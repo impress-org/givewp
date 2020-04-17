@@ -18,36 +18,31 @@ export const initializeIframeResize = function( iframe ) {
 			heightCalculationMethod: 'documentElementOffset',
 			widthCalculationMethod: 'documentElementOffset',
 			onMessage: function( messageData ) {
+				let parent = iframe.parentElement;
+				if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
+					parent = parent.parentElement.parentElement;
+				}
+
 				switch ( messageData.message.action ) {
 					case 'giveEmbedFormContentLoaded':
+
 						const timer = setTimeout( function() {
 							revealIframe();
 						}, 400 );
-
-						let parent = iframe.parentElement;
-						const iframeToAutoScroll = document.querySelector( 'iframe[name="give-embed-form"][data-autoscroll="1"]:not(.in-modal)' );
-						if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-							parent = parent.parentElement.parentElement;
-						}
-
-						parent.classList.remove( 'give-loader-type-img' );
-						iframe.style.visibility = 'visible';
 
 						// Attribute to dom when iframe loaded.
 						iframe.setAttribute( 'data-contentLoaded', '1' );
 
 						function revealIframe() {
 							clearTimeout( timer );
-							let parent = iframe.parentElement;
-							if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-								parent = parent.parentElement.parentElement;
-							}
-							parent.querySelector( '.iframe-loader' ).remove();
+							parent.querySelector( '.iframe-loader' ).style.display = 'none';
 							iframe.style.visibility = 'visible';
 							iframe.style.minHeight = '';
 						}
 						break;
-					case 'setProcessingHeight':
+					case 'showLoader':
+						parent.querySelector( '.iframe-loader' ).style.display = '';
+						iframe.style.visibility = 'hidden';
 						iframe.style.minHeight = `${ messageData.message.payload }px`;
 						break;
 				}

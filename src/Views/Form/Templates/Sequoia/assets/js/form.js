@@ -158,10 +158,10 @@
 				// Setup gateway icons
 				setupGatewayIcons();
 
-				$( '#give-purchase-button' ).on( 'click', function() {
+				$( '.give-section.payment' ).on( 'click', '#give-purchase-button', function() {
 					const height = $( '.give-embed-form' ).height();
 					const message = {
-						action: 'setProcessingHeight',
+						action: 'showLoader',
 						payload: height,
 					};
 					window.parentIFrame.sendMessage( message );
