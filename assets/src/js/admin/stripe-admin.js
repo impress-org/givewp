@@ -32,12 +32,35 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const connectionTypes = Array.from( document.querySelectorAll( 'input[name="stripe_connection_type"]' ) );
 	const selectedConnectionType = document.querySelector( 'input[name="stripe_connection_type"]:checked' );
 	const disconnectBtns = Array.from( document.querySelectorAll( '.give-stripe-disconnect-account-btn' ) );
+	const setStripeDefaults = Array.from( document.querySelectorAll( '.give-stripe-account-set-default' ) );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== setStripeDefaults ) {
+		setStripeDefaults.forEach( ( setStripeDefault ) => {
+			setStripeDefault.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+
+				const xhr      = new XMLHttpRequest();
+				const formData = new FormData();
+
+				formData.append( 'action', 'give_stripe_set_account_default' );
+				formData.append( 'account_slug', e.target.getAttribute( 'data-account' ) );
+				xhr.open( 'POST', ajaxurl );
+				xhr.onload = function() {
+					const response = JSON.parse( xhr.response );
+					if ( xhr.status === 200 && response.success ) {
+						window.location.href = e.target.getAttribute( 'data-url' );
+					}
+				};
+				xhr.send( formData );
+			} );
+		} );
+	}
 
 	if ( null !== connectionTypes ) {
 		giveStripeConnectionTypeToggle( selectedConnectionType.value );
