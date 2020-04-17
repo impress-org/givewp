@@ -35,13 +35,15 @@ export const initializeIframeResize = function( iframe ) {
 
 						function revealIframe() {
 							clearTimeout( timer );
-							parent.querySelector( '.iframe-loader' ).style.display = 'none';
+							parent.querySelector( '.iframe-loader' ).style.opacity = 0;
+							parent.querySelector( '.iframe-loader' ).style.transition = 'opacity 0.2s ease';
 							iframe.style.visibility = 'visible';
 							iframe.style.minHeight = '';
 						}
 						break;
 					case 'showLoader':
-						parent.querySelector( '.iframe-loader' ).style.display = '';
+						parent.querySelector( '.iframe-loader' ).style.opacity = 1;
+						parent.querySelector( '.iframe-loader' ).style.transition = '';
 						iframe.style.visibility = 'hidden';
 						iframe.style.minHeight = `${ messageData.message.payload }px`;
 						break;

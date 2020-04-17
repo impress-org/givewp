@@ -910,6 +910,8 @@ Embed Form aka IFrame Form
 		width: 100%;
 		position: absolute;
 		top: 0;
+		pointer-events: none;
+		z-index: 99;
 	}
 
 	iframe {
