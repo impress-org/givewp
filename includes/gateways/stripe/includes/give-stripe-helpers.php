@@ -1337,15 +1337,7 @@ function give_stripe_get_admin_settings_page_url() {
  * @return void
  */
 function give_stripe_get_back_to_settings_page() {
-	$redirect_to = add_query_arg(
-		[
-			'post_type' => 'give_forms',
-			'page'      => 'give-settings',
-			'tab'       => 'gateways',
-			'section'   => 'stripe-settings',
-		],
-		esc_url_raw( admin_url( 'edit.php' ) )
-	);
+	$redirect_to = give_stripe_get_admin_settings_page_url();
 
 	wp_safe_redirect( $redirect_to );
 	give_die();
