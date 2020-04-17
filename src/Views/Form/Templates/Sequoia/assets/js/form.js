@@ -19,6 +19,10 @@
 			$( '.step-tracker' ).removeClass( 'current' );
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
+			if ( steps[ step ].title ) {
+				$navigatorTitle.text( steps[ step ].title );
+			}
+
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				if ( $( '.step-tracker' ).length === 3 ) {
 					$( '.step-tracker:first-of-type' ).remove();
@@ -30,14 +34,12 @@
 					$( '.back-btn', $container ).show();
 				}
 			} else if ( step === 0 ) {
-				$( '.give-form-navigator', $container ).hide();
+				$( '.give-form-navigator', $container ).removeClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '' );
 			} else {
-				$( '.give-form-navigator', $container ).show();
+				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			}
-
-			$navigatorTitle.text( steps[ step ].title );
 
 			const hide = steps.map( ( obj, index ) => {
 				if ( index === step || index === navigator.currentStep ) {

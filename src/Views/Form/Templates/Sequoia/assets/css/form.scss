@@ -176,6 +176,13 @@ p {
 	width: 100%;
 	position: absolute;
 	z-index: 99;
+	transition: transform 0.2s ease;
+	transform: translate3d(0, -50px, 0);
+
+	&.nav-visible {
+		transform: translate3d(0, 0, 0);
+		transition-delay: 0.15s;
+	}
 
 	> .back-btn {
 		padding: 0 20px;
