@@ -42,7 +42,11 @@ ob_start();
 		animation: spin 0.6s linear infinite;
 		"></div>
 	<h3><?php _e( 'Redirecting...', 'give' ); ?></h3>
+	<a style="display: none" id="link" href="<?php echo $location; ?>" target="_parent"></a>
 </div>
+<script>
+	document.getElementById( 'link' ).click();
+</script>',
 
 <?php
 
