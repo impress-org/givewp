@@ -854,11 +854,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							<?php
 							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
 								foreach ( $stripe_accounts as $name => $details ) {
-									$stripe_account_id = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : $details['user_id'];
+									$stripe_account_id  = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : $details['user_id'];
+									$disconnect_message = sprintf(
+										__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
+										$stripe_account_id
+									);
 									?>
-									<div class="give-stripe-account-manager-list-item">
+									<div id="give-stripe-<?php echo $name; ?>" class="give-stripe-account-manager-list-item">
 										<span class="give-stripe-account-name">
-											<?php echo $stripe_account_id; ?>
+											<?php echo give_stripe_convert_slug_to_title( $name ); ?>
 										</span>
 										<span class="give-stripe-account-actions">
 										<span class="give-stripe-account-type">
@@ -882,7 +886,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										}
 										?>
 										<span class="give-stripe-account-disconnect">
-											<a class="give-stripe-disconnect-account-btn" data-account="<?php echo $stripe_account_id; ?>" href="#">
+											<a
+												class="give-stripe-disconnect-account-btn"
+												href="<?php echo give_stripe_disconnect_url( $stripe_account_id, $name ); ?>"
+												data-disconnect-message="<?php echo $disconnect_message; ?>"
+											>
 												<?php echo __( 'Disconnect', 'give' ); ?>
 											</a>
 										</span>
