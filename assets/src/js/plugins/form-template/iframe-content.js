@@ -3,7 +3,7 @@ const iFrameResizer = {
 	targetOrigin: window.location.origin,
 
 	onReady: function() {
-		window.parentIFrame.sendMessage( 'giveEmbedFormContentLoaded' );
+		window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
 	},
 
 	onMessage: function( message ) {
