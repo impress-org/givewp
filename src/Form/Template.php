@@ -92,6 +92,19 @@ abstract class Template {
 	}
 
 	/**
+	 * Get form receipt height
+	 *
+	 * Returns receipt height for iframe (in pixels), this is used to predict iframe height before the iframe loads
+	 * Implemented in includes/shortcodes.php:
+	 * Implemented in form donation processing view
+	 *
+	 * @return int
+	 **/
+	public function getFormReceiptHeight() {
+		return 977;
+	}
+
+	/**
 	 * Get loading view filepath
 	 *
 	 * @since 2.7.0
