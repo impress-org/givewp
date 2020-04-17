@@ -36,20 +36,6 @@ export const initializeIframeResize = function( iframe ) {
 						// Attribute to dom when iframe loaded.
 						iframe.setAttribute( 'data-contentLoaded', '1' );
 
-						// Is there any iframe to auto scroll?
-						if ( iframeToAutoScroll ) {
-							// Scroll to latest iframe only if all iframe loaded.
-							const allIframesCount = document.querySelectorAll( 'iframe[name="give-embed-form"]:not(.in-modal)' ).length,
-								  allILoadedIframesCount = document.querySelectorAll( 'iframe[name="give-embed-form"][data-contentloaded="1"]:not(.in-modal)' ).length;
-
-							if ( allIframesCount === allILoadedIframesCount ) {
-								jQuery( 'html, body' ).animate( {
-									scrollTop: iframeToAutoScroll.offsetTop,
-									scrollLeft: iframeToAutoScroll.offsetLeft,
-								} );
-							}
-						}
-
 						function revealIframe() {
 							clearTimeout( timer );
 							let parent = iframe.parentElement;
@@ -65,16 +51,6 @@ export const initializeIframeResize = function( iframe ) {
 						iframe.style.minHeight = `${ messageData.message.payload }px`;
 						break;
 				}
-			},
-			onScroll: ( { x, y } ) => {
-				// No need to auto scroll if form loaded in modal.
-				if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-					return false;
-				}
-
-				jQuery( 'html, body' ).animate( { scrollTop: y, scrollLeft: x } );
-
-				return false;
 			},
 			onInit: function( iframe ) {
 				iframe.iFrameResizer.sendMessage( {
