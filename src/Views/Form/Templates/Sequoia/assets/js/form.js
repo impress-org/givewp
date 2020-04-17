@@ -31,8 +31,10 @@
 				}
 			} else if ( step === 0 ) {
 				$( '.give-form-navigator', $container ).hide();
+				$( steps[ step ].selector ).css( 'padding-top', '' );
 			} else {
 				$( '.give-form-navigator', $container ).show();
+				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			}
 
 			$navigatorTitle.text( steps[ step ].title );
@@ -76,7 +78,7 @@
 				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 			} );
 			setupHeightChangeCallback( function( height, diff ) {
-				if ( diff > 10 ) {
+				if ( diff > 5 ) {
 					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
 				} else {
 					$( '.form-footer' ).css( 'transition', '' );
@@ -305,11 +307,11 @@
 		let lastHeight = 0;
 		function checkHeightChange() {
 			const selector = $( steps[ navigator.currentStep ].selector );
-			const changed = lastHeight !== $( selector ).height();
+			const changed = lastHeight !== $( selector ).outerHeight();
 			if ( changed ) {
-				const diff = lastHeight > $( selector ).height() ? lastHeight - $( selector ).height() : $( selector ).height() - lastHeight;
-				callback( $( selector ).height(), diff );
-				lastHeight = $( selector ).height();
+				const diff = lastHeight > $( selector ).outerHeight() ? lastHeight - $( selector ).outerHeight() : $( selector ).outerHeight() - lastHeight;
+				callback( $( selector ).outerHeight(), diff );
+				lastHeight = $( selector ).outerHeight();
 			}
 			window.requestAnimationFrame( checkHeightChange );
 		}
