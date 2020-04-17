@@ -1357,6 +1357,19 @@ function give_stripe_convert_slug_to_title( $slug ) {
 }
 
 /**
+ * Convert Title to Slug.
+ *
+ * @param string $title Title.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_convert_title_to_slug( $title ) {
+	return str_replace( ' ', '_', strtolower( $title ) );
+}
+
+/**
  * This helper fn is used to generate unique account slug.
  *
  * @param array $all_account_slugs All Stripe accounts slug.
