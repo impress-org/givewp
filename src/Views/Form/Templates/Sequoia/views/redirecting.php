@@ -46,7 +46,7 @@ ob_start();
 </div>
 <script>
 	document.getElementById( 'link' ).click();
-</script>',
+</script>
 
 <?php
 
