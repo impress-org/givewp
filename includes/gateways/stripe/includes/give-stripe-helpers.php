@@ -1343,3 +1343,15 @@ function give_stripe_get_default_account() {
 	return give_get_option( '_give_stripe_default_account', '' );
 }
 
+/**
+ * Convert Slug to Title.
+ *
+ * @param string $slug Slug.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_convert_slug_to_title( $slug ) {
+	return ucfirst( str_replace( '_', ' ', $slug ) );
+}
