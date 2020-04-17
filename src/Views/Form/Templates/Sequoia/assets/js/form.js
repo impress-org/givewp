@@ -53,8 +53,6 @@
 				const inDirection = navigator.currentStep < step ? 'right' : 'left';
 				$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
-			} else {
-				$( steps[ navigator.currentStep ].selector ).css( 'position', 'absolute' );
 			}
 			navigator.currentStep = step;
 		},
@@ -63,6 +61,7 @@
 				if ( step.setup !== undefined ) {
 					step.setup();
 				}
+				$( step.selector ).css( 'position', 'absolute' );
 			} );
 			$advanceButton.on( 'click', function( e ) {
 				e.preventDefault();
