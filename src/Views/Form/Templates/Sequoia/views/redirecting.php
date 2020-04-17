@@ -24,6 +24,7 @@ ob_start();
 		background: #fff;
 		border-radius: 6px;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
