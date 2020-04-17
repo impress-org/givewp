@@ -1355,3 +1355,25 @@ function give_stripe_get_default_account() {
 function give_stripe_convert_slug_to_title( $slug ) {
 	return ucfirst( str_replace( '_', ' ', $slug ) );
 }
+
+/**
+ * This helper fn is used to generate unique account slug.
+ *
+ * @param array $all_account_slugs All Stripe accounts slug.
+ * @param int   $accounts_count    Total Stripe accounts connected count.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count = 1 ) {
+
+	$account_slug = 'account_' . $accounts_count;
+
+	if ( ! in_array( $account_slug, $all_account_slugs, true ) ) {
+		return $account_slug;
+	}
+
+	$accounts_count++;
+	return give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
+}
