@@ -43,6 +43,10 @@ ob_start();
 		"></div>
 	<h3><?php _e( 'Verifying Payment...', 'give' ); ?></h3>
 </div>
+<script type="text/javascript">setTimeout(function () {
+		window.location = '?giveDonationAction=showReceipt';
+	}, 4000);
+</script>
 
 <?php
 
