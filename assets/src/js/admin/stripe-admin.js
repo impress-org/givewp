@@ -31,6 +31,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const connectField = document.querySelector( '.give-stripe-account-type-connect' );
 	const connectionTypes = Array.from( document.querySelectorAll( 'input[name="stripe_connection_type"]' ) );
 	const selectedConnectionType = document.querySelector( 'input[name="stripe_connection_type"]:checked' );
+	const disconnectBtns = Array.from( document.querySelectorAll( '.give-stripe-disconnect-account-btn' ) );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
@@ -156,24 +157,26 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
-	if ( null !== stripeDisconnect ) {
-		document.querySelector( '.give-stripe-disconnect' ).addEventListener( 'click', ( e ) => {
-			e.preventDefault();
+	if ( null !== disconnectBtns ) {
+		disconnectBtns.forEach( ( disconnectBtn ) => {
+			disconnectBtn.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
 
-			new Give.modal.GiveConfirmModal( {
-				type: 'alert',
-				classes: {
-					modalWrapper: 'give-modal--warning',
-				},
-				modalContent: {
-					title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
-					desc: Give.fn.getGlobalVar( 'disconnect_stripe_message' ),
-				},
-				successConfirm: () => {
-					window.location.href = e.target.getAttribute( 'href' );
-				},
-			} ).render();
-		} );
+				new Give.modal.GiveConfirmModal( {
+					type: 'alert',
+					classes: {
+						modalWrapper: 'give-modal--warning',
+					},
+					modalContent: {
+						title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
+						desc: e.target.getAttribute( 'data-disconnect-message' ),
+					},
+					successConfirm: () => {
+						window.location.href = e.target.getAttribute( 'href' );
+					},
+				} ).render();
+			} );
+		});
 	}
 
 	if ( null !== donationStatus ) {
