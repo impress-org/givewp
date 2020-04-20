@@ -20,7 +20,7 @@ ob_start();
 	<div class="give-section receipt">
 		<?php if ( ! empty( $options['thank-you']['image'] ) ) : ?>
 			<div class="image">
-				<img src="<?php echo $options['thank-you']['image']; ?>" />
+				<img src="<?php echo $options['thank-you']['image']; ?>"/>
 			</div>
 		<?php else : ?>
 			<div class="checkmark">
@@ -70,30 +70,30 @@ ob_start();
 					<div class="value">
 						<?php echo $payment->email; ?>
 					</div>
-					<div class="details-row">
-						<div class="detail">
-							<?php _e( 'Payment Status', 'give' ); ?>
-						</div>
-						<div class="value">
-							<?php echo getDonationStatusLabel( $payment->ID, true ); ?>
-						</div>
+				</div>
+				<div class="details-row">
+					<div class="detail">
+						<?php _e( 'Payment Status', 'give' ); ?>
 					</div>
-					<div class="details-row">
-						<div class="detail">
-							<?php _e( 'Donation Amount', 'give' ); ?>
-						</div>
-						<div class="value">
-							<?php
-							echo filterCurrency(
-								sanitizeAmount( $payment->subtotal ),
-								[
-									'currency_code'   => $payment->currency,
-									'decode_currency' => true,
-									'form_id'         => $payment->form_id,
-								]
-							);
-							?>
-						</div>
+					<div class="value">
+						<?php echo getDonationStatusLabel( $payment->ID, true ); ?>
+					</div>
+				</div>
+				<div class="details-row">
+					<div class="detail">
+						<?php _e( 'Donation Amount', 'give' ); ?>
+					</div>
+					<div class="value">
+						<?php
+						echo filterCurrency(
+							sanitizeAmount( $payment->subtotal ),
+							[
+								'currency_code'   => $payment->currency,
+								'decode_currency' => true,
+								'form_id'         => $payment->form_id,
+							]
+						);
+						?>
 					</div>
 				</div>
 				<?php if ( ! empty( $payment->address['line1'] ) ) : ?>
@@ -109,7 +109,8 @@ ob_start();
 								echo $payment->address['line1'];
 							}
 							?>
-							<?php echo $payment->address['city']; ?>, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
+							<?php echo $payment->address['city']; ?>
+							, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
 							<?php echo $payment->address['country']; ?>
 						</div>
 					</div>
