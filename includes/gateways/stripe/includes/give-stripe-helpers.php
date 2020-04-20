@@ -1427,3 +1427,22 @@ function give_stripe_disconnect_account( $slug ) {
 	// Update Stripe accounts.
 	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 }
+
+/**
+ * This helper function is used to get account options.
+ *
+ * @since 2.6.3
+ *
+ * @return array
+ */
+function give_stripe_get_account_options() {
+
+	$options         = [];
+	$stripe_accounts = give_stripe_get_all_accounts();
+
+	foreach ( $stripe_accounts as $slug => $details ) {
+		$options[ $slug ] = give_stripe_convert_slug_to_title( $slug );
+	}
+
+	return $options;
+}
