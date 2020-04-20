@@ -10,6 +10,9 @@
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		goToStep: ( step ) => {
+			const stepHeight = $( steps[ step ].selector ).outerHeight() + 123;
+			$( '.give-form-templates' ).css( 'min-height', `${ stepHeight }px` );
+
 			if ( steps[ step ].showErrors === true ) {
 				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).show();
 			} else {
@@ -84,7 +87,6 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
-
 			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
