@@ -18,7 +18,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
 	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
-	const stripeConnectedElement = document.getElementById( 'give-stripe-connect' );
+	const stripeConnectedElement = document.getElementById( 'give-stripe-connected' );
 	const hideIconElements = Array.from( document.querySelectorAll( 'input[name="stripe_hide_icon"]' ) );
 	const iconStyleElement = document.querySelector( '.stripe-icon-style' );
 	const hideMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_mandate_acceptance_option"]' ) );
@@ -45,7 +45,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			setStripeDefault.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
-				const xhr      = new XMLHttpRequest();
+				const xhr = new XMLHttpRequest();
 				const formData = new FormData();
 
 				formData.append( 'action', 'give_stripe_set_account_default' );
@@ -199,7 +199,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					},
 				} ).render();
 			} );
-		});
+		} );
 	}
 
 	if ( null !== donationStatus ) {
