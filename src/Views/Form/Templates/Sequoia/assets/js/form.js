@@ -10,8 +10,15 @@
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		goToStep: ( step ) => {
-			const stepHeight = $( steps[ step ].selector ).outerHeight() + 123;
-			$( '.give-form-templates' ).css( 'min-height', `${ stepHeight }px` );
+			const nextStepHeight = steps[ step ].title ? $( steps[ step ].selector ).height() + 50 : $( steps[ step ].selector ).height();
+			const currentStepHeight = steps[ navigator.currentStep ].title ? $( steps[ navigator.currentStep ].selector ).height() + 50 : $( steps[ navigator.currentStep ].selector ).height();
+			if ( nextStepHeight > currentStepHeight ) {
+				$( '.give-form-templates' ).css( 'min-height', `${ nextStepHeight + 123 }px` );
+			} else {
+				setTimeout( function() {
+					$( '.give-form-templates' ).css( 'min-height', `${ nextStepHeight + 123 }px` );
+				}, 200 );
+			}
 
 			if ( steps[ step ].showErrors === true ) {
 				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).show();
