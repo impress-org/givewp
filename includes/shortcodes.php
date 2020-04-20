@@ -233,7 +233,7 @@ function give_form_shortcode( $atts ) {
 									class="in-modal"
 									data-src="%1$s"
 									data-autoScroll="%2$s"
-									style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>
+									style="border: 0; visibility: hidden; min-height: %5$spx;"></iframe>
 								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
 							</div>
 						</div>
