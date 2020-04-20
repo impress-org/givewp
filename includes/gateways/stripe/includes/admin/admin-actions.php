@@ -78,7 +78,7 @@ function give_stripe_connect_save_options() {
 	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 
 	// Send back to settings page.
-	give_stripe_get_back_to_settings_page();
+	give_stripe_get_back_to_settings_page( [ 'stripe_account' => 'connected' ] );
 }
 add_action( 'admin_init', 'give_stripe_connect_save_options' );
 
