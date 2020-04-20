@@ -1394,7 +1394,7 @@ function give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_coun
 
 	$account_slug = 'account_' . $accounts_count;
 
-	if ( ! in_array( $account_slug, $all_account_slugs, true ) ) {
+	if ( ! in_array( $account_slug, array_keys( $all_account_slugs ), true ) ) {
 		return $account_slug;
 	}
 
