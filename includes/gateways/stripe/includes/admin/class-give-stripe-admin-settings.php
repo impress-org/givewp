@@ -917,87 +917,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								<tbody>
 									<?php
 									if ( give_stripe_is_premium_active() ) {
-										?>
-										<tr valign="top" class="stripe-cc-field-format-settings">
-											<th scope="row" class="titledesc">
-												<label for="stripe_cc_fields_format">
-													<?php echo __( 'Connection Type', 'give' ); ?>
-												</label>
-											</th>
-
-											<td class="give-forminp give-forminp-radio_inline give-radio-inline">
-												<fieldset>
-													<ul>
-														<li>
-															<label>
-																<input name="stripe_connection_type" value="connect" checked="checked" type="radio">
-																<?php echo __( 'Connect', 'give' ); ?>
-															</label>
-														</li>
-														<li>
-															<label>
-																<input name="stripe_connection_type" value="manual" type="radio">
-																<?php echo __( 'Manual', 'give' ); ?>
-															</label>
-														</li>
-														<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
-													</ul>
-												</fieldset>
-											</td>
-										</tr>
-										<tr valign="top" class="give-stripe-account-type-manual">
-											<th scope="row" class="titledesc">
-												<label for="stripe_account_type_manual">
-													<?php echo __( 'Live Secret Key', 'give' ); ?>
-												</label>
-											</th>
-											<td class="give-forminp">
-												<fieldset>
-													<input type="text" name="stripe_account[live_secret_key]" value="" />
-													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
-												</fieldset>
-											</td>
-										</tr>
-										<tr valign="top" class="give-stripe-account-type-manual">
-											<th scope="row" class="titledesc">
-												<label for="stripe_live_publishable_key">
-													<?php echo __( 'Live Publishable Key', 'give' ); ?>
-												</label>
-											</th>
-											<td class="give-forminp">
-												<fieldset>
-													<input type="text" name="stripe_account[live_publishable_key]" value="" />
-													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
-												</fieldset>
-											</td>
-										</tr>
-										<tr valign="top" class="give-stripe-account-type-manual">
-											<th scope="row" class="titledesc">
-												<label for="stripe_test_secret_key">
-													<?php echo __( 'Test Secret Key', 'give' ); ?>
-												</label>
-											</th>
-											<td class="give-forminp">
-												<fieldset>
-													<input type="text" name="stripe_account[test_secret_key]" value="" />
-													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
-												</fieldset>
-											</td>
-										</tr>
-										<tr valign="top" class="give-stripe-account-type-manual">
-											<th scope="row" class="titledesc">
-												<label for="stripe_test_publishable_key">
-													<?php echo __( 'Test Publishable Key', 'give' ); ?>
-												</label>
-											</th>
-											<td class="give-forminp">
-												<fieldset>
-													<input type="text" name="stripe_account[test_publishable_key]" value="" />
-													<div class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</div>
-												</fieldset>
-											</td>
-										</tr>
-										<?php
+										/**
+										 * This action hook will be used to load Manual API fields for premium addon.
+										 *
+										 * @since 2.6.3
+										 */
+										do_action( 'give_stripe_premium_manual_api_fields' );
 									}
 									?>
 									<tr valign="top" class="give-stripe-account-type-connect">
