@@ -82,7 +82,7 @@ class Form {
 			/* @var Template $formTemplate */
 			$formTemplate = Give()->templates->getTemplate();
 
-			if ( $formTemplate->openSuccessPageInIframe || inIframe() ) {
+			if ( inIframe() || ( $formTemplate->openSuccessPageInIframe && isProcessingForm() ) ) {
 				// Set header.
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
