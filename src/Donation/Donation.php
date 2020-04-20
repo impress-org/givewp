@@ -28,9 +28,9 @@ class Donation {
 	 * @param int $donationId
 	 * @return bool
 	 */
-	public static function isSubscription( $donationId = null ) {
+	public static function isRecurring( $donationId = null ) {
 		$donationId = $donationId ?: getPaymentId();
 
-		return 1 === Give()->payment_meta->get_meta( $donationId, '_give_subscription_payment', true );
+		return '1' === Give()->payment_meta->get_meta( $donationId, '_give_is_donation_recurring', true );
 	}
 }
