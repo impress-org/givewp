@@ -80,7 +80,7 @@
 				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 			} );
 			setupHeightChangeCallback( function( height, diff ) {
-				if ( diff > 10 ) {
+				if ( diff > 4 ) {
 					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
 				} else {
 					$( '.form-footer' ).css( 'transition', '' );
