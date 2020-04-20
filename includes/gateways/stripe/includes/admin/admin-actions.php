@@ -423,23 +423,19 @@ add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
  *
  * @return void
  */
-function give_stripe_disconnect_stripe_account() {
+function give_stripe_disconnect_connect_stripe_account() {
 
 	$get_data = give_clean( $_GET );
 
 	if ( is_admin() && isset( $get_data['stripe_disconnected'] ) ) {
 		$account_name    = ! empty( $get_data['account_name'] ) ? $get_data['account_name'] : false;
-		$stripe_accounts = give_stripe_get_all_accounts();
 
-		// Unset Account ID from the list.
-		unset( $stripe_accounts[ $account_name ] );
-
-		// Update Stripe accounts.
-		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+		// Disconnect Stripe Account.
+		give_stripe_disconnect_account( $account_name );
 	}
 }
 
-add_action( 'admin_init', 'give_stripe_disconnect_stripe_account' );
+add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
 
 /**
  * Set default Stripe account.
