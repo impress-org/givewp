@@ -162,6 +162,7 @@ function give_form_shortcode( $atts ) {
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
+		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight();
 
 		storePostedData();
 
@@ -204,9 +205,10 @@ function give_form_shortcode( $atts ) {
 						src="%1$s"
 						data-autoScroll="%2$s"
 						onload="Give.initializeIframeResize(this)"
-						style="border: 0; visibility: hidden"></iframe>',
+						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>',
 			$iframe_url,
-			$buttonModeActive ? 0 : $isAutoScroll
+			$buttonModeActive ? 0 : $isAutoScroll,
+			$formStartingHeight
 		);
 
 		// Show button in button mode and hide Iframe.
@@ -233,7 +235,7 @@ function give_form_shortcode( $atts ) {
 									class="in-modal"
 									data-src="%1$s"
 									data-autoScroll="%2$s"
-									style="border: 0; visibility: hidden"></iframe>
+									style="border: 0; visibility: hidden; min-height: %5$spx;"></iframe>
 								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
 							</div>
 						</div>
@@ -241,18 +243,20 @@ function give_form_shortcode( $atts ) {
 				$iframe_url,
 				$buttonModeActive ? 0 : $isAutoScroll,
 				__( 'Close modal', 'give' ),
-				$uniqueId
+				$uniqueId,
+				$formStartingHeight
 			);
 		}
 
+		$isHidden = $buttonModeActive ? ' is-hide' : '';
 		printf(
-			'<div class="give-embed-form-wrapper give-loader-type-img%3$s" id="%2$s">
-				%1$s
-			</div>',
-			$iframe,
+			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s<div class="iframe-loader">',
+			$isHidden,
 			$uniqueId,
-			$buttonModeActive ? ' is-hide' : ''
+			$iframe
 		);
+		include Give()->templates->getTemplate( $activeTheme )->getLoadingView();
+		echo '</div></div>';
 
 	} else {
 		give_get_donation_form( $atts );

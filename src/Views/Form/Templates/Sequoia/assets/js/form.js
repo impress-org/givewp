@@ -84,7 +84,6 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
-
 			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
@@ -158,6 +157,15 @@
 
 				// Setup gateway icons
 				setupGatewayIcons();
+
+				$( '.give-section.payment' ).on( 'click', '#give-purchase-button', function() {
+					const height = $( '.give-embed-form' ).height();
+					const message = {
+						action: 'showLoader',
+						payload: height,
+					};
+					window.parentIFrame.sendMessage( message );
+				} );
 			},
 		},
 	];

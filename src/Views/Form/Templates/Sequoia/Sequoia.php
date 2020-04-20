@@ -15,8 +15,44 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
+	public function getFormStartingHeight() {
+		$templateOptions = getTemplateOptions();
+		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
+			return 748;
+		}
+		if ( empty( $templateOptions['introduction']['image'] ) ) {
+			return 448;
+		} else {
+			return 754;
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getLoadingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/loading.php';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getReceiptView() {
 		return wp_doing_ajax() ? GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/receipt.php' : parent::getReceiptView();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getDonationProcessingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/verifying.php';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getRedirectingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/redirecting.php';
 	}
 
 	/**

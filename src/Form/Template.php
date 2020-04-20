@@ -80,6 +80,42 @@ abstract class Template {
 	public $showDonationIntroductionContent = false;
 
 	/**
+	 * Get starting form height
+	 *
+	 * Returns starting height for iframe (in pixels), this is used to predict iframe height before the iframe loads
+	 * Implemented in includes/shortcodes.php:
+	 *
+	 * @return int
+	 **/
+	public function getFormStartingHeight() {
+		return 600;
+	}
+
+	/**
+	 * Get form receipt height
+	 *
+	 * Returns receipt height for iframe (in pixels), this is used to predict iframe height before the iframe loads
+	 * Implemented in includes/shortcodes.php:
+	 * Implemented in form donation processing view
+	 *
+	 * @return int
+	 **/
+	public function getFormReceiptHeight() {
+		return 977;
+	}
+
+	/**
+	 * Get loading view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getLoadingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultLoadingView.php';
+	}
+
+	/**
 	 * Get form view filepath
 	 *
 	 * @since 2.7.0
@@ -110,9 +146,19 @@ abstract class Template {
 	 */
 	public function getDonationProcessingView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
+		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
 	}
 
-
+	/**
+	 * Get redirecting view filepath
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function getRedirectingView() {
+		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
+	}
 
 	/**
 	 * return form template ID.
