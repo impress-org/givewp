@@ -10,11 +10,14 @@
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		goToStep: ( step ) => {
+			// Adjust body height before animating step, to prevent choppy iframe resizing
+			// Compare next step to current step, and increase body height if next step is taller.
 			const nextStepHeight = steps[ step ].title ? $( steps[ step ].selector ).height() + 50 : $( steps[ step ].selector ).height();
 			const currentStepHeight = steps[ navigator.currentStep ].title ? $( steps[ navigator.currentStep ].selector ).height() + 50 : $( steps[ navigator.currentStep ].selector ).height();
 			if ( nextStepHeight > currentStepHeight ) {
 				$( '.give-form-templates' ).css( 'min-height', `${ nextStepHeight + 123 }px` );
 			} else {
+				// Delay setting body height if next step is shorter than current step
 				setTimeout( function() {
 					$( '.give-form-templates' ).css( 'min-height', `${ nextStepHeight + 123 }px` );
 				}, 200 );
