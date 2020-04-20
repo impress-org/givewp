@@ -154,7 +154,7 @@ ob_start();
 				</div>
 			</div>
 		</div>
-
+		<?php require 'subscription-details.php'; ?>
 		<!-- Download Receipt TODO: make this conditional on presence of pdf receipts addon -->
 		<button class="give-btn download-btn">
 			<?php _e( 'Donation Receipt', 'give' ); ?> <i class="fas fa-file-pdf"></i>
