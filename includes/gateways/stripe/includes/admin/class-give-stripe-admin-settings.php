@@ -913,6 +913,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						</div>
 						<div class="give-stripe-account-manager-add-section">
 							<h3><?php echo __( 'Add New Stripe Account', 'give' ); ?></h3>
+							<div class="give-stripe-add-account-errors"></div>
 							<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 								<tbody>
 									<?php
@@ -920,9 +921,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										/**
 										 * This action hook will be used to load Manual API fields for premium addon.
 										 *
+										 * @param array $stripe_accounts All Stripe accounts.
+										 *
 										 * @since 2.6.3
 										 */
-										do_action( 'give_stripe_premium_manual_api_fields' );
+										do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
 									}
 									?>
 									<tr valign="top" class="give-stripe-account-type-connect">
