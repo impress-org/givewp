@@ -763,6 +763,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
 								$stripe_user_id
 							);
+
 							?>
 							<a href="<?php give_stripe_disconnect_url(); ?>" class="give-stripe-disconnect">
 								<?php esc_attr_e( '[Disconnect]', 'give' ); ?>
@@ -855,10 +856,26 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
 								foreach ( $stripe_accounts as $name => $details ) {
 									$stripe_account_id  = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : $details['user_id'];
-									$disconnect_message = sprintf(
-										__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
-										$stripe_account_id
-									);
+									$disconnect_message = ( 'connect' === $details['type'] ) ?
+										sprintf(
+											__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
+											$stripe_account_id
+										) :
+										__( 'Are you sure you want to disconnect GiveWP from Stripe?', 'give' );
+									$disconnect_url = ( 'connect' === $details['type'] ) ?
+										give_stripe_disconnect_url( $stripe_account_id, $name ) :
+										add_query_arg(
+											[
+												'post_type'   => 'give_forms',
+												'page'        => 'give-settings',
+												'tab'         => 'gateways',
+												'section'     => 'stripe-settings',
+												'give_action' => 'disconnect_manual_stripe_account',
+												'account'     => $name,
+											],
+											admin_url( 'edit.php' )
+										);
+
 									?>
 									<div id="give-stripe-<?php echo $name; ?>" class="give-stripe-account-manager-list-item">
 										<span class="give-stripe-account-name">
@@ -892,7 +909,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										<span class="give-stripe-account-disconnect">
 											<a
 												class="give-stripe-disconnect-account-btn"
-												href="<?php echo give_stripe_disconnect_url( $stripe_account_id, $name ); ?>"
+												href="<?php echo $disconnect_url; ?>"
 												data-disconnect-message="<?php echo $disconnect_message; ?>"
 											>
 												<?php echo __( 'Disconnect', 'give' ); ?>
