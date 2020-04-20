@@ -1313,18 +1313,25 @@ function give_stripe_get_all_accounts() {
 /**
  * This helper function will return admin settings page url.
  *
+ * @param array $args List of arguments.
+ *
  * @since 2.6.3
  *
  * @return string
  */
-function give_stripe_get_admin_settings_page_url() {
+function give_stripe_get_admin_settings_page_url( $args = [] ) {
+
+	$default_args = [
+		'post_type' => 'give_forms',
+		'page'      => 'give-settings',
+		'tab'       => 'gateways',
+		'section'   => 'stripe-settings',
+	];
+
+	$args = wp_parse_args( $args, $default_args );
+
 	return add_query_arg(
-		[
-			'post_type' => 'give_forms',
-			'page'      => 'give-settings',
-			'tab'       => 'gateways',
-			'section'   => 'stripe-settings',
-		],
+		$args,
 		esc_url_raw( admin_url( 'edit.php' ) )
 	);
 }
@@ -1332,12 +1339,14 @@ function give_stripe_get_admin_settings_page_url() {
 /**
  * Send user back to Stripe settings page.
  *
+ * @param array $args List of arguments.
+ *
  * @since 2.6.3
  *
  * @return void
  */
-function give_stripe_get_back_to_settings_page() {
-	$redirect_to = give_stripe_get_admin_settings_page_url();
+function give_stripe_get_back_to_settings_page( $args = [] ) {
+	$redirect_to = give_stripe_get_admin_settings_page_url( $args );
 
 	wp_safe_redirect( $redirect_to );
 	give_die();
