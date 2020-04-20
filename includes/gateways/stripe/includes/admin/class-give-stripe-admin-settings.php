@@ -847,10 +847,31 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			} else {
 				$default_account = give_stripe_get_default_account();
 			}
+
+			$site_url            = get_site_url();
+			$modal_title         = __( '<strong>You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.</strong>', 'give' );
+			$modal_first_detail  = sprintf(
+				'%1$s %2$s',
+				__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
+				"<strong>{$site_url}?give-listener=stripe</strong>"
+			);
+			$modal_second_detail = __( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
+			$can_display         = ! empty( $_GET['stripe_account'] ) ? '0' : '1';
 			?>
 			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
 				<td class="give-forminp give-forminp-api_key">
 					<div class="give-stripe-account-manager-container">
+						<div
+							id="give-stripe-connected"
+							class="stripe-btn-disabled give-hidden"
+							data-status="connected"
+							data-title="<?php echo $modal_title; ?>"
+							data-first-detail="<?php echo $modal_first_detail; ?>"
+							data-second-detail="<?php echo $modal_second_detail; ?>"
+							data-display="<?php echo $can_display; ?>"
+							data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
+						>
+						</div>
 						<div class="give-stripe-account-manager-list">
 							<?php
 							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
