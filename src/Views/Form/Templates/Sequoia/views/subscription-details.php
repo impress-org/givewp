@@ -1,10 +1,14 @@
 <?php
 
 use Give\Addon\Recurring;
+use Give\Donation\Donation;
 
-if ( ! Recurring::isActive() ) {
+// Exit if donation is not subscription.
+if ( ! Recurring::isActive() || ! Donation::isSubscription() ) {
 	return '';
 }
+
+
 ?>
 <div class="details">
 	<h3 class="headline"><?php _e( 'Subscription Details', 'give' ); ?></h3>
