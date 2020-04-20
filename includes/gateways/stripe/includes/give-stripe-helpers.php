@@ -1401,3 +1401,20 @@ function give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_coun
 	$accounts_count++;
 	return give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
 }
+
+/**
+ * This function is used to disconnect Stripe account.
+ *
+ * @param string $slug Account Slug.
+ *
+ * @return void
+ */
+function give_stripe_disconnect_account( $slug ) {
+	$stripe_accounts = give_stripe_get_all_accounts();
+
+	// Unset Account ID from the list.
+	unset( $stripe_accounts[ $slug ] );
+
+	// Update Stripe accounts.
+	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+}
