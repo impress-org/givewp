@@ -34,9 +34,9 @@ $subscriptionInformation = sprintf(
 	$frequency
 );
 
-$editAmountLink = give_recurring_is_subscriptions_page() && $subscription->can_update_subscription() ?
+$editAmountLink = $subscription->can_update_subscription() ?
 	sprintf(
-		'&nbsp;<strong><a href="%3$s" title="%2$s">%1$s</a></strong>',
+		'<br><strong><a href="%3$s" title="%2$s" target="_parent">%1$s</a></strong>',
 		__( 'Edit Amount', 'give' ),
 		__( 'Edit amount of subscription', 'give' ),
 		esc_url( $subscription->get_edit_subscription_url() )
