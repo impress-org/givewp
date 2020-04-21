@@ -6,7 +6,7 @@
   "homepage": "https://givewp.com/",
   "require": {
     "composer/installers": "~1.2",
-    "tecnickcom/tcpdf": "^6.2",
+    "tecnickcom/tcpdf": "^6.3",
     "stripe/stripe-php": "^6.41"
   },
   "require-dev": {
