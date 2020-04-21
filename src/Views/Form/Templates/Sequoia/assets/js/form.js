@@ -270,6 +270,10 @@
 	 * @param {number} formID Form ID
 	 */
 	function refreshPaymentInformationSection( ev, response, formID ) {
+		if ( navigator.currentStep === 2 ) {
+			$( '.give-form-templates' ).css( 'min-height', '' );
+		}
+
 		const $form = $( `#${ formID }` );
 
 		// This function will run only for embed donation form.
