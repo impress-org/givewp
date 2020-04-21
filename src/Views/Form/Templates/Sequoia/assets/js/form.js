@@ -5,6 +5,7 @@
 	const $advanceButton = $( '.advance-btn', $container );
 	const $backButton = $( '.back-btn' );
 	const $navigatorTitle = $( '.give-form-navigator .title' );
+	let gatewayAnimating = false;
 
 	const navigator = {
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
@@ -96,8 +97,8 @@
 				e.preventDefault();
 				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 			} );
-			setupHeightChangeCallback( function( height, diff ) {
-				if ( diff > 4 ) {
+			setupHeightChangeCallback( function( height ) {
+				if ( gatewayAnimating === false ) {
 					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
 				} else {
 					$( '.form-footer' ).css( 'transition', '' );
@@ -241,11 +242,13 @@
 			// eslint-disable-next-line no-unused-expressions
 			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
 
-			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
-				const height = $( '.payment' ).height();
-				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
-			} );
+			if ( showFields ) {
+				gatewayAnimating = true;
+				// eslint-disable-next-line no-unused-expressions
+				jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
+					gatewayAnimating = false;
+				} );
+			}
 		} );
 	}
 
@@ -327,8 +330,7 @@
 			const selector = $( steps[ navigator.currentStep ].selector );
 			const changed = lastHeight !== $( selector ).outerHeight();
 			if ( changed ) {
-				const diff = lastHeight > $( selector ).outerHeight() ? lastHeight - $( selector ).outerHeight() : $( selector ).outerHeight() - lastHeight;
-				callback( $( selector ).outerHeight(), diff );
+				callback( $( selector ).outerHeight() );
 				lastHeight = $( selector ).outerHeight();
 			}
 			window.requestAnimationFrame( checkHeightChange );
