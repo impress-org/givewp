@@ -63,6 +63,17 @@ function isViewingFormReceipt() {
 }
 
 /**
+ * Get result if we are viewing old  donationreceipt or not
+ *
+ * @return bool
+ * @since 2.7.0
+ */
+function isViewingOldFormReceipt() {
+	return give_is_donation_history_page() && ! empty( $_REQUEST['donation_id'] );
+}
+
+
+/**
  * Get result whether or not show failed transaction error.
  *
  * @return bool
