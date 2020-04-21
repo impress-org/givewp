@@ -34,7 +34,7 @@ function give_stripe_get_secret_key() {
 	/**
 	 * Filter to handle secret key for Stripe.
 	 *
-	 * @param string $publishable_key Secret Key.
+	 * @param string $secret_key Secret Key.
 	 *
 	 * @since 2.6.3
 	 */
@@ -1363,6 +1363,9 @@ function give_stripe_get_back_to_settings_page( $args = [] ) {
  */
 function give_stripe_get_default_account( $form_id = 0 ) {
 
+	// Get all Stripe accounts.
+	$all_accounts = give_stripe_get_all_accounts();
+
 	// Global Stripe account.
 	$default_account = give_get_option( '_give_stripe_default_account', '' );
 
@@ -1374,7 +1377,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 		$default_account = give_get_meta(  $form_id, '_give_stripe_default_account', true );
 	}
 
-	return $default_account;
+	return $all_accounts[ $default_account ];
 }
 
 /**
