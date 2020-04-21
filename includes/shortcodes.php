@@ -12,7 +12,6 @@
 // Exit if accessed directly.
 use Give\Views\IframeView;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 
@@ -68,7 +67,7 @@ function give_donation_history( $atts, $content = false ) {
 		echo do_shortcode( getReceiptShortcodeFromConfirmationPage() );
 
 		// Display donation history link only if Receipt Access Session is available.
-		if ( isLegacyForm() && ( give_get_receipt_session() || is_user_logged_in() ) ) {
+		if ( give_get_receipt_session() || is_user_logged_in() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( give_get_history_page_uri() ),
@@ -327,11 +326,6 @@ function give_receipt_shortcode( $atts ) {
 		$donation_id = $session['donation_id'];
 	} elseif ( ! empty( $give_receipt_args['id'] ) ) {
 		$donation_id = $give_receipt_args['id'];
-	}
-
-	if ( ! isLegacyForm() && give_is_donation_history_page() && ! inIframe() ) {
-		$iframeView = new IframeView();
-		return $iframeView->setURL( $_SERVER['REQUEST_URI'] )->render();
 	}
 
 	// Display donation receipt placeholder while loading receipt via AJAX.

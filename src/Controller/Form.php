@@ -30,7 +30,6 @@ use function Give\Helpers\Form\Utils\isIframeParentSuccessPageURL;
 use function Give\Helpers\Form\Utils\isProcessingGiveActionOnAjax;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
-use function Give\Helpers\Form\Utils\isViewingOldFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 use function Give\Helpers\removeDonationAction;
 use function Give\Helpers\switchRequestedURL;
@@ -104,19 +103,6 @@ class Form {
 
 			// Render receipt on success page in iframe.
 			add_filter( 'the_content', [ $this, 'showReceiptInIframeOnSuccessPage' ], 1 );
-		}
-
-		if ( inIframe() && isViewingOldFormReceipt() ) {
-			/* @var Template $formTemplate */
-			$formTemplate = Give()->templates->getTemplate();
-
-			// Set header.
-			nocache_headers();
-			header( 'HTTP/1.1 200 OK' );
-
-			// Render receipt with in iframe.
-			include $formTemplate->getReceiptView();
-			exit();
 		}
 	}
 
