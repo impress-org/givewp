@@ -33,12 +33,26 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const selectedConnectionType = document.querySelector( 'input[name="stripe_connection_type"]:checked' );
 	const disconnectBtns = Array.from( document.querySelectorAll( '.give-stripe-disconnect-account-btn' ) );
 	const setStripeDefaults = Array.from( document.querySelectorAll( '.give-stripe-account-set-default' ) );
+	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
+	const perFormAccount = document.querySelector( '.give-stripe-per-form-default-account' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== perFormOptions ) {
+		perFormOptions.forEach( ( formOption ) => {
+			formOption.addEventListener( 'change', ( e ) => {
+				if ( 'enabled' === e.target.value ) {
+					perFormAccount.classList.remove( 'give-hidden' );
+				} else {
+					perFormAccount.classList.add( 'give-hidden' );
+				}
+			} );
+		} );
+	}
 
 	if ( null !== setStripeDefaults ) {
 		setStripeDefaults.forEach( ( setStripeDefault ) => {
