@@ -61,26 +61,26 @@ function give_stripe_get_connected_account_options() {
 /**
  * Get Publishable Key.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return string
  */
-function give_stripe_get_publishable_key() {
+function give_stripe_get_publishable_key( $form_id = 0 ) {
 
-	$publishable_key = give_get_option( 'live_publishable_key' );
+	// Get default Stripe account details.
+	$default_account = give_stripe_get_default_account( $form_id );
 
+	// Live Publishable Key.
+	$publishable_key = trim( $default_account['live_publishable_key'] );
+
+	// Update publishable key, if test mode is enabled.
 	if ( give_is_test_mode() ) {
-		$publishable_key = give_get_option( 'test_publishable_key' );
+		$publishable_key = trim( $default_account['test_publishable_key'] );
 	}
 
-	/**
-	 * Filter to handle publishable key for Stripe.
-	 *
-	 * @param string $publishable_key Publishable Key.
-	 *
-	 * @since 2.6.3
-	 */
-	return apply_filters( 'give_stripe_get_publishable_key', $publishable_key );
+	return $publishable_key;
 }
 
 /**
