@@ -518,11 +518,13 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 /**
  * This function is used to set application information to Stripe.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return void
  */
-function give_stripe_set_app_info() {
+function give_stripe_set_app_info( $form_id = 0 ) {
 
 	try {
 
@@ -565,7 +567,7 @@ function give_stripe_set_app_info() {
 	} // End try().
 
 	// Set API Key after setting app info to ensure that API key is set on every Stripe call.
-	give_stripe_set_api_key();
+	give_stripe_set_api_key( $form_id );
 
 }
 
