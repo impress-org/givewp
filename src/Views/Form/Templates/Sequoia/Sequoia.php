@@ -44,13 +44,6 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
-	public function getDonationProcessingView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/verifying.php';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function getRedirectingView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/Templates/Sequoia/views/redirecting.php';
 	}
