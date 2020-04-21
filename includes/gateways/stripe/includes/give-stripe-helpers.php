@@ -1355,12 +1355,26 @@ function give_stripe_get_back_to_settings_page( $args = [] ) {
 /**
  * Get Default Stripe Account.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.6.3
  *
  * @return string
  */
-function give_stripe_get_default_account() {
-	return give_get_option( '_give_stripe_default_account', '' );
+function give_stripe_get_default_account( $form_id = 0 ) {
+
+	// Global Stripe account.
+	$default_account = give_get_option( '_give_stripe_default_account', '' );
+
+	// Return default Stripe account of the form, if enabled.
+	if (
+		$form_id > 0 &&
+		give_is_setting_enabled( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) )
+	) {
+		$default_account = give_get_meta(  $form_id, '_give_stripe_default_account', true );
+	}
+
+	return $default_account;
 }
 
 /**
