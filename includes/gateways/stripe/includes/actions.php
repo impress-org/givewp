@@ -33,15 +33,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 
 	$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-	$publishable_key        = give_stripe_get_publishable_key();
-	$secret_key             = give_stripe_get_secret_key();
+	$publishable_key        = give_stripe_get_publishable_key( $form_id );
+	$secret_key             = give_stripe_get_secret_key( $form_id );
+	$account_id             = give_stripe_get_connected_account_id( $form_id );
 	$stripe_cc_field_format = give_get_option( 'stripe_cc_fields_format', 'multi' );
 
 	ob_start();
 
 	do_action( 'give_before_cc_fields', $form_id ); ?>
 
-	<fieldset id="give_cc_fields" class="give-do-validate">
+	<fieldset
+		id="give_cc_fields_<?php echo $id_prefix; ?>"
+		class="give-do-validate give-stripe-cc-fields-container"
+		data-publishable-key="<?php echo $publishable_key; ?>"
+		data-account="<?php echo $account_id; ?>"
+	>
 		<legend>
 			<?php esc_attr_e( 'Credit Card Info', 'give' ); ?>
 		</legend>
