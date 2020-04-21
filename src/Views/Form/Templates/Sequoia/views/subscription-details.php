@@ -1,13 +1,13 @@
 <?php
 
-use Give\Addon\Recurring;
+use Give\Addon\Recurring as RecurringAddon;
 use Give\Donation\Donation;
 use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 
 $donationID = getPaymentId();
 
 // Exit if donation is not subscription.
-if ( ! Recurring::isActive() || ! Donation::isRecurring( $donationID ) ) {
+if ( ! RecurringAddon::isActive() || ! Donation::isRecurring( $donationID ) ) {
 	return '';
 }
 
