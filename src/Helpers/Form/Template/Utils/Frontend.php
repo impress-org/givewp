@@ -48,6 +48,11 @@ function getFormId() {
 		return $formId;
 	}
 
+	// Get form id on ajax request by donation id.
+	if ( ! empty( $_REQUEST['donation_id'] ) ) {
+		return absint( give_get_payment_form_id( absint( $_REQUEST['donation_id'] ) ) );
+	}
+
 	// Get form id from donor purchase session.
 	$donorSession = give_get_purchase_session();
 	$formId       = ! empty( $donorSession['post_data']['give-form-id'] ) ?
