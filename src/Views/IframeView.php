@@ -15,6 +15,8 @@ use function Give\Helpers\removeDonationAction;
 /**
  * Class IframeView
  *
+ * Note: only for internal use.
+ *
  * @since   2.7.0
  * @package Give
  */
