@@ -150,17 +150,6 @@ abstract class Template {
 	}
 
 	/**
-	 * Get redirecting view filepath
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return string
-	 */
-	public function getRedirectingView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
-	}
-
-	/**
 	 * return form template ID.
 	 *
 	 * @return string
