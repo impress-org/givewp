@@ -538,11 +538,13 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 /**
  * This function is used to set application information to Stripe.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return void
  */
-function give_stripe_set_app_info() {
+function give_stripe_set_app_info( $form_id = 0 ) {
 
 	try {
 
@@ -584,7 +586,7 @@ function give_stripe_set_app_info() {
 		give_set_error( 'stripe_app_info_error', __( 'Unable to set application information to Stripe. Please try again.', 'give' ) );
 	} // End try().
 
-	$form_id = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$form_id = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : $form_id;
 
 	// Set API Key on every Stripe API request call.
 	give_stripe_set_api_key( $form_id );
