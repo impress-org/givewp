@@ -41,9 +41,28 @@ function give_stripe_get_secret_key( $form_id = 0 ) {
 }
 
 /**
- * This function will return connected account options.
+ * This function is used to fetch the account id of the Connected Stripe ACcount.
  *
- * @param int $form_id Form ID.
+ * @param int $form_id Form Id.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_get_connected_account_id( $form_id = 0 ) {
+
+	$account_id      = '';
+	$default_account = give_stripe_get_default_account( $form_id );
+
+	if ( 'connect' === $default_account['type'] ) {
+		$account_id = trim( $default_account['give_stripe_user_id'] );
+	}
+
+	return $account_id;
+}
+
+/**
+ * This function will return connected account options.
  *
  * @since 2.5.0
  *
@@ -563,6 +582,11 @@ function give_stripe_set_app_info() {
 
 		give_set_error( 'stripe_app_info_error', __( 'Unable to set application information to Stripe. Please try again.', 'give' ) );
 	} // End try().
+
+	$form_id = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+
+	// Set API Key on every Stripe API request call.
+	give_stripe_set_api_key( $form_id );
 }
 
 /**
