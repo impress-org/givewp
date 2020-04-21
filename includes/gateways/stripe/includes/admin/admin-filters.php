@@ -35,3 +35,60 @@ function give_stripe_link_transaction_id( $transaction_id, $payment_id ) {
 
 add_filter( 'give_payment_details_transaction_id-stripe', 'give_stripe_link_transaction_id', 10, 2 );
 add_filter( 'give_payment_details_transaction_id-stripe_ach', 'give_stripe_link_transaction_id', 10, 2 );
+
+/**
+ * This function is used to add per-form Stripe account management.
+ *
+ * @since 2.6.3
+ *
+ * @param array $settings Settings List.
+ * @param int   $form_id  Form ID.
+ *
+ * @return array
+ */
+function give_stripe_add_metabox_settings( $settings, $form_id ) {
+	$account_options      = give_stripe_get_account_options();
+	$account_options_keys = array_keys( $account_options );
+
+	$settings['stripe_form_account_options'] = array(
+		'id'        => 'stripe_form_account_options',
+		'title'     => __( 'Manage Accounts', 'give' ),
+		'icon-html' => sprintf(
+			'<img class="give-stripe-icon" src="%1$s" />',
+			GIVE_PLUGIN_URL . 'assets/dist/images/admin/stripe-icon.png'
+		),
+		'fields'    => array(
+			array(
+				'name'    => __( 'Account Options', 'give' ),
+				'id'      => 'give_stripe_per_form_accounts',
+				'type'    => 'radio_inline',
+				'default' => 'disabled',
+				'options' => array(
+					'disabled' => __( 'Global', 'give' ),
+					'enabled'  => __( 'Customize', 'give' ),
+				),
+			),
+			array(
+				'name'    => __( 'Stripe Accounts', 'give' ),
+				'id'      => '_give_stripe_default_accounts',
+				'type'    => 'radio',
+				'default' => $account_options_keys[0],
+				'options' => give_stripe_get_account_options(),
+			),
+			array(
+				'type'  => 'label',
+				'id'    => 'give-Ôstripe-add-account-link',
+				'title' => sprintf(
+					'<a href="%1$s">%2$s</a> %3$s',
+					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ),
+					__( 'Click here', 'give' ),
+					__( 'to add new Stripe account.', 'give' )
+				),
+			),
+		),
+	);
+
+	return $settings;
+}
+
+add_filter( 'give_metabox_form_data_settings', 'give_stripe_add_metabox_settings', 10, 2 );
