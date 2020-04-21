@@ -43,16 +43,20 @@ function give_stripe_get_secret_key( $form_id = 0 ) {
 /**
  * This function will return connected account options.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return array
  */
-function give_stripe_get_connected_account_options() {
+function give_stripe_get_connected_account_options( $form_id = 0 ) {
 
-	$args = array();
+	$args            = [];
+	$default_account = give_stripe_get_default_account( $form_id );
 
-	if ( give_stripe_is_connected() ) {
-		$args['stripe_account'] = give_get_option( 'give_stripe_user_id' );
+	// If the Stripe account is connected via Connect method.
+	if ( 'connect' === $default_account['type'] ) {
+		$args['stripe_account'] = $default_account['give_stripe_user_id'];
 	}
 
 	return $args;
