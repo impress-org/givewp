@@ -62,7 +62,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
-	if ( null !== connectionTypes ) {
+	if ( null !== connectionTypes && null !== selectedConnectionType ) {
 		giveStripeConnectionTypeToggle( selectedConnectionType.value );
 
 		connectionTypes.forEach( ( connectionType ) => {
