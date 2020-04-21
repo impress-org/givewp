@@ -13,7 +13,7 @@ namespace Give\Views;
  * @since 2.7.0
  * @package Give
  */
-class IframeView {
+class IframeContentView {
 	/**
 	 * Document page title.
 	 *
@@ -49,7 +49,7 @@ class IframeView {
 	 *
 	 * @param string $title
 	 *
-	 * @return IframeView $this
+	 * @return IframeContentView $this
 	 */
 	public function setTitle( $title ) {
 		$this->title = $title;
@@ -62,7 +62,7 @@ class IframeView {
 	 *
 	 * @param string $body
 	 *
-	 * @return IframeView $this
+	 * @return IframeContentView $this
 	 */
 	public function setBody( $body ) {
 		$this->body = $body;
@@ -75,7 +75,7 @@ class IframeView {
 	 *
 	 * @param array $classes
 	 *
-	 * @return IframeView $this
+	 * @return IframeContentView $this
 	 */
 	public function setBodyClasses( $classes ) {
 		$this->bodyClasses = array_merge( $this->bodyClasses, (array) $classes );

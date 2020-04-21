@@ -1,6 +1,6 @@
 <?php
 
-use Give\Views\IframeView;
+use Give\Views\IframeContentView;
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
 use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 use function give_get_gateway_admin_label as getGatewayLabel;
@@ -170,7 +170,7 @@ ob_start();
 
 
 <?php
-$iframeView = new IframeView();
+$iframeView = new IframeContentView();
 
 echo $iframeView->setTitle( __( 'Donation Receipt', 'give' ) )
 				->setBody( ob_get_clean() )

@@ -4,7 +4,7 @@
  *
  * @since 2.7.0
  */
-use Give\Views\IframeView;
+use Give\Views\IframeContentView;
 
 $bodyContent = sprintf(
 	'<p style="text-align: center">%1$s</p>
@@ -17,7 +17,7 @@ $bodyContent = sprintf(
 	esc_js( $location )
 );
 
-$iframeView = new IframeView();
+$iframeView = new IframeContentView();
 echo $iframeView->setTitle( __( 'Donation Processing...', 'give' ) )
    ->setBody( $bodyContent )
    ->render();
