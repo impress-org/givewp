@@ -4,10 +4,20 @@
  *
  * @since 2.7.0
  */
-use Give\Views\IframeView;
 
-$iframeView = new IframeView();
+?>
 
-echo $iframeView->setTitle( __( 'Donation Processing', 'give' ) )
-	->setBody( apply_filters( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ), '' ) )
-	->render();
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+	<head>
+		<meta charset="utf-8">
+		<title><?php _e( 'Redirecting...', 'give' ); ?></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			setTimeout(function () {
+				window.location = '<?php echo give_get_success_page_uri(); ?>';
+			}, 5000);
+		</script>
+	</body>
+</html>
