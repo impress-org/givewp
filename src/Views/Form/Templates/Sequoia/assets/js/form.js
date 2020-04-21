@@ -10,6 +10,19 @@
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		goToStep: ( step ) => {
+			// Adjust body height before animating step, to prevent choppy iframe resizing
+			// Compare next step to current step, and increase body height if next step is taller.
+			const nextStepHeight = steps[ step ].title ? $( steps[ step ].selector ).height() + 50 : $( steps[ step ].selector ).height();
+			const currentStepHeight = steps[ navigator.currentStep ].title ? $( steps[ navigator.currentStep ].selector ).height() + 50 : $( steps[ navigator.currentStep ].selector ).height();
+			if ( nextStepHeight > currentStepHeight ) {
+				$( '.give-form-templates' ).css( 'min-height', `${ nextStepHeight + 123 }px` );
+			} else {
+				// Delay setting body height if next step is shorter than current step
+				setTimeout( function() {
+					$( '.give-form-templates' ).css( 'min-height', `${ nextStepHeight + 123 }px` );
+				}, 200 );
+			}
+
 			if ( steps[ step ].showErrors === true ) {
 				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).show();
 			} else {
@@ -84,14 +97,13 @@
 				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 			} );
 			setupHeightChangeCallback( function( height, diff ) {
-				if ( diff > 5 ) {
+				if ( diff > 4 ) {
 					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
 				} else {
 					$( '.form-footer' ).css( 'transition', '' );
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
-
 			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
