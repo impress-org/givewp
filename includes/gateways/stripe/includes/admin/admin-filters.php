@@ -70,7 +70,7 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 			),
 			array(
 				'name'    => __( 'Stripe Accounts', 'give' ),
-				'id'      => '_give_stripe_default_accounts',
+				'id'      => '_give_stripe_default_account',
 				'type'    => 'radio',
 				'default' => $account_options_keys[0],
 				'options' => give_stripe_get_account_options(),
