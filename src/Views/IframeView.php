@@ -106,7 +106,10 @@ class IframeView {
 	 * @return $this
 	 */
 	public function setURL( $url = null ) {
-		$this->url = $url;
+		$this->url = add_query_arg(
+			array_merge( [ 'giveDonationFormInIframe' => 1 ] ),
+			$url
+		);
 
 		return $this;
 	}
