@@ -45,15 +45,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		public $api_version = '2019-05-16';
 
 		/**
-		 * Secret API Key.
-		 *
-		 * @access private
-		 *
-		 * @var string
-		 */
-		private $secret_key = '';
-
-		/**
 		 * Payment Intent.
 		 *
 		 * @since  2.5.0
@@ -82,9 +73,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return bool|void
 		 */
 		public function __construct() {
-
-			// Set secret key received from Stripe.
-			$this->secret_key = give_stripe_get_secret_key();
 
 			// Set API Version.
 			$this->set_api_version();
