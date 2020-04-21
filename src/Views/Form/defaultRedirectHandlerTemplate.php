@@ -4,20 +4,17 @@
  *
  * @since 2.7.0
  */
-use Give\Views\IframeContentView;
-
-$bodyContent = sprintf(
-	'<p style="text-align: center">%1$s</p>
-		<a style="font-size: 0" id="link" href="%3$s" target="_parent">%2$s</a>
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+	<head>
+		<meta charset="utf-8">
+		<title><?php _e( 'Redirecting...' ); ?></title>
+	</head>
+	<body>
+		<a style="font-size: 0" id="link" href="<?php echo $location; ?>" target="_parent"></a>
 		<script>
-			document.getElementById( \'link\' ).click();
-		</script>',
-	__( 'Processing...', 'give' ),
-	__( 'Link', 'give' ),
-	esc_js( $location )
-);
-
-$iframeView = new IframeContentView();
-echo $iframeView->setTitle( __( 'Donation Processing...', 'give' ) )
-   ->setBody( $bodyContent )
-   ->render();
+			document.getElementById( 'link' ).click();
+		</script>
+	</body>
+</html>
