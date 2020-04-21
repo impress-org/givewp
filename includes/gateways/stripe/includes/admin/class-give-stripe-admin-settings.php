@@ -841,11 +841,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				}
 			}
 
+			// Set account as default.
 			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 1 ) {
 				$stripe_account_keys = array_keys( $stripe_accounts );
 				$default_account     = $stripe_account_keys[0];
 			} else {
-				$default_account = give_stripe_get_default_account();
+				$default_account = give_stripe_get_default_account_slug();
 			}
 
 			$site_url            = get_site_url();
