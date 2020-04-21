@@ -628,16 +628,18 @@ function give_stripe_get_donation_id_by( $id, $type ) {
 /**
  * This function is used to set Stripe API Key.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return void
  */
-function give_stripe_set_api_key() {
+function give_stripe_set_api_key( $form_id = 0 ) {
 
 	try {
 
 		// Fetch secret key.
-		$secret_key = give_stripe_get_secret_key();
+		$secret_key = give_stripe_get_secret_key( $form_id );
 
 		// Set secret key.
 		\Stripe\Stripe::setApiKey( $secret_key );
@@ -1377,7 +1379,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 		$form_id > 0 &&
 		give_is_setting_enabled( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) )
 	) {
-		$default_account = give_get_meta(  $form_id, '_give_stripe_default_account', true );
+		$default_account = give_get_meta( $form_id, '_give_stripe_default_account', true );
 	}
 
 	return $all_accounts[ $default_account ];
