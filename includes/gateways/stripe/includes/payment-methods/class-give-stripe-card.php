@@ -290,7 +290,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 						__( 'Stripe Customer Creation Failed', 'give' ),
 						sprintf(
 							/* translators: %s Donation Data */
-							__( 'Customer creation failed while processing the donation. Details: %s', 'give' ),
+							__( 'Unable to get Stripe Customer ID while processing donation. Details: %s', 'give' ),
 							wp_json_encode( $donation_data )
 						)
 					);
