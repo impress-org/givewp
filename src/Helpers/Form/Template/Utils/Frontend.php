@@ -74,7 +74,12 @@ function getFormId() {
  * @since 2.7.0
  */
 function getPaymentId() {
+	// Get donation id from query parameter if any.
+	if ( ! empty( $_REQUEST['donation_id'] ) ) {
+		return absint( $_REQUEST['donation_id'] );
+	}
+
 	$session = give_get_purchase_session();
-	return isset( $session['donation_id'] ) ? intval( $session['donation_id'] ) : null;
+	return ! empty( $session['donation_id'] ) ? absint( $session['donation_id'] ) : null;
 }
 
