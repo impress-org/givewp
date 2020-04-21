@@ -16,6 +16,9 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			return;
 		}
 
+		const ccFieldContainer = form_element.querySelector( '.give-stripe-cc-fields-container' );
+		const publishableKey = ccFieldContainer.getAttribute( 'data-publishable-key' );
+		const accountId = ccFieldContainer.getAttribute( 'data-account' );
 		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
 		const idPrefix = form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value;
 		const checkoutImage = ( give_stripe_vars.checkout_image.length > 0 ) ? give_stripe_vars.checkout_image : '';
@@ -27,7 +30,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 
 		// Set stripe handler for form.
 		stripe_handler[ idPrefix ] = StripeCheckout.configure( {
-			key: give_stripe_vars.publishable_key,
+			key: publishableKey,
 			image: checkoutImage,
 			locale: give_stripe_vars.preferred_locale,
 			billingAddress: checkoutAddress,
@@ -48,8 +51,8 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				tokenCreated = true;
 
 				// For Stripe Connect API Users.
-				if ( '' !== give_stripe_vars.stripe_account_id ) {
-					token.stripeAccount = give_stripe_vars.stripe_account_id;
+				if ( '' !== accountId ) {
+					token.stripeAccount = accountId;
 				}
 
 				// Supplemental loading animation while the donation form submits.

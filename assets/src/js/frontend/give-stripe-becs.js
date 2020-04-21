@@ -1,13 +1,7 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
-let stripe = Stripe( give_stripe_vars.publishable_key );
-
-if ( give_stripe_vars.stripe_account_id ) {
-	stripe = Stripe( give_stripe_vars.publishable_key, {
-		stripeAccount: give_stripe_vars.stripe_account_id,
-	} );
-}
+let stripe = {};
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
@@ -29,6 +23,18 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Loop through the number of forms on the page.
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		const formElement = formWrap.querySelector( '.give-form' );
+
+		const ccFieldContainer = formElement.querySelector( '.give-stripe-cc-fields-container' );
+		const publishableKey = ccFieldContainer.getAttribute( 'data-publishable-key' );
+		const accountId = ccFieldContainer.getAttribute( 'data-account' );
+
+		stripe = Stripe( publishableKey );
+
+		if ( accountId.trim().length !== 0 ) {
+			stripe = Stripe( publishableKey, {
+				stripeAccount: accountId,
+			} );
+		}
 
 		let elements = stripe.elements( {
 			locale: preferredLocale,
