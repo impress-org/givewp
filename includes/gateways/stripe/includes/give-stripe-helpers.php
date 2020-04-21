@@ -68,9 +68,10 @@ function give_stripe_get_connected_account_id( $form_id = 0 ) {
  *
  * @return array
  */
-function give_stripe_get_connected_account_options( $form_id = 0 ) {
+function give_stripe_get_connected_account_options() {
 
 	$args            = [];
+	$form_id         = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
 	$default_account = give_stripe_get_default_account( $form_id );
 
 	// If the Stripe account is connected via Connect method.
