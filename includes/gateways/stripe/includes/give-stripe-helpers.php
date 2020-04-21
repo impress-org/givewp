@@ -1391,8 +1391,22 @@ function give_stripe_get_back_to_settings_page( $args = [] ) {
  */
 function give_stripe_get_default_account( $form_id = 0 ) {
 
-	// Get all Stripe accounts.
-	$all_accounts = give_stripe_get_all_accounts();
+	$all_accounts    = give_stripe_get_all_accounts();
+	$default_account = give_stripe_get_default_account_slug( $form_id );
+
+	return $all_accounts[ $default_account ];
+}
+
+/**
+ * This helper function is used to get default account slug.
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_get_default_account_slug( $form_id = 0 ) {
 
 	// Global Stripe account.
 	$default_account = give_get_option( '_give_stripe_default_account', '' );
@@ -1405,8 +1419,10 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 		$default_account = give_get_meta( $form_id, '_give_stripe_default_account', true );
 	}
 
-	return $all_accounts[ $default_account ];
+	return $default_account;
 }
+
+
 
 /**
  * Convert Slug to Title.
