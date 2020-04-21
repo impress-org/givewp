@@ -47,6 +47,7 @@ add_filter( 'give_payment_details_transaction_id-stripe_ach', 'give_stripe_link_
  * @return array
  */
 function give_stripe_add_metabox_settings( $settings, $form_id ) {
+	$form_account         = give_is_setting_enabled( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) );
 	$account_options      = give_stripe_get_account_options();
 	$account_options_keys = array_keys( $account_options );
 
@@ -69,15 +70,16 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 				),
 			),
 			array(
-				'name'    => __( 'Stripe Accounts', 'give' ),
-				'id'      => '_give_stripe_default_account',
-				'type'    => 'radio',
-				'default' => $account_options_keys[0],
-				'options' => give_stripe_get_account_options(),
+				'name'          => __( 'Stripe Accounts', 'give' ),
+				'id'            => '_give_stripe_default_account',
+				'type'          => 'radio',
+				'default'       => $account_options_keys[0],
+				'options'       => give_stripe_get_account_options(),
+				'wrapper_class' => $form_account ? 'give-stripe-per-form-default-account' : 'give-stripe-per-form-default-account give-hidden',
 			),
 			array(
 				'type'  => 'label',
-				'id'    => 'give-Ôstripe-add-account-link',
+				'id'    => 'give-stripe-add-account-link',
 				'title' => sprintf(
 					'<a href="%1$s">%2$s</a> %3$s',
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ),
