@@ -10,13 +10,10 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Views\IframeView;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
-use function Give\Helpers\Form\Utils\isViewingFormReceipt;
+use function Give\Helpers\Form\Utils\isLegacyForm;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
-use function Give\Helpers\removeDonationAction;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -150,112 +147,18 @@ function give_form_shortcode( $atts ) {
 	$atts['id'] = $atts['id'] ?: getFormId();
 	$formId     = absint( $atts['id'] );
 
-	// Get active theme
-	$activeTheme = getActiveID( $atts['id'] );
-
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( $activeTheme && 'legacy' !== $activeTheme ) {
-		$query_string           = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
-		$donation_history       = give_get_purchase_session();
-		$hasAction              = ! empty( $query_string['giveDonationAction'] );
-		$isAutoScroll           = absint( $hasAction );
-		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
-		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight();
+	if ( ! isLegacyForm( $formId ) ) {
+		$showIframeInModal = 'button' === $atts['display_style'];
+		$iframeView        = new IframeView();
 
-		// Do not pass donation acton by query param if does not belong to current form.
-		if (
-			$hasAction &&
-			! empty( $donation_history ) &&
-			! $donationFormHasSession
-		) {
-			unset( $query_string['giveDonationAction'] );
-			$hasAction    = false;
-			$isAutoScroll = 0;
-		}
-
-		// Build iframe url.
-		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) );
-
-		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || isViewingFormReceipt() ) {
-			$url = getSuccessPageURL();
-
-		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
-			$url                                     = Give()->templates->getTemplate( $activeTheme )->getFailedPageURL( $formId );
-			$query_string['showFailedDonationError'] = 1;
-		}
-
-		$iframe_url = add_query_arg(
-			array_merge( [ 'giveDonationFormInIframe' => 1 ], $query_string ),
-			trailingslashit( $url )
-		);
-
-		$iframe_url = removeDonationAction( $iframe_url );
-
-		$uniqueId         = uniqid( 'give-' );
-		$buttonModeActive = 'button' === $atts['display_style'];
-
-		// Set iframe.
-		$iframe = sprintf(
-			'<iframe
-						name="give-embed-form"
-						src="%1$s"
-						data-autoScroll="%2$s"
-						onload="Give.initializeIframeResize(this)"
-						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>',
-			$iframe_url,
-			$buttonModeActive ? 0 : $isAutoScroll,
-			$formStartingHeight
-		);
-
-		// Show button in button mode and hide Iframe.
-		if ( $buttonModeActive ) {
-			printf(
-				'<div>
-						<button
-						type="button"
-						class="js-give-embed-form-modal-opener"
-						data-form-id="%1$s"%3$s>%2$s</button>
-					</div>',
-				$uniqueId,
-				! empty( $atts['continue_button_title'] ) ? $atts['continue_button_title'] : __( 'Click to donate', 'give' ),
-				! empty( $atts['button_color'] ) ? " style=\"background-color: {$atts['button_color']}\"" : ''
-			);
-
-			// Insert iframe inside modal HTML.
-			$iframe = sprintf(
-				'
-						<div class="modal-inner-wrap">
-							<div class="modal-content">
-								<iframe
-									name="give-embed-form"
-									class="in-modal"
-									data-src="%1$s"
-									data-autoScroll="%2$s"
-									style="border: 0; visibility: hidden; min-height: %5$spx;"></iframe>
-								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
-							</div>
-						</div>
-						',
-				$iframe_url,
-				$buttonModeActive ? 0 : $isAutoScroll,
-				__( 'Close modal', 'give' ),
-				$uniqueId,
-				$formStartingHeight
-			);
-		}
-
-		$isHidden = $buttonModeActive ? ' is-hide' : '';
-		printf(
-			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s<div class="iframe-loader">',
-			$isHidden,
-			$uniqueId,
-			$iframe
-		);
-		include Give()->templates->getTemplate( $activeTheme )->getLoadingView();
-		echo '</div></div>';
-
+		echo $iframeView->setFormId( $formId )
+				   ->showInModal( $showIframeInModal )
+				   ->setButtonTitle( $atts['continue_button_title'] )
+				   ->setButtonColor( $atts['button_color'] )
+				   ->render();
 	} else {
 		give_get_donation_form( $atts );
 	}
