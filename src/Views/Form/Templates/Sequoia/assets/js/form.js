@@ -5,6 +5,7 @@
 	const $advanceButton = $( '.advance-btn', $container );
 	const $backButton = $( '.back-btn' );
 	const $navigatorTitle = $( '.give-form-navigator .title' );
+	let gatewayAnimating = false;
 
 	const navigator = {
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
@@ -34,21 +35,29 @@
 
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				if ( $( '.step-tracker' ).length === 3 ) {
-					$( '.step-tracker:first-of-type' ).remove();
+					$( '.step-tracker' ).remove();
 				}
+
 				step = step > 0 ? step : 1;
 				if ( step === 1 ) {
 					$( '.back-btn', $container ).hide();
 				} else {
 					$( '.back-btn', $container ).show();
 				}
+
+				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
+				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			} else if ( step === 0 ) {
-				$( '.give-form-navigator', $container ).hide();
+				$( '.give-form-navigator', $container ).removeClass( 'nav-visible' );
+				$( steps[ step ].selector ).css( 'padding-top', '' );
 			} else {
-				$( '.give-form-navigator', $container ).show();
+				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
+				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			}
 
-			$navigatorTitle.text( steps[ step ].title );
+			if ( steps[ step ].title ) {
+				$navigatorTitle.text( steps[ step ].title );
+			}
 
 			const hide = steps.map( ( obj, index ) => {
 				if ( index === step || index === navigator.currentStep ) {
@@ -66,8 +75,6 @@
 				const inDirection = navigator.currentStep < step ? 'right' : 'left';
 				$( steps[ navigator.currentStep ].selector ).removeClass( directionClasses ).addClass( `slide-out-${ outDirection }` );
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
-			} else {
-				$( steps[ navigator.currentStep ].selector ).css( 'position', 'absolute' );
 			}
 			navigator.currentStep = step;
 		},
@@ -76,6 +83,7 @@
 				if ( step.setup !== undefined ) {
 					step.setup();
 				}
+				$( step.selector ).css( 'position', 'absolute' );
 			} );
 			$advanceButton.on( 'click', function( e ) {
 				e.preventDefault();
@@ -89,8 +97,8 @@
 				e.preventDefault();
 				navigator.goToStep( parseInt( $( e.target ).attr( 'data-step' ) ) );
 			} );
-			setupHeightChangeCallback( function( height, diff ) {
-				if ( diff > 4 ) {
+			setupHeightChangeCallback( function( height ) {
+				if ( gatewayAnimating === false ) {
 					$( '.form-footer' ).css( 'transition', 'margin-top 0.2s ease' );
 				} else {
 					$( '.form-footer' ).css( 'transition', '' );
@@ -243,11 +251,13 @@
 			// eslint-disable-next-line no-unused-expressions
 			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
 
-			// eslint-disable-next-line no-unused-expressions
-			showFields && jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
-				const height = $( '.payment' ).height();
-				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
-			} );
+			if ( showFields ) {
+				gatewayAnimating = true;
+				// eslint-disable-next-line no-unused-expressions
+				jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
+					gatewayAnimating = false;
+				} );
+			}
 		} );
 	}
 
@@ -327,11 +337,10 @@
 		let lastHeight = 0;
 		function checkHeightChange() {
 			const selector = $( steps[ navigator.currentStep ].selector );
-			const changed = lastHeight !== $( selector ).height();
+			const changed = lastHeight !== $( selector ).outerHeight();
 			if ( changed ) {
-				const diff = lastHeight > $( selector ).height() ? lastHeight - $( selector ).height() : $( selector ).height() - lastHeight;
-				callback( $( selector ).height(), diff );
-				lastHeight = $( selector ).height();
+				callback( $( selector ).outerHeight() );
+				lastHeight = $( selector ).outerHeight();
 			}
 			window.requestAnimationFrame( checkHeightChange );
 		}
