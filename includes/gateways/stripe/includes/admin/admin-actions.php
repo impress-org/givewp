@@ -196,6 +196,12 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 		return;
 	}
 
+	// Get Form ID.
+	$form_id = give_get_payment_form_id( $donation_id );
+
+	// Set App Info.
+	give_stripe_set_app_info( $form_id );
+
 	try {
 
 		$args = [
