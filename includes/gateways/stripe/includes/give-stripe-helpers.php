@@ -18,27 +18,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This function is used to fetch the secret key based on the test mode status.
  *
+ * @param int $form_id Form Id.
+ *
  * @since 2.5.0
  *
  * @return string
  */
-function give_stripe_get_secret_key() {
+function give_stripe_get_secret_key( $form_id = 0 ) {
 
-	$secret_key = trim( give_get_option( 'live_secret_key' ) );
+	// Get default Stripe account details.
+	$default_account = give_stripe_get_default_account( $form_id );
+
+	// Live Secret Key.
+	$secret_key = trim( $default_account['live_secret_key'] );
 
 	// Update secret key, if test mode is enabled.
 	if ( give_is_test_mode() ) {
-		$secret_key = trim( give_get_option( 'test_secret_key' ) );
+		$secret_key = trim( $default_account['test_secret_key'] );
 	}
 
-	/**
-	 * Filter to handle secret key for Stripe.
-	 *
-	 * @param string $secret_key Secret Key.
-	 *
-	 * @since 2.6.3
-	 */
-	return apply_filters( 'give_stripe_get_secret_key', $secret_key );
+	return $secret_key;
 }
 
 /**
@@ -1359,7 +1358,7 @@ function give_stripe_get_back_to_settings_page( $args = [] ) {
  *
  * @since 2.6.3
  *
- * @return string
+ * @return array
  */
 function give_stripe_get_default_account( $form_id = 0 ) {
 
