@@ -182,7 +182,7 @@ class IframeView {
 						style="border: 0;visibility: hidden;%3$s"></iframe>',
 			$this->modal ? "data-src=\"{$this->url}\"" : "src=\"{$this->url}\"",
 			$this->modal ? 0 : $this->autoScroll,
-			$this->minHeight ? "min-height: \"{$this->minHeight}px;\"" : '',
+			$this->minHeight ? "min-height: {$this->minHeight}px;" : '',
 			$this->modal ? 'class="in-modal"' : ''
 		);
 
