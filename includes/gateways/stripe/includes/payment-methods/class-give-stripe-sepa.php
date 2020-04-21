@@ -65,8 +65,8 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
 
 			$id_prefix       = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-			$publishable_key = give_stripe_get_publishable_key();
-			$secret_key      = give_stripe_get_secret_key();
+			$publishable_key = give_stripe_get_publishable_key( $form_id );
+			$secret_key      = give_stripe_get_secret_key( $form_id );
 
 			ob_start();
 
