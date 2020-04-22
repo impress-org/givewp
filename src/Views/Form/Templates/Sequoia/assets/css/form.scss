@@ -11,6 +11,8 @@
 // Receipt Styles
 @import 'receipt';
 
+$break-phone: 500px;
+
 // Structure
 
 html {
@@ -100,6 +102,10 @@ p {
 	> i {
 		font-size: 15px;
 		margin-left: 15px;
+	}
+
+	@media screen and (max-width: $break-phone) {
+		margin-top: 26px;
 	}
 }
 
@@ -236,6 +242,10 @@ p {
 				background-color: #959595;
 			}
 		}
+
+		@media screen and (max-width: $break-phone) {
+			margin: 5px auto 5px auto;
+		}
 	}
 
 	.secure-notice {
@@ -293,6 +303,10 @@ p {
 		font-size: 16px;
 		font-weight: 500;
 		margin: 18px 70px 29px 70px;
+
+		@media screen and (max-width: $break-phone) {
+			margin: 14px 26px 16px 26px;
+		}
 	}
 
 	.income-stats {
@@ -365,6 +379,10 @@ p {
 		text-align: center;
 		margin: 24px 30px 22px 30px;
 		font-size: 15px;
+
+		@media screen and (max-width: $break-phone) {
+			margin: 20px 20px 16px 20px;
+		}
 	}
 
 	// Amount Total
@@ -375,6 +393,11 @@ p {
 		align-items: center;
 		margin-top: 5px;
 		margin-bottom: 15px;
+
+		@media screen and (max-width: $break-phone) {
+			margin-top: 0;
+			margin-bottom: 5px;
+		}
 
 		.give-donation-amount {
 			@include before-after-content-none;
@@ -423,6 +446,10 @@ p {
 		padding: 0;
 		margin: 24px 30px 0 30px !important;
 
+		@media screen and (max-width: $break-phone) {
+			margin: 16px 20px 0 20px !important;
+		}
+
 		li {
 			margin: 0 !important;
 		}
@@ -457,6 +484,11 @@ p {
 				border: 2px solid #28c77b;
 				color: #28c77b;
 			}
+
+			@media screen and (max-width: $break-phone) {
+				padding-top: 16px;
+				padding-bottom: 16px;
+			}
 		}
 	}
 }
@@ -470,6 +502,10 @@ p {
 		font-weight: 500;
 		color: #6b6b6b;
 		text-align: center;
+
+		@media screen and (max-width: $break-phone) {
+			padding: 20px 3px 0;
+		}
 	}
 	.subheading {
 		padding: 5px 0 34px 0;
@@ -477,6 +513,10 @@ p {
 		font-size: 12px;
 		color: #767676;
 		text-align: center;
+
+		@media screen and (max-width: $break-phone) {
+			padding: 5px 0 20px 0;
+		}
 	}
 
 	fieldset {
