@@ -65,6 +65,8 @@ function give_stripe_connect_save_options() {
 		give_update_option( '_give_stripe_default_account', $account_slug );
 	}
 
+	$is_apple_pay_registered = give_update_option( 'is_stripe_apple_pay_registered', false );
+
 	$stripe_accounts[ $account_slug ] = [
 		'type'                 => 'connect',
 		'give_stripe_user_id'  => $stripe_account_id,
@@ -72,6 +74,7 @@ function give_stripe_connect_save_options() {
 		'test_secret_key'      => $get_vars['stripe_access_token_test'],
 		'live_publishable_key' => $get_vars['stripe_publishable_key'],
 		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
+		'register_apple_pay'   => $is_apple_pay_registered ? true : false,
 	];
 
 	// Update Stripe accounts to global settings.
