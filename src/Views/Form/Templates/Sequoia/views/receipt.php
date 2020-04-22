@@ -71,31 +71,6 @@ ob_start();
 						<?php echo $donation->email; ?>
 					</div>
 				</div>
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Payment Status', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php echo getDonationStatusLabel( $donation->ID, true ); ?>
-					</div>
-				</div>
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Donation Amount', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php
-						echo filterCurrency(
-							sanitizeAmount( $donation->subtotal ),
-							[
-								'currency_code'   => $donation->currency,
-								'decode_currency' => true,
-								'form_id'         => $donation->form_id,
-							]
-						);
-						?>
-					</div>
-				</div>
 				<?php if ( ! empty( $donation->address['line1'] ) ) : ?>
 					<div class="details-row">
 						<i class="fas fa-envelope"></i>
@@ -124,6 +99,14 @@ ob_start();
 					</div>
 					<div class="value">
 						<?php echo getGatewayLabel( $donation->gateway ); ?>
+					</div>
+				</div>
+				<div class="details-row">
+					<div class="detail">
+						<?php _e( 'Payment Status', 'give' ); ?>
+					</div>
+					<div class="value">
+						<?php echo getDonationStatusLabel( $donation->ID, true ); ?>
 					</div>
 				</div>
 				<div class="details-row">
