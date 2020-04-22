@@ -4,6 +4,14 @@ const iFrameResizer = {
 
 	onReady: function() {
 		window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
+		window.addEventListener( 'beforeunload', function() {
+			const height = document.querySelector( '.give-form-templates' ).offsetHeight;
+			const message = {
+				action: 'showLoader',
+				payload: height,
+			};
+			window.parentIFrame.sendMessage( message );
+		} );
 	},
 
 	onMessage: function( message ) {
