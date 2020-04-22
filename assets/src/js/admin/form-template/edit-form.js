@@ -26,7 +26,7 @@
 			$( this ).parents( '.template-info' ).addClass( 'active' );
 			$innerContainer.addClass( 'has-activated-template' );
 
-			$innerContainer.prev( 'input[name=_give_form_template]' ).val( activatedTemplateId );
+			$innerContainer.prev( 'input[name=_give_form_template]' ).val( activatedTemplateId ).trigger( 'change' );
 		} );
 	};
 
@@ -55,7 +55,7 @@
 
 			$innerContainer.removeClass( 'has-activated-template' );
 
-			$innerContainer.prev( 'input[name=_give_form_template]' ).val( '' );
+			$innerContainer.prev( 'input[name=_give_form_template]' ).val( '' ).trigger( 'change' );
 		} );
 	};
 
