@@ -40,12 +40,15 @@ ob_start();
 				<div class="btn-row">
 					<button class="give-btn social-btn facebook-btn"
 						onclick="
+							// Retrieve and sanitize url to be shared
 							let url = parent.window.location.toString();
 							if (url.includes('?giveDonationAction=showReceipt')) {
 								url = url.replace('?giveDonationAction=showReceipt', '');
 							}
+							// Calculate new window position, based on parent window height/width
 							const top = parent.window.innerHeight / 2 - 365;
 							const left = parent.window.innerWidth / 2 - 280;
+							// Open new window with prompt for Facebook sharing
 							window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 
 							'newwindow', 
 							`width=560,height=730,top=${top},left=${left}`); 
@@ -55,12 +58,15 @@ ob_start();
 					<button
 						class="give-btn social-btn twitter-btn"
 						onclick="
+							// Retrieve and sanitize url to be shared
 							let url = parent.window.location.toString();
 							if (url.includes('?giveDonationAction=showReceipt')) {
 								url = url.replace('?giveDonationAction=showReceipt', '');
 							}
+							// Calculate new window position, based on parent window height/width
 							const top = parent.window.innerHeight / 2 - 126;
 							const left = parent.window.innerWidth / 2 - 280;
+							// Open new window with prompt for Twitter sharing
 							window.open(`https://twitter.com/intent/tweet?url=${url}&text=<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`, 
 							'newwindow', 
 							`width=560,height=253,top=${top},left=${left}`); 
