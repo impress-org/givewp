@@ -1453,23 +1453,23 @@ function give_stripe_convert_title_to_slug( $title ) {
 /**
  * This helper fn is used to generate unique account slug.
  *
- * @param array $all_account_slugs All Stripe accounts slug.
- * @param int   $accounts_count    Total Stripe accounts connected count.
+ * @param array $all_accounts   All Stripe accounts.
+ * @param int   $accounts_count Total Stripe accounts connected count.
  *
  * @since 2.6.3
  *
  * @return string
  */
-function give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count = 1 ) {
+function give_stripe_get_unique_account_slug( $all_accounts, $accounts_count = 1 ) {
 
 	$account_slug = 'account_' . $accounts_count;
 
-	if ( ! in_array( $account_slug, array_keys( $all_account_slugs ), true ) ) {
+	if ( ! in_array( $account_slug, array_keys( $all_accounts ), true ) ) {
 		return $account_slug;
 	}
 
 	$accounts_count++;
-	return give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
+	return give_stripe_get_unique_account_slug( $all_accounts, $accounts_count );
 }
 
 /**
