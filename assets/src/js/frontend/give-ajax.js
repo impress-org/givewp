@@ -291,6 +291,9 @@ jQuery( document ).ready( function( $ ) {
 			data: data,
 			success: function( response ) {
 				receiptContainer.innerHTML = response;
+				if ( receiptContainer.parentElement.classList.contains( 'give-form-templates' ) ) {
+					window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
+				}
 			},
 		} );
 	}

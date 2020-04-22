@@ -3,7 +3,10 @@ const iFrameResizer = {
 	targetOrigin: window.location.origin,
 
 	onReady: function() {
-		window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
+		if ( ! document.getElementById( 'give-receipt' ) ) {
+			window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
+		}
+
 		window.addEventListener( 'beforeunload', function() {
 			const height = document.querySelector( '.give-form-templates' ).offsetHeight;
 			const message = {
