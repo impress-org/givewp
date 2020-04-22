@@ -33,19 +33,15 @@ ob_start();
 			<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $payment->ID ] ); ?>
 		</p>
 		<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
-			<?php
-			$facebookLink = 'https://www.facebook.com/sharer/sharer.php?u=https://givewp.com/donate';
-			$twitterLink  = 'https://twitter.com/intent/tweet?url=https://givewp.com/donate&text=Hello%20world';
-			?>
 			<div class="social-sharing">
 				<p class="instruction">
 					<?php __( 'Tell the world about your generosity and help spread the word!', 'give' ); ?>
 				</p>
 				<div class="btn-row">
-					<button 
-						class="give-btn social-btn facebook-btn"
+					<button class="give-btn social-btn facebook-btn"
 						onclick="
-							window.open('<?php echo $facebookLink; ?>', 
+							const url = parent.window.location;
+							window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 
 							'newwindow', 
 							'width=560,height=730'); 
 							return false;">
@@ -54,7 +50,8 @@ ob_start();
 					<button
 						class="give-btn social-btn twitter-btn"
 						onclick="
-							window.open('<?php echo $twitterLink; ?>', 
+							const url = parent.window.location;
+							window.open(`https://twitter.com/intent/tweet?url=${url}&text=Hello%20world`, 
 							'newwindow', 
 							'width=560,height=253'); 
 							return false;">
