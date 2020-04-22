@@ -23,7 +23,10 @@ import './admin-export';
 import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
+
+// Form template.
 import './form-template/edit-form';
+import './form-template/Sequoia/edit-form';
 
 // Stripe core.
 import './stripe-admin';

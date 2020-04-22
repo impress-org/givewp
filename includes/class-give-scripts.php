@@ -403,6 +403,11 @@ class Give_Scripts {
 				'processing' => __( 'Processing...', 'give' ),
 				'activating' => __( 'Activating...', 'give' ),
 			),
+			'formTemplate'                      => [
+				'Sequoia' => [
+					'donorChoiceRecurringDonationType' => __( 'Sequoia form template styling will not look good when you set <code>Recurring donations</code> value to other then <code>Yes - Donor\'s Choice</code>. For same reason you can not choose other recurring donation type when Sequoia form template active.', 'give' ),
+				],
+			],
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
