@@ -33,17 +33,33 @@ ob_start();
 			<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $payment->ID ] ); ?>
 		</p>
 		<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
+			<?php
+			$facebookLink = 'https://www.facebook.com/sharer/sharer.php?u=https://givewp.com/donate';
+			$twitterLink  = 'https://twitter.com/intent/tweet?url=https://givewp.com/donate&text=Hello%20world';
+			?>
 			<div class="social-sharing">
 				<p class="instruction">
 					<?php __( 'Tell the world about your generosity and help spread the word!', 'give' ); ?>
 				</p>
 				<div class="btn-row">
-					<button class="give-btn social-btn facebook-btn">
+					<button 
+						class="give-btn social-btn facebook-btn"
+						onclick="
+							window.open('<?php echo $facebookLink; ?>', 
+							'newwindow', 
+							'width=560,height=730'); 
+							return false;">
 						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 					</button>
-					<button class="give-btn social-btn twitter-btn">
+					<button
+						class="give-btn social-btn twitter-btn"
+						onclick="
+							window.open('<?php echo $twitterLink; ?>', 
+							'newwindow', 
+							'width=560,height=253'); 
+							return false;">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
-					</button>
+					</a>
 				</div>
 			</div>
 		<?php endif; ?>
