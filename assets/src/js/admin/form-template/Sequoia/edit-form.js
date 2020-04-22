@@ -22,7 +22,7 @@
 	 * Show recurring related notices.
 	 *
 	 * @since 2.7.0
-	 * 1. Only `Yes - Donor's Choice` recurring donation type allow for Sequoia form template.
+	 * 1. Only the Yes - Donor's Choice recurring donation type is allowed for the Sequoia form template.
 	 */
 	const showRecurringAddonNotice = function() {
 		const $templateList = $( 'div.templates-list', '.form_template_options_wrap' ),
