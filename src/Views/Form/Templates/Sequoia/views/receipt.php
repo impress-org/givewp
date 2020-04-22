@@ -117,24 +117,7 @@ ob_start();
 						?>
 					</div>
 				</div>
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Processing Fees', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php
-						$fees = $payment->total - $payment->subtotal;
-						echo filterCurrency(
-							sanitizeAmount( $fees ),
-							[
-								'currency_code'   => $payment->currency,
-								'decode_currency' => true,
-								'form_id'         => $payment->form_id,
-							]
-						);
-						?>
-					</div>
-				</div>
+				<?php require 'processing-fee.php'; ?>
 				<div class="details-row total">
 					<div class="detail">
 						<?php _e( 'Donation Total', 'give' ); ?>
