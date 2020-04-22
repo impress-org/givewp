@@ -405,7 +405,7 @@ class Give_Scripts {
 			),
 			'formTemplate'                      => [
 				'Sequoia' => [
-					'donorChoiceRecurringDonationType' => __( 'Sequoia form template styling will not look good when you set <code>Recurring donations</code> value to other then <code>Yes - Donor\'s Choice</code>. For same reason you can not choose other recurring donation type when Sequoia form template active.', 'give' ),
+					'donorChoiceRecurringDonationType' => __( '<strong>Recurring Addon Compatibility Error: </strong>Sequoia form template styling will not look good when you set <code>Recurring donations</code> value to other then <code>Yes - Donor\'s Choice</code>.', 'give' ),
 				],
 			],
 		);
