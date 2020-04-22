@@ -1,7 +1,7 @@
 /* globals Give, jQuery */
 ( function( $ ) {
 	/**
-	 * Return whether or not recurring addon enabled or not.
+	 * Return whether or not the recurring addon is enabled or not.
 	 *
 	 * @since 2.7.0
 	 */
@@ -10,7 +10,7 @@
 	};
 
 	/**
-	 * Return whether or not Sequoia form template active.
+	 * Return whether or not the Sequoia form template is active
 	 *
 	 * @since 2.7.0
 	 */
