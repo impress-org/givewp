@@ -15,7 +15,7 @@ use Give\Form\Template;
 use Give_Notices;
 use WP_Post;
 use function Give\Helper\Session\Donation\getId as getDonationIdFromDonorSession;
-use function Give\Helper\Session\DonationConfirmation\removePostedData;
+use function Give\Helper\Session\DonationConfirmation\removePostedData as removeStoredConfirmationPagePostData;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\isConfirmingDonation;
@@ -96,7 +96,7 @@ class Form {
 
 					// Load payment processing video only if donation is in pending status.
 					if ( $donation->isPending() ) {
-						removePostedData();
+						removeStoredConfirmationPagePostData();
 
 						/*
 						 * If developer want to verify payment before showing receipt then use `init` action hook to verify donation.
