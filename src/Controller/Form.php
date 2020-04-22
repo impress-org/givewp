@@ -248,10 +248,15 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
+		$redirect = add_query_arg(
+			[ 'showDonationProcessingError' => 1 ],
+			$redirect
+		);
+
 		$url    = explode( '?', $redirect, 2 );
 		$url[0] = Give()->routeForm->getURL( get_post_field( 'post_name', absint( $_REQUEST['give-form-id'] ) ) );
 
-		return implode( '?showDonationProcessingError=1', $url );
+		return implode( '?', $url );
 	}
 
 	/**
