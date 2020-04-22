@@ -220,5 +220,5 @@ function getIframeParentURL() {
  * @return bool
  */
 function isConfirmingDonation() {
-	return isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) );
+	return isViewingFormReceipt() && isset( $_GET['payment-confirmation'] );
 }
