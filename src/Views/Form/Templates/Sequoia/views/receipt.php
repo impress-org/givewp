@@ -51,7 +51,7 @@ ob_start();
 						class="give-btn social-btn twitter-btn"
 						onclick="
 							const url = parent.window.location;
-							window.open(`https://twitter.com/intent/tweet?url=${url}&text=Hello%20world`, 
+							window.open(`https://twitter.com/intent/tweet?url=${url}&text=<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`, 
 							'newwindow', 
 							'width=560,height=253'); 
 							return false;">

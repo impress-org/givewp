@@ -194,6 +194,16 @@ return [
 				],
 				'default'    => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
 			],
+			[
+				'id'         => 'twitter_message',
+				'name'       => __( 'Twitter Message', 'give' ),
+				'desc'       => __( 'Do you want to customize the default tweet? This text pre-fills a user\'s tweet when they choose to share to Twitter. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'type'       => 'text',
+				'attributes' => [
+					'placeholder' => __( 'Help me raise money for this great cause!', 'give' ),
+				],
+				'default'    => __( 'Help me raise money for this great cause!', 'give' ),
+			],
 		],
 	],
 ];
