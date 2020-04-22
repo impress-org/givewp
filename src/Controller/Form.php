@@ -92,16 +92,25 @@ class Form {
 
 				// Show donation processing template.
 				if ( isConfirmingDonation() ) {
-					$donation = new Donation( getDonationIdFromDonorSession() );
+					$donationId = getDonationIdFromDonorSession();
+
+					/**
+					 * Fire the action hook.
+					 *
+					 * If developer want to verify payment before showing receipt then use `give_handle_donation_confirm` action hook to verify donation.
+					 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
+					 *
+					 * @since 2.7.0
+					 * @param int $donationId
+					 */
+					do_action( 'give_handle_donation_confirmation', $donationId );
+
+					$donation = new Donation( $donationId );
 
 					// Load payment processing video only if donation is in pending status.
 					if ( $donation->isPending() ) {
 						removeStoredConfirmationPagePostData();
 
-						/*
-						 * If developer want to verify payment before showing receipt then use `init` action hook to verify donation.
-						 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
-						 */
 						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 						exit();
 					}
