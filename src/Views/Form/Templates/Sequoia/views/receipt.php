@@ -38,6 +38,7 @@ ob_start();
 					<?php echo $options['thank-you']['sharing_instruction']; ?>
 				</p>
 				<div class="btn-row">
+					<!-- Use inline onclick listener to avoid popup blockers -->
 					<button class="give-btn social-btn facebook-btn"
 						onclick="
 							// Retrieve and sanitize url to be shared
@@ -55,6 +56,7 @@ ob_start();
 							return false;">
 						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 					</button>
+					<!-- Use inline onclick listener to avoid popup blockers -->
 					<button
 						class="give-btn social-btn twitter-btn"
 						onclick="
