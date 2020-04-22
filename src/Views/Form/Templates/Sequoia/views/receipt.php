@@ -109,8 +109,7 @@ ob_start();
 								echo $payment->address['line1'];
 							}
 							?>
-							<?php echo $payment->address['city']; ?>
-							, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
+							<?php echo $payment->address['city']; ?>, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
 							<?php echo $payment->address['country']; ?>
 						</div>
 					</div>
