@@ -35,12 +35,71 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const setStripeDefaults = Array.from( document.querySelectorAll( '.give-stripe-account-set-default' ) );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-per-form-default-account' );
+	const perAccountEdits = Array.from( document.querySelectorAll( '.give-stripe-account-edit-name' ) );
+	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
+	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
 
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	if ( null !== perAccountEdits ) {
+		perAccountEdits.forEach( ( perAccountEdit ) => {
+			perAccountEdit.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+
+				const updateElement = e.target.nextElementSibling;
+				const accountName = e.target.parentNode.previousElementSibling.textContent.trim();
+				const inputElement = document.createElement( 'input' );
+
+				inputElement.type = 'text';
+				inputElement.name = 'account_name';
+				inputElement.value = accountName;
+
+				e.target.parentNode.previousElementSibling.textContent = '';
+				e.target.parentNode.previousElementSibling.append( inputElement );
+
+				e.target.classList.add( 'give-hidden' );
+				updateElement.classList.remove( 'give-hidden' );
+			} );
+		} );
+	}
+
+	if ( null !== perAccountUpdates ) {
+		perAccountUpdates.forEach( ( perAccountUpdate ) => {
+			perAccountUpdate.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+
+				const accountSlug = e.target.getAttribute( 'data-account' );
+				const accountNameElement = e.target.parentNode.previousElementSibling;
+				const newAccountName = accountNameElement.querySelector( 'input[name="account_name"]' ).value;
+
+				const xhr = new XMLHttpRequest();
+				const formData = new FormData();
+
+				formData.append( 'action', 'give_stripe_update_account_name' );
+				formData.append( 'account_slug', accountSlug );
+				formData.append( 'new_account_name', newAccountName );
+
+				xhr.open( 'POST', ajaxurl );
+				xhr.onload = function() {
+					const response = JSON.parse( xhr.response );
+					let notice = '';
+
+					if ( xhr.status === 200 && response.success ) {
+						notice = `<div class="give-notice notice inline success notice-success"><p>${response.data.message}</p></div>`;
+						accountNameElement.innerHTML = response.data.name;
+					} else {
+						notice = `<div class="give-notice notice inline error notice-error"><p>${response.data.message}</p></div>`;
+					}
+					accountManagerError.innerHTML = notice;
+				};
+				xhr.send( formData );
+			} );
+		} );
+	}
 
 	if ( null !== perFormOptions ) {
 		perFormOptions.forEach( ( formOption ) => {
