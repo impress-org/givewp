@@ -468,3 +468,49 @@ function give_stripe_set_account_default() {
 }
 
 add_action( 'wp_ajax_give_stripe_set_account_default', 'give_stripe_set_account_default' );
+
+/**
+ * This function is used to update account name.
+ *
+ * @since 2.6.3
+ *
+ * @return void
+ */
+function give_stripe_update_account_name() {
+
+	$post_data        = give_clean( $_POST );
+	$account_slug     = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
+	$new_account_name = ! empty( $post_data['new_account_name'] ) ? $post_data['new_account_name'] : false;
+
+	if ( ! empty( $account_slug ) && ! empty( $new_account_name ) ) {
+		$accounts         = give_stripe_get_all_accounts();
+		$account_keys     = array_keys( $accounts );
+		$account_values   = array_values( $accounts );
+		$new_account_slug = give_stripe_convert_title_to_slug( $new_account_name );
+
+		// Bailout, if Account Name already exists.
+		if ( in_array( $new_account_slug, $account_keys, true ) ) {
+			wp_send_json_error( [ 'message' => __( 'Account Name already used. Please enter different account name.', 'give' ) ] );
+			return;
+		}
+
+		$key = array_search( $account_slug, $account_keys, true );
+		$account_keys[ $key ] = $new_account_slug;
+
+		$new_accounts = array_combine( $account_keys, $account_values );
+
+		// Update accounts.
+		give_update_option( '_give_stripe_get_all_accounts', $new_accounts );
+
+		$success_args = [
+			'message' => __( 'Account Name update successfully.', 'give' ),
+			'name'    => $new_account_name,
+		];
+		wp_send_json_success( $success_args );
+	} else {
+		wp_send_json_error( [ 'message' => __( 'Unable to update account name. Please contact administrator.', 'give' ) ] );
+	}
+	give_die();
+}
+
+add_action( 'wp_ajax_give_stripe_update_account_name', 'give_stripe_update_account_name' );
