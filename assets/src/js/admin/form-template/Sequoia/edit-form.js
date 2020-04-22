@@ -36,7 +36,7 @@
 		}
 
 		if ( 'yes_admin' === recurringDonationType ) {
-			$templateList.before( `<div class="give-notice notice warning notice-warning inline js-sequoia-form-template-recurring-addon-notice"><p>${ Give.fn.getGlobalVar( 'formTemplate' ).Sequoia.donorChoiceRecurringDonationType }</p></div>` );
+			$templateList.before( `<div class="give-notice notice warning notice-warning inline js-sequoia-form-template-recurring-addon-notice js-has-compatibility-issue"><p>${ Give.fn.getGlobalVar( 'formTemplate' ).Sequoia.donorChoiceRecurringDonationType }</p></div>` );
 		}
 	};
 

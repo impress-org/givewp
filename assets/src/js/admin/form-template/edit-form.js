@@ -88,9 +88,24 @@
 		} );
 	};
 
+	/**
+	 * Auto switch to form template setting if has any error or warning.
+	 *
+	 * @since 2.7.0
+	 */
+	const autoSwitchToFormTemplateSettingIfHasCompatibilityIssues = function() {
+		if ( $( '.form_template_options_wrap', '#form_template_options' ).find( '.js-has-compatibility-issue' ).length ) {
+			$( 'a[href="#form_template_options"]' ).trigger( 'click' );
+		}
+	};
+
 	$( document ).ready( function() {
 		handleFormTemplateActivation();
 		handleFormTemplateDeactivation();
 		saveFormSettingOnlyIfFormTemplateSelected();
+	} );
+
+	$( window ).load( function() {
+		autoSwitchToFormTemplateSettingIfHasCompatibilityIssues();
 	} );
 }( jQuery ) );
