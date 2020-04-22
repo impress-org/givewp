@@ -99,6 +99,7 @@ class IframeView {
 		<html <?php language_attributes(); ?>>
 			<head>
 				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
 				<title><?php echo apply_filters( 'the_title', $this->title ); ?></title>
 				<?php
 				/**
