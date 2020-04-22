@@ -1,3 +1,5 @@
+@import 'util';
+
 .receipt {
 	.checkmark {
 		display: flex;
@@ -10,16 +12,26 @@
 		border: 7px solid rgb(36, 179, 71);
 		color: rgb(36, 179, 71);
 		font-size: 42px;
+
+		@media screen and (max-width: $break-phone) {
+			margin: 38px auto 0 auto;
+		}
 	}
 	.headline {
 		margin-top: 30px;
 		margin-bottom: 10px;
+		margin-left: 10px;
+		margin-right: 10px;
+		text-align: center;
 	}
 
 	.message {
 		margin-top: 10px;
 		max-width: 80%;
 		text-align: center;
+		@media screen and (max-width: $break-phone) {
+			margin-top: 5px;
+		}
 	}
 
 	.social-sharing {
@@ -33,6 +45,11 @@
 		margin-right: 0;
 		margin-top: 28px;
 
+		@media screen and (max-width: $break-phone) {
+			padding: 12px 20px 14px 20px;
+			margin-top: 6px;
+		}
+
 		.instruction {
 			margin: 0 0 14px 0;
 			line-height: 1;
@@ -40,6 +57,12 @@
 			font-size: 13px;
 			color: #767676;
 			text-align: center;
+
+			@media screen and (max-width: $break-phone) {
+				margin: 0 24px 0 24px;
+				font-size: 15px;
+				line-height: 1.5;
+			}
 		}
 
 		.btn-row {
@@ -48,6 +71,11 @@
 			align-items: center;
 			margin-right: auto;
 			margin-left: auto;
+
+			@media screen and (max-width: $break-phone) {
+				flex-direction: column;
+				align-items: stretch;
+			}
 		}
 
 		.social-btn {
@@ -57,6 +85,10 @@
 			padding: 14px 27px;
 			margin: 0 14px;
 			border: none !important;
+
+			@media screen and (max-width: $break-phone) {
+				margin: 6px 0;
+			}
 
 			> i {
 				margin-left: 12px;
@@ -102,6 +134,11 @@
 			text-align: center;
 			color: #555;
 			font-weight: 400;
+
+			@media screen and (max-width: $break-phone) {
+				margin-top: 16px !important;
+				margin-bottom: 6px !important;
+			}
 		}
 		.details-table {
 			display: flex;
