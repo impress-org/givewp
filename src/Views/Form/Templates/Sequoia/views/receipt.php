@@ -40,7 +40,10 @@ ob_start();
 				<div class="btn-row">
 					<button class="give-btn social-btn facebook-btn"
 						onclick="
-							const url = parent.window.location;
+							let url = parent.window.location.toString();
+							if (url.includes('?giveDonationAction=showReceipt')) {
+								url = url.replace('?giveDonationAction=showReceipt', '');
+							}
 							const top = parent.window.innerHeight / 2 - 365;
 							const left = parent.window.innerWidth / 2 - 280;
 							window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 
@@ -52,7 +55,10 @@ ob_start();
 					<button
 						class="give-btn social-btn twitter-btn"
 						onclick="
-							const url = parent.window.location;
+							let url = parent.window.location.toString();
+							if (url.includes('?giveDonationAction=showReceipt')) {
+								url = url.replace('?giveDonationAction=showReceipt', '');
+							}
 							const top = parent.window.innerHeight / 2 - 126;
 							const left = parent.window.innerWidth / 2 - 280;
 							window.open(`https://twitter.com/intent/tweet?url=${url}&text=<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`, 
