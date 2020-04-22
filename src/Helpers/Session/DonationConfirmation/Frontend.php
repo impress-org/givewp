@@ -16,7 +16,7 @@ use function Give\Helpers\Form\Utils\isConfirmingDonation;
  * @since 2.7.0
  */
 function storePostedData() {
-	if ( isConfirmingDonation() ) {
+	if ( $_REQUEST['giveDonationAction'] && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] ) ) {
 		$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
 		storeDataIntoSession( "postDataFor{$paymentGatewayId}", array_map( 'give_clean', $_POST ) );
 
