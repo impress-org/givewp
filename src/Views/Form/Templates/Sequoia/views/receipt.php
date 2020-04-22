@@ -35,7 +35,7 @@ ob_start();
 		<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
 			<div class="social-sharing">
 				<p class="instruction">
-					<?php __( 'Tell the world about your generosity and help spread the word!', 'give' ); ?>
+					<?php echo $options['thank-you']['sharing_instruction']; ?>
 				</p>
 				<div class="btn-row">
 					<button class="give-btn social-btn facebook-btn"
