@@ -14,10 +14,10 @@ class Donation {
 	/**
 	 * Donation constructor.
 	 *
-	 * @param int $id
+	 * @param int|null $id
 	 */
-	public function __construct( $id ) {
-		$this->id = absint( $id );
+	public function __construct( $id = null ) {
+		$this->id = $id ?: getPaymentId();
 	}
 
 
@@ -25,12 +25,9 @@ class Donation {
 	 * Return true if donation is subscription.
 	 *
 	 * @since 2.7.0
-	 * @param int $donationId
 	 * @return bool
 	 */
-	public static function isRecurring( $donationId = null ) {
-		$donationId = $donationId ?: getPaymentId();
-
-		return '1' === Give()->payment_meta->get_meta( $donationId, '_give_is_donation_recurring', true );
+	public function isRecurring() {
+		return '1' === Give()->payment_meta->get_meta( $this->id, '_give_is_donation_recurring', true );
 	}
 }
