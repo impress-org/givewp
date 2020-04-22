@@ -41,9 +41,11 @@ ob_start();
 					<button class="give-btn social-btn facebook-btn"
 						onclick="
 							const url = parent.window.location;
+							const top = parent.window.innerHeight / 2 - 365;
+							const left = parent.window.innerWidth / 2 - 280;
 							window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 
 							'newwindow', 
-							'width=560,height=730'); 
+							`width=560,height=730,top=${top},left=${left}`); 
 							return false;">
 						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 					</button>
@@ -51,9 +53,11 @@ ob_start();
 						class="give-btn social-btn twitter-btn"
 						onclick="
 							const url = parent.window.location;
+							const top = parent.window.innerHeight / 2 - 126;
+							const left = parent.window.innerWidth / 2 - 280;
 							window.open(`https://twitter.com/intent/tweet?url=${url}&text=<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`, 
 							'newwindow', 
-							'width=560,height=253'); 
+							`width=560,height=253,top=${top},left=${left}`); 
 							return false;">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 					</a>
