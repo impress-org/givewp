@@ -85,7 +85,7 @@ class Form {
 			/* @var Template $formTemplate */
 			$formTemplate = Give()->templates->getTemplate();
 
-			if ( $formTemplate->openSuccessPageInIframe || inIframe() ) {
+			if ( inIframe() || ( $formTemplate->openSuccessPageInIframe && isProcessingForm() ) ) {
 				// Set header.
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
@@ -102,7 +102,7 @@ class Form {
 						 * If developer want to verify payment before showing receipt then use `init` action hook to verify donation.
 						 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
 						 */
-						include $formTemplate->getDonationProcessingView();
+						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 						exit();
 					}
 				}
@@ -330,9 +330,7 @@ class Form {
 	 * @param string $location
 	 */
 	private function openLinkInWindow( $location ) {
-		/* @var Template $template */
-		$template = Give()->templates->getTemplate();
-		include $template->getRedirectingView();
+		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
 		exit();
 	}
 

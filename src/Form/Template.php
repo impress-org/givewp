@@ -138,29 +138,6 @@ abstract class Template {
 	}
 
 	/**
-	 * Get donation processing view filepath
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return string
-	 */
-	public function getDonationProcessingView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
-		include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
-	}
-
-	/**
-	 * Get redirecting view filepath
-	 *
-	 * @since 2.7.0
-	 *
-	 * @return string
-	 */
-	public function getRedirectingView() {
-		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultRedirectHandlerTemplate.php';
-	}
-
-	/**
 	 * return form template ID.
 	 *
 	 * @return string
