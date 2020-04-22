@@ -18,60 +18,36 @@ export const initializeIframeResize = function( iframe ) {
 			heightCalculationMethod: 'documentElementOffset',
 			widthCalculationMethod: 'documentElementOffset',
 			onMessage: function( messageData ) {
-				switch ( messageData.message ) {
+				let parent = iframe.parentElement;
+				if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
+					parent = parent.parentElement.parentElement;
+				}
+
+				switch ( messageData.message.action ) {
 					case 'giveEmbedFormContentLoaded':
+
 						const timer = setTimeout( function() {
 							revealIframe();
 						}, 400 );
 
-						let parent = iframe.parentElement;
-						const iframeToAutoScroll = document.querySelector( 'iframe[name="give-embed-form"][data-autoscroll="1"]:not(.in-modal)' );
-						if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-							parent = parent.parentElement.parentElement;
-						}
-
-						parent.classList.remove( 'give-loader-type-img' );
-						iframe.style.visibility = 'visible';
-
 						// Attribute to dom when iframe loaded.
 						iframe.setAttribute( 'data-contentLoaded', '1' );
 
-						// Is there any iframe to auto scroll?
-						if ( iframeToAutoScroll ) {
-							// Scroll to latest iframe only if all iframe loaded.
-							const allIframesCount = document.querySelectorAll( 'iframe[name="give-embed-form"]:not(.in-modal)' ).length,
-								  allILoadedIframesCount = document.querySelectorAll( 'iframe[name="give-embed-form"][data-contentloaded="1"]:not(.in-modal)' ).length;
-
-							if ( allIframesCount === allILoadedIframesCount ) {
-								jQuery( 'html, body' ).animate( {
-									scrollTop: iframeToAutoScroll.offsetTop,
-									scrollLeft: iframeToAutoScroll.offsetLeft,
-								} );
-							}
-						}
-
 						function revealIframe() {
 							clearTimeout( timer );
-							let parent = iframe.parentElement;
-							if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-								parent = parent.parentElement.parentElement;
-							}
-							parent.querySelector( '.iframe-loader' ).remove();
+							parent.querySelector( '.iframe-loader' ).style.opacity = 0;
+							parent.querySelector( '.iframe-loader' ).style.transition = 'opacity 0.2s ease';
 							iframe.style.visibility = 'visible';
 							iframe.style.minHeight = '';
 						}
 						break;
+					case 'showLoader':
+						parent.querySelector( '.iframe-loader' ).style.opacity = 1;
+						parent.querySelector( '.iframe-loader' ).style.transition = '';
+						iframe.style.visibility = 'hidden';
+						iframe.style.minHeight = `${ messageData.message.payload }px`;
+						break;
 				}
-			},
-			onScroll: ( { x, y } ) => {
-				// No need to auto scroll if form loaded in modal.
-				if ( iframe.parentElement.classList.contains( 'modal-content' ) ) {
-					return false;
-				}
-
-				jQuery( 'html, body' ).animate( { scrollTop: y, scrollLeft: x } );
-
-				return false;
 			},
 			onInit: function( iframe ) {
 				iframe.iFrameResizer.sendMessage( {

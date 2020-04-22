@@ -89,7 +89,7 @@ class Form {
 
 				// Show donation processing template
 				if ( isConfirmingDonation() ) {
-					include $formTemplate->getDonationProcessingView();
+					include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 					exit();
 				}
 
