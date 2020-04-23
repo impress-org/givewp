@@ -159,6 +159,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 			// General.
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/give-stripe-scripts.php';
 
 			// Classes.
