@@ -18,8 +18,12 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 
 		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
 		const accountId = form_element.getAttribute( 'data-account' );
-		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
-		const idPrefix = form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value;
+		const formName = null !== form_element.querySelector( 'input[name="give-form-title"]' ) ?
+			form_element.querySelector( 'input[name="give-form-title"]' ).value :
+			false;
+		const idPrefix = null !== form_element.querySelector( 'input[name="give-form-id-prefix"]' ) ?
+			form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value :
+			false;
 		const checkoutImage = ( give_stripe_vars.checkout_image.length > 0 ) ? give_stripe_vars.checkout_image : '';
 		const checkoutAddress = ( give_stripe_vars.checkout_address.length > 0 );
 		const isZipCode = ( give_stripe_vars.zipcode_option.length > 0 );
