@@ -2,7 +2,7 @@
 
 use Give\Addon\FeeRecovery;
 use function give_currency_filter as filterCurrency;
-use function give_sanitize_amount as sanitizeAmount;
+use function give_maybe_sanitize_amount as sanitizeAmount;
 
 if ( ! FeeRecovery::isActive() || ! FeeRecovery::canFormRecoverFee() ) {
 	return;
@@ -14,13 +14,11 @@ if ( ! FeeRecovery::isActive() || ! FeeRecovery::canFormRecoverFee() ) {
 	</div>
 	<div class="value">
 		<?php
-		$fees = $payment->total - $payment->subtotal;
-		echo filterCurrency(
-			sanitizeAmount( $fees ),
+		echo give_fee_format_amount(
+			sanitizeAmount( give_get_meta( $donation_id, '_give_fee_amount', true ) ),
 			[
-				'currency_code'   => $payment->currency,
-				'decode_currency' => true,
-				'form_id'         => $payment->form_id,
+				'donation_id' => $payment->ID,
+				'currency'    => $payment->currency,
 			]
 		);
 		?>
