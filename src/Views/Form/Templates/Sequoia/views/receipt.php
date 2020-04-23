@@ -1,5 +1,7 @@
 <?php
 
+use Give\Addon\FeeRecovery;
+use Give\Donation\Donation;
 use Give\Views\IframeContentView;
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
 use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
@@ -9,9 +11,15 @@ use function give_sanitize_amount as sanitizeAmount;
 use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
 
-/* @var Payment $payment */
-$payment = new Payment( getPaymentId() );
-$options = getTemplateOptions();
+$donationId = getPaymentId();
+
+$donation = new Donation( $donationId );
+$payment  = new Payment( $donationId );
+$options  = getTemplateOptions();
+
+$feeAmount           = FeeRecovery::getFeeAmount( $donationId );
+$donationAmount      = $feeAmount ? FeeRecovery::getAmount( $donationId ) : $payment->total;
+$totalDonationAmount = $payment->total;
 
 ob_start();
 ?>
@@ -110,7 +118,7 @@ ob_start();
 					<div class="value">
 						<?php
 						echo filterCurrency(
-							sanitizeAmount( $payment->subtotal ),
+							sanitizeAmount( $donationAmount ),
 							[
 								'currency_code'   => $payment->currency,
 								'decode_currency' => true,
@@ -128,7 +136,7 @@ ob_start();
 					<div class="value">
 						<?php
 						echo filterCurrency(
-							sanitizeAmount( $payment->total ),
+							sanitizeAmount( $totalDonationAmount ),
 							[
 								'currency_code'   => $payment->currency,
 								'decode_currency' => true,

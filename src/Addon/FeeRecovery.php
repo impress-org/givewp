@@ -34,4 +34,24 @@ class FeeRecovery implements Addonable {
 				 give_is_setting_enabled( give_get_option( 'give_fee_recovery' ) )
 			   );
 	}
+
+	/**
+	 * Get donation amount
+	 *
+	 * @param int $donationId
+	 * @return string
+	 */
+	public static function getAmount( $donationId ) {
+		return give_get_meta( $donationId, '_give_fee_donation_amount', true );
+	}
+
+	/**
+	 * Get fee amount.
+	 *
+	 * @param int $donationId
+	 * @return bool|mixed
+	 */
+	public static function getFeeAmount( $donationId ) {
+		return give_get_meta( $donationId, '_give_fee_amount', true );
+	}
 }
