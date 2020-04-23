@@ -349,8 +349,8 @@ Give.share = {
 			const top = targetWindow.innerHeight / 2 - 365;
 			const left = targetWindow.innerWidth / 2 - 280;
 			// Open new window with prompt for Facebook sharing
-			window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 'newwindow', `width=560,height=730,top=${top},left=${left}`); 
-		}
+			window.open( `https://www.facebook.com/sharer/sharer.php?u=${ url }`, 'newwindow', `width=560,height=730,top=${ top },left=${ left }` );
+		},
 	},
 };
 
