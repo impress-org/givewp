@@ -243,7 +243,8 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					);
 
 					// Record the pending payment in Give.
-					$donation_id = give_insert_payment( $payment_data );
+					$donation_id        = give_insert_payment( $payment_data );
+
 
 					// Return error, if donation id doesn't exists.
 					if ( ! $donation_id ) {
@@ -302,7 +303,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 								'customer_acceptance' => [
 									'type'   => 'online',
 									'online' => [
-										'ip_address' => give_get_ip(),
+										'ip_address' => give_stripe_get_ip_address(),
 										'user_agent' => give_get_user_agent(),
 									],
 								],
