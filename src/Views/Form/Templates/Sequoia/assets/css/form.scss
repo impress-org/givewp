@@ -572,13 +572,18 @@ p {
 
 		.give-submit-button-wrap {
 			display: flex;
-			justify-content: center;
+			flex-direction: column;
+			align-items: center;
 			position: relative;
+
+			.give_notices + .give-submit {
+				margin-top: 0;
+			}
 
 			.sequoia-loader {
 				height: 30px;
 				width: 30px;
-				top: 64px;
+				bottom: 34px;
 				position: absolute;
 				font-size: 4px;
 			}
