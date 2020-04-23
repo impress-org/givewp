@@ -329,6 +329,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 						give_set_payment_transaction_id( $donation_id, $intent->id );
 						give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
 
+						// Update donation status to `processing`.
+						give_update_payment_status( $donation_id, 'processing' );
+
 						// Success. Send user to success page.
 						give_send_to_success_page();
 					} else {
