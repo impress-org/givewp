@@ -128,6 +128,13 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			setup: () => {
+				$( '#give-amount' ).on( 'blur', function() {
+					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
+						$( '.advance-btn' ).attr( 'disabled', true );
+					} else {
+						$( '.advance-btn' ).attr( 'disabled', false );
+					}
+				} );
 				$( '.give-donation-level-btn' ).each( function() {
 					const hasTooltip = $( this ).attr( 'has-tooltip' );
 					if ( hasTooltip ) {
@@ -168,7 +175,11 @@
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
 					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
-					$( '.sequoia-loader' ).addClass( 'spinning' );
+
+					// Only show spinner if form is valid
+					if ( $( 'form' ).get( 0 ).checkValidity() ) {
+						$( '.sequoia-loader' ).addClass( 'spinning' );
+					}
 				} );
 
 				// Go to choose amount step when donation maximum error is clicked
@@ -227,6 +238,11 @@
 	// Move payment information section when gateway updated.
 	$( document ).on( 'give_gateway_loaded', function() {
 		moveFieldsUnderPaymentGateway( true );
+
+		// Disable form if fields are still invalid
+		if ( $( '.give-invalid-maximum' ) || $( 'form' ).get( 0 ).checkValidity() ) {
+			Give.form.fn.disable( $( 'form' ), true );
+		}
 	} );
 	$( document ).on( 'Give:onPreGatewayLoad', function() {
 		moveFieldsUnderPaymentGateway( false );
