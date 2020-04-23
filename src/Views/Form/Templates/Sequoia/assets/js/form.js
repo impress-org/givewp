@@ -24,12 +24,6 @@
 				}, 200 );
 			}
 
-			if ( steps[ step ].showErrors === true ) {
-				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).show();
-			} else {
-				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).hide();
-			}
-
 			$( '.step-tracker' ).removeClass( 'current' );
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
@@ -165,6 +159,10 @@
 
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
+
+				const testNotice = $( '#give_error_test_mode' );
+				$( testNotice ).clone().prependTo( '.give-section.payment' );
+				$( testNotice ).remove();
 
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {

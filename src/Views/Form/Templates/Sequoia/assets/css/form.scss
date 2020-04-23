@@ -474,6 +474,10 @@ p {
 // Payment Section
 
 .payment {
+	> .give_error {
+		margin-right: 20px;
+		margin-left: 20px;
+	}
 	.heading {
 		padding: 39px 3px 0;
 		font-size: 16px;
@@ -482,6 +486,9 @@ p {
 		text-align: center;
 	}
 	.give_notices + .heading {
+		padding: 28px 3px 0;
+	}
+	.give_error + .heading {
 		padding: 28px 3px 0;
 	}
 	.subheading {
