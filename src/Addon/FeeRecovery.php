@@ -25,6 +25,10 @@ class FeeRecovery implements Addonable {
 	 * @return bool
 	 */
 	public static function canFormRecoverFee() {
+		// Exit if fee recovery feature disabled for donation form.
+		if ( ! self::isActive() ) {
+			return false;
+		}
 		// Get the value of fee recovery enable or not.
 		$optionValue = give_get_meta( getFormId(), '_form_give_fee_recovery', true );
 		$optionValue = ! empty( $optionValue ) ? $optionValue : 'global';
@@ -42,6 +46,11 @@ class FeeRecovery implements Addonable {
 	 * @return string
 	 */
 	public static function getAmount( $donationId ) {
+		// Exit if fee recovery feature disabled for donation form.
+		if ( ! self::isActive() ) {
+			return null;
+		}
+
 		return give_get_meta( $donationId, '_give_fee_donation_amount', true );
 	}
 
@@ -52,6 +61,11 @@ class FeeRecovery implements Addonable {
 	 * @return bool|mixed
 	 */
 	public static function getFeeAmount( $donationId ) {
+		// Exit if fee recovery feature disabled for donation form.
+		if ( ! self::isActive() ) {
+			return null;
+		}
+
 		return give_get_meta( $donationId, '_give_fee_amount', true );
 	}
 }
