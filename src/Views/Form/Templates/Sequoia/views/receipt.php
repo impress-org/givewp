@@ -74,7 +74,7 @@ ob_start();
 							return false;
 						">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
-					</a>
+					</button>
 				</div>
 			</div>
 		<?php endif; ?>
