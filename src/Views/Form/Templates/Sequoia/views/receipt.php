@@ -44,7 +44,9 @@ ob_start();
 							// Retrieve and sanitize url to be shared
 							let url = parent.window.location.toString();
 							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
-								url = url.replace('?giveDonationAction=showReceipt', '');
+								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+								url = window.Give.fn.removeURLParameter(url, 'payment-id');
 							}
 							// Calculate new window position, based on parent window height/width
 							const top = parent.window.innerHeight / 2 - 365;
@@ -63,7 +65,9 @@ ob_start();
 							// Retrieve and sanitize url to be shared
 							let url = parent.window.location.toString();
 							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
-								url = url.replace('?giveDonationAction=showReceipt', '');
+								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+								url = window.Give.fn.removeURLParameter(url, 'payment-id');
 							}
 							// Calculate new window position, based on parent window height/width
 							const top = parent.window.innerHeight / 2 - 126;
