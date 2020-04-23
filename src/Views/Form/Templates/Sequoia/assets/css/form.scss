@@ -481,6 +481,9 @@ p {
 		color: #6b6b6b;
 		text-align: center;
 	}
+	.give_notices + .heading {
+		padding: 28px 3px 0;
+	}
 	.subheading {
 		padding: 5px 0 34px 0;
 		font-style: italic;
@@ -585,10 +588,6 @@ p {
 			flex-direction: column;
 			align-items: center;
 			position: relative;
-
-			.give_notices + .give-submit {
-				margin-top: 0;
-			}
 
 			.sequoia-loader {
 				height: 30px;

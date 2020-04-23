@@ -178,6 +178,30 @@
 
 				// Setup gateway icons
 				setupGatewayIcons();
+
+				const observer = new window.MutationObserver( function( mutations ) {
+					mutations.forEach( function( mutation ) {
+						if ( ! mutation.addedNodes ) {
+							return;
+						}
+
+						for ( let i = 0; i < mutation.addedNodes.length; i++ ) {
+							// do things to your newly added nodes here
+							const node = mutation.addedNodes[ i ];
+							if ( $( node ).parent().hasClass( 'give-submit-button-wrap' ) && $( node ).hasClass( 'give_errors' ) ) {
+								$( node ).clone().prependTo( '.give-section.payment' );
+								$( node ).remove();
+							}
+						}
+					} );
+				} );
+
+				observer.observe( document.body, {
+					childList: true,
+					subtree: true,
+					attributes: false,
+					characterData: false,
+				} );
 			},
 		},
 	];
