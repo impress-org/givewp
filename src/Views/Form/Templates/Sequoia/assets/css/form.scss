@@ -103,6 +103,13 @@ p {
 	}
 }
 
+.advance-btn:disabled,
+.give-submit:disabled,
+.download-btn:disabled {
+	filter: grayscale(0.6);
+	opacity: 0.6;
+}
+
 .download-btn {
 	font-size: 16px;
 	line-height: 20px;
