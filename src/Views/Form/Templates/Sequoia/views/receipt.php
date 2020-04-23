@@ -77,14 +77,17 @@ ob_start();
 							<?php _e( 'Billing Address', 'give' ); ?>
 						</div>
 						<div class="value">
-							<?php echo $payment->address['line1']; ?> <br>
 							<?php
-							if ( ! empty( $payment->address['line2'] ) ) {
-								echo $payment->address['line1'];
-							}
+							printf(
+								'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
+								$payment->address['line1'],
+								! empty( $payment->address['line2'] ) ? $payment->address['line2'] . '<br>' : '',
+								$payment->address['city'],
+								$payment->address['state'],
+								$payment->address['zip'],
+								$payment->address['country']
+							)
 							?>
-							<?php echo $payment->address['city']; ?>, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
-							<?php echo $payment->address['country']; ?>
 						</div>
 					</div>
 				<?php endif; ?>
