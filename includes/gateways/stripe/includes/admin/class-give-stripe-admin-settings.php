@@ -843,7 +843,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 												<?php
 											}
 
-											if ( $name !== $default_account ) {
+											if (
+												$name !== $default_account ||
+												(
+													is_array( $stripe_accounts ) &&
+													count( $stripe_accounts ) === 1
+												)
+											) {
 												?>
 												<span class="give-stripe-account-disconnect">
 													<a
