@@ -474,6 +474,11 @@ p {
 // Payment Section
 
 .payment {
+	#give_error_invalid_donation_maximum,
+	#give_error_invalid_donation_amount {
+		cursor: pointer;
+	}
+
 	> .give_error {
 		margin-right: 20px;
 		margin-left: 20px;
