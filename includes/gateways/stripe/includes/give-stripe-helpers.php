@@ -1507,3 +1507,17 @@ function give_stripe_get_account_options() {
 
 	return $options;
 }
+
+/**
+ * This function is used to get single ip address for Stripe.
+ *
+ * @since 2.6.3
+ *
+ * @return string
+ */
+function give_stripe_get_ip_address() {
+
+	$ip_address_details = explode( ',', give_get_ip() );
+
+	return $ip_address_details[0];
+}
