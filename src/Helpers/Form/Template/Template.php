@@ -58,11 +58,8 @@ function set( $formId, $settings ) {
 	 *
 	 * Note: We can remove legacy setting compatibility by returning anything except LegacyFormSettingCompatibility class object.
 	 */
-	if ( $isUpdated ) {
-		/* @var LegacyFormSettingCompatibility $legacySettingHandler */
-		$legacySettingHandler = new LegacyFormSettingCompatibility( $template );
-		$legacySettingHandler->save( $formId, $settings );
-	}
+	$legacySettingHandler = new LegacyFormSettingCompatibility( $template );
+	$legacySettingHandler->save( $formId, $settings );
 
 	return $isUpdated;
 }
