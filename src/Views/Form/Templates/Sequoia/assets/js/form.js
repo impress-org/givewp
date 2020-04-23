@@ -203,6 +203,7 @@
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
+								Give.form.fn.disable( $( 'form' ), true );
 							}
 						}
 					} );
