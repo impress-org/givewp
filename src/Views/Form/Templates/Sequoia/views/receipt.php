@@ -43,7 +43,7 @@ ob_start();
 						onclick="
 							// Retrieve and sanitize url to be shared
 							let url = parent.window.location.toString();
-							if (url.includes('?giveDonationAction=showReceipt')) {
+							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
 								url = url.replace('?giveDonationAction=showReceipt', '');
 							}
 							// Calculate new window position, based on parent window height/width
@@ -62,7 +62,7 @@ ob_start();
 						onclick="
 							// Retrieve and sanitize url to be shared
 							let url = parent.window.location.toString();
-							if (url.includes('?giveDonationAction=showReceipt')) {
+							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
 								url = url.replace('?giveDonationAction=showReceipt', '');
 							}
 							// Calculate new window position, based on parent window height/width
