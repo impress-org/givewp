@@ -437,7 +437,7 @@ function give_stripe_disconnect_connect_stripe_account() {
 	$get_data = give_clean( $_GET );
 
 	if ( is_admin() && isset( $get_data['stripe_disconnected'] ) ) {
-		$account_name    = ! empty( $get_data['account_name'] ) ? $get_data['account_name'] : false;
+		$account_name = ! empty( $get_data['account_name'] ) ? $get_data['account_name'] : false;
 
 		// Disconnect Stripe Account.
 		give_stripe_disconnect_account( $account_name );
@@ -486,10 +486,11 @@ function give_stripe_update_account_name() {
 	$new_account_name = ! empty( $post_data['new_account_name'] ) ? $post_data['new_account_name'] : false;
 
 	if ( ! empty( $account_slug ) && ! empty( $new_account_name ) ) {
-		$accounts         = give_stripe_get_all_accounts();
-		$account_keys     = array_keys( $accounts );
-		$account_values   = array_values( $accounts );
-		$new_account_slug = give_stripe_convert_title_to_slug( $new_account_name );
+		$accounts             = give_stripe_get_all_accounts();
+		$account_keys         = array_keys( $accounts );
+		$account_values       = array_values( $accounts );
+		$new_account_slug     = give_stripe_convert_title_to_slug( $new_account_name );
+		$default_account_slug = give_stripe_get_default_account_slug();
 
 		// Bailout, if Account Name already exists.
 		if ( in_array( $new_account_slug, $account_keys, true ) ) {
@@ -497,7 +498,7 @@ function give_stripe_update_account_name() {
 			return;
 		}
 
-		$key = array_search( $account_slug, $account_keys, true );
+		$key                  = array_search( $account_slug, $account_keys, true );
 		$account_keys[ $key ] = $new_account_slug;
 
 		$new_accounts = array_combine( $account_keys, $account_values );
@@ -505,8 +506,12 @@ function give_stripe_update_account_name() {
 		// Update accounts.
 		give_update_option( '_give_stripe_get_all_accounts', $new_accounts );
 
+		if ( $account_slug === $default_account_slug ) {
+			give_update_option( '_give_stripe_default_account', $new_account_slug );
+		}
+
 		$success_args = [
-			'message' => __( 'Account Name update successfully.', 'give' ),
+			'message' => __( 'Account Name updated successfully.', 'give' ),
 			'name'    => $new_account_name,
 		];
 		wp_send_json_success( $success_args );
