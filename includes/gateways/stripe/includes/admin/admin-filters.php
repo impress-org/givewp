@@ -34,7 +34,9 @@ function give_stripe_link_transaction_id( $transaction_id, $payment_id ) {
 }
 
 add_filter( 'give_payment_details_transaction_id-stripe', 'give_stripe_link_transaction_id', 10, 2 );
-add_filter( 'give_payment_details_transaction_id-stripe_ach', 'give_stripe_link_transaction_id', 10, 2 );
+add_filter( 'give_payment_details_transaction_id-stripe_checkout', 'give_stripe_link_transaction_id', 10, 2 );
+add_filter( 'give_payment_details_transaction_id-stripe_sepa', 'give_stripe_link_transaction_id', 10, 2 );
+add_filter( 'give_payment_details_transaction_id-stripe_becs', 'give_stripe_link_transaction_id', 10, 2 );
 
 /**
  * This function is used to add per-form Stripe account management.
