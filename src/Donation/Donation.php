@@ -15,7 +15,7 @@ class Donation {
 	 * @param int $id
 	 */
 	public function __construct( $id ) {
-		$this->id = absint( $id );
+		$this->id = $id;
 	}
 
 

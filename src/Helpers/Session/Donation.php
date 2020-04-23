@@ -13,5 +13,5 @@ use function give_get_donation_id_by_key as getDonationIdByPurchaseKey;
 function getId() {
 	$session = getSession();
 
-	return ! empty( $session['purchase_key'] ) ? getDonationIdByPurchaseKey( $session['purchase_key'] ) : 0;
+	return ! empty( $session['purchase_key'] ) ? absint( getDonationIdByPurchaseKey( $session['purchase_key'] ) ) : 0;
 }
