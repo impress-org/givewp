@@ -20,6 +20,6 @@ import './give-donor-wall';
 import iFrameResizer from '../plugins/form-template/iframe-content';
 import '../plugins/form-template/parent-page';
 
-const { init, fn, form, notice, cache, donor, util } = GiveAPI;
-window.Give = { init, fn, form, notice, cache, donor, util, initializeIframeResize };
+const { init, fn, form, notice, cache, donor, util, share } = GiveAPI;
+window.Give = { init, fn, form, notice, cache, donor, util, share, initializeIframeResize };
 window.iFrameResizer = iFrameResizer;

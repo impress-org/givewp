@@ -35,13 +35,44 @@ ob_start();
 		<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
 			<div class="social-sharing">
 				<p class="instruction">
-					<?php __( 'Tell the world about your generosity and help spread the word!', 'give' ); ?>
+					<?php echo $options['thank-you']['sharing_instruction']; ?>
 				</p>
 				<div class="btn-row">
-					<button class="give-btn social-btn facebook-btn">
+					<!-- Use inline onclick listener to avoid popup blockers -->
+					<button class="give-btn social-btn facebook-btn"
+						onclick="
+							// Retrieve and sanitize url to be shared
+							let url = parent.window.location.toString();
+							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
+								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+								url = window.Give.fn.removeURLParameter(url, 'payment-id');
+							}
+							// Calculate new window position, based on parent window height/width
+							const top = parent.window.innerHeight / 2 - 365;
+							const left = parent.window.innerWidth / 2 - 280;
+							// Open new window with prompt for Facebook sharing
+							window.Give.share.fn.facebook(url);
+							return false;
+							">
 						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 					</button>
-					<button class="give-btn social-btn twitter-btn">
+					<!-- Use inline onclick listener to avoid popup blockers -->
+					<button
+						class="give-btn social-btn twitter-btn"
+						onclick="
+							// Retrieve and sanitize url to be shared
+							let url = parent.window.location.toString();
+							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
+								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+								url = window.Give.fn.removeURLParameter(url, 'payment-id');
+							}
+							const text = `<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`;
+							// Open new window with prompt for Twitter sharing
+							window.Give.share.fn.twitter(url, text);
+							return false;
+						">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 					</button>
 				</div>
