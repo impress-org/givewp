@@ -69,14 +69,9 @@ ob_start();
 								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
 								url = window.Give.fn.removeURLParameter(url, 'payment-id');
 							}
-							// Calculate new window position, based on parent window height/width
-							const top = parent.window.innerHeight / 2 - 126;
-							const left = parent.window.innerWidth / 2 - 280;
-							// Open new window with prompt for Twitter sharing
-							window.open(`https://twitter.com/intent/tweet?url=${url}&text=<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`, 
-							'newwindow', 
-							`width=560,height=253,top=${top},left=${left}`); 
-							return false;">
+							const text = `<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`;
+							window.Give.share.fn.twitter(url, text);
+						">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 					</a>
 				</div>

@@ -333,6 +333,20 @@ const Give = {
 	cache: {},
 };
 
+Give.share = {
+	fn: {
+		twitter: function twitter (url, text) {
+			const targetWindow = parent.window ? parent.window : window;
+			// Calculate new window position, based on parent window height/width
+			const top = targetWindow.innerHeight / 2 - 126;
+			const left = targetWindow.innerWidth / 2 - 280;
+			// Open new window with prompt for Twitter sharing
+			targetWindow.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, 'newwindow', `width=560,height=253,top=${top},left=${left}`); 
+			return false;
+		}
+	}
+}
+
 Give.notice = GiveNotice;
 Give.form = GiveForm;
 Give.donor = GiveDonor;
