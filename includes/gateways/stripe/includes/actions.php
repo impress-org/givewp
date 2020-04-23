@@ -45,8 +45,6 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 	<fieldset
 		id="give_cc_fields_<?php echo $id_prefix; ?>"
 		class="give-do-validate give-stripe-cc-fields-container"
-		data-publishable-key="<?php echo $publishable_key; ?>"
-		data-account="<?php echo $account_id; ?>"
 	>
 		<legend>
 			<?php esc_attr_e( 'Credit Card Info', 'give' ); ?>
