@@ -361,6 +361,16 @@ p {
 // Choose Amount Styles
 
 .choose-amount {
+	> * {
+		order: 2;
+	}
+
+	> .give_error {
+		order: 1;
+		margin-right: 20px;
+		margin-left: 20px;
+	}
+
 	.content {
 		text-align: center;
 		margin: 24px 30px 22px 30px;
