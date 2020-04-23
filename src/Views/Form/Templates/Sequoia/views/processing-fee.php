@@ -2,9 +2,10 @@
 
 use Give\Addon\FeeRecovery;
 use function give_currency_filter as filterCurrency;
+use function give_fee_format_amount as formatAmount;
 use function give_maybe_sanitize_amount as sanitizeAmount;
 
-if ( ! $feeAmount ) {
+if ( ! FeeRecovery::isActive() || ! FeeRecovery::canFormRecoverFee() ) {
 	return;
 }
 ?>
@@ -14,12 +15,14 @@ if ( ! $feeAmount ) {
 	</div>
 	<div class="value">
 		<?php
-		echo give_fee_format_amount(
-			sanitizeAmount( $feeAmount ),
-			[
-				'donation_id' => $payment->ID,
-				'currency'    => $payment->currency,
-			]
+		echo filterCurrency(
+			formatAmount(
+				$feeAmount ? sanitizeAmount( $feeAmount ) : 0,
+				[
+					'donation_id' => $payment->ID,
+					'currency'    => $payment->currency,
+				]
+			)
 		);
 		?>
 	</div>
