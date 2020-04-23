@@ -167,10 +167,22 @@
 				window.give_global_vars.purchase_loading = '';
 
 				// Show Sequoia loader on click/touchend
-				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
+				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
 					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
 					$( '.sequoia-loader' ).addClass( 'spinning' );
+				} );
+
+				// Go to choose amount step when donation maximum error is clicked
+				$( 'body.give-form-templates' ).on( 'click touchend', '#give_error_invalid_donation_maximum', function() {
+					// Go to choose amount step
+					navigator.goToStep( 1 );
+				} );
+
+				// Go to choose amount step when invalid donation error is clicked
+				$( 'body.give-form-templates' ).on( 'click touchend', '#give_error_invalid_donation_amount', function() {
+					// Go to choose amount step
+					navigator.goToStep( 1 );
 				} );
 
 				//Setup input icons
