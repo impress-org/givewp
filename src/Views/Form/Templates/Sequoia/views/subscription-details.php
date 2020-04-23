@@ -5,9 +5,10 @@ use Give\Donation\Donation;
 use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 
 $donationID = getPaymentId();
+$donation   = new Donation( $donationID );
 
 // Exit if donation is not subscription.
-if ( ! RecurringAddon::isActive() || ! Donation::isRecurring( $donationID ) ) {
+if ( ! RecurringAddon::isActive() || ! $donation->isRecurring() ) {
 	return '';
 }
 
