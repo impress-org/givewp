@@ -169,7 +169,8 @@
 				// Show Sequoia loader on click/touchend
 				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
-					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
+					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
+					$( '.sequoia-loader' ).addClass( 'spinning' );
 				} );
 
 				//Setup input icons
@@ -191,6 +192,7 @@
 							if ( $( node ).parent().hasClass( 'give-submit-button-wrap' ) && $( node ).hasClass( 'give_errors' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
+								$( '.sequoia-loader' ).removeClass( 'spinning' );
 							}
 						}
 					} );
