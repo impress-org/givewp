@@ -5,7 +5,7 @@ use function give_currency_filter as filterCurrency;
 use function give_fee_format_amount as formatAmount;
 use function give_maybe_sanitize_amount as sanitizeAmount;
 
-if ( ! FeeRecovery::isActive() || ! FeeRecovery::canFormRecoverFee() ) {
+if ( ! FeeRecovery::canFormRecoverFee() ) {
 	return;
 }
 ?>
