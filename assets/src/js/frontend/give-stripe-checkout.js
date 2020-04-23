@@ -16,9 +16,8 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			return;
 		}
 
-		const ccFieldContainer = form_element.querySelector( '.give-stripe-cc-fields-container' );
-		const publishableKey = ccFieldContainer.getAttribute( 'data-publishable-key' );
-		const accountId = ccFieldContainer.getAttribute( 'data-account' );
+		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
+		const accountId = form_element.getAttribute( 'data-account' );
 		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
 		const idPrefix = form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value;
 		const checkoutImage = ( give_stripe_vars.checkout_image.length > 0 ) ? give_stripe_vars.checkout_image : '';

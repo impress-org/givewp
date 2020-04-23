@@ -24,9 +24,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		const formElement = formWrap.querySelector( '.give-form' );
 
-		const ccFieldContainer = formElement.querySelector( '.give-stripe-cc-fields-container' );
-		const publishableKey = ccFieldContainer.getAttribute( 'data-publishable-key' );
-		const accountId = ccFieldContainer.getAttribute( 'data-account' );
+		// Bailout, if `form_element` is null.
+		if ( null === formElement ) {
+			return;
+		}
+
+		const publishableKey = formElement.getAttribute( 'data-publishable-key' );
+		const accountId = formElement.getAttribute( 'data-account' );
 
 		stripe = Stripe( publishableKey );
 
@@ -35,7 +39,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 				stripeAccount: accountId,
 			} );
 		}
-		
+
 		let elements = stripe.elements( {
 			locale: preferredLocale,
 		} );

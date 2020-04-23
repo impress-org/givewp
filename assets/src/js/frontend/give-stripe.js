@@ -29,9 +29,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			return;
 		}
 
-		const ccFieldContainer = form_element.querySelector( '.give-stripe-cc-fields-container' );
-		const publishableKey = ccFieldContainer.getAttribute( 'data-publishable-key' );
-		const accountId = ccFieldContainer.getAttribute( 'data-account' );
+		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
+		const accountId = form_element.getAttribute( 'data-account' );
 
 		stripe = Stripe( publishableKey );
 
