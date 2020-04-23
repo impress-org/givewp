@@ -52,10 +52,9 @@ ob_start();
 							const top = parent.window.innerHeight / 2 - 365;
 							const left = parent.window.innerWidth / 2 - 280;
 							// Open new window with prompt for Facebook sharing
-							window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 
-							'newwindow', 
-							`width=560,height=730,top=${top},left=${left}`); 
-							return false;">
+							window.Give.share.fn.facebook(url);
+							return false;
+							">
 						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 					</button>
 					<!-- Use inline onclick listener to avoid popup blockers -->
@@ -70,7 +69,9 @@ ob_start();
 								url = window.Give.fn.removeURLParameter(url, 'payment-id');
 							}
 							const text = `<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`;
+							// Open new window with prompt for Twitter sharing
 							window.Give.share.fn.twitter(url, text);
+							return false;
 						">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 					</a>
