@@ -944,16 +944,21 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 												</span>
 												<?php
 											}
+
+											if ( $name !== $default_account ) {
+												?>
+												<span class="give-stripe-account-disconnect">
+													<a
+														class="give-stripe-disconnect-account-btn"
+														href="<?php echo $disconnect_url; ?>"
+														data-disconnect-message="<?php echo $disconnect_message; ?>"
+													>
+														<?php echo __( 'Disconnect', 'give' ); ?>
+													</a>
+												</span>
+												<?php
+											}
 											?>
-											<span class="give-stripe-account-disconnect">
-												<a
-													class="give-stripe-disconnect-account-btn"
-													href="<?php echo $disconnect_url; ?>"
-													data-disconnect-message="<?php echo $disconnect_message; ?>"
-												>
-													<?php echo __( 'Disconnect', 'give' ); ?>
-												</a>
-											</span>
 										</span>
 									</div>
 									<?php
