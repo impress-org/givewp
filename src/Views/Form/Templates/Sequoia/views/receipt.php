@@ -38,10 +38,41 @@ ob_start();
 					<?php echo $options['thank-you']['sharing_instruction']; ?>
 				</p>
 				<div class="btn-row">
-					<button class="give-btn social-btn facebook-btn">
+					<!-- Use inline onclick listener to avoid popup blockers -->
+					<button class="give-btn social-btn facebook-btn"
+						onclick="
+							// Retrieve and sanitize url to be shared
+							let url = parent.window.location.toString();
+							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
+								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+								url = window.Give.fn.removeURLParameter(url, 'payment-id');
+							}
+							// Calculate new window position, based on parent window height/width
+							const top = parent.window.innerHeight / 2 - 365;
+							const left = parent.window.innerWidth / 2 - 280;
+							// Open new window with prompt for Facebook sharing
+							window.Give.share.fn.facebook(url);
+							return false;
+							">
 						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 					</button>
-					<button class="give-btn social-btn twitter-btn">
+					<!-- Use inline onclick listener to avoid popup blockers -->
+					<button
+						class="give-btn social-btn twitter-btn"
+						onclick="
+							// Retrieve and sanitize url to be shared
+							let url = parent.window.location.toString();
+							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
+								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+								url = window.Give.fn.removeURLParameter(url, 'payment-id');
+							}
+							const text = `<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`;
+							// Open new window with prompt for Twitter sharing
+							window.Give.share.fn.twitter(url, text);
+							return false;
+						">
 						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 					</button>
 				</div>
@@ -77,14 +108,17 @@ ob_start();
 							<?php _e( 'Billing Address', 'give' ); ?>
 						</div>
 						<div class="value">
-							<?php echo $payment->address['line1']; ?> <br>
 							<?php
-							if ( ! empty( $payment->address['line2'] ) ) {
-								echo $payment->address['line1'];
-							}
+							printf(
+								'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
+								$payment->address['line1'],
+								! empty( $payment->address['line2'] ) ? $payment->address['line2'] . '<br>' : '',
+								$payment->address['city'],
+								$payment->address['state'],
+								$payment->address['zip'],
+								$payment->address['country']
+							)
 							?>
-							<?php echo $payment->address['city']; ?>, <?php echo $payment->address['state']; ?> <?php echo $payment->address['zip']; ?> <br>
-							<?php echo $payment->address['country']; ?>
 						</div>
 					</div>
 				<?php endif; ?>
