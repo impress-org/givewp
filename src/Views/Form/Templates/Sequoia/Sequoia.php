@@ -18,12 +18,12 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	public function getFormStartingHeight( int $formId ) {
 		$templateOptions = getTemplateOptions( $formId );
 		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
-			return 748;
+			return 645;
 		}
-		if ( empty( $templateOptions['introduction']['image'] ) ) {
-			return 448;
+		if ( empty( $templateOptions['introduction']['image'] ) && empty( get_post_thumbnail_id( $formId ) ) ) {
+			return 423;
 		} else {
-			return 754;
+			return 645;
 		}
 	}
 
