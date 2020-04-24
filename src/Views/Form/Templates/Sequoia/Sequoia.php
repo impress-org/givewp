@@ -15,8 +15,8 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	/**
 	 * @inheritDoc
 	 */
-	public function getFormStartingHeight() {
-		$templateOptions = getTemplateOptions();
+	public function getFormStartingHeight( int $formId ) {
+		$templateOptions = getTemplateOptions( $formId );
 		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
 			return 748;
 		}
