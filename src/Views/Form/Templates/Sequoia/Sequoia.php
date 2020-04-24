@@ -5,6 +5,7 @@ use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use \Give_Donate_Form as DonationForm;
 
 /**
  * Class Sequoia
@@ -16,15 +17,14 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getFormStartingHeight( int $formId ) {
+		$form            = new DonationForm( $formId );
 		$templateOptions = getTemplateOptions( $formId );
 		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
 			return 645;
 		}
-		if ( empty( $templateOptions['introduction']['image'] ) && empty( get_post_thumbnail_id( $formId ) ) ) {
-			return 423;
-		} else {
-			return 645;
-		}
+		$goalHeight  = ! $form->has_goal() ? 0 : 123;
+		$imageHeight = empty( $templateOptions['introduction']['image'] ) && empty( get_post_thumbnail_id( $formId ) ) ? 0 : 175;
+		return 423 + $goalHeight + $imageHeight;
 	}
 
 	/**
