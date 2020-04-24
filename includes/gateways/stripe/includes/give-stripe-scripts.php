@@ -29,8 +29,13 @@ function give_stripe_frontend_scripts() {
 	// @TODO: convert checkboxes to radios.
 	$zip_option      = give_is_setting_enabled( give_get_option( 'stripe_checkout_zip_verify' ) );
 	$remember_option = give_is_setting_enabled( give_get_option( 'stripe_checkout_remember_me' ) );
+	$subscription_db = new Give_Subscriptions_DB();
 
-	$stripe_card_update = give_stripe_is_update_payment_method_screen();
+	// If update allowed then it will return subscription id.
+	$is_update_pm_allowed = give_stripe_is_update_payment_method_screen();
+	$subscription_details = ! empty( $is_update_pm_allowed ) ?
+		$subscription_db->get_subscriptions( [ 'id' => $is_update_pm_allowed ] ) :
+		false;
 
 	// Set vars for AJAX.
 	$stripe_vars = array(
@@ -59,7 +64,8 @@ function give_stripe_frontend_scripts() {
 			)
 		),
 		'base_country'                 => give_get_option( 'base_country' ),
-		'stripe_card_update'           => $stripe_card_update,
+		'stripe_card_update'           => $is_update_pm_allowed && 'stripe' === $subscription_details[0]->gateway,
+		'stripe_becs_update'           => $is_update_pm_allowed && 'stripe_becs' === $subscription_details[0]->gateway,
 		'stripe_account_id'            => give_stripe_is_connected() ? give_get_option( 'give_stripe_user_id' ) : false,
 		'preferred_locale'             => give_stripe_get_preferred_locale(),
 	);
@@ -91,7 +97,13 @@ function give_stripe_frontend_scripts() {
 	}
 
 	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
-	if ( give_is_gateway_active( 'stripe' ) || $stripe_card_update ) {
+	if (
+		give_is_gateway_active( 'stripe' ) ||
+		(
+			$is_update_pm_allowed &&
+			'stripe' === $subscription_details[0]->gateway
+		)
+	) {
 		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 	}
@@ -103,7 +115,13 @@ function give_stripe_frontend_scripts() {
 	}
 
 	// Load Stripe BECS Direct Debit JS when the gateway is active.
-	if ( give_is_gateway_active( 'stripe_becs' ) ) {
+	if (
+		give_is_gateway_active( 'stripe_becs' ) ||
+		(
+			$is_update_pm_allowed &&
+			'stripe_becs' === $subscription_details[0]->gateway
+		)
+	) {
 		Give_Scripts::register_script( 'give-stripe-becs', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-becs.js', array( 'give-stripe-js' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-becs' );
 	}
