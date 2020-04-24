@@ -410,6 +410,10 @@ p {
 			padding: 18px 24px;
 			margin: 0;
 
+			@media screen and (max-width: $break-phone) {
+				padding: 12px 16px;
+			}
+
 			input {
 				height: auto !important;
 				width: auto !important;
@@ -465,9 +469,17 @@ p {
 			padding-top: 24px;
 			padding-bottom: 24px;
 
+			@media screen and (max-width: $break-phone) {
+				font-size: 21px;
+			}
+
 			> .currency {
 				font-size: 14px;
 				margin: 0 6px 11px 0;
+				@media screen and (max-width: $break-phone) {
+					font-size: 11px;
+					margin: 0 3px 6px 0;
+				}
 			}
 
 			&.give-btn-level-custom {
@@ -475,6 +487,10 @@ p {
 				font-size: 18px;
 				line-height: 1.2;
 				padding: 10px;
+
+				@media screen and (max-width: $break-phone) {
+					font-size: 14px;
+				}
 			}
 
 			&.give-default-level {
