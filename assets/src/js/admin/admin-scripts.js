@@ -2121,7 +2121,7 @@ const gravatar = require( 'gravatar' );
 	 */
 	const Edit_Form_Screen = {
 		init: function() {
-			const default_tab_id = $.query.get( 'give_tab' ).length ? $.query.get( 'give_tab' ) : 'form_field_options';
+			const default_tab_id = $.query.get( 'give_tab' ).length ? $.query.get( 'give_tab' ) : 'form_template_options';
 
 			this.handle_metabox_tab_click();
 			this.setup_colorpicker_fields();

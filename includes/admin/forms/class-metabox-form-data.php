@@ -102,6 +102,26 @@ class Give_MetaBox_Form_Data {
 
 		$settings = array(
 			/**
+			 * Theme Options
+			 */
+			'form_template_options' => apply_filters(
+				'give_form_template_options',
+				array(
+					'id'        => 'form_template_options',
+					'title'     => __( 'Form Template', 'give' ),
+					'icon-html' => '<i class="fas fa-palette"></i>',
+					'fields'    => array(
+						array(
+							'id'      => $prefix . 'form_template',
+							'name'    => 'form_template',
+							'type'    => 'hidden',
+							'default' => '',
+						),
+					),
+				)
+			),
+
+			/**
 			 * Repeatable Field Groups
 			 */
 			'form_field_options'    => apply_filters(
@@ -273,26 +293,6 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						$post_id
-					),
-				)
-			),
-
-			/**
-			 * Theme Options
-			 */
-			'form_template_options' => apply_filters(
-				'give_form_template_options',
-				array(
-					'id'        => 'form_template_options',
-					'title'     => __( 'Form Template', 'give' ),
-					'icon-html' => '<i class="fas fa-palette"></i>',
-					'fields'    => array(
-						array(
-							'id'      => $prefix . 'form_template',
-							'name'    => 'form_template',
-							'type'    => 'hidden',
-							'default' => '',
-						),
 					),
 				)
 			),
@@ -717,7 +717,7 @@ class Give_MetaBox_Form_Data {
 	public function output() {
 		// Bailout.
 		if ( $form_data_tabs = $this->get_tabs() ) :
-			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_field_options';
+			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_template_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 
 			$upsell_html          = $this->upsell_html();
