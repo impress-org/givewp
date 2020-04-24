@@ -39,12 +39,21 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
 	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
 
+	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
 	giveStripeJsonFormattedTextarea( stripeStylesEmpty );
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
 
+	/**
+	 * Edit Stripe Account Name
+	 *
+	 * On clicking "Edit" link on account name will show text fields
+	 * to update account name.
+	 *
+	 *  @since 2.6.3
+	 */
 	if ( null !== perAccountEdits ) {
 		perAccountEdits.forEach( ( perAccountEdit ) => {
 			perAccountEdit.addEventListener( 'click', ( e ) => {
@@ -67,6 +76,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * Update Stripe Account Name
+	 *
+	 * On changing the account name and clicking on the "Update" link will
+	 * update the account name of a particular Stripe account.
+	 *
+	 * @since 2.6.3
+	 */
 	if ( null !== perAccountUpdates ) {
 		perAccountUpdates.forEach( ( perAccountUpdate ) => {
 			perAccountUpdate.addEventListener( 'click', ( e ) => {
@@ -101,6 +118,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * Show/Hide Per-Form fields
+	 *
+	 * When a user want to add per-form Stripe account, this code will help
+	 * toggle the Stripe account list on clicking 'Customize'.
+	 *
+	 * @since 2.6.3
+	 */
 	if ( null !== perFormOptions ) {
 		perFormOptions.forEach( ( formOption ) => {
 			formOption.addEventListener( 'change', ( e ) => {
@@ -113,6 +138,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * Set Default Stripe Account
+	 *
+	 * This will be used to set any non-default Stripe account from the list
+	 * to set that particular Stripe account as default.
+	 *
+	 * @since 2.6.3
+	 */
 	if ( null !== setStripeDefaults ) {
 		setStripeDefaults.forEach( ( setStripeDefault ) => {
 			setStripeDefault.addEventListener( 'click', ( e ) => {
@@ -135,6 +168,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * Connection Type Toggle for Stripe Account
+	 *
+	 * This will help toggle between connect and manual fields of Stripe
+	 * using the "Connection Type" radio fields.
+	 *
+	 * @since 2.6.3
+	 */
 	if ( null !== connectionTypes && null !== selectedConnectionType ) {
 		giveStripeConnectionTypeToggle( selectedConnectionType.value );
 
@@ -166,6 +207,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		}
 	}
 
+	/**
+	 * Show/Hide SEPA Icon Style Settings.
+	 *
+	 * This will show/hide the Icon Style settings for SEPA.
+	 */
 	if ( null !== hideIconElements ) {
 		hideIconElements.forEach( ( hideIconElement ) => {
 			hideIconElement.addEventListener( 'change', ( e ) => {
@@ -177,6 +223,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			} );
 		} );
 	}
+
+	/**
+	 * Show/Hide Mandate Textarea Settings for SEPA.
+	 *
+	 * This will show/hide the Mandate Textarea settings for SEPA.
+	 */
 	if ( null !== hideMandateElements ) {
 		hideMandateElements.forEach( ( hideIconElement ) => {
 			hideIconElement.addEventListener( 'change', ( e ) => {
@@ -189,7 +241,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
-	// For BECS Direct Debit.
+	/**
+	 * Show/Hide BECS Icon Style Settings.
+	 *
+	 * This will show/hide the Icon Style settings for BECS.
+	 */
 	if ( null !== hideBecsIconElements ) {
 		hideBecsIconElements.forEach( ( hideIconElement ) => {
 			hideIconElement.addEventListener( 'change', ( e ) => {
@@ -201,6 +257,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			} );
 		} );
 	}
+
+	/**
+	 * Show/Hide Mandate Textarea Settings for BECS.
+	 *
+	 * This will show/hide the Mandate Textarea settings for BECS.
+	 */
 	if ( null !== hideBecsMandateElements ) {
 		hideBecsMandateElements.forEach( ( hideIconElement ) => {
 			hideIconElement.addEventListener( 'change', ( e ) => {
