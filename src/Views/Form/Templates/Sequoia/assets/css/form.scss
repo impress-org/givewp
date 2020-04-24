@@ -136,15 +136,13 @@ p {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 	border-width: 0 0 0 5px;
 
-	> p {
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 24px;
-		color: #555 !important;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 24px;
+	color: #555 !important;
 
-		> strong {
-			font-weight: 500 !important;
-		}
+	> strong {
+		font-weight: 500 !important;
 	}
 }
 
