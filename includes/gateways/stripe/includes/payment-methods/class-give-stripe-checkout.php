@@ -306,7 +306,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
 			// Redirect to show loading area to trigger redirectToCheckout client side.
-			wp_redirect(
+			wp_safe_redirect(
 				add_query_arg(
 					array(
 						'action'  => 'checkout_processing',
