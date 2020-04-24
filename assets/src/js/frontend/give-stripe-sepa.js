@@ -24,7 +24,15 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		const formElement = formWrap.querySelector( '.give-form' );
 
-		// Bailout, if `form_element` is null.
+		/**
+		 * Bailout, if `formElement` is null.
+		 *
+		 * We are bailing out here as this script is loaded on every page of the
+		 * site but the `formElement` only exists on the pages when Give donation
+		 * form is loaded. So, when the pages where the donation form is not loaded
+		 * will show console error. To avoid JS console errors we bail it, if
+		 * `formElement` is null to avoid console errors.
+		 */
 		if ( null === formElement ) {
 			return;
 		}
