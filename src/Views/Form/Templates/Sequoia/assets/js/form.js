@@ -240,7 +240,7 @@
 		moveFieldsUnderPaymentGateway( true );
 
 		// Disable form if fields are still invalid
-		if ( $( '.give-invalid-maximum' ).length > 0 || $( 'form' ).get( 0 ).checkValidity() === false ) {
+		if ( $( '.give-invalid-maximum' ).length > 0 ) {
 			Give.form.fn.disable( $( 'form' ), true );
 		}
 	} );
