@@ -706,8 +706,17 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Account Manager Field.
 		 *
+		 * This function will add a custom admin settings field to display
+		 * Stripe Account Management field where all the connected Stripe
+		 * accounts will display irrespective of the Stripe account connected
+		 * via Connect method or Manual method.
+		 *
 		 * @param array $field Field Arguments.
 		 * @param string $option_value Field Value.
+		 *
+		 * @since 2.6.3
+		 *
+		 * @return mixed|void
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 
