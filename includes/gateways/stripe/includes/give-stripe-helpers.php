@@ -1135,10 +1135,10 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 	$form_id = give_get_payment_form_id( $donation_id );
 	$email   = give_get_payment_user_email( $donation_id );
 
-	$args = array(
+	$args = apply_filters( 'give_stripe_prepare_metadata', array(
 		'Email'            => $email,
 		'Donation Post ID' => $donation_id,
-	);
+	), $donation_id );
 
 	// Add Sequential Metadata.
 	$seq_donation_id = give_stripe_get_sequential_id( $donation_id );
@@ -1173,15 +1173,15 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 function give_stripe_is_update_payment_method_screen() {
 
 	$get_data         = give_clean( filter_input_array( INPUT_GET ) );
+	$subscription_id  = ! empty( $get_data['subscription_id'] ) ? absint( $get_data['subscription_id'] ) : false;
 	$is_update_screen = false;
 
 	if (
 		isset( $get_data['action'] ) &&
 		'update' === $get_data['action'] &&
-		isset( $get_data['subscription_id'] ) &&
-		is_numeric( $get_data['subscription_id'] )
+		$subscription_id
 	) {
-		$is_update_screen = true;
+		$is_update_screen = $subscription_id;
 	}
 
 	return $is_update_screen;
