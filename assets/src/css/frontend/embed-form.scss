@@ -43,36 +43,28 @@ Embed Form aka IFrame Form
 
 		.modal-content {
 			position: relative;
-			margin: 0 auto;
+			margin: 35px auto auto;
 			max-width: 572px;
 			width: 100%;
 		}
 
-		iframe {
+		.close-btn-wrap {
 			margin-top: 15px;
 		}
 
-		.close-btn-wrap {
-			text-align: center;
-			position: absolute;
-			width: 100%;
-			margin-bottom: 20px;
-		}
-
 		.close-btn {
-			padding: 4px 12px;
-
-			background: black;
-			color: white !important;
+			padding: 1px 5px;
+			background: white;
+			color: black !important;
 			border-radius: 24px;
-			line-height: initial;
 			text-decoration: none;
 			outline: none;
-			font-size: 1em;
-
-			&:hover {
-				background: red;
-			}
+			font-size: 1.8em;
+			position: absolute;
+			right: 9px;
+			top: -22px;
+			font-weight: bold;
+			line-height: 0.8em;
 		}
 
 		&::after {
