@@ -11,7 +11,6 @@ Embed Form aka IFrame Form
 		position: absolute;
 		top: 0;
 		pointer-events: none;
-		z-index: 99;
 	}
 
 	iframe {
@@ -25,7 +24,7 @@ Embed Form aka IFrame Form
 
 	&.modal {
 		position: fixed;
-		z-index: 999;
+		z-index: 999999;
 		top: 0;
 		left: 0;
 		width: 100% !important;
@@ -38,8 +37,8 @@ Embed Form aka IFrame Form
 		.modal-inner-wrap {
 			position: absolute;
 			top: 0;
-			z-index: 1001;
 			width: 100%;
+			z-index: 1;
 		}
 
 		.modal-content {
@@ -68,7 +67,6 @@ Embed Form aka IFrame Form
 			border-radius: 24px;
 			line-height: initial;
 			text-decoration: none;
-			z-index: 1002;
 			outline: none;
 			font-size: 1em;
 
@@ -86,7 +84,6 @@ Embed Form aka IFrame Form
 			bottom: 0;
 			right: 0;
 			background-color: rgba(0, 0, 0, 0.8);
-			z-index: 1000;
 			overflow: hidden;
 		}
 	}
