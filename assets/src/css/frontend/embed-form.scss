@@ -101,3 +101,10 @@ Embed Form aka IFrame Form
 		transform: rotateZ(180deg);
 	}
 }
+
+/*---------------------------------
+Embed Form aka IFrame Form
+-----------------------------------*/
+.js-give-grid-modal-launcher + div.js-embed-form-modal-launcher-wrap {
+	display: none;
+}

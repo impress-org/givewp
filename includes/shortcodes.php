@@ -221,7 +221,7 @@ function give_form_shortcode( $atts ) {
 		// Show button in button mode and hide Iframe.
 		if ( $buttonModeActive ) {
 			printf(
-				'<div>
+				'<div class="js-embed-form-modal-launcher-wrap">
 						<button
 						type="button"
 						class="js-give-embed-form-modal-opener"

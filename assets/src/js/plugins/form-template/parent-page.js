@@ -46,6 +46,22 @@ jQuery( function( $ ) {
 		} );
 	} );
 
+	/**
+	 * Trigger click on embedded form modal launcher when click on grid item form modal launcher.
+	 *
+	 * Note: This code with make form template (other then legacy form template) compatible with form grid.
+	 */
+	document.querySelectorAll( '.js-give-grid-modal-launcher' ).forEach( function( $formModalLauncher ) {
+		$formModalLauncher.addEventListener( 'click', function( evt ) {
+			const $embedFormLauncher = $formModalLauncher.nextElementSibling.firstElementChild;
+
+			// Do not open magnific poppup.
+			jQuery.magnificPopup.close();
+
+			$embedFormLauncher.click();
+		} );
+	} );
+
 	window.addEventListener( 'load', function() {
 		/**
 		 * Automatically open form if it is in modal.
