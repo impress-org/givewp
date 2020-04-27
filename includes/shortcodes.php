@@ -213,7 +213,7 @@ function give_form_shortcode( $atts ) {
 						onload="Give.initializeIframeResize(this)"
 						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>%4$s',
 			$iframe_url,
-			$buttonModeActive ? 0 : $isAutoScroll,
+			$isAutoScroll,
 			$formStartingHeight,
 			$loader
 		);
@@ -251,7 +251,7 @@ function give_form_shortcode( $atts ) {
 						</div>
 						',
 				$iframe_url,
-				$buttonModeActive ? 0 : $isAutoScroll,
+				$isAutoScroll,
 				__( 'Close modal', 'give' ),
 				$uniqueId,
 				$formStartingHeight,
