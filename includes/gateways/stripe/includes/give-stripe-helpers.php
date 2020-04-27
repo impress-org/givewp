@@ -30,11 +30,11 @@ function give_stripe_get_secret_key( $form_id = 0 ) {
 	$default_account = give_stripe_get_default_account( $form_id );
 
 	// Live Secret Key.
-	$secret_key = trim( $default_account['live_secret_key'] );
+	$secret_key = ! empty( $default_account['live_secret_key'] ) ? trim( $default_account['live_secret_key'] ) : '';
 
 	// Update secret key, if test mode is enabled.
 	if ( give_is_test_mode() ) {
-		$secret_key = trim( $default_account['test_secret_key'] );
+		$secret_key = ! empty( $default_account['test_secret_key'] ) ? trim( $default_account['test_secret_key'] ) : '';
 	}
 
 	return $secret_key;
@@ -75,7 +75,7 @@ function give_stripe_get_connected_account_options() {
 	$default_account = give_stripe_get_default_account( $form_id );
 
 	// If the Stripe account is connected via Connect method.
-	if ( 'connect' === $default_account['type'] ) {
+	if ( ! empty( $default_account['type'] ) && 'connect' === $default_account['type'] ) {
 		$args['stripe_account'] = $default_account['give_stripe_user_id'];
 	}
 
@@ -97,11 +97,11 @@ function give_stripe_get_publishable_key( $form_id = 0 ) {
 	$default_account = give_stripe_get_default_account( $form_id );
 
 	// Live Publishable Key.
-	$publishable_key = trim( $default_account['live_publishable_key'] );
+	$publishable_key = ! empty( $default_account['live_publishable_key'] ) ? trim( $default_account['live_publishable_key'] ) : '';
 
 	// Update publishable key, if test mode is enabled.
 	if ( give_is_test_mode() ) {
-		$publishable_key = trim( $default_account['test_publishable_key'] );
+		$publishable_key = ! empty( $default_account['test_publishable_key'] ) ? trim( $default_account['test_publishable_key'] ) : '';
 	}
 
 	return $publishable_key;
@@ -1391,10 +1391,20 @@ function give_stripe_get_back_to_settings_page( $args = [] ) {
  */
 function give_stripe_get_default_account( $form_id = 0 ) {
 
-	$all_accounts    = give_stripe_get_all_accounts();
-	$default_account = give_stripe_get_default_account_slug( $form_id );
+	$default_account_details = [];
+	$all_accounts            = give_stripe_get_all_accounts();
+	$default_account         = give_stripe_get_default_account_slug( $form_id );
 
-	return $all_accounts[ $default_account ];
+	if (
+		( is_array( $all_accounts ) &&
+		  count( $all_accounts ) > 0
+		) &&
+		! empty( $default_account)
+	) {
+		$default_account_details = $all_accounts[ $default_account ];
+	}
+
+	return $default_account_details;
 }
 
 /**
