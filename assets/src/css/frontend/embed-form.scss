@@ -53,18 +53,29 @@ Embed Form aka IFrame Form
 		}
 
 		.close-btn {
-			padding: 1px 5px;
-			background: white;
-			color: black !important;
+			background: black;
+			color: white !important;
 			border-radius: 24px;
 			text-decoration: none;
 			outline: none;
-			font-size: 1.8em;
+			font-size: 0.5em;
 			position: absolute;
 			right: 9px;
-			top: -22px;
+			top: -14px;
 			font-weight: bold;
-			line-height: 0.8em;
+			padding: 2px 10px;
+			opacity: 0.3;
+
+			&:hover {
+				opacity: 0.8;
+			}
+
+			span {
+				margin-left: 3px;
+				font-size: 1.5em;
+				line-height: 0.7em;
+				vertical-align: middle;
+			}
 		}
 
 		&::after {

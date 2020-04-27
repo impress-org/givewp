@@ -237,7 +237,7 @@ function give_form_shortcode( $atts ) {
 				'
 						<div class="modal-inner-wrap">
 							<div class="modal-content">
-								<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s" rel="nofollow">&times;</a>
+								<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s" rel="nofollow">%7$s<span>&times;</span></a>
 								<iframe
 									name="give-embed-form"
 									class="in-modal"
@@ -253,7 +253,8 @@ function give_form_shortcode( $atts ) {
 				__( 'Close modal', 'give' ),
 				$uniqueId,
 				$formStartingHeight,
-				$loader
+				$loader,
+				__( 'CLOSE', 'give' )
 			);
 		}
 
