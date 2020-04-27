@@ -94,7 +94,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		} );
 
 		// Mount Card Elements, if default gateway is Stripe BECS.
-		if ( 'stripe_becs' === defaultGateway || give_stripe_vars.stripe_card_update ) {
+		if ( 'stripe_becs' === defaultGateway || give_stripe_vars.stripe_becs_update ) {
 			// Disabled the donate button of the form.
 			donateButton.setAttribute( 'disabled', 'disabled' );
 
@@ -112,7 +112,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const $form = jQuery( this );
 		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
-		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_card_update  ) {
+		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_becs_update  ) {
 			give_stripe_process_becs_bank_account( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
@@ -259,7 +259,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		additionalData.billing_details.email = $email;
 
 		// Gather additional customer data we may have collected in our form.
-		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {
+		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_becs_update ) {
 			const address1 = $form.find( '.card-address' ).val();
 			const address2 = $form.find( '.card-address-2' ).val();
 			const city = $form.find( '.card-city' ).val();
