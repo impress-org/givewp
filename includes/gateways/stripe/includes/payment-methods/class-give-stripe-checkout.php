@@ -220,7 +220,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				'currency'             => give_get_currency( $form_id ),
 				'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
 				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
-				'metadata'             => $this->prepare_metadata( $donation_id ),
+				'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
 			);
 
 			// Process the charge.
