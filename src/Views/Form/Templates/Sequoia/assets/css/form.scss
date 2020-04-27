@@ -524,6 +524,12 @@ p {
 
 			> li.give_purchase_form_wrap-clone {
 				background-color: transparent;
+				margin-right: 0;
+
+				fieldset.no-fields {
+					background: #fbfbfb;
+					padding: 6px 16px;
+				}
 			}
 
 			input[type='radio'] {
