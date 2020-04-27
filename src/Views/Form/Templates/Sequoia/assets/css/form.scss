@@ -526,9 +526,27 @@ p {
 				background-color: transparent;
 				margin-right: 0;
 
-				fieldset.no-fields {
+				.no-fields {
 					background: #fbfbfb;
 					padding: 6px 16px;
+
+					p {
+						color: #333;
+					}
+				}
+
+				fieldset {
+					ol {
+						list-style: none;
+						padding-left: 0;
+
+						li {
+							font-size: 15px;
+							line-height: 24px;
+							margin-top: 8px;
+							margin-bottom: 10px;
+						}
+					}
 				}
 			}
 
