@@ -52,7 +52,7 @@ jQuery( function( $ ) {
 		 */
 		const $iframe = document.querySelector( '.modal-content iframe[data-autoScroll="1"]' );
 		if ( $iframe ) {
-			const containerID = $iframe.parentElement.parentElement.parentElement.parentElement.getAttribute( 'id' ),
+			const containerID = $iframe.parentElement.parentElement.parentElement.getAttribute( 'id' ),
 				  $button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerID }"]` );
 
 			if ( $button ) {

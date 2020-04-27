@@ -237,16 +237,14 @@ function give_form_shortcode( $atts ) {
 				'
 						<div class="modal-inner-wrap">
 							<div class="modal-content">
-								<div class="modal-content-inner">
-									<iframe
-										name="give-embed-form"
-										class="in-modal"
-										data-src="%1$s"
-										data-autoScroll="%2$s"
-										style="border: 0; visibility: hidden; min-height: %5$spx;"></iframe>
-										%6$s
-									<div class="close-btn-wrap"><a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s" rel="nofollow">%7$s</a></div>
-								</div>
+								<iframe
+									name="give-embed-form"
+									class="in-modal"
+									data-src="%1$s"
+									data-autoScroll="%2$s"
+									style="border: 0; visibility: hidden; min-height: %5$spx;"></iframe>
+									%6$s
+								<div class="close-btn-wrap"><a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s" rel="nofollow">%7$s</a></div>
 							</div>
 						</div>
 						',
