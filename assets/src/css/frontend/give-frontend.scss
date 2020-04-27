@@ -16,6 +16,7 @@
 @import 'receipt';
 @import 'float-labels';
 @import 'forms';
+@import 'embed-form';
 @import 'alerts';
 @import 'layouts';
 @import 'progress-bar';
@@ -36,7 +37,7 @@
 }
 
 // Import placeholder style from gutenberg placeholder.
-#give-receipt{
+#give-receipt {
 	@import '../../../../blocks/components/placeholder-animation/style';
 }
 
