@@ -1115,17 +1115,19 @@ function give_stripe_load_stripe_sdk() {
 	}
 }
 
+
 /**
  * This function will prepare metadata to send to Stripe.
  *
- * @param int $donation_id Donation ID.
+ * @param int   $donation_id   Donation ID.
+ * @param array $donation_data Donation Data.
  *
  * @since  2.5.5
  * @access public
  *
  * @return array
  */
-function give_stripe_prepare_metadata( $donation_id = 0 ) {
+function give_stripe_prepare_metadata( $donation_id, $donation_data = array() ) {
 
 	// Bailout, if donation id doesn't exists.
 	if ( ! $donation_id ) {
@@ -1135,10 +1137,15 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 	$form_id = give_get_payment_form_id( $donation_id );
 	$email   = give_get_payment_user_email( $donation_id );
 
-	$args = apply_filters( 'give_stripe_prepare_metadata', array(
-		'Email'            => $email,
-		'Donation Post ID' => $donation_id,
-	), $donation_id );
+	$args = apply_filters(
+		'give_stripe_prepare_metadata',
+		[
+			'Email'            => $email,
+			'Donation Post ID' => $donation_id,
+		],
+		$donation_id,
+		$donation_data
+	);
 
 	// Add Sequential Metadata.
 	$seq_donation_id = give_stripe_get_sequential_id( $donation_id );
@@ -1162,7 +1169,6 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 
 	return $args;
 }
-
 /**
  * This helper function is used to determine whether the screen is update payment method screen or not.
  *
@@ -1399,7 +1405,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 		( is_array( $all_accounts ) &&
 		  count( $all_accounts ) > 0
 		) &&
-		! empty( $default_account)
+		! empty( $default_account )
 	) {
 		$default_account_details = $all_accounts[ $default_account ];
 	}
