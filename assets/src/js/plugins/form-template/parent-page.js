@@ -53,7 +53,16 @@ jQuery( function( $ ) {
 	 */
 	document.querySelectorAll( '.js-give-grid-modal-launcher' ).forEach( function( $formModalLauncher ) {
 		$formModalLauncher.addEventListener( 'click', function( evt ) {
-			const $embedFormLauncher = $formModalLauncher.nextElementSibling.firstElementChild;
+			const $embedFormLauncher = $formModalLauncher.nextElementSibling.firstElementChild,
+				  $magnificPopContainer = document.querySelector( '.mfp-wrap.give-modal' );
+
+			$magnificPopContainer && $magnificPopContainer.classList.add( 'mfp-hide' );
+
+			// Exit if form has legacy form template.
+			if ( ! $embedFormLauncher ) {
+				$magnificPopContainer && $magnificPopContainer.classList.remove( 'mfp-hide' );
+				return;
+			}
 
 			// Do not open magnific poppup.
 			jQuery.magnificPopup.close();
