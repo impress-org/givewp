@@ -45,4 +45,19 @@ jQuery( function( $ ) {
 			iframeContainer.classList.add( 'is-hide' );
 		} );
 	} );
+
+	window.addEventListener( 'load', function() {
+		/**
+		 * Automatically open form if it is in modal.
+		 */
+		const $iframe = document.querySelector( '.modal-content iframe[data-autoScroll="1"]' );
+		if ( $iframe ) {
+			const containerID = $iframe.parentElement.parentElement.parentElement.parentElement.getAttribute( 'id' ),
+				  $button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerID }"]` );
+
+			if ( $button ) {
+				$button.click();
+			}
+		}
+	} );
 } );
