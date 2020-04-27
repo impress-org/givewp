@@ -34,7 +34,9 @@ jQuery( function( $ ) {
 	} );
 
 	document.querySelectorAll( '.js-give-embed-form-modal-closer' ).forEach( function( button ) {
-		button.addEventListener( 'click', function() {
+		button.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
 			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
 
 			document.documentElement.style.overflow = '';
