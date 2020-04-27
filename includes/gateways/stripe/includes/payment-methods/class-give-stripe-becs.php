@@ -127,7 +127,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
 							<?php echo __( 'Bank Account', 'give' ); ?>
 							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
+							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo __( 'BSB Number and Account Number of your bank account.', 'give' );?>"></span>
 						</label>
 						<div
 							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
