@@ -480,15 +480,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		/**
 		 * This function will prepare metadata to send to Stripe.
 		 *
-		 * @param int $donation_id Donation ID.
+		 * @param int   $donation_id   Donation ID.
+		 * @param array $donation_data Donation Data.
 		 *
 		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return array
 		 */
-		public function prepare_metadata( $donation_id = 0 ) {
-			return give_stripe_prepare_metadata( $donation_id );
+		public function prepare_metadata( $donation_id, $donation_data = array() ) {
+			return give_stripe_prepare_metadata( $donation_id, $donation_data );
 		}
 
 		/**
