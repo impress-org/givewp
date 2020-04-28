@@ -740,14 +740,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					// Set first Stripe account as default.
 					give_update_option( '_give_stripe_default_account', 'account_1' );
 					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
-				} elseif ( give_stripe_is_connected() ) {
+				} else {
 					$stripe_accounts['account_1'] = give_stripe_get_connect_settings();
 
 					// Set first Stripe account as default.
 					give_update_option( '_give_stripe_default_account', 'account_1' );
 					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
-				} else {
-					$stripe_accounts = [];
 				}
 			}
 
