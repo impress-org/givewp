@@ -71,14 +71,35 @@ jQuery( function( $ ) {
 		} );
 	} );
 
+	/**
+	 * Close embed form modal when press "esc" key.
+	 */
+	document.addEventListener( 'keydown', event => {
+		// Exit if pressed keycode is not 27. Only listen for "esc" key
+		if ( event.isComposing || event.keyCode !== 27 ) {
+			return;
+		}
+
+		// Close modal if open.
+		const $modal = document.querySelector( '.give-embed-form-wrapper.modal' );
+		if ( $modal ) {
+			const containerId = $modal.getAttribute( 'id' ),
+				$button = document.querySelector( `.js-give-embed-form-modal-closer[data-form-id="${ containerId }"]` );
+
+			console.log( event.keyCode, $button );
+
+			$button && $button.click();
+		}
+	} );
+
 	window.addEventListener( 'load', function() {
 		/**
 		 * Automatically open form if it is in modal.
 		 */
 		const $iframe = document.querySelector( '.modal-content iframe[data-autoScroll="1"]' );
 		if ( $iframe ) {
-			const containerID = $iframe.parentElement.parentElement.parentElement.getAttribute( 'id' ),
-				  $button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerID }"]` );
+			const containerId = $iframe.parentElement.parentElement.parentElement.getAttribute( 'id' ),
+				  $button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerId }"]` );
 
 			if ( $button ) {
 				$button.click();
