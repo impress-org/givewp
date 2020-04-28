@@ -142,6 +142,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.5.11', '<' ):
 			give_v2511_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.6.3', '<' ):
+			give_v263_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -2375,12 +2379,12 @@ function give_v201_upgrades_payment_metadata_callback() {
 		"
 			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
-			AND ( 
+			AND (
   				$wpdb->posts.post_date >= '2018-01-08 00:00:00'
 			)
 			AND $wpdb->posts.post_type = 'give_payment'
 			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
-			ORDER BY $wpdb->posts.post_date ASC 
+			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
 			OFFSET " . $give_updates->get_offset( 100 )
 	);
@@ -2466,11 +2470,11 @@ function give_v201_move_metadata_into_new_table_callback() {
 
 	$payments = $wpdb->get_col(
 		"
-			SELECT ID FROM $wpdb->posts 
+			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
 			AND ( $wpdb->posts.post_type = 'give_payment' OR $wpdb->posts.post_type = 'give_forms' )
 			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
-			ORDER BY $wpdb->posts.post_date ASC 
+			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
 			OFFSET " . $give_updates->get_offset( 100 )
 	);
@@ -2552,11 +2556,11 @@ function give_v201_logs_upgrades_callback() {
 
 	$logs = $wpdb->get_col(
 		"
-			SELECT ID FROM $wpdb->posts 
+			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
 			AND $wpdb->posts.post_type = 'give_log'
 			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
-			ORDER BY $wpdb->posts.post_date ASC 
+			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
 			OFFSET " . $give_updates->get_offset( 100 )
 	);
@@ -3591,5 +3595,57 @@ function give_v2511_upgrades() {
 		$wp_roles->remove_cap( $role, 'edit_give_payment' );
 		$wp_roles->remove_cap( $role, 'read_give_form' );
 		$wp_roles->remove_cap( $role, 'read_give_payment' );
+	}
+}
+
+/**
+ * Upgrade routine to call for backward compatibility to manage default Stripe account.
+ *
+ * @since 2.6.3
+ *
+ * @return void
+ */
+function give_v263_upgrades() {
+
+	$stripe_accounts = give_stripe_get_all_accounts();
+	$is_migrated     = give_get_option( '_give_stripe_data_migrated', false );
+
+	// Process, only when there is no Stripe accounts stored.
+	if (
+		is_array( $stripe_accounts ) &&
+		count( $stripe_accounts ) === 0 &&
+		! $is_migrated
+	) {
+		if (
+			give_stripe_is_premium_active() &&
+			give_stripe_is_manual_api_keys_enabled()
+		) {
+			$stripe_accounts['account_1'] = [
+				'type'                 => 'manual',
+				'live_secret_key'      => give_get_option( 'live_secret_key' ),
+				'test_secret_key'      => give_get_option( 'test_secret_key' ),
+				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
+				'test_publishable_key' => give_get_option( 'test_publishable_key' ),
+			];
+
+			// Set first Stripe account as default.
+			give_update_option( '_give_stripe_default_account', 'account_1' );
+			give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+		} else {
+			$stripe_accounts['account_1'] = give_stripe_get_connect_settings();
+
+			// Set first Stripe account as default.
+			give_update_option( '_give_stripe_default_account', 'account_1' );
+			give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+		}
+
+		// Delete old keys.
+		give_delete_option( 'live_secret_key' );
+		give_delete_option( 'test_secret_key' );
+		give_delete_option( 'live_publishable_key' );
+		give_delete_option( 'test_secret_key' );
+
+		// Set option to check that data is migrated or not.
+		give_update_option( '_give_stripe_data_migrated', true );
 	}
 }

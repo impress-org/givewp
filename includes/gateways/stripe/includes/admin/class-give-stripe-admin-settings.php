@@ -723,38 +723,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$stripe_accounts = give_stripe_get_all_accounts();
 			$default_account = '';
 
-			// Process, only when there is no Stripe accounts stored.
-			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
-				if (
-					give_stripe_is_premium_active() &&
-					give_stripe_is_manual_api_keys_enabled()
-				) {
-					$stripe_accounts['account_1'] = [
-						'type'                 => 'manual',
-						'live_secret_key'      => give_get_option( 'live_secret_key' ),
-						'test_secret_key'      => give_get_option( 'test_secret_key' ),
-						'live_publishable_key' => give_get_option( 'live_publishable_key' ),
-						'test_publishable_key' => give_get_option( 'test_publishable_key' ),
-					];
-
-					// Set first Stripe account as default.
-					give_update_option( '_give_stripe_default_account', 'account_1' );
-					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
-				} else {
-					$stripe_accounts['account_1'] = give_stripe_get_connect_settings();
-
-					// Set first Stripe account as default.
-					give_update_option( '_give_stripe_default_account', 'account_1' );
-					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
-				}
-
-				// Delete old keys.
-				give_delete_option( 'live_secret_key' );
-				give_delete_option( 'test_secret_key' );
-				give_delete_option( 'live_publishable_key' );
-				give_delete_option( 'test_secret_key' );
-			}
-
 			// Set account as default.
 			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 1 ) {
 				$stripe_account_keys = array_keys( $stripe_accounts );
