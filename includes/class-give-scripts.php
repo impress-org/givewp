@@ -403,11 +403,6 @@ class Give_Scripts {
 				'processing' => __( 'Processing...', 'give' ),
 				'activating' => __( 'Activating...', 'give' ),
 			),
-			'formTemplate'                      => [
-				'Sequoia' => [
-					'donorChoiceRecurringDonationType' => __( '<strong>Error: </strong>This form template does not support the Recurring Donation choice of "Admin Defined". Please update your Recurring Donation option to "Donor\'s Choice" in order to use this template.', 'give' ),
-				],
-			],
 		);
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
