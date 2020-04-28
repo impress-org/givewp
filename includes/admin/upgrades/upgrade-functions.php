@@ -3639,12 +3639,6 @@ function give_v263_upgrades() {
 			give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 		}
 
-		// Delete old keys.
-		give_delete_option( 'live_secret_key' );
-		give_delete_option( 'test_secret_key' );
-		give_delete_option( 'live_publishable_key' );
-		give_delete_option( 'test_secret_key' );
-
 		// Set option to check that data is migrated or not.
 		give_update_option( '_give_stripe_data_migrated', true );
 	}
