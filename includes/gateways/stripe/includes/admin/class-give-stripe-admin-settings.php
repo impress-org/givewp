@@ -731,10 +731,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				) {
 					$stripe_accounts['account_1'] = [
 						'type'                 => 'manual',
-						'access_token'         => give_get_option( 'live_secret_key' ),
-						'access_token_test'    => give_get_option( 'test_secret_key' ),
-						'publishable_key'      => give_get_option( 'live_publishable_key' ),
-						'publishable_key_test' => give_get_option( 'test_publishable_key' ),
+						'live_secret_key'      => give_get_option( 'live_secret_key' ),
+						'test_secret_key'      => give_get_option( 'test_secret_key' ),
+						'live_publishable_key' => give_get_option( 'live_publishable_key' ),
+						'test_publishable_key' => give_get_option( 'test_publishable_key' ),
 					];
 
 					// Set first Stripe account as default.
