@@ -318,6 +318,12 @@ function give_stripe_show_connect_banner() {
 		$status = false;
 	}
 
+	// Additional Check: For multiple accounts management.
+	$all_accounts = give_stripe_get_all_accounts();
+	if ( is_array( $all_accounts ) && count( $all_accounts ) > 0 ) {
+		$status = false;
+	}
+
 	/**
 	 * This filter hook is used to decide whether the connect button banner need to be displayed or not.
 	 *
