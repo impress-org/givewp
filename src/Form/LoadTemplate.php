@@ -14,6 +14,7 @@ use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 
@@ -120,6 +121,11 @@ class LoadTemplate {
 	public function handleReceiptAjax() {
 		// Do not handle form template receipt for legacy form.
 		if ( isLegacyForm() ) {
+			return;
+		}
+
+		// Show new receipt view only on donation confirmation page.
+		if ( false === strpos( wp_get_referer(), untrailingslashit( getSuccessPageURL() ) ) ) {
 			return;
 		}
 
