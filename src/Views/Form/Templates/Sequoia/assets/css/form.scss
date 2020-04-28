@@ -307,6 +307,12 @@ p {
 		}
 	}
 
+	.description + .advance-btn {
+		@media screen and (max-width: $break-phone) {
+			margin-top: 10px !important;
+		}
+	}
+
 	.income-stats {
 		width: 100%;
 		display: flex;
