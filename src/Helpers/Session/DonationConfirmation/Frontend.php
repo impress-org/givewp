@@ -9,6 +9,7 @@ use function Give\Helpers\Form\Utils\isConfirmingDonation;
 
 /**
  * Store posted data to donor session to access it in iframe if we are on payment confirmation page.
+ * This function will return true if data stored successfully in purchase session (session key name "give_purchase" ) otherwise false.
  *
  * Note: only for internal use.
  *
