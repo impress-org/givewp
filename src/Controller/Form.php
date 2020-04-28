@@ -107,7 +107,7 @@ class Form {
 
 					$donation = new Donation( $donationId );
 
-					// Load payment processing video only if donation is in pending status.
+					// Load payment processing view only if donation is in pending status.
 					if ( $donation->isPending() ) {
 						removeStoredConfirmationPagePostData();
 
