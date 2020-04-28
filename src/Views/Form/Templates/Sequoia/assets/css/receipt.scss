@@ -155,6 +155,11 @@
 				line-height: 17px;
 				margin: 10px 0;
 				font-weight: 300;
+				flex-wrap: wrap;
+
+				@media screen and (max-width: $break-phone) {
+					justify-content: center;
+				}
 
 				> i {
 					color: #989898;
@@ -162,14 +167,21 @@
 				}
 
 				.detail {
-					flex: 1;
 					text-transform: uppercase;
 					color: #6b6b6b;
+					white-space: nowrap;
 				}
 
 				.value {
+					flex: 1;
 					text-align: right;
 					color: #555;
+					white-space: nowrap;
+
+					@media screen and (max-width: $break-phone) {
+						flex: 0;
+						padding: 0 10px;
+					}
 				}
 
 				&.total {
