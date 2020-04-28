@@ -31,14 +31,11 @@ function storePostedData() {
  *
  * Note: Only for internal use.
  *
- * @return bool
  * @since 2.7.0
  */
 function removePostedData() {
 	$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
 	removeDataFromSession( "postDataFor{$paymentGatewayId}" );
-
-	return false;
 }
 
 /**
