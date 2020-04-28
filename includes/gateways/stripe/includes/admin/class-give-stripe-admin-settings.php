@@ -747,6 +747,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					give_update_option( '_give_stripe_default_account', 'account_1' );
 					give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 				}
+
+				// Delete old keys.
+				give_delete_option( 'live_secret_key' );
+				give_delete_option( 'test_secret_key' );
+				give_delete_option( 'live_publishable_key' );
+				give_delete_option( 'test_secret_key' );
 			}
 
 			// Set account as default.
