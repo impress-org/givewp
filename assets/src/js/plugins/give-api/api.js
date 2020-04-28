@@ -3,6 +3,7 @@ import GiveNotice from './notice';
 import GiveForm from './form';
 import GiveDonor from './donor';
 import GiveUtil from './util';
+import GiveShare from './share';
 
 /**
  *  This API is under development.
@@ -337,5 +338,6 @@ Give.notice = GiveNotice;
 Give.form = GiveForm;
 Give.donor = GiveDonor;
 Give.util = GiveUtil;
+Give.share = GiveShare;
 
 export default Give;
