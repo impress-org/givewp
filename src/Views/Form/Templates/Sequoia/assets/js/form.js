@@ -210,11 +210,11 @@
 						for ( let i = 0; i < mutation.addedNodes.length; i++ ) {
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
+
 							if ( $( node ).parent().hasClass( 'give-submit-button-wrap' ) && $( node ).hasClass( 'give_errors' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
-								Give.form.fn.disable( $( 'form' ), true );
 							}
 						}
 					} );
