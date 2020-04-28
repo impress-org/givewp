@@ -110,11 +110,11 @@ function give_stripe_is_connected() {
 	// Check all the necessary options.
 	if (
 		! empty( $settings['connected_status'] ) && '1' === $settings['connected_status']
-		&& ! empty( $settings['user_id'] )
-		&& ! empty( $settings['access_token'] )
-		&& ! empty( $settings['access_token_test'] )
-		&& ! empty( $settings['publishable_key'] )
-		&& ! empty( $settings['publishable_key_test'] )
+		&& ! empty( $settings['give_stripe_user_id'] )
+		&& ! empty( $settings['live_secret_key'] )
+		&& ! empty( $settings['test_secret_key'] )
+		&& ! empty( $settings['live_publishable_key'] )
+		&& ! empty( $settings['test_publishable_key'] )
 	) {
 		return true;
 	}
