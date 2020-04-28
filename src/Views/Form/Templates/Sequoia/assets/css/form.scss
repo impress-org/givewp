@@ -594,7 +594,7 @@ p {
 			label::before {
 				content: ' ';
 				position: absolute;
-				top: 13px;
+				top: calc(50% - 10px);
 				left: 15px;
 				width: 16px;
 				height: 16px;
@@ -615,7 +615,7 @@ p {
 				width: 8px;
 				height: 8px;
 				position: absolute;
-				top: 18px;
+				top: calc(50% - 5px);
 				left: 20px;
 				content: ' ';
 				display: block;
