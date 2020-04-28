@@ -15,6 +15,7 @@ use Give\Form\Template\Scriptable;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\inIframe;
+use function Give\Helpers\Form\Utils\isLegacyForm;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -117,6 +118,11 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	public function handleReceiptAjax() {
+		// Do not handle form template receipt for legacy form.
+		if ( isLegacyForm() ) {
+			return;
+		}
+
 		ob_start();
 		include_once $this->template->getReceiptView();
 		$data = ob_get_clean();
