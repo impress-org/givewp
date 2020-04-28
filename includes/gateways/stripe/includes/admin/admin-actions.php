@@ -519,6 +519,7 @@ function give_stripe_update_account_name() {
 		$success_args = [
 			'message' => __( 'Account Name updated successfully.', 'give' ),
 			'name'    => $new_account_name,
+			'slug'    => $new_account_slug,
 		];
 		wp_send_json_success( $success_args );
 	} else {

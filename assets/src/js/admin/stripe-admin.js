@@ -95,6 +95,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 				const xhr = new XMLHttpRequest();
 				const formData = new FormData();
+				const editElement = e.target.previousElementSibling;
 
 				formData.append( 'action', 'give_stripe_update_account_name' );
 				formData.append( 'account_slug', accountSlug );
@@ -108,6 +109,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					if ( xhr.status === 200 && response.success ) {
 						notice = `<div class="give-notice notice inline success notice-success"><p>${response.data.message}</p></div>`;
 						accountNameElement.innerHTML = response.data.name;
+						e.target.classList.add( 'give-hidden' );
+						e.target.setAttribute( 'data-account', response.data.slug );
+						editElement.classList.remove( 'give-hidden' );
 					} else {
 						notice = `<div class="give-notice notice inline error notice-error"><p>${response.data.message}</p></div>`;
 					}
