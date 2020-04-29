@@ -55,7 +55,7 @@ class ConfirmDonation {
 	 * @since 2.7.0
 	 * @return bool
 	 */
-	public static function isViewingPage() {
+	public static function isConfirming() {
 		return isViewingFormReceipt() && isset( $_GET['payment-confirmation'] );
 	}
 }

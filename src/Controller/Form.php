@@ -89,7 +89,7 @@ class Form {
 				header( 'HTTP/1.1 200 OK' );
 
 				// Show donation processing template.
-				if ( ConfirmDonation::isViewingPage() ) {
+				if ( ConfirmDonation::isConfirming() ) {
 					$session    = new DonationSessionAccess();
 					$donationId = $session->getDonationId();
 
