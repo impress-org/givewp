@@ -1,9 +1,16 @@
 <?php
+
 namespace Give\Helpers\Frontend;
 
 use Give\Session\DonationSessionAccess;
+use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 
-class ConfirmingDonation {
+/**
+ * Class ConfirmDonation
+ *
+ * @package Give\Helpers\Frontend
+ */
+class ConfirmDonation {
 	/**
 	 * Store posted data to donation session to access it in iframe if we are on payment confirmation page.
 	 * This function will return true if data stored successfully in purchase session (session key name "give_purchase" ) otherwise false.
@@ -40,5 +47,15 @@ class ConfirmingDonation {
 
 		$session = new DonationSessionAccess();
 		$session->delete( "postDataFor{$paymentGatewayId}" );
+	}
+
+	/**
+	 * Return whether or not we are viewing donation confirmation view or not.
+	 *
+	 * @since 2.7.0
+	 * @return bool
+	 */
+	public static function isViewingPage() {
+		return isViewingFormReceipt() && isset( $_GET['payment-confirmation'] );
 	}
 }

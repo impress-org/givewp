@@ -12,13 +12,12 @@ namespace Give\Controller;
 use Give\Donation\Donation;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
-use Give\Helpers\Frontend\ConfirmingDonation;
+use Give\Helpers\Frontend\ConfirmDonation;
 use Give\Session\DonationSessionAccess;
 use Give_Notices;
 use WP_Post;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\isConfirmingDonation;
 use function Give\Helpers\Form\Utils\canShowFailedDonationError;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 use function Give\Helpers\Form\Utils\createSuccessPageURL;
@@ -91,7 +90,7 @@ class Form {
 				header( 'HTTP/1.1 200 OK' );
 
 				// Show donation processing template.
-				if ( isConfirmingDonation() ) {
+				if ( ConfirmDonation::isViewingPage() ) {
 					$session    = new DonationSessionAccess();
 					$donationId = $session->getDonationId();
 
@@ -110,7 +109,7 @@ class Form {
 
 					// Load payment processing view only if donation is in pending status.
 					if ( $donation->isPending() ) {
-						ConfirmingDonation::removePostedDataFromDonationSession();
+						ConfirmDonation::removePostedDataFromDonationSession();
 
 						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 						exit();

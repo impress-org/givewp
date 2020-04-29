@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-use Give\Helpers\Frontend\ConfirmingDonation;
+use Give\Helpers\Frontend\ConfirmDonation;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
@@ -164,7 +164,7 @@ function give_form_shortcode( $atts ) {
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
 		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight();
 
-		ConfirmingDonation::storePostedDataInDonationSession();
+		ConfirmDonation::storePostedDataInDonationSession();
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
