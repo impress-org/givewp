@@ -21,14 +21,6 @@ class DonationSessionAccess extends SessionAccess {
 	private $data;
 
 	/**
-	 *
-	 * DonationSession constructor.
-	 */
-	public function __construct() {
-		$this->data = $this->get();
-	}
-
-	/**
 	 * gEt donation id.
 	 *
 	 * @since 2.7.0

@@ -20,7 +20,15 @@ abstract class SessionAccess {
 	 *
 	 * @var mixed
 	 */
-	private $data = [];
+	private $data;
+
+	/**
+	 *
+	 * Class constructor.
+	 */
+	public function __construct() {
+		$this->data = $this->get();
+	}
 
 	/**
 	 * Get data from session.
