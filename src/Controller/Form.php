@@ -9,7 +9,6 @@
 
 namespace Give\Controller;
 
-use Give\Donation\Donation;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give\Helpers\Frontend\ConfirmDonation;
@@ -105,10 +104,8 @@ class Form {
 					 */
 					do_action( 'give_handle_donation_confirmation', $donationId );
 
-					$donation = new Donation( $donationId );
-
 					// Load payment processing view only if donation is in pending status.
-					if ( $donation->isPending() ) {
+					if ( 'pending' === get_post_status( $donationId ) ) {
 						ConfirmDonation::removePostedDataFromDonationSession();
 
 						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
