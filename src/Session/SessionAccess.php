@@ -13,14 +13,14 @@ abstract class SessionAccess {
 	 *
 	 * @var string
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * Session data.
 	 *
 	 * @var mixed
 	 */
-	private $data;
+	protected $data;
 
 	/**
 	 *

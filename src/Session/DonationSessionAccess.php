@@ -10,15 +10,7 @@ class DonationSessionAccess extends SessionAccess {
 	 * @since 2.7.0
 	 * @var string
 	 */
-	private $id = 'give_purchase';
-
-	/**
-	 * Session dat.
-	 *
-	 * @since 2.7.0a
-	 * @var array
-	 */
-	private $data;
+	protected $id = 'give_purchase';
 
 	/**
 	 * gEt donation id.
