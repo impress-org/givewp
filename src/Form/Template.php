@@ -85,9 +85,11 @@ abstract class Template {
 	 * Returns starting height for iframe (in pixels), this is used to predict iframe height before the iframe loads
 	 * Implemented in includes/shortcodes.php:
 	 *
+	 * @param int $formId Form ID
+	 *
 	 * @return int
 	 **/
-	public function getFormStartingHeight() {
+	public function getFormStartingHeight( int $formId ) {
 		return 600;
 	}
 

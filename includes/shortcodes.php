@@ -162,7 +162,7 @@ function give_form_shortcode( $atts ) {
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$isAutoScroll           = absint( $hasAction );
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
-		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight();
+		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight( $formId );
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
