@@ -1,9 +1,9 @@
 <?php
-namespace Give\Session;
+namespace Give\Session\Access;
 
 use function give_get_donation_id_by_key as getDonationIdByPurchaseKey;
 
-class DonationSessionAccess extends SessionAccess {
+class Donation extends Access {
 	/**
 	 * Session key
 	 *

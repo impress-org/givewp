@@ -12,7 +12,7 @@ namespace Give\Controller;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give\Helpers\Frontend\ConfirmDonation;
-use Give\Session\DonationSessionAccess;
+use Give\Session\Access\Donation as DonationSessionAccess;
 use Give_Notices;
 use WP_Post;
 use function Give\Helpers\Form\Template\getActiveID;

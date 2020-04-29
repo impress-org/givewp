@@ -2,7 +2,7 @@
 
 namespace Give\Helpers\Frontend;
 
-use Give\Session\DonationSessionAccess;
+use Give\Session\Access\Donation as DonationSessionAccess;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 
 /**

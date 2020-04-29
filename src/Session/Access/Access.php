@@ -1,16 +1,16 @@
 <?php
 
-namespace Give\Session;
+namespace Give\Session\Access;
 
 /**
- * Class Session
+ * Class Access
  *
  * In legacy core session data load in array which contains multiple keys like give_purchase, receipt_access etc.
  * This class helps to convert them into objects. Every subclass will treat a specific key as group of session data.
  *
  * @package Give\Session
  */
-abstract class SessionAccess {
+abstract class Access {
 	/**
 	 * Session Id.
 	 *
