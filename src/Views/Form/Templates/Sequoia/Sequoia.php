@@ -101,7 +101,8 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			input[type=\'radio\'] + label::after {
 				background: {$primaryColor}!important;
 			}
-			.give-recurring-donors-choice:hover {
+			.give-recurring-donors-choice:hover,
+			.give-recurring-donors-choice.active {
 				border: 1px solid {$primaryColor};
 			}
 			.give-recurring-donors-choice input[type='checkbox'] + label::after {

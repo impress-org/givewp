@@ -152,6 +152,9 @@
 						$( this ).attr( 'has-tooltip', true );
 					}
 				} );
+				$( '.give-recurring-period' ).change( function() {
+					$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
+				} );
 			},
 		},
 		{
