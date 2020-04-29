@@ -374,7 +374,8 @@ class Give_Stripe_Customer {
 				__( 'Stripe - Customer Creation Error', 'give' ),
 				$e->getMessage()
 			);
-
+			give_set_error( 'stripe_error', $e->getMessage() );
+			give_send_back_to_checkout( "?payment-mode={$payment_mode}&form_id={$post_data['post_data']['give-form-id']}" );
 		} catch ( Exception $e ) {
 			give_record_gateway_error(
 				__( 'Stripe Error', 'give' ),
