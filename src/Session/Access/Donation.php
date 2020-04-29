@@ -5,12 +5,12 @@ use function give_get_donation_id_by_key as getDonationIdByPurchaseKey;
 
 class Donation extends Access {
 	/**
-	 * Session key
+	 * Session Id
 	 *
 	 * @since 2.7.0
 	 * @var string
 	 */
-	protected $id = 'give_purchase';
+	protected $sessionKey = 'give_purchase';
 
 	/**
 	 * gEt donation id.

@@ -16,7 +16,7 @@ abstract class Access {
 	 *
 	 * @var string
 	 */
-	protected $id;
+	protected $sessionKey;
 
 	/**
 	 * Session data.
@@ -44,7 +44,7 @@ abstract class Access {
 			return $this->data;
 		}
 
-		$this->data = Give()->session->get( $this->id, $this->data );
+		$this->data = Give()->session->get( $this->sessionKey, $this->data );
 		return $this->data;
 	}
 
@@ -94,7 +94,7 @@ abstract class Access {
 	 * @since 2.7.0
 	 */
 	protected function set() {
-		return Give()->session->set( $this->id, $this->data );
+		return Give()->session->set( $this->sessionKey, $this->data );
 	}
 
 	/**
