@@ -143,8 +143,8 @@
 
 					const value = $( this ).attr( 'value' );
 					const text = $( this ).text();
-					const symbol = $( '.give-currency-symbol' ).text();
-					const position = $( '.give-currency-symbol' ).hasClass( 'give-currency-position-before' ) ? 'before' : 'after';
+					const symbol = window.give_global_vars.currency_sign;
+					const position = window.give_global_vars.currency_pos;
 					const compare = position === 'before' ? symbol + value : value + symbol;
 					if ( value !== 'custom' && text !== compare ) {
 						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
