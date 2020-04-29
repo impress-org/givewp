@@ -5,6 +5,9 @@ namespace Give\Session;
 /**
  * Class Session
  *
+ * In legacy core session data load in array which contains multiple keys like give_purchase, receipt_access etc.
+ * This class helps to convert them into objects. Every subclass will treat a specific key as group of session data.
+ *
  * @package Give\Session
  */
 abstract class SessionAccess {
