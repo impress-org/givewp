@@ -170,6 +170,9 @@
 					text-transform: uppercase;
 					color: #6b6b6b;
 					white-space: nowrap;
+					@media screen and (max-width: $break-phone) {
+						padding: 5px 0;
+					}
 				}
 
 				.value {
@@ -180,7 +183,7 @@
 
 					@media screen and (max-width: $break-phone) {
 						flex: 0;
-						padding: 0 10px;
+						padding: 5px 10px;
 					}
 				}
 
