@@ -12,10 +12,10 @@ namespace Give\Controller;
 use Give\Donation\Donation;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
+use Give\Helpers\Frontend\ConfirmingDonation;
+use Give\Session\DonationSessionAccess;
 use Give_Notices;
 use WP_Post;
-use function Give\Helper\Session\Donation\getId as getDonationIdFromDonorSession;
-use function Give\Helper\Session\DonationConfirmation\removePostedData as removeStoredConfirmationPagePostData;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\isConfirmingDonation;
@@ -92,7 +92,8 @@ class Form {
 
 				// Show donation processing template.
 				if ( isConfirmingDonation() ) {
-					$donationId = getDonationIdFromDonorSession();
+					$session    = new DonationSessionAccess();
+					$donationId = $session->getDonationId();
 
 					/**
 					 * Fire the action hook.
@@ -109,7 +110,7 @@ class Form {
 
 					// Load payment processing view only if donation is in pending status.
 					if ( $donation->isPending() ) {
-						removeStoredConfirmationPagePostData();
+						ConfirmingDonation::removePostedDataFromDonationSession();
 
 						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 						exit();
