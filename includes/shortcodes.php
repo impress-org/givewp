@@ -196,6 +196,14 @@ function give_form_shortcode( $atts ) {
 		$uniqueId         = uniqid( 'give-' );
 		$buttonModeActive = 'button' === $atts['display_style'];
 
+		ob_start();
+		include Give()->templates->getTemplate( $activeTheme )->getLoadingView();
+
+		$loader = sprintf(
+			'<div class="iframe-loader">%1$s</div>',
+			ob_get_clean()
+		);
+
 		// Set iframe.
 		$iframe = sprintf(
 			'<iframe
@@ -203,16 +211,17 @@ function give_form_shortcode( $atts ) {
 						src="%1$s"
 						data-autoScroll="%2$s"
 						onload="Give.initializeIframeResize(this)"
-						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>',
+						style="border: 0; visibility: hidden; min-height: %3$spx;"></iframe>%4$s',
 			$iframe_url,
-			$buttonModeActive ? 0 : $isAutoScroll,
-			$formStartingHeight
+			$isAutoScroll,
+			$formStartingHeight,
+			$loader
 		);
 
 		// Show button in button mode and hide Iframe.
 		if ( $buttonModeActive ) {
 			printf(
-				'<div>
+				'<div class="js-embed-form-modal-launcher-wrap">
 						<button
 						type="button"
 						class="js-give-embed-form-modal-opener"
@@ -228,33 +237,33 @@ function give_form_shortcode( $atts ) {
 				'
 						<div class="modal-inner-wrap">
 							<div class="modal-content">
+								<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s" rel="nofollow">%7$s<span>&times;</span></a>
 								<iframe
 									name="give-embed-form"
 									class="in-modal"
 									data-src="%1$s"
 									data-autoScroll="%2$s"
 									style="border: 0; visibility: hidden; min-height: %5$spx;"></iframe>
-								<button class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%4$s">&times;</button>
+									%6$s
 							</div>
 						</div>
 						',
 				$iframe_url,
-				$buttonModeActive ? 0 : $isAutoScroll,
+				$isAutoScroll,
 				__( 'Close modal', 'give' ),
 				$uniqueId,
-				$formStartingHeight
+				$formStartingHeight,
+				$loader,
+				__( 'CLOSE', 'give' )
 			);
 		}
 
-		$isHidden = $buttonModeActive ? ' is-hide' : '';
 		printf(
-			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s<div class="iframe-loader">',
-			$isHidden,
+			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>',
+			$buttonModeActive ? ' is-hide' : '',
 			$uniqueId,
 			$iframe
 		);
-		include Give()->templates->getTemplate( $activeTheme )->getLoadingView();
-		echo '</div></div>';
 
 	} else {
 		give_get_donation_form( $atts );
