@@ -2,7 +2,7 @@
 /**
  * Give - Stripe Core Admin Settings
  *
- * @since 2.5.0
+ * @since      2.5.0
  *
  * @package    Give
  * @subpackage Stripe Core
@@ -86,12 +86,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register sections.
 		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
 		 * @param array $sections List of sections.
 		 *
 		 * @return array
+		 * @since  2.5.0
+		 * @access public
+		 *
 		 */
 		public function register_sections( $sections ) {
 			$sections['stripe-settings'] = __( 'Stripe', 'give' );
@@ -102,10 +102,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register groups of a section.
 		 *
+		 * @return array
 		 * @since  2.6.0
 		 * @access public
 		 *
-		 * @return array
 		 */
 		public function register_groups() {
 
@@ -124,12 +124,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Add "Stripe" advanced settings.
 		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
 		 * @param array $section List of sections.
 		 *
 		 * @return mixed
+		 * @since  2.5.0
+		 * @access public
+		 *
 		 */
 		public function register_advanced_sections( $section ) {
 			$section['stripe'] = __( 'Stripe', 'give' );
@@ -142,10 +142,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @param array $settings List of setting fields.
 		 *
+		 * @return array
 		 * @since  2.5.0
 		 * @access public
 		 *
-		 * @return array
 		 */
 		public function register_settings( $settings ) {
 
@@ -182,9 +182,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add configuration fields like api key, access token, oAuth button, etc.
 					 *
+					 * @return array
 					 * @since 2.5.0
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
@@ -218,9 +218,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe General fields.
 					 *
+					 * @return array
 					 * @since 2.5.5
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
 
@@ -258,9 +258,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields before Stripe Credit Card fields.
 					 *
+					 * @return array
 					 * @since 2.5.5
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
 
@@ -280,9 +280,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe Credit Card fields.
 					 *
+					 * @return array
 					 * @since 2.5.5
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
 
@@ -303,9 +303,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields before Stripe Checkout fields.
 					 *
+					 * @return array
 					 * @since 2.5.0
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_checkout_fields', $settings );
 
@@ -381,9 +381,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe Checkout fields.
 					 *
+					 * @return array
 					 * @since 2.5.0
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_checkout_fields', $settings );
 
@@ -562,12 +562,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * New tab under Settings > Advanced that allows users to use their own API key.
 		 *
-		 * @since  2.5.0
-		 * @access public
-		 *
 		 * @param array $settings List of settings.
 		 *
 		 * @return array
+		 * @since  2.5.0
+		 * @access public
+		 *
 		 */
 		public function register_advanced_settings( $settings ) {
 
@@ -593,9 +593,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add setting fields before stripe advanced settings.
 					 *
+					 * @return array
 					 * @since 2.5.0
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
@@ -664,9 +664,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add setting fields after stripe advanced settings.
 					 *
+					 * @return array
 					 * @since 2.5.0
 					 *
-					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_after_advanced_setting_fields', $settings );
 
@@ -687,10 +687,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @param string $status Status - Enabled or Disabled.
 		 *
+		 * @return string
 		 * @since  2.5.0
 		 * @access public
 		 *
-		 * @return string
 		 */
 		public function stripe_modal_checkout_status( $status = 'enabled' ) {
 
@@ -711,12 +711,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * accounts will display irrespective of the Stripe account connected
 		 * via Connect method or Manual method.
 		 *
-		 * @param array $field Field Arguments.
+		 * @param array  $field        Field Arguments.
 		 * @param string $option_value Field Value.
 		 *
+		 * @return mixed|void
 		 * @since 2.6.3
 		 *
-		 * @return mixed|void
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 
@@ -732,7 +732,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			}
 
 			$site_url            = get_site_url();
-			$modal_title         = __( '<strong>You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.</strong>', 'give' );
+			$modal_title         = __( '<strong>You are connected! Now this is important: Please configure your Stripe webhook to finalize the setup.</strong>', 'give' );
 			$modal_first_detail  = sprintf(
 				'%1$s %2$s',
 				__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
@@ -744,6 +744,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
 				<td class="give-forminp give-forminp-api_key">
 					<div id="give-stripe-account-manager-errors"></div>
+					<div id="give-stripe-account-manager-description">
+						<h2><?php _e('Manage Your Stripe Accounts'); ?></h2>
+						<p class="give-field-description"><?php _e('In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give'); ?></p>
+					</div>
 					<div class="give-stripe-account-manager-container">
 						<div
 							id="give-stripe-connected"
@@ -782,108 +786,92 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										);
 
 									?>
-									<div id="give-stripe-<?php echo $name; ?>"
-										 class="give-stripe-account-manager-list-item">
-										<span class="give-stripe-account-name">
-											<?php echo give_stripe_convert_slug_to_title( $name ); ?>
-										</span>
-										<span class="give-stripe-account-edit">
-											<a class="give-stripe-account-edit-name" href="#">
-												<?php echo __( 'Edit', 'give' ); ?>
-											</a>
-											<a
-												class="give-stripe-account-update-name give-hidden"
-												href="#"
-												data-account="<?php echo $name; ?>"
-											>
-												<?php echo __( 'Update', 'give' ); ?>
-											</a>
-										</span>
-										<span class="give-stripe-account-actions">
-											<span class="give-stripe-account-type">
-												<?php echo ucfirst( $details['type'] ); ?>
+									<div id="give-stripe-<?php echo $name; ?>" class="give-stripe-account-manager-list-item">
+										<div class="give-stripe-account-name-wrap">
+											<span class="give-stripe-account-name">
+												<?php echo give_stripe_convert_slug_to_title( $name ); ?>
 											</span>
-											<?php
-											if ( $name === $default_account ) {
-												?>
+											<span class="give-stripe-account-edit">
+												<a class="give-stripe-account-edit-name" href="#"><?php echo __( 'Edit', 'give' ); ?></a>
+												<a
+													class="give-stripe-account-update-name give-hidden"
+													href="#"
+													data-account="<?php echo $name; ?>"
+												><?php _e( 'Update', 'give' ); ?></a>
+
+											<?php if ( $name === $default_account ) { ?>
 												<span class="give-stripe-account-default give-stripe-account-badge">
-													<?php echo __( 'Default', 'give' ); ?>
+													<?php _e( 'Default Account', 'give' ); ?>
 												</span>
-												<?php
-											} else {
-												?>
+											<?php } else { ?>
 												<span class="give-stripe-account-default">
 													<a
 														data-account="<?php echo $name; ?>"
 														data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
 														class="give-stripe-account-set-default" href="#"
-													>
-														<?php echo __( 'Set Default', 'give' ); ?>
-													</a>
+													><?php _e( 'Set as Default', 'give' ); ?></a>
 												</span>
-												<?php
-											}
+											<?php } ?>
 
-											if (
+											</span>
+										</div>
+										<div class="give-stripe-account-actions">
+											<span class="give-stripe-account-type-description give-field-description"><?php _e( 'Connection Method:', 'give' ); ?></span>
+											<span class="give-stripe-account-type-method"><?php echo ucfirst( $details['type'] ); ?></span>
+											<?php if (
 												$name !== $default_account ||
 												(
 													is_array( $stripe_accounts ) &&
 													count( $stripe_accounts ) === 1
 												)
-											) {
-												?>
+											) { ?>
 												<span class="give-stripe-account-disconnect">
 													<a
 														class="give-stripe-disconnect-account-btn"
 														href="<?php echo $disconnect_url; ?>"
 														data-disconnect-message="<?php echo $disconnect_message; ?>"
 													>
-														<?php echo __( 'Disconnect', 'give' ); ?>
+														<?php _e( 'Disconnect', 'give' ); ?>
 													</a>
 												</span>
-												<?php
-											}
-											?>
-										</span>
+											<?php } ?>
+										</div>
 									</div>
 									<?php
 								}
-							} else {
-								?>
+							} else { ?>
 								<div class="give-stripe-account-manager-list-item">
-									<span><?php echo __( 'No Stripe Accounts found.', 'give' ); ?></span>
+									<span><?php _e( 'No Stripe Accounts found.', 'give' ); ?></span>
 								</div>
-								<?php
-							}
-							?>
+							<?php } ?>
 						</div>
 						<div class="give-stripe-account-manager-add-section">
 							<h3><?php echo __( 'Add New Stripe Account', 'give' ); ?></h3>
 							<div class="give-stripe-add-account-errors"></div>
 							<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 								<tbody>
-									<?php
-									if ( give_stripe_is_premium_active() ) {
-										/**
-										 * This action hook will be used to load Manual API fields for premium addon.
-										 *
-										 * @param array $stripe_accounts All Stripe accounts.
-										 *
-										 * @since 2.6.3
-										 */
-										do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
-									}
-									?>
-									<tr valign="top" class="give-stripe-account-type-connect">
-										<th scope="row" class="titledesc">
-											<label for="stripe_connect_button">
-												<?php echo __( 'Stripe Connection', 'give' ); ?>
-											</label>
-										</th>
-										<td class="give-forminp">
-											<?php echo give_stripe_connect_button(); ?>
-										</td>
-									</tr>
+								<?php
+								if ( give_stripe_is_premium_active() ) {
+									/**
+									 * This action hook will be used to load Manual API fields for premium addon.
+									 *
+									 * @param array $stripe_accounts All Stripe accounts.
+									 *
+									 * @since 2.6.3
+									 */
+									do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
+								}
+								?>
+								<tr valign="top" class="give-stripe-account-type-connect">
+									<th scope="row" class="titledesc">
+										<label for="stripe_connect_button">
+											<?php echo __( 'Stripe Connection', 'give' ); ?>
+										</label>
+									</th>
+									<td class="give-forminp">
+										<?php echo give_stripe_connect_button(); ?>
+									</td>
+								</tr>
 								</tbody>
 							</table>
 						</div>
@@ -960,8 +948,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Advanced Stripe Styles field to manage theme stylings for Stripe CC fields.
 		 *
-		 * @param array $field_options List of field options.
-		 * @param string $option_value Option value.
+		 * @param array  $field_options List of field options.
+		 * @param string $option_value  Option value.
 		 *
 		 * @since  2.5.0
 		 * @access public

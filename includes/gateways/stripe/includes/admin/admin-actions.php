@@ -500,7 +500,7 @@ function give_stripe_update_account_name() {
 
 		// Bailout, if Account Name already exists.
 		if ( in_array( $new_account_slug, $account_keys, true ) ) {
-			wp_send_json_error( [ 'message' => __( 'Account Name already used. Please enter different account name.', 'give' ) ] );
+			wp_send_json_error( [ 'message' => __( 'This account name is already in use. Please enter a different account name.', 'give' ) ] );
 			return;
 		}
 
