@@ -145,7 +145,11 @@
 					const text = $( this ).text();
 					const symbol = window.give_global_vars.currency_sign;
 					const position = window.give_global_vars.currency_pos;
+
+					// Setup string to check tooltip label against
 					const compare = position === 'before' ? symbol + value : value + symbol;
+
+					// Setup tooltip unless for custom donation level, or if level label matches value
 					if ( value !== 'custom' && text !== compare ) {
 						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
 						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
