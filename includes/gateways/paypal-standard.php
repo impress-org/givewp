@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+
 /**
  * Toggle PayPal CC Billing Detail Fieldset.
  *
@@ -27,6 +30,10 @@ function give_paypal_standard_billing_fields( $form_id ) {
 		give_default_cc_address_fields( $form_id );
 
 		return true;
+	}
+
+	if ( getActiveID( getFormId() ) === 'legacy' ) {
+		return false;
 	}
 
 	printf(
@@ -49,7 +56,7 @@ function give_paypal_standard_billing_fields( $form_id ) {
 		__( 'You will be redirected to PayPal to pay using your PayPal account, or with a credit or debit card. You will then be brought back to this page to view your receipt.', 'give' )
 	);
 
-	return false;
+	return true;
 
 }
 

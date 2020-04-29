@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use function Give\Helpers\Form\Template\getActiveID;
+use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+
 /**
  * Manual Gateway does not need a CC form, so remove it.
  *
@@ -29,6 +32,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  **/
 function give_manual_form_ouput() {
+	if ( getActiveId( getFormId() ) === 'legacy') {
+		return false;
+	}
+
 	printf(
 		'
 		<fieldset class="no-fields">
@@ -54,7 +61,7 @@ function give_manual_form_ouput() {
 		__( 'How it works:', 'give' ),
 		__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.', 'give' )
 	);
-	return false;
+	return true;
 }
 add_action( 'give_manual_cc_form', 'give_manual_form_ouput' );
 
