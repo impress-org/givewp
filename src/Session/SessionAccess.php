@@ -45,11 +45,7 @@ abstract class SessionAccess {
 	 * @since 2.7.0
 	 */
 	public function getByKey( $key ) {
-		if ( ! $this->data ) {
-			$this->data = $this->get();
-		}
-
-		if ( ! $this->data || array_key_exists( $key, $this->data ) ) {
+		if ( array_key_exists( $key, $this->data ) ) {
 			return null;
 		}
 
@@ -65,20 +61,16 @@ abstract class SessionAccess {
 	 * @return string
 	 */
 	public function store( $key, $data ) {
-		$session = $this->get();
-
-		if ( ! empty( $session[ $key ] ) ) {
+		if ( ! empty( $this->data[ $key ] ) ) {
 			// Merge data.
-			$session[ $key ] = array_merge(
-				$session[ $key ],
+			$this->data[ $key ] = array_merge(
+				$this->data[ $key ],
 				$data
 			);
 
 		} else {
-			$session[ $key ] = $data;
+			$this->data[ $key ] = $data;
 		}
-
-		$this->data = $session;
 
 		return $this->set();
 	}
