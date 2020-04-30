@@ -798,7 +798,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 													href="#"
 													data-account="<?php echo $name; ?>"
 												><?php _e( 'Update', 'give' ); ?></a>
-
+												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php echo __( 'Cancel', 'give' ); ?></a>
 											<?php if ( $name === $default_account ) { ?>
 												<span class="give-stripe-account-default give-stripe-account-badge">
 													<?php _e( 'Default Account', 'give' ); ?>
@@ -817,7 +817,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										</div>
 										<div class="give-stripe-account-actions">
 											<span class="give-stripe-account-type-description give-field-description"><?php _e( 'Connection Method:', 'give' ); ?></span>
-											<span class="give-stripe-account-type-method"><?php echo ucfirst( $details['type'] ); ?></span>
+											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_names( $details['type'] ); ?></span>
 											<?php if (
 												$name !== $default_account ||
 												(
