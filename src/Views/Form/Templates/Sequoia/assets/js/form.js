@@ -146,8 +146,10 @@
 					const symbol = window.give_global_vars.currency_sign;
 					const position = window.give_global_vars.currency_pos;
 
-					const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
-					$( this ).html( html );
+					if ( value !== 'custom' ) {
+						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
+						$( this ).html( html );
+					}
 
 					// Setup string to check tooltip label against
 					const compare = position === 'before' ? symbol + value : value + symbol;
