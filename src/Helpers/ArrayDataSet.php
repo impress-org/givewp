@@ -25,4 +25,20 @@ class ArrayDataSet {
 
 		return $array;
 	}
+
+	/**
+	 * Return whether or not array contains required keys.
+	 *
+	 * This function only support one dimensional array.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array $array
+	 * @param array $requiredKeys Array of required keys.
+	 *
+	 * @return bool
+	 */
+	public static function hasRequiredKeys( $array, $requiredKeys ) {
+		return (bool) array_intersect_key( $array, array_flip( $requiredKeys ) );
+	}
 }
