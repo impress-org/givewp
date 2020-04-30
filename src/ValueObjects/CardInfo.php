@@ -75,7 +75,9 @@ class CardInfo implements ValueObjects {
 		}
 
 		// Cast array "address" to Give\ValueObjects\Address object.
-		$array['address'] = Address::fromArray( $array['address'] );
+		if ( ! empty( $array['address'] ) ) {
+			$array['address'] = Address::fromArray( $array['address'] );
+		}
 
 		$cardInfo = new self();
 
