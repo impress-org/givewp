@@ -37,6 +37,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const perFormAccount = document.querySelector( '.give-stripe-per-form-default-account' );
 	const perAccountEdits = Array.from( document.querySelectorAll( '.give-stripe-account-edit-name' ) );
 	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
+	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
 	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
@@ -45,6 +46,32 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
+
+	/**
+	 * Edit Stripe Account Cancel
+	 *
+	 * On clicking "Cancel" link on account name will revert to edit link and
+	 * won't do any changes to account name
+	 *
+	 *  @since 2.7.0
+	 */
+	if ( null !== perAccountCancels ) {
+		perAccountCancels.forEach( ( perAccountCancel ) => {
+			perAccountCancel.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+
+				const updateElement = e.target.previousElementSibling;
+				const editElement = updateElement.previousElementSibling;
+				const accountElement = e.target.parentNode.parentNode.querySelector( 'input[name="account_name"]' );
+				const accountName = ( null !== accountElement ) ? accountElement.value : '';
+
+				e.target.parentNode.parentNode.querySelector( '.give-stripe-account-name' ).textContent = accountName;
+				e.target.classList.add( 'give-hidden' );
+				updateElement.classList.add( 'give-hidden' );
+				editElement.classList.remove( 'give-hidden' );
+			} );
+		} );
+	}
 
 	/**
 	 * Edit Stripe Account Name
