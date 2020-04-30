@@ -204,7 +204,7 @@
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
-				setupInputIcon( '#give-company-wrap', 'briefcase' );
+				setupInputIcon( '#give-company-wrap', 'building' );
 
 				// Setup gateway icons
 				setupGatewayIcons();
