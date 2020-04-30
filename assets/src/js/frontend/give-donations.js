@@ -250,7 +250,7 @@ jQuery( function( $ ) {
 				formatted_total = Give.form.fn.formatAmount( value_now, parent_form, {} );
 			}
 		}
-console.log(value_now);
+
 		// Cache donor selected price id for an amount.
 		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
 		$( this ).val( formatted_total );
