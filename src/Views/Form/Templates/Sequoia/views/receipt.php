@@ -112,12 +112,12 @@ ob_start();
 							<?php
 							printf(
 								'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
-								$payment->address['line1'],
-								! empty( $payment->address['line2'] ) ? $payment->address['line2'] . '<br>' : '',
-								$payment->address['city'],
-								$payment->address['state'],
-								$payment->address['zip'],
-								$payment->address['country']
+								$donation->address['line1'],
+								! empty( $donation->address['line2'] ) ? $donation->address['line2'] . '<br>' : '',
+								$donation->address['city'],
+								$donation->address['state'],
+								$donation->address['zip'],
+								$donation->address['country']
 							)
 							?>
 						</div>
