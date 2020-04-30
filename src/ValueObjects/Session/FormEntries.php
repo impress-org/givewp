@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\ValueObjects\Session;
 
 use Give\Helpers\ArrayDataSet;
@@ -7,6 +8,83 @@ use InvalidArgumentException;
 
 class FormEntries implements ValueObjects {
 	/**
+	 * Form Id.
+	 *
+	 * @var string
+	 */
+	public $formId;
+
+	/**
+	 * Form Title.
+	 *
+	 * @var string
+	 */
+	public $formTitle;
+
+	/**
+	 * Page url on which donation page exist.
+	 *
+	 * @var string
+	 */
+	public $currentUrl;
+
+	/**
+	 * Donation level id.
+	 *
+	 * @var string
+	 */
+	public $priceId;
+
+	/**
+	 * Donation amount
+	 *
+	 * @var string
+	 */
+	public $totalAmount;
+
+	/**
+	 * First name
+	 *
+	 * @var string
+	 */
+	public $firstName;
+
+	/**
+	 * Last name.
+	 *
+	 * @var string
+	 */
+	public $lastName;
+
+	/**
+	 * Company name.
+	 *
+	 * @var string
+	 */
+	public $companyName;
+
+	/**
+	 * Donor email
+	 *
+	 * @var string
+	 */
+	public $donorEmail;
+
+	/**
+	 * WP user id.
+	 *
+	 * @var string
+	 */
+	public $wpUserId;
+
+	/**
+	 * Payment gateway.
+	 *
+	 * @var string
+	 */
+	public $paymentGateway;
+
+	/**
 	 * Take array and return object.
 	 *
 	 * @param $array
@@ -14,7 +92,17 @@ class FormEntries implements ValueObjects {
 	 * @return FormEntries
 	 */
 	public static function fromArray( $array ) {
-		$expectedKeys = [ 'formId', 'formTitle', 'currentUrl', 'priceId', 'amount', 'first', 'email', 'gateway' ];
+		$renameTo = [
+			'amount'  => 'totalAmount',
+			'first'   => 'firstName',
+			'last'    => 'lastName',
+			'email'   => 'donorEmail',
+			'userId'  => 'wpUserId',
+			'gateway' => 'paymentGateway',
+		];
+
+		$array        = ArrayDataSet::renameKeys( $array, $renameTo );
+		$expectedKeys = [ 'formId', 'totalAmount', 'firstName', 'email', 'gateway' ];
 
 		if ( ! ArrayDataSet::hasRequiredKeys( $array, $expectedKeys ) ) {
 			throw new InvalidArgumentException(
