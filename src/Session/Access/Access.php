@@ -2,6 +2,7 @@
 
 namespace Give\Session\Access;
 
+use InvalidArgumentException;
 use stdClass;
 
 /**
@@ -109,6 +110,8 @@ abstract class Access {
 	 * @return string
 	 */
 	public function store( $key, $data ) {
+		$this->validateData( $data );
+
 		if ( ! empty( $this->data[ $key ] ) ) {
 			// Merge data.
 			$this->data[ $key ] = array_merge(
@@ -146,6 +149,7 @@ abstract class Access {
 	 * @since 2.7.0
 	 */
 	public function replace( $key, $data ) {
+		$this->validateData( $data );
 		$this->data[ $key ] = $data;
 
 		return $this->set();
@@ -211,5 +215,18 @@ abstract class Access {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Validate data.
+	 *
+	 * @param mixed $data
+	 *
+	 * @since 2.7.0
+	 */
+	protected function validateData( $data ) {
+		if ( is_array( $data ) && isset( $data[0] ) ) {
+			throw new InvalidArgumentException( 'Invalid value. Please pass an associative array' );
+		}
 	}
 }
