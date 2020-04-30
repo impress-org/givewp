@@ -64,22 +64,11 @@ class CardInfo implements ValueObjects {
 	 * @return CardInfo
 	 */
 	public static function fromArray( $array ) {
-		$cardInfo = new self();
-
-		// Rename and group array data.
-		$renameTo = [
-			'address'  => 'line1',
-			'address2' => 'line2',
-		];
-		$array    = $cardInfo->removePrefixFromArrayKey( $array );
-		$array    = ArrayDataSet::renameKeys( $array, $renameTo );
-		$array    = $cardInfo->moveAddressItemsToGroup( $array );
-
 		$expectedKeys = [ 'name', 'cvc', 'expMonth', 'expYear', 'number', 'address' ];
 
-		$hasRequiredKeys = array_intersect_key( $array, array_flip( $expectedKeys ) );
+		$array = array_intersect_key( $array, array_flip( $expectedKeys ) );
 
-		if ( ! $hasRequiredKeys ) {
+		if ( empty( $array ) ) {
 			throw new InvalidArgumentException(
 				'Invalid DonorInfo object, must have the exact following keys: ' . implode( ', ', $expectedKeys )
 			);
@@ -88,63 +77,12 @@ class CardInfo implements ValueObjects {
 		// Cast array "address" to Give\ValueObjects\Address object.
 		$array['address'] = Address::fromArray( $array['address'] );
 
+		$cardInfo = new self();
+
 		foreach ( $array as $key => $value ) {
 			$cardInfo->{$key} = $value;
 		}
 
 		return $cardInfo;
-	}
-
-	/**
-	 * Remove prefix from array key.
-	 *
-	 * This function will remove card prefix from array key.
-	 *
-	 * @param $array
-	 *
-	 * @return array
-	 */
-	private function removePrefixFromArrayKey( $array ) {
-		foreach ( $array as $key => $value ) {
-			$newKey = lcfirst( str_replace( 'card', '', $key ) );
-
-			if ( $key !== $newKey ) {
-				unset( $array[ $key ] );
-			}
-
-			if ( is_array( $value ) ) {
-				$array[ $newKey ] = $this->removePrefixFromArrayKey( $value );
-				continue;
-			}
-
-			$array[ $newKey ] = $value;
-
-		}
-
-		return $array;
-	}
-
-	/**
-	 * Return array with grouped address items.
-	 *
-	 * @param array $array
-	 *
-	 * @return array
-	 */
-	private function moveAddressItemsToGroup( $array ) {
-		$addressItems = [ 'line1', 'line2', 'city', 'state', 'country', 'zip' ];
-
-		foreach ( $addressItems as $key ) {
-			if ( array_key_exists( $key, $array ) ) {
-				$array['address'][ $key ] = $array[ $key ];
-				unset( $array[ $key ] );
-			}
-		}
-
-		// Rename zip to postal code.
-		$array['address']['postalCode'] = $array['zip'];
-		unset( $array['address']['zip'] );
-
-		return $array;
 	}
 }

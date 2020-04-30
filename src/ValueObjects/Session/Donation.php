@@ -57,7 +57,6 @@ class Donation implements ValueObjects {
 	 */
 	public $paymentGateway;
 
-
 	/**
 	 * Array of properties  and there cast type.
 	 *
@@ -69,7 +68,6 @@ class Donation implements ValueObjects {
 		'cardInfo'    => CardInfo::class,
 	];
 
-
 	/**
 	 * Take array and return object
 	 *
@@ -80,8 +78,6 @@ class Donation implements ValueObjects {
 	public static function fromArray( $array ) {
 		$expectedKeys = [ 'id', 'totalAmount', 'purchaseKey', 'donorEmail', 'createdAt', 'paymentGateway', 'formEntries', 'cardInfo', 'donorInfo' ];
 
-		$array = array_intersect_key( $array, array_flip( $expectedKeys ) );
-
 		if ( ! ArrayDataSet::hasRequiredKeys( $array, $expectedKeys ) ) {
 			throw new InvalidArgumentException(
 				'Invalid Donation object, must have the exact following keys: ' . implode( ', ', $expectedKeys )
@@ -89,6 +85,9 @@ class Donation implements ValueObjects {
 		}
 
 		$donation = new self();
+
+		$array['donorInfo'] = $donation->renameKeyInDonorInfo( $array['donorInfo'] );
+		$array['cardInfo']  = $donation->filterCardInfoKeys( $array['cardInfo'] );
 
 		foreach ( $array as $key => $value ) {
 			if ( array_key_exists( $key, $donation->caseTo ) ) {
@@ -105,5 +104,48 @@ class Donation implements ValueObjects {
 		 * @param Donation $donation
 		 */
 		return apply_filters( 'give_session_donation_object', $donation, $array );
+	}
+
+	/**
+	 * Rename array key in donor info
+	 *
+	 * @since 2.7.0
+	 * @param array $array
+	 *
+	 * @return array
+	 */
+	private function renameKeyInDonorInfo( $array ) {
+		return ArrayDataSet::renameKeys(
+			$array,
+			[
+				'id'    => 'wpUserId',
+				'title' => 'honorific',
+			]
+		);
+	}
+
+	/**
+	 * Filter array keys in card info
+	 *
+	 * @since 2.7.0
+	 * @param $array
+	 * @return array
+	 */
+	private function filterCardInfoKeys( $array ) {
+		$array = ArrayDataSet::removePrefixFromArrayKeys( $array, [ 'card' ] );
+		$array = ArrayDataSet::renameKeys(
+			$array,
+			[
+				'address'  => 'line1',
+				'address2' => 'line2',
+			]
+		);
+		$array = ArrayDataSet::moveArrayItemsUnderArrayKey( $array, [ 'line1', 'line2', 'city', 'state', 'country', 'zip' ], 'address' );
+
+		// Rename zip to postal code.
+		$array['address']['postalCode'] = $array['address']['zip'];
+		unset( $array['address']['zip'] );
+
+		return $array;
 	}
 }

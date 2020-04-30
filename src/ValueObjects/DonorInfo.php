@@ -57,11 +57,6 @@ class DonorInfo implements ValueObjects {
 	 * @return DonorInfo
 	 */
 	public static function fromArray( $array ) {
-		$renameTo     = [
-			'id'    => 'wpUserId',
-			'title' => 'honorific',
-		];
-		$array        = ArrayDataSet::renameKeys( $array, $renameTo );
 		$expectedKeys = [ 'wpUserId', 'firstName', 'email', 'honorific', 'address' ];
 
 		$array = array_intersect_key( $array, array_flip( $expectedKeys ) );
