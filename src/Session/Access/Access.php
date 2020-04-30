@@ -2,6 +2,8 @@
 
 namespace Give\Session\Access;
 
+use stdClass;
+
 /**
  * Class Access
  *
@@ -9,6 +11,10 @@ namespace Give\Session\Access;
  * This class helps to convert them into objects. Every subclass will treat a specific key as group of session data.
  *
  * @package Give\Session
+ *
+ * @property-read string $sessionKey
+ * @property-read array $data
+ * @property-read stdClass $dataObj
  */
 abstract class Access {
 	/**
@@ -19,48 +25,82 @@ abstract class Access {
 	protected $sessionKey;
 
 	/**
-	 * Session data.
+	 * Session data as array.
+	 * We use this array internally to perform database related operation.
 	 *
 	 * @var mixed
 	 */
 	protected $data;
 
 	/**
+	 * Session data as object.
+	 * Session data in object format will be return when query.
 	 *
+	 * @var stdClass
+	 */
+	protected $dataObj;
+
+	/**
 	 * Class constructor.
 	 */
 	public function __construct() {
-		$this->data = $this->get();
+		$this->data    = $this->get();
+		$this->dataObj = $this->convertToObject( $this->data );
+	}
+
+	/**
+	 * Convert session data to object.
+	 *
+	 * @param array $data
+	 *
+	 * @return stdClass
+	 * @since 2.7.0
+	 */
+	protected function convertToObject( $data ) {
+		$dataObj = new stdClass();
+
+		foreach ( $data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$dataObj->{$key} = $this->convertToObject( $value );
+				continue;
+			}
+
+			$dataObj->{$key} = $value;
+		}
+
+		return $dataObj;
 	}
 
 	/**
 	 * Get data from session.
 	 *
-	 * @return array|bool|string
+	 * @return stdClass
 	 * @since 2.7.0
 	 */
 	public function get() {
-		if ( $this->data ) {
-			return $this->data;
+		if ( $this->dataObj ) {
+			return $this->dataObj;
 		}
 
-		$this->data = Give()->session->get( $this->sessionKey, $this->data );
-		return $this->data;
+		$this->data    = Give()->session->get( $this->sessionKey, $this->data );
+		$this->dataObj = $this->convertToObject( $this->data );
+
+		return $this->dataObj;
 	}
 
 	/**
 	 * Get data from session.
 	 *
 	 * @param string $key
-	 * @return array|null
+	 * @return stdClass
 	 * @since 2.7.0
 	 */
 	public function getByKey( $key ) {
-		if ( array_key_exists( $key, $this->data ) ) {
+		if ( ! property_exists( $this->dataObj, $key ) ) {
 			return null;
 		}
 
-		return ! empty( $this->data[ $key ] ) ? $this->data[ $key ] : null;
+		return ! empty( $this->dataObj->{$key} ) ? $this->dataObj->{$key} : null;
 	}
 
 	/**
@@ -94,6 +134,8 @@ abstract class Access {
 	 * @since 2.7.0
 	 */
 	protected function set() {
+		$this->dataObj = $this->convertToObject( $this->data );
+
 		return Give()->session->set( $this->sessionKey, $this->data );
 	}
 
