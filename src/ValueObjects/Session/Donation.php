@@ -98,12 +98,7 @@ class Donation implements ValueObjects {
 			$donation->{$key} = $value;
 		}
 
-		/**
-		 * Filter the donation object
-		 *
-		 * @param Donation $donation
-		 */
-		return apply_filters( 'give_session_donation_object', $donation, $array );
+		return $donation;
 	}
 
 	/**
