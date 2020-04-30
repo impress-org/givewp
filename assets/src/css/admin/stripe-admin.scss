@@ -325,8 +325,11 @@ a.give-stripe-connect-temp-dismiss:active {
 	> a {
 		margin: 0 10px;
 	}
-}
 
+	.give-stripe-account-cancel-name {
+		margin-left: 0;
+	}
+}
 
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
