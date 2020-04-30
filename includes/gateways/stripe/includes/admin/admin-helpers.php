@@ -213,3 +213,22 @@ function give_stripe_connect_delete_options() {
 	give_delete_option( 'live_publishable_key' );
 	give_delete_option( 'test_publishable_key' );
 }
+
+/**
+ * This helper function is used to convert slug into names of Stripe connection.
+ *
+ * @param string $slug Connection Type Slug.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_connection_type_names( $slug = 'connect' ) {
+
+	$names = [
+		'manual'  => __( 'API Keys', 'give' ),
+		'connect' => __( 'Stripe Connect', 'give' ),
+	];
+
+	return $names[ $slug ];
+}
