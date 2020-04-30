@@ -41,4 +41,52 @@ class ArrayDataSet {
 	public static function hasRequiredKeys( $array, $requiredKeys ) {
 		return (bool) array_intersect_key( $array, array_flip( $requiredKeys ) );
 	}
+
+	/**
+	 * Remove prefix from array key.
+	 *
+	 * @param array $array
+	 * @param array $prefixes
+	 *
+	 * @return array
+	 */
+	public static function removePrefixFromArrayKeys( $array, $prefixes ) {
+		foreach ( $array as $key => $value ) {
+			$newKey = lcfirst( str_replace( (array) $prefixes, '', $key ) );
+
+			if ( $key !== $newKey ) {
+				unset( $array[ $key ] );
+			}
+
+			if ( is_array( $value ) ) {
+				$array[ $newKey ] = self::removePrefixFromArrayKeys( $value, $prefixes );
+				continue;
+			}
+
+			$array[ $newKey ] = $value;
+
+		}
+
+		return $array;
+	}
+
+	/**
+	 *  Return array with grouped under specific key.
+	 *
+	 * @param array  $array
+	 * @param array  $itemsToMove
+	 * @param string $arrayKey
+	 *
+	 * @return mixed
+	 */
+	public static function moveArrayItemsUnderArrayKey( $array, $itemsToMove, $arrayKey ) {
+		foreach ( $itemsToMove as $key ) {
+			if ( array_key_exists( $key, $array ) ) {
+				$array[ $arrayKey ][ $key ] = $array[ $key ];
+				unset( $array[ $key ] );
+			}
+		}
+
+		return $array;
+	}
 }
