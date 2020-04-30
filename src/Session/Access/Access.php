@@ -139,13 +139,14 @@ abstract class Access {
 	/**
 	 * Replace session data.
 	 *
-	 * @param mixed $data
+	 * @param string $key
+	 * @param mixed  $data
 	 *
 	 * @return string
 	 * @since 2.7.0
 	 */
-	public function replace( $data ) {
-		$this->data = $data;
+	public function replace( $key, $data ) {
+		$this->data[ $key ] = $data;
 
 		return $this->set();
 	}
