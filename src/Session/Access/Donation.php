@@ -4,7 +4,6 @@ namespace Give\Session\Access;
 
 use DateTime;
 use Give\ValueObjects\Session\Donation as DonationObject;
-use function give_get_donation_id_by_key as getDonationIdByPurchaseKey;
 
 /**
  * Class Donation
@@ -79,11 +78,10 @@ class Donation extends Access {
 	 * Get donation id.
 	 *
 	 * @return int
+	 *
 	 * @since 2.7.0
 	 */
 	public function getDonationId() {
-		return ! empty( $this->dataObj->purchaseKey ) ?
-			absint( getDonationIdByPurchaseKey( $this->dataObj->purchaseKey ) ) :
-			0;
+		return absint( $this->getByKey( 'id' ) );
 	}
 }
