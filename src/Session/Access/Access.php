@@ -97,11 +97,7 @@ abstract class Access {
 	 * @since 2.7.0
 	 */
 	public function getByKey( $key ) {
-		if ( ! property_exists( $this->dataObj, $key ) ) {
-			return null;
-		}
-
-		return ! empty( $this->dataObj->{$key} ) ? $this->dataObj->{$key} : null;
+		return property_exists( $this->dataObj, $key ) ? $this->dataObj->{$key} : null;
 	}
 
 	/**
