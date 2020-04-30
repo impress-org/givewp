@@ -523,7 +523,7 @@ function give_stripe_update_account_name() {
 		];
 		wp_send_json_success( $success_args );
 	} else {
-		wp_send_json_error( [ 'message' => __( 'Unable to update account name. Please contact administrator.', 'give' ) ] );
+		wp_send_json_error( [ 'message' => __( 'Unable to update account name. Please contact support.', 'give' ) ] );
 	}
 	give_die();
 }
