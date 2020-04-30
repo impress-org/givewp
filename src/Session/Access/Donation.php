@@ -46,6 +46,7 @@ class Donation extends Access {
 		'donation_id' => 'id',
 		'price'       => 'totalAmount',
 		'gateway'     => 'paymentGateway',
+		'date' => 'createdAt'
 	];
 
 	/**
