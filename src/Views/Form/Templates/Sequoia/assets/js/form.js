@@ -232,6 +232,7 @@
 
 	navigator.init();
 
+	// Check if only a single gateway is enabled
 	if ( $( '#give-payment-mode-select' ).css( 'display' ) !== 'none' ) {
 		// Move payment information section when document load.
 		moveFieldsUnderPaymentGateway( true );
