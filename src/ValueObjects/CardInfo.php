@@ -67,30 +67,30 @@ class CardInfo implements ValueObjects {
 			);
 		}
 
-		$donation = new self();
+		$cardInfo = new self();
 
 		// Rename and group array data.
 		$renameTo = [
 			'address'  => 'line1',
 			'address2' => 'line2',
 		];
-		$array    = $donation->removePrefixFromArrayKey( $array );
+		$array    = $cardInfo->removePrefixFromArrayKey( $array );
 		$array    = ArrayDataSet::renameKeys( $array, $renameTo );
-		$array    = $donation->moveAddressItemsToGroup( $array );
+		$array    = $cardInfo->moveAddressItemsToGroup( $array );
 
 		// Cast array "address" to Give\ValueObjects\Address object.
 		$array['address'] = Address::fromArray( $array['address'] );
 
 		foreach ( $array as $key => $value ) {
-			$donation->{$key} = $value;
+			$cardInfo->{$key} = $value;
 		}
 
 		/**
 		 * Filter the donor info object
 		 *
-		 * @param CardInfo $donation
+		 * @param CardInfo $cardInfo
 		 */
-		return apply_filters( 'give_session_donor_info_object', $donation, $array );
+		return apply_filters( 'give_card_info_object', $cardInfo, $array );
 	}
 
 	/**

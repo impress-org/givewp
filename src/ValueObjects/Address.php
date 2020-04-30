@@ -64,6 +64,11 @@ class Address implements ValueObjects {
 			$address->$key = $value;
 		}
 
-		return $address;
+		/**
+		 * Filter the donation object
+		 *
+		 * @param Address $donation
+		 */
+		return apply_filters( 'give_address_object', $address, $array );
 	}
 }

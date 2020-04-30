@@ -23,16 +23,16 @@ class FormEntries implements ValueObjects {
 			);
 		}
 
-		$donation = new self();
+		$formEntries = new self();
 		foreach ( $array as $key => $value ) {
-			$donation->{$key} = $value;
+			$formEntries->{$key} = $value;
 		}
 
 		/**
 		 * Filter the form entries object
 		 *
-		 * @param FormEntries $donation
+		 * @param FormEntries $formEntries
 		 */
-		return apply_filters( 'give_session_form_entries_object', $donation, $array );
+		return apply_filters( 'give_session_form_entries_object', $formEntries, $array );
 	}
 }

@@ -58,16 +58,16 @@ class DonorInfo implements ValueObjects {
 			);
 		}
 
-		$donation = new self();
+		$donorInfo = new self();
 		foreach ( $array as $key => $value ) {
-			$donation->{$key} = $value;
+			$donorInfo->{$key} = $value;
 		}
 
 		/**
 		 * Filter the donor info object
 		 *
-		 * @param DonorInfo $donation
+		 * @param DonorInfo $donorInfo
 		 */
-		return apply_filters( 'give_session_donor_info_object', $donation, $array );
+		return apply_filters( 'give_session_donor_info_object', $donorInfo, $array );
 	}
 }
