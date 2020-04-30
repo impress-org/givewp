@@ -780,17 +780,27 @@ fieldset {
 	margin: 0 !important;
 
 	&::after {
+		display: block;
+		padding: 12px 18px;
 		background: #383838;
 		color: #fff;
-		padding: 12px 18px;
 		font-size: 16px;
 		font-family: 'Montserrat', sans-serif;
 		border-radius: 4px;
-		line-height: 12px;
+		line-height: 1.2;
 		text-align: center;
-		white-space: nowrap;
 		text-shadow: 0 -1px 0 #000;
 		box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+		word-wrap: normal;
+		white-space: normal;
+		width: fit-content;
+		max-width: 136px;
+	}
+
+	&.wide {
+		&::after {
+			width: 136px;
+		}
 	}
 }
 
