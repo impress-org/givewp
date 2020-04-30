@@ -61,20 +61,3 @@ function getFormId() {
 	return null;
 }
 
-/**
- * This function will return payment id.
- *
- * The payment id is found by getting information on the current purchase session, and returning the
- * donation id associated with the current purchase session.
- *
- * This function is used in the purchasing flow (ie building the receipt page)
- *
- * @return int|null
- * @global WP_Post $post
- * @since 2.7.0
- */
-function getPaymentId() {
-	$session = give_get_purchase_session();
-	return isset( $session['donation_id'] ) ? intval( $session['donation_id'] ) : null;
-}
-
