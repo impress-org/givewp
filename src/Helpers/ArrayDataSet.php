@@ -9,7 +9,7 @@ class ArrayDataSet {
 	 * You can pass a multi dimensional array but only zero level array keys will be renamed.
 	 *
 	 * @param array $array
-	 * @param array $renameTo Pass array as existing key name as key and new key name as value.
+	 * @param array $renameTo Pass array of existing key name as key and new key name as value.
 	 *
 	 * @return array
 	 * @since 2.7.0
