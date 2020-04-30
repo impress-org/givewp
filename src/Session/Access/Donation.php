@@ -46,7 +46,7 @@ class Donation extends Access {
 		'donation_id' => 'id',
 		'price'       => 'totalAmount',
 		'gateway'     => 'paymentGateway',
-		'date' => 'createdAt'
+		'date'        => 'createdAt',
 	];
 
 	/**
@@ -54,6 +54,7 @@ class Donation extends Access {
 	 *
 	 * @param array $data
 	 *
+	 * @return DonationObject
 	 * @since 2.7.0
 	 */
 	protected function convertToObject( $data ) {
@@ -71,7 +72,7 @@ class Donation extends Access {
 		// Rename unknown keys.
 		$data = $this->renameArrayKeysToPropertyNames( $data );
 
-		$this->dataObj = DonationObject::fromArray( $data );
+		return DonationObject::fromArray( $data );
 	}
 
 	/**
