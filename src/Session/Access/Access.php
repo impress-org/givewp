@@ -195,7 +195,7 @@ abstract class Access {
 			// Convert array key string to property name.
 			// Remove other then char, dash, give related prefix and hyphen and prefix.
 			$newName  = preg_replace( '/[^a-zA-Z0-9_\-]/', '', $key );
-			$newName  = str_replace( array( '_give', 'give-', 'give_', 'give' ), '', $newName );
+			$newName  = preg_replace( '/(-|_)?give(-|_)?/', '', $newName );
 			$keyParts = preg_split( '/(-|_)/', $newName );
 			$keyParts = array_map( 'ucfirst', array_filter( $keyParts ) );
 			$newName  = lcfirst( implode( '', $keyParts ) );
