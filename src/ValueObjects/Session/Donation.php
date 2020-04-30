@@ -7,6 +7,7 @@ use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;
 use InvalidArgumentException;
+use stdClass;
 
 class Donation implements ValueObjects {
 	/**
@@ -95,7 +96,9 @@ class Donation implements ValueObjects {
 				continue;
 			}
 
-			$donation->{$key} = $value;
+			$donation->{$key} = is_array( $value ) ?
+				json_decode( json_encode( $value ) ) // Convert unlisted array type session data to stdClass object
+				: $value;
 		}
 
 		return $donation;
