@@ -86,40 +86,4 @@ class Donation extends Access {
 			absint( getDonationIdByPurchaseKey( $this->dataObj->purchaseKey ) ) :
 			0;
 	}
-
-	/**
-	 * Rename array key to property name
-	 *
-	 * @param array $data
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function renameArrayKeysToPropertyNames( $data ) {
-
-		foreach ( $data as $key => $value ) {
-			// Convert array key string to property name.
-			// Remove other then char, dash, give related prefix and hyphen and prefix.
-			$newName  = preg_replace( '/[^a-zA-Z0-9_\-]/', '', $key );
-			$newName  = str_replace( array( '_give', 'give-', 'give_', 'give' ), '', $newName );
-			$keyParts = preg_split( '/(-|_)/', $newName );
-			$keyParts = array_map( 'ucfirst', array_filter( $keyParts ) );
-			$newName  = lcfirst( implode( '', $keyParts ) );
-
-			// Remove old key/value pair if renamed.
-			if ( $key !== $newName ) {
-				unset( $data[ $key ] );
-			}
-
-			if ( is_array( $value ) ) {
-				// Process array.
-				$data[ $newName ] = $this->renameArrayKeysToPropertyNames( $value );
-				continue;
-			}
-
-			$data[ $newName ] = $value;
-		}
-
-		return $data;
-	}
 }

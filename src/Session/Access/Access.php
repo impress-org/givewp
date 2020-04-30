@@ -12,8 +12,8 @@ use stdClass;
  *
  * @package Give\Session
  *
- * @property-read string $sessionKey
- * @property-read array $data
+ * @property-read string   $sessionKey
+ * @property-read array    $data
  * @property-read stdClass $dataObj
  */
 abstract class Access {
@@ -44,8 +44,7 @@ abstract class Access {
 	 * Class constructor.
 	 */
 	public function __construct() {
-		$this->data    = $this->get();
-		$this->dataObj = $this->convertToObject( $this->data );
+		$this->get();
 	}
 
 	/**
@@ -58,6 +57,7 @@ abstract class Access {
 	 */
 	protected function convertToObject( $data ) {
 		$dataObj = new stdClass();
+		$data    = $this->renameArrayKeysToPropertyNames( $data );
 
 		foreach ( $data as $key => $value ) {
 			if ( is_array( $value ) ) {
@@ -92,6 +92,7 @@ abstract class Access {
 	 * Get data from session.
 	 *
 	 * @param string $key
+	 *
 	 * @return stdClass
 	 * @since 2.7.0
 	 */
@@ -142,10 +143,10 @@ abstract class Access {
 	/**
 	 * Replace session data.
 	 *
-	 * @since 2.7.0
 	 * @param mixed $data
 	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function replace( $data ) {
 		$this->data = $data;
@@ -156,10 +157,10 @@ abstract class Access {
 	/**
 	 * Delete session data.
 	 *
-	 * @since 2.7.0
 	 * @param string $key
 	 *
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function delete( $key ) {
 		if ( array_key_exists( $key, $this->data ) ) {
@@ -167,5 +168,51 @@ abstract class Access {
 		}
 
 		return $this->set();
+	}
+
+	/**
+	 * Return session data in array format.
+	 *
+	 * @return array
+	 * @since 2.7.0
+	 */
+	public function toArray() {
+		return $this->data;
+	}
+
+	/**
+	 * Rename array key to property name
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 * @since 2.7.0
+	 */
+	protected function renameArrayKeysToPropertyNames( $data ) {
+
+		foreach ( $data as $key => $value ) {
+			// Convert array key string to property name.
+			// Remove other then char, dash, give related prefix and hyphen and prefix.
+			$newName  = preg_replace( '/[^a-zA-Z0-9_\-]/', '', $key );
+			$newName  = str_replace( array( '_give', 'give-', 'give_', 'give' ), '', $newName );
+			$keyParts = preg_split( '/(-|_)/', $newName );
+			$keyParts = array_map( 'ucfirst', array_filter( $keyParts ) );
+			$newName  = lcfirst( implode( '', $keyParts ) );
+
+			// Remove old key/value pair if renamed.
+			if ( $key !== $newName ) {
+				unset( $data[ $key ] );
+			}
+
+			if ( is_array( $value ) ) {
+				// Process array.
+				$data[ $newName ] = $this->renameArrayKeysToPropertyNames( $value );
+				continue;
+			}
+
+			$data[ $newName ] = $value;
+		}
+
+		return $data;
 	}
 }
