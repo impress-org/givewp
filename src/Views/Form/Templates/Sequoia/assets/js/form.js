@@ -151,7 +151,7 @@
 						$( this ).html( html );
 					}
 
-					// Setup string to check tooltip label against
+					// Setup string to check tooltip label ga
 					const compare = position === 'before' ? symbol + value : value + symbol;
 					// Setup tooltip unless for custom donation level, or if level label matches value
 					if ( value !== 'custom' && text !== compare ) {
@@ -204,6 +204,7 @@
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
+				setupInputIcon( '#give-company-wrap', 'briefcase' );
 
 				// Setup gateway icons
 				setupGatewayIcons();
