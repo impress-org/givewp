@@ -43,34 +43,6 @@ class ArrayDataSet {
 	}
 
 	/**
-	 * Remove prefix from array key.
-	 *
-	 * @param array $array
-	 * @param array $prefixes
-	 *
-	 * @return array
-	 */
-	public static function removePrefixFromArrayKeys( $array, $prefixes ) {
-		foreach ( $array as $key => $value ) {
-			$newKey = lcfirst( str_replace( (array) $prefixes, '', $key ) );
-
-			if ( $key !== $newKey ) {
-				unset( $array[ $key ] );
-			}
-
-			if ( is_array( $value ) ) {
-				$array[ $newKey ] = self::removePrefixFromArrayKeys( $value, $prefixes );
-				continue;
-			}
-
-			$array[ $newKey ] = $value;
-
-		}
-
-		return $array;
-	}
-
-	/**
 	 *  Return array with grouped under specific key.
 	 *
 	 * @param array  $array

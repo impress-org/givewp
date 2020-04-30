@@ -130,7 +130,7 @@ class Donation implements ValueObjects {
 	 * @return array
 	 */
 	private function filterCardInfoKeys( $array ) {
-		$array = ArrayDataSet::removePrefixFromArrayKeys( $array, [ 'card' ] );
+		$array = $this->removePrefixFromArrayKeys( $array, [ 'card' ] );
 		$array = ArrayDataSet::renameKeys(
 			$array,
 			[
@@ -143,6 +143,34 @@ class Donation implements ValueObjects {
 		// Rename zip to postal code.
 		$array['address']['postalCode'] = $array['address']['zip'];
 		unset( $array['address']['zip'] );
+
+		return $array;
+	}
+
+	/**
+	 * Remove prefix from array key.
+	 *
+	 * @param array $array
+	 * @param array $prefixes
+	 *
+	 * @return array
+	 */
+	private function removePrefixFromArrayKeys( $array, $prefixes ) {
+		foreach ( $array as $key => $value ) {
+			$newKey = lcfirst( str_replace( (array) $prefixes, '', $key ) );
+
+			if ( $key !== $newKey ) {
+				unset( $array[ $key ] );
+			}
+
+			if ( is_array( $value ) ) {
+				$array[ $newKey ] = $this->removePrefixFromArrayKeys( $value, $prefixes );
+				continue;
+			}
+
+			$array[ $newKey ] = $value;
+
+		}
 
 		return $array;
 	}
