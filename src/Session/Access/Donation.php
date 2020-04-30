@@ -35,7 +35,7 @@ class Donation extends Access {
 
 	/**
 	 * property vs session key array.
-	 * It is useful to map session key to class property.
+	 * It is useful to map array keys to class properties.
 	 *
 	 * @var array
 	 */
