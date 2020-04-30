@@ -1,6 +1,8 @@
 /* stylelint-disable */
 @import 'mixins';
 
+$break-phone: 500px;
+
 .give-flex {
 	@include display-flex;
 }

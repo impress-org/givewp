@@ -14,6 +14,7 @@ use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use function Give\Helpers\Form\Utils\getSuccessPageURL;
 use function Give\Helpers\Form\Utils\inIframe;
 use function Give\Helpers\Form\Utils\isLegacyForm;
 
