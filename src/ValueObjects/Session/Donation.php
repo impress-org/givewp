@@ -2,6 +2,7 @@
 namespace Give\ValueObjects\Session;
 
 use DateTime;
+use Give\Helpers\ArrayDataSet;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;
@@ -46,7 +47,7 @@ class Donation implements ValueObjects {
 	 * @since 2.7.0
 	 * @var DateTime
 	 */
-	public $creationDate;
+	public $createdAt;
 
 	/**
 	 * Payment gateway id.
@@ -58,6 +59,18 @@ class Donation implements ValueObjects {
 
 
 	/**
+	 * Array of properties  and there cast type.
+	 *
+	 * @var ValueObjects[]
+	 */
+	private $caseTo = [
+		'formEntries' => FormEntries::class,
+		'donorInfo'   => DonorInfo::class,
+		'cardInfo'    => CardInfo::class,
+	];
+
+
+	/**
 	 * Take array and return object
 	 *
 	 * @param $array
@@ -65,31 +78,25 @@ class Donation implements ValueObjects {
 	 * @return Donation
 	 */
 	public static function fromArray( $array ) {
-		$expectedKeys = [ 'id', 'price', 'totalAmount', 'purchaseKey', 'donorEmail', 'creationDate', 'paymentGateway' ];
+		$expectedKeys = [ 'id', 'totalAmount', 'purchaseKey', 'donorEmail', 'createdAt', 'paymentGateway', 'formEntries', 'cardInfo', 'donorInfo' ];
 
-		$hasRequiredKeys = (bool) array_intersect_key( $array, array_flip( $expectedKeys ) );
+		$array = array_intersect_key( $array, array_flip( $expectedKeys ) );
 
-		if ( ! $hasRequiredKeys ) {
+		if ( ! ArrayDataSet::hasRequiredKeys( $array, $expectedKeys ) ) {
 			throw new InvalidArgumentException(
 				'Invalid Donation object, must have the exact following keys: ' . implode( ', ', $expectedKeys )
 			);
 		}
 
 		$donation = new self();
+
 		foreach ( $array as $key => $value ) {
+			if ( array_key_exists( $key, $donation->caseTo ) ) {
+				$donation->{$key} = $donation->caseTo[ $key ]::fromArray( $value );
+				continue;
+			}
+
 			$donation->{$key} = $value;
-		}
-
-		if ( property_exists( $donation, 'formEntries' ) ) {
-			$donation->formEntries = FormEntries::fromArray( $donation->formEntries );
-		}
-
-		if ( property_exists( $donation, 'donorInfo' ) ) {
-			$donation->donorInfo = DonorInfo::fromArray( $donation->donorInfo );
-		}
-
-		if ( property_exists( $donation, 'cardInfo' ) ) {
-			$donation->cardInfo = CardInfo::fromArray( $donation->cardInfo );
 		}
 
 		/**
