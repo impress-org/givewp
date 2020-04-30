@@ -143,8 +143,8 @@ function give_do_automatic_upgrades() {
 			give_v2511_upgrades();
 			$did_upgrade = true;
 
-		case version_compare( $give_version, '2.6.3', '<' ):
-			give_v263_upgrades();
+		case version_compare( $give_version, '2.7.0', '<' ):
+			give_v270_upgrades();
 			$did_upgrade = true;
 	}
 
@@ -3601,11 +3601,11 @@ function give_v2511_upgrades() {
 /**
  * Upgrade routine to call for backward compatibility to manage default Stripe account.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return void
  */
-function give_v263_upgrades() {
+function give_v270_upgrades() {
 
 	$stripe_accounts = give_stripe_get_all_accounts();
 	$is_migrated     = give_get_option( '_give_stripe_data_migrated', false );
