@@ -733,7 +733,13 @@ fieldset {
 		word-wrap: normal;
 		white-space: normal;
 		width: fit-content;
-		max-width: 120px;
+		max-width: 136px;
+	}
+
+	&.wide {
+		&::after {
+			width: 136px;
+		}
 	}
 }
 
