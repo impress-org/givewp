@@ -21,6 +21,13 @@ class CardInfo implements ValueObjects {
 	public $name;
 
 	/**
+	 * Cardholder name.
+	 *
+	 * @var  string
+	 */
+	public $number;
+
+	/**
 	 * Card security pin.
 	 *
 	 * @var string
@@ -57,16 +64,6 @@ class CardInfo implements ValueObjects {
 	 * @return CardInfo
 	 */
 	public static function fromArray( $array ) {
-		$expectedKeys = [ 'cardName', 'firstName', 'email' ];
-
-		$hasRequiredKeys = (bool) array_intersect_key( $array, array_flip( $expectedKeys ) );
-
-		if ( ! $hasRequiredKeys ) {
-			throw new InvalidArgumentException(
-				'Invalid DonorInfo object, must have the exact following keys: ' . implode( ', ', $expectedKeys )
-			);
-		}
-
 		$cardInfo = new self();
 
 		// Rename and group array data.
@@ -78,6 +75,16 @@ class CardInfo implements ValueObjects {
 		$array    = ArrayDataSet::renameKeys( $array, $renameTo );
 		$array    = $cardInfo->moveAddressItemsToGroup( $array );
 
+		$expectedKeys = [ 'name', 'cvc', 'expMonth', 'expYear', 'number', 'address' ];
+
+		$hasRequiredKeys = array_intersect_key( $array, array_flip( $expectedKeys ) );
+
+		if ( ! $hasRequiredKeys ) {
+			throw new InvalidArgumentException(
+				'Invalid DonorInfo object, must have the exact following keys: ' . implode( ', ', $expectedKeys )
+			);
+		}
+
 		// Cast array "address" to Give\ValueObjects\Address object.
 		$array['address'] = Address::fromArray( $array['address'] );
 
@@ -85,12 +92,7 @@ class CardInfo implements ValueObjects {
 			$cardInfo->{$key} = $value;
 		}
 
-		/**
-		 * Filter the donor info object
-		 *
-		 * @param CardInfo $cardInfo
-		 */
-		return apply_filters( 'give_card_info_object', $cardInfo, $array );
+		return $cardInfo;
 	}
 
 	/**

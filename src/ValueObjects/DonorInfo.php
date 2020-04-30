@@ -2,15 +2,17 @@
 
 namespace Give\ValueObjects;
 
+use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;
 
 class DonorInfo implements ValueObjects {
 	/**
-	 * Donor id.
+	 * WP user id.
+	 * Donor can be connect to WP user. if connect and donating after login as WP user then it set to logged in user id.
 	 *
 	 * @var string
 	 */
-	public $id;
+	public $wpUserId;
 
 	/**
 	 * Primary email.
@@ -41,6 +43,13 @@ class DonorInfo implements ValueObjects {
 	public $lastName;
 
 	/**
+	 * Donor honorific.
+	 *
+	 * @var string
+	 */
+	public $honorific;
+
+	/**
 	 * Take array and return object.
 	 *
 	 * @param $array
@@ -48,11 +57,16 @@ class DonorInfo implements ValueObjects {
 	 * @return DonorInfo
 	 */
 	public static function fromArray( $array ) {
-		$expectedKeys = [ 'id', 'firstName', 'email' ];
+		$renameTo     = [
+			'id'    => 'wpUserId',
+			'title' => 'honorific',
+		];
+		$array        = ArrayDataSet::renameKeys( $array, $renameTo );
+		$expectedKeys = [ 'wpUserId', 'firstName', 'email', 'honorific', 'address' ];
 
-		$hasRequiredKeys = (bool) array_intersect_key( $array, array_flip( $expectedKeys ) );
+		$array = array_intersect_key( $array, array_flip( $expectedKeys ) );
 
-		if ( ! $hasRequiredKeys ) {
+		if ( empty( $array ) ) {
 			throw new InvalidArgumentException(
 				'Invalid DonorInfo object, must have the exact following keys: ' . implode( ', ', $expectedKeys )
 			);
@@ -63,11 +77,11 @@ class DonorInfo implements ValueObjects {
 			$donorInfo->{$key} = $value;
 		}
 
-		/**
-		 * Filter the donor info object
-		 *
-		 * @param DonorInfo $donorInfo
-		 */
-		return apply_filters( 'give_session_donor_info_object', $donorInfo, $array );
+		// Cast address to Give\ValueObjects\Address object.
+		if ( ! empty( $array['address'] ) ) {
+			$donorInfo->address = Address::fromArray( $array['address'] );
+		}
+
+		return $donorInfo;
 	}
 }
