@@ -954,7 +954,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param array $license All access pass license data
 		 *
 		 * @return string[]
-		 * @since 2.7.0
+		 * @since 2.6.3
 		 */
 		public static function getAddonSlugsFromAllAccessPassLicense( $license ) {
 			$result = [];
