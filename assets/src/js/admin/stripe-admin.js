@@ -72,6 +72,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 				e.target.classList.add( 'give-hidden' );
 				updateElement.classList.remove( 'give-hidden' );
+				updateElement.nextElementSibling.classList.remove( 'give-hidden' );
 			} );
 		} );
 	}
