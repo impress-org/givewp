@@ -175,11 +175,11 @@ class Give_Welcome {
 
 			<div class="give-welcome-header-inner">
 
-				<h1 class="give-welcome-h1"><?php esc_html_e( $title, 'give' ); ?></h1>
+				<h1 class="give-welcome-h1"><?php esc_html_e( $title ); ?></h1>
 
 				<?php $this->social_media_elements(); ?>
 
-				<p class="give-welcome-text"><?php _e( $content, 'give' ); ?></p>
+				<p class="give-welcome-text"><?php _e( $content ); ?></p>
 
 				<?php $this->get_newsletter(); ?>
 
