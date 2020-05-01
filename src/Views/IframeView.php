@@ -225,7 +225,7 @@ class IframeView {
 	 */
 	private function getButtonHTML() {
 		return sprintf(
-			'<div>
+			'<div class="js-give-embed-form-modal-launcher-wrap">
 				<button
 				type="button"
 				class="js-give-embed-form-modal-opener"
