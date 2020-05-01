@@ -13,7 +13,7 @@
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -144,7 +144,7 @@ function give_form_shortcode( $atts ) {
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
 	// Set form id.
-	$atts['id'] = $atts['id'] ?: getFormId();
+	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
 	$formId     = absint( $atts['id'] );
 
 	// Get active theme

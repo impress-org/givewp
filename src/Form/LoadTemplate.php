@@ -14,7 +14,7 @@ use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -46,7 +46,7 @@ class LoadTemplate {
 	 * @param int $formId Form Id. Default value: check explanation in src/Helpers/Form/Utils.php:103
 	 */
 	private function setUpTemplate( $formId = null ) {
-		$formId = (int) ( $formId ?: getFormId() );
+		$formId = (int) ( $formId ?: FrontendFormTemplateUtils::getFormId() );
 
 		$templateID = FormTemplateUtils::getActiveID( $formId ) ?: $this->defaultTemplateID;
 

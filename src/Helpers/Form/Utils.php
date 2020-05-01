@@ -4,7 +4,7 @@ namespace Give\Helpers\Form;
 use Give\Controller\Form;
 use Give\Helpers\Utils as GlobalUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 class Utils {
 	/**
@@ -30,7 +30,7 @@ class Utils {
 	 */
 	public static function isProcessingForm() {
 		$base     = Give()->routeForm->getBase();
-		$formName = get_post_field( 'post_name', getFormId() );
+		$formName = get_post_field( 'post_name', FrontendFormTemplateUtils::getFormId() );
 		$referer  = trailingslashit( wp_get_referer() );
 
 		return ! empty( $_REQUEST['give_embed_form'] ) ||

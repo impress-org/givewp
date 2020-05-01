@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 /**
  * Manual Gateway does not need a CC form, so remove it.
@@ -32,7 +32,7 @@ use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
  * @return bool
  **/
 function give_manual_form_ouput() {
-	if ( getActiveId( getFormId() ) === 'legacy' ) {
+	if ( FormTemplateUtils::getActiveId( FrontendFormTemplateUtils::getFormId() ) === 'legacy' ) {
 		return false;
 	}
 

@@ -17,7 +17,7 @@ use Give\Helpers\Form\Utils as FormUtils;
 use Give_Notices;
 use WP_Post;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -273,7 +273,7 @@ class Form {
 			}
 
 			if ( FormUtils::isIframeParentFailedPageURL( $location ) ) {
-				$location = add_query_arg( [ 'showFailedDonationError' => 1 ], $template->getFailedPageURL( getFormId() ) );
+				$location = add_query_arg( [ 'showFailedDonationError' => 1 ], $template->getFailedPageURL( FrontendFormTemplateUtils::getFormId() ) );
 				$location = Utils::removeDonationAction( $location );
 
 				// Open link in window?

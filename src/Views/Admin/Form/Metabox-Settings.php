@@ -3,7 +3,7 @@ global $post;
 
 use Give\Form\Template;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function Give\Helpers\Form\Template\Utils\Admin\renderMetaboxSettings;
+use Give\Helpers\Form\Template\Utils\Admin as AdminFormTemplateUtils;
 
 $activatedTemplate   = FormTemplateUtils::getActiveID( $post->ID );
 $registeredTemplates = Give()->templates->getTemplates();
@@ -68,7 +68,7 @@ $registeredTemplates = Give()->templates->getTemplates();
 				'<div class="template-options %1$s" data-id="%2$s">%3$s</div>',
 				$template->getID() . ( $activatedTemplate === $template->getID() ? ' active' : '' ),
 				$template->getID(),
-				renderMetaboxSettings( $template )
+				AdminFormTemplateUtils::renderMetaboxSettings( $template )
 			);
 		}
 		?>

@@ -1,9 +1,9 @@
 <?php
 
 use Give\Form\Template\Options;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
-$formInfo = get_post( getFormId() );
+$formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
 $introHeadline    = $formInfo->post_title ? $formInfo->post_title : __( 'Campaign Heading', 'give' );
