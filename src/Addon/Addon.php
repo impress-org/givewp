@@ -1,7 +1,7 @@
 <?php
 namespace Give\Addon;
 
-interface Addonable {
+interface Addon {
 	/**
 	 * Return whether or not addon active.
 	 *

@@ -11,7 +11,7 @@ use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
  *
  * @package Give\Addon
  */
-class Recurring implements Addonable {
+class Recurring implements Addon {
 
 	/**
 	 * @inheritDoc
