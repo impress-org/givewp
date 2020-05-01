@@ -2,9 +2,9 @@
 namespace Give\Helpers\Form\Utils;
 
 use Give\Controller\Form;
+use Give\Helpers\Utils;
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\getQueryParamFromURL;
 
 /**
  * Get result if we are viewing embed form or not
@@ -81,7 +81,7 @@ function canShowFailedDonationError() {
  * @since 2.7.0
  */
 function isIframeParentFailedPageURL( $url ) {
-	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
+	$action = Utils::getQueryParamFromURL( $url, 'giveDonationAction' );
 
 	return $action && 'failedDonation' === $action;
 }
@@ -95,7 +95,7 @@ function isIframeParentFailedPageURL( $url ) {
  * @since 2.7.0
  */
 function isIframeParentSuccessPageURL( $url ) {
-	$action = getQueryParamFromURL( $url, 'giveDonationAction' );
+	$action = Utils::getQueryParamFromURL( $url, 'giveDonationAction' );
 
 	return $action && 'showReceipt' === $action;
 }

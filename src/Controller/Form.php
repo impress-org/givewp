@@ -11,6 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
+use Give\Helpers\Utils;
 use Give_Notices;
 use WP_Post;
 use function Give\Helpers\Form\Template\getActiveID;
@@ -31,8 +32,6 @@ use function Give\Helpers\Form\Utils\isProcessingGiveActionOnAjax;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
-use function Give\Helpers\removeDonationAction;
-use function Give\Helpers\switchRequestedURL;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -215,7 +214,7 @@ class Form {
 		$template = Give()->templates->getTemplate();
 
 		return $template->openSuccessPageInIframe ?
-			createSuccessPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
+			createSuccessPageURL( Utils::switchRequestedURL( $url, getIframeParentURL() ) ) :
 			$url;
 	}
 
@@ -232,7 +231,7 @@ class Form {
 		$template = Give()->templates->getTemplate( getActiveID() );
 
 		return $template->openFailedPageInIframe ?
-			createFailedPageURL( switchRequestedURL( $url, getIframeParentURL() ) ) :
+			createFailedPageURL( Utils::switchRequestedURL( $url, getIframeParentURL() ) ) :
 			$url;
 	}
 
@@ -277,7 +276,7 @@ class Form {
 		if ( 0 === strpos( $location, home_url() ) ) {
 			if ( isIframeParentSuccessPageURL( $location ) ) {
 				$location = getSuccessPageURL();
-				$location = removeDonationAction( $location );
+				$location = Utils::removeDonationAction( $location );
 
 				// Open link in window?
 				if ( ! $template->openSuccessPageInIframe ) {
@@ -289,7 +288,7 @@ class Form {
 
 			if ( isIframeParentFailedPageURL( $location ) ) {
 				$location = add_query_arg( [ 'showFailedDonationError' => 1 ], $template->getFailedPageURL( getFormId() ) );
-				$location = removeDonationAction( $location );
+				$location = Utils::removeDonationAction( $location );
 
 				// Open link in window?
 				if ( ! $template->openFailedPageInIframe ) {

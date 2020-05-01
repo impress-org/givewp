@@ -13,10 +13,8 @@
 use function Give\Helpers\Form\Template\getActiveID;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
-use function Give\Helpers\removeDonationAction;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -191,7 +189,7 @@ function give_form_shortcode( $atts ) {
 			trailingslashit( $url )
 		);
 
-		$iframe_url = removeDonationAction( $iframe_url );
+		$iframe_url = Utils::removeDonationAction( $iframe_url );
 
 		$uniqueId         = uniqid( 'give-' );
 		$buttonModeActive = 'button' === $atts['display_style'];
