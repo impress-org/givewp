@@ -37,6 +37,15 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		const isZipCode = ( give_stripe_vars.zipcode_option.length > 0 );
 		const isRememberMe = ( give_stripe_vars.remember_option.length > 0 );
 
+		/**
+		 * Bailout, when publishable key is not present for a donation form
+		 * due to Stripe account not properly attached to the form or global
+		 * Stripe account is not added.
+		 */
+		if ( publishableKey.length === 0 ) {
+			return;
+		}
+
 		stripe_handler[ idPrefix ] = [];
 
 		// Set stripe handler for form.

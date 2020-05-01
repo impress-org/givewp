@@ -41,6 +41,15 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const accountId = formElement.getAttribute( 'data-account' );
 		const idPrefix = formElement.getAttribute( 'data-id' );
 
+		/**
+		 * Bailout, when publishable key is not present for a donation form
+		 * due to Stripe account not properly attached to the form or global
+		 * Stripe account is not added.
+		 */
+		if ( publishableKey.length === 0 ) {
+			return;
+		}
+
 		stripe[ idPrefix ] = Stripe( publishableKey );
 
 		if ( accountId.trim().length !== 0 ) {
