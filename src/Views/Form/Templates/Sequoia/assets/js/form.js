@@ -240,19 +240,22 @@
 
 	navigator.init();
 
-	// Move payment information section when document load.
-	moveFieldsUnderPaymentGateway( true );
-
-	// Move payment information section when gateway updated.
-	$( document ).on( 'give_gateway_loaded', function() {
+	// Check if only a single gateway is enabled
+	if ( $( '#give-payment-mode-select' ).css( 'display' ) !== 'none' ) {
+		// Move payment information section when document load.
 		moveFieldsUnderPaymentGateway( true );
-	} );
-	$( document ).on( 'Give:onPreGatewayLoad', function() {
-		moveFieldsUnderPaymentGateway( false );
-	} );
 
-	// Refresh payment information section.
-	$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+		// Move payment information section when gateway updated.
+		$( document ).on( 'give_gateway_loaded', function() {
+			moveFieldsUnderPaymentGateway( true );
+		} );
+		$( document ).on( 'Give:onPreGatewayLoad', function() {
+			moveFieldsUnderPaymentGateway( false );
+		} );
+
+		// Refresh payment information section.
+		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+	}
 
 	/**
 	 * Move form field under payment gateway
