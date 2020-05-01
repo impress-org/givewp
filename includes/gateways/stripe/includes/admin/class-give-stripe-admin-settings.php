@@ -534,7 +534,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter is used to add setting fields after BECS Direct Debit fields.
 					 *
-					 * @since 2.6.3
+					 * @since 2.7.0
 					 */
 					$settings = apply_filters( 'give_stripe_after_becs_fields', $settings );
 
@@ -715,7 +715,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @param string $option_value Field Value.
 		 *
 		 * @return mixed|void
-		 * @since 2.6.3
+		 * @since 2.7.0
 		 *
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
@@ -857,7 +857,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									 *
 									 * @param array $stripe_accounts All Stripe accounts.
 									 *
-									 * @since 2.6.3
+									 * @since 2.7.0
 									 */
 									do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
 								}

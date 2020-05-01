@@ -41,7 +41,7 @@ add_filter( 'give_payment_details_transaction_id-stripe_becs', 'give_stripe_link
 /**
  * This function is used to add per-form Stripe account management.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @param array $settings Settings List.
  * @param int   $form_id  Form ID.

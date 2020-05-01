@@ -389,7 +389,7 @@ function give_chosen_input( $field ) {
  * @type string $after_field   Text/HTML to add after input field. Default ''.
  * }
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return void
  */

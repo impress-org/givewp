@@ -16,14 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Check for Give_Stripe_Becs existence.
  *
- * @since 2.6.3
+ * @since 2.7.0
  */
 if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 
 	/**
 	 * Class Give_Stripe_Becs.
 	 *
-	 * @since 2.6.3
+	 * @since 2.7.0
 	 */
 	class Give_Stripe_Becs extends Give_Stripe_Gateway {
 
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 		/**
 		 * Give_Stripe_Becs constructor.
 		 *
-		 * @since  2.6.3
+		 * @since  2.7.0
 		 * @access public
 		 */
 		public function __construct() {
@@ -58,7 +58,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 		 * @param bool $echo    Status to display or not.
 		 *
 		 * @access public
-		 * @since  2.6.3
+		 * @since  2.7.0
 		 *
 		 * @return string $form
 		 */
@@ -192,7 +192,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 		 * @param array $donation_data List of donation data.
 		 *
 		 * @return void
-		 * @since  2.6.3
+		 * @since  2.7.0
 		 * @access public
 		 */
 		public function process_payment( $donation_data ) {

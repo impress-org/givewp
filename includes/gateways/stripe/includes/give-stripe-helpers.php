@@ -45,7 +45,7 @@ function give_stripe_get_secret_key( $form_id = 0 ) {
  *
  * @param int $form_id Form Id.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */
@@ -1322,7 +1322,7 @@ function give_stripe_get_becs_icon_style( $form_id ) {
 /**
  * This helper function will be used check whether Stripe Premium add-on is active or not.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return bool
  */
@@ -1336,7 +1336,7 @@ function give_stripe_is_premium_active() {
 /**
  * Get all Stripe accounts.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return array
  */
@@ -1349,7 +1349,7 @@ function give_stripe_get_all_accounts() {
  *
  * @param array $args List of arguments.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */
@@ -1375,7 +1375,7 @@ function give_stripe_get_admin_settings_page_url( $args = [] ) {
  *
  * @param array $args List of arguments.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return void
  */
@@ -1391,7 +1391,7 @@ function give_stripe_get_back_to_settings_page( $args = [] ) {
  *
  * @param int $form_id Form ID.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return array
  */
@@ -1418,7 +1418,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
  *
  * @param int $form_id Form ID.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */
@@ -1445,7 +1445,7 @@ function give_stripe_get_default_account_slug( $form_id = 0 ) {
  *
  * @param string $slug Slug.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */
@@ -1458,7 +1458,7 @@ function give_stripe_convert_slug_to_title( $slug ) {
  *
  * @param string $title Title.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */
@@ -1472,7 +1472,7 @@ function give_stripe_convert_title_to_slug( $title ) {
  * @param array $all_accounts   All Stripe accounts.
  * @param int   $accounts_count Total Stripe accounts connected count.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */
@@ -1508,7 +1508,7 @@ function give_stripe_disconnect_account( $slug ) {
 /**
  * This helper function is used to get account options.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return array
  */
@@ -1527,7 +1527,7 @@ function give_stripe_get_account_options() {
 /**
  * This function is used to get single ip address for Stripe.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return string
  */

@@ -51,7 +51,7 @@ add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payme
  * @param array  $form_html_tags Form HTML tags.
  * @param object $form           Form Object.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return mixed
  */

@@ -79,7 +79,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 * On clicking "Edit" link on account name will show text fields
 	 * to update account name.
 	 *
-	 *  @since 2.6.3
+	 *  @since 2.7.0
 	 */
 	if ( null !== perAccountEdits ) {
 		perAccountEdits.forEach( ( perAccountEdit ) => {
@@ -110,7 +110,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 * On changing the account name and clicking on the "Update" link will
 	 * update the account name of a particular Stripe account.
 	 *
-	 * @since 2.6.3
+	 * @since 2.7.0
 	 */
 	if ( null !== perAccountUpdates ) {
 		perAccountUpdates.forEach( ( perAccountUpdate ) => {
@@ -156,7 +156,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 * When a user want to add per-form Stripe account, this code will help
 	 * toggle the Stripe account list on clicking 'Customize'.
 	 *
-	 * @since 2.6.3
+	 * @since 2.7.0
 	 */
 	if ( null !== perFormOptions ) {
 		perFormOptions.forEach( ( formOption ) => {
@@ -176,7 +176,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 * This will be used to set any non-default Stripe account from the list
 	 * to set that particular Stripe account as default.
 	 *
-	 * @since 2.6.3
+	 * @since 2.7.0
 	 */
 	if ( null !== setStripeDefaults ) {
 		setStripeDefaults.forEach( ( setStripeDefault ) => {
@@ -206,7 +206,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 * This will help toggle between connect and manual fields of Stripe
 	 * using the "Connection Type" radio fields.
 	 *
-	 * @since 2.6.3
+	 * @since 2.7.0
 	 */
 	if ( null !== connectionTypes && null !== selectedConnectionType ) {
 		giveStripeConnectionTypeToggle( selectedConnectionType.value );
@@ -223,7 +223,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 *
 	 * @param {string} $value
 	 *
-	 * @since 2.6.3
+	 * @since 2.7.0
 	 */
 	function giveStripeConnectionTypeToggle( $value ) {
 		if ( 'connect' === $value ) {
