@@ -274,7 +274,7 @@ function give_get_license_info_handler() {
 	if ( ! empty( $check_license_res['is_all_access_pass'] ) ) {
 		$addonSlugs = Give_License::getAddonSlugsFromAllAccessPassLicense( $check_license_res );
 		foreach ( $licenses as $license_key => $data ) {
-			if ( in_array( $data['plugin_slug'], $addonSlugs, true ) || ! empty( $check_license_res['is_all_access_pass'] ) ) {
+			if ( in_array( $data['plugin_slug'], $addonSlugs, true ) || ! empty( $data['is_all_access_pass'] ) ) {
 				unset( $licenses[ $license_key ] );
 			}
 		}
