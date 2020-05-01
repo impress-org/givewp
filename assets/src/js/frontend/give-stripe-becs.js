@@ -39,22 +39,23 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		const publishableKey = formElement.getAttribute( 'data-publishable-key' );
 		const accountId = formElement.getAttribute( 'data-account' );
-
-		stripe = Stripe( publishableKey );
+		const idPrefix = formElement.getAttribute( 'data-id' );
+		
+		stripe[ idPrefix ] = Stripe( publishableKey );
 
 		if ( accountId.trim().length !== 0 ) {
-			stripe = Stripe( publishableKey, {
+			stripe[ idPrefix ] = Stripe( publishableKey, {
 				stripeAccount: accountId,
 			} );
 		}
 
-		let elements = stripe.elements( {
+		let elements = stripe[ idPrefix ].elements( {
 			locale: preferredLocale,
 		} );
 
 		// Update fonts of Stripe Elements.
 		if ( fontStyles.length > 0 ) {
-			elements = stripe.elements( {
+			elements = stripe[ idPrefix ].elements( {
 				fonts: fontStyles,
 				locale: preferredLocale,
 			} );
@@ -64,7 +65,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			defaultGateway = formElement.querySelector( '.give-gateway:checked' ).value;
 		}
 
-		const idPrefix = formElement.getAttribute( 'data-id' );
 		const donateButton = formElement.querySelector( '.give-submit' );
 
 		// Create IBAN Elements for each form.
@@ -247,6 +247,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
+		const idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 		const $firstName = $form.find( 'input[name="give_first"]' ).val();
 		const $lastName = $form.find( 'input[name="give_last"]' ).val();
 		const $email = $form.find( 'input[name="give_email"]' ).val();
@@ -278,7 +279,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'au_becs_debit', $iban, additionalData ).then( function( result ) {
+		stripe[ idPrefix ].createPaymentMethod( 'au_becs_debit', $iban, additionalData ).then( function( result ) {
 			if ( result.error ) {
 				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 

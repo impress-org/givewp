@@ -1,7 +1,7 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
-let stripe = {};
+let stripe = [];
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
@@ -39,22 +39,23 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
 		const accountId = form_element.getAttribute( 'data-account' );
+		const idPrefix = form_element.getAttribute( 'data-id' );
 
-		stripe = Stripe( publishableKey );
+		stripe[ idPrefix ] = Stripe( publishableKey );
 
 		if ( accountId.trim().length !== 0 ) {
-			stripe = Stripe( publishableKey, {
+			stripe[ idPrefix ] = Stripe( publishableKey, {
 				stripeAccount: accountId,
 			} );
 		}
 
-		let elements = stripe.elements( {
+		let elements = stripe[ idPrefix ].elements( {
 			locale: preferredLocale,
 		} );
 
 		// Update fonts of Stripe Elements.
 		if ( fontStyles.length > 0 ) {
-			elements = stripe.elements( {
+			elements = stripe[ idPrefix ].elements( {
 				fonts: fontStyles,
 				locale: preferredLocale,
 			} );
@@ -64,7 +65,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			defaultGateway = form_element.querySelector( '.give-gateway:checked' ).value;
 		}
 
-		const idPrefix = form_element.getAttribute( 'data-id' );
 		const donateButton = form_element.querySelector( '.give-submit' );
 
 		// Create Card Elements for each form.
@@ -332,6 +332,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			billing_details: {},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
+		const idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
 		const card_name = $form.find( '.card-name' ).val();
 
@@ -363,7 +364,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
+		stripe[ idPrefix ].createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
+
 			if ( result.error ) {
 				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
 
