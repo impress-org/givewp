@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 /**
@@ -32,7 +32,7 @@ function give_paypal_standard_billing_fields( $form_id ) {
 		return true;
 	}
 
-	if ( getActiveID( getFormId() ) === 'legacy' ) {
+	if ( FormTemplateUtils::getActiveID( getFormId() ) === 'legacy' ) {
 		return false;
 	}
 

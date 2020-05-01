@@ -12,11 +12,9 @@ namespace Give\Form;
 use _WP_Dependency;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\inIframe;
-use function Give\Helpers\Form\Utils\isLegacyForm;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,7 +48,7 @@ class LoadTemplate {
 	private function setUpTemplate( $formId = null ) {
 		$formId = (int) ( $formId ?: getFormId() );
 
-		$templateID = getActiveID( $formId ) ?: $this->defaultTemplateID;
+		$templateID = FormTemplateUtils::getActiveID( $formId ) ?: $this->defaultTemplateID;
 
 		$this->template = Give()->templates->getTemplate( $templateID );
 	}
@@ -120,12 +118,12 @@ class LoadTemplate {
 	 */
 	public function handleReceiptAjax() {
 		// Do not handle form template receipt for legacy form.
-		if ( isLegacyForm() ) {
+		if ( FormUtils::isLegacyForm() ) {
 			return;
 		}
 
 		// Show new receipt view only on donation confirmation page.
-		if ( false === strpos( wp_get_referer(), untrailingslashit( getSuccessPageURL() ) ) ) {
+		if ( false === strpos( wp_get_referer(), untrailingslashit( FormUtils::getSuccessPageURL() ) ) ) {
 			return;
 		}
 
@@ -169,7 +167,7 @@ class LoadTemplate {
 
 		$classes[] = 'give-embed-form';
 
-		if ( inIframe() ) {
+		if ( FormUtils::inIframe() ) {
 			$classes[] = 'give-viewing-form-in-iframe';
 		}
 

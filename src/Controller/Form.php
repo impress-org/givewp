@@ -13,25 +13,11 @@ use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 use Give\Helpers\Utils;
+use Give\Helpers\Form\Utils as FormUtils;
 use Give_Notices;
 use WP_Post;
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\isConfirmingDonation;
-use function Give\Helpers\Form\Utils\canShowFailedDonationError;
-use function Give\Helpers\Form\Utils\createFailedPageURL;
-use function Give\Helpers\Form\Utils\createSuccessPageURL;
-use function Give\Helpers\Form\Utils\getIframeParentURL;
-use function Give\Helpers\Form\Utils\getLegacyFailedPageURL;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\inIframe;
-use function Give\Helpers\Form\Utils\isIframeParentFailedPageURL;
-use function Give\Helpers\Form\Utils\isLegacyForm;
-use function Give\Helpers\Form\Utils\isProcessingForm;
-use function Give\Helpers\Form\Utils\isIframeParentSuccessPageURL;
-use function Give\Helpers\Form\Utils\isProcessingGiveActionOnAjax;
-use function Give\Helpers\Form\Utils\isViewingForm;
-use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -61,9 +47,9 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadTemplateOnFrontend() {
-		$inIframe = inIframe();
+		$inIframe = FormUtils::inIframe();
 
-		if ( $inIframe || isProcessingForm() ) {
+		if ( $inIframe || FormUtils::isProcessingForm() ) {
 			$this->loadTemplate();
 
 			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
@@ -77,17 +63,17 @@ class Form {
 	 */
 	public function loadReceiptView() {
 		// Handle success page.
-		if ( isViewingFormReceipt() && ! isLegacyForm() ) {
+		if ( FormUtils::isViewingFormReceipt() && ! FormUtils::isLegacyForm() ) {
 			/* @var Template $formTemplate */
 			$formTemplate = Give()->templates->getTemplate();
 
-			if ( inIframe() || ( $formTemplate->openSuccessPageInIframe && isProcessingForm() ) ) {
+			if ( FormUtils::inIframe() || ( $formTemplate->openSuccessPageInIframe && FormUtils::isProcessingForm() ) ) {
 				// Set header.
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
 
 				// Show donation processing template
-				if ( isConfirmingDonation() ) {
+				if ( FormUtils::isConfirmingDonation() ) {
 					include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 					exit();
 				}
@@ -113,12 +99,12 @@ class Form {
 		$formTemplate = Give()->templates->getTemplate();
 
 		// Handle failed donation error.
-		if ( canShowFailedDonationError() ) {
+		if ( FormUtils::canShowFailedDonationError() ) {
 			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 		}
 
 			// Handle donation form.
-		if ( isViewingForm() ) {
+		if ( FormUtils::isViewingForm() ) {
 			// Set header.
 			nocache_headers();
 			header( 'HTTP/1.1 200 OK' );
@@ -135,7 +121,7 @@ class Form {
 	 */
 	public function setFailedTransactionError() {
 		Give_Notices::print_frontend_notice(
-			Give()->templates->getTemplate( getActiveID() )->getFailedDonationMessage(),
+			Give()->templates->getTemplate( FormTemplateUtils::getActiveID() )->getFailedDonationMessage(),
 			true,
 			'error'
 		);
@@ -176,7 +162,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadTemplateOnAjaxRequest() {
-		if ( isProcessingGiveActionOnAjax() && ! isLegacyForm() ) {
+		if ( FormUtils::isProcessingGiveActionOnAjax() && ! FormUtils::isLegacyForm() ) {
 			$this->loadTemplate();
 		}
 	}
@@ -192,7 +178,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function embedFormRedirectURIHandler() {
-		if ( isProcessingForm() ) {
+		if ( FormUtils::isProcessingForm() ) {
 			add_filter( 'give_get_success_page_uri', [ self::class, 'editSuccessPageURI' ] );
 			add_filter( 'give_get_failed_transaction_uri', [ self::class, 'editFailedPageURI' ] );
 			add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
@@ -214,7 +200,7 @@ class Form {
 		$template = Give()->templates->getTemplate();
 
 		return $template->openSuccessPageInIframe ?
-			createSuccessPageURL( Utils::switchRequestedURL( $url, getIframeParentURL() ) ) :
+			FormUtils::createSuccessPageURL( Utils::switchRequestedURL( $url, FormUtils::getIframeParentURL() ) ) :
 			$url;
 	}
 
@@ -228,10 +214,10 @@ class Form {
 	 */
 	public static function editFailedPageURI( $url ) {
 		/* @var Template $template */
-		$template = Give()->templates->getTemplate( getActiveID() );
+		$template = Give()->templates->getTemplate( FormTemplateUtils::getActiveID() );
 
 		return $template->openFailedPageInIframe ?
-			createFailedPageURL( Utils::switchRequestedURL( $url, getIframeParentURL() ) ) :
+			FormUtils::createFailedPageURL( Utils::switchRequestedURL( $url, FormUtils::getIframeParentURL() ) ) :
 			$url;
 	}
 
@@ -274,8 +260,8 @@ class Form {
 
 		// Exit if redirect is on same website.
 		if ( 0 === strpos( $location, home_url() ) ) {
-			if ( isIframeParentSuccessPageURL( $location ) ) {
-				$location = getSuccessPageURL();
+			if ( FormUtils::isIframeParentSuccessPageURL( $location ) ) {
+				$location = FormUtils::getSuccessPageURL();
 				$location = Utils::removeDonationAction( $location );
 
 				// Open link in window?
@@ -286,13 +272,13 @@ class Form {
 				return $location;
 			}
 
-			if ( isIframeParentFailedPageURL( $location ) ) {
+			if ( FormUtils::isIframeParentFailedPageURL( $location ) ) {
 				$location = add_query_arg( [ 'showFailedDonationError' => 1 ], $template->getFailedPageURL( getFormId() ) );
 				$location = Utils::removeDonationAction( $location );
 
 				// Open link in window?
 				if ( ! $template->openFailedPageInIframe ) {
-					$this->openLinkInWindow( getLegacyFailedPageURL() );
+					$this->openLinkInWindow( FormUtils::getLegacyFailedPageURL() );
 				}
 
 				return $location;
@@ -300,8 +286,8 @@ class Form {
 
 			// Add comment here.
 			if (
-				( ! $template->openSuccessPageInIframe && 0 === strpos( $location, getSuccessPageURL() ) ) ||
-				( ! $template->openFailedPageInIframe && 0 === strpos( $location, getLegacyFailedPageURL() ) )
+				( ! $template->openSuccessPageInIframe && 0 === strpos( $location, FormUtils::getSuccessPageURL() ) ) ||
+				( ! $template->openFailedPageInIframe && 0 === strpos( $location, FormUtils::getLegacyFailedPageURL() ) )
 			) {
 				$this->openLinkInWindow( $location );
 			}
@@ -331,7 +317,7 @@ class Form {
 	 */
 	public function handleSingleDonationFormPage() {
 		// Exit if current form is legacy
-		if ( isLegacyForm() ) {
+		if ( FormUtils::isLegacyForm() ) {
 			return;
 		}
 

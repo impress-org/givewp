@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
 
 /**
@@ -32,7 +32,7 @@ use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
  * @return bool
  **/
 function give_manual_form_ouput() {
-	if ( getActiveId( getFormId() ) === 'legacy') {
+	if ( getActiveId( getFormId() ) === 'legacy' ) {
 		return false;
 	}
 
@@ -49,7 +49,7 @@ function give_manual_form_ouput() {
 							<rect width="83.75" height="67" fill="white"/>
 						</clipPath>
 					</defs>
-				</svg>			
+				</svg>
 			</div>
 			<p style="text-align: center;"><b>%1$s</b></p>
 			<p style="text-align: center;">

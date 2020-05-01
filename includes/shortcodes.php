@@ -11,10 +11,9 @@
 
 // Exit if accessed directly.
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -149,7 +148,7 @@ function give_form_shortcode( $atts ) {
 	$formId     = absint( $atts['id'] );
 
 	// Get active theme
-	$activeTheme = getActiveID( $atts['id'] );
+	$activeTheme = FormTemplateUtils::getActiveID( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
@@ -176,8 +175,8 @@ function give_form_shortcode( $atts ) {
 		// Build iframe url.
 		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) );
 
-		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || isViewingFormReceipt() ) {
-			$url = getSuccessPageURL();
+		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || FormUtils::isViewingFormReceipt() ) {
+			$url = FormUtils::getSuccessPageURL();
 
 		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
 			$url                                     = Give()->templates->getTemplate( $activeTheme )->getFailedPageURL( $formId );

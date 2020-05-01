@@ -1,7 +1,7 @@
 <?php
 
 use Give\Views\IframeView;
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_currency_filter as filterCurrency;
@@ -11,7 +11,7 @@ use Give_Payment as Payment;
 
 /* @var Payment $payment */
 $payment = new Payment( getPaymentId() );
-$options = getTemplateOptions();
+$options = FormTemplateUtils::getOptions();
 
 ob_start();
 ?>

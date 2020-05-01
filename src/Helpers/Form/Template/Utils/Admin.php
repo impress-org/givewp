@@ -5,7 +5,8 @@ use Give\Form\Template;
 use Give\FormAPI\Form\Field;
 use Give\FormAPI\Group;
 use WP_Post;
-use function Give\Helpers\Form\Template\get as getTheme;
+use Give\Helpers\Form\Template as FormTemplateUtils;
+
 
 /**
  * Render template setting in form metabox.
@@ -21,7 +22,7 @@ function renderMetaboxSettings( $template ) {
 
 	ob_start();
 
-	$saveOptions = getTheme( $post->ID, $template->getID() );
+	$saveOptions = FormTemplateUtils::getOptions( $post->ID, $template->getID() );
 
 	/* @var Group $option */
 	foreach ( $template->getOptions()->groups as $group ) {

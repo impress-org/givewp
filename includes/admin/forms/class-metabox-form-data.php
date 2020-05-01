@@ -14,8 +14,7 @@
 use Give\Form\Template;
 use Give\FormAPI\Fields;
 use Give\FormAPI\Group;
-use function Give\Helpers\Form\Template\get as getTemplateSettings;
-use function Give\Helpers\Form\Template\set as SaveTemplateSettings;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 
 /**
  * Give_Meta_Box_Form_Data Class.
@@ -1070,7 +1069,7 @@ class Give_MetaBox_Form_Data {
 
 		/* @var Template\Options $templateOptions */
 		$templateOptions = $template->getOptions();
-		$saveOptions     = getTemplateSettings( $formID );
+		$saveOptions     = FormTemplateUtils::getOptions( $formID );
 
 		/* @var Group $group */
 		foreach ( $templateOptions->groups as $group ) {
@@ -1132,7 +1131,7 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-		SaveTemplateSettings( $formID, $saveOptions );
+		FormTemplateUtils::saveOptions( $formID, $saveOptions );
 	}
 
 
