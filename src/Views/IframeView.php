@@ -199,15 +199,12 @@ class IframeView {
 
 		if ( $this->modal ) {
 			$iframe = sprintf(
-				'<div class="js-embed-form-modal-launcher-wrap">
-					<div class="modal-inner-wrap">
-						<div class="modal-content">
-			    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s<span>&times;</span></a>
-							%1$s
-						</div>
+				'<div class="modal-inner-wrap">
+					<div class="modal-content">
+		    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s<span>&times;</span></a>
+						%1$s
 					</div>
-				</div>
-				',
+				</div>',
 				$iframe,
 				__( 'Close modal', 'give' ),
 				$this->uniqueId
@@ -284,7 +281,7 @@ class IframeView {
 	 */
 	private function loadDefaultConfig() {
 		$this->template  = Give()->templates->getTemplate();
-		$this->minHeight = $this->template->getFormStartingHeight();
+		$this->minHeight = $this->template->getFormStartingHeight( $this->formId );
 
 		$this->url = $this->url ?: $this->getIframeURL();
 	}
