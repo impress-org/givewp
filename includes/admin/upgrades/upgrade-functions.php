@@ -3608,11 +3608,16 @@ function give_v262_upgrades() {
 
 	if ( $licenses ) {
 		foreach ( $licenses as $license ) {
-			// Remove single license which is part of all access pass.
-			// @see https://github.com/impress-org/givewp/issues/4669
 			if ( ! empty( $license['is_all_access_pass'] ) ) {
+				// Remove single license which is part of all access pass.
+				// @see https://github.com/impress-org/givewp/issues/4669
 				$addonSlugs = Give_License::getAddonSlugsFromAllAccessPassLicense( $license );
 				foreach ( $licenses as $license_key => $data ) {
+					// Skip bundle plan license key.
+					if ( ! empty( $data['is_all_access_pass'] ) ) {
+						continue;
+					}
+
 					if ( in_array( $data['plugin_slug'], $addonSlugs, true ) ) {
 						unset( $licenses[ $license_key ] );
 					}
