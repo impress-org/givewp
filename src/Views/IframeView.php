@@ -174,26 +174,37 @@ class IframeView {
 	 * @return string
 	 */
 	private function getIframeHTML() {
+		ob_start();
+		include $this->template->getLoadingView();
+
+		$loader = sprintf(
+			'<div class="iframe-loader">%1$s</div>',
+			ob_get_clean()
+		);
+
 		$iframe = sprintf(
 			'<iframe
-						name="give-embed-form"
-						%1$s
-						%4$s
-						data-autoScroll="%2$s"
-						onload="Give.initializeIframeResize(this)"
-						style="border: 0;visibility: hidden;%3$s"></iframe>',
+				name="give-embed-form"
+				%1$s
+				%4$s
+				data-autoScroll="%2$s"
+				onload="Give.initializeIframeResize(this)"
+				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
 			$this->modal ? "data-src=\"{$this->url}\"" : "src=\"{$this->url}\"",
-			$this->modal ? 0 : $this->autoScroll,
+			$this->autoScroll,
 			$this->minHeight ? "min-height: {$this->minHeight}px;" : '',
-			$this->modal ? 'class="in-modal"' : ''
+			$this->modal ? 'class="in-modal"' : '',
+			$loader
 		);
 
 		if ( $this->modal ) {
 			$iframe = sprintf(
-				'<div class="modal-inner-wrap">
-					<div class="modal-content">
-						%1$s
-						<button class="close-btn js-give-embed-form-modal-closer" aria-label="%2$s" data-form-id="%3$s">&times;</button>
+				'<div class="js-embed-form-modal-launcher-wrap">
+					<div class="modal-inner-wrap">
+						<div class="modal-content">
+			    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s<span>&times;</span></a>
+							%1$s
+						</div>
 					</div>
 				</div>
 				',
@@ -215,11 +226,11 @@ class IframeView {
 	private function getButtonHTML() {
 		return sprintf(
 			'<div>
-						<button
-						type="button"
-						class="js-give-embed-form-modal-opener"
-						data-form-id="%1$s"%3$s>%2$s</button>
-					</div>',
+				<button
+				type="button"
+				class="js-give-embed-form-modal-opener"
+				data-form-id="%1$s"%3$s>%2$s</button>
+			</div>',
 			$this->uniqueId,
 			$this->buttonTitle,
 			$this->buttonColor ? " style=\"background-color: {$this->buttonColor}\"" : ''
@@ -296,15 +307,11 @@ class IframeView {
 		}
 
 		printf(
-			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s<div class="iframe-loader">',
+			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>',
 			$this->modal ? ' is-hide' : '',
 			$this->uniqueId,
 			$this->getIframeHTML()
 		);
-
-		include $this->template->getLoadingView();
-
-		echo '</div></div>';
 
 		return ob_get_clean();
 	}

@@ -24,12 +24,6 @@
 				}, 200 );
 			}
 
-			if ( steps[ step ].showErrors === true ) {
-				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).show();
-			} else {
-				$( '.give_error, .give_warning, .give_success', '.give-form-wrap' ).hide();
-			}
-
 			$( '.step-tracker' ).removeClass( 'current' );
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
@@ -134,6 +128,13 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			setup: () => {
+				$( '#give-amount' ).on( 'blur', function() {
+					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
+						$( '.advance-btn' ).attr( 'disabled', true );
+					} else {
+						$( '.advance-btn' ).attr( 'disabled', false );
+					}
+				} );
 				$( '.give-donation-level-btn' ).each( function() {
 					const hasTooltip = $( this ).attr( 'has-tooltip' );
 					if ( hasTooltip ) {
@@ -166,10 +167,31 @@
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
+				const testNotice = $( '#give_error_test_mode' );
+				$( testNotice ).clone().prependTo( '.give-section.payment' );
+				$( testNotice ).remove();
+
 				// Show Sequoia loader on click/touchend
-				$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
+				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
-					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
+					$( '#give-purchase-button + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader' );
+
+					// Only show spinner if form is valid
+					if ( $( 'form' ).get( 0 ).checkValidity() ) {
+						$( '.sequoia-loader' ).addClass( 'spinning' );
+					}
+				} );
+
+				// Go to choose amount step when donation maximum error is clicked
+				$( 'body.give-form-templates' ).on( 'click touchend', '#give_error_invalid_donation_maximum', function() {
+					// Go to choose amount step
+					navigator.goToStep( 1 );
+				} );
+
+				// Go to choose amount step when invalid donation error is clicked
+				$( 'body.give-form-templates' ).on( 'click touchend', '#give_error_invalid_donation_amount', function() {
+					// Go to choose amount step
+					navigator.goToStep( 1 );
 				} );
 
 				//Setup input icons
@@ -178,6 +200,32 @@
 
 				// Setup gateway icons
 				setupGatewayIcons();
+
+				const observer = new window.MutationObserver( function( mutations ) {
+					mutations.forEach( function( mutation ) {
+						if ( ! mutation.addedNodes ) {
+							return;
+						}
+
+						for ( let i = 0; i < mutation.addedNodes.length; i++ ) {
+							// do things to your newly added nodes here
+							const node = mutation.addedNodes[ i ];
+
+							if ( $( node ).parent().hasClass( 'give-submit-button-wrap' ) && $( node ).hasClass( 'give_errors' ) ) {
+								$( node ).clone().prependTo( '.give-section.payment' );
+								$( node ).remove();
+								$( '.sequoia-loader' ).removeClass( 'spinning' );
+							}
+						}
+					} );
+				} );
+
+				observer.observe( document.body, {
+					childList: true,
+					subtree: true,
+					attributes: false,
+					characterData: false,
+				} );
 			},
 		},
 	];

@@ -34,7 +34,9 @@ jQuery( function( $ ) {
 	} );
 
 	document.querySelectorAll( '.js-give-embed-form-modal-closer' ).forEach( function( button ) {
-		button.addEventListener( 'click', function() {
+		button.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
 			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) );
 
 			document.documentElement.style.overflow = '';
@@ -42,5 +44,66 @@ jQuery( function( $ ) {
 			iframeContainer.classList.remove( 'modal' );
 			iframeContainer.classList.add( 'is-hide' );
 		} );
+	} );
+
+	/**
+	 * Trigger click on embedded form modal launcher when click on grid item form modal launcher.
+	 *
+	 * Note: This code with make form template (other then legacy form template) compatible with form grid.
+	 */
+	document.querySelectorAll( '.js-give-grid-modal-launcher' ).forEach( function( $formModalLauncher ) {
+		$formModalLauncher.addEventListener( 'click', function( evt ) {
+			const $embedFormLauncher = $formModalLauncher.nextElementSibling.firstElementChild,
+				  $magnificPopContainer = document.querySelector( '.mfp-wrap.give-modal' );
+
+			$magnificPopContainer && $magnificPopContainer.classList.add( 'mfp-hide' );
+
+			// Exit if form has legacy form template.
+			if ( ! $embedFormLauncher ) {
+				$magnificPopContainer && $magnificPopContainer.classList.remove( 'mfp-hide' );
+				return;
+			}
+
+			// Do not open magnific poppup.
+			jQuery.magnificPopup.close();
+
+			$embedFormLauncher.click();
+		} );
+	} );
+
+	/**
+	 * Close embed form modal when press "esc" key.
+	 */
+	document.addEventListener( 'keydown', event => {
+		// Exit if pressed keycode is not 27. Only listen for "esc" key
+		if ( event.isComposing || event.keyCode !== 27 ) {
+			return;
+		}
+
+		// Close modal if open.
+		const $modal = document.querySelector( '.give-embed-form-wrapper.modal' );
+		if ( $modal ) {
+			const containerId = $modal.getAttribute( 'id' ),
+				$button = document.querySelector( `.js-give-embed-form-modal-closer[data-form-id="${ containerId }"]` );
+
+			console.log( event.keyCode, $button );
+
+			$button && $button.click();
+		}
+	} );
+
+	window.addEventListener( 'load', function() {
+		/**
+		 * Automatically open form if it is in modal.
+		 */
+		const $iframe = document.querySelector( '.modal-content iframe[data-autoScroll="1"]' );
+		if ( $iframe ) {
+			const containerId = $iframe.parentElement.parentElement.parentElement.getAttribute( 'id' ),
+				  $button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerId }"]` );
+
+			if ( $button ) {
+				$button.click();
+			}
+		}
 	} );
 } );
