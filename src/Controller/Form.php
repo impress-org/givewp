@@ -11,6 +11,7 @@ namespace Give\Controller;
 
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 use Give\Helpers\Utils;
 use Give_Notices;
 use WP_Post;
@@ -31,7 +32,6 @@ use function Give\Helpers\Form\Utils\isIframeParentSuccessPageURL;
 use function Give\Helpers\Form\Utils\isProcessingGiveActionOnAjax;
 use function Give\Helpers\Form\Utils\isViewingForm;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
-use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -150,7 +150,7 @@ class Form {
 	 * @return string
 	 */
 	public function showReceiptInIframeOnSuccessPage( $content ) {
-		$receiptShortcode = getReceiptShortcodeFromConfirmationPage();
+		$receiptShortcode = ShortcodeUtils::getReceiptShortcodeFromConfirmationPage();
 		$content          = str_replace( $receiptShortcode, give_form_shortcode( [] ), $content );
 
 		return $content;
