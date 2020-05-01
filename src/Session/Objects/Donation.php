@@ -1,5 +1,5 @@
 <?php
-namespace Give\ValueObjects\Session;
+namespace Give\Session\Objects;
 
 use DateTime;
 use Give\Helpers\ArrayDataSet;
@@ -7,9 +7,8 @@ use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;
 use InvalidArgumentException;
-use stdClass;
 
-class Donation implements ValueObjects {
+class Donation implements Objects {
 	/**
 	 * Donation id.
 	 *
@@ -64,7 +63,7 @@ class Donation implements ValueObjects {
 	 * @var ValueObjects[]
 	 */
 	private $caseTo = [
-		'formEntries' => FormEntries::class,
+		'formEntries' => FormEntry::class,
 		'donorInfo'   => DonorInfo::class,
 		'cardInfo'    => CardInfo::class,
 	];
@@ -92,7 +91,8 @@ class Donation implements ValueObjects {
 
 		foreach ( $array as $key => $value ) {
 			if ( array_key_exists( $key, $donation->caseTo ) ) {
-				$donation->{$key} = $donation->caseTo[ $key ]::fromArray( $value );
+				$class            = $donation->caseTo[ $key ];
+				$donation->{$key} = $class::fromArray( $value );
 				continue;
 			}
 

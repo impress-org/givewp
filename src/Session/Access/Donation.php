@@ -3,7 +3,7 @@
 namespace Give\Session\Access;
 
 use DateTime;
-use Give\ValueObjects\Session\Donation as DonationObject;
+use Give\Session\Objects\Donation as DonationObject;
 
 /**
  * Class Donation

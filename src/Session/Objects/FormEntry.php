@@ -1,12 +1,11 @@
 <?php
 
-namespace Give\ValueObjects\Session;
+namespace Give\Session\Objects;
 
 use Give\Helpers\ArrayDataSet;
-use Give\ValueObjects\ValueObjects;
 use InvalidArgumentException;
 
-class FormEntries implements ValueObjects {
+class FormEntry implements Objects {
 	/**
 	 * Form Id.
 	 *
@@ -89,7 +88,7 @@ class FormEntries implements ValueObjects {
 	 *
 	 * @param $array
 	 *
-	 * @return FormEntries
+	 * @return FormEntry
 	 */
 	public static function fromArray( $array ) {
 		$renameTo = [
