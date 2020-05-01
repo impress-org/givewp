@@ -89,7 +89,7 @@ abstract class Template {
 	 *
 	 * @return int
 	 **/
-	public function getFormStartingHeight( int $formId ) {
+	public function getFormStartingHeight( $formId ) {
 		return 600;
 	}
 
