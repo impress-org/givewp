@@ -13,7 +13,7 @@
 
 use Give\Form\Template;
 use Give\FormAPI\Fields;
-use Give\FormAPI\Group;
+use Give\FormAPI\Section;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 
 /**
@@ -1071,8 +1071,8 @@ class Give_MetaBox_Form_Data {
 		$templateOptions = $template->getOptions();
 		$saveOptions     = FormTemplateUtils::getOptions( $formID );
 
-		/* @var Group $group */
-		foreach ( $templateOptions->groups as $group ) {
+		/* @var Section $group */
+		foreach ( $templateOptions->sections as $group ) {
 			/* @var Fields $field */
 			foreach ( $group->fields as $field ) {
 				if ( ! isset( $options[ $group->id ][ $field->id ] ) ) {

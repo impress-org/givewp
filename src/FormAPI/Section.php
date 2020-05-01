@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * @since   2.7.0
  * @package Give\Form\Theme
  */
-class Group {
+class Section {
 
 	/**
 	 * Group id.

@@ -3,7 +3,7 @@ namespace Give\Helpers\Form\Template\Utils;
 
 use Give\Form\Template;
 use Give\FormAPI\Form\Field;
-use Give\FormAPI\Group;
+use Give\FormAPI\Section;
 use WP_Post;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 
@@ -25,8 +25,8 @@ class Admin {
 
 		$saveOptions = FormTemplateUtils::getOptions( $post->ID, $template->getID() );
 
-		/* @var Group $option */
-		foreach ( $template->getOptions()->groups as $group ) {
+		/* @var Section $option */
+		foreach ( $template->getOptions()->sections as $group ) {
 			printf(
 				'<div class="give-row %1$s">',
 				$group->id
