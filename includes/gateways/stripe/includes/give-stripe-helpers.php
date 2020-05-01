@@ -54,7 +54,10 @@ function give_stripe_get_connected_account_id( $form_id = 0 ) {
 	$account_id      = '';
 	$default_account = give_stripe_get_default_account( $form_id );
 
-	if ( 'connect' === $default_account['type'] ) {
+	if (
+		! empty( $default_account['type'] ) &&
+		'connect' === $default_account['type']
+	) {
 		$account_id = trim( $default_account['give_stripe_user_id'] );
 	}
 
@@ -1407,7 +1410,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 		) &&
 		! empty( $default_account )
 	) {
-		$default_account_details = $all_accounts[ $default_account ];
+		$default_account_details = isset( $all_accounts[ $default_account ] ) ? $all_accounts[ $default_account ] : [];
 	}
 
 	return $default_account_details;
