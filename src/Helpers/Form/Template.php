@@ -2,7 +2,7 @@
 namespace Give\Helpers\Form;
 
 use Give\Form\Template\LegacyFormSettingCompatibility;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend;
 
 class Template {
 	/**
@@ -14,7 +14,7 @@ class Template {
 	 * @since 2.7.0
 	 */
 	public static function getActiveID( $formId = null ) {
-		return Give()->form_meta->get_meta( $formId ?: FrontendFormTemplateUtils::getFormId(), '_give_form_template', true );
+		return Give()->form_meta->get_meta( $formId ?: Frontend::getFormId(), '_give_form_template', true );
 	}
 
 	/**
@@ -27,7 +27,7 @@ class Template {
 	 * @since 2.7.0
 	 */
 	public static function getOptions( $formId = null, $templateId = '' ) {
-		$formId   = $formId ?: FrontendFormTemplateUtils::getFormId();
+		$formId   = $formId ?: Frontend::getFormId();
 		$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 		$settings = Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
 

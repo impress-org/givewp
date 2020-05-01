@@ -2,9 +2,8 @@
 namespace Give\Helpers\Form;
 
 use Give\Controller\Form;
+use Give\Helpers\Form\Template\Utils\Frontend;
 use Give\Helpers\Utils as GlobalUtils;
-use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 class Utils {
 	/**
@@ -30,7 +29,7 @@ class Utils {
 	 */
 	public static function isProcessingForm() {
 		$base     = Give()->routeForm->getBase();
-		$formName = get_post_field( 'post_name', FrontendFormTemplateUtils::getFormId() );
+		$formName = get_post_field( 'post_name', Frontend::getFormId() );
 		$referer  = trailingslashit( wp_get_referer() );
 
 		return ! empty( $_REQUEST['give_embed_form'] ) ||
@@ -211,10 +210,10 @@ class Utils {
 	 * @since 2.7.0
 	 */
 	public static function isLegacyForm( $formID = null ) {
-		$formID       = $formID ?: getFormId();
-		$formTemplate = FormTemplateUtils::getActiveID( $formID );
+		$formID       = $formID ?: Frontend::getFormId();
+		$formTemplate = Template::getActiveID( $formID );
 
-		return ! $formTemplate || 'legacy' === FormTemplateUtils::getActiveID( $formID );
+		return ! $formTemplate || 'legacy' === Template::getActiveID( $formID );
 	}
 
 }
