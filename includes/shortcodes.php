@@ -12,6 +12,7 @@
 // Exit if accessed directly.
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Utils as GlobalUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
@@ -188,7 +189,7 @@ function give_form_shortcode( $atts ) {
 			trailingslashit( $url )
 		);
 
-		$iframe_url = Utils::removeDonationAction( $iframe_url );
+		$iframe_url = GlobalUtils::removeDonationAction( $iframe_url );
 
 		$uniqueId         = uniqid( 'give-' );
 		$buttonModeActive = 'button' === $atts['display_style'];

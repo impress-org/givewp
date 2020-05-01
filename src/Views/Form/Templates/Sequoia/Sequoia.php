@@ -1,7 +1,6 @@
 <?php
 namespace Give\Views\Form\Templates\Sequoia;
 
-use Give\Controller\Form;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
@@ -56,7 +55,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	public function loadScripts() {
 
 		// Localize Template options
-		$templateOptions = getTemplateOptions();
+		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
