@@ -9,10 +9,6 @@ use Give\ValueObjects\Session\Donation as DonationObject;
  * Class Donation
  *
  * @package Give\Session\Access
- *
- * @property-read string         $sessionKey
- * @property-read DonationObject $dataObj
- * @property-read array          $renameTo
  */
 class Donation extends Access {
 	/**
