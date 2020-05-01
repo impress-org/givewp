@@ -101,6 +101,10 @@ p {
 		font-size: 15px;
 		margin-left: 15px;
 	}
+
+	@media screen and (max-width: $break-phone) {
+		margin-top: 26px;
+	}
 }
 
 .advance-btn:disabled,
@@ -241,6 +245,10 @@ p {
 				background-color: #959595;
 			}
 		}
+
+		@media screen and (max-width: $break-phone) {
+			margin: 5px auto 5px auto;
+		}
 	}
 
 	.secure-notice {
@@ -298,6 +306,16 @@ p {
 		font-size: 16px;
 		font-weight: 500;
 		margin: 18px 70px 29px 70px;
+
+		@media screen and (max-width: $break-phone) {
+			margin: 14px 12px 16px 12px;
+		}
+	}
+
+	.description + .advance-btn {
+		@media screen and (max-width: $break-phone) {
+			margin-top: 10px !important;
+		}
 	}
 
 	.income-stats {
@@ -380,6 +398,10 @@ p {
 		text-align: center;
 		margin: 24px 30px 22px 30px;
 		font-size: 15px;
+
+		@media screen and (max-width: $break-phone) {
+			margin: 20px 20px 16px 20px;
+		}
 	}
 
 	// Amount Total
@@ -390,6 +412,11 @@ p {
 		align-items: center;
 		margin-top: 5px;
 		margin-bottom: 15px;
+
+		@media screen and (max-width: $break-phone) {
+			margin-top: 0;
+			margin-bottom: 5px;
+		}
 
 		.give-donation-amount {
 			@include before-after-content-none;
@@ -403,6 +430,10 @@ p {
 			overflow: hidden;
 			padding: 18px 24px;
 			margin: 0;
+
+			@media screen and (max-width: $break-phone) {
+				padding: 12px 16px;
+			}
 
 			input {
 				height: auto !important;
@@ -434,9 +465,13 @@ p {
 		@include before-after-content-none;
 		display: grid !important;
 		grid-gap: 10px;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		padding: 0;
 		margin: 24px 30px 0 30px !important;
+
+		@media screen and (max-width: $break-phone) {
+			margin: 16px 20px 0 20px !important;
+		}
 
 		li {
 			margin: 0 !important;
@@ -455,9 +490,17 @@ p {
 			padding-top: 24px;
 			padding-bottom: 24px;
 
+			@media screen and (max-width: $break-phone) {
+				font-size: 21px;
+			}
+
 			> .currency {
 				font-size: 14px;
 				margin: 0 6px 11px 0;
+				@media screen and (max-width: $break-phone) {
+					font-size: 11px;
+					margin: 0 3px 6px 0;
+				}
 			}
 
 			&.give-btn-level-custom {
@@ -465,12 +508,21 @@ p {
 				font-size: 18px;
 				line-height: 1.2;
 				padding: 10px;
+
+				@media screen and (max-width: $break-phone) {
+					font-size: 14px;
+				}
 			}
 
 			&.give-default-level {
 				background: #fff;
 				border: 2px solid #28c77b;
 				color: #28c77b;
+			}
+
+			@media screen and (max-width: $break-phone) {
+				padding-top: 16px;
+				padding-bottom: 16px;
 			}
 		}
 	}
@@ -494,6 +546,10 @@ p {
 		font-weight: 500;
 		color: #6b6b6b;
 		text-align: center;
+
+		@media screen and (max-width: $break-phone) {
+			padding: 20px 3px 0;
+		}
 	}
 	.give_notices {
 		width: 100%;
@@ -510,6 +566,10 @@ p {
 		font-size: 12px;
 		color: #767676;
 		text-align: center;
+
+		@media screen and (max-width: $break-phone) {
+			padding: 5px 0 20px 0;
+		}
 	}
 
 	fieldset {
@@ -548,15 +608,40 @@ p {
 					font-size: 14px;
 					text-align: left;
 					padding-left: 23px;
+					padding-right: 12px;
 					font-weight: 600;
 					color: #333;
 					flex-grow: 1;
-					line-height: 1;
+					line-height: 1.4;
 				}
 			}
 
 			> li.give_purchase_form_wrap-clone {
 				background-color: transparent;
+				margin-right: 0;
+
+				.no-fields {
+					background: #fbfbfb;
+					padding: 6px 16px;
+
+					p {
+						color: #333;
+					}
+				}
+
+				fieldset {
+					ol {
+						list-style: none;
+						padding-left: 0;
+
+						li {
+							font-size: 15px;
+							line-height: 24px;
+							margin-top: 8px;
+							margin-bottom: 10px;
+						}
+					}
+				}
 			}
 
 			input[type='radio'] {
@@ -566,7 +651,7 @@ p {
 			label::before {
 				content: ' ';
 				position: absolute;
-				top: 13px;
+				top: calc(50% - 10px);
 				left: 15px;
 				width: 16px;
 				height: 16px;
@@ -587,7 +672,7 @@ p {
 				width: 8px;
 				height: 8px;
 				position: absolute;
-				top: 18px;
+				top: calc(50% - 5px);
 				left: 20px;
 				content: ' ';
 				display: block;
@@ -612,7 +697,7 @@ p {
 			.sequoia-loader {
 				height: 30px;
 				width: 30px;
-				bottom: 34px;
+				bottom: 32px;
 				position: absolute;
 				font-size: 4px;
 			}
@@ -695,17 +780,27 @@ fieldset {
 	margin: 0 !important;
 
 	&::after {
+		display: block;
+		padding: 12px 18px;
 		background: #383838;
 		color: #fff;
-		padding: 12px 18px;
 		font-size: 16px;
 		font-family: 'Montserrat', sans-serif;
 		border-radius: 4px;
-		line-height: 12px;
+		line-height: 1.2;
 		text-align: center;
-		white-space: nowrap;
 		text-shadow: 0 -1px 0 #000;
 		box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+		word-wrap: normal;
+		white-space: normal;
+		width: fit-content;
+		max-width: 136px;
+	}
+
+	&.wide {
+		&::after {
+			width: 136px;
+		}
 	}
 }
 

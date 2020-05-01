@@ -143,12 +143,19 @@
 
 					const value = $( this ).attr( 'value' );
 					const text = $( this ).text();
+					const symbol = window.give_global_vars.currency_sign;
+					const position = window.give_global_vars.currency_pos;
+
 					if ( value !== 'custom' ) {
-						const wrap = `<span class="give-tooltip hint--top hint--bounce" style="width: 100%" aria-label="${ text }" rel="tooltip"></span>`;
-						const symbol = $( '.give-currency-symbol' ).text();
-						const position = $( '.give-currency-symbol' ).hasClass( 'give-currency-position-before' ) ? 'before' : 'after';
 						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
 						$( this ).html( html );
+					}
+
+					// Setup string to check tooltip label ga
+					const compare = position === 'before' ? symbol + value : value + symbol;
+					// Setup tooltip unless for custom donation level, or if level label matches value
+					if ( value !== 'custom' && text !== compare ) {
+						const wrap = `<span class="give-tooltip hint--top hint--bounce ${ text.length > 50 ? 'wide' : '' }" style="width: 100%" aria-label="${ text.length < 50 ? text : text.substr( 0, 50 ) + '...' }" rel="tooltip"></span>`;
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
 					}
@@ -197,6 +204,7 @@
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
+				setupInputIcon( '#give-company-wrap', 'building' );
 
 				// Setup gateway icons
 				setupGatewayIcons();
@@ -232,19 +240,22 @@
 
 	navigator.init();
 
-	// Move payment information section when document load.
-	moveFieldsUnderPaymentGateway( true );
-
-	// Move payment information section when gateway updated.
-	$( document ).on( 'give_gateway_loaded', function() {
+	// Check if only a single gateway is enabled
+	if ( $( '#give-payment-mode-select' ).css( 'display' ) !== 'none' ) {
+		// Move payment information section when document load.
 		moveFieldsUnderPaymentGateway( true );
-	} );
-	$( document ).on( 'Give:onPreGatewayLoad', function() {
-		moveFieldsUnderPaymentGateway( false );
-	} );
 
-	// Refresh payment information section.
-	$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+		// Move payment information section when gateway updated.
+		$( document ).on( 'give_gateway_loaded', function() {
+			moveFieldsUnderPaymentGateway( true );
+		} );
+		$( document ).on( 'Give:onPreGatewayLoad', function() {
+			moveFieldsUnderPaymentGateway( false );
+		} );
+
+		// Refresh payment information section.
+		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+	}
 
 	/**
 	 * Move form field under payment gateway
