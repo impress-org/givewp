@@ -41,6 +41,10 @@ ob_start();
 		foreach ( $receiptDetails->getDetailGroupList() as $groupId ) {
 			$group = $receiptDetails->get( $groupId );
 
+			if ( ! $group->canShow() ) {
+				continue;
+			}
+
 			echo '<div class="details">';
 			if ( $group->heading ) {
 				printf( '<h3 class="headline">%1$s</h3>', $group->heading );
