@@ -12,10 +12,6 @@ use stdClass;
  * This class helps to convert them into objects. Every subclass will treat a specific key as group of session data.
  *
  * @package Give\Session
- *
- * @property-read string   $sessionKey
- * @property-read array    $data
- * @property-read stdClass $dataObj
  */
 abstract class Accessor {
 	/**
