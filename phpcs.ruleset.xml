@@ -17,6 +17,7 @@
 	<!-- Bring in WP rules. -->
 	<rule ref="WordPress-Core">
 			<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+			<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
 	</rule>
 
 	<!-- Add this hopefully soon -->
