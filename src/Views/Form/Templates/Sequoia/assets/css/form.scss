@@ -313,6 +313,8 @@ p {
 	}
 
 	.description + .advance-btn {
+		margin-top: 6px !important;
+
 		@media screen and (max-width: $break-phone) {
 			margin-top: 10px !important;
 		}
