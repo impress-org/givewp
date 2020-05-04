@@ -2,8 +2,7 @@
 namespace Give\Receipt\Detail\Donor;
 
 use Give\Receipt\Detail;
-use function give_get_payment_donor_id as getDonationDonorId;
-use function give_get_donor_name_by as getDonorNameBy;
+use function give_get_payment_meta as getDonationDonorName;
 
 class Name extends Detail {
 	/**
@@ -17,6 +16,9 @@ class Name extends Detail {
 	 * @inheritDoc
 	 */
 	public function getValue() {
-		return getDonorNameBy( getDonationDonorId( $this->donationId ) );
+		$firstName = getDonationDonorName( $this->donationId, '_give_donor_billing_first_name', true );
+		$lastName  = getDonationDonorName( $this->donationId, '_give_donor_billing_last_name', true );
+
+		return trim( "{$firstName} {$lastName}" );
 	}
 }
