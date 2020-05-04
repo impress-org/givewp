@@ -2,7 +2,6 @@
 
 namespace Give\ValueObjects;
 
-use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;
 
 class DonorInfo implements ValueObjects {

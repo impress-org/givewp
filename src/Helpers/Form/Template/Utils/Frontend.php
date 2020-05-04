@@ -1,6 +1,7 @@
 <?php
 namespace Give\Helpers\Form\Template\Utils\Frontend;
 
+use Give\Session\SessionDonation\DonationAccessor;
 use WP_Post;
 
 /**
@@ -49,10 +50,8 @@ function getFormId() {
 	}
 
 	// Get form id from donor purchase session.
-	$donorSession = give_get_purchase_session();
-	$formId       = ! empty( $donorSession['post_data']['give-form-id'] ) ?
-		absint( $donorSession['post_data']['give-form-id'] ) :
-		null;
+	$session = new DonationAccessor();
+	$formId  = $session->getFormId();
 
 	if ( $formId ) {
 		return $formId;
