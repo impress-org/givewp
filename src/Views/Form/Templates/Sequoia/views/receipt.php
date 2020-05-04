@@ -16,7 +16,6 @@ $sequoiaTemplate = Give()->templates->getTemplate();
 
 $receiptDetails = $sequoiaTemplate->getReceiptDetails( $payment->ID );
 
-
 ob_start();
 ?>
 <div class="give-receipt-wrap give-embed-receipt">
