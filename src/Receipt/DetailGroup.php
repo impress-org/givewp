@@ -45,19 +45,6 @@ abstract class DetailGroup {
 		return $this->details[ $class ];
 	}
 
-
-	/**
-	 * Add detail to group.
-	 *
-	 * @param string $id
-	 * @param Detail $detail
-	 *
-	 * @since 2.7.0
-	 */
-	public function addDetail( $id, $detail ) {
-		$this->detailsList[ $id ] = $detail;
-	}
-
 	/**
 	 * Get details list.
 	 *
@@ -65,5 +52,14 @@ abstract class DetailGroup {
 	 */
 	public function getDetailsList() {
 		return $this->detailsList;
+	}
+
+	/**
+	 * Return whether or not to render details group.
+	 *
+	 * @return bool
+	 */
+	public function canShow() {
+		return true;
 	}
 }
