@@ -753,7 +753,7 @@ endif; // End if class_exists check
  * @since 1.0
  * @return object|Give
  */
-function Give() {
+function Give() { // phpcs:ignore
 	return Give::instance();
 }
 
