@@ -10,6 +10,7 @@
 namespace Give\Form;
 
 use Give\Form\Template\Options;
+use Give\Receipt\Receipt;
 use function Give\Helpers\Form\Utils\createFailedPageURL;
 
 defined( 'ABSPATH' ) || exit;
@@ -244,5 +245,19 @@ abstract class Template {
 	 */
 	public function getDonationIntroductionContentPosition() {
 		return null;
+	}
+
+	/**
+	 * Get receipt details.
+	 *
+	 * @since 2.7.0
+	 * @param int|null $donationId
+	 *
+	 * @return Receipt
+	 */
+	public function getReceiptDetails( $donationId = null ) {
+		$receipt = new Receipt( $donationId );
+
+		return $receipt->get();
 	}
 }
