@@ -17,6 +17,16 @@ class BillingAddress extends Detail {
 	 * @inheritDoc
 	 */
 	public function getValue() {
-		return getDonorAddress( getDonationDonorId( $this->donationId ) );
+		$address = getDonorAddress( getDonationDonorId( $this->donationId ) );
+
+		return sprintf(
+			'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
+			$address['line1'],
+			! empty( $address['line2'] ) ? $address['line2'] . '<br>' : '',
+			$address['city'],
+			$address['state'],
+			$address['zip'],
+			$address['country']
+		);
 	}
 }
