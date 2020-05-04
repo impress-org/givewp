@@ -11,7 +11,10 @@ class Status extends Detail {
 		return __( 'PAYMENT STATUS', 'give' );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getValue() {
-		return '';
+		return give_get_payment_statuses()[ get_post_status( $this->donationId ) ];
 	}
 }

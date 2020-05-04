@@ -2,6 +2,8 @@
 namespace Give\Receipt\Detail\Donation;
 
 use Give\Receipt\Detail;
+use function give_get_payment_meta as getDonationMetaData;
+use function give_get_gateway_admin_label as getGatewayLabel;
 
 class PaymentGateway extends Detail {
 	/**
@@ -15,6 +17,6 @@ class PaymentGateway extends Detail {
 	 * @inheritDoc
 	 */
 	public function getValue() {
-		return '';
+		return getGatewayLabel( getDonationMetaData( $this->donationId, '_give_payment_gateway', true ) );
 	}
 }
