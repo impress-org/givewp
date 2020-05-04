@@ -84,8 +84,6 @@ ob_start();
 			}
 			echo '</div>';
 		}
-
-		require 'subscription-details.php';
 		?>
 		<!-- Download Receipt TODO: make this conditional on presence of pdf receipts addon -->
 		<button class="give-btn download-btn">
