@@ -251,13 +251,11 @@ abstract class Template {
 	 * Get receipt details.
 	 *
 	 * @since 2.7.0
-	 * @param int|null $donationId
+	 * @param int $donationId
 	 *
 	 * @return Receipt
 	 */
-	public function getReceiptDetails( $donationId = null ) {
-		$receipt = new Receipt( $donationId );
-
-		return $receipt->get();
+	public function getReceiptDetails( $donationId ) {
+		return new Receipt( $donationId );
 	}
 }
