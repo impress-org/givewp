@@ -1,5 +1,5 @@
 <?php
-namespace Give\Donation\SessionObjects;
+namespace Give\Session\SessionDonation\SessionObjects;
 
 use DateTime;
 use Give\Helpers\ArrayDataSet;
@@ -63,9 +63,9 @@ class Donation implements Objects {
 	 * @var ValueObjects[]
 	 */
 	private $caseTo = [
-		'formEntries' => FormEntry::class,
-		'donorInfo'   => DonorInfo::class,
-		'cardInfo'    => CardInfo::class,
+		'formEntry' => FormEntry::class,
+		'donorInfo' => DonorInfo::class,
+		'cardInfo'  => CardInfo::class,
 	];
 
 	/**
@@ -76,7 +76,7 @@ class Donation implements Objects {
 	 * @return Donation
 	 */
 	public static function fromArray( $array ) {
-		$expectedKeys = [ 'id', 'totalAmount', 'purchaseKey', 'donorEmail', 'createdAt', 'paymentGateway', 'formEntries', 'cardInfo', 'donorInfo' ];
+		$expectedKeys = [ 'id', 'totalAmount', 'purchaseKey', 'donorEmail', 'createdAt', 'paymentGateway', 'formEntry', 'cardInfo', 'donorInfo' ];
 
 		if ( ! ArrayDataSet::hasRequiredKeys( $array, $expectedKeys ) ) {
 			throw new InvalidArgumentException(
