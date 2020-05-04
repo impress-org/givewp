@@ -98,7 +98,12 @@ abstract class Accessor {
 	 * @since 2.7.0
 	 */
 	public function getByKey( $key ) {
-		return property_exists( $this->dataObj, $key ) ? $this->dataObj->{$key} : null;
+		$result = null;
+
+		if ( null !== $this->dataObj ) {
+			$result = property_exists( $this->dataObj, $key ) ? $this->dataObj->{$key} : $result;
+		}
+		return $result;
 	}
 
 	/**

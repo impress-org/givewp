@@ -2,8 +2,9 @@
 namespace Give\Session\SessionDonation;
 
 use DateTime;
-use Give\Donation\SessionObjects\Donation as DonationObject;
+use Give\Session\SessionDonation\SessionObjects\Donation as DonationObject;
 use Give\Session\Accessor;
+use Give\Session\SessionDonation\SessionObjects\FormEntry;
 
 /**
  * Class Donation
@@ -49,10 +50,14 @@ class DonationAccessor extends Accessor {
 	 *
 	 * @param array $data
 	 *
-	 * @return DonationObject
+	 * @return DonationObject|null
 	 * @since 2.7.0
 	 */
 	protected function convertToObject( $data ) {
+		if ( ! $data ) {
+			return null;
+		}
+
 		// Cast date string to DateTime object.
 		$data['date'] = DateTime::createFromFormat( 'Y-m-d H:i:s', $data['date'] );
 
@@ -78,6 +83,26 @@ class DonationAccessor extends Accessor {
 	 * @since 2.7.0
 	 */
 	public function getDonationId() {
-		return absint( $this->getByKey( 'id' ) );
+		if ( $donationId = $this->getByKey( 'id' ) ) {
+			return absint( $donationId );
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get donation id.
+	 *
+	 * @return int
+	 *
+	 * @since 2.7.0
+	 */
+	public function getFormId() {
+		/* @var FormEntry $data */
+		if ( $data = $this->getByKey( 'formEntry' ) ) {
+			return absint( $data->formId );
+		}
+
+		return null;
 	}
 }
