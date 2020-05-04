@@ -32,6 +32,21 @@ class Receipt {
 	 */
 	public function __construct( $donationId ) {
 		$this->donationId = $donationId;
+
+		$this->setupReceipt();
+
+	}
+
+	/**
+	 * Setup receipt.
+	 */
+	private function setupReceipt() {
+		/**
+		 * Filter the details group list.
+		 *
+		 * Developer can use this filter hook to register there details group.
+		 */
+		$this->detailsGroupList = apply_filters( 'give_get_receipt_details_group_list', $this->detailsGroupList, $this );
 	}
 
 	/**
@@ -42,13 +57,14 @@ class Receipt {
 	 * @return DetailGroup
 	 */
 	public function get( $class ) {
-		if ( in_array( $class, $this->detailsGroup, true ) ) {
-			return $this->detailsGroup[ $class ];
+		if ( ! in_array( $class, $this->detailsGroup, true ) ) {
+			$classNames                   = array_flip( $this->getDetailGroupList() );
+			$this->detailsGroup[ $class ] = null;
+
+			if ( array_key_exists( $class, $classNames ) ) {
+				$this->detailsGroup[ $class ] = new $this->detailsGroupList[ $classNames[ $class ] ]( $this->donationId );
+			}
 		}
-
-		$classNames = array_flip( $this->getDetailGroupList() );
-
-		$this->detailsGroup[ $class ] = new $this->detailsGroupList[ $classNames[ $class ] ]( $this->donationId );
 
 		return $this->detailsGroup[ $class ];
 	}
@@ -58,15 +74,5 @@ class Receipt {
 	 */
 	public function getDetailGroupList() {
 		return $this->detailsGroupList;
-	}
-
-	/**
-	 * Add details group to receipt.
-	 *
-	 * @since 2.7.0
-	 * @param string $class
-	 */
-	public function addDetailsGroup( $class ) {
-		$this->detailsGroupList[] = $class;
 	}
 }
