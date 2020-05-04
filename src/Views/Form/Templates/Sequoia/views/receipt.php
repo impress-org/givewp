@@ -103,7 +103,7 @@ ob_start();
 				</div>
 				<?php if ( ! empty( $payment->address['line1'] ) ) : ?>
 					<div class="details-row">
-						<i class="fas fa-envelope"></i>
+						<i class="fas fa-globe-americas"></i>
 						<div class="detail">
 							<?php _e( 'Billing Address', 'give' ); ?>
 						</div>
