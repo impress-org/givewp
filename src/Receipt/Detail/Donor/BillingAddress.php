@@ -2,8 +2,7 @@
 namespace Give\Receipt\Detail\Donor;
 
 use Give\Receipt\Detail;
-use function give_get_payment_donor_id as getDonationDonorId;
-use function give_get_donor_address as getDonorAddress;
+use function give_get_donation_address as getDonationDonorAddress;
 
 class BillingAddress extends Detail {
 	/**
@@ -17,7 +16,11 @@ class BillingAddress extends Detail {
 	 * @inheritDoc
 	 */
 	public function getValue() {
-		$address = getDonorAddress( getDonationDonorId( $this->donationId ) );
+		$address = getDonationDonorAddress( $this->donationId );
+
+		if ( ! array_filter( $address ) ) {
+			return '';
+		}
 
 		return sprintf(
 			'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
