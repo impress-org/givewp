@@ -1,0 +1,21 @@
+<?php
+namespace Give\Receipt\Detail\Donor;
+
+use Give\Receipt\Detail;
+use function give_get_donation_donor_email as getDonationDonorEmail;
+
+class Email extends Detail {
+	/**
+	 * @inheritDoc
+	 */
+	public function getLabel() {
+		return __( 'EMAIL ADDRESS', 'give' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getValue() {
+		return getDonationDonorEmail( $this->donationId );
+	}
+}
