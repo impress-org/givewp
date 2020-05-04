@@ -12,7 +12,7 @@ namespace Give\Controller;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give\Helpers\Frontend\ConfirmDonation;
-use Give\Session\Access\Donation as DonationSessionAccess;
+use Give\Session\SessionDonation\DonationAccessor;
 use Give_Notices;
 use WP_Post;
 use function Give\Helpers\Form\Template\getActiveID;
@@ -90,7 +90,7 @@ class Form {
 
 				// Show donation processing template.
 				if ( ConfirmDonation::isConfirming() ) {
-					$session    = new DonationSessionAccess();
+					$session    = new DonationAccessor();
 					$donationId = $session->getDonationId();
 
 					/**

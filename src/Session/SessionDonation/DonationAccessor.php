@@ -1,16 +1,16 @@
 <?php
-
-namespace Give\Session\Access;
+namespace Give\Session\SessionDonation;
 
 use DateTime;
-use Give\Session\Objects\Donation as DonationObject;
+use Give\Donation\SessionObjects\Donation as DonationObject;
+use Give\Session\Accessor;
 
 /**
  * Class Donation
  *
  * @package Give\Session\Access
  */
-class Donation extends Access {
+class DonationAccessor extends Accessor {
 	/**
 	 * Session Id
 	 *

@@ -2,7 +2,7 @@
 
 namespace Give\Helpers\Frontend;
 
-use Give\Session\Access\Donation as DonationSessionAccess;
+use Give\Session\SessionDonation\DonationAccessor;
 use function Give\Helpers\Form\Utils\isViewingFormReceipt;
 
 /**
@@ -26,7 +26,7 @@ class ConfirmDonation {
 		if ( $isShowingDonationReceipt ) {
 			$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
 
-			$session = new DonationSessionAccess();
+			$session = new DonationAccessor();
 			$session->store( "postDataFor{$paymentGatewayId}", array_map( 'give_clean', $_POST ) );
 
 			return true;
@@ -45,7 +45,7 @@ class ConfirmDonation {
 	public static function removePostedDataFromDonationSession() {
 		$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
 
-		$session = new DonationSessionAccess();
+		$session = new DonationAccessor();
 		$session->delete( "postDataFor{$paymentGatewayId}" );
 	}
 

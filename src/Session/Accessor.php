@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Session\Access;
+namespace Give\Session;
 
 use InvalidArgumentException;
 use stdClass;
@@ -17,7 +17,7 @@ use stdClass;
  * @property-read array    $data
  * @property-read stdClass $dataObj
  */
-abstract class Access {
+abstract class Accessor {
 	/**
 	 * Session Id.
 	 *

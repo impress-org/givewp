@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Session\Objects;
+namespace Give\Donation\SessionObjects;
 
 use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;

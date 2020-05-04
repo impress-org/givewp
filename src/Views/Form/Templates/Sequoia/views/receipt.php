@@ -1,6 +1,6 @@
 <?php
 
-use Give\Session\Access\Donation as DonationSessionAccess;
+use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\IframeView;
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
 use function give_get_gateway_admin_label as getGatewayLabel;
@@ -10,9 +10,9 @@ use function give_sanitize_amount as sanitizeAmount;
 use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
 
-$donationSessionAccess = new DonationSessionAccess();
-$donation              = new Payment( $donationSessionAccess->getDonationId() );
-$options               = getTemplateOptions();
+$donationSessionAccessor = new DonationAccessor();
+$donation                = new Payment( $donationSessionAccessor->getDonationId() );
+$options                 = getTemplateOptions();
 
 ob_start();
 ?>

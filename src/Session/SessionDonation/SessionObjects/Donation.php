@@ -1,5 +1,5 @@
 <?php
-namespace Give\Session\Objects;
+namespace Give\Donation\SessionObjects;
 
 use DateTime;
 use Give\Helpers\ArrayDataSet;
