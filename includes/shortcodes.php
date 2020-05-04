@@ -10,13 +10,11 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helpers\Form\Template\getActiveID;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\isViewingFormFailedPage;
-use function Give\Helpers\Form\Utils\isViewingFormReceipt;
-use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
-use function Give\Helpers\removeDonationAction;
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Utils as GlobalUtils;
+use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -67,7 +65,7 @@ function give_donation_history( $atts, $content = false ) {
 	) {
 		ob_start();
 
-		echo do_shortcode( getReceiptShortcodeFromConfirmationPage() );
+		echo do_shortcode( ShortcodeUtils::getReceiptShortcodeFromConfirmationPage() );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
@@ -147,11 +145,11 @@ function give_form_shortcode( $atts ) {
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
 	// Set form id.
-	$atts['id'] = $atts['id'] ?: getFormId();
+	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
 	$formId     = absint( $atts['id'] );
 
 	// Get active theme
-	$activeTheme = getActiveID( $atts['id'] );
+	$activeTheme = FormTemplateUtils::getActiveID( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
@@ -178,8 +176,8 @@ function give_form_shortcode( $atts ) {
 		// Build iframe url.
 		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) );
 
-		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || isViewingFormReceipt() ) {
-			$url = getSuccessPageURL();
+		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || FormUtils::isViewingFormReceipt() ) {
+			$url = FormUtils::getSuccessPageURL();
 
 		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
 			$url                                     = Give()->templates->getTemplate( $activeTheme )->getFailedPageURL( $formId );
@@ -191,7 +189,7 @@ function give_form_shortcode( $atts ) {
 			trailingslashit( $url )
 		);
 
-		$iframe_url = removeDonationAction( $iframe_url );
+		$iframe_url = GlobalUtils::removeDonationAction( $iframe_url );
 
 		$uniqueId         = uniqid( 'give-' );
 		$buttonModeActive = 'button' === $atts['display_style'];

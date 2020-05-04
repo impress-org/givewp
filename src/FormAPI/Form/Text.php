@@ -2,8 +2,6 @@
 
 namespace Give\FormAPI\Form;
 
-use InvalidArgumentException;
-
 class Text extends Field {
 	/**
 	 * Before field.

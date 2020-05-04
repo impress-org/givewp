@@ -1,8 +1,8 @@
 <?php
 
 use Give\Views\IframeView;
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
-use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
+use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_currency_filter as filterCurrency;
 use function give_sanitize_amount as sanitizeAmount;
@@ -10,8 +10,8 @@ use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
 
 /* @var Payment $payment */
-$payment = new Payment( getPaymentId() );
-$options = getTemplateOptions();
+$payment = new Payment( FrontendFormTemplateUtils::getPaymentId() );
+$options = FormTemplateUtils::getOptions();
 
 ob_start();
 ?>

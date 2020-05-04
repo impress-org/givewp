@@ -4,7 +4,7 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use \Give_Donate_Form as DonationForm;
 
 /**
@@ -18,7 +18,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 */
 	public function getFormStartingHeight( $formId ) {
 		$form            = new DonationForm( $formId );
-		$templateOptions = getTemplateOptions( $formId );
+		$templateOptions = FormTemplateUtils::getOptions( $formId );
 		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
 			return 645;
 		}
@@ -55,7 +55,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	public function loadScripts() {
 
 		// Localize Template options
-		$templateOptions = getTemplateOptions();
+		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );

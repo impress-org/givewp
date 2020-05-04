@@ -2,7 +2,7 @@
 
 namespace Give\Form\Template;
 
-use Give\FormAPI\Group;
+use Give\FormAPI\Section;
 
 /**
  * Class Options
@@ -17,7 +17,7 @@ class Options {
 	 * @since 2.7.0
 	 * @var array
 	 */
-	public $groups = [];
+	public $sections = [];
 
 	/**
 	 * ThemeOptions constructor.
@@ -31,8 +31,8 @@ class Options {
 		$options = new static();
 
 		foreach ( $array as $id => $group ) {
-			$group['id']       = $id;
-			$options->groups[] = Group::fromArray( $group );
+			$group['id']         = $id;
+			$options->sections[] = Section::fromArray( $group );
 		}
 
 		return $options;

@@ -11,7 +11,7 @@ namespace Give\Form;
 
 use Give\Views\Form\Templates\Legacy\Legacy;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -89,7 +89,7 @@ class Templates {
 	 * @since 2.7.0
 	 */
 	public function getTemplate( $templateId = null ) {
-		$templateId = $templateId ?: getActiveID();
+		$templateId = $templateId ?: FormTemplateUtils::getActiveID();
 
 		if ( isset( $this->templateObjs[ $templateId ] ) ) {
 			return $this->templateObjs[ $templateId ];
