@@ -38,7 +38,7 @@ class DonationAccessor extends Accessor {
 	private $renameTo = [
 		'user_email'  => 'donorEmail',
 		'user_info'   => 'donorInfo',
-		'post_data'   => 'formEntries',
+		'post_data'   => 'formEntry',
 		'donation_id' => 'id',
 		'price'       => 'totalAmount',
 		'gateway'     => 'paymentGateway',
