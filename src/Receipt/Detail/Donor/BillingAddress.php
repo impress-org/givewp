@@ -32,4 +32,8 @@ class BillingAddress extends Detail {
 			$address['country']
 		);
 	}
+
+	public function getIcon() {
+		return '<i class="fas fa-envelope"></i>';
+	}
 }

@@ -26,4 +26,14 @@ abstract  class Detail {
 	 * @return mixed
 	 */
 	abstract public function getValue();
+
+
+	/**
+	 * Return icon which represent detail.
+	 *
+	 * @return string
+	 */
+	public function getIcon() {
+		return '';
+	}
 }

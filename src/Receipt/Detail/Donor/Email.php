@@ -18,4 +18,11 @@ class Email extends Detail {
 	public function getValue() {
 		return getDonationDonorEmail( $this->donationId );
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getIcon() {
+		return '<i class="fas fa-envelope"></i>';
+	}
 }

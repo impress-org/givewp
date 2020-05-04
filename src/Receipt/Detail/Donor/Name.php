@@ -21,4 +21,11 @@ class Name extends Detail {
 
 		return trim( "{$firstName} {$lastName}" );
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getIcon() {
+		return '<i class="fas fa-user"></i>';
+	}
 }
