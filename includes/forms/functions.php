@@ -77,6 +77,7 @@ function give_is_float_labels_enabled( $args ) {
 		$float_labels = give_get_option( 'floatlabels', 'disabled' );
 	}
 
+	// If the form is using a non-legacy form template, do not use floating labels
 	if ( !isLegacyForm( $args['form_id'] ) ) {
 		$float_labels = 'disabled';
 	}
