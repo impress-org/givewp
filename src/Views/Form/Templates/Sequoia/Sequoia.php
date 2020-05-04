@@ -8,7 +8,6 @@ use Give\Receipt\Receipt;
 use function Give\Helpers\Form\Template\get;
 use function Give\Helpers\Form\Template\get as getTemplateOptions;
 use \Give_Donate_Form as DonationForm;
-use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
 use function give_do_email_tags as formatContent;
 
 
