@@ -10,7 +10,7 @@ abstract class DetailGroup {
 	/**
 	 * @var Detail[]
 	 */
-	public $details;
+	public $details = [];
 
 	/**
 	 * Array of class names.
