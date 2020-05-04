@@ -11,9 +11,9 @@ class Donation extends DetailGroup {
 	public $groupId = 'donationDetails';
 
 	protected $detailsList = [
-		Amount::class,
 		PaymentGateway::class,
 		Status::class,
+		Amount::class,
 		TotalAmount::class,
 	];
 }
