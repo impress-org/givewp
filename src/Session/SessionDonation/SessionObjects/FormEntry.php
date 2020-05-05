@@ -6,6 +6,13 @@ use Give\Helpers\ArrayDataSet;
 use Give\Session\Objects;
 use InvalidArgumentException;
 
+/**
+ * Class FormEntry
+ *
+ * This class use to represent donation form entries as object.
+ *
+ * @package Give\Session\SessionDonation\SessionObjects
+ */
 class FormEntry implements Objects {
 	/**
 	 * Form Id.

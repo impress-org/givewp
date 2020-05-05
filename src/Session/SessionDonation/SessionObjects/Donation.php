@@ -9,6 +9,16 @@ use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;
 use InvalidArgumentException;
 
+
+/**
+ * Class Donation
+ *
+ * This class is use to represent donation session data as object.
+ * You can add custom data but that data only store momentarily because of donation session time limit.
+ * This does not represent actual Donation model instead of that it has few donation related information which required for donation processing.
+ *
+ * @package Give\Session\SessionDonation\SessionObjects
+ */
 class Donation implements Objects {
 	/**
 	 * Donation id.

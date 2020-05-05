@@ -9,6 +9,8 @@ use Give\Session\SessionDonation\SessionObjects\FormEntry;
 /**
  * Class Donation
  *
+ * This class provide way to access donation session data.
+ *
  * @package Give\Session\Access
  */
 class DonationAccessor extends Accessor {

@@ -1,6 +1,10 @@
 <?php
 namespace Give\Session;
 
+/**
+ * Interface Objects
+ * @package Give\Session
+ */
 interface Objects {
 	/**
 	 * Take array return object
