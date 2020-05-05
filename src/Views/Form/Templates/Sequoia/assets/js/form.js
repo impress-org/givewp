@@ -178,6 +178,11 @@
 				$( testNotice ).clone().prependTo( '.give-section.payment' );
 				$( testNotice ).remove();
 
+				// Perist fee recovery input border when selected
+				$( '.give-fee-recovery-donors-choice > label' ).on( 'click', function() {
+					$( '.give-fee-recover-donors-choice' ).toggleClass( 'active' );
+				} );
+
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
