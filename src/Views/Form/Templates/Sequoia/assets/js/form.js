@@ -179,8 +179,8 @@
 				$( testNotice ).remove();
 
 				// Perist fee recovery input border when selected
-				$( '.give-fee-recovery-donors-choice > label' ).on( 'click', function() {
-					$( '.give-fee-recover-donors-choice' ).toggleClass( 'active' );
+				$( '.give-fee-message-label-text' ).on( 'click touchend', function() {
+					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
 				} );
 
 				// Show Sequoia loader on click/touchend

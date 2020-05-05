@@ -46,9 +46,9 @@
 		}
 	}
 
-	// &.active {
-	// 	border: 1px solid #3398db;
-	// }
+	&.active {
+		border: 1px solid #3398db;
+	}
 
 	input[type='checkbox']:checked + .give-fee-message-label-text::after {
 		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
