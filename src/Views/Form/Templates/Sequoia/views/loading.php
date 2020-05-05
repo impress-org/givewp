@@ -1,7 +1,7 @@
 <?php
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 
-$templateOptions = getTemplateOptions();
+$templateOptions = FormTemplateUtils::getOptions();
 $primaryColor    = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
 $primaryColor    = trim( $primaryColor, '#' );
 

@@ -8,9 +8,8 @@
 namespace Give\Views;
 
 use Give\Form\Template;
-use function Give\Helpers\Form\Utils\getSuccessPageURL;
-use function Give\Helpers\Form\Utils\isViewingFormReceipt;
-use function Give\Helpers\removeDonationAction;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Utils as GlobalUtils;
 
 /**
  * Class IframeView
@@ -260,8 +259,8 @@ class IframeView {
 		// Build iframe url.
 		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $this->formId ) );
 
-		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || isViewingFormReceipt() ) {
-			$url = getSuccessPageURL();
+		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || FormUtils::isViewingFormReceipt() ) {
+			$url = FormUtils::getSuccessPageURL();
 
 		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
 			$url                                     = $this->template->getFailedPageURL( $this->formId );
@@ -273,7 +272,7 @@ class IframeView {
 			trailingslashit( $url )
 		);
 
-		return removeDonationAction( $iframe_url );
+		return GlobalUtils::removeDonationAction( $iframe_url );
 	}
 
 	/**

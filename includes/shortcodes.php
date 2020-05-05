@@ -11,9 +11,11 @@
 
 // Exit if accessed directly.
 use Give\Views\IframeView;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
-use function Give\Helpers\Form\Utils\isLegacyForm;
-use function Give\Helpers\Frontend\getReceiptShortcodeFromConfirmationPage;
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Helpers\Frontend\ConfirmDonation;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -64,7 +66,7 @@ function give_donation_history( $atts, $content = false ) {
 	) {
 		ob_start();
 
-		echo do_shortcode( getReceiptShortcodeFromConfirmationPage() );
+		echo do_shortcode( ShortcodeUtils::getReceiptShortcodeFromConfirmationPage() );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
@@ -144,13 +146,13 @@ function give_form_shortcode( $atts ) {
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
 	// Set form id.
-	$atts['id'] = $atts['id'] ?: getFormId();
+	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
 	$formId     = absint( $atts['id'] );
 
 	// Fetch the Give Form.
 	ob_start();
 
-	if ( ! isLegacyForm( $formId ) ) {
+	if ( ! FormUtils::isLegacyForm( $formId ) ) {
 		$showIframeInModal = 'button' === $atts['display_style'];
 		$iframeView        = new IframeView();
 

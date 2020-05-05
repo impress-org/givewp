@@ -10,8 +10,8 @@
 namespace Give\Form;
 
 use Give\Form\Template\Options;
+use Give\Helpers\Form\Utils as FormUtils;
 use Give\Receipt\Receipt;
-use function Give\Helpers\Form\Utils\createFailedPageURL;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -201,7 +201,7 @@ abstract class Template {
 	 * @since 2.7.0
 	 */
 	public function getFailedPageURL( $formId ) {
-		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+		return FormUtils::createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
 	}
 
 	/**

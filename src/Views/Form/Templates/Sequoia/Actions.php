@@ -3,8 +3,7 @@
 namespace Give\Views\Form\Templates\Sequoia;
 
 use Give_Donate_Form;
-use function Give\Helpers\Form\Template\get as getTheme;
-
+use Give\Helpers\Form\Template as FormTemplateUtils;
 
 /**
  * Class Actions
@@ -23,7 +22,7 @@ class Actions {
 	 */
 	public function init() {
 		// Get Template options
-		$this->templateOptions = getTheme();
+		$this->templateOptions = FormTemplateUtils::getOptions();
 
 		// Set zero number of decimal.
 		add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );

@@ -1,20 +1,22 @@
 <?php
 
 use Give\Receipt\Detail;
+use Give\Receipt\Detail\Donation\TotalAmount;
 use Give\Receipt\DetailGroup;
+use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
 use Give\Views\IframeContentView;
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
-use function Give\Helpers\Form\Template\Utils\Frontend\getPaymentId;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give_Payment as Payment;
 
-$payment = new Payment( getPaymentId() );
-$options = getTemplateOptions();
+$donationSessionAccessor = new DonationAccessor();
+$donation                = new Payment( $donationSessionAccessor->getDonationId() );
+$options                 = FormTemplateUtils::getOptions();
 
 /* @var Sequoia $sequoiaTemplate */
 $sequoiaTemplate = Give()->templates->getTemplate();
 
-$receiptDetails = $sequoiaTemplate->getReceiptDetails( $payment->ID );
+$receiptDetails = $sequoiaTemplate->getReceiptDetails( $donation->ID );
 
 ob_start();
 ?>
@@ -22,7 +24,7 @@ ob_start();
 	<div class="give-section receipt">
 		<?php if ( ! empty( $options['thank-you']['image'] ) ) : ?>
 			<div class="image">
-				<img src="<?php echo $options['thank-you']['image']; ?>" />
+				<img src="<?php echo $options['thank-you']['image']; ?>"/>
 			</div>
 		<?php else : ?>
 			<div class="checkmark">
@@ -63,7 +65,7 @@ ob_start();
 					}
 
 					// This class is required to highlight total donation amount in receipt.
-					$detailRowClass = $detailId === Detail\Donation\TotalAmount::class ? ' total' : '';
+					$detailRowClass = $detailId === TotalAmount::class ? ' total' : '';
 
 					printf(
 						'<div class="details-row%1$s">',

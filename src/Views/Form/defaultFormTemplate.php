@@ -5,9 +5,9 @@
  * @since 2.7.0
  */
 use Give\Views\IframeContentView;
-use function Give\Helpers\Form\Template\Utils\Frontend\getFormId;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
-$formId     = getFormId();
+$formId     = FrontendFormTemplateUtils::getFormId();
 $iframeView = new IframeContentView();
 
 // Fetch the Give Form.

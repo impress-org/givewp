@@ -5,8 +5,7 @@ use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Receipt\Receipt;
-use function Give\Helpers\Form\Template\get;
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use \Give_Donate_Form as DonationForm;
 use function give_do_email_tags as formatContent;
 
@@ -22,7 +21,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 */
 	public function getFormStartingHeight( $formId ) {
 		$form            = new DonationForm( $formId );
-		$templateOptions = getTemplateOptions( $formId );
+		$templateOptions = FormTemplateUtils::getOptions( $formId );
 		if ( $templateOptions['introduction']['enabled'] === 'disabled' ) {
 			return 645;
 		}
@@ -59,7 +58,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	public function loadScripts() {
 
 		// Localize Template options
-		$templateOptions = getTemplateOptions();
+		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
@@ -146,7 +145,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 */
 	public function getReceiptDetails( $donationId ) {
 		$receipt = new Receipt( $donationId );
-		$options = getTemplateOptions();
+		$options = FormTemplateUtils::getOptions();
 
 		$receipt->heading = $options['thank-you']['headline'];
 		$receipt->message = formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] );
