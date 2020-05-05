@@ -58,7 +58,7 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 			<?php
 		}
 
-		if ( ! give_stripe_load_payment_fields_conditionally( 'Credit Card fields are' ) ) {
+		if ( give_stripe_load_payment_fields_conditionally( 'Credit Card fields are' ) ) {
 			if ( 'single' === $stripe_cc_field_format ) {
 
 				// Display the stripe container which can be occupied by Stripe for CC fields.
