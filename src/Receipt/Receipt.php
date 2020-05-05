@@ -46,7 +46,7 @@ class Receipt {
 		 *
 		 * Developer can use this filter hook to register there details group.
 		 */
-		$this->detailsGroupList = apply_filters( 'give_get_receipt_details_group_list', $this->detailsGroupList, $this );
+		$this->detailsGroupList = apply_filters( 'give_receipt_register_details_group', $this->detailsGroupList, $this );
 	}
 
 	/**
