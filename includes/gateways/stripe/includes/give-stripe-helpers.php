@@ -1302,7 +1302,7 @@ function give_stripe_is_account_configured() {
  */
 function give_stripe_load_payment_fields_conditionally( $text = 'Payment' ) {
 
-	$status = false;
+	$status = true;
 
 	if (
 		! give_stripe_is_account_configured() &&
@@ -1319,7 +1319,8 @@ function give_stripe_load_payment_fields_conditionally( $text = 'Payment' ) {
 				)
 			)
 		);
-	} else if ( ! give_stripe_is_account_configured() ) {
+		$status = false;
+	} elseif ( ! give_stripe_is_account_configured() ) {
 		Give()->notices->print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
@@ -1330,7 +1331,8 @@ function give_stripe_load_payment_fields_conditionally( $text = 'Payment' ) {
 				)
 			)
 		);
-	} else if (
+		$status = false;
+	} elseif (
 		! is_ssl() &&
 		! give_is_test_mode()
 	) {
@@ -1344,8 +1346,7 @@ function give_stripe_load_payment_fields_conditionally( $text = 'Payment' ) {
 				)
 			)
 		);
-	} else {
-		$status = true;
+		$status = false;
 	}
 
 	return $status;
