@@ -1,7 +1,7 @@
 <?php
 
 use Give\Receipt\Detail;
-use Give\Receipt\Detail\Donation\TotalAmount;
+use Give\Receipt\DonationDetailsGroup\Details\TotalAmount as TotalAmountDetailItem;
 use Give\Receipt\DetailGroup;
 use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
@@ -65,7 +65,7 @@ ob_start();
 					}
 
 					// This class is required to highlight total donation amount in receipt.
-					$detailRowClass = $detailId === TotalAmount::class ? ' total' : '';
+					$detailRowClass = $detailId === TotalAmountDetailItem::class ? ' total' : '';
 
 					printf(
 						'<div class="details-row%1$s">',
