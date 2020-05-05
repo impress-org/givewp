@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use function Give\Helpers\Form\Utils\isLegacyForm;
+use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * Filter: Do not show the Give shortcut button on Give Forms CPT
@@ -78,7 +78,7 @@ function give_is_float_labels_enabled( $args ) {
 	}
 
 	// If the form is using a non-legacy form template, do not use floating labels
-	if ( !isLegacyForm( $args['form_id'] ) ) {
+	if ( ! FormUtils::isLegacyForm( $args['form_id'] ) ) {
 		$float_labels = 'disabled';
 	}
 

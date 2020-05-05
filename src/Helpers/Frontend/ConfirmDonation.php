@@ -3,7 +3,7 @@
 namespace Give\Helpers\Frontend;
 
 use Give\Session\SessionDonation\DonationAccessor;
-use function Give\Helpers\Form\Utils\isViewingFormReceipt;
+use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * Class ConfirmDonation
@@ -56,6 +56,6 @@ class ConfirmDonation {
 	 * @return bool
 	 */
 	public static function isConfirming() {
-		return isViewingFormReceipt() && isset( $_GET['payment-confirmation'] );
+		return FormUtils::isViewingFormReceipt() && isset( $_GET['payment-confirmation'] );
 	}
 }
