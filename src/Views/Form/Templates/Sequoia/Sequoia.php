@@ -69,7 +69,6 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', array( 'give-styles' ), GIVE_VERSION );
 
 		$primaryColor = $templateOptions['introduction']['primary_color'];
-		$primaryColor = $templateOptions['introduction']['primary_color'];
 		$rawColor     = trim( $primaryColor, '#' );
 		$dynamic_css  = "
 			.seperator {
