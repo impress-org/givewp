@@ -58,41 +58,7 @@ function give_stripe_credit_card_form( $form_id, $args, $echo = true ) {
 			<?php
 		}
 
-		if (
-				! is_ssl() &&
-				! give_is_test_mode() &&
-				(
-					empty( $publishable_key ) ||
-					empty( $secret_key )
-				)
-			) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Credit card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-		} elseif (
-			empty( $publishable_key ) ||
-			empty( $secret_key )
-		) {
-			Give()->notices->print_frontend_notice(
-				sprintf(
-					'<strong>%1$s</strong> %2$s',
-					esc_html__( 'Notice:', 'give' ),
-					esc_html__( 'Credit card fields are disabled because Stripe is not connected.', 'give' )
-				)
-			);
-		} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
-			Give()->notices->print_frontend_notice(
-				sprintf(
-					'<strong>%1$s</strong> %2$s',
-					esc_html__( 'Notice:', 'give' ),
-					esc_html__( 'Credit card fields are disabled because your site is not running securely over HTTPS.', 'give' )
-				)
-			);
-		} else {
+		if ( ! give_stripe_load_payment_fields_conditionally( 'Credit Card fields are' ) ) {
 			if ( 'single' === $stripe_cc_field_format ) {
 
 				// Display the stripe container which can be occupied by Stripe for CC fields.

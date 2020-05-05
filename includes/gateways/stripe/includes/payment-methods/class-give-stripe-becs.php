@@ -87,41 +87,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					<?php
 				}
 
-				if (
-					! is_ssl() &&
-					! give_is_test_mode() &&
-					(
-						empty( $publishable_key ) ||
-						empty( $secret_key )
-					)
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} elseif (
-					empty( $publishable_key ) ||
-					empty( $secret_key )
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected.', 'give' )
-						)
-					);
-				} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} else {
+				if ( ! give_stripe_load_payment_fields_conditionally( 'Mandate Form fields are' ) ) {
 					?>
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">

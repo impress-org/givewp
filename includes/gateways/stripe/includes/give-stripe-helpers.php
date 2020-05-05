@@ -1290,3 +1290,63 @@ function give_stripe_is_account_configured() {
 
 	return $is_configured;
 }
+
+/**
+ * This function will be used to show notice instead of loading Stripe payment fields with errors.
+ *
+ * @param string $text Dynamic text for the payment fields
+ *
+ * @since 2.6.3
+ *
+ * @return bool
+ */
+function give_stripe_load_payment_fields_conditionally( $text = 'Payment' ) {
+
+	$status = false;
+
+	if (
+		! give_stripe_is_account_configured() &&
+		! is_ssl() &&
+		! give_is_test_mode()
+	) {
+		Give()->notices->print_frontend_notice(
+			sprintf(
+				'<strong>%1$s</strong> %2$s',
+				__( 'Notice:', 'give' ),
+				sprintf(
+					__( '%1$s disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' ),
+					$text
+				)
+			)
+		);
+	} else if ( ! give_stripe_is_account_configured() ) {
+		Give()->notices->print_frontend_notice(
+			sprintf(
+				'<strong>%1$s</strong> %2$s',
+				__( 'Notice:', 'give' ),
+				sprintf(
+					__( '%1$s disabled. Please connect and configure your Stripe account to accept donations.', 'give' ),
+					$text
+				)
+			)
+		);
+	} else if (
+		! is_ssl() &&
+		! give_is_test_mode()
+	) {
+		Give()->notices->print_frontend_notice(
+			sprintf(
+				'<strong>%1$s</strong> %2$s',
+				__( 'Notice:', 'give' ),
+				sprintf(
+					__( '%1$s disabled because your site is not running securely over HTTPS.', 'give' ),
+					$text
+				)
+			)
+		);
+	} else {
+		$status = true;
+	}
+
+	return $status;
+}
