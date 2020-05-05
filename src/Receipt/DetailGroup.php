@@ -5,7 +5,7 @@ namespace Give\Receipt;
 abstract class DetailGroup {
 	public $groupId;
 	public $heading = '';
-	protected $donationId;
+	public $donationId;
 
 	/**
 	 * @var Detail[]
