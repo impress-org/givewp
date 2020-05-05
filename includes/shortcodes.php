@@ -15,6 +15,7 @@ use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Utils as GlobalUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Helpers\Frontend\ConfirmDonation;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
