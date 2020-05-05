@@ -156,6 +156,8 @@ function give_form_shortcode( $atts ) {
 		$showIframeInModal = 'button' === $atts['display_style'];
 		$iframeView        = new IframeView();
 
+		ConfirmDonation::storePostedDataInDonationSession();
+
 		echo $iframeView->setFormId( $formId )
 				   ->showInModal( $showIframeInModal )
 				   ->setButtonTitle( $atts['continue_button_title'] )
