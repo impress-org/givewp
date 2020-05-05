@@ -1,10 +1,10 @@
-﻿<h1><p align="center">GiveWP - The #1 WordPress Fundraising Plugin 💚</p></h1>
+<h1><p align="center">GiveWP - The #1 WordPress Fundraising Plugin 💚</p></h1>
 
 <p align="center">This plugin is the highest rated, most downloaded, and best supported donation plugin for WordPress. Built from the ground up for all your fundraising needs, GiveWP provides you with a powerful donation platform optimized for online giving that's both easy-to-use for beginners yet flexible for developers to craft their own unique giving experiences.</p>
 
 ---
 
-👉🏻 Not a developer? Running WordPress? [Download GiveWP](https://wordpress.org/plugins/give/) on WordPress.org.
+👉 Not a developer? Running WordPress? [Download GiveWP](https://wordpress.org/plugins/give/) on WordPress.org.
 
 ![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![Build Status](https://travis-ci.org/impress-org/givewp.svg?branch=master)](https://travis-ci.org/impress-org/givewp) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/impress-org/give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/impress-org/give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/impress-org/give/blob/master/license.txt) 
 
