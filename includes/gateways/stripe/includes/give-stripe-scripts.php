@@ -22,6 +22,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_stripe_frontend_scripts() {
 
+	/**
+	 * Bailout, if Stripe account is not configured.
+	 *
+	 * We are not loading any scripts if Stripe account is not configured to avoid an intentional console error
+	 * for Stripe integration.
+	 */
+	if ( ! give_stripe_is_account_configured() ) {
+		return;
+	}
+
 	// Get publishable key.
 	$publishable_key = give_stripe_get_publishable_key();
 
