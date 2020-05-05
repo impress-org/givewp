@@ -144,7 +144,7 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.6.3', '<' ):
-			give_v262_upgrades();
+			give_v263_upgrades();
 			$did_upgrade = true;
 	}
 
@@ -3603,7 +3603,7 @@ function give_v2511_upgrades() {
  *
  * @since 2.6.3
  */
-function give_v262_upgrades() {
+function give_v263_upgrades() {
 	$licenses = get_option( 'give_licenses', [] );
 
 	if ( $licenses ) {
