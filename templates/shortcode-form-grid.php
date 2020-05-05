@@ -4,7 +4,7 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helpers\Form\Utils\isLegacyForm;
+use Give\Helpers\Form\Utils as FormUtils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -113,7 +113,7 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
-		if ( ! isLegacyForm( $form_id ) ) {
+		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
 			echo give_form_shortcode(
 				[
 					'id'            => $form_id,

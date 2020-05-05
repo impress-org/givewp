@@ -33,14 +33,6 @@
     "autoload": {
         "psr-4": {
             "Give\\": "src/"
-        },
-        "files": [
-            "src/Helpers/Form/Template/Template.php",
-            "src/Helpers/Form/Template/Utils/Admin.php",
-            "src/Helpers/Form/Template/Utils/Frontend.php",
-            "src/Helpers/Form/Utils.php",
-            "src/Helpers/Frontend/Shortcode.php",
-            "src/Helpers/Utils.php"
-        ]
+        }
     }
 }

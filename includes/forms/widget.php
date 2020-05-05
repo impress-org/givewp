@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helpers\Form\Utils\isLegacyForm;
+use Give\Helpers\Form\Utils as FormUtils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -116,7 +116,7 @@ class Give_Forms_Widget extends WP_Widget {
 		$form_id = (int) $instance['id'];
 
 		// Use alias setting to set display setting when form template other then Legacy.
-		if ( ! isLegacyForm( $form_id ) ) {
+		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
 			$instance['display_style']         = $instance['tmp_display_style'];
 			$instance['continue_button_title'] = $instance['tmp_continue_button_title'];
 

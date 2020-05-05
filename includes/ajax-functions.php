@@ -12,7 +12,7 @@
  */
 
 // Exit if accessed directly.
-use function Give\Helpers\Form\Template\getActiveID;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -864,7 +864,7 @@ function give_get_form_template_id() {
 		wp_send_json_error();
 	}
 
-	$templateID = getActiveID( $formId );
+	$templateID = FormTemplateUtils::getActiveID( $formId );
 	$templateID = $templateID ?: 'legacy';
 
 	wp_send_json_success( $templateID );

@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use function Give\Helpers\Form\Utils\isLegacyForm;
+
 /**
  * Filter: Do not show the Give shortcut button on Give Forms CPT
  *
@@ -73,6 +75,11 @@ function give_is_float_labels_enabled( $args ) {
 
 	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
 		$float_labels = give_get_option( 'floatlabels', 'disabled' );
+	}
+
+	// If the form is using a non-legacy form template, do not use floating labels
+	if ( !isLegacyForm( $args['form_id'] ) ) {
+		$float_labels = 'disabled';
 	}
 
 	return give_is_setting_enabled( $float_labels );

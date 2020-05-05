@@ -33,7 +33,7 @@ function give_offline_payment_cc_form( $form_id ) {
 	 */
 	do_action( 'give_before_offline_info_fields', $form_id );
 	?>
-	<fieldset id="give_offline_payment_info">
+	<fieldset class="no-fields" id="give_offline_payment_info">
 		<?php echo stripslashes( $offline_instructions ); ?>
 	</fieldset>
 	<?php

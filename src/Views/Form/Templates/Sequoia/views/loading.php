@@ -1,7 +1,7 @@
 <?php
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 
-$templateOptions = getTemplateOptions();
+$templateOptions = FormTemplateUtils::getOptions();
 $primaryColor    = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
 $primaryColor    = trim( $primaryColor, '#' );
 
@@ -11,7 +11,7 @@ $loaderBG = "&quot;data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encodin
 
 <div style="
 		height: calc(100% - 28px);
-		width: 100%;
+		width: calc(100% - 20px);
 		max-width: 552px;
 		margin: 10px auto 10px auto;
 		background: #fff;

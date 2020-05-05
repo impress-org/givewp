@@ -2,7 +2,7 @@
 
 use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\IframeView;
-use function Give\Helpers\Form\Template\get as getTemplateOptions;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_get_payment_status as getDonationStatusLabel;
 use function give_currency_filter as filterCurrency;
@@ -12,7 +12,7 @@ use Give_Payment as Payment;
 
 $donationSessionAccessor = new DonationAccessor();
 $donation                = new Payment( $donationSessionAccessor->getDonationId() );
-$options                 = getTemplateOptions();
+$options                 = FormTemplateUtils::getOptions();
 
 ob_start();
 ?>
@@ -104,7 +104,7 @@ ob_start();
 				</div>
 				<?php if ( ! empty( $donation->address['line1'] ) ) : ?>
 					<div class="details-row">
-						<i class="fas fa-envelope"></i>
+						<i class="fas fa-globe-americas"></i>
 						<div class="detail">
 							<?php _e( 'Billing Address', 'give' ); ?>
 						</div>

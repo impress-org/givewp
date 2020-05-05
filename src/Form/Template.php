@@ -10,7 +10,7 @@
 namespace Give\Form;
 
 use Give\Form\Template\Options;
-use function Give\Helpers\Form\Utils\createFailedPageURL;
+use Give\Helpers\Form\Utils as FormUtils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -85,9 +85,11 @@ abstract class Template {
 	 * Returns starting height for iframe (in pixels), this is used to predict iframe height before the iframe loads
 	 * Implemented in includes/shortcodes.php:
 	 *
+	 * @param int $formId Form ID
+	 *
 	 * @return int
 	 **/
-	public function getFormStartingHeight() {
+	public function getFormStartingHeight( $formId ) {
 		return 600;
 	}
 
@@ -198,7 +200,7 @@ abstract class Template {
 	 * @since 2.7.0
 	 */
 	public function getFailedPageURL( $formId ) {
-		return createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
+		return FormUtils::createFailedPageURL( Give()->routeForm->getURL( get_post_field( 'post_name', $formId ) ) );
 	}
 
 	/**

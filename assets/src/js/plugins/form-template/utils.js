@@ -15,6 +15,7 @@ export const initializeIframeResize = function( iframe ) {
 		{
 			log: false,
 			sizeWidth: true,
+			checkOrigin: [ window.location.origin ],
 			heightCalculationMethod: 'documentElementOffset',
 			widthCalculationMethod: 'documentElementOffset',
 			onMessage: function( messageData ) {
