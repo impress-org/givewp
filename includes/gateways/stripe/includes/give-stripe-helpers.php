@@ -1270,3 +1270,23 @@ function give_stripe_get_becs_icon_style( $form_id ) {
 
 	return apply_filters( 'give_stripe_get_becs_icon_style', $icon_style, $form_id );
 }
+
+/**
+ * This function will check whether the Stripe account is configured or not?
+ *
+ * @since 2.6.3
+ *
+ * @return bool
+ */
+function give_stripe_is_account_configured() {
+
+	$is_configured   = false;
+	$publishable_key = give_stripe_get_publishable_key();
+	$secret_key      = give_stripe_get_secret_key();
+
+	if ( ! empty( $publishable_key ) || ! empty( $secret_key ) ) {
+		$is_configured = true;
+	}
+
+	return $is_configured;
+}
