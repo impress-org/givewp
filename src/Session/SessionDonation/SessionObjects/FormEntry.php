@@ -3,6 +3,7 @@
 namespace Give\Session\SessionDonation\SessionObjects;
 
 use Give\Helpers\ArrayDataSet;
+use Give\Session\Objects;
 use InvalidArgumentException;
 
 class FormEntry implements Objects {

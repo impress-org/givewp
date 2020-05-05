@@ -3,6 +3,7 @@ namespace Give\Session\SessionDonation\SessionObjects;
 
 use DateTime;
 use Give\Helpers\ArrayDataSet;
+use Give\Session\Objects;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;

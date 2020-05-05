@@ -1,5 +1,5 @@
 <?php
-namespace Give\Session\SessionDonation\SessionObjects;
+namespace Give\Session;
 
 interface Objects {
 	/**
