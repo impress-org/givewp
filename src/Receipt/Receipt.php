@@ -1,8 +1,8 @@
 <?php
 namespace Give\Receipt;
 
-use Give\Receipt\DetailGroup\Donation;
-use Give\Receipt\DetailGroup\Donor;
+use Give\Receipt\DonationDetailsGroup\DonationDetailsGroup;
+use Give\Receipt\DonorDetailsGroup\DonorDetailsGroup;
 use Sabberworm\CSS\Value\String;
 
 class Receipt {
@@ -21,8 +21,8 @@ class Receipt {
 	 * @var array
 	 */
 	private $detailsGroupList = [
-		Donor::class,
-		Donation::class,
+		DonorDetailsGroup::class,
+		DonationDetailsGroup::class,
 	];
 
 	/**

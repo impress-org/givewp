@@ -1,12 +1,12 @@
 <?php
-namespace Give\Receipt\DetailGroup;
+namespace Give\Receipt\DonorDetailsGroup;
 
-use Give\Receipt\Detail\Donor\BillingAddress;
-use Give\Receipt\Detail\Donor\Name;
-use Give\Receipt\Detail\Donor\Email;
 use Give\Receipt\DetailGroup;
+use Give\Receipt\DonorDetailsGroup\Details\BillingAddress;
+use Give\Receipt\DonorDetailsGroup\Details\Email;
+use Give\Receipt\DonorDetailsGroup\Details\Name;
 
-class Donor extends DetailGroup {
+class DonorDetailsGroup extends DetailGroup {
 	public $groupId = 'donorDetails';
 
 	protected $detailsList = [

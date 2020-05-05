@@ -1,17 +1,18 @@
 <?php
-namespace Give\Receipt\Detail\Donation;
+
+namespace Give\Receipt\DonationDetailsGroup\Details;
 
 use Give\Receipt\Detail;
 use function give_get_payment_meta as getDonationMetaData;
 use function give_format_amount as formatAmount;
 use function give_currency_filter as filterCurrency;
 
-class TotalAmount extends Detail {
+class Amount extends Detail {
 	/**
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return __( 'DONATION TOTAL', 'give' );
+		return __( 'DONATION AMOUNT', 'give' );
 	}
 
 	/**

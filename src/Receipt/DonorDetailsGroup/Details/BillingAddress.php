@@ -1,5 +1,5 @@
 <?php
-namespace Give\Receipt\Detail\Donor;
+namespace Give\Receipt\DonorDetailsGroup\Details;
 
 use Give\Receipt\Detail;
 use function give_get_donation_address as getDonationDonorAddress;

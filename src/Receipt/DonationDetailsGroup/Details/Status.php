@@ -1,5 +1,5 @@
 <?php
-namespace Give\Receipt\Detail\Donation;
+namespace Give\Receipt\DonationDetailsGroup\Details;
 
 use Give\Receipt\Detail;
 
