@@ -26,6 +26,20 @@ abstract class DetailGroup {
 	 */
 	public function __construct( $donationId ) {
 		$this->donationId = $donationId;
+
+		$this->setupDetailsGroup();
+	}
+
+	/**
+	 * Setup receipt.
+	 */
+	private function setupDetailsGroup() {
+		/**
+		 * Filter the details group list items.
+		 *
+		 * Developer can use this filter hook to register there details group list item.
+		 */
+		$this->detailsList = apply_filters( 'give_receipt_register_detail_item', $this->detailsList, $this );
 	}
 
 	/**
