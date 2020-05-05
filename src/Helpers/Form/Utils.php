@@ -109,16 +109,6 @@ class Utils {
 	}
 
 	/**
-	 * Return whether or not we are confirming donation or not.
-	 *
-	 * @since 2.7.0
-	 * @return bool
-	 */
-	public static function isConfirmingDonation() {
-		return isset( $_GET['payment-confirmation'] ) && has_filter( 'give_payment_confirm_' . give_clean( $_GET['payment-confirmation'] ) );
-	}
-
-	/**
 	 * Get Iframe parent page URL.
 	 *
 	 * Note: must be use only inside iframe logic.
@@ -215,5 +205,4 @@ class Utils {
 
 		return ! $formTemplate || 'legacy' === Template::getActiveID( $formID );
 	}
-
 }

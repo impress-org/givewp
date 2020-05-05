@@ -12,8 +12,10 @@ namespace Give\Controller;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
+use Give\Helpers\Frontend\ConfirmDonation;
 use Give\Helpers\Utils;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Session\SessionDonation\DonationAccessor;
 use Give_Notices;
 use WP_Post;
 use Give\Helpers\Form\Template as FormTemplateUtils;
@@ -72,10 +74,29 @@ class Form {
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
 
-				// Show donation processing template
-				if ( FormUtils::isConfirmingDonation() ) {
-					include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
-					exit();
+				// Show donation processing template.
+				if ( ConfirmDonation::isConfirming() ) {
+					$session    = new DonationAccessor();
+					$donationId = $session->getDonationId();
+
+					/**
+					 * Fire the action hook.
+					 *
+					 * If developer wants to verify payment before showing receipt then use `give_handle_donation_confirm` action hook to verify donation.
+					 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
+					 *
+					 * @since 2.7.0
+					 * @param int $donationId
+					 */
+					do_action( 'give_handle_donation_confirmation', $donationId );
+
+					// Load payment processing view only if donation is in pending status.
+					if ( 'pending' === get_post_status( $donationId ) ) {
+						ConfirmDonation::removePostedDataFromDonationSession();
+
+						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
+						exit();
+					}
 				}
 
 				// Render receipt with in iframe.

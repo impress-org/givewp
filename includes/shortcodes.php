@@ -162,6 +162,8 @@ function give_form_shortcode( $atts ) {
 		$donationFormHasSession = $formId === absint( $donation_history['post_data'] ['give-form-id'] );
 		$formStartingHeight     = Give()->templates->getTemplate( $activeTheme )->getFormStartingHeight( $formId );
 
+		ConfirmDonation::storePostedDataInDonationSession();
+
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
 			$hasAction &&

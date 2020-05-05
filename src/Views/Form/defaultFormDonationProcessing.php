@@ -4,7 +4,6 @@
  *
  * @since 2.7.0
  */
-
 ?>
 
 <!DOCTYPE html>

@@ -1,17 +1,18 @@
 <?php
 
+use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\IframeView;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use function give_get_gateway_admin_label as getGatewayLabel;
+use function give_get_payment_status as getDonationStatusLabel;
 use function give_currency_filter as filterCurrency;
 use function give_sanitize_amount as sanitizeAmount;
 use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
 
-/* @var Payment $payment */
-$payment = new Payment( FrontendFormTemplateUtils::getPaymentId() );
-$options = FormTemplateUtils::getOptions();
+$donationSessionAccessor = new DonationAccessor();
+$donation                = new Payment( $donationSessionAccessor->getDonationId() );
+$options                 = FormTemplateUtils::getOptions();
 
 ob_start();
 ?>
@@ -19,7 +20,7 @@ ob_start();
 	<div class="give-section receipt">
 		<?php if ( ! empty( $options['thank-you']['image'] ) ) : ?>
 			<div class="image">
-				<img src="<?php echo $options['thank-you']['image']; ?>" />
+				<img src="<?php echo $options['thank-you']['image']; ?>"/>
 			</div>
 		<?php else : ?>
 			<div class="checkmark">
@@ -30,7 +31,7 @@ ob_start();
 			<?php echo $options['thank-you']['headline']; ?>
 		</h2>
 		<p class="message">
-			<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $payment->ID ] ); ?>
+			<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $donation->ID ] ); ?>
 		</p>
 		<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
 			<div class="social-sharing">
@@ -89,7 +90,7 @@ ob_start();
 						<?php _e( 'Donor Name', 'give' ); ?>
 					</div>
 					<div class="value">
-						<?php echo "{$payment->first_name} {$payment->last_name}"; ?>
+						<?php echo "{$donation->first_name} {$donation->last_name}"; ?>
 					</div>
 				</div>
 				<div class="details-row">
@@ -98,10 +99,10 @@ ob_start();
 						<?php _e( 'Email Address', 'give' ); ?>
 					</div>
 					<div class="value">
-						<?php echo $payment->email; ?>
+						<?php echo $donation->email; ?>
 					</div>
 				</div>
-				<?php if ( ! empty( $payment->address['line1'] ) ) : ?>
+				<?php if ( ! empty( $donation->address['line1'] ) ) : ?>
 					<div class="details-row">
 						<i class="fas fa-globe-americas"></i>
 						<div class="detail">
@@ -111,12 +112,12 @@ ob_start();
 							<?php
 							printf(
 								'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
-								$payment->address['line1'],
-								! empty( $payment->address['line2'] ) ? $payment->address['line2'] . '<br>' : '',
-								$payment->address['city'],
-								$payment->address['state'],
-								$payment->address['zip'],
-								$payment->address['country']
+								$donation->address['line1'],
+								! empty( $donation->address['line2'] ) ? $donation->address['line2'] . '<br>' : '',
+								$donation->address['city'],
+								$donation->address['state'],
+								$donation->address['zip'],
+								$donation->address['country']
 							)
 							?>
 						</div>
@@ -131,7 +132,15 @@ ob_start();
 						<?php _e( 'Payment Method', 'give' ); ?>
 					</div>
 					<div class="value">
-						<?php echo getGatewayLabel( $payment->gateway ); ?>
+						<?php echo getGatewayLabel( $donation->gateway ); ?>
+					</div>
+				</div>
+				<div class="details-row">
+					<div class="detail">
+						<?php _e( 'Payment Status', 'give' ); ?>
+					</div>
+					<div class="value">
+						<?php echo getDonationStatusLabel( $donation->ID, true ); ?>
 					</div>
 				</div>
 				<div class="details-row">
@@ -141,11 +150,11 @@ ob_start();
 					<div class="value">
 						<?php
 						echo filterCurrency(
-							sanitizeAmount( $payment->subtotal ),
+							sanitizeAmount( $donation->subtotal ),
 							[
-								'currency_code'   => $payment->currency,
+								'currency_code'   => $donation->currency,
 								'decode_currency' => true,
-								'form_id'         => $payment->form_id,
+								'form_id'         => $donation->form_id,
 							]
 						);
 						?>
@@ -157,13 +166,13 @@ ob_start();
 					</div>
 					<div class="value">
 						<?php
-						$fees = $payment->total - $payment->subtotal;
+						$fees = $donation->total - $donation->subtotal;
 						echo filterCurrency(
 							sanitizeAmount( $fees ),
 							[
-								'currency_code'   => $payment->currency,
+								'currency_code'   => $donation->currency,
 								'decode_currency' => true,
-								'form_id'         => $payment->form_id,
+								'form_id'         => $donation->form_id,
 							]
 						);
 						?>
@@ -176,11 +185,11 @@ ob_start();
 					<div class="value">
 						<?php
 						echo filterCurrency(
-							sanitizeAmount( $payment->total ),
+							sanitizeAmount( $donation->total ),
 							[
-								'currency_code'   => $payment->currency,
+								'currency_code'   => $donation->currency,
 								'decode_currency' => true,
-								'form_id'         => $payment->form_id,
+								'form_id'         => $donation->form_id,
 							]
 						);
 						?>
