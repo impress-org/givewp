@@ -40,8 +40,8 @@ ob_start();
 		<?php require 'social-sharing.php'; ?>
 		<?php
 		/* @global DetailGroup $group */
-		foreach ( $receiptDetails->getDetailGroupList() as $groupId ) {
-			$group = $receiptDetails->getDetailGroupObject( $groupId );
+		foreach ( $receiptDetails->getDetailGroupList() as $detailGroupClassName ) {
+			$group = $receiptDetails->getDetailGroupObject( $detailGroupClassName );
 
 			if ( ! $group->canShow() ) {
 				continue;
@@ -56,8 +56,8 @@ ob_start();
 				echo '<div class="details-table">';
 
 				/* @var Detail $detail */
-				foreach ( $detailList as $detailId ) {
-					$detail = $group->get( $detailId );
+				foreach ( $detailList as $detailItemClassName ) {
+					$detail = $group->get( $detailItemClassName );
 					$value  = $detail->getValue();
 
 					if ( ! $value ) {
@@ -65,7 +65,7 @@ ob_start();
 					}
 
 					// This class is required to highlight total donation amount in receipt.
-					$detailRowClass = $detailId === TotalAmountDetailItem::class ? ' total' : '';
+					$detailRowClass = $detailItemClassName === TotalAmountDetailItem::class ? ' total' : '';
 
 					printf(
 						'<div class="details-row%1$s">',
