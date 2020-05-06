@@ -179,10 +179,8 @@
 				$( testNotice ).remove();
 
 				// Perist the input border when selected
-				$( '.give-recurring-donors-choice > label' ).on( 'click', function( evt ) {
-					if ( ! $( evt.target ).is( '.give-recurring-donors-choice-period' ) ) {
-						$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
-					}
+				$( '.give-recurring-period' ).change( function() {
+					$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
 				} );
 
 				// Show Sequoia loader on click/touchend
