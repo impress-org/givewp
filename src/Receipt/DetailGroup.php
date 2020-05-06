@@ -75,7 +75,7 @@ abstract class DetailGroup {
 	 * @param string $class
 	 * @return Detail
 	 */
-	public function get( $class ) {
+	public function getDetailItemObject( $class ) {
 		if ( in_array( $class, $this->details, true ) ) {
 			return $this->details[ $class ];
 		}

@@ -57,7 +57,7 @@ ob_start();
 
 				/* @var Detail $detail */
 				foreach ( $detailList as $detailItemClassName ) {
-					$detail = $group->get( $detailItemClassName );
+					$detail = $group->getDetailItemObject( $detailItemClassName );
 					$value  = $detail->getValue();
 
 					if ( ! $value ) {
