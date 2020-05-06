@@ -11,6 +11,10 @@
 	transition: border 0.2s ease;
 	width: auto !important;
 
+	.give-fee-message-label {
+		margin: 0;
+	}
+
 	input[type='checkbox'] {
 		display: none !important;
 	}
