@@ -41,7 +41,7 @@ ob_start();
 		<?php
 		/* @global DetailGroup $group */
 		foreach ( $receiptDetails->getDetailGroupList() as $groupId ) {
-			$group = $receiptDetails->get( $groupId );
+			$group = $receiptDetails->getDetailGroupObject( $groupId );
 
 			if ( ! $group->canShow() ) {
 				continue;

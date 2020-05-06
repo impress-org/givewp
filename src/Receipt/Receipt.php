@@ -94,7 +94,7 @@ class Receipt {
 	 *
 	 * @return DetailGroup
 	 */
-	public function get( $class ) {
+	public function getDetailGroupObject( $class ) {
 		if ( ! in_array( $class, $this->detailsGroup, true ) ) {
 			$classNames                   = array_flip( $this->getDetailGroupList() );
 			$this->detailsGroup[ $class ] = null;
