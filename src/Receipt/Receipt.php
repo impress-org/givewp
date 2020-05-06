@@ -3,7 +3,6 @@ namespace Give\Receipt;
 
 use Give\Receipt\DonationDetailsGroup\DonationDetailsGroup;
 use Give\Receipt\DonorDetailsGroup\DonorDetailsGroup;
-use Sabberworm\CSS\Value\String;
 
 /**
  * Class Receipt
