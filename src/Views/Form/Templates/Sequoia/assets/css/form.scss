@@ -11,6 +11,7 @@
 // Receipt Styles
 @import 'receipt';
 @import 'recurring';
+@import 'feerecovery';
 
 // Structure
 
@@ -86,6 +87,7 @@ p {
 .advance-btn,
 .give-submit,
 .download-btn {
+	order: 99 !important;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -682,6 +684,9 @@ p {
 				background: #333;
 			}
 		}
+	}
+	#give_purchase_form_wrap {
+		width: 100%;
 	}
 	#give_purchase_submit {
 		display: flex;

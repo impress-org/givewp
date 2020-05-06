@@ -4,9 +4,7 @@
  *
  * @since 2.7.0
  */
-
 ?>
-
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 	<head>

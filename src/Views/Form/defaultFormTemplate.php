@@ -4,11 +4,11 @@
  *
  * @since 2.7.0
  */
-use Give\Views\IframeView;
+use Give\Views\IframeContentView;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 $formId     = FrontendFormTemplateUtils::getFormId();
-$iframeView = new IframeView();
+$iframeView = new IframeContentView();
 
 // Fetch the Give Form.
 ob_start();

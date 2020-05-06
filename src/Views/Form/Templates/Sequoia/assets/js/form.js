@@ -178,9 +178,14 @@
 				$( testNotice ).clone().prependTo( '.give-section.payment' );
 				$( testNotice ).remove();
 
-				// Perist the input border when selected
+				// Perist the recurring input border when selected
 				$( '.give-recurring-period' ).change( function() {
 					$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
+        }
+                                             
+				// Perist fee recovery input border when selected
+				$( '.give-fee-message-label-text' ).on( 'click touchend', function() {
+					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
 				} );
 
 				// Show Sequoia loader on click/touchend

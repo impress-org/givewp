@@ -1,18 +1,22 @@
 <?php
 
+use Give\Receipt\Detail;
+use Give\Receipt\DonationDetailsGroup\Details\TotalAmount as TotalAmountDetailItem;
+use Give\Receipt\DetailGroup;
 use Give\Session\SessionDonation\DonationAccessor;
-use Give\Views\IframeView;
+use Give\Views\Form\Templates\Sequoia\Sequoia;
+use Give\Views\IframeContentView;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use function give_get_gateway_admin_label as getGatewayLabel;
-use function give_get_payment_status as getDonationStatusLabel;
-use function give_currency_filter as filterCurrency;
-use function give_sanitize_amount as sanitizeAmount;
-use function give_do_email_tags as formatContent;
 use Give_Payment as Payment;
 
 $donationSessionAccessor = new DonationAccessor();
 $donation                = new Payment( $donationSessionAccessor->getDonationId() );
 $options                 = FormTemplateUtils::getOptions();
+
+/* @var Sequoia $sequoiaTemplate */
+$sequoiaTemplate = Give()->templates->getTemplate();
+
+$receiptDetails = $sequoiaTemplate->getReceiptDetails( $donation->ID );
 
 ob_start();
 ?>
@@ -28,176 +32,61 @@ ob_start();
 			</div>
 		<?php endif; ?>
 		<h2 class="headline">
-			<?php echo $options['thank-you']['headline']; ?>
+			<?php echo $receiptDetails->heading; ?>
 		</h2>
 		<p class="message">
-			<?php echo formatContent( $options['thank-you']['description'], [ 'payment_id' => $donation->ID ] ); ?>
+			<?php echo $receiptDetails->message; ?>
 		</p>
-		<?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
-			<div class="social-sharing">
-				<p class="instruction">
-					<?php echo $options['thank-you']['sharing_instruction']; ?>
-				</p>
-				<div class="btn-row">
-					<!-- Use inline onclick listener to avoid popup blockers -->
-					<button class="give-btn social-btn facebook-btn"
-						onclick="
-							// Retrieve and sanitize url to be shared
-							let url = parent.window.location.toString();
-							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
-								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
-								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
-								url = window.Give.fn.removeURLParameter(url, 'payment-id');
-							}
-							// Calculate new window position, based on parent window height/width
-							const top = parent.window.innerHeight / 2 - 365;
-							const left = parent.window.innerWidth / 2 - 280;
-							// Open new window with prompt for Facebook sharing
-							window.Give.share.fn.facebook(url);
-							return false;
-							">
-						<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
-					</button>
-					<!-- Use inline onclick listener to avoid popup blockers -->
-					<button
-						class="give-btn social-btn twitter-btn"
-						onclick="
-							// Retrieve and sanitize url to be shared
-							let url = parent.window.location.toString();
-							if (window.Give.fn.getParameterByName('giveDonationAction', url)) {
-								url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
-								url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
-								url = window.Give.fn.removeURLParameter(url, 'payment-id');
-							}
-							const text = `<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`;
-							// Open new window with prompt for Twitter sharing
-							window.Give.share.fn.twitter(url, text);
-							return false;
-						">
-						<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
-					</button>
-				</div>
-			</div>
-		<?php endif; ?>
-		<div class="details">
-			<h3 class="headline"><?php _e( 'Donation Details', 'give' ); ?></h3>
+		<?php require 'social-sharing.php'; ?>
+		<?php
+		/* @global DetailGroup $group */
+		foreach ( $receiptDetails->getDetailGroupList() as $detailGroupClassName ) {
+			$group = $receiptDetails->getDetailGroupObject( $detailGroupClassName );
 
-			<!-- Donor Details -->
-			<div class="details-table">
-				<div class="details-row">
-					<i class="fas fa-user"></i>
-					<div class="detail">
-						<?php _e( 'Donor Name', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php echo "{$donation->first_name} {$donation->last_name}"; ?>
-					</div>
-				</div>
-				<div class="details-row">
-					<i class="fas fa-envelope"></i>
-					<div class="detail">
-						<?php _e( 'Email Address', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php echo $donation->email; ?>
-					</div>
-				</div>
-				<?php if ( ! empty( $donation->address['line1'] ) ) : ?>
-					<div class="details-row">
-						<i class="fas fa-globe-americas"></i>
-						<div class="detail">
-							<?php _e( 'Billing Address', 'give' ); ?>
-						</div>
-						<div class="value">
-							<?php
-							printf(
-								'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
-								$donation->address['line1'],
-								! empty( $donation->address['line2'] ) ? $donation->address['line2'] . '<br>' : '',
-								$donation->address['city'],
-								$donation->address['state'],
-								$donation->address['zip'],
-								$donation->address['country']
-							)
-							?>
-						</div>
-					</div>
-				<?php endif; ?>
-			</div>
+			if ( ! $group->canShow() ) {
+				continue;
+			}
 
-			<!-- Payment Details -->
-			<div class="details-table payment-details">
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Payment Method', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php echo getGatewayLabel( $donation->gateway ); ?>
-					</div>
-				</div>
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Payment Status', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php echo getDonationStatusLabel( $donation->ID, true ); ?>
-					</div>
-				</div>
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Donation Amount', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php
-						echo filterCurrency(
-							sanitizeAmount( $donation->subtotal ),
-							[
-								'currency_code'   => $donation->currency,
-								'decode_currency' => true,
-								'form_id'         => $donation->form_id,
-							]
-						);
-						?>
-					</div>
-				</div>
-				<div class="details-row">
-					<div class="detail">
-						<?php _e( 'Processing Fees', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php
-						$fees = $donation->total - $donation->subtotal;
-						echo filterCurrency(
-							sanitizeAmount( $fees ),
-							[
-								'currency_code'   => $donation->currency,
-								'decode_currency' => true,
-								'form_id'         => $donation->form_id,
-							]
-						);
-						?>
-					</div>
-				</div>
-				<div class="details-row total">
-					<div class="detail">
-						<?php _e( 'Donation Total', 'give' ); ?>
-					</div>
-					<div class="value">
-						<?php
-						echo filterCurrency(
-							sanitizeAmount( $donation->total ),
-							[
-								'currency_code'   => $donation->currency,
-								'decode_currency' => true,
-								'form_id'         => $donation->form_id,
-							]
-						);
-						?>
-					</div>
-				</div>
-			</div>
-		</div>
+			echo '<div class="details">';
+			if ( $group->heading ) {
+				printf( '<h3 class="headline">%1$s</h3>', $group->heading );
+			}
 
+			if ( $detailList = $group->getDetailsList() ) {
+				echo '<div class="details-table">';
+
+				/* @var Detail $detail */
+				foreach ( $detailList as $detailItemClassName ) {
+					$detail = $group->getDetailItemObject( $detailItemClassName );
+					$value  = $detail->getValue();
+
+					if ( ! $value ) {
+						continue;
+					}
+
+					// This class is required to highlight total donation amount in receipt.
+					$detailRowClass = $detailItemClassName === TotalAmountDetailItem::class ? ' total' : '';
+
+					printf(
+						'<div class="details-row%1$s">',
+						$detailRowClass
+					);
+
+					echo $detail->getIcon();
+
+					printf(
+						'<div class="detail">%1$s</div><div class="value">%2$s</div>',
+						$detail->getLabel(),
+						print_r( $value, true )
+					);
+
+					echo '</div>';
+				}
+				echo '</div>';
+			}
+			echo '</div>';
+		}
+		?>
 		<!-- Download Receipt TODO: make this conditional on presence of pdf receipts addon -->
 		<button class="give-btn download-btn">
 			<?php _e( 'Donation Receipt', 'give' ); ?> <i class="fas fa-file-pdf"></i>
@@ -213,9 +102,9 @@ ob_start();
 
 
 <?php
-$iframeView = new IframeView();
+$iframeView = new IframeContentView();
 
-echo $iframeView->setTitle( __( 'Donation Receipt', 'give' ) )
+echo $iframeView->setTitle( esc_html__( 'Donation Receipt', 'give' ) )
 				->setBody( ob_get_clean() )
 				->render();
 ?>
