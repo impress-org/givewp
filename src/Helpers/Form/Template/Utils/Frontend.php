@@ -52,8 +52,11 @@ class Frontend {
 		}
 
 		// Get form id on ajax request by donation id.
-		if ( ! empty( $_REQUEST['donation_id'] ) ) {
-			return absint( give_get_payment_form_id( absint( $_REQUEST['donation_id'] ) ) );
+		if (
+			! empty( $_REQUEST['donation_id'] ) &&
+			( $donationId = absint( $_REQUEST['donation_id'] ) )
+		) {
+			return give_get_payment_form_id( $donationId );
 		}
 
 		// Get form id from donor purchase session.
