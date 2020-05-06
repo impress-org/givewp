@@ -11,7 +11,7 @@ namespace Give\Receipt;
  */
 abstract  class Detail {
 	/**
-	 * Donaiton id.
+	 * Donation id.
 	 *
 	 * @since 2.7.0
 	 * @var int $donationId
