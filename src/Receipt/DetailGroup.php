@@ -78,12 +78,15 @@ abstract class DetailGroup {
 	 * @return Detail
 	 */
 	public function getDetailItemObject( $class ) {
-		if ( in_array( $class, $this->details, true ) ) {
-			return $this->details[ $class ];
-		}
+		if ( ! in_array( $class, $this->details, true ) ) {
+			$classNames              = $this->getDetailsList();
+			$detailGroupClassName    = $classNames[ array_search( $class, $classNames, true ) ];
+			$this->details[ $class ] = null;
 
-		$classNames              = array_flip( $this->getDetailsList() );
-		$this->details[ $class ] = new $this->detailsList[ $classNames[ $class ] ]( $this->donationId );
+			if ( $detailGroupClassName ) {
+				$this->details[ $class ] = new $detailGroupClassName( $this->donationId );
+			}
+		}
 
 		return $this->details[ $class ];
 	}
