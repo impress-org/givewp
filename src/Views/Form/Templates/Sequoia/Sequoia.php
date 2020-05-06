@@ -97,7 +97,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 				border-color: {$primaryColor}!important;
 				color: {$primaryColor} !important;
 			}
-			input[type=\'radio\'] + label::after {
+			input[type='radio'] + label::after {
 				background: {$primaryColor} !important;
 			}
 		";
