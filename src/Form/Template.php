@@ -11,6 +11,7 @@ namespace Give\Form;
 
 use Give\Form\Template\Options;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Receipt\Receipt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -244,5 +245,17 @@ abstract class Template {
 	 */
 	public function getDonationIntroductionContentPosition() {
 		return null;
+	}
+
+	/**
+	 * Get receipt details.
+	 *
+	 * @since 2.7.0
+	 * @param int $donationId
+	 *
+	 * @return Receipt
+	 */
+	public function getReceiptDetails( $donationId ) {
+		return new Receipt( $donationId );
 	}
 }

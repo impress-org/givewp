@@ -49,9 +49,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadTemplateOnFrontend() {
-		$inIframe = FormUtils::inIframe();
-
-		if ( $inIframe || FormUtils::isProcessingForm() ) {
+		if ( FormUtils::isProcessingForm() ) {
 			$this->loadTemplate();
 
 			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
@@ -64,6 +62,11 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadReceiptView() {
+		// Do not handle legacy donation form.
+		if ( FormUtils::isLegacyForm() ) {
+			return;
+		}
+
 		// Handle success page.
 		if ( FormUtils::isViewingFormReceipt() && ! FormUtils::isLegacyForm() ) {
 			/* @var Template $formTemplate */

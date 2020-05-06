@@ -51,11 +51,13 @@ class Frontend {
 			return $formId;
 		}
 
-		// Get form id from donor purchase session.
-		$donorSession = give_get_purchase_session();
-		$formId       = ! empty( $donorSession['post_data']['give-form-id'] ) ?
-			absint( $donorSession['post_data']['give-form-id'] ) :
-			null;
+		// Get form id on ajax request by donation id.
+		if (
+			! empty( $_REQUEST['donation_id'] ) &&
+			( $donationId = absint( $_REQUEST['donation_id'] ) )
+		) {
+			return give_get_payment_form_id( $donationId );
+		}
 
 		// Get form id from donor purchase session.
 		$session = new DonationAccessor();

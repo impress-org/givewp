@@ -1,88 +1,289 @@
 <?php
 /**
- * Handle form template view skin.
+ * Handle iframe skin.
  *
  * @package Give
  */
 
 namespace Give\Views;
 
+use Give\Form\Template;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Utils as GlobalUtils;
+
 /**
  * Class IframeView
  *
- * @since 2.7.0
+ * Note: only for internal use.
+ *
+ * @since   2.7.0
  * @package Give
  */
 class IframeView {
 	/**
-	 * Document page title.
+	 * Iframe URL.
 	 *
-	 * This will be use to setup title tag.
-	 *
-	 * @since 2.7.0
-	 * @var string
-	 */
-	protected $title;
-
-	/**
-	 * Document page body.
-	 *
-	 * This will be use to setup content of body tag.
+	 * This will be use to setup src attribute.
 	 *
 	 * @since 2.7.0
 	 * @var string
 	 */
-	protected $body;
+	protected $url;
 
 	/**
-	 * Body classes.
-	 *
-	 * This will be use to setup body tag classes.
+	 * Flag to check whether show modal or iframe on page.
 	 *
 	 * @since 2.7.0
-	 * @var array
+	 * @var bool
 	 */
-	protected $bodyClasses = [ 'give-form-templates' ];
+	protected $modal = false;
 
 	/**
-	 * Set document page title.
+	 * Flag to check whether on not auto scroll page to iframe.
+	 *
+	 * @since 2.7.0
+	 * @var int
+	 */
+	protected $autoScroll = 0;
+
+	/**
+	 * Iframe minimum height.
+	 *
+	 * @since 2.7.0
+	 * @var bool
+	 */
+	protected $minHeight = null;
+
+	/**
+	 * Unique identifier.
+	 *
+	 * @var string|null
+	 */
+	protected $uniqueId = null;
+
+	/**
+	 * Button title.
+	 *
+	 * @var string|null
+	 */
+	protected $buttonTitle = null;
+
+	/**
+	 * Button color.
+	 *
+	 * @var string|null
+	 */
+	protected $buttonColor = null;
+
+	/**
+	 * Form template.
+	 *
+	 * @var Template
+	 */
+	protected $template = null;
+
+	/**
+	 * Form id.
+	 *
+	 * @var int
+	 */
+	protected $formId = 0;
+
+	/**
+	 * IframeView Constructor
+	 *
+	 * @param Template $template
+	 */
+	public function __construct( $template = null ) {
+		$this->uniqueId    = uniqid( 'give-' );
+		$this->buttonTitle = esc_html__( 'Click to donate', 'give' );
+	}
+
+	/**
+	 * Set iframe URL.
+	 *
+	 * @param string $url
+	 *
+	 * @return $this
+	 */
+	public function setURL( $url = null ) {
+		$this->url = add_query_arg(
+			array_merge( [ 'giveDonationFormInIframe' => 1 ] ),
+			$url
+		);
+
+		return $this;
+	}
+
+	/**
+	 * Set whether or not show modal.
+	 *
+	 * @param bool $set
+	 *
+	 * @return $this
+	 */
+	public function showInModal( $set ) {
+		$this->modal = $set;
+
+		return $this;
+	}
+
+	/**
+	 * Button title.
 	 *
 	 * @param string $title
 	 *
-	 * @return IframeView $this
+	 * @return $this
 	 */
-	public function setTitle( $title ) {
-		$this->title = $title;
+	public function setButtonTitle( $title ) {
+		$this->buttonTitle = $title;
 
 		return $this;
 	}
 
 	/**
-	 * Set document page title.
+	 * Button color.
 	 *
-	 * @param string $body
+	 * @param string $color
 	 *
-	 * @return IframeView $this
+	 * @return $this
 	 */
-	public function setBody( $body ) {
-		$this->body = $body;
+	public function setButtonColor( $color ) {
+		$this->buttonColor = $color;
 
 		return $this;
 	}
 
 	/**
-	 * Set document page title.
+	 * Form id.
 	 *
-	 * @param array $classes
+	 * @param int $id
 	 *
-	 * @return IframeView $this
+	 * @return $this
 	 */
-	public function setBodyClasses( $classes ) {
-		$this->bodyClasses = array_merge( $this->bodyClasses, (array) $classes );
+	public function setFormId( $id ) {
+		$this->formId = $id;
 
 		return $this;
 	}
 
+	/**
+	 * Get iframe HTML.
+	 *
+	 * @return string
+	 */
+	private function getIframeHTML() {
+		ob_start();
+		include $this->template->getLoadingView();
+
+		$loader = sprintf(
+			'<div class="iframe-loader">%1$s</div>',
+			ob_get_clean()
+		);
+
+		$iframe = sprintf(
+			'<iframe
+				name="give-embed-form"
+				%1$s
+				%4$s
+				data-autoScroll="%2$s"
+				onload="Give.initializeIframeResize(this)"
+				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
+			$this->modal ? "data-src=\"{$this->url}\"" : "src=\"{$this->url}\"",
+			$this->autoScroll,
+			$this->minHeight ? "min-height: {$this->minHeight}px;" : '',
+			$this->modal ? 'class="in-modal"' : '',
+			$loader
+		);
+
+		if ( $this->modal ) {
+			$iframe = sprintf(
+				'<div class="modal-inner-wrap">
+					<div class="modal-content">
+		    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s<span>&times;</span></a>
+						%1$s
+					</div>
+				</div>',
+				$iframe,
+				esc_html__( 'Close modal', 'give' ),
+				$this->uniqueId
+			);
+		}
+
+		return $iframe;
+	}
+
+
+	/**
+	 * Get button HTML.
+	 *
+	 * @return string
+	 */
+	private function getButtonHTML() {
+		return sprintf(
+			'<div class="js-give-embed-form-modal-launcher-wrap">
+				<button
+				type="button"
+				class="js-give-embed-form-modal-opener"
+				data-form-id="%1$s"%3$s>%2$s</button>
+			</div>',
+			$this->uniqueId,
+			$this->buttonTitle,
+			$this->buttonColor ? " style=\"background-color: {$this->buttonColor}\"" : ''
+		);
+	}
+
+	/**
+	 * Get iframe URL.
+	 *
+	 * @return string
+	 */
+	private function getIframeURL() {
+		$query_string           = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
+		$donation_history       = give_get_purchase_session();
+		$hasAction              = ! empty( $query_string['giveDonationAction'] );
+		$this->autoScroll       = absint( $hasAction );
+		$donationFormHasSession = $this->formId === absint( $donation_history['post_data'] ['give-form-id'] );
+
+		// Do not pass donation acton by query param if does not belong to current form.
+		if (
+			$hasAction &&
+			! empty( $donation_history ) &&
+			! $donationFormHasSession
+		) {
+			unset( $query_string['giveDonationAction'] );
+			$hasAction        = false;
+			$this->autoScroll = 0;
+		}
+
+		// Build iframe url.
+		$url = Give()->routeForm->getURL( get_post_field( 'post_name', $this->formId ) );
+
+		if ( ( $hasAction && 'showReceipt' === $query_string['giveDonationAction'] ) || FormUtils::isViewingFormReceipt() ) {
+			$url = FormUtils::getSuccessPageURL();
+
+		} elseif ( ( $hasAction && 'failedDonation' === $query_string['giveDonationAction'] ) ) {
+			$url                                     = $this->template->getFailedPageURL( $this->formId );
+			$query_string['showFailedDonationError'] = 1;
+		}
+
+		$iframe_url = add_query_arg(
+			array_merge( [ 'giveDonationFormInIframe' => 1 ], $query_string ),
+			trailingslashit( $url )
+		);
+
+		return GlobalUtils::removeDonationAction( $iframe_url );
+	}
+
+	/**
+	 *  Setup Default config.
+	 */
+	private function loadDefaultConfig() {
+		$this->template  = Give()->templates->getTemplate();
+		$this->minHeight = $this->template->getFormStartingHeight( $this->formId );
+
+		$this->url = $this->url ?: $this->getIframeURL();
+	}
 
 	/**
 	 * Render view.
@@ -94,32 +295,20 @@ class IframeView {
 	 */
 	public function render() {
 		ob_start();
-		?>
-		<!DOCTYPE html>
-		<html <?php language_attributes(); ?>>
-			<head>
-				<meta charset="utf-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1">
-				<title><?php echo apply_filters( 'the_title', $this->title ); ?></title>
-				<?php
-				/**
-				 * Fire the action hook in header
-				 */
-				do_action( 'give_embed_head' );
-				?>
-			</head>
-			<body class="<?php echo implode( ' ', $this->bodyClasses ); ?>">
-				<?php
-				echo $this->body;
 
-				/**
-				 * Fire the action hook in footer
-				 */
-				do_action( 'give_embed_footer' );
-				?>
-			</body>
-		</html>
-		<?php
+		$this->loadDefaultConfig();
+
+		if ( $this->modal ) {
+			echo $this->getButtonHTML();
+		}
+
+		printf(
+			'<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>',
+			$this->modal ? ' is-hide' : '',
+			$this->uniqueId,
+			$this->getIframeHTML()
+		);
+
 		return ob_get_clean();
 	}
 }

@@ -24,6 +24,9 @@ import './admin-scripts';
 import './admin-importer';
 import './shortcode-button';
 
+// Form template.
+import './form-template/edit-form';
+
 // Stripe core.
 import './stripe-admin';
 

@@ -117,7 +117,7 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	public function handleReceiptAjax() {
-		// Do not handle form template receipt for legacy form.
+		// Let core handle receipt for legacy form.
 		if ( FormUtils::isLegacyForm() ) {
 			return;
 		}
