@@ -6,9 +6,16 @@ use Give\Receipt\DonorDetailsGroup\Details\BillingAddress;
 use Give\Receipt\DonorDetailsGroup\Details\Email;
 use Give\Receipt\DonorDetailsGroup\Details\Name;
 
+/**
+ * Class DonorDetailsGroup
+ *
+ * @since 2.7.0
+ * @package Give\Receipt\DonorDetailsGroup
+ */
 class DonorDetailsGroup extends DetailGroup {
-	public $groupId = 'donorDetails';
-
+	/**
+	 * @inheritDoc
+	 */
 	protected $detailsList = [
 		Name::class,
 		Email::class,
@@ -18,6 +25,7 @@ class DonorDetailsGroup extends DetailGroup {
 	/**
 	 * Donor constructor.
 	 *
+	 * @since 2.7.0
 	 * @param $donationId
 	 */
 	public function __construct( $donationId ) {

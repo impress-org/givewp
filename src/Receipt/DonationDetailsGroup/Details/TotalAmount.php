@@ -6,6 +6,12 @@ use function give_get_payment_meta as getDonationMetaData;
 use function give_format_amount as formatAmount;
 use function give_currency_filter as filterCurrency;
 
+/**
+ * Class TotalAmount
+ *
+ * @since 2.7.0
+ * @package Give\Receipt\DonationDetailsGroup\Details
+ */
 class TotalAmount extends Detail {
 	/**
 	 * @inheritDoc

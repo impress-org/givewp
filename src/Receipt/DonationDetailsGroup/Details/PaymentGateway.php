@@ -5,6 +5,12 @@ use Give\Receipt\Detail;
 use function give_get_payment_meta as getDonationMetaData;
 use function give_get_gateway_admin_label as getGatewayLabel;
 
+/**
+ * Class PaymentGateway
+ *
+ * @since 2.7.0
+ * @package Give\Receipt\DonationDetailsGroup\Details
+ */
 class PaymentGateway extends Detail {
 	/**
 	 * @inheritDoc

@@ -4,6 +4,12 @@ namespace Give\Receipt\DonorDetailsGroup\Details;
 use Give\Receipt\Detail;
 use function give_get_payment_meta as getDonationDonorName;
 
+/**
+ * Class Name
+ *
+ * @since 2.7.0
+ * @package Give\Receipt\DonorDetailsGroup\Details
+ */
 class Name extends Detail {
 	/**
 	 * @inheritDoc

@@ -4,6 +4,12 @@ namespace Give\Receipt\DonorDetailsGroup\Details;
 use Give\Receipt\Detail;
 use function give_get_donation_address as getDonationDonorAddress;
 
+/**
+ * Class BillingAddress
+ *
+ * @since 2.7.0
+ * @package Give\Receipt\DonorDetailsGroup\Details
+ */
 class BillingAddress extends Detail {
 	/**
 	 * @inheritDoc
@@ -33,6 +39,9 @@ class BillingAddress extends Detail {
 		);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getIcon() {
 		return '<i class="fas fa-envelope"></i>';
 	}
