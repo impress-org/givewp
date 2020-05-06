@@ -46,7 +46,7 @@ class Receipt {
 	 * @since 2.7.0
 	 * @var array
 	 */
-	public $detailsGroup = [];
+	protected $detailsGroup = [];
 
 	/**
 	 * Receipt details group class names.
