@@ -104,7 +104,7 @@ ob_start();
 <?php
 $iframeView = new IframeContentView();
 
-echo $iframeView->setTitle( __( 'Donation Receipt', 'give' ) )
+echo $iframeView->setTitle( esc_html__( 'Donation Receipt', 'give' ) )
 				->setBody( ob_get_clean() )
 				->render();
 ?>

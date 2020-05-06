@@ -15,7 +15,7 @@ class Email extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return __( 'EMAIL ADDRESS', 'give' );
+		return esc_html__( 'EMAIL ADDRESS', 'give' );
 	}
 
 	/**

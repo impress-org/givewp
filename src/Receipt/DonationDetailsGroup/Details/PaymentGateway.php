@@ -16,7 +16,7 @@ class PaymentGateway extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return __( 'PAYMENT METHOD', 'give' );
+		return esc_html__( 'PAYMENT METHOD', 'give' );
 	}
 
 	/**

@@ -31,6 +31,6 @@ class DonorDetailsGroup extends DetailGroup {
 	public function __construct( $donationId ) {
 		parent::__construct( $donationId );
 
-		$this->heading = __( 'Donation Details', 'give' );
+		$this->heading = esc_html__( 'Donation Details', 'give' );
 	}
 }

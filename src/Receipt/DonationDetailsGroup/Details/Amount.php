@@ -18,7 +18,7 @@ class Amount extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return __( 'DONATION AMOUNT', 'give' );
+		return esc_html__( 'DONATION AMOUNT', 'give' );
 	}
 
 	/**

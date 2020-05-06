@@ -17,7 +17,7 @@ class TotalAmount extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return __( 'DONATION TOTAL', 'give' );
+		return esc_html__( 'DONATION TOTAL', 'give' );
 	}
 
 	/**

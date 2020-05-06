@@ -8,5 +8,5 @@ use Give\Views\IframeContentView;
 
 $iframeView = new IframeContentView();
 
-echo $iframeView->setTitle( __( 'Donation Receipt', 'give' ) )
+echo $iframeView->setTitle( esc_html__( 'Donation Receipt', 'give' ) )
 	->setBody( '<div id="give-receipt"></div>' )->render();

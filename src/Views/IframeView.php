@@ -96,7 +96,7 @@ class IframeView {
 	 */
 	public function __construct( $template = null ) {
 		$this->uniqueId    = uniqid( 'give-' );
-		$this->buttonTitle = __( 'Click to donate', 'give' );
+		$this->buttonTitle = esc_html__( 'Click to donate', 'give' );
 	}
 
 	/**
@@ -205,7 +205,7 @@ class IframeView {
 					</div>
 				</div>',
 				$iframe,
-				__( 'Close modal', 'give' ),
+				esc_html__( 'Close modal', 'give' ),
 				$this->uniqueId
 			);
 		}

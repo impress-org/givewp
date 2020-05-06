@@ -1,7 +1,7 @@
 <?php if ( isset( $options['thank-you']['sharing'] ) && $options['thank-you']['sharing'] === 'enabled' ) : ?>
 	<div class="social-sharing">
 		<p class="instruction">
-			<?php echo $options['thank-you']['sharing_instruction']; ?>
+			<?php echo esc_html( $options['thank-you']['sharing_instruction'] ); ?>
 		</p>
 		<div class="btn-row">
 			<!-- Use inline onclick listener to avoid popup blockers -->
@@ -21,7 +21,7 @@
 							window.Give.share.fn.facebook(url);
 							return false;
 							">
-				<?php _e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
+				<?php esc_html_e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
 			</button>
 			<!-- Use inline onclick listener to avoid popup blockers -->
 			<button
@@ -39,7 +39,7 @@
 					window.Give.share.fn.twitter(url, text);
 					return false;
 					">
-				<?php _e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
+				<?php esc_html_e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
 			</button>
 		</div>
 	</div>
