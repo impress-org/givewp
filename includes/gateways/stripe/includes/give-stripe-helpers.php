@@ -1298,30 +1298,30 @@ function give_stripe_is_account_configured() {
  *
  * @since 2.6.3
  *
- * @return bool
+ * @return bool Whether to load Payment fields or not? Returns True or False.
  */
 function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' ) {
 
-	$account_not_configured_no_ssl_message = __( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-	$account_not_configured_message        = __( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
-	$account_configured_no_ssl_message     = __( 'Credit Card fields are disabled because your site is not running securely over HTTPS.', 'give' );
+	$account_not_configured_no_ssl_message = esc_html__( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+	$account_not_configured_message        = esc_html__( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+	$account_configured_no_ssl_message     = esc_html__( 'Credit Card fields are disabled because your site is not running securely over HTTPS.', 'give' );
 
 	if ( 'stripe_becs' === $gateway_id ) {
-		$account_not_configured_no_ssl_message = __( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-		$account_not_configured_message        = __( 'Mandate form fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
-		$account_configured_no_ssl_message     = __( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_no_ssl_message = esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_message        = esc_html__( 'Mandate form fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+		$account_configured_no_ssl_message     = esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' );
 	} elseif ( 'stripe_sepa' === $gateway_id ) {
-		$account_not_configured_no_ssl_message = __( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-		$account_not_configured_message        = __( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
-		$account_configured_no_ssl_message     = __( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_no_ssl_message = esc_html__( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_message        = esc_html__( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+		$account_configured_no_ssl_message     = esc_html__( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
 	} elseif ( 'stripe_google_pay' === $gateway_id ) {
-		$account_not_configured_no_ssl_message = __( 'Google Pay button is disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-		$account_not_configured_message        = __( 'Google Pay button is disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
-		$account_configured_no_ssl_message     = __( 'Google Pay button is disabled because your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_no_ssl_message = esc_html__( 'Google Pay button is disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_message        = esc_html__( 'Google Pay button is disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+		$account_configured_no_ssl_message     = esc_html__( 'Google Pay button is disabled because your site is not running securely over HTTPS.', 'give' );
 	} elseif ( 'stripe_apple_pay' === $gateway_id ) {
-		$account_not_configured_no_ssl_message = __( 'Apple Pay button is disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-		$account_not_configured_message        = __( 'Apple Pay button is disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
-		$account_configured_no_ssl_message     = __( 'Apple Pay button is disabled because your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_no_ssl_message = esc_html__( 'Apple Pay button is disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+		$account_not_configured_message        = esc_html__( 'Apple Pay button is disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+		$account_configured_no_ssl_message     = esc_html__( 'Apple Pay button is disabled because your site is not running securely over HTTPS.', 'give' );
 	}
 
 	$status = true;
@@ -1335,7 +1335,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		Give()->notices->print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
-				__( 'Notice:', 'give' ),
+				esc_html__( 'Notice:', 'give' ),
 				$account_not_configured_no_ssl_message
 			)
 		);
@@ -1345,7 +1345,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		Give()->notices->print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
-				__( 'Notice:', 'give' ),
+				esc_html__( 'Notice:', 'give' ),
 				$account_not_configured_message
 			)
 		);
@@ -1358,7 +1358,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		Give()->notices->print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
-				__( 'Notice:', 'give' ),
+				esc_html__( 'Notice:', 'give' ),
 				$account_configured_no_ssl_message
 			)
 		);
