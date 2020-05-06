@@ -73,34 +73,34 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$rawColor     = trim( $primaryColor, '#' );
 		$dynamic_css  = "
 			.seperator {
-				background: {$primaryColor}!important;
+				background: {$primaryColor} !important;
 			}
 			.give-btn {
-				border: 2px solid {$primaryColor}!important;
-				background: {$primaryColor}!important;
+				border: 2px solid {$primaryColor} !important;
+				background: {$primaryColor} !important;
 			}
 			.give-btn:hover {
-				background: {$primaryColor}!important;
+				background: {$primaryColor} !important;
 			}
 			.give-donation-level-btn {
-				border: 2px solid {$primaryColor}!important;
+				border: 2px solid {$primaryColor} !important;
 			}
 			.give-donation-level-btn.give-default-level {
-				color: {$primaryColor}!important; background: #fff!important;
+				color: {$primaryColor}!important; background: #fff !important;
 				transition: background 0.2s ease, color 0.2s ease;
 			}
 			.give-donation-level-btn.give-default-level:hover {
-				color: {$primaryColor}!important; background: #fff!important;
+				color: {$primaryColor}!important; background: #fff !important;
 			}
 			.give-input:focus, .give-select:focus {
-				border: 1px solid {$primaryColor}!important;
+				border: 1px solid {$primaryColor} !important;
 			}
 			.checkmark {
 				border-color: {$primaryColor}!important;
-				color: {$primaryColor}!important;
+				color: {$primaryColor} !important;
 			}
 			input[type=\'radio\'] + label::after {
-				background: {$primaryColor}!important;
+				background: {$primaryColor} !important;
 			}
 			.give-fee-recovery-donors-choice.give-fee-message:hover,
 			.give-fee-recovery-donors-choice.give-fee-message.active {
