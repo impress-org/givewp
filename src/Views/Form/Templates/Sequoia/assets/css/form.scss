@@ -86,6 +86,7 @@ p {
 .advance-btn,
 .give-submit,
 .download-btn {
+	order: 99 !important;
 	display: flex;
 	align-items: center;
 	justify-content: center;
