@@ -87,7 +87,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					<?php
 				}
 
-				if ( give_stripe_load_payment_fields_conditionally( 'Mandate Form fields are' ) ) {
+				if ( give_stripe_load_payment_fields_conditionally( $this->id ) ) {
 					?>
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
