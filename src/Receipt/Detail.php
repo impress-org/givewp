@@ -44,7 +44,6 @@ abstract  class Detail {
 	 */
 	abstract public function getValue();
 
-
 	/**
 	 * Return icon HTML which represent detail.
 	 *
