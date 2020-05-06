@@ -96,11 +96,12 @@ class Receipt {
 	 */
 	public function getDetailGroupObject( $class ) {
 		if ( ! in_array( $class, $this->detailsGroup, true ) ) {
-			$classNames                   = array_flip( $this->getDetailGroupList() );
+			$classNames                   = $this->getDetailGroupList();
+			$detailGroupClassName         = $classNames[ array_search( $class, $classNames, true ) ];
 			$this->detailsGroup[ $class ] = null;
 
-			if ( array_key_exists( $class, $classNames ) ) {
-				$this->detailsGroup[ $class ] = new $this->detailsGroupList[ $classNames[ $class ] ]( $this->donationId );
+			if ( $detailGroupClassName ) {
+				$this->detailsGroup[ $class ] = new $detailGroupClassName( $this->donationId );
 			}
 		}
 
