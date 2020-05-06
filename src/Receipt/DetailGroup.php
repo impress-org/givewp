@@ -69,7 +69,7 @@ abstract class DetailGroup {
 	}
 
 	/**
-	 * Get details
+	 * Get detail item object.
 	 *
 	 * @since 2.7.0
 	 * @param string $class
