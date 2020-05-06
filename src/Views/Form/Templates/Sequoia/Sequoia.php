@@ -69,8 +69,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', array( 'give-styles' ), GIVE_VERSION );
 
 		$primaryColor = $templateOptions['introduction']['primary_color'];
-		$rawColor     = trim( $primaryColor, '#' );
-		$dynamic_css  = "
+		$dynamicCss   = "
 			.seperator {
 				background: {$primaryColor}!important;
 			}
@@ -101,6 +100,11 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			input[type=\'radio\'] + label::after {
 				background: {$primaryColor}!important;
 			}
+		";
+		wp_add_inline_style( 'give-sequoia-template-css', $dynamicCss );
+
+		$rawColor            = trim( $primaryColor, '#' );
+		$recurringDynamicCss = "
 			.give-recurring-donors-choice:hover,
 			.give-recurring-donors-choice.active {
 				border: 1px solid {$primaryColor};
@@ -109,7 +113,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 				background-image: url(\"data:image/svg+xml,%3Csvg width='15' height='11' viewBox='0 0 15 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.73047 10.7812C6.00391 11.0547 6.46875 11.0547 6.74219 10.7812L14.7812 2.74219C15.0547 2.46875 15.0547 2.00391 14.7812 1.73047L13.7969 0.746094C13.5234 0.472656 13.0859 0.472656 12.8125 0.746094L6.25 7.30859L3.16016 4.24609C2.88672 3.97266 2.44922 3.97266 2.17578 4.24609L1.19141 5.23047C0.917969 5.50391 0.917969 5.96875 1.19141 6.24219L5.73047 10.7812Z' fill='%23{$rawColor}'/%3E%3C/svg%3E%0A\");
 			}
 		";
-		wp_add_inline_style( 'give-sequoia-template-css', $dynamic_css );
+		wp_add_inline_style( 'give-sequoia-template-css', $recurringDynamicCss );
 
 		wp_enqueue_script( 'give-sequoia-template-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-template.js', array( 'give' ), GIVE_VERSION, true );
 		wp_localize_script( 'give-sequoia-template-js', 'sequoiaTemplateOptions', $templateOptions );
