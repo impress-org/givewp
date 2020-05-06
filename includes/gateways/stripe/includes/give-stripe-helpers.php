@@ -1294,7 +1294,7 @@ function give_stripe_is_account_configured() {
 /**
  * This function will be used to show notice instead of loading Stripe payment fields with errors.
  *
- * @param string $text Dynamic text for the payment fields
+ * @param string $gateway_id Gateway ID.
  *
  * @since 2.6.3
  *
@@ -1310,15 +1310,15 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		$account_not_configured_no_ssl_message = __( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
 		$account_not_configured_message        = __( 'Mandate form fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
 		$account_configured_no_ssl_message     = __( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' );
-	} else if ( 'stripe_sepa' === $gateway_id ) {
+	} elseif ( 'stripe_sepa' === $gateway_id ) {
 		$account_not_configured_no_ssl_message = __( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
 		$account_not_configured_message        = __( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
 		$account_configured_no_ssl_message     = __( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
-	} else if ( 'stripe_google_pay' === $gateway_id ) {
+	} elseif ( 'stripe_google_pay' === $gateway_id ) {
 		$account_not_configured_no_ssl_message = __( 'Google Pay button is disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
 		$account_not_configured_message        = __( 'Google Pay button is disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
 		$account_configured_no_ssl_message     = __( 'Google Pay button is disabled because your site is not running securely over HTTPS.', 'give' );
-	} else if ( 'stripe_apple_pay' === $gateway_id ) {
+	} elseif ( 'stripe_apple_pay' === $gateway_id ) {
 		$account_not_configured_no_ssl_message = __( 'Apple Pay button is disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
 		$account_not_configured_message        = __( 'Apple Pay button is disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
 		$account_configured_no_ssl_message     = __( 'Apple Pay button is disabled because your site is not running securely over HTTPS.', 'give' );
