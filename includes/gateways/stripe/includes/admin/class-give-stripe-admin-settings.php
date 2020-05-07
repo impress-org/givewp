@@ -745,7 +745,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				<td class="give-forminp give-forminp-api_key">
 					<div id="give-stripe-account-manager-errors"></div>
 					<div id="give-stripe-account-manager-description">
-						<h2><?php _e('Manage Your Stripe Accounts'); ?></h2>
+						<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
 						<p class="give-field-description"><?php _e('In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give'); ?></p>
 					</div>
 					<div class="give-stripe-account-manager-container">
@@ -763,7 +763,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<div class="give-stripe-account-manager-list">
 							<?php
 							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
-								foreach ( $stripe_accounts as $name => $details ) {
+								foreach ( $stripe_accounts as $slug => $details ) {
+									$account_name       = ! empty( $details['account_name'] ) ? $details['account_name'] : give_stripe_convert_slug_to_title( $slug );
+									$account_email      = ! empty( $details['account_email'] ) ? $details['account_email'] : '';
+									$account_country    = ! empty( $details['account_country'] ) ? $details['account_country'] : '';
 									$stripe_account_id  = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : '';
 									$disconnect_message = ( 'connect' === $details['type'] ) ?
 										sprintf(
@@ -772,7 +775,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										) :
 										__( 'Are you sure you want to disconnect GiveWP from Stripe?', 'give' );
 									$disconnect_url     = ( 'connect' === $details['type'] ) ?
-										give_stripe_disconnect_url( $stripe_account_id, $name ) :
+										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
 										add_query_arg(
 											[
 												'post_type'   => 'give_forms',
@@ -780,33 +783,38 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 												'tab'         => 'gateways',
 												'section'     => 'stripe-settings',
 												'give_action' => 'disconnect_manual_stripe_account',
-												'account'     => $name,
+												'account'     => $slug,
 											],
 											admin_url( 'edit.php' )
 										);
 
 									?>
-									<div id="give-stripe-<?php echo $name; ?>" class="give-stripe-account-manager-list-item">
+									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
 											<span class="give-stripe-account-name">
-												<?php echo give_stripe_convert_slug_to_title( $name ); ?>
+												<?php _e( $account_name ); ?>
+											</span>
+											<span class="give-field-description">
+												<?php _e( $account_email ); ?>
 											</span>
 											<span class="give-stripe-account-edit">
+												<?php if ( 'connect' !== $details['type'] ) { ?>
 												<a class="give-stripe-account-edit-name" href="#"><?php echo __( 'Edit', 'give' ); ?></a>
 												<a
 													class="give-stripe-account-update-name give-hidden"
 													href="#"
-													data-account="<?php echo $name; ?>"
+													data-account="<?php echo $slug; ?>"
 												><?php _e( 'Update', 'give' ); ?></a>
 												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php echo __( 'Cancel', 'give' ); ?></a>
-											<?php if ( $name === $default_account ) { ?>
+												<?php } ?>
+											<?php if ( $slug === $default_account ) { ?>
 												<span class="give-stripe-account-default give-stripe-account-badge">
 													<?php _e( 'Default Account', 'give' ); ?>
 												</span>
 											<?php } else { ?>
 												<span class="give-stripe-account-default">
 													<a
-														data-account="<?php echo $name; ?>"
+														data-account="<?php echo $slug; ?>"
 														data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
 														class="give-stripe-account-set-default" href="#"
 													><?php _e( 'Set as Default', 'give' ); ?></a>
@@ -819,7 +827,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											<span class="give-stripe-account-type-description give-field-description"><?php _e( 'Connection Method:', 'give' ); ?></span>
 											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_names( $details['type'] ); ?></span>
 											<?php if (
-												$name !== $default_account ||
+												$slug !== $default_account ||
 												(
 													is_array( $stripe_accounts ) &&
 													count( $stripe_accounts ) === 1
