@@ -528,7 +528,7 @@ function give_stripe_update_account_name() {
 
 		// Bailout, if Account Name already exists.
 		if ( in_array( $new_account_slug, $account_keys, true ) ) {
-			wp_send_json_error( [ 'message' => __( 'This account name is already in use. Please enter a different account name.', 'give' ) ] );
+			wp_send_json_error( [ 'message' => esc_html__( 'This account name is already in use. Please enter a different account name.', 'give' ) ] );
 			return;
 		}
 
@@ -545,13 +545,13 @@ function give_stripe_update_account_name() {
 		}
 
 		$success_args = [
-			'message' => __( 'Account Name updated successfully.', 'give' ),
+			'message' => esc_html__( 'Account Name updated successfully.', 'give' ),
 			'name'    => $new_account_name,
 			'slug'    => $new_account_slug,
 		];
 		wp_send_json_success( $success_args );
 	} else {
-		wp_send_json_error( [ 'message' => __( 'Unable to update account name. Please contact support.', 'give' ) ] );
+		wp_send_json_error( [ 'message' => esc_html__( 'Unable to update account name. Please contact support.', 'give' ) ] );
 	}
 	give_die();
 }
