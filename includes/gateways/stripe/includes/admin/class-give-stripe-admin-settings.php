@@ -58,7 +58,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function __construct() {
 
@@ -75,10 +74,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
 			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
-			add_action( 'give_admin_field_stripe_account_manager', array(
-				$this,
-				'stripe_account_manager_field'
-			), 10, 2 );
+			add_action(
+				'give_admin_field_stripe_account_manager',
+				array(
+					$this,
+					'stripe_account_manager_field',
+				),
+				10,
+				2
+			);
 			add_action( 'give_admin_field_stripe_webhooks', array( $this, 'stripe_webhook_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', array( $this, 'stripe_styles_field' ), 10, 2 );
 		}
@@ -91,7 +95,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return array
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function register_sections( $sections ) {
 			$sections['stripe-settings'] = __( 'Stripe', 'give' );
@@ -105,7 +108,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return array
 		 * @since  2.6.0
 		 * @access public
-		 *
 		 */
 		public function register_groups() {
 
@@ -129,7 +131,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return mixed
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function register_advanced_sections( $section ) {
 			$section['stripe'] = __( 'Stripe', 'give' );
@@ -145,7 +146,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return array
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function register_settings( $settings ) {
 
@@ -184,7 +184,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.0
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
@@ -220,14 +219,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.5
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
 
 					$settings['general'][] = array(
 						'name' => __( 'Stripe Receipt Emails', 'give' ),
 						'desc' => sprintf(
-						/* translators: 1. GiveWP Support URL */
+							/* translators: 1. GiveWP Support URL */
 							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
 							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
 						),
@@ -260,7 +258,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.5
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
 
@@ -282,7 +279,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.5
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
 
@@ -305,7 +301,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.0
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_checkout_fields', $settings );
 
@@ -383,7 +378,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.0
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_checkout_fields', $settings );
 
@@ -456,8 +450,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'id'            => 'stripe_mandate_acceptance_text',
 						'wrapper_class' => $is_hide_mandate ? 'stripe-mandate-acceptance-text' : 'stripe-mandate-acceptance-text give-hidden',
 
-						'type'    => 'textarea',
-						'default' => give_stripe_get_default_mandate_acceptance_text(),
+						'type'          => 'textarea',
+						'default'       => give_stripe_get_default_mandate_acceptance_text(),
 					);
 
 					/**
@@ -567,7 +561,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return array
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function register_advanced_settings( $settings ) {
 
@@ -595,14 +588,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.0
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
 					$settings[] = array(
 						'name'    => __( 'Stripe SDK Compatibility', 'give' ),
 						'desc'    => sprintf(
-						/* translators: 1. GiveWP Support URL */
+							/* translators: 1. GiveWP Support URL */
 							__( 'If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href="%1$s" target="_blank">Stripe SDK</a> (Software Development Kit) either through <a href="%2$s" target="_blank">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href="%3$s" target="_blank">contact support</a>.', 'give' ),
 							esc_url_raw( 'https://github.com/stripe/stripe-php' ),
 							esc_url_raw( 'http://getcomposer.org/' ),
@@ -666,7 +658,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 *
 					 * @return array
 					 * @since 2.5.0
-					 *
 					 */
 					$settings = apply_filters( 'give_stripe_after_advanced_setting_fields', $settings );
 
@@ -690,7 +681,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @return string
 		 * @since  2.5.0
 		 * @access public
-		 *
 		 */
 		public function stripe_modal_checkout_status( $status = 'enabled' ) {
 
@@ -716,7 +706,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @return mixed|void
 		 * @since 2.7.0
-		 *
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 
@@ -732,13 +721,16 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			}
 
 			$site_url            = get_site_url();
-			$modal_title         = __( '<strong>You are connected! Now this is important: Please configure your Stripe webhook to finalize the setup.</strong>', 'give' );
+			$modal_title         = sprintf(
+				'<strong>%1$s</strong>',
+				esc_html__( 'You are connected! Now this is important: Please configure your Stripe webhook to finalize the setup.', 'give' )
+			);
 			$modal_first_detail  = sprintf(
 				'%1$s %2$s',
 				__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
 				"<strong>{$site_url}?give-listener=stripe</strong>"
 			);
-			$modal_second_detail = __( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
+			$modal_second_detail = esc_html__( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
 			$can_display         = ! empty( $_GET['stripe_account'] ) ? '0' : '1';
 			?>
 			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
@@ -746,7 +738,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					<div id="give-stripe-account-manager-errors"></div>
 					<div id="give-stripe-account-manager-description">
 						<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
-						<p class="give-field-description"><?php _e('In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give'); ?></p>
+						<p class="give-field-description"><?php _e( 'In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give' ); ?></p>
 					</div>
 					<div class="give-stripe-account-manager-container">
 						<div
@@ -770,20 +762,20 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									$stripe_account_id  = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : '';
 									$disconnect_message = ( 'connect' === $details['type'] ) ?
 										sprintf(
-											__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
+											esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
 											$stripe_account_id
 										) :
-										__( 'Are you sure you want to disconnect GiveWP from Stripe?', 'give' );
+										esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe?', 'give' );
 									$disconnect_url     = ( 'connect' === $details['type'] ) ?
 										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
 										add_query_arg(
 											[
-												'post_type'   => 'give_forms',
-												'page'        => 'give-settings',
-												'tab'         => 'gateways',
-												'section'     => 'stripe-settings',
+												'post_type' => 'give_forms',
+												'page'    => 'give-settings',
+												'tab'     => 'gateways',
+												'section' => 'stripe-settings',
 												'give_action' => 'disconnect_manual_stripe_account',
-												'account'     => $slug,
+												'account' => $slug,
 											],
 											admin_url( 'edit.php' )
 										);
@@ -792,24 +784,24 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
 											<span class="give-stripe-account-name">
-												<?php _e( $account_name ); ?>
+												<?php _e( $account_name, 'give' ); ?>
 											</span>
 											<span class="give-field-description">
-												<?php _e( $account_email ); ?>
+												<?php _e( $account_email, 'give' ); ?>
 											</span>
 											<span class="give-stripe-account-edit">
 												<?php if ( 'connect' !== $details['type'] ) { ?>
-												<a class="give-stripe-account-edit-name" href="#"><?php echo __( 'Edit', 'give' ); ?></a>
+												<a class="give-stripe-account-edit-name" href="#"><?php esc_html_e( 'Edit', 'give' ); ?></a>
 												<a
 													class="give-stripe-account-update-name give-hidden"
 													href="#"
 													data-account="<?php echo $slug; ?>"
-												><?php _e( 'Update', 'give' ); ?></a>
+												><?php esc_html_e( 'Update', 'give' ); ?></a>
 												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php echo __( 'Cancel', 'give' ); ?></a>
 												<?php } ?>
 											<?php if ( $slug === $default_account ) { ?>
 												<span class="give-stripe-account-default give-stripe-account-badge">
-													<?php _e( 'Default Account', 'give' ); ?>
+													<?php esc_html_e( 'Default Account', 'give' ); ?>
 												</span>
 											<?php } else { ?>
 												<span class="give-stripe-account-default">
@@ -817,7 +809,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 														data-account="<?php echo $slug; ?>"
 														data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
 														class="give-stripe-account-set-default" href="#"
-													><?php _e( 'Set as Default', 'give' ); ?></a>
+													><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
 												</span>
 											<?php } ?>
 
@@ -826,20 +818,22 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										<div class="give-stripe-account-actions">
 											<span class="give-stripe-account-type-description give-field-description"><?php _e( 'Connection Method:', 'give' ); ?></span>
 											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_names( $details['type'] ); ?></span>
-											<?php if (
+											<?php
+											if (
 												$slug !== $default_account ||
 												(
 													is_array( $stripe_accounts ) &&
 													count( $stripe_accounts ) === 1
 												)
-											) { ?>
+											) {
+												?>
 												<span class="give-stripe-account-disconnect">
 													<a
 														class="give-stripe-disconnect-account-btn"
 														href="<?php echo $disconnect_url; ?>"
 														data-disconnect-message="<?php echo $disconnect_message; ?>"
 													>
-														<?php _e( 'Disconnect', 'give' ); ?>
+																								<?php esc_html_e( 'Disconnect', 'give' ); ?>
 													</a>
 												</span>
 											<?php } ?>
@@ -847,14 +841,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									</div>
 									<?php
 								}
-							} else { ?>
+							} else {
+								?>
 								<div class="give-stripe-account-manager-list-item">
-									<span><?php _e( 'No Stripe Accounts found.', 'give' ); ?></span>
+									<span><?php esc_html_e( 'No Stripe Accounts found.', 'give' ); ?></span>
 								</div>
 							<?php } ?>
 						</div>
 						<div class="give-stripe-account-manager-add-section">
-							<h3><?php echo __( 'Add New Stripe Account', 'give' ); ?></h3>
+							<h3><?php esc_html_e( 'Add New Stripe Account', 'give' ); ?></h3>
 							<div class="give-stripe-add-account-errors"></div>
 							<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 								<tbody>
@@ -873,7 +868,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								<tr valign="top" class="give-stripe-account-type-connect">
 									<th scope="row" class="titledesc">
 										<label for="stripe_connect_button">
-											<?php echo __( 'Stripe Connection', 'give' ); ?>
+											<?php esc_html_e( 'Stripe Connection', 'give' ); ?>
 										</label>
 									</th>
 									<td class="give-forminp">
@@ -896,7 +891,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @param $option_value
 		 *
 		 * @since 2.5.0
-		 *
 		 */
 		public function stripe_webhook_field( $value, $option_value ) {
 			?>
@@ -911,7 +905,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							<?php
 							esc_html_e( 'In order for Stripe to function properly, you must configure your Stripe webhooks.', 'give' );
 							echo sprintf(
-							/* translators: 1. Webhook settings page. */
+								/* translators: 1. Webhook settings page. */
 								__( ' You can  visit your <a href="%1$s" target="_blank">Stripe Account Dashboard</a> to add a new webhook. ', 'give' ),
 								esc_url_raw( 'https://dashboard.stripe.com/account/webhooks' )
 							);
@@ -937,7 +931,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<p>
 							<?php
 							echo sprintf(
-							/* translators: 1. Documentation on webhook setup. */
+								/* translators: 1. Documentation on webhook setup. */
 								__( 'See our <a href="%1$s" target="_blank">documentation</a> for more information.', 'give' ),
 								esc_url_raw( 'http://docs.givewp.com/stripe-webhooks' )
 							);

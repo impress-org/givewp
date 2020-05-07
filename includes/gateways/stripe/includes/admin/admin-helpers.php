@@ -152,7 +152,7 @@ function give_stripe_connect_button() {
 			'mode'                  => give_is_test_mode() ? 'test' : 'live',
 			'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 			'website_url'           => get_bloginfo( 'url' ),
-			'give_stripe_connected' => '0',//! empty( $connected ) ? '1' : '0',
+			'give_stripe_connected' => '0',
 		),
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
@@ -226,8 +226,8 @@ function give_stripe_connect_delete_options() {
 function give_stripe_connection_type_names( $slug = 'connect' ) {
 
 	$names = [
-		'manual'  => __( 'API Keys', 'give' ),
-		'connect' => __( 'Stripe Connect', 'give' ),
+		'manual'  => esc_html__( 'API Keys', 'give' ),
+		'connect' => esc_html__( 'Stripe Connect', 'give' ),
 	];
 
 	return $names[ $slug ];
