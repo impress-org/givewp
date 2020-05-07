@@ -72,38 +72,42 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', array( 'give-styles' ), GIVE_VERSION );
 
 		$primaryColor = $templateOptions['introduction']['primary_color'];
-		$dynamicCss   = "
+		$dynamicCss   = sprintf(
+			'
 			.seperator {
-				background: {$primaryColor} !important;
+				background: %1$s !important;
 			}
 			.give-btn {
-				border: 2px solid {$primaryColor} !important;
-				background: {$primaryColor} !important;
+				border: 2px solid %1$s !important;
+				background: %1$s !important;
 			}
 			.give-btn:hover {
-				background: {$primaryColor} !important;
+				background: %1$s !important;
 			}
 			.give-donation-level-btn {
-				border: 2px solid {$primaryColor} !important;
+				border: 2px solid %1$s !important;
 			}
 			.give-donation-level-btn.give-default-level {
-				color: {$primaryColor}!important; background: #fff !important;
+				color: %1$s !important;
+				background: #fff !important;
 				transition: background 0.2s ease, color 0.2s ease;
 			}
 			.give-donation-level-btn.give-default-level:hover {
-				color: {$primaryColor}!important; background: #fff !important;
+				color: %1$s !important; background: #fff !important;
 			}
 			.give-input:focus, .give-select:focus {
-				border: 1px solid {$primaryColor} !important;
+				border: 1px solid %1$s !important;
 			}
 			.checkmark {
-				border-color: {$primaryColor} !important;
-				color: {$primaryColor}!important;
+				border-color: %1$s !important;
+				color: %1$s !important;
 			}
-			input[type='radio'] + label::after {
-				background: {$primaryColor} !important;
+			input[type=\'radio\'] + label::after {
+				background: %1$s !important;
 			}
-		";
+		',
+			$primaryColor
+		);
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamicCss );
 
 		$rawColor            = trim( $primaryColor, '#' );
@@ -169,7 +173,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$options = FormTemplateUtils::getOptions();
 
 		$receipt->heading = esc_html( $options['thank-you']['headline'] );
-		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
+		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], array( 'payment_id' => $donationId ) ) );
 
 		return $receipt;
 	}
