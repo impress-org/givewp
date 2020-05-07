@@ -287,14 +287,14 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 					// No customer, failed.
 					give_record_gateway_error(
-						__( 'Stripe Customer Creation Failed', 'give' ),
+						esc_html__( 'Stripe Customer Creation Failed', 'give' ),
 						sprintf(
 							/* translators: %s Donation Data */
-							__( 'Unable to get Stripe Customer ID while processing donation. Details: %s', 'give' ),
+							esc_html__( 'Unable to get Stripe Customer ID while processing donation. Details: %s', 'give' ),
 							wp_json_encode( $donation_data )
 						)
 					);
-					give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
+					give_set_error( 'stripe_error', esc_html__( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
 					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 
 				} // End if().

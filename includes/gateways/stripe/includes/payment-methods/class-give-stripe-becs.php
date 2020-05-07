@@ -125,9 +125,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					?>
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
-							<?php echo __( 'Bank Account', 'give' ); ?>
+							<?php echo esc_html__( 'Bank Account', 'give' ); ?>
 							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo __( 'BSB Number and Account Number of your bank account.', 'give' );?>"></span>
+							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'BSB Number and Account Number of your bank account.', 'give' ); ?>"></span>
 						</label>
 						<div
 							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
@@ -243,8 +243,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					);
 
 					// Record the pending payment in Give.
-					$donation_id        = give_insert_payment( $payment_data );
-
+					$donation_id = give_insert_payment( $payment_data );
 
 					// Return error, if donation id doesn't exists.
 					if ( ! $donation_id ) {
