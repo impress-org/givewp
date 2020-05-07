@@ -56,9 +56,8 @@ add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payme
  * @return mixed
  */
 function __give_stripe_form_add_credentials( $form_html_tags, $form ) {
-
-	$publishable_key        = give_stripe_get_publishable_key( $form->ID );
-	$account_id             = give_stripe_get_connected_account_id( $form->ID );
+	$publishable_key = give_stripe_get_publishable_key( $form->ID );
+	$account_id      = give_stripe_get_connected_account_id( $form->ID );
 
 	$form_html_tags['data-publishable-key'] = $publishable_key;
 	$form_html_tags['data-account']         = $account_id;
