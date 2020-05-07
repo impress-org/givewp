@@ -143,6 +143,10 @@ function give_do_automatic_upgrades() {
 			give_v2511_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '2.6.3', '<' ):
+			give_v263_upgrades();
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.7.0', '<' ):
 			Give()->routeForm->addRule();
 			$did_upgrade = true;
@@ -3597,3 +3601,35 @@ function give_v2511_upgrades() {
 		$wp_roles->remove_cap( $role, 'read_give_payment' );
 	}
 }
+
+/**
+ * Upgrade for version 2.6.3
+ *
+ * @since 2.6.3
+ */
+function give_v263_upgrades() {
+	$licenses = get_option( 'give_licenses', [] );
+
+	if ( $licenses ) {
+		foreach ( $licenses as $license ) {
+			if ( ! empty( $license['is_all_access_pass'] ) ) {
+				// Remove single license which is part of all access pass.
+				// @see https://github.com/impress-org/givewp/issues/4669
+				$addonSlugs = Give_License::getAddonSlugsFromAllAccessPassLicense( $license );
+				foreach ( $licenses as $license_key => $data ) {
+					// Skip bundle plan license key.
+					if ( ! empty( $data['is_all_access_pass'] ) ) {
+						continue;
+					}
+
+					if ( in_array( $data['plugin_slug'], $addonSlugs, true ) ) {
+						unset( $licenses[ $license_key ] );
+					}
+				}
+			}
+		}
+
+		update_option( 'give_licenses', $licenses );
+	}
+}
+
