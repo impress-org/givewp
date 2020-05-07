@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_stripe_connect_save_options() {
+
 	// Is user have permission to edit give setting.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
@@ -32,12 +33,17 @@ function give_stripe_connect_save_options() {
 
 	// If we don't have values here, bounce.
 	if (
-		! isset( $get_vars['stripe_publishable_key'] )
-		|| ! isset( $get_vars['stripe_user_id'] )
-		|| ! isset( $get_vars['stripe_access_token'] )
-		|| ! isset( $get_vars['stripe_access_token_test'] )
-		|| ! isset( $get_vars['connected'] )
+		! isset( $get_vars['stripe_publishable_key'] ) ||
+		! isset( $get_vars['stripe_user_id'] ) ||
+		! isset( $get_vars['stripe_access_token'] ) ||
+		! isset( $get_vars['stripe_access_token_test'] ) ||
+		! isset( $get_vars['connected'] )
 	) {
+		return;
+	}
+
+	// Unable to redirect, bail.
+	if ( headers_sent() ) {
 		return;
 	}
 
@@ -46,13 +52,33 @@ function give_stripe_connect_save_options() {
 	$all_account_slugs = array_keys( $stripe_accounts );
 	$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) + 1 : 1;
 	$account_slug      = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
+	$secret_key        = ! give_is_test_mode() ? $get_vars['stripe_access_token'] : $get_vars['stripe_access_token_test'];
+	$account_name      = give_stripe_convert_slug_to_title( $account_slug );
+	$account_email     = '';
+	$account_country   = '';
 
-	// If Stripe account is already exists, then don't save it.
+	// Set API Key to fetch account details.
+	\Stripe\Stripe::setApiKey( $secret_key );
+
+	// Get Account Details.
+	$account_details = give_stripe_get_account_details( $stripe_account_id );
+
+	// Setup Account Details for Connected Stripe Accounts.
+	if ( ! empty( $account_details->id ) && 'account' === $account_details->object ) {
+		$account_name    = $account_details->business_profile->name;
+		$account_slug    = $account_details->id;
+		$account_email   = $account_details->email;
+		$account_country = $account_details->country;
+	}
+
+	// If the same Stripe account is already connected, then don't save it.
 	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'give_stripe_user_id' ), true ) ) {
 		return;
 	}
 
+	// Set the first account as default.
 	if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
+
 		// Set the connect details of Stripe account as default Stripe account.
 		give_update_option( 'give_stripe_connected', $get_vars['connected'] );
 		give_update_option( 'give_stripe_user_id', $stripe_account_id );
@@ -65,16 +91,16 @@ function give_stripe_connect_save_options() {
 		give_update_option( '_give_stripe_default_account', $account_slug );
 	}
 
-	$is_apple_pay_registered = give_update_option( 'is_stripe_apple_pay_registered', false );
-
 	$stripe_accounts[ $account_slug ] = [
 		'type'                 => 'connect',
+		'account_name'         => $account_name,
+		'account_email'        => $account_email,
+		'account_country'      => $account_country,
 		'give_stripe_user_id'  => $stripe_account_id,
 		'live_secret_key'      => $get_vars['stripe_access_token'],
 		'test_secret_key'      => $get_vars['stripe_access_token_test'],
 		'live_publishable_key' => $get_vars['stripe_publishable_key'],
 		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
-		'register_apple_pay'   => $is_apple_pay_registered ? true : false,
 	];
 
 	// Update Stripe accounts to global settings.
@@ -82,7 +108,9 @@ function give_stripe_connect_save_options() {
 
 	// Send back to settings page.
 	give_stripe_get_back_to_settings_page( [ 'stripe_account' => 'connected' ] );
+	give_die();
 }
+
 add_action( 'admin_init', 'give_stripe_connect_save_options' );
 
 /**
