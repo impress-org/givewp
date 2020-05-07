@@ -56,24 +56,24 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 
 	$settings['stripe_form_account_options'] = array(
 		'id'        => 'stripe_form_account_options',
-		'title'     => __( 'Manage Accounts', 'give' ),
+		'title'     => esc_html__( 'Manage Accounts', 'give' ),
 		'icon-html' => sprintf(
 			'<img class="give-stripe-icon" src="%1$s" />',
 			GIVE_PLUGIN_URL . 'assets/dist/images/admin/stripe-icon.png'
 		),
 		'fields'    => array(
 			array(
-				'name'    => __( 'Account Options', 'give' ),
+				'name'    => esc_html__( 'Account Options', 'give' ),
 				'id'      => 'give_stripe_per_form_accounts',
 				'type'    => 'radio_inline',
 				'default' => 'disabled',
 				'options' => array(
-					'disabled' => __( 'Global', 'give' ),
-					'enabled'  => __( 'Customize', 'give' ),
+					'disabled' => esc_html__( 'Global', 'give' ),
+					'enabled'  => esc_html__( 'Customize', 'give' ),
 				),
 			),
 			array(
-				'name'          => __( 'Stripe Accounts', 'give' ),
+				'name'          => esc_html__( 'Stripe Accounts', 'give' ),
 				'id'            => '_give_stripe_default_account',
 				'type'          => 'radio',
 				'default'       => $first_account_key,
@@ -86,8 +86,8 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 				'title' => sprintf(
 					'<a href="%1$s">%2$s</a> %3$s',
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ),
-					__( 'Click here', 'give' ),
-					__( 'to add new Stripe account.', 'give' )
+					esc_html__( 'Click here', 'give' ),
+					esc_html__( 'to add new Stripe account.', 'give' )
 				),
 			),
 		),
