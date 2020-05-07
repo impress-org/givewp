@@ -1540,3 +1540,28 @@ function give_stripe_get_ip_address() {
 
 	return $ip_address_details[0];
 }
+
+/**
+ * This helper function will be used to fetch account details for the users connected via Stripe Connect.
+ *
+ * @param string $id Stripe Account ID of the connected user.
+ *
+ * @since 2.7.0
+ *
+ * @return bool|\Stripe\Account
+ */
+function give_stripe_get_account_details( $id ) {
+
+	try {
+		$account = \Stripe\Account::retrieve( $id );
+	} catch ( Exception $e ) {
+		give_record_gateway_error(
+			__( 'Give - Stripe Error', 'give' ),
+			__( 'Unable to retrieve account details. Please contact support for assistance', 'give' )
+		);
+
+		return false;
+	}
+
+	return $account;
+}
