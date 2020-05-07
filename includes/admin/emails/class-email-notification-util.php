@@ -286,6 +286,12 @@ class Give_Email_Notification_Util {
 			: $option_name );
 		$option_value       = give_get_option( $global_option_name, $default );
 
+		// Ensure that emails sent to donors can be translated using WPML
+		// Registering only the emails sent to the donors.
+		if ( defined( 'ICL_SITEPRESS_VERSION' ) && ! is_array( $option_value ) ) {
+			$option_value = apply_filters( 'wpml_translate_single_string', $option_value, 'admin_texts_give_settings', '[give_settings]' . $global_option_name );
+		}
+
 		if (
 			! empty( $form_id )
 			&& give_is_setting_enabled(
