@@ -787,6 +787,12 @@ form.give-form .form-row input[type='url'] {
 	padding: 14px !important;
 }
 
+form[id*='give-form'] .form-row textarea,
+#give-recurring-form .form-row textarea,
+form.give-form .form-row textarea {
+	line-height: 1.4;
+}
+
 .give-select {
 	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
