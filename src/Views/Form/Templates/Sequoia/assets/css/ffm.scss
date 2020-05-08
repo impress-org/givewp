@@ -13,7 +13,7 @@
 			font-weight: 500;
 			font-size: 16px;
 			line-height: 1.4;
-			padding: 0 0 0 36px;
+			padding: 0 0 0 32px;
 			width: 100%;
 			margin-left: 0;
 			color: #333;
@@ -27,6 +27,53 @@
 			left: 0;
 			width: 20px;
 			height: 20px;
+			border: 1px solid #b4b9be;
+			background-color: #fff;
+			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+		}
+
+		label::after {
+			transition: transform 0.2s ease;
+			width: 16px;
+			height: 16px;
+			position: absolute;
+			transform: scale3d(0, 0, 0);
+			top: calc(50% - 12px);
+			left: 0;
+			content: ' ';
+			display: block;
+			background: rgb(65, 65, 65);
+			background-position: center;
+		}
+
+		label.selected {
+			transform: scale3d(1, 1, 1);
+		}
+	}
+	.ffm-radio-field {
+		input[type='radio'] {
+			display: none !important;
+		}
+
+		label {
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 1.4;
+			padding: 0 0 0 32px;
+			width: 100%;
+			margin-left: 0;
+			color: #333;
+			display: inline-block;
+		}
+
+		label::before {
+			content: ' ';
+			position: absolute;
+			top: calc(50% - 12px);
+			left: 0;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
 			border: 1px solid #b4b9be;
 			background-color: #fff;
 			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
