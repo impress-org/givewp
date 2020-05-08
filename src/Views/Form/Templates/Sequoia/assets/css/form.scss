@@ -12,6 +12,7 @@
 @import 'receipt';
 @import 'recurring';
 @import 'feerecovery';
+@import 'ffm';
 
 // Structure
 
@@ -724,7 +725,7 @@ fieldset {
 
 		> i {
 			position: absolute;
-			top: 18px;
+			bottom: 18px;
 			left: 16px;
 			font-size: 12px;
 			color: #989898;
@@ -736,7 +737,7 @@ fieldset {
 
 		> i {
 			position: absolute;
-			top: 18px;
+			bottom: 18px;
 			left: 24px;
 			font-size: 12px;
 			color: #989898;
