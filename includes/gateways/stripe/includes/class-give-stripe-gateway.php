@@ -74,6 +74,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		public $payment_method;
 
 		/**
+		 * Error Messages.
+		 *
+		 * @since  2.7.0
+		 * @access protected
+		 *
+		 * @var array $errorMessages List of error messages.
+		 */
+		public array $errorMessages = [];
+
+		/**
 		 * Give_Stripe_Gateway constructor.
 		 *
 		 * @since  2.5.0
@@ -95,6 +105,60 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
 
+		}
+
+		/**
+		 * This function is used to determine whether to show the payment fields or not.
+		 *
+		 * @since  2.7.0
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public function canShowFields() {
+
+			$status = true;
+
+			if (
+				! Give\Helpers\Gateways\Stripe::isAccountConfigured() &&
+				! is_ssl() &&
+				! give_is_test_mode()
+			) {
+				// Account not configured, No SSL scenario.
+				Give_Notices::print_frontend_notice(
+					sprintf(
+						'<strong>%1$s</strong> %2$s',
+						esc_html__( 'Notice:', 'give' ),
+						$this->errorMessages['account_not_configured_no_ssl']
+					)
+				);
+				$status = false;
+			} elseif ( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
+				// Account not configured scenario.
+				Give_Notices::print_frontend_notice(
+					sprintf(
+						'<strong>%1$s</strong> %2$s',
+						esc_html__( 'Notice:', 'give' ),
+						$this->errorMessages['account_not_configured']
+					)
+				);
+				$status = false;
+			} elseif (
+				! is_ssl() &&
+				! give_is_test_mode()
+			) {
+				// Account configured, No SSL scenario.
+				Give_Notices::print_frontend_notice(
+					sprintf(
+						'<strong>%1$s</strong> %2$s',
+						esc_html__( 'Notice:', 'give' ),
+						$this->errorMessages['account_configured_no_ssl']
+					)
+				);
+				$status = false;
+			}
+
+			return $status;
 		}
 
 		/**
