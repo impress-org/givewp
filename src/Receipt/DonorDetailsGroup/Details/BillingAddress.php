@@ -15,7 +15,7 @@ class BillingAddress extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return esc_html__( 'BILLING ADDRESS', 'give' );
+		return esc_html__( 'Billing Address', 'give' );
 	}
 
 	/**

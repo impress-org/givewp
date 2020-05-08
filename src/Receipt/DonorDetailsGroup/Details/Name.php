@@ -15,7 +15,7 @@ class Name extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return esc_html__( 'DONOR NAME', 'give' );
+		return esc_html__( 'Donor Name', 'give' );
 	}
 
 	/**

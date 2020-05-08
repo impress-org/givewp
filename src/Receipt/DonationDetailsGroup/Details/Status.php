@@ -14,7 +14,7 @@ class Status extends Detail {
 	 * @inheritDoc
 	 */
 	public function getLabel() {
-		return esc_html__( 'PAYMENT STATUS', 'give' );
+		return esc_html__( 'Payment Status', 'give' );
 	}
 
 	/**
