@@ -11,6 +11,7 @@ export function getBGColor() {
 	return palette[ Math.floor( Math.random() * ( palette.length ) ) ];
 }
 
+
 export function getInitials( names ) {
 	return names.trim().split( ' ' ).map( singleName => singleName.charAt( 0 ) ).join( '' );
 }

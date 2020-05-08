@@ -12,6 +12,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Form\Template as FormTemplateUtils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -180,6 +182,7 @@ function give_load_checkout_fields() {
 	);
 }
 
+add_action( 'wp_ajax_give_cancel_login', 'give_load_checkout_fields' );
 add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields' );
 add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields' );
 
@@ -843,3 +846,28 @@ function give_get_content_by_ajax_handler() {
 
 add_action( 'wp_ajax_give_get_content_by_ajax', 'give_get_content_by_ajax_handler' );
 
+
+/**
+ * Get form template for ajax request.
+ *
+ * Note: only for internal use
+ *
+ * @since 2.7.0
+ */
+function give_get_form_template_id() {
+	check_ajax_referer( 'give-donation-form-widget', 'security' );
+
+	$formId = isset( $_POST['formId'] ) ? absint( $_POST['formId'] ) : 0;
+
+	// Send error response if form id does not mentioned.
+	if ( ! $formId ) {
+		wp_send_json_error();
+	}
+
+	$templateID = FormTemplateUtils::getActiveID( $formId );
+	$templateID = $templateID ?: 'legacy';
+
+	wp_send_json_success( $templateID );
+}
+add_action( 'wp_ajax_give_get_form_template_id', 'give_get_form_template_id' );
+add_action( 'wp_ajax_no_priv_give_get_form_template_id', 'give_get_form_template_id' );

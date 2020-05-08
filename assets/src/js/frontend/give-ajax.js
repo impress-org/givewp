@@ -56,7 +56,7 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'click', '.give-checkout-login', function( e ) {
 		const $this = $( this );
 		const this_form = $( this ).parents( 'form' );
-		const loading_animation = $( this_form ).find( '[id^="give-checkout-login-register"] .give-loading-text' );
+		const loading_animation = $this.parents( 'div.give-login-account-wrap' ).find( '.give-loading-text' );
 		const data = {
 			action: $this.data( 'action' ),
 			form_id: $( this_form ).find( '[name="give-form-id"]' ).val(),
@@ -66,8 +66,16 @@ jQuery( document ).ready( function( $ ) {
 		loading_animation.show();
 
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
-			//Clear form HTML and add AJAX response containing fields
-			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
+			const oldPosition = $( this_form ).find( '[id^=give-checkout-login-register]' );
+
+			//Show fields
+			if ( oldPosition.length && parseInt( oldPosition.html().trim().length ) ) {
+				$( this_form ).find( '[id^=give-checkout-login-register]' ).html( checkout_response );
+			} else {
+				// Insert html on correct position for elegent form style (form in embed).
+				$( this_form ).find( '[id^="give_checkout_user_info"]' ).html( checkout_response );
+			}
+
 			$( this_form ).find( '.give-submit-button-wrap' ).hide();
 		} ).done( function() {
 			// Hide the ajax loader
@@ -75,6 +83,7 @@ jQuery( document ).ready( function( $ ) {
 			// Trigger float-labels
 			give_fl_trigger();
 		} );
+
 		return false;
 	} );
 
@@ -90,8 +99,8 @@ jQuery( document ).ready( function( $ ) {
 		};
 		// AJAX get the payment fields.
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( checkout_response ) {
-			//Show fields
-			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( $.parseJSON( checkout_response.fields ) );
+			$( this_form ).find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( checkout_response.fields ) );
+			$( this_form ).find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
 			$( this_form ).find( '.give-submit-button-wrap' ).show();
 		} ).done( function() {
 			// Trigger float-labels
@@ -125,7 +134,7 @@ jQuery( document ).ready( function( $ ) {
 				this_form.find( '.give_errors' ).remove();
 
 				// Login successfully message.
-				this_form.find( '#give-payment-mode-select' ).after( response.data );
+				this_form.find( '[id^=give-checkout-login-register]' ).before( response.data );
 				this_form.find( '.give_notices.give_errors' ).delay( 5000 ).slideUp();
 
 				Give.form.fn.resetAllNonce( this_form ).then(
@@ -282,6 +291,18 @@ jQuery( document ).ready( function( $ ) {
 			data: data,
 			success: function( response ) {
 				receiptContainer.innerHTML = response;
+
+				if ( receiptContainer.parentElement.classList.contains( 'give-form-templates' ) ) {
+					const interval = setInterval(function(){
+						if (window.parentIFrame) {
+							sendLoadedMessage();
+						}
+					}, 50);
+					function sendLoadedMessage () {
+						clearInterval(interval);
+						window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
+					}
+				}
 			},
 		} );
 	}
@@ -316,23 +337,32 @@ function give_load_gateway( form_object, payment_mode ) {
 	}
 
 	//Post via AJAX to Give
-	jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
-		action: 'give_load_gateway',
-		give_total: give_total,
-		give_form_id: give_form_id,
-		give_form_id_prefix: give_form_id_prefix,
-		give_payment_mode: payment_mode,
-		nonce: Give.form.fn.getNonce( form_object ),
-	},
-	function( response ) {
-		//Success: let's output the gateway fields in the appropriate form space
-		jQuery( form_object ).unblock();
-		jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
-		jQuery( '.give-no-js' ).hide();
-		jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
+	new Promise( function( res ) {
+		// trigger an event on before payment gateway loads.
+		jQuery( document ).trigger( 'Give:onPreGatewayLoad' );
 
+		jQuery.post( Give.fn.getGlobalVar( 'ajaxurl' ) + '?payment-mode=' + payment_mode, {
+			action: 'give_load_gateway',
+			give_total: give_total,
+			give_form_id: give_form_id,
+			give_form_id_prefix: give_form_id_prefix,
+			give_payment_mode: payment_mode,
+			nonce: Give.form.fn.getNonce( form_object ),
+		},
+		function( response ) {
+			//Success: let's output the gateway fields in the appropriate form space
+			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
+			jQuery( '.give-no-js' ).hide();
+			jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
+
+			return res( response );
+		}
+		);
+	} ).then( function( response ) {
 		// trigger an event on success for hooks
 		jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
-	}
-	);
+
+		// Unblock form.
+		jQuery( form_object ).unblock();
+	} );
 }

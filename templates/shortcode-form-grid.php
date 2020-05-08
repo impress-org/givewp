@@ -4,6 +4,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Form\Utils as FormUtils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -111,12 +113,22 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
-		printf(
-			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
-			$form_id
-		);
-		give_get_donation_form( $form_id );
-		echo '</div>';
+		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
+			echo give_form_shortcode(
+				[
+					'id'            => $form_id,
+					'display_style' => 'button',
+				]
+			);
+
+		} else {
+			printf(
+				'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
+				$form_id
+			);
+			give_get_donation_form( $form_id );
+			echo '</div>';
+		}
 	}
 	?>
 </div>

@@ -55,7 +55,7 @@ jQuery( function( $ ) {
 						new_state_field = `<input type="text" id="card_state" name="card_state" class="cart-state give-input required" placeholder="${ states_label }" value="${ response.default_state }" autocomplete="address-level4"/>`;
 						new_state_field = $( new_state_field );
 					}
-					
+
 					// No float labels.
 					if ( false === $form.hasClass( 'float-labels-enabled' ) ) {
 						if (

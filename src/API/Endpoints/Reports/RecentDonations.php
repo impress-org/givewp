@@ -16,26 +16,26 @@ class RecentDonations extends Endpoint {
 
 	public function get_report( $request ) {
 		// Setup donation query args (get sanitized start/end date from request)
-		$args = array(
+		$args = [
 			'number'     => 50,
 			'paged'      => 1,
 			'orderby'    => 'date',
 			'order'      => 'DESC',
 			'start_date' => $request->get_param( 'start' ),
 			'end_date'   => $request->get_param( 'end' ),
-		);
+		];
 
 		// Get array of 50 recent donations
 		$donations = new \Give_Payments_Query( $args );
 		$donations = $donations->get_payments();
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
-		$data = array();
+		$data = [];
 		foreach ( $donations as $donation ) {
 
 			$donation = new \Give_Payment( $donation->ID );
 
-			$amount = give_currency_symbol( $donation->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
+			$amount = give_currency_symbol( $donation->currency, true ) . give_format_amount( $donation->total, [ 'sanitize' => false ] );
 			$status = null;
 			switch ( $donation->status ) {
 				case 'publish':
@@ -57,10 +57,10 @@ class RecentDonations extends Endpoint {
 				'amount'   => $amount,
 				'url'      => $url,
 				'time'     => $donation->date,
-				'donor'    => array(
+				'donor'    => [
 					'name' => "{$donation->first_name} {$donation->last_name}",
 					'id'   => $donation->donor_id,
-				),
+				],
 				'source'   => $donation->form_title,
 			];
 		}

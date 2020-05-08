@@ -60,7 +60,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @access public
 		 * @return string $form
 		 * @since  2.6.1
-		 *
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
 
@@ -107,7 +106,8 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						<?php
 						if ( give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option', 'enabled' ) ) ) {
 							echo give_stripe_get_mandate_acceptance_text();
-						} ?>
+						}
+						?>
 					</div>
 					<?php
 					/**
@@ -119,7 +119,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					 * @param array $args    List of additional arguments.
 					 *
 					 * @since 2.5.0
-					 *
 					 */
 					do_action( 'give_after_cc_expiration', $form_id, $args );
 
@@ -130,7 +129,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					 * @param array $args    List of additional arguments.
 					 *
 					 * @since 2.5.0
-					 *
 					 */
 					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
 				}
@@ -162,7 +160,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @return void
 		 * @since  2.6.1
 		 * @access public
-		 *
 		 */
 		public function process_payment( $donation_data ) {
 
@@ -219,7 +216,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						give_record_gateway_error(
 							__( 'Donation creating error', 'give' ),
 							sprintf(
-							/* translators: %s Donation Data */
+								/* translators: %s Donation Data */
 								__( 'Unable to create a pending donation. Details: %s', 'give' ),
 								wp_json_encode( $donation_data )
 							)

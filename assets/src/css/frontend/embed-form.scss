@@ -1,0 +1,110 @@
+/*---------------------------------
+Embed Form aka IFrame Form
+-----------------------------------*/
+.give-embed-form-wrapper {
+	width: 100% !important;
+	position: relative;
+
+	.iframe-loader {
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		pointer-events: none;
+	}
+
+	iframe {
+		width: 100% !important;
+	}
+
+	&.is-hide {
+		position: fixed;
+		left: -9999px;
+	}
+
+	&.modal {
+		position: fixed;
+		z-index: 999999;
+		top: 0;
+		left: 0;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		overflow: hidden auto;
+
+		.modal-inner-wrap {
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+		}
+
+		.modal-content {
+			position: relative;
+			margin: 35px auto auto;
+			max-width: 572px;
+			width: 100%;
+		}
+
+		.close-btn-wrap {
+			margin-top: 15px;
+		}
+
+		.close-btn {
+			background: black;
+			color: white !important;
+			border-radius: 24px;
+			text-decoration: none;
+			outline: none;
+			font-size: 0.5em;
+			position: absolute;
+			right: 9px;
+			top: -14px;
+			font-weight: bold;
+			padding: 2px 10px;
+			opacity: 0.3;
+
+			&:hover {
+				opacity: 0.8;
+			}
+
+			span {
+				margin-left: 3px;
+				font-size: 1.5em;
+				line-height: 0.7em;
+				vertical-align: middle;
+			}
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background-color: rgba(0, 0, 0, 0.8);
+			overflow: hidden;
+		}
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotateZ(0deg);
+	}
+
+	to {
+		transform: rotateZ(180deg);
+	}
+}
+
+/*---------------------------------
+Embed Form aka IFrame Form
+-----------------------------------*/
+.js-give-grid-modal-launcher + div.js-give-embed-form-modal-launcher-wrap {
+	display: none;
+}

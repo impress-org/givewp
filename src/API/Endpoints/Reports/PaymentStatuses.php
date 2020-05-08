@@ -20,10 +20,10 @@ class PaymentStatuses extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 
 		// Setup args for give_count_payments
-		$args = array(
+		$args = [
 			'start-date' => $start->format( 'Y-m-d H:i:s' ),
 			'end-date'   => $end->format( 'Y-m-d H:i:s' ),
-		);
+		];
 
 		// Use give_count_payments logic to get payments
 		$payments  = give_count_payments( $args );

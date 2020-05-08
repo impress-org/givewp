@@ -69,6 +69,29 @@ class Give_Donation_Form_Block {
 	private function init() {
 		add_action( 'init', array( $this, 'register_block' ), 999 );
 		add_action( 'wp_ajax_give_block_donation_form_search_results', array( $this, 'block_donation_form_search_results' ) );
+		add_filter( 'rest_prepare_give_forms', array( $this, 'addExtraDataToResponse' ), 10, 2 );
+	}
+
+	/**
+	 * Add extra data to response.
+	 *
+	 * @since 2.7.0
+	 * @param WP_REST_Response $response
+	 * @param WP_Post          $form
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function addExtraDataToResponse( $response, $form ) {
+		// Return extra data only if query in edit context.
+		if ( empty( $_REQUEST['context'] ) || $_REQUEST['context'] !== 'edit' ) {
+			return $response;
+		}
+
+		$data                 = $response->get_data();
+		$data['formTemplate'] = Give()->form_meta->get_meta( $form->ID, '_give_form_template', true );
+		$response->set_data( $data );
+
+		return $response;
 	}
 
 	/**
@@ -142,7 +165,7 @@ class Give_Donation_Form_Block {
 
 		$parameters = array();
 
-		$parameters['id']                    = $attributes['id'];
+		$parameters['id']                    = absint( $attributes['id'] );
 		$parameters['show_title']            = $attributes['showTitle'];
 		$parameters['show_goal']             = $attributes['showGoal'];
 		$parameters['show_content']          = ! empty( $attributes['contentDisplay'] ) ? $attributes['showContent'] : 'none';

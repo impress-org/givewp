@@ -252,7 +252,8 @@ class Give_Scripts {
 	 */
 	public function admin_localize_scripts() {
 
-		global $post, $pagenow;
+		global $post;
+
 		$give_options = give_get_settings();
 
 		// Price Separators.
@@ -289,6 +290,8 @@ class Give_Scripts {
 			'one_option'                        => __( 'Choose a form', 'give' ),
 			'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
 			'ok'                                => __( 'Ok', 'give' ),
+			'activate'                          => __( 'Activate', 'give' ),
+			'deactivate'                        => __( 'Deactivate', 'give' ),
 			'cancel'                            => __( 'Cancel', 'give' ),
 			'success'                           => __( 'Success', 'give' ),
 			'error'                             => __( 'Error', 'give' ),
@@ -326,6 +329,7 @@ class Give_Scripts {
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
 			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
+			'form_template_required'            => __( 'To save form settings, you must select form template.', 'give' ),
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
@@ -611,6 +615,7 @@ class Give_Scripts {
 				'wp-components',
 				'wp-api',
 				'wp-editor',
+				'give-admin-scripts',
 			),
 			GIVE_VERSION
 		);
