@@ -1272,26 +1272,6 @@ function give_stripe_get_becs_icon_style( $form_id ) {
 }
 
 /**
- * This function will check whether the Stripe account is configured or not?
- *
- * @since 2.6.3
- *
- * @return bool
- */
-function give_stripe_is_account_configured() {
-
-	$is_configured   = false;
-	$publishable_key = give_stripe_get_publishable_key();
-	$secret_key      = give_stripe_get_secret_key();
-
-	if ( ! empty( $publishable_key ) || ! empty( $secret_key ) ) {
-		$is_configured = true;
-	}
-
-	return $is_configured;
-}
-
-/**
  * This function will be used to show notice instead of loading Stripe payment fields with errors.
  *
  * @param string $gateway_id Gateway ID.
@@ -1327,7 +1307,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 	$status = true;
 
 	if (
-		! give_stripe_is_account_configured() &&
+		! Give\Helpers\Gateways\Stripe::isAccountConfigured() &&
 		! is_ssl() &&
 		! give_is_test_mode()
 	) {
@@ -1340,7 +1320,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 			)
 		);
 		$status = false;
-	} elseif ( ! give_stripe_is_account_configured() ) {
+	} elseif ( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
 		// Account not configured scenario.
 		Give()->notices->print_frontend_notice(
 			sprintf(
