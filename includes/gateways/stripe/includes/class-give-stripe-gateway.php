@@ -77,11 +77,11 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * Error Messages.
 		 *
 		 * @since  2.7.0
-		 * @access protected
+		 * @access public
 		 *
 		 * @var array $errorMessages List of error messages.
 		 */
-		public array $errorMessages = [];
+		public $errorMessages = [];
 
 		/**
 		 * Give_Stripe_Gateway constructor.
