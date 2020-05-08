@@ -1312,7 +1312,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		! give_is_test_mode()
 	) {
 		// Account not configured, No SSL scenario.
-		Give()->notices->print_frontend_notice(
+		Give_Notices::print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
 				esc_html__( 'Notice:', 'give' ),
@@ -1322,7 +1322,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		$status = false;
 	} elseif ( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
 		// Account not configured scenario.
-		Give()->notices->print_frontend_notice(
+		Give_Notices::print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
 				esc_html__( 'Notice:', 'give' ),
@@ -1335,7 +1335,7 @@ function give_stripe_load_payment_fields_conditionally( $gateway_id = 'stripe' )
 		! give_is_test_mode()
 	) {
 		// Account configured, No SSL scenario.
-		Give()->notices->print_frontend_notice(
+		Give_Notices::print_frontend_notice(
 			sprintf(
 				'<strong>%1$s</strong> %2$s',
 				esc_html__( 'Notice:', 'give' ),
