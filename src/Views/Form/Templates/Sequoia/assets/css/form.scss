@@ -730,6 +730,18 @@ fieldset {
 			color: #989898;
 		}
 	}
+
+	.give-ffm-form-row-responsive {
+		position: relative;
+
+		> i {
+			position: absolute;
+			top: 18px;
+			left: 24px;
+			font-size: 12px;
+			color: #989898;
+		}
+	}
 	.give_error,
 	.give_success,
 	.give_warning {

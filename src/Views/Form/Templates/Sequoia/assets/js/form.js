@@ -215,6 +215,7 @@
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
 				setupInputIcon( '#give-company-wrap', 'building' );
+				setupInputIcon( '#date_field-wrap', 'calendar-alt' );
 
 				// Setup gateway icons
 				setupGatewayIcons();
