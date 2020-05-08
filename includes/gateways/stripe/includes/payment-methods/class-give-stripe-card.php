@@ -63,7 +63,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		 *
 		 * @return string $form
 		 */
-		function add_credit_card_form( $form_id, $args, $echo = true ) {
+		public function add_credit_card_form( $form_id, $args, $echo = true ) {
 
 			ob_start();
 			$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
