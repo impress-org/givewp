@@ -1270,4 +1270,3 @@ function give_stripe_get_becs_icon_style( $form_id ) {
 
 	return apply_filters( 'give_stripe_get_becs_icon_style', $icon_style, $form_id );
 }
-
