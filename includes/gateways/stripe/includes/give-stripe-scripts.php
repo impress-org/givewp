@@ -28,7 +28,7 @@ function give_stripe_frontend_scripts() {
 	 * We are not loading any scripts if Stripe account is not configured to avoid an intentional console error
 	 * for Stripe integration.
 	 */
-	if ( ! give_stripe_is_account_configured() ) {
+	if ( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
 		return;
 	}
 
