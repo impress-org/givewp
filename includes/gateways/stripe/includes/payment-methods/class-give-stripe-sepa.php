@@ -40,6 +40,11 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 
 			parent::__construct();
 
+			// Setup Error Messages.
+			$this->errorMessages['account_configured_no_ssl']     = esc_html__( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['account_not_configured_no_ssl'] = esc_html__( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['account_not_configured']        = esc_html__( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+
 			// Remove CC fieldset.
 			add_action( 'give_stripe_sepa_cc_form', '__return_false' );
 
@@ -62,12 +67,9 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @since  2.6.1
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
-
-			$id_prefix       = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-			$publishable_key = give_stripe_get_publishable_key();
-			$secret_key      = give_stripe_get_secret_key();
-
 			ob_start();
+
+			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 			do_action( 'give_before_cc_fields', $form_id ); ?>
 
@@ -86,8 +88,8 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					<?php
 				}
 
-				if ( give_stripe_load_payment_fields_conditionally( $this->id ) ) {
-				?>
+				if ( $this->canShowFields() ) {
+					?>
 					<div id="give-iban-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-iban-number-field-<?php echo $id_prefix; ?>" class="give-label">
 							<?php echo __( 'IBAN', 'give' ); ?>
