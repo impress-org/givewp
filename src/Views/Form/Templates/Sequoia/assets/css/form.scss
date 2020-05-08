@@ -738,7 +738,7 @@ fieldset {
 		> i {
 			position: absolute;
 			bottom: 18px;
-			left: 24px;
+			left: 22px;
 			font-size: 12px;
 			color: #989898;
 		}
@@ -754,21 +754,18 @@ fieldset {
 	display: none !important;
 }
 
-form[id*='give-form'] .form-row select,
 form[id*='give-form'] .form-row textarea,
 form[id*='give-form'] .form-row input[type='text'],
 form[id*='give-form'] .form-row input[type='tel'],
 form[id*='give-form'] .form-row input[type='email'],
 form[id*='give-form'] .form-row input[type='password'],
 form[id*='give-form'] .form-row input[type='url'],
-#give-recurring-form .form-row select,
 #give-recurring-form .form-row textarea,
 #give-recurring-form .form-row input[type='text'],
 #give-recurring-form .form-row input[type='tel'],
 #give-recurring-form .form-row input[type='email'],
 #give-recurring-form .form-row input[type='password'],
 #give-recurring-form .form-row input[type='url'],
-form.give-form .form-row select,
 form.give-form .form-row textarea,
 form.give-form .form-row input[type='text'],
 form.give-form .form-row input[type='tel'],
@@ -794,6 +791,9 @@ form.give-form .form-row textarea {
 	line-height: 1.4;
 }
 
+form[id*='give-form'] .form-row select,
+#give-recurring-form .form-row select,
+form.give-form .form-row select,
 .give-select {
 	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
