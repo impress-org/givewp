@@ -1276,7 +1276,7 @@ function give_stripe_get_becs_icon_style( $form_id ) {
  *
  * @param string $gateway_id Gateway ID.
  *
- * @since 2.6.3
+ * @since 2.7.0
  *
  * @return bool Whether to load Payment fields or not? Returns True or False.
  */
