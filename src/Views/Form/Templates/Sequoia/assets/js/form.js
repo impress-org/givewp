@@ -211,6 +211,29 @@
 					navigator.goToStep( 1 );
 				} );
 
+				$( '#give-ffm-section' ).on( 'click', handleFFMInput );
+
+				$( '#give-ffm-section input' ).each( function() {
+					switch ( $( this ).prop( 'type' ) ) {
+						case 'checkbox': {
+							if ( $( this ).prop( 'checked' ) ) {
+								$( this ).parent().addClass( 'checked' );
+							} else {
+								$( this ).parent().removeClass( 'checked' );
+							}
+							break;
+						}
+						case 'radio': {
+							if ( $( this ).prop( 'checked' ) ) {
+								$( this ).parent().addClass( 'selected' );
+							} else {
+								$( this ).parent().removeClass( 'selected' );
+							}
+							break;
+						}
+					}
+				} );
+
 				//Setup input icons
 				setupInputIcon( '#give-first-name-wrap', 'user' );
 				setupInputIcon( '#give-email-wrap', 'envelope' );
@@ -423,5 +446,27 @@
 	 */
 	function getInitialStep() {
 		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
+	}
+
+	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function handleFFMInput( evt ) {
+		if ( $( evt.target ).is( 'input' ) ) {
+			switch ( $( evt.target ).prop( 'type' ) ) {
+				case 'checkbox': {
+					$( evt.target ).parent().toggleClass( 'checked' );
+					break;
+				}
+				case 'radio': {
+					$( evt.target ).parent().addClass( 'selected' );
+					$( evt.target ).parent().siblings().removeClass( 'selected' );
+					break;
+				}
+			}
+		}
 	}
 }( jQuery ) );
