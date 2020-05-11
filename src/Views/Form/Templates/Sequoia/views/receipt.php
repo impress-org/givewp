@@ -8,6 +8,7 @@ use Give\Views\Form\Templates\Sequoia\Sequoia;
 use Give\Views\IframeContentView;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give_Payment as Payment;
+use GivePdfReceipt\Receipt\PdfReceiptDetailsGroup\Details\Receipt as PdfReceiptDetailItem;
 
 $donationSessionAccessor = new DonationAccessor();
 $donation                = new Payment( $donationSessionAccessor->getDonationId() );
@@ -17,6 +18,9 @@ $options                 = FormTemplateUtils::getOptions();
 $sequoiaTemplate = Give()->templates->getTemplate();
 
 $receiptDetails = $sequoiaTemplate->getReceiptDetails( $donation->ID );
+
+/* @var PdfReceiptDetailItem $pdfReceiptDownloadLinkDetailItem */
+$pdfReceiptDownloadLinkDetailItem = null;
 
 ob_start();
 ?>
@@ -64,6 +68,12 @@ ob_start();
 						continue;
 					}
 
+					// We will render download pdf receipt separately.
+					if ( PdfReceiptDetailItem::class === $detailItemClassName ) {
+						$pdfReceiptDownloadLinkDetailItem = $detail;
+						continue;
+					}
+
 					// This class is required to highlight total donation amount in receipt.
 					$detailRowClass = $detailItemClassName === TotalAmountDetailItem::class ? ' total' : '';
 
@@ -87,10 +97,13 @@ ob_start();
 			echo '</div>';
 		}
 		?>
-		<!-- Download Receipt TODO: make this conditional on presence of pdf receipts addon -->
-		<button class="give-btn download-btn">
-			<?php _e( 'Donation Receipt', 'give' ); ?> <i class="fas fa-file-pdf"></i>
-		</button>
+
+		<?php if ( $pdfReceiptDownloadLinkDetailItem instanceof PdfReceiptDetailItem ) : ?>
+			<div class="give-btn download-btn">
+				<?php echo $pdfReceiptDownloadLinkDetailItem->getValue(); ?>
+			</div>
+		<?php endif; ?>
+
 	</div>
 	<div class="form-footer">
 		<div class="secure-notice">
