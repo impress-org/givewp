@@ -40,6 +40,11 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 
 			parent::__construct();
 
+			// Setup Error Messages.
+			$this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfigured']      = esc_html__( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+
 			// Remove CC fieldset.
 			add_action( 'give_stripe_sepa_cc_form', '__return_false' );
 
@@ -62,12 +67,9 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @since  2.6.1
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
-
-			$id_prefix       = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-			$publishable_key = give_stripe_get_publishable_key();
-			$secret_key      = give_stripe_get_secret_key();
-
 			ob_start();
+
+			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 			do_action( 'give_before_cc_fields', $form_id ); ?>
 
@@ -86,41 +88,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					<?php
 				}
 
-				if (
-					! is_ssl() &&
-					! give_is_test_mode() &&
-					(
-						empty( $publishable_key ) ||
-						empty( $secret_key )
-					)
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} elseif (
-					empty( $publishable_key ) ||
-					empty( $secret_key )
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected.', 'give' )
-						)
-					);
-				} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} else {
+				if ( $this->canShowFields() ) {
 					?>
 					<div id="give-iban-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-iban-number-field-<?php echo $id_prefix; ?>" class="give-label">
