@@ -117,13 +117,12 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 */
 		public function canShowFields() {
 
-			$status = true;
+			$status       = true;
+			$isConfigured = Give\Helpers\Gateways\Stripe::isAccountConfigured();
+			$isTestMode   = give_is_test_mode();
+			$isSslActive  = is_ssl();
 
-			if (
-				! Give\Helpers\Gateways\Stripe::isAccountConfigured() &&
-				! is_ssl() &&
-				! give_is_test_mode()
-			) {
+			if ( ! $isConfigured && ! $isSslActive && ! $isTestMode ) {
 				// Account not configured, No SSL scenario.
 				Give_Notices::print_frontend_notice(
 					sprintf(
@@ -133,7 +132,8 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 					)
 				);
 				$status = false;
-			} elseif ( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
+
+			} elseif ( ! $isConfigured ) {
 				// Account not configured scenario.
 				Give_Notices::print_frontend_notice(
 					sprintf(
@@ -143,10 +143,8 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 					)
 				);
 				$status = false;
-			} elseif (
-				! is_ssl() &&
-				! give_is_test_mode()
-			) {
+
+			} elseif ( ! $isTestMode && ! $isSslActive ) {
 				// Account configured, No SSL scenario.
 				Give_Notices::print_frontend_notice(
 					sprintf(
