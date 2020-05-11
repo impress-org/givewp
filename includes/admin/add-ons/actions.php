@@ -269,6 +269,17 @@ function give_get_license_info_handler() {
 	$check_license_res['site_count']       = $activate_license_res['site_count'];
 	$check_license_res['activations_left'] = $activate_license_res['activations_left'];
 
+	// Remove single license which is part of all access pass or already existed all access pass key because admin can only one active.
+	// @see https://github.com/impress-org/givewp/issues/4669
+	if ( ! empty( $check_license_res['is_all_access_pass'] ) ) {
+		$addonSlugs = Give_License::getAddonSlugsFromAllAccessPassLicense( $check_license_res );
+		foreach ( $licenses as $license_key => $data ) {
+			if ( in_array( $data['plugin_slug'], $addonSlugs, true ) || ! empty( $data['is_all_access_pass'] ) ) {
+				unset( $licenses[ $license_key ] );
+			}
+		}
+	}
+
 	$licenses[ $check_license_res['license_key'] ] = $check_license_res;
 	update_option( 'give_licenses', $licenses );
 
