@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			$this->errorMessages['account_not_configured_no_ssl'] = esc_html__( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
 			$this->errorMessages['account_not_configured']        = esc_html__( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
 
-			add_action( 'give_stripe_cc_form', [ $this, 'add_credit_card_form' ], 10, 3 );
+			add_action( 'give_stripe_cc_form', [ $this, 'addCreditCardForm' ], 10, 3 );
 
 			parent::__construct();
 		}
@@ -63,7 +63,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		 *
 		 * @return string $form
 		 */
-		public function add_credit_card_form( $form_id, $args, $echo = true ) {
+		public function addCreditCardForm( $form_id, $args, $echo = true ) {
 
 			ob_start();
 			$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
