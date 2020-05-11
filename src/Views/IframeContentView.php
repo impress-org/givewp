@@ -83,7 +83,6 @@ class IframeContentView {
 		return $this;
 	}
 
-
 	/**
 	 * Render view.
 	 *
@@ -120,5 +119,14 @@ class IframeContentView {
 		</html>
 		<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Render only body html tag children of view.
+	 *
+	 * @since 2.7.0
+	 */
+	public function renderBody(){
+		return $this->body;
 	}
 }
