@@ -8,6 +8,7 @@
 namespace Give\Views;
 
 use Give\Form\Template;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Utils as GlobalUtils;
 
@@ -279,8 +280,9 @@ class IframeView {
 	 *  Setup Default config.
 	 */
 	private function loadDefaultConfig() {
-		$this->template  = Give()->templates->getTemplate();
-		$this->minHeight = $this->template->getFormStartingHeight( $this->formId );
+		$activeFormTemplate = FormTemplateUtils::getActiveID( $this->formId );
+		$this->template     = Give()->templates->getTemplate( $activeFormTemplate );
+		$this->minHeight    = $this->template->getFormStartingHeight( $this->formId );
 
 		$this->url = $this->url ?: $this->getIframeURL();
 	}
