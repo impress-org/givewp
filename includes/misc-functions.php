@@ -2140,15 +2140,21 @@ function give_get_safe_asset_url( $url ) {
  * @param string $date           Date.
  * @param string $format         Date Format.
  * @param string $current_format Current date Format.
+ * @param bool   $localize
  *
  * @return string
  * @since 2.3.0
  */
-function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
+function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '', $localize = false ) {
 	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
 	$date_obj       = DateTime::createFromFormat( $current_format, $date );
+	$formatted_date = '';
 
-	$formatted_date = $date_obj instanceof DateTime ? $date_obj->format( $format ) : '';
+	if ( $date_obj instanceof DateTime ) {
+		$formatted_date = $localize ?
+			date_i18n( $format, $date_obj->getTimestamp() ) :
+			$date_obj->format( $format );
+	}
 
 	/**
 	 * Give get formatted date.
