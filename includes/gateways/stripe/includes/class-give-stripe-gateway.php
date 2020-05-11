@@ -129,7 +129,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 					sprintf(
 						'<strong>%1$s</strong> %2$s',
 						esc_html__( 'Notice:', 'give' ),
-						$this->errorMessages['account_not_configured_no_ssl']
+						$this->errorMessages['accountNotConfiguredNoSsl']
 					)
 				);
 				$status = false;
@@ -139,7 +139,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 					sprintf(
 						'<strong>%1$s</strong> %2$s',
 						esc_html__( 'Notice:', 'give' ),
-						$this->errorMessages['account_not_configured']
+						$this->errorMessages['accountNotConfigured']
 					)
 				);
 				$status = false;
@@ -152,7 +152,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 					sprintf(
 						'<strong>%1$s</strong> %2$s',
 						esc_html__( 'Notice:', 'give' ),
-						$this->errorMessages['account_configured_no_ssl']
+						$this->errorMessages['accountConfiguredNoSsl']
 					)
 				);
 				$status = false;

@@ -38,9 +38,9 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			$this->id = 'stripe';
 
 			// Setup Error Messages.
-			$this->errorMessages['account_configured_no_ssl']     = esc_html__( 'Credit Card fields are disabled because your site is not running securely over HTTPS.', 'give' );
-			$this->errorMessages['account_not_configured_no_ssl'] = esc_html__( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-			$this->errorMessages['account_not_configured']        = esc_html__( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+			$this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'Credit Card fields are disabled because your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfigured']      = esc_html__( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
 
 			add_action( 'give_stripe_cc_form', [ $this, 'addCreditCardForm' ], 10, 3 );
 
