@@ -816,6 +816,12 @@ form.give-form .form-row select,
 	background-size: 0.65em auto, 100%;
 }
 
+form[id*='give-form'] .form-row select.multiselect,
+#give-recurring-form .form-row select.multiselect,
+form.give-form .form-row select.multiselect {
+	background-image: none;
+}
+
 .give-input:hover,
 .give-select:hover {
 	border: 1px solid rgb(54, 54, 54);
