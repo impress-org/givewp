@@ -17,14 +17,9 @@ class Stripe {
 	 * @return bool
 	 */
 	public static function isAccountConfigured() {
-		$is_configured   = false;
-		$publishable_key = give_stripe_get_publishable_key();
-		$secret_key      = give_stripe_get_secret_key();
+		$publishableKey = give_stripe_get_publishable_key();
+		$secretKey      = give_stripe_get_secret_key();
 
-		if ( ! empty( $publishable_key ) || ! empty( $secret_key ) ) {
-			$is_configured = true;
-		}
-
-		return $is_configured;
+		return ! empty( $publishableKey ) || ! empty( $secretKey );
 	}
 }
