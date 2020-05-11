@@ -53,7 +53,7 @@ $atts          = $args[2]; // Shortcode attributes.
 							? __( 'Anonymous', 'give' )
 							: trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
 						?>
-						<?php esc_html_e( $donor_name, 'give' ); ?>
+						<?php echo esc_html( $donor_name ); ?>
 					</h3>
 				<?php endif; ?>
 
