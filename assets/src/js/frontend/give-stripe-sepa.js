@@ -1,7 +1,7 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
-let stripe = {};
+const stripe = {};
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
@@ -46,7 +46,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		 * due to Stripe account not properly attached to the form or global
 		 * Stripe account is not added.
 		 */
-		if ( publishableKey.length === 0 ) {
+		if ( null === publishableKey ) {
 			return;
 		}
 
@@ -215,7 +215,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			ibanCreateArgs.iconStyle = iconStyle;
 			ibanCreateArgs.hideIcon = ( 'disabled' !== hideIcon );
 			ibanCreateArgs.placeholderCountry = placeholderCountry;
-
 		}
 
 		const ibanElement = elements.create(

@@ -42,7 +42,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		 * due to Stripe account not properly attached to the form or global
 		 * Stripe account is not added.
 		 */
-		if ( publishableKey.length === 0 ) {
+		if ( null === publishableKey ) {
 			return;
 		}
 

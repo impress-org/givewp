@@ -1,7 +1,7 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
-let stripe = {};
+const stripe = {};
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
@@ -46,7 +46,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		 * due to Stripe account not properly attached to the form or global
 		 * Stripe account is not added.
 		 */
-		if ( publishableKey.length === 0 ) {
+		if ( null === publishableKey ) {
 			return;
 		}
 
@@ -121,7 +121,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const $form = jQuery( this );
 		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
-		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_becs_update  ) {
+		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_becs_update ) {
 			give_stripe_process_becs_bank_account( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
