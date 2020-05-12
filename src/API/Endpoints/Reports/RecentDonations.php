@@ -16,6 +16,11 @@ class RecentDonations extends Endpoint {
 
 	public function get_report( $request ) {
 		// Setup donation query args (get sanitized start/end date from request)
+
+		$gateways = give_get_payment_gateways();
+		unset( $gateways['manual'] );
+		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
+
 		$args = array(
 			'number'     => 50,
 			'paged'      => 1,
@@ -23,6 +28,7 @@ class RecentDonations extends Endpoint {
 			'order'      => 'DESC',
 			'start_date' => $request->get_param( 'start' ),
 			'end_date'   => $request->get_param( 'end' ),
+			'gateway'    => $gateway,
 		);
 
 		// Get array of 50 recent donations
@@ -50,7 +56,7 @@ class RecentDonations extends Endpoint {
 			}
 			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
 
-			$data[] = [
+			$data[] = array(
 				'type'     => 'donation',
 				'donation' => $donation,
 				'status'   => $status,
@@ -62,7 +68,7 @@ class RecentDonations extends Endpoint {
 					'id'   => $donation->donor_id,
 				),
 				'source'   => $donation->form_title,
-			];
+			);
 		}
 
 		// Return $list of donations for RESTList component

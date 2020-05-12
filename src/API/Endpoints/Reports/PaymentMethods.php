@@ -18,7 +18,12 @@ class PaymentMethods extends Endpoint {
 
 		// Use give_count_payments logic to get payments
 		$gateways = give_get_payment_gateways();
-		$stats    = new \Give_Payment_Stats();
+
+		if ( $this->testMode === false ) {
+			unset( $gateways['manual'] );
+		}
+
+		$stats = new \Give_Payment_Stats();
 
 		$gatewaysArr = array();
 

@@ -128,6 +128,8 @@ abstract class Endpoint {
 		$this->request   = $request;
 		$this->startDate = date_create( $request->get_param( 'start' ) );
 		$this->endDate   = date_create( $request->get_param( 'end' ) );
+		$this->currency  = $request->get_param( 'currency' );
+		$this->testMode  = $request->get_param( 'testMode' );
 		$this->dateDiff  = date_diff( $this->startDate, $this->endDate );
 	}
 
@@ -321,13 +323,17 @@ abstract class Endpoint {
 	 * @return mixed
 	 */
 	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
-		$args = array(
+		$gateways = give_get_payment_gateways();
+		unset( $gateways['manual'] );
+		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
+		$args    = array(
 			'number'     => $number,
 			'paged'      => 1,
 			'orderby'    => $orderBy,
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
+			'gateway'    => $gateway,
 		);
 
 		// Check if a cached payments exists
