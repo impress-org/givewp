@@ -104,8 +104,8 @@ class Actions {
 		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
 		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
-		add_action( 'give_donation_form_before_personal_info', [ $this, 'getStartWrapperHTMLForPaymentSection' ] );
-		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ] );
+		add_action( 'give_payment_mode_top', [ $this, 'getStartWrapperHTMLForPaymentSection' ], 0 );
+		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ], 999 );
 
 		/**
 		 * Remove actions
