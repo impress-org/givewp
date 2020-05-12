@@ -4,6 +4,7 @@ import Toggle from '../toggle';
 import { toggleSettingsPanel, setCurrency, toggleTestMode } from '../../store/actions';
 import { useStoreValue } from '../../store';
 import './style.scss';
+const { __ } = wp.i18n;
 
 // Utils
 import { getWindowData } from '../../utils';
@@ -26,8 +27,8 @@ const SettingsToggle = () => {
 			</Button>
 			{ settingsPanelToggled && (
 				<div className="givewp-reports-settings__panel">
-					<Select prefix="Currency:" options={ currencyOptions } value={ currency } onChange={ ( event ) => dispatch( setCurrency( event.target.value ) ) } />
-					<Toggle label="View test data" value={ testMode } onChange={ () => dispatch( toggleTestMode() ) } />
+					<Select prefix={ __( 'Currency:', 'give' ) } options={ currencyOptions } value={ currency } onChange={ ( event ) => dispatch( setCurrency( event.target.value ) ) } />
+					<Toggle label={ __( 'View test data', 'give' ) } value={ testMode } onChange={ () => dispatch( toggleTestMode() ) } />
 				</div>
 			) }
 		</div>
