@@ -1,5 +1,6 @@
 import Button from '../button';
 import Select from '../select';
+import Toggle from '../toggle';
 import './style.scss';
 
 const SettingsToggle = () => {
@@ -25,6 +26,7 @@ const SettingsToggle = () => {
 			</Button>
 			<div className="givewp-reports-settings__panel">
 				<Select prefix="Currency:" options={ currencies } value="usd" />
+				<Toggle label="View test data" />
 			</div>
 		</div>
 	);
