@@ -42,7 +42,7 @@ abstract class DetailGroup {
 	 * @since 2.7.0
 	 * @var Detail[]
 	 */
-	protected $detailsList;
+	protected $detailsList = [];
 
 	/**
 	 * DetailGroup constructor.
