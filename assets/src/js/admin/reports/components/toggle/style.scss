@@ -1,0 +1,47 @@
+.givewp-reports-toggle {
+	padding: 12px 0 4px 0;
+
+	input[type='checkbox'] {
+		display: none;
+	}
+
+	label {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+
+		&::before {
+			content: '';
+			display: inline-block;
+			height: 24px;
+			width: 52px;
+			border-radius: 12px;
+			background-color: #ddd;
+			transition: background-color 0.2s ease;
+		}
+
+		&::after {
+			content: '';
+			display: inline-block;
+			height: 16px;
+			width: 16px;
+			border-radius: 16px;
+			left: 4px;
+			position: absolute;
+			background: #fff;
+			transform: translate3d(0, 0, 0);
+			transition: transform 0.2s ease;
+		}
+	}
+
+	input[type='checkbox']:checked + label {
+		&::before {
+			background-color: #66bb6a;
+		}
+
+		&::after {
+			transform: translate3d(28px, 0, 0);
+		}
+	}
+}
