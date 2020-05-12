@@ -58,3 +58,10 @@ export const setCurrency = ( currency ) => {
 	};
 };
 
+// Dispatch TOGGLE_TEST_MODE action
+export const toggleTestMode = () => {
+	return {
+		type: 'TOGGLE_TEST_MODE',
+	};
+};
+

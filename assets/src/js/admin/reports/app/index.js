@@ -29,6 +29,7 @@ const App = () => {
 		pageLoaded: false,
 		settingsPanelToggled: false,
 		currency: 'usd',
+		testMode: false,
 	};
 
 	return (

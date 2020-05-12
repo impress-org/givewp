@@ -64,6 +64,11 @@ export const reducer = ( state, action ) => {
 				...state,
 				currency: action.payload,
 			};
+		case 'TOGGLE_TEST_MODE':
+			return {
+				...state,
+				testMode: ! state.testMode,
+			};
 		default:
 			return state;
 	}
