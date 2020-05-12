@@ -8,7 +8,7 @@ const Select = ( { options, onChange, value, prefix } ) => {
 	return (
 		<div className="givewp-reports-select">
 			{ prefix }
-			<select onChange={ onChange } value={ value }>
+			<select onChange={ onChange } defaultValue={ value }>
 				{ optionElements }
 			</select>
 		</div>
