@@ -203,13 +203,11 @@ class Actions {
 		$headline    = isset( $this->templateOptions['payment_information']['headline'] ) ? $this->templateOptions['payment_information']['headline'] : __( 'Tell us a bit about yourself.', 'give' );
 		$description = isset( $this->templateOptions['payment_information']['description'] ) ? $this->templateOptions['payment_information']['description'] : __( 'We’ll never share this information with anyone.', 'give' );
 
-		if ( ! empty( $headline ) || ! empty( $description ) ) {
-			printf(
-				'<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
-				$headline,
-				$description
-			);
-		}
+		printf(
+			'<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
+			$headline,
+			$description
+		);
 	}
 
 	/**
