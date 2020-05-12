@@ -373,7 +373,7 @@ class Give_Stripe_Customer {
 				esc_html__( 'Stripe Error', 'give' ),
 				sprintf(
 					'%1$s %2$s',
-					esc_html__( 'Unable to create a customer. Details:', 'give' ),
+					esc_html__( 'The Stripe Gateway returned an error while creating the customer. Details:', 'give' ),
 					$e->getTraceAsString()
 				)
 			);
