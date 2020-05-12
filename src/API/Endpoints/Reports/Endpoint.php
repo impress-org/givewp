@@ -59,17 +59,28 @@ abstract class Endpoint {
 					'callback'            => array( $this, 'handle_request' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => array(
-						'start' => array(
+						'start'    => array(
 							'type'              => 'string',
 							'required'          => true,
 							'validate_callback' => array( $this, 'validate_date' ),
 							'sanitize_callback' => array( $this, 'sanitize_date' ),
 						),
-						'end'   => array(
+						'end'      => array(
 							'type'              => 'string',
 							'required'          => true,
 							'validate_callback' => array( $this, 'validate_date' ),
 							'sanitize_callback' => array( $this, 'sanitize_date' ),
+						),
+						'currency' => array(
+							'type'              => 'string',
+							'required'          => true,
+							'validate_callback' => array( $this, 'validate_currency' ),
+						),
+						'testMode' => array(
+							'type'              => 'string',
+							'required'          => true,
+							'validate_callback' => array( $this, 'validate_test_mode' ),
+							'sanitize_callback' => array( $this, 'sanitize_test_mode' ),
 						),
 					),
 				),
@@ -140,6 +151,18 @@ abstract class Endpoint {
 		$exploded = explode( '-', $param );
 		$date     = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
 		return $date;
+	}
+
+	public function validate_currency( $param, $request, $key ) {
+		return in_array( $param, array_keys( give_get_currencies_list() ) );
+	}
+
+	public function validate_test_mode( $param, $request, $key ) {
+		return $param === 'true' || $param === 'false';
+	}
+
+	public function sanitize_test_mode( $param, $request, $key ) {
+		return $param === 'true' ? true : false;
 	}
 
 	/**
