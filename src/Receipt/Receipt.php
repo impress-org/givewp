@@ -2,6 +2,7 @@
 namespace Give\Receipt;
 
 use Give\Receipt\DonationDetailsGroup\DonationDetailsGroup;
+use Give\Receipt\AdditionalDetailsGroup\AdditionalDetailsGroup;
 use Give\Receipt\DonorDetailsGroup\DonorDetailsGroup;
 
 /**
@@ -56,6 +57,7 @@ class Receipt {
 	private $detailsGroupList = [
 		DonorDetailsGroup::class,
 		DonationDetailsGroup::class,
+		AdditionalDetailsGroup::class,
 	];
 
 	/**
