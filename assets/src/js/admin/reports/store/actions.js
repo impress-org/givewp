@@ -42,3 +42,10 @@ export const setPageLoaded = () => {
 		payload: true,
 	};
 };
+
+// Dispatch TOGGLE_SETTINGS_PANEL action
+export const toggleSettingsPanel = () => {
+	return {
+		type: 'TOGGLE_SETTINGS_PANEL',
+	};
+};

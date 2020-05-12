@@ -1,6 +1,8 @@
 import Button from '../button';
 import Select from '../select';
 import Toggle from '../toggle';
+import { toggleSettingsPanel } from '../../store/actions';
+import { useStoreValue } from '../../store';
 import './style.scss';
 
 const SettingsToggle = () => {
@@ -19,15 +21,19 @@ const SettingsToggle = () => {
 		},
 	];
 
+	const [ { settingsPanelToggled }, dispatch ] = useStoreValue();
+
 	return (
 		<div className="givewp-reports-settings__toggle">
-			<Button type="icon" pressed={ true }>
+			<Button type="icon" pressed={ settingsPanelToggled } onClick={ () => dispatch( toggleSettingsPanel() ) }>
 				{ icon }
 			</Button>
-			<div className="givewp-reports-settings__panel">
-				<Select prefix="Currency:" options={ currencies } value="usd" />
-				<Toggle label="View test data" />
-			</div>
+			{ settingsPanelToggled && (
+				<div className="givewp-reports-settings__panel">
+					<Select prefix="Currency:" options={ currencies } value="usd" />
+					<Toggle label="View test data" />
+				</div>
+			) }
 		</div>
 	);
 };

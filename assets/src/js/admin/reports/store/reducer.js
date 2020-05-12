@@ -54,6 +54,11 @@ export const reducer = ( state, action ) => {
 				...state,
 				pageLoaded: action.payload,
 			};
+		case 'TOGGLE_SETTINGS_PANEL':
+			return {
+				...state,
+				settingsPanelToggled: ! state.settingsPanelToggled,
+			};
 		default:
 			return state;
 	}
