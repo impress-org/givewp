@@ -28,6 +28,7 @@ const App = () => {
 		giveStatus: null,
 		pageLoaded: false,
 		settingsPanelToggled: false,
+		currency: 'usd',
 	};
 
 	return (

@@ -59,6 +59,11 @@ export const reducer = ( state, action ) => {
 				...state,
 				settingsPanelToggled: ! state.settingsPanelToggled,
 			};
+		case 'SET_CURRENCY':
+			return {
+				...state,
+				currency: action.payload,
+			};
 		default:
 			return state;
 	}

@@ -49,3 +49,12 @@ export const toggleSettingsPanel = () => {
 		type: 'TOGGLE_SETTINGS_PANEL',
 	};
 };
+
+// Dispatch SET_CURRENCY action
+export const setCurrency = ( currency ) => {
+	return {
+		type: 'SET_CURRENCY',
+		payload: currency,
+	};
+};
+
