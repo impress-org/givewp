@@ -10,6 +10,9 @@ import './style.scss';
 import { StoreProvider } from '../store';
 import { reducer } from '../store/reducer';
 
+// Utils
+import { getWindowData } from '../utils';
+
 // Components
 import PeriodSelector from '../components/period-selector';
 import SettingsToggle from '../components/settings-toggle';
@@ -25,10 +28,10 @@ const App = () => {
 			endDate: moment().hour( 23 ),
 			range: 'week',
 		},
-		giveStatus: null,
+		// giveStatus: null
 		pageLoaded: false,
 		settingsPanelToggled: false,
-		currency: 'usd',
+		currency: getWindowData( 'currency' ),
 		testMode: false,
 	};
 
