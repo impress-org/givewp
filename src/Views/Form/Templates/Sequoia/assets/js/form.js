@@ -171,6 +171,14 @@
 			setup: () => {
 				// Setup payment information screen
 
+				$( '.give-section.payment' ).on( 'click', '.give-cancel-login, .give-checkout-register-cancel', clearLoginNotices );
+
+				// Show Sequoia loader on click/touchend
+				$( '.give-section.payment' ).on( 'click touchend', 'input[name="give_login_submit"]', function() {
+					//Override submit loader with Sequoia loader
+					$( 'input[name="give_login_submit"] + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
+				} );
+
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
@@ -256,7 +264,7 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
-							if ( $( node ).parent().hasClass( 'give-submit-button-wrap' ) && $( node ).hasClass( 'give_errors' ) ) {
+							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'payment' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
@@ -468,5 +476,9 @@
 				}
 			}
 		}
+	}
+
+	function clearLoginNotices() {
+		$( '#give_error_must_log_in' ).remove();
 	}
 }( jQuery ) );
