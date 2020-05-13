@@ -41,14 +41,6 @@ class Receipt {
 	private $donationId;
 
 	/**
-	 * Receipt details group objects.
-	 *
-	 * @since 2.7.0
-	 * @var array
-	 */
-	protected $detailsGroup = [];
-
-	/**
 	 * Receipt details group class names.
 	 *
 	 * @since 2.7.0
@@ -90,23 +82,20 @@ class Receipt {
 	/**
 	 * Get detail group object.
 	 *
-	 * @since 2.7.0
 	 * @param string $class
 	 *
-	 * @return DetailGroup
+	 * @return DetailGroup|null
+	 * @since 2.7.0
 	 */
 	public function getDetailGroupObject( $class ) {
-		if ( ! in_array( $class, $this->detailsGroup, true ) ) {
-			$classNames                   = $this->getDetailGroupList();
-			$detailGroupClassName         = $classNames[ array_search( $class, $classNames, true ) ];
-			$this->detailsGroup[ $class ] = null;
+		$classNames           = $this->getDetailGroupList();
+		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
 
-			if ( $detailGroupClassName ) {
-				$this->detailsGroup[ $class ] = new $detailGroupClassName( $this->donationId );
-			}
+		if ( $detailGroupClassName ) {
+			return new $detailGroupClassName( $this->donationId );
 		}
 
-		return $this->detailsGroup[ $class ];
+		return null;
 	}
 
 	/**

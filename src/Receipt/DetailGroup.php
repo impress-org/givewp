@@ -29,14 +29,6 @@ abstract class DetailGroup {
 	public $donationId;
 
 	/**
-	 * Array of detail item objects.
-	 *
-	 * @since 2.7.0
-	 * @var Detail[]
-	 */
-	protected $details = [];
-
-	/**
 	 * Array of detail item class names.
 	 *
 	 * @since 2.7.0
@@ -73,22 +65,20 @@ abstract class DetailGroup {
 	/**
 	 * Get detail item object.
 	 *
-	 * @since 2.7.0
 	 * @param string $class
+	 *
 	 * @return Detail
+	 * @since 2.7.0
 	 */
 	public function getDetailItemObject( $class ) {
-		if ( ! in_array( $class, $this->details, true ) ) {
-			$classNames              = $this->getDetailsList();
-			$detailGroupClassName    = $classNames[ array_search( $class, $classNames, true ) ];
-			$this->details[ $class ] = null;
+		$classNames           = $this->getDetailsList();
+		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
 
-			if ( $detailGroupClassName ) {
-				$this->details[ $class ] = new $detailGroupClassName( $this->donationId );
-			}
+		if ( $detailGroupClassName ) {
+			return new $detailGroupClassName( $this->donationId );
 		}
 
-		return $this->details[ $class ];
+		return null;
 	}
 
 	/**
