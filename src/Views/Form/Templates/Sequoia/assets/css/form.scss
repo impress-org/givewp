@@ -537,6 +537,9 @@ p {
 // Payment Section
 
 .payment {
+	> * {
+		order: 99;
+	}
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
 	}
@@ -603,21 +606,18 @@ p {
 				padding: 0;
 				background: none !important;
 				font-size: 14px;
-				display: inline-block;
+				display: block;
 				width: fit-content;
 				border: none !important;
 				text-decoration: underline;
 				color: #b8b8b8;
+				float: right;
 			}
 
 			[id*='give-forgot-password-wrap-'] {
 				grid-column: 1;
 				grid-row: 2;
 				font-size: 14px;
-
-				a {
-					float: right;
-				}
 			}
 		}
 	}
@@ -644,6 +644,7 @@ p {
 	}
 	.give_notices {
 		width: 100%;
+		order: 1;
 	}
 	.give_notices + .heading {
 		padding: 28px 3px 0;
