@@ -209,4 +209,10 @@
 			display: none !important;
 		}
 	}
+
+	#give-pdf-receipt-link,
+	#give-pdf-receipt-link:visited {
+		text-decoration: none;
+		color: #fff;
+	}
 }
