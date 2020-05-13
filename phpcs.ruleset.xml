@@ -13,6 +13,8 @@
 	<!-- Exclude directories we don't want checked. -->
 	<exclude-pattern>node_modules/*</exclude-pattern>
 	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>sample-data/*</exclude-pattern>
+	<exclude-pattern>languages/*</exclude-pattern>
 
 	<!-- Bring in WP rules. -->
 	<rule ref="WordPress-Core">
