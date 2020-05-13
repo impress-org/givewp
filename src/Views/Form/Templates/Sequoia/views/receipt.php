@@ -77,7 +77,7 @@ ob_start();
 					printf(
 						'<div class="detail">%1$s</div><div class="value">%2$s</div>',
 						$detail->getLabel(),
-						print_r( $value, true )
+						$value
 					);
 
 					echo '</div>';
