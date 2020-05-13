@@ -572,6 +572,56 @@ p {
 		font-size: 14px;
 	}
 
+	[id*='give-login-fields-'] {
+		display: grid;
+		grid-template-columns: 1fr;
+
+		.give-user-login-fields-container {
+			grid-row: 1;
+		}
+
+		.give-new-account-link {
+			grid-row: 2;
+			display: none;
+		}
+
+		[id*='give-user-login-submit-'] {
+			grid-row: 3;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			margin-bottom: 16px;
+
+			.give-submit {
+				margin-top: 0;
+				grid-column: span 2;
+				grid-row: 1;
+			}
+
+			.give-cancel-login {
+				grid-column: 2;
+				grid-row: 2;
+				padding: 0;
+				background: none !important;
+				font-size: 14px;
+				display: inline-block;
+				width: fit-content;
+				border: none !important;
+				text-decoration: underline;
+				color: #b8b8b8;
+			}
+
+			[id*='give-forgot-password-wrap-'] {
+				grid-column: 1;
+				grid-row: 2;
+				font-size: 14px;
+
+				a {
+					float: right;
+				}
+			}
+		}
+	}
+
 	#give_error_invalid_donation_maximum,
 	#give_error_invalid_donation_amount {
 		cursor: pointer;
