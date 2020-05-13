@@ -536,6 +536,10 @@ p {
 // Payment Section
 
 .payment {
+	> div {
+		width: 100%;
+	}
+
 	#give_error_invalid_donation_maximum,
 	#give_error_invalid_donation_amount {
 		cursor: pointer;
@@ -579,6 +583,10 @@ p {
 
 	fieldset {
 		padding: 0 20px;
+
+		> fieldset {
+			padding: 0;
+		}
 	}
 
 	#give_checkout_user_info {
