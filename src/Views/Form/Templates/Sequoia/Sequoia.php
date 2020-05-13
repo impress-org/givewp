@@ -105,6 +105,9 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			input[type=\'radio\'] + label::after {
 				background: %1$s !important;
 			}
+			a.give-checkout-login {
+				color: %1$s;
+			}
 		',
 			$primaryColor
 		);
