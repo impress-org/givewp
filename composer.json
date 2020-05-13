@@ -22,7 +22,7 @@
         "donations"
     ],
     "support": {
-        "issues": "https://github.com/impress-org/give/issues"
+        "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
         "post-install-cmd": [
