@@ -212,7 +212,24 @@
 
 	#give-pdf-receipt-link,
 	#give-pdf-receipt-link:visited {
+		display: flex;
+		align-items: center;
 		text-decoration: none;
 		color: #fff;
+
+		&::after {
+			display: inline-block;
+			content: '\f1c1';
+			font-family: 'Font Awesome 5 Free', serif;
+			font-weight: 900;
+			font-size: 20px;
+			margin-left: 15px;
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			font-style: normal;
+			font-variant: normal;
+			text-rendering: auto;
+			line-height: 1;
+		}
 	}
 }
