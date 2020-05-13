@@ -537,7 +537,7 @@ p {
 // Payment Section
 
 .payment {
-	> div {
+	[id*='give-checkout-login-register-'] {
 		width: 100%;
 	}
 
@@ -550,7 +550,7 @@ p {
 			padding-left: 30px;
 			font-size: 14px;
 
-			i {
+			.give-tooltip {
 				padding-left: 6px;
 			}
 
