@@ -2,7 +2,7 @@
 /**
  * This function use to initialize chosen js on select fields.
  *
- * Note: only for internal use. This can be update or remove in future
+ * Note: only for internal use. This can be updated or removed in the future.
  *
  * @since 2.7.0
  * @param $els
