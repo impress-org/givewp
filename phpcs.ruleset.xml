@@ -7,8 +7,8 @@
 	<description>A custom set of code standard rules to check for WordPress themes and plugins.</description>
 
 	<!-- Check for PHP cross-version compatibility. -->
-	<config name="testVersion" value="7.1-" />
-	<rule ref="PHPCompatibilityWP" />
+	<!--<config name="testVersion" value="7.1-" />
+	<rule ref="PHPCompatibilityWP" />-->
 
 	<!-- Exclude directories we don't want checked. -->
 	<exclude-pattern>node_modules/*</exclude-pattern>
