@@ -76,7 +76,7 @@ class Receipt {
 		 *
 		 * Developer can use this filter hook to register there detail group.
 		 */
-		$this->detailsGroupList = apply_filters( 'give_receipt_register_details_group', $this->detailsGroupList, $this );
+		$this->detailsGroupList = apply_filters( 'give_receipt_register_details_group', $this->detailsGroupList, $this->donationId );
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Receipt {
 		 *
 		 * @since 2.7.0
 		 */
-		$object = apply_filters( 'give_receipt_create_detail_group_object', null, $class, $this );
+		$object = apply_filters( 'give_receipt_create_detail_group_object', null, $class, $this->donationId );
 
 		if ( $object instanceof DetailGroup ) {
 			return $object;
