@@ -367,26 +367,19 @@ class Give_Stripe_Customer {
 
 			// Create a customer first so we can retrieve them later for future payments.
 			$customer = \Stripe\Customer::create( $args, give_stripe_get_connected_account_options() );
-
-		} catch ( \Stripe\Error\Base $e ) {
-			// Record Log.
-			give_stripe_record_log(
-				__( 'Stripe - Customer Creation Error', 'give' ),
-				$e->getMessage()
-			);
-
 		} catch ( Exception $e ) {
+			// Something else happened.
 			give_record_gateway_error(
-				__( 'Stripe Error', 'give' ),
+				esc_html__( 'Stripe Error', 'give' ),
 				sprintf(
-					/* translators: %s Exception Message Body */
-					__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
-					$e->getMessage()
+					'%1$s %2$s',
+					esc_html__( 'The Stripe Gateway returned an error while creating the customer. Details:', 'give' ),
+					$e->getTraceAsString()
 				)
 			);
-			give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
+			give_set_error( 'stripe_error', $e->getMessage() );
 			give_send_back_to_checkout( "?payment-mode={$payment_mode}&form_id={$post_data['post_data']['give-form-id']}" );
-		} // End try().
+		}
 
 		if ( ! empty( $customer->id ) ) {
 			// Return obj.
