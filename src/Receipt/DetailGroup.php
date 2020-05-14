@@ -37,6 +37,14 @@ abstract class DetailGroup {
 	protected $detailsList = [];
 
 	/**
+	 * Array of detail item whose object will be create by custom logic.
+	 *
+	 * @since 2.7.0
+	 * @var array
+	 */
+	protected $detailItemObject = [];
+
+	/**
 	 * DetailGroup constructor.
 	 *
 	 * @since 2.7.0
@@ -55,6 +63,10 @@ abstract class DetailGroup {
 	 * @since 2.7.0
 	 */
 	public function getDetailItemObject( $class ) {
+		if ( array_key_exists( $class, $this->detailItemObject ) ) {
+			return call_user_func( $this->detailItemObject[ $class ], $this->donationId );
+		}
+
 		$classNames           = $this->detailsList;
 		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
 
@@ -80,6 +92,28 @@ abstract class DetailGroup {
 	public function removeDetailItem( $className ) {
 		if ( in_array( $className, $this->detailsList, true ) ) {
 			unset( $this->detailsList[ array_search( $className, $this->detailsList, true ) ] );
+		}
+	}
+
+	/**
+	 * Add detail item object creator callback.
+	 *
+	 * @since 2.7.0
+	 * @param string $className
+	 */
+	public function addDetailItemObjectCreationHandler( $className ) {
+		$this->detailItemObject[] = $className;
+	}
+
+	/**
+	 * Remove detail item object creator callback.
+	 *
+	 * @since 2.7.0
+	 * @param string $className
+	 */
+	public function removeDetailItemObjectCreationHandler( $className ) {
+		if ( in_array( $className, $this->detailItemObject, true ) ) {
+			unset( $this->detailItemObject[ array_search( $className, $this->detailItemObject, true ) ] );
 		}
 	}
 
