@@ -56,7 +56,7 @@ abstract class Endpoint {
 				// Here we register the readable endpoint
 				[
 					'methods'             => 'GET',
-					'callback'            => [ $this, 'get_report' ],
+					'callback'            => [ $this, 'handle_request' ],
 					'permission_callback' => [ $this, 'permissions_check' ],
 					'args'                => [
 						'start' => [
