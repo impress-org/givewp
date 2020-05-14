@@ -59,7 +59,7 @@ abstract class DetailGroup {
 		 *
 		 * Developer can use this filter hook to register there detail item.
 		 */
-		$this->detailsList = apply_filters( 'give_receipt_register_detail_item', $this->detailsList, $this->donationId );
+		$this->detailsList = apply_filters( 'give_receipt_register_detail_item', $this->detailsList, static::class, $this->donationId );
 	}
 
 	/**

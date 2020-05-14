@@ -76,7 +76,7 @@ class Receipt {
 		 *
 		 * Developer can use this filter hook to register there detail group.
 		 */
-		$this->detailsGroupList = apply_filters( 'give_receipt_register_details_group', $this->detailsGroupList, $this->donationId );
+		$this->detailsGroupList = apply_filters( 'give_receipt_register_details_group', $this->detailsGroupList, static::class, $this->donationId );
 	}
 
 	/**
