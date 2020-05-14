@@ -119,10 +119,11 @@ abstract class DetailGroup {
 	 * Add detail item object creator callback.
 	 *
 	 * @since 2.7.0
-	 * @param string $className
+	 * @param string       $className
+	 * @param string|array $handler
 	 */
-	public function addDetailItemObjectCreationHandler( $className ) {
-		$this->detailItemObject[] = $className;
+	public function addDetailItemObjectCreationHandler( $className, $handler ) {
+		$this->detailItemObject[ $className ] = $handler;
 	}
 
 	/**
