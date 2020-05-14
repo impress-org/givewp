@@ -44,22 +44,6 @@ abstract class DetailGroup {
 	 */
 	public function __construct( $donationId ) {
 		$this->donationId = $donationId;
-
-		$this->setupDetailsGroup();
-	}
-
-	/**
-	 * Setup receipt.
-	 *
-	 * @since 2.7.0
-	 */
-	private function setupDetailsGroup() {
-		/**
-		 * Filter the detail item class names.
-		 *
-		 * Developer can use this filter hook to register there detail item.
-		 */
-		$this->detailsList = apply_filters( 'give_receipt_register_detail_item', $this->detailsList, static::class, $this->donationId );
 	}
 
 	/**
@@ -71,35 +55,32 @@ abstract class DetailGroup {
 	 * @since 2.7.0
 	 */
 	public function getDetailItemObject( $class ) {
-		/**
-		 * Use this filter to handle object initialization for your detail item class.
-		 *
-		 * @since 2.7.0
-		 */
-		$object = apply_filters( 'give_receipt_create_detail_item_object', null, $class, $this->donationId );
-
-		if ( $object instanceof Detail ) {
-			return $object;
-		}
-
-		$classNames           = $this->getDetailsList();
+		$classNames           = $this->detailsList;
 		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
 
-		if ( $detailGroupClassName ) {
-			$object = new $detailGroupClassName( $this->donationId );
-		}
-
-		return $object;
+		return new $detailGroupClassName( $this->donationId );
 	}
 
 	/**
-	 * Get detail item class names.
+	 * Add detail item.
 	 *
 	 * @since 2.7.0
-	 * @return array
+	 * @param string $className
 	 */
-	public function getDetailsList() {
-		return $this->detailsList;
+	public function addDetailItem( $className ) {
+		$this->detailsList[] = $className;
+	}
+
+	/**
+	 * Remove detail item.
+	 *
+	 * @since 2.7.0
+	 * @param string $className
+	 */
+	public function removeDetailItem( $className ) {
+		if ( in_array( $className, $this->detailsList, true ) ) {
+			unset( $this->detailsList[ array_search( $className, $this->detailsList, true ) ] );
+		}
 	}
 
 	/**

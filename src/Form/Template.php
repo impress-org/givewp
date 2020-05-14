@@ -256,6 +256,11 @@ abstract class Template {
 	 * @return Receipt
 	 */
 	public function getReceiptDetails( $donationId ) {
-		return new Receipt( $donationId );
+		/**
+		 * filter the receipt object.
+		 *
+		 * @since 2.7.0
+		 */
+		return apply_filters( 'give_new_receipt', new Receipt( $donationId ) );
 	}
 }

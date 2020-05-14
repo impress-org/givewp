@@ -60,23 +60,6 @@ class Receipt {
 	 */
 	public function __construct( $donationId ) {
 		$this->donationId = $donationId;
-
-		$this->setupReceipt();
-
-	}
-
-	/**
-	 * Setup receipt.
-	 *
-	 * @since 2.7.0
-	 */
-	private function setupReceipt() {
-		/**
-		 * Filter the detail group class names.
-		 *
-		 * Developer can use this filter hook to register there detail group.
-		 */
-		$this->detailsGroupList = apply_filters( 'give_receipt_register_details_group', $this->detailsGroupList, static::class, $this->donationId );
 	}
 
 	/**
@@ -88,35 +71,38 @@ class Receipt {
 	 * @since 2.7.0
 	 */
 	public function getDetailGroupObject( $class ) {
+		$classNames           = $this->detailsGroupList;
+		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+
+		$object = new $detailGroupClassName( $this->donationId );
+
 		/**
-		 * Use this filter to handle object initialization for your detail group class.
+		 * filter the receipt detail group.
 		 *
 		 * @since 2.7.0
 		 */
-		$object = apply_filters( 'give_receipt_create_detail_group_object', null, $class, $this->donationId );
-
-		if ( $object instanceof DetailGroup ) {
-			return $object;
-		}
-
-		$classNames           = $this->getDetailGroupList();
-		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
-
-		if ( $detailGroupClassName ) {
-			$object = new $detailGroupClassName( $this->donationId );
-		}
-
-		return $object;
+		return apply_filters( 'give_new_receipt_detail_group', $object );
 	}
 
 	/**
-	 * Return list of detail group class names.
+	 * Add detail group.
 	 *
 	 * @since 2.7.0
-	 *
-	 * @return array
+	 * @param string $className
 	 */
-	public function getDetailGroupList() {
-		return $this->detailsGroupList;
+	public function addDetailGroup( $className ) {
+		$this->detailsGroupList[] = $className;
+	}
+
+	/**
+	 * Remove detail group.
+	 *
+	 * @since 2.7.0
+	 * @param string $className
+	 */
+	public function removeDetailGroup( $className ) {
+		if ( in_array( $className, $this->detailsGroupList, true ) ) {
+			unset( $this->detailsGroupList[ array_search( $className, $this->detailsGroupList, true ) ] );
+		}
 	}
 }
