@@ -612,23 +612,28 @@ p {
 
 		[id*='give-user-login-submit-'] {
 			grid-row: 3;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			margin-bottom: 16px;
+			display: flex;
+			flex-direction: row-reverse;
+			flex-wrap: wrap;
+			justify-content: center;
+			margin-bottom: 10px;
+
+			> * {
+				order: 99;
+			}
 
 			.give-submit {
 				margin-top: 0;
-				grid-column: span 2;
-				grid-row: 1;
+				margin-bottom: 6px;
+				flex-basis: 100%;
+				order: 1;
 			}
 
 			.give-cancel-login {
-				grid-column: 2;
-				grid-row: 2;
 				padding: 0;
 				background: none !important;
 				font-size: 14px;
-				display: block;
+				display: inline-block;
 				width: fit-content;
 				border: none !important;
 				text-decoration: underline;
@@ -637,9 +642,8 @@ p {
 			}
 
 			[id*='give-forgot-password-wrap-'] {
-				grid-column: 1;
-				grid-row: 2;
 				font-size: 14px;
+				display: inline-block;
 			}
 		}
 	}
