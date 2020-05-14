@@ -67,10 +67,20 @@ abstract class DetailGroup {
 			return call_user_func( $this->detailItemObject[ $class ], $this->donationId );
 		}
 
-		$classNames           = $this->detailsList;
+		$classNames           = $this->getDetailItemList();
 		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
 
 		return new $detailGroupClassName( $this->donationId );
+	}
+
+	/**
+	 * Get detail item list.
+	 *
+	 * @since 2.7.0
+	 * @return array
+	 */
+	public function getDetailItemList() {
+		return $this->detailsList;
 	}
 
 	/**

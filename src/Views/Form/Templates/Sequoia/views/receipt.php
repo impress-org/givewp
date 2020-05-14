@@ -56,7 +56,7 @@ ob_start();
 				printf( '<h3 class="headline">%1$s</h3>', $group->heading );
 			}
 
-			if ( $detailList = $group->getDetailsList() ) {
+			if ( $detailList = $group->getDetailItemList() ) {
 				echo '<div class="details-table">';
 
 				/* @var Detail $detail */

@@ -71,7 +71,7 @@ class Receipt {
 	 * @since 2.7.0
 	 */
 	public function getDetailGroupObject( $class ) {
-		$classNames           = $this->detailsGroupList;
+		$classNames           = $this->getDetailGroupList();
 		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
 
 		$object = new $detailGroupClassName( $this->donationId );
@@ -83,7 +83,18 @@ class Receipt {
 		 */
 		 do_action( 'give_new_receipt_detail_group', $object );
 
-		 return  $object;
+		 return $object;
+	}
+
+
+	/**
+	 * Get detail group list.
+	 *
+	 * @since 2.7.0
+	 * @return array
+	 */
+	public function getDetailGroupList() {
+		return $this->detailsGroupList;
 	}
 
 	/**
