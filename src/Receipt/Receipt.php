@@ -38,7 +38,7 @@ class Receipt {
 	 * @since 2.7.0
 	 * @var int $donationId
 	 */
-	private $donationId;
+	protected $donationId;
 
 	/**
 	 * Receipt details group class names.
@@ -46,7 +46,7 @@ class Receipt {
 	 * @since 2.7.0
 	 * @var array
 	 */
-	private $detailsGroupList = [
+	protected $detailsGroupList = [
 		DonorDetailsGroup::class,
 		DonationDetailsGroup::class,
 		AdditionalDetailsGroup::class,

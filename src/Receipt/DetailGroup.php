@@ -26,7 +26,7 @@ abstract class DetailGroup {
 	 *
 	 * @var int $donationId
 	 */
-	public $donationId;
+	protected $donationId;
 
 	/**
 	 * Array of detail item class names.
