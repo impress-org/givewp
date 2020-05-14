@@ -186,10 +186,12 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], array( 'payment_id' => $donationId ) ) );
 
 		/**
-		 * filter the receipt object.
+		 * fire the action for receipt object.
 		 *
 		 * @since 2.7.0
 		 */
-		return apply_filters( 'give_new_receipt', $receipt );
+		 do_action( 'give_new_receipt', $receipt );
+
+		return $receipt;
 	}
 }

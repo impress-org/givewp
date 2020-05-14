@@ -77,11 +77,13 @@ class Receipt {
 		$object = new $detailGroupClassName( $this->donationId );
 
 		/**
-		 * filter the receipt detail group.
+		 * fire the action for receipt detail group.
 		 *
 		 * @since 2.7.0
 		 */
-		return apply_filters( 'give_new_receipt_detail_group', $object );
+		 do_action( 'give_new_receipt_detail_group', $object );
+
+		 return  $object;
 	}
 
 	/**
