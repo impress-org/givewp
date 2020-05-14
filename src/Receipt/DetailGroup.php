@@ -64,7 +64,7 @@ abstract class DetailGroup {
 	 */
 	public function getDetailItemObject( $class ) {
 		if ( array_key_exists( $class, $this->detailItemObject ) ) {
-			return call_user_func( $this->detailItemObject[ $class ], $this->donationId );
+			return call_user_func( $this->detailItemObject[ $class ] );
 		}
 
 		$classNames           = $this->getDetailItemList();
