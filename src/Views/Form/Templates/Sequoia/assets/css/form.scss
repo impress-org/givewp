@@ -624,9 +624,12 @@ p {
 
 			.give-submit {
 				margin-top: 0;
-				margin-bottom: 6px;
+				margin-bottom: 12px;
 				flex-basis: 100%;
 				order: 1;
+				padding: 14px !important;
+				line-height: 1;
+				font-size: 16px;
 			}
 
 			.give-cancel-login {
@@ -638,12 +641,18 @@ p {
 				border: none !important;
 				text-decoration: underline;
 				color: #b8b8b8;
-				float: right;
+				margin-left: 10px;
+				font-weight: 400;
 			}
 
 			[id*='give-forgot-password-wrap-'] {
 				font-size: 14px;
 				display: inline-block;
+
+				a {
+					color: #b8b8b8;
+					font-weight: 400;
+				}
 			}
 		}
 	}
