@@ -220,6 +220,7 @@
 				} );
 
 				$( '#give-ffm-section' ).on( 'click', handleFFMInput );
+				$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 
 				$( '#give-ffm-section input' ).each( function() {
 					switch ( $( this ).prop( 'type' ) ) {
@@ -268,6 +269,10 @@
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
+							}
+
+							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
+								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 							}
 						}
 					} );
