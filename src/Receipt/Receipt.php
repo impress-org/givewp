@@ -88,14 +88,23 @@ class Receipt {
 	 * @since 2.7.0
 	 */
 	public function getDetailGroupObject( $class ) {
-		$classNames           = $this->getDetailGroupList();
-		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+		/**
+		 * Use this filter to handle object initialization for your detail group class.
+		 *
+		 * @since 2.7.0
+		 */
+		$object = apply_filters( 'give_receipt_create_detail_group_object', null, $class, $this );
 
-		if ( $detailGroupClassName ) {
-			return new $detailGroupClassName( $this->donationId );
+		if ( ! ( $object instanceof DetailGroup ) ) {
+			$classNames           = $this->getDetailGroupList();
+			$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+
+			if ( $detailGroupClassName ) {
+				$object = new $detailGroupClassName( $this->donationId );
+			}
 		}
 
-		return null;
+		return $object;
 	}
 
 	/**

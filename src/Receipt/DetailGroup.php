@@ -71,14 +71,23 @@ abstract class DetailGroup {
 	 * @since 2.7.0
 	 */
 	public function getDetailItemObject( $class ) {
-		$classNames           = $this->getDetailsList();
-		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+		/**
+		 * Use this filter to handle object initialization for your detail item class.
+		 *
+		 * @since 2.7.0
+		 */
+		$object = apply_filters( 'give_receipt_create_detail_item_object', null, $class, $this );
 
-		if ( $detailGroupClassName ) {
-			return new $detailGroupClassName( $this->donationId );
+		if ( ! ( $object instanceof Detail ) ) {
+			$classNames           = $this->getDetailsList();
+			$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+
+			if ( $detailGroupClassName ) {
+				$object = new $detailGroupClassName( $this->donationId );
+			}
 		}
 
-		return null;
+		return $object;
 	}
 
 	/**
