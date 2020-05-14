@@ -78,13 +78,15 @@ abstract class DetailGroup {
 		 */
 		$object = apply_filters( 'give_receipt_create_detail_item_object', null, $class, $this );
 
-		if ( ! ( $object instanceof Detail ) ) {
-			$classNames           = $this->getDetailsList();
-			$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+		if ( $object instanceof Detail ) {
+			return $object;
+		}
 
-			if ( $detailGroupClassName ) {
-				$object = new $detailGroupClassName( $this->donationId );
-			}
+		$classNames           = $this->getDetailsList();
+		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+
+		if ( $detailGroupClassName ) {
+			$object = new $detailGroupClassName( $this->donationId );
 		}
 
 		return $object;

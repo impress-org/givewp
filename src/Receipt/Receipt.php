@@ -95,13 +95,15 @@ class Receipt {
 		 */
 		$object = apply_filters( 'give_receipt_create_detail_group_object', null, $class, $this );
 
-		if ( ! ( $object instanceof DetailGroup ) ) {
-			$classNames           = $this->getDetailGroupList();
-			$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+		if ( $object instanceof DetailGroup ) {
+			return $object;
+		}
 
-			if ( $detailGroupClassName ) {
-				$object = new $detailGroupClassName( $this->donationId );
-			}
+		$classNames           = $this->getDetailGroupList();
+		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
+
+		if ( $detailGroupClassName ) {
+			$object = new $detailGroupClassName( $this->donationId );
 		}
 
 		return $object;
