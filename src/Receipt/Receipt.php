@@ -98,6 +98,16 @@ class Receipt {
 	}
 
 	/**
+	 * Get donation id.
+	 *
+	 * @since 2.7.0
+	 * @return int
+	 */
+	public function getDonationId() {
+		return $this->donationId;
+	}
+
+	/**
 	 * Add detail group.
 	 *
 	 * @since 2.7.0

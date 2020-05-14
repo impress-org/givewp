@@ -84,6 +84,16 @@ abstract class DetailGroup {
 	}
 
 	/**
+	 * Get donation id.
+	 *
+	 * @since 2.7.0
+	 * @return int
+	 */
+	public function getDonationId() {
+		return $this->donationId;
+	}
+
+	/**
 	 * Add detail item.
 	 *
 	 * @since 2.7.0
