@@ -69,7 +69,6 @@ function give_stripe_frontend_scripts() {
 				)
 			),
 			'base_country'                 => give_get_option( 'base_country' ),
-			'stripe_account_id'            => give_stripe_is_connected() ? give_get_option( 'give_stripe_user_id' ) : false,
 			'preferred_locale'             => give_stripe_get_preferred_locale(),
 		)
 	);
