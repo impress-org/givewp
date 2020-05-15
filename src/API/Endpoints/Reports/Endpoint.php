@@ -164,7 +164,7 @@ abstract class Endpoint {
 	}
 
 	public function sanitize_test_mode( $param, $request, $key ) {
-		return $param === 'true' ? true : false;
+		return filter_var($param, FILTER_VALIDATE_BOOLEAN);
 	}
 
 	/**
