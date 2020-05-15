@@ -751,7 +751,7 @@ p {
 				background-color: transparent;
 				margin-right: 0;
 
-				#give_cc_fields,
+				[id*='give_cc_fields'],
 				.no-fields {
 					background: #fbfbfb;
 					padding: 6px 16px;
