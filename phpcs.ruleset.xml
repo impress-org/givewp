@@ -21,6 +21,7 @@
 	<rule ref="WordPress-Core">
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
 	</rule>
 
 	<!-- Add this hopefully soon -->
