@@ -950,6 +950,7 @@ input[type='checkbox']:checked + label::after {
 	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
+.give-stripe-cc-field,
 form[id*='give-form'] .form-row textarea,
 form[id*='give-form'] .form-row input[type='text'],
 form[id*='give-form'] .form-row input[type='tel'],
