@@ -90,40 +90,6 @@ function give_stripe_get_connect_settings() {
 }
 
 /**
- * Is Stripe connected using Connect API?
- *
- * @since 2.5.0
- *
- * @return bool
- */
-function give_stripe_is_connected() {
-
-	$settings = give_stripe_get_connect_settings();
-
-	$user_api_keys_enabled = give_is_setting_enabled( give_get_option( 'stripe_user_api_keys' ) );
-
-	// Return false, if manual API keys are used to configure Stripe.
-	if ( $user_api_keys_enabled ) {
-		return false;
-	}
-
-	// Check all the necessary options.
-	if (
-		! empty( $settings['connected_status'] ) && '1' === $settings['connected_status']
-		&& ! empty( $settings['give_stripe_user_id'] )
-		&& ! empty( $settings['live_secret_key'] )
-		&& ! empty( $settings['test_secret_key'] )
-		&& ! empty( $settings['live_publishable_key'] )
-		&& ! empty( $settings['test_publishable_key'] )
-	) {
-		return true;
-	}
-
-	// Default return value.
-	return false;
-}
-
-/**
  * Is Stripe Checkout Enabled?
  *
  * @since 2.5.0
