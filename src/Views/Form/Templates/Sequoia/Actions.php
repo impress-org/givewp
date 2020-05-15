@@ -61,7 +61,6 @@ class Actions {
 			"color": "#8d8e8e",
 			"fontWeight": 400,
 			"fontSize": "14px",
-			"fontSmoothing": "antialiased",
 			"::placeholder": {
 			  "color": "#8d8e8e"
 			},
