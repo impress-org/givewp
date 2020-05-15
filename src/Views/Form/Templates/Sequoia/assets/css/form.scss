@@ -1045,6 +1045,23 @@ form.give-form .form-row select.multiselect {
 	animation-fill-mode: forwards;
 }
 
+[id*='give_secure_site_wrapper'] {
+	font-size: 12px;
+	color: #8d8e8e;
+
+	span.padlock {
+		font-size: 12px;
+		margin-right: 4px;
+		line-height: 1;
+
+		&::before {
+			font-family: 'Font Awesome 5 Free';
+			font-weight: 900;
+			content: '\f023';
+		}
+	}
+}
+
 @keyframes slideInRight {
 	from {
 		transform: translate3d(100%, 0, 0);
