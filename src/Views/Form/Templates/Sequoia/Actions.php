@@ -25,19 +25,65 @@ class Actions {
 		$this->templateOptions = FormTemplateUtils::getOptions();
 
 		// Set zero number of decimal.
-		add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );
-		add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
+		add_filter( 'give_get_currency_formatting_settings', array( $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ), 1 );
+		add_filter( 'give_get_option_number_decimals', array( $this, 'setupZeroNumberOfDecimal' ), 1 );
 
 		// Handle personal section html template.
-		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
-		add_action( 'wp_ajax_nopriv_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
-		add_action( 'wp_ajax_nopriv_give_checkout_register', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
+		add_action( 'wp_ajax_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_cancel_login', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
+		add_action( 'wp_ajax_nopriv_give_checkout_register', array( $this, 'cancelLoginAjaxHanleder' ), 9 );
 
 		// Handle common hooks.
-		add_action( 'give_donation_form', [ $this, 'loadCommonHooks' ], 9, 2 );
+		add_action( 'give_donation_form', array( $this, 'loadCommonHooks' ), 9, 2 );
 
 		// Setup hooks.
-		add_action( 'give_pre_form_output', [ $this, 'loadHooks' ], 1, 3 );
+		add_action( 'give_pre_form_output', array( $this, 'loadHooks' ), 1, 3 );
+
+		// Setup Stripe font Styles
+		add_filter( 'give_stripe_get_element_font_styles', array( $this, 'setupStripeFontStyles' ), 1 );
+
+		// Setup Stripe base styles
+		add_filter( 'give_stripe_get_element_base_styles', array( $this, 'setupStripeBaseStyles' ), 1 );
+
+	}
+
+	/** Set Stripe base styles consistent with Sequoia form template
+	 *
+	 * As per design requirement, we want to format Stripe elements to use Montserrat, with the same styling options as other text inputs.
+	 *
+	 * @since 2.7.0
+	 * @param object $styles
+	 * @return object
+	 */
+	public function setupStripeBaseStyles( $styles ) {
+		$styles = '{
+			"fontFamily": "Montserrat",
+			"color": "#8d8e8e",
+			"fontWeight": 400,
+			"fontSize": "14px",
+			"fontSmoothing": "antialiased",
+			"::placeholder": {
+			  "color": "#8d8e8e"
+			},
+			":-webkit-autofill": {
+			  "color": "#e39f48"
+			}
+		}';
+		return json_decode( $styles );
+	}
+
+	/** Set Stripe Font styles consistent with Sequoia form template
+	 *
+	 * As per design requirement, we want to format Stripe elements to use Montserrat, with the same styling options as other text inputs.
+	 *
+	 * @since 2.7.0
+	 * @param array $fontStyles
+	 * @return array
+	 */
+	public function setupStripeFontStyles( $fontStyles ) {
+		return array(
+			'cssSrc' => 'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
+		);
 	}
 
 	/**
@@ -98,14 +144,14 @@ class Actions {
 		/**
 		 * Add hooks
 		 */
-		add_action( 'give_pre_form', [ $this, 'getNavigator' ], 0, 3 );
-		add_action( 'give_post_form', [ $this, 'getFooterSection' ], 99998, 0 );
-		add_action( 'give_donation_form_top', [ $this, 'getIntroductionSection' ], 0, 3 );
-		add_action( 'give_donation_form_top', [ $this, 'getStartWrapperHTMLForAmountSection' ], 0 );
-		add_action( 'give_donation_form_top', [ $this, 'getCloseWrapperHTMLForAmountSection' ], 99998 );
+		add_action( 'give_pre_form', array( $this, 'getNavigator' ), 0, 3 );
+		add_action( 'give_post_form', array( $this, 'getFooterSection' ), 99998, 0 );
+		add_action( 'give_donation_form_top', array( $this, 'getIntroductionSection' ), 0, 3 );
+		add_action( 'give_donation_form_top', array( $this, 'getStartWrapperHTMLForAmountSection' ), 0 );
+		add_action( 'give_donation_form_top', array( $this, 'getCloseWrapperHTMLForAmountSection' ), 99998 );
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
-		add_action( 'give_payment_mode_top', [ $this, 'getStartWrapperHTMLForPaymentSection' ], 0 );
-		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ], 999 );
+		add_action( 'give_payment_mode_top', array( $this, 'getStartWrapperHTMLForPaymentSection' ), 0 );
+		add_action( 'give_donation_form_after_submit', array( $this, 'getCloseWrapperHTMLForPaymentSection' ), 999 );
 
 		/**
 		 * Remove actions
@@ -120,7 +166,7 @@ class Actions {
 		add_filter( 'give_form_title', '__return_empty_string' );
 
 		// Append "Donate with " to gateway labels
-		add_filter( 'give_enabled_payment_gateways', [ $this, 'modifyGatewayLabels' ] );
+		add_filter( 'give_enabled_payment_gateways', array( $this, 'modifyGatewayLabels' ) );
 
 	}
 
