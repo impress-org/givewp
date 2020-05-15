@@ -716,7 +716,7 @@ p {
 		legend {
 			display: none;
 		}
-		ul {
+		#give-gateway-radio-list {
 			@include before-after-content-none;
 			display: grid;
 			grid-gap: 10px;
