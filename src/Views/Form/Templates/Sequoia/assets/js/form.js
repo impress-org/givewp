@@ -438,6 +438,9 @@
 				case 'stripe_sepa':
 					icon = 'fas fa-university';
 					break;
+				case 'paypalpro_payflow':
+					icon = 'far fa-credit-card';
+					break;
 				default:
 					icon = 'fas fa-hand-holding-heart';
 					break;
