@@ -282,11 +282,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @param $settings
 		 */
 		public function render_gateway_notice( $field, $settings ) {
-
 			$gateways = give_get_payment_gateways();
 
 			// Only display notice if no active gateways are installed. Filter provided for developers to configure display.
-			if ( apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 4 ) && ! give_stripe_is_connected() ) {
+			if (
+				apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 4 ) &&
+				! Give\Helpers\Gateways\Stripe::isAccountConfigured()
+			) {
 				?>
 				<div class="give-gateways-notice">
 					<div class="give-gateways-cc-icon">
