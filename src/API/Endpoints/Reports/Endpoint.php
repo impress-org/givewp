@@ -160,7 +160,7 @@ abstract class Endpoint {
 	}
 
 	public function validate_test_mode( $param, $request, $key ) {
-		return $param === 'true' || $param === 'false';
+		return filter_var($param, FILTER_VALIDATE_BOOLEAN);
 	}
 
 	public function sanitize_test_mode( $param, $request, $key ) {
