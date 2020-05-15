@@ -316,7 +316,7 @@ function give_stripe_show_connect_banner() {
 	}
 
 	// Don't show if already connected.
-	if ( give_stripe_is_connected() ) {
+	if ( Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
 		$status = false;
 	}
 
