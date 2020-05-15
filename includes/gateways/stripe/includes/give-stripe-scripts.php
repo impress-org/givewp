@@ -21,9 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_stripe_frontend_scripts() {
-
 	// Get publishable key.
 	$publishable_key = give_stripe_get_publishable_key();
+
+	// If a key is not found, bail out and don't load stripe assets.
+	if ( ! $publishable_key ) {
+		return;
+	}
 
 	// Checkout options.
 	// @TODO: convert checkboxes to radios.
