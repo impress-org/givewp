@@ -1026,7 +1026,7 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id; ?>"
-				   class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>"
+				   class="card-cvc give-input required" placeholder="<?php _e( 'CVC', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
 
