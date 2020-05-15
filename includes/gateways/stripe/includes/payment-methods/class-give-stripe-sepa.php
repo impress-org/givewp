@@ -40,6 +40,11 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 
 			parent::__construct();
 
+			// Setup Error Messages.
+			$this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfigured']      = esc_html__( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+
 			// Remove CC fieldset.
 			add_action( 'give_stripe_sepa_cc_form', '__return_false' );
 
@@ -60,15 +65,11 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @access public
 		 * @return string $form
 		 * @since  2.6.1
-		 *
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
-
-			$id_prefix       = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-			$publishable_key = give_stripe_get_publishable_key( $form_id );
-			$secret_key      = give_stripe_get_secret_key( $form_id );
-
 			ob_start();
+
+			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 			do_action( 'give_before_cc_fields', $form_id ); ?>
 
@@ -87,41 +88,8 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					<?php
 				}
 
-				if (
-					! is_ssl() &&
-					! give_is_test_mode() &&
-					(
-						empty( $publishable_key ) ||
-						empty( $secret_key )
-					)
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} elseif (
-					empty( $publishable_key ) ||
-					empty( $secret_key )
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected.', 'give' )
-						)
-					);
-				} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} else { ?>
+				if ( $this->canShowFields() ) {
+					?>
 					<div id="give-iban-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-iban-number-field-<?php echo $id_prefix; ?>" class="give-label">
 							<?php echo __( 'IBAN', 'give' ); ?>
@@ -140,7 +108,8 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						<?php
 						if ( give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option', 'enabled' ) ) ) {
 							echo give_stripe_get_mandate_acceptance_text();
-						} ?>
+						}
+						?>
 					</div>
 					<?php
 					/**
@@ -152,7 +121,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					 * @param array $args    List of additional arguments.
 					 *
 					 * @since 2.5.0
-					 *
 					 */
 					do_action( 'give_after_cc_expiration', $form_id, $args );
 
@@ -163,7 +131,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					 * @param array $args    List of additional arguments.
 					 *
 					 * @since 2.5.0
-					 *
 					 */
 					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
 				}
@@ -195,7 +162,6 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 * @return void
 		 * @since  2.6.1
 		 * @access public
-		 *
 		 */
 		public function process_payment( $donation_data ) {
 
@@ -252,7 +218,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						give_record_gateway_error(
 							__( 'Donation creating error', 'give' ),
 							sprintf(
-							/* translators: %s Donation Data */
+								/* translators: %s Donation Data */
 								__( 'Unable to create a pending donation. Details: %s', 'give' ),
 								wp_json_encode( $donation_data )
 							)

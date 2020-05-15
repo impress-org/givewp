@@ -1581,4 +1581,15 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 
 add_action( 'give_akismet_deblacklist_spammed_email', 'give_akismet_deblacklist_spammed_email_handler' );
 
+/**
+ * Add Custom setting view for form them setting panel
+ *
+ * @since 2.7.0
+ */
+function give_render_form_theme_setting_panel() {
+	require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form/Metabox-Settings.php';
+}
+add_action( 'give_post_form_template_options_settings', 'give_render_form_theme_setting_panel' );
+
+
 

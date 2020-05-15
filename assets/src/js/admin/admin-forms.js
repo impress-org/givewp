@@ -1,3 +1,4 @@
+/* globals jQuery, Give*/
 /*!
  * Give Admin Forms JS
  *

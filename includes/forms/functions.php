@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Give\Helpers\Form\Utils as FormUtils;
+
 /**
  * Filter: Do not show the Give shortcut button on Give Forms CPT
  *
@@ -75,6 +77,11 @@ function give_is_float_labels_enabled( $args ) {
 		$float_labels = give_get_option( 'floatlabels', 'disabled' );
 	}
 
+	// If the form is using a non-legacy form template, do not use floating labels
+	if ( ! FormUtils::isLegacyForm( $args['form_id'] ) ) {
+		$float_labels = 'disabled';
+	}
+
 	return give_is_setting_enabled( $float_labels );
 }
 
@@ -105,7 +112,9 @@ function give_can_checkout() {
 function give_get_success_page_uri() {
 	$give_options = give_get_settings();
 
-	$success_page = isset( $give_options['success_page'] ) ? get_permalink( absint( $give_options['success_page'] ) ) : get_bloginfo( 'url' );
+	$success_page = isset( $give_options['success_page'] )
+		? get_permalink( absint( $give_options['success_page'] ) )
+		: get_bloginfo( 'url' );
 
 	return apply_filters( 'give_get_success_page_uri', $success_page );
 }
@@ -137,14 +146,13 @@ function give_is_success_page() {
  * @return      void
  */
 function give_send_to_success_page( $query_string = null ) {
-
 	$redirect = give_get_success_page_uri();
 
 	if ( $query_string ) {
 		$redirect .= $query_string;
 	}
 
-	$gateway = isset( $_REQUEST['give-gateway'] ) ? $_REQUEST['give-gateway'] : '';
+	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : '';
 
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
@@ -223,9 +231,7 @@ function give_send_back_to_checkout( $args = array() ) {
  * @return      string
  */
 function give_get_success_page_url( $query_string = null ) {
-
-	$success_page = give_get_option( 'success_page', 0 );
-	$success_page = get_permalink( $success_page );
+	$success_page = give_get_success_page_uri();
 
 	if ( $query_string ) {
 		$success_page .= $query_string;
@@ -293,13 +299,11 @@ function give_is_failed_transaction_page() {
  * @return bool
  */
 function give_listen_for_failed_payments() {
-
-	$failed_page = give_get_option( 'failure_page', 0 );
-	$payment_id  = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
-	$nonce       = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
+	$payment_id = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
+	$nonce      = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
 
 	// Bailout.
-	if ( ! $failed_page || ! is_page( $failed_page ) || ! $payment_id || ! $nonce ) {
+	if ( ! give_is_failed_transaction_page() || ! $payment_id || ! $nonce ) {
 		return false;
 	}
 
@@ -312,7 +316,7 @@ function give_listen_for_failed_payments() {
 	give_update_payment_status( $payment_id, 'failed' );
 }
 
-add_action( 'template_redirect', 'give_listen_for_failed_payments' );
+add_action( 'template_redirect', 'give_listen_for_failed_payments', 0 );
 
 /**
  * Retrieve the Donation History page URI
@@ -1561,8 +1565,8 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
 /**
  * Get the list of default parameters for the form shortcode.
  *
- * @since 2.4.1
  * @return array
+ * @since 2.4.1
  */
 function give_get_default_form_shortcode_args() {
 	$default = array(
@@ -1573,6 +1577,10 @@ function give_get_default_form_shortcode_args() {
 		'float_labels'          => '',
 		'display_style'         => '',
 		'continue_button_title' => '',
+
+		// This attribute belong to form template functionality.
+		// You can use this attribute to set modal open button background color.
+		'button_color'          => '#28C77B',
 	);
 
 	/**

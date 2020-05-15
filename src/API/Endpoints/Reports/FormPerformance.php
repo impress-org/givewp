@@ -30,9 +30,9 @@ class FormPerformance extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
 
-		$forms    = array();
-		$labels   = array();
-		$tooltips = array();
+		$forms    = [];
+		$labels   = [];
+		$tooltips = [];
 
 		if ( count( $this->payments ) > 0 ) {
 
@@ -58,11 +58,11 @@ class FormPerformance extends Endpoint {
 				$forms = array_slice( $forms, 0, 5 );
 
 				foreach ( $forms as $key => $value ) {
-					$tooltips[]    = array(
-						'title'  => give_currency_filter( give_format_amount( $value['income'] ), array( 'decode_currency' => true ) ),
+					$tooltips[]    = [
+						'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
 						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 						'footer' => $value['title'],
-					);
+					];
 					$labels[]      = $value['title'];
 					$forms[ $key ] = $value['income'];
 				}
@@ -71,11 +71,7 @@ class FormPerformance extends Endpoint {
 			}
 		} else {
 
-			$formsQuery = new \Give_Forms_Query(
-				array(
-					'posts_per_page' => 5,
-				)
-			);
+			$formsQuery = new \Give_Forms_Query( [ 'posts_per_page' => 5 ] );
 
 			$allForms = $formsQuery->get_forms();
 
@@ -86,11 +82,11 @@ class FormPerformance extends Endpoint {
 			}
 
 			foreach ( $forms as $key => $value ) {
-				$tooltips[]    = array(
-					'title'  => give_currency_filter( give_format_amount( $value['income'] ), array( 'decode_currency' => true ) ),
+				$tooltips[]    = [
+					'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
 					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 					'footer' => $value['title'],
-				);
+				];
 				$labels[]      = $value['title'];
 				$forms[ $key ] = $value['income'];
 			}
