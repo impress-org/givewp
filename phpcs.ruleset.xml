@@ -24,6 +24,10 @@
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
 	</rule>
 
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
+	  <type>warning</type>
+	</rule>
+
 	<!-- Add this hopefully soon -->
 	<!-- <rule ref="WordPress-Docs" /> -->
 
