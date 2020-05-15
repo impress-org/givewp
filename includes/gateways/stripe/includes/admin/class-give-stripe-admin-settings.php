@@ -786,7 +786,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											<span class="give-stripe-account-name">
 												<?php _e( $account_name, 'give' ); ?>
 											</span>
-											<span class="give-field-description">
+											<span class="give-field-description give-stripe-account-email">
 												<?php _e( $account_email, 'give' ); ?>
 											</span>
 											<span class="give-stripe-account-edit">
