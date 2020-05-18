@@ -44,11 +44,11 @@ abstract class Receipt {
 	/**
 	 * Get receipt sections.
 	 *
-	 * @return stdClass[]
+	 * @return array
 	 * @since 2.7.0
 	 */
 	public function getSections() {
-		return ArrayDataSet::convertToObject( $this->sectionList );
+		return $this->sectionList;
 	}
 
 	/**
