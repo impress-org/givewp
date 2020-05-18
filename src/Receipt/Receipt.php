@@ -2,7 +2,6 @@
 
 namespace Give\Receipt;
 
-use InvalidArgumentException;
 use Iterator;
 
 /**
@@ -10,7 +9,6 @@ use Iterator;
  *
  * This class represent receipt as object.
  * Receipt can have multiple detail group and detail group can has multiple detail item.
- * You can add your own logic to render receipt because it does not return any UI item.
  *
  * @since 2.7.0
  * @package Give\Receipt

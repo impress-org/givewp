@@ -2,6 +2,7 @@
 namespace Give\Receipt;
 
 use Give\Helpers\ArrayDataSet;
+use InvalidArgumentException;
 use stdClass;
 use function give_get_payment_meta as getDonationMetaData;
 use function give_get_gateway_admin_label as getGatewayLabel;
@@ -76,6 +77,22 @@ class DonationReceipt extends Receipt {
 		$this->sectionList[] = $section;
 
 		return $section;
+	}
+
+	/**
+	 * Remove section.
+	 *
+	 * @param  string $sectionId
+	 * @since 2.7.0
+	 */
+	public function removeSection( $sectionId ) {
+		/* @var Section $section */
+		foreach ( $this->$this->sectionList as $index => $section ) {
+			if ( $sectionId === $section->id ) {
+				unset( $this->sectionList[ $index ] );
+				break;
+			}
+		}
 	}
 
 	/**
