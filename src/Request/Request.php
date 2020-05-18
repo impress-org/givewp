@@ -12,7 +12,7 @@ class Request {
 	/**
 	 * $_GET parameter.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 * @since 2.7.0
 	 */
 	public $query;
@@ -20,7 +20,7 @@ class Request {
 	/**
 	 * $_POST parameter.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 * @since 2.7.0
 	 */
 	public $request;
@@ -28,7 +28,7 @@ class Request {
 	/**
 	 * $_COOKIE parameter.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 * @since 2.7.0
 	 */
 	public $cookies;
@@ -36,7 +36,7 @@ class Request {
 	/**
 	 * $_SERVER parameter.
 	 *
-	 * @var array
+	 * @var ServerBag
 	 * @since 2.7.0
 	 */
 	public $server;
