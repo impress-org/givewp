@@ -334,13 +334,6 @@ abstract class Endpoint {
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
 			'gateway'    => $gateway,
-			'meta_query' => array(
-				array(
-					'key'     => '_give_payment_currency',
-					'value'   => $this->currency,
-					'compare' => 'LIKE',
-				),
-			),
 		);
 
 		// Check if a cached payments exists
