@@ -38,6 +38,7 @@
  */
 
 use Give\Form\Templates;
+use Give\Request\Request;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 
@@ -55,6 +56,7 @@ if ( ! class_exists( 'Give' ) ) :
 	 *
 	 * @property-read Templates $templates
 	 * @property-read FormRoute $routeForm
+	 * @property-read Request $request
 	 */
 	final class Give {
 
@@ -779,6 +781,13 @@ if ( ! class_exists( 'Give' ) ) :
 					}
 
 					return $this->singletonsCache[ FormRoute::class ];
+
+				case 'request':
+					if ( ! isset( $this->singletonsCache[ Request::class ] ) ) {
+						$this->singletonsCache[ Request::class ] = new Request();
+					}
+
+					return $this->singletonsCache[ Request::class ];
 			}
 		}
 
