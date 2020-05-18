@@ -784,7 +784,11 @@ if ( ! class_exists( 'Give' ) ) :
 
 				case 'request':
 					if ( ! isset( $this->singletonsCache[ Request::class ] ) ) {
-						$this->singletonsCache[ Request::class ] = new Request();
+						$query   = array_map( 'give_clean', $_GET );
+						$request = array_map( 'give_clean', $_POST );
+						$cookie  = array_map( 'give_clean', $_COOKIE );
+
+						$this->singletonsCache[ Request::class ] = new Request( $query, $request, $cookie, $_SERVER );
 					}
 
 					return $this->singletonsCache[ Request::class ];

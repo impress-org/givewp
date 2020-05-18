@@ -1,32 +1,81 @@
 <?php
-namespace Give\Request;
 
-use WP;
+namespace Give\Request;
 
 /**
  * Class Request
  *
+ * @since 2.7.0
  * @package Give\Request
  */
 class Request {
 	/**
-	 * @var WP
+	 * $_GET parameter.
+	 *
+	 * @var array
 	 */
-	private $wp;
+	public $query;
+
+	/**
+	 * $_POST parameter.
+	 *
+	 * @var array
+	 */
+	public $request;
+
+	/**
+	 * $_COOKIE parameter.
+	 *
+	 * @var array
+	 */
+	public $cookies;
+
+	/**
+	 * $_SERVER parameter.
+	 *
+	 * @var array
+	 */
+	public $server;
 
 	/**
 	 * Request constructor.
 	 *
-	 * @param WP $wpRequest
+	 * @param  array $query  The GET parameters
+	 * @param  array $request  The POST parameters
+	 * @param  array $cookies  The COOKIE parameters
+	 * @param  array $server  The SERVER parameters
 	 */
-	public function __construct( $wpRequest ) {
-		$this->wp = $wpRequest;
+	public function __construct( $query = [], $request = [], $cookies = [], $server = [] ) {
+		$this->initialize( $query, $request, $cookies, $server );
 	}
 
 	/**
-	 * Setup request.
+	 * Sets the parameters for this request.
+	 *
+	 * This method also re-initializes all properties.
+	 *
+	 * @param  array $query  The GET parameters
+	 * @param  array $request  The POST parameters
+	 * @param  array $cookies  The COOKIE parameters
+	 * @param  array $server  The SERVER parameters
 	 */
-	public function init() {
-		error_log( print_r( $this->wp, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+	public function initialize( $query = [], $request = [], $cookies = [], $server = [] ) {
+		$this->request = new ParameterBag( $request );
+		$this->query   = new ParameterBag( $query );
+		$this->cookies = new ParameterBag( $cookies );
+		$this->server  = new ServerBag( $server );
+	}
+
+	/**
+	 * Get result whether or not performing Give core action on ajax or not.
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	public function isProcessingGiveActionOnAjax() {
+		$action            = isset( $this->query['action'] ) ? $this->query['action'] : '';
+		$whiteListedAction = [ 'get_receipt' ];
+
+		return $action && wp_doing_ajax() && ( 0 === strpos( $action, 'give_' ) || in_array( $action, $whiteListedAction, true ) );
 	}
 }
