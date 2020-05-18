@@ -43,21 +43,9 @@ class DonationReceipt extends Receipt {
 	public function __construct( $donationId ) {
 		$this->donationId = $donationId;
 
-		/* Donor Section */
-		$this->addSection( $this->getDonorSection() );
-		$this->addLineItem( self::DONORSECTIONID, $this->getDonorNameLineItem() );
-		$this->addLineItem( self::DONORSECTIONID, $this->getDonorEmailLineItem() );
-		$this->addLineItem( self::DONORSECTIONID, $this->getDonorBillingAddressLineItem() );
-
-		/* Donation Section */
-		$this->addSection( $this->getDonationSection() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationPaymentGatewayLineItem() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationStatusLineItem() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationAmountLineItem() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationTotalAmountLineItem() );
-
-		/* Additional Information Section */
-		$this->addSection( $this->getAdditionInformationSection() );
+		$this->addDonorSection();
+		$this->addDonationSection();
+		$this->addSection( $this->getAdditionInformationSection() ); // Additional Information Section
 	}
 
 	/**
@@ -96,6 +84,38 @@ class DonationReceipt extends Receipt {
 		);
 
 		$this->sectionList[ $section['id'] ] = $section;
+	}
+
+	/**
+	 * Add donor section.
+	 *
+	 * @since 2.7.0
+	 */
+	public function addDonorSection() {
+		$billingAddressLineItem = $this->getDonorBillingAddressLineItem();
+		$hasAddress             = (bool) trim( str_replace( ',', '', strip_tags( $billingAddressLineItem['value'] ) ) ); // Remove formatting from address.
+
+		$this->addSection( $this->getDonorSection() );
+		$this->addLineItem( self::DONORSECTIONID, $this->getDonorNameLineItem() );
+		$this->addLineItem( self::DONORSECTIONID, $this->getDonorEmailLineItem() );
+
+		// Add billing address line item only if donor has billing address.
+		if ( $hasAddress ) {
+			$this->addLineItem( self::DONORSECTIONID, $this->getDonorBillingAddressLineItem() );
+		}
+	}
+
+	/**
+	 * Add donation section.
+	 *
+	 * @since 2.7.0
+	 */
+	public function addDonationSection() {
+		$this->addSection( $this->getDonationSection() );
+		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationPaymentGatewayLineItem() );
+		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationStatusLineItem() );
+		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationAmountLineItem() );
+		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationTotalAmountLineItem() );
 	}
 
 	/**
