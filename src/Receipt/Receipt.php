@@ -87,7 +87,7 @@ abstract class Receipt {
 	 */
 	public function removeSection( $sectionId ) {
 		if ( in_array( $sectionId, $this->sectionList, true ) ) {
-			unset( $this->sectionList[ array_search( $sectionId, $this->sectionList, true ) ] );
+			unset( $this->sectionList[ $sectionId ] );
 		}
 	}
 
