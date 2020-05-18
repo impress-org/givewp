@@ -86,7 +86,7 @@ abstract class Receipt {
 	public function addLineItem( $sectionId, $listItem ) {
 		$this->validateLineItem( $listItem );
 
-		$this->sectionList[ $sectionId ]['lineItem'][ $listItem['id'] ] = $listItem;
+		$this->sectionList[ $sectionId ]['lineItems'][ $listItem['id'] ] = $listItem;
 	}
 
 	/**
