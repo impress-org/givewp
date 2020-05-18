@@ -186,7 +186,7 @@ class DonationReceipt extends Receipt {
 			'id'    => 'billingAddress',
 			'label' => esc_html__( 'Billing Address', 'give' ),
 			'value' => $address,
-			'icon'  => '<i class="fas fa-envelope"></i>',
+			'icon'  => '<i class="fas fa-globe-americas"></i>',
 		];
 	}
 
