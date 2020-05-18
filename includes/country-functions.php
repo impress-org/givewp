@@ -327,7 +327,6 @@ function give_get_country_list() {
 		'EH' => esc_html__( 'Western Sahara', 'give' ),
 		'WS' => esc_html__( 'Western Samoa', 'give' ),
 		'YE' => esc_html__( 'Yemen', 'give' ),
-		'YU' => esc_html__( 'Yugoslavia', 'give' ),
 		'ZM' => esc_html__( 'Zambia', 'give' ),
 		'ZW' => esc_html__( 'Zimbabwe', 'give' ),
 	);
