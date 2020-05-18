@@ -92,6 +92,23 @@ abstract class Receipt {
 	}
 
 	/**
+	 * Remove line item.
+	 *
+	 * @param  string $sectionId
+	 * @param  string $lineItemId
+	 *
+	 * @since 2.7.0
+	 */
+	public function removeLineItem( $sectionId, $lineItemId ) {
+		if (
+			in_array( $sectionId, $this->sectionList, true ) &&
+			in_array( $lineItemId, $this->sectionList[ $sectionId ], true )
+		) {
+			unset( $this->sectionList[ $sectionId ][ $lineItemId ] );
+		}
+	}
+
+	/**
 	 * Validate section.
 	 *
 	 * @param array $array
