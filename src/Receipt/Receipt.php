@@ -57,11 +57,7 @@ abstract class Receipt implements Iterator {
 	 *
 	 * @since 2.7.0
 	 */
-	public function addSection( $section ) {
-		$this->validateSection( $section );
-
-		$this->sectionList[ $section['id'] ] = $section;
-	}
+	abstract public function addSection( $section );
 
 	/**
 	 * Remove receipt section.
@@ -70,24 +66,5 @@ abstract class Receipt implements Iterator {
 	 *
 	 * @since 2.7.0
 	 */
-	public function removeSection( $sectionId ) {
-		if ( in_array( $sectionId, $this->sectionList, true ) ) {
-			unset( $this->sectionList[ $sectionId ] );
-		}
-	}
-
-	/**
-	 * Validate section.
-	 *
-	 * @param array $array
-	 * @since 2.7.0
-	 */
-	protected function validateSection( $array ) {
-		$required = [ 'id' ];
-		$array    = array_filter( $array ); // Remove empty values.
-
-		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'Invalid receipt section. Please provide valid section id', 'give' ) );
-		}
-	}
+	abstract public function removeSection( $sectionId );
 }

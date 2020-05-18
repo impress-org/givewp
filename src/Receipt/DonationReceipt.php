@@ -321,4 +321,19 @@ class DonationReceipt extends Receipt {
 	public function rewind() {
 		$this->position = 0;
 	}
+
+	/**
+	 * Validate section.
+	 *
+	 * @param array $array
+	 * @since 2.7.0
+	 */
+	protected function validateSection( $array ) {
+		$required = [ 'id' ];
+		$array    = array_filter( $array ); // Remove empty values.
+
+		if ( array_diff( $required, array_keys( $array ) ) ) {
+			throw new InvalidArgumentException( __( 'Invalid receipt section. Please provide valid section id', 'give' ) );
+		}
+	}
 }
