@@ -167,7 +167,7 @@ class LoadTemplate {
 
 		$classes[] = 'give-embed-form';
 
-		if ( FormUtils::inIframe() ) {
+		if ( Give()->request->inIframe() ) {
 			$classes[] = 'give-viewing-form-in-iframe';
 		}
 

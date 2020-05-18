@@ -34,7 +34,7 @@ class Utils {
 
 		return ! empty( $_REQUEST['give_embed_form'] ) ||
 			   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
-			   self::inIframe() ||
+			   Give()->request->inIframe() ||
 			   false !== strpos( $referer, 'giveDonationFormInIframe' );
 	}
 
