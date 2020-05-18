@@ -2,6 +2,7 @@
 namespace Give\Receipt;
 
 use Give\Helpers\ArrayDataSet;
+use stdClass;
 use function give_get_payment_meta as getDonationMetaData;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_get_donation_donor_email as getDonationDonorEmail;
@@ -62,7 +63,7 @@ class DonationReceipt extends Receipt {
 	/**
 	 * Get receipt sections.
 	 *
-	 * @return array
+	 * @return stdClass[]
 	 * @since 2.7.0
 	 */
 	public function getSections() {

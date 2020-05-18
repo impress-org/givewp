@@ -4,6 +4,7 @@ namespace Give\Receipt;
 
 use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;
+use stdClass;
 
 /**
  * Class Receipt
@@ -43,23 +44,11 @@ abstract class Receipt {
 	/**
 	 * Get receipt sections.
 	 *
-	 * @return array
+	 * @return stdClass[]
 	 * @since 2.7.0
 	 */
 	public function getSections() {
 		return ArrayDataSet::convertToObject( $this->sectionList );
-	}
-
-	/**
-	 * Get receipt sections.
-	 *
-	 * @param  string $sectionId
-	 *
-	 * @return array|null
-	 * @since 2.7.0
-	 */
-	public function getSection( $sectionId ) {
-		return isset( $this->sectionList[ $sectionId ] ) ? $this->sectionList[ $sectionId ] : null;
 	}
 
 	/**
