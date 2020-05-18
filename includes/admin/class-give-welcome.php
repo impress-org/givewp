@@ -117,7 +117,7 @@ class Give_Welcome {
 				<?php esc_html_e( 'What\'s New', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>"
-			   href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-addons' ) ); ?>">
+			   href="https://givewp.com/addons/?utm_source=welcome-screen&utm_medium=getting-started">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>"
@@ -175,11 +175,11 @@ class Give_Welcome {
 
 			<div class="give-welcome-header-inner">
 
-				<h1 class="give-welcome-h1"><?php esc_html_e( $title ); ?></h1>
+				<h1 class="give-welcome-h1"><?php esc_html_e( $title, 'give' ); ?></h1>
 
 				<?php $this->social_media_elements(); ?>
 
-				<p class="give-welcome-text"><?php _e( $content ); ?></p>
+				<p class="give-welcome-text"><?php _e( $content, 'give' ); ?></p>
 
 				<?php $this->get_newsletter(); ?>
 
