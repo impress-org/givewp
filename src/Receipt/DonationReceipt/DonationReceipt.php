@@ -1,6 +1,7 @@
 <?php
 namespace Give\Receipt\DonationReceipt;
 
+use Give\Helpers\ArrayDataSet;
 use Give\Receipt\Receipt;
 use function give_get_payment_meta as getDonationMetaData;
 use function give_get_gateway_admin_label as getGatewayLabel;
@@ -60,13 +61,61 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Get donation id.
+	 * Get receipt sections.
+	 *
+	 * @return array
+	 * @since 2.7.0
+	 */
+	public function getSections() {
+		$sections = $this->sectionList;
+
+		// Filter sections which does not have lineItems.
+		foreach ( $sections as $id => $value ) {
+			if ( ! array_key_exists( 'lineItems', $value ) ) {
+				unset( $sections[ $id ] );
+			}
+		}
+
+		return ArrayDataSet::convertToObject( $sections );
+	}
+
+	/**
+	 * Add detail group.
+	 *
+	 * @param  array $section
 	 *
 	 * @since 2.7.0
-	 * @return int
 	 */
-	public function getDonationId() {
-		return $this->donationId;
+	public function addSection( $section ) {
+		$this->validateSection( $section );
+
+		// Add default label.
+		$section = wp_parse_args(
+			$section,
+			[ 'label' => '' ]
+		);
+
+		$this->sectionList[ $section['id'] ] = $section;
+	}
+
+	/**
+	 * Add detail group.
+	 *
+	 * @param  string $sectionId
+	 * @param  array  $listItem
+	 *
+	 * @since 2.7.0
+	 */
+	public function addLineItem( $sectionId, $listItem ) {
+		$this->validateLineItem( $listItem );
+
+		// Add default icon.
+		$listItem = wp_parse_args(
+			$listItem,
+			[ 'icon' => '' ]
+		);
+
+		$this->sectionList[ $sectionId ]['lineItems'][ $listItem['id'] ] = $listItem;
 	}
 
 	/**
