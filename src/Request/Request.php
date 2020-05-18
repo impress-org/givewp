@@ -79,9 +79,13 @@ class Request {
 	 * @since 2.7.0
 	 */
 	public function isProcessingGiveActionOnAjax() {
-		$action            = isset( $this->query['action'] ) ? $this->query['action'] : '';
+		$action            = $this->query->get( 'action' );
+		$action            = $action ?: '';
 		$whiteListedAction = [ 'get_receipt' ];
 
-		return $action && wp_doing_ajax() && ( 0 === strpos( $action, 'give_' ) || in_array( $action, $whiteListedAction, true ) );
+		$isGiveAction        = 0 === strpos( $action, 'give_' );
+		$isWhiteListedAction = in_array( $action, $whiteListedAction, true );
+
+		return $action && wp_doing_ajax() && ( $isGiveAction || $isWhiteListedAction );
 	}
 }
