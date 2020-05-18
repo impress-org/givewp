@@ -12,6 +12,13 @@ use function give_currency_filter as filterCurrency;
 
 class DonationReceipt extends Receipt {
 	/**
+	 * Iterator initial position.
+	 *
+	 * @var int
+	 */
+	private $position = 0;
+
+	/**
 	 * Receipt donor section id.
 	 */
 	const DONORSECTIONID = 'Donor';
@@ -66,7 +73,7 @@ class DonationReceipt extends Receipt {
 
 		$section = new Section( $section['id'], $section['label'] );
 
-		$this->sectionList[ $section->id ] = $section;
+		$this->sectionList[] = $section;
 
 		return $section;
 	}
@@ -272,5 +279,46 @@ class DonationReceipt extends Receipt {
 			'id'    => self::ADDITIONALINFORMATIONSECTIONID,
 			'label' => esc_html__( 'Additional Information', 'give' ),
 		];
+	}
+
+	/**
+	 * Return current data.
+	 *
+	 * @return mixed
+	 */
+	public function current() {
+		return $this->sectionList[ $this->position ];
+	}
+
+	/**
+	 * Update iterator position.
+	 */
+	public function next() {
+		++ $this->position;
+	}
+
+	/**
+	 * Return iterator position.
+	 *
+	 * @return bool|float|int|string|void|null
+	 */
+	public function key() {
+		return $this->position;
+	}
+
+	/**
+	 * Return whether or not valid array position.
+	 *
+	 * @return bool|void
+	 */
+	public function valid() {
+		return isset( $this->sectionList[ $this->position ] );
+	}
+
+	/**
+	 * Set iterator position to zero when rewind.
+	 */
+	public function rewind() {
+		$this->position = 0;
 	}
 }

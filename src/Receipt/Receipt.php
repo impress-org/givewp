@@ -2,9 +2,8 @@
 
 namespace Give\Receipt;
 
-use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;
-use stdClass;
+use Iterator;
 
 /**
  * Class Receipt
@@ -16,7 +15,7 @@ use stdClass;
  * @since 2.7.0
  * @package Give\Receipt
  */
-abstract class Receipt {
+abstract class Receipt implements Iterator {
 	/**
 	 * Receipt Heading.
 	 *

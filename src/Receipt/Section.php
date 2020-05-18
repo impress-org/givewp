@@ -3,6 +3,7 @@
 namespace Give\Receipt;
 
 use InvalidArgumentException;
+use Iterator;
 
 /**
  * Class Section
@@ -12,7 +13,14 @@ use InvalidArgumentException;
  * @since 2.7.0
  * @package Give\Receipt
  */
-class Section {
+class Section implements Iterator {
+	/**
+	 * Iterator initial position.
+	 *
+	 * @var int
+	 */
+	private $position = 0;
+
 	/**
 	 * Section heading.
 	 *
@@ -35,7 +43,7 @@ class Section {
 	 * @since 2.7.0
 	 * @var LineItem[]
 	 */
-	protected $lineItems = [];
+	private $lineItems = [];
 
 	/**
 	 * Section constructor.
@@ -46,6 +54,17 @@ class Section {
 	public function __construct( $id, $label ) {
 		$this->id    = $id;
 		$this->label = $label;
+	}
+
+
+	/**
+	 * Get line items.
+	 *
+	 * @return LineItem[]
+	 * @since 2.7.0
+	 */
+	public function getLineItems() {
+		return $this->lineItems;
 	}
 
 	/**
@@ -62,7 +81,7 @@ class Section {
 
 		$listItem = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
 
-		$this->lineItems[ $listItem->id ] = $listItem;
+		$this->lineItems[] = $listItem;
 	}
 
 	/**
@@ -92,5 +111,46 @@ class Section {
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException( __( 'Invalid receipt section line item. Please provide valid line item id, label, and value.', 'give' ) );
 		}
+	}
+
+	/**
+	 * Return current data.
+	 *
+	 * @return mixed
+	 */
+	public function current() {
+		return $this->lineItems[ $this->position ];
+	}
+
+	/**
+	 * Update iterator position.
+	 */
+	public function next() {
+		++ $this->position;
+	}
+
+	/**
+	 * Return iterator position.
+	 *
+	 * @return bool|float|int|string|void|null
+	 */
+	public function key() {
+		return $this->position;
+	}
+
+	/**
+	 * Return whether or not valid array position.
+	 *
+	 * @return bool|void
+	 */
+	public function valid() {
+		return isset( $this->lineItems[ $this->position ] );
+	}
+
+	/**
+	 * Set iterator position to zero when rewind.
+	 */
+	public function rewind() {
+		$this->position = 0;
 	}
 }

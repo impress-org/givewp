@@ -1,6 +1,8 @@
 <?php
 
 use Give\Receipt\DonationReceipt;
+use Give\Receipt\LineItem;
+use Give\Receipt\Section;
 use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
 use Give\Views\IframeContentView;
@@ -37,9 +39,10 @@ ob_start();
 		</p>
 		<?php require 'social-sharing.php'; ?>
 		<?php
-		foreach ( $receipt->getSections() as $section ) {
+		/* @var Section $section */
+		foreach ( $receipt as $section ) {
 			// Continue if section does not have line items.
-			if ( ! $section->lineItems ) {
+			if ( ! $section->getLineItems() ) {
 				continue;
 			}
 
@@ -49,7 +52,8 @@ ob_start();
 			}
 			echo '<div class="details-table">';
 
-			foreach ( $section->lineItems as $lineItem ) {
+			/* @var LineItem $lineItem */
+			foreach ( $section as $lineItem ) {
 				// Continue if line item does not have value.
 				if ( ! $lineItem->value ) {
 					continue;
