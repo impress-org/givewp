@@ -201,6 +201,7 @@ function give_get_country_list() {
 		'KZ' => esc_html__( 'Kazakhstan', 'give' ),
 		'KE' => esc_html__( 'Kenya', 'give' ),
 		'KI' => esc_html__( 'Kiribati', 'give' ),
+		'XK' => esc_html__( 'Kosovo', 'give' ),
 		'KW' => esc_html__( 'Kuwait', 'give' ),
 		'KG' => esc_html__( 'Kyrgyzstan', 'give' ),
 		'LA' => esc_html__( 'Lao People\'s Democratic Republic', 'give' ),
