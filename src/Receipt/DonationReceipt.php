@@ -67,16 +67,13 @@ class DonationReceipt extends Receipt {
 	 */
 	public function addSection( $section ) {
 		// Add default label.
-		$section = wp_parse_args(
-			$section,
-			[ 'label' => '' ]
-		);
+		$label = isset( $section['label'] ) ? $section['label'] : '';
 
-		$section = new Section( $section['id'], $section['label'] );
+		$sectionObj = new Section( $section['id'], $label );
 
-		$this->sectionList[] = $section;
+		$this->sectionList[] = $sectionObj;
 
-		return $section;
+		return $sectionObj;
 	}
 
 	/**

@@ -80,11 +80,11 @@ class Section implements Iterator {
 
 		$icon = isset( $listItem['icon'] ) ? $listItem['icon'] : '';
 
-		$listItem = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
+		$listItemObj = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
 
-		$this->lineItems[] = $listItem;
+		$this->lineItems[] = $listItemObj;
 
-		return $listItem;
+		return $listItemObj;
 	}
 
 	/**
