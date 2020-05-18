@@ -14,12 +14,20 @@ use InvalidArgumentException;
  */
 class Section {
 	/**
-	 * Group heading.
+	 * Section heading.
 	 *
 	 * @since 2.7.0
-	 * @var string $heading
+	 * @var string
 	 */
-	public $heading = '';
+	public $label = '';
+
+	/**
+	 * Section ID.
+	 *
+	 * @since 2.7.0
+	 * @var string
+	 */
+	public $id = '';
 
 	/**
 	 * Array of detail item class names.
@@ -28,6 +36,17 @@ class Section {
 	 * @var LineItem[]
 	 */
 	protected $lineItems = [];
+
+	/**
+	 * Section constructor.
+	 *
+	 * @param string $id
+	 * @param string $label
+	 */
+	public function __construct( $id, $label ) {
+		$this->id    = $id;
+		$this->label = $label;
+	}
 
 	/**
 	 * Add detail group.
@@ -39,7 +58,11 @@ class Section {
 	public function addLineItem( $listItem ) {
 		$this->validateLineItem( $listItem );
 
-		$this->lineItems[ $listItem['id'] ] = $listItem;
+		$icon = isset( $listItem['icon'] ) ? $listItem['icon'] : '';
+
+		$listItem = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
+
+		$this->lineItems[ $listItem->id ] = $listItem;
 	}
 
 	/**
@@ -63,7 +86,7 @@ class Section {
 	 * @since 2.7.0
 	 */
 	protected function validateLineItem( $array ) {
-		$required = [ 'label', 'value' ];
+		$required = [ 'id', 'label', 'value' ];
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Receipt;
 
 /**
@@ -10,6 +11,14 @@ namespace Give\Receipt;
  * @package Give\Receipt
  */
 class LineItem {
+	/**
+	 * ID.
+	 *
+	 * @since 2.7.0
+	 * @var int $donationId
+	 */
+	public $id;
+
 	/**
 	 * Label.
 	 *
@@ -37,11 +46,13 @@ class LineItem {
 	/**
 	 * LineItem constructor.
 	 *
-	 * @param string $label
-	 * @param string $value
+	 * @param  string $id
+	 * @param  string $label
+	 * @param  string $value
 	 * @param  string $icon
 	 */
-	public function __construct( $label, $value, $icon = '' ) {
+	public function __construct( $id, $label, $value, $icon = '' ) {
+		$this->id    = $id;
 		$this->label = $label;
 		$this->value = $value;
 		$this->icon  = $icon;

@@ -49,41 +49,26 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Get receipt sections.
-	 *
-	 * @return stdClass[]
-	 * @since 2.7.0
-	 */
-	public function getSections() {
-		$sections = $this->sectionList;
-
-		// Filter sections which does not have lineItems.
-		foreach ( $sections as $id => $value ) {
-			if ( ! array_key_exists( 'lineItems', $value ) ) {
-				unset( $sections[ $id ] );
-			}
-		}
-
-		return ArrayDataSet::convertToObject( $sections );
-	}
-
-	/**
 	 * Add detail group.
 	 *
 	 * @param  array $section
 	 *
+	 * @return Section
+	 *
 	 * @since 2.7.0
 	 */
 	public function addSection( $section ) {
-		$this->validateSection( $section );
-
 		// Add default label.
 		$section = wp_parse_args(
 			$section,
 			[ 'label' => '' ]
 		);
 
-		$this->sectionList[ $section['id'] ] = $section;
+		$section = new Section( $section['id'], $section['label'] );
+
+		$this->sectionList[ $section->id ] = $section;
+
+		return $section;
 	}
 
 	/**
@@ -95,13 +80,13 @@ class DonationReceipt extends Receipt {
 		$billingAddressLineItem = $this->getDonorBillingAddressLineItem();
 		$hasAddress             = (bool) trim( str_replace( ',', '', strip_tags( $billingAddressLineItem['value'] ) ) ); // Remove formatting from address.
 
-		$this->addSection( $this->getDonorSection() );
-		$this->addLineItem( self::DONORSECTIONID, $this->getDonorNameLineItem() );
-		$this->addLineItem( self::DONORSECTIONID, $this->getDonorEmailLineItem() );
+		$section = $this->addSection( $this->getDonorSection() );
+		$section->addLineItem( $this->getDonorNameLineItem() );
+		$section->addLineItem( $this->getDonorEmailLineItem() );
 
 		// Add billing address line item only if donor has billing address.
 		if ( $hasAddress ) {
-			$this->addLineItem( self::DONORSECTIONID, $this->getDonorBillingAddressLineItem() );
+			$section->addLineItem( $this->getDonorBillingAddressLineItem() );
 		}
 	}
 
@@ -111,31 +96,11 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	public function addDonationSection() {
-		$this->addSection( $this->getDonationSection() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationPaymentGatewayLineItem() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationStatusLineItem() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationAmountLineItem() );
-		$this->addLineItem( self::DONATIONSECTIONID, $this->getDonationTotalAmountLineItem() );
-	}
-
-	/**
-	 * Add detail group.
-	 *
-	 * @param  string $sectionId
-	 * @param  array  $listItem
-	 *
-	 * @since 2.7.0
-	 */
-	public function addLineItem( $sectionId, $listItem ) {
-		$this->validateLineItem( $listItem );
-
-		// Add default icon.
-		$listItem = wp_parse_args(
-			$listItem,
-			[ 'icon' => '' ]
-		);
-
-		$this->sectionList[ $sectionId ]['lineItems'][ $listItem['id'] ] = $listItem;
+		$section = $this->addSection( $this->getDonationSection() );
+		$section->addLineItem( $this->getDonationPaymentGatewayLineItem() );
+		$section->addLineItem( $this->getDonationStatusLineItem() );
+		$section->addLineItem( $this->getDonationAmountLineItem() );
+		$section->addLineItem( $this->getDonationTotalAmountLineItem() );
 	}
 
 	/**
