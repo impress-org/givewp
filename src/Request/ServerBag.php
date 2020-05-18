@@ -4,15 +4,15 @@ namespace Give\Request;
 /**
  * ServerBag is a container for HTTP headers from the $_SERVER variable.
  *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Bulat Shakirzyanov <mallluhuct@gmail.com>
- * @author Robert Kiss <kepten@gmail.com>
+ * @package Give\Request
+ * @since 2.7.0
  */
 class ServerBag extends ParameterBag {
 	/**
 	 * Gets the HTTP headers.
 	 *
 	 * @return array
+	 * @since 2.7.0
 	 */
 	public function getHeaders() {
 		$headers = [];

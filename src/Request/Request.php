@@ -13,6 +13,7 @@ class Request {
 	 * $_GET parameter.
 	 *
 	 * @var array
+	 * @since 2.7.0
 	 */
 	public $query;
 
@@ -20,6 +21,7 @@ class Request {
 	 * $_POST parameter.
 	 *
 	 * @var array
+	 * @since 2.7.0
 	 */
 	public $request;
 
@@ -27,6 +29,7 @@ class Request {
 	 * $_COOKIE parameter.
 	 *
 	 * @var array
+	 * @since 2.7.0
 	 */
 	public $cookies;
 
@@ -34,6 +37,7 @@ class Request {
 	 * $_SERVER parameter.
 	 *
 	 * @var array
+	 * @since 2.7.0
 	 */
 	public $server;
 
@@ -44,6 +48,7 @@ class Request {
 	 * @param  array $request  The POST parameters
 	 * @param  array $cookies  The COOKIE parameters
 	 * @param  array $server  The SERVER parameters
+	 * @since 2.7.0
 	 */
 	public function __construct( $query = [], $request = [], $cookies = [], $server = [] ) {
 		$this->initialize( $query, $request, $cookies, $server );
@@ -58,6 +63,7 @@ class Request {
 	 * @param  array $request  The POST parameters
 	 * @param  array $cookies  The COOKIE parameters
 	 * @param  array $server  The SERVER parameters
+	 * @since 2.7.0
 	 */
 	public function initialize( $query = [], $request = [], $cookies = [], $server = [] ) {
 		$this->request = new ParameterBag( $request );
