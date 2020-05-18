@@ -289,6 +289,7 @@ function give_get_country_list() {
 		'ZA' => esc_html__( 'South Africa', 'give' ),
 		'GS' => esc_html__( 'South Georgia', 'give' ),
 		'KR' => esc_html__( 'South Korea', 'give' ),
+		'SS' => esc_html__( 'South Sudan', 'give' ),
 		'ES' => esc_html__( 'Spain', 'give' ),
 		'LK' => esc_html__( 'Sri Lanka', 'give' ),
 		'SD' => esc_html__( 'Sudan', 'give' ),
