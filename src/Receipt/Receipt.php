@@ -1,9 +1,9 @@
 <?php
+
 namespace Give\Receipt;
 
-use Give\Receipt\DonationDetailsGroup\DonationDetailsGroup;
-use Give\Receipt\AdditionalDetailsGroup\AdditionalDetailsGroup;
-use Give\Receipt\DonorDetailsGroup\DonorDetailsGroup;
+use Give\Helpers\ArrayDataSet;
+use InvalidArgumentException;
 
 /**
  * Class Receipt
@@ -15,7 +15,7 @@ use Give\Receipt\DonorDetailsGroup\DonorDetailsGroup;
  * @since 2.7.0
  * @package Give\Receipt
  */
-class Receipt {
+abstract class Receipt {
 	/**
 	 * Receipt Heading.
 	 *
@@ -33,99 +33,102 @@ class Receipt {
 	public $message = '';
 
 	/**
-	 * Donation id.
-	 *
-	 * @since 2.7.0
-	 * @var int $donationId
-	 */
-	protected $donationId;
-
-	/**
 	 * Receipt details group class names.
 	 *
 	 * @since 2.7.0
 	 * @var array
 	 */
-	protected $detailsGroupList = [
-		DonorDetailsGroup::class,
-		DonationDetailsGroup::class,
-		AdditionalDetailsGroup::class,
-	];
+	protected $sectionList = [];
 
 	/**
-	 * Receipt constructor.
+	 * Get receipt sections.
 	 *
-	 * @since 2.7.0
-	 * @param $donationId
-	 */
-	public function __construct( $donationId ) {
-		$this->donationId = $donationId;
-	}
-
-	/**
-	 * Get detail group object.
-	 *
-	 * @param string $class
-	 *
-	 * @return DetailGroup|null
-	 * @since 2.7.0
-	 */
-	public function getDetailGroupObject( $class ) {
-		$classNames           = $this->getDetailGroupList();
-		$detailGroupClassName = $classNames[ array_search( $class, $classNames, true ) ];
-
-		$object = new $detailGroupClassName( $this->donationId );
-
-		/**
-		 * fire the action for receipt detail group.
-		 *
-		 * @since 2.7.0
-		 */
-		 do_action( 'give_new_receipt_detail_group', $object );
-
-		 return $object;
-	}
-
-
-	/**
-	 * Get detail group list.
-	 *
-	 * @since 2.7.0
 	 * @return array
+	 * @since 2.7.0
 	 */
-	public function getDetailGroupList() {
-		return $this->detailsGroupList;
+	public function getSections() {
+		return ArrayDataSet::convertToObject( $this->sectionList );
 	}
 
 	/**
-	 * Get donation id.
+	 * Get receipt sections.
 	 *
+	 * @param  string $sectionId
+	 *
+	 * @return array|null
 	 * @since 2.7.0
-	 * @return int
 	 */
-	public function getDonationId() {
-		return $this->donationId;
+	public function getSection( $sectionId ) {
+		return isset( $this->sectionList[ $sectionId ] ) ? $this->sectionList[ $sectionId ] : null;
 	}
 
 	/**
 	 * Add detail group.
 	 *
+	 * @param  array $section
+	 *
 	 * @since 2.7.0
-	 * @param string $className
 	 */
-	public function addDetailGroup( $className ) {
-		$this->detailsGroupList[] = $className;
+	public function addSection( $section ) {
+		$this->validateSection( $section );
+
+		$this->sectionList[ $section['id'] ] = $section;
 	}
 
 	/**
-	 * Remove detail group.
+	 * Add detail group.
+	 *
+	 * @param  string $sectionId
+	 * @param  array  $listItem
 	 *
 	 * @since 2.7.0
-	 * @param string $className
 	 */
-	public function removeDetailGroup( $className ) {
-		if ( in_array( $className, $this->detailsGroupList, true ) ) {
-			unset( $this->detailsGroupList[ array_search( $className, $this->detailsGroupList, true ) ] );
+	public function addLineItem( $sectionId, $listItem ) {
+		$this->validateLineItem( $listItem );
+
+		$this->sectionList[ $sectionId ]['lineItem'][ $listItem['id'] ] = $listItem;
+	}
+
+	/**
+	 * Remove receipt section.
+	 *
+	 * @param  string $sectionId
+	 *
+	 * @since 2.7.0
+	 */
+	public function removeSection( $sectionId ) {
+		if ( in_array( $sectionId, $this->sectionList, true ) ) {
+			unset( $this->sectionList[ array_search( $sectionId, $this->sectionList, true ) ] );
+		}
+	}
+
+	/**
+	 * Validate section.
+	 *
+	 * @param array $array
+	 * @since 2.7.0
+	 */
+	protected function validateSection( $array ) {
+		$required = [ 'id' ];
+		$array    = array_filter( $array ); // Remove empty values.
+
+		if ( array_diff( $required, array_keys( $array ) ) ) {
+			throw new InvalidArgumentException( __( 'Invalid receipt section. Please provide valid section id', 'give' ) );
+		}
+	}
+
+	/**
+	 * Validate line item.
+	 *
+	 * @param array $array
+	 * @since 2.7.0
+	 */
+	protected function validateLineItem( $array ) {
+		$required = [ 'label', 'value' ];
+		$array    = array_filter( $array ); // Remove empty values.
+
+		if ( array_diff( $required, array_keys( $array ) ) ) {
+			throw new InvalidArgumentException( __( 'Invalid receipt section line item. Please provide valid line item id, label, and value.', 'give' ) );
 		}
 	}
 }
