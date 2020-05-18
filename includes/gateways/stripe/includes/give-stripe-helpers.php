@@ -1523,7 +1523,7 @@ function give_stripe_get_account_options() {
 	foreach ( $stripe_accounts as $slug => $details ) {
 		$options[ $slug ] = ! empty( $details['account_name'] ) ?
 			$details['account_name'] :
-			$slug;
+			give_stripe_convert_slug_to_title( $slug );
 	}
 
 	return $options;
