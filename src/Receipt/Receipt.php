@@ -65,20 +65,6 @@ abstract class Receipt {
 	}
 
 	/**
-	 * Add detail group.
-	 *
-	 * @param  string $sectionId
-	 * @param  array  $listItem
-	 *
-	 * @since 2.7.0
-	 */
-	public function addLineItem( $sectionId, $listItem ) {
-		$this->validateLineItem( $listItem );
-
-		$this->sectionList[ $sectionId ]['lineItems'][ $listItem['id'] ] = $listItem;
-	}
-
-	/**
 	 * Remove receipt section.
 	 *
 	 * @param  string $sectionId
@@ -88,23 +74,6 @@ abstract class Receipt {
 	public function removeSection( $sectionId ) {
 		if ( in_array( $sectionId, $this->sectionList, true ) ) {
 			unset( $this->sectionList[ $sectionId ] );
-		}
-	}
-
-	/**
-	 * Remove line item.
-	 *
-	 * @param  string $sectionId
-	 * @param  string $lineItemId
-	 *
-	 * @since 2.7.0
-	 */
-	public function removeLineItem( $sectionId, $lineItemId ) {
-		if (
-			in_array( $sectionId, $this->sectionList, true ) &&
-			in_array( $lineItemId, $this->sectionList[ $sectionId ], true )
-		) {
-			unset( $this->sectionList[ $sectionId ][ $lineItemId ] );
 		}
 	}
 
@@ -120,21 +89,6 @@ abstract class Receipt {
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException( __( 'Invalid receipt section. Please provide valid section id', 'give' ) );
-		}
-	}
-
-	/**
-	 * Validate line item.
-	 *
-	 * @param array $array
-	 * @since 2.7.0
-	 */
-	protected function validateLineItem( $array ) {
-		$required = [ 'label', 'value' ];
-		$array    = array_filter( $array ); // Remove empty values.
-
-		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'Invalid receipt section line item. Please provide valid line item id, label, and value.', 'give' ) );
 		}
 	}
 }
