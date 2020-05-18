@@ -87,4 +87,14 @@ class Request {
 
 		return $action && wp_doing_ajax() && ( $isGiveAction || $isWhiteListedAction );
 	}
+
+	/**
+	 * Return if current URL loading in iframe or not.
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	public function inIframe() {
+		return ! empty( $this->query->get( 'giveDonationFormInIframe', false ) );
+	}
 }
