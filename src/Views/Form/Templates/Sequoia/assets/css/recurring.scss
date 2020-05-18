@@ -18,7 +18,7 @@
 		display: none !important;
 	}
 
-	label {
+	input[type='checkbox'] + label {
 		font-weight: 500;
 		font-size: 16px;
 		line-height: 1.4;
@@ -29,7 +29,7 @@
 		display: inline-block;
 	}
 
-	label::before {
+	input[type='checkbox'] + label::before {
 		content: ' ';
 		position: absolute;
 		top: calc(50% - 12px);
