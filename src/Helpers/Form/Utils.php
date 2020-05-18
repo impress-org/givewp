@@ -182,16 +182,6 @@ class Utils {
 	}
 
 	/**
-	 * Return if current URL loading in iframe or not.
-	 *
-	 * @since 2.7.0
-	 * @return bool
-	 */
-	public static function inIframe() {
-		return ! empty( $_GET['giveDonationFormInIframe'] );
-	}
-
-	/**
 	 * Returns whether or not the given form uses the legacy form template
 	 *
 	 * @param int|null $formID
