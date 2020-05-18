@@ -16,11 +16,11 @@
 	}
 
 	input[type='radio'] + label {
-		font-weight: 400;
-		font-size: 16px;
-		padding: 0 0 0 32px;
+		padding: 0 10px 0 28px;
 		width: 100%;
-		color: #333;
+		color: #696969;
+		font-size: 14px !important;
+		font-weight: 400 !important;
 		display: inline-block;
 		position: relative;
 		margin: 0 0 5px;
@@ -29,10 +29,10 @@
 		&::before {
 			content: ' ';
 			position: absolute;
-			top: calc(50% - 12px);
+			top: calc(50% - 9px);
 			left: 0;
-			width: 20px;
-			height: 20px;
+			width: 16px;
+			height: 16px;
 			border-radius: 50%;
 			border: 1px solid #b4b9be;
 			background-color: #fff;
@@ -42,12 +42,12 @@
 		&::after {
 			transform: scale3d(0, 0, 0);
 			transition: transform 0.2s ease;
-			border-radius: 12px;
-			width: 10px;
-			height: 10px;
+			border-radius: 8px;
+			width: 8px;
+			height: 8px;
 			position: absolute;
-			top: calc(50% - 6px);
-			left: 6px;
+			top: calc(50% - 4px);
+			left: 5px;
 			content: ' ';
 			display: block;
 			background: #333;
