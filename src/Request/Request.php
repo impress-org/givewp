@@ -79,8 +79,7 @@ class Request {
 	 * @since 2.7.0
 	 */
 	public function isProcessingGiveActionOnAjax() {
-		$action            = $this->query->get( 'action' );
-		$action            = $action ?: '';
+		$action            = $this->query->get( 'action', '' );
 		$whiteListedAction = [ 'get_receipt' ];
 
 		$isGiveAction        = 0 === strpos( $action, 'give_' );
