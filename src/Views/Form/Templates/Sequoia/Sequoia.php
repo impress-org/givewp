@@ -4,7 +4,7 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use Give\Receipt\DonationReceipt\DonationReceipt;
+use Give\Receipt\DonationReceipt;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use \Give_Donate_Form as DonationForm;
 use function give_do_email_tags as formatContent;

@@ -11,7 +11,7 @@ namespace Give\Form;
 
 use Give\Form\Template\Options;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\Receipt\DonationReceipt\DonationReceipt;
+use Give\Receipt\DonationReceipt;
 
 defined( 'ABSPATH' ) || exit;
 
