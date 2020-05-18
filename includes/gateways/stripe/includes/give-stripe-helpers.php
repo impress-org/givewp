@@ -1521,7 +1521,9 @@ function give_stripe_get_account_options() {
 	$stripe_accounts = give_stripe_get_all_accounts();
 
 	foreach ( $stripe_accounts as $slug => $details ) {
-		$options[ $slug ] = give_stripe_convert_slug_to_title( $slug );
+		$options[ $slug ] = ! empty( $details['account_name'] ) ?
+			$details['account_name'] :
+			$slug;
 	}
 
 	return $options;
