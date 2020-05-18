@@ -175,7 +175,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-header-inner">
 
-				<h1 class="give-welcome-h1"><?php esc_html_e( $title, 'give' ); ?></h1>
+				<h1 class="give-welcome-h1"><?php echo esc_html( $title ); ?></h1>
 
 				<?php $this->social_media_elements(); ?>
 
