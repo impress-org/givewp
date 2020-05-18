@@ -72,6 +72,7 @@ class Section implements Iterator {
 	 *
 	 * @param  array $listItem
 	 *
+	 * @return LineItem
 	 * @since 2.7.0
 	 */
 	public function addLineItem( $listItem ) {
@@ -82,6 +83,8 @@ class Section implements Iterator {
 		$listItem = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
 
 		$this->lineItems[] = $listItem;
+
+		return $listItem;
 	}
 
 	/**
