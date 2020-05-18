@@ -92,8 +92,11 @@ class Section implements Iterator {
 	 * @since 2.7.0
 	 */
 	public function removeLineItem( $lineItemId ) {
-		if ( in_array( $lineItemId, $this->lineItems, true ) ) {
-			unset( $this->lineItems[ $lineItemId ] );
+		/* @var LineItem $lineItem */
+		foreach ( $this->lineItems as $index => $lineItem ) {
+			if ( $lineItemId === $lineItem->id ) {
+				unset( $this->lineItems[ $index ] );
+			}
 		}
 	}
 
