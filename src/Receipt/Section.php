@@ -189,7 +189,7 @@ class Section implements Iterator, ArrayAccess {
 	 * @since 2.7.0
 	 */
 	public function offsetExists( $offset ) {
-		return isset( $this->sectionList[ $offset ] );
+		return isset( $this->lineItemIds[ $offset ] );
 	}
 
 	/**
