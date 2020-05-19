@@ -259,7 +259,7 @@ abstract class Template {
 		$receipt = new DonationReceipt( $donationId );
 
 		/**
-		 * fire the action for receipt object.
+		 * Fire the action for receipt object.
 		 *
 		 * @since 2.7.0
 		 */

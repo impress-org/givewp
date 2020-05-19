@@ -108,7 +108,6 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			a.give-checkout-login {
 				color: %1$s;
 			}
-
 		',
 			$primaryColor
 		);
@@ -197,7 +196,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], array( 'payment_id' => $donationId ) ) );
 
 		/**
-		 * fire the action for receipt object.
+		 * Fire the action for receipt object.
 		 *
 		 * @since 2.7.0
 		 */

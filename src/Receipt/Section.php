@@ -9,7 +9,7 @@ use Iterator;
 /**
  * Class Section
  *
- * This class represent receipt detail group as object and you can add ass many as you want detail item.
+ * This class represent receipt section as object and you can add ass many as you want line items.
  *
  * @since 2.7.0
  * @package Give\Receipt
@@ -65,7 +65,6 @@ class Section implements Iterator, ArrayAccess {
 		$this->label = $label;
 	}
 
-
 	/**
 	 * Get line items.
 	 *
@@ -80,7 +79,7 @@ class Section implements Iterator, ArrayAccess {
 	 * Add detail group.
 	 *
 	 * @param  array  $lineItem
-	 * @param  string $position Position can be set either "before" or "after".
+	 * @param  string $position Position can be set either "before" or "after" to insert line item at specific position.
 	 * @param  string $lineItemId
 	 *
 	 * @return LineItem
@@ -149,7 +148,7 @@ class Section implements Iterator, ArrayAccess {
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException(
-				__(
+				esc_html__(
 					'Invalid receipt section line item. Please provide valid line item id, label, and value.',
 					'give'
 				)
@@ -161,6 +160,7 @@ class Section implements Iterator, ArrayAccess {
 	 * Return current data.
 	 *
 	 * @return mixed
+	 * @since 2.7.0
 	 */
 	public function current() {
 		return $this->lineItems[ $this->lineItemIds[ $this->position ] ];
@@ -168,6 +168,8 @@ class Section implements Iterator, ArrayAccess {
 
 	/**
 	 * Update iterator position.
+	 *
+	 * @since 2.7.0
 	 */
 	public function next() {
 		++ $this->position;
@@ -177,6 +179,7 @@ class Section implements Iterator, ArrayAccess {
 	 * Return iterator position.
 	 *
 	 * @return bool|float|int|string|void|null
+	 * @since 2.7.0
 	 */
 	public function key() {
 		return $this->position;
@@ -186,6 +189,7 @@ class Section implements Iterator, ArrayAccess {
 	 * Return whether or not valid array position.
 	 *
 	 * @return bool|void
+	 * @since 2.7.0
 	 */
 	public function valid() {
 		return isset( $this->lineItemIds[ $this->position ] );
@@ -193,6 +197,8 @@ class Section implements Iterator, ArrayAccess {
 
 	/**
 	 * Set iterator position to zero when rewind.
+	 *
+	 * @since 2.7.0
 	 */
 	public function rewind() {
 		$this->position = 0;
@@ -230,8 +236,8 @@ class Section implements Iterator, ArrayAccess {
 	 * @since 2.7.0
 	 */
 	public function offsetUnset( $offset ) {
-		if( $this->offsetExists( $offset ) ) {
-			unset($this->lineItems[$offset]);
+		if ( $this->offsetExists( $offset ) ) {
+			unset( $this->lineItems[ $offset ] );
 			$this->lineItemIds = array_keys( $this->lineItems );
 		}
 	}

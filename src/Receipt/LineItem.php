@@ -3,9 +3,9 @@
 namespace Give\Receipt;
 
 /**
- * Class Detail
+ * Class LineItem
  *
- * This class represent receipt detail item as object.
+ * This class represent receipt line item as object.
  *
  * @since 2.7.0
  * @package Give\Receipt

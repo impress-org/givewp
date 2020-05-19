@@ -9,7 +9,7 @@ use Iterator;
  * Class Receipt
  *
  * This class represent receipt as object.
- * Receipt can have multiple detail group and detail group can has multiple detail item.
+ * Receipt can have multiple sections and sections can have multiple line items.
  *
  * @since 2.7.0
  * @package Give\Receipt

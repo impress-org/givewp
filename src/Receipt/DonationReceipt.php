@@ -63,10 +63,10 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Add detail group.
+	 * Add receipt section.
 	 *
 	 * @param  array  $section
-	 * @param  string $position Position can be set either "before" or "after".
+	 * @param  string $position Position can be set either "before" or "after" to insert section at specific position.
 	 * @param  string $sectionId
 	 *
 	 * @return Section
@@ -120,7 +120,7 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	public function removeSection( $sectionId ) {
-		$this->offsetUnset($sectionId);
+		$this->offsetUnset( $sectionId );
 	}
 
 	/**
@@ -254,7 +254,7 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Get donation status line ite.
+	 * Get donation status line item.
 	 *
 	 * @return array
 	 * @since 2.7.0
@@ -268,7 +268,7 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Get donation amount line ite.
+	 * Get donation amount line item.
 	 *
 	 * @return array
 	 * @since 2.7.0
@@ -291,7 +291,7 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Get donation total amount line ite.
+	 * Get donation total amount line item.
 	 *
 	 * @return array
 	 * @since 2.7.0
@@ -327,9 +327,10 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Return current data.
+	 * Return current data when iterate or data.
 	 *
 	 * @return mixed
+	 * @since 2.7.0
 	 */
 	public function current() {
 		return $this->sectionList[ $this->sectionIds[ $this->position ] ];
@@ -337,6 +338,8 @@ class DonationReceipt extends Receipt {
 
 	/**
 	 * Update iterator position.
+	 *
+	 * @since 2.7.0
 	 */
 	public function next() {
 		++ $this->position;
@@ -346,6 +349,7 @@ class DonationReceipt extends Receipt {
 	 * Return iterator position.
 	 *
 	 * @return bool|float|int|string|void|null
+	 * @since 2.7.0
 	 */
 	public function key() {
 		return $this->position;
@@ -355,6 +359,7 @@ class DonationReceipt extends Receipt {
 	 * Return whether or not valid array position.
 	 *
 	 * @return bool|void
+	 * @since 2.7.0
 	 */
 	public function valid() {
 		return isset( $this->sectionIds[ $this->position ] );
@@ -362,6 +367,8 @@ class DonationReceipt extends Receipt {
 
 	/**
 	 * Set iterator position to zero when rewind.
+	 *
+	 * @since 2.7.0
 	 */
 	public function rewind() {
 		$this->position = 0;
@@ -378,7 +385,7 @@ class DonationReceipt extends Receipt {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'Invalid receipt section. Please provide valid section id', 'give' ) );
+			throw new InvalidArgumentException( esc_html__( 'Invalid receipt section. Please provide valid section id', 'give' ) );
 		}
 	}
 
@@ -412,8 +419,8 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	public function offsetUnset( $offset ) {
-		if( $this->offsetExists( $offset ) ) {
-			unset( $this->sectionList[$offset] );
+		if ( $this->offsetExists( $offset ) ) {
+			unset( $this->sectionList[ $offset ] );
 			$this->sectionIds = array_keys( $this->sectionList );
 		}
 	}
