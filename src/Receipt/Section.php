@@ -22,6 +22,14 @@ class Section implements Iterator {
 	private $position = 0;
 
 	/**
+	 * Array of line item ids to use in Iterator.
+	 * Note: this property helps to iterate over associative array.
+	 *
+	 * @var int
+	 */
+	private $lineItemIds = [];
+
+	/**
 	 * Section heading.
 	 *
 	 * @since 2.7.0
@@ -82,7 +90,8 @@ class Section implements Iterator {
 
 		$listItemObj = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
 
-		$this->lineItems[] = $listItemObj;
+		$this->lineItems[ $listItemObj->id ] = $listItemObj;
+		$this->lineItemIds[]                 = $listItemObj->id;
 
 		return $listItemObj;
 	}
@@ -98,7 +107,7 @@ class Section implements Iterator {
 		/* @var LineItem $lineItem */
 		foreach ( $this->lineItems as $index => $lineItem ) {
 			if ( $lineItemId === $lineItem->id ) {
-				unset( $this->lineItems[ $index ] );
+				unset( $this->lineItems[ $index ], $this->lineItemIds[ $index ] );
 			}
 		}
 	}
@@ -125,7 +134,7 @@ class Section implements Iterator {
 	 * @return mixed
 	 */
 	public function current() {
-		return $this->lineItems[ $this->position ];
+		return $this->lineItems[ $this->lineItemIds[ $this->position ] ];
 	}
 
 	/**
@@ -150,7 +159,7 @@ class Section implements Iterator {
 	 * @return bool|void
 	 */
 	public function valid() {
-		return isset( $this->lineItems[ $this->position ] );
+		return isset( $this->lineItemIds[ $this->position ] );
 	}
 
 	/**

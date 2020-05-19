@@ -20,6 +20,14 @@ class DonationReceipt extends Receipt {
 	private $position = 0;
 
 	/**
+	 * Array of section ids to use for Iterator.
+	 * Note: this property helps to iterate over associative array.
+	 *
+	 * @var int
+	 */
+	private $sectionIds = [];
+
+	/**
 	 * Receipt donor section id.
 	 */
 	const DONORSECTIONID = 'Donor';
@@ -66,12 +74,15 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	public function addSection( $section ) {
+		$this->validateSection( $section );
+
 		// Add default label.
 		$label = isset( $section['label'] ) ? $section['label'] : '';
 
 		$sectionObj = new Section( $section['id'], $label );
 
-		$this->sectionList[] = $sectionObj;
+		$this->sectionList[ $sectionObj->id ] = $sectionObj;
+		$this->sectionIds[]                   = $sectionObj->id;
 
 		return $sectionObj;
 	}
@@ -86,7 +97,7 @@ class DonationReceipt extends Receipt {
 		/* @var Section $section */
 		foreach ( $this->$this->sectionList as $index => $section ) {
 			if ( $sectionId === $section->id ) {
-				unset( $this->sectionList[ $index ] );
+				unset( $this->sectionList[ $index ], $this->sectionIds[ $index ] );
 				break;
 			}
 		}
@@ -301,7 +312,7 @@ class DonationReceipt extends Receipt {
 	 * @return mixed
 	 */
 	public function current() {
-		return $this->sectionList[ $this->position ];
+		return $this->sectionList[ $this->sectionIds[ $this->position ] ];
 	}
 
 	/**
@@ -326,7 +337,7 @@ class DonationReceipt extends Receipt {
 	 * @return bool|void
 	 */
 	public function valid() {
-		return isset( $this->sectionList[ $this->position ] );
+		return isset( $this->sectionIds[ $this->position ] );
 	}
 
 	/**
