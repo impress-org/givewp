@@ -142,6 +142,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		wp_add_inline_style( 'give-sequoia-template-css', $recurringDynamicCss );
 
 		$giftaidDynamicCss = "
+			.mfp-content a,
 			a.give-gift-aid-explanation-content-more,
 			a.give-gift-aid-explanation-content-more:visited {
 				color: {$primaryColor};
