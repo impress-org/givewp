@@ -65,13 +65,15 @@ class DonationReceipt extends Receipt {
 	/**
 	 * Add detail group.
 	 *
-	 * @param  array $section
+	 * @param  array  $section
+	 * @param  string $position Position can be set either "before" or "after".
+	 * @param  string $sectionId
 	 *
 	 * @return Section
 	 *
 	 * @since 2.7.0
 	 */
-	public function addSection( $section ) {
+	public function addSection( $section, $position = '', $sectionId = '' ) {
 		$this->validateSection( $section );
 
 		// Add default label.
@@ -79,8 +81,34 @@ class DonationReceipt extends Receipt {
 
 		$sectionObj = new Section( $section['id'], $label );
 
-		$this->sectionList[ $sectionObj->id ] = $sectionObj;
-		$this->sectionIds[]                   = $sectionObj->id;
+		if ( isset( $this->sectionList[ $sectionId ] ) && in_array( $position, [ 'before', 'after' ] ) ) {
+			// Insert line item at specific position.
+			$tmp    = [];
+			$tmpIds = [];
+
+			foreach ( $this->sectionList as $id => $data ) {
+				if ( 'after' === $position ) {
+					$tmp[ $id ] = $data;
+					$tmpIds[]   = $id;
+				}
+
+				if ( $id === $sectionId ) {
+					$tmp[ $sectionObj->id ] = $sectionObj;
+					$tmpIds[]               = $sectionObj->id;
+				}
+
+				if ( 'before' === $position ) {
+					$tmp[ $id ] = $data;
+					$tmpIds[]   = $id;
+				}
+			}
+
+			$this->sectionList = $tmp;
+			$this->sectionIds  = $tmpIds;
+		} else {
+			$this->sectionList[ $sectionObj->id ] = $sectionObj;
+			$this->sectionIds[]                   = $sectionObj->id;
+		}
 
 		return $sectionObj;
 	}

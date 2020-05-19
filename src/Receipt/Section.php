@@ -79,20 +79,48 @@ class Section implements Iterator, ArrayAccess {
 	/**
 	 * Add detail group.
 	 *
-	 * @param  array $lineItem
+	 * @param  array  $lineItem
+	 * @param  string $position Position can be set either "before" or "after".
+	 * @param  string $lineItemId
 	 *
 	 * @return LineItem
 	 * @since 2.7.0
 	 */
-	public function addLineItem( $lineItem ) {
+	public function addLineItem( $lineItem, $position = '', $lineItemId = '' ) {
 		$this->validateLineItem( $lineItem );
 
 		$icon = isset( $lineItem['icon'] ) ? $lineItem['icon'] : '';
 
 		$lineItemObj = new LineItem( $lineItem['id'], $lineItem['label'], $lineItem['value'], $icon );
 
-		$this->lineItems[ $lineItemObj->id ] = $lineItemObj;
-		$this->lineItemIds[]                 = $lineItemObj->id;
+		if ( isset( $this->lineItems[ $lineItemId ] ) && in_array( $position, [ 'before', 'after' ] ) ) {
+			// Insert line item at specific position.
+			$tmp    = [];
+			$tmpIds = [];
+
+			foreach ( $this->lineItems as $id => $data ) {
+				if ( 'after' === $position ) {
+					$tmp[ $id ] = $data;
+					$tmpIds[]   = $id;
+				}
+
+				if ( $id === $lineItemId ) {
+					$tmp[ $lineItemObj->id ] = $lineItemObj;
+					$tmpIds[]                = $lineItemObj->id;
+				}
+
+				if ( 'before' === $position ) {
+					$tmp[ $id ] = $data;
+					$tmpIds[]   = $id;
+				}
+			}
+
+			$this->lineItems   = $tmp;
+			$this->lineItemIds = $tmpIds;
+		} else {
+			$this->lineItems[ $lineItemObj->id ] = $lineItemObj;
+			$this->lineItemIds[]                 = $lineItemObj->id;
+		}
 
 		return $lineItemObj;
 	}
