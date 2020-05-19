@@ -348,7 +348,7 @@ class DonationReceipt extends Receipt {
 	/**
 	 * Return iterator position.
 	 *
-	 * @return bool|float|int|string|void|null
+	 * @return int
 	 * @since 2.7.0
 	 */
 	public function key() {

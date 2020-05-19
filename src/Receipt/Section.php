@@ -178,7 +178,7 @@ class Section implements Iterator, ArrayAccess {
 	/**
 	 * Return iterator position.
 	 *
-	 * @return bool|float|int|string|void|null
+	 * @return int
 	 * @since 2.7.0
 	 */
 	public function key() {
