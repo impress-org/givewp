@@ -1,9 +1,7 @@
 <?php
 namespace Give\Receipt;
 
-use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;
-use stdClass;
 use function give_get_payment_meta as getDonationMetaData;
 use function give_get_gateway_admin_label as getGatewayLabel;
 use function give_get_donation_donor_email as getDonationDonorEmail;
@@ -360,5 +358,50 @@ class DonationReceipt extends Receipt {
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException( __( 'Invalid receipt section. Please provide valid section id', 'give' ) );
 		}
+	}
+
+	/**
+	 * Set section.
+	 *
+	 * @param  string $offset Section ID.
+	 * @param  array  $value   Section Data.
+	 * @since 2.7.0
+	 */
+	public function offsetSet( $offset, $value ) {
+		$this->addSection( $value );
+	}
+
+	/**
+	 * Return whether or not session id exist in list.
+	 *
+	 * @param  string $offset Section ID.
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	public function offsetExists( $offset ) {
+		return isset( $this->sectionList[ $offset ] );
+	}
+
+	/**
+	 * Remove section from list.
+	 *
+	 * @param  string $offset Section ID.
+	 * @since 2.7.0
+	 */
+	public function offsetUnset( $offset ) {
+		$this->removeSection( $offset );
+	}
+
+	/**
+	 * Get section.
+	 *
+	 * @param  string $offset Session ID.
+	 *
+	 * @return Section|null
+	 * @since 2.7.0
+	 */
+	public function offsetGet( $offset ) {
+		return isset( $this->sectionList[ $offset ] ) ? $this->sectionList[ $offset ] : null;
 	}
 }

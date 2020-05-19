@@ -2,6 +2,7 @@
 
 namespace Give\Receipt;
 
+use ArrayAccess;
 use InvalidArgumentException;
 use Iterator;
 
@@ -13,7 +14,7 @@ use Iterator;
  * @since 2.7.0
  * @package Give\Receipt
  */
-class Section implements Iterator {
+class Section implements Iterator, ArrayAccess {
 	/**
 	 * Iterator initial position.
 	 *
@@ -104,7 +105,6 @@ class Section implements Iterator {
 	 * @since 2.7.0
 	 */
 	public function removeLineItem( $lineItemId ) {
-		/* @var LineItem $lineItem */
 		foreach ( $this->lineItems as $index => $lineItem ) {
 			if ( $lineItemId === $lineItem->id ) {
 				unset( $this->lineItems[ $index ], $this->lineItemIds[ $index ] );
@@ -167,5 +167,50 @@ class Section implements Iterator {
 	 */
 	public function rewind() {
 		$this->position = 0;
+	}
+
+	/**
+	 * Set line item.
+	 *
+	 * @param  string $offset LineItem ID.
+	 * @param  array  $value   LineItem Data.
+	 * @since 2.7.0
+	 */
+	public function offsetSet( $offset, $value ) {
+		$this->addLineItem( $value );
+	}
+
+	/**
+	 * Return whether or not line item id exist in list.
+	 *
+	 * @param  string $offset LineItem ID.
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	public function offsetExists( $offset ) {
+		return isset( $this->sectionList[ $offset ] );
+	}
+
+	/**
+	 * Remove line item from list.
+	 *
+	 * @param  string $offset LineItem ID.
+	 * @since 2.7.0
+	 */
+	public function offsetUnset( $offset ) {
+		$this->removeLineItem( $offset );
+	}
+
+	/**
+	 * Get line item.
+	 *
+	 * @param  string $offset LineItem ID.
+	 *
+	 * @return LineItem|null
+	 * @since 2.7.0
+	 */
+	public function offsetGet( $offset ) {
+		return isset( $this->lineItems[ $offset ] ) ? $this->lineItems[ $offset ] : null;
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Give\Receipt;
 
+use ArrayAccess;
 use Iterator;
 
 /**
@@ -13,7 +14,7 @@ use Iterator;
  * @since 2.7.0
  * @package Give\Receipt
  */
-abstract class Receipt implements Iterator {
+abstract class Receipt implements Iterator, ArrayAccess {
 	/**
 	 * Receipt Heading.
 	 *
