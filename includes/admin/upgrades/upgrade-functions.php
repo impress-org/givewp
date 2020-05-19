@@ -142,6 +142,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.5.11', '<' ):
 			give_v2511_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.6.3', '<' ):
+			give_v263_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -2375,12 +2379,12 @@ function give_v201_upgrades_payment_metadata_callback() {
 		"
 			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
-			AND ( 
+			AND (
   				$wpdb->posts.post_date >= '2018-01-08 00:00:00'
 			)
 			AND $wpdb->posts.post_type = 'give_payment'
 			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
-			ORDER BY $wpdb->posts.post_date ASC 
+			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
 			OFFSET " . $give_updates->get_offset( 100 )
 	);
@@ -2466,11 +2470,11 @@ function give_v201_move_metadata_into_new_table_callback() {
 
 	$payments = $wpdb->get_col(
 		"
-			SELECT ID FROM $wpdb->posts 
+			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
 			AND ( $wpdb->posts.post_type = 'give_payment' OR $wpdb->posts.post_type = 'give_forms' )
 			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
-			ORDER BY $wpdb->posts.post_date ASC 
+			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
 			OFFSET " . $give_updates->get_offset( 100 )
 	);
@@ -2552,11 +2556,11 @@ function give_v201_logs_upgrades_callback() {
 
 	$logs = $wpdb->get_col(
 		"
-			SELECT ID FROM $wpdb->posts 
+			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
 			AND $wpdb->posts.post_type = 'give_log'
 			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
-			ORDER BY $wpdb->posts.post_date ASC 
+			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
 			OFFSET " . $give_updates->get_offset( 100 )
 	);
@@ -3593,3 +3597,35 @@ function give_v2511_upgrades() {
 		$wp_roles->remove_cap( $role, 'read_give_payment' );
 	}
 }
+
+/**
+ * Upgrade for version 2.6.3
+ *
+ * @since 2.6.3
+ */
+function give_v263_upgrades() {
+	$licenses = get_option( 'give_licenses', [] );
+
+	if ( $licenses ) {
+		foreach ( $licenses as $license ) {
+			if ( ! empty( $license['is_all_access_pass'] ) ) {
+				// Remove single license which is part of all access pass.
+				// @see https://github.com/impress-org/givewp/issues/4669
+				$addonSlugs = Give_License::getAddonSlugsFromAllAccessPassLicense( $license );
+				foreach ( $licenses as $license_key => $data ) {
+					// Skip bundle plan license key.
+					if ( ! empty( $data['is_all_access_pass'] ) ) {
+						continue;
+					}
+
+					if ( in_array( $data['plugin_slug'], $addonSlugs, true ) ) {
+						unset( $licenses[ $license_key ] );
+					}
+				}
+			}
+		}
+
+		update_option( 'give_licenses', $licenses );
+	}
+}
+

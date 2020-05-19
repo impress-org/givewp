@@ -31,6 +31,7 @@ function give_stripe_supported_payment_methods() {
 		'stripe_apple_pay',
 		'stripe_checkout',
 		'stripe_sepa',
+		'stripe_becs',
 	];
 }
 

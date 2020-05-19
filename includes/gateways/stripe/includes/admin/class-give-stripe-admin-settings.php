@@ -112,6 +112,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				'credit-card' => __( 'Credit Card On Site', 'give' ),
 				'checkout'    => __( 'Stripe Checkout', 'give' ),
 				'sepa'        => __( 'SEPA Direct Debit', 'give' ),
+				'becs'        => __( 'BECS Direct Debit', 'give' ),
 			);
 
 			return apply_filters( 'give_stripe_register_groups', $groups );
@@ -423,7 +424,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						),
 					);
 
-
 					$settings['sepa'][] = array(
 						'name'          => __( 'Display Mandate Acceptance', 'give' ),
 						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
@@ -459,6 +459,77 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					// Stripe Admin Settings - Footer.
 					$settings['sepa'][] = array(
 						'id'   => 'give_title_stripe_sepa',
+						'type' => 'sectionend',
+					);
+
+					// BECS Direct Debit.
+					$settings['becs'][] = array(
+						'id'   => 'give_title_stripe_becs',
+						'type' => 'title',
+					);
+
+					$settings['becs'][] = array(
+						'name'          => __( 'Display Icon', 'give' ),
+						'desc'          => __( 'This option allows you to display a bank building icon within the bank account input field for BECS Direct Debit.', 'give' ),
+						'id'            => 'stripe_becs_hide_icon',
+						'wrapper_class' => 'stripe-becs-hide-icon',
+						'type'          => 'radio_inline',
+						'default'       => 'enabled',
+						'options'       => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					);
+
+					$is_becs_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_becs_hide_icon', 'enabled' ) );
+
+					$settings['becs'][] = array(
+						'name'          => __( 'Icon Style', 'give' ),
+						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'id'            => 'stripe_becs_icon_style',
+						'wrapper_class' => $is_becs_hide_icon ? 'stripe-becs-icon-style' : 'stripe-becs-icon-style give-hidden',
+						'type'          => 'radio_inline',
+						'default'       => 'default',
+						'options'       => array(
+							'default' => __( 'Default', 'give' ),
+							'solid'   => __( 'Solid', 'give' ),
+						),
+					);
+
+					$settings['becs'][] = array(
+						'name'          => __( 'Display Mandate Acceptance', 'give' ),
+						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the Bank Account fields.', 'give' ),
+						'id'            => 'stripe_becs_mandate_acceptance_option',
+						'wrapper_class' => 'stripe-becs-mandate-acceptance-option',
+						'type'          => 'radio_inline',
+						'default'       => 'enabled',
+						'options'       => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					);
+
+					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) );
+
+					$settings['becs'][] = array(
+						'name'          => __( 'Mandate Acceptance Text', 'give' ),
+						'desc'          => __( 'This text displays below the Bank Account fields and should provide clarity to your donors on how this payment option works.', 'give' ),
+						'id'            => 'stripe_becs_mandate_acceptance_text',
+						'wrapper_class' => $is_hide_mandate ? 'stripe-becs-mandate-acceptance-text' : 'stripe-becs-mandate-acceptance-text give-hidden',
+						'type'          => 'textarea',
+						'default'       => give_stripe_get_default_mandate_acceptance_text( 'becs' ),
+					);
+
+					/**
+					 * This filter is used to add setting fields after BECS Direct Debit fields.
+					 *
+					 * @since 2.6.3
+					 */
+					$settings = apply_filters( 'give_stripe_after_becs_fields', $settings );
+
+					// Stripe Admin Settings - Footer.
+					$settings['becs'][] = array(
+						'id'   => 'give_title_stripe_becs',
 						'type' => 'sectionend',
 					);
 
@@ -641,14 +712,14 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					if ( give_stripe_is_connected() ) :
 						$site_url            = get_site_url();
 						$stripe_user_id      = give_get_option( 'give_stripe_user_id' );
-						$modal_title         = __( '<strong>You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.</strong>', 'give' );
+						$modal_title         = '<strong>' . esc_html__( 'You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.', 'give' ) . '</strong>';
 						$modal_first_detail  = sprintf(
 							'%1$s %2$s',
 							__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
 							"<strong>{$site_url}?give-listener=stripe</strong>"
 						);
 						$modal_second_detail = __( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
-						$can_display = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
+						$can_display         = ! empty( $_GET['stripe_access_token'] ) ? '0' : '1';
 						?>
 						<span
 							id="give-stripe-connect"

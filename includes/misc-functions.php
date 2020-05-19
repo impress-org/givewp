@@ -594,25 +594,25 @@ if ( ! function_exists( 'array_column' ) ) {
 		$params = func_get_args();
 
 		if ( $argc < 2 ) {
-			trigger_error( sprintf( esc_html__( 'array_column() expects at least 2 parameters, %s given.', 'give' ), $argc ), E_USER_WARNING );
+			trigger_error( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ), E_USER_WARNING );
 
 			return null;
 		}
 
 		if ( ! is_array( $params[0] ) ) {
-			trigger_error( sprintf( esc_html__( 'array_column() expects parameter 1 to be array, %s given.', 'give' ), gettype( $params[0] ) ), E_USER_WARNING );
+			trigger_error( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ), E_USER_WARNING );
 
 			return null;
 		}
 
 		if ( ! is_int( $params[1] ) && ! is_float( $params[1] ) && ! is_string( $params[1] ) && $params[1] !== null && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) ) ) {
-			trigger_error( esc_html__( 'array_column(): The column key should be either a string or an integer.', 'give' ), E_USER_WARNING );
+			trigger_error( 'array_column(): The column key should be either a string or an integer.', E_USER_WARNING );
 
 			return false;
 		}
 
 		if ( isset( $params[2] ) && ! is_int( $params[2] ) && ! is_float( $params[2] ) && ! is_string( $params[2] ) && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) ) ) {
-			trigger_error( esc_html__( 'array_column(): The index key should be either a string or an integer.', 'give' ), E_USER_WARNING );
+			trigger_error( 'array_column(): The index key should be either a string or an integer.', E_USER_WARNING );
 
 			return false;
 		}
@@ -2140,15 +2140,21 @@ function give_get_safe_asset_url( $url ) {
  * @param string $date           Date.
  * @param string $format         Date Format.
  * @param string $current_format Current date Format.
+ * @param bool   $localize
  *
  * @return string
  * @since 2.3.0
  */
-function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '' ) {
+function give_get_formatted_date( $date, $format = 'Y-m-d', $current_format = '', $localize = false ) {
 	$current_format = empty( $current_format ) ? give_date_format() : $current_format;
 	$date_obj       = DateTime::createFromFormat( $current_format, $date );
+	$formatted_date = '';
 
-	$formatted_date = $date_obj instanceof DateTime ? $date_obj->format( $format ) : '';
+	if ( $date_obj instanceof DateTime ) {
+		$formatted_date = $localize ?
+			date_i18n( $format, $date_obj->getTimestamp() ) :
+			$date_obj->format( $format );
+	}
 
 	/**
 	 * Give get formatted date.

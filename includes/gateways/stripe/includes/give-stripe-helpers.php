@@ -1148,28 +1148,50 @@ function give_stripe_is_update_payment_method_screen() {
 /**
  * This function will return the default mandate acceptance text.
  *
+ * @param string $method Type of Direct Debit Method.
+ *
  * @since 2.6.1
  *
  * @return string
  */
-function give_stripe_get_default_mandate_acceptance_text() {
-	return sprintf(
+function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
+
+	// For SEPA Direct Debit.
+	$mandate_acceptance_text = sprintf(
 		__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
 		get_bloginfo( 'sitename' )
 	);
+
+	if ( 'becs' === $method ) {
+		// For BECS Direct Debit.
+		$mandate_acceptance_text = sprintf(
+			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorise Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorised signatory on the account listed above.', 'give' ),
+			esc_url_raw( 'https://stripe.com/au-becs-dd-service-agreement/legal' ),
+			get_bloginfo( 'sitename' )
+		);
+	}
+
+	return $mandate_acceptance_text;
 }
 
 /**
  * This function is used to get mandate acceptance text which is saved in admin.
  *
+ * @param string $method Type of Direct Debit method.
+ *
  * @since 2.6.1
  *
  * @return string
  */
-function give_stripe_get_mandate_acceptance_text() {
+function give_stripe_get_mandate_acceptance_text( $method = 'sepa' ) {
 
 	$default_text = give_stripe_get_default_mandate_acceptance_text();
 	$text         = give_get_option( 'stripe_mandate_acceptance_text', $default_text );
+
+	if ( 'becs' === $method ) {
+		$default_text = give_stripe_get_default_mandate_acceptance_text( 'becs' );
+		$text         = give_get_option( 'stripe_becs_mandate_acceptance_text', $default_text );
+	}
 
 	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text );
 }
@@ -1215,4 +1237,36 @@ function give_stripe_get_iban_icon_style( $form_id ) {
  */
 function give_stripe_get_iban_placeholder_country() {
 	return apply_filters( 'give_stripe_get_iban_placeholder_country', 'DE' );
+}
+
+/**
+ * This helper function is used get stored value of whether we need to hide icon for Bank Account element or not.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_becs_hide_icon( $form_id ) {
+
+	$hide_icon = give_get_option( 'stripe_becs_hide_icon', 'enabled' );
+
+	return apply_filters( 'give_stripe_becs_hide_icon', $hide_icon, $form_id );
+}
+
+/**
+ * This helper function is used get IBAN element icon style.
+ *
+ * @param int $form_id Donation Form ID.
+ *
+ * @since 2.6.1
+ *
+ * @return string
+ */
+function give_stripe_get_becs_icon_style( $form_id ) {
+
+	$icon_style = give_get_option( 'stripe_becs_icon_style', 'default' );
+
+	return apply_filters( 'give_stripe_get_becs_icon_style', $icon_style, $form_id );
 }
