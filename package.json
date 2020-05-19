@@ -1,6 +1,6 @@
 {
     "name": "give",
-    "version": "2.5.6",
+    "version": "2.5.5",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -9,12 +9,11 @@
         "production": "cross-env NODE_ENV=production webpack",
         "build": "npm run production",
         "watch": "cross-env webpack --watch",
-        "installcodestandards": "composer run-script install-codestandards",
         "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
         "lint:js": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js",
         "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js --fix",
-        "lint:php": "./vendor/bin/phpcs -v --colors --standard=phpcs.ruleset.xml",
-        "lint:php:fix": "./vendor/bin/phpcbf -v --colors --standard=phpcs.ruleset.xml",
+        "lint:php": "./vendor/bin/phpcs --standard=WordPress --ignore=*.js",
+        "lint:php:fix": "./vendor/bin/phpcbf --standard=WordPress --ignore=*.js",
         "lint:textdomain": "node ./wp-textdomain.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles"
