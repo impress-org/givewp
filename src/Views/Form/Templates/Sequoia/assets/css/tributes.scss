@@ -18,7 +18,15 @@
 		padding: 0 !important;
 		margin: 0 0 5px !important;
 		line-height: 1.7;
-		width: auto;
+	}
+
+	.give_tributes_send_ecard_fields > .give-tributes-legend {
+		width: auto !important;
+	}
+
+	.give-tributes-add-recipient {
+		margin-top: -3px;
+		margin-left: 8px;
 	}
 
 	input[type='radio'] {
