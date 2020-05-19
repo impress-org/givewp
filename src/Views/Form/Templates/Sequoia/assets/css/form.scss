@@ -665,6 +665,10 @@ p {
 		margin-bottom: 0 !important;
 	}
 
+	.give-modal .mfp-content {
+		padding: 0 16px 16px 16px !important;
+	}
+
 	#give_error_invalid_donation_maximum,
 	#give_error_invalid_donation_amount {
 		cursor: pointer;
