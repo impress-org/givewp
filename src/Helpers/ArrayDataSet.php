@@ -1,8 +1,6 @@
 <?php
 namespace Give\Helpers;
 
-use stdClass;
-
 class ArrayDataSet {
 	/**
 	 * This function will return array with renamed keys.
@@ -62,24 +60,5 @@ class ArrayDataSet {
 		}
 
 		return $array;
-	}
-
-	/**
-	 * Return object.
-	 *
-	 * Note: only applicable on associative Array. Key name must be in camel case.
-	 *
-	 * @param  array $array
-	 *
-	 * @return stdClass|stdClass[]
-	 */
-	public static function convertToObject( $array ) {
-		$object = new stdClass();
-
-		foreach ( $array as $property => $value ) {
-			$object->{$property} = is_array( $value ) ? self::convertToObject( $value ) : $value;
-		}
-
-		return $object;
 	}
 }
