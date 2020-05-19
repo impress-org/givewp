@@ -155,7 +155,7 @@
 					const compare = position === 'before' ? symbol + value : value + symbol;
 					// Setup tooltip unless for custom donation level, or if level label matches value
 					if ( value !== 'custom' && text !== compare ) {
-						const wrap = `<span class="give-tooltip hint--top hint--bounce ${ text.length > 50 ? 'wide' : '' }" style="width: 100%" aria-label="${ text.length < 50 ? text : text.substr( 0, 50 ) + '...' }" rel="tooltip"></span>`;
+						const wrap = `<span class="give-tooltip hint--top hint--bounce ${ text.length < 50 ? 'narrow' : '' }" style="width: 100%" aria-label="${ text.length < 50 ? text : text.substr( 0, 50 ) + '...' }" rel="tooltip"></span>`;
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
 					}
@@ -170,6 +170,14 @@
 			showErrors: true,
 			setup: () => {
 				// Setup payment information screen
+
+				$( '.give-section.payment' ).on( 'click', '.give-cancel-login, .give-checkout-register-cancel', clearLoginNotices );
+
+				// Show Sequoia loader on click/touchend
+				$( '.give-section.payment' ).on( 'click touchend', 'input[name="give_login_submit"]', function() {
+					//Override submit loader with Sequoia loader
+					$( 'input[name="give_login_submit"] + .give-loading-animation' ).removeClass( 'give-loading-animation' ).addClass( 'sequoia-loader spinning' );
+				} );
 
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
@@ -212,6 +220,7 @@
 				} );
 
 				$( '#give-ffm-section' ).on( 'click', handleFFMInput );
+				$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 
 				$( '#give-ffm-section input' ).each( function() {
 					switch ( $( this ).prop( 'type' ) ) {
@@ -256,7 +265,7 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
-							if ( $( node ).parent().hasClass( 'give-submit-button-wrap' ) && $( node ).hasClass( 'give_errors' ) ) {
+							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'payment' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
@@ -269,6 +278,10 @@
 
 							if ( $( node ).attr( 'name' ) === 'give_tributes_address_state' && $( node ).attr( 'class' ).includes( 'give-input' ) ) {
 								$( node ).attr( 'placeholder', $( node ).siblings( 'label' ).text().trim() );
+              }
+              
+							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
+								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 							}
 						}
 					} );
@@ -477,5 +490,9 @@
 				}
 			}
 		}
+	}
+
+	function clearLoginNotices() {
+		$( '#give_error_must_log_in' ).remove();
 	}
 }( jQuery ) );

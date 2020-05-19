@@ -234,7 +234,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Resolved an issue with the new Reports interface throwing a few PHP notices. [#4515](https://github.com/impress-org/givewp/issues/4515), [#4593](https://github.com/impress-org/givewp/issues/4593), [#4592](https://github.com/impress-org/givewp/issues/4592)
 * Fix: Adjusted our Gutenberg styles so that it doesn't conflict with WordPress'. [#4577](https://github.com/impress-org/givewp/issues/4577)
 * Fix: Resolved an error when using Stripe's Checkout feature with the Recurring Donations causing "The Stripe Gateway returned an error while creating the Checkout Session" error. [#4566](https://github.com/impress-org/givewp/issues/4566)
-* Fix: Resolved an issue with user roles that would display the "Donations" top level menu item in WP-Aamin incorrectly to subscribers. Note: none of the screens would be accessible. [#4524](https://github.com/impress-org/givewp/issues/4524)
+* Fix: Resolved an issue with user roles that would display the "Donations" top level menu item in WP-Admin incorrectly to subscribers. Note: none of the screens would be accessible. [#4524](https://github.com/impress-org/givewp/issues/4524)
 * Fix: Solved an issue where Stripe payments with the form grid not rendering correctly when opening and closing donation forms in the popup modal window. [#4467](https://github.com/impress-org/givewp/issues/4467)
 * Fix: The "Title" field would not correctly display as optional (the asterisk would not remove) when set as optional. [#4510](https://github.com/impress-org/givewp/issues/4510)
 
