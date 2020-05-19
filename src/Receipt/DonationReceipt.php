@@ -120,13 +120,7 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	public function removeSection( $sectionId ) {
-		/* @var Section $section */
-		foreach ( $this->$this->sectionList as $index => $section ) {
-			if ( $sectionId === $section->id ) {
-				unset( $this->sectionList[ $index ], $this->sectionIds[ $index ] );
-				break;
-			}
-		}
+		$this->offsetUnset($sectionId);
 	}
 
 	/**
@@ -418,7 +412,10 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	public function offsetUnset( $offset ) {
-		$this->removeSection( $offset );
+		if( $this->offsetExists( $offset ) ) {
+			unset( $this->sectionList[$offset] );
+			$this->sectionIds = array_keys( $this->sectionList );
+		}
 	}
 
 	/**

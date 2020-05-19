@@ -133,11 +133,7 @@ class Section implements Iterator, ArrayAccess {
 	 * @since 2.7.0
 	 */
 	public function removeLineItem( $lineItemId ) {
-		foreach ( $this->lineItems as $index => $lineItem ) {
-			if ( $lineItemId === $lineItem->id ) {
-				unset( $this->lineItems[ $index ], $this->lineItemIds[ $index ] );
-			}
-		}
+		$this->offsetUnset( $lineItemId );
 	}
 
 	/**
@@ -223,7 +219,7 @@ class Section implements Iterator, ArrayAccess {
 	 * @since 2.7.0
 	 */
 	public function offsetExists( $offset ) {
-		return isset( $this->lineItemIds[ $offset ] );
+		return isset( $this->lineItems[ $offset ] );
 	}
 
 	/**
@@ -234,7 +230,10 @@ class Section implements Iterator, ArrayAccess {
 	 * @since 2.7.0
 	 */
 	public function offsetUnset( $offset ) {
-		$this->removeLineItem( $offset );
+		if( $this->offsetExists( $offset ) ) {
+			unset($this->lineItems[$offset]);
+			$this->lineItemIds = array_keys( $this->lineItems );
+		}
 	}
 
 	/**
