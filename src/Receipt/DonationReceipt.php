@@ -30,7 +30,7 @@ class DonationReceipt extends Receipt {
 	const DONATIONSECTIONID = 'Donation';
 
 	/**
-	 * Receipt additonal information section id.
+	 * Receipt additional information section id.
 	 */
 	const ADDITIONALINFORMATIONSECTIONID = 'AdditionalInformation';
 
