@@ -46,7 +46,7 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 * @var int $donationId
 	 */
-	protected $donationId;
+	public $donationId;
 
 	/**
 	 * Receipt constructor.
