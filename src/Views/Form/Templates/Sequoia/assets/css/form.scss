@@ -661,6 +661,10 @@ p {
 		padding-bottom: 8px;
 	}
 
+	[id*='give-gift-aid-checkbox-label-wrap-'] {
+		margin-bottom: 0 !important;
+	}
+
 	#give_error_invalid_donation_maximum,
 	#give_error_invalid_donation_amount {
 		cursor: pointer;
