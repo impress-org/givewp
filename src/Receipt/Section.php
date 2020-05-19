@@ -57,8 +57,8 @@ class Section implements Iterator, ArrayAccess {
 	/**
 	 * Section constructor.
 	 *
-	 * @param string $id
-	 * @param string $label
+	 * @param  string $id
+	 * @param  string $label
 	 */
 	public function __construct( $id, $label ) {
 		$this->id    = $id;
@@ -79,22 +79,22 @@ class Section implements Iterator, ArrayAccess {
 	/**
 	 * Add detail group.
 	 *
-	 * @param  array $listItem
+	 * @param  array $lineItem
 	 *
 	 * @return LineItem
 	 * @since 2.7.0
 	 */
-	public function addLineItem( $listItem ) {
-		$this->validateLineItem( $listItem );
+	public function addLineItem( $lineItem ) {
+		$this->validateLineItem( $lineItem );
 
-		$icon = isset( $listItem['icon'] ) ? $listItem['icon'] : '';
+		$icon = isset( $lineItem['icon'] ) ? $lineItem['icon'] : '';
 
-		$listItemObj = new LineItem( $listItem['id'], $listItem['label'], $listItem['value'], $icon );
+		$lineItemObj = new LineItem( $lineItem['id'], $lineItem['label'], $lineItem['value'], $icon );
 
-		$this->lineItems[ $listItemObj->id ] = $listItemObj;
-		$this->lineItemIds[]                 = $listItemObj->id;
+		$this->lineItems[ $lineItemObj->id ] = $lineItemObj;
+		$this->lineItemIds[]                 = $lineItemObj->id;
 
-		return $listItemObj;
+		return $lineItemObj;
 	}
 
 	/**
@@ -124,7 +124,12 @@ class Section implements Iterator, ArrayAccess {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'Invalid receipt section line item. Please provide valid line item id, label, and value.', 'give' ) );
+			throw new InvalidArgumentException(
+				__(
+					'Invalid receipt section line item. Please provide valid line item id, label, and value.',
+					'give'
+				)
+			);
 		}
 	}
 
@@ -172,8 +177,9 @@ class Section implements Iterator, ArrayAccess {
 	/**
 	 * Set line item.
 	 *
-	 * @param  string $offset LineItem ID.
-	 * @param  array  $value   LineItem Data.
+	 * @param  string $offset  LineItem ID.
+	 * @param  array  $value  LineItem Data.
+	 *
 	 * @since 2.7.0
 	 */
 	public function offsetSet( $offset, $value ) {
@@ -181,9 +187,9 @@ class Section implements Iterator, ArrayAccess {
 	}
 
 	/**
-	 * Return whether or not line item id exist in list.
+	 * Return whether or not line item id exist in line.
 	 *
-	 * @param  string $offset LineItem ID.
+	 * @param  string $offset  LineItem ID.
 	 *
 	 * @return bool
 	 * @since 2.7.0
@@ -193,9 +199,10 @@ class Section implements Iterator, ArrayAccess {
 	}
 
 	/**
-	 * Remove line item from list.
+	 * Remove line item from line.
 	 *
-	 * @param  string $offset LineItem ID.
+	 * @param  string $offset  LineItem ID.
+	 *
 	 * @since 2.7.0
 	 */
 	public function offsetUnset( $offset ) {
@@ -205,7 +212,7 @@ class Section implements Iterator, ArrayAccess {
 	/**
 	 * Get line item.
 	 *
-	 * @param  string $offset LineItem ID.
+	 * @param  string $offset  LineItem ID.
 	 *
 	 * @return LineItem|null
 	 * @since 2.7.0
