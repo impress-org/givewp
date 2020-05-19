@@ -65,19 +65,12 @@ ob_start();
 				}
 
 				printf(
-					'<div class="details-row%1$s">',
-					$detailRowClass
-				);
-
-				echo $lineItem->icon;
-
-				printf(
-					'<div class="detail">%1$s</div><div class="value">%2$s</div>',
+					'<div class="details-row%1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
+					$detailRowClass,
+					$lineItem->icon,
 					$lineItem->label,
 					$lineItem->value
 				);
-
-				echo '</div>';
 			}
 			echo '</div>';
 			echo '</div>';
