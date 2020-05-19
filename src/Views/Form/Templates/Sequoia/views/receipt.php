@@ -14,8 +14,10 @@ $donation                = new Payment( $donationSessionAccessor->getDonationId(
 $options                 = FormTemplateUtils::getOptions();
 
 /* @var Sequoia $sequoiaTemplate */
-$sequoiaTemplate                  = Give()->templates->getTemplate();
-$receipt                          = $sequoiaTemplate->getReceiptDetails( $donation->ID );
+$sequoiaTemplate = Give()->templates->getTemplate();
+$receipt         = $sequoiaTemplate->getReceiptDetails( $donation->ID );
+
+/* @var LineItem|null $pdfReceiptDownloadLinkDetailItem */
 $pdfReceiptDownloadLinkDetailItem = null;
 
 ob_start();
@@ -43,6 +45,11 @@ ob_start();
 		foreach ( $receipt as $section ) {
 			// Continue if section does not have line items.
 			if ( ! $section->getLineItems() ) {
+				continue;
+			}
+
+			if ( 'PDFReceipt' === $section->id ) {
+				$pdfReceiptLinkDetailItem = $section['receiptLink'];
 				continue;
 			}
 
@@ -78,9 +85,9 @@ ob_start();
 		}
 		?>
 
-		<?php if ( $pdfReceiptDownloadLinkDetailItem ) : ?>
+		<?php if ( $pdfReceiptLinkDetailItem ) : ?>
 			<div class="give-btn download-btn">
-				<?php echo $pdfReceiptDownloadLinkDetailItem->getValue(); ?>
+				<?php echo $pdfReceiptLinkDetailItem->value; ?>
 			</div>
 		<?php endif; ?>
 
