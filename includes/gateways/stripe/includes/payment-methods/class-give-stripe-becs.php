@@ -4,7 +4,7 @@
  *
  * @package    Give
  * @subpackage Stripe Core
- * @copyright  Copyright (c) 2019, GiveWP
+ * @copyright  Copyright (c) 2020, GiveWP
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
@@ -125,9 +125,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					?>
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
-							<?php echo __( 'Bank Account', 'give' ); ?>
-							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
+							<?php esc_html_e( 'Bank Account', 'give' ); ?>
 						</label>
 						<div
 							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
@@ -145,26 +143,14 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					</div>
 					<?php
 					/**
-					 * This action hook is used to display content after the Credit Card expiration field.
-					 *
-					 * Note: Kept this hook as it is.
+					 * This action hook is used to display content after the Stripe BECS field.
 					 *
 					 * @param int   $form_id Donation Form ID.
 					 * @param array $args    List of additional arguments.
 					 *
-					 * @since 2.5.0
+					 * @since 2.6.3
 					 */
-					do_action( 'give_after_cc_expiration', $form_id, $args );
-
-					/**
-					 * This action hook is used to display content after the Credit Card expiration field.
-					 *
-					 * @param int   $form_id Donation Form ID.
-					 * @param array $args    List of additional arguments.
-					 *
-					 * @since 2.5.0
-					 */
-					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
+					do_action( 'give_after_becs_fields', $form_id, $args );
 				}
 				?>
 			</fieldset>
@@ -283,7 +269,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					/**
 					 * This filter hook is used to update the payment intent arguments.
 					 *
-					 * @since 2.5.0
+					 * @since 2.6.3
 					 */
 					$intent_args = apply_filters(
 						'give_stripe_create_intent_args',
