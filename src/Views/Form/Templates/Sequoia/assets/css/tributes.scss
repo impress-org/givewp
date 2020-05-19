@@ -11,13 +11,14 @@
 	legend,
 	.give-tributes-legend,
 	.give-tributes-label {
-		display: block;
+		display: inline-block;
 		font-size: 14px !important;
 		font-weight: 400 !important;
 		border-bottom: none !important;
 		padding: 0 !important;
 		margin: 0 0 5px !important;
 		line-height: 1.7;
+		width: auto;
 	}
 
 	input[type='radio'] {
@@ -67,7 +68,8 @@
 		transform: scale3d(1, 1, 1);
 	}
 
-	.give-tributes-ecard-personalized-message-left {
+	.give-tributes-ecard-personalized-message-left,
+	.give-tributes-mail-card-personalized-message-left {
 		padding-bottom: 8px;
 	}
 }
