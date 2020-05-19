@@ -60,7 +60,7 @@ ob_start();
 				}
 
 				// This class is required to highlight total donation amount in receipt.
-				if ( DonationReceipt::DONORSECTIONID === $section->id ) {
+				if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
 					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
 				}
 
