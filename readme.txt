@@ -228,9 +228,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: When viewing legacy reports and filtering it would incorrectly redirect you to the new reports screen. [#4644](https://github.com/impress-org/givewp/issues/4644)
 * Fix: Alignment of the money fields were off a few pixels on the donation form settings screen. [#4638](https://github.com/impress-org/givewp/issues/4638)
 * Fix: Modified pro license logic so that old license keys saved to the database don't cause incorrect notices to display. [#4669](https://github.com/impress-org/givewp/issues/4669)
-* Fix: Modified pro license logic so that old license keys saved to the database don't cause incorrect notices to display. [#4669](https://github.com/impress-org/givewp/issues/4669)
 * Fix: Updated the country select dropdown to remove missing and incorrect countries. [#4745](https://github.com/impress-org/givewp/issues/4745)
-* Fix: Dates for the donot wall now print in the localized format. [#4721](https://github.com/impress-org/givewp/issues/4721)
+* Fix: Dates for the donor wall now output the properly translated date. [#4721](https://github.com/impress-org/givewp/issues/4721)
 * Fix: Several field descriptions in the plugin settings had typos and / or required clarity for better understanding. [#4649](https://github.com/impress-org/givewp/issues/4649), [#2808](https://github.com/impress-org/givewp/issues/2808)
 * Tweak: Replaced the default placeholder image that was using placehold.it image for a local image for improved support. [#4743](https://github.com/impress-org/givewp/issues/4743)
 
