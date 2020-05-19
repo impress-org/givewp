@@ -1,4 +1,4 @@
-reCAPTCHA<?php
+<?php
 /**
  * Misc Functions
  *
