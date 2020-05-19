@@ -1,4 +1,4 @@
-<?php
+reCAPTCHA<?php
 /**
  * Misc Functions
  *
@@ -594,7 +594,7 @@ if ( ! function_exists( 'array_column' ) ) {
 		$params = func_get_args();
 
 		if ( $argc < 2 ) {
-			trigger_error( sprintf( 'array_column() expects at least 2 parameters, %s given.',, $argc ), E_USER_WARNING );
+			trigger_error( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ), E_USER_WARNING );
 
 			return null;
 		}
@@ -606,13 +606,13 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( ! is_int( $params[1] ) && ! is_float( $params[1] ) && ! is_string( $params[1] ) && $params[1] !== null && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) ) ) {
-			trigger_error( 'array_column(): The column key should be either a string or an integer.',, E_USER_WARNING );
+			trigger_error( 'array_column(): The column key should be either a string or an integer.', E_USER_WARNING );
 
 			return false;
 		}
 
 		if ( isset( $params[2] ) && ! is_int( $params[2] ) && ! is_float( $params[2] ) && ! is_string( $params[2] ) && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) ) ) {
-			trigger_error( 'array_column(): The index key should be either a string or an integer.',, E_USER_WARNING );
+			trigger_error( 'array_column(): The index key should be either a string or an integer.', E_USER_WARNING );
 
 			return false;
 		}
