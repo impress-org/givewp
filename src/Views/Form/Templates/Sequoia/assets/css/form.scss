@@ -13,6 +13,7 @@
 @import 'recurring';
 @import 'feerecovery';
 @import 'ffm';
+@import 'tributes';
 
 // Structure
 
@@ -924,7 +925,7 @@ form.give-form .form-row select,
 	font-size: 14px;
 	font-weight: 400;
 	color: #333;
-	line-height: 1;
+	line-height: 1.2;
 	padding: 12px !important;
 	margin: 0;
 	border: 1px solid #b8b8b8;
