@@ -106,7 +106,7 @@ class DonationReceipt extends Receipt {
 	 *
 	 * @since 2.7.0
 	 */
-	public function addDonorSection() {
+	private function addDonorSection() {
 		$billingAddressLineItem = $this->getDonorBillingAddressLineItem();
 		$hasAddress             = (bool) trim( str_replace( ',', '', strip_tags( $billingAddressLineItem['value'] ) ) ); // Remove formatting from address.
 
@@ -125,7 +125,7 @@ class DonationReceipt extends Receipt {
 	 *
 	 * @since 2.7.0
 	 */
-	public function addDonationSection() {
+	private function addDonationSection() {
 		$section = $this->addSection( $this->getDonationSection() );
 		$section->addLineItem( $this->getDonationPaymentGatewayLineItem() );
 		$section->addLineItem( $this->getDonationStatusLineItem() );
