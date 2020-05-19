@@ -261,6 +261,15 @@
 								$( node ).remove();
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
 							}
+
+							if ( $( node ).attr( 'id' ) === 'give_tributes_address_state' ) {
+								const placeholder = $( node ).attr( 'placeholder' );
+								$( node ).prepend( `<option selected disabled>${ placeholder }</option>` );
+							}
+
+							if ( $( node ).attr( 'name' ) === 'give_tributes_address_state' && $( node ).attr( 'class' ).includes( 'give-input' ) ) {
+								$( node ).attr( 'placeholder', $( node ).siblings( 'label' ).text().trim() );
+							}
 						}
 					} );
 				} );

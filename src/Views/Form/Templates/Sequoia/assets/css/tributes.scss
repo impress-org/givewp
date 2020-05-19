@@ -1,4 +1,13 @@
 .give-tributes-dedicate-donation {
+	.give_tributes_mail_card_country > label,
+	.give_tributes_mail_card_state > label {
+		display: none !important;
+	}
+
+	#give_tributes_address_state {
+		min-height: 48px !important;
+	}
+
 	legend,
 	.give-tributes-legend,
 	.give-tributes-label {
