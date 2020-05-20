@@ -29,6 +29,13 @@ class RecentDonations extends Endpoint {
 			'start_date' => $request->get_param( 'start' ),
 			'end_date'   => $request->get_param( 'end' ),
 			'gateway'    => $gateway,
+			'meta_query' => array(
+				array(
+					'key'     => '_give_payment_currency',
+					'value'   => $this->currency,
+					'compare' => 'LIKE',
+				),
+			),
 		);
 
 		// Get array of 50 recent donations
