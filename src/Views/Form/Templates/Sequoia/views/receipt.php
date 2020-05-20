@@ -85,7 +85,7 @@ ob_start();
 		}
 		?>
 
-		<?php if ( $pdfReceiptLinkDetailItem ) : ?>
+		<?php if ( $pdfReceiptLinkDetailItem && $pdfReceiptLinkDetailItem->value ) : ?>
 			<div class="give-btn download-btn">
 				<?php echo $pdfReceiptLinkDetailItem->value; ?>
 			</div>
