@@ -162,9 +162,11 @@ class TotalIncome extends Endpoint {
 		$income = 0;
 
 		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
-					$income += $payment->total;
+			if ( $payment->currency === $this->currency ) {
+				if ( $payment->date > $startStr && $payment->date < $endStr ) {
+					if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
+						$income += $payment->total;
+					}
 				}
 			}
 		}
@@ -173,8 +175,6 @@ class TotalIncome extends Endpoint {
 	}
 
 	public function get_earnings( $startStr, $endStr ) {
-		$stats  = new \Give_Payment_Stats();
-		$income = $stats->get_earnings( 0, $startStr, $endStr );
-		return $income;
+		return $this->get_income( $startStr, $endStr );
 	}
 }
