@@ -11,21 +11,6 @@ use function give_currency_filter as filterCurrency;
 
 class DonationReceipt extends Receipt {
 	/**
-	 * Iterator initial position.
-	 *
-	 * @var int
-	 */
-	private $position = 0;
-
-	/**
-	 * Array of section ids to use for Iterator.
-	 * Note: this property helps to iterate over associative array.
-	 *
-	 * @var int
-	 */
-	private $sectionIds = [];
-
-	/**
 	 * Receipt donor section id.
 	 */
 	const DONORSECTIONID = 'Donor';
@@ -60,67 +45,6 @@ class DonationReceipt extends Receipt {
 		$this->addDonorSection();
 		$this->addDonationSection();
 		$this->addSection( $this->getAdditionInformationSection() ); // Additional Information Section
-	}
-
-	/**
-	 * Add receipt section.
-	 *
-	 * @param  array  $section
-	 * @param  string $position Position can be set either "before" or "after" to insert section at specific position.
-	 * @param  string $sectionId
-	 *
-	 * @return Section
-	 *
-	 * @since 2.7.0
-	 */
-	public function addSection( $section, $position = '', $sectionId = '' ) {
-		$this->validateSection( $section );
-
-		// Add default label.
-		$label = isset( $section['label'] ) ? $section['label'] : '';
-
-		$sectionObj = new Section( $section['id'], $label );
-
-		if ( isset( $this->sectionList[ $sectionId ] ) && in_array( $position, [ 'before', 'after' ] ) ) {
-			// Insert line item at specific position.
-			$tmp    = [];
-			$tmpIds = [];
-
-			foreach ( $this->sectionList as $id => $data ) {
-				if ( 'after' === $position ) {
-					$tmp[ $id ] = $data;
-					$tmpIds[]   = $id;
-				}
-
-				if ( $id === $sectionId ) {
-					$tmp[ $sectionObj->id ] = $sectionObj;
-					$tmpIds[]               = $sectionObj->id;
-				}
-
-				if ( 'before' === $position ) {
-					$tmp[ $id ] = $data;
-					$tmpIds[]   = $id;
-				}
-			}
-
-			$this->sectionList = $tmp;
-			$this->sectionIds  = $tmpIds;
-		} else {
-			$this->sectionList[ $sectionObj->id ] = $sectionObj;
-			$this->sectionIds[]                   = $sectionObj->id;
-		}
-
-		return $sectionObj;
-	}
-
-	/**
-	 * Remove section.
-	 *
-	 * @param  string $sectionId
-	 * @since 2.7.0
-	 */
-	public function removeSection( $sectionId ) {
-		$this->offsetUnset( $sectionId );
 	}
 
 	/**
@@ -327,45 +251,6 @@ class DonationReceipt extends Receipt {
 	}
 
 	/**
-	 * Return current data when iterate or data.
-	 *
-	 * @return mixed
-	 * @since 2.7.0
-	 */
-	public function current() {
-		return $this->sectionList[ $this->sectionIds[ $this->position ] ];
-	}
-
-	/**
-	 * Update iterator position.
-	 *
-	 * @since 2.7.0
-	 */
-	public function next() {
-		++ $this->position;
-	}
-
-	/**
-	 * Return iterator position.
-	 *
-	 * @return int
-	 * @since 2.7.0
-	 */
-	public function key() {
-		return $this->position;
-	}
-
-	/**
-	 * Return whether or not valid array position.
-	 *
-	 * @return bool|void
-	 * @since 2.7.0
-	 */
-	public function valid() {
-		return isset( $this->sectionIds[ $this->position ] );
-	}
-
-	/**
 	 * Set iterator position to zero when rewind.
 	 *
 	 * @since 2.7.0
@@ -387,53 +272,5 @@ class DonationReceipt extends Receipt {
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException( esc_html__( 'Invalid receipt section. Please provide valid section id', 'give' ) );
 		}
-	}
-
-	/**
-	 * Set section.
-	 *
-	 * @param  string $offset Section ID.
-	 * @param  array  $value   Section Data.
-	 * @since 2.7.0
-	 */
-	public function offsetSet( $offset, $value ) {
-		$this->addSection( $value );
-	}
-
-	/**
-	 * Return whether or not session id exist in list.
-	 *
-	 * @param  string $offset Section ID.
-	 *
-	 * @return bool
-	 * @since 2.7.0
-	 */
-	public function offsetExists( $offset ) {
-		return isset( $this->sectionList[ $offset ] );
-	}
-
-	/**
-	 * Remove section from list.
-	 *
-	 * @param  string $offset Section ID.
-	 * @since 2.7.0
-	 */
-	public function offsetUnset( $offset ) {
-		if ( $this->offsetExists( $offset ) ) {
-			unset( $this->sectionList[ $offset ] );
-			$this->sectionIds = array_keys( $this->sectionList );
-		}
-	}
-
-	/**
-	 * Get section.
-	 *
-	 * @param  string $offset Session ID.
-	 *
-	 * @return Section|null
-	 * @since 2.7.0
-	 */
-	public function offsetGet( $offset ) {
-		return isset( $this->sectionList[ $offset ] ) ? $this->sectionList[ $offset ] : null;
 	}
 }
