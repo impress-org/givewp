@@ -86,7 +86,13 @@ class AverageDonation extends Endpoint {
 			);
 
 			$tooltips[] = array(
-				'title'  => give_currency_filter( give_format_amount( $averageForPeriod ), array( 'decode_currency' => true ) ),
+				'title'  => give_currency_filter(
+					give_format_amount( $averageForPeriod ),
+					array(
+						'currency_code'   => $this->currency,
+						'decode_currency' => true,
+					)
+				),
 				'body'   => __( 'Avg Donation', 'give' ),
 				'footer' => $periodLabel,
 			);
@@ -110,7 +116,13 @@ class AverageDonation extends Endpoint {
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
-					'highlight' => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), array( 'decode_currency' => true ) ),
+					'highlight' => give_currency_filter(
+						give_format_amount( $averageIncomeForPeriod ),
+						array(
+							'currency_code'   => $this->currency,
+							'decode_currency' => true,
+						)
+					),
 				),
 			),
 		);

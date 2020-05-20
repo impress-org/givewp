@@ -21,7 +21,7 @@ class TotalIncome extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = [];
+		$data = array();
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -81,7 +81,13 @@ class TotalIncome extends Endpoint {
 			);
 
 			$tooltips[] = array(
-				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), array( 'decode_currency' => true ) ),
+				'title'  => give_currency_filter(
+					give_format_amount( $incomeForPeriod ),
+					array(
+						'currency_code'   => $this->currency,
+						'decode_currency' => true,
+					)
+				),
 				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
 			);
@@ -105,7 +111,13 @@ class TotalIncome extends Endpoint {
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
-					'highlight' => give_currency_filter( give_format_amount( $totalIncomeForPeriod ), array( 'decode_currency' => true ) ),
+					'highlight' => give_currency_filter(
+						give_format_amount( $totalIncomeForPeriod ),
+						array(
+							'currency_code'   => $this->currency,
+							'decode_currency' => true,
+						)
+					),
 				),
 			),
 		);

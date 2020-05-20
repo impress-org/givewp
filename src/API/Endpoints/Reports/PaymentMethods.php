@@ -54,7 +54,13 @@ class PaymentMethods extends Endpoint {
 				$labels[]   = $gateway['admin_label'];
 				$data[]     = $gateway['amount'];
 				$tooltips[] = array(
-					'title'  => give_currency_filter( give_format_amount( $gateway['amount'] ), array( 'decode_currency' => true ) ),
+					'title'  => give_currency_filter(
+						give_format_amount( $gateway['amount'] ),
+						array(
+							'currency_code'   => $this->currency,
+							'decode_currency' => true,
+						)
+					),
 					'body'   => $gateway['count'] . ' ' . __( 'Payments', 'give' ),
 					'footer' => $gateway['admin_label'],
 				);
