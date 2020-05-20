@@ -1,11 +1,11 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, bradparbs
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -223,6 +223,17 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.6.3: May 19th, 2020 =
+* New: Added a new payment gateway for Stripe called BECS Direct Debit payments for Australia. This includes support for one time and subscription payments. Note: Subscription payments are only supported via the Recurring Donations add-on. [#4590](https://github.com/impress-org/givewp/issues/4590)
+* Fix: Improved Stripe's error handling so that the error output is more descriptive of the actual problem and donations are not marked as complete if the card is denied by Stripe. [#4689](https://github.com/impress-org/givewp/issues/4689)
+* Fix: When viewing legacy reports and filtering data you would incorrectly be redirected to the new reports screen instead of seeing filtered report data. [#4644](https://github.com/impress-org/givewp/issues/4644)
+* Fix: The alignment of the money fields were off a few pixels on the donation form settings screen. [#4638](https://github.com/impress-org/givewp/issues/4638)
+* Fix: Modified pro license logic so that old license keys saved to the database don't cause incorrect notices to display. [#4669](https://github.com/impress-org/givewp/issues/4669)
+* Fix: Updated the country select dropdown to remove missing and incorrect countries. [#4745](https://github.com/impress-org/givewp/issues/4745)
+* Fix: Dates for the donor wall now output the properly translated date. [#4721](https://github.com/impress-org/givewp/issues/4721)
+* Fix: Several field descriptions in the plugin settings had typos and / or required clarity for better understanding. [#4649](https://github.com/impress-org/givewp/issues/4649), [#2808](https://github.com/impress-org/givewp/issues/2808)
+* Tweak: Replaced the default placeholder image that was using placehold.it image for a local image for improved support. [#4743](https://github.com/impress-org/givewp/issues/4743)
+
 = 2.6.2: April 1st, 2020 =
 * Fix: Resolved an issue with Stripe in the latest release which prevented the donation form from properly redirecting to the donation receipt page upon successful donation. [#4605](https://github.com/impress-org/givewp/issues/4605)
 * Fix: Modified how we compare values in Stripe's gateway JavaScript to prevent a Payment Intent error from happening for certain configurations. [#4604](https://github.com/impress-org/givewp/issues/4604)
@@ -234,7 +245,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Resolved an issue with the new Reports interface throwing a few PHP notices. [#4515](https://github.com/impress-org/givewp/issues/4515), [#4593](https://github.com/impress-org/givewp/issues/4593), [#4592](https://github.com/impress-org/givewp/issues/4592)
 * Fix: Adjusted our Gutenberg styles so that it doesn't conflict with WordPress'. [#4577](https://github.com/impress-org/givewp/issues/4577)
 * Fix: Resolved an error when using Stripe's Checkout feature with the Recurring Donations causing "The Stripe Gateway returned an error while creating the Checkout Session" error. [#4566](https://github.com/impress-org/givewp/issues/4566)
-* Fix: Resolved an issue with user roles that would display the "Donations" top level menu item in WP-Aamin incorrectly to subscribers. Note: none of the screens would be accessible. [#4524](https://github.com/impress-org/givewp/issues/4524)
+* Fix: Resolved an issue with user roles that would display the "Donations" top level menu item in WP-Admin incorrectly to subscribers. Note: none of the screens would be accessible. [#4524](https://github.com/impress-org/givewp/issues/4524)
 * Fix: Solved an issue where Stripe payments with the form grid not rendering correctly when opening and closing donation forms in the popup modal window. [#4467](https://github.com/impress-org/givewp/issues/4467)
 * Fix: The "Title" field would not correctly display as optional (the asterisk would not remove) when set as optional. [#4510](https://github.com/impress-org/givewp/issues/4510)
 

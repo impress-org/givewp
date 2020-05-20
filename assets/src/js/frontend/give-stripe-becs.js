@@ -1,5 +1,5 @@
 /**
- * Give - Stripe Gateway Add-on JS
+ * Give - Stripe BECS Gateway JS
  */
 let stripe = Stripe( give_stripe_vars.publishable_key );
 
@@ -101,12 +101,12 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	} );
 
 	/**
-	 * Mount Card Elements
+	 * Mount Elements
 	 *
 	 * @param {string} idPrefix     ID Prefix.
 	 * @param {array}  bankAccountElements List of card elements to be mounted.
 	 *
-	 * @since 1.6
+	 * @since 2.6.3
 	 */
 	function giveStripeMountIbanElements( idPrefix, bankAccountElements = [] ) {
 		const bankAccountElementsLength = Object.keys( bankAccountElements ).length;
@@ -130,7 +130,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 *
 	 * @param {array} bankAccountElements List of card elements to be unmounted.
 	 *
-	 * @since 1.6
+	 * @since 2.6.3
 	 */
 	function giveStripeUnmountIbanElements( bankAccountElements = [] ) {
 		// Un-mount required card elements.
@@ -149,7 +149,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	 * @param {object} elements     Stripe Element.
 	 * @param {string} idPrefix     ID Prefix.
 	 *
-	 * @since 1.6
+	 * @since 2.6.3
 	 *
 	 * @return {array} elements
 	 */
@@ -214,7 +214,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	}
 
 	/**
-	 * Stripe Process CC
+	 * Stripe Process BECS
 	 *
 	 * @param {object} $form Form Object.
 	 * @param {object} $iban IBAN Object.

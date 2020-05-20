@@ -366,7 +366,7 @@ class Give_Welcome {
 
 					<p><?php esc_html_e( 'Every donation form you create with GiveWP can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget.', 'give' ); ?></p>
 
-					<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or choose "None" if you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
 				</div>
 
 				<div class="content feature-section-item last-feature">

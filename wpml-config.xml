@@ -21,6 +21,18 @@
       <key name="subscription_receipt_message"/>
       <key name="subscription_cancelled_subject"/>
       <key name="subscription_cancelled_message"/>
+      <key name="donation-receipt_email_message"/>
+      <key name="donation-receipt_email_subject"/>
+      <key name="donation-receipt_email_header"/>
+      <key name="offline-donation-instruction_email_header"/>
+      <key name="offline-donation-instruction_email_subject"/>
+      <key name="offline-donation-instruction_email_message"/>
+      <key name="donor-register_email_subject"/>
+      <key name="donor-register_email_header"/>
+      <key name="donor-register_email_message"/>
+      <key name="donor-note_email_subject"/>
+      <key name="donor-note_email_header"/>
+      <key name="donor-note_email_message"/>
     </key>
   </admin-texts>
 </wpml-config>
