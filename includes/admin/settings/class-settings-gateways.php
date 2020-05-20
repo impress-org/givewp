@@ -94,7 +94,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => __( 'PayPal IPN Verification', 'give' ),
-							'desc'    => __( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
+							'desc'    => __( 'When an Instant Payment Notification is received from PayPal the plugin verifies it was actually sent by PayPal for security purposes. If donations are not being marked as complete, you may disable this option for a slightly less secure way of receiving IPN requests.', 'give' ),
 							'id'      => 'paypal_verification',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',

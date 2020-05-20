@@ -2,7 +2,7 @@
 /**
  * Give - Stripe Core Admin Settings
  *
- * @since      2.5.0
+ * @since 2.5.0
  *
  * @package    Give
  * @subpackage Stripe Core
@@ -58,6 +58,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @since  2.5.0
 		 * @access public
+		 *
+		 * @return void
 		 */
 		public function __construct() {
 
@@ -90,11 +92,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register sections.
 		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
 		 * @param array $sections List of sections.
 		 *
 		 * @return array
-		 * @since  2.5.0
-		 * @access public
 		 */
 		public function register_sections( $sections ) {
 			$sections['stripe-settings'] = __( 'Stripe', 'give' );
@@ -105,9 +108,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register groups of a section.
 		 *
-		 * @return array
 		 * @since  2.6.0
 		 * @access public
+		 *
+		 * @return array
 		 */
 		public function register_groups() {
 
@@ -126,11 +130,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Add "Stripe" advanced settings.
 		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
 		 * @param array $section List of sections.
 		 *
 		 * @return mixed
-		 * @since  2.5.0
-		 * @access public
 		 */
 		public function register_advanced_sections( $section ) {
 			$section['stripe'] = __( 'Stripe', 'give' );
@@ -143,9 +148,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @param array $settings List of setting fields.
 		 *
-		 * @return array
 		 * @since  2.5.0
 		 * @access public
+		 *
+		 * @return array
 		 */
 		public function register_settings( $settings ) {
 
@@ -182,8 +188,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add configuration fields like api key, access token, oAuth button, etc.
 					 *
-					 * @return array
 					 * @since 2.5.0
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
@@ -217,8 +224,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe General fields.
 					 *
-					 * @return array
 					 * @since 2.5.5
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
 
@@ -256,8 +264,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields before Stripe Credit Card fields.
 					 *
-					 * @return array
 					 * @since 2.5.5
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
 
@@ -277,8 +286,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe Credit Card fields.
 					 *
-					 * @return array
 					 * @since 2.5.5
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
 
@@ -299,8 +309,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields before Stripe Checkout fields.
 					 *
-					 * @return array
 					 * @since 2.5.0
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_before_checkout_fields', $settings );
 
@@ -376,8 +387,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add fields after Stripe Checkout fields.
 					 *
-					 * @return array
 					 * @since 2.5.0
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_checkout_fields', $settings );
 
@@ -556,11 +568,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * New tab under Settings > Advanced that allows users to use their own API key.
 		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
 		 * @param array $settings List of settings.
 		 *
 		 * @return array
-		 * @since  2.5.0
-		 * @access public
 		 */
 		public function register_advanced_settings( $settings ) {
 
@@ -586,8 +599,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add setting fields before stripe advanced settings.
 					 *
-					 * @return array
 					 * @since 2.5.0
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
@@ -656,8 +670,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					/**
 					 * This filter hook is used to add setting fields after stripe advanced settings.
 					 *
-					 * @return array
 					 * @since 2.5.0
+					 *
+					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_after_advanced_setting_fields', $settings );
 
@@ -678,9 +693,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @param string $status Status - Enabled or Disabled.
 		 *
-		 * @return string
 		 * @since  2.5.0
 		 * @access public
+		 *
+		 * @return string
 		 */
 		public function stripe_modal_checkout_status( $status = 'enabled' ) {
 
@@ -887,10 +903,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Webhook field.
 		 *
+		 * @since 2.5.0
+		 *
 		 * @param $value
 		 * @param $option_value
-		 *
-		 * @since 2.5.0
 		 */
 		public function stripe_webhook_field( $value, $option_value ) {
 			?>

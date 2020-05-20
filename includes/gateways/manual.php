@@ -14,8 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * Manual Gateway does not need a CC form, so remove it.
@@ -29,10 +28,11 @@ use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
  *
  * Manual Gateway does not use a CC form, but it does display a note about test donations
  *
+ * @param int $formId Form ID.
  * @return bool
  **/
-function give_manual_form_ouput() {
-	if ( FormTemplateUtils::getActiveId( FrontendFormTemplateUtils::getFormId() ) === 'legacy' ) {
+function give_manual_form_output( $formId ) {
+	if ( FormUtils::isLegacyForm( $formId ) ) {
 		return false;
 	}
 
@@ -63,7 +63,7 @@ function give_manual_form_ouput() {
 	);
 	return true;
 }
-add_action( 'give_manual_cc_form', 'give_manual_form_ouput' );
+add_action( 'give_manual_cc_form', 'give_manual_form_output', 10, 1 );
 
 /**
  * Processes the donation data and uses the Manual Payment gateway to record
