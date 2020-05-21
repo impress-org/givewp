@@ -493,9 +493,9 @@ function give_stripe_set_account_default() {
 
 	if ( $is_updated ) {
 		wp_send_json_success();
-	} else {
-		wp_send_json_error();
 	}
+
+	wp_send_json_error();
 }
 
 add_action( 'wp_ajax_give_stripe_set_account_default', 'give_stripe_set_account_default' );
