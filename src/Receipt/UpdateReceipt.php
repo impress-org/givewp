@@ -2,11 +2,26 @@
 namespace Give\Receipt;
 
 /**
- * Interface UpdateReceipt
+ * Abstract class UpdateReceipt
  *
  * @package Give\Receipt
  * @since 2.7.0
  */
-interface UpdateReceipt {
-	public function apply();
+abstract class UpdateReceipt {
+	/**
+	 * @var Receipt
+	 */
+	protected $receipt;
+
+	/**
+	 * UpdateReceipt constructor.
+	 *
+	 * @param $receipt
+	 * @since 2.7.0
+	 */
+	public function __construct( $receipt ) {
+		$this->receipt = $receipt;
+	}
+
+	abstract public function apply();
 }
