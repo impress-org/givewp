@@ -849,7 +849,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 														href="<?php echo $disconnect_url; ?>"
 														data-disconnect-message="<?php echo $disconnect_message; ?>"
 													>
-																								<?php esc_html_e( 'Disconnect', 'give' ); ?>
+														<?php esc_html_e( 'Disconnect', 'give' ); ?>
 													</a>
 												</span>
 											<?php } ?>
