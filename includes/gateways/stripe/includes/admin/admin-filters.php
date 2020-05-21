@@ -49,7 +49,7 @@ add_filter( 'give_payment_details_transaction_id-stripe_becs', 'give_stripe_link
  * @return array
  */
 function give_stripe_add_metabox_settings( $settings, $form_id ) {
-	$form_account         = give_is_setting_enabled( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) );
+	$form_account         = give_is_setting_enabled( give_clean( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) ) );
 	$account_options      = give_stripe_get_account_options();
 	$account_options_keys = array_keys( $account_options );
 	$first_account_key    = $account_options_keys ? $account_options_keys[0] : [];
