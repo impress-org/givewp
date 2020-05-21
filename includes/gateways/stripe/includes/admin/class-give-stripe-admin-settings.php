@@ -800,10 +800,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
 											<span class="give-stripe-account-name">
-												<?php _e( $account_name, 'give' ); ?>
+												<?php echo esc_html( $account_name ); ?>
 											</span>
 											<span class="give-field-description give-stripe-account-email">
-												<?php _e( $account_email, 'give' ); ?>
+												<?php echo esc_html( $account_email ); ?>
 											</span>
 											<span class="give-stripe-account-edit">
 												<?php if ( 'connect' !== $details['type'] ) { ?>
@@ -813,7 +813,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 													href="#"
 													data-account="<?php echo $slug; ?>"
 												><?php esc_html_e( 'Update', 'give' ); ?></a>
-												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php echo __( 'Cancel', 'give' ); ?></a>
+												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<?php } ?>
 											<?php if ( $slug === $default_account ) { ?>
 												<span class="give-stripe-account-default give-stripe-account-badge">
