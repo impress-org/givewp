@@ -61,35 +61,6 @@ function give_stripe_is_any_payment_method_active() {
 }
 
 /**
- * Get Settings for the Stripe account connected via Connect API.
- *
- * @since 2.5.0
- *
- * @return mixed
- */
-function give_stripe_get_connect_settings() {
-
-	$options = array(
-		'type'                 => 'connect',
-		'connected_status'     => give_get_option( 'give_stripe_connected' ),
-		'give_stripe_user_id'  => give_get_option( 'give_stripe_user_id' ),
-		'live_secret_key'      => give_get_option( 'live_secret_key' ),
-		'test_secret_key'      => give_get_option( 'test_secret_key' ),
-		'live_publishable_key' => give_get_option( 'live_publishable_key' ),
-		'test_publishable_key' => give_get_option( 'test_publishable_key' ),
-	);
-
-	/**
-	 * This filter hook is used to override the existing stripe connect settings stored in DB.
-	 *
-	 * @param array $options List of Stripe Connect settings required to make functionality work.
-	 *
-	 * @since 2.5.0
-	 */
-	return apply_filters( 'give_stripe_get_connect_settings', $options );
-}
-
-/**
  * Is Stripe Checkout Enabled?
  *
  * @since 2.5.0
