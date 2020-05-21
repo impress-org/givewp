@@ -42,7 +42,7 @@ class IframeContentView {
 	 * @since 2.7.0
 	 * @var array
 	 */
-	protected $bodyClasses = [ 'give-form-templates' ];
+	protected $bodyClasses = array( 'give-form-templates' );
 
 	/**
 	 * Set document page title.
@@ -98,6 +98,7 @@ class IframeContentView {
 		<html <?php language_attributes(); ?>>
 			<head>
 				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title><?php echo apply_filters( 'the_title', $this->title ); ?></title>
 				<?php
 				/**
