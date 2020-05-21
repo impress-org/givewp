@@ -720,7 +720,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$default_account = '';
 
 			// Set account as default.
-			if ( count( $stripe_accounts ) === 1 ) {
+			if ( 1 === count( $stripe_accounts ) ) {
 				$stripe_account_keys = array_keys( $stripe_accounts );
 				$default_account     = $stripe_account_keys[0];
 			} else {
