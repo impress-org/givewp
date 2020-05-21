@@ -49,7 +49,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function loadTemplateOnFrontend() {
-		if ( FormUtils::isProcessingForm() ) {
+		if ( Give()->request->isProcessingForm() ) {
 			$this->loadTemplate();
 
 			add_action( 'template_redirect', [ $this, 'loadDonationFormView' ], 1 );
@@ -72,7 +72,7 @@ class Form {
 			/* @var Template $formTemplate */
 			$formTemplate = Give()->templates->getTemplate();
 
-			if ( Give()->request->isDonationFormInIframe() || ( $formTemplate->openSuccessPageInIframe && FormUtils::isProcessingForm() ) ) {
+			if ( Give()->request->isDonationFormInIframe() || ( $formTemplate->openSuccessPageInIframe && Give()->request->isProcessingForm() ) ) {
 				// Set header.
 				nocache_headers();
 				header( 'HTTP/1.1 200 OK' );
@@ -202,7 +202,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function embedFormRedirectURIHandler() {
-		if ( FormUtils::isProcessingForm() ) {
+		if ( Give()->request->isProcessingForm() ) {
 			add_filter( 'give_get_success_page_uri', [ self::class, 'editSuccessPageURI' ] );
 			add_filter( 'give_get_failed_transaction_uri', [ self::class, 'editFailedPageURI' ] );
 			add_filter( 'give_send_back_to_checkout', [ $this, 'handlePrePaymentProcessingErrorRedirect' ] );
