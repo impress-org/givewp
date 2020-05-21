@@ -305,7 +305,7 @@ add_action( 'give_update_payment_status', 'give_stripe_process_refund', 200, 3 )
 function give_stripe_show_connect_banner() {
 
 	$status                       = true;
-	$stripe_payment_methods       = array( 'stripe', 'stripe_ach', 'stripe_google_pay', 'stripe_apple_pay', 'stripe_ideal' );
+	$stripe_payment_methods       = give_stripe_supported_payment_methods();
 	$is_any_stripe_gateway_active = array_map( 'give_is_gateway_active', $stripe_payment_methods );
 
 	// Don't show banner, if all the stripe gateways are disabled.
