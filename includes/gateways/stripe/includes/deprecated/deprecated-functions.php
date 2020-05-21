@@ -104,3 +104,22 @@ if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
 		return give_stripe_get_connect_settings();
 	}
 }
+
+/**
+ * This function is used to fetch the connect options for Stripe.
+ *
+ * @since      2.5.0
+ * @deprecated 2.6.0
+ *
+ * @return bool
+ */
+if ( ! function_exists( 'give_stripe_get_connect_settings' ) ) {
+	function give_stripe_get_connect_settings() {
+
+		$backtrace = debug_backtrace();
+
+		_give_deprecated_function( __FUNCTION__, '2.6.0', 'give_stripe_get_connect_settings', $backtrace );
+
+		return [];
+	}
+}
