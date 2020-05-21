@@ -91,12 +91,12 @@ class Request {
 	}
 
 	/**
-	 * Return if current URL loading in iframe or not.
+	 * Get result whether or not donation form in iframe.
 	 *
 	 * @return bool
 	 * @since 2.7.0
 	 */
-	public function inIframe() {
+	public function isDonationFormInIframe() {
 		return ! empty( $this->query->get( 'giveDonationFormInIframe', false ) );
 	}
 }
