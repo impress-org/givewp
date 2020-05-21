@@ -486,7 +486,7 @@ add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
  */
 function give_stripe_set_account_default() {
 	$post_data    = give_clean( $_POST );
-	$account_slug = ! empty( $post_data['account_slug'] ) ? give_clean( $post_data['account_slug'] ) : false;
+	$account_slug = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
 
 	// Update default Stripe account.
 	$is_updated = give_update_option( '_give_stripe_default_account', $account_slug );
