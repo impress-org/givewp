@@ -3660,17 +3660,13 @@ function give_v270_upgrades() {
 				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
 				'test_publishable_key' => give_get_option( 'test_publishable_key' ),
 			];
-
-			// Set first Stripe account as default.
-			give_update_option( '_give_stripe_default_account', 'account_1' );
-			give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 		} else {
 			$stripe_accounts['account_1'] = give_stripe_get_connect_settings();
-
-			// Set first Stripe account as default.
-			give_update_option( '_give_stripe_default_account', 'account_1' );
-			give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 		}
+
+		// Set first Stripe account as default.
+		give_update_option( '_give_stripe_default_account', 'account_1' );
+		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 
 		// Set option to check that data is migrated or not.
 		give_update_option( '_give_stripe_data_migrated', true );
