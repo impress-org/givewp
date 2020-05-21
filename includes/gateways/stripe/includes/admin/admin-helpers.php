@@ -181,7 +181,7 @@ function give_stripe_connect_delete_options() {
 }
 
 /**
- * This helper function is used to convert slug into names of Stripe connection.
+ * This helper function is used to convert slug into name of Stripe connection.
  *
  * @param string $slug Connection Type Slug.
  *
@@ -189,7 +189,7 @@ function give_stripe_connect_delete_options() {
  *
  * @return string
  */
-function give_stripe_connection_type_names( $slug = 'connect' ) {
+function give_stripe_connection_type_name( $slug = 'connect' ) {
 
 	$names = [
 		'manual'  => esc_html__( 'API Keys', 'give' ),
