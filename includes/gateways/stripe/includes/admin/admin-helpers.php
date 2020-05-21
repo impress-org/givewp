@@ -108,9 +108,6 @@ function give_stripe_is_checkout_enabled() {
  * @return string
  */
 function give_stripe_connect_button() {
-
-	$connected = give_get_option( 'give_stripe_connected' );
-
 	// Prepare Stripe Connect URL.
 	$link = add_query_arg(
 		array(
