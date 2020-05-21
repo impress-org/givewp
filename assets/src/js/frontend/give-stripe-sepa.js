@@ -293,7 +293,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
 		stripe[ idPrefix ].createPaymentMethod( 'sepa_debit', $iban, additionalData ).then( function( result ) {
 			if ( result.error ) {
-				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+				const error = `<div class="give_errors"><p class="give_error">${ result.error.message }</p></div>`;
 
 				// re-enable the submit button.
 				$form_submit_btn.attr( 'disabled', false );
