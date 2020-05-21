@@ -76,15 +76,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_settings_gateways', array( $this, 'register_settings' ) );
 			add_filter( 'give_get_sections_advanced', array( $this, 'register_advanced_sections' ) );
 			add_filter( 'give_get_settings_advanced', array( $this, 'register_advanced_settings' ), 10, 1 );
-			add_action(
-				'give_admin_field_stripe_account_manager',
-				array(
-					$this,
-					'stripe_account_manager_field',
-				),
-				10,
-				2
-			);
+			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', array( $this, 'stripe_webhook_field' ), 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', array( $this, 'stripe_styles_field' ), 10, 2 );
 		}
