@@ -743,7 +743,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			);
 			$modal_first_detail  = sprintf(
 				'%1$s %2$s',
-				__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
+				esc_html__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
 				"<strong>{$site_url}?give-listener=stripe</strong>"
 			);
 			$modal_second_detail = esc_html__( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
@@ -754,7 +754,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					<div id="give-stripe-account-manager-errors"></div>
 					<div id="give-stripe-account-manager-description">
 						<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
-						<p class="give-field-description"><?php _e( 'In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give' ); ?></p>
+						<p class="give-field-description"><?php esc_html_e( 'In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give' ); ?></p>
 					</div>
 					<div class="give-stripe-account-manager-container">
 						<div
