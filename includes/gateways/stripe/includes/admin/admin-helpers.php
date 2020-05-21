@@ -109,7 +109,6 @@ function give_stripe_connect_button() {
  * @return string
  */
 function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
-
 	$args = [
 		'stripe_action'  => 'disconnect',
 		'mode'           => give_is_test_mode() ? 'test' : 'live',
