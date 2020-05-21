@@ -5,6 +5,8 @@ namespace Give\Request;
 /**
  * Class Request
  *
+ * Note: This API is still in development and we are using this for internal purpose. we will not recommend it to use publically.
+ *
  * @since 2.7.0
  * @package Give\Request
  */
