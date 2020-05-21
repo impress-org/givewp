@@ -823,7 +823,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											</span>
 										</div>
 										<div class="give-stripe-account-actions">
-											<span class="give-stripe-account-type-description give-field-description"><?php _e( 'Connection Method:', 'give' ); ?></span>
+											<span class="give-stripe-account-type-description give-field-description"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
 											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_name( $details['type'] ); ?></span>
 											<?php
 											if (
