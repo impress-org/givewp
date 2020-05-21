@@ -64,9 +64,9 @@ function give_stripe_frontend_scripts() {
 			'element_empty_styles'         => give_stripe_get_element_empty_styles(),
 			'element_invalid_styles'       => give_stripe_get_element_invalid_styles(),
 			'float_labels'                 => give_is_float_labels_enabled(
-				array(
+				[
 					'form_id' => get_the_ID(),
-				)
+				]
 			),
 			'base_country'                 => give_get_option( 'base_country' ),
 			'preferred_locale'             => give_stripe_get_preferred_locale(),

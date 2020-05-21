@@ -550,7 +550,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 *
 		 * @return array
 		 */
-		public function prepare_metadata( $donation_id, $donation_data = array() ) {
+		public function prepare_metadata( $donation_id, $donation_data = [] ) {
 			return give_stripe_prepare_metadata( $donation_id, $donation_data );
 		}
 
