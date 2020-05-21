@@ -76,7 +76,7 @@ function give_stripe_connect_save_options() {
 	}
 
 	// Set the first account as default.
-	if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 0 ) {
+	if ( ! $stripe_accounts ) {
 
 		// Set the connect details of Stripe account as default Stripe account.
 		give_update_option( 'give_stripe_connected', $get_vars['connected'] );

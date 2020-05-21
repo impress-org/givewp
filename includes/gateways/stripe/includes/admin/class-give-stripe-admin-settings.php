@@ -729,7 +729,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$default_account = '';
 
 			// Set account as default.
-			if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) === 1 ) {
+			if ( count( $stripe_accounts ) === 1 ) {
 				$stripe_account_keys = array_keys( $stripe_accounts );
 				$default_account     = $stripe_account_keys[0];
 			} else {
@@ -770,7 +770,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						</div>
 						<div class="give-stripe-account-manager-list">
 							<?php
-							if ( is_array( $stripe_accounts ) && count( $stripe_accounts ) > 0 ) {
+							if ( $stripe_accounts ) {
 								foreach ( $stripe_accounts as $slug => $details ) {
 									$account_name       = ! empty( $details['account_name'] ) ? $details['account_name'] : give_stripe_convert_slug_to_title( $slug );
 									$account_email      = ! empty( $details['account_email'] ) ? $details['account_email'] : '';
@@ -837,10 +837,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											<?php
 											if (
 												$slug !== $default_account ||
-												(
-													is_array( $stripe_accounts ) &&
-													count( $stripe_accounts ) === 1
-												)
+												count( $stripe_accounts ) === 1
 											) {
 												?>
 												<span class="give-stripe-account-disconnect">
