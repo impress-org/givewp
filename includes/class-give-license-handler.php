@@ -780,7 +780,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 								<?php
 								echo sprintf(
 									'<p class="give-license-renewal-date"><span class="dashicons dashicons-calendar-alt"></span> <strong>%1$s</strong> %2$s</p>',
-									$is_license_expired ? __( 'Expired:' ) : __( 'Renews:' ),
+									$is_license_expired ? __( 'Expired:', 'give' ) : __( 'Renews:', 'give' ),
 									date( give_date_format(), $expires_timestamp )
 								);
 								?>
@@ -884,7 +884,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						<?php echo $plugin['Name']; ?>
 					</span>
 					<span class="give-addon-version">
-						<?php echo sprintf( '%1$s %2$s', __( 'Version' ), $plugin['Version'] ); ?>
+						<?php echo sprintf( '%1$s %2$s', __( 'Version', 'give' ), $plugin['Version'] ); ?>
 					</span>
 				</div>
 
@@ -901,7 +901,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 							)
 						),
 						__( 'View Changelog', 'give' ),
-						__( 'Changelog of' ) . " {$plugin['Name']}"
+						__( 'Changelog of', 'give' ) . " {$plugin['Name']}"
 					);
 					?>
 
@@ -945,6 +945,25 @@ if ( ! class_exists( 'Give_License' ) ) :
 					'count'   => 0,
 				)
 			);
+		}
+
+		/**
+		 * Get all download slugs from all access pass key.
+		 * Note: only for internal use and will be refactored in the  future.
+		 *
+		 * @param array $license All access pass license data
+		 *
+		 * @return string[]
+		 * @since 2.6.3
+		 */
+		public static function getAddonSlugsFromAllAccessPassLicense( $license ) {
+			$result = [];
+
+			foreach ( $license['download'] as $download ) {
+				$result[] = $download['plugin_slug'];
+			}
+
+			return $result;
 		}
 	}
 
