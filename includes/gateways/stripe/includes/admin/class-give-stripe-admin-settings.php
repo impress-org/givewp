@@ -716,7 +716,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @since 2.7.0
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
-
 			$stripe_accounts = give_stripe_get_all_accounts();
 			$default_account = '';
 
