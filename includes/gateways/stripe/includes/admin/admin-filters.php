@@ -52,7 +52,7 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 	$form_account         = give_is_setting_enabled( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) );
 	$account_options      = give_stripe_get_account_options();
 	$account_options_keys = array_keys( $account_options );
-	$first_account_key    = is_array( $account_options_keys ) && count( $account_options_keys ) > 0 ? $account_options_keys[0] : [];
+	$first_account_key    = $account_options_keys ? $account_options_keys[0] : [];
 
 	$settings['stripe_form_account_options'] = array(
 		'id'        => 'stripe_form_account_options',
