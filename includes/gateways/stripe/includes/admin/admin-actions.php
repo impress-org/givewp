@@ -107,7 +107,6 @@ function give_stripe_connect_save_options() {
 
 	// Send back to settings page.
 	give_stripe_get_back_to_settings_page( [ 'stripe_account' => 'connected' ] );
-	give_die();
 }
 
 add_action( 'admin_init', 'give_stripe_connect_save_options' );
