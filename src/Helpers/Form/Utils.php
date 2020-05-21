@@ -22,23 +22,6 @@ class Utils {
 	}
 
 	/**
-	 * Get result if we are processing embed form or not
-	 *
-	 * @return bool
-	 * @since 2.7.0
-	 */
-	public static function isProcessingForm() {
-		$base     = Give()->routeForm->getBase();
-		$formName = get_post_field( 'post_name', Frontend::getFormId() );
-		$referer  = trailingslashit( wp_get_referer() );
-
-		return ! empty( $_REQUEST['give_embed_form'] ) ||
-			   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
-			   Give()->request->isDonationFormInIframe() ||
-			   false !== strpos( $referer, 'giveDonationFormInIframe' );
-	}
-
-	/**
 	 * Get result whether or not performing Give core action on ajax or not.
 	 *
 	 * @since 2.7.0

@@ -2,6 +2,8 @@
 
 namespace Give\Request;
 
+use Give\Helpers\Form\Template\Utils\Frontend;
+
 /**
  * Class Request
  *
@@ -50,6 +52,7 @@ class Request {
 	 * @param  array $request  The POST parameters
 	 * @param  array $cookies  The COOKIE parameters
 	 * @param  array $server  The SERVER parameters
+	 *
 	 * @since 2.7.0
 	 */
 	public function __construct( $query = [], $request = [], $cookies = [], $server = [] ) {
@@ -65,6 +68,7 @@ class Request {
 	 * @param  array $request  The POST parameters
 	 * @param  array $cookies  The COOKIE parameters
 	 * @param  array $server  The SERVER parameters
+	 *
 	 * @since 2.7.0
 	 */
 	public function initialize( $query = [], $request = [], $cookies = [], $server = [] ) {
@@ -98,5 +102,22 @@ class Request {
 	 */
 	public function isDonationFormInIframe() {
 		return ! empty( $this->query->get( 'giveDonationFormInIframe', false ) );
+	}
+
+	/**
+	 * Get result if we are processing embed form or not
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	public function isProcessingForm() {
+		$base     = Give()->routeForm->getBase();
+		$formName = get_post_field( 'post_name', Frontend::getFormId() );
+		$referer  = trailingslashit( wp_get_referer() );
+
+		return ! empty( $_REQUEST['give_embed_form'] ) ||
+			   false !== strpos( trailingslashit( wp_get_referer() ), "/{$base}/{$formName}/" ) ||
+			   $this->isDonationFormInIframe() ||
+			   false !== strpos( $referer, 'giveDonationFormInIframe' );
 	}
 }
