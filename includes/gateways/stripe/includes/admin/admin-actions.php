@@ -496,8 +496,6 @@ function give_stripe_set_account_default() {
 	} else {
 		wp_send_json_error();
 	}
-
-	give_die();
 }
 
 add_action( 'wp_ajax_give_stripe_set_account_default', 'give_stripe_set_account_default' );
@@ -548,7 +546,6 @@ function give_stripe_update_account_name() {
 	} else {
 		wp_send_json_error( [ 'message' => esc_html__( 'Unable to update account name. Please contact support.', 'give' ) ] );
 	}
-	give_die();
 }
 
 add_action( 'wp_ajax_give_stripe_update_account_name', 'give_stripe_update_account_name' );
