@@ -23,7 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_stripe_connect_save_options() {
-
 	// Is user have permission to edit give setting.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
