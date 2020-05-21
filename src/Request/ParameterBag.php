@@ -50,26 +50,6 @@ class ParameterBag {
 	}
 
 	/**
-	 * Replaces the current parameters by a new set.
-	 *
-	 * @param  array $parameters
-	 * @since 2.7.0
-	 */
-	public function replace( $parameters = [] ) {
-		$this->parameters = $parameters;
-	}
-
-	/**
-	 * Adds parameters.
-	 *
-	 * @param  array $parameters
-	 * @since 2.7.0
-	 */
-	public function add( $parameters = [] ) {
-		$this->parameters = array_replace( $this->parameters, $parameters );
-	}
-
-	/**
 	 * Returns a parameter by name.
 	 *
 	 * @param  string $key
