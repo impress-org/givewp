@@ -1,14 +1,13 @@
 <?php
 
-use Give\Receipt\Detail;
-use Give\Receipt\DonationDetailsGroup\Details\TotalAmount as TotalAmountDetailItem;
-use Give\Receipt\DetailGroup;
+use Give\Receipt\DonationReceipt;
+use Give\Receipt\LineItem;
+use Give\Receipt\Section;
 use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
 use Give\Views\IframeContentView;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give_Payment as Payment;
-use GivePdfReceipt\Receipt\PdfReceiptDetailsGroup\Details\Receipt as PdfReceiptDetailItem;
 
 $donationSessionAccessor = new DonationAccessor();
 $donation                = new Payment( $donationSessionAccessor->getDonationId() );
@@ -16,10 +15,9 @@ $options                 = FormTemplateUtils::getOptions();
 
 /* @var Sequoia $sequoiaTemplate */
 $sequoiaTemplate = Give()->templates->getTemplate();
+$receipt         = $sequoiaTemplate->getReceiptDetails( $donation->ID );
 
-$receiptDetails = $sequoiaTemplate->getReceiptDetails( $donation->ID );
-
-/* @var PdfReceiptDetailItem $pdfReceiptDownloadLinkDetailItem */
+/* @var LineItem|null $pdfReceiptDownloadLinkDetailItem */
 $pdfReceiptDownloadLinkDetailItem = null;
 
 ob_start();
@@ -36,71 +34,60 @@ ob_start();
 			</div>
 		<?php endif; ?>
 		<h2 class="headline">
-			<?php echo $receiptDetails->heading; ?>
+			<?php echo $receipt->heading; ?>
 		</h2>
 		<p class="message">
-			<?php echo $receiptDetails->message; ?>
+			<?php echo $receipt->message; ?>
 		</p>
 		<?php require 'social-sharing.php'; ?>
 		<?php
-		/* @global DetailGroup $group */
-		foreach ( $receiptDetails->getDetailGroupList() as $detailGroupClassName ) {
-			$group = $receiptDetails->getDetailGroupObject( $detailGroupClassName );
+		/* @var Section $section */
+		foreach ( $receipt as $section ) {
+			// Continue if section does not have line items.
+			if ( ! $section->getLineItems() ) {
+				continue;
+			}
 
-			if ( ! $group->canShow() ) {
+			if ( 'PDFReceipt' === $section->id ) {
+				$pdfReceiptLinkDetailItem = $section['receiptLink'];
 				continue;
 			}
 
 			echo '<div class="details">';
-			if ( $group->heading ) {
-				printf( '<h3 class="headline">%1$s</h3>', $group->heading );
+			if ( $section->label ) {
+				printf( '<h3 class="headline">%1$s</h3>', $section->label );
 			}
+			echo '<div class="details-table">';
 
-			if ( $detailList = $group->getDetailsList() ) {
-				echo '<div class="details-table">';
-
-				/* @var Detail $detail */
-				foreach ( $detailList as $detailItemClassName ) {
-					$detail = $group->getDetailItemObject( $detailItemClassName );
-					$value  = $detail->getValue();
-
-					if ( ! $value ) {
-						continue;
-					}
-
-					// We will render download pdf receipt separately.
-					if ( PdfReceiptDetailItem::class === $detailItemClassName ) {
-						$pdfReceiptDownloadLinkDetailItem = $detail;
-						continue;
-					}
-
-					// This class is required to highlight total donation amount in receipt.
-					$detailRowClass = $detailItemClassName === TotalAmountDetailItem::class ? ' total' : '';
-
-					printf(
-						'<div class="details-row%1$s">',
-						$detailRowClass
-					);
-
-					echo $detail->getIcon();
-
-					printf(
-						'<div class="detail">%1$s</div><div class="value">%2$s</div>',
-						$detail->getLabel(),
-						$value
-					);
-
-					echo '</div>';
+			/* @var LineItem $lineItem */
+			foreach ( $section as $lineItem ) {
+				// Continue if line item does not have value.
+				if ( ! $lineItem->value ) {
+					continue;
 				}
-				echo '</div>';
+
+				// This class is required to highlight total donation amount in receipt.
+				$detailRowClass = '';
+				if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
+					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+				}
+
+				printf(
+					'<div class="details-row%1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
+					$detailRowClass,
+					$lineItem->icon,
+					$lineItem->label,
+					$lineItem->value
+				);
 			}
+			echo '</div>';
 			echo '</div>';
 		}
 		?>
 
-		<?php if ( $pdfReceiptDownloadLinkDetailItem instanceof PdfReceiptDetailItem ) : ?>
+		<?php if ( $pdfReceiptLinkDetailItem ) : ?>
 			<div class="give-btn download-btn">
-				<?php echo $pdfReceiptDownloadLinkDetailItem->getValue(); ?>
+				<?php echo $pdfReceiptLinkDetailItem->value; ?>
 			</div>
 		<?php endif; ?>
 

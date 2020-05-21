@@ -13,8 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * Toggle PayPal CC Billing Detail Fieldset.
@@ -32,7 +31,7 @@ function give_paypal_standard_billing_fields( $form_id ) {
 		return true;
 	}
 
-	if ( FormTemplateUtils::getActiveID( FrontendFormTemplateUtils::getFormId() ) === 'legacy' ) {
+	if ( FormUtils::isLegacyForm( $form_id ) ) {
 		return false;
 	}
 
