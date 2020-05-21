@@ -465,7 +465,6 @@ add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
  * @return void
  */
 function give_stripe_disconnect_connect_stripe_account() {
-
 	$get_data = give_clean( $_GET );
 
 	if ( is_admin() && isset( $get_data['stripe_disconnected'] ) ) {
@@ -486,7 +485,6 @@ add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
  * @return void
  */
 function give_stripe_set_account_default() {
-
 	$post_data    = give_clean( $_POST );
 	$account_slug = ! empty( $post_data['account_slug'] ) ? give_clean( $post_data['account_slug'] ) : false;
 
@@ -512,7 +510,6 @@ add_action( 'wp_ajax_give_stripe_set_account_default', 'give_stripe_set_account_
  * @return void
  */
 function give_stripe_update_account_name() {
-
 	$post_data        = give_clean( $_POST );
 	$account_slug     = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
 	$new_account_name = ! empty( $post_data['new_account_name'] ) ? $post_data['new_account_name'] : false;
