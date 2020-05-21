@@ -3643,7 +3643,6 @@ function give_v263_upgrades() {
  * @return void
  */
 function give_v270_upgrades() {
-
 	$stripe_accounts = give_stripe_get_all_accounts();
 	$is_migrated     = give_get_option( '_give_stripe_data_migrated', false );
 
@@ -3660,12 +3659,43 @@ function give_v270_upgrades() {
 				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
 				'test_publishable_key' => give_get_option( 'test_publishable_key' ),
 			];
+
+			// Set first Stripe account as default.
+			give_update_option( '_give_stripe_default_account', 'account_1' );
 		} else {
-			$stripe_accounts['account_1'] = give_stripe_get_connect_settings();
+			$accountName     = '';
+			$accountSlug     = '';
+			$accountEmail    = '';
+			$accountCountry  = '';
+			$stripeAccountId = give_get_option( 'give_stripe_user_id' );
+			$accountDetails  = give_stripe_get_account_details( $stripeAccountId );
+
+			// Setup Account Details for Connected Stripe Accounts.
+			if ( ! empty( $accountDetails->id ) && 'account' === $accountDetails->object ) {
+				$accountName    = $accountDetails->business_profile->name;
+				$accountSlug    = $accountDetails->id;
+				$accountEmail   = $accountDetails->email;
+				$accountCountry = $accountDetails->country;
+			}
+
+			$stripe_accounts[ $accountSlug ] = [
+				'type'                 => 'connect',
+				'account_name'         => $accountName,
+				'account_slug'         => $accountSlug,
+				'account_email'        => $accountEmail,
+				'account_country'      => $accountCountry,
+				'connected_status'     => give_get_option( 'give_stripe_connected' ),
+				'give_stripe_user_id'  => $stripeAccountId,
+				'live_secret_key'      => give_get_option( 'live_secret_key' ),
+				'test_secret_key'      => give_get_option( 'test_secret_key' ),
+				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
+				'test_publishable_key' => give_get_option( 'test_publishable_key' ),
+			];
+
+			// Set first Stripe account as default.
+			give_update_option( '_give_stripe_default_account', $accountSlug );
 		}
 
-		// Set first Stripe account as default.
-		give_update_option( '_give_stripe_default_account', 'account_1' );
 		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 
 		// Set option to check that data is migrated or not.
