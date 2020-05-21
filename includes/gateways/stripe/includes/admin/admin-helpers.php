@@ -157,7 +157,6 @@ function give_stripe_connect_delete_options() {
  * @return string
  */
 function give_stripe_connection_type_name( $slug = 'connect' ) {
-
 	$names = [
 		'manual'  => esc_html__( 'API Keys', 'give' ),
 		'connect' => esc_html__( 'Stripe Connect', 'give' ),
