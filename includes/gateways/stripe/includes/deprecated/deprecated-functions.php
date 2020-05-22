@@ -201,3 +201,19 @@ function give_stripe_is_connected() {
 	// Default return value.
 	return false;
 }
+
+ /** Is Stripe Checkout Enabled?
+ *
+ * @since 2.5.0
+ * @deprecated 2.6.4
+ *
+ * @return bool
+ */
+function give_stripe_is_checkout_enabled() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '2.6.4', 'give_stripe_is_checkout_enabled', $backtrace );
+
+	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
+}
