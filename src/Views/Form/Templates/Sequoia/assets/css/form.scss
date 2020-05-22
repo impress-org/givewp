@@ -831,7 +831,7 @@ p {
 		display: flex;
 		flex-direction: column;
 
-		> *:not(.give-donation-submit) {
+		#give-final-total-wrap {
 			display: none;
 		}
 
