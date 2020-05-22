@@ -832,7 +832,12 @@ p {
 		}
 	}
 	#give_purchase_form_wrap {
-		width: 100%;
+		background: #fbfbfb;
+		padding: 24px 20px 20px 20px;
+
+		fieldset {
+			padding: 0;
+		}
 	}
 	#give_purchase_submit {
 		display: flex;
