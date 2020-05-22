@@ -79,6 +79,28 @@ class Request {
 	}
 
 	/**
+	 * Returns a parameter by name from $_POST or $_GET
+	 *
+	 * @param  string $key
+	 * @param  mixed  $default  The default value if the parameter key does not exist
+	 *
+	 * @return mixed
+	 * @since 2.7.0
+	 */
+	public function get( $key, $default = null ) {
+		$value = $default;
+
+		if ( $this->request->has( $key ) ) {
+			$value = $this->request->get( $key, $default );
+
+		} elseif ( $this->query->has( $key ) ) {
+			$value = $this->query->get( $key, $default );
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Get result whether or not performing Give core action on ajax or not.
 	 *
 	 * @return bool
