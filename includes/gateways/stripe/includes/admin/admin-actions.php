@@ -75,21 +75,6 @@ function give_stripe_connect_save_options() {
 		return;
 	}
 
-	// Set the first account as default.
-	if ( ! $stripe_accounts ) {
-
-		// Set the connect details of Stripe account as default Stripe account.
-		give_update_option( 'give_stripe_connected', $get_vars['connected'] );
-		give_update_option( 'give_stripe_user_id', $stripe_account_id );
-		give_update_option( 'live_secret_key', $get_vars['stripe_access_token'] );
-		give_update_option( 'test_secret_key', $get_vars['stripe_access_token_test'] );
-		give_update_option( 'live_publishable_key', $get_vars['stripe_publishable_key'] );
-		give_update_option( 'test_publishable_key', $get_vars['stripe_publishable_key_test'] );
-
-		// Set first Stripe account as default.
-		give_update_option( '_give_stripe_default_account', $account_slug );
-	}
-
 	$stripe_accounts[ $account_slug ] = [
 		'type'                 => 'connect',
 		'account_name'         => $account_name,
@@ -101,6 +86,9 @@ function give_stripe_connect_save_options() {
 		'live_publishable_key' => $get_vars['stripe_publishable_key'],
 		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
 	];
+
+	// Set first Stripe account as default.
+	give_update_option( '_give_stripe_default_account', $account_slug );
 
 	// Update Stripe accounts to global settings.
 	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
