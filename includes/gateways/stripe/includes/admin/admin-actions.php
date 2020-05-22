@@ -87,6 +87,9 @@ function give_stripe_connect_save_options() {
 		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
 	];
 
+	// Set first Stripe account as default.
+	give_update_option( '_give_stripe_default_account', $account_slug );
+
 	// Update Stripe accounts to global settings.
 	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 
