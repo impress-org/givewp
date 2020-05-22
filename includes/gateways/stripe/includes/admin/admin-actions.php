@@ -455,7 +455,7 @@ add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
 function give_stripe_disconnect_connect_stripe_account() {
 	$get_data = give_clean( $_GET );
 
-	if ( is_admin() && isset( $get_data['stripe_disconnected'] ) ) {
+	if ( isset( $get_data['stripe_disconnected'] ) ) {
 		$account_name = ! empty( $get_data['account_name'] ) ? $get_data['account_name'] : false;
 
 		// Disconnect Stripe Account.
