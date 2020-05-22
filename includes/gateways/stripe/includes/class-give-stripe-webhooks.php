@@ -132,11 +132,6 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 					// Update time of webhook received whenever the event is retrieved.
 					give_update_option( 'give_stripe_last_webhook_received_timestamp', time() );
 
-				} catch ( \Stripe\Error\Authentication $e ) {
-
-					if ( strpos( $e->getMessage(), 'Platform access may have been revoked' ) !== false ) {
-						give_stripe_connect_delete_options();
-					}
 				} catch ( Exception $e ) {
 					die( 'Invalid event ID' );
 				}

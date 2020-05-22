@@ -129,25 +129,6 @@ function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
 }
 
 /**
- * Delete all the Give settings options for Stripe Connect.
- *
- * @since 2.5.0
- *
- * @return void
- */
-function give_stripe_connect_delete_options() {
-
-	// Disconnection successful.
-	// Remove the connect options within the db.
-	give_delete_option( 'give_stripe_connected' );
-	give_delete_option( 'give_stripe_user_id' );
-	give_delete_option( 'live_secret_key' );
-	give_delete_option( 'test_secret_key' );
-	give_delete_option( 'live_publishable_key' );
-	give_delete_option( 'test_publishable_key' );
-}
-
-/**
  * This helper function is used to convert slug into name of Stripe connection.
  *
  * @param string $slug Connection Type Slug.
