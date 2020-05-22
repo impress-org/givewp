@@ -389,6 +389,11 @@
 	 * @param {number} formID Form ID
 	 */
 	function refreshPaymentInformationSection( ev, response, formID ) {
+		// If mailchimp is opted in by default, add border on load
+		if ( $( 'input[name="give_mailchimp_signup"]' ).prop( 'checked' ) === true ) {
+			$( '.give-mailchimp-fieldset' ).addClass( 'active' );
+		}
+
 		if ( navigator.currentStep === 2 ) {
 			$( '.give-form-templates' ).css( 'min-height', '' );
 		}
