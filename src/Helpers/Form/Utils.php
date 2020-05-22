@@ -22,18 +22,6 @@ class Utils {
 	}
 
 	/**
-	 * Get result whether or not performing Give core action on ajax or not.
-	 *
-	 * @since 2.7.0
-	 * @return bool
-	 */
-	public static function isProcessingGiveActionOnAjax() {
-		$action            = isset( $_REQUEST['action'] ) ? give_clean( $_REQUEST['action'] ) : '';
-		$whiteListedAction = [ 'get_receipt' ];
-		return $action && wp_doing_ajax() && ( 0 === strpos( $action, 'give_' ) || in_array( $action, $whiteListedAction, true ) );
-	}
-
-	/**
 	 * Get result whether or not show failed transaction error.
 	 *
 	 * @return bool
