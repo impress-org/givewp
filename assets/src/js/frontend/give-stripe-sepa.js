@@ -19,11 +19,10 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	const fontStyles = [];
 	const preferredLocale = give_stripe_vars.preferred_locale;
 	const formWraps = document.querySelectorAll( '.give-form-wrap' );
-	const fontIterator = Object.entries( give_stripe_vars.element_font_styles );
-
-	// Loop through each font element to convert its object to array.
-	for ( const fontElement of fontIterator ) {
-		fontStyles[ fontElement[ 0 ] ] = fontElement[ 1 ];
+	
+	// If font styles are defined, add them to font styles array
+	if ( Object.keys( give_stripe_vars.element_font_styles ).length !== 0 ) {
+		fontStyles.push( give_stripe_vars.element_font_styles );
 	}
 
 	// Loop through the number of forms on the page.
