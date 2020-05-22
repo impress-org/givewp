@@ -3644,7 +3644,7 @@ function give_v263_upgrades() {
  */
 function give_v270_upgrades() {
 	$stripe_accounts = give_stripe_get_all_accounts();
-	$is_migrated     = give_get_option( '_give_stripe_data_migrated', false );
+	$is_migrated     = get_option( '_give_stripe_data_migrated', false );
 
 	// Process, only when there is no Stripe accounts stored.
 	if ( ! ( $stripe_accounts && $is_migrated ) ) {
@@ -3698,7 +3698,15 @@ function give_v270_upgrades() {
 
 		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
 
+		// Remove legacy settings.
+		give_delete_option( 'live_secret_key' );
+		give_delete_option( 'test_secret_key' );
+		give_delete_option( 'live_publishable_key' );
+		give_delete_option( 'test_secret_key' );
+		give_delete_option( 'give_stripe_connected' );
+		give_delete_option( 'give_stripe_user_id' );
+
 		// Set option to check that data is migrated or not.
-		give_update_option( '_give_stripe_data_migrated', true );
+		update_option( '_give_stripe_data_migrated', true );
 	}
 }
