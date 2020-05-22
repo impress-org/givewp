@@ -3663,6 +3663,14 @@ function give_v270_upgrades() {
 			// Set first Stripe account as default.
 			give_update_option( '_give_stripe_default_account', 'account_1' );
 		} else {
+
+			$secret_key = give_get_meta( 'live_secret_key' );
+			if ( give_is_test_mode() ) {
+				$secret_key = give_get_meta( 'test_secret_key' );
+			}
+
+			\Stripe\Stripe::setApiKey( $secret_key );
+
 			$accountName     = '';
 			$accountSlug     = '';
 			$accountEmail    = '';

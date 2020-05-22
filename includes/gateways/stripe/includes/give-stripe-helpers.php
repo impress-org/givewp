@@ -1558,8 +1558,12 @@ function give_stripe_get_account_details( $id ) {
 		$account = \Stripe\Account::retrieve( $id );
 	} catch ( Exception $e ) {
 		give_record_gateway_error(
-			__( 'Give - Stripe Error', 'give' ),
-			__( 'Unable to retrieve account details. Please contact support for assistance', 'give' )
+			esc_html__( 'Give - Stripe Error', 'give' ),
+			sprintf(
+				'%1$s: %2$s',
+				esc_html__( 'Unable to retrieve account details. Please contact support for assistance. Details:', 'give' ),
+				$e->getMessage()
+			)
 		);
 
 		return false;
