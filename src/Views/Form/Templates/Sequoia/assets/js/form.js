@@ -196,6 +196,16 @@
 					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
 				} );
 
+				// If mailchimp is opted in by default, add border on load
+				if ( $( 'input[name="give_mailchimp_signup"]' ).prop( 'checked' ) === true ) {
+					$( '.give-mailchimp-fieldset' ).addClass( 'active' );
+				}
+
+				// Persist mailchimp input border when selected
+				$( '.give-mc-message-text' ).on( 'click touchend', function() {
+					$( '.give-mailchimp-fieldset' ).toggleClass( 'active' );
+				} );
+
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
@@ -278,8 +288,8 @@
 
 							if ( $( node ).attr( 'name' ) === 'give_tributes_address_state' && $( node ).attr( 'class' ).includes( 'give-input' ) ) {
 								$( node ).attr( 'placeholder', $( node ).siblings( 'label' ).text().trim() );
-              }
-              
+							}
+
 							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
 								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 							}
