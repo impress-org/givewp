@@ -3647,7 +3647,7 @@ function give_v270_upgrades() {
 	$is_migrated     = get_option( '_give_stripe_data_migrated', false );
 
 	// Process, only when there is no Stripe accounts stored.
-	if ( ! ( $stripe_accounts && $is_migrated ) ) {
+	if ( ! $stripe_accounts && ! $is_migrated ) {
 		if (
 			give_stripe_is_premium_active() &&
 			give_stripe_is_manual_api_keys_enabled()
