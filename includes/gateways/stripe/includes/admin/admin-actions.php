@@ -75,6 +75,11 @@ function give_stripe_connect_save_options() {
 		$account_country = $account_details->country;
 	}
 
+	// Set first Stripe account as default.
+	if ( ! $stripe_accounts ) {
+		give_update_option( '_give_stripe_default_account', $account_slug );
+	}
+
 	$stripe_accounts[ $account_slug ] = [
 		'type'                 => 'connect',
 		'account_name'         => $account_name,
@@ -86,9 +91,6 @@ function give_stripe_connect_save_options() {
 		'live_publishable_key' => $get_vars['stripe_publishable_key'],
 		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
 	];
-
-	// Set first Stripe account as default.
-	give_update_option( '_give_stripe_default_account', $account_slug );
 
 	// Update Stripe accounts to global settings.
 	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
