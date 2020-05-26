@@ -3675,7 +3675,6 @@ function give_v270_upgrades() {
 			$all_account_slugs = array_keys( $stripe_accounts );
 			$accountSlug       = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
 			$accountName       = give_stripe_convert_slug_to_title( $accountSlug );
-			$accountSlug       = '';
 			$accountEmail      = '';
 			$accountCountry    = '';
 			$stripeAccountId   = give_get_option( 'give_stripe_user_id' );
