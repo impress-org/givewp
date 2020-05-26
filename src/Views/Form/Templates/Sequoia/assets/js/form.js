@@ -274,6 +274,11 @@
 							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
 								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 							}
+
+							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
+								const placeholder = $( node ).attr( 'placeholder' );
+								$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+							}
 						}
 					} );
 				} );
