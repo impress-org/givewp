@@ -3644,7 +3644,7 @@ function give_v263_upgrades() {
  */
 function give_v270_upgrades() {
 	$stripe_accounts = give_stripe_get_all_accounts();
-	$is_migrated     = get_option( '_give_stripe_data_migrated', false );
+	$is_migrated     = give_has_upgrade_completed( 'give_stripe_v270_data_migrated' );
 
 	// Process, only when there is no Stripe accounts stored.
 	if ( ! $stripe_accounts && ! $is_migrated ) {
@@ -3715,6 +3715,6 @@ function give_v270_upgrades() {
 		give_delete_option( 'give_stripe_user_id' );
 
 		// Set option to check that data is migrated or not.
-		update_option( '_give_stripe_data_migrated', true );
+		give_set_upgrade_complete( 'give_stripe_v270_data_migrated' );
 	}
 }
