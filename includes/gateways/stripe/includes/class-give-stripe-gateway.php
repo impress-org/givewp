@@ -287,13 +287,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			$card_exists = false;
 			$all_sources = $stripe_customer->sources->all();
-
-			if ( give_stripe_is_checkout_enabled() && 'stripe' === $this->id ) {
-				$card = $this->get_token_details( $id );
-			} else {
-				$card = $this->get_source_details( $id );
-			}
-
+			$card        = $this->get_source_details( $id );
 			$source_list = wp_list_pluck( $all_sources->data, 'id' );
 
 			// Check whether the source is already attached to customer or not.
