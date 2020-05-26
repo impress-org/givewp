@@ -1,5 +1,6 @@
 /* stylelint-disable */
-.give-mailchimp-fieldset {
+.give-mailchimp-fieldset,
+.give-constant-contact-fieldset {
 	order: 3;
 	background: #fff;
 	border: 1px solid rgba(255, 255, 255, 0) !important;
@@ -11,21 +12,9 @@
 	position: relative;
 	transition: border 0.2s ease;
 	width: auto !important;
-}
 
-.give-mc-message-text {
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 1.4;
-	padding: 20px 20px 20px 22px !important;
-	color: #333;
-	display: inline-block;
-}
-
-.give-mailchimp-fieldset {
-	border: 1px solid #fff;
-
-	.give-mc-optin-label {
+	label,
+	p {
 		margin: 0;
 	}
 
@@ -33,13 +22,19 @@
 		display: none !important;
 	}
 
-	.give-mc-message-text {
+	span {
 		width: calc(100% - 82px);
 		margin-left: 40px !important;
 		display: inline-block;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 1.4;
+		padding: 20px 20px 20px 22px !important;
+		color: #333;
+		display: inline-block;
 	}
 
-	.give-mc-message-text::before {
+	span::before {
 		content: ' ';
 		position: absolute;
 		top: calc(50% - 12px);
@@ -63,11 +58,11 @@
 		border: 1px solid #3398db !important;
 	}
 
-	input[type='checkbox']:checked + .give-mc-message-text::after {
+	input[type='checkbox']:checked + span::after {
 		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 	}
 
-	input[type='checkbox'] + .give-mc-message-text::after {
+	input[type='checkbox'] + span::after {
 		transition: clip-path 0.2s ease;
 		border-radius: 11px;
 		width: 20px;
