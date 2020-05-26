@@ -56,6 +56,11 @@ function give_stripe_connect_save_options() {
 	$account_email     = '';
 	$account_country   = '';
 
+	// If the same Stripe account is already connected, then don't save it.
+	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'give_stripe_user_id' ), true ) ) {
+		return;
+	}
+
 	// Set API Key to fetch account details.
 	\Stripe\Stripe::setApiKey( $secret_key );
 
@@ -68,11 +73,6 @@ function give_stripe_connect_save_options() {
 		$account_slug    = $account_details->id;
 		$account_email   = $account_details->email;
 		$account_country = $account_details->country;
-	}
-
-	// If the same Stripe account is already connected, then don't save it.
-	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'give_stripe_user_id' ), true ) ) {
-		return;
 	}
 
 	$stripe_accounts[ $account_slug ] = [
