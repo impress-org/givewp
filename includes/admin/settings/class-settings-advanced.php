@@ -145,7 +145,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						array(
 							'name'    => __( 'Form Page URL Prefix', 'give' ),
 							'desc'    => sprintf(
-								__( 'This slug will be used as a base for all form pages which will be rendered in an iframe when  <code>embed=true</code> and `form_theme` is set to other than `legacy` in `give_form` shortcode. All URLs will look like %1$s. This will add a rewrite rule that transforms a URL structure to a set of query vars. This can cause of 404 error on URLs which contains a similar URL format, so choose a unique URL prefix to prevent conflict.', 'give' ),
+								__( 'This slug will be used as a base for the iframe URL that contains all form templates besides the legacy form template. Currently the iframe URLs look like %1$s. This options adds a rewrite rule that transforms the URL structure to a set of query vars. If you modify this URL prefix please ensure it is unique as it can cause a 404 error if a similar URL already exists.', 'give' ),
 								'<code>' . trailingslashit( home_url() ) . Give()->routeForm->getBase() . '/{form-slug}</code>'
 							),
 							'id'      => Give()->routeForm->getOptionName(),
