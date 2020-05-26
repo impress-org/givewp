@@ -3710,7 +3710,7 @@ function give_v270_upgrades() {
 		give_delete_option( 'live_secret_key' );
 		give_delete_option( 'test_secret_key' );
 		give_delete_option( 'live_publishable_key' );
-		give_delete_option( 'test_secret_key' );
+		give_delete_option( 'test_publishable_key' );
 		give_delete_option( 'give_stripe_connected' );
 		give_delete_option( 'give_stripe_user_id' );
 
