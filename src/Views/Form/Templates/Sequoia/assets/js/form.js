@@ -406,6 +406,15 @@
 				case 'stripe_sepa':
 					icon = 'fas fa-university';
 					break;
+				case 'stripe_ach':
+					icon = 'fas fa-university';
+					break;
+				case 'stripe_ideal':
+					icon = 'fas fa-university';
+					break;
+				case 'stripe_becs':
+					icon = 'fas fa-university';
+					break;
 				case 'paypalpro_payflow':
 					icon = 'far fa-credit-card';
 					break;
