@@ -206,6 +206,16 @@
 					$( '.give-mailchimp-fieldset' ).toggleClass( 'active' );
 				} );
 
+				// If mailchimp is opted in by default, add border on load
+				if ( $( 'input[name="give_constant_contact_signup"]' ).prop( 'checked' ) === true ) {
+					$( '.give-constant-contact-fieldset' ).addClass( 'active' );
+				}
+
+				// Persist mailchimp input border when selected
+				$( '.give-constant-contact-fieldset span' ).on( 'click touchend', function() {
+					$( '.give-constant-contact-fieldset' ).toggleClass( 'active' );
+				} );
+
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
