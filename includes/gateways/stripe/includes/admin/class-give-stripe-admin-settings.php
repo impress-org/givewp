@@ -777,12 +777,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
 										add_query_arg(
 											[
-												'post_type' => 'give_forms',
-												'page'    => 'give-settings',
-												'tab'     => 'gateways',
-												'section' => 'stripe-settings',
+												'post_type'   => 'give_forms',
+												'page'        => 'give-settings',
+												'tab'         => 'gateways',
+												'section'     => 'stripe-settings',
 												'give_action' => 'disconnect_manual_stripe_account',
-												'account' => $slug,
+												'account'     => $slug,
 											],
 											admin_url( 'edit.php' )
 										);
