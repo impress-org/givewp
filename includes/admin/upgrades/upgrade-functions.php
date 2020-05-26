@@ -3671,12 +3671,15 @@ function give_v270_upgrades() {
 
 			\Stripe\Stripe::setApiKey( $secret_key );
 
-			$accountName     = '';
-			$accountSlug     = '';
-			$accountEmail    = '';
-			$accountCountry  = '';
-			$stripeAccountId = give_get_option( 'give_stripe_user_id' );
-			$accountDetails  = give_stripe_get_account_details( $stripeAccountId );
+			$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) + 1 : 1;
+			$all_account_slugs = array_keys( $stripe_accounts );
+			$accountSlug       = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
+			$accountName       = give_stripe_convert_slug_to_title( $accountSlug );
+			$accountSlug       = '';
+			$accountEmail      = '';
+			$accountCountry    = '';
+			$stripeAccountId   = give_get_option( 'give_stripe_user_id' );
+			$accountDetails    = give_stripe_get_account_details( $stripeAccountId );
 
 			// Setup Account Details for Connected Stripe Accounts.
 			if ( ! empty( $accountDetails->id ) && 'account' === $accountDetails->object ) {
