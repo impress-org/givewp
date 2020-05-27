@@ -54,7 +54,17 @@ p {
 
 .give-stripe-becs-mandate-acceptance-text,
 .give-stripe-sepa-mandate-acceptance-text {
-	margin-bottom: 8px !important;
+	margin-bottom: 16px !important;
+
+	&::before,
+	&::after {
+		display: none !important;
+		content: none !important;
+	}
+
+	&:empty {
+		margin-bottom: 0 !important;
+	}
 }
 
 // Container
