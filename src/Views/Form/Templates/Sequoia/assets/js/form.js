@@ -206,12 +206,12 @@
 					$( '.give-mailchimp-fieldset' ).toggleClass( 'active' );
 				} );
 
-				// If mailchimp is opted in by default, add border on load
+				// If constant contact is opted in by default, add border on load
 				if ( $( 'input[name="give_constant_contact_signup"]' ).prop( 'checked' ) === true ) {
 					$( '.give-constant-contact-fieldset' ).addClass( 'active' );
 				}
 
-				// Persist mailchimp input border when selected
+				// Persist constant contact input border when selected
 				$( '.give-constant-contact-fieldset span' ).on( 'click touchend', function() {
 					$( '.give-constant-contact-fieldset' ).toggleClass( 'active' );
 				} );
