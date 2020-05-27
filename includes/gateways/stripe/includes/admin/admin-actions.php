@@ -69,7 +69,9 @@ function give_stripe_connect_save_options() {
 
 	// Setup Account Details for Connected Stripe Accounts.
 	if ( ! empty( $account_details->id ) && 'account' === $account_details->object ) {
-		$account_name    = $account_details->business_profile->name;
+		$account_name    = ! empty( $account_details->business_profile->name ) ?
+			$account_details->business_profile->name :
+			$account_details->settings->dashboard->display_name;
 		$account_slug    = $account_details->id;
 		$account_email   = $account_details->email;
 		$account_country = $account_details->country;

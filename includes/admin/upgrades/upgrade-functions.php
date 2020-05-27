@@ -3682,7 +3682,9 @@ function give_v270_upgrades() {
 
 			// Setup Account Details for Connected Stripe Accounts.
 			if ( ! empty( $accountDetails->id ) && 'account' === $accountDetails->object ) {
-				$accountName    = $accountDetails->business_profile->name;
+				$accountName    = ! empty( $accountDetails->business_profile->name ) ?
+					$accountDetails->business_profile->name :
+					$accountDetails->settings->dashboard->display_name;
 				$accountSlug    = $accountDetails->id;
 				$accountEmail   = $accountDetails->email;
 				$accountCountry = $accountDetails->country;
