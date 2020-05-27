@@ -15,13 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Composer's autoload.php.
  */
-if ( ! class_exists( 'TCPDF' ) ) {
-	if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/tecnickcom/tcpdf/tcpdf.php' ) ) {
-		require_once GIVE_PLUGIN_DIR . 'vendor/tecnickcom/tcpdf/tcpdf.php';
-	} else {
-		// Load autoloader.
-		require_once GIVE_PLUGIN_DIR . 'includes/libraries/tcpdf/tcpdf.php';
-	}
+if ( ! class_exists( 'TCPDF' ) && file_exists( GIVE_PLUGIN_DIR . 'vendor/tecnickcom/tcpdf/tcpdf.php' ) ) {
+	require_once GIVE_PLUGIN_DIR . 'vendor/tecnickcom/tcpdf/tcpdf.php';
 }
 
 /**

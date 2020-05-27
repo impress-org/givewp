@@ -15,7 +15,7 @@
 
 // Welcome header
 .give-welcome-header {
-	background: #FFF;
+	background: #fff;
 	height: 100%;
 	min-width: 1000px;
 
@@ -36,7 +36,7 @@
 		display: inline-block;
 		margin-right: 15px !important;
 
-		&:before {
+		&::before {
 			background: url('../../images/give-icon-full-circle.svg');
 			width: 36px;
 			height: 36px;
@@ -47,7 +47,6 @@
 			position: relative;
 			top: 4px;
 		}
-
 	}
 
 	.give-welcome-text {
@@ -55,7 +54,6 @@
 		margin: 20px 0 30px;
 		padding: 0;
 	}
-
 }
 
 // Version Badge
@@ -64,7 +62,7 @@
 	padding-top: 150px;
 	height: 52px;
 	width: 185px;
-	color: #FFF;
+	color: #fff;
 	font-weight: bold;
 	font-size: 14px;
 	text-align: center;
@@ -82,14 +80,13 @@
 	&.give-changelog-wrap {
 		width: 1140px;
 	}
-
 }
 
 // Getting Started
 .give-welcome-content-intro {
 	font-size: 22px;
 	font-style: italic;
-	color: #8E8E8E;
+	color: #8e8e8e;
 	margin: 50px 30px 60px;
 	max-width: 1400px;
 	min-width: 1000px;
@@ -100,7 +97,7 @@
 	border: 3px solid #9199a5;
 	border-radius: 10px;
 	position: relative;
-	box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.40);
+	box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.4);
 
 	.give-ipad-showcase-inner {
 		background: #fafbfb;
@@ -113,7 +110,6 @@
 		height: auto;
 		max-width: 100%;
 	}
-
 }
 
 // Feature section
@@ -136,7 +132,7 @@
 	}
 
 	&__step2 {
-		background: #FFF;
+		background: #fff;
 	}
 
 	span.dashicons {
@@ -149,7 +145,6 @@
 	.give-feature-section-item {
 		display: flex;
 		width: 50%;
-
 
 		&__container {
 			padding: 0 60px 0 0;
@@ -167,20 +162,19 @@
 			margin: 0 0 20px;
 
 			> .give-feature-section-item-number {
-				background: #FFF;
+				background: #fff;
 				width: 40px;
 				height: 40px;
 				margin: 0 10px 0 0;
 				padding: 0;
 				line-height: 40px;
 				text-align: center;
-				color: #777777;
+				color: #777;
 				box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 				border-radius: 50%;
 				display: inline-block;
 				font-size: 22px;
 			}
-
 		}
 
 		p {
@@ -191,9 +185,7 @@
 			font-size: 12px !important;
 			line-height: 16px;
 		}
-
 	}
-
 
 	.give-feature-btns {
 		margin: 30px 0 20px;
@@ -207,9 +199,7 @@
 			font-size: 15px;
 			line-height: 30px;
 		}
-
 	}
-
 }
 
 // Social Media
@@ -225,10 +215,9 @@
 	}
 }
 
-
 // Welcome widgets on Changelog and Getting Started
 .give-welcome-widgets {
-	background: #FFF;
+	background: #fff;
 	text-align: center;
 	padding: 100px 0 160px;
 
@@ -253,9 +242,7 @@
 			margin-top: 10px;
 			font-size: 15px;
 		}
-
 	}
-
 
 	&__col {
 		float: left;
@@ -267,7 +254,7 @@
 			font-size: 22px;
 			font-weight: 500;
 
-			&:before {
+			&::before {
 				background: url('../../images/admin/happy-face.svg') no-repeat center top transparent;
 				opacity: 0.3;
 				content: ' ';
@@ -277,24 +264,22 @@
 				font-size: 80px;
 				@include easing-transition();
 			}
-
 		}
 
 		p {
 			font-size: 13px;
 		}
 
-		&:hover h3:before {
+		&:hover h3::before {
 			opacity: 0.45;
 		}
-
 	}
 
-	&__addons h3:before {
+	&__addons h3::before {
 		background: url('../../images/admin/shopping-cart.svg') no-repeat center top transparent;
 	}
 
-	&__documentation h3:before {
+	&__documentation h3::before {
 		background: url('../../images/admin/docs-book.svg') no-repeat center top transparent;
 	}
 
@@ -307,8 +292,6 @@
 		font-weight: bold;
 		font-size: 15px;
 	}
-
-
 }
 
 //Credits
@@ -335,7 +318,6 @@
 			margin: 3px 0 0;
 			font-weight: bold;
 		}
-
 	}
 }
 
@@ -344,7 +326,7 @@
 	margin: 10px 0 15px 0;
 	padding: 10px 15px 15px;
 	background: #f1f1f1;
-	border: 1px solid #DDD;
+	border: 1px solid #ddd;
 	max-width: 900px;
 
 	.give-newsletter-intro {
@@ -363,9 +345,8 @@
 		}
 	}
 
-
-	input[type="email"],
-	input[type="text"] {
+	input[type='email'],
+	input[type='text'] {
 		width: 100%;
 		height: 36px;
 	}
@@ -389,12 +370,10 @@
 			padding: 2px;
 		}
 	}
-
 }
 
 // Changelog.
 .give-changelog-wrap {
-
 	.give-changelog {
 		max-height: 510px;
 		margin: 0 0 100px 30px;
@@ -404,7 +383,7 @@
 		font-size: 18px;
 		line-height: 28px;
 		background: #fff;
-		border: 1px solid #DDD;
+		border: 1px solid #ddd;
 
 		br:first-child {
 			display: none;
@@ -423,37 +402,32 @@
 			+ br {
 				display: none;
 			}
-
 		}
-
 	}
 }
 
 // Removes the bottom gray border added by WP core.
 .dashboard_page_give-getting-started,
 .dashboard_page_give-changelog {
-
 	#wpbody-content {
 		padding-bottom: 0;
 	}
-
 }
 
 // Connect with PayPal button.
 #give-paypal-connect {
-
-	background: #039CDE;
-	color: #FFF;
+	background: #039cde;
+	color: #fff;
 	font-size: 14px;
 	line-height: 30px;
 	font-weight: bold;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	box-shadow: none;
 	text-decoration: none;
 	padding: 8px 20px;
 	border-radius: 40px;
 
-	span:before {
+	span::before {
 		content: ' ';
 		width: 16px;
 		height: 16px;

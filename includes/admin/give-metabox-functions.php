@@ -63,6 +63,7 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_{$field['type']}";
 			break;
 
+		case 'hidden':
 		case 'levels_id':
 			$func_name = "{$func_name_prefix}_hidden_input";
 			break;
@@ -1250,8 +1251,17 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
-			$repeater_field_values = give_get_meta( $thepostid, $fields['id'], true );
-			$header_title          = isset( $fields['options']['header_title'] )
+			// Get value.
+			$repeater_field_values = ! empty( $fields['attributes']['value'] )
+				? $fields['attributes']['value']
+				: give_get_meta( $thepostid, $fields['id'], true );
+
+			// Setup default value.
+			if ( empty( $repeater_field_values ) && ! empty( $fields['default'] ) ) {
+				$repeater_field_values = $fields['default'];
+			}
+
+			$header_title = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
 				: esc_attr__( 'Group', 'give' );
 

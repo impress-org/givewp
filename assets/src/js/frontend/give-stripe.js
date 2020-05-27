@@ -1,6 +1,7 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
+
 let stripe = Stripe( give_stripe_vars.publishable_key );
 
 if ( give_stripe_vars.stripe_account_id ) {
@@ -79,8 +80,10 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			giveStripeUnmountCardElements( globalCardElements[ idPrefix ] );
 
 			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway' ).value === 'stripe' ) {
-				// Mount card elements when stripe is the selected gateway.
-				giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
+				setTimeout( function() {
+					// Mount card elements when stripe is the selected gateway.
+					giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
+				}, 100 );
 			}
 
 			// Convert normal fields to float labels.

@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Generates PDF report on donations and income for all forms for the current year.
  *
- * @since  1.0
- *
  * @param string $data Data.
+ *
+ * @since  1.0
  *
  * @uses   give_pdf
  */
@@ -43,7 +43,7 @@ function give_generate_pdf( $data ) {
 
 	$daterange = utf8_decode(
 		sprintf(
-			/* translators: 1: start date 2: end date */
+		/* translators: 1: start date 2: end date */
 			__( '%1$s to %2$s', 'give' ),
 			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
 			date_i18n( give_date_format() )
@@ -57,17 +57,10 @@ function give_generate_pdf( $data ) {
 	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
 	$custom_font  = 'dejavusans';
 	$font_style   = '';
-	$font_path    = '';
-
-	if ( file_exists( GIVE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-		$font_path = GIVE_PLUGIN_DIR . '/vendor/tecnickcom/tcpdf/fonts/CODE2000.TTF';
-	} else {
-		$font_path = GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF';
-	}
+	$font_path    = GIVE_PLUGIN_DIR . '/vendor/tecnickcom/tcpdf/fonts/CODE2000.TTF';
 
 	if (
 		file_exists( $font_path ) &&
-
 		// RIAL exist for backward compatibility.
 		in_array( give_get_currency(), array( 'RIAL', 'RUB', 'IRR' ) )
 	) {
@@ -226,13 +219,13 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * Draws the sales and earnings chart for the PDF report and then retrieves the
  * URL of that chart to display on the PDF Report.
  *
- * @since  1.1.4.0
+ * @return string $chart->getUrl() URL for the Google Chart
  * @uses   GoogleChart
  * @uses   GoogleChartData
  * @uses   GoogleChartShapeMarker
  * @uses   GoogleChartTextMarker
  * @uses   GoogleChartAxis
- * @return string $chart->getUrl() URL for the Google Chart
+ * @since  1.1.4.0
  */
 function give_draw_chart_image() {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/googlechartlib/GoogleChart.php';

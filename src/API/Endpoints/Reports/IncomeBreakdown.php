@@ -21,7 +21,7 @@ class IncomeBreakdown extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = array();
+		$dataset = [];
 
 		switch ( true ) {
 			case ( $diff->days > 365 ):
@@ -45,8 +45,8 @@ class IncomeBreakdown extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = array();
-		$income   = array();
+		$tooltips = [];
+		$income   = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -78,13 +78,13 @@ class IncomeBreakdown extends Endpoint {
 					$periodLabel = $periodEnd->format( 'F j, Y' );
 			}
 
-			$income[] = array(
+			$income[] = [
 				__( 'Date', 'give' )      => $periodLabel,
 				__( 'Donors', 'give' )    => $donorsForPeriod,
 				__( 'Donations', 'give' ) => $incomeForPeriod,
 				__( 'Refunds', 'give' )   => $refundsForPeriod,
 				__( 'Net', 'give' )       => $netForPeriod,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -102,7 +102,7 @@ class IncomeBreakdown extends Endpoint {
 		$income      = 0;
 		$refundTotal = 0;
 		$refunds     = 0;
-		$donors      = array();
+		$donors      = [];
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->date > $startStr && $payment->date < $endStr ) {
@@ -125,12 +125,13 @@ class IncomeBreakdown extends Endpoint {
 
 		$unique = array_unique( $donors );
 
-		return array(
-			'income'  => give_currency_filter( give_format_amount( $income ), array( 'decode_currency' => true ) ),
+		return [
+			'income'  => give_currency_filter( give_format_amount( $income ), [ 'decode_currency' => true ] ),
 			'donors'  => count( $unique ),
 			'refunds' => $refunds,
-			'net'     => give_currency_filter( give_format_amount( $income - $refundTotal ), array( 'decode_currency' => true ) ),
-		);
+			'net'     => give_currency_filter( give_format_amount( $income - $refundTotal ), [ 'decode_currency' => true ] ),
+
+		];
 	}
 
 }

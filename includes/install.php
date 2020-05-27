@@ -99,8 +99,6 @@ function give_run_install() {
 	$api->add_endpoint();
 	update_option( 'give_default_api_version', 'v' . $api->get_version(), false );
 
-	flush_rewrite_rules();
-
 	// Create databases.
 	__give_register_tables();
 
@@ -161,6 +159,9 @@ function give_run_install() {
 	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
 		return;
 	}
+
+	// Flush rewrite rules.
+	flush_rewrite_rules();
 
 	// Add the transient to redirect.
 	Give_Cache::set( '_give_activation_redirect', true, 30, true );
@@ -380,6 +381,7 @@ function give_get_default_settings() {
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 
 		'donor_default_user_role'                     => 'give_donor',
+		Give()->routeForm->getOptionName()            => 'give',
 
 	);
 

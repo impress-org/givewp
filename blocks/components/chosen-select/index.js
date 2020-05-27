@@ -1,5 +1,5 @@
 /**
- * Wordpress dependencies
+ * WordPress dependencies
  */
 const { Component } = wp.element;
 const { BaseControl } = wp.components;
@@ -10,8 +10,6 @@ const { BaseControl } = wp.components;
 class ChosenSelect extends Component {
 	constructor( props ) {
 		super( props );
-
-		this.state = {};
 
 		this.saveSetting = this.saveSetting.bind( this );
 		this.saveState = this.saveState.bind( this );
@@ -30,7 +28,11 @@ class ChosenSelect extends Component {
 	}
 
 	componentDidMount() {
+		const { value } = this.props;
+
 		this.$el = jQuery( this.el );
+		this.$el.val( value );
+
 		this.$input = this.$el.chosen( {
 			width: '100%',
 		} ).data( 'chosen' );

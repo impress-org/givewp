@@ -143,6 +143,16 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Form Page URL Prefix', 'give' ),
+							'desc'    => sprintf(
+								__( 'This slug will be used as a base for the iframe URL that contains all form templates besides the legacy form template. Currently the iframe URLs look like %1$s. This options adds a rewrite rule that transforms the URL structure to a set of query vars. If you modify this URL prefix please ensure it is unique as it can cause a 404 error if a similar URL already exists.', 'give' ),
+								'<code>' . trailingslashit( home_url() ) . Give()->routeForm->getBase() . '/{form-slug}</code>'
+							),
+							'id'      => Give()->routeForm->getOptionName(),
+							'type'    => 'text',
+							'default' => Give()->routeForm->getBase(),
+						),
+						array(
 							'name'        => 'GiveWP Cache',
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),

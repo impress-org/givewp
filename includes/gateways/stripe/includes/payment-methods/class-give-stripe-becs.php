@@ -4,7 +4,7 @@
  *
  * @package    Give
  * @subpackage Stripe Core
- * @copyright  Copyright (c) 2019, GiveWP
+ * @copyright  Copyright (c) 2020, GiveWP
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
@@ -27,7 +27,6 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 	 */
 	class Give_Stripe_Becs extends Give_Stripe_Gateway {
 
-
 		/**
 		 * Give_Stripe_Becs constructor.
 		 *
@@ -40,12 +39,16 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 
 			parent::__construct();
 
+			// Setup Error Messages.
+			$this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+			$this->errorMessages['accountNotConfigured']      = esc_html__( 'Mandate form fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+
 			// Remove CC fieldset.
 			add_action( 'give_stripe_becs_cc_form', '__return_false' );
 
 			add_action( 'give_stripe_becs_cc_form', [ $this, 'add_mandate_form' ], 10, 3 );
 		}
-
 
 		/**
 		 * Stripe BECS uses it's own mandate form.
@@ -63,12 +66,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 		 * @return string $form
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
-
-			$id_prefix       = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-			$publishable_key = give_stripe_get_publishable_key();
-			$secret_key      = give_stripe_get_secret_key();
-
 			ob_start();
+
+			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 			do_action( 'give_before_cc_fields', $form_id ); ?>
 
@@ -87,47 +87,11 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					<?php
 				}
 
-				if (
-					! is_ssl() &&
-					! give_is_test_mode() &&
-					(
-						empty( $publishable_key ) ||
-						empty( $secret_key )
-					)
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} elseif (
-					empty( $publishable_key ) ||
-					empty( $secret_key )
-				) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because Stripe is not connected.', 'give' )
-						)
-					);
-				} elseif ( ! is_ssl() && ! give_is_test_mode() ) {
-					Give()->notices->print_frontend_notice(
-						sprintf(
-							'<strong>%1$s</strong> %2$s',
-							esc_html__( 'Notice:', 'give' ),
-							esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' )
-						)
-					);
-				} else {
+				if ( $this->canShowFields() ) {
 					?>
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
-							<?php echo __( 'Bank Account', 'give' ); ?>
-							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
+							<?php esc_html_e( 'Bank Account', 'give' ); ?>
 						</label>
 						<div
 							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
@@ -145,26 +109,14 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					</div>
 					<?php
 					/**
-					 * This action hook is used to display content after the Credit Card expiration field.
-					 *
-					 * Note: Kept this hook as it is.
+					 * This action hook is used to display content after the Stripe BECS field.
 					 *
 					 * @param int   $form_id Donation Form ID.
 					 * @param array $args    List of additional arguments.
 					 *
-					 * @since 2.5.0
+					 * @since 2.6.3
 					 */
-					do_action( 'give_after_cc_expiration', $form_id, $args );
-
-					/**
-					 * This action hook is used to display content after the Credit Card expiration field.
-					 *
-					 * @param int   $form_id Donation Form ID.
-					 * @param array $args    List of additional arguments.
-					 *
-					 * @since 2.5.0
-					 */
-					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
+					do_action( 'give_after_becs_fields', $form_id, $args );
 				}
 				?>
 			</fieldset>
@@ -283,7 +235,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					/**
 					 * This filter hook is used to update the payment intent arguments.
 					 *
-					 * @since 2.5.0
+					 * @since 2.6.3
 					 */
 					$intent_args = apply_filters(
 						'give_stripe_create_intent_args',

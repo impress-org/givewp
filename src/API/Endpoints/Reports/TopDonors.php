@@ -25,13 +25,13 @@ class TopDonors extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d 23:i:s' ), 'date', -1 );
 
-		$donors = array();
+		$donors = [];
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
 				$donors[ $payment->donor_id ]['type']      = 'donor';
 				$donors[ $payment->donor_id ]['earnings']  = isset( $donors[ $payment->donor_id ]['earnings'] ) ? $donors[ $payment->donor_id ]['earnings'] += $payment->total : $payment->total;
-				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], array( 'sanitize' => false ) ), array( 'decode_currency' => true ) );
+				$donors[ $payment->donor_id ]['total']     = give_currency_filter( give_format_amount( $donors[ $payment->donor_id ]['earnings'], [ 'sanitize' => false ] ), [ 'decode_currency' => true ] );
 				$donors[ $payment->donor_id ]['donations'] = isset( $donors[ $payment->donor_id ]['donations'] ) ? $donors[ $payment->donor_id ]['donations'] += 1 : 1;
 				$countLabel                                = _n( 'Donation', 'Donations', $donors[ $payment->donor_id ]['donations'], 'give' );
 				$donors[ $payment->donor_id ]['count']     = $donors[ $payment->donor_id ]['donations'] . ' ' . $countLabel;

@@ -146,6 +146,12 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.6.3', '<' ):
 			give_v263_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.7.0', '<' ):
+			// Flush rewrite rules. It will help to store register route for embed form.
+			flush_rewrite_rules();
+
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {

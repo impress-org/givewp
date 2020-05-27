@@ -68,7 +68,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							/* translators: %s: http://docs.givewp.com/form-floating-labels */
 							'desc'    => sprintf(
 								wp_kses(
-									__( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ),
+									__( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself. This option only affects legacy forms, as floating labels are not a display option in new form templates.', 'give' ),
 									array(
 										'a' => array(
 											'href'   => array(),
@@ -164,7 +164,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => __( 'Form Single Views', 'give' ),
-							'desc'    => __( 'By default, all donation form have single views enabled which creates a specific URL on your website for that form. This option disables the singular posts from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
+							'desc'    => __( 'By default, all donation forms have single views enabled which creates a specific URL on your website for that form. This option disables the singular posts from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if disabled.', 'give' ),
 							'id'      => 'forms_singular',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',

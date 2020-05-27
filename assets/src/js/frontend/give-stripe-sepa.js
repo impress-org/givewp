@@ -188,7 +188,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			ibanCreateArgs.iconStyle = iconStyle;
 			ibanCreateArgs.hideIcon = ( 'disabled' !== hideIcon );
 			ibanCreateArgs.placeholderCountry = placeholderCountry;
-
 		}
 
 		const ibanElement = elements.create(

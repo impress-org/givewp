@@ -10,6 +10,13 @@
  */
 
 // Exit if accessed directly.
+use Give\Views\IframeView;
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Helpers\Frontend\ConfirmDonation;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -59,7 +66,7 @@ function give_donation_history( $atts, $content = false ) {
 	) {
 		ob_start();
 
-		echo give_receipt_shortcode( array() );
+		echo do_shortcode( ShortcodeUtils::getReceiptShortcodeFromConfirmationPage() );
 
 		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
@@ -138,9 +145,28 @@ function give_form_shortcode( $atts ) {
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
+	// Set form id.
+	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
+	$formId     = absint( $atts['id'] );
+
 	// Fetch the Give Form.
 	ob_start();
-	give_get_donation_form( $atts );
+
+	if ( ! FormUtils::isLegacyForm( $formId ) ) {
+		$showIframeInModal = 'button' === $atts['display_style'];
+		$iframeView        = new IframeView();
+
+		ConfirmDonation::storePostedDataInDonationSession();
+
+		echo $iframeView->setFormId( $formId )
+				   ->showInModal( $showIframeInModal )
+				   ->setButtonTitle( $atts['continue_button_title'] )
+				   ->setButtonColor( $atts['button_color'] )
+				   ->render();
+	} else {
+		give_get_donation_form( $atts );
+	}
+
 	$final_output = ob_get_clean();
 
 	return apply_filters( 'give_donate_form', $final_output, $atts );
@@ -977,8 +1003,8 @@ function give_form_grid_shortcode( $atts ) {
 				'end_size'  => 1,
 				'mid_size'  => 2,
 				'prev_next' => true,
-				'prev_text' => __( '« Previous', 'give' ),
-				'next_text' => __( 'Next »', 'give' ),
+				'prev_text' => __( '&laquo; Previous', 'give' ),
+				'next_text' => __( 'Next &raquo;', 'give' ),
 				'type'      => 'plain',
 				'add_args'  => false,
 			);
@@ -995,3 +1021,4 @@ function give_form_grid_shortcode( $atts ) {
 }
 
 add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );
+

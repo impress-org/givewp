@@ -22,6 +22,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_stripe_frontend_scripts() {
 
+	/**
+	 * Bailout, if Stripe account is not configured.
+	 *
+	 * We are not loading any scripts if Stripe account is not configured to avoid an intentional console error
+	 * for Stripe integration.
+	 */
+	if ( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
+		return;
+	}
+
 	// Get publishable key.
 	$publishable_key = give_stripe_get_publishable_key();
 
@@ -92,7 +102,7 @@ function give_stripe_frontend_scripts() {
 
 	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
 	if ( give_is_gateway_active( 'stripe' ) || $stripe_card_update ) {
-		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
+		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js', 'jquery' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 	}
 

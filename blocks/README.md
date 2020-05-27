@@ -1,12 +1,11 @@
 Blocks
 =======
 
-Want to add new blocks to Give this document outlines guidelines for the same.
-
+This document outlines guidelines for adding additional blocks to the GiveWP plugin.
 
 ## Structure
 
-Following outlines the files & folders
+The following outlines the files and directory structure:
 
 ```
 ├── blocks
@@ -32,20 +31,21 @@ Following outlines the files & folders
 
 ## :page_facing_up: load.js
 
-Main entry file responsible for loading various blocks, each new block needs to be added here.
+This is the main entry file responsible for loading various blocks, each new block needs to be added here.
 
-### example
+### Example
 
 ```
 import '/my-block/index'
 ```  
+
 ## :open_file_folder:  components
 
 This directory includes a library of generic React components to be used for creating common UI elements shared between blocks. Identify and extract reusable components as much possible.
 
 **:open_file_folder: my-component** 
 
-Each component is organized in its parent folder to hold various files: page_facing_up: & folder.
+Each component will be organized in its parent folder to hold various files: page_facing_up: & folder.
 
 Following outlines the possible structure.
 
@@ -58,22 +58,22 @@ Following outlines the possible structure.
 
 **:page_facing_up: index.js**
 
-Its the main file building the component, a component can be made of a single file or multiple files.
-In case the component is complex it can be split across files and index.js serves as a loader.
+This is the main script building the component. A component can be made of a single file or multiple files.
+In the case that the component is more complex it can be split across files and index.js serves as a loader.
 
 **:page_facing_up: style.scss**
 
-All the styling required by the component 
+All the styling required by the component.
 
 **:page_facing_up: README.md**
 
-Each component added should ship the documentation stating usage & example.
+Each component added should ship the documentation stating usage and at least one example.
 
 ## :open_file_folder: my-block
 
-This directory includes all the files that makeup block.
+This directory includes all the files that makeup a block.
 
-Following outlines the possible structure.
+The following outlines the possible structure.
 
 ```
 ├── my-block
@@ -124,4 +124,4 @@ Inspector controls extracted to files as wrapper component.
 
 ## Note
 
-Based on the requirement may contain other files & folder.  
+Based on the requirement this may contain other files & folders.
