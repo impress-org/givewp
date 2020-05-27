@@ -283,6 +283,10 @@ a.give-stripe-connect-temp-dismiss:active {
 .give-stripe-account-name-wrap {
 	width: 50%;
 	display: inline-block;
+
+	span {
+		display: inline-block;
+	}
 }
 
 .give-stripe-account-email {
@@ -290,7 +294,7 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-account-actions {
-	width: 50%;
+	width: 30%;
 	float: right;
 	text-align: right;
 
