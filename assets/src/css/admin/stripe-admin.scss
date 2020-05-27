@@ -289,12 +289,8 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-.give-stripe-account-email {
-	margin: 0 5px !important;
-}
-
 .give-stripe-account-actions {
-	width: 30%;
+	width: 40%;
 	float: right;
 	text-align: right;
 
@@ -307,6 +303,11 @@ a.give-stripe-connect-temp-dismiss:active {
 		position: relative;
 		top: -1px;
 		margin-right: 0;
+	}
+
+	span {
+		display: inline-block;
+		padding: 5px 0 0 0;
 	}
 }
 
@@ -326,9 +327,12 @@ a.give-stripe-connect-temp-dismiss:active {
 	color: #23282d;
 	font-weight: 600;
 	font-size: 15px;
+	margin-right: 5px;
 }
 
 .give-stripe-account-edit {
+	padding: 5px 0 0 0;
+
 	> a {
 		margin: 0 10px;
 	}
