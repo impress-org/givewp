@@ -242,15 +242,19 @@ class IframeView {
 	 */
 	private function getIframeURL() {
 		$query_string           = array_map( 'give_clean', wp_parse_args( $_SERVER['QUERY_STRING'] ) );
-		$donation_history       = give_get_purchase_session();
+		$donationHistory        = give_get_purchase_session();
 		$hasAction              = ! empty( $query_string['giveDonationAction'] );
 		$this->autoScroll       = absint( $hasAction );
-		$donationFormHasSession = $this->formId === absint( $donation_history['post_data'] ['give-form-id'] );
+		$donationFormHasSession = null;
+
+		if ( $donationHistory ) {
+			$donationFormHasSession = $this->formId === absint( $donationHistory['post_data'] ['give-form-id'] );
+		}
 
 		// Do not pass donation acton by query param if does not belong to current form.
 		if (
 			$hasAction &&
-			! empty( $donation_history ) &&
+			! empty( $donationHistory ) &&
 			! $donationFormHasSession
 		) {
 			unset( $query_string['giveDonationAction'] );
