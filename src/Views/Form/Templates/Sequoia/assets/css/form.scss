@@ -754,39 +754,6 @@ p {
 				}
 			}
 
-			> li.give_purchase_form_wrap-clone {
-				background-color: transparent;
-				margin-right: 0;
-
-				[id*='give_cc_fields'],
-				.no-fields {
-					background: #fbfbfb;
-					padding: 6px 16px;
-
-					p {
-						color: #333;
-					}
-				}
-
-				#give_cc_fields {
-					padding: 16px;
-				}
-
-				fieldset {
-					ol {
-						list-style: none;
-						padding-left: 0;
-
-						li {
-							font-size: 15px;
-							line-height: 24px;
-							margin-top: 8px;
-							margin-bottom: 10px;
-						}
-					}
-				}
-			}
-
 			input[type='radio'] {
 				display: none !important;
 			}
@@ -829,6 +796,14 @@ p {
 
 		fieldset {
 			padding: 0;
+		}
+
+		.cc-address {
+			margin-bottom: 0;
+		}
+
+		.no-fields {
+			margin-bottom: 8px;
 		}
 	}
 	#give_purchase_submit {
