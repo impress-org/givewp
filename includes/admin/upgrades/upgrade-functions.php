@@ -148,7 +148,9 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.7.0', '<' ):
-			Give()->routeForm->addRule();
+			// Flush rewrite rules. It will help to store register route for embed form.
+			flush_rewrite_rules();
+
 			$did_upgrade = true;
 	}
 
