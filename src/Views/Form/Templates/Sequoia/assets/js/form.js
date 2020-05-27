@@ -404,6 +404,11 @@
 			$( '.give-mailchimp-fieldset' ).addClass( 'active' );
 		}
 
+		// If constant contact is opted in by default, add border on load
+		if ( $( 'input[name="give_constant_contact_signup"]' ).prop( 'checked' ) === true ) {
+			$( '.give-constant-contact-fieldset' ).addClass( 'active' );
+		}
+
 		if ( navigator.currentStep === 2 ) {
 			$( '.give-form-templates' ).css( 'min-height', '' );
 		}
