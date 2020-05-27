@@ -1229,11 +1229,11 @@ function give_stripe_get_iban_placeholder_country() {
 }
 
 /**
- * This helper function is used get stored value of whether we need to hide icon for BECS Bank Account element or not.
+ * This helper function is used get stored value of whether we need to hide icon for Bank Account element or not.
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.6.3
+ * @since 2.6.1
  *
  * @return string
  */
@@ -1245,11 +1245,11 @@ function give_stripe_becs_hide_icon( $form_id ) {
 }
 
 /**
- * This helper function is used get BECS element icon style.
+ * This helper function is used get IBAN element icon style.
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.6.3
+ * @since 2.6.1
  *
  * @return string
  */

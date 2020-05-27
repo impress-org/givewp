@@ -712,7 +712,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					if ( give_stripe_is_connected() ) :
 						$site_url            = get_site_url();
 						$stripe_user_id      = give_get_option( 'give_stripe_user_id' );
-						$modal_title         = '<strong>' . esc_html__( 'You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.', 'give' ) . '</strong>';
+						$modal_title         = __( '<strong>You are connected! Now this is important: Please now configure your Stripe webhook to finalize the setup.</strong>', 'give' );
 						$modal_first_detail  = sprintf(
 							'%1$s %2$s',
 							__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),

@@ -1,5 +1,5 @@
 /**
- * WordPress dependencies
+ * Wordpress dependencies
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
