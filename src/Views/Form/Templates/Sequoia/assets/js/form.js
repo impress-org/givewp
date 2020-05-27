@@ -196,24 +196,16 @@
 					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
 				} );
 
-				// If mailchimp is opted in by default, add border on load
-				if ( $( 'input[name="give_mailchimp_signup"]' ).prop( 'checked' ) === true ) {
-					$( '.give-mailchimp-fieldset' ).addClass( 'active' );
-				}
-
-				// Persist mailchimp input border when selected
-				$( '.give-mc-message-text' ).on( 'click touchend', function() {
-					$( '.give-mailchimp-fieldset' ).toggleClass( 'active' );
+				setupCheckbox( {
+					container: '.give-mailchimp-fieldset',
+					label: '.give-mc-message-text',
+					input: 'input[name="give_mailchimp_signup"]',
 				} );
 
-				// If constant contact is opted in by default, add border on load
-				if ( $( 'input[name="give_constant_contact_signup"]' ).prop( 'checked' ) === true ) {
-					$( '.give-constant-contact-fieldset' ).addClass( 'active' );
-				}
-
-				// Persist constant contact input border when selected
-				$( '.give-constant-contact-fieldset span' ).on( 'click touchend', function() {
-					$( '.give-constant-contact-fieldset' ).toggleClass( 'active' );
+				setupCheckbox( {
+					container: '.give-constant-contact-fieldset',
+					label: '.give-constant-contact-fieldset span',
+					input: 'input[name="give_constant_contact_signup"]',
 				} );
 
 				// Show Sequoia loader on click/touchend
@@ -399,15 +391,17 @@
 	 * @param {number} formID Form ID
 	 */
 	function refreshPaymentInformationSection( ev, response, formID ) {
-		// If mailchimp is opted in by default, add border on load
-		if ( $( 'input[name="give_mailchimp_signup"]' ).prop( 'checked' ) === true ) {
-			$( '.give-mailchimp-fieldset' ).addClass( 'active' );
-		}
+		setupCheckbox( {
+			container: '.give-mailchimp-fieldset',
+			label: '.give-mc-message-text',
+			input: 'input[name="give_mailchimp_signup"]',
+		} );
 
-		// If constant contact is opted in by default, add border on load
-		if ( $( 'input[name="give_constant_contact_signup"]' ).prop( 'checked' ) === true ) {
-			$( '.give-constant-contact-fieldset' ).addClass( 'active' );
-		}
+		setupCheckbox( {
+			container: '.give-constant-contact-fieldset',
+			label: '.give-constant-contact-fieldset span',
+			input: 'input[name="give_constant_contact_signup"]',
+		} );
 
 		if ( navigator.currentStep === 2 ) {
 			$( '.give-form-templates' ).css( 'min-height', '' );
@@ -473,6 +467,24 @@
 					break;
 			}
 			$( this ).append( `<i class="${ icon }"></i>` );
+		} );
+	}
+
+	/**
+	 * Setup prominent checkboxes (that use persistent borders on select)
+	 *
+	 * @since 2.7.0
+	 * @param {object} args Argument object containing: container, label, input selectors
+	 */
+	function setupCheckbox( { container, label, input } ) {
+		// If checkbox is opted in by default, add border on load
+		if ( $( input ).prop( 'checked' ) === true ) {
+			$( container ).addClass( 'active' );
+		}
+
+		// Persist checkbox input border when selected
+		$( label ).on( 'click touchend', function() {
+			$( container ).toggleClass( 'active' );
 		} );
 	}
 
