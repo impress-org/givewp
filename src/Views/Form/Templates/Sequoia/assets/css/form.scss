@@ -966,7 +966,7 @@ form.give-form .form-row input[type='password'],
 form.give-form .form-row input[type='url'] {
 	font-family: 'Montserrat', sans-serif;
 	background: #fff;
-	border: 1px solid #b8b8b8;
+	border: 1px solid #b8b8b8 !important;
 	box-sizing: border-box;
 	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289);
 	border-radius: 4px !important;
