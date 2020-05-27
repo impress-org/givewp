@@ -330,12 +330,19 @@
 	 * @since 2.7.0
 	 */
 	function moveFieldsUnderPaymentGateway() {
+		// Handle "Donate Now" button placement
 		if ( ! $( '#give-payment-mode-select' ).next().hasClass( 'give-submit' ) ) {
 			$( '#give-payment-mode-select' ).after( $( '#give_purchase_form_wrap .give-submit' ) );
 		} else {
 			$( '#give_purchase_form_wrap .give-submit' ).remove();
 		}
+
+		// Move purchase fields (credit card, billing, etc)
 		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
+
+		// Add gateway class to fields wrapper, indicating which gateway is active
+		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
+		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
 	}
 
 	/**
