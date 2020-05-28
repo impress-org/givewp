@@ -65,10 +65,19 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 		}
 
+		/**
+		 * Render redirection notice.
+		 *
+		 * @return bool
+		 * @since 2.7.0
+		 */
 		public function output_redirect_notice() {
-			if ( ! FormUtils::isLegacyForm() ) {
-				printf(
-					'
+			if ( FormUtils::isLegacyForm() ) {
+				return false;
+			}
+
+			printf(
+				'
 					<fieldset class="no-fields">
 						<div style="display: flex; justify-content: center; margin-top: 20px;">
 						<svg width="173" height="73" viewBox="0 0 173 73" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -86,15 +95,13 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 							<b>%2$s</b> %3$s
 						</p>
 					</fieldset>
-				',
-					__( 'Make your donations quickly and securely with Stripe', 'give' ),
-					__( 'How it works:', 'give' ),
-					__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' )
-				);
-				return true;
-			} else {
-				return false;
-			}
+					',
+				esc_html__( 'Make your donations quickly and securely with Stripe', 'give' ),
+				esc_html__( 'How it works:', 'give' ),
+				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' )
+			);
+
+			return true;
 		}
 
 		/**
