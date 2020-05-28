@@ -84,20 +84,6 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
-		add_action( 'give_embed_head', 'rel_canonical' );
-		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-		add_action( 'give_embed_head', 'wp_resource_hints', 2 );
-		add_action( 'give_embed_head', 'feed_links', 2 );
-		add_action( 'give_embed_head', 'feed_links_extra', 3 );
-		add_action( 'give_embed_head', 'rsd_link' );
-		add_action( 'give_embed_head', 'wlwmanifest_link' );
-		add_action( 'give_embed_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-		add_action( 'give_embed_head', 'noindex', 1 );
-		add_action( 'give_embed_head', 'wp_generator' );
-		add_action( 'give_embed_head', 'rel_canonical' );
-		add_action( 'give_embed_head', 'wp_shortlink_wp_head', 10, 0 );
-		add_action( 'give_embed_head', 'wp_site_icon', 99 );
-
 		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
 		add_action( 'give_embed_head', [ $this, 'handleEnqueueScripts' ], 2 );
 		add_action( 'give_embed_head', 'wp_print_styles', 8 );
