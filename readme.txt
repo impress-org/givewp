@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,17 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.6.3: May 19th, 2020 =
+* New: Added a new payment gateway for Stripe called BECS Direct Debit payments for Australia. This includes support for one time and subscription payments. Note: Subscription payments are only supported via the Recurring Donations add-on. [#4590](https://github.com/impress-org/givewp/issues/4590)
+* Fix: Improved Stripe's error handling so that the error output is more descriptive of the actual problem and donations are not marked as complete if the card is denied by Stripe. [#4689](https://github.com/impress-org/givewp/issues/4689)
+* Fix: When viewing legacy reports and filtering data you would incorrectly be redirected to the new reports screen instead of seeing filtered report data. [#4644](https://github.com/impress-org/givewp/issues/4644)
+* Fix: The alignment of the money fields were off a few pixels on the donation form settings screen. [#4638](https://github.com/impress-org/givewp/issues/4638)
+* Fix: Modified pro license logic so that old license keys saved to the database don't cause incorrect notices to display. [#4669](https://github.com/impress-org/givewp/issues/4669)
+* Fix: Updated the country select dropdown to remove missing and incorrect countries. [#4745](https://github.com/impress-org/givewp/issues/4745)
+* Fix: Dates for the donor wall now output the properly translated date. [#4721](https://github.com/impress-org/givewp/issues/4721)
+* Fix: Several field descriptions in the plugin settings had typos and / or required clarity for better understanding. [#4649](https://github.com/impress-org/givewp/issues/4649), [#2808](https://github.com/impress-org/givewp/issues/2808)
+* Tweak: Replaced the default placeholder image that was using placehold.it image for a local image for improved support. [#4743](https://github.com/impress-org/givewp/issues/4743)
 
 = 2.6.2: April 1st, 2020 =
 * Fix: Resolved an issue with Stripe in the latest release which prevented the donation form from properly redirecting to the donation receipt page upon successful donation. [#4605](https://github.com/impress-org/givewp/issues/4605)
