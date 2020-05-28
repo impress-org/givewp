@@ -337,13 +337,13 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Bailout: Need minimum php version to load plugin.
 			if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-				add_action( 'admin_notices', array( $this, 'minimum_phpversion_notice' ) );
+				add_action( 'admin_notices', [ $this, 'minimum_phpversion_notice' ] );
 
 				return;
 			}
 
 			// Add compatibility notice for recurring and stripe support with Give 2.5.0.
-			add_action( 'admin_notices', array( $this, 'display_old_recurring_compatibility_notice' ) );
+			add_action( 'admin_notices', [ $this, 'display_old_recurring_compatibility_notice' ] );
 
 			$this->setup_constants();
 			$this->includes();
@@ -359,7 +359,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
-			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+			add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
 		}
 
 
@@ -722,12 +722,12 @@ if ( ! class_exists( 'Give' ) ) :
 				);
 
 				Give()->notices->register_notice(
-					array(
+					[
 						'id'               => 'give-compatibility-with-old-recurring',
 						'description'      => $message,
 						'dismissible_type' => 'user',
 						'dismiss_interval' => 'shortly',
-					)
+					]
 				);
 			}
 
