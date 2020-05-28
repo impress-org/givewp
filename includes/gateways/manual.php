@@ -55,10 +55,10 @@ function give_manual_form_output() {
 				<b>%2$s</b> %3$s
 			</p>
 		</fieldset>
-	',
-		__( 'Test GiveWP with the Test Donation Gateway', 'give' ),
-		__( 'How it works:', 'give' ),
-		__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.', 'give' )
+		',
+		esc_html__( 'Test GiveWP with the Test Donation Gateway', 'give' ),
+		esc_html__( 'How it works:', 'give' ),
+		esc_html__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.', 'give' )
 	);
 	return true;
 }
