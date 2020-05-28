@@ -196,7 +196,7 @@ class Give_Donor_Wall_Block {
 	}
 
 	/**
-	 * Return formatted notice when shortcode return empty string
+	 * Return formatted notice when shortcode returns an empty string
 	 *
 	 * @since 2.4.0
 	 *
