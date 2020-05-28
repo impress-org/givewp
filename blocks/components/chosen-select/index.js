@@ -1,5 +1,5 @@
 /**
- * WordPress dependencies
+ * Wordpress dependencies
  */
 const { Component } = wp.element;
 const { BaseControl } = wp.components;

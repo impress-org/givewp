@@ -1,5 +1,5 @@
 /**
- * WordPress dependencies
+ * Wordpress dependencies
  */
 const { Fragment } = wp.element;
 const ServerSideRender = wp.serverSideRender;

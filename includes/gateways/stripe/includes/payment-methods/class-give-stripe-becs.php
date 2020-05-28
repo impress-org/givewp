@@ -4,7 +4,7 @@
  *
  * @package    Give
  * @subpackage Stripe Core
- * @copyright  Copyright (c) 2020, GiveWP
+ * @copyright  Copyright (c) 2019, GiveWP
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
@@ -111,14 +111,26 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					</div>
 					<?php
 					/**
-					 * This action hook is used to display content after the Stripe BECS field.
+					 * This action hook is used to display content after the Credit Card expiration field.
+					 *
+					 * Note: Kept this hook as it is.
 					 *
 					 * @param int   $form_id Donation Form ID.
 					 * @param array $args    List of additional arguments.
 					 *
-					 * @since 2.6.3
+					 * @since 2.5.0
 					 */
-					do_action( 'give_after_becs_fields', $form_id, $args );
+					do_action( 'give_after_cc_expiration', $form_id, $args );
+
+					/**
+					 * This action hook is used to display content after the Credit Card expiration field.
+					 *
+					 * @param int   $form_id Donation Form ID.
+					 * @param array $args    List of additional arguments.
+					 *
+					 * @since 2.5.0
+					 */
+					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
 				}
 				?>
 			</fieldset>
@@ -237,7 +249,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					/**
 					 * This filter hook is used to update the payment intent arguments.
 					 *
-					 * @since 2.6.3
+					 * @since 2.5.0
 					 */
 					$intent_args = apply_filters(
 						'give_stripe_create_intent_args',

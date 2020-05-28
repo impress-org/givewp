@@ -86,6 +86,8 @@ jQuery( function( $ ) {
 			const containerId = $modal.getAttribute( 'id' ),
 				$button = document.querySelector( `.js-give-embed-form-modal-closer[data-form-id="${ containerId }"]` );
 
+			console.log( event.keyCode, $button );
+
 			$button && $button.click();
 		}
 	} );

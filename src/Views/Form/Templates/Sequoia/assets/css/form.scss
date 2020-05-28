@@ -676,18 +676,6 @@ p {
 		}
 	}
 
-	.give-gift-aid-explanation-content-more-wrap {
-		padding-bottom: 8px;
-	}
-
-	[id*='give-gift-aid-checkbox-label-wrap-'] {
-		margin-bottom: 0 !important;
-	}
-
-	.give-modal .mfp-content {
-		padding: 0 16px 16px 16px !important;
-	}
-
 	#give_error_invalid_donation_maximum,
 	#give_error_invalid_donation_amount {
 		cursor: pointer;
@@ -747,7 +735,7 @@ p {
 		legend {
 			display: none;
 		}
-		#give-gateway-radio-list {
+		ul {
 			@include before-after-content-none;
 			display: grid;
 			grid-gap: 10px;
@@ -782,7 +770,7 @@ p {
 				display: none !important;
 			}
 
-			.give-gateway-option::before {
+			label::before {
 				content: ' ';
 				position: absolute;
 				top: calc(50% - 10px);
@@ -853,11 +841,6 @@ p {
 			}
 		}
 	}
-}
-
-// Gift Aid Styles
-.give_gift_aid_address_state_label {
-	display: none !important;
 }
 
 // Fieldsets and Inputs
