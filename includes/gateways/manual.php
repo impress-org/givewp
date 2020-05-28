@@ -77,11 +77,11 @@ add_action( 'give_manual_cc_form', 'give_manual_form_output' );
 function give_manual_payment( $purchase_data ) {
 
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	// Create payment_data array
-	$payment_data = array(
+	$payment_data = [
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => intval( $purchase_data['post_data']['give-form-id'] ),
@@ -92,7 +92,7 @@ function give_manual_payment( $purchase_data ) {
 		'currency'        => give_get_currency( $purchase_data['post_data']['give-form-id'], $purchase_data ),
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
-	);
+	];
 	// Record the pending payment
 	$payment = give_insert_payment( $payment_data );
 
