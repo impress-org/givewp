@@ -277,6 +277,11 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
+							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).hasClass( 'payment' ) ) {
+								$( node ).children( '.give_errors' ).clone().prependTo( '.give-section.payment' );
+								$( node ).children( '.give_errors' ).remove();
+							}
+
 							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'payment' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
