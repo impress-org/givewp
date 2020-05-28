@@ -121,7 +121,7 @@ class LoadTemplate {
 		}
 
 		// Show new receipt view only on donation confirmation page.
-		if ( false === strpos( wp_get_referer(), untrailingslashit( FormUtils::getSuccessPageURL() ) ) ) {
+		if ( false === strpos( untrailingslashit( wp_get_referer() ), untrailingslashit( FormUtils::getSuccessPageURL() ) ) ) {
 			return;
 		}
 
