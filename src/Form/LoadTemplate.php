@@ -84,6 +84,7 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
+		add_action( 'give_embed_head', [ $this, 'noRobots' ] );
 		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
 		add_action( 'give_embed_head', [ $this, 'handleEnqueueScripts' ], 2 );
 		add_action( 'give_embed_head', 'wp_print_styles', 8 );
@@ -95,6 +96,17 @@ class LoadTemplate {
 		// Handle receipt screen template
 		add_action( 'wp_ajax_get_receipt', [ $this, 'handleReceiptAjax' ], 9 );
 		add_action( 'wp_ajax_nopriv_get_receipt', [ $this, 'handleReceiptAjax' ], 9 );
+	}
+
+	/**
+	 * Display a noindex meta tag.
+	 *
+	 * Outputs a noindex meta tag that tells web robots not to index and follow content.
+	 *
+	 * @since 2.7.0
+	 */
+	public function noRobots() {
+		echo "<meta name='robots' content='noindex,nofollow'/>\n";
 	}
 
 	/**
