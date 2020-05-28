@@ -144,17 +144,17 @@ class Give_Welcome {
 
 		switch ( $page ) {
 			case 'give-getting-started':
-				$title   = sprintf( __( 'Welcome to GiveWP %s', 'give' ), $display_version );
-				$content = __( 'Thank you for activating the latest version of Give! Welcome to the best fundraising platform for WordPress. We encourage you to check out the plugin documentation and getting started guide below.', 'give' );
+				$title   = sprintf( esc_html__( 'Welcome to GiveWP %s', 'give' ), $display_version );
+				$content = esc_html__( 'Thank you for activating the latest version of Give! Welcome to the best fundraising platform for WordPress. We encourage you to check out the plugin documentation and getting started guide below.', 'give' );
 				break;
 
 			case 'give-changelog':
-				$title   = sprintf( __( 'What\'s New in GiveWP %s', 'give' ), $display_version );
-				$content = __( 'GiveWP is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping GiveWP up to date with the latest version.', 'give' );
+				$title   = sprintf( esc_html__( 'What\'s New in GiveWP %s', 'give' ), $display_version );
+				$content = esc_html__( 'GiveWP is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping GiveWP up to date with the latest version.', 'give' );
 				break;
 
 			case 'give-credits':
-				$title   = sprintf( __( 'GitHub Contributors', 'give' ) );
+				$title   = sprintf( esc_html__( 'GitHub Contributors', 'give' ) );
 				$content = sprintf(
 					/* translators: %s: https://github.com/impress-org/give */
 					__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
@@ -175,11 +175,11 @@ class Give_Welcome {
 
 			<div class="give-welcome-header-inner">
 
-				<h1 class="give-welcome-h1"><?php esc_html_e( $title ); ?></h1>
+				<h1 class="give-welcome-h1"><?php echo $title; ?></h1>
 
 				<?php $this->social_media_elements(); ?>
 
-				<p class="give-welcome-text"><?php _e( $content ); ?></p>
+				<p class="give-welcome-text"><?php echo $content; ?></p>
 
 				<?php $this->get_newsletter(); ?>
 
