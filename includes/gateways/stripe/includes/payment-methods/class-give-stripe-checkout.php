@@ -55,12 +55,12 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$this->stripe_checkout_session = new Give_Stripe_Checkout_Session();
 
 			// Remove CC fieldset.
-			add_action( 'give_stripe_checkout_cc_form', array( $this, 'output_redirect_notice' ) );
+			add_action( 'give_stripe_checkout_cc_form', [ $this, 'output_redirect_notice' ] );
 
 			// Load the `redirect_to_checkout` function only when `redirect` is set as checkout type.
 			if ( 'redirect' === give_stripe_get_checkout_type() ) {
-				add_action( 'wp_footer', array( $this, 'redirect_to_checkout' ), 99999 );
-				add_action( 'give_embed_footer', array( $this, 'redirect_to_checkout' ), 99999 );
+				add_action( 'wp_footer', [ $this, 'redirect_to_checkout' ], 99999 );
+				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 			}
 
 		}
@@ -147,7 +147,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				if ( $stripe_customer_id ) {
 
 					// Setup the payment details.
-					$payment_data = array(
+					$payment_data = [
 						'price'           => $donation_data['price'],
 						'give_form_title' => $donation_data['post_data']['give-form-title'],
 						'give_form_id'    => $form_id,
@@ -159,7 +159,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 						'user_info'       => $donation_data['user_info'],
 						'status'          => 'pending',
 						'gateway'         => $this->id,
-					);
+					];
 
 					// Record the pending payment in Give.
 					$donation_id = give_insert_payment( $payment_data );
@@ -256,14 +256,14 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$amount = $this->format_amount( $donation_data['price'] );
 
 			// Prepare charge arguments.
-			$charge_args = array(
+			$charge_args = [
 				'amount'               => $amount,
 				'customer'             => $stripe_customer_id,
 				'currency'             => give_get_currency( $form_id ),
 				'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
 				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
 				'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
-			);
+			];
 
 			// Process the charge.
 			$charge = $this->create_charge( $donation_id, $charge_args );
@@ -302,36 +302,36 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			// Fetch whether the billing address collection is enabled in admin settings or not.
 			$is_billing_enabled = give_is_setting_enabled( give_get_option( 'stripe_collect_billing' ) );
 
-			$session_args = array(
+			$session_args = [
 				'customer'                   => $data['customer_id'],
 				'client_reference_id'        => $data['purchase_key'],
-				'payment_method_types'       => array( 'card' ),
+				'payment_method_types'       => [ 'card' ],
 				'billing_address_collection' => $is_billing_enabled ? 'required' : 'auto',
 				'mode'                       => 'payment',
-				'line_items'                 => array(
-					array(
+				'line_items'                 => [
+					[
 						'name'        => $form_name,
 						'description' => $data['description'],
 						'amount'      => $amount,
 						'currency'    => give_get_currency( $form_id ),
 						'quantity'    => 1,
-					),
-				),
-				'payment_intent_data'        => array(
+					],
+				],
+				'payment_intent_data'        => [
 					'capture_method'       => 'automatic',
 					'description'          => $donation_summary,
 					'metadata'             => $this->prepare_metadata( $donation_id ),
 					'statement_descriptor' => give_stripe_get_statement_descriptor(),
-				),
+				],
 				'submit_type'                => 'donate',
 				'success_url'                => give_get_success_page_uri(),
 				'cancel_url'                 => give_get_failed_transaction_uri(),
 				'locale'                     => give_stripe_get_preferred_locale(),
-			);
+			];
 
 			// If featured image exists, then add it to checkout session.
 			if ( ! empty( get_the_post_thumbnail( $form_id ) ) ) {
-				$session_args['line_items'][0]['images'] = array( get_the_post_thumbnail_url( $form_id ) );
+				$session_args['line_items'][0]['images'] = [ get_the_post_thumbnail_url( $form_id ) ];
 			}
 
 			// Create Checkout Session.
@@ -350,11 +350,11 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			// Redirect to show loading area to trigger redirectToCheckout client side.
 			wp_safe_redirect(
 				add_query_arg(
-					array(
+					[
 						'action'  => 'checkout_processing',
 						'session' => $session_id,
 						'id'      => $form_id,
-					),
+					],
 					$redirect_to_url
 				)
 			);
