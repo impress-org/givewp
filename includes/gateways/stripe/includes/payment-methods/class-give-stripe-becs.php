@@ -4,7 +4,7 @@
  *
  * @package    Give
  * @subpackage Stripe Core
- * @copyright  Copyright (c) 2020, GiveWP
+ * @copyright  Copyright (c) 2019, GiveWP
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
@@ -92,6 +92,8 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
 							<?php esc_html_e( 'Bank Account', 'give' ); ?>
+							<span class="give-required-indicator">*</span>
+							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'BSB Number and Account Number of your bank account.', 'give' ); ?>"></span>
 						</label>
 						<div
 							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
@@ -109,14 +111,26 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					</div>
 					<?php
 					/**
-					 * This action hook is used to display content after the Stripe BECS field.
+					 * This action hook is used to display content after the Credit Card expiration field.
+					 *
+					 * Note: Kept this hook as it is.
 					 *
 					 * @param int   $form_id Donation Form ID.
 					 * @param array $args    List of additional arguments.
 					 *
-					 * @since 2.6.3
+					 * @since 2.5.0
 					 */
-					do_action( 'give_after_becs_fields', $form_id, $args );
+					do_action( 'give_after_cc_expiration', $form_id, $args );
+
+					/**
+					 * This action hook is used to display content after the Credit Card expiration field.
+					 *
+					 * @param int   $form_id Donation Form ID.
+					 * @param array $args    List of additional arguments.
+					 *
+					 * @since 2.5.0
+					 */
+					do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
 				}
 				?>
 			</fieldset>
@@ -235,7 +249,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					/**
 					 * This filter hook is used to update the payment intent arguments.
 					 *
-					 * @since 2.6.3
+					 * @since 2.5.0
 					 */
 					$intent_args = apply_filters(
 						'give_stripe_create_intent_args',
@@ -245,7 +259,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 							'payment_method_types' => [ 'au_becs_debit' ],
 							'statement_descriptor' => give_stripe_get_statement_descriptor(),
 							'description'          => give_payment_gateway_donation_summary( $donation_data ),
-							'metadata'             => $this->prepare_metadata( $donation_id ),
+							'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
 							'customer'             => $stripe_customer_id,
 							'payment_method'       => $payment_method_id,
 							'confirm'              => true,
@@ -254,7 +268,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 								'customer_acceptance' => [
 									'type'   => 'online',
 									'online' => [
-										'ip_address' => give_get_ip(),
+										'ip_address' => give_stripe_get_ip_address(),
 										'user_agent' => give_get_user_agent(),
 									],
 								],
@@ -279,6 +293,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 						// Set Payment Intent ID as transaction ID for the donation.
 						give_set_payment_transaction_id( $donation_id, $intent->id );
 						give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+
+						// Update donation status to `processing`.
+						give_update_payment_status( $donation_id, 'processing' );
 
 						// Success. Send user to success page.
 						give_send_to_success_page();

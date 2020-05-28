@@ -3,6 +3,7 @@ namespace Give\Session;
 
 /**
  * Interface Objects
+ *
  * @package Give\Session
  */
 interface Objects {

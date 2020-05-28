@@ -38,6 +38,51 @@ class Actions {
 
 		// Setup hooks.
 		add_action( 'give_pre_form_output', [ $this, 'loadHooks' ], 1, 3 );
+
+		// Setup Stripe font Styles
+		add_filter( 'give_stripe_get_element_font_styles', [ $this, 'setupStripeFontStyles' ], 1 );
+
+		// Setup Stripe base styles
+		add_filter( 'give_stripe_get_element_base_styles', [ $this, 'setupStripeBaseStyles' ], 1 );
+
+	}
+
+	/** Set Stripe base styles consistent with Sequoia form template
+	 *
+	 * As per design requirement, we want to format Stripe elements to use Montserrat, with the same styling options as other text inputs.
+	 *
+	 * @since 2.7.0
+	 * @param object $styles
+	 * @return object
+	 */
+	public function setupStripeBaseStyles( $styles ) {
+		$styles = '{
+			"fontFamily": "Montserrat",
+			"color": "#8d8e8e",
+			"fontWeight": 400,
+			"fontSize": "14px",
+			"::placeholder": {
+			  "color": "#8d8e8e"
+			},
+			":-webkit-autofill": {
+			  "color": "#e39f48"
+			}
+		}';
+		return json_decode( $styles );
+	}
+
+	/** Set Stripe Font styles consistent with Sequoia form template
+	 *
+	 * As per design requirement, we want to format Stripe elements to use Montserrat, with the same styling options as other text inputs.
+	 *
+	 * @since 2.7.0
+	 * @param array $fontStyles
+	 * @return array
+	 */
+	public function setupStripeFontStyles( $fontStyles ) {
+		return [
+			'cssSrc' => 'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
+		];
 	}
 
 	/**

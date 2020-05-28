@@ -184,22 +184,22 @@ function give_process_paypal_ipn() {
 	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
 	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
-		$remote_post_vars = array(
+		$remote_post_vars = [
 			'method'      => 'POST',
 			'timeout'     => 45,
 			'redirection' => 5,
 			'httpversion' => '1.1',
 			'blocking'    => true,
-			'headers'     => array(
+			'headers'     => [
 				'host'         => 'www.paypal.com',
 				'connection'   => 'close',
 				'content-type' => 'application/x-www-form-urlencoded',
 				'post'         => '/cgi-bin/webscr HTTP/1.1',
 
-			),
+			],
 			'sslverify'   => false,
 			'body'        => $encoded_data_array,
-		);
+		];
 
 		// Validate the IPN.
 		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
@@ -234,10 +234,10 @@ function give_process_paypal_ipn() {
 		return;
 	}
 
-	$defaults = array(
+	$defaults = [
 		'txn_type'       => '',
 		'payment_status' => '',
-	);
+	];
 
 	$encoded_data_array = wp_parse_args( $encoded_data_array, $defaults );
 
@@ -246,11 +246,11 @@ function give_process_paypal_ipn() {
 
 	// Check for PayPal IPN Notifications and update data based on it.
 	$current_timestamp = current_time( 'timestamp' );
-	$paypal_ipn_vars   = array(
+	$paypal_ipn_vars   = [
 		'auth_status'    => isset( $api_response['body'] ) ? $api_response['body'] : 'N/A',
 		'transaction_id' => isset( $encoded_data_array['txn_id'] ) ? $encoded_data_array['txn_id'] : 'N/A',
 		'payment_id'     => $payment_id,
-	);
+	];
 	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars, false );
 	give_insert_payment_note(
 		$payment_id,
@@ -647,10 +647,10 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 
 	// Get the success url.
 	$return_url = add_query_arg(
-		array(
+		[
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment_id,
-		),
+		],
 		give_get_success_page_uri()
 	);
 
@@ -661,7 +661,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	$item_name = give_payment_gateway_item_title( $payment_data );
 
 	// Setup PayPal API params.
-	$paypal_args = array(
+	$paypal_args = [
 		'business'      => give_get_option( 'paypal_email', false ),
 		'first_name'    => $payment_data['user_info']['first_name'],
 		'last_name'     => $payment_data['user_info']['last_name'],
@@ -682,18 +682,18 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 		'page_style'    => give_get_paypal_page_style(),
 		'cbt'           => get_bloginfo( 'name' ),
 		'bn'            => 'givewp_SP',
-	);
+	];
 
 	// Add user address if present.
 	if ( ! empty( $payment_data['user_info']['address'] ) ) {
-		$default_address = array(
+		$default_address = [
 			'line1'   => '',
 			'line2'   => '',
 			'city'    => '',
 			'state'   => '',
 			'zip'     => '',
 			'country' => '',
-		);
+		];
 
 		$address = wp_parse_args( $payment_data['user_info']['address'], $default_address );
 

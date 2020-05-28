@@ -295,6 +295,11 @@
 							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
 								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 							}
+
+							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
+								const placeholder = $( node ).attr( 'placeholder' );
+								$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+							}
 						}
 					} );
 				} );
@@ -319,9 +324,13 @@
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
 			moveFieldsUnderPaymentGateway( true );
+			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
+				gatewayAnimating = false;
+			} );
 		} );
 		$( document ).on( 'Give:onPreGatewayLoad', function() {
-			moveFieldsUnderPaymentGateway( false );
+			gatewayAnimating = true;
+			$( '#give_purchase_form_wrap' ).slideUp( 200 );
 		} );
 
 		// Refresh payment information section.
@@ -331,55 +340,21 @@
 	/**
 	 * Move form field under payment gateway
 	 * @since 2.7.0
-	 * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
 	 */
-	function moveFieldsUnderPaymentGateway( $refresh = false ) {
-		// This function will run only for embed donation form.
-		if ( 1 !== parseInt( jQuery( 'div.give-embed-form' ).length ) ) {
-			return;
+	function moveFieldsUnderPaymentGateway() {
+		// Handle "Donate Now" button placement
+		if ( ! $( '#give-payment-mode-select' ).next().hasClass( 'give-submit' ) ) {
+			$( '#give-payment-mode-select' ).after( $( '#give_purchase_form_wrap .give-submit' ) );
+		} else {
+			$( '#give_purchase_form_wrap .give-submit' ).remove();
 		}
 
-		if ( ! $refresh ) {
-			const element = jQuery( 'li.give_purchase_form_wrap-clone' );
-			element.slideUp( 300, function() {
-				element.remove();
-			} );
+		// Move purchase fields (credit card, billing, etc)
+		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
 
-			return;
-		}
-
-		new Promise( function( res ) {
-			const fields = jQuery( '#give_purchase_form_wrap > *' ).not( '.give-donation-submit' );
-			let showFields = false;
-
-			jQuery( '.give-gateway-option-selected' ).after( '<li class="give_purchase_form_wrap-clone" style="display: none"></li>' );
-
-			jQuery.each( fields, function( index, $item ) {
-				$item = jQuery( $item );
-				jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
-
-				showFields = ! showFields ? !! $item.html().trim() : showFields;
-
-				$item.remove();
-			} );
-
-			if ( ! showFields ) {
-				jQuery( '.give_purchase_form_wrap-clone' ).remove();
-			}
-
-			return res( showFields );
-		} ).then( function( showFields ) {
-			// eslint-disable-next-line no-unused-expressions
-			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
-
-			if ( showFields ) {
-				gatewayAnimating = true;
-				// eslint-disable-next-line no-unused-expressions
-				jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
-					gatewayAnimating = false;
-				} );
-			}
-		} );
+		// Add gateway class to fields wrapper, indicating which gateway is active
+		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
+		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
 	}
 
 	/**
@@ -461,6 +436,18 @@
 					break;
 				case 'stripe_sepa':
 					icon = 'fas fa-university';
+					break;
+				case 'stripe_ach':
+					icon = 'fas fa-university';
+					break;
+				case 'stripe_ideal':
+					icon = 'fas fa-university';
+					break;
+				case 'stripe_becs':
+					icon = 'fas fa-university';
+					break;
+				case 'paypalpro_payflow':
+					icon = 'far fa-credit-card';
 					break;
 				default:
 					icon = 'fas fa-hand-holding-heart';

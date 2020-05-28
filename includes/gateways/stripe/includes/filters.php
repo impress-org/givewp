@@ -44,3 +44,25 @@ function give_stripe_get_payment_txn_id_fallback( $payment_id ) {
 
 add_filter( 'give_get_payment_transaction_id-stripe', 'give_stripe_get_payment_txn_id_fallback', 10, 1 );
 add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payment_txn_id_fallback', 10, 1 );
+
+/**
+ * This function is used to add Stripe credentials to GiveWP form.
+ *
+ * @param array  $form_html_tags Form HTML tags.
+ * @param object $form           Form Object.
+ *
+ * @since 2.7.0
+ *
+ * @return mixed
+ */
+function __give_stripe_form_add_credentials( $form_html_tags, $form ) {
+	$publishable_key = give_stripe_get_publishable_key( $form->ID );
+	$account_id      = give_stripe_get_connected_account_id( $form->ID );
+
+	$form_html_tags['data-publishable-key'] = $publishable_key;
+	$form_html_tags['data-account']         = $account_id;
+
+	return $form_html_tags;
+}
+
+add_filter( 'give_form_html_tags', '__give_stripe_form_add_credentials', 0, 2 );

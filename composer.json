@@ -11,8 +11,10 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*",
-        "wp-coding-standards/wpcs": "*",
-        "wimg/php-compatibility": "*"
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.6",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpcompatibility/phpcompatibility-wp": "*",
+        "wp-coding-standards/wpcs": "*"
     },
     "keywords": [
         "wordpress",
@@ -20,14 +22,18 @@
         "donations"
     ],
     "support": {
-        "issues": "https://github.com/impress-org/give/issues"
+        "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
         "post-install-cmd": [
-            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
+            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
+            "@install-codestandards"
         ],
         "post-update-cmd": [
             "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
+        ],
+        "install-codestandards": [
+            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
         ]
     },
     "autoload": {

@@ -2,21 +2,21 @@
  * Clearfix
  */
 @mixin clearfix() {
-  *zoom: 1;
+	*zoom: 1;
 
-  &:before,
-  &:after {
-    content: " ";
-    display: table;
-  }
+	&::before,
+	&::after {
+		content: ' ';
+		display: table;
+	}
 
-  &:after {
-    clear: both;
-  }
+	&::after {
+		clear: both;
+	}
 }
 
 .give-clearfix {
-  @include clearfix;
+	@include clearfix;
 }
 
 /**
@@ -24,85 +24,84 @@
  * https://github.com/timrogers/sass-box-sizing-mixin
  */
 @mixin box-sizing($box-model) {
-  -webkit-box-sizing: $box-model; // Safari <= 5
-  -moz-box-sizing: $box-model; // Firefox <= 19
-  box-sizing: $box-model;
+	-webkit-box-sizing: $box-model; // Safari <= 5
+	-moz-box-sizing: $box-model; // Firefox <= 19
+	box-sizing: $box-model;
 }
 
 /**
  * CSS3 Easing
  */
 @mixin easing-transition() {
-  -moz-transition: 0.2s all linear;
-  -o-transition: 0.2s all linear;
-  transition: 0.2s all linear;
+	-moz-transition: 0.2s all linear;
+	-o-transition: 0.2s all linear;
+	transition: 0.2s all linear;
 }
 
 //Labels
 @mixin give-label() {
-  padding: .2em .4em .3em;
-  font-size: 11px;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: .25em;
+	padding: 0.2em 0.4em 0.3em;
+	font-size: 11px;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 0.25em;
 
-  &:hover {
-    color:#fff;
-    text-decoration: none;
-  }
+	&:hover {
+		color: #fff;
+		text-decoration: none;
+	}
 }
 
 @mixin give-label-gray() {
-  background-color: #929292;
+	background-color: #929292;
 }
 @mixin give-label-orange() {
-  background-color: #ffba00;
+	background-color: #ffba00;
 }
 
 .give-item-label {
-  @include give-label();
+	@include give-label();
 }
 
 .give-item-label-gray {
-  @include give-label-gray();
+	@include give-label-gray();
 }
 
 .give-item-label-orange {
-  @include give-label-orange();
+	@include give-label-orange();
 }
 
-
 .give-item-label {
-  @include give-label();
+	@include give-label();
 }
 
 //Fields
 @mixin give-currency() {
-  background-color: lighten($light-gray, 2%);
-  border-top: 1px solid $borders;
-  border-bottom: 1px solid $borders;
-  color: $dark;
-  margin: 0;
-  padding: 0 12px;
-  height: 35px;
-  line-height: 35px;
-  font-size: $font-size-medium;
-  @include box-sizing(border-box);
+	background-color: lighten($light-gray, 2%);
+	border-top: 1px solid $borders;
+	border-bottom: 1px solid $borders;
+	color: $dark;
+	margin: 0;
+	padding: 0 12px;
+	height: 35px;
+	line-height: 35px;
+	font-size: $font-size-medium;
+	@include box-sizing(border-box);
 }
 
 @mixin give-input() {
-  border: 1px solid $borders;
-  background: #FFF;
-  border-radius: 0;
-  height: 35px;
-  line-height: 35px;
-  padding: 0 12px;
-  margin: 0;
-  font-size: $font-size-medium;
-  @include box-sizing(border-box);
+	border: 1px solid $borders;
+	background: #fff;
+	border-radius: 0;
+	height: 35px;
+	line-height: 35px;
+	padding: 0 12px;
+	margin: 0;
+	font-size: $font-size-medium;
+	@include box-sizing(border-box);
 }
 
 @mixin give-img-type-loader {
