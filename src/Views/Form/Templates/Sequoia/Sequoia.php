@@ -4,7 +4,7 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use Give\Receipt\Receipt;
+use Give\Receipt\DonationReceipt;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use \Give_Donate_Form as DonationForm;
 use function give_do_email_tags as formatContent;
@@ -108,7 +108,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			a {
 				color: %1$s;
 			}
-			
+
 		',
 			$primaryColor
 		);
@@ -190,11 +190,18 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptDetails( $donationId ) {
-		$receipt = new Receipt( $donationId );
+		$receipt = new DonationReceipt( $donationId );
 		$options = FormTemplateUtils::getOptions();
 
 		$receipt->heading = esc_html( $options['thank-you']['headline'] );
 		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
+
+		/**
+		 * Fire the action for receipt object.
+		 *
+		 * @since 2.7.0
+		 */
+		do_action( 'give_new_receipt', $receipt );
 
 		return $receipt;
 	}
