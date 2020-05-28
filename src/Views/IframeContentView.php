@@ -42,7 +42,7 @@ class IframeContentView {
 	 * @since 2.7.0
 	 * @var array
 	 */
-	protected $bodyClasses = array( 'give-form-templates' );
+	protected $bodyClasses = [ 'give-form-templates' ];
 
 	/**
 	 * Set document page title.
