@@ -5,6 +5,7 @@
 	const $advanceButton = $( '.advance-btn', $container );
 	const $backButton = $( '.back-btn' );
 	const $navigatorTitle = $( '.give-form-navigator .title' );
+	const $paymentGatewayContainer = $( '#give-payment-mode-select' );
 	let gatewayAnimating = false;
 
 	const navigator = {
@@ -322,7 +323,7 @@
 	navigator.init();
 
 	// Check if only a single gateway is enabled
-	if ( $( '#give-payment-mode-select' ).css( 'display' ) !== 'none' ) {
+	if ( $paymentGatewayContainer.length && $paymentGatewayContainer.css( 'display' ) !== 'none' ) {
 		// Move payment information section when document load.
 		moveFieldsUnderPaymentGateway( true );
 
@@ -347,9 +348,11 @@
 	 * @since 2.7.0
 	 */
 	function moveFieldsUnderPaymentGateway() {
-		// Create donate fieldset (bottom of form)
-		if ( $( '#donate-fieldset' ).length === 0 ) {
-			$( '#give-payment-mode-select' ).after( $( '<fieldset id="donate-fieldset"></fieldset>' ) );
+		// Handle "Donate Now" button placement
+		if ( ! $paymentGatewayContainer.next().hasClass( 'give-submit' ) ) {
+			$paymentGatewayContainer.after( $( '#give_purchase_form_wrap .give-submit' ) );
+		} else {
+			$( '#give_purchase_form_wrap .give-submit' ).remove();
 		}
 
 		// Elements to move into donate fieldset (located at bottom of form)
