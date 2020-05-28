@@ -322,6 +322,16 @@
 			$( '#give_purchase_form_wrap' ).slideUp( 200 );
 		} );
 
+		// Hide Donate Now button for Apple and Google Pay gateways
+		$( document ).on( 'Give:onPreGatewayLoad', function() {
+			const gateway = $( '.give-gateway-option-selected input' ).attr( 'value' );
+			if ( gateway === 'stripe_google_pay' || gateway === 'stripe_apple_pay' ) {
+				$( '.give-submit' ).hide();
+			} else {
+				$( '.give-submit' ).show();
+			}
+		} );
+
 		// Refresh payment information section.
 		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 	}
