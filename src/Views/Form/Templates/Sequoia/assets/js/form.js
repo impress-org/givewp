@@ -348,11 +348,10 @@
 	 * @since 2.7.0
 	 */
 	function moveFieldsUnderPaymentGateway() {
-		// Handle "Donate Now" button placement
-		if ( ! $paymentGatewayContainer.next().hasClass( 'give-submit' ) ) {
-			$paymentGatewayContainer.after( $( '#give_purchase_form_wrap .give-submit' ) );
-		} else {
-			$( '#give_purchase_form_wrap .give-submit' ).remove();
+		// Check if donate fieldset area has been created, if not set it up below payment gateways
+		// This area is necessary for correctly placing various elements (fee recovery notice, newsletters, submit button, etc)
+		if ( $( '#donate-fieldset' ).length === 0 ) {
+			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
 		// Elements to move into donate fieldset (located at bottom of form)
