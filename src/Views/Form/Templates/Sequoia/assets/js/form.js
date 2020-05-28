@@ -436,6 +436,12 @@
 				case 'paypalpro_payflow':
 					icon = 'far fa-credit-card';
 					break;
+				case 'stripe_google_pay':
+					icon = 'fab fa-google';
+					break;
+				case 'stripe_apple_pay':
+					icon = 'fab fa-apple';
+					break;
 				default:
 					icon = 'fas fa-hand-holding-heart';
 					break;
