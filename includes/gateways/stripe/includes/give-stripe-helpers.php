@@ -1284,7 +1284,7 @@ function give_stripe_get_iban_placeholder_country() {
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.6.1
+ * @since 2.6.3
  *
  * @return string
  */
@@ -1300,7 +1300,7 @@ function give_stripe_becs_hide_icon( $form_id ) {
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.6.1
+ * @since 2.6.3
  *
  * @return string
  */
