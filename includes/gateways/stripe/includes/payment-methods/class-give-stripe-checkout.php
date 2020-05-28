@@ -255,7 +255,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				'currency'             => give_get_currency( $form_id ),
 				'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
 				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
-				'metadata'             => $this->prepare_metadata( $donation_id ),
+				'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
 			);
 
 			// Process the charge.
@@ -346,6 +346,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					array(
 						'action'  => 'checkout_processing',
 						'session' => $session_id,
+						'id'      => $form_id,
 					),
 					$redirect_to_url
 				)
@@ -366,10 +367,12 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		public function redirect_to_checkout() {
 
 			$get_data          = give_clean( $_GET );
-			$publishable_key   = give_stripe_get_publishable_key();
+			$form_id           = ! empty( $get_data['id'] ) ? absint( $get_data['id'] ) : false;
+			$publishable_key   = give_stripe_get_publishable_key( $form_id );
 			$session_id        = ! empty( $get_data['session'] ) ? $get_data['session'] : false;
 			$action            = ! empty( $get_data['action'] ) ? $get_data['action'] : false;
-			$stripe_account_id = give_get_option( 'give_stripe_user_id' );
+			$default_account   = give_stripe_get_default_account( $form_id );
+			$stripe_account_id = $default_account['give_stripe_user_id'];
 
 			// Bailout, if action is not checkout processing.
 			if ( 'checkout_processing' !== $action ) {
@@ -398,9 +401,15 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				processingHtml.innerHTML = '<div class="give-stripe-checkout-processing-container" style="position: absolute;top: 50%;left: 50%;width: 300px; margin-left: -150px; text-align:center;"><div style="display:inline-block;"><span class="give-loading-animation" style="color: #333;height:26px;width:26px;font-size:26px; margin:0; "></span><span style="color:#000; font-size: 26px; margin:0 0 0 10px;">' + give_stripe_vars.checkout_processing_text + '</span></div></div>';
 
 				window.addEventListener('load', function() {
-					const stripe = Stripe( '<?php echo $publishable_key; ?>', {
+					let stripe = {};
+
+					stripe = Stripe( '<?php echo $publishable_key; ?>' );
+
+					<?php if ( ! empty( $stripe_account_id ) ) { ?>
+					stripe = Stripe( '<?php echo $publishable_key; ?>', {
 						'stripeAccount': '<?php echo $stripe_account_id; ?>'
 					} );
+					<?php } ?>
 
 					// Redirect donor to Checkout page.
 					stripe.redirectToCheckout({

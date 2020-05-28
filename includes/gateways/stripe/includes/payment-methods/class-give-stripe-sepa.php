@@ -261,7 +261,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 							'payment_method_types' => [ 'sepa_debit' ],
 							'statement_descriptor' => give_stripe_get_statement_descriptor(),
 							'description'          => give_payment_gateway_donation_summary( $donation_data ),
-							'metadata'             => $this->prepare_metadata( $donation_id ),
+							'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
 							'customer'             => $stripe_customer_id,
 							'payment_method'       => $payment_method_id,
 							'confirm'              => true,

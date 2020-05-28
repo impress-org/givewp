@@ -61,65 +61,14 @@ function give_stripe_is_any_payment_method_active() {
 }
 
 /**
- * Get Settings for the Stripe account connected via Connect API.
- *
- * @since 2.5.0
- *
- * @return mixed
- */
-function give_stripe_get_connect_settings() {
-
-	$options = array(
-		'connected_status'     => give_get_option( 'give_stripe_connected' ),
-		'user_id'              => give_get_option( 'give_stripe_user_id' ),
-		'access_token'         => give_get_option( 'live_secret_key' ),
-		'access_token_test'    => give_get_option( 'test_secret_key' ),
-		'publishable_key'      => give_get_option( 'live_publishable_key' ),
-		'publishable_key_test' => give_get_option( 'test_publishable_key' ),
-	);
-
-	/**
-	 * This filter hook is used to override the existing stripe connect settings stored in DB.
-	 *
-	 * @param array $options List of Stripe Connect settings required to make functionality work.
-	 *
-	 * @since 2.5.0
-	 */
-	return apply_filters( 'give_stripe_get_connect_settings', $options );
-}
-
-/**
- * Is Stripe connected using Connect API?
+ * Is Stripe Checkout Enabled?
  *
  * @since 2.5.0
  *
  * @return bool
  */
-function give_stripe_is_connected() {
-
-	$settings = give_stripe_get_connect_settings();
-
-	$user_api_keys_enabled = give_is_setting_enabled( give_get_option( 'stripe_user_api_keys' ) );
-
-	// Return false, if manual API keys are used to configure Stripe.
-	if ( $user_api_keys_enabled ) {
-		return false;
-	}
-
-	// Check all the necessary options.
-	if (
-		! empty( $settings['connected_status'] ) && '1' === $settings['connected_status']
-		&& ! empty( $settings['user_id'] )
-		&& ! empty( $settings['access_token'] )
-		&& ! empty( $settings['access_token_test'] )
-		&& ! empty( $settings['publishable_key'] )
-		&& ! empty( $settings['publishable_key_test'] )
-	) {
-		return true;
-	}
-
-	// Default return value.
-	return false;
+function give_stripe_is_checkout_enabled() {
+	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
 }
 
 /**
@@ -130,9 +79,6 @@ function give_stripe_is_connected() {
  * @return string
  */
 function give_stripe_connect_button() {
-
-	$connected = give_get_option( 'give_stripe_connected' );
-
 	// Prepare Stripe Connect URL.
 	$link = add_query_arg(
 		array(
@@ -140,7 +86,7 @@ function give_stripe_connect_button() {
 			'mode'                  => give_is_test_mode() ? 'test' : 'live',
 			'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 			'website_url'           => get_bloginfo( 'url' ),
-			'give_stripe_connected' => ! empty( $connected ) ? '1' : '0',
+			'give_stripe_connected' => '0',
 		),
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
@@ -155,41 +101,47 @@ function give_stripe_connect_button() {
 /**
  * Stripe Disconnect URL.
  *
+ * @param string $account_id   Stripe Account ID.
+ * @param string $account_name Stripe Account Name.
+ *
  * @since 2.5.0
  *
- * @return void
+ * @return string
  */
-function give_stripe_disconnect_url() {
+function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
+	$args = [
+		'stripe_action'  => 'disconnect',
+		'mode'           => give_is_test_mode() ? 'test' : 'live',
+		'stripe_user_id' => ! empty( $account_id ) ? $account_id : give_get_option( 'give_stripe_user_id' ),
+		'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+	];
+
+	// Send Account Name.
+	if ( ! empty( $account_name ) ) {
+		$args['account_name'] = $account_name;
+	}
 
 	// Prepare Stripe Disconnect URL.
-	$link = add_query_arg(
-		array(
-			'stripe_action'  => 'disconnect',
-			'mode'           => give_is_test_mode() ? 'test' : 'live',
-			'stripe_user_id' => give_get_option( 'give_stripe_user_id' ),
-			'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
-		),
+	return add_query_arg(
+		$args,
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
-
-	echo esc_url( $link );
 }
 
 /**
- * Delete all the Give settings options for Stripe Connect.
+ * This helper function is used to convert slug into name of Stripe connection.
  *
- * @since 2.5.0
+ * @param string $slug Connection Type Slug.
  *
- * @return void
+ * @since 2.7.0
+ *
+ * @return string
  */
-function give_stripe_connect_delete_options() {
+function give_stripe_connection_type_name( $slug = 'connect' ) {
+	$names = [
+		'manual'  => esc_html__( 'API Keys', 'give' ),
+		'connect' => esc_html__( 'Stripe Connect', 'give' ),
+	];
 
-	// Disconnection successful.
-	// Remove the connect options within the db.
-	give_delete_option( 'give_stripe_connected' );
-	give_delete_option( 'give_stripe_user_id' );
-	give_delete_option( 'live_secret_key' );
-	give_delete_option( 'test_secret_key' );
-	give_delete_option( 'live_publishable_key' );
-	give_delete_option( 'test_publishable_key' );
+	return $names[ $slug ];
 }

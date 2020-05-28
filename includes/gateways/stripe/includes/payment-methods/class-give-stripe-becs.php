@@ -91,9 +91,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 					?>
 					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
 						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
-							<?php echo __( 'Bank Account', 'give' ); ?>
+							<?php esc_html_e( 'Bank Account', 'give' ); ?>
 							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
+							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'BSB Number and Account Number of your bank account.', 'give' ); ?>"></span>
 						</label>
 						<div
 							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
@@ -259,7 +259,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 							'payment_method_types' => [ 'au_becs_debit' ],
 							'statement_descriptor' => give_stripe_get_statement_descriptor(),
 							'description'          => give_payment_gateway_donation_summary( $donation_data ),
-							'metadata'             => $this->prepare_metadata( $donation_id ),
+							'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
 							'customer'             => $stripe_customer_id,
 							'payment_method'       => $payment_method_id,
 							'confirm'              => true,
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 								'customer_acceptance' => [
 									'type'   => 'online',
 									'online' => [
-										'ip_address' => give_get_ip(),
+										'ip_address' => give_stripe_get_ip_address(),
 										'user_agent' => give_get_user_agent(),
 									],
 								],
@@ -293,6 +293,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 						// Set Payment Intent ID as transaction ID for the donation.
 						give_set_payment_transaction_id( $donation_id, $intent->id );
 						give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+
+						// Update donation status to `processing`.
+						give_update_payment_status( $donation_id, 'processing' );
 
 						// Success. Send user to success page.
 						give_send_to_success_page();

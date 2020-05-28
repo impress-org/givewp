@@ -293,13 +293,13 @@ jQuery( document ).ready( function( $ ) {
 				receiptContainer.innerHTML = response;
 
 				if ( receiptContainer.parentElement.classList.contains( 'give-form-templates' ) ) {
-					const interval = setInterval(function(){
-						if (window.parentIFrame) {
+					const interval = setInterval( function() {
+						if ( window.parentIFrame ) {
 							sendLoadedMessage();
 						}
-					}, 50);
-					function sendLoadedMessage () {
-						clearInterval(interval);
+					}, 50 );
+					function sendLoadedMessage() {
+						clearInterval( interval );
 						window.parentIFrame.sendMessage( { action: 'giveEmbedFormContentLoaded' } );
 					}
 				}

@@ -3,14 +3,7 @@
 /**
  * Give - Stripe Gateway Add-on JS
  */
-
-let stripe = Stripe( give_stripe_vars.publishable_key );
-
-if ( give_stripe_vars.stripe_account_id ) {
-	stripe = Stripe( give_stripe_vars.publishable_key, {
-		stripeAccount: give_stripe_vars.stripe_account_id,
-	} );
-}
+const stripe = [];
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
@@ -32,18 +25,47 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		const form_element = formWrap.querySelector( '.give-form' );
 
-		// Bailout, if `form_element` is null.
+		/**
+		 * Bailout, if `form_element` is null.
+		 *
+		 * We are bailing out here as this script is loaded on every page of the
+		 * site but the `form_element` only exists on the pages when Give donation
+		 * form is loaded. So, when the pages where the donation form is not loaded
+		 * will show console error. To avoid JS console errors we bail it, if
+		 * `form_element` is null to avoid console errors.
+		 */
 		if ( null === form_element ) {
 			return;
 		}
 
-		let elements = stripe.elements( {
+		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
+		const accountId = form_element.getAttribute( 'data-account' );
+		const idPrefix = form_element.getAttribute( 'data-id' );
+
+		/**
+		 * Bailout, when publishable key is not present for a donation form
+		 * due to Stripe account not properly attached to the form or global
+		 * Stripe account is not added.
+		 */
+		if ( null === publishableKey ) {
+			return;
+		}
+
+		stripe[ idPrefix ] = Stripe( publishableKey );
+
+		if ( accountId.trim().length !== 0 ) {
+			stripe[ idPrefix ] = Stripe( publishableKey, {
+				stripeAccount: accountId,
+			} );
+		}
+
+		let elements = stripe[ idPrefix ].elements( {
 			locale: preferredLocale,
 		} );
 
 		// Update fonts of Stripe Elements.
 		if ( fontStyles.length > 0 ) {
-			elements = stripe.elements( {
+			elements = stripe[ idPrefix ].elements( {
 				fonts: fontStyles,
 				locale: preferredLocale,
 			} );
@@ -53,7 +75,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			defaultGateway = form_element.querySelector( '.give-gateway:checked' ).value;
 		}
 
-		const idPrefix = form_element.getAttribute( 'data-id' );
 		const donateButton = form_element.querySelector( '.give-submit' );
 
 		// Create Card Elements for each form.
@@ -323,6 +344,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			billing_details: {},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
+		const idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 		const $form_submit_btn = $form.find( '[id^=give-purchase-button]' );
 		const card_name = $form.find( '.card-name' ).val();
 
@@ -354,9 +376,9 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
+		stripe[ idPrefix ].createPaymentMethod( 'card', card, additionalData ).then( function( result ) {
 			if ( result.error ) {
-				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+				const error = `<div class="give_errors"><p class="give_error">${ result.error.message }</p></div>`;
 
 				// re-enable the submit button.
 				$form_submit_btn.attr( 'disabled', false );
