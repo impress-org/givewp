@@ -386,18 +386,6 @@
 	 * @param {number} formID Form ID
 	 */
 	function refreshPaymentInformationSection( ev, response, formID ) {
-		setupCheckbox( {
-			container: '.give-mailchimp-fieldset',
-			label: '.give-mc-message-text',
-			input: 'input[name="give_mailchimp_signup"]',
-		} );
-
-		setupCheckbox( {
-			container: '.give-constant-contact-fieldset',
-			label: '.give-constant-contact-fieldset span',
-			input: 'input[name="give_constant_contact_signup"]',
-		} );
-
 		if ( navigator.currentStep === 2 ) {
 			$( '.give-form-templates' ).css( 'min-height', '' );
 		}
