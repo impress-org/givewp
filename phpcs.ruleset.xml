@@ -6,10 +6,6 @@
 	<!-- Set a description for this ruleset. -->
 	<description>We love clean code for GiveWP. This will let us enforce that easily.</description>
 
-	<!-- Check for PHP cross-version compatibility. -->
-	<!--<config name="testVersion" value="7.1-" />
-	<rule ref="PHPCompatibilityWP" />-->
-
 	<!-- Exclude directories we don't want checked. -->
 	<exclude-pattern>node_modules/*</exclude-pattern>
 	<exclude-pattern>vendor/*</exclude-pattern>
@@ -27,11 +23,6 @@
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
 	  <type>warning</type>
 	</rule>
-
-	<!-- Add this hopefully soon -->
-	<!-- <rule ref="WordPress-Docs" /> -->
-
-
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
