@@ -46,7 +46,7 @@ function give_stripe_is_any_payment_method_active() {
 
 	// Get settings.
 	$settings = give_get_settings();
-	$gateways = isset( $settings['gateways'] ) ? $settings['gateways'] : array();
+	$gateways = isset( $settings['gateways'] ) ? $settings['gateways'] : [];
 
 	// Loop through gateways list.
 	foreach ( array_keys( $gateways ) as $gateway ) {
@@ -61,17 +61,6 @@ function give_stripe_is_any_payment_method_active() {
 }
 
 /**
- * Is Stripe Checkout Enabled?
- *
- * @since 2.5.0
- *
- * @return bool
- */
-function give_stripe_is_checkout_enabled() {
-	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
-}
-
-/**
  * Displays Stripe Connect Button.
  *
  * @since 2.5.0
@@ -81,13 +70,13 @@ function give_stripe_is_checkout_enabled() {
 function give_stripe_connect_button() {
 	// Prepare Stripe Connect URL.
 	$link = add_query_arg(
-		array(
+		[
 			'stripe_action'         => 'connect',
 			'mode'                  => give_is_test_mode() ? 'test' : 'live',
 			'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 			'website_url'           => get_bloginfo( 'url' ),
 			'give_stripe_connected' => '0',
-		),
+		],
 		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
 	);
 
