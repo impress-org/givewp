@@ -342,12 +342,27 @@
 	 * @since 2.7.0
 	 */
 	function moveFieldsUnderPaymentGateway() {
-		// Handle "Donate Now" button placement
-		if ( ! $( '#give-payment-mode-select' ).next().hasClass( 'give-submit' ) ) {
-			$( '#give-payment-mode-select' ).after( $( '#give_purchase_form_wrap .give-submit' ) );
-		} else {
-			$( '#give_purchase_form_wrap .give-submit' ).remove();
+		// Create donate fieldset (bottom of form)
+		if ( $( '#donate-fieldset' ).length === 0 ) {
+			$( '#give-payment-mode-select' ).after( $( '<fieldset id="donate-fieldset"></fieldset>' ) );
 		}
+
+		// Elements to move into donate fieldset (located at bottom of form)
+		// The elements will appear in order of array
+		const donateFieldsetElements = [
+			'.give-constant-contact-fieldset',
+			'.give-mailchimp-fieldset',
+			'.give-donation-submit',
+		];
+
+		// Handle moving elements into donate fieldset
+		donateFieldsetElements.forEach( function( selector ) {
+			if ( $( '#donate-fieldset ' + selector ).length === 0 ) {
+				$( '#donate-fieldset' ).append( $( '#give_purchase_form_wrap ' + selector ) );
+			} else {
+				$( '#give_purchase_form_wrap ' + selector ).remove();
+			}
+		} );
 
 		// Move purchase fields (credit card, billing, etc)
 		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );

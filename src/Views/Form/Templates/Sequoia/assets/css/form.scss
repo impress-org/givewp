@@ -826,6 +826,11 @@ p {
 		#give-final-total-wrap {
 			display: none;
 		}
+	}
+
+	#donate-fieldset {
+		display: flex;
+		flex-direction: column;
 
 		.give-submit-button-wrap {
 			display: flex;
