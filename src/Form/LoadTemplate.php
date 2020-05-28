@@ -84,20 +84,7 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	private function setUpFrontendHooks() {
-		add_action( 'give_embed_head', 'rel_canonical' );
-		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
-		add_action( 'give_embed_head', 'wp_resource_hints', 2 );
-		add_action( 'give_embed_head', 'feed_links', 2 );
-		add_action( 'give_embed_head', 'feed_links_extra', 3 );
-		add_action( 'give_embed_head', 'rsd_link' );
-		add_action( 'give_embed_head', 'wlwmanifest_link' );
-		add_action( 'give_embed_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-		add_action( 'give_embed_head', 'noindex', 1 );
-		add_action( 'give_embed_head', 'wp_generator' );
-		add_action( 'give_embed_head', 'rel_canonical' );
-		add_action( 'give_embed_head', 'wp_shortlink_wp_head', 10, 0 );
-		add_action( 'give_embed_head', 'wp_site_icon', 99 );
-
+		add_action( 'give_embed_head', [ $this, 'noRobots' ] );
 		add_action( 'give_embed_head', 'wp_enqueue_scripts', 1 );
 		add_action( 'give_embed_head', [ $this, 'handleEnqueueScripts' ], 2 );
 		add_action( 'give_embed_head', 'wp_print_styles', 8 );
@@ -112,6 +99,17 @@ class LoadTemplate {
 	}
 
 	/**
+	 * Display a noindex meta tag.
+	 *
+	 * Outputs a noindex meta tag that tells web robots not to index and follow content.
+	 *
+	 * @since 2.7.0
+	 */
+	public function noRobots() {
+		echo "<meta name='robots' content='noindex,nofollow'/>\n";
+	}
+
+	/**
 	 * Render sequoia receipt by ajax
 	 *
 	 * @since 2.7.0
@@ -123,7 +121,7 @@ class LoadTemplate {
 		}
 
 		// Show new receipt view only on donation confirmation page.
-		if ( false === strpos( wp_get_referer(), untrailingslashit( FormUtils::getSuccessPageURL() ) ) ) {
+		if ( false === strpos( untrailingslashit( wp_get_referer() ), untrailingslashit( FormUtils::getSuccessPageURL() ) ) ) {
 			return;
 		}
 
