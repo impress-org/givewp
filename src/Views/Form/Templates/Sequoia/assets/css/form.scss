@@ -862,6 +862,10 @@ p {
 				position: absolute;
 				font-size: 4px;
 			}
+
+			.give-submit:not(:disabled) + .sequoia-loader {
+				display: none;
+			}
 		}
 	}
 }
