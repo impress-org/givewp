@@ -840,7 +840,6 @@ p {
 		input[value='stripe_apple_pay'] ~ .give-stripe-payment-request-button,
 		input[value='stripe_google_pay'] ~ .give-stripe-payment-request-button {
 			width: 236px;
-			height: 64px;
 			margin: 48px auto 16px auto;
 			order: 3;
 		}

@@ -364,6 +364,10 @@
 			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
+		if ( $( '#give_purchase_form_wrap .give_error' ).length !== 0 ) {
+			$( '.payment' ).prepend( $( '#give_purchase_form_wrap .give_error' ) );
+		}
+
 		// Elements to move into donate fieldset (located at bottom of form)
 		// The elements will appear in order of array
 		const donateFieldsetElements = [
