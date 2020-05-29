@@ -349,6 +349,21 @@
 			}
 		} );
 
+		// Clear gateway related errors
+		$( document ).on( 'Give:onPreGatewayLoad', function() {
+			const persistedNotices = [
+				'give_error_test_mode',
+			];
+
+			$( '.give_errors, .give_notices, .give_error' ).each( function() {
+				if ( ! persistedNotices.includes( $( this ).attr( 'id' ) ) ) {
+					$( this ).slideUp( 200, function() {
+						$( this ).remove();
+					} );
+				}
+			} );
+		} );
+
 		// Refresh payment information section.
 		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 	}
