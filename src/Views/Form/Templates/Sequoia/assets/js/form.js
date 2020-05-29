@@ -376,6 +376,9 @@
 		donateFieldsetElements.forEach( function( selector ) {
 			if ( $( `#donate-fieldset  ${ selector }` ).length === 0 ) {
 				$( '#donate-fieldset' ).append( $( `#give_purchase_form_wrap ${ selector }` ) );
+			} else if ( $( `#donate-fieldset  ${ selector }` ).html() !== $( `#give_purchase_form_wrap  ${ selector }` ).html() ) {
+				$( `#donate-fieldset  ${ selector }` ).remove();
+				$( '#donate-fieldset' ).append( $( `#give_purchase_form_wrap ${ selector }` ) );
 			} else {
 				$( `#give_purchase_form_wrap ${ selector }` ).remove();
 			}
