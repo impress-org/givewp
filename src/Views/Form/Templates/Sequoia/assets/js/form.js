@@ -197,6 +197,18 @@
 					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
 				} );
 
+				setupCheckbox( {
+					container: '.give-mailchimp-fieldset',
+					label: '.give-mc-message-text',
+					input: 'input[name="give_mailchimp_signup"]',
+				} );
+
+				setupCheckbox( {
+					container: '.give-constant-contact-fieldset',
+					label: '.give-constant-contact-fieldset span',
+					input: 'input[name="give_constant_contact_signup"]',
+				} );
+
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
@@ -266,6 +278,11 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
+							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).hasClass( 'payment' ) ) {
+								$( node ).children( '.give_errors' ).clone().prependTo( '.give-section.payment' );
+								$( node ).children( '.give_errors' ).remove();
+							}
+
 							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'payment' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
@@ -331,12 +348,28 @@
 	 * @since 2.7.0
 	 */
 	function moveFieldsUnderPaymentGateway() {
-		// Handle "Donate Now" button placement
-		if ( ! $paymentGatewayContainer.next().hasClass( 'give-submit' ) ) {
-			$paymentGatewayContainer.after( $( '#give_purchase_form_wrap .give-submit' ) );
-		} else {
-			$( '#give_purchase_form_wrap .give-submit' ).remove();
+		// Check if donate fieldset area has been created, if not set it up below payment gateways
+		// This area is necessary for correctly placing various elements (fee recovery notice, newsletters, submit button, etc)
+		if ( $( '#donate-fieldset' ).length === 0 ) {
+			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
+
+		// Elements to move into donate fieldset (located at bottom of form)
+		// The elements will appear in order of array
+		const donateFieldsetElements = [
+			'.give-constant-contact-fieldset',
+			'.give-mailchimp-fieldset',
+			'.give-donation-submit',
+		];
+
+		// Handle moving elements into donate fieldset
+		donateFieldsetElements.forEach( function( selector ) {
+			if ( $( `#donate-fieldset  ${ selector }` ).length === 0 ) {
+				$( '#donate-fieldset' ).append( $( `#give_purchase_form_wrap ${ selector }` ) );
+			} else {
+				$( `#give_purchase_form_wrap ${ selector }` ).remove();
+			}
+		} );
 
 		// Move purchase fields (credit card, billing, etc)
 		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
@@ -431,6 +464,24 @@
 					break;
 			}
 			$( this ).append( `<i class="${ icon }"></i>` );
+		} );
+	}
+
+	/**
+	 * Setup prominent checkboxes (that use persistent borders on select)
+	 *
+	 * @since 2.7.0
+	 * @param {object} args Argument object containing: container, label, input selectors
+	 */
+	function setupCheckbox( { container, label, input } ) {
+		// If checkbox is opted in by default, add border on load
+		if ( $( input ).prop( 'checked' ) === true ) {
+			$( container ).addClass( 'active' );
+		}
+
+		// Persist checkbox input border when selected
+		$( label ).on( 'click touchend', function() {
+			$( container ).toggleClass( 'active' );
 		} );
 	}
 
