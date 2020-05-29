@@ -257,13 +257,7 @@
 				} );
 
 				//Setup input icons
-				setupInputIcon( '#give-first-name-wrap', 'user' );
-				setupInputIcon( '#give-email-wrap', 'envelope' );
-				setupInputIcon( '#give-company-wrap', 'building' );
-				setupInputIcon( '#date_field-wrap', 'calendar-alt' );
-				setupInputIcon( '#url_field-wrap', 'globe' );
-				setupInputIcon( '#phone_field-wrap', 'phone' );
-				setupInputIcon( '#email_field-wrap', 'envelope' );
+				setupInputIcons();
 
 				// Setup gateway icons
 				setupGatewayIcons();
@@ -435,6 +429,17 @@
 	function setupInputIcon( selector, icon ) {
 		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
+	}
+
+	function setupInputIcons() {
+		setupInputIcon( '#give-first-name-wrap', 'user' );
+		setupInputIcon( '#give-email-wrap', 'envelope' );
+		setupInputIcon( '#give-company-wrap', 'building' );
+		setupInputIcon( '#date_field-wrap', 'calendar-alt' );
+		setupInputIcon( '#url_field-wrap', 'globe' );
+		setupInputIcon( '#phone_field-wrap', 'phone' );
+		setupInputIcon( '#give-phone-wrap', 'phone' );
+		setupInputIcon( '#email_field-wrap', 'envelope' );
 	}
 
 	/**
