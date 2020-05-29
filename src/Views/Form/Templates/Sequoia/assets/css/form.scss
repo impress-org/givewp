@@ -14,6 +14,7 @@
 @import 'feerecovery';
 @import 'ffm';
 @import 'tributes';
+@import 'newsletter';
 @import 'square';
 
 // Structure
@@ -226,6 +227,7 @@ p {
 		position: absolute;
 		border-radius: 6px 0 0 0;
 		overflow: hidden;
+		cursor: pointer;
 
 		&:focus {
 			outline: none;
@@ -822,9 +824,14 @@ p {
 		display: flex;
 		flex-direction: column;
 
-		> *:not(.give-donation-submit) {
+		#give-final-total-wrap {
 			display: none;
 		}
+	}
+
+	#donate-fieldset {
+		display: flex;
+		flex-direction: column;
 
 		.give-submit-button-wrap {
 			display: flex;
@@ -945,6 +952,12 @@ form[id*='give-form'] .form-row input[type='tel'],
 form[id*='give-form'] .form-row input[type='email'],
 form[id*='give-form'] .form-row input[type='password'],
 form[id*='give-form'] .form-row input[type='url'],
+form[id*='give-form'] .form-row textarea.required,
+form[id*='give-form'] .form-row input[type='text'].required,
+form[id*='give-form'] .form-row input[type='tel'].required,
+form[id*='give-form'] .form-row input[type='email'].required,
+form[id*='give-form'] .form-row input[type='password'].required,
+form[id*='give-form'] .form-row input[type='url'].required,
 #give-recurring-form .form-row textarea,
 #give-recurring-form .form-row input[type='text'],
 #give-recurring-form .form-row input[type='tel'],
@@ -967,7 +980,7 @@ form.give-form .form-row input[type='url'] {
 	height: auto;
 	font-size: 14px;
 	line-height: 1;
-	color: #8d8e8e;
+	color: #828382;
 	padding: 14px !important;
 }
 
@@ -984,11 +997,14 @@ form.give-form .form-row textarea {
 form[id*='give-form'] .form-row select,
 #give-recurring-form .form-row select,
 form.give-form .form-row select,
+form[id*='give-form'] .form-row select.required,
+#give-recurring-form .form-row select.required,
+form.give-form .form-row select.required,
 .give-select {
 	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
-	color: #333;
+	color: #828382;
 	line-height: 1.2;
 	padding: 12px !important;
 	min-height: 48px;
