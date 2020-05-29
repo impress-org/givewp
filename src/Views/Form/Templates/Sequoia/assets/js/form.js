@@ -364,10 +364,10 @@
 
 		// Handle moving elements into donate fieldset
 		donateFieldsetElements.forEach( function( selector ) {
-			if ( $( '#donate-fieldset ' + selector ).length === 0 ) {
-				$( '#donate-fieldset' ).append( $( '#give_purchase_form_wrap ' + selector ) );
+			if ( $( `#donate-fieldset  ${ selector }` ).length === 0 ) {
+				$( '#donate-fieldset' ).append( $( `#give_purchase_form_wrap ${ selector }` ) );
 			} else {
-				$( '#give_purchase_form_wrap ' + selector ).remove();
+				$( `#give_purchase_form_wrap ${ selector }` ).remove();
 			}
 		} );
 
