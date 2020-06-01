@@ -844,6 +844,8 @@ p {
 
 			&.StripeElement {
 				margin-top: 48px;
+				display: flex !important;
+				justify-content: center;
 			}
 
 			> *:not(.give_error) {
