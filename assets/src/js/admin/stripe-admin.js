@@ -60,14 +60,17 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			perAccountCancel.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
-				const updateElement = e.target.previousElementSibling;
-				const editElement = updateElement.previousElementSibling;
-				const accountElement = e.target.parentNode.parentNode.querySelector( 'input[name="account_name"]' );
-				const accountName = ( null !== accountElement ) ? accountElement.value : '';
+				const cancelElement = e.target;
+				const parentElement = cancelElement.parentNode.parentNode;
+				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
+				const editElement = parentElement.querySelector( '.give-stripe-account-edit-name' );
+				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
+				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
 
-				e.target.parentNode.parentNode.querySelector( '.give-stripe-account-name' ).textContent = accountName;
-				e.target.classList.add( 'give-hidden' );
+				accountNameElement.textContent = accountInputElement.value;
+				cancelElement.classList.add( 'give-hidden' );
 				updateElement.classList.add( 'give-hidden' );
+				accountInputElement.classList.add( 'give-hidden' );
 				editElement.classList.remove( 'give-hidden' );
 			} );
 		} );
@@ -86,18 +89,21 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			perAccountEdit.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
-				const updateElement = e.target.nextElementSibling;
-				const accountName = e.target.parentNode.previousElementSibling.textContent.trim();
+				const editElement = e.target;
+				const parentElement = editElement.parentNode.parentNode;
+				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
+				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
+				const accountName = accountNameElement.textContent.trim();
 				const inputElement = document.createElement( 'input' );
 
 				inputElement.type = 'text';
 				inputElement.name = 'account_name';
 				inputElement.value = accountName;
 
-				e.target.parentNode.previousElementSibling.textContent = '';
-				e.target.parentNode.previousElementSibling.append( inputElement );
+				accountNameElement.textContent = '';
+				accountNameElement.append( inputElement );
 
-				e.target.classList.add( 'give-hidden' );
+				editElement.classList.add( 'give-hidden' );
 				updateElement.classList.remove( 'give-hidden' );
 				updateElement.nextElementSibling.classList.remove( 'give-hidden' );
 			} );
@@ -117,9 +123,13 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			perAccountUpdate.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
-				const accountSlug = e.target.getAttribute( 'data-account' );
-				const accountNameElement = e.target.parentNode.previousElementSibling;
-				const newAccountName = accountNameElement.querySelector( 'input[name="account_name"]' ).value;
+				const updateElement = e.target;
+				const parentElement = updateElement.parentNode.parentNode;
+				const accountSlug = updateElement.getAttribute( 'data-account' );
+				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
+				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
+				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
+				const newAccountName = accountInputElement.value;
 
 				const xhr = new XMLHttpRequest();
 				const formData = new FormData();
@@ -137,8 +147,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					if ( xhr.status === 200 && response.success ) {
 						notice = `<div class="give-notice notice inline success notice-success"><p>${response.data.message}</p></div>`;
 						accountNameElement.innerHTML = response.data.name;
-						e.target.classList.add( 'give-hidden' );
-						e.target.setAttribute( 'data-account', response.data.slug );
+						updateElement.classList.add( 'give-hidden' );
+						cancelElement.classList.add( 'give-hidden' );
+						updateElement.setAttribute( 'data-account', response.data.slug );
 						editElement.classList.remove( 'give-hidden' );
 					} else {
 						notice = `<div class="give-notice notice inline error notice-error"><p>${response.data.message}</p></div>`;
