@@ -14,6 +14,8 @@
 @import 'feerecovery';
 @import 'ffm';
 @import 'tributes';
+@import 'newsletter';
+@import 'square';
 
 // Structure
 
@@ -43,11 +45,28 @@ h2 {
 	color: #333;
 }
 
+.give-stripe-becs-mandate-acceptance-text,
+.give-stripe-sepa-mandate-acceptance-text,
 p {
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 24px;
 	color: #6f6f6f;
+}
+
+.give-stripe-becs-mandate-acceptance-text,
+.give-stripe-sepa-mandate-acceptance-text {
+	margin-bottom: 16px !important;
+
+	&::before,
+	&::after {
+		display: none !important;
+		content: none !important;
+	}
+
+	&:empty {
+		margin-bottom: 0 !important;
+	}
 }
 
 // Container
@@ -208,6 +227,7 @@ p {
 		position: absolute;
 		border-radius: 6px 0 0 0;
 		overflow: hidden;
+		cursor: pointer;
 
 		&:focus {
 			outline: none;
@@ -658,18 +678,6 @@ p {
 		}
 	}
 
-	.give-gift-aid-explanation-content-more-wrap {
-		padding-bottom: 8px;
-	}
-
-	[id*='give-gift-aid-checkbox-label-wrap-'] {
-		margin-bottom: 0 !important;
-	}
-
-	.give-modal .mfp-content {
-		padding: 0 16px 16px 16px !important;
-	}
-
 	#give_error_invalid_donation_maximum,
 	#give_error_invalid_donation_amount {
 		cursor: pointer;
@@ -729,7 +737,7 @@ p {
 		legend {
 			display: none;
 		}
-		#give-gateway-radio-list {
+		ul {
 			@include before-after-content-none;
 			display: grid;
 			grid-gap: 10px;
@@ -760,39 +768,11 @@ p {
 				}
 			}
 
-			> li.give_purchase_form_wrap-clone {
-				background-color: transparent;
-				margin-right: 0;
-
-				.no-fields {
-					background: #fbfbfb;
-					padding: 6px 16px;
-
-					p {
-						color: #333;
-					}
-				}
-
-				fieldset {
-					ol {
-						list-style: none;
-						padding-left: 0;
-
-						li {
-							font-size: 15px;
-							line-height: 24px;
-							margin-top: 8px;
-							margin-bottom: 10px;
-						}
-					}
-				}
-			}
-
 			input[type='radio'] {
 				display: none !important;
 			}
 
-			.give-gateway-option::before {
+			label::before {
 				content: ' ';
 				position: absolute;
 				top: calc(50% - 10px);
@@ -825,15 +805,33 @@ p {
 		}
 	}
 	#give_purchase_form_wrap {
-		width: 100%;
+		background: #fbfbfb;
+		padding: 12px 20px 6px 20px;
+
+		fieldset {
+			padding: 0;
+		}
+
+		.cc-address {
+			margin-bottom: 0;
+		}
+
+		.no-fields {
+			margin-bottom: 8px;
+		}
 	}
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
 
-		> *:not(.give-donation-submit) {
+		#give-final-total-wrap {
 			display: none;
 		}
+	}
+
+	#donate-fieldset {
+		display: flex;
+		flex-direction: column;
 
 		.give-submit-button-wrap {
 			display: flex;
@@ -852,11 +850,6 @@ p {
 	}
 }
 
-// Gift Aid Styles
-.give_gift_aid_address_state_label {
-	display: none !important;
-}
-
 // Fieldsets and Inputs
 
 fieldset {
@@ -868,8 +861,8 @@ fieldset {
 
 		> i {
 			position: absolute;
-			bottom: 18px;
-			left: 16px;
+			bottom: calc(50% - 6px);
+			left: 14px;
 			font-size: 12px;
 			color: #989898;
 		}
@@ -950,12 +943,21 @@ input[type='checkbox']:checked + label::after {
 	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
+.give-square-cc-fields,
+.give-stripe-cc-field,
+.give-stripe-single-cc-field-wrap,
 form[id*='give-form'] .form-row textarea,
 form[id*='give-form'] .form-row input[type='text'],
 form[id*='give-form'] .form-row input[type='tel'],
 form[id*='give-form'] .form-row input[type='email'],
 form[id*='give-form'] .form-row input[type='password'],
 form[id*='give-form'] .form-row input[type='url'],
+form[id*='give-form'] .form-row textarea.required,
+form[id*='give-form'] .form-row input[type='text'].required,
+form[id*='give-form'] .form-row input[type='tel'].required,
+form[id*='give-form'] .form-row input[type='email'].required,
+form[id*='give-form'] .form-row input[type='password'].required,
+form[id*='give-form'] .form-row input[type='url'].required,
 #give-recurring-form .form-row textarea,
 #give-recurring-form .form-row input[type='text'],
 #give-recurring-form .form-row input[type='tel'],
@@ -970,15 +972,20 @@ form.give-form .form-row input[type='password'],
 form.give-form .form-row input[type='url'] {
 	font-family: 'Montserrat', sans-serif;
 	background: #fff;
-	border: 1px solid #b8b8b8;
+	border: 1px solid #b8b8b8 !important;
 	box-sizing: border-box;
 	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289);
 	border-radius: 4px !important;
 	font-weight: 400;
+	height: auto;
 	font-size: 14px;
 	line-height: 1;
-	color: #8d8e8e;
+	color: #828382;
 	padding: 14px !important;
+}
+
+.give-square-cc-fields {
+	height: 52px;
 }
 
 form[id*='give-form'] .form-row textarea,
@@ -990,13 +997,17 @@ form.give-form .form-row textarea {
 form[id*='give-form'] .form-row select,
 #give-recurring-form .form-row select,
 form.give-form .form-row select,
+form[id*='give-form'] .form-row select.required,
+#give-recurring-form .form-row select.required,
+form.give-form .form-row select.required,
 .give-select {
 	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
-	color: #333;
+	color: #828382;
 	line-height: 1.2;
 	padding: 12px !important;
+	min-height: 48px;
 	margin: 0;
 	border: 1px solid #b8b8b8;
 	border-radius: 4px !important;
@@ -1108,6 +1119,23 @@ form.give-form .form-row select.multiselect {
 	animation-name: slideOutLeft;
 	animation-duration: 0.3s;
 	animation-fill-mode: forwards;
+}
+
+[id*='give_secure_site_wrapper'] {
+	font-size: 12px;
+	color: #8d8e8e;
+
+	span.padlock {
+		font-size: 12px;
+		margin-right: 4px;
+		line-height: 1;
+
+		&::before {
+			font-family: 'Font Awesome 5 Free';
+			font-weight: 900;
+			content: '\f023';
+		}
+	}
 }
 
 @keyframes slideInRight {

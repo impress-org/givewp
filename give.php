@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.6.3
+ * Version: 2.7.0
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -339,13 +339,13 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Bailout: Need minimum php version to load plugin.
 			if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-				add_action( 'admin_notices', array( $this, 'minimum_phpversion_notice' ) );
+				add_action( 'admin_notices', [ $this, 'minimum_phpversion_notice' ] );
 
 				return;
 			}
 
 			// Add compatibility notice for recurring and stripe support with Give 2.5.0.
-			add_action( 'admin_notices', array( $this, 'display_old_recurring_compatibility_notice' ) );
+			add_action( 'admin_notices', [ $this, 'display_old_recurring_compatibility_notice' ] );
 
 			$this->setup_constants();
 			$this->includes();
@@ -361,7 +361,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
-			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+			add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
 		}
 
 
@@ -463,7 +463,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.6.3' );
+				define( 'GIVE_VERSION', '2.7.0' );
 			}
 
 			// Plugin Root File.
@@ -724,12 +724,12 @@ if ( ! class_exists( 'Give' ) ) :
 				);
 
 				Give()->notices->register_notice(
-					array(
+					[
 						'id'               => 'give-compatibility-with-old-recurring',
 						'description'      => $message,
 						'dismissible_type' => 'user',
 						'dismiss_interval' => 'shortly',
-					)
+					]
 				);
 			}
 
@@ -813,7 +813,7 @@ endif; // End if class_exists check
  * @since 1.0
  * @return object|Give
  */
-function Give() {
+function Give() { // phpcs:ignore
 	return Give::instance();
 }
 

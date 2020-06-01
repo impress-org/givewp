@@ -4,6 +4,10 @@
  * @see: http://jsfiddle.net/luddep/vM7R7/
  */
 
+.give-stripe-add-account-link_field {
+	padding: 0 10px;
+}
+
 .give-stripe-connect-message > p {
 	overflow: hidden;
 	line-height: 30px;
@@ -36,6 +40,7 @@
 		}
 	}
 }
+
 #give-stripe-connect-banner p {
 	font-size: 16px;
 }
@@ -144,6 +149,13 @@
 	margin-left: 10px;
 }
 
+.give-stripe-icon {
+	display: inline-block;
+	width: 12px;
+	vertical-align: middle;
+	margin: 0 5px 0 0;
+}
+
 /* Temp dismiss button */
 .give-stripe-connect-temp-dismiss {
 	color: #bfbfbf;
@@ -153,11 +165,13 @@
 	float: right;
 	outline: none;
 }
+
 a.give-stripe-connect-temp-dismiss:focus,
 a.give-stripe-connect-temp-dismiss:active {
 	outline: 0;
 	box-shadow: none;
 }
+
 .give-stripe-connect-temp-dismiss span.dashicons {
 	height: 14px;
 	font-size: 12px;
@@ -222,6 +236,109 @@ a.give-stripe-connect-temp-dismiss:active {
 				font-size: 14px;
 			}
 		}
+	}
+}
+
+// Stripe Manage Accounts section
+.give-stripe-account-manager-wrap {
+	.give-forminp-api_key {
+		padding-top: 0;
+	}
+}
+
+#give-stripe-account-manager-description {
+	margin-bottom: 25px;
+
+	h2 {
+		margin-top: 0;
+		margin-bottom: 15px;
+	}
+
+	p {
+		padding-top: 0;
+		margin-top: 0;
+	}
+}
+
+.give-stripe-account-manager-container {
+	background-color: #f7f7f7;
+	border: 1px solid #e5e5e5;
+}
+
+.give-stripe-account-manager-add-section {
+	background: #fff;
+	padding: 15px;
+
+	h3 {
+		margin-top: 0;
+		font-size: 1.1em;
+	}
+}
+
+.give-stripe-account-manager-list-item {
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.give-stripe-account-name-wrap {
+	width: 50%;
+	display: inline-block;
+
+	span {
+		display: inline-block;
+	}
+}
+
+.give-stripe-account-actions {
+	width: 40%;
+	float: right;
+	text-align: right;
+
+	.give-stripe-disconnect-account-btn {
+		margin-left: 10px;
+	}
+
+	.give-field-description {
+		font-size: 13px;
+		position: relative;
+		top: -1px;
+		margin-right: 0;
+	}
+
+	span {
+		display: inline-block;
+		padding: 5px 0 0 0;
+	}
+}
+
+.give-stripe-account-badge {
+	background-color: #69b868;
+	padding: 5px 10px;
+	border-radius: 3px;
+	color: #fff;
+
+	a {
+		text-decoration: none;
+		color: #fff;
+	}
+}
+
+.give-stripe-account-name {
+	color: #23282d;
+	font-weight: 600;
+	font-size: 15px;
+	margin-right: 5px;
+}
+
+.give-stripe-account-edit {
+	padding: 5px 0 0 0;
+
+	> a {
+		margin: 0 10px;
+	}
+
+	.give-stripe-account-cancel-name {
+		margin-left: 0;
 	}
 }
 

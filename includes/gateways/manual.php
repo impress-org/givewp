@@ -28,11 +28,10 @@ use Give\Helpers\Form\Utils as FormUtils;
  *
  * Manual Gateway does not use a CC form, but it does display a note about test donations
  *
- * @param int $formId Form ID.
  * @return bool
  **/
-function give_manual_form_output( $formId ) {
-	if ( FormUtils::isLegacyForm( $formId ) ) {
+function give_manual_form_output() {
+	if ( FormUtils::isLegacyForm() ) {
 		return false;
 	}
 
@@ -56,14 +55,14 @@ function give_manual_form_output( $formId ) {
 				<b>%2$s</b> %3$s
 			</p>
 		</fieldset>
-	',
-		__( 'Test GiveWP with the Test Donation Gateway', 'give' ),
-		__( 'How it works:', 'give' ),
-		__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.', 'give' )
+		',
+		esc_html__( 'Test GiveWP with the Test Donation Gateway', 'give' ),
+		esc_html__( 'How it works:', 'give' ),
+		esc_html__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.', 'give' )
 	);
 	return true;
 }
-add_action( 'give_manual_cc_form', 'give_manual_form_output', 10, 1 );
+add_action( 'give_manual_cc_form', 'give_manual_form_output' );
 
 /**
  * Processes the donation data and uses the Manual Payment gateway to record
@@ -78,11 +77,11 @@ add_action( 'give_manual_cc_form', 'give_manual_form_output', 10, 1 );
 function give_manual_payment( $purchase_data ) {
 
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	// Create payment_data array
-	$payment_data = array(
+	$payment_data = [
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => intval( $purchase_data['post_data']['give-form-id'] ),
@@ -93,7 +92,7 @@ function give_manual_payment( $purchase_data ) {
 		'currency'        => give_get_currency( $purchase_data['post_data']['give-form-id'], $purchase_data ),
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
-	);
+	];
 	// Record the pending payment
 	$payment = give_insert_payment( $payment_data );
 

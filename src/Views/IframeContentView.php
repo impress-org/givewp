@@ -98,6 +98,7 @@ class IframeContentView {
 		<html <?php language_attributes(); ?>>
 			<head>
 				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title><?php echo apply_filters( 'the_title', $this->title ); ?></title>
 				<?php
 				/**
@@ -126,7 +127,7 @@ class IframeContentView {
 	 *
 	 * @since 2.7.0
 	 */
-	public function renderBody(){
+	public function renderBody() {
 		return $this->body;
 	}
 }

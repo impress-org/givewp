@@ -11,23 +11,46 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		let tokenCreated = false;
 		const form_element = formWrap.querySelector( '.give-form' );
 
-		// Bailout, if `form_element` is null.
+		/**
+		 * Bailout, if `form_element` is null.
+		 *
+		 * We are bailing out here as this script is loaded on every page of the
+		 * site but the `form_element` only exists on the pages when Give donation
+		 * form is loaded. So, when the pages where the donation form is not loaded
+		 * will show console error. To avoid JS console errors we bail it, if
+		 * `form_element` is null to avoid console errors.
+		 */
 		if ( null === form_element ) {
 			return;
 		}
 
-		const formName = form_element.querySelector( 'input[name="give-form-title"]' ).value;
-		const idPrefix = form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value;
+		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
+		const accountId = form_element.getAttribute( 'data-account' );
+		const formName = null !== form_element.querySelector( 'input[name="give-form-title"]' ) ?
+			form_element.querySelector( 'input[name="give-form-title"]' ).value :
+			false;
+		const idPrefix = null !== form_element.querySelector( 'input[name="give-form-id-prefix"]' ) ?
+			form_element.querySelector( 'input[name="give-form-id-prefix"]' ).value :
+			false;
 		const checkoutImage = ( give_stripe_vars.checkout_image.length > 0 ) ? give_stripe_vars.checkout_image : '';
 		const checkoutAddress = ( give_stripe_vars.checkout_address.length > 0 );
 		const isZipCode = ( give_stripe_vars.zipcode_option.length > 0 );
 		const isRememberMe = ( give_stripe_vars.remember_option.length > 0 );
 
+		/**
+		 * Bailout, when publishable key is not present for a donation form
+		 * due to Stripe account not properly attached to the form or global
+		 * Stripe account is not added.
+		 */
+		if ( null === publishableKey ) {
+			return;
+		}
+
 		stripe_handler[ idPrefix ] = [];
 
 		// Set stripe handler for form.
 		stripe_handler[ idPrefix ] = StripeCheckout.configure( {
-			key: give_stripe_vars.publishable_key,
+			key: publishableKey,
 			image: checkoutImage,
 			locale: give_stripe_vars.preferred_locale,
 			billingAddress: checkoutAddress,
@@ -48,8 +71,8 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				tokenCreated = true;
 
 				// For Stripe Connect API Users.
-				if ( '' !== give_stripe_vars.stripe_account_id ) {
-					token.stripeAccount = give_stripe_vars.stripe_account_id;
+				if ( '' !== accountId ) {
+					token.stripeAccount = accountId;
 				}
 
 				// Supplemental loading animation while the donation form submits.

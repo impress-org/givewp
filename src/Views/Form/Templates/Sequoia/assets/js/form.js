@@ -5,6 +5,7 @@
 	const $advanceButton = $( '.advance-btn', $container );
 	const $backButton = $( '.back-btn' );
 	const $navigatorTitle = $( '.give-form-navigator .title' );
+	const $paymentGatewayContainer = $( '#give-payment-mode-select' );
 	let gatewayAnimating = false;
 
 	const navigator = {
@@ -196,6 +197,18 @@
 					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
 				} );
 
+				setupCheckbox( {
+					container: '.give-mailchimp-fieldset',
+					label: '.give-mc-message-text',
+					input: 'input[name="give_mailchimp_signup"]',
+				} );
+
+				setupCheckbox( {
+					container: '.give-constant-contact-fieldset',
+					label: '.give-constant-contact-fieldset span',
+					input: 'input[name="give_constant_contact_signup"]',
+				} );
+
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
@@ -244,13 +257,7 @@
 				} );
 
 				//Setup input icons
-				setupInputIcon( '#give-first-name-wrap', 'user' );
-				setupInputIcon( '#give-email-wrap', 'envelope' );
-				setupInputIcon( '#give-company-wrap', 'building' );
-				setupInputIcon( '#date_field-wrap', 'calendar-alt' );
-				setupInputIcon( '#url_field-wrap', 'globe' );
-				setupInputIcon( '#phone_field-wrap', 'phone' );
-				setupInputIcon( '#email_field-wrap', 'envelope' );
+				setupInputIcons();
 
 				// Setup gateway icons
 				setupGatewayIcons();
@@ -265,6 +272,11 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
+							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).hasClass( 'payment' ) ) {
+								$( node ).children( '.give_errors' ).clone().prependTo( '.give-section.payment' );
+								$( node ).children( '.give_errors' ).remove();
+							}
+
 							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'payment' ) ) {
 								$( node ).clone().prependTo( '.give-section.payment' );
 								$( node ).remove();
@@ -278,10 +290,15 @@
 
 							if ( $( node ).attr( 'name' ) === 'give_tributes_address_state' && $( node ).attr( 'class' ).includes( 'give-input' ) ) {
 								$( node ).attr( 'placeholder', $( node ).siblings( 'label' ).text().trim() );
-              }
-              
+							}
+
 							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
 								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
+							}
+
+							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
+								const placeholder = $( node ).attr( 'placeholder' );
+								$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
 							}
 						}
 					} );
@@ -300,16 +317,20 @@
 	navigator.init();
 
 	// Check if only a single gateway is enabled
-	if ( $( '#give-payment-mode-select' ).css( 'display' ) !== 'none' ) {
+	if ( $paymentGatewayContainer.length && $paymentGatewayContainer.css( 'display' ) !== 'none' ) {
 		// Move payment information section when document load.
 		moveFieldsUnderPaymentGateway( true );
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
 			moveFieldsUnderPaymentGateway( true );
+			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
+				gatewayAnimating = false;
+			} );
 		} );
 		$( document ).on( 'Give:onPreGatewayLoad', function() {
-			moveFieldsUnderPaymentGateway( false );
+			gatewayAnimating = true;
+			$( '#give_purchase_form_wrap' ).slideUp( 200 );
 		} );
 
 		// Refresh payment information section.
@@ -319,55 +340,37 @@
 	/**
 	 * Move form field under payment gateway
 	 * @since 2.7.0
-	 * @param {boolean} $refresh Flag to remove or add form fields to selected payment gateway.
 	 */
-	function moveFieldsUnderPaymentGateway( $refresh = false ) {
-		// This function will run only for embed donation form.
-		if ( 1 !== parseInt( jQuery( 'div.give-embed-form' ).length ) ) {
-			return;
+	function moveFieldsUnderPaymentGateway() {
+		// Check if donate fieldset area has been created, if not set it up below payment gateways
+		// This area is necessary for correctly placing various elements (fee recovery notice, newsletters, submit button, etc)
+		if ( $( '#donate-fieldset' ).length === 0 ) {
+			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
-		if ( ! $refresh ) {
-			const element = jQuery( 'li.give_purchase_form_wrap-clone' );
-			element.slideUp( 300, function() {
-				element.remove();
-			} );
+		// Elements to move into donate fieldset (located at bottom of form)
+		// The elements will appear in order of array
+		const donateFieldsetElements = [
+			'.give-constant-contact-fieldset',
+			'.give-mailchimp-fieldset',
+			'.give-donation-submit',
+		];
 
-			return;
-		}
-
-		new Promise( function( res ) {
-			const fields = jQuery( '#give_purchase_form_wrap > *' ).not( '.give-donation-submit' );
-			let showFields = false;
-
-			jQuery( '.give-gateway-option-selected' ).after( '<li class="give_purchase_form_wrap-clone" style="display: none"></li>' );
-
-			jQuery.each( fields, function( index, $item ) {
-				$item = jQuery( $item );
-				jQuery( '.give_purchase_form_wrap-clone' ).append( $item.clone() );
-
-				showFields = ! showFields ? !! $item.html().trim() : showFields;
-
-				$item.remove();
-			} );
-
-			if ( ! showFields ) {
-				jQuery( '.give_purchase_form_wrap-clone' ).remove();
-			}
-
-			return res( showFields );
-		} ).then( function( showFields ) {
-			// eslint-disable-next-line no-unused-expressions
-			setupInputIcon( '#give-card-country-wrap', 'globe-americas' );
-
-			if ( showFields ) {
-				gatewayAnimating = true;
-				// eslint-disable-next-line no-unused-expressions
-				jQuery( '.give_purchase_form_wrap-clone' ).slideDown( 300, function() {
-					gatewayAnimating = false;
-				} );
+		// Handle moving elements into donate fieldset
+		donateFieldsetElements.forEach( function( selector ) {
+			if ( $( `#donate-fieldset  ${ selector }` ).length === 0 ) {
+				$( '#donate-fieldset' ).append( $( `#give_purchase_form_wrap ${ selector }` ) );
+			} else {
+				$( `#give_purchase_form_wrap ${ selector }` ).remove();
 			}
 		} );
+
+		// Move purchase fields (credit card, billing, etc)
+		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
+
+		// Add gateway class to fields wrapper, indicating which gateway is active
+		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
+		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
 	}
 
 	/**
@@ -410,6 +413,17 @@
 		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
 	}
 
+	function setupInputIcons() {
+		setupInputIcon( '#give-first-name-wrap', 'user' );
+		setupInputIcon( '#give-email-wrap', 'envelope' );
+		setupInputIcon( '#give-company-wrap', 'building' );
+		setupInputIcon( '#date_field-wrap', 'calendar-alt' );
+		setupInputIcon( '#url_field-wrap', 'globe' );
+		setupInputIcon( '#phone_field-wrap', 'phone' );
+		setupInputIcon( '#give-phone-wrap', 'phone' );
+		setupInputIcon( '#email_field-wrap', 'envelope' );
+	}
+
 	/**
 	 * Loop through gateway li elements and setup fontawesome icons
 	 *
@@ -438,11 +452,41 @@
 				case 'stripe_sepa':
 					icon = 'fas fa-university';
 					break;
+				case 'stripe_ach':
+					icon = 'fas fa-university';
+					break;
+				case 'stripe_ideal':
+					icon = 'fas fa-university';
+					break;
+				case 'stripe_becs':
+					icon = 'fas fa-university';
+					break;
+				case 'paypalpro_payflow':
+					icon = 'far fa-credit-card';
+					break;
 				default:
 					icon = 'fas fa-hand-holding-heart';
 					break;
 			}
 			$( this ).append( `<i class="${ icon }"></i>` );
+		} );
+	}
+
+	/**
+	 * Setup prominent checkboxes (that use persistent borders on select)
+	 *
+	 * @since 2.7.0
+	 * @param {object} args Argument object containing: container, label, input selectors
+	 */
+	function setupCheckbox( { container, label, input } ) {
+		// If checkbox is opted in by default, add border on load
+		if ( $( input ).prop( 'checked' ) === true ) {
+			$( container ).addClass( 'active' );
+		}
+
+		// Persist checkbox input border when selected
+		$( label ).on( 'click touchend', function() {
+			$( container ).toggleClass( 'active' );
 		} );
 	}
 

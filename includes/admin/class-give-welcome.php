@@ -36,9 +36,9 @@ class Give_Welcome {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menus' ) );
-		add_action( 'admin_head', array( $this, 'admin_head' ) );
-		add_action( 'admin_init', array( $this, 'welcome' ) );
+		add_action( 'admin_menu', [ $this, 'admin_menus' ] );
+		add_action( 'admin_head', [ $this, 'admin_head' ] );
+		add_action( 'admin_init', [ $this, 'welcome' ] );
 	}
 
 	/**
@@ -58,7 +58,7 @@ class Give_Welcome {
 			esc_html__( 'What\'s New', 'give' ),
 			$this->minimum_capability,
 			'give-changelog',
-			array( $this, 'changelog_screen' )
+			[ $this, 'changelog_screen' ]
 		);
 
 		// Getting Started Page
@@ -68,7 +68,7 @@ class Give_Welcome {
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
 			'give-getting-started',
-			array( $this, 'getting_started_screen' )
+			[ $this, 'getting_started_screen' ]
 		);
 
 		// Credits Page
@@ -78,7 +78,7 @@ class Give_Welcome {
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
 			'give-credits',
-			array( $this, 'credits_screen' )
+			[ $this, 'credits_screen' ]
 		);
 	}
 
@@ -109,19 +109,19 @@ class Give_Welcome {
 		?>
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-getting-started' ? 'nav-tab-active' : ''; ?>"
-			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-getting-started' ), 'index.php' ) ) ); ?>">
+			   href="<?php echo esc_url( admin_url( add_query_arg( [ 'page' => 'give-getting-started' ], 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'Getting Started', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-changelog' ? 'nav-tab-active' : ''; ?>"
-			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-changelog' ), 'index.php' ) ) ); ?>">
+			   href="<?php echo esc_url( admin_url( add_query_arg( [ 'page' => 'give-changelog' ], 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'What\'s New', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>"
-			   href="https://givewp.com/addons/?utm_source=welcome-screen&utm_medium=getting-started">
+			   href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-addons' ) ); ?>">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>"
-			   href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-credits' ), 'index.php' ) ) ); ?>">
+			   href="<?php echo esc_url( admin_url( add_query_arg( [ 'page' => 'give-credits' ], 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'Credits', 'give' ); ?>
 			</a>
 		</div>
@@ -505,16 +505,16 @@ class Give_Welcome {
 			return $contributors;
 		}
 
-		$response = wp_remote_get( 'https://api.github.com/repos/impress-org/give/contributors', array( 'sslverify' => false ) );
+		$response = wp_remote_get( 'https://api.github.com/repos/impress-org/give/contributors', [ 'sslverify' => false ] );
 
 		if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
-			return array();
+			return [];
 		}
 
 		$contributors = json_decode( wp_remote_retrieve_body( $response ) );
 
 		if ( ! is_array( $contributors ) ) {
-			return array();
+			return [];
 		}
 
 		Give_Cache::set( 'give_contributors', $contributors, HOUR_IN_SECONDS, true );

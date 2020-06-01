@@ -160,10 +160,6 @@ function give_run_install() {
 		return;
 	}
 
-	// Setup rewrite URL.
-	Give()->routeForm->setBasePrefix();
-	Give()->routeForm->addRule();
-
 	// Flush rewrite rules.
 	flush_rewrite_rules();
 
@@ -385,7 +381,7 @@ function give_get_default_settings() {
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 
 		'donor_default_user_role'                     => 'give_donor',
-		Give()->routeForm->getOptionName()            => Give()->routeForm->getBase(),
+		Give()->routeForm->getOptionName()            => 'give',
 
 	);
 

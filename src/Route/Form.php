@@ -63,7 +63,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function setBasePrefix() {
-		$this->base = give_get_option( $this->optionName ) ?: $this->defaultBase;
+		$this->base = give_get_option( $this->optionName, $this->defaultBase );
 	}
 
 

@@ -45,15 +45,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		public $api_version = '2019-05-16';
 
 		/**
-		 * Secret API Key.
-		 *
-		 * @access private
-		 *
-		 * @var string
-		 */
-		private $secret_key = '';
-
-		/**
 		 * Payment Intent.
 		 *
 		 * @since  2.5.0
@@ -92,9 +83,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return bool|void
 		 */
 		public function __construct() {
-
-			// Set secret key received from Stripe.
-			$this->secret_key = give_stripe_get_secret_key();
 
 			// Set API Version.
 			$this->set_api_version();
@@ -349,13 +337,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			$card_exists = false;
 			$all_sources = $stripe_customer->sources->all();
-
-			if ( give_stripe_is_checkout_enabled() && 'stripe' === $this->id ) {
-				$card = $this->get_token_details( $id );
-			} else {
-				$card = $this->get_source_details( $id );
-			}
-
+			$card        = $this->get_source_details( $id );
 			$source_list = wp_list_pluck( $all_sources->data, 'id' );
 
 			// Check whether the source is already attached to customer or not.
@@ -554,15 +536,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		/**
 		 * This function will prepare metadata to send to Stripe.
 		 *
-		 * @param int $donation_id Donation ID.
+		 * @param int   $donation_id   Donation ID.
+		 * @param array $donation_data Donation Data.
 		 *
 		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return array
 		 */
-		public function prepare_metadata( $donation_id = 0 ) {
-			return give_stripe_prepare_metadata( $donation_id );
+		public function prepare_metadata( $donation_id, $donation_data = [] ) {
+			return give_stripe_prepare_metadata( $donation_id, $donation_data );
 		}
 
 		/**
