@@ -151,6 +151,8 @@ function give_do_automatic_upgrades() {
 			// Flush rewrite rules. It will help to store register route for embed form.
 			flush_rewrite_rules();
 
+			give_v270_upgrades();
+
 			$did_upgrade = true;
 	}
 
