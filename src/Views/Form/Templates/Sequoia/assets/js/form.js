@@ -184,8 +184,7 @@
 				window.give_global_vars.purchase_loading = '';
 
 				const testNotice = $( '#give_error_test_mode' );
-				$( testNotice ).clone().prependTo( '.give-section.payment' );
-				$( testNotice ).remove();
+				moveErrorNotice( testNotice );
 
 				// Persist the recurring input border when selected
 				$( '.give-recurring-period' ).change( function() {
@@ -272,14 +271,15 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
-							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).hasClass( 'payment' ) ) {
-								$( node ).children( '.give_errors' ).clone().prependTo( '.give-section.payment' );
-								$( node ).children( '.give_errors' ).remove();
+							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
+								$( node ).children( '.give_errors' ).each( function() {
+									const notice = $( this );
+									moveErrorNotice( notice );
+								} );
 							}
 
-							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'payment' ) ) {
-								$( node ).clone().prependTo( '.give-section.payment' );
-								$( node ).remove();
+							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
+								moveErrorNotice( $( node ) );
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
 							}
 
@@ -350,6 +350,26 @@
 
 		// Refresh payment information section.
 		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+	}
+
+	/**
+	 * Move error notices to error notice container at the top of the payment section
+	 * @since 2.7.0
+	 * @param {node} node The error notice node to be moved
+	 */
+	function moveErrorNotice( node ) {
+		// First check if specific donation notice container has been set up
+		if ( $( '.donation-errors' ).length === 0 ) {
+			$( '.payment' ).prepend( '<div class="donation-errors"></div>' );
+		}
+
+		// If a specific notice does not already exist, proceed with moving the error
+		if ( ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
+			$( node ).appendTo( '.donation-errors' );
+		} else {
+			// If the specific notice already exists, do not add it
+			$( node ).remove();
+		}
 	}
 
 	/**
