@@ -697,7 +697,13 @@ function give_get_country_locale() {
 			],
 			'LB' => [
 				'state' => [
+					'required' => false
+				],
+			],
+			'MC' => [
+				'state' => [
 					'required' => false,
+					'hidden'   => true,
 				],
 			],
 			'MQ' => [
