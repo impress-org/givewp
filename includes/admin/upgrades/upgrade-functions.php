@@ -499,6 +499,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		]
 	);
 
+	$give_updates->register(
+		[
+			'id'       => 'v270_store_stripe_account_for_donation',
+			'version'  => '2.7.0',
+			'callback' => 'give_v270_store_stripe_account_for_donation_callback',
+		]
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -3723,5 +3730,48 @@ function give_v270_upgrades() {
 
 		// Set option to check that data is migrated or not.
 		give_set_upgrade_complete( 'give_stripe_v270_data_migrated' );
+	}
+}
+
+/**
+ * This manual upgrade routine is used set the default Stripe account for all the existing donations.
+ * This process will help us to identify which Stripe account is used to process a specific donation.
+ *
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function give_v270_store_stripe_account_for_donation_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donations = new WP_Query(
+		[
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => [ 'give_payment' ],
+			'posts_per_page' => 100,
+		]
+	);
+
+	if ( $donations->have_posts() ) {
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 100 );
+
+		while ( $donations->have_posts() ) {
+			$donations->the_post();
+
+			$defaultStripeAccount        = give_stripe_get_default_account_slug();
+			$defaultStripeAccountDetails = give_stripe_get_default_account();
+
+			// Store essential details for donation specific stripe account.
+			give_update_meta( get_the_ID(), '_give_stripe_processed_account_slug', $defaultStripeAccount );
+			give_update_meta( get_the_ID(), '_give_stripe_processed_account_details', $defaultStripeAccountDetails );
+		}
+
+		wp_reset_postdata();
+	} else {
+		// Update Ran Successfully.
+		give_set_upgrade_complete( 'v270_store_stripe_account_for_donation' );
 	}
 }
