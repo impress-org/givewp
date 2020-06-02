@@ -384,6 +384,9 @@ function give_get_default_settings() {
 		'donor_default_user_role'                     => 'give_donor',
 		Give()->routeForm->getOptionName()            => 'give',
 
+		// Stripe accounts.
+		'_give_stripe_get_all_accounts'               => [],
+
 	];
 
 	return $options;

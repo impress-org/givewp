@@ -3653,16 +3653,18 @@ function give_v263_upgrades() {
  * @return void
  */
 function give_v270_upgrades() {
-	$stripe_accounts = give_stripe_get_all_accounts();
-	$is_migrated     = give_has_upgrade_completed( 'give_stripe_v270_data_migrated' );
+	$settingKey              = '_give_stripe_get_all_accounts';
+	$giveSettings            = give_get_settings();
+	$isStripeAccountMigrated = array_key_exists( $settingKey, $giveSettings );
+	$stripeAccounts          = $isStripeAccountMigrated ? $giveSettings[ $settingKey ] : [];
 
 	// Process, only when there is no Stripe accounts stored.
-	if ( ! $stripe_accounts && ! $is_migrated ) {
+	if ( ! $isStripeAccountMigrated ) {
 		if (
 			give_stripe_is_premium_active() &&
 			give_stripe_is_manual_api_keys_enabled()
 		) {
-			$stripe_accounts['account_1'] = [
+			$stripeAccounts['account_1'] = [
 				'type'                 => 'manual',
 				'live_secret_key'      => give_get_option( 'live_secret_key' ),
 				'test_secret_key'      => give_get_option( 'test_secret_key' ),
@@ -3681,8 +3683,8 @@ function give_v270_upgrades() {
 
 			\Stripe\Stripe::setApiKey( $secret_key );
 
-			$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) + 1 : 1;
-			$all_account_slugs = array_keys( $stripe_accounts );
+			$accounts_count    = is_countable( $stripeAccounts ) ? count( $stripeAccounts ) + 1 : 1;
+			$all_account_slugs = array_keys( $stripeAccounts );
 			$accountSlug       = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
 			$accountName       = give_stripe_convert_slug_to_title( $accountSlug );
 			$accountEmail      = '';
@@ -3700,7 +3702,7 @@ function give_v270_upgrades() {
 				$accountCountry = $accountDetails->country;
 			}
 
-			$stripe_accounts[ $accountSlug ] = [
+			$stripeAccounts[ $accountSlug ] = [
 				'type'                 => 'connect',
 				'account_name'         => $accountName,
 				'account_slug'         => $accountSlug,
@@ -3718,7 +3720,7 @@ function give_v270_upgrades() {
 			give_update_option( '_give_stripe_default_account', $accountSlug );
 		}
 
-		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+		give_update_option( $settingKey, $stripeAccounts );
 
 		// Remove legacy settings.
 		give_delete_option( 'live_secret_key' );
@@ -3727,9 +3729,6 @@ function give_v270_upgrades() {
 		give_delete_option( 'test_publishable_key' );
 		give_delete_option( 'give_stripe_connected' );
 		give_delete_option( 'give_stripe_user_id' );
-
-		// Set option to check that data is migrated or not.
-		give_set_upgrade_complete( 'give_stripe_v270_data_migrated' );
 	}
 }
 
