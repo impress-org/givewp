@@ -796,7 +796,7 @@ const gravatar = require( 'gravatar' );
 			// Check if it give setting page or not.
 			if ( settingsPage.length > 0 ) {
 				// Get the default value.
-				const on_load_value = $( '#give-mainform' ).serialize();
+				const on_load_value = $( '#give-mainform :not([data-exclude-from-form])' ).serialize();
 
 				/**
 				 * Keyup event add to support to text box and textarea.
@@ -805,7 +805,7 @@ const gravatar = require( 'gravatar' );
 				 */
 				settingsPage.on( 'change keyup blur', 'form', function() {
 					// Get the form value after change.
-					const on_change_value = $( '#give-mainform' ).serialize();
+					const on_change_value = $( '#give-mainform :not([data-exclude-from-form])' ).serialize();
 
 					// If both the value are same then no change has being made else change has being made.
 					give_setting_edit = ( on_load_value !== on_change_value ) ? true : false;
