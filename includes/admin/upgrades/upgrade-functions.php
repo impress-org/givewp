@@ -3763,10 +3763,26 @@ function give_v270_store_stripe_account_for_donation_callback() {
 
 			$defaultStripeAccount        = give_stripe_get_default_account_slug();
 			$defaultStripeAccountDetails = give_stripe_get_default_account();
+			$stripeAccountNote           = 'connect' === $defaultStripeAccountDetails['type'] ?
+				sprintf(
+					'%1$s "%2$s" %3$s',
+					esc_html__( 'Donation accepted with Stripe account', 'give' ),
+					"{$defaultStripeAccountDetails['account_name']} ({$defaultStripeAccount})",
+					esc_html__( 'using Stripe Connect.', 'give' )
+				) :
+				sprintf(
+					'%1$s "%2$s" %3$s',
+					esc_html__( 'Donation accepted with Stripe account', 'give' ),
+					give_stripe_convert_slug_to_title( $defaultStripeAccount ),
+					esc_html__( 'using Manual API Keys.', 'give' )
+				);
 
 			// Store essential details for donation specific stripe account.
 			give_update_meta( get_the_ID(), '_give_stripe_processed_account_slug', $defaultStripeAccount );
 			give_update_meta( get_the_ID(), '_give_stripe_processed_account_details', $defaultStripeAccountDetails );
+
+			// Log data to donation notes.
+			give_insert_payment_note( get_the_ID(), $stripeAccountNote );
 		}
 
 		wp_reset_postdata();
