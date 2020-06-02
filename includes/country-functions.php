@@ -700,6 +700,12 @@ function give_get_country_locale() {
 					'required' => false,
 				),
 			),
+			'MC' => array(
+				'state' => array(
+					'required' => false,
+					'hidden'   => true,
+				),
+			),
 			'MQ' => array(
 				'state' => array(
 					'required' => false,
