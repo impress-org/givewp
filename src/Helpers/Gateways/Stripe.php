@@ -40,11 +40,7 @@ class Stripe {
 
 		$accountId     = give_stripe_get_default_account_slug( $formId );
 		$accountDetail = give_stripe_get_default_account( $formId );
-		$accountName   = $accountDetail['account_name'];
-
-		if ( 'manual' === $accountDetail['type'] ) {
-			$accountName = give_stripe_convert_slug_to_title( $accountId );
-		}
+		$accountName   = 'connect' === $accountDetail['type'] ? $accountDetail['account_name'] : give_stripe_convert_slug_to_title( $accountId );
 
 		$stripeAccountNote = 'connect' === $accountDetail['type'] ?
 			sprintf(
