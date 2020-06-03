@@ -223,21 +223,6 @@ class Actions {
 	}
 
 	/**
-	 * Add load next sections button
-	 *
-	 * @since 2.7.0
-	 */
-	public function getNextButton( $id ) {
-
-		$label = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
-
-		printf(
-			'<div class="give-section"><button class="give-btn advance-btn">%1$s</button></div>',
-			$label
-		);
-	}
-
-	/**
 	 * Add wrapper and introduction text to payment information section
 	 *
 	 * @since 2.7.0
@@ -273,10 +258,16 @@ class Actions {
 		$content = isset( $this->templateOptions['payment_amount']['content'] ) ? $this->templateOptions['payment_amount']['content'] : __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' );
 		$label   = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 
-		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
+		printf(
+			'<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-right"></i></button></div>',
+			$label
+		);
 
 		if ( ! empty( $content ) ) {
-			echo "<div class='give-section choose-amount'><p class='content'>{$content}</p>";
+			printf(
+				'<div class="give-section choose-amount"><p class="content">%1$s</p>',
+				$content
+			);
 		} else {
 			echo "<div class='give-section choose-amount'>";
 		}
@@ -289,7 +280,11 @@ class Actions {
 	 */
 	public function getCloseWrapperHTMLForAmountSection() {
 		$label = isset( $this->templateOptions['payment_amount']['next_label'] ) ? $this->templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
-		echo "<button class='give-btn advance-btn'>{$label}</button></div>";
+
+		printf(
+			'<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-right"></i></button></div>',
+			$label
+		);
 	}
 
 	/**
