@@ -102,6 +102,10 @@ p {
 	padding-bottom: 15px;
 	&:focus {
 		outline: none;
+		box-shadow: 0 0 8px #28c77b;
+	}
+	&:hover {
+		filter: brightness(1.2);
 	}
 }
 
@@ -120,6 +124,8 @@ p {
 	margin-top: 48px;
 	margin-bottom: 16px;
 	min-width: 236px;
+	filter: brightness(1);
+	transition: filter 0.2s ease;
 
 	> i {
 		font-size: 15px;
@@ -473,10 +479,6 @@ p {
 				line-height: 1 !important;
 				color: #333;
 				border: 0 !important;
-
-				&:focus {
-					outline: none;
-				}
 			}
 		}
 
