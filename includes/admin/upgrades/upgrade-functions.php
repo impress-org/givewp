@@ -13,6 +13,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Gateways\Stripe;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -3761,7 +3763,7 @@ function give_v270_store_stripe_account_for_donation_callback() {
 			$donations->the_post();
 			$donationId = get_the_ID();
 
-			giveStripeAddDonationStripeAccount(
+			Stripe::addAccountDetail(
 				$donationId,
 				give_get_payment_form_id( $donationId ),
 				give_get_payment_gateway( $donationId )
