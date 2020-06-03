@@ -479,6 +479,10 @@ p {
 				line-height: 1 !important;
 				color: #333;
 				border: 0 !important;
+
+				&:focus {
+					outline: none;
+				}
 			}
 		}
 

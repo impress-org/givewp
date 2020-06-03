@@ -88,6 +88,9 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			.give-btn:focus {
 				box-shadow: 0 0 8px %1$s;
 			}
+			.choose-amount .give-total-wrap .give-donation-amount:focus-within {
+				border-color: %1$s !important;
+			}
 			.give-donation-level-btn {
 				border: 2px solid %1$s !important;
 			}
