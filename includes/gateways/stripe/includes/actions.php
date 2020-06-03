@@ -58,22 +58,22 @@ add_action( 'give_donation_form_top', 'give_stripe_add_secret_payment_method_fie
  * This function is used to add Stripe account used while processing donation.
  *
  * @param int   $donationId   Donation ID.
- * @param array $donationData Donation Data.
+ * @param int $formId Form ID.
+ * @param string $paymentMethod Payment gateway id.
  *
  * @since 2.7.0
  *
  * @return void
  */
-function giveStripeAddDonationStripeAccount( $donationId, $donationData ) {
+function giveStripeAddDonationStripeAccount( $donationId, $formId, $paymentMethod ) {
 	// Bailout, if the donation is not processed with any of the supported payment method of Stripe.
 	if (
 		! empty( $donationData['gateway'] ) &&
-		'stripe' === substr( $donationData['gateway'], 0, 5 )
+		! in_array( $paymentMethod, give_stripe_supported_payment_methods(), true )
 	) {
 		return;
 	}
 
-	$formId                      = $donationData['give_form_id'];
 	$defaultStripeAccount        = give_stripe_get_default_account_slug( $formId );
 	$defaultStripeAccountDetails = give_stripe_get_default_account( $formId );
 	$stripeAccountNote           = 'connect' === $defaultStripeAccountDetails['type'] ?
