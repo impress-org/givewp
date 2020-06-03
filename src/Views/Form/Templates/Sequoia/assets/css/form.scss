@@ -753,7 +753,7 @@ p {
 			grid-template-rows: 1fr;
 			margin: 0;
 
-			> li:not(.give_purchase_form_wrap-clone) {
+			> li {
 				@include background-lightgray;
 				margin: 0 !important;
 				padding: 14px 20px !important;
@@ -811,6 +811,18 @@ p {
 				content: ' ';
 				display: block;
 				background: #333;
+			}
+		}
+	}
+	#give_offline_payment_info {
+		> ol {
+			list-style: none;
+			padding: 0;
+
+			> li {
+				line-height: 1.4;
+				padding: 4px 0;
+				font-size: 15px;
 			}
 		}
 	}
