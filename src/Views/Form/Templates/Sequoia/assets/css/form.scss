@@ -698,6 +698,12 @@ p {
 			padding: 20px 3px 0;
 		}
 	}
+	.subheading {
+		@media screen and (max-width: $break-phone) {
+			padding-left: 20px !important;
+			padding-right: 20px !important;
+		}
+	}
 	.give_notices {
 		width: 100%;
 		order: 1;
