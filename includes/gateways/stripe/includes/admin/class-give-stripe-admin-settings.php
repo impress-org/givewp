@@ -782,7 +782,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 												'tab'     => 'gateways',
 												'section' => 'stripe-settings',
 												'give_action' => 'disconnect_manual_stripe_account',
-												'account' => $slug,
 											],
 											admin_url( 'edit.php' )
 										);
@@ -836,6 +835,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 														class="give-stripe-disconnect-account-btn"
 														href="<?php echo $disconnect_url; ?>"
 														data-disconnect-message="<?php echo $disconnect_message; ?>"
+														data-account="<?php echo $slug; ?>"
 													>
 														<?php esc_html_e( 'Disconnect', 'give' ); ?>
 													</a>
