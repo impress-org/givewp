@@ -88,6 +88,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			.give-btn:focus {
 				box-shadow: 0 0 8px %1$s;
 			}
+			#give-gateway-radio-list > li:focus-within,
 			.choose-amount .give-total-wrap .give-donation-amount:focus-within {
 				border-color: %1$s !important;
 			}
