@@ -901,7 +901,7 @@ input[type='checkbox'] + label {
 	font-size: 16px;
 	line-height: 1.4;
 	padding: 0 0 0 32px;
-	width: 100%;
+	width: calc(100% - 82px);
 	margin-left: 0;
 	color: #333;
 	display: inline-block;
