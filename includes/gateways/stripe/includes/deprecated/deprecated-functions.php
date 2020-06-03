@@ -120,14 +120,14 @@ if ( ! function_exists( 'give_stripe_get_connect_settings' ) ) {
 
 		_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_connect_settings', $backtrace );
 
-		$options = array(
+		$options = [
 			'connected_status'     => give_get_option( 'give_stripe_connected' ),
 			'user_id'              => give_get_option( 'give_stripe_user_id' ),
 			'access_token'         => give_get_option( 'live_secret_key' ),
 			'access_token_test'    => give_get_option( 'test_secret_key' ),
 			'publishable_key'      => give_get_option( 'live_publishable_key' ),
 			'publishable_key_test' => give_get_option( 'test_publishable_key' ),
-		);
+		];
 
 		/**
 		 * This filter hook is used to override the existing stripe connect settings stored in DB.
@@ -216,4 +216,24 @@ function give_stripe_is_checkout_enabled() {
 	_give_deprecated_function( __FUNCTION__, '2.6.4', 'give_stripe_is_checkout_enabled', $backtrace );
 
 	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
+}
+
+/**
+ * Look up the stripe customer id in user meta, and look to recurring if not found yet.
+ * Note: We are not changing @since and @deprecated as we moved this fn from Stripe Premium.
+ *
+ * @since  1.4
+ * @deprecated 2.1
+ *
+ * @param  int $user_id_or_email The user ID or email to look up.
+ *
+ * @return string       Stripe customer ID.
+ */
+function give_get_stripe_customer_id( $user_id_or_email ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_customer_id', $backtrace );
+
+	return give_stripe_get_customer_id( $user_id_or_email );
 }
