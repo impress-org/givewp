@@ -34,7 +34,7 @@ class Stripe {
 	 */
 	public static function addAccountDetail( $donationId, $formId, $paymentMethod ) {
 		// Bailout, if the donation is not processed with any of the supported payment method of Stripe.
-		if ( ! in_array( $paymentMethod, give_stripe_supported_payment_methods(), true ) ) {
+		if ( ! self::isDonationPaymentMethod( $paymentMethod ) ) {
 			return;
 		}
 
@@ -60,5 +60,16 @@ class Stripe {
 
 		// Log data to donation notes.
 		give_insert_payment_note( $donationId, $stripeAccountNote );
+	}
+
+	/**
+	 * Return whether or not a Stripe payment method.
+	 *
+	 * @param $paymentMethod
+	 *
+	 * @return bool
+	 */
+	public static function isDonationPaymentMethod( $paymentMethod ) {
+		return in_array( $paymentMethod, give_stripe_supported_payment_methods(), true );
 	}
 }
