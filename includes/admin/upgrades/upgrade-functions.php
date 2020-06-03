@@ -3770,7 +3770,7 @@ function give_v270_store_stripe_account_for_donation_callback() {
 
 			Stripe::addAccountDetail(
 				$donationId,
-				give_get_payment_form_id( $donationId ),
+				give_get_payment_form_id( $donationId )
 			);
 		}
 
