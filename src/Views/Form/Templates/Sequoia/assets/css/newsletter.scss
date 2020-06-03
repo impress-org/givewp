@@ -32,6 +32,10 @@
 		padding: 20px 20px 20px 22px !important;
 		color: #333;
 		display: inline-block;
+
+		@media screen and (max-width: $break-phone) {
+			font-size: 14px;
+		}
 	}
 
 	span::before {

@@ -14,6 +14,10 @@
 	position: relative;
 	transition: border 0.2s ease;
 
+	@media screen and (max-width: $break-phone) {
+		margin: 20px 20px 0 20px !important;
+	}
+
 	input[type='checkbox'] {
 		display: none !important;
 	}
@@ -23,10 +27,14 @@
 		font-size: 16px;
 		line-height: 1.4;
 		padding: 20px 22px 20px 22px !important;
-		width: calc(100% - 62px);
+		width: calc(100% - 62px) !important;
 		margin-left: 40px !important;
 		color: #333;
 		display: inline-block;
+
+		@media screen and (max-width: $break-phone) {
+			font-size: 14px !important;
+		}
 	}
 
 	label::before {
@@ -93,6 +101,10 @@
 		background-repeat: no-repeat, repeat;
 		background-position: right 4px top 50%, 0 0;
 		background-size: 0.65em auto, 100%;
+
+		@media screen and (max-width: $break-phone) {
+			font-size: 14px;
+		}
 
 		&::-ms-expand {
 			display: none;
