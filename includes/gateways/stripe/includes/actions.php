@@ -67,10 +67,7 @@ add_action( 'give_donation_form_top', 'give_stripe_add_secret_payment_method_fie
  */
 function giveStripeAddDonationStripeAccount( $donationId, $formId, $paymentMethod ) {
 	// Bailout, if the donation is not processed with any of the supported payment method of Stripe.
-	if (
-		! empty( $donationData['gateway'] ) &&
-		! in_array( $paymentMethod, give_stripe_supported_payment_methods(), true )
-	) {
+	if ( ! in_array( $paymentMethod, give_stripe_supported_payment_methods(), true ) ) {
 		return;
 	}
 
