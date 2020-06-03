@@ -73,7 +73,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				updateElement.classList.add( 'give-hidden' );
 				accountInputElement.classList.add( 'give-hidden' );
 				editElement.classList.remove( 'give-hidden' );
-				defaultElement.classList.remove( 'give-hidden' );
+				null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
 			} );
 		} );
 	}
@@ -94,6 +94,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				const editElement = e.target;
 				const parentElement = editElement.parentNode.parentNode;
 				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
+				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
 				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
 				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
 				const accountName = accountNameElement.textContent.trim();
@@ -107,9 +108,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				accountNameElement.append( inputElement );
 
 				editElement.classList.add( 'give-hidden' );
-				defaultElement.classList.add( 'give-hidden' );
 				updateElement.classList.remove( 'give-hidden' );
-				updateElement.nextElementSibling.classList.remove( 'give-hidden' );
+				cancelElement.classList.remove( 'give-hidden' );
+				null !== defaultElement ? defaultElement.classList.add( 'give-hidden' ) : '';
 			} );
 		} );
 	}
@@ -158,8 +159,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 						cancelElement.classList.add( 'give-hidden' );
 						updateElement.setAttribute( 'data-account', accountSlug );
 						editElement.classList.remove( 'give-hidden' );
-						defaultElement.classList.remove( 'give-hidden' );
-						disconnectElement.setAttribute( 'data-account', accountSlug );
+						null !== disconnectElement ? disconnectElement.setAttribute( 'data-account', accountSlug ) : '';
+						null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
 					} else {
 						notice = `<div class="give-notice notice inline error notice-error"><p>${ response.data.message }</p></div>`;
 					}
@@ -384,7 +385,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 						desc: currentElement.getAttribute( 'data-disconnect-message' ),
 					},
 					successConfirm: () => {
-						console.log( `${ currentElement.getAttribute( 'href' ) }&account=${ currentElement.getAttribute( 'data-account' ) }` );
 						window.location.href = `${ currentElement.getAttribute( 'href' ) }&account=${ currentElement.getAttribute( 'data-account' ) }`;
 					},
 				} ).render();
