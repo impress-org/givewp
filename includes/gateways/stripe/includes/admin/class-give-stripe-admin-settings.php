@@ -161,7 +161,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings['accounts'][] = [
 						'name'          => __( 'Stripe Connect', 'give' ),
 						'desc'          => '',
-						'wrapper_class' => 'give-stripe-account-manager-wrap',
+						'wrapper_class' => 'give-stripe-account-manager-wrap js-fields-has-custom-saving-logic',
 						'id'            => 'stripe_account_manager',
 						'type'          => 'stripe_account_manager',
 					];
