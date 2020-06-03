@@ -128,7 +128,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				e.preventDefault();
 
 				const updateElement = e.target;
-				const parentElement = updateElement.parentNode.parentNode;
+				const parentElement = updateElement.parentNode.parentNode.parentNode;
+				const disconnectElement = parentElement.querySelector( '.give-stripe-disconnect-account-btn' );
 				const accountSlug = updateElement.getAttribute( 'data-account' );
 				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
 				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
@@ -150,13 +151,15 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					let notice = '';
 
 					if ( xhr.status === 200 && response.success ) {
+						const accountSlug = response.data.slug;
 						notice = `<div class="give-notice notice inline success notice-success"><p>${ response.data.message }</p></div>`;
 						accountNameElement.innerHTML = response.data.name;
 						updateElement.classList.add( 'give-hidden' );
 						cancelElement.classList.add( 'give-hidden' );
-						updateElement.setAttribute( 'data-account', response.data.slug );
+						updateElement.setAttribute( 'data-account', accountSlug );
 						editElement.classList.remove( 'give-hidden' );
 						defaultElement.classList.remove( 'give-hidden' );
+						disconnectElement.setAttribute( 'data-account', accountSlug );
 					} else {
 						notice = `<div class="give-notice notice inline error notice-error"><p>${ response.data.message }</p></div>`;
 					}
@@ -369,6 +372,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			disconnectBtn.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
+				const currentElement = e.target;
+
 				new Give.modal.GiveConfirmModal( {
 					type: 'alert',
 					classes: {
@@ -376,10 +381,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					},
 					modalContent: {
 						title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
-						desc: e.target.getAttribute( 'data-disconnect-message' ),
+						desc: currentElement.getAttribute( 'data-disconnect-message' ),
 					},
 					successConfirm: () => {
-						window.location.href = e.target.getAttribute( 'href' );
+						console.log( `${ currentElement.getAttribute( 'href' ) }&account=${ currentElement.getAttribute( 'data-account' ) }` );
+						window.location.href = `${ currentElement.getAttribute( 'href' ) }&account=${ currentElement.getAttribute( 'data-account' ) }`;
 					},
 				} ).render();
 			} );
