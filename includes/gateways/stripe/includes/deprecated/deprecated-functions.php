@@ -230,11 +230,16 @@ function give_stripe_is_checkout_enabled() {
  * @return string       Stripe customer ID.
  */
 if ( ! function_exists( 'give_get_stripe_customer_id' ) ) {
-	function give_get_stripe_customer_id( $user_id_or_email ) {
-		$backtrace = debug_backtrace();
+	$stripeVersion  = defined( 'GIVE_STRIPE_VERSION' ) ? GIVE_STRIPE_VERSION : '';
+	$isValidVersion = version_compare( $stripeVersion, '2.2.6', '>=' );
 
-		_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_customer_id', $backtrace );
+	if ( $isValidVersion ) {
+		function give_get_stripe_customer_id( $user_id_or_email ) {
+			$backtrace = debug_backtrace();
 
-		return give_stripe_get_customer_id( $user_id_or_email );
+			_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_customer_id', $backtrace );
+
+			return give_stripe_get_customer_id( $user_id_or_email );
+		}
 	}
 }
