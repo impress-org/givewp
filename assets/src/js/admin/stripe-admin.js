@@ -66,12 +66,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				const editElement = parentElement.querySelector( '.give-stripe-account-edit-name' );
 				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
 				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
+				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
 
 				accountNameElement.textContent = accountInputElement.value;
 				cancelElement.classList.add( 'give-hidden' );
 				updateElement.classList.add( 'give-hidden' );
 				accountInputElement.classList.add( 'give-hidden' );
 				editElement.classList.remove( 'give-hidden' );
+				defaultElement.classList.remove( 'give-hidden' );
 			} );
 		} );
 	}
@@ -93,6 +95,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				const parentElement = editElement.parentNode.parentNode;
 				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
 				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
+				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
 				const accountName = accountNameElement.textContent.trim();
 				const inputElement = document.createElement( 'input' );
 
@@ -104,6 +107,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				accountNameElement.append( inputElement );
 
 				editElement.classList.add( 'give-hidden' );
+				defaultElement.classList.add( 'give-hidden' );
 				updateElement.classList.remove( 'give-hidden' );
 				updateElement.nextElementSibling.classList.remove( 'give-hidden' );
 			} );
@@ -128,6 +132,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				const accountSlug = updateElement.getAttribute( 'data-account' );
 				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
 				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
+				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
 				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
 				const newAccountName = accountInputElement.value;
 
@@ -145,14 +150,15 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					let notice = '';
 
 					if ( xhr.status === 200 && response.success ) {
-						notice = `<div class="give-notice notice inline success notice-success"><p>${response.data.message}</p></div>`;
+						notice = `<div class="give-notice notice inline success notice-success"><p>${ response.data.message }</p></div>`;
 						accountNameElement.innerHTML = response.data.name;
 						updateElement.classList.add( 'give-hidden' );
 						cancelElement.classList.add( 'give-hidden' );
 						updateElement.setAttribute( 'data-account', response.data.slug );
 						editElement.classList.remove( 'give-hidden' );
+						defaultElement.classList.remove( 'give-hidden' );
 					} else {
-						notice = `<div class="give-notice notice inline error notice-error"><p>${response.data.message}</p></div>`;
+						notice = `<div class="give-notice notice inline error notice-error"><p>${ response.data.message }</p></div>`;
 					}
 					accountManagerError.innerHTML = notice;
 				};
