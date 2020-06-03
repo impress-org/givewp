@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\Helpers\Gateways\Stripe;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -552,6 +554,13 @@ add_action( 'wp_ajax_give_stripe_update_account_name', 'give_stripe_update_accou
  *
  */
 function giveStripeDisplayProcessedStripeAccount( $donationId ) {
+	$paymentMethod = give_get_payment_gateway( $donationId );
+
+	// Exit if donation is not processed with Stripe payment method.
+	if ( ! Stripe::isDonationPaymentMethod( $paymentMethod ) ) {
+		return;
+	}
+
 	$stripeAccounts = give_stripe_get_all_accounts();
 	$accountId      = give_get_meta( $donationId, '_give_stripe_account_slug', true );
 	$accountDetail  = isset( $stripeAccounts[ $accountId ] ) ? $stripeAccounts[ $accountId ] : [];
