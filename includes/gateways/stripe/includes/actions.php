@@ -70,7 +70,12 @@ function giveStripeAddDonationStripeAccount( $donationId, $donationData ) {
 	$paymentMethod = isset( $donationData['gateway'] ) ? $donationData['gateway'] : '';
 	$formId        = (int) $donationData['give_form_id'];
 
-	Stripe::addAccountDetail( $donationId, $formId, $paymentMethod );
+	// Return, if the donation is not processed with any of the supported payment method of Stripe.
+	if ( ! Stripe::isDonationPaymentMethod( give_get_payment_gateway( $paymentMethod ) ) ) {
+		return;
+	}
+
+	Stripe::addAccountDetail( $donationId, $formId );
 }
 
 add_action( 'give_insert_payment', 'giveStripeAddDonationStripeAccount', 10, 2 );

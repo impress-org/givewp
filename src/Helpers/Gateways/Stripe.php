@@ -28,16 +28,10 @@ class Stripe {
 	 *
 	 * @param int $donationId
 	 * @param int $formId
-	 * @param string $paymentMethod
 	 *
 	 * @since 2.7.0
 	 */
-	public static function addAccountDetail( $donationId, $formId, $paymentMethod ) {
-		// Bailout, if the donation is not processed with any of the supported payment method of Stripe.
-		if ( ! self::isDonationPaymentMethod( $paymentMethod ) ) {
-			return;
-		}
-
+	public static function addAccountDetail( $donationId, $formId ) {
 		$accountId     = give_stripe_get_default_account_slug( $formId );
 		$accountDetail = give_stripe_get_default_account( $formId );
 		$accountName   = 'connect' === $accountDetail['type'] ? $accountDetail['account_name'] : give_stripe_convert_slug_to_title( $accountId );

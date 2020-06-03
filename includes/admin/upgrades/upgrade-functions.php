@@ -3763,10 +3763,14 @@ function give_v270_store_stripe_account_for_donation_callback() {
 			$donations->the_post();
 			$donationId = get_the_ID();
 
+			// Continue, if the donation is not processed with any of the supported payment method of Stripe.
+			if ( ! Stripe::isDonationPaymentMethod( give_get_payment_gateway( $donationId ) ) ) {
+				continue;
+			}
+
 			Stripe::addAccountDetail(
 				$donationId,
 				give_get_payment_form_id( $donationId ),
-				give_get_payment_gateway( $donationId )
 			);
 		}
 
