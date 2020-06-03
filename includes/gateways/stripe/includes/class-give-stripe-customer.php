@@ -304,7 +304,7 @@ class Give_Stripe_Customer {
 		$customer     = false;
 		$post_data    = give_clean( $_POST );
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
-		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : false;
+		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 		$first_name   = ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : '';
 		$last_name    = ! empty( $post_data['give_last'] ) ? $post_data['give_last'] : '';
 		$full_name    = ! empty( $last_name ) ? "{$first_name} {$last_name}" : $first_name;
@@ -378,7 +378,7 @@ class Give_Stripe_Customer {
 				)
 			);
 			give_set_error( 'stripe_error', $e->getMessage() );
-			give_send_back_to_checkout( "?payment-mode={$payment_mode}&form_id={$post_data['post_data']['give-form-id']}" );
+			give_send_back_to_checkout( "?payment-mode={$payment_mode}&form_id={$form_id}" );
 		}
 
 		if ( ! empty( $customer->id ) ) {
