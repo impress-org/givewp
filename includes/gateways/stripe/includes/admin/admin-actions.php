@@ -59,7 +59,7 @@ function give_stripe_connect_save_options() {
 	$account_country   = '';
 
 	// If the same Stripe account is already connected, then don't save it.
-	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'give_stripe_user_id' ), true ) ) {
+	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'account_id' ), true ) ) {
 		return;
 	}
 
