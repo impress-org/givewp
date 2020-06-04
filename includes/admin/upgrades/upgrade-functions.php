@@ -3715,7 +3715,6 @@ function give_v270_upgrades() {
 				'account_slug'         => $accountSlug,
 				'account_email'        => $accountEmail,
 				'account_country'      => $accountCountry,
-				'connected_status'     => give_get_option( 'give_stripe_connected' ),
 				'give_stripe_user_id'  => $stripeAccountId,
 				'live_secret_key'      => give_get_option( 'live_secret_key' ),
 				'test_secret_key'      => give_get_option( 'test_secret_key' ),
