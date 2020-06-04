@@ -521,8 +521,14 @@ function give_stripe_update_account_name() {
 
 		$key                  = array_search( $account_slug, $account_keys, true );
 		$account_keys[ $key ] = $new_account_slug;
+		$new_accounts         = array_combine( $account_keys, $account_values );
 
-		$new_accounts = array_combine( $account_keys, $account_values );
+		// Set Account related data. Some data will always be empty for manual API keys scenarios.
+		$new_accounts[ $new_account_slug ]['account_name']        = $new_account_name;
+		$new_accounts[ $new_account_slug ]['account_slug']        = $new_account_slug;
+		$new_accounts[ $new_account_slug ]['account_email']       = '';
+		$new_accounts[ $new_account_slug ]['account_country']     = '';
+		$new_accounts[ $new_account_slug ]['give_stripe_user_id'] = '';
 
 		// Update accounts.
 		give_update_option( '_give_stripe_get_all_accounts', $new_accounts );
