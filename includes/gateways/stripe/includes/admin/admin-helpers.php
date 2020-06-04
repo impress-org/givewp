@@ -101,7 +101,7 @@ function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
 	$args = [
 		'stripe_action'  => 'disconnect',
 		'mode'           => give_is_test_mode() ? 'test' : 'live',
-		'stripe_user_id' => ! empty( $account_id ) ? $account_id : give_get_option( 'give_stripe_user_id' ),
+		'stripe_user_id' => $account_id,
 		'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 	];
 

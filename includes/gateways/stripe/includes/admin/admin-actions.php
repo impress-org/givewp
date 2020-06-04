@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\Helpers\Gateways\Stripe;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -57,7 +59,7 @@ function give_stripe_connect_save_options() {
 	$account_country   = '';
 
 	// If the same Stripe account is already connected, then don't save it.
-	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'give_stripe_user_id' ), true ) ) {
+	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'account_id' ), true ) ) {
 		return;
 	}
 
@@ -85,9 +87,10 @@ function give_stripe_connect_save_options() {
 	$stripe_accounts[ $account_slug ] = [
 		'type'                 => 'connect',
 		'account_name'         => $account_name,
+		'account_slug'         => $account_slug,
 		'account_email'        => $account_email,
 		'account_country'      => $account_country,
-		'give_stripe_user_id'  => $stripe_account_id,
+		'account_id'           => $stripe_account_id,
 		'live_secret_key'      => $get_vars['stripe_access_token'],
 		'test_secret_key'      => $get_vars['stripe_access_token_test'],
 		'live_publishable_key' => $get_vars['stripe_publishable_key'],
@@ -266,9 +269,9 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 		wp_die(
 			$error,
 			esc_html__( 'Error', 'give' ),
-			array(
+			[
 				'response' => 400,
-			)
+			]
 		);
 
 	} // End try().
@@ -304,14 +307,14 @@ function give_stripe_show_connect_banner() {
 		$status = false;
 	}
 
-	$hide_on_pages = array( 'give-about', 'give-getting-started', 'give-credits', 'give-addons' );
+	$hide_on_pages = [ 'give-about', 'give-getting-started', 'give-credits', 'give-addons' ];
 
 	// Don't show if on the about page.
 	if ( in_array( give_get_current_setting_page(), $hide_on_pages, true ) ) {
 		$status = false;
 	}
 
-	$hide_on_sections = array( 'stripe-settings', 'gateways-settings', 'stripe-ach-settings' );
+	$hide_on_sections = [ 'stripe-settings', 'gateways-settings', 'stripe-ach-settings' ];
 	$current_section  = give_get_current_setting_section();
 
 	// Don't show if on the payment settings section.
@@ -371,13 +374,13 @@ function give_stripe_show_connect_banner() {
 
 	// Register Notice.
 	Give()->notices->register_notice(
-		array(
+		[
 			'id'               => 'give-stripe-connect-banner',
 			'description'      => $message,
 			'type'             => 'warning',
 			'dismissible_type' => 'user',
 			'dismiss_interval' => 'shortly',
-		)
+		]
 	);
 }
 
@@ -405,7 +408,7 @@ function give_stripe_show_currency_notice() {
 		! class_exists( 'Give_Currency_Switcher' ) // Disable Notice, if Currency Switcher add-on is enabled.
 	) {
 		Give()->notices->register_notice(
-			array(
+			[
 				'id'          => 'give-stripe-currency-notice',
 				'type'        => 'error',
 				'dismissible' => false,
@@ -414,7 +417,7 @@ function give_stripe_show_currency_notice() {
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),
 				'show'        => true,
-			)
+			]
 		);
 	}
 
@@ -426,7 +429,7 @@ function give_stripe_show_currency_notice() {
 		! class_exists( 'Give_Currency_Switcher' ) // Disable Notice, if Currency Switcher add-on is enabled.
 	) {
 		Give()->notices->register_notice(
-			array(
+			[
 				'id'          => 'give-stripe-currency-notice',
 				'type'        => 'error',
 				'dismissible' => false,
@@ -435,7 +438,7 @@ function give_stripe_show_currency_notice() {
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),
 				'show'        => true,
-			)
+			]
 		);
 	}
 
@@ -519,8 +522,14 @@ function give_stripe_update_account_name() {
 
 		$key                  = array_search( $account_slug, $account_keys, true );
 		$account_keys[ $key ] = $new_account_slug;
+		$new_accounts         = array_combine( $account_keys, $account_values );
 
-		$new_accounts = array_combine( $account_keys, $account_values );
+		// Set Account related data. Some data will always be empty for manual API keys scenarios.
+		$new_accounts[ $new_account_slug ]['account_name']    = $new_account_name;
+		$new_accounts[ $new_account_slug ]['account_slug']    = $new_account_slug;
+		$new_accounts[ $new_account_slug ]['account_email']   = '';
+		$new_accounts[ $new_account_slug ]['account_country'] = '';
+		$new_accounts[ $new_account_slug ]['account_id']      = '';
 
 		// Update accounts.
 		give_update_option( '_give_stripe_get_all_accounts', $new_accounts );
@@ -541,3 +550,38 @@ function give_stripe_update_account_name() {
 }
 
 add_action( 'wp_ajax_give_stripe_update_account_name', 'give_stripe_update_account_name' );
+
+/**
+ * Show Stripe Account Used under donation details.
+ *
+ * @param  int  $donationId  Donation ID.
+ *
+ * @return void
+ * @since 2.7.0
+ *
+ */
+function giveStripeDisplayProcessedStripeAccount( $donationId ) {
+	$paymentMethod = give_get_payment_gateway( $donationId );
+
+	// Exit if donation is not processed with Stripe payment method.
+	if ( ! Stripe::isDonationPaymentMethod( $paymentMethod ) ) {
+		return;
+	}
+
+	$stripeAccounts = give_stripe_get_all_accounts();
+	$accountId      = give_get_meta( $donationId, '_give_stripe_account_slug', true );
+	$accountDetail  = isset( $stripeAccounts[ $accountId ] ) ? $stripeAccounts[ $accountId ] : [];
+	$account        = 'connect' === $accountDetail['type'] ?
+		"{$accountDetail['account_name']} ({$accountId})" :
+		give_stripe_convert_slug_to_title( $accountId );
+	?>
+	<div class="give-donation-stripe-account-used give-admin-box-inside">
+		<p>
+			<strong><?php esc_html_e( 'Stripe Account:', 'give' ); ?></strong><br/>
+			<?php echo $account; ?>
+		</p>
+	</div>
+	<?php
+}
+
+add_action( 'give_view_donation_details_payment_meta_after', 'giveStripeDisplayProcessedStripeAccount' );
