@@ -87,9 +87,10 @@ function give_stripe_connect_save_options() {
 	$stripe_accounts[ $account_slug ] = [
 		'type'                 => 'connect',
 		'account_name'         => $account_name,
+		'account_slug'         => $account_slug,
 		'account_email'        => $account_email,
 		'account_country'      => $account_country,
-		'give_stripe_user_id'  => $stripe_account_id,
+		'account_id'           => $stripe_account_id,
 		'live_secret_key'      => $get_vars['stripe_access_token'],
 		'test_secret_key'      => $get_vars['stripe_access_token_test'],
 		'live_publishable_key' => $get_vars['stripe_publishable_key'],
