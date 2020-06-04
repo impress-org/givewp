@@ -568,7 +568,7 @@ function giveStripeDisplayProcessedStripeAccount( $donationId ) {
 		"{$accountDetail['account_name']} ({$accountId})" :
 		give_stripe_convert_slug_to_title( $accountId );
 	?>
-	<div class="give-order-tx-id give-admin-box-inside">
+	<div class="give-donation-stripe-account-used give-admin-box-inside">
 		<p>
 			<strong><?php esc_html_e( 'Stripe Account:', 'give' ); ?></strong><br/>
 			<?php echo $account; ?>
