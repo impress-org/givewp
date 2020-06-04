@@ -253,8 +253,10 @@ class Give_Email_Access {
 			}
 
 			// Set Receipt Access Session.
+			Give()->session->maybe_start_session();
 			Give()->session->set( 'receipt_access', true );
 			$this->token_exists = true;
+
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
 			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
