@@ -563,9 +563,29 @@ p {
 	}
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
+
+		@media screen and (max-width: $break-phone) {
+			display: flex !important;
+			justify-content: center;
+		}
+
+		.give-login-message {
+			@media screen and (max-width: $break-phone) {
+				width: fit-content !important;
+				margin-right: auto !important;
+				margin-left: auto !important;
+				text-align: center;
+			}
+		}
 	}
 
 	[id*='give-create-account-wrap-'] {
+		@media screen and (max-width: $break-phone) {
+			display: flex !important;
+			justify-content: center;
+			margin-bottom: 2px !important;
+		}
+
 		input {
 			display: none;
 		}
@@ -573,6 +593,10 @@ p {
 		label {
 			padding-left: 30px;
 			font-size: 14px;
+
+			@media screen and (max-width: $break-phone) {
+				width: fit-content !important;
+			}
 
 			.give-tooltip {
 				padding-left: 6px;
