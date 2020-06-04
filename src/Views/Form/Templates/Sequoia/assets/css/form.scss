@@ -836,7 +836,11 @@ p {
 	}
 	#give_purchase_form_wrap {
 		background: #fbfbfb;
-		padding: 12px 20px 6px 20px;
+		padding: 20px 20px 6px 20px;
+
+		@media screen and (max-width: $break-phone) {
+			padding: 14px 14px 0 14px;
+		}
 
 		fieldset {
 			padding: 0;
@@ -1154,6 +1158,8 @@ form.give-form .form-row select.multiselect {
 [id*='give_secure_site_wrapper'] {
 	font-size: 12px;
 	color: #8d8e8e;
+	padding-top: 0;
+	line-height: 1.2;
 
 	span.padlock {
 		font-size: 12px;
