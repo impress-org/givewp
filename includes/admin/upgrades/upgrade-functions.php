@@ -3673,7 +3673,7 @@ function give_v270_upgrades() {
 				'account_slug'         => $uniqueSlug,
 				'account_email'        => '',
 				'account_country'      => '',
-				'give_stripe_user_id'  => '', // This parameter will be empty for manual API Keys Stripe account.
+				'account_id'           => '', // This parameter will be empty for manual API Keys Stripe account.
 				'live_secret_key'      => give_get_option( 'live_secret_key' ),
 				'test_secret_key'      => give_get_option( 'test_secret_key' ),
 				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
@@ -3716,7 +3716,7 @@ function give_v270_upgrades() {
 				'account_slug'         => $accountSlug,
 				'account_email'        => $accountEmail,
 				'account_country'      => $accountCountry,
-				'give_stripe_user_id'  => $stripeAccountId,
+				'account_id'           => $stripeAccountId,
 				'live_secret_key'      => give_get_option( 'live_secret_key' ),
 				'test_secret_key'      => give_get_option( 'test_secret_key' ),
 				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
