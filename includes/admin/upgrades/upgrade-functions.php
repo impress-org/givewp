@@ -3670,6 +3670,7 @@ function give_v270_upgrades() {
 			$stripeAccounts[ $uniqueSlug ] = [
 				'type'                 => 'manual',
 				'account_name'         => give_stripe_convert_slug_to_title( $uniqueSlug ),
+				'account_slug'         => $uniqueSlug,
 				'account_email'        => '',
 				'account_country'      => '',
 				'give_stripe_user_id'  => '', // This parameter will be empty for manual API Keys Stripe account.
