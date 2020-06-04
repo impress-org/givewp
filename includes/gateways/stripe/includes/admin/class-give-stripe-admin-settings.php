@@ -763,10 +763,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							<?php
 							if ( $stripe_accounts ) {
 								foreach ( $stripe_accounts as $slug => $details ) {
-									$account_name       = ! empty( $details['account_name'] ) ? $details['account_name'] : give_stripe_convert_slug_to_title( $slug );
-									$account_email      = ! empty( $details['account_email'] ) ? $details['account_email'] : '';
-									$account_country    = ! empty( $details['account_country'] ) ? $details['account_country'] : '';
-									$stripe_account_id  = ! empty( $details['give_stripe_user_id'] ) ? $details['give_stripe_user_id'] : '';
+									$account_name       = $details['account_name'];
+									$account_email      = $details['account_email'];
+									$stripe_account_id  = $details['account_id'];
 									$disconnect_message = ( 'connect' === $details['type'] ) ?
 										sprintf(
 											esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
@@ -777,10 +776,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
 										add_query_arg(
 											[
-												'post_type' => 'give_forms',
-												'page'    => 'give-settings',
-												'tab'     => 'gateways',
-												'section' => 'stripe-settings',
+												'post_type'   => 'give_forms',
+												'page'        => 'give-settings',
+												'tab'         => 'gateways',
+												'section'     => 'stripe-settings',
 												'give_action' => 'disconnect_manual_stripe_account',
 											],
 											admin_url( 'edit.php' )
