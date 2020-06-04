@@ -3664,7 +3664,7 @@ function give_v270_upgrades() {
 	if ( ! $isStripeAccountMigrated ) {
 		if (
 			give_stripe_is_premium_active() &&
-			! (bool) give_get_option( 'connected_status', '0' ) // Manual API Keys are enabled.
+			'1' !== give_get_option( 'connected_status', '0' ) // Manual API Keys are enabled.
 		) {
 			$uniqueSlug                    = 'account_1';
 			$stripeAccounts[ $uniqueSlug ] = [
