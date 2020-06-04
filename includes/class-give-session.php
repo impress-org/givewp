@@ -178,6 +178,7 @@ class Give_Session {
 		}
 
 		add_action( 'give_process_donation_after_validation', array( $this, 'maybe_start_session' ) );
+		add_action( 'wp_login', array( $this, 'startSessionWhenLoginAsWPUser' ), 10, 2 );
 
 		add_action( 'shutdown', array( $this, 'save_data' ), 20 );
 		add_action( 'wp_logout', array( $this, 'destroy_session' ) );
@@ -426,6 +427,22 @@ class Give_Session {
 			&& ! $this->has_cookie
 		) {
 			$this->set_session_cookies( true );
+		}
+	}
+
+	/**
+	 * Setup donor session when authorized by WP user credentials
+	 *
+	 * @param string $wpUserLogin
+	 * @param WP_User $wpUser
+	 * @since 2.7.0
+	 */
+	public function startSessionWhenLoginAsWPUser( $wpUserLogin, $wpUser ){
+		$donor = Give()->donors->get_donor_by( 'user_id', $wpUser->ID );
+
+		// Setup session only if donor exist for specific WP user.
+		if( $donor ) {
+			$this->maybe_start_session();
 		}
 	}
 
