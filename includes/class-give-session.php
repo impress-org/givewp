@@ -35,7 +35,7 @@ class Give_Session {
 	 *
 	 * @var    array
 	 */
-	private $session = array();
+	private $session = [];
 
 	/**
 	 * Holds our session data
@@ -177,18 +177,18 @@ class Give_Session {
 			$this->generate_donor_id();
 		}
 
-		add_action( 'give_process_donation_after_validation', array( $this, 'maybe_start_session' ) );
-		add_action( 'wp_login', array( $this, 'startSessionWhenLoginAsWPUser' ), 10, 2 );
+		add_action( 'give_process_donation_after_validation', [ $this, 'maybe_start_session' ] );
+		add_action( 'wp_login', [ $this, 'startSessionWhenLoginAsWPUser' ], 10, 2 );
 
-		add_action( 'shutdown', array( $this, 'save_data' ), 20 );
-		add_action( 'wp_logout', array( $this, 'destroy_session' ) );
+		add_action( 'shutdown', [ $this, 'save_data' ], 20 );
+		add_action( 'wp_logout', [ $this, 'destroy_session' ] );
 
 		if ( ! is_user_logged_in() ) {
-			add_filter( 'nonce_user_logged_out', array( $this, '__nonce_user_logged_out' ) );
+			add_filter( 'nonce_user_logged_out', [ $this, '__nonce_user_logged_out' ] );
 		}
 
 		// Remove old sessions.
-		Give_Cron::add_daily_event( array( $this, '__cleanup_sessions' ) );
+		Give_Cron::add_daily_event( [ $this, '__cleanup_sessions' ] );
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Give_Session {
 	 * @return array
 	 */
 	public function get_session_data() {
-		return $this->has_session() ? (array) Give()->session_db->get_session( $this->donor_id, array() ) : array();
+		return $this->has_session() ? (array) Give()->session_db->get_session( $this->donor_id, [] ) : [];
 	}
 
 
@@ -213,7 +213,7 @@ class Give_Session {
 	 * @return array
 	 */
 	public function get_session_cookie() {
-		$session      = array();
+		$session      = [];
 		$cookie_value = isset( $_COOKIE[ $this->cookie_name ] ) ? give_clean( $_COOKIE[ $this->cookie_name ] ) : $this->__handle_ajax_cookie(); // @codingStandardsIgnoreLine.
 
 		if ( empty( $cookie_value ) || ! is_string( $cookie_value ) ) {
@@ -241,7 +241,7 @@ class Give_Session {
 		 */
 		$cookie_data = apply_filters(
 			'give_get_session_cookie',
-			array( $donor_id, $session_expiration, $session_expiring, $cookie_hash )
+			[ $donor_id, $session_expiration, $session_expiring, $cookie_hash ]
 		);
 
 		return $cookie_data;
@@ -437,11 +437,11 @@ class Give_Session {
 	 * @param WP_User $wpUser
 	 * @since 2.7.0
 	 */
-	public function startSessionWhenLoginAsWPUser( $wpUserLogin, $wpUser ){
+	public function startSessionWhenLoginAsWPUser( $wpUserLogin, $wpUser ) {
 		$donor = Give()->donors->get_donor_by( 'user_id', $wpUser->ID );
 
 		// Setup session only if donor exist for specific WP user.
-		if( $donor ) {
+		if ( $donor ) {
 			$this->maybe_start_session();
 		}
 	}
@@ -474,16 +474,16 @@ class Give_Session {
 
 			Give()->session_db->__replace(
 				Give()->session_db->table_name,
-				array(
+				[
 					'session_key'    => $this->donor_id,
 					'session_value'  => maybe_serialize( $this->session ),
 					'session_expiry' => $this->session_expiration,
-				),
-				array(
+				],
+				[
 					'%s',
 					'%s',
 					'%d',
-				)
+				]
 			);
 
 			$this->session_data_changed = false;
@@ -502,7 +502,7 @@ class Give_Session {
 
 		Give()->session_db->delete_session( $this->donor_id );
 
-		$this->session              = array();
+		$this->session              = [];
 		$this->session_data_changed = false;
 
 		$this->generate_donor_id();
@@ -652,7 +652,7 @@ class Give_Session {
 
 			$blacklist = apply_filters(
 				'give_session_start_uri_blacklist',
-				array(
+				[
 					'feed',
 					'feed',
 					'feed/rss',
@@ -660,7 +660,7 @@ class Give_Session {
 					'feed/rdf',
 					'feed/atom',
 					'comments/feed/',
-				)
+				]
 			);
 			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' ); // // @codingStandardsIgnoreLine
 			$uri       = untrailingslashit( $uri );
