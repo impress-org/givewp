@@ -717,14 +717,12 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 			$stripe_accounts = give_stripe_get_all_accounts();
-			$default_account = '';
+			$default_account = give_stripe_get_default_account_slug();
 
 			// Set account as default.
 			if ( 1 === count( $stripe_accounts ) ) {
 				$stripe_account_keys = array_keys( $stripe_accounts );
 				$default_account     = $stripe_account_keys[0];
-			} else {
-				$default_account = give_stripe_get_default_account_slug();
 			}
 
 			$site_url            = get_site_url();
