@@ -3666,8 +3666,13 @@ function give_v270_upgrades() {
 			give_stripe_is_premium_active() &&
 			give_stripe_is_manual_api_keys_enabled()
 		) {
-			$stripeAccounts['account_1'] = [
+			$uniqueSlug                    = 'account_1';
+			$stripeAccounts[ $uniqueSlug ] = [
 				'type'                 => 'manual',
+				'account_name'         => give_stripe_convert_slug_to_title( $uniqueSlug ),
+				'account_email'        => '',
+				'account_country'      => '',
+				'give_stripe_user_id'  => '', // This parameter will be empty for manual API Keys Stripe account.
 				'live_secret_key'      => give_get_option( 'live_secret_key' ),
 				'test_secret_key'      => give_get_option( 'test_secret_key' ),
 				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
@@ -3675,7 +3680,7 @@ function give_v270_upgrades() {
 			];
 
 			// Set first Stripe account as default.
-			give_update_option( '_give_stripe_default_account', 'account_1' );
+			give_update_option( '_give_stripe_default_account', $uniqueSlug );
 		} else {
 
 			$secret_key = give_get_option( 'live_secret_key' );
