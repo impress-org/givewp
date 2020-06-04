@@ -123,17 +123,6 @@ function give_stripe_is_connected() {
 }
 
 /**
- * Is Stripe Checkout Enabled?
- *
- * @since 2.5.0
- *
- * @return bool
- */
-function give_stripe_is_checkout_enabled() {
-	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
-}
-
-/**
  * Displays Stripe Connect Button.
  *
  * @since 2.5.0
