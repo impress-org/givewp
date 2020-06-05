@@ -3741,10 +3741,10 @@ function give_v270_upgrades() {
 	$canStoreStripeInformationInDonation = (bool) $wpdb->get_var(
 		$wpdb->prepare(
 			"
-					SELECT COUNT(donation_id)
-					FROM $wpdb->donationmeta
-					WHERE meta_key=%s
-					AND meta_value LIKE %s",
+			SELECT COUNT(donation_id)
+			FROM $wpdb->donationmeta
+			WHERE meta_key=%s
+			AND meta_value LIKE %s",
 			'_give_payment_gateway',
 			'%stripe%'
 		)
