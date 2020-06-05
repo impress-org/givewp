@@ -774,10 +774,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
 										add_query_arg(
 											[
-												'post_type'   => 'give_forms',
-												'page'        => 'give-settings',
-												'tab'         => 'gateways',
-												'section'     => 'stripe-settings',
+												'post_type' => 'give_forms',
+												'page'    => 'give-settings',
+												'tab'     => 'gateways',
+												'section' => 'stripe-settings',
 												'give_action' => 'disconnect_manual_stripe_account',
 											],
 											admin_url( 'edit.php' )
@@ -822,10 +822,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											<span class="give-stripe-account-type-description give-field-description"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
 											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_name( $details['type'] ); ?></span>
 											<?php
-											if (
-												$slug !== $default_account ||
-												count( $stripe_accounts ) === 1
-											) {
+											if ( $slug !== $default_account ) {
 												?>
 												<span class="give-stripe-account-disconnect">
 													<a
