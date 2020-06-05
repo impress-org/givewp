@@ -204,7 +204,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getImage() {
-		return 'https://images.unsplash.com/photo-1448387473223-5c37445527e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=100';
+		return GIVE_PLUGIN_URL . 'assets/dist/images/admin/SequoiaForm.jpg';
 	}
 
 	/**
