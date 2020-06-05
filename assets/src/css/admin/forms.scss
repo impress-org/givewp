@@ -453,9 +453,10 @@ Shortcode Copy & Paste
 		}
 
 		.form-template-introduction {
-			padding-bottom: 25px;
+			padding-bottom: 16px;
 
 			p {
+				font-weight: 300;
 				font-size: 18px;
 				margin: 0 0 14px 0;
 				padding: 0;
@@ -464,6 +465,7 @@ Shortcode Copy & Paste
 			p.form-template-description {
 				color: #9c9c9c;
 				font-size: 16px;
+				padding-bottom: 26px;
 			}
 
 			.form-template-notice {
