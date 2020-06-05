@@ -3672,7 +3672,7 @@ function give_v270_upgrades() {
 
 		if ( $isStripeConfigurationExist ) {
 			// Manual API Keys are enabled.
-			if ( ! (bool) give_get_option( 'give_stripe_connected', '1' ) ) {
+			if ( ! give_get_option( 'give_stripe_user_id' ) ) {
 				$uniqueSlug                    = 'account_1';
 				$stripeAccounts[ $uniqueSlug ] = [
 					'type'                 => 'manual',
