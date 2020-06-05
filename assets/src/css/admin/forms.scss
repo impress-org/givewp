@@ -496,6 +496,17 @@ Shortcode Copy & Paste
 		}
 
 		.inner-panel {
+			display: flex;
+			flex-direction: column;
+			padding-left: 34px;
+			padding-right: 34px;
+
+			.templates-list-heading {
+				font-size: 14px;
+				font-weight: 400;
+				margin: 12px 0 24px 0;
+			}
+
 			.form-template-options-introduction {
 				display: none;
 				padding-bottom: 25px;
@@ -509,6 +520,9 @@ Shortcode Copy & Paste
 			}
 
 			&.has-activated-template {
+				padding-left: 20px;
+				padding-right: 20px;
+
 				.templates-list {
 					grid-template-columns: 1fr !important;
 
