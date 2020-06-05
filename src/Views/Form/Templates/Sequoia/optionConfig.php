@@ -150,7 +150,7 @@ return [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'This image appears above the main thank you content. It should be something that reaffirms successful donation like a checkmark or heart. We recommend keeping it square in size at 120x120 pixels for best results.', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a checkmark icon will appear.', 'give' ),
 				'type' => 'file',
 			],
 			[
