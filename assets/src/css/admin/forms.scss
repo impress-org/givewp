@@ -552,6 +552,10 @@ Shortcode Copy & Paste
 				.template-options.active {
 					display: block;
 				}
+
+				.give-file {
+					width: calc(100% - 150px) !important;
+				}
 			}
 		}
 	}
