@@ -86,10 +86,11 @@
 
 	input[type='checkbox']:checked + .give-fee-message-label-text::after {
 		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+		-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 	}
 
 	input[type='checkbox'] + .give-fee-message-label-text::after {
-		transition: clip-path 0.2s ease;
+		transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
 		border-radius: 11px;
 		width: 20px;
 		height: 20px;
@@ -102,5 +103,6 @@
 		background-repeat: no-repeat;
 		background-position: center;
 		clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 }

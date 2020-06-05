@@ -591,7 +591,7 @@ p {
 			}
 
 			&::after {
-				transition: clip-path 0.2s ease;
+				transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
 				border-radius: 11px;
 				width: 20px;
 				height: 20px;
@@ -604,11 +604,13 @@ p {
 				background-repeat: no-repeat;
 				background-position: center;
 				clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+				-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 			}
 
 			&.checked {
 				&::after {
 					clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+					-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 				}
 			}
 		}
@@ -734,6 +736,11 @@ p {
 		}
 	}
 	#give-payment-mode-select {
+		.gateway-stripe-google_pay,
+		.gateway-stripe-apple_pay {
+			display: none !important;
+		}
+
 		legend {
 			display: none;
 		}
@@ -804,6 +811,7 @@ p {
 			}
 		}
 	}
+
 	#give_purchase_form_wrap {
 		background: #fbfbfb;
 		padding: 12px 20px 6px 20px;
@@ -823,9 +831,26 @@ p {
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
+		order: 3;
 
 		#give-final-total-wrap {
 			display: none;
+		}
+
+		input[value='stripe_apple_pay'] ~ .give-stripe-payment-request-button,
+		input[value='stripe_google_pay'] ~ .give-stripe-payment-request-button {
+			margin: 16px auto 16px auto;
+			order: 3;
+
+			&.StripeElement {
+				margin-top: 48px;
+				display: flex !important;
+				justify-content: center;
+			}
+
+			> *:not(.give_error) {
+				width: 236px;
+			}
 		}
 	}
 
@@ -838,6 +863,7 @@ p {
 			flex-direction: column;
 			align-items: center;
 			position: relative;
+			order: 3;
 
 			.sequoia-loader {
 				height: 30px;
@@ -845,6 +871,10 @@ p {
 				bottom: 32px;
 				position: absolute;
 				font-size: 4px;
+			}
+
+			.give-submit:not(:disabled) + .sequoia-loader {
+				display: none;
 			}
 		}
 	}
@@ -917,7 +947,7 @@ input[type='checkbox'] + label {
 	}
 
 	&::after {
-		transition: clip-path 0.2s ease;
+		transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
 		border-radius: 11px;
 		width: 20px;
 		height: 20px;
@@ -930,17 +960,20 @@ input[type='checkbox'] + label {
 		background-repeat: no-repeat;
 		background-position: center;
 		clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 
 	&.checked {
 		&::after {
 			clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+			-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 		}
 	}
 }
 
 input[type='checkbox']:checked + label::after {
 	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .give-square-cc-fields,
