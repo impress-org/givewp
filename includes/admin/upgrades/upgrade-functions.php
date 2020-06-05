@@ -3651,10 +3651,12 @@ function give_v263_upgrades() {
  * Upgrade routine to call for backward compatibility to manage default Stripe account.
  *
  * @since 2.7.0
- *
+ * @global wpdb $wpdb
  * @return void
  */
 function give_v270_upgrades() {
+	global $wpdb;
+
 	$settingKey              = '_give_stripe_get_all_accounts';
 	$giveSettings            = give_get_settings();
 	$isStripeAccountMigrated = array_key_exists( $settingKey, $giveSettings );
@@ -3662,10 +3664,8 @@ function give_v270_upgrades() {
 
 	// Process, only when there is no Stripe accounts stored.
 	if ( ! $isStripeAccountMigrated ) {
-		if (
-			give_stripe_is_premium_active() &&
-			! (bool) give_get_option( 'give_stripe_connected', '1' ) // Manual API Keys are enabled.
-		) {
+		// Manual API Keys are enabled.
+		if ( ! (bool) give_get_option( 'give_stripe_connected', '1' ) ) {
 			$uniqueSlug                    = 'account_1';
 			$stripeAccounts[ $uniqueSlug ] = [
 				'type'                 => 'manual',
@@ -3736,6 +3736,22 @@ function give_v270_upgrades() {
 		give_delete_option( 'test_publishable_key' );
 		give_delete_option( 'give_stripe_connected' );
 		give_delete_option( 'give_stripe_user_id' );
+	}
+
+	$canStoreStripeInformationInDonation = (bool) $wpdb->get_var(
+		$wpdb->prepare(
+			"
+					SELECT COUNT(donation_id)
+					FROM $wpdb->donationmeta
+					WHERE meta_key=%s
+					AND meta_value LIKE %s",
+			'_give_payment_gateway',
+			'%stripe%'
+		)
+	);
+
+	if ( ! $canStoreStripeInformationInDonation || ! $stripeAccounts ) {
+		give_set_upgrade_complete( 'v270_store_stripe_account_for_donation' );
 	}
 }
 
