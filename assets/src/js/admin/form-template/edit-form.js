@@ -99,6 +99,11 @@
 		$( 'input[name="sequoia[introduction][enabled]"]' ).on( 'change', function() {
 			updateIntroductionFields();
 		} );
+
+		updateSocialSharingFields();
+		$( 'input[name="sequoia[thank-you][sharing]"]' ).on( 'change', function() {
+			updateSocialSharingFields();
+		} );
 	};
 
 	/**
@@ -114,6 +119,22 @@
 			$( introductionFields ).hide();
 		} else {
 			$( introductionFields ).show();
+		}
+	};
+
+	/**
+	 * Update social sharing fields
+	 * Hide or show social sharing fields if enabled
+	 *
+	 * @since 2.7.0
+	 */
+	const updateSocialSharingFields = function() {
+		const socialSharingFields = $( '[class*="sequoia[thank-you][sharing_instruction]_field"], [class*="sequoia[thank-you][twitter_message]_field"]' );
+
+		if ( $( 'input[name="sequoia[thank-you][sharing]"]' ).length !== 0 && ! $( 'input[name="sequoia[thank-you][sharing]"]' ).prop( 'checked' ) ) {
+			$( socialSharingFields ).hide();
+		} else {
+			$( socialSharingFields ).show();
 		}
 	};
 
