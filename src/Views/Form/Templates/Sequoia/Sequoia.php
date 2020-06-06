@@ -70,6 +70,13 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
 		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', [], GIVE_VERSION );
+
+		// If default Give styles are disabled globally, enqueue Give default styles here
+		if ( ! \give_is_setting_enabled( give_get_option( 'css' ) ) ) {
+			wp_enqueue_style( 'give-styles', ( new \Give_Scripts )->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all' );
+		}
+
+		// Enqueue Sequoia template styles
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', [ 'give-styles' ], GIVE_VERSION );
 
 		$primaryColor = $templateOptions['introduction']['primary_color'];
