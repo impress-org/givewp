@@ -8,10 +8,6 @@
 }
 
 .ffm-checkbox-field {
-	input[type='checkbox'] {
-		display: none !important;
-	}
-
 	label {
 		font-weight: 500;
 		font-size: 16px;
@@ -59,7 +55,8 @@
 }
 .ffm-radio-field {
 	input[type='radio'] {
-		display: none !important;
+		opacity: 0 !important;
+		position: absolute !important;
 	}
 
 	label {
@@ -135,5 +132,9 @@
 		color: #333;
 		background: #f1f1f1;
 		text-decoration: none;
+
+		&:focus {
+			outline: none;
+		}
 	}
 }

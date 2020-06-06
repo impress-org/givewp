@@ -273,7 +273,12 @@ p {
 			transition: background-color 0.2s ease;
 
 			&.current {
-				background-color: #959595;
+				background-color: #747474;
+			}
+
+			&:focus {
+				border: 1px solid #959595;
+				outline: none;
 			}
 		}
 
@@ -779,7 +784,8 @@ p {
 			}
 
 			input[type='radio'] {
-				display: none !important;
+				opacity: 0 !important;
+				position: absolute !important;
 			}
 
 			label::before {
@@ -913,7 +919,8 @@ fieldset {
 }
 
 input[type='checkbox'] {
-	display: none !important;
+	opacity: 0 !important;
+	position: absolute !important;
 }
 
 input[type='checkbox'] + label {
