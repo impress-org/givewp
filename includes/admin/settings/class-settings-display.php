@@ -53,29 +53,6 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type' => 'title',
 						],
 						[
-							'name'    => __( 'Floating Labels', 'give' ),
-							/* translators: %s: http://docs.givewp.com/form-floating-labels */
-							'desc'    => sprintf(
-								wp_kses(
-									__( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself. This option only affects legacy forms, as floating labels are not a display option in new form templates.', 'give' ),
-									[
-										'a' => [
-											'href'   => [],
-											'target' => [],
-										],
-									]
-								),
-								esc_url( 'http://docs.givewp.com/form-floating-labels' )
-							),
-							'id'      => 'floatlabels',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => [
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							],
-						],
-						[
 							'name'    => __( 'Name Title Prefix', 'give' ),
 							'desc'    => __( 'Do you want a Name Title Prefix field to appear before First Name?', 'give' ),
 							'id'      => 'name_title_prefix',
