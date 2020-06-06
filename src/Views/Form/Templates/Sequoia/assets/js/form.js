@@ -72,6 +72,7 @@
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 			}
 			navigator.currentStep = step;
+			setupTabOrder();
 		},
 		init: () => {
 			steps.forEach( ( step ) => {
@@ -121,6 +122,10 @@
 			selector: '.give-section.introduction',
 			label: templateOptions.introduction.donate_label,
 			showErrors: false,
+			tabOrder: [
+				'.introduction .advance-btn',
+				'.step-tracker',
+			],
 		},
 		{
 			id: 'choose-amount',
@@ -128,6 +133,16 @@
 			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
+			tabOrder: [
+				'.give-amount-top',
+				'.give-donation-levels-wrap button',
+				'.give-recurring-period',
+				'.give-recurring-donors-choice-period',
+				'.give_fee_mode_checkbox',
+				'.choose-amount .advance-btn',
+				'.step-tracker',
+				'.back-btn',
+			],
 			setup: () => {
 				$( '#give-amount' ).on( 'blur', function() {
 					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
@@ -169,6 +184,10 @@
 			label: templateOptions.payment_information.checkout_label,
 			selector: '.give-section.payment',
 			showErrors: true,
+			tabOrder: [
+				'.payment input, .payment a, .payment button, .payment select, .payment multiselect, .payment textarea, .payment .button',
+				'.give-submit',
+			],
 			setup: () => {
 				// Setup payment information screen
 
@@ -323,6 +342,7 @@
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
+			setupTabOrder();
 			moveFieldsUnderPaymentGateway( true );
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
 				gatewayAnimating = false;
@@ -422,6 +442,20 @@
 		setupInputIcon( '#phone_field-wrap', 'phone' );
 		setupInputIcon( '#give-phone-wrap', 'phone' );
 		setupInputIcon( '#email_field-wrap', 'envelope' );
+	}
+
+	/**
+	 * Setup tab order for elements in form
+	 *
+	 * @since 2.7.0
+	 */
+	function setupTabOrder() {
+		$( 'select, button, input, textarea, multiselect, a' ).attr( 'tabindex', -1 );
+
+		const tabOrder = steps[ navigator.currentStep ].tabOrder;
+		tabOrder.forEach( ( selector, index ) => {
+			$( selector ).attr( 'tabindex', index + 1 );
+		} );
 	}
 
 	/**
