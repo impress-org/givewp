@@ -356,7 +356,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 */
 		public function get_sections() {
 			$sections = [
-				'display-settings'    => __( 'Display', 'give' ),
+				'display-settings'    => __( 'Form Fields', 'give' ),
 				'post-types'          => __( 'Post Types', 'give' ),
 				'taxonomies'          => __( 'Taxonomies', 'give' ),
 				'term-and-conditions' => __( 'Terms and Conditions', 'give' ),
