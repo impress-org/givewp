@@ -65,27 +65,29 @@
 	 * @since 2.7.0
 	 */
 	const saveFormSettingOnlyIfFormTemplateSelected = function() {
-		$( '.post-type-give_forms' ).on( 'click', '#publishing-action input[type=submit]', function() {
-			const activatedTemplate = $( 'input[name=_give_form_template]', '#form_template_options' ).val();
+		$( '.post-php.post-type-give_forms #publishing-action input[type=submit]' )
+			.add( '.post-new-php.post-type-give_forms #publishing-action input[type=submit]' )
+			.on( 'click', function() {
+				const activatedTemplate = $( 'input[name=_give_form_template]', '#form_template_options' ).val();
 
-			if ( ! activatedTemplate ) {
-				new Give.modal.GiveNoticeAlert( {
-					type: 'warning',
-					modalContent: {
-						desc: Give.fn.getGlobalVar( 'form_template_required' ),
-					},
-				} ).render();
+				if ( ! activatedTemplate ) {
+					new Give.modal.GiveNoticeAlert( {
+						type: 'warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar( 'form_template_required' ),
+						},
+					} ).render();
 
-				// Open form template settings.
-				if ( 'form_template_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
-					$( 'a[href="#form_template_options"]' ).trigger( 'click' );
+					// Open form template settings.
+					if ( 'form_template_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
+						$( 'a[href="#form_template_options"]' ).trigger( 'click' );
+					}
+
+					return false;
 				}
 
-				return false;
-			}
-
-			return true;
-		} );
+				return true;
+			} );
 	};
 
 	$( document ).ready( function() {
