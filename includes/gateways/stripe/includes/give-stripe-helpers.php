@@ -1378,12 +1378,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 	$all_accounts            = give_stripe_get_all_accounts();
 	$default_account         = give_stripe_get_default_account_slug( $form_id );
 
-	if (
-		( is_array( $all_accounts ) &&
-		  count( $all_accounts ) > 0
-		) &&
-		! empty( $default_account )
-	) {
+	if ( $all_accounts && ! empty( $default_account ) ) {
 		$default_account_details = isset( $all_accounts[ $default_account ] ) ? $all_accounts[ $default_account ] : [];
 	}
 
