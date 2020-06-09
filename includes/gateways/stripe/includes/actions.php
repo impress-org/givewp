@@ -71,7 +71,7 @@ function giveStripeAddDonationStripeAccount( $donationId, $donationData ) {
 	$formId        = (int) $donationData['give_form_id'];
 
 	// Return, if the donation is not processed with any of the supported payment method of Stripe.
-	if ( ! Stripe::isDonationPaymentMethod( give_get_payment_gateway( $paymentMethod ) ) ) {
+	if ( ! Stripe::isDonationPaymentMethod( $paymentMethod ) ) {
 		return;
 	}
 
