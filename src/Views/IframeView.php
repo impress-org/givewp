@@ -206,7 +206,7 @@ class IframeView {
 					</div>
 				</div>',
 				$iframe,
-				esc_html__( 'Close modal', 'give' ),
+				esc_html__( 'Close', 'give' ),
 				$this->uniqueId
 			);
 		}
