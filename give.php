@@ -592,7 +592,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-sequential-donation-number.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
