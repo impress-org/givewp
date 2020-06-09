@@ -8,7 +8,9 @@ use Give\Receipt\DonationReceipt;
 use Give\Helpers\Utils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use \Give_Donate_Form as DonationForm;
+use Give_Scripts;
 use function give_do_email_tags as formatContent;
+use function give_is_setting_enabled;
 
 
 /**
@@ -72,8 +74,8 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', [], GIVE_VERSION );
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
-		if ( ! \give_is_setting_enabled( give_get_option( 'css' ) ) ) {
-			wp_enqueue_style( 'give-styles', ( new \Give_Scripts )->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all' );
+		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
+			wp_enqueue_style( 'give-styles', ( new Give_Scripts )->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all' );
 		}
 
 		// Enqueue Sequoia template styles
