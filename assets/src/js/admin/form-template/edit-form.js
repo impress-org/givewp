@@ -1,4 +1,5 @@
 /* globals Give, jQuery */
+/* eslint-disable */
 ( function( $ ) {
 	/**
 	 * Handle form template activation
@@ -90,9 +91,60 @@
 			} );
 	};
 
+	/**
+	 * Handle conditional form template fields
+	 *
+	 * @since 2.7.0
+	 */
+	const handleConditionalFormTemplateFields = function() {
+		updateIntroductionFields();
+		$( 'input[name="sequoia[introduction][enabled]"]' ).on( 'change', function() {
+			updateIntroductionFields();
+		} );
+
+		updateSocialSharingFields();
+		$( 'input[name="sequoia[thank-you][sharing]"]' ).on( 'change', function() {
+			updateSocialSharingFields();
+		} );
+	};
+
+	/**
+	 * Update introduciton fields
+	 * Hide or show introduction fields if enabled
+	 *
+	 * @since 2.7.0
+	 */
+	const updateIntroductionFields = function() {
+		const introductionFields = $( '[class*="sequoia[introduction][headline]_field"], [class*="sequoia[introduction][description]_field"], [class*="sequoia[introduction][image]_field"], [class*="sequoia[introduction][primary_color]_field"], [class*="sequoia[introduction][donate_label]_field"]' );
+
+		if ( $( 'input[name="sequoia[introduction][enabled]"]' ).length !== 0 && ! $( 'input[name="sequoia[introduction][enabled]"]' ).prop( 'checked' ) ) {
+			$( introductionFields ).hide();
+		} else {
+			$( introductionFields ).show();
+		}
+	};
+
+	/**
+	 * Update social sharing fields
+	 * Hide or show social sharing fields if enabled
+	 *
+	 * @since 2.7.0
+	 */
+	const updateSocialSharingFields = function() {
+		const socialSharingFields = $( '[class*="sequoia[thank-you][sharing_instruction]_field"], [class*="sequoia[thank-you][twitter_message]_field"]' );
+
+		if ( $( 'input[name="sequoia[thank-you][sharing]"]' ).length !== 0 && ! $( 'input[name="sequoia[thank-you][sharing]"]' ).prop( 'checked' ) ) {
+			$( socialSharingFields ).hide();
+		} else {
+			$( socialSharingFields ).show();
+		}
+	};
+
 	$( document ).ready( function() {
 		handleFormTemplateActivation();
 		handleFormTemplateDeactivation();
 		saveFormSettingOnlyIfFormTemplateSelected();
+		handleConditionalFormTemplateFields();
 	} );
 }( jQuery ) );
+/* eslint-enable */
