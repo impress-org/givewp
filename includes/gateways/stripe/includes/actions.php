@@ -67,11 +67,11 @@ add_action( 'give_donation_form_top', 'give_stripe_add_secret_payment_method_fie
  * @return void
  */
 function giveStripeAddDonationStripeAccount( $donationId, $donationData ) {
-	$paymentMethod = isset( $donationData['gateway'] ) ? $donationData['gateway'] : '';
+	$paymentMethod = give_get_payment_gateway( $donationId );
 	$formId        = (int) $donationData['give_form_id'];
 
 	// Return, if the donation is not processed with any of the supported payment method of Stripe.
-	if ( ! Stripe::isDonationPaymentMethod( give_get_payment_gateway( $paymentMethod ) ) ) {
+	if ( ! Stripe::isDonationPaymentMethod( $paymentMethod ) ) {
 		return;
 	}
 

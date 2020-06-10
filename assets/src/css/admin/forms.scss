@@ -404,7 +404,7 @@ Shortcode Copy & Paste
 	#form_template_options {
 		.templates-list {
 			display: grid;
-			grid-gap: 10px;
+			grid-gap: 36px;
 			grid-template-columns: 1fr 1fr;
 			padding: 8px 0 24px 0;
 
@@ -412,7 +412,7 @@ Shortcode Copy & Paste
 				width: 100%;
 				height: auto;
 				position: relative;
-				padding-top: 56.25%;
+				padding-top: 70%;
 
 				.template-image {
 					height: 100%;
@@ -453,9 +453,10 @@ Shortcode Copy & Paste
 		}
 
 		.form-template-introduction {
-			padding-bottom: 25px;
+			padding-bottom: 16px;
 
 			p {
+				font-weight: 300;
 				font-size: 18px;
 				margin: 0 0 14px 0;
 				padding: 0;
@@ -464,18 +465,19 @@ Shortcode Copy & Paste
 			p.form-template-description {
 				color: #9c9c9c;
 				font-size: 16px;
+				padding-bottom: 26px;
 			}
 
 			.form-template-notice {
-				padding: 16px 10px;
+				padding: 14px;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				margin-top: 24px;
 
 				p {
-					max-width: 60%;
-					margin: 0;
+					flex: 1;
+					margin: 0 14px;
 					font-size: 16px;
 					color: #555;
 				}
@@ -496,6 +498,17 @@ Shortcode Copy & Paste
 		}
 
 		.inner-panel {
+			display: flex;
+			flex-direction: column;
+			padding-left: 34px;
+			padding-right: 34px;
+
+			.templates-list-heading {
+				font-size: 14px;
+				font-weight: 400;
+				margin: 12px 0 24px 0;
+			}
+
 			.form-template-options-introduction {
 				display: none;
 				padding-bottom: 25px;
@@ -509,6 +522,9 @@ Shortcode Copy & Paste
 			}
 
 			&.has-activated-template {
+				padding-left: 20px;
+				padding-right: 20px;
+
 				.templates-list {
 					grid-template-columns: 1fr !important;
 
@@ -535,6 +551,10 @@ Shortcode Copy & Paste
 				.form-template-options-introduction,
 				.template-options.active {
 					display: block;
+				}
+
+				.give-file {
+					width: calc(100% - 150px) !important;
 				}
 			}
 		}

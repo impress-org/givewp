@@ -22,7 +22,7 @@ class Legacy extends Template {
 	 * @inheritDoc
 	 */
 	public function getImage() {
-		return 'https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80';
+		return GIVE_PLUGIN_URL . 'assets/dist/images/admin/LegacyForm.jpg';
 	}
 
 	/**
