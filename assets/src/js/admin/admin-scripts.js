@@ -803,7 +803,12 @@ const gravatar = require( 'gravatar' );
 				 * blur event add to support to dropdown.
 				 * Change event add to support to rest all element.
 				 */
-				settingsPage.on( 'change keyup blur', 'form', function() {
+				settingsPage.on( 'change keyup blur', 'form', function( event ) {
+					// Do not listen for excluded form fields. They are there own logic to handle their state.
+					if ( $( event.target ).closest( '.js-fields-has-custom-saving-logic' ).length ) {
+						return;
+					}
+
 					// Get the form value after change.
 					const on_change_value = $( '#give-mainform' ).serialize();
 

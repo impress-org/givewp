@@ -577,9 +577,29 @@ p {
 	}
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
+
+		@media screen and (max-width: $break-phone) {
+			display: flex !important;
+			justify-content: center;
+		}
+
+		.give-login-message {
+			@media screen and (max-width: $break-phone) {
+				width: fit-content !important;
+				margin-right: auto !important;
+				margin-left: auto !important;
+				text-align: center;
+			}
+		}
 	}
 
 	[id*='give-create-account-wrap-'] {
+		@media screen and (max-width: $break-phone) {
+			display: flex !important;
+			justify-content: center;
+			margin-bottom: 2px !important;
+		}
+
 		input {
 			display: none;
 		}
@@ -587,6 +607,10 @@ p {
 		label {
 			padding-left: 30px;
 			font-size: 14px;
+
+			@media screen and (max-width: $break-phone) {
+				width: fit-content !important;
+			}
 
 			.give-tooltip {
 				padding-left: 6px;
@@ -605,7 +629,7 @@ p {
 			}
 
 			&::after {
-				transition: clip-path 0.2s ease;
+				transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
 				border-radius: 11px;
 				width: 20px;
 				height: 20px;
@@ -618,11 +642,13 @@ p {
 				background-repeat: no-repeat;
 				background-position: center;
 				clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+				-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 			}
 
 			&.checked {
 				&::after {
 					clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+					-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 				}
 			}
 		}
@@ -712,6 +738,12 @@ p {
 			padding: 20px 3px 0;
 		}
 	}
+	.subheading {
+		@media screen and (max-width: $break-phone) {
+			padding-left: 20px !important;
+			padding-right: 20px !important;
+		}
+	}
 	.give_notices {
 		width: 100%;
 		order: 1;
@@ -748,6 +780,11 @@ p {
 		}
 	}
 	#give-payment-mode-select {
+		.gateway-stripe-google_pay,
+		.gateway-stripe-apple_pay {
+			display: none !important;
+		}
+
 		legend {
 			display: none;
 		}
@@ -820,7 +857,8 @@ p {
 			}
 		}
 	}
-	#give_offline_payment_info {
+
+  #give_offline_payment_info {
 		> ol {
 			list-style: none;
 			padding: 0;
@@ -832,9 +870,14 @@ p {
 			}
 		}
 	}
+
 	#give_purchase_form_wrap {
 		background: #fbfbfb;
-		padding: 12px 20px 6px 20px;
+		padding: 20px 20px 6px 20px;
+
+		@media screen and (max-width: $break-phone) {
+			padding: 14px 14px 0 14px;
+		}
 
 		fieldset {
 			padding: 0;
@@ -851,9 +894,26 @@ p {
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
+		order: 3;
 
 		#give-final-total-wrap {
 			display: none;
+		}
+
+		input[value='stripe_apple_pay'] ~ .give-stripe-payment-request-button,
+		input[value='stripe_google_pay'] ~ .give-stripe-payment-request-button {
+			margin: 16px auto 16px auto;
+			order: 3;
+
+			&.StripeElement {
+				margin-top: 48px;
+				display: flex !important;
+				justify-content: center;
+			}
+
+			> *:not(.give_error) {
+				width: 236px;
+			}
 		}
 	}
 
@@ -866,6 +926,7 @@ p {
 			flex-direction: column;
 			align-items: center;
 			position: relative;
+			order: 3;
 
 			.sequoia-loader {
 				height: 30px;
@@ -873,6 +934,10 @@ p {
 				bottom: 32px;
 				position: absolute;
 				font-size: 4px;
+			}
+
+			.give-submit:not(:disabled) + .sequoia-loader {
+				display: none;
 			}
 		}
 	}
@@ -946,7 +1011,7 @@ input[type='checkbox'] + label {
 	}
 
 	&::after {
-		transition: clip-path 0.2s ease;
+		transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
 		border-radius: 11px;
 		width: 20px;
 		height: 20px;
@@ -959,17 +1024,20 @@ input[type='checkbox'] + label {
 		background-repeat: no-repeat;
 		background-position: center;
 		clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 
 	&.checked {
 		&::after {
 			clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+			-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 		}
 	}
 }
 
 input[type='checkbox']:checked + label::after {
 	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .give-square-cc-fields,
@@ -1153,6 +1221,8 @@ form.give-form .form-row select.multiselect {
 [id*='give_secure_site_wrapper'] {
 	font-size: 12px;
 	color: #8d8e8e;
+	padding-top: 0;
+	line-height: 1.2;
 
 	span.padlock {
 		font-size: 12px;

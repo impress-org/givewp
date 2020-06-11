@@ -68,7 +68,7 @@ function give_run_install() {
 	}
 
 	// Setup some default options.
-	$options = array();
+	$options = [];
 
 	// Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
@@ -110,7 +110,7 @@ function give_run_install() {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 
 		// When new upgrade routines are added, mark them as complete on fresh install.
-		$upgrade_routines = array(
+		$upgrade_routines = [
 			'upgrade_give_user_caps_cleanup',
 			'upgrade_give_payment_customer_id',
 			'upgrade_give_offline_status',
@@ -148,7 +148,8 @@ function give_run_install() {
 			'v230_delete_donor_wall_related_comment_data',
 			'v240_update_form_goal_progress',
 			'v241_remove_sale_logs',
-		);
+			'v270_store_stripe_account_for_donation',
+		];
 
 		foreach ( $upgrade_routines as $upgrade ) {
 			give_set_upgrade_complete( $upgrade );
@@ -320,7 +321,7 @@ add_action( 'admin_init', 'give_install_roles_on_network' );
  */
 function give_get_default_settings() {
 
-	$options = array(
+	$options = [
 		// General.
 		'base_country'                                => 'US',
 		'test_mode'                                   => 'enabled',
@@ -360,11 +361,11 @@ function give_get_default_settings() {
 		'paypal_verification'                         => 'enabled',
 
 		// Default is manual gateway.
-		'gateways'                                    => array(
+		'gateways'                                    => [
 			'manual'  => 1,
 			'offline' => 1,
 			'stripe'  => 1,
-		),
+		],
 		'default_gateway'                             => 'manual',
 
 		// Offline gateway setup.
@@ -383,7 +384,10 @@ function give_get_default_settings() {
 		'donor_default_user_role'                     => 'give_donor',
 		Give()->routeForm->getOptionName()            => 'give',
 
-	);
+		// Stripe accounts.
+		'_give_stripe_get_all_accounts'               => [],
+
+	];
 
 	return $options;
 }
@@ -425,21 +429,21 @@ function give_create_pages() {
 		return;
 	}
 
-	$options = array();
+	$options = [];
 
 	// Checks if the Success Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
 
 		// Donation Confirmation (Success) Page
 		$success = wp_insert_post(
-			array(
+			[
 				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
 				'post_content'   => '[give_receipt]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
 				'comment_status' => 'closed',
-			)
+			]
 		);
 
 		// Store our page IDs
@@ -451,14 +455,14 @@ function give_create_pages() {
 
 		// Failed Donation Page
 		$failed = wp_insert_post(
-			array(
+			[
 				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
 				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
 				'comment_status' => 'closed',
-			)
+			]
 		);
 
 		$options['failure_page'] = $failed;
@@ -468,14 +472,14 @@ function give_create_pages() {
 	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
 		// Donation History Page
 		$history = wp_insert_post(
-			array(
+			[
 				'post_title'     => esc_html__( 'Donation History', 'give' ),
 				'post_content'   => '[donation_history]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
 				'comment_status' => 'closed',
-			)
+			]
 		);
 
 		$options['history_page'] = $history;
@@ -517,7 +521,7 @@ add_action( 'update_option_give_version', 'give_install_tables_on_plugin_update'
  * @sice 2.3.1
  */
 function __give_get_tables() {
-	$tables = array(
+	$tables = [
 		'donors_db'       => new Give_DB_Donors(),
 		'donor_meta_db'   => new Give_DB_Donor_Meta(),
 		'comment_db'      => new Give_DB_Comments(),
@@ -528,7 +532,7 @@ function __give_get_tables() {
 		'formmeta_db'     => new Give_DB_Form_Meta(),
 		'sequential_db'   => new Give_DB_Sequential_Ordering(),
 		'donation_meta'   => new Give_DB_Payment_Meta(),
-	);
+	];
 
 	return $tables;
 }

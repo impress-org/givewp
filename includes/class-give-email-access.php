@@ -106,7 +106,7 @@ class Give_Email_Access {
 	public function __construct() {
 
 		// Get it started.
-		add_action( 'wp', array( $this, 'setup' ) );
+		add_action( 'wp', [ $this, 'setup' ] );
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Give_Email_Access {
 
 		if ( $is_email_access_on_page ) {
 			// Get it started.
-			add_action( 'wp', array( $this, 'init' ), 14 );
+			add_action( 'wp', [ $this, 'init' ], 14 );
 		}
 	}
 
@@ -157,7 +157,7 @@ class Give_Email_Access {
 
 		if ( $this->token_exists ) {
 			add_filter( 'give_user_pending_verification', '__return_false' );
-			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
+			add_filter( 'give_get_users_donations_args', [ $this, 'users_donations_args' ] );
 		}
 
 	}
@@ -253,8 +253,10 @@ class Give_Email_Access {
 			}
 
 			// Set Receipt Access Session.
+			Give()->session->maybe_start_session();
 			Give()->session->set( 'receipt_access', true );
 			$this->token_exists = true;
+
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
 			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );

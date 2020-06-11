@@ -28,6 +28,11 @@
 		padding: 17px 20px 17px 22px !important;
 		color: #333;
 		display: inline-block;
+
+		@media screen and (max-width: $break-phone) {
+			font-size: 14px;
+			padding: 14px 20px 14px 22px !important;
+		}
 	}
 
 	span::before {
@@ -56,10 +61,11 @@
 
 	input[type='checkbox']:checked + span::after {
 		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+		-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 	}
 
 	input[type='checkbox'] + span::after {
-		transition: clip-path 0.2s ease;
+		transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
 		border-radius: 11px;
 		width: 20px;
 		height: 20px;
@@ -72,5 +78,6 @@
 		background-repeat: no-repeat;
 		background-position: center;
 		clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 }

@@ -49,38 +49,36 @@ add_filter( 'give_payment_details_transaction_id-stripe_becs', 'give_stripe_link
  * @return array
  */
 function give_stripe_add_metabox_settings( $settings, $form_id ) {
-	$form_account         = give_is_setting_enabled( give_clean( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) ) );
-	$account_options      = give_stripe_get_account_options();
-	$account_options_keys = array_keys( $account_options );
-	$first_account_key    = $account_options_keys ? $account_options_keys[0] : [];
+	$form_account       = give_is_setting_enabled( give_clean( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) ) );
+	$defaultAccountSlug = give_stripe_get_default_account_slug();
 
-	$settings['stripe_form_account_options'] = array(
+	$settings['stripe_form_account_options'] = [
 		'id'        => 'stripe_form_account_options',
 		'title'     => esc_html__( 'Manage Accounts', 'give' ),
 		'icon-html' => sprintf(
 			'<img class="give-stripe-icon" src="%1$s" />',
 			GIVE_PLUGIN_URL . 'assets/dist/images/admin/stripe-icon.png'
 		),
-		'fields'    => array(
-			array(
+		'fields'    => [
+			[
 				'name'    => esc_html__( 'Account Options', 'give' ),
 				'id'      => 'give_stripe_per_form_accounts',
 				'type'    => 'radio_inline',
 				'default' => 'disabled',
-				'options' => array(
+				'options' => [
 					'disabled' => esc_html__( 'Global', 'give' ),
 					'enabled'  => esc_html__( 'Customize', 'give' ),
-				),
-			),
-			array(
+				],
+			],
+			[
 				'name'          => esc_html__( 'Stripe Accounts', 'give' ),
 				'id'            => '_give_stripe_default_account',
 				'type'          => 'radio',
-				'default'       => $first_account_key,
+				'default'       => $defaultAccountSlug,
 				'options'       => give_stripe_get_account_options(),
 				'wrapper_class' => $form_account ? 'give-stripe-per-form-default-account' : 'give-stripe-per-form-default-account give-hidden',
-			),
-			array(
+			],
+			[
 				'type'  => 'label',
 				'id'    => 'give-stripe-add-account-link',
 				'title' => sprintf(
@@ -89,9 +87,9 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 					esc_html__( 'Click here', 'give' ),
 					esc_html__( 'to add new Stripe account.', 'give' )
 				),
-			),
-		),
-	);
+			],
+		],
+	];
 
 	return $settings;
 }

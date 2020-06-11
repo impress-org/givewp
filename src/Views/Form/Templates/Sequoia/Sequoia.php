@@ -8,7 +8,9 @@ use Give\Receipt\DonationReceipt;
 use Give\Helpers\Utils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use \Give_Donate_Form as DonationForm;
+use Give_Scripts;
 use function give_do_email_tags as formatContent;
+use function give_is_setting_enabled;
 
 
 /**
@@ -70,6 +72,13 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
 		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', [], GIVE_VERSION );
+
+		// If default Give styles are disabled globally, enqueue Give default styles here
+		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
+			wp_enqueue_style( 'give-styles', ( new Give_Scripts )->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all' );
+		}
+
+		// Enqueue Sequoia template styles
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', [ 'give-styles' ], GIVE_VERSION );
 
 		$primaryColor = $templateOptions['introduction']['primary_color'];
@@ -255,7 +264,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getImage() {
-		return 'https://images.unsplash.com/photo-1448387473223-5c37445527e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=100';
+		return GIVE_PLUGIN_URL . 'assets/dist/images/admin/SequoiaForm.jpg';
 	}
 
 	/**

@@ -8,6 +8,13 @@
 		min-height: 48px !important;
 	}
 
+	.give-tributes-grab-info {
+		@media screen and (max-width: $break-phone) {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
 	legend,
 	.give-tributes-legend,
 	.give-tributes-label {

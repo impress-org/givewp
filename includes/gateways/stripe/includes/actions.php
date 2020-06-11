@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\Helpers\Gateways\Stripe;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -53,3 +55,27 @@ function give_stripe_add_secret_payment_method_field( $form_id, $args ) {
 
 }
 add_action( 'give_donation_form_top', 'give_stripe_add_secret_payment_method_field', 10, 2 );
+
+/**
+ * This function is used to add Stripe account used while processing donation.
+ *
+ * @param int   $donationId   Donation ID.
+ * @param array $donationData Donation data.
+ *
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function giveStripeAddDonationStripeAccount( $donationId, $donationData ) {
+	$paymentMethod = give_get_payment_gateway( $donationId );
+	$formId        = (int) $donationData['give_form_id'];
+
+	// Return, if the donation is not processed with any of the supported payment method of Stripe.
+	if ( ! Stripe::isDonationPaymentMethod( $paymentMethod ) ) {
+		return;
+	}
+
+	Stripe::addAccountDetail( $donationId, $formId );
+}
+
+add_action( 'give_insert_payment', 'giveStripeAddDonationStripeAccount', 10, 2 );

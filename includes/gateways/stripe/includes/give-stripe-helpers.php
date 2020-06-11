@@ -50,18 +50,9 @@ function give_stripe_get_secret_key( $form_id = 0 ) {
  * @return string
  */
 function give_stripe_get_connected_account_id( $form_id = 0 ) {
-
-	$account_id      = '';
 	$default_account = give_stripe_get_default_account( $form_id );
 
-	if (
-		! empty( $default_account['type'] ) &&
-		'connect' === $default_account['type']
-	) {
-		$account_id = trim( $default_account['give_stripe_user_id'] );
-	}
-
-	return $account_id;
+	return trim( $default_account['account_id'] );
 }
 
 /**
@@ -72,15 +63,9 @@ function give_stripe_get_connected_account_id( $form_id = 0 ) {
  * @return array
  */
 function give_stripe_get_connected_account_options() {
-
-	$args            = [];
-	$form_id         = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
-	$default_account = give_stripe_get_default_account( $form_id );
-
-	// If the Stripe account is connected via Connect method.
-	if ( ! empty( $default_account['type'] ) && 'connect' === $default_account['type'] ) {
-		$args['stripe_account'] = $default_account['give_stripe_user_id'];
-	}
+	$form_id                = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$default_account        = give_stripe_get_default_account( $form_id );
+	$args['stripe_account'] = $default_account['account_id'];
 
 	return $args;
 }
@@ -120,24 +105,24 @@ function give_stripe_get_publishable_key( $form_id = 0 ) {
 function give_stripe_get_default_base_styles() {
 
 	$float_labels = give_is_float_labels_enabled(
-		array(
+		[
 			'form_id' => get_the_ID(),
-		)
+		]
 	);
 
 	return wp_json_encode(
-		array(
+		[
 			'color'             => '#32325D',
 			'fontWeight'        => 500,
 			'fontSize'          => '16px',
 			'fontSmoothing'     => 'antialiased',
-			'::placeholder'     => array(
+			'::placeholder'     => [
 				'color' => $float_labels ? '#CCCCCC' : '#222222',
-			),
-			':-webkit-autofill' => array(
+			],
+			':-webkit-autofill' => [
 				'color' => '#e39f48',
-			),
-		)
+			],
+		]
 	);
 }
 
@@ -150,12 +135,12 @@ function give_stripe_get_default_base_styles() {
  */
 function give_stripe_get_stripe_styles() {
 
-	$default_styles = array(
+	$default_styles = [
 		'base'     => give_stripe_get_default_base_styles(),
 		'empty'    => false,
 		'invalid'  => false,
 		'complete' => false,
-	);
+	];
 
 	return give_get_option( 'stripe_styles', $default_styles );
 }
@@ -236,13 +221,13 @@ function give_stripe_get_element_font_styles() {
 		$custom_fonts_attributes = give_get_option( 'stripe_custom_fonts' );
 		$font_styles             = json_decode( $custom_fonts_attributes );
 	} else {
-		$font_styles = array(
+		$font_styles = [
 			'cssSrc' => give_get_option( 'stripe_google_fonts_url' ),
-		);
+		];
 	}
 
 	if ( empty( $font_styles ) ) {
-		$font_styles = array();
+		$font_styles = [];
 	}
 
 	return apply_filters( 'give_stripe_get_element_font_styles', $font_styles );
@@ -262,10 +247,10 @@ function give_stripe_get_preferred_locale() {
 
 	if ( 'modal' === give_stripe_get_checkout_type() ) {
 		// For Legacy Checkout, Return "no" as accepted parameter for norwegian language code "nb" && "nn".
-		$language_code = in_array( $language_code, array( 'nb', 'nn' ), true ) ? 'no' : $language_code;
+		$language_code = in_array( $language_code, [ 'nb', 'nn' ], true ) ? 'no' : $language_code;
 	} else {
 		// For Checkout 2.0, Return "nb" as accepted parameter for norwegian language code "no" && "nn".
-		$language_code = in_array( $language_code, array( 'no', 'nn' ), true ) ? 'nb' : $language_code;
+		$language_code = in_array( $language_code, [ 'no', 'nn' ], true ) ? 'nb' : $language_code;
 	}
 
 	return apply_filters( 'give_stripe_elements_preferred_locale', $language_code );
@@ -427,12 +412,12 @@ function give_stripe_is_zero_decimal_currency() {
  *
  * @return mixed
  */
-function give_stripe_get_statement_descriptor( $data = array() ) {
+function give_stripe_get_statement_descriptor( $data = [] ) {
 
 	$descriptor_option = give_get_option( 'stripe_statement_descriptor', get_bloginfo( 'name' ) );
 
 	// Clean the statement descriptor.
-	$unsupported_characters = array( '<', '>', '"', '\'' );
+	$unsupported_characters = [ '<', '>', '"', '\'' ];
 	$statement_descriptor   = mb_substr( $descriptor_option, 0, 22 );
 	$statement_descriptor   = str_replace( $unsupported_characters, '', $statement_descriptor );
 
@@ -477,12 +462,12 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 
 	// Bail out, if FFM add-on is not active.
 	if ( ! class_exists( 'Give_Form_Fields_Manager' ) ) {
-		return array();
+		return [];
 	}
 
-	$ffm_meta     = array();
-	$ffm_required = array();
-	$ffm_optional = array();
+	$ffm_meta     = [];
+	$ffm_required = [];
+	$ffm_optional = [];
 	$field_label  = '';
 	$ffm_fields   = give_get_meta( $form_id, 'give-form-fields', true );
 
@@ -907,7 +892,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			$payment_method_id = $payment_method->id;
 
 			// Setup the payment details.
-			$payment_data = array(
+			$payment_data = [
 				'price'           => $donation_data['price'],
 				'give_form_title' => $donation_data['post_data']['give-form-title'],
 				'give_form_id'    => $form_id,
@@ -919,7 +904,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 				'user_info'       => $donation_data['user_info'],
 				'status'          => 'pending',
 				'gateway'         => $stripe_gateway->id,
-			);
+			];
 
 			// Record the pending payment in Give.
 			$donation_id = give_insert_payment( $payment_data );
@@ -948,10 +933,10 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			 */
 			$intent_args = apply_filters(
 				'give_stripe_create_intent_args',
-				array(
+				[
 					'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
 					'currency'             => give_get_currency( $form_id ),
-					'payment_method_types' => array( 'card' ),
+					'payment_method_types' => [ 'card' ],
 					'statement_descriptor' => give_stripe_get_statement_descriptor(),
 					'description'          => give_payment_gateway_donation_summary( $donation_data ),
 					'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
@@ -959,7 +944,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 					'payment_method'       => $payment_method_id,
 					'confirm'              => true,
 					'return_url'           => give_get_success_page_uri(),
-				)
+				]
 			);
 
 			// Send Stripe Receipt emails when enabled.
@@ -1119,11 +1104,11 @@ function give_stripe_load_stripe_sdk() {
  *
  * @return array
  */
-function give_stripe_prepare_metadata( $donation_id, $donation_data = array() ) {
+function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
 
 	// Bailout, if donation id doesn't exists.
 	if ( ! $donation_id ) {
-		return array();
+		return [];
 	}
 
 	$form_id = give_get_payment_form_id( $donation_id );
@@ -1153,9 +1138,9 @@ function give_stripe_prepare_metadata( $donation_id, $donation_data = array() ) 
 		$args = array_slice( $args, 0, 19, false );
 		$args = array_merge(
 			$args,
-			array(
+			[
 				'More Details' => esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id ) ),
-			)
+			]
 		);
 	}
 
@@ -1205,7 +1190,7 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
 	if ( 'becs' === $method ) {
 		// For BECS Direct Debit.
 		$mandate_acceptance_text = sprintf(
-			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorise Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorised signatory on the account listed above.', 'give' ),
+			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorize Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorized signatory on the account listed above.', 'give' ),
 			esc_url_raw( 'https://stripe.com/au-becs-dd-service-agreement/legal' ),
 			get_bloginfo( 'sitename' )
 		);
@@ -1393,12 +1378,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 	$all_accounts            = give_stripe_get_all_accounts();
 	$default_account         = give_stripe_get_default_account_slug( $form_id );
 
-	if (
-		( is_array( $all_accounts ) &&
-		  count( $all_accounts ) > 0
-		) &&
-		! empty( $default_account )
-	) {
+	if ( $all_accounts && ! empty( $default_account ) ) {
 		$default_account_details = isset( $all_accounts[ $default_account ] ) ? $all_accounts[ $default_account ] : [];
 	}
 

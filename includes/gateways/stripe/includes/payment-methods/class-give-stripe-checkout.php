@@ -379,7 +379,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$session_id        = ! empty( $get_data['session'] ) ? $get_data['session'] : false;
 			$action            = ! empty( $get_data['action'] ) ? $get_data['action'] : false;
 			$default_account   = give_stripe_get_default_account( $form_id );
-			$stripe_account_id = $default_account['give_stripe_user_id'];
+			$stripe_account_id = give_stripe_get_connected_account_id( $form_id );
 
 			// Bailout, if action is not checkout processing.
 			if ( 'checkout_processing' !== $action ) {

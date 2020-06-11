@@ -13,6 +13,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Gateways\Stripe;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -499,6 +501,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		]
 	);
 
+	$give_updates->register(
+		[
+			'id'       => 'v270_store_stripe_account_for_donation',
+			'version'  => '2.7.0',
+			'callback' => 'give_v270_store_stripe_account_for_donation_callback',
+		]
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -3642,86 +3651,161 @@ function give_v263_upgrades() {
  * Upgrade routine to call for backward compatibility to manage default Stripe account.
  *
  * @since 2.7.0
- *
+ * @global wpdb $wpdb
  * @return void
  */
 function give_v270_upgrades() {
-	$stripe_accounts = give_stripe_get_all_accounts();
-	$is_migrated     = give_has_upgrade_completed( 'give_stripe_v270_data_migrated' );
+	global $wpdb;
+
+	$settingKey              = '_give_stripe_get_all_accounts';
+	$giveSettings            = give_get_settings();
+	$isStripeAccountMigrated = array_key_exists( $settingKey, $giveSettings );
+	$stripeAccounts          = $isStripeAccountMigrated ? $giveSettings[ $settingKey ] : [];
 
 	// Process, only when there is no Stripe accounts stored.
-	if ( ! $stripe_accounts && ! $is_migrated ) {
-		if (
-			give_stripe_is_premium_active() &&
-			give_stripe_is_manual_api_keys_enabled()
-		) {
-			$stripe_accounts['account_1'] = [
-				'type'                 => 'manual',
-				'live_secret_key'      => give_get_option( 'live_secret_key' ),
-				'test_secret_key'      => give_get_option( 'test_secret_key' ),
-				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
-				'test_publishable_key' => give_get_option( 'test_publishable_key' ),
-			];
+	if ( ! $isStripeAccountMigrated ) {
+		$liveSecretKey              = give_get_option( 'live_secret_key' );
+		$testSecretKey              = give_get_option( 'test_secret_key' );
+		$livePublishableKey         = give_get_option( 'live_publishable_key' );
+		$testPublishableKey         = give_get_option( 'test_publishable_key' );
+		$isStripeConfigurationExist = $liveSecretKey || $testSecretKey || $livePublishableKey || $testPublishableKey;
 
-			// Set first Stripe account as default.
-			give_update_option( '_give_stripe_default_account', 'account_1' );
-		} else {
+		if ( $isStripeConfigurationExist ) {
+			// Manual API Keys are enabled.
+			if ( ! give_get_option( 'give_stripe_user_id' ) ) {
+				$uniqueSlug                    = 'account_1';
+				$stripeAccounts[ $uniqueSlug ] = [
+					'type'                 => 'manual',
+					'account_name'         => give_stripe_convert_slug_to_title( $uniqueSlug ),
+					'account_slug'         => $uniqueSlug,
+					'account_email'        => '',
+					'account_country'      => '',
+					'account_id'           => '', // This parameter will be empty for manual API Keys Stripe account.
+					'live_secret_key'      => $liveSecretKey,
+					'test_secret_key'      => $testSecretKey,
+					'live_publishable_key' => $livePublishableKey,
+					'test_publishable_key' => $testPublishableKey,
+				];
 
-			$secret_key = give_get_option( 'live_secret_key' );
-			if ( give_is_test_mode() ) {
-				$secret_key = give_get_option( 'test_secret_key' );
+				// Set first Stripe account as default.
+				give_update_option( '_give_stripe_default_account', $uniqueSlug );
+			} else {
+
+				$secret_key = give_get_option( 'live_secret_key' );
+				if ( give_is_test_mode() ) {
+					$secret_key = give_get_option( 'test_secret_key' );
+				}
+
+				\Stripe\Stripe::setApiKey( $secret_key );
+
+				$accounts_count    = is_countable( $stripeAccounts ) ? count( $stripeAccounts ) + 1 : 1;
+				$all_account_slugs = array_keys( $stripeAccounts );
+				$accountSlug       = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
+				$accountName       = give_stripe_convert_slug_to_title( $accountSlug );
+				$accountEmail      = '';
+				$accountCountry    = '';
+				$stripeAccountId   = give_get_option( 'give_stripe_user_id' );
+				$accountDetails    = give_stripe_get_account_details( $stripeAccountId );
+
+				// Setup Account Details for Connected Stripe Accounts.
+				if ( ! empty( $accountDetails->id ) && 'account' === $accountDetails->object ) {
+					$accountName    = ! empty( $accountDetails->business_profile->name ) ?
+						$accountDetails->business_profile->name :
+						$accountDetails->settings->dashboard->display_name;
+					$accountSlug    = $accountDetails->id;
+					$accountEmail   = $accountDetails->email;
+					$accountCountry = $accountDetails->country;
+				}
+
+				$stripeAccounts[ $accountSlug ] = [
+					'type'                 => 'connect',
+					'account_name'         => $accountName,
+					'account_slug'         => $accountSlug,
+					'account_email'        => $accountEmail,
+					'account_country'      => $accountCountry,
+					'account_id'           => $stripeAccountId,
+					'live_secret_key'      => $liveSecretKey,
+					'test_secret_key'      => $testSecretKey,
+					'live_publishable_key' => $livePublishableKey,
+					'test_publishable_key' => $testPublishableKey,
+				];
+
+				// Set first Stripe account as default.
+				give_update_option( '_give_stripe_default_account', $accountSlug );
 			}
 
-			\Stripe\Stripe::setApiKey( $secret_key );
+			give_update_option( $settingKey, $stripeAccounts );
 
-			$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) + 1 : 1;
-			$all_account_slugs = array_keys( $stripe_accounts );
-			$accountSlug       = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
-			$accountName       = give_stripe_convert_slug_to_title( $accountSlug );
-			$accountEmail      = '';
-			$accountCountry    = '';
-			$stripeAccountId   = give_get_option( 'give_stripe_user_id' );
-			$accountDetails    = give_stripe_get_account_details( $stripeAccountId );
+			// Remove legacy settings.
+			give_delete_option( 'live_secret_key' );
+			give_delete_option( 'test_secret_key' );
+			give_delete_option( 'live_publishable_key' );
+			give_delete_option( 'test_publishable_key' );
+			give_delete_option( 'give_stripe_connected' );
+			give_delete_option( 'give_stripe_user_id' );
+		}
+	}
 
-			// Setup Account Details for Connected Stripe Accounts.
-			if ( ! empty( $accountDetails->id ) && 'account' === $accountDetails->object ) {
-				$accountName    = ! empty( $accountDetails->business_profile->name ) ?
-					$accountDetails->business_profile->name :
-					$accountDetails->settings->dashboard->display_name;
-				$accountSlug    = $accountDetails->id;
-				$accountEmail   = $accountDetails->email;
-				$accountCountry = $accountDetails->country;
+	$canStoreStripeInformationInDonation = (bool) $wpdb->get_var(
+		$wpdb->prepare(
+			"
+			SELECT COUNT(donation_id)
+			FROM $wpdb->donationmeta
+			WHERE meta_key=%s
+			AND meta_value LIKE %s",
+			'_give_payment_gateway',
+			'%stripe%'
+		)
+	);
+
+	if ( ! $canStoreStripeInformationInDonation || ! $stripeAccounts ) {
+		give_set_upgrade_complete( 'v270_store_stripe_account_for_donation' );
+	}
+}
+
+/**
+ * This manual upgrade routine is used set the default Stripe account for all the existing donations.
+ * This process will help us to identify which Stripe account is used to process a specific donation.
+ *
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function give_v270_store_stripe_account_for_donation_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$donations = new WP_Query(
+		[
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => [ 'give_payment' ],
+			'posts_per_page' => 100,
+		]
+	);
+
+	if ( $donations->have_posts() ) {
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 100 );
+
+		while ( $donations->have_posts() ) {
+			$donations->the_post();
+			$donationId = get_the_ID();
+
+			// Continue, if the donation is not processed with any of the supported payment method of Stripe.
+			if ( ! Stripe::isDonationPaymentMethod( give_get_payment_gateway( $donationId ) ) ) {
+				continue;
 			}
 
-			$stripe_accounts[ $accountSlug ] = [
-				'type'                 => 'connect',
-				'account_name'         => $accountName,
-				'account_slug'         => $accountSlug,
-				'account_email'        => $accountEmail,
-				'account_country'      => $accountCountry,
-				'connected_status'     => give_get_option( 'give_stripe_connected' ),
-				'give_stripe_user_id'  => $stripeAccountId,
-				'live_secret_key'      => give_get_option( 'live_secret_key' ),
-				'test_secret_key'      => give_get_option( 'test_secret_key' ),
-				'live_publishable_key' => give_get_option( 'live_publishable_key' ),
-				'test_publishable_key' => give_get_option( 'test_publishable_key' ),
-			];
-
-			// Set first Stripe account as default.
-			give_update_option( '_give_stripe_default_account', $accountSlug );
+			Stripe::addAccountDetail(
+				$donationId,
+				give_get_payment_form_id( $donationId )
+			);
 		}
 
-		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
-
-		// Remove legacy settings.
-		give_delete_option( 'live_secret_key' );
-		give_delete_option( 'test_secret_key' );
-		give_delete_option( 'live_publishable_key' );
-		give_delete_option( 'test_publishable_key' );
-		give_delete_option( 'give_stripe_connected' );
-		give_delete_option( 'give_stripe_user_id' );
-
-		// Set option to check that data is migrated or not.
-		give_set_upgrade_complete( 'give_stripe_v270_data_migrated' );
+		wp_reset_postdata();
+	} else {
+		// Update Ran Successfully.
+		give_set_upgrade_complete( 'v270_store_stripe_account_for_donation' );
 	}
 }
