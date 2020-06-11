@@ -1,6 +1,4 @@
-/**
- * Give - Stripe Popup Checkout JS
- */
+import { GiveStripeModal } from './give-stripe-modal';
 
 document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 	const stripe_handler = [];
