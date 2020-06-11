@@ -1,132 +1,36 @@
-/* eslint-disable */ 
+/* eslint-disable */
 
-/**
- * Give - Stripe Gateway Add-on JS
- */
-const stripe = [];
+import {GiveStripeElements} from "./give-stripe-elements";
+
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
-	// Register Variables.
-	let card = {};
-	let cardElements = [];
-	let defaultGateway = '';
-	const globalCardElements = [];
-	let cardElementSelectors = [];
-	const fontStyles = [];
-	const preferredLocale = give_stripe_vars.preferred_locale;
-	const formWraps = document.querySelectorAll( '.give-form-wrap' );
-
-	// If font styles are defined, add them to font styles array
-	if ( Object.keys( give_stripe_vars.element_font_styles ).length !== 0 ) {
-		fontStyles.push( give_stripe_vars.element_font_styles );
-	}
+	const formWraps = Array.from( document.querySelectorAll( '.give-form-wrap' ) );
 
 	// Loop through the number of forms on the page.
-	Array.prototype.forEach.call( formWraps, function( formWrap ) {
-		const form_element = formWrap.querySelector( '.give-form' );
+	formWraps.forEach( formWrap => {
+		const formElement = formWrap.querySelector( '.give-form' );
+		const formGateway = formWrap.querySelector( 'input[name="give-gateway"]' );
+		const gateways = Array.from( formWrap.querySelectorAll( '.give-gateway' ) );
 
-		/**
-		 * Bailout, if `form_element` is null.
-		 *
-		 * We are bailing out here as this script is loaded on every page of the
-		 * site but the `form_element` only exists on the pages when Give donation
-		 * form is loaded. So, when the pages where the donation form is not loaded
-		 * will show console error. To avoid JS console errors we bail it, if
-		 * `form_element` is null to avoid console errors.
-		 */
-		if ( null === form_element ) {
-			return;
+		const stripeElements = new GiveStripeElements( formElement );
+		const cardElements   = stripeElements.createElement( stripeElements.getElements( stripeElements.setupStripeElement() ) );
+
+		if ( formGateway && 'stripe' === formGateway.value ) {
+			stripeElements.mountElement( cardElements );
 		}
 
-		const publishableKey = form_element.getAttribute( 'data-publishable-key' );
-		const accountId = form_element.getAttribute( 'data-account' );
-		const idPrefix = form_element.getAttribute( 'data-id' );
+		gateways.forEach( gateway => {
+			gateway.addEventListener( 'change', ( e ) => {
+				const selectedGateway = e.target.value;
 
-		/**
-		 * Bailout, when publishable key is not present for a donation form
-		 * due to Stripe account not properly attached to the form or global
-		 * Stripe account is not added.
-		 */
-		if ( null === publishableKey ) {
-			return;
-		}
-
-		stripe[ idPrefix ] = Stripe( publishableKey );
-
-		if ( accountId.trim().length !== 0 ) {
-			stripe[ idPrefix ] = Stripe( publishableKey, {
-				stripeAccount: accountId,
+				if ( 'stripe' === selectedGateway ) {
+					stripeElements.mountElement( cardElements );
+				} else {
+					stripeElements.unMountElement( cardElements );
+				}
 			} );
-		}
-
-		let elements = stripe[ idPrefix ].elements( {
-			locale: preferredLocale,
 		} );
 
-		// Update fonts of Stripe Elements.
-		if ( fontStyles.length > 0 ) {
-			elements = stripe[ idPrefix ].elements( {
-				fonts: fontStyles,
-				locale: preferredLocale,
-			} );
-		}
-
-		if ( null !== form_element.querySelector( '.give-gateway:checked' ) ) {
-			defaultGateway = form_element.querySelector( '.give-gateway:checked' ).value;
-		}
-
-		const donateButton = form_element.querySelector( '.give-submit' );
-
-		// Create Card Elements for each form.
-		cardElements = giveStripePrepareCardElements( form_element, elements, idPrefix );
-
-		if ( 'single' === give_stripe_vars.cc_fields_format ) {
-			cardElementSelectors = [ '#give-stripe-single-cc-fields-' ];
-		} else if ( 'multi' === give_stripe_vars.cc_fields_format ) {
-			cardElementSelectors = [ '#give-card-number-field-', '#give-card-cvc-field-', '#give-card-expiration-field-' ];
-		}
-
-		// Prepare Card Elements for each form on a single page.
-		globalCardElements[ idPrefix ] = [];
-
-		Array.prototype.forEach.call( cardElementSelectors, function( selector, index ) {
-			globalCardElements[ idPrefix ][ index ] = [];
-			globalCardElements[ idPrefix ][ index ].item = cardElements[ index ];
-			globalCardElements[ idPrefix ][ index ].selector = selector;
-			globalCardElements[ idPrefix ][ index ].isCardMounted = false;
-		} );
-
-		// Mount and Un-Mount Stripe CC Fields on gateway load.
-		jQuery( document ).on( 'give_gateway_loaded', function( event, xhr, settings ) {
-			// Un-mount card elements when stripe is not the selected gateway.
-			giveStripeUnmountCardElements( globalCardElements[ idPrefix ] );
-
-			if ( form_element.querySelector( '.give-gateway-option-selected .give-gateway' ).value === 'stripe' ) {
-				setTimeout( function() {
-					// Mount card elements when stripe is the selected gateway.
-					giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
-				}, 100 );
-			}
-
-			// Convert normal fields to float labels.
-			giveStripeTriggerFloatLabels( idPrefix, form_element );
-		} );
-
-		// Mount Card Elements, if default gateway is stripe.
-		if ( 'stripe' === defaultGateway || give_stripe_vars.stripe_card_update ) {
-			// Disabled the donate button of the form.
-			donateButton.setAttribute( 'disabled', 'disabled' );
-
-			giveStripeMountCardElements( idPrefix, globalCardElements[ idPrefix ] );
-
-			// Enable the donate button of the form after successful mounting of CC fields.
-			donateButton.removeAttribute( 'disabled' );
-		} else {
-			giveStripeUnmountCardElements( cardElements );
-		}
-
-		// Convert normal fields to float labels.
-		giveStripeTriggerFloatLabels( idPrefix, form_element );
 	} );
 
 	// Process Donation using Stripe Elements on form submission.
