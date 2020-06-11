@@ -384,7 +384,7 @@
 		}
 
 		// If a specific notice does not already exist, proceed with moving the error
-		if ( ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
+		if ( $( '.donation-errors' ).html() && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
 			$( node ).appendTo( '.donation-errors' );
 		} else {
 			// If the specific notice already exists, do not add it
