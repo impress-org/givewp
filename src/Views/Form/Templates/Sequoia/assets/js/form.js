@@ -250,33 +250,6 @@
 					navigator.goToStep( 1 );
 				} );
 
-				$( '#give-ffm-section' ).on( 'click', handleFFMInput );
-				$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
-
-				$( '#give-ffm-section input' ).each( function() {
-					switch ( $( this ).prop( 'type' ) ) {
-						case 'checkbox': {
-							if ( $( this ).prop( 'checked' ) ) {
-								$( this ).parent().addClass( 'checked' );
-							} else {
-								$( this ).parent().removeClass( 'checked' );
-							}
-							break;
-						}
-						case 'radio': {
-							if ( $( this ).prop( 'checked' ) ) {
-								$( this ).parent().addClass( 'selected' );
-							} else {
-								$( this ).parent().removeClass( 'selected' );
-							}
-							break;
-						}
-					}
-				} );
-
-				//Setup input icons
-				setupInputIcons();
-
 				// Setup gateway icons
 				setupGatewayIcons();
 
@@ -393,6 +366,36 @@
 	}
 
 	/**
+	 * Add listeners and starting states to FFM inputs
+	 * @since 2.7.0
+	 */
+	function setupFFMInputs() {
+		$( '#give-ffm-section' ).on( 'click', handleFFMInput );
+		$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
+
+		$( '#give-ffm-section input' ).each( function() {
+			switch ( $( this ).prop( 'type' ) ) {
+				case 'checkbox': {
+					if ( $( this ).prop( 'checked' ) ) {
+						$( this ).parent().addClass( 'checked' );
+					} else {
+						$( this ).parent().removeClass( 'checked' );
+					}
+					break;
+				}
+				case 'radio': {
+					if ( $( this ).prop( 'checked' ) ) {
+						$( this ).parent().addClass( 'selected' );
+					} else {
+						$( this ).parent().removeClass( 'selected' );
+					}
+					break;
+				}
+			}
+		} );
+	}
+
+	/**
 	 * Move form field under payment gateway
 	 * @since 2.7.0
 	 */
@@ -424,11 +427,14 @@
 		} );
 
 		// Move purchase fields (credit card, billing, etc)
-		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
+		$( 'li.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
 
 		// Add gateway class to fields wrapper, indicating which gateway is active
 		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
 		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
+
+		setupFFMInputs();
+		setupInputIcons();
 	}
 
 	/**
