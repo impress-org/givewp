@@ -323,10 +323,12 @@ abstract class Endpoint {
 	 * @return mixed
 	 */
 	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
+
 		$gateways = give_get_payment_gateways();
 		unset( $gateways['manual'] );
 		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
-		$args    = array(
+
+		$args = array(
 			'number'     => $number,
 			'paged'      => 1,
 			'orderby'    => $orderBy,
@@ -339,6 +341,11 @@ abstract class Endpoint {
 					'key'     => '_give_payment_currency',
 					'value'   => $this->currency,
 					'compare' => 'LIKE',
+				),
+				array(
+					'key'     => '_give_payment_mode',
+					'value'   => 'test',
+					'compare' => $this->testMode ? '=' : '!=',
 				),
 			),
 		);

@@ -23,7 +23,7 @@ class TotalRefunds extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = [];
+		$data = array();
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -161,6 +161,10 @@ class TotalRefunds extends Endpoint {
 
 	public function get_prev_refunds( $startStr, $endStr ) {
 
+		$gateways = give_get_payment_gateways();
+		unset( $gateways['manual'] );
+		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
+
 		$args = array(
 			'number'     => -1,
 			'paged'      => 1,
@@ -168,6 +172,19 @@ class TotalRefunds extends Endpoint {
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
+			'gateway'    => $gateway,
+			'meta_query' => array(
+				array(
+					'key'     => '_give_payment_currency',
+					'value'   => $this->currency,
+					'compare' => 'LIKE',
+				),
+				array(
+					'key'     => '_give_payment_mode',
+					'value'   => 'test',
+					'compare' => $this->testMode ? '=' : '!=',
+				),
+			),
 		);
 
 		$prevPayments = new \Give_Payments_Query( $args );

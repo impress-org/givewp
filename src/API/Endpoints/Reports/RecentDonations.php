@@ -35,6 +35,11 @@ class RecentDonations extends Endpoint {
 					'value'   => $this->currency,
 					'compare' => 'LIKE',
 				),
+				array(
+					'key'     => '_give_payment_mode',
+					'value'   => 'test',
+					'compare' => $this->testMode ? '=' : '!=',
+				),
 			),
 		);
 

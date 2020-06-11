@@ -23,11 +23,26 @@ class PaymentStatuses extends Endpoint {
 		unset( $gateways['manual'] );
 		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
 
-		// Setup args for give_count_payments
 		$args = array(
-			'start-date' => $start->format( 'Y-m-d H:i:s' ),
-			'end-date'   => $end->format( 'Y-m-d H:i:s' ),
+			'number'     => -1,
+			'paged'      => 1,
+			'orderby'    => 'date',
+			'order'      => 'DESC',
+			'start_date' => $request->get_param( 'start' ),
+			'end_date'   => $request->get_param( 'end' ),
 			'gateway'    => $gateway,
+			'meta_query' => array(
+				array(
+					'key'     => '_give_payment_currency',
+					'value'   => $this->currency,
+					'compare' => 'LIKE',
+				),
+				array(
+					'key'     => '_give_payment_mode',
+					'value'   => 'test',
+					'compare' => $this->testMode ? '=' : '!=',
+				),
+			),
 		);
 
 		// Use give_count_payments logic to get payments
