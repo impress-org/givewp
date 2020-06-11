@@ -166,7 +166,7 @@ class GiveStripeElements {
 	 *
 	 * @since 2.7.1
 	 */
-	unmountElement( stripeElement ) {
+	unMountElement( stripeElement ) {
 		const unMountOnElement = this.getElementsToMountOn();
 
 		Array.from( stripeElement ).forEach( ( element, index ) => {
