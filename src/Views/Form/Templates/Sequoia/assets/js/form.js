@@ -370,6 +370,9 @@
 	 * @since 2.7.0
 	 */
 	function setupFFMInputs() {
+		$( '#give-ffm-section' ).off( 'click', handleFFMInput );
+		$( '[id*="give-register-account-fields"]' ).off( 'click', handleFFMInput );
+
 		$( '#give-ffm-section' ).on( 'click', handleFFMInput );
 		$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
 

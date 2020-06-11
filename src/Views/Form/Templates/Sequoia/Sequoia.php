@@ -234,7 +234,9 @@ class Sequoia extends Template implements Hookable, Scriptable {
 				.ffm-radio-field label::after {
 					background: {$primaryColor};
 				}
-				.ffm-attachment-upload-filelist:focus-within {
+				.ffm-attachment-upload-filelist:focus-within,
+				.ffm-checkbox-field label:focus-within::before,
+				.ffm-radio-field label:focus-within::before {
 					border-color: {$primaryColor};
 				}
 			";
