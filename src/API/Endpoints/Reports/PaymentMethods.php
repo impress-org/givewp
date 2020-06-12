@@ -23,13 +23,13 @@ class PaymentMethods extends Endpoint {
 			unset( $gatewayObjects['manual'] );
 		}
 
-		$gateways = array();
+		$gateways = [];
 		foreach ( $gatewayObjects as $gatewayId => $gatewayObject ) {
-			$gateways[ $gatewayId ] = array(
+			$gateways[ $gatewayId ] = [
 				'label'  => $gatewayObject['admin_label'],
 				'count'  => 0,
 				'amount' => 0,
-			);
+			];
 		}
 
 		if ( count( $paymentObjects ) > 0 ) {
@@ -49,26 +49,26 @@ class PaymentMethods extends Endpoint {
 			}
 		);
 
-		$data     = array();
-		$labels   = array();
-		$tooltips = array();
+		$data     = [];
+		$labels   = [];
+		$tooltips = [];
 
 		if ( $gatewaysSorted == true ) {
 			$gateways = array_slice( $gateways, 0, 5 );
 			foreach ( $gateways as $gateway ) {
 				$labels[]   = $gateway['label'];
 				$data[]     = $gateway['amount'];
-				$tooltips[] = array(
+				$tooltips[] = [
 					'title'  => give_currency_filter(
 						give_format_amount( $gateway['amount'] ),
-						array(
+						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
-						)
+						]
 					),
 					'body'   => $gateway['count'] . ' ' . __( 'Payments', 'give' ),
 					'footer' => $gateway['label'],
-				);
+				];
 			}
 		}
 

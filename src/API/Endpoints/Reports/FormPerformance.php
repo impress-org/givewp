@@ -61,10 +61,10 @@ class FormPerformance extends Endpoint {
 					$tooltips[]    = array(
 						'title'  => give_currency_filter(
 							give_format_amount( $value['income'] ),
-							array(
+							[
 								'currency_code'   => $this->currency,
 								'decode_currency' => true,
-							)
+							]
 						),
 						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 						'footer' => $value['title'],
@@ -91,10 +91,10 @@ class FormPerformance extends Endpoint {
 				$tooltips[]    = array(
 					'title'  => give_currency_filter(
 						give_format_amount( $value['income'] ),
-						array(
+						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
-						)
+						]
 					),
 					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 					'footer' => $value['title'],
@@ -108,15 +108,15 @@ class FormPerformance extends Endpoint {
 		}
 
 		// Create data object to be returned, with 'highlights' object containing total and average figures to display
-		return array(
-			'datasets' => array(
-				array(
+		return [
+			'datasets' => [
+				[
 					'data'     => $forms,
 					'tooltips' => $tooltips,
 					'labels'   => $labels,
-				),
-			),
-		);
+				],
+			],
+		];
 
 	}
 }

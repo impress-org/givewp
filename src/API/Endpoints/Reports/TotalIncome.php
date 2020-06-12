@@ -21,7 +21,7 @@ class TotalIncome extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = array();
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -80,49 +80,49 @@ class TotalIncome extends Endpoint {
 				'y' => $incomeForPeriod,
 			];
 
-			$tooltips[] = array(
+			$tooltips[] = [
 				'title'  => give_currency_filter(
 					give_format_amount( $incomeForPeriod ),
-					array(
+					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
-					)
+					]
 				),
 				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
 			];
 
-			// Add interval to set up next period
-			date_add( $periodStart, $interval );
-			date_add( $periodEnd, $interval );
+				// Add interval to set up next period
+				date_add( $periodStart, $interval );
+				date_add( $periodEnd, $interval );
 		}
 
-		$totalIncomeForPeriod = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-		$trend                = $this->get_trend( $start, $end, $income );
+			$totalIncomeForPeriod = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
+			$trend                = $this->get_trend( $start, $end, $income );
 
-		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
+			$diff = date_diff( $start, $end );
+			$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = [
-			'datasets' => [
-				[
-					'data'      => $income,
-					'tooltips'  => $tooltips,
-					'trend'     => $trend,
-					'info'      => $info,
-					'highlight' => give_currency_filter(
-						give_format_amount( $totalIncomeForPeriod ),
-						array(
-							'currency_code'   => $this->currency,
-							'decode_currency' => true,
-						)
+			// Create data objec to be returned, with 'highlights' object containing total and average figures to display
+			$data = [
+				'datasets'          => [
+					[
+						'data'      => $income,
+						'tooltips'  => $tooltips,
+						'trend'     => $trend,
+						'info'      => $info,
+						'highlight' => give_currency_filter(
+							give_format_amount( $totalIncomeForPeriod ),
+							[
+								'currency_code'   => $this->currency,
+								'decode_currency' => true,
+							]
+						),
+					],
 					),
-				),
-			),
-		);
+					);
 
-		return $data;
+					return $data;
 
 	}
 

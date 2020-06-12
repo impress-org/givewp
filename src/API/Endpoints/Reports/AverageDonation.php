@@ -84,49 +84,49 @@ class AverageDonation extends Endpoint {
 				'y' => $averageForPeriod,
 			];
 
-			$tooltips[] = array(
+			$tooltips[] = [
 				'title'  => give_currency_filter(
 					give_format_amount( $averageForPeriod ),
-					array(
+					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
-					)
+					]
 				),
 				'body'   => __( 'Avg Donation', 'give' ),
 				'footer' => $periodLabel,
 			];
 
-			// Add interval to set up next period
-			date_add( $periodStart, $interval );
-			date_add( $periodEnd, $interval );
+				// Add interval to set up next period
+				date_add( $periodStart, $interval );
+				date_add( $periodEnd, $interval );
 		}
 
-		$averageIncomeForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
-		$trend                  = $this->get_trend( $start, $end, $income );
+			$averageIncomeForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+			$trend                  = $this->get_trend( $start, $end, $income );
 
-		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
+			$diff = date_diff( $start, $end );
+			$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = [
-			'datasets' => [
-				[
-					'data'      => $income,
-					'tooltips'  => $tooltips,
-					'trend'     => $trend,
-					'info'      => $info,
-					'highlight' => give_currency_filter(
-						give_format_amount( $averageIncomeForPeriod ),
-						array(
-							'currency_code'   => $this->currency,
-							'decode_currency' => true,
-						)
+			// Create data objec to be returned, with 'highlights' object containing total and average figures to display
+			$data = [
+				'datasets'          => [
+					[
+						'data'      => $income,
+						'tooltips'  => $tooltips,
+						'trend'     => $trend,
+						'info'      => $info,
+						'highlight' => give_currency_filter(
+							give_format_amount( $averageIncomeForPeriod ),
+							[
+								'currency_code'   => $this->currency,
+								'decode_currency' => true,
+							]
+						),
+					],
 					),
-				),
-			),
-		);
+					);
 
-		return $data;
+					return $data;
 
 	}
 

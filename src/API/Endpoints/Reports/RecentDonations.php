@@ -19,9 +19,9 @@ class RecentDonations extends Endpoint {
 		$paymentObjects = $this->get_payments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', 50 );
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
-		$data = array();
+		$data = [];
 		foreach ( $paymentObjects as $paymentObject ) {
-			$amount = give_currency_symbol( $paymentObject->currency, true ) . give_format_amount( $paymentObject->total, array( 'sanitize' => false ) );
+			$amount = give_currency_symbol( $paymentObject->currency, true ) . give_format_amount( $paymentObject->total, [ 'sanitize' => false ] );
 			$status = null;
 			switch ( $paymentObject->status ) {
 				case 'publish':
@@ -36,19 +36,19 @@ class RecentDonations extends Endpoint {
 			}
 			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $paymentObject->ID ) );
 
-			$data[] = array(
+			$data[] = [
 				'type'     => 'donation',
 				'donation' => $paymentObject,
 				'status'   => $status,
 				'amount'   => $amount,
 				'url'      => $url,
 				'time'     => $paymentObject->date,
-				'donor'    => array(
+				'donor'    => [
 					'name' => "{$paymentObject->first_name} {$paymentObject->last_name}",
 					'id'   => $paymentObject->donor_id,
-				),
+				],
 				'source'   => $paymentObject->form_title,
-			);
+			];
 		}
 
 		// Return $list of donations for RESTList component

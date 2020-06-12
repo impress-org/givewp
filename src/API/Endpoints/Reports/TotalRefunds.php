@@ -23,7 +23,7 @@ class TotalRefunds extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = array();
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):

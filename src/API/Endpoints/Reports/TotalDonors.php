@@ -21,7 +21,7 @@ class TotalDonors extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = array();
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -167,7 +167,7 @@ class TotalDonors extends Endpoint {
 
 		$prevPaymentObjects = $this->get_payments( $startStr, $endStr, 'date', -1 );
 
-		$donorIds = array();
+		$donorIds = [];
 		foreach ( $prevPaymentObjects as $paymentObject ) {
 			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
 				$donorIds[] = $paymentObject->donor_id;

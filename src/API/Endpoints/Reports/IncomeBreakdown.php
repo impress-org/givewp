@@ -125,24 +125,24 @@ class IncomeBreakdown extends Endpoint {
 
 		$unique = array_unique( $donors );
 
-		return array(
+		return [
 			'income'  => give_currency_filter(
 				give_format_amount( $income ),
-				array(
+				[
 					'currency_code'   => $this->currency,
 					'decode_currency' => true,
-				)
+				]
 			),
 			'donors'  => count( $unique ),
 			'refunds' => $refunds,
 			'net'     => give_currency_filter(
 				give_format_amount( $income - $refundTotal ),
-				array(
+				[
 					'currency_code'   => $this->currency,
 					'decode_currency' => true,
-				)
+				]
 			),
-		);
+		];
 	}
 
 }
