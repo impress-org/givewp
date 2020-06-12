@@ -43,6 +43,16 @@ abstract class Endpoint {
 	 */
 	protected $endpoint;
 
+	/**
+	 * @var boolean
+	 */
+	protected $testMode;
+
+	/**
+	 * @var string
+	 */
+	protected $currency;
+
 	public function init() {
 		add_action( 'rest_api_init', array( $this, 'register_route' ) );
 	}
