@@ -73,6 +73,8 @@
 			}
 			navigator.currentStep = step;
 			setupTabOrder();
+
+			$( steps[ navigator.currentStep ].firstFocus ).focus();
 		},
 		init: () => {
 			steps.forEach( ( step ) => {
@@ -126,6 +128,7 @@
 				'.introduction .advance-btn',
 				'.step-tracker',
 			],
+			firstFocus: '.introduction .advance-btn',
 		},
 		{
 			id: 'choose-amount',
@@ -143,6 +146,7 @@
 				'.step-tracker',
 				'.back-btn',
 			],
+			firstFocus: '.give-amount-top',
 			setup: () => {
 				$( '#give-amount' ).on( 'blur', function() {
 					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
@@ -187,7 +191,10 @@
 			tabOrder: [
 				'.payment input, .payment a, .payment button, .payment select, .payment multiselect, .payment textarea, .payment .button',
 				'.give-submit',
+				'.step-tracker',
+				'.back-btn',
 			],
+			firstFocus: '#give-first',
 			setup: () => {
 				// Setup payment information screen
 

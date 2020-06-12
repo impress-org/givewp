@@ -269,8 +269,10 @@ p {
 			height: 12px;
 			width: 12px;
 			margin: 7.5px;
+			padding: 0;
 			cursor: pointer;
 			transition: background-color 0.2s ease;
+			border: none;
 
 			&.current {
 				background-color: #747474;
@@ -858,7 +860,7 @@ p {
 		}
 	}
 
-  #give_offline_payment_info {
+	#give_offline_payment_info {
 		> ol {
 			list-style: none;
 			padding: 0;

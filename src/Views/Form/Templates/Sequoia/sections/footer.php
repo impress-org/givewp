@@ -1,9 +1,9 @@
 
 <div class="form-footer">
 	<div class="navigator-tracker">
-		<div class="step-tracker current" data-step="0"></div>
-		<div class="step-tracker" data-step="1"></div>
-		<div class="step-tracker" data-step="2"></div>
+		<button class="step-tracker current" data-step="0"></button>
+		<button class="step-tracker" data-step="1"></button>
+		<button class="step-tracker" data-step="2"></button>
 	</div>
 	<div class="secure-notice">
 	<?php if ( is_ssl() ) : ?>
