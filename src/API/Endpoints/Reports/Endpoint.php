@@ -87,9 +87,8 @@ abstract class Endpoint {
 							'validate_callback' => array( $this, 'validate_currency' ),
 						),
 						'testMode' => array(
-							'type'              => 'string',
+							'type'              => 'boolean',
 							'required'          => true,
-							'validate_callback' => array( $this, 'validate_test_mode' ),
 							'sanitize_callback' => array( $this, 'sanitize_test_mode' ),
 						),
 					),
@@ -175,18 +174,6 @@ abstract class Endpoint {
 	 */
 	public function validate_currency( $param, $request, $key ) {
 		return in_array( $param, array_keys( give_get_currencies_list() ) );
-	}
-
-	/**
-	 * Validate test mode string
-	 * Check if currency code provided to REST APi is valid
-	 *
-	 * @param string          $param Test mode parameter provided in REST API request
-	 * @param WP_REST_Request $request REST API Request object
-	 * @param string          $key REST API Request key being validated (in this case test mode)
-	 */
-	public function validate_test_mode( $param, $request, $key ) {
-		return $param === 'true' || $param === 'false';
 	}
 
 	/**
