@@ -58,7 +58,7 @@ class GiveModal {
 					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${ this.config.modalContent.title }</h2>` : '' }
 					${ this.config.modalContent.desc ? `<p class="give-modal__description">${ this.config.modalContent.desc }</p>` : '' }
 				</div>
-	
+
 				<div class="give-modal__controls">
 
 					${ ( 'form' === this.config.type ) ? '<div class="spinner"></div>' : '' }
@@ -73,7 +73,7 @@ class GiveModal {
 						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : Give.fn.getGlobalVar( 'confirm' ) }
 					</button>` }
 				</div>
-				
+
 			</div>`;
 		}
 
