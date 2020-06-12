@@ -181,14 +181,14 @@ abstract class Endpoint {
 
 	/**
 	 * Sanitize test mode parameter
-	 * Uses filter_var to cast string to variable
+	 * Uses boolval to cast string to boolean
 	 *
 	 * @param string          $param Validated test mode parameter provided in REST API request
 	 * @param WP_REST_Request $request REST API Request object
 	 * @param string          $key REST API Request key being validated (in this case test mode)
 	 */
 	public function sanitize_test_mode( $param, $request, $key ) {
-		return filter_var( $param, FILTER_VALIDATE_BOOLEAN );
+		return boolval( $param );
 	}
 
 	/**
