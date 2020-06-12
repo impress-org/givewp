@@ -161,42 +161,15 @@ class TotalRefunds extends Endpoint {
 
 	public function get_prev_refunds( $startStr, $endStr ) {
 
-		$gateways = give_get_payment_gateways();
-		unset( $gateways['manual'] );
-		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
+		$prevPaymentObjects = $this->get_payments( $startStr, $endStr, 'date', -1 );
 
-		$args = array(
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-			'gateway'    => $gateway,
-			'meta_query' => array(
-				array(
-					'key'     => '_give_payment_currency',
-					'value'   => $this->currency,
-					'compare' => 'LIKE',
-				),
-				array(
-					'key'     => '_give_payment_mode',
-					'value'   => 'test',
-					'compare' => $this->testMode ? '=' : '!=',
-				),
-			),
-		);
-
-		$prevPayments = new \Give_Payments_Query( $args );
-		$prevPayments = $prevPayments->get_payments();
-
-		$refunds = 0;
-		foreach ( $prevPayments as $payment ) {
-			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$refunds += 1;
+		$refundCount = 0;
+		foreach ( $prevPaymentObjects as $paymentObject ) {
+			if ( $paymentObject->status == 'refunded' && $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				$refundCount += 1;
 			}
 		}
 
-		return $refunds;
+		return $refundCount;
 	}
 }
