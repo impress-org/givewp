@@ -155,14 +155,38 @@ abstract class Endpoint {
 		return $date;
 	}
 
+	/**
+	 * Validate currency string
+	 * Check if currency code provided to REST APi is valid
+	 *
+	 * @param string          $param Currency parameter provided in REST API request
+	 * @param WP_REST_Request $request REST API Request object
+	 * @param string          $key REST API Request key being validated (in this case currency)
+	 */
 	public function validate_currency( $param, $request, $key ) {
 		return in_array( $param, array_keys( give_get_currencies_list() ) );
 	}
 
+	/**
+	 * Validate test mode string
+	 * Check if currency code provided to REST APi is valid
+	 *
+	 * @param string          $param Test mode parameter provided in REST API request
+	 * @param WP_REST_Request $request REST API Request object
+	 * @param string          $key REST API Request key being validated (in this case test mode)
+	 */
 	public function validate_test_mode( $param, $request, $key ) {
 		return $param === 'true' || $param === 'false';
 	}
 
+	/**
+	 * Sanitize test mode parameter
+	 * Uses filter_var to cast string to variable
+	 *
+	 * @param string          $param Validated test mode parameter provided in REST API request
+	 * @param WP_REST_Request $request REST API Request object
+	 * @param string          $key REST API Request key being validated (in this case test mode)
+	 */
 	public function sanitize_test_mode( $param, $request, $key ) {
 		return filter_var( $param, FILTER_VALIDATE_BOOLEAN );
 	}
