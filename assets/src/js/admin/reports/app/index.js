@@ -32,7 +32,7 @@ const App = () => {
 		pageLoaded: false,
 		settingsPanelToggled: false,
 		currency: getWindowData( 'currency' ),
-		testMode: false,
+		testMode: getWindowData( 'testMode' ),
 	};
 
 	return (
