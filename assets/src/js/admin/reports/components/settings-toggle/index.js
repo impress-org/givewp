@@ -4,6 +4,7 @@ import Toggle from '../toggle';
 import { toggleSettingsPanel, setCurrency, toggleTestMode } from '../../store/actions';
 import { useStoreValue } from '../../store';
 import './style.scss';
+import { useEffect, useRef } from 'react';
 const { __ } = wp.i18n;
 
 // Utils
@@ -20,8 +21,23 @@ const SettingsToggle = () => {
 
 	const [ { settingsPanelToggled, currency, testMode }, dispatch ] = useStoreValue();
 
+	const toggleRef = useRef( null );
+
+	const handleClick = ( evt ) => {
+		if ( settingsPanelToggled === true && toggleRef.current && ! toggleRef.current.contains( evt.target ) ) {
+			dispatch( toggleSettingsPanel() );
+		}
+	};
+
+	useEffect( () => {
+		document.addEventListener( 'click', handleClick, false );
+		return function cleanup() {
+			document.removeEventListener( 'click', handleClick, false );
+		};
+	} );
+
 	return (
-		<div className="givewp-reports-settings__toggle">
+		<div className="givewp-reports-settings__toggle" ref={ toggleRef }>
 			<Button type="icon" pressed={ settingsPanelToggled } onClick={ () => dispatch( toggleSettingsPanel() ) }>
 				{ icon }
 			</Button>
