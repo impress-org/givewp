@@ -22,7 +22,7 @@ const EditForm = ( { attributes, setAttributes, formId } ) => {
 
 	return (
 		<GiveBlankSlate title={ __( 'Edit Form.' ) }
-			description={ __( 'You can not see donation form preview because there is something went wrong with donation form settings.' ) }>
+			description={ __( 'An error occured with donation form settings that rendered the preview inaccessible.' ) }>
 			<Button isPrimary
 				isLarge
 				target="_blank"

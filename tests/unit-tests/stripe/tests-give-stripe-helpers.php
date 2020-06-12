@@ -15,9 +15,26 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 	 */
 	public function test_give_stripe_get_secret_key() {
 
-		// Set dummy secret key.
-		give_update_option( 'test_secret_key', 'sk_test_xxxxxx' );
-		give_update_option( 'live_secret_key', 'sk_live_xxxxxx' );
+		$accounts = [
+			'account_1' => [
+				'type'                 => 'connect',
+				'live_secret_key'      => 'sk_live_xxxxxxxx',
+				'live_publishable_key' => 'pk_live_xxxxxxxx',
+				'test_secret_key'      => 'sk_test_xxxxxxxx',
+				'test_publishable_key' => 'pk_test_xxxxxxxx',
+			],
+			'account_2' => [
+				'type'                 => 'manual',
+				'live_secret_key'      => 'sk_live_xxxxxxxx',
+				'live_publishable_key' => 'pk_live_xxxxxxxx',
+				'test_secret_key'      => 'sk_test_xxxxxxxx',
+				'test_publishable_key' => 'pk_test_xxxxxxxx',
+			],
+		];
+		give_update_option( '_give_stripe_get_all_accounts', $accounts );
+
+		// Set dummy default key.
+		give_update_option( '_give_stripe_default_account', 'account_1' );
 
 		$this->assertStringStartsWith( 'sk_test_', give_stripe_get_secret_key() );
 
@@ -37,9 +54,26 @@ class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
 	 */
 	public function test_give_stripe_get_publishable_key() {
 
-		// Set dummy publishable key.
-		give_update_option( 'test_publishable_key', 'pk_test_xxxxxx' );
-		give_update_option( 'live_publishable_key', 'pk_live_xxxxxx' );
+		$accounts = [
+			'account_1' => [
+				'type'                 => 'connect',
+				'live_secret_key'      => 'sk_live_xxxxxxxx',
+				'live_publishable_key' => 'pk_live_xxxxxxxx',
+				'test_secret_key'      => 'sk_test_xxxxxxxx',
+				'test_publishable_key' => 'pk_test_xxxxxxxx',
+			],
+			'account_2' => [
+				'type'                 => 'manual',
+				'live_secret_key'      => 'sk_live_xxxxxxxx',
+				'live_publishable_key' => 'pk_live_xxxxxxxx',
+				'test_secret_key'      => 'sk_test_xxxxxxxx',
+				'test_publishable_key' => 'pk_test_xxxxxxxx',
+			],
+		];
+		give_update_option( '_give_stripe_get_all_accounts', $accounts );
+
+		// Set dummy default key.
+		give_update_option( '_give_stripe_default_account', 'account_2' );
 
 		$this->assertStringStartsWith( 'pk_test_', give_stripe_get_publishable_key() );
 

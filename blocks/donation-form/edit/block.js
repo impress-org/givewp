@@ -6,9 +6,9 @@ const ServerSideRender = wp.serverSideRender;
 /**
  * Internal dependencies
  */
+import './block.scss';
 import SelectForm from '../../components/select-form';
 import Inspector from './inspector';
-import Controls from './controls';
 
 /**
  * Render Block UI For Editor
@@ -27,7 +27,6 @@ const GiveForm = ( props ) => {
 		blockUI = (
 			<div className={ !! isSelected ? `${ className } isSelected` : className } >
 				<Inspector { ... { ...props } } />
-				<Controls { ... { ...props } } />
 				<ServerSideRender block="give/donation-form" attributes={ attributes } />
 			</div>
 		);

@@ -119,7 +119,7 @@ class Give_Email_Notifications {
 		$settings['email_notification_options'] = array(
 			'id'         => 'email_notification_options',
 			'title'      => __( 'Email Notifications', 'give' ),
-			'icon-html'  => '<span class="dashicons dashicons-email-alt"></span>',
+			'icon-html'  => '<i class="fas fa-envelope"></i>',
 			'fields'     => array(
 				array(
 					'name'    => __( 'Email Options', 'give' ),
@@ -127,7 +127,7 @@ class Give_Email_Notifications {
 					'type'    => 'radio_inline',
 					'default' => 'global',
 					'options' => array(
-						'global'  => __( 'Global Options' ),
+						'global'  => __( 'Global Options', 'give' ),
 						'enabled' => __( 'Customize', 'give' ),
 					),
 				),

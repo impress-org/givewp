@@ -48,8 +48,8 @@ class TotalRefunds extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = array();
-		$refunds  = array();
+		$tooltips = [];
+		$refunds  = [];
 
 		$interval = new DateInterval( $intervalStr );
 
@@ -77,16 +77,16 @@ class TotalRefunds extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$refunds[] = array(
+			$refunds[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $refundsForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
+			$tooltips[] = [
 				'title'  => $refundsForPeriod . ' ' . __( 'Refunds', 'give' ),
 				'body'   => __( 'Total Refunds', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -100,17 +100,17 @@ class TotalRefunds extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
+		$data = [
+			'datasets' => [
+				[
 					'data'      => $refunds,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
 					'highlight' => $totalRefundsForPeriod,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $data;
 

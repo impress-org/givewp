@@ -523,7 +523,7 @@ function give_output_levels( $form_id ) {
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 
 	if ( empty( $custom_amount_text ) ) {
-		$custom_amount_text = esc_html__( 'Give a Custom Amount', 'give' );
+		$custom_amount_text = esc_html__( 'Custom Amount', 'give' );
 	}
 
 	$output = '';
@@ -1014,7 +1014,7 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id; ?>"
-				   class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>"
+				   class="card-number give-input required" placeholder="<?php _e( 'Card Number', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
 
@@ -1026,7 +1026,7 @@ function give_get_cc_form( $form_id ) {
 			</label>
 
 			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id; ?>"
-				   class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>"
+				   class="card-cvc give-input required" placeholder="<?php _e( 'CVC', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
 
@@ -1546,15 +1546,7 @@ function give_get_login_fields( $form_id ) {
 					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 				<?php endif; ?>
 			</div>
-
-			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
-				 <span class="give-forgot-password ">
-					 <a href="<?php echo wp_lostpassword_url(); ?>"
-						target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
-				 </span>
-			</div>
 		</div>
-
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit"
@@ -1565,6 +1557,11 @@ function give_get_login_fields( $form_id ) {
 					   value="<?php _e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
+			<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
+				<span class="give-forgot-password ">
+					<a href="<?php echo wp_lostpassword_url(); ?>" target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
+				</span>
+			</div>
 		</div>
 		<?php
 		/**
@@ -1906,7 +1903,7 @@ function give_checkout_submit( $form_id, $args ) {
 		 */
 		do_action( 'give_donation_form_before_submit', $form_id, $args );
 
-		give_checkout_hidden_fields( $form_id );
+		give_checkout_hidden_fields( $form_id, $args );
 
 		echo give_get_donation_form_submit_button( $form_id, $args );
 
@@ -2135,12 +2132,13 @@ function give_form_display_content( $form_id, $args ) {
 /**
  * Renders the hidden Checkout fields.
  *
- * @param int $form_id The form ID.
+ * @param int   $form_id The form ID.
+ * @param array $args Shortcode args.
  *
  * @return void
  * @since 1.0
  */
-function give_checkout_hidden_fields( $form_id ) {
+function give_checkout_hidden_fields( $form_id, $args = array() ) {
 
 	/**
 	 * Fires while rendering hidden checkout fields, before the fields.
@@ -2149,7 +2147,7 @@ function give_checkout_hidden_fields( $form_id ) {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_hidden_fields_before', $form_id );
+	do_action( 'give_hidden_fields_before', $form_id, $args );
 
 	if ( is_user_logged_in() ) {
 		?>
@@ -2165,7 +2163,7 @@ function give_checkout_hidden_fields( $form_id ) {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_hidden_fields_after', $form_id );
+	do_action( 'give_hidden_fields_after', $form_id, $args );
 
 }
 

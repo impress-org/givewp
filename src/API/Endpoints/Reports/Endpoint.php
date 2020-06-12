@@ -54,7 +54,7 @@ abstract class Endpoint {
 	protected $currency;
 
 	public function init() {
-		add_action( 'rest_api_init', array( $this, 'register_route' ) );
+		add_action( 'rest_api_init', [ $this, 'register_route' ] );
 	}
 
 	// Register our routes.
@@ -62,9 +62,9 @@ abstract class Endpoint {
 		register_rest_route(
 			'give-api/v2',
 			'/reports/' . $this->endpoint,
-			array(
+			[
 				// Here we register the readable endpoint
-				array(
+				[
 					'methods'             => 'GET',
 					'callback'            => array( $this, 'handle_request' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
@@ -94,8 +94,8 @@ abstract class Endpoint {
 					),
 				),
 				// Register our schema callback.
-				'schema' => array( $this, 'get_report_schema' ),
-			)
+				'schema' => [ $this, 'get_report_schema' ],
+			]
 		);
 	}
 
@@ -117,10 +117,10 @@ abstract class Endpoint {
 
 		$this->setupProperties( $request );
 
-		$responseData = array(
+		$responseData = [
 			'status' => $this->get_give_status(),
 			'data'   => $this->get_report( $request ),
-		);
+		];
 
 		$this->cache_report( $request, $responseData );
 
@@ -198,9 +198,7 @@ abstract class Endpoint {
 			return new \WP_Error(
 				'rest_forbidden',
 				esc_html__( 'You cannot view the reports resource.', 'give' ),
-				array(
-					'status' => $this->authorization_status_code(),
-				)
+				[ 'status' => $this->authorization_status_code() ]
 			);
 		}
 		return true;
@@ -214,12 +212,12 @@ abstract class Endpoint {
 	 * @return array
 	 */
 	public function get_report( $request ) {
-		return array(
-			'data' => array(
-				'labels' => array( 'a', 'b', 'c' ),
-				'data'   => array( '1', '4', '3' ),
-			),
-		);
+		return [
+			'data' => [
+				'labels' => [ 'a', 'b', 'c' ],
+				'data'   => [ '1', '4', '3' ],
+			],
+		];
 	}
 
 	/**
@@ -232,20 +230,20 @@ abstract class Endpoint {
 			return $this->schema;
 		}
 
-		$this->schema = array(
+		$this->schema = [
 			// This tells the spec of JSON Schema we are using which is draft 4.
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			// The title property marks the identity of the resource.
 			'title'      => 'report',
 			'type'       => 'object',
 			// In JSON Schema you can specify object properties in the properties attribute.
-			'properties' => array(
-				'data' => array(
+			'properties' => [
+				'data' => [
 					'description' => esc_html__( 'The data for the report.', 'give' ),
 					'type'        => 'object',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $this->schema;
 	}
@@ -392,11 +390,11 @@ abstract class Endpoint {
 	public function get_give_status() {
 
 		$donations = get_posts(
-			array(
-				'post_type'   => array( 'give_payment' ),
+			[
+				'post_type'   => [ 'give_payment' ],
 				'post_status' => 'publish',
 				'numberposts' => 1,
-			)
+			]
 		);
 
 		if ( count( $donations ) > 0 ) {

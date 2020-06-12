@@ -63,16 +63,23 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 				return;
 			}
 
+			// Retrieve the request's body and parse it as JSON.
+			$body  = @file_get_contents( 'php://input' );
+			$event = json_decode( $body );
+
+			/**
+			 * Never remove this as it ensure the check for which Stripe account to use.
+			 * @Todo Utilize idempotency key on every Stripe request for better stability.
+			 */
+			$metadata    = (array) $event->data->object->metadata;
+			$donation_id = ! empty( $metadata['Donation Post ID'] ) ? $metadata['Donation Post ID'] : 0;
+			$form_id     = give_get_payment_form_id( $donation_id );
+
 			// Load Stripe SDK.
 			give_stripe_load_stripe_sdk();
 
 			// Set App Info, API Key, and API Version.
-			give_stripe_set_app_info();
-			$this->stripe_gateway->set_api_version();
-
-			// Retrieve the request's body and parse it as JSON.
-			$body  = @file_get_contents( 'php://input' );
-			$event = json_decode( $body );
+			give_stripe_set_app_info( $form_id );
 
 			$processed_event = $this->process( $event );
 
@@ -125,11 +132,6 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 					// Update time of webhook received whenever the event is retrieved.
 					give_update_option( 'give_stripe_last_webhook_received_timestamp', time() );
 
-				} catch ( \Stripe\Error\Authentication $e ) {
-
-					if ( strpos( $e->getMessage(), 'Platform access may have been revoked' ) !== false ) {
-						give_stripe_connect_delete_options();
-					}
 				} catch ( Exception $e ) {
 					die( 'Invalid event ID' );
 				}

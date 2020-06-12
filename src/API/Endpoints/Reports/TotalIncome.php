@@ -46,8 +46,8 @@ class TotalIncome extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
-		$tooltips = array();
-		$income   = array();
+		$tooltips = [];
+		$income   = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -75,10 +75,10 @@ class TotalIncome extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = array(
+			$income[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $incomeForPeriod,
-			);
+			];
 
 			$tooltips[] = array(
 				'title'  => give_currency_filter(
@@ -90,7 +90,7 @@ class TotalIncome extends Endpoint {
 				),
 				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -104,9 +104,9 @@ class TotalIncome extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
+		$data = [
+			'datasets' => [
+				[
 					'data'      => $income,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,

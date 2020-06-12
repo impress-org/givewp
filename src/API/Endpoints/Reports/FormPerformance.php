@@ -30,9 +30,9 @@ class FormPerformance extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
 
-		$forms    = array();
-		$labels   = array();
-		$tooltips = array();
+		$forms    = [];
+		$labels   = [];
+		$tooltips = [];
 
 		if ( count( $this->payments ) > 0 ) {
 
@@ -68,7 +68,7 @@ class FormPerformance extends Endpoint {
 						),
 						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 						'footer' => $value['title'],
-					);
+					];
 					$labels[]      = $value['title'];
 					$forms[ $key ] = $value['income'];
 				}
@@ -77,11 +77,7 @@ class FormPerformance extends Endpoint {
 			}
 		} else {
 
-			$formsQuery = new \Give_Forms_Query(
-				array(
-					'posts_per_page' => 5,
-				)
-			);
+			$formsQuery = new \Give_Forms_Query( [ 'posts_per_page' => 5 ] );
 
 			$allForms = $formsQuery->get_forms();
 
@@ -102,7 +98,7 @@ class FormPerformance extends Endpoint {
 					),
 					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 					'footer' => $value['title'],
-				);
+				];
 				$labels[]      = $value['title'];
 				$forms[ $key ] = $value['income'];
 			}

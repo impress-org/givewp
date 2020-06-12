@@ -1,10 +1,10 @@
 <?php
 /**
- * Donors Gravatars
+ * Donor Wall
  *
  * @package     Give
- * @subpackage  Classes/Give_Donors_Gravatars
- * @copyright   Copyright (c) 2016, GiveWP
+ * @subpackage  Classes/Give_Donor_Wall
+ * @copyright   Copyright (c) 2020, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
@@ -249,7 +249,7 @@ class Give_Donor_Wall {
 	 * @since  2.2.0
 	 * @access public
 	 *
-	 * @param array $donor_query Dorno query.
+	 * @param array $donor_query Donor query.
 	 *
 	 * @return array
 	 */

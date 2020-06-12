@@ -18,20 +18,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This function is used to fetch the secret key based on the test mode status.
  *
+ * @param int $form_id Form Id.
+ *
  * @since 2.5.0
  *
  * @return string
  */
-function give_stripe_get_secret_key() {
+function give_stripe_get_secret_key( $form_id = 0 ) {
 
-	$secret_key = trim( give_get_option( 'live_secret_key' ) );
+	// Get default Stripe account details.
+	$default_account = give_stripe_get_default_account( $form_id );
+
+	// Live Secret Key.
+	$secret_key = ! empty( $default_account['live_secret_key'] ) ? trim( $default_account['live_secret_key'] ) : '';
 
 	// Update secret key, if test mode is enabled.
 	if ( give_is_test_mode() ) {
-		$secret_key = trim( give_get_option( 'test_secret_key' ) );
+		$secret_key = ! empty( $default_account['test_secret_key'] ) ? trim( $default_account['test_secret_key'] ) : '';
 	}
 
 	return $secret_key;
+}
+
+/**
+ * This function is used to fetch the account id of the Connected Stripe ACcount.
+ *
+ * @param int $form_id Form Id.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_get_connected_account_id( $form_id = 0 ) {
+	$default_account = give_stripe_get_default_account( $form_id );
+
+	return trim( $default_account['account_id'] );
 }
 
 /**
@@ -42,12 +63,9 @@ function give_stripe_get_secret_key() {
  * @return array
  */
 function give_stripe_get_connected_account_options() {
-
-	$args = array();
-
-	if ( give_stripe_is_connected() ) {
-		$args['stripe_account'] = give_get_option( 'give_stripe_user_id' );
-	}
+	$form_id                = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$default_account        = give_stripe_get_default_account( $form_id );
+	$args['stripe_account'] = $default_account['account_id'];
 
 	return $args;
 }
@@ -55,16 +73,23 @@ function give_stripe_get_connected_account_options() {
 /**
  * Get Publishable Key.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return string
  */
-function give_stripe_get_publishable_key() {
+function give_stripe_get_publishable_key( $form_id = 0 ) {
 
-	$publishable_key = give_get_option( 'live_publishable_key' );
+	// Get default Stripe account details.
+	$default_account = give_stripe_get_default_account( $form_id );
 
+	// Live Publishable Key.
+	$publishable_key = ! empty( $default_account['live_publishable_key'] ) ? trim( $default_account['live_publishable_key'] ) : '';
+
+	// Update publishable key, if test mode is enabled.
 	if ( give_is_test_mode() ) {
-		$publishable_key = give_get_option( 'test_publishable_key' );
+		$publishable_key = ! empty( $default_account['test_publishable_key'] ) ? trim( $default_account['test_publishable_key'] ) : '';
 	}
 
 	return $publishable_key;
@@ -80,24 +105,24 @@ function give_stripe_get_publishable_key() {
 function give_stripe_get_default_base_styles() {
 
 	$float_labels = give_is_float_labels_enabled(
-		array(
+		[
 			'form_id' => get_the_ID(),
-		)
+		]
 	);
 
 	return wp_json_encode(
-		array(
+		[
 			'color'             => '#32325D',
 			'fontWeight'        => 500,
 			'fontSize'          => '16px',
 			'fontSmoothing'     => 'antialiased',
-			'::placeholder'     => array(
+			'::placeholder'     => [
 				'color' => $float_labels ? '#CCCCCC' : '#222222',
-			),
-			':-webkit-autofill' => array(
+			],
+			':-webkit-autofill' => [
 				'color' => '#e39f48',
-			),
-		)
+			],
+		]
 	);
 }
 
@@ -110,12 +135,12 @@ function give_stripe_get_default_base_styles() {
  */
 function give_stripe_get_stripe_styles() {
 
-	$default_styles = array(
+	$default_styles = [
 		'base'     => give_stripe_get_default_base_styles(),
 		'empty'    => false,
 		'invalid'  => false,
 		'complete' => false,
-	);
+	];
 
 	return give_get_option( 'stripe_styles', $default_styles );
 }
@@ -196,13 +221,13 @@ function give_stripe_get_element_font_styles() {
 		$custom_fonts_attributes = give_get_option( 'stripe_custom_fonts' );
 		$font_styles             = json_decode( $custom_fonts_attributes );
 	} else {
-		$font_styles = array(
+		$font_styles = [
 			'cssSrc' => give_get_option( 'stripe_google_fonts_url' ),
-		);
+		];
 	}
 
 	if ( empty( $font_styles ) ) {
-		$font_styles = array();
+		$font_styles = [];
 	}
 
 	return apply_filters( 'give_stripe_get_element_font_styles', $font_styles );
@@ -222,10 +247,10 @@ function give_stripe_get_preferred_locale() {
 
 	if ( 'modal' === give_stripe_get_checkout_type() ) {
 		// For Legacy Checkout, Return "no" as accepted parameter for norwegian language code "nb" && "nn".
-		$language_code = in_array( $language_code, array( 'nb', 'nn' ), true ) ? 'no' : $language_code;
+		$language_code = in_array( $language_code, [ 'nb', 'nn' ], true ) ? 'no' : $language_code;
 	} else {
 		// For Checkout 2.0, Return "nb" as accepted parameter for norwegian language code "no" && "nn".
-		$language_code = in_array( $language_code, array( 'no', 'nn' ), true ) ? 'nb' : $language_code;
+		$language_code = in_array( $language_code, [ 'no', 'nn' ], true ) ? 'nb' : $language_code;
 	}
 
 	return apply_filters( 'give_stripe_elements_preferred_locale', $language_code );
@@ -387,12 +412,12 @@ function give_stripe_is_zero_decimal_currency() {
  *
  * @return mixed
  */
-function give_stripe_get_statement_descriptor( $data = array() ) {
+function give_stripe_get_statement_descriptor( $data = [] ) {
 
 	$descriptor_option = give_get_option( 'stripe_statement_descriptor', get_bloginfo( 'name' ) );
 
 	// Clean the statement descriptor.
-	$unsupported_characters = array( '<', '>', '"', '\'' );
+	$unsupported_characters = [ '<', '>', '"', '\'' ];
 	$statement_descriptor   = mb_substr( $descriptor_option, 0, 22 );
 	$statement_descriptor   = str_replace( $unsupported_characters, '', $statement_descriptor );
 
@@ -437,12 +462,12 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 
 	// Bail out, if FFM add-on is not active.
 	if ( ! class_exists( 'Give_Form_Fields_Manager' ) ) {
-		return array();
+		return [];
 	}
 
-	$ffm_meta     = array();
-	$ffm_required = array();
-	$ffm_optional = array();
+	$ffm_meta     = [];
+	$ffm_required = [];
+	$ffm_optional = [];
 	$field_label  = '';
 	$ffm_fields   = give_get_meta( $form_id, 'give-form-fields', true );
 
@@ -501,11 +526,13 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 /**
  * This function is used to set application information to Stripe.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return void
  */
-function give_stripe_set_app_info() {
+function give_stripe_set_app_info( $form_id = 0 ) {
 
 	try {
 
@@ -547,9 +574,10 @@ function give_stripe_set_app_info() {
 		give_set_error( 'stripe_app_info_error', __( 'Unable to set application information to Stripe. Please try again.', 'give' ) );
 	} // End try().
 
-	// Set API Key after setting app info to ensure that API key is set on every Stripe call.
-	give_stripe_set_api_key();
+	$form_id = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : $form_id;
 
+	// Set API Key on every Stripe API request call.
+	give_stripe_set_api_key( $form_id );
 }
 
 /**
@@ -611,16 +639,18 @@ function give_stripe_get_donation_id_by( $id, $type ) {
 /**
  * This function is used to set Stripe API Key.
  *
+ * @param int $form_id Form ID.
+ *
  * @since 2.5.0
  *
  * @return void
  */
-function give_stripe_set_api_key() {
+function give_stripe_set_api_key( $form_id = 0 ) {
 
 	try {
 
 		// Fetch secret key.
-		$secret_key = give_stripe_get_secret_key();
+		$secret_key = give_stripe_get_secret_key( $form_id );
 
 		// Set secret key.
 		\Stripe\Stripe::setApiKey( $secret_key );
@@ -862,7 +892,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			$payment_method_id = $payment_method->id;
 
 			// Setup the payment details.
-			$payment_data = array(
+			$payment_data = [
 				'price'           => $donation_data['price'],
 				'give_form_title' => $donation_data['post_data']['give-form-title'],
 				'give_form_id'    => $form_id,
@@ -874,7 +904,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 				'user_info'       => $donation_data['user_info'],
 				'status'          => 'pending',
 				'gateway'         => $stripe_gateway->id,
-			);
+			];
 
 			// Record the pending payment in Give.
 			$donation_id = give_insert_payment( $payment_data );
@@ -896,58 +926,47 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			// Save donation summary to donation.
 			give_update_meta( $donation_id, '_give_stripe_donation_summary', $donation_summary );
 
-			if ( give_stripe_is_checkout_enabled() ) {
+			/**
+			 * This filter hook is used to update the payment intent arguments.
+			 *
+			 * @since 2.5.0
+			 */
+			$intent_args = apply_filters(
+				'give_stripe_create_intent_args',
+				[
+					'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
+					'currency'             => give_get_currency( $form_id ),
+					'payment_method_types' => [ 'card' ],
+					'statement_descriptor' => give_stripe_get_statement_descriptor(),
+					'description'          => give_payment_gateway_donation_summary( $donation_data ),
+					'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
+					'customer'             => $stripe_customer_id,
+					'payment_method'       => $payment_method_id,
+					'confirm'              => true,
+					'return_url'           => give_get_success_page_uri(),
+				]
+			);
 
-				// Process charge w/ support for preapproval.
-				$charge = $stripe_gateway->process_charge( $donation_data, $stripe_customer_id );
-
-				// Verify the Stripe payment.
-				$stripe_gateway->verify_payment( $donation_id, $stripe_customer_id, $charge );
-			} else {
-
-				/**
-				 * This filter hook is used to update the payment intent arguments.
-				 *
-				 * @since 2.5.0
-				 */
-				$intent_args = apply_filters(
-					'give_stripe_create_intent_args',
-					array(
-						'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
-						'currency'             => give_get_currency( $form_id ),
-						'payment_method_types' => array( 'card' ),
-						'statement_descriptor' => give_stripe_get_statement_descriptor(),
-						'description'          => give_payment_gateway_donation_summary( $donation_data ),
-						'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
-						'customer'             => $stripe_customer_id,
-						'payment_method'       => $payment_method_id,
-						'confirm'              => true,
-						'return_url'           => give_get_success_page_uri(),
-					)
-				);
-
-				// Send Stripe Receipt emails when enabled.
-				if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
-					$intent_args['receipt_email'] = $donation_data['user_email'];
-				}
-
-				$intent = $stripe_gateway->payment_intent->create( $intent_args );
-
-				// Save Payment Intent Client Secret to donation note and DB.
-				give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
-				give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
-
-				// Set Payment Intent ID as transaction ID for the donation.
-				give_set_payment_transaction_id( $donation_id, $intent->id );
-				give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
-
-				// Process additional steps for SCA or 3D secure.
-				give_stripe_process_additional_authentication( $donation_id, $intent );
-
-				// Send them to success page.
-				give_send_to_success_page();
-
+			// Send Stripe Receipt emails when enabled.
+			if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+				$intent_args['receipt_email'] = $donation_data['user_email'];
 			}
+
+			$intent = $stripe_gateway->payment_intent->create( $intent_args );
+
+			// Save Payment Intent Client Secret to donation note and DB.
+			give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+			give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
+			// Set Payment Intent ID as transaction ID for the donation.
+			give_set_payment_transaction_id( $donation_id, $intent->id );
+			give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+
+			// Process additional steps for SCA or 3D secure.
+			give_stripe_process_additional_authentication( $donation_id, $intent );
+
+			// Send them to success page.
+			give_send_to_success_page();
 		} else {
 
 			// No customer, failed.
@@ -1073,29 +1092,36 @@ function give_stripe_load_stripe_sdk() {
 	}
 }
 
+
 /**
  * This function will prepare metadata to send to Stripe.
  *
- * @param int $donation_id Donation ID.
+ * @param int   $donation_id   Donation ID.
+ * @param array $donation_data Donation Data.
  *
  * @since  2.5.5
  * @access public
  *
  * @return array
  */
-function give_stripe_prepare_metadata( $donation_id = 0 ) {
+function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
 
 	// Bailout, if donation id doesn't exists.
 	if ( ! $donation_id ) {
-		return array();
+		return [];
 	}
 
 	$form_id = give_get_payment_form_id( $donation_id );
 	$email   = give_get_payment_user_email( $donation_id );
 
-	$args = array(
-		'Email'            => $email,
-		'Donation Post ID' => $donation_id,
+	$args = apply_filters(
+		'give_stripe_prepare_metadata',
+		[
+			'Email'            => $email,
+			'Donation Post ID' => $donation_id,
+		],
+		$donation_id,
+		$donation_data
 	);
 
 	// Add Sequential Metadata.
@@ -1112,15 +1138,14 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 		$args = array_slice( $args, 0, 19, false );
 		$args = array_merge(
 			$args,
-			array(
+			[
 				'More Details' => esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id ) ),
-			)
+			]
 		);
 	}
 
 	return $args;
 }
-
 /**
  * This helper function is used to determine whether the screen is update payment method screen or not.
  *
@@ -1131,15 +1156,15 @@ function give_stripe_prepare_metadata( $donation_id = 0 ) {
 function give_stripe_is_update_payment_method_screen() {
 
 	$get_data         = give_clean( filter_input_array( INPUT_GET ) );
+	$subscription_id  = ! empty( $get_data['subscription_id'] ) ? absint( $get_data['subscription_id'] ) : false;
 	$is_update_screen = false;
 
 	if (
 		isset( $get_data['action'] ) &&
 		'update' === $get_data['action'] &&
-		isset( $get_data['subscription_id'] ) &&
-		is_numeric( $get_data['subscription_id'] )
+		$subscription_id
 	) {
-		$is_update_screen = true;
+		$is_update_screen = $subscription_id;
 	}
 
 	return $is_update_screen;
@@ -1165,7 +1190,7 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
 	if ( 'becs' === $method ) {
 		// For BECS Direct Debit.
 		$mandate_acceptance_text = sprintf(
-			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorise Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorised signatory on the account listed above.', 'give' ),
+			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorize Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorized signatory on the account listed above.', 'give' ),
 			esc_url_raw( 'https://stripe.com/au-becs-dd-service-agreement/legal' ),
 			get_bloginfo( 'sitename' )
 		);
@@ -1244,7 +1269,7 @@ function give_stripe_get_iban_placeholder_country() {
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.6.1
+ * @since 2.6.3
  *
  * @return string
  */
@@ -1260,7 +1285,7 @@ function give_stripe_becs_hide_icon( $form_id ) {
  *
  * @param int $form_id Donation Form ID.
  *
- * @since 2.6.1
+ * @since 2.6.3
  *
  * @return string
  */
@@ -1269,4 +1294,249 @@ function give_stripe_get_becs_icon_style( $form_id ) {
 	$icon_style = give_get_option( 'stripe_becs_icon_style', 'default' );
 
 	return apply_filters( 'give_stripe_get_becs_icon_style', $icon_style, $form_id );
+}
+
+/**
+ * This helper function will be used check whether Stripe Premium add-on is active or not.
+ *
+ * @since 2.7.0
+ *
+ * @return bool
+ */
+function give_stripe_is_premium_active() {
+	return (
+		is_plugin_active( 'give-stripe/give-stripe.php' ) &&
+		defined( 'GIVE_STRIPE_VERSION' )
+	);
+}
+
+/**
+ * Get all Stripe accounts.
+ *
+ * @since 2.7.0
+ *
+ * @return array
+ */
+function give_stripe_get_all_accounts() {
+	return give_get_option( '_give_stripe_get_all_accounts', [] );
+}
+
+/**
+ * This helper function will return admin settings page url.
+ *
+ * @param array $args List of arguments.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_get_admin_settings_page_url( $args = [] ) {
+
+	$default_args = [
+		'post_type' => 'give_forms',
+		'page'      => 'give-settings',
+		'tab'       => 'gateways',
+		'section'   => 'stripe-settings',
+	];
+
+	$args = wp_parse_args( $args, $default_args );
+
+	return add_query_arg(
+		$args,
+		esc_url_raw( admin_url( 'edit.php' ) )
+	);
+}
+
+/**
+ * Send user back to Stripe settings page.
+ *
+ * @param array $args List of arguments.
+ *
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function give_stripe_get_back_to_settings_page( $args = [] ) {
+	$redirect_to = give_stripe_get_admin_settings_page_url( $args );
+
+	wp_safe_redirect( $redirect_to );
+	give_die();
+}
+
+/**
+ * Get Default Stripe Account.
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.7.0
+ *
+ * @return array
+ */
+function give_stripe_get_default_account( $form_id = 0 ) {
+
+	$default_account_details = [];
+	$all_accounts            = give_stripe_get_all_accounts();
+	$default_account         = give_stripe_get_default_account_slug( $form_id );
+
+	if ( $all_accounts && ! empty( $default_account ) ) {
+		$default_account_details = isset( $all_accounts[ $default_account ] ) ? $all_accounts[ $default_account ] : [];
+	}
+
+	return $default_account_details;
+}
+
+/**
+ * This helper function is used to get default account slug.
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_get_default_account_slug( $form_id = 0 ) {
+
+	// Global Stripe account.
+	$default_account = give_get_option( '_give_stripe_default_account', '' );
+
+	// Return default Stripe account of the form, if enabled.
+	if (
+		$form_id > 0 &&
+		give_is_setting_enabled( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) )
+	) {
+		$default_account = give_get_meta( $form_id, '_give_stripe_default_account', true );
+	}
+
+	return $default_account;
+}
+
+
+
+/**
+ * Convert Slug to Title.
+ *
+ * @param string $slug Slug.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_convert_slug_to_title( $slug ) {
+	return ucfirst( str_replace( '_', ' ', $slug ) );
+}
+
+/**
+ * Convert Title to Slug.
+ *
+ * @param string $title Title.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_convert_title_to_slug( $title ) {
+	return str_replace( ' ', '_', strtolower( $title ) );
+}
+
+/**
+ * This helper fn is used to generate unique account slug.
+ *
+ * @param array $all_accounts   All Stripe accounts.
+ * @param int   $accounts_count Total Stripe accounts connected count.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_get_unique_account_slug( $all_accounts, $accounts_count = 1 ) {
+
+	$account_slug = 'account_' . $accounts_count;
+
+	if ( ! in_array( $account_slug, array_keys( $all_accounts ), true ) ) {
+		return $account_slug;
+	}
+
+	$accounts_count++;
+	return give_stripe_get_unique_account_slug( $all_accounts, $accounts_count );
+}
+
+/**
+ * This function is used to disconnect Stripe account.
+ *
+ * @param string $slug Account Slug.
+ *
+ * @return void
+ */
+function give_stripe_disconnect_account( $slug ) {
+	$stripe_accounts = give_stripe_get_all_accounts();
+
+	// Unset Account ID from the list.
+	unset( $stripe_accounts[ $slug ] );
+
+	// Update Stripe accounts.
+	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+}
+
+/**
+ * This helper function is used to get account options.
+ *
+ * @since 2.7.0
+ *
+ * @return array
+ */
+function give_stripe_get_account_options() {
+
+	$options         = [];
+	$stripe_accounts = give_stripe_get_all_accounts();
+
+	foreach ( $stripe_accounts as $slug => $details ) {
+		$options[ $slug ] = ! empty( $details['account_name'] ) ?
+			$details['account_name'] :
+			give_stripe_convert_slug_to_title( $slug );
+	}
+
+	return $options;
+}
+
+/**
+ * This function is used to get single ip address for Stripe.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function give_stripe_get_ip_address() {
+
+	$ip_address_details = explode( ',', give_get_ip() );
+
+	return $ip_address_details[0];
+}
+
+/**
+ * This helper function will be used to fetch account details for the users connected via Stripe Connect.
+ *
+ * @param string $id Stripe Account ID of the connected user.
+ *
+ * @since 2.7.0
+ *
+ * @return bool|\Stripe\Account
+ */
+function give_stripe_get_account_details( $id ) {
+
+	try {
+		$account = \Stripe\Account::retrieve( $id );
+	} catch ( Exception $e ) {
+		give_record_gateway_error(
+			esc_html__( 'Give - Stripe Error', 'give' ),
+			sprintf(
+				'%1$s: %2$s',
+				esc_html__( 'Unable to retrieve account details. Please contact support for assistance. Details:', 'give' ),
+				$e->getMessage()
+			)
+		);
+
+		return false;
+	}
+
+	return $account;
 }

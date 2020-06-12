@@ -72,14 +72,14 @@ class PaymentMethods extends Endpoint {
 			}
 		}
 
-		return array(
+		return [
 			'labels'   => $labels,
-			'datasets' => array(
-				array(
+			'datasets' => [
+				[
 					'data'     => $data,
 					'tooltips' => $tooltips,
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

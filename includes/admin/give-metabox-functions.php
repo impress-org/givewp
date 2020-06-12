@@ -63,6 +63,7 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_{$field['type']}";
 			break;
 
+		case 'hidden':
 		case 'levels_id':
 			$func_name = "{$func_name_prefix}_hidden_input";
 			break;
@@ -81,6 +82,10 @@ function give_get_field_callback( $field ) {
 
 		case 'chosen':
 			$func_name = "{$func_name_prefix}_chosen_input";
+			break;
+
+		case 'label':
+			$func_name = "{$func_name_prefix}_label_field";
 			break;
 
 		default:
@@ -364,6 +369,43 @@ function give_chosen_input( $field ) {
 			}
 			?>
 		</select>
+		<?php echo esc_attr( $field['after_field'] ); ?>
+		<?php echo give_get_field_description( $field ); ?>
+	</p>
+	<?php
+}
+
+/**
+ * Output a label field
+ * Note: only for internal use.
+ *
+ * @param array $field         {
+ *                              Optional. Array of text input field arguments.
+ *
+ * @type string $id            Field ID. Default ''.
+ * @type string $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string $value         Value of input field. Default ''.
+ * @type string $title         Text to display. HTML supported Default ''.
+ * @type string $before_field  Text/HTML to add before input field. Default ''.
+ * @type string $after_field   Text/HTML to add after input field. Default ''.
+ * }
+ *
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function give_label_field( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['before_field']  = '';
+	$field['after_field']   = '';
+	?>
+	<p class=" <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<?php echo esc_attr( $field['before_field'] ); ?>
+		<?php echo $field['title']; ?>
 		<?php echo esc_attr( $field['after_field'] ); ?>
 		<?php echo give_get_field_description( $field ); ?>
 	</p>
@@ -1250,8 +1292,17 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
-			$repeater_field_values = give_get_meta( $thepostid, $fields['id'], true );
-			$header_title          = isset( $fields['options']['header_title'] )
+			// Get value.
+			$repeater_field_values = ! empty( $fields['attributes']['value'] )
+				? $fields['attributes']['value']
+				: give_get_meta( $thepostid, $fields['id'], true );
+
+			// Setup default value.
+			if ( empty( $repeater_field_values ) && ! empty( $fields['default'] ) ) {
+				$repeater_field_values = $fields['default'];
+			}
+
+			$header_title = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
 				: esc_attr__( 'Group', 'give' );
 

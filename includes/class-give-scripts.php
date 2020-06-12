@@ -252,20 +252,14 @@ class Give_Scripts {
 	 */
 	public function admin_localize_scripts() {
 
-		global $post, $pagenow;
+		global $post;
+
 		$give_options = give_get_settings();
 
 		// Price Separators.
 		$thousand_separator = give_get_price_thousand_separator();
 		$decimal_separator  = give_get_price_decimal_separator();
 		$number_decimals    = give_get_price_decimals();
-
-		$stripe_user_id            = give_get_option( 'give_stripe_user_id', false );
-		$disconnect_stripe_message = sprintf(
-			/* translators: %s Stripe User ID */
-			__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
-			$stripe_user_id
-		);
 
 		// Localize strings & variables for JS.
 		$localized_data = array(
@@ -289,6 +283,8 @@ class Give_Scripts {
 			'one_option'                        => __( 'Choose a form', 'give' ),
 			'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
 			'ok'                                => __( 'Ok', 'give' ),
+			'activate'                          => __( 'Activate', 'give' ),
+			'deactivate'                        => __( 'Deactivate', 'give' ),
 			'cancel'                            => __( 'Cancel', 'give' ),
 			'success'                           => __( 'Success', 'give' ),
 			'error'                             => __( 'Error', 'give' ),
@@ -326,6 +322,7 @@ class Give_Scripts {
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
 			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
+			'form_template_required'            => __( 'To save form settings, you must select form template.', 'give' ),
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
@@ -390,8 +387,6 @@ class Give_Scripts {
 					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance( 'donor-note' ) ),
 				),
 			),
-			'disconnect_stripe_title'           => __( 'Confirm Disconnect?', 'give' ),
-			'disconnect_stripe_message'         => $disconnect_stripe_message,
 			'loader_translation'                => array(
 				'updating'   => __( 'Updating...', 'give' ),
 				'loading'    => __( 'Loading...', 'give' ),
@@ -611,6 +606,7 @@ class Give_Scripts {
 				'wp-components',
 				'wp-api',
 				'wp-editor',
+				'give-admin-scripts',
 			),
 			GIVE_VERSION
 		);

@@ -12,8 +12,8 @@
         "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
         "lint:js": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js",
         "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js --fix",
-        "lint:php": "./vendor/bin/phpcs --standard=WordPress --ignore=*.js",
-        "lint:php:fix": "./vendor/bin/phpcbf --standard=WordPress --ignore=*.js",
+        "lint:php": "./vendor/bin/phpcs -v --colors --standard=phpcs.ruleset.xml",
+        "lint:php:fix": "./vendor/bin/phpcbf -v --colors --standard=phpcs.ruleset.xml",
         "lint:textdomain": "node ./wp-textdomain.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles"
@@ -88,6 +88,7 @@
         "flot-orderbars": "^1.0.0",
         "gravatar": "^1.8.0",
         "hint.css": "^2.5.1",
+        "iframe-resizer": "^4.2.10",
         "jquery-chosen": "latest",
         "jquery.payment": "latest",
         "magnific-popup": "latest",

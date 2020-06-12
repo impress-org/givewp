@@ -25,7 +25,7 @@ class TopDonors extends Endpoint {
 
 		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d 23:i:s' ), 'date', -1 );
 
-		$donors = array();
+		$donors = [];
 
 		foreach ( $this->payments as $payment ) {
 			if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
