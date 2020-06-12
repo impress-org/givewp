@@ -7,35 +7,55 @@
 	background-color: #fdfdfd;
 	border: 1px solid #ccc;
 	margin: 0;
-	padding: .5em;
-  }
+	padding: 0.5em;
+}
 
-  .give-stripe-cc-field.give-fl-input {
+.give-stripe-cc-field.give-fl-input {
 	height: auto;
 	min-height: 50px;
 	line-height: inherit;
 	padding: 14px 10px;
-	background-color: #FFF;
-  }
+	background-color: #fff;
+}
 
-  .give-stripe-cc-field-wrap .give-fl-is-active .give-fl-input {
+.give-stripe-cc-field-wrap .give-fl-is-active .give-fl-input {
 	padding: 20px 12px 4px;
 	transition: padding 0.2s ease-in-out, border 0.2s ease-in-out;
-  }
+}
 
-  .give-stripe-cc-field-wrap .give-fl-label span {
+.give-stripe-cc-field-wrap .give-fl-label span {
 	display: none;
-  }
+}
 
-  .give-stripe-single-cc-field-wrap {
-	border: 1px solid #CCCCCC;
-	background-color: #FDFDFD;
+.give-stripe-single-cc-field-wrap {
+	border: 1px solid #ccc;
+	background-color: #fdfdfd;
 	padding: 10px;
 	height: 40px;
 	margin: 0 0 15px 0;
-  }
+}
 
-  .give-form .give-stripe-cc-field.focus,
-  .give-form .give-stripe-cc-field:focus {
-	background-color: #FFFFFF;
-  }
+.give-form .give-stripe-cc-field.focus,
+.give-form .give-stripe-cc-field:focus {
+	background-color: #fff;
+}
+
+.give-modal--stripe-checkout {
+	border-top: 0;
+	max-width: 400px;
+
+	.give-modal__header {
+		background-color: #222;
+		color: #fff;
+		padding: 10px;
+		text-align: center;
+
+		h2 {
+			color: #fff;
+		}
+	}
+
+	.give-modal__controls {
+		text-align: center;
+	}
+}
