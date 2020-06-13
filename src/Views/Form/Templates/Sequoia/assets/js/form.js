@@ -74,7 +74,11 @@
 			navigator.currentStep = step;
 			setupTabOrder();
 
-			$( steps[ navigator.currentStep ].firstFocus ).focus();
+			setTimeout( function() {
+				if ( steps[ navigator.currentStep ].firstFocus ) {
+					$( steps[ navigator.currentStep ].firstFocus ).focus();
+				}
+			}, 200 );
 		},
 		init: () => {
 			steps.forEach( ( step ) => {
@@ -128,7 +132,6 @@
 				'.introduction .advance-btn',
 				'.step-tracker',
 			],
-			firstFocus: '.introduction .advance-btn',
 		},
 		{
 			id: 'choose-amount',
@@ -146,7 +149,7 @@
 				'.step-tracker',
 				'.back-btn',
 			],
-			firstFocus: '.give-amount-top',
+			firstFocus: '.give-default-level',
 			setup: () => {
 				$( '#give-amount' ).on( 'blur', function() {
 					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
