@@ -183,12 +183,21 @@ class AverageDonation extends Endpoint {
 
 	public function get_prev_average_donation( $startStr, $endStr ) {
 
-		$stats = new \Give_Payment_Stats();
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
 
-		$earnings = $stats->get_earnings( 0, $startStr, $endStr );
-		$sales    = $stats->get_sales( 0, $startStr, $endStr );
+		$earnings     = 0;
+		$paymentCount = 0;
 
-		$average = $sales > 0 ? $earnings / $sales : 0;
+		foreach ( $this->paymentObjects as $paymentObject ) {
+			if ( $paymentObjects->date > $startStr && $paymentObject->date < $endStr ) {
+				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
+					$earnings     += $paymentObject->total;
+					$paymentCount += 1;
+				}
+			}
+		}
+
+		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
 		// Return rounded average (avoid displaying figures with many decimal places)
 		return round( $average, 2 );
