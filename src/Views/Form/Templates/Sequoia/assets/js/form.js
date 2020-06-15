@@ -170,7 +170,7 @@
 					const position = window.give_global_vars.currency_pos;
 
 					if ( value !== 'custom' ) {
-						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
+						const html = position === 'before' ? `<div class="currency currency--before">${ symbol }</div>${ value }` : `${ value }<div class="currency currency--after">${ symbol }</div>`;
 						$( this ).html( html );
 					}
 

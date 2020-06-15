@@ -500,6 +500,17 @@ p {
 			position: relative;
 			z-index: 3;
 			padding: 0 !important;
+			color: #555;
+
+			&.give-currency-position-before {
+				padding-right: 24px !important;
+				border-right: dotted #f0f0f0 1px !important;
+			}
+
+			&.give-currency-position-after {
+				padding-left: 24px !important;
+				border-left: dotted #f0f0f0 1px !important;
+			}
 		}
 	}
 
@@ -539,10 +550,21 @@ p {
 
 			> .currency {
 				font-size: 14px;
-				margin: 0 6px 11px 0;
-				@media screen and (max-width: $break-phone) {
-					font-size: 11px;
-					margin: 0 3px 6px 0;
+
+				&.currency--before {
+					margin: 0 6px 11px 0;
+					@media screen and (max-width: $break-phone) {
+						font-size: 11px;
+						margin: 0 3px 6px 0;
+					}
+				}
+
+				&.currency--after {
+					margin: 0 0 11px 6px;
+					@media screen and (max-width: $break-phone) {
+						font-size: 11px;
+						margin: 0 0 6px 3px;
+					}
 				}
 			}
 
