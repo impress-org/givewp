@@ -173,6 +173,7 @@ p {
 	font-weight: 400;
 	font-size: 16px;
 	line-height: 24px;
+	word-break: break-word;
 	color: #555 !important;
 
 	> strong {
@@ -599,6 +600,12 @@ p {
 	> * {
 		order: 99;
 	}
+
+	.donation-errors {
+		position: relative;
+		width: 100%;
+	}
+
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
 
