@@ -344,8 +344,11 @@ abstract class Endpoint {
 	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
 
 		$gateways = give_get_payment_gateways();
-		unset( $gateways['manual'] );
-		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
+		if ( ! $this->testMode ) {
+			unset( $gateways['manual'] );
+		}
+
+		$gateway = array_keys( $gateways );
 
 		$args = [
 			'number'     => $number,

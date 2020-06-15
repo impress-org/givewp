@@ -20,8 +20,11 @@ class PaymentStatuses extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 
 		$gateways = give_get_payment_gateways();
-		unset( $gateways['manual'] );
-		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
+		if ( ! $this->testMode ) {
+			unset( $gateways['manual'] );
+		}
+
+		$gateway = array_keys( $gateways );
 
 		$args = [
 			'number'     => -1,
