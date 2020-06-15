@@ -526,6 +526,8 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 /**
  * This function is used to set application information to Stripe.
  *
+ * Note: to setup stripe app environment either pass form Id or make sure you have `give-form-id` in POST global variable.
+ *
  * @param int $form_id Form ID.
  *
  * @since 2.5.0
