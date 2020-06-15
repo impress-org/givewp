@@ -13,6 +13,10 @@
 	position: relative;
 	transition: border 0.2s ease;
 	width: auto !important;
+
+	@media screen and (max-width: $break-phone) {
+		margin: 20px 20px 0 20px !important;
+	}
 }
 
 .give-fee-total-wrap.fee-coverage-required.give-fee-message,
@@ -24,6 +28,11 @@
 		padding: 20px 20px 20px 22px !important;
 		color: #333;
 		display: inline-block;
+
+		@media screen and (max-width: $break-phone) {
+			font-size: 14px;
+			padding: 14px 20px 14px 22px !important;
+		}
 	}
 }
 
@@ -36,6 +45,10 @@
 	color: #333;
 	display: inline-block;
 	text-align: center;
+
+	@media screen and (max-width: $break-phone) {
+		font-size: 14px;
+	}
 }
 
 .give-fee-total-wrap.fee-coverage-required.give-fee-message {

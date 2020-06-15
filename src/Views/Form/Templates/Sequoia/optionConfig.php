@@ -11,7 +11,7 @@ $introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Hel
 
 return [
 	'introduction'        => [
-		'name'   => __( 'Introduction', 'give' ),
+		'name'   => sprintf( __( '%1$s Step 1: %2$s Introduction', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
@@ -71,7 +71,7 @@ return [
 		],
 	],
 	'payment_amount'      => [
-		'name'   => __( 'Payment Amount', 'give' ),
+		'name'   => sprintf( __( '%1$s Step 2: %2$s Payment Amount', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
@@ -107,7 +107,7 @@ return [
 		],
 	],
 	'payment_information' => [
-		'name'   => __( 'Payment Information', 'give' ),
+		'name'   => sprintf( __( '%1$s Step 3: %2$s Payment Information', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
@@ -144,13 +144,13 @@ return [
 		],
 	],
 	'thank-you'           => [
-		'name'   => __( 'Thank You', 'give' ),
+		'name'   => sprintf( __( '%1$s Step 4: %2$s Thank You', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description will show up here if any', 'give' ),
 		'fields' => [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'This image appears above the main thank you content. It should be something that reaffirms successful donation like a checkmark or heart. We recommend keeping it square in size at 120x120 pixels for best results.', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a checkmark icon will appear.', 'give' ),
 				'type' => 'file',
 			],
 			[

@@ -1190,7 +1190,7 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
 	if ( 'becs' === $method ) {
 		// For BECS Direct Debit.
 		$mandate_acceptance_text = sprintf(
-			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorise Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorised signatory on the account listed above.', 'give' ),
+			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorize Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorized signatory on the account listed above.', 'give' ),
 			esc_url_raw( 'https://stripe.com/au-becs-dd-service-agreement/legal' ),
 			get_bloginfo( 'sitename' )
 		);
@@ -1378,12 +1378,7 @@ function give_stripe_get_default_account( $form_id = 0 ) {
 	$all_accounts            = give_stripe_get_all_accounts();
 	$default_account         = give_stripe_get_default_account_slug( $form_id );
 
-	if (
-		( is_array( $all_accounts ) &&
-		  count( $all_accounts ) > 0
-		) &&
-		! empty( $default_account )
-	) {
+	if ( $all_accounts && ! empty( $default_account ) ) {
 		$default_account_details = isset( $all_accounts[ $default_account ] ) ? $all_accounts[ $default_account ] : [];
 	}
 

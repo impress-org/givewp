@@ -1,4 +1,5 @@
 /* globals Give, jQuery */
+/* eslint-disable */
 ( function( $ ) {
 	/**
 	 * Handle form template activation
@@ -65,32 +66,85 @@
 	 * @since 2.7.0
 	 */
 	const saveFormSettingOnlyIfFormTemplateSelected = function() {
-		$( '.post-type-give_forms' ).on( 'click', '#publishing-action input[type=submit]', function() {
-			const activatedTemplate = $( 'input[name=_give_form_template]', '#form_template_options' ).val();
+		$( '.post-php.post-type-give_forms #publishing-action input[type=submit]' )
+			.add( '.post-new-php.post-type-give_forms #publishing-action input[type=submit]' )
+			.on( 'click', function() {
+				const activatedTemplate = $( 'input[name=_give_form_template]', '#form_template_options' ).val();
 
-			if ( ! activatedTemplate ) {
-				new Give.modal.GiveNoticeAlert( {
-					type: 'warning',
-					modalContent: {
-						desc: Give.fn.getGlobalVar( 'form_template_required' ),
-					},
-				} ).render();
+				if ( ! activatedTemplate ) {
+					new Give.modal.GiveNoticeAlert( {
+						type: 'warning',
+						modalContent: {
+							desc: Give.fn.getGlobalVar( 'form_template_required' ),
+						},
+					} ).render();
 
-				// Open form template settings.
-				if ( 'form_template_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
-					$( 'a[href="#form_template_options"]' ).trigger( 'click' );
+					// Open form template settings.
+					if ( 'form_template_options' !== Give.fn.getParameterByName( 'give_tab' ) ) {
+						$( 'a[href="#form_template_options"]' ).trigger( 'click' );
+					}
+
+					return false;
 				}
 
-				return false;
-			}
+				return true;
+			} );
+	};
 
-			return true;
+	/**
+	 * Handle conditional form template fields
+	 *
+	 * @since 2.7.0
+	 */
+	const handleConditionalFormTemplateFields = function() {
+		updateIntroductionFields();
+		$( 'input[name="sequoia[introduction][enabled]"]' ).on( 'change', function() {
+			updateIntroductionFields();
 		} );
+
+		updateSocialSharingFields();
+		$( 'input[name="sequoia[thank-you][sharing]"]' ).on( 'change', function() {
+			updateSocialSharingFields();
+		} );
+	};
+
+	/**
+	 * Update introduciton fields
+	 * Hide or show introduction fields if enabled
+	 *
+	 * @since 2.7.0
+	 */
+	const updateIntroductionFields = function() {
+		const introductionFields = $( '[class*="sequoia[introduction][headline]_field"], [class*="sequoia[introduction][description]_field"], [class*="sequoia[introduction][image]_field"], [class*="sequoia[introduction][primary_color]_field"], [class*="sequoia[introduction][donate_label]_field"]' );
+
+		if ( $( 'input[name="sequoia[introduction][enabled]"]' ).length !== 0 && ! $( 'input[name="sequoia[introduction][enabled]"]' ).prop( 'checked' ) ) {
+			$( introductionFields ).hide();
+		} else {
+			$( introductionFields ).show();
+		}
+	};
+
+	/**
+	 * Update social sharing fields
+	 * Hide or show social sharing fields if enabled
+	 *
+	 * @since 2.7.0
+	 */
+	const updateSocialSharingFields = function() {
+		const socialSharingFields = $( '[class*="sequoia[thank-you][sharing_instruction]_field"], [class*="sequoia[thank-you][twitter_message]_field"]' );
+
+		if ( $( 'input[name="sequoia[thank-you][sharing]"]' ).length !== 0 && ! $( 'input[name="sequoia[thank-you][sharing]"]' ).prop( 'checked' ) ) {
+			$( socialSharingFields ).hide();
+		} else {
+			$( socialSharingFields ).show();
+		}
 	};
 
 	$( document ).ready( function() {
 		handleFormTemplateActivation();
 		handleFormTemplateDeactivation();
 		saveFormSettingOnlyIfFormTemplateSelected();
+		handleConditionalFormTemplateFields();
 	} );
 }( jQuery ) );
+/* eslint-enable */
