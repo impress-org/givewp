@@ -487,8 +487,14 @@
 	}
 
 	function setupInputIcon( selector, icon ) {
-		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
-		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
+		$( selector ).each( function() {
+			if ( $( this ).html() !== '' && $( this ).html().includes( `<i class="fas fa-${ icon }"></i>` ) === false ) {
+				$( this ).prepend( `<i class="fas fa-${ icon }"></i>` );
+				$( this ).children( 'input, selector' ).each( function() {
+					$( this ).attr( 'style', 'padding-left: 33px!important;' );
+				} );
+			}
+		} );
 	}
 
 	function setupInputIcons() {
