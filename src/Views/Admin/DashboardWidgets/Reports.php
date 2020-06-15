@@ -67,6 +67,8 @@ class Reports {
 			[
 				'newFormUrl'   => admin_url( '/post-new.php?post_type=give_forms' ),
 				'allTimeStart' => $this->get_all_time_start(),
+				'currency'     => give_get_currency(),
+				'testMode'     => give_is_test_mode(),
 			]
 		);
 
