@@ -413,6 +413,12 @@ function give_setup_email_tags() {
 			'func'    => 'give_email_tag_donor_note',
 			'context' => 'donation',
 		),
+		array(
+			'tag'      => 'anonymous_status',
+			'desc'     => esc_html__( 'Did the donor check the anonymous donation checkbox?', 'give' ),
+			'func'     => 'give_email_tag_anonymous_status',
+			'context'  => 'donation',
+		),
 
 		/* Donation Form */
 		array(
@@ -1485,6 +1491,39 @@ function give_email_tag_donor_note( $tag_args ) {
 	return apply_filters(
 		'give_email_tag_donor_note',
 		$donor_note,
+		$tag_args
+	);
+}
+
+/**
+ * Email template tag: {anonymous_status}
+ *
+ * @param array $tag_args Array of arguments for email tags.
+ *
+ * @since 2.6
+ *
+ * @return array
+ */
+function give_email_tag_anonymous_status( $tag_args ) {
+	$anonymous_status_meta = give_get_meta( $tag_args['payment_id'], '_give_anonymous_donation', true );
+
+	if ( $anonymous_status_meta ) {
+		$anonymous_status = __( 'Anonymous donation', 'give' );
+	} else {
+		$anonymous_status = __( 'Not an anonymous donation', 'give' );
+	}
+
+	/**
+	 * Filter the {anonymous_status} email template tag output.
+	 *
+	 * @param string $anonymous_status Tag output.
+	 * @param array  $tag_args   Email Tag arguments.
+	 *
+	 * @since 2.6
+	 */
+	return apply_filters(
+		'give_email_tag_anonymous_status',
+		$anonymous_status,
 		$tag_args
 	);
 }
