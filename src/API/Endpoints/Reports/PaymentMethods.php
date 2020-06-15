@@ -16,21 +16,31 @@ class PaymentMethods extends Endpoint {
 
 	public function get_report( $request ) {
 
-		// Use give_count_payments logic to get payments
-		$gateways = give_get_payment_gateways();
-		$stats    = new \Give_Payment_Stats();
+		$paymentObjects = $this->get_payments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', -1 );
+		$gatewayObjects = give_get_payment_gateways();
 
-		$gatewaysArr = [];
+		if ( $this->testMode === false ) {
+			unset( $gatewayObjects['manual'] );
+		}
 
-		foreach ( $gateways as $gateway_id => $gateway ) {
-			$gatewaysArr[] = [
-				'admin_label' => $gateway['admin_label'],
-				'count'       => $stats->get_sales( 0, date( $request->get_param( 'start' ) ), date( $request->get_param( 'end' ) ), $gateway_id ),
-				'amount'      => $stats->get_earnings( 0, date( $request->get_param( 'start' ) ), date( $request->get_param( 'end' ) ), $gateway_id ),
+		$gateways = [];
+		foreach ( $gatewayObjects as $gatewayId => $gatewayObject ) {
+			$gateways[ $gatewayId ] = [
+				'label'  => $gatewayObject['admin_label'],
+				'count'  => 0,
+				'amount' => 0,
 			];
 		}
-		$sorted = usort(
-			$gatewaysArr,
+
+		if ( count( $paymentObjects ) > 0 ) {
+			foreach ( $paymentObjects as $paymentObject ) {
+				$gateways[ $paymentObject->gateway ]['count']  += 1;
+				$gateways[ $paymentObject->gateway ]['amount'] += $paymentObject->total;
+			}
+		}
+
+		$gatewaysSorted = usort(
+			$gateways,
 			function ( $a, $b ) {
 				if ( $a['amount'] == $b['amount'] ) {
 					return 0;
@@ -39,19 +49,25 @@ class PaymentMethods extends Endpoint {
 			}
 		);
 
-		$labels   = [];
 		$data     = [];
+		$labels   = [];
 		$tooltips = [];
 
-		if ( $sorted == true ) {
-			$gatewaysArr = array_slice( $gatewaysArr, 0, 5 );
-			foreach ( $gatewaysArr as $gateway ) {
-				$labels[]   = $gateway['admin_label'];
+		if ( $gatewaysSorted == true ) {
+			$gateways = array_slice( $gateways, 0, 5 );
+			foreach ( $gateways as $gateway ) {
+				$labels[]   = $gateway['label'];
 				$data[]     = $gateway['amount'];
 				$tooltips[] = [
-					'title'  => give_currency_filter( give_format_amount( $gateway['amount'] ), [ 'decode_currency' => true ] ),
+					'title'  => give_currency_filter(
+						give_format_amount( $gateway['amount'] ),
+						[
+							'currency_code'   => $this->currency,
+							'decode_currency' => true,
+						]
+					),
 					'body'   => $gateway['count'] . ' ' . __( 'Payments', 'give' ),
-					'footer' => $gateway['admin_label'],
+					'footer' => $gateway['label'],
 				];
 			}
 		}

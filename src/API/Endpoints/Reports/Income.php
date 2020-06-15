@@ -87,7 +87,13 @@ class Income extends Endpoint {
 			];
 
 			$tooltips[] = [
-				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), [ 'decode_currency' => true ] ),
+				'title'  => give_currency_filter(
+					give_format_amount( $incomeForPeriod ),
+					[
+						'currency_code'   => $this->currency,
+						'decode_currency' => true,
+					]
+				),
 				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
 				'footer' => $periodLabel,
 			];

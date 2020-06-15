@@ -59,7 +59,13 @@ class FormPerformance extends Endpoint {
 
 				foreach ( $forms as $key => $value ) {
 					$tooltips[]    = [
-						'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
+						'title'  => give_currency_filter(
+							give_format_amount( $value['income'] ),
+							[
+								'currency_code'   => $this->currency,
+								'decode_currency' => true,
+							]
+						),
 						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 						'footer' => $value['title'],
 					];
@@ -83,7 +89,13 @@ class FormPerformance extends Endpoint {
 
 			foreach ( $forms as $key => $value ) {
 				$tooltips[]    = [
-					'title'  => give_currency_filter( give_format_amount( $value['income'] ), [ 'decode_currency' => true ] ),
+					'title'  => give_currency_filter(
+						give_format_amount( $value['income'] ),
+						[
+							'currency_code'   => $this->currency,
+							'decode_currency' => true,
+						]
+					),
 					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
 					'footer' => $value['title'],
 				];

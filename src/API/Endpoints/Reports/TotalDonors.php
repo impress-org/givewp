@@ -95,7 +95,7 @@ class TotalDonors extends Endpoint {
 		$trend                = $this->get_trend( $start, $end, $donors );
 
 		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
+		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -165,27 +165,17 @@ class TotalDonors extends Endpoint {
 
 	public function get_prev_donors( $startStr, $endStr ) {
 
-		$args = [
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		];
+		$prevPaymentObjects = $this->get_payments( $startStr, $endStr, 'date', -1 );
 
-		$prevPayments = new \Give_Payments_Query( $args );
-		$prevPayments = $prevPayments->get_payments();
-
-		$donors = [];
-		foreach ( $prevPayments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				$donors[] = $payment->donor_id;
+		$donorIds = [];
+		foreach ( $prevPaymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				$donorIds[] = $paymentObject->donor_id;
 			}
 		}
 
-		$unique     = array_unique( $donors );
-		$donorCount = count( $unique );
+		$uniqueDonorIds = array_unique( $donorIds );
+		$donorCount     = count( $uniqueDonorIds );
 
 		return $donorCount;
 	}

@@ -42,3 +42,26 @@ export const setPageLoaded = () => {
 		payload: true,
 	};
 };
+
+// Dispatch TOGGLE_SETTINGS_PANEL action
+export const toggleSettingsPanel = () => {
+	return {
+		type: 'TOGGLE_SETTINGS_PANEL',
+	};
+};
+
+// Dispatch SET_CURRENCY action
+export const setCurrency = ( currency ) => {
+	return {
+		type: 'SET_CURRENCY',
+		payload: currency,
+	};
+};
+
+// Dispatch TOGGLE_TEST_MODE action
+export const toggleTestMode = () => {
+	return {
+		type: 'TOGGLE_TEST_MODE',
+	};
+};
+
