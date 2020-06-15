@@ -212,8 +212,9 @@
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
-				const testNotice = $( '#give_error_test_mode' );
-				moveErrorNotice( testNotice );
+				$( '.give_error' ).each( function() {
+					moveErrorNotice( $( this ) );
+				} );
 
 				// Persist the recurring input border when selected
 				$( '.give-recurring-period' ).change( function() {
@@ -367,7 +368,7 @@
 		}
 
 		// If a specific notice does not already exist, proceed with moving the error
-		if ( $( '.donation-errors' ).html() && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
+		if ( typeof $( '.donation-errors' ).html() !== undefined && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
 			$( node ).appendTo( '.donation-errors' );
 		} else {
 			// If the specific notice already exists, do not add it
