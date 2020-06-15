@@ -66,33 +66,33 @@ abstract class Endpoint {
 				// Here we register the readable endpoint
 				[
 					'methods'             => 'GET',
-					'callback'            => array( $this, 'handle_request' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'                => array(
-						'start'    => array(
+					'callback'            => [ $this, 'handle_request' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => [
+						'start'    => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => array( $this, 'validate_date' ),
-							'sanitize_callback' => array( $this, 'sanitize_date' ),
-						),
-						'end'      => array(
+							'validate_callback' => [ $this, 'validate_date' ],
+							'sanitize_callback' => [ $this, 'sanitize_date' ],
+						],
+						'end'      => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => array( $this, 'validate_date' ),
-							'sanitize_callback' => array( $this, 'sanitize_date' ),
-						),
-						'currency' => array(
+							'validate_callback' => [ $this, 'validate_date' ],
+							'sanitize_callback' => [ $this, 'sanitize_date' ],
+						],
+						'currency' => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => array( $this, 'validate_currency' ),
-						),
-						'testMode' => array(
+							'validate_callback' => [ $this, 'validate_currency' ],
+						],
+						'testMode' => [
 							'type'              => 'boolean',
 							'required'          => true,
-							'sanitize_callback' => array( $this, 'sanitize_test_mode' ),
-						),
-					),
-				),
+							'sanitize_callback' => [ $this, 'sanitize_test_mode' ],
+						],
+					],
+				],
 				// Register our schema callback.
 				'schema' => [ $this, 'get_report_schema' ],
 			]
@@ -347,7 +347,7 @@ abstract class Endpoint {
 		unset( $gateways['manual'] );
 		$gateway = $this->testMode ? 'manual' : array_keys( $gateways );
 
-		$args = array(
+		$args = [
 			'number'     => $number,
 			'paged'      => 1,
 			'orderby'    => $orderBy,
@@ -355,19 +355,19 @@ abstract class Endpoint {
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
 			'gateway'    => $gateway,
-			'meta_query' => array(
-				array(
+			'meta_query' => [
+				[
 					'key'     => '_give_payment_currency',
 					'value'   => $this->currency,
 					'compare' => 'LIKE',
-				),
-				array(
+				],
+				[
 					'key'     => '_give_payment_mode',
 					'value'   => 'test',
 					'compare' => $this->testMode ? '=' : '!=',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		// Check if a cached payments exists
 		$cached_payments = $this->get_cached_payments( $args );

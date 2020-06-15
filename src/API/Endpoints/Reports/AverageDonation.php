@@ -109,7 +109,7 @@ class AverageDonation extends Endpoint {
 
 			// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 			$data = [
-				'datasets'          => [
+				'datasets' => [
 					[
 						'data'      => $income,
 						'tooltips'  => $tooltips,
@@ -123,10 +123,10 @@ class AverageDonation extends Endpoint {
 							]
 						),
 					],
-					),
-					);
+				],
+			];
 
-					return $data;
+			return $data;
 
 	}
 

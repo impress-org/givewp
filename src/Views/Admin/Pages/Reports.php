@@ -73,7 +73,7 @@ class Reports {
 				'currencies'       => array_keys( give_get_currencies_list() ),
 				'currency'         => give_get_currency(),
 				'testMode'         => give_is_test_mode(),
-			)
+			]
 		);
 
 	}

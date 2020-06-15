@@ -58,7 +58,7 @@ class FormPerformance extends Endpoint {
 				$forms = array_slice( $forms, 0, 5 );
 
 				foreach ( $forms as $key => $value ) {
-					$tooltips[]    = array(
+					$tooltips[]    = [
 						'title'  => give_currency_filter(
 							give_format_amount( $value['income'] ),
 							[
@@ -88,7 +88,7 @@ class FormPerformance extends Endpoint {
 			}
 
 			foreach ( $forms as $key => $value ) {
-				$tooltips[]    = array(
+				$tooltips[]    = [
 					'title'  => give_currency_filter(
 						give_format_amount( $value['income'] ),
 						[

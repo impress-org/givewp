@@ -86,7 +86,7 @@ class Income extends Endpoint {
 				'y' => $incomeForPeriod,
 			];
 
-			$tooltips[] = array(
+			$tooltips[] = [
 				'title'  => give_currency_filter(
 					give_format_amount( $incomeForPeriod ),
 					[
