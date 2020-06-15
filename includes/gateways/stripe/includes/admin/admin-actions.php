@@ -58,11 +58,6 @@ function give_stripe_connect_save_options() {
 	$account_email     = '';
 	$account_country   = '';
 
-	// If the same Stripe account is already connected, then don't save it.
-	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'account_id' ), true ) ) {
-		return;
-	}
-
 	// Set API Key to fetch account details.
 	\Stripe\Stripe::setApiKey( $secret_key );
 
