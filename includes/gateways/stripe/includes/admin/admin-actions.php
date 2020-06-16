@@ -59,7 +59,7 @@ function give_stripe_connect_save_options() {
 	$account_details = give_stripe_get_account_details( $stripe_account_id );
 
 	// Setup Account Details for Connected Stripe Accounts.
-	if ( empty( $account_details->id ) || 'account' === $account_details->object ) {
+	if ( empty( $account_details->id ) ) {
 		Give_Admin_Settings::add_error(
 			'give-stripe-account-id-fetching-error',
 			sprintf(
