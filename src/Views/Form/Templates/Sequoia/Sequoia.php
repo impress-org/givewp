@@ -144,8 +144,8 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			form.give-form .form-row input:focus,
 			form.give-form .form-row input.required:focus,
 			.form-row select, #give-recurring-form .form-row select:focus,
-			form.give-form .form-row select:focus, 
-			.form-row select.required:focus, 
+			form.give-form .form-row select:focus,
+			.form-row select.required:focus,
 			#give-recurring-form .form-row select.required:focus,
 			form.give-form .form-row select.required:focus, .give-select:focus {
 				border-color: %1$s !important;
@@ -259,7 +259,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return __( 'Sequoia - Multi-Step Form', 'give' );
+		return __( 'Multi-Step Donation Form', 'give' );
 	}
 
 	/**
