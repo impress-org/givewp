@@ -66,4 +66,16 @@ class Stripe {
 	public static function isDonationPaymentMethod( $paymentMethod ) {
 		return in_array( $paymentMethod, give_stripe_supported_payment_methods(), true );
 	}
+
+	public static function checkoutModalOutput() {
+		ob_start();
+		?>
+		<div class="give-stripe-checkout-modal-content">
+			<div class="give-stripe-checkout-modal-container">
+				<div class="give-stripe-checkout-modal-"
+			</div>
+		</div>
+		<?php
+		return ob_get_contents();
+	}
 }

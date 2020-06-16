@@ -180,24 +180,38 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		form_element.onsubmit = function( evt ) {
 			const selectedGateway = form_element.querySelector( '.give-gateway:checked' ).value;
 
+			// new GiveStripeModal(
+			// 	{
+			// 		modalWrapper: 'give-modal--stripe-checkout',
+			// 		modalContent: {
+			// 			title: 'Hello World',
+			// 			price: '$100',
+			// 			email: 'mehul.gohil0810@gmail.com',
+			// 			formTitle: 'Save the Whales',
+			// 			btnTitle: 'Donate',
+			// 		},
+			// 	}
+			// ).render();
+
+			evt.preventDefault();
 			// If Stripe Checkout is enabled, then restrict default form submission.
-			if ( 'stripe_checkout' === selectedGateway ) {
-				evt.preventDefault();
-
-				const donationAmount = form_element.querySelector( '.give-final-total-amount' ).getAttribute( 'data-total' );
-				const donorEmail = form_element.querySelector( 'input[name="give_email"]' ).value;
-
-				// Open Stripe Checkout Modal.
-				stripe_handler[ idPrefix ].open( {
-					name: give_stripe_vars.sitename,
-					description: formName,
-					amount: give_stripe_format_currency( donationAmount, form_element ),
-					zipCode: isZipCode,
-					allowRememberMe: isRememberMe,
-					email: donorEmail,
-					currency: form_element.getAttribute( 'data-currency_code' ),
-				} );
-			}
+			// if ( 'stripe_checkout' === selectedGateway ) {
+			// 	evt.preventDefault();
+			//
+			// 	const donationAmount = form_element.querySelector( '.give-final-total-amount' ).getAttribute( 'data-total' );
+			// 	const donorEmail = form_element.querySelector( 'input[name="give_email"]' ).value;
+			//
+			// 	// Open Stripe Checkout Modal.
+			// 	stripe_handler[ idPrefix ].open( {
+			// 		name: give_stripe_vars.sitename,
+			// 		description: formName,
+			// 		amount: give_stripe_format_currency( donationAmount, form_element ),
+			// 		zipCode: isZipCode,
+			// 		allowRememberMe: isRememberMe,
+			// 		email: donorEmail,
+			// 		currency: form_element.getAttribute( 'data-currency_code' ),
+			// 	} );
+			// }
 		};
 	} );
 
