@@ -420,7 +420,7 @@
 			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
-		// Elements to move into donate fieldset (located at bottom of form)
+		// Elements to move into donate field`set (located at bottom of form)
 		// The elements will appear in order of array
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
@@ -439,6 +439,14 @@
 				$( `#give_purchase_form_wrap ${ selector }` ).remove();
 			}
 		} );
+
+		// Handle per-Gateway fee option
+		if ( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
+			if ( $( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
+				$( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).remove();
+			}
+			$( '.choose-amount' ).append( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ) );
+		}
 
 		// Move purchase fields (credit card, billing, etc)
 		$( 'li.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
