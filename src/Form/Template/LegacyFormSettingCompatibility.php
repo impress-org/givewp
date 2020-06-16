@@ -2,6 +2,7 @@
 namespace Give\Form\Template;
 
 use Give\Form\Template;
+use Give\Helpers\Form\Utils;
 
 /**
  * Class LegacyFormSettingCompatibility
@@ -92,5 +93,42 @@ class LegacyFormSettingCompatibility {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Migrate existing legacy form settings.
+	 *
+	 * @param  int  $formId
+	 *
+	 * @since 2.7.0
+	 */
+	public static function migrateExistingFormSettings( $formId ) {
+		if ( ! Utils::isLegacyForm( $formId ) || 'edit' !== give_clean( $_GET['action'] ) ) {
+			return;
+		}
+
+		if ( Give()->form_meta->get_meta( $formId, '_give_legacy_form_template_settings', true ) ) {
+			return;
+		}
+
+		$mapToSetting = [
+			'display_style'        => '_give_display_style',
+			'payment_display'      => '_give_payment_display',
+			'reveal_label'         => '_give_reveal_label',
+			'checkout_label'       => '_give_checkout_label',
+			'form_floating_labels' => '_give_form_floating_labels',
+			'display_content'      => '_give_display_content',
+			'content_placement'    => '_give_content_placement',
+			'form_content'         => '_give_form_content',
+		];
+
+		foreach ( $mapToSetting as $newSetting => $oldSetting ) {
+			if ( $value = Give()->form_meta->get_meta( $formId, $oldSetting, true ) ) {
+				$settings['display_settings'][ $newSetting ] = $value;
+			}
+		}
+
+		Give()->form_meta->update_meta( $formId, '_give_form_template', 'legacy' );
+		Give()->form_meta->update_meta( $formId, '_give_legacy_form_template_settings', $settings );
 	}
 }
