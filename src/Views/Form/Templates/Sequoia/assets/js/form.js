@@ -442,10 +442,13 @@
 
 		// Handle per-Gateway fee option
 		if ( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
+			let checked = false;
 			if ( $( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
+				checked = $( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked' );
 				$( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).remove();
 			}
 			$( '.choose-amount' ).append( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ) );
+			$( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked', checked );
 		}
 
 		// Move purchase fields (credit card, billing, etc)
