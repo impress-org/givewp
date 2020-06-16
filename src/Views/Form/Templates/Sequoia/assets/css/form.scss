@@ -102,6 +102,10 @@ p {
 	padding-bottom: 15px;
 	&:focus {
 		outline: none;
+		box-shadow: 0 0 8px #28c77b;
+	}
+	&:hover {
+		filter: brightness(1.2);
 	}
 }
 
@@ -120,6 +124,8 @@ p {
 	margin-top: 48px;
 	margin-bottom: 16px;
 	min-width: 236px;
+	filter: brightness(1);
+	transition: filter 0.2s ease;
 
 	> i {
 		font-size: 15px;
@@ -167,6 +173,7 @@ p {
 	font-weight: 400;
 	font-size: 16px;
 	line-height: 24px;
+	word-break: break-word;
 	color: #555 !important;
 
 	> strong {
@@ -263,11 +270,18 @@ p {
 			height: 12px;
 			width: 12px;
 			margin: 7.5px;
+			padding: 0;
 			cursor: pointer;
 			transition: background-color 0.2s ease;
+			border: none;
 
 			&.current {
-				background-color: #959595;
+				background-color: #747474;
+			}
+
+			&:focus {
+				border: 1px solid #959595;
+				outline: none;
 			}
 		}
 
@@ -316,7 +330,7 @@ p {
 
 	.headline {
 		max-width: 75%;
-		margin-bottom: 18px;
+		margin-bottom: 16px;
 		margin-top: 30px;
 	}
 
@@ -366,15 +380,17 @@ p {
 			flex: 1 1 0%;
 			flex-direction: column;
 			align-items: center;
-			border: 1px solid #f2f2f2;
 			padding: 10px;
+			border-color: #f2f2f2;
+			border-style: solid;
+			border-width: 1px 0 1px 0;
 
 			&:first-of-type {
-				border-left: 0;
+				border-right: 1px solid #f2f2f2;
 			}
 
 			&:last-of-type {
-				border-right: 0;
+				border-left: 1px solid #f2f2f2;
 			}
 		}
 	}
@@ -463,6 +479,7 @@ p {
 			}
 
 			input {
+				font-family: 'Montserrat', sans-serif;
 				height: auto !important;
 				width: auto !important;
 				text-align: center;
@@ -484,6 +501,17 @@ p {
 			position: relative;
 			z-index: 3;
 			padding: 0 !important;
+			color: #555;
+
+			&.give-currency-position-before {
+				padding-right: 24px !important;
+				border-right: dotted #aaa 1px !important;
+			}
+
+			&.give-currency-position-after {
+				padding-left: 24px !important;
+				border-left: dotted #aaa 1px !important;
+			}
 		}
 	}
 
@@ -523,10 +551,21 @@ p {
 
 			> .currency {
 				font-size: 14px;
-				margin: 0 6px 11px 0;
-				@media screen and (max-width: $break-phone) {
-					font-size: 11px;
-					margin: 0 3px 6px 0;
+
+				&.currency--before {
+					margin: 0 6px 11px 0;
+					@media screen and (max-width: $break-phone) {
+						font-size: 11px;
+						margin: 0 3px 6px 0;
+					}
+				}
+
+				&.currency--after {
+					margin: 0 0 11px 6px;
+					@media screen and (max-width: $break-phone) {
+						font-size: 11px;
+						margin: 0 0 6px 3px;
+					}
 				}
 			}
 
@@ -561,6 +600,12 @@ p {
 	> * {
 		order: 99;
 	}
+
+	.donation-errors {
+		position: relative;
+		width: 100%;
+	}
+
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
 
@@ -781,11 +826,12 @@ p {
 			grid-template-rows: 1fr;
 			margin: 0;
 
-			> li:not(.give_purchase_form_wrap-clone) {
+			> li {
 				@include background-lightgray;
 				margin: 0 !important;
 				padding: 14px 20px !important;
 				border-radius: 4px;
+				border: 1px solid #f1f1f1;
 
 				position: relative;
 
@@ -806,7 +852,8 @@ p {
 			}
 
 			input[type='radio'] {
-				display: none !important;
+				opacity: 0 !important;
+				position: absolute !important;
 			}
 
 			.give-gateway-option::before {
@@ -838,6 +885,19 @@ p {
 				content: ' ';
 				display: block;
 				background: #333;
+			}
+		}
+	}
+
+	#give_offline_payment_info {
+		> ol {
+			list-style: none;
+			padding: 0;
+
+			> li {
+				line-height: 1.4;
+				padding: 4px 0;
+				font-size: 15px;
 			}
 		}
 	}
@@ -955,7 +1015,8 @@ fieldset {
 }
 
 input[type='checkbox'] {
-	display: none !important;
+	opacity: 0 !important;
+	position: absolute !important;
 }
 
 input[type='checkbox'] + label {
@@ -963,7 +1024,7 @@ input[type='checkbox'] + label {
 	font-size: 16px;
 	line-height: 1.4;
 	padding: 0 0 0 32px;
-	width: 100%;
+	width: calc(100% - 82px);
 	margin-left: 0;
 	color: #333;
 	display: inline-block;
@@ -1076,7 +1137,7 @@ form.give-form .form-row select.required,
 	padding: 12px !important;
 	min-height: 48px;
 	margin: 0;
-	border: 1px solid #b8b8b8;
+	border: 1px solid #b8b8b8 !important;
 	border-radius: 4px !important;
 	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289), 0 1px 0 1px rgba(0, 0, 0, 0.04);
 	-moz-appearance: none;

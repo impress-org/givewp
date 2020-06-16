@@ -15,7 +15,7 @@ class Legacy extends Template {
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return __( 'Legacy - Standard Form', 'give' );
+		return __( 'Legacy Donation Form', 'give' );
 	}
 
 	/**

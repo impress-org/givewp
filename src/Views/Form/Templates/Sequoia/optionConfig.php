@@ -61,7 +61,7 @@ return [
 			[
 				'id'         => 'donate_label',
 				'name'       => __( 'Donate Button', 'give' ),
-				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
+				'desc'       => __( 'Customize the text that appears prompting the user to progress to the next step.', 'give' ),
 				'type'       => 'text_medium',
 				'attributes' => [
 					'placeholder' => __( 'Donate Now', 'give' ),
@@ -97,7 +97,7 @@ return [
 			[
 				'id'         => 'next_label',
 				'name'       => __( 'Continue Button', 'give' ),
-				'desc'       => __( 'The button label for displaying the additional payment fields.', 'give' ),
+				'desc'       => __( 'Customize the text that appears prompting the user to progress to the next step.', 'give' ),
 				'type'       => 'text_medium',
 				'attributes' => [
 					'placeholder' => __( 'Continue', 'give' ),

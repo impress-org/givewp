@@ -37,7 +37,8 @@
 	}
 
 	input[type='radio'] {
-		display: none !important;
+		opacity: 0 !important;
+		position: absolute !important;
 	}
 
 	input[type='radio'] + label {
