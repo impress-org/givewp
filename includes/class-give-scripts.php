@@ -322,7 +322,10 @@ class Give_Scripts {
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
 			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to the user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
-			'form_template_required'            => __( 'Please activate a "Form Template" to save the donation form. Select a template by clicking on the "Form Template" tab and "Activate".', 'give' ),
+			'form_template_required' => [
+				'title' => __( 'Select Form Template', 'give' ),
+				'desc'  => __( 'Please activate a "Form Template" to save the donation form. Select a template by clicking on the "Form Template" tab and "Activate".', 'give' ),
+			],
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
