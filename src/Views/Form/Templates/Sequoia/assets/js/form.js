@@ -420,7 +420,7 @@
 			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
-		// Elements to move into donate field`set (located at bottom of form)
+		// Elements to move into donate fieldset (located at bottom of form)
 		// The elements will appear in order of array
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
