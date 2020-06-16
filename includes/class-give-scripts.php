@@ -320,9 +320,9 @@ class Give_Scripts {
 			'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 			'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
-			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
+			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to the user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
-			'form_template_required'            => __( 'To save form settings, you must select form template.', 'give' ),
+			'form_template_required'            => __( 'Please activate a donation form template to save the donation form. To select a template click on the "Form Template" tab and then "Activate".', 'give' ),
 			'donors_bulk_action'                => array(
 				'no_donor_selected'  => array(
 					'title' => __( 'No donors selected', 'give' ),
