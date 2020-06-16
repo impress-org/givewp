@@ -230,7 +230,7 @@ class Actions {
 	 * @param int $formId
 	 */
 	public function getStartWrapperHTMLForPaymentSection( $formId ) {
-		$headline    = isset( $this->templateOptions['payment_information']['headline'] ) ? $this->templateOptions['payment_information']['headline'] : __( 'Tell us a bit about yourself.', 'give' );
+		$headline    = isset( $this->templateOptions['payment_information']['headline'] ) ? $this->templateOptions['payment_information']['headline'] : __( "Who's giving today?", 'give' );
 		$description = isset( $this->templateOptions['payment_information']['description'] ) ? $this->templateOptions['payment_information']['description'] : __( 'We’ll never share this information with anyone.', 'give' );
 
 		printf(
