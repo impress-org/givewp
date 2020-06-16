@@ -49,20 +49,20 @@ class Give_Scripts {
 	 */
 	public function init() {
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
+		add_action( 'admin_enqueue_scripts', [ $this, 'register_styles' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ] );
 
 		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
-			add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_admin_scripts' ) );
-			add_action( 'admin_head', array( $this, 'global_admin_head' ) );
+			add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+			add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_styles' ] );
+			add_action( 'enqueue_block_editor_assets', [ $this, 'gutenberg_admin_scripts' ] );
+			add_action( 'admin_head', [ $this, 'global_admin_head' ] );
 
 		} else {
-			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
+			add_action( 'wp_enqueue_scripts', [ $this, 'public_enqueue_styles' ] );
+			add_action( 'wp_enqueue_scripts', [ $this, 'public_enqueue_scripts' ] );
 		}
 	}
 
@@ -77,7 +77,7 @@ class Give_Scripts {
 	 * @param array  $dep    Dependency on a script.
 	 * @param mixed  $ver    Script Version
 	 */
-	public static function register_script( $handle, $src, $dep = array(), $ver = false ) {
+	public static function register_script( $handle, $src, $dep = [], $ver = false ) {
 		wp_register_script( $handle, $src, $dep, $ver, self::$scripts_footer );
 	}
 
@@ -89,22 +89,22 @@ class Give_Scripts {
 	public function register_styles() {
 
 		// Global WP-admin.
-		wp_register_style( 'give-admin-global-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin-global' . $this->direction . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-admin-global-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin-global' . $this->direction . '.css', [], GIVE_VERSION );
 
 		// GiveWP-only WP-admin.
-		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', [], GIVE_VERSION );
 
 		// WP-admin: plugin page.
 		wp_register_style(
 			'plugin-deactivation-survey-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/plugin-deactivation-survey.css',
-			array(),
+			[],
 			GIVE_VERSION
 		);
 
 		// Frontend.
 		if ( give_is_setting_enabled( give_get_option( 'css' ) ) ) {
-			wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
+			wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all' );
 		}
 	}
 
@@ -119,12 +119,12 @@ class Give_Scripts {
 		wp_register_script(
 			'give-admin-scripts',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin.js',
-			array(
+			[
 				'jquery',
 				'jquery-ui-datepicker',
 				'wp-color-picker',
 				'jquery-query',
-			),
+			],
 			GIVE_VERSION
 		);
 
@@ -132,7 +132,7 @@ class Give_Scripts {
 		wp_register_script(
 			'plugin-deactivation-survey-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
-			array( 'jquery' ),
+			[ 'jquery' ],
 			GIVE_VERSION,
 			true
 		);
@@ -141,13 +141,13 @@ class Give_Scripts {
 		wp_register_script(
 			'admin-add-ons-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
-			array( 'jquery' ),
+			[ 'jquery' ],
 			GIVE_VERSION,
 			true
 		);
 
 		// Frontend.
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, self::$scripts_footer );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', [ 'jquery' ], GIVE_VERSION, self::$scripts_footer );
 	}
 
 	/**
@@ -211,14 +211,14 @@ class Give_Scripts {
 
 		if ( Give_Admin_Settings::is_setting_page( 'licenses' ) ) {
 			wp_enqueue_script( 'admin-add-ons-js' );
-			$localized_data = array(
-				'notices' => array(
+			$localized_data = [
+				'notices' => [
 					'invalid_license'        => __( 'Sorry, you entered an invalid key.', 'give' ),
 					'download_file'          => __( 'Success! You have activated your license key and are receiving updates and priority support. <a href="{link}">Click here</a> to download your add-on.', 'give' ),
 					'addon_activated'        => __( '{pluginName} add-on activated successfully.', 'give' ),
 					'addon_activation_error' => __( 'The add-on did not activate successfully.', 'give' ),
-				),
-			);
+				],
+			];
 
 			wp_localize_script( 'admin-add-ons-js', 'give_addon_var', $localized_data );
 		}
@@ -234,7 +234,7 @@ class Give_Scripts {
 		wp_enqueue_style( 'plugin-deactivation-survey-css' );
 		wp_enqueue_script( 'plugin-deactivation-survey-js' );
 
-		$localized_data = array(
+		$localized_data = [
 			'nonce'                           => wp_create_nonce( 'deactivation_survey_nonce' ),
 			'cancel'                          => __( 'Cancel', 'give' ),
 			'deactivation_no_option_selected' => __( 'Error: Please select at least one option.', 'give' ),
@@ -242,7 +242,7 @@ class Give_Scripts {
 			'skip_and_deactivate'             => __( 'Skip and Deactivate', 'give' ),
 			'please_fill_field'               => __( 'Error: Please complete the required field.', 'give' ),
 
-		);
+		];
 
 		wp_localize_script( 'plugin-deactivation-survey-js', 'give_vars', $localized_data );
 	}
@@ -262,7 +262,7 @@ class Give_Scripts {
 		$number_decimals    = give_get_price_decimals();
 
 		// Localize strings & variables for JS.
-		$localized_data = array(
+		$localized_data = [
 			'post_id'                           => isset( $post->ID ) ? $post->ID : null,
 			'give_version'                      => GIVE_VERSION,
 			'thousands_separator'               => $thousand_separator,
@@ -322,82 +322,82 @@ class Give_Scripts {
 			'unlock_donor_fields_title'         => __( 'Action forbidden', 'give' ),
 			'unlock_donor_fields_message'       => __( 'To edit first name and last name, please go to the user profile of the donor.', 'give' ),
 			'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
-			'form_template_required' => [
+			'form_template_required'            => [
 				'title' => __( 'Select Form Template', 'give' ),
 				'desc'  => __( 'Please activate a "Form Template" to save the donation form. Select a template by clicking on the "Form Template" tab and "Activate".', 'give' ),
 			],
-			'donors_bulk_action'                => array(
-				'no_donor_selected'  => array(
+			'donors_bulk_action'                => [
+				'no_donor_selected'  => [
 					'title' => __( 'No donors selected', 'give' ),
 					'desc'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
-				),
-				'no_action_selected' => array(
+				],
+				'no_action_selected' => [
 					'title' => __( 'No action selected', 'give' ),
 					'desc'  => __( 'You must select a bulk action to proceed.', 'give' ),
-				),
-			),
-			'donations_bulk_action'             => array(
-				'titles'         => array(
+				],
+			],
+			'donations_bulk_action'             => [
+				'titles'         => [
 					'zero' => __( 'No payments selected', 'give' ),
-				),
-				'delete'         => array(
+				],
+				'delete'         => [
 					'zero'     => __( 'You must choose at least one or more donations to delete.', 'give' ),
 					'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 					'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
-				),
-				'resend-receipt' => array(
+				],
+				'resend-receipt' => [
 					'zero'     => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
 					'single'   => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 					'multiple' => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
-				),
-				'set-to-status'  => array(
+				],
+				'set-to-status'  => [
 					'zero'     => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
 					'single'   => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
 					'multiple' => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
-				),
-			),
-			'updates'                           => array(
+				],
+			],
+			'updates'                           => [
 				'ajax_error' => __( 'Please reload this page and try again', 'give' ),
-			),
-			'metabox_fields'                    => array(
-				'media' => array(
+			],
+			'metabox_fields'                    => [
+				'media' => [
 					'button_title' => __( 'Choose Image', 'give' ),
-				),
-				'file'  => array(
+				],
+				'file'  => [
 					'button_title' => __( 'Choose File', 'give' ),
-				),
-			),
-			'chosen'                            => array(
+				],
+			],
+			'chosen'                            => [
 				'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 				'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
-			),
+			],
 			'db_update_confirmation_msg_button' => __( 'Run Updates', 'give' ),
 			'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
 			'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 			'give_donation_import'              => 'give_donation_import',
 			'core_settings_import'              => 'give_core_settings_import',
 			'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
-			'give_donation_amounts'             => array(
+			'give_donation_amounts'             => [
 				'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
 				'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
-			),
+			],
 			'chosen_add_title_prefix'           => __( 'No result found. Press enter to add', 'give' ),
 			'db_update_nonce'                   => wp_create_nonce( Give_Updates::$background_updater->get_identifier() ),
 			'ajax'                              => give_test_ajax_works(),
 			'donor_note_confirm_msg'            => __( 'Please confirm you would like to add a donor note. An email notification will be sent to the donor with the note. If you do not want to notify the donor you may add a private note or disable the donor note email.', 'give' ),
-			'email_notification'                => array(
-				'donor_note' => array(
+			'email_notification'                => [
+				'donor_note' => [
 					'status' => Give_Email_Notification_Util::is_email_notification_active( Give_Email_Notification::get_instance( 'donor-note' ) ),
-				),
-			),
-			'loader_translation'                => array(
+				],
+			],
+			'loader_translation'                => [
 				'updating'   => __( 'Updating...', 'give' ),
 				'loading'    => __( 'Loading...', 'give' ),
 				'uploading'  => __( 'Uploading...', 'give' ),
 				'processing' => __( 'Processing...', 'give' ),
 				'activating' => __( 'Activating...', 'give' ),
-			),
-		);
+			],
+		];
 
 		wp_localize_script( 'give-admin-scripts', 'give_vars', $localized_data );
 	}
@@ -454,7 +454,7 @@ class Give_Scripts {
 			wp_enqueue_script(
 				'babel-polyfill',
 				GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js',
-				array( 'jquery' ),
+				[ 'jquery' ],
 				GIVE_VERSION,
 				false
 			);
@@ -482,7 +482,7 @@ class Give_Scripts {
 
 		$localize_give_vars = apply_filters(
 			'give_global_script_vars',
-			array(
+			[
 				'ajaxurl'                     => give_get_ajax_url(),
 				'checkout_nonce'              => wp_create_nonce( 'give_checkout_nonce' ),
 				// Do not use this nonce. Its deprecated.
@@ -500,14 +500,14 @@ class Give_Scripts {
 				'give_version'                => GIVE_VERSION,
 				'magnific_options'            => apply_filters(
 					'give_magnific_options',
-					array(
+					[
 						'main_class'        => 'give-modal',
 						'close_on_bg_click' => false,
-					)
+					]
 				),
 				'form_translation'            => apply_filters(
 					'give_form_translation_js',
-					array(
+					[
 						// Field name               Validation message.
 						'payment-mode'           => __( 'Please select payment mode.', 'give' ),
 						'give_first'             => __( 'Please enter your first name.', 'give' ),
@@ -516,12 +516,12 @@ class Give_Scripts {
 						'give_user_pass'         => __( 'Enter a password.', 'give' ),
 						'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
 						'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
-					)
+					]
 				),
 				'confirm_email_sent_message'  => $message,
 				'ajax_vars'                   => apply_filters(
 					'give_global_ajax_vars',
-					array(
+					[
 						'ajaxurl'         => give_get_ajax_url(),
 						'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
 						'loading'         => __( 'Loading', 'give' ),
@@ -531,13 +531,13 @@ class Give_Scripts {
 						'default_gateway' => give_get_default_gateway( null ),
 						'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
 						'number_decimals' => give_get_price_decimals(),
-					)
+					]
 				),
 				'cookie_hash'                 => COOKIEHASH,
 				'session_nonce_cookie_name'   => Give()->session->get_cookie_name( 'nonce' ),
 				'session_cookie_name'         => Give()->session->get_cookie_name( 'session' ),
 				'delete_session_nonce_cookie' => absint( Give()->session->is_delete_nonce_cookie() ),
-			)
+			]
 		);
 
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
@@ -602,7 +602,7 @@ class Give_Scripts {
 		wp_enqueue_script(
 			'give-blocks-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
-			array(
+			[
 				'wp-i18n',
 				'wp-element',
 				'wp-blocks',
@@ -610,7 +610,7 @@ class Give_Scripts {
 				'wp-api',
 				'wp-editor',
 				'give-admin-scripts',
-			),
+			],
 			GIVE_VERSION
 		);
 
@@ -618,7 +618,7 @@ class Give_Scripts {
 		wp_enqueue_style(
 			'give-blocks-css',
 			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
-			array( 'give-styles' ),
+			[ 'give-styles' ],
 			GIVE_VERSION
 		);
 
