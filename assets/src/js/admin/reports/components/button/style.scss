@@ -1,0 +1,27 @@
+.givewp-reports-button {
+	border: 1px solid #ddd;
+	background: #f7f7f7;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 3px;
+	border-width: 1px 1px 3px 1px;
+	padding: 0 16px;
+	cursor: pointer;
+	margin: 0;
+
+	&.givewp-reports-button--pressed {
+		background: #ddd;
+	}
+
+	&:focus {
+		outline: none;
+		box-shadow: none;
+		border-color: #ddd;
+	}
+
+	&.givewp-reports-button--icon {
+		padding: 0 8px;
+	}
+}

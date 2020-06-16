@@ -72,6 +72,13 @@
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 			}
 			navigator.currentStep = step;
+			setupTabOrder();
+
+			setTimeout( function() {
+				if ( steps[ navigator.currentStep ].firstFocus ) {
+					$( steps[ navigator.currentStep ].firstFocus ).focus();
+				}
+			}, 200 );
 		},
 		init: () => {
 			steps.forEach( ( step ) => {
@@ -121,6 +128,10 @@
 			selector: '.give-section.introduction',
 			label: templateOptions.introduction.donate_label,
 			showErrors: false,
+			tabOrder: [
+				'.introduction .advance-btn',
+				'.step-tracker',
+			],
 		},
 		{
 			id: 'choose-amount',
@@ -128,6 +139,17 @@
 			selector: '.give-section.choose-amount',
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
+			tabOrder: [
+				'.give-amount-top',
+				'.give-donation-levels-wrap button',
+				'.give-recurring-period',
+				'.give-recurring-donors-choice-period',
+				'.give_fee_mode_checkbox',
+				'.choose-amount .advance-btn',
+				'.step-tracker',
+				'.back-btn',
+			],
+			firstFocus: '.give-default-level',
 			setup: () => {
 				$( '#give-amount' ).on( 'blur', function() {
 					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
@@ -148,7 +170,7 @@
 					const position = window.give_global_vars.currency_pos;
 
 					if ( value !== 'custom' ) {
-						const html = position === 'before' ? `<div class="currency">${ symbol }</div>${ value }` : `${ value }<div class="currency">${ symbol }</div>`;
+						const html = position === 'before' ? `<div class="currency currency--before">${ symbol }</div>${ value }` : `${ value }<div class="currency currency--after">${ symbol }</div>`;
 						$( this ).html( html );
 					}
 
@@ -169,6 +191,13 @@
 			label: templateOptions.payment_information.checkout_label,
 			selector: '.give-section.payment',
 			showErrors: true,
+			tabOrder: [
+				'.payment input, .payment a, .payment button, .payment select, .payment multiselect, .payment textarea, .payment .button',
+				'.give-submit',
+				'.step-tracker',
+				'.back-btn',
+			],
+			firstFocus: '#give-first',
 			setup: () => {
 				// Setup payment information screen
 
@@ -183,8 +212,9 @@
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
-				const testNotice = $( '#give_error_test_mode' );
-				moveErrorNotice( testNotice );
+				$( '.give_error' ).each( function() {
+					moveErrorNotice( $( this ) );
+				} );
 
 				// Persist the recurring input border when selected
 				$( '.give-recurring-period' ).change( function() {
@@ -230,33 +260,6 @@
 					// Go to choose amount step
 					navigator.goToStep( 1 );
 				} );
-
-				$( '#give-ffm-section' ).on( 'click', handleFFMInput );
-				$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
-
-				$( '#give-ffm-section input' ).each( function() {
-					switch ( $( this ).prop( 'type' ) ) {
-						case 'checkbox': {
-							if ( $( this ).prop( 'checked' ) ) {
-								$( this ).parent().addClass( 'checked' );
-							} else {
-								$( this ).parent().removeClass( 'checked' );
-							}
-							break;
-						}
-						case 'radio': {
-							if ( $( this ).prop( 'checked' ) ) {
-								$( this ).parent().addClass( 'selected' );
-							} else {
-								$( this ).parent().removeClass( 'selected' );
-							}
-							break;
-						}
-					}
-				} );
-
-				//Setup input icons
-				setupInputIcons();
 
 				// Setup gateway icons
 				setupGatewayIcons();
@@ -323,6 +326,7 @@
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
+			setupTabOrder();
 			moveFieldsUnderPaymentGateway( true );
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
 				gatewayAnimating = false;
@@ -364,12 +368,45 @@
 		}
 
 		// If a specific notice does not already exist, proceed with moving the error
-		if ( ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
+		if ( typeof $( '.donation-errors' ).html() !== undefined && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
 			$( node ).appendTo( '.donation-errors' );
 		} else {
 			// If the specific notice already exists, do not add it
 			$( node ).remove();
 		}
+	}
+
+	/**
+	 * Add listeners and starting states to FFM inputs
+	 * @since 2.7.0
+	 */
+	function setupFFMInputs() {
+		$( '#give-ffm-section' ).off( 'click', handleFFMInput );
+		$( '[id*="give-register-account-fields"]' ).off( 'click', handleFFMInput );
+
+		$( '#give-ffm-section' ).on( 'click', handleFFMInput );
+		$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
+
+		$( '#give-ffm-section input' ).each( function() {
+			switch ( $( this ).prop( 'type' ) ) {
+				case 'checkbox': {
+					if ( $( this ).prop( 'checked' ) ) {
+						$( this ).parent().addClass( 'checked' );
+					} else {
+						$( this ).parent().removeClass( 'checked' );
+					}
+					break;
+				}
+				case 'radio': {
+					if ( $( this ).prop( 'checked' ) ) {
+						$( this ).parent().addClass( 'selected' );
+					} else {
+						$( this ).parent().removeClass( 'selected' );
+					}
+					break;
+				}
+			}
+		} );
 	}
 
 	/**
@@ -404,11 +441,14 @@
 		} );
 
 		// Move purchase fields (credit card, billing, etc)
-		$( '.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
+		$( 'li.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
 
 		// Add gateway class to fields wrapper, indicating which gateway is active
 		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
 		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
+
+		setupFFMInputs();
+		setupInputIcons();
 	}
 
 	/**
@@ -447,8 +487,14 @@
 	}
 
 	function setupInputIcon( selector, icon ) {
-		$( selector ).prepend( `<i class="fas fa-${ icon }"></i>` );
-		$( `${ selector } input, ${ selector } select` ).attr( 'style', 'padding-left: 33px!important;' );
+		$( selector ).each( function() {
+			if ( $( this ).html() !== '' && $( this ).html().includes( `<i class="fas fa-${ icon }"></i>` ) === false ) {
+				$( this ).prepend( `<i class="fas fa-${ icon }"></i>` );
+				$( this ).children( 'input, selector' ).each( function() {
+					$( this ).attr( 'style', 'padding-left: 33px!important;' );
+				} );
+			}
+		} );
 	}
 
 	function setupInputIcons() {
@@ -460,6 +506,20 @@
 		setupInputIcon( '#phone_field-wrap', 'phone' );
 		setupInputIcon( '#give-phone-wrap', 'phone' );
 		setupInputIcon( '#email_field-wrap', 'envelope' );
+	}
+
+	/**
+	 * Setup tab order for elements in form
+	 *
+	 * @since 2.7.0
+	 */
+	function setupTabOrder() {
+		$( 'select, button, input, textarea, multiselect, a' ).attr( 'tabindex', -1 );
+
+		const tabOrder = steps[ navigator.currentStep ].tabOrder;
+		tabOrder.forEach( ( selector, index ) => {
+			$( selector ).attr( 'tabindex', index + 1 );
+		} );
 	}
 
 	/**

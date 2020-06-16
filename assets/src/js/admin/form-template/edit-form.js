@@ -75,7 +75,8 @@
 					new Give.modal.GiveNoticeAlert( {
 						type: 'warning',
 						modalContent: {
-							desc: Give.fn.getGlobalVar( 'form_template_required' ),
+							title: Give.fn.getGlobalVar( 'form_template_required' ).title,
+							desc: Give.fn.getGlobalVar( 'form_template_required' ).desc,
 						},
 					} ).render();
 

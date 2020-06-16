@@ -43,6 +43,16 @@ abstract class Endpoint {
 	 */
 	protected $endpoint;
 
+	/**
+	 * @var boolean
+	 */
+	protected $testMode;
+
+	/**
+	 * @var string
+	 */
+	protected $currency;
+
 	public function init() {
 		add_action( 'rest_api_init', [ $this, 'register_route' ] );
 	}
@@ -59,17 +69,27 @@ abstract class Endpoint {
 					'callback'            => [ $this, 'handle_request' ],
 					'permission_callback' => [ $this, 'permissions_check' ],
 					'args'                => [
-						'start' => [
+						'start'    => [
 							'type'              => 'string',
 							'required'          => true,
 							'validate_callback' => [ $this, 'validate_date' ],
 							'sanitize_callback' => [ $this, 'sanitize_date' ],
 						],
-						'end'   => [
+						'end'      => [
 							'type'              => 'string',
 							'required'          => true,
 							'validate_callback' => [ $this, 'validate_date' ],
 							'sanitize_callback' => [ $this, 'sanitize_date' ],
+						],
+						'currency' => [
+							'type'              => 'string',
+							'required'          => true,
+							'validate_callback' => [ $this, 'validate_currency' ],
+						],
+						'testMode' => [
+							'type'              => 'boolean',
+							'required'          => true,
+							'sanitize_callback' => [ $this, 'sanitize_test_mode' ],
 						],
 					],
 				],
@@ -117,6 +137,8 @@ abstract class Endpoint {
 		$this->request   = $request;
 		$this->startDate = date_create( $request->get_param( 'start' ) );
 		$this->endDate   = date_create( $request->get_param( 'end' ) );
+		$this->currency  = $request->get_param( 'currency' );
+		$this->testMode  = $request->get_param( 'testMode' );
 		$this->dateDiff  = date_diff( $this->startDate, $this->endDate );
 	}
 
@@ -140,6 +162,30 @@ abstract class Endpoint {
 		$exploded = explode( '-', $param );
 		$date     = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
 		return $date;
+	}
+
+	/**
+	 * Validate currency string
+	 * Check if currency code provided to REST APi is valid
+	 *
+	 * @param string          $param Currency parameter provided in REST API request
+	 * @param WP_REST_Request $request REST API Request object
+	 * @param string          $key REST API Request key being validated (in this case currency)
+	 */
+	public function validate_currency( $param, $request, $key ) {
+		return in_array( $param, array_keys( give_get_currencies_list() ) );
+	}
+
+	/**
+	 * Sanitize test mode parameter
+	 * Uses filter_var to cast string to variable
+	 *
+	 * @param string          $param Validated test mode parameter provided in REST API request
+	 * @param WP_REST_Request $request REST API Request object
+	 * @param string          $key REST API Request key being validated (in this case test mode)
+	 */
+	public function sanitize_test_mode( $param, $request, $key ) {
+		return filter_var( $param, FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
@@ -296,6 +342,17 @@ abstract class Endpoint {
 	 * @return mixed
 	 */
 	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
+
+		$gatewayObjects        = give_get_payment_gateways();
+		$paymentModeKeyCompare = '!=';
+
+		if ( $this->testMode === false ) {
+			unset( $gatewayObjects['manual'] );
+			$paymentModeKeyCompare = '=';
+		}
+
+		$gateway = array_keys( $gatewayObjects );
+
 		$args = [
 			'number'     => $number,
 			'paged'      => 1,
@@ -303,6 +360,19 @@ abstract class Endpoint {
 			'order'      => 'DESC',
 			'start_date' => $startStr,
 			'end_date'   => $endStr,
+			'gateway'    => $gateway,
+			'meta_query' => [
+				[
+					'key'     => '_give_payment_currency',
+					'value'   => $this->currency,
+					'compare' => '=',
+				],
+				[
+					'key'     => '_give_payment_mode',
+					'value'   => 'live',
+					'compare' => $paymentModeKeyCompare,
+				],
+			],
 		];
 
 		// Check if a cached payments exists

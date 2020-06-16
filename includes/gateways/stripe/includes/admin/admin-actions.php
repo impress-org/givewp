@@ -50,18 +50,7 @@ function give_stripe_connect_save_options() {
 
 	$stripe_account_id = $get_vars['stripe_user_id'];
 	$stripe_accounts   = give_stripe_get_all_accounts();
-	$all_account_slugs = array_keys( $stripe_accounts );
-	$accounts_count    = is_countable( $stripe_accounts ) ? count( $stripe_accounts ) + 1 : 1;
-	$account_slug      = give_stripe_get_unique_account_slug( $all_account_slugs, $accounts_count );
 	$secret_key        = ! give_is_test_mode() ? $get_vars['stripe_access_token'] : $get_vars['stripe_access_token_test'];
-	$account_name      = give_stripe_convert_slug_to_title( $account_slug );
-	$account_email     = '';
-	$account_country   = '';
-
-	// If the same Stripe account is already connected, then don't save it.
-	if ( in_array( $stripe_account_id, wp_list_pluck( $stripe_accounts, 'account_id' ), true ) ) {
-		return;
-	}
 
 	// Set API Key to fetch account details.
 	\Stripe\Stripe::setApiKey( $secret_key );
@@ -70,14 +59,24 @@ function give_stripe_connect_save_options() {
 	$account_details = give_stripe_get_account_details( $stripe_account_id );
 
 	// Setup Account Details for Connected Stripe Accounts.
-	if ( ! empty( $account_details->id ) && 'account' === $account_details->object ) {
-		$account_name    = ! empty( $account_details->business_profile->name ) ?
-			$account_details->business_profile->name :
-			$account_details->settings->dashboard->display_name;
-		$account_slug    = $account_details->id;
-		$account_email   = $account_details->email;
-		$account_country = $account_details->country;
+	if ( empty( $account_details->id ) ) {
+		Give_Admin_Settings::add_error(
+			'give-stripe-account-id-fetching-error',
+			sprintf(
+				'<strong>%1$s</strong> %2$s',
+				esc_html__( 'Stripe Error:', 'give' ),
+				esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
+			)
+		);
+		return;
 	}
+
+	$account_name    = ! empty( $account_details->business_profile->name ) ?
+		$account_details->business_profile->name :
+		$account_details->settings->dashboard->display_name;
+	$account_slug    = $account_details->id;
+	$account_email   = $account_details->email;
+	$account_country = $account_details->country;
 
 	// Set first Stripe account as default.
 	if ( ! $stripe_accounts ) {

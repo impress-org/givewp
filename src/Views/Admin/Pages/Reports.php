@@ -63,12 +63,16 @@ class Reports {
 			true
 		);
 		wp_set_script_translations( 'give-admin-reports-v3-js', 'give' );
+
 		wp_localize_script(
 			'give-admin-reports-v3-js',
 			'giveReportsData',
 			[
 				'legacyReportsUrl' => admin_url( '/edit.php?post_type=give_forms&page=give-reports&legacy=true' ),
 				'allTimeStart'     => $this->get_all_time_start(),
+				'currencies'       => array_keys( give_get_currencies_list() ),
+				'currency'         => give_get_currency(),
+				'testMode'         => give_is_test_mode(),
 			]
 		);
 

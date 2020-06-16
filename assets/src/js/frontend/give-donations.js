@@ -166,7 +166,7 @@ jQuery( function( $ ) {
 	// Add a class to the currently selected gateway on click
 	doc.on(
 		'click',
-		'#give-payment-mode-select input',
+		'#give-payment-mode-select input[name="payment-mode"]',
 		function() {
 			let $form = $( this ).parents( 'form' ),
 				$gateways_li = $form.find( '#give-payment-mode-select li' ),

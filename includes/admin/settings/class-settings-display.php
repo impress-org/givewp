@@ -130,7 +130,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						],
 						[
 							'name'    => __( 'Form Single Views', 'give' ),
-							'desc'    => __( 'By default, all donation form have single views enabled which creates a specific URL on your website for that form. This option disables the singular posts from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
+							'desc'    => __( 'By default, all donation forms have single views enabled. This creates a specific URL on your website for that form. Selecting "Disabled" will prevent the single view from being publicly displayed. Note: if selecting "Disabled", to display each form you will need to embed it using a block, shortcode, or widget.', 'give' ),
 							'id'      => 'forms_singular',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -143,7 +143,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name'    => __( 'Form Archives', 'give' ),
 							'desc'    => sprintf(
 								wp_kses(
-									__( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ),
+									__( 'Archive pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The form\'s single view will still be displayed. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ),
 									[
 										'a' => [
 											'href'   => [],

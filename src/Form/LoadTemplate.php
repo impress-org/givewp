@@ -120,8 +120,12 @@ class LoadTemplate {
 			return;
 		}
 
+		// Remove protocol before url comparision.
+		$referer        = preg_replace( '/^https?:\/\//i', '', untrailingslashit( wp_get_referer() ) );
+		$successPageUrl = preg_replace( '/^https?:\/\//i', '', untrailingslashit( FormUtils::getSuccessPageURL() ) );
+
 		// Show new receipt view only on donation confirmation page.
-		if ( false === strpos( untrailingslashit( wp_get_referer() ), untrailingslashit( FormUtils::getSuccessPageURL() ) ) ) {
+		if ( false === strpos( $referer, $successPageUrl ) ) {
 			return;
 		}
 

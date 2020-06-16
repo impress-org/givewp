@@ -54,6 +54,21 @@ export const reducer = ( state, action ) => {
 				...state,
 				pageLoaded: action.payload,
 			};
+		case 'TOGGLE_SETTINGS_PANEL':
+			return {
+				...state,
+				settingsPanelToggled: ! state.settingsPanelToggled,
+			};
+		case 'SET_CURRENCY':
+			return {
+				...state,
+				currency: action.payload,
+			};
+		case 'TOGGLE_TEST_MODE':
+			return {
+				...state,
+				testMode: ! state.testMode,
+			};
 		default:
 			return state;
 	}

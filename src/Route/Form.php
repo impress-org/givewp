@@ -151,4 +151,30 @@ class Form {
 			$wp_rewrite->wp_rewrite_rules();
 		}
 	}
+
+	/**
+	 * Get queried form ID.
+	 *
+	 * @since 2.7.0
+	 * @return int
+	 */
+	public function getQueriedFormID() {
+		$formId = 0;
+
+		if ( $queryVar = get_query_var( 'give_form_id' ) ) {
+			$form = current(
+				get_posts(
+					[
+						'name'        => $queryVar,
+						'numberposts' => 1,
+						'post_type'   => 'give_forms',
+					]
+				)
+			);
+
+			$formId = $form->ID;
+		}
+
+		return $formId;
+	}
 }

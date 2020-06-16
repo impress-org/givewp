@@ -161,25 +161,15 @@ class TotalRefunds extends Endpoint {
 
 	public function get_prev_refunds( $startStr, $endStr ) {
 
-		$args = [
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		];
+		$prevPaymentObjects = $this->get_payments( $startStr, $endStr, 'date', -1 );
 
-		$prevPayments = new \Give_Payments_Query( $args );
-		$prevPayments = $prevPayments->get_payments();
-
-		$refunds = 0;
-		foreach ( $prevPayments as $payment ) {
-			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$refunds += 1;
+		$refundCount = 0;
+		foreach ( $prevPaymentObjects as $paymentObject ) {
+			if ( $paymentObject->status == 'refunded' && $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				$refundCount += 1;
 			}
 		}
 
-		return $refunds;
+		return $refundCount;
 	}
 }
