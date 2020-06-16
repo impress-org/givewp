@@ -716,6 +716,8 @@ class Give_MetaBox_Form_Data {
 	public function output() {
 		// Bailout.
 		if ( $form_data_tabs = $this->get_tabs() ) :
+			Template\LegacyFormSettingCompatibility::migrateExistingFormSettings( absint( $_GET['post'] ) );
+
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_template_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 
