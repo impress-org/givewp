@@ -1,6 +1,6 @@
 {
     "name": "give",
-    "version": "2.5.5",
+    "version": "2.7.0",
     "description": "",
     "main": "index.js",
     "scripts": {
