@@ -140,7 +140,7 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			tabOrder: [
-				'.give-amount-top',
+				'input.give-amount-top',
 				'.give-donation-levels-wrap button',
 				'.give-recurring-period',
 				'.give-recurring-donors-choice-period',
