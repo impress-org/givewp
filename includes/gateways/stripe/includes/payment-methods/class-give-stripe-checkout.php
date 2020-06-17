@@ -64,6 +64,8 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 			} else {
 				add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
+				remove_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
+				add_action( 'give_donation_form_after_cc_form', [ $this, 'checkoutSubmit' ], 9999, 2 );
 			}
 
 		}
@@ -438,22 +440,68 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			<?php
 		}
 
+		/**
+		 * Stripe Checkout Modal HTML.
+		 *
+		 * @param int   $formId Donation Form ID.
+		 * @param array $args   List of arguments.
+		 *
+		 * @since  2.7.1
+		 * @access public
+		 *
+		 * @return void
+		 */
 		public function showCheckoutModal( $formId, $args ) {
 			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
 			?>
-			<div id="give-stripe-checkout-modal-<?php echo $idPrefix; ?>" class="give-stripe-checkout-modal-content give-hidden">
-				<div class="give-stripe-checkout-modal-container">
-					<div class="give-stripe-checkout-modal-header">
+			<div id="give-stripe-checkout-modal-<?php echo $idPrefix; ?>" class="give-stripe-checkout-modal">
+				<div class="give-stripe-checkout-modal-content">
+					<div class="give-stripe-checkout-modal-container">
+						<div class="give-stripe-checkout-modal-header">
+							<h3><?php echo get_bloginfo( 'name' ); ?></h3>
+							<div class="give-stripe-checkout-form-title">
+								<?php echo get_the_title( $formId ); ?>
+							</div>
+							<div class="give-stripe-checkout-donation-amount">
+								<?php echo give_get_form_price( $formId ); ?>
+							</div>
+							<div class="give-stripe-checkout-donor-email"></div>
+						</div>
+						<div class="give-stripe-checkout-modal-body">
+							<?php Stripe::showCreditCardFields( $idPrefix ); ?>
+						</div>
+						<div class="give-stripe-checkout-modal-footer">
 
-					</div>
-					<div class="give-stripe-checkout-modal-body">
-						<?php Stripe::showCreditCardFields( $idPrefix ); ?>
-					</div>
-					<div class="give-stripe-checkout-modal-footer">
-
+						</div>
 					</div>
 				</div>
 			</div>
+			<?php
+		}
+
+		/**
+		 * Simplify Stripe Checkout Submit.
+		 *
+		 * @param int   $formId Donation Form ID.
+		 * @param array $args   List of arguments.
+		 *
+		 * @since  2.7.1
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function checkoutSubmit( $formId, $args ) {
+			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
+			?>
+			<fieldset id="give_purchase_submit" class="give-stripe-checkout-submit">
+				<input
+					id="give-stripe-checkout-modal-btn-<?php echo $idPrefix; ?>"
+					class="give-stripe-checkout-modal-btn"
+					type="button"
+					name="give-stripe-checkout-submit"
+					value="<?php esc_html_e( 'Donate Now', 'give' ); ?>"
+				/>
+			</fieldset>
 			<?php
 		}
 	}
