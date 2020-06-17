@@ -54,11 +54,8 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 
 	$settings['stripe_form_account_options'] = [
 		'id'        => 'stripe_form_account_options',
-		'title'     => esc_html__( 'Manage Accounts', 'give' ),
-		'icon-html' => sprintf(
-			'<img class="give-stripe-icon" src="%1$s" />',
-			GIVE_PLUGIN_URL . 'assets/dist/images/admin/stripe-icon.png'
-		),
+		'title'     => esc_html__( 'Stripe Account', 'give' ),
+		'icon-html' => '<i class="fab fa-stripe-s"></i>',
 		'fields'    => [
 			[
 				'name'    => esc_html__( 'Account Options', 'give' ),
@@ -66,12 +63,13 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 				'type'    => 'radio_inline',
 				'default' => 'disabled',
 				'options' => [
-					'disabled' => esc_html__( 'Global', 'give' ),
-					'enabled'  => esc_html__( 'Customize', 'give' ),
+					'disabled' => esc_html__( 'Use Global Default Stripe Account', 'give' ),
+					'enabled'  => esc_html__( 'Customize Stripe Account', 'give' ),
 				],
+				'description' => esc_html__( 'Do you want to customize the Stripe account used by this donation form? The customize option allows you to modify the Stripe account this form processes payments through. By default new donation forms will use the Global Default Stripe account.', 'give' ),
 			],
 			[
-				'name'          => esc_html__( 'Stripe Accounts', 'give' ),
+				'name'          => esc_html__( 'Active Stripe Account', 'give' ),
 				'id'            => '_give_stripe_default_account',
 				'type'          => 'radio',
 				'default'       => $defaultAccountSlug,
@@ -82,10 +80,9 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 				'type'  => 'label',
 				'id'    => 'give-stripe-add-account-link',
 				'title' => sprintf(
-					'<a href="%1$s">%2$s</a> %3$s',
+					'<span style="display:block;"><a href="%1$s" class="button">%2$s</a></span>',
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ),
-					esc_html__( 'Click here', 'give' ),
-					esc_html__( 'to add new Stripe account.', 'give' )
+					esc_html__( 'Connect Stripe Account', 'give' )
 				),
 			],
 		],
