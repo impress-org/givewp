@@ -59,4 +59,27 @@ class Frontend {
 
 		return null;
 	}
+
+	/**
+	 * Return form id if admin previewing donation form.
+	 *
+	 * @return int|null
+	 * @since 2.7.0
+	 */
+	public static function getPreviewDonationFormId() {
+		if ( ! is_user_logged_in() ) {
+			return null;
+		}
+
+		if (
+			isset( $_GET['preview'], $_GET['p'], $_GET['post_type'] ) &&
+			filter_var( $_GET['preview'], FILTER_VALIDATE_BOOLEAN ) &&
+			( 'give_forms' === give_clean( $_GET['post_type'] ) ) &&
+			( $formId = absint( $_GET['p'] ) )
+		) {
+			return $formId;
+		}
+
+		return null;
+	}
 }
