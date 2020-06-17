@@ -15,7 +15,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const stripeElements = new GiveStripeElements( formElement );
 		const cardElements   = stripeElements.createElement( stripeElements.getElements( stripeElements.setupStripeElement() ) );
 
-		if ( formGateway && 'stripe' === formGateway.value ) {
+		if (
+			formGateway &&
+			(
+				'stripe' === formGateway.value ||
+				'stripe_checkout' === formGateway.value
+			)
+		) {
 			stripeElements.mountElement( cardElements );
 		}
 
