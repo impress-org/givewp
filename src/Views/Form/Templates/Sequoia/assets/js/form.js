@@ -224,14 +224,16 @@
 					moveErrorNotice( $( this ) );
 				} );
 
-				// Persist the recurring input border when selected
-				$( '.give-recurring-period' ).change( function() {
-					$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
+				setupCheckbox( {
+					container: '.give-recurring-donors-choice',
+					label: 'label[for*="give-admin_choice"]',
+					input: 'input[name="give-recurring-period"]',
 				} );
 
-				// Persist fee recovery input border when selected
-				$( '.give-fee-message-label-text' ).on( 'click touchend', function() {
-					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
+				setupCheckbox( {
+					container: '.give-fee-recovery-donors-choice',
+					label: '.give-fee-message-label-text',
+					input: 'input[name="give_fee_mode_checkbox"]',
 				} );
 
 				setupCheckbox( {
