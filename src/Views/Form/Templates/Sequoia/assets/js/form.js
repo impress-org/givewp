@@ -151,6 +151,14 @@
 			],
 			firstFocus: '.give-default-level',
 			setup: () => {
+				// Dynamically set grid columns based on number of buttons
+				const buttonCount = $( '.give-donation-level-btn' ).length;
+				if ( buttonCount === 1 ) {
+					$( '.give-donation-levels-wrap' ).attr( 'style', 'display: none!important;' );
+				} else if ( buttonCount % 2 === 0 && buttonCount < 6 ) {
+					$( '.give-donation-levels-wrap' ).css( 'grid-template-columns', 'repeat(2, minmax(0, 1fr))' );
+				}
+
 				$( '#give-amount' ).on( 'blur', function() {
 					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
 						$( '.advance-btn' ).attr( 'disabled', true );
