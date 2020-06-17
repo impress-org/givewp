@@ -97,7 +97,7 @@ class LegacyFormSettingCompatibility {
 
 	/**
 	 * Migrate existing legacy form settings.
-	 * Note: Only for internal use. This function can be remove or change in future
+	 * Note: Only for internal use. This function can be removed or change in future
 	 *
 	 * @since 2.7.0
 	 */
