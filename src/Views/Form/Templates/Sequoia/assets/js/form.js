@@ -224,22 +224,28 @@
 					moveErrorNotice( $( this ) );
 				} );
 
-				// Persist the recurring input border when selected
-				$( '.give-recurring-period' ).change( function() {
-					$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
+				// Setup recurring donations opt-in event listeners
+				setupCheckbox( {
+					container: '.give-recurring-donors-choice',
+					label: '.give-recurring-donors-choice label',
+					input: 'input[name="give-recurring-period"]',
 				} );
 
-				// Persist fee recovery input border when selected
-				$( '.give-fee-message-label-text' ).on( 'click touchend', function() {
-					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
+				// Setup fee recovery opt-in event listeners
+				setupCheckbox( {
+					container: '.give-fee-recovery-donors-choice',
+					label: '.give-fee-message-label-text',
+					input: 'input[name="give_fee_mode_checkbox"]',
 				} );
 
+				// Setup mailchimp opt-in event listeners
 				setupCheckbox( {
 					container: '.give-mailchimp-fieldset',
 					label: '.give-mc-message-text',
 					input: 'input[name="give_mailchimp_signup"]',
 				} );
 
+				// Setup constant contact opt-in event listeners
 				setupCheckbox( {
 					container: '.give-constant-contact-fieldset',
 					label: '.give-constant-contact-fieldset span',
