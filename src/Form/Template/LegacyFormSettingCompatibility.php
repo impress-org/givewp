@@ -97,13 +97,19 @@ class LegacyFormSettingCompatibility {
 
 	/**
 	 * Migrate existing legacy form settings.
-	 *
-	 * @param  int  $formId
+	 * Note: Only for internal use. This function can be remove or change in future
 	 *
 	 * @since 2.7.0
 	 */
-	public static function migrateExistingFormSettings( $formId ) {
-		if ( ! Utils::isLegacyForm( $formId ) || 'edit' !== give_clean( $_GET['action'] ) ) {
+	public static function migrateExistingFormSettings() {
+		// Only migrate settings for existing form when editing.
+		if ( ! isset( $_GET['action'] ) || 'edit' !== give_clean( $_GET['action'] ) ) {
+			return;
+		}
+
+		$formId = absint( $_GET['post'] );
+
+		if ( ! Utils::isLegacyForm( $formId ) ) {
 			return;
 		}
 
