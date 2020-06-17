@@ -59,3 +59,62 @@
 		text-align: center;
 	}
 }
+
+.give-stripe-checkout-modal {
+	all: initial;
+	box-sizing: border-box;
+	position: fixed;
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 0;
+	visibility: hidden;
+	transform: scale(1.1);
+	transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+	z-index: 100001 !important;
+
+	&.give-stripe-checkout-show-modal {
+		opacity: 1;
+		visibility: visible;
+		transform: scale(1);
+		transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+	}
+
+	.give-stripe-checkout-modal-content {
+		position: absolute;
+		top: 42%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: rgb(255, 255, 255);
+		overflow: hidden;
+		width: 385px;
+		border-radius: 0.5rem;
+
+		.give-stripe-checkout-modal-container {
+			.give-stripe-checkout-modal-header {
+				background-color: #222;
+				color: #fff;
+				padding: 20px;
+
+				h3 {
+					color: #fff;
+					text-transform: uppercase;
+					font-size: 18px;
+					font-weight: bold;
+					margin: 0 0 10px 0;
+				}
+			}
+
+			.give-stripe-checkout-modal-body {
+				padding: 20px;
+			}
+
+			.give-stripe-checkout-modal-footer {
+				padding: 20px;
+			}
+		}
+	}
+}
