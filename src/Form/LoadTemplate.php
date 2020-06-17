@@ -221,13 +221,20 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
-		$list = [];
-		$skip = [ 'babel-polyfill' ];
+		$list     = [];
+		$skip     = [ 'babel-polyfill' ];
+		$themeDir = get_template_directory_uri();
 
 		/* @var _WP_Dependency $data */
 		foreach ( $scripts as $handle => $data ) {
 			// Do not unset dependency.
 			if ( in_array( $handle, $skip, true ) ) {
+				continue;
+			}
+
+			// Do not allow styles and scripts from theme.
+			if ( false !== strpos( (string) $data->src, $themeDir ) ) {
+				$list[] = $handle;
 				continue;
 			}
 
