@@ -7,7 +7,7 @@ $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
 
-$introHeadline    = empty( $formInfo->post_title ) || $formInfo->post_title === __( 'Auto Draft', 'give' ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
+$introHeadline    = empty( $formInfo->post_title ) || $formInfo->post_title === __( 'Auto Draft' ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
 $introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
