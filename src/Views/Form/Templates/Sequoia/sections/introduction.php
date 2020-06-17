@@ -12,17 +12,23 @@ $image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $thi
 
 <div class="give-section introduction">
 	<h2 class="headline">
-		<?php echo $headline; ?>
+		<?php
+		if ( empty( $headline ) || $headline === __( 'Auto Draft' ) ) {
+			_e( 'Support Our Cause', 'give' );
+		} else {
+			esc_html_e( $headline, 'give' );
+		}
+		?>
 	</h2>
 	<?php if ( ! empty( $description ) ) : ?>
 		<div class="seperator"></div>
 		<p class="description">
-			<?php echo $description; ?>
+			<?php esc_html_e( $description, 'give' ); ?>
 		</p>
 	<?php endif; ?>
 	<?php if ( ! empty( $image ) ) : ?>
 		<div class="image">
-			<img src="<?php echo $image; ?>" />
+			<img src="<?php esc_html_e( $image, 'give' ); ?>" />
 		</div>
 	<?php endif; ?>
 
