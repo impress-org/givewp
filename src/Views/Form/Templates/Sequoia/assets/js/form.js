@@ -227,7 +227,7 @@
 				// Setup recurring donations opt-in event listeners
 				setupCheckbox( {
 					container: '.give-recurring-donors-choice',
-					label: 'label[for*="give-admin_choice"]',
+					label: '.give-recurring-donors-choice label',
 					input: 'input[name="give-recurring-period"]',
 				} );
 
