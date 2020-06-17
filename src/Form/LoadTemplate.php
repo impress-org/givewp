@@ -92,6 +92,7 @@ class LoadTemplate {
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 		add_filter( 'give_form_wrap_classes', [ $this, 'editClassList' ], 999 );
 		add_action( 'give_hidden_fields_after', [ $this, 'addHiddenField' ] );
+		add_filter( 'give_donation_form_submit_button', [ $this, 'disableDonationButtonInPreviewMode' ], 999, 2 );
 
 		// Handle receipt screen template
 		add_action( 'wp_ajax_get_receipt', [ $this, 'handleReceiptAjax' ], 9 );
@@ -187,6 +188,28 @@ class LoadTemplate {
 			'give_embed_form',
 			'1'
 		);
+	}
+
+	/**
+	 * Disable donation submit in donation form preview mode.
+	 *
+	 * @param string $buttonHtml
+	 * @param int  $formId
+	 * @return string
+	 * @since 2.7.0
+	 */
+	public function disableDonationButtonInPreviewMode( $buttonHtml, $formId ) {
+		if ( $formId === (int) FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId() ) {
+			$search = 'input type="submit"';
+
+			$buttonHtml = str_replace(
+				$search,
+				"{$search} onclick=\"return false;\"",
+				$buttonHtml
+			);
+		}
+
+		return $buttonHtml;
 	}
 
 	/**
