@@ -1,7 +1,6 @@
-/* globals CustomEvent */
 import { initializeIframeResize } from './utils';
 
-jQuery( function( $ ) {
+jQuery( function() {
 	// This script is only for parent page.
 	if ( document.querySelector( 'body.give-form-templates' ) ) {
 		return false;
@@ -15,8 +14,8 @@ jQuery( function( $ ) {
 	document.querySelectorAll( '.js-give-embed-form-modal-opener' ).forEach( function( button ) {
 		button.addEventListener( 'click', function() {
 			const iframeContainer = document.getElementById( button.getAttribute( 'data-form-id' ) ),
-				  iframe = iframeContainer.querySelector( 'iframe[name="give-embed-form"]' ),
-				  iframeURL = iframe.getAttribute( 'data-src' );
+				iframe = iframeContainer.querySelector( 'iframe[name="give-embed-form"]' ),
+				iframeURL = iframe.getAttribute( 'data-src' );
 
 			// Load iframe.
 			if ( iframeURL ) {
@@ -52,9 +51,9 @@ jQuery( function( $ ) {
 	 * Note: This code with make form template (other then legacy form template) compatible with form grid.
 	 */
 	document.querySelectorAll( '.js-give-grid-modal-launcher' ).forEach( function( $formModalLauncher ) {
-		$formModalLauncher.addEventListener( 'click', function( evt ) {
+		$formModalLauncher.addEventListener( 'click', function() {
 			const $embedFormLauncher = $formModalLauncher.nextElementSibling.firstElementChild,
-				  $magnificPopContainer = document.querySelector( '.mfp-wrap.give-modal' );
+				$magnificPopContainer = document.querySelector( '.mfp-wrap.give-modal' );
 
 			$magnificPopContainer && $magnificPopContainer.classList.add( 'mfp-hide' );
 
@@ -97,7 +96,7 @@ jQuery( function( $ ) {
 		const $iframe = document.querySelector( '.modal-content iframe[data-autoScroll="1"]' );
 		if ( $iframe ) {
 			const containerId = $iframe.parentElement.parentElement.parentElement.getAttribute( 'id' ),
-				  $button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerId }"]` );
+				$button = document.querySelector( `.js-give-embed-form-modal-opener[data-form-id="${ containerId }"]` );
 
 			if ( $button ) {
 				$button.click();

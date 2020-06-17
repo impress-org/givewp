@@ -1,4 +1,4 @@
-/*globals Give, jQuery*/
+/* globals Give */
 
 import { iframeResize } from 'iframe-resizer';
 
@@ -42,15 +42,21 @@ export const initializeIframeResize = function( iframe ) {
 							iframe.style.minHeight = '';
 						}
 						break;
-					case 'showLoader':
-						parent.querySelector( '.iframe-loader' ).style.opacity = 1;
-						parent.querySelector( '.iframe-loader' ).style.transition = '';
-						iframe.style.visibility = 'hidden';
-						iframe.style.minHeight = `${ messageData.message.payload }px`;
-						break;
 				}
 			},
-			onInit: function( iframe ) {
+			onInit: function() {
+				let parentUnload = false;
+				window.addEventListener( 'beforeunload', function() {
+					parentUnload = true;
+				} );
+				iframe.contentWindow.addEventListener( 'beforeunload', function() {
+					if ( parentUnload === false ) {
+						iframe.parentElement.querySelector( '.iframe-loader' ).style.opacity = 1;
+						iframe.parentElement.querySelector( '.iframe-loader' ).style.transition = '';
+						iframe.style.visibility = 'hidden';
+					}
+				} );
+
 				iframe.iFrameResizer.sendMessage( {
 					currentPage: Give.fn.removeURLParameter( window.location.href, 'giveDonationAction' ),
 				} );
