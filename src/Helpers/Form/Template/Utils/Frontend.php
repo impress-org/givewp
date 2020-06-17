@@ -72,7 +72,7 @@ class Frontend {
 	 * @since 2.7.0
 	 */
 	public static function getPreviewDonationFormId() {
-		if ( ! is_user_logged_in() ) {
+		if ( ! current_user_can( 'edit_give_forms' ) ) {
 			return null;
 		}
 
