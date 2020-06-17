@@ -13,7 +13,7 @@ $image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $thi
 <div class="give-section introduction">
 	<h2 class="headline">
 		<?php
-		if ( empty( $headline ) || $headline === __( 'Auto Draft', 'give' ) ) {
+		if ( empty( $headline ) || $headline === __( 'Auto Draft' ) ) {
 			_e( 'Support Our Cause', 'give' );
 		} else {
 			esc_html_e( $headline, 'give' );
