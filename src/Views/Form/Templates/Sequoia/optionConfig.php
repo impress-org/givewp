@@ -6,7 +6,7 @@ use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
-$introHeadline    = ($formInfo->post_title && 'Auto Draft' !== $formInfo->post_title ) ? $formInfo->post_title : __( 'Support Our Cause', 'give' );
+$introHeadline    = ( $formInfo->post_title && ! empty( $formInfo->post_title ) ) ? $formInfo->post_title : __( 'Support Our Cause', 'give' );
 $introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
