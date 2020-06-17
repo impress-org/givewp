@@ -31,6 +31,11 @@ class Frontend {
 			return $formId;
 		}
 
+		// Check if admin previewing donation form.
+		if ( $formId = self::getPreviewDonationFormId() ) {
+			return $formId;
+		}
+
 		// Get form Id on ajax request.
 		if ( isset( $_REQUEST['give_form_id'] ) && ( $formId = absint( $_REQUEST['give_form_id'] ) ) ) {
 			return $formId;
