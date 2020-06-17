@@ -2,7 +2,7 @@
 /**
  * Give - Stripe Core | Admin Filters
  *
- * @since 2.5.0
+ * @since      2.5.0
  *
  * @package    Give
  * @subpackage Stripe Core
@@ -18,12 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Given a transaction ID, generate a link to the Stripe transaction ID details
  *
- * @since 2.5.0
- *
  * @param string $transaction_id The Transaction ID.
- * @param int    $payment_id The payment ID for this transaction.
+ * @param int    $payment_id     The payment ID for this transaction.
  *
  * @return string                 A link to the Transaction details
+ * @since 2.5.0
+ *
  */
 function give_stripe_link_transaction_id( $transaction_id, $payment_id ) {
 
@@ -41,37 +41,40 @@ add_filter( 'give_payment_details_transaction_id-stripe_becs', 'give_stripe_link
 /**
  * This function is used to add per-form Stripe account management.
  *
- * @since 2.7.0
- *
  * @param array $settings Settings List.
  * @param int   $form_id  Form ID.
  *
  * @return array
+ * @since 2.7.0
+ *
  */
 function give_stripe_add_metabox_settings( $settings, $form_id ) {
 	$form_account       = give_is_setting_enabled( give_clean( give_get_meta( $form_id, 'give_stripe_per_form_accounts', true ) ) );
 	$defaultAccountSlug = give_stripe_get_default_account_slug();
 
+	// Must have a Stripe payment gateway active.
+	if ( ! give_stripe_is_any_payment_method_active() ) {
+		return $settings;
+	}
+
 	$settings['stripe_form_account_options'] = [
 		'id'        => 'stripe_form_account_options',
-		'title'     => esc_html__( 'Manage Accounts', 'give' ),
-		'icon-html' => sprintf(
-			'<img class="give-stripe-icon" src="%1$s" />',
-			GIVE_PLUGIN_URL . 'assets/dist/images/admin/stripe-icon.png'
-		),
+		'title'     => esc_html__( 'Stripe Account', 'give' ),
+		'icon-html' => '<i class="fab fa-stripe-s"></i>',
 		'fields'    => [
 			[
-				'name'    => esc_html__( 'Account Options', 'give' ),
-				'id'      => 'give_stripe_per_form_accounts',
-				'type'    => 'radio_inline',
-				'default' => 'disabled',
-				'options' => [
-					'disabled' => esc_html__( 'Global', 'give' ),
-					'enabled'  => esc_html__( 'Customize', 'give' ),
+				'name'        => esc_html__( 'Account Options', 'give' ),
+				'id'          => 'give_stripe_per_form_accounts',
+				'type'        => 'radio_inline',
+				'default'     => 'disabled',
+				'options'     => [
+					'disabled' => esc_html__( 'Use Global Default Stripe Account', 'give' ),
+					'enabled'  => esc_html__( 'Customize Stripe Account', 'give' ),
 				],
+				'description' => esc_html__( 'Do you want to customize the Stripe account used by this donation form? The customize option allows you to modify the Stripe account this form processes payments through. By default new donation forms will use the Global Default Stripe account.', 'give' ),
 			],
 			[
-				'name'          => esc_html__( 'Stripe Accounts', 'give' ),
+				'name'          => esc_html__( 'Active Stripe Account', 'give' ),
 				'id'            => '_give_stripe_default_account',
 				'type'          => 'radio',
 				'default'       => $defaultAccountSlug,
@@ -82,10 +85,9 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 				'type'  => 'label',
 				'id'    => 'give-stripe-add-account-link',
 				'title' => sprintf(
-					'<a href="%1$s">%2$s</a> %3$s',
+					'<span style="display:block;"><a href="%1$s" class="button">%2$s</a></span>',
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ),
-					esc_html__( 'Click here', 'give' ),
-					esc_html__( 'to add new Stripe account.', 'give' )
+					esc_html__( 'Connect Stripe Account', 'give' )
 				),
 			],
 		],

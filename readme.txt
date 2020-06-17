@@ -223,6 +223,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.7.0: June, 2020 =
+* Add change log here.
+
 = 2.6.3: May 19th, 2020 =
 * New: Added a new payment gateway for Stripe called BECS Direct Debit payments for Australia. This includes support for one time and subscription payments. Note: Subscription payments are only supported via the Recurring Donations add-on. [#4590](https://github.com/impress-org/givewp/issues/4590)
 * Fix: Improved Stripe's error handling so that the error output is more descriptive of the actual problem and donations are not marked as complete if the card is denied by Stripe. [#4689](https://github.com/impress-org/givewp/issues/4689)
