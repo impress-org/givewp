@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Gateways\Stripe;
 
 /**
  * Check for Give_Stripe_Checkout existence.
@@ -61,6 +62,8 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			if ( 'redirect' === give_stripe_get_checkout_type() ) {
 				add_action( 'wp_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
+			} else {
+				add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
 			}
 
 		}
@@ -432,6 +435,25 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					});
 				})
 			</script>
+			<?php
+		}
+
+		public function showCheckoutModal( $formId, $args ) {
+			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
+			?>
+			<div id="give-stripe-checkout-modal-<?php echo $idPrefix; ?>" class="give-stripe-checkout-modal-content give-hidden">
+				<div class="give-stripe-checkout-modal-container">
+					<div class="give-stripe-checkout-modal-header">
+
+					</div>
+					<div class="give-stripe-checkout-modal-body">
+						<?php Stripe::showCreditCardFields( $idPrefix ); ?>
+					</div>
+					<div class="give-stripe-checkout-modal-footer">
+
+					</div>
+				</div>
+			</div>
 			<?php
 		}
 	}
