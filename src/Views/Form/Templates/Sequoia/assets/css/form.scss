@@ -613,6 +613,11 @@ p {
 		padding: 17px 20px 17px 22px !important;
 		display: flex;
 
+		input[type='checkbox'] {
+			bottom: 14px;
+			left: 27px;
+		}
+
 		#give_terms {
 			padding-bottom: 10px;
 		}
