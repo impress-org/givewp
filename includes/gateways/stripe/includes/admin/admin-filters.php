@@ -71,7 +71,7 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 					'disabled' => esc_html__( 'Use Global Default Stripe Account', 'give' ),
 					'enabled'  => esc_html__( 'Customize Stripe Account', 'give' ),
 				],
-				'description' => esc_html__( 'Do you want to customize the Stripe account used by this donation form? The customize option allows you to modify the Stripe account this form processes payments through. By default new donation forms will use the Global Default Stripe account.', 'give' ),
+				'description' => esc_html__( 'Do you want to customize the Stripe account for this donation form? The customize option allows you to modify the Stripe account this form processes payments through. By default, new donation forms will use the Global Default Stripe account.', 'give' ),
 			],
 			[
 				'name'          => esc_html__( 'Active Stripe Account', 'give' ),
