@@ -56,8 +56,6 @@ class AverageDonation extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
 		$income   = [];
 		$tooltips = [];
 
@@ -163,13 +161,15 @@ class AverageDonation extends Endpoint {
 
 	public function get_average_donation( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$earnings     = 0;
 		$paymentCount = 0;
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
-					$earnings     += $payment->total;
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
+					$earnings     += $paymentObject->total;
 					$paymentCount += 1;
 				}
 			}
@@ -188,7 +188,7 @@ class AverageDonation extends Endpoint {
 		$earnings     = 0;
 		$paymentCount = 0;
 
-		foreach ( $this->paymentObjects as $paymentObject ) {
+		foreach ( $paymentObjects as $paymentObject ) {
 			if ( $paymentObjects->date > $startStr && $paymentObject->date < $endStr ) {
 				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
 					$earnings     += $paymentObject->total;
