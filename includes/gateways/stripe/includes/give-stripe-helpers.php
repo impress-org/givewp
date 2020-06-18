@@ -52,7 +52,7 @@ function give_stripe_get_secret_key( $form_id = 0 ) {
 function give_stripe_get_connected_account_id( $form_id = 0 ) {
 	$default_account = give_stripe_get_default_account( $form_id );
 
-	return trim( $default_account['account_id'] );
+	return isset( $default_account['account_id'] ) ? trim( $default_account['account_id'] ) :  false;
 }
 
 /**
