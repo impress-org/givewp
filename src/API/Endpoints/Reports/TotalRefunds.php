@@ -46,8 +46,6 @@ class TotalRefunds extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
 		$tooltips = [];
 		$refunds  = [];
 
@@ -149,9 +147,11 @@ class TotalRefunds extends Endpoint {
 
 	public function get_refunds( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$refunds = 0;
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->status == 'refunded' && $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
 				$refunds += 1;
 			}
 		}

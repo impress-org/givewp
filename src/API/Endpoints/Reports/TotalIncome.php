@@ -44,8 +44,6 @@ class TotalIncome extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
 		$tooltips = [];
 		$income   = [];
 
@@ -159,13 +157,15 @@ class TotalIncome extends Endpoint {
 
 	public function get_income( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$income = 0;
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->currency === $this->currency ) {
-				if ( $payment->date > $startStr && $payment->date < $endStr ) {
-					if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
-						$income += $payment->total;
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->currency === $this->currency ) {
+				if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+					if ( $paymentObject->status === 'publish' || $paymentObject->status === 'give_subscription' ) {
+						$income += $paymentObject->total;
 					}
 				}
 			}
