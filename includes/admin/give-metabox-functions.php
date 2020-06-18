@@ -668,7 +668,11 @@ function give_wysiwyg( $field ) {
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 
+	// Since WP 3.9.0 WP does not allow square brackets in field id.
+	// If we pass square brackets in field id then code will work as expected but you will get PHP warnings.
+	// wp-includes/class-wp-editor.php::parse_settings::106
 	$field['unique_field_id'] = str_replace( [ '[', ']' ], [ '_', '' ], give_get_field_name( $field ) );
+
 	$editor_attributes        = [
 		'textarea_name' => isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'],
 		'textarea_rows' => '10',
