@@ -121,7 +121,7 @@ class TotalDonors extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevDonors    = $this->get_prev_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$prevDonors    = $this->get_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentDonors = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
@@ -159,23 +159,6 @@ class TotalDonors extends Endpoint {
 
 		$unique     = array_unique( $donors );
 		$donorCount = count( $unique );
-
-		return $donorCount;
-	}
-
-	public function get_prev_donors( $startStr, $endStr ) {
-
-		$prevPaymentObjects = $this->get_payments( $startStr, $endStr, 'date', -1 );
-
-		$donorIds = [];
-		foreach ( $prevPaymentObjects as $paymentObject ) {
-			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
-				$donorIds[] = $paymentObject->donor_id;
-			}
-		}
-
-		$uniqueDonorIds = array_unique( $donorIds );
-		$donorCount     = count( $uniqueDonorIds );
 
 		return $donorCount;
 	}

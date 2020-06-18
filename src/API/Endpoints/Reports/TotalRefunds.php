@@ -123,7 +123,7 @@ class TotalRefunds extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevRefunds    = $this->get_prev_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$prevRefunds    = $this->get_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentRefunds = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
@@ -159,17 +159,4 @@ class TotalRefunds extends Endpoint {
 		return $refunds;
 	}
 
-	public function get_prev_refunds( $startStr, $endStr ) {
-
-		$prevPaymentObjects = $this->get_payments( $startStr, $endStr, 'date', -1 );
-
-		$refundCount = 0;
-		foreach ( $prevPaymentObjects as $paymentObject ) {
-			if ( $paymentObject->status == 'refunded' && $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
-				$refundCount += 1;
-			}
-		}
-
-		return $refundCount;
-	}
 }
