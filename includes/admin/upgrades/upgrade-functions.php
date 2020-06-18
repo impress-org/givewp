@@ -3746,6 +3746,13 @@ function give_v270_upgrades() {
 		}
 	}
 
+	// Do need to go beyond this if you are on fresh install.
+	// Below code is to check if site have donations which processed with Stripe payment method
+	// if not then we will auto complete stripe background update.
+	if ( doing_action( 'give_upgrades' ) ) {
+		return;
+	}
+
 	$canStoreStripeInformationInDonation = (bool) $wpdb->get_var(
 		$wpdb->prepare(
 			"
