@@ -90,7 +90,7 @@ return [
 				'desc'       => __( 'Cotent displays before the level amounts, and is designed to provide context for those levels. Best practice: limit this to 1-2 short sentences crafted to drive the donor to decide and to remove friction.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo('sitename') )
+					'placeholder' => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo( 'sitename' ) ),
 				],
 			],
 			[
