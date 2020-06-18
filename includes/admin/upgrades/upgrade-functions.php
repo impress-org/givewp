@@ -3746,7 +3746,7 @@ function give_v270_upgrades() {
 		}
 	}
 
-	// Do need to go beyond this if you are on fresh install and on fresh install donationmeta property is not defined for $wpdb.
+	// Do not need to go beyond this if you are on fresh install and on fresh install donationmeta property is not defined for $wpdb.
 	// Below code is to check if site have donations which processed with Stripe payment method
 	// if not then we will auto complete stripe background update.
 	if ( ! property_exists( $wpdb, 'donationmeta' ) ) {
