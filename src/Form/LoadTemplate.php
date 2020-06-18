@@ -222,7 +222,7 @@ class LoadTemplate {
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
 		$list     = [];
-		$skip     = [ 'babel-polyfill' ];
+		$skip     = [ 'babel-polyfill', 'plupload-handlers' ];
 		$themeDir = get_template_directory_uri();
 
 		/* @var _WP_Dependency $data */
