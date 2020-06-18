@@ -16,19 +16,19 @@ $image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $thi
 		if ( empty( $headline ) || $headline === __( 'Auto Draft' ) ) {
 			_e( 'Support Our Cause', 'give' );
 		} else {
-			esc_html_e( $headline, 'give' );
+			echo $headline;
 		}
 		?>
 	</h2>
 	<?php if ( ! empty( $description ) ) : ?>
 		<div class="seperator"></div>
 		<p class="description">
-			<?php esc_html_e( $description, 'give' ); ?>
+			<?php echo $description; ?>
 		</p>
 	<?php endif; ?>
 	<?php if ( ! empty( $image ) ) : ?>
 		<div class="image">
-			<img src="<?php esc_html_e( $image, 'give' ); ?>" />
+			<img src="<?php echo $image; ?>" />
 		</div>
 	<?php endif; ?>
 
