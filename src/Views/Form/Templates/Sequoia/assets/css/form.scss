@@ -601,7 +601,7 @@ p {
 	#give_terms_agreement {
 		order: 3;
 		background: #fff;
-		border: 1px solid rgba(255, 255, 255, 0) !important;
+		border: 1px solid rgba(255, 255, 255, 0);
 		box-sizing: border-box;
 		box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
 		border-radius: 5px;
@@ -629,7 +629,7 @@ p {
 		}
 
 		&:hover {
-			border: 1px solid #3398db !important;
+			border: 1px solid #3398db;
 
 			.give-mc-message-text::before {
 				background-color: rgba(245, 245, 245, 0.815);
@@ -637,7 +637,7 @@ p {
 		}
 
 		&.active {
-			border: 1px solid #3398db !important;
+			border: 1px solid #3398db;
 		}
 	}
 
