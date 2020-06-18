@@ -12,13 +12,7 @@ $image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $thi
 
 <div class="give-section introduction">
 	<h2 class="headline">
-		<?php
-		if ( empty( $headline ) || $headline === __( 'Auto Draft' ) ) {
-			_e( 'Support Our Cause', 'give' );
-		} else {
-			echo $headline;
-		}
-		?>
+		<?php echo $headline; ?>
 	</h2>
 	<?php if ( ! empty( $description ) ) : ?>
 		<div class="seperator"></div>
