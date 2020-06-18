@@ -3,11 +3,11 @@
 use Give\Form\Template\Options;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
+global $pagenow;
 $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
-
-$introHeadline    = empty( $formInfo->post_title ) || $formInfo->post_title === __( 'Auto Draft' ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
+$introHeadline    = ( ! $formInfo->post_title || 'post-new.php' === $pagenow ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
 $introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
@@ -34,6 +34,7 @@ return [
 				'attributes' => [
 					'placeholder' => $introHeadline,
 				],
+				'default'    => $introHeadline,
 			],
 			[
 				'id'         => 'description',
@@ -90,7 +91,7 @@ return [
 				'desc'       => __( 'Do you want to customize the content that appears before amount options? The content displays above the amount option buttons during the second step. We recommend keeping it to 1-2 short sentences.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo('sitename') )
+					'placeholder' => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo( 'sitename' ) ),
 				],
 			],
 			[
