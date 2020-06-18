@@ -53,9 +53,15 @@ add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payme
  *
  * @since 2.7.0
  *
- * @return mixed
+ * @return array|bool
  */
-function __give_stripe_form_add_credentials( $form_html_tags, $form ) {
+function give_stripe_form_add_data_tag_keys( $form_html_tags, $form ) {
+
+	// Must have a Stripe payment gateway active.
+	if ( ! give_stripe_is_any_payment_method_active() ) {
+		return false;
+	}
+
 	$publishable_key = give_stripe_get_publishable_key( $form->ID );
 	$account_id      = give_stripe_get_connected_account_id( $form->ID );
 
@@ -65,4 +71,4 @@ function __give_stripe_form_add_credentials( $form_html_tags, $form ) {
 	return $form_html_tags;
 }
 
-add_filter( 'give_form_html_tags', '__give_stripe_form_add_credentials', 0, 2 );
+add_filter( 'give_form_html_tags', 'give_stripe_form_add_data_tag_keys', 0, 2 );
