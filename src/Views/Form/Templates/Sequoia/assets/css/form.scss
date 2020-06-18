@@ -598,6 +598,49 @@ p {
 		width: 100%;
 	}
 
+	#give_terms_agreement {
+		order: 3;
+		background: #fff;
+		border: 1px solid rgba(255, 255, 255, 0) !important;
+		box-sizing: border-box;
+		box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+		border-radius: 5px;
+		margin: 20px 0 0 0 !important;
+		padding: 0 !important;
+		position: relative;
+		transition: border 0.2s ease;
+		width: auto !important;
+		padding: 17px 20px 17px 22px !important;
+		display: flex;
+
+		#give_terms {
+			padding-bottom: 10px;
+		}
+
+		label {
+			margin: 0;
+			padding: 0 0 0 40px;
+			width: calc(100% - 180px);
+			display: inline-block;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 1.4;
+			position: relative;
+		}
+
+		&:hover {
+			border: 1px solid #3398db !important;
+
+			.give-mc-message-text::before {
+				background-color: rgba(245, 245, 245, 0.815);
+			}
+		}
+
+		&.active {
+			border: 1px solid #3398db !important;
+		}
+	}
+
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
 
