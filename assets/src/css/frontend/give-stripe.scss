@@ -43,6 +43,11 @@
 .give-modal--stripe-checkout {
 	border-top: 0;
 	max-width: 400px;
+	width: auto;
+	display: block;
+	overflow: hidden;
+	height: auto;
+	padding: 20px;
 
 	.give-modal__header {
 		background-color: #222;
@@ -95,9 +100,23 @@
 
 		.give-stripe-checkout-modal-container {
 			.give-stripe-checkout-modal-header {
-				background-color: #222;
+				background-color: #000;
 				color: #fff;
 				padding: 20px;
+				text-align: center;
+
+				.give-stripe-checkout-modal-close {
+					background: none;
+					padding: 15px;
+					font: inherit;
+					outline: inherit;
+					color: rgb(255, 255, 255);
+					cursor: pointer;
+					position: absolute;
+					top: 0;
+					right: 0;
+					border: none;
+				}
 
 				h3 {
 					color: #fff;
@@ -105,6 +124,21 @@
 					font-size: 18px;
 					font-weight: bold;
 					margin: 0 0 10px 0;
+				}
+
+				.give-stripe-checkout-form-title {
+					color: rgba(255, 255, 255, 0.5);
+					font-size: 16px;
+					font-weight: 500;
+				}
+
+				.give-stripe-checkout-donor-email {
+					@extend .give-stripe-checkout-form-title;
+				}
+
+				.give-stripe-checkout-donation-amount {
+					font-size: 36px;
+					font-weight: 600;
 				}
 			}
 

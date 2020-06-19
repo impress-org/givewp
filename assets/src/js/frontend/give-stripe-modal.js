@@ -1,4 +1,4 @@
-import {GiveModal} from "../plugins/modal";
+import { GiveModal } from '../plugins/modal';
 
 class GiveStripeModal extends GiveModal {
 	constructor( obj ) {
@@ -8,6 +8,8 @@ class GiveStripeModal extends GiveModal {
 		if ( 'undefined' !== typeof ( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
 			this.config.classes.modalWrapper = obj.modalWrapper;
 		}
+
+		this.config.mainClass = 'give-stripe-modal';
 
 		this.init();
 	}
@@ -55,6 +57,13 @@ class GiveStripeModal extends GiveModal {
 		}
 
 		return template;
+	}
+
+	render() {
+		jQuery.magnificPopup.instance.popupsCache = {};
+		jQuery.magnificPopup.open( this.config );
+
+		return this;
 	}
 }
 

@@ -63,9 +63,9 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				add_action( 'wp_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 			} else {
-				add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
-				remove_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
-				add_action( 'give_donation_form_after_cc_form', [ $this, 'checkoutSubmit' ], 9999, 2 );
+				//              add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
+				//              remove_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
+				//              add_action( 'give_donation_form_after_cc_form', [ $this, 'checkoutSubmit' ], 9999, 2 );
 			}
 
 		}
@@ -458,6 +458,56 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				<div class="give-stripe-checkout-modal-content">
 					<div class="give-stripe-checkout-modal-container">
 						<div class="give-stripe-checkout-modal-header">
+							<button class="give-stripe-checkout-modal-close">
+								<svg
+									width="20px"
+									height="20px"
+									viewBox="0 0 20 20"
+									version="1.1"
+									xmlns="http://www.w3.org/2000/svg"
+									xmlns:xlink="http://www.w3.org/1999/xlink"
+								>
+									<defs>
+										<path
+											d="M10,8.8766862 L13.6440403,5.2326459 C13.9542348,4.92245137 14.4571596,4.92245137 14.7673541,5.2326459 C15.0775486,5.54284044 15.0775486,6.04576516 14.7673541,6.3559597 L11.1238333,9.99948051 L14.7673541,13.6430016 C15.0775486,13.9531961 15.0775486,14.4561209 14.7673541,14.7663154 C14.4571596,15.0765099 13.9542348,15.0765099 13.6440403,14.7663154 L10,11.1222751 L6.3559597,14.7663154 C6.04576516,15.0765099 5.54284044,15.0765099 5.2326459,14.7663154 C4.92245137,14.4561209 4.92245137,13.9531961 5.2326459,13.6430016 L8.87616671,9.99948051 L5.2326459,6.3559597 C4.92245137,6.04576516 4.92245137,5.54284044 5.2326459,5.2326459 C5.54284044,4.92245137 6.04576516,4.92245137 6.3559597,5.2326459 L10,8.8766862 Z"
+											id="path-1"
+										></path>
+									</defs>
+									<g
+										id="Payment-recipes"
+										stroke="none"
+										stroke-width="1"
+										fill="none"
+										fill-rule="evenodd"
+									>
+										<g
+											id="Elements-Popup"
+											transform="translate(-816.000000, -97.000000)"
+										>
+											<g id="close-btn" transform="translate(816.000000, 97.000000)">
+												<circle
+													id="Oval"
+													fill-opacity="0.3"
+													fill="#AEAEAE"
+													cx="10"
+													cy="10"
+													r="10"
+												></circle>
+												<mask id="mask-2" fill="white">
+													<use xlink:href="#path-1"></use>
+												</mask>
+												<use
+													id="Mask"
+													fill-opacity="0.5"
+													fill="#FFFFFF"
+													opacity="0.5"
+													xlink:href="#path-1"
+												></use>
+											</g>
+										</g>
+									</g>
+								</svg>
+							</button>
 							<h3><?php echo get_bloginfo( 'name' ); ?></h3>
 							<div class="give-stripe-checkout-form-title">
 								<?php echo get_the_title( $formId ); ?>
@@ -497,7 +547,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				<input
 					id="give-stripe-checkout-modal-btn-<?php echo $idPrefix; ?>"
 					class="give-stripe-checkout-modal-btn"
-					type="button"
+					type="submit"
 					name="give-stripe-checkout-submit"
 					value="<?php esc_html_e( 'Donate Now', 'give' ); ?>"
 				/>

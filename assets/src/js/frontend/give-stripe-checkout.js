@@ -1,4 +1,5 @@
 import { GiveStripeModal } from './give-stripe-modal';
+import { GiveConfirmModal } from '../plugins/modal';
 
 document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 	const stripe_handler = [];
@@ -178,30 +179,32 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		// 	},
 		// } );
 
-		modalBtn.addEventListener( 'click', ( e ) => {
-			const modal = form_element.querySelector( '.give-stripe-checkout-modal' );
-
-			modal.classList.add( 'give-stripe-checkout-show-modal' );
-			e.preventDefault();
-		} );
+		// modalBtn.addEventListener( 'click', ( e ) => {
+		// 	const modal = form_element.querySelector( '.give-stripe-checkout-modal' );
+		// 	const email = form_element.querySelector( 'input[name="give_email"]' ).value;
+		//
+		// 	modal.querySelector( '.give-stripe-checkout-donor-email' ).innerHTML = email;
+		// 	modal.classList.add( 'give-stripe-checkout-show-modal' );
+		// 	e.preventDefault();
+		// } );
 
 		form_element.onsubmit = function( evt ) {
 			const selectedGateway = form_element.querySelector( '.give-gateway:checked' ).value;
 			const modal = form_element.querySelector( '.give-stripe-checkout-modal' );
 
 			// modal.classList.add( 'give-stripe-checkout-show-modal' );
-			// new GiveStripeModal(
-			// 	{
-			// 		modalWrapper: 'give-modal--stripe-checkout',
-			// 		modalContent: {
-			// 			title: 'Hello World',
-			// 			price: '$100',
-			// 			email: 'mehul.gohil0810@gmail.com',
-			// 			formTitle: 'Save the Whales',
-			// 			btnTitle: 'Donate',
-			// 		},
-			// 	}
-			// ).render();
+			new GiveStripeModal(
+				{
+					modalWrapper: 'give-modal--stripe-checkout',
+					modalContent: {
+						title: 'Hello World',
+						price: '$100',
+						email: 'mehul.gohil0810@gmail.com',
+						formTitle: 'Save the Whales',
+						btnTitle: 'Donate',
+					},
+				}
+			).render();
 
 			evt.preventDefault();
 			// If Stripe Checkout is enabled, then restrict default form submission.
