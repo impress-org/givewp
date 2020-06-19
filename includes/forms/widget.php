@@ -133,7 +133,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 			unset( $instance['tmp_display_style'], $instance['tmp_continue_button_title'] );
 
-			if ( ! empty( $instance['introduction_text'] ) ) {
+			if ( 'button' === $instance['display_style'] && ! empty( $instance['introduction_text'] ) ) {
 				printf(
 					'<p>%1$s</p>',
 					$instance['introduction_text']
