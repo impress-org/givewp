@@ -65,13 +65,13 @@ class Give_Forms_Widget extends WP_Widget {
 		parent::__construct(
 			strtolower( $this->self ),
 			esc_html__( 'GiveWP - Donation Form', 'give' ),
-			array(
+			[
 				'description' => esc_html__( 'Display a GiveWP Donation Form in your theme\'s widget powered sidebar.', 'give' ),
-			)
+			]
 		);
 
-		add_action( 'widgets_init', array( $this, 'widget_init' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_widget_scripts' ) );
+		add_action( 'widgets_init', [ $this, 'widget_init' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_widget_scripts' ] );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Give_Forms_Widget extends WP_Widget {
 			return;
 		}
 
-		$form_id = (int) $instance['id'];
+		$form_id      = (int) $instance['id'];
 		$isLegacyForm = FormUtils::isLegacyForm( $form_id );
 
 		echo $args['before_widget']; // XSS ok.
@@ -164,7 +164,7 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @param array $instance Current settings.
 	 */
 	public function form( $instance ) {
-		$defaults = array(
+		$defaults = [
 			'title'                     => '',
 			'id'                        => 0,
 			'float_labels'              => 'global',
@@ -178,7 +178,7 @@ class Give_Forms_Widget extends WP_Widget {
 			// These settings are aliases for shortcode setting which prevent conflict when saving and showing setting. Later we will use them to set original settings.
 			'tmp_display_style'         => 'button',
 			'tmp_continue_button_title' => __( 'Continue', 'give' ),
-		);
+		];
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
 
