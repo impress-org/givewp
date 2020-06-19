@@ -612,10 +612,16 @@ p {
 		width: auto !important;
 		padding: 17px 20px 17px 22px !important;
 		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 
 		input[type='checkbox'] {
 			bottom: 14px;
 			left: 27px;
+		}
+
+		#give_show_terms {
+			order: 3;
 		}
 
 		#give_terms {
