@@ -224,7 +224,15 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 
 = 2.7.0: June, 2020 =
-* Add change log here.
+* New: We're excited to announce a new way to create your donation forms called "Form Templates". The first template is allows you to create a highly customizable multi-step donation form where you control all the text, colors, and images in place. Be sure to update to the latest version of your add-ons for full compatibility. [Read more about Form Templates](LINK HERE)
+* New: Multiple Stripe Account is here! Now you can connect to multiple Stripe accounts and set them per donation form. That means organizations, like charities with chapters or schools with clubs that need to raise money online, can create different forms to accept donations through separate Stripe accounts. [Read more about Stripe Multi-Accounts](LINK HERE)
+* Tweak: Previous to this release we were packaging two TCPDF packages for backwards compatibility reason. We removed one of the packages and now are relying on the composer package. This means that you'll need to be running the PDF Receipts version add-on at 2.3.4 or higher for compatibility. [#4656](https://github.com/impress-org/givewp/pull/4656) 
+* Fix: If you install GiveWP and didn't configure anything there would be a JavaScript error on the frontend if Stripe is not connected but enabled, which it is by default for new installs. [#4709](https://github.com/impress-org/givewp/pull/4709)
+* Fix: Monaco doesn't have states so don't display or require a state field when that country is selected. [#4773](https://github.com/impress-org/givewp/pull/4773) 
+* Fix: Properly internationalized a stripe in Stripe so translations properly display. [#4677](https://github.com/impress-org/givewp/pull/4677)
+* Fix: The "Add-ons" like on the plugin activation welcome screen was broken. [#4843](https://github.com/impress-org/givewp/pull/4843)
+* Fix: Resolved a caching conflict with WP Rocket that was preventing donation forms from being cached properly. [#4546](https://github.com/impress-org/givewp/pull/4546) 
+* Fix: Prevented a fatal error that could occur on the Donor profile screen in WP-Admin when the Stripe add-on is active but no Stripe payment gateways are enabled. [#4787](https://github.com/impress-org/givewp/pull/4787)
 
 = 2.6.3: May 19th, 2020 =
 * New: Added a new payment gateway for Stripe called BECS Direct Debit payments for Australia. This includes support for one time and subscription payments. Note: Subscription payments are only supported via the Recurring Donations add-on. [#4590](https://github.com/impress-org/givewp/issues/4590)
