@@ -90,11 +90,8 @@ class Give_Forms_Widget extends WP_Widget {
 		// Directories of assets.
 		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/';
 
-		// Use minified libraries if SCRIPT_DEBUG is turned off.
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets' . $suffix . '.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
-		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets' . $suffix . '.css', [], GIVE_VERSION, false );
+		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
+		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets.css', [], GIVE_VERSION, false );
 	}
 
 	/**
