@@ -114,14 +114,7 @@ class Give_Forms_Widget extends WP_Widget {
 		}
 
 		$form_id = (int) $instance['id'];
-
-		// Use alias setting to set display setting when form template other then Legacy.
-		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
-			$instance['display_style']         = $instance['tmp_display_style'];
-			$instance['continue_button_title'] = $instance['tmp_continue_button_title'];
-
-			unset( $instance['tmp_display_style'], $instance['tmp_continue_button_title'] );
-		}
+		$isLegacyForm = FormUtils::isLegacyForm( $form_id );
 
 		echo $args['before_widget']; // XSS ok.
 
@@ -136,11 +129,19 @@ class Give_Forms_Widget extends WP_Widget {
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : ''; // XSS ok.
 
-		if ( ! empty( $instance['introduction_text'] ) ) {
-			printf(
-				'<p>%1$s</p>',
-				$instance['introduction_text']
-			);
+		// Use alias setting to set display setting when form template other then Legacy.
+		if ( ! $isLegacyForm ) {
+			$instance['display_style']         = $instance['tmp_display_style'];
+			$instance['continue_button_title'] = $instance['tmp_continue_button_title'];
+
+			unset( $instance['tmp_display_style'], $instance['tmp_continue_button_title'] );
+
+			if ( ! empty( $instance['introduction_text'] ) ) {
+				printf(
+					'<p>%1$s</p>',
+					$instance['introduction_text']
+				);
+			}
 		}
 
 		echo give_form_shortcode( $instance );
