@@ -281,7 +281,9 @@ abstract class Template {
 	 * @since 2.7.0
 	 *
 	 */
-	abstract public function getFormHeading( $formId );
+	public function getFormHeading( $formId ) {
+		return get_the_title( $formId );
+	}
 
 	/**
 	 * Get form image
@@ -292,7 +294,9 @@ abstract class Template {
 	 * @since 2.7.0
 	 *
 	 */
-	abstract public function getFormFeaturedImage( $formId );
+	public function getFormFeaturedImage( $formId ) {
+		return get_the_post_thumbnail_url( $formId );
+	}
 
 	/**
 	 * Get form excerpt
@@ -303,5 +307,7 @@ abstract class Template {
 	 * @since 2.7.0
 	 *
 	 */
-	abstract public function getFormExcerpt( $formId );
+	public function getFormExcerpt( $formId ) {
+		return get_the_excerpt( $formId );
+	}
 }
