@@ -252,6 +252,13 @@
 					input: 'input[name="give_constant_contact_signup"]',
 				} );
 
+				// Setup terms and conditions opt-in event listeners
+				setupCheckbox( {
+					container: '#give_terms_agreement',
+					label: '#give_terms_agreement label',
+					input: 'input[name="give_agree_to_terms"]',
+				} );
+
 				// Show Sequoia loader on click/touchend
 				$( 'body.give-form-templates' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function() {
 					//Override submit loader with Sequoia loader
@@ -439,6 +446,7 @@
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
 			'.give-mailchimp-fieldset',
+			'#give_terms_agreement',
 			'.give-donation-submit',
 		];
 

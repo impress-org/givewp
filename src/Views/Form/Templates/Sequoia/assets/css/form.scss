@@ -598,6 +598,63 @@ p {
 		width: 100%;
 	}
 
+	#give_terms_agreement {
+		order: 3;
+		background: #fff;
+		border: 1px solid rgba(255, 255, 255, 0);
+		box-sizing: border-box;
+		box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+		border-radius: 5px;
+		margin: 20px 0 0 0 !important;
+		padding: 0 !important;
+		position: relative;
+		transition: border 0.2s ease;
+		width: auto !important;
+		padding: 17px 20px 17px 22px !important;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+
+		input[type='checkbox'] {
+			bottom: 14px;
+			left: 27px;
+		}
+
+		#give_show_terms {
+			order: 3;
+		}
+
+		#give_terms {
+			margin-bottom: 17px;
+			max-height: 300px;
+			overflow-y: scroll;
+		}
+
+		label {
+			margin: 0;
+			padding: 0 0 0 40px;
+			width: calc(100% - 180px);
+			display: inline-block;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 1.4;
+			position: relative;
+			cursor: pointer;
+		}
+
+		&:hover {
+			border: 1px solid #3398db;
+
+			.give-mc-message-text::before {
+				background-color: rgba(245, 245, 245, 0.815);
+			}
+		}
+
+		&.active {
+			border: 1px solid #3398db;
+		}
+	}
+
 	[id*='give-checkout-login-register-'] {
 		width: 100%;
 
