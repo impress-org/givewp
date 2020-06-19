@@ -18,7 +18,7 @@ $sequoiaTemplate = Give()->templates->getTemplate();
 $receipt         = $sequoiaTemplate->getReceiptDetails( $donation->ID );
 
 /* @var LineItem|null $pdfReceiptDownloadLinkDetailItem */
-$pdfReceiptDownloadLinkDetailItem = null;
+$pdfReceiptLinkDetailItem = null;
 
 ob_start();
 ?>
