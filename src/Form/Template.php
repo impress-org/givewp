@@ -10,6 +10,7 @@
 namespace Give\Form;
 
 use Give\Form\Template\Options;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Receipt\DonationReceipt;
 
@@ -267,4 +268,37 @@ abstract class Template {
 
 		return $receipt;
 	}
+
+	/**
+	 * Get form heading
+	 *
+	 * @param  int  $formId
+	 *
+	 * @return string
+	 *@since 2.7.0
+	 *
+	 */
+	abstract public function getFormHeading( $formId );
+
+	/**
+	 * Get form image
+	 *
+	 * @param  int  $formId
+	 *
+	 * @return string
+	 *@since 2.7.0
+ *
+ */
+	abstract public function getFormFeaturedImage( $formId );
+
+	/**
+	 * Get form excerpt
+	 *
+	 * @param  int|null  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+ *
+ */
+	abstract public function getFormExcerpt( $formId );
 }
