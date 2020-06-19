@@ -338,7 +338,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 		return ! empty( $templateOptions['introduction']['image'] ) ?
 			$templateOptions['introduction']['image'] :
-			get_the_post_thumbnail_url( $formId );
+			get_the_post_thumbnail_url( $formId, 'full' );
 	}
 
 	/**

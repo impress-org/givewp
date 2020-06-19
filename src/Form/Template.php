@@ -295,7 +295,7 @@ abstract class Template {
 	 *
 	 */
 	public function getFormFeaturedImage( $formId ) {
-		return get_the_post_thumbnail_url( $formId );
+		return get_the_post_thumbnail_url( $formId, 'full' );
 	}
 
 	/**
