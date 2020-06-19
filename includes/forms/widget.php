@@ -171,7 +171,7 @@ class Give_Forms_Widget extends WP_Widget {
 			'display_style'             => 'modal',
 			'show_content'              => 'none',
 			'continue_button_title'     => __( 'Continue', 'give' ),
-			'introduction_text'         => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
+			'introduction_text'         => __( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' ),
 			'button_text'               => __( 'Donate Now', 'give' ),
 			'button_color'              => '#28C77B',
 
