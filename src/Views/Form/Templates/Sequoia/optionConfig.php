@@ -8,8 +8,7 @@ $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
 $introHeadline    = ( ! $formInfo->post_title || 'post-new.php' === $pagenow ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
-$introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
-
+$introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
 	'introduction'        => [
