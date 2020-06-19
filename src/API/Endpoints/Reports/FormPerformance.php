@@ -28,19 +28,19 @@ class FormPerformance extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
+		$paymentObjects = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
 
 		$forms    = [];
 		$labels   = [];
 		$tooltips = [];
 
-		if ( count( $this->payments ) > 0 ) {
+		if ( count( $paymentObjects ) > 0 ) {
 
-			foreach ( $this->payments as $payment ) {
-				if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
-					$forms[ $payment->form_id ]['income']    = isset( $forms[ $payment->form_id ]['income'] ) ? $forms[ $payment->form_id ]['income'] += $payment->total : $payment->total;
-					$forms[ $payment->form_id ]['donations'] = isset( $forms[ $payment->form_id ]['donations'] ) ? $forms[ $payment->form_id ]['donations'] += 1 : 1;
-					$forms[ $payment->form_id ]['title']     = $payment->form_title;
+			foreach ( $paymentObjects as $paymentObject ) {
+				if ( $paymentObject->status === 'publish' || $paymentObject->status === 'give_subscription' ) {
+					$forms[ $paymentObject->form_id ]['income']    = isset( $forms[ $paymentObject->form_id ]['income'] ) ? $forms[ $paymentObject->form_id ]['income'] += $paymentObject->total : $paymentObject->total;
+					$forms[ $paymentObject->form_id ]['donations'] = isset( $forms[ $paymentObject->form_id ]['donations'] ) ? $forms[ $paymentObject->form_id ]['donations'] += 1 : 1;
+					$forms[ $paymentObject->form_id ]['title']     = $paymentObject->form_title;
 				}
 			}
 
