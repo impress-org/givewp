@@ -117,7 +117,7 @@ class Give_Welcome {
 				<?php esc_html_e( 'What\'s New', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>"
-			   href="https://givewp.com/addons/?utm_source=welcome-screen&utm_medium=getting-started">
+			   href="https://givewp.com/addons/?utm_source=welcome-screen&utm_medium=getting-started" target="_blank">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>"
