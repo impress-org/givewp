@@ -306,4 +306,55 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 		return $receipt;
 	}
+
+	/**
+	 * Get form heading
+	 *
+	 * @param  int  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 *
+	 */
+	public function getFormHeading( $formId ) {
+		$templateOptions = FormTemplateUtils::getOptions( $formId );
+
+		return ! empty( $templateOptions['introduction']['headline'] ) ?
+			$templateOptions['introduction']['headline'] :
+			get_the_title( $formId );
+	}
+
+	/**
+	 * Get form image
+	 *
+	 * @param  int  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 *
+	 */
+	public function getFormFeaturedImage( $formId ) {
+		$templateOptions = FormTemplateUtils::getOptions( $formId );
+
+		return ! empty( $templateOptions['introduction']['image'] ) ?
+			$templateOptions['introduction']['image'] :
+			get_the_post_thumbnail_url( $formId, 'full' );
+	}
+
+	/**
+	 * Get form excerpt
+	 *
+	 * @param  int|null  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 *
+	 */
+	public function getFormExcerpt( $formId ) {
+		$templateOptions = FormTemplateUtils::getOptions( $formId );
+
+		return ! empty( $templateOptions['introduction']['description'] ) ?
+			$templateOptions['introduction']['description'] :
+			get_the_excerpt( $formId );
+	}
 }

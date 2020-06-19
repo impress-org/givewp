@@ -188,7 +188,7 @@ class IframeView {
 				%1$s
 				%4$s
 				data-autoScroll="%2$s"
-				onload="Give.initializeIframeResize(this)"
+				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
 				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
 			$this->modal ? "data-src=\"{$this->url}\"" : "src=\"{$this->url}\"",
 			$this->autoScroll,
