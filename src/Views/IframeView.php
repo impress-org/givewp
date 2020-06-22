@@ -169,13 +169,23 @@ class IframeView {
 	}
 
 	/**
+	 * Return whether or not rest api request to render donation form block.
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	private function isDonationFormBlockRendererApiRequest() {
+		return false !== strpos( $_SERVER['REQUEST_URI'], rest_get_url_prefix() . '/wp/v2/block-renderer/give/donation-form' );
+	}
+
+	/**
 	 * Extra extra query param to iframe url.
 	 *
 	 * @since 2.7.0
 	 */
 	private function addExtraQueryParams() {
 		// We can prevent live donation on in appropriate situation like: previewing donation form (with draft status)
-		if ( FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId() ) {
+		if ( FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId() || $this->isDonationFormBlockRendererApiRequest() ) {
 			$this->url = add_query_arg(
 				[ 'giveDisableDonateNowButton' => 1 ],
 				$this->url
