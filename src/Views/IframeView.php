@@ -109,7 +109,7 @@ class IframeView {
 	 */
 	public function setURL( $url = null ) {
 		$this->url = add_query_arg(
-			array_merge( [ 'giveDonationFormInIframe' => 1 ] ),
+			[ 'giveDonationFormInIframe' => 1 ],
 			$url
 		);
 
