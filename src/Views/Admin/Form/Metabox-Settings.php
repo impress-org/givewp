@@ -42,7 +42,7 @@ $registeredTemplates = Give()->templates->getTemplates();
 		<p>
 			<?php _e( 'What is a Form Template?', 'give' ); ?>
 		</p>
-		<p class="give-field-description form-template-description"><?php _e( 'In GiveWP, a form template is a collection of templates and stylesheets used to define then appearance and display of a donation form on your website. Each one comes with a different design, layout and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the template chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
+		<p class="give-field-description form-template-description"><?php _e( 'In GiveWP, a form template is a collection of templates and stylesheets used to define the appearance and display of a donation form on your website. Each one comes with a different design, layout and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the template chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
 
 		<div class="form-template-notice give-notice notice notice-success inline">
 			<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
