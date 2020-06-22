@@ -10,6 +10,7 @@
 namespace Give\Route;
 
 use Give\Controller\Form as Controller;
+use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -172,7 +173,9 @@ class Form {
 				)
 			);
 
-			$formId = $form->ID;
+			if ( $form instanceof WP_Post ) {
+				$formId = $form->ID;
+			}
 		}
 
 		return $formId;

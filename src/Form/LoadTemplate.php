@@ -12,6 +12,7 @@ namespace Give\Form;
 use _WP_Dependency;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
@@ -199,7 +200,7 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	public function disableDonationButtonInPreviewMode( $buttonHtml, $formId ) {
-		if ( $formId === (int) FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId() ) {
+		if ( Utils::canDisableDonationNowButton() ) {
 			$search = 'input type="submit"';
 
 			$buttonHtml = str_replace(

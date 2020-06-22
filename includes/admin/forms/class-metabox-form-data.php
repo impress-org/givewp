@@ -1054,6 +1054,11 @@ class Give_MetaBox_Form_Data {
 	 * @param int    $formID
 	 */
 	public function save_form_template_settings( $meta_key, $new_template, $formID ) {
+		// Save setting for new template only if it is not empty.
+		if ( ! $new_template ) {
+			return;
+		}
+
 		$options = $_POST[ $new_template ];
 
 		// Exit
