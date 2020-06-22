@@ -169,6 +169,21 @@ class IframeView {
 	}
 
 	/**
+	 * Extra extra query param to iframe url.
+	 *
+	 * @since 2.7.0
+	 */
+	private function addExtraQueryParams() {
+		// We can prevent live donation on in appropriate situation like: previewing donation form (with draft status)
+		if ( FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId() ) {
+			$this->url = add_query_arg(
+				[ 'giveDisableDonateNowButton' => 1 ],
+				$this->url
+			);
+		}
+	}
+
+	/**
 	 * Get iframe HTML.
 	 *
 	 * @return string
@@ -289,6 +304,8 @@ class IframeView {
 		$this->minHeight    = $this->template->getFormStartingHeight( $this->formId );
 
 		$this->url = $this->url ?: $this->getIframeURL();
+
+		$this->addExtraQueryParams();
 	}
 
 	/**
