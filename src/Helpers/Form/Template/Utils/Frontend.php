@@ -67,6 +67,7 @@ class Frontend {
 
 	/**
 	 * Return form id if admin previewing donation form.
+	 * Note: only for internal use. This function can be update or remove in future.
 	 *
 	 * @return int|null
 	 * @since 2.7.0
