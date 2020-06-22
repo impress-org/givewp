@@ -746,9 +746,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		} else {
 			$email  = give_get_payment_user_email( $payment->ID );
 			$value .= sprintf(
-				'<a href="%1$s">%2$s</a>',
+				'<a href="%1$s">%2$s (%3$s)</a>',
 				esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ),
-				give_get_donor_name_by( $payment->ID, 'donation' )
+				give_get_donor_name_by( $payment->ID, 'donation' ),
+				esc_html__( 'donor missing', 'give' )
 			);
 		}
 
