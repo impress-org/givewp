@@ -39,21 +39,26 @@ export const initializeIframeResize = function( iframe ) {
 							parent.querySelector( '.iframe-loader' ).style.transition = 'opacity 0.2s ease';
 							iframe.style.visibility = 'visible';
 							iframe.style.minHeight = '';
+							parent.style.minHeight = iframe.offsetHeight;
 						}
 						break;
 				}
 			},
 			onInit: function() {
+				const parent = iframe.parentElement;
+
 				let parentUnload = false;
 				window.addEventListener( 'beforeunload', function() {
 					parentUnload = true;
 				} );
+
 				iframe.contentWindow.addEventListener( 'beforeunload', function() {
 					if ( parentUnload === false ) {
 						iframe.scrollIntoView( { behavior: 'smooth', inline: 'nearest' } );
 						iframe.parentElement.querySelector( '.iframe-loader' ).style.opacity = 1;
 						iframe.parentElement.querySelector( '.iframe-loader' ).style.transition = '';
 						iframe.style.visibility = 'hidden';
+						parent.style.minHeight = iframe.offsetHeight;
 					}
 				} );
 
