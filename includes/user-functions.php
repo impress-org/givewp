@@ -495,10 +495,7 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 
 	$donor = new Give_Donor( $donor_id, (bool) $args['by_user_id'] );
 
-	$address = $donor->get_donor_address( $args );
-
-	return $address;
-
+	return $donor->get_donor_address( $args );
 }
 
 /**
