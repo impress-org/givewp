@@ -26,7 +26,6 @@ export const initializeIframeResize = function( iframe ) {
 
 				switch ( messageData.message.action ) {
 					case 'giveEmbedFormContentLoaded':
-
 						const timer = setTimeout( function() {
 							revealIframe();
 						}, 400 );
@@ -51,6 +50,7 @@ export const initializeIframeResize = function( iframe ) {
 				} );
 				iframe.contentWindow.addEventListener( 'beforeunload', function() {
 					if ( parentUnload === false ) {
+						iframe.scrollIntoView( { behavior: 'smooth', inline: 'nearest' } );
 						iframe.parentElement.querySelector( '.iframe-loader' ).style.opacity = 1;
 						iframe.parentElement.querySelector( '.iframe-loader' ).style.transition = '';
 						iframe.style.visibility = 'hidden';
