@@ -745,7 +745,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 			}
 		} else {
 			$email  = give_get_payment_user_email( $payment->ID );
-			$value .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . __( '(donor missing)', 'give' ) . '</a>';
+			$value .= sprintf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ),
+				give_get_donor_name_by( $payment->ID, 'donation' )
+			);
 		}
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'donor' );
