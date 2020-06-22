@@ -212,7 +212,7 @@ class Utils {
 	 * @since 2.7.0
 	 * @return bool
 	 */
-	public static function canDisableDonationNowButton(){
+	public static function canDisableDonationNowButton() {
 		return ! empty( $_GET['giveDisableDonateNowButton'] );
 	}
 }
