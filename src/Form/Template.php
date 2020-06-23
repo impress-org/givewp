@@ -10,6 +10,7 @@
 namespace Give\Form;
 
 use Give\Form\Template\Options;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Receipt\DonationReceipt;
 
@@ -86,7 +87,7 @@ abstract class Template {
 	 * Returns starting height for iframe (in pixels), this is used to predict iframe height before the iframe loads
 	 * Implemented in includes/shortcodes.php:
 	 *
-	 * @param int $formId Form ID
+	 * @param  int  $formId  Form ID
 	 *
 	 * @return int
 	 **/
@@ -110,9 +111,9 @@ abstract class Template {
 	/**
 	 * Get loading view filepath
 	 *
+	 * @return string
 	 * @since 2.7.0
 	 *
-	 * @return string
 	 */
 	public function getLoadingView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultLoadingView.php';
@@ -121,9 +122,9 @@ abstract class Template {
 	/**
 	 * Get form view filepath
 	 *
+	 * @return string
 	 * @since 2.7.0
 	 *
-	 * @return string
 	 */
 	public function getFormView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormTemplate.php';
@@ -132,9 +133,9 @@ abstract class Template {
 	/**
 	 * Get receipt view filepath
 	 *
+	 * @return string
 	 * @since 2.7.0
 	 *
-	 * @return string
 	 */
 	public function getReceiptView() {
 		return GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormReceiptTemplate.php';
@@ -188,14 +189,17 @@ abstract class Template {
 	 * @since 2.7.0
 	 */
 	public function getFailedDonationMessage() {
-		return esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' );
+		return esc_html__(
+			'We\'re sorry, your donation failed to process. Please try again or contact site support.',
+			'give'
+		);
 	}
 
 
 	/**
 	 * Get failed donation page URL.
 	 *
-	 * @param int $formId
+	 * @param  int  $formId
 	 *
 	 * @return mixed
 	 * @since 2.7.0
@@ -207,8 +211,8 @@ abstract class Template {
 	/**
 	 * Get donate now button label text.
 	 *
-	 * @since 2.7.0
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function getDonateNowButtonLabel() {
 		return __( 'Donate Now', 'give' );
@@ -217,8 +221,8 @@ abstract class Template {
 	/**
 	 * Get continue to donation form button label text.
 	 *
-	 * @since 2.7.0
 	 * @return string
+	 * @since 2.7.0
 	 */
 	public function getContinueToDonationFormLabel() {
 		return __( 'Donate Now', 'give' );
@@ -227,8 +231,8 @@ abstract class Template {
 	/**
 	 * Get donation introduction text.
 	 *
-	 * @since 2.7.0
 	 * @return string|null
+	 * @since 2.7.0
 	 */
 	public function getDonationIntroductionContent() {
 		return null;
@@ -250,10 +254,10 @@ abstract class Template {
 	/**
 	 * Get receipt details.
 	 *
-	 * @since 2.7.0
-	 * @param int $donationId
+	 * @param  int  $donationId
 	 *
 	 * @return DonationReceipt
+	 * @since 2.7.0
 	 */
 	public function getReceiptDetails( $donationId ) {
 		$receipt = new DonationReceipt( $donationId );
@@ -266,5 +270,44 @@ abstract class Template {
 		do_action( 'give_new_receipt', $receipt );
 
 		return $receipt;
+	}
+
+	/**
+	 * Get form heading
+	 *
+	 * @param  int  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 *
+	 */
+	public function getFormHeading( $formId ) {
+		return get_the_title( $formId );
+	}
+
+	/**
+	 * Get form image
+	 *
+	 * @param  int  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 *
+	 */
+	public function getFormFeaturedImage( $formId ) {
+		return get_the_post_thumbnail_url( $formId, 'full' );
+	}
+
+	/**
+	 * Get form excerpt
+	 *
+	 * @param  int|null  $formId
+	 *
+	 * @return string
+	 * @since 2.7.0
+	 *
+	 */
+	public function getFormExcerpt( $formId ) {
+		return get_the_excerpt( $formId );
 	}
 }

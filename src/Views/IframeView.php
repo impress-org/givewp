@@ -109,7 +109,7 @@ class IframeView {
 	 */
 	public function setURL( $url = null ) {
 		$this->url = add_query_arg(
-			array_merge( [ 'giveDonationFormInIframe' => 1 ] ),
+			[ 'giveDonationFormInIframe' => 1 ],
 			$url
 		);
 
@@ -169,6 +169,31 @@ class IframeView {
 	}
 
 	/**
+	 * Return whether or not rest api request to render donation form block.
+	 *
+	 * @return bool
+	 * @since 2.7.0
+	 */
+	private function isDonationFormBlockRendererApiRequest() {
+		return false !== strpos( $_SERVER['REQUEST_URI'], rest_get_url_prefix() . '/wp/v2/block-renderer/give/donation-form' );
+	}
+
+	/**
+	 * Extra extra query param to iframe url.
+	 *
+	 * @since 2.7.0
+	 */
+	private function addExtraQueryParams() {
+		// We can prevent live donation on in appropriate situation like: previewing donation form (with draft status)
+		if ( FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId() || $this->isDonationFormBlockRendererApiRequest() ) {
+			$this->url = add_query_arg(
+				[ 'giveDisableDonateNowButton' => 1 ],
+				$this->url
+			);
+		}
+	}
+
+	/**
 	 * Get iframe HTML.
 	 *
 	 * @return string
@@ -188,7 +213,7 @@ class IframeView {
 				%1$s
 				%4$s
 				data-autoScroll="%2$s"
-				onload="Give.initializeIframeResize(this)"
+				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
 				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
 			$this->modal ? "data-src=\"{$this->url}\"" : "src=\"{$this->url}\"",
 			$this->autoScroll,
@@ -289,6 +314,8 @@ class IframeView {
 		$this->minHeight    = $this->template->getFormStartingHeight( $this->formId );
 
 		$this->url = $this->url ?: $this->getIframeURL();
+
+		$this->addExtraQueryParams();
 	}
 
 	/**

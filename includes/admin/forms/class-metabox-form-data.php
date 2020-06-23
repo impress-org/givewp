@@ -190,7 +190,7 @@ class Give_MetaBox_Form_Data {
 							],
 							[
 								'name'          => __( 'Custom Amount Text', 'give' ),
-								'description'   => __( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
+								'description'   => __( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as its own level (button, radio, or select option).', 'give' ),
 								'id'            => $prefix . 'custom_amount_text',
 								'type'          => 'text_medium',
 								'default'       => __( 'Custom Amount', 'give' ),
@@ -353,7 +353,7 @@ class Give_MetaBox_Form_Data {
 							],
 							[
 								'name'    => __( 'Anonymous Donations', 'give' ),
-								'desc'    => __( 'Do you want to provide donors the ability mark themselves anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
+								'desc'    => __( 'Do you want to provide donors the ability mark themselves anonymous while giving? This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
 								'id'      => "{$prefix}anonymous_donation",
 								'type'    => 'radio_inline',
 								'default' => 'global',
@@ -716,7 +716,7 @@ class Give_MetaBox_Form_Data {
 	public function output() {
 		// Bailout.
 		if ( $form_data_tabs = $this->get_tabs() ) :
-			Template\LegacyFormSettingCompatibility::migrateExistingFormSettings( absint( $_GET['post'] ) );
+			Template\LegacyFormSettingCompatibility::migrateExistingFormSettings();
 
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_template_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
@@ -1054,6 +1054,11 @@ class Give_MetaBox_Form_Data {
 	 * @param int    $formID
 	 */
 	public function save_form_template_settings( $meta_key, $new_template, $formID ) {
+		// Save setting for new template only if it is not empty.
+		if ( ! $new_template ) {
+			return;
+		}
+
 		$options = $_POST[ $new_template ];
 
 		// Exit

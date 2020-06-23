@@ -161,6 +161,10 @@ function give_run_install() {
 		return;
 	}
 
+	// Setup embed form route on fresh install or plugin activation.
+	Give()->routeForm->setBasePrefix();
+	Give()->routeForm->addRule();
+
 	// Flush rewrite rules.
 	flush_rewrite_rules();
 

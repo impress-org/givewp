@@ -1,13 +1,17 @@
 <?php
 
+use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
+/* @var \Give\Form\Template $formTemplate */
+$formTemplate = Give()->templates->getTemplate();
+
 // Get headline and description
-$headline    = ! empty( $this->templateOptions['introduction']['headline'] ) ? $this->templateOptions['introduction']['headline'] : $formInfo->post_title;
-$description = ! empty( $this->templateOptions['introduction']['description'] ) ? $this->templateOptions['introduction']['description'] : $formInfo->post_excerpt;
-$image       = ! empty( $this->templateOptions['introduction']['image'] ) ? $this->templateOptions['introduction']['image'] : get_the_post_thumbnail_url( FrontendFormTemplateUtils::getFormId() );
+$headline    = $formTemplate->getFormHeading( $formInfo->ID );
+$description = $formTemplate->getFormExcerpt( $formInfo->ID );
+$image       = $formTemplate->getFormFeaturedImage( $formInfo->ID );
 ?>
 
 <div class="give-section introduction">

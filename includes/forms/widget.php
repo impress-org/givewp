@@ -65,13 +65,13 @@ class Give_Forms_Widget extends WP_Widget {
 		parent::__construct(
 			strtolower( $this->self ),
 			esc_html__( 'GiveWP - Donation Form', 'give' ),
-			array(
+			[
 				'description' => esc_html__( 'Display a GiveWP Donation Form in your theme\'s widget powered sidebar.', 'give' ),
-			)
+			]
 		);
 
-		add_action( 'widgets_init', array( $this, 'widget_init' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_widget_scripts' ) );
+		add_action( 'widgets_init', [ $this, 'widget_init' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_widget_scripts' ] );
 	}
 
 	/**
@@ -90,11 +90,8 @@ class Give_Forms_Widget extends WP_Widget {
 		// Directories of assets.
 		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/';
 
-		// Use minified libraries if SCRIPT_DEBUG is turned off.
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets' . $suffix . '.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
-		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets' . $suffix . '.css', [], GIVE_VERSION, false );
+		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
+		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets.css', [], GIVE_VERSION, false );
 	}
 
 	/**
@@ -113,15 +110,8 @@ class Give_Forms_Widget extends WP_Widget {
 			return;
 		}
 
-		$form_id = (int) $instance['id'];
-
-		// Use alias setting to set display setting when form template other then Legacy.
-		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
-			$instance['display_style']         = $instance['tmp_display_style'];
-			$instance['continue_button_title'] = $instance['tmp_continue_button_title'];
-
-			unset( $instance['tmp_display_style'], $instance['tmp_continue_button_title'] );
-		}
+		$form_id      = (int) $instance['id'];
+		$isLegacyForm = FormUtils::isLegacyForm( $form_id );
 
 		echo $args['before_widget']; // XSS ok.
 
@@ -136,11 +126,19 @@ class Give_Forms_Widget extends WP_Widget {
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : ''; // XSS ok.
 
-		if ( ! empty( $instance['introduction_text'] ) ) {
-			printf(
-				'<p>%1$s</p>',
-				$instance['introduction_text']
-			);
+		// Use alias setting to set display setting when form template other then Legacy.
+		if ( ! $isLegacyForm ) {
+			$instance['display_style']         = $instance['tmp_display_style'];
+			$instance['continue_button_title'] = $instance['tmp_continue_button_title'];
+
+			unset( $instance['tmp_display_style'], $instance['tmp_continue_button_title'] );
+
+			if ( 'button' === $instance['display_style'] && ! empty( $instance['introduction_text'] ) ) {
+				printf(
+					'<p>%1$s</p>',
+					$instance['introduction_text']
+				);
+			}
 		}
 
 		echo give_form_shortcode( $instance );
@@ -163,21 +161,21 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @param array $instance Current settings.
 	 */
 	public function form( $instance ) {
-		$defaults = array(
+		$defaults = [
 			'title'                     => '',
 			'id'                        => 0,
 			'float_labels'              => 'global',
 			'display_style'             => 'modal',
 			'show_content'              => 'none',
 			'continue_button_title'     => __( 'Continue', 'give' ),
-			'introduction_text'         => __( 'Help our organization by donating today. all contributions go directly to making a difference for our cause', 'give' ),
+			'introduction_text'         => __( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' ),
 			'button_text'               => __( 'Donate Now', 'give' ),
 			'button_color'              => '#28C77B',
 
 			// These settings are aliases for shortcode setting which prevent conflict when saving and showing setting. Later we will use them to set original settings.
 			'tmp_display_style'         => 'button',
 			'tmp_continue_button_title' => __( 'Continue', 'give' ),
-		);
+		];
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
 

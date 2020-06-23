@@ -626,14 +626,18 @@ Shortcode Copy & Paste
 			}
 		}
 
-		.give-metabox-sub-tabs li {
-			background-color: #f1f1f1;
+		.give-metabox-sub-tabs {
+			z-index: 999;
 
-			a {
-				border-bottom-color: #e5e5e5;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
+			li {
+				background-color: #f1f1f1;
+
+				a {
+					border-bottom-color: #e5e5e5;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
 			}
 		}
 

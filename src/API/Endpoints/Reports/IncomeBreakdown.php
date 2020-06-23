@@ -43,8 +43,6 @@ class IncomeBreakdown extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
 		$tooltips = [];
 		$income   = [];
 
@@ -99,24 +97,26 @@ class IncomeBreakdown extends Endpoint {
 
 	public function get_values( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$income      = 0;
 		$refundTotal = 0;
 		$refunds     = 0;
 		$donors      = [];
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				switch ( $payment->status ) {
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				switch ( $paymentObject->status ) {
 					case 'give_subscription':
 					case 'publish': {
-						$income  += $payment->total;
-						$donors[] = $payment->donor_id;
+						$income  += $paymentObject->total;
+						$donors[] = $paymentObject->donor_id;
 						break;
 					}
 					case 'refunded': {
 						$refunds     += 1;
-						$income      += $payment->total;
-						$refundTotal += $payment->total;
+						$income      += $paymentObject->total;
+						$refundTotal += $paymentObject->total;
 						break;
 					}
 				}

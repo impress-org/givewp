@@ -31,6 +31,11 @@ class Frontend {
 			return $formId;
 		}
 
+		// Check if admin previewing donation form.
+		if ( $formId = self::getPreviewDonationFormId() ) {
+			return $formId;
+		}
+
 		// Get form Id on ajax request.
 		if ( isset( $_REQUEST['give_form_id'] ) && ( $formId = absint( $_REQUEST['give_form_id'] ) ) ) {
 			return $formId;
@@ -54,6 +59,30 @@ class Frontend {
 		$formId  = $session->getFormId();
 
 		if ( $formId ) {
+			return $formId;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Return form id if admin previewing donation form.
+	 * Note: only for internal use. This function can be update or remove in future.
+	 *
+	 * @return int|null
+	 * @since 2.7.0
+	 */
+	public static function getPreviewDonationFormId() {
+		if ( ! current_user_can( 'edit_give_forms' ) ) {
+			return null;
+		}
+
+		if (
+			isset( $_GET['preview'], $_GET['p'], $_GET['post_type'] ) &&
+			filter_var( $_GET['preview'], FILTER_VALIDATE_BOOLEAN ) &&
+			( 'give_forms' === give_clean( $_GET['post_type'] ) ) &&
+			( $formId = absint( $_GET['p'] ) )
+		) {
 			return $formId;
 		}
 

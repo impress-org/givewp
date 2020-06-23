@@ -3,20 +3,21 @@
 use Give\Form\Template\Options;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
+global $pagenow;
 $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
-$introHeadline    = $formInfo->post_title ? $formInfo->post_title : __( 'Campaign Heading', 'give' );
-$introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help make a difference today! All donations go directly to making a difference for our cause.', 'give' );
+$introHeadline    = ( ! $formInfo->post_title || 'post-new.php' === $pagenow ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
+$introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
 	'introduction'        => [
 		'name'   => sprintf( __( '%1$s Step 1: %2$s Introduction', 'give' ), '<strong>', '</strong>' ),
-		'desc'   => __( 'Step description will show up here if any', 'give' ),
+		'desc'   => __( 'Step description goes here.', 'give' ),
 		'fields' => [
 			[
-				'name'    => __( 'Include Introduction', 'give' ),
-				'desc'    => __( 'Should this form include an introduction section?', 'give' ),
+				'name'    => __( 'Include Step One', 'give' ),
+				'desc'    => __( 'If enabled, a headline and description show for the first step of the donation process.', 'give' ),
 				'id'      => 'enabled',
 				'type'    => 'radio_inline',
 				'options' => [
@@ -28,7 +29,7 @@ return [
 			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
-				'desc'       => __( 'Do you want to customize the headline for this form? We recommend keeping it to no more than 8 words as a best practive. If no title is provided the fallback will be your form’s post title.', 'give' ),
+				'desc'       => __( 'The headline displays at the top of step one, and defaults to the Form Title. Best practice: limit the headline to fewer than 8 words.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
 					'placeholder' => $introHeadline,
@@ -38,7 +39,7 @@ return [
 			[
 				'id'         => 'description',
 				'name'       => __( 'Description', 'give' ),
-				'desc'       => __( 'Do you want to customize the description for this form? The description displays below the headline. We recommend keeping it to 1-2 short sentences. If no description is provided the fallback will be your form’s excerpt.', 'give' ),
+				'desc'       => __( 'The description displays below the headline, and defaults to the Donation Form\'s excerpt, if present. Best practice: limit the description to short sentences that drive the donor toward the next step.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
 					'placeholder' => $introDescription,
@@ -48,20 +49,20 @@ return [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'Upload an eye-catching image that reflects your cause. The image is required and if none is provided the featured image will be a the fallback. If none is set you will see a placeholder image displayed on the form. For best results use an image that’s 600x400 pixels.', 'give' ),
+				'desc' => __( 'Upload an eye-catching image that reflects your cause. For best results use an image that’s 600x400 pixels.', 'give' ),
 				'type' => 'file',
 			],
 			[
 				'id'      => 'primary_color',
 				'name'    => __( 'Primary Color', 'give' ),
-				'desc'    => __( 'The primary color is used through the Form Template for various elements including buttons, line breaks, and focus and hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
+				'desc'    => __( 'The primary color is used throughout the Form Template for various elements including buttons, line breaks, and focus/hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
 				'type'    => 'colorpicker',
 				'default' => '#28C77B',
 			],
 			[
 				'id'         => 'donate_label',
 				'name'       => __( 'Donate Button', 'give' ),
-				'desc'       => __( 'Customize the text that appears prompting the user to progress to the next step.', 'give' ),
+				'desc'       => __( 'Customize the text that appears prompting the user to go to the next step.', 'give' ),
 				'type'       => 'text_medium',
 				'attributes' => [
 					'placeholder' => __( 'Donate Now', 'give' ),
@@ -72,12 +73,12 @@ return [
 	],
 	'payment_amount'      => [
 		'name'   => sprintf( __( '%1$s Step 2: %2$s Payment Amount', 'give' ), '<strong>', '</strong>' ),
-		'desc'   => __( 'Step description will show up here if any', 'give' ),
+		'desc'   => __( 'Step description goes here.', 'give' ),
 		'fields' => [
 			[
 				'id'         => 'header_label',
 				'name'       => __( 'Header Label', 'give' ),
-				'desc'       => __( 'Do you want to customize the header label for the payment amount step? We recommend keeping it to no more than 5 words as a best practive.', 'give' ),
+				'desc'       => __( 'The Header Label displays at the top of this step, and is designed to focus the donor\'s attention on what this step is about. Best Practice: limit this to fewer than 4 words.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
 					'placeholder' => __( 'Choose Amount', 'give' ),
@@ -87,17 +88,16 @@ return [
 			[
 				'id'         => 'content',
 				'name'       => __( 'Content', 'give' ),
-				'desc'       => __( 'Do you want to customize the content that appears before amount options? The content displays above the amount option buttons during the second step. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'desc'       => __( 'Cotent displays before the level amounts, and is designed to provide context for those levels. Best practice: limit this to 1-2 short sentences crafted to drive the donor to decide and to remove friction.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' ),
+					'placeholder' => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo( 'sitename' ) ),
 				],
-				'default'    => __( 'As a contributor to Save the Whales we make sure your money gets put to work. How much would you like to donate? Your donation goes directly to supporting our cause.', 'give' ),
 			],
 			[
 				'id'         => 'next_label',
 				'name'       => __( 'Continue Button', 'give' ),
-				'desc'       => __( 'Customize the text that appears prompting the user to progress to the next step.', 'give' ),
+				'desc'       => __( 'Customize the text that appears prompting the user to go to the next step.', 'give' ),
 				'type'       => 'text_medium',
 				'attributes' => [
 					'placeholder' => __( 'Continue', 'give' ),
@@ -108,12 +108,12 @@ return [
 	],
 	'payment_information' => [
 		'name'   => sprintf( __( '%1$s Step 3: %2$s Payment Information', 'give' ), '<strong>', '</strong>' ),
-		'desc'   => __( 'Step description will show up here if any', 'give' ),
+		'desc'   => __( 'Step description goes here.', 'give' ),
 		'fields' => [
 			[
 				'id'         => 'header_label',
 				'name'       => __( 'Header Label', 'give' ),
-				'desc'       => __( 'Do you want to customize the header label for the payment information step? We recommend keeping it to no more than 5 words as a best practive.', 'give' ),
+				'desc'       => __( 'The Header Label displays at the top of this step, and is designed to focus the donor\'s attention on what this step is about. Best Practice: limit this to fewer than 4 words.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
 					'placeholder' => __( 'Add Your Information', 'give' ),
@@ -123,7 +123,7 @@ return [
 			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
-				'desc'       => __( 'Do you want to customize the headline for the checkout step? We recommend keeping it to no more than 8 words as a best practive.', 'give' ),
+				'desc'       => __( 'The Headline introduces the section where donors provide information about themselves. Best practice: limit the headline to fewer than 5 words.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
 					'placeholder' => __( "Who's giving today?", 'give' ),
@@ -133,7 +133,7 @@ return [
 			[
 				'id'         => 'description',
 				'name'       => __( 'Description', 'give' ),
-				'desc'       => __( 'Do you want to customize the description for the checkout step? The description displays below the headline. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'desc'       => __( 'The description displays below the checkout step, and is designed to remove obstacles from donating. Best practice: use this section to reassure donors that they are making a wise decision.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
 					'placeholder' => __( 'We’ll never share this information with anyone.', 'give' ),
@@ -145,18 +145,18 @@ return [
 	],
 	'thank-you'           => [
 		'name'   => sprintf( __( '%1$s Step 4: %2$s Thank You', 'give' ), '<strong>', '</strong>' ),
-		'desc'   => __( 'Step description will show up here if any', 'give' ),
+		'desc'   => __( 'Step description goes here.', 'give' ),
 		'fields' => [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a checkmark icon will appear.', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a check mark icon will appear.', 'give' ),
 				'type' => 'file',
 			],
 			[
 				'id'         => 'headline',
 				'name'       => __( 'Headline', 'give' ),
-				'desc'       => __( 'This message should be short and sweet. Make the donor feel good about their donation so they continue to give in the future. This text is required and you may use any of the available template tags within this message.', 'give' ),
+				'desc'       => __( 'This message displays in large font on the thank you screen. Best practice: short, sweet, and sincere works best.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
 					'placeholder' => __( 'A great big thank you!', 'give' ),
@@ -166,7 +166,7 @@ return [
 			[
 				'id'         => 'description',
 				'name'       => __( 'Description', 'give' ),
-				'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences for best performance. You may use any of the available template tags within this message.', 'give' ),
+				'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences. You may use any of the available template tags within this message.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
 					'placeholder' => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
@@ -174,35 +174,35 @@ return [
 				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
 			[
-				'name'    => __( 'Enable Social Sharing', 'give' ),
-				'desc'    => __( 'Should the thank you page include a social sharing section?', 'give' ),
+				'name'    => __( 'Social Sharing', 'give' ),
+				'desc'    => __( 'Enable to display links for donors to share on social media that they donated.', 'give' ),
 				'id'      => 'sharing',
 				'type'    => 'radio_inline',
 				'options' => [
 					'enabled'  => __( 'Enabled', 'give' ),
 					'disabled' => __( 'Disabled', 'give' ),
 				],
-				'default' => 'disabled',
+				'default' => 'enabled',
 			],
 			[
 				'id'         => 'sharing_instruction',
 				'name'       => __( 'Sharing Instruction', 'give' ),
-				'desc'       => __( 'Do you want to customize the sharing instructions for this form? The instruction note displays above the social sharing buttons. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'desc'       => __( 'Sharing instructions display above the social sharing buttons. Best practice: be direct, bold, and confident here. Donors share when they are asked to.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
+					'placeholder' => __( 'Help us out by sharing with friends and followers that you supported the cause!', 'give' ),
 				],
-				'default'    => __( 'Tell the world about your generosity and help spread the word!', 'give' ),
+				'default'    => __( 'Help us out by sharing with friends and followers that you supported the cause!', 'give' ),
 			],
 			[
 				'id'         => 'twitter_message',
 				'name'       => __( 'Twitter Message', 'give' ),
-				'desc'       => __( 'Do you want to customize the default tweet? This text pre-fills a user\'s tweet when they choose to share to Twitter. We recommend keeping it to 1-2 short sentences.', 'give' ),
+				'desc'       => __( 'This puts "words in the mouth" of your donor to share with their Twitter followers.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => __( 'Help me raise money for this great cause!', 'give' ),
+					'placeholder' => __( 'I just gave to this cause. Who\'s next?', 'give' ),
 				],
-				'default'    => __( 'Help me raise money for this great cause!', 'give' ),
+				'default'    => __( 'I just gave to this cause. Who\'s next?', 'give' ),
 			],
 		],
 	],

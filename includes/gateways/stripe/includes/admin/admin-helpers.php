@@ -45,14 +45,15 @@ function give_stripe_supported_payment_methods() {
 function give_stripe_is_any_payment_method_active() {
 
 	// Get settings.
-	$settings = give_get_settings();
-	$gateways = isset( $settings['gateways'] ) ? $settings['gateways'] : [];
+	$settings             = give_get_settings();
+	$gateways             = isset( $settings['gateways'] ) ? $settings['gateways'] : [];
+	$stripePaymentMethods = give_stripe_supported_payment_methods();
 
 	// Loop through gateways list.
 	foreach ( array_keys( $gateways ) as $gateway ) {
 
 		// Return true, if even single payment method is active.
-		if ( in_array( $gateway, give_stripe_supported_payment_methods(), true ) ) {
+		if ( in_array( $gateway, $stripePaymentMethods, true ) ) {
 			return true;
 		}
 	}

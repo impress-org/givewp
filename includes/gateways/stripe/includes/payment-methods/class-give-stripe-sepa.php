@@ -94,7 +94,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						<label for="give-iban-number-field-<?php echo $id_prefix; ?>" class="give-label">
 							<?php echo __( 'IBAN', 'give' ); ?>
 							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
+							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
 						</label>
 						<div
 							id="give-stripe-sepa-fields-<?php echo $id_prefix; ?>"

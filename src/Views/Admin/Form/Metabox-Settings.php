@@ -40,13 +40,13 @@ $registeredTemplates = Give()->templates->getTemplates();
 
 	<div class="form-template-introduction">
 		<p>
-			<?php _e( 'What is a Form Template?', 'give' ); ?>
+			<?php _e( 'What Are Form Templates?', 'give' ); ?>
 		</p>
-		<p class="give-field-description form-template-description"><?php _e( 'In GiveWP, a form template is a collection of templates and stylesheets used to define then appearance and display of a donation form on your website. Each one comes with a different design, layout, and feature. All you need to do is choose the one that suits your taste and requirements for your cause.Compatibility with add-ons and third party plugins depend on the template chosen. Be sure to test your donation form before going live to ensure smooth sailing!', 'give' ); ?></p>
+		<p class="give-field-description form-template-description"><?php _e( 'Form Templates are built-in ways of changing the appearance of a GiveWP form on your site. Each template has a different design, layout, and features. Choose the one that suits your taste and the requirements for your cause. Note: compatibility with add-ons and third-party plugins or themes is not guaranteed. Always thoroughly test your donation forms before going live!', 'give' ); ?></p>
 
 		<div class="form-template-notice give-notice notice notice-success inline">
 			<img src="<?php echo esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg' ); ?>" alt="<?php esc_html_e( 'GiveWP', 'give' ); ?>" class="give-logo" style="width:35px;" />
-			<p><?php esc_html_e( 'Learn the ins-and-outs of creating the perfect donation form with GiveWP', 'give' ); ?></p>
+			<p><?php esc_html_e( 'Learn the ins and outs of creating the perfect Donation Form with GiveWP', 'give' ); ?></p>
 			<a href="http://docs.givewp.com/form-templates/" target="_blank" class="button"><?php _e( 'Learn More', 'give' ); ?> <span class="dashicons dashicons-external"></span></a>
 		</div>
 	</div>
@@ -55,7 +55,7 @@ $registeredTemplates = Give()->templates->getTemplates();
 		<strong>
 			<?php _e( 'Form Template Options', 'give' ); ?>
 		</strong>
-		<p class="give-field-description"><?php _e( 'Customize the appearance of your form template by modifying the options below. You can preview your changes using the "Preview Changes" button at anytime.', 'give' ); ?></p>
+		<p class="give-field-description"><?php _e( 'Customize the form template using the options below. See those customizations at any time using the "Preview" button.', 'give' ); ?></p>
 	</div>
 
 	<div class="form-template-options">

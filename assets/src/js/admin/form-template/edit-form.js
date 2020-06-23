@@ -68,6 +68,8 @@
 	const saveFormSettingOnlyIfFormTemplateSelected = function() {
 		$( '.post-php.post-type-give_forms #publishing-action input[type=submit]' )
 			.add( '.post-new-php.post-type-give_forms #publishing-action input[type=submit]' )
+			.add( '.post-new-php.post-type-give_forms #save-action input[type=submit]' )
+			.add( '.post-php.post-type-give_forms #save-action input[type=submit]' )
 			.on( 'click', function() {
 				const activatedTemplate = $( 'input[name=_give_form_template]', '#form_template_options' ).val();
 

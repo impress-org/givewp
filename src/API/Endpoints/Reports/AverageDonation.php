@@ -56,8 +56,6 @@ class AverageDonation extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
 		$income   = [];
 		$tooltips = [];
 
@@ -139,7 +137,7 @@ class AverageDonation extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevAverage    = $this->get_prev_average_donation( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$prevAverage    = $this->get_average_donation( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentAverage = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
@@ -163,33 +161,13 @@ class AverageDonation extends Endpoint {
 
 	public function get_average_donation( $startStr, $endStr ) {
 
-		$earnings     = 0;
-		$paymentCount = 0;
-
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
-					$earnings     += $payment->total;
-					$paymentCount += 1;
-				}
-			}
-		}
-
-		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
-
-		// Return rounded average (avoid displaying figures with many decimal places)
-		return round( $average, 2 );
-	}
-
-	public function get_prev_average_donation( $startStr, $endStr ) {
-
 		$paymentObjects = $this->get_payments( $startStr, $endStr );
 
 		$earnings     = 0;
 		$paymentCount = 0;
 
-		foreach ( $this->paymentObjects as $paymentObject ) {
-			if ( $paymentObjects->date > $startStr && $paymentObject->date < $endStr ) {
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
 				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
 					$earnings     += $paymentObject->total;
 					$paymentCount += 1;

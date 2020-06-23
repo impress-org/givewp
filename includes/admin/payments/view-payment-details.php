@@ -606,12 +606,17 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 
 												// Check whether the donor name and WP_User name is same or not.
 												if ( $donor_billing_name !== $donor_name ) {
-													echo sprintf(
-														'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
-														esc_html( $donor_billing_name ),
-														esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}" ) ),
-														esc_html( $donor_name )
-													);
+													// Donors can be deleted by the user, but we can show the donor billing name from donation details.
+													if ( empty( $donor_name ) ) {
+														echo esc_html( $donor_billing_name );
+													} else {
+														echo sprintf(
+															'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
+															esc_html( $donor_billing_name ),
+															esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}" ) ),
+															esc_html( $donor_name )
+														);
+													}
 												} else {
 													echo esc_html( $donor_name );
 												}
@@ -621,7 +626,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
 												<?php
 												// Show Donor donation email first and Primary email on parenthesis if not match both email.
-												echo hash_equals( $donor->email, $payment->email )
+												echo ( empty( $donor->email ) || hash_equals( $donor->email, $payment->email ) )
 													? $payment->email
 													: sprintf(
 														'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',

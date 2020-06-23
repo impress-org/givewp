@@ -140,7 +140,7 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			tabOrder: [
-				'.give-amount-top',
+				'input.give-amount-top',
 				'.give-donation-levels-wrap button',
 				'.give-recurring-period',
 				'.give-recurring-donors-choice-period',
@@ -151,6 +151,14 @@
 			],
 			firstFocus: '.give-default-level',
 			setup: () => {
+				// Dynamically set grid columns based on number of buttons
+				const buttonCount = $( '.give-donation-level-btn' ).length;
+				if ( buttonCount === 1 ) {
+					$( '.give-donation-levels-wrap' ).attr( 'style', 'display: none!important;' );
+				} else if ( buttonCount % 2 === 0 && buttonCount < 6 ) {
+					$( '.give-donation-levels-wrap' ).css( 'grid-template-columns', 'repeat(2, minmax(0, 1fr))' );
+				}
+
 				$( '#give-amount' ).on( 'blur', function() {
 					if ( ! Give.form.fn.isValidDonationAmount( $( 'form' ) ) ) {
 						$( '.advance-btn' ).attr( 'disabled', true );
@@ -216,26 +224,39 @@
 					moveErrorNotice( $( this ) );
 				} );
 
-				// Persist the recurring input border when selected
-				$( '.give-recurring-period' ).change( function() {
-					$( '.give-recurring-donors-choice' ).toggleClass( 'active' );
+				// Setup recurring donations opt-in event listeners
+				setupCheckbox( {
+					container: '.give-recurring-donors-choice',
+					label: '.give-recurring-donors-choice label',
+					input: 'input[name="give-recurring-period"]',
 				} );
 
-				// Persist fee recovery input border when selected
-				$( '.give-fee-message-label-text' ).on( 'click touchend', function() {
-					$( '.give-fee-recovery-donors-choice' ).toggleClass( 'active' );
+				// Setup fee recovery opt-in event listeners
+				setupCheckbox( {
+					container: '.give-fee-recovery-donors-choice',
+					label: '.give-fee-message-label-text',
+					input: 'input[name="give_fee_mode_checkbox"]',
 				} );
 
+				// Setup mailchimp opt-in event listeners
 				setupCheckbox( {
 					container: '.give-mailchimp-fieldset',
 					label: '.give-mc-message-text',
 					input: 'input[name="give_mailchimp_signup"]',
 				} );
 
+				// Setup constant contact opt-in event listeners
 				setupCheckbox( {
 					container: '.give-constant-contact-fieldset',
 					label: '.give-constant-contact-fieldset span',
 					input: 'input[name="give_constant_contact_signup"]',
+				} );
+
+				// Setup terms and conditions opt-in event listeners
+				setupCheckbox( {
+					container: '#give_terms_agreement',
+					label: '#give_terms_agreement label',
+					input: 'input[name="give_agree_to_terms"]',
 				} );
 
 				// Show Sequoia loader on click/touchend
@@ -425,6 +446,7 @@
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
 			'.give-mailchimp-fieldset',
+			'#give_terms_agreement',
 			'.give-donation-submit',
 		];
 

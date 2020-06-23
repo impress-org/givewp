@@ -12,6 +12,7 @@ namespace Give\Form;
 use _WP_Dependency;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
@@ -92,6 +93,7 @@ class LoadTemplate {
 		add_action( 'give_embed_footer', 'wp_print_footer_scripts', 20 );
 		add_filter( 'give_form_wrap_classes', [ $this, 'editClassList' ], 999 );
 		add_action( 'give_hidden_fields_after', [ $this, 'addHiddenField' ] );
+		add_filter( 'give_donation_form_submit_button', [ $this, 'disableDonationButtonInPreviewMode' ], 999, 2 );
 
 		// Handle receipt screen template
 		add_action( 'wp_ajax_get_receipt', [ $this, 'handleReceiptAjax' ], 9 );
@@ -190,6 +192,28 @@ class LoadTemplate {
 	}
 
 	/**
+	 * Disable donation submit in donation form preview mode.
+	 *
+	 * @param string $buttonHtml
+	 * @param int  $formId
+	 * @return string
+	 * @since 2.7.0
+	 */
+	public function disableDonationButtonInPreviewMode( $buttonHtml, $formId ) {
+		if ( Utils::canDisableDonationNowButton() ) {
+			$search = 'input type="submit"';
+
+			$buttonHtml = str_replace(
+				$search,
+				"{$search} onclick=\"return false;\"",
+				$buttonHtml
+			);
+		}
+
+		return $buttonHtml;
+	}
+
+	/**
 	 * Get filter list to dequeue scripts and style
 	 *
 	 * @param array $scripts
@@ -198,13 +222,20 @@ class LoadTemplate {
 	 * @since 2.7.0
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
-		$list = [];
-		$skip = [ 'babel-polyfill' ];
+		$list     = [];
+		$skip     = [ 'babel-polyfill' ];
+		$themeDir = get_template_directory_uri();
 
 		/* @var _WP_Dependency $data */
 		foreach ( $scripts as $handle => $data ) {
 			// Do not unset dependency.
 			if ( in_array( $handle, $skip, true ) ) {
+				continue;
+			}
+
+			// Do not allow styles and scripts from theme.
+			if ( false !== strpos( (string) $data->src, $themeDir ) ) {
+				$list[] = $handle;
 				continue;
 			}
 
