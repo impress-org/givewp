@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 				if ( $this->canShowFields() ) {
 					// Show Credit Card Fields.
-					Stripe::showCreditCardFields( $id_prefix );
+					echo Stripe::showCreditCardFields( $id_prefix );
 
 					/**
 					 * This action hook is used to display content after the Credit Card expiration field.
