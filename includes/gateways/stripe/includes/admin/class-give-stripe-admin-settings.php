@@ -208,7 +208,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['general'][] = [
 						'name' => __( 'Collect Billing Details', 'give' ),
-						'desc' => __( 'This option will enable the billing details section for Stripe which requires the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
+						'desc' => __( 'This option enables the billing details section for Stripe, requiring the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
 						'type' => 'checkbox',
 					];
@@ -226,7 +226,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'name' => __( 'Stripe Receipt Emails', 'give' ),
 						'desc' => sprintf(
 							/* translators: 1. GiveWP Support URL */
-							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>.', 'give' ),
+							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>. Checking this option does not disable GiveWP emails.', 'give' ),
 							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
 						),
 						'id'   => 'stripe_receipt_emails',
@@ -435,7 +435,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['sepa'][] = [
 						'name'          => __( 'Display Mandate Acceptance', 'give' ),
-						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
+						'desc'          => __( 'The mandate acceptance text explains to donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
 						'id'            => 'stripe_mandate_acceptance_option',
 						'wrapper_class' => 'stripe-mandate-acceptance-option',
 						'type'          => 'radio_inline',
@@ -743,7 +743,24 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					<div id="give-stripe-account-manager-errors"></div>
 					<div id="give-stripe-account-manager-description">
 						<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
-						<p class="give-field-description"><?php esc_html_e( 'In this section you can connect one or multiple Stripe accounts. All donation forms will use the "Default Account" attached unless you specify otherwise in the specific donation form\'s settings. Connecting multiple accounts allows you to create donation campaigns for specific accounts rather than just one.', 'give' ); ?></p>
+						<p class="give-field-description"><?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.', 'give' ); ?></p>
+						<?php
+						if ( ! defined( 'GIVE_STRIPE_VERSION' ) ) {
+							?>
+							<p class="give-field-description">
+								<br />
+								<?php
+								echo sprintf(
+									__( 'The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
+									esc_url( 'https://givewp.com/addons/stripe-gateway/' ),
+									esc_url( 'https://givewp.com/addons/recurring-donations/' ),
+									esc_url( 'http://docs.givewp.com/addon-stripe' )
+								);
+								?>
+							</p>
+							<?php
+						}
+						?>
 					</div>
 					<div class="give-stripe-account-manager-container">
 						<div
@@ -845,7 +862,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							} else {
 								?>
 								<div class="give-stripe-account-manager-list-item">
-									<span><?php esc_html_e( 'No Stripe Accounts found.', 'give' ); ?></span>
+									<span><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></span>
 								</div>
 							<?php } ?>
 						</div>
@@ -854,7 +871,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							// Show option to add Stripe when the manual upgrade is completed.
 							if ( give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' ) ) {
 								?>
-								<h3><?php esc_html_e( 'Add New Stripe Account', 'give' ); ?></h3>
+								<h3><?php esc_html_e( 'Connect a New Stripe Account', 'give' ); ?></h3>
 								<div class="give-stripe-add-account-errors"></div>
 								<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 									<tbody>
@@ -888,7 +905,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									[
 										'description' => sprintf(
 											'%1$s <a href="%2$s">%3$s</a> %4$s',
-											esc_html__( 'In Give 2.7.0, we have introduced multiple Stripe accounts feature. To use this feature, you need to complete database updates. ', 'give' ),
+											esc_html__( 'Give 2.7.0 introduces the ability to connect a single site to multiple Stripe accounts. To use this feature, you need to complete database updates. ', 'give' ),
 											esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ),
 											esc_html__( 'Click here', 'give' ),
 											esc_html__( 'to complete your pending database updates.', 'give' )
@@ -961,7 +978,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					</div>
 
 					<p class="give-field-description">
-						<?php esc_html_e( 'Stripe webhooks are important to setup so GiveWP can communicate properly with the payment gateway. It is not required to have the sandbox webhooks setup unless you are testing. Note: webhooks cannot be setup on localhost or websites in maintenance mode.', 'give' ); ?>
+						<?php esc_html_e( 'Stripe webhooks are critical to configure so that GiveWP can recieve communication properly from the payment gateway. Webhooks for test-mode donations are configured separately on the Stripe dashboard. Note: webhooks do not function on localhost or websites in maintenance mode.', 'give' ); ?>
 					</p>
 				</td>
 			</tr>
