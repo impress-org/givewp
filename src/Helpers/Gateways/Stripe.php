@@ -75,9 +75,10 @@ class Stripe {
 	 * @since  2.7.1
 	 * @access public
 	 *
-	 * @return void
+	 * @return mixed|void
 	 */
 	public static function showCreditCardFields( $idPrefix ) {
+		ob_start();
 		$ccFieldFormat = give_get_option( 'stripe_cc_fields_format', 'multi' );
 
 		if ( 'single' === $ccFieldFormat ) {
@@ -146,5 +147,7 @@ class Stripe {
 			</div>
 			<?php
 		}
+
+		return ob_get_clean();
 	}
 }
