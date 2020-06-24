@@ -9,19 +9,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Loop through the number of forms on the page.
 	formWraps.forEach( formWrap => {
 		const formElement = formWrap.querySelector( '.give-form' );
-		const formGateway = formWrap.querySelector( 'input[name="give-gateway"]' );
-		const gateways = Array.from( formWrap.querySelectorAll( '.give-gateway' ) );
+		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+		const gateways = Array.from( formElement.querySelectorAll( '.give-gateway' ) );
 
 		const stripeElements = new GiveStripeElements( formElement );
 		const cardElements   = stripeElements.createElement( stripeElements.getElements( stripeElements.setupStripeElement() ) );
 
-		if (
-			formGateway &&
-			(
-				'stripe' === formGateway.value ||
-				'stripe_checkout' === formGateway.value
-			)
-		) {
+		if ( formGateway && 'stripe' === formGateway.value ) {
 			stripeElements.mountElement( cardElements );
 		}
 
