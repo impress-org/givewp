@@ -63,11 +63,24 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				add_action( 'wp_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 			} else {
-				//              add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
+				add_action( 'give_stripe_checkout_cc_form', [ $this, 'showCheckoutModal' ], 10, 2 );
+				//              add_action( 'wp_ajax_load_checkout_fields', [ $this, 'loadCheckoutFields' ] );
+				//              add_action( 'wp_ajax_nopriv_load_checkout_fields', [ $this, 'loadCheckoutFields' ] );
+				//                            add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
 				//              remove_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
 				//              add_action( 'give_donation_form_after_cc_form', [ $this, 'checkoutSubmit' ], 9999, 2 );
 			}
 
+		}
+
+		public function loadCheckoutFields() {
+			$idPrefix = ! empty( $_POST['idPrefix'] ) ? give_clean( $_POST['idPrefix'] ) : '-1';
+
+			wp_send_json_success(
+				[
+					'html' => Stripe::showCreditCardFields( $idPrefix ),
+				]
+			);
 		}
 
 		/**
@@ -518,10 +531,29 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 							<div class="give-stripe-checkout-donor-email"></div>
 						</div>
 						<div class="give-stripe-checkout-modal-body">
-							<?php Stripe::showCreditCardFields( $idPrefix ); ?>
+							<?php echo Stripe::showCreditCardFields( $idPrefix ); ?>
+							<input type="hidden" name="give_validate_stripe_payment_fields" value="0"/>
 						</div>
 						<div class="give-stripe-checkout-modal-footer">
-
+							<div class="card-errors"></div>
+							<?php
+							$display_label_field = give_get_meta( $formId, '_give_checkout_label', true );
+							$display_label_field = apply_filters( 'give_donation_form_submit_button_text', $display_label_field, $formId, $args );
+							$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
+							ob_start();
+							?>
+							<div class="give-submit-button-wrap give-clearfix">
+								<?php
+								echo sprintf(
+									'<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" disabled/>',
+									'give-btn give-stripe-checkout-modal-donate-button',
+									"give-stripe-checkout-modal-donate-button-{$idPrefix}",
+									$display_label,
+									'give_stripe_modal_donate'
+								);
+								?>
+								<span class="give-loading-animation"></span>
+							</div>
 						</div>
 					</div>
 				</div>
