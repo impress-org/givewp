@@ -418,7 +418,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						],
 					];
 
-					$is_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon' ) );
+					$is_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon', 'enabled' ) );
 
 					$settings['sepa'][] = [
 						'name'          => __( 'Icon Style', 'give' ),
@@ -446,7 +446,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						],
 					];
 
-					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option' ) );
+					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option', 'enabled' ) );
 
 					$settings['sepa'][] = [
 						'name'          => __( 'Mandate Acceptance Text', 'give' ),
