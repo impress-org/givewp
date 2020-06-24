@@ -1,4 +1,5 @@
 import { GiveModal } from '../plugins/modal';
+import { GiveStripeElements } from './give-stripe-elements';
 
 class GiveStripeModal extends GiveModal {
 	constructor( obj ) {
@@ -9,7 +10,9 @@ class GiveStripeModal extends GiveModal {
 			this.config.classes.modalWrapper = obj.modalWrapper;
 		}
 
-		this.config.mainClass = 'give-stripe-modal';
+		this.config.closeBtnInside = true;
+		this.config.showCloseBtn = true;
+		this.config.mainClass = 'give-modal give-stripe-modal';
 
 		this.init();
 	}
@@ -29,28 +32,22 @@ class GiveStripeModal extends GiveModal {
 
 				<div class="give-modal__header">
 					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${ this.config.modalContent.title }</h2>` : '' }
+					${ this.config.modalContent.formTitle ? `<div class="give-modal__form-title">${ this.config.modalContent.formTitle }</div>` : '' }
 					${ this.config.modalContent.price ? `<div class="give-modal__price">${ this.config.modalContent.price }</div>` : '' }
 					${ this.config.modalContent.email ? `<div class="give-modal__email">${ this.config.modalContent.email }</div>` : '' }
-					${ this.config.modalContent.formTitle ? `<div class="give-modal__form-title">${ this.config.modalContent.formTitle }</div>` : '' }
+
 				</div>
 				<div class="give-modal__body">
-					<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-stripe-cc-field-wrap">
-						<div>
-							<label for="give-card-number-field-9-1" class="give-label">
-								Card Number
-								<span class="give-required-indicator">*</span>
-								<span class="give-tooltip give-icon give-icon-question" data-tooltip="The (typically) 16 digits on the front of your credit card."></span>
-								<span class="card-type"></span>
-							</label>
-							<div id="give-card-number-field-9-1" class="input empty give-stripe-cc-field give-stripe-card-number-field"></div>
-						</div>
-					</div>
+
 				</div>
 
-				<div class="give-modal__controls">
-					<button class="give-button give-button--primary">
-						${ this.config.modalContent.btnTitle ? this.config.modalContent.btnTitle : '' }
-					</button>
+				<div class="give-modal__footer">
+					<input
+						type="submit"
+						class="give-submit give-btn give-stripe-checkout-donate-btn"
+						id="give-stripe-checkout-donate-btn-${ this.config.modalContent.idPrefix }"
+						value="${ this.config.modalContent.btnTitle ? this.config.modalContent.btnTitle : '' }"
+					/>
 				</div>
 
 			</div>`;
@@ -59,9 +56,61 @@ class GiveStripeModal extends GiveModal {
 		return template;
 	}
 
+	triggerAjax() {
+		const verifyPayment = new XMLHttpRequest();
+		const formElement = this.config.modalContent.formElement;
+		const formData = new FormData();
+
+		formData.append( 'action', 'load_checkout_fields' );
+		formData.append( 'idPrefix', this.config.modalContent.idPrefix );
+
+		// Do something on Ajax on state change.
+		verifyPayment.onreadystatechange = function( evt ) {
+			if (
+				4 === this.readyState &&
+				200 === this.status &&
+				'success' !== this.responseText
+			) {
+				evt.preventDefault();
+				const response = JSON.parse( this.response );
+
+				document.querySelector( '.give-modal--stripe-checkout' ).querySelector( '.give-modal__body' ).innerHTML = response.data.html;
+
+				const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+				const gateways = Array.from( formElement.querySelectorAll( '.give-gateway' ) );
+
+				const stripeElements = new GiveStripeElements( formElement );
+				const cardElements = stripeElements.createElement( stripeElements.getElements( stripeElements.setupStripeElement() ) );
+
+				if ( formGateway && 'stripe_checkout' === formGateway.value ) {
+					stripeElements.mountElement( cardElements );
+				}
+
+				const checkoutDonateBtn = document.querySelector( '.give-stripe-checkout-donate-btn' );
+
+				checkoutDonateBtn.addEventListener( 'click', ( e ) => {
+					console.log( 'modal donate clicked' );
+				} );
+			} else {
+				console.log( evt );
+			}
+		};
+		verifyPayment.open( 'POST', give_global_vars.ajaxurl, false );
+		verifyPayment.send( formData );
+	}
+
 	render() {
-		jQuery.magnificPopup.instance.popupsCache = {};
-		jQuery.magnificPopup.open( this.config );
+		const config = this.config;
+		const myself = this;
+
+		jQuery.magnificPopup.close();
+		setTimeout( function( ) {
+			jQuery.magnificPopup.open( config );
+		}, 100 );
+
+		setTimeout( function( ) {
+			myself.triggerAjax();
+		}, 100 );
 
 		return this;
 	}
