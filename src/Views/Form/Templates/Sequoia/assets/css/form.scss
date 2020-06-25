@@ -464,6 +464,7 @@ p {
 		border-radius: 4px !important;
 		overflow: hidden;
 		padding: 18px 24px;
+		float: none !important;
 		margin: 5px auto 15px !important;
 
 		@media screen and (max-width: $break-phone) {
