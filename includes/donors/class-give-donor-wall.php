@@ -255,9 +255,8 @@ class Give_Donor_Wall {
 	 */
 	public function get_donors( $donor_query ) {
 		$donor_query = new Give_Donors_Query( $donor_query );
-		$donors      = $donor_query->get_donors();
 
-		return $donors;
+		return $donor_query->get_donors();
 	}
 
 
