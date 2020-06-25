@@ -751,7 +751,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								<br />
 								<?php
 								echo sprintf(
-									__( 'The free Stripe payment gateway includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
+									__( 'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
 									esc_url( 'https://givewp.com/addons/stripe-gateway/' ),
 									esc_url( 'https://givewp.com/addons/recurring-donations/' ),
 									esc_url( 'http://docs.givewp.com/addon-stripe' )
