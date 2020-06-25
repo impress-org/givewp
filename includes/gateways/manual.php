@@ -30,8 +30,8 @@ use Give\Helpers\Form\Utils as FormUtils;
  *
  * @return bool
  **/
-function give_manual_form_output() {
-	if ( FormUtils::isLegacyForm() ) {
+function give_manual_form_output( $form_id ) {
+	if ( FormUtils::isLegacyForm( $form_id ) ) {
 		return false;
 	}
 
