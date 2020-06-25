@@ -230,6 +230,7 @@ class Give_Donor_Wall {
 		$numeric_attributes = array(
 			'donors_per_page',
 			'form_id',
+			'ids',
 			'paged',
 			'comment_length',
 			'avatar_size',
