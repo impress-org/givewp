@@ -16,7 +16,7 @@ class Utils {
 		$base = Give()->routeForm->getBase();
 
 		return (
-			$base === get_query_var( 'name' ) ||
+			$base === get_query_var( 'url_prefix' ) ||
 			( wp_doing_ajax() && false !== strpos( wp_get_referer(), "/{$base}/" ) ) // for ajax
 		);
 	}
