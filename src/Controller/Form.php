@@ -20,6 +20,7 @@ use Give_Notices;
 use WP_Post;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
