@@ -1319,6 +1319,11 @@ form.give-form .form-row select.multiselect {
 	}
 }
 
+/* Hide everything which is not output by Give core or addon */
+body > *:not([class^='give']):not([id^='give']) {
+	display: none;
+}
+
 @keyframes slideInRight {
 	from {
 		transform: translate3d(100%, 0, 0);
