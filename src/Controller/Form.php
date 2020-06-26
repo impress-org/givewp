@@ -37,34 +37,11 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function init() {
-		add_filter( 'pre_handle_404', [ $this, 'doNotSetEmbedIframeURLAs404' ], 99, 2 );
 		add_action( 'wp', [ $this, 'loadTemplateOnFrontend' ], 11, 0 );
 		add_action( 'admin_init', [ $this, 'loadTemplateOnAjaxRequest' ] );
 		add_action( 'init', [ $this, 'embedFormRedirectURIHandler' ], 1 );
 		add_action( 'template_redirect', [ $this, 'loadReceiptView' ], 1 );
 		add_action( 'give_before_single_form_summary', [ $this, 'handleSingleDonationFormPage' ], 0 );
-	}
-
-	/**
-	 * Return true if embed iframe url otherwise false.
-	 * Note: few plugins redirect 404 urls to url, to prevent this we adding status handling logic.
-	 *
-	 * @param bool $status
-	 * @param WP_Query $wp_query
-	 *
-	 * @return bool
-	 * @since 2.7.0
-	 */
-	public function doNotSetEmbedIframeURLAs404( $status, $wp_query ) {
-		$base = Give()->routeForm->getBase();
-
-		if ( $base === get_query_var( 'name' ) ) {
-			$wp_query->is_404 = false;
-
-			return true;
-		}
-
-		return $status;
 	}
 
 	/**
