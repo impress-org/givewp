@@ -230,7 +230,6 @@ class Give_Donor_Wall {
 		$numeric_attributes = array(
 			'donors_per_page',
 			'form_id',
-			'ids',
 			'paged',
 			'comment_length',
 			'avatar_size',
@@ -239,6 +238,16 @@ class Give_Donor_Wall {
 		foreach ( $numeric_attributes as $att ) {
 			// It will prevent condition check against numeric value.
 			$atts[ $att ] = absint( $atts[ $att ] );
+		}
+
+		// Validate comma separated numeric attributes.
+		if( ! empty( $atts['ids'] ) ) {
+			if( false === strpos( $atts['ids'], ',' ) ){
+				$atts['ids'] = absint( $atts['ids'] );
+			} else{
+				$tmp = array_filter( array_map( 'absint', explode( ',', $atts['ids'] ) ) );
+				$atts['ids'] = implode( ',', $tmp );
+			}
 		}
 
 		return $atts;
