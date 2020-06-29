@@ -56,7 +56,7 @@ const MiniChart = ( { title, data } ) => {
 				newIndicator = <Fragment>
 					{ down }
 					<span style={ { color: '#D75A4B' } }>
-						{ `${ numberToDigits( Math.abs( newTrend ), 2 ) }%` }
+						{ `${ numberToDigits( Math.abs( newTrend ), 2, 2 ) }%` }
 					</span>
 				</Fragment>;
 				break;
@@ -65,7 +65,7 @@ const MiniChart = ( { title, data } ) => {
 				newIndicator = <Fragment>
 					{ up }
 					<span style={ { color: '#69B868' } }>
-						{ `${ numberToDigits( Math.abs( newTrend ), 2 ) }%` }
+						{ `${ numberToDigits( Math.abs( newTrend ), 2, 2 ) }%` }
 					</span>
 				</Fragment>;
 				break;
@@ -73,7 +73,7 @@ const MiniChart = ( { title, data } ) => {
 			default: {
 				newIndicator = <Fragment>
 					<span style={ { color: '#82878c' } }>
-						{ `${ numberToDigits( Math.abs( newTrend ), 2 ) }%` }
+						{ `${ numberToDigits( Math.abs( newTrend ), 2, 2 ) }%` }
 					</span>
 				</Fragment>;
 				break;
