@@ -69,10 +69,10 @@ class Give_Donor_Wall {
 	 */
 	public function setup_actions() {
 
-		add_shortcode( 'give_donor_wall', array( $this, 'render_shortcode' ) );
+		add_shortcode( 'give_donor_wall', [ $this, 'render_shortcode' ] );
 
-		add_action( 'wp_ajax_give_get_donor_comments', array( $this, 'ajax_handler' ) );
-		add_action( 'wp_ajax_nopriv_give_get_donor_comments', array( $this, 'ajax_handler' ) );
+		add_action( 'wp_ajax_give_get_donor_comments', [ $this, 'ajax_handler' ] );
+		add_action( 'wp_ajax_nopriv_give_get_donor_comments', [ $this, 'ajax_handler' ] );
 
 	}
 
@@ -123,7 +123,7 @@ class Give_Donor_Wall {
 
 			foreach ( $donations as $donation ) {
 				// Give/templates/shortcode-donor-wall.php.
-				give_get_template( 'shortcode-donor-wall', array( $donation, $give_settings, $atts ) );
+				give_get_template( 'shortcode-donor-wall', [ $donation, $give_settings, $atts ] );
 			}
 
 			$html = ob_get_clean();
@@ -177,7 +177,7 @@ class Give_Donor_Wall {
 	 */
 	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
-			array(
+			[
 				'donors_per_page' => 12,
 				'form_id'         => 0,
 				'paged'           => 1,
@@ -198,12 +198,12 @@ class Give_Donor_Wall {
 				'order'           => 'DESC',
 				'hide_empty'      => true,  // Deprecated in 2.3.0
 				'only_donor_html' => false, // Only for internal use.
-			),
+			],
 			$atts
 		);
 
 		// Validate boolean attributes.
-		$boolean_attributes = array(
+		$boolean_attributes = [
 			'anonymous',
 			'show_avatar',
 			'show_name',
@@ -214,7 +214,7 @@ class Give_Donor_Wall {
 			'hide_empty',
 			'only_comments',
 			'only_donor_html',
-		);
+		];
 
 		foreach ( $boolean_attributes as $att ) {
 			// Convert numeric to boolean.
@@ -227,13 +227,13 @@ class Give_Donor_Wall {
 		}
 
 		// Validate numeric attributes.
-		$numeric_attributes = array(
+		$numeric_attributes = [
 			'donors_per_page',
 			'form_id',
 			'paged',
 			'comment_length',
 			'avatar_size',
-		);
+		];
 
 		foreach ( $numeric_attributes as $att ) {
 			// It will prevent condition check against numeric value.
@@ -241,11 +241,11 @@ class Give_Donor_Wall {
 		}
 
 		// Validate comma separated numeric attributes.
-		if( ! empty( $atts['ids'] ) ) {
-			if( false === strpos( $atts['ids'], ',' ) ){
+		if ( ! empty( $atts['ids'] ) ) {
+			if ( false === strpos( $atts['ids'], ',' ) ) {
 				$atts['ids'] = absint( $atts['ids'] );
-			} else{
-				$tmp = array_filter( array_map( 'absint', explode( ',', $atts['ids'] ) ) );
+			} else {
+				$tmp         = array_filter( array_map( 'absint', explode( ',', $atts['ids'] ) ) );
 				$atts['ids'] = implode( ',', $tmp );
 			}
 		}
@@ -294,11 +294,11 @@ class Give_Donor_Wall {
 		unset( $shortcode_atts['only_donor_html'] );
 
 		wp_send_json(
-			array(
+			[
 				'shortcode' => rawurlencode( http_build_query( $shortcode_atts ) ),
 				'html'      => $donors_comment_html,
 				'remaining' => $has_donors,
-			)
+			]
 		);
 	}
 
@@ -311,11 +311,11 @@ class Give_Donor_Wall {
 	 *
 	 * @return array
 	 */
-	private function get_query_param( $atts = array() ) {
-		$valid_order   = array( 'ASC', 'DESC' );
-		$valid_orderby = array( 'post_date', 'donation_amount' );
+	private function get_query_param( $atts = [] ) {
+		$valid_order   = [ 'ASC', 'DESC' ];
+		$valid_orderby = [ 'post_date', 'donation_amount' ];
 
-		$query_atts = array();
+		$query_atts = [];
 
 		$query_atts['order']         = in_array( $atts['order'], $valid_order ) ? $atts['order'] : 'DESC';
 		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
@@ -337,12 +337,12 @@ class Give_Donor_Wall {
 	 *
 	 * @return array
 	 */
-	private function get_donation_data( $atts = array() ) {
+	private function get_donation_data( $atts = [] ) {
 		global $wpdb;
 
 		// Bailout if donation does not exist.
 		if ( ! ( $donation_ids = $this->get_donations( $atts ) ) ) {
-			return array();
+			return [];
 		}
 
 		$donation_ids = ! empty( $donation_ids )
@@ -361,7 +361,7 @@ class Give_Donor_Wall {
 		$results = (array) $wpdb->get_results( $sql );
 
 		if ( ! empty( $results ) ) {
-			$temp = array();
+			$temp = [];
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
@@ -380,17 +380,17 @@ class Give_Donor_Wall {
 					$temp[ $donation_id ]['donation_id'] = $donation_id;
 
 					$temp[ $donation_id ]['name_initial'] = give_get_name_initial(
-						array(
+						[
 							'firstname' => $donation_data['_give_donor_billing_first_name'],
 							'lastname'  => $donation_data['_give_donor_billing_last_name'],
-						)
+						]
 					);
 
 					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[ $donation_id ] ) ? $comments[ $donation_id ] : '';
 				}
 			}
 
-			$results = ! empty( $temp ) ? $temp : array();
+			$results = ! empty( $temp ) ? $temp : [];
 		}
 
 		return $results;
@@ -405,7 +405,7 @@ class Give_Donor_Wall {
 	 *
 	 * @return array
 	 */
-	private function get_donations( $atts = array() ) {
+	private function get_donations( $atts = [] ) {
 		global $wpdb;
 
 		// Backward compatibility
@@ -465,9 +465,9 @@ class Give_Donor_Wall {
 	 *
 	 * @return array
 	 */
-	private function get_donor_comments( $donations_data = array() ) {
+	private function get_donor_comments( $donations_data = [] ) {
 		global $wpdb;
-		$comments = array();
+		$comments = [];
 
 		// Bailout.
 		if ( empty( $donations_data ) ) {
@@ -489,7 +489,7 @@ class Give_Donor_Wall {
 
 		$sql   = "SELECT c1.comment_parent as donation_id, c1.comment_content as comment FROM {$wpdb->give_comments} as c1";
 		$sql  .= " INNER JOIN {$wpdb->give_commentmeta} as cm1 ON (c1.comment_ID=cm1.give_comment_id)";
-		$where = array();
+		$where = [];
 
 		foreach ( $donations_data as $id => $data ) {
 			// Do not fetch comment for anonymous donation.
@@ -526,7 +526,7 @@ class Give_Donor_Wall {
 	 *
 	 * @return bool
 	 */
-	private function has_donations( $atts = array() ) {
+	private function has_donations( $atts = [] ) {
 		return (bool) $this->get_donations( $atts );
 	}
 }
