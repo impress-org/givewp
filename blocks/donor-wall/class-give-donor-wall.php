@@ -67,7 +67,7 @@ class Give_Donor_Wall_Block {
 	 * @access private
 	 */
 	private function init() {
-		add_action( 'init', array( $this, 'register_block' ), 999 );
+		add_action( 'init', [ $this, 'register_block' ], 999 );
 	}
 
 	/**
@@ -84,79 +84,79 @@ class Give_Donor_Wall_Block {
 		// Register block.
 		register_block_type(
 			'give/donor-wall',
-			array(
-				'render_callback' => array( $this, 'render_block' ),
-				'attributes'      => array(
-					'donorsPerPage' => array(
+			[
+				'render_callback' => [ $this, 'render_block' ],
+				'attributes'      => [
+					'donorsPerPage' => [
 						'type'    => 'string',
 						'default' => '12',
-					),
-					'formID'        => array(
+					],
+					'formID'        => [
 						'type'    => 'string',
 						'default' => '0',
-					),
-					'orderBy'       => array(
+					],
+					'orderBy'       => [
 						'type'    => 'string',
 						'default' => 'post_date',
-					),
-					'order'         => array(
+					],
+					'order'         => [
 						'type'    => 'string',
 						'default' => 'DESC',
-					),
-					'paged'         => array(
+					],
+					'paged'         => [
 						'type'    => 'string',
 						'default' => '1',
-					),
-					'columns'       => array(
+					],
+					'columns'       => [
 						'type'    => 'string',
 						'default' => 'best-fit',
-					),
-					'showAvatar'    => array(
+					],
+					'showAvatar'    => [
 						'type'    => 'boolean',
 						'default' => true,
-					),
-					'showName'      => array(
+					],
+					'showName'      => [
 						'type'    => 'boolean',
 						'default' => true,
-					),
-					'showTotal'     => array(
+					],
+					'showTotal'     => [
 						'type'    => 'boolean',
 						'default' => true,
-					),
-					'showDate'      => array(
+					],
+					'showDate'      => [
 						'type'    => 'boolean',
 						'default' => true,
-					),
-					'showComments'  => array(
+					],
+					'showComments'  => [
 						'type'    => 'boolean',
 						'default' => true,
-					),
-					'showAnonymous' => array(
+					],
+					'showAnonymous' => [
 						'type'    => 'boolean',
 						'default' => true,
-					),
-					'onlyComments'  => array(
+					],
+					'onlyComments'  => [
 						'type'    => 'boolean',
 						'default' => false,
-					),
-					'commentLength' => array(
+					],
+					'commentLength' => [
 						'type'    => 'string',
 						'default' => '140',
-					),
-					'readMoreText'  => array(
+					],
+					'readMoreText'  => [
 						'type'    => 'string',
 						'default' => __( 'Read more', 'give' ),
-					),
-					'loadMoreText'  => array(
+					],
+					'loadMoreText'  => [
 						'type'    => 'string',
 						'default' => __( 'Load more', 'give' ),
-					),
-					'avatarSize'    => array(
+					],
+					'avatarSize'    => [
 						'type'    => 'string',
 						'default' => '60',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 	}
 
@@ -169,7 +169,7 @@ class Give_Donor_Wall_Block {
 	 * @return string;
 	 */
 	public function render_block( $attributes ) {
-		$parameters = array(
+		$parameters = [
 			'donors_per_page' => absint( $attributes['donorsPerPage'] ),
 			'form_id'         => absint( $attributes['formID'] ),
 			'orderby'         => $attributes['orderBy'],
@@ -187,7 +187,7 @@ class Give_Donor_Wall_Block {
 			'readmore_text'   => $attributes['readMoreText'],
 			'loadmore_text'   => $attributes['loadMoreText'],
 			'avatar_size'     => absint( $attributes['avatarSize'] ),
-		);
+		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();
@@ -196,7 +196,7 @@ class Give_Donor_Wall_Block {
 	}
 
 	/**
-	 * Return formatted notice when shortcode return empty string
+	 * Return formatted notice when shortcode returns an empty string
 	 *
 	 * @since 2.4.0
 	 *
@@ -209,7 +209,7 @@ class Give_Donor_Wall_Block {
 
 		ob_start();
 
-		$content = array(
+		$content = [
 			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
 			'image_alt' => __( 'GiveWP Icon', 'give' ),
 			'heading'   => __( 'No donors found.', 'give' ),
@@ -219,7 +219,7 @@ class Give_Donor_Wall_Block {
 				'<a href="http://docs.givewp.com/core-donors/">',
 				'</a>'
 			),
-		);
+		];
 
 		include_once GIVE_PLUGIN_DIR . 'includes/admin/views/blank-slate.php';
 

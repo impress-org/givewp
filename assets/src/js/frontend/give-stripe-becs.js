@@ -1,13 +1,7 @@
 /**
- * Give - Stripe BECS Gateway JS
+ * Give - Stripe BECS Payment Method JS
  */
-let stripe = Stripe( give_stripe_vars.publishable_key );
-
-if ( give_stripe_vars.stripe_account_id ) {
-	stripe = Stripe( give_stripe_vars.publishable_key, {
-		stripeAccount: give_stripe_vars.stripe_account_id,
-	} );
-}
+const stripe = {};
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Register Variables.
@@ -19,24 +13,57 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	const fontStyles = [];
 	const preferredLocale = give_stripe_vars.preferred_locale;
 	const formWraps = document.querySelectorAll( '.give-form-wrap' );
-	const fontIterator = Object.entries( give_stripe_vars.element_font_styles );
 
-	// Loop through each font element to convert its object to array.
-	for ( const fontElement of fontIterator ) {
-		fontStyles[ fontElement[ 0 ] ] = fontElement[ 1 ];
+	// If font styles are defined, add them to font styles array
+	if ( Object.keys( give_stripe_vars.element_font_styles ).length !== 0 ) {
+		fontStyles.push( give_stripe_vars.element_font_styles );
 	}
 
 	// Loop through the number of forms on the page.
 	Array.prototype.forEach.call( formWraps, function( formWrap ) {
 		const formElement = formWrap.querySelector( '.give-form' );
 
-		let elements = stripe.elements( {
+		/**
+		 * Bailout, if `formElement` is null.
+		 *
+		 * We are bailing out here as this script is loaded on every page of the
+		 * site but the `formElement` only exists on the pages when Give donation
+		 * form is loaded. So, when the pages where the donation form is not loaded
+		 * will show console error. To avoid JS console errors we bail it, if
+		 * `formElement` is null to avoid console errors.
+		 */
+		if ( null === formElement ) {
+			return;
+		}
+
+		const publishableKey = formElement.getAttribute( 'data-publishable-key' );
+		const accountId = formElement.getAttribute( 'data-account' );
+		const idPrefix = formElement.getAttribute( 'data-id' );
+
+		/**
+		 * Bailout, when publishable key is not present for a donation form
+		 * due to Stripe account not properly attached to the form or global
+		 * Stripe account is not added.
+		 */
+		if ( null === publishableKey ) {
+			return;
+		}
+
+		stripe[ idPrefix ] = Stripe( publishableKey );
+
+		if ( accountId.trim().length !== 0 ) {
+			stripe[ idPrefix ] = Stripe( publishableKey, {
+				stripeAccount: accountId,
+			} );
+		}
+
+		let elements = stripe[ idPrefix ].elements( {
 			locale: preferredLocale,
 		} );
 
 		// Update fonts of Stripe Elements.
 		if ( fontStyles.length > 0 ) {
-			elements = stripe.elements( {
+			elements = stripe[ idPrefix ].elements( {
 				fonts: fontStyles,
 				locale: preferredLocale,
 			} );
@@ -46,7 +73,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			defaultGateway = formElement.querySelector( '.give-gateway:checked' ).value;
 		}
 
-		const idPrefix = formElement.getAttribute( 'data-id' );
 		const donateButton = formElement.querySelector( '.give-submit' );
 
 		// Create IBAN Elements for each form.
@@ -76,7 +102,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		} );
 
 		// Mount Card Elements, if default gateway is Stripe BECS.
-		if ( 'stripe_becs' === defaultGateway || give_stripe_vars.stripe_card_update ) {
+		if ( 'stripe_becs' === defaultGateway || give_stripe_vars.stripe_becs_update ) {
 			// Disabled the donate button of the form.
 			donateButton.setAttribute( 'disabled', 'disabled' );
 
@@ -94,14 +120,14 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const $form = jQuery( this );
 		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
-		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_card_update  ) {
+		if ( 'stripe_becs' === $form.find( 'input.give-gateway:checked' ).val() || give_stripe_vars.stripe_becs_update ) {
 			give_stripe_process_becs_bank_account( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
 			event.preventDefault();
 		}
 	} );
 
 	/**
-	 * Mount Elements
+	 * Mount IBAN Elements
 	 *
 	 * @param {string} idPrefix     ID Prefix.
 	 * @param {array}  bankAccountElements List of card elements to be mounted.
@@ -126,7 +152,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	}
 
 	/**
-	 * Un-mount Card Elements
+	 * Un-mount IBAN Elements
 	 *
 	 * @param {array} bankAccountElements List of card elements to be unmounted.
 	 *
@@ -143,7 +169,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	}
 
 	/**
-	 * Create required card elements.
+	 * Create required IBAN elements.
 	 *
 	 * @param {object} formElement Form Element.
 	 * @param {object} elements     Stripe Element.
@@ -214,7 +240,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	}
 
 	/**
-	 * Stripe Process BECS
+	 * Stripe Process BECS payment.
 	 *
 	 * @param {object} $form Form Object.
 	 * @param {object} $iban IBAN Object.
@@ -229,6 +255,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			},
 		};
 		const $form_id = $form.find( 'input[name="give-form-id"]' ).val();
+		const idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 		const $firstName = $form.find( 'input[name="give_first"]' ).val();
 		const $lastName = $form.find( 'input[name="give_last"]' ).val();
 		const $email = $form.find( 'input[name="give_email"]' ).val();
@@ -241,7 +268,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		additionalData.billing_details.email = $email;
 
 		// Gather additional customer data we may have collected in our form.
-		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {
+		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_becs_update ) {
 			const address1 = $form.find( '.card-address' ).val();
 			const address2 = $form.find( '.card-address-2' ).val();
 			const city = $form.find( '.card-city' ).val();
@@ -260,9 +287,9 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		// createPaymentMethod returns immediately - the supplied callback submits the form if there are no errors.
-		stripe.createPaymentMethod( 'au_becs_debit', $iban, additionalData ).then( function( result ) {
+		stripe[ idPrefix ].createPaymentMethod( 'au_becs_debit', $iban, additionalData ).then( function( result ) {
 			if ( result.error ) {
-				const error = '<div class="give_errors"><p class="give_error">' + result.error.message + '</p></div>';
+				const error = `<div class="give_errors"><p class="give_error">${ result.error.message }</p></div>`;
 
 				// re-enable the submit button.
 				$form_submit_btn.attr( 'disabled', false );

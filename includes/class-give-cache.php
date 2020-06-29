@@ -114,10 +114,14 @@ class Give_Cache {
 			)
 		);
 
-		if (
-			is_page( $page_ids )
-			|| is_singular( 'give_forms' )
-		) {
+		/**
+		 * Use this filter to prevent
+		 *
+		 * @since 2.6.3
+		 */
+		$canCache = apply_filters( 'give_can_cache_page', is_page( $page_ids ) );
+
+		if ( $canCache ) {
 			self::set_nocache_constants();
 			nocache_headers();
 		}

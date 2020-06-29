@@ -11,7 +11,7 @@ export const getWindowData = ( value ) => {
 
 export const useReportsAPI = ( endpoint ) => {
 	// Use period from store
-	const [ { period }, dispatch ] = useStoreValue();
+	const [ { period, currency, testMode }, dispatch ] = useStoreValue();
 
 	// Use state to hold data fetched from API
 	const [ fetched, setFetched ] = useState( null );
@@ -35,6 +35,8 @@ export const useReportsAPI = ( endpoint ) => {
 				params: {
 					start: period.startDate.format( 'YYYY-MM-DD' ),
 					end: period.endDate.format( 'YYYY-MM-DD' ),
+					currency: currency,
+					testMode: testMode,
 				},
 				headers: {
 					'X-WP-Nonce': wpApiSettings.nonce,
@@ -61,7 +63,7 @@ export const useReportsAPI = ( endpoint ) => {
 					setQuerying( false );
 				} );
 		}
-	}, [ period, endpoint ] );
+	}, [ period, currency, testMode, endpoint ] );
 
 	return [ fetched, querying ];
 };

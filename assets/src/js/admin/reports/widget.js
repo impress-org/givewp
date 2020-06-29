@@ -10,6 +10,9 @@ import Widget from './widget/index.js';
 import { StoreProvider } from './store';
 import { reducer } from './store/reducer';
 
+// Utils
+import { getWindowData } from './utils';
+
 const initialState = {
 	// Initial period range (defaults to the past week)
 	period: {
@@ -19,6 +22,8 @@ const initialState = {
 	},
 	pageLoaded: false,
 	giveStatus: null,
+	currency: getWindowData( 'currency' ),
+	testMode: getWindowData( 'testMode' ),
 };
 
 const container = document.getElementById( 'givewp-reports-widget' );

@@ -44,10 +44,8 @@ class TotalIncome extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
-		$tooltips = array();
-		$income   = array();
+		$tooltips = [];
+		$income   = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -75,42 +73,54 @@ class TotalIncome extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = array(
+			$income[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $incomeForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
-				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), array( 'decode_currency' => true ) ),
+			$tooltips[] = [
+				'title'  => give_currency_filter(
+					give_format_amount( $incomeForPeriod ),
+					[
+						'currency_code'   => $this->currency,
+						'decode_currency' => true,
+					]
+				),
 				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
-			// Add interval to set up next period
-			date_add( $periodStart, $interval );
-			date_add( $periodEnd, $interval );
+				// Add interval to set up next period
+				date_add( $periodStart, $interval );
+				date_add( $periodEnd, $interval );
 		}
 
-		$totalIncomeForPeriod = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-		$trend                = $this->get_trend( $start, $end, $income );
+			$totalIncomeForPeriod = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
+			$trend                = $this->get_trend( $start, $end, $income );
 
-		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
+			$diff = date_diff( $start, $end );
+			$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
-					'data'      => $income,
-					'tooltips'  => $tooltips,
-					'trend'     => $trend,
-					'info'      => $info,
-					'highlight' => give_currency_filter( give_format_amount( $totalIncomeForPeriod ), array( 'decode_currency' => true ) ),
-				),
-			),
-		);
+			// Create data objec to be returned, with 'highlights' object containing total and average figures to display
+			$data = [
+				'datasets' => [
+					[
+						'data'      => $income,
+						'tooltips'  => $tooltips,
+						'trend'     => $trend,
+						'info'      => $info,
+						'highlight' => give_currency_filter(
+							give_format_amount( $totalIncomeForPeriod ),
+							[
+								'currency_code'   => $this->currency,
+								'decode_currency' => true,
+							]
+						),
+					],
+				],
+			];
 
-		return $data;
+			return $data;
 
 	}
 
@@ -147,12 +157,16 @@ class TotalIncome extends Endpoint {
 
 	public function get_income( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$income = 0;
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status === 'publish' || $payment->status === 'give_subscription' ) {
-					$income += $payment->total;
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->currency === $this->currency ) {
+				if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+					if ( $paymentObject->status === 'publish' || $paymentObject->status === 'give_subscription' ) {
+						$income += $paymentObject->total;
+					}
 				}
 			}
 		}
@@ -161,8 +175,6 @@ class TotalIncome extends Endpoint {
 	}
 
 	public function get_earnings( $startStr, $endStr ) {
-		$stats  = new \Give_Payment_Stats();
-		$income = $stats->get_earnings( 0, $startStr, $endStr );
-		return $income;
+		return $this->get_income( $startStr, $endStr );
 	}
 }

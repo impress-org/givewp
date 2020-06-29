@@ -4,6 +4,9 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Form\Template;
+use Give\Helpers\Form\Utils as FormUtils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -14,6 +17,10 @@ $atts             = $args[1]; // Shortcode attributes.
 $raw_content      = ''; // Raw form content.
 $stripped_content = ''; // Form content stripped of HTML tags and shortcodes.
 $excerpt          = ''; // Trimmed form excerpt ready for display.
+
+
+/* @var \Give\Form\Template $formTemplate */
+$formTemplate = Give()->templates->getTemplate( Template::getActiveID( $form_id ) );
 ?>
 
 <div class="give-grid__item">
@@ -37,14 +44,15 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 			<?php
 			// Maybe display the form title.
 			if ( true === $atts['show_title'] ) {
-				the_title( '<h3 class="give-card__title">', '</h3>' );
+				printf(
+					'<h3 class="give-card__title">%1$s</h3>',
+					$formTemplate->getFormHeading( $form_id )
+				);
 			}
 
 			// Maybe display the form excerpt.
 			if ( true === $atts['show_excerpt'] ) {
-				if ( has_excerpt( $form_id ) ) {
-					// Get excerpt from the form post's excerpt field.
-					$raw_content      = get_the_excerpt( $form_id );
+				if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
 					$stripped_content = wp_strip_all_tags(
 						strip_shortcodes( $raw_content )
 					);
@@ -85,7 +93,7 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 		// Maybe display the featured image.
 		if (
 			give_is_setting_enabled( $give_settings['form_featured_img'] )
-			&& has_post_thumbnail()
+			&& ( $imageSrc = $formTemplate->getFormFeaturedImage( $form_id ) )
 			&& true === $atts['show_featured_image']
 		) {
 			/*
@@ -97,26 +105,38 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 			$image_size = apply_filters( 'give_form_grid_image_size', $atts['image_size'], $atts );
 			$image_attr = '';
 
-			echo '<div class="give-card__media">';
 			if ( 'auto' !== $atts['image_height'] ) {
-				$image_attr = array(
+				$image_attr = [
 					'style' => 'height: ' . $atts['image_height'],
-				);
+				];
 			}
-				the_post_thumbnail( $image_size, $image_attr );
-			echo '</div>';
+
+			printf(
+				'<div class="give-card__media">%1$s</div>',
+				wp_get_attachment_image( attachment_url_to_postid( $imageSrc ), $image_size, false, $image_attr )
+			);
 		}
 		?>
 	</a>
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
-		printf(
-			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
-			$form_id
-		);
-		give_get_donation_form( $form_id );
-		echo '</div>';
+		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
+			echo give_form_shortcode(
+				[
+					'id'            => $form_id,
+					'display_style' => 'button',
+				]
+			);
+
+		} else {
+			printf(
+				'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
+				$form_id
+			);
+			give_get_donation_form( $form_id );
+			echo '</div>';
+		}
 	}
 	?>
 </div>

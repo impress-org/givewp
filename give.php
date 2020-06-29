@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.6.3
+ * Version: 2.7.0
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -37,6 +37,10 @@
  * - The GiveWP Team
  */
 
+use Give\Form\Templates;
+use Give\Route\Form as FormRoute;
+use Give\Controller\Form as FormRouteController;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -48,6 +52,9 @@ if ( ! class_exists( 'Give' ) ) :
 	 * Main Give Class
 	 *
 	 * @since 1.0
+	 *
+	 * @property-read Templates $templates
+	 * @property-read FormRoute $routeForm
 	 */
 	final class Give {
 
@@ -289,6 +296,15 @@ if ( ! class_exists( 'Give' ) ) :
 		public $stripe;
 
 		/**
+		 * Array of singleton objects
+		 *
+		 * @since 2.7.0
+		 * @var array
+		 */
+		private $singletonsCache = [];
+
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -321,13 +337,13 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Bailout: Need minimum php version to load plugin.
 			if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-				add_action( 'admin_notices', array( $this, 'minimum_phpversion_notice' ) );
+				add_action( 'admin_notices', [ $this, 'minimum_phpversion_notice' ] );
 
 				return;
 			}
 
 			// Add compatibility notice for recurring and stripe support with Give 2.5.0.
-			add_action( 'admin_notices', array( $this, 'display_old_recurring_compatibility_notice' ) );
+			add_action( 'admin_notices', [ $this, 'display_old_recurring_compatibility_notice' ] );
 
 			$this->setup_constants();
 			$this->includes();
@@ -343,7 +359,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
-			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+			add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
 		}
 
 
@@ -386,6 +402,12 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->comment                = Give_Comment::get_instance();
 			$this->session_db             = new Give_DB_Sessions();
 			$this->session                = Give_Session::get_instance();
+
+			// Load form template
+			$this->templates->load();
+
+			// Load routes.
+			$this->routeForm->init( new FormRouteController() );
 
 			/**
 			 * Fire the action after Give core loads.
@@ -439,7 +461,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '2.6.3' );
+				define( 'GIVE_VERSION', '2.7.0' );
 			}
 
 			// Plugin Root File.
@@ -550,7 +572,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
-
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
@@ -701,12 +722,12 @@ if ( ! class_exists( 'Give' ) ) :
 				);
 
 				Give()->notices->register_notice(
-					array(
+					[
 						'id'               => 'give-compatibility-with-old-recurring',
 						'description'      => $message,
 						'dismissible_type' => 'user',
 						'dismiss_interval' => 'shortly',
-					)
+					]
 				);
 			}
 
@@ -735,6 +756,32 @@ if ( ! class_exists( 'Give' ) ) :
 			}
 		}
 
+		/**
+		 * Handle property get request
+		 *
+		 * @param string $propertyName
+		 *
+		 * @since 2.7.0
+		 * @return mixed
+		 */
+		function __get( $propertyName ) {
+			switch ( $propertyName ) {
+				case 'templates':
+					if ( ! isset( $this->singletonsCache[ Templates::class ] ) ) {
+						$this->singletonsCache[ Templates::class ] = new Templates();
+					}
+
+					return $this->singletonsCache[ Templates::class ];
+
+				case 'routeForm':
+					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
+						$this->singletonsCache[ FormRoute::class ] = new FormRoute();
+					}
+
+					return $this->singletonsCache[ FormRoute::class ];
+			}
+		}
+
 	}
 
 endif; // End if class_exists check
@@ -753,7 +800,7 @@ endif; // End if class_exists check
  * @since 1.0
  * @return object|Give
  */
-function Give() {
+function Give() { // phpcs:ignore
 	return Give::instance();
 }
 

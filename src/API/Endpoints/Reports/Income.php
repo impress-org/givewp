@@ -21,7 +21,7 @@ class Income extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$dataset = array();
+		$dataset = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -47,10 +47,8 @@ class Income extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
-		$tooltips = array();
-		$income   = array();
+		$tooltips = [];
+		$income   = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -81,16 +79,22 @@ class Income extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = array(
+			$income[] = [
 				'x' => $time,
 				'y' => $incomeForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
-				'title'  => give_currency_filter( give_format_amount( $incomeForPeriod ), array( 'decode_currency' => true ) ),
+			$tooltips[] = [
+				'title'  => give_currency_filter(
+					give_format_amount( $incomeForPeriod ),
+					[
+						'currency_code'   => $this->currency,
+						'decode_currency' => true,
+					]
+				),
 				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -103,14 +107,14 @@ class Income extends Endpoint {
 		}
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
+		$data = [
+			'datasets' => [
+				[
 					'data'     => $income,
 					'tooltips' => $tooltips,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $data;
 
@@ -118,24 +122,26 @@ class Income extends Endpoint {
 
 	public function get_values( $startStr, $endStr ) {
 
-		$earnings = 0;
-		$donors   = array();
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
-					$earnings += $payment->total;
-					$donors[]  = $payment->donor_id;
+		$earnings = 0;
+		$donors   = [];
+
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
+					$earnings += $paymentObject->total;
+					$donors[]  = $paymentObject->donor_id;
 				}
 			}
 		}
 
 		$unique = array_unique( $donors );
 
-		return array(
+		return [
 			'earnings'    => $earnings,
 			'donor_count' => count( $unique ),
-		);
+		];
 	}
 
 }

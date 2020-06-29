@@ -28,7 +28,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @since 1.8
 		 * @var   array List of settings.
 		 */
-		private static $settings = array();
+		private static $settings = [];
 
 		/**
 		 * Setting filter and action prefix.
@@ -44,7 +44,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @since 1.8
 		 * @var   array List of errors.
 		 */
-		private static $errors = array();
+		private static $errors = [];
 
 		/**
 		 * Update messages.
@@ -52,7 +52,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @since 1.8
 		 * @var   array List of messages.
 		 */
-		private static $messages = array();
+		private static $messages = [];
 
 		/**
 		 * Include the settings page classes.
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @param array $settings Array of settings class object.
 			 */
-			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', array() );
+			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', [] );
 
 			return self::$settings;
 		}
@@ -176,7 +176,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
 					$notice_html .= sprintf(
-						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p><strong>%3$s</strong></p></div>',
+						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p>%3$s</p></div>',
 						$code,
 						$classes,
 						$message
@@ -259,7 +259,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @since 1.8
 			 */
-			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', array() );
+			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', [] );
 
 			include 'views/html-admin-settings.php';
 
@@ -418,7 +418,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$current_tab = give_get_current_setting_tab();
 
 			// Field Default values.
-			$defaults = array(
+			$defaults = [
 				'id'               => '',
 				'class'            => '',
 				'css'              => '',
@@ -427,7 +427,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				'table_html'       => true,
 				'repeat'           => false,
 				'repeat_btn_title' => __( 'Add Field', 'give' ),
-			);
+			];
 
 			// Set title.
 			$defaults['title'] = isset( $value['name'] ) ? $value['name'] : '';
@@ -440,7 +440,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$value['type']  = ( 'colorpicker' === $value['type'] ? 'text' : $value['type'] );
 
 			// Custom attribute handling.
-			$custom_attributes = array();
+			$custom_attributes = [];
 
 			if ( ! empty( $value['attributes'] ) && is_array( $value['attributes'] ) ) {
 				foreach ( $value['attributes'] as $attribute => $attribute_value ) {
@@ -534,7 +534,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Set default value for repeater field if not any value set yet.
 					if ( $value['repeat'] && is_string( $option_value ) ) {
-						$option_value = array( $value['default'] );
+						$option_value = [ $value['default'] ];
 					}
 					?>
 				<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : ''; ?>>
@@ -580,11 +580,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Textarea.
 				case 'textarea':
 					$option_value        = self::get_option( $option_name, $value['id'], $value['default'] );
-					$default_attributes  = array(
+					$default_attributes  = [
 						'rows' => 10,
 						'cols' => 60,
-					);
-					$textarea_attributes = isset( $value['attributes'] ) ? $value['attributes'] : array();
+					];
+					$textarea_attributes = isset( $value['attributes'] ) ? $value['attributes'] : [];
 					?>
 					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : ''; ?>>
 						<th scope="row" class="titledesc">
@@ -730,7 +730,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Multi Checkbox input.
 				case 'multicheck':
 					$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-					$option_value = is_array( $option_value ) ? $option_value : array();
+					$option_value = is_array( $option_value ) ? $option_value : [];
 					?>
 					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : ''; ?>>
 						<th scope="row" class="titledesc">
@@ -776,7 +776,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $value['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 					$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
 
-					$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
+					$allow_media_preview_tags = [ 'jpg', 'jpeg', 'png', 'gif', 'ico' ];
 					$preview_image_src        = $option_value ? ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) : '';
 					$preview_image_extension  = $preview_image_src ? pathinfo( $preview_image_src, PATHINFO_EXTENSION ) : '';
 					$is_show_preview          = in_array( $preview_image_extension, $allow_media_preview_tags );
@@ -820,7 +820,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
 					// Get editor settings.
-					$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
+					$editor_settings = ! empty( $value['options'] ) ? $value['options'] : [];
 					?>
 				<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : ''; ?>>
 					<th scope="row" class="titledesc">
@@ -897,7 +897,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$type             = 'multiple';
 						$allow_new_values = 'data-allows-new-values="true"';
 						$name             = $name . '[]';
-						$option_value     = empty( $option_value ) ? array() : $option_value;
+						$option_value     = empty( $option_value ) ? [] : $option_value;
 					}
 
 					$title_prefixes_value = ( is_array( $option_value ) && count( $option_value ) > 0 ) ?
@@ -1061,7 +1061,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				return false;
 			}
 
-			$new_options      = array();
+			$new_options      = [];
 			$options_keys     = array_keys( $options );
 			$is_vertical_tabs = is_array( $options_keys ) && count( $options_keys ) > 0 ? ctype_alnum( $options_keys[0] ) : false;
 
@@ -1077,7 +1077,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Options to update will be stored here and saved later.
-			$update_options = array();
+			$update_options = [];
 
 			// Loop options and get values to save.
 			foreach ( $options as $option ) {
@@ -1136,10 +1136,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Check if option is an array and handle that differently to single values.
 				if ( $field_option_name && $setting_name ) {
 					if ( ! isset( $update_options[ $field_option_name ] ) ) {
-						$update_options[ $field_option_name ] = get_option( $field_option_name, array() );
+						$update_options[ $field_option_name ] = get_option( $field_option_name, [] );
 					}
 					if ( ! is_array( $update_options[ $field_option_name ] ) ) {
-						$update_options[ $field_option_name ] = array();
+						$update_options[ $field_option_name ] = [];
 					}
 					$update_options[ $field_option_name ][ $setting_name ] = $value;
 				} else {
@@ -1162,7 +1162,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					do_action( "give_save_option_{$name}", $value, $name );
 				}
 			} else {
-				$old_options    = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
+				$old_options    = ( $old_options = get_option( $option_name ) ) ? $old_options : [];
 				$update_options = array_merge( $old_options, $update_options );
 
 				update_option( $option_name, $update_options, false );

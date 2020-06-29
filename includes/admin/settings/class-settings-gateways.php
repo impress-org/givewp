@@ -83,7 +83,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => __( 'Billing Details', 'give' ),
-							'desc'    => __( 'This option will enable the billing details section for PayPal Standard which requires the donor\'s address to complete the donation. These fields are not required by PayPal to process the transaction, but you may have a need to collect the data.', 'give' ),
+							'desc'    => __( 'If enabled, required billing address fields are added to PayPal Standard forms. These fields are not required by PayPal to process the transaction, but you may have a need to collect the data. Billing address details are added to both the donation and donor record in GiveWP.', 'give' ),
 							'id'      => 'paypal_standard_billing_details',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -94,7 +94,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => __( 'PayPal IPN Verification', 'give' ),
-							'desc'    => __( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
+							'desc'    => __( 'If enabled, IPN (Instant Payment Notification) messages sent to your site from PayPal are verified with an extra (background) step. The IPN is what marks PayPal donations as complete on GiveWP\'s side. If donations are not getting marked as complete, disabling this extra verification step can resolve it. Only disable this setting to resolve the pending donation issue, since it is technically less secure.', 'give' ),
 							'id'      => 'paypal_verification',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -106,7 +106,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						array(
 							'id'      => 'paypal_invoice_prefix',
 							'name'    => esc_html__( 'Invoice ID Prefix', 'give' ),
-							'desc'    => esc_html__( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number.', 'give' ),
+							'desc'    => esc_html__( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.', 'give' ),
 							'type'    => 'text',
 							'default' => 'GIVE-',
 						),
@@ -133,7 +133,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => __( 'Collect Billing Details', 'give' ),
-							'desc'    => __( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
+							'desc'    => __( 'If enabled, required billing address fields are added to Offline Donation forms. These fields are not required to process the transaction, but you may have a need to collect the data. Billing address details are added to both the donation and donor record in GiveWP. ', 'give' ),
 							'id'      => 'give_offline_donation_enable_billing_fields',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -144,7 +144,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => __( 'Offline Donation Instructions', 'give' ),
-							'desc'    => __( 'The following content will appear for all forms when the user selects the offline donation payment option. Note: You may customize the content per form as needed.', 'give' ),
+							'desc'    => __( 'The Offline Donation Instructions are a chance for you to educate the donor on how to best submit offline donations. These instructions appear directly on the form, and after submission of the form. Note: You may also customize the instructions on individual forms as needed.', 'give' ),
 							'id'      => 'global_offline_donation_content',
 							'default' => give_get_default_offline_donation_content(),
 							'type'    => 'wysiwyg',
@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => __( 'Test Mode', 'give' ),
-							'desc'    => __( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'desc'    => __( 'If enabled, donations are processed through the sandbox/test accounts configured in each gateway\'s settings. This prevents having to use real money for tests. See the payment gateway documentation for instructions on configuring sandbox accounts.', 'give' ),
 							'id'      => 'test_mode',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -282,11 +282,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @param $settings
 		 */
 		public function render_gateway_notice( $field, $settings ) {
-
 			$gateways = give_get_payment_gateways();
 
 			// Only display notice if no active gateways are installed. Filter provided for developers to configure display.
-			if ( apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 4 ) && ! give_stripe_is_connected() ) {
+			if (
+				apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 4 ) &&
+				! Give\Helpers\Gateways\Stripe::isAccountConfigured()
+			) {
 				?>
 				<div class="give-gateways-notice">
 					<div class="give-gateways-cc-icon">

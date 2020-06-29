@@ -10,8 +10,12 @@ import './style.scss';
 import { StoreProvider } from '../store';
 import { reducer } from '../store/reducer';
 
+// Utils
+import { getWindowData } from '../utils';
+
 // Components
 import PeriodSelector from '../components/period-selector';
+import SettingsToggle from '../components/settings-toggle';
 import Tabs from '../components/tabs';
 import Routes from '../components/routes';
 
@@ -24,8 +28,11 @@ const App = () => {
 			endDate: moment().hour( 23 ),
 			range: 'week',
 		},
-		giveStatus: null,
+		// giveStatus: null
 		pageLoaded: false,
+		settingsPanelToggled: false,
+		currency: getWindowData( 'currency' ),
+		testMode: getWindowData( 'testMode' ),
 	};
 
 	return (
@@ -33,8 +40,9 @@ const App = () => {
 			<div className="wrap give-settings-page" style={ { position: 'relative' } }>
 				<div className="give-settings-header">
 					<h1 className="wp-heading-inline">{ __( 'Reports', 'give' ) }</h1>
-					<div className="givewp-inline-period-selector">
+					<div className="givewp-filters">
 						<PeriodSelector />
+						<SettingsToggle />
 					</div>
 				</div>
 				<Tabs />

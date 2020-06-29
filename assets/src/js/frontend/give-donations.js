@@ -55,7 +55,7 @@ jQuery( function( $ ) {
 						new_state_field = `<input type="text" id="card_state" name="card_state" class="cart-state give-input required" placeholder="${ states_label }" value="${ response.default_state }" autocomplete="address-level4"/>`;
 						new_state_field = $( new_state_field );
 					}
-					
+
 					// No float labels.
 					if ( false === $form.hasClass( 'float-labels-enabled' ) ) {
 						if (
@@ -166,7 +166,7 @@ jQuery( function( $ ) {
 	// Add a class to the currently selected gateway on click
 	doc.on(
 		'click',
-		'#give-payment-mode-select input',
+		'#give-payment-mode-select input[name="payment-mode"]',
 		function() {
 			let $form = $( this ).parents( 'form' ),
 				$gateways_li = $form.find( '#give-payment-mode-select li' ),

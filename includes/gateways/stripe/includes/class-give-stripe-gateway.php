@@ -45,15 +45,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		public $api_version = '2019-05-16';
 
 		/**
-		 * Secret API Key.
-		 *
-		 * @access private
-		 *
-		 * @var string
-		 */
-		private $secret_key = '';
-
-		/**
 		 * Payment Intent.
 		 *
 		 * @since  2.5.0
@@ -74,6 +65,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		public $payment_method;
 
 		/**
+		 * Error Messages.
+		 *
+		 * @since  2.7.0
+		 * @access public
+		 *
+		 * @var array $errorMessages List of error messages.
+		 */
+		public $errorMessages = [];
+
+		/**
 		 * Give_Stripe_Gateway constructor.
 		 *
 		 * @since  2.5.0
@@ -82,9 +83,6 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return bool|void
 		 */
 		public function __construct() {
-
-			// Set secret key received from Stripe.
-			$this->secret_key = give_stripe_get_secret_key();
 
 			// Set API Version.
 			$this->set_api_version();
@@ -95,6 +93,58 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
 
+		}
+
+		/**
+		 * This function is used to determine whether to show the payment fields or not.
+		 *
+		 * @since  2.7.0
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public function canShowFields() {
+
+			$status       = true;
+			$isConfigured = Give\Helpers\Gateways\Stripe::isAccountConfigured();
+			$isTestMode   = give_is_test_mode();
+			$isSslActive  = is_ssl();
+
+			if ( ! $isConfigured && ! $isSslActive && ! $isTestMode ) {
+				// Account not configured, No SSL scenario.
+				Give_Notices::print_frontend_notice(
+					sprintf(
+						'<strong>%1$s</strong> %2$s',
+						esc_html__( 'Notice:', 'give' ),
+						$this->errorMessages['accountNotConfiguredNoSsl']
+					)
+				);
+				$status = false;
+
+			} elseif ( ! $isConfigured ) {
+				// Account not configured scenario.
+				Give_Notices::print_frontend_notice(
+					sprintf(
+						'<strong>%1$s</strong> %2$s',
+						esc_html__( 'Notice:', 'give' ),
+						$this->errorMessages['accountNotConfigured']
+					)
+				);
+				$status = false;
+
+			} elseif ( ! $isTestMode && ! $isSslActive ) {
+				// Account configured, No SSL scenario.
+				Give_Notices::print_frontend_notice(
+					sprintf(
+						'<strong>%1$s</strong> %2$s',
+						esc_html__( 'Notice:', 'give' ),
+						$this->errorMessages['accountConfiguredNoSsl']
+					)
+				);
+				$status = false;
+			}
+
+			return $status;
 		}
 
 		/**
@@ -486,15 +536,16 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		/**
 		 * This function will prepare metadata to send to Stripe.
 		 *
-		 * @param int $donation_id Donation ID.
+		 * @param int   $donation_id   Donation ID.
+		 * @param array $donation_data Donation Data.
 		 *
 		 * @since  2.5.0
 		 * @access public
 		 *
 		 * @return array
 		 */
-		public function prepare_metadata( $donation_id = 0 ) {
-			return give_stripe_prepare_metadata( $donation_id );
+		public function prepare_metadata( $donation_id, $donation_data = [] ) {
+			return give_stripe_prepare_metadata( $donation_id, $donation_data );
 		}
 
 		/**

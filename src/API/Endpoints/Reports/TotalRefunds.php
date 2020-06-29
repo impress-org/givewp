@@ -46,10 +46,8 @@ class TotalRefunds extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
-		$tooltips = array();
-		$refunds  = array();
+		$tooltips = [];
+		$refunds  = [];
 
 		$interval = new DateInterval( $intervalStr );
 
@@ -77,16 +75,16 @@ class TotalRefunds extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$refunds[] = array(
+			$refunds[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $refundsForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
+			$tooltips[] = [
 				'title'  => $refundsForPeriod . ' ' . __( 'Refunds', 'give' ),
 				'body'   => __( 'Total Refunds', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -100,17 +98,17 @@ class TotalRefunds extends Endpoint {
 		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
+		$data = [
+			'datasets' => [
+				[
 					'data'      => $refunds,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
 					'highlight' => $totalRefundsForPeriod,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $data;
 
@@ -125,7 +123,7 @@ class TotalRefunds extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevRefunds    = $this->get_prev_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$prevRefunds    = $this->get_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentRefunds = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
@@ -149,9 +147,11 @@ class TotalRefunds extends Endpoint {
 
 	public function get_refunds( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$refunds = 0;
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->status == 'refunded' && $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
 				$refunds += 1;
 			}
 		}
@@ -159,27 +159,4 @@ class TotalRefunds extends Endpoint {
 		return $refunds;
 	}
 
-	public function get_prev_refunds( $startStr, $endStr ) {
-
-		$args = array(
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		);
-
-		$prevPayments = new \Give_Payments_Query( $args );
-		$prevPayments = $prevPayments->get_payments();
-
-		$refunds = 0;
-		foreach ( $prevPayments as $payment ) {
-			if ( $payment->status == 'refunded' && $payment->date > $startStr && $payment->date < $endStr ) {
-				$refunds += 1;
-			}
-		}
-
-		return $refunds;
-	}
 }

@@ -15,53 +15,39 @@ class RecentDonations extends Endpoint {
 	}
 
 	public function get_report( $request ) {
-		// Setup donation query args (get sanitized start/end date from request)
-		$args = array(
-			'number'     => 50,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $request->get_param( 'start' ),
-			'end_date'   => $request->get_param( 'end' ),
-		);
 
-		// Get array of 50 recent donations
-		$donations = new \Give_Payments_Query( $args );
-		$donations = $donations->get_payments();
+		$paymentObjects = $this->get_payments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', 50 );
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
-		$data = array();
-		foreach ( $donations as $donation ) {
-
-			$donation = new \Give_Payment( $donation->ID );
-
-			$amount = give_currency_symbol( $donation->currency, true ) . give_format_amount( $donation->total, array( 'sanitize' => false ) );
+		$data = [];
+		foreach ( $paymentObjects as $paymentObject ) {
+			$amount = give_currency_symbol( $paymentObject->currency, true ) . give_format_amount( $paymentObject->total, [ 'sanitize' => false ] );
 			$status = null;
-			switch ( $donation->status ) {
+			switch ( $paymentObject->status ) {
 				case 'publish':
-					$meta   = $donation->payment_meta;
+					$meta   = $paymentObject->payment_meta;
 					$status = isset( $meta['_give_is_donation_recurring'] ) && $meta['_give_is_donation_recurring'] ? 'first_renewal' : 'completed';
 					break;
 				case 'give_subscription':
 					$status = 'renewal';
 					break;
 				default:
-					$status = $donation->status;
+					$status = $paymentObject->status;
 			}
-			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $donation->ID ) );
+			$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . absint( $paymentObject->ID ) );
 
 			$data[] = [
 				'type'     => 'donation',
-				'donation' => $donation,
+				'donation' => $paymentObject,
 				'status'   => $status,
 				'amount'   => $amount,
 				'url'      => $url,
-				'time'     => $donation->date,
-				'donor'    => array(
-					'name' => "{$donation->first_name} {$donation->last_name}",
-					'id'   => $donation->donor_id,
-				),
-				'source'   => $donation->form_title,
+				'time'     => $paymentObject->date,
+				'donor'    => [
+					'name' => "{$paymentObject->first_name} {$paymentObject->last_name}",
+					'id'   => $paymentObject->donor_id,
+				],
+				'source'   => $paymentObject->form_title,
 			];
 		}
 

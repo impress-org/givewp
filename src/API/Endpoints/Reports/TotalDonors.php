@@ -44,10 +44,8 @@ class TotalDonors extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
-		$tooltips = array();
-		$donors   = array();
+		$tooltips = [];
+		$donors   = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -75,16 +73,16 @@ class TotalDonors extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$donors[] = array(
+			$donors[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $donorsForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
+			$tooltips[] = [
 				'title'  => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
 				'body'   => __( 'Total Donors', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
@@ -95,20 +93,20 @@ class TotalDonors extends Endpoint {
 		$trend                = $this->get_trend( $start, $end, $donors );
 
 		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
+		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
+		$data = [
+			'datasets' => [
+				[
 					'data'      => $donors,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
 					'highlight' => $totalDonorsForPeriod,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $data;
 
@@ -123,7 +121,7 @@ class TotalDonors extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevDonors    = $this->get_prev_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$prevDonors    = $this->get_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentDonors = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
@@ -147,40 +145,15 @@ class TotalDonors extends Endpoint {
 
 	public function get_donors( $startStr, $endStr ) {
 
-		$donors = array();
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
-					$donors[] = $payment->donor_id;
+		$donors = [];
+
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
+					$donors[] = $paymentObject->donor_id;
 				}
-			}
-		}
-
-		$unique     = array_unique( $donors );
-		$donorCount = count( $unique );
-
-		return $donorCount;
-	}
-
-	public function get_prev_donors( $startStr, $endStr ) {
-
-		$args = array(
-			'number'     => -1,
-			'paged'      => 1,
-			'orderby'    => 'date',
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-		);
-
-		$prevPayments = new \Give_Payments_Query( $args );
-		$prevPayments = $prevPayments->get_payments();
-
-		$donors = array();
-		foreach ( $prevPayments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				$donors[] = $payment->donor_id;
 			}
 		}
 

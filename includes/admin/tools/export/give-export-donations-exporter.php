@@ -424,7 +424,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 							$custom_amount_text = give_get_meta( $payment->form_id, '_give_custom_amount_text', true );
 
 							if ( empty( $custom_amount_text ) ) {
-								$custom_amount_text = esc_html__( 'Custom', 'give' );
+								$custom_amount_text = esc_html__( 'Custom Amount', 'give' );
 							}
 							$data[ $i ]['form_level_title'] = $custom_amount_text;
 						} else {

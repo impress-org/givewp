@@ -19,7 +19,6 @@ class AverageDonation extends Endpoint {
 		$this->endpoint = 'average-donation';
 	}
 
-
 	/**
 	 * Handle rest request.
 	 *
@@ -34,7 +33,7 @@ class AverageDonation extends Endpoint {
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
 
-		$data = array();
+		$data = [];
 
 		switch ( true ) {
 			case ( $diff->days > 12 ):
@@ -57,10 +56,8 @@ class AverageDonation extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$this->payments = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-
-		$income   = array();
-		$tooltips = array();
+		$income   = [];
+		$tooltips = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -80,42 +77,54 @@ class AverageDonation extends Endpoint {
 				$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$income[] = array(
+			$income[] = [
 				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
 				'y' => $averageForPeriod,
-			);
+			];
 
-			$tooltips[] = array(
-				'title'  => give_currency_filter( give_format_amount( $averageForPeriod ), array( 'decode_currency' => true ) ),
+			$tooltips[] = [
+				'title'  => give_currency_filter(
+					give_format_amount( $averageForPeriod ),
+					[
+						'currency_code'   => $this->currency,
+						'decode_currency' => true,
+					]
+				),
 				'body'   => __( 'Avg Donation', 'give' ),
 				'footer' => $periodLabel,
-			);
+			];
 
-			// Add interval to set up next period
-			date_add( $periodStart, $interval );
-			date_add( $periodEnd, $interval );
+				// Add interval to set up next period
+				date_add( $periodStart, $interval );
+				date_add( $periodEnd, $interval );
 		}
 
-		$averageIncomeForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
-		$trend                  = $this->get_trend( $start, $end, $income );
+			$averageIncomeForPeriod = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+			$trend                  = $this->get_trend( $start, $end, $income );
 
-		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
+			$diff = date_diff( $start, $end );
+			$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = array(
-			'datasets' => array(
-				array(
-					'data'      => $income,
-					'tooltips'  => $tooltips,
-					'trend'     => $trend,
-					'info'      => $info,
-					'highlight' => give_currency_filter( give_format_amount( $averageIncomeForPeriod ), array( 'decode_currency' => true ) ),
-				),
-			),
-		);
+			// Create data objec to be returned, with 'highlights' object containing total and average figures to display
+			$data = [
+				'datasets' => [
+					[
+						'data'      => $income,
+						'tooltips'  => $tooltips,
+						'trend'     => $trend,
+						'info'      => $info,
+						'highlight' => give_currency_filter(
+							give_format_amount( $averageIncomeForPeriod ),
+							[
+								'currency_code'   => $this->currency,
+								'decode_currency' => true,
+							]
+						),
+					],
+				],
+			];
 
-		return $data;
+			return $data;
 
 	}
 
@@ -128,7 +137,7 @@ class AverageDonation extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevAverage    = $this->get_prev_average_donation( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$prevAverage    = $this->get_average_donation( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
 		$currentAverage = $this->get_average_donation( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
@@ -152,32 +161,21 @@ class AverageDonation extends Endpoint {
 
 	public function get_average_donation( $startStr, $endStr ) {
 
+		$paymentObjects = $this->get_payments( $startStr, $endStr );
+
 		$earnings     = 0;
 		$paymentCount = 0;
 
-		foreach ( $this->payments as $payment ) {
-			if ( $payment->date > $startStr && $payment->date < $endStr ) {
-				if ( $payment->status == 'publish' || $payment->status == 'give_subscription' ) {
-					$earnings     += $payment->total;
+		foreach ( $paymentObjects as $paymentObject ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
+					$earnings     += $paymentObject->total;
 					$paymentCount += 1;
 				}
 			}
 		}
 
 		$average = $paymentCount > 0 ? $earnings / $paymentCount : 0;
-
-		// Return rounded average (avoid displaying figures with many decimal places)
-		return round( $average, 2 );
-	}
-
-	public function get_prev_average_donation( $startStr, $endStr ) {
-
-		$stats = new \Give_Payment_Stats();
-
-		$earnings = $stats->get_earnings( 0, $startStr, $endStr );
-		$sales    = $stats->get_sales( 0, $startStr, $endStr );
-
-		$average = $sales > 0 ? $earnings / $sales : 0;
 
 		// Return rounded average (avoid displaying figures with many decimal places)
 		return round( $average, 2 );
