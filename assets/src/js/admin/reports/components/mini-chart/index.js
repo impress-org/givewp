@@ -47,7 +47,7 @@ const MiniChart = ( { title, data } ) => {
 
 	useEffect( () => {
 		const newHighlightValue = getHighlightValue( data );
-		const newTrend = getTrend( data ) === 0 ? 0 : numberToDigits( getTrend( data ), 2, 2 );
+		const newTrend = getTrend( data ) === 0 ? 0 : numberToDigits( getTrend( data ), 3, 2 );
 		const newTooltipText = getTooltipText( data );
 		let newIndicator;
 
