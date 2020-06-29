@@ -85,7 +85,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'name'    => __( 'Email Access', 'give' ),
-							'desc'    => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'desc'    => __( 'If enabled, donors can access their donation history by verifying access to the email address used to donate. When they visit the donation history page, they input their email address and can access the site from a link in the resulting email.', 'give' ),
 							'id'      => 'email_access',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -96,7 +96,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'name'    => __( 'Enable reCAPTCHA', 'give' ),
-							'desc'    => __( 'Would you like to enable the reCAPTCHA feature?', 'give' ),
+							'desc'    => __( 'If enabled, this option adds a reCAPTCHA field to the email access form. Note: this does not add reCAPTCHA to donation forms.', 'give' ),
 							'id'      => 'enable_recaptcha',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -109,7 +109,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => 'recaptcha_key',
 							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
 							/* translators: %s: https://www.google.com/recaptcha/ */
-							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key and paste your reCAPTCHA site key here. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'http://docs.givewp.com/recaptcha' ) ),
+							'desc'    => sprintf( __( 'Navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key and paste your reCAPTCHA site key here. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'http://docs.givewp.com/recaptcha' ) ),
 							'default' => '',
 							'type'    => 'text',
 						),

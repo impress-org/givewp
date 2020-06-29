@@ -332,24 +332,24 @@ add_filter( 'give_forms_offline_donations_metabox_fields', 'give_offline_add_set
  * @return string
  */
 function give_get_default_offline_donation_content() {
-	$default_text  = '<p>' . __( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
+	$default_text  = '<p>' . __( 'To make an offline donation toward this cause, follow these steps:', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		__( 'Make a check payable to "{sitename}"', 'give' )
+		__( 'Write a check payable to "{sitename}"', 'give' )
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		__( 'On the memo line of the check, please indicate that the donation is for "{sitename}"', 'give' )
+		__( 'On the memo line of the check, indicate that the donation is for "{sitename}"', 'give' )
 	);
 	$default_text .= '</li>';
-	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
+	$default_text .= '<li>' . __( 'Mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '{offline_mailing_address}<br>';
-	$default_text .= '<p>' . __( 'All contributions will be gratefully acknowledged and are tax deductible.', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Your tax-deductible donation is greatly appreciated!', 'give' ) . '</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
 
@@ -363,25 +363,25 @@ function give_get_default_offline_donation_content() {
  * @return string
  */
 function give_get_default_offline_donation_email_content() {
-	$default_text  = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
-	$default_text .= '<p>' . __( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:', 'give' ) . '</p>';
+	$default_text  = '<p>' . __( 'Hi {name},', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Thank you for letting us know that you\'re mailing a check! Your generosity is greatly appreciated. Here are those steps again:', 'give' ) . '</p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		__( 'Make a check payable to "{sitename}"', 'give' )
+		__( 'Write a check payable to "{sitename}"', 'give' )
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		__( 'On the memo line of the check, please indicate that the donation is for "{sitename}"', 'give' )
+		__( 'On the memo line of the check, indicate that the donation is for "{form_title}"', 'give' )
 	);
 	$default_text .= '</li>';
-	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
+	$default_text .= '<li>' . __( 'Mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '{offline_mailing_address}<br>';
-	$default_text .= '<p>' . __( 'Once your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!', 'give' ) . '</p>';
-	$default_text .= '<p>' . __( 'Sincerely,', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Once we receive the check, we will mark it as complete in our system, which will generate an email receipt for your records. Please contact us with any questions you may have!', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Thanks in advance!', 'give' ) . '</p>';
 	$default_text .= '<p>{sitename}</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );

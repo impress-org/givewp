@@ -71,8 +71,8 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @return bool
 		 * @since 2.7.0
 		 */
-		public function output_redirect_notice() {
-			if ( FormUtils::isLegacyForm() ) {
+		public function output_redirect_notice( $form_id ) {
+			if ( FormUtils::isLegacyForm( $form_id ) ) {
 				return false;
 			}
 

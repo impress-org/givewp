@@ -49,7 +49,7 @@ return [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'Upload an eye-catching image that reflects your cause. For best results use an image that’s 600x400 pixels.', 'give' ),
+				'desc' => __( 'Upload an eye-catching image that reflects your cause. For best results use an image in 16x9 aspect ratio at least 680x400px.', 'give' ),
 				'type' => 'file',
 			],
 			[
@@ -150,7 +150,7 @@ return [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a check mark icon will appear.', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a check mark icon will appear. For best results use an image in 16x9 aspect ratio at least 680x400px.', 'give' ),
 				'type' => 'file',
 			],
 			[
