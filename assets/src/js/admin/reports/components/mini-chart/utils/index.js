@@ -123,3 +123,19 @@ export function createConfig( data ) {
 	};
 	return config;
 }
+
+/**
+ * Sets a fixed amount of decimal digits conditionally based on the number of signficant digits
+ *
+ * @since 0.9.0
+ *
+ * @param {Number} value – the value to format
+ * @param {Number} totalDigits – the max digits
+ * @param {Number} afterDecimal – the max decimal places
+ * @returns {Number} Number rounded to significant digits
+ */
+export function numberToDigits( value, totalDigits, afterDecimal ) {
+	const lengthBeforeDecimal = Math.floor( value ).toString().length;
+
+	return value.toFixed( Math.max( 0, Math.min( afterDecimal, totalDigits - lengthBeforeDecimal ) ) );
+}
