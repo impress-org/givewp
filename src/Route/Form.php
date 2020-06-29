@@ -77,7 +77,7 @@ class Form {
 		add_rewrite_rule(
 			"{$this->base}/(.+?)/?$",
 			sprintf(
-				'index.php?name=%1$s&give_form_id=$matches[1]',
+				'index.php?url_prefix=%1$s&give_form_id=$matches[1]',
 				$this->base
 			),
 			'top'
@@ -95,6 +95,7 @@ class Form {
 	 */
 	public function addQueryVar( $queryVars ) {
 		$queryVars[] = 'give_form_id';
+		$queryVars[] = 'url_prefix';
 
 		return $queryVars;
 	}
