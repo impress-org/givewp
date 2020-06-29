@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 //Import ChartJS dependencies
 import ChartJS from 'chart.js';
-import { createConfig, getTrend, getHighlightValue, getTooltipText } from './utils';
+import { createConfig, getTrend, getHighlightValue, getTooltipText, numberToDigits } from './utils';
 
 import Tooltip from '../tooltip';
 
@@ -56,7 +56,7 @@ const MiniChart = ( { title, data } ) => {
 				newIndicator = <Fragment>
 					{ down }
 					<span style={ { color: '#D75A4B' } }>
-						{ `${ Math.abs( newTrend ) }%` }
+						{ `${ numberToDigits( Math.abs( newTrend ), 2 ) }%` }
 					</span>
 				</Fragment>;
 				break;
@@ -65,7 +65,7 @@ const MiniChart = ( { title, data } ) => {
 				newIndicator = <Fragment>
 					{ up }
 					<span style={ { color: '#69B868' } }>
-						{ `${ Math.abs( newTrend ) }%` }
+						{ `${ numberToDigits( Math.abs( newTrend ), 2 ) }%` }
 					</span>
 				</Fragment>;
 				break;
@@ -73,7 +73,7 @@ const MiniChart = ( { title, data } ) => {
 			default: {
 				newIndicator = <Fragment>
 					<span style={ { color: '#82878c' } }>
-						{ `${ Math.abs( newTrend ) }%` }
+						{ `${ numberToDigits( Math.abs( newTrend ), 2 ) }%` }
 					</span>
 				</Fragment>;
 				break;
