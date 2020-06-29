@@ -149,10 +149,10 @@ class AverageDonation extends Endpoint {
 			// Check if it is a percent decreate, or increase
 			if ( $prevAverage > $currentAverage ) {
 				// Calculate a percent decrease
-				$trend = round( ( ( ( $prevAverage - $currentAverage ) / $prevAverage ) * 100 ), 1 ) * -1;
+				$trend = ( ( ( $prevAverage - $currentAverage ) / $prevAverage ) * 100 ) * -1;
 			} elseif ( $currentAverage > $prevAverage ) {
 				// Calculate a percent increase
-				$trend = round( ( ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100 ), 1 );
+				$trend = ( ( $currentAverage - $prevAverage ) / $prevAverage ) * 100;
 			}
 		}
 

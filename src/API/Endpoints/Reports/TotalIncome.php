@@ -145,10 +145,10 @@ class TotalIncome extends Endpoint {
 			// Check if it is a percent decreate, or increase
 			if ( $prevIncome > $currentIncome ) {
 				// Calculate a percent decrease
-				$trend = round( ( ( ( $prevIncome - $currentIncome ) / $prevIncome ) * 100 ), 1 ) * -1;
+				$trend = ( ( ( $prevIncome - $currentIncome ) / $prevIncome ) * 100 ) * -1;
 			} elseif ( $currentIncome > $prevIncome ) {
 				// Calculate a percent increase
-				$trend = round( ( ( ( $currentIncome - $prevIncome ) / $prevIncome ) * 100 ), 1 );
+				$trend = ( ( $currentIncome - $prevIncome ) / $prevIncome ) * 100;
 			}
 		}
 

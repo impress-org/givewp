@@ -135,10 +135,10 @@ class TotalRefunds extends Endpoint {
 			// Check if it is a percent decreate, or increase
 			if ( $prevRefunds > $currentRefunds ) {
 				// Calculate a percent decrease
-				$trend = round( ( ( ( $prevRefunds - $currentRefunds ) / $prevRefunds ) * 100 ), 1 ) * -1;
+				$trend = ( ( ( $prevRefunds - $currentRefunds ) / $prevRefunds ) * 100 ) * -1;
 			} elseif ( $currentRefunds > $prevRefunds ) {
 				// Calculate a percent increase
-				$trend = round( ( ( ( $currentRefunds - $prevRefunds ) / $prevRefunds ) * 100 ), 1 );
+				$trend = ( ( $currentRefunds - $prevRefunds ) / $prevRefunds ) * 100;
 			}
 		}
 
