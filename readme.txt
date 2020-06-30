@@ -231,7 +231,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: If you install GiveWP and didn't configure anything there would be a JavaScript error on the frontend if Stripe is not connected but enabled, which it is by default for new installs. [#4709](https://github.com/impress-org/givewp/pull/4709)
 * Fix: Improved how reports are rounding percentages so that the trend comparisons are more accurate. [#4766](https://github.com/impress-org/givewp/issues/4766)
 * Fix: Monaco doesn't have states so don't display or require a state field when that country is selected. [#4773](https://github.com/impress-org/givewp/pull/4773) 
-* Fix: Properly internationalized a stripe in Stripe so translations properly display. [#4677](https://github.com/impress-org/givewp/pull/4677)
+* Fix: Properly internationalized a tooltip in Stripe so translations properly display. [#4677](https://github.com/impress-org/givewp/pull/4677)
 * Fix: The "Add-ons" like on the plugin activation welcome screen was broken. [#4843](https://github.com/impress-org/givewp/pull/4843)
 * Fix: Resolved a caching conflict with WP Rocket that was preventing donation forms from being cached properly. [#4546](https://github.com/impress-org/givewp/pull/4546) 
 * Fix: Prevented a fatal error that could occur on the Donor profile screen in WP-Admin when the Stripe add-on is active but no Stripe payment gateways are enabled. [#4787](https://github.com/impress-org/givewp/pull/4787)
