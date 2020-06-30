@@ -52,13 +52,13 @@ class Reports {
 			'give-admin-reports-widget-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports-widget.css',
 			[],
-			'0.0.1'
+			GIVE_VERSION
 		);
 		wp_enqueue_script(
 			'give-admin-reports-widget-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
 			[ 'wp-element', 'wp-api', 'wp-i18n' ],
-			'0.0.1',
+			GIVE_VERSION,
 			true
 		);
 		wp_localize_script(
