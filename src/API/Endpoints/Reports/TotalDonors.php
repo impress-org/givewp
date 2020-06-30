@@ -133,10 +133,10 @@ class TotalDonors extends Endpoint {
 			// Check if it is a percent decreate, or increase
 			if ( $prevDonors > $currentDonors ) {
 				// Calculate a percent decrease
-				$trend = round( ( ( ( $prevDonors - $currentDonors ) / $prevDonors ) * 100 ), 1 ) * -1;
+				$trend = ( ( ( $prevDonors - $currentDonors ) / $prevDonors ) * 100 ) * -1;
 			} elseif ( $currentDonors > $prevDonors ) {
 				// Calculate a percent increase
-				$trend = round( ( ( ( $currentDonors - $prevDonors ) / $prevDonors ) * 100 ), 1 );
+				$trend = ( ( $currentDonors - $prevDonors ) / $prevDonors ) * 100;
 			}
 		}
 
