@@ -19,8 +19,10 @@ $stripped_content = ''; // Form content stripped of HTML tags and shortcodes.
 $excerpt          = ''; // Trimmed form excerpt ready for display.
 
 
+$activeTemplate = FormUtils::isLegacyForm( $form_id ) ? 'legacy' : Template::getActiveID( $form_id );
+
 /* @var \Give\Form\Template $formTemplate */
-$formTemplate = Give()->templates->getTemplate( Template::getActiveID( $form_id ) );
+$formTemplate = Give()->templates->getTemplate( $activeTemplate );
 ?>
 
 <div class="give-grid__item">
