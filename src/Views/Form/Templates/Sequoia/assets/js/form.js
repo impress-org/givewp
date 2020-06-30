@@ -220,7 +220,7 @@
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
-				$( '.give_error' ).each( function() {
+				$( '.give_error', '[id*="give-stripe-payment-errors-"]', '[id*="give-square-payment-errors-"]' ).each( function() {
 					moveErrorNotice( $( this ) );
 				} );
 
