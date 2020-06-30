@@ -229,6 +229,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Our Gutenberg blocks' UI was improved so they are have a better user experience.
 * Tweak: Previous to this release we were packaging two TCPDF packages for backwards compatibility reason. We removed one of the packages and now are relying on the composer package. This means that you'll need to be running the PDF Receipts version add-on at 2.3.4 or higher for compatibility. [#4656](https://github.com/impress-org/givewp/pull/4656) 
 * Fix: If you install GiveWP and didn't configure anything there would be a JavaScript error on the frontend if Stripe is not connected but enabled, which it is by default for new installs. [#4709](https://github.com/impress-org/givewp/pull/4709)
+* Fix: Improved how reports are rounding percentages so that the trend comparisons are more accurate. [#4766](https://github.com/impress-org/givewp/issues/4766)
 * Fix: Monaco doesn't have states so don't display or require a state field when that country is selected. [#4773](https://github.com/impress-org/givewp/pull/4773) 
 * Fix: Properly internationalized a stripe in Stripe so translations properly display. [#4677](https://github.com/impress-org/givewp/pull/4677)
 * Fix: The "Add-ons" like on the plugin activation welcome screen was broken. [#4843](https://github.com/impress-org/givewp/pull/4843)
