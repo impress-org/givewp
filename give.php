@@ -40,6 +40,8 @@
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
+use Give\ServiceProviders\PaymentGateways;
+use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -303,6 +305,15 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private $singletonsCache = [];
 
+		/**
+		 * Array of the Service Gateways
+		 *
+		 * @since 2.8.0
+		 * @var string[]
+		 */
+		private $serviceProviders = [
+			PaymentGateways::class,
+		];
 
 		/**
 		 * Main Give Instance
@@ -348,6 +359,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->setup_constants();
 			$this->includes();
 			$this->init_hooks();
+			$this->registerServiceProviders();
 
 			do_action( 'give_loaded' );
 		}
@@ -764,7 +776,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since 2.7.0
 		 * @return mixed
 		 */
-		function __get( $propertyName ) {
+		public function __get( $propertyName ) {
 			switch ( $propertyName ) {
 				case 'templates':
 					if ( ! isset( $this->singletonsCache[ Templates::class ] ) ) {
@@ -782,6 +794,30 @@ if ( ! class_exists( 'Give' ) ) :
 			}
 		}
 
+		/**
+		 * This registers the Service Providers by first calling the register method on all of them,
+		 * and then going through and calling the boot method on all of them.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @return void
+		 */
+		private function registerServiceProviders() {
+			$providers = [];
+
+			foreach ( $this->serviceProviders as $serviceProvider ) {
+				/** @var ServiceProvider $serviceProvider */
+				$serviceProvider = new $serviceProvider();
+
+				$serviceProvider->register();
+
+				$providers[] = $serviceProvider;
+			}
+
+			foreach ( $providers as $serviceProvider ) {
+				$serviceProvider->boot();
+			}
+		}
 	}
 
 endif; // End if class_exists check
