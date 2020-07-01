@@ -375,6 +375,8 @@
 
 		// Refresh payment information section.
 		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+	} else {
+		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
 	}
 
 	/**
