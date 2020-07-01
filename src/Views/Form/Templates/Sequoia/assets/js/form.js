@@ -349,6 +349,7 @@
 		$( document ).on( 'give_gateway_loaded', function() {
 			setupTabOrder();
 			moveFieldsUnderPaymentGateway( true );
+			setupSelectInputs();
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
 				gatewayAnimating = false;
 			} );
@@ -377,6 +378,7 @@
 		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 	} else {
 		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
+		setupSelectInputs();
 	}
 
 	/**
@@ -678,5 +680,21 @@
 
 	function clearLoginNotices() {
 		$( '#give_error_must_log_in' ).remove();
+	}
+
+	/**
+	 * Setup select inputs
+	 *
+	 * @since 2.7.0
+	 */
+	function setupSelectInputs() {
+		if ( $( 'select option[selected="selected"][value=""]' ).length > 0 ) {
+			$( 'select option[selected="selected"][value=""]' ).each( function() {
+				if ( $( this ).parent().siblings( 'label' ).length ) {
+					$( this ).text( $( this ).parent().siblings( 'label' ).text().replace( '*', '' ).trim() );
+					$( this ).attr( 'disabled', true );
+				}
+			} );
+		}
 	}
 }( jQuery ) );
