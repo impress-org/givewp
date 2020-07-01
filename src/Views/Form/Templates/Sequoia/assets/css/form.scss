@@ -972,7 +972,14 @@ p {
 		.no-fields {
 			margin-bottom: 8px;
 		}
+
+		&.give-single-gateway-wrap {
+			background: none;
+			padding: 0;
+			margin: 0 20px;
+		}
 	}
+
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
