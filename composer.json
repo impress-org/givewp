@@ -17,7 +17,7 @@
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
         "jetbrains/phpstorm-stubs": "dev-master",
-        "humbug/php-scoper": "dev-master"
+        "humbug/php-scoper": "^0.13"
     },
     "keywords": [
         "wordpress",
@@ -40,17 +40,10 @@
             "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
         ],
         "prefix-dependencies": [
-            "composer prefix-paypal",
-            "composer du"
+            "composer prefix-paypal"
         ],
         "prefix-paypal": [
-            "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --output-dir=./src/Vendor/PayPal --config=config/php-scoper/paypal.inc.php --force --quiet",
-            "mv src/Vendor/PayPal/paypalhttp/lib/PayPalHttp/* src/Vendor/PayPal/paypalhttp/",
-            "rm -rf src/Vendor/PayPal/paypalhttp/lib/",
-            "mv src/Vendor/PayPal/paypalhttp/ src/Vendor/PayPal/PayPalHttp",
-            "mv src/Vendor/PayPal/paypal-checkout-sdk/lib/PayPalCheckoutSdk/* src/Vendor/PayPal/paypal-checkout-sdk",
-            "rm -rf src/Vendor/PayPal/paypal-checkout-sdk/lib/",
-            "mv src/Vendor/PayPal/paypal-checkout-sdk/ src/Vendor/PayPal/PayPalCheckoutSdk",
+            "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --output-dir=./vendor-prefixed --config=config/php-scoper/paypal.inc.php --force --quiet",
             "rm -rf vendor/paypal"
         ]
     },

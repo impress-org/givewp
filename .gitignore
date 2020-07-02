@@ -47,3 +47,4 @@ assets/dist/
 
 # Composer
 vendor
+vendor-prefixed
