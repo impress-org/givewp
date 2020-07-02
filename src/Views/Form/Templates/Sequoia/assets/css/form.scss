@@ -629,13 +629,14 @@ p {
 				bottom: 20px;
 				left: 60px;
 				position: absolute;
+				z-index: 99;
 			}
 		}
 
 		#give_terms {
 			margin-bottom: 17px;
 			max-height: 300px;
-			overflow-y: scroll;
+			overflow-y: scroll !important;
 		}
 
 		label {
