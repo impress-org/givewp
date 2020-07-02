@@ -31,7 +31,7 @@
         "post-install-cmd": [
             "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
             "@install-codestandards",
-            "composer prefix-dependencies"
+            "@prefix-dependencies"
         ],
         "post-update-cmd": [
             "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
