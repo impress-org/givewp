@@ -24,19 +24,22 @@
  *
  * A Tribute to Open Source:
  *
- * "Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by anyone. Open
- * source software is made by many people, and distributed under licenses that comply with the Open Source Definition."
+ * "Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by
+ * anyone. Open source software is made by many people, and distributed under licenses that comply with the Open Source
+ * Definition."
  *
  * -- The Open Source Initiative
  *
- * Give is a tribute to the spirit and philosophy of Open Source. We at GiveWP gladly embrace the Open Source philosophy both
- * in how Give itself was developed, and how we hope to see others build more from our code base.
+ * Give is a tribute to the spirit and philosophy of Open Source. We at GiveWP gladly embrace the Open Source
+ * philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects
+ * and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The GiveWP Team
  */
 
+use Give\Container\Container;
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
@@ -53,43 +56,13 @@ if ( ! class_exists( 'Give' ) ) :
 	 *
 	 * @since 1.0
 	 *
-	 * @property-read Templates $templates
-	 * @property-read FormRoute $routeForm
+	 * @property-read Give_Roles          $roles
+	 * @property-read Give_Admin_Settings $give_settings
+	 * @property-read Give_API            $api
+	 * @property-read Templates           $templates
+	 * @property-read FormRoute           $routeForm
 	 */
 	final class Give {
-
-		/** Singleton *************************************************************/
-
-		/**
-		 * Give Instance
-		 *
-		 * @since  1.0
-		 * @access private
-		 *
-		 * @var    Give() The one true Give
-		 */
-		protected static $_instance;
-
-		/**
-		 * Give Roles Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_Roles object
-		 */
-		public $roles;
-
-		/**
-		 * Give Settings Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_Admin_Settings object
-		 */
-		public $give_settings;
-
 		/**
 		 * Give Session Object
 		 *
@@ -173,16 +146,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_DB_Sequential_Ordering object
 		 */
 		public $sequential_donation_db;
-
-		/**
-		 * Give API Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_API object
-		 */
-		public $api;
 
 		/**
 		 * Give Template Loader Object
@@ -296,40 +259,15 @@ if ( ! class_exists( 'Give' ) ) :
 		public $stripe;
 
 		/**
-		 * Array of singleton objects
-		 *
-		 * @since 2.7.0
-		 * @var array
+		 * @var Container
 		 */
-		private $singletonsCache = [];
+		private $container;
 
-
-		/**
-		 * Main Give Instance
-		 *
-		 * Ensures that only one instance of Give exists in memory at any one
-		 * time. Also prevents needing to define globals all over the place.
-		 *
-		 * @since     1.0
-		 * @access    public
-		 *
-		 * @static
-		 * @see       Give()
-		 *
-		 * @return    Give
-		 */
-		public static function instance() {
-			if ( is_null( self::$_instance ) ) {
-				self::$_instance = new self();
-			}
-
-			return self::$_instance;
+		public function __construct() {
+			$this->container = new Container();
 		}
 
-		/**
-		 * Give Constructor.
-		 */
-		public function __construct() {
+		public function boot() {
 			// PHP version
 			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
 				define( 'GIVE_REQUIRED_PHP_VERSION', '5.6.0' );
@@ -347,9 +285,33 @@ if ( ! class_exists( 'Give' ) ) :
 
 			$this->setup_constants();
 			$this->includes();
+			$this->bindClasses();
 			$this->init_hooks();
 
 			do_action( 'give_loaded' );
+		}
+
+		private function bindLegacyInstance( $alias, $class, $includesPath ) {
+			require_once GIVE_PLUGIN_DIR . "includes/$includesPath";
+
+			if ( is_callable( $class ) ) {
+				$this->container->instance( $alias, $class() );
+			} else {
+				$this->container->instance( $alias, new $class() );
+			}
+		}
+
+		private function bindClasses() {
+			$this->container->singleton( 'templates', Templates::class );
+			$this->container->singleton( 'routeForm', FormRoute::class );
+
+			$this->bindLegacyInstance( 'roles', 'Give_Roles', 'class-give-roles.php' );
+			$this->bindLegacyInstance(
+				'give_settings',
+				'Give_Admin_Settings',
+				'admin/class-admin-settings.php'
+			);
+			$this->bindLegacyInstance( 'api', 'Give_API', 'api/class-give-api.php' );
 		}
 
 		/**
@@ -362,14 +324,12 @@ if ( ! class_exists( 'Give' ) ) :
 			add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
 		}
 
-
 		/**
 		 * Init Give when WordPress Initializes.
 		 *
 		 * @since 1.8.9
 		 */
 		public function init() {
-
 			/**
 			 * Fires before the Give core is initialized.
 			 *
@@ -380,9 +340,6 @@ if ( ! class_exists( 'Give' ) ) :
 			// Set up localization.
 			$this->load_textdomain();
 
-			$this->roles                  = new Give_Roles();
-			$this->api                    = new Give_API();
-			$this->give_settings          = new Give_Admin_Settings();
 			$this->emails                 = new Give_Emails();
 			$this->email_tags             = new Give_Email_Template_Tags();
 			$this->html                   = Give_HTML_Elements::get_instance();
@@ -412,12 +369,12 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Fire the action after Give core loads.
 			 *
+			 * @since 1.8.7
+			 *
 			 * @param Give class instance.
 			 *
-			 * @since 1.8.7
 			 */
 			do_action( 'give_init', $this );
-
 		}
 
 		/**
@@ -458,7 +415,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		private function setup_constants() {
-
 			// Plugin version.
 			if ( ! defined( 'GIVE_VERSION' ) ) {
 				define( 'GIVE_VERSION', '2.7.1' );
@@ -530,7 +486,6 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Load plugin files
 			 */
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
@@ -538,7 +493,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api-v2.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
@@ -547,7 +501,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db.php';
@@ -644,7 +597,6 @@ if ( ! class_exists( 'Give' ) ) :
 			) {
 				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/class-give-stripe.php';
 			}
-
 		}
 
 		/**
@@ -656,7 +608,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function load_textdomain() {
-
 			// Set filter for Give's languages directory
 			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
 			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
@@ -668,7 +619,6 @@ if ( ! class_exists( 'Give' ) ) :
 			unload_textdomain( 'give' );
 			load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
 			load_plugin_textdomain( 'give', false, $give_lang_dir );
-
 		}
 
 
@@ -684,13 +634,35 @@ if ( ! class_exists( 'Give' ) ) :
 				return;
 			}
 
-			$notice_desc  = '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
-			$notice_desc .= '<p>' . __( 'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.', 'give' ) . '</p>';
-			$notice_desc .= '<p>' . __( 'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.', 'give' ) . '</p>';
+			$notice_desc  = '<p><strong>' . __(
+				'Your site could be faster and more secure with a newer PHP version.',
+				'give'
+			) . '</strong></p>';
+			$notice_desc .= '<p>' . __(
+				'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.',
+				'give'
+			) . '</p>';
+			$notice_desc .= '<p>' . __(
+				'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.',
+				'give'
+			) . '</p>';
 			$notice_desc .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
-			$notice_desc .= '<p>' . __( 'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.', 'give' ) . '</p>';
+			$notice_desc .= '<p>' . __(
+				'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.',
+				'give'
+			) . '</p>';
 			$notice_desc .= '<p><strong>' . __( 'Can\'t update? Ask your host!', 'give' ) . '</strong></p>';
-			$notice_desc .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
+			$notice_desc .= '<p>' . sprintf(
+				__(
+					'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.',
+					'give'
+				),
+				sprintf(
+					'<a href="%1$s" target="_blank">',
+					esc_url( 'https://wordpress.org/hosting/' )
+				),
+				'</a>'
+			) . '</p>';
 
 			echo sprintf(
 				'<div class="notice notice-error">%1$s</div>',
@@ -706,7 +678,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function display_old_recurring_compatibility_notice() {
-
 			// Show notice, if incompatibility found.
 			if (
 				defined( 'GIVE_RECURRING_VERSION' )
@@ -714,9 +685,11 @@ if ( ! class_exists( 'Give' ) ) :
 				&& defined( 'GIVE_STRIPE_VERSION' )
 				&& version_compare( GIVE_STRIPE_VERSION, '2.2.0', '<' )
 			) {
-
 				$message = sprintf(
-					__( '<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.', 'give' ),
+					__(
+						'<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.',
+						'give'
+					),
 					esc_url( 'https://givewp.com/wp-login.php' ),
 					esc_url( 'https://givewp.com/my-account/#tab_downloads' )
 				);
@@ -730,7 +703,6 @@ if ( ! class_exists( 'Give' ) ) :
 					]
 				);
 			}
-
 		}
 
 		/**
@@ -738,7 +710,8 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * @since 2.4.0
 		 *
-		 * @param  string $type admin, ajax, cron or frontend.
+		 * @param string $type admin, ajax, cron or frontend.
+		 *
 		 * @return bool
 		 */
 		private function is_request( $type ) {
@@ -759,29 +732,15 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Handle property get request
 		 *
+		 * @since 2.7.0
+		 *
 		 * @param string $propertyName
 		 *
-		 * @since 2.7.0
 		 * @return mixed
 		 */
-		function __get( $propertyName ) {
-			switch ( $propertyName ) {
-				case 'templates':
-					if ( ! isset( $this->singletonsCache[ Templates::class ] ) ) {
-						$this->singletonsCache[ Templates::class ] = new Templates();
-					}
-
-					return $this->singletonsCache[ Templates::class ];
-
-				case 'routeForm':
-					if ( ! isset( $this->singletonsCache[ FormRoute::class ] ) ) {
-						$this->singletonsCache[ FormRoute::class ] = new FormRoute();
-					}
-
-					return $this->singletonsCache[ FormRoute::class ];
-			}
+		public function __get( $propertyName ) {
+			return $this->container->get( $propertyName );
 		}
-
 	}
 
 endif; // End if class_exists check
@@ -801,7 +760,15 @@ endif; // End if class_exists check
  * @return object|Give
  */
 function Give() { // phpcs:ignore
-	return Give::instance();
+	static $instance = null;
+
+	if ( $instance === null ) {
+		$instance = new Give();
+	}
+
+	return $instance;
 }
 
-Give();
+require 'vendor/autoload.php';
+
+Give()->boot();
