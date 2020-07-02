@@ -30,7 +30,8 @@
     "scripts": {
         "post-install-cmd": [
             "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
-            "@install-codestandards"
+            "@install-codestandards",
+            "composer prefix-dependencies"
         ],
         "post-update-cmd": [
             "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
@@ -49,7 +50,8 @@
             "mv src/Vendors/Paypal/paypalhttp/ src/Vendors/Paypal/PayPalHttp",
             "mv src/Vendors/Paypal/paypal-checkout-sdk/lib/PayPalCheckoutSdk/* src/Vendors/Paypal/paypal-checkout-sdk",
             "rm -rf src/Vendors/Paypal/paypal-checkout-sdk/lib/",
-            "mv src/Vendors/Paypal/paypal-checkout-sdk/ src/Vendors/Paypal/PayPalCheckoutSdk"
+            "mv src/Vendors/Paypal/paypal-checkout-sdk/ src/Vendors/Paypal/PayPalCheckoutSdk",
+            "rm -rf vendor/paypal"
         ]
     },
     "autoload": {
