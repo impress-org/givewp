@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
-use Give\Vendor\Paypal\PayPalHttp\Injector;
-class GzipInjector implements \Give\Vendor\Paypal\PayPalHttp\Injector {
+use Give\Vendor\PayPal\PayPalHttp\Injector;
+class GzipInjector implements \Give\Vendor\PayPal\PayPalHttp\Injector {
 
 	public function inject( $httpRequest ) {
 		$httpRequest->headers['Accept-Encoding'] = 'gzip';

@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
-use Give\Vendor\Paypal\PayPalHttp\HttpRequest;
-class AccessTokenRequest extends \Give\Vendor\Paypal\PayPalHttp\HttpRequest {
+use Give\Vendor\PayPal\PayPalHttp\HttpRequest;
+class AccessTokenRequest extends \Give\Vendor\PayPal\PayPalHttp\HttpRequest {
 
-	public function __construct( \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\PayPalEnvironment $environment, $refreshToken = null ) {
+	public function __construct( \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\PayPalEnvironment $environment, $refreshToken = null ) {
 		parent::__construct( '/v1/oauth2/token', 'POST' );
 		$this->headers['Authorization'] = 'Basic ' . $environment->authorizationString();
 		$body                           = [ 'grant_type' => 'client_credentials' ];

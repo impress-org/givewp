@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
 /**
  * Class PayPalUserAgent
@@ -26,7 +26,7 @@ class UserAgent {
 			$curlVersion   = \curl_version();
 			$featureList[] = 'curl=' . $curlVersion['version'];
 		}
-		return \sprintf( 'PayPalSDK/%s %s (%s)', 'Checkout-PHP-SDK', \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\Version::VERSION, \implode( '; ', $featureList ) );
+		return \sprintf( 'PayPalSDK/%s %s (%s)', 'Checkout-PHP-SDK', \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\Version::VERSION, \implode( '; ', $featureList ) );
 	}
 	/**
 	 * Gets PHP Bit version

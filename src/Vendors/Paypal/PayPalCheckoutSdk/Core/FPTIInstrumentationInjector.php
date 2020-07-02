@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
-use Give\Vendor\Paypal\PayPalHttp\Injector;
-class FPTIInstrumentationInjector implements \Give\Vendor\Paypal\PayPalHttp\Injector {
+use Give\Vendor\PayPal\PayPalHttp\Injector;
+class FPTIInstrumentationInjector implements \Give\Vendor\PayPal\PayPalHttp\Injector {
 
 	public function inject( $request ) {
 		$request->headers['sdk_name']             = 'Checkout SDK';

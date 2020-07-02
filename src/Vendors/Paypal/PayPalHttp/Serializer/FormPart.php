@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp\Serializer;
+namespace Give\Vendor\PayPal\PayPalHttp\Serializer;
 
 class FormPart {
 

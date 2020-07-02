@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp;
+namespace Give\Vendor\PayPal\PayPalHttp;
 
-class HttpException extends \Give\Vendor\Paypal\PayPalHttp\IOException {
+class HttpException extends \Give\Vendor\PayPal\PayPalHttp\IOException {
 
 	/**
 	 * @var statusCode

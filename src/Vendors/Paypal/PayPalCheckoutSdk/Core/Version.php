@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
 class Version {
 

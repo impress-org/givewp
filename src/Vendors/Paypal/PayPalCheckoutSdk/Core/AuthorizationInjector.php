@@ -1,17 +1,17 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
-use Give\Vendor\Paypal\PayPalHttp\HttpRequest;
-use Give\Vendor\Paypal\PayPalHttp\Injector;
-use Give\Vendor\Paypal\PayPalHttp\HttpClient;
-class AuthorizationInjector implements \Give\Vendor\Paypal\PayPalHttp\Injector {
+use Give\Vendor\PayPal\PayPalHttp\HttpRequest;
+use Give\Vendor\PayPal\PayPalHttp\Injector;
+use Give\Vendor\PayPal\PayPalHttp\HttpClient;
+class AuthorizationInjector implements \Give\Vendor\PayPal\PayPalHttp\Injector {
 
 	private $client;
 	private $environment;
 	private $refreshToken;
 	public $accessToken;
-	public function __construct( \Give\Vendor\Paypal\PayPalHttp\HttpClient $client, \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\PayPalEnvironment $environment, $refreshToken ) {
+	public function __construct( \Give\Vendor\PayPal\PayPalHttp\HttpClient $client, \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\PayPalEnvironment $environment, $refreshToken ) {
 		$this->client       = $client;
 		$this->environment  = $environment;
 		$this->refreshToken = $refreshToken;
@@ -25,14 +25,14 @@ class AuthorizationInjector implements \Give\Vendor\Paypal\PayPalHttp\Injector {
 		}
 	}
 	private function fetchAccessToken() {
-		$accessTokenResponse = $this->client->execute( new \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\AccessTokenRequest( $this->environment, $this->refreshToken ) );
+		$accessTokenResponse = $this->client->execute( new \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\AccessTokenRequest( $this->environment, $this->refreshToken ) );
 		$accessToken         = $accessTokenResponse->result;
-		return new \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\AccessToken( $accessToken->access_token, $accessToken->token_type, $accessToken->expires_in );
+		return new \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\AccessToken( $accessToken->access_token, $accessToken->token_type, $accessToken->expires_in );
 	}
 	private function isAuthRequest( $request ) {
-		return $request instanceof \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\AccessTokenRequest || $request instanceof \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\RefreshTokenRequest;
+		return $request instanceof \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\AccessTokenRequest || $request instanceof \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\RefreshTokenRequest;
 	}
-	private function hasAuthHeader( \Give\Vendor\Paypal\PayPalHttp\HttpRequest $request ) {
+	private function hasAuthHeader( \Give\Vendor\PayPal\PayPalHttp\HttpRequest $request ) {
 		return \array_key_exists( 'Authorization', $request->headers );
 	}
 }

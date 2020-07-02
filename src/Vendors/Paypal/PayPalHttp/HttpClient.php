@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp;
+namespace Give\Vendor\PayPal\PayPalHttp;
 
 /**
  * Class HttpClient
@@ -28,10 +28,10 @@ class HttpClient {
 	 * @param $environment Environment
 	 * @see Environment
 	 */
-	function __construct( \Give\Vendor\Paypal\PayPalHttp\Environment $environment ) {
+	function __construct( \Give\Vendor\PayPal\PayPalHttp\Environment $environment ) {
 		$this->environment = $environment;
-		$this->encoder     = new \Give\Vendor\Paypal\PayPalHttp\Encoder();
-		$this->curlCls     = \Give\Vendor\Paypal\PayPalHttp\Curl::class;
+		$this->encoder     = new \Give\Vendor\PayPal\PayPalHttp\Encoder();
+		$this->curlCls     = \Give\Vendor\PayPal\PayPalHttp\Curl::class;
 	}
 	/**
 	 * Injectors are blocks that can be used for executing arbitrary pre-flight logic, such as modifying a request or logging data.
@@ -39,7 +39,7 @@ class HttpClient {
 	 *
 	 * @param Injector $inj
 	 */
-	public function addInjector( \Give\Vendor\Paypal\PayPalHttp\Injector $inj ) {
+	public function addInjector( \Give\Vendor\PayPal\PayPalHttp\Injector $inj ) {
 		$this->injectors[] = $inj;
 	}
 	/**
@@ -48,9 +48,9 @@ class HttpClient {
 	 * @param $httpRequest HttpRequest
 	 * @return HttpResponse
 	 */
-	public function execute( \Give\Vendor\Paypal\PayPalHttp\HttpRequest $httpRequest ) {
+	public function execute( \Give\Vendor\PayPal\PayPalHttp\HttpRequest $httpRequest ) {
 		$requestCpy = clone $httpRequest;
-		$curl       = new \Give\Vendor\Paypal\PayPalHttp\Curl();
+		$curl       = new \Give\Vendor\PayPal\PayPalHttp\Curl();
 		foreach ( $this->injectors as $inj ) {
 			$inj->inject( $requestCpy );
 		}
@@ -125,10 +125,10 @@ class HttpClient {
 	protected function getCACertFilePath() {
 		return null;
 	}
-	protected function setCurl( \Give\Vendor\Paypal\PayPalHttp\Curl $curl ) {
+	protected function setCurl( \Give\Vendor\PayPal\PayPalHttp\Curl $curl ) {
 		$this->curl = $curl;
 	}
-	protected function setEncoder( \Give\Vendor\Paypal\PayPalHttp\Encoder $encoder ) {
+	protected function setEncoder( \Give\Vendor\PayPal\PayPalHttp\Encoder $encoder ) {
 		$this->encoder = $encoder;
 	}
 	private function serializeHeaders( $headers ) {
@@ -158,7 +158,7 @@ class HttpClient {
 		$errorCode    = $curl->errNo();
 		$error        = $curl->error();
 		if ( $errorCode > 0 ) {
-			throw new \Give\Vendor\Paypal\PayPalHttp\IOException( $error, $errorCode );
+			throw new \Give\Vendor\PayPal\PayPalHttp\IOException( $error, $errorCode );
 		}
 		$body = $responseData;
 		if ( $statusCode >= 200 && $statusCode < 300 ) {
@@ -166,9 +166,9 @@ class HttpClient {
 			if ( ! empty( $body ) ) {
 				$responseBody = $this->encoder->deserializeResponse( $body, $this->prepareHeaders( $headers ) );
 			}
-			return new \Give\Vendor\Paypal\PayPalHttp\HttpResponse( $errorCode === 0 ? $statusCode : $errorCode, $responseBody, $headers );
+			return new \Give\Vendor\PayPal\PayPalHttp\HttpResponse( $errorCode === 0 ? $statusCode : $errorCode, $responseBody, $headers );
 		} else {
-			throw new \Give\Vendor\Paypal\PayPalHttp\HttpException( $body, $statusCode, $headers );
+			throw new \Give\Vendor\PayPal\PayPalHttp\HttpException( $body, $statusCode, $headers );
 		}
 	}
 	private function deserializeHeader( $header, &$key, &$value ) {

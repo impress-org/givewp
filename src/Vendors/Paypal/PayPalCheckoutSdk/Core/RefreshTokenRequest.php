@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
-use Give\Vendor\Paypal\PayPalHttp\HttpRequest;
-class RefreshTokenRequest extends \Give\Vendor\Paypal\PayPalHttp\HttpRequest {
+use Give\Vendor\PayPal\PayPalHttp\HttpRequest;
+class RefreshTokenRequest extends \Give\Vendor\PayPal\PayPalHttp\HttpRequest {
 
-	public function __construct( \Give\Vendor\Paypal\PayPalCheckoutSdk\Core\PayPalEnvironment $environment, $authorizationCode ) {
+	public function __construct( \Give\Vendor\PayPal\PayPalCheckoutSdk\Core\PayPalEnvironment $environment, $authorizationCode ) {
 		parent::__construct( '/v1/identity/openidconnect/tokenservice', 'POST' );
 		$this->headers['Authorization'] = 'Basic ' . $environment->authorizationString();
 		$this->headers['Content-Type']  = 'application/x-www-form-urlencoded';

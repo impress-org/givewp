@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp;
+namespace Give\Vendor\PayPal\PayPalHttp;
 
 use Throwable;
 class IOException extends \Exception {

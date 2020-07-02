@@ -1,21 +1,21 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp\Serializer;
+namespace Give\Vendor\PayPal\PayPalHttp\Serializer;
 
-use Give\Vendor\Paypal\PayPalHttp\HttpRequest;
-use Give\Vendor\Paypal\PayPalHttp\Serializer;
+use Give\Vendor\PayPal\PayPalHttp\HttpRequest;
+use Give\Vendor\PayPal\PayPalHttp\Serializer;
 /**
  * Class Json
  * @package PayPalHttp\Serializer
  *
  * Serializer for JSON content types.
  */
-class Json implements \Give\Vendor\Paypal\PayPalHttp\Serializer {
+class Json implements \Give\Vendor\PayPal\PayPalHttp\Serializer {
 
 	public function contentType() {
 		return '/^application\\/json/';
 	}
-	public function encode( \Give\Vendor\Paypal\PayPalHttp\HttpRequest $request ) {
+	public function encode( \Give\Vendor\PayPal\PayPalHttp\HttpRequest $request ) {
 		$body = $request->body;
 		if ( \is_string( $body ) ) {
 			return $body;

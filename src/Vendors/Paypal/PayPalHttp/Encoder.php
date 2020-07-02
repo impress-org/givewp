@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp;
+namespace Give\Vendor\PayPal\PayPalHttp;
 
-use Give\Vendor\Paypal\PayPalHttp\Serializer\Form;
-use Give\Vendor\Paypal\PayPalHttp\Serializer\Json;
-use Give\Vendor\Paypal\PayPalHttp\Serializer\Multipart;
-use Give\Vendor\Paypal\PayPalHttp\Serializer\Text;
+use Give\Vendor\PayPal\PayPalHttp\Serializer\Form;
+use Give\Vendor\PayPal\PayPalHttp\Serializer\Json;
+use Give\Vendor\PayPal\PayPalHttp\Serializer\Multipart;
+use Give\Vendor\PayPal\PayPalHttp\Serializer\Text;
 /**
  * Class Encoder
  * @package PayPalHttp
@@ -16,12 +16,12 @@ class Encoder {
 
 	private $serializers = [];
 	function __construct() {
-		$this->serializers[] = new \Give\Vendor\Paypal\PayPalHttp\Serializer\Json();
-		$this->serializers[] = new \Give\Vendor\Paypal\PayPalHttp\Serializer\Text();
-		$this->serializers[] = new \Give\Vendor\Paypal\PayPalHttp\Serializer\Multipart();
-		$this->serializers[] = new \Give\Vendor\Paypal\PayPalHttp\Serializer\Form();
+		$this->serializers[] = new \Give\Vendor\PayPal\PayPalHttp\Serializer\Json();
+		$this->serializers[] = new \Give\Vendor\PayPal\PayPalHttp\Serializer\Text();
+		$this->serializers[] = new \Give\Vendor\PayPal\PayPalHttp\Serializer\Multipart();
+		$this->serializers[] = new \Give\Vendor\PayPal\PayPalHttp\Serializer\Form();
 	}
-	public function serializeRequest( \Give\Vendor\Paypal\PayPalHttp\HttpRequest $request ) {
+	public function serializeRequest( \Give\Vendor\PayPal\PayPalHttp\HttpRequest $request ) {
 		if ( ! \array_key_exists( 'content-type', $request->headers ) ) {
 			$message = 'HttpRequest does not have Content-Type header set';
 			echo $message;

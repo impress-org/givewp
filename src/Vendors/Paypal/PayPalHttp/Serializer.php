@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp;
+namespace Give\Vendor\PayPal\PayPalHttp;
 
 /**
  * Interface Serializer
@@ -18,7 +18,7 @@ interface Serializer {
 	 * @param HttpRequest $request
 	 * @return string representation of your data after being serialized.
 	 */
-	public function encode( \Give\Vendor\Paypal\PayPalHttp\HttpRequest $request);
+	public function encode( \Give\Vendor\PayPal\PayPalHttp\HttpRequest $request);
 	/**
 	 * @param $body
 	 * @return mixed object/string representing the de-serialized response body.

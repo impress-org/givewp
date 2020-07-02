@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalCheckoutSdk\Core;
+namespace Give\Vendor\PayPal\PayPalCheckoutSdk\Core;
 
-use Give\Vendor\Paypal\PayPalHttp\Environment;
-abstract class PayPalEnvironment implements \Give\Vendor\Paypal\PayPalHttp\Environment {
+use Give\Vendor\PayPal\PayPalHttp\Environment;
+abstract class PayPalEnvironment implements \Give\Vendor\PayPal\PayPalHttp\Environment {
 
 	private $clientId;
 	private $clientSecret;

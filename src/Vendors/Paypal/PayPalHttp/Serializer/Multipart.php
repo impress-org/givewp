@@ -1,25 +1,25 @@
 <?php
 
-namespace Give\Vendor\Paypal\PayPalHttp\Serializer;
+namespace Give\Vendor\PayPal\PayPalHttp\Serializer;
 
 use finfo;
-use Give\Vendor\Paypal\PayPalHttp\HttpRequest;
-use Give\Vendor\Paypal\PayPalHttp\Serializer;
-use Give\Vendor\Paypal\PayPalHttp\Encoder;
-use Give\Vendor\Paypal\PayPalHttp\Serializer\FormPart;
+use Give\Vendor\PayPal\PayPalHttp\HttpRequest;
+use Give\Vendor\PayPal\PayPalHttp\Serializer;
+use Give\Vendor\PayPal\PayPalHttp\Encoder;
+use Give\Vendor\PayPal\PayPalHttp\Serializer\FormPart;
 /**
  * Class Multipart
  * @package PayPalHttp\Serializer
  *
  * Serializer for multipart.
  */
-class Multipart implements \Give\Vendor\Paypal\PayPalHttp\Serializer {
+class Multipart implements \Give\Vendor\PayPal\PayPalHttp\Serializer {
 
 	const LINEFEED = "\r\n";
 	public function contentType() {
 		return '/^multipart\\/.*$/';
 	}
-	public function encode( \Give\Vendor\Paypal\PayPalHttp\HttpRequest $request ) {
+	public function encode( \Give\Vendor\PayPal\PayPalHttp\HttpRequest $request ) {
 		if ( ! \is_array( $request->body ) || ! $this->isAssociative( $request->body ) ) {
 			throw new \Exception( 'HttpRequest body must be an associative array when Content-Type is: ' . $request->headers['content-type'] );
 		}
@@ -35,7 +35,7 @@ class Multipart implements \Give\Vendor\Paypal\PayPalHttp\Serializer {
 			if ( \is_resource( $v ) ) {
 				$file_params[] = $this->prepareFilePart( $k, $v, $boundary );
 			} else {
-				if ( $v instanceof \Give\Vendor\Paypal\PayPalHttp\Serializer\FormPart ) {
+				if ( $v instanceof \Give\Vendor\PayPal\PayPalHttp\Serializer\FormPart ) {
 					$value_params[] = $this->prepareFormPart( $k, $v, $boundary );
 				} else {
 					$value_params[] = $this->prepareFormField( $k, $v, $boundary );
@@ -83,10 +83,10 @@ class Multipart implements \Give\Vendor\Paypal\PayPalHttp\Serializer {
 			if ( $formattedheaders['content-type'] === 'application/json' ) {
 				$contentDisposition .= "; filename=\"{$partName}.json\"";
 			}
-			$tempRequest          = new \Give\Vendor\Paypal\PayPalHttp\HttpRequest( '/', 'POST' );
+			$tempRequest          = new \Give\Vendor\PayPal\PayPalHttp\HttpRequest( '/', 'POST' );
 			$tempRequest->headers = $formattedheaders;
 			$tempRequest->body    = $formPart->getValue();
-			$encoder              = new \Give\Vendor\Paypal\PayPalHttp\Encoder();
+			$encoder              = new \Give\Vendor\PayPal\PayPalHttp\Encoder();
 			$partValue            = $encoder->serializeRequest( $tempRequest );
 		} else {
 			$partValue = $formPart->getValue();
