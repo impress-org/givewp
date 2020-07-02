@@ -44,13 +44,13 @@
             "composer du"
         ],
         "prefix-paypal": [
-            "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --output-dir=./src/Vendors/PayPal --config=config/php-scoper/paypal.inc.php --force --quiet",
-            "mv src/Vendors/PayPal/paypalhttp/lib/PayPalHttp/* src/Vendors/PayPal/paypalhttp/",
-            "rm -rf src/Vendors/PayPal/paypalhttp/lib/",
-            "mv src/Vendors/PayPal/paypalhttp/ src/Vendors/PayPal/PayPalHttp",
-            "mv src/Vendors/PayPal/paypal-checkout-sdk/lib/PayPalCheckoutSdk/* src/Vendors/PayPal/paypal-checkout-sdk",
-            "rm -rf src/Vendors/PayPal/paypal-checkout-sdk/lib/",
-            "mv src/Vendors/PayPal/paypal-checkout-sdk/ src/Vendors/PayPal/PayPalCheckoutSdk",
+            "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --output-dir=./src/Vendor/PayPal --config=config/php-scoper/paypal.inc.php --force --quiet",
+            "mv src/Vendor/PayPal/paypalhttp/lib/PayPalHttp/* src/Vendor/PayPal/paypalhttp/",
+            "rm -rf src/Vendor/PayPal/paypalhttp/lib/",
+            "mv src/Vendor/PayPal/paypalhttp/ src/Vendor/PayPal/PayPalHttp",
+            "mv src/Vendor/PayPal/paypal-checkout-sdk/lib/PayPalCheckoutSdk/* src/Vendor/PayPal/paypal-checkout-sdk",
+            "rm -rf src/Vendor/PayPal/paypal-checkout-sdk/lib/",
+            "mv src/Vendor/PayPal/paypal-checkout-sdk/ src/Vendor/PayPal/PayPalCheckoutSdk",
             "rm -rf vendor/paypal"
         ]
     },

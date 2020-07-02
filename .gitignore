@@ -47,6 +47,3 @@ assets/dist/
 
 # Composer
 vendor
-
-# Custom vandor direcory
-src/Vendors
