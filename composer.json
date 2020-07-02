@@ -37,6 +37,19 @@
         ],
         "install-codestandards": [
             "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+        ],
+        "prefix-dependencies": [
+            "composer prefix-paypal",
+            "composer du"
+        ],
+        "prefix-paypal": [
+            "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --output-dir=./src/Vendor/Paypal --config=config/php-scoper/paypal.inc.php --force --quiet",
+            "mv src/Vendor/Paypal/paypalhttp/lib/PayPalHttp/* src/Vendor/Paypal/paypalhttp/",
+            "rm -rf src/Vendor/Paypal/paypalhttp/lib/",
+            "mv src/Vendor/Paypal/paypalhttp/ src/Vendor/Paypal/PayPalHttp",
+            "mv src/Vendor/Paypal/paypal-checkout-sdk/lib/PayPalCheckoutSdk/* src/Vendor/Paypal/paypal-checkout-sdk",
+            "rm -rf src/Vendor/Paypal/paypal-checkout-sdk/lib/",
+            "mv src/Vendor/Paypal/paypal-checkout-sdk/ src/Vendor/Paypal/PayPalCheckoutSdk"
         ]
     },
     "autoload": {
