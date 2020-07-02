@@ -2,8 +2,15 @@
 
 namespace Give\PaymentGateways;
 
+/**
+ * Interface PaymentGateway
+ *
+ * For use when defining a Payment Gateway. This gives the basic configurations needed to register
+ * the gateway with GiveWP.
+ *
+ * @since 2.8.0
+ */
 interface PaymentGateway {
-
 	/**
 	 * Returns a unique ID for the gateway
 	 *

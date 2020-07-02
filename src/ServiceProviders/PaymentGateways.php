@@ -5,7 +5,19 @@ namespace Give\ServiceProviders;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
 
+/**
+ * Class PaymentGateways
+ *
+ * The Service Provider for loading the Payment Gateways
+ *
+ * @since 2.8.0
+ */
 class PaymentGateways implements ServiceProvider {
+	/**
+	 * Array of PaymentGateway classes to be bootstrapped
+	 *
+	 * @var string[]
+	 */
 	public $gateways = [
 		PayPalCheckout::class,
 	];
@@ -26,6 +38,8 @@ class PaymentGateways implements ServiceProvider {
 
 	/**
 	 * Registers all of the payment gateways with GiveWP
+	 *
+	 * @since 2.8.0
 	 *
 	 * @param array $gateways
 	 *

@@ -2,8 +2,14 @@
 
 namespace Give\ServiceProviders;
 
+/**
+ * Interface ServiceProvider
+ *
+ * For use when defining Service Providers, see the method docs for when to use them
+ *
+ * @since 2.8.0
+ */
 interface ServiceProvider {
-
 	/**
 	 * Registers the Service Provider within the application. Use this to bind anything to the
 	 * Service Container. This prepares the service.
