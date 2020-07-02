@@ -624,6 +624,12 @@ p {
 
 		#give_show_terms {
 			order: 3;
+
+			@media screen and (max-width: $break-phone) {
+				bottom: 20px;
+				left: 60px;
+				position: absolute;
+			}
 		}
 
 		#give_terms {
@@ -642,6 +648,11 @@ p {
 			line-height: 1.4;
 			position: relative;
 			cursor: pointer;
+
+			@media screen and (max-width: $break-phone) {
+				width: calc(100% - 20px);
+				padding: 0 0 30px 40px;
+			}
 		}
 
 		&:hover {
