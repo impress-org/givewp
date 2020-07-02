@@ -358,8 +358,8 @@ abstract class Endpoint {
 			'paged'      => 1,
 			'orderby'    => $orderBy,
 			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
+			'start_date' => strtotime( $startStr ),
+			'end_date'   => strtotime( $endStr ),
 			'gateway'    => $gateway,
 			'meta_query' => [
 				[
