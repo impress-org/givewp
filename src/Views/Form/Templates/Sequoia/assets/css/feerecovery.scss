@@ -19,6 +19,14 @@
 	}
 }
 
+#give_purchase_form_wrap {
+	.give-fee-total-wrap.fee-coverage-required.give-fee-message,
+	.give-fee-recovery-donors-choice.give-fee-message,
+	.fee-break-down-message {
+		margin: 20px 0 0 0 !important;
+	}
+}
+
 .give-fee-total-wrap.fee-coverage-required.give-fee-message,
 .give-fee-recovery-donors-choice.give-fee-message {
 	.give-fee-message-label-text {

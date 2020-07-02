@@ -972,7 +972,14 @@ p {
 		.no-fields {
 			margin-bottom: 8px;
 		}
+
+		&.give-single-gateway-wrap {
+			background: none;
+			padding: 0;
+			margin: 0 20px;
+		}
 	}
+
 	#give_purchase_submit {
 		display: flex;
 		flex-direction: column;
@@ -1002,25 +1009,25 @@ p {
 	#donate-fieldset {
 		display: flex;
 		flex-direction: column;
+	}
 
-		.give-submit-button-wrap {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			position: relative;
-			order: 3;
+	.give-submit-button-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: relative;
+		order: 3;
 
-			.sequoia-loader {
-				height: 30px;
-				width: 30px;
-				bottom: 32px;
-				position: absolute;
-				font-size: 4px;
-			}
+		.sequoia-loader {
+			height: 30px;
+			width: 30px;
+			bottom: 32px;
+			position: absolute;
+			font-size: 4px;
+		}
 
-			.give-submit:not(:disabled) + .sequoia-loader {
-				display: none;
-			}
+		.give-submit:not(:disabled) + .sequoia-loader {
+			display: none;
 		}
 	}
 }
