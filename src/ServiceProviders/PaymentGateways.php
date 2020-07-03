@@ -4,7 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
-use Give\PaymentGateways\PayPalCheckout\PayPalStandard;
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingSection;
 
 /**

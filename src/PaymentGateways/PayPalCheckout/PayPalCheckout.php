@@ -25,4 +25,11 @@ class PayPalCheckout implements PaymentGateway {
 	public function getPaymentMethodLabel() {
 		return __( 'Credit Card', 'give' );
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getOptions() {
+		return [];
+	}
 }
