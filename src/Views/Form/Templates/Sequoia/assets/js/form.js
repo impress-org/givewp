@@ -225,6 +225,13 @@
 					moveErrorNotice( $( this ) );
 				} );
 
+				// Setup anonymouse donations opt-in event listeners
+				setupCheckbox( {
+					container: '#give-anonymous-donation-wrap label',
+					label: '#give-anonymous-donation-wrap label',
+					input: '#give-anonymous-donation',
+				} );
+
 				// Setup recurring donations opt-in event listeners
 				setupCheckbox( {
 					container: '.give-recurring-donors-choice',
@@ -637,7 +644,11 @@
 		}
 
 		// Persist checkbox input border when selected
-		$( label ).on( 'click touchend', function() {
+		$( label ).on( 'click touchend', function( evt ) {
+			if ( container === label ) {
+				evt.stopPropagation();
+				evt.preventDefault();
+			}
 			$( container ).toggleClass( 'active' );
 		} );
 	}
