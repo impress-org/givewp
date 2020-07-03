@@ -12,6 +12,16 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  */
 class PaypalSettingSection implements SettingSection {
 	/**
+	 * @var PayPalCheckout\PayPalCheckout
+	 */
+	private $paypalCheckout;
+
+	/**
+	 * @var PayPalStandard\PayPalStandard
+	 */
+	private $paypalStandard;
+
+	/**
 	 * Register properties
 	 * @return PaypalSettingSection
 	 *
@@ -19,6 +29,7 @@ class PaypalSettingSection implements SettingSection {
 	 */
 	public function register() {
 		$this->paypalCheckout = new PayPalCheckout\PayPalCheckout();
+		$this->paypalStandard = new PaymentGateways\PayPalStandard\PayPalStandard();
 
 		return $this;
 	}
@@ -31,13 +42,6 @@ class PaypalSettingSection implements SettingSection {
 		add_filter( 'give_get_settings_gateways', [ $this, 'registerPaypalSettings' ] );
 		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ] );
 	}
-
-	/**
-	 * @var PaymentGateways\PayPalCheckout\PayPalCheckout
-	 *
-	 * @since 2.8.0
-	 */
-	private $paypalCheckout;
 
 	/**
 	 * @inheritDoc
@@ -57,7 +61,11 @@ class PaypalSettingSection implements SettingSection {
 	 * @inheritDoc
 	 */
 	public function getSettings() {
-		return [];
+		$settings[ $this->paypalCheckout->getId() ] = $this->paypalCheckout->getOptions();
+		$settings[ $this->paypalStandard->getId() ] = $this->paypalStandard->getOptions();
+		$settings['paypal-legacy']                  = [];
+
+		return $settings;
 	}
 
 	/**
@@ -69,7 +77,7 @@ class PaypalSettingSection implements SettingSection {
 	public function getGroups() {
 		return [
 			$this->paypalCheckout->getId() => $this->paypalCheckout->getName(),
-			'paypal-standard'              => esc_html__( 'PayPal Standard', 'give' ),
+			$this->paypalStandard->getId() => $this->paypalStandard->getName(),
 			'paypal-legacy'                => esc_html__( 'PayPal Legacy', 'give' ),
 		];
 	}
