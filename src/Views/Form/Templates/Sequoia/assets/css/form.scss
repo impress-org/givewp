@@ -638,6 +638,11 @@ p {
 			max-height: 300px;
 			padding: 0 10px 0 0;
 			overflow-y: scroll !important;
+
+			> p:first-of-type {
+				margin-top: 0;
+			}
+
 		}
 
 		label {
