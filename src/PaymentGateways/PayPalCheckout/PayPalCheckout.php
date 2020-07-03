@@ -32,8 +32,9 @@ class PayPalCheckout implements PaymentGateway {
 	public function getOptions() {
 		return [
 			[
-				'type' => 'title',
-				'id'   => 'give_title_gateway_settings_2',
+				'type'       => 'title',
+				'id'         => 'give_title_gateway_settings_2',
+				'table_html' => false,
 			],
 			[
 				'name' => __( 'Connect With Paypal', 'give' ),
@@ -41,8 +42,9 @@ class PayPalCheckout implements PaymentGateway {
 				'type' => 'paypal_checkout_account_manger',
 			],
 			[
-				'type' => 'sectionend',
-				'id'   => 'give_title_gateway_settings_2',
+				'type'       => 'sectionend',
+				'id'         => 'give_title_gateway_settings_2',
+				'table_html' => false,
 			],
 		];
 	}
