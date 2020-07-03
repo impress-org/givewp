@@ -12,7 +12,10 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  */
 class PaypalSettingSection implements SettingSection {
 	/**
-	 * @inheritDoc
+	 * Register properties
+	 * @return PaypalSettingSection
+	 *
+	 * @since 2.8.0
 	 */
 	public function register() {
 		$this->paypalCheckout = new PayPalCheckout\PayPalCheckout();
@@ -72,6 +75,7 @@ class PaypalSettingSection implements SettingSection {
 	}
 
 	/**
+	 * Register settings.
 	 * @param $settings
 	 *
 	 * @return array
@@ -85,9 +89,11 @@ class PaypalSettingSection implements SettingSection {
 	}
 
 	/**
+	 * Register setting section.
 	 * @param $sections
 	 *
 	 * @return array
+	 * @since 2.8.0
 	 */
 	public function registerPaypalSettingSection( $sections ) {
 		$sections[ $this->getId() ] = $this->getName();
