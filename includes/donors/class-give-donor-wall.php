@@ -240,7 +240,7 @@ class Give_Donor_Wall {
 			$atts[ $att ] = absint( $atts[ $att ] );
 		}
 
-		// Validate comma separated numeric attributes.
+		// Validate comma separated numeric attributes and keep original data format ( comma separated string).
 		if ( ! empty( $atts['ids'] ) ) {
 			if ( false === strpos( $atts['ids'], ',' ) ) {
 				$tmp = [ absint( $atts['ids'] ) ];
@@ -254,7 +254,7 @@ class Give_Donor_Wall {
 				);
 			}
 
-			$atts['ids'] = $tmp;
+			$atts['ids'] = implode( ',', $tmp );
 		}
 
 		return $atts;
@@ -329,7 +329,7 @@ class Give_Donor_Wall {
 		$query_atts['limit']         = $atts['donors_per_page'];
 		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
 		$query_atts['form_id']       = $atts['form_id'];
-		$query_atts['ids']           = $atts['ids'];
+		$query_atts['ids']           = implode( '\',\'', explode( ',', $atts['ids'] ) );
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
 
@@ -435,9 +435,8 @@ class Give_Donor_Wall {
 
 		// Get donations only from specific donors.
 		if ( $query_params['ids'] ) {
-			$donorIds = implode( '\',\'', $query_params['ids'] );
-			$sql     .= " INNER JOIN {$wpdb->donationmeta} as m3 ON (p1.ID = m3.{$donation_id_col})";
-			$where   .= " AND m3.meta_key='_give_payment_donor_id' AND m3.meta_value IN ('{$donorIds}')";
+			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m3 ON (p1.ID = m3.{$donation_id_col})";
+			$where .= " AND m3.meta_key='_give_payment_donor_id' AND m3.meta_value IN ('{$query_params['ids']}')";
 		}
 
 		// exclude donations which does not has donor comment.
