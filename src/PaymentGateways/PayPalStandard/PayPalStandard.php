@@ -16,14 +16,14 @@ class PayPalStandard implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return __( 'PayPal Standard', 'give' );
+		return esc_html__( 'PayPal Standard', 'give' );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getPaymentMethodLabel() {
-		return __( 'PayPal', 'give' );
+		return esc_html__( 'PayPal', 'give' );
 	}
 
 	/**
