@@ -12,19 +12,23 @@ const blockAttributes = {
 		type: 'string',
 		default: '12',
 	},
-	formID:{
+	formID: {
 		type: 'string',
 		default: '0',
 	},
-	orderBy:{
+	ids: {
+		type: 'string',
+		default: '',
+	},
+	orderBy: {
 		type: 'string',
 		default: 'post_date',
 	},
-	order:{
+	order: {
 		type: 'string',
 		default: 'DESC',
 	},
-	paged:{
+	paged: {
 		type: 'string',
 		default: '1',
 	},
