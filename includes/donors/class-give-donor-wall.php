@@ -243,11 +243,18 @@ class Give_Donor_Wall {
 		// Validate comma separated numeric attributes.
 		if ( ! empty( $atts['ids'] ) ) {
 			if ( false === strpos( $atts['ids'], ',' ) ) {
-				$atts['ids'] = absint( $atts['ids'] );
+				$tmp = [ absint( $atts['ids'] ) ];
 			} else {
-				$tmp         = array_filter( array_map( 'absint', explode( ',', $atts['ids'] ) ) );
-				$atts['ids'] = implode( ',', $tmp );
+				$tmp = array_filter(
+					array_map(
+						static function( $id ) {
+							return absint( trim( $id ) ); },
+						explode( ',', $atts['ids'] )
+					)
+				);
 			}
+
+			$atts['ids'] = $tmp;
 		}
 
 		return $atts;
@@ -322,6 +329,7 @@ class Give_Donor_Wall {
 		$query_atts['limit']         = $atts['donors_per_page'];
 		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
 		$query_atts['form_id']       = $atts['form_id'];
+		$query_atts['ids']           = $atts['ids'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
 
@@ -425,6 +433,13 @@ class Give_Donor_Wall {
 			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value={$query_params['form_id']}";
 		}
 
+		// Get donations only from specific donors.
+		if ( $query_params['ids'] ) {
+			$donorIds = implode( '\',\'', $query_params['ids'] );
+			$sql     .= " INNER JOIN {$wpdb->donationmeta} as m3 ON (p1.ID = m3.{$donation_id_col})";
+			$where   .= " AND m3.meta_key='_give_payment_donor_id' AND m3.meta_value IN ('{$donorIds}')";
+		}
+
 		// exclude donations which does not has donor comment.
 		if ( $query_params['only_comments'] ) {
 			$sql   .= " INNER JOIN {$wpdb->give_comments} as gc1 ON (p1.ID = gc1.comment_parent)";
@@ -449,11 +464,9 @@ class Give_Donor_Wall {
 		$limit  = " LIMIT {$query_params['limit']}";
 		$offset = " OFFSET {$query_params['offset']}";
 
-		$sql = $sql . $where . $order . $limit . $offset;
+		$sql .= $where . $order . $limit . $offset;
 
-		$donation_ids = $wpdb->get_col( $sql );
-
-		return $donation_ids;
+		return $wpdb->get_col( $sql );
 	}
 
 	/**
