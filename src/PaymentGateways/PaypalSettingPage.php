@@ -41,6 +41,9 @@ class PaypalSettingPage implements SettingPage {
 		add_action( 'give_get_groups_paypal', [ $this, 'getGroups' ] );
 		add_filter( 'give_get_settings_gateways', [ $this, 'registerPaypalSettings' ] );
 		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ] );
+
+		// Custom field type for paypal checkout options
+		add_action( 'give_admin_field_paypal_checkout_account_manger', [ $this, 'paypalCheckoutAccountManagerField' ] );
 	}
 
 	/**
@@ -107,5 +110,33 @@ class PaypalSettingPage implements SettingPage {
 		$sections[ $this->getId() ] = $this->getName();
 
 		return $sections;
+	}
+
+	/**
+	 * Paypal Checkout account manager custom field
+	 *
+	 * @since 2.8.0
+	 */
+	public function paypalCheckoutAccountManagerField() {
+		?>
+		<div>
+			<h3><?php esc_html_e( 'Accept Donations with PayPal Checkout', 'give' ); ?></h3>
+			<p><?php esc_html_e( 'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees. Upgrade to PayPal Pro and provide your donors with even more payment options using PayPal Smart Buttons.', 'give' ); ?></p>
+			<ul>
+				<li><?php esc_html_e( 'Credit and Debit Card Donations', 'give' ); ?></li>
+				<li><?php esc_html_e( 'Accept payments from around the world', 'give' ); ?></li>
+				<li><?php esc_html_e( 'Improve donation conversion rates', 'give' ); ?></li>
+				<li><?php esc_html_e( 'Easy no-API key connection', 'give' ); ?></li>
+				<li><?php esc_html_e( 'PayPal, Apple and Google Pay', 'give' ); ?></li>
+			</ul>
+			<div>
+				<div><?php esc_html_e( 'PayPal Connection', 'give' ); ?></div>
+				<div>
+					<button><?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button>
+					<span><?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?></span>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 }

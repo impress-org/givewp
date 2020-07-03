@@ -30,6 +30,20 @@ class PayPalCheckout implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getOptions() {
-		return [];
+		return [
+			[
+				'type' => 'title',
+				'id'   => 'give_title_gateway_settings_2',
+			],
+			[
+				'name' => __( 'Connect With Paypal', 'give' ),
+				'id'   => 'paypal_checkout_account_manger',
+				'type' => 'paypal_checkout_account_manger',
+			],
+			[
+				'type' => 'sectionend',
+				'id'   => 'give_title_gateway_settings_2',
+			],
+		];
 	}
 }
