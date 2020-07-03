@@ -636,6 +636,7 @@ p {
 		#give_terms {
 			margin-bottom: 17px;
 			max-height: 300px;
+			padding: 0 10px 0 0;
 			overflow-y: scroll !important;
 		}
 
@@ -651,7 +652,7 @@ p {
 			cursor: pointer;
 
 			@media screen and (max-width: $break-phone) {
-				width: calc(100% - 20px);
+				width: calc(100% - 30px);
 				padding: 0 0 30px 40px;
 			}
 		}
