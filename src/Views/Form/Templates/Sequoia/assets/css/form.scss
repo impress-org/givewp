@@ -624,12 +624,25 @@ p {
 
 		#give_show_terms {
 			order: 3;
+
+			@media screen and (max-width: $break-phone) {
+				bottom: 20px;
+				left: 60px;
+				position: absolute;
+				z-index: 99;
+			}
 		}
 
 		#give_terms {
 			margin-bottom: 17px;
 			max-height: 300px;
-			overflow-y: scroll;
+			padding: 0 10px 0 0;
+			overflow-y: scroll !important;
+
+			> p:first-of-type {
+				margin-top: 0;
+			}
+
 		}
 
 		label {
@@ -642,6 +655,11 @@ p {
 			line-height: 1.4;
 			position: relative;
 			cursor: pointer;
+
+			@media screen and (max-width: $break-phone) {
+				width: calc(100% - 30px);
+				padding: 0 0 30px 40px;
+			}
 		}
 
 		&:hover {
