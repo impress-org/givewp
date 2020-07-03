@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
+use Give\PaymentGateways\PayPalCheckout\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingSection;
 
 /**
@@ -20,6 +21,7 @@ class PaymentGateways implements ServiceProvider {
 	 * @var string[]
 	 */
 	public $gateways = [
+		PayPalStandard::class,
 		PayPalCheckout::class,
 	];
 
