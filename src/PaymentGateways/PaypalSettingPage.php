@@ -10,7 +10,7 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  *
  * @sicne 2.8.0
  */
-class PaypalSettingSection implements SettingSection {
+class PaypalSettingPage implements SettingPage {
 	/**
 	 * @var PayPalCheckout\PayPalCheckout
 	 */
@@ -23,7 +23,7 @@ class PaypalSettingSection implements SettingSection {
 
 	/**
 	 * Register properties
-	 * @return PaypalSettingSection
+	 * @return PaypalSettingPage
 	 *
 	 * @since 2.8.0
 	 */

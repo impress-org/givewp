@@ -5,7 +5,7 @@ namespace Give\ServiceProviders;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PaypalSettingSection;
+use Give\PaymentGateways\PaypalSettingPage;
 
 /**
  * Class PaymentGateways
@@ -38,8 +38,8 @@ class PaymentGateways implements ServiceProvider {
 		add_filter( 'give_payment_gateways', [ $this, 'registerGateways' ] );
 
 		// Register paypal setting section.
-		$paypalSettingSection = new PaypalSettingSection();
-		$paypalSettingSection->register()->boot();
+		$paypalSettingPage = new PaypalSettingPage();
+		$paypalSettingPage->register()->boot();
 	}
 
 	/**

@@ -7,7 +7,7 @@ namespace  Give\PaymentGateways;
  *
  * @since 2.8.0
  */
-interface SettingSection {
+interface SettingPage {
 	/**
 	 * Get section id.
 	 * @return string
