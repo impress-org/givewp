@@ -220,6 +220,7 @@
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
+				// Move errors
 				$( '.give_error' ).each( function() {
 					moveErrorNotice( $( this ) );
 				} );
@@ -301,6 +302,10 @@
 						for ( let i = 0; i < mutation.addedNodes.length; i++ ) {
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
+
+							if ( $( node ).find( '.give_error' ).length > 0 ) {
+								moveErrorNotice( $( node ).find( '.give_error' ) );
+							}
 
 							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
 								$( node ).children( '.give_errors' ).each( function() {
@@ -394,6 +399,11 @@
 	 * @param {node} node The error notice node to be moved
 	 */
 	function moveErrorNotice( node ) {
+		//If the error is inside stripe payment button, do nothing
+		if ( $( node ).parent().hasClass( 'give-stripe-payment-request-button' ) ) {
+			return;
+		}
+
 		// First check if specific donation notice container has been set up
 		if ( $( '.donation-errors' ).length === 0 ) {
 			$( '.payment' ).prepend( '<div class="donation-errors"></div>' );
