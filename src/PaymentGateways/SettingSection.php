@@ -14,7 +14,7 @@ interface SettingSection {
 	 *
 	 * @since 2.8.0
 	 */
-	public function getSectionId();
+	public function getId();
 
 	/**
 	 * Get section title.
@@ -22,7 +22,7 @@ interface SettingSection {
 	 *
 	 * @since 2.8.0
 	 */
-	public function getSectionTitle();
+	public function getName();
 
 	/**
 	 * Get section settings.
@@ -31,4 +31,18 @@ interface SettingSection {
 	 * @since 2.8.0
 	 */
 	public function getSettings();
+
+	/**
+	 * Register required properties
+	 *
+	 * @since 2.8.0
+	 */
+	public function register();
+
+	/**
+	 * Boot functionality
+	 *
+	 * @since 2.8.0
+	 */
+	public function boot();
 }

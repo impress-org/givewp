@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
+use Give\PaymentGateways\PaypalSettingSection;
 
 /**
  * Class PaymentGateways
@@ -26,7 +27,6 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
-		// Not used, but needed for interface
 	}
 
 	/**
@@ -34,6 +34,10 @@ class PaymentGateways implements ServiceProvider {
 	 */
 	public function boot() {
 		add_filter( 'give_payment_gateways', [ $this, 'registerGateways' ] );
+
+		// Register paypal setting section.
+		$paypalSettingSection = new PaypalSettingSection();
+		$paypalSettingSection->register()->boot();
 	}
 
 	/**
@@ -59,3 +63,5 @@ class PaymentGateways implements ServiceProvider {
 		return $gateways;
 	}
 }
+
+
