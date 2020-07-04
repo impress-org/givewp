@@ -40,6 +40,7 @@
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
+use Give\ServiceProviders\DatabaseMigrations;
 use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\ServiceProvider;
 
@@ -313,6 +314,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private $serviceProviders = [
 			PaymentGateways::class,
+			DatabaseMigrations::class,
 		];
 
 		/**
