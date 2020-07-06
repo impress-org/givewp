@@ -45,12 +45,31 @@ class AdminSettingFields {
 			</div>
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
-				<div class="button-wrap">
+				<div class="button-wrap connection-setting" style="display: none">
 					<div><button class="button button-primary button-large"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button></div>
 					<span class="give-field-description">
 						<i class="fa fa-exclamation"></i>
 						<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
 					</span>
+				</div>
+				<div class="button-wrap disconnection-setting">
+					<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
+					<div>
+						<span class="give-field-description">
+							<i class="fa fa-check"></i>
+							<?php esc_html_e( 'Connected for payments as devin.walker47@yahoo.com.', 'give' ); ?>
+						</span>
+						<span class="actions">
+							<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
+							&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
+						</span>
+					</div>
+					<div class="api-access-feature-list">
+						<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
+						<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
+						<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
+						<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
+					</div>
 				</div>
 			</div>
 		</div>

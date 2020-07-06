@@ -629,7 +629,7 @@ a.give-delete {
 
 		.label {
 			font-weight: bold;
-			padding: 0;
+			margin: 0;
 		}
 
 		.button-wrap {
@@ -637,6 +637,7 @@ a.give-delete {
 			justify-content: flex-start;
 			flex-grow: 1;
 			padding-left: 50px;
+			grid-template-columns: 1fr;
 		}
 
 		.button-wrap > div {
@@ -652,6 +653,25 @@ a.give-delete {
 			line-height: 7px;
 			font-weight: bold;
 			margin-right: 5px;
+		}
+
+		.fa.fa-check {
+			color: #1fb11f;
+			border: 2px solid #1fb11f;
+			padding: 5px 3px;
+		}
+
+		.actions {
+			margin-left: 30px;
+		}
+
+		.api-access-feature-list {
+			color: #aaa;
+
+			p {
+				margin-bottom: 0;
+				font-weight: bold;
+			}
 		}
 	}
 }
