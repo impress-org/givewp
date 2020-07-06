@@ -15,9 +15,9 @@ class UpsellNotice {
 	 * Upsell notice for recurring addon
 	 */
 	public static function recurringAddon() {
-		// if ( Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
-		// 	return '';
-		// }
+		if ( Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
+			return '';
+		}
 
 		$addon_link_url   = esc_url( 'https://go.givewp.com/addons-recurring-inlinelink' );
 		$addon_button_url = esc_url( 'https://go.givewp.com/addons-recurring-button' );
