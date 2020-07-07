@@ -169,9 +169,9 @@ return [
 				'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences. You may use any of the available template tags within this message.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+					'placeholder' => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				],
-				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+				'default'    => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
 			[
 				'name'    => __( 'Social Sharing', 'give' ),
