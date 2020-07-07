@@ -350,3 +350,27 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 	} );
 } );
+
+// Handle paypal onboarding.
+document.addEventListener( 'DOMContentLoaded', () => {
+	document.getElementById( 'js-give-paypal-on-boarding-handler' ).addEventListener( 'click', function( evt ) {
+		evt.preventDefault();
+
+		evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+
+		fetch( ajaxurl + '?action=give_paypal_checkout_get_partner_url' )
+			.then( response => response.json() )
+			.then( function( res ) {
+				// @todo handle error.
+				if ( true === res.success ) {
+					const payPalLink = document.querySelector( '[data-paypal-button]' );
+
+					payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+					payPalLink.click();
+				}
+			}
+			);
+
+		return false;
+	} );
+} );

@@ -44,4 +44,11 @@ interface PaymentGateway {
 	 * @return array
 	 */
 	public function getOptions();
+
+	/**
+	 * Bootstrap payment gateway
+	 *
+	 * 2since 2.8.0
+	 */
+	public function boot();
 }

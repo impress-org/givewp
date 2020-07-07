@@ -101,4 +101,9 @@ class PayPalStandard implements PaymentGateway {
 			],
 		];
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function boot(){}
 }

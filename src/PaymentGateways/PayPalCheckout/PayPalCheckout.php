@@ -48,4 +48,12 @@ class PayPalCheckout implements PaymentGateway {
 			],
 		];
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function boot() {
+		( new ScriptLoader() )->boot();
+		( new AjaxRequestHandler() )->boot();
+	}
 }

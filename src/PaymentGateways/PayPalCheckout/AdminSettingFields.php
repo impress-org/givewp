@@ -1,9 +1,12 @@
 <?php
 namespace Give\PaymentGateways\PayPalCheckout;
 
-use Give\Views\Admin\UpsellNotice;
-use Give_License;
-
+/**
+ * Class AdminSettingFields
+ * @package Give\PaymentGateways\PayPalCheckout
+ *
+ * @since 2.8.0
+ */
 class AdminSettingFields {
 	/**
 	 * Bootstrap fields.
@@ -20,8 +23,6 @@ class AdminSettingFields {
 	 * @since 2.8.0
 	 */
 	public function paypalCheckoutAccountManagerField() {
-		$recurringAddonInfo     = Give_License::get_plugin_by_slug( 'give-recurring' );
-		$isRecurringAddonActive = isset( $recurringAddonInfo['Status'] ) && 'active' === $recurringAddonInfo['Status'];
 		?>
 		<div id="give-paypal-checkout-account-manager-field-wrap">
 			<div class="hero-section">
@@ -51,7 +52,14 @@ class AdminSettingFields {
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
 				<div class="button-wrap connection-setting">
-					<div><button class="button button-primary button-large"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button></div>
+					<div>
+						<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
+							<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?>
+						</button>
+						<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="" data-paypal-button="true">
+							<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
+						</a>
+					</div>
 					<span class="give-field-description">
 						<i class="fa fa-exclamation"></i>
 						<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
@@ -72,12 +80,9 @@ class AdminSettingFields {
 					<div class="api-access-feature-list">
 						<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
 						<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
-						<?php if ( $isRecurringAddonActive ) : ?>
-							<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
-						<?php endif; ?>
+						<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
 						<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
 					</div>
-					<?php echo UpsellNotice::recurringAddon(); ?>
 				</div>
 			</div>
 		</div>

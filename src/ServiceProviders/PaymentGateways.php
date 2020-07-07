@@ -60,6 +60,8 @@ class PaymentGateways implements ServiceProvider {
 				'admin_label'    => $gateway->getName(),
 				'checkout_label' => $gateway->getPaymentMethodLabel(),
 			];
+
+			$gateway->boot();
 		}
 
 		return $gateways;
