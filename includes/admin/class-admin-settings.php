@@ -1063,7 +1063,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			$new_options      = [];
 			$options_keys     = array_keys( $options );
-			$is_vertical_tabs = is_array( $options_keys ) && count( $options_keys ) > 0 ? ctype_alnum( $options_keys[0] ) : false;
+			$is_vertical_tabs = is_array( $options_keys ) && count( $options_keys ) && ! is_numeric( $options_keys[0] );
 
 			if ( $is_vertical_tabs ) {
 
