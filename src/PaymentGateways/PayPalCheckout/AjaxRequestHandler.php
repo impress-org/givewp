@@ -35,7 +35,7 @@ class AjaxRequestHandler {
 	 */
 	public function onGetPartnerUrlAjaxRequestHandler() {
 		$restApiUrl = sprintf(
-			'http://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
+			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
 			give_is_test_mode() ? 'sandbox' : 'live',
 			admin_url( 'http://give.test/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-checkout' )
 		);
