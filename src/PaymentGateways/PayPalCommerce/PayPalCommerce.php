@@ -1,22 +1,22 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PaymentGateway;
 
-class PayPalCheckout implements PaymentGateway {
+class PayPalCommerce implements PaymentGateway {
 	/**
 	 * @inheritDoc
 	 */
 	public function getId() {
-		return 'paypal-checkout';
+		return 'paypal-commerce';
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return __( 'PayPal Checkout', 'give' );
+		return __( 'PayPal Donations', 'give' );
 	}
 
 	/**
