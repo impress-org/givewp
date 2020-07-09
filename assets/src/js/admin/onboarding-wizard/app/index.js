@@ -1,7 +1,12 @@
-// Onboarding Wizard App
-
+// Import styles
 import './style.scss';
 
+/**
+ * Onboarding Wizard app component
+ *
+ * @since 2.8.0
+ * @returns {array} Array of React elements, comprising the Onboarding Wizard app
+ */
 const App = () => {
 	return (
 		<div className="give-obw">
