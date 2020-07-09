@@ -1,0 +1,48 @@
+/**
+ * Give Setup SCSS
+ *
+ * @description Setup Page Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 292, GiveWP
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+.section {
+	margin: 0;
+	padding: 30px;
+}
+.section-header {
+	font-size: 20px;
+	margin: 0 0 15px;
+	padding: 0 0 15px;
+	line-height: 20px;
+}
+.section-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: auto;
+	padding: 30px;
+	margin-bottom: 10px;
+	background-color: #fff;
+}
+.section-card--action {
+	flex: 1;
+
+	.button {
+		text-align: center;
+		width: 100%;
+		padding: 10px;
+	}
+}
+.section-card--label {
+	flex: 6;
+	font-size: 20px;
+
+	.dashicons {
+		font-size: 50px;
+		margin-top: -15px;
+		margin-right: 60px;
+	}
+}
