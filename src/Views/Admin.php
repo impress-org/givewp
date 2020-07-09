@@ -42,6 +42,10 @@ class Admin {
 		// Load Reports page
 		$reports = new Admin\Pages\Reports();
 		$reports->init();
+
+		// Load Setup page
+		$setup = new Admin\Pages\Setup();
+		$setup->init();
 	}
 
 }
