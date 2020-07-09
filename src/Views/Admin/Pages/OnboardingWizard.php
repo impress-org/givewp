@@ -29,7 +29,28 @@ class OnboardingWizard {
 	}
 
 	public function enqueue_scripts() {
+		wp_enqueue_style(
+			'give-admin-onboarding-wizard',
+			GIVE_PLUGIN_URL . 'assets/dist/css/admin-onboarding-wizard.css',
+			[],
+			'0.0.1'
+		);
+		wp_enqueue_script(
+			'give-admin-onboarding-wizard-app',
+			GIVE_PLUGIN_URL . 'assets/dist/js/admin-onboarding-wizard.js',
+			[ 'wp-element', 'wp-api', 'wp-i18n' ],
+			'0.0.1',
+			true
+		);
+		wp_set_script_translations( 'give-admin-onboarding-wizard-app', 'give' );
 
+		wp_localize_script(
+			'give-admin-onboarding-wizard-app',
+			'giveOnboardingWizardData',
+			[
+				'currencies' => array_keys( give_get_currencies_list() ),
+			]
+		);
 	}
 
 }
