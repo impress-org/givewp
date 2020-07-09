@@ -9,6 +9,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * Responsible for setting up and rendering Onboarding Wizard page at
  * wp-admin/?page=give-onboarding-wizard
+ *
+ * @since 2.8.0
  */
 class OnboardingWizard {
 
@@ -21,6 +23,7 @@ class OnboardingWizard {
 	 *
 	 * Handles setting up hooks relates to the Onboarding Wizard admin page.
 	 *
+	 * @since 2.8.0
 	 **/
 	public function init() {
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
@@ -33,6 +36,7 @@ class OnboardingWizard {
 	 *
 	 * Register Onboarding Wizard as an admin page route
 	 *
+	 * @since 2.8.0
 	 **/
 	public function add_page() {
 		add_dashboard_page( '', '', 'manage_options', $this->slug, '' );
@@ -43,6 +47,7 @@ class OnboardingWizard {
 	 *
 	 * If the current page query matches the onboarding wizard's slug, method renders the onboarding wizard.
 	 *
+	 * @since 2.8.0
 	 **/
 	public function setup_wizard() {
 		if ( empty( $_GET['page'] ) || $this->slug !== $_GET['page'] ) { // WPCS: CSRF ok, input var ok.
@@ -57,6 +62,7 @@ class OnboardingWizard {
 	 *
 	 * Uses an object buffer to display the onboarding wizard template
 	 *
+	 * @since 2.8.0
 	 **/
 	public function render_page() {
 		ob_start();
@@ -71,6 +77,7 @@ class OnboardingWizard {
 	 * Enqueues scripts/styles necessary for loading the Onboarding Wizard React app,
 	 * and localizes some additional data for the app to access.
 	 *
+	 * @since 2.8.0
 	 **/
 	public function enqueue_scripts() {
 		wp_enqueue_style(
