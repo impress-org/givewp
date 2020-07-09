@@ -50,6 +50,9 @@ class Admin {
 			$setup = new Admin\Pages\Setup();
 			$setup->init();
 		}
+		// Load Onboarding Wizard page
+		$onboarding_wizard = new Admin\Pages\OnboardingWizard();
+		$onboarding_wizard->init();
 	}
 
 }
