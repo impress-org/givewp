@@ -6,9 +6,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Reports app
+// Onboarding Wizard app
 import App from './app/index.js';
 
+// Render application
 ReactDOM.render(
 	<App />,
 	document.getElementById( 'onboarding-wizard-app' )
