@@ -84,13 +84,13 @@ class OnboardingWizard {
 			'give-admin-onboarding-wizard',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-onboarding-wizard.css',
 			[],
-			'0.0.1'
+			GIVE_VERSION
 		);
 		wp_enqueue_script(
 			'give-admin-onboarding-wizard-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-onboarding-wizard.js',
 			[ 'wp-element', 'wp-api', 'wp-i18n' ],
-			'0.0.1',
+			GIVE_VERSION,
 			true
 		);
 		wp_set_script_translations( 'give-admin-onboarding-wizard-app', 'give' );
