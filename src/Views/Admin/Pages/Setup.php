@@ -19,12 +19,30 @@ class Setup {
 	 * Initialize Reports Admin page
 	 */
 	public function init() {
+		add_action( 'admin_init', [ $this, 'redirectDonationsToSetup' ] );
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
 	public function __construct() {
 		// Do nothing
+	}
+
+	public function redirectDonationsToSetup() {
+		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
+			if ( ! isset( $_GET['post_type'] ) ) {
+				wp_redirect(
+					add_query_arg(
+						[
+							'post_type' => 'give_forms',
+							'page'      => 'give-setup',
+						],
+						admin_url( 'edit.php' )
+					)
+				);
+				exit;
+			}
+		}
 	}
 
 	// Add Setup submenu page to admin menu

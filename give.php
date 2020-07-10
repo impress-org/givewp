@@ -614,6 +614,9 @@ if ( ! class_exists( 'Give' ) ) :
 			// Include API
 			require_once GIVE_PLUGIN_DIR . 'src/API/API.php';
 
+			// Include Onboarding
+			require_once GIVE_PLUGIN_DIR . 'src/Onboarding/Onboarding.php';
+
 			// Include Views
 			require_once GIVE_PLUGIN_DIR . 'src/Views/Views.php';
 

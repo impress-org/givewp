@@ -391,6 +391,8 @@ function give_get_default_settings() {
 		// Stripe accounts.
 		'_give_stripe_get_all_accounts'               => [],
 
+		// Onboarding
+		'setup_page_enabled'                          => true,
 	];
 
 	return $options;

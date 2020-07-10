@@ -154,6 +154,29 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							],
 						],
 						[
+							'name'    => __( 'Setup Page', 'give' ),
+							/* translators: %s: about page URL */
+							'desc'    => sprintf(
+								wp_kses(
+									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first isntalled.', 'give' ),
+									[
+										'a' => [
+											'href'   => [],
+											'target' => [],
+										],
+									]
+								),
+								esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
+							),
+							'id'      => 'setup_page_enabled',
+							'type'    => 'radio_inline',
+							'default' => \Give\Onboarding\Onboarding::isSetupPageEnabled(),
+							'options' => [
+								1 => __( 'Enabled', 'give' ),
+								0 => __( 'Disabled', 'give' ),
+							],
+						],
+						[
 							'name'    => __( 'Form Page URL Prefix', 'give' ),
 							'desc'    => sprintf(
 								__( 'This slug will be used as a base for the iframe URL that contains all form templates besides the legacy form template. Currently the iframe URLs look like %1$s. This options adds a rewrite rule that transforms the URL structure to a set of query vars. If you modify this URL prefix please ensure it is unique as it can cause a 404 error if a similar URL already exists.', 'give' ),

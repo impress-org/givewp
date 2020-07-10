@@ -8,6 +8,8 @@
 
 namespace Give\Views;
 
+use Give\Onboarding\Onboarding;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -44,8 +46,10 @@ class Admin {
 		$reports->init();
 
 		// Load Setup page
-		$setup = new Admin\Pages\Setup();
-		$setup->init();
+		if ( Onboarding::isSetupPageEnabled() ) {
+			$setup = new Admin\Pages\Setup();
+			$setup->init();
+		}
 	}
 
 }
