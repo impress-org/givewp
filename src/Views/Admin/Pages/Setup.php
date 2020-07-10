@@ -11,12 +11,16 @@ namespace Give\Views\Admin\Pages;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Manages setup admin page
+ * Organizes WordPress actions for the Setup Page submenu.
+ *
+ * @since 2.8.0
  */
 class Setup {
 
 	/**
 	 * Initialize Reports Admin page
+	 *
+	 * @since 2.8.0
 	 */
 	public function init() {
 		add_action( 'admin_init', [ $this, 'redirectDonationsToSetup' ] );
@@ -28,6 +32,13 @@ class Setup {
 		// Do nothing
 	}
 
+	/**
+	 * Redirect the top level "Donations" menu to the Setup submenu.
+	 *
+	 * @note This adjusts the URL pattern so that the submenu page displays correctly.
+	 *
+	 * @since 2.8.0
+	 */
 	public function redirectDonationsToSetup() {
 		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
 			if ( ! isset( $_GET['post_type'] ) ) {
@@ -45,7 +56,11 @@ class Setup {
 		}
 	}
 
-	// Add Setup submenu page to admin menu
+	/**
+	 * Add Setup submenu page to admin menu
+	 *
+	 * @since 2.8.0
+	 */
 	public function add_page() {
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
@@ -58,6 +73,11 @@ class Setup {
 		);
 	}
 
+	/**
+	 * Enqueue scripts and styles.
+	 *
+	 * @since 2.8.0
+	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style(
 			'give-admin-setup-style',
@@ -67,10 +87,23 @@ class Setup {
 		);
 	}
 
+	/**
+	 * Render the submenu page
+	 *
+	 * @since 2.8.0
+	 */
 	public function render_page() {
 		include GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/setup-template.php';
 	}
 
+	/**
+	 * Render templates
+	 *
+	 * @param string $template
+	 * @param array $data The key/value pairs passed as $data are extracted as variables for use within the template file.
+	 *
+	 * @since 2.8.0
+	 */
 	public function render_template( $template, $data = [] ) {
 		extract( $data );
 		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/$template.php";
