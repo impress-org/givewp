@@ -89,12 +89,12 @@
 
 	</section>
 
-	<footer style="text-align:center;">
+	<div class="section-dismiss">
 		<form action="<?php echo admin_url( 'admin-post.php' ); ?>">
 			<input type="hidden" name="action" value="dismiss_setup_page">
 			<?php wp_nonce_field( 'dismiss_setup_page' ); ?>
 			<button type="submit">Dismiss Setup Screen</button>
 		</form>
-	</footer>
+	</div>
 
 </div>
