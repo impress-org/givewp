@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 class Onboarding {
 
 	/**
-	 * Initialize Reports and Pages, register hooks
+	 * Initialize the Onboarding hooks/actions.
 	 *
 	 * @since 2.8.0
 	 */
