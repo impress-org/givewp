@@ -224,6 +224,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 
 = 2.8.0: ??? =
+* New: On a fresh install, users are now directed to the new Onboarding Wizard!
 * New: Introduces a new Setup Page for tracking progress towards accepting the first donation.
 
 = 2.7.2: July 6th, 2020 =
