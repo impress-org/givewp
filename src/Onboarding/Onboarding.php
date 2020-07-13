@@ -35,7 +35,7 @@ class Onboarding {
 	 * @since 2.8.0
 	 */
 	public function dismissSetupPage() {
-		if ( wp_verify_nonce( $_REQUEST['_wpnonce'], 'dismiss_setup_page' ) ) {
+		if ( wp_verify_nonce( $_GET['_wpnonce'], 'dismiss_setup_page' ) ) {
 			give_update_option( 'setup_page_enabled', self::DISABLED );
 
 			wp_redirect( add_query_arg( [ 'post_type' => 'give_forms' ], admin_url( 'edit.php' ) ) );
