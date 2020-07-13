@@ -170,10 +170,12 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 							'id'      => 'setup_page_enabled',
 							'type'    => 'radio_inline',
-							'default' => \Give\Onboarding\Onboarding::isSetupPageEnabled() ? 1 : 0,
+							'default' => give_is_setting_enabled( \Give\Onboarding\Onboarding::isSetupPageEnabled() )
+								? \Give\Onboarding\Onboarding::ENABLED
+								: \Give\Onboarding\Onboarding::DISABLED,
 							'options' => [
-								1 => __( 'Enabled', 'give' ),
-								0 => __( 'Disabled', 'give' ),
+								\Give\Onboarding\Onboarding::ENABLED => __( 'Enabled', 'give' ),
+								\Give\Onboarding\Onboarding::DISABLED => __( 'Disabled', 'give' ),
 							],
 						],
 						[

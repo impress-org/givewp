@@ -17,6 +17,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Onboarding {
 
+	const ENABLED  = 'enabled';
+	const DISABLED = 'disabled';
+
 	/**
 	 * Initialize the Onboarding hooks/actions.
 	 *
@@ -33,7 +36,7 @@ class Onboarding {
 	 */
 	public function dismissSetupPage() {
 		if ( wp_verify_nonce( $_REQUEST['_wpnonce'], 'dismiss_setup_page' ) ) {
-			$foo = give_update_option( 'setup_page_enabled', false );
+			give_update_option( 'setup_page_enabled', self::DISABLED );
 
 			wp_redirect( add_query_arg( [ 'post_type' => 'give_forms' ], admin_url( 'edit.php' ) ) );
 			exit;
@@ -46,7 +49,7 @@ class Onboarding {
 	 * @since 2.8.0
 	 */
 	public static function isSetupPageEnabled() {
-		return give_get_option( 'setup_page_enabled', false );
+		return give_get_option( 'setup_page_enabled', self::DISABLED );
 	}
 }
 
