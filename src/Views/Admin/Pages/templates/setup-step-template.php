@@ -4,6 +4,6 @@
 		<?php echo $labelText; ?>
 	</div>
 	<div class="section-card--action">
-		<a class="button button-primary" href="<?php echo $actionLocation ?? '#'; ?>"><?php echo $actionText; ?></a>
+		<a class="button button-primary" href="<?php echo isset( $actionLocation ) ? $actionLocation : '#'; ?>"><?php echo $actionText; ?></a>
 	</div>
 </div>
