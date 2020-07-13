@@ -21,8 +21,8 @@
 			'setup-step-template',
 			[
 				'dashicon'   => 'admin-settings',
-				'labelText'  => 'First-Time Configuration',
-				'actionText' => 'Get Started',
+				'labelText'  => esc_html__( 'First-Time Configuration', 'give' ),
+				'actionText' => esc_html__( 'Get Started', 'give' ),
 			]
 		);
 		?>
@@ -38,8 +38,8 @@
 			'setup-step-template',
 			[
 				'dashicon'   => 'admin-generic',
-				'labelText'  => 'PayPal Checkout',
-				'actionText' => 'Connect to PayPal',
+				'labelText'  => esc_html__( 'PayPal Checkout', 'give' ),
+				'actionText' => esc_html__( 'Connect to PayPal', 'give' ),
 			]
 		);
 		?>
@@ -50,8 +50,8 @@
 			'setup-step-template',
 			[
 				'dashicon'   => 'admin-generic',
-				'labelText'  => 'Stripe',
-				'actionText' => 'Connect to Stripe',
+				'labelText'  => esc_html__( 'Stripe', 'give' ),
+				'actionText' => esc_html__( 'Connect to Stripe', 'give' ),
 			]
 		);
 		?>
@@ -67,9 +67,9 @@
 			'setup-step-template',
 			[
 				'dashicon'       => 'welcome-learn-more',
-				'labelText'      => 'GiveWP 101',
-				'actionText'     => 'View GiveWP 101',
-				'actionLocation' => 'https://givewp.com/documentation/',
+				'labelText'      => esc_html__( 'GiveWP 101', 'give' ),
+				'actionText'     => esc_html__( 'View GiveWP 101', 'give' ),
+				'actionLocation' => esc_url( 'https://givewp.com/documentation/' ),
 			]
 		);
 		?>
@@ -80,9 +80,9 @@
 			'setup-step-template',
 			[
 				'dashicon'       => 'admin-plugins',
-				'labelText'      => 'GiveWP Premium Add-ons',
-				'actionText'     => 'View Add-ons',
-				'actionLocation' => 'https://givewp.com/addons/',
+				'labelText'      => esc_html__( 'GiveWP Premium Add-ons', 'give' ),
+				'actionText'     => esc_html__( 'View Add-ons', 'give' ),
+				'actionLocation' => esc_url( 'https://givewp.com/addons/' ),
 			]
 		);
 		?>
@@ -93,7 +93,7 @@
 		<form action="<?php echo admin_url( 'admin-post.php' ); ?>">
 			<input type="hidden" name="action" value="dismiss_setup_page">
 			<?php wp_nonce_field( 'dismiss_setup_page' ); ?>
-			<button type="submit">Dismiss Setup Screen</button>
+			<button type="submit"><?php echo esc_html__( 'Dismiss Setup Screen', 'give' ); ?></button>
 		</form>
 	</div>
 
