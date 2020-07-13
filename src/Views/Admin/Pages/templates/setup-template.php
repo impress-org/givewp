@@ -6,12 +6,6 @@
 
 	<hr class="wp-header-end">
 
-	<!--
-	<div class="error">
-		&nbsp;
-	</div>
-	-->
-
 	<section class="section">
 		<h2 class="section-header"><?php echo esc_html_e( 'Create Your First Donation Form in Minutes', 'give' ); ?></h2>
 
