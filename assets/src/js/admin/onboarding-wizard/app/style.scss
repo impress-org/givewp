@@ -1,0 +1,51 @@
+body {
+	font-family: Montserrat, arial, sans-serif;
+	color: #222;
+}
+
+.give-obw {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.give-obw-step {
+	text-align: center;
+	max-width: 600px;
+}
+
+.give-obw-logo {
+	font-size: 88px;
+	font-weight: 600;
+	color: #69b868;
+}
+
+.give-obw-buttons {
+	display: inline-flex;
+	flex-direction: column;
+	margin-top: 36px;
+}
+
+.give-obw-button {
+	text-decoration: none;
+	color: #000;
+	border: 1px solid #ccc;
+	padding: 12px 12px;
+	background: #eee;
+	font-size: 14px;
+	margin: 6px;
+	border-radius: 4px;
+}
+
+.give-obw-button--primary {
+	background: #333;
+	border: 1px solid #000;
+	color: #fff;
+	font-size: 18px;
+	padding: 16px 46px;
+}

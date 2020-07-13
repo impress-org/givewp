@@ -641,7 +641,7 @@ class Give_Welcome {
 
 		if ( ! $upgrade ) {
 			// First time install
-			wp_safe_redirect( admin_url( 'index.php?page=give-getting-started' ) );
+			wp_safe_redirect( admin_url( 'index.php?page=give-onboarding-wizard' ) );
 			exit;
 		} elseif ( ! give_is_setting_enabled( give_get_option( 'welcome' ) ) ) {
 			// Welcome is disabled in settings
