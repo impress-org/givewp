@@ -13,7 +13,7 @@
 	-->
 
 	<section class="section">
-		<h2 class="section-header">Create Your First Donation Form in Minutes</h2>
+		<h2 class="section-header"><?php echo esc_html_e( 'Create Your First Donation Form in Minutes', 'give' ); ?></h2>
 
 		<!-- Onboarding Wizard -->
 		<?php
@@ -30,7 +30,7 @@
 	</section>
 
 	<section class="section">
-		<h2 class="section-header">Connect a Payment Gateway to Accept Donations</h2>
+		<h2 class="section-header"><?php esc_html_e( 'Connect a Payment Gateway to Accept Donations', 'give' ); ?></h2>
 
 		<!-- PayPal Checkout -->
 		<?php
@@ -59,7 +59,7 @@
 	</section>
 
 	<section class="section">
-		<h2 class="section-header">Level Up Your Fundraising</h2>
+		<h2 class="section-header"><?php esc_html_e( 'Level Up Your Fundraising', 'give' ); ?></h2>
 
 		<!-- Give 101 -->
 		<?php
