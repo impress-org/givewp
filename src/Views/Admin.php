@@ -45,6 +45,10 @@ class Admin {
 		$reports = new Admin\Pages\Reports();
 		$reports->init();
 
+		// Load Onboarding Wizard page
+		$onboarding_wizard = new Admin\Pages\OnboardingWizard();
+		$onboarding_wizard->init();
+    
 		// Load Setup page
 		if ( give_is_setting_enabled( \Give\Onboarding\Onboarding::isSetupPageEnabled() ) ) {
 			$setup = new Admin\Pages\Setup();
