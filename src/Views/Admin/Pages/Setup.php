@@ -97,6 +97,13 @@ class Setup {
 			[],
 			'0.0.1'
 		);
+		wp_enqueue_script(
+			'give-admin-setup-script',
+			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
+			[],
+			'0.0.1',
+			$in_footer = true
+		);
 	}
 
 	/**
