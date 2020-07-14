@@ -8,7 +8,7 @@ import dismiss from '../dismiss.html';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
-	title: 'Components',
+	title: 'Setup Page/Components',
 	decorators: [ withA11y ],
 };
 

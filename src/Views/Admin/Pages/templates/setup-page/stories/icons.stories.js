@@ -1,7 +1,7 @@
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
-	title: 'Icons',
+	title: 'Setup Page/Icons',
 	decorators: [ withA11y ],
 };
 

@@ -8,7 +8,7 @@ import addons from './src/addons.js';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
-	title: 'Row Items',
+	title: 'Setup Page/Row Items',
 	decorators: [ withA11y ],
 };
 
