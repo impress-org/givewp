@@ -25,7 +25,19 @@ class Setup {
 	public function init() {
 		add_action( 'admin_init', [ $this, 'redirectDonationsToSetup' ] );
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
+		add_action( 'admin_notices', [ $this, 'hide_admin_notices' ], -999999 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+	}
+
+	public function hide_admin_notices() {
+		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
+			ob_start();
+			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
+		}
+	}
+
+	public function _hide_admin_notices() {
+		ob_get_clean();
 	}
 
 	/**
