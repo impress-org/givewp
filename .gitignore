@@ -44,6 +44,7 @@ intermediate
 cache
 node_modules
 assets/dist/
+.storybook-static
 
 # Composer
 vendor
