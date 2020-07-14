@@ -67,7 +67,7 @@ class Income extends Endpoint {
 
 			switch ( $intervalStr ) {
 				case 'P1D':
-					$time        = $periodStart->format( 'Y-m-d H:i:s' );
+					$time        = $periodStart->format( 'Y-m-d' );
 					$periodLabel = $periodStart->format( 'l' );
 					break;
 				case 'PT12H':
@@ -128,7 +128,7 @@ class Income extends Endpoint {
 		$donors   = [];
 
 		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+			if ( $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
 				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
 					$earnings += $paymentObject->total;
 					$donors[]  = $paymentObject->donor_id;

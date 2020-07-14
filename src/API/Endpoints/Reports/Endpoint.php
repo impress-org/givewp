@@ -354,14 +354,18 @@ abstract class Endpoint {
 		$gateway = array_keys( $gatewayObjects );
 
 		$args = [
-			'number'     => $number,
-			'paged'      => 1,
-			'orderby'    => $orderBy,
-			'order'      => 'DESC',
-			'start_date' => $startStr,
-			'end_date'   => $endStr,
-			'gateway'    => $gateway,
-			'meta_query' => [
+			'post_status' => [
+				'publish',
+				'give_subscription',
+			],
+			'number'      => $number,
+			'paged'       => 1,
+			'orderby'     => $orderBy,
+			'order'       => 'DESC',
+			'start_date'  => strtotime( $startStr ),
+			'end_date'    => strtotime( $endStr ),
+			'gateway'     => $gateway,
+			'meta_query'  => [
 				[
 					'key'     => '_give_payment_currency',
 					'value'   => $this->currency,
