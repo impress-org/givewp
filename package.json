@@ -17,12 +17,8 @@
         "lint:textdomain": "node ./wp-textdomain.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles",
-<<<<<<< HEAD
         "storybook": "start-storybook -p 6006",
         "storybook:build": "build-storybook -c .storybook -o .storybook-static"
-=======
-        "storybook": "start-storybook -p 6006"
->>>>>>> Implement Setup Page design.
     },
     "repository": {
         "type": "git",
