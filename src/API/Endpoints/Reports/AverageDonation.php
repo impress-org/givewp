@@ -197,6 +197,6 @@ class AverageDonation extends Endpoint {
 		$averageIncome = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
 		// Return rounded average (avoid displaying figures with many decimal places)
-		return round( $averageIncome, 2 );
+		return round( $averageIncome, give_get_price_decimals( $this->currency ) );
 	}
 }
