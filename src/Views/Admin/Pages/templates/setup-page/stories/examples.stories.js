@@ -8,7 +8,7 @@ import addons from './src/addons.js';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
-	title: 'Examples',
+	title: 'Setup Page/Examples',
 	decorators: [ withA11y ],
 };
 
