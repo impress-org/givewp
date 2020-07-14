@@ -22,7 +22,7 @@ export const Configuration = () => Styles + `
 <section>
   <header>
     <h2>Create your first donation form in minutes</h2>
-    <span class="badge">Complete</span>
+    <span class="badge badge-complete">Complete</span>
   </header>
   <main>
     ` + configuration() + `
