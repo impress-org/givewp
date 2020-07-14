@@ -208,6 +208,16 @@ final class Give {
 	}
 
 	/**
+	 * Binds the initial classes to the service provider.
+	 *
+	 * @since 2.8.0
+	 */
+	private function bindClasses() {
+		$this->container->singleton( 'templates', Templates::class );
+		$this->container->singleton( 'routeForm', FormRoute::class );
+	}
+
+	/**
 	 * Setup plugin constants
 	 *
 	 * @since  1.0
