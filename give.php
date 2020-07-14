@@ -54,99 +54,37 @@ if ( ! class_exists( 'Give' ) ) :
 	/**
 	 * Main Give Class
 	 *
+	 * @since 2.8.0 build in a service container
 	 * @since 1.0
 	 *
-	 * @property-read Give_Roles          $roles
+	 * @property-read Give_API $api
+	 * @property-read Give_Async_Process $async_process
+	 * @property-read Give_Comment $comment
+	 * @property-read Give_DB_Donors $donors
+	 * @property-read Give_DB_Donor_Meta $donor_meta
+	 * @property-read Give_Emails $emails
+	 * @property-read Give_Email_Template_Tags $email_tags
+	 * @property-read Give_DB_Form_Meta $form_meta
 	 * @property-read Give_Admin_Settings $give_settings
-	 * @property-read Give_API            $api
-	 * @property-read Templates           $templates
-	 * @property-read FormRoute           $routeForm
+	 * @property-read Give_HTML_Elements $html
+	 * @property-read Give_Logging $logs
+	 * @property-read Give_DB_Logs $log_db
+	 * @property-read Give_DB_Log_Meta $logmeta_db
+	 * @property-read Give_Notices $notices
+	 * @property-read Give_DB_Payment_Meta $payment_meta
+	 * @property-read Give_Roles $roles
+	 * @property-read FormRoute $routeForm
+	 * @property-read Templates $templates
+	 * @property-read Give_Scripts $scripts
+	 * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
+	 * @property-read Give_Sequential_Donation_Number $seq_donation_number
+	 * @property-read Give_Session $session
+	 * @property-read Give_DB_Sessions $session_db
+	 * @property-read Give_Tooltips $tooltips
+	 *
+	 * @mixin Container
 	 */
 	final class Give {
-		/**
-		 * Give Session Object
-		 *
-		 * This holds donation data for user's session.
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_Session object
-		 */
-		public $session;
-
-		/**
-		 * Give Session DB Object
-		 *
-		 * This holds donation data for user's session.
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_DB_Sessions object
-		 */
-		public $session_db;
-
-		/**
-		 * Give HTML Element Helper Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_HTML_Elements object
-		 */
-		public $html;
-
-		/**
-		 * Give Emails Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_Emails object
-		 */
-		public $emails;
-
-		/**
-		 * Give Email Template Tags Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_Email_Template_Tags object
-		 */
-		public $email_tags;
-
-		/**
-		 * Give Donors DB Object
-		 *
-		 * @since  1.0
-		 * @access public
-		 *
-		 * @var    Give_DB_Donors object
-		 */
-		public $donors;
-
-		/**
-		 * Give Donor meta DB Object
-		 *
-		 * @since  1.6
-		 * @access public
-		 *
-		 * @var    Give_DB_Donor_Meta object
-		 */
-		public $donor_meta;
-
-		/**
-		 * Give Sequential Donation DB Object
-		 *
-		 * @since  2.1.0
-		 * @access public
-		 *
-		 * @var    Give_DB_Sequential_Ordering object
-		 */
-		public $sequential_donation_db;
-
 		/**
 		 * Give Template Loader Object
 		 *
@@ -168,87 +106,6 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
-		 * Give_tooltips Object
-		 *
-		 * @since  1.8.9
-		 * @access public
-		 *
-		 * @var    Give_Tooltips object
-		 */
-		public $tooltips;
-
-		/**
-		 * Give notices Object
-		 *
-		 * @var    Give_Notices $notices
-		 */
-		public $notices;
-
-
-		/**
-		 * Give logging Object
-		 *
-		 * @var    Give_Logging $logs
-		 */
-		public $logs;
-
-		/**
-		 * Give log db Object
-		 *
-		 * @var    Give_DB_Logs $log_db
-		 */
-		public $log_db;
-
-		/**
-		 * Give log meta db Object
-		 *
-		 * @var    Give_DB_Log_Meta $logmeta_db
-		 */
-		public $logmeta_db;
-
-		/**
-		 * Give payment Object
-		 *
-		 * @var    Give_DB_Payment_Meta $payment_meta
-		 */
-		public $payment_meta;
-
-		/**
-		 * Give form Object
-		 *
-		 * @var    Give_DB_Form_Meta $form_meta
-		 */
-		public $form_meta;
-
-		/**
-		 * Give form Object
-		 *
-		 * @var    Give_Async_Process $async_process
-		 */
-		public $async_process;
-
-		/**
-		 * Give scripts Object.
-		 *
-		 * @var Give_Scripts
-		 */
-		public $scripts;
-
-		/**
-		 * Give_Seq_Donation_Number Object.
-		 *
-		 * @var Give_Sequential_Donation_Number
-		 */
-		public $seq_donation_number;
-
-		/**
-		 * Give_Comment Object
-		 *
-		 * @var Give_Comment
-		 */
-		public $comment;
-
-		/**
 		 * Give_Stripe Object.
 		 *
 		 * @since  2.5.0
@@ -263,10 +120,22 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private $container;
 
+		/**
+		 * Give constructor.
+		 *
+		 * Sets up the Container to be used for managing all other instances and data
+		 *
+		 * @since 2.8.0
+		 */
 		public function __construct() {
 			$this->container = new Container();
 		}
 
+		/**
+		 * Bootstraps the Give Plugin
+		 *
+		 * @since 2.8.0
+		 */
 		public function boot() {
 			// PHP version
 			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
@@ -291,27 +160,37 @@ if ( ! class_exists( 'Give' ) ) :
 			do_action( 'give_loaded' );
 		}
 
-		private function bindLegacyInstance( $alias, $class, $includesPath ) {
+		/**
+		 * A helper for loading legacy classes that do not use autoloading, then binding their instance
+		 * to the container.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param string $alias
+		 * @param string|Closure $class
+		 * @param string $includesPath
+		 * @param bool $singleton
+		 */
+		private function bindLegacyInstance( $alias, $class, $includesPath, $singleton = false ) {
 			require_once GIVE_PLUGIN_DIR . "includes/$includesPath";
 
-			if ( is_callable( $class ) ) {
+			if ( $class instanceof Closure ) {
 				$this->container->instance( $alias, $class() );
+			} elseif ( $singleton ) {
+				$this->container->instance( $alias, $class::get_instance() );
 			} else {
 				$this->container->instance( $alias, new $class() );
 			}
 		}
 
+		/**
+		 * Binds the initial classes to the service provider.
+		 *
+		 * @since 2.8.0
+		 */
 		private function bindClasses() {
 			$this->container->singleton( 'templates', Templates::class );
 			$this->container->singleton( 'routeForm', FormRoute::class );
-
-			$this->bindLegacyInstance( 'roles', 'Give_Roles', 'class-give-roles.php' );
-			$this->bindLegacyInstance(
-				'give_settings',
-				'Give_Admin_Settings',
-				'admin/class-admin-settings.php'
-			);
-			$this->bindLegacyInstance( 'api', 'Give_API', 'api/class-give-api.php' );
 		}
 
 		/**
@@ -340,25 +219,28 @@ if ( ! class_exists( 'Give' ) ) :
 			// Set up localization.
 			$this->load_textdomain();
 
-			$this->emails                 = new Give_Emails();
-			$this->email_tags             = new Give_Email_Template_Tags();
-			$this->html                   = Give_HTML_Elements::get_instance();
-			$this->donors                 = new Give_DB_Donors();
-			$this->donor_meta             = new Give_DB_Donor_Meta();
-			$this->tooltips               = new Give_Tooltips();
-			$this->notices                = new Give_Notices();
-			$this->payment_meta           = new Give_DB_Payment_Meta();
-			$this->log_db                 = new Give_DB_Logs();
-			$this->logmeta_db             = new Give_DB_Log_Meta();
-			$this->logs                   = new Give_Logging();
-			$this->form_meta              = new Give_DB_Form_Meta();
-			$this->sequential_donation_db = new Give_DB_Sequential_Ordering();
-			$this->async_process          = new Give_Async_Process();
-			$this->scripts                = new Give_Scripts();
-			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
-			$this->comment                = Give_Comment::get_instance();
-			$this->session_db             = new Give_DB_Sessions();
-			$this->session                = Give_Session::get_instance();
+			$this->bindLegacyInstance( 'roles', 'Give_Roles', 'class-give-roles.php' );
+			$this->bindLegacyInstance( 'give_settings', 'Give_Admin_Settings', 'admin/class-admin-settings.php' );
+			$this->bindLegacyInstance( 'api', 'Give_API', 'api/class-give-api.php' );
+			$this->bindLegacyInstance( 'emails', 'Give_Emails', 'emails/class-give-emails.php' );
+			$this->bindLegacyInstance( 'email_tags', 'Give_Email_Template_Tags', 'emails/class-give-email-tags.php' );
+			$this->bindLegacyInstance( 'html', 'Give_HTML_Elements', 'admin/class-give-html-elements.php', true );
+			$this->bindLegacyInstance( 'donors', 'Give_DB_Donors', 'database/class-give-db-donors.php' );
+			$this->bindLegacyInstance( 'donor_meta', 'Give_DB_Donor_Meta', 'database/class-give-db-donor-meta.php' );
+			$this->bindLegacyInstance( 'tooltips', 'Give_Tooltips', 'class-give-tooltips.php' );
+			$this->bindLegacyInstance( 'notices', 'Give_Notices', 'class-notices.php' );
+			$this->bindLegacyInstance( 'payment_meta', 'Give_DB_Payment_Meta', 'database/class-give-db-payment-meta.php' );
+			$this->bindLegacyInstance( 'log_db', 'Give_DB_Logs', 'database/class-give-db-logs.php' );
+			$this->bindLegacyInstance( 'logmeta_db', 'Give_DB_Log_Meta', 'database/class-give-db-logs-meta.php' );
+			$this->bindLegacyInstance( 'logs', 'Give_Logging', 'class-give-logging.php' );
+			$this->bindLegacyInstance( 'form_meta', 'Give_DB_Form_Meta', 'database/class-give-db-form-meta.php' );
+			$this->bindLegacyInstance( 'sequential_donation_db', 'Give_DB_Sequential_Ordering', 'database/class-give-db-sequential-ordering.php' );
+			$this->bindLegacyInstance( 'async_process', 'Give_Async_Process', 'class-give-async-process.php' );
+			$this->bindLegacyInstance( 'scripts', 'Give_Scripts', 'class-give-scripts.php' );
+			$this->bindLegacyInstance( 'seq_donation_number', 'Give_Sequential_Donation_Number', 'payments/class-give-sequential-donation-number.php', true );
+			$this->bindLegacyInstance( 'comment', 'Give_Comment', 'class-give-comment.php', true );
+			$this->bindLegacyInstance( 'session_db', 'Give_DB_Sessions', 'database/class-give-db-sessions.php' );
+			$this->bindLegacyInstance( 'session', 'Give_Session', 'class-give-session.php', true );
 
 			// Load form template
 			$this->templates->load();
@@ -730,16 +612,32 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Handle property get request
+		 * Magic properties are passed to the service container to retrieve the data.
 		 *
+		 * @since 2.8.0 retrieve from the service container
 		 * @since 2.7.0
 		 *
 		 * @param string $propertyName
 		 *
 		 * @return mixed
+		 * @throws Exception
 		 */
 		public function __get( $propertyName ) {
 			return $this->container->get( $propertyName );
+		}
+
+		/**
+		 * Magic methods are passed to the service container.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param $name
+		 * @param $arguments
+		 *
+		 * @return mixed
+		 */
+		public function __call( $name, $arguments ) {
+			return call_user_func_array( [ $this->container, $name ], $arguments );
 		}
 	}
 
@@ -759,11 +657,15 @@ endif; // End if class_exists check
  * @since 1.0
  * @return object|Give
  */
-function Give() { // phpcs:ignore
+function Give( $abstract = null ) { // phpcs:ignore
 	static $instance = null;
 
 	if ( $instance === null ) {
 		$instance = new Give();
+	}
+
+	if ( $abstract !== null ) {
+		return $instance->make( $abstract );
 	}
 
 	return $instance;
