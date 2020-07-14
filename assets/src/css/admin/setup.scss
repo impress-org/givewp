@@ -8,44 +8,122 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-.section {
-	margin: 0;
-	padding: 30px;
+@import url(https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap);
+
+section,
+section * {
+	font-family: 'Open Sans', sans-serif;
 }
-.section-header {
-	font-size: 20px;
-	margin: 0 0 15px;
-	padding: 0 0 15px;
-	line-height: 20px;
-}
-.section-card {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: auto;
-	padding: 30px;
-	margin-bottom: 10px;
+
+section {
+	margin: 20px;
+	margin-bottom: 40px;
+	color: #424242;
 	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
+	border-radius: 6px;
 }
-.section-card--action {
-	flex: 1;
-
-	.button {
-		text-align: center;
-		width: 100%;
-		padding: 10px;
-	}
+header {
+	padding: 0 40px 0 20px;
+	font-size: 22px;
+	line-height: 22px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #ddd;
 }
-.section-card--label {
-	flex: 6;
+footer {
+	font-size: 16px;
+	padding: 20px;
+	display: flex;
+	justify-content: space-between;
+}
+footer a {
+	color: #0073aa;
+	text-decoration: none;
+}
+footer a::after {
+	content: ' >';
+}
+header .badge {
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 10px 20px;
+	color: #18694c;
+	background: #cbf4c9;
+	border-radius: 3px;
+}
+article {
+	padding: 20px 0;
+	border-bottom: 1px solid #ddd;
+	display: grid;
+	grid-template-columns: 150px 1fr 300px;
+	grid-template-rows: auto;
+	grid-template-areas:
+		'icon header action'
+		'icon description action';
+}
+article .icon,
+article .action {
+	align-self: center;
+	justify-content: center;
+}
+article .icon {
+	width: 100px;
+	padding: 20px;
+	grid-area: icon;
+}
+article .action {
+	grid-area: action;
+}
+article .action a {
+	display: block;
+	color: inherit;
+	font-size: 22px;
+	text-align: right;
+	margin-right: 40px;
+	text-decoration: none;
+}
+article .header {
+	margin: 20px 0 0;
 	font-size: 20px;
-
-	.dashicons {
-		font-size: 50px;
-		margin-top: -15px;
-		margin-right: 60px;
-	}
+	line-height: 25px;
 }
+article .description {
+	color: #595959;
+	font-size: 16px;
+}
+
+.configuration .icon {
+	margin-top: -25px;
+	margin-left: 15px;
+}
+
+.stripe button {
+	margin-left: 15px;
+	width: 223px;
+	height: 38px;
+	font-size: 16px;
+	line-height: 22px;
+	color: #fff;
+	background: rgb(70, 170, 228);
+	background: linear-gradient(180deg, rgba(70, 170, 228, 1) 0%, rgba(12, 144, 222, 1) 50%);
+	border: 0;
+	border-radius: 6px;
+}
+
 .section-dismiss {
 	text-align: center;
+
+	button {
+		cursor: pointer;
+		border: 0;
+		background-color: inherit;
+		// color: #9EA3A8;
+		color: rgb(102, 102, 102);
+		font-size: 16px;
+		font-weight: 600;
+		text-decoration: underline;
+	}
 }
