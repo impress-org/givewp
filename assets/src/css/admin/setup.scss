@@ -50,9 +50,15 @@ header .badge {
 	font-size: 12px;
 	line-height: 16px;
 	padding: 10px 20px;
+	border-radius: 3px;
+}
+header .badge.badge-complete {
 	color: #18694c;
 	background: #cbf4c9;
-	border-radius: 3px;
+}
+header .badge.badge-review {
+	color: #696969;
+	background: transparent;
 }
 article {
 	padding: 20px 0;

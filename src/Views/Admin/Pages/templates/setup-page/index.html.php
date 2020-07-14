@@ -12,7 +12,7 @@
 			'setup-page/section',
 			[
 				'title'    => 'Create your first donation form in minutes',
-				'badge'    => '<span class="badge">Complete</span>',
+				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
 				'contents' => $this->render_template(
 					'setup-page/row-item',
 					[
