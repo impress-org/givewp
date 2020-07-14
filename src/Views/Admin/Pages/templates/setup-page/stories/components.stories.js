@@ -79,10 +79,14 @@ export const SectionMarkedComplete = () => Styles + `
 		<header>
 			<h2>Connect a payment gateway to begin accepting donations</h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<span class="badge badge-complete">Complete</span>
 =======
 		<span class="badge">Complete</span>
 >>>>>>> Implement Setup Page design.
+=======
+		<span class="badge badge-complete">Complete</span>
+>>>>>>> Add review badge variation.
 		</header>
 			<main>
 			` + paypal() + `

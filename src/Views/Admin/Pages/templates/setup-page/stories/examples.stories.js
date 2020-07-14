@@ -31,10 +31,14 @@ export const Configuration = () => Styles + `
   <header>
     <h2>Create your first donation form in minutes</h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <span class="badge badge-complete">Complete</span>
 =======
     <span class="badge">Complete</span>
 >>>>>>> Implement Setup Page design.
+=======
+    <span class="badge badge-complete">Complete</span>
+>>>>>>> Add review badge variation.
   </header>
   <main>
     ` + configuration() + `

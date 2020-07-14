@@ -13,10 +13,14 @@
 			[
 				'title'    => 'Create your first donation form in minutes',
 <<<<<<< HEAD
+<<<<<<< HEAD
 				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
 =======
 				'badge'    => '<span class="badge">Complete</span>',
 >>>>>>> Implement Setup Page design.
+=======
+				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
+>>>>>>> Add review badge variation.
 				'contents' => $this->render_template(
 					'setup-page/row-item',
 					[
