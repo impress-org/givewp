@@ -34,7 +34,7 @@ export const Dismiss = () => Styles +
 		.replace( /{{\s*label\s*}}/gi, 'Dismiss Setup Screen' );
 
 export const SectionBasic = () => Styles + `
-	'<section>
+	<section>
 		<header>
 			<h2>Connect a payment gateway to begin accepting donations</h2>
 		</header>
