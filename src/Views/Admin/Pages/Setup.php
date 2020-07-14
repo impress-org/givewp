@@ -89,7 +89,7 @@ class Setup {
 	 * @since 2.8.0
 	 */
 	public function render_page() {
-		include GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/setup-template.php';
+		include GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/setup-page/index.html.php';
 	}
 
 	/**
@@ -101,7 +101,31 @@ class Setup {
 	 * @since 2.8.0
 	 */
 	public function render_template( $template, $data = [] ) {
-		extract( $data );
-		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/{$template}.php";
+		ob_start();
+		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/$template.html";
+		$output = ob_get_clean();
+
+		foreach ( $data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$value = implode( '', $value );
+			}
+			$output = preg_replace( '/{{\s*' . $key . '\s*}}/', $value, $output );
+		}
+
+		// Stripe unmerged tags.
+		$output = preg_replace( '/{{\s*.*\s*}}/', '', $output );
+
+		return $output;
+	}
+
+	/**
+	 * Returns a qualified image URL.
+	 *
+	 * @param string $src
+	 *
+	 * @return string
+	 */
+	public function image( $src ) {
+		return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
 	}
 }
