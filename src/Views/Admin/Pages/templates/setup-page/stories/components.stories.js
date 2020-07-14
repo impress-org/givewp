@@ -17,7 +17,7 @@ const Styles = '<style>' + styles + '</style>';
 export const header = () => Styles +
 	section
 		.replace( /{{\s*title\s*}}/gi, 'Connect a payment gateway to begin accepting donations' )
-		.replace( /{{\s*badge\s*}}/gi, '<span class="badge">Complete</span>' )
+		.replace( /{{\s*badge\s*}}/gi, '<span class="badge badge-complete">Complete</span>' )
 		.replace( /{{\s*contents\s*}}/gi, '' )
 		.replace( /{{\s*footer\s*}}/gi, '' );
 
@@ -78,7 +78,7 @@ export const SectionMarkedComplete = () => Styles + `
 	<section>
 		<header>
 			<h2>Connect a payment gateway to begin accepting donations</h2>
-		<span class="badge">Complete</span>
+		<span class="badge badge-complete">Complete</span>
 		</header>
 			<main>
 			` + paypal() + `
