@@ -8,11 +8,7 @@ import dismiss from '../dismiss.html';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
-<<<<<<< HEAD
 	title: 'Setup Page/Components',
-=======
-	title: 'Components',
->>>>>>> Implement Setup Page design.
 	decorators: [ withA11y ],
 };
 
@@ -21,11 +17,7 @@ const Styles = '<style>' + styles + '</style>';
 export const header = () => Styles +
 	section
 		.replace( /{{\s*title\s*}}/gi, 'Connect a payment gateway to begin accepting donations' )
-<<<<<<< HEAD
 		.replace( /{{\s*badge\s*}}/gi, '<span class="badge badge-complete">Complete</span>' )
-=======
-		.replace( /{{\s*badge\s*}}/gi, '<span class="badge">Complete</span>' )
->>>>>>> Implement Setup Page design.
 		.replace( /{{\s*contents\s*}}/gi, '' )
 		.replace( /{{\s*footer\s*}}/gi, '' );
 

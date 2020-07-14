@@ -9,10 +9,14 @@ import { withA11y } from '@storybook/addon-a11y';
 
 export default {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	title: 'Setup Page/Examples',
 =======
 	title: 'Examples',
 >>>>>>> Implement Setup Page design.
+=======
+	title: 'Setup Page/Examples',
+>>>>>>> Add namespace to Setup Page stories.
 	decorators: [ withA11y ],
 };
 
