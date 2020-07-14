@@ -51,6 +51,7 @@ class LegacyServiceProvider implements ServiceProvider {
 		/**
 		 * Load plugin files
 		 */
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 		$give_options = give_get_settings();
 
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
@@ -66,6 +67,7 @@ class LegacyServiceProvider implements ServiceProvider {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php';
 
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 
 		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db.php';
@@ -87,7 +89,6 @@ class LegacyServiceProvider implements ServiceProvider {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-comment.php';
 
-		require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor-wall-widget.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/forms/class-give-forms-query.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';

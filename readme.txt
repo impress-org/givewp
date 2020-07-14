@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.7.1
+Stable tag: 2.7.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.7.2: July 6th, 2020 =
+* Fix: The 2.7.0 upgrade routine could cause WP-Admin to be incorrectly redirected to the update success screen for certain hosting environments after completion. [#4900](https://github.com/impress-org/givewp/issues/4900)
+* Fix: The Donor Wall shortcode now allows you to properly only display certain donors by their donor IDs. [#4864](https://github.com/impress-org/givewp/issues/4864)
+* Fix: Improved the Multi-Step Form Template styles when only one gateway is active. Previously the "Donate Now" button wouldn't be properly centered aligned and checkboxes could be a smaller width than the container. [#4882](https://github.com/impress-org/givewp/issues/4882)
+* Fix: Provided support for the "Anonymous Donations" checkbox within the new Multi-step Form Template. [#4888](https://github.com/impress-org/givewp/issues/4888)
+* Fix: The "Terms and Conditions" checkbox can now be properly scrolled on mobile devices. [#4899](https://github.com/impress-org/givewp/issues/4899)
+* Fix: When Google Pay was the default gateway a notice would incorrectly display in the new donation form template. [#4879](https://github.com/impress-org/givewp/issues/4879)
 
 = 2.7.1: June 30th, 2020 =
 * Fix: Resolved an issue with the 2.7.0 releasing causing the Form Grid shortcode to not render due to a PHP fatal error. [#4877](https://github.com/impress-org/givewp/issues/4877)
