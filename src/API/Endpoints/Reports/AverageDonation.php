@@ -100,6 +100,7 @@ class AverageDonation extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				),
 				'body'   => __( 'Avg Income', 'give' ),
@@ -135,6 +136,7 @@ class AverageDonation extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 				],

@@ -64,6 +64,7 @@ class PaymentMethods extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 					'body'   => $gateway['count'] . ' ' . __( 'Payments', 'give' ),

@@ -88,6 +88,7 @@ class TotalIncome extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				),
 				'body'   => __( 'Total Income', 'give' ),
@@ -123,6 +124,7 @@ class TotalIncome extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 				],

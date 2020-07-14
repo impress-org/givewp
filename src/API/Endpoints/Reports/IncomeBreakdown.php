@@ -129,6 +129,7 @@ class IncomeBreakdown extends Endpoint {
 				[
 					'currency_code'   => $this->currency,
 					'decode_currency' => true,
+					'sanitize'        => false,
 				]
 			),
 			'donors'  => count( $unique ),
@@ -138,6 +139,7 @@ class IncomeBreakdown extends Endpoint {
 				[
 					'currency_code'   => $this->currency,
 					'decode_currency' => true,
+					'sanitize'        => false,
 				]
 			),
 		];
