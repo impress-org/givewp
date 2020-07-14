@@ -8,7 +8,11 @@ import addons from './src/addons.js';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
+<<<<<<< HEAD
 	title: 'Setup Page/Row Items',
+=======
+	title: 'Row Items',
+>>>>>>> Implement Setup Page design.
 	decorators: [ withA11y ],
 };
 

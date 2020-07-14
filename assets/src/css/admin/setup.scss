@@ -40,6 +40,9 @@ footer a {
 	color: #0073aa;
 	text-decoration: none;
 }
+footer a::after {
+	content: ' >';
+}
 header .badge {
 	font-weight: 600;
 	font-size: 12px;
@@ -54,6 +57,9 @@ header .badge.badge-complete {
 header .badge.badge-review {
 	color: #696969;
 	background: transparent;
+	color: #18694c;
+	background: #cbf4c9;
+	border-radius: 3px;
 }
 article {
 	padding: 20px 0;

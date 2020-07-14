@@ -12,7 +12,11 @@
 			'setup-page/section',
 			[
 				'title'    => 'Create your first donation form in minutes',
+<<<<<<< HEAD
 				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
+=======
+				'badge'    => '<span class="badge">Complete</span>',
+>>>>>>> Implement Setup Page design.
 				'contents' => $this->render_template(
 					'setup-page/row-item',
 					[
@@ -60,7 +64,11 @@
 				'footer'   => $this->render_template(
 					'setup-page/footer',
 					[
+<<<<<<< HEAD
 						'contents' => 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more!<a href="#">View all gateways <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
+=======
+						'contents' => 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more!<a href="#">View all gateways</a>',
+>>>>>>> Implement Setup Page design.
 					]
 				),
 			]

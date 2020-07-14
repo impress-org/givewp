@@ -8,7 +8,11 @@ import addons from './src/addons.js';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
+<<<<<<< HEAD
 	title: 'Setup Page/Examples',
+=======
+	title: 'Examples',
+>>>>>>> Implement Setup Page design.
 	decorators: [ withA11y ],
 };
 
@@ -22,7 +26,11 @@ export const Configuration = () => Styles + `
 <section>
   <header>
     <h2>Create your first donation form in minutes</h2>
+<<<<<<< HEAD
     <span class="badge badge-complete">Complete</span>
+=======
+    <span class="badge">Complete</span>
+>>>>>>> Implement Setup Page design.
   </header>
   <main>
     ` + configuration() + `
