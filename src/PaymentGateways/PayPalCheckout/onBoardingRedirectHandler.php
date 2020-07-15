@@ -41,8 +41,8 @@ class onBoardingRedirectHandler {
 	public function savePayPalMerchantDetails() {
 		// Save PayPal merchant details only if admin redirected to PayPal connect setting page after completing onboarding process.
 		if (
-		! isset( $_GET['merchantIdInPayPal'] )
-			// ! \Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
+			! isset( $_GET['merchantIdInPayPal'] ) ||
+			! Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
 		) {
 			return;
 		}
@@ -125,11 +125,11 @@ class onBoardingRedirectHandler {
 	 *
 	 * @since 2.8.0
 	 */
-	public function showNotice(){
-		if(
-			! isset( $_GET['paypal-account-connected']) ||
+	public function showNotice() {
+		if (
+			! isset( $_GET['paypal-account-connected'] ) ||
 			! Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
-		){
+		) {
 			return;
 		}
 
