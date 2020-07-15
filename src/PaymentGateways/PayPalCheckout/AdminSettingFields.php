@@ -84,7 +84,9 @@ class AdminSettingFields {
 						<div class="api-access-feature-list">
 							<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
 							<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
-							<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
+							<?php if ( class_exists( 'Give_Recurring' ) ) : ?>
+								<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
+							<?php endif; ?>
 							<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
 						</div>
 					</div>
