@@ -1075,19 +1075,6 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Get the globally available instance of the container.
-	 *
-	 * @return static
-	 */
-	public static function getInstance() {
-		if ( is_null( static::$instance ) ) {
-			static::$instance = new static;
-		}
-
-		return static::$instance;
-	}
-
-	/**
 	 * Determine if a given offset exists.
 	 *
 	 * @param string $key
