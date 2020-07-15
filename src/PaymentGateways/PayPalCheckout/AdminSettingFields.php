@@ -49,41 +49,46 @@ class AdminSettingFields {
 				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'Accept payments from around the world', 'give' ); ?></div>
 				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'PayPal, Apple and Google Pay', 'give' ); ?></div>
 			</div>
+
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
-				<div class="button-wrap connection-setting">
-					<div>
-						<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
-							<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?>
-						</button>
-						<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="" data-paypal-button="true">
-							<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
-						</a>
-					</div>
-					<span class="give-field-description">
-						<i class="fa fa-exclamation"></i>
-						<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
-					</span>
-				</div>
-				<div class="button-wrap disconnection-setting" style="display: none">
-					<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
-					<div>
+
+				<?php if ( Utils::isConnected() ) : ?>
+					<div class="button-wrap connection-setting">
+						<div>
+							<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
+								<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?>
+							</button>
+							<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="" data-paypal-button="true">
+								<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
+							</a>
+						</div>
 						<span class="give-field-description">
-							<i class="fa fa-check"></i>
-							<?php esc_html_e( 'Connected for payments as devin.walker47@yahoo.com.', 'give' ); ?>
-						</span>
-						<span class="actions">
-							<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
-							&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
+							<i class="fa fa-exclamation"></i>
+							<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
 						</span>
 					</div>
-					<div class="api-access-feature-list">
-						<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
-						<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
-						<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
-						<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
+				<?php else : ?>
+					<div class="button-wrap disconnection-setting" style="display: none">
+						<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
+						<div>
+							<span class="give-field-description">
+								<i class="fa fa-check"></i>
+								<?php esc_html_e( 'Connected for payments as devin.walker47@yahoo.com.', 'give' ); ?>
+							</span>
+							<span class="actions">
+								<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
+								&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
+							</span>
+						</div>
+						<div class="api-access-feature-list">
+							<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
+							<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
+							<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
+							<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php
