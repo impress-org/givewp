@@ -16,7 +16,7 @@ class IncomeBreakdown extends Endpoint {
 		$this->endpoint = 'income-breakdown';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -95,7 +95,7 @@ class IncomeBreakdown extends Endpoint {
 
 	public function get_values( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$income      = 0;
 		$refundTotal = 0;
