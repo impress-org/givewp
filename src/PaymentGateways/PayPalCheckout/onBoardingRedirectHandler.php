@@ -1,6 +1,8 @@
 <?php
 namespace Give\PaymentGateways\PayPalCheckout;
 
+use Give_Admin_Settings;
+
 /**
  * Class PayPalOnBoardingRedirectHandler
  * @package Give\PaymentGateways\PayPalCheckout
@@ -27,6 +29,7 @@ class onBoardingRedirectHandler {
 
 		// add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
 		add_action( 'admin_init', [ $this, 'savePayPalMerchantDetails' ] );
+		add_action( 'admin_init', [ $this, 'showNotice' ] );
 	}
 
 	/**
@@ -113,5 +116,21 @@ class onBoardingRedirectHandler {
 	private function deleteTempOption() {
 		delete_option( OptionId::$partnerInfoOptionKey );
 		delete_option( OptionId::$accessTokenOptionKey );
+	}
+
+	/**
+	 * Show notice if account connect success fully.
+	 *
+	 * @since 2.8.0
+	 */
+	public function showNotice(){
+		if(
+			! isset( $_GET['paypal-account-connected']) ||
+			! Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
+		){
+			return;
+		}
+
+		Give_Admin_Settings::add_message( 'paypal-account-connected', esc_html__( 'PayPal account connected successfully', 'give' ) );
 	}
 }
