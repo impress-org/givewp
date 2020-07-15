@@ -10,14 +10,14 @@ namespace Give\API\Endpoints\Reports;
 
 use DateInterval;
 use DateTime;
+use Give\API\RestRoute;
 use \Give_Cache;
 use Give_Payment;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
-abstract class Endpoint {
-
+abstract class Endpoint implements RestRoute {
 	/**
 	 * @since 2.6.1
 	 * @var WP_REST_Request
@@ -55,9 +55,7 @@ abstract class Endpoint {
 	protected $currency;
 
 	/**
-	 * Registers the route with WordPress
-	 *
-	 * @since 2.7.0
+	 * @inheritDoc
 	 */
 	public function registerRoute() {
 		register_rest_route(
