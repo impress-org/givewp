@@ -62,6 +62,8 @@ class onBoardingRedirectHandler {
 		$payPalAccounts = (array) get_option( OptionId::$payPalAccountsOptionKey, [] );
 		$paypalData     = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
+		// Reset account details.
+		$payPalAccounts[ $paypalData['merchantIdInPayPal'] ] = [];
 		$payPalAccounts[ $paypalData['merchantIdInPayPal'] ] = array_merge( $payPalAccounts[ $paypalData['merchantIdInPayPal'] ], $paypalData );
 
 		$this->saveSellerRestAPICredentials( $payPalAccounts, $paypalData['merchantIdInPayPal'] );
