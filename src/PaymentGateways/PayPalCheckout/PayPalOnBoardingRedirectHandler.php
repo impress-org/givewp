@@ -9,11 +9,41 @@ namespace Give\PaymentGateways\PayPalCheckout;
  */
 class PayPalOnBoardingRedirectHandler {
 	/**
+	 * Option key name.
+	 *
+	 * In this option we stores partner link rest api response temporary.
+	 *
+	 * @var string
+	 * @since 2.8.0
+	 */
+	public static $partnerInfoOptionKey = 'temp_give_paypal_checkout_partner_link';
+
+	/**
+	 * Option key name.
+	 *
+	 * In this option we stores PayPal access token details temporary.
+	 *
+	 * @var string
+	 * @since 2.8.0
+	 */
+	public static $accessTokenOptionKey = 'temp_give_paypal_checkout_seller_access_token';
+
+	/**
+	 * Environment type.
+	 *
+	 * @var string
+	 * @since 2.8.0
+	 */
+	private $mode;
+
+	/**
 	 * Bootstrap class
 	 *
 	 * @since 2.8.0
 	 */
 	public function boot() {
+		$this->mode = give_is_test_mode() ? 'sandbox' : 'live';
+
 		// add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
 		add_action( 'admin_init', [ $this, 'savePayPalMerchantDetails' ] );
 	}
@@ -45,25 +75,29 @@ class PayPalOnBoardingRedirectHandler {
 			'returnMessage',
 		];
 
-		$allAccounts = (array) maybe_unserialize( give_update_option( 'paypalCheckoutAccounts', [] ) );
-		$paypalData  = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+		$payPalAccounts = (array) get_option( 'give_paypal_checkout_accounts', [] );
+		$paypalData     = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
-		$allAccounts[ $paypalData['merchantIdInPayPal'] ] = $paypalData;
+		$payPalAccounts[ $paypalData['merchantIdInPayPal'] ] = array_merge( $payPalAccounts[ $paypalData['merchantIdInPayPal'] ], $paypalData );
 
-		give_update_option( 'paypalCheckoutAccounts', maybe_serialize( $allAccounts ) );
+		$this->saveSellerRestAPICredentials( $payPalAccounts, $paypalData['merchantIdInPayPal'] );
 
-		$this->saveSellerRestAPICredentials( $paypalData['merchantIdInPayPal'] );
+		update_option( 'give_paypal_checkout_accounts', $payPalAccounts );
+
+		$this->deleteTempOption();
 	}
 
 	/**
 	 * Save seller rest API credentials
 	 *
+	 * @param array $payPalAccounts
 	 * @param string $partnerMerchantId
 	 * @return void
 	 * @since 2.8.0
 	 */
-	private function saveSellerRestAPICredentials( $partnerMerchantId ) {
-		$tokenInfo      = get_option( 'give_paypal_checkout_seller_access_token', [ 'access_token' => '' ] );
+	private function saveSellerRestAPICredentials( &$payPalAccounts, $partnerMerchantId ) {
+		$tokenInfo = get_option( self::$accessTokenOptionKey, [ 'access_token' => '' ] );
+
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_get(
 				sprintf(
@@ -82,12 +116,19 @@ class PayPalOnBoardingRedirectHandler {
 			)
 		);
 
-		$mode      = give_is_test_mode() ? 'sandbox' : 'live';
-		$optionKey = 'give_paypal_checkout_seller_rest_api_credentials';
+		$payPalAccounts[ $this->mode ]                   = json_decode( $payPalResponse, true );
+		$payPalAccounts[ $this->mode ]['tokenDetails']   = $tokenInfo;
+		$payPalAccounts[ $this->mode ]['partnerDetails'] = get_option( self::$partnerInfoOptionKey );
+	}
 
-		$optionValue          = get_option( $optionKey, [] );
-		$optionValue[ $mode ] = json_decode( $payPalResponse, true );
-
-		update_option( $optionKey, $optionValue );
+	/**
+	 * Delete temp data
+	 *
+	 * @return void
+	 * @since 2.8.0
+	 */
+	private function deleteTempOption() {
+		delete_option( self::$partnerInfoOptionKey );
+		delete_option( self::$accessTokenOptionKey );
 	}
 }
