@@ -71,7 +71,6 @@ class PaypalSettingPage implements SettingPage {
 	public function getSettings() {
 		$settings[ $this->paypalCheckout->getId() ] = $this->paypalCheckout->getOptions();
 		$settings[ $this->paypalStandard->getId() ] = $this->paypalStandard->getOptions();
-		$settings['paypal-legacy']                  = [];
 
 		return $settings;
 	}
@@ -86,7 +85,6 @@ class PaypalSettingPage implements SettingPage {
 		return [
 			$this->paypalCheckout->getId() => $this->paypalCheckout->getName(),
 			$this->paypalStandard->getId() => $this->paypalStandard->getName(),
-			'paypal-legacy'                => esc_html__( 'PayPal Legacy', 'give' ),
 		];
 	}
 
