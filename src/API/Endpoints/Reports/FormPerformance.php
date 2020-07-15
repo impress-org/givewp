@@ -64,6 +64,7 @@ class FormPerformance extends Endpoint {
 							[
 								'currency_code'   => $this->currency,
 								'decode_currency' => true,
+								'sanitize'        => false,
 							]
 						),
 						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
@@ -94,6 +95,7 @@ class FormPerformance extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),

@@ -36,6 +36,7 @@ class TopDonors extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				);
 				$donors[ $paymentObject->donor_id ]['donations'] = isset( $donors[ $paymentObject->donor_id ]['donations'] ) ? $donors[ $paymentObject->donor_id ]['donations'] += 1 : 1;

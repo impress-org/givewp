@@ -100,6 +100,7 @@ class AverageDonation extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				),
 				'body'   => __( 'Avg Income', 'give' ),
@@ -135,6 +136,7 @@ class AverageDonation extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 				],
@@ -176,6 +178,18 @@ class AverageDonation extends Endpoint {
 		return $trend;
 	}
 
+	/**
+	 * Calculate average income for a period
+	 *
+	 * Based on provided start and end strings, return the calculated income,
+	 * rounded to the appropriate decimal place for the currently queried currency
+	 *
+	 * @param string $startStr Period start string
+	 * @param string $endStr Period end string
+	 *
+	 * @return float Average income float (rounded to the decimal place of currently queried currency)
+	 * @since 2.6.0
+	 **/
 	public function get_average_income( $startStr, $endStr ) {
 
 		$paymentObjects = $this->get_payments( $startStr, $endStr );
@@ -195,6 +209,6 @@ class AverageDonation extends Endpoint {
 		$averageIncome = $paymentCount > 0 ? $earnings / $paymentCount : 0;
 
 		// Return rounded average (avoid displaying figures with many decimal places)
-		return round( $averageIncome, 2 );
+		return round( $averageIncome, give_get_price_decimals( $this->currency ) );
 	}
 }
