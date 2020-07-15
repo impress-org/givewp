@@ -133,6 +133,6 @@ class onBoardingRedirectHandler {
 			return;
 		}
 
-		Give_Admin_Settings::add_message( 'paypal-account-connected', esc_html__( 'PayPal account connected successfully', 'give' ) );
+		Give_Admin_Settings::add_message( 'paypal-account-connected', esc_html__( 'PayPal account connected successfully.', 'give' ) );
 	}
 }
