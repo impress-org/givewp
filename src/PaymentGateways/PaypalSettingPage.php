@@ -41,6 +41,7 @@ class PaypalSettingPage implements SettingPage {
 		add_action( 'give_get_groups_paypal', [ $this, 'getGroups' ] );
 		add_filter( 'give_get_settings_gateways', [ $this, 'registerPaypalSettings' ] );
 		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ] );
+		add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
 
 		// Load custom setting fields.
 		$adminSettingFields = new PaymentGateways\PayPalCheckout\AdminSettingFields();
@@ -112,5 +113,40 @@ class PaypalSettingPage implements SettingPage {
 		$sections[ $this->getId() ] = $this->getName();
 
 		return $sections;
+	}
+
+	/**
+	 * Save PayPal merchant details
+	 *
+	 * @return void
+	 * @since 2.8.0
+	 */
+	public function savePayPalMerchantDetails() {
+		// Save PayPal merchant details only if admin redirected to PayPal connect setting page after completing onboarding process.
+		if (
+			! isset( $_GET['merchantIdInPayPal'] ) ||
+			! \Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
+		) {
+			return;
+		}
+
+		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
+
+		$allowedPayPalData = [
+			'merchantIdInPayPal',
+			'permissionsGranted',
+			'accountStatus',
+			'consentStatus',
+			'productIntentId',
+			'isEmailConfirmed',
+			'returnMessage',
+		];
+
+		$allAccounts = maybe_unserialize( give_update_option( 'paypalCheckoutAccounts', [] ) );
+		$paypalData  = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+
+		$allAccounts[ $paypalData['merchantIdInPayPal'] ] = $paypalData;
+
+		give_update_option( 'paypalCheckoutAccounts', maybe_serialize( $allAccounts ) );
 	}
 }
