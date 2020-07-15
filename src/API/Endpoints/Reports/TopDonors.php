@@ -14,7 +14,7 @@ class TopDonors extends Endpoint {
 		$this->endpoint = 'top-donors';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 
@@ -23,7 +23,7 @@ class TopDonors extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$paymentObjects = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d 23:i:s' ), 'date', -1 );
+		$paymentObjects = $this->getPayments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d 23:i:s' ), 'date', -1 );
 
 		$donors = [];
 
@@ -36,6 +36,7 @@ class TopDonors extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				);
 				$donors[ $paymentObject->donor_id ]['donations'] = isset( $donors[ $paymentObject->donor_id ]['donations'] ) ? $donors[ $paymentObject->donor_id ]['donations'] += 1 : 1;

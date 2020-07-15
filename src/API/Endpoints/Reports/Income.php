@@ -16,7 +16,7 @@ class Income extends Endpoint {
 		$this->endpoint = 'income';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -67,7 +67,7 @@ class Income extends Endpoint {
 
 			switch ( $intervalStr ) {
 				case 'P1D':
-					$time        = $periodStart->format( 'Y-m-d H:i:s' );
+					$time        = $periodStart->format( 'Y-m-d' );
 					$periodLabel = $periodStart->format( 'l' );
 					break;
 				case 'PT12H':
@@ -90,6 +90,7 @@ class Income extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				),
 				'body'   => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
@@ -122,13 +123,13 @@ class Income extends Endpoint {
 
 	public function get_values( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$earnings = 0;
 		$donors   = [];
 
 		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+			if ( $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
 				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
 					$earnings += $paymentObject->total;
 					$donors[]  = $paymentObject->donor_id;

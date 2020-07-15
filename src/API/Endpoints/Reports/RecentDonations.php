@@ -14,9 +14,9 @@ class RecentDonations extends Endpoint {
 		$this->endpoint = 'recent-donations';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 
-		$paymentObjects = $this->get_payments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', 50 );
+		$paymentObjects = $this->getPayments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', 50 );
 
 		// Populate $list with arrays in correct shape for frontend RESTList component
 		$data = [];

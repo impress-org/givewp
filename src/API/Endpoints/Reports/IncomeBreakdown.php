@@ -16,7 +16,7 @@ class IncomeBreakdown extends Endpoint {
 		$this->endpoint = 'income-breakdown';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -43,8 +43,7 @@ class IncomeBreakdown extends Endpoint {
 
 	public function get_data( $start, $end, $intervalStr ) {
 
-		$tooltips = [];
-		$income   = [];
+		$data = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -56,7 +55,8 @@ class IncomeBreakdown extends Endpoint {
 
 		while ( $periodStart < $end ) {
 
-			$values           = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$values = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+
 			$incomeForPeriod  = $values['income'];
 			$donorsForPeriod  = $values['donors'];
 			$refundsForPeriod = $values['refunds'];
@@ -76,7 +76,7 @@ class IncomeBreakdown extends Endpoint {
 					$periodLabel = $periodEnd->format( 'F j, Y' );
 			}
 
-			$income[] = [
+			$data[] = [
 				__( 'Date', 'give' )      => $periodLabel,
 				__( 'Donors', 'give' )    => $donorsForPeriod,
 				__( 'Donations', 'give' ) => $incomeForPeriod,
@@ -89,15 +89,13 @@ class IncomeBreakdown extends Endpoint {
 			date_add( $periodEnd, $interval );
 		}
 
-		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-		$data = $income;
 		return $data;
 
 	}
 
 	public function get_values( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$income      = 0;
 		$refundTotal = 0;
@@ -105,7 +103,7 @@ class IncomeBreakdown extends Endpoint {
 		$donors      = [];
 
 		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+			if ( $paymentObject->date > $startStr && $paymentObject->date <= $endStr ) {
 				switch ( $paymentObject->status ) {
 					case 'give_subscription':
 					case 'publish': {
@@ -131,6 +129,7 @@ class IncomeBreakdown extends Endpoint {
 				[
 					'currency_code'   => $this->currency,
 					'decode_currency' => true,
+					'sanitize'        => false,
 				]
 			),
 			'donors'  => count( $unique ),
@@ -140,6 +139,7 @@ class IncomeBreakdown extends Endpoint {
 				[
 					'currency_code'   => $this->currency,
 					'decode_currency' => true,
+					'sanitize'        => false,
 				]
 			),
 		];
