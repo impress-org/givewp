@@ -44,6 +44,7 @@ use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
+use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -129,6 +130,7 @@ final class Give {
 	 */
 	private $serviceProviders = [
 		LegacyServiceProvider::class,
+		RestAPI::class,
 	];
 
 	/**

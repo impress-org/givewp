@@ -16,7 +16,7 @@ class TotalIncome extends Endpoint {
 		$this->endpoint = 'total-income';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -166,7 +166,7 @@ class TotalIncome extends Endpoint {
 
 	public function get_income( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$income = 0;
 

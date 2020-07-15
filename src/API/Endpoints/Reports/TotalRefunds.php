@@ -18,7 +18,7 @@ class TotalRefunds extends Endpoint {
 		$this->endpoint = 'total-refunds';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -156,7 +156,7 @@ class TotalRefunds extends Endpoint {
 
 	public function get_refunds( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$refunds = 0;
 		foreach ( $paymentObjects as $paymentObject ) {

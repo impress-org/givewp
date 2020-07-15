@@ -16,7 +16,7 @@ class TotalDonors extends Endpoint {
 		$this->endpoint = 'total-donors';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -154,7 +154,7 @@ class TotalDonors extends Endpoint {
 
 	public function get_donors( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$donors = [];
 

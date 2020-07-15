@@ -12,6 +12,7 @@ use DateInterval;
 use DateTime;
 use \Give_Cache;
 use Give_Payment;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -53,12 +54,12 @@ abstract class Endpoint {
 	 */
 	protected $currency;
 
-	public function init() {
-		add_action( 'rest_api_init', [ $this, 'register_route' ] );
-	}
-
-	// Register our routes.
-	public function register_route() {
+	/**
+	 * Registers the route with WordPress
+	 *
+	 * @since 2.7.0
+	 */
+	public function registerRoute() {
 		register_rest_route(
 			'give-api/v2',
 			'/reports/' . $this->endpoint,
@@ -66,35 +67,35 @@ abstract class Endpoint {
 				// Here we register the readable endpoint
 				[
 					'methods'             => 'GET',
-					'callback'            => [ $this, 'handle_request' ],
-					'permission_callback' => [ $this, 'permissions_check' ],
+					'callback'            => [ $this, 'handleRequest' ],
+					'permission_callback' => [ $this, 'permissionsCheck' ],
 					'args'                => [
 						'start'    => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => [ $this, 'validate_date' ],
-							'sanitize_callback' => [ $this, 'sanitize_date' ],
+							'validate_callback' => [ $this, 'validateDate' ],
+							'sanitize_callback' => [ $this, 'sanitizeDate' ],
 						],
 						'end'      => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => [ $this, 'validate_date' ],
-							'sanitize_callback' => [ $this, 'sanitize_date' ],
+							'validate_callback' => [ $this, 'validateDate' ],
+							'sanitize_callback' => [ $this, 'sanitizeDate' ],
 						],
 						'currency' => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => [ $this, 'validate_currency' ],
+							'validate_callback' => [ $this, 'validateCurrency' ],
 						],
 						'testMode' => [
 							'type'              => 'boolean',
 							'required'          => true,
-							'sanitize_callback' => [ $this, 'sanitize_test_mode' ],
+							'sanitize_callback' => [ $this, 'sanitizeTestMode' ],
 						],
 					],
 				],
 				// Register our schema callback.
-				'schema' => [ $this, 'get_report_schema' ],
+				'schema' => [ $this, 'getReportSchema' ],
 			]
 		);
 	}
@@ -103,13 +104,14 @@ abstract class Endpoint {
 	 * Handle rest request.
 	 *
 	 * @since 2.6.1
+	 *
 	 * @param WP_REST_Request $request
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function handle_request( $request ) {
+	public function handleRequest( $request ) {
 		// Check if a cached version exists
-		$cached_report = $this->get_cached_report( $request );
+		$cached_report = $this->getCachedReport( $request );
 		if ( $cached_report !== null ) {
 			// Bail and return the cached version
 			return new WP_REST_Response( $cached_report );
@@ -118,11 +120,11 @@ abstract class Endpoint {
 		$this->setupProperties( $request );
 
 		$responseData = [
-			'status' => $this->get_give_status(),
-			'data'   => $this->get_report( $request ),
+			'status' => $this->getGiveStatus(),
+			'data'   => $this->getReport( $request ),
 		];
 
-		$this->cache_report( $request, $responseData );
+		$this->cacheReport( $request, $responseData );
 
 		return new WP_REST_Response( $responseData );
 	}
@@ -131,6 +133,7 @@ abstract class Endpoint {
 	 * Setup properties
 	 *
 	 * @since 2.6.1
+	 *
 	 * @param WP_REST_Request $request
 	 */
 	private function setupProperties( $request ) {
@@ -142,7 +145,7 @@ abstract class Endpoint {
 		$this->dateDiff  = date_diff( $this->startDate, $this->endDate );
 	}
 
-	public function validate_date( $param, $request, $key ) {
+	public function validateDate( $param, $request, $key ) {
 		// Check that date is valid, and formatted YYYY-MM-DD
 		$exploded = explode( '-', $param );
 		$valid    = checkdate( $exploded[1], $exploded[2], $exploded[0] );
@@ -157,11 +160,11 @@ abstract class Endpoint {
 		return $valid;
 	}
 
-	public function sanitize_date( $param, $request, $key ) {
+	public function sanitizeDate( $param, $request, $key ) {
 		// Return Date object from parameter
 		$exploded = explode( '-', $param );
-		$date     = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
-		return $date;
+
+		return "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
 	}
 
 	/**
@@ -171,8 +174,10 @@ abstract class Endpoint {
 	 * @param string          $param Currency parameter provided in REST API request
 	 * @param WP_REST_Request $request REST API Request object
 	 * @param string          $key REST API Request key being validated (in this case currency)
+	 *
+	 * @return bool
 	 */
-	public function validate_currency( $param, $request, $key ) {
+	public function validateCurrency( $param, $request, $key ) {
 		return in_array( $param, array_keys( give_get_currencies_list() ) );
 	}
 
@@ -184,7 +189,7 @@ abstract class Endpoint {
 	 * @param WP_REST_Request $request REST API Request object
 	 * @param string          $key REST API Request key being validated (in this case test mode)
 	 */
-	public function sanitize_test_mode( $param, $request, $key ) {
+	public function sanitizeTestMode( $param, $request, $key ) {
 		return filter_var( $param, FILTER_VALIDATE_BOOLEAN );
 	}
 
@@ -192,15 +197,18 @@ abstract class Endpoint {
 	 * Check permissions
 	 *
 	 * @param WP_REST_Request $request Current request.
+	 *
+	 * @return bool|WP_Error
 	 */
-	public function permissions_check( $request ) {
+	public function permissionsCheck( $request ) {
 		if ( ! current_user_can( 'read' ) ) {
-			return new \WP_Error(
+			return new WP_Error(
 				'rest_forbidden',
 				esc_html__( 'You cannot view the reports resource.', 'give' ),
-				[ 'status' => $this->authorization_status_code() ]
+				[ 'status' => $this->authorizationStatusCode() ]
 			);
 		}
+
 		return true;
 	}
 
@@ -211,7 +219,7 @@ abstract class Endpoint {
 	 *
 	 * @return array
 	 */
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		return [
 			'data' => [
 				'labels' => [ 'a', 'b', 'c' ],
@@ -223,7 +231,7 @@ abstract class Endpoint {
 	/**
 	 * Get our sample schema for a report
 	 */
-	public function get_report_schema() {
+	public function getReportSchema() {
 
 		if ( $this->schema ) {
 			// Since WordPress 5.3, the schema can be cached in the $schema property.
@@ -249,7 +257,7 @@ abstract class Endpoint {
 	}
 
 	// Sets up the proper HTTP status code for authorization.
-	public function authorization_status_code() {
+	public function authorizationStatusCode() {
 
 		$status = 401;
 		if ( is_user_logged_in() ) {
@@ -267,7 +275,7 @@ abstract class Endpoint {
 	 *
 	 * @return mixed
 	 */
-	public function get_cached_report( $request ) {
+	public function getCachedReport( $request ) {
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $request->get_params() );
 
 		$cached = Give_Cache::get_db_query( $cache_key );
@@ -288,7 +296,7 @@ abstract class Endpoint {
 	 *
 	 * @return bool
 	 */
-	public function cache_report( $request, $report ) {
+	public function cacheReport( $request, $report ) {
 		$cache_key = Give_Cache::get_key( "api_get_report_{$this->endpoint}", $request->get_params() );
 
 		return Give_Cache::set_db_query( $cache_key, $report );
@@ -298,12 +306,12 @@ abstract class Endpoint {
 	/**
 	 * Cache report
 	 *
-	 * @param  array          $args Query arguments.
-	 * @param  Give_Payment[] $payments Payments.
+	 * @param array          $args Query arguments.
+	 * @param Give_Payment[] $payments Payments.
 	 *
 	 * @return bool
 	 */
-	private function cache_payments( $args, $payments ) {
+	private function cachePayments( $args, $payments ) {
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $args );
 
 		return Give_Cache::set_db_query( $cache_key, $payments );
@@ -313,10 +321,11 @@ abstract class Endpoint {
 	/**
 	 * Get cached report
 	 *
-	 * @param  array $args Query arguments.
+	 * @param array $args Query arguments.
+	 *
 	 * @return mixed
 	 */
-	private function get_cached_payments( $args ) {
+	private function getCachedPayments( $args ) {
 
 		$cache_key = Give_Cache::get_key( 'api_report_payments', $args );
 
@@ -334,14 +343,14 @@ abstract class Endpoint {
 	/**
 	 * Get payment.
 	 *
-	 * @param  string $startStr
-	 * @param   string $endStr
+	 * @param string $startStr
+	 * @param string $endStr
 	 * @param string $orderBy
 	 * @param int    $number
 	 *
 	 * @return mixed
 	 */
-	public function get_payments( $startStr, $endStr, $orderBy = 'date', $number = -1 ) {
+	public function getPayments( $startStr, $endStr, $orderBy = 'date', $number = - 1 ) {
 
 		$gatewayObjects        = give_get_payment_gateways();
 		$paymentModeKeyCompare = '!=';
@@ -380,7 +389,7 @@ abstract class Endpoint {
 		];
 
 		// Check if a cached payments exists
-		$cached_payments = $this->get_cached_payments( $args );
+		$cached_payments = $this->getCachedPayments( $args );
 
 		if ( $cached_payments !== null ) {
 			// Bail and return the cached payments
@@ -391,13 +400,13 @@ abstract class Endpoint {
 		$payments = $payments->get_payments();
 
 		// Cache the report data
-		$this->cache_payments( $args, $payments );
+		$this->cachePayments( $args, $payments );
 
 		return $payments;
 
 	}
 
-	public function get_give_status() {
+	public function getGiveStatus() {
 
 		$donations = get_posts(
 			[
@@ -409,8 +418,8 @@ abstract class Endpoint {
 
 		if ( count( $donations ) > 0 ) {
 			return 'donations_found';
-		} else {
-			return 'no_donations_found';
 		}
+
+		return 'no_donations_found';
 	}
 }

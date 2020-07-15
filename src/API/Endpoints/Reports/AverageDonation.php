@@ -28,7 +28,7 @@ class AverageDonation extends Endpoint {
 	 *
 	 * @return array
 	 */
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -178,7 +178,7 @@ class AverageDonation extends Endpoint {
 
 	public function get_average_income( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$earnings     = 0;
 		$paymentCount = 0;

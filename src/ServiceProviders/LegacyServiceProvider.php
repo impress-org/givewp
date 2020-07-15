@@ -131,9 +131,6 @@ class LegacyServiceProvider implements ServiceProvider {
 
 		require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
 
-		// Include API
-		require_once GIVE_PLUGIN_DIR . 'src/API/API.php';
-
 		// Include Views
 		require_once GIVE_PLUGIN_DIR . 'src/Views/Views.php';
 
