@@ -66,6 +66,8 @@ class onBoardingRedirectHandler {
 		update_option( OptionId::$payPalAccountsOptionKey, $payPalAccounts );
 
 		$this->deleteTempOption();
+
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-checkout&paypal-account-connected=1' ) );
 	}
 
 	/**
