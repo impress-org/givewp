@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, formID, orderBy, order, columns, showAvatar, showName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, orderBy, order, columns, showAvatar, showName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -29,12 +29,17 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					name="donorsPerPage"
 					label={ __( 'Donors Per Page' ) }
 					value={ donorsPerPage }
-					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) }/>
+					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) } />
+				<TextControl
+					name="ids"
+					label={ __( 'Donor IDs' ) }
+					value={ ids }
+					onChange={ ( value ) => saveSetting( 'ids', value ) } />
 				<TextControl
 					name="formID"
 					label={ __( 'Form ID' ) }
 					value={ formID }
-					onChange={ ( value ) => saveSetting( 'formID', value ) }/>
+					onChange={ ( value ) => saveSetting( 'formID', value ) } />
 				<SelectControl
 					label={ __( 'Order By' ) }
 					name="orderBy"
@@ -92,17 +97,17 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					name="commentLength"
 					label={ __( 'Comment Length' ) }
 					value={ commentLength }
-					onChange={ ( value ) => saveSetting( 'commentLength', value ) }/>
+					onChange={ ( value ) => saveSetting( 'commentLength', value ) } />
 				<TextControl
 					name="readMoreText"
 					label={ __( 'Read More Text' ) }
 					value={ readMoreText }
-					onChange={ ( value ) => saveSetting( 'readMoreText', value ) }/>
+					onChange={ ( value ) => saveSetting( 'readMoreText', value ) } />
 				<TextControl
 					name="loadMoreText"
 					label={ __( 'Load More Text' ) }
 					value={ loadMoreText }
-					onChange={ ( value ) => saveSetting( 'loadMoreText', value ) }/>
+					onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
 			</PanelBody>
 		</InspectorControls>
 	);

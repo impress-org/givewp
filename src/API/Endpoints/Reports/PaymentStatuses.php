@@ -14,7 +14,7 @@ class PaymentStatuses extends Endpoint {
 		$this->endpoint = 'payment-statuses';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );

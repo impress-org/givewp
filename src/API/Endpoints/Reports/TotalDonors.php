@@ -16,7 +16,7 @@ class TotalDonors extends Endpoint {
 		$this->endpoint = 'total-donors';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -28,7 +28,10 @@ class TotalDonors extends Endpoint {
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
-			case ( $diff->days > 7 ):
+			case ( $diff->days > 5 ):
+				$data = $this->get_data( $start, $end, 'P1D' );
+				break;
+			case ( $diff->days > 4 ):
 				$data = $this->get_data( $start, $end, 'PT12H' );
 				break;
 			case ( $diff->days > 2 ):
@@ -58,14 +61,15 @@ class TotalDonors extends Endpoint {
 		while ( $periodStart < $end ) {
 
 			$donorsForPeriod = $this->get_donors( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$time            = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			switch ( $intervalStr ) {
+				case 'P1D':
+					$time        = $periodStart->format( 'Y-m-d' );
+					$periodLabel = $periodStart->format( 'l' );
+					break;
 				case 'PT12H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT3H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT1H':
 					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 					break;
@@ -74,12 +78,12 @@ class TotalDonors extends Endpoint {
 			}
 
 			$donors[] = [
-				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'x' => $time,
 				'y' => $donorsForPeriod,
 			];
 
 			$tooltips[] = [
-				'title'  => $donorsForPeriod . ' ' . __( 'Donors', 'give' ),
+				'title'  => sprintf( _n( '%d Donor', '%d Donors', $donorsForPeriod, 'give' ), $donorsForPeriod ),
 				'body'   => __( 'Total Donors', 'give' ),
 				'footer' => $periodLabel,
 			];
@@ -87,6 +91,11 @@ class TotalDonors extends Endpoint {
 			// Add interval to set up next period
 			date_add( $periodStart, $interval );
 			date_add( $periodEnd, $interval );
+		}
+
+		if ( $intervalStr === 'P1D' ) {
+			$donors   = array_slice( $donors, 1 );
+			$tooltips = array_slice( $tooltips, 1 );
 		}
 
 		$totalDonorsForPeriod = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
@@ -145,12 +154,12 @@ class TotalDonors extends Endpoint {
 
 	public function get_donors( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$donors = [];
 
 		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+			if ( $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
 				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
 					$donors[] = $paymentObject->donor_id;
 				}

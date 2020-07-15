@@ -41,25 +41,25 @@ msgstr ""
 msgid "Need help? Get started with %1$sGive 101%2$s."
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:148, includes/donors/class-give-donor-wall.php:194, includes/admin/shortcodes/shortcode-give-donor-wall.php:99
+#: blocks/donor-wall/class-give-donor-wall.php:152, includes/donors/class-give-donor-wall.php:194, includes/admin/shortcodes/shortcode-give-donor-wall.php:99
 msgid "Read more"
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:152, includes/donors/class-give-donor-wall.php:195, includes/admin/shortcodes/shortcode-give-donor-wall.php:106
+#: blocks/donor-wall/class-give-donor-wall.php:156, includes/donors/class-give-donor-wall.php:195, includes/admin/shortcodes/shortcode-give-donor-wall.php:106
 msgid "Load more"
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:214, includes/admin/class-blank-slate.php:259
+#: blocks/donor-wall/class-give-donor-wall.php:219, includes/admin/class-blank-slate.php:259
 msgid "GiveWP Icon"
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:215, includes/class-give-cli-commands.php:470, includes/admin/class-blank-slate.php:295, includes/admin/class-give-html-elements.php:274, includes/api/class-give-api.php:1002
+#: blocks/donor-wall/class-give-donor-wall.php:220, includes/class-give-cli-commands.php:470, includes/admin/class-blank-slate.php:295, includes/admin/class-give-html-elements.php:274, includes/api/class-give-api.php:1002
 msgid "No donors found."
 msgstr ""
 
 #. translators: 1: Opening anchor tag. 2: Closing anchor tag.
 #. translators: 1: Opening anchor tag. 2: Closing anchor tag.
-#: blocks/donor-wall/class-give-donor-wall.php:218, includes/admin/class-blank-slate.php:301
+#: blocks/donor-wall/class-give-donor-wall.php:223, includes/admin/class-blank-slate.php:301
 msgid "Need help? Learn more about %1$sDonors%2$s."
 msgstr ""
 
@@ -67,35 +67,35 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: give.php:687
+#: give.php:686
 msgid "Your site could be faster and more secure with a newer PHP version."
 msgstr ""
 
-#: give.php:688
+#: give.php:687
 msgid "Hey, we've noticed that you're running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we're sending you this notice."
 msgstr ""
 
-#: give.php:689
+#: give.php:688
 msgid "Hosts have the ability to update your PHP version, but sometimes they don't dare to do that because they're afraid they'll break your site."
 msgstr ""
 
-#: give.php:690
+#: give.php:689
 msgid "To which version should I update?"
 msgstr ""
 
-#: give.php:691
+#: give.php:690
 msgid "You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It's also the only PHP version still in active development and therefore the better option for your site in the long run."
 msgstr ""
 
-#: give.php:692
+#: give.php:691
 msgid "Can't update? Ask your host!"
 msgstr ""
 
-#: give.php:693
+#: give.php:692
 msgid "If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don't want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s."
 msgstr ""
 
-#: give.php:719
+#: give.php:718
 msgid "<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href=\"%1$s\" target=\"_blank\">logging into your account</a> and visiting <a href=\"%1$s\" target=\"_blank\">your downloads</a> page on the GiveWP website."
 msgstr ""
 
@@ -353,18 +353,6 @@ msgstr ""
 
 #: includes/class-give-donate-form.php:427
 msgid "New Donation Form"
-msgstr ""
-
-#: includes/class-give-donor-wall-widget.php:37
-msgid "Displays gravatars of people who have donated using your your form. Will only show on the single form page."
-msgstr ""
-
-#: includes/class-give-donor-wall-widget.php:50
-msgid "GiveWP Donor Gravatars"
-msgstr ""
-
-#: includes/class-give-donor-wall-widget.php:143, includes/forms/widget.php:191
-msgid "Title:"
 msgstr ""
 
 #: includes/class-give-email-access.php:300
@@ -7842,6 +7830,10 @@ msgstr ""
 msgid "Help our organization by donating today! All donations go directly to making a difference for our cause."
 msgstr ""
 
+#: includes/forms/widget.php:191
+msgid "Title:"
+msgstr ""
+
 #: includes/forms/widget.php:193
 msgid "Leave blank to hide the widget title."
 msgstr ""
@@ -14108,7 +14100,7 @@ msgstr ""
 msgid "Process Donation"
 msgstr ""
 
-#: src/Views/Form/Templates/Sequoia/Sequoia.php:273
+#: src/Views/Form/Templates/Sequoia/Sequoia.php:279
 msgid "Multi-Step Donation Form"
 msgstr ""
 
