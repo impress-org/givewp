@@ -42,8 +42,10 @@
 use Give\Container\Container;
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
+use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
+use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -193,20 +195,8 @@ final class Give {
 		// Load form template
 		$this->templates->load();
 
-<<<<<<< HEAD
-		/**
-		 * Array of the Service Gateways
-		 *
-		 * @since 2.8.0
-		 * @var string[]
-		 */
-		private $serviceProviders = [
-			PaymentGateways::class,
-		];
-=======
 		// Load routes.
 		$this->routeForm->init( new FormRouteController() );
->>>>>>> develop
 
 		/**
 		 * Fire the action after Give core loads.
