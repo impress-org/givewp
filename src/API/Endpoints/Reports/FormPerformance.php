@@ -16,7 +16,7 @@ class FormPerformance extends Endpoint {
 		$this->endpoint = 'form-performance';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -28,7 +28,7 @@ class FormPerformance extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$paymentObjects = $this->get_payments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
+		$paymentObjects = $this->getPayments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ), 'date', -1 );
 
 		$forms    = [];
 		$labels   = [];
@@ -64,6 +64,7 @@ class FormPerformance extends Endpoint {
 							[
 								'currency_code'   => $this->currency,
 								'decode_currency' => true,
+								'sanitize'        => false,
 							]
 						),
 						'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
@@ -94,6 +95,7 @@ class FormPerformance extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 					'body'   => $value['donations'] . ' ' . __( 'Donations', 'give' ),
