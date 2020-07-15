@@ -25,7 +25,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onBoardedUserAjaxRequestHandler() {
-		$partnerLinkInfo = get_option( onBoardingRedirectHandler::$partnerInfoOptionKey, [ 'nonce' => '' ] );
+		$partnerLinkInfo = get_option( OptionId::$partnerInfoOptionKey, [ 'nonce' => '' ] );
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
@@ -53,7 +53,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = json_decode( $payPalResponse, true );
 
-		update_option( onBoardingRedirectHandler::$accessTokenOptionKey, $payPalResponse );
+		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
 
 		wp_send_json_success();
 	}
@@ -77,7 +77,7 @@ class AjaxRequestHandler {
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ), true );
-		update_option( onBoardingRedirectHandler::$partnerInfoOptionKey, $data );
+		update_option( OptionId::$partnerInfoOptionKey, $data );
 
 		wp_send_json_success( $data );
 	}

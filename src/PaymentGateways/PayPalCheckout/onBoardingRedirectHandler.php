@@ -8,25 +8,6 @@ namespace Give\PaymentGateways\PayPalCheckout;
  * @since 2.8.0
  */
 class onBoardingRedirectHandler {
-	/**
-	 * Option key name.
-	 *
-	 * In this option we stores partner link rest api response temporary.
-	 *
-	 * @var string
-	 * @since 2.8.0
-	 */
-	public static $partnerInfoOptionKey = 'temp_give_paypal_checkout_partner_link';
-
-	/**
-	 * Option key name.
-	 *
-	 * In this option we stores PayPal access token details temporary.
-	 *
-	 * @var string
-	 * @since 2.8.0
-	 */
-	public static $accessTokenOptionKey = 'temp_give_paypal_checkout_seller_access_token';
 
 	/**
 	 * Environment type.
@@ -75,14 +56,14 @@ class onBoardingRedirectHandler {
 			'returnMessage',
 		];
 
-		$payPalAccounts = (array) get_option( 'give_paypal_checkout_accounts', [] );
+		$payPalAccounts = (array) get_option( OptionId::$payPalAccountsOptionKey, [] );
 		$paypalData     = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
 		$payPalAccounts[ $paypalData['merchantIdInPayPal'] ] = array_merge( $payPalAccounts[ $paypalData['merchantIdInPayPal'] ], $paypalData );
 
 		$this->saveSellerRestAPICredentials( $payPalAccounts, $paypalData['merchantIdInPayPal'] );
 
-		update_option( 'give_paypal_checkout_accounts', $payPalAccounts );
+		update_option( OptionId::$payPalAccountsOptionKey, $payPalAccounts );
 
 		$this->deleteTempOption();
 	}
@@ -96,7 +77,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function saveSellerRestAPICredentials( &$payPalAccounts, $partnerMerchantId ) {
-		$tokenInfo = get_option( self::$accessTokenOptionKey, [ 'access_token' => '' ] );
+		$tokenInfo = get_option( OptionId::$accessTokenOptionKey, [ 'access_token' => '' ] );
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_get(
@@ -118,7 +99,7 @@ class onBoardingRedirectHandler {
 
 		$payPalAccounts[ $this->mode ]                   = json_decode( $payPalResponse, true );
 		$payPalAccounts[ $this->mode ]['tokenDetails']   = $tokenInfo;
-		$payPalAccounts[ $this->mode ]['partnerDetails'] = get_option( self::$partnerInfoOptionKey );
+		$payPalAccounts[ $this->mode ]['partnerDetails'] = get_option( OptionId::$partnerInfoOptionKey );
 	}
 
 	/**
@@ -128,7 +109,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function deleteTempOption() {
-		delete_option( self::$partnerInfoOptionKey );
-		delete_option( self::$accessTokenOptionKey );
+		delete_option( OptionId::$partnerInfoOptionKey );
+		delete_option( OptionId::$accessTokenOptionKey );
 	}
 }
