@@ -53,7 +53,7 @@ class AdminSettingFields {
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
 
-				<?php if ( Utils::isConnected() ) : ?>
+				<?php if ( ! Utils::isConnected() ) : ?>
 					<div class="button-wrap connection-setting">
 						<div>
 							<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
@@ -69,7 +69,7 @@ class AdminSettingFields {
 						</span>
 					</div>
 				<?php else : ?>
-					<div class="button-wrap disconnection-setting" style="display: none">
+					<div class="button-wrap disconnection-setting">
 						<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
 						<div>
 							<span class="give-field-description">
