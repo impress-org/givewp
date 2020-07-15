@@ -25,7 +25,37 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onBoardedUserAjaxRequestHandler() {
+		$partnerLinkInfo = get_option( 'give_paypal_checkout_partner_link', [ 'nonce' => '' ] );
 
+		$payPalResponse = wp_remote_retrieve_body(
+			wp_remote_post(
+				'https://api.sandbox.paypal.com/v1/oauth2/token',
+				[
+					'headers' => [
+						'Authorization' => sprintf(
+							'Basic %1$s',
+							base64_encode( give_clean( $_GET['sharedId'] ) )
+						),
+						'Content-Type'  => 'application/x-www-form-urlencoded',
+					],
+					'body'    => [
+						'grant_type'    => 'authorization_code',
+						'code'          => give_clean( $_GET['authCode'] ),
+						'code_verifier' => $partnerLinkInfo['nonce'], // Seller nonce.
+					],
+				]
+			)
+		);
+
+		if ( ! $payPalResponse ) {
+			wp_send_json_error();
+		}
+
+		$payPalResponse = json_decode( $payPalResponse, true );
+
+		update_option( 'give_paypal_checkout_seller_access_token', $payPalResponse );
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -47,6 +77,8 @@ class AjaxRequestHandler {
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ), true );
+		update_option( 'give_paypal_checkout_partner_link', $data );
+
 		wp_send_json_success( $data );
 	}
 }
