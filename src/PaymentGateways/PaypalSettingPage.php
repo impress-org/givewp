@@ -47,7 +47,7 @@ class PaypalSettingPage implements SettingPage {
 		$adminSettingFields->boot();
 
 		// Handle paypal redirect on setting page after on boarding seller.
-		( new PaymentGateways\PayPalCheckout\PayPalOnBoardingRedirectHandler )->boot();
+		( new PaymentGateways\PayPalCheckout\onBoardingRedirectHandler )->boot();
 
 	}
 

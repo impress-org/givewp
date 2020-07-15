@@ -7,7 +7,7 @@ namespace Give\PaymentGateways\PayPalCheckout;
  *
  * @since 2.8.0
  */
-class PayPalOnBoardingRedirectHandler {
+class onBoardingRedirectHandler {
 	/**
 	 * Option key name.
 	 *
