@@ -4,12 +4,25 @@ namespace Give\ServiceProviders;
 
 use Closure;
 
+/**
+ * Class LegacyServiceProvider
+ *
+ * This handles the loading of all of the legacy codebase included in the /includes directory.
+ * DO NOT EXTEND THIS WITH NEW CODE as it is intended to shrink over time as we migrate over
+ * to the new ways of doing things.
+ */
 class LegacyServiceProvider implements ServiceProvider {
+	/**
+	 * @inheritDoc
+	 */
 	public function register() {
 		$this->includeLegacyFiles();
 		$this->bindClasses();
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function boot() {
 		register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 	}
@@ -198,10 +211,10 @@ class LegacyServiceProvider implements ServiceProvider {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param string $alias
+	 * @param string         $alias
 	 * @param string|Closure $class
-	 * @param string $includesPath
-	 * @param bool $singleton
+	 * @param string         $includesPath
+	 * @param bool           $singleton
 	 */
 	private function bindInstance( $alias, $class, $includesPath, $singleton = false ) {
 		require_once GIVE_PLUGIN_DIR . "includes/$includesPath";
