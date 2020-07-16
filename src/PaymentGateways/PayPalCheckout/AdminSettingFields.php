@@ -2,6 +2,7 @@
 namespace Give\PaymentGateways\PayPalCheckout;
 
 use Give\Views\Admin\UpsellNotice;
+use Give_License;
 
 /**
  * Class AdminSettingFields
@@ -56,42 +57,45 @@ class AdminSettingFields {
 
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
-
 				<?php if ( ! Utils::isConnected() ) : ?>
-					<div class="button-wrap connection-setting">
+					<div class="button-wrap connection-setting" style="display: none">
+						<div><button class="button button-primary button-large"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button></div>
+						<span class="give-field-description">
+							<i class="fa fa-exclamation"></i>
+							<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
+						</span>
+					</div>
+				<?php else : ?>
+					<div class="button-wrap disconnection-setting">
+						<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
 						<div>
-							<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
-								<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?>
-							</button>
-							<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="" data-paypal-button="true">
-								<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
-							</a>
-						</div>
 						<span class="give-field-description">
 							<i class="fa fa-check"></i>
 							<?php
-								printf(
-									'%1$s <span class="paypal-account-email">%2$s</span>',
-									esc_html__( 'Connected for payments as', 'give' ),
-									'devin.walker47@yahoo.com.'
-								);
+							printf(
+								'%1$s <span class="paypal-account-email">%2$s</span>',
+								esc_html__( 'Connected for payments as', 'give' ),
+								'devin.walker47@yahoo.com.'
+							);
 							?>
 						</span>
-						<span class="actions">
+							<span class="actions">
 							<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
 							&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
 						</span>
+						</div>
+						<div class="api-access-feature-list-wrap">
+							<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
+							<ul>
+								<li><?php esc_html_e( 'Payments', 'give' ); ?></li>
+								<?php if ( $isRecurringAddonActive ) : ?>
+									<li><?php esc_html_e( 'Subscriptions', 'give' ); ?></li>
+								<?php endif; ?>
+								<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
+							</ul>
+						</div>
 					</div>
-					<div class="api-access-feature-list-wrap">
-						<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
-						<ul>
-							<li><?php esc_html_e( 'Payments', 'give' ); ?></li>
-							<?php if ( $isRecurringAddonActive ) : ?>
-								<li><?php esc_html_e( 'Subscriptions', 'give' ); ?></li>
-							<?php endif; ?>
-							<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
-						</ul>
-					</div>
+					<?php echo UpsellNotice::recurringAddon(); ?>
 				<?php endif; ?>
 			</div>
 		</div>
