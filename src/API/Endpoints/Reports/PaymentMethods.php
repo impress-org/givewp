@@ -14,9 +14,9 @@ class PaymentMethods extends Endpoint {
 		$this->endpoint = 'payment-methods';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 
-		$paymentObjects = $this->get_payments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', -1 );
+		$paymentObjects = $this->getPayments( $request->get_param( 'start' ), $request->get_param( 'end' ), 'date', -1 );
 		$gatewayObjects = give_get_payment_gateways();
 
 		if ( $this->testMode === false ) {
@@ -64,6 +64,7 @@ class PaymentMethods extends Endpoint {
 						[
 							'currency_code'   => $this->currency,
 							'decode_currency' => true,
+							'sanitize'        => false,
 						]
 					),
 					'body'   => $gateway['count'] . ' ' . __( 'Payments', 'give' ),

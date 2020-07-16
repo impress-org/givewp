@@ -14,7 +14,7 @@ class DonationsVsIncome extends Endpoint {
 		$this->endpoint = 'donations-vs-income';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
