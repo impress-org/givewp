@@ -36,8 +36,15 @@ class PaymentGateways implements ServiceProvider {
 	 */
 	public function boot() {
 		add_filter( 'give_payment_gateways', [ $this, 'registerGateways' ] );
+		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
+	}
 
-		// Register paypal setting section.
+	/**
+	 * Register paypal setting section.
+	 *
+	 * @since 2.8.0
+	 */
+	public function registerPayPalSettingPage() {
 		$paypalSettingPage = new PaypalSettingPage();
 		$paypalSettingPage->register()->boot();
 	}
