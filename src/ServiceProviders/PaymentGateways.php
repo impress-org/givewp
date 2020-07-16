@@ -49,7 +49,7 @@ class PaymentGateways implements ServiceProvider {
 	}
 
 	/**
-	 * Register all payment gateways setting page with GiveWP.
+	 * Register all payment gateways setting pages with GiveWP.
 	 *
 	 * @since 2.8.0
 	 */
