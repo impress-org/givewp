@@ -59,7 +59,11 @@ class AdminSettingFields {
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
 				<?php if ( ! Utils::isConnected() ) : ?>
 					<div class="button-wrap connection-setting">
-						<div><button class="button button-primary button-large"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button></div>
+						<div>
+							<button class="button button-primary button-large">
+								<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?>
+							</button>
+						</div>
 						<span class="give-field-description">
 							<i class="fa fa-exclamation"></i>
 							<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
@@ -67,7 +71,11 @@ class AdminSettingFields {
 					</div>
 				<?php else : ?>
 					<div class="button-wrap disconnection-setting">
-						<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
+						<div>
+							<button class="button button-large disabled" disabled="disabled">
+								<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?>
+							</button>
+						</div>
 						<div>
 						<span class="give-field-description">
 							<i class="fa fa-check"></i>
