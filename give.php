@@ -131,7 +131,6 @@ final class Give {
 	 */
 	private $serviceProviders = [
 		LegacyServiceProvider::class,
-		PaymentGateways::class,
 		RestAPI::class,
 		PaymentGateways::class,
 	];
