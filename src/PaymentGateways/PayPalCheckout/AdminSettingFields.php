@@ -68,32 +68,29 @@ class AdminSettingFields {
 							</a>
 						</div>
 						<span class="give-field-description">
-							<i class="fa fa-exclamation"></i>
-							<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
+							<i class="fa fa-check"></i>
+							<?php
+								printf(
+									'%1$s <span class="paypal-account-email">%2$s</span>',
+									esc_html__( 'Connected for payments as', 'give' ),
+									'devin.walker47@yahoo.com.'
+								);
+							?>
+						</span>
+						<span class="actions">
+							<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
+							&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
 						</span>
 					</div>
-				<?php else : ?>
-					<div class="button-wrap disconnection-setting">
-						<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
-						<div>
-							<span class="give-field-description">
-								<i class="fa fa-check"></i>
-								<?php esc_html_e( 'Connected for payments as devin.walker47@yahoo.com.', 'give' ); ?>
-							</span>
-							<span class="actions">
-								<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
-								&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
-							</span>
-						</div>
-						<div class="api-access-feature-list">
-							<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
-							<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
+					<div class="api-access-feature-list-wrap">
+						<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
+						<ul>
+							<li><?php esc_html_e( 'Payments', 'give' ); ?></li>
 							<?php if ( $isRecurringAddonActive ) : ?>
-								<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
+								<li><?php esc_html_e( 'Subscriptions', 'give' ); ?></li>
 							<?php endif; ?>
-							<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
-						</div>
-						<?php echo UpsellNotice::recurringAddon(); ?>
+							<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
+						</ul>
 					</div>
 				<?php endif; ?>
 			</div>
