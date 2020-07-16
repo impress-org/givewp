@@ -353,7 +353,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 // Handle paypal onboarding.
 document.addEventListener( 'DOMContentLoaded', () => {
-	document.getElementById( 'js-give-paypal-on-boarding-handler' ).addEventListener( 'click', function( evt ) {
+	const button = document.getElementById( 'js-give-paypal-on-boarding-handler' );
+
+	if ( ! button ) {
+		return;
+	}
+
+	button.addEventListener( 'click', function( evt ) {
 		evt.preventDefault();
 
 		evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
