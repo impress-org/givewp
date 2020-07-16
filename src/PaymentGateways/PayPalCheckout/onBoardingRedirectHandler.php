@@ -28,7 +28,7 @@ class onBoardingRedirectHandler {
 		$this->mode = give_is_test_mode() ? 'sandbox' : 'live';
 
 		add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
-		add_action( 'admin_init', [ $this, 'showNotice' ] );
+		add_action( 'give-settings_start', [ $this, 'showNotice' ] );
 	}
 
 	/**
