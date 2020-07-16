@@ -26,6 +26,15 @@ class PaymentGateways implements ServiceProvider {
 	];
 
 	/**
+	 * Array of SettingPage classes to be bootstrapped
+	 *
+	 * @var string[]
+	 */
+	private $gatewaySettingsPages = [
+		PaypalSettingPage::class,
+	];
+
+	/**
 	 * @inheritDoc
 	 */
 	public function register() {
@@ -40,13 +49,14 @@ class PaymentGateways implements ServiceProvider {
 	}
 
 	/**
-	 * Register paypal setting section.
+	 * Register all payment gateways setting page with GiveWP.
 	 *
 	 * @since 2.8.0
 	 */
 	public function registerPayPalSettingPage() {
-		$paypalSettingPage = new PaypalSettingPage();
-		$paypalSettingPage->register()->boot();
+		foreach ( $this->gatewaySettingsPages  as $page ) {
+			( new $page() )->register()->boot();
+		}
 	}
 
 	/**
