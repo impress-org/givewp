@@ -58,7 +58,7 @@ class AdminSettingFields {
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
 				<?php if ( ! Utils::isConnected() ) : ?>
-					<div class="button-wrap connection-setting" style="display: none">
+					<div class="button-wrap connection-setting">
 						<div><button class="button button-primary button-large"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button></div>
 						<span class="give-field-description">
 							<i class="fa fa-exclamation"></i>
