@@ -23,6 +23,8 @@ class AdminSettingFields {
 	 * @since 2.8.0
 	 */
 	public function paypalCheckoutAccountManagerField() {
+		$recurringAddonInfo     = Give_License::get_plugin_by_slug( 'give-recurring' );
+		$isRecurringAddonActive = isset( $recurringAddonInfo['Status'] ) && 'active' === $recurringAddonInfo['Status'];
 		?>
 		<div id="give-paypal-checkout-account-manager-field-wrap">
 			<div class="hero-section">
@@ -84,7 +86,7 @@ class AdminSettingFields {
 						<div class="api-access-feature-list">
 							<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
 							<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
-							<?php if ( class_exists( 'Give_Recurring' ) ) : ?>
+							<?php if ( $isRecurringAddonActive ) : ?>
 								<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
 							<?php endif; ?>
 							<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
