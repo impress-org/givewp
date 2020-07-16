@@ -75,13 +75,15 @@ class AdminSettingFields {
 							&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
 						</span>
 					</div>
-					<div class="api-access-feature-list">
+					<div class="api-access-feature-list-wrap">
 						<p><?php esc_html_e( 'APIs Connected:', 'give' ); ?></p>
-						<span><?php esc_html_e( 'Payments', 'give' ); ?></span><br>
-						<?php if ( $isRecurringAddonActive ) : ?>
-							<span><?php esc_html_e( 'Subscription', 'give' ); ?></span><br>
-						<?php endif; ?>
-						<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
+						<ul>
+							<li><?php esc_html_e( 'Payments', 'give' ); ?></li>
+							<?php if ( $isRecurringAddonActive ) : ?>
+								<li><?php esc_html_e( 'Subscription', 'give' ); ?></li>
+							<?php endif; ?>
+							<li><?php esc_html_e( 'Refund', 'give' ); ?></li>
+						</ul>
 					</div>
 					<?php echo UpsellNotice::recurringAddon(); ?>
 				</div>
