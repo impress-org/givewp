@@ -678,6 +678,17 @@ a.give-delete {
 			color: #807e7e;
 			font-weight: bold;
 		}
+
+		.disconnection-setting {
+			.button {
+				font-weight: 600;
+				color: #333 !important;
+
+				.fa-paypal {
+					color: #636363;
+				}
+			}
+		}
 	}
 
 	.give-upsell-notice {
