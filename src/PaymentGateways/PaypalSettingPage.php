@@ -76,9 +76,10 @@ class PaypalSettingPage implements SettingPage {
 
 	/**
 	 * Get groups.
-	 * @return array
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return array
 	 */
 	public function getGroups() {
 		return [
@@ -89,7 +90,10 @@ class PaypalSettingPage implements SettingPage {
 
 	/**
 	 * Register settings.
-	 * @param $settings
+	 *
+	 * @param array $settings
+	 *
+	 * @since 2.8.0
 	 *
 	 * @return array
 	 */
@@ -103,10 +107,12 @@ class PaypalSettingPage implements SettingPage {
 
 	/**
 	 * Register setting section.
-	 * @param $sections
+	 *
+	 * @param array $sections
+	 *
+	 * @since 2.8.0
 	 *
 	 * @return array
-	 * @since 2.8.0
 	 */
 	public function registerPaypalSettingSection( $sections ) {
 		$sections[ $this->getId() ] = $this->getName();
