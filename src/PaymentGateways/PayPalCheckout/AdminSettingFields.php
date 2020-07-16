@@ -80,9 +80,9 @@ class AdminSettingFields {
 						<ul>
 							<li><?php esc_html_e( 'Payments', 'give' ); ?></li>
 							<?php if ( $isRecurringAddonActive ) : ?>
-								<li><?php esc_html_e( 'Subscription', 'give' ); ?></li>
+								<li><?php esc_html_e( 'Subscriptions', 'give' ); ?></li>
 							<?php endif; ?>
-							<li><?php esc_html_e( 'Refund', 'give' ); ?></li>
+							<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
 						</ul>
 					</div>
 					<?php echo UpsellNotice::recurringAddon(); ?>
