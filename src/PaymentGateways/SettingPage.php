@@ -33,13 +33,6 @@ interface SettingPage {
 	public function getSettings();
 
 	/**
-	 * Register required properties
-	 *
-	 * @since 2.8.0
-	 */
-	public function register();
-
-	/**
 	 * Boot functionality
 	 *
 	 * @since 2.8.0

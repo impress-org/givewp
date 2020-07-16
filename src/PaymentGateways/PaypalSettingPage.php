@@ -23,15 +23,15 @@ class PaypalSettingPage implements SettingPage {
 
 	/**
 	 * Register properties
-	 * @return PaypalSettingPage
+	 *
+	 * @param  PayPalCheckout\PayPalCheckout  $paypalCheckout
+	 * @param  PayPalStandard\PayPalStandard  $paypalStandard
 	 *
 	 * @since 2.8.0
 	 */
-	public function register() {
-		$this->paypalCheckout = new PayPalCheckout\PayPalCheckout();
-		$this->paypalStandard = new PaymentGateways\PayPalStandard\PayPalStandard();
-
-		return $this;
+	public function __construct( PayPalCheckout\PayPalCheckout $paypalCheckout, PaymentGateways\PayPalStandard\PayPalStandard $paypalStandard ) {
+		$this->paypalCheckout = $paypalCheckout;
+		$this->paypalStandard = $paypalStandard;
 	}
 
 	/**

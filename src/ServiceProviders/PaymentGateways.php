@@ -55,7 +55,7 @@ class PaymentGateways implements ServiceProvider {
 	 */
 	public function registerPayPalSettingPage() {
 		foreach ( $this->gatewaySettingsPages  as $page ) {
-			( new $page() )->register()->boot();
+			give()->make( $page )->boot();
 		}
 	}
 
