@@ -62,7 +62,13 @@ class AdminSettingFields {
 					<div>
 						<span class="give-field-description">
 							<i class="fa fa-check"></i>
-							<?php esc_html_e( 'Connected for payments as devin.walker47@yahoo.com.', 'give' ); ?>
+							<?php
+								printf(
+									'%1$s <span class="paypal-account-email">%2$s</span>',
+									__( 'Connected for payments as', 'give' ),
+									'devin.walker47@yahoo.com.'
+								);
+							?>
 						</span>
 						<span class="actions">
 							<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
