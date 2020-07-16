@@ -1,6 +1,8 @@
 <?php
 namespace Give\PaymentGateways\PayPalCheckout;
 
+use Give\Views\Admin\UpsellNotice;
+
 /**
  * Class AdminSettingFields
  * @package Give\PaymentGateways\PayPalCheckout
@@ -91,6 +93,7 @@ class AdminSettingFields {
 							<?php endif; ?>
 							<span><?php esc_html_e( 'Refund', 'give' ); ?></span>
 						</div>
+						<?php echo UpsellNotice::recurringAddon(); ?>
 					</div>
 				<?php endif; ?>
 			</div>
