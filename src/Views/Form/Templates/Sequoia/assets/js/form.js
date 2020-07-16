@@ -246,6 +246,13 @@
 					input: 'input[name="give_fee_mode_checkbox"]',
 				} );
 
+				// Setup activecampaign opt-in event listeners
+				setupCheckbox( {
+					container: '.give-activecampaign-fieldset',
+					label: '.give-activecampaign-optin-label',
+					input: '.give-activecampaign-optin-input',
+				} );
+
 				// Setup mailchimp opt-in event listeners
 				setupCheckbox( {
 					container: '.give-mailchimp-fieldset',
@@ -466,6 +473,7 @@
 		// The elements will appear in order of array
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
+			'.give-activecampaign-fieldset',
 			'.give-mailchimp-fieldset',
 			'#give_terms_agreement',
 			'.give-donation-submit',
