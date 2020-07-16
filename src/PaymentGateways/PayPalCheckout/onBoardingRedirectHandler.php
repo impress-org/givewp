@@ -27,13 +27,13 @@ class onBoardingRedirectHandler {
 	public function boot() {
 		$this->mode = give_is_test_mode() ? 'sandbox' : 'live';
 
-		// add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
-		add_action( 'admin_init', [ $this, 'savePayPalMerchantDetails' ] );
+		add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
 		add_action( 'admin_init', [ $this, 'showNotice' ] );
 	}
 
 	/**
 	 * Save PayPal merchant details
+	 * @todo: Confirm `primary_email_confirmed` set to true via PayPal api to confirm onboarding process status.
 	 *
 	 * @return void
 	 * @since 2.8.0
