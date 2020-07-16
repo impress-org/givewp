@@ -1,7 +1,9 @@
 <?php
 namespace  Give\PaymentGateways;
 
-use Give\PaymentGateways;
+use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
+use Give\PaymentGateways\PayPalCheckout\AdminSettingFields;
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use function give_get_current_setting_section as getCurrentSettingSection;
 
 /**
@@ -12,24 +14,24 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  */
 class PaypalSettingPage implements SettingPage {
 	/**
-	 * @var PayPalCheckout\PayPalCheckout
+	 * @var PayPalCheckout
 	 */
 	private $paypalCheckout;
 
 	/**
-	 * @var PayPalStandard\PayPalStandard
+	 * @var PayPalStandard
 	 */
 	private $paypalStandard;
 
 	/**
 	 * Register properties
 	 *
-	 * @param  PayPalCheckout\PayPalCheckout  $paypalCheckout
-	 * @param  PayPalStandard\PayPalStandard  $paypalStandard
+	 * @param  PayPalCheckout  $paypalCheckout
+	 * @param  PayPalStandard  $paypalStandard
 	 *
 	 * @since 2.8.0
 	 */
-	public function __construct( PayPalCheckout\PayPalCheckout $paypalCheckout, PaymentGateways\PayPalStandard\PayPalStandard $paypalStandard ) {
+	public function __construct( PayPalCheckout $paypalCheckout, PayPalStandard $paypalStandard ) {
 		$this->paypalCheckout = $paypalCheckout;
 		$this->paypalStandard = $paypalStandard;
 	}
@@ -43,7 +45,7 @@ class PaypalSettingPage implements SettingPage {
 		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ] );
 
 		// Load custom setting fields.
-		$adminSettingFields = new PaymentGateways\PayPalCheckout\AdminSettingFields();
+		$adminSettingFields = new AdminSettingFields();
 		$adminSettingFields->boot();
 
 	}
