@@ -33,10 +33,10 @@ class UpsellNotice {
 			sprintf(
 				__( 'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provide your donors with flexible subscription giving options.', 'give' ),
 				$addon_link_url,
-				__( 'Click to view the Recurring Donations add-on', 'give' )
+				esc_html__( 'Click to view the Recurring Donations add-on', 'give' )
 			),
 			$addon_button_url,
-			__( 'View Add-on', 'give' )
+			esc_html__( 'View Add-on', 'give' )
 		);
 	}
 }

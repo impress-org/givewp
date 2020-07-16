@@ -65,7 +65,7 @@ class AdminSettingFields {
 							<?php
 								printf(
 									'%1$s <span class="paypal-account-email">%2$s</span>',
-									__( 'Connected for payments as', 'give' ),
+									esc_html__( 'Connected for payments as', 'give' ),
 									'devin.walker47@yahoo.com.'
 								);
 							?>
