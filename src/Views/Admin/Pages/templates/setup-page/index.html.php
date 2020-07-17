@@ -60,7 +60,7 @@
 				'footer'   => $this->render_template(
 					'setup-page/footer',
 					[
-						'contents' => 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more!<a href="#">View all gateways</a>',
+						'contents' => 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more!<a href="#">View all gateways <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
 					]
 				),
 			]
