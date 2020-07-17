@@ -48,9 +48,9 @@ class Admin {
 		// Load Onboarding Wizard page
 		$onboarding_wizard = new Admin\Pages\OnboardingWizard();
 		$onboarding_wizard->init();
-    
+
 		// Load Setup page
-		if ( give_is_setting_enabled( \Give\Onboarding\Onboarding::isSetupPageEnabled() ) ) {
+		if ( give_is_setting_enabled( \Give\Onboarding\Onboarding::getSetupPageEnabledOrDisabled() ) ) {
 			$setup = new Admin\Pages\Setup();
 			$setup->init();
 		}
