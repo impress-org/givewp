@@ -3,7 +3,9 @@
 namespace Give\ServiceProviders;
 
 use Give\PaymentGateways\PaymentGateway;
-use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\PaypalSettingPage;
 
 /**
  * Class PaymentGateways
@@ -19,14 +21,23 @@ class PaymentGateways implements ServiceProvider {
 	 * @var string[]
 	 */
 	public $gateways = [
-		PayPalCheckout::class,
+		PayPalStandard::class,
+		PayPalCommerce::class,
+	];
+
+	/**
+	 * Array of SettingPage classes to be bootstrapped
+	 *
+	 * @var string[]
+	 */
+	private $gatewaySettingsPages = [
+		PaypalSettingPage::class,
 	];
 
 	/**
 	 * @inheritDoc
 	 */
 	public function register() {
-		// Not used, but needed for interface
 	}
 
 	/**
@@ -34,6 +45,18 @@ class PaymentGateways implements ServiceProvider {
 	 */
 	public function boot() {
 		add_filter( 'give_payment_gateways', [ $this, 'registerGateways' ] );
+		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
+	}
+
+	/**
+	 * Register all payment gateways setting pages with GiveWP.
+	 *
+	 * @since 2.8.0
+	 */
+	public function registerPayPalSettingPage() {
+		foreach ( $this->gatewaySettingsPages  as $page ) {
+			give()->make( $page )->boot();
+		}
 	}
 
 	/**
@@ -59,3 +82,5 @@ class PaymentGateways implements ServiceProvider {
 		return $gateways;
 	}
 }
+
+

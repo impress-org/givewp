@@ -37,4 +37,11 @@ interface PaymentGateway {
 	 * @return string
 	 */
 	public function getPaymentMethodLabel();
+
+	/**
+	 * Get payment gateway options
+	 *
+	 * @return array
+	 */
+	public function getOptions();
 }
