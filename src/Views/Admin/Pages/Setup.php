@@ -28,10 +28,6 @@ class Setup {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
-	public function __construct() {
-		// Do nothing
-	}
-
 	/**
 	 * Redirect the top level "Donations" menu to the Setup submenu.
 	 *
