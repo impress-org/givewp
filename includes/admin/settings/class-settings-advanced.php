@@ -9,6 +9,8 @@
  * @since       1.8
  */
 
+use Give\Onboarding\Onboarding;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -151,6 +153,33 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'options' => [
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
+							],
+						],
+						[
+							'name'    => __( 'Setup Page', 'give' ),
+							/* translators: %s: about page URL */
+							'desc'    => sprintf(
+								wp_kses(
+									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first installed.', 'give' ),
+									[
+										'a' => [
+											'href'   => [],
+											'target' => [],
+										],
+									]
+								),
+								esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
+							),
+							'id'      => 'setup_page_enabled',
+							'type'    => 'radio_inline',
+							'default' => give_is_setting_enabled(
+								Onboarding::getSetupPageEnabledOrDisabled()
+							)
+								? Onboarding::ENABLED
+								: Onboarding::DISABLED,
+							'options' => [
+								Onboarding::ENABLED  => __( 'Enabled', 'give' ),
+								Onboarding::DISABLED => __( 'Disabled', 'give' ),
 							],
 						],
 						[
