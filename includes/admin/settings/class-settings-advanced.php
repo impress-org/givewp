@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 								? Onboarding::ENABLED
 								: Onboarding::DISABLED,
 							'options' => [
-								Onboarding::ENABLED => __( 'Enabled', 'give' ),
+								Onboarding::ENABLED  => __( 'Enabled', 'give' ),
 								Onboarding::DISABLED => __( 'Disabled', 'give' ),
 							],
 						],
