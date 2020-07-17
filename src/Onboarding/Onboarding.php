@@ -47,8 +47,10 @@ class Onboarding {
 	 * Helper method for checking the if the Setup Page is enabled.
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return string
 	 */
-	public static function isSetupPageEnabled() {
+	public static function getSetupPageEnabledOrDisabled() {
 		return give_get_option( 'setup_page_enabled', self::DISABLED );
 	}
 }

@@ -46,7 +46,7 @@ class Admin {
 		$reports->init();
 
 		// Load Setup page
-		if ( give_is_setting_enabled( \Give\Onboarding\Onboarding::isSetupPageEnabled() ) ) {
+		if ( give_is_setting_enabled( \Give\Onboarding\Onboarding::getSetupPageEnabledOrDisabled() ) ) {
 			$setup = new Admin\Pages\Setup();
 			$setup->init();
 		}
