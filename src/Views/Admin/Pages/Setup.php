@@ -79,7 +79,7 @@ class Setup {
 			'give-admin-setup-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-setup.css',
 			[],
-			'0.0.1'
+			GIVE_VERSION
 		);
 	}
 
