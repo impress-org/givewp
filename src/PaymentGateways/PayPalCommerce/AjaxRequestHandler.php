@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PaypalCommerce;
 
 /**
  * Class AjaxRequestHandler
- * @package Give\PaymentGateways\PayPalCheckout
+ * @package Give\PaymentGateways\PaypalCommerce
  *
  * @sicne 2.8.0
  */
@@ -15,12 +15,12 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function boot() {
-		add_action( 'wp_ajax_give_paypal_checkout_user_on_boarded', [ $this, 'onBoardedUserAjaxRequestHandler' ] );
-		add_action( 'wp_ajax_give_paypal_checkout_get_partner_url', [ $this, 'onGetPartnerUrlAjaxRequestHandler' ] );
+		add_action( 'wp_ajax_give_paypal_commerce_user_on_boarded', [ $this, 'onBoardedUserAjaxRequestHandler' ] );
+		add_action( 'wp_ajax_give_paypal_commerce_get_partner_url', [ $this, 'onGetPartnerUrlAjaxRequestHandler' ] );
 	}
 
 	/**
-	 *  give_paypal_checkout_user_onboarded ajax action handler
+	 *  give_paypal_commerce_user_onboarded ajax action handler
 	 *
 	 * @since 2.8.0
 	 */
@@ -59,7 +59,7 @@ class AjaxRequestHandler {
 	}
 
 	/**
-	 * give_paypal_checkout_get_partner_url action handler
+	 * give_paypal_commerce_get_partner_url action handler
 	 *
 	 * @since 2.8.0
 	 */
@@ -67,7 +67,7 @@ class AjaxRequestHandler {
 		$restApiUrl = sprintf(
 			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
 			give_is_test_mode() ? 'sandbox' : 'live',
-			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-checkout' ) )
+			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
 		);
 
 		$response = wp_remote_get( $restApiUrl );

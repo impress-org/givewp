@@ -364,7 +364,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
 
-		fetch( ajaxurl + '?action=give_paypal_checkout_get_partner_url' )
+		fetch( ajaxurl + '?action=give_paypal_commerce_get_partner_url' )
 			.then( response => response.json() )
 			.then( function( res ) {
 				// @todo handle error.

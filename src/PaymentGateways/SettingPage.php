@@ -9,35 +9,31 @@ namespace  Give\PaymentGateways;
  */
 interface SettingPage {
 	/**
-	 * Get section id.
-	 * @return string
+	 * Provides the section id to be use to render setting page.
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return string
 	 */
 	public function getId();
 
 	/**
-	 * Get section title.
-	 * @return string
+	 * Provides the section title to be displayed to the user.
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return string
 	 */
 	public function getName();
 
 	/**
-	 * Get section settings.
-	 * @return array
+	 * Provides the section settings to be displayed to the user.
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return array
 	 */
 	public function getSettings();
-
-	/**
-	 * Register required properties
-	 *
-	 * @since 2.8.0
-	 */
-	public function register();
 
 	/**
 	 * Boot functionality

@@ -1,22 +1,22 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PaymentGateway;
 
-class PayPalCheckout implements PaymentGateway {
+class PayPalCommerce implements PaymentGateway {
 	/**
 	 * @inheritDoc
 	 */
 	public function getId() {
-		return 'paypal-checkout';
+		return 'paypal-commerce';
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return esc_html__( 'PayPal Checkout', 'give' );
+		return esc_html__( 'PayPal Donations', 'give' );
 	}
 
 	/**
@@ -38,8 +38,8 @@ class PayPalCheckout implements PaymentGateway {
 			],
 			[
 				'name' => esc_html__( 'Connect With Paypal', 'give' ),
-				'id'   => 'paypal_checkout_account_manger',
-				'type' => 'paypal_checkout_account_manger',
+				'id'   => 'paypal_commerce_account_manger',
+				'type' => 'paypal_commerce_account_manger',
 			],
 			[
 				'type'       => 'sectionend',

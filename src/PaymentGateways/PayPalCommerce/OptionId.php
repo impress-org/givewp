@@ -1,9 +1,9 @@
 <?php
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PaypalCommerce;
 
 /**
  * Class OptionId
- * @package Give\PaymentGateways\PayPalCheckout
+ * @package Give\PaymentGateways\PaypalCommerce
  *
  * @since 2.8.0
  */
@@ -17,7 +17,7 @@ class OptionId {
 	 * @var string
 	 * @since 2.8.0
 	 */
-	public static $accessTokenOptionKey = 'temp_give_paypal_checkout_seller_access_token';
+	public static $accessTokenOptionKey = 'temp_give_paypal_commerce_seller_access_token';
 	/**
 	 * Option key name.
 	 *
@@ -26,7 +26,7 @@ class OptionId {
 	 * @var string
 	 * @since 2.8.0
 	 */
-	public static $partnerInfoOptionKey = 'temp_give_paypal_checkout_partner_link';
+	public static $partnerInfoOptionKey = 'temp_give_paypal_commerce_partner_link';
 	/**
 	 * Option key name.
 	 *
@@ -35,5 +35,5 @@ class OptionId {
 	 * @var string
 	 * @since 2.8.0
 	 */
-	public static $payPalAccountsOptionKey = 'give_paypal_checkout_accounts';
+	public static $payPalAccountsOptionKey = 'give_paypal_commerce_accounts';
 }

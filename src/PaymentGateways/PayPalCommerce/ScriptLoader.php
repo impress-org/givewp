@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PaypalCommerce;
 
 use Give_Admin_Settings;
 
 /**
  * Class ScriptLoader
- * @package Give\PaymentGateways\PayPalCheckout
+ * @package Give\PaymentGateways\PaypalCommerce
  *
  * @since 2.8.0
  */
@@ -27,7 +27,7 @@ class ScriptLoader {
 	 */
 	public function loadAdminScripts() {
 		if ( Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
-			$nonce = wp_create_nonce( 'give_paypal_checkout_user_onboarded' );
+			$nonce = wp_create_nonce( 'give_paypal_commerce_user_onboarded' );
 
 			wp_enqueue_script(
 				'paypal-partner-js',
@@ -41,7 +41,7 @@ class ScriptLoader {
 				function givePayPalOnBoardedCallback(authCode, sharedId) {
 					console.log( authCode, sharedId );
 					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
-					fetch( ajaxurl + '?action=give_paypal_checkout_user_on_boarded&_wpnonce={$nonce}' + query )
+					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded&_wpnonce={$nonce}' + query )
 						.then(function(res){
 							return res.json()
 						})

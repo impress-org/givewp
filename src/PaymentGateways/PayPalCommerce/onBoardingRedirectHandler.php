@@ -1,11 +1,11 @@
 <?php
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PaypalCommerce;
 
 use Give_Admin_Settings;
 
 /**
  * Class PayPalOnBoardingRedirectHandler
- * @package Give\PaymentGateways\PayPalCheckout
+ * @package Give\PaymentGateways\PaypalCommerce
  *
  * @since 2.8.0
  */
@@ -72,7 +72,7 @@ class onBoardingRedirectHandler {
 
 		$this->deleteTempOption();
 
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-checkout&paypal-account-connected=1' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
 	}
 
 	/**

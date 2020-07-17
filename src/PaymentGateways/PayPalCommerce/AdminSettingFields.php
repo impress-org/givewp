@@ -1,12 +1,12 @@
 <?php
-namespace Give\PaymentGateways\PayPalCheckout;
+namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Views\Admin\UpsellNotice;
 use Give_License;
 
 /**
  * Class AdminSettingFields
- * @package Give\PaymentGateways\PayPalCheckout
+ * @package Give\PaymentGateways\PaypalCommerce
  *
  * @since 2.8.0
  */
@@ -17,7 +17,7 @@ class AdminSettingFields {
 	 * @since 2.8.0
 	 */
 	public function boot() {
-		add_action( 'give_admin_field_paypal_checkout_account_manger', [ $this, 'paypalCheckoutAccountManagerField' ] );
+		add_action( 'give_admin_field_paypal_commerce_account_manger', [ $this, 'payPalCommerceAccountManagerField' ] );
 	}
 
 	/**
@@ -25,14 +25,14 @@ class AdminSettingFields {
 	 *
 	 * @since 2.8.0
 	 */
-	public function paypalCheckoutAccountManagerField() {
+	public function payPalCommerceAccountManagerField() {
 		$recurringAddonInfo     = Give_License::get_plugin_by_slug( 'give-recurring' );
 		$isRecurringAddonActive = isset( $recurringAddonInfo['Status'] ) && 'active' === $recurringAddonInfo['Status'];
 		?>
-		<div id="give-paypal-checkout-account-manager-field-wrap">
+		<div id="give-paypal-commerce-account-manager-field-wrap">
 			<div class="hero-section">
 				<div>
-					<h2><?php esc_html_e( 'Accept Donations with PayPal Checkout', 'give' ); ?></h2>
+					<h2><?php esc_html_e( 'Accept Donations with PayPal Commerce', 'give' ); ?></h2>
 					<p class="give-field-description"><?php esc_html_e( 'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees. Upgrade to PayPal Pro and provide your donors with even more payment options using PayPal Smart Buttons.', 'give' ); ?></p>
 				</div>
 				<div>

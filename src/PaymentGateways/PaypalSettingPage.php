@@ -1,7 +1,9 @@
 <?php
 namespace  Give\PaymentGateways;
 
-use Give\PaymentGateways;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\AdminSettingFields;
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use function give_get_current_setting_section as getCurrentSettingSection;
 
 /**
@@ -12,26 +14,26 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  */
 class PaypalSettingPage implements SettingPage {
 	/**
-	 * @var PayPalCheckout\PayPalCheckout
+	 * @var PayPalCommerce
 	 */
-	private $paypalCheckout;
+	private $payPalCommerce;
 
 	/**
-	 * @var PayPalStandard\PayPalStandard
+	 * @var PayPalStandard
 	 */
 	private $paypalStandard;
 
 	/**
 	 * Register properties
-	 * @return PaypalSettingPage
+	 *
+	 * @param  PayPalCommerce  $payPalCommerce
+	 * @param  PayPalStandard  $paypalStandard
 	 *
 	 * @since 2.8.0
 	 */
-	public function register() {
-		$this->paypalCheckout = new PayPalCheckout\PayPalCheckout();
-		$this->paypalStandard = new PaymentGateways\PayPalStandard\PayPalStandard();
-
-		return $this;
+	public function __construct( PayPalCommerce $payPalCommerce, PayPalStandard $paypalStandard ) {
+		$this->payPalCommerce = $payPalCommerce;
+		$this->paypalStandard = $paypalStandard;
 	}
 
 	/**
@@ -43,11 +45,11 @@ class PaypalSettingPage implements SettingPage {
 		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ] );
 
 		// Load custom setting fields.
-		$adminSettingFields = new PaymentGateways\PayPalCheckout\AdminSettingFields();
+		$adminSettingFields = new AdminSettingFields();
 		$adminSettingFields->boot();
 
 		// Handle paypal redirect on setting page after on boarding seller.
-		( new PaymentGateways\PayPalCheckout\onBoardingRedirectHandler )->boot();
+		( new PaymentGateways\PaypalCommerce\onBoardingRedirectHandler )->boot();
 
 	}
 
@@ -69,7 +71,7 @@ class PaypalSettingPage implements SettingPage {
 	 * @inheritDoc
 	 */
 	public function getSettings() {
-		$settings[ $this->paypalCheckout->getId() ] = $this->paypalCheckout->getOptions();
+		$settings[ $this->payPalCommerce->getId() ] = $this->payPalCommerce->getOptions();
 		$settings[ $this->paypalStandard->getId() ] = $this->paypalStandard->getOptions();
 
 		return $settings;
@@ -77,20 +79,24 @@ class PaypalSettingPage implements SettingPage {
 
 	/**
 	 * Get groups.
-	 * @return array
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return array
 	 */
 	public function getGroups() {
 		return [
-			$this->paypalCheckout->getId() => $this->paypalCheckout->getName(),
+			$this->payPalCommerce->getId() => $this->payPalCommerce->getName(),
 			$this->paypalStandard->getId() => $this->paypalStandard->getName(),
 		];
 	}
 
 	/**
 	 * Register settings.
-	 * @param $settings
+	 *
+	 * @param array $settings
+	 *
+	 * @since 2.8.0
 	 *
 	 * @return array
 	 */
@@ -104,10 +110,12 @@ class PaypalSettingPage implements SettingPage {
 
 	/**
 	 * Register setting section.
-	 * @param $sections
+	 *
+	 * @param array $sections
+	 *
+	 * @since 2.8.0
 	 *
 	 * @return array
-	 * @since 2.8.0
 	 */
 	public function registerPaypalSettingSection( $sections ) {
 		$sections[ $this->getId() ] = $this->getName();
