@@ -102,6 +102,6 @@ class Setup {
 	 */
 	public function render_template( $template, $data = [] ) {
 		extract( $data );
-		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/$template.php";
+		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/{$template}.php";
 	}
 }
