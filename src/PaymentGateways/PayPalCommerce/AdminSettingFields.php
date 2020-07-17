@@ -60,9 +60,12 @@ class AdminSettingFields {
 				<?php if ( ! Utils::isConnected() ) : ?>
 					<div class="button-wrap connection-setting">
 						<div>
-							<button class="button button-primary button-large">
+							<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
 								<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?>
 							</button>
+							<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#" data-paypal-button="true">
+								<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
+							</a>
 						</div>
 						<span class="give-field-description">
 							<i class="fa fa-exclamation"></i>
