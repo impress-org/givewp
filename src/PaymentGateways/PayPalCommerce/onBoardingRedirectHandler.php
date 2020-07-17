@@ -27,8 +27,9 @@ class onBoardingRedirectHandler {
 	public function boot() {
 		$this->mode = give_is_test_mode() ? 'sandbox' : 'live';
 
-		add_action( 'give-settings_start', [ $this, 'savePayPalMerchantDetails' ] );
-		add_action( 'give-settings_start', [ $this, 'showNotice' ] );
+		if ( $this->isPayPalUserRedirected() ) {
+			$this->savePayPalMerchantDetails();
+		}
 	}
 
 	/**
@@ -39,24 +40,11 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	public function savePayPalMerchantDetails() {
-		// Save PayPal merchant details only if admin redirected to PayPal connect setting page after completing onboarding process.
-		if (
-			! isset( $_GET['merchantIdInPayPal'] ) ||
-			! Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
-		) {
-			return;
-		}
-
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
 
 		$allowedPayPalData = [
+			'merchantId',
 			'merchantIdInPayPal',
-			'permissionsGranted',
-			'accountStatus',
-			'consentStatus',
-			'productIntentId',
-			'isEmailConfirmed',
-			'returnMessage',
 		];
 
 		$payPalAccounts = (array) get_option( OptionId::$payPalAccountsOptionKey, [] );
@@ -104,9 +92,7 @@ class onBoardingRedirectHandler {
 			)
 		);
 
-		$payPalAccounts[ $this->mode ]                   = json_decode( $payPalResponse, true );
-		$payPalAccounts[ $this->mode ]['tokenDetails']   = $tokenInfo;
-		$payPalAccounts[ $this->mode ]['partnerDetails'] = get_option( OptionId::$partnerInfoOptionKey );
+		$payPalAccounts[ $partnerMerchantId ][ $this->mode ] = json_decode( $payPalResponse, true );
 	}
 
 	/**
@@ -134,5 +120,16 @@ class onBoardingRedirectHandler {
 		}
 
 		Give_Admin_Settings::add_message( 'paypal-account-connected', esc_html__( 'PayPal account connected successfully.', 'give' ) );
+	}
+
+	/**
+	 * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	private function isPayPalUserRedirected() {
+		return isset( $_GET['merchantIdInPayPal'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
 	}
 }
