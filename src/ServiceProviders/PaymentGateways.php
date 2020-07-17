@@ -3,7 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Give\PaymentGateways\PaymentGateway;
-use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 
@@ -22,7 +22,7 @@ class PaymentGateways implements ServiceProvider {
 	 */
 	public $gateways = [
 		PayPalStandard::class,
-		PayPalCheckout::class,
+		PayPalCommerce::class,
 	];
 
 	/**

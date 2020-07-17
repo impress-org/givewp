@@ -1,8 +1,8 @@
 <?php
 namespace  Give\PaymentGateways;
 
-use Give\PaymentGateways\PayPalCheckout\PayPalCheckout;
-use Give\PaymentGateways\PayPalCheckout\AdminSettingFields;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\AdminSettingFields;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use function give_get_current_setting_section as getCurrentSettingSection;
 
@@ -14,9 +14,9 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  */
 class PaypalSettingPage implements SettingPage {
 	/**
-	 * @var PayPalCheckout
+	 * @var PayPalCommerce
 	 */
-	private $paypalCheckout;
+	private $payPalCommerce;
 
 	/**
 	 * @var PayPalStandard
@@ -26,13 +26,13 @@ class PaypalSettingPage implements SettingPage {
 	/**
 	 * Register properties
 	 *
-	 * @param  PayPalCheckout  $paypalCheckout
+	 * @param  PayPalCommerce  $payPalCommerce
 	 * @param  PayPalStandard  $paypalStandard
 	 *
 	 * @since 2.8.0
 	 */
-	public function __construct( PayPalCheckout $paypalCheckout, PayPalStandard $paypalStandard ) {
-		$this->paypalCheckout = $paypalCheckout;
+	public function __construct( PayPalCommerce $payPalCommerce, PayPalStandard $paypalStandard ) {
+		$this->payPalCommerce = $payPalCommerce;
 		$this->paypalStandard = $paypalStandard;
 	}
 
@@ -68,7 +68,7 @@ class PaypalSettingPage implements SettingPage {
 	 * @inheritDoc
 	 */
 	public function getSettings() {
-		$settings[ $this->paypalCheckout->getId() ] = $this->paypalCheckout->getOptions();
+		$settings[ $this->payPalCommerce->getId() ] = $this->payPalCommerce->getOptions();
 		$settings[ $this->paypalStandard->getId() ] = $this->paypalStandard->getOptions();
 
 		return $settings;
@@ -83,7 +83,7 @@ class PaypalSettingPage implements SettingPage {
 	 */
 	public function getGroups() {
 		return [
-			$this->paypalCheckout->getId() => $this->paypalCheckout->getName(),
+			$this->payPalCommerce->getId() => $this->payPalCommerce->getName(),
 			$this->paypalStandard->getId() => $this->paypalStandard->getName(),
 		];
 	}
