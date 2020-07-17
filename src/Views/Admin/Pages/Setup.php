@@ -97,6 +97,12 @@ class Setup {
 			[],
 			'0.0.1'
 		);
+		wp_enqueue_style(
+			'give-admin-setup-google-fonts',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			[],
+			GIVE_VERSION
+		);
 		wp_enqueue_script(
 			'give-admin-setup-script',
 			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
