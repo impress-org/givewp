@@ -86,7 +86,7 @@ class AdminSettingFields {
 							printf(
 								'%1$s <span class="paypal-account-email">%2$s</span>',
 								esc_html__( 'Connected for payments as', 'give' ),
-								'devin.walker47@yahoo.com.'
+								give()->make( MerchantDetail::class )->merchantId
 							);
 							?>
 						</span>
