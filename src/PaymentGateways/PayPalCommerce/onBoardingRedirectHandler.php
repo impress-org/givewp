@@ -47,16 +47,11 @@ class onBoardingRedirectHandler {
 			'merchantIdInPayPal',
 		];
 
-		$payPalAccounts = (array) get_option( OptionId::$payPalAccountsOptionKey, [] );
-		$paypalData     = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
-		// Reset account details.
-		$payPalAccounts[ $paypalData['merchantIdInPayPal'] ] = [];
-		$payPalAccounts[ $paypalData['merchantIdInPayPal'] ] = array_merge( $payPalAccounts[ $paypalData['merchantIdInPayPal'] ], $paypalData );
+		$this->saveSellerRestAPICredentials( $payPalAccount, $payPalAccount['merchantIdInPayPal'] );
 
-		$this->saveSellerRestAPICredentials( $payPalAccounts, $paypalData['merchantIdInPayPal'] );
-
-		update_option( OptionId::$payPalAccountsOptionKey, $payPalAccounts );
+		update_option( OptionId::$payPalAccountsOptionKey, $payPalAccount );
 
 		$this->deleteTempOption();
 
@@ -66,12 +61,12 @@ class onBoardingRedirectHandler {
 	/**
 	 * Save seller rest API credentials
 	 *
-	 * @param array $payPalAccounts
+	 * @param array $payPalAccount
 	 * @param string $partnerMerchantId
 	 * @return void
 	 * @since 2.8.0
 	 */
-	private function saveSellerRestAPICredentials( &$payPalAccounts, $partnerMerchantId ) {
+	private function saveSellerRestAPICredentials( &$payPalAccount, $partnerMerchantId ) {
 		$tokenInfo = get_option( OptionId::$accessTokenOptionKey, [ 'access_token' => '' ] );
 
 		$payPalResponse = wp_remote_retrieve_body(
@@ -92,7 +87,7 @@ class onBoardingRedirectHandler {
 			)
 		);
 
-		$payPalAccounts[ $partnerMerchantId ][ $this->mode ] = json_decode( $payPalResponse, true );
+		$payPalAccount[ $this->mode ] = json_decode( $payPalResponse, true );
 	}
 
 	/**

@@ -16,8 +16,6 @@ class Utils {
 	 * @since 2.8.0
 	 */
 	public static function isConnected() {
-		$mode = give_is_test_mode() ? 'sandbox' : 'live';
-
-		return isset( get_option( OptionId::$payPalAccountsOptionKey )[ $mode ] );
+		return get_option( OptionId::$payPalAccountsOptionKey, [] );
 	}
 }

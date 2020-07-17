@@ -35,5 +35,5 @@ class OptionId {
 	 * @var string
 	 * @since 2.8.0
 	 */
-	public static $payPalAccountsOptionKey = 'give_paypal_commerce_accounts';
+	public static $payPalAccountsOptionKey = 'give_paypal_commerce_account';
 }
