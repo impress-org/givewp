@@ -79,12 +79,16 @@ article .action {
 	grid-area: action;
 }
 article .action a {
-	display: block;
 	color: inherit;
 	font-size: 22px;
 	text-align: right;
 	margin-right: 40px;
 	text-decoration: none;
+
+	/*
+	 * Float the anchor to avoid expanding the focus state.
+	 */
+	float: right;
 }
 article .header {
 	margin: 20px 0 0;
