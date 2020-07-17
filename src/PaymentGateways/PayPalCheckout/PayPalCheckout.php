@@ -16,7 +16,7 @@ class PayPalCheckout implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return esc_html__( 'PayPal Checkout', 'give' );
+		return esc_html__( 'PayPal Donations', 'give' );
 	}
 
 	/**
