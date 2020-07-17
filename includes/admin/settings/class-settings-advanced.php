@@ -158,7 +158,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							/* translators: %s: about page URL */
 							'desc'    => sprintf(
 								wp_kses(
-									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first isntalled.', 'give' ),
+									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first installed.', 'give' ),
 									[
 										'a' => [
 											'href'   => [],
