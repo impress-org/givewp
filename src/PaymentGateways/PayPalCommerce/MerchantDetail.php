@@ -48,6 +48,7 @@ class MerchantDetail {
 
 	/**
 	 * Environment mode.
+	 *
 	 * @var null|string
 	 */
 	private $mode = null;

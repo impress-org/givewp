@@ -48,7 +48,7 @@ interface PaymentGateway {
 	/**
 	 * Bootstrap payment gateway
 	 *
-	 * 2since 2.8.0
+	 * @since 2.8.0
 	 */
 	public function boot();
 }
