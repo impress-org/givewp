@@ -356,14 +356,14 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 // Handle paypal onboarding.
 document.addEventListener( 'DOMContentLoaded', () => {
-	const onBoradingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
+	const onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
 		  changePayPalAccountButton = document.getElementById( 'js-give-paypal-change-paypal-account' ),
 		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
 		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
 		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' );
 
-	if ( onBoradingButton ) {
-		onBoradingButton.addEventListener( 'click', function( evt ) {
+	if ( onBoardingButton ) {
+		onBoardingButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
 
 			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
