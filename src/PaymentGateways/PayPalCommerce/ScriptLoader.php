@@ -70,7 +70,7 @@ EOT;
 	private function getPartnerJsUrl() {
 		return sprintf(
 			'https://www.%1$spaypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js',
-			'sandbox' === give()->make( PayPalClient::class )->mode ? '.sandbox' : ''
+			'sandbox' === give()->make( PayPalClient::class )->mode ? 'sandbox.' : ''
 		);
 	}
 }
