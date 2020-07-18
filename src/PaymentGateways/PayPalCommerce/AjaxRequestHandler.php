@@ -17,6 +17,7 @@ class AjaxRequestHandler {
 	public function boot() {
 		add_action( 'wp_ajax_give_paypal_commerce_user_on_boarded', [ $this, 'onBoardedUserAjaxRequestHandler' ] );
 		add_action( 'wp_ajax_give_paypal_commerce_get_partner_url', [ $this, 'onGetPartnerUrlAjaxRequestHandler' ] );
+		add_action( 'wp_ajax_give_paypal_commerce_disconnect_account', [ $this, 'removePayPalAccount' ] );
 	}
 
 	/**
@@ -80,5 +81,16 @@ class AjaxRequestHandler {
 		update_option( OptionId::$partnerInfoOptionKey, $data );
 
 		wp_send_json_success( $data );
+	}
+
+	/**
+	 * give_paypal_commerce_disconnect_account ajax request handler.
+	 *
+	 * @since 2.8.0
+	 */
+	public function removePayPalAccount() {
+		give()->make( MerchantDetail::class )->delete();
+
+		wp_send_json_success();
 	}
 }

@@ -87,6 +87,17 @@ class MerchantDetail {
 	}
 
 	/**
+	 * Delete merchant details.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		return delete_option( OptionId::$payPalAccountsOptionKey );
+	}
+
+	/**
 	 * Return array of merchnat details.
 	 *
 	 * @sicne 2.8.0

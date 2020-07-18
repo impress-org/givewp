@@ -353,30 +353,56 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 // Handle paypal onboarding.
 document.addEventListener( 'DOMContentLoaded', () => {
-	const button = document.getElementById( 'js-give-paypal-on-boarding-handler' );
+	const onBoradingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
+		  changePayPalAccountButton = document.getElementById( 'js-give-paypal-change-paypal-account' ),
+		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
+		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
+		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' );
 
-	if ( ! button ) {
-		return;
+	if ( onBoradingButton ) {
+		onBoradingButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
+			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+
+			fetch( ajaxurl + '?action=give_paypal_commerce_get_partner_url' )
+				.then( response => response.json() )
+				.then( function( res ) {
+					// @todo handle error.
+					if ( true === res.success ) {
+						const payPalLink = document.querySelector( '[data-paypal-button]' );
+
+						payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+						payPalLink.click();
+					}
+				}
+				);
+
+			return false;
+		} );
 	}
 
-	button.addEventListener( 'click', function( evt ) {
-		evt.preventDefault();
+	if ( changePayPalAccountButton ) {
+		changePayPalAccountButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
 
-		evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+			connectionSettingContainer.classList.remove( 'give-hidden' );
+			disConnectionSettingContainer.classList.add( 'give-hidden' );
 
-		fetch( ajaxurl + '?action=give_paypal_commerce_get_partner_url' )
-			.then( response => response.json() )
-			.then( function( res ) {
-				// @todo handle error.
-				if ( true === res.success ) {
-					const payPalLink = document.querySelector( '[data-paypal-button]' );
+			return false;
+		} );
+	}
 
-					payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
-					payPalLink.click();
-				}
-			}
-			);
+	if ( disconnectPayPalAccountButton ) {
+		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
 
-		return false;
-	} );
+			connectionSettingContainer.classList.remove( 'give-hidden' );
+			disConnectionSettingContainer.classList.add( 'give-hidden' );
+
+			fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+
+			return false;
+		} );
+	}
 } );
