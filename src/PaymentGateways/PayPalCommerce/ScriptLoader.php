@@ -31,7 +31,7 @@ class ScriptLoader {
 
 			wp_enqueue_script(
 				'give-paypal-partner-js',
-				'https://www.sandbox.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js',
+				$this->getPartnerJsUrl()
 				[],
 				null,
 				true
@@ -60,5 +60,19 @@ EOT;
 				$script
 			);
 		}
+	}
+
+	/**
+	 * Get PayPal partner js url.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getPartnerJsUrl() {
+		return sprintf(
+			'https://www.%1$spaypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js',
+			'sandbox' === give()->make( PayPalClient::class )->mode ? '.sandbox' : ''
+		);
 	}
 }
