@@ -49,12 +49,19 @@ class ScriptLoader {
 			$script = <<<EOT
 				function givePayPalOnBoardedCallback(authCode, sharedId) {
 					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
-					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query );
+					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
+						.then(function(res){ return res.json() })
+						.then(function(res) {
+							if ( true !== res.success ) {
+								alert("Something went wrong!");
+								}
+							}
+						);
 				}
 EOT;
 
 			wp_add_inline_script(
-				'paypal-partner-js',
+				'give-paypal-partner-js',
 				$script
 			);
 		}
