@@ -1,5 +1,6 @@
 <?php
-namespace Give\PaymentGateways\PaypalCommerce;
+
+namespace Give\PaymentGateways\PayPalCommerce;
 
 /**
  * Class PayPalClient

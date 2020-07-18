@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PaypalCommerce;
+namespace Give\PaymentGateways\PayPalCommerce;
 
 /**
  * Class AjaxRequestHandler
@@ -72,7 +72,8 @@ class AjaxRequestHandler {
 		$restApiUrl = sprintf(
 			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
 			give_is_test_mode() ? 'sandbox' : 'live',
-			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
+			//          urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
+			'https://google.com'
 		);
 
 		$response = wp_remote_get( $restApiUrl );
