@@ -19,6 +19,10 @@ class onBoardingRedirectHandler {
 		if ( $this->isPayPalUserRedirected() ) {
 			$this->savePayPalMerchantDetails();
 		}
+
+		if ( $this->isPayPalAccountDetailsSaved() ) {
+			$this->showNotice();
+		}
 	}
 
 	/**
@@ -28,7 +32,7 @@ class onBoardingRedirectHandler {
 	 * @return void
 	 * @since 2.8.0
 	 */
-	public function savePayPalMerchantDetails() {
+	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
 		$mode          = give()->make( PayPalClient::class )->mode;
 
@@ -102,14 +106,7 @@ class onBoardingRedirectHandler {
 	 *
 	 * @since 2.8.0
 	 */
-	public function showNotice() {
-		if (
-			! isset( $_GET['paypal-account-connected'] ) ||
-			! Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' )
-		) {
-			return;
-		}
-
+	private function showNotice() {
 		Give_Admin_Settings::add_message( 'paypal-account-connected', esc_html__( 'PayPal account connected successfully.', 'give' ) );
 	}
 
@@ -122,5 +119,16 @@ class onBoardingRedirectHandler {
 	 */
 	private function isPayPalUserRedirected() {
 		return isset( $_GET['merchantIdInPayPal'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
+	}
+
+	/**
+	 * Return whether or not PayPal account details saved.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	private function isPayPalAccountDetailsSaved() {
+		return isset( $_GET['paypal-account-connected'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
 	}
 }
