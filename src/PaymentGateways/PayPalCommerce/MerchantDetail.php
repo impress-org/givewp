@@ -1,7 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Class MerchantDetail
@@ -69,8 +69,10 @@ class MerchantDetail {
 	public function boot() {
 		$paypalAccount = get_option( OptionId::$payPalAccountsOptionKey, [] );
 
-		$this->validate( $paypalAccount );
-		$this->setupProperties( $paypalAccount );
+		if ( $paypalAccount ) {
+			$this->validate( $paypalAccount );
+			$this->setupProperties( $paypalAccount );
+		}
 
 		return $this;
 	}
