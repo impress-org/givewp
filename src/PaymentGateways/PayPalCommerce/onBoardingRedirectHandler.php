@@ -10,23 +10,12 @@ use Give_Admin_Settings;
  * @since 2.8.0
  */
 class onBoardingRedirectHandler {
-
-	/**
-	 * Environment type.
-	 *
-	 * @var string
-	 * @since 2.8.0
-	 */
-	private $mode;
-
 	/**
 	 * Bootstrap class
 	 *
 	 * @since 2.8.0
 	 */
 	public function boot() {
-		$this->mode = give_is_test_mode() ? 'sandbox' : 'live';
-
 		if ( $this->isPayPalUserRedirected() ) {
 			$this->savePayPalMerchantDetails();
 		}
@@ -41,6 +30,7 @@ class onBoardingRedirectHandler {
 	 */
 	public function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$mode          = give()->make( PayPalClient::class )->mode;
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -49,31 +39,37 @@ class onBoardingRedirectHandler {
 
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
-		$this->saveSellerRestAPICredentials( $payPalAccount, $payPalAccount['merchantIdInPayPal'] );
+		$restApiCredentials = $this->getSellerRestAPICredentials( $payPalAccount['merchantIdInPayPal'] );
 
-		update_option( OptionId::$payPalAccountsOptionKey, $payPalAccount );
+		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
+		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
 
-		$this->deleteTempOption();
+		/* @var MerchantDetail $merchantDetails */
+		$merchantDetails = give()->make( MerchantDetail::class )->fromArray( $payPalAccount );
+		$merchantDetails->save();
+
+		$this->deleteTempOptions();
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
 	}
 
 	/**
-	 * Save seller rest API credentials
+	 * Get seller rest API credentials
 	 *
-	 * @param array $payPalAccount
-	 * @param string $partnerMerchantId
-	 * @return void
+	 * @param string $merchantId
+	 *
 	 * @since 2.8.0
+	 *
+	 * @return array
 	 */
-	private function saveSellerRestAPICredentials( &$payPalAccount, $partnerMerchantId ) {
+	private function getSellerRestAPICredentials( $merchantId ) {
 		$tokenInfo = get_option( OptionId::$accessTokenOptionKey, [ 'access_token' => '' ] );
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_get(
 				sprintf(
 					'https://api.sandbox.paypal.com/v1/customer/partners/%1$s/merchant-integrations/credentials/',
-					$partnerMerchantId
+					$merchantId
 				),
 				[
 					'headers' => [
@@ -87,7 +83,7 @@ class onBoardingRedirectHandler {
 			)
 		);
 
-		$payPalAccount[ $this->mode ] = json_decode( $payPalResponse, true );
+		return json_decode( $payPalResponse, true );
 	}
 
 	/**
@@ -96,7 +92,7 @@ class onBoardingRedirectHandler {
 	 * @return void
 	 * @since 2.8.0
 	 */
-	private function deleteTempOption() {
+	private function deleteTempOptions() {
 		delete_option( OptionId::$partnerInfoOptionKey );
 		delete_option( OptionId::$accessTokenOptionKey );
 	}
