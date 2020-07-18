@@ -39,15 +39,8 @@ class ScriptLoader {
 
 			$script = <<<EOT
 				function givePayPalOnBoardedCallback(authCode, sharedId) {
-					console.log( authCode, sharedId );
 					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
-					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded&_wpnonce={$nonce}' + query )
-						.then(function(res){
-							return res.json()
-						})
-						.then(function(res) {
-							console.log(res)
-						});
+					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded&_wpnonce={$nonce}' + query );
 				}
 EOT;
 
