@@ -9,7 +9,10 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/* globals Give, jQuery */
+/* globals Give, jQuery, givePayPalCommerce */
+
+import { GiveConfirmModal } from './../plugins/modal';
+
 jQuery( document ).ready( function( $ ) {
 	/**
 	 *  Sortable payment gateways.
@@ -397,10 +400,18 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
 
-			connectionSettingContainer.classList.remove( 'give-hidden' );
-			disConnectionSettingContainer.classList.add( 'give-hidden' );
+			new GiveConfirmModal( {
+				modalContent: {
+					title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
+					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
+				},
+				successConfirm: () => {
+					connectionSettingContainer.classList.remove( 'give-hidden' );
+					disConnectionSettingContainer.classList.add( 'give-hidden' );
 
-			fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+				},
+			} ).render();
 
 			return false;
 		} );

@@ -30,11 +30,22 @@ class ScriptLoader {
 			$nonce = wp_create_nonce( 'give_paypal_commerce_user_onboarded' );
 
 			wp_enqueue_script(
-				'paypal-partner-js',
+				'give-paypal-partner-js',
 				'https://www.sandbox.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js',
 				[],
 				null,
 				true
+			);
+
+			wp_localize_script(
+				'give-paypal-partner-js',
+				'givePayPalCommerce',
+				[
+					'translations' => [
+						'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
+						'disconnectPayPalAccount' => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
+					],
+				]
 			);
 
 			$script = <<<EOT
