@@ -17,10 +17,10 @@ class PayPalWebhooks {
 	 *
 	 * @since 2.8.0
 	 *
-	 * TODO: Load dependencies via service container once introduced
+	 * @param Webhooks $webhooksRepository
 	 */
-	public function __construct() {
-		$this->webhooksRepository = new Webhooks();
+	public function __construct( Webhooks $webhooksRepository ) {
+		$this->webhooksRepository = $webhooksRepository;
 	}
 
 	/**
@@ -50,6 +50,8 @@ class PayPalWebhooks {
 	/**
 	 * This takes an event type such as CHECKOUT.ORDER.APPROVED, breaks it apart, and puts it back
 	 * together as a studly cased class: CheckoutOrderApproved.
+	 *
+	 * @since 2.8.0
 	 *
 	 * @param string $event_type
 	 *

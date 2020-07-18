@@ -42,9 +42,14 @@ class PayPalWebhooks implements Route {
 		return $vars;
 	}
 
+	/**
+	 * Calls the corresponding controller for the route in the appropriate context
+	 *
+	 * @since 2.8.0
+	 */
 	public function callController() {
 		if ( get_query_var( 'give_webhook_event', null ) ) {
-			( new Controller() )->handle();
+			give( Controller::class )->handle();
 
 			http_response_code( 200 );
 			die();
