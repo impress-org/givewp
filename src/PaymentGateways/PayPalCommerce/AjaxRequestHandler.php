@@ -26,7 +26,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onBoardedUserAjaxRequestHandler() {
-		$this->sentErrorAjaxRequestIfUserDoesNotHasPermission();
+		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
 		$partnerLinkInfo = get_option( OptionId::$partnerInfoOptionKey, [ 'nonce' => '' ] );
 
@@ -67,7 +67,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onGetPartnerUrlAjaxRequestHandler() {
-		$this->sentErrorAjaxRequestIfUserDoesNotHasPermission();
+		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
 		$restApiUrl = sprintf(
 			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
@@ -93,7 +93,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function removePayPalAccount() {
-		$this->sentErrorAjaxRequestIfUserDoesNotHasPermission();
+		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
 		give()->make( MerchantDetail::class )->delete();
 
@@ -105,7 +105,7 @@ class AjaxRequestHandler {
 	 *
 	 * @since 2.8.0
 	 */
-	private function sentErrorAjaxRequestIfUserDoesNotHasPermission() {
+	private function sendErrorOnAjaxRequestIfUserDoesNotHasPermission() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_send_json_error();
 		}
