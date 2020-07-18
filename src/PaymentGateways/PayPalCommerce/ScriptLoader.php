@@ -29,7 +29,7 @@ class ScriptLoader {
 		if ( Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
 			wp_enqueue_script(
 				'give-paypal-partner-js',
-				$this->getPartnerJsUrl()
+				$this->getPartnerJsUrl(),
 				[],
 				null,
 				true
