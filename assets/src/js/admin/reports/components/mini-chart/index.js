@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 //Import ChartJS dependencies
 import ChartJS from 'chart.js';
-import { createConfig, getTrend, getHighlightValue, getTooltipText } from './utils';
+import { createConfig, getTrend, getHighlightValue, getTooltipText, numberToDigits } from './utils';
 
 import Tooltip from '../tooltip';
 
@@ -47,7 +47,7 @@ const MiniChart = ( { title, data } ) => {
 
 	useEffect( () => {
 		const newHighlightValue = getHighlightValue( data );
-		const newTrend = getTrend( data );
+		const newTrend = getTrend( data ) === 0 ? 0 : numberToDigits( getTrend( data ), 3, 2 );
 		const newTooltipText = getTooltipText( data );
 		let newIndicator;
 

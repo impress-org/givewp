@@ -220,8 +220,16 @@
 				// Remove purchase_loading text
 				window.give_global_vars.purchase_loading = '';
 
+				// Move errors
 				$( '.give_error' ).each( function() {
 					moveErrorNotice( $( this ) );
+				} );
+
+				// Setup anonymouse donations opt-in event listeners
+				setupCheckbox( {
+					container: '#give-anonymous-donation-wrap label',
+					label: '#give-anonymous-donation-wrap label',
+					input: '#give-anonymous-donation',
 				} );
 
 				// Setup recurring donations opt-in event listeners
@@ -236,6 +244,13 @@
 					container: '.give-fee-recovery-donors-choice',
 					label: '.give-fee-message-label-text',
 					input: 'input[name="give_fee_mode_checkbox"]',
+				} );
+
+				// Setup activecampaign opt-in event listeners
+				setupCheckbox( {
+					container: '.give-activecampaign-fieldset',
+					label: '.give-activecampaign-optin-label',
+					input: '.give-activecampaign-optin-input',
 				} );
 
 				// Setup mailchimp opt-in event listeners
@@ -295,6 +310,10 @@
 							// do things to your newly added nodes here
 							const node = mutation.addedNodes[ i ];
 
+							if ( $( node ).find( '.give_error' ).length > 0 ) {
+								moveErrorNotice( $( node ).find( '.give_error' ) );
+							}
+
 							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
 								$( node ).children( '.give_errors' ).each( function() {
 									const notice = $( this );
@@ -349,6 +368,7 @@
 		$( document ).on( 'give_gateway_loaded', function() {
 			setupTabOrder();
 			moveFieldsUnderPaymentGateway( true );
+			setupSelectInputs();
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
 				gatewayAnimating = false;
 			} );
@@ -375,6 +395,9 @@
 
 		// Refresh payment information section.
 		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
+	} else {
+		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
+		setupSelectInputs();
 	}
 
 	/**
@@ -383,6 +406,11 @@
 	 * @param {node} node The error notice node to be moved
 	 */
 	function moveErrorNotice( node ) {
+		//If the error is inside stripe payment button, do nothing
+		if ( $( node ).parent().hasClass( 'give-stripe-payment-request-button' ) ) {
+			return;
+		}
+
 		// First check if specific donation notice container has been set up
 		if ( $( '.donation-errors' ).length === 0 ) {
 			$( '.payment' ).prepend( '<div class="donation-errors"></div>' );
@@ -445,6 +473,7 @@
 		// The elements will appear in order of array
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
+			'.give-activecampaign-fieldset',
 			'.give-mailchimp-fieldset',
 			'#give_terms_agreement',
 			'.give-donation-submit',
@@ -623,7 +652,11 @@
 		}
 
 		// Persist checkbox input border when selected
-		$( label ).on( 'click touchend', function() {
+		$( label ).on( 'click touchend', function( evt ) {
+			if ( container === label ) {
+				evt.stopPropagation();
+				evt.preventDefault();
+			}
 			$( container ).toggleClass( 'active' );
 		} );
 	}
@@ -676,5 +709,21 @@
 
 	function clearLoginNotices() {
 		$( '#give_error_must_log_in' ).remove();
+	}
+
+	/**
+	 * Setup select inputs
+	 *
+	 * @since 2.7.0
+	 */
+	function setupSelectInputs() {
+		if ( $( 'select option[selected="selected"][value=""]' ).length > 0 ) {
+			$( 'select option[selected="selected"][value=""]' ).each( function() {
+				if ( $( this ).parent().siblings( 'label' ).length ) {
+					$( this ).text( $( this ).parent().siblings( 'label' ).text().replace( '*', '' ).trim() );
+					$( this ).attr( 'disabled', true );
+				}
+			} );
+		}
 	}
 }( jQuery ) );

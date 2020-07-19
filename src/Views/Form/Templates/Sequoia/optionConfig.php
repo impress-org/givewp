@@ -49,7 +49,7 @@ return [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'Upload an eye-catching image that reflects your cause. For best results use an image that’s 600x400 pixels.', 'give' ),
+				'desc' => __( 'Upload an eye-catching image that reflects your cause. For best results use an image in 16x9 aspect ratio at least 680x400px.', 'give' ),
 				'type' => 'file',
 			],
 			[
@@ -150,7 +150,7 @@ return [
 			[
 				'id'   => 'image',
 				'name' => __( 'Image', 'give' ),
-				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a check mark icon will appear.', 'give' ),
+				'desc' => __( 'This image appears above the main thank you content. If no image is provided, a check mark icon will appear. For best results use an image in 16x9 aspect ratio at least 680x400px.', 'give' ),
 				'type' => 'file',
 			],
 			[
@@ -166,12 +166,12 @@ return [
 			[
 				'id'         => 'description',
 				'name'       => __( 'Description', 'give' ),
-				'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences. You may use any of the available template tags within this message.', 'give' ),
+				'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences. You may use <a href="http://docs.givewp.com/email-tags target="_blank">any of the available template tags</a> within this message.', 'give' ),
 				'type'       => 'textarea',
 				'attributes' => [
-					'placeholder' => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+					'placeholder' => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				],
-				'default'    => __( '{name}, you contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+				'default'    => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
 			[
 				'name'    => __( 'Social Sharing', 'give' ),

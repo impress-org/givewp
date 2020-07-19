@@ -16,7 +16,7 @@ class TotalIncome extends Endpoint {
 		$this->endpoint = 'total-income';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -28,7 +28,10 @@ class TotalIncome extends Endpoint {
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
-			case ( $diff->days > 7 ):
+			case ( $diff->days > 5 ):
+				$data = $this->get_data( $start, $end, 'P1D' );
+				break;
+			case ( $diff->days > 4 ):
 				$data = $this->get_data( $start, $end, 'PT12H' );
 				break;
 			case ( $diff->days > 2 ):
@@ -55,17 +58,18 @@ class TotalIncome extends Endpoint {
 		// Subtract interval to set up period start
 		date_sub( $periodStart, $interval );
 
-		while ( $periodStart <= $end ) {
+		while ( $periodStart < $end ) {
 
 			$incomeForPeriod = $this->get_income( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$time            = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			switch ( $intervalStr ) {
+				case 'P1D':
+					$time        = $periodStart->format( 'Y-m-d' );
+					$periodLabel = $periodStart->format( 'l' );
+					break;
 				case 'PT12H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT3H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT1H':
 					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 					break;
@@ -74,7 +78,7 @@ class TotalIncome extends Endpoint {
 			}
 
 			$income[] = [
-				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'x' => $time,
 				'y' => $incomeForPeriod,
 			];
 
@@ -84,43 +88,50 @@ class TotalIncome extends Endpoint {
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
+						'sanitize'        => false,
 					]
 				),
 				'body'   => __( 'Total Income', 'give' ),
 				'footer' => $periodLabel,
 			];
 
-				// Add interval to set up next period
-				date_add( $periodStart, $interval );
-				date_add( $periodEnd, $interval );
+			// Add interval to set up next period
+			date_add( $periodStart, $interval );
+			date_add( $periodEnd, $interval );
 		}
 
-			$totalIncomeForPeriod = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
-			$trend                = $this->get_trend( $start, $end, $income );
+		if ( $intervalStr === 'P1D' ) {
+			$income   = array_slice( $income, 1 );
+			$tooltips = array_slice( $tooltips, 1 );
+		}
 
-			$diff = date_diff( $start, $end );
-			$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
+		$totalIncomeForPeriod = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend                = $this->get_trend( $start, $end, $income );
 
-			// Create data objec to be returned, with 'highlights' object containing total and average figures to display
-			$data = [
-				'datasets' => [
-					[
-						'data'      => $income,
-						'tooltips'  => $tooltips,
-						'trend'     => $trend,
-						'info'      => $info,
-						'highlight' => give_currency_filter(
-							give_format_amount( $totalIncomeForPeriod ),
-							[
-								'currency_code'   => $this->currency,
-								'decode_currency' => true,
-							]
-						),
-					],
+		$diff = date_diff( $start, $end );
+		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
+
+		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
+		$data = [
+			'datasets' => [
+				[
+					'data'      => $income,
+					'tooltips'  => $tooltips,
+					'trend'     => $trend,
+					'info'      => $info,
+					'highlight' => give_currency_filter(
+						give_format_amount( $totalIncomeForPeriod ),
+						[
+							'currency_code'   => $this->currency,
+							'decode_currency' => true,
+							'sanitize'        => false,
+						]
+					),
 				],
-			];
+			],
+		];
 
-			return $data;
+		return $data;
 
 	}
 
@@ -133,8 +144,8 @@ class TotalIncome extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevIncome    = $this->get_earnings( $prevStart->format( 'Y-m-d' ), $prevEnd->format( 'Y-m-d' ) );
-		$currentIncome = $this->get_earnings( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
+		$prevIncome    = $this->get_income( $prevStart->format( 'Y-m-d' ), $prevEnd->format( 'Y-m-d' ) );
+		$currentIncome = $this->get_income( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
 
 		// Set default trend to 0
 		$trend = 0;
@@ -145,10 +156,10 @@ class TotalIncome extends Endpoint {
 			// Check if it is a percent decreate, or increase
 			if ( $prevIncome > $currentIncome ) {
 				// Calculate a percent decrease
-				$trend = round( ( ( ( $prevIncome - $currentIncome ) / $prevIncome ) * 100 ), 1 ) * -1;
+				$trend = ( ( ( $prevIncome - $currentIncome ) / $prevIncome ) * 100 ) * -1;
 			} elseif ( $currentIncome > $prevIncome ) {
 				// Calculate a percent increase
-				$trend = round( ( ( ( $currentIncome - $prevIncome ) / $prevIncome ) * 100 ), 1 );
+				$trend = ( ( $currentIncome - $prevIncome ) / $prevIncome ) * 100;
 			}
 		}
 
@@ -157,13 +168,13 @@ class TotalIncome extends Endpoint {
 
 	public function get_income( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$income = 0;
 
 		foreach ( $paymentObjects as $paymentObject ) {
 			if ( $paymentObject->currency === $this->currency ) {
-				if ( $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+				if ( $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
 					if ( $paymentObject->status === 'publish' || $paymentObject->status === 'give_subscription' ) {
 						$income += $paymentObject->total;
 					}
@@ -174,7 +185,4 @@ class TotalIncome extends Endpoint {
 		return $income;
 	}
 
-	public function get_earnings( $startStr, $endStr ) {
-		return $this->get_income( $startStr, $endStr );
-	}
 }

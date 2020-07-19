@@ -145,19 +145,19 @@ class Give_Welcome {
 		switch ( $page ) {
 			case 'give-getting-started':
 				$title   = sprintf( esc_html__( 'Welcome to GiveWP %s', 'give' ), $display_version );
-				$content = esc_html__( 'Thank you for activating the latest version of Give! Welcome to the best fundraising platform for WordPress. We encourage you to check out the plugin documentation and getting started guide below.', 'give' );
+				$content = esc_html__( 'You\'re now using the best fundraising platform for WordPress. The three steps below will set you and your organization up for success in online donations.', 'give' );
 				break;
 
 			case 'give-changelog':
 				$title   = sprintf( esc_html__( 'What\'s New in GiveWP %s', 'give' ), $display_version );
-				$content = esc_html__( 'GiveWP is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. We always recommend keeping GiveWP up to date with the latest version.', 'give' );
+				$content = esc_html__( 'GiveWP is regularly updated with new features and fixes to ensure your fundraising campaigns run smoothly and securely. The only version that is actively supported is the latest version. Please stay up to date.', 'give' );
 				break;
 
 			case 'give-credits':
 				$title   = sprintf( esc_html__( 'GitHub Contributors', 'give' ) );
 				$content = sprintf(
 					/* translators: %s: https://github.com/impress-org/give */
-					__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
+					__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing code, translations, or other improvements, please visit the <a href="%s" target="_blank">GitHub Repository</a>.', 'give' ),
 					esc_url( 'https://github.com/impress-org/give' )
 				);
 
@@ -216,7 +216,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap">
 
-				<p class="give-welcome-content-intro"><?php esc_html_e( 'Getting started with GiveWP is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ); ?></p>
+				<p class="give-welcome-content-intro"><?php esc_html_e( 'Getting started with GiveWP is as easy as the following three steps! GiveWP is designed with "smart defaults" based on online donation best practices, and backed by a team of folks who are passionate about your success in online donations. It\'s their number one priority.', 'give' ); ?></p>
 
 				<div class="give-feature-section give-clearfix">
 					<div class="give-feature-section__inner">
@@ -224,12 +224,12 @@ class Give_Welcome {
 							<div class="give-feature-section-item__container">
 								<h3>
 									<span class="give-feature-section-item-number">1</span>
-									<?php esc_html_e( 'Configure your payment methods', 'give' ); ?>
+									<?php esc_html_e( 'Configure your payment gateways.', 'give' ); ?>
 								</h3>
 
-								<p><?php esc_html_e( 'Before you can begin fundraising, first you need to set up your payment gateway. Payment gateways allow you to accept payment methods through your donation forms. GiveWP supports many of the top payment processors through our add-ons. Stripe and PayPal Standard are included for free in the core plugin. Please ensure your site is running securely with a valid SSL certificate before accepting online payments.', 'give' ); ?></p>
+								<p><?php esc_html_e( 'GiveWP is not a payment processor, and for PCI compliance reasons, that\'s a very good thing. Instead, GiveWP supports connecting to many of the top payment processors. Stripe and PayPal Standard are included for free in the main plugin, while other payment gateways can be integrated by activating GiveWP add-ons. Please ensure your site is running securely with a valid SSL certificate before accepting online payments.', 'give' ); ?></p>
 
-								<p><?php echo sprintf( __( 'Having Trouble? Our team is here to help if you need to ask any questions. If you need help setting up your payment gateway, contact our <a href="%s" target="_blank">support team</a>.', 'give' ), 'https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started' ); ?></p>
+								<p><?php echo sprintf( __( 'Having Trouble? A team of online donation (and WordPress) experts is available to help. Contact the <a href="%s" target="_blank">GiveWP support team</a> for speedy help from folks who won\'t make you feel silly for asking for it.', 'give' ), 'https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started' ); ?></p>
 
 								<div class="give-welcome-connect-gateways">
 
@@ -244,11 +244,11 @@ class Give_Welcome {
 											<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=welcome-screen&utm_medium=getting-started"
 											   class="give-feature-btn-link"
 											   target="_blank"
-											   title="<?php esc_attr_e( 'View Premium Gateways', 'give' ); ?>"><?php esc_html_e( 'View Premium Gateways', 'give' ); ?></a>
+											   title="<?php esc_attr_e( 'View Premium Gateway Add-ons', 'give' ); ?>"><?php esc_html_e( 'View Premium Gateway Add-ons', 'give' ); ?></a>
 										</li>
 									</ul>
 
-									<p class="give-welcome-gateway-notice give-field-description"><?php esc_html_e( 'Note: The free version of the Stripe payment gateway for GiveWP does not include Apple or Google Pay. In the core plugin, using the free version of Stripe includes an additional 2% fee for a one-time donation in addition to the standard Stripe processing fee. Stripe Premium (the Stripe Add-on for Give) does not include this additional fee. Using PayPal standard does not include any additional fees. However, the donor will be taken to PayPal’s website to process their donation before being redirected back to your site.', 'give' ); ?></p>
+									<p class="give-welcome-gateway-notice give-field-description"><?php esc_html_e( 'Note: The free version of the Stripe payment gateway for GiveWP allows for credit card, SEPA direct debit, BECS direct debit, and Stripe Checkout. Using the free version of Stripe incurs an additional 2% fee on one-time donations in addition to the standard Stripe processing fee. To enable Apple Pay or Google Pay, as well as to remove the additional 2% fee, install and activate the premium Stripe add-on. The only way to avoid that additional fee is to install and activate the premium Stripe add-on. Those fees are non-refundable. Using PayPal Standard does not incur any additional fees.', 'give' ); ?></p>
 
 								</div>
 
@@ -286,21 +286,21 @@ class Give_Welcome {
 								class="give-feature-section-item__container give-feature-section-item__container-right">
 								<h3>
 									<span class="give-feature-section-item-number">2</span>
-									<?php esc_html_e( 'Create your first donation form', 'give' ); ?>
+									<?php esc_html_e( 'Create your first donation form.', 'give' ); ?>
 								</h3>
 
-								<p><?php esc_html_e( 'Donations are accepted through customizable forms. Forms can be stand-alone pages or embedded throughout your website using a block, shortcode, or widget. You can create multi-level forms which allow donors to choose from preconfigured donation amount, allow for custom amounts, and even set a fundraising goal. Customizing your forms with content and images is a breeze. You can also allow donors to leave comments, embed the form throughout your site and more.', 'give' ); ?></p>
+								<p><?php esc_html_e( 'Donations are accepted through customizable donation forms. Forms can be stand-alone pages or embedded throughout your website using a block, shortcode, or widget. Start simple with a multi-step form template which uses smart defaults to supercharge your fundraising using online donation best practices! Once you\'re comfortable with a simple form, take a look at the GiveWP documentation and some premium add-ons to take your online donations to the next level! You can create multi-level forms which allow donors to choose from preconfigured donation amounts, allow for custom amounts, and even set a fundraising goal.', 'give' ); ?></p>
 
 								<ul class="give-feature-btns">
 									<li>
 										<a href="<?php echo admin_url( 'post-new.php?post_type=give_forms' ); ?>"
 										   class="button button-primary button-large"
-										   title="<?php esc_attr_e( 'Add new donation form', 'give' ); ?>"><?php esc_html_e( 'Add Donation Form', 'give' ); ?></a>
+										   title="<?php esc_attr_e( 'Add a new donation form', 'give' ); ?>"><?php esc_html_e( 'Add Donation Form', 'give' ); ?></a>
 									</li>
 									<li>
 										<a href="http://docs.givewp.com/give-forms" class="give-feature-btn-link"
 										   target="_blank"
-										   title="<?php esc_attr_e( 'Learn more about Test Mode', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ); ?></a>
+										   title="<?php esc_attr_e( 'Learn more about creating forms', 'give' ); ?>"><?php esc_html_e( 'Learn more', 'give' ); ?></a>
 									</li>
 								</ul>
 
@@ -322,7 +322,7 @@ class Give_Welcome {
 									<?php esc_html_e( 'Test and launch your campaign!', 'give' ); ?>
 								</h3>
 
-								<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or choose "None" if you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
+								<p><?php esc_html_e( 'Once you\'ve placed your form on a page using the GiveWP block or shortcode, you\'re ready to test it out. Before you go live, take advantage of GiveWP\'s built-in Test Mode for testing donations without using real money. Try getting a true donor experience by viewing your new form in an incognito or private browser, and processing a Test Mode donation. GiveWP defaults to Test Mode when you first install it. Once you\'ve confirmed everything is working, disable Test Mode and get to fundraising!', 'give' ); ?></p>
 
 								<ul class="give-feature-btns">
 									<li>
@@ -380,7 +380,7 @@ class Give_Welcome {
 
 			<div class="give-welcome-content-wrap give-changelog-wrap">
 
-				<p class="give-welcome-content-intro"><?php printf( __( 'See what\'s new in version %1$s of Give! If you feel we\'ve missed a fix or there\'s a feature you\'d like to see developed please <a href="%2$s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started' ); ?></p>
+				<p class="give-welcome-content-intro"><?php printf( __( 'See what\'s new in version %1$s of Give! If you need clarity on anything you see here, don\'t hesitate to <a href="%2$s" target="_blank">contact support</a>.', 'give' ), GIVE_VERSION, 'https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started' ); ?></p>
 
 				<div class="give-changelog">
 					<?php echo $this->parse_readme(); ?>
@@ -416,7 +416,7 @@ class Give_Welcome {
 					<?php
 					printf(
 						/* translators: %s: https://github.com/impress-org/give */
-						__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
+						__( 'GiveWP is backed by a dedicated team of in-house developers and a vibrant open source community. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repository</a>.', 'give' ),
 						esc_url( 'https://github.com/impress-org/give' )
 					);
 					?>
@@ -576,7 +576,7 @@ class Give_Welcome {
 
 				<div class="give-welcome-widgets__heading">
 					<h2><?php esc_html_e( 'Start off on the right foot', 'give' ); ?></h2>
-					<p><?php esc_html_e( 'If you aren’t quite sure how to get started or you want to see the best ways to use GiveWP for your fundraising needs, book a demo. Our Customer Success Team is happy to help.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'If you aren’t quite sure how to get started or you want to see the best ways to use GiveWP for your fundraising needs, book a live demo. The Customer Success Team is happy to help.', 'give' ); ?></p>
 
 					<a href="https://givewp.com/schedule-a-demo/?utm_source=welcome-screen&utm_medium=getting-started"
 					   class="give-welcome-widgets__demo-btn button button-large"
@@ -586,7 +586,7 @@ class Give_Welcome {
 				<div class="give-welcome-widgets__col give-welcome-widgets__support">
 					<div class="give-welcome-widgets__col-inner">
 						<h3><?php esc_html_e( 'Support', 'give' ); ?></h3>
-						<p><?php esc_html_e( 'Inevitably questions arise when building great fundraising websites. That’s exactly why we have a dedicated support staff of GiveWP experts to help you succeed with your campaign. ', 'give' ); ?></p>
+						<p><?php esc_html_e( 'Inevitably questions arise when building great fundraising websites. GiveWP has a dedicated team of world-class experts who are trained to help with personal, patient support.', 'give' ); ?></p>
 
 						<a href="https://givewp.com/support/?utm_source=welcome-screen&utm_medium=getting-started" class="give-welcome-widgets__link"
 						   target="_blank"><?php esc_html_e( 'How support works', 'give' ); ?></a>
@@ -661,7 +661,7 @@ class Give_Welcome {
 		?>
 		<div class="give-newsletter-form-wrap">
 
-			<p class="give-newsletter-intro"><?php esc_html_e( 'Sign up for the below to stay informed about important updates, release notes, fundraising tips, and more! We\'ll never spam you.', 'give' ); ?></p>
+			<p class="give-newsletter-intro"><?php esc_html_e( 'Sign up for the WordPress Nonprofit Newsletter for the latest updates, online donation best practices, and exclusive promotions.', 'give' ); ?></p>
 
 			<form method="POST" action="https://givewp.activehosted.com/proc.php" id="_form_3_" class="_form _form_3 _inline-form  _dark" novalidate>
 				<input type="hidden" name="u" value="3"/>
