@@ -57,7 +57,7 @@ class MerchantDetail {
 	 * MerchantDetail constructor.
 	 */
 	public function __construct() {
-		$this->mode = give()->make( PayPalClient::class )->mode;
+		$this->mode = give( PayPalClient::class )->mode;
 	}
 
 	/**

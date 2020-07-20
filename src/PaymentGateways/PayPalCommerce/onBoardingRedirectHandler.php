@@ -38,7 +38,7 @@ class onBoardingRedirectHandler {
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode          = give()->make( PayPalClient::class )->mode;
+		$mode          = give( PayPalClient::class )->mode;
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -65,7 +65,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
 
 		/* @var MerchantDetail $merchantDetails */
-		$merchantDetails = give()->make( MerchantDetail::class )->fromArray( $payPalAccount );
+		$merchantDetails = give( MerchantDetail::class )->fromArray( $payPalAccount );
 		$merchantDetails->save();
 
 		$this->deleteTempOptions();

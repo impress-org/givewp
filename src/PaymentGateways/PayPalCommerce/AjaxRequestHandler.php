@@ -96,7 +96,7 @@ class AjaxRequestHandler {
 	public function removePayPalAccount() {
 		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
-		give()->make( MerchantDetail::class )->delete();
+		give( MerchantDetail::class )->delete();
 
 		wp_send_json_success();
 	}
