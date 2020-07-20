@@ -61,7 +61,7 @@ class AjaxRequestHandler {
 
 		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
 
-		give( RefreshToken::class )->registerCronJobTorRefreshToken( $payPalResponse['expiresIn'] );
+		give( RefreshToken::class )->registerCronJobToRefreshToken( $payPalResponse['expiresIn'] );
 
 		wp_send_json_success();
 	}
