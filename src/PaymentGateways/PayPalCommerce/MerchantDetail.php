@@ -189,4 +189,27 @@ class MerchantDetail {
 			);
 		}
 	}
+
+	/**
+	 * Get refresh token code.
+	 *
+	 * @since 2.8.0
+	 * @return mixed
+	 */
+	public function getRefreshToken() {
+		return $this->tokenDetails['refreshToken'];
+	}
+
+	/**
+	 * Get refresh token code.
+	 *
+	 * @param array $tokenDetails
+	 *
+	 * @return mixed
+	 * @since 2.8.0
+	 *
+	 */
+	public function setTokenDetails( $tokenDetails ) {
+		$this->tokenDetails = array_merge( $this->tokenDetails, $tokenDetails );
+	}
 }

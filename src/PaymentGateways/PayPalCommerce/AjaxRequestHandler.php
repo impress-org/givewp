@@ -2,6 +2,9 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Helpers\ArrayDataSet;
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+
 /**
  * Class AjaxRequestHandler
  * @package Give\PaymentGateways\PaypalCommerce
@@ -54,9 +57,11 @@ class AjaxRequestHandler {
 			wp_send_json_error();
 		}
 
-		$payPalResponse = $this->renameArrayKeys( json_decode( $payPalResponse, true ) );
+		$payPalResponse = ArrayDataSet::ucWordInKeyNameComesAfterDash( json_decode( $payPalResponse, true ) );
 
 		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
+
+		give( PayPalClient::class )->registerCronJobTorRefreshToken( $payPalResponse['expiresIn'] );
 
 		wp_send_json_success();
 	}
@@ -109,42 +114,5 @@ class AjaxRequestHandler {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_send_json_error();
 		}
-	}
-
-	/**
-	 * Rename array keys.
-	 *
-	 * @param  array  $array
-	 *
-	 * @return array
-	 * @since 2.8.0
-	 *
-	 */
-	private function renameArrayKeys( $array ) {
-		foreach ( $array as $key => $value ) {
-			// Skip if key name does not contain underscore.
-			if ( false === strpos( $key, '_' ) ) {
-				continue;
-			}
-
-			$newKey = explode( '_', $key );
-
-			if ( 1 < count( $newKey ) ) {
-				foreach ( $newKey as $index => $namePart ) {
-					// Skip first string
-					if ( ! $index ) {
-						continue;
-					}
-
-					$newKey[ $index ] = ucfirst( $namePart );
-				}
-
-				$newKey           = implode( '', $newKey );
-				$array[ $newKey ] = $value;
-
-				unset( $array[ $key ] );
-			}
-		}
-		return $array;
 	}
 }

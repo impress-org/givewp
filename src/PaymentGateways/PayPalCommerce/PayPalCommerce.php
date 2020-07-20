@@ -70,6 +70,11 @@ class PayPalCommerce implements PaymentGateway {
 			}
 		);
 
-		give()->singleton( PayPalClient::class );
+		give()->singleton(
+			PayPalClient::class,
+			static function () {
+				return ( new PayPalClient() )->boot();
+			}
+		);
 	}
 }
