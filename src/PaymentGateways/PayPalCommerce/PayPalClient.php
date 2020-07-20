@@ -112,5 +112,7 @@ class PayPalClient {
 
 		$merchant->setTokenDetails( $tokenDetails );
 		$merchant->save();
+
+		$this->registerCronJobTorRefreshToken( $tokenDetails['expiresIn'] );
 	}
 }
