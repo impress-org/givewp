@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give_Admin_Settings;
+use PayPalCheckoutSdk\Core\AccessTokenRequest;
 
 /**
  * Class ScriptLoader
@@ -18,6 +19,7 @@ class ScriptLoader {
 	 */
 	public function boot() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'loadAdminScripts' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'loadPublicScripts' ] );
 	}
 
 	/**
@@ -68,6 +70,63 @@ EOT;
 	}
 
 	/**
+	 * Load public scripts.
+	 *
+	 * @since 2.8.0
+	 */
+	public function loadPublicScripts() {
+		/* @var MerchantDetail $merchant */
+		$merchant = give( MerchantDetail::class );
+
+		wp_enqueue_script(
+			'give-paypal-sdk',
+			sprintf(
+				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture',
+				'hosted-fields',
+				$merchant->clientId,
+				$merchant->merchantIdInPayPal,
+				give_get_currency()
+			),
+			[ 'give' ],
+			null,
+			false
+		);
+
+		add_filter( 'script_loader_tag', [ $this, 'addAttributesToPayPalSdkScript' ], 10, 2 );
+	}
+
+	/**
+	 * Add attributes to PayPal sdk.
+	 *
+	 * @param $tag
+	 * @param $handle
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function addAttributesToPayPalSdkScript( $tag, $handle ) {
+		if ( 'give-paypal-sdk' !== $handle ) {
+			return $tag;
+		}
+
+		/* @var MerchantDetail $merchant */
+		$merchant = give( MerchantDetail::class );
+
+		$tag = str_replace(
+			'src=',
+			sprintf(
+				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
+				$merchant->merchantIdInPayPal,
+				give( PayPalClient::class )->getToken()
+			),
+			$tag
+		);
+
+		return $tag;
+	}
+
+	/**
 	 * Get PayPal partner js url.
 	 *
 	 * @since 2.8.0
@@ -77,7 +136,18 @@ EOT;
 	private function getPartnerJsUrl() {
 		return sprintf(
 			'https://www.%1$spaypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js',
-			'sandbox' === give( PayPalClient::class )->mode ? 'sandbox.' : ''
+			$this->getPayPalScriptFileUrlPrefix()
 		);
+	}
+
+	/**
+	 * Get PayPal script file url prefix.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getPayPalScriptFileUrlPrefix() {
+		return 'sandbox' === give( PayPalClient::class )->mode ? 'sandbox.' : '';
 	}
 }
