@@ -35,7 +35,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
-				'https://api.sandbox.paypal.com/v1/oauth2/token',
+				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/oauth2/token',
 				[
 					'headers' => [
 						'Authorization' => sprintf(
