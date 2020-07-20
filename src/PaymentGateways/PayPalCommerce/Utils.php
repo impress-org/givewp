@@ -1,9 +1,9 @@
 <?php
-namespace Give\PaymentGateways\PaypalCommerce;
+namespace Give\PaymentGateways\PayPalCommerce;
 
 /**
  * Class Utils
- * @package Give\PaymentGateways\PaypalCommerce
+ * @package Give\PaymentGateways\PayPalCommerce
  *
  * @since 2.8.0
  */

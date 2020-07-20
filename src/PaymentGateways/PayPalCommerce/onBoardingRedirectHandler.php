@@ -1,11 +1,11 @@
 <?php
-namespace Give\PaymentGateways\PaypalCommerce;
+namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give_Admin_Settings;
 
 /**
  * Class PayPalOnBoardingRedirectHandler
- * @package Give\PaymentGateways\PaypalCommerce
+ * @package Give\PaymentGateways\PayPalCommerce
  *
  * @since 2.8.0
  */

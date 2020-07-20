@@ -6,7 +6,7 @@ use Give_License;
 
 /**
  * Class AdminSettingFields
- * @package Give\PaymentGateways\PaypalCommerce
+ * @package Give\PaymentGateways\PayPalCommerce
  *
  * @since 2.8.0
  */
