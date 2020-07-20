@@ -54,6 +54,20 @@ class MerchantDetail {
 	private $mode = null;
 
 	/**
+	 * Access token.
+	 *
+	 * @var null|string
+	 */
+	public $accessToken = null;
+
+	/**
+	 * Access token.
+	 *
+	 * @var array
+	 */
+	private $tokenDetails = null;
+
+	/**
 	 * MerchantDetail constructor.
 	 */
 	public function __construct() {
@@ -114,6 +128,7 @@ class MerchantDetail {
 			$this->mode          => [
 				'clientId'     => $this->clientId,
 				'clientSecret' => $this->clientSecret,
+				'token'        => $this->tokenDetails,
 			],
 		];
 	}
@@ -139,9 +154,10 @@ class MerchantDetail {
 	/**
 	 * Setup properties from array.
 	 *
+	 * @param $merchantDetails
+	 *
 	 * @since 2.8.0
 	 *
-	 * @param $merchantDetails
 	 */
 	private function setupProperties( $merchantDetails ) {
 		$this->merchantId         = $merchantDetails['merchantId'];
@@ -149,6 +165,8 @@ class MerchantDetail {
 
 		$this->clientId     = $merchantDetails[ $this->mode ]['clientId'];
 		$this->clientSecret = $merchantDetails[ $this->mode ]['clientSecret'];
+		$this->tokenDetails = $merchantDetails[ $this->mode ]['token'];
+		$this->accessToken  = $this->tokenDetails['accessToken'];
 	}
 
 	/**
@@ -170,5 +188,28 @@ class MerchantDetail {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Get refresh token code.
+	 *
+	 * @since 2.8.0
+	 * @return mixed
+	 */
+	public function getRefreshToken() {
+		return $this->tokenDetails['refreshToken'];
+	}
+
+	/**
+	 * Get refresh token code.
+	 *
+	 * @param array $tokenDetails
+	 *
+	 * @return mixed
+	 * @since 2.8.0
+	 *
+	 */
+	public function setTokenDetails( $tokenDetails ) {
+		$this->tokenDetails = array_merge( $this->tokenDetails, $tokenDetails );
 	}
 }

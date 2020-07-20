@@ -4,7 +4,6 @@ namespace  Give\PaymentGateways;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\AdminSettingFields;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use function give_get_current_setting_section as getCurrentSettingSection;
 
 /**
@@ -48,10 +47,6 @@ class PaypalSettingPage implements SettingPage {
 		// Load custom setting fields.
 		$adminSettingFields = new AdminSettingFields();
 		$adminSettingFields->boot();
-
-		// Handle paypal redirect on setting page after on boarding seller.
-		( new onBoardingRedirectHandler )->boot();
-
 	}
 
 	/**

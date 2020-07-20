@@ -39,6 +39,7 @@ class onBoardingRedirectHandler {
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
 		$mode          = give( PayPalClient::class )->mode;
+		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -47,7 +48,7 @@ class onBoardingRedirectHandler {
 
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
-		$restApiCredentials = $this->getSellerRestAPICredentials( $payPalAccount['merchantIdInPayPal'] );
+		$restApiCredentials = $this->getSellerRestAPICredentials( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		if ( ! $this->validateRestApiCredentials( $restApiCredentials ) ) {
 			wp_redirect(
@@ -60,9 +61,9 @@ class onBoardingRedirectHandler {
 			);
 			exit;
 		}
-
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
+		$payPalAccount[ $mode ]['token']        = $tokenInfo;
 
 		/* @var MerchantDetail $merchantDetails */
 		$merchantDetails = give( MerchantDetail::class )->fromArray( $payPalAccount );
@@ -78,14 +79,13 @@ class onBoardingRedirectHandler {
 	 * Get seller rest API credentials
 	 *
 	 * @param string $merchantId
+	 * @param string $accessToken
 	 *
 	 * @since 2.8.0
 	 *
 	 * @return array
 	 */
-	private function getSellerRestAPICredentials( $merchantId ) {
-		$tokenInfo = get_option( OptionId::$accessTokenOptionKey, [ 'access_token' => '' ] );
-
+	private function getSellerRestAPICredentials( $merchantId, $accessToken ) {
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_get(
 				sprintf(
@@ -96,7 +96,7 @@ class onBoardingRedirectHandler {
 					'headers' => [
 						'Authorization' => sprintf(
 							'Bearer %1$s',
-							$tokenInfo['access_token']
+							$accessToken
 						),
 						'Content-Type'  => 'application/json',
 					],

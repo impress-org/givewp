@@ -71,5 +71,17 @@ class PayPalCommerce implements PaymentGateway {
 		);
 
 		give()->singleton( PayPalClient::class );
+
+		give()->singleton(
+			RefreshToken::class,
+			static function() {
+				return ( new RefreshToken() )->boot();
+			}
+		);
+
+		// Boot RefreshToken class immediately if cron job running.
+		if ( wp_doing_cron() ) {
+			give( RefreshToken::class );
+		}
 	}
 }

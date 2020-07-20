@@ -2,6 +2,9 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Helpers\ArrayDataSet;
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+
 /**
  * Class AjaxRequestHandler
  * @package Give\PaymentGateways\PaypalCommerce
@@ -54,9 +57,11 @@ class AjaxRequestHandler {
 			wp_send_json_error();
 		}
 
-		$payPalResponse = json_decode( $payPalResponse, true );
+		$payPalResponse = ArrayDataSet::ucWordInKeyNameComesAfterDash( json_decode( $payPalResponse, true ) );
 
 		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
+
+		give( RefreshToken::class )->registerCronJobTorRefreshToken( $payPalResponse['expiresIn'] );
 
 		wp_send_json_success();
 	}

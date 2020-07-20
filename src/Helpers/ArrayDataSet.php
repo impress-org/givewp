@@ -61,4 +61,44 @@ class ArrayDataSet {
 
 		return $array;
 	}
+
+
+	/**
+	 * Rename array keys.
+	 * Covert word first letter to uppercase which comes after dash.
+	 * For example: access_token will be renamed to accessToken
+	 *
+	 * @param $array
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return mixed
+	 */
+	public static function ucWordInKeyNameComesAfterDash( $array ) {
+		foreach ( $array as $key => $value ) {
+			// Skip if key name does not contain underscore.
+			if ( false === strpos( $key, '_' ) ) {
+				continue;
+			}
+
+			$newKey = explode( '_', $key );
+
+			if ( 1 < count( $newKey ) ) {
+				foreach ( $newKey as $index => $namePart ) {
+					// Skip first string
+					if ( ! $index ) {
+						continue;
+					}
+
+					$newKey[ $index ] = ucfirst( $namePart );
+				}
+
+				$newKey           = implode( '', $newKey );
+				$array[ $newKey ] = $value;
+
+				unset( $array[ $key ] );
+			}
+		}
+		return $array;
+	}
 }
