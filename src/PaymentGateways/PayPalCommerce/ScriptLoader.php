@@ -93,6 +93,15 @@ EOT;
 		);
 
 		add_filter( 'script_loader_tag', [ $this, 'addAttributesToPayPalSdkScript' ], 10, 2 );
+
+		wp_enqueue_script(
+			'give-paypal-advanced-card-fields',
+			'',
+			[ 'give-paypal-sdk' ],
+			GIVE_VERSION,
+			false
+		);
+
 	}
 
 	/**
@@ -118,7 +127,7 @@ EOT;
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
 				$merchant->merchantIdInPayPal,
-				give( PayPalClient::class )->getToken()
+				give( MerchantDetail::class )->accessToken
 			),
 			$tag
 		);
