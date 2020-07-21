@@ -1,3 +1,4 @@
+/* globals paypal */
 document.addEventListener( 'DOMContentLoaded', () => {
 	// Check if card fields are eligible to render for the buyer's country. The card fields are not eligible in all countries where buyers are located.
 	if ( paypal.HostedFields.isEligible() === true ) {
@@ -11,32 +12,22 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					return data.id;
 				} );
 			},
-			styles: {
-				input: {
-					'font-size': '14px',
-					'font-family': 'Product Sans',
-					color: '#3a3a3a',
-				},
-				':focus': {
-					color: 'black',
-				},
-			},
 			fields: {
 				number: {
-					selector: '#card-number',
-					placeholder: 'Credit Card Number',
+					selector: '#give-card-number-field-510-1',
+					placeholder: 'Card Number',
 				},
 				cvv: {
-					selector: '#cvv',
+					selector: '#give-card-cvc-field-510-1',
 					placeholder: 'CVV',
 				},
 				expirationDate: {
-					selector: '#expiration-date',
-					placeholder: 'MM/YYYY',
+					selector: '#give-card-expiration-field-510-1',
+					placeholder: 'MM/YY',
 				},
 			},
 		} ).then( hostedFields => {
-			document.querySelector( '#my-sample-form' ).addEventListener( 'submit', event => {
+			document.querySelector( '#give-form-510-1' ).addEventListener( 'submit', event => {
 				event.preventDefault();
 				hostedFields.submit().then( payload => {
 					return fetch( '/my-server/handle-approve/' + payload.orderId, {
