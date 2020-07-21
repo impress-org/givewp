@@ -40,6 +40,17 @@ class Setup {
 		ob_get_clean();
 	}
 
+	public function hide_admin_notices() {
+		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
+			ob_start();
+			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
+		}
+	}
+
+	public function _hide_admin_notices() {
+		ob_get_clean();
+	}
+
 	/**
 	 * Redirect the top level "Donations" menu to the Setup submenu.
 	 *
@@ -92,6 +103,19 @@ class Setup {
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-setup.css',
 			[],
 			GIVE_VERSION
+		);
+		wp_enqueue_style(
+			'give-admin-setup-google-fonts',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			[],
+			GIVE_VERSION
+		);
+		wp_enqueue_script(
+			'give-admin-setup-script',
+			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
+			[],
+			'0.0.1',
+			$in_footer = true
 		);
 		wp_enqueue_style(
 			'give-admin-setup-google-fonts',
