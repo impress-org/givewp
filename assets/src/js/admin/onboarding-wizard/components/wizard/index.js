@@ -26,7 +26,7 @@ const Wizard = ( { children } ) => {
 		const stepLinks = app.current.querySelectorAll( '.give-obw-step-link button' );
 
 		// Set tabindex for step links (in step navigation area)
-		stepLinks.querySelectorAll( '.give-obw-step-link button' ).forEach( ( element ) => {
+		stepLinks.forEach( ( element ) => {
 			element.setAttribute( 'tabindex', 2 );
 		} );
 
