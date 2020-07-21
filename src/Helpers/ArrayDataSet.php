@@ -65,7 +65,7 @@ class ArrayDataSet {
 
 	/**
 	 * Rename array keys.
-	 * Covert word first letter to uppercase which comes after dash.
+	 * Convert word first letter to uppercase which comes after dash in array key name.
 	 * For example: access_token will be renamed to accessToken
 	 *
 	 * @param $array

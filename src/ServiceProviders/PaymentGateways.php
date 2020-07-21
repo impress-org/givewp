@@ -45,7 +45,7 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function boot() {
-		add_filter( 'give_payment_gateways', [ $this, 'registerGateways' ] );
+		add_filter( 'give_register_gateway', [ $this, 'registerGateways' ] );
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 	}

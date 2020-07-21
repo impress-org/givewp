@@ -35,7 +35,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
-				'https://api.sandbox.paypal.com/v1/oauth2/token',
+				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/oauth2/token',
 				[
 					'headers' => [
 						'Authorization' => sprintf(
@@ -61,7 +61,7 @@ class AjaxRequestHandler {
 
 		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
 
-		give( RefreshToken::class )->registerCronJobTorRefreshToken( $payPalResponse['expiresIn'] );
+		give( RefreshToken::class )->registerCronJobToRefreshToken( $payPalResponse['expiresIn'] );
 
 		wp_send_json_success();
 	}
@@ -76,7 +76,7 @@ class AjaxRequestHandler {
 
 		$restApiUrl = sprintf(
 			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
-			give_is_test_mode() ? 'sandbox' : 'live',
+			give( PayPalClient::class )->mode,
 			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
 		);
 

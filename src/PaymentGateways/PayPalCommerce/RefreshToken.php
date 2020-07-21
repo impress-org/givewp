@@ -34,7 +34,7 @@ class RefreshToken {
 	 * @since 2.8.0
 	 *
 	 */
-	public function registerCronJobTorRefreshToken( $tokenExpires ) {
+	public function registerCronJobToRefreshToken( $tokenExpires ) {
 		wp_schedule_single_event(
 			time() + ( $tokenExpires - 1800 ), // Refresh token before half hours of expires date.
 			'give_paypal_commerce_refresh_token'
@@ -70,6 +70,6 @@ class RefreshToken {
 		$merchant->setTokenDetails( $tokenDetails );
 		$merchant->save();
 
-		$this->registerCronJobTorRefreshToken( $tokenDetails['expiresIn'] );
+		$this->registerCronJobToRefreshToken( $tokenDetails['expiresIn'] );
 	}
 }
