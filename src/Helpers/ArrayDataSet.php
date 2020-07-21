@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Helpers;
 
 class ArrayDataSet {
@@ -8,11 +9,13 @@ class ArrayDataSet {
 	 * This function only support one dimensional array.
 	 * You can pass a multi dimensional array but only zero level array keys will be renamed.
 	 *
-	 * @param array $array
+	 * @since 2.7.0
+	 *
 	 * @param array $renameTo Pass array of existing key name as key and new key name as value.
 	 *
+	 * @param array $array
+	 *
 	 * @return array
-	 * @since 2.7.0
 	 */
 	public static function renameKeys( $array, $renameTo ) {
 		// Rename key if property name exist for them.
@@ -68,37 +71,22 @@ class ArrayDataSet {
 	 * Convert word first letter to uppercase which comes after dash in array key name.
 	 * For example: access_token will be renamed to accessToken
 	 *
-	 * @param $array
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param $array
 	 *
 	 * @return mixed
 	 */
-	public static function ucWordInKeyNameComesAfterDash( $array ) {
+	public static function camelCaseKeys( $array ) {
+		$newArray = [];
+
 		foreach ( $array as $key => $value ) {
-			// Skip if key name does not contain underscore.
-			if ( false === strpos( $key, '_' ) ) {
-				continue;
-			}
+			$studlyKey = ucwords( str_replace( [ '-', '_' ], ' ', $key ) );
+			$studlyKey = lcfirst( str_replace( ' ', '', $studlyKey ) );
 
-			$newKey = explode( '_', $key );
-
-			if ( 1 < count( $newKey ) ) {
-				foreach ( $newKey as $index => $namePart ) {
-					// Skip first string
-					if ( ! $index ) {
-						continue;
-					}
-
-					$newKey[ $index ] = ucfirst( $namePart );
-				}
-
-				$newKey           = implode( '', $newKey );
-				$array[ $newKey ] = $value;
-
-				unset( $array[ $key ] );
-			}
+			$newArray[ $studlyKey ] = $value;
 		}
-		return $array;
+
+		return $newArray;
 	}
 }

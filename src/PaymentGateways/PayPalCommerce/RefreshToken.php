@@ -65,7 +65,7 @@ class RefreshToken {
 		];
 
 		$response     = $paypalClient->getHttpClient()->execute( $request );
-		$tokenDetails = ArrayDataSet::ucWordInKeyNameComesAfterDash( (array) $response->result );
+		$tokenDetails = ArrayDataSet::camelCaseKeys( (array) $response->result );
 
 		$merchant->setTokenDetails( $tokenDetails );
 		$merchant->save();

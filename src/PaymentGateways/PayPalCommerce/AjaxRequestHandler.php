@@ -57,7 +57,7 @@ class AjaxRequestHandler {
 			wp_send_json_error();
 		}
 
-		$payPalResponse = ArrayDataSet::ucWordInKeyNameComesAfterDash( json_decode( $payPalResponse, true ) );
+		$payPalResponse = ArrayDataSet::camelCaseKeys( json_decode( $payPalResponse, true ) );
 
 		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
 
