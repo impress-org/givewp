@@ -6,6 +6,12 @@
 
 	<hr class="wp-header-end">
 
+	<?php if ( isset( $_GET['give_setup_stripe_error'] ) ) : ?>
+	<div class="notice notice-error">
+		<p><?php echo esc_html( $_GET['give_setup_stripe_error'] ); ?></p>
+	</div>
+	<?php endif; ?>
+
 	<!-- Configuration -->
 	<?php
 		echo $this->render_template(

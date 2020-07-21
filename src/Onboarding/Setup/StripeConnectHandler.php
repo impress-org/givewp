@@ -15,8 +15,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class StripeConnectHandler {
 
-
-	public function saveConnection() {
+	public static function maybeHandle() {
 		// Is user have permission to edit give setting.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
@@ -40,60 +39,65 @@ class StripeConnectHandler {
 			return;
 		}
 
-		$stripe_account_id = $get_vars['stripe_user_id'];
-		$stripe_accounts   = give_stripe_get_all_accounts();
-		$secret_key        = ! give_is_test_mode() ? $get_vars['stripe_access_token'] : $get_vars['stripe_access_token_test'];
+		$handler = new self( $get_vars );
+		$handler->handle();
+	}
+
+	public function __construct( $vars ) {
+		$this->stripe_accounts = give_stripe_get_all_accounts();
+		$this->account_details = give_stripe_get_account_details( $vars['stripe_user_id'] );
+		$this->access_token    = ! give_is_test_mode()
+			? $vars['stripe_access_token']
+			: $vars['stripe_access_token_test'];
+
+		$this->liveSecretKey      = $vars['stripe_access_token'];
+		$this->testSecretKey      = $vars['stripe_access_token_test'];
+		$this->livePublishableKey = $vars['stripe_publishable_key'];
+		$this->testPublishableKey = $vars['stripe_publishable_key_test'];
+	}
+
+
+	public function handle() {
 
 		// Set API Key to fetch account details.
-		\Stripe\Stripe::setApiKey( $secret_key );
-
-		// Get Account Details.
-		$account_details = give_stripe_get_account_details( $stripe_account_id );
+		\Stripe\Stripe::setApiKey( $this->access_token );
 
 		// Setup Account Details for Connected Stripe Accounts.
-		if ( empty( $account_details->id ) ) {
-			Give_Admin_Settings::add_error(
-				'give-stripe-account-id-fetching-error',
-				sprintf(
-					'<strong>%1$s</strong> %2$s',
-					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
-				)
-			);
-			return;
+		if ( empty( $this->account_details->id ) ) {
+			$this->redirectToSetupPage( [ 'give_setup_stripe_error' => __( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' ) ] );
 		}
 
-		$account_name    = ! empty( $account_details->business_profile->name ) ?
-			$account_details->business_profile->name :
-			$account_details->settings->dashboard->display_name;
-		$account_slug    = $account_details->id;
-		$account_email   = $account_details->email;
-		$account_country = $account_details->country;
+		$account_name = ! empty( $this->account_details->business_profile->name ) ?
+			$this->account_details->business_profile->name :
+			$this->account_details->settings->dashboard->display_name;
 
 		// Set first Stripe account as default.
-		if ( ! $stripe_accounts ) {
-			give_update_option( '_give_stripe_default_account', $account_slug );
+		if ( ! $this->stripe_accounts ) {
+			give_update_option( '_give_stripe_default_account', $this->account_details->id );
 		}
 
-		$stripe_accounts[ $account_slug ] = [
+		$this->stripe_accounts[ $account_slug ] = [
 			'type'                 => 'connect',
 			'account_name'         => $account_name,
-			'account_slug'         => $account_slug,
-			'account_email'        => $account_email,
-			'account_country'      => $account_country,
-			'account_id'           => $stripe_account_id,
-			'live_secret_key'      => $get_vars['stripe_access_token'],
-			'test_secret_key'      => $get_vars['stripe_access_token_test'],
-			'live_publishable_key' => $get_vars['stripe_publishable_key'],
-			'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
+			'account_slug'         => $this->account_details->id,
+			'account_email'        => $this->account_details->email,
+			'account_country'      => $this->account_details->country,
+			'account_id'           => $this->account_details->id,
+			'live_secret_key'      => $this->liveSecretKey,
+			'test_secret_key'      => $this->testSecretKey,
+			'live_publishable_key' => $this->livePublishableKey,
+			'test_publishable_key' => $this->testPublishableKey,
 		];
 
 		// Update Stripe accounts to global settings.
-		give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
+		give_update_option( '_give_stripe_get_all_accounts', $this->stripe_accounts );
 
-		// Send back to settings page.
+		$this->redirectToSetupPage( [ 'give_setup_stripe_connect' => 'connected' ] );
+	}
+
+	protected function redirectToSetupPage( $args ) {
 		wp_redirect(
-			add_query_arg( [ 'stripe_account' => 'connected' ], admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
+			add_query_arg( $args, admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
 		);
 		die();
 	}

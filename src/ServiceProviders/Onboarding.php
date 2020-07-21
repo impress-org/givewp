@@ -38,6 +38,6 @@ class Onboarding implements ServiceProvider {
 
 		// Handle Stripe Connect return.
 		// Priority 9 to listener implemented by the advanced settings.
-		add_action( 'admin_init', [ new StripeConnectHandler, 'saveConnection' ], 9 );
+		add_action( 'admin_init', [ StripeConnectHandler::class, 'maybeHandle' ], 9 );
 	}
 }
