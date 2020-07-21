@@ -1,44 +1,23 @@
 <?php
 
 /**
- * Setup Page class
+ * Onboarding class
  *
  * @package Give
  */
 
-namespace Give\Views\Admin\Pages;
+namespace Give\Onboarding\Setup;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Organizes WordPress actions for the Setup Page submenu.
+ * Organizes WordPress actions and helper methods for Onboarding.
  *
  * @since 2.8.0
  */
-class Setup {
+class Page {
 
-	/**
-	 * Initialize Reports Admin page
-	 *
-	 * @since 2.8.0
-	 */
-	public function init() {
-		add_action( 'admin_init', [ $this, 'redirectDonationsToSetup' ] );
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_notices', [ $this, 'hide_admin_notices' ], -999999 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-	}
-
-	public function hide_admin_notices() {
-		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
-			ob_start();
-			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
-		}
-	}
-
-	public function _hide_admin_notices() {
-		ob_get_clean();
-	}
+	use PageDismissible;
 
 	public function hide_admin_notices() {
 		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
@@ -138,7 +117,7 @@ class Setup {
 	 * @since 2.8.0
 	 */
 	public function render_page() {
-		include GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/setup-page/index.html.php';
+		include plugin_dir_path( __FILE__ ) . 'templates/index.html.php';
 	}
 
 	/**
@@ -151,7 +130,7 @@ class Setup {
 	 */
 	public function render_template( $template, $data = [] ) {
 		ob_start();
-		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/$template.html";
+		include plugin_dir_path( __FILE__ ) . "templates/$template.html";
 		$output = ob_get_clean();
 
 		foreach ( $data as $key => $value ) {

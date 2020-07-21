@@ -9,7 +9,8 @@
  * @since       1.8
  */
 
-use Give\Onboarding\Onboarding;
+use Give\Onboarding\Setup\Page as SetupPage;
+use Give\Onboarding\Setup\PageStatus as SetupPageStatus;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -173,13 +174,13 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'id'      => 'setup_page_enabled',
 							'type'    => 'radio_inline',
 							'default' => give_is_setting_enabled(
-								Onboarding::getSetupPageEnabledOrDisabled()
+								SetupPage::getSetupPageEnabledOrDisabled()
 							)
-								? Onboarding::ENABLED
-								: Onboarding::DISABLED,
+								? SetupPageStatus::ENABLED
+								: SetupPageStatus::DISABLED,
 							'options' => [
-								Onboarding::ENABLED  => __( 'Enabled', 'give' ),
-								Onboarding::DISABLED => __( 'Disabled', 'give' ),
+								SetupPageStatus::ENABLED  => __( 'Enabled', 'give' ),
+								SetupPageStatus::DISABLED => __( 'Disabled', 'give' ),
 							],
 						],
 						[
