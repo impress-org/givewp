@@ -1,8 +1,14 @@
+// Import vendor dependencies
 import PropTypes from 'prop-types';
-import './style.scss';
 
+// Import store dependencies
 import { useStoreValue } from '../../app/store';
+
+// Import utilities
 import { goToStep } from '../../app/store/actions';
+
+// Import styles
+import './style.scss';
 
 const StepLink = ( { title, step } ) => {
 	const [ { currentStep }, dispatch ] = useStoreValue();

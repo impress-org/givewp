@@ -1,9 +1,13 @@
+// Import vendor dependencies
 import React from 'react';
 import PropTypes from 'prop-types';
-import './style.scss';
 
+// Import components
 import StepLink from '../step-link';
 import Step from '../step';
+
+// Import styles
+import './style.scss';
 
 const StepNavigation = ( { steps } ) => {
 	const stepLinks = steps.map( ( step, index ) => {

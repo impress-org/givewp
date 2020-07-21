@@ -1,6 +1,7 @@
+// Import vendor dependencies
 const { __ } = wp.i18n;
 
-// Store related dependencies
+// Import store dependencies
 import { StoreProvider } from './store';
 import { reducer } from './store/reducer';
 

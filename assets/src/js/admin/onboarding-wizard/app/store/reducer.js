@@ -1,3 +1,4 @@
+// Import utilities
 import { getWindowData } from '../../utils';
 
 export const reducer = ( state, action ) => {

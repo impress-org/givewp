@@ -1,12 +1,14 @@
-const { __ } = wp.i18n;
-import CardInput from '../../../components/card-input';
-import Card from '../../../components/card';
-
-import './style.scss';
-
+// Import vendor dependencies
 import { useState } from 'react';
+const { __ } = wp.i18n;
 
+// Import components
+import Card from '../../../components/card';
+import CardInput from '../../../components/card-input';
 import ContinueButton from '../../../components/continue-button';
+
+// Import styles
+import './style.scss';
 
 const FundraisingNeeds = () => {
 	const [ needs, setNeeds ] = useState( [ 'testing' ] );

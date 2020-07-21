@@ -1,3 +1,4 @@
+// Import vendor dependencies
 import { createContext, useContext, useReducer } from 'react';
 
 export const StoreContext = createContext();

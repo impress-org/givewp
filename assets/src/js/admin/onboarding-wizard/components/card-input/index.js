@@ -1,5 +1,8 @@
-import PropTypes from 'prop-types';
+// Import vendor dependencies
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Import styles
 import './style.scss';
 
 import Card from '../card';

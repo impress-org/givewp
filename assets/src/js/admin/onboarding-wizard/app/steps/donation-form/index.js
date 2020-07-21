@@ -1,6 +1,10 @@
+// Import vendor dependencies
 const { __ } = wp.i18n;
 
+// Import components
 import ContinueButton from '../../../components/continue-button';
+
+// Import styles
 import './style.scss';
 
 const DonationForm = () => {

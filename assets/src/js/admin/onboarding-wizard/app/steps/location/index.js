@@ -1,10 +1,13 @@
+// Import vendor dependencies
+import { useState } from 'react';
 const { __ } = wp.i18n;
 
+// Import components
 import Card from '../../../components/card';
 import ContinueButton from '../../../components/continue-button';
 import SelectInput from '../../../components/select-input';
-import { useState } from 'react';
 
+// Import styles
 import './style.scss';
 
 const Location = () => {

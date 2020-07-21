@@ -1,12 +1,15 @@
+// Import vendor dependencies
+import { useState } from 'react';
 const { __ } = wp.i18n;
 
-import './style.scss';
+// Import components
 import CardInput from '../../../components/card-input';
 import Card from '../../../components/card';
 import SelectInput from '../../../components/select-input';
-import { useState } from 'react';
-
 import ContinueButton from '../../../components/continue-button';
+
+// Import styles
+import './style.scss';
 
 const YourCause = () => {
 	const [ userType, setUserType ] = useState( [ 'testing' ] );

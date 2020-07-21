@@ -1,4 +1,7 @@
+// Import vendor dependencies
 import PropTypes from 'prop-types';
+
+// Import styles
 import './style.scss';
 
 const Card = ( { padding, children } ) => {

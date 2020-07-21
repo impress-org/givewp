@@ -1,5 +1,8 @@
+// Import vendor dependencies
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+// Import styles
 import './style.scss';
 
 const SelectInput = ( { label, value, onChange, options } ) => {

@@ -1,6 +1,10 @@
+// Import vendor dependencies
 const { __ } = wp.i18n;
+
+// Import utilities
 import { getWindowData } from '../../../utils';
 
+// Import styles
 import './style.scss';
 
 import Card from '../../../components/card';

@@ -1,3 +1,4 @@
+// Import styles
 import './style.scss';
 
 const { __ } = wp.i18n;
