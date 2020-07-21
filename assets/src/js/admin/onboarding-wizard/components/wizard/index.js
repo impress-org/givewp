@@ -13,7 +13,9 @@ const Wizard = ( { children } ) => {
 
 	return (
 		<div className="give-obw">
-			<StepNavigation steps={ steps } />
+			{ steps[ currentStep ].props.showInNavigation && (
+				<StepNavigation steps={ steps } />
+			) }
 			{ steps.map( ( step, index ) => {
 				if ( currentStep === index ) {
 					return step;
