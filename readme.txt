@@ -224,8 +224,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 
 = 2.8.0: ??? =
-* New: On a fresh install, users are now directed to the new Onboarding Wizard!
 * New: Introduces a new Setup Page for tracking progress towards accepting the first donation.
+* New: New installs now direct users to the new Onboarding Wizard, rather than a Welcome Page
 
 = 2.7.2: July 6th, 2020 =
 * Fix: The 2.7.0 upgrade routine could cause WP-Admin to be incorrectly redirected to the update success screen for certain hosting environments after completion. [#4900](https://github.com/impress-org/givewp/issues/4900)

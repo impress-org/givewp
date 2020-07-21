@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Views\Admin\Pages;
+namespace Give\Onboarding\Wizard;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.8.0
  */
-class OnboardingWizard {
+class Page {
 
 
 	/** @var string $slug Page slug used for displaying onboarding wizard */
@@ -66,7 +66,7 @@ class OnboardingWizard {
 	 **/
 	public function render_page() {
 		ob_start();
-		include_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/onboarding-wizard-template.php';
+		include_once plugin_dir_path( __FILE__ ) . 'templates/index.php';
 		exit;
 
 	}
@@ -99,7 +99,7 @@ class OnboardingWizard {
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
 			[
-				'setupUrl'   => admin_url( '?page=give-getting-started' ),
+				'setupUrl'   => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
 				'currencies' => array_keys( give_get_currencies_list() ),
 			]
 		);

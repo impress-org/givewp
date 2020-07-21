@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Income over time endpoint
+ * Refunds over time endpoint
  *
  * @package Give
  */
@@ -18,7 +18,7 @@ class TotalRefunds extends Endpoint {
 		$this->endpoint = 'total-refunds';
 	}
 
-	public function get_report( $request ) {
+	public function getReport( $request ) {
 		$start = date_create( $request->get_param( 'start' ) );
 		$end   = date_create( $request->get_param( 'end' ) );
 		$diff  = date_diff( $start, $end );
@@ -30,7 +30,10 @@ class TotalRefunds extends Endpoint {
 				$interval = round( $diff->days / 12 );
 				$data     = $this->get_data( $start, $end, 'P' . $interval . 'D' );
 				break;
-			case ( $diff->days > 7 ):
+			case ( $diff->days > 5 ):
+				$data = $this->get_data( $start, $end, 'P1D' );
+				break;
+			case ( $diff->days > 4 ):
 				$data = $this->get_data( $start, $end, 'PT12H' );
 				break;
 			case ( $diff->days > 2 ):
@@ -49,7 +52,7 @@ class TotalRefunds extends Endpoint {
 		$tooltips = [];
 		$refunds  = [];
 
-		$interval = new DateInterval( $intervalStr );
+		$interval = new \DateInterval( $intervalStr );
 
 		$periodStart = clone $start;
 		$periodEnd   = clone $start;
@@ -60,14 +63,15 @@ class TotalRefunds extends Endpoint {
 		while ( $periodStart < $end ) {
 
 			$refundsForPeriod = $this->get_refunds( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$time             = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			switch ( $intervalStr ) {
+				case 'P1D':
+					$time        = $periodStart->format( 'Y-m-d' );
+					$periodLabel = $periodStart->format( 'l' );
+					break;
 				case 'PT12H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT3H':
-					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
-					break;
 				case 'PT1H':
 					$periodLabel = $periodStart->format( 'D ga' ) . ' - ' . $periodEnd->format( 'D ga' );
 					break;
@@ -76,12 +80,12 @@ class TotalRefunds extends Endpoint {
 			}
 
 			$refunds[] = [
-				'x' => $periodEnd->format( 'Y-m-d H:i:s' ),
+				'x' => $time,
 				'y' => $refundsForPeriod,
 			];
 
 			$tooltips[] = [
-				'title'  => $refundsForPeriod . ' ' . __( 'Refunds', 'give' ),
+				'title'  => sprintf( _n( '%d Donor', '%d Donors', $refundsForPeriod, 'give' ), $refundsForPeriod ),
 				'body'   => __( 'Total Refunds', 'give' ),
 				'footer' => $periodLabel,
 			];
@@ -91,11 +95,16 @@ class TotalRefunds extends Endpoint {
 			date_add( $periodEnd, $interval );
 		}
 
+		if ( $intervalStr === 'P1D' ) {
+			$refunds  = array_slice( $refunds, 1 );
+			$tooltips = array_slice( $tooltips, 1 );
+		}
+
 		$totalRefundsForPeriod = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 		$trend                 = $this->get_trend( $start, $end, $refunds );
 
 		$diff = date_diff( $start, $end );
-		$info = $diff->days > 1 ? __( 'VS previous' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day' );
+		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
 
 		// Create data objec to be returned, with 'highlights' object containing total and average figures to display
 		$data = [
@@ -114,7 +123,7 @@ class TotalRefunds extends Endpoint {
 
 	}
 
-	public function get_trend( $start, $end, $income ) {
+	public function get_trend( $start, $end, $refunds ) {
 
 		$interval = $start->diff( $end );
 
@@ -147,11 +156,11 @@ class TotalRefunds extends Endpoint {
 
 	public function get_refunds( $startStr, $endStr ) {
 
-		$paymentObjects = $this->get_payments( $startStr, $endStr );
+		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
 		$refunds = 0;
 		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->status == 'refunded' && $paymentObject->date > $startStr && $paymentObject->date < $endStr ) {
+			if ( $paymentObject->status == 'refunded' && $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
 				$refunds += 1;
 			}
 		}

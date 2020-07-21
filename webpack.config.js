@@ -26,7 +26,7 @@ const config = {
 		'give-stripe-becs': [ './assets/src/js/frontend/give-stripe-becs.js' ],
 		admin: [ './assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js' ],
 		'admin-global': [ './assets/src/css/admin/give-admin-global.scss' ],
-		'admin-setup': [ './assets/src/css/admin/setup.scss' ],
+		'admin-setup': [ './assets/src/css/admin/setup.scss', './assets/src/js/admin/admin-setup.js' ],
 		'babel-polyfill': '@babel/polyfill',
 		gutenberg: './blocks/load.js',
 		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
