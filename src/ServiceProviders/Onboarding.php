@@ -3,6 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Give\Onboarding\Setup\Page as SetupPage;
+use Give\Onboarding\Setup\StripeConnectHandler;
 use Give\Onboarding\Wizard\Page as WizardPage;
 
 class Onboarding implements ServiceProvider {
@@ -34,5 +35,9 @@ class Onboarding implements ServiceProvider {
 			add_action( 'admin_notices', [ $setupPage, 'hide_admin_notices' ], -999999 );
 			add_action( 'admin_post_dismiss_setup_page', [ $setupPage, 'dismissSetupPage' ] );
 		}
+
+		// Handle Stripe Connect return.
+		// Priority 9 to listener implemented by the advanced settings.
+		add_action( 'admin_init', [ new StripeConnectHandler, 'saveConnection' ], 9 );
 	}
 }
