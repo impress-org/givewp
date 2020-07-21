@@ -2,7 +2,7 @@
 
 namespace Give\Helpers;
 
-use BadMethodCallException;
+use InvalidArgumentException;
 
 class Hooks {
 	/**
@@ -20,6 +20,10 @@ class Hooks {
 	 * @return void
 	 */
 	public static function addAction( $tag, $class, $method = '__invoke', $priority = 10, $acceptedArgs = 1 ) {
+		if ( ! method_exists( $class, $method ) ) {
+			throw new InvalidArgumentException( "The method $method does not exist on $class" );
+		}
+
 		add_action(
 			$tag,
 			static function () use ( $tag, $class, $method ) {
@@ -29,10 +33,6 @@ class Hooks {
 				}
 
 				$instance = give( $class );
-
-				if ( ! method_exists( $instance, $method ) ) {
-					throw new BadMethodCallException( "The method $method does not exist on $class" );
-				}
 
 				call_user_func_array( [ $instance, $method ], func_get_args() );
 			},
@@ -56,6 +56,10 @@ class Hooks {
 	 * @return void
 	 */
 	public static function addFilter( $tag, $class, $method = '__invoke', $priority = 10, $acceptedArgs = 1 ) {
+		if ( ! method_exists( $class, $method ) ) {
+			throw new InvalidArgumentException( "The method $method does not exist on $class" );
+		}
+
 		add_filter(
 			$tag,
 			static function () use ( $tag, $class, $method ) {
@@ -64,11 +68,7 @@ class Hooks {
 					return func_get_arg( 0 );
 				}
 
-				$instance = give()->make( $class );
-
-				if ( ! method_exists( $instance, $method ) ) {
-					throw new BadMethodCallException( "The method $method does not exist on $class" );
-				}
+				$instance = give( $class );
 
 				return call_user_func_array( [ $instance, $method ], func_get_args() );
 			},
