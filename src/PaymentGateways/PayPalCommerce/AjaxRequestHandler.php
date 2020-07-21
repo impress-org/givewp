@@ -2,8 +2,13 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Braintree\Exception;
 use Give\Helpers\ArrayDataSet;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+use PayPalCheckoutSdk\Orders\OrdersGetRequest;
+use PayPalHttp\HttpException;
 
 /**
  * Class AjaxRequestHandler
@@ -21,6 +26,12 @@ class AjaxRequestHandler {
 		add_action( 'wp_ajax_give_paypal_commerce_user_on_boarded', [ $this, 'onBoardedUserAjaxRequestHandler' ] );
 		add_action( 'wp_ajax_give_paypal_commerce_get_partner_url', [ $this, 'onGetPartnerUrlAjaxRequestHandler' ] );
 		add_action( 'wp_ajax_give_paypal_commerce_disconnect_account', [ $this, 'removePayPalAccount' ] );
+
+		add_action( 'wp_ajax_give_paypal_commerce_create_order', [ $this, 'createOrder' ] );
+		add_action( 'wp_ajax_nopriv_give_paypal_commerce_create_order', [ $this, 'createOrder' ] );
+
+		add_action( 'wp_ajax_give_paypal_commerce_create_order', [ $this, 'approveOrder' ] );
+		add_action( 'wp_ajax_nopriv_give_paypal_commerce_create_order', [ $this, 'approveOrder' ] );
 	}
 
 	/**
@@ -113,6 +124,92 @@ class AjaxRequestHandler {
 	private function sendErrorOnAjaxRequestIfUserDoesNotHasPermission() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_send_json_error();
+		}
+	}
+
+	/**
+	 * Create order.
+	 *
+	 * @since 2.8.0
+	 */
+	public function createOrder() {
+		/* @var PayPalHttpClient $client */
+		$client = give( PayPalClient::class )->getHttpClient();
+		$formId = absint( $_POST['give-form-id'] );
+
+		$request = new OrdersCreateRequest();
+		$request->payPalPartnerAttributionId( PartnerDetails::$attributionId );
+		$request->body = [
+			'intent'              => 'CAPTURE',
+			'purchase_units'      => [
+				[
+					'reference_id'        => get_post_field( 'post_name', $formId ),
+					'description'         => '',
+					'amount'              => [
+						'value'         => $_POST['give-amount'],
+						'currency_code' => give_get_currency( $_POST['give-form-id'] ),
+					],
+					'payee'               => [
+						'email_address' => $_POST['give_email'],
+					],
+					'payment_instruction' => [
+						'disbursement_mode' => 'INSTANT',
+					],
+				],
+			],
+			'application_context' => [
+				'shipping_preference' => 'NO_SHIPPING',
+				'user_action'         => 'PAY_NOW',
+			],
+		];
+
+		try {
+			$response     = $client->execute( $request );
+			$orderRequest = new OrdersGetRequest( $response->result->id );
+
+			wp_send_json_success(
+				[
+					'id'    => $response->result->id,
+					'order' => $client->execute( $orderRequest )->result,
+				]
+			);
+		} catch ( Exception $ex ) {
+			wp_send_json_error(
+				[
+					'errorMsg' => $ex->getMessage(),
+				]
+			);
+		}
+	}
+
+	/**
+	 * Approve order.
+	 *
+	 * @since 2.8.0
+	 */
+	public function approveOrder() {
+		/* @var PayPalHttpClient $client */
+		$client = give( PayPalClient::class )->getHttpClient();
+
+		$request = new OrdersCaptureRequest( $_POST['order'] );
+
+		try {
+			$response = $client->execute( $request );
+
+			$orderRequest = new OrdersGetRequest( $_POST['order'] );
+
+			wp_send_json_success(
+				[
+					'response' => $response->result,
+					'order'    => $client->execute( $orderRequest )->result,
+				]
+			);
+		} catch ( Exception $ex ) {
+			wp_send_json_error(
+				[
+					'errorMsg' => $ex->getMessage(),
+				]
+			);
 		}
 	}
 }
