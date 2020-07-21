@@ -139,7 +139,7 @@ EOT;
 			'src=',
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
-				'GiveWP_SP_PCP',
+				PartnerDetails::$attributionId,
 				give( MerchantDetail::class )->getClientToken()
 			),
 			$tag
