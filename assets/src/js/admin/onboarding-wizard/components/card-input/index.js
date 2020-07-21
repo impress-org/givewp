@@ -32,7 +32,7 @@ const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 };
 
 CardInput.propTypes = {
-	max: PropTypes.number,
+	checkMultiple: PropTypes.bool,
 	values: PropTypes.array,
 	onChange: PropTypes.func,
 	children: function( props, propName, componentName ) {

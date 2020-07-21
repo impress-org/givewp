@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import './style.scss';
 
 const SelectInput = ( { label, value, onChange, options } ) => {
@@ -15,6 +16,20 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 			</select>
 		</Fragment>
 	);
+};
+
+SelectInput.propTypes = {
+	label: PropTypes.string,
+	value: PropTypes.string.isRequired,
+	onChange: PropTypes.func,
+	options: PropTypes.array.isRequired,
+};
+
+SelectInput.defaultProps = {
+	label: null,
+	value: null,
+	onChange: null,
+	options: null,
 };
 
 export default SelectInput;
