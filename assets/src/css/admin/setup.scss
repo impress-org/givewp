@@ -129,6 +129,9 @@ article .description {
 		color: rgb(102, 102, 102);
 		font-size: 16px;
 		font-weight: 600;
-		text-decoration: underline;
+
+		&:focus {
+			text-decoration: underline;
+		}
 	}
 }
