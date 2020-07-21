@@ -9,12 +9,12 @@
 	<!-- Configuration -->
 	<?php
 		echo $this->render_template(
-			'setup-page/section',
+			'section',
 			[
 				'title'    => 'Create your first donation form in minutes',
 				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
 				'contents' => $this->render_template(
-					'setup-page/row-item',
+					'row-item',
 					[
 						'class'       => 'configuration',
 						'icon'        => $this->image( 'configuration@2x.min.png' ),
@@ -31,12 +31,12 @@
 	<!-- Gateways -->
 	<?php
 		echo $this->render_template(
-			'setup-page/section',
+			'section',
 			[
 				'title'    => 'Connect a payment gateway to begin accepting donations',
 				'contents' => [
 					$this->render_template(
-						'setup-page/row-item',
+						'row-item',
 						[
 							'icon'        => $this->image( 'paypal@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'PayPal', 'give' ),
@@ -46,7 +46,7 @@
 						]
 					),
 					$this->render_template(
-						'setup-page/row-item',
+						'row-item',
 						[
 							'class'       => 'stripe',
 							'icon'        => $this->image( 'stripe@2x.min.png' ),
@@ -58,7 +58,7 @@
 					),
 				],
 				'footer'   => $this->render_template(
-					'setup-page/footer',
+					'footer',
 					[
 						'contents' => 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more!<a href="#">View all gateways <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
 					]
@@ -70,12 +70,12 @@
 	<!-- Resources -->
 	<?php
 		echo $this->render_template(
-			'setup-page/section',
+			'section',
 			[
 				'title'    => 'Connect a payment gateway to begin accepting donations',
 				'contents' => [
 					$this->render_template(
-						'setup-page/row-item',
+						'row-item',
 						[
 							'icon'        => $this->image( 'givewp101@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'GiveWP 101', 'give' ),
@@ -85,7 +85,7 @@
 						]
 					),
 					$this->render_template(
-						'setup-page/row-item',
+						'row-item',
 						[
 							'class'       => 'stripe',
 							'icon'        => $this->image( 'addons@2x.min.png' ),
@@ -102,7 +102,7 @@
 
 	<?php
 	echo $this->render_template(
-		'setup-page/dismiss',
+		'dismiss',
 		[
 			'action' => admin_url( 'admin-post.php' ),
 			'nonce'  => wp_nonce_field( 'dismiss_setup_page', $name = '_wpnonce', $referer = true, $echo = false ),
