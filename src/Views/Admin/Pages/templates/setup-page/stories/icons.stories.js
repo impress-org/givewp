@@ -1,15 +1,7 @@
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	title: 'Setup Page/Icons',
-=======
-	title: 'Icons',
->>>>>>> Implement Setup Page design.
-=======
-	title: 'Setup Page/Icons',
->>>>>>> Add namespace to Setup Page stories.
 	decorators: [ withA11y ],
 };
 
