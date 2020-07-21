@@ -83,5 +83,14 @@ class PayPalCommerce implements PaymentGateway {
 		if ( wp_doing_cron() ) {
 			give( RefreshToken::class );
 		}
+
+		give()->singleton(
+			AdvancedCardFields::class,
+			static function() {
+				return ( new AdvancedCardFields() )->boot();
+			}
+		);
+
+		give( AdvancedCardFields::class );
 	}
 }
