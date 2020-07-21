@@ -9,7 +9,7 @@ class Webhooks {
 	 * @see https://developer.paypal.com/docs/api/webhooks/v1/#verify-webhook-signature
 	 * @since 2.8.0
 	 *
-	 * @param array $headers The request headers
+	 * @param array  $headers The request headers
 	 * @param object $event The event to verify
 	 *
 	 * @return bool
@@ -60,7 +60,7 @@ class Webhooks {
 	 * @since 2.8.0
 	 *
 	 * @param string $url
-	 * @param array $eventTypes a sequential array of events to register
+	 * @param array  $eventTypes a sequential array of events to register
 	 *
 	 * @return mixed
 	 */
@@ -98,5 +98,38 @@ class Webhooks {
 		$response = json_decode( $response['body'], false );
 
 		return $response->id;
+	}
+
+	/**
+	 * Deletes the webhook with the given id.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $webhookId
+	 *
+	 * @return bool Whether or not the deletion was successful
+	 */
+	public function deleteWebhook( $webhookId ) {
+		$apiUrl = give_is_test_mode()
+			? "https://api.sandbox.paypal.com/v1/notifications/webhooks/$webhookId"
+			: "https://api.paypal.com/v1/notifications/webhooks/$webhookId";
+
+		// TODO: Retrieve the actual token and webhook ID
+		$token = 'abc';
+
+		$response = wp_remote_request(
+			$apiUrl,
+			[
+				'method'  => 'DELETE',
+				'headers' => [
+					'Content-Type'  => 'application/json',
+					'Authorization' => "Bearer $token",
+				],
+			]
+		);
+
+		$code = wp_remote_retrieve_response_code( $response );
+
+		return $code >= 200 && $code < 300;
 	}
 }
