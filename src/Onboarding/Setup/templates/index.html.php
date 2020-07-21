@@ -99,7 +99,6 @@
 					$this->render_template(
 						'row-item',
 						[
-							'class'       => 'stripe',
 							'icon'        => $this->image( 'addons@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'Add-ons', 'give' ),
 							'title'       => esc_html__( 'GiveWP Add-ons', 'give' ),
