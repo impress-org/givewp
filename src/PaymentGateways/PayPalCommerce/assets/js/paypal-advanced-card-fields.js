@@ -2,6 +2,13 @@
 document.addEventListener( 'DOMContentLoaded', () => {
 	// Check if card fields are eligible to render for the buyer's country. The card fields are not eligible in all countries where buyers are located.
 	if ( paypal.HostedFields.isEligible() === true ) {
+		const computedStyle = window.getComputedStyle( document.querySelector( '#give-card-name-wrap input[name="card_name"]' ), null ),
+			inputStyle = {
+				'font-size': computedStyle.getPropertyValue( 'font-size' ),
+				'font-family': computedStyle.getPropertyValue( 'font-family' ),
+				color: computedStyle.getPropertyValue( 'color' ),
+			};
+
 		paypal.HostedFields.render( {
 			createOrder: function( data, actions ) {
 				return fetch( '/my-server/create-order', {
@@ -11,6 +18,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				} ).then( function( data ) {
 					return data.id;
 				} );
+			},
+			styles: {
+				input: inputStyle,
 			},
 			fields: {
 				number: {
