@@ -1,6 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;
 
 /**
@@ -211,5 +212,37 @@ class MerchantDetail {
 	 */
 	public function setTokenDetails( $tokenDetails ) {
 		$this->tokenDetails = array_merge( $this->tokenDetails, $tokenDetails );
+	}
+
+	/**
+	 * Get client token for hosted credit card fields.
+	 *
+	 * @since 2.8.0
+	 */
+	public function getClientToken() {
+		$response = wp_remote_retrieve_body(
+			wp_remote_post(
+				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/identity/generate-token',
+				[
+					'headers' => [
+						'Accept'          => 'application/json',
+						'Accept-Language' => 'en_US',
+						'Authorization'   => sprintf(
+							'Bearer %1$s',
+							$this->accessToken
+						),
+						'Content-Type'    => 'application/json',
+					],
+				]
+			)
+		);
+
+		if ( ! $response ) {
+			return '';
+		}
+
+		$response = ArrayDataSet::ucWordInKeyNameComesAfterDash( json_decode( $response, true ) );
+
+		return $response['clientToken'];
 	}
 }
