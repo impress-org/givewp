@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './style.scss';
 
 import { useStoreValue } from '../../app/store';
@@ -11,8 +11,31 @@ const Wizard = ( { children } ) => {
 	const [ { currentStep } ] = useStoreValue();
 	const steps = children;
 
+	const app = useRef( null );
+
+	useEffect( () => {
+		// Query all focusable elements inside current step
+		const stepInputs = app.current.querySelectorAll( '.give-obw-step button, .give-obw-step input, .give-obw-step select' );
+
+		// Set tabindex for focusable elements in current step
+		stepInputs.forEach( ( element ) => {
+			element.setAttribute( 'tabindex', 1 );
+		} );
+
+		// Query all focusable step link elements
+		const stepLinks = app.current.querySelectorAll( '.give-obw-step-link button' );
+
+		// Set tabindex for step links (in step navigation area)
+		stepLinks.querySelectorAll( '.give-obw-step-link button' ).forEach( ( element ) => {
+			element.setAttribute( 'tabindex', 2 );
+		} );
+
+		// Set focus to first element in current step
+		stepInputs[ 0 ].focus();
+	}, [ currentStep ] );
+
 	return (
-		<div className="give-obw">
+		<div className="give-obw" ref={ app }>
 			{ steps[ currentStep ].props.showInNavigation && (
 				<StepNavigation steps={ steps } />
 			) }
