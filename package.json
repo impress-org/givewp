@@ -16,7 +16,9 @@
         "lint:php:fix": "./vendor/bin/phpcbf -v --colors --standard=phpcs.ruleset.xml",
         "lint:textdomain": "node ./wp-textdomain.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
-        "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles"
+        "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles",
+        "storybook": "start-storybook -p 6006",
+        "storybook:build": "build-storybook -c .storybook -o .storybook-static"
     },
     "repository": {
         "type": "git",
@@ -65,6 +67,8 @@
         "puppeteer": "^1.14.0",
         "sass-loader": "^7.1.0",
         "script-loader": "^0.7.2",
+        "@storybook/html": "^5.3.19",
+        "@storybook/addon-a11y": "^5.3.19",
         "style-loader": "^1.1.2",
         "stylelint": "^11.0.0",
         "stylelint-config-prettier": "^8.0.0",

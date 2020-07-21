@@ -25,7 +25,30 @@ class Setup {
 	public function init() {
 		add_action( 'admin_init', [ $this, 'redirectDonationsToSetup' ] );
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
+		add_action( 'admin_notices', [ $this, 'hide_admin_notices' ], -999999 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+	}
+
+	public function hide_admin_notices() {
+		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
+			ob_start();
+			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
+		}
+	}
+
+	public function _hide_admin_notices() {
+		ob_get_clean();
+	}
+
+	public function hide_admin_notices() {
+		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
+			ob_start();
+			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
+		}
+	}
+
+	public function _hide_admin_notices() {
+		ob_get_clean();
 	}
 
 	/**
@@ -81,6 +104,32 @@ class Setup {
 			[],
 			GIVE_VERSION
 		);
+		wp_enqueue_style(
+			'give-admin-setup-google-fonts',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			[],
+			GIVE_VERSION
+		);
+		wp_enqueue_script(
+			'give-admin-setup-script',
+			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
+			[],
+			'0.0.1',
+			$in_footer = true
+		);
+		wp_enqueue_style(
+			'give-admin-setup-google-fonts',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			[],
+			GIVE_VERSION
+		);
+		wp_enqueue_script(
+			'give-admin-setup-script',
+			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
+			[],
+			'0.0.1',
+			$in_footer = true
+		);
 	}
 
 	/**
@@ -89,7 +138,7 @@ class Setup {
 	 * @since 2.8.0
 	 */
 	public function render_page() {
-		include GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/setup-template.php';
+		include GIVE_PLUGIN_DIR . 'src/Views/Admin/Pages/templates/setup-page/index.html.php';
 	}
 
 	/**
@@ -101,7 +150,31 @@ class Setup {
 	 * @since 2.8.0
 	 */
 	public function render_template( $template, $data = [] ) {
-		extract( $data );
-		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/{$template}.php";
+		ob_start();
+		include GIVE_PLUGIN_DIR . "src/Views/Admin/Pages/templates/$template.html";
+		$output = ob_get_clean();
+
+		foreach ( $data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$value = implode( '', $value );
+			}
+			$output = preg_replace( '/{{\s*' . $key . '\s*}}/', $value, $output );
+		}
+
+		// Stripe unmerged tags.
+		$output = preg_replace( '/{{\s*.*\s*}}/', '', $output );
+
+		return $output;
+	}
+
+	/**
+	 * Returns a qualified image URL.
+	 *
+	 * @param string $src
+	 *
+	 * @return string
+	 */
+	public function image( $src ) {
+		return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
 	}
 }
