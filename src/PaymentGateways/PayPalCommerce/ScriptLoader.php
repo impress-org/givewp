@@ -13,13 +13,22 @@ use PayPalCheckoutSdk\Core\AccessTokenRequest;
  */
 class ScriptLoader {
 	/**
+	 * Paypal SDK handle.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	private $paypalSdkScriptHandle = 'give-paypal-sdk-js';
+
+	/**
 	 * Setup hooks
 	 *
 	 * @since 2.8.0
 	 */
 	public function boot() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'loadAdminScripts' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'loadPublicScripts' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'loadPublicAssets' ] );
 	}
 
 	/**
@@ -70,16 +79,16 @@ EOT;
 	}
 
 	/**
-	 * Load public scripts.
+	 * Load public assets.
 	 *
 	 * @since 2.8.0
 	 */
-	public function loadPublicScripts() {
+	public function loadPublicAssets() {
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
 		wp_enqueue_script(
-			'give-paypal-sdk',
+			$this->paypalSdkScriptHandle,
 			sprintf(
 				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture',
 				'hosted-fields',
@@ -95,11 +104,18 @@ EOT;
 		add_filter( 'script_loader_tag', [ $this, 'addAttributesToPayPalSdkScript' ], 10, 2 );
 
 		wp_enqueue_script(
-			'give-paypal-advanced-card-fields',
-			'',
-			[ 'give-paypal-sdk' ],
+			'give-paypal-advanced-card-fields-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/paypal-advanced-card-fields.js',
+			[ $this->paypalSdkScriptHandle ],
 			GIVE_VERSION,
-			false
+			true
+		);
+
+		wp_enqueue_style(
+			'give-paypal-advanced-card-fields-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/paypal-advanced-card-fields.css',
+			[ 'give-styles' ],
+			GIVE_VERSION
 		);
 
 	}
@@ -115,7 +131,7 @@ EOT;
 	 * @return string
 	 */
 	public function addAttributesToPayPalSdkScript( $tag, $handle ) {
-		if ( 'give-paypal-sdk' !== $handle ) {
+		if ( $this->paypalSdkScriptHandle !== $handle ) {
 			return $tag;
 		}
 
@@ -127,7 +143,7 @@ EOT;
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
 				$merchant->merchantIdInPayPal,
-				give( MerchantDetail::class )->accessToken
+				give( MerchantDetail::class )->getClientToken()
 			),
 			$tag
 		);
