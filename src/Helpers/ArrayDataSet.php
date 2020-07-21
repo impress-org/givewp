@@ -67,9 +67,8 @@ class ArrayDataSet {
 
 
 	/**
-	 * Rename array keys.
-	 * Convert word first letter to uppercase which comes after dash in array key name.
-	 * For example: access_token will be renamed to accessToken
+	 * Creates a new array from the old one with all of the index keys converted to camel case.
+	 * This is only intended for associative arrays.
 	 *
 	 * @since 2.8.0
 	 *
