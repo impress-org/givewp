@@ -135,14 +135,11 @@ EOT;
 			return $tag;
 		}
 
-		/* @var MerchantDetail $merchant */
-		$merchant = give( MerchantDetail::class );
-
 		$tag = str_replace(
 			'src=',
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
-				$merchant->merchantIdInPayPal,
+				'GiveWP_SP_PCP',
 				give( MerchantDetail::class )->getClientToken()
 			),
 			$tag
