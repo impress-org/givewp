@@ -11,10 +11,12 @@ const Step = ( { children } ) => {
 
 Step.propTypes = {
 	children: PropTypes.node.isRequired,
+	showInNavigation: PropTypes.bool,
 };
 
 Step.defaultProps = {
 	children: null,
+	showInNavigation: false,
 };
 
 export default Step;

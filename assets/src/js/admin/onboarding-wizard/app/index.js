@@ -40,18 +40,22 @@ const App = () => {
 		{
 			title: __( 'Your Cause', 'give' ),
 			component: <YourCause />,
+			showInNavigation: true,
 		},
 		{
 			title: __( 'Location', 'give' ),
 			component: <Location />,
+			showInNavigation: true,
 		},
 		{
 			title: __( 'Fundraising Needs', 'give' ),
 			component: <FundraisingNeeds />,
+			showInNavigation: true,
 		},
 		{
 			title: __( 'Donation Form', 'give' ),
 			component: <DonationForm />,
+			showInNavigation: true,
 		},
 	];
 
