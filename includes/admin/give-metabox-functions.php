@@ -338,7 +338,7 @@ function give_chosen_input( $field ) {
 	if ( 'multiselect' === $data_type ) {
 		$type           = 'multiple';
 		$field['value'] = empty( $field['value'] ) ? [] : $field['value'];
-		$fieldName      = "{$fieldName}[]";
+		$fieldName     .= '[]';
 	}
 
 	if ( $allow_new_values && $field['value'] && ( $missing = array_diff( $field['value'], array_keys( $choices ) ) ) ) {
