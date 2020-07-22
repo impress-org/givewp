@@ -885,25 +885,26 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Note: only for internal use.
 				case 'chosen':
 					// Get option value.
-					$option_value     = self::get_option( $option_name, $value['id'], $value['default'] );
-					$option_value     = is_array( $option_value ) ? array_fill_keys( $option_value, 'selected' ) : $option_value;
+					$option_value     = array_filter( (array) self::get_option( $option_name, $value['id'], $value['default'] ) );
 					$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 					$type             = '';
-					$allow_new_values = '';
+					$allow_new_values = ! empty( $value['allow-custom-values'] ) && (bool) $value['allow-custom-values'] ? 'data-allows-new-values="true"' : '';
 					$name             = give_get_field_name( $value );
+					$choices          = $value['options'];
+					$value['style']   = isset( $value['style'] ) ? $value['style'] : '';
 
 					// Set attributes based on multiselect datatype.
-					if ( 'multiselect' === $value['data_type'] ) {
-						$type             = 'multiple';
-						$allow_new_values = 'data-allows-new-values="true"';
-						$name             = $name . '[]';
-						$option_value     = empty( $option_value ) ? [] : $option_value;
+					if ( ! empty( $value['data_type'] ) && 'multiselect' === $value['data_type'] ) {
+						$type         = 'multiple';
+						$name        .= '[]';
+						$option_value = empty( $option_value ) ? [] : $option_value;
 					}
 
-					$title_prefixes_value = ( is_array( $option_value ) && count( $option_value ) > 0 ) ?
-						array_merge( $value['options'], $option_value ) :
-						$value['options'];
-
+					// Add dynamically added values to options
+					// we can add option dynamically to chosen select field. For example: "Title Prefixes"
+					if ( $allow_new_values && $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
+						$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
+					}
 					?>
 					<tr valign="top" <?php echo $wrapper_class; ?>>
 						<th scope="row" class="titledesc">
@@ -921,14 +922,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								?>
 							>
 								<?php
-								if ( is_array( $title_prefixes_value ) && count( $title_prefixes_value ) > 0 ) {
-									foreach ( $title_prefixes_value as $key => $item_value ) {
-										echo sprintf(
-											'<option %1$s value="%2$s">%2$s</option>',
-											( 'selected' === $item_value ) ? 'selected="selected"' : '',
-											esc_attr( $key )
-										);
-									}
+								foreach ( $choices as $key => $name ) {
+									echo sprintf(
+										'<option %1$s value="%2$s">%3$s</option>',
+										in_array( $key, $option_value ) ? 'selected="selected"' : '',
+										esc_attr( $key ),
+										$name
+									);
 								}
 								?>
 							</select>
