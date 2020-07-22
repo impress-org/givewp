@@ -12,7 +12,7 @@ import './style.scss';
 const StepNavigation = ( { steps } ) => {
 	const stepLinks = steps.map( ( step, index ) => {
 		if ( step.props.showInNavigation === true ) {
-			return ( <StepLink title={ step.props.title } step={ index } key={ index } /> );
+			return ( <StepLink title={ step.props.title } stepNumber={ index } key={ index } /> );
 		}
 	} );
 
