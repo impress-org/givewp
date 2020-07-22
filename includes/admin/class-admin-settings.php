@@ -901,7 +901,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Add dynamically added values to options
 					// we can add option dynamically to chosen select field. For example: "Title Prefixes"
-					if ( $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
+					if ( $allow_new_values && $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
 						$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
 					}
 					?>

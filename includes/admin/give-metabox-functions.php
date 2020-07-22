@@ -341,7 +341,7 @@ function give_chosen_input( $field ) {
 		$fieldName      = "{$fieldName}[]";
 	}
 
-	if ( $field['value'] && ( $missing = array_diff( $field['value'], array_keys( $choices ) ) ) ) {
+	if ( $allow_new_values && $field['value'] && ( $missing = array_diff( $field['value'], array_keys( $choices ) ) ) ) {
 		$choices = array_merge( $choices, array_combine( $missing, $missing ) );
 	}
 	?>
