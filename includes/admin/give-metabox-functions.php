@@ -329,23 +329,21 @@ function give_chosen_input( $field ) {
 	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
 	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
 	$type                   = '';
-	$allow_new_values       = '';
 	$field['value']         = array_filter( (array) give_get_field_value( $field, $thepostid ) );
 	$choices                = $field['options'];
 	$fieldName              = esc_attr( give_get_field_name( $field ) );
+	$allow_new_values       = ! empty( $field['allow-custom-values'] ) && (bool) $field['allow-custom-values'] ? 'data-allows-new-values="true"' : '';
 
 	// Set attributes based on multiselect datatype.
 	if ( 'multiselect' === $data_type ) {
-		$type             = 'multiple';
-		$allow_new_values = 'data-allows-new-values="true"';
-		$field['value']   = empty( $field['value'] ) ? [] : $field['value'];
-		$fieldName        = "{$fieldName}[]";
-
-		if ( $field['value'] && ( $missing = array_diff( $field['value'], array_keys( $choices ) ) ) ) {
-			$choices = array_merge( $choices, array_combine( $missing, $missing ) );
-		}
+		$type           = 'multiple';
+		$field['value'] = empty( $field['value'] ) ? [] : $field['value'];
+		$fieldName      = "{$fieldName}[]";
 	}
 
+	if ( $field['value'] && ( $missing = array_diff( $field['value'], array_keys( $choices ) ) ) ) {
+		$choices = array_merge( $choices, array_combine( $missing, $missing ) );
+	}
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>">
