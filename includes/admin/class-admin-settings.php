@@ -891,20 +891,20 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$allow_new_values = '';
 					$name             = give_get_field_name( $value );
 
+					$choices = $value['options'];
+
 					// Set attributes based on multiselect datatype.
 					if ( 'multiselect' === $value['data_type'] ) {
 						$type             = 'multiple';
 						$allow_new_values = 'data-allows-new-values="true"';
-						$name             = $name . '[]';
+						$name            .= '[]';
 						$option_value     = empty( $option_value ) ? [] : $option_value;
-					}
 
-					$choices = $value['options'];
-
-					// Add dynamically added values to options
-					// we can add option dynamically to chosen select field. For example: "Title Prefixes"
-					if ( $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
-						$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
+						// Add dynamically added values to options
+						// we can add option dynamically to chosen select field. For example: "Title Prefixes"
+						if ( $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
+							$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
+						}
 					}
 
 					?>
