@@ -891,6 +891,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$allow_new_values = ! empty( $value['allow-custom-values'] ) && (bool) $value['allow-custom-values'] ? 'data-allows-new-values="true"' : '';
 					$name             = give_get_field_name( $value );
 					$choices          = $value['options'];
+					$value['style']   = isset( $value['style'] ) ? $value['style'] : '';
 
 					// Set attributes based on multiselect datatype.
 					if ( ! empty( $value['data_type'] ) && 'multiselect' === $value['data_type'] ) {
