@@ -888,24 +888,22 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$option_value     = array_filter( (array) self::get_option( $option_name, $value['id'], $value['default'] ) );
 					$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 					$type             = '';
-					$allow_new_values = '';
+					$allow_new_values = ! empty( $value['allow-custom-values'] ) && (bool) $value['allow-custom-values'] ? 'data-allows-new-values="true"' : '';
 					$name             = give_get_field_name( $value );
 					$choices          = $value['options'];
 
 					// Set attributes based on multiselect datatype.
-					if ( 'multiselect' === $value['data_type'] ) {
-						$type             = 'multiple';
-						$allow_new_values = 'data-allows-new-values="true"';
-						$name            .= '[]';
-						$option_value     = empty( $option_value ) ? [] : $option_value;
-
-						// Add dynamically added values to options
-						// we can add option dynamically to chosen select field. For example: "Title Prefixes"
-						if ( $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
-							$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
-						}
+					if ( ! empty( $value['data_type'] ) && 'multiselect' === $value['data_type'] ) {
+						$type         = 'multiple';
+						$name        .= '[]';
+						$option_value = empty( $option_value ) ? [] : $option_value;
 					}
 
+					// Add dynamically added values to options
+					// we can add option dynamically to chosen select field. For example: "Title Prefixes"
+					if ( $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
+						$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
+					}
 					?>
 					<tr valign="top" <?php echo $wrapper_class; ?>>
 						<th scope="row" class="titledesc">
