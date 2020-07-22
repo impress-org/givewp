@@ -5,6 +5,9 @@ const { __ } = wp.i18n;
 import { useStoreValue } from '../../app/store';
 import { goToStep } from '../../app/store/actions';
 
+// Import utilities
+import { redirectToSetupPage } from '../../utils';
+
 // Import components
 import Button from '../button';
 import Chevron from '../chevron';
@@ -13,10 +16,16 @@ import Chevron from '../chevron';
 import './style.scss';
 
 const ContinueButton = () => {
-	const [ { currentStep }, dispatch ] = useStoreValue();
+	const [ { currentStep, lastStep }, dispatch ] = useStoreValue();
 
 	return (
-		<Button onClick={ () => dispatch( goToStep( currentStep + 1 ) ) }>
+		<Button onClick={ () => {
+			if ( currentStep + 1 <= lastStep ) {
+				dispatch( goToStep( currentStep + 1 ) );
+			} else {
+				redirectToSetupPage();
+			}
+		} }>
 			{ __( 'Continue', 'give' ) }
 			<span className="give-obw-continue-button__icon">
 				<Chevron />
