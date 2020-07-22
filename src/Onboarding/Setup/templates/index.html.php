@@ -51,7 +51,7 @@
 							'action'      => '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/setup-page/paypal.svg' . '" alt="Connect to PayPal" />',
 						]
 					),
-					$this->render_template(
+					\Give\Helpers\Gateways\Stripe::isAccountConfigured() ? '' : $this->render_template(
 						'row-item',
 						[
 							'class'       => 'stripe',

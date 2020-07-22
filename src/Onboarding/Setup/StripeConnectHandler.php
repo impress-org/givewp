@@ -44,11 +44,16 @@ class StripeConnectHandler {
 	}
 
 	public function __construct( $vars ) {
-		$this->stripe_accounts = give_stripe_get_all_accounts();
-		$this->account_details = give_stripe_get_account_details( $vars['stripe_user_id'] );
-		$this->access_token    = ! give_is_test_mode()
+
+		$access_token = ! give_is_test_mode()
 			? $vars['stripe_access_token']
 			: $vars['stripe_access_token_test'];
+
+		// Set API Key to fetch account details.
+		\Stripe\Stripe::setApiKey( $access_token );
+
+		$this->stripe_accounts = give_stripe_get_all_accounts();
+		$this->account_details = give_stripe_get_account_details( $vars['stripe_user_id'] );
 
 		$this->liveSecretKey      = $vars['stripe_access_token'];
 		$this->testSecretKey      = $vars['stripe_access_token_test'];
@@ -58,9 +63,6 @@ class StripeConnectHandler {
 
 
 	public function handle() {
-
-		// Set API Key to fetch account details.
-		\Stripe\Stripe::setApiKey( $this->access_token );
 
 		// Setup Account Details for Connected Stripe Accounts.
 		if ( empty( $this->account_details->id ) ) {
@@ -76,7 +78,7 @@ class StripeConnectHandler {
 			give_update_option( '_give_stripe_default_account', $this->account_details->id );
 		}
 
-		$this->stripe_accounts[ $account_slug ] = [
+		$this->stripe_accounts[ $this->account_details->id ] = [
 			'type'                 => 'connect',
 			'account_name'         => $account_name,
 			'account_slug'         => $this->account_details->id,
