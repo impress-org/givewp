@@ -176,7 +176,7 @@ const gravatar = require( 'gravatar' );
 
 					if (
 						13 === event.keyCode &&
-						! jQuery( data.chosen.form_field ).find( 'option[value="' + chosenText + '"]' ).length &&
+						! $selectField.find( 'option[value="' + chosenText + '"]' ).length &&
 						'true' === $selectField.attr( 'data-allows-new-values' )
 					) {
 						$( data.chosen.form_field )
