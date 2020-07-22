@@ -1,6 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\ConnectClient\ConnectClient;
 use Give_Admin_Settings;
 
 /**
@@ -48,14 +49,16 @@ class onBoardingRedirectHandler {
 
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
-		$restApiCredentials = $this->getSellerRestAPICredentials( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
+		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
 
 		if ( ! $this->validateRestApiCredentials( $restApiCredentials ) ) {
 			wp_redirect(
 				admin_url(
 					sprintf(
 						'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
-						urlencode( $restApiCredentials['message'] )
+						isset( $restApiCredentials['error_description'] ) ?
+							urlencode( $restApiCredentials['error_description'] ) :
+							esc_html__( 'You are unable to completed onboarding. Please contact Support Team', 'give' )
 					)
 				)
 			);
@@ -78,31 +81,24 @@ class onBoardingRedirectHandler {
 	/**
 	 * Get seller rest API credentials
 	 *
-	 * @param string $merchantId
 	 * @param string $accessToken
 	 *
 	 * @since 2.8.0
 	 *
 	 * @return array
 	 */
-	private function getSellerRestAPICredentials( $merchantId, $accessToken ) {
-		$payPalResponse = wp_remote_retrieve_body(
-			wp_remote_get(
+	private function getSellerRestAPICredentials( $accessToken ) {
+		$request = wp_remote_get(
+			give( ConnectClient::class )->getApiUrl(
 				sprintf(
-					'https://api.sandbox.paypal.com/v1/customer/partners/%1$s/merchant-integrations/credentials/',
-					$merchantId
-				),
-				[
-					'headers' => [
-						'Authorization' => sprintf(
-							'Bearer %1$s',
-							$accessToken
-						),
-						'Content-Type'  => 'application/json',
-					],
-				]
+					'paypal?mode=%1$s&request=seller-credentials&token=%2$s',
+					give( PayPalClient::class )->mode,
+					$accessToken
+				)
 			)
 		);
+
+		$payPalResponse = wp_remote_retrieve_body( $request );
 
 		return json_decode( $payPalResponse, true );
 	}

@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\ConnectClient\ConnectClient;
 use Give\Helpers\ArrayDataSet;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 
@@ -75,18 +76,18 @@ class AjaxRequestHandler {
 		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
 		$restApiUrl = sprintf(
-			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
+			give( ConnectClient::class )->getApiUrl( 'paypal?mode=%1$s&request=partner-link&return_url=%2$s' ),
 			give( PayPalClient::class )->mode,
 			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
 		);
 
-		$response = wp_remote_get( $restApiUrl );
+		$response = wp_remote_retrieve_body( wp_remote_get( $restApiUrl ) );
 
-		if ( is_wp_error( $response ) ) {
+		if ( ! $response ) {
 			wp_send_json_error();
 		}
 
-		$data = json_decode( wp_remote_retrieve_body( $response ), true );
+		$data = json_decode( $response, true );
 		update_option( OptionId::$partnerInfoOptionKey, $data );
 
 		wp_send_json_success( $data );
