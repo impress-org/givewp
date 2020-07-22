@@ -56,7 +56,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$this->stripe_checkout_session = new Give_Stripe_Checkout_Session();
 
 			// Remove CC fieldset.
-			add_action( 'give_stripe_checkout_cc_form', [ $this, 'output_redirect_notice' ] );
+			add_action( 'give_stripe_checkout_cc_form', [ $this, 'output_redirect_notice' ], 10, 2 );
 
 			// Load the `redirect_to_checkout` function only when `redirect` is set as checkout type.
 			if ( 'redirect' === give_stripe_get_checkout_type() ) {
@@ -86,17 +86,16 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		/**
 		 * Render redirection notice.
 		 *
-		 * @param int $formId Donation Form ID.
+		 * @param int   $formId Donation Form ID.
+		 * @param array $args   List of arguments.
 		 *
 		 * @return bool
 		 * @since 2.7.0
 		 */
-		public function output_redirect_notice( $formId ) {
-			$canShowBillingAddress = Stripe::canShowBillingAddress( $formId );
-
+		public function output_redirect_notice( $formId, $args ) {
 			if ( FormUtils::isLegacyForm( $formId ) ) {
 				// For Legacy Form Template.
-				return $canShowBillingAddress;
+				return Stripe::canShowBillingAddress( $formId, $args );
 			}
 
 			// For Multi-step Sequoia Form Template.
@@ -122,10 +121,10 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					',
 				esc_html__( 'Make your donations quickly and securely with Stripe', 'give' ),
 				esc_html__( 'How it works:', 'give' ),
-				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' )
+				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' ),
 			);
 
-			return $canShowBillingAddress;
+			return Stripe::canShowBillingAddress( $formId, $args );
 		}
 
 		/**
