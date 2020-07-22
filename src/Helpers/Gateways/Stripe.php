@@ -150,4 +150,35 @@ class Stripe {
 
 		return ob_get_clean();
 	}
+
+	/**
+	 * Collect Billing Address?
+	 *
+	 * @since 2.7.3
+	 *
+	 * @return bool
+	 */
+	public static function collectBillingAddress() {
+		return give_is_setting_enabled( give_get_option( 'stripe_collect_billing' ) );
+	}
+
+	/**
+	 * Can Show Billing address Fields.
+	 *
+	 * @param int   $formId Donation Form ID.
+	 * @param array $args   List of additional arguments.
+	 *
+	 * @since 2.7.3
+	 *
+	 * @return bool|mixed
+	 */
+	public static function canShowBillingAddress( $formId, $args ) {
+		if ( ! self::collectBillingAddress() ) {
+			remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
+			return false;
+		}
+
+		do_action( 'give_after_cc_fields', $formId, $args );
+		return true;
+	}
 }
