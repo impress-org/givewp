@@ -885,13 +885,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Note: only for internal use.
 				case 'chosen':
 					// Get option value.
-					$option_value     = self::get_option( $option_name, $value['id'], $value['default'] );
+					$option_value     = array_filter( (array) self::get_option( $option_name, $value['id'], $value['default'] ) );
 					$wrapper_class    = ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '';
 					$type             = '';
 					$allow_new_values = '';
 					$name             = give_get_field_name( $value );
-
-					$choices = $value['options'];
+					$choices          = $value['options'];
 
 					// Set attributes based on multiselect datatype.
 					if ( 'multiselect' === $value['data_type'] ) {
@@ -924,15 +923,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								?>
 							>
 								<?php
-								if ( is_array( $choices ) && count( $choices ) > 0 ) {
-									foreach ( $choices as $key => $name ) {
-										echo sprintf(
-											'<option %1$s value="%2$s">%3$s</option>',
-											in_array( $key, $option_value ) ? 'selected="selected"' : '',
-											esc_attr( $key ),
-											$name
-										);
-									}
+								foreach ( $choices as $key => $name ) {
+									echo sprintf(
+										'<option %1$s value="%2$s">%3$s</option>',
+										in_array( $key, $option_value ) ? 'selected="selected"' : '',
+										esc_attr( $key ),
+										$name
+									);
 								}
 								?>
 							</select>
