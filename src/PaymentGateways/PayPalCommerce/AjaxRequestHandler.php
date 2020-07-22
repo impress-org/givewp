@@ -75,13 +75,19 @@ class AjaxRequestHandler {
 	public function onGetPartnerUrlAjaxRequestHandler() {
 		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
-		$restApiUrl = sprintf(
-			give( ConnectClient::class )->getApiUrl( 'paypal?mode=%1$s&request=partner-link&return_url=%2$s' ),
-			give( PayPalClient::class )->mode,
-			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
+		$response = wp_remote_retrieve_body(
+			wp_remote_post(
+				sprintf(
+					give( ConnectClient::class )->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
+					give( PayPalClient::class )->mode
+				),
+				[
+					'body' => [
+						'return_url' => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
+					],
+				]
+			)
 		);
-
-		$response = wp_remote_retrieve_body( wp_remote_get( $restApiUrl ) );
 
 		if ( ! $response ) {
 			wp_send_json_error();

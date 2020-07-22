@@ -88,14 +88,18 @@ class onBoardingRedirectHandler {
 	 * @return array
 	 */
 	private function getSellerRestAPICredentials( $accessToken ) {
-		$request = wp_remote_get(
+		$request = wp_remote_post(
 			give( ConnectClient::class )->getApiUrl(
 				sprintf(
-					'paypal?mode=%1$s&request=seller-credentials&token=%2$s',
-					give( PayPalClient::class )->mode,
-					$accessToken
+					'paypal?mode=%1$s&request=seller-credentials',
+					give( PayPalClient::class )->mode
 				)
-			)
+			),
+			[
+				'body' => [
+					'token' => $accessToken,
+				],
+			]
 		);
 
 		$payPalResponse = wp_remote_retrieve_body( $request );
