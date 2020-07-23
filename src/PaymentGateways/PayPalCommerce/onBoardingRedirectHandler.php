@@ -38,9 +38,10 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function savePayPalMerchantDetails() {
-		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode          = give( PayPalClient::class )->mode;
-		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
+		$paypalDefaultError = esc_html__( 'You are unable to completed onboarding. Please contact Support Team', 'give' );
+		$paypalGetData      = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$mode               = give( PayPalClient::class )->mode;
+		$tokenInfo          = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -50,20 +51,26 @@ class onBoardingRedirectHandler {
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
+		$onBoardingDetails  = $this->getSellerOnBoardingDetailsFromPayPal( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
-		if ( ! $this->validateRestApiCredentials( $restApiCredentials ) ) {
+		if (
+			! $onBoardingDetails['payments_receivable'] ||
+			! $onBoardingDetails['primary_email_confirmed'] ||
+			! $this->validateRestApiCredentials( $restApiCredentials )
+		) {
 			wp_redirect(
 				admin_url(
 					sprintf(
 						'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
 						isset( $restApiCredentials['error_description'] ) ?
 							urlencode( $restApiCredentials['error_description'] ) :
-							esc_html__( 'You are unable to completed onboarding. Please contact Support Team', 'give' )
+							$payPalAccount
 					)
 				)
 			);
 			exit;
 		}
+
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
 		$payPalAccount[ $mode ]['token']        = $tokenInfo;
@@ -98,6 +105,37 @@ class onBoardingRedirectHandler {
 			[
 				'body' => [
 					'token' => $accessToken,
+				],
+			]
+		);
+
+		$payPalResponse = wp_remote_retrieve_body( $request );
+
+		return json_decode( $payPalResponse, true );
+	}
+
+	/**
+	 * Get seller onboarding details from seller.
+	 *
+	 * @param string $merchantId
+	 * @param string $accessToken
+	 *
+	 * @return array
+	 * @since 2.8.0
+	 *
+	 */
+	private function getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken ) {
+		$request = wp_remote_post(
+			give( ConnectClient::class )->getApiUrl(
+				sprintf(
+					'paypal?mode=%1$s&request=seller-status',
+					give( PayPalClient::class )->mode
+				)
+			),
+			[
+				'body' => [
+					'merchant_id' => $merchantId,
+					'token'       => $accessToken,
 				],
 			]
 		);
