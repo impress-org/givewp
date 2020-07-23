@@ -219,15 +219,15 @@ class onBoardingRedirectHandler {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessage = esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' );
-		$redirect = false;
+		$errorMessage  = esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' );
+		$redirect      = false;
 
 		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
 			$this->redirectWhenOnBoardingFail();
 		}
 
 		if ( ! $onBoardedData['payments_receivable'] ) {
-			$redirect = true;
+			$redirect      = true;
 			$errorMessage .= sprintf(
 				'<br>- %1$s',
 				esc_html__( 'Set up an account to receive payment from PayPal', 'give' )
@@ -235,14 +235,14 @@ class onBoardingRedirectHandler {
 		}
 
 		if ( ! $onBoardedData['primary_email_confirmed'] ) {
-			$redirect = true;
+			$redirect      = true;
 			$errorMessage .= sprintf(
 				'<br>- %1$s',
 				esc_html__( 'Confirm your primary email address', 'give' )
 			);
 		}
 
-		if( $redirect ) {
+		if ( $redirect ) {
 			$this->redirectWhenOnBoardingFail( $errorMessage );
 		}
 	}
