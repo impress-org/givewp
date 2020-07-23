@@ -18,7 +18,7 @@ class ConnectClient {
 	public $apiUrl = 'https://connect.givewp.com/';
 
 	/**
-	 * Get api url.
+	 * Get rest api endpoint url for requests.
 	 *
 	 * @since 2.8.0
 	 *
