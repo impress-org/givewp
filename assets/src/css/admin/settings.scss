@@ -697,9 +697,13 @@ a.give-delete {
 				}
 			}
 		}
+
+		.give-hidden {
+			display: none !important;
+		}
 	}
 
 	.give-upsell-notice {
-		margin: 0;
+		margin: 30px 0 0 0 !important;
 	}
 }

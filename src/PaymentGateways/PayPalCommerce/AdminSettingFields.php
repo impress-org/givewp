@@ -4,6 +4,12 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\Views\Admin\UpsellNotice;
 use Give_License;
 
+/**
+ * Class AdminSettingFields
+ * @package Give\PaymentGateways\PayPalCommerce
+ *
+ * @since 2.8.0
+ */
 class AdminSettingFields {
 	/**
 	 * Bootstrap fields.
@@ -48,31 +54,49 @@ class AdminSettingFields {
 				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'Accept payments from around the world', 'give' ); ?></div>
 				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'PayPal, Apple and Google Pay', 'give' ); ?></div>
 			</div>
+
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
-				<div class="button-wrap connection-setting" style="display: none">
-					<div><button class="button button-primary button-large"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connect with PayPal', 'give' ); ?></button></div>
+				<div class="button-wrap connection-setting <?php echo Utils::isConnected() ? 'give-hidden' : ''; ?>">
+					<div>
+						<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
+							<i class="fab fa-paypal"></i>&nbsp;&nbsp;
+							<?php
+							esc_html_e(
+								'Connect with PayPal',
+								'give'
+							);
+							?>
+						</button>
+						<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#" data-paypal-button="true">
+							<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
+						</a>
+					</div>
 					<span class="give-field-description">
-						<i class="fa fa-exclamation"></i>
-						<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
-					</span>
+							<i class="fa fa-exclamation"></i>
+							<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
+						</span>
 				</div>
-				<div class="button-wrap disconnection-setting">
-					<div><button class="button button-large disabled" disabled="disabled"><i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?></button></div>
+				<div class="button-wrap disconnection-setting <?php echo ! Utils::isConnected() ? 'give-hidden' : ''; ?>">
+					<div>
+						<button class="button button-large disabled" disabled="disabled">
+							<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?>
+						</button>
+					</div>
 					<div>
 						<span class="give-field-description">
 							<i class="fa fa-check"></i>
 							<?php
-								printf(
-									'%1$s <span class="paypal-account-email">%2$s</span>',
-									esc_html__( 'Connected for payments as', 'give' ),
-									'devin.walker47@yahoo.com.'
-								);
+							printf(
+								'%1$s <span class="paypal-account-email">%2$s</span>',
+								esc_html__( 'Connected for payments as', 'give' ),
+								give( MerchantDetail::class )->merchantId
+							);
 							?>
 						</span>
 						<span class="actions">
-							<a href="#"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
-							&nbsp;|&nbsp;<a href="#"><?php esc_html_e( 'Change', 'give' ); ?></a>
+							<a href="#" id="js-give-paypal-disconnect-paypal-account"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
+							&nbsp;|&nbsp;<a href="#" id="js-give-paypal-change-paypal-account"><?php esc_html_e( 'Change', 'give' ); ?></a>
 						</span>
 					</div>
 					<div class="api-access-feature-list-wrap">
@@ -85,9 +109,9 @@ class AdminSettingFields {
 							<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
 						</ul>
 					</div>
-					<?php echo UpsellNotice::recurringAddon(); ?>
 				</div>
 			</div>
+			<?php echo UpsellNotice::recurringAddon(); ?>
 		</div>
 		<?php
 	}

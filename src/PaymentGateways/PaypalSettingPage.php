@@ -47,7 +47,6 @@ class PaypalSettingPage implements SettingPage {
 		// Load custom setting fields.
 		$adminSettingFields = new AdminSettingFields();
 		$adminSettingFields->boot();
-
 	}
 
 	/**

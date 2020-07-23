@@ -4,6 +4,13 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PaymentGateway;
 
+/**
+ * Class PayPalCommerce
+ *
+ * Boots the PayPalCommerce gateway and provides its basic registration properties
+ *
+ * @since 2.8.0
+ */
 class PayPalCommerce implements PaymentGateway {
 	/**
 	 * @inheritDoc
@@ -47,5 +54,34 @@ class PayPalCommerce implements PaymentGateway {
 				'table_html' => false,
 			],
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function boot() {
+		give( ScriptLoader::class )->boot();
+		give( AjaxRequestHandler::class )->boot();
+
+		give()->singleton(
+			MerchantDetail::class,
+			static function () {
+				return ( new MerchantDetail() )->boot();
+			}
+		);
+
+		give()->singleton( PayPalClient::class );
+
+		give()->singleton(
+			RefreshToken::class,
+			static function() {
+				return ( new RefreshToken() )->boot();
+			}
+		);
+
+		// Boot RefreshToken class immediately if cron job running.
+		if ( wp_doing_cron() ) {
+			give( RefreshToken::class );
+		}
 	}
 }
