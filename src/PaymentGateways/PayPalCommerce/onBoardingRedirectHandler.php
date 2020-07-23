@@ -51,7 +51,7 @@ class onBoardingRedirectHandler {
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
-		$this->isAdminSuccessfullyObBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
+		$this->isAdminSuccessfullyOnBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
@@ -214,7 +214,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 *
 	 */
-	private function isAdminSuccessfullyObBoarded( $merchantId, $accessToken ) {
+	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
