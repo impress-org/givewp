@@ -1,6 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\ConnectClient\ConnectClient;
 use Give_Admin_Settings;
 
 /**
@@ -37,30 +38,36 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function savePayPalMerchantDetails() {
-		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode          = give( PayPalClient::class )->mode;
-		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
+		$paypalDefaultError = esc_html__( 'You are unable to completed onboarding. Please contact Support Team', 'give' );
+		$paypalGetData      = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$mode               = give( PayPalClient::class )->mode;
+		$tokenInfo          = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
 			'merchantIdInPayPal',
 		];
 
-		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
 
-		$restApiCredentials = $this->getSellerRestAPICredentials( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
-
-		if ( ! $this->validateRestApiCredentials( $restApiCredentials ) ) {
+		if (
+			! $this->isAdminSuccessfullyObBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] ) ||
+			! $this->validateRestApiCredentials( $restApiCredentials )
+		) {
 			wp_redirect(
 				admin_url(
 					sprintf(
 						'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
-						urlencode( $restApiCredentials['message'] )
+						isset( $restApiCredentials['error_description'] ) ?
+							urlencode( $restApiCredentials['error_description'] ) :
+							$payPalAccount
 					)
 				)
 			);
 			exit;
 		}
+
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
 		$payPalAccount[ $mode ]['token']        = $tokenInfo;
@@ -78,33 +85,57 @@ class onBoardingRedirectHandler {
 	/**
 	 * Get seller rest API credentials
 	 *
-	 * @param string $merchantId
 	 * @param string $accessToken
 	 *
 	 * @since 2.8.0
 	 *
 	 * @return array
 	 */
-	private function getSellerRestAPICredentials( $merchantId, $accessToken ) {
-		$payPalResponse = wp_remote_retrieve_body(
-			wp_remote_get(
+	private function getSellerRestAPICredentials( $accessToken ) {
+		$request = wp_remote_post(
+			give( ConnectClient::class )->getApiUrl(
 				sprintf(
-					'https://api.sandbox.paypal.com/v1/customer/partners/%1$s/merchant-integrations/credentials/',
-					$merchantId
-				),
-				[
-					'headers' => [
-						'Authorization' => sprintf(
-							'Bearer %1$s',
-							$accessToken
-						),
-						'Content-Type'  => 'application/json',
-					],
-				]
-			)
+					'paypal?mode=%1$s&request=seller-credentials',
+					give( PayPalClient::class )->mode
+				)
+			),
+			[
+				'body' => [
+					'token' => $accessToken,
+				],
+			]
 		);
 
-		return json_decode( $payPalResponse, true );
+		return json_decode( wp_remote_retrieve_body( $request ), true );
+	}
+
+	/**
+	 * Get seller onboarding details from seller.
+	 *
+	 * @param string $merchantId
+	 * @param string $accessToken
+	 *
+	 * @return array
+	 * @since 2.8.0
+	 *
+	 */
+	private function getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken ) {
+		$request = wp_remote_post(
+			give( ConnectClient::class )->getApiUrl(
+				sprintf(
+					'paypal?mode=%1$s&request=seller-status',
+					give( PayPalClient::class )->mode
+				)
+			),
+			[
+				'body' => [
+					'merchant_id' => $merchantId,
+					'token'       => $accessToken,
+				],
+			]
+		);
+
+		return json_decode( wp_remote_retrieve_body( $request ), true );
 	}
 
 	/**
@@ -189,5 +220,25 @@ class onBoardingRedirectHandler {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Validate on Boarding PayPal details
+	 *
+	 * @param string $merchantId
+	 * @param string $accessToken
+	 *
+	 * @return bool
+	 * @since 2.8.0
+	 *
+	 */
+	private function isAdminSuccessfullyObBoarded( $merchantId, $accessToken ) {
+		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
+		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
+		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
+
+		return ! array_diff( $required, array_keys( $onBoardedData ) ) &&
+			   $onBoardedData['payments_receivable'] &&
+			   $onBoardedData['primary_email_confirmed'];
 	}
 }

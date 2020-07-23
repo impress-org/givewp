@@ -2,13 +2,12 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Braintree\Exception;
 use Give\Helpers\ArrayDataSet;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
-use PayPalHttp\HttpException;
+use Give\ConnectClient\ConnectClient;
 
 /**
  * Class AjaxRequestHandler
@@ -68,7 +67,7 @@ class AjaxRequestHandler {
 			wp_send_json_error();
 		}
 
-		$payPalResponse = ArrayDataSet::ucWordInKeyNameComesAfterDash( json_decode( $payPalResponse, true ) );
+		$payPalResponse = ArrayDataSet::camelCaseKeys( json_decode( $payPalResponse, true ) );
 
 		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
 
@@ -85,19 +84,25 @@ class AjaxRequestHandler {
 	public function onGetPartnerUrlAjaxRequestHandler() {
 		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
-		$restApiUrl = sprintf(
-			'https://connect.givewp.com/paypal?mode=%1$s&return_url=%2$s',
-			give( PayPalClient::class )->mode,
-			urlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ) )
+		$response = wp_remote_retrieve_body(
+			wp_remote_post(
+				sprintf(
+					give( ConnectClient::class )->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
+					give( PayPalClient::class )->mode
+				),
+				[
+					'body' => [
+						'return_url' => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
+					],
+				]
+			)
 		);
 
-		$response = wp_remote_get( $restApiUrl );
-
-		if ( is_wp_error( $response ) ) {
+		if ( ! $response ) {
 			wp_send_json_error();
 		}
 
-		$data = json_decode( wp_remote_retrieve_body( $response ), true );
+		$data = json_decode( $response, true );
 		update_option( OptionId::$partnerInfoOptionKey, $data );
 
 		wp_send_json_success( $data );
@@ -173,7 +178,7 @@ class AjaxRequestHandler {
 					'order' => $client->execute( $orderRequest )->result,
 				]
 			);
-		} catch ( Exception $ex ) {
+		} catch ( \Exception $ex ) {
 			wp_send_json_error(
 				[
 					'errorMsg' => $ex->getMessage(),
@@ -204,7 +209,7 @@ class AjaxRequestHandler {
 					'order'    => $client->execute( $orderRequest )->result,
 				]
 			);
-		} catch ( Exception $ex ) {
+		} catch ( \Exception $ex ) {
 			wp_send_json_error(
 				[
 					'errorMsg' => $ex->getMessage(),
