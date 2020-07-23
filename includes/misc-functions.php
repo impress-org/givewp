@@ -980,7 +980,7 @@ function give_get_meta( $id, $meta_key = '', $single = false, $default = false, 
 	 *
 	 * @since 1.8.8
 	 */
-	$meta_value = apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default, $meta_value );
+	$meta_value = apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default, $meta_type );
 
 	if ( ( empty( $meta_key ) || empty( $meta_value ) ) && $default ) {
 		$meta_value = $default;
