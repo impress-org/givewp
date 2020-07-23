@@ -219,13 +219,31 @@ class onBoardingRedirectHandler {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
+		$errorMessage = esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' );
+		$redirect = false;
 
 		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
 			$this->redirectWhenOnBoardingFail();
-		} elseif ( ! $onBoardedData['payments_receivable'] ) {
-			$this->redirectWhenOnBoardingFail( esc_html__( 'We are unable to connect your seller account because your seller account can not receive payments. Please contact PayPal Support Team', 'give' ) );
-		} elseif ( ! $onBoardedData['primary_email_confirmed'] ) {
-			$this->redirectWhenOnBoardingFail( esc_html__( 'We are unable to connect your seller account because your seller account primary email has not been confirmed. Please contact PayPal Support Team', 'give' ) );
+		}
+
+		if ( ! $onBoardedData['payments_receivable'] ) {
+			$redirect = true;
+			$errorMessage .= sprintf(
+				'<br>- %1$s',
+				esc_html__( 'Set up an account to receive payment from PayPal', 'give' )
+			);
+		}
+
+		if ( ! $onBoardedData['primary_email_confirmed'] ) {
+			$redirect = true;
+			$errorMessage .= sprintf(
+				'<br>- %1$s',
+				esc_html__( 'Confirm your primary email address', 'give' )
+			);
+		}
+
+		if( $redirect ) {
+			$this->redirectWhenOnBoardingFail( $errorMessage );
 		}
 	}
 
