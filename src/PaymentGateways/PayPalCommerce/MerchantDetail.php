@@ -241,7 +241,7 @@ class MerchantDetail {
 			return '';
 		}
 
-		$response = ArrayDataSet::ucWordInKeyNameComesAfterDash( json_decode( $response, true ) );
+		$response = ArrayDataSet::camelCaseKeys( json_decode( $response, true ) );
 
 		return $response['clientToken'];
 	}
