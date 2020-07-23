@@ -51,7 +51,6 @@ class onBoardingRedirectHandler {
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
-		$this->isAdminSuccessfullyOnBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
@@ -62,6 +61,8 @@ class onBoardingRedirectHandler {
 		$merchantDetails->save();
 
 		$this->deleteTempOptions();
+
+		$this->isAdminSuccessfullyOnBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
 		exit;
