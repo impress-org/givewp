@@ -51,7 +51,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
-		$onBoardingDetails  = $this->getSellerOnBoardingDetailsFromPayPal( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
+		$onBoardingDetails  = (array) $this->getSellerOnBoardingDetailsFromPayPal( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		if (
 			! $onBoardingDetails['payments_receivable'] ||
