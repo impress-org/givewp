@@ -48,14 +48,11 @@ class onBoardingRedirectHandler {
 			'merchantIdInPayPal',
 		];
 
-		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
-
+		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
-		$onBoardingDetails  = (array) $this->getSellerOnBoardingDetailsFromPayPal( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		if (
-			! $onBoardingDetails['payments_receivable'] ||
-			! $onBoardingDetails['primary_email_confirmed'] ||
+			! $this->isAdminSuccessfullyObBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] ) ||
 			! $this->validateRestApiCredentials( $restApiCredentials )
 		) {
 			wp_redirect(
@@ -109,9 +106,7 @@ class onBoardingRedirectHandler {
 			]
 		);
 
-		$payPalResponse = wp_remote_retrieve_body( $request );
-
-		return json_decode( $payPalResponse, true );
+		return json_decode( wp_remote_retrieve_body( $request ), true );
 	}
 
 	/**
@@ -140,9 +135,7 @@ class onBoardingRedirectHandler {
 			]
 		);
 
-		$payPalResponse = wp_remote_retrieve_body( $request );
-
-		return json_decode( $payPalResponse, true );
+		return json_decode( wp_remote_retrieve_body( $request ), true );
 	}
 
 	/**
@@ -227,5 +220,25 @@ class onBoardingRedirectHandler {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Validate on Boarding PayPal details
+	 *
+	 * @param string $merchantId
+	 * @param string $accessToken
+	 *
+	 * @return bool
+	 * @since 2.8.0
+	 *
+	 */
+	private function isAdminSuccessfullyObBoarded( $merchantId, $accessToken ) {
+		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
+		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
+		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
+
+		return ! array_diff( $required, array_keys( $onBoardedData ) ) &&
+			   $onBoardedData['payments_receivable'] &&
+			   $onBoardedData['primary_email_confirmed'];
 	}
 }
