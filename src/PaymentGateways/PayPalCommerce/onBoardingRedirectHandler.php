@@ -150,7 +150,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function registerPayPalErrorNotice() {
-		Give_Admin_Settings::add_error( 'paypal-error', give_clean( $_GET['paypal-error'] ) );
+		Give_Admin_Settings::add_error( 'paypal-error', wp_kses( $_GET['paypal-error'], [ 'br' => [] ] ) );
 	}
 
 	/**
