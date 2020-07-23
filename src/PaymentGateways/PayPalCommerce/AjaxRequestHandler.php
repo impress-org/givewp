@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
 use Give\Helpers\ArrayDataSet;
-use PayPalCheckoutSdk\Core\PayPalHttpClient;
 
 /**
  * Class AjaxRequestHandler
