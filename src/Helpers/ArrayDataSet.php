@@ -74,7 +74,7 @@ class ArrayDataSet {
 	 *
 	 * @param $array
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public static function camelCaseKeys( $array ) {
 		$newArray = [];
