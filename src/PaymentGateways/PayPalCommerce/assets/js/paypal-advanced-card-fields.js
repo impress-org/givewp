@@ -60,4 +60,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			} );
 		} );
 	}
+
+	paypal.Buttons().render( '#give-paypal-smart-buttons-field-510-1' );
 } );

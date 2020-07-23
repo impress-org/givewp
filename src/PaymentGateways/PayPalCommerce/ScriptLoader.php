@@ -91,7 +91,7 @@ EOT;
 			$this->paypalSdkScriptHandle,
 			sprintf(
 				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture',
-				'hosted-fields',
+				'hosted-fields,buttons',
 				$merchant->clientId,
 				$merchant->merchantIdInPayPal,
 				give_get_currency()

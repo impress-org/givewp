@@ -54,6 +54,9 @@ class AdvancedCardFields {
 			}
 
 			?>
+			<div id="give-paypal-smart-buttons-wrap" class="form-row">
+				<div id="give-paypal-smart-buttons-field-<?php echo esc_html( $id_prefix ); ?>"></div>
+			</div>
 			<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-paypal-commerce-cc-field-wrap">
 				<div>
 					<label for="give-card-number-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
