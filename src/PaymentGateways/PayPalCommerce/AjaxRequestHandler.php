@@ -3,11 +3,9 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\ArrayDataSet;
-use Give_Session;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
-use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use Give\ConnectClient\ConnectClient;
 
 /**
@@ -136,18 +134,18 @@ class AjaxRequestHandler {
 	/**
 	 * Create order.
 	 *
+	 * @todo: handle payment create error on frontend.
+	 *
 	 * @since 2.8.0
 	 */
 	public function createOrder() {
-		give( Give_Session::class )->maybe_start_session();
-
 		/* @var PayPalHttpClient $client */
 		$client = give( PayPalClient::class )->getHttpClient();
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
-		$formId   = absint( $_POST['give-form-id'] );
 		$postData = give_clean( $_POST );
+		$formId   = absint( $postData['give-form-id'] );
 
 		$request = new OrdersCreateRequest();
 		$request->payPalPartnerAttributionId( PartnerDetails::$attributionId );
@@ -182,13 +180,11 @@ class AjaxRequestHandler {
 		];
 
 		try {
-			$response     = $client->execute( $request );
-			$orderRequest = new OrdersGetRequest( $response->result->id );
+			$response = $client->execute( $request );
 
 			wp_send_json_success(
 				[
-					'id'    => $response->result->id,
-					'order' => $client->execute( $orderRequest )->result,
+					'id' => $response->result->id,
 				]
 			);
 		} catch ( \Exception $ex ) {
@@ -203,23 +199,22 @@ class AjaxRequestHandler {
 	/**
 	 * Approve order.
 	 *
+	 * @todo: handle payment capture error on frontend.
+	 *
 	 * @since 2.8.0
 	 */
 	public function approveOrder() {
 		/* @var PayPalHttpClient $client */
-		$client = give( PayPalClient::class )->getHttpClient();
+		$client  = give( PayPalClient::class )->getHttpClient();
+		$orderId = give_clean( $_GET['order'] );
 
-		$request = new OrdersCaptureRequest( $_GET['order'] );
+		$request = new OrdersCaptureRequest( $orderId );
 
 		try {
 			$response = $client->execute( $request );
-
-			$orderRequest = new OrdersGetRequest( $_POST['order'] );
-
 			wp_send_json_success(
 				[
-					'response' => $response->result,
-					'order'    => $client->execute( $orderRequest )->result,
+					'order' => $response->result,
 				]
 			);
 		} catch ( \Exception $ex ) {
