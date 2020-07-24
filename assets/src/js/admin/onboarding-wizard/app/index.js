@@ -38,6 +38,16 @@ const App = () => {
 			currency: 'USD',
 			featureNeeds: [ 'one-time-donations' ],
 		},
+		countriesList: [
+			{
+				value: 'USA',
+				label: 'United States',
+			},
+			{
+				value: 'MEX',
+				label: 'Mexico',
+			},
+		],
 		currenciesList: [
 			{
 				value: 'USD',
