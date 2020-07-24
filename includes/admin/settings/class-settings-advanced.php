@@ -10,7 +10,6 @@
  */
 
 use Give\Onboarding\Setup\Page as SetupPage;
-use Give\Onboarding\Setup\PageStatus as SetupPageStatus;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -176,11 +175,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'default' => give_is_setting_enabled(
 								SetupPage::getSetupPageEnabledOrDisabled()
 							)
-								? SetupPageStatus::ENABLED
-								: SetupPageStatus::DISABLED,
+								? SetupPage::ENABLED
+								: SetupPage::DISABLED,
 							'options' => [
-								SetupPageStatus::ENABLED  => __( 'Enabled', 'give' ),
-								SetupPageStatus::DISABLED => __( 'Disabled', 'give' ),
+								SetupPage::ENABLED  => __( 'Enabled', 'give' ),
+								SetupPage::DISABLED => __( 'Disabled', 'give' ),
 							],
 						],
 						[

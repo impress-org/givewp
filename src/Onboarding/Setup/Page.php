@@ -17,41 +17,32 @@ defined( 'ABSPATH' ) || exit;
  */
 class Page {
 
-	use PageDismissible;
-
-	public function hide_admin_notices() {
-		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
-			ob_start();
-			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
-		}
-	}
-
-	public function _hide_admin_notices() {
-		ob_get_clean();
-	}
+	const ENABLED  = 'enabled';
+	const DISABLED = 'disabled';
 
 	/**
-	 * Redirect the top level "Donations" menu to the Setup submenu.
-	 *
-	 * @note This adjusts the URL pattern so that the submenu page displays correctly.
+	 * Dissmiss the Setup Page.
 	 *
 	 * @since 2.8.0
 	 */
-	public function redirectDonationsToSetup() {
-		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
-			if ( ! isset( $_GET['post_type'] ) ) {
-				wp_redirect(
-					add_query_arg(
-						[
-							'post_type' => 'give_forms',
-							'page'      => 'give-setup',
-						],
-						admin_url( 'edit.php' )
-					)
-				);
-				exit;
-			}
+	public function dismissSetupPage() {
+		if ( wp_verify_nonce( $_GET['_wpnonce'], 'dismiss_setup_page' ) ) {
+			give_update_option( 'setup_page_enabled', self::DISABLED );
+
+			wp_redirect( add_query_arg( [ 'post_type' => 'give_forms' ], admin_url( 'edit.php' ) ) );
+			exit;
 		}
+	}
+
+	/**
+	 * Helper method for checking the if the Setup Page is enabled.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function getSetupPageEnabledOrDisabled() {
+		return give_get_option( 'setup_page_enabled', self::DISABLED );
 	}
 
 	/**
@@ -77,6 +68,11 @@ class Page {
 	 * @since 2.8.0
 	 */
 	public function enqueue_scripts() {
+
+		if ( 'give-setup' !== $_GET['page'] ) {
+			return;
+		}
+
 		wp_enqueue_style(
 			'give-admin-setup-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-setup.css',
@@ -93,7 +89,7 @@ class Page {
 			'give-admin-setup-script',
 			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
 			[],
-			'0.0.1',
+			GIVE_VERSION,
 			$in_footer = true
 		);
 		wp_enqueue_style(
@@ -106,7 +102,7 @@ class Page {
 			'give-admin-setup-script',
 			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
 			[],
-			'0.0.1',
+			GIVE_VERSION,
 			$in_footer = true
 		);
 	}
@@ -117,43 +113,7 @@ class Page {
 	 * @since 2.8.0
 	 */
 	public function render_page() {
-		include plugin_dir_path( __FILE__ ) . 'templates/index.html.php';
-	}
-
-	/**
-	 * Render templates
-	 *
-	 * @param string $template
-	 * @param array $data The key/value pairs passed as $data are extracted as variables for use within the template file.
-	 *
-	 * @since 2.8.0
-	 */
-	public function render_template( $template, $data = [] ) {
-		ob_start();
-		include plugin_dir_path( __FILE__ ) . "templates/$template.html";
-		$output = ob_get_clean();
-
-		foreach ( $data as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$value = implode( '', $value );
-			}
-			$output = preg_replace( '/{{\s*' . $key . '\s*}}/', $value, $output );
-		}
-
-		// Stripe unmerged tags.
-		$output = preg_replace( '/{{\s*.*\s*}}/', '', $output );
-
-		return $output;
-	}
-
-	/**
-	 * Returns a qualified image URL.
-	 *
-	 * @param string $src
-	 *
-	 * @return string
-	 */
-	public function image( $src ) {
-		return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
+		$view = new PageView();
+		echo $view->render();
 	}
 }

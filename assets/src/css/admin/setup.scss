@@ -54,12 +54,6 @@ header .badge.badge-complete {
 header .badge.badge-review {
 	color: #696969;
 	background: transparent;
-	color: #18694c;
-	background: #cbf4c9;
-}
-header .badge.badge-review {
-	color: #696969;
-	background: transparent;
 }
 article {
 	padding: 20px 0;
@@ -111,12 +105,13 @@ article .description {
 	margin-left: 15px;
 }
 
-.stripe button {
+article.stripe .action a {
 	margin-left: 15px;
 	width: 223px;
 	height: 38px;
 	font-size: 16px;
-	line-height: 22px;
+	line-height: 35px;
+	text-align: center;
 	color: #fff;
 	background: rgb(70, 170, 228);
 	background: linear-gradient(180deg, rgba(70, 170, 228, 1) 0%, rgba(12, 144, 222, 1) 50%);
