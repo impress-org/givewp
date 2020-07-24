@@ -36,7 +36,7 @@ const App = () => {
 			country: 'USA',
 			state: 'WA',
 			currency: 'USD',
-			featureNeeds: [ 'one-time-donations' ],
+			fundraisingNeeds: [ 'one-time-donations' ],
 		},
 		countriesList: [
 			{

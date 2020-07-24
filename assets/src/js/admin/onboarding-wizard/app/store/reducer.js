@@ -40,11 +40,11 @@ export const reducer = ( state, action ) => {
 					currency: action.payload.currency,
 				},
 			};
-		case 'SET_FEATURE_NEEDS':
+		case 'SET_FUNDRAISING_NEEDS':
 			return {
 				...state,
 				configuration: { ...state.configuration,
-					featureNeeds: action.payload.needs,
+					fundraisingNeeds: action.payload.needs,
 				},
 			};
 		default:

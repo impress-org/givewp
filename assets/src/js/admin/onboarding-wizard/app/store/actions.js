@@ -58,10 +58,10 @@ export const setCurrency = ( currency ) => {
 	};
 };
 
-// Dispatch SET_FEATURE_NEEDS action
-export const setFeatureNeeds = ( needs ) => {
+// Dispatch SET_FUNDRAISING_NEEDS action
+export const setFundraisingNeeds = ( needs ) => {
 	return {
-		type: 'SET_FEATURE_NEEDS',
+		type: 'SET_FUNDRAISING_NEEDS',
 		payload: {
 			needs,
 		},
