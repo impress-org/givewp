@@ -15,6 +15,7 @@ use Give\Form\Template;
 use Give\FormAPI\Fields;
 use Give\FormAPI\Section;
 use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Views\Admin\UpsellNotice;
 
 /**
  * Give_Meta_Box_Form_Data Class.
@@ -328,14 +329,15 @@ class Give_MetaBox_Form_Data {
 								'default' => 'global',
 							],
 							[
-								'name'          => __( 'Title Prefixes', 'give' ),
-								'desc'          => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
-								'id'            => $prefix . 'title_prefixes',
-								'type'          => 'chosen',
-								'data_type'     => 'multiselect',
-								'style'         => 'width: 100%',
-								'wrapper_class' => 'give-hidden give-title-prefixes-wrap',
-								'options'       => give_get_default_title_prefixes(),
+								'name'                => __( 'Title Prefixes', 'give' ),
+								'desc'                => __( 'Add or remove salutations from the dropdown using the field above.', 'give' ),
+								'id'                  => $prefix . 'title_prefixes',
+								'type'                => 'chosen',
+								'data_type'           => 'multiselect',
+								'allow-custom-values' => true,
+								'style'               => 'width: 100%',
+								'wrapper_class'       => 'give-hidden give-title-prefixes-wrap',
+								'options'             => give_get_default_title_prefixes(),
 							],
 							[
 								'name'    => __( 'Company Donations', 'give' ),
@@ -721,7 +723,6 @@ class Give_MetaBox_Form_Data {
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_template_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 
-			$upsell_html          = $this->upsell_html();
 			$added_upsells_notice = false;
 			?>
 			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
@@ -773,7 +774,7 @@ class Give_MetaBox_Form_Data {
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
 						<?php
 						if ( ! $added_upsells_notice ) {
-							echo $upsell_html;
+							echo UpsellNotice::recurringAddon();
 							$added_upsells_notice = true;
 						}
 						?>
@@ -804,39 +805,6 @@ class Give_MetaBox_Form_Data {
 			</div>
 			<?php
 		endif; // End if().
-	}
-
-
-	/**
-	 * Gt upsells html
-	 *
-	 * @return string
-	 * @since 2.6.0
-	 */
-	private function upsell_html() {
-		if ( Give_License::get_plugin_by_slug( 'give-recurring' ) ) {
-			return '';
-		}
-
-		$addon_link_url   = esc_url( 'https://go.givewp.com/addons-recurring-inlinelink' );
-		$addon_button_url = esc_url( 'https://go.givewp.com/addons-recurring-button' );
-
-		return sprintf(
-			'
-			<div class="give-upsell-notice">
-				<span class="icon dashicons dashicons-update-alt"></span>
-				<span class="description">%1$s</span>
-				<a class="view-addon-link button" href="%2$s" target="_blank">%3$s</a>
-			</div>
-			',
-			sprintf(
-				__( 'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provide your donors with flexible subscription giving options.', 'give' ),
-				$addon_link_url,
-				__( 'Click to view the Recurring Donations add-on', 'give' )
-			),
-			$addon_button_url,
-			__( 'View Add-on', 'give' )
-		);
 	}
 
 	/**

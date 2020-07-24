@@ -171,11 +171,13 @@ const gravatar = require( 'gravatar' );
 				width: '30%',
 			} ).on( 'chosen:no_results', function( evt, data ) {
 				$( data.chosen.container ).on( 'keydown', function( event ) {
-					const chosenText = data.chosen.get_search_text();
+					const chosenText = data.chosen.get_search_text(),
+						  $selectField = jQuery( data.chosen.form_field );
 
 					if (
 						13 === event.keyCode &&
-						! jQuery( data.chosen.form_field ).find( 'option[value="' + chosenText + '"]' ).length
+						! $selectField.find( 'option[value="' + chosenText + '"]' ).length &&
+						'true' === $selectField.attr( 'data-allows-new-values' )
 					) {
 						$( data.chosen.form_field )
 							.append( '<option value="' + chosenText + '" selected>' + chosenText + '</option>' )
