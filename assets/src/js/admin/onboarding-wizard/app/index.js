@@ -32,7 +32,7 @@ const App = () => {
 		lastStep: 4,
 		configuration: {
 			userType: 'individual',
-			causeTypes: [ 'school' ],
+			causeType: 'school',
 			country: 'USA',
 			state: 'WA',
 			currency: 'USD',

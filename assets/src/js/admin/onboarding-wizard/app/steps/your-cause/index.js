@@ -2,7 +2,7 @@
 const { __ } = wp.i18n;
 
 // Import store dependencies
-import useStoreValue from '../../store';
+import { useStoreValue } from '../../store';
 import { setUserType, setCauseType } from '../../store/actions';
 
 // Import components
@@ -17,7 +17,7 @@ import './style.scss';
 const YourCause = () => {
 	const [ { configuration }, dispatch ] = useStoreValue();
 
-	const userType = configuration.useType;
+	const userType = configuration.userType;
 	const causeType = configuration.causeType;
 
 	return (

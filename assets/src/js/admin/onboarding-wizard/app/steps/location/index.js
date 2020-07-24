@@ -2,7 +2,7 @@
 const { __ } = wp.i18n;
 
 // Import store dependencies
-import useStoreValue from '../../store';
+import { useStoreValue } from '../../store';
 import { setCountry, setState, setCurrency } from '../../store/actions';
 
 // Import components
