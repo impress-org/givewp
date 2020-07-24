@@ -35,7 +35,7 @@ trait PageDismissible {
 	 *
 	 * @return string
 	 */
-	public static function getSetupPageEnabledOrDisabled() {
+	public function getSetupPageEnabledOrDisabled() {
 		return give_get_option( 'setup_page_enabled', PageStatus::DISABLED );
 	}
 

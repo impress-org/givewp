@@ -22,7 +22,7 @@ class Page {
 	public function hide_admin_notices() {
 		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
 			ob_start();
-			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
+			add_action( 'admin_notices', [ self::class, '_hide_admin_notices' ], 999999 );
 		}
 	}
 
@@ -66,7 +66,7 @@ class Page {
 			esc_html__( 'Setup', 'give' ),
 			'manage_give_settings',
 			'give-setup',
-			[ $this, 'render_page' ],
+			[ self::class, 'render_page' ],
 			$position = 0
 		);
 	}

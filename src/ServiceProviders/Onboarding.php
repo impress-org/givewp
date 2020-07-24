@@ -2,6 +2,7 @@
 
 namespace Give\ServiceProviders;
 
+use Give\Helpers\Hooks;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Setup\StripeConnectHandler;
 use Give\Onboarding\Wizard\Page as WizardPage;
@@ -12,7 +13,7 @@ class Onboarding implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
-		// ...
+		give()->singleton( SetupPage::class );
 	}
 
 	/**
@@ -28,16 +29,15 @@ class Onboarding implements ServiceProvider {
 
 		// Maybe load Setup Page
 		if ( give_is_setting_enabled( SetupPage::getSetupPageEnabledOrDisabled() ) ) {
-			$setupPage = new SetupPage;
-			add_action( 'admin_menu', [ $setupPage, 'add_page' ] );
-			add_action( 'admin_init', [ $setupPage, 'redirectDonationsToSetup' ] );
-			add_action( 'admin_enqueue_scripts', [ $setupPage, 'enqueue_scripts' ] );
-			add_action( 'admin_notices', [ $setupPage, 'hide_admin_notices' ], -999999 );
-			add_action( 'admin_post_dismiss_setup_page', [ $setupPage, 'dismissSetupPage' ] );
+			Hooks::addAction( 'admin_menu', SetupPage::class, 'add_page' );
+			Hooks::addAction( 'admin_init', SetupPage::class, 'redirectDonationsToSetup' );
+			Hooks::addAction( 'admin_enqueue_scripts', SetupPage::class, 'enqueue_scripts' );
+			Hooks::addAction( 'admin_notices', SetupPage::class, 'hide_admin_notices', -999999 );
+			Hooks::addAction( 'admin_post_dismiss_setup_page', SetupPage::class, 'dismissSetupPage' );
 		}
 
 		// Handle Stripe Connect return.
 		// Priority 9 to listener implemented by the advanced settings.
-		add_action( 'admin_init', [ StripeConnectHandler::class, 'maybeHandle' ], 9 );
+		Hooks::addAction( 'admin_init', StripeConnectHandler::class, 'maybeHandle', 9 );
 	}
 }

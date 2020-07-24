@@ -15,21 +15,22 @@ defined( 'ABSPATH' ) || exit;
  */
 class StripeConnectHandler {
 
-	public static function maybeHandle() {
+	public function maybeHandle() {
+
 		// Is user have permission to edit give setting.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
 		}
 
-		$get_vars = give_clean( $_GET );
+		$vars = give_clean( $_GET );
 
 		// If we don't have values here, bounce.
 		if (
-			! isset( $get_vars['stripe_publishable_key'] ) ||
-			! isset( $get_vars['stripe_user_id'] ) ||
-			! isset( $get_vars['stripe_access_token'] ) ||
-			! isset( $get_vars['stripe_access_token_test'] ) ||
-			! isset( $get_vars['connected'] )
+			! isset( $vars['stripe_publishable_key'] ) ||
+			! isset( $vars['stripe_user_id'] ) ||
+			! isset( $vars['stripe_access_token'] ) ||
+			! isset( $vars['stripe_access_token_test'] ) ||
+			! isset( $vars['connected'] )
 		) {
 			return;
 		}
@@ -38,12 +39,6 @@ class StripeConnectHandler {
 		if ( headers_sent() ) {
 			return;
 		}
-
-		$handler = new self( $get_vars );
-		$handler->handle();
-	}
-
-	public function __construct( $vars ) {
 
 		$access_token = ! give_is_test_mode()
 			? $vars['stripe_access_token']
