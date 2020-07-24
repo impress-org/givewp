@@ -14,7 +14,7 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 	return (
 		<Fragment>
 			{ label && <p>{ label }</p> }
-			<select value={ value } className="give-obw-select-input" onChange={ ( event ) => onChange( event.target.val ) } >
+			<select value={ value } className="give-obw-select-input" onChange={ ( event ) => onChange( event.target.value ) } >
 				{ optionElements }
 			</select>
 		</Fragment>
