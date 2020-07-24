@@ -93,7 +93,7 @@ class Page {
 			'give-admin-setup-script',
 			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
 			[],
-			'0.0.1',
+			GIVE_VERSION,
 			$in_footer = true
 		);
 		wp_enqueue_style(
@@ -106,7 +106,7 @@ class Page {
 			'give-admin-setup-script',
 			GIVE_PLUGIN_URL . 'assets/src/js/admin/admin-setup.js',
 			[],
-			'0.0.1',
+			GIVE_VERSION,
 			$in_footer = true
 		);
 	}
