@@ -1,7 +1,23 @@
+// Import vendor dependencies
+const { __ } = wp.i18n;
+
+// Import store dependencies
+import { StoreProvider } from './store';
+import { reducer } from './store/reducer';
+
 // Import styles
 import './style.scss';
 
-const { __ } = wp.i18n;
+// Import components
+import Wizard from '../components/wizard';
+import Step from '../components/step';
+
+// Import steps
+import DonationForm from './steps/donation-form';
+import FundraisingNeeds from './steps/fundraising-needs';
+import Introduction from './steps/introduction';
+import Location from './steps/location';
+import YourCause from './steps/your-cause';
 
 /**
  * Onboarding Wizard app component
@@ -10,22 +26,52 @@ const { __ } = wp.i18n;
  * @returns {array} Array of React elements, comprising the Onboarding Wizard app
  */
 const App = () => {
+	// Initial app state (available in component through useStoreValue)
+	const initialState = {
+		currentStep: 0,
+		lastStep: 4,
+	};
+
+	const steps = [
+		{
+			title: __( 'Introduction', 'give' ),
+			component: <Introduction />,
+			showInNavigation: false,
+		},
+		{
+			title: __( 'Your Cause', 'give' ),
+			component: <YourCause />,
+			showInNavigation: true,
+		},
+		{
+			title: __( 'Location', 'give' ),
+			component: <Location />,
+			showInNavigation: true,
+		},
+		{
+			title: __( 'Fundraising Needs', 'give' ),
+			component: <FundraisingNeeds />,
+			showInNavigation: true,
+		},
+		{
+			title: __( 'Donation Form', 'give' ),
+			component: <DonationForm />,
+			showInNavigation: true,
+		},
+	];
+
 	return (
-		<div className="give-obw">
-			<div className="give-obw-step">
-				<h2>
-					{ __( 'Welcome To', 'give' ) }
-				</h2>
-				<div className="give-obw-logo">{ __( 'GiveWP', 'give' ) }</div>
-				<p>
-					{ __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in mi a leo convallis consequat. Sed ornare tellus vel justo porttitor, eu bibendum lorem vulputate.', 'give' ) }
-				</p>
-				<div className="give-obw-buttons">
-					<a className="give-obw-button give-obw-button--primary" href="#">{ __( 'Get Started', 'give' ) }</a>
-					<a className="give-obw-button" href={ window.giveOnboardingWizardData.setupUrl }>{ __( 'Not right now.', 'give' ) }</a>
-				</div>
-			</div>
-		</div>
+		<StoreProvider initialState={ initialState } reducer={ reducer }>
+			<Wizard>
+				{ steps.map( ( step, index ) => {
+					return (
+						<Step title={ step.title } showInNavigation={ step.showInNavigation } key={ index }>
+							{ step.component }
+						</Step>
+					);
+				} ) }
+			</Wizard>
+		</StoreProvider>
 	);
 };
 export default App;
