@@ -6,6 +6,7 @@ use Give\Helpers\Hooks;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Setup\StripeConnectHandler;
 use Give\Onboarding\Wizard\Page as WizardPage;
+use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
 
 class Onboarding implements ServiceProvider {
 
@@ -14,6 +15,7 @@ class Onboarding implements ServiceProvider {
 	 */
 	public function register() {
 		give()->singleton( SetupPage::class );
+		give()->bind( DonationsRedirect::class );
 	}
 
 	/**
@@ -29,8 +31,8 @@ class Onboarding implements ServiceProvider {
 
 		// Maybe load Setup Page
 		if ( give_is_setting_enabled( SetupPage::getSetupPageEnabledOrDisabled() ) ) {
+			Hooks::addAction( 'admin_init', TopLevelMenuRedirect::class, 'maybeHandle' );
 			Hooks::addAction( 'admin_menu', SetupPage::class, 'add_page' );
-			Hooks::addAction( 'admin_init', SetupPage::class, 'redirectDonationsToSetup' );
 			Hooks::addAction( 'admin_enqueue_scripts', SetupPage::class, 'enqueue_scripts' );
 			Hooks::addAction( 'admin_post_dismiss_setup_page', SetupPage::class, 'dismissSetupPage' );
 		}

@@ -46,30 +46,6 @@ class Page {
 	}
 
 	/**
-	 * Redirect the top level "Donations" menu to the Setup submenu.
-	 *
-	 * @note This adjusts the URL pattern so that the submenu page displays correctly.
-	 *
-	 * @since 2.8.0
-	 */
-	public function redirectDonationsToSetup() {
-		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
-			if ( ! isset( $_GET['post_type'] ) ) {
-				wp_redirect(
-					add_query_arg(
-						[
-							'post_type' => 'give_forms',
-							'page'      => 'give-setup',
-						],
-						admin_url( 'edit.php' )
-					)
-				);
-				exit;
-			}
-		}
-	}
-
-	/**
 	 * Add Setup submenu page to admin menu
 	 *
 	 * @since 2.8.0
@@ -92,6 +68,11 @@ class Page {
 	 * @since 2.8.0
 	 */
 	public function enqueue_scripts() {
+
+		if ( 'give-setup' !== $_GET['page'] ) {
+			return;
+		}
+
 		wp_enqueue_style(
 			'give-admin-setup-style',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-setup.css',
