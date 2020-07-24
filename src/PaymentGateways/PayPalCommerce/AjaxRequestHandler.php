@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\ArrayDataSet;
+use Give_Session;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
@@ -138,6 +139,8 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function createOrder() {
+		give( Give_Session::class )->maybe_start_session();
+
 		/* @var PayPalHttpClient $client */
 		$client = give( PayPalClient::class )->getHttpClient();
 		/* @var MerchantDetail $merchant */
