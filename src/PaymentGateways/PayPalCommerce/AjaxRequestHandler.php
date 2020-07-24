@@ -143,7 +143,8 @@ class AjaxRequestHandler {
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
-		$formId = absint( $_POST['give-form-id'] );
+		$formId   = absint( $_POST['give-form-id'] );
+		$postData = give_clean( $_POST );
 
 		$request = new OrdersCreateRequest();
 		$request->payPalPartnerAttributionId( PartnerDetails::$attributionId );
@@ -154,7 +155,7 @@ class AjaxRequestHandler {
 					'reference_id'        => get_post_field( 'post_name', $formId ),
 					'description'         => '',
 					'amount'              => [
-						'value'         => $_POST['give-amount'],
+						'value'         => give_maybe_sanitize_amount( $postData['give-amount'] ),
 						'currency_code' => give_get_currency( $_POST['give-form-id'] ),
 					],
 					'payee'               => [
@@ -162,7 +163,9 @@ class AjaxRequestHandler {
 						'merchant_id'   => $merchant->merchantIdInPayPal,
 					],
 					'payer'               => [
-						'email_address' => '',
+						'given_name'    => $postData['give_first'],
+						'surname'       => $postData['give_last'],
+						'email_address' => $postData['give_email'],
 					],
 					'payment_instruction' => [
 						'disbursement_mode' => 'INSTANT',
