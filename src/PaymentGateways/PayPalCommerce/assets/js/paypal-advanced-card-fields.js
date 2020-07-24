@@ -1,6 +1,39 @@
 class GiveWpPayPal {
-	static getFormData( $formId ) {
-		return new FormData( $formId );
+	/**
+	 * Get form Data.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param $form
+	 * @return {FormData}
+	 */
+	static getFormDataFormHttpRequest( $form ) {
+		const formData = new FormData( $form );
+
+		formData.delete( 'give_action' );
+
+		return formData;
+	}
+
+	/**
+	 * Add PayPal order id as hidden type input field to donation form.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param $form
+	 * @param orderId
+	 * @return {*}
+	 */
+	static attachOrderIdToForm( $form, orderId ) {
+		const input = document.createElement( 'input' );
+
+		input.type = 'hidden';
+		input.name = 'payPalOrderId';
+		input.value = orderId;
+
+		return new Promise( ( resolve, reject ) => {
+			resolve( $form.appendChild( input ) );
+		} );
 	}
 }
 
@@ -72,7 +105,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		createOrder: function( data, actions ) {
 			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
 				method: 'POST',
-				body: GiveWpPayPal.getFormData( $form ),
+				body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
 			} ).then( function( res ) {
 				return res.json();
 			} ).then( function( res ) {
@@ -82,20 +115,19 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		// Call your server to finalize the transaction
 		onApprove: function( data, actions ) {
-			console.log( data, actions );
-
 			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 				method: 'post',
 			} ).then( function( res ) {
 				return res.json();
-			} ).then( function( orderData ) {
+			} ).then( function( res ) {
 				// Three cases to handle:
 				//   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
 				//   (2) Other non-recoverable errors -> Show a failure message
 				//   (3) Successful transaction -> Show a success / thank you message
 
 				// Your server defines the structure of 'orderData', which may differ
-				const errorDetail = Array.isArray( orderData.details ) && orderData.details[ 0 ];
+				const errorDetail = Array.isArray( res.data.order.details ) && res.data.order.details[ 0 ],
+					orderData = res.data.order;
 
 				if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
 					// Recoverable state, see: "Handle Funding Failures"
@@ -115,8 +147,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					return alert( msg );
 				}
 
-				// Show a success message to the buyer  orderData.payer.name.given_name
-				alert( 'Transaction completed' + orderData.payer.name.given_name );
+				GiveWpPayPal.attachOrderIdToForm( $form, orderData.id )
+					.then( () => {
+						$form.submit();
+					} );
 			} );
 		},
 	} ).render( '#give-paypal-smart-buttons-field-510-1' );
