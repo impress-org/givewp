@@ -38,10 +38,9 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function savePayPalMerchantDetails() {
-		$paypalDefaultError = esc_html__( 'You are unable to completed onboarding. Please contact Support Team', 'give' );
-		$paypalGetData      = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode               = give( PayPalClient::class )->mode;
-		$tokenInfo          = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
+		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$mode          = give( PayPalClient::class )->mode;
+		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -51,22 +50,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
 
-		if (
-			! $this->isAdminSuccessfullyObBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] ) ||
-			! $this->validateRestApiCredentials( $restApiCredentials )
-		) {
-			wp_redirect(
-				admin_url(
-					sprintf(
-						'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
-						isset( $restApiCredentials['error_description'] ) ?
-							urlencode( $restApiCredentials['error_description'] ) :
-							$payPalAccount
-					)
-				)
-			);
-			exit;
-		}
+		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
@@ -77,6 +61,8 @@ class onBoardingRedirectHandler {
 		$merchantDetails->save();
 
 		$this->deleteTempOptions();
+
+		$this->isAdminSuccessfullyOnBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
 		exit;
@@ -164,7 +150,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function registerPayPalErrorNotice() {
-		Give_Admin_Settings::add_error( 'paypal-error', give_clean( $_GET['paypal-error'] ) );
+		Give_Admin_Settings::add_error( 'paypal-error', wp_kses( $_GET['paypal-error'], [ 'br' => [] ] ) );
 	}
 
 	/**
@@ -206,39 +192,80 @@ class onBoardingRedirectHandler {
 	 *
 	 * @param  array  $array
 	 *
-	 * @return bool
 	 * @since 2.8.0
 	 *
 	 */
-	private function validateRestApiCredentials( $array ) {
+	private function didWeGetValidSellerRestApiCredentials( $array ) {
 
 		$required = [ 'client_id', 'client_secret' ];
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			return false;
+			$errorMessage = isset( $restApiCredentials['error_description'] ) ? urlencode( $restApiCredentials['error_description'] ) : '';
+			$this->redirectWhenOnBoardingFail( $errorMessage );
 		}
-
-		return true;
 	}
 
 	/**
-	 * Validate on Boarding PayPal details
+	 * Validate seller on Boarding status
 	 *
 	 * @param string $merchantId
 	 * @param string $accessToken
 	 *
-	 * @return bool
 	 * @since 2.8.0
 	 *
 	 */
-	private function isAdminSuccessfullyObBoarded( $merchantId, $accessToken ) {
+	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
+		$errorMessage  = esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' );
+		$redirect      = false;
 
-		return ! array_diff( $required, array_keys( $onBoardedData ) ) &&
-			   $onBoardedData['payments_receivable'] &&
-			   $onBoardedData['primary_email_confirmed'];
+		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
+			$this->redirectWhenOnBoardingFail();
+		}
+
+		if ( ! $onBoardedData['payments_receivable'] ) {
+			$redirect      = true;
+			$errorMessage .= sprintf(
+				'<br>- %1$s',
+				esc_html__( 'Set up an account to receive payment from PayPal', 'give' )
+			);
+		}
+
+		if ( ! $onBoardedData['primary_email_confirmed'] ) {
+			$redirect      = true;
+			$errorMessage .= sprintf(
+				'<br>- %1$s',
+				esc_html__( 'Confirm your primary email address', 'give' )
+			);
+		}
+
+		if ( $redirect ) {
+			$this->redirectWhenOnBoardingFail( $errorMessage );
+		}
+	}
+
+	/**
+	 * Redirect admin to setting section with error.
+	 *
+	 * @param $errorMessage
+	 *
+	 * @since 2.8.0
+	 */
+	private function redirectWhenOnBoardingFail( $errorMessage = '' ) {
+		$errorMessage = $errorMessage ?: esc_html__( 'We are unable to connect your seller account because required result did not return from PayPal. Please contact GiveWP Support Team', 'give' );
+
+		wp_redirect(
+			admin_url(
+				sprintf(
+					'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
+					urlencode( $errorMessage )
+				)
+			)
+		);
+
+		exit();
 	}
 }

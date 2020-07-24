@@ -146,6 +146,7 @@ class MerchantDetail {
 	public function fromArray( $merchantDetails ) {
 		$obj = new static();
 
+		$obj->validate( $merchantDetails );
 		$obj->setupProperties( $merchantDetails );
 
 		return $obj;

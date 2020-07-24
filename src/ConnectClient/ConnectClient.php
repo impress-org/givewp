@@ -15,11 +15,10 @@ class ConnectClient {
 	 *
 	 * @var string
 	 */
-	// public $apiUrl = 'https://connect.givewp.com/';
-	protected $apiUrl = 'https://dev-givewp.pantheonsite.io/gateway-oauth/';
+	public $apiUrl = 'https://connect.givewp.com/';
 
 	/**
-	 * Get api url.
+	 * Get rest api endpoint url for requests.
 	 *
 	 * @since 2.8.0
 	 *
