@@ -1,12 +1,12 @@
 //import axios from 'axios';
 
-export const getAPIRoot = () => {
-	return 'givewp.local/';
-};
-
 export const getWindowData = ( value ) => {
 	const data = window.giveOnboardingWizardData;
 	return data[ value ];
+};
+
+export const getAPIRoot = () => {
+	return 'givewp.local/';
 };
 
 export const getAPINonce = () => {

@@ -1,6 +1,6 @@
 import { saveSettingWithOnboardingAPI, getStatesListWithOnboardingAPI, getCurrencyWithOnboardingAPI } from '../../utils';
 
-export const reducer = async( state, action ) => {
+export const reducer = ( state, action ) => {
 	switch ( action.type ) {
 		case 'GO_TO_STEP':
 			return {
@@ -8,7 +8,7 @@ export const reducer = async( state, action ) => {
 				currentStep: action.payload.step,
 			};
 		case 'SET_USER_TYPE':
-			await saveSettingWithOnboardingAPI( 'user_type', action.payload.type );
+			saveSettingWithOnboardingAPI( 'user_type', action.payload.type );
 			return {
 				...state,
 				configuration: { ...state.configuration,
@@ -16,7 +16,7 @@ export const reducer = async( state, action ) => {
 				},
 			};
 		case 'SET_CAUSE_TYPE':
-			await saveSettingWithOnboardingAPI( 'cause_type', action.payload.type );
+			saveSettingWithOnboardingAPI( 'cause_type', action.payload.type );
 			return {
 				...state,
 				configuration: { ...state.configuration,
@@ -24,9 +24,9 @@ export const reducer = async( state, action ) => {
 				},
 			};
 		case 'SET_COUNTRY':
-			await saveSettingWithOnboardingAPI( 'country', action.payload.country );
-			const newStatesList = await getStatesListWithOnboardingAPI( action.payload.country );
-			const newCurrency = await getCurrencyWithOnboardingAPI( action.payload.country );
+			saveSettingWithOnboardingAPI( 'country', action.payload.country );
+			const newStatesList = getStatesListWithOnboardingAPI( action.payload.country );
+			const newCurrency = getCurrencyWithOnboardingAPI( action.payload.country );
 			return {
 				...state,
 				statesList: newStatesList,
@@ -36,7 +36,7 @@ export const reducer = async( state, action ) => {
 				},
 			};
 		case 'SET_STATE':
-			await saveSettingWithOnboardingAPI( 'state_province', action.payload.state );
+			saveSettingWithOnboardingAPI( 'state_province', action.payload.state );
 			return {
 				...state,
 				configuration: { ...state.configuration,
@@ -44,7 +44,7 @@ export const reducer = async( state, action ) => {
 				},
 			};
 		case 'SET_CURRENCY':
-			await saveSettingWithOnboardingAPI( 'currency', action.payload.currency );
+			saveSettingWithOnboardingAPI( 'currency', action.payload.currency );
 			return {
 				...state,
 				configuration: { ...state.configuration,
@@ -52,7 +52,7 @@ export const reducer = async( state, action ) => {
 				},
 			};
 		case 'SET_FUNDRAISING_NEEDS':
-			await saveSettingWithOnboardingAPI( 'fundraising_needs', action.payload.fundraisingNeeds );
+			saveSettingWithOnboardingAPI( 'fundraising_needs', action.payload.fundraisingNeeds );
 			return {
 				...state,
 				configuration: { ...state.configuration,
