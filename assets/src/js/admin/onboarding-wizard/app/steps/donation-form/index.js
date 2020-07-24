@@ -16,7 +16,7 @@ const DonationForm = () => {
 			<div className="give-obw-donation-form__content">
 				<h2>{ __( 'Check out your first donation form!', 'give' ) }</h2>
 				<p>
-					{ __( 'We\'ve create a donation form for you based on your responses.', 'give' ) }
+					{ __( 'We\'ve created a donation form for you based on your responses.', 'give' ) }
 				</p>
 
 				<h3>{ __( 'After setup you can:', 'give' ) }</h3>

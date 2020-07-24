@@ -24,12 +24,12 @@ const YourCause = () => {
 			<CardInput values={ userType } onChange={ ( values ) => setUserType( values ) } checkMultiple={ false } >
 				<Card value="individual" padding="60px 32px">
 					<IndividualIcon />
-					<p>{ __( 'I\'m funraising as an', 'give' ) }</p>
+					<p>{ __( 'I\'m fundraising as an', 'give' ) }</p>
 					<h2>{ __( 'Individual', 'give' ) }</h2>
 				</Card>
 				<Card value="organization" padding="60px 32px">
 					<OrganizationIcon />
-					<p>{ __( 'I\'m funraising within an', 'give' ) }</p>
+					<p>{ __( 'I\'m fundraising within an', 'give' ) }</p>
 					<h2>{ __( 'Organization', 'give' ) }</h2>
 				</Card>
 				<Card value="other" padding="60px 32px">
