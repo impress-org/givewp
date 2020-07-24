@@ -45,17 +45,6 @@ class Page {
 		return give_get_option( 'setup_page_enabled', self::DISABLED );
 	}
 
-	public function hide_admin_notices() {
-		if ( isset( $_GET['page'] ) && 'give-setup' == $_GET['page'] ) {
-			ob_start();
-			add_action( 'admin_notices', [ $this, '_hide_admin_notices' ], 999999 );
-		}
-	}
-
-	public function _hide_admin_notices() {
-		ob_get_clean();
-	}
-
 	/**
 	 * Redirect the top level "Donations" menu to the Setup submenu.
 	 *

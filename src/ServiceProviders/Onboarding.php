@@ -32,7 +32,6 @@ class Onboarding implements ServiceProvider {
 			Hooks::addAction( 'admin_menu', SetupPage::class, 'add_page' );
 			Hooks::addAction( 'admin_init', SetupPage::class, 'redirectDonationsToSetup' );
 			Hooks::addAction( 'admin_enqueue_scripts', SetupPage::class, 'enqueue_scripts' );
-			Hooks::addAction( 'admin_notices', SetupPage::class, 'hide_admin_notices', -999999 );
 			Hooks::addAction( 'admin_post_dismiss_setup_page', SetupPage::class, 'dismissSetupPage' );
 		}
 
