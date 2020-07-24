@@ -41,7 +41,7 @@ class Page {
 	 *
 	 * @return string
 	 */
-	public function getSetupPageEnabledOrDisabled() {
+	public static function getSetupPageEnabledOrDisabled() {
 		return give_get_option( 'setup_page_enabled', self::DISABLED );
 	}
 
@@ -69,7 +69,7 @@ class Page {
 	 */
 	public function enqueue_scripts() {
 
-		if ( 'give-setup' !== $_GET['page'] ) {
+		if ( ! isset( $_GET['page'] ) || 'give-setup' !== $_GET['page'] ) {
 			return;
 		}
 
