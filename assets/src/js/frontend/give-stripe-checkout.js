@@ -1,7 +1,6 @@
-import { GiveStripeElements } from './give-stripe-elements';
+import {GiveStripeElements} from './give-stripe-elements';
 
 document.addEventListener( 'DOMContentLoaded', ( evt ) => {
-	const stripe_handler = [];
 	const formWraps = document.querySelectorAll( '.give-form-wrap' );
 
 	// Loop through the number of forms on the page.
@@ -21,21 +20,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			return;
 		}
 
-		const modalBtn = formElement.querySelector( '.give-stripe-checkout-modal-btn' );
 		const publishableKey = formElement.getAttribute( 'data-publishable-key' );
-		const accountId = formElement.getAttribute( 'data-account' );
-		const formName = null !== formElement.querySelector( 'input[name="give-form-title"]' ) ?
-			formElement.querySelector( 'input[name="give-form-title"]' ).value :
-			false;
-		const idPrefix = null !== formElement.querySelector( 'input[name="give-form-id-prefix"]' ) ?
-			formElement.querySelector( 'input[name="give-form-id-prefix"]' ).value :
-			false;
-		const checkoutImage = ( give_stripe_vars.checkout_image.length > 0 ) ? give_stripe_vars.checkout_image : '';
-		const checkoutAddress = ( give_stripe_vars.checkout_address.length > 0 );
-		const isZipCode = ( give_stripe_vars.zipcode_option.length > 0 );
-		const isRememberMe = ( give_stripe_vars.remember_option.length > 0 );
-		const siteTitle = give_stripe_vars.sitename;
-		const btnTitle = give_stripe_vars.checkoutBtnTitle;
 
 		/**
 		 * Bailout, when publishable key is not present for a donation form
@@ -50,11 +35,11 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		const stripeModalDonateBtn = formElement.querySelector( '.give-stripe-checkout-modal-donate-button' );
 		const cardholderName = formElement.querySelector( 'input[name="card_name"]' );
 		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
-		const gateways = Array.from( formElement.querySelectorAll( '.give-gateway' ) );
-
 		const stripeElements = new GiveStripeElements( formElement );
-		const cardElements = stripeElements.createElement( stripeElements.getElements( stripeElements.setupStripeElement() ) );
+		const setupElements  = stripeElements.setupStripeElement();
+		const cardElements   = stripeElements.createElement( stripeElements.getElements( setupElements ) );
 
+		// Mount the Stripe Elements if it is Stripe Checkout.
 		if ( formGateway && 'stripe_checkout' === formGateway.value ) {
 			stripeElements.mountElement( cardElements );
 		}
@@ -64,6 +49,7 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 
 		cardElements.forEach( ( cardElement ) => {
 			completeCardElements.cardName = false;
+
 			cardElement.on( 'ready', ( e ) => {
 				completeCardElements[ e.elementType ] = false;
 			} );
@@ -87,40 +73,105 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			} );
 		}
 
-		stripeModalDonateBtn.addEventListener( 'click', ( e ) => {
-			e.preventDefault();
-			const mainDonateBtn = formElement.querySelector( 'input[name="give-purchase"]' );
-			mainDonateBtn.removeAttribute( 'disabled' );
-			mainDonateBtn.click();
-		} );
+		if ( null !== stripeModalDonateBtn ) {
+			// Process donation on the click of the modal donate button.
+			stripeModalDonateBtn.addEventListener('click', (e) => {
+				const currentModalDonateBtn = e.target;
+				const loadingAnimationElement = currentModalDonateBtn.nextElementSibling;
 
+				// Show Loading Icon on submitting modal donate btn.
+				currentModalDonateBtn.value = '';
+				loadingAnimationElement.classList.add('sequoia-loader');
+				loadingAnimationElement.classList.add('spinning');
+				loadingAnimationElement.classList.remove('give-loading-animation');
+
+				const billing_details = {
+					name: '',
+					email: '',
+					address: {
+						line1: '',
+						line2: '',
+						city: '',
+						state: '',
+						postal_code: '',
+						country: '',
+					},
+				};
+				const firstName = formElement.querySelector('input[name="give_first"]').value;
+				const lastName = formElement.querySelector('input[name="give_last"]').value;
+				const email = formElement.querySelector('input[name="give_email"]').value;
+				const formSubmit = formElement.querySelector('[id^=give-purchase-button]');
+
+				// Disable the submit button to prevent repeated clicks.
+				formSubmit.setAttribute('disabled', 'disabled');
+
+				billing_details.name = `${firstName} ${lastName}`;
+				billing_details.email = email;
+
+				// Gather additional customer data we may have collected in our form.
+				if (give_stripe_vars.checkout_address && !give_stripe_vars.stripe_card_update) {
+					const address1 = formElement.querySelector('.card-address').value;
+					const address2 = formElement.querySelector('.card-address-2').value;
+					const city = formElement.querySelector('.card-city').value;
+					const state = formElement.querySelector('.card_state').value;
+					const zip = formElement.querySelector('.card-zip').value;
+					const country = formElement.querySelector('.billing-country').value;
+
+					billing_details.address.line1 = address1 ? address1 : '';
+					billing_details.address.line2 = address2 ? address2 : '';
+					billing_details.address.city = city ? city : '';
+					billing_details.address.state = state ? state : '';
+					billing_details.address.postal_code = zip ? zip : '';
+					billing_details.address.country = country ? country : '';
+				}
+
+				// Create Payment Method using the CC fields.
+				setupElements.createPaymentMethod({
+					type: 'card',
+					card: cardElements[0],
+					billing_details: billing_details,
+				}).then(function (result) {
+					if (result.error) {
+						const donateBtn = formElement.getElementById('give-purchase-button');
+						const error = `<div class="give_errors"><p class="give_error">${result.error.message}</p></div>`;
+
+						// re-enable the submit button.
+						donateBtn.setAttribute('disabled', false);
+
+						// Display Error on the form.
+						formElement.getElementById(`give-stripe-payment-errors-${formId}`).innerHTML = error;
+
+						// Reset Donate Button.
+						if (give_global_vars.complete_purchase) {
+							formElement.value = give_global_vars.complete_purchase;
+						} else {
+							formElement.value = formElement.getAttribute('data-before-validation-label');
+						}
+					} else {
+						formElement.querySelector('input[name="give_stripe_payment_method"]').value = result.paymentMethod.id;
+						formElement.submit();
+					}
+				});
+				e.preventDefault();
+			});
+		}
+
+		// This will be triggered when the actual donation form is submitted.
 		formElement.onsubmit = function( evt ) {
 			const selectedGateway = formElement.querySelector( '.give-gateway:checked' ).value;
-			const formName = null !== formElement.querySelector( 'input[name="give-form-title"]' ) ?
-				formElement.querySelector( 'input[name="give-form-title"]' ).value :
-				false;
-			const donorEmail = formElement.querySelector( 'input[name="give_email"]' ).value;
-			const idPrefix = formElement.querySelector( 'input[name="give-form-id-prefix"]' ).value;
+
+			// Bailout, if Stripe Checkout is not the selected gateway.
+			if ( 'stripe_checkout' !== selectedGateway ) {
+				return false;
+			}
+
 			const donationAmount = formElement.querySelector( '.give-final-total-amount' ).textContent;
 			const validatePaymentFields = formElement.querySelector( 'input[name="give_validate_stripe_payment_fields"]' );
 
+			// Setup data on modal and then trigger to display modal.
+			stripeModal.querySelector( '.give-stripe-checkout-donation-amount' ).innerHTML = donationAmount;
 			stripeModal.classList.add( 'give-stripe-checkout-show-modal' );
 			validatePaymentFields.setAttribute( 'value', '1' );
-
-			// new GiveStripeModal(
-			// 	{
-			// 		modalWrapper: 'give-modal--stripe-checkout',
-			// 		modalContent: {
-			// 			title: siteTitle,
-			// 			price: donationAmount,
-			// 			email: donorEmail,
-			// 			formTitle: formName,
-			// 			btnTitle: btnTitle,
-			// 			formElement: formElement,
-			// 			idPrefix: idPrefix,
-			// 		},
-			// 	}
-			// ).render();
 
 			evt.preventDefault();
 		};
