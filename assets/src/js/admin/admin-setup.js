@@ -8,7 +8,7 @@
  */
 
 Array.from( document.querySelectorAll( '.setup-item' ) ).forEach( ( setupItem ) => {
-	const actionAnchor = setupItem.querySelector( '.action a' );
+	const actionAnchor = setupItem.querySelector( '.js-action-link' );
 
 	if ( actionAnchor ) {
 		actionAnchor.addEventListener( 'click', ( e ) => e.stopPropagation() );

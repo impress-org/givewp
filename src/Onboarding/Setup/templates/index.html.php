@@ -27,7 +27,13 @@
 						'icon_alt'    => esc_html__( 'First-Time Configuration', 'give' ),
 						'title'       => esc_html__( 'First-Time Configuration', 'give' ),
 						'description' => esc_html__( 'Every fundraising campaign begins with a donation form. Click here to create your first donation form in minutes. Once created you can use it anywhere on your website.', 'give' ),
-						'action'      => '<a href="' . admin_url( '?page=give-onboarding-wizard' ) . '"><span class="screen-reader-text">Configure GiveWP</span><i class="fas fa-chevron-right"></i></a>',
+						'action'      => $this->render_template(
+							'action-link',
+							[
+								'href'             => admin_url( '?page=give-onboarding-wizard' ),
+								'screenReaderText' => 'Configure GiveWP',
+							]
+						),
 					]
 				),
 			]
@@ -51,7 +57,7 @@
 							'action'      => '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/setup-page/paypal.svg' . '" alt="Connect to PayPal" />',
 						]
 					),
-					\Give\Helpers\Gateways\Stripe::isAccountConfigured() ? '' : $this->render_template(
+					$this->render_template(
 						'row-item',
 						[
 							'class'       => 'stripe',
@@ -99,7 +105,13 @@
 							'icon_alt'    => esc_html__( 'GiveWP 101', 'give' ),
 							'title'       => esc_html__( 'GiveWP 101', 'give' ),
 							'description' => esc_html__( 'Start off on the right foot by learning the basics of the plugin and how to get the most out of it to further your online fundraising efforts.', 'give' ),
-							'action'      => '<a href="#"><span class="screen-reader-text">Learn more about GiveWP</span><i class="fas fa-chevron-right"></i></a>',
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => 'Learn more about GiveWP',
+								]
+							),
 						]
 					),
 					$this->render_template(
@@ -109,7 +121,13 @@
 							'icon_alt'    => esc_html__( 'Add-ons', 'give' ),
 							'title'       => esc_html__( 'GiveWP Add-ons', 'give' ),
 							'description' => esc_html__( 'Make your fundraising even more effective with powerful features like Recurring Donations, ask donor\'s to cover processing fees, multiple currencies, eCard dedications, and much more. View our growing library of 35+ add-ons and extend your fundraising now.', 'give' ),
-							'action'      => '<a href="#"><span class="screen-reader-text">View Add-ons for GiveWP</span><i class="fas fa-chevron-right"></i></a>',
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => 'View Add-ons for GiveWP',
+								]
+							),
 						]
 					),
 				],
