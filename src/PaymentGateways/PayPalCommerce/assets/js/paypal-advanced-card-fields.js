@@ -1,3 +1,9 @@
+class GiveWpPayPal{
+	static getFormData( $formId ) {
+		return new FormData( $formId );
+	}
+}
+
 /* globals paypal, Give */
 document.addEventListener( 'DOMContentLoaded', () => {
 	const computedStyle = window.getComputedStyle( document.querySelector( '#give-card-name-wrap input[name="card_name"]' ), null ),
@@ -66,7 +72,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		createOrder: function( data, actions ) {
 			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
 				method: 'POST',
-				body: formData,
+				body: GiveWpPayPal.getFormData( $form ),
 			} ).then( function( res ) {
 				return res.json();
 			} ).then( function( res ) {
@@ -110,7 +116,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				}
 
 				// Show a success message to the buyer  orderData.payer.name.given_name
-				alert( 'Transaction completed' );
+				alert( 'Transaction completed' + orderData.payer.name.given_name );
 			} );
 		},
 	} ).render( '#give-paypal-smart-buttons-field-510-1' );
