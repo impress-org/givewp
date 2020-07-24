@@ -65,7 +65,7 @@
 							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
 							'title'       => esc_html__( 'Connect to Stripe', 'give' ),
 							'description' => esc_html__( 'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations.', 'give' ),
-							'action'      => sprintf(
+							'action'      => \Give\Helpers\Gateways\Stripe::isAccountConfigured() ? '' : sprintf(
 								'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect with Stripe</a>',
 								add_query_arg(
 									[
