@@ -140,6 +140,9 @@ class AjaxRequestHandler {
 	public function createOrder() {
 		/* @var PayPalHttpClient $client */
 		$client = give( PayPalClient::class )->getHttpClient();
+		/* @var MerchantDetail $merchant */
+		$merchant = give( MerchantDetail::class );
+
 		$formId = absint( $_POST['give-form-id'] );
 
 		$request = new OrdersCreateRequest();
@@ -155,7 +158,11 @@ class AjaxRequestHandler {
 						'currency_code' => give_get_currency( $_POST['give-form-id'] ),
 					],
 					'payee'               => [
-						'email_address' => $_POST['give_email'],
+						'email_address' => $merchant->merchantId,
+						'merchant_id'   => $merchant->merchantIdInPayPal,
+					],
+					'payer'               => [
+						'email_address' => '',
 					],
 					'payment_instruction' => [
 						'disbursement_mode' => 'INSTANT',
