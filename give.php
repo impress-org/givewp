@@ -42,7 +42,6 @@
 use Give\Container\Container;
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
-use Give\ServiceProviders\DatabaseMigrations;
 use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
