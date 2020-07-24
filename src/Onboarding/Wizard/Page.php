@@ -80,12 +80,31 @@ class Page {
 	 * @since 2.8.0
 	 **/
 	public function enqueue_scripts() {
+
+		wp_enqueue_style(
+			'give-google-font-montserrat',
+			'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap',
+			[],
+			null
+		);
+
+		wp_enqueue_style(
+			'give-google-font-open-sans',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			[],
+			null
+		);
+
 		wp_enqueue_style(
 			'give-admin-onboarding-wizard',
 			GIVE_PLUGIN_URL . 'assets/dist/css/admin-onboarding-wizard.css',
-			[],
+			[
+				'give-google-font-montserrat',
+				'give-google-font-open-sans',
+			],
 			GIVE_VERSION
 		);
+
 		wp_enqueue_script(
 			'give-admin-onboarding-wizard-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-onboarding-wizard.js',
@@ -93,6 +112,7 @@ class Page {
 			GIVE_VERSION,
 			true
 		);
+
 		wp_set_script_translations( 'give-admin-onboarding-wizard-app', 'give' );
 
 		wp_localize_script(
@@ -102,13 +122,6 @@ class Page {
 				'setupUrl'   => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
 				'currencies' => array_keys( give_get_currencies_list() ),
 			]
-		);
-
-		wp_enqueue_style(
-			'give-google-font-montserrat',
-			'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap',
-			[],
-			null
 		);
 
 	}
