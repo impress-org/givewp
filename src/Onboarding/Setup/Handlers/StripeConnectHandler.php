@@ -6,14 +6,14 @@
  * @package Give
  */
 
-namespace Give\Onboarding\Setup;
+namespace Give\Onboarding\Setup\Handlers;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Fork of `give_stripe_connect_save_options()`
  */
-class StripeConnectHandler {
+class StripeConnectHandler implements RequestHandler {
 
 	public function maybeHandle() {
 
@@ -54,6 +54,8 @@ class StripeConnectHandler {
 		$this->testSecretKey      = $vars['stripe_access_token_test'];
 		$this->livePublishableKey = $vars['stripe_publishable_key'];
 		$this->testPublishableKey = $vars['stripe_publishable_key_test'];
+
+		$this->handle();
 	}
 
 
