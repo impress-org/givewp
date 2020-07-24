@@ -11,7 +11,7 @@ import { redirectToSetupPage } from '../../utils';
 
 // Import components
 import Button from '../button';
-import Chevron from '../chevron';
+import Chevron from '../icons/chevron';
 
 // Import styles
 import './style.scss';
