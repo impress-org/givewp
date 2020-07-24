@@ -44,7 +44,7 @@ export const reducer = ( state, action ) => {
 			return {
 				...state,
 				configuration: { ...state.configuration,
-					featureNeeds: action.payload.featureNeeds,
+					featureNeeds: action.payload.needs,
 				},
 			};
 		default:
