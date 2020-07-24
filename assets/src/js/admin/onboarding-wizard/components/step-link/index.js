@@ -1,0 +1,46 @@
+// Import vendor dependencies
+import PropTypes from 'prop-types';
+
+// Import store dependencies
+import { useStoreValue } from '../../app/store';
+
+// Import utilities
+import { goToStep } from '../../app/store/actions';
+
+// Import components
+import Checkmark from '../checkmark';
+
+// Import styles
+import './style.scss';
+
+const StepLink = ( { title, stepNumber } ) => {
+	const [ { currentStep }, dispatch ] = useStoreValue();
+
+	return (
+		<div className="give-obw-step-link">
+			<button className="give-obw-step-button" onClick={ () => dispatch( goToStep( stepNumber ) ) }>
+				<div className={ `give-obw-step-icon${ currentStep >= stepNumber ? ' give-obw-step-icon--green' : '' }` }>
+					{ currentStep <= stepNumber ? stepNumber : <Checkmark /> }
+				</div>
+				<div className="give-obw-step-title">
+					{ title }
+				</div>
+			</button>
+			<div className="give-obw-step-progress">
+				<div className="give-obw-step-progress-bar"></div>
+			</div>
+		</div>
+	);
+};
+
+StepLink.propTypes = {
+	title: PropTypes.string.isRequired,
+	stepNumber: PropTypes.number.isRequired,
+};
+
+StepLink.defaultProps = {
+	title: null,
+	stepNumber: null,
+};
+
+export default StepLink;

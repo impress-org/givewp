@@ -1,0 +1,29 @@
+.give-obw-card-input {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 22px;
+
+	border: none;
+	padding: 0;
+}
+
+.give-obw-card-input__option {
+	.give-obw-card {
+		&:hover {
+			border-color: #888;
+		}
+	}
+
+	&:focus-within .give-obw-card {
+		outline: -webkit-focus-ring-color auto 1px;
+	}
+
+	input[type='checkbox'] {
+		position: absolute;
+		opacity: 0;
+	}
+
+	input:checked + label > .give-obw-card {
+		border: 1px solid rgb(105, 184, 107);
+	}
+}
