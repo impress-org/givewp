@@ -186,6 +186,21 @@
 				padding: 20px;
 				text-align: center;
 				background-color: #f5f5f5;
+
+				.give-stripe-checkout-modal-donate-button {
+					order: 99 !important;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 20px 28px !important;
+					border-radius: 4px;
+					border: none;
+					font-size: 22px;
+					line-height: 20px;
+					min-width: 236px;
+					filter: brightness(1);
+					transition: filter 0.2s ease;
+				}
 			}
 		}
 	}
