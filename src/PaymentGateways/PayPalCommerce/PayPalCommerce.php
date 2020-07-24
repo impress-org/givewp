@@ -92,5 +92,14 @@ class PayPalCommerce implements PaymentGateway {
 		);
 
 		give( AdvancedCardFields::class );
+
+		give()->singleton(
+			DonationProcessor::class,
+			static function() {
+				return ( new DonationProcessor() )->boot();
+			}
+		);
+
+		give( DonationProcessor::class );
 	}
 }
