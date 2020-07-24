@@ -1,4 +1,4 @@
-class GiveWpPayPal{
+class GiveWpPayPal {
 	static getFormData( $formId ) {
 		return new FormData( $formId );
 	}
