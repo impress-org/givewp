@@ -1,7 +1,5 @@
 /* eslint-disable */
-
 import {GiveStripeElements} from "./give-stripe-elements";
-
 
 document.addEventListener( 'DOMContentLoaded', function( e ) {
 	const formWraps = Array.from( document.querySelectorAll( '.give-form-wrap' ) );
@@ -10,27 +8,25 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	formWraps.forEach( formWrap => {
 		const formElement = formWrap.querySelector( '.give-form' );
 		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
-		const gateways = Array.from( formElement.querySelectorAll( '.give-gateway' ) );
 
 		const stripeElements = new GiveStripeElements( formElement );
-		const cardElements   = stripeElements.createElement( stripeElements.getElements( stripeElements.setupStripeElement() ) );
+		const setupStripeElement = stripeElements.setupStripeElement();
+		const getStripeElements = stripeElements.getElements( setupStripeElement );
 
 		if ( formGateway && 'stripe' === formGateway.value ) {
-			stripeElements.mountElement( cardElements );
+			stripeElements.mountElement( stripeElements.createElement( getStripeElements ) );
 		}
 
-		gateways.forEach( gateway => {
-			gateway.addEventListener( 'change', ( e ) => {
-				const selectedGateway = e.target.value;
+		document.addEventListener( 'give_gateway_loaded', ( e ) => {
+			const selectedGateway = e.detail.selectedGateway;
+			const getStripeElements = stripeElements.getElements( setupStripeElement );
 
-				if ( 'stripe' === selectedGateway ) {
-					stripeElements.mountElement( cardElements );
-				} else {
-					stripeElements.unMountElement( cardElements );
-				}
-			} );
-		} );
-
+			if ( 'stripe' === selectedGateway ) {
+				stripeElements.mountElement( stripeElements.createElement( getStripeElements ) );
+			} else {
+				stripeElements.unMountElement( stripeElements.createElement( getStripeElements ) );
+			}
+		});
 	} );
 
 	// Process Donation using Stripe Elements on form submission.

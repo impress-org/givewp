@@ -25,6 +25,12 @@ class GiveStripeElements {
 		this.locale = give_stripe_vars.preferred_locale;
 		this.fieldsFormat = give_stripe_vars.cc_fields_format;
 		this.isMounted = false;
+		this.fontStyles = [];
+
+		// If font styles are defined, add them to font styles array
+		if ( Object.keys( give_stripe_vars.element_font_styles ).length !== 0 ) {
+			this.fontStyles.push( give_stripe_vars.element_font_styles );
+		}
 	}
 
 	/**
@@ -56,9 +62,17 @@ class GiveStripeElements {
 	 * @returns {*}
 	 */
 	getElements( stripeElement ) {
-		const args = {
+		let args = {
 			locale: this.locale,
 		};
+
+		// Add Fonts to Stripe Elements.
+		if ( this.fontStyles.length > 0 ) {
+			args = {
+				fonts: this.fontStyles,
+				locale: this.locale,
+			};
+		}
 
 		return stripeElement.elements( args );
 	}
@@ -75,7 +89,7 @@ class GiveStripeElements {
 	createElement( stripeElement ) {
 		const paymentElement = [];
 
-		this.getElementsToMountOn().forEach( ( element ) => {
+		this.getElementsToMountOn().forEach( ( element, index ) => {
 			paymentElement.push( stripeElement.create( element[ 0 ], {
 				style: this.getElementStyles(),
 				classes: this.getElementClasses(),
@@ -147,14 +161,14 @@ class GiveStripeElements {
 	/**
 	 * Mount Element.
 	 *
-	 * @param stripeElement
+	 * @param stripeElements
 	 *
 	 * @since 2.7.1
 	 */
-	mountElement( stripeElement ) {
+	mountElement( stripeElements ) {
 		const mountOnElement = this.getElementsToMountOn();
 
-		Array.from( stripeElement ).forEach( ( element, index ) => {
+		Array.from( stripeElements ).forEach( ( element, index ) => {
 			element.mount( mountOnElement[ index ][ 1 ] );
 		} );
 	}
