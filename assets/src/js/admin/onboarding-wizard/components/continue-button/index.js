@@ -1,4 +1,5 @@
 // Import vendor dependencies
+import PropTypes from 'prop-types';
 const { __ } = wp.i18n;
 
 // Import store dependencies
@@ -15,7 +16,7 @@ import Chevron from '../chevron';
 // Import styles
 import './style.scss';
 
-const ContinueButton = () => {
+const ContinueButton = ( { label } ) => {
 	const [ { currentStep, lastStep }, dispatch ] = useStoreValue();
 
 	return (
@@ -26,12 +27,20 @@ const ContinueButton = () => {
 				redirectToSetupPage();
 			}
 		} }>
-			{ __( 'Continue', 'give' ) }
+			{ label }
 			<span className="give-obw-continue-button__icon">
 				<Chevron />
 			</span>
 		</Button>
 	);
+};
+
+ContinueButton.propTypes = {
+	label: PropTypes.string,
+};
+
+ContinueButton.defaultProps = {
+	label: __( 'Continue', 'give' ),
 };
 
 export default ContinueButton;
