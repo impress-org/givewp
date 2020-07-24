@@ -29,8 +29,8 @@ class AjaxRequestHandler {
 		add_action( 'wp_ajax_give_paypal_commerce_create_order', [ $this, 'createOrder' ] );
 		add_action( 'wp_ajax_nopriv_give_paypal_commerce_create_order', [ $this, 'createOrder' ] );
 
-		add_action( 'wp_ajax_give_paypal_commerce_create_order', [ $this, 'approveOrder' ] );
-		add_action( 'wp_ajax_nopriv_give_paypal_commerce_create_order', [ $this, 'approveOrder' ] );
+		add_action( 'wp_ajax_give_paypal_commerce_approve_order', [ $this, 'approveOrder' ] );
+		add_action( 'wp_ajax_nopriv_give_paypal_commerce_approve_order', [ $this, 'approveOrder' ] );
 	}
 
 	/**
@@ -203,7 +203,7 @@ class AjaxRequestHandler {
 		/* @var PayPalHttpClient $client */
 		$client = give( PayPalClient::class )->getHttpClient();
 
-		$request = new OrdersCaptureRequest( $_POST['order'] );
+		$request = new OrdersCaptureRequest( $_GET['order'] );
 
 		try {
 			$response = $client->execute( $request );
