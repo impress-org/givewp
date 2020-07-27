@@ -85,73 +85,9 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 				loadingAnimationElement.classList.add( 'spinning' );
 				loadingAnimationElement.classList.remove( 'give-loading-animation' );
 
-				const billing_details = {
-					name: '',
-					email: '',
-					address: {
-						line1: '',
-						line2: '',
-						city: '',
-						state: '',
-						postal_code: '',
-						country: '',
-					},
-				};
-				const firstName = formElement.querySelector( 'input[name="give_first"]' ).value;
-				const lastName = formElement.querySelector( 'input[name="give_last"]' ).value;
-				const email = formElement.querySelector( 'input[name="give_email"]' ).value;
-				const formSubmit = formElement.querySelector( '[id^=give-purchase-button]' );
+				// Create Payment Method.
+				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
 
-				// Disable the submit button to prevent repeated clicks.
-				formSubmit.setAttribute( 'disabled', 'disabled' );
-
-				billing_details.name = `${ firstName } ${ lastName }`;
-				billing_details.email = email;
-
-				// Gather additional customer data we may have collected in our form.
-				if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {
-					const address1 = formElement.querySelector( '.card-address' ).value;
-					const address2 = formElement.querySelector( '.card-address-2' ).value;
-					const city = formElement.querySelector( '.card-city' ).value;
-					const state = formElement.querySelector( '.card_state' ).value;
-					const zip = formElement.querySelector( '.card-zip' ).value;
-					const country = formElement.querySelector( '.billing-country' ).value;
-
-					billing_details.address.line1 = address1 ? address1 : '';
-					billing_details.address.line2 = address2 ? address2 : '';
-					billing_details.address.city = city ? city : '';
-					billing_details.address.state = state ? state : '';
-					billing_details.address.postal_code = zip ? zip : '';
-					billing_details.address.country = country ? country : '';
-				}
-
-				// Create Payment Method using the CC fields.
-				setupStripeElement.createPaymentMethod( {
-					type: 'card',
-					card: cardElements[ 0 ],
-					billing_details: billing_details,
-				} ).then( function( result ) {
-					if ( result.error ) {
-						const donateBtn = formElement.getElementById( 'give-purchase-button' );
-						const error = `<div class="give_errors"><p class="give_error">${ result.error.message }</p></div>`;
-
-						// re-enable the submit button.
-						donateBtn.setAttribute( 'disabled', false );
-
-						// Display Error on the form.
-						formElement.getElementById( `give-stripe-payment-errors-${ formId }` ).innerHTML = error;
-
-						// Reset Donate Button.
-						if ( give_global_vars.complete_purchase ) {
-							formElement.value = give_global_vars.complete_purchase;
-						} else {
-							formElement.value = formElement.getAttribute( 'data-before-validation-label' );
-						}
-					} else {
-						formElement.querySelector( 'input[name="give_stripe_payment_method"]' ).value = result.paymentMethod.id;
-						formElement.submit();
-					}
-				} );
 				e.preventDefault();
 			} );
 		}
@@ -181,17 +117,19 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 		const modalClose = formElement.querySelector( '.give-stripe-checkout-modal-close' );
 
 		// Close Modal Popup.
-		modalClose.addEventListener( 'click', ( e ) => {
-			formElement.querySelector( `#give-stripe-checkout-modal-${ idPrefixElement.value }` ).classList.remove( 'give-stripe-checkout-show-modal' );
-			const mainDonateBtn = formElement.querySelector( '.give-submit' );
+		if ( null !== modalClose ) {
+			modalClose.addEventListener( 'click', ( e ) => {
+				formElement.querySelector( `#give-stripe-checkout-modal-${ idPrefixElement.value }` ).classList.remove( 'give-stripe-checkout-show-modal' );
+				const mainDonateBtn = formElement.querySelector( '.give-submit' );
 
-			if ( null !== mainDonateBtn ) {
-				mainDonateBtn.value = mainDonateBtn.getAttribute( 'data-before-validation-label' );
-				mainDonateBtn.nextElementSibling.style.display = 'none';
-				mainDonateBtn.removeAttribute( 'disabled' );
-				formElement.querySelector( 'input[name="give_validate_stripe_payment_fields"]' ).setAttribute( 'value', '0' );
-			}
-			e.preventDefault();
-		} );
+				if ( null !== mainDonateBtn ) {
+					mainDonateBtn.value = mainDonateBtn.getAttribute( 'data-before-validation-label' );
+					mainDonateBtn.nextElementSibling.style.display = 'none';
+					mainDonateBtn.removeAttribute( 'disabled' );
+					formElement.querySelector( 'input[name="give_validate_stripe_payment_fields"]' ).setAttribute( 'value', '0' );
+				}
+				e.preventDefault();
+			} );
+		}
 	} );
 } );
