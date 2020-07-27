@@ -44,57 +44,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			}
 
 			if ( 'stripe_checkout' === selectedGateway ) {
-				const stripeModalDonateBtn = formElement.querySelector( '.give-stripe-checkout-modal-donate-button' );
-				const cardholderName = formElement.querySelector( 'input[name="card_name"]' );
-				const completeCardElements = {};
-				let completeCardStatus = false;
-
-				cardElements.forEach( ( cardElement ) => {
-					completeCardElements.cardName = false;
-
-					cardElement.on( 'ready', ( e ) => {
-						completeCardElements[ e.elementType ] = false;
-					} );
-
-					cardElement.on( 'change', ( e ) => {
-						completeCardElements[ e.elementType ] = e.complete;
-						completeCardStatus = Object.values( completeCardElements ).every( ( string ) => {
-							return true === string;
-						} );
-						completeCardStatus ? stripeModalDonateBtn.removeAttribute( 'disabled' ) : stripeModalDonateBtn.setAttribute( 'disabled', 'disabled' );
-					} );
-				} );
-
-				if ( null !== cardholderName ) {
-					cardholderName.addEventListener( 'keyup', ( e ) => {
-						completeCardElements.cardName = '' !== e.target.value;
-						completeCardStatus = Object.values( completeCardElements ).every( ( string ) => {
-							return true === string;
-						} );
-						completeCardStatus ? stripeModalDonateBtn.removeAttribute( 'disabled' ) : stripeModalDonateBtn.setAttribute( 'disabled', 'disabled' );
-					} );
-				}
-
-				if ( null !== stripeModalDonateBtn ) {
-					// Process donation on the click of the modal donate button.
-					stripeModalDonateBtn.addEventListener( 'click', ( e ) => {
-						const currentModalDonateBtn = e.target;
-						const loadingAnimationElement = currentModalDonateBtn.nextElementSibling;
-
-						// Show Loading Icon on submitting modal donate btn.
-						currentModalDonateBtn.value = '';
-						loadingAnimationElement.classList.add( 'sequoia-loader' );
-						loadingAnimationElement.classList.add( 'spinning' );
-						loadingAnimationElement.classList.remove( 'give-loading-animation' );
-
-						// Create Payment Method.
-						stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
-
-						e.preventDefault();
-					} );
-				}
+				stripeElements.triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements );
 			}
 		});
+
+		if ( 'stripe_checkout' === formGateway.value ) {
+			stripeElements.triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements );
+		}
 
 		formElement.onsubmit = ( e ) => {
 			const selectedGateway = formElement.querySelector( '.give-gateway:checked' ).value;
