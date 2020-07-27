@@ -38,13 +38,16 @@
 	}
 
 	.give-obw-card {
+		width: 250px;
+		height: 308px;
+		align-items: center;
+
 		p {
 			font-family: Montserrat, Arial, Helvetica, sans-serif;
 			font-weight: 500;
 			font-size: 14px;
 			line-height: 20px;
 			color: #333;
-			margin-top: 36px;
 		}
 
 		h2 {

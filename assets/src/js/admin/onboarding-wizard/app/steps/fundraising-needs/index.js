@@ -23,7 +23,6 @@ import './style.scss';
 const FundraisingNeeds = () => {
 	const [ { configuration }, dispatch ] = useStoreValue();
 	const needs = configuration.fundraisingNeeds;
-	const cardPadding = '50px 34px 38px 34px';
 
 	return (
 		<div className="give-obw-fundraising-needs">
@@ -32,31 +31,31 @@ const FundraisingNeeds = () => {
 				{ __( 'Take your fundraising to the next level with free and premium add-ons.', 'give' ) }
 			</p>
 			<CardInput values={ needs } onChange={ ( value ) => dispatch( setFundraisingNeeds( value ) ) } >
-				<Card value="one-time-donations" padding={ cardPadding }>
+				<Card value="one-time-donations">
 					<OneTimeDonationIcon />
 					<h2>{ __( 'One-Time Donations', 'give' ) }</h2>
 				</Card>
-				<Card value="recurring-donations" padding={ cardPadding }>
+				<Card value="recurring-donations">
 					<Badge label="Add-On" />
 					<RecurringDonationsIcon />
 					<h2>{ __( 'Recurring Donations', 'give' ) }</h2>
 				</Card>
-				<Card value="donors-cover-fees" padding={ cardPadding }>
+				<Card value="donors-cover-fees">
 					<Badge label="Add-On" />
 					<DonorsCoverFeesIcon />
 					<h2>{ __( 'Donors Cover Fees', 'give' ) }</h2>
 				</Card>
-				<Card value="custom-form-fields" padding={ cardPadding }>
+				<Card value="custom-form-fields">
 					<Badge label="Add-On" />
 					<CustomFormFieldsIcon />
 					<h2>{ __( 'Custom Form Fields', 'give' ) }</h2>
 				</Card>
-				<Card value="multiple-currencies" padding={ cardPadding }>
+				<Card value="multiple-currencies">
 					<Badge label="Add-On" />
 					<MultipleCurrenciesIcon />
 					<h2>{ __( 'Multiple Currencies', 'give' ) }</h2>
 				</Card>
-				<Card value="dedicate-donations" padding="50px 44px 38px 44px">
+				<Card value="dedicate-donations">
 					<Badge label="Add-On" />
 					<DedicateDonationsIcon />
 					<h2>{ __( 'Dedicate Donations', 'give' ) }</h2>
