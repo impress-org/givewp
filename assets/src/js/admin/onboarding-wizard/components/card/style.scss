@@ -1,6 +1,6 @@
 .give-obw-card {
 	position: relative;
-	padding: 40px 60px;
+	padding: 20px;
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border: 1px solid #fff;
@@ -8,5 +8,8 @@
 
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+
+	& > svg {
+		flex: 1;
+	}
 }

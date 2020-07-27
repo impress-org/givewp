@@ -25,7 +25,10 @@
 
 	.give-obw-card {
 		box-sizing: border-box;
-		max-width: 242px;
+		height: 218px;
+		width: 242px;
+		align-items: center;
+		justify-content: center;
 
 		> h2 {
 			font-family: Montserrat, Arial, Helvetica, sans-serif;
