@@ -262,7 +262,6 @@ class GiveStripeElements {
 			card: cardElements[ 0 ],
 			billing_details: billing_details,
 		} ).then( function( result ) {
-			console.log( result );
 			if ( result.error ) {
 				const donateBtn = formElement.getElementById( 'give-purchase-button' );
 				const error = `<div class="give_errors"><p class="give_error">${ result.error.message }</p></div>`;
