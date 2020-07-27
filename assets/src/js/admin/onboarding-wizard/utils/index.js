@@ -26,6 +26,7 @@ export const redirectToSetupPage = () => {
  * @param {string} setting Name of setting to save (examples include: 'country' or 'currency')
  * @param {any} value Value to be saved (examples include: 'USA' or 'USD')
  * @return {object} Object containing saved setting and value for confirmation
+ * @since 2.8.0
  */
 export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 	// Example shape of returned data
@@ -67,6 +68,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  *
  * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')
  * @return {array} Array of objects representing states/provinces for requested country
+ * @since 2.8.0
  */
 export const getStatesListWithOnboardingAPI = ( country ) => {
 	// Example shape of returned data
@@ -112,6 +114,7 @@ export const getStatesListWithOnboardingAPI = ( country ) => {
  *
  * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')
  * @return {string} Currency code based on requested country code
+ * @since 2.8.0
  */
 export const getCurrencyWithOnboardingAPI = ( country ) => {
 	// Example shape of returned data
