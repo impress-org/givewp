@@ -13,7 +13,7 @@ const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 		if ( checkMultiple === true ) {
 			newValues = values.includes( value ) ? values.filter( e => e !== value ) : values.concat( [ value ] );
 		} else {
-			newValues = [ value ];
+			newValues = value;
 		}
 		onChange( newValues );
 	};

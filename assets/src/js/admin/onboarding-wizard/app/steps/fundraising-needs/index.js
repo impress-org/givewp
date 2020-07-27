@@ -1,6 +1,9 @@
 // Import vendor dependencies
-import { useState } from 'react';
 const { __ } = wp.i18n;
+
+// Import store dependencies
+import { useStoreValue } from '../../store';
+import { setFundraisingNeeds } from '../../store/actions';
 
 // Import components
 import Card from '../../../components/card';
@@ -18,7 +21,8 @@ import Badge from '../../../components/badge';
 import './style.scss';
 
 const FundraisingNeeds = () => {
-	const [ needs, setNeeds ] = useState( [ 'testing' ] );
+	const [ { configuration }, dispatch ] = useStoreValue();
+	const needs = configuration.fundraisingNeeds;
 	const cardPadding = '50px 34px 38px 34px';
 
 	return (
@@ -27,7 +31,7 @@ const FundraisingNeeds = () => {
 			<p>
 				{ __( 'Take your fundraising to the next level with free and premium add-ons.', 'give' ) }
 			</p>
-			<CardInput values={ needs } onChange={ ( value ) => setNeeds( value ) } >
+			<CardInput values={ needs } onChange={ ( value ) => dispatch( setFundraisingNeeds( value ) ) } >
 				<Card value="one-time-donations" padding={ cardPadding }>
 					<OneTimeDonationIcon />
 					<h2>{ __( 'One-Time Donations', 'give' ) }</h2>

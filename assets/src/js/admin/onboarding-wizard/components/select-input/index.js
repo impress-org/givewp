@@ -12,8 +12,8 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 	} );
 	return (
 		<div className="give-obw-select-input">
-			{ label && <p className="give-obw-select-input__label">{ label }</p> }
-			<select value={ value } className="give-obw-select-input__input" onChange={ ( event ) => onChange( event.target.val ) } >
+			{ label && <p>{ label }</p> }
+			<select value={ value } className="give-obw-select-input" onChange={ ( event ) => onChange( event.target.value ) } >
 				{ optionElements }
 			</select>
 		</div>

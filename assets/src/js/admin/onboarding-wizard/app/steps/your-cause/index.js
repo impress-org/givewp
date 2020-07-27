@@ -1,6 +1,9 @@
 // Import vendor dependencies
-import { useState } from 'react';
 const { __ } = wp.i18n;
+
+// Import store dependencies
+import { useStoreValue } from '../../store';
+import { setUserType, setCauseType } from '../../store/actions';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -15,14 +18,16 @@ import OtherIcon from '../../../components/icons/other';
 import './style.scss';
 
 const YourCause = () => {
-	const [ userType, setUserType ] = useState( [ 'testing' ] );
-	const [ causeType, setCauseType ] = useState( 'religous' );
+	const [ { configuration }, dispatch ] = useStoreValue();
+
+	const userType = configuration.userType;
+	const causeType = configuration.causeType;
 	const cardPadding = '60px 32px';
 
 	return (
 		<div className="give-obw-your-cause">
 			<h2>{ __( 'What does fundraising look for you?', 'give' ) }</h2>
-			<CardInput values={ userType } onChange={ ( values ) => setUserType( values ) } checkMultiple={ false } >
+			<CardInput values={ userType } onChange={ ( values ) => dispatch( setUserType( values ) ) } checkMultiple={ false } >
 				<Card value="individual" padding={ cardPadding }>
 					<IndividualIcon />
 					<p>{ __( 'I\'m fundraising as an', 'give' ) }</p>
@@ -41,7 +46,7 @@ const YourCause = () => {
 			</CardInput>
 			<h3>{ __( 'What is your cause?', 'give' ) }</h3>
 			<p>{ __( '(select all that apply)', 'give' ) }</p>
-			<SelectInput value={ causeType } onChange={ ( value ) => setCauseType( value ) } options={
+			<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={
 				[
 					{
 						value: 'religous',

@@ -30,6 +30,44 @@ const App = () => {
 	const initialState = {
 		currentStep: 0,
 		lastStep: 4,
+		configuration: {
+			userType: 'individual',
+			causeType: 'school',
+			country: 'USA',
+			state: 'WA',
+			currency: 'USD',
+			fundraisingNeeds: [ 'one-time-donations' ],
+		},
+		countriesList: [
+			{
+				value: 'USA',
+				label: 'United States',
+			},
+			{
+				value: 'MEX',
+				label: 'Mexico',
+			},
+		],
+		currenciesList: [
+			{
+				value: 'USD',
+				label: 'US Dollar',
+			},
+			{
+				value: 'EUR',
+				label: 'Euro',
+			},
+		],
+		statesList: [
+			{
+				value: 'WA',
+				label: 'Washington',
+			},
+			{
+				value: 'RI',
+				label: 'Rhode Island',
+			},
+		],
 	};
 
 	const steps = [
