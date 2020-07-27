@@ -9,7 +9,8 @@ class AdvancedCardFields {
 	 * @since 2.8.0
 	 */
 	public function boot() {
-		add_action( 'give_paypal-commerce_cc_form', [ $this, 'addCreditCardForm' ], 10, 3 );
+		$gatewayId = give( PayPalCommerce::class )->getId();
+		add_action( "give_{$gatewayId}_cc_form", [ $this, 'addCreditCardForm' ], 10, 3 );
 
 		return $this;
 	}
