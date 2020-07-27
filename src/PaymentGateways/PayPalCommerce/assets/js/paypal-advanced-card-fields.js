@@ -4,11 +4,12 @@ class GiveWpPayPal {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param $form
-	 * @return {FormData}
+	 * @param {object} $form Form selector.
+	 *
+	 * @return {FormData} FormData object of form entries.
 	 */
 	static getFormDataFormHttpRequest( $form ) {
-		const formData = new FormData( $form );
+		const formData = new FormData( $form ); // eslint-disable-line
 
 		formData.delete( 'give_action' );
 
@@ -20,9 +21,10 @@ class GiveWpPayPal {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param $form
-	 * @param orderId
-	 * @return {*}
+	 * @param {object} $form Form selector.
+	 * @param {string} orderId PayPal order id.
+	 *
+	 * @return {Promise} Promise of appending hidden input field to donation form.
 	 */
 	static attachOrderIdToForm( $form, orderId ) {
 		const input = document.createElement( 'input' );
@@ -31,7 +33,7 @@ class GiveWpPayPal {
 		input.name = 'payPalOrderId';
 		input.value = orderId;
 
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve, reject ) => { // eslint-disable-line
 			resolve( $form.appendChild( input ) );
 		} );
 	}
@@ -39,18 +41,24 @@ class GiveWpPayPal {
 
 /* globals paypal, Give */
 document.addEventListener( 'DOMContentLoaded', () => {
+	// Run script only if form exits on page.
+	if ( ! Give.form.fn.isFormExist() ) {
+		return;
+	}
+
 	const computedStyle = window.getComputedStyle( document.querySelector( '#give-card-name-wrap input[name="card_name"]' ), null ),
-		  inputStyle = {
-			  'font-size': computedStyle.getPropertyValue( 'font-size' ),
-			  'font-family': computedStyle.getPropertyValue( 'font-family' ),
-			  color: computedStyle.getPropertyValue( 'color' ),
-		  },
-		  $form = document.querySelector( '#give-form-510-1' );
+		inputStyle = {
+			'font-size': computedStyle.getPropertyValue( 'font-size' ),
+			'font-family': computedStyle.getPropertyValue( 'font-family' ),
+			color: computedStyle.getPropertyValue( 'color' ),
+		},
+		$form = document.querySelector( '#give-form-510-1' );
 
 	// Check if card fields are eligible to render for the buyer's country. The card fields are not eligible in all countries where buyers are located.
 	if ( paypal.HostedFields.isEligible() === true ) {
 		paypal.HostedFields.render( {
-			createOrder: function( data, actions ) {
+			createOrder: function( data, actions ) { // eslint-disable-line
+				// eslint-disable-next-line
 				return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
 					method: 'POST',
 					body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
@@ -81,15 +89,14 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			jQuery( $form ).on( 'submit', event => {
 				event.preventDefault();
 				hostedFields.submit().then( payload => {
-					console.log( payload );
-
+					// eslint-disable-next-line
 					return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + payload.orderId, {
 						method: 'POST',
 					} ).then( function( res ) {
 						return res.json();
 					} ).then( res => {
 						if ( true !== res.success ) {
-							alert( 'Something went wrong' );
+							alert( 'Something went wrong' ); // eslint-disable-line
 						}
 					} );
 				} );
@@ -101,7 +108,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	paypal.Buttons( {
 		// Call your server to set up the transaction
-		createOrder: function( data, actions ) {
+		createOrder: function( data, actions ) { // eslint-disable-line
+			// eslint-disable-next-line
 			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
 				method: 'POST',
 				body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
@@ -114,6 +122,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		// Call your server to finalize the transaction
 		onApprove: function( data, actions ) {
+			// eslint-disable-next-line
 			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 				method: 'post',
 			} ).then( function( res ) {
@@ -143,7 +152,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						msg += ' (' + orderData.debug_id + ')';
 					}
 					// Show a failure message
-					return alert( msg );
+					return alert( msg ); // eslint-disable-line
 				}
 
 				GiveWpPayPal.attachOrderIdToForm( $form, orderData.id )
