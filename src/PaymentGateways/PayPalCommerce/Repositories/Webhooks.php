@@ -2,26 +2,67 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\Route\PayPalWebhooks;
+use Give\Route\PayPalWebhooks as WebhooksRoute;
+
 class Webhooks {
+	/**
+	 * The wp_options key the webhook id is stored under
+	 *
+	 * @since 2.8.0
+	 */
+	const OPTION_KEY = 'give_paypal_commerce_webhook_id';
+
+	/**
+	 * @since 2.8.0
+	 *
+	 * @var PayPalWebhooks
+	 */
+	private $webhookRoute;
+
+	/**
+	 * The webhook events registered with PayPal
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string[]
+	 */
+	private $webhookEvents = [
+		'CHECKOUT.ORDER.APPROVED',
+		'PAYMENT.CAPTURE.COMPLETED',
+		'PAYMENT.CAPTURE.DENIED',
+		'PAYMENT.CAPTURE.REFUNDED',
+	];
+
+	/**
+	 * Webhooks constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param PayPalWebhooks $webhookRoute
+	 */
+	public function __construct( WebhooksRoute $webhookRoute ) {
+		$this->webhookRoute = $webhookRoute;
+	}
+
 	/**
 	 * Verifies with PayPal that the given event is securely from PayPal and not some sneaking sneaker
 	 *
 	 * @see https://developer.paypal.com/docs/api/webhooks/v1/#verify-webhook-signature
 	 * @since 2.8.0
 	 *
-	 * @param array  $headers The request headers
+	 * @param string $token
 	 * @param object $event The event to verify
+	 * @param array  $headers The request headers
 	 *
 	 * @return bool
 	 */
-	public function verifyEventSignature( $event, $headers ) {
+	public function verifyEventSignature( $token, $event, $headers ) {
 		$verificationUrl = give_is_test_mode()
 			? 'https://api.sandbox.paypal.com/v1/notifications/verify-webhook-signature'
 			: 'https://api.paypal.com/v1/notifications/verify-webhook-signature';
 
-		// TODO: Retrieve the actual token and webhook ID
-		$token     = 'abc';
-		$webhookId = '';
+		$webhookId = $this->getWebhookId();
 
 		$response = wp_remote_post(
 			$verificationUrl,
@@ -59,18 +100,16 @@ class Webhooks {
 	 * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
 	 * @since 2.8.0
 	 *
-	 * @param string $url
-	 * @param array  $eventTypes a sequential array of events to register
+	 * @param string $token
 	 *
 	 * @return mixed
 	 */
-	public function createWebhook( $url, array $eventTypes ) {
+	public function createWebhook( $token ) {
 		$apiUrl = give_is_test_mode()
 			? 'https://api.sandbox.paypal.com/v1/notifications/webhooks'
 			: 'https://api.paypal.com/v1/notifications/webhooks';
 
-		// TODO: Retrieve the actual token and webhook ID
-		$token = 'abc';
+		$webhookUrl = $this->webhookRoute->getRouteUrl();
 
 		$response = wp_remote_post(
 			$apiUrl,
@@ -79,16 +118,16 @@ class Webhooks {
 					'Content-Type'  => 'application/json',
 					'Authorization' => "Bearer $token",
 				],
-				'body'    => wp_json_encode(
+				'body'    => json_encode(
 					[
-						'url'         => $url,
+						'url'         => $webhookUrl,
 						'event_types' => array_map(
 							static function ( $eventType ) {
 								return [
 									'name' => $eventType,
 								];
 							},
-							$eventTypes
+							$this->webhookEvents
 						),
 					]
 				),
@@ -105,17 +144,15 @@ class Webhooks {
 	 *
 	 * @since 2.8.0
 	 *
+	 * @param string $token
 	 * @param string $webhookId
 	 *
 	 * @return bool Whether or not the deletion was successful
 	 */
-	public function deleteWebhook( $webhookId ) {
+	public function deleteWebhook( $token, $webhookId ) {
 		$apiUrl = give_is_test_mode()
 			? "https://api.sandbox.paypal.com/v1/notifications/webhooks/$webhookId"
 			: "https://api.paypal.com/v1/notifications/webhooks/$webhookId";
-
-		// TODO: Retrieve the actual token and webhook ID
-		$token = 'abc';
 
 		$response = wp_remote_request(
 			$apiUrl,
@@ -131,5 +168,51 @@ class Webhooks {
 		$code = wp_remote_retrieve_response_code( $response );
 
 		return $code >= 200 && $code < 300;
+	}
+
+	/**
+	 * Stores the webhook id
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $id
+	 */
+	public function saveWebhookId( $id ) {
+		update_option( self::OPTION_KEY, $id, false );
+	}
+
+	/**
+	 * Returns the stored webhook id
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function getWebhookId() {
+		return get_option( self::OPTION_KEY );
+	}
+
+	/**
+	 * Deletes the webhook id
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	public function deleteWebhookId() {
+		return delete_option( self::OPTION_KEY );
+	}
+
+	/**
+	 * Adds an event to be listened for by the webhook
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $event
+	 */
+	public function addWebhookEvent( $event ) {
+		if ( ! in_array( $event, $this->webhookEvents ) ) {
+			$this->webhookEvents[] = $event;
+		}
 	}
 }
