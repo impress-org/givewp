@@ -194,42 +194,4 @@ document.addEventListener( 'DOMContentLoaded', ( evt ) => {
 			e.preventDefault();
 		} );
 	} );
-
-	/**
-	 * Format Stripe Currency
-	 *
-	 * @param {number} amount       Donation Amount.
-	 * @param {object} form_element Donation Form Element.
-	 *
-	 * @returns {number}
-	 */
-	function give_stripe_format_currency( amount, form_element ) {
-		let formattedCurrency = Math.abs( parseFloat( accounting.unformat( amount, Give.form.fn.getInfo( 'decimal_separator', jQuery( form_element ) ) ) ) );
-		const selectedCurrency = form_element.getAttribute( 'data-currency_code' );
-		const zeroDecimalCurrencies = give_stripe_vars.zero_based_currencies_list;
-
-		// If not Zero Decimal Based Currency, then multiply with 100.
-		if ( zeroDecimalCurrencies.indexOf( selectedCurrency ) < 0 ) {
-			formattedCurrency = formattedCurrency * 100;
-		}
-
-		return formattedCurrency;
-	}
-
-	/**
-	 * This function is used to reset the donate button.
-	 *
-	 * @param form_element
-	 */
-	function give_stripe_refresh_donate_button( form_element ) {
-		const $donate_button_wrap = form_element.querySelector( '.give-submit-button-wrap' );
-		const $donate_button = $donate_button_wrap.querySelector( '#give-purchase-button' );
-
-		// Remove loading animations.
-		$donate_button_wrap.querySelector( '.give-loading-animation' ).style.display = 'none';
-
-		// Refresh donate button.
-		$donate_button.value = $donate_button.getAttribute( 'data-before-validation-label' );
-		$donate_button.removeAttribute( 'disabled' );
-	}
 } );
