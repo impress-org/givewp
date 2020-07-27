@@ -7,24 +7,39 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 	// Loop through the number of forms on the page.
 	formWraps.forEach( formWrap => {
 		const formElement = formWrap.querySelector( '.give-form' );
-		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
 
+		/**
+		 * Bailout, if `form_element` is null.
+		 *
+		 * We are bailing out here as this script is loaded on every page of the
+		 * site but the `form_element` only exists on the pages when Give donation
+		 * form is loaded. So, when the pages where the donation form is not loaded
+		 * will show console error. To avoid JS console errors we bail it, if
+		 * `form_element` is null to avoid console errors.
+		 */
+		if ( null === formElement ) {
+			return;
+		}
+
+		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
 		const stripeElements = new GiveStripeElements( formElement );
 		const setupStripeElement = stripeElements.setupStripeElement();
 		const getStripeElements = stripeElements.getElements( setupStripeElement );
+		let cardElements = stripeElements.createElement( getStripeElements, formElement );
 
-		if ( formGateway && 'stripe' === formGateway.value ) {
-			stripeElements.mountElement( stripeElements.createElement( getStripeElements ) );
+		if ( 'stripe' === formGateway.value ) {
+			stripeElements.mountElement(cardElements);
 		}
 
 		document.addEventListener( 'give_gateway_loaded', ( e ) => {
 			const selectedGateway = e.detail.selectedGateway;
 			const getStripeElements = stripeElements.getElements( setupStripeElement );
+			cardElements = stripeElements.createElement( getStripeElements, formElement );
 
 			if ( 'stripe' === selectedGateway ) {
-				stripeElements.mountElement( stripeElements.createElement( getStripeElements ) );
+				stripeElements.mountElement( cardElements );
 			} else {
-				stripeElements.unMountElement( stripeElements.createElement( getStripeElements ) );
+				stripeElements.unMountElement( cardElements );
 			}
 		});
 	} );
@@ -88,132 +103,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 	}
 
-	/**
-	 * Mount Card Elements
-	 *
-	 * @param {string} idPrefix     ID Prefix.
-	 * @param {array}  cardElements List of card elements to be mounted.
-	 *
-	 * @since 1.6
-	 */
-	function giveStripeMountCardElements( idPrefix, cardElements = [] ) {
-		const cardElementsLength = Object.keys( cardElements ).length;
 
-		// Assign any card element to variable to create source.
-		if ( cardElementsLength > 0 ) {
-			card = cardElements[ 0 ].item;
-		}
-
-		// Mount required card elements.
-		Array.prototype.forEach.call( cardElements, function( value, index ) {
-			if ( false === value.isCardMounted ) {
-				value.item.mount( value.selector + idPrefix );
-				value.isCardMounted = true;
-			}
-		} );
-	}
-
-	/**
-	 * Un-mount Card Elements
-	 *
-	 * @param {array} cardElements List of card elements to be unmounted.
-	 *
-	 * @since 1.6
-	 */
-	function giveStripeUnmountCardElements( cardElements = [] ) {
-		// Un-mount required card elements.
-		Array.prototype.forEach.call( cardElements, function( value, index ) {
-			if ( true === value.isCardMounted ) {
-				value.item.unmount();
-				value.isCardMounted = false;
-			}
-		} );
-	}
-
-	/**
-	 * Create required card elements.
-	 *
-	 * @param {object} form_element Form Element.
-	 * @param {object} elements     Stripe Element.
-	 * @param {string} idPrefix     ID Prefix.
-	 *
-	 * @since 1.6
-	 *
-	 * @return {array} elements
-	 */
-	function giveStripePrepareCardElements( form_element, elements, idPrefix ) {
-		const prepareCardElements = [];
-		const baseStyles = give_stripe_vars.element_base_styles;
-		const completeStyles = give_stripe_vars.element_complete_styles;
-		const emptyStyles = give_stripe_vars.element_empty_styles;
-		const invalidStyles = give_stripe_vars.element_invalid_styles;
-
-		const elementStyles = {
-			base: baseStyles,
-			complete: completeStyles,
-			empty: emptyStyles,
-			invalid: invalidStyles,
-		};
-
-		const elementClasses = {
-			focus: 'focus',
-			empty: 'empty',
-			invalid: 'invalid',
-		};
-
-		// Mount CC Fields based on the settings.
-		if ( 'multi' === give_stripe_vars.cc_fields_format ) {
-			const cardNumber = elements.create(
-				'cardNumber',
-				{
-					style: elementStyles,
-					classes: elementClasses,
-					placeholder: give_stripe_vars.card_number_placeholder_text,
-				}
-			);
-
-			// Update Card Type for Stripe Multi Fields.
-			cardNumber.addEventListener( 'change', function( event ) {
-				// Workaround for class name of Diners Club Card.
-				const brand = ( 'diners' === event.brand ) ? 'dinersclub' : event.brand;
-
-				// Add Brand to card type wrapper to display specific brand logo based on card number.
-				form_element.querySelector( '.card-type' ).className = 'card-type ' + brand;
-			} );
-
-			const cardExpiry = elements.create(
-				'cardExpiry',
-				{
-					style: elementStyles,
-					classes: elementClasses,
-				}
-			);
-
-			const cardCvc = elements.create(
-				'cardCvc',
-				{
-					style: elementStyles,
-					classes: elementClasses,
-					placeholder: give_stripe_vars.card_cvc_placeholder_text,
-				}
-			);
-
-			prepareCardElements.push( cardNumber, cardCvc, cardExpiry );
-		} else if ( 'single' === give_stripe_vars.cc_fields_format ) {
-			const card = elements.create(
-				'card',
-				{
-					style: elementStyles,
-					classes: elementClasses,
-					hidePostalCode: !! ( give_stripe_vars.checkout_address ),
-				}
-			);
-
-			prepareCardElements.push( card );
-		}
-
-		return prepareCardElements;
-	}
 
 	/**
 	 * Stripe Response Handler

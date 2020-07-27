@@ -12,7 +12,7 @@ class GiveStripeElements {
 	 * @since 2.7.1
 	 */
 	constructor( formElement ) {
-		// Don't load JS if `formElement` or `publishableKey` is not present.
+		// Don't load JS if `formElement` is not present.
 		if ( ! formElement ) {
 			return;
 		}
@@ -86,17 +86,44 @@ class GiveStripeElements {
 	 *
 	 * @returns {[]}
 	 */
-	createElement( stripeElement ) {
+	createElement( stripeElement, formElement ) {
 		const paymentElement = [];
+		const mountOnElements = this.getElementsToMountOn();
 
-		this.getElementsToMountOn().forEach( ( element, index ) => {
+		mountOnElements.forEach( ( element, index ) => {
 			paymentElement.push( stripeElement.create( element[ 0 ], {
 				style: this.getElementStyles(),
 				classes: this.getElementClasses(),
 			} ) );
 		} );
 
+		if ( 'cardNumber' === mountOnElements[0][0] ) {
+			// Update Card Type for Stripe Multi Fields.
+			paymentElement[0].addEventListener( 'change', function( event ) {
+				// Workaround for class name of Diners Club Card.
+				const brand = ( 'diners' === event.brand ) ? 'dinersclub' : event.brand;
+
+				// Add Brand to card type wrapper to display specific brand logo based on card number.
+				formElement.querySelector( '.card-type' ).className = 'card-type ' + brand;
+			} );
+		}
+
 		return paymentElement;
+	}
+
+	/**
+	 * Destroy Card Elements.
+	 *
+	 * @param elements
+	 *
+	 * @since 2.7.1
+	 *
+	 * @returns {[]}
+	 */
+	destroyElement( elements ) {
+		elements.forEach( ( element, index ) => {
+			element.destroy();
+		} );
 	}
 
 	/**
