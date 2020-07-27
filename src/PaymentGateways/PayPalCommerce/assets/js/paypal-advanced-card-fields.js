@@ -45,8 +45,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			  'font-family': computedStyle.getPropertyValue( 'font-family' ),
 			  color: computedStyle.getPropertyValue( 'color' ),
 		  },
-		  $form = document.querySelector( '#give-form-510-1' ),
-		  formData = new FormData( $form );
+		  $form = document.querySelector( '#give-form-510-1' );
 
 	// Check if card fields are eligible to render for the buyer's country. The card fields are not eligible in all countries where buyers are located.
 	if ( paypal.HostedFields.isEligible() === true ) {
@@ -54,7 +53,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			createOrder: function( data, actions ) {
 				return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
 					method: 'POST',
-					body: formData,
+					body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
 				} ).then( function( res ) {
 					return res.json();
 				} ).then( function( res ) {
