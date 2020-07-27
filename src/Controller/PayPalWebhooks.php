@@ -3,24 +3,74 @@
 namespace Give\Controller;
 
 use Exception;
+use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\OptionId;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\Utils;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\CheckoutOrderApproved;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
+use InvalidArgumentException;
 
 class PayPalWebhooks {
+	/**
+	 * Array of the PayPal webhook event handlers. Add-ons can use the registerEventHandler method
+	 * to add additional events/handlers.
+	 *
+	 * Structure: PayPalEventName => EventHandlerClass
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string[]
+	 */
+	private $eventHandlers = [
+		'CHECKOUT.ORDER.APPROVED' => CheckoutOrderApproved::class,
+	];
+
 	/**
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
 
 	/**
+	 * @var MerchantDetail
+	 */
+	private $merchantDetails;
+
+	/**
 	 * PayPalWebhooks constructor.
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param Webhooks $webhooksRepository
+	 * @param Webhooks       $webhooksRepository
+	 * @param MerchantDetail $merchantDetails
 	 */
-	public function __construct( Webhooks $webhooksRepository ) {
+	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails ) {
 		$this->webhooksRepository = $webhooksRepository;
+		$this->merchantDetails    = $merchantDetails;
+	}
+
+	/**
+	 * Use this to register additional events and handlers
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $payPalEvent PayPal event to listen for, i.e. CHECKOUT.ORDER.APPROVED
+	 * @param string $eventHandler The FQCN of the event handler
+	 *
+	 * @return $this
+	 */
+	public function registerEventHandler( $payPalEvent, $eventHandler ) {
+		if ( isset( $this->eventHandlers[ $payPalEvent ] ) ) {
+			throw new InvalidArgumentException( 'Cannot register an already registered event' );
+		}
+
+		if ( ! is_subclass_of( $eventHandler, EventListener::class ) ) {
+			throw new InvalidArgumentException( 'Listener must be a subclass of ' . EventListener::class );
+		}
+
+		$this->eventHandlers[ $payPalEvent ] = $eventHandler;
+
+		return $this;
 	}
 
 	/**
@@ -32,40 +82,24 @@ class PayPalWebhooks {
 	 * @throws Exception
 	 */
 	public function handle() {
+		if ( ! Utils::isConnected() ) {
+			return;
+		}
+
 		$event = json_decode( file_get_contents( 'php://input' ), false );
 
-		if ( ! $this->webhooksRepository->verifyEventSignature( $event, getallheaders() ) ) {
+		// If we receive an event that we're not expecting, just ignore it
+		if ( ! isset( $this->eventHandlers[ $event->event_type ] ) ) {
+			return;
+		}
+
+		if ( ! $this->webhooksRepository->verifyEventSignature( $this->merchantDetails->accessToken, $event, getallheaders() ) ) {
 			throw new Exception( 'Failed event verification' );
 		}
 
-		$handlerClass = 'Give\\PaymentGateways\\PayPalCommerce\\Webhooks\\Listeners\\'
-						. $this->deriveHandlerClass( $event->event_type );
-
 		/** @var EventListener $handler */
-		$handler = new $handlerClass();
+		$handler = give( $this->eventHandlers[ $event->event_type ] );
 
 		$handler->processEvent( $event );
-	}
-
-	/**
-	 * This takes an event type such as CHECKOUT.ORDER.APPROVED, breaks it apart, and puts it back
-	 * together as a studly cased class: CheckoutOrderApproved.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param string $event_type
-	 *
-	 * @return string
-	 */
-	private function deriveHandlerClass( $event_type ) {
-		return implode(
-			'',
-			array_map(
-				function ( $name ) {
-					return ucfirst( strtolower( $name ) );
-				},
-				explode( '.', $event_type )
-			)
-		);
 	}
 }
