@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+// Note: no-unused-vars rule is disabled while axios logic is not enabled
+
 //import axios from 'axios';
 
 export const getWindowData = ( value ) => {
@@ -17,11 +20,25 @@ export const redirectToSetupPage = () => {
 	window.location.href = getWindowData( 'setupUrl' );
 };
 
+/**
+ * Saves global site settings and onboarding values with the Onboarding API
+ *
+ * @param {string} setting Name of setting to save (examples include: 'country' or 'currency')
+ * @param {any} value Value to be saved (examples include: 'USA' or 'USD')
+ * @return {object} Object containing saved setting and value for confirmation
+ */
 export const saveSettingWithOnboardingAPI = ( setting, value ) => {
+	// Example shape of returned data
 	return {
 		setting,
 		value,
 	};
+
+	// Logic for connecting to the Onboarding API
+	// An object with action: 'save' and satting: ${value} is passed to the API
+	// An object of the same shape should be returned to confirm the value was stored as expected
+	// Note: When the below code is actually implemented, the ${value} should be
+	// stringified (using qs library or JSON stringify).
 
 	// // Setup cancel token for request
 	// const CancelToken = axios.CancelToken;
@@ -45,7 +62,14 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 	// 	} );
 };
 
-export const getStatesListWithOnboardingAPI = () => {
+/**
+ * Retrieves array of state/provinces from API based on country
+ *
+ * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')
+ * @return {array} Array of objects representing states/provinces for requested country
+ */
+export const getStatesListWithOnboardingAPI = ( country ) => {
+	// Example shape of returned data
 	return [
 		{
 			value: 'FL',
@@ -56,6 +80,10 @@ export const getStatesListWithOnboardingAPI = () => {
 			label: 'Rhode Island',
 		},
 	];
+
+	// Logic for connecting to the Onboarding API
+	// An object with action: 'get_states' and country: ${country} is passed to the API
+	// An array of objects with 'value' and 'label' properties for each state/province is returned
 
 	// // Setup cancel token for request
 	// const CancelToken = axios.CancelToken;
@@ -79,8 +107,19 @@ export const getStatesListWithOnboardingAPI = () => {
 	// 	} );
 };
 
-export const getCurrencyWithOnboardingAPI = () => {
+/**
+ * Retrieves currency code from API based on country
+ *
+ * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')
+ * @return {string} Currency code based on requested country code
+ */
+export const getCurrencyWithOnboardingAPI = ( country ) => {
+	// Example shape of returned data
 	return 'EUR';
+
+	// Logic for connecting to the Onboarding API
+	// An object with action: 'get_currency' and country: ${country} is passed to the API
+	// A string with currency code for the requested country code is returned
 
 	// // Setup cancel token for request
 	// const CancelToken = axios.CancelToken;
