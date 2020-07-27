@@ -9,22 +9,8 @@ class PayPalWebhooks implements Route {
 	 * @inheritDoc
 	 */
 	public function init() {
-		add_action( 'init', [ $this, 'addRule' ] );
 		add_action( 'query_vars', [ $this, 'addQueryVars' ] );
 		add_action( 'wp', [ $this, 'callController' ] );
-	}
-
-	/**
-	 * Adds the rewrite rules to WordPress
-	 *
-	 * @since 2.8.0
-	 */
-	public function addRule() {
-		add_rewrite_rule(
-			'^give/paypal/commerce/webhook$',
-			'index.php?give_webhook_event=paypal-commerce',
-			'top'
-		);
 	}
 
 	/**
@@ -54,5 +40,16 @@ class PayPalWebhooks implements Route {
 			http_response_code( 200 );
 			die();
 		}
+	}
+
+	/**
+	 * Returns the route URL
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function getRouteUrl() {
+		return get_site_url( null, 'index.php?give_webhook_event=paypal-commerce' );
 	}
 }
