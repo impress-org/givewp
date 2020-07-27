@@ -15,6 +15,9 @@ import './style.scss';
 
 const StepLink = ( { title, stepNumber } ) => {
 	const [ { currentStep }, dispatch ] = useStoreValue();
+	const progressBarStyle = {
+		width: currentStep <= stepNumber ? '0%' : '100%',
+	};
 
 	return (
 		<div className="give-obw-step-link">
@@ -27,7 +30,7 @@ const StepLink = ( { title, stepNumber } ) => {
 				</div>
 			</button>
 			<div className="give-obw-step-progress">
-				<div className="give-obw-step-progress-bar"></div>
+				<div className="give-obw-step-progress-bar" style={ progressBarStyle }></div>
 			</div>
 		</div>
 	);

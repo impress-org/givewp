@@ -2,8 +2,11 @@
 
 namespace Give\ServiceProviders;
 
+use Give\Helpers\Hooks;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
+use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
+use Give\Onboarding\Setup\Handlers\StripeConnectHandler;
 
 class Onboarding implements ServiceProvider {
 
@@ -11,7 +14,8 @@ class Onboarding implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
-		// ...
+		give()->singleton( SetupPage::class );
+		give()->bind( DonationsRedirect::class );
 	}
 
 	/**
@@ -27,12 +31,11 @@ class Onboarding implements ServiceProvider {
 
 		// Maybe load Setup Page
 		if ( give_is_setting_enabled( SetupPage::getSetupPageEnabledOrDisabled() ) ) {
-			$setupPage = new SetupPage;
-			add_action( 'admin_menu', [ $setupPage, 'add_page' ] );
-			add_action( 'admin_init', [ $setupPage, 'redirectDonationsToSetup' ] );
-			add_action( 'admin_enqueue_scripts', [ $setupPage, 'enqueue_scripts' ] );
-			add_action( 'admin_notices', [ $setupPage, 'hide_admin_notices' ], -999999 );
-			add_action( 'admin_post_dismiss_setup_page', [ $setupPage, 'dismissSetupPage' ] );
+			Hooks::addAction( 'admin_init', TopLevelMenuRedirect::class, 'maybeHandle' );
+			Hooks::addAction( 'admin_init', StripeConnectHandler::class, 'maybeHandle' );
+			Hooks::addAction( 'admin_menu', SetupPage::class, 'add_page' );
+			Hooks::addAction( 'admin_enqueue_scripts', SetupPage::class, 'enqueue_scripts' );
+			Hooks::addAction( 'admin_post_dismiss_setup_page', SetupPage::class, 'dismissSetupPage' );
 		}
 	}
 }

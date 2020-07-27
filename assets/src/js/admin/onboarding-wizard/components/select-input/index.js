@@ -1,5 +1,4 @@
 // Import vendor dependencies
-import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // Import styles
@@ -12,12 +11,12 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 		);
 	} );
 	return (
-		<Fragment>
+		<div className="give-obw-select-input">
 			{ label && <p>{ label }</p> }
 			<select value={ value } className="give-obw-select-input" onChange={ ( event ) => onChange( event.target.value ) } >
 				{ optionElements }
 			</select>
-		</Fragment>
+		</div>
 	);
 };
 

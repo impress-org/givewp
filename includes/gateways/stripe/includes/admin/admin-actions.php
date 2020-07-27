@@ -32,6 +32,10 @@ function give_stripe_connect_save_options() {
 
 	$get_vars = give_clean( $_GET );
 
+	if ( ! isset( $get_vars['page'] ) || 'give-settings' !== $get_vars['page'] ) {
+		return;
+	}
+
 	// If we don't have values here, bounce.
 	if (
 		! isset( $get_vars['stripe_publishable_key'] ) ||

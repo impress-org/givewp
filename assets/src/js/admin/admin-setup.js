@@ -8,12 +8,12 @@
  */
 
 Array.from( document.querySelectorAll( '.setup-item' ) ).forEach( ( setupItem ) => {
-	const actionAnchor = setupItem.querySelector( '.action a' );
+	const actionAnchor = setupItem.querySelector( '.js-action-link' );
 
 	if ( actionAnchor ) {
 		actionAnchor.addEventListener( 'click', ( e ) => e.stopPropagation() );
 		setupItem.style.cursor = 'pointer';
-		setupItem.addEventListener( 'click', ( event ) => {
+		setupItem.addEventListener( 'click', ( event ) => { // eslint-disable-line no-unused-vars
 			if ( ! window.getSelection().toString() ) {
 				actionAnchor.click();
 			}
