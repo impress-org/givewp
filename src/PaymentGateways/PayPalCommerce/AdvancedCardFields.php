@@ -21,21 +21,21 @@ class AdvancedCardFields {
 	 * We don't want the name attributes to be present on the fields in order to
 	 * prevent them from getting posted to the server.
 	 *
-	 * @param  int  $form_id  Donation Form ID.
+	 * @since 2.8.0
+	 *
+	 * @param  int  $formId  Donation Form ID.
 	 * @param  int  $args  Donation Form Arguments.
 	 * @param  bool  $echo  Status to display or not.
 	 *
 	 * @access public
 	 * @return string $form
-	 * @since  1.0
 	 *
 	 */
-	public function addCreditCardForm( $form_id, $args, $echo = true ) {
+	public function addCreditCardForm( $formId, $args, $echo = true ) {
 		ob_start();
-		$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-		$stripe_cc_field_format = give_get_option( 'stripe_cc_fields_format', 'multi' );
+		$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
-		do_action( 'give_before_cc_fields', $form_id ); ?>
+		do_action( 'give_before_cc_fields', $formId ); ?>
 
 		<fieldset id="give_cc_fields" class="give-do-validate">
 			<legend>
@@ -117,24 +117,24 @@ class AdvancedCardFields {
 			 *
 			 * Note: Kept this hook as it is.
 			 *
-			 * @param  int  $form_id  Donation Form ID.
+			 * @param  int  $formId  Donation Form ID.
 			 * @param  array  $args  List of additional arguments.
 			 *
 			 * @since 2.5.0
 			 *
 			 */
-			do_action( 'give_after_cc_expiration', $form_id, $args );
+			do_action( 'give_after_cc_expiration', $formId, $args );
 
 			/**
 			 * This action hook is used to display content after the Credit Card expiration field.
 			 *
-			 * @param  int  $form_id  Donation Form ID.
+			 * @param  int  $formId  Donation Form ID.
 			 * @param  array  $args  List of additional arguments.
 			 *
 			 * @since 2.5.0
 			 *
 			 */
-			do_action( 'give_stripe_after_cc_expiration', $form_id, $args );
+			do_action( 'give_stripe_after_cc_expiration', $formId, $args );
 			?>
 		</fieldset>
 		<?php
@@ -144,7 +144,7 @@ class AdvancedCardFields {
 			remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
 		}
 
-		do_action( 'give_after_cc_fields', $form_id, $args );
+		do_action( 'give_after_cc_fields', $formId, $args );
 
 		$form = ob_get_clean();
 
