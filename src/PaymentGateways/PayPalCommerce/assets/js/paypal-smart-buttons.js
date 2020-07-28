@@ -72,6 +72,14 @@ class SmartButtons {
 	 */
 	onInitHandler( data, actions ) {
 		actions.disable();
+
+		document.addEventListener( 'GivePaypalSmartButton:onEnable', function() {
+			actions.enabled();
+		} );
+
+		document.addEventListener( 'GivePaypalSmartButton:onDisable', function() {
+			actions.disabled();
+		} );
 	}
 
 	/**
