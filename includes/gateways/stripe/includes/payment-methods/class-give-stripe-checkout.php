@@ -588,7 +588,24 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 							<div class="give-stripe-checkout-donor-email"></div>
 						</div>
 						<div class="give-stripe-checkout-modal-body">
-							<?php echo Stripe::showCreditCardFields( $idPrefix ); ?>
+							<?php
+							/**
+							 * This action hook will be trigger in Stripe Checkout Modal before CC fields.
+							 *
+							 * @since 2.7.3
+							 */
+							do_action( 'give_stripe_checkout_modal_before_cc_fields', $formId, $args );
+
+							// Load Credit Card Fields for Stripe Checkout.
+							echo Stripe::showCreditCardFields( $idPrefix );
+
+							/**
+							 * This action hook will be trigger in Stripe Checkout Modal after CC fields.
+							 *
+							 * @since 2.7.3
+							 */
+							do_action( 'give_stripe_checkout_modal_after_cc_fields', $formId, $args );
+							?>
 							<input type="hidden" name="give_validate_stripe_payment_fields" value="0"/>
 						</div>
 						<div class="give-stripe-checkout-modal-footer">
