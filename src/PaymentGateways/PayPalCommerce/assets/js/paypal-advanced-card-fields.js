@@ -2,29 +2,29 @@
 /* globals paypal, Give */
 document.addEventListener( 'DOMContentLoaded', () => {
 	// Run script only if form exits on page.
-	if ( ! Give.form.fn.isFormExist() ) {
-		return;
-	}
+	// if ( ! Give.form.fn.isFormExist() ) {
+	// 	return;
+	// }
+	//
+	// const computedStyle = window.getComputedStyle( document.querySelector( '#give-card-name-wrap input[name="card_name"]' ), null ),
+	// 	inputStyle = {
+	// 		'font-size': computedStyle.getPropertyValue( 'font-size' ),
+	// 		'font-family': computedStyle.getPropertyValue( 'font-family' ),
+	// 		color: computedStyle.getPropertyValue( 'color' ),
+	// 	},
+	// 	$form = document.querySelector( '#give-form-510-1' ),
+	// 	$jForm = jQuery( $form );
 
-	const computedStyle = window.getComputedStyle( document.querySelector( '#give-card-name-wrap input[name="card_name"]' ), null ),
-		inputStyle = {
-			'font-size': computedStyle.getPropertyValue( 'font-size' ),
-			'font-family': computedStyle.getPropertyValue( 'font-family' ),
-			color: computedStyle.getPropertyValue( 'color' ),
-		},
-		$form = document.querySelector( '#give-form-510-1' ),
-		$jForm = jQuery( $form );
-
-	// On form submit prevent submission for PayPal commerce.
-	$jForm.on( 'submit', function( e ) {
-		if ( ! GiveWpPayPal.isPayPalCommerceSelected( $jForm ) || ! GiveWpPayPal.isDonationFormHtml5Valid( $form ) ) {
-			return true;
-		}
-
-		e.preventDefault();
-
-		return false;
-	} );
+	// // On form submit prevent submission for PayPal commerce.
+	// $jForm.on( 'submit', function( e ) {
+	// 	if ( ! GiveWpPayPal.isPayPalCommerceSelected( $jForm ) || ! GiveWpPayPal.isDonationFormHtml5Valid( $form ) ) {
+	// 		return true;
+	// 	}
+	//
+	// 	e.preventDefault();
+	//
+	// 	return false;
+	// } );
 
 	// Check if card fields are eligible to render for the buyer's country. The card fields are not eligible in all countries where buyers are located.
 	// if ( paypal.HostedFields.isEligible() === true ) {
