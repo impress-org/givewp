@@ -144,9 +144,12 @@ class SmartButtons {
 	 * @return {Promise<unknown>} Return whether or not PayPal payment captured.
 	 */
 	onApproveHandler( data, actions ) {
+		const self = this;
+
 		// eslint-disable-next-line
 		return fetch(`${this.ajaxurl}?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 			method: 'post',
+			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} ).then( function( res ) {
 			return res.json();
 		} ).then( function( res ) {
@@ -174,12 +177,16 @@ class SmartButtons {
 					msg += ' (' + orderData.debug_id + ')';
 				}
 				// Show a failure message
-				return alert(msg); // eslint-disable-line
+				console.log(msg); // eslint-disable-line
 			}
 
-			DonationForm.attachOrderIdToForm( this.form, orderData.id )
+			DonationForm.attachOrderIdToForm( self.form, orderData.id )
 				.then( () => {
-					this.form.submit();
+					// Do not submit  empty or filled Name credit card field with form.
+					// If we do that we will get `empty_card_name` error or other.
+					// We are removing this field before form submission because this donation processed with smart button.
+					self.removeCreditCardFields();
+					self.form.submit();
 				} );
 		} );
 	}
@@ -191,6 +198,15 @@ class SmartButtons {
 	 */
 	resetCreditCardFields() {
 		this.jQueryForm.find( 'input[name="card_name"]' ).val( '' );
+	}
+
+	/**
+	 * Remove Card fields.
+	 *
+	 * @since 2.8.0
+	 */
+	removeCreditCardFields() {
+		this.jQueryForm.find( 'input[name="card_name"]' ).remove();
 	}
 }
 
