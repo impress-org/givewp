@@ -6,7 +6,7 @@ import './style.scss';
 
 const Step = ( { children } ) => {
 	return (
-		<div className="give-obw-step">
+		<div className="give-obw-step" role="main">
 			{ children }
 		</div>
 	);

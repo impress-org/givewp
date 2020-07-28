@@ -22,7 +22,7 @@ const Location = () => {
 
 	return (
 		<div className="give-obw-location">
-			<h2>{ __( 'Where are you fundraising?', 'give' ) }</h2>
+			<h1>{ __( 'Where are you fundraising?', 'give' ) }</h1>
 			<Card>
 				<SelectInput label={ __( 'Country', 'give' ) } value={ country } onChange={ ( value ) => dispatch( setCountry( value ) ) } options={ countriesList } />
 				<SelectInput label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } />

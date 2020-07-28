@@ -17,7 +17,7 @@ const StepNavigation = ( { steps } ) => {
 	} );
 
 	return (
-		<div className="give-obw-step-navigation">
+		<div className="give-obw-step-navigation" role="navigation">
 			<div className="give-obw-step-navigation__steps-container">
 				{ stepLinks }
 			</div>

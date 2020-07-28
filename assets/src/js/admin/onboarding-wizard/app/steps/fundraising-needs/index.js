@@ -26,7 +26,7 @@ const FundraisingNeeds = () => {
 
 	return (
 		<div className="give-obw-fundraising-needs">
-			<h2>{ __( 'What do you need to support your cause?', 'give' ) }</h2>
+			<h1>{ __( 'What do you need to support your cause?', 'give' ) }</h1>
 			<p>
 				{ __( 'Take your fundraising to the next level with free and premium add-ons.', 'give' ) }
 			</p>

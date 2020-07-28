@@ -3,7 +3,7 @@
 	flex-direction: column;
 	align-items: center;
 
-	> h2 {
+	> h1 {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 600;
 		font-size: 24px;
@@ -13,7 +13,7 @@
 		margin: 52px 0;
 	}
 
-	> h3 {
+	> h2 {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 600;
 		font-size: 18px;
@@ -50,7 +50,7 @@
 			color: #333;
 		}
 
-		h2 {
+		strong {
 			text-transform: uppercase;
 			font-family: Montserrat, Arial, Helvetica, sans-serif;
 			font-weight: 500;
@@ -63,8 +63,6 @@
 			background: -webkit-linear-gradient(#1da3b0, #9fd894);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
-
-			margin: 0;
 		}
 	}
 }
