@@ -36,9 +36,9 @@ class SmartButtons {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param {object} evt
-	 * @param {*} response
-	 * @param {string} formIdAttr
+	 * @param {object} evt Event object.
+	 * @param {*} response Form fields HTML for gateway.
+	 * @param {string} formIdAttr Form Id attribute value.
 	 */
 	onGatewayLoadBoot( evt, response, formIdAttr ) {
 		const self = evt.data.self;
@@ -53,11 +53,16 @@ class SmartButtons {
 	 * @since 2.8.0
 	 */
 	renderSmartButtons() {
+		const onInitHandler = this.onInitHandler.bind( this );
+		const onClickHandler = this.onClickHandler.bind( this );
+		const createOrderHandler = this.createOrderHandler.bind( this );
+		const onApproveHandler = this.onApproveHandler.bind( this );
+
 		paypal.Buttons( {
-			onInit: this.onInitHandler,
-			onClick: this.onClickHandler,
-			createOrder: this.createOrderHandler,
-			onApprove: this.onApproveHandler,
+			onInit: onInitHandler,
+			onClick: onClickHandler,
+			createOrder: createOrderHandler,
+			onApprove: onApproveHandler,
 		} ).render( this.form.querySelector( '#give-paypal-smart-buttons-wrap div' ) );
 	}
 
@@ -66,20 +71,11 @@ class SmartButtons {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param {object} data
-	 * @param {object} actions
-	 * @return {Promise<unknown>}
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
 	 */
-	onInitHandler( data, actions ) {
-		actions.disable();
-
-		document.addEventListener( 'GivePaypalSmartButton:onEnable', function() {
-			actions.enabled();
-		} );
-
-		document.addEventListener( 'GivePaypalSmartButton:onDisable', function() {
-			actions.disabled();
-		} );
+	onInitHandler( data, actions ) { // eslint-disable-line
+		// Keeping this for future reference.
 	}
 
 	/**
@@ -87,48 +83,22 @@ class SmartButtons {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param {object} data
-	 * @param {object} actions
-	 * @return {Promise<unknown>}
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
+	 *
+	 * @return {Promise<unknown>} Return wther or not open PayPal checkout window.
 	 */
 	onClickHandler(data, actions) { // eslint-disable-line
-		let timerId;
-		this.jQueryForm.ajaxComplete( DonationForm.checkIfDonationFormValidAfterValidationAjaxComplete );
-		jQuery( 'input[name="give-purchase"].give-submit', this.jQueryForm ).trigger( 'click' );
+		if ( ! Give.form.fn.isDonationFormHtml5Valid( this.form, true ) ) {
+			return actions.reject();
+		}
 
-		return new Promise(
-			( resolve ) => {
-				if ( ! Give.form.fn.isDonationFormHtml5Valid( this.form ) ) {
-					resolve( false );
-				}
-
-				timerId = window.setInterval(
-					() => {
-						const status = this.jQueryForm.attr( 'data-pc-form-valid' );
-
-						console.log( 'got status in interval callback ', status );
-
-						if ( '1' === status ) {
-							resolve( true );
-						} else if ( '0' === status ) {
-							resolve( false );
-						}
-					},
-					5000
-				);
-			} )
-			.then( ( result ) => {
-				console.log( 'promise resoled with ', result );
-
-				window.clearInterval( timerId );
-				this.jQueryForm.removeAttr( 'data-pc-form-valid' );
-				this.jQueryForm.off( 'ajaxComplete', DonationForm.checkIfDonationFormValidAfterValidationAjaxComplete );
-
-				if ( result ) {
+		return Give.form.fn.isDonorFilledValidData( this.form )
+			.then( res => {
+				if ( 'success' === res ) {
 					return actions.resolve();
 				}
 
-				console.log( 'fail' );
 				return actions.reject();
 			} );
 	}
@@ -138,9 +108,10 @@ class SmartButtons {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param {object} data
-	 * @param {object} actions
-	 * @return {Promise<unknown>}
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
+	 *
+	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
 	createOrderHandler(data, actions) { // eslint-disable-line
 		// eslint-disable-next-line
@@ -159,8 +130,10 @@ class SmartButtons {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param {object} data
-	 * @param {object} actions
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
+	 *
+	 * @return {Promise<unknown>} Return whether or not PayPal payment captured.
 	 */
 	onApproveHandler( data, actions ) {
 		// eslint-disable-next-line
@@ -175,8 +148,8 @@ class SmartButtons {
 			//   (3) Successful transaction -> Show a success / thank you message
 
 			// Your server defines the structure of 'orderData', which may differ
-			const errorDetail = Array.isArray( res.data.order.details ) && res.data.order.details[ 0 ],
-				  orderData = res.data.order;
+			const errorDetail = Array.isArray( res.data.order.details ) && res.data.order.details[ 0 ];
+			const orderData = res.data.order;
 
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
 				// Recoverable state, see: "Handle Funding Failures"
