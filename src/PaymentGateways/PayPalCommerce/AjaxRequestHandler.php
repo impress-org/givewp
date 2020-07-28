@@ -38,7 +38,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onBoardedUserAjaxRequestHandler() {
-		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
+		$this->validateAdminRequest();
 
 		$partnerLinkInfo = get_option( OptionId::$partnerInfoOptionKey, [ 'nonce' => '' ] );
 
@@ -81,7 +81,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onGetPartnerUrlAjaxRequestHandler() {
-		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
+		$this->validateAdminRequest();
 
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
@@ -113,22 +113,11 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function removePayPalAccount() {
-		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
+		$this->validateAdminRequest();
 
 		give( MerchantDetail::class )->delete();
 
 		wp_send_json_success();
-	}
-
-	/**
-	 * Send error if user does not has capability to manage GiveWP settings.
-	 *
-	 * @since 2.8.0
-	 */
-	private function sendErrorOnAjaxRequestIfUserDoesNotHasPermission() {
-		if ( ! current_user_can( 'manage_give_settings' ) ) {
-			wp_send_json_error();
-		}
 	}
 
 	/**
@@ -139,6 +128,8 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function createOrder() {
+		$this->validateFrontendRequest();
+
 		/* @var PayPalHttpClient $client */
 		$client = give( PayPalClient::class )->getHttpClient();
 		/* @var MerchantDetail $merchant */
@@ -204,6 +195,8 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function approveOrder() {
+		$this->validateFrontendRequest();
+
 		/* @var PayPalHttpClient $client */
 		$client  = give( PayPalClient::class )->getHttpClient();
 		$orderId = give_clean( $_GET['order'] );
@@ -223,6 +216,30 @@ class AjaxRequestHandler {
 					'errorMsg' => $ex->getMessage(),
 				]
 			);
+		}
+	}
+
+	/**
+	 * Validate admin ajax request.
+	 *
+	 * @since 2.8.0
+	 */
+	private function validateAdminRequest() {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			wp_send_json_error();
+		}
+	}
+
+	/**
+	 * Validate frontend ajax request.
+	 *
+	 * @since 2.8.0
+	 */
+	private function validateFrontendRequest() {
+		$formId = absint( $_POST['give-form-id'] );
+
+		if ( ! $formId || ! give_verify_donation_form_nonce( give_clean( $_POST['give-form-hash'] ), $formId ) ) {
+			wp_send_json_error();
 		}
 	}
 }
