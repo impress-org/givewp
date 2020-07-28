@@ -2,9 +2,11 @@
 
 namespace Give\ServiceProviders;
 
+use Give\Controller\PayPalWebhooks;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 
@@ -39,6 +41,8 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
+		give()->singleton( PayPalWebhooks::class );
+		give()->singleton( Webhooks::class );
 	}
 
 	/**
