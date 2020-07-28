@@ -706,6 +706,30 @@ export default {
 				.then( res => res.trim() );
 		},
 
+		/**
+		 * Add error notices to donation form.
+		 * Note: this function will add error before "Donote Now" button.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Jquery Form object
+		 * @param {string} errors Error list HTML.
+		 */
+		addErrors: function( $form, errors ) {
+			$form.find( '#give_purchase_submit input[type="submit"].give-submit' ).before( errors );
+		},
+
+		/**
+		 * Remove error notices to donation form.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Jquery Form object
+		 */
+		removeErrors: function( $form ) {
+			$form.find( '.give_errors' ).remove();
+		},
+
 		field: {
 
 			/**
