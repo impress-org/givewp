@@ -24,9 +24,15 @@ const Location = () => {
 		<div className="give-obw-location">
 			<h1>{ __( 'Where are you fundraising?', 'give' ) }</h1>
 			<Card>
-				<SelectInput label={ __( 'Country', 'give' ) } value={ country } onChange={ ( value ) => dispatch( setCountry( value ) ) } options={ countriesList } />
-				<SelectInput label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } />
-				<SelectInput label={ __( 'Currency', 'give' ) } value={ currency } onChange={ ( value ) => dispatch( setCurrency( value ) ) } options={ currenciesList } />
+				<label>{ __( 'Country', 'give' ) }
+					<SelectInput value={ country } onChange={ ( value ) => dispatch( setCountry( value ) ) } options={ countriesList } />
+				</label>
+				<label>{ __( 'State / Province', 'give' ) }
+					<SelectInput value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } />
+				</label>
+				<label>{ __( 'Currency', 'give' ) }
+					<SelectInput value={ currency } onChange={ ( value ) => dispatch( setCurrency( value ) ) } options={ currenciesList } />
+				</label>
 			</Card>
 			<ContinueButton />
 		</div>
