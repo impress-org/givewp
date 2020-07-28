@@ -658,6 +658,7 @@
 				evt.preventDefault();
 			}
 			$( container ).toggleClass( 'active' );
+			$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
 		} );
 	}
 
