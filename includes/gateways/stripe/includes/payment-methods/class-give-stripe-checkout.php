@@ -579,13 +579,13 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 								</svg>
 							</button>
 							<h3><?php echo give_get_option( 'stripe_checkout_name' ); ?></h3>
-							<div class="give-stripe-checkout-form-title">
-								<?php echo get_the_title( $formId ); ?>
-							</div>
 							<div class="give-stripe-checkout-donation-amount">
 								<?php echo give_get_form_price( $formId ); ?>
 							</div>
 							<div class="give-stripe-checkout-donor-email"></div>
+							<div class="give-stripe-checkout-form-title">
+								<?php echo get_the_title( $formId ); ?>
+							</div>
 						</div>
 						<div class="give-stripe-checkout-modal-body">
 							<?php
