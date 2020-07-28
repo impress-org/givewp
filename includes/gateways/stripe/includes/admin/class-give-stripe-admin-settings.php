@@ -321,7 +321,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type'          => 'radio_inline',
 						'default'       => 'modal',
 						'options'       => [
-							'modal'    => __( 'Modal (Legacy Checkout)', 'give' ),
+							'modal'    => __( 'Modal (Stripe Elements)', 'give' ),
 							'redirect' => __( 'Redirect (Checkout 2.0)', 'give' ),
 						],
 					];
@@ -348,32 +348,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'text'          => [
 							'add_upload_file_text' => __( 'Add or Upload Image', 'give' ),
 						],
-					];
-
-					$settings['checkout'][] = [
-						'name'    => __( 'Processing Text', 'give' ),
-						'desc'    => __( 'This text appears briefly once the donor has submitted a donation while GiveWP is confirming the payment with the Stripe API.', 'give' ),
-						'id'      => 'stripe_checkout_processing_text',
-						'default' => __( 'Donation Processing...', 'give' ),
-						'type'    => 'text',
-					];
-
-					$settings['checkout'][] = [
-						'name'          => __( 'Verify Zip Code', 'give' ),
-						'desc'          => __( 'Specify whether Checkout should validate the billing ZIP code of the donor for added fraud protection.', 'give' ),
-						'id'            => 'stripe_checkout_zip_verify',
-						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
-						'default'       => 'on',
-						'type'          => 'checkbox',
-					];
-
-					$settings['checkout'][] = [
-						'name'          => __( 'Remember Me', 'give' ),
-						'desc'          => __( 'Specify whether to include the option to "Remember Me" for future donations.', 'give' ),
-						'id'            => 'stripe_checkout_remember_me',
-						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
-						'default'       => 'on',
-						'type'          => 'checkbox',
 					];
 
 					/**
