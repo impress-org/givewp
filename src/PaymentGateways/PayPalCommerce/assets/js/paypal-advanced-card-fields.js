@@ -1,43 +1,3 @@
-class GiveWpPayPal {
-	/**
-	 * Get form Data.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {object} $form Form selector.
-	 *
-	 * @return {FormData} FormData object of form entries.
-	 */
-	static getFormDataFormHttpRequest( $form ) {
-		const formData = new FormData( $form ); // eslint-disable-line
-
-		formData.delete( 'give_action' );
-
-		return formData;
-	}
-
-	/**
-	 * Add PayPal order id as hidden type input field to donation form.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {object} $form Form selector.
-	 * @param {string} orderId PayPal order id.
-	 *
-	 * @return {Promise} Promise of appending hidden input field to donation form.
-	 */
-	static attachOrderIdToForm( $form, orderId ) {
-		const input = document.createElement( 'input' );
-
-		input.type = 'hidden';
-		input.name = 'payPalOrderId';
-		input.value = orderId;
-
-		return new Promise( ( resolve, reject ) => { // eslint-disable-line
-			resolve( $form.appendChild( input ) );
-		} );
-	}
-}
 
 /* globals paypal, Give */
 document.addEventListener( 'DOMContentLoaded', () => {
@@ -52,114 +12,69 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			'font-family': computedStyle.getPropertyValue( 'font-family' ),
 			color: computedStyle.getPropertyValue( 'color' ),
 		},
-		$form = document.querySelector( '#give-form-510-1' );
+		$form = document.querySelector( '#give-form-510-1' ),
+		$jForm = jQuery( $form );
+
+	// On form submit prevent submission for PayPal commerce.
+	$jForm.on( 'submit', function( e ) {
+		if ( ! GiveWpPayPal.isPayPalCommerceSelected( $jForm ) || ! GiveWpPayPal.isDonationFormHtml5Valid( $form ) ) {
+			return true;
+		}
+
+		e.preventDefault();
+
+		return false;
+	} );
 
 	// Check if card fields are eligible to render for the buyer's country. The card fields are not eligible in all countries where buyers are located.
-	if ( paypal.HostedFields.isEligible() === true ) {
-		paypal.HostedFields.render( {
-			createOrder: function( data, actions ) { // eslint-disable-line
-				// eslint-disable-next-line
-				return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
-					method: 'POST',
-					body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
-				} ).then( function( res ) {
-					return res.json();
-				} ).then( function( res ) {
-					return res.data.id;
-				} );
-			},
-			styles: {
-				input: inputStyle,
-			},
-			fields: {
-				number: {
-					selector: '#give-card-number-field-510-1',
-					placeholder: 'Card Number',
-				},
-				cvv: {
-					selector: '#give-card-cvc-field-510-1',
-					placeholder: 'CVV',
-				},
-				expirationDate: {
-					selector: '#give-card-expiration-field-510-1',
-					placeholder: 'MM/YY',
-				},
-			},
-		} ).then( hostedFields => {
-			jQuery( $form ).on( 'submit', event => {
-				event.preventDefault();
-				hostedFields.submit().then( payload => {
-					// eslint-disable-next-line
-					return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + payload.orderId, {
-						method: 'POST',
-					} ).then( function( res ) {
-						return res.json();
-					} ).then( res => {
-						if ( true !== res.success ) {
-							alert( 'Something went wrong' ); // eslint-disable-line
-						}
-					} );
-				} );
-
-				return false;
-			} );
-		} );
-	}
-
-	paypal.Buttons( {
-		// Call your server to set up the transaction
-		createOrder: function( data, actions ) { // eslint-disable-line
-			// eslint-disable-next-line
-			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
-				method: 'POST',
-				body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
-			} ).then( function( res ) {
-				return res.json();
-			} ).then( function( res ) {
-				return res.data.id;
-			} );
-		},
-
-		// Call your server to finalize the transaction
-		onApprove: function( data, actions ) {
-			// eslint-disable-next-line
-			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
-				method: 'post',
-			} ).then( function( res ) {
-				return res.json();
-			} ).then( function( res ) {
-				// Three cases to handle:
-				//   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-				//   (2) Other non-recoverable errors -> Show a failure message
-				//   (3) Successful transaction -> Show a success / thank you message
-
-				// Your server defines the structure of 'orderData', which may differ
-				const errorDetail = Array.isArray( res.data.order.details ) && res.data.order.details[ 0 ],
-					orderData = res.data.order;
-
-				if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-					// Recoverable state, see: "Handle Funding Failures"
-					// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
-					return actions.restart();
-				}
-
-				if ( errorDetail ) {
-					let msg = 'Sorry, your transaction could not be processed.';
-					if ( errorDetail.description ) {
-						msg += '\n\n' + errorDetail.description;
-					}
-					if ( orderData.debug_id ) {
-						msg += ' (' + orderData.debug_id + ')';
-					}
-					// Show a failure message
-					return alert( msg ); // eslint-disable-line
-				}
-
-				GiveWpPayPal.attachOrderIdToForm( $form, orderData.id )
-					.then( () => {
-						$form.submit();
-					} );
-			} );
-		},
-	} ).render( '#give-paypal-smart-buttons-field-510-1' );
+	// if ( paypal.HostedFields.isEligible() === true ) {
+	// 	paypal.HostedFields.render( {
+	// 		createOrder: function( data, actions ) { // eslint-disable-line
+	// 			// eslint-disable-next-line
+	// 			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
+	// 				method: 'POST',
+	// 				body: GiveWpPayPal.getFormDataFormHttpRequest( $form ),
+	// 			} ).then( function( res ) {
+	// 				return res.json();
+	// 			} ).then( function( res ) {
+	// 				return res.data.id;
+	// 			} );
+	// 		},
+	// 		styles: {
+	// 			input: inputStyle,
+	// 		},
+	// 		fields: {
+	// 			number: {
+	// 				selector: '#give-card-number-field-510-1',
+	// 				placeholder: 'Card Number',
+	// 			},
+	// 			cvv: {
+	// 				selector: '#give-card-cvc-field-510-1',
+	// 				placeholder: 'CVV',
+	// 			},
+	// 			expirationDate: {
+	// 				selector: '#give-card-expiration-field-510-1',
+	// 				placeholder: 'MM/YY',
+	// 			},
+	// 		},
+	// 	} ).then( hostedFields => {
+	// 		jQuery( $form ).on( 'submit', event => {
+	// 			event.preventDefault();
+	// 			hostedFields.submit().then( payload => {
+	// 				// eslint-disable-next-line
+	// 				return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + payload.orderId, {
+	// 					method: 'POST',
+	// 				} ).then( function( res ) {
+	// 					return res.json();
+	// 				} ).then( res => {
+	// 					if ( true !== res.success ) {
+	// 						alert( 'Something went wrong' ); // eslint-disable-line
+	// 					}
+	// 				} );
+	// 			} );
+	//
+	// 			return false;
+	// 		} );
+	// 	} );
+	// }
 } );
