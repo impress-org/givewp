@@ -690,10 +690,11 @@ export default {
 		 * @since 2.8.0
 		 *
 		 * @param {object} $form
+		 * @param {FormData} formData
 		 * @return {Promise}
 		 */
-		isDonorFilledValidData: function( $form ) {
-			const formData = new FormData( $form );
+		isDonorFilledValidData: function( $form, formData = {} ) {
+			formData = formData instanceof FormData ? formData : new FormData( $form );
 
 			formData.append( 'action', 'give_process_donation' );
 			formData.append( 'give_ajax', true );
