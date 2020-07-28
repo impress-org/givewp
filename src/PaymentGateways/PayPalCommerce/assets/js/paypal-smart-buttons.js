@@ -1,4 +1,4 @@
-/* globals jQuery, paypal, Give */
+/* globals jQuery, paypal, Give, FormData */
 import DonationForm from './DonationForm';
 
 /**
@@ -89,16 +89,24 @@ class SmartButtons {
 	 * @return {Promise<unknown>} Return wther or not open PayPal checkout window.
 	 */
 	onClickHandler(data, actions) { // eslint-disable-line
+		const formData = new FormData( this.form );
+
+		formData.delete( 'card_name' );
+		this.resetCreditCardFields();
+
 		if ( ! Give.form.fn.isDonationFormHtml5Valid( this.form, true ) ) {
 			return actions.reject();
 		}
 
-		return Give.form.fn.isDonorFilledValidData( this.form )
+		Give.form.fn.removeErrors( this.jQueryForm );
+
+		return Give.form.fn.isDonorFilledValidData( this.form, formData )
 			.then( res => {
 				if ( 'success' === res ) {
 					return actions.resolve();
 				}
 
+				Give.form.fn.addErrors( this.jQueryForm, res );
 				return actions.reject();
 			} );
 	}
@@ -174,6 +182,15 @@ class SmartButtons {
 					this.form.submit();
 				} );
 		} );
+	}
+
+	/**
+	 * Reset Card fields.
+	 *
+	 * @since 2.8.0
+	 */
+	resetCreditCardFields() {
+		this.jQueryForm.find( 'input[name="card_name"]' ).val( '' );
 	}
 }
 
