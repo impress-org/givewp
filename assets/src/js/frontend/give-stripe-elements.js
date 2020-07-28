@@ -89,12 +89,23 @@ class GiveStripeElements {
 	createElement( stripeElement, formElement ) {
 		const paymentElement = [];
 		const mountOnElements = this.getElementsToMountOn();
+		const args = {
+			style: this.getElementStyles(),
+			classes: this.getElementClasses(),
+		};
 
 		mountOnElements.forEach( ( element, index ) => {
-			paymentElement.push( stripeElement.create( element[ 0 ], {
-				style: this.getElementStyles(),
-				classes: this.getElementClasses(),
-			} ) );
+			if ( 'card' === element[ 0 ] ) {
+				args.hidePostalCode = !! ( give_stripe_vars.checkout_address );
+			} else if ( 'cardNumber' === element[ 0 ] ) {
+				args.placeholder = give_stripe_vars.card_number_placeholder_text;
+			} else if ( 'cardCvc' === element[ 0 ] ) {
+				args.placeholder = give_stripe_vars.card_cvc_placeholder_text;
+			} else {
+				delete args.placeholder;
+			}
+
+			paymentElement.push( stripeElement.create( element[ 0 ], args ) );
 		} );
 
 		if ( 'cardNumber' === mountOnElements[ 0 ][ 0 ] ) {
@@ -306,7 +317,7 @@ class GiveStripeElements {
 	 */
 	triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements ) {
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
-		const stripeModalDonateBtn = formElement.querySelector( `#give-stripe-checkout-modal-donate-button-${idPrefixElement.value}` );
+		const stripeModalDonateBtn = formElement.querySelector( `#give-stripe-checkout-modal-donate-button-${ idPrefixElement.value }` );
 		const cardholderName = formElement.querySelector( 'input[name="card_name"]' );
 		const completeCardElements = {};
 		let completeCardStatus = false;
