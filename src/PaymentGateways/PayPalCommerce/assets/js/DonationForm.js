@@ -1,4 +1,4 @@
-/* globals Give, jQuery, Promise  */
+/* globals Give, Promise  */
 class DonationForm {
 	/**
 	 * Get form Data.
@@ -46,21 +46,10 @@ class DonationForm {
 	 *
 	 * @param {object} $form Form object.
 	 *
-	 * @return {boolean}
+	 * @return {boolean} Return whether or not donor selected PayPal Commerce payment gateway.
 	 */
 	static isPayPalCommerceSelected( $form ) {
 		return 'paypal-commerce' === Give.form.fn.getGateway( $form );
-	}
-
-	/**
-	 *
-	 */
-	static checkIfDonationFormValidAfterValidationAjaxComplete( event, response ) {
-		const status = 'success' === response.responseText ? 1 : 0;
-
-		console.log( 'status added to donation form ', status );
-
-		jQuery( event.target ).attr( 'data-pc-form-valid', status );
 	}
 }
 
