@@ -578,7 +578,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 									</g>
 								</svg>
 							</button>
-							<h3><?php echo get_bloginfo( 'name' ); ?></h3>
+							<h3><?php echo give_get_option( 'stripe_checkout_name' ); ?></h3>
 							<div class="give-stripe-checkout-form-title">
 								<?php echo get_the_title( $formId ); ?>
 							</div>
@@ -603,7 +603,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 								<?php
 								echo sprintf(
 									'<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" disabled/>',
-									'give-btn give-stripe-checkout-modal-donate-button',
+									FormUtils::isLegacyForm() ? 'give-btn give-stripe-checkout-modal-donate-button' : 'give-btn give-stripe-checkout-modal-sequoia-donate-button',
 									"give-stripe-checkout-modal-donate-button-{$idPrefix}",
 									$display_label,
 									'give_stripe_modal_donate'
