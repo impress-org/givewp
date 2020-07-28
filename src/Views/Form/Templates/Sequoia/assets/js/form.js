@@ -656,9 +656,11 @@
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
+
+				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
 			}
+
 			$( container ).toggleClass( 'active' );
-			$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
 		} );
 	}
 
