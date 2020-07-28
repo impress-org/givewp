@@ -146,6 +146,9 @@ class SmartButtons {
 	onApproveHandler( data, actions ) {
 		const self = this;
 
+		Give.form.fn.showProcessingState();
+		Give.form.fn.disable( this.jQueryForm, true );
+
 		// eslint-disable-next-line
 		return fetch(`${this.ajaxurl}?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 			method: 'post',
@@ -163,6 +166,9 @@ class SmartButtons {
 			const orderData = res.data.order;
 
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
+				Give.form.fn.showProcessingState( false );
+				Give.form.fn.disable( self.jQueryForm, false );
+
 				// Recoverable state, see: "Handle Funding Failures"
 				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
 				return actions.restart();
@@ -176,8 +182,12 @@ class SmartButtons {
 				if ( orderData.debug_id ) {
 					msg += ' (' + orderData.debug_id + ')';
 				}
+
 				// Show a failure message
-				console.log(msg); // eslint-disable-line
+				alert(msg); // eslint-disable-line
+
+				Give.form.fn.disable( self.jQueryForm, false );
+				Give.form.fn.showProcessingState( false );
 			}
 
 			DonationForm.attachOrderIdToForm( self.form, orderData.id )
