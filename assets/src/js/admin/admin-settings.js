@@ -357,7 +357,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 // Handle paypal onboarding.
 document.addEventListener( 'DOMContentLoaded', () => {
 	const onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
-		  changePayPalAccountButton = document.getElementById( 'js-give-paypal-change-paypal-account' ),
 		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
 		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
 		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' );
@@ -380,17 +379,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					}
 				}
 				);
-
-			return false;
-		} );
-	}
-
-	if ( changePayPalAccountButton ) {
-		changePayPalAccountButton.addEventListener( 'click', function( evt ) {
-			evt.preventDefault();
-
-			connectionSettingContainer.classList.remove( 'give-hidden' );
-			disConnectionSettingContainer.classList.add( 'give-hidden' );
 
 			return false;
 		} );
