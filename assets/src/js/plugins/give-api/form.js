@@ -659,6 +659,53 @@ export default {
 			} );
 		},
 
+		/**
+		 * Check donation form pass HTML5 validation.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form
+		 * @param {boolean} reportValidity Set to true if want to show HTML5 error notices on form field.
+		 * @return {boolean}
+		 */
+		isDonationFormHtml5Valid: function( $form, reportValidity = false ) {
+			if ( typeof $form.checkValidity === 'function' && $form.checkValidity() === false ) {
+				//Check for Safari (doesn't support HTML5 required)
+				if ( ( navigator.userAgent.indexOf( 'Safari' ) != -1 && navigator.userAgent.indexOf( 'Chrome' ) == -1 ) === false ) {
+					if ( reportValidity ) {
+						$form.reportValidity();
+					}
+
+					//Not safari: Support HTML5 "required" so skip the rest of this function
+					return false;
+				}
+			}
+
+			return true;
+		},
+
+		/**
+		 * Check donation form pass HTML5 validation.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form
+		 * @return {Promise}
+		 */
+		isDonorFilledValidData: function( $form ) {
+			const formData = new FormData( $form );
+
+			formData.append( 'action', 'give_process_donation' );
+			formData.append( 'give_ajax', true );
+
+			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }`, {
+				method: 'POST',
+				body: formData,
+			} )
+				.then( res => res.text() )
+				.then( res => res.trim() );
+		},
+
 		field: {
 
 			/**
