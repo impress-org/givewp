@@ -40,6 +40,23 @@ export default {
 		},
 
 		/**
+		 * Show processing state template.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {boolean} show Set whether or not show processing template.
+		 */
+		showProcessingState: function( show = true ) {
+			const $template = jQuery( '#give-processing-state-template' );
+
+			if ( show ) {
+				$template.addClass( 'active' );
+			} else {
+				$template.removeClass( 'active' );
+			}
+		},
+
+		/**
 		 * Get formatted amount
 		 *
 		 * @param {string/number} amount
