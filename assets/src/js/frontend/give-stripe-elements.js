@@ -81,6 +81,7 @@ class GiveStripeElements {
 	 * Create Card Element.
 	 *
 	 * @param stripeElement
+	 * @param formElement
 	 *
 	 * @since 2.7.3
 	 *
