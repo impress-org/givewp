@@ -326,15 +326,17 @@ class GiveStripeElements {
 		cardElements.forEach( ( cardElement ) => {
 			completeCardElements.cardName = false;
 
-			cardElement.on( 'ready', ( e ) => {
+			cardElement.addEventListener( 'ready', ( e ) => {
 				completeCardElements[ e.elementType ] = false;
+				completeCardElements.cardName = 'card' === e.elementType;
 			} );
 
-			cardElement.on( 'change', ( e ) => {
+			cardElement.addEventListener( 'change', ( e ) => {
 				completeCardElements[ e.elementType ] = e.complete;
 				completeCardStatus = Object.values( completeCardElements ).every( ( string ) => {
 					return true === string;
 				} );
+
 				completeCardStatus ? stripeModalDonateBtn.removeAttribute( 'disabled' ) : stripeModalDonateBtn.setAttribute( 'disabled', 'disabled' );
 			} );
 		} );
