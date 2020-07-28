@@ -64,12 +64,15 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			} else if ( 'stripe_checkout' === selectedGateway ) {
 				const stripeModal = formElement.querySelector( '.give-stripe-checkout-modal' );
 				const modalAmountElement = stripeModal.querySelector( '.give-stripe-checkout-donation-amount' );
+				const modalEmailElement = stripeModal.querySelector( '.give-stripe-checkout-donor-email' );
 				const donationAmount = formElement.querySelector( '.give-final-total-amount' ).textContent;
+				const donorEmail = formElement.querySelector( 'input[name="give_email"]' ).value;
 				const validatePaymentFields = formElement.querySelector( 'input[name="give_validate_stripe_payment_fields"]' );
 
 				// Setup data on modal and then trigger to display modal.
 				stripeModal.classList.add( 'give-stripe-checkout-show-modal' );
 				null !== modalAmountElement ? modalAmountElement.innerHTML = donationAmount : '';
+				null !== modalEmailElement ? modalEmailElement.innerHTML = donorEmail : '';
 				validatePaymentFields.setAttribute( 'value', '1' );
 
 				const modalClose = formElement.querySelector( '.give-stripe-checkout-modal-close' );
