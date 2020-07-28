@@ -40,65 +40,6 @@
 	background-color: #fff;
 }
 
-.give-stripe-modal {
-	.mfp-content {
-		padding: 0;
-		max-width: 400px;
-		width: 100%;
-		border-radius: 5px;
-	}
-}
-
-.give-modal--stripe-checkout {
-	border-radius: 5px;
-	max-width: 600px;
-	width: auto;
-	display: block;
-	overflow: hidden;
-	height: auto;
-
-	.give-modal__header {
-		background-color: #000;
-		color: #fff;
-		padding: 20px;
-		text-align: center;
-
-		.give-modal__title {
-			color: #fff;
-			text-transform: uppercase;
-			font-weight: bold;
-			font-size: 18px;
-			margin-bottom: 32px;
-		}
-
-		.give-modal__price {
-			font-size: 36px;
-			font-weight: 600;
-			line-height: 38px;
-		}
-
-		.give-modal__email {
-			color: rgba(255, 255, 255, 0.5);
-			font-size: 16px;
-			font-weight: 500;
-		}
-
-		.give-modal__form-title {
-			@extend .give-modal__email;
-		}
-	}
-
-	.give-modal__body {
-		padding: 20px;
-	}
-
-	.give-modal__footer {
-		text-align: center;
-		padding: 20px;
-		background-color: #f5f5f5;
-	}
-}
-
 .give-stripe-checkout-modal {
 	all: initial;
 	box-sizing: border-box;
@@ -181,6 +122,15 @@
 				padding: 20px;
 				display: block;
 				overflow: hidden;
+
+				.give-stripe-checkout-modal-else-part {
+					margin: 15px 0;
+					text-align: center;
+				}
+
+				.give-stripe-single-cc-field-wrap {
+					margin: 0;
+				}
 			}
 
 			.give-stripe-checkout-modal-footer {
@@ -188,7 +138,7 @@
 				text-align: center;
 				background-color: #f5f5f5;
 
-				.give-stripe-checkout-modal-donate-button {
+				.give-stripe-checkout-modal-sequoia-donate-button {
 					order: 99 !important;
 					display: flex;
 					align-items: center;
