@@ -11,25 +11,6 @@ use PayPalCheckoutSdk\Orders\OrdersGetRequest;
  */
 class DonationProcessor {
 	/**
-	 * Payment gateway id.
-	 *
-	 * @var string
-	 */
-	private $gatewayId;
-
-	/**
-	 * Bootstrap class.
-	 *
-	 * @since 2.8.0
-	 */
-	public function boot() {
-		$this->gatewayId = give( PayPalCommerce::class )->getId();
-		add_action( "give_gateway_{$this->gatewayId}", [ $this, 'handle' ] );
-
-		return $this;
-	}
-
-	/**
 	 * Handle donation form submission.
 	 *
 	 * @param array $donationFormData
@@ -113,7 +94,7 @@ class DonationProcessor {
 
 		wp_safe_redirect(
 			add_query_arg(
-				[ 'payment-confirmation' => $this->gatewayId ],
+				[ 'payment-confirmation' => 'paypal-commerce' ],
 				give_get_success_page_url()
 			)
 		);

@@ -4,18 +4,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 class AdvancedCardFields {
 	/**
-	 * Bootstrap class
-	 *
-	 * @since 2.8.0
-	 */
-	public function boot() {
-		$gatewayId = give( PayPalCommerce::class )->getId();
-		add_action( "give_{$gatewayId}_cc_form", [ $this, 'addCreditCardForm' ], 10, 3 );
-
-		return $this;
-	}
-
-	/**
 	 * PayPal commerce uses smart buttons to accept payment.
 	 *
 	 * @since 2.8.0

@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
 
 /**
@@ -84,22 +85,10 @@ class PayPalCommerce implements PaymentGateway {
 			give( RefreshToken::class );
 		}
 
-		give()->singleton(
-			AdvancedCardFields::class,
-			static function() {
-				return ( new AdvancedCardFields() )->boot();
-			}
-		);
+		give()->singleton( AdvancedCardFields::class );
+		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm', 10, 3 );
 
-		give( AdvancedCardFields::class );
-
-		give()->singleton(
-			DonationProcessor::class,
-			static function() {
-				return ( new DonationProcessor() )->boot();
-			}
-		);
-
-		give( DonationProcessor::class );
+		give()->singleton( DonationProcessor::class );
+		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle', 10, 3 );
 	}
 }
