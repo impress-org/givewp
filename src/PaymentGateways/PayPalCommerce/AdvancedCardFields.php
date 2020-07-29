@@ -66,10 +66,7 @@ class AdvancedCardFields {
 	 * @since 2.8.0
 	 */
 	private function removeBillingField() {
-		$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
-		if ( ! $billing_fields_enabled ) {
-			remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
-		}
+		remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
 	}
 
 
