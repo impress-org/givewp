@@ -337,7 +337,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['checkout'][] = [
 						'name'          => esc_html__( 'Background Image', 'give' ),
-						'desc'          => esc_html__( 'This background image appears in the header section of the Stripe checkout modal window and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png.', 'give' ),
+						'desc'          => esc_html__( 'This background image appears in the header section of the Stripe checkout modal window and provides better brand recognition that leads to increased conversion rates. The recommended minimum size of background image is 400x200px. The supported image types are: .gif, .jpeg, and .png.', 'give' ),
 						'id'            => 'stripe_checkout_background_image',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'type'          => 'file',
