@@ -136,68 +136,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		}
 
 		/**
-		 * Check for the Stripe Source.
-		 *
-		 * @param array $donation_data List of Donation Data.
-		 *
-		 * @since 2.0.6
-		 *
-		 * @return string
-		 */
-		public function check_for_source( $donation_data ) {
-
-			$source_id          = $donation_data['post_data']['give_stripe_payment_method'];
-			$stripe_js_fallback = give_get_option( 'stripe_js_fallback' );
-
-			if ( ! isset( $source_id ) ) {
-
-				// check for fallback mode.
-				if ( ! empty( $stripe_js_fallback ) ) {
-
-					$card_data = $this->prepare_card_data( $donation_data );
-
-					// Set Application Info.
-					give_stripe_set_app_info();
-
-					try {
-
-						$source    = \Stripe\Source::create(
-							[
-								'card' => $card_data,
-							]
-						);
-						$source_id = $source->id;
-
-					} catch ( \Stripe\Error\Base $e ) {
-						$this->log_error( $e );
-
-					} catch ( Exception $e ) {
-
-						give_record_gateway_error(
-							__( 'Stripe Error', 'give' ),
-							sprintf(
-								/* translators: %s Exception Message Body */
-								__( 'The Stripe Gateway returned an error while creating the customer payment source. Details: %s', 'give' ),
-								$e->getMessage()
-							)
-						);
-						give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
-						give_send_back_to_checkout( "?payment-mode={$this->id}&form_id={$donation_data['post_data']['give-form-id']}" );
-					}
-				} elseif ( ! $this->is_stripe_popup_enabled() ) {
-
-					// No Stripe source and fallback mode is disabled.
-					give_set_error( 'no_token', __( 'Missing Stripe Source. Please contact support.', 'give' ) );
-					give_record_gateway_error( __( 'Missing Stripe Source', 'give' ), __( 'A Stripe token failed to be generated. Please check Stripe logs for more information.', 'give' ) );
-
-				}
-			} // End if().
-
-			return $source_id;
-
-		}
-
-		/**
 		 * Process the POST Data for the Credit Card Form, if a source was not supplied.
 		 *
 		 * @since 2.5.0

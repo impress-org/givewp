@@ -868,7 +868,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 
 	$payment_method_id = ! empty( $donation_data['post_data']['give_stripe_payment_method'] )
 		? $donation_data['post_data']['give_stripe_payment_method']
-		: $stripe_gateway->check_for_source( $donation_data );
+		: false;
 
 	// Any errors?
 	$errors = give_get_errors();
