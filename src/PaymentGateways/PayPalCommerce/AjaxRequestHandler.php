@@ -7,6 +7,7 @@ use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Give\ConnectClient\ConnectClient;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 
 /**
  * Class AjaxRequestHandler
@@ -15,6 +16,21 @@ use Give\ConnectClient\ConnectClient;
  * @sicne 2.8.0
  */
 class AjaxRequestHandler {
+	/**
+	 * @var Webhooks
+	 */
+	private $webhooksRepository;
+
+	/**
+	 * @var MerchantDetail
+	 */
+	private $merchantDetails;
+
+	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails ) {
+		$this->webhooksRepository = $webhooksRepository;
+		$this->merchantDetails    = $merchantDetails;
+	}
+
 	/**
 	 *  give_paypal_commerce_user_onboarded ajax action handler
 	 *
@@ -98,7 +114,13 @@ class AjaxRequestHandler {
 	public function removePayPalAccount() {
 		$this->validateAdminRequest();
 
-		give( MerchantDetail::class )->delete();
+		// Remove the webhook from PayPal if there is one
+		if ( $webhookId = $this->webhooksRepository->getWebhookId() ) {
+			$this->webhooksRepository->deleteWebhook( $this->merchantDetails->accessToken, $webhookId );
+			$this->webhooksRepository->deleteWebhookId();
+		}
+
+		$this->merchantDetails->delete();
 
 		wp_send_json_success();
 	}

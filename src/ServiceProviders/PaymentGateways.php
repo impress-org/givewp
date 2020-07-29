@@ -2,16 +2,18 @@
 
 namespace Give\ServiceProviders;
 
+use Give\Controller\PayPalWebhooks;
 use Give\PaymentGateways\PaymentGateway;
-use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields as PayPalCommerceAdvancedCardFields;
-use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler as PayPalCommerceAjaxRequestHandler;
-use Give\PaymentGateways\PayPalCommerce\DonationProcessor as PayPalCommerceDonationProcessor;
-use Give\PaymentGateways\PayPalCommerce\MerchantDetail as PayPalCommerceMerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\RefreshToken as PayPalCommerceRefreshToken;
-use Give\PaymentGateways\PayPalCommerce\ScriptLoader as PayPalCommerceScriptLoader;
+use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
+use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
+use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
+use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken;
+use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 
@@ -46,26 +48,16 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
-		give()->singleton( PayPalCommerceAdvancedCardFields::class );
-		give()->singleton( PayPalCommerceDonationProcessor::class );
-		give()->singleton( PayPalClient::class );
-		give()->singleton( PayPalCommerceRefreshToken::class );
-		give()->singleton( PayPalCommerceAjaxRequestHandler::class );
-		give()->singleton( PayPalCommerceScriptLoader::class );
-
-		give()->singleton(
-			PayPalCommerceMerchantDetail::class,
-			static function () {
-				return ( new PayPalCommerceMerchantDetail() )->boot();
-			}
-		);
+		give()->singleton( PayPalWebhooks::class );
+		give()->singleton( Webhooks::class );
+		$this->registerPayPalCommerceClasses();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function boot() {
-		add_filter( 'give_register_gateway', [ $this, 'registerGateways' ] );
+		add_filter( 'give_register_gateway', [ $this, 'bootGateways' ] );
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 	}
@@ -85,7 +77,7 @@ class PaymentGateways implements ServiceProvider {
 	 * @since 2.8.0
 	 */
 	public function registerPayPalSettingPage() {
-		foreach ( $this->gatewaySettingsPages  as $page ) {
+		foreach ( $this->gatewaySettingsPages as $page ) {
 			give()->make( $page )->boot();
 		}
 	}
@@ -99,10 +91,10 @@ class PaymentGateways implements ServiceProvider {
 	 *
 	 * @return array
 	 */
-	public function registerGateways( array $gateways ) {
+	public function bootGateways( array $gateways ) {
 		foreach ( $this->gateways as $gateway ) {
 			/** @var PaymentGateway $gateway */
-			$gateway = new $gateway();
+			$gateway = give( $gateway );
 
 			$gateways[ $gateway->getId() ] = [
 				'admin_label'    => $gateway->getName(),
@@ -114,6 +106,25 @@ class PaymentGateways implements ServiceProvider {
 
 		return $gateways;
 	}
+
+	/**
+	 * Registers the classes for the PayPal Commerce gateway
+	 *
+	 * @since 2.8.0
+	 */
+	private function registerPayPalCommerceClasses() {
+		give()->singleton( AdvancedCardFields::class );
+		give()->singleton( DonationProcessor::class );
+		give()->singleton( PayPalClient::class );
+		give()->singleton( RefreshToken::class );
+		give()->singleton( AjaxRequestHandler::class );
+		give()->singleton( ScriptLoader::class );
+
+		give()->singleton(
+			MerchantDetail::class,
+			static function () {
+				return ( new MerchantDetail() )->boot();
+			}
+		);
+	}
 }
-
-

@@ -1,16 +1,41 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give_Admin_Settings;
 
 /**
  * Class PayPalOnBoardingRedirectHandler
+ * @since 2.8.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
  */
 class onBoardingRedirectHandler {
+	/**
+	 * @var PayPalClient
+	 */
+	private $payPalClient;
+
+	/**
+	 * @var Webhooks
+	 */
+	private $webhooksRepository;
+
+	/**
+	 * onBoardingRedirectHandler constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param Webhooks     $webhooks
+	 * @param PayPalClient $payPalClient
+	 */
+	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient ) {
+		$this->webhooksRepository = $webhooks;
+		$this->payPalClient       = $payPalClient;
+	}
+
 	/**
 	 * Bootstrap class
 	 *
@@ -18,10 +43,13 @@ class onBoardingRedirectHandler {
 	 */
 	public function boot() {
 		if ( $this->isPayPalUserRedirected() ) {
-			$this->savePayPalMerchantDetails();
+			$details = $this->savePayPalMerchantDetails();
+			$this->setUpWebhook( $details );
+			$this->redirectAccountConnected( $details );
 		}
 
 		if ( $this->isPayPalAccountDetailsSaved() ) {
+			$this->registerPayPalSSLNotice();
 			$this->registerPayPalAccountConnectedNotice();
 		}
 
@@ -32,14 +60,16 @@ class onBoardingRedirectHandler {
 
 	/**
 	 * Save PayPal merchant details
+	 *
 	 * @todo: Confirm `primary_email_confirmed` set to true via PayPal api to confirm onboarding process status.
 	 *
-	 * @return void
 	 * @since 2.8.0
+	 *
+	 * @return MerchantDetail
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode          = give( PayPalClient::class )->mode;
+		$mode          = $this->payPalClient->mode;
 		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
@@ -62,18 +92,46 @@ class onBoardingRedirectHandler {
 
 		$this->deleteTempOptions();
 
-		$this->isAdminSuccessfullyOnBoarded( $payPalAccount['merchantIdInPayPal'], $tokenInfo['accessToken'] );
+		return $merchantDetails;
+	}
+
+	/**
+	 * Redirects the user to the account connected url
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param MerchantDetail $merchant_detail
+	 */
+	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
+		$this->isAdminSuccessfullyOnBoarded( $merchant_detail->merchantIdInPayPal, $merchant_detail->accessToken );
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
 		exit;
 	}
 
 	/**
-	 * Get seller rest API credentials
-	 *
-	 * @param string $accessToken
+	 * Sets up the webhook for the connected account
 	 *
 	 * @since 2.8.0
+	 *
+	 * @param MerchantDetail $merchant_details
+	 */
+	private function setUpWebhook( MerchantDetail $merchant_details ) {
+		if ( ! is_ssl() ) {
+			return;
+		}
+
+		$webhookId = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
+
+		$this->webhooksRepository->saveWebhookId( $webhookId );
+	}
+
+	/**
+	 * Get seller rest API credentials
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $accessToken
 	 *
 	 * @return array
 	 */
@@ -82,7 +140,7 @@ class onBoardingRedirectHandler {
 			give( ConnectClient::class )->getApiUrl(
 				sprintf(
 					'paypal?mode=%1$s&request=seller-credentials',
-					give( PayPalClient::class )->mode
+					$this->payPalClient->mode
 				)
 			),
 			[
@@ -98,19 +156,20 @@ class onBoardingRedirectHandler {
 	/**
 	 * Get seller onboarding details from seller.
 	 *
-	 * @param string $merchantId
-	 * @param string $accessToken
-	 *
-	 * @return array
 	 * @since 2.8.0
 	 *
+	 * @param string $accessToken
+	 *
+	 * @param string $merchantId
+	 *
+	 * @return array
 	 */
 	private function getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken ) {
 		$request = wp_remote_post(
 			give( ConnectClient::class )->getApiUrl(
 				sprintf(
 					'paypal?mode=%1$s&request=seller-status',
-					give( PayPalClient::class )->mode
+					$this->payPalClient->mode
 				)
 			),
 			[
@@ -127,8 +186,8 @@ class onBoardingRedirectHandler {
 	/**
 	 * Delete temp data
 	 *
-	 * @return void
 	 * @since 2.8.0
+	 * @return void
 	 */
 	private function deleteTempOptions() {
 		delete_option( OptionId::$partnerInfoOptionKey );
@@ -190,9 +249,9 @@ class onBoardingRedirectHandler {
 	/**
 	 * validate rest api credential.
 	 *
-	 * @param  array  $array
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param array $array
 	 *
 	 */
 	private function didWeGetValidSellerRestApiCredentials( $array ) {
@@ -209,11 +268,11 @@ class onBoardingRedirectHandler {
 	/**
 	 * Validate seller on Boarding status
 	 *
-	 * @param string $merchantId
-	 * @param string $accessToken
-	 *
 	 * @since 2.8.0
 	 *
+	 * @param string $accessToken
+	 *
+	 * @param string $merchantId
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
@@ -250,9 +309,10 @@ class onBoardingRedirectHandler {
 	/**
 	 * Redirect admin to setting section with error.
 	 *
+	 * @since 2.8.0
+	 *
 	 * @param $errorMessage
 	 *
-	 * @since 2.8.0
 	 */
 	private function redirectWhenOnBoardingFail( $errorMessage = '' ) {
 		$errorMessage = $errorMessage ?: esc_html__( 'We are unable to connect your seller account because required result did not return from PayPal. Please contact GiveWP Support Team', 'give' );
@@ -267,5 +327,28 @@ class onBoardingRedirectHandler {
 		);
 
 		exit();
+	}
+
+	/**
+	 * Displays a notice of the site is not using SSL
+	 *
+	 * @since 2.8.0
+	 */
+	private function registerPayPalSSLNotice() {
+		if ( ! is_ssl() ) {
+			Give_Admin_Settings::add_error(
+				'paypal-ssl-error',
+				'There was a problem registering your site\'s webhook with PayPal. In order for to register
+				the webhook your site must have a valid SSL certificate. You are connected, but your site will not
+				receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
+				include https, and then disconnect and reconnect your PayPal account.'
+			);
+		} elseif ( empty( $this->webhooksRepository->getWebhookId() ) ) {
+			Give_Admin_Settings::add_error(
+				'paypal-webhook-error',
+				'There was a problem creating a webhook for your account. Please try disconnecting and then
+				reconnect. If the problem persists, please contact support'
+			);
+		}
 	}
 }

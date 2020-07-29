@@ -55,4 +55,19 @@ class PayPalClient {
 	public function getHttpClient() {
 		return new PayPalHttpClient( $this->getEnvironment() );
 	}
+
+
+	/**
+	 * Get api url.
+	 *
+	 * @param  string  $endpoint
+	 *
+	 * @return string
+	 * @since 2.8.0
+	 */
+	public function getApiUrl( $endpoint ) {
+		$baseUrl = $this->getEnvironment()->baseUrl();
+
+		return "{$baseUrl}/$endpoint";
+	}
 }
