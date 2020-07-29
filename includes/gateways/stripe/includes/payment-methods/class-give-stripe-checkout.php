@@ -624,14 +624,15 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 							$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 							ob_start();
 							?>
-							<div class="give-submit-button-wrap give-clearfix">
+							<div class="give-submit-button-wrap give-stripe-checkout-modal-btn-wrap give-clearfix">
 								<?php
 								echo sprintf(
-									'<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" disabled/>',
+									'<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" data-is_legacy_form="%5$s" disabled/>',
 									FormUtils::isLegacyForm() ? 'give-btn give-stripe-checkout-modal-donate-button' : 'give-btn give-stripe-checkout-modal-sequoia-donate-button',
 									"give-stripe-checkout-modal-donate-button-{$idPrefix}",
 									$display_label,
-									'give_stripe_modal_donate'
+									'give_stripe_modal_donate',
+									FormUtils::isLegacyForm()
 								);
 								?>
 								<span class="give-loading-animation"></span>
