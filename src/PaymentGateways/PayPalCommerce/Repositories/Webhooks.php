@@ -140,6 +140,12 @@ class Webhooks {
 
 		$response = json_decode( $response['body'], false );
 
+		if ( ! isset( $response->id ) ) {
+			give_record_gateway_error( 'Create PayPal Commerce Webhook Failure', print_r( $response, true ) );
+
+			return null;
+		}
+
 		return $response->id;
 	}
 

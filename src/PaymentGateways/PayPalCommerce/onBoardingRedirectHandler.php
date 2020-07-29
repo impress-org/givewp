@@ -343,6 +343,12 @@ class onBoardingRedirectHandler {
 				receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
 				include https, and then disconnect and reconnect your PayPal account.'
 			);
+		} elseif ( empty( $this->webhooksRepository->getWebhookId() ) ) {
+			Give_Admin_Settings::add_error(
+				'paypal-webhook-error',
+				'There was a problem creating a webhook for your account. Please try disconnecting and then
+				reconnect. If the problem persists, please contact support'
+			);
 		}
 	}
 }
