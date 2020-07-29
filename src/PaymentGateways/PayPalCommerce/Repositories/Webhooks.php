@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\Route\PayPalWebhooks;
 use Give\Route\PayPalWebhooks as WebhooksRoute;
 
@@ -19,6 +20,11 @@ class Webhooks {
 	 * @var PayPalWebhooks
 	 */
 	private $webhookRoute;
+
+	/**
+	 * @var PayPalClient
+	 */
+	private $payPalClient;
 
 	/**
 	 * The webhook events registered with PayPal
@@ -40,9 +46,11 @@ class Webhooks {
 	 * @since 2.8.0
 	 *
 	 * @param PayPalWebhooks $webhookRoute
+	 * @param PayPalClient   $payPalClient
 	 */
-	public function __construct( WebhooksRoute $webhookRoute ) {
+	public function __construct( WebhooksRoute $webhookRoute, PayPalClient $payPalClient ) {
 		$this->webhookRoute = $webhookRoute;
+		$this->payPalClient = $payPalClient;
 	}
 
 	/**
@@ -58,14 +66,12 @@ class Webhooks {
 	 * @return bool
 	 */
 	public function verifyEventSignature( $token, $event, $headers ) {
-		$verificationUrl = give_is_test_mode()
-			? 'https://api.sandbox.paypal.com/v1/notifications/verify-webhook-signature'
-			: 'https://api.paypal.com/v1/notifications/verify-webhook-signature';
+		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/verify-webhook-signature' );
 
 		$webhookId = $this->getWebhookId();
 
 		$response = wp_remote_post(
-			$verificationUrl,
+			$apiUrl,
 			[
 				'headers' => [
 					'Content-Type'  => 'application/json',
@@ -105,9 +111,7 @@ class Webhooks {
 	 * @return mixed
 	 */
 	public function createWebhook( $token ) {
-		$apiUrl = give_is_test_mode()
-			? 'https://api.sandbox.paypal.com/v1/notifications/webhooks'
-			: 'https://api.paypal.com/v1/notifications/webhooks';
+		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/webhooks' );
 
 		$webhookUrl = $this->webhookRoute->getRouteUrl();
 
@@ -150,9 +154,7 @@ class Webhooks {
 	 * @return bool Whether or not the deletion was successful
 	 */
 	public function deleteWebhook( $token, $webhookId ) {
-		$apiUrl = give_is_test_mode()
-			? "https://api.sandbox.paypal.com/v1/notifications/webhooks/$webhookId"
-			: "https://api.paypal.com/v1/notifications/webhooks/$webhookId";
+		$apiUrl = $this->payPalClient->getApiUrl( "v1/notifications/webhooks/$webhookId" );
 
 		$response = wp_remote_request(
 			$apiUrl,
