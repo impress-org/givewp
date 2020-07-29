@@ -49,6 +49,7 @@ class onBoardingRedirectHandler {
 		}
 
 		if ( $this->isPayPalAccountDetailsSaved() ) {
+			$this->registerPayPalSSLNotice();
 			$this->registerPayPalAccountConnectedNotice();
 		}
 
@@ -116,6 +117,10 @@ class onBoardingRedirectHandler {
 	 * @param MerchantDetail $merchant_details
 	 */
 	private function setUpWebhook( MerchantDetail $merchant_details ) {
+		if ( ! is_ssl() ) {
+			return;
+		}
+
 		$webhookId = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
 
 		$this->webhooksRepository->saveWebhookId( $webhookId );
@@ -322,5 +327,22 @@ class onBoardingRedirectHandler {
 		);
 
 		exit();
+	}
+
+	/**
+	 * Displays a notice of the site is not using SSL
+	 *
+	 * @since 2.8.0
+	 */
+	private function registerPayPalSSLNotice() {
+		if ( ! is_ssl() ) {
+			Give_Admin_Settings::add_error(
+				'paypal-ssl-error',
+				'There was a problem registering your site\'s webhook with PayPal. In order for to register
+				the webhook your site must have a valid SSL certificate. You are connected, but your site will not
+				receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
+				include https, and then disconnect and reconnect your PayPal account.'
+			);
+		}
 	}
 }

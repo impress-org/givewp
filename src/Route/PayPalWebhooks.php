@@ -34,6 +34,6 @@ class PayPalWebhooks implements Route {
 	 * @return string
 	 */
 	public function getRouteUrl() {
-		return get_site_url( null, 'index.php?give-listener=paypal-commerce' );
+		return get_site_url( null, 'index.php?give-listener=paypal-commerce', 'https' );
 	}
 }
