@@ -34,15 +34,15 @@ class AdvancedCardFields {
 
 		do_action( 'give_before_cc_fields', $formId ); ?>
 
-		<fieldset id="give_cc_fields" class="give-do-validate">
+		<fieldset id="give_cc_fields">
 			<legend>
 				<?php esc_attr_e( 'Credit Card Info', 'give' ); ?>
 			</legend>
 
 			<?php echo $this->getSslNotice(); ?>
 
-			<div id="give-paypal-smart-buttons-wrap" class="form-row">
-				<div id="give-paypal-smart-buttons-field-<?php echo esc_html( $id_prefix ); ?>"></div>
+			<div id="give-paypal-commerce-smart-buttons-wrap" class="form-row">
+				<div id="give-paypal-commerce-smart-buttons-field-<?php echo esc_html( $id_prefix ); ?>"></div>
 			</div>
 
 		</fieldset>
