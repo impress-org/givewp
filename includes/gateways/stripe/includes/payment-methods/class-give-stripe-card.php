@@ -68,7 +68,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		public function addCreditCardForm( $form_id, $args, $echo = true ) {
 
 			ob_start();
-			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
+			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 			do_action( 'give_before_cc_fields', $form_id ); ?>
 
@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 				if ( $this->canShowFields() ) {
 					// Show Credit Card Fields.
-					echo Stripe::showCreditCardFields( $id_prefix );
+					echo Stripe::showCreditCardFields( $idPrefix );
 
 					/**
 					 * This action hook is used to display content after the Credit Card expiration field.
