@@ -89,7 +89,7 @@ class Stripe {
 			);
 		} elseif ( 'multi' === $ccFieldFormat ) {
 			?>
-			<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-stripe-cc-field-wrap">
+			<div id="give-card-number-wrap-<?php echo esc_html( $idPrefix ); ?>" class="form-row form-row-two-thirds form-row-responsive give-stripe-cc-field-wrap">
 				<div>
 					<label for="give-card-number-field-<?php echo esc_html( $idPrefix ); ?>" class="give-label">
 						<?php esc_attr_e( 'Card Number', 'give' ); ?>
@@ -102,7 +102,7 @@ class Stripe {
 				</div>
 			</div>
 
-			<div id="give-card-cvc-wrap" class="form-row form-row-one-third form-row-responsive give-stripe-cc-field-wrap">
+			<div id="give-card-cvc-wrap-<?php echo esc_html( $idPrefix ); ?>" class="form-row form-row-one-third form-row-responsive give-stripe-cc-field-wrap">
 				<div>
 					<label for="give-card-cvc-field-<?php echo esc_html( $idPrefix ); ?>" class="give-label">
 						<?php esc_attr_e( 'CVC', 'give' ); ?>
@@ -114,8 +114,8 @@ class Stripe {
 				</div>
 			</div>
 
-			<div id="give-card-name-wrap" class="form-row form-row-two-thirds form-row-responsive">
-				<label for="card_name" class="give-label">
+			<div id="give-card-name-wrap-<?php echo esc_html( $idPrefix ); ?>" class="form-row form-row-two-thirds form-row-responsive">
+				<label for="give-card-name-field-<?php echo esc_html( $idPrefix ); ?>" class="give-label">
 					<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>
 					<span class="give-required-indicator">*</span>
 					<span class="give-tooltip give-icon give-icon-question"
@@ -124,7 +124,7 @@ class Stripe {
 				<input
 					type="text"
 					autocomplete="off"
-					id="card_name"
+					id="give-card-name-field-<?php echo esc_html( $idPrefix ); ?>"
 					name="card_name"
 					class="card-name give-input required"
 					placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
@@ -133,7 +133,7 @@ class Stripe {
 
 			<?php do_action( 'give_before_cc_expiration' ); ?>
 
-			<div id="give-card-expiration-wrap" class="card-expiration form-row form-row-one-third form-row-responsive give-stripe-cc-field-wrap">
+			<div id="give-card-expiration-wrap-<?php echo esc_html( $idPrefix ); ?>" class="card-expiration form-row form-row-one-third form-row-responsive give-stripe-cc-field-wrap">
 				<div>
 					<label for="give-card-expiration-field-<?php echo esc_html( $idPrefix ); ?>" class="give-label">
 						<?php esc_attr_e( 'Expiration', 'give' ); ?>
