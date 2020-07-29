@@ -221,6 +221,12 @@ class MerchantDetail {
 	 * @since 2.8.0
 	 */
 	public function getClientToken() {
+		$optionName = 'give_paypal_commerce_client_token';
+
+		if ( $optionValue = get_transient( $optionName ) ) {
+			return $optionValue;
+		}
+
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
 				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/identity/generate-token',
@@ -243,6 +249,12 @@ class MerchantDetail {
 		}
 
 		$response = ArrayDataSet::camelCaseKeys( json_decode( $response, true ) );
+
+		set_transient(
+			$optionName,
+			$response['clientToken'],
+			$response['expiresIn'] - 60 // Expire token before one minute to prevent unnecessary race condition.
+		);
 
 		return $response['clientToken'];
 	}
