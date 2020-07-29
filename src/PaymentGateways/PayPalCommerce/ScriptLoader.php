@@ -104,20 +104,12 @@ EOT;
 		add_filter( 'script_loader_tag', [ $this, 'addAttributesToPayPalSdkScript' ], 10, 2 );
 
 		wp_enqueue_script(
-			'give-paypal-advanced-card-fields-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/paypal-advanced-card-fields.js',
+			'give-paypal-commerce-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/paypal-commerce.js',
 			[ $this->paypalSdkScriptHandle ],
 			GIVE_VERSION,
 			true
 		);
-
-		wp_enqueue_style(
-			'give-paypal-advanced-card-fields-css',
-			GIVE_PLUGIN_URL . 'assets/dist/css/paypal-advanced-card-fields.css',
-			[ 'give-styles' ],
-			GIVE_VERSION
-		);
-
 	}
 
 	/**

@@ -36,7 +36,7 @@ const config = {
 		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 		'admin-widgets': [ './assets/src/js/admin/admin-widgets.js', './assets/src/css/admin/widgets.scss' ],
-		'paypal-advanced-card-fields': [ './src/PaymentGateways/PayPalCommerce/assets/js/index.js', './src/PaymentGateways/PayPalCommerce/assets/css/paypal-advanced-card-fields.scss' ],
+		'paypal-commerce': [ './src/PaymentGateways/PayPalCommerce/assets/js/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),

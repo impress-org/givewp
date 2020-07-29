@@ -42,107 +42,15 @@ class AdvancedCardFields {
 				<?php esc_attr_e( 'Credit Card Info', 'give' ); ?>
 			</legend>
 
-			<?php
-			if ( is_ssl() ) {
-				?>
-				<div id="give_secure_site_wrapper">
-					<span class="give-icon padlock"></span>
-					<span>
-					<?php esc_attr_e( 'This is a secure SSL encrypted payment.', 'give' ); ?>
-				</span>
-				</div>
-				<?php
-			}
+			<?php echo $this->getSslNotice(); ?>
 
-			?>
 			<div id="give-paypal-smart-buttons-wrap" class="form-row">
 				<div id="give-paypal-smart-buttons-field-<?php echo esc_html( $id_prefix ); ?>"></div>
 			</div>
-			<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-paypal-commerce-cc-field-wrap">
-				<div>
-					<label for="give-card-number-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
-						<?php esc_attr_e( 'Card Number', 'give' ); ?>
-						<span class="give-required-indicator">*</span>
-						<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
-						<span class="card-type"></span>
-					</label>
-					<div id="give-card-number-field-<?php echo esc_html( $id_prefix ); ?>" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-number-field"></div>
-				</div>
-			</div>
 
-			<div id="give-card-cvc-wrap" class="form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
-				<div>
-					<label for="give-card-cvc-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
-						<?php esc_attr_e( 'CVC', 'give' ); ?>
-						<span class="give-required-indicator">*</span>
-						<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
-					</label>
-					<div id="give-card-cvc-field-<?php echo esc_html( $id_prefix ); ?>" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-cvc-field"></div>
-				</div>
-			</div>
-
-			<div id="give-card-name-wrap" class="form-row form-row-two-thirds form-row-responsive">
-				<label for="card_name" class="give-label">
-					<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>
-					<span class="give-required-indicator">*</span>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The name of the credit card account holder.', 'give' ); ?>"></span>
-				</label>
-				<input
-					type="text"
-					autocomplete="off"
-					id="card_name"
-					name="card_name"
-					class="card-name give-input required"
-					placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
-				/>
-			</div>
-
-			<?php do_action( 'give_before_cc_expiration' ); ?>
-
-			<div id="give-card-expiration-wrap" class="card-expiration form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
-				<div>
-					<label for="give-card-expiration-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
-						<?php esc_attr_e( 'Expiration', 'give' ); ?>
-						<span class="give-required-indicator">*</span>
-						<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
-					</label>
-
-					<div id="give-card-expiration-field-<?php echo esc_html( $id_prefix ); ?>" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
-				</div>
-			</div>
-			<?php
-
-			/**
-			 * This action hook is used to display content after the Credit Card expiration field.
-			 *
-			 * Note: Kept this hook as it is.
-			 *
-			 * @param  int  $formId  Donation Form ID.
-			 * @param  array  $args  List of additional arguments.
-			 *
-			 * @since 2.5.0
-			 *
-			 */
-			do_action( 'give_after_cc_expiration', $formId, $args );
-
-			/**
-			 * This action hook is used to display content after the Credit Card expiration field.
-			 *
-			 * @param  int  $formId  Donation Form ID.
-			 * @param  array  $args  List of additional arguments.
-			 *
-			 * @since 2.5.0
-			 *
-			 */
-			do_action( 'give_stripe_after_cc_expiration', $formId, $args );
-			?>
 		</fieldset>
 		<?php
-		// Remove Address Fields if user has option enabled.
-		$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
-		if ( ! $billing_fields_enabled ) {
-			remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
-		}
+		$this->removeBillingField();
 
 		do_action( 'give_after_cc_fields', $formId, $args );
 
@@ -153,5 +61,36 @@ class AdvancedCardFields {
 		}
 
 		return $form;
+	}
+
+	/**
+	 * Remove Address Fields if user has option enabled.
+	 *
+	 * @since 2.8.0
+	 */
+	private function removeBillingField() {
+		$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
+		if ( ! $billing_fields_enabled ) {
+			remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
+		}
+	}
+
+
+	/**
+	 * Get ssl notice.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getSslNotice() {
+		if ( is_ssl() ) {
+			return '';
+		}
+
+		return sprintf(
+			'<div id="give_secure_site_wrapper"><span class="give-icon padlock"></span><span>%1$s</span></div>',
+			esc_html__( 'This is a secure SSL encrypted payment.', 'give' )
+		);
 	}
 }
