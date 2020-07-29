@@ -127,9 +127,14 @@
 				display: block;
 				overflow: hidden;
 
+				hr {
+					margin: 20px 0;
+				}
+
 				.give-stripe-checkout-modal-else-part {
-					margin: 15px 0;
+					margin: -5px 0 20px 0;
 					text-align: center;
+					font-size: 14px;
 				}
 
 				.give-stripe-single-cc-field-wrap {
