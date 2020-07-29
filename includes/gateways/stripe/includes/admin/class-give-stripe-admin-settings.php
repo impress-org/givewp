@@ -196,7 +196,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['general'][] = [
 						'name'       => esc_html__( 'Statement Descriptor', 'give' ),
-						'desc'       => esc_html__( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
+						'desc'       => __( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
 						'id'         => 'stripe_statement_descriptor',
 						'type'       => 'text',
 						'attributes' => [
@@ -315,7 +315,16 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings['checkout'][] = [
 						'name'          => esc_html__( 'Checkout Type', 'give' ),
-						'desc'          => sprintf( esc_html__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%1$s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%2$s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout' ),
+						'desc'          => sprintf(
+							'%1$s <a href="%2$s" target="_blank">%3$s</a> %4$s <a href="%5$s" target="_blank">%6$s</a> %7$s',
+							esc_html__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the', 'give' ),
+							esc_url( 'https://stripe.com/docs/legacy-checkout' ),
+							esc_html__( 'legacy Stripe Checkout', 'give' ),
+							esc_html__( 'and is not SCA compatible. The "Redirect" option uses Stripe\'s new', 'give' ),
+							esc_url( 'https://stripe.com/docs/payments/checkout' ),
+							esc_html__( 'Checkout', 'give' ),
+							esc_html__( 'interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' )
+						),
 						'id'            => 'stripe_checkout_type',
 						'wrapper_class' => 'stripe-checkout-type',
 						'type'          => 'radio_inline',
