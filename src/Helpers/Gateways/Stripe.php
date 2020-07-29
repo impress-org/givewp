@@ -72,7 +72,7 @@ class Stripe {
 	 *
 	 * @param string $idPrefix ID Prefix to define same forms uniquely.
 	 *
-	 * @since  2.7.1
+	 * @since  2.7.3
 	 * @access public
 	 *
 	 * @return mixed|void
