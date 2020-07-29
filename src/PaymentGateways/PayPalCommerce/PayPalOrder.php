@@ -46,7 +46,7 @@ class PayPalOrder {
 	}
 
 	/**
-	 * Get payment details for PayPal order.
+	 * Get payment detail from PayPal order.
 	 *
 	 * @since 2.8.0
 	 *
@@ -66,7 +66,7 @@ class PayPalOrder {
 	}
 
 	/**
-	 * Return whether array has validate format or not.
+	 * Validate order given in array format.
 	 *
 	 * @since 2.8.0
 	 *

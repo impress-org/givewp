@@ -115,8 +115,8 @@ EOT;
 	/**
 	 * Add attributes to PayPal sdk.
 	 *
-	 * @param $tag
-	 * @param $handle
+	 * @param string $tag
+	 * @param string $handle
 	 *
 	 * @since 2.8.0
 	 *

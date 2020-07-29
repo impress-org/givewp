@@ -39,7 +39,7 @@ class PayPalPayment {
 	}
 
 	/**
-	 * Return whether array has validate format or not.
+	 * Validate order given in array format.
 	 *
 	 * @since 2.8.0
 	 *
