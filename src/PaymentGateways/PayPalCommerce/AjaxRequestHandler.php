@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
 use Give\Helpers\ArrayDataSet;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 
 /**
  * Class AjaxRequestHandler
@@ -12,6 +13,21 @@ use Give\Helpers\ArrayDataSet;
  * @sicne 2.8.0
  */
 class AjaxRequestHandler {
+	/**
+	 * @var Webhooks
+	 */
+	private $webhooksRepository;
+
+	/**
+	 * @var MerchantDetail
+	 */
+	private $merchantDetails;
+
+	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails ) {
+		$this->webhooksRepository = $webhooksRepository;
+		$this->merchantDetails    = $merchantDetails;
+	}
+
 	/**
 	 * Setup hooks
 	 *
@@ -106,7 +122,13 @@ class AjaxRequestHandler {
 	public function removePayPalAccount() {
 		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
 
-		give( MerchantDetail::class )->delete();
+		// Remove the webhook from PayPal if there is one
+		if ( $webhookId = $this->webhooksRepository->getWebhookId() ) {
+			$this->webhooksRepository->deleteWebhook( $this->merchantDetails->accessToken, $webhookId );
+			$this->webhooksRepository->deleteWebhookId();
+		}
+
+		$this->merchantDetails->delete();
 
 		wp_send_json_success();
 	}

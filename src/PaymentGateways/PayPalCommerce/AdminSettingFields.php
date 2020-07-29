@@ -96,7 +96,6 @@ class AdminSettingFields {
 						</span>
 						<span class="actions">
 							<a href="#" id="js-give-paypal-disconnect-paypal-account"><?php esc_html_e( 'Disconnect', 'give' ); ?></a>
-							&nbsp;|&nbsp;<a href="#" id="js-give-paypal-change-paypal-account"><?php esc_html_e( 'Change', 'give' ); ?></a>
 						</span>
 					</div>
 					<div class="api-access-feature-list-wrap">
