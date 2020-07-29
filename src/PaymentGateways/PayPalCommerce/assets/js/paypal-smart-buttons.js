@@ -53,6 +53,12 @@ class SmartButtons {
 	 * @since 2.8.0
 	 */
 	renderSmartButtons() {
+		const smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+
+		if ( ! smartButtonContainer ) {
+			return;
+		}
+
 		const onInitHandler = this.onInitHandler.bind( this );
 		const onClickHandler = this.onClickHandler.bind( this );
 		const createOrderHandler = this.createOrderHandler.bind( this );
@@ -63,7 +69,7 @@ class SmartButtons {
 			onClick: onClickHandler,
 			createOrder: createOrderHandler,
 			onApprove: onApproveHandler,
-		} ).render( this.form.querySelector( '#give-paypal-smart-buttons-wrap div' ) );
+		} ).render( smartButtonContainer );
 	}
 
 	/**
