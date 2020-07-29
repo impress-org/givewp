@@ -12,7 +12,7 @@ use stdClass;
  */
 class HtmlTemplate {
 	/**
-	 * Return loader overlay.
+	 * Return overlay + text template.
 	 *
 	 * @since 2.8.0
 	 *

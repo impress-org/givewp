@@ -16,10 +16,7 @@ class AdvancedCardFields {
 	}
 
 	/**
-	 * Stripe uses it's own credit card form because the card details are tokenized.
-	 *
-	 * We don't want the name attributes to be present on the fields in order to
-	 * prevent them from getting posted to the server.
+	 * PayPal commerce uses smart buttons to accept payment.
 	 *
 	 * @since 2.8.0
 	 *
