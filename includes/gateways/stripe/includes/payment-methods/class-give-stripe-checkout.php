@@ -64,23 +64,8 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 			} else {
 				add_action( 'give_stripe_checkout_cc_form', [ $this, 'showCheckoutModal' ], 10, 2 );
-				//              add_action( 'wp_ajax_load_checkout_fields', [ $this, 'loadCheckoutFields' ] );
-				//              add_action( 'wp_ajax_nopriv_load_checkout_fields', [ $this, 'loadCheckoutFields' ] );
-				//                            add_action( 'give_donation_form_bottom', [ $this, 'showCheckoutModal' ], 10, 2 );
-				//              remove_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
-				//              add_action( 'give_donation_form_after_cc_form', [ $this, 'checkoutSubmit' ], 9999, 2 );
 			}
 
-		}
-
-		public function loadCheckoutFields() {
-			$idPrefix = ! empty( $_POST['idPrefix'] ) ? give_clean( $_POST['idPrefix'] ) : '-1';
-
-			wp_send_json_success(
-				[
-					'html' => Stripe::showCreditCardFields( $idPrefix ),
-				]
-			);
 		}
 
 		/**
