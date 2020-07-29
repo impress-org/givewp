@@ -167,7 +167,7 @@ class SmartButtons {
 		const orderData = responseJson.data.order;
 
 		if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-			Give.form.fn.showProcessingState( false );
+			Give.form.fn.hideProcessingState();
 			Give.form.fn.disable( self.jQueryForm, false );
 
 			// Recoverable state, see: "Handle Funding Failures"
@@ -188,7 +188,7 @@ class SmartButtons {
 			alert(msg); // eslint-disable-line
 
 			Give.form.fn.disable( self.jQueryForm, false );
-			Give.form.fn.showProcessingState( false );
+			Give.form.fn.hideProcessingState();
 		}
 
 		DonationForm.attachOrderIdToForm( self.form, orderData.id )

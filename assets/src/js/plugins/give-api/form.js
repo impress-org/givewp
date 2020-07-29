@@ -43,17 +43,27 @@ export default {
 		 * Show processing state template.
 		 *
 		 * @since 2.8.0
-		 *
-		 * @param {boolean} show Set whether or not show processing template.
 		 */
-		showProcessingState: function( show = true ) {
-			const $template = jQuery( '#give-processing-state-template' );
+		showProcessingState: function() {
+			const loader = document.createElement( 'div' );
+			const textNode = document.createElement( 'div' );
 
-			if ( show ) {
-				$template.addClass( 'active' );
-			} else {
-				$template.removeClass( 'active' );
-			}
+			textNode.innerText = Give.fn.getGlobalVar( 'purchase_loading' );
+
+			loader.setAttribute( 'id', 'give-processing-state-template' );
+			loader.append( textNode );
+
+			loader.classList.add( 'active' );
+			document.body.appendChild( loader );
+		},
+
+		/**
+		 * Hide processing state template.
+		 *
+		 * @since 2.8.0
+		 */
+		hideProcessingState: function( ) {
+			document.getElementById( 'give-processing-state-template' ).remove();
 		},
 
 		/**
