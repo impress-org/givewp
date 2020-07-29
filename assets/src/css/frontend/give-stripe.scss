@@ -129,6 +129,7 @@
 
 				hr {
 					margin: 20px 0;
+					border: 1px solid #e5e5e5;
 				}
 
 				.give-stripe-checkout-modal-else-part {
@@ -146,6 +147,16 @@
 				padding: 20px;
 				text-align: center;
 				background-color: #f5f5f5;
+
+				.give-stripe-checkout-modal-btn-wrap {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					.sequoia-loader {
+						bottom: 20px;
+					}
+				}
 
 				.give-stripe-checkout-modal-sequoia-donate-button {
 					order: 99 !important;

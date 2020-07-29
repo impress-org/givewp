@@ -356,12 +356,17 @@ class GiveStripeElements {
 			stripeModalDonateBtn.addEventListener( 'click', ( e ) => {
 				const currentModalDonateBtn = e.target;
 				const loadingAnimationElement = currentModalDonateBtn.nextElementSibling;
+				const isLegacyForm = stripeModalDonateBtn.getAttribute( 'data-is_legacy_form' );
 
-				// Show Loading Icon on submitting modal donate btn.
-				currentModalDonateBtn.value = '';
-				loadingAnimationElement.classList.add( 'sequoia-loader' );
-				loadingAnimationElement.classList.add( 'spinning' );
-				loadingAnimationElement.classList.remove( 'give-loading-animation' );
+				if ( isLegacyForm ) {
+					currentModalDonateBtn.value = give_global_vars.purchase_loading;
+					loadingAnimationElement.style.display = 'inline-block';
+				} else {
+					currentModalDonateBtn.value = '';
+					loadingAnimationElement.classList.add( 'sequoia-loader' );
+					loadingAnimationElement.classList.add( 'spinning' );
+					loadingAnimationElement.classList.remove( 'give-loading-animation' );
+				}
 
 				// Create Payment Method.
 				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
