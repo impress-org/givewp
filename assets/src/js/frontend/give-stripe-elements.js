@@ -1,7 +1,7 @@
 /**
  * Give - Stripe Elements.
  *
- * @since 2.7.1
+ * @since 2.7.3
  */
 class GiveStripeElements {
 	/**
