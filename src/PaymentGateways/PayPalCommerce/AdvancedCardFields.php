@@ -42,7 +42,7 @@ class AdvancedCardFields {
 			<?php echo $this->getSslNotice(); ?>
 
 			<div id="give-paypal-commerce-smart-buttons-wrap" class="form-row">
-				<div id="give-paypal-commerce-smart-buttons-field-<?php echo esc_html( $id_prefix ); ?>"></div>
+				<div id="smart-buttons-<?php echo esc_html( $id_prefix ); ?>"></div>
 			</div>
 
 		</fieldset>
