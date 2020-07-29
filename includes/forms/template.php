@@ -2443,11 +2443,11 @@ add_filter( 'give_send_back_to_checkout', 'give_redirect_and_popup_form', 10, 2 
 
 
 /**
- * Render processing template on donation form.
+ * Render processing state template on all pages.
  *
  * @since 2.8.0
  *
- * Note: for internal use.
+ * Note: for internal use. You toggle this template with Give javascript api. Check Gve.form.fn.showProcessingState
  */
 function give_render_processing_state_template() {
 	echo HtmlTemplate::LoaderOverlay(
