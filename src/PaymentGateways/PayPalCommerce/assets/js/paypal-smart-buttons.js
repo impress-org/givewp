@@ -94,7 +94,7 @@ class SmartButtons {
 	 *
 	 * @return {Promise<unknown>} Return wther or not open PayPal checkout window.
 	 */
-	onClickHandler(data, actions) { // eslint-disable-line
+	async onClickHandler(data, actions) { // eslint-disable-line
 		const formData = new FormData( this.form );
 
 		formData.delete( 'card_name' );
@@ -105,16 +105,14 @@ class SmartButtons {
 		}
 
 		Give.form.fn.removeErrors( this.jQueryForm );
+		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
-		return Give.form.fn.isDonorFilledValidData( this.form, formData )
-			.then( res => {
-				if ( 'success' === res ) {
-					return actions.resolve();
-				}
+		if ( 'success' === result ) {
+			return actions.resolve();
+		}
 
-				Give.form.fn.addErrors( this.jQueryForm, res );
-				return actions.reject();
-			} );
+		Give.form.fn.addErrors( this.jQueryForm, result );
+		return actions.reject();
 	}
 
 	/**
@@ -127,16 +125,15 @@ class SmartButtons {
 	 *
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
-	createOrderHandler(data, actions) { // eslint-disable-line
+	async createOrderHandler(data, actions) { // eslint-disable-line
 		// eslint-disable-next-line
-		return fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
+		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} ).then( function( res ) {
-			return res.json();
-		} ).then( function( res ) {
-			return res.data.id;
 		} );
+		const responseJson = await response.json();
+
+		return responseJson.data.id;
 	}
 
 	/**
@@ -149,62 +146,59 @@ class SmartButtons {
 	 *
 	 * @return {Promise<unknown>} Return whether or not PayPal payment captured.
 	 */
-	onApproveHandler( data, actions ) {
-		const self = this;
-
+	async onApproveHandler( data, actions ) {
 		Give.form.fn.showProcessingState();
 		Give.form.fn.disable( this.jQueryForm, true );
 
-		// eslint-disable-next-line
-		return fetch(`${this.ajaxurl}?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
+		const self = this;
+		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 			method: 'post',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} ).then( function( res ) {
-			return res.json();
-		} ).then( function( res ) {
-			// Three cases to handle:
-			//   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-			//   (2) Other non-recoverable errors -> Show a failure message
-			//   (3) Successful transaction -> Show a success / thank you message
-
-			// Your server defines the structure of 'orderData', which may differ
-			const errorDetail = Array.isArray( res.data.order.details ) && res.data.order.details[ 0 ];
-			const orderData = res.data.order;
-
-			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-				Give.form.fn.showProcessingState( false );
-				Give.form.fn.disable( self.jQueryForm, false );
-
-				// Recoverable state, see: "Handle Funding Failures"
-				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
-				return actions.restart();
-			}
-
-			if ( errorDetail ) {
-				let msg = 'Sorry, your transaction could not be processed.';
-				if ( errorDetail.description ) {
-					msg += '\n\n' + errorDetail.description;
-				}
-				if ( orderData.debug_id ) {
-					msg += ' (' + orderData.debug_id + ')';
-				}
-
-				// Show a failure message
-				alert(msg); // eslint-disable-line
-
-				Give.form.fn.disable( self.jQueryForm, false );
-				Give.form.fn.showProcessingState( false );
-			}
-
-			DonationForm.attachOrderIdToForm( self.form, orderData.id )
-				.then( () => {
-					// Do not submit  empty or filled Name credit card field with form.
-					// If we do that we will get `empty_card_name` error or other.
-					// We are removing this field before form submission because this donation processed with smart button.
-					self.removeCreditCardFields();
-					self.form.submit();
-				} );
 		} );
+		const responseJson = await response.json();
+
+		// Three cases to handle:
+		//   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+		//   (2) Other non-recoverable errors -> Show a failure message
+		//   (3) Successful transaction -> Show a success / thank you message
+
+		// Your server defines the structure of 'orderData', which may differ
+		const errorDetail = Array.isArray( responseJson.data.order.details ) && responseJson.data.order.details[ 0 ];
+		const orderData = responseJson.data.order;
+
+		if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
+			Give.form.fn.showProcessingState( false );
+			Give.form.fn.disable( self.jQueryForm, false );
+
+			// Recoverable state, see: "Handle Funding Failures"
+			// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
+			return actions.restart();
+		}
+
+		if ( errorDetail ) {
+			let msg = 'Sorry, your transaction could not be processed.';
+			if ( errorDetail.description ) {
+				msg += '\n\n' + errorDetail.description;
+			}
+			if ( orderData.debug_id ) {
+				msg += ' (' + orderData.debug_id + ')';
+			}
+
+			// Show a failure message
+			alert(msg); // eslint-disable-line
+
+			Give.form.fn.disable( self.jQueryForm, false );
+			Give.form.fn.showProcessingState( false );
+		}
+
+		DonationForm.attachOrderIdToForm( self.form, orderData.id )
+			.then( () => {
+				// Do not submit  empty or filled Name credit card field with form.
+				// If we do that we will get `empty_card_name` error or other.
+				// We are removing this field before form submission because this donation processed with smart button.
+				self.removeCreditCardFields();
+				self.form.submit();
+			} );
 	}
 
 	/**

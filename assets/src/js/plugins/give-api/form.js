@@ -708,20 +708,21 @@ export default {
 		 *
 		 * @param {object} $form
 		 * @param {FormData} formData
-		 * @return {Promise}
+		 * @return {string}
 		 */
-		isDonorFilledValidData: function( $form, formData = {} ) {
+		isDonorFilledValidData: async function( $form, formData = {} ) {
 			formData = formData instanceof FormData ? formData : new FormData( $form );
 
 			formData.append( 'action', 'give_process_donation' );
 			formData.append( 'give_ajax', true );
 
-			return fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }`, {
+			const response = await fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }`, {
 				method: 'POST',
 				body: formData,
-			} )
-				.then( res => res.text() )
-				.then( res => res.trim() );
+			} );
+			const result = await response.text();
+
+			return result.trim();
 		},
 
 		/**
