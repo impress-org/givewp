@@ -225,7 +225,7 @@
 					moveErrorNotice( $( this ) );
 				} );
 
-				// Setup anonymouse donations opt-in event listeners
+				// Setup anonymous donations opt-in event listeners
 				setupCheckbox( {
 					container: '#give-anonymous-donation-wrap label',
 					label: '#give-anonymous-donation-wrap label',
@@ -656,7 +656,10 @@
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
+
+				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
 			}
+
 			$( container ).toggleClass( 'active' );
 		} );
 	}
