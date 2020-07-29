@@ -159,7 +159,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['accounts'][] = [
-						'name'          => __( 'Stripe Connect', 'give' ),
+						'name'          => esc_html__( 'Stripe Connect', 'give' ),
 						'desc'          => '',
 						'wrapper_class' => 'give-stripe-account-manager-wrap js-fields-has-custom-saving-logic',
 						'id'            => 'stripe_account_manager',
@@ -187,7 +187,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
 					$settings['general'][] = [
-						'name'          => __( 'Stripe Webhooks', 'give' ),
+						'name'          => esc_html__( 'Stripe Webhooks', 'give' ),
 						'desc'          => '',
 						'wrapper_class' => 'give-stripe-webhooks-tr',
 						'id'            => 'stripe_webhooks',
@@ -195,8 +195,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['general'][] = [
-						'name'       => __( 'Statement Descriptor', 'give' ),
-						'desc'       => __( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
+						'name'       => esc_html__( 'Statement Descriptor', 'give' ),
+						'desc'       => esc_html__( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
 						'id'         => 'stripe_statement_descriptor',
 						'type'       => 'text',
 						'attributes' => [
@@ -207,8 +207,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['general'][] = [
-						'name' => __( 'Collect Billing Details', 'give' ),
-						'desc' => __( 'This option enables the billing details section for Stripe, requiring the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
+						'name' => esc_html__( 'Collect Billing Details', 'give' ),
+						'desc' => esc_html__( 'This option enables the billing details section for Stripe, requiring the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
 						'type' => 'checkbox',
 					];
@@ -223,7 +223,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
 
 					$settings['general'][] = [
-						'name' => __( 'Stripe Receipt Emails', 'give' ),
+						'name' => esc_html__( 'Stripe Receipt Emails', 'give' ),
 						'desc' => sprintf(
 							/* translators: 1. GiveWP Support URL */
 							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>. Checking this option does not disable GiveWP emails.', 'give' ),
@@ -234,10 +234,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['general'][] = [
-						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'name'  => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_general_docs_link',
 						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
-						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'title' => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
 
@@ -263,15 +263,15 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_before_credit_card_fields', $settings );
 
 					$settings['credit-card'][] = [
-						'name'          => __( 'Credit Card Fields Format', 'give' ),
-						'desc'          => __( 'This option allows you to show single or multiple credit card fields on your donation forms.', 'give' ),
+						'name'          => esc_html__( 'Credit Card Fields Format', 'give' ),
+						'desc'          => esc_html__( 'This option allows you to show single or multiple credit card fields on your donation forms.', 'give' ),
 						'id'            => 'stripe_cc_fields_format',
 						'wrapper_class' => 'stripe-cc-field-format-settings',
 						'type'          => 'radio_inline',
 						'default'       => 'multi',
 						'options'       => [
-							'single' => __( 'Single Field', 'give' ),
-							'multi'  => __( 'Multi Field', 'give' ),
+							'single' => esc_html__( 'Single Field', 'give' ),
+							'multi'  => esc_html__( 'Multi Field', 'give' ),
 						],
 					];
 
@@ -285,10 +285,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_after_credit_card_fields', $settings );
 
 					$settings['credit-card'][] = [
-						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'name'  => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_credit_card_docs_link',
 						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
-						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'title' => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
 
@@ -314,8 +314,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['checkout'][] = [
-						'name'          => __( 'Checkout Type', 'give' ),
-						'desc'          => sprintf( __( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%1$s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%2$s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout' ),
+						'name'          => esc_html__( 'Checkout Type', 'give' ),
+						'desc'          => sprintf( esc_html__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the <a href="%1$s" target="_blank">legacy Stripe Checkout</a> and is not SCA compatible. The "Redirect" option uses Stripe\'s new <a href="%2$s" target="_blank">Checkout</a> interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' ), 'https://stripe.com/docs/legacy-checkout', 'https://stripe.com/docs/payments/checkout' ),
 						'id'            => 'stripe_checkout_type',
 						'wrapper_class' => 'stripe-checkout-type',
 						'type'          => 'radio_inline',
@@ -327,8 +327,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['checkout'][] = [
-						'name'          => __( 'Checkout Heading', 'give' ),
-						'desc'          => __( 'This is the main heading within the modal checkout. Typically, this is the name of your organization, cause, or website.', 'give' ),
+						'name'          => esc_html__( 'Checkout Heading', 'give' ),
+						'desc'          => esc_html__( 'This is the main heading within the modal checkout. Typically, this is the name of your organization, cause, or website.', 'give' ),
 						'id'            => 'stripe_checkout_name',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'default'       => get_bloginfo( 'name' ),
@@ -336,17 +336,16 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['checkout'][] = [
-						'name'          => __( 'Stripe Checkout Image', 'give' ),
-						'desc'          => __( 'This image appears in when the Stripe checkout modal window opens and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png.', 'give' ),
-						'id'            => 'stripe_checkout_image',
+						'name'          => esc_html__( 'Background Image', 'give' ),
+						'desc'          => esc_html__( 'This background image appears in the header section of the Stripe checkout modal window and provides better brand recognition that leads to increased conversion rates. The recommended minimum size is a square image at 128x128px. The supported image types are: .gif, .jpeg, and .png.', 'give' ),
+						'id'            => 'stripe_checkout_background_image',
 						'wrapper_class' => 'stripe-checkout-field ' . $this->stripe_modal_checkout_status(),
 						'type'          => 'file',
-						// Optional.
 						'options'       => [
 							'url' => false, // Hide the text input for the url.
 						],
 						'text'          => [
-							'add_upload_file_text' => __( 'Add or Upload Image', 'give' ),
+							'add_upload_file_text' => esc_html__( 'Add or Upload Image', 'give' ),
 						],
 					];
 
@@ -360,10 +359,10 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_after_checkout_fields', $settings );
 
 					$settings['checkout'][] = [
-						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
+						'name'  => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_checkout_docs_link',
 						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
-						'title' => __( 'Stripe Gateway Documentation', 'give' ),
+						'title' => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
 
@@ -380,54 +379,53 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['sepa'][] = [
-						'name'          => __( 'Display Icon', 'give' ),
-						'desc'          => __( 'This option allows you to display a bank building icon within the IBAN input field for SEPA Direct Debit.', 'give' ),
+						'name'          => esc_html__( 'Display Icon', 'give' ),
+						'desc'          => esc_html__( 'This option allows you to display a bank building icon within the IBAN input field for SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_hide_icon',
 						'wrapper_class' => 'stripe-hide-icon',
 						'type'          => 'radio_inline',
 						'default'       => 'enabled',
 						'options'       => [
-							'enabled'  => __( 'Enabled', 'give' ),
-							'disabled' => __( 'Disabled', 'give' ),
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
 						],
 					];
 
 					$is_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_hide_icon', 'enabled' ) );
 
 					$settings['sepa'][] = [
-						'name'          => __( 'Icon Style', 'give' ),
-						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'name'          => esc_html__( 'Icon Style', 'give' ),
+						'desc'          => esc_html__( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_icon_style',
 						'wrapper_class' => $is_hide_icon ? 'stripe-icon-style' : 'stripe-icon-style give-hidden',
 						'type'          => 'radio_inline',
 						'default'       => 'default',
 						'options'       => [
-							'default' => __( 'Default', 'give' ),
-							'solid'   => __( 'Solid', 'give' ),
+							'default' => esc_html__( 'Default', 'give' ),
+							'solid'   => esc_html__( 'Solid', 'give' ),
 						],
 					];
 
 					$settings['sepa'][] = [
-						'name'          => __( 'Display Mandate Acceptance', 'give' ),
-						'desc'          => __( 'The mandate acceptance text explains to donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
+						'name'          => esc_html__( 'Display Mandate Acceptance', 'give' ),
+						'desc'          => esc_html__( 'The mandate acceptance text explains to donors how the payment processing will work for their donation. The text will display below the IBAN field.', 'give' ),
 						'id'            => 'stripe_mandate_acceptance_option',
 						'wrapper_class' => 'stripe-mandate-acceptance-option',
 						'type'          => 'radio_inline',
 						'default'       => 'enabled',
 						'options'       => [
-							'enabled'  => __( 'Enabled', 'give' ),
-							'disabled' => __( 'Disabled', 'give' ),
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
 						],
 					];
 
 					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_mandate_acceptance_option', 'enabled' ) );
 
 					$settings['sepa'][] = [
-						'name'          => __( 'Mandate Acceptance Text', 'give' ),
-						'desc'          => __( 'This text displays below the IBAN field and should provide clarity to your donors on how this payment option works.', 'give' ),
+						'name'          => esc_html__( 'Mandate Acceptance Text', 'give' ),
+						'desc'          => esc_html__( 'This text displays below the IBAN field and should provide clarity to your donors on how this payment option works.', 'give' ),
 						'id'            => 'stripe_mandate_acceptance_text',
 						'wrapper_class' => $is_hide_mandate ? 'stripe-mandate-acceptance-text' : 'stripe-mandate-acceptance-text give-hidden',
-
 						'type'          => 'textarea',
 						'default'       => give_stripe_get_default_mandate_acceptance_text(),
 					];
@@ -452,51 +450,51 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['becs'][] = [
-						'name'          => __( 'Display Icon', 'give' ),
-						'desc'          => __( 'This option allows you to display a bank building icon within the bank account input field for BECS Direct Debit.', 'give' ),
+						'name'          => esc_html__( 'Display Icon', 'give' ),
+						'desc'          => esc_html__( 'This option allows you to display a bank building icon within the bank account input field for BECS Direct Debit.', 'give' ),
 						'id'            => 'stripe_becs_hide_icon',
 						'wrapper_class' => 'stripe-becs-hide-icon',
 						'type'          => 'radio_inline',
 						'default'       => 'enabled',
 						'options'       => [
-							'enabled'  => __( 'Enabled', 'give' ),
-							'disabled' => __( 'Disabled', 'give' ),
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
 						],
 					];
 
 					$is_becs_hide_icon = give_is_setting_enabled( give_get_option( 'stripe_becs_hide_icon', 'enabled' ) );
 
 					$settings['becs'][] = [
-						'name'          => __( 'Icon Style', 'give' ),
-						'desc'          => __( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
+						'name'          => esc_html__( 'Icon Style', 'give' ),
+						'desc'          => esc_html__( 'This option allows you to select the icon style for the IBAN element of SEPA Direct Debit.', 'give' ),
 						'id'            => 'stripe_becs_icon_style',
 						'wrapper_class' => $is_becs_hide_icon ? 'stripe-becs-icon-style' : 'stripe-becs-icon-style give-hidden',
 						'type'          => 'radio_inline',
 						'default'       => 'default',
 						'options'       => [
-							'default' => __( 'Default', 'give' ),
-							'solid'   => __( 'Solid', 'give' ),
+							'default' => esc_html__( 'Default', 'give' ),
+							'solid'   => esc_html__( 'Solid', 'give' ),
 						],
 					];
 
 					$settings['becs'][] = [
-						'name'          => __( 'Display Mandate Acceptance', 'give' ),
-						'desc'          => __( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the Bank Account fields.', 'give' ),
+						'name'          => esc_html__( 'Display Mandate Acceptance', 'give' ),
+						'desc'          => esc_html__( 'The mandate acceptance text is meant to explain to your donors how the payment processing will work for their donation. The text will display below the Bank Account fields.', 'give' ),
 						'id'            => 'stripe_becs_mandate_acceptance_option',
 						'wrapper_class' => 'stripe-becs-mandate-acceptance-option',
 						'type'          => 'radio_inline',
 						'default'       => 'enabled',
 						'options'       => [
-							'enabled'  => __( 'Enabled', 'give' ),
-							'disabled' => __( 'Disabled', 'give' ),
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
 						],
 					];
 
 					$is_hide_mandate = give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) );
 
 					$settings['becs'][] = [
-						'name'          => __( 'Mandate Acceptance Text', 'give' ),
-						'desc'          => __( 'This text displays below the Bank Account fields and should provide clarity to your donors on how this payment option works.', 'give' ),
+						'name'          => esc_html__( 'Mandate Acceptance Text', 'give' ),
+						'desc'          => esc_html__( 'This text displays below the Bank Account fields and should provide clarity to your donors on how this payment option works.', 'give' ),
 						'id'            => 'stripe_becs_mandate_acceptance_text',
 						'wrapper_class' => $is_hide_mandate ? 'stripe-becs-mandate-acceptance-text' : 'stripe-becs-mandate-acceptance-text give-hidden',
 						'type'          => 'textarea',
