@@ -516,18 +516,26 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @param int   $formId Donation Form ID.
 		 * @param array $args   List of arguments.
 		 *
-		 * @since  2.7.1
+		 * @since  2.7.3
 		 * @access public
 		 *
 		 * @return void
 		 */
 		public function showCheckoutModal( $formId, $args ) {
-			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
+			$idPrefix           = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
+			$backgroundImageUrl = give_get_option( 'stripe_checkout_background_image', '' );
+			$backgroundItem     = 'background-color: #000000;';
+
+			// Load Background Image, if exists.
+			if ( ! empty( $backgroundImageUrl ) ) {
+				$backgroundImageUrl = esc_url_raw( $backgroundImageUrl );
+				$backgroundItem     = "background-image: url('{$backgroundImageUrl}'); background-size: cover;";
+			}
 			?>
 			<div id="give-stripe-checkout-modal-<?php echo $idPrefix; ?>" class="give-stripe-checkout-modal">
 				<div class="give-stripe-checkout-modal-content">
 					<div class="give-stripe-checkout-modal-container">
-						<div class="give-stripe-checkout-modal-header">
+						<div class="give-stripe-checkout-modal-header" style="<?php echo $backgroundItem; ?>">
 							<button class="give-stripe-checkout-modal-close">
 								<svg
 									width="20px"
