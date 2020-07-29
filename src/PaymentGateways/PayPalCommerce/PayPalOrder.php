@@ -9,16 +9,81 @@ use stdClass;
  * Class PayPalOrder
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @property-read string $id
- * @property-read string $intent
- * @property-read stdClass $purchaseUnit
- * @property-read stdClass $payer
- * @property-read string $createTime
- * @property-read string $updateTime
- * @property-read string $links
- * @property-read string $status
+ * @since 2.8.0
  */
 class PayPalOrder {
+	/**
+	 * Order Id.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $id;
+
+	/**
+	 * Order intent.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $intent;
+
+	/**
+	 * Order status.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $status;
+
+	/**
+	 * Order creation time.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $createTime;
+
+	/**
+	 * Order update time.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $updateTime;
+
+	/**
+	 * PayPal Order action links.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $links;
+
+	/**
+	 * Payer information.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var stdClass
+	 */
+	public $payer;
+
+	/**
+	 * Order purchase unit details.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var stdClass
+	 */
+	public $purchaseUnit;
+
 	/**
 	 * Create PayPalOrder object from given array.
 	 *
@@ -36,7 +101,9 @@ class PayPalOrder {
 
 		foreach ( $array as $itemName => $value ) {
 			if ( 'purchaseUnits' === $itemName ) {
-				$value = current( $value );
+				// We will always have single unit in order.
+				$itemName = 'purchaseUnit';
+				$value    = current( $value );
 			}
 
 			$order->{$itemName} = $value;
@@ -54,15 +121,8 @@ class PayPalOrder {
 	 * @return PayPalPayment
 	 */
 	public function getPayment() {
-		if ( property_exists( $this->purchaseUnits, 'payments' ) ) {
-			$payments = $this->purchaseUnits->payments;
+		return PayPalPayment::fromArray( (array) current( $this->purchaseUnit->payments->captures ) );
 
-			if ( property_exists( $payments, 'captures' ) ) {
-				return PayPalPayment::fromArray( (array) current( $payments->captures ) );
-			}
-		}
-
-		return null;
 	}
 
 	/**

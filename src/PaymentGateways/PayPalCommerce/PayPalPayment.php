@@ -8,13 +8,67 @@ use InvalidArgumentException;
  * Class PayPalPayment
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @property-read string $id
- * @property-read string $status
- * @property-read string $amount
- * @property-read string $createTime
- * @property-read string $updateTime
+ * @since 2.8.0
  */
 class PayPalPayment {
+	/**
+	 * Payment Id.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $id;
+
+	/**
+	 * Payment Amount.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $amount;
+
+
+	/**
+	 * Payment status.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $status;
+
+	/**
+	 * Payment creation time.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $createTime;
+
+	/**
+	 * Payment update time.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $updateTime;
+
+	/**
+	 * PayPal Payment action links.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	public $links;
+
+	/**
+	 *
+	 */
 	/**
 	 * Create PayPalPayment object from given array.
 	 *
