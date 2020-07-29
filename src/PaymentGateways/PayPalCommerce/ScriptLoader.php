@@ -22,16 +22,6 @@ class ScriptLoader {
 	private $paypalSdkScriptHandle = 'give-paypal-sdk-js';
 
 	/**
-	 * Setup hooks
-	 *
-	 * @since 2.8.0
-	 */
-	public function boot() {
-		add_action( 'admin_enqueue_scripts', [ $this, 'loadAdminScripts' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'loadPublicAssets' ] );
-	}
-
-	/**
 	 * Load admin scripts
 	 *
 	 * @since 2.8.0

@@ -61,34 +61,19 @@ class PayPalCommerce implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function boot() {
-		give( ScriptLoader::class )->boot();
-		give( AjaxRequestHandler::class )->boot();
+		Hooks::addAction( 'wp_ajax_give_paypal_commerce_user_on_boarded', AjaxRequestHandler::class, 'onBoardedUserAjaxRequestHandler' );
+		Hooks::addAction( 'wp_ajax_give_paypal_commerce_get_partner_url', AjaxRequestHandler::class, 'onGetPartnerUrlAjaxRequestHandler' );
+		Hooks::addAction( 'wp_ajax_give_paypal_commerce_disconnect_account', AjaxRequestHandler::class, 'removePayPalAccount' );
+		Hooks::addAction( 'wp_ajax_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder' );
+		Hooks::addAction( 'wp_ajax_nopriv_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder' );
+		Hooks::addAction( 'wp_ajax_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder' );
+		Hooks::addAction( 'wp_ajax_nopriv_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder' );
 
-		give()->singleton(
-			MerchantDetail::class,
-			static function () {
-				return ( new MerchantDetail() )->boot();
-			}
-		);
+		Hooks::addAction( 'admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts' );
+		Hooks::addAction( 'wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets' );
 
-		give()->singleton( PayPalClient::class );
-
-		give()->singleton(
-			RefreshToken::class,
-			static function() {
-				return ( new RefreshToken() )->boot();
-			}
-		);
-
-		// Boot RefreshToken class immediately if cron job running.
-		if ( wp_doing_cron() ) {
-			give( RefreshToken::class );
-		}
-
-		give()->singleton( AdvancedCardFields::class );
+		Hooks::addAction( 'give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken' );
 		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm', 10, 3 );
-
-		give()->singleton( DonationProcessor::class );
-		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle', 10, 3 );
+		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle' );
 	}
 }

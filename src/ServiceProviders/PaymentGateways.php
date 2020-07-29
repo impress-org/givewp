@@ -3,7 +3,14 @@
 namespace Give\ServiceProviders;
 
 use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields as PayPalCommerceAdvancedCardFields;
+use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler as PayPalCommerceAjaxRequestHandler;
+use Give\PaymentGateways\PayPalCommerce\DonationProcessor as PayPalCommerceDonationProcessor;
+use Give\PaymentGateways\PayPalCommerce\MerchantDetail as PayPalCommerceMerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken as PayPalCommerceRefreshToken;
+use Give\PaymentGateways\PayPalCommerce\ScriptLoader as PayPalCommerceScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
+use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
@@ -39,6 +46,19 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
+		give()->singleton( PayPalCommerceAdvancedCardFields::class );
+		give()->singleton( PayPalCommerceDonationProcessor::class );
+		give()->singleton( PayPalClient::class );
+		give()->singleton( PayPalCommerceRefreshToken::class );
+		give()->singleton( PayPalCommerceAjaxRequestHandler::class );
+		give()->singleton( PayPalCommerceScriptLoader::class );
+
+		give()->singleton(
+			PayPalCommerceMerchantDetail::class,
+			static function () {
+				return ( new PayPalCommerceMerchantDetail() )->boot();
+			}
+		);
 	}
 
 	/**

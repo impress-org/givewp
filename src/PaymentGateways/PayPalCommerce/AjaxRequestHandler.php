@@ -16,23 +16,6 @@ use Give\ConnectClient\ConnectClient;
  */
 class AjaxRequestHandler {
 	/**
-	 * Setup hooks
-	 *
-	 * @since 2.8.0
-	 */
-	public function boot() {
-		add_action( 'wp_ajax_give_paypal_commerce_user_on_boarded', [ $this, 'onBoardedUserAjaxRequestHandler' ] );
-		add_action( 'wp_ajax_give_paypal_commerce_get_partner_url', [ $this, 'onGetPartnerUrlAjaxRequestHandler' ] );
-		add_action( 'wp_ajax_give_paypal_commerce_disconnect_account', [ $this, 'removePayPalAccount' ] );
-
-		add_action( 'wp_ajax_give_paypal_commerce_create_order', [ $this, 'createOrder' ] );
-		add_action( 'wp_ajax_nopriv_give_paypal_commerce_create_order', [ $this, 'createOrder' ] );
-
-		add_action( 'wp_ajax_give_paypal_commerce_approve_order', [ $this, 'approveOrder' ] );
-		add_action( 'wp_ajax_nopriv_give_paypal_commerce_approve_order', [ $this, 'approveOrder' ] );
-	}
-
-	/**
 	 *  give_paypal_commerce_user_onboarded ajax action handler
 	 *
 	 * @since 2.8.0
