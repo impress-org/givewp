@@ -284,67 +284,6 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		}
 
 		/**
-		 * This function is used to process donations via legacy Stripe Checkout which will be deprecated soon.
-		 *
-		 * @param int   $donation_id   Donation ID.
-		 * @param array $donation_data List of submitted data for donation processing.
-		 *
-		 * @since  2.5.5
-		 * @access public
-		 *
-		 * @return void
-		 */
-		public function process_legacy_checkout( $donation_id, $donation_data ) {
-
-			$stripe_customer_id = ! empty( $donation_data['customer_id'] ) ? $donation_data['customer_id'] : '';
-
-			// Process charge w/ support for preapproval.
-			$charge = $this->process_charge( $donation_data, $stripe_customer_id );
-
-			// Verify the Stripe payment.
-			$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
-
-		}
-
-		/**
-		 * Process One Time Charge.
-		 *
-		 * @param array  $donation_data      List of donation data.
-		 * @param string $stripe_customer_id Customer ID.
-		 *
-		 * @return bool|\Stripe\Charge
-		 */
-		public function process_charge( $donation_data, $stripe_customer_id ) {
-
-			$form_id     = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
-			$donation_id = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
-			$description = ! empty( $donation_data['description'] ) ? $donation_data['description'] : false;
-
-			// Format the donation amount as required by Stripe.
-			$amount = $this->format_amount( $donation_data['price'] );
-
-			// Prepare charge arguments.
-			$charge_args = [
-				'amount'               => $amount,
-				'customer'             => $stripe_customer_id,
-				'currency'             => give_get_currency( $form_id ),
-				'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
-				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
-				'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
-			];
-
-			// Process the charge.
-			$charge = $this->create_charge( $donation_id, $charge_args );
-
-			// Return charge if set.
-			if ( isset( $charge ) ) {
-				return $charge;
-			} else {
-				return false;
-			}
-		}
-
-		/**
 		 * This function is used to process donations via Stripe Checkout 2.0.
 		 *
 		 * @param int   $donation_id Donation ID.
@@ -634,32 +573,6 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					</div>
 				</div>
 			</div>
-			<?php
-		}
-
-		/**
-		 * Simplify Stripe Checkout Submit.
-		 *
-		 * @param int   $formId Donation Form ID.
-		 * @param array $args   List of arguments.
-		 *
-		 * @since  2.7.1
-		 * @access public
-		 *
-		 * @return void
-		 */
-		public function checkoutSubmit( $formId, $args ) {
-			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
-			?>
-			<fieldset id="give_purchase_submit" class="give-stripe-checkout-submit">
-				<input
-					id="give-stripe-checkout-modal-btn-<?php echo $idPrefix; ?>"
-					class="give-stripe-checkout-modal-btn"
-					type="submit"
-					name="give-stripe-checkout-submit"
-					value="<?php esc_html_e( 'Donate Now', 'give' ); ?>"
-				/>
-			</fieldset>
 			<?php
 		}
 	}
