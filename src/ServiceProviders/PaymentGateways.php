@@ -4,8 +4,11 @@ namespace Give\ServiceProviders;
 
 use Give\Controller\PayPalWebhooks;
 use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
+use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
@@ -43,13 +46,14 @@ class PaymentGateways implements ServiceProvider {
 	public function register() {
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
+		$this->registerPayPalCommerceClasses();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function boot() {
-		add_filter( 'give_register_gateway', [ $this, 'registerGateways' ] );
+		add_filter( 'give_register_gateway', [ $this, 'bootGateways' ] );
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 	}
@@ -69,7 +73,7 @@ class PaymentGateways implements ServiceProvider {
 	 * @since 2.8.0
 	 */
 	public function registerPayPalSettingPage() {
-		foreach ( $this->gatewaySettingsPages  as $page ) {
+		foreach ( $this->gatewaySettingsPages as $page ) {
 			give()->make( $page )->boot();
 		}
 	}
@@ -83,10 +87,10 @@ class PaymentGateways implements ServiceProvider {
 	 *
 	 * @return array
 	 */
-	public function registerGateways( array $gateways ) {
+	public function bootGateways( array $gateways ) {
 		foreach ( $this->gateways as $gateway ) {
 			/** @var PaymentGateway $gateway */
-			$gateway = new $gateway();
+			$gateway = give( $gateway );
 
 			$gateways[ $gateway->getId() ] = [
 				'admin_label'    => $gateway->getName(),
@@ -97,5 +101,28 @@ class PaymentGateways implements ServiceProvider {
 		}
 
 		return $gateways;
+	}
+
+	/**
+	 * Registers the classes for the PayPal Commerce gateway
+	 *
+	 * @since 2.8.0
+	 */
+	private function registerPayPalCommerceClasses() {
+		give()->singleton(
+			MerchantDetail::class,
+			static function () {
+				return ( new MerchantDetail() )->boot();
+			}
+		);
+
+		give()->singleton( PayPalClient::class );
+
+		give()->singleton(
+			RefreshToken::class,
+			static function () {
+				return ( new RefreshToken() )->boot();
+			}
+		);
 	}
 }
