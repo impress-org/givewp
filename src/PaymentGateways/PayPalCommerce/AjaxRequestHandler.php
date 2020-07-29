@@ -26,9 +26,26 @@ class AjaxRequestHandler {
 	 */
 	private $merchantDetails;
 
-	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails ) {
+	/**
+	 * @var PayPalClient
+	 */
+	private $paypalClient;
+
+	/**
+	 * @var ConnectClient
+	 */
+	private $connectClient;
+
+	public function __construct(
+		Webhooks $webhooksRepository,
+		MerchantDetail $merchantDetails,
+		PayPalClient $paypalClient,
+		ConnectClient $connectClient
+	) {
 		$this->webhooksRepository = $webhooksRepository;
 		$this->merchantDetails    = $merchantDetails;
+		$this->paypalClient       = $paypalClient;
+		$this->connectClient      = $connectClient;
 	}
 
 	/**
@@ -43,7 +60,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
-				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/oauth2/token',
+				$this->paypalClient->getEnvironment()->baseUrl() . '/v1/oauth2/token',
 				[
 					'headers' => [
 						'Authorization' => sprintf(
@@ -85,8 +102,8 @@ class AjaxRequestHandler {
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
 				sprintf(
-					give( ConnectClient::class )->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
-					give( PayPalClient::class )->mode
+					$this->connectClient->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
+					$this->paypalClient->mode
 				),
 				[
 					'body' => [
@@ -135,11 +152,6 @@ class AjaxRequestHandler {
 	public function createOrder() {
 		$this->validateFrontendRequest();
 
-		/* @var PayPalHttpClient $client */
-		$client = give( PayPalClient::class )->getHttpClient();
-		/* @var MerchantDetail $merchant */
-		$merchant = give( MerchantDetail::class );
-
 		$postData = give_clean( $_POST );
 		$formId   = absint( $postData['give-form-id'] );
 
@@ -156,8 +168,8 @@ class AjaxRequestHandler {
 						'currency_code' => give_get_currency( $_POST['give-form-id'] ),
 					],
 					'payee'               => [
-						'email_address' => $merchant->merchantId,
-						'merchant_id'   => $merchant->merchantIdInPayPal,
+						'email_address' => $this->merchantDetails->merchantId,
+						'merchant_id'   => $this->merchantDetails->merchantIdInPayPal,
 					],
 					'payer'               => [
 						'given_name'    => $postData['give_first'],
@@ -176,7 +188,7 @@ class AjaxRequestHandler {
 		];
 
 		try {
-			$response = $client->execute( $request );
+			$response = $this->paypalClient->getHttpClient()->execute( $request );
 
 			wp_send_json_success(
 				[
@@ -201,15 +213,12 @@ class AjaxRequestHandler {
 	 */
 	public function approveOrder() {
 		$this->validateFrontendRequest();
-
-		/* @var PayPalHttpClient $client */
-		$client  = give( PayPalClient::class )->getHttpClient();
 		$orderId = give_clean( $_GET['order'] );
 
 		$request = new OrdersCaptureRequest( $orderId );
 
 		try {
-			$response = $client->execute( $request );
+			$response = $this->paypalClient->getHttpClient()->execute( $request );
 			wp_send_json_success(
 				[
 					'order' => $response->result,
