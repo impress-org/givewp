@@ -136,34 +136,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		}
 
 		/**
-		 * Process the POST Data for the Credit Card Form, if a source was not supplied.
-		 *
-		 * @since 2.5.0
-		 *
-		 * @param array $donation_data List of donation data.
-		 *
-		 * @return array The credit card data from the $_POST
-		 */
-		public function prepare_card_data( $donation_data ) {
-
-			$card_data = [
-				'number'          => $donation_data['card_info']['card_number'],
-				'name'            => $donation_data['card_info']['card_name'],
-				'exp_month'       => $donation_data['card_info']['card_exp_month'],
-				'exp_year'        => $donation_data['card_info']['card_exp_year'],
-				'cvc'             => $donation_data['card_info']['card_cvc'],
-				'address_line1'   => $donation_data['card_info']['card_address'],
-				'address_line2'   => $donation_data['card_info']['card_address_2'],
-				'address_city'    => $donation_data['card_info']['card_city'],
-				'address_zip'     => $donation_data['card_info']['card_zip'],
-				'address_state'   => $donation_data['card_info']['card_state'],
-				'address_country' => $donation_data['card_info']['card_country'],
-			];
-
-			return $card_data;
-		}
-
-		/**
 		 * This function will be used for donation processing.
 		 *
 		 * @param array $donation_data List of donation data.
