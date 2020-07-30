@@ -143,7 +143,7 @@ class MerchantDetail {
 	 *
 	 * @return MerchantDetail
 	 */
-	public function fromArray( $merchantDetails ) {
+	public static function fromArray( $merchantDetails ) {
 		$obj = new static();
 
 		$obj->validate( $merchantDetails );
