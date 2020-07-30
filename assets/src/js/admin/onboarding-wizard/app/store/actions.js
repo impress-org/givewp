@@ -38,6 +38,26 @@ export const setCountry = ( country ) => {
 	};
 };
 
+export const fetchStateList = ( country, dispatch ) => {
+	return {
+		type: 'FETCH_STATE_LIST',
+		payload: {
+			country,
+			dispatch,
+		},
+	};
+};
+
+// Dispatch SET_STATE_LIST action
+export const setStateList = ( stateList ) => {
+	return {
+		type: 'SET_STATE_LIST',
+		payload: {
+			stateList,
+		},
+	};
+};
+
 // Dispatch SET_STATE action
 export const setState = ( state ) => {
 	return {

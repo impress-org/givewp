@@ -1,4 +1,7 @@
-import { saveSettingWithOnboardingAPI, getStatesListWithOnboardingAPI, getCurrencyWithOnboardingAPI } from '../../utils';
+import {
+	saveSettingWithOnboardingAPI,
+	fetchStatesListWithOnboardingAPI,
+} from '../../utils';
 
 export const reducer = ( state, action ) => {
 	switch ( action.type ) {
@@ -25,15 +28,21 @@ export const reducer = ( state, action ) => {
 			};
 		case 'SET_COUNTRY':
 			saveSettingWithOnboardingAPI( 'country', action.payload.country );
-			const newStatesList = getStatesListWithOnboardingAPI( action.payload.country );
-			const newCurrency = getCurrencyWithOnboardingAPI( action.payload.country );
 			return {
 				...state,
-				statesList: newStatesList,
 				configuration: { ...state.configuration,
 					country: action.payload.country,
-					currency: newCurrency,
 				},
+			};
+		case 'FETCH_STATE_LIST':
+			fetchStatesListWithOnboardingAPI( action.payload.country, action.payload.dispatch );
+			return {
+				...state,
+			};
+		case 'SET_STATE_LIST':
+			return {
+				...state,
+				statesList: action.payload.stateList,
 			};
 		case 'SET_STATE':
 			saveSettingWithOnboardingAPI( 'state_province', action.payload.state );

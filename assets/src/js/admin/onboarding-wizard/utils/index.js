@@ -2,6 +2,7 @@
 // Note: no-unused-vars rule is disabled while axios logic is not enabled
 
 import axios from 'axios';
+import { setStateList } from '../app/store/actions';
 
 export const getWindowData = ( value ) => {
 	const data = window.giveOnboardingWizardData;
@@ -14,6 +15,14 @@ export const getAPIRoot = () => {
 
 export const getAPINonce = () => {
 	return getWindowData( 'apiNonce' );
+};
+
+export const getCountryList = () => {
+	return getWindowData( 'countries' );
+};
+
+export const getDefaultStateList = () => {
+	return getWindowData( 'states' );
 };
 
 export const redirectToSetupPage = () => {
@@ -65,46 +74,26 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  * Retrieves array of state/provinces from API based on country
  *
  * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')
- * @return {array} Array of objects representing states/provinces for requested country
+ * @param {requestCallback} dispatch Dispatch an action with the returned data
  * @since 2.8.0
  */
-export const getStatesListWithOnboardingAPI = ( country ) => {
-	// Example shape of returned data
-	return [
-		{
-			value: 'FL',
-			label: 'Florida',
+export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
+	// Setup cancel token for request
+	const CancelToken = axios.CancelToken;
+	const source = CancelToken.source();
+
+	axios.get( getAPIRoot() + 'give-api/v2/onboarding/location', {
+		cancelToken: source.token,
+		params: {
+			countryCode: country,
 		},
-		{
-			value: 'RI',
-			label: 'Rhode Island',
+		headers: {
+			'X-WP-Nonce': getAPINonce(),
+			'Content-Type': 'multipart/form-data',
 		},
-	];
-
-	// Logic for connecting to the Onboarding API
-	// An object with action: 'get_states' and country: ${country} is passed to the API
-	// An array of objects with 'value' and 'label' properties for each state/province is returned
-
-	// // Setup cancel token for request
-	// const CancelToken = axios.CancelToken;
-	// const source = CancelToken.source();
-
-	// axios.get( getAPIRoot() + 'give-api/v2/onboarding/', {
-	// 	cancelToken: source.token,
-	// 	params: {
-	// 		action: 'get_states',
-	// 		country,
-	// 	},
-	// 	headers: {
-	// 		'X-WP-Nonce': getAPINonce(),
-	// 	},
-	// } )
-	// 	.then( function( response ) {
-	// 		// Return states list on success
-	// 	} )
-	// 	.catch( function() {
-	// 		// Do something on error
-	// 	} );
+	} )
+		.then( ( response ) => response.data )
+		.then( ( data ) => dispatch( setStateList( data.states ) ) );
 };
 
 /**

@@ -3,7 +3,7 @@ const { __ } = wp.i18n;
 
 // Import store dependencies
 import { useStoreValue } from '../../store';
-import { setCountry, setState, setCurrency } from '../../store/actions';
+import { setCountry, setState, setCurrency, fetchStateList } from '../../store/actions';
 
 // Import components
 import Card from '../../../components/card';
@@ -20,12 +20,17 @@ const Location = () => {
 	const state = configuration.state;
 	const currency = configuration.currency;
 
+	const onChangeCountry = ( value ) => {
+		dispatch( fetchStateList( value, dispatch ) );
+		dispatch( setCountry( value ) );
+	};
+
 	return (
 		<div className="give-obw-location">
 			<h1>{ __( 'Where are you fundraising?', 'give' ) }</h1>
 			<Card>
 				<label>{ __( 'Country', 'give' ) }
-					<SelectInput value={ country } onChange={ ( value ) => dispatch( setCountry( value ) ) } options={ countriesList } />
+					<SelectInput value={ country } onChange={ onChangeCountry } options={ countriesList } />
 				</label>
 				<label>{ __( 'State / Province', 'give' ) }
 					<SelectInput value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } />
