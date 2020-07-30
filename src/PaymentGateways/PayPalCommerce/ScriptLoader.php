@@ -102,6 +102,13 @@ EOT;
 			GIVE_VERSION,
 			true
 		);
+
+		wp_enqueue_style(
+			'give-paypal-commerce-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/paypal-commerce.css',
+			[ 'give-styles' ],
+			GIVE_VERSION
+		);
 	}
 
 	/**
