@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\Helpers\ArrayDataSet;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 
 /**
  * Class AjaxRequestHandler
