@@ -59,7 +59,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
-				$this->paypalClient->getApiUrl( '/v1/oauth2/token' ),
+				$this->paypalClient->getApiUrl( 'v1/oauth2/token' ),
 				[
 					'headers' => [
 						'Authorization' => sprintf(
