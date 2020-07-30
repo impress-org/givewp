@@ -3,7 +3,7 @@
 namespace Give\Controller;
 
 use Exception;
-use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\OptionId;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Utils;

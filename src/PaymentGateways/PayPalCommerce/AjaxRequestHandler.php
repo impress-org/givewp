@@ -4,7 +4,10 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\ArrayDataSet;
 use Give\ConnectClient\ConnectClient;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 
 /**
  * Class AjaxRequestHandler
@@ -57,7 +60,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
-				$this->paypalClient->getApiUrl( '/v1/oauth2/token' ),
+				$this->paypalClient->getApiUrl( 'v1/oauth2/token' ),
 				[
 					'headers' => [
 						'Authorization' => sprintf(
@@ -134,7 +137,7 @@ class AjaxRequestHandler {
 			$this->webhooksRepository->deleteWebhookId();
 		}
 
-		$this->merchantDetails->delete();
+		MerchantDetails::delete();
 
 		wp_send_json_success();
 	}

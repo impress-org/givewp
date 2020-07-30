@@ -1,6 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\Views\Admin\UpsellNotice;
 use Give_License;
 

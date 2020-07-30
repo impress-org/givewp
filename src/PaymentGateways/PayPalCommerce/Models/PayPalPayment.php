@@ -1,5 +1,5 @@
 <?php
-namespace Give\PaymentGateways\PayPalCommerce;
+namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 use Give\Helpers\ArrayDataSet;
 use InvalidArgumentException;

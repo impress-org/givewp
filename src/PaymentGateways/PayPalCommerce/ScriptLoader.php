@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give_Admin_Settings;
 use PayPalCheckoutSdk\Core\AccessTokenRequest;
 
@@ -122,7 +124,7 @@ EOT;
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
 				PartnerDetails::$attributionId,
-				give( MerchantDetail::class )->getClientToken()
+				MerchantDetails::getClientToken()
 			),
 			$tag
 		);

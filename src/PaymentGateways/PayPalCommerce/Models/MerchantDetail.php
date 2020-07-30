@@ -1,7 +1,7 @@
 <?php
-namespace Give\PaymentGateways\PayPalCommerce;
+namespace Give\PaymentGateways\PayPalCommerce\Models;
 
-use Give\Helpers\ArrayDataSet;
+use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use InvalidArgumentException;
 
 /**
@@ -76,47 +76,7 @@ class MerchantDetail {
 	}
 
 	/**
-	 * Define properties values.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return $this
-	 */
-	public function boot() {
-		$paypalAccount = get_option( OptionId::$payPalAccountsOptionKey, [] );
-
-		if ( $paypalAccount ) {
-			$this->validate( $paypalAccount );
-			$this->setupProperties( $paypalAccount );
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Save merchant details.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	public function save() {
-		return update_option( OptionId::$payPalAccountsOptionKey, $this->toArray() );
-	}
-
-	/**
-	 * Delete merchant details.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	public function delete() {
-		return delete_option( OptionId::$payPalAccountsOptionKey );
-	}
-
-	/**
-	 * Return array of merchnat details.
+	 * Return array of merchant details.
 	 *
 	 * @sicne 2.8.0
 	 *
@@ -143,8 +103,12 @@ class MerchantDetail {
 	 *
 	 * @return MerchantDetail
 	 */
-	public function fromArray( $merchantDetails ) {
+	public static function fromArray( $merchantDetails ) {
 		$obj = new static();
+
+		if ( ! $merchantDetails ) {
+			return $obj;
+		}
 
 		$obj->validate( $merchantDetails );
 		$obj->setupProperties( $merchantDetails );
@@ -213,49 +177,5 @@ class MerchantDetail {
 	 */
 	public function setTokenDetails( $tokenDetails ) {
 		$this->tokenDetails = array_merge( $this->tokenDetails, $tokenDetails );
-	}
-
-	/**
-	 * Get client token for hosted credit card fields.
-	 *
-	 * @since 2.8.0
-	 */
-	public function getClientToken() {
-		$optionName = 'give_paypal_commerce_client_token';
-
-		if ( $optionValue = get_transient( $optionName ) ) {
-			return $optionValue;
-		}
-
-		$response = wp_remote_retrieve_body(
-			wp_remote_post(
-				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/identity/generate-token',
-				[
-					'headers' => [
-						'Accept'          => 'application/json',
-						'Accept-Language' => 'en_US',
-						'Authorization'   => sprintf(
-							'Bearer %1$s',
-							$this->accessToken
-						),
-						'Content-Type'    => 'application/json',
-					],
-				]
-			)
-		);
-
-		if ( ! $response ) {
-			return '';
-		}
-
-		$response = ArrayDataSet::camelCaseKeys( json_decode( $response, true ) );
-
-		set_transient(
-			$optionName,
-			$response['clientToken'],
-			$response['expiresIn'] - 60 // Expire token before one minute to prevent unnecessary race condition.
-		);
-
-		return $response['clientToken'];
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 
 /**
