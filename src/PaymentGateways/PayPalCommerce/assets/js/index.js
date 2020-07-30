@@ -1,6 +1,6 @@
 /* globals jQuery */
 import DonationForm from './DonationForm';
-import SmartButtons from './paypal-smart-buttons';
+import SmartButtons from './SmartButtons';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );

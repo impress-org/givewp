@@ -1,58 +1,17 @@
-/* globals jQuery, paypal, Give, FormData */
+/* globals paypal, Give, FormData */
 import DonationForm from './DonationForm';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * PayPal Smart Buttons.
  */
-class SmartButtons {
-	/**
-	 * Constructor.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {object} form selector.
-	 */
-	constructor( form ) {
-		this.form = form;
-		this.jQueryForm = jQuery( form );
-		this.ajaxurl = Give.fn.getGlobalVar( 'ajaxurl' );
-	}
-
-	/**
-	 * Render PayPal smart buttons.
-	 *
-	 * @since 2.8.0
-	 */
-	boot() {
-		jQuery( document ).on( 'give_gateway_loaded', { self: this }, this.onGatewayLoadBoot );
-
-		if ( DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
-			this.renderSmartButtons();
-		}
-	}
-
-	/**
-	 * Render paypal buttons when reload payment gateways.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {object} evt Event object.
-	 * @param {*} response Form fields HTML for gateway.
-	 * @param {string} formIdAttr Form Id attribute value.
-	 */
-	onGatewayLoadBoot( evt, response, formIdAttr ) {
-		const self = evt.data.self;
-		if ( formIdAttr === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
-			self.renderSmartButtons();
-		}
-	}
-
+class SmartButtons extends PaymentMethod {
 	/**
 	 * Render smart buttons.
 	 *
 	 * @since 2.8.0
 	 */
-	renderSmartButtons() {
+	renderPaymentMethodOption() {
 		const smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
 
 		if ( ! smartButtonContainer ) {
@@ -151,6 +110,8 @@ class SmartButtons {
 		Give.form.fn.disable( this.jQueryForm, true );
 
 		const self = this;
+
+		// eslint-disable-next-line
 		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 			method: 'post',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
