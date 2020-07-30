@@ -225,7 +225,7 @@
 					moveErrorNotice( $( this ) );
 				} );
 
-				// Setup anonymouse donations opt-in event listeners
+				// Setup anonymous donations opt-in event listeners
 				setupCheckbox( {
 					container: '#give-anonymous-donation-wrap label',
 					label: '#give-anonymous-donation-wrap label',
@@ -244,6 +244,13 @@
 					container: '.give-fee-recovery-donors-choice',
 					label: '.give-fee-message-label-text',
 					input: 'input[name="give_fee_mode_checkbox"]',
+				} );
+
+				// Setup activecampaign opt-in event listeners
+				setupCheckbox( {
+					container: '.give-activecampaign-fieldset',
+					label: '.give-activecampaign-optin-label',
+					input: '.give-activecampaign-optin-input',
 				} );
 
 				// Setup mailchimp opt-in event listeners
@@ -466,6 +473,7 @@
 		// The elements will appear in order of array
 		const donateFieldsetElements = [
 			'.give-constant-contact-fieldset',
+			'.give-activecampaign-fieldset',
 			'.give-mailchimp-fieldset',
 			'#give_terms_agreement',
 			'.give-donation-submit',
@@ -648,7 +656,10 @@
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
+
+				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
 			}
+
 			$( container ).toggleClass( 'active' );
 		} );
 	}
