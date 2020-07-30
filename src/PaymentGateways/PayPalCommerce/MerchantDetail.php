@@ -76,24 +76,6 @@ class MerchantDetail {
 	}
 
 	/**
-	 * Define properties values.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return $this
-	 */
-	public function boot() {
-		$paypalAccount = get_option( OptionId::$payPalAccountsOptionKey, [] );
-
-		if ( $paypalAccount ) {
-			$this->validate( $paypalAccount );
-			$this->setupProperties( $paypalAccount );
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Save merchant details.
 	 *
 	 * @since 2.8.0
