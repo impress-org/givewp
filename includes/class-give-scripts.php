@@ -496,7 +496,7 @@ class Give_Scripts {
 				'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
 				'general_loading'             => __( 'Loading...', 'give' ),
 				'purchase_loading'            => __( 'Please Wait...', 'give' ),
-				'textForOverlayScreen'        => __( 'Please Wait...', 'give' ),
+				'textForOverlayScreen'        => esc_html__( 'Please Wait...', 'give' ),
 				'number_decimals'             => give_get_price_decimals(),
 				'give_version'                => GIVE_VERSION,
 				'magnific_options'            => apply_filters(
