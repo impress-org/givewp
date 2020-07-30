@@ -86,8 +86,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
 		$payPalAccount[ $mode ]['token']        = $tokenInfo;
 
-		/* @var MerchantDetail $merchantDetails */
-		$merchantDetails = give( MerchantDetail::class )->fromArray( $payPalAccount );
+		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
 		$merchantDetails->save();
 
 		$this->deleteTempOptions();
