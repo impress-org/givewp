@@ -29,7 +29,9 @@ class AdvancedCardFields extends PaymentMethod {
 
 		await paypal.HostedFields.render( {
 			createOrder: creatOrderHandler,
-			styles: this.getComputedInputFieldStyle(),
+			styles: {
+				input: this.getComputedInputFieldStyle(),
+			},
 			fields: this.getFields(),
 		} );
 
@@ -135,7 +137,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @return {object} Return object of style properties.
 	 */
 	getComputedInputFieldStyle() {
-		const computedStyle = window.getComputedStyle( this.form.querySelector( '#give-card-name-wrap input[name="card_name"]' ), null );
+		const computedStyle = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
 
 		return {
 			'font-size': computedStyle.getPropertyValue( 'font-size' ),
