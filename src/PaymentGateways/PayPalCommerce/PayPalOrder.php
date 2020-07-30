@@ -85,7 +85,16 @@ class PayPalOrder {
 	 *
 	 * @var stdClass
 	 */
-	public $purchaseUnit;
+	private $purchaseUnit;
+
+	/**
+	 * Payment details for order.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var PayPalPayment
+	 */
+	public $payment;
 
 	/**
 	 * @since 2.8.0
@@ -205,6 +214,11 @@ class PayPalOrder {
 				// We will always have single unit in order.
 				$itemName = 'purchaseUnit';
 				$value    = current( $value );
+
+				$order->purchaseUnit = $value;
+				$order->payment      = PayPalPayment::fromArray( (array) current( $order->purchaseUnit->payments->captures ) );
+
+				continue;
 			}
 
 			$order->{$itemName} = $value;

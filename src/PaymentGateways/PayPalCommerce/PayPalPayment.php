@@ -79,7 +79,8 @@ class PayPalPayment {
 	 * @return PayPalPayment
 	 */
 	public static function fromArray( $array ) {
-		$payment = new static();
+		/* @var PayPalPayment $payment */
+		$payment = give( __CLASS__ );
 
 		$payment->validate( $array );
 
