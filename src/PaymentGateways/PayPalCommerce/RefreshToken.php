@@ -3,6 +3,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 
 use Give\Helpers\ArrayDataSet;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
 
 /**
@@ -12,19 +13,6 @@ use PayPalCheckoutSdk\Core\RefreshTokenRequest;
  * @since 2.8.0
  */
 class RefreshToken {
-	/**
-	 * Bootstrap class.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return RefreshToken
-	 */
-	public function boot() {
-		add_action( 'give_paypal_commerce_refresh_token', [ $this, 'refreshToken' ] );
-
-		return $this;
-	}
-
 	/**
 	 * Register cron job to refresh access token.
 	 * Note: only for internal use.

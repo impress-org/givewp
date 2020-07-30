@@ -1,6 +1,7 @@
 <?php
-namespace Give\PaymentGateways\PayPalCommerce;
+namespace Give\PaymentGateways\PayPalCommerce\Models;
 
+use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use InvalidArgumentException;
 
 /**
@@ -75,47 +76,7 @@ class MerchantDetail {
 	}
 
 	/**
-	 * Define properties values.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return $this
-	 */
-	public function boot() {
-		$paypalAccount = get_option( OptionId::$payPalAccountsOptionKey, [] );
-
-		if ( $paypalAccount ) {
-			$this->validate( $paypalAccount );
-			$this->setupProperties( $paypalAccount );
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Save merchant details.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	public function save() {
-		return update_option( OptionId::$payPalAccountsOptionKey, $this->toArray() );
-	}
-
-	/**
-	 * Delete merchant details.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	public function delete() {
-		return delete_option( OptionId::$payPalAccountsOptionKey );
-	}
-
-	/**
-	 * Return array of merchnat details.
+	 * Return array of merchant details.
 	 *
 	 * @sicne 2.8.0
 	 *
@@ -142,8 +103,12 @@ class MerchantDetail {
 	 *
 	 * @return MerchantDetail
 	 */
-	public function fromArray( $merchantDetails ) {
+	public static function fromArray( $merchantDetails ) {
 		$obj = new static();
+
+		if ( ! $merchantDetails ) {
+			return $obj;
+		}
 
 		$obj->validate( $merchantDetails );
 		$obj->setupProperties( $merchantDetails );

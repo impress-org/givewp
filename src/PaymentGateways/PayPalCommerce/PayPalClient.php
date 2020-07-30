@@ -2,10 +2,9 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Helpers\ArrayDataSet;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
-use PayPalCheckoutSdk\Core\RefreshTokenRequest;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 
 /**

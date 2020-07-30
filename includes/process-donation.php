@@ -108,14 +108,14 @@ function give_process_donation_form() {
 	do_action( 'give_process_donation_after_validation' );
 
 	// Setup user information.
-	$user_info = array(
+	$user_info = [
 		'id'         => $user['user_id'],
 		'title'      => $user['user_title'],
 		'email'      => $user['user_email'],
 		'first_name' => $user['user_first'],
 		'last_name'  => $user['user_last'],
 		'address'    => $user['address'],
-	);
+	];
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
@@ -123,7 +123,7 @@ function give_process_donation_form() {
 	$form_id = isset( $post_data['give-form-id'] ) ? absint( $post_data['give-form-id'] ) : 0;
 
 	$price        = isset( $post_data['give-amount'] ) ?
-		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) ) :
+		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => give_get_currency( $form_id ) ] ) ) :
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
@@ -151,7 +151,7 @@ function give_process_donation_form() {
 	);
 
 	// Setup donation information.
-	$donation_data = array(
+	$donation_data = [
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
@@ -160,7 +160,7 @@ function give_process_donation_form() {
 		'post_data'    => $post_data,
 		'gateway'      => $valid_data['gateway'],
 		'card_info'    => $valid_data['cc_info'],
-	);
+	];
 
 	// Add the user data for hooks.
 	$valid_data['user'] = $user;
@@ -345,16 +345,16 @@ function give_donation_form_validate_fields() {
 	}
 
 	// Start an array to collect valid data.
-	$valid_data = array(
+	$valid_data = [
 		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here).
 		'need_new_user'    => false,     // New user flag.
 		'need_user_login'  => false,     // Login user flag.
-		'logged_user_data' => array(),   // Logged user collected data.
-		'new_user_data'    => array(),   // New user collected data.
-		'login_user_data'  => array(),   // Login user collected data.
-		'guest_user_data'  => array(),   // Guest user collected data.
+		'logged_user_data' => [],   // Logged user collected data.
+		'new_user_data'    => [],   // New user collected data.
+		'login_user_data'  => [],   // Login user collected data.
+		'guest_user_data'  => [],   // Guest user collected data.
 		'cc_info'          => give_donation_form_validate_cc(), // Credit card info.
-	);
+	];
 
 	$form_id = (int) $post_data['give-form-id'];
 
@@ -458,9 +458,9 @@ function give_donation_form_validate_gateway() {
 				give_currency_filter(
 					give_format_amount(
 						give_get_form_minimum_price( $form_id ),
-						array(
+						[
 							'sanitize' => false,
-						)
+						]
 					)
 				)
 			)
@@ -475,9 +475,9 @@ function give_donation_form_validate_gateway() {
 				give_currency_filter(
 					give_format_amount(
 						give_get_form_maximum_price( $form_id ),
-						array(
+						[
 							'sanitize' => false,
-						)
+						]
 					)
 				)
 			)
@@ -504,7 +504,7 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
-	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => give_get_currency( $form_id ) ) ) : 0;
+	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => give_get_currency( $form_id ) ] ) : 0;
 	$price_id  = isset( $post_data['give-price-id'] ) ? absint( $post_data['give-price-id'] ) : '';
 
 	$variable_prices = give_has_variable_prices( $form_id );
@@ -578,23 +578,23 @@ function give_get_required_fields( $form_id ) {
 	$posted_data  = give_clean( filter_input_array( INPUT_POST ) );
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
-	$required_fields = array(
-		'give_email' => array(
+	$required_fields = [
+		'give_email' => [
 			'error_id'      => 'invalid_email',
 			'error_message' => __( 'Please enter a valid email address.', 'give' ),
-		),
-		'give_first' => array(
+		],
+		'give_first' => [
 			'error_id'      => 'invalid_first_name',
 			'error_message' => __( 'Please enter your first name.', 'give' ),
-		),
-	);
+		],
+	];
 
 	$name_title_prefix = give_is_name_title_prefix_required( $form_id );
 	if ( $name_title_prefix ) {
-		$required_fields['give_title'] = array(
+		$required_fields['give_title'] = [
 			'error_id'      => 'invalid_title',
 			'error_message' => __( 'Please enter your title.', 'give' ),
-		);
+		];
 	}
 
 	// If credit card fields related actions exists then check for the cc fields validations.
@@ -608,10 +608,10 @@ function give_get_required_fields( $form_id ) {
 			isset( $posted_data['card_number'] ) &&
 			empty( $posted_data['card_number'] )
 		) {
-			$required_fields['card_number'] = array(
+			$required_fields['card_number'] = [
 				'error_id'      => 'empty_card_number',
 				'error_message' => __( 'Please enter a credit card number.', 'give' ),
-			);
+			];
 		}
 
 		// Validate card cvc field for empty check.
@@ -619,10 +619,10 @@ function give_get_required_fields( $form_id ) {
 			isset( $posted_data['card_cvc'] ) &&
 			empty( $posted_data['card_cvc'] )
 		) {
-			$required_fields['card_cvc'] = array(
+			$required_fields['card_cvc'] = [
 				'error_id'      => 'empty_card_cvc',
 				'error_message' => __( 'Please enter a credit card CVC information.', 'give' ),
-			);
+			];
 		}
 
 		// Validate card name field for empty check.
@@ -630,10 +630,10 @@ function give_get_required_fields( $form_id ) {
 			isset( $posted_data['card_name'] ) &&
 			empty( $posted_data['card_name'] )
 		) {
-			$required_fields['card_name'] = array(
+			$required_fields['card_name'] = [
 				'error_id'      => 'empty_card_name',
 				'error_message' => __( 'Please enter a name of your credit card account holder.', 'give' ),
-			);
+			];
 		}
 
 		// Validate card expiry field for empty check.
@@ -641,37 +641,37 @@ function give_get_required_fields( $form_id ) {
 			isset( $posted_data['card_expiry'] ) &&
 			empty( $posted_data['card_expiry'] )
 		) {
-			$required_fields['card_expiry'] = array(
+			$required_fields['card_expiry'] = [
 				'error_id'      => 'empty_card_expiry',
 				'error_message' => __( 'Please enter a credit card expiry date.', 'give' ),
-			);
+			];
 		}
 	}
 
 	$require_address = give_require_billing_address( $payment_mode );
 
 	if ( $require_address ) {
-		$required_fields['card_address']    = array(
+		$required_fields['card_address']    = [
 			'error_id'      => 'invalid_card_address',
 			'error_message' => __( 'Please enter your primary billing address.', 'give' ),
-		);
-		$required_fields['card_zip']        = array(
+		];
+		$required_fields['card_zip']        = [
 			'error_id'      => 'invalid_zip_code',
 			'error_message' => __( 'Please enter your zip / postal code.', 'give' ),
-		);
-		$required_fields['card_city']       = array(
+		];
+		$required_fields['card_city']       = [
 			'error_id'      => 'invalid_city',
 			'error_message' => __( 'Please enter your billing city.', 'give' ),
-		);
-		$required_fields['billing_country'] = array(
+		];
+		$required_fields['billing_country'] = [
 			'error_id'      => 'invalid_country',
 			'error_message' => __( 'Please select your billing country.', 'give' ),
-		);
+		];
 
-		$required_fields['card_state'] = array(
+		$required_fields['card_state'] = [
 			'error_id'      => 'invalid_state',
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
-		);
+		];
 
 		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
@@ -698,22 +698,22 @@ function give_get_required_fields( $form_id ) {
 
 		$is_company_field_required = false;
 
-		if ( ! empty( $form_option ) && give_is_setting_enabled( $form_option, array( 'required' ) ) ) {
+		if ( ! empty( $form_option ) && give_is_setting_enabled( $form_option, [ 'required' ] ) ) {
 			$is_company_field_required = true;
 
-		} elseif ( 'global' === $form_option && give_is_setting_enabled( $global_setting, array( 'required' ) ) ) {
+		} elseif ( 'global' === $form_option && give_is_setting_enabled( $global_setting, [ 'required' ] ) ) {
 			$is_company_field_required = true;
 
-		} elseif ( empty( $form_option ) && give_is_setting_enabled( $global_setting, array( 'required' ) ) ) {
+		} elseif ( empty( $form_option ) && give_is_setting_enabled( $global_setting, [ 'required' ] ) ) {
 			$is_company_field_required = true;
 
 		}
 
 		if ( $is_company_field_required ) {
-			$required_fields['give_company_name'] = array(
+			$required_fields['give_company_name'] = [
 				'error_id'      => 'invalid_company',
 				'error_message' => __( 'Please enter Company Name.', 'give' ),
-			);
+			];
 		}
 	}
 
@@ -766,11 +766,11 @@ function give_donation_form_validate_logged_in_user() {
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
 	// Start empty array to collect valid user data.
-	$valid_user_data = array(
+	$valid_user_data = [
 
 		// Assume there will be errors.
 		'user_id' => - 1,
-	);
+	];
 
 	// Proceed only, if valid $user_id found.
 	if ( $user_id > 0 ) {
@@ -784,7 +784,7 @@ function give_donation_form_validate_logged_in_user() {
 		// Verify data.
 		if ( is_object( $user_data ) && $user_data->ID > 0 ) {
 			// Collected logged in user data.
-			$valid_user_data = array(
+			$valid_user_data = [
 				'user_id'    => $user_id,
 				'user_email' => ! empty( $post_data['give_email'] )
 					? sanitize_email( $post_data['give_email'] )
@@ -795,7 +795,7 @@ function give_donation_form_validate_logged_in_user() {
 				'user_last'  => ! empty( $post_data['give_last'] )
 					? $post_data['give_last']
 					: $user_data->last_name,
-			);
+			];
 
 			// Validate essential form fields.
 			give_donation_form_validate_name_fields( $post_data );
@@ -827,7 +827,7 @@ function give_donation_form_validate_logged_in_user() {
 function give_donation_form_validate_new_user() {
 	// Default user data.
 	$auto_generated_password = wp_generate_password();
-	$default_user_data       = array(
+	$default_user_data       = [
 		'give-form-id'           => '',
 		'user_id'                => - 1, // Assume there will be errors.
 		'user_first'             => '',
@@ -836,7 +836,7 @@ function give_donation_form_validate_new_user() {
 		'give_email'             => false,
 		'give_user_pass'         => $auto_generated_password,
 		'give_user_pass_confirm' => $auto_generated_password,
-	);
+	];
 
 	// Get data.
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
@@ -855,7 +855,7 @@ function give_donation_form_validate_new_user() {
 	give_donation_form_validate_name_fields( $user_data );
 
 	// Start an empty array to collect valid user data.
-	$valid_user_data = array(
+	$valid_user_data = [
 
 		// Assume there will be errors.
 		'user_id'    => - 1,
@@ -868,7 +868,7 @@ function give_donation_form_validate_new_user() {
 
 		// Get Password.
 		'user_pass'  => $user_data['give_user_pass'],
-	);
+	];
 
 	// Validate Required Form Fields.
 	give_validate_required_form_fields( $form_id );
@@ -897,11 +897,11 @@ function give_donation_form_validate_user_login() {
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
 	// Start an array to collect valid user data.
-	$valid_user_data = array(
+	$valid_user_data = [
 
 		// Assume there will be errors.
 		'user_id' => - 1,
-	);
+	];
 
 	// Bailout, if Username is empty.
 	if ( empty( $post_data['give_user_login'] ) ) {
@@ -947,14 +947,14 @@ function give_donation_form_validate_user_login() {
 			} else {
 
 				// Repopulate the valid user data array.
-				$valid_user_data = array(
+				$valid_user_data = [
 					'user_id'    => $user_data->ID,
 					'user_login' => $user_data->user_login,
 					'user_email' => $user_data->user_email,
 					'user_first' => $user_data->first_name,
 					'user_last'  => $user_data->last_name,
 					'user_pass'  => $user_pass,
-				);
+				];
 			}
 		} else {
 			// Empty password.
@@ -982,10 +982,10 @@ function give_donation_form_validate_guest_user() {
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
 	// Start an array to collect valid user data.
-	$valid_user_data = array(
+	$valid_user_data = [
 		// Set a default id for guests.
 		'user_id' => 0,
-	);
+	];
 
 	// Validate name fields.
 	give_donation_form_validate_name_fields( $post_data );
@@ -1045,7 +1045,7 @@ function give_donation_form_validate_guest_user() {
  *
  * @return  integer
  */
-function give_register_and_login_new_user( $user_data = array() ) {
+function give_register_and_login_new_user( $user_data = [] ) {
 	// Verify the array.
 	if ( empty( $user_data ) ) {
 		return - 1;
@@ -1057,7 +1057,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 
 	$user_args = apply_filters(
 		'give_insert_user_args',
-		array(
+		[
 			'user_login'      => isset( $user_data['user_login'] ) ? $user_data['user_login'] : '',
 			'user_pass'       => isset( $user_data['user_pass'] ) ? $user_data['user_pass'] : '',
 			'user_email'      => isset( $user_data['user_email'] ) ? $user_data['user_email'] : '',
@@ -1065,7 +1065,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 			'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
 			'user_registered' => date( 'Y-m-d H:i:s' ),
 			'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
-		),
+		],
 		$user_data
 	);
 
@@ -1116,7 +1116,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
  *
  * @return  array|bool
  */
-function give_get_donation_form_user( $valid_data = array() ) {
+function give_get_donation_form_user( $valid_data = [] ) {
 
 	// Initialize user.
 	$user      = false;
@@ -1186,7 +1186,7 @@ function give_get_donation_form_user( $valid_data = array() ) {
 	}
 
 	// Get the user's billing address details.
-	$user['address']            = array();
+	$user['address']            = [];
 	$user['address']['line1']   = ! empty( $post_data['card_address'] ) ? $post_data['card_address'] : false;
 	$user['address']['line2']   = ! empty( $post_data['card_address_2'] ) ? $post_data['card_address_2'] : false;
 	$user['address']['city']    = ! empty( $post_data['card_city'] ) ? $post_data['card_city'] : false;
@@ -1244,7 +1244,7 @@ function give_get_donation_cc_info() {
 	// Sanitize the values submitted with donation form.
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
 
-	$cc_info                   = array();
+	$cc_info                   = [];
 	$cc_info['card_name']      = ! empty( $post_data['card_name'] ) ? $post_data['card_name'] : '';
 	$cc_info['card_number']    = ! empty( $post_data['card_number'] ) ? $post_data['card_number'] : '';
 	$cc_info['card_cvc']       = ! empty( $post_data['card_cvc'] ) ? $post_data['card_cvc'] : '';
@@ -1280,7 +1280,7 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 	$country_code = strtoupper( $country_code );
 
-	$zip_regex = array(
+	$zip_regex = [
 		'AD' => 'AD\d{3}',
 		'AM' => '(37)?\d{4}',
 		'AR' => '^([A-Z]{1}\d{4}[A-Z]{3}|[A-Z]{1}\d{4}|\d{4})$',
@@ -1436,7 +1436,7 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 		'YU' => '\d{5}',
 		'ZA' => '\d{4}',
 		'ZM' => '\d{5}',
-	);
+	];
 
 	if ( ! isset( $zip_regex[ $country_code ] ) || preg_match( '/' . $zip_regex[ $country_code ] . '/i', $zip ) ) {
 		$ret = true;
@@ -1469,7 +1469,7 @@ function give_validate_donation_amount( $valid_data ) {
 	if ( $form->is_set_type_donation_form() ) {
 
 		// Sanitize donation amount.
-		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => $form_currency ) );
+		$post_data['give-amount'] = give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => $form_currency ] );
 
 		// Backward compatibility.
 		if ( $form->is_custom_price( $post_data['give-amount'] ) ) {
@@ -1488,8 +1488,8 @@ function give_validate_donation_amount( $valid_data ) {
 		}
 
 		// Sanitize donation amount.
-		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'], array( 'currency' => $form_currency ) );
-		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ), array( 'currency' => $form_currency ) );
+		$post_data['give-amount']     = give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => $form_currency ] );
+		$variable_price_option_amount = give_maybe_sanitize_amount( give_get_price_option_amount( $post_data['give-form-id'], $post_data['give-price-id'] ), [ 'currency' => $form_currency ] );
 		$new_price_id                 = '';
 
 		if ( $post_data['give-amount'] === $variable_price_option_amount ) {
@@ -1528,7 +1528,7 @@ function give_validate_donation_amount( $valid_data ) {
 				/* translators: %s: invalid donation amount */
 				__( 'Donation amount %s is invalid.', 'give' ),
 				give_currency_filter(
-					give_format_amount( $post_data['give-amount'], array( 'sanitize' => false ) )
+					give_format_amount( $post_data['give-amount'], [ 'sanitize' => false ] )
 				)
 			)
 		);
@@ -1547,16 +1547,17 @@ add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 1
 function give_validate_required_form_fields( $form_id ) {
 
 	// Sanitize values submitted with donation form.
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data          = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$requiredFormFields = give_get_required_fields( $form_id );
 
 	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+	foreach ( $requiredFormFields as $field_name => $value ) {
 
 		// Clean Up Data of the input fields.
 		$field_value = $post_data[ $field_name ];
 
 		// Check whether the required field is empty, then show the error message.
-		if ( in_array( $value, give_get_required_fields( $form_id ), true ) && empty( $field_value ) ) {
+		if ( empty( $field_value ) && in_array( $value, $requiredFormFields, true ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}

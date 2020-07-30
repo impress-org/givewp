@@ -2,9 +2,12 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\ConnectClient\ConnectClient;
 use Give\Helpers\ArrayDataSet;
+use Give\ConnectClient\ConnectClient;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 
 /**
  * Class AjaxRequestHandler
@@ -23,20 +26,26 @@ class AjaxRequestHandler {
 	 */
 	private $merchantDetails;
 
-	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails ) {
-		$this->webhooksRepository = $webhooksRepository;
-		$this->merchantDetails    = $merchantDetails;
-	}
+	/**
+	 * @var PayPalClient
+	 */
+	private $paypalClient;
 
 	/**
-	 * Setup hooks
-	 *
-	 * @since 2.8.0
+	 * @var ConnectClient
 	 */
-	public function boot() {
-		add_action( 'wp_ajax_give_paypal_commerce_user_on_boarded', [ $this, 'onBoardedUserAjaxRequestHandler' ] );
-		add_action( 'wp_ajax_give_paypal_commerce_get_partner_url', [ $this, 'onGetPartnerUrlAjaxRequestHandler' ] );
-		add_action( 'wp_ajax_give_paypal_commerce_disconnect_account', [ $this, 'removePayPalAccount' ] );
+	private $connectClient;
+
+	public function __construct(
+		Webhooks $webhooksRepository,
+		MerchantDetail $merchantDetails,
+		PayPalClient $paypalClient,
+		ConnectClient $connectClient
+	) {
+		$this->webhooksRepository = $webhooksRepository;
+		$this->merchantDetails    = $merchantDetails;
+		$this->paypalClient       = $paypalClient;
+		$this->connectClient      = $connectClient;
 	}
 
 	/**
@@ -45,13 +54,13 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onBoardedUserAjaxRequestHandler() {
-		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
+		$this->validateAdminRequest();
 
 		$partnerLinkInfo = get_option( OptionId::$partnerInfoOptionKey, [ 'nonce' => '' ] );
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
-				give( PayPalClient::class )->getEnvironment()->baseUrl() . '/v1/oauth2/token',
+				$this->paypalClient->getApiUrl( 'v1/oauth2/token' ),
 				[
 					'headers' => [
 						'Authorization' => sprintf(
@@ -88,13 +97,13 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function onGetPartnerUrlAjaxRequestHandler() {
-		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
+		$this->validateAdminRequest();
 
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
 				sprintf(
-					give( ConnectClient::class )->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
-					give( PayPalClient::class )->mode
+					$this->connectClient->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
+					$this->paypalClient->mode
 				),
 				[
 					'body' => [
@@ -120,7 +129,7 @@ class AjaxRequestHandler {
 	 * @since 2.8.0
 	 */
 	public function removePayPalAccount() {
-		$this->sendErrorOnAjaxRequestIfUserDoesNotHasPermission();
+		$this->validateAdminRequest();
 
 		// Remove the webhook from PayPal if there is one
 		if ( $webhookId = $this->webhooksRepository->getWebhookId() ) {
@@ -128,18 +137,99 @@ class AjaxRequestHandler {
 			$this->webhooksRepository->deleteWebhookId();
 		}
 
-		$this->merchantDetails->delete();
+		MerchantDetails::delete();
 
 		wp_send_json_success();
 	}
 
 	/**
-	 * Send error if user does not has capability to manage GiveWP settings.
+	 * Create order.
+	 *
+	 * @todo: handle payment create error on frontend.
 	 *
 	 * @since 2.8.0
 	 */
-	private function sendErrorOnAjaxRequestIfUserDoesNotHasPermission() {
+	public function createOrder() {
+		$this->validateFrontendRequest();
+
+		$postData = give_clean( $_POST );
+		$formId   = absint( $postData['give-form-id'] );
+
+		$data = [
+			'formId'         => $formId,
+			'donationAmount' => $postData['give-amount'],
+			'payer'          => [
+				'firstName' => $postData['give_first'],
+				'lastName'  => $postData['give_last'],
+				'email'     => $postData['give_email'],
+			],
+		];
+
+		try {
+			$result = give( PayPalOrder::class )->createOrder( $data );
+
+			wp_send_json_success(
+				[
+					'id' => $result,
+				]
+			);
+		} catch ( \Exception $ex ) {
+			wp_send_json_error(
+				[
+					'errorMsg' => $ex->getMessage(),
+				]
+			);
+		}
+	}
+
+	/**
+	 * Approve order.
+	 *
+	 * @todo: handle payment capture error on frontend.
+	 *
+	 * @since 2.8.0
+	 */
+	public function approveOrder() {
+		$this->validateFrontendRequest();
+
+		$orderId = give_clean( $_GET['order'] );
+
+		try {
+			$result = give( PayPalOrder::class )->approveOrder( $orderId );
+			wp_send_json_success(
+				[
+					'order' => $result,
+				]
+			);
+		} catch ( \Exception $ex ) {
+			wp_send_json_error(
+				[
+					'errorMsg' => $ex->getMessage(),
+				]
+			);
+		}
+	}
+
+	/**
+	 * Validate admin ajax request.
+	 *
+	 * @since 2.8.0
+	 */
+	private function validateAdminRequest() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			wp_send_json_error();
+		}
+	}
+
+	/**
+	 * Validate frontend ajax request.
+	 *
+	 * @since 2.8.0
+	 */
+	private function validateFrontendRequest() {
+		$formId = absint( $_POST['give-form-id'] );
+
+		if ( ! $formId || ! give_verify_donation_form_nonce( give_clean( $_POST['give-form-hash'] ), $formId ) ) {
 			wp_send_json_error();
 		}
 	}
