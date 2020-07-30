@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // Note: no-unused-vars rule is disabled while axios logic is not enabled
 
-//import axios from 'axios';
+import axios from 'axios';
 
 export const getWindowData = ( value ) => {
 	const data = window.giveOnboardingWizardData;
@@ -9,11 +9,11 @@ export const getWindowData = ( value ) => {
 };
 
 export const getAPIRoot = () => {
-	return 'givewp.local/';
+	return getWindowData( 'apiRoot' );
 };
 
 export const getAPINonce = () => {
-	return 'mock-nonce';
+	return getWindowData( 'apiNonce' );
 };
 
 export const redirectToSetupPage = () => {
@@ -29,38 +29,36 @@ export const redirectToSetupPage = () => {
  * @since 2.8.0
  */
 export const saveSettingWithOnboardingAPI = ( setting, value ) => {
-	// Example shape of returned data
-	return {
-		setting,
-		value,
-	};
-
 	// Logic for connecting to the Onboarding API
-	// An object with action: 'save' and satting: ${value} is passed to the API
+	// An object with action: 'save' and setting: ${value} is passed to the API
 	// An object of the same shape should be returned to confirm the value was stored as expected
 	// Note: When the below code is actually implemented, the ${value} should be
 	// stringified (using qs library or JSON stringify).
 
 	// // Setup cancel token for request
-	// const CancelToken = axios.CancelToken;
-	// const source = CancelToken.source();
+	const CancelToken = axios.CancelToken;
+	const source = CancelToken.source();
 
-	// axios.get( getAPIRoot() + 'give-api/v2/onboarding/', {
-	// 	cancelToken: source.token,
-	// 	params: {
-	// 		action: 'save',
-	// 		setting: value,
-	// 	},
-	// 	headers: {
-	// 		'X-WP-Nonce': getAPINonce(),
-	// 	},
-	// } )
-	// 	.then( function( response ) {
-	// 		// Do something on success
-	// 	} )
-	// 	.catch( function() {
-	// 		// Do something on error
-	// 	} );
+	axios.post( getAPIRoot() + 'give-api/v2/onboarding/settings', {
+		cancelToken: source.token,
+		setting: setting,
+		value: JSON.stringify( value ),
+		headers: {
+			'X-WP-Nonce': getAPINonce(),
+			'Content-Type': 'multipart/form-data',
+		},
+	} )
+		.then( function( response ) {
+			console.log( response ); // eslint-disable-line no-console
+		} )
+		.catch( function() {
+			console.log( 'caught' ); // eslint-disable-line no-console
+		} );
+
+	return {
+		setting,
+		value,
+	};
 };
 
 /**
