@@ -59,7 +59,7 @@ class MerchantDetails {
 		$optionName = 'give_paypal_commerce_client_token';
 
 		if ( $optionValue = get_transient( $optionName ) ) {
-			return '';
+			return $optionValue;
 		}
 
 		$merchant = give( MerchantDetail::class );
