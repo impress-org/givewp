@@ -33,6 +33,7 @@ class AdvancedCardFields extends PaymentMethod {
 			fields: this.getFields(),
 		} );
 
+		// @todo: add form submit event only if processing payment with advanced card fields.
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 	}
 
