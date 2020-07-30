@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give_Admin_Settings;
 
@@ -87,7 +88,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount[ $mode ]['token']        = $tokenInfo;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
-		$merchantDetails->save();
+		MerchantDetails::save( $merchantDetails );
 
 		$this->deleteTempOptions();
 
