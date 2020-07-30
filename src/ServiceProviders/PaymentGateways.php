@@ -9,6 +9,7 @@ use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
 use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
 use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -123,7 +124,7 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton(
 			MerchantDetail::class,
 			static function () {
-				return ( new MerchantDetail() )->boot();
+				return MerchantDetails::getDetails();
 			}
 		);
 	}
