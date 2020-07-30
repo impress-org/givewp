@@ -14,6 +14,7 @@ import Step from '../components/step';
 
 // Import steps
 import DonationForm from './steps/donation-form';
+import Features from './steps/features';
 import FundraisingNeeds from './steps/fundraising-needs';
 import Introduction from './steps/introduction';
 import Location from './steps/location';
@@ -29,14 +30,15 @@ const App = () => {
 	// Initial app state (available in component through useStoreValue)
 	const initialState = {
 		currentStep: 0,
-		lastStep: 4,
+		lastStep: 5,
 		configuration: {
 			userType: 'individual',
 			causeType: 'school',
 			country: 'USA',
 			state: 'WA',
 			currency: 'USD',
-			fundraisingNeeds: [ 'one-time-donations' ],
+			features: [ 'one-time-donations' ],
+			fundraisingNeeds: [],
 		},
 		countriesList: [
 			{
@@ -87,13 +89,18 @@ const App = () => {
 			showInNavigation: true,
 		},
 		{
-			title: __( 'Fundraising Needs', 'give' ),
-			component: <FundraisingNeeds />,
+			title: __( 'Features', 'give' ),
+			component: <Features />,
 			showInNavigation: true,
 		},
 		{
 			title: __( 'Donation Form', 'give' ),
 			component: <DonationForm />,
+			showInNavigation: true,
+		},
+		{
+			title: __( 'Fundraising Needs', 'give' ),
+			component: <FundraisingNeeds />,
 			showInNavigation: true,
 		},
 	];

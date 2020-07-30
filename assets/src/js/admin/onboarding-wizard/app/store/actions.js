@@ -68,3 +68,13 @@ export const setFundraisingNeeds = ( needs ) => {
 	};
 };
 
+// Dispatch SET_FEATURES action
+export const setFeatures = ( features ) => {
+	return {
+		type: 'SET_FEATURES',
+		payload: {
+			features,
+		},
+	};
+};
+

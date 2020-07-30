@@ -59,6 +59,14 @@ export const reducer = ( state, action ) => {
 					fundraisingNeeds: action.payload.needs,
 				},
 			};
+		case 'SET_FEATURES':
+			saveSettingWithOnboardingAPI( 'features', action.payload.features );
+			return {
+				...state,
+				configuration: { ...state.configuration,
+					features: action.payload.features,
+				},
+			};
 		default:
 			return state;
 	}
