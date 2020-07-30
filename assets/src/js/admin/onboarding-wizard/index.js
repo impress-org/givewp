@@ -9,6 +9,9 @@ import ReactDOM from 'react-dom';
 // Onboarding Wizard app
 import App from './app/index.js';
 
+// Import styles
+import './style.scss';
+
 // Render application
 ReactDOM.render(
 	<App />,

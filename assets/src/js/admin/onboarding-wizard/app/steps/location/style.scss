@@ -3,7 +3,7 @@
 	flex-direction: column;
 	align-items: center;
 
-	> h2 {
+	> h1 {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 600;
 		font-size: 24px;
@@ -16,6 +16,10 @@
 	.give-obw-card {
 		width: 450px;
 		margin-bottom: 84px;
+
+		label {
+			margin-bottom: 20px;
+		}
 
 		select {
 			width: 100%;

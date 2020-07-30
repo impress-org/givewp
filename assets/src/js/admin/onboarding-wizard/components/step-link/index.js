@@ -23,7 +23,7 @@ const StepLink = ( { title, stepNumber } ) => {
 		<div className="give-obw-step-link">
 			<button className="give-obw-step-button" onClick={ () => dispatch( goToStep( stepNumber ) ) }>
 				<div className={ `give-obw-step-icon${ currentStep >= stepNumber ? ' give-obw-step-icon--green' : '' }` }>
-					{ currentStep <= stepNumber ? stepNumber : <Checkmark /> }
+					{ currentStep <= stepNumber ? stepNumber : <Checkmark index={ stepNumber } /> }
 				</div>
 				<div className="give-obw-step-title">
 					{ title }

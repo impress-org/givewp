@@ -25,38 +25,41 @@ const YourCause = () => {
 
 	return (
 		<div className="give-obw-your-cause">
-			<h2>{ __( 'What does fundraising look for you?', 'give' ) }</h2>
+			<h1>{ __( 'What does fundraising look for you?', 'give' ) }</h1>
 			<CardInput values={ userType } onChange={ ( values ) => dispatch( setUserType( values ) ) } checkMultiple={ false } >
 				<Card value="individual">
 					<IndividualIcon />
 					<p>{ __( 'I\'m fundraising as an', 'give' ) }</p>
-					<h2>{ __( 'Individual', 'give' ) }</h2>
+					<strong>{ __( 'Individual', 'give' ) }</strong>
 				</Card>
 				<Card value="organization">
 					<OrganizationIcon />
 					<p>{ __( 'I\'m fundraising within an', 'give' ) }</p>
-					<h2>{ __( 'Organization', 'give' ) }</h2>
+					<strong>{ __( 'Organization', 'give' ) }</strong>
 				</Card>
 				<Card value="other">
 					<OtherIcon />
 					<p>{ __( 'My fundraising is', 'give' ) }</p>
-					<h2>{ __( 'Other', 'give' ) }</h2>
+					<strong>{ __( 'Other', 'give' ) }</strong>
 				</Card>
 			</CardInput>
-			<h3>{ __( 'What is your cause?', 'give' ) }</h3>
+			<h2>{ __( 'What is your cause?', 'give' ) }</h2>
 			<p>{ __( '(select all that apply)', 'give' ) }</p>
-			<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={
-				[
-					{
-						value: 'religous',
-						label: 'Religous',
-					},
-					{
-						value: 'school',
-						label: 'School',
-					},
-				]
-			} />
+			<label>
+				<span className="screen-reader-text">{ __( 'What is your cause?', 'give' ) }</span>
+				<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={
+					[
+						{
+							value: 'religous',
+							label: 'Religous',
+						},
+						{
+							value: 'school',
+							label: 'School',
+						},
+					]
+				} />
+			</label>
 			<ContinueButton />
 		</div>
 	);

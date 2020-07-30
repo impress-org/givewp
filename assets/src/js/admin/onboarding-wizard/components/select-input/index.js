@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // Import styles
 import './style.scss';
 
-const SelectInput = ( { label, value, onChange, options } ) => {
+const SelectInput = ( { value, onChange, options } ) => {
 	const optionElements = options.map( ( option, index ) => {
 		return (
 			<option value={ option.value } key={ index }>{ option.label }</option>
@@ -12,7 +12,6 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 	} );
 	return (
 		<div className="give-obw-select-input">
-			{ label && <p>{ label }</p> }
 			<select value={ value } className="give-obw-select-input" onChange={ ( event ) => onChange( event.target.value ) } >
 				{ optionElements }
 			</select>

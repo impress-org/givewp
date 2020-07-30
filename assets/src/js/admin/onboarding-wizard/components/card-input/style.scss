@@ -24,6 +24,18 @@
 	}
 
 	input:checked + label > .give-obw-card {
-		border: 1px solid rgb(105, 184, 107);
+		// Using a border as a selected state with border-box box-sizing,
+		// creates a change in available content space within the box.
+		// Instead, a box-shadow maintains width and border-radius.
+		box-shadow: 0 0 0 3px rgb(105, 184, 107);
+	}
+
+	// For an input that is active or in focus underline the label text.
+	input + label strong {
+		border-bottom: 2px solid transparent;
+	}
+	input:active + label strong,
+	input:focus + label strong {
+		border-color: #4fa651;
 	}
 }

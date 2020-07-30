@@ -26,39 +26,39 @@ const FundraisingNeeds = () => {
 
 	return (
 		<div className="give-obw-fundraising-needs">
-			<h2>{ __( 'What do you need to support your cause?', 'give' ) }</h2>
+			<h1>{ __( 'What do you need to support your cause?', 'give' ) }</h1>
 			<p>
 				{ __( 'Take your fundraising to the next level with free and premium add-ons.', 'give' ) }
 			</p>
 			<CardInput values={ needs } onChange={ ( value ) => dispatch( setFundraisingNeeds( value ) ) } >
 				<Card value="one-time-donations">
 					<OneTimeDonationIcon />
-					<h2>{ __( 'One-Time Donations', 'give' ) }</h2>
+					<strong>{ __( 'One-Time Donations', 'give' ) }</strong>
 				</Card>
 				<Card value="recurring-donations">
 					<Badge label="Add-On" />
 					<RecurringDonationsIcon />
-					<h2>{ __( 'Recurring Donations', 'give' ) }</h2>
+					<strong>{ __( 'Recurring Donations', 'give' ) }</strong>
 				</Card>
 				<Card value="donors-cover-fees">
 					<Badge label="Add-On" />
 					<DonorsCoverFeesIcon />
-					<h2>{ __( 'Donors Cover Fees', 'give' ) }</h2>
+					<strong>{ __( 'Donors Cover Fees', 'give' ) }</strong>
 				</Card>
 				<Card value="custom-form-fields">
 					<Badge label="Add-On" />
 					<CustomFormFieldsIcon />
-					<h2>{ __( 'Custom Form Fields', 'give' ) }</h2>
+					<strong>{ __( 'Custom Form Fields', 'give' ) }</strong>
 				</Card>
 				<Card value="multiple-currencies">
 					<Badge label="Add-On" />
 					<MultipleCurrenciesIcon />
-					<h2>{ __( 'Multiple Currencies', 'give' ) }</h2>
+					<strong>{ __( 'Multiple Currencies', 'give' ) }</strong>
 				</Card>
 				<Card value="dedicate-donations">
 					<Badge label="Add-On" />
 					<DedicateDonationsIcon />
-					<h2>{ __( 'Dedicate Donations', 'give' ) }</h2>
+					<strong>{ __( 'Dedicate Donations', 'give' ) }</strong>
 				</Card>
 			</CardInput>
 			<ContinueButton />
