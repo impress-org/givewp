@@ -128,18 +128,6 @@ class PayPalOrder {
 	}
 
 	/**
-	 * Get payment detail from PayPal order.
-	 *
-	 * @since 2.8.0
-	 *
-	 *
-	 * @return PayPalPayment
-	 */
-	public function getPayment() {
-		return PayPalPayment::fromArray( (array) current( $this->purchaseUnit->payments->captures ) );
-	}
-
-	/**
 	 * Validate order given in array format.
 	 *
 	 * @since 2.8.0
