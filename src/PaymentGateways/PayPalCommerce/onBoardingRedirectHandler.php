@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give_Admin_Settings;

@@ -7,7 +7,7 @@ use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
 use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
-use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\ScriptLoader;

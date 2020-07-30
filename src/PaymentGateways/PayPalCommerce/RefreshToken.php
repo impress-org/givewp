@@ -3,6 +3,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 
 use Give\Helpers\ArrayDataSet;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
 
 /**

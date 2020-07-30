@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;

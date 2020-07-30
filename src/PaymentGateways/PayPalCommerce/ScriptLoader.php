@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give_Admin_Settings;
 use PayPalCheckoutSdk\Core\AccessTokenRequest;

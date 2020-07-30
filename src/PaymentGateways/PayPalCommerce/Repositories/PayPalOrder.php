@@ -1,7 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\PaymentGateways\PayPalCommerce\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PartnerDetails;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use InvalidArgumentException;
