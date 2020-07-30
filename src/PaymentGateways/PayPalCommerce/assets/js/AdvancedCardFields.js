@@ -25,36 +25,15 @@ class AdvancedCardFields extends PaymentMethod {
 		}
 
 		const creatOrderHandler = this.createOrderHandler.bind( this );
-		const self = this;
+		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 
-		const hf = await paypal.HostedFields.render( {
+		const hostedCardFields = await paypal.HostedFields.render( {
 			createOrder: creatOrderHandler,
 			styles: this.getComputedInputFieldStyle(),
 			fields: this.getFields(),
 		} );
 
-		this.jQueryForm.on( 'submit', event => {
-			event.preventDefault();
-
-			hf.submit().then( payload => { // eslint-disable-line
-				Give.form.fn.showProcessingState();
-
-				const result = self.approvePayment();
-
-				if ( ! result ) {
-					Give.form.fn.hideProcessingState();
-
-					if ( result.data.errorMsg ) {
-						alert( result.data.errorMsg ); //eslint-disable-line
-					}
-				}
-
-				DonationForm.attachOrderIdToForm( result.data.order.id );
-				self.jQueryForm.submit();
-			} );
-
-			return false;
-		} );
+		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 	}
 
 	/**
@@ -107,12 +86,15 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * @since 2.8.0
 	 *
+	 * @param {string} orderId Order id.
+	 *
 	 * @return {Promise<any>} Return request response.
 	 */
-	async approvePayment() {
+	async approvePayment( orderId ) {
 		// eslint-disable-next-line
-		const response = await fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_approve_order&order=` + payload.orderId, {
+		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_approve_order&order=` + orderId, {
 			method: 'POST',
+			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
 
 		return await response.json();
@@ -148,6 +130,52 @@ class AdvancedCardFields extends PaymentMethod {
 				color: computedStyle.getPropertyValue( 'color' ),
 			},
 		};
+	}
+
+	/**
+	 *
+	 * Handle donation form submit event.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} event jQuery event object.
+	 *
+	 * @return {boolean} Return boolean false value to stop form submission.
+	 */
+	async onSubmitHandlerForDonationForm( event ) {
+		event.preventDefault();
+
+		const payload = await event.data.hostedCardFields.submit();
+
+		await this.onApproveHandler( payload );
+
+		return false;
+	}
+
+	/**
+	 * Handle PayPal payment on approve event.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} payload PayPal response object after payment completion.
+	 */
+	async onApproveHandler( payload ) {
+		Give.form.fn.showProcessingState();
+
+		const result = await this.approvePayment( payload.orderId );
+
+		if ( ! result.success ) {
+			Give.form.fn.hideProcessingState();
+
+			if ( result.data.errorMsg ) {
+				alert(result.data.errorMsg); //eslint-disable-line
+			}
+		}
+
+		await DonationForm.attachOrderIdToForm( this.form, result.data.order.id );
+
+		this.jQueryForm.off( 'submit' );
+		this.jQueryForm.submit();
 	}
 }
 
