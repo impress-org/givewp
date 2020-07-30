@@ -58,12 +58,12 @@ export const setCurrency = ( currency ) => {
 	};
 };
 
-// Dispatch SET_FUNDRAISING_NEEDS action
-export const setFundraisingNeeds = ( needs ) => {
+// Dispatch SET_ADDONS action
+export const setAddons = ( addons ) => {
 	return {
-		type: 'SET_FUNDRAISING_NEEDS',
+		type: 'SET_ADDONS',
 		payload: {
-			needs,
+			addons,
 		},
 	};
 };

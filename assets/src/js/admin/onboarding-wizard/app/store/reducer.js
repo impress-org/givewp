@@ -51,12 +51,12 @@ export const reducer = ( state, action ) => {
 					currency: action.payload.currency,
 				},
 			};
-		case 'SET_FUNDRAISING_NEEDS':
-			saveSettingWithOnboardingAPI( 'fundraising_needs', action.payload.fundraisingNeeds );
+		case 'SET_ADDONS':
+			saveSettingWithOnboardingAPI( 'addons', action.payload.addons );
 			return {
 				...state,
 				configuration: { ...state.configuration,
-					fundraisingNeeds: action.payload.needs,
+					addons: action.payload.addons,
 				},
 			};
 		case 'SET_FEATURES':

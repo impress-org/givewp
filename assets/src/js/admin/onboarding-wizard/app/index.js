@@ -13,12 +13,12 @@ import Wizard from '../components/wizard';
 import Step from '../components/step';
 
 // Import steps
-import DonationForm from './steps/donation-form';
-import Features from './steps/features';
-import FundraisingNeeds from './steps/fundraising-needs';
 import Introduction from './steps/introduction';
-import Location from './steps/location';
 import YourCause from './steps/your-cause';
+import Location from './steps/location';
+import Features from './steps/features';
+import DonationForm from './steps/donation-form';
+import Addons from './steps/addons';
 
 /**
  * Onboarding Wizard app component
@@ -38,7 +38,7 @@ const App = () => {
 			state: 'WA',
 			currency: 'USD',
 			features: [ 'one-time-donations' ],
-			fundraisingNeeds: [],
+			addons: [],
 		},
 		countriesList: [
 			{
@@ -99,8 +99,8 @@ const App = () => {
 			showInNavigation: true,
 		},
 		{
-			title: __( 'Fundraising Needs', 'give' ),
-			component: <FundraisingNeeds />,
+			title: __( 'Add-ons', 'give' ),
+			component: <Addons />,
 			showInNavigation: true,
 		},
 	];
