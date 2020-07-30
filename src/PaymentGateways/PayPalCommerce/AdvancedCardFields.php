@@ -185,13 +185,13 @@ EOT;
 		return <<<EOT
 			<div id="give-card-expiration-wrap" class="card-expiration form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
 				<div>
-					<label for="give-card-expiration-field-<?php echo esc_html( $idPrefix ); ?>" class="give-label">
+					<label for="give-card-expiration-field-$idPrefix" class="give-label">
 						$label
 						<span class="give-required-indicator">*</span>
 						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
 					</label>
 
-					<div id="give-card-expiration-field-<?php echo esc_html( $idPrefix ); ?>" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
+					<div id="give-card-expiration-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
 				</div>
 			</div>
 EOT;
