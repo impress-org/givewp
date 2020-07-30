@@ -3,9 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\ArrayDataSet;
-use PayPalCheckoutSdk\Core\PayPalHttpClient;
-use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
-use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 
@@ -155,44 +152,22 @@ class AjaxRequestHandler {
 		$postData = give_clean( $_POST );
 		$formId   = absint( $postData['give-form-id'] );
 
-		$request = new OrdersCreateRequest();
-		$request->payPalPartnerAttributionId( PartnerDetails::$attributionId );
-		$request->body = [
-			'intent'              => 'CAPTURE',
-			'purchase_units'      => [
-				[
-					'reference_id'        => get_post_field( 'post_name', $formId ),
-					'description'         => '',
-					'amount'              => [
-						'value'         => give_maybe_sanitize_amount( $postData['give-amount'] ),
-						'currency_code' => give_get_currency( $_POST['give-form-id'] ),
-					],
-					'payee'               => [
-						'email_address' => $this->merchantDetails->merchantId,
-						'merchant_id'   => $this->merchantDetails->merchantIdInPayPal,
-					],
-					'payer'               => [
-						'given_name'    => $postData['give_first'],
-						'surname'       => $postData['give_last'],
-						'email_address' => $postData['give_email'],
-					],
-					'payment_instruction' => [
-						'disbursement_mode' => 'INSTANT',
-					],
-				],
-			],
-			'application_context' => [
-				'shipping_preference' => 'NO_SHIPPING',
-				'user_action'         => 'PAY_NOW',
+		$data = [
+			'formId'         => $formId,
+			'donationAmount' => $postData['give-amount'],
+			'payer'          => [
+				'firstName' => $postData['give_first'],
+				'lastName'  => $postData['give_last'],
+				'email'     => $postData['give_email'],
 			],
 		];
 
 		try {
-			$response = $this->paypalClient->getHttpClient()->execute( $request );
+			$result = give( PayPalOrder::class )->createOrder( $data );
 
 			wp_send_json_success(
 				[
-					'id' => $response->result->id,
+					'id' => $result,
 				]
 			);
 		} catch ( \Exception $ex ) {
@@ -213,15 +188,14 @@ class AjaxRequestHandler {
 	 */
 	public function approveOrder() {
 		$this->validateFrontendRequest();
+
 		$orderId = give_clean( $_GET['order'] );
 
-		$request = new OrdersCaptureRequest( $orderId );
-
 		try {
-			$response = $this->paypalClient->getHttpClient()->execute( $request );
+			$result = give( PayPalOrder::class )->approveOrder( $orderId );
 			wp_send_json_success(
 				[
-					'order' => $response->result,
+					'order' => $result,
 				]
 			);
 		} catch ( \Exception $ex ) {
