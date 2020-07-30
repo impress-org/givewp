@@ -27,27 +27,29 @@ class AdvancedCardFields extends PaymentMethod {
 		const creatOrderHandler = this.createOrderHandler.bind( this );
 		const self = this;
 
-		await paypal.HostedFields.render( {
+		const hf = await paypal.HostedFields.render( {
 			createOrder: creatOrderHandler,
-			styles: {
-				input: this.getComputedInputFieldStyle(),
-			},
+			styles: this.getComputedInputFieldStyle(),
 			fields: this.getFields(),
 		} );
 
 		this.jQueryForm.on( 'submit', event => {
 			event.preventDefault();
 
-			paypal.HostedFields.submit().then( payload => { // eslint-disable-line
+			hf.submit().then( payload => { // eslint-disable-line
 				Give.form.fn.showProcessingState();
 
-				const result = self.isPaymentApproved();
+				const result = self.approvePayment();
 
 				if ( ! result ) {
 					Give.form.fn.hideProcessingState();
-					alert( 'Something went wrong' ); //eslint-disable-line
+
+					if ( result.data.errorMsg ) {
+						alert( result.data.errorMsg ); //eslint-disable-line
+					}
 				}
 
+				DonationForm.attachOrderIdToForm( result.data.order.id );
 				self.jQueryForm.submit();
 			} );
 
@@ -140,9 +142,11 @@ class AdvancedCardFields extends PaymentMethod {
 		const computedStyle = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
 
 		return {
-			'font-size': computedStyle.getPropertyValue( 'font-size' ),
-			'font-family': computedStyle.getPropertyValue( 'font-family' ),
-			color: computedStyle.getPropertyValue( 'color' ),
+			input: {
+				'font-size': computedStyle.getPropertyValue( 'font-size' ),
+				'font-family': computedStyle.getPropertyValue( 'font-family' ),
+				color: computedStyle.getPropertyValue( 'color' ),
+			},
 		};
 	}
 }
