@@ -48,7 +48,7 @@ export default {
 			const loader = document.createElement( 'div' );
 			const textNode = document.createElement( 'div' );
 
-			textNode.innerText = Give.fn.getGlobalVar( 'purchase_loading' );
+			textNode.innerText = Give.fn.getGlobalVar( 'textForOverlayScreen' );
 
 			loader.setAttribute( 'id', 'give-processing-state-template' );
 			loader.append( textNode );
