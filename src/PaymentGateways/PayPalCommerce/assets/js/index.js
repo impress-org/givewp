@@ -22,7 +22,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// On form submit prevent submission for PayPal commerce.
 	// Form submission will be take care internally by smart buttons or advanced card fields.
 	jQuery( 'form.give-form' ).on( 'submit', e => {
-		if ( ! DonationForm.isPayPalCommerceSelected( jQuery( this ) ) || ! DonationForm.isDonationFormHtml5Valid( jQuery( this ).get( 0 ) ) ) {
+		if ( ! DonationForm.isPayPalCommerceSelected( jQuery( this ) ) ) {
 			return true;
 		}
 
