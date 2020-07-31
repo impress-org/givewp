@@ -65,7 +65,7 @@ class MerchantDetails {
 		$merchant = give( MerchantDetail::class );
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
-				give( PayPalClient::class )->getApiUrl( '/v1/identity/generate-token' ),
+				give( PayPalClient::class )->getApiUrl( 'v1/identity/generate-token' ),
 				[
 					'headers' => [
 						'Accept'          => 'application/json',
@@ -85,6 +85,10 @@ class MerchantDetails {
 		}
 
 		$response = ArrayDataSet::camelCaseKeys( json_decode( $response, true ) );
+
+		if ( ! array_key_exists( 'clientToken', $response ) ) {
+			return '';
+		}
 
 		set_transient(
 			$optionName,
