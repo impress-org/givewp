@@ -240,14 +240,6 @@ class GiveStripeElements {
 		const billing_details = {
 			name: '',
 			email: '',
-			address: {
-				line1: '',
-				line2: '',
-				city: '',
-				state: '',
-				postal_code: '',
-				country: '',
-			},
 		};
 		const firstName = formElement.querySelector( 'input[name="give_first"]' ).value;
 		const lastName = formElement.querySelector( 'input[name="give_last"]' ).value;
