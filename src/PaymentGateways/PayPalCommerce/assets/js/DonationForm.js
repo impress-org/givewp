@@ -51,6 +51,19 @@ class DonationForm {
 	static isPayPalCommerceSelected( $form ) {
 		return 'paypal-commerce' === Give.form.fn.getGateway( $form );
 	}
+
+	/**
+	 * Add error notices to donation form.
+	 * Note: this function will add error at beginning of credit card fields section.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} $form Jquery Form object
+	 * @param {string} errors Error list HTML.
+	 */
+	static addErrors( $form, errors ) {
+		$form.find( '#give-paypal-commerce-smart-buttons-wrap' ).before( errors );
+	}
 }
 
 export default DonationForm;
