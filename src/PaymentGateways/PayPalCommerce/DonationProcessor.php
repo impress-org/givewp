@@ -58,12 +58,12 @@ class DonationProcessor {
 			esc_html__( 'Payment Error', 'give' ),
 			/* translators: %s: payment data */
 			sprintf(
-				esc_html__( 'The payment creation failed before processing the Razorpay gateway request. Payment data: %s', 'give' ),
+				esc_html__( 'The payment creation failed before processing the PayPalCommerce gateway request. Payment data: %s', 'give' ),
 				print_r( $donationFormData, true )
 			)
 		);
 
-		give_set_error( 'give', __( 'An error occurred while processing your payment. Please try again.', 'give' ) );
+		give_set_error( 'give', esc_html__( 'An error occurred while processing your payment. Please try again.', 'give' ) );
 
 		// Problems? Send back.
 		give_send_back_to_checkout();
