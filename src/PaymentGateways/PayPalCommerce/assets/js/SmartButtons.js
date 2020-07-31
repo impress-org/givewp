@@ -1,4 +1,4 @@
-/* globals paypal, Give, FormData */
+/* globals paypal, Give, FormData, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
@@ -85,12 +85,27 @@ class SmartButtons extends PaymentMethod {
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
 	async createOrderHandler(data, actions) { // eslint-disable-line
+		Give.form.fn.removeErrors( this.jQueryForm );
+
 		// eslint-disable-next-line
 		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
 		const responseJson = await response.json();
+		let errorDetail = {};
+
+		if ( responseJson.data.hasOwnProperty( 'error' ) ) {
+			if ( null === responseJson.data.error ) {
+				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+				return null;
+			}
+
+			errorDetail = responseJson.data.error.details[ 0 ];
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+
+			return null;
+		}
 
 		return responseJson.data.id;
 	}
@@ -122,22 +137,27 @@ class SmartButtons extends PaymentMethod {
 		//   (2) Other non-recoverable errors -> Show a failure message
 		//   (3) Successful transaction -> Show a success / thank you message
 
-		// Your server defines the structure of 'orderData', which may differ
-		const errorDetail = responseJson.data.hasOwnProperty( 'error' ) && responseJson.data.error.details[ 0 ];
-		if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-			Give.form.fn.hideProcessingState();
+		let errorDetail = {};
+		if ( responseJson.data.hasOwnProperty( 'error' ) ) {
 			Give.form.fn.disable( this.jQueryForm, false );
+			Give.form.fn.hideProcessingState();
 
-			// Recoverable state, see: "Handle Funding Failures"
-			// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
-			return actions.restart();
-		}
+			if ( null === responseJson.data.error ) {
+				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+				return;
+			}
 
-		if ( errorDetail ) {
+			errorDetail = responseJson.data.error.details[ 0 ];
+			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
+				Give.form.fn.hideProcessingState();
+				Give.form.fn.disable( this.jQueryForm, false );
+
+				// Recoverable state, see: "Handle Funding Failures"
+				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
+				return actions.restart();
+			}
+
 			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
-			Give.form.fn.disable( this.jQueryForm, false );
-			Give.form.fn.hideProcessingState();
-
 			return;
 		}
 
