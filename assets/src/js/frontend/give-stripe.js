@@ -22,6 +22,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
 		const stripeElements = new GiveStripeElements( formElement );
 		const setupStripeElement = stripeElements.setupStripeElement();
@@ -57,10 +58,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 
 			// Bailout, if Stripe is not the selected gateway.
 			if ( 'stripe' === selectedGateway ) {
-				// Create Payment Method.
 				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
-				// formElement.submit();
-
+				e.preventDefault();
 			} else if ( 'stripe_checkout' === selectedGateway ) {
 				const stripeModal = formElement.querySelector( '.give-stripe-checkout-modal' );
 				const modalAmountElement = stripeModal.querySelector( '.give-stripe-checkout-donation-amount' );
@@ -93,8 +92,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 					} );
 				}
 			}
-
-			e.preventDefault();
 		}
 	} );
 } );
