@@ -109,6 +109,18 @@ EOT;
 			[ 'give-styles' ],
 			GIVE_VERSION
 		);
+
+		wp_localize_script(
+			'give-paypal-commerce-js',
+			'givePayPalCommerce',
+			[
+				'paypalCardInfoErrorPrefixes' => [
+					'expirationDateField' => esc_html__( 'Card Expiration Date:', 'give' ),
+					'cardNumberField'     => esc_html__( 'Card Number:', 'give' ),
+					'cardCvcField'        => esc_html__( 'Card CVC:', 'give' ),
+				],
+			]
+		);
 	}
 
 	/**
