@@ -47,9 +47,29 @@ class SettingsRoute implements RestRoute {
 						],
 					],
 				],
-				// Register our schema callback.
-				// 'schema' => [ $this, 'getSchema' ],
+				'schema' => [ $this, 'getSchema' ],
 			]
 		);
+	}
+
+	public function getSchema() {
+		return [
+			// This tells the spec of JSON Schema we are using which is draft 4.
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			// The title property marks the identity of the resource.
+			'title'      => 'onboarding',
+			'type'       => 'object',
+			// In JSON Schema you can specify object properties in the properties attribute.
+			'properties' => [
+				'setting' => [
+					'description' => esc_html__( 'The reference name for the setting being updated.', 'give' ),
+					'type'        => 'string',
+				],
+				'value'   => [
+					'description' => esc_html__( 'The value of the setting being updated.', 'give' ),
+					'type'        => 'string',
+				],
+			],
+		];
 	}
 }
