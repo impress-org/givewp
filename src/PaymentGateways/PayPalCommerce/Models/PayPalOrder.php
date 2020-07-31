@@ -139,7 +139,7 @@ class PayPalOrder {
 	private function validate( $array ) {
 		$required = [ 'id', 'intent', 'purchase_units', 'create_time', 'update_time', 'links' ];
 
-		// PayPal does not send following parameter in Order (completed with card payment) details.
+		// PayPal does not send following parameter in Order (completed with advanced card fields payment method) details.
 		if ( ! isset( $array['payment_source'] ) ) {
 			$required = array_merge( $required, [ 'payer', 'status' ] );
 		}
@@ -149,8 +149,8 @@ class PayPalOrder {
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException(
 				sprintf(
-					__( 'To create a PayPalOrder object, please provide valid %1$s', 'give' ),
-					implode( ',', $required )
+					esc_html__( 'To create a PayPalOrder object, please provide valid %1$s', 'give' ),
+					implode( ', ', $required )
 				)
 			);
 		}
