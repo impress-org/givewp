@@ -152,8 +152,9 @@ class AdvancedCardFields extends PaymentMethod {
 
 		const self = this;
 		const data = event.data;
+		const getExtraCardDetails = this.getExtraCardDetails.bind( this );
 
-		const payload = await data.hostedCardFields.submit().catch( error => {
+		const payload = await data.hostedCardFields.submit( getExtraCardDetails ).catch( error => {
 			const errorStringByGroup = {};
 			const errors = [];
 
@@ -237,6 +238,21 @@ class AdvancedCardFields extends PaymentMethod {
 
 		this.jQueryForm.off( 'submit' );
 		this.jQueryForm.submit();
+	}
+
+	/**
+	 * Get extra card detail form like card name etc.
+	 *
+	 * In future we can add billing field: https://developer.paypal.com/docs/business/checkout/advanced-card-payments/
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return {{cardholderName: *}} Card details object.
+	 */
+	getExtraCardDetails() {
+		return {
+			cardholderName: this.form.getElementById( '#card_name' ).value,
+		};
 	}
 }
 
