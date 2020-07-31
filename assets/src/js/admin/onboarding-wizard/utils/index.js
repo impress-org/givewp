@@ -44,12 +44,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 	// Note: When the below code is actually implemented, the ${value} should be
 	// stringified (using qs library or JSON stringify).
 
-	// // Setup cancel token for request
-	const CancelToken = axios.CancelToken;
-	const source = CancelToken.source();
-
 	axios.post( getAPIRoot() + 'give-api/v2/onboarding/settings', {
-		cancelToken: source.token,
 		setting: setting,
 		value: JSON.stringify( value ),
 	}, {
@@ -78,22 +73,14 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  * @since 2.8.0
  */
 export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
-	// Setup cancel token for request
-	const CancelToken = axios.CancelToken;
-	const source = CancelToken.source();
-
 	axios.get( getAPIRoot() + 'give-api/v2/onboarding/location', {
-		cancelToken: source.token,
 		params: {
 			countryCode: country,
 		},
-	},
-	{
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
 		},
-	}
-	)
+	} )
 		.then( ( response ) => response.data )
 		.then( ( data ) => dispatch( setStateList( data.states ) ) );
 };
@@ -113,12 +100,7 @@ export const getCurrencyWithOnboardingAPI = ( country ) => {
 	// An object with action: 'get_currency' and country: ${country} is passed to the API
 	// A string with currency code for the requested country code is returned
 
-	// // Setup cancel token for request
-	// const CancelToken = axios.CancelToken;
-	// const source = CancelToken.source();
-
 	// axios.get( getAPIRoot() + 'give-api/v2/onboarding/', {
-	// 	cancelToken: source.token,
 	// 	params: {
 	// 		action: 'get_currency',
 	// 		country,
