@@ -86,6 +86,10 @@ class MerchantDetails {
 
 		$response = ArrayDataSet::camelCaseKeys( json_decode( $response, true ) );
 
+		if ( ! array_key_exists( 'clientToken', $response ) ) {
+			return '';
+		}
+
 		set_transient(
 			$optionName,
 			$response['clientToken'],
