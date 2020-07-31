@@ -777,7 +777,7 @@ export default {
 				const $error = document.createElement( 'p' );
 				$error.classList.add( 'give_error' );
 
-				$error.innerText = error.message;
+				$error.innerHTML = error.message;
 
 				$errorContainer.append( $error );
 			} );
