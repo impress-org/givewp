@@ -4,6 +4,8 @@ namespace Give\Onboarding\Wizard;
 
 defined( 'ABSPATH' ) || exit;
 
+use Give\Onboarding\Helpers\FormatList;
+
 /**
  * Onboarding Wizard admin page class
  *
@@ -115,8 +117,6 @@ class Page {
 
 		wp_set_script_translations( 'give-admin-onboarding-wizard-app', 'give' );
 
-		$countryList = give_get_country_list();
-		$statesList  = give_get_states( 'US' );
 		wp_localize_script(
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
@@ -125,26 +125,8 @@ class Page {
 				'apiNonce'   => wp_create_nonce( 'wp_rest' ),
 				'setupUrl'   => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
 				'currencies' => array_keys( give_get_currencies_list() ),
-				'countries'  => array_map(
-					function( $value, $label ) {
-						return [
-							'value' => $value,
-							'label' => $label,
-						];
-					},
-					array_keys( $countryList ),
-					$countryList
-				),
-				'states'     => array_map(
-					function( $value, $label ) {
-						return [
-							'value' => $value,
-							'label' => $label,
-						];
-					},
-					array_keys( $statesList ),
-					$statesList
-				),
+				'countries'  => FormatList::fromKeyValue( give_get_country_list() ),
+				'states'     => FormatList::fromKeyValue( give_get_states( 'US' ) ),
 			]
 		);
 

@@ -4,6 +4,7 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
+use Give\Onboarding\Helpers\FormatList;
 
 class LocationRoute implements RestRoute {
 
@@ -17,16 +18,7 @@ class LocationRoute implements RestRoute {
 		$statesList[''] = '-';
 
 		return [
-			'states' => array_map(
-				function( $value, $label ) {
-					return [
-						'value' => $value,
-						'label' => $label,
-					];
-				},
-				array_keys( $statesList ),
-				$statesList
-			),
+			'states' => FormatList::fromKeyValue( $statesList ),
 		];
 	}
 
