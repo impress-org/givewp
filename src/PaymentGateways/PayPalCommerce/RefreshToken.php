@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
 
 /**
@@ -56,7 +57,7 @@ class RefreshToken {
 		$tokenDetails = ArrayDataSet::camelCaseKeys( (array) $response->result );
 
 		$merchant->setTokenDetails( $tokenDetails );
-		$merchant->save();
+		MerchantDetails::save( $merchant );
 
 		$this->registerCronJobToRefreshToken( $tokenDetails['expiresIn'] );
 	}
