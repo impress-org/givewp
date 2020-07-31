@@ -52,9 +52,9 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 		cancelToken: source.token,
 		setting: setting,
 		value: JSON.stringify( value ),
+	}, {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
-			'Content-Type': 'multipart/form-data',
 		},
 	} )
 		.then( function( response ) {
@@ -87,11 +87,13 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
 		params: {
 			countryCode: country,
 		},
+	},
+	{
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
-			'Content-Type': 'multipart/form-data',
 		},
-	} )
+	}
+	)
 		.then( ( response ) => response.data )
 		.then( ( data ) => dispatch( setStateList( data.states ) ) );
 };

@@ -30,22 +30,23 @@ class LocationRoute implements RestRoute {
 			'give-api/v2',
 			$this->endpoint,
 			[
-				// Here we register the readable endpoint
 				[
-					'methods'  => 'GET',
-					'callback' => [ $this, 'handleRequest' ],
-					// 'permission_callback' => [ $this, 'permissionsCheck' ],
-					'args'     => [
+					'methods'             => 'GET',
+					'callback'            => [ $this, 'handleRequest' ],
+					'permission_callback' => function() {
+						return current_user_can( 'manage_options' );
+					},
+					'args'                => [
 						'countryCode' => [
-							'type'     => 'string',
-							'required' => true,
+							'type'              => 'string',
+							'required'          => true,
 							// 'validate_callback' => [ $this, 'validateSetting' ],
-							// 'sanitize_callback' => [ $this, 'sanitizeSetting' ],
+							'sanitize_callback' => 'sanitize_text_field',
 						],
 					],
 				],
 				// Register our schema callback.
-				// 'schema' => [ $this, 'getReportSchema' ],
+				// 'schema' => [ $this, 'getSchema' ],
 			]
 		);
 	}

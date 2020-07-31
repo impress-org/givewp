@@ -26,28 +26,29 @@ class SettingsRoute implements RestRoute {
 			'give-api/v2',
 			$this->endpoint,
 			[
-				// Here we register the readable endpoint
 				[
-					'methods'  => 'POST',
-					'callback' => [ $this, 'handleRequest' ],
-					// 'permission_callback' => [ $this, 'permissionsCheck' ],
-					'args'     => [
+					'methods'             => 'POST',
+					'callback'            => [ $this, 'handleRequest' ],
+					'permission_callback' => function() {
+						return current_user_can( 'manage_options' );
+					},
+					'args'                => [
 						'setting' => [
-							'type'     => 'string',
-							'required' => true,
+							'type'              => 'string',
+							'required'          => true,
 							// 'validate_callback' => [ $this, 'validateSetting' ],
-							// 'sanitize_callback' => [ $this, 'sanitizeSetting' ],
+							'sanitize_callback' => 'sanitize_text_field',
 						],
 						'value'   => [
-							'type'     => 'string',
-							'required' => false,
+							'type'              => 'string',
+							'required'          => false,
 							// 'validate_callback' => [ $this, 'validateValue' ],
-							// 'sanitize_callback' => [ $this, 'sanitizeValue' ],
+							'sanitize_callback' => 'sanitize_text_field',
 						],
 					],
 				],
 				// Register our schema callback.
-				// 'schema' => [ $this, 'getReportSchema' ],
+				// 'schema' => [ $this, 'getSchema' ],
 			]
 		);
 	}
