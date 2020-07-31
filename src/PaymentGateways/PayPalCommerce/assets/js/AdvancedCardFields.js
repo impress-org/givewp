@@ -215,14 +215,22 @@ class AdvancedCardFields extends PaymentMethod {
 		if ( ! result.success ) {
 			Give.form.fn.hideProcessingState();
 
-			if ( result.data.errorMsg ) {
+			if ( null === result.data.error ) {
 				Give.form.fn.addErrorsAndResetDonationButton(
 					this.jQueryForm,
-					Give.form.fn.getErrorHTML( [ { message: result.data.errorMsg } ] )
+					Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] )
 				);
 
 				return;
 			}
+
+			const errorDetail = result.data.error.details[ 0 ];
+			Give.form.fn.addErrorsAndResetDonationButton(
+				this.jQueryForm,
+				Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] )
+			);
+
+			return;
 		}
 
 		await DonationForm.attachOrderIdToForm( this.form, result.data.order.id );
