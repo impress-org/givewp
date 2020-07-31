@@ -103,13 +103,12 @@ class SmartButtons extends PaymentMethod {
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
 	 *
-	 * @return {Promise<unknown>} Return whether or not PayPal payment captured.
+	 * @return {*} Return whether or not PayPal payment captured.
 	 */
 	async onApproveHandler( data, actions ) {
 		Give.form.fn.showProcessingState();
 		Give.form.fn.disable( this.jQueryForm, true );
-
-		const self = this;
+		Give.form.fn.removeErrors( this.jQueryForm );
 
 		// eslint-disable-next-line
 		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
@@ -124,12 +123,10 @@ class SmartButtons extends PaymentMethod {
 		//   (3) Successful transaction -> Show a success / thank you message
 
 		// Your server defines the structure of 'orderData', which may differ
-		const errorDetail = Array.isArray( responseJson.data.order.details ) && responseJson.data.order.details[ 0 ];
-		const orderData = responseJson.data.order;
-
+		const errorDetail = responseJson.data.hasOwnProperty( 'error' ) && responseJson.data.error.details[ 0 ];
 		if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
 			Give.form.fn.hideProcessingState();
-			Give.form.fn.disable( self.jQueryForm, false );
+			Give.form.fn.disable( this.jQueryForm, false );
 
 			// Recoverable state, see: "Handle Funding Failures"
 			// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
@@ -137,28 +134,21 @@ class SmartButtons extends PaymentMethod {
 		}
 
 		if ( errorDetail ) {
-			let msg = 'Sorry, your transaction could not be processed.';
-			if ( errorDetail.description ) {
-				msg += '\n\n' + errorDetail.description;
-			}
-			if ( orderData.debug_id ) {
-				msg += ' (' + orderData.debug_id + ')';
-			}
-
-			// Show a failure message
-			alert(msg); // eslint-disable-line
-
-			Give.form.fn.disable( self.jQueryForm, false );
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+			Give.form.fn.disable( this.jQueryForm, false );
 			Give.form.fn.hideProcessingState();
+
+			return;
 		}
 
-		await DonationForm.attachOrderIdToForm( self.form, orderData.id );
+		const orderData = responseJson.data.order;
+		await DonationForm.attachOrderIdToForm( this.form, orderData.id );
 
 		// Do not submit  empty or filled Name credit card field with form.
 		// If we do that we will get `empty_card_name` error or other.
 		// We are removing this field before form submission because this donation processed with smart button.
-		self.removeCreditCardFields();
-		self.form.submit();
+		this.removeCreditCardFields();
+		this.form.submit();
 	}
 
 	/**
