@@ -4,6 +4,8 @@ namespace Give\Onboarding\Wizard;
 
 defined( 'ABSPATH' ) || exit;
 
+use Give\Onboarding\Helpers\FormatList;
+
 /**
  * Onboarding Wizard admin page class
  *
@@ -119,8 +121,12 @@ class Page {
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
 			[
+				'apiRoot'    => esc_url_raw( rest_url() ),
+				'apiNonce'   => wp_create_nonce( 'wp_rest' ),
 				'setupUrl'   => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
 				'currencies' => array_keys( give_get_currencies_list() ),
+				'countries'  => FormatList::fromKeyValue( give_get_country_list() ),
+				'states'     => FormatList::fromKeyValue( give_get_states( 'US' ) ),
 			]
 		);
 
