@@ -5,6 +5,7 @@ namespace Give\Onboarding\Routes;
 use WP_REST_Request;
 use Give\API\RestRoute;
 use Give\Onboarding\Helpers\FormatList;
+use Give\Onboarding\Helpers\CountryCode;
 
 class LocationRoute implements RestRoute {
 
@@ -40,7 +41,7 @@ class LocationRoute implements RestRoute {
 						'countryCode' => [
 							'type'              => 'string',
 							'required'          => true,
-							// 'validate_callback' => [ $this, 'validateSetting' ],
+							'validate_callback' => 'give_get_country_name_by_key',
 							'sanitize_callback' => 'sanitize_text_field',
 						],
 					],
