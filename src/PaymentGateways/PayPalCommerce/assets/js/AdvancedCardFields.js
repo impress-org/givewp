@@ -144,6 +144,10 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @return {boolean} Return boolean false value to stop form submission.
 	 */
 	async onSubmitHandlerForDonationForm( event ) {
+		if ( ! DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
+			return true;
+		}
+
 		event.preventDefault();
 
 		const self = this;
