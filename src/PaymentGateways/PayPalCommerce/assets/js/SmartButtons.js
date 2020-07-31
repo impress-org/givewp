@@ -95,7 +95,7 @@ class SmartButtons extends PaymentMethod {
 		const responseJson = await response.json();
 		let errorDetail = {};
 
-		if ( responseJson.data.hasOwnProperty( 'error' ) ) {
+		if ( ! responseJson.success ) {
 			if ( null === responseJson.data.error ) {
 				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
 				return null;
@@ -138,7 +138,7 @@ class SmartButtons extends PaymentMethod {
 		//   (3) Successful transaction -> Show a success / thank you message
 
 		let errorDetail = {};
-		if ( responseJson.data.hasOwnProperty( 'error' ) ) {
+		if ( ! responseJson.success ) {
 			Give.form.fn.disable( this.jQueryForm, false );
 			Give.form.fn.hideProcessingState();
 
