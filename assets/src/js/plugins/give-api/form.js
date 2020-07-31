@@ -737,7 +737,7 @@ export default {
 
 		/**
 		 * Add error notices to donation form.
-		 * Note: this function will add error before "Donote Now" button.
+		 * Note: this function will add error before "Donate Now" button.
 		 *
 		 * @since 2.8.0
 		 *
