@@ -176,7 +176,7 @@ class AjaxRequestHandler {
 		} catch ( \Exception $ex ) {
 			wp_send_json_error(
 				[
-					'errorMsg' => $ex->getMessage(),
+					'error' => json_decode( $ex->getMessage(), true ),
 				]
 			);
 		}
@@ -204,7 +204,7 @@ class AjaxRequestHandler {
 		} catch ( \Exception $ex ) {
 			wp_send_json_error(
 				[
-					'errorMsg' => $ex->getMessage(),
+					'error' => json_decode( $ex->getMessage(), true ),
 				]
 			);
 		}
