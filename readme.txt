@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.7.2
+Stable tag: 2.7.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.7.3:  =
+* Fix: The Donation Reports were not correctly calculating renewals processed via the Recurring Donations add-on leading to incorrect figures. [#4883](https://github.com/impress-org/givewp/issues/4883)
+* Fix: The new Multi-Step Form Template was not correctly marking donations as anonymous if the donor elected to give anonymously. [#4959](https://github.com/impress-org/givewp/issues/4959)
+* Fix: Reports have been improved to account for the use of a comma as the currency decimal separator. Previously, when using a ',' as the decimal separator for a currency, it produced inconsistent errors in terms of decimal placement for totals displayed on the Reports page. Furthermore, using a ',' for the decimal separator resulted in consistent misplacement of the decimal in the Average Donations totals. [#4926](https://github.com/impress-org/givewp/issues/4926)
+* Fix: The Chosen select dropdown field now can properly have separate values and labels. [#4943](https://github.com/impress-org/givewp/issues/4943)
+* Fix: Fixed a typo in the default Thank You page content for the new Multi-step Form Template. [#4909](https://github.com/impress-org/givewp/issues/4909)
+* Fix: The `give_get_meta` filter had a duplicate parameter passed and now properly passes all parameters. [#4464](https://github.com/impress-org/givewp/issues/4464)
 
 = 2.7.2: July 6th, 2020 =
 * Fix: The 2.7.0 upgrade routine could cause WP-Admin to be incorrectly redirected to the update success screen for certain hosting environments after completion. [#4900](https://github.com/impress-org/givewp/issues/4900)
