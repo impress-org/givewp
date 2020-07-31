@@ -1,4 +1,4 @@
-/* globals paypal, Give */
+/* globals paypal, Give, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
@@ -146,8 +146,46 @@ class AdvancedCardFields extends PaymentMethod {
 	async onSubmitHandlerForDonationForm( event ) {
 		event.preventDefault();
 
-		const payload = await event.data.hostedCardFields.submit().catch( error => {
-			console.log( error.message ); //eslint-disable-line
+		const self = this;
+		const data = event.data;
+
+		const payload = await data.hostedCardFields.submit().catch( error => {
+			const errorStringByGroup = {};
+			const errors = [];
+
+			error.details.forEach( detail => {
+				if ( ! errorStringByGroup.hasOwnProperty( `${ detail.field }` ) ) {
+					// setup error label.
+					let label = '';
+
+					if ( -1 !== detail.field.indexOf( 'expiry' ) ) {
+						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.expirationDateField;
+					} else if ( -1 !== detail.field.indexOf( 'number' ) ) {
+						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardNumberField;
+					} else if ( -1 !== detail.field.indexOf( 'security_code' ) ) {
+						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardCvcField;
+					}
+
+					if ( label ) {
+						errorStringByGroup[ `${ detail.field }` ] = [ `<strong>${ label }</strong>` ];
+					} else {
+						errorStringByGroup[ `${ detail.field }` ] = [];
+					}
+				}
+
+				errorStringByGroup[ `${ detail.field }` ].push( `${ detail.description }.` );
+			} );
+
+			for ( const field in errorStringByGroup ) {
+				errors.push( {
+					message: errorStringByGroup[ field ].join( ' ' ),
+				} );
+			}
+
+			Give.form.fn.addErrorsAndResetDonationButton(
+				self.jQueryForm,
+				Give.form.fn.getErrorHTML( errors )
+			);
 		} );
 
 		// Approve payment on if we did not get any error.
@@ -174,7 +212,12 @@ class AdvancedCardFields extends PaymentMethod {
 			Give.form.fn.hideProcessingState();
 
 			if ( result.data.errorMsg ) {
-				alert(result.data.errorMsg); //eslint-disable-line
+				Give.form.fn.addErrorsAndResetDonationButton(
+					this.jQueryForm,
+					Give.form.fn.getErrorHTML( [ { message: result.data.errorMsg } ] )
+				);
+
+				return;
 			}
 		}
 
