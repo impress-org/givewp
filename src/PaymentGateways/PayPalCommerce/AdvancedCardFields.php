@@ -151,7 +151,7 @@ EOT;
 		$placeholder = esc_attr__( 'Cardholder Name', 'give' );
 
 		return <<<EOT
-			<div id="give-card-name-wrap" class="form-row form-row-two-thirds form-row-responsive">
+			<div id="give-card-name-wrap" class="form-row form-row-two-thirds form-row-responsive give-paypal-commerce-cc-field-wrap">
 				<label for="card_name" class="give-label">
 					$label
 					<span class="give-required-indicator">*</span>
