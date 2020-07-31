@@ -70,15 +70,15 @@ class AdvancedCardFields extends PaymentMethod {
 		return {
 			number: {
 				selector: `#${ this.form.querySelector( 'div[id^="give-card-number-field-"]' ).getAttribute( 'id' ) }`,
-				placeholder: 'Card Number',
+				placeholder: givePayPalCommerce.cardFieldPlaceholders.cardNumber,
 			},
 			cvv: {
 				selector: `#${ this.form.querySelector( 'div[id^="give-card-cvc-field-"]' ).getAttribute( 'id' ) }`,
-				placeholder: 'CVV',
+				placeholder: givePayPalCommerce.cardFieldPlaceholders.cardCvc,
 			},
 			expirationDate: {
 				selector: `#${ this.form.querySelector( 'div[id^="give-card-expiration-field-"]' ).getAttribute( 'id' ) }`,
-				placeholder: 'MM/YY',
+				placeholder: givePayPalCommerce.cardFieldPlaceholders.expirationDate,
 			},
 		};
 	}
