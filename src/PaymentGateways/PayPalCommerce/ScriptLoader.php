@@ -114,11 +114,12 @@ EOT;
 			'give-paypal-commerce-js',
 			'givePayPalCommerce',
 			[
-				'paypalCardInfoErrorPrefixes' => [
+				'paypalCardInfoErrorPrefixes'  => [
 					'expirationDateField' => esc_html__( 'Card Expiration Date:', 'give' ),
 					'cardNumberField'     => esc_html__( 'Card Number:', 'give' ),
 					'cardCvcField'        => esc_html__( 'Card CVC:', 'give' ),
 				],
+				'defaultDonationCreationError' => esc_html__( 'An error occurred while processing your payment. Please try again.', 'give' ),
 			]
 		);
 	}
