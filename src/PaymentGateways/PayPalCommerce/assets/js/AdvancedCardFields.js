@@ -146,9 +146,14 @@ class AdvancedCardFields extends PaymentMethod {
 	async onSubmitHandlerForDonationForm( event ) {
 		event.preventDefault();
 
-		const payload = await event.data.hostedCardFields.submit();
+		const payload = await event.data.hostedCardFields.submit().catch( error => {
+			console.log( error.message ); //eslint-disable-line
+		} );
 
-		await this.onApproveHandler( payload );
+		// Approve payment on if we did not get any error.
+		if ( payload ) {
+			await this.onApproveHandler( payload );
+		}
 
 		return false;
 	}
