@@ -167,6 +167,7 @@ class SmartButtons extends PaymentMethod {
 		// Do not submit  empty or filled Name credit card field with form.
 		// If we do that we will get `empty_card_name` error or other.
 		// We are removing this field before form submission because this donation processed with smart button.
+		this.jQueryForm.off( 'submit' );
 		this.removeCreditCardFields();
 		this.form.submit();
 	}
