@@ -1,58 +1,17 @@
-/* globals jQuery, paypal, Give, FormData */
+/* globals paypal, Give, FormData, givePayPalCommerce */
 import DonationForm from './DonationForm';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * PayPal Smart Buttons.
  */
-class SmartButtons {
-	/**
-	 * Constructor.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {object} form selector.
-	 */
-	constructor( form ) {
-		this.form = form;
-		this.jQueryForm = jQuery( form );
-		this.ajaxurl = Give.fn.getGlobalVar( 'ajaxurl' );
-	}
-
-	/**
-	 * Render PayPal smart buttons.
-	 *
-	 * @since 2.8.0
-	 */
-	boot() {
-		jQuery( document ).on( 'give_gateway_loaded', { self: this }, this.onGatewayLoadBoot );
-
-		if ( DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
-			this.renderSmartButtons();
-		}
-	}
-
-	/**
-	 * Render paypal buttons when reload payment gateways.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {object} evt Event object.
-	 * @param {*} response Form fields HTML for gateway.
-	 * @param {string} formIdAttr Form Id attribute value.
-	 */
-	onGatewayLoadBoot( evt, response, formIdAttr ) {
-		const self = evt.data.self;
-		if ( formIdAttr === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
-			self.renderSmartButtons();
-		}
-	}
-
+class SmartButtons extends PaymentMethod {
 	/**
 	 * Render smart buttons.
 	 *
 	 * @since 2.8.0
 	 */
-	renderSmartButtons() {
+	renderPaymentMethodOption() {
 		const smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
 
 		if ( ! smartButtonContainer ) {
@@ -126,12 +85,27 @@ class SmartButtons {
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
 	async createOrderHandler(data, actions) { // eslint-disable-line
+		Give.form.fn.removeErrors( this.jQueryForm );
+
 		// eslint-disable-next-line
 		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
 		const responseJson = await response.json();
+		let errorDetail = {};
+
+		if ( ! responseJson.success ) {
+			if ( null === responseJson.data.error ) {
+				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+				return null;
+			}
+
+			errorDetail = responseJson.data.error.details[ 0 ];
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+
+			return null;
+		}
 
 		return responseJson.data.id;
 	}
@@ -144,13 +118,14 @@ class SmartButtons {
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
 	 *
-	 * @return {Promise<unknown>} Return whether or not PayPal payment captured.
+	 * @return {*} Return whether or not PayPal payment captured.
 	 */
 	async onApproveHandler( data, actions ) {
 		Give.form.fn.showProcessingState();
 		Give.form.fn.disable( this.jQueryForm, true );
+		Give.form.fn.removeErrors( this.jQueryForm );
 
-		const self = this;
+		// eslint-disable-next-line
 		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_approve_order&order=` + data.orderID, {
 			method: 'post',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
@@ -162,43 +137,39 @@ class SmartButtons {
 		//   (2) Other non-recoverable errors -> Show a failure message
 		//   (3) Successful transaction -> Show a success / thank you message
 
-		// Your server defines the structure of 'orderData', which may differ
-		const errorDetail = Array.isArray( responseJson.data.order.details ) && responseJson.data.order.details[ 0 ];
+		let errorDetail = {};
+		if ( ! responseJson.success ) {
+			Give.form.fn.disable( this.jQueryForm, false );
+			Give.form.fn.hideProcessingState();
+
+			if ( null === responseJson.data.error ) {
+				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+				return;
+			}
+
+			errorDetail = responseJson.data.error.details[ 0 ];
+			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
+				Give.form.fn.hideProcessingState();
+				Give.form.fn.disable( this.jQueryForm, false );
+
+				// Recoverable state, see: "Handle Funding Failures"
+				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
+				return actions.restart();
+			}
+
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+			return;
+		}
+
 		const orderData = responseJson.data.order;
+		await DonationForm.attachOrderIdToForm( this.form, orderData.id );
 
-		if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-			Give.form.fn.hideProcessingState();
-			Give.form.fn.disable( self.jQueryForm, false );
-
-			// Recoverable state, see: "Handle Funding Failures"
-			// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
-			return actions.restart();
-		}
-
-		if ( errorDetail ) {
-			let msg = 'Sorry, your transaction could not be processed.';
-			if ( errorDetail.description ) {
-				msg += '\n\n' + errorDetail.description;
-			}
-			if ( orderData.debug_id ) {
-				msg += ' (' + orderData.debug_id + ')';
-			}
-
-			// Show a failure message
-			alert(msg); // eslint-disable-line
-
-			Give.form.fn.disable( self.jQueryForm, false );
-			Give.form.fn.hideProcessingState();
-		}
-
-		DonationForm.attachOrderIdToForm( self.form, orderData.id )
-			.then( () => {
-				// Do not submit  empty or filled Name credit card field with form.
-				// If we do that we will get `empty_card_name` error or other.
-				// We are removing this field before form submission because this donation processed with smart button.
-				self.removeCreditCardFields();
-				self.form.submit();
-			} );
+		// Do not submit  empty or filled Name credit card field with form.
+		// If we do that we will get `empty_card_name` error or other.
+		// We are removing this field before form submission because this donation processed with smart button.
+		this.jQueryForm.off( 'submit' );
+		this.removeCreditCardFields();
+		this.form.submit();
 	}
 
 	/**

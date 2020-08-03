@@ -18,7 +18,7 @@ class AdvancedCardFields {
 	 */
 	public function addCreditCardForm( $formId, $args, $echo = true ) {
 		ob_start();
-		$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
+		$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 		do_action( 'give_before_cc_fields', $formId ); ?>
 
@@ -30,8 +30,15 @@ class AdvancedCardFields {
 			<?php echo $this->getSslNotice(); ?>
 
 			<div id="give-paypal-commerce-smart-buttons-wrap" class="form-row">
-				<div id="smart-buttons-<?php echo esc_html( $id_prefix ); ?>"></div>
+				<div id="smart-buttons-<?php echo esc_html( $idPrefix ); ?>"></div>
 			</div>
+
+			<?php
+			echo $this->cardNumberField( $idPrefix );
+			echo $this->cardCvcField( $idPrefix );
+			echo $this->cardNameField();
+			echo $this->cardExpirationField( $idPrefix )
+			?>
 
 		</fieldset>
 		<?php
@@ -74,5 +81,119 @@ class AdvancedCardFields {
 			'<div id="give_secure_site_wrapper"><span class="give-icon padlock"></span><span>%1$s</span></div>',
 			esc_html__( 'This is a secure SSL encrypted payment.', 'give' )
 		);
+	}
+
+	/**
+	 * Return card number field html.
+	 *
+	 * @param string $idPrefix
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function cardNumberField( $idPrefix ) {
+		$label   = esc_html__( 'Card Number', 'give' );
+		$tooltip = esc_attr__( 'The (typically) 16 digits on the front of your credit card.', 'give' );
+
+		return <<<EOT
+			<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-paypal-commerce-cc-field-wrap">
+				<div>
+					<label for="give-card-number-field-$idPrefix" class="give-label">
+						$label
+						<span class="give-required-indicator">*</span>
+						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+						<span class="card-type"></span>
+					</label>
+					<div id="give-card-number-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-number-field"></div>
+				</div>
+			</div>
+EOT;
+	}
+
+	/**
+	 * Return card cvc field html.
+	 *
+	 * @param string $idPrefix
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function cardCvcField( $idPrefix ) {
+		$label   = esc_html__( 'CVC', 'give' );
+		$tooltip = esc_attr__( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' );
+
+		return <<<EOT
+			<div id="give-card-cvc-wrap" class="form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
+				<div>
+					<label for="give-card-cvc-field-$idPrefix" class="give-label">
+						$label
+						<span class="give-required-indicator">*</span>
+						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+					</label>
+					<div id="give-card-cvc-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-cvc-field"></div>
+				</div>
+			</div>
+EOT;
+	}
+
+	/**
+	 * Return card name field html.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function cardNameField() {
+		$label       = esc_html__( 'Cardholder Name', 'give' );
+		$tooltip     = esc_attr__( 'The name of the credit card account holder.', 'give' );
+		$placeholder = esc_attr__( 'Cardholder Name', 'give' );
+
+		return <<<EOT
+			<div id="give-card-name-wrap" class="form-row form-row-two-thirds form-row-responsive give-paypal-commerce-cc-field-wrap">
+				<label for="card_name" class="give-label">
+					$label
+					<span class="give-required-indicator">*</span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+				</label>
+				<input
+					type="text"
+					autocomplete="off"
+					id="card_name"
+					name="card_name"
+					class="card-name give-input required"
+					placeholder="$placeholder"
+				/>
+			</div>
+EOT;
+	}
+
+	/**
+	 * Return card expiration  field html.
+	 *
+	 * @param string $idPrefix
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function cardExpirationField( $idPrefix ) {
+		$label   = esc_html__( 'Expiration', 'give' );
+		$tooltip = esc_attr__( 'The date your credit card expires, typically on the front of the card.', 'give' );
+
+		return <<<EOT
+			<div id="give-card-expiration-wrap" class="card-expiration form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
+				<div>
+					<label for="give-card-expiration-field-$idPrefix" class="give-label">
+						$label
+						<span class="give-required-indicator">*</span>
+						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+					</label>
+
+					<div id="give-card-expiration-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
+				</div>
+			</div>
+EOT;
 	}
 }

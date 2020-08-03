@@ -176,7 +176,7 @@ class AjaxRequestHandler {
 		} catch ( \Exception $ex ) {
 			wp_send_json_error(
 				[
-					'errorMsg' => $ex->getMessage(),
+					'error' => json_decode( $ex->getMessage(), true ),
 				]
 			);
 		}
@@ -204,7 +204,7 @@ class AjaxRequestHandler {
 		} catch ( \Exception $ex ) {
 			wp_send_json_error(
 				[
-					'errorMsg' => $ex->getMessage(),
+					'error' => json_decode( $ex->getMessage(), true ),
 				]
 			);
 		}
@@ -217,7 +217,7 @@ class AjaxRequestHandler {
 	 */
 	private function validateAdminRequest() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
-			wp_send_json_error();
+			wp_die();
 		}
 	}
 
@@ -230,7 +230,7 @@ class AjaxRequestHandler {
 		$formId = absint( $_POST['give-form-id'] );
 
 		if ( ! $formId || ! give_verify_donation_form_nonce( give_clean( $_POST['give-form-hash'] ), $formId ) ) {
-			wp_send_json_error();
+			wp_die();
 		}
 	}
 }

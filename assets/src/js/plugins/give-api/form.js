@@ -737,7 +737,7 @@ export default {
 
 		/**
 		 * Add error notices to donation form.
-		 * Note: this function will add error before "Donote Now" button.
+		 * Note: this function will add error before "Donate Now" button.
 		 *
 		 * @since 2.8.0
 		 *
@@ -757,6 +757,55 @@ export default {
 		 */
 		removeErrors: function( $form ) {
 			$form.find( '.give_errors' ).remove();
+		},
+
+		/**
+		 * Get error HTML.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {array} errors List of Error messages.
+		 *
+		 * @return {Element} Error HTML object.
+		 */
+		getErrorHTML: function( errors ) {
+			const $errorContainer = document.createElement( 'div' );
+
+			$errorContainer.classList.add( 'give_errors' );
+
+			errors.forEach( error => {
+				const $error = document.createElement( 'p' );
+				$error.classList.add( 'give_error' );
+
+				$error.innerHTML = error.message;
+
+				$errorContainer.append( $error );
+			} );
+
+			return $errorContainer;
+		},
+
+		/**
+		 * Add errors to donation form and reset "Donate Now" button state.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Javascript form selector.
+		 * @param {*} $errors Errors list.
+		 */
+		addErrorsAndResetDonationButton: function( $form, $errors = null ) {
+			const $submitButton = $form.find( '#give_purchase_submit input[type="submit"].give-submit' );
+			const $container = $submitButton.closest( 'div' );
+
+			//There was an error / remove old errors and prepend new ones
+			$submitButton.val( $submitButton.data( 'before-validation-label' ) );
+			$container.find( '.give-loading-animation' ).fadeOut();
+			$form.find( '.give_errors' ).remove();
+
+			$errors && this.addErrors( $form, $errors );
+
+			// Enable the form donation button.
+			Give.form.fn.disable( $form, false );
 		},
 
 		field: {

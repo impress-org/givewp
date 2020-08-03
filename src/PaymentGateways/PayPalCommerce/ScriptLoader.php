@@ -102,6 +102,31 @@ EOT;
 			GIVE_VERSION,
 			true
 		);
+
+		wp_enqueue_style(
+			'give-paypal-commerce-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/paypal-commerce.css',
+			[ 'give-styles' ],
+			GIVE_VERSION
+		);
+
+		wp_localize_script(
+			'give-paypal-commerce-js',
+			'givePayPalCommerce',
+			[
+				'paypalCardInfoErrorPrefixes'  => [
+					'expirationDateField' => esc_html__( 'Card Expiration Date:', 'give' ),
+					'cardNumberField'     => esc_html__( 'Card Number:', 'give' ),
+					'cardCvcField'        => esc_html__( 'Card CVC:', 'give' ),
+				],
+				'cardFieldPlaceholders'        => [
+					'cardNumber'     => esc_html__( 'Card Number', 'give' ),
+					'cardCvc'        => esc_html__( 'CVC', 'give' ),
+					'expirationDate' => esc_html__( 'MM/YY', 'give' ),
+				],
+				'defaultDonationCreationError' => esc_html__( 'An error occurred while processing your payment. Please try again.', 'give' ),
+			]
+		);
 	}
 
 	/**
