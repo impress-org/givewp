@@ -4,6 +4,7 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
+use Give\Onboarding\Helpers\Currency;
 use Give\Onboarding\SettingsRepository;
 
 class SettingsRoute implements RestRoute {
@@ -31,6 +32,14 @@ class SettingsRoute implements RestRoute {
 			case 'state_province':
 				$setting = 'base_state';
 				break;
+		}
+
+		if ( 'currency' == $setting ) {
+			$currencyConfiguration = Currency::getConfiguration( $value );
+			$this->settingsRepository->set( 'currency_position', $currencyConfiguration['currency_position'] );
+			$this->settingsRepository->set( 'thousands_separator', $currencyConfiguration['thousands_separator'] );
+			$this->settingsRepository->set( 'decimal_separator', $currencyConfiguration['decimal_separator'] );
+			$this->settingsRepository->set( 'number_decimals', $currencyConfiguration['number_decimals'] );
 		}
 
 		$this->settingsRepository->set( $setting, $value );
