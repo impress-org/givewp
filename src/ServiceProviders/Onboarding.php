@@ -28,10 +28,11 @@ class Onboarding implements ServiceProvider {
 		give()->bind(
 			SettingsRepository::class,
 			function() {
+				$optionName = 'give_settings';
 				return new SettingsRepository(
-					get_option( 'give_settings' ),
-					function( $settings ) {
-						return update_option( 'give_settings', $settings );
+					get_option( $optionName ),
+					function( $settings ) use ( $optionName ) {
+						return update_option( $optionName, $settings );
 					}
 				);
 			}
