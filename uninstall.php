@@ -17,23 +17,27 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 // Load Give file.
 include_once( 'give.php' );
 
+give()->init();
+
 global $wpdb, $wp_roles;
 
 
 if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	// Delete All the Custom Post Types.
-	$give_taxonomies = array( 'form_category', 'form_tag' );
-	$give_post_types = array( 'give_forms', 'give_payment' );
+	$give_taxonomies = [ 'form_category', 'form_tag' ];
+	$give_post_types = [ 'give_forms', 'give_payment' ];
 	foreach ( $give_post_types as $post_type ) {
 
 		$give_taxonomies = array_merge( $give_taxonomies, get_object_taxonomies( $post_type ) );
-		$items           = get_posts( array(
-			'post_type'   => $post_type,
-			'post_status' => 'any',
-			'numberposts' => - 1,
-			'fields'      => 'ids',
-		) );
+		$items           = get_posts(
+			[
+				'post_type'   => $post_type,
+				'post_status' => 'any',
+				'numberposts' => - 1,
+				'fields'      => 'ids',
+			]
+		);
 
 		if ( $items ) {
 			foreach ( $items as $item ) {
@@ -50,17 +54,17 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 		// Delete Terms.
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
-				$wpdb->delete( $wpdb->term_taxonomy, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
-				$wpdb->delete( $wpdb->terms, array( 'term_id' => $term->term_id ) );
+				$wpdb->delete( $wpdb->term_taxonomy, [ 'term_taxonomy_id' => $term->term_taxonomy_id ] );
+				$wpdb->delete( $wpdb->terms, [ 'term_id' => $term->term_id ] );
 			}
 		}
 
 		// Delete Taxonomies.
-		$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy ), array( '%s' ) );
+		$wpdb->delete( $wpdb->term_taxonomy, [ 'taxonomy' => $taxonomy ], [ '%s' ] );
 	}
 
 	// Delete the Plugin Pages.
-	$give_created_pages = array( 'success_page', 'failure_page', 'history_page' );
+	$give_created_pages = [ 'success_page', 'failure_page', 'history_page' ];
 	foreach ( $give_created_pages as $p ) {
 		$page = give_get_option( $p, false );
 		if ( $page ) {
@@ -73,7 +77,7 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	Give()->roles->remove_caps();
 
 	// Delete the Roles.
-	$give_roles = array( 'give_manager', 'give_accountant', 'give_worker', 'give_donor' );
+	$give_roles = [ 'give_manager', 'give_accountant', 'give_worker', 'give_donor' ];
 	foreach ( $give_roles as $role ) {
 		remove_role( $role );
 	}
@@ -111,7 +115,7 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	if ( ! empty( $give_option_names ) ) {
 		// Convert option name to transient or option name.
-		$new_give_option_names = array();
+		$new_give_option_names = [];
 
 		// Delete all the Plugin Options.
 		foreach ( $give_option_names as $option ) {
