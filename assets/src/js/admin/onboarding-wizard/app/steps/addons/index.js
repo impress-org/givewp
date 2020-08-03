@@ -15,7 +15,6 @@ import PDFReceiptsIcon from '../../../components/icons/pdf-receipts';
 import CustomFormFieldsIcon from '../../../components/icons/custom-form-fields';
 import MultipleCurrenciesIcon from '../../../components/icons/multiple-currencies';
 import DedicateDonationsIcon from '../../../components/icons/dedicate-donations';
-import Badge from '../../../components/badge';
 
 // Import styles
 import './style.scss';
@@ -32,32 +31,26 @@ const Addons = () => {
 			</p>
 			<CardInput values={ addons } onChange={ ( value ) => dispatch( setAddons( value ) ) } >
 				<Card value="recurring-donations">
-					<Badge label="Add-On" />
 					<RecurringDonationsIcon />
 					<strong>{ __( 'Recurring Donations', 'give' ) }</strong>
 				</Card>
 				<Card value="donors-cover-fees">
-					<Badge label="Add-On" />
 					<DonorsCoverFeesIcon />
 					<strong>{ __( 'Donors Cover Fees', 'give' ) }</strong>
 				</Card>
 				<Card value="pdf-receipts">
-					<Badge label="Add-On" />
 					<PDFReceiptsIcon />
 					<strong>{ __( 'PDF Reciepts', 'give' ) }</strong>
 				</Card>
 				<Card value="custom-form-fields">
-					<Badge label="Add-On" />
 					<CustomFormFieldsIcon />
 					<strong>{ __( 'Custom Form Fields', 'give' ) }</strong>
 				</Card>
 				<Card value="multiple-currencies">
-					<Badge label="Add-On" />
 					<MultipleCurrenciesIcon />
 					<strong>{ __( 'Multiple Currencies', 'give' ) }</strong>
 				</Card>
 				<Card value="dedicate-donations">
-					<Badge label="Add-On" />
 					<DedicateDonationsIcon />
 					<strong>{ __( 'Dedicate Donations', 'give' ) }</strong>
 				</Card>
