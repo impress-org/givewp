@@ -3,6 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Give\Helpers\Hooks;
+use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
 use Give\Onboarding\Routes\SettingsRoute;
@@ -18,6 +19,23 @@ class Onboarding implements ServiceProvider {
 	public function register() {
 		give()->singleton( SetupPage::class );
 		give()->bind( DonationsRedirect::class );
+		give()->bind(
+			SettingsRoute::class,
+			function( $container ) {
+				return new SettingsRoute( $container->make( SettingsRepository::class ) );
+			}
+		);
+		give()->bind(
+			SettingsRepository::class,
+			function() {
+				return new SettingsRepository(
+					get_option( 'give_settings' ),
+					function( $settings ) {
+						return update_option( 'give_settings', $settings );
+					}
+				);
+			}
+		);
 	}
 
 	/**

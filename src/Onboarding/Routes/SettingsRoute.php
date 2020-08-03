@@ -4,16 +4,42 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
+use Give\Onboarding\SettingsRepository;
 
 class SettingsRoute implements RestRoute {
 
 	protected $endpoint = 'onboarding/settings';
 
+	/**
+	 * @var SettingsRepository
+	 */
+	protected $settingsRepository;
+
+	public function __construct( SettingsRepository $settingsRepository ) {
+		$this->settingsRepository = $settingsRepository;
+	}
+
 	public function handleRequest( WP_REST_Request $request ) {
+
+		$setting = $request->get_param( 'setting' );
+		$value   = json_decode( $request->get_param( 'value' ) );
+
+		switch ( $setting ) {
+			case 'country':
+				$setting = 'base_country';
+				break;
+			case 'state_province':
+				$setting = 'base_state';
+				break;
+		}
+
+		$this->settingsRepository->set( $setting, $value );
+		$this->settingsRepository->save();
+
 		return [
 			'data' => [
-				'setting' => $request->get_param( 'setting' ),
-				'value'   => json_decode( $request->get_param( 'value' ) ),
+				'setting' => $setting,
+				'value'   => $value,
 			],
 		];
 	}
