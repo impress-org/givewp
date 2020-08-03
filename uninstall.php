@@ -17,6 +17,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 // Load Give file.
 include_once( 'give.php' );
 
+/**
+ * Initialize the main Give class, which includes loading the code necessary to process the uninstall.
+ * This is included manually because the plugins_loaded hook does not run on uninstall.
+ *
+ * @since 2.7.4
+ */
 give()->init();
 
 global $wpdb, $wp_roles;
