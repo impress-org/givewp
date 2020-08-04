@@ -70,4 +70,18 @@ class PayPalClient {
 
 		return "{$baseUrl}/$endpoint";
 	}
+
+	/**
+	 * Get PayPal homepage url.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function getHomePageUrl() {
+		return sprintf(
+			'https://www.%1$spaypal.com/',
+			'sandbox' === $this->mode ? 'sandbox.' : ''
+		);
+	}
 }
