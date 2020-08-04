@@ -45,21 +45,19 @@ const YourCause = () => {
 			</CardInput>
 			<h2>{ __( 'What is your cause?', 'give' ) }</h2>
 			<p>{ __( '(select all that apply)', 'give' ) }</p>
-			<label>
-				<span className="screen-reader-text">{ __( 'What is your cause?', 'give' ) }</span>
-				<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={
-					[
-						{
-							value: 'religous',
-							label: 'Religous',
-						},
-						{
-							value: 'school',
-							label: 'School',
-						},
-					]
-				} />
-			</label>
+			<span className="screen-reader-text">{ __( 'What is your cause?', 'give' ) }</span>
+			<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={
+				[
+					{
+						value: 'religous',
+						label: 'Religous',
+					},
+					{
+						value: 'school',
+						label: 'School',
+					},
+				]
+			} />
 			<ContinueButton />
 		</div>
 	);
