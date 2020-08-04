@@ -299,7 +299,7 @@ class IframeView {
 
 		$iframe_url = add_query_arg(
 			array_merge( [ 'giveDonationFormInIframe' => 1 ], $query_string ),
-			trailingslashit( $url )
+			$url
 		);
 
 		return GlobalUtils::removeDonationAction( $iframe_url );
