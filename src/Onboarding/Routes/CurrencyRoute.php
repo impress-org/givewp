@@ -51,7 +51,8 @@ class CurrencyRoute implements RestRoute {
 
 		return [
 			'data' => [
-				'currencyCode' => $currencyCode,
+				'setting' => 'currency',
+				'value'   => $currencyCode,
 			],
 		];
 	}
