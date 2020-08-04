@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\Helpers\ArrayDataSet;
@@ -8,11 +9,12 @@ use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 
 /**
  * Class MerchantDetails
- * @package Give\PaymentGateways\PayPalCommerce\Repositories
  *
  * @since 2.8.0
  */
 class MerchantDetails {
+	const OPTION_KEY = 'give_paypal_commerce_account';
+
 	/**
 	 * Get merchant details.
 	 *
@@ -21,20 +23,20 @@ class MerchantDetails {
 	 * @return MerchantDetail
 	 */
 	public static function getDetails() {
-		return MerchantDetail::fromArray( get_option( OptionId::$payPalAccountsOptionKey, [] ) );
+		return MerchantDetail::fromArray( get_option( self::OPTION_KEY, [] ) );
 	}
 
 	/**
 	 * Save merchant details.
 	 *
-	 * @param  MerchantDetail  $merchantDetails
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param MerchantDetail $merchantDetails
 	 *
 	 * @return bool
 	 */
 	public static function save( MerchantDetail $merchantDetails ) {
-		return update_option( OptionId::$payPalAccountsOptionKey, $merchantDetails->toArray() );
+		return update_option( self::OPTION_KEY, $merchantDetails->toArray() );
 	}
 
 	/**
@@ -45,7 +47,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public static function delete() {
-		return delete_option( OptionId::$payPalAccountsOptionKey );
+		return delete_option( self::OPTION_KEY );
 	}
 
 	/**
