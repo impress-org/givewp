@@ -223,6 +223,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.7.4: =
+* Fix: The uninstall process in v2.7.3 previously resulted in a fatal error. [#4981](https://github.com/impress-org/givewp/issues/4981)
+
 = 2.7.3:  =
 * Fix: The Donation Reports were not correctly calculating renewals processed via the Recurring Donations add-on leading to incorrect figures. [#4883](https://github.com/impress-org/givewp/issues/4883)
 * Fix: The new Multi-Step Form Template was not correctly marking donations as anonymous if the donor elected to give anonymously. [#4959](https://github.com/impress-org/givewp/issues/4959)
