@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\Helpers\Hooks;
 use Give\Onboarding\SettingsRepository;
+use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
 use Give\Onboarding\Routes\SettingsRoute;
@@ -25,13 +26,7 @@ class Onboarding implements ServiceProvider {
 		give()->bind(
 			SettingsRepository::class,
 			function() {
-				$optionName = 'give_settings';
-				return new SettingsRepository(
-					get_option( $optionName ),
-					function( $settings ) use ( $optionName ) {
-						return update_option( $optionName, $settings );
-					}
-				);
+				return SettingsRepositoryFactory::make( 'give_settings' );
 			}
 		);
 	}
