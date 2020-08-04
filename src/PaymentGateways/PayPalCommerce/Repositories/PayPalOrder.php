@@ -60,6 +60,14 @@ class PayPalOrder {
 		try {
 			return $this->paypalClient->getHttpClient()->execute( $request )->result;
 		} catch ( Exception $ex ) {
+			logError(
+				'Capture PayPal Commerce payment failure',
+				sprintf(
+					'<strong>Response</strong><pre>%1$s</pre>',
+					print_r( json_decode( $ex->getMessage(), true ), true )
+				)
+			);
+
 			throw $ex;
 		}
 	}
