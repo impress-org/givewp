@@ -2934,7 +2934,7 @@ const gravatar = require( 'gravatar' );
 	/**
 	 * Keep multi select options order.
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 */
 	const GiveMultiSelectOptions = {
 		init: function() {
