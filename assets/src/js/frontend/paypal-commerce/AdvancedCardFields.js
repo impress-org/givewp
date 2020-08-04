@@ -127,7 +127,6 @@ class AdvancedCardFields extends PaymentMethod {
 		return {
 			input: {
 				'font-size': computedStyle.getPropertyValue( 'font-size' ),
-				'font-family': computedStyle.getPropertyValue( 'font-family' ),
 				color: computedStyle.getPropertyValue( 'color' ),
 			},
 		};
