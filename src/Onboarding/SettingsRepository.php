@@ -2,6 +2,9 @@
 
 namespace Give\Onboarding;
 
+/**
+ * @since 2.8.0
+ */
 class SettingsRepository {
 
 	/** @var array */
@@ -13,6 +16,8 @@ class SettingsRepository {
 	/**
 	 * @param array $settings
 	 * @param callable $persistCallback
+	 *
+	 * @since 2.8.0
 	 */
 	public function __construct( array $settings, callable $persistCallback ) {
 		$this->settings        = $settings;
@@ -23,6 +28,8 @@ class SettingsRepository {
 	 * @param string $name The setting name.
 	 *
 	 * @return mixed The setting value.
+	 *
+	 * @since 2.8.0
 	 */
 	public function get( $name ) {
 		return $this->settings[ $name ];
@@ -31,6 +38,10 @@ class SettingsRepository {
 	/**
 	 * @param string $name The setting name.
 	 * @param mixed $value The setting value.
+	 *
+	 * @return void
+	 *
+	 * @since 2.8.0
 	 */
 	public function set( $name, $value ) {
 		$this->settings[ $name ] = $value;
@@ -38,6 +49,8 @@ class SettingsRepository {
 
 	/**
 	 * @return bool False if value was not updated and true if value was updated.
+	 *
+	 * @since 2.8.0
 	 */
 	public function save() {
 		return $this->persistCallback->__invoke(

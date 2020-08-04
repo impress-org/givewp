@@ -2,8 +2,16 @@
 
 namespace Give\Onboarding;
 
+/**
+ * @since 2.8.0
+ */
 class SettingsRepositoryFactory {
 
+	/**
+	 * @param string $optionName
+	 *
+	 * @since 2.8.0
+	 */
 	public static function make( $optionName ) {
 
 		$option = get_option( $optionName );

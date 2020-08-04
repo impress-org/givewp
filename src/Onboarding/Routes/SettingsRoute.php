@@ -7,19 +7,33 @@ use Give\API\RestRoute;
 use Give\Onboarding\Helpers\Currency;
 use Give\Onboarding\SettingsRepository;
 
+/**
+ * @since 2.8.0
+ */
 class SettingsRoute implements RestRoute {
 
+	/** @var string */
 	protected $endpoint = 'onboarding/settings/(?P<setting>\w+)';
 
-	/**
-	 * @var SettingsRepository
-	 */
+	/** @var SettingsRepository */
 	protected $settingsRepository;
 
+	/**
+	 * @param SettingsRepository $settingsRepository
+	 *
+	 * @since 2.8.0
+	 */
 	public function __construct( SettingsRepository $settingsRepository ) {
 		$this->settingsRepository = $settingsRepository;
 	}
 
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array
+	 *
+	 * @since 2.8.0
+	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
 		$setting = $request->get_param( 'setting' );
@@ -36,6 +50,13 @@ class SettingsRoute implements RestRoute {
 		];
 	}
 
+	/**
+	 * @param string $setting
+	 *
+	 * @return bool
+	 *
+	 * @since 2.8.0
+	 */
 	public function validateSetting( $setting ) {
 		return in_array(
 			$setting,
@@ -84,6 +105,11 @@ class SettingsRoute implements RestRoute {
 		);
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @since 2.8.0
+	 */
 	public function getSchema() {
 		return [
 			// This tells the spec of JSON Schema we are using which is draft 4.
