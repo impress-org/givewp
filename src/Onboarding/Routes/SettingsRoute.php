@@ -36,6 +36,20 @@ class SettingsRoute implements RestRoute {
 		];
 	}
 
+	public function validateSetting( $setting ) {
+		return in_array(
+			$setting,
+			[
+				'user_type',
+				'cause_type',
+				'base_country',
+				'base_state',
+				'addons',
+				'features',
+			]
+		);
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -54,7 +68,7 @@ class SettingsRoute implements RestRoute {
 						'setting' => [
 							'type'              => 'string',
 							'required'          => true,
-							// 'validate_callback' => [ $this, 'validateSetting' ],
+							'validate_callback' => [ $this, 'validateSetting' ],
 							'sanitize_callback' => 'sanitize_text_field',
 						],
 						'value'   => [
