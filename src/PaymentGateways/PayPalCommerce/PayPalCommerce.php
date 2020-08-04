@@ -75,5 +75,6 @@ class PayPalCommerce implements PaymentGateway {
 		Hooks::addAction( 'give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken' );
 		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm', 10, 3 );
 		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle' );
+		Hooks::addFilter( 'give_payment_details_transaction_id-paypal-commerce', DonationDetailsPage::class, 'getPayPalPaymentUrl' );
 	}
 }

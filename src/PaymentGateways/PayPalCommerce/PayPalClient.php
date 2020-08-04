@@ -57,7 +57,6 @@ class PayPalClient {
 		return new PayPalHttpClient( $this->getEnvironment() );
 	}
 
-
 	/**
 	 * Get api url.
 	 *
@@ -70,5 +69,19 @@ class PayPalClient {
 		$baseUrl = $this->getEnvironment()->baseUrl();
 
 		return "{$baseUrl}/$endpoint";
+	}
+
+	/**
+	 * Get PayPal homepage url.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function getHomePageUrl() {
+		return sprintf(
+			'https://%1$spaypal.com/',
+			'sandbox' === $this->mode ? 'sandbox.' : ''
+		);
 	}
 }
