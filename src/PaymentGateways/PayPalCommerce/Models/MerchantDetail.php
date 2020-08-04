@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -6,9 +7,9 @@ use InvalidArgumentException;
 
 /**
  * Class MerchantDetail
+ * @since 2.8.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
  */
 class MerchantDetail {
 	/**
@@ -50,6 +51,8 @@ class MerchantDetail {
 	/**
 	 * Environment mode.
 	 *
+	 * @since 2.8.0
+	 *
 	 * @var null|string
 	 */
 	private $mode = null;
@@ -57,12 +60,25 @@ class MerchantDetail {
 	/**
 	 * Access token.
 	 *
+	 * @since 2.8.0
+	 *
 	 * @var null|string
 	 */
 	public $accessToken = null;
 
 	/**
+	 * Whether or not the connected account is ready to process donations.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var bool
+	 */
+	public $accountIsReady = true;
+
+	/**
 	 * Access token.
+	 *
+	 * @since 2.8.0
 	 *
 	 * @var array
 	 */
@@ -70,6 +86,8 @@ class MerchantDetail {
 
 	/**
 	 * MerchantDetail constructor.
+	 *
+	 * @since 2.8.0
 	 */
 	public function __construct() {
 		$this->mode = give( PayPalClient::class )->mode;
@@ -86,6 +104,7 @@ class MerchantDetail {
 		return [
 			'merchantId'         => $this->merchantId,
 			'merchantIdInPayPal' => $this->merchantIdInPayPal,
+			'accountIsReady'     => $this->accountIsReady,
 			$this->mode          => [
 				'clientId'     => $this->clientId,
 				'clientSecret' => $this->clientSecret,
@@ -97,9 +116,9 @@ class MerchantDetail {
 	/**
 	 * Make MerchantDetail object from array.
 	 *
-	 * @param array $merchantDetails
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param array $merchantDetails
 	 *
 	 * @return MerchantDetail
 	 */
@@ -116,23 +135,23 @@ class MerchantDetail {
 		return $obj;
 	}
 
-
 	/**
 	 * Setup properties from array.
 	 *
-	 * @param $merchantDetails
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param $merchantDetails
 	 *
 	 */
 	private function setupProperties( $merchantDetails ) {
 		$this->merchantId         = $merchantDetails['merchantId'];
 		$this->merchantIdInPayPal = $merchantDetails['merchantIdInPayPal'];
 
-		$this->clientId     = $merchantDetails[ $this->mode ]['clientId'];
-		$this->clientSecret = $merchantDetails[ $this->mode ]['clientSecret'];
-		$this->tokenDetails = $merchantDetails[ $this->mode ]['token'];
-		$this->accessToken  = $this->tokenDetails['accessToken'];
+		$this->clientId       = $merchantDetails[ $this->mode ]['clientId'];
+		$this->clientSecret   = $merchantDetails[ $this->mode ]['clientSecret'];
+		$this->tokenDetails   = $merchantDetails[ $this->mode ]['token'];
+		$this->accessToken    = $this->tokenDetails['accessToken'];
+		$this->accountIsReady = $merchantDetails['accountIsReady'];
 	}
 
 	/**
@@ -143,7 +162,7 @@ class MerchantDetail {
 	 * @param array $merchantDetails
 	 */
 	private function validate( $merchantDetails ) {
-		$required = [ 'merchantId', 'merchantIdInPayPal', $this->mode ];
+		$required = [ 'merchantId', 'merchantIdInPayPal', 'accountIsReady', $this->mode ];
 		$array    = array_filter( $merchantDetails ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
@@ -169,11 +188,11 @@ class MerchantDetail {
 	/**
 	 * Get refresh token code.
 	 *
+	 * @since 2.8.0
+	 *
 	 * @param array $tokenDetails
 	 *
 	 * @return mixed
-	 * @since 2.8.0
-	 *
 	 */
 	public function setTokenDetails( $tokenDetails ) {
 		$this->tokenDetails = array_merge( $this->tokenDetails, $tokenDetails );
