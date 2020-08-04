@@ -25,15 +25,6 @@ class SettingsRoute implements RestRoute {
 		$setting = $request->get_param( 'setting' );
 		$value   = json_decode( $request->get_param( 'value' ) );
 
-		switch ( $setting ) {
-			case 'country':
-				$setting = 'base_country';
-				break;
-			case 'state_province':
-				$setting = 'base_state';
-				break;
-		}
-
 		$this->settingsRepository->set( $setting, $value );
 		$this->settingsRepository->save();
 

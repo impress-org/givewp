@@ -27,7 +27,7 @@ export const reducer = ( state, action ) => {
 				},
 			};
 		case 'SET_COUNTRY':
-			saveSettingWithOnboardingAPI( 'country', action.payload.country );
+			saveSettingWithOnboardingAPI( 'base_country', action.payload.country );
 			return {
 				...state,
 				configuration: { ...state.configuration,
@@ -45,7 +45,7 @@ export const reducer = ( state, action ) => {
 				statesList: action.payload.stateList,
 			};
 		case 'SET_STATE':
-			saveSettingWithOnboardingAPI( 'state_province', action.payload.state );
+			saveSettingWithOnboardingAPI( 'base_state', action.payload.state );
 			return {
 				...state,
 				configuration: { ...state.configuration,
