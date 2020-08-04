@@ -223,6 +223,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.8.0 =
+* New: Form Templates now support all permalink settings, including the default value "plain".
+
 = 2.7.3:  =
 * Fix: The Donation Reports were not correctly calculating renewals processed via the Recurring Donations add-on leading to incorrect figures. [#4883](https://github.com/impress-org/givewp/issues/4883)
 * Fix: The new Multi-Step Form Template was not correctly marking donations as anonymous if the donor elected to give anonymously. [#4959](https://github.com/impress-org/givewp/issues/4959)
