@@ -44,8 +44,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 	// Note: When the below code is actually implemented, the ${value} should be
 	// stringified (using qs library or JSON stringify).
 
-	axios.post( getAPIRoot() + 'give-api/v2/onboarding/settings', {
-		setting: setting,
+	axios.post( getAPIRoot() + 'give-api/v2/onboarding/settings/' + setting, {
 		value: JSON.stringify( value ),
 	}, {
 		headers: {
