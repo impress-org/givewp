@@ -57,7 +57,6 @@ class PayPalClient {
 		return new PayPalHttpClient( $this->getEnvironment() );
 	}
 
-
 	/**
 	 * Get api url.
 	 *
