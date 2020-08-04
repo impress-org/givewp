@@ -87,6 +87,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
 		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
 		$payPalAccount[ $mode ]['token']        = $tokenInfo;
+		$payPalAccount['accountIsReady']        = true;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
 		MerchantDetails::save( $merchantDetails );
@@ -104,10 +105,18 @@ class onBoardingRedirectHandler {
 	 * @param MerchantDetail $merchant_detail
 	 */
 	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
-		$this->isAdminSuccessfullyOnBoarded( $merchant_detail->merchantIdInPayPal, $merchant_detail->accessToken );
+		$check = $this->isAdminSuccessfullyOnBoarded( $merchant_detail->merchantIdInPayPal, $merchant_detail->accessToken );
+
+		if ( $check !== true ) {
+			$merchant_detail->accountIsReady = false;
+			MerchantDetails::save( $merchant_detail );
+
+			$this->redirectWhenOnBoardingFail( $check );
+		}
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
-		exit;
+
+		exit();
 	}
 
 	/**
@@ -274,37 +283,64 @@ class onBoardingRedirectHandler {
 	 * @param string $accessToken
 	 *
 	 * @param string $merchantId
+	 *
+	 * @return true|string
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
-		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
+		$required      = [ 'payments_receivable', 'primary_email_confirmed', 'products', 'capabilities' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessage  = esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' );
-		$redirect      = false;
+		$errorMessages = [];
 
 		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
-			$this->redirectWhenOnBoardingFail();
+			return esc_html__( 'We are unable to connect your seller account because required result did not return from PayPal. Please contact GiveWP Support Team', 'give' );
 		}
 
 		if ( ! $onBoardedData['payments_receivable'] ) {
-			$redirect      = true;
-			$errorMessage .= sprintf(
-				'<br>- %1$s',
-				esc_html__( 'Set up an account to receive payment from PayPal', 'give' )
-			);
+			$errorMessages[] = esc_html__( 'Set up an account to receive payment from PayPal', 'give' );
 		}
 
 		if ( ! $onBoardedData['primary_email_confirmed'] ) {
-			$redirect      = true;
-			$errorMessage .= sprintf(
-				'<br>- %1$s',
-				esc_html__( 'Confirm your primary email address', 'give' )
-			);
+			$errorMessage[] = esc_html__( 'Confirm your primary email address', 'give' );
 		}
 
-		if ( $redirect ) {
-			$this->redirectWhenOnBoardingFail( $errorMessage );
+		// grab the PPCP_CUSTOM product from the status data
+		$customProduct = current(
+			array_filter(
+				$onBoardedData['products'],
+				function ( $product ) {
+					return $product['name'] === 'PPCP_CUSTOM';
+				}
+			)
+		);
+
+		if ( empty( $customProduct ) || $customProduct['vetting_status'] !== 'SUBSCRIBED' ) {
+			$errorMessages[] = esc_html__( 'Reach out to PayPal to enable PPCP_CUSTOM for your account', 'give' );
 		}
+
+		// loop through the capabilities and see if any are not active
+		$invalidCapabilities = [];
+		foreach ( $onBoardedData['capabilities'] as $capability ) {
+			if ( $capability['status'] !== 'ACTIVE' ) {
+				$invalidCapabilities[] = $capability['name'];
+			}
+		}
+
+		if ( ! empty( $invalidCapabilities ) ) {
+			$errorMessages[] = 'Reach out to PayPal to resolve the following capabilities: ' . implode( ', ', $invalidCapabilities );
+		}
+
+		// If there were errors then redirect the user with notices
+		if ( ! empty( $errorMessages ) ) {
+			array_unshift(
+				$errorMessages,
+				esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' )
+			);
+
+			return implode( '<br>-', $errorMessages );
+		}
+
+		return true;
 	}
 
 	/**
@@ -315,9 +351,7 @@ class onBoardingRedirectHandler {
 	 * @param $errorMessage
 	 *
 	 */
-	private function redirectWhenOnBoardingFail( $errorMessage = '' ) {
-		$errorMessage = $errorMessage ?: esc_html__( 'We are unable to connect your seller account because required result did not return from PayPal. Please contact GiveWP Support Team', 'give' );
-
+	private function redirectWhenOnBoardingFail( $errorMessage ) {
 		wp_redirect(
 			admin_url(
 				sprintf(
