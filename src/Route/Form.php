@@ -110,15 +110,13 @@ class Form {
 	 * @return string
 	 */
 	public function getURL( $form_id ) {
-		return get_option( 'permalink_structure' )
-			? home_url( "/{$this->base}/{$form_id}" )
-			: add_query_arg(
-				[
-					'give_form_id' => $form_id,
-					'url_prefix'   => $this->base,
-				],
-				home_url()
-			);
+		return add_query_arg(
+			[
+				'give_form_id' => $form_id,
+				'url_prefix'   => $this->base,
+			],
+			home_url()
+		);
 	}
 
 
