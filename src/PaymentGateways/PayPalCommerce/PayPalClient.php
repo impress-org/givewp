@@ -80,7 +80,7 @@ class PayPalClient {
 	 */
 	public function getHomePageUrl() {
 		return sprintf(
-			'https://www.%1$spaypal.com/',
+			'https://%1$spaypal.com/',
 			'sandbox' === $this->mode ? 'sandbox.' : ''
 		);
 	}
