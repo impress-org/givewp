@@ -1,6 +1,9 @@
 // Import vendor dependencies
 import PropTypes from 'prop-types';
 
+// Import utilities
+import { toKebabCase } from '../../utils';
+
 // Import styles
 import './style.scss';
 
@@ -12,8 +15,8 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 	} );
 	return (
 		<div className="give-obw-select-input">
-			{ label && ( <label className="give-obw-select-input__label">{ label }</label> ) }
-			<select value={ value } className="give-obw-select-input__input" onChange={ ( event ) => onChange( event.target.value ) } >
+			{ label && ( <label className="give-obw-select-input__label" htmlFor={ toKebabCase( label ) }>{ label }</label> ) }
+			<select value={ value } className="give-obw-select-input__input" id={ label && toKebabCase( label ) } onChange={ ( event ) => onChange( event.target.value ) } >
 				{ optionElements }
 			</select>
 		</div>
