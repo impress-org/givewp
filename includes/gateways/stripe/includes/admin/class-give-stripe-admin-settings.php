@@ -316,14 +316,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings['checkout'][] = [
 						'name'          => esc_html__( 'Checkout Type', 'give' ),
 						'desc'          => sprintf(
-							'%1$s <a href="%2$s" target="_blank">%3$s</a> %4$s <a href="%5$s" target="_blank">%6$s</a> %7$s',
-							esc_html__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option is the', 'give' ),
-							esc_url( 'https://stripe.com/docs/legacy-checkout' ),
-							esc_html__( 'legacy Stripe Checkout', 'give' ),
-							esc_html__( 'and is not SCA compatible. The "Redirect" option uses Stripe\'s new', 'give' ),
+							'%1$s <a href="%2$s" target="_blank">%3$s</a> %4$s',
+							esc_html__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option uses Stripe elements in a popup modal which does not take the donor off your website. The "Redirect" option uses Stripe\'s new off-site', 'give' ),
 							esc_url( 'https://stripe.com/docs/payments/checkout' ),
 							esc_html__( 'Checkout', 'give' ),
-							esc_html__( 'interface and offers donors an easy way to pay with Credit Card, Apple, and Google Pay. As well, it is SCA compatible and fully supported by Stripe and GiveWP.', 'give' )
+							esc_html__( 'interface that provides donors an easy way to pay with Credit or Debit Cards, Apple, and Google Pay.', 'give' )
 						),
 						'id'            => 'stripe_checkout_type',
 						'wrapper_class' => 'stripe-checkout-type',
