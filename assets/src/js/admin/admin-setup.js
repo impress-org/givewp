@@ -37,13 +37,16 @@ document.getElementById( 'stripeWebhooksCopyHandler' ).addEventListener( 'click'
 	}, 3000 );
 } );
 
-// function pollStripeWebhookRecieved() {
-// 	fetch( wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved' )
-// 		.then( response => response.json() )
-// 		.then( data => {
-// 			console.log( data );
-// 			setTimeout( pollStripeWebhookRecieved, 5000 );
-// 		} );
-// }
-// pollStripeWebhookRecieved();
+function pollStripeWebhookRecieved() {
+	const endpoint = wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved';
+	jQuery.get( endpoint, function( data ) {
+		if ( undefined === typeof data.webhookRecieved || ! data.webhookRecieved ) {
+			setTimeout( pollStripeWebhookRecieved, 5000 );
+		} else {
+			document.getElementById( 'stripeWebhooksConfigureButton' ).classList.add( 'hidden' );
+			document.getElementById( 'stripeWebhooksConfigureConfirmed' ).classList.remove( 'hidden' );
+		}
+	} );
+}
+pollStripeWebhookRecieved();
 

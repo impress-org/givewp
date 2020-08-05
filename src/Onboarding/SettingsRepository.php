@@ -47,6 +47,10 @@ class SettingsRepository {
 		$this->settings[ $name ] = $value;
 	}
 
+	public function has( $name ) {
+		return isset( $this->settings[ $name ] );
+	}
+
 	/**
 	 * @return bool False if value was not updated and true if value was updated.
 	 *

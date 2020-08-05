@@ -88,7 +88,9 @@
 							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
 							'title'       => esc_html__( 'Please configure your Stripe webhook to finalize the setup.', 'give' ),
 							'description' => esc_html__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the Webhooks Section of your Stripe Dashboard and click the Add endpoint button and paste the following URL: ', 'give' ) . '<br /><span id="stripeWebhooksCopyHandler" class="stripe-webhooks-url"><input disabled="disabled" id="stripeWebhooksCopy" value="https://wordpress.test?give-listener=stripe" /> &nbsp; <i id="stripeWebhooksCopyIcon" class="fa fa-clipboard"></i></input>',
-							'action'      => sprintf( '<a href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) ),
+							'action'      =>
+								sprintf( '<a id="stripeWebhooksConfigureButton" href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) )
+								. sprintf( '<button class="hidden" disabled="disable" id="stripeWebhooksConfigureConfirmed">%s</button>', __( 'Webhooks Configured!', 'give' ) ),
 						]
 					),
 				],
