@@ -7,10 +7,21 @@ use Give\API\RestRoute;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\CountryCode;
 
+/**
+ * @since 2.8.0
+ */
 class LocationRoute implements RestRoute {
 
+	/** @var string */
 	protected $endpoint = 'onboarding/location';
 
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array
+	 *
+	 * @since 2.8.0
+	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
 		$countryCode = $request->get_param( 'countryCode' );
@@ -51,6 +62,11 @@ class LocationRoute implements RestRoute {
 		);
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @since 2.8.0
+	 */
 	public function getSchema() {
 		return [
 			// This tells the spec of JSON Schema we are using which is draft 4.
