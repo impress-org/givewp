@@ -62,8 +62,8 @@ class onBoardingRedirectHandler {
 			$this->registerPayPalAccountConnectedNotice();
 		}
 
-		if ( $this->isPayPalError() ) {
-			$this->registerPayPalErrorNotice();
+		if ( $this->isStatusRefresh() ) {
+			$this->refreshAccountStatus();
 		}
 	}
 
@@ -112,14 +112,7 @@ class onBoardingRedirectHandler {
 	 * @param MerchantDetail $merchant_detail
 	 */
 	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
-		$check = $this->isAdminSuccessfullyOnBoarded( $merchant_detail->merchantIdInPayPal, $merchant_detail->accessToken );
-
-		if ( $check !== true ) {
-			$merchant_detail->accountIsReady = false;
-			$this->merchantRepository->save( $merchant_detail );
-
-			$this->redirectWhenOnBoardingFail( $check );
-		}
+		$this->refreshAccountStatus();
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
 
@@ -221,12 +214,14 @@ class onBoardingRedirectHandler {
 	}
 
 	/**
-	 * Register notice if Paypal error set in url.
+	 * Returns whether or not the current request is for refreshing the account status
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return bool
 	 */
-	private function registerPayPalErrorNotice() {
-		Give_Admin_Settings::add_error( 'paypal-error', wp_kses( $_GET['paypal-error'], [ 'br' => [] ] ) );
+	private function isStatusRefresh() {
+		return isset( $_GET['paypalStatusCheck'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
 	}
 
 	/**
@@ -252,18 +247,6 @@ class onBoardingRedirectHandler {
 	}
 
 	/**
-	 * Return whether or not PayPal account details saved.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	private function isPayPalError() {
-		return isset( $_GET['paypal-error'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
-	}
-
-
-	/**
 	 * validate rest api credential.
 	 *
 	 * @since 2.8.0
@@ -283,6 +266,28 @@ class onBoardingRedirectHandler {
 	}
 
 	/**
+	 * Handles the request for refreshing the account status
+	 *
+	 * @since 2.8.0
+	 */
+	private function refreshAccountStatus() {
+		/** @var MerchantDetail $merchantDetails */
+		$merchantDetails = give( MerchantDetail::class );
+
+		$statusErrors = $this->isAdminSuccessfullyOnBoarded( $merchantDetails->merchantIdInPayPal, $merchantDetails->accessToken );
+		if ( $statusErrors !== true ) {
+			$merchantDetails->accountIsReady = false;
+			$this->merchantRepository->save( $merchantDetails );
+			$this->merchantRepository->saveAccountErrors( $statusErrors );
+
+		} else {
+			$merchantDetails->accountIsReady = true;
+			$this->merchantRepository->save( $merchantDetails );
+			$this->merchantRepository->deleteAccountErrors();
+		}
+	}
+
+	/**
 	 * Validate seller on Boarding status
 	 *
 	 * @since 2.8.0
@@ -291,7 +296,7 @@ class onBoardingRedirectHandler {
 	 *
 	 * @param string $merchantId
 	 *
-	 * @return true|string
+	 * @return true|string[]
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
@@ -300,7 +305,7 @@ class onBoardingRedirectHandler {
 		$errorMessages = [];
 
 		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
-			return esc_html__( 'We are unable to connect your seller account because required result did not return from PayPal. Please contact GiveWP Support Team', 'give' );
+			return [ esc_html__( 'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.', 'give' ) ];
 		}
 
 		if ( ! $onBoardedData['payments_receivable'] ) {
@@ -338,16 +343,7 @@ class onBoardingRedirectHandler {
 		}
 
 		// If there were errors then redirect the user with notices
-		if ( ! empty( $errorMessages ) ) {
-			array_unshift(
-				$errorMessages,
-				esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' )
-			);
-
-			return implode( '<br>-', $errorMessages );
-		}
-
-		return true;
+		return empty( $errorMessages ) ? true : $errorMessages;
 	}
 
 	/**

@@ -145,6 +145,7 @@ class AjaxRequestHandler {
 		}
 
 		$this->merchantRepository->delete();
+		$this->merchantRepository->deleteAccountErrors();
 
 		wp_send_json_success();
 	}

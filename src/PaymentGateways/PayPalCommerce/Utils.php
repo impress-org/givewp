@@ -19,7 +19,7 @@ class Utils {
 	 * @return bool
 	 */
 	public static function isConnected() {
-		return get_option( MerchantDetails::OPTION_KEY, [] );
+		return get_option( MerchantDetails::ACCOUNT_OPTION_KEY, [] );
 	}
 
 	/**

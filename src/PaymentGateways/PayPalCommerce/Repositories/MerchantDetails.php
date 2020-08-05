@@ -13,7 +13,9 @@ use Give\PaymentGateways\PayPalCommerce\PayPalClient;
  * @since 2.8.0
  */
 class MerchantDetails {
-	const OPTION_KEY = 'give_paypal_commerce_account';
+	const ACCOUNT_OPTION_KEY = 'give_paypal_commerce_account';
+
+	const ERRORS_OPTION_KEY = 'give_paypal_commerce_account_errors';
 
 	/**
 	 * Get merchant details.
@@ -23,7 +25,7 @@ class MerchantDetails {
 	 * @return MerchantDetail
 	 */
 	public function getDetails() {
-		return MerchantDetail::fromArray( get_option( self::OPTION_KEY, [] ) );
+		return MerchantDetail::fromArray( get_option( self::ACCOUNT_OPTION_KEY, [] ) );
 	}
 
 	/**
@@ -36,7 +38,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function save( MerchantDetail $merchantDetails ) {
-		return update_option( self::OPTION_KEY, $merchantDetails->toArray() );
+		return update_option( self::ACCOUNT_OPTION_KEY, $merchantDetails->toArray() );
 	}
 
 	/**
@@ -47,7 +49,42 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function delete() {
-		return delete_option( self::OPTION_KEY );
+		return delete_option( self::ACCOUNT_OPTION_KEY );
+	}
+
+	/**
+	 * Returns the account errors if there are any
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string[]|null
+	 */
+	public function getAccountErrors() {
+		return json_decode( get_option( self::ERRORS_OPTION_KEY, null ), true );
+	}
+
+	/**
+	 * Saves the account error message
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string[] $errorMessage
+	 *
+	 * @return bool
+	 */
+	public function saveAccountErrors( $errorMessage ) {
+		return update_option( self::ERRORS_OPTION_KEY, json_encode( $errorMessage ) );
+	}
+
+	/**
+	 * Deletes the errors for the account
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	public function deleteAccountErrors() {
+		return delete_option( self::ERRORS_OPTION_KEY );
 	}
 
 	/**
