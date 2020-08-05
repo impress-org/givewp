@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useStoreValue } from '../../app/store';
 
 // Import utilities
-import { setupTabIndex } from '../../utils';
+import { setStepFocus } from '../../utils';
 
 // Import components
 import StepNavigation from '../step-navigation';
@@ -22,19 +22,19 @@ const Wizard = ( { children } ) => {
 	const app = useRef( null );
 
 	useEffect( () => {
-		setupTabIndex();
+		setStepFocus();
 	}, [ currentStep ] );
 
 	return (
 		<div className="give-obw" ref={ app }>
-			{ steps[ currentStep ].props.showInNavigation && (
-				<StepNavigation steps={ steps } />
-			) }
 			{ steps.map( ( step, index ) => {
 				if ( currentStep === index ) {
 					return step;
 				}
 			} ) }
+			{ steps[ currentStep ].props.showInNavigation && (
+				<StepNavigation steps={ steps } />
+			) }
 		</div>
 	);
 };
