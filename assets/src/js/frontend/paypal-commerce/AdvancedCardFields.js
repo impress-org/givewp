@@ -23,7 +23,10 @@ class AdvancedCardFields extends PaymentMethod {
 		if ( ! this.canRenderFields() ) {
 			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
 				el => {
-					el.previousElementSibling.remove();
+					// Remove separator.
+					if ( el.previousElementSibling.classList.contains( 'separator-with-text' ) ) {
+						el.previousElementSibling.remove();
+					}
 					el.remove();
 				}
 			);
