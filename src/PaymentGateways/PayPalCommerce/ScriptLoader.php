@@ -166,19 +166,8 @@ EOT;
 	 */
 	private function getPartnerJsUrl() {
 		return sprintf(
-			'https://www.%1$spaypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js',
-			$this->getPayPalScriptFileUrlPrefix()
+			'%1$swebapps/merchantboarding/js/lib/lightbox/partner.js',
+			give( PayPalClient::class )->getHomePageUrl()
 		);
-	}
-
-	/**
-	 * Get PayPal script file url prefix.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return string
-	 */
-	private function getPayPalScriptFileUrlPrefix() {
-		return 'sandbox' === give( PayPalClient::class )->mode ? 'sandbox.' : '';
 	}
 }

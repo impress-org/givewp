@@ -79,5 +79,6 @@ class PayPalCommerce implements PaymentGateway {
 		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle' );
 
 		Hooks::addAction( 'admin_init', AccountAdminNotices::class, 'displayNotices' );
+		Hooks::addFilter( 'give_payment_details_transaction_id-paypal-commerce', DonationDetailsPage::class, 'getPayPalPaymentUrl' );
 	}
 }

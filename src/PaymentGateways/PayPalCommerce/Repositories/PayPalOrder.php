@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Exception;
+use function give_record_gateway_error as logError;
 
 /**
  * Class PayPalOrder
@@ -59,6 +60,14 @@ class PayPalOrder {
 		try {
 			return $this->paypalClient->getHttpClient()->execute( $request )->result;
 		} catch ( Exception $ex ) {
+			logError(
+				'Capture PayPal Commerce payment failure',
+				sprintf(
+					'<strong>Response</strong><pre>%1$s</pre>',
+					print_r( json_decode( $ex->getMessage(), true ), true )
+				)
+			);
+
 			throw $ex;
 		}
 	}
@@ -111,6 +120,15 @@ class PayPalOrder {
 		try {
 			return $this->paypalClient->getHttpClient()->execute( $request )->result->id;
 		} catch ( Exception $ex ) {
+			logError(
+				'Create PayPal Commerce order failure',
+				sprintf(
+					'<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
+					print_r( $request->body, true ) ,
+					print_r( json_decode( $ex->getMessage(), true ), true )
+				)
+			);
+
 			throw $ex;
 		}
 	}
