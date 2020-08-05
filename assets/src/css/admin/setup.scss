@@ -91,7 +91,7 @@ article .action a {
 	float: right;
 }
 article .header {
-	margin: 20px 0 0;
+	margin: 20px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
 	font-size: 20px;
 	line-height: 25px;
 }
@@ -126,6 +126,7 @@ article.stripe .action a {
 
 	input {
 		width: 300px;
+		margin-left: -2px; /* Align input with sibling p.description */
 		border-color: transparent;
 		outline-color: transparent;
 	}
