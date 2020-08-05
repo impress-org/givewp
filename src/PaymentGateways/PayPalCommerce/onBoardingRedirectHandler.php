@@ -84,10 +84,10 @@ class onBoardingRedirectHandler {
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
-		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
-		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
-		$payPalAccount[ $mode ]['token']        = $tokenInfo;
-		$payPalAccount['accountIsReady']        = true;
+		$payPalAccount[ $mode ]['clientId']       = $restApiCredentials['client_id'];
+		$payPalAccount[ $mode ]['clientSecret']   = $restApiCredentials['client_secret'];
+		$payPalAccount[ $mode ]['token']          = $tokenInfo;
+		$payPalAccount[ $mode ]['accountIsReady'] = true;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
 		MerchantDetails::save( $merchantDetails );
