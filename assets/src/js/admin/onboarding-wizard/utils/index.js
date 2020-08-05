@@ -10,6 +10,20 @@ export const getWindowData = ( value ) => {
 };
 
 /**
+ * Returns string in Kebab Case (ex: kebab-case)
+ *
+ * @param {string} str String to be returned in Kebab Case
+ * @return {string} String returned in Kebab Case
+ * @since 2.8.0
+ */
+export const toKebabCase = ( str ) => {
+	return str.replace( ' / ', ' ' )
+		.replace( /([a-z])([A-Z])/g, '$1-$2' )
+		.replace( /\s+/g, '-' )
+		.toLowerCase();
+};
+
+/**
  * Sets browser focus to first input/iframe element in current step
  *
  * @since 2.8.0
