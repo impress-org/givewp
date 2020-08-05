@@ -21,6 +21,25 @@ section {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
 	border-radius: 6px;
 }
+
+.section-dismiss {
+	text-align: center;
+
+	button {
+		cursor: pointer;
+		border: 0;
+		background-color: inherit;
+		// color: #9EA3A8;
+		color: rgb(102, 102, 102);
+		font-size: 16px;
+		font-weight: 600;
+
+		&:focus {
+			text-decoration: underline;
+		}
+	}
+}
+
 header {
 	padding: 0 40px 0 20px;
 	font-size: 22px;
@@ -91,7 +110,7 @@ article .action a {
 	float: right;
 }
 article .header {
-	margin: 20px 0 0;
+	margin: 20px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
 	font-size: 20px;
 	line-height: 25px;
 }
@@ -105,7 +124,8 @@ article .description {
 	margin-left: 15px;
 }
 
-article.stripe .action a {
+article.stripe .action a,
+article.stripe .action button {
 	margin-left: 15px;
 	width: 223px;
 	height: 38px;
@@ -117,22 +137,21 @@ article.stripe .action a {
 	background: linear-gradient(180deg, rgba(70, 170, 228, 1) 0%, rgba(12, 144, 222, 1) 50%);
 	border: 0;
 	border-radius: 6px;
+
+	&.hidden {
+		display: none;
+	}
 }
 
-.section-dismiss {
-	text-align: center;
+.stripe-webhooks .stripe-webhooks-url {
+	cursor: pointer;
+	display: inline-block;
+	margin-top: 10px;
 
-	button {
-		cursor: pointer;
-		border: 0;
-		background-color: inherit;
-		// color: #9EA3A8;
-		color: rgb(102, 102, 102);
-		font-size: 16px;
-		font-weight: 600;
-
-		&:focus {
-			text-decoration: underline;
-		}
+	input {
+		width: 300px;
+		margin-left: -2px; /* Align input with sibling p.description */
+		border-color: transparent;
+		outline-color: transparent;
 	}
 }

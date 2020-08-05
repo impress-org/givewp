@@ -20,3 +20,37 @@ Array.from( document.querySelectorAll( '.setup-item' ) ).forEach( ( setupItem ) 
 		} );
 	}
 } );
+
+document.getElementById( 'stripeWebhooksCopyHandler' ).addEventListener( 'click', function() {
+	const webhooksURL = document.getElementById( 'stripeWebhooksCopy' );
+	webhooksURL.disabled = false; // Copying requires the input to not be disabled.
+	webhooksURL.select();
+	document.execCommand( 'copy' );
+	webhooksURL.disabled = true;
+
+	const icon = document.getElementById( 'stripeWebhooksCopyIcon' );
+	icon.classList.remove( 'fa-clipboard' );
+	icon.classList.add( 'fa-clipboard-check' );
+	setTimeout( function() {
+		icon.classList.remove( 'fa-clipboard-check' );
+		icon.classList.add( 'fa-clipboard' );
+	}, 3000 );
+} );
+
+document.getElementById( 'stripeWebhooksConfigureButton' ).addEventListener( 'click', function( event ) {
+	event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+} );
+
+function pollStripeWebhookRecieved() {
+	const endpoint = wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved';
+	jQuery.get( endpoint, function( data ) {
+		if ( undefined === typeof data.webhookRecieved || ! data.webhookRecieved ) {
+			setTimeout( pollStripeWebhookRecieved, 5000 );
+		} else {
+			document.getElementById( 'stripeWebhooksConfigureButton' ).classList.add( 'hidden' );
+			document.getElementById( 'stripeWebhooksConfigureConfirmed' ).classList.remove( 'hidden' );
+		}
+	} );
+}
+pollStripeWebhookRecieved();
+

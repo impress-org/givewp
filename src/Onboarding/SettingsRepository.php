@@ -48,6 +48,17 @@ class SettingsRepository {
 	}
 
 	/**
+	 * @param string $name The setting name.
+	 *
+	 * @return bool
+	 *
+	 * @since 2.8.0
+	 */
+	public function has( $name ) {
+		return isset( $this->settings[ $name ] );
+	}
+
+	/**
 	 * @return bool False if value was not updated and true if value was updated.
 	 *
 	 * @since 2.8.0
