@@ -22,6 +22,15 @@ const DonationForm = () => {
 		opacity: iframeLoaded === false ? '1' : '0',
 	};
 
+	const onIframeLoaded = () => {
+		setIframeLoaded( true );
+
+		document.getElementById( 'donationFormPreview' ).contentDocument
+			.getElementById( 'iFrameResizer0' ).contentDocument
+			.getElementById( 'give_error_test_mode' )
+			.style.display = 'none';
+	};
+
 	return (
 		<div className="give-obw-donation-form-preview">
 			<div className="give-obw-donation-form-preview__loading-message" style={ messageStyle }>
@@ -30,7 +39,7 @@ const DonationForm = () => {
 					{ __( 'Building Form Preview...', 'give' ) }
 				</h3>
 			</div>
-			<iframe onLoad={ () => setIframeLoaded( true ) } className="give-obw-donation-form-preview__iframe" src={ formPreviewUrl } style={ iframeStyle } />
+			<iframe id="donationFormPreview" onLoad={ onIframeLoaded } className="give-obw-donation-form-preview__iframe" src={ formPreviewUrl } style={ iframeStyle } />
 		</div>
 	);
 };
