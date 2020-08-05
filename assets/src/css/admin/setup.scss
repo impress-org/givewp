@@ -119,6 +119,18 @@ article.stripe .action a {
 	border-radius: 6px;
 }
 
+.stripe-webhooks .stripe-webhooks-url {
+	cursor: pointer;
+	display: block;
+	margin-top: 10px;
+
+	input {
+		width: 300px;
+		border-color: transparent;
+		outline-color: transparent;
+	}
+}
+
 .section-dismiss {
 	text-align: center;
 
