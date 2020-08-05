@@ -69,7 +69,7 @@ class Donation implements Objects {
 	public $paymentGateway;
 
 	/**
-	 * Array of properties  and there cast type.
+	 * Array of properties and their cast type.
 	 *
 	 * @var ValueObjects[]
 	 */
@@ -80,7 +80,7 @@ class Donation implements Objects {
 	];
 
 	/**
-	 * Take array and return object
+	 * Take array and return object.
 	 *
 	 * @param $array
 	 *

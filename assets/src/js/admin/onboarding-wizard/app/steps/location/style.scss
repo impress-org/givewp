@@ -10,20 +10,20 @@
 		line-height: 34px;
 		color: #333;
 
-		margin: 52px 0;
+		margin: 0 0 52px 0;
 	}
 
 	.give-obw-card {
-		width: 450px;
-		margin-bottom: 84px;
+		padding: 40px;
+		margin-bottom: 85px;
+	}
 
-		label {
-			margin-bottom: 20px;
-		}
+	.give-obw-select-input {
+		width: 100%;
+		margin-bottom: 42px;
 
-		select {
-			width: 100%;
-			padding: 10px;
+		&:last-of-type {
+			margin-bottom: 0;
 		}
 	}
 }
