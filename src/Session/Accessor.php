@@ -23,7 +23,8 @@ abstract class Accessor {
 
 	/**
 	 * Session data as array.
-	 * We use this array internally to perform database related operation.
+	 *
+	 * We use this array internally to perform database related operations.
 	 *
 	 * @var mixed
 	 */
