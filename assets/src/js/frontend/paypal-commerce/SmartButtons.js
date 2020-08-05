@@ -29,7 +29,7 @@ class SmartButtons extends PaymentMethod {
 			createOrder: createOrderHandler,
 			onApprove: onApproveHandler,
 			style: {
-				layout: 'horizontal',
+				layout: 'vertical',
 				size: 'responsive',
 				shape: 'rect',
 				label: 'paypal',
