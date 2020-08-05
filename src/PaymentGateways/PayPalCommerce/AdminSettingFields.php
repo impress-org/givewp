@@ -125,20 +125,21 @@ class AdminSettingFields {
 					</div>
 
 					<?php $accountErrors = give( MerchantDetails::class )->getAccountErrors(); ?>
-					<div class="<?php echo $accountErrors ? '' : 'give-hidden'; ?>">
-
-					<span>
-						<p class="error-message"><strong>Warning,</strong> your account is not ready to accept donations. Please review the following list:</p>
-						<ul class="ul-disc">
-						<?php
-						foreach ( $accountErrors as $error ) {
-							echo "<li>{$error}</li>";
-						}
-						?>
-						</ul>
-						<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">Re-Check Account Status</a></p>
-					</span>
-					</div>
+					<?php if ( ! empty( $accountErrors ) ) : ?>
+						<div>
+							<span>
+								<p class="error-message"><strong>Warning,</strong> your account is not ready to accept donations. Please review the following list:</p>
+								<ul class="ul-disc">
+								<?php
+								foreach ( $accountErrors as $error ) {
+									echo "<li>{$error}</li>";
+								}
+								?>
+								</ul>
+								<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">Re-Check Account Status</a></p>
+							</span>
+						</div>
+					<?php endif; ?>
 				</div>
 
 			</div>
