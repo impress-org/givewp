@@ -1,20 +1,29 @@
 // Import vendor dependencies
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+// Import store dependencies
+import { useStoreValue } from '../../app/store';
+
+// Import utilities
+import { setupTabIndex } from '../../utils';
+
+// Import components
+import StepNavigation from '../step-navigation';
+import Step from '../step';
 
 // Import styles
 import './style.scss';
-
-import { useStoreValue } from '../../app/store';
-
-import StepNavigation from '../step-navigation';
-import Step from '../step';
 
 const Wizard = ( { children } ) => {
 	const [ { currentStep } ] = useStoreValue();
 	const steps = children;
 
 	const app = useRef( null );
+
+	useEffect( () => {
+		setupTabIndex();
+	}, [ currentStep ] );
 
 	return (
 		<div className="give-obw" ref={ app }>

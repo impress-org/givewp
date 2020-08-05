@@ -9,6 +9,21 @@ export const getWindowData = ( value ) => {
 	return data[ value ];
 };
 
+export const setupTabIndex = () => {
+	const stepInputs = document.querySelectorAll( '.give-obw-step button, .give-obw-step input, .give-obw-step select' );
+	const navButtons = document.querySelectorAll( '.give-obw-step-navigation button' );
+
+	stepInputs.forEach( ( input ) => {
+		input.setAttribute( 'tabindex', 1 );
+	} );
+
+	navButtons.forEach( ( input ) => {
+		input.setAttribute( 'tabindex', 2 );
+	} );
+
+	stepInputs[ 0 ].focus();
+};
+
 export const getAPIRoot = () => {
 	return getWindowData( 'apiRoot' );
 };
