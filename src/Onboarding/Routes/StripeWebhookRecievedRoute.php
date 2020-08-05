@@ -8,8 +8,12 @@ use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\CountryCode;
 
+/**
+ * @since 2.8.0
+ */
 class StripeWebhookRecievedRoute implements RestRoute {
 
+	/** @var string */
 	protected $endpoint = 'onboarding/stripe-webhook-recieved';
 
 	/** @var SettingsRepository */
@@ -24,6 +28,13 @@ class StripeWebhookRecievedRoute implements RestRoute {
 		$this->settingsRepository = $settingsRepository;
 	}
 
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array
+	 *
+	 * @since 2.8.0
+	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
 		$this->ensureStripeEnabled();
@@ -41,6 +52,11 @@ class StripeWebhookRecievedRoute implements RestRoute {
 		];
 	}
 
+	/**
+	 * @since 2.8.0
+	 *
+	 * @return void
+	 */
 	protected function ensureStripeEnabled() {
 		$gateways = $this->settingsRepository->has( 'gateways' )
 			? $this->settingsRepository->get( 'gateways' )
@@ -53,6 +69,11 @@ class StripeWebhookRecievedRoute implements RestRoute {
 		}
 	}
 
+	/**
+	 * @since 2.8.0
+	 *
+	 * @return string $customerID
+	 */
 	protected function getStripeTestCustomerID() {
 		$customerID = get_option( 'give_stripe_webhooks_test_customer_id', false );
 		if ( ! $customerID ) {
@@ -67,6 +88,18 @@ class StripeWebhookRecievedRoute implements RestRoute {
 		return $customerID;
 	}
 
+	/**
+	 * Triggers a test event in Stripe.
+	 *
+	 * If the request is invalid delete the test customer ID
+	 *   so that another is created.
+	 *
+	 * @param string $customerID The Stripe customer ID
+	 *
+	 * @return void
+	 *
+	 * @since 2.8.0
+	 */
 	protected function triggerStripeTestEvent( $customerID ) {
 		try {
 			// Make an update to trigger a `customer.updated` event.
@@ -79,12 +112,16 @@ class StripeWebhookRecievedRoute implements RestRoute {
 		} catch ( \Stripe\Error\InvalidRequest $e ) {
 			// Cleanup
 			delete_option( 'give_stripe_webhooks_test_customer_id' );
-			return false;
 		} catch ( \Exception $e ) {
-			return false;
+			// Supress the error.
 		}
 	}
 
+	/**
+	 * @return bool|string
+	 *
+	 * @since 2.8.0
+	 */
 	protected function getWebhookRecieved() {
 		return $this->settingsRepository->get( 'give_stripe_last_webhook_received_timestamp' );
 	}

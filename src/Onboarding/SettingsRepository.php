@@ -47,6 +47,13 @@ class SettingsRepository {
 		$this->settings[ $name ] = $value;
 	}
 
+	/**
+	 * @param string $name The setting name.
+	 *
+	 * @return bool
+	 *
+	 * @since 2.8.0
+	 */
 	public function has( $name ) {
 		return isset( $this->settings[ $name ] );
 	}
