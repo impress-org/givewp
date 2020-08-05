@@ -124,20 +124,11 @@ jQuery( function( $ ) {
 					}
 
 					// Check whether the post code fields should be required
-					if (
-						'undefined' !== typeof ( response.zip_require ) &&
-						false === response.zip_require
-					) {
-						$form.find( 'input#card_zip' ).removeClass( 'required' );
-						$form.find( 'input#card_zip' ).attr( 'required', false );
-						$form.find( 'input#card_zip' ).attr( 'aria-required', false );
-						$form.find( 'label[for="card_zip"] span.give-required-indicator' ).addClass( 'give-hidden' );
-					} else {
-						$form.find( 'input#card_zip' ).addClass( 'required' );
-						$form.find( 'input#card_zip' ).attr( 'required', true );
-						$form.find( 'input#card_zip' ).attr( 'aria-required', true );
-						$form.find( 'label[for="card_zip"] span.give-required-indicator' ).removeClass( 'give-hidden' );
-					}
+					const zipRequired = !! response.zip_required;
+					$form.find( 'input#card_zip' ).toggleClass( 'required', zipRequired )
+						.attr( 'required', zipRequired )
+						.attr( 'aria-required', zipRequired );
+					$form.find( 'label[for="card_zip"] span.give-required-indicator' ).toggleClass( 'give-hidden', zipRequired );
 
 					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
 				},
