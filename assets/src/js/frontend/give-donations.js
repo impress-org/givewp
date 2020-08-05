@@ -124,7 +124,7 @@ jQuery( function( $ ) {
 					}
 
 					// Check whether the post code fields should be required
-					const zipRequired = !! response.zip_required;
+					const zipRequired = !! response.zip_require;
 					$form.find( 'input#card_zip' ).toggleClass( 'required', zipRequired )
 						.attr( 'required', zipRequired )
 						.attr( 'aria-required', zipRequired );
