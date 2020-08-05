@@ -12,13 +12,18 @@ export const getWindowData = ( value ) => {
 export const setupTabIndex = () => {
 	const stepInputs = document.querySelectorAll( '.give-obw-step button, .give-obw-step input, .give-obw-step select' );
 	const navButtons = document.querySelectorAll( '.give-obw-step-navigation button' );
+	const formPreviewIframe = document.querySelector( '.give-obw-step iframe' );
 
 	stepInputs.forEach( ( input ) => {
 		input.setAttribute( 'tabindex', 1 );
 	} );
 
+	if ( formPreviewIframe !== null ) {
+		formPreviewIframe.setAttribute( 'tabindex', 2 );
+	}
+
 	navButtons.forEach( ( input ) => {
-		input.setAttribute( 'tabindex', 2 );
+		input.setAttribute( 'tabindex', 3 );
 	} );
 
 	stepInputs[ 0 ].focus();

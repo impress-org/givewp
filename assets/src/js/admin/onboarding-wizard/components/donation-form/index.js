@@ -21,6 +21,7 @@ const DonationForm = () => {
 	const messageStyle = {
 		opacity: iframeLoaded === false ? '1' : '0',
 	};
+
 	return (
 		<div className="give-obw-donation-form-preview">
 			<div className="give-obw-donation-form-preview__loading-message" style={ messageStyle }>
