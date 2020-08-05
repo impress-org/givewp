@@ -21,7 +21,12 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	async renderPaymentMethodOption() {
 		if ( ! this.canRenderFields() ) {
-			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach( el => el.remove() );
+			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
+				el => {
+					el.previousElementSibling.remove();
+					el.remove();
+				}
+			);
 			return;
 		}
 
