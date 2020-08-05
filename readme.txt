@@ -1,11 +1,11 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.7.3
+Stable tag: 2.7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -222,6 +222,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.7.4: August 4th, 2020 =
+* Fix: The uninstall process in v2.7.3 previously resulted in a fatal error due to a change made in the plugin's bootstrapping process. [#4981](https://github.com/impress-org/givewp/issues/4981)
 
 = 2.7.3:  =
 * Fix: The Donation Reports were not correctly calculating renewals processed via the Recurring Donations add-on leading to incorrect figures. [#4883](https://github.com/impress-org/givewp/issues/4883)
