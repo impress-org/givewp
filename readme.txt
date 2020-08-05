@@ -223,10 +223,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= NEXT RELEASE =
+* Fix: Ensure that the "Title Prefixes" maintain the order of values when saved. [#4992](https://github.com/impress-org/givewp/issues/4992)
+
 = 2.7.4: August 4th, 2020 =
 * Fix: The uninstall process in v2.7.3 previously resulted in a fatal error due to a change made in the plugin's bootstrapping process. [#4981](https://github.com/impress-org/givewp/issues/4981)
 
-= 2.7.3:  =
+= 2.7.3: July 29th, 2020 =
 * Fix: The Donation Reports were not correctly calculating renewals processed via the Recurring Donations add-on leading to incorrect figures. [#4883](https://github.com/impress-org/givewp/issues/4883)
 * Fix: The new Multi-Step Form Template was not correctly marking donations as anonymous if the donor elected to give anonymously. [#4959](https://github.com/impress-org/givewp/issues/4959)
 * Fix: Reports have been improved to account for the use of a comma as the currency decimal separator. Previously, when using a ',' as the decimal separator for a currency, it produced inconsistent errors in terms of decimal placement for totals displayed on the Reports page. Furthermore, using a ',' for the decimal separator resulted in consistent misplacement of the decimal in the Average Donations totals. [#4926](https://github.com/impress-org/givewp/issues/4926)
