@@ -341,8 +341,8 @@ function give_chosen_input( $field ) {
 		$fieldName     .= '[]';
 	}
 
-	if ( $allow_new_values && $field['value'] && ( $missing = array_diff( $field['value'], array_keys( $choices ) ) ) ) {
-		$choices = array_merge( $choices, array_combine( $missing, $missing ) );
+	if ( $allow_new_values && $field['value'] ) {
+		$choices = array_merge( array_combine( $field['value'], $field['value'] ), $choices );
 	}
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">

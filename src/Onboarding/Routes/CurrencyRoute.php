@@ -4,18 +4,19 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
-use Give\Onboarding\Helpers\Currency;
 use Give\Onboarding\SettingsRepository;
 
 /**
  * @since 2.8.0
  */
-class SettingsRoute implements RestRoute {
+class CurrencyRoute implements RestRoute {
 
 	/** @var string */
-	protected $endpoint = 'onboarding/settings/(?P<setting>\w+)';
+	protected $endpoint = 'onboarding/settings/currency';
 
-	/** @var SettingsRepository */
+	/**
+	 * @var SettingsRepository
+	 */
 	protected $settingsRepository;
 
 	/**
@@ -36,39 +37,24 @@ class SettingsRoute implements RestRoute {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
-		$setting = $request->get_param( 'setting' );
-		$value   = json_decode( $request->get_param( 'value' ) );
+		$currencyCode = json_decode( $request->get_param( 'value' ) );
 
-		$this->settingsRepository->set( $setting, $value );
+		$currencyList          = give_get_currencies_list();
+		$currencyConfiguration = $currencyList[ $currencyCode ]['setting'];
+
+		$this->settingsRepository->set( 'currency', $currencyCode );
+		$this->settingsRepository->set( 'currency_position', $currencyConfiguration['currency_position'] );
+		$this->settingsRepository->set( 'thousands_separator', $currencyConfiguration['thousands_separator'] );
+		$this->settingsRepository->set( 'decimal_separator', $currencyConfiguration['decimal_separator'] );
+		$this->settingsRepository->set( 'number_decimals', $currencyConfiguration['number_decimals'] );
 		$this->settingsRepository->save();
 
 		return [
 			'data' => [
-				'setting' => $setting,
-				'value'   => $value,
+				'setting' => 'currency',
+				'value'   => $currencyCode,
 			],
 		];
-	}
-
-	/**
-	 * @param string $setting
-	 *
-	 * @return bool
-	 *
-	 * @since 2.8.0
-	 */
-	public function validateSetting( $setting ) {
-		return in_array(
-			$setting,
-			[
-				'user_type',
-				'cause_type',
-				'base_country',
-				'base_state',
-				'addons',
-				'features',
-			]
-		);
 	}
 
 	/**
@@ -86,16 +72,10 @@ class SettingsRoute implements RestRoute {
 						return current_user_can( 'manage_options' );
 					},
 					'args'                => [
-						'setting' => [
+						'value' => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => [ $this, 'validateSetting' ],
-							'sanitize_callback' => 'sanitize_text_field',
-						],
-						'value'   => [
-							'type'              => 'string',
-							'required'          => false,
-							// 'validate_callback' => [ $this, 'validateValue' ],
+							// 'validate_callback' => [ $this, 'validateSetting' ],
 							'sanitize_callback' => 'sanitize_text_field',
 						],
 					],
@@ -104,6 +84,7 @@ class SettingsRoute implements RestRoute {
 			]
 		);
 	}
+
 
 	/**
 	 * @return array
@@ -119,12 +100,8 @@ class SettingsRoute implements RestRoute {
 			'type'       => 'object',
 			// In JSON Schema you can specify object properties in the properties attribute.
 			'properties' => [
-				'setting' => [
-					'description' => esc_html__( 'The reference name for the setting being updated.', 'give' ),
-					'type'        => 'string',
-				],
-				'value'   => [
-					'description' => esc_html__( 'The value of the setting being updated.', 'give' ),
+				'currencyCode' => [
+					'description' => esc_html__( 'Two letter code representing a country.', 'give' ),
 					'type'        => 'string',
 				],
 			],

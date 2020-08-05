@@ -11,6 +11,7 @@
 	const navigator = {
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
+		firstFocus: false,
 		goToStep: ( step ) => {
 			// Adjust body height before animating step, to prevent choppy iframe resizing
 			// Compare next step to current step, and increase body height if next step is taller.
@@ -75,6 +76,10 @@
 			setupTabOrder();
 
 			setTimeout( function() {
+				// Do not auto-focus form on the page load if the first step is disabled
+				if ( ! navigator.firstFocus && templateOptions.introduction.enabled === 'disabled' ) {
+					return navigator.firstFocus = true;
+				}
 				if ( steps[ navigator.currentStep ].firstFocus ) {
 					$( steps[ navigator.currentStep ].firstFocus ).focus();
 				}
@@ -225,7 +230,7 @@
 					moveErrorNotice( $( this ) );
 				} );
 
-				// Setup anonymouse donations opt-in event listeners
+				// Setup anonymous donations opt-in event listeners
 				setupCheckbox( {
 					container: '#give-anonymous-donation-wrap label',
 					label: '#give-anonymous-donation-wrap label',
@@ -656,7 +661,10 @@
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
+
+				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
 			}
+
 			$( container ).toggleClass( 'active' );
 		} );
 	}
