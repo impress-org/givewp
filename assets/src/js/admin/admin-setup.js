@@ -37,6 +37,10 @@ document.getElementById( 'stripeWebhooksCopyHandler' ).addEventListener( 'click'
 	}, 3000 );
 } );
 
+document.getElementById( 'stripeWebhooksConfigureButton' ).addEventListener( 'click', function( event ) {
+	event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+} );
+
 function pollStripeWebhookRecieved() {
 	const endpoint = wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved';
 	jQuery.get( endpoint, function( data ) {
