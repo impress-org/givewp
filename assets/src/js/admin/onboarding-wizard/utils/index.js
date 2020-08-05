@@ -9,6 +9,12 @@ export const getWindowData = ( value ) => {
 	return data[ value ];
 };
 
+/**
+ * Walks through input/button elements on the page and sets tabindex attributes for keyboard accessibility.
+ * Finishes by focusing browser on the first input in the step.
+ *
+ * @since 2.8.0
+ */
 export const setupTabIndex = () => {
 	const stepInputs = document.querySelectorAll( '.give-obw-step button, .give-obw-step input, .give-obw-step select' );
 	const navButtons = document.querySelectorAll( '.give-obw-step-navigation button' );
