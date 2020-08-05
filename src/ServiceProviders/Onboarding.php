@@ -7,6 +7,7 @@ use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
+use Give\Onboarding\Wizard\FormPreview as FormPreview;
 use Give\Onboarding\Routes\SettingsRoute;
 use Give\Onboarding\Routes\LocationRoute;
 use Give\Onboarding\Routes\CurrencyRoute;
@@ -41,6 +42,10 @@ class Onboarding implements ServiceProvider {
 		add_action( 'admin_menu', [ $wizardPage, 'add_page' ] );
 		add_action( 'admin_init', [ $wizardPage, 'setup_wizard' ] );
 		add_action( 'admin_enqueue_scripts', [ $wizardPage, 'enqueue_scripts' ] );
+
+		// Load Form Preview
+		Hooks::addAction( 'admin_menu', FormPreview::class, 'add_page' );
+		Hooks::addAction( 'admin_init', FormPreview::class, 'setup_form_preview' );
 
 		Hooks::addAction( 'rest_api_init', LocationRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', CurrencyRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/currency
