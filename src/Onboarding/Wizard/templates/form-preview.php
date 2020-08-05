@@ -29,7 +29,7 @@ set_current_screen();
 			<?php
 			echo give_form_shortcode(
 				[
-					'id' => 18,
+					'id' => $this->get_preview_form_id(),
 				]
 			);
 			?>
