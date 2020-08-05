@@ -37,3 +37,13 @@ document.getElementById( 'stripeWebhooksCopyHandler' ).addEventListener( 'click'
 	}, 3000 );
 } );
 
+// function pollStripeWebhookRecieved() {
+// 	fetch( wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved' )
+// 		.then( response => response.json() )
+// 		.then( data => {
+// 			console.log( data );
+// 			setTimeout( pollStripeWebhookRecieved, 5000 );
+// 		} );
+// }
+// pollStripeWebhookRecieved();
+

@@ -10,6 +10,7 @@ use Give\Onboarding\Wizard\Page as WizardPage;
 use Give\Onboarding\Routes\SettingsRoute;
 use Give\Onboarding\Routes\LocationRoute;
 use Give\Onboarding\Routes\CurrencyRoute;
+use Give\Onboarding\Routes\StripeWebhookRecievedRoute;
 use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
 use Give\Onboarding\Setup\Handlers\StripeConnectHandler;
 
@@ -45,6 +46,7 @@ class Onboarding implements ServiceProvider {
 		Hooks::addAction( 'rest_api_init', LocationRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', CurrencyRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/currency
 		Hooks::addAction( 'rest_api_init', SettingsRoute::class, 'registerRoute', 11 ); // Dynamic route, onboarding/settings/{setting}
+		Hooks::addAction( 'rest_api_init', StripeWebhookRecievedRoute::class, 'registerRoute' );
 
 		// Maybe load Setup Page
 		if ( give_is_setting_enabled( SetupPage::getSetupPageEnabledOrDisabled() ) ) {
