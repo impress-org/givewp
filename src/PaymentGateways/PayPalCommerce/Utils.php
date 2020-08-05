@@ -21,4 +21,15 @@ class Utils {
 	public static function isConnected() {
 		return get_option( MerchantDetails::OPTION_KEY, [] );
 	}
+
+	/**
+	 * Returns whether or not the PayPal Commerce gateway is active
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	public static function gatewayIsActive() {
+		return give_is_gateway_active( PayPalCommerce::GATEWAY_ID );
+	}
 }
