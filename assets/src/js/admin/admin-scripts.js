@@ -2931,6 +2931,48 @@ const gravatar = require( 'gravatar' );
 		},
 	};
 
+	/**
+	 * Keep multi select options order.
+	 *
+	 * @since 2.8.0
+	 */
+	const GiveMultiSelectOptions = {
+		init: function() {
+			$( '.give-select-chosen[multiple]' ).each( function( i, selectDropdown ) {
+				$( selectDropdown ).chosen().change( function( e, currentOption ) {
+					const $dropdown = $( this );
+					const dropDownId = $dropdown.attr( 'id' );
+					const orderedOptions = [];
+
+					$( `#${ dropDownId }_chosen li.search-choice span` ).each( function( j, element ) {
+						const value = element.textContent;
+						if ( value !== currentOption.deselected ) {
+							orderedOptions.push( { value, selected: true } );
+						}
+					} );
+
+					Array.from( e.target.options ).map( option => {
+						const included = orderedOptions.filter( orderedOption => orderedOption.value === option.value ).length;
+						if ( ! included ) {
+							orderedOptions.push( {
+								value: option.value,
+								selected: option.selected,
+							} );
+						}
+					} );
+
+					// Rebuild the dropdown
+					$dropdown.empty();
+					orderedOptions.map( option => $dropdown.append( $( '<option>', {
+						value: option.value,
+						text: option.value,
+						selected: option.selected,
+					} ) ) );
+				} );
+			} );
+		},
+	};
+
 	// On DOM Ready.
 	$( function() {
 		give_dismiss_notice();
@@ -2950,6 +2992,7 @@ const gravatar = require( 'gravatar' );
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
 		GiveShortcodeButtonObj.init();
+		GiveMultiSelectOptions.init();
 
 		// Footer.
 		$( 'a.give-rating-link' ).click( function() {
