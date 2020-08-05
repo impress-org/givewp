@@ -223,7 +223,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
-= NEXT RELEASE =
+= 2.8.0 =
+* New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain".
 * Fix: Ensure that the "Title Prefixes" maintain the order of values when saved. [#4992](https://github.com/impress-org/givewp/issues/4992)
 
 = 2.7.4: August 4th, 2020 =
