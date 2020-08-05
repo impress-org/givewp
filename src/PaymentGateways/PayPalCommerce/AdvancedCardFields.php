@@ -33,6 +33,12 @@ class AdvancedCardFields {
 				<div id="smart-buttons-<?php echo esc_html( $idPrefix ); ?>"></div>
 			</div>
 
+			<div class="separator-with-text">
+				<div class="dashed-line"></div>
+				<div class="label"><?php esc_html_e( 'or pay with card', 'give' ); ?></div>
+				<div class="dashed-line"></div>
+			</div>
+
 			<?php
 			echo $this->cardNumberField( $idPrefix );
 			echo $this->cardCvcField( $idPrefix );
