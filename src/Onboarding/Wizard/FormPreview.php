@@ -8,35 +8,23 @@ use Give\Onboarding\Helpers\FormatList;
 use Give_Scripts;
 
 /**
- * Onboarding Wizard admin page class
+ * Form Preview page class
  *
- * Responsible for setting up and rendering Onboarding Wizard page at
- * wp-admin/?page=give-onboarding-wizard
+ * Responsible for setting up and rendering Form Preview page at wp-admin/?page=give-form-preview
+ * This URL is used as the src for an iframe which appears inside the Onboarding Wizard.
  *
  * @since 2.8.0
  */
 class FormPreview {
 
 
-	/** @var string $slug Page slug used for displaying onboarding wizard */
+	/** @var string $slug Page slug used for displaying form preview */
 	protected $slug = 'give-form-preview';
 
 	/**
-	 * Adds Onboarding Wizard hooks
+	 * Adds Form Preview as dashboard page
 	 *
-	 * Handles setting up hooks relates to the Onboarding Wizard admin page.
-	 *
-	 * @since 2.8.0
-	 **/
-	public function init() {
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_init', [ $this, 'setup_wizard' ] );
-	}
-
-	/**
-	 * Adds Onboarding Wizard as dashboard page
-	 *
-	 * Register Onboarding Wizard as an admin page route
+	 * Register Form Preview as an admin page route
 	 *
 	 * @since 2.8.0
 	 **/
@@ -45,9 +33,9 @@ class FormPreview {
 	}
 
 	/**
-	 * Conditionally renders Onboarding Wizard
+	 * Conditionally renders Form Preview markup
 	 *
-	 * If the current page query matches the onboarding wizard's slug, method renders the onboarding wizard.
+	 * If the current page query matches the form preview's slug, method renders the form preview.
 	 *
 	 * @since 2.8.0
 	 **/
@@ -60,9 +48,9 @@ class FormPreview {
 	}
 
 	/**
-	 * Renders onboarding wizard markup
+	 * Renders form preview markup
 	 *
-	 * Uses an object buffer to display the onboarding wizard template
+	 * Uses an object buffer to display the form preview template
 	 *
 	 * @since 2.8.0
 	 **/
@@ -76,10 +64,7 @@ class FormPreview {
 	}
 
 	/**
-	 * Enqueues onboarding wizard scripts/styles
-	 *
-	 * Enqueues scripts/styles necessary for loading the Onboarding Wizard React app,
-	 * and localizes some additional data for the app to access.
+	 * Registers form preview scripts/styles
 	 *
 	 * @since 2.8.0
 	 **/
@@ -102,6 +87,11 @@ class FormPreview {
 
 	}
 
+	/**
+	 * Returns the ID of the form used for the form preview
+	 *
+	 * @since 2.8.0
+	 **/
 	protected function get_preview_form_id() {
 		return 18;
 	}
