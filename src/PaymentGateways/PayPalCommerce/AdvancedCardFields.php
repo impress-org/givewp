@@ -104,15 +104,13 @@ class AdvancedCardFields {
 
 		return <<<EOT
 			<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-paypal-commerce-cc-field-wrap">
-				<div>
-					<label for="give-card-number-field-$idPrefix" class="give-label">
-						$label
-						<span class="give-required-indicator">*</span>
-						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
-						<span class="card-type"></span>
-					</label>
-					<div id="give-card-number-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-number-field"></div>
-				</div>
+				<label for="give-card-number-field-$idPrefix" class="give-label">
+					$label
+					<span class="give-required-indicator">*</span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+					<span class="card-type"></span>
+				</label>
+				<div id="give-card-number-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-number-field"></div>
 			</div>
 EOT;
 	}
@@ -132,14 +130,12 @@ EOT;
 
 		return <<<EOT
 			<div id="give-card-cvc-wrap" class="form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
-				<div>
-					<label for="give-card-cvc-field-$idPrefix" class="give-label">
-						$label
-						<span class="give-required-indicator">*</span>
-						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
-					</label>
-					<div id="give-card-cvc-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-cvc-field"></div>
-				</div>
+				<label for="give-card-cvc-field-$idPrefix" class="give-label">
+					$label
+					<span class="give-required-indicator">*</span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+				</label>
+				<div id="give-card-cvc-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-cvc-field"></div>
 			</div>
 EOT;
 	}
@@ -190,15 +186,12 @@ EOT;
 
 		return <<<EOT
 			<div id="give-card-expiration-wrap" class="card-expiration form-row form-row-one-third form-row-responsive give-paypal-commerce-cc-field-wrap">
-				<div>
-					<label for="give-card-expiration-field-$idPrefix" class="give-label">
-						$label
-						<span class="give-required-indicator">*</span>
-						<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
-					</label>
-
-					<div id="give-card-expiration-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
-				</div>
+				<label for="give-card-expiration-field-$idPrefix" class="give-label">
+					$label
+					<span class="give-required-indicator">*</span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="$tooltip"></span>
+				</label>
+				<div id="give-card-expiration-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
 			</div>
 EOT;
 	}
