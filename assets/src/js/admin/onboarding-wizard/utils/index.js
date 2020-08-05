@@ -9,6 +9,13 @@ export const getWindowData = ( value ) => {
 	return data[ value ];
 };
 
+export const toKebabCase = ( str ) => {
+	return str.replace( ' / ', ' ' )
+		.replace( /([a-z])([A-Z])/g, '$1-$2' )
+		.replace( /\s+/g, '-' )
+		.toLowerCase();
+};
+
 export const getAPIRoot = () => {
 	return getWindowData( 'apiRoot' );
 };
