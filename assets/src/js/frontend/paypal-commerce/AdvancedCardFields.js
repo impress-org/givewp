@@ -35,11 +35,15 @@ class AdvancedCardFields extends PaymentMethod {
 
 		const creatOrderHandler = this.createOrderHandler.bind( this );
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
+		const styles = await this.getComputedInputFieldStyle();
+		const fields = this.getFields();
+
+		this.addStyleToHostedFieldsContainer( fields );
 
 		const hostedCardFields = await paypal.HostedFields.render( {
 			createOrder: creatOrderHandler,
-			styles: this.getComputedInputFieldStyle(),
-			fields: this.getFields(),
+			styles,
+			fields,
 		} );
 
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
@@ -130,14 +134,35 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @return {object} Return object of style properties.
 	 */
 	getComputedInputFieldStyle() {
-		const computedStyle = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
-
-		return {
-			input: {
-				'font-size': computedStyle.getPropertyValue( 'font-size' ),
-				color: computedStyle.getPropertyValue( 'color' ),
-			},
+		const computedStyleInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
+		const computedStyleForFocusedInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':focus' );
+		const supportProperties = [
+			'color',
+			'direction',
+			'font-size', // Custom
+			'letter-spacing',
+			'line-height',
+			'padding',
+		];
+		let styles = {
+			input: {},
+			':focus': {},
 		};
+
+		supportProperties.forEach( property => {
+			styles = {
+				input: {
+					...styles.input,
+					[ property ]: computedStyleInput.getPropertyValue( property ),
+				},
+				':focus': {
+					...styles[ ':focus' ],
+					[ property ]: computedStyleForFocusedInput.getPropertyValue( property ),
+				},
+			};
+		} );
+
+		return styles;
 	}
 
 	/**
@@ -260,6 +285,32 @@ class AdvancedCardFields extends PaymentMethod {
 		return {
 			cardholderName: this.form.getElementById( '#card_name' ).value,
 		};
+	}
+
+	/**
+	 * Add style to hosted field's container.
+	 *
+	 * @since 2.8.0
+	 * @param {object} fields list of fields.
+	 */
+	addStyleToHostedFieldsContainer( fields ) {
+		// Apply styles
+		for ( const fieldKey in fields ) {
+			const source = this.form.querySelector( 'input[name="card_name"]' );
+			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
+
+			Give.util.fn.copyNodeStyle(
+				source,
+				target,
+				[
+					'background',
+					'box-sizing',
+					'box-shadow',
+					'border',
+					'border-radius',
+				]
+			);
+		}
 	}
 }
 
