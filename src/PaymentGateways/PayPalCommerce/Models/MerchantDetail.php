@@ -104,11 +104,11 @@ class MerchantDetail {
 		return [
 			'merchantId'         => $this->merchantId,
 			'merchantIdInPayPal' => $this->merchantIdInPayPal,
-			'accountIsReady'     => $this->accountIsReady,
 			$this->mode          => [
-				'clientId'     => $this->clientId,
-				'clientSecret' => $this->clientSecret,
-				'token'        => $this->tokenDetails,
+				'clientId'       => $this->clientId,
+				'clientSecret'   => $this->clientSecret,
+				'token'          => $this->tokenDetails,
+				'accountIsReady' => $this->accountIsReady,
 			],
 		];
 	}
@@ -150,8 +150,8 @@ class MerchantDetail {
 		$this->clientId       = $merchantDetails[ $this->mode ]['clientId'];
 		$this->clientSecret   = $merchantDetails[ $this->mode ]['clientSecret'];
 		$this->tokenDetails   = $merchantDetails[ $this->mode ]['token'];
+		$this->accountIsReady = $merchantDetails[ $this->mode ]['accountIsReady'];
 		$this->accessToken    = $this->tokenDetails['accessToken'];
-		$this->accountIsReady = $merchantDetails['accountIsReady'];
 	}
 
 	/**
@@ -162,7 +162,7 @@ class MerchantDetail {
 	 * @param array $merchantDetails
 	 */
 	private function validate( $merchantDetails ) {
-		$required = [ 'merchantId', 'merchantIdInPayPal', 'accountIsReady', $this->mode ];
+		$required = [ 'merchantId', 'merchantIdInPayPal', $this->mode ];
 		$array    = array_filter( $merchantDetails ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
