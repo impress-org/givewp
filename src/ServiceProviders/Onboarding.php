@@ -7,7 +7,7 @@ use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
-use Give\Onboarding\Wizard\FormPreview as FormPreview;
+use Give\Onboarding\Wizard\FormPreview;
 use Give\Onboarding\Routes\SettingsRoute;
 use Give\Onboarding\Routes\LocationRoute;
 use Give\Onboarding\Routes\CurrencyRoute;
