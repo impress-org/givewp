@@ -22,9 +22,7 @@ class PayPalWebhooks {
 	 *
 	 * @var string[]
 	 */
-	private $eventHandlers = [
-		'CHECKOUT.ORDER.APPROVED' => CheckoutOrderApproved::class,
-	];
+	private $eventHandlers = [];
 
 	/**
 	 * @var Webhooks
