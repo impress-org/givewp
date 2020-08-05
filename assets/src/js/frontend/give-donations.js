@@ -123,6 +123,22 @@ jQuery( function( $ ) {
 						$form.find( 'p#give-card-zip-wrap' ).removeClass( 'form-row-last' );
 					}
 
+					// Check whether the post code fields should be required
+					if (
+						'undefined' !== typeof ( response.zip_require ) &&
+						false === response.zip_require
+					) {
+						$form.find( 'input#card_zip' ).removeClass( 'required' );
+						$form.find( 'input#card_zip' ).attr( 'required', false );
+						$form.find( 'input#card_zip' ).attr( 'aria-required', false );
+						$form.find( 'label[for="card_zip"] span.give-required-indicator' ).addClass( 'give-hidden' );
+					} else {
+						$form.find( 'input#card_zip' ).addClass( 'required' );
+						$form.find( 'input#card_zip' ).attr( 'required', true );
+						$form.find( 'input#card_zip' ).attr( 'aria-required', true );
+						$form.find( 'label[for="card_zip"] span.give-required-indicator' ).removeClass( 'give-hidden' );
+					}
+
 					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
 				},
 			} ).fail( function( data ) {
