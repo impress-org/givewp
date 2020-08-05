@@ -26,16 +26,23 @@ class onBoardingRedirectHandler {
 	private $webhooksRepository;
 
 	/**
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
+
+	/**
 	 * onBoardingRedirectHandler constructor.
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param Webhooks     $webhooks
-	 * @param PayPalClient $payPalClient
+	 * @param Webhooks        $webhooks
+	 * @param PayPalClient    $payPalClient
+	 * @param MerchantDetails $merchantRepository
 	 */
-	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient ) {
+	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository ) {
 		$this->webhooksRepository = $webhooks;
 		$this->payPalClient       = $payPalClient;
+		$this->merchantRepository = $merchantRepository;
 	}
 
 	/**
@@ -90,7 +97,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount[ $mode ]['accountIsReady'] = true;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
-		MerchantDetails::save( $merchantDetails );
+		$this->merchantRepository->save( $merchantDetails );
 
 		$this->deleteTempOptions();
 
@@ -109,7 +116,7 @@ class onBoardingRedirectHandler {
 
 		if ( $check !== true ) {
 			$merchant_detail->accountIsReady = false;
-			MerchantDetails::save( $merchant_detail );
+			$this->merchantRepository->save( $merchant_detail );
 
 			$this->redirectWhenOnBoardingFail( $check );
 		}

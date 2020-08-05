@@ -22,7 +22,7 @@ class MerchantDetails {
 	 *
 	 * @return MerchantDetail
 	 */
-	public static function getDetails() {
+	public function getDetails() {
 		return MerchantDetail::fromArray( get_option( self::OPTION_KEY, [] ) );
 	}
 
@@ -35,7 +35,7 @@ class MerchantDetails {
 	 *
 	 * @return bool
 	 */
-	public static function save( MerchantDetail $merchantDetails ) {
+	public function save( MerchantDetail $merchantDetails ) {
 		return update_option( self::OPTION_KEY, $merchantDetails->toArray() );
 	}
 
@@ -46,7 +46,7 @@ class MerchantDetails {
 	 *
 	 * @return bool
 	 */
-	public static function delete() {
+	public function delete() {
 		return delete_option( self::OPTION_KEY );
 	}
 
@@ -57,14 +57,16 @@ class MerchantDetails {
 	 *
 	 * @return string
 	 */
-	public static function getClientToken() {
+	public function getClientToken() {
 		$optionName = 'give_paypal_commerce_client_token';
 
 		if ( $optionValue = get_transient( $optionName ) ) {
 			return $optionValue;
 		}
 
+		/** @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
+
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
 				give( PayPalClient::class )->getApiUrl( 'v1/identity/generate-token' ),

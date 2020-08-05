@@ -27,6 +27,11 @@ class AjaxRequestHandler {
 	private $merchantDetails;
 
 	/**
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
+
+	/**
 	 * @var PayPalClient
 	 */
 	private $paypalClient;
@@ -40,12 +45,14 @@ class AjaxRequestHandler {
 		Webhooks $webhooksRepository,
 		MerchantDetail $merchantDetails,
 		PayPalClient $paypalClient,
-		ConnectClient $connectClient
+		ConnectClient $connectClient,
+		MerchantDetails $merchantRepository
 	) {
 		$this->webhooksRepository = $webhooksRepository;
 		$this->merchantDetails    = $merchantDetails;
 		$this->paypalClient       = $paypalClient;
 		$this->connectClient      = $connectClient;
+		$this->merchantRepository = $merchantRepository;
 	}
 
 	/**
@@ -137,7 +144,7 @@ class AjaxRequestHandler {
 			$this->webhooksRepository->deleteWebhookId();
 		}
 
-		MerchantDetails::delete();
+		$this->merchantRepository->delete();
 
 		wp_send_json_success();
 	}

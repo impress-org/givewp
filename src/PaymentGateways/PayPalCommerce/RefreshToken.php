@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce;
 
 
@@ -9,18 +10,24 @@ use PayPalCheckoutSdk\Core\RefreshTokenRequest;
 
 /**
  * Class RefreshToken
- * @package Give\PaymentGateways\PayPalCommerce
  *
  * @since 2.8.0
  */
 class RefreshToken {
+	/** @var MerchantDetails */
+	private $detailsRepository;
+
+	public function __construct( MerchantDetails $detailsRepository ) {
+		$this->detailsRepository = $detailsRepository;
+	}
+
 	/**
 	 * Register cron job to refresh access token.
 	 * Note: only for internal use.
 	 *
-	 * @param  string  $tokenExpires
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param string $tokenExpires
 	 *
 	 */
 	public function registerCronJobToRefreshToken( $tokenExpires ) {
@@ -57,7 +64,7 @@ class RefreshToken {
 		$tokenDetails = ArrayDataSet::camelCaseKeys( (array) $response->result );
 
 		$merchant->setTokenDetails( $tokenDetails );
-		MerchantDetails::save( $merchant );
+		$this->detailsRepository->save( $merchant );
 
 		$this->registerCronJobToRefreshToken( $tokenDetails['expiresIn'] );
 	}
