@@ -13,6 +13,7 @@ class AdvancedCardFields extends PaymentMethod {
 			'border',
 			'border-radius',
 			'margin',
+			'height',
 		];
 
 		this.hostedInputFieldStyleProperties = [
@@ -55,6 +56,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	async renderPaymentMethodOption() {
 		this.addInitialStyleToHostedFieldsContainer();
+		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 
 		if ( ! this.canRenderFields() ) {
 			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
@@ -319,6 +321,9 @@ class AdvancedCardFields extends PaymentMethod {
 			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
 
 			this.hostedFieldContainerStyleProperties.forEach( property => {
+				if ( 'height' === property && [ 'auto', '0px' ].includes( this.styles.container[ property ] ) ) {
+					return;
+				}
 				target.style.setProperty( property, this.styles.container[ property ] );
 			} );
 		}
@@ -402,6 +407,26 @@ class AdvancedCardFields extends PaymentMethod {
 		// Set style properties for container input field and input, placeholder.
 		const event = new Event( 'blur' );
 		this.form.querySelector( 'input[name="card_name"]' ).dispatchEvent( event );
+	}
+
+	/**
+	 * Set hosted field's container height.
+	 *
+	 * @since 2.8.0
+	 */
+	setHostedFieldContainerHeight() {
+		const fields = this.getFields();
+		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
+
+		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
+			return;
+		}
+
+		// Apply styles
+		for ( const fieldKey in fields ) {
+			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
+			target.style.setProperty( 'height', this.styles.container.height );
+		}
 	}
 }
 
