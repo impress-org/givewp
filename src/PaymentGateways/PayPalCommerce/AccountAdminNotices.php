@@ -13,16 +13,34 @@ class AccountAdminNotices {
 	 */
 	private $merchantDetails;
 
+	/**
+	 * AccountAdminNotices constructor.
+	 *
+	 * @param MerchantDetail $merchantDetails
+	 */
 	public function __construct( MerchantDetail $merchantDetails ) {
 		$this->merchantDetails = $merchantDetails;
 	}
 
+	/**
+	 * Displays the admin notices in the right conditions
+	 *
+	 * @since 2.8.0
+	 */
 	public function displayNotices() {
-		$this->checkForConnectedLiveAccount();
+		if ( Utils::gatewayIsActive() && ! give_is_test_mode() ) {
+			$this->checkForConnectedLiveAccount();
+			$this->checkForAccountReadiness();
+		}
 	}
 
+	/**
+	 * Displays a notice if the account is not connected
+	 *
+	 * @since 2.8.0
+	 */
 	public function checkForConnectedLiveAccount() {
-		if ( Utils::gatewayIsActive() && ! give_is_test_mode() && ! Utils::isConnected() ) {
+		if ( ! Utils::isConnected() ) {
 			$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
 			Give_Admin_Settings::add_message(
 				'paypal-commerce-not-connected',
@@ -31,8 +49,13 @@ class AccountAdminNotices {
 		}
 	}
 
+	/**
+	 * Displays a notice if the account is connected but not ready
+	 *
+	 * @since 2.8.0
+	 */
 	public function checkForAccountReadiness() {
-		if ( Utils::gatewayIsActive() && ! give_is_test_mode() && Utils::isConnected() && ! $this->merchantDetails->accountIsReady ) {
+		if ( Utils::isConnected() && ! $this->merchantDetails->accountIsReady ) {
 			$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
 			Give_Admin_Settings::add_message(
 				'paypal-commerce-account-not-ready',

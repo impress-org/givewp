@@ -277,14 +277,14 @@ class onBoardingRedirectHandler {
 		$statusErrors = $this->isAdminSuccessfullyOnBoarded( $merchantDetails->merchantIdInPayPal, $merchantDetails->accessToken );
 		if ( $statusErrors !== true ) {
 			$merchantDetails->accountIsReady = false;
-			$this->merchantRepository->save( $merchantDetails );
 			$this->merchantRepository->saveAccountErrors( $statusErrors );
 
 		} else {
 			$merchantDetails->accountIsReady = true;
-			$this->merchantRepository->save( $merchantDetails );
 			$this->merchantRepository->deleteAccountErrors();
 		}
+
+		$this->merchantRepository->save( $merchantDetails );
 	}
 
 	/**

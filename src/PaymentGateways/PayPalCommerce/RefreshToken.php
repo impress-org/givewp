@@ -14,9 +14,20 @@ use PayPalCheckoutSdk\Core\RefreshTokenRequest;
  * @since 2.8.0
  */
 class RefreshToken {
-	/** @var MerchantDetails */
+	/**
+	 * @since 2.8.0
+	 *
+	 * @var MerchantDetails
+	 */
 	private $detailsRepository;
 
+	/**
+	 * RefreshToken constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param MerchantDetails $detailsRepository
+	 */
 	public function __construct( MerchantDetails $detailsRepository ) {
 		$this->detailsRepository = $detailsRepository;
 	}

@@ -28,6 +28,13 @@ class ScriptLoader {
 	 */
 	private $merchantRepository;
 
+	/**
+	 * ScriptLoader constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param MerchantDetails $merchantRepository
+	 */
 	public function __construct( MerchantDetails $merchantRepository ) {
 		$this->merchantRepository = $merchantRepository;
 	}
