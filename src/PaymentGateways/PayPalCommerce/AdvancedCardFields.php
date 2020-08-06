@@ -198,12 +198,15 @@ EOT;
 	 *
 	 * @return string
 	 */
-	private function getSeparator(){
+	private function getSeparator() {
 		$label = esc_html__( 'or pay with card', 'give' );
 
-		ob_start();
-		include GIVE_PLUGIN_DIR . 'src/Views/Utils/separator-with-center-text.php';
-
-		return ob_get_clean();
+		return <<<EOF
+			<div class="separator-with-text">
+				<div class="dashed-line"></div>
+				<div class="label">$label</div>
+				<div class="dashed-line"></div>
+			</div>
+EOF;
 	}
 }
