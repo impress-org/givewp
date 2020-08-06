@@ -112,9 +112,7 @@ class PayPalOrder {
 
 		foreach ( $array as $itemName => $value ) {
 			if ( 'purchaseUnits' === $itemName ) {
-				// We will always have single unit in order.
-				$itemName = 'purchaseUnit';
-				$value    = current( $value );
+				$value = current( $value );
 
 				$order->purchaseUnit = $value;
 				$order->payment      = PayPalPayment::fromArray( (array) current( $order->purchaseUnit->payments->captures ) );
