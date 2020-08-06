@@ -339,7 +339,7 @@ class onBoardingRedirectHandler {
 		}
 
 		if ( ! empty( $invalidCapabilities ) ) {
-			$errorMessages[] = 'Reach out to PayPal to resolve the following capabilities: ' . implode( ', ', $invalidCapabilities );
+			$errorMessages[] = esc_html__( 'Reach out to PayPal to resolve the following capabilities:', 'give' ) . ' ' . implode( ', ', $invalidCapabilities );
 		}
 
 		// If there were errors then redirect the user with notices
