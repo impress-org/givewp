@@ -261,12 +261,14 @@ class GiveStripeElements {
 			const zip = formElement.querySelector( '.card-zip' ).value;
 			const country = formElement.querySelector( '.billing-country' ).value;
 
-			billing_details.address.line1 = address1 ? address1 : '';
-			billing_details.address.line2 = address2 ? address2 : '';
-			billing_details.address.city = city ? city : '';
-			billing_details.address.state = state ? state : '';
-			billing_details.address.postal_code = zip ? zip : '';
-			billing_details.address.country = country ? country : '';
+			billing_details.address = {
+				line1: address1 ? address1 : '',
+				line2: address2 ? address2 : '',
+				city: city ? city : '',
+				state: state ? state : '',
+				postal_code: zip ? zip : '',
+				country: country ? country : '',
+			};
 		}
 
 		// Create Payment Method using the CC fields.
