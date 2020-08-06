@@ -306,8 +306,6 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	addStyleToHostedFieldsContainer( fields ) {
 		const source = this.form.querySelector( 'input[name="card_name"]' );
-		const computedStyleForInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
-		const computedStyleForFocusedInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':focus' );
 
 		// Apply styles
 		for ( const fieldKey in fields ) {
@@ -337,14 +335,11 @@ class AdvancedCardFields extends PaymentMethod {
 		hostedCardFields.on( 'focus', function( event ) {
 			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
 			target.style.borderColor = self.focusedInputBorderColor;
-
-			console.log( 'gain focus' );
 		} );
 
 		hostedCardFields.on( 'blur', function( event ) {
 			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
 			target.style.borderColor = self.inputBorderColor;
-			console.log( 'gain blur' );
 		} );
 	}
 
