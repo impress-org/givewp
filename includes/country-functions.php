@@ -2363,3 +2363,86 @@ function give_get_spain_states_list() {
 
 	return apply_filters( 'give_spain_states', $states );
 }
+
+/**
+ * Get Country List without postcodes
+ *
+ * @since 2.8.0
+ * @return array $countries A list of countries without postcodes.
+ */
+function give_get_country_list_without_postcodes() {
+	$countries = [
+		'AO' => esc_html__( 'Angola', 'give' ),
+		'AG' => esc_html__( 'Antigua and Barbuda', 'give' ),
+		'AW' => esc_html__( 'Aruba', 'give' ),
+		'BS' => esc_html__( 'Bahamas', 'give' ),
+		'BZ' => esc_html__( 'Belize', 'give' ),
+		'BJ' => esc_html__( 'Benin', 'give' ),
+		'BW' => esc_html__( 'Botswana', 'give' ),
+		'BF' => esc_html__( 'Burkina Faso', 'give' ),
+		'BI' => esc_html__( 'Burundi', 'give' ),
+		'CM' => esc_html__( 'Cameroon', 'give' ),
+		'CF' => esc_html__( 'Central African Republic', 'give' ),
+		'KM' => esc_html__( 'Comoros', 'give' ),
+		'CD' => esc_html__( 'Congo, Democratic People\'s Republic', 'give' ),
+		'CG' => esc_html__( 'Congo, Republic of', 'give' ),
+		'CK' => esc_html__( 'Cook Islands', 'give' ),
+		'CI' => esc_html__( 'Cote d\'Ivoire', 'give' ),
+		'DJ' => esc_html__( 'Djibouti', 'give' ),
+		'DM' => esc_html__( 'Dominica', 'give' ),
+		'GQ' => esc_html__( 'Equatorial Guinea', 'give' ),
+		'ER' => esc_html__( 'Eritrea', 'give' ),
+		'FJ' => esc_html__( 'Fiji', 'give' ),
+		'TF' => esc_html__( 'French Southern Territories', 'give' ),
+		'GM' => esc_html__( 'Gambia', 'give' ),
+		'GH' => esc_html__( 'Ghana', 'give' ),
+		'GD' => esc_html__( 'Grenada', 'give' ),
+		'GN' => esc_html__( 'Guinea', 'give' ),
+		'GY' => esc_html__( 'Guyana', 'give' ),
+		'HK' => esc_html__( 'Hong Kong', 'give' ),
+		'IE' => esc_html__( 'Ireland', 'give' ),
+		'JM' => esc_html__( 'Jamaica', 'give' ),
+		'KE' => esc_html__( 'Kenya', 'give' ),
+		'KI' => esc_html__( 'Kiribati', 'give' ),
+		'MO' => esc_html__( 'Macau', 'give' ),
+		'MW' => esc_html__( 'Malawi', 'give' ),
+		'ML' => esc_html__( 'Mali', 'give' ),
+		'MR' => esc_html__( 'Mauritania', 'give' ),
+		'MU' => esc_html__( 'Mauritius', 'give' ),
+		'MS' => esc_html__( 'Montserrat', 'give' ),
+		'NR' => esc_html__( 'Nauru', 'give' ),
+		'AN' => esc_html__( 'Netherlands Antilles', 'give' ),
+		'NU' => esc_html__( 'Niue', 'give' ),
+		'KP' => esc_html__( 'North Korea', 'give' ),
+		'PA' => esc_html__( 'Panama', 'give' ),
+		'QA' => esc_html__( 'Qatar', 'give' ),
+		'RW' => esc_html__( 'Rwanda', 'give' ),
+		'KN' => esc_html__( 'Saint Kitts and Nevis', 'give' ),
+		'LC' => esc_html__( 'Saint Lucia', 'give' ),
+		'ST' => esc_html__( 'Sao Tome and Principe', 'give' ),
+		'SC' => esc_html__( 'Seychelles', 'give' ),
+		'SL' => esc_html__( 'Sierra Leone', 'give' ),
+		'SB' => esc_html__( 'Solomon Islands', 'give' ),
+		'SO' => esc_html__( 'Somalia', 'give' ),
+		'ZA' => esc_html__( 'South Africa', 'give' ),
+		'SR' => esc_html__( 'Suriname', 'give' ),
+		'SY' => esc_html__( 'Syrian Arab Republic', 'give' ),
+		'TZ' => esc_html__( 'Tanzania', 'give' ),
+		'TK' => esc_html__( 'Tokelau', 'give' ),
+		'TO' => esc_html__( 'Tonga', 'give' ),
+		'TT' => esc_html__( 'Trinidad and Tobago', 'give' ),
+		'TV' => esc_html__( 'Tuvalu', 'give' ),
+		'UG' => esc_html__( 'Uganda', 'give' ),
+		'AE' => esc_html__( 'United Arab Emirates', 'give' ),
+		'VU' => esc_html__( 'Vanuatu', 'give' ),
+		'YE' => esc_html__( 'Yemen', 'give' ),
+		'ZW' => esc_html__( 'Zimbabwe', 'give' ),
+	];
+
+	/**
+	 * Filter list of countries without postcodes
+	 *
+	 * @since 2.8.0
+	 */
+	return (array) apply_filters( 'give_countries_without_postcodes', $countries );
+}
