@@ -3,6 +3,14 @@ import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
 class AdvancedCardFields extends PaymentMethod {
+	constructor( form ) {
+		super( form );
+
+		this.inputBorderColor = null;
+		this.focusedInputBorderColor = null;
+
+		this.setBorderColorForHostedCardFields();
+	}
 	/**
 	 * Return whether or not render credit card fields.
 	 *
@@ -38,14 +46,14 @@ class AdvancedCardFields extends PaymentMethod {
 		const styles = await this.getComputedInputFieldStyle();
 		const fields = this.getFields();
 
-		this.addStyleToHostedFieldsContainer( fields );
-
 		const hostedCardFields = await paypal.HostedFields.render( {
 			createOrder: creatOrderHandler,
 			styles,
 			fields,
 		} );
 
+		this.addStyleToHostedFieldsContainer( fields );
+		this.applyStyleWhenEventTriggerOnHostedFields( hostedCardFields );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 	}
 
@@ -147,30 +155,25 @@ class AdvancedCardFields extends PaymentMethod {
 			'line-height',
 			'padding',
 		];
-		let styles = {
-			input: {},
-			':focus': {},
-			':placeholder': {},
-		};
 
+		let inputStyle = {};
 		supportProperties.forEach( property => {
-			styles = {
-				input: {
-					...styles.input,
-					[ property ]: computedStyleInput.getPropertyValue( property ),
-				},
-				':focus': {
-					...styles[ ':focus' ],
-					[ property ]: computedStyleForFocusedInput.getPropertyValue( property ),
-				},
-				':placeholder': {
-					...styles[ ':placeholder' ],
-					[ property ]: computedStyleForInputPlaceholder.getPropertyValue( property ),
-				},
+			inputStyle = {
+				[ property ]: computedStyleInput.getPropertyValue( property ),
+				...inputStyle,
 			};
 		} );
 
-		return styles;
+		return {
+			input: inputStyle,
+			':focus': {
+				color: computedStyleForFocusedInput.getPropertyValue( 'color' ),
+				outline: computedStyleForFocusedInput.getPropertyValue( 'outline' ),
+			},
+			':placeholder': {
+				color: computedStyleForInputPlaceholder.getPropertyValue( 'color' ),
+			},
+		};
 	}
 
 	/**
@@ -302,9 +305,12 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @param {object} fields list of fields.
 	 */
 	addStyleToHostedFieldsContainer( fields ) {
+		const source = this.form.querySelector( 'input[name="card_name"]' );
+		const computedStyleForInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
+		const computedStyleForFocusedInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':focus' );
+
 		// Apply styles
 		for ( const fieldKey in fields ) {
-			const source = this.form.querySelector( 'input[name="card_name"]' );
 			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
 
 			Give.util.fn.copyNodeStyle(
@@ -319,6 +325,51 @@ class AdvancedCardFields extends PaymentMethod {
 				]
 			);
 		}
+	}
+
+	/**
+	 *
+	 * @param {object} hostedCardFields
+	 */
+	applyStyleWhenEventTriggerOnHostedFields( hostedCardFields ) {
+		const self = this;
+
+		hostedCardFields.on( 'focus', function( event ) {
+			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
+			target.style.borderColor = self.focusedInputBorderColor;
+
+			console.log( 'gain focus' );
+		} );
+
+		hostedCardFields.on( 'blur', function( event ) {
+			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
+			target.style.borderColor = self.inputBorderColor;
+			console.log( 'gain blur' );
+		} );
+	}
+
+	/**
+	 * Set border color properties for hosted card fields container.
+	 *
+	 * @since 2.8.0
+	 */
+	setBorderColorForHostedCardFields() {
+		const self = this;
+		const sources = this.form.querySelectorAll( 'input[type="text"]' );
+
+		sources.forEach( source => {
+			source.addEventListener( 'focus', event => {
+				if ( ! self.focusedInputBorderColor ) {
+					self.focusedInputBorderColor = window.getComputedStyle( event.target, ':focus' ).getPropertyValue( 'border-color' );
+				}
+			}, { once: true } );
+
+			source.addEventListener( 'blur', event => {
+				if ( ! self.inputBorderColor ) {
+					self.inputBorderColor = window.getComputedStyle( event.target, null ).getPropertyValue( 'border-color' );
+				}
+			}, { once: true } );
+		} );
 	}
 }
 
