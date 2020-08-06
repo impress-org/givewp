@@ -28,6 +28,7 @@ class SmartButtons extends PaymentMethod {
 			onClick: onClickHandler,
 			createOrder: createOrderHandler,
 			onApprove: onApproveHandler,
+			funding: { disallowed: [ paypal.FUNDING.CARD, paypal.FUNDING.CREDIT ] },
 		} ).render( smartButtonContainer );
 	}
 
