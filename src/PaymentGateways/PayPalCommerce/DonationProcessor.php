@@ -83,12 +83,20 @@ class DonationProcessor {
 		$orderDetailRequest = new OrdersGetRequest( $donationFormData['post_data']['payPalOrderId'] );
 		$orderDetails       = (array) give( PayPalClient::class )->getHttpClient()->execute( $orderDetailRequest )->result;
 
-		$payment = PayPalOrder::fromArray( $orderDetails )->payment;
+		$order = PayPalOrder::fromArray( $orderDetails );
 
-		give_insert_payment_note( $donationId, sprintf( __( 'Transaction Successful. PayPal Transaction ID: %s', 'give' ), $payment->id ) );
-		give_set_payment_transaction_id( $donationId, $payment->id );
+		give_insert_payment_note(
+			$donationId,
+			sprintf(
+				__( 'Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give' ),
+				$order->payment->id,
+				$order->id
+			)
+		);
+		give_set_payment_transaction_id( $donationId, $order->payment->id );
+		give( 'payment_meta' )->update_meta( $donationId, '_give_order_id', $order->id );
 
-		if ( 'COMPLETED' === $payment->status ) {
+		if ( 'COMPLETED' === $order->payment->status ) {
 			give_update_payment_status( $donationId, 'complete' );
 		}
 
