@@ -125,6 +125,9 @@ EOT;
 					'expirationDate' => esc_html__( 'MM/YY', 'give' ),
 				],
 				'defaultDonationCreationError' => esc_html__( 'An error occurred while processing your payment. Please try again.', 'give' ),
+
+				// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
+				'hostedCardFieldStyles'        => apply_filters( 'give_paypal_commerce_hosted_field_style', [] ),
 			]
 		);
 	}

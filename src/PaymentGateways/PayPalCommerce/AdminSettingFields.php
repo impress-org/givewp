@@ -72,6 +72,10 @@ class AdminSettingFields {
 						<a class="give-hidden" target="_blank" data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#" data-paypal-button="true">
 							<?php esc_html_e( 'Sign up for PayPal', 'give' ); ?>
 						</a>
+						<span class="tooltip">
+							<span class="left-arrow"></span>
+							<?php esc_html_e( 'Click to get started!', 'give' ); ?>
+						</span>
 					</div>
 					<span class="give-field-description">
 							<i class="fa fa-exclamation"></i>

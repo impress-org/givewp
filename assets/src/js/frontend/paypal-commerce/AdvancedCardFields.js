@@ -1,8 +1,43 @@
-/* globals paypal, Give, givePayPalCommerce */
+/* globals paypal, Give, givePayPalCommerce, Event */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
 class AdvancedCardFields extends PaymentMethod {
+	constructor( form ) {
+		super( form );
+
+		this.hostedFieldContainerStyleProperties = [
+			'background-color',
+			'box-sizing',
+			'box-shadow',
+			'border',
+			'border-radius',
+			'margin',
+			'height',
+		];
+
+		this.hostedInputFieldStyleProperties = [
+			'color',
+			'direction',
+			'font-size',
+			'letter-spacing',
+			'line-height',
+			'padding',
+		];
+
+		this.hostedFocusedInputFieldStyleProperties = [ 'color', 'border' ];
+
+		this.hostedInputFieldPlaceholderStyleProperties = [ 'color' ];
+
+		this.styles = {
+			container: {},
+			input: {},
+			'input:focus': {},
+			'input:placeholder': {},
+		};
+
+		this.setStyles();
+	}
 	/**
 	 * Return whether or not render credit card fields.
 	 *
@@ -20,20 +55,29 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	async renderPaymentMethodOption() {
+		this.addInitialStyleToHostedFieldsContainer();
+		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
+
 		if ( ! this.canRenderFields() ) {
-			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach( el => el.remove() );
+			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
+				el => {
+					// Remove separator.
+					if ( el.previousElementSibling.classList.contains( 'separator-with-text' ) ) {
+						el.previousElementSibling.remove();
+					}
+					el.remove();
+				}
+			);
 			return;
 		}
 
-		const creatOrderHandler = this.createOrderHandler.bind( this );
+		const createOrder = this.createOrderHandler.bind( this );
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
+		const styles = await this.getComputedInputFieldForHostedField();
+		const fields = this.getFields();
 
-		const hostedCardFields = await paypal.HostedFields.render( {
-			createOrder: creatOrderHandler,
-			styles: this.getComputedInputFieldStyle(),
-			fields: this.getFields(),
-		} );
-
+		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
+		this.applyStyleWhenEventTriggerOnHostedFields( hostedCardFields );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 	}
 
@@ -115,19 +159,29 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Get computed style of credit card input field.
+	 * Get computed style for hosted card fields.
+	 *
+	 * List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 	 *
 	 * @since 2.8.0
 	 *
 	 * @return {object} Return object of style properties.
 	 */
-	getComputedInputFieldStyle() {
-		const computedStyle = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
+	getComputedInputFieldForHostedField() {
+		const input = {
+			...this.styles.input,
+			...givePayPalCommerce.hostedCardFieldStyles.input,
+		};
 
 		return {
-			input: {
-				'font-size': computedStyle.getPropertyValue( 'font-size' ),
-				color: computedStyle.getPropertyValue( 'color' ),
+			input,
+			':focus': {
+				color: this.styles[ 'input:focus' ].color,
+				...givePayPalCommerce.hostedCardFieldStyles[ ':focus' ],
+			},
+			':placeholder': {
+				color: this.styles[ 'input:placeholder' ].color,
+				...givePayPalCommerce.hostedCardFieldStyles[ ':placeholder' ],
 			},
 		};
 	}
@@ -252,6 +306,127 @@ class AdvancedCardFields extends PaymentMethod {
 		return {
 			cardholderName: this.form.getElementById( '#card_name' ).value,
 		};
+	}
+
+	/**
+	 * Add style to hosted field's container.
+	 *
+	 * @since 2.8.0
+	 */
+	addInitialStyleToHostedFieldsContainer() {
+		const fields = this.getFields();
+
+		// Apply styles
+		for ( const fieldKey in fields ) {
+			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
+
+			this.hostedFieldContainerStyleProperties.forEach( property => {
+				if ( 'height' === property && [ 'auto', '0px' ].includes( this.styles.container[ property ] ) ) {
+					return;
+				}
+				target.style.setProperty( property, this.styles.container[ property ] );
+			} );
+		}
+	}
+
+	/**
+	 * Add initial style to hosted card field container.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} hostedCardFields Hosted card field object
+	 */
+	applyStyleWhenEventTriggerOnHostedFields( hostedCardFields ) {
+		const self = this;
+
+		hostedCardFields.on( 'focus', function( event ) {
+			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
+			target.style.border = self.styles[ 'input:focus' ].border;
+		} );
+
+		hostedCardFields.on( 'blur', function( event ) {
+			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
+			target.style.border = self.styles.container.border;
+		} );
+	}
+
+	/**
+	 * Set style properties for hosted card field and its container.
+	 *
+	 * @since 2.8.0
+	 */
+	setStyles() {
+		const sources = this.form.querySelectorAll( 'input[type="text"]' );
+		sources.forEach( source => {
+			// Get style properties for focused input field.
+			source.addEventListener( 'focus', event => {
+				if ( Array.from( this.styles[ 'input:focus' ] ).length ) {
+					return;
+				}
+
+				const computedStyle = window.getComputedStyle( event.target, null );
+
+				this.hostedFocusedInputFieldStyleProperties.forEach( property => {
+					this.styles[ 'input:focus' ] = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	this.styles[ 'input:focus' ],
+					};
+				} );
+			}, { once: true } );
+
+			source.addEventListener( 'blur', event => {
+				if ( Array.from( this.styles.container ).length ) {
+					return;
+				}
+
+				const computedStyle = window.getComputedStyle( event.target, null );
+
+				this.hostedFieldContainerStyleProperties.forEach( property => {
+					this.styles.container = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	this.styles.container,
+					};
+				} );
+
+				this.hostedInputFieldStyleProperties.forEach( property => {
+					this.styles.input = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	this.styles.input,
+					};
+				} );
+
+				this.hostedInputFieldPlaceholderStyleProperties.forEach( property => {
+					this.styles[ 'input:placeholder' ] = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	this.styles[ 'input:placeholder' ],
+					};
+				} );
+			}, { once: true } );
+		} );
+
+		// Set style properties for container input field and input, placeholder.
+		const event = new Event( 'blur' );
+		this.form.querySelector( 'input[name="card_name"]' ).dispatchEvent( event );
+	}
+
+	/**
+	 * Set hosted field's container height.
+	 *
+	 * @since 2.8.0
+	 */
+	setHostedFieldContainerHeight() {
+		const fields = this.getFields();
+		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
+
+		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
+			return;
+		}
+
+		// Apply styles
+		for ( const fieldKey in fields ) {
+			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
+			target.style.setProperty( 'height', this.styles.container.height );
+		}
 	}
 }
 

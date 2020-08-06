@@ -17,8 +17,10 @@
 @import 'newsletter';
 @import 'square';
 
-// Structure
+// Payment gateways
+@import 'paypal-commerce';
 
+// Structure
 html {
 	margin: 0;
 	padding: 0;
