@@ -54,6 +54,8 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	async renderPaymentMethodOption() {
+		this.addInitialStyleToHostedFieldsContainer();
+
 		if ( ! this.canRenderFields() ) {
 			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
 				el => {
@@ -66,8 +68,6 @@ class AdvancedCardFields extends PaymentMethod {
 			);
 			return;
 		}
-
-		this.addInitialStyleToHostedFieldsContainer();
 
 		const createOrder = this.createOrderHandler.bind( this );
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
