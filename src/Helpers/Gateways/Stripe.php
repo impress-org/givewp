@@ -72,7 +72,7 @@ class Stripe {
 	 *
 	 * @param string $idPrefix ID Prefix to define same forms uniquely.
 	 *
-	 * @since  2.7.3
+	 * @since  2.8.0
 	 * @access public
 	 *
 	 * @return mixed|void
@@ -154,7 +154,7 @@ class Stripe {
 	/**
 	 * Collect Billing Address?
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @return bool
 	 */
@@ -168,7 +168,7 @@ class Stripe {
 	 * @param int   $formId Donation Form ID.
 	 * @param array $args   List of additional arguments.
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @return bool|mixed
 	 */

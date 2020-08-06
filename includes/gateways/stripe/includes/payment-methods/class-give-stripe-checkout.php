@@ -228,7 +228,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @param int   $donationId   Donation ID.
 		 * @param array $donationData Donation Data.
 		 *
-		 * @since 2.7.3
+		 * @since 2.8.0
 		 *
 		 * @return void
 		 */
@@ -448,7 +448,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @param int   $formId Donation Form ID.
 		 * @param array $args   List of arguments.
 		 *
-		 * @since  2.7.3
+		 * @since  2.8.0
 		 * @access public
 		 *
 		 * @return void

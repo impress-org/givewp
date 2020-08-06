@@ -1,7 +1,7 @@
 /**
  * Give - Stripe Elements.
  *
- * @since 2.7.3
+ * @since 2.8.0
  */
 class GiveStripeElements {
 	/**
@@ -9,7 +9,7 @@ class GiveStripeElements {
 	 *
 	 * @param formElement
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 */
 	constructor( formElement ) {
 		// Don't load JS if `formElement` is not present.
@@ -36,7 +36,7 @@ class GiveStripeElements {
 	/**
 	 * Setup Stripe Element.
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {*}
 	 */
@@ -57,7 +57,7 @@ class GiveStripeElements {
 	 *
 	 * @param stripeElement
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {*}
 	 */
@@ -83,7 +83,7 @@ class GiveStripeElements {
 	 * @param stripeElement
 	 * @param formElement
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {[]}
 	 */
@@ -128,7 +128,7 @@ class GiveStripeElements {
 	 *
 	 * @param elements
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {[]}
 	 */
@@ -141,7 +141,7 @@ class GiveStripeElements {
 	/**
 	 * Get Element Styles.
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {{invalid: *, complete: *, base: *, empty: *}}
 	 */
@@ -162,7 +162,7 @@ class GiveStripeElements {
 	/**
 	 * Get Element Classes.
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {{invalid: string, focus: string, empty: string}}
 	 */
@@ -177,7 +177,7 @@ class GiveStripeElements {
 	/**
 	 * Get Card Elements to Mount on.
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 *
 	 * @returns {[string, string][]}
 	 */
@@ -202,7 +202,7 @@ class GiveStripeElements {
 	 *
 	 * @param stripeElements
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 */
 	mountElement( stripeElements ) {
 		const mountOnElement = this.getElementsToMountOn();
@@ -217,7 +217,7 @@ class GiveStripeElements {
 	 *
 	 * @param stripeElement
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 */
 	unMountElement( stripeElement ) {
 		const unMountOnElement = this.getElementsToMountOn();
@@ -234,7 +234,7 @@ class GiveStripeElements {
 	 * @param stripeElement
 	 * @param cardElements
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 */
 	createPaymentMethod( formElement, stripeElement, cardElements ) {
 		const billing_details = {
@@ -308,7 +308,7 @@ class GiveStripeElements {
 	 * @param setupStripeElement
 	 * @param cardElements
 	 *
-	 * @since 2.7.3
+	 * @since 2.8.0
 	 */
 	triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements ) {
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
