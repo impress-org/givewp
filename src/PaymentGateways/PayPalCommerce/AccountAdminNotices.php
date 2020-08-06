@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give_Admin_Settings;
 
 class AccountAdminNotices {
@@ -14,12 +15,19 @@ class AccountAdminNotices {
 	private $merchantDetails;
 
 	/**
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
+
+	/**
 	 * AccountAdminNotices constructor.
 	 *
-	 * @param MerchantDetail $merchantDetails
+	 * @param MerchantDetail  $merchantDetails
+	 * @param MerchantDetails $merchantRepository
 	 */
-	public function __construct( MerchantDetail $merchantDetails ) {
-		$this->merchantDetails = $merchantDetails;
+	public function __construct( MerchantDetail $merchantDetails, MerchantDetails $merchantRepository ) {
+		$this->merchantDetails    = $merchantDetails;
+		$this->merchantRepository = $merchantRepository;
 	}
 
 	/**
@@ -40,14 +48,14 @@ class AccountAdminNotices {
 	 * @since 2.8.0
 	 */
 	public function checkForConnectedLiveAccount() {
-		if ( ! Utils::isConnected() ) {
+		if ( ! $this->merchantRepository->accountIsConnected() ) {
 			$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
 			Give_Admin_Settings::add_message(
 				'paypal-commerce-not-connected',
 				sprintf(
 					"<strong>%1\$s</strong> %2\$s <a href='{$connectUrl}'>%3\$s</a>",
 					esc_html__( 'PayPal Donations:', 'give' ),
-					esc_html__( 'Please connect to your account so donationos may be processed.', 'give' ),
+					esc_html__( 'Please connect to your account so donations may be processed.', 'give' ),
 					esc_html__( 'Connect Account', 'give' )
 				)
 			);
@@ -60,17 +68,24 @@ class AccountAdminNotices {
 	 * @since 2.8.0
 	 */
 	public function checkForAccountReadiness() {
-		if ( Utils::isConnected() && ! $this->merchantDetails->accountIsReady ) {
-			$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
-			Give_Admin_Settings::add_message(
-				'paypal-commerce-account-not-ready',
-				sprintf(
-					"<strong>%1\$s</strong> %2\$s <a href='{$connectUrl}'>%3\$s</a>",
-					esc_html__( 'PayPal Donations:', 'give' ),
-					esc_html__( 'Please check your account status as additional setup is needed before you may accept donations.', 'give' ),
-					esc_html__( 'Account Status', 'give' )
-				)
-			);
+		if ( ! $this->merchantRepository->accountIsConnected() ) {
+			return;
 		}
+
+		$merchantDetails = $this->merchantRepository->getDetails();
+		if ( $merchantDetails->accountIsReady ) {
+			return;
+		}
+
+		$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
+		Give_Admin_Settings::add_message(
+			'paypal-commerce-account-not-ready',
+			sprintf(
+				"<strong>%1\$s</strong> %2\$s <a href='{$connectUrl}'>%3\$s</a>",
+				esc_html__( 'PayPal Donations:', 'give' ),
+				esc_html__( 'Please check your account status as additional setup is needed before you may accept donations.', 'give' ),
+				esc_html__( 'Account Status', 'give' )
+			)
+		);
 	}
 }

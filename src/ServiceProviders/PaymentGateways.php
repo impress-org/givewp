@@ -120,7 +120,13 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( RefreshToken::class );
 		give()->singleton( AjaxRequestHandler::class );
 		give()->singleton( ScriptLoader::class );
-		give()->singleton( MerchantDetails::class );
+		give()->singleton(
+			MerchantDetails::class,
+			static function () {
+				return ( new MerchantDetails() )
+				->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
+			}
+		);
 
 		give()->singleton(
 			MerchantDetail::class,

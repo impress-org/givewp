@@ -78,7 +78,6 @@ class onBoardingRedirectHandler {
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode          = $this->payPalClient->mode;
 		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
@@ -91,10 +90,10 @@ class onBoardingRedirectHandler {
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
-		$payPalAccount[ $mode ]['clientId']       = $restApiCredentials['client_id'];
-		$payPalAccount[ $mode ]['clientSecret']   = $restApiCredentials['client_secret'];
-		$payPalAccount[ $mode ]['token']          = $tokenInfo;
-		$payPalAccount[ $mode ]['accountIsReady'] = true;
+		$payPalAccount['clientId']       = $restApiCredentials['client_id'];
+		$payPalAccount['clientSecret']   = $restApiCredentials['client_secret'];
+		$payPalAccount['token']          = $tokenInfo;
+		$payPalAccount['accountIsReady'] = true;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
 		$this->merchantRepository->save( $merchantDetails );

@@ -3,11 +3,8 @@
 namespace Give\Controller;
 
 use Exception;
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\OptionId;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
-use Give\PaymentGateways\PayPalCommerce\Utils;
-use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\CheckoutOrderApproved;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
 use InvalidArgumentException;
 
@@ -30,21 +27,20 @@ class PayPalWebhooks {
 	private $webhooksRepository;
 
 	/**
-	 * @var MerchantDetail
+	 * @var MerchantDetails
 	 */
-	private $merchantDetails;
+	private $merchantRepository;
 
 	/**
 	 * PayPalWebhooks constructor.
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param Webhooks       $webhooksRepository
-	 * @param MerchantDetail $merchantDetails
+	 * @param Webhooks $webhooksRepository
 	 */
-	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails ) {
+	public function __construct( Webhooks $webhooksRepository, MerchantDetails $merchantRepository ) {
 		$this->webhooksRepository = $webhooksRepository;
-		$this->merchantDetails    = $merchantDetails;
+		$this->merchantRepository = $merchantRepository;
 	}
 
 	/**
@@ -80,9 +76,11 @@ class PayPalWebhooks {
 	 * @throws Exception
 	 */
 	public function handle() {
-		if ( ! Utils::isConnected() ) {
+		if ( ! $this->merchantRepository->accountIsConnected() ) {
 			return;
 		}
+
+		$merchantDetails = $this->merchantRepository->getDetails();
 
 		$event = json_decode( file_get_contents( 'php://input' ), false );
 
@@ -91,7 +89,7 @@ class PayPalWebhooks {
 			return;
 		}
 
-		if ( ! $this->webhooksRepository->verifyEventSignature( $this->merchantDetails->accessToken, $event, getallheaders() ) ) {
+		if ( ! $this->webhooksRepository->verifyEventSignature( $merchantDetails->accessToken, $event, getallheaders() ) ) {
 			throw new Exception( 'Failed event verification' );
 		}
 

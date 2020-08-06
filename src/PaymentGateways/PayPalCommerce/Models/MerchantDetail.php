@@ -49,15 +49,6 @@ class MerchantDetail {
 	public $clientSecret = null;
 
 	/**
-	 * Environment mode.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @var null|string
-	 */
-	private $mode = null;
-
-	/**
 	 * Access token.
 	 *
 	 * @since 2.8.0
@@ -85,15 +76,6 @@ class MerchantDetail {
 	private $tokenDetails = null;
 
 	/**
-	 * MerchantDetail constructor.
-	 *
-	 * @since 2.8.0
-	 */
-	public function __construct() {
-		$this->mode = give( PayPalClient::class )->mode;
-	}
-
-	/**
 	 * Return array of merchant details.
 	 *
 	 * @sicne 2.8.0
@@ -104,12 +86,10 @@ class MerchantDetail {
 		return [
 			'merchantId'         => $this->merchantId,
 			'merchantIdInPayPal' => $this->merchantIdInPayPal,
-			$this->mode          => [
-				'clientId'       => $this->clientId,
-				'clientSecret'   => $this->clientSecret,
-				'token'          => $this->tokenDetails,
-				'accountIsReady' => $this->accountIsReady,
-			],
+			'clientId'           => $this->clientId,
+			'clientSecret'       => $this->clientSecret,
+			'token'              => $this->tokenDetails,
+			'accountIsReady'     => $this->accountIsReady,
 		];
 	}
 
@@ -147,10 +127,10 @@ class MerchantDetail {
 		$this->merchantId         = $merchantDetails['merchantId'];
 		$this->merchantIdInPayPal = $merchantDetails['merchantIdInPayPal'];
 
-		$this->clientId       = $merchantDetails[ $this->mode ]['clientId'];
-		$this->clientSecret   = $merchantDetails[ $this->mode ]['clientSecret'];
-		$this->tokenDetails   = $merchantDetails[ $this->mode ]['token'];
-		$this->accountIsReady = $merchantDetails[ $this->mode ]['accountIsReady'];
+		$this->clientId       = $merchantDetails['clientId'];
+		$this->clientSecret   = $merchantDetails['clientSecret'];
+		$this->tokenDetails   = $merchantDetails['token'];
+		$this->accountIsReady = $merchantDetails['accountIsReady'];
 		$this->accessToken    = $this->tokenDetails['accessToken'];
 	}
 
@@ -162,15 +142,11 @@ class MerchantDetail {
 	 * @param array $merchantDetails
 	 */
 	private function validate( $merchantDetails ) {
-		$required = [ 'merchantId', 'merchantIdInPayPal', $this->mode ];
-		$array    = array_filter( $merchantDetails ); // Remove empty values.
+		$required = [ 'merchantId', 'merchantIdInPayPal', 'clientId', 'clientSecret', 'token', 'accountIsReady' ];
 
-		if ( array_diff( $required, array_keys( $array ) ) ) {
+		if ( array_diff( $required, array_keys( $merchantDetails ) ) ) {
 			throw new InvalidArgumentException(
-				sprintf(
-					__( 'To create a MerchantDetail object, please provide valid merchantId, merchantIdInPayPal and %1$s', 'give' ),
-					$this->mode
-				)
+				__( 'To create a MerchantDetail object, please provide the following: ' . implode( ', ', $required ), 'give' ),
 			);
 		}
 	}

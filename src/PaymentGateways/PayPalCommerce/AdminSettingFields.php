@@ -68,7 +68,12 @@ class AdminSettingFields {
 
 			<div class="connect-button-wrap">
 				<p class="label"><?php esc_html_e( 'PayPal Connection', 'give' ); ?></p>
-				<div class="button-wrap connection-setting <?php echo Utils::isConnected() ? 'give-hidden' : ''; ?>">
+				<?php
+				/** @var MerchantDetails $accountRepository */
+				$accountRepository = give( MerchantDetails::class );
+				?>
+				<div
+					class="button-wrap connection-setting <?php echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
 					<div>
 						<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
 							<i class="fab fa-paypal"></i>&nbsp;&nbsp;
@@ -91,7 +96,7 @@ class AdminSettingFields {
 						</span>
 				</div>
 				<div
-					class="button-wrap disconnection-setting <?php echo ! Utils::isConnected() ? 'give-hidden' : ''; ?>">
+					class="button-wrap disconnection-setting <?php echo ! $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
 					<div>
 						<button class="button button-large disabled" disabled="disabled">
 							<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?>

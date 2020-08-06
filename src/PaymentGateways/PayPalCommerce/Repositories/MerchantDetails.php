@@ -6,6 +6,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\OptionId;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
+use InvalidArgumentException;
 
 /**
  * Class MerchantDetails
@@ -13,9 +14,44 @@ use Give\PaymentGateways\PayPalCommerce\PayPalClient;
  * @since 2.8.0
  */
 class MerchantDetails {
-	const ACCOUNT_OPTION_KEY = 'give_paypal_commerce_account';
+	/**
+	 * The current working mode: live or sandbox
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var string
+	 */
+	private $mode;
 
-	const ERRORS_OPTION_KEY = 'give_paypal_commerce_account_errors';
+	/**
+	 * Sets the mode for the repository for handling operations
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param $mode
+	 *
+	 * @return MerchantDetails
+	 */
+	public function setMode( $mode ) {
+		if ( ! in_array( $mode, [ 'live', 'sandbox' ], true ) ) {
+			throw new InvalidArgumentException( "Must be either 'live' or 'sandbox', received: $mode" );
+		}
+
+		$this->mode = $mode;
+
+		return $this;
+	}
+
+	/**
+	 * Returns whether or not the account has been connected
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	public function accountIsConnected() {
+		return (bool) get_option( $this->getAccountKey() );
+	}
 
 	/**
 	 * Get merchant details.
@@ -25,7 +61,7 @@ class MerchantDetails {
 	 * @return MerchantDetail
 	 */
 	public function getDetails() {
-		return MerchantDetail::fromArray( get_option( self::ACCOUNT_OPTION_KEY, [] ) );
+		return MerchantDetail::fromArray( get_option( $this->getAccountKey(), [] ) );
 	}
 
 	/**
@@ -38,7 +74,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function save( MerchantDetail $merchantDetails ) {
-		return update_option( self::ACCOUNT_OPTION_KEY, $merchantDetails->toArray() );
+		return update_option( $this->getAccountKey(), $merchantDetails->toArray() );
 	}
 
 	/**
@@ -49,7 +85,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function delete() {
-		return delete_option( self::ACCOUNT_OPTION_KEY );
+		return delete_option( $this->getAccountKey() );
 	}
 
 	/**
@@ -60,7 +96,7 @@ class MerchantDetails {
 	 * @return string[]|null
 	 */
 	public function getAccountErrors() {
-		return json_decode( get_option( self::ERRORS_OPTION_KEY, null ), true );
+		return json_decode( get_option( $this->getAccountErrorsKey(), null ), true );
 	}
 
 	/**
@@ -73,7 +109,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function saveAccountErrors( $errorMessage ) {
-		return update_option( self::ERRORS_OPTION_KEY, json_encode( $errorMessage ) );
+		return update_option( $this->getAccountErrorsKey(), json_encode( $errorMessage ) );
 	}
 
 	/**
@@ -84,7 +120,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function deleteAccountErrors() {
-		return delete_option( self::ERRORS_OPTION_KEY );
+		return delete_option( $this->getAccountErrorsKey() );
 	}
 
 	/**
@@ -95,7 +131,7 @@ class MerchantDetails {
 	 * @return string
 	 */
 	public function getClientToken() {
-		$optionName = 'give_paypal_commerce_client_token';
+		$optionName = "give_paypal_commerce_{$this->mode}_client_token";
 
 		if ( $optionValue = get_transient( $optionName ) ) {
 			return $optionValue;
@@ -138,5 +174,27 @@ class MerchantDetails {
 		);
 
 		return $response['clientToken'];
+	}
+
+	/**
+	 * Returns the options key for the account in the give mode
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function getAccountKey() {
+		return "give_paypal_commerce_{$this->mode}_account";
+	}
+
+	/**
+	 * Returns the options key for the account errors in the give mode
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getAccountErrorsKey() {
+		return "give_paypal_commerce_{$this->mode}_account_errors";
 	}
 }
