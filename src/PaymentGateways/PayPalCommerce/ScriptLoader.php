@@ -29,27 +29,30 @@ class ScriptLoader {
 	 * @since 2.8.0
 	 */
 	public function loadAdminScripts() {
-		if ( Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
-			wp_enqueue_script(
-				'give-paypal-partner-js',
-				$this->getPartnerJsUrl(),
-				[],
-				null,
-				true
-			);
+		if ( ! Utils::isConnected() || ! Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
+			return;
+		}
 
-			wp_localize_script(
-				'give-paypal-partner-js',
-				'givePayPalCommerce',
-				[
-					'translations' => [
-						'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
-						'disconnectPayPalAccount' => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
-					],
-				]
-			);
+		wp_enqueue_script(
+			'give-paypal-partner-js',
+			$this->getPartnerJsUrl(),
+			[],
+			null,
+			true
+		);
 
-			$script = <<<EOT
+		wp_localize_script(
+			'give-paypal-partner-js',
+			'givePayPalCommerce',
+			[
+				'translations' => [
+					'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
+					'disconnectPayPalAccount'           => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
+				],
+			]
+		);
+
+		$script = <<<EOT
 				function givePayPalOnBoardedCallback(authCode, sharedId) {
 					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
 					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
@@ -63,11 +66,10 @@ class ScriptLoader {
 				}
 EOT;
 
-			wp_add_inline_script(
-				'give-paypal-partner-js',
-				$script
-			);
-		}
+		wp_add_inline_script(
+			'give-paypal-partner-js',
+			$script
+		);
 	}
 
 	/**
@@ -76,6 +78,10 @@ EOT;
 	 * @since 2.8.0
 	 */
 	public function loadPublicAssets() {
+		if ( ! Utils::isConnected() ) {
+			return;
+		}
+
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
