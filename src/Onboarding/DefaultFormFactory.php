@@ -4,12 +4,17 @@ namespace Give\Onboarding;
 
 use Give\Form\Template\Options as TempalteOptions;
 
+/**
+ * @since 2.8.0
+ */
 class DefaultFormFactory {
 
 	/**
 	 * Green to match the Onboarding Wizard.
 	 *
 	 * @var string;
+	 *
+	 * @since 2.8.0
 	 */
 	protected $primaryColor = '#4fa651';
 
