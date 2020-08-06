@@ -35,7 +35,7 @@ class AdvancedCardFields extends PaymentMethod {
 			'input:placeholder': {},
 		};
 
-		this.setHostedCardFieldContainerStyle();
+		this.setStyles();
 	}
 	/**
 	 * Return whether or not render credit card fields.
@@ -69,7 +69,7 @@ class AdvancedCardFields extends PaymentMethod {
 
 		const createOrder = this.createOrderHandler.bind( this );
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
-		const styles = await this.getComputedInputFieldStyle();
+		const styles = await this.getComputedInputFieldForHostedField();
 		const fields = this.getFields();
 
 		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
@@ -165,7 +165,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * @return {object} Return object of style properties.
 	 */
-	getComputedInputFieldStyle() {
+	getComputedInputFieldForHostedField() {
 		return {
 			input: this.styles.input,
 			':focus': {
@@ -337,11 +337,11 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Set style properties for hosted card fields container.
+	 * Set style properties for hosted card field and its container.
 	 *
 	 * @since 2.8.0
 	 */
-	setHostedCardFieldContainerStyle() {
+	setStyles() {
 		const self = this;
 		const sources = this.form.querySelectorAll( 'input[type="text"]' );
 		sources.forEach( source => {
