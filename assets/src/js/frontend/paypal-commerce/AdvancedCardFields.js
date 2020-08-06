@@ -136,10 +136,12 @@ class AdvancedCardFields extends PaymentMethod {
 	getComputedInputFieldStyle() {
 		const computedStyleInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
 		const computedStyleForFocusedInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':focus' );
+
+		// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 		const supportProperties = [
 			'color',
 			'direction',
-			'font-size', // Custom
+			'font-size',
 			'letter-spacing',
 			'line-height',
 			'padding',
