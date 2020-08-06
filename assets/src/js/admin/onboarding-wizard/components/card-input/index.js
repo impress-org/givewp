@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 // Import styles
 import './style.scss';
 
+// Import components
 import Card from '../card';
+import Selected from './selected';
 
 const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 	const handleChange = ( value ) => {
@@ -19,9 +21,13 @@ const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 	};
 
 	const cards = children.map( ( card, index ) => {
+		const checked = values.includes( card.props.value );
 		return (
 			<div className="give-obw-card-input__option" key={ index }>
-				<input type="checkbox" id={ card.props.value } value={ card.props.value } onChange={ ( evt ) => handleChange( evt.target.value ) } checked={ values.includes( card.props.value ) } />
+				{ !! checked &&
+					<Selected index={ index } />
+				}
+				<input type="checkbox" id={ card.props.value } value={ card.props.value } onChange={ ( evt ) => handleChange( evt.target.value ) } checked={ checked } />
 				<label htmlFor={ card.props.value }>{ card }</label>
 			</div>
 		);

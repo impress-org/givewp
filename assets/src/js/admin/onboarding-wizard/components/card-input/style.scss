@@ -8,6 +8,15 @@
 }
 
 .give-obw-card-input__option {
+	position: relative;
+
+	.card-input-selected {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 1;
+	}
+
 	.give-obw-card {
 		&:hover {
 			border-color: #888;
