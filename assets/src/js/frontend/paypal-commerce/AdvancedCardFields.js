@@ -306,13 +306,14 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	addInitialStyleToHostedFieldsContainer() {
 		const fields = this.getFields();
-		const source = this.form.querySelector( 'input[name="card_name"]' );
 
 		// Apply styles
 		for ( const fieldKey in fields ) {
 			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
 
-			Give.util.fn.copyNodeStyle( source, target, this.hostedFieldContainerStyleProperties );
+			this.hostedFieldContainerStyleProperties.forEach( property => {
+				target.style.setProperty( property, this.styles.container[ property ] );
+			} );
 		}
 	}
 
