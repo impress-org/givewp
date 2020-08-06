@@ -85,15 +85,27 @@ EOT;
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
+		/**
+		 * Filter PayPal sdk js query parameters.
+		 *
+		 * List of query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
+		 *
+		 * @since 2.8.0
+		 */
+		$payPalSdkQueryParameters = apply_filters(
+			'give_paypal_commerce_sdk_query_parameters',
+			[
+				'client-id'   => $merchant->clientId,
+				'merchant-id' => $merchant->merchantIdInPayPal,
+				'currency'    => give_get_currency(),
+				'components'  => 'hosted-fields,buttons',
+				'locale'      => get_locale(),
+			]
+		);
+
 		wp_enqueue_script(
 			$this->paypalSdkScriptHandle,
-			sprintf(
-				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture',
-				'hosted-fields,buttons',
-				$merchant->clientId,
-				$merchant->merchantIdInPayPal,
-				give_get_currency()
-			),
+			add_query_arg( $payPalSdkQueryParameters, 'https://www.paypal.com/sdk/js' ),
 			[ 'give' ],
 			null,
 			false
