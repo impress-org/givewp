@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
@@ -8,13 +9,14 @@ use InvalidArgumentException;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Exception;
+use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use function give_record_gateway_error as logError;
 
 /**
  * Class PayPalOrder
+ * @since 2.8.0
  * @package Give\PaymentGateways\PayPalCommerce\Repositories
  *
- * @since 2.8.0
  */
 class PayPalOrder {
 	/**
@@ -34,10 +36,11 @@ class PayPalOrder {
 	/**
 	 * PayPalOrder constructor.
 	 *
-	 * @param  PayPalClient  $paypalClient
-	 * @param  MerchantDetail  $merchantDetails
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param MerchantDetail $merchantDetails
+	 *
+	 * @param PayPalClient   $paypalClient
 	 */
 	public function __construct( PayPalClient $paypalClient, MerchantDetail $merchantDetails ) {
 		$this->paypalClient    = $paypalClient;
@@ -124,7 +127,7 @@ class PayPalOrder {
 				'Create PayPal Commerce order failure',
 				sprintf(
 					'<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-					print_r( $request->body, true ) ,
+					print_r( $request->body, true ),
 					print_r( json_decode( $ex->getMessage(), true ), true )
 				)
 			);
@@ -134,11 +137,42 @@ class PayPalOrder {
 	}
 
 	/**
+	 * Refunds a processed payment
+	 *
+	 * @param $captureId
+	 *
+	 * @return string The id of the refund
+	 * @throws Exception
+	 */
+	public function refundPayment( $captureId ) {
+		$refund = new CapturesRefundRequest( $captureId );
+
+		//      $refund->headers['PayPal-Auth-Assertion'] =
+		//          base64_encode( json_encode( [ 'alg' => 'none' ] ) );
+
+		try {
+			return $this->paypalClient->getHttpClient()->execute( $refund )->result->id;
+		} catch ( Exception $exception ) {
+			logError(
+				'Create PayPal Commerce order failure',
+				sprintf(
+					'<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
+					print_r( $refund->body, true ),
+					print_r( json_decode( $exception->getMessage(), true ), true )
+				)
+			);
+
+			throw $exception;
+		}
+	}
+
+	/**
 	 * Validate argument given to create PayPal order.
 	 *
 	 * @since 2.8.0
 	 *
 	 * @param array $array
+	 *
 	 * @throws InvalidArgumentException
 	 */
 	private function validateCreateOrderArguments( $array ) {
