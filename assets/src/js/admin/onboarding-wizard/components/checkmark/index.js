@@ -1,5 +1,5 @@
 const Checkmark = ( { index } ) => {
-	const id = `filter${ index }_d`;
+	const id = `filterCheckmark${ index }_d`;
 	return (
 		<svg width="27" height="22" viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g filter={ `url(#${ id })` }>
