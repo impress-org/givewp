@@ -351,50 +351,49 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	setStyles() {
-		const self = this;
 		const sources = this.form.querySelectorAll( 'input[type="text"]' );
 		sources.forEach( source => {
 			// Get style properties for focused input field.
 			source.addEventListener( 'focus', event => {
-				if ( Array.from( self.styles[ 'input:focus' ] ).length ) {
+				if ( Array.from( this.styles[ 'input:focus' ] ).length ) {
 					return;
 				}
 
 				const computedStyle = window.getComputedStyle( event.target, null );
 
-				self.hostedFocusedInputFieldStyleProperties.forEach( property => {
-					self.styles[ 'input:focus' ] = {
+				this.hostedFocusedInputFieldStyleProperties.forEach( property => {
+					this.styles[ 'input:focus' ] = {
 						[ property ]: computedStyle.getPropertyValue( property ),
-						...	self.styles[ 'input:focus' ],
+						...	this.styles[ 'input:focus' ],
 					};
 				} );
 			}, { once: true } );
 
 			source.addEventListener( 'blur', event => {
-				if ( Array.from( self.styles.container ).length ) {
+				if ( Array.from( this.styles.container ).length ) {
 					return;
 				}
 
 				const computedStyle = window.getComputedStyle( event.target, null );
 
-				self.hostedFieldContainerStyleProperties.forEach( property => {
-					self.styles.container = {
+				this.hostedFieldContainerStyleProperties.forEach( property => {
+					this.styles.container = {
 						[ property ]: computedStyle.getPropertyValue( property ),
-						...	self.styles.container,
+						...	this.styles.container,
 					};
 				} );
 
-				self.hostedInputFieldStyleProperties.forEach( property => {
-					self.styles.input = {
+				this.hostedInputFieldStyleProperties.forEach( property => {
+					this.styles.input = {
 						[ property ]: computedStyle.getPropertyValue( property ),
-						...	self.styles.input,
+						...	this.styles.input,
 					};
 				} );
 
-				self.hostedInputFieldPlaceholderStyleProperties.forEach( property => {
-					self.styles[ 'input:placeholder' ] = {
+				this.hostedInputFieldPlaceholderStyleProperties.forEach( property => {
+					this.styles[ 'input:placeholder' ] = {
 						[ property ]: computedStyle.getPropertyValue( property ),
-						...	self.styles[ 'input:placeholder' ],
+						...	this.styles[ 'input:placeholder' ],
 					};
 				} );
 			}, { once: true } );
