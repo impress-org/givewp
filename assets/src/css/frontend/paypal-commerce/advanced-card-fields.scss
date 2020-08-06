@@ -2,10 +2,6 @@
 	height: 47px;
 }
 
-.give-embed-form .give-paypal-commerce-cc-field {
-	height: 48px;
-}
-
 .give-paypal-commerce-cc-field.give-fl-input {
 	height: auto;
 	min-height: 50px;
@@ -38,22 +34,4 @@
 
 #give-paypal-commerce-smart-buttons-wrap {
 	margin-bottom: 0;
-}
-
-.separator-with-text {
-	font-size: 16px;
-	font-style: italic;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 20px 0;
-
-	.dashed-line {
-		border: 1px dashed black;
-		flex-grow: 1;
-	}
-
-	.label {
-		padding: 0 6px;
-	}
 }

@@ -33,13 +33,8 @@ class AdvancedCardFields {
 				<div id="smart-buttons-<?php echo esc_html( $idPrefix ); ?>"></div>
 			</div>
 
-			<div class="separator-with-text">
-				<div class="dashed-line"></div>
-				<div class="label"><?php esc_html_e( 'or pay with card', 'give' ); ?></div>
-				<div class="dashed-line"></div>
-			</div>
-
 			<?php
+			echo $this->getSeparator();
 			echo $this->cardNumberField( $idPrefix );
 			echo $this->cardCvcField( $idPrefix );
 			echo $this->cardNameField();
@@ -194,5 +189,21 @@ EOT;
 				<div id="give-card-expiration-field-$idPrefix" class="input empty give-paypal-commerce-cc-field give-paypal-commerce-card-expiration-field"></div>
 			</div>
 EOT;
+	}
+
+	/**
+	 *  Return separator html.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getSeparator(){
+		$label = esc_html__( 'or pay with card', 'give' );
+
+		ob_start();
+		include GIVE_PLUGIN_DIR . 'src/Views/Utils/separator-with-center-text.php';
+
+		return ob_get_clean();
 	}
 }
