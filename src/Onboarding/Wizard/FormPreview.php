@@ -4,8 +4,9 @@ namespace Give\Onboarding\Wizard;
 
 defined( 'ABSPATH' ) || exit;
 
-use Give\Onboarding\Helpers\FormatList;
 use Give_Scripts;
+use Give\Onboarding\Helpers\FormatList;
+use Give\Onboarding\DefaultFormFactory;
 
 /**
  * Form Preview page class
@@ -20,6 +21,13 @@ class FormPreview {
 
 	/** @var string $slug Page slug used for displaying form preview */
 	protected $slug = 'give-form-preview';
+
+	/** @var DefaultFormFactory */
+	protected $defaultFormFactory;
+
+	public function __construct( DefaultFormFactory $defaultFormFactory ) {
+		$this->defaultFormFactory = $defaultFormFactory;
+	}
 
 	/**
 	 * Adds Form Preview as dashboard page
@@ -93,7 +101,7 @@ class FormPreview {
 	 * @since 2.8.0
 	 **/
 	protected function get_preview_form_id() {
-		return 18;
+		return $this->defaultFormFactory->get();
 	}
 
 }

@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\Helpers\Hooks;
 use Give\Onboarding\SettingsRepository;
+use Give\Onboarding\DefaultFormFactory;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
@@ -22,15 +23,13 @@ class Onboarding implements ServiceProvider {
 	 */
 	public function register() {
 		give()->singleton( SetupPage::class );
+		give()->singleton( WizardPage::class );
+		give()->singleton( FormPreview::class );
 		give()->bind( DonationsRedirect::class );
 		give()->bind( SettingsRoute::class );
 		give()->bind( CurrencyRoute::class );
-		give()->bind(
-			SettingsRepository::class,
-			function() {
-				return SettingsRepositoryFactory::make( 'give_settings' );
-			}
-		);
+		give()->bind( DefaultFormFactory::class );
+		give()->bind( SettingsRepositoryFactory::class );
 	}
 
 	/**
@@ -39,10 +38,9 @@ class Onboarding implements ServiceProvider {
 	public function boot() {
 
 		// Load Wizard Page
-		$wizardPage = new WizardPage();
-		add_action( 'admin_menu', [ $wizardPage, 'add_page' ] );
-		add_action( 'admin_init', [ $wizardPage, 'setup_wizard' ] );
-		add_action( 'admin_enqueue_scripts', [ $wizardPage, 'enqueue_scripts' ] );
+		Hooks::addAction( 'admin_menu', WizardPage::class, 'add_page' );
+		Hooks::addAction( 'admin_init', WizardPage::class, 'setup_wizard' );
+		Hooks::addAction( 'admin_enqueue_scripts', WizardPage::class, 'enqueue_scripts' );
 
 		// Load Form Preview
 		Hooks::addAction( 'admin_menu', FormPreview::class, 'add_page' );
