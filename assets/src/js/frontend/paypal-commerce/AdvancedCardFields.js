@@ -1,4 +1,4 @@
-/* globals paypal, Give, givePayPalCommerce */
+/* globals paypal, Give, givePayPalCommerce, Event */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
@@ -317,10 +317,11 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 *
 	 * Add initial style to hosted card field container.
 	 *
-	 * @param {object} hostedCardFields
+	 * @since 2.8.0
+	 *
+	 * @param {object} hostedCardFields Hosted card field object
 	 */
 	applyStyleWhenEventTriggerOnHostedFields( hostedCardFields ) {
 		const self = this;
@@ -391,7 +392,7 @@ class AdvancedCardFields extends PaymentMethod {
 			}, { once: true } );
 		} );
 
-		// Get style properties for container input field and input placeholder.
+		// Set style properties for container input field and input, placeholder.
 		const event = new Event( 'blur' );
 		this.form.querySelector( 'input[name="card_name"]' ).dispatchEvent( event );
 	}
