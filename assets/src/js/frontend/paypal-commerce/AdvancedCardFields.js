@@ -136,6 +136,7 @@ class AdvancedCardFields extends PaymentMethod {
 	getComputedInputFieldStyle() {
 		const computedStyleInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
 		const computedStyleForFocusedInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':focus' );
+		const computedStyleForInputPlaceholder = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':placeholder' );
 
 		// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 		const supportProperties = [
@@ -149,6 +150,7 @@ class AdvancedCardFields extends PaymentMethod {
 		let styles = {
 			input: {},
 			':focus': {},
+			':placeholder': {},
 		};
 
 		supportProperties.forEach( property => {
@@ -160,6 +162,10 @@ class AdvancedCardFields extends PaymentMethod {
 				':focus': {
 					...styles[ ':focus' ],
 					[ property ]: computedStyleForFocusedInput.getPropertyValue( property ),
+				},
+				':placeholder': {
+					...styles[ ':placeholder' ],
+					[ property ]: computedStyleForInputPlaceholder.getPropertyValue( property ),
 				},
 			};
 		} );
