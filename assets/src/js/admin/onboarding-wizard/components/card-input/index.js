@@ -23,12 +23,15 @@ const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 	const cards = children.map( ( card, index ) => {
 		const checked = values.includes( card.props.value );
 		return (
-			<div className="give-obw-card-input__option" key={ index }>
-				{ !! checked &&
-					<Selected index={ index } />
-				}
+			<div key={ index }>
 				<input type="checkbox" id={ card.props.value } value={ card.props.value } onChange={ ( evt ) => handleChange( evt.target.value ) } checked={ checked } />
-				<label htmlFor={ card.props.value }>{ card }</label>
+				<div className="give-obw-card-input__option">
+					{ !! checked &&
+						<Selected index={ index } />
+					}
+
+					<label htmlFor={ card.props.value }>{ card }</label>
+				</div>
 			</div>
 		);
 	} );
