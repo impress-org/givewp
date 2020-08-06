@@ -166,13 +166,20 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @return {object} Return object of style properties.
 	 */
 	getComputedInputFieldForHostedField() {
+		const input = {
+			...this.styles.input,
+			...givePayPalCommerce.hostedCardFieldStyles.input,
+		};
+
 		return {
-			input: this.styles.input,
+			input,
 			':focus': {
 				color: this.styles[ 'input:focus' ].color,
+				...givePayPalCommerce.hostedCardFieldStyles[ ':focus' ],
 			},
 			':placeholder': {
 				color: this.styles[ 'input:placeholder' ].color,
+				...givePayPalCommerce.hostedCardFieldStyles[ ':placeholder' ],
 			},
 		};
 	}
