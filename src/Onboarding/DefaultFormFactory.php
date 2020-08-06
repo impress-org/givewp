@@ -13,23 +13,6 @@ class DefaultFormFactory {
 	 */
 	protected $primaryColor = '#4fa651';
 
-	public function __construct( SettingsRepositoryFactory $settingsRepositoryFactory ) {
-		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
-	}
-
-	public function getOrMake() {
-		return $this->get() ?: $this->make();
-	}
-
-	public function get() {
-		$formID     = $this->settingsRepository->get( 'form_id' );
-		$postStatus = get_post_status( $formID );
-		if ( false === $postStatus || 'trash' == $postStatus ) {
-			return 0;
-		}
-		return $formID;
-	}
-
 	/**
 	 * @return int $formID
 	 *
@@ -102,9 +85,6 @@ class DefaultFormFactory {
 				],
 			]
 		);
-
-		$this->settingsRepository->set( 'form_id', $formID );
-		$this->settingsRepository->save();
 
 		return $formID;
 	}

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Give_Scripts;
 use Give\Onboarding\Helpers\FormatList;
-use Give\Onboarding\DefaultFormFactory;
+use Give\Onboarding\FormRepository;
 
 /**
  * Form Preview page class
@@ -22,11 +22,11 @@ class FormPreview {
 	/** @var string $slug Page slug used for displaying form preview */
 	protected $slug = 'give-form-preview';
 
-	/** @var DefaultFormFactory */
-	protected $defaultFormFactory;
+	/** @var FormRepository */
+	protected $formRepository;
 
-	public function __construct( DefaultFormFactory $defaultFormFactory ) {
-		$this->defaultFormFactory = $defaultFormFactory;
+	public function __construct( FormRepository $formRepository ) {
+		$this->formRepository = $formRepository;
 	}
 
 	/**
@@ -101,7 +101,7 @@ class FormPreview {
 	 * @since 2.8.0
 	 **/
 	protected function get_preview_form_id() {
-		return $this->defaultFormFactory->get();
+		return $this->formRepository->getOrMake();
 	}
 
 }

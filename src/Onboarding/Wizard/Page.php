@@ -5,7 +5,7 @@ namespace Give\Onboarding\Wizard;
 defined( 'ABSPATH' ) || exit;
 
 use Give\Onboarding\Helpers\FormatList;
-use Give\Onboarding\DefaultFormFactory;
+use Give\Onboarding\FormRepository;
 
 /**
  * Onboarding Wizard admin page class
@@ -20,11 +20,11 @@ class Page {
 	/** @var string $slug Page slug used for displaying onboarding wizard */
 	protected $slug = 'give-onboarding-wizard';
 
-	/** @var DefaultFormFactory */
-	protected $defaultFormFactory;
+	/** @var FormRepository */
+	protected $formRepository;
 
-	public function __construct( DefaultFormFactory $defaultFormFactory ) {
-		$this->defaultFormFactory = $defaultFormFactory;
+	public function __construct( FormRepository $formRepository ) {
+		$this->formRepository = $formRepository;
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Page {
 	 **/
 	public function render_page() {
 
-		$this->defaultFormFactory->getOrMake();
+		$this->formRepository->getOrMake();
 
 		ob_start();
 		include_once plugin_dir_path( __FILE__ ) . 'templates/index.php';

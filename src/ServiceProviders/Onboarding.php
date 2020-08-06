@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\Helpers\Hooks;
 use Give\Onboarding\SettingsRepository;
+use Give\Onboarding\FormRepository;
 use Give\Onboarding\DefaultFormFactory;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
@@ -28,6 +29,7 @@ class Onboarding implements ServiceProvider {
 		give()->bind( DonationsRedirect::class );
 		give()->bind( SettingsRoute::class );
 		give()->bind( CurrencyRoute::class );
+		give()->bind( FormRepository::class );
 		give()->bind( DefaultFormFactory::class );
 		give()->bind( SettingsRepositoryFactory::class );
 	}
