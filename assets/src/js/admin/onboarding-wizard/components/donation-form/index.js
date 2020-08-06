@@ -25,10 +25,10 @@ const DonationForm = () => {
 	const onIframeLoaded = () => {
 		setIframeLoaded( true );
 
-		// document.getElementById( 'donationFormPreview' ).contentDocument
-		// 	.getElementById( 'iFrameResizer0' ).contentDocument
-		// 	.getElementById( 'give_error_test_mode' )
-		// 	.style.display = 'none';
+		document.getElementById( 'donationFormPreview' ).contentDocument
+			.getElementById( 'iFrameResizer0' ).contentDocument
+			.getElementById( 'give_error_test_mode' )
+			.style.display = 'none';
 	};
 
 	return (
