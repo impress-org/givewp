@@ -6,10 +6,36 @@ class AdvancedCardFields extends PaymentMethod {
 	constructor( form ) {
 		super( form );
 
-		this.inputBorderColor = null;
-		this.focusedInputBorderColor = null;
+		this.hostedFieldContainerStyleProperties = [
+			'background-color',
+			'box-sizing',
+			'box-shadow',
+			'border',
+			'border-radius',
+			'margin',
+		];
 
-		this.setBorderColorForHostedCardFields();
+		this.hostedInputFieldStyleProperties = [
+			'color',
+			'direction',
+			'font-size',
+			'letter-spacing',
+			'line-height',
+			'padding',
+		];
+
+		this.hostedFocusedInputFieldStyleProperties = [ 'color', 'border' ];
+
+		this.hostedInputFieldPlaceholderStyleProperties = [ 'color' ];
+
+		this.styles = {
+			container: {},
+			input: {},
+			'input:focus': {},
+			'input:placeholder': {},
+		};
+
+		this.setHostedCardFieldContainerStyle();
 	}
 	/**
 	 * Return whether or not render credit card fields.
@@ -41,18 +67,14 @@ class AdvancedCardFields extends PaymentMethod {
 			return;
 		}
 
-		const creatOrderHandler = this.createOrderHandler.bind( this );
+		const createOrder = this.createOrderHandler.bind( this );
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		const styles = await this.getComputedInputFieldStyle();
 		const fields = this.getFields();
 
-		const hostedCardFields = await paypal.HostedFields.render( {
-			createOrder: creatOrderHandler,
-			styles,
-			fields,
-		} );
+		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
 
-		this.addStyleToHostedFieldsContainer( fields );
+		this.addInitialStyleToHostedFieldsContainer();
 		this.applyStyleWhenEventTriggerOnHostedFields( hostedCardFields );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 	}
@@ -135,43 +157,22 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Get computed style of credit card input field.
+	 * Get computed style for hosted card fields.
+	 *
+	 * List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 	 *
 	 * @since 2.8.0
 	 *
 	 * @return {object} Return object of style properties.
 	 */
 	getComputedInputFieldStyle() {
-		const computedStyleInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), null );
-		const computedStyleForFocusedInput = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':focus' );
-		const computedStyleForInputPlaceholder = window.getComputedStyle( this.form.querySelector( 'input[name="card_name"]' ), ':placeholder' );
-
-		// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
-		const supportProperties = [
-			'color',
-			'direction',
-			'font-size',
-			'letter-spacing',
-			'line-height',
-			'padding',
-		];
-
-		let inputStyle = {};
-		supportProperties.forEach( property => {
-			inputStyle = {
-				[ property ]: computedStyleInput.getPropertyValue( property ),
-				...inputStyle,
-			};
-		} );
-
 		return {
-			input: inputStyle,
+			input: this.styles.input,
 			':focus': {
-				color: computedStyleForFocusedInput.getPropertyValue( 'color' ),
-				outline: computedStyleForFocusedInput.getPropertyValue( 'outline' ),
+				color: this.styles[ 'input:focus' ].color,
 			},
 			':placeholder': {
-				color: computedStyleForInputPlaceholder.getPropertyValue( 'color' ),
+				color: this.styles[ 'input:placeholder' ].color,
 			},
 		};
 	}
@@ -302,30 +303,22 @@ class AdvancedCardFields extends PaymentMethod {
 	 * Add style to hosted field's container.
 	 *
 	 * @since 2.8.0
-	 * @param {object} fields list of fields.
 	 */
-	addStyleToHostedFieldsContainer( fields ) {
+	addInitialStyleToHostedFieldsContainer() {
+		const fields = this.getFields();
 		const source = this.form.querySelector( 'input[name="card_name"]' );
 
 		// Apply styles
 		for ( const fieldKey in fields ) {
 			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
 
-			Give.util.fn.copyNodeStyle(
-				source,
-				target,
-				[
-					'background',
-					'box-sizing',
-					'box-shadow',
-					'border',
-					'border-radius',
-				]
-			);
+			Give.util.fn.copyNodeStyle( source, target, this.hostedFieldContainerStyleProperties );
 		}
 	}
 
 	/**
+	 *
+	 * Add initial style to hosted card field container.
 	 *
 	 * @param {object} hostedCardFields
 	 */
@@ -334,37 +327,73 @@ class AdvancedCardFields extends PaymentMethod {
 
 		hostedCardFields.on( 'focus', function( event ) {
 			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
-			target.style.borderColor = self.focusedInputBorderColor;
+			target.style.border = self.styles[ 'input:focus' ].border;
 		} );
 
 		hostedCardFields.on( 'blur', function( event ) {
 			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
-			target.style.borderColor = self.inputBorderColor;
+			target.style.border = self.styles.container.border;
 		} );
 	}
 
 	/**
-	 * Set border color properties for hosted card fields container.
+	 * Set style properties for hosted card fields container.
 	 *
 	 * @since 2.8.0
 	 */
-	setBorderColorForHostedCardFields() {
+	setHostedCardFieldContainerStyle() {
 		const self = this;
 		const sources = this.form.querySelectorAll( 'input[type="text"]' );
-
 		sources.forEach( source => {
+			// Get style properties for focused input field.
 			source.addEventListener( 'focus', event => {
-				if ( ! self.focusedInputBorderColor ) {
-					self.focusedInputBorderColor = window.getComputedStyle( event.target, ':focus' ).getPropertyValue( 'border-color' );
+				if ( Array.from( self.styles[ 'input:focus' ] ).length ) {
+					return;
 				}
+
+				const computedStyle = window.getComputedStyle( event.target, null );
+
+				self.hostedFocusedInputFieldStyleProperties.forEach( property => {
+					self.styles[ 'input:focus' ] = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	self.styles[ 'input:focus' ],
+					};
+				} );
 			}, { once: true } );
 
 			source.addEventListener( 'blur', event => {
-				if ( ! self.inputBorderColor ) {
-					self.inputBorderColor = window.getComputedStyle( event.target, null ).getPropertyValue( 'border-color' );
+				if ( Array.from( self.styles.container ).length ) {
+					return;
 				}
+
+				const computedStyle = window.getComputedStyle( event.target, null );
+
+				self.hostedFieldContainerStyleProperties.forEach( property => {
+					self.styles.container = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	self.styles.container,
+					};
+				} );
+
+				self.hostedInputFieldStyleProperties.forEach( property => {
+					self.styles.input = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	self.styles.input,
+					};
+				} );
+
+				self.hostedInputFieldPlaceholderStyleProperties.forEach( property => {
+					self.styles[ 'input:placeholder' ] = {
+						[ property ]: computedStyle.getPropertyValue( property ),
+						...	self.styles[ 'input:placeholder' ],
+					};
+				} );
 			}, { once: true } );
 		} );
+
+		// Get style properties for container input field and input placeholder.
+		const event = new Event( 'blur' );
+		this.form.querySelector( 'input[name="card_name"]' ).dispatchEvent( event );
 	}
 }
 
