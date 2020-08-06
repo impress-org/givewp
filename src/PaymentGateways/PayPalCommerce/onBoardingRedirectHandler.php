@@ -376,16 +376,22 @@ class onBoardingRedirectHandler {
 		if ( ! is_ssl() ) {
 			Give_Admin_Settings::add_error(
 				'paypal-ssl-error',
-				'There was a problem registering your site\'s webhook with PayPal. In order for to register
+				esc_html__(
+					'There was a problem registering your site\'s webhook with PayPal. In order for to register
 				the webhook your site must have a valid SSL certificate. You are connected, but your site will not
 				receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
-				include https, and then disconnect and reconnect your PayPal account.'
+				include https, and then disconnect and reconnect your PayPal account.',
+					'give'
+				)
 			);
 		} elseif ( empty( $this->webhooksRepository->getWebhookId() ) ) {
 			Give_Admin_Settings::add_error(
 				'paypal-webhook-error',
-				'There was a problem creating a webhook for your account. Please try disconnecting and then
-				reconnect. If the problem persists, please contact support'
+				esc_html__(
+					'There was a problem creating a webhook for your account. Please try disconnecting and then
+				reconnect. If the problem persists, please contact support',
+					'give'
+				)
 			);
 		}
 	}

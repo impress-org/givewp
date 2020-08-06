@@ -44,7 +44,12 @@ class AccountAdminNotices {
 			$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
 			Give_Admin_Settings::add_message(
 				'paypal-commerce-not-connected',
-				"<strong>PayPal Donations: </strong> Please <a href=\"{$connectUrl}\">connect your account</a> so donations may be processed."
+				sprintf(
+					"<strong>%1\$s</strong> %2\$s <a href='{$connectUrl}'>%3\$s</a>",
+					esc_html__( 'PayPal Donations:', 'give' ),
+					esc_html__( 'Please connect to your account so donationos may be processed.', 'give' ),
+					esc_html__( 'Connect Account', 'give' )
+				)
 			);
 		}
 	}
@@ -59,7 +64,12 @@ class AccountAdminNotices {
 			$connectUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' );
 			Give_Admin_Settings::add_message(
 				'paypal-commerce-account-not-ready',
-				"<strong>PayPal Donations: </strong> Please <a href=\"{$connectUrl}\">check your account</a> as additional setup is needed before you are ready to receive donations."
+				sprintf(
+					"<strong>%1\$s</strong> %2\$s <a href='{$connectUrl}'>%3\$s</a>",
+					esc_html__( 'PayPal Donations:', 'give' ),
+					esc_html__( 'Please check your account status as additional setup is needed before you may accept donations.', 'give' ),
+					esc_html__( 'Account Status', 'give' )
+				)
 			);
 		}
 	}
