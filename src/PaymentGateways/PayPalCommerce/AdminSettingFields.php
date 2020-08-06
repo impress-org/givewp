@@ -128,7 +128,7 @@ class AdminSettingFields {
 					<?php if ( ! empty( $accountErrors ) ) : ?>
 						<div>
 							<span>
-								<p class="error-message"><strong>Warning,</strong> your account is not ready to accept donations. Please review the following list:</p>
+								<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations. Please review the following list:', 'give' ); ?></p>
 								<ul class="ul-disc">
 								<?php
 								foreach ( $accountErrors as $error ) {
@@ -136,7 +136,7 @@ class AdminSettingFields {
 								}
 								?>
 								</ul>
-								<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">Re-Check Account Status</a></p>
+								<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>"><?php esc_html_e( 'Re-Check Account Status', 'give' ); ?></a></p>
 							</span>
 						</div>
 					<?php endif; ?>
