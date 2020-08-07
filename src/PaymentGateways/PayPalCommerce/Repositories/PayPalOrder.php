@@ -139,6 +139,8 @@ class PayPalOrder {
 	/**
 	 * Refunds a processed payment
 	 *
+	 * @since 2.8.0
+	 *
 	 * @param $captureId
 	 *
 	 * @return string The id of the refund
@@ -146,9 +148,6 @@ class PayPalOrder {
 	 */
 	public function refundPayment( $captureId ) {
 		$refund = new CapturesRefundRequest( $captureId );
-
-		//      $refund->headers['PayPal-Auth-Assertion'] =
-		//          base64_encode( json_encode( [ 'alg' => 'none' ] ) );
 
 		try {
 			return $this->paypalClient->getHttpClient()->execute( $refund )->result->id;

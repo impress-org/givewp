@@ -80,5 +80,7 @@ class PayPalCommerce implements PaymentGateway {
 
 		Hooks::addAction( 'admin_init', AccountAdminNotices::class, 'displayNotices' );
 		Hooks::addFilter( 'give_payment_details_transaction_id-paypal-commerce', DonationDetailsPage::class, 'getPayPalPaymentUrl' );
+
+		Hooks::addAction( 'give_post_refunded_payment', RefundPaymentHandler::class, 'refundPayment' );
 	}
 }
