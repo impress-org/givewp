@@ -34,7 +34,6 @@ class Webhooks {
 	 * @var string[]
 	 */
 	private $webhookEvents = [
-		'CHECKOUT.ORDER.APPROVED',
 		'PAYMENT.CAPTURE.COMPLETED',
 		'PAYMENT.CAPTURE.DENIED',
 		'PAYMENT.CAPTURE.REFUNDED',
