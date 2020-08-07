@@ -96,7 +96,7 @@ class MerchantDetails {
 	 * @return string[]|null
 	 */
 	public function getAccountErrors() {
-		return json_decode( get_option( $this->getAccountErrorsKey(), null ), true );
+		return get_option( $this->getAccountErrorsKey(), null );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class MerchantDetails {
 	 * @return bool
 	 */
 	public function saveAccountErrors( $errorMessage ) {
-		return update_option( $this->getAccountErrorsKey(), json_encode( $errorMessage ) );
+		return update_option( $this->getAccountErrorsKey(), $errorMessage );
 	}
 
 	/**
