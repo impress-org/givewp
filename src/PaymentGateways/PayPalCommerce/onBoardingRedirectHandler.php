@@ -78,7 +78,7 @@ class onBoardingRedirectHandler {
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$tokenInfo     = get_option( OptionId::PARTNER_LINK_DETAIL, [ 'accessToken' => '' ] );
+		$tokenInfo     = get_option( OptionId::ACCESS_TOKEN, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
