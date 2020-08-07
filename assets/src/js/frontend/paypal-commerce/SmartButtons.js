@@ -29,6 +29,14 @@ class SmartButtons extends PaymentMethod {
 			onClick: onClickHandler,
 			createOrder: createOrderHandler,
 			onApprove: onApproveHandler,
+			style: {
+				layout: 'vertical',
+				size: 'responsive',
+				shape: 'rect',
+				label: 'paypal',
+				color: 'gold',
+				tagline: false,
+			},
 			funding: { disallowed: [ paypal.FUNDING.CARD, paypal.FUNDING.CREDIT ] },
 		} ).render( smartButtonContainer );
 	}

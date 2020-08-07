@@ -27,6 +27,9 @@
 @import '_components.donor';
 @import 'processing-state-template';
 
+// Utilities
+@import '../plugins/utils';
+
 // Stripe Core
 @import 'give-stripe';
 
