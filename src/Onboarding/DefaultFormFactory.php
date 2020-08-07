@@ -109,7 +109,7 @@ class DefaultFormFactory {
 				'enabled'       => 'enabled',
 				'headline'      => __( 'Support Our Cause', 'give' ),
 				'description'   => __( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' ),
-				'image'         => '', // @TODO Add a default image.
+				'image'         => GIVE_PLUGIN_URL . 'assets/dist/images/donate.min.png',
 				'primary_color' => $this->primaryColor,
 				'donate_label'  => __( 'Donate Now', 'give' ),
 			],
