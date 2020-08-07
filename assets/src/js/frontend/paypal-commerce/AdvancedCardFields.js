@@ -237,6 +237,20 @@ class AdvancedCardFields extends PaymentMethod {
 						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardNumberField;
 					} else if ( -1 !== detail.field.indexOf( 'security_code' ) ) {
 						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardCvcField;
+					} else {
+						// Handle server errors.
+						if ( detail.hasOwnProperty( 'description' ) ) {
+							errors.push( {
+								message: detail.description,
+							} );
+
+							return;
+						}
+
+						errors.push( {
+							message: `${ givePayPalCommerce.failedDonationNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
+						} );
+						return;
 					}
 
 					if ( label ) {

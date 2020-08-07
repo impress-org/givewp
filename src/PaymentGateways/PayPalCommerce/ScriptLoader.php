@@ -126,6 +126,7 @@ EOT;
 				],
 				'defaultDonationCreationError' => esc_html__( 'An error occurred while processing your payment. Please try again.', 'give' ),
 				'failedDonationNotice'         => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
+				'errorCodeLabel'               => esc_html__( 'Error Code', 'give' ),
 				// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 				'hostedCardFieldStyles'        => apply_filters( 'give_paypal_commerce_hosted_field_style', [] ),
 			]
