@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 class PageView {
 
 	public function render() {
+		$settings = get_option( 'give_onboarding' );
 		ob_start();
 		include plugin_dir_path( __FILE__ ) . 'templates/index.html.php';
 		return ob_get_clean();

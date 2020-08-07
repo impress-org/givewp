@@ -122,11 +122,107 @@
 								'action-link',
 								[
 									'href'             => '#',
-									'screenReaderText' => 'Learn more about GiveWP',
+									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
 								]
 							),
 						]
 					),
+					in_array( 'recurring-donations', $settings['addons'] ) ? $this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'recurring-donations@2x.min.png' ),
+							'icon_alt'    => __( 'Recurring Donations', 'give' ),
+							'title'       => __( 'Recurring Donations', 'give' ),
+							'description' => __( 'The Recurring Donations add-on for GiveWP brings you more dependable payments by allowing your donors to give regularly at different time intervals. Let your donors choose how often they give and how much. Manage your subscriptions, view specialized reports, and connect more strategically with your recurring donors.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about Recurring Donations', 'give' ),
+								]
+							),
+						]
+					) : '',
+					in_array( 'donors-cover-fees', $settings['addons'] ) ? $this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'fee-recovery@2x.min.png' ),
+							'icon_alt'    => __( 'Fee Recovery', 'give' ),
+							'title'       => __( 'Fee Recovery', 'give' ),
+							'description' => __( 'Credit Card processing fees can take away a big chunk of your donations. This means less money goes to your cause. Why not ask your donors to further help your cause by asking them to take care of the payment processing fees? That’s where the Fee Recovery add-on comes into play.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about Fee Recovery', 'give' ),
+								]
+							),
+						]
+					) : '',
+					in_array( 'pdf-receipts', $settings['addons'] ) ? $this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'pdf-receipts@2x.min.png' ),
+							'icon_alt'    => __( 'PDF Receipts', 'give' ),
+							'title'       => __( 'PDF Receipts', 'give' ),
+							'description' => __( 'PDF Receipts makes it easy for your donors to print their tax deductible receipts by making PDF downloadable copies of them easily available. Donors can get a link to their receipt provided to them in the confirmation email, there is also a link in the donation confirmation screen, and a link in their Donation History page.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about PDF Receipts', 'give' ),
+								]
+							),
+						]
+					) : '',
+					in_array( 'custom-form-fields', $settings['addons'] ) ? $this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'form-fields-manager@2x.min.png' ),
+							'icon_alt'    => __( 'Form Field Manager', 'give' ),
+							'title'       => __( 'Form Field Manager', 'give' ),
+							'description' => __( 'Form Field Manager (FFM) allows you to add and manage additional fields for your GiveWP donation forms using an intuitive drag-and-drop interface. Form fields include simple fields such as checkboxes, dropdowns, radios, and more. The more complex form fields that you can add are file upload fields, Rich text editors (TinyMCE), and the powerful Repeater field.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about Form Field Manager', 'give' ),
+								]
+							),
+						]
+					) : '',
+					in_array( 'multiple-currencies', $settings['addons'] ) ? $this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'currency-switcher@2x.min.png' ),
+							'icon_alt'    => __( 'Currency Switcher', 'give' ),
+							'title'       => __( 'Currency Switcher', 'give' ),
+							'description' => __( 'Allow your donors to switch to their currency of choice and increase your overall giving with the GiveWP Currency Switcher add-on. Select from an extensive list of currencies, set the currency based on your users’ location, pull from live exchange rates and more!', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about Currency Switcher', 'give' ),
+								]
+							),
+						]
+					) : '',
+					in_array( 'dedicate-donations', $settings['addons'] ) ? $this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'tributes@2x.min.png' ),
+							'icon_alt'    => __( 'Tributes', 'give' ),
+							'title'       => __( 'Tributes', 'give' ),
+							'description' => __( 'Allow donors to give to your cause via customizable tributes like “In honor of,” “In memory of,” or any dedication you prefer. Also, you are able to send eCards and produce customizable mailable cards that your donors and their honorees will love.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about Tributes', 'give' ),
+								]
+							),
+						]
+					) : '',
 					$this->render_template(
 						'row-item',
 						[
@@ -138,7 +234,7 @@
 								'action-link',
 								[
 									'href'             => '#',
-									'screenReaderText' => 'View Add-ons for GiveWP',
+									'screenReaderText' => __( 'View Add-ons for GiveWP', 'give' ),
 								]
 							),
 						]
