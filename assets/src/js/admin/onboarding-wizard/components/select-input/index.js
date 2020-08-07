@@ -1,5 +1,6 @@
 // Import vendor dependencies
 import PropTypes from 'prop-types';
+import Select from 'react-select';
 
 // Import utilities
 import { toKebabCase } from '../../utils';
@@ -8,17 +9,15 @@ import { toKebabCase } from '../../utils';
 import './style.scss';
 
 const SelectInput = ( { label, value, onChange, options } ) => {
-	const optionElements = options.map( ( option, index ) => {
-		return (
-			<option value={ option.value } key={ index }>{ option.label }</option>
-		);
-	} );
 	return (
 		<div className="give-obw-select-input">
 			{ label && ( <label className="give-obw-select-input__label" htmlFor={ toKebabCase( label ) }>{ label }</label> ) }
-			<select value={ value } className="give-obw-select-input__input" id={ label && toKebabCase( label ) } onChange={ ( event ) => onChange( event.target.value ) } >
-				{ optionElements }
-			</select>
+			<Select
+				inputId={ label && toKebabCase( label ) }
+				value={ value }
+				onChange={ ( selectedOption ) => onChange( selectedOption ) }
+				options={ options }
+			/>
 		</div>
 	);
 };
