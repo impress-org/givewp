@@ -136,7 +136,7 @@ class DefaultFormFactory {
 	}
 
 	/**
-	 * Default values extracted from includes/admin/forms/class-metabox-form-data.php
+	 * Default values forked from includes/admin/forms/class-metabox-form-data.php
 	 *
 	 * @return array
 	 *
@@ -149,28 +149,28 @@ class DefaultFormFactory {
 					[
 						'level_id' => 0,
 					],
-				'_give_amount' => '10.000000',
+				'_give_amount' => 10,
 			],
 			[
 				'_give_id'     =>
 					[
 						'level_id' => 1,
 					],
-				'_give_amount' => '25.000000',
+				'_give_amount' => 25,
 			],
 			[
 				'_give_id'     =>
 					[
 						'level_id' => 2,
 					],
-				'_give_amount' => '50.000000',
+				'_give_amount' => 50,
 			],
 			[
 				'_give_id'      =>
 					[
 						'level_id' => 3,
 					],
-				'_give_amount'  => '100.000000',
+				'_give_amount'  => 100,
 				'_give_default' => 'default',
 			],
 			[
@@ -178,7 +178,7 @@ class DefaultFormFactory {
 					[
 						'level_id' => 5,
 					],
-				'_give_amount' => '250.000000',
+				'_give_amount' => 250,
 			],
 		];
 	}
