@@ -1,21 +1,21 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce;
 
 /**
  * Class Utils
- * @package Give\PaymentGateways\PayPalCommerce
  *
  * @since 2.8.0
  */
 class Utils {
-
 	/**
-	 * Return whether or not PayPal account connected
+	 * Returns whether or not the PayPal Commerce gateway is active
+	 *
+	 * @since 2.8.0
 	 *
 	 * @return bool
-	 * @since 2.8.0
 	 */
-	public static function isConnected() {
-		return get_option( OptionId::$payPalAccountsOptionKey, [] );
+	public static function gatewayIsActive() {
+		return give_is_gateway_active( PayPalCommerce::GATEWAY_ID );
 	}
 }

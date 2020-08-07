@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -6,9 +7,9 @@ use InvalidArgumentException;
 
 /**
  * Class MerchantDetail
+ * @since 2.8.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
  */
 class MerchantDetail {
 	/**
@@ -48,32 +49,31 @@ class MerchantDetail {
 	public $clientSecret = null;
 
 	/**
-	 * Environment mode.
-	 *
-	 * @var null|string
-	 */
-	private $mode = null;
-
-	/**
 	 * Access token.
+	 *
+	 * @since 2.8.0
 	 *
 	 * @var null|string
 	 */
 	public $accessToken = null;
 
 	/**
+	 * Whether or not the connected account is ready to process donations.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var bool
+	 */
+	public $accountIsReady = true;
+
+	/**
 	 * Access token.
+	 *
+	 * @since 2.8.0
 	 *
 	 * @var array
 	 */
 	private $tokenDetails = null;
-
-	/**
-	 * MerchantDetail constructor.
-	 */
-	public function __construct() {
-		$this->mode = give( PayPalClient::class )->mode;
-	}
 
 	/**
 	 * Return array of merchant details.
@@ -86,20 +86,19 @@ class MerchantDetail {
 		return [
 			'merchantId'         => $this->merchantId,
 			'merchantIdInPayPal' => $this->merchantIdInPayPal,
-			$this->mode          => [
-				'clientId'     => $this->clientId,
-				'clientSecret' => $this->clientSecret,
-				'token'        => $this->tokenDetails,
-			],
+			'clientId'           => $this->clientId,
+			'clientSecret'       => $this->clientSecret,
+			'token'              => $this->tokenDetails,
+			'accountIsReady'     => $this->accountIsReady,
 		];
 	}
 
 	/**
 	 * Make MerchantDetail object from array.
 	 *
-	 * @param array $merchantDetails
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param array $merchantDetails
 	 *
 	 * @return MerchantDetail
 	 */
@@ -116,23 +115,23 @@ class MerchantDetail {
 		return $obj;
 	}
 
-
 	/**
 	 * Setup properties from array.
 	 *
-	 * @param $merchantDetails
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param $merchantDetails
 	 *
 	 */
 	private function setupProperties( $merchantDetails ) {
 		$this->merchantId         = $merchantDetails['merchantId'];
 		$this->merchantIdInPayPal = $merchantDetails['merchantIdInPayPal'];
 
-		$this->clientId     = $merchantDetails[ $this->mode ]['clientId'];
-		$this->clientSecret = $merchantDetails[ $this->mode ]['clientSecret'];
-		$this->tokenDetails = $merchantDetails[ $this->mode ]['token'];
-		$this->accessToken  = $this->tokenDetails['accessToken'];
+		$this->clientId       = $merchantDetails['clientId'];
+		$this->clientSecret   = $merchantDetails['clientSecret'];
+		$this->tokenDetails   = $merchantDetails['token'];
+		$this->accountIsReady = $merchantDetails['accountIsReady'];
+		$this->accessToken    = $this->tokenDetails['accessToken'];
 	}
 
 	/**
@@ -143,15 +142,11 @@ class MerchantDetail {
 	 * @param array $merchantDetails
 	 */
 	private function validate( $merchantDetails ) {
-		$required = [ 'merchantId', 'merchantIdInPayPal', $this->mode ];
-		$array    = array_filter( $merchantDetails ); // Remove empty values.
+		$required = [ 'merchantId', 'merchantIdInPayPal', 'clientId', 'clientSecret', 'token', 'accountIsReady' ];
 
-		if ( array_diff( $required, array_keys( $array ) ) ) {
+		if ( array_diff( $required, array_keys( $merchantDetails ) ) ) {
 			throw new InvalidArgumentException(
-				sprintf(
-					__( 'To create a MerchantDetail object, please provide valid merchantId, merchantIdInPayPal and %1$s', 'give' ),
-					$this->mode
-				)
+				esc_html__( 'To create a MerchantDetail object, please provide the following: ' . implode( ', ', $required ), 'give' ),
 			);
 		}
 	}
@@ -169,11 +164,11 @@ class MerchantDetail {
 	/**
 	 * Get refresh token code.
 	 *
+	 * @since 2.8.0
+	 *
 	 * @param array $tokenDetails
 	 *
 	 * @return mixed
-	 * @since 2.8.0
-	 *
 	 */
 	public function setTokenDetails( $tokenDetails ) {
 		$this->tokenDetails = array_merge( $this->tokenDetails, $tokenDetails );
