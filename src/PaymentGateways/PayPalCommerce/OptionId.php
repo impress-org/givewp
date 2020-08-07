@@ -16,7 +16,7 @@ class OptionId {
 	 * @since 2.8.0
 	 * @var string
 	 */
-	public static $accessTokenOptionKey = 'temp_give_paypal_commerce_seller_access_token';
+	const ACCESS_TOKEN = 'temp_give_paypal_commerce_seller_access_token';
 
 	/**
 	 * Option key name.
@@ -26,5 +26,5 @@ class OptionId {
 	 * @since 2.8.0
 	 * @var string
 	 */
-	public static $partnerInfoOptionKey = 'temp_give_paypal_commerce_partner_link';
+	const PARTNER_LINK_DETAIL = 'temp_give_paypal_commerce_partner_link';
 }

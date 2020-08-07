@@ -63,7 +63,7 @@ class AjaxRequestHandler {
 	public function onBoardedUserAjaxRequestHandler() {
 		$this->validateAdminRequest();
 
-		$partnerLinkInfo = get_option( OptionId::$partnerInfoOptionKey, [ 'nonce' => '' ] );
+		$partnerLinkInfo = get_option( OptionId::PARTNER_LINK_DETAIL, [ 'nonce' => '' ] );
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
@@ -91,7 +91,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = ArrayDataSet::camelCaseKeys( json_decode( $payPalResponse, true ) );
 
-		update_option( OptionId::$accessTokenOptionKey, $payPalResponse );
+		update_option( OptionId::ACCESS_TOKEN, $payPalResponse );
 
 		give( RefreshToken::class )->registerCronJobToRefreshToken( $payPalResponse['expiresIn'] );
 
@@ -125,7 +125,7 @@ class AjaxRequestHandler {
 		}
 
 		$data = json_decode( $response, true );
-		update_option( OptionId::$partnerInfoOptionKey, $data );
+		update_option( OptionId::PARTNER_LINK_DETAIL, $data );
 
 		wp_send_json_success( $data );
 	}

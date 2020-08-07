@@ -78,7 +78,7 @@ class onBoardingRedirectHandler {
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
+		$tokenInfo     = get_option( OptionId::PARTNER_LINK_DETAIL, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -199,8 +199,8 @@ class onBoardingRedirectHandler {
 	 * @return void
 	 */
 	private function deleteTempOptions() {
-		delete_option( OptionId::$partnerInfoOptionKey );
-		delete_option( OptionId::$accessTokenOptionKey );
+		delete_option( OptionId::PARTNER_LINK_DETAIL );
+		delete_option( OptionId::ACCESS_TOKEN );
 	}
 
 	/**
