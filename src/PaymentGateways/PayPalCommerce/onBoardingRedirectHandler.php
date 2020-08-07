@@ -309,8 +309,19 @@ class onBoardingRedirectHandler {
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
 		$errorMessages = [];
 
+		if ( ! is_ssl() ) {
+			$errorMessages[] = esc_html__(
+				'A valid SSL certificate is required to accept donations and set up your PayPal account. Once a
+					certificate is installed and the site is using https, please disconnect and reconnect your account.',
+				'give'
+			);
+		}
+
 		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
-			return [ esc_html__( 'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.', 'give' ) ];
+			$errorMessages[] = esc_html__( 'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.', 'give' );
+
+			// Return here since the rest of the validations will definitely fail
+			return $errorMessages;
 		}
 
 		if ( ! $onBoardedData['payments_receivable'] ) {
@@ -378,18 +389,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function registerPayPalSSLNotice() {
-		if ( ! is_ssl() ) {
-			Give_Admin_Settings::add_error(
-				'paypal-ssl-error',
-				esc_html__(
-					'There was a problem registering your site\'s webhook with PayPal. In order for to register
-					the webhook your site must have a valid SSL certificate. You are connected, but your site will not
-					receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
-					include https, and then disconnect and reconnect your PayPal account.',
-					'give'
-				)
-			);
-		} elseif ( empty( $this->webhooksRepository->getWebhookId() ) ) {
+		if ( is_ssl() && empty( $this->webhooksRepository->getWebhookId() ) ) {
 			Give_Admin_Settings::add_error(
 				'paypal-webhook-error',
 				esc_html__(
