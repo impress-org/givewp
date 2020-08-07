@@ -16,16 +16,22 @@ use Give_Admin_Settings;
  */
 class onBoardingRedirectHandler {
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var PayPalClient
 	 */
 	private $payPalClient;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;
@@ -315,7 +321,7 @@ class onBoardingRedirectHandler {
 			$errorMessage[] = esc_html__( 'Confirm your primary email address', 'give' );
 		}
 
-		// grab the PPCP_CUSTOM product from the status data
+		// Grab the PPCP_CUSTOM product from the status data
 		$customProduct = current(
 			array_filter(
 				$onBoardedData['products'],
@@ -329,7 +335,7 @@ class onBoardingRedirectHandler {
 			$errorMessages[] = esc_html__( 'Reach out to PayPal to enable PPCP_CUSTOM for your account', 'give' );
 		}
 
-		// loop through the capabilities and see if any are not active
+		// Loop through the capabilities and see if any are not active
 		$invalidCapabilities = [];
 		foreach ( $onBoardedData['capabilities'] as $capability ) {
 			if ( $capability['status'] !== 'ACTIVE' ) {
@@ -377,9 +383,9 @@ class onBoardingRedirectHandler {
 				'paypal-ssl-error',
 				esc_html__(
 					'There was a problem registering your site\'s webhook with PayPal. In order for to register
-				the webhook your site must have a valid SSL certificate. You are connected, but your site will not
-				receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
-				include https, and then disconnect and reconnect your PayPal account.',
+					the webhook your site must have a valid SSL certificate. You are connected, but your site will not
+					receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
+					include https, and then disconnect and reconnect your PayPal account.',
 					'give'
 				)
 			);
@@ -388,7 +394,7 @@ class onBoardingRedirectHandler {
 				'paypal-webhook-error',
 				esc_html__(
 					'There was a problem creating a webhook for your account. Please try disconnecting and then
-				reconnect. If the problem persists, please contact support',
+					reconnect. If the problem persists, please contact support',
 					'give'
 				)
 			);

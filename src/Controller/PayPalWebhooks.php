@@ -22,11 +22,15 @@ class PayPalWebhooks {
 	private $eventHandlers = [];
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;

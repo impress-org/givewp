@@ -24,6 +24,8 @@ class ScriptLoader {
 	private $paypalSdkScriptHandle = 'give-paypal-sdk-js';
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;

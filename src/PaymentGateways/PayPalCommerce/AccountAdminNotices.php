@@ -15,6 +15,8 @@ class AccountAdminNotices {
 	private $merchantDetails;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;

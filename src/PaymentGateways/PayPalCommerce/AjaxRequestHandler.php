@@ -17,30 +17,51 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
  */
 class AjaxRequestHandler {
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var MerchantDetail
 	 */
 	private $merchantDetails;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var PayPalClient
 	 */
 	private $paypalClient;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var ConnectClient
 	 */
 	private $connectClient;
 
+	/**
+	 * AjaxRequestHandler constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param Webhooks        $webhooksRepository
+	 * @param MerchantDetail  $merchantDetails
+	 * @param PayPalClient    $paypalClient
+	 * @param ConnectClient   $connectClient
+	 * @param MerchantDetails $merchantRepository
+	 */
 	public function __construct(
 		Webhooks $webhooksRepository,
 		MerchantDetail $merchantDetails,
