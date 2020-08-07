@@ -202,16 +202,31 @@ class AdvancedCardFields extends PaymentMethod {
 		}
 
 		event.preventDefault();
+		Give.form.fn.removeErrors( this.jQueryForm );
 
-		const self = this;
 		const data = event.data;
 		const getExtraCardDetails = this.getExtraCardDetails.bind( this );
 
-		const payload = await data.hostedCardFields.submit( getExtraCardDetails ).catch( error => {
+		const payload = await data.hostedCardFields.submit(
+			{
+			// Trigger 3D Secure authentication
+				contingencies: [ '3D_SECURE' ],
+				...getExtraCardDetails,
+			}
+		).catch( error => {
 			const errorStringByGroup = {};
 			const errors = [];
 
 			error.details.forEach( detail => {
+				// If details is not about card field then insert notice into errors object.
+				if ( ! detail.hasOwnProperty( 'field' ) ) {
+					errors.push( {
+						message: detail.description,
+					} );
+
+					return;
+				}
+
 				if ( ! errorStringByGroup.hasOwnProperty( `${ detail.field }` ) ) {
 					// setup error label.
 					let label = '';
@@ -241,15 +256,27 @@ class AdvancedCardFields extends PaymentMethod {
 			}
 
 			Give.form.fn.addErrorsAndResetDonationButton(
-				self.jQueryForm,
+				this.jQueryForm,
 				Give.form.fn.getErrorHTML( errors )
 			);
 		} );
 
-		// Approve payment on if we did not get any error.
-		if ( payload ) {
-			await this.onApproveHandler( payload );
+		if ( ! payload ) {
+			return false;
+		} else if ( 'NO' === payload.liabilityShift ) {
+			// Handle no 3D Secure contingency passed scenario
+			Give.form.fn.addErrorsAndResetDonationButton(
+				this.jQueryForm,
+				Give.form.fn.getErrorHTML( [ {
+					message: givePayPalCommerce.failedDonationNotice,
+				} ] )
+			);
+
+			return false;
 		}
+
+		// Approve payment on if we did not get any error.
+		await this.onApproveHandler( payload );
 
 		return false;
 	}
