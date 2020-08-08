@@ -14,6 +14,7 @@ use Give\Onboarding\Routes\SettingsRoute;
 use Give\Onboarding\Routes\LocationRoute;
 use Give\Onboarding\Routes\CurrencyRoute;
 use Give\Onboarding\Routes\AddonsRoute;
+use Give\Onboarding\Routes\FeaturesRoute;
 use Give\Onboarding\Routes\StripeWebhookRecievedRoute;
 use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
 use Give\Onboarding\Setup\Handlers\StripeConnectHandler;
@@ -31,6 +32,7 @@ class Onboarding implements ServiceProvider {
 		give()->bind( SettingsRoute::class );
 		give()->bind( CurrencyRoute::class );
 		give()->bind( AddonsRoute::class );
+		give()->bind( FeaturesRoute::class );
 		give()->bind( FormRepository::class );
 		give()->bind( DefaultFormFactory::class );
 		give()->bind( SettingsRepositoryFactory::class );
@@ -53,6 +55,7 @@ class Onboarding implements ServiceProvider {
 		Hooks::addAction( 'rest_api_init', LocationRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', AddonsRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/addons
 		Hooks::addAction( 'rest_api_init', CurrencyRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/currency
+		Hooks::addAction( 'rest_api_init', FeaturesRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/features
 		Hooks::addAction( 'rest_api_init', SettingsRoute::class, 'registerRoute', 11 ); // Dynamic route, onboarding/settings/{setting}
 		Hooks::addAction( 'rest_api_init', StripeWebhookRecievedRoute::class, 'registerRoute' );
 
