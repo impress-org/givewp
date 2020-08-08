@@ -1,7 +1,13 @@
 .give-obw-location {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	> svg {
+		top: 50px;
+		position: absolute;
+	}
 
 	> h1 {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;

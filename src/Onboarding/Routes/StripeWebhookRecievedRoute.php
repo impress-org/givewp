@@ -4,7 +4,7 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
-use Give\Onboarding\SettingsRepository;
+use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\CountryCode;
 
@@ -24,8 +24,8 @@ class StripeWebhookRecievedRoute implements RestRoute {
 	 *
 	 * @since 2.8.0
 	 */
-	public function __construct( SettingsRepository $settingsRepository ) {
-		$this->settingsRepository = $settingsRepository;
+	public function __construct( SettingsRepositoryFactory $settingsRepositoryFactory ) {
+		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_settings' );
 	}
 
 	/**

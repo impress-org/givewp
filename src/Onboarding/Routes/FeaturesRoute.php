@@ -4,18 +4,19 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
-use Give\Onboarding\Helpers\Currency;
 use Give\Onboarding\SettingsRepositoryFactory;
 
 /**
  * @since 2.8.0
  */
-class SettingsRoute implements RestRoute {
+class FeaturesRoute implements RestRoute {
 
 	/** @var string */
-	protected $endpoint = 'onboarding/settings/(?P<setting>\w+)';
+	protected $endpoint = 'onboarding/settings/features';
 
-	/** @var SettingsRepository */
+	/**
+	 * @var SettingsRepository
+	 */
 	protected $settingsRepository;
 
 	/**
@@ -24,7 +25,7 @@ class SettingsRoute implements RestRoute {
 	 * @since 2.8.0
 	 */
 	public function __construct( SettingsRepositoryFactory $settingsRepositoryFactory ) {
-		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_settings' );
+		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
 	}
 
 	/**
@@ -36,39 +37,23 @@ class SettingsRoute implements RestRoute {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
-		$setting = $request->get_param( 'setting' );
-		$value   = json_decode( $request->get_param( 'value' ) );
+		$features = json_decode( $request->get_param( 'value' ) );
 
-		$this->settingsRepository->set( $setting, $value );
-		$this->settingsRepository->save();
+		$formID = $this->settingsRepository->get( 'form_id' );
+
+		update_post_meta( $formID, '_give_goal_option', in_array( 'donation-goal', $features ) ? 'enabled' : 'disabled' );
+		update_post_meta( $formID, '_give_donor_comment', in_array( 'donation-comments', $features ) ? 'enabled' : 'disabled' );
+		update_post_meta( $formID, '_give_terms_option', in_array( 'terms-conditions', $features ) ? 'enabled' : 'disabled' );
+		update_post_meta( $formID, '_give_anonymous_donation', in_array( 'anonymous-donations', $features ) ? 'enabled' : 'disabled' );
+		update_post_meta( $formID, '_give_company_field', in_array( 'company-donations', $features ) ? 'optional' : 'disabled' ); // Note: The company field has two values for enabled, "required" and "optional".
 
 		return [
 			'data' => [
-				'setting' => $setting,
-				'value'   => $value,
+				'setting' => 'features',
+				'value'   => $features,
+				'formID'  => $formID,
 			],
 		];
-	}
-
-	/**
-	 * @param string $setting
-	 *
-	 * @return bool
-	 *
-	 * @since 2.8.0
-	 */
-	public function validateSetting( $setting ) {
-		return in_array(
-			$setting,
-			[
-				'user_type',
-				'cause_type',
-				'base_country',
-				'base_state',
-				'addons',
-				'features',
-			]
-		);
 	}
 
 	/**
@@ -86,16 +71,10 @@ class SettingsRoute implements RestRoute {
 						return current_user_can( 'manage_options' );
 					},
 					'args'                => [
-						'setting' => [
+						'value' => [
 							'type'              => 'string',
 							'required'          => true,
-							'validate_callback' => [ $this, 'validateSetting' ],
-							'sanitize_callback' => 'sanitize_text_field',
-						],
-						'value'   => [
-							'type'              => 'string',
-							'required'          => false,
-							// 'validate_callback' => [ $this, 'validateValue' ],
+							// 'validate_callback' => [ $this, 'validateSetting' ],
 							'sanitize_callback' => 'sanitize_text_field',
 						],
 					],
@@ -104,6 +83,7 @@ class SettingsRoute implements RestRoute {
 			]
 		);
 	}
+
 
 	/**
 	 * @return array

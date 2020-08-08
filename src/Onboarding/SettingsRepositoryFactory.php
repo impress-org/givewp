@@ -12,9 +12,9 @@ class SettingsRepositoryFactory {
 	 *
 	 * @since 2.8.0
 	 */
-	public static function make( $optionName ) {
+	public function make( $optionName ) {
 
-		$option = get_option( $optionName );
+		$option = get_option( $optionName, [] );
 
 		$persistCallback = function( $settings ) use ( $optionName ) {
 			return update_option( $optionName, $settings );

@@ -4,6 +4,8 @@ namespace Give\ServiceProviders;
 
 use Give\Helpers\Hooks;
 use Give\Onboarding\SettingsRepository;
+use Give\Onboarding\FormRepository;
+use Give\Onboarding\DefaultFormFactory;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
@@ -11,6 +13,7 @@ use Give\Onboarding\Wizard\FormPreview;
 use Give\Onboarding\Routes\SettingsRoute;
 use Give\Onboarding\Routes\LocationRoute;
 use Give\Onboarding\Routes\CurrencyRoute;
+use Give\Onboarding\Routes\FeaturesRoute;
 use Give\Onboarding\Routes\StripeWebhookRecievedRoute;
 use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
 use Give\Onboarding\Setup\Handlers\StripeConnectHandler;
@@ -22,15 +25,15 @@ class Onboarding implements ServiceProvider {
 	 */
 	public function register() {
 		give()->singleton( SetupPage::class );
+		give()->singleton( WizardPage::class );
+		give()->singleton( FormPreview::class );
 		give()->bind( DonationsRedirect::class );
 		give()->bind( SettingsRoute::class );
 		give()->bind( CurrencyRoute::class );
-		give()->bind(
-			SettingsRepository::class,
-			function() {
-				return SettingsRepositoryFactory::make( 'give_settings' );
-			}
-		);
+		give()->bind( FeaturesRoute::class );
+		give()->bind( FormRepository::class );
+		give()->bind( DefaultFormFactory::class );
+		give()->bind( SettingsRepositoryFactory::class );
 	}
 
 	/**
@@ -39,10 +42,9 @@ class Onboarding implements ServiceProvider {
 	public function boot() {
 
 		// Load Wizard Page
-		$wizardPage = new WizardPage();
-		add_action( 'admin_menu', [ $wizardPage, 'add_page' ] );
-		add_action( 'admin_init', [ $wizardPage, 'setup_wizard' ] );
-		add_action( 'admin_enqueue_scripts', [ $wizardPage, 'enqueue_scripts' ] );
+		Hooks::addAction( 'admin_menu', WizardPage::class, 'add_page' );
+		Hooks::addAction( 'admin_init', WizardPage::class, 'setup_wizard' );
+		Hooks::addAction( 'admin_enqueue_scripts', WizardPage::class, 'enqueue_scripts' );
 
 		// Load Form Preview
 		Hooks::addAction( 'admin_menu', FormPreview::class, 'add_page' );
@@ -50,6 +52,7 @@ class Onboarding implements ServiceProvider {
 
 		Hooks::addAction( 'rest_api_init', LocationRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', CurrencyRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/currency
+		Hooks::addAction( 'rest_api_init', FeaturesRoute::class, 'registerRoute', 10 ); // Static route, onboarding/settings/features
 		Hooks::addAction( 'rest_api_init', SettingsRoute::class, 'registerRoute', 11 ); // Dynamic route, onboarding/settings/{setting}
 		Hooks::addAction( 'rest_api_init', StripeWebhookRecievedRoute::class, 'registerRoute' );
 

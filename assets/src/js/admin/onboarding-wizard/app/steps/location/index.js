@@ -9,6 +9,7 @@ import { setCountry, setState, setCurrency, fetchStateList } from '../../store/a
 import Card from '../../../components/card';
 import ContinueButton from '../../../components/continue-button';
 import SelectInput from '../../../components/select-input';
+import BackgroundImage from './background';
 
 // Import styles
 import './style.scss';
@@ -27,6 +28,7 @@ const Location = () => {
 
 	return (
 		<div className="give-obw-location">
+			<BackgroundImage />
 			<h1>{ __( 'Where are you fundraising?', 'give' ) }</h1>
 			<Card>
 				<SelectInput label={ __( 'Country', 'give' ) } value={ country } onChange={ onChangeCountry } options={ countriesList } />
