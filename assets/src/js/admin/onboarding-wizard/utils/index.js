@@ -49,6 +49,21 @@ export const getDefaultStateList = () => {
 	return getWindowData( 'states' );
 };
 
+export const getCurrencyList = () => {
+	return getWindowData( 'currencies' ).map( ( currency ) => {
+		return {
+			value: currency.value,
+			label: decodeHTMLEntity( currency.label.admin_label ),
+		};
+	} );
+};
+
+export const decodeHTMLEntity = ( entity ) => {
+	const div = document.createElement( 'div' );
+	div.innerHTML = entity;
+	return div.innerText;
+};
+
 export const redirectToSetupPage = () => {
 	window.location.href = getWindowData( 'setupUrl' );
 };
