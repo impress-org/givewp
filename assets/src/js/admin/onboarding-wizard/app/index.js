@@ -37,7 +37,7 @@ const App = () => {
 			userType: 'individual',
 			causeType: 'school',
 			country: 'US',
-			state: 'TN',
+			state: null,
 			currency: 'USD',
 			features: [ 'one-time-donations' ],
 			addons: [],
