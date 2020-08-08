@@ -53,6 +53,7 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 				options={ options }
 				styles={ selectStyles }
 				maxMenuHeight="200px"
+				isDisabled={ options.length < 2 }
 			/>
 		</div>
 	);
