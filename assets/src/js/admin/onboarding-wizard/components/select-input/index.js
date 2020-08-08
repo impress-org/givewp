@@ -11,7 +11,7 @@ import './style.scss';
 const SelectInput = ( { label, value, onChange, options } ) => {
 	const selectedOptionValue = options.filter( option => option.value === value );
 	const selectStyles = {
-		control: ( provided ) => ( {
+		control: ( provided, state ) => ( {
 			...provided,
 			fontSize: '14px',
 			fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
@@ -22,7 +22,7 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 			boxSizing: 'border-box',
 			marginTop: '10px',
 			border: '1px solid #b8b8b8',
-			boxShadow: '0 1px 4px rgba(0, 0, 0, 0.158927)',
+			boxShadow: state.isFocused ? '0 0 0 3px #4fa651' : '0 1px 4px rgba(0, 0, 0, 0.158927)',
 			borderRadius: '4px',
 		} ),
 		input: ( provided ) => ( {
@@ -43,7 +43,6 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 			fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
 			fontWeight: '500',
 			color: state.isSelected ? '#fff' : '#333',
-			background: state.isSelected ? '#4fa651' : '#fff',
 			lineHeight: '1.2',
 		} ),
 		indicatorSeparator: () => ( {
@@ -62,6 +61,16 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 				styles={ selectStyles }
 				maxMenuHeight="200px"
 				isDisabled={ options.length < 2 }
+				theme={ ( theme ) => ( {
+					...theme,
+					colors: {
+						...theme.colors,
+						primary: '#4fa651',
+						primary75: '#77b579',
+						primary50: '#c5e0c7',
+						primary25: '#e6f5e7',
+					},
+				} ) }
 			/>
 		</div>
 	);
