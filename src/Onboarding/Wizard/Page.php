@@ -5,6 +5,7 @@ namespace Give\Onboarding\Wizard;
 defined( 'ABSPATH' ) || exit;
 
 use Give\Onboarding\Helpers\FormatList;
+use Give\Onboarding\FormRepository;
 
 /**
  * Onboarding Wizard admin page class
@@ -16,21 +17,14 @@ use Give\Onboarding\Helpers\FormatList;
  */
 class Page {
 
-
 	/** @var string $slug Page slug used for displaying onboarding wizard */
 	protected $slug = 'give-onboarding-wizard';
 
-	/**
-	 * Adds Onboarding Wizard hooks
-	 *
-	 * Handles setting up hooks relates to the Onboarding Wizard admin page.
-	 *
-	 * @since 2.8.0
-	 **/
-	public function init() {
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_init', [ $this, 'setup_wizard' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+	/** @var FormRepository */
+	protected $formRepository;
+
+	public function __construct( FormRepository $formRepository ) {
+		$this->formRepository = $formRepository;
 	}
 
 	/**
@@ -67,6 +61,9 @@ class Page {
 	 * @since 2.8.0
 	 **/
 	public function render_page() {
+
+		$this->formRepository->getOrMake();
+
 		ob_start();
 		include_once plugin_dir_path( __FILE__ ) . 'templates/index.php';
 		exit;
