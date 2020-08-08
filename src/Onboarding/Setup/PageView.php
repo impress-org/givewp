@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 class PageView {
 
 	public function render() {
+		$settings = get_option( 'give_onboarding' );
 		ob_start();
 		include plugin_dir_path( __FILE__ ) . 'templates/index.html.php';
 		return ob_get_clean();
@@ -56,5 +57,17 @@ class PageView {
 	 */
 	public function image( $src ) {
 		return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
+	}
+
+	public function give_link( $href ) {
+		return add_query_arg(
+			[
+				'utm_source'   => 'GiveWPPlugin',
+				'utm_medium'   => 'admin',
+				'utm_campaign' => 'Plugin_Links',
+				'utm_content'  => 'Setup',
+			],
+			$href
+		);
 	}
 }
