@@ -25,6 +25,14 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 			boxShadow: '0 1px 4px rgba(0, 0, 0, 0.158927)',
 			borderRadius: '4px',
 		} ),
+		input: ( provided ) => ( {
+			...provided,
+			fontSize: '14px',
+			fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
+			fontWeight: '500',
+			color: '#333',
+			lineHeight: '1.2',
+		} ),
 		valueContainer: ( provided ) => ( {
 			...provided,
 			padding: '13px 15px',
