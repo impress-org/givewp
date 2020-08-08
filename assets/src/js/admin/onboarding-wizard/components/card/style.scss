@@ -8,8 +8,9 @@
 
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 
-	& > svg {
-		flex: 1;
+	> svg {
+		margin-bottom: 20px;
 	}
 }
