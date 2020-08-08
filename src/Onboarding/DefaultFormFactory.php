@@ -64,8 +64,8 @@ class DefaultFormFactory {
 					'_give_close_form_when_goal_achieved'  => 'disabled',
 					'_give_form_goal_achieved_message'     => __( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
 					'_give_terms_option'                   => 'global',
-					'_give_agree_label'                    => '',
-					'_give_agree_text'                     => '',
+					'_give_agree_label'                    => __( 'Agree to terms?', 'give' ),
+					'_give_agree_text'                     => __( 'The terms can be customized in the donation form settings.', 'give' ),
 					'give_stripe_per_form_accounts'        => 'disables', // Note: Doesn't use underscore prefix.
 					'_give_default_stripe_account'         => '', // @TODO Might need to update this???
 					'_give_email_options'                  => 'global',
