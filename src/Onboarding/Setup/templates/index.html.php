@@ -109,7 +109,7 @@
 		echo $this->render_template(
 			'section',
 			[
-				'title'    => 'Connect a payment gateway to begin accepting donations',
+				'title'    => 'Level up your fundraising with these great resources',
 				'contents' => [
 					$this->render_template(
 						'row-item',
