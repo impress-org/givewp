@@ -41,9 +41,10 @@ class RefundPaymentHandler {
 	 */
 	public function refundPayment( $donationId ) {
 		$payPalPaymentId   = give_get_payment_transaction_id( $donationId );
+		$paymentGateway    = give_get_payment_gateway( $donationId );
 		$newDonationStatus = give_clean( $_POST['give-payment-status'] );
 
-		if ( 'refunded' !== $newDonationStatus ) {
+		if ( 'refunded' !== $newDonationStatus || PayPalCommerce::GATEWAY_ID !== $paymentGateway ) {
 			return;
 		}
 
