@@ -103,7 +103,7 @@ function give_get_donation_form( $args = [] ) {
 			$form_title = ! is_singular( 'give_forms' ) ? apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form->ID ) . '</h2>' ) : '';
 
 			// Get Goal thank you message.
-			$goal_achieved_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
+			$goal_achieved_message = give_get_meta( $form->ID, '_give_form_goal_achieved_message', true );
 			$goal_achieved_message = ! empty( $goal_achieved_message ) ? $form_title . apply_filters( 'the_content', $goal_achieved_message ) : '';
 
 			// Print thank you message.
@@ -1253,7 +1253,10 @@ function give_default_cc_address_fields( $form_id ) {
 		$require_state = ! array_key_exists( $selected_country, $no_states_country ) && give_field_is_required( 'card_state', $form_id );
 		// Used to determine is state input should be marked as required.
 		$validate_state = ! array_key_exists( $selected_country, $states_not_required_country_list ) && give_field_is_required( 'card_state', $form_id );
-
+		// Check if post code is required
+		$postcode_required = $selected_country
+			? ! array_key_exists( $selected_country, give_get_country_list_without_postcodes() ) && give_field_is_required( 'card_zip', $form_id )
+			: give_field_is_required( 'card_zip', $form_id );
 		?>
 		<p id="give-card-state-wrap"
 		   class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && ! $require_state ) ? 'give-hidden' : ''; ?> ">
@@ -1291,9 +1294,7 @@ function give_default_cc_address_fields( $form_id ) {
 		<p id="give-card-zip-wrap" class="form-row <?php echo $require_state ? 'form-row-last' : ''; ?> form-row-responsive">
 			<label for="card_zip" class="give-label">
 				<?php _e( 'Zip / Postal Code', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
+				<span class="give-required-indicator<?php echo ( $postcode_required ? '' : ' give-hidden' ); ?>">*</span>
 				<?php echo Give()->tooltips->render_help( __( 'The zip or postal code for your billing address.', 'give' ) ); ?>
 			</label>
 
@@ -1303,10 +1304,10 @@ function give_default_cc_address_fields( $form_id ) {
 				id="card_zip"
 				name="card_zip"
 				autocomplete="postal-code"
-				class="card-zip give-input<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required' : '' ); ?>"
+				class="card-zip give-input<?php echo( $postcode_required ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+				<?php echo( $postcode_required ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 		<?php
