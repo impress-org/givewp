@@ -125,8 +125,8 @@ class RefundPaymentHandler {
 	 * @return bool
 	 */
 	private function isAdminOptInToRefundPaymentOnPayPal() {
-		return ! empty( $_GET['give_paypal_donations_optin_for_refund'] ) ?
-			(bool) absint( $_GET['give_paypal_donations_optin_for_refund'] )
+		return ! empty( $_POST['give_paypal_donations_optin_for_refund'] ) ?
+			(bool) absint( $_POST['give_paypal_donations_optin_for_refund'] )
 			: false;
 	}
 }
