@@ -120,6 +120,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => '#',
 									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
 								]
@@ -148,6 +149,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => $this->give_link( 'https://givewp.com/addons/recurring-donations/' ),
 									'screenReaderText' => __( 'Learn more about Recurring Donations', 'give' ),
 								]
@@ -164,6 +166,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => $this->give_link( 'https://givewp.com/addons/fee-recovery/' ),
 									'screenReaderText' => __( 'Learn more about Fee Recovery', 'give' ),
 								]
@@ -180,6 +183,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => $this->give_link( 'https://givewp.com/addons/pdf-receipts/' ),
 									'screenReaderText' => __( 'Learn more about PDF Receipts', 'give' ),
 								]
@@ -196,6 +200,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => $this->give_link( 'https://givewp.com/addons/form-field-manager/' ),
 									'screenReaderText' => __( 'Learn more about Form Field Manager', 'give' ),
 								]
@@ -212,6 +217,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => $this->give_link( 'https://givewp.com/addons/currency-switcher/' ),
 									'screenReaderText' => __( 'Learn more about Currency Switcher', 'give' ),
 								]
@@ -228,6 +234,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => $this->give_link( 'https://givewp.com/addons/tributes/' ),
 									'screenReaderText' => __( 'Learn more about Tributes', 'give' ),
 								]
@@ -244,6 +251,7 @@
 							'action'      => $this->render_template(
 								'action-link',
 								[
+									'target'           => '_blank',
 									'href'             => '#',
 									'screenReaderText' => __( 'View Add-ons for GiveWP', 'give' ),
 								]
