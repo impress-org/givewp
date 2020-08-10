@@ -1396,7 +1396,13 @@ form.give-form .form-row select.multiselect {
 }
 
 /* Hide everything which is not output by Give core or addon */
-body > *:not([class^='give']):not([id^='give']) {
+body >
+	*:not([class^='give'])
+	:not([id^='give'])
+
+	// exclude PayPal payment contingency handler.
+	// This is popup used by PayPal to verify 3ds card.
+	:not( .payments-sdk-contingency-handler > * ) {
 	display: none;
 }
 
