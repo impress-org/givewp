@@ -689,6 +689,12 @@ function give_get_required_fields( $form_id ) {
 				// If states is empty remove the required fields of city in billing cart.
 				unset( $required_fields['card_city'] );
 			}
+
+			// Check if country is without post codes.
+			if ( array_key_exists( $country, give_get_country_list_without_postcodes() ) ) {
+				// If country is on the list, zip code is not required.
+				unset( $required_fields['card_zip'] );
+			}
 		}
 	} // End if().
 
