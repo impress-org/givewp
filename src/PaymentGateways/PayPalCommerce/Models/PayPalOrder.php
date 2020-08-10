@@ -1,16 +1,18 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalPayment;
+use Give_Payment;
 use InvalidArgumentException;
 use stdClass;
 
 /**
  * Class PayPalOrder
+ * @since 2.8.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
  */
 class PayPalOrder {
 	/**
@@ -132,6 +134,7 @@ class PayPalOrder {
 	 * @since 2.8.0
 	 *
 	 * @param array $array
+	 *
 	 * @throws InvalidArgumentException
 	 */
 	private function validate( $array ) {
