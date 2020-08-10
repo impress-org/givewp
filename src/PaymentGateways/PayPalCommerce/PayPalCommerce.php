@@ -83,5 +83,6 @@ class PayPalCommerce implements PaymentGateway {
 
 		Hooks::addAction( 'give_update_edited_donation', RefundPaymentHandler::class, 'refundPayment' );
 		Hooks::addAction( 'admin_notices', RefundPaymentHandler::class, 'showPaymentRefundFailureNotice' );
+		Hooks::addAction( 'give_view_donation_details_totals_after', RefundPaymentHandler::class, 'optInForRefundFormField' );
 	}
 }

@@ -40,6 +40,10 @@ class RefundPaymentHandler {
 	 * @throws Exception
 	 */
 	public function refundPayment( $donationId ) {
+		if ( ! $this->isAdminOptInToRefundPaymentOnPayPal() ) {
+			return;
+		}
+
 		$payPalPaymentId   = give_get_payment_transaction_id( $donationId );
 		$paymentGateway    = give_get_payment_gateway( $donationId );
 		$newDonationStatus = give_clean( $_POST['give-payment-status'] );
@@ -83,5 +87,46 @@ class RefundPaymentHandler {
 				),
 			]
 		);
+	}
+
+	/**
+	 * This function will display field to opt for refund.
+	 *
+	 * @param int $donationId Donation ID.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return void
+	 */
+	public function optInForRefundFormField( $donationId ) {
+		if ( PayPalCommerce::GATEWAY_ID !== give_get_payment_gateway( $donationId ) ) {
+			return;
+		}
+
+		?>
+		<div id="give-paypal-donations-opt-refund-wrap" class="give-paypal-donations-opt-refund give-admin-box-inside give-hidden">
+			<p>
+				<input type="checkbox" id="give-paypal-donations-opt-refund" name="give_paypal_donations_optin_for_refund" value="1"/>
+				<label for="give-paypal-donations-opt-refund">
+					<?php esc_html_e( 'Refund Charge in PayPal?', 'give' ); ?>
+				</label>
+			</p>
+		</div>
+
+		<?php
+	}
+
+
+	/**
+	 * Return whether or not admin optin for refund payment in PayPal
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	private function isAdminOptInToRefundPaymentOnPayPal() {
+		return ! empty( $_GET['give_paypal_donations_optin_for_refund'] ) ?
+			(bool) absint( $_GET['give_paypal_donations_optin_for_refund'] )
+			: false;
 	}
 }
