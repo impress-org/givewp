@@ -118,6 +118,13 @@ class Page {
 
 		wp_set_script_translations( 'give-admin-onboarding-wizard-app', 'give' );
 
+		$formID           = $this->formRepository->getOrMake();
+		$featureGoal      = get_post_meta( $formID, '_give_goal_option', true );
+		$featureComments  = get_post_meta( $formID, '_give_donor_comment', true );
+		$featureTerms     = get_post_meta( $formID, '_give_terms_option', true );
+		$featureAnonymous = get_post_meta( $formID, '_give_anonymous_donation', true );
+		$featureCompany   = get_post_meta( $formID, '_give_company_field', true );
+
 		wp_localize_script(
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
@@ -129,6 +136,15 @@ class Page {
 				'currencies'     => FormatList::fromKeyValue( give_get_currencies_list() ),
 				'countries'      => FormatList::fromKeyValue( give_get_country_list() ),
 				'states'         => FormatList::fromKeyValue( give_get_states( 'US' ) ),
+				'features'       => FormatList::fromValueKey(
+					[
+						'donation-goal'       => ( 'enabled' == $featureGoal ),
+						'donation-comments'   => ( 'enabled' == $featureComments ),
+						'terms-conditions'    => ( 'enabled' == $featureTerms ),
+						'anonymous-donations' => ( 'enabled' == $featureAnonymous ),
+						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
+					]
+				),
 			]
 		);
 

@@ -17,16 +17,34 @@ class FormatList {
 	 * @since 2.8.0
 	 */
 	public static function fromKeyValue( $data ) {
-		$keys = array_keys( $data );
-		return array_map(
+		return self::format(
+			$data,
 			function( $key, $label ) {
 				return [
 					'value' => $key,
 					'label' => $label,
 				];
-			},
-			$keys,
-			$data
+			}
+		);
+	}
+
+	public static function fromValueKey( $data ) {
+		return self::format(
+			$data,
+			function( $label, $key ) {
+				return [
+					'value' => $key,
+					'label' => $label,
+				];
+			}
+		);
+	}
+
+	protected static function format( $data, $function ) {
+		return array_map(
+			$function,
+			array_keys( $data ),
+			array_values( $data )
 		);
 	}
 }

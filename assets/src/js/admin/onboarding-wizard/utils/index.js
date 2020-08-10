@@ -58,6 +58,15 @@ export const getCurrencyList = () => {
 	} );
 };
 
+export const getFeaturesEnabledDefault = () => {
+	const features = getWindowData( 'features' );
+	return features.filter( ( feature ) => {
+		return feature.value;
+	} ).map( ( feature ) => {
+		return feature.label;
+	} );
+};
+
 export const decodeHTMLEntity = ( entity ) => {
 	const div = document.createElement( 'div' );
 	div.innerHTML = entity;
