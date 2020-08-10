@@ -204,10 +204,10 @@ class AdvancedCardFields extends PaymentMethod {
 		event.preventDefault();
 		Give.form.fn.removeErrors( this.jQueryForm );
 
-		const data = event.data;
+		const { hostedCardFields } = event.data;
 		const getExtraCardDetails = this.getExtraCardDetails.bind( this );
 
-		const payload = await data.hostedCardFields.submit(
+		const payload = await hostedCardFields.submit(
 			{
 			// Trigger 3D Secure authentication
 				contingencies: [ '3D_SECURE' ],
@@ -274,6 +274,8 @@ class AdvancedCardFields extends PaymentMethod {
 				Give.form.fn.getErrorHTML( errors )
 			);
 		} );
+
+		console.log( hostedCardFields, payload )
 
 		if ( ! payload ) {
 			return false;
