@@ -66,6 +66,7 @@ class onBoardingRedirectHandler {
 		if ( $this->isPayPalAccountDetailsSaved() ) {
 			$this->registerPayPalSSLNotice();
 			$this->registerPayPalAccountConnectedNotice();
+			$this->registerAdminWarningToConnectLiveAccount();
 		}
 
 		if ( $this->isStatusRefresh() ) {
@@ -395,6 +396,26 @@ class onBoardingRedirectHandler {
 				esc_html__(
 					'There was a problem creating a webhook for your account. Please try disconnecting and then
 					reconnect. If the problem persists, please contact support',
+					'give'
+				)
+			);
+		}
+	}
+
+	/**
+	 * Displays a notice of the site is not using SSL
+	 *
+	 * @since 2.8.0
+	 */
+	private function registerAdminWarningToConnectLiveAccount() {
+		$isLiveAccountConnected = (bool) get_option( 'give_paypal_commerce_live_account' );
+
+		if ( 'sandbox' === $this->payPalClient->mode && ! $isLiveAccountConnected ) {
+			Give_Admin_Settings::add_message(
+				'paypal-webhook-error',
+				esc_html__(
+					'PayPal Donations: Please connect to your account again when you disable "Test Mode"
+					so donations may be processed.',
 					'give'
 				)
 			);
