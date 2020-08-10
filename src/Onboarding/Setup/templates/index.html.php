@@ -17,7 +17,7 @@
 		echo $this->render_template(
 			'section',
 			[
-				'title'    => 'Create your first donation form in minutes',
+				'title'    => sprintf( '%s 1: %s', __( 'Step', 'give' ), __( 'Create your first donation form', 'give' ) ),
 				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
 				'contents' => $this->render_template(
 					'row-item',
@@ -45,7 +45,7 @@
 		echo $this->render_template(
 			'section',
 			[
-				'title'    => 'Connect a payment gateway to begin accepting donations',
+				'title'    => sprintf( '%s 2: %s', __( 'Step', 'give' ), __( 'Connect a payment gateway', 'give' ) ),
 				'contents' => [
 					$this->render_template(
 						'row-item',
@@ -104,40 +104,12 @@
 		);
 		?>
 
-	<?php
-		echo $this->render_template(
-			'section',
-			[
-				'title'    => __( 'Get the most out of GiveWP', 'give' ),
-				'contents' => [
-					$this->render_template(
-						'row-item',
-						[
-							'icon'        => $this->image( 'givewp101@2x.min.png' ),
-							'icon_alt'    => esc_html__( 'GiveWP 101', 'give' ),
-							'title'       => esc_html__( 'GiveWP 101', 'give' ),
-							'description' => esc_html__( 'Start off on the right foot by learning the basics of the plugin and how to get the most out of it to further your online fundraising efforts.', 'give' ),
-							'action'      => $this->render_template(
-								'action-link',
-								[
-									'target'           => '_blank',
-									'href'             => '#',
-									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
-								]
-							),
-						]
-					),
-				],
-			]
-		);
-		?>
-
 	<!-- Resources -->
 	<?php
 		echo $this->render_template(
 			'section',
 			[
-				'title'    => 'Level up your fundraising with these great resources',
+				'title'    => sprintf( '%s 3: %s', __( 'Step', 'give' ), __( 'Level up your fundraising', 'give' ) ),
 				'contents' => [
 					in_array( 'recurring-donations', $settings['addons'] ) ? $this->render_template(
 						'row-item',
@@ -254,6 +226,34 @@
 									'target'           => '_blank',
 									'href'             => '#',
 									'screenReaderText' => __( 'View Add-ons for GiveWP', 'give' ),
+								]
+							),
+						]
+					),
+				],
+			]
+		);
+		?>
+
+<?php
+		echo $this->render_template(
+			'section',
+			[
+				'title'    => sprintf( '%s 4: %s', __( 'Step', 'give' ), __( 'Get the most out of GiveWP', 'give' ) ),
+				'contents' => [
+					$this->render_template(
+						'row-item',
+						[
+							'icon'        => $this->image( 'givewp101@2x.min.png' ),
+							'icon_alt'    => esc_html__( 'GiveWP 101', 'give' ),
+							'title'       => esc_html__( 'GiveWP 101', 'give' ),
+							'description' => esc_html__( 'Start off on the right foot by learning the basics of the plugin and how to get the most out of it to further your online fundraising efforts.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'target'           => '_blank',
+									'href'             => '#',
+									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
 								]
 							),
 						]
