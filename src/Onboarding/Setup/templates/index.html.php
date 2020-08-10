@@ -239,7 +239,7 @@
 		echo $this->render_template(
 			'section',
 			[
-				'title'    => sprintf( '%s 4: %s', __( 'Step', 'give' ), __( 'Get the most out of GiveWP', 'give' ) ),
+				'title'    => __( 'Get the most out of GiveWP', 'give' ),
 				'contents' => [
 					$this->render_template(
 						'row-item',
