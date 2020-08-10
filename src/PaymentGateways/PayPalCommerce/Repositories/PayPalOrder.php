@@ -153,7 +153,7 @@ class PayPalOrder {
 			return $this->paypalClient->getHttpClient()->execute( $refund )->result->id;
 		} catch ( Exception $exception ) {
 			logError(
-				'Create PayPal Commerce order failure',
+				'Create PayPal Commerce payment refund failure',
 				sprintf(
 					'<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
 					print_r( $refund->body, true ),
