@@ -104,12 +104,11 @@
 		);
 		?>
 
-	<!-- Resources -->
 	<?php
 		echo $this->render_template(
 			'section',
 			[
-				'title'    => 'Level up your fundraising with these great resources',
+				'title'    => __( 'Get the most out of GiveWP', 'give' ),
 				'contents' => [
 					$this->render_template(
 						'row-item',
@@ -127,6 +126,18 @@
 							),
 						]
 					),
+				],
+			]
+		);
+		?>
+
+	<!-- Resources -->
+	<?php
+		echo $this->render_template(
+			'section',
+			[
+				'title'    => 'Level up your fundraising with these great resources',
+				'contents' => [
 					in_array( 'recurring-donations', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
