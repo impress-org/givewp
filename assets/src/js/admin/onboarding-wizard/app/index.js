@@ -54,7 +54,7 @@ const App = () => {
 			showInNavigation: false,
 		},
 		{
-			title: __( 'Your Cause', 'give' ),
+			title: __( 'Cause', 'give' ),
 			component: <YourCause />,
 			showInNavigation: true,
 		},
@@ -69,7 +69,7 @@ const App = () => {
 			showInNavigation: true,
 		},
 		{
-			title: __( 'Donation Form', 'give' ),
+			title: __( 'Preview', 'give' ),
 			component: <DonationForm />,
 			showInNavigation: true,
 		},
