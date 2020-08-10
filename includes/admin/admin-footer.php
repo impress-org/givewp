@@ -27,7 +27,7 @@ function give_admin_rate_us( $footer_text ) {
 	global $typenow;
 
 	$page        = isset( $_GET['page'] ) ? $_GET['page'] : '';
-	$show_footer = array( 'give-getting-started', 'give-changelog', 'give-credits' );
+	$show_footer = [ 'give-credits' ];
 
 	if ( 'give_forms' === $typenow || in_array( $page, $show_footer ) ) {
 		$rate_text = sprintf(
