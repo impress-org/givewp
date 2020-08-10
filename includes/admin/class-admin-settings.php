@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Setting filter and action prefix.
 		 *
 		 * @since 1.8
-		 * @var   string setting fileter and action anme prefix.
+		 * @var   string setting filter and action name prefix.
 		 */
 		private static $setting_filter_prefix = '';
 
@@ -902,8 +902,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Add dynamically added values to options
 					// we can add option dynamically to chosen select field. For example: "Title Prefixes"
-					if ( $allow_new_values && $option_value && ( $missing_options = array_diff( $option_value, array_keys( $choices ) ) ) ) {
-						$choices = array_merge( $value['options'], array_combine( $missing_options, $missing_options ) );
+					if ( $allow_new_values && $option_value ) {
+						$choices = array_merge( array_combine( $option_value, $option_value ), $value['options'] );
 					}
 					?>
 					<tr valign="top" <?php echo $wrapper_class; ?>>

@@ -57,13 +57,13 @@ function give_test_ajax_works( $force = false ) {
 	$works = Give_Cache::get( '_give_ajax_works', true );
 
 	if ( ! $works || $force ) {
-		$params = array(
+		$params = [
 			'sslverify' => false,
 			'timeout'   => 30,
-			'body'      => array(
+			'body'      => [
 				'action' => 'give_test_ajax',
-			),
-		);
+			],
+		];
 
 		$ajax = wp_remote_post( give_get_ajax_url(), $params );
 
@@ -116,7 +116,7 @@ add_action( 'wp_ajax_nopriv_give_test_ajax', 'give_test_ajax_works' );
  *
  * @return string
  */
-function give_get_ajax_url( $query = array() ) {
+function give_get_ajax_url( $query = [] ) {
 	$scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
 
 	$current_url = give_get_current_page_url();
@@ -175,10 +175,10 @@ function give_load_checkout_fields() {
 	$fields = ob_get_clean();
 
 	wp_send_json(
-		array(
+		[
 			'fields' => wp_json_encode( $fields ),
 			'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
-		)
+		]
 	);
 }
 
@@ -223,7 +223,7 @@ function give_ajax_get_states_field() {
 
 	$states = give_get_states( $country );
 	if ( ! empty( $states ) ) {
-		$args         = array(
+		$args         = [
 			'name'             => $field_name,
 			'id'               => $field_name,
 			'class'            => $field_name . '  give-select',
@@ -233,7 +233,7 @@ function give_ajax_get_states_field() {
 			'placeholder'      => $label,
 			'selected'         => $default_state,
 			'autocomplete'     => 'address-level1',
-		);
+		];
 		$data         = Give()->html->select( $args );
 		$states_found = true;
 	} else {
@@ -256,7 +256,7 @@ function give_ajax_get_states_field() {
 		}
 	}
 
-	$response = array(
+	$response = [
 		'success'        => true,
 		'states_found'   => $states_found,
 		'states_label'   => $label,
@@ -265,7 +265,8 @@ function give_ajax_get_states_field() {
 		'data'           => $data,
 		'default_state'  => $default_state,
 		'city_require'   => ! array_key_exists( $country, give_city_not_required_country_list() ),
-	);
+		'zip_require'    => ! array_key_exists( $country, give_get_country_list_without_postcodes() ),
+	];
 	wp_send_json( $response );
 }
 
@@ -280,10 +281,10 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
  * @return void
  */
 function give_ajax_form_search() {
-	$results = array();
+	$results = [];
 	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
-	$args = array(
+	$args = [
 		'post_type'              => 'give_forms',
 		's'                      => $search,
 		'update_post_term_cache' => false,
@@ -294,7 +295,7 @@ function give_ajax_form_search() {
 		'orderby'                => 'title',
 		'order'                  => 'ASC',
 		'posts_per_page'         => empty( $search ) ? 30 : -1,
-	);
+	];
 
 	/**
 	 * Filter to modify Ajax form search args
@@ -314,10 +315,10 @@ function give_ajax_form_search() {
 			$query->the_post();
 			global $post;
 
-			$results[] = array(
+			$results[] = [
 				'id'   => $post->ID,
 				'name' => $post->post_title,
-			);
+			];
 		}
 		wp_reset_postdata();
 	}
@@ -350,9 +351,9 @@ function give_ajax_donor_search() {
 	global $wpdb;
 
 	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
-	$results = array();
+	$results = [];
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		$donors = array();
+		$donors = [];
 	} else {
 		$donors = $wpdb->get_results( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
 	}
@@ -360,10 +361,10 @@ function give_ajax_donor_search() {
 	if ( $donors ) {
 		foreach ( $donors as $donor ) {
 
-			$results[] = array(
+			$results[] = [
 				'id'   => $donor->id,
 				'name' => $donor->name . ' (' . $donor->email . ')',
-			);
+			];
 		}
 	}
 
@@ -381,30 +382,30 @@ add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
  * @return void
  */
 function give_ajax_search_users() {
-	$results = array();
+	$results = [];
 
 	if ( current_user_can( 'manage_give_settings' ) ) {
 
 		$search = esc_sql( sanitize_text_field( $_POST['s'] ) );
 
-		$get_users_args = array(
+		$get_users_args = [
 			'number' => 9999,
 			'search' => $search . '*',
-		);
+		];
 
 		$get_users_args = apply_filters( 'give_search_users_args', $get_users_args );
 
 		$found_users = apply_filters( 'give_ajax_found_users', get_users( $get_users_args ), $search );
-		$results     = array();
+		$results     = [];
 
 		if ( $found_users ) {
 
 			foreach ( $found_users as $user ) {
 
-				$results[] = array(
+				$results[] = [
 					'id'   => $user->ID,
 					'name' => esc_html( $user->user_login . ' (' . $user->user_email . ')' ),
-				);
+				];
 			}
 		}
 	}// End if().
@@ -426,11 +427,11 @@ add_action( 'wp_ajax_give_user_search', 'give_ajax_search_users' );
  * @return string
  */
 function give_ajax_pages_search() {
-	$data = array();
-	$args = array(
+	$data = [];
+	$args = [
 		'post_type' => 'page',
 		's'         => give_clean( $_POST['s'] ),
-	);
+	];
 
 	$query = new WP_Query( $args );
 
@@ -439,10 +440,10 @@ function give_ajax_pages_search() {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 
-			$data[] = array(
+			$data[] = [
 				'id'   => get_the_ID(),
 				'name' => get_the_title(),
-			);
+			];
 		}
 	}
 
@@ -459,7 +460,7 @@ add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
  * @return void
  */
 function give_ajax_categories_search() {
-	$results = array();
+	$results = [];
 
 	/**
 	 * Filter to modify Ajax tags search args
@@ -472,19 +473,19 @@ function give_ajax_categories_search() {
 	 */
 	$args = (array) apply_filters(
 		'give_forms_categories_dropdown_args',
-		array(
+		[
 			'number'     => 30,
 			'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) ),
-		)
+		]
 	);
 
 	$categories = get_terms( 'give_forms_category', $args );
 
 	foreach ( $categories as $category ) {
-		$results[] = array(
+		$results[] = [
 			'id'   => $category->term_id,
 			'name' => $category->name,
-		);
+		];
 	}
 
 	/**
@@ -511,7 +512,7 @@ add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
  * @return void
  */
 function give_ajax_tags_search() {
-	$results = array();
+	$results = [];
 
 	/**
 	 * Filter to modify Ajax tags search args
@@ -524,19 +525,19 @@ function give_ajax_tags_search() {
 	 */
 	$args = (array) apply_filters(
 		'give_forms_tags_dropdown_args',
-		array(
+		[
 			'number'     => 30,
 			'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) ),
-		)
+		]
 	);
 
 	$categories = get_terms( 'give_forms_tag', $args );
 
 	foreach ( $categories as $category ) {
-		$results[] = array(
+		$results[] = [
 			'id'   => $category->term_id,
 			'name' => $category->name,
-		);
+		];
 	}
 
 	/**
@@ -587,7 +588,7 @@ function give_check_for_form_price_variations() {
 
 			foreach ( $variable_prices as $key => $price ) {
 
-				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) );
+				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'], [ 'sanitize' => false ] ) );
 
 				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
 			}
@@ -628,22 +629,22 @@ function give_check_for_form_price_variations_html() {
 	if ( ! give_has_variable_prices( $form_id ) || ! $form_id ) {
 		esc_html_e( 'n/a', 'give' );
 	} else {
-		$prices_atts = array();
+		$prices_atts = [];
 		if ( $variable_prices = give_get_variable_prices( $form_id ) ) {
 			foreach ( $variable_prices as $variable_price ) {
-				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
+				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], [ 'sanitize' => false ] );
 			}
 		}
 
 		// Variable price dropdown options.
-		$variable_price_dropdown_option = array(
+		$variable_price_dropdown_option = [
 			'id'               => $form_id,
 			'name'             => 'give-variable-price',
 			'chosen'           => true,
 			'show_option_all'  => '',
 			'show_option_none' => '',
 			'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
-		);
+		];
 
 		if ( $payment_id ) {
 			// Payment object.
@@ -684,7 +685,7 @@ function give_confirm_email_for_donation_access() {
 
 	$donor = Give()->donors->get_donor_by( 'email', give_clean( $_POST['email'] ) );
 	if ( Give()->email_access->can_send_email( $donor->id ) ) {
-		$return     = array();
+		$return     = [];
 		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
 
 		$return['status'] = 'success';
@@ -782,13 +783,13 @@ add_action( 'wp_ajax_nopriv_get_receipt', '__give_get_receipt' );
  * @return string
  * @since 2.5.0
  */
-function give_modal_ajax_url( $args = array() ) {
+function give_modal_ajax_url( $args = [] ) {
 	$args = wp_parse_args(
 		$args,
-		array(
+		[
 			'action'   => 'give_get_content_by_ajax',
 			'_wpnonce' => wp_create_nonce( 'give_get_content_by_ajax' ),
-		)
+		]
 	);
 
 	return add_query_arg( $args, admin_url( '/admin-ajax.php' ) );
