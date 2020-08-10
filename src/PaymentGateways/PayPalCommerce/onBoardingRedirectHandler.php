@@ -16,26 +16,39 @@ use Give_Admin_Settings;
  */
 class onBoardingRedirectHandler {
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var PayPalClient
 	 */
 	private $payPalClient;
 
 	/**
+	 * @since 2.8.0
+	 *
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
+
+	/**
+	 * @since 2.8.0
+	 *
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
 
 	/**
 	 * onBoardingRedirectHandler constructor.
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param Webhooks     $webhooks
-	 * @param PayPalClient $payPalClient
+	 * @param Webhooks        $webhooks
+	 * @param PayPalClient    $payPalClient
+	 * @param MerchantDetails $merchantRepository
 	 */
-	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient ) {
+	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository ) {
 		$this->webhooksRepository = $webhooks;
 		$this->payPalClient       = $payPalClient;
+		$this->merchantRepository = $merchantRepository;
 	}
 
 	/**
@@ -55,8 +68,8 @@ class onBoardingRedirectHandler {
 			$this->registerPayPalAccountConnectedNotice();
 		}
 
-		if ( $this->isPayPalError() ) {
-			$this->registerPayPalErrorNotice();
+		if ( $this->isStatusRefresh() ) {
+			$this->refreshAccountStatus();
 		}
 	}
 
@@ -71,8 +84,7 @@ class onBoardingRedirectHandler {
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$mode          = $this->payPalClient->mode;
-		$tokenInfo     = get_option( OptionId::$accessTokenOptionKey, [ 'accessToken' => '' ] );
+		$tokenInfo     = get_option( OptionId::ACCESS_TOKEN, [ 'accessToken' => '' ] );
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -84,12 +96,13 @@ class onBoardingRedirectHandler {
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
-		$payPalAccount[ $mode ]['clientId']     = $restApiCredentials['client_id'];
-		$payPalAccount[ $mode ]['clientSecret'] = $restApiCredentials['client_secret'];
-		$payPalAccount[ $mode ]['token']        = $tokenInfo;
+		$payPalAccount['clientId']       = $restApiCredentials['client_id'];
+		$payPalAccount['clientSecret']   = $restApiCredentials['client_secret'];
+		$payPalAccount['token']          = $tokenInfo;
+		$payPalAccount['accountIsReady'] = true;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
-		MerchantDetails::save( $merchantDetails );
+		$this->merchantRepository->save( $merchantDetails );
 
 		$this->deleteTempOptions();
 
@@ -104,10 +117,11 @@ class onBoardingRedirectHandler {
 	 * @param MerchantDetail $merchant_detail
 	 */
 	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
-		$this->isAdminSuccessfullyOnBoarded( $merchant_detail->merchantIdInPayPal, $merchant_detail->accessToken );
+		$this->refreshAccountStatus();
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
-		exit;
+
+		exit();
 	}
 
 	/**
@@ -191,8 +205,8 @@ class onBoardingRedirectHandler {
 	 * @return void
 	 */
 	private function deleteTempOptions() {
-		delete_option( OptionId::$partnerInfoOptionKey );
-		delete_option( OptionId::$accessTokenOptionKey );
+		delete_option( OptionId::PARTNER_LINK_DETAIL );
+		delete_option( OptionId::ACCESS_TOKEN );
 	}
 
 	/**
@@ -205,12 +219,14 @@ class onBoardingRedirectHandler {
 	}
 
 	/**
-	 * Register notice if Paypal error set in url.
+	 * Returns whether or not the current request is for refreshing the account status
 	 *
 	 * @since 2.8.0
+	 *
+	 * @return bool
 	 */
-	private function registerPayPalErrorNotice() {
-		Give_Admin_Settings::add_error( 'paypal-error', wp_kses( $_GET['paypal-error'], [ 'br' => [] ] ) );
+	private function isStatusRefresh() {
+		return isset( $_GET['paypalStatusCheck'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
 	}
 
 	/**
@@ -236,18 +252,6 @@ class onBoardingRedirectHandler {
 	}
 
 	/**
-	 * Return whether or not PayPal account details saved.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	private function isPayPalError() {
-		return isset( $_GET['paypal-error'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
-	}
-
-
-	/**
 	 * validate rest api credential.
 	 *
 	 * @since 2.8.0
@@ -267,6 +271,28 @@ class onBoardingRedirectHandler {
 	}
 
 	/**
+	 * Handles the request for refreshing the account status
+	 *
+	 * @since 2.8.0
+	 */
+	private function refreshAccountStatus() {
+		/** @var MerchantDetail $merchantDetails */
+		$merchantDetails = give( MerchantDetail::class );
+
+		$statusErrors = $this->isAdminSuccessfullyOnBoarded( $merchantDetails->merchantIdInPayPal, $merchantDetails->accessToken );
+		if ( $statusErrors !== true ) {
+			$merchantDetails->accountIsReady = false;
+			$this->merchantRepository->saveAccountErrors( $statusErrors );
+
+		} else {
+			$merchantDetails->accountIsReady = true;
+			$this->merchantRepository->deleteAccountErrors();
+		}
+
+		$this->merchantRepository->save( $merchantDetails );
+	}
+
+	/**
 	 * Validate seller on Boarding status
 	 *
 	 * @since 2.8.0
@@ -274,37 +300,66 @@ class onBoardingRedirectHandler {
 	 * @param string $accessToken
 	 *
 	 * @param string $merchantId
+	 *
+	 * @return true|string[]
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
-		$required      = [ 'payments_receivable', 'primary_email_confirmed' ];
+		$required      = [ 'payments_receivable', 'primary_email_confirmed', 'products', 'capabilities' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessage  = esc_html__( 'Your are successfully connected, but you need to do a few things within your PayPal account before you\'re ready to receive donations:', 'give' );
-		$redirect      = false;
+		$errorMessages = [];
+
+		if ( ! is_ssl() ) {
+			$errorMessages[] = esc_html__(
+				'A valid SSL certificate is required to accept donations and set up your PayPal account. Once a
+					certificate is installed and the site is using https, please disconnect and reconnect your account.',
+				'give'
+			);
+		}
 
 		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
-			$this->redirectWhenOnBoardingFail();
+			$errorMessages[] = esc_html__( 'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.', 'give' );
+
+			// Return here since the rest of the validations will definitely fail
+			return $errorMessages;
 		}
 
 		if ( ! $onBoardedData['payments_receivable'] ) {
-			$redirect      = true;
-			$errorMessage .= sprintf(
-				'<br>- %1$s',
-				esc_html__( 'Set up an account to receive payment from PayPal', 'give' )
-			);
+			$errorMessages[] = esc_html__( 'Set up an account to receive payment from PayPal', 'give' );
 		}
 
 		if ( ! $onBoardedData['primary_email_confirmed'] ) {
-			$redirect      = true;
-			$errorMessage .= sprintf(
-				'<br>- %1$s',
-				esc_html__( 'Confirm your primary email address', 'give' )
-			);
+			$errorMessage[] = esc_html__( 'Confirm your primary email address', 'give' );
 		}
 
-		if ( $redirect ) {
-			$this->redirectWhenOnBoardingFail( $errorMessage );
+		// Grab the PPCP_CUSTOM product from the status data
+		$customProduct = current(
+			array_filter(
+				$onBoardedData['products'],
+				function ( $product ) {
+					return $product['name'] === 'PPCP_CUSTOM';
+				}
+			)
+		);
+
+		if ( empty( $customProduct ) || $customProduct['vetting_status'] !== 'SUBSCRIBED' ) {
+			$errorMessages[] = esc_html__( 'Reach out to PayPal to enable PPCP_CUSTOM for your account', 'give' );
 		}
+
+		// Loop through the capabilities and see if any are not active
+		$invalidCapabilities = [];
+		foreach ( $onBoardedData['capabilities'] as $capability ) {
+			if ( $capability['status'] !== 'ACTIVE' ) {
+				$invalidCapabilities[] = $capability['name'];
+			}
+		}
+
+		if ( ! empty( $invalidCapabilities ) ) {
+			$errorMessages[] = esc_html__( 'Reach out to PayPal to resolve the following capabilities:', 'give' ) . ' ' . implode( ', ', $invalidCapabilities );
+		}
+
+		// If there were errors then redirect the user with notices
+		return empty( $errorMessages ) ? true : $errorMessages;
 	}
 
 	/**
@@ -315,9 +370,7 @@ class onBoardingRedirectHandler {
 	 * @param $errorMessage
 	 *
 	 */
-	private function redirectWhenOnBoardingFail( $errorMessage = '' ) {
-		$errorMessage = $errorMessage ?: esc_html__( 'We are unable to connect your seller account because required result did not return from PayPal. Please contact GiveWP Support Team', 'give' );
-
+	private function redirectWhenOnBoardingFail( $errorMessage ) {
 		wp_redirect(
 			admin_url(
 				sprintf(
@@ -336,19 +389,14 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function registerPayPalSSLNotice() {
-		if ( ! is_ssl() ) {
-			Give_Admin_Settings::add_error(
-				'paypal-ssl-error',
-				'There was a problem registering your site\'s webhook with PayPal. In order for to register
-				the webhook your site must have a valid SSL certificate. You are connected, but your site will not
-				receive donation payment events. To fix this, set up an SSL for the website, update your site URL to
-				include https, and then disconnect and reconnect your PayPal account.'
-			);
-		} elseif ( empty( $this->webhooksRepository->getWebhookId() ) ) {
+		if ( is_ssl() && empty( $this->webhooksRepository->getWebhookId() ) ) {
 			Give_Admin_Settings::add_error(
 				'paypal-webhook-error',
-				'There was a problem creating a webhook for your account. Please try disconnecting and then
-				reconnect. If the problem persists, please contact support'
+				esc_html__(
+					'There was a problem creating a webhook for your account. Please try disconnecting and then
+					reconnect. If the problem persists, please contact support',
+					'give'
+				)
 			);
 		}
 	}

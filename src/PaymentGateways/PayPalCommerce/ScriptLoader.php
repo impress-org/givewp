@@ -9,9 +9,9 @@ use PayPalCheckoutSdk\Core\AccessTokenRequest;
 
 /**
  * Class ScriptLoader
+ * @since 2.8.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
  */
 class ScriptLoader {
 	/**
@@ -22,6 +22,24 @@ class ScriptLoader {
 	 * @var string
 	 */
 	private $paypalSdkScriptHandle = 'give-paypal-sdk-js';
+
+	/**
+	 * @since 2.8.0
+	 *
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
+
+	/**
+	 * ScriptLoader constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param MerchantDetails $merchantRepository
+	 */
+	public function __construct( MerchantDetails $merchantRepository ) {
+		$this->merchantRepository = $merchantRepository;
+	}
 
 	/**
 	 * Load admin scripts
@@ -137,10 +155,11 @@ EOT;
 	/**
 	 * Add attributes to PayPal sdk.
 	 *
-	 * @param string $tag
+	 * @since 2.8.0
+	 *
 	 * @param string $handle
 	 *
-	 * @since 2.8.0
+	 * @param string $tag
 	 *
 	 * @return string
 	 */
@@ -154,7 +173,7 @@ EOT;
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
 				PartnerDetails::$attributionId,
-				MerchantDetails::getClientToken()
+				$this->merchantRepository->getClientToken()
 			),
 			$tag
 		);

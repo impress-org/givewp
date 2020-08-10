@@ -13,11 +13,13 @@ use Give\PaymentGateways\PaymentGateway;
  * @since 2.8.0
  */
 class PayPalCommerce implements PaymentGateway {
+	const GATEWAY_ID = 'paypal-commerce';
+
 	/**
 	 * @inheritDoc
 	 */
 	public function getId() {
-		return 'paypal-commerce';
+		return self::GATEWAY_ID;
 	}
 
 	/**
@@ -75,6 +77,8 @@ class PayPalCommerce implements PaymentGateway {
 		Hooks::addAction( 'give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken' );
 		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm', 10, 3 );
 		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle' );
+
+		Hooks::addAction( 'admin_init', AccountAdminNotices::class, 'displayNotices' );
 		Hooks::addFilter( 'give_payment_details_transaction_id-paypal-commerce', DonationDetailsPage::class, 'getPayPalPaymentUrl' );
 	}
 }
