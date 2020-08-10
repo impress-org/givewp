@@ -200,6 +200,8 @@ class AdvancedCardFields extends PaymentMethod {
 			return true;
 		}
 
+		const hostedFieldOnSubmitErrorHandler = this.hostedFieldOnSubmitErrorHandler.bind( this );
+
 		event.preventDefault();
 		Give.form.fn.removeErrors( this.jQueryForm );
 
@@ -212,7 +214,7 @@ class AdvancedCardFields extends PaymentMethod {
 				contingencies: [ '3D_SECURE' ],
 				...getExtraCardDetails,
 			}
-		).catch( this.hostedFieldOnSubmitErrorHandler );
+		).catch( hostedFieldOnSubmitErrorHandler );
 
 		if ( ! payload ) {
 			return false;
