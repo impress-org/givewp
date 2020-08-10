@@ -133,29 +133,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							],
 						],
 						[
-							'name'    => __( 'What\'s New Screen', 'give' ),
-							/* translators: %s: about page URL */
-							'desc'    => sprintf(
-								wp_kses(
-									__( 'Enable this option if you would like to disable the <a href="%s" target="_blank">GiveWP What\'s New screen</a> that displays each time GiveWP is updated.', 'give' ),
-									[
-										'a' => [
-											'href'   => [],
-											'target' => [],
-										],
-									]
-								),
-								esc_url( admin_url( 'index.php?page=give-changelog' ) )
-							),
-							'id'      => 'welcome',
-							'type'    => 'radio_inline',
-							'default' => 'enabled',
-							'options' => [
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							],
-						],
-						[
 							'name'    => __( 'Setup Page', 'give' ),
 							/* translators: %s: about page URL */
 							'desc'    => sprintf(
