@@ -187,7 +187,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 *
 	 * Handle donation form submit event.
 	 *
 	 * @since 2.8.0
@@ -213,71 +212,13 @@ class AdvancedCardFields extends PaymentMethod {
 				contingencies: [ '3D_SECURE' ],
 				...getExtraCardDetails,
 			}
-		).catch( error => {
-			const errorStringByGroup = {};
-			const errors = [];
-
-			error.details.forEach( detail => {
-				// If details is not about card field then insert notice into errors object.
-				if ( ! detail.hasOwnProperty( 'field' ) ) {
-					errors.push( {
-						message: detail.description,
-					} );
-
-					return;
-				}
-
-				if ( ! errorStringByGroup.hasOwnProperty( `${ detail.field }` ) ) {
-					// setup error label.
-					let label = '';
-
-					if ( -1 !== detail.field.indexOf( 'expiry' ) ) {
-						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.expirationDateField;
-					} else if ( -1 !== detail.field.indexOf( 'number' ) ) {
-						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardNumberField;
-					} else if ( -1 !== detail.field.indexOf( 'security_code' ) ) {
-						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardCvcField;
-					} else {
-						// Handle server errors.
-						if ( detail.hasOwnProperty( 'description' ) ) {
-							errors.push( {
-								message: detail.description,
-							} );
-
-							return;
-						}
-
-						errors.push( {
-							message: `${ givePayPalCommerce.failedPaymentProcessingNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
-						} );
-						return;
-					}
-
-					if ( label ) {
-						errorStringByGroup[ `${ detail.field }` ] = [ `<strong>${ label }</strong>` ];
-					} else {
-						errorStringByGroup[ `${ detail.field }` ] = [];
-					}
-				}
-
-				errorStringByGroup[ `${ detail.field }` ].push( `${ detail.description }.` );
-			} );
-
-			for ( const field in errorStringByGroup ) {
-				errors.push( {
-					message: errorStringByGroup[ field ].join( ' ' ),
-				} );
-			}
-
-			Give.form.fn.addErrorsAndResetDonationButton(
-				this.jQueryForm,
-				Give.form.fn.getErrorHTML( errors )
-			);
-		} );
+		).catch( this.hostedFieldOnSubmitErrorHandler );
 
 		if ( ! payload ) {
 			return false;
-		} else if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
+		}
+
+		if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
 			// Handle no 3D Secure contingency passed scenario
 			Give.form.fn.addErrorsAndResetDonationButton(
 				this.jQueryForm,
@@ -491,6 +432,75 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	IsCardThreeDsAuthorized( payload ) {
 		return payload.liabilityShifted && 'POSSIBLE' === payload.liabilityShift;
+	}
+
+	/**
+	 * Handle hosted fields on submit errors.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} error Collection of hosted field on submit error
+	 */
+	hostedFieldOnSubmitErrorHandler( error ) {
+		const errorStringByGroup = {};
+		const errors = [];
+
+		error.details.forEach( detail => {
+			// If details is not about card field then insert notice into errors object.
+			if ( ! detail.hasOwnProperty( 'field' ) ) {
+				errors.push( {
+					message: detail.description,
+				} );
+
+				return;
+			}
+
+			if ( ! errorStringByGroup.hasOwnProperty( `${ detail.field }` ) ) {
+				// setup error label.
+				let label = '';
+
+				if ( -1 !== detail.field.indexOf( 'expiry' ) ) {
+					label = givePayPalCommerce.paypalCardInfoErrorPrefixes.expirationDateField;
+				} else if ( -1 !== detail.field.indexOf( 'number' ) ) {
+					label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardNumberField;
+				} else if ( -1 !== detail.field.indexOf( 'security_code' ) ) {
+					label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardCvcField;
+				} else {
+					// Handle server errors.
+					if ( detail.hasOwnProperty( 'description' ) ) {
+						errors.push( {
+							message: detail.description,
+						} );
+
+						return;
+					}
+
+					errors.push( {
+						message: `${ givePayPalCommerce.failedPaymentProcessingNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
+					} );
+					return;
+				}
+
+				if ( label ) {
+					errorStringByGroup[ `${ detail.field }` ] = [ `<strong>${ label }</strong>` ];
+				} else {
+					errorStringByGroup[ `${ detail.field }` ] = [];
+				}
+			}
+
+			errorStringByGroup[ `${ detail.field }` ].push( `${ detail.description }.` );
+		} );
+
+		for ( const field in errorStringByGroup ) {
+			errors.push( {
+				message: errorStringByGroup[ field ].join( ' ' ),
+			} );
+		}
+
+		Give.form.fn.addErrorsAndResetDonationButton(
+			this.jQueryForm,
+			Give.form.fn.getErrorHTML( errors )
+		);
 	}
 }
 
