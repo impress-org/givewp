@@ -155,8 +155,7 @@ class PayPalOrder {
 			logError(
 				'Create PayPal Commerce payment refund failure',
 				sprintf(
-					'<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-					print_r( $refund->body, true ),
+					'<strong>Response</strong><pre>%1$s</pre>',
 					print_r( json_decode( $exception->getMessage(), true ), true )
 				)
 			);
