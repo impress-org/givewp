@@ -275,11 +275,9 @@ class AdvancedCardFields extends PaymentMethod {
 			);
 		} );
 
-		console.log( hostedCardFields, payload )
-
 		if ( ! payload ) {
 			return false;
-		} else if ( 'NO' === payload.liabilityShift ) {
+		} else if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
 			// Handle no 3D Secure contingency passed scenario
 			Give.form.fn.addErrorsAndResetDonationButton(
 				this.jQueryForm,
@@ -470,6 +468,29 @@ class AdvancedCardFields extends PaymentMethod {
 			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
 			target.style.setProperty( 'height', this.styles.container.height );
 		}
+	}
+
+	/**
+	 * Return whether or not 3ds authorize card Can authorize card.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} payload Hosted field response
+	 * @return {boolean} true if card can be authorize with 3ds or vice versa
+	 */
+	canThreeDsAuthorizeCard( payload ) {
+		return [ 'NO', 'POSSIBLE' ].includes( payload.liabilityShift );
+	}
+
+	/**
+	 * Return whether or not card 3ds authorized to process payment.
+	 *
+	 * @since 2.8.0
+	 * @param {object} payload Hosted field response
+	 * @return {boolean} true if card is 3ds authorized or vice versa
+	 */
+	IsCardThreeDsAuthorized( payload ) {
+		return payload.liabilityShifted && 'POSSIBLE' === payload.liabilityShift;
 	}
 }
 
