@@ -76,10 +76,10 @@ class RefundPaymentHandler {
 					'<strong>%1$s</strong>&nbsp;%2$s&nbsp;%3$s<a href="%4$s" target="_blank">%5$s</a>%6$s',
 					esc_html__( 'PayPal Donations:', 'give' ),
 					esc_html__( 'We were unable to process refund.', 'give' ),
-					esc_html__( 'Please', 'give' ),
+					esc_html__( 'Please ', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs' ),
-					esc_html__( ' check log ', 'give' ),
-					esc_html__( 'for detailed information.', 'give' )
+					esc_html__( 'check log', 'give' ),
+					esc_html__( ' for detailed information.', 'give' )
 				),
 			]
 		);
