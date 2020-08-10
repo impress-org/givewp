@@ -248,7 +248,7 @@ class AdvancedCardFields extends PaymentMethod {
 						}
 
 						errors.push( {
-							message: `${ givePayPalCommerce.failedDonationNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
+							message: `${ givePayPalCommerce.failedPaymentProcessingNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
 						} );
 						return;
 					}
@@ -282,7 +282,7 @@ class AdvancedCardFields extends PaymentMethod {
 			Give.form.fn.addErrorsAndResetDonationButton(
 				this.jQueryForm,
 				Give.form.fn.getErrorHTML( [ {
-					message: givePayPalCommerce.failedDonationNotice,
+					message: givePayPalCommerce.threeDsCardAuthenticationFailedNotice,
 				} ] )
 			);
 
