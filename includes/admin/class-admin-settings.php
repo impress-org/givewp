@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Setting filter and action prefix.
 		 *
 		 * @since 1.8
-		 * @var   string setting fileter and action anme prefix.
+		 * @var   string setting filter and action name prefix.
 		 */
 		private static $setting_filter_prefix = '';
 
