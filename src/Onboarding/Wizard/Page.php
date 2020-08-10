@@ -6,6 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\FormRepository;
+use Give\Onboarding\SettingsRepositoryFactory;
 
 /**
  * Onboarding Wizard admin page class
@@ -23,8 +24,16 @@ class Page {
 	/** @var FormRepository */
 	protected $formRepository;
 
-	public function __construct( FormRepository $formRepository ) {
-		$this->formRepository = $formRepository;
+	/** @var SettingsRepository */
+	protected $settingsRepository;
+
+	/**
+	 * @param FormRepository $formRepository
+	 * @param SettingsRepositoryFactory $settingsRepositoryFactory
+	 */
+	public function __construct( FormRepository $formRepository, SettingsRepositoryFactory $settingsRepositoryFactory ) {
+		$this->formRepository     = $formRepository;
+		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
 	}
 
 	/**
@@ -145,6 +154,7 @@ class Page {
 						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
+				'addons'         => $this->settingsRepository->get( 'addons' ),
 			]
 		);
 

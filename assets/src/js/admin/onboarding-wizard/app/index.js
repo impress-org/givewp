@@ -20,7 +20,13 @@ import Features from './steps/features';
 import DonationForm from './steps/donation-form';
 import Addons from './steps/addons';
 
-import { getCountryList, getDefaultStateList, getCurrencyList, getFeaturesEnabledDefault } from '../utils';
+import {
+	getCountryList,
+	getDefaultStateList,
+	getCurrencyList,
+	getFeaturesEnabledDefault,
+	getAddonsSelectedDefault,
+} from '../utils';
 
 /**
  * Onboarding Wizard app component
@@ -40,7 +46,7 @@ const App = () => {
 			state: null,
 			currency: 'USD',
 			features: getFeaturesEnabledDefault(),
-			addons: [],
+			addons: getAddonsSelectedDefault(),
 		},
 		countriesList: getCountryList(),
 		currenciesList: getCurrencyList(),

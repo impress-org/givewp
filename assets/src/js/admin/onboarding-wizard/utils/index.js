@@ -67,6 +67,10 @@ export const getFeaturesEnabledDefault = () => {
 	} );
 };
 
+export const getAddonsSelectedDefault = () => {
+	return getWindowData( 'addons' );
+};
+
 export const decodeHTMLEntity = ( entity ) => {
 	const div = document.createElement( 'div' );
 	div.innerHTML = entity;
