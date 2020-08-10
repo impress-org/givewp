@@ -90,6 +90,7 @@ article .action {
 	justify-content: center;
 }
 article .icon {
+	margin: auto;
 	width: 100px;
 	padding: 20px;
 	grid-area: icon;
@@ -154,4 +155,15 @@ article.stripe .action button {
 		border-color: transparent;
 		outline-color: transparent;
 	}
+}
+
+/** Normalize icon sizes. */
+article.setup-item-configuration .icon,
+article.setup-item-tributes .icon,
+article.setup-item-fee-recovery .icon,
+article.setup-item-pdf-receipts .icon,
+article.setup-item-currency-switcher .icon,
+article.setup-item-recurring-donations .icon,
+article.setup-item-form-fields-manager .icon {
+	width: 80px;
 }

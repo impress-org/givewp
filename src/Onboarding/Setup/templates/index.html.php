@@ -22,7 +22,7 @@
 				'contents' => $this->render_template(
 					'row-item',
 					[
-						'class'       => 'configuration',
+						'class'       => 'setup-item-configuration',
 						'icon'        => $this->image( 'configuration@2x.min.png' ),
 						'icon_alt'    => esc_html__( 'First-Time Configuration', 'give' ),
 						'title'       => esc_html__( 'First-Time Configuration', 'give' ),
@@ -114,6 +114,7 @@
 					in_array( 'recurring-donations', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item-recurring-donations',
 							'icon'        => $this->image( 'recurring-donations@2x.min.png' ),
 							'icon_alt'    => __( 'Recurring Donations', 'give' ),
 							'title'       => __( 'Recurring Donations', 'give' ),
@@ -131,6 +132,7 @@
 					in_array( 'donors-cover-fees', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item-fee-recovery',
 							'icon'        => $this->image( 'fee-recovery@2x.min.png' ),
 							'icon_alt'    => __( 'Fee Recovery', 'give' ),
 							'title'       => __( 'Fee Recovery', 'give' ),
@@ -148,6 +150,7 @@
 					in_array( 'pdf-receipts', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item-pdf-receipts',
 							'icon'        => $this->image( 'pdf-receipts@2x.min.png' ),
 							'icon_alt'    => __( 'PDF Receipts', 'give' ),
 							'title'       => __( 'PDF Receipts', 'give' ),
@@ -165,6 +168,7 @@
 					in_array( 'custom-form-fields', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item-form-fields-manager',
 							'icon'        => $this->image( 'form-fields-manager@2x.min.png' ),
 							'icon_alt'    => __( 'Form Field Manager', 'give' ),
 							'title'       => __( 'Form Field Manager', 'give' ),
@@ -182,6 +186,7 @@
 					in_array( 'multiple-currencies', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item-currency-switcher',
 							'icon'        => $this->image( 'currency-switcher@2x.min.png' ),
 							'icon_alt'    => __( 'Currency Switcher', 'give' ),
 							'title'       => __( 'Currency Switcher', 'give' ),
@@ -199,6 +204,7 @@
 					in_array( 'dedicate-donations', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item-tributes',
 							'icon'        => $this->image( 'tributes@2x.min.png' ),
 							'icon_alt'    => __( 'Tributes', 'give' ),
 							'title'       => __( 'Tributes', 'give' ),
