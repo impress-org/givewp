@@ -66,8 +66,8 @@ class DefaultFormFactory {
 					'_give_terms_option'                   => 'global',
 					'_give_agree_label'                    => __( 'Agree to terms?', 'give' ),
 					'_give_agree_text'                     => __( 'The terms can be customized in the donation form settings.', 'give' ),
-					'give_stripe_per_form_accounts'        => 'disables', // Note: Doesn't use underscore prefix.
-					'_give_default_stripe_account'         => '', // @TODO Might need to update this???
+					'give_stripe_per_form_accounts'        => 'disabled', // Note: Doesn't use underscore prefix.
+					'_give_default_stripe_account'         => '',
 					'_give_email_options'                  => 'global',
 					'_give_email_template'                 => 'default',
 					'_give_email_logo'                     => '',
