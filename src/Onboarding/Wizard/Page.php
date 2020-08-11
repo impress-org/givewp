@@ -154,7 +154,7 @@ class Page {
 						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
-				'addons'         => $this->settingsRepository->get( 'addons' ),
+				'addons'         => $this->settingsRepository->get( 'addons' ) ?: [],
 			]
 		);
 
