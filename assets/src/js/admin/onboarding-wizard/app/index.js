@@ -51,6 +51,7 @@ const App = () => {
 		countriesList: getCountryList(),
 		currenciesList: getCurrencyList(),
 		statesList: getDefaultStateList(),
+		fetchingStatesList: false,
 	};
 
 	const steps = [

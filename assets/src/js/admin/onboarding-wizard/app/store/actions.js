@@ -48,6 +48,16 @@ export const fetchStateList = ( country, dispatch ) => {
 	};
 };
 
+// Dispatch SET_FETCHING_STATES_LIST action
+export const setFetchingStatesList = ( status ) => {
+	return {
+		type: 'SET_FETCHING_STATES_LIST',
+		payload: {
+			status,
+		},
+	};
+};
+
 // Dispatch SET_STATE_LIST action
 export const setStateList = ( stateList ) => {
 	return {

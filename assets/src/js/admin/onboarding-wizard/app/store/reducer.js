@@ -44,6 +44,11 @@ export const reducer = ( state, action ) => {
 				...state,
 				statesList: action.payload.stateList,
 			};
+		case 'SET_FETCHING_STATES_LIST':
+			return {
+				...state,
+				fetchingStatesList: action.payload.status,
+			};
 		case 'SET_STATE':
 			saveSettingWithOnboardingAPI( 'base_state', action.payload.state );
 			return {
