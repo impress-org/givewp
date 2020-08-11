@@ -6,6 +6,7 @@ use Exception;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PaymentCaptureRefunded;
 use InvalidArgumentException;
 
 class PayPalWebhooks {
@@ -19,7 +20,9 @@ class PayPalWebhooks {
 	 *
 	 * @var string[]
 	 */
-	private $eventHandlers = [];
+	private $eventHandlers = [
+		'PAYMENT.CAPTURE.REFUNDED' => PaymentCaptureRefunded::class,
+	];
 
 	/**
 	 * @since 2.8.0
