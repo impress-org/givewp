@@ -2,11 +2,11 @@
 /**
  * Session
  *
- * @package     Give
+ * @since       1.0
  * @subpackage  Classes/Give_Session
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @package     Give
  */
 
 // Exit if accessed directly.
@@ -226,6 +226,8 @@ class Give_Session {
 			return $session;
 		}
 
+		require_once ABSPATH . WPINC . '/pluggable.php';
+
 		// Validate hash.
 		$to_hash = $donor_id . '|' . $session_expiration;
 		$hash    = hash_hmac( 'md5', $to_hash, wp_hash( $to_hash ) );
@@ -323,7 +325,7 @@ class Give_Session {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $key     Session key.
+	 * @param string $key Session key.
 	 * @param mixed  $default default value.
 	 *
 	 * @return string|array      Session variable.
@@ -340,8 +342,8 @@ class Give_Session {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $key   Session key.
-	 * @param  mixed  $value Session variable.
+	 * @param string $key Session key.
+	 * @param mixed  $value Session variable.
 	 *
 	 * @return string        Session variable.
 	 */
@@ -433,9 +435,10 @@ class Give_Session {
 	/**
 	 * Setup donor session when authorized by WP user credentials
 	 *
-	 * @param string $wpUserLogin
-	 * @param WP_User $wpUser
 	 * @since 2.7.0
+	 *
+	 * @param WP_User $wpUser
+	 * @param string  $wpUserLogin
 	 */
 	public function startSessionWhenLoginAsWPUser( $wpUserLogin, $wpUser ) {
 		$donor = Give()->donors->get_donor_by( 'user_id', $wpUser->ID );
@@ -586,10 +589,10 @@ class Give_Session {
 	 * Retrieve session ID.
 	 *
 	 * @since      1.0
+	 * @return string Session ID.
 	 * @deprecated 2.2.0
 	 * @access     public
 	 *
-	 * @return string Session ID.
 	 */
 	public function get_id() {
 		return $this->get_cookie_name( 'session' );
@@ -602,10 +605,10 @@ class Give_Session {
 	 * (set_expiration_variant_time used in WP_Session).
 	 *
 	 * @since      1.0
+	 * @return int
 	 * @deprecated 2.2.0
 	 * @access     public
 	 *
-	 * @return int
 	 */
 	public function set_expiration_variant_time() {
 
@@ -619,9 +622,9 @@ class Give_Session {
 	 *
 	 * @since      1.0
 	 * @access     public
+	 * @return bool $ret True if we are using PHP sessions, false otherwise.
 	 * @deprecated 2.2.0
 	 *
-	 * @return bool $ret True if we are using PHP sessions, false otherwise.
 	 */
 	public function use_php_sessions() {
 		$ret = false;
@@ -638,9 +641,9 @@ class Give_Session {
 	 *
 	 * @since      1.4
 	 * @access     public
+	 * @return bool
 	 * @deprecated 2.2.0
 	 *
-	 * @return bool
 	 */
 	public function should_start_session() {
 

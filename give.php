@@ -59,30 +59,30 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.8.0 build in a service container
  * @since 1.0
  *
- * @property-read Give_API $api
- * @property-read Give_Async_Process $async_process
- * @property-read Give_Comment $comment
- * @property-read Give_DB_Donors $donors
- * @property-read Give_DB_Donor_Meta $donor_meta
- * @property-read Give_Emails $emails
- * @property-read Give_Email_Template_Tags $email_tags
- * @property-read Give_DB_Form_Meta $form_meta
- * @property-read Give_Admin_Settings $give_settings
- * @property-read Give_HTML_Elements $html
- * @property-read Give_Logging $logs
- * @property-read Give_DB_Logs $log_db
- * @property-read Give_DB_Log_Meta $logmeta_db
- * @property-read Give_Notices $notices
- * @property-read Give_DB_Payment_Meta $payment_meta
- * @property-read Give_Roles $roles
- * @property-read FormRoute $routeForm
- * @property-read Templates $templates
- * @property-read Give_Scripts $scripts
- * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
+ * @property-read Give_API                        $api
+ * @property-read Give_Async_Process              $async_process
+ * @property-read Give_Comment                    $comment
+ * @property-read Give_DB_Donors                  $donors
+ * @property-read Give_DB_Donor_Meta              $donor_meta
+ * @property-read Give_Emails                     $emails
+ * @property-read Give_Email_Template_Tags        $email_tags
+ * @property-read Give_DB_Form_Meta               $form_meta
+ * @property-read Give_Admin_Settings             $give_settings
+ * @property-read Give_HTML_Elements              $html
+ * @property-read Give_Logging                    $logs
+ * @property-read Give_DB_Logs                    $log_db
+ * @property-read Give_DB_Log_Meta                $logmeta_db
+ * @property-read Give_Notices                    $notices
+ * @property-read Give_DB_Payment_Meta            $payment_meta
+ * @property-read Give_Roles                      $roles
+ * @property-read FormRoute                       $routeForm
+ * @property-read Templates                       $templates
+ * @property-read Give_Scripts                    $scripts
+ * @property-read Give_DB_Sequential_Ordering     $sequential_donation_db
  * @property-read Give_Sequential_Donation_Number $seq_donation_number
- * @property-read Give_Session $session
- * @property-read Give_DB_Sessions $session_db
- * @property-read Give_Tooltips $tooltips
+ * @property-read Give_Session                    $session
+ * @property-read Give_DB_Sessions                $session_db
+ * @property-read Give_Tooltips                   $tooltips
  *
  * @mixin Container
  */
@@ -136,6 +136,13 @@ final class Give {
 	];
 
 	/**
+	 * @since 2.8.0
+	 *
+	 * @var bool Make sure the providers are loaded only once
+	 */
+	private $providersLoaded = false;
+
+	/**
 	 * Give constructor.
 	 *
 	 * Sets up the Container to be used for managing all other instances and data
@@ -164,12 +171,14 @@ final class Give {
 			return;
 		}
 
+		$this->setup_constants();
+
 		// Add compatibility notice for recurring and stripe support with Give 2.5.0.
 		add_action( 'admin_notices', [ $this, 'display_old_recurring_compatibility_notice' ] );
 
 		add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
 
-		$this->setup_constants();
+		register_activation_hook( GIVE_PLUGIN_FILE, [ $this, 'install' ] );
 
 		do_action( 'give_loaded' );
 	}
@@ -367,12 +376,21 @@ final class Give {
 		}
 	}
 
+	public function install() {
+		$this->loadServiceProviders();
+		give_install();
+	}
+
 	/**
 	 * Load all the service providers to bootstrap the various parts of the application.
 	 *
 	 * @since 2.8.0
 	 */
 	private function loadServiceProviders() {
+		if ( $this->providersLoaded ) {
+			return;
+		}
+
 		$providers = [];
 
 		foreach ( $this->serviceProviders as $serviceProvider ) {
@@ -391,6 +409,8 @@ final class Give {
 		foreach ( $providers as $serviceProvider ) {
 			$serviceProvider->boot();
 		}
+
+		$this->providersLoaded = true;
 	}
 
 	/**
