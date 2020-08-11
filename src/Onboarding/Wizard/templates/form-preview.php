@@ -35,4 +35,42 @@ set_current_screen();
 			?>
 			<?php wp_print_scripts( [ 'give' ] ); ?>
 	</body>
+	<script>
+		(function checkForBodySizeChange() {
+			var last_body_size = {
+				width: document.body.clientWidth,
+				height: document.body.clientHeight
+			};
+
+			function checkBodySizeChange()
+			{
+				var width_changed = last_body_size.width !== document.body.clientWidth,
+					height_changed = last_body_size.height !== document.body.clientHeight;
+
+
+				if(width_changed || height_changed) {
+					handleBodySizeChange(document.body.clientWidth, document.body.clientHeight);
+					last_body_size = {
+						width: document.body.clientWidth,
+						height: document.body.clientHeight
+					};
+				}
+
+				window.requestAnimationFrame(checkBodySizeChange);
+			}
+
+			function handleBodySizeChange(width, height)
+			{
+				window.parent.postMessage({
+					action: 'resize',
+					payload: {
+						height,
+						width
+					}
+				});
+			}
+
+			window.requestAnimationFrame(checkBodySizeChange);
+		})();
+	</script>
 </html>
