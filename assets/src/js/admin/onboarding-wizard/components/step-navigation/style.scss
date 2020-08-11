@@ -1,5 +1,9 @@
 .give-obw-step-navigation {
+	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
+	z-index: 99;
 
 	background: #fff;
 	border-bottom: 1px solid #dbdbdb;
