@@ -9,8 +9,6 @@
  * @since       1.8
  */
 
-use Give\Route\Form;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -161,7 +159,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 								__( 'This slug will be used as a base for the iframe URL that contains all form templates besides the legacy form template. Currently the iframe URLs look like %1$s. This options adds a rewrite rule that transforms the URL structure to a set of query vars. If you modify this URL prefix please ensure it is unique as it can cause a 404 error if a similar URL already exists.', 'give' ),
 								'<code>' . trailingslashit( home_url() ) . Give()->routeForm->getBase() . '/{form-slug}</code>'
 							),
-							'id'      => Form::OPTION_NAME,
+							'id'      => Give()->routeForm->getOptionName(),
 							'type'    => 'text',
 							'default' => Give()->routeForm->getBase(),
 						],

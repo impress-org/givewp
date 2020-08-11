@@ -10,8 +10,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Route\Form;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -388,7 +386,7 @@ function give_get_default_settings() {
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 
 		'donor_default_user_role'                     => 'give_donor',
-		Form::OPTION_NAME                             => 'give',
+		Give()->routeForm->getOptionName()            => 'give',
 
 		// Stripe accounts.
 		'_give_stripe_get_all_accounts'               => [],

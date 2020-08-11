@@ -21,9 +21,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class Form {
 	/**
-	 * @since 2.8.0
+	 * Option name
+	 *
+	 * @since 2.7.0
+	 * @var string
 	 */
-	const OPTION_NAME = 'form_page_url_prefix';
+	private $optionName = 'form_page_url_prefix';
 
 	/**
 	 * Route base
@@ -61,7 +64,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function setBasePrefix() {
-		$this->base = give_get_option( self::OPTION_NAME, $this->defaultBase );
+		$this->base = give_get_option( $this->optionName, $this->defaultBase );
 	}
 
 
@@ -101,12 +104,22 @@ class Form {
 	 * Get form URL.
 	 *
 	 * @since 2.7.0
+	 * @since 2.8.0 Add support for all permalink settings.
+	 *
 	 * @param int $form_id
 	 *
 	 * @return string
 	 */
 	public function getURL( $form_id ) {
-		return home_url( "/{$this->base}/{$form_id}" );
+		return get_option( 'permalink_structure' )
+			? home_url( "/{$this->base}/{$form_id}" )
+			: add_query_arg(
+				[
+					'give_form_id' => $form_id,
+					'url_prefix'   => $this->base,
+				],
+				home_url()
+			);
 	}
 
 
@@ -121,6 +134,17 @@ class Form {
 	}
 
 	/**
+	 * Get url base.
+	 *
+	 * @since 2.7.0
+	 * @return string
+	 */
+	public function getOptionName() {
+		return $this->optionName;
+	}
+
+
+	/**
 	 * Update route rule
 	 *
 	 * @since 2.7.0
@@ -128,7 +152,7 @@ class Form {
 	public function updateRule() {
 		global $wp_rewrite;
 
-		$updateBase = give_get_option( self::OPTION_NAME, $this->defaultBase );
+		$updateBase = give_get_option( $this->optionName, $this->defaultBase );
 
 		if ( $updateBase !== $this->base ) {
 			$this->base = $updateBase;
