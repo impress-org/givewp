@@ -146,8 +146,7 @@ article.paypal .action button {
 
 article.stripe .action a,
 article.stripe .action button {
-	background: rgb(70, 170, 228);
-	background: linear-gradient(180deg, rgba(70, 170, 228, 1) 0%, rgba(12, 144, 222, 1) 50%);
+	background: #46aae4;
 
 	&.hidden {
 		display: none;
