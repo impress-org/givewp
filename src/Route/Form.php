@@ -21,12 +21,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Form {
 	/**
-	 * Option name
-	 *
-	 * @since 2.7.0
-	 * @var string
+	 * @since 2.8.0
 	 */
-	private $optionName = 'form_page_url_prefix';
+	const OPTION_NAME = 'form_page_url_prefix';
 
 	/**
 	 * Route base
@@ -64,7 +61,7 @@ class Form {
 	 * @since 2.7.0
 	 */
 	public function setBasePrefix() {
-		$this->base = give_get_option( $this->optionName, $this->defaultBase );
+		$this->base = give_get_option( self::OPTION_NAME, $this->defaultBase );
 	}
 
 
@@ -124,17 +121,6 @@ class Form {
 	}
 
 	/**
-	 * Get url base.
-	 *
-	 * @since 2.7.0
-	 * @return string
-	 */
-	public function getOptionName() {
-		return $this->optionName;
-	}
-
-
-	/**
 	 * Update route rule
 	 *
 	 * @since 2.7.0
@@ -142,7 +128,7 @@ class Form {
 	public function updateRule() {
 		global $wp_rewrite;
 
-		$updateBase = give_get_option( $this->optionName, $this->defaultBase );
+		$updateBase = give_get_option( self::OPTION_NAME, $this->defaultBase );
 
 		if ( $updateBase !== $this->base ) {
 			$this->base = $updateBase;
