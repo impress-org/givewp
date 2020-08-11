@@ -76,11 +76,11 @@ class Webhooks {
 				],
 				'body'    => wp_json_encode(
 					[
-						'transmission_id'   => $headers['PAYPAL-TRANSMISSION-ID'],
-						'transmission_time' => $headers['PAYPAL-TRANSMISSION-TIME'],
-						'cert_url'          => $headers['PAYPAL-CERT-URL'],
-						'auth_algo'         => $headers['AYPAL-AUTH-ALGO'],
-						'transmission_sig'  => $headers['PAYPAL-TRANSMISSION-SIG'],
+						'transmission_id'   => $headers['Paypal-Transmission-Id'],
+						'transmission_time' => $headers['Paypal-Transmission-Time'],
+						'transmission_sig'  => $headers['Paypal-Transmission-Sig'],
+						'cert_url'          => $headers['Paypal-Cert-Url'],
+						'auth_algo'         => $headers['Paypal-Auth-Algo'],
 						'webhook_id'        => $webhookId,
 						'webhook_event'     => $event,
 					]
@@ -111,6 +111,8 @@ class Webhooks {
 		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/webhooks' );
 
 		$webhookUrl = $this->webhookRoute->getRouteUrl();
+
+		$webhookUrl = 'https://ab34e94f0f29.ngrok.io/index.php?give-listener=paypal-commerce&XDEBUG_SESSION_START=PHPSTORM';
 
 		$response = wp_remote_post(
 			$apiUrl,
