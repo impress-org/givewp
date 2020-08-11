@@ -33,7 +33,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @var    array
 	 */
-	public $_args = array();
+	public $_args = [];
 
 	/**
 	 * The args to pass to the give_get_payments() query
@@ -43,7 +43,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @var    array
 	 */
-	public $args = array();
+	public $args = [];
 
 	/**
 	 * The payments found based on the criteria set
@@ -53,7 +53,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @var    array
 	 */
-	public $payments = array();
+	public $payments = [];
 
 	/**
 	 * Default query arguments.
@@ -66,10 +66,10 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @param  $args array The array of arguments that can be passed in and used for setting up this payment query.
 	 */
-	public function __construct( $args = array() ) {
-		$defaults = array(
+	public function __construct( $args = [] ) {
+		$defaults = [
 			'output'          => 'payments',
-			'post_type'       => array( 'give_payment' ),
+			'post_type'       => [ 'give_payment' ],
 			'start_date'      => false,
 			'end_date'        => false,
 			'number'          => 20,
@@ -94,7 +94,7 @@ class Give_Payments_Query extends Give_Stats {
 			// Currently these params only works with get_payment_by_group
 			'group_by'        => '',
 			'count'           => false,
-		);
+		];
 
 		// We do not want WordPress to handle meta cache because WordPress stores in under `post_meta` key and cache object while we want it under `donation_meta`.
 		// Similar for term cache
@@ -115,7 +115,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @param $value
 	 */
 	public function __set( $query_var, $value ) {
-		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
+		if ( in_array( $query_var, [ 'meta_query', 'tax_query' ] ) ) {
 			$this->args[ $query_var ][] = $value;
 		} else {
 			$this->args[ $query_var ] = $value;
@@ -158,7 +158,7 @@ class Give_Payments_Query extends Give_Stats {
 		$this->args = $this->_args;
 
 		// Whitelist order.
-		$this->args['order'] = in_array( strtoupper( $this->args['order'] ), array( 'ASC', 'DESC' ) ) ? $this->args['order'] : 'DESC';
+		$this->args['order'] = in_array( strtoupper( $this->args['order'] ), [ 'ASC', 'DESC' ] ) ? $this->args['order'] : 'DESC';
 
 		$this->date_filter_pre();
 		$this->orderby();
@@ -174,7 +174,7 @@ class Give_Payments_Query extends Give_Stats {
 		$this->give_forms();
 		$this->gateway_filter();
 
-		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
+		add_filter( 'posts_orderby', [ $this, 'custom_orderby' ], 10, 2 );
 
 		/**
 		 * Fires after setup filters.
@@ -193,7 +193,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @access private
 	 */
 	private function unset_filters() {
-		remove_filter( 'posts_orderby', array( $this, 'custom_orderby' ) );
+		remove_filter( 'posts_orderby', [ $this, 'custom_orderby' ] );
 
 		/**
 		 * Fires after retrieving payments.
@@ -221,8 +221,8 @@ class Give_Payments_Query extends Give_Stats {
 	public function get_payments() {
 		global $post;
 
-		$results        = array();
-		$this->payments = array();
+		$results        = [];
+		$this->payments = [];
 		$cache_key      = Give_Cache::get_key( 'give_payment_query', $this->args, false );
 		$this->payments = Give_Cache::get_db_query( $cache_key );
 
@@ -237,10 +237,10 @@ class Give_Payments_Query extends Give_Stats {
 		/* @var WP_Query $query */
 		$query = new WP_Query( $this->args );
 
-		$custom_output = array(
+		$custom_output = [
 			'payments',
 			'give_payments',
-		);
+		];
 
 		if ( $query->have_posts() ) {
 
@@ -299,8 +299,8 @@ class Give_Payments_Query extends Give_Stats {
 	public function get_payment_by_group() {
 		global $wpdb;
 
-		$allowed_groups = array( 'post_status' );
-		$result         = array();
+		$allowed_groups = [ 'post_status' ];
+		$result         = [];
 
 		if ( in_array( $this->args['group_by'], $allowed_groups ) ) {
 			// Set only count in result.
@@ -364,7 +364,7 @@ class Give_Payments_Query extends Give_Stats {
 		$is_end_date   = property_exists( __CLASS__, 'end_date' );
 
 		if ( $is_start_date || $is_end_date ) {
-			$date_query = array();
+			$date_query = [];
 
 			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
 				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
@@ -501,7 +501,7 @@ class Give_Payments_Query extends Give_Stats {
 	public function custom_orderby( $order, $query ) {
 
 		if ( ! empty( $query->query['post_type'] ) ) {
-			$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
+			$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : [ $query->query['post_type'] ];
 
 			if ( ! in_array( 'give_payment', $post_types ) || ! isset( $query->query['orderby'] ) || is_array( $query->query['orderby'] ) ) {
 				return $order;
@@ -531,21 +531,21 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		$args = array();
+		$args = [];
 
 		if ( is_numeric( $this->args['user'] ) ) {
 			// Backward compatibility: user donor param to get payment attached to donor instead of user
 			$donor_id = Give()->donors->get_column_by( 'id', 'user_id', $this->args['user'] );
 
-			$args = array(
+			$args = [
 				'key'   => '_give_payment_donor_id',
 				'value' => $donor_id ?: -1,
-			);
+			];
 		} elseif ( is_email( $this->args['user'] ) ) {
-			$args = array(
+			$args = [
 				'key'   => '_give_payment_donor_email',
 				'value' => $this->args['user'],
-			);
+			];
 		}
 
 		$this->__set( 'meta_query', $args );
@@ -567,10 +567,10 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set(
 			'meta_query',
-			array(
+			[
 				'key'   => "_give_payment_{$donor_meta_type}_id",
 				'value' => (int) $this->args['donor'],
-			)
+			]
 		);
 	}
 
@@ -613,21 +613,21 @@ class Give_Payments_Query extends Give_Stats {
 		} elseif ( $is_email || strlen( $search ) == 32 ) {
 
 			$key         = $is_email ? '_give_payment_donor_email' : '_give_payment_purchase_key';
-			$search_meta = array(
+			$search_meta = [
 				'key'     => $key,
 				'value'   => $search,
 				'compare' => 'LIKE',
-			);
+			];
 
 			$this->__set( 'meta_query', $search_meta );
 			$this->__unset( 's' );
 
 		} elseif ( $is_user ) {
 
-			$search_meta = array(
+			$search_meta = [
 				'key'   => '_give_payment_donor_id',
 				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) ),
-			);
+			];
 
 			$this->__set( 'meta_query', $search_meta );
 
@@ -639,7 +639,7 @@ class Give_Payments_Query extends Give_Stats {
 
 			if ( is_object( $post ) && $post->post_type == 'give_payment' ) {
 
-				$arr   = array();
+				$arr   = [];
 				$arr[] = $search;
 				$this->__set( 'post__in', $arr );
 				$this->__unset( 's' );
@@ -655,33 +655,33 @@ class Give_Payments_Query extends Give_Stats {
 			$search_parts = preg_split( '/\s+/', $search );
 
 			if ( is_array( $search_parts ) && 2 === count( $search_parts ) ) {
-				$search_meta = array(
+				$search_meta = [
 					'relation' => 'AND',
-					array(
+					[
 						'key'     => '_give_donor_billing_first_name',
 						'value'   => $search_parts[0],
-						'compare' => '=',
-					),
-					array(
+						'compare' => 'LIKE',
+					],
+					[
 						'key'     => '_give_donor_billing_last_name',
 						'value'   => $search_parts[1],
-						'compare' => '=',
-					),
-				);
+						'compare' => 'LIKE',
+					],
+				];
 			} else {
-				$search_meta = array(
+				$search_meta = [
 					'relation' => 'OR',
-					array(
+					[
 						'key'     => '_give_donor_billing_first_name',
 						'value'   => $search,
 						'compare' => 'LIKE',
-					),
-					array(
+					],
+					[
 						'key'     => '_give_donor_billing_last_name',
 						'value'   => $search,
 						'compare' => 'LIKE',
-					),
-				);
+					],
+				];
 			}
 
 			$this->__set( 'meta_query', $search_meta );
@@ -712,10 +712,10 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set(
 			'meta_query',
-			array(
+			[
 				'key'   => '_give_payment_mode',
 				'value' => $this->args['mode'],
-			)
+			]
 		);
 	}
 
@@ -756,11 +756,11 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set(
 			'meta_query',
-			array(
+			[
 				'key'     => '_give_payment_form_id',
 				'value'   => $this->args['give_forms'],
 				'compare' => $compare,
-			)
+			]
 		);
 
 		$this->__unset( 'give_forms' );
@@ -789,11 +789,11 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set(
 			'meta_query',
-			array(
+			[
 				'key'     => '_give_payment_gateway',
 				'value'   => $this->args['gateway'],
 				'compare' => $compare,
-			)
+			]
 		);
 
 		$this->__unset( 'gateway' );
@@ -815,7 +815,7 @@ class Give_Payments_Query extends Give_Stats {
 	private function get_sql() {
 		global $wpdb;
 
-		$allowed_keys = array(
+		$allowed_keys = [
 			'post_name',
 			'post_author',
 			'post_date',
@@ -826,7 +826,7 @@ class Give_Payments_Query extends Give_Stats {
 			'post_type',
 			'menu_order',
 			'comment_count',
-		);
+		];
 
 		$this->args['orderby'] = 'post_parent__in';
 
@@ -883,16 +883,16 @@ class Give_Payments_Query extends Give_Stats {
 		if ( ! empty( $this->args['date_query'] ) ) {
 			$date_query_obj = new WP_Date_Query( $this->args['date_query'] );
 			$where         .= str_replace(
-				array(
+				[
 					"\n",
 					'(   (',
 					'))',
-				),
-				array(
+				],
+				[
 					'',
 					'( (',
 					') )',
-				),
+				],
 				$date_query_obj->get_sql()
 			);
 		}
