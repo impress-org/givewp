@@ -45,6 +45,7 @@ class Onboarding implements ServiceProvider {
 
 		// Load Wizard Page
 		Hooks::addAction( 'admin_menu', WizardPage::class, 'add_page' );
+		Hooks::addAction( 'admin_init', WizardPage::class, 'redirect' );
 		Hooks::addAction( 'admin_init', WizardPage::class, 'setup_wizard' );
 		Hooks::addAction( 'admin_enqueue_scripts', WizardPage::class, 'enqueue_scripts' );
 
