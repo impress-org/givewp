@@ -341,7 +341,6 @@ function give_get_default_settings() {
 		// Display options.
 		'css'                                         => 'enabled',
 		'floatlabels'                                 => 'disabled',
-		'welcome'                                     => 'enabled',
 		'company_field'                               => 'disabled',
 		'name_title_prefix'                           => 'disabled',
 		'forms_singular'                              => 'enabled',

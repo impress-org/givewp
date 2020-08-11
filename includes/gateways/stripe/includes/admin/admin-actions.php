@@ -310,13 +310,6 @@ function give_stripe_show_connect_banner() {
 		$status = false;
 	}
 
-	$hide_on_pages = [ 'give-about', 'give-getting-started', 'give-credits', 'give-addons' ];
-
-	// Don't show if on the about page.
-	if ( in_array( give_get_current_setting_page(), $hide_on_pages, true ) ) {
-		$status = false;
-	}
-
 	$hide_on_sections = [ 'stripe-settings', 'gateways-settings', 'stripe-ach-settings' ];
 	$current_section  = give_get_current_setting_section();
 

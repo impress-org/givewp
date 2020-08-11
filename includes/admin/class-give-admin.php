@@ -72,7 +72,6 @@ class Give_Admin {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php'; // @todo: [refactor] can be loaded only on the form edit screen. review possibilities
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-welcome.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
