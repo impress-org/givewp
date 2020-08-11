@@ -187,7 +187,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 *
 	 * Handle donation form submit event.
 	 *
 	 * @since 2.8.0
@@ -201,55 +200,40 @@ class AdvancedCardFields extends PaymentMethod {
 			return true;
 		}
 
-		event.preventDefault();
+		const hostedFieldOnSubmitErrorHandler = this.hostedFieldOnSubmitErrorHandler.bind( this );
 
-		const self = this;
-		const data = event.data;
+		event.preventDefault();
+		Give.form.fn.removeErrors( this.jQueryForm );
+
+		const { hostedCardFields } = event.data;
 		const getExtraCardDetails = this.getExtraCardDetails.bind( this );
 
-		const payload = await data.hostedCardFields.submit( getExtraCardDetails ).catch( error => {
-			const errorStringByGroup = {};
-			const errors = [];
-
-			error.details.forEach( detail => {
-				if ( ! errorStringByGroup.hasOwnProperty( `${ detail.field }` ) ) {
-					// setup error label.
-					let label = '';
-
-					if ( -1 !== detail.field.indexOf( 'expiry' ) ) {
-						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.expirationDateField;
-					} else if ( -1 !== detail.field.indexOf( 'number' ) ) {
-						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardNumberField;
-					} else if ( -1 !== detail.field.indexOf( 'security_code' ) ) {
-						label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardCvcField;
-					}
-
-					if ( label ) {
-						errorStringByGroup[ `${ detail.field }` ] = [ `<strong>${ label }</strong>` ];
-					} else {
-						errorStringByGroup[ `${ detail.field }` ] = [];
-					}
-				}
-
-				errorStringByGroup[ `${ detail.field }` ].push( `${ detail.description }.` );
-			} );
-
-			for ( const field in errorStringByGroup ) {
-				errors.push( {
-					message: errorStringByGroup[ field ].join( ' ' ),
-				} );
+		const payload = await hostedCardFields.submit(
+			{
+			// Trigger 3D Secure authentication
+				contingencies: [ '3D_SECURE' ],
+				...getExtraCardDetails,
 			}
+		).catch( hostedFieldOnSubmitErrorHandler );
 
+		if ( ! payload ) {
+			return false;
+		}
+
+		if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
+			// Handle no 3D Secure contingency passed scenario
 			Give.form.fn.addErrorsAndResetDonationButton(
-				self.jQueryForm,
-				Give.form.fn.getErrorHTML( errors )
+				this.jQueryForm,
+				Give.form.fn.getErrorHTML( [ {
+					message: givePayPalCommerce.threeDsCardAuthenticationFailedNotice,
+				} ] )
 			);
-		} );
+
+			return false;
+		}
 
 		// Approve payment on if we did not get any error.
-		if ( payload ) {
-			await this.onApproveHandler( payload );
-		}
+		await this.onApproveHandler( payload );
 
 		return false;
 	}
@@ -427,6 +411,98 @@ class AdvancedCardFields extends PaymentMethod {
 			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
 			target.style.setProperty( 'height', this.styles.container.height );
 		}
+	}
+
+	/**
+	 * Return whether or not 3ds authorize card Can authorize card.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} payload Hosted field response
+	 * @return {boolean} true if card can be authorize with 3ds or vice versa
+	 */
+	canThreeDsAuthorizeCard( payload ) {
+		return [ 'NO', 'POSSIBLE' ].includes( payload.liabilityShift );
+	}
+
+	/**
+	 * Return whether or not card 3ds authorized to process payment.
+	 *
+	 * @since 2.8.0
+	 * @param {object} payload Hosted field response
+	 * @return {boolean} true if card is 3ds authorized or vice versa
+	 */
+	IsCardThreeDsAuthorized( payload ) {
+		return payload.liabilityShifted && 'POSSIBLE' === payload.liabilityShift;
+	}
+
+	/**
+	 * Handle hosted fields on submit errors.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {object} error Collection of hosted field on submit error
+	 */
+	hostedFieldOnSubmitErrorHandler( error ) {
+		const errorStringByGroup = {};
+		const errors = [];
+
+		error.details.forEach( detail => {
+			// If details is not about card field then insert notice into errors object.
+			if ( ! detail.hasOwnProperty( 'field' ) ) {
+				errors.push( {
+					message: detail.description,
+				} );
+
+				return;
+			}
+
+			if ( ! errorStringByGroup.hasOwnProperty( `${ detail.field }` ) ) {
+				// setup error label.
+				let label = '';
+
+				if ( -1 !== detail.field.indexOf( 'expiry' ) ) {
+					label = givePayPalCommerce.paypalCardInfoErrorPrefixes.expirationDateField;
+				} else if ( -1 !== detail.field.indexOf( 'number' ) ) {
+					label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardNumberField;
+				} else if ( -1 !== detail.field.indexOf( 'security_code' ) ) {
+					label = givePayPalCommerce.paypalCardInfoErrorPrefixes.cardCvcField;
+				} else {
+					// Handle server errors.
+					if ( detail.hasOwnProperty( 'description' ) ) {
+						errors.push( {
+							message: detail.description,
+						} );
+
+						return;
+					}
+
+					errors.push( {
+						message: `${ givePayPalCommerce.failedPaymentProcessingNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
+					} );
+					return;
+				}
+
+				if ( label ) {
+					errorStringByGroup[ `${ detail.field }` ] = [ `<strong>${ label }</strong>` ];
+				} else {
+					errorStringByGroup[ `${ detail.field }` ] = [];
+				}
+			}
+
+			errorStringByGroup[ `${ detail.field }` ].push( `${ detail.description }.` );
+		} );
+
+		for ( const field in errorStringByGroup ) {
+			errors.push( {
+				message: errorStringByGroup[ field ].join( ' ' ),
+			} );
+		}
+
+		Give.form.fn.addErrorsAndResetDonationButton(
+			this.jQueryForm,
+			Give.form.fn.getErrorHTML( errors )
+		);
 	}
 }
 
