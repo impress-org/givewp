@@ -1,5 +1,6 @@
 .give-obw-donation-form {
 	display: grid;
+	position: relative;
 	grid-template-columns: repeat(2, 1fr);
 	width: 1200px;
 	grid-gap: 62px;
@@ -12,7 +13,11 @@
 	align-items: flex-start;
 	height: calc(100vh - 190px);
 
-	> h1 {
+	.give-obw-donation-form__fixed {
+		position: fixed;
+	}
+
+	h1 {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 600;
 		font-size: 24px;
@@ -21,7 +26,7 @@
 		margin: 0 0 8px 0;
 	}
 
-	> p {
+	p {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 500;
 		font-size: 16px;
@@ -30,7 +35,7 @@
 		margin: 0 0 38px;
 	}
 
-	> h2 {
+	h2 {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 600;
 		font-size: 16px;
@@ -39,7 +44,7 @@
 		margin: 0 0 4px 0;
 	}
 
-	> ul {
+	ul {
 		padding: 0;
 		margin: 0 0 36px 0;
 		list-style: none;

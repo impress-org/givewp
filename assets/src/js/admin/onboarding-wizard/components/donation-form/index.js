@@ -14,7 +14,7 @@ import './style.scss';
 const DonationForm = () => {
 	const formPreviewUrl = getWindowData( 'formPreviewUrl' );
 	const [ iframeLoaded, setIframeLoaded ] = useState( false );
-	const [ iframeHeight, setIframeHeight ] = useState( 800 );
+	const [ iframeHeight, setIframeHeight ] = useState( 749 );
 
 	useEffect( () => {
 		window.addEventListener( 'message', receiveMessage, false );
