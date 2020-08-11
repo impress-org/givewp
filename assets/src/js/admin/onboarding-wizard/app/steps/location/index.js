@@ -3,6 +3,7 @@ const { __ } = wp.i18n;
 
 // Import store dependencies
 import { useStoreValue } from '../../store';
+import { getLocaleCurrency } from '../../../utils';
 import { setCountry, setState, setCurrency, fetchStateList } from '../../store/actions';
 
 // Import components
@@ -24,6 +25,7 @@ const Location = () => {
 	const onChangeCountry = ( value ) => {
 		dispatch( fetchStateList( value, dispatch ) );
 		dispatch( setCountry( value ) );
+		dispatch( setCurrency( getLocaleCurrency( value ) ) );
 	};
 
 	return (
