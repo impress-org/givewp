@@ -112,8 +112,6 @@ class Webhooks {
 
 		$webhookUrl = $this->webhookRoute->getRouteUrl();
 
-		$webhookUrl = 'https://ab34e94f0f29.ngrok.io/index.php?give-listener=paypal-commerce&XDEBUG_SESSION_START=PHPSTORM';
-
 		$response = wp_remote_post(
 			$apiUrl,
 			[
