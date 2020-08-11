@@ -27,7 +27,7 @@ const Features = () => {
 		<div className="give-obw-fundraising-needs">
 			<h1>{ __( 'What do you need in your first donation form?', 'give' ) }</h1>
 			<p>
-				{ __( 'Don\t worry, these settings can always be changed later.', 'give' ) }
+				{ __( 'Don\'t worry, these settings can always be changed later.', 'give' ) }
 			</p>
 			<CardInput values={ features } onChange={ ( value ) => dispatch( setFeatures( value ) ) } >
 				<Card value="one-time-donations">
