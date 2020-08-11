@@ -5,8 +5,8 @@
 .give-obw-donation-form-preview__iframe {
 	border: none;
 	width: 560px;
-	height: 800px;
-	transition: opacity 0.2s ease;
+	overflow: hidden;
+	transition: opacity 0.2s ease, height 0.2s ease;
 }
 
 .give-obw-donation-form-preview__loading-message {
@@ -15,7 +15,6 @@
 	left: 10px;
 	border: none;
 	width: 542px;
-	height: 748px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
