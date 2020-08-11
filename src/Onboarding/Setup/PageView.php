@@ -49,6 +49,24 @@ class PageView {
 	}
 
 	/**
+	 * @return bool
+	 *
+	 * @since 2.8.0
+	 */
+	public function isStripeSetup() {
+		return \Give\Helpers\Gateways\Stripe::isAccountConfigured();
+	}
+
+	/**
+	 * @return bool
+	 *
+	 * @since 2.8.0
+	 */
+	public function isPayPalSetup() {
+		return false;
+	}
+
+	/**
 	 * Returns a qualified image URL.
 	 *
 	 * @param string $src
