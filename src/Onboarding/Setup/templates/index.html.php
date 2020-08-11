@@ -47,7 +47,7 @@
 			[
 				'title'    => sprintf( '%s 2: %s', __( 'Step', 'give' ), __( 'Connect a payment gateway', 'give' ) ),
 				'contents' => [
-					$this->render_template(
+					! $this->isStripeSetup() ? $this->render_template(
 						'row-item',
 						[
 							'class'       => 'paypal',
@@ -68,8 +68,8 @@
 								)
 							),
 						]
-					),
-					! \Give\Helpers\Gateways\Stripe::isAccountConfigured() ? $this->render_template(
+					) : '',
+					! $this->isStripeSetup() && ! $this->isPayPalSetup() ? $this->render_template(
 						'row-item',
 						[
 							'class'       => 'stripe',
@@ -91,8 +91,8 @@
 								)
 							),
 						]
-					)
-					: $this->render_template(
+					) : '',
+					$this->isStripeSetup() && ! $this->isPayPalSetup() ? $this->render_template(
 						'row-item',
 						[
 							'class'       => 'stripe stripe-webhooks',
@@ -104,7 +104,7 @@
 								sprintf( '<a id="stripeWebhooksConfigureButton" href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) )
 								. sprintf( '<button class="hidden" disabled="disable" id="stripeWebhooksConfigureConfirmed">%s</button>', __( 'Webhooks Configured!', 'give' ) ),
 						]
-					),
+					) : '',
 				],
 				'footer'   => $this->render_template(
 					'footer',
