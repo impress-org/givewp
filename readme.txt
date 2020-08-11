@@ -227,6 +227,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain". [#4952](https://github.com/impress-org/givewp/issues/4952)
 * New: The Donations search bar now allows you to search by like keywords for rather than exact match which makes it a lot easier to find proper results. [#4994](https://github.com/impress-org/givewp/issues/4994)
 * Fix: Revamped the logic for requiring Postal / Zip codes for countries that do not have postal codes. [#5006](https://github.com/impress-org/givewp/issues/5006)
+* Fix: Resolved an issue when using the Multi-Step donation form with the first step disabled would cause the donor to auto-scroll incorrectly on page load. [#5004](https://github.com/impress-org/givewp/issues/5004)
 * Fix: Resolved a database table creation issue for new installs due to bug within our new bootstrapping process. [#5017](https://github.com/impress-org/givewp/issues/5017)
 * Fix: Ensure that the "Title Prefixes" maintain the order of values when saved. [#4992](https://github.com/impress-org/givewp/issues/4992)
 * Fix: The "Donation Form" Block can now properly be re-selected when it's using the new Multi-Step donation form template and the admin loses focus on the block. [#5017](https://github.com/impress-org/givewp/issues/5017)
