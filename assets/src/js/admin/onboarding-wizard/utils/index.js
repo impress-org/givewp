@@ -124,6 +124,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  * @since 2.8.0
  */
 export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
+	dispatch( setStateList( null ) );
 	axios.get( getAPIRoot() + 'give-api/v2/onboarding/location', {
 		params: {
 			countryCode: country,
@@ -133,7 +134,9 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
 		},
 	} )
 		.then( ( response ) => response.data )
-		.then( ( data ) => dispatch( setStateList( data.states ) ) );
+		.then( ( data ) => {
+			dispatch( setStateList( data.states ) );
+		} );
 };
 
 /**

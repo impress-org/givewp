@@ -9,7 +9,8 @@ import { toKebabCase } from '../../utils';
 import './style.scss';
 
 const SelectInput = ( { label, value, onChange, options } ) => {
-	const selectedOptionValue = options.filter( option => option.value === value );
+	const selectedOptionValue = options !== null ? options.filter( option => option.value === value ) : null;
+	const isLoading = options === null ? true : false;
 	const selectStyles = {
 		control: ( provided, state ) => ( {
 			...provided,
@@ -54,13 +55,14 @@ const SelectInput = ( { label, value, onChange, options } ) => {
 		<div className="give-obw-select-input">
 			{ label && ( <label className="give-obw-select-input__label" htmlFor={ toKebabCase( label ) }>{ label }</label> ) }
 			<Select
+				isLoading={ isLoading }
 				inputId={ label && toKebabCase( label ) }
 				value={ selectedOptionValue }
 				onChange={ ( selectedOption ) => onChange( selectedOption.value ) }
 				options={ options }
 				styles={ selectStyles }
 				maxMenuHeight="200px"
-				isDisabled={ options.length < 2 }
+				isDisabled={ isLoading }
 				theme={ ( theme ) => ( {
 					...theme,
 					colors: {
