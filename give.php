@@ -129,6 +129,7 @@ final class Give {
 	 * @var array Array of Service Providers to load
 	 */
 	private $serviceProviders = [
+		LegacyServiceProvider::class,
 		RestAPI::class,
 	];
 
@@ -176,12 +177,6 @@ final class Give {
 		add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
 
 		register_activation_hook( GIVE_PLUGIN_FILE, [ $this, 'install' ] );
-
-		// This must be loaded before plugins_loaded, so load it here
-		$legacyServiceProvider = new LegacyServiceProvider();
-
-		$legacyServiceProvider->register();
-		$legacyServiceProvider->boot();
 
 		do_action( 'give_loaded' );
 	}
