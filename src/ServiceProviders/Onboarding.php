@@ -6,6 +6,7 @@ use Give\Helpers\Hooks;
 use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\DefaultFormFactory;
+use Give\Onboarding\LocaleCollection;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 use Give\Onboarding\Wizard\Page as WizardPage;
@@ -36,6 +37,7 @@ class Onboarding implements ServiceProvider {
 		give()->bind( FormRepository::class );
 		give()->bind( DefaultFormFactory::class );
 		give()->bind( SettingsRepositoryFactory::class );
+		give()->bind( LocaleCollection::class );
 	}
 
 	/**

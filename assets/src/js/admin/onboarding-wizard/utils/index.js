@@ -58,6 +58,11 @@ export const getCurrencyList = () => {
 	} );
 };
 
+export const getLocaleCurrency = ( countryCode ) => {
+	const lookup = getWindowData( 'localeCurrency' );
+	return lookup[ countryCode ] ?? '';
+};
+
 export const getFeaturesEnabledDefault = () => {
 	const features = getWindowData( 'features' );
 	return features.filter( ( feature ) => {

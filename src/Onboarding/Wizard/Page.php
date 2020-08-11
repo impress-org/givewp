@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || exit;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
+use Give\Onboarding\LocaleCollection;
 
 /**
  * Onboarding Wizard admin page class
@@ -27,13 +28,21 @@ class Page {
 	/** @var SettingsRepository */
 	protected $settingsRepository;
 
+	/** @var LocaleCollection */
+	protected $localeCollection;
+
 	/**
 	 * @param FormRepository $formRepository
 	 * @param SettingsRepositoryFactory $settingsRepositoryFactory
 	 */
-	public function __construct( FormRepository $formRepository, SettingsRepositoryFactory $settingsRepositoryFactory ) {
+	public function __construct(
+		FormRepository $formRepository,
+		SettingsRepositoryFactory $settingsRepositoryFactory,
+		LocaleCollection $localeCollection
+	) {
 		$this->formRepository     = $formRepository;
 		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
+		$this->localeCollection   = $localeCollection;
 	}
 
 	/**
@@ -142,6 +151,7 @@ class Page {
 				'apiNonce'       => wp_create_nonce( 'wp_rest' ),
 				'setupUrl'       => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
 				'formPreviewUrl' => admin_url( '?page=give-form-preview' ),
+				'localeCurrency' => $this->localeCollection->pluck( 'currency_code' ),
 				'currencies'     => FormatList::fromKeyValue( give_get_currencies_list() ),
 				'countries'      => FormatList::fromKeyValue( give_get_country_list() ),
 				'states'         => FormatList::fromKeyValue( give_get_states( 'US' ) ),
@@ -154,7 +164,7 @@ class Page {
 						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
-				'addons'         => $this->settingsRepository->get( 'addons' ),
+				'addons'         => $this->settingsRepository->get( 'addons' ) ?: [],
 			]
 		);
 
