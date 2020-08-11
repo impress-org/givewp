@@ -12,7 +12,9 @@ import './style.scss';
 const DonationForm = () => {
 	return (
 		<div className="give-obw-donation-form">
-			<DonationFormComponent />
+			<div className="give-obw-donation-form__preview">
+				<DonationFormComponent />
+			</div>
 			<div className="give-obw-donation-form__content">
 				<h1>{ __( 'Check out your first donation form!', 'give' ) }</h1>
 				<p>

@@ -1,5 +1,5 @@
 // Import vendor dependencies
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 const { __ } = wp.i18n;
 
 // Import utilities
@@ -14,11 +14,25 @@ import './style.scss';
 const DonationForm = () => {
 	const formPreviewUrl = getWindowData( 'formPreviewUrl' );
 	const [ iframeLoaded, setIframeLoaded ] = useState( false );
+	const [ iframeHeight, setIframeHeight ] = useState( 800 );
+
+	useEffect( () => {
+		window.addEventListener( 'message', receiveMessage, false );
+		return () => {
+			window.removeEventListener( 'message', receiveMessage, false );
+		};
+	}, [] );
+
+	const receiveMessage = ( event ) => {
+		setIframeHeight( event.data.payload.height );
+	};
 
 	const iframeStyle = {
+		height: iframeHeight,
 		opacity: iframeLoaded === false ? '0' : '1',
 	};
 	const messageStyle = {
+		height: iframeHeight,
 		opacity: iframeLoaded === false ? '1' : '0',
 	};
 
@@ -39,7 +53,7 @@ const DonationForm = () => {
 					{ __( 'Building Form Preview...', 'give' ) }
 				</h3>
 			</div>
-			<iframe id="donationFormPreview" onLoad={ onIframeLoaded } className="give-obw-donation-form-preview__iframe" src={ formPreviewUrl } style={ iframeStyle } />
+			<iframe id="donationFormPreview" onLoad={ onIframeLoaded } className="give-obw-donation-form-preview__iframe" scrolling="no" src={ formPreviewUrl } style={ iframeStyle } />
 		</div>
 	);
 };
