@@ -124,7 +124,8 @@ article .description {
 	margin-top: -25px;
 	margin-left: 15px;
 }
-
+article.paypal .action a,
+article.paypal .action button,
 article.stripe .action a,
 article.stripe .action button {
 	margin-left: 15px;
@@ -134,10 +135,19 @@ article.stripe .action button {
 	line-height: 35px;
 	text-align: center;
 	color: #fff;
-	background: rgb(70, 170, 228);
-	background: linear-gradient(180deg, rgba(70, 170, 228, 1) 0%, rgba(12, 144, 222, 1) 50%);
 	border: 0;
 	border-radius: 6px;
+}
+
+article.paypal .action a,
+article.paypal .action button {
+	background-color: #0070bc;
+}
+
+article.stripe .action a,
+article.stripe .action button {
+	background: rgb(70, 170, 228);
+	background: linear-gradient(180deg, rgba(70, 170, 228, 1) 0%, rgba(12, 144, 222, 1) 50%);
 
 	&.hidden {
 		display: none;

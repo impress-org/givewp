@@ -50,11 +50,23 @@
 					$this->render_template(
 						'row-item',
 						[
+							'class'       => 'paypal',
 							'icon'        => $this->image( 'paypal@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'PayPal', 'give' ),
 							'title'       => esc_html__( 'Connect to PayPal', 'give' ),
 							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It’s been the go-to payment merchant in for many of the worlds top NGOs. Accept PayPal, Credit and Debit Cards, and more using PayPal’s Smart Buttons without any added platform fees.', 'give' ),
-							'action'      => '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/setup-page/paypal.svg' . '" alt="Connect to PayPal" />',
+							'action'      => sprintf(
+								'<a href="%s"><i class="fab fa-paypal"></i>&nbsp;&nbsp;Connect to PayPal</a>',
+								add_query_arg(
+									[
+										'post_type' => 'give_forms',
+										'page'      => 'give-settings',
+										'tab'       => 'gateways',
+										'section'   => 'paypal-standard',
+									],
+									esc_url_raw( admin_url( 'edit.php' ) )
+								)
+							),
 						]
 					),
 					! \Give\Helpers\Gateways\Stripe::isAccountConfigured() ? $this->render_template(
