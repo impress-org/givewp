@@ -2,7 +2,7 @@
 // Note: no-unused-vars rule is disabled while axios logic is not enabled
 
 import axios from 'axios';
-import { setStateList } from '../app/store/actions';
+import { setStateList, setFetchingStatesList } from '../app/store/actions';
 
 export const getWindowData = ( value ) => {
 	const data = window.giveOnboardingWizardData;
@@ -124,7 +124,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  * @since 2.8.0
  */
 export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
-	dispatch( setStateList( null ) );
+	dispatch( setFetchingStatesList( true ) );
 	axios.get( getAPIRoot() + 'give-api/v2/onboarding/location', {
 		params: {
 			countryCode: country,
@@ -136,6 +136,7 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
 			dispatch( setStateList( data.states ) );
+			dispatch( setFetchingStatesList( false ) );
 		} );
 };
 

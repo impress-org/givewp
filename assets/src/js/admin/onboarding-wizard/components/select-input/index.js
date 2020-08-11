@@ -8,9 +8,12 @@ import { toKebabCase } from '../../utils';
 // Import styles
 import './style.scss';
 
-const SelectInput = ( { label, value, onChange, options } ) => {
+const SelectInput = ( { label, value, isLoading, onChange, options } ) => {
+	if ( options && options.length < 2 ) {
+		return null;
+	}
+
 	const selectedOptionValue = options !== null ? options.filter( option => option.value === value ) : null;
-	const isLoading = options === null ? true : false;
 	const selectStyles = {
 		control: ( provided, state ) => ( {
 			...provided,

@@ -15,7 +15,7 @@ import BackgroundImage from './background';
 import './style.scss';
 
 const Location = () => {
-	const [ { configuration, currenciesList, statesList, countriesList }, dispatch ] = useStoreValue();
+	const [ { configuration, currenciesList, statesList, fetchingStatesList, countriesList }, dispatch ] = useStoreValue();
 
 	const country = configuration.country;
 	const state = configuration.state;
@@ -32,7 +32,7 @@ const Location = () => {
 			<h1>{ __( 'Where are you fundraising?', 'give' ) }</h1>
 			<Card>
 				<SelectInput label={ __( 'Country', 'give' ) } value={ country } onChange={ onChangeCountry } options={ countriesList } />
-				<SelectInput label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } />
+				<SelectInput label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } isLoading={ fetchingStatesList } />
 				<SelectInput label={ __( 'Currency', 'give' ) } value={ currency } onChange={ ( value ) => dispatch( setCurrency( value ) ) } options={ currenciesList } />
 			</Card>
 			<ContinueButton />
