@@ -41,7 +41,7 @@ const App = () => {
 		lastStep: 5,
 		configuration: {
 			userType: 'individual',
-			causeType: 'school',
+			causeType: '',
 			country: 'US',
 			state: null,
 			currency: 'USD',
