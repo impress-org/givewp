@@ -1,12 +1,9 @@
 // Import vendor dependencies
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Import store dependencies
 import { useStoreValue } from '../../app/store';
-
-// Import utilities
-import { setStepFocus } from '../../utils';
 
 // Import components
 import StepNavigation from '../step-navigation';
@@ -20,10 +17,6 @@ const Wizard = ( { children } ) => {
 	const steps = children;
 
 	const app = useRef( null );
-
-	useEffect( () => {
-		setStepFocus();
-	}, [ currentStep ] );
 
 	return (
 		<div className="give-obw" ref={ app }>
