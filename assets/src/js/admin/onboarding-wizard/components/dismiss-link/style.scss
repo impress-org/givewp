@@ -1,0 +1,15 @@
+.give-obw-dismiss-link {
+	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+	color: #666;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	margin-top: 42px;
+	padding: 6px;
+	border-radius: 3px;
+
+	&:focus {
+		box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
+		outline: none;
+	}
+}

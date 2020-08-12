@@ -11,6 +11,7 @@ import Card from '../../../components/card';
 import ContinueButton from '../../../components/continue-button';
 import SelectInput from '../../../components/select-input';
 import BackgroundImage from './background';
+import DismissLink from '../../../components/dismiss-link';
 
 // Import styles
 import './style.scss';
@@ -38,6 +39,7 @@ const Location = () => {
 				<SelectInput label={ __( 'Currency', 'give' ) } value={ currency } onChange={ ( value ) => dispatch( setCurrency( value ) ) } options={ currenciesList } />
 			</Card>
 			<ContinueButton />
+			<DismissLink />
 		</div>
 	);
 };

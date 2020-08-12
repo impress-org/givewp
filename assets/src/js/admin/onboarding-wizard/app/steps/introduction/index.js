@@ -1,18 +1,15 @@
 // Import vendor dependencies
 const { __ } = wp.i18n;
 
-// Import utilities
-import { getWindowData } from '../../../utils';
-
 // Import styles
 import './style.scss';
 
 import Card from '../../../components/card';
 import GiveLogo from '../../../components/give-logo';
 import ContinueButton from '../../../components/continue-button';
+import DismissLink from '../../../components/dismiss-link';
 
 const Introduction = () => {
-	const setupUrl = getWindowData( 'setupUrl' );
 	return (
 		<div className="give-obw-introduction">
 			<Card>
@@ -27,7 +24,7 @@ const Introduction = () => {
 					<ContinueButton label={ __( 'Start Setup', 'give' ) } />
 				</div>
 			</Card>
-			<a href={ setupUrl }>{ __( 'Dismiss Setup Wizard', 'give' ) }</a>
+			<DismissLink />
 		</div>
 	);
 };
