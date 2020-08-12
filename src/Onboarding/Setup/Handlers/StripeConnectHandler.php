@@ -48,7 +48,7 @@ class StripeConnectHandler implements RequestHandler {
 		\Stripe\Stripe::setApiKey( $access_token );
 
 		$this->stripe_accounts = give_stripe_get_all_accounts();
-		$this->account_details = give_stripe_get_account_details( $vars['stripe_user_id'] );
+		$this->account_details = @give_stripe_get_account_details( $vars['stripe_user_id'] );
 
 		$this->liveSecretKey      = $vars['stripe_access_token'];
 		$this->testSecretKey      = $vars['stripe_access_token_test'];
