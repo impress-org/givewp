@@ -198,12 +198,15 @@ class AjaxRequestHandler {
 		$formId   = absint( $postData['give-form-id'] );
 
 		$data = [
-			'formId'         => $formId,
-			'donationAmount' => $postData['give-amount'],
-			'payer'          => [
+			'formId'              => $formId,
+			'donationAmount'      => $postData['give-amount'],
+			'payer'               => [
 				'firstName' => $postData['give_first'],
 				'lastName'  => $postData['give_last'],
 				'email'     => $postData['give_email'],
+			],
+			'application_context' => [
+				'shipping_preference' => 'NO_SHIPPING',
 			],
 		];
 
