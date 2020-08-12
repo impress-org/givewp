@@ -242,7 +242,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => '#',
+									'href'             => $this->give_link( 'https://givewp.com/addons/' ),
 									'screenReaderText' => __( 'View Add-ons for GiveWP', 'give' ),
 								]
 							),
