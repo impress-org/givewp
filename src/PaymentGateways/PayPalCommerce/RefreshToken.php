@@ -32,6 +32,18 @@ class RefreshToken {
 		$this->detailsRepository = $detailsRepository;
 	}
 
+
+	/**
+	 * Return cron json name which uses to refresh token.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getCronJobHookName() {
+		return 'give_paypal_commerce_refresh_token';
+	}
+
 	/**
 	 * Register cron job to refresh access token.
 	 * Note: only for internal use.
@@ -44,8 +56,19 @@ class RefreshToken {
 	public function registerCronJobToRefreshToken( $tokenExpires ) {
 		wp_schedule_single_event(
 			time() + ( $tokenExpires - 1800 ), // Refresh token before half hours of expires date.
-			'give_paypal_commerce_refresh_token'
+			$this->getCronJobHookName()
 		);
+	}
+
+	/**
+	 * Delete cron job which refresh access token.
+	 * Note: only for internal use.
+	 *
+	 * @since 2.8.0
+	 *
+	 */
+	public function deleteRefreshTokenCronJob() {
+		wp_clear_scheduled_hook( $this->getCronJobHookName() );
 	}
 
 	/**
