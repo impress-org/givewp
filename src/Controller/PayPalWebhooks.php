@@ -6,6 +6,8 @@ use Exception;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PaymentCaptureCompleted;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PaymentCaptureDenied;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PaymentCaptureRefunded;
 use InvalidArgumentException;
 
@@ -21,7 +23,9 @@ class PayPalWebhooks {
 	 * @var string[]
 	 */
 	private $eventHandlers = [
-		'PAYMENT.CAPTURE.REFUNDED' => PaymentCaptureRefunded::class,
+		'PAYMENT.CAPTURE.REFUNDED'  => PaymentCaptureRefunded::class,
+		'PAYMENT.CAPTURE.COMPLETED' => PaymentCaptureCompleted::class,
+		'PAYMENT.CAPTURE.DENIED'    => PaymentCaptureDenied::class,
 	];
 
 	/**
@@ -41,9 +45,11 @@ class PayPalWebhooks {
 	/**
 	 * PayPalWebhooks constructor.
 	 *
+	 * @param  Webhooks  $webhooksRepository
+	 * @param  MerchantDetails  $merchantRepository
+	 *
 	 * @since 2.8.0
 	 *
-	 * @param Webhooks $webhooksRepository
 	 */
 	public function __construct( Webhooks $webhooksRepository, MerchantDetails $merchantRepository ) {
 		$this->webhooksRepository = $webhooksRepository;

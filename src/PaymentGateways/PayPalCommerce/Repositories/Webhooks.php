@@ -35,6 +35,8 @@ class Webhooks {
 	 */
 	private $webhookEvents = [
 		'PAYMENT.CAPTURE.REFUNDED',
+		'PAYMENT.CAPTURE.COMPLETED',
+		'PAYMENT.CAPTURE.DENIED',
 	];
 
 	/**
