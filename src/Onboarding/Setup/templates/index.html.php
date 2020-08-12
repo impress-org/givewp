@@ -1,7 +1,7 @@
 <div class="wrap" class="give-setup-page">
 
 	<h1 class="wp-heading-inline">
-		<?php echo __( 'Setup GiveWP', 'give' ); ?>
+		<?php echo __( 'GiveWP Setup Guide', 'give' ); ?>
 	</h1>
 
 	<hr class="wp-header-end">
