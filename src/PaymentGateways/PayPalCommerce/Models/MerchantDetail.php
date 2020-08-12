@@ -67,6 +67,15 @@ class MerchantDetail {
 	public $accountIsReady = true;
 
 	/**
+	 * Whether or not the account can make custom payments (i.e Advanced Fields & PPCP)
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var bool
+	 */
+	public $supportsCustomPayments;
+
+	/**
 	 * Access token.
 	 *
 	 * @since 2.8.0
@@ -84,12 +93,13 @@ class MerchantDetail {
 	 */
 	public function toArray() {
 		return [
-			'merchantId'         => $this->merchantId,
-			'merchantIdInPayPal' => $this->merchantIdInPayPal,
-			'clientId'           => $this->clientId,
-			'clientSecret'       => $this->clientSecret,
-			'token'              => $this->tokenDetails,
-			'accountIsReady'     => $this->accountIsReady,
+			'merchantId'             => $this->merchantId,
+			'merchantIdInPayPal'     => $this->merchantIdInPayPal,
+			'clientId'               => $this->clientId,
+			'clientSecret'           => $this->clientSecret,
+			'token'                  => $this->tokenDetails,
+			'accountIsReady'         => $this->accountIsReady,
+			'supportsCustomPayments' => $this->supportsCustomPayments,
 		];
 	}
 
@@ -127,11 +137,12 @@ class MerchantDetail {
 		$this->merchantId         = $merchantDetails['merchantId'];
 		$this->merchantIdInPayPal = $merchantDetails['merchantIdInPayPal'];
 
-		$this->clientId       = $merchantDetails['clientId'];
-		$this->clientSecret   = $merchantDetails['clientSecret'];
-		$this->tokenDetails   = $merchantDetails['token'];
-		$this->accountIsReady = $merchantDetails['accountIsReady'];
-		$this->accessToken    = $this->tokenDetails['accessToken'];
+		$this->clientId               = $merchantDetails['clientId'];
+		$this->clientSecret           = $merchantDetails['clientSecret'];
+		$this->tokenDetails           = $merchantDetails['token'];
+		$this->accountIsReady         = $merchantDetails['accountIsReady'];
+		$this->supportsCustomPayments = $merchantDetails['supportsCustomPayments'];
+		$this->accessToken            = $this->tokenDetails['accessToken'];
 	}
 
 	/**
@@ -142,7 +153,15 @@ class MerchantDetail {
 	 * @param array $merchantDetails
 	 */
 	private function validate( $merchantDetails ) {
-		$required = [ 'merchantId', 'merchantIdInPayPal', 'clientId', 'clientSecret', 'token', 'accountIsReady' ];
+		$required = [
+			'merchantId',
+			'merchantIdInPayPal',
+			'clientId',
+			'clientSecret',
+			'token',
+			'accountIsReady',
+			'supportsCustomPayments',
+		];
 
 		if ( array_diff( $required, array_keys( $merchantDetails ) ) ) {
 			throw new InvalidArgumentException(
