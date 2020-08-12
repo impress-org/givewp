@@ -270,7 +270,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/documentation/' ),
+									'href'             => 'http://docs.givewp.com/getting-started', // Shortlink includes UTM tracking.
 									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
 								]
 							),
