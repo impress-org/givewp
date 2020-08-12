@@ -26,7 +26,7 @@ const YourCause = () => {
 
 	return (
 		<div className="give-obw-your-cause">
-			<h1>{ __( 'What does fundraising look for you?', 'give' ) }</h1>
+			<h1>{ __( 'What does fundraising look like for you?', 'give' ) }</h1>
 			<CardInput values={ userType } onChange={ ( values ) => dispatch( setUserType( values ) ) } checkMultiple={ false } >
 				<Card value="individual">
 					<IndividualIcon />

@@ -23,16 +23,6 @@ export const toKebabCase = ( str ) => {
 		.toLowerCase();
 };
 
-/**
- * Sets browser focus to first input/iframe element in current step
- *
- * @since 2.8.0
- */
-export const setStepFocus = () => {
-	const stepInputs = document.querySelectorAll( '.give-obw-step button, .give-obw-step input, .give-obw-step select, .give-obw-step iframe' );
-	stepInputs[ 0 ].focus();
-};
-
 export const getAPIRoot = () => {
 	return getWindowData( 'apiRoot' );
 };
