@@ -265,6 +265,7 @@ function give_ajax_get_states_field() {
 		'data'           => $data,
 		'default_state'  => $default_state,
 		'city_require'   => ! array_key_exists( $country, give_city_not_required_country_list() ),
+		'zip_require'    => ! array_key_exists( $country, give_get_country_list_without_postcodes() ),
 	);
 	wp_send_json( $response );
 }

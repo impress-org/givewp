@@ -7,10 +7,20 @@
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 	const $paymentGatewayContainer = $( '#give-payment-mode-select' );
 	let gatewayAnimating = false;
+	const { wp: parentWp } = window.parent;
+
+	// Make donation form block selectable in editor
+	if ( !! parentWp.data ) {
+		$container.on( 'click', function() {
+			const blockId = window.frameElement.closest( '.wp-block' ).getAttribute( 'data-block' );
+			parentWp.data.dispatch( 'core/block-editor' ).selectBlock( blockId );
+		} );
+	}
 
 	const navigator = {
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
+		firstFocus: false,
 		goToStep: ( step ) => {
 			// Adjust body height before animating step, to prevent choppy iframe resizing
 			// Compare next step to current step, and increase body height if next step is taller.
@@ -75,6 +85,10 @@
 			setupTabOrder();
 
 			setTimeout( function() {
+				// Do not auto-focus form on the page load if the first step is disabled
+				if ( ! navigator.firstFocus && templateOptions.introduction.enabled === 'disabled' ) {
+					return navigator.firstFocus = true;
+				}
 				if ( steps[ navigator.currentStep ].firstFocus ) {
 					$( steps[ navigator.currentStep ].firstFocus ).focus();
 				}
