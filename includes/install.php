@@ -391,7 +391,7 @@ function give_get_default_settings() {
 		'_give_stripe_get_all_accounts'               => [],
 
 		// Onboarding
-		'setup_page_enabled'                          => true,
+		'setup_page_enabled'                          => 'enabled',
 	];
 
 	return $options;

@@ -170,4 +170,29 @@ class Page {
 
 	}
 
+	public function redirect() {
+
+		// Bail if no activation redirect
+		if ( ! \Give_Cache::get( '_give_activation_redirect', true ) || wp_doing_ajax() ) {
+			return;
+		}
+
+		// Delete the redirect transient
+		\Give_Cache::delete( \Give_Cache::get_key( '_give_activation_redirect' ) );
+
+		// Bail if activating from network, or bulk
+		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+			return;
+		}
+
+		$redirect = add_query_arg( 'page', 'give-onboarding-wizard', admin_url() );
+
+		$upgrade = get_option( 'give_version_upgraded_from' );
+
+		if ( ! $upgrade ) {
+			// First time install
+			wp_safe_redirect( $redirect );
+			exit;
+		}
+	}
 }
