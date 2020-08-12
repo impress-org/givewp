@@ -32,7 +32,9 @@ class SettingsRepository {
 	 * @since 2.8.0
 	 */
 	public function get( $name ) {
-		return $this->settings[ $name ];
+		return ( $this->has( $name ) )
+			? $this->settings[ $name ]
+			: null;
 	}
 
 	/**
