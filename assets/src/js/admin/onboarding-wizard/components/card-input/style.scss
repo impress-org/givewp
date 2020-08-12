@@ -33,7 +33,8 @@ input:focus + .give-obw-card-input__option .give-obw-card {
 	// Using a border as a selected state with border-box box-sizing,
 	// creates a change in available content space within the box.
 	// Instead, a box-shadow maintains width and border-radius.
-	box-shadow: 0 0 0 3px rgb(105, 184, 107);
+	//box-shadow: 0 0 0 3px rgb(105, 184, 107);
+	box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
 }
 
 input[type='checkbox'] {
