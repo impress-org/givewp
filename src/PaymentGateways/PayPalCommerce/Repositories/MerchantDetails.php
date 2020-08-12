@@ -124,6 +124,17 @@ class MerchantDetails {
 	}
 
 	/**
+	 * Deletes the client token for the account
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return bool
+	 */
+	public function deleteClientToken() {
+		return delete_transient( $this->getClientTokenKey() );
+	}
+
+	/**
 	 * Get client token for hosted credit card fields.
 	 *
 	 * @since 2.8.0
@@ -131,7 +142,7 @@ class MerchantDetails {
 	 * @return string
 	 */
 	public function getClientToken() {
-		$optionName = "give_paypal_commerce_{$this->mode}_client_token";
+		$optionName = $this->getClientTokenKey();
 
 		if ( $optionValue = get_transient( $optionName ) ) {
 			return $optionValue;
@@ -196,5 +207,17 @@ class MerchantDetails {
 	 */
 	private function getAccountErrorsKey() {
 		return "give_paypal_commerce_{$this->mode}_account_errors";
+	}
+
+
+	/**
+	 * Returns the options key for the client token in the give mode
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	private function getClientTokenKey() {
+		return "give_paypal_commerce_{$this->mode}_client_token";
 	}
 }
