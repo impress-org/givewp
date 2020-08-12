@@ -135,7 +135,8 @@ class AjaxRequestHandler {
 				),
 				[
 					'body' => [
-						'return_url' => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
+						'return_url'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
+						'country_code' => give_get_option('base_country'),
 					],
 				]
 			)
