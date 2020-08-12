@@ -270,7 +270,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => '#',
+									'href'             => $this->give_link( 'https://givewp.com/documentation/' ),
 									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
 								]
 							),
