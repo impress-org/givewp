@@ -7,6 +7,15 @@
 	const $navigatorTitle = $( '.give-form-navigator .title' );
 	const $paymentGatewayContainer = $( '#give-payment-mode-select' );
 	let gatewayAnimating = false;
+	const { wp: parentWp } = window.parent;
+
+	// Make donation form block selectable in editor
+	if ( !! parentWp.data ) {
+		$container.on( 'click', function() {
+			const blockId = window.frameElement.closest( '.wp-block' ).getAttribute( 'data-block' );
+			parentWp.data.dispatch( 'core/block-editor' ).selectBlock( blockId );
+		} );
+	}
 
 	const navigator = {
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
