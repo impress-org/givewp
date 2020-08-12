@@ -52,6 +52,13 @@ class AjaxRequestHandler {
 	private $connectClient;
 
 	/**
+	 * @since 2.8.0
+	 *
+	 * @var ConnectClient
+	 */
+	private $refreshToken;
+
+	/**
 	 * AjaxRequestHandler constructor.
 	 *
 	 * @since 2.8.0
@@ -61,19 +68,22 @@ class AjaxRequestHandler {
 	 * @param PayPalClient    $paypalClient
 	 * @param ConnectClient   $connectClient
 	 * @param MerchantDetails $merchantRepository
+	 * @param RefreshToken    $refreshToken
 	 */
 	public function __construct(
 		Webhooks $webhooksRepository,
 		MerchantDetail $merchantDetails,
 		PayPalClient $paypalClient,
 		ConnectClient $connectClient,
-		MerchantDetails $merchantRepository
+		MerchantDetails $merchantRepository,
+		RefreshToken $refreshToken
 	) {
 		$this->webhooksRepository = $webhooksRepository;
 		$this->merchantDetails    = $merchantDetails;
 		$this->paypalClient       = $paypalClient;
 		$this->connectClient      = $connectClient;
 		$this->merchantRepository = $merchantRepository;
+		$this->refreshToken       = $refreshToken;
 	}
 
 	/**
@@ -136,7 +146,7 @@ class AjaxRequestHandler {
 				[
 					'body' => [
 						'return_url'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
-						'country_code' => give_get_option('base_country'),
+						'country_code' => give_get_option( 'base_country' ),
 					],
 				]
 			)
@@ -168,6 +178,8 @@ class AjaxRequestHandler {
 
 		$this->merchantRepository->delete();
 		$this->merchantRepository->deleteAccountErrors();
+		$this->merchantRepository->deleteClientToken();
+		$this->refreshToken->deleteRefreshTokenCronJob();
 
 		wp_send_json_success();
 	}
