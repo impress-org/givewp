@@ -41,7 +41,7 @@ const Addons = () => {
 				</Card>
 				<Card value="pdf-receipts">
 					<PDFReceiptsIcon />
-					<strong>{ __( 'PDF Reciepts', 'give' ) }</strong>
+					<strong>{ __( 'PDF Receipts', 'give' ) }</strong>
 				</Card>
 				<Card value="custom-form-fields">
 					<CustomFormFieldsIcon />
