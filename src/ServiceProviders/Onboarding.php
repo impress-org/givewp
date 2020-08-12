@@ -17,8 +17,9 @@ use Give\Onboarding\Routes\CurrencyRoute;
 use Give\Onboarding\Routes\AddonsRoute;
 use Give\Onboarding\Routes\FeaturesRoute;
 use Give\Onboarding\Routes\StripeWebhookRecievedRoute;
-use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
+use Give\Onboarding\Setup\Handlers\AdminNoticeHandler;
 use Give\Onboarding\Setup\Handlers\StripeConnectHandler;
+use Give\Onboarding\Setup\Handlers\TopLevelMenuRedirect;
 
 class Onboarding implements ServiceProvider {
 
@@ -64,6 +65,7 @@ class Onboarding implements ServiceProvider {
 
 		// Maybe load Setup Page
 		if ( give_is_setting_enabled( SetupPage::getSetupPageEnabledOrDisabled() ) ) {
+			Hooks::addAction( 'admin_init', AdminNoticeHandler::class, 'maybeHandle' );
 			Hooks::addAction( 'admin_init', TopLevelMenuRedirect::class, 'maybeHandle' );
 			Hooks::addAction( 'admin_init', StripeConnectHandler::class, 'maybeHandle' );
 			Hooks::addAction( 'admin_menu', SetupPage::class, 'add_page' );
