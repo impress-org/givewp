@@ -97,41 +97,40 @@
 					$this->isStripeSetup() && ! $this->isPayPalSetup() && ! $this->isStripeWebhooksSetup() ? $this->render_template(
 						'row-item',
 						[
+							'id'          => 'stripeWebhooks',
 							'class'       => 'stripe stripe-webhooks',
 							'icon'        => $this->image( 'stripe-connect@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
 							'title'       => esc_html__( 'Please configure your Stripe webhook to finalize the setup.', 'give' ),
 							'description' => esc_html__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the Webhooks Section of your Stripe Dashboard and click the Add endpoint button and paste the following URL: ', 'give' ) . '<br /><span id="stripeWebhooksCopyHandler" class="stripe-webhooks-url"><input disabled="disabled" id="stripeWebhooksCopy" value="' . add_query_arg( 'give-listener', 'stripe', site_url() ) . '" /> &nbsp; <i id="stripeWebhooksCopyIcon" class="fa fa-clipboard"></i></input>',
 							'action'      =>
-								sprintf( '<a id="stripeWebhooksConfigureButton" href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) )
-								. sprintf( '<button class="hidden" disabled="disable" id="stripeWebhooksConfigureConfirmed">%s</button>', __( 'Webhooks Configured!', 'give' ) ),
+								sprintf( '<a id="stripeWebhooksConfigureButton" href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) ),
 						]
 					) : '',
-					$this->isStripeSetup() && ! $this->isPayPalSetup() && $this->isStripeWebhooksSetup() ? $this->render_template(
+					$this->render_template(
 						'row-item',
 						[
-							'class'       => 'setup-item-completed',
+							'id'          => 'stripeConnected',
+							'class'       => ( $this->isStripeWebhooksSetup() ) ? 'stripe setup-item-completed' : 'stripe setup-item-completed hidden',
 							'icon'        => $this->image( 'check-circle.min.png' ),
 							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
 							'title'       => esc_html__( 'Connect to Stripe', 'give' ),
 							'description' => esc_html__( 'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations.', 'give' ),
-							'action'      => $this->render_template(
-								'action-link',
-								[
-									'href'             => add_query_arg(
-										[
-											'post_type' => 'give_forms',
-											'page'      => 'give-settings',
-											'tab'       => 'gateways',
-											'section'   => 'stripe',
-										],
-										esc_url_raw( admin_url( 'edit.php' ) )
-									),
-									'screenReaderText' => 'Configure GiveWP',
-								]
+							'action'      => sprintf(
+								'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;%s</a>',
+								add_query_arg(
+									[
+										'post_type' => 'give_forms',
+										'page'      => 'give-settings',
+										'tab'       => 'gateways',
+										'section'   => 'stripe-settings',
+									],
+									esc_url_raw( admin_url( 'edit.php' ) )
+								),
+								__( 'Stripe Settings', 'give' )
 							),
 						]
-					) : '',
+					),
 				],
 				'footer'   => $this->render_template(
 					'footer',

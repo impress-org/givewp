@@ -47,8 +47,8 @@ function pollStripeWebhookRecieved() {
 		if ( undefined === typeof data.webhookRecieved || ! data.webhookRecieved ) {
 			setTimeout( pollStripeWebhookRecieved, 5000 );
 		} else {
-			document.getElementById( 'stripeWebhooksConfigureButton' ).classList.add( 'hidden' );
-			document.getElementById( 'stripeWebhooksConfigureConfirmed' ).classList.remove( 'hidden' );
+			document.getElementById( 'stripeWebhooks' ).classList.add( 'hidden' );
+			document.getElementById( 'stripeConnected' ).classList.remove( 'hidden' );
 		}
 	} );
 }
