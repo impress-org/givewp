@@ -9,6 +9,7 @@ use Give\Onboarding\DefaultFormFactory;
 use Give\Onboarding\LocaleCollection;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
+use Give\Onboarding\Setup\PageView as SetupPageView;
 use Give\Onboarding\Wizard\Page as WizardPage;
 use Give\Onboarding\Wizard\FormPreview;
 use Give\Onboarding\Routes\SettingsRoute;
@@ -41,6 +42,7 @@ class Onboarding implements ServiceProvider {
 		give()->bind( DefaultFormFactory::class );
 		give()->bind( SettingsRepositoryFactory::class );
 		give()->bind( LocaleCollection::class );
+		give()->singleton( SetupPageView::class );
 	}
 
 	/**

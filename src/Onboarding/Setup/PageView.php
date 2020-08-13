@@ -10,10 +10,24 @@ namespace Give\Onboarding\Setup;
 
 defined( 'ABSPATH' ) || exit;
 
+use Give\Onboarding\FormRepository;
+
 /**
  * @since 2.8.0
  */
 class PageView {
+
+	/** @var FormRepository */
+	protected $formRepository;
+
+	/**
+	 * @param FormRepository $formRepository
+	 *
+	 * @since 2.8.0
+	 */
+	public function __construct( FormRepository $formRepository ) {
+		$this->formRepository = $formRepository;
+	}
 
 	public function render() {
 		$settings = wp_parse_args(
@@ -51,6 +65,13 @@ class PageView {
 		$output = preg_replace( '/{{\s*.*\s*}}/', '', $output );
 
 		return $output;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isFormConfigured() {
+		return ! ! $this->formRepository->getDefaultFormID();
 	}
 
 	/**

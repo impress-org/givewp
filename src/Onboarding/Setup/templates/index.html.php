@@ -22,8 +22,10 @@
 				'contents' => $this->render_template(
 					'row-item',
 					[
-						'class'       => 'setup-item-configuration setup-item-completed',
-						'icon'        => $this->image( 'check-circle.min.png' ),
+						'class'       => ( $this->isFormConfigured() ) ? 'setup-item-configuration setup-item-completed' : 'setup-item-configuration',
+						'icon'        => ( $this->isFormConfigured() )
+											? $this->image( 'check-circle.min.png' )
+											: $this->image( 'configuration@2x.min.png' ),
 						'icon_alt'    => esc_html__( 'First-Time Configuration', 'give' ),
 						'title'       => esc_html__( 'First-Time Configuration', 'give' ),
 						'description' => esc_html__( 'Every fundraising campaign begins with a donation form. Click here to create your first donation form in minutes. Once created you can use it anywhere on your website.', 'give' ),

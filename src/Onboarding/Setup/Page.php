@@ -113,7 +113,7 @@ class Page {
 	 * @since 2.8.0
 	 */
 	public function render_page() {
-		$view = new PageView();
+		$view = give()->make( PageView::class );
 		echo $view->render();
 	}
 }
