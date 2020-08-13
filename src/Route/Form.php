@@ -120,13 +120,22 @@ class Form {
 	 * Get form URL.
 	 *
 	 * @since 2.7.0
+	 * @since 2.8.0 Add support for all permalink settings.
 	 *
 	 * @param int $form_id
 	 *
 	 * @return string
 	 */
 	public function getURL( $form_id ) {
-		return home_url( "/{$this->base}/{$form_id}" );
+		return get_option( 'permalink_structure' )
+			? home_url( "/{$this->base}/{$form_id}" )
+			: add_query_arg(
+				[
+					'give_form_id' => $form_id,
+					'url_prefix'   => $this->base,
+				],
+				home_url()
+			);
 	}
 
 

@@ -199,7 +199,7 @@ EOT;
 	 * @return string
 	 */
 	private function getSeparator() {
-		$label = esc_html__( 'or pay with card', 'give' );
+		$label = esc_html__( 'Or pay with card', 'give' );
 
 		return <<<EOF
 			<div class="separator-with-text">
