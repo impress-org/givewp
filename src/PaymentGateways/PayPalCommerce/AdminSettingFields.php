@@ -150,7 +150,7 @@ class AdminSettingFields {
 					<p class="give-field-description"><?php esc_html_e( 'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees. Upgrade to PayPal Pro and provide your donors with even more payment options using PayPal Smart Buttons.', 'give' ); ?></p>
 				</div>
 				<div class="paypal-logo">
-					PayPal Logo
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>" width="316" height="84" alt="<?php esc_attr_e( 'PayPal Logo Image', 'give' ); ?>">
 				</div>
 			</div>
 			<div class="feature-list">
