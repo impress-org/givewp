@@ -3,6 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Closure;
+use Give\Route\Form;
 
 /**
  * Class LegacyServiceProvider
@@ -24,7 +25,6 @@ class LegacyServiceProvider implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function boot() {
-		register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 	}
 
 	/**
@@ -181,6 +181,8 @@ class LegacyServiceProvider implements ServiceProvider {
 	 * @since 2.8.0
 	 */
 	private function bindClasses() {
+		give()->singleton( 'routeForm', Form::class );
+
 		$this->bindInstance( 'roles', 'Give_Roles', 'class-give-roles.php' );
 		$this->bindInstance( 'give_settings', 'Give_Admin_Settings', 'admin/class-admin-settings.php' );
 		$this->bindInstance( 'api', 'Give_API', 'api/class-give-api.php' );

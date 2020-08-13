@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.7.4
+Stable tag: 2.7.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -223,9 +223,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
-= 2.8.0 =
-* New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain".
+= 2.7.5: August 11th, 2020 =
+* New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain". [#4952](https://github.com/impress-org/givewp/issues/4952)
+* New: The Donations search bar now allows you to search by like keywords for rather than exact match which makes it a lot easier to find proper results. [#4994](https://github.com/impress-org/givewp/issues/4994)
+* Fix: Revamped the logic for requiring Postal / Zip codes for countries that do not have postal codes. [#5006](https://github.com/impress-org/givewp/issues/5006)
+* Fix: Resolved an issue when using the Multi-Step donation form with the first step disabled would cause the donor to auto-scroll incorrectly on page load. [#5004](https://github.com/impress-org/givewp/issues/5004)
+* Fix: Resolved a database table creation issue for new installs due to bug within our new bootstrapping process. [#5017](https://github.com/impress-org/givewp/issues/5017)
 * Fix: Ensure that the "Title Prefixes" maintain the order of values when saved. [#4992](https://github.com/impress-org/givewp/issues/4992)
+* Fix: The "Donation Form" Block can now properly be re-selected when it's using the new Multi-Step donation form template and the admin loses focus on the block. [#5017](https://github.com/impress-org/givewp/issues/5017)
 
 = 2.7.4: August 4th, 2020 =
 * Fix: The uninstall process in v2.7.3 previously resulted in a fatal error due to a change made in the plugin's bootstrapping process. [#4981](https://github.com/impress-org/givewp/issues/4981)
