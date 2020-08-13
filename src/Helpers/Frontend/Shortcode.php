@@ -14,7 +14,7 @@ class Shortcode {
 		$content = $post->post_content;
 
 		if ( ! empty( $content ) ) {
-			preg_match( '/\[give_receipt(.*?)]/', $content, $matches );
+			preg_match( '/\[give_receipt(.*?)]/i', $content, $matches );
 
 			if ( isset( $matches[0] ) ) {
 				return $matches[0];
