@@ -1,25 +1,33 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners;
+namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
 use Give\Repositories\PaymentsRepository;
 
-class PaymentCaptureCompleted implements EventListener {
+
+/**
+ * Class PaymentEventListener
+ * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
+ *
+ * @since 2.8.0
+ */
+abstract class PaymentEventListener implements EventListener {
 	/**
 	 * @since 2.8.0
 	 *
 	 * @var PaymentsRepository
 	 */
-	private $paymentsRepository;
+	protected $paymentsRepository;
 
 	/**
 	 * @var MerchantDetails
 	 */
-	private $merchantDetails;
+	protected $merchantDetails;
 
 	/**
-	 * PaymentCaptureRefunded constructor.
+	 * PaymentEventListener constructor.
 	 *
 	 * @since 2.8.0
 	 *
@@ -32,44 +40,21 @@ class PaymentCaptureCompleted implements EventListener {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function processEvent( $event ) {
-		$paymentId = $this->getPaymentFromRefund( $event->resource );
-
-		$donation = $this->paymentsRepository->getDonationByPayment( $paymentId );
-
-		// If there's no matching donation then it's not tracked by GiveWP
-		if ( ! $donation ) {
-			return;
-		}
-
-		give_update_payment_status( $donation->ID, 'publish' );
-		give_insert_payment_note( $donation->ID, __( 'Charge Completed in PayPal', 'give' ) );
-
-		/**
-		 * Fires when a charge has been completed via webhook
-		 *
-		 * @since 2.8.0
-		 */
-		do_action( 'give_paypal_commerce_webhook_charge_completed', $event, $donation );
-	}
-
-	/**
-	 * This uses the links property to get payment from PayPal
+	 * This uses the links property to get payment id from PayPal
 	 *
 	 * @since 2.8.0
 	 *
 	 * @param object $refund
+	 * @param string $relType
 	 *
 	 * @return string
 	 */
-	private function getPaymentFromRefund( $refund ) {
+	protected function getPaymentFromRefund( $refund, $relType ) {
 		$link = current(
 			array_filter(
 				$refund->links,
-				static function ( $link ) {
-					return $link->rel === 'self';
+				static function ( $link ) use ( $relType ) {
+					return $link->rel === $relType;
 				}
 			)
 		);
