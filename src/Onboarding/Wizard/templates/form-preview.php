@@ -73,4 +73,16 @@ set_current_screen();
 			window.requestAnimationFrame(checkBodySizeChange);
 		})();
 	</script>
+	<script>
+		(function listenForFormLoaded() {
+			function handleFormLoaded(width, height)
+			{
+				window.parent.postMessage({
+					action: 'loaded',
+					payload: {}
+				});
+			}
+			document.querySelector('iframe').addEventListener('load', handleFormLoaded );
+		})();
+	</script>
 </html>
