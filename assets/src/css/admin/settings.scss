@@ -726,6 +726,10 @@ a.give-delete {
 		display: grid;
 		grid-template-columns: repeat(2, auto);
 
+		img {
+			width: 100%;
+		}
+
 		h2 {
 			font-size: 1.6em !important;
 		}
@@ -745,7 +749,7 @@ a.give-delete {
 		padding: 20px;
 		display: grid;
 		grid-template-columns: repeat(3, auto);
-		margin: 1em 0 2em 0;
+		margin: 2em 0;
 		font-size: 1.2em !important;
 		line-height: 2em;
 
