@@ -109,7 +109,14 @@
 				'footer'   => $this->render_template(
 					'footer',
 					[
-						'contents' => 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more!<a href="#">View all gateways <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
+						'contents' => sprintf(
+							__( 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more! %s', 'give' ),
+							sprintf(
+								'<a href="%s" target="_blank">%s <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
+								$this->give_link( 'https://givewp.com/addons/category/payment-gateways/' ),
+								__( 'View all gateways', 'give' )
+							)
+						),
 					]
 				),
 			]
