@@ -43,8 +43,22 @@ class PayPalCommerce implements PaymentGateway {
 		return [
 			[
 				'type'       => 'title',
-				'id'         => 'give_title_gateway_settings_2',
+				'id'         => 'give_gateway_settings_1',
 				'table_html' => false,
+			],
+			[
+				'name' => esc_html__( 'Connect With Paypal', 'give' ),
+				'id'   => 'paypal_commerce_account_manger',
+				'type' => 'paypal_commerce_account_manger',
+			],
+			[
+				'type'       => 'sectionend',
+				'id'         => 'give_gateway_settings_1',
+				'table_html' => false,
+			],
+			[
+				'type' => 'title',
+				'id'   => 'give_gateway_settings_2',
 			],
 			[
 				'name'       => __( 'Account Country', 'give' ),
@@ -59,14 +73,8 @@ class PayPalCommerce implements PaymentGateway {
 				'default'    => give_get_country(),
 			],
 			[
-				'name' => esc_html__( 'Connect With Paypal', 'give' ),
-				'id'   => 'paypal_commerce_account_manger',
-				'type' => 'paypal_commerce_account_manger',
-			],
-			[
-				'type'       => 'sectionend',
-				'id'         => 'give_title_gateway_settings_2',
-				'table_html' => false,
+				'type' => 'sectionend',
+				'id'   => 'give_gateway_settings_2',
 			],
 		];
 	}
