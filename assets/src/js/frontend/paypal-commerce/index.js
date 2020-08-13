@@ -13,10 +13,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	$formWraps.forEach( $formWrap => {
 		const $form = $formWrap.querySelector( '.give-form' );
 		const smartButtons = new SmartButtons( $form );
-		const advancedCardFields = new AdvancedCardFields( $form );
+
+		if ( !! window.givePayPalCommerce.supportsCustomPayments ) {
+			const advancedCardFields = new AdvancedCardFields( $form );
+			advancedCardFields.boot();
+		}
 
 		smartButtons.boot();
-		advancedCardFields.boot();
 	} );
 
 	// On form submit prevent submission for PayPal commerce.

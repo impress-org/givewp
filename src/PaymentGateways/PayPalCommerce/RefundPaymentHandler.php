@@ -104,10 +104,10 @@ class RefundPaymentHandler {
 		}
 
 		?>
-		<div id="give-paypal-donations-opt-refund-wrap" class="give-paypal-donations-opt-refund give-admin-box-inside give-hidden">
+		<div id="give-paypal-commerce-opt-refund-wrap" class="give-paypal-commerce-opt-refund give-admin-box-inside give-hidden">
 			<p>
-				<input type="checkbox" id="give-paypal-donations-opt-refund" name="give_paypal_donations_optin_for_refund" value="1"/>
-				<label for="give-paypal-donations-opt-refund">
+				<input type="checkbox" id="give-paypal-commerce-opt-refund" name="give_paypal_donations_optin_for_refund" value="1"/>
+				<label for="give-paypal-commerce-opt-refund">
 					<?php esc_html_e( 'Refund Charge in PayPal?', 'give' ); ?>
 				</label>
 			</p>

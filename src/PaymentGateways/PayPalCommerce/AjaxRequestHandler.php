@@ -6,6 +6,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 
@@ -59,6 +60,13 @@ class AjaxRequestHandler {
 	private $refreshToken;
 
 	/**
+	 * @since 2.8.0
+	 *
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
 	 * AjaxRequestHandler constructor.
 	 *
 	 * @since 2.8.0
@@ -69,6 +77,7 @@ class AjaxRequestHandler {
 	 * @param ConnectClient   $connectClient
 	 * @param MerchantDetails $merchantRepository
 	 * @param RefreshToken    $refreshToken
+	 * @param Settings        $settings
 	 */
 	public function __construct(
 		Webhooks $webhooksRepository,
@@ -76,7 +85,8 @@ class AjaxRequestHandler {
 		PayPalClient $paypalClient,
 		ConnectClient $connectClient,
 		MerchantDetails $merchantRepository,
-		RefreshToken $refreshToken
+		RefreshToken $refreshToken,
+		Settings $settings
 	) {
 		$this->webhooksRepository = $webhooksRepository;
 		$this->merchantDetails    = $merchantDetails;
@@ -84,6 +94,7 @@ class AjaxRequestHandler {
 		$this->connectClient      = $connectClient;
 		$this->merchantRepository = $merchantRepository;
 		$this->refreshToken       = $refreshToken;
+		$this->settings           = $settings;
 	}
 
 	/**
@@ -94,7 +105,7 @@ class AjaxRequestHandler {
 	public function onBoardedUserAjaxRequestHandler() {
 		$this->validateAdminRequest();
 
-		$partnerLinkInfo = get_option( OptionId::PARTNER_LINK_DETAIL, [ 'nonce' => '' ] );
+		$partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
 		$payPalResponse = wp_remote_retrieve_body(
 			wp_remote_post(
@@ -122,7 +133,7 @@ class AjaxRequestHandler {
 
 		$payPalResponse = ArrayDataSet::camelCaseKeys( json_decode( $payPalResponse, true ) );
 
-		update_option( OptionId::ACCESS_TOKEN, $payPalResponse );
+		$this->settings->updateAccessToken( $payPalResponse );
 
 		give( RefreshToken::class )->registerCronJobToRefreshToken( $payPalResponse['expiresIn'] );
 
@@ -146,7 +157,7 @@ class AjaxRequestHandler {
 				[
 					'body' => [
 						'return_url'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
-						'country_code' => give_get_option( 'base_country' ),
+						'country_code' => $this->settings->getAccountCountry(),
 					],
 				]
 			)
@@ -157,7 +168,7 @@ class AjaxRequestHandler {
 		}
 
 		$data = json_decode( $response, true );
-		update_option( OptionId::PARTNER_LINK_DETAIL, $data );
+		$this->settings->updatePartnerLinkDetails( $data );
 
 		wp_send_json_success( $data );
 	}
@@ -198,12 +209,15 @@ class AjaxRequestHandler {
 		$formId   = absint( $postData['give-form-id'] );
 
 		$data = [
-			'formId'         => $formId,
-			'donationAmount' => $postData['give-amount'],
-			'payer'          => [
+			'formId'              => $formId,
+			'donationAmount'      => $postData['give-amount'],
+			'payer'               => [
 				'firstName' => $postData['give_first'],
 				'lastName'  => $postData['give_last'],
 				'email'     => $postData['give_email'],
+			],
+			'application_context' => [
+				'shipping_preference' => 'NO_SHIPPING',
 			],
 		];
 

@@ -593,35 +593,6 @@ a.give-delete {
 // Paypal setting page
 //--------------------------------------------------------------
 #give-paypal-commerce-account-manager-field-wrap {
-	.hero-section {
-		display: grid;
-		grid-template-columns: repeat(2, auto);
-
-		div:last-child {
-			margin: 2em 0;
-		}
-	}
-
-	.feature-list {
-		background: #f8f8f8;
-		border-radius: 8px;
-		padding: 20px;
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		margin: 25px 0;
-		font-size: 14px !important;
-		line-height: 22px;
-
-		div {
-			font-style: italic;
-			color: #939393;
-		}
-
-		.fa {
-			padding-right: 10px;
-		}
-	}
-
 	.connect-button-wrap {
 		display: flex;
 		align-items: end;
@@ -636,7 +607,6 @@ a.give-delete {
 			display: grid;
 			justify-content: flex-start;
 			flex-grow: 1;
-			padding-left: 50px;
 			grid-template-columns: 1fr;
 		}
 
@@ -748,6 +718,49 @@ a.give-delete {
 
 	.give-upsell-notice {
 		margin: 30px 0 0 0 !important;
+	}
+}
+
+#give-paypal-commerce-introduction-wrap {
+	.hero-section {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+
+		img {
+			width: 100%;
+		}
+
+		h2 {
+			font-size: 1.6em !important;
+		}
+
+		.give-field-description {
+			font-size: 1.2em !important;
+		}
+
+		div:last-child {
+			margin-top: 1.6em;
+		}
+	}
+
+	.feature-list {
+		background: #f8f8f8;
+		border-radius: 8px;
+		padding: 20px;
+		display: grid;
+		grid-template-columns: repeat(3, auto);
+		margin: 2em 0;
+		font-size: 1.2em !important;
+		line-height: 2em;
+
+		div {
+			font-style: italic;
+			color: #939393;
+		}
+
+		.fa {
+			padding-right: 10px;
+		}
 	}
 }
 

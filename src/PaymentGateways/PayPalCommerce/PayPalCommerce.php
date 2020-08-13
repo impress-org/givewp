@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 
 /**
  * Class PayPalCommerce
@@ -43,8 +44,33 @@ class PayPalCommerce implements PaymentGateway {
 		return [
 			[
 				'type'       => 'title',
-				'id'         => 'give_title_gateway_settings_2',
+				'id'         => 'give_gateway_settings_1',
 				'table_html' => false,
+			],
+			[
+				'id'   => 'paypal_commerce_introduction',
+				'type' => 'paypal_commerce_introduction',
+			],
+			[
+				'type'       => 'sectionend',
+				'id'         => 'give_gateway_settings_1',
+				'table_html' => false,
+			],
+			[
+				'type' => 'title',
+				'id'   => 'give_gateway_settings_2',
+			],
+			[
+				'name'       => __( 'Account Country', 'give' ),
+				'desc'       => __( 'The country of your PayPal account.', 'give' ),
+				'id'         => Settings::COUNTRY_KEY,
+				'type'       => 'select',
+				'options'    => give_get_country_list(),
+				'class'      => 'give-select give-select-chosen',
+				'attributes' => [
+					'data-search-type' => 'no_ajax',
+				],
+				'default'    => give_get_country(),
 			],
 			[
 				'name' => esc_html__( 'Connect With Paypal', 'give' ),
@@ -52,9 +78,8 @@ class PayPalCommerce implements PaymentGateway {
 				'type' => 'paypal_commerce_account_manger',
 			],
 			[
-				'type'       => 'sectionend',
-				'id'         => 'give_title_gateway_settings_2',
-				'table_html' => false,
+				'type' => 'sectionend',
+				'id'   => 'give_gateway_settings_2',
 			],
 		];
 	}

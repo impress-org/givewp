@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give_Admin_Settings;
 
@@ -37,6 +38,13 @@ class onBoardingRedirectHandler {
 	private $merchantRepository;
 
 	/**
+	 * @since 2.8.0
+	 *
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
 	 * onBoardingRedirectHandler constructor.
 	 *
 	 * @since 2.8.0
@@ -44,11 +52,13 @@ class onBoardingRedirectHandler {
 	 * @param Webhooks        $webhooks
 	 * @param PayPalClient    $payPalClient
 	 * @param MerchantDetails $merchantRepository
+	 * @param Settings        $settings
 	 */
-	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository ) {
+	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository, Repositories\Settings $settings ) {
 		$this->webhooksRepository = $webhooks;
 		$this->payPalClient       = $payPalClient;
 		$this->merchantRepository = $merchantRepository;
+		$this->settings           = $settings;
 	}
 
 	/**
@@ -83,8 +93,9 @@ class onBoardingRedirectHandler {
 	 * @return MerchantDetail
 	 */
 	private function savePayPalMerchantDetails() {
-		$paypalGetData = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$tokenInfo     = get_option( OptionId::ACCESS_TOKEN, [ 'accessToken' => '' ] );
+		$paypalGetData   = wp_parse_args( $_SERVER['QUERY_STRING'] );
+		$partnerLinkInfo = $this->settings->getPartnerLinkDetails();
+		$tokenInfo       = $this->settings->getAccessToken();
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -92,14 +103,15 @@ class onBoardingRedirectHandler {
 		];
 
 		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
-		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
+		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
-		$payPalAccount['clientId']       = $restApiCredentials['client_id'];
-		$payPalAccount['clientSecret']   = $restApiCredentials['client_secret'];
-		$payPalAccount['token']          = $tokenInfo;
-		$payPalAccount['accountIsReady'] = true;
+		$payPalAccount['clientId']               = $restApiCredentials['client_id'];
+		$payPalAccount['clientSecret']           = $restApiCredentials['client_secret'];
+		$payPalAccount['token']                  = $tokenInfo;
+		$payPalAccount['supportsCustomPayments'] = 'PPCP' === $partnerLinkInfo['product'];
+		$payPalAccount['accountIsReady']         = true;
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
 		$this->merchantRepository->save( $merchantDetails );
@@ -205,8 +217,8 @@ class onBoardingRedirectHandler {
 	 * @return void
 	 */
 	private function deleteTempOptions() {
-		delete_option( OptionId::PARTNER_LINK_DETAIL );
-		delete_option( OptionId::ACCESS_TOKEN );
+		$this->settings->deletePartnerLinkDetails();
+		$this->settings->deleteAccessToken();
 	}
 
 	/**
@@ -276,10 +288,9 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function refreshAccountStatus() {
-		/** @var MerchantDetail $merchantDetails */
-		$merchantDetails = give( MerchantDetail::class );
+		$merchantDetails = $this->merchantRepository->getDetails();
 
-		$statusErrors = $this->isAdminSuccessfullyOnBoarded( $merchantDetails->merchantIdInPayPal, $merchantDetails->accessToken );
+		$statusErrors = $this->isAdminSuccessfullyOnBoarded( $merchantDetails->merchantIdInPayPal, $merchantDetails->accessToken, $merchantDetails->supportsCustomPayments );
 		if ( $statusErrors !== true ) {
 			$merchantDetails->accountIsReady = false;
 			$this->merchantRepository->saveAccountErrors( $statusErrors );
@@ -297,15 +308,14 @@ class onBoardingRedirectHandler {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param string $accessToken
-	 *
 	 * @param string $merchantId
+	 * @param string $accessToken
+	 * @param bool   $usesCustomPayments
 	 *
 	 * @return true|string[]
 	 */
-	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken ) {
+	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken, $usesCustomPayments ) {
 		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
-		$required      = [ 'payments_receivable', 'primary_email_confirmed', 'products', 'capabilities' ];
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
 		$errorMessages = [];
 
@@ -317,7 +327,7 @@ class onBoardingRedirectHandler {
 			);
 		}
 
-		if ( array_diff( $required, array_keys( $onBoardedData ) ) ) {
+		if ( array_diff( [ 'payments_receivable', 'primary_email_confirmed' ], array_keys( $onBoardedData ) ) ) {
 			$errorMessages[] = esc_html__( 'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.', 'give' );
 
 			// Return here since the rest of the validations will definitely fail
@@ -330,6 +340,21 @@ class onBoardingRedirectHandler {
 
 		if ( ! $onBoardedData['primary_email_confirmed'] ) {
 			$errorMessage[] = esc_html__( 'Confirm your primary email address', 'give' );
+		}
+
+		if ( ! $usesCustomPayments ) {
+			return empty( $errorMessages ) ? true : $errorMessages;
+		}
+
+		if ( array_diff( [ 'products', 'capabilities' ], array_keys( $onBoardedData ) ) ) {
+			$errorMessages[] = esc_html__(
+				'Your account was expected to be able to accept custom payments, but is not. Please make sure your
+				account country matches the country setting. If the problem persists, please contact PayPal.',
+				'give'
+			);
+
+			// Return here since the rest of the validations will definitely fail
+			return $errorMessages;
 		}
 
 		// Grab the PPCP_CUSTOM product from the status data

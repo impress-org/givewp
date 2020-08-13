@@ -2,15 +2,35 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+
 class AdvancedCardFields {
+	/**
+	 * @since 2.8.0
+	 *
+	 * @var MerchantDetail
+	 */
+	private $merchantDetails;
+
+	/**
+	 * AdvancedCardFields constructor.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param MerchantDetail $merchantDetails
+	 */
+	public function __construct( MerchantDetail $merchantDetails ) {
+		$this->merchantDetails = $merchantDetails;
+	}
+
 	/**
 	 * PayPal commerce uses smart buttons to accept payment.
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param  int  $formId  Donation Form ID.
-	 * @param  int  $args  Donation Form Arguments.
-	 * @param  bool  $echo  Status to display or not.
+	 * @param int  $formId Donation Form ID.
+	 * @param int  $args Donation Form Arguments.
+	 * @param bool $echo Status to display or not.
 	 *
 	 * @access public
 	 * @return string $form
@@ -34,11 +54,13 @@ class AdvancedCardFields {
 			</div>
 
 			<?php
-			echo $this->getSeparator();
-			echo $this->cardNumberField( $idPrefix );
-			echo $this->cardCvcField( $idPrefix );
-			echo $this->cardNameField();
-			echo $this->cardExpirationField( $idPrefix )
+			if ( $this->merchantDetails->supportsCustomPayments ) {
+				echo $this->getSeparator();
+				echo $this->cardNumberField( $idPrefix );
+				echo $this->cardCvcField( $idPrefix );
+				echo $this->cardNameField();
+				echo $this->cardExpirationField( $idPrefix );
+			}
 			?>
 
 		</fieldset>
@@ -87,9 +109,9 @@ class AdvancedCardFields {
 	/**
 	 * Return card number field html.
 	 *
-	 * @param string $idPrefix
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param string $idPrefix
 	 *
 	 * @return string
 	 */
@@ -113,9 +135,9 @@ EOT;
 	/**
 	 * Return card cvc field html.
 	 *
-	 * @param string $idPrefix
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param string $idPrefix
 	 *
 	 * @return string
 	 */
@@ -169,9 +191,9 @@ EOT;
 	/**
 	 * Return card expiration  field html.
 	 *
-	 * @param string $idPrefix
-	 *
 	 * @since 2.8.0
+	 *
+	 * @param string $idPrefix
 	 *
 	 * @return string
 	 */
