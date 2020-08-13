@@ -20,6 +20,7 @@ class PaymentCaptureDenied extends PaymentEventListener {
 			return;
 		}
 
+		// Exit if donation status already set to failed.
 		if ( ! give_update_payment_status( $donation->ID, 'failed' ) ) {
 			return;
 		}

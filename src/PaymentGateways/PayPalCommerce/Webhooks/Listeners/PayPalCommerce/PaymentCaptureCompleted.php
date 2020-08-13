@@ -20,6 +20,7 @@ class PaymentCaptureCompleted extends PaymentEventListener {
 			return;
 		}
 
+		// Exit if donation status already set to publish.
 		if ( ! give_update_payment_status( $donation->ID, 'publish' ) ) {
 			return;
 		}

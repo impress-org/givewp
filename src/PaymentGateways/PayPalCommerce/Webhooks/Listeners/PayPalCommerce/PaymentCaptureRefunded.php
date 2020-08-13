@@ -22,6 +22,7 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 			return;
 		}
 
+		// Exit if donation status already set to refunded.
 		if ( ! give_update_payment_status( $donation->ID, 'refunded' ) ) {
 			return;
 		}
