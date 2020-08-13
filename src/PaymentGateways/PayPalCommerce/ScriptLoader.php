@@ -100,7 +100,7 @@ EOT;
 		wp_enqueue_script(
 			$this->paypalSdkScriptHandle,
 			sprintf(
-				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture',
+				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture&disable-funding=credit',
 				'hosted-fields,buttons',
 				$merchant->clientId,
 				$merchant->merchantIdInPayPal,
