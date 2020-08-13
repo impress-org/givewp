@@ -13,7 +13,7 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 	 * @inheritDoc
 	 */
 	public function processEvent( $event ) {
-		$paymentId = $this->getPaymentFromRefund( $event->resource, 'up' );
+		$paymentId = $this->getPaymentFromRefund( $event->resource );
 
 		$donation = $this->paymentsRepository->getDonationByPayment( $paymentId );
 
