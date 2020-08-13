@@ -278,8 +278,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function refreshAccountStatus() {
-		/** @var MerchantDetail $merchantDetails */
-		$merchantDetails = give( MerchantDetail::class );
+		$merchantDetails = $this->merchantRepository->getDetails();
 
 		$statusErrors = $this->isAdminSuccessfullyOnBoarded( $merchantDetails->merchantIdInPayPal, $merchantDetails->accessToken, $merchantDetails->supportsCustomPayments );
 		if ( $statusErrors !== true ) {
