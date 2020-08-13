@@ -13,7 +13,6 @@ import ContinueButton from '../../../components/continue-button';
 import IndividualIcon from '../../../components/icons/individual';
 import OrganizationIcon from '../../../components/icons/organization';
 import OtherIcon from '../../../components/icons/other';
-import DismissLink from '../../../components/dismiss-link';
 
 // Import styles
 import './style.scss';
@@ -59,7 +58,6 @@ const YourCause = () => {
 				]
 			} />
 			<ContinueButton />
-			<DismissLink />
 		</div>
 	);
 };
