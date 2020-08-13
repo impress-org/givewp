@@ -26,6 +26,7 @@ const config = {
 		'give-stripe-becs': [ './assets/src/js/frontend/give-stripe-becs.js' ],
 		admin: [ './assets/src/css/admin/give-admin.scss', './assets/src/js/admin/admin.js' ],
 		'admin-global': [ './assets/src/css/admin/give-admin-global.scss' ],
+		'admin-setup': [ './assets/src/css/admin/setup.scss', './assets/src/js/admin/admin-setup.js' ],
 		'babel-polyfill': '@babel/polyfill',
 		gutenberg: './blocks/load.js',
 		'admin-shortcode-button': [ './assets/src/css/admin/shortcodes.scss' ],
@@ -36,6 +37,7 @@ const config = {
 		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 		'admin-widgets': [ './assets/src/js/admin/admin-widgets.js', './assets/src/css/admin/widgets.scss' ],
+		'admin-onboarding-wizard': [ './assets/src/js/admin/onboarding-wizard/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),

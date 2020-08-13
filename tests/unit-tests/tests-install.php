@@ -57,9 +57,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'floatlabels', $give_options );
 		$this->assertEquals( 'disabled', $give_options['floatlabels'] );
 
-		$this->assertArrayHasKey( 'welcome', $give_options );
-		$this->assertEquals( 'enabled', $give_options['welcome'] );
-
 		$this->assertArrayHasKey( 'forms_singular', $give_options );
 		$this->assertEquals( 'enabled', $give_options['forms_singular'] );
 

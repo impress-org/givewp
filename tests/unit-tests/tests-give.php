@@ -109,7 +109,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		/** Check Admin Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-give-welcome.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php' );

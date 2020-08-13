@@ -1,0 +1,201 @@
+/**
+ * Give Setup SCSS
+ *
+ * @description Setup Page Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2020, GiveWP
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+.wp-heading-inline {
+	font-family: 'Open Sans', sans-serif;
+}
+
+section,
+section * {
+	font-family: 'Open Sans', sans-serif;
+}
+
+section {
+	margin: 20px;
+	margin-bottom: 40px;
+	color: #424242;
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
+	border-radius: 6px;
+}
+
+.section-dismiss {
+	text-align: center;
+
+	button {
+		cursor: pointer;
+		border: 0;
+		background-color: inherit;
+		color: #9ea3a8;
+		font-size: 16px;
+		font-weight: 600;
+		text-decoration: underline;
+		font-family: 'Open Sans', sans-serif;
+	}
+}
+
+header {
+	padding: 20px 20px 20px 25px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #ddd;
+
+	h2 {
+		margin: 0;
+		font-size: 22px;
+		line-height: 22px;
+		color: #424242;
+	}
+}
+footer {
+	padding: 20px 20px 20px 25px;
+	font-size: 16px;
+	display: flex;
+	justify-content: space-between;
+}
+footer a {
+	color: #0073aa;
+	text-decoration: none;
+	font-style: italic;
+
+	> .fa {
+		margin-left: 6px;
+	}
+}
+header .badge {
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 10px 20px;
+	border-radius: 3px;
+}
+header .badge.badge-complete {
+	color: #18694c;
+	background: #cbf4c9;
+}
+header .badge.badge-review {
+	color: #696969;
+	border: #ddd 1px solid;
+	background: transparent;
+}
+article {
+	padding: 20px 0;
+	border-bottom: 1px solid #ddd;
+	display: grid;
+	grid-template-columns: 125px 3fr 1fr;
+	grid-template-areas: 'icon content action';
+}
+article .icon,
+article .action {
+	align-self: center;
+	justify-content: center;
+}
+article .icon {
+	margin: auto;
+	flex: 1;
+	width: 75px;
+	padding: 25px 0 25px 0;
+	grid-area: icon;
+}
+article .action a {
+	color: inherit;
+	font-size: 22px;
+	text-align: right;
+	margin-right: 70px;
+	text-decoration: none;
+
+	/*
+	 * Float the anchor to avoid expanding the focus state.
+	 */
+	float: right;
+}
+article .content {
+	grid-area: content;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+article .header {
+	margin: 10px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
+	font-size: 20px;
+	line-height: 25px;
+}
+article .description {
+	grid-area: description;
+	color: #595959;
+	font-size: 16px;
+	line-height: 22px;
+}
+
+.configuration .icon {
+	margin-top: -25px;
+	margin-left: 15px;
+}
+article.paypal .action a,
+article.paypal .action button,
+article.stripe .action a,
+article.stripe .action button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 15px;
+	margin-right: 30px;
+	width: 223px;
+	height: 38px;
+	font-size: 16px;
+	line-height: 35px;
+	text-align: center;
+	color: #fff;
+	border: 0;
+	border-radius: 6px;
+}
+
+article.paypal .action a,
+article.paypal .action button {
+	background-color: #0070bc;
+}
+
+article.stripe .action a,
+article.stripe .action button {
+	background: #46aae4;
+}
+
+.stripe-webhooks .stripe-webhooks-url {
+	cursor: pointer;
+	display: inline-block;
+	margin-top: 10px;
+
+	input {
+		width: 300px;
+		margin-left: -2px; /* Align input with sibling p.description */
+		border-color: transparent;
+		outline-color: transparent;
+	}
+}
+
+.setup-item-completed .header {
+	text-decoration: line-through;
+}
+
+/** Normalize icon sizes. */
+article.setup-item-configuration .icon,
+article.setup-item-tributes .icon,
+article.setup-item-fee-recovery .icon,
+article.setup-item-pdf-receipts .icon,
+article.setup-item-currency-switcher .icon,
+article.setup-item-recurring-donations .icon,
+article.setup-item-form-fields-manager .icon {
+	width: 70px;
+}
+
+.hidden {
+	display: none;
+}
