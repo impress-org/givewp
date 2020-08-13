@@ -97,6 +97,20 @@ class PageView {
 	}
 
 	/**
+	 * @return string
+	 *
+	 * @since 2.8.0
+	 */
+	public function getStripeWebhooksURL() {
+		$testMode = give_get_option( 'test_mode' );
+		$url      = ( give_is_setting_enabled( $testMode ) )
+			? 'https://dashboard.stripe.com/test/webhooks'
+			: 'https://dashboard.stripe.com/webhooks';
+
+		return esc_url_raw( $url );
+	}
+
+	/**
 	 * Returns a qualified image URL.
 	 *
 	 * @param string $src
