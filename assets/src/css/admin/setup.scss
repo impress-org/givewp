@@ -166,10 +166,6 @@ article.paypal .action button {
 article.stripe .action a,
 article.stripe .action button {
 	background: #46aae4;
-
-	&.hidden {
-		display: none;
-	}
 }
 
 .stripe-webhooks .stripe-webhooks-url {
@@ -198,4 +194,8 @@ article.setup-item-currency-switcher .icon,
 article.setup-item-recurring-donations .icon,
 article.setup-item-form-fields-manager .icon {
 	width: 70px;
+}
+
+.hidden {
+	display: none;
 }
