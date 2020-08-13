@@ -38,7 +38,7 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 	}
 
 	/**
-	 * This uses the links property to get payment id from PayPal
+	 * This uses the links property of the refund to retrieve the refunded Payment from PayPal
 	 *
 	 * @since 2.8.0
 	 *
