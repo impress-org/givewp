@@ -47,7 +47,7 @@ class ScriptLoader {
 	 * @since 2.8.0
 	 */
 	public function loadAdminScripts() {
-		if ( ! Utils::isConnected() || ! Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
+		if ( ! Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
 			return;
 		}
 
