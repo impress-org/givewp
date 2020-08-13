@@ -3,7 +3,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 	if ( donationStatus ) {
 		donationStatus.addEventListener( 'change', ( event ) => {
-			const paypalDonationsCheckbox = document.getElementById( 'give-paypal-donations-opt-refund' );
+			const paypalDonationsCheckbox = document.getElementById( 'give-paypal-commerce-opt-refund' );
 
 			if ( null === paypalDonationsCheckbox ) {
 				return;
@@ -13,9 +13,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 			// If donation status is complete, then show refund checkbox
 			if ( 'refunded' === event.target.value ) {
-				document.getElementById( 'give-paypal-donations-opt-refund-wrap' ).style.display = 'block';
+				document.getElementById( 'give-paypal-commerce-opt-refund-wrap' ).style.display = 'block';
 			} else {
-				document.getElementById( 'give-paypal-donations-opt-refund-wrap' ).style.display = 'none';
+				document.getElementById( 'give-paypal-commerce-opt-refund-wrap' ).style.display = 'none';
 			}
 		} );
 	}
