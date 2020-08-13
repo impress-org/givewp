@@ -13,9 +13,7 @@ class PaymentCaptureCompleted extends PaymentEventListener {
 	 * @inheritDoc
 	 */
 	public function processEvent( $event ) {
-		$paymentId = $this->getPaymentFromRefund( $event->resource, 'self' );
-
-		$donation = $this->paymentsRepository->getDonationByPayment( $paymentId );
+		$donation = $this->paymentsRepository->getDonationByPayment( $event->resource->id );
 
 		// If there's no matching donation then it's not tracked by GiveWP
 		if ( ! $donation || 'publish' === $donation->status ) {

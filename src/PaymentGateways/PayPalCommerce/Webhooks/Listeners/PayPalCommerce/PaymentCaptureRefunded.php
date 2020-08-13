@@ -32,4 +32,41 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 		 */
 		do_action( 'give_paypal_commerce_webhook_charge_refunded', $event, $donation );
 	}
+
+	/**
+	 * This uses the links property to get payment id from PayPal
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param object $refund
+	 *
+	 * @return string
+	 */
+	private function getPaymentFromRefund( $refund ) {
+		$link = current(
+			array_filter(
+				$refund->links,
+				static function ( $link ) {
+					return $link->rel === 'up';
+				}
+			)
+		);
+
+		$accountDetails = $this->merchantDetails->getDetails();
+
+		$response = wp_remote_request(
+			$link->href,
+			[
+				'method'  => $link->method,
+				'headers' => [
+					'Content-Type'  => 'application/json',
+					'Authorization' => "Bearer $accountDetails->accessToken",
+				],
+			]
+		);
+
+		$response = json_decode( $response['body'], false );
+
+		return $response->id;
+	}
 }
