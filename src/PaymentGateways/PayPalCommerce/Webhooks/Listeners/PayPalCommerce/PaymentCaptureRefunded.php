@@ -18,11 +18,14 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 		$donation = $this->paymentsRepository->getDonationByPayment( $paymentId );
 
 		// If there's no matching donation then it's not tracked by GiveWP
-		if ( ! $donation || 'refunded' === $donation->status ) {
+		if ( ! $donation ) {
 			return;
 		}
 
-		give_update_payment_status( $donation->ID, 'refunded' );
+		if ( ! give_update_payment_status( $donation->ID, 'refunded' ) ) {
+			return;
+		}
+
 		give_insert_payment_note( $donation->ID, __( 'Charge refunded in PayPal', 'give' ) );
 
 		/**

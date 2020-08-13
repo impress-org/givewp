@@ -16,11 +16,14 @@ class PaymentCaptureDenied extends PaymentEventListener {
 		$donation = $this->paymentsRepository->getDonationByPayment( $event->resource->id );
 
 		// If there's no matching donation then it's not tracked by GiveWP
-		if ( ! $donation || 'failed' === $donation->status ) {
+		if ( ! $donation ) {
 			return;
 		}
 
-		give_update_payment_status( $donation->ID, 'failed' );
+		if ( ! give_update_payment_status( $donation->ID, 'failed' ) ) {
+			return;
+		}
+
 		give_insert_payment_note( $donation->ID, __( 'Charge Denied in PayPal', 'give' ) );
 
 		/**

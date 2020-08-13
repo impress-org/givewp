@@ -96,8 +96,9 @@ class DonationProcessor {
 		give_set_payment_transaction_id( $donationId, $order->payment->id );
 		give( 'payment_meta' )->update_meta( $donationId, '_give_order_id', $order->id );
 
+		// Do not need to set donation to complete if already completed by PayPal webhook.
 		if ( 'COMPLETED' === $order->payment->status ) {
-			give_update_payment_status( $donationId, 'complete' );
+			give_update_payment_status( $donationId );
 		}
 
 		wp_safe_redirect(

@@ -16,11 +16,14 @@ class PaymentCaptureCompleted extends PaymentEventListener {
 		$donation = $this->paymentsRepository->getDonationByPayment( $event->resource->id );
 
 		// If there's no matching donation then it's not tracked by GiveWP
-		if ( ! $donation || 'publish' === $donation->status ) {
+		if ( ! $donation ) {
 			return;
 		}
 
-		give_update_payment_status( $donation->ID, 'publish' );
+		if ( ! give_update_payment_status( $donation->ID, 'publish' ) ) {
+			return;
+		}
+
 		give_insert_payment_note( $donation->ID, __( 'Charge Completed in PayPal', 'give' ) );
 
 		/**
