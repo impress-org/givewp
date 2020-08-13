@@ -250,7 +250,7 @@ function give_create_payment( $payment_data ) {
 		'currency'        => give_get_currency( $form_id, $payment_data ),
 		'user_info'       => $payment_data['user_info'],
 		'status'          => 'pending',
-		'gateway'         => 'paypal',
+		'gateway'         => $payment_data['gateway'],
 	);
 
 	/**
