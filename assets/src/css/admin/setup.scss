@@ -185,6 +185,10 @@ article.stripe .action button {
 	}
 }
 
+.setup-item-completed .header {
+	text-decoration: line-through;
+}
+
 /** Normalize icon sizes. */
 article.setup-item-configuration .icon,
 article.setup-item-tributes .icon,
