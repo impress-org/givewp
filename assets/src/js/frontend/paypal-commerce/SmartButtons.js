@@ -23,7 +23,6 @@ class SmartButtons extends PaymentMethod {
 		const createOrderHandler = this.createOrderHandler.bind( this );
 		const onApproveHandler = this.onApproveHandler.bind( this );
 
-		// Options list: https://developer.paypal.com/docs/archive/checkout/how-to/customize-button/
 		paypal.Buttons( {
 			onInit: onInitHandler,
 			onClick: onClickHandler,
