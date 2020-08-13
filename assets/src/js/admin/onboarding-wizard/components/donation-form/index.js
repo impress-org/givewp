@@ -24,7 +24,19 @@ const DonationForm = () => {
 	}, [] );
 
 	const receiveMessage = ( event ) => {
-		setIframeHeight( event.data.payload.height );
+		switch ( event.data.action ) {
+			case 'resize': {
+				setIframeHeight( event.data.payload.height );
+				break;
+			}
+			case 'loaded': {
+				onIframeLoaded();
+				break;
+			}
+			default: {
+
+			}
+		}
 	};
 
 	const iframeStyle = {
@@ -38,11 +50,17 @@ const DonationForm = () => {
 
 	const onIframeLoaded = () => {
 		setIframeLoaded( true );
+		hideInIframe( '#give_error_test_mode' );
+		hideInIframe( '.social-sharing' );
+	};
 
-		document.getElementById( 'donationFormPreview' ).contentDocument
+	const hideInIframe = ( selector ) => {
+		const element = document.getElementById( 'donationFormPreview' ).contentDocument
 			.getElementById( 'iFrameResizer0' ).contentDocument
-			.getElementById( 'give_error_test_mode' )
-			.style.display = 'none';
+			.querySelector( selector );
+		if ( element ) {
+			element.style.display = 'none';
+		}
 	};
 
 	return (
@@ -53,7 +71,7 @@ const DonationForm = () => {
 					{ __( 'Building Form Preview...', 'give' ) }
 				</h3>
 			</div>
-			<iframe id="donationFormPreview" onLoad={ onIframeLoaded } className="give-obw-donation-form-preview__iframe" scrolling="no" src={ formPreviewUrl } style={ iframeStyle } />
+			<iframe id="donationFormPreview" className="give-obw-donation-form-preview__iframe" scrolling="no" src={ formPreviewUrl } style={ iframeStyle } />
 		</div>
 	);
 };
