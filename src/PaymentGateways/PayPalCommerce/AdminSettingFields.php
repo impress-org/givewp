@@ -146,7 +146,7 @@ class AdminSettingFields {
 		<div id="give-paypal-commerce-introduction-wrap">
 			<div class="hero-section">
 				<div>
-					<h2><?php esc_html_e( 'Accept Donations with PayPal Commerce', 'give' ); ?></h2>
+					<h2><?php esc_html_e( 'Accept Donations with PayPal Donations', 'give' ); ?></h2>
 					<p class="give-field-description"><?php esc_html_e( 'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees. Upgrade to PayPal Pro and provide your donors with even more payment options using PayPal Smart Buttons.', 'give' ); ?></p>
 				</div>
 				<div class="paypal-logo">
