@@ -96,7 +96,7 @@ EOT;
 	 * @since 2.8.0
 	 */
 	public function loadPublicAssets() {
-		if ( ! Utils::isConnected() ) {
+		if ( ! $this->merchantRepository->getDetails() || ! Utils::gatewayIsActive() ) {
 			return;
 		}
 
