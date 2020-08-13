@@ -5,6 +5,7 @@ const { __ } = wp.i18n;
 import ContinueButton from '../../../components/continue-button';
 import DonationFormComponent from '../../../components/donation-form';
 import GradientChevronIcon from '../../../components/icons/gradient-chevron';
+import DismissLink from '../../../components/dismiss-link';
 
 // Import styles
 import './style.scss';
@@ -42,6 +43,7 @@ const DonationForm = () => {
 						</li>
 					</ul>
 					<ContinueButton />
+					<DismissLink />
 				</div>
 			</div>
 		</div>

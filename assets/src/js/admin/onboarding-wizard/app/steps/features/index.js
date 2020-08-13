@@ -15,6 +15,7 @@ import DonationCommentsIcon from '../../../components/icons/donation-comments';
 import TermsConditionsIcon from '../../../components/icons/terms-conditions';
 import AnonymousDonationsIcon from '../../../components/icons/anonymous-donations';
 import CompanyDonationsIcon from '../../../components/icons/company-donations';
+import DismissLink from '../../../components/dismiss-link';
 
 // Import styles
 import './style.scss';
@@ -56,6 +57,7 @@ const Features = () => {
 				</Card>
 			</CardInput>
 			<ContinueButton />
+			<DismissLink />
 		</div>
 	);
 };

@@ -15,6 +15,7 @@ import PDFReceiptsIcon from '../../../components/icons/pdf-receipts';
 import CustomFormFieldsIcon from '../../../components/icons/custom-form-fields';
 import MultipleCurrenciesIcon from '../../../components/icons/multiple-currencies';
 import DedicateDonationsIcon from '../../../components/icons/dedicate-donations';
+import DismissLink from '../../../components/dismiss-link';
 
 // Import styles
 import './style.scss';
@@ -40,7 +41,7 @@ const Addons = () => {
 				</Card>
 				<Card value="pdf-receipts">
 					<PDFReceiptsIcon />
-					<strong>{ __( 'PDF Reciepts', 'give' ) }</strong>
+					<strong>{ __( 'PDF Receipts', 'give' ) }</strong>
 				</Card>
 				<Card value="custom-form-fields">
 					<CustomFormFieldsIcon />
@@ -56,6 +57,7 @@ const Addons = () => {
 				</Card>
 			</CardInput>
 			<ContinueButton />
+			<DismissLink />
 		</div>
 	);
 };

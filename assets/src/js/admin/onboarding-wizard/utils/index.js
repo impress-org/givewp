@@ -32,7 +32,12 @@ export const getAPINonce = () => {
 };
 
 export const getCountryList = () => {
-	return getWindowData( 'countries' );
+	return getWindowData( 'countries' ).map( ( country ) => {
+		return {
+			value: country.value,
+			label: decodeHTMLEntity( country.label ),
+		};
+	} );
 };
 
 export const getDefaultStateList = () => {

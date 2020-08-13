@@ -10,6 +10,8 @@
 	flex-direction: column;
 	justify-content: center;
 
+	transition: box-shadow 0.2s ease;
+
 	> svg {
 		margin-bottom: 20px;
 	}
