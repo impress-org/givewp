@@ -47,9 +47,8 @@ class PayPalCommerce implements PaymentGateway {
 				'table_html' => false,
 			],
 			[
-				'name' => esc_html__( 'Connect With Paypal', 'give' ),
-				'id'   => 'paypal_commerce_account_manger',
-				'type' => 'paypal_commerce_account_manger',
+				'id'   => 'paypal_commerce_introduction',
+				'type' => 'paypal_commerce_introduction',
 			],
 			[
 				'type'       => 'sectionend',
@@ -71,6 +70,11 @@ class PayPalCommerce implements PaymentGateway {
 					'data-search-type' => 'no_ajax',
 				],
 				'default'    => give_get_country(),
+			],
+			[
+				'name' => esc_html__( 'Connect With Paypal', 'give' ),
+				'id'   => 'paypal_commerce_account_manger',
+				'type' => 'paypal_commerce_account_manger',
 			],
 			[
 				'type' => 'sectionend',
