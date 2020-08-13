@@ -18,7 +18,7 @@ class PaymentCaptureCompleted extends PaymentEventListener {
 		$donation = $this->paymentsRepository->getDonationByPayment( $paymentId );
 
 		// If there's no matching donation then it's not tracked by GiveWP
-		if ( ! $donation ) {
+		if ( ! $donation || 'publish' === $donation->status ) {
 			return;
 		}
 
