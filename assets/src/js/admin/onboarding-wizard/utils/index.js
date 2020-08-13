@@ -141,6 +141,18 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
 };
 
 /**
+ * @param {requestCallback} dispatch Dispatch an action with the returned data
+ * @since 2.8.0
+ */
+export const genereateFormPreviewWithOnboardingAPI = ( dispatch ) => {
+	axios.post( getAPIRoot() + 'give-api/v2/onboarding/form', {}, {
+		headers: {
+			'X-WP-Nonce': getAPINonce(),
+		},
+	} );
+};
+
+/**
  * Retrieves currency code from API based on country
  *
  * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')

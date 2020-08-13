@@ -136,7 +136,7 @@ class Page {
 
 		wp_set_script_translations( 'give-admin-onboarding-wizard-app', 'give' );
 
-		$formID           = $this->formRepository->getOrMake();
+		$formID           = $this->formRepository->getDefaultFormID();
 		$featureGoal      = get_post_meta( $formID, '_give_goal_option', true );
 		$featureComments  = get_post_meta( $formID, '_give_donor_comment', true );
 		$featureTerms     = get_post_meta( $formID, '_give_terms_option', true );

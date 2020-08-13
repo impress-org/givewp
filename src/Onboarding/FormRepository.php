@@ -37,7 +37,7 @@ class FormRepository {
 	 *
 	 * @since 2.8.0
 	 */
-	protected function getDefaultFormID() {
+	public function getDefaultFormID() {
 		$formID = $this->settingsRepository->get( 'form_id' );
 		return $this->isFormAvailable( $formID ) ? $formID : 0;
 	}
