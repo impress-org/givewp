@@ -10,13 +10,6 @@ class AccountAdminNotices {
 	/**
 	 * @since 2.8.0
 	 *
-	 * @var MerchantDetail
-	 */
-	private $merchantDetails;
-
-	/**
-	 * @since 2.8.0
-	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;
@@ -24,11 +17,9 @@ class AccountAdminNotices {
 	/**
 	 * AccountAdminNotices constructor.
 	 *
-	 * @param MerchantDetail  $merchantDetails
 	 * @param MerchantDetails $merchantRepository
 	 */
-	public function __construct( MerchantDetail $merchantDetails, MerchantDetails $merchantRepository ) {
-		$this->merchantDetails    = $merchantDetails;
+	public function __construct( MerchantDetails $merchantRepository ) {
 		$this->merchantRepository = $merchantRepository;
 	}
 

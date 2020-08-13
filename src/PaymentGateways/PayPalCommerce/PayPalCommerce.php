@@ -47,6 +47,18 @@ class PayPalCommerce implements PaymentGateway {
 				'table_html' => false,
 			],
 			[
+				'name'       => __( 'Account Country', 'give' ),
+				'desc'       => __( 'The country of your PayPal account.', 'give' ),
+				'id'         => 'give_paypal_commerce_country',
+				'type'       => 'select',
+				'options'    => give_get_country_list(),
+				'class'      => 'give-select give-select-chosen',
+				'attributes' => [
+					'data-search-type' => 'no_ajax',
+				],
+				'default'    => give_get_country(),
+			],
+			[
 				'name' => esc_html__( 'Connect With Paypal', 'give' ),
 				'id'   => 'paypal_commerce_account_manger',
 				'type' => 'paypal_commerce_account_manger',

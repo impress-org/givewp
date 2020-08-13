@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give_Admin_Settings;
 
@@ -37,6 +38,13 @@ class onBoardingRedirectHandler {
 	private $merchantRepository;
 
 	/**
+	 * @since 2.8.0
+	 *
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
 	 * onBoardingRedirectHandler constructor.
 	 *
 	 * @since 2.8.0
@@ -44,11 +52,13 @@ class onBoardingRedirectHandler {
 	 * @param Webhooks        $webhooks
 	 * @param PayPalClient    $payPalClient
 	 * @param MerchantDetails $merchantRepository
+	 * @param Settings        $settings
 	 */
-	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository ) {
+	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository, Repositories\Settings $settings ) {
 		$this->webhooksRepository = $webhooks;
 		$this->payPalClient       = $payPalClient;
 		$this->merchantRepository = $merchantRepository;
+		$this->settings           = $settings;
 	}
 
 	/**
@@ -84,8 +94,8 @@ class onBoardingRedirectHandler {
 	 */
 	private function savePayPalMerchantDetails() {
 		$paypalGetData   = wp_parse_args( $_SERVER['QUERY_STRING'] );
-		$tokenInfo       = get_option( OptionId::ACCESS_TOKEN, [ 'accessToken' => '' ] );
-		$partnerLinkInfo = get_option( OptionId::PARTNER_LINK_DETAIL, null );
+		$partnerLinkInfo = $this->settings->getPartnerLinkDetails();
+		$tokenInfo       = $this->settings->getAccessToken();
 
 		$allowedPayPalData = [
 			'merchantId',
@@ -93,7 +103,7 @@ class onBoardingRedirectHandler {
 		];
 
 		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
-		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo['accessToken'] );
+		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
@@ -207,8 +217,8 @@ class onBoardingRedirectHandler {
 	 * @return void
 	 */
 	private function deleteTempOptions() {
-		delete_option( OptionId::PARTNER_LINK_DETAIL );
-		delete_option( OptionId::ACCESS_TOKEN );
+		$this->settings->deletePartnerLinkDetails();
+		$this->settings->deleteAccessToken();
 	}
 
 	/**
