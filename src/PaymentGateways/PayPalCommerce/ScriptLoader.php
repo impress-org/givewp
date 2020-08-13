@@ -113,11 +113,12 @@ EOT;
 		$payPalSdkQueryParameters = apply_filters(
 			'give_paypal_commerce_sdk_query_parameters',
 			[
-				'client-id'   => $merchant->clientId,
-				'merchant-id' => $merchant->merchantIdInPayPal,
-				'currency'    => give_get_currency(),
-				'components'  => 'hosted-fields,buttons',
-				'locale'      => get_locale(),
+				'client-id'       => $merchant->clientId,
+				'merchant-id'     => $merchant->merchantIdInPayPal,
+				'currency'        => give_get_currency(),
+				'components'      => 'hosted-fields,buttons',
+				'locale'          => get_locale(),
+				'disable-funding' => 'credit',
 			]
 		);
 

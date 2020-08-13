@@ -37,7 +37,6 @@ class SmartButtons extends PaymentMethod {
 				color: 'gold',
 				tagline: false,
 			},
-			funding: { disallowed: [ paypal.FUNDING.CARD, paypal.FUNDING.CREDIT ] },
 		} ).render( smartButtonContainer );
 	}
 
