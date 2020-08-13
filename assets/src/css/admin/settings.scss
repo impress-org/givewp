@@ -726,8 +726,16 @@ a.give-delete {
 		display: grid;
 		grid-template-columns: repeat(2, auto);
 
+		h2 {
+			font-size: 1.6em !important;
+		}
+
+		.give-field-description {
+			font-size: 1.2em !important;
+		}
+
 		div:last-child {
-			margin: 2em 0;
+			margin-top: 1.6em;
 		}
 	}
 
@@ -737,9 +745,9 @@ a.give-delete {
 		padding: 20px;
 		display: grid;
 		grid-template-columns: repeat(3, auto);
-		margin: 25px 0;
-		font-size: 14px !important;
-		line-height: 22px;
+		margin: 1em 0 2em 0;
+		font-size: 1.2em !important;
+		line-height: 2em;
 
 		div {
 			font-style: italic;
