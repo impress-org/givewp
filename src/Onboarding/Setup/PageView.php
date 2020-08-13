@@ -62,6 +62,11 @@ class PageView {
 		return \Give\Helpers\Gateways\Stripe::isAccountConfigured();
 	}
 
+	public function isStripeWebhooksSetup() {
+		return true;
+		return ! empty( give_get_option( 'give_stripe_last_webhook_received_timestamp' ) );
+	}
+
 	/**
 	 * @return bool
 	 *

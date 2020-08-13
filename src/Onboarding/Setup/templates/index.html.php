@@ -18,12 +18,12 @@
 			'section',
 			[
 				'title'    => sprintf( '%s 1: %s', __( 'Step', 'give' ), __( 'Create your first donation form', 'give' ) ),
-				'badge'    => '<span class="badge badge-review">5-10 Minutes</span>',
+				'badge'    => '<span class="badge badge-review">5 Minutes</span>',
 				'contents' => $this->render_template(
 					'row-item',
 					[
-						'class'       => 'setup-item-configuration',
-						'icon'        => $this->image( 'configuration@2x.min.png' ),
+						'class'       => 'setup-item-configuration setup-item-completed',
+						'icon'        => $this->image( 'check-circle.min.png' ),
 						'icon_alt'    => esc_html__( 'First-Time Configuration', 'give' ),
 						'title'       => esc_html__( 'First-Time Configuration', 'give' ),
 						'description' => esc_html__( 'Every fundraising campaign begins with a donation form. Click here to create your first donation form in minutes. Once created you can use it anywhere on your website.', 'give' ),
@@ -50,8 +50,10 @@
 					! $this->isStripeSetup() ? $this->render_template(
 						'row-item',
 						[
-							'class'       => 'paypal',
-							'icon'        => $this->image( 'paypal@2x.min.png' ),
+							'class'       => ( $this->isPayPalSetup() ) ? 'paypal setup-item-completed' : 'paypal',
+							'icon'        => ( $this->isPayPalSetup() )
+												? $this->image( 'check-circle.min.png' )
+												: $this->image( 'paypal@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'PayPal', 'give' ),
 							'title'       => esc_html__( 'Connect to PayPal', 'give' ),
 							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It’s been the go-to payment merchant for many of the world\'s top NGOs. Accept PayPal, Credit and Debit Cards, and more using PayPal’s Smart Buttons without any added platform fees.', 'give' ),
@@ -92,7 +94,7 @@
 							),
 						]
 					) : '',
-					$this->isStripeSetup() && ! $this->isPayPalSetup() ? $this->render_template(
+					$this->isStripeSetup() && ! $this->isPayPalSetup() && ! $this->isStripeWebhooksSetup() ? $this->render_template(
 						'row-item',
 						[
 							'class'       => 'stripe stripe-webhooks',
@@ -103,6 +105,31 @@
 							'action'      =>
 								sprintf( '<a id="stripeWebhooksConfigureButton" href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) )
 								. sprintf( '<button class="hidden" disabled="disable" id="stripeWebhooksConfigureConfirmed">%s</button>', __( 'Webhooks Configured!', 'give' ) ),
+						]
+					) : '',
+					$this->isStripeSetup() && ! $this->isPayPalSetup() && $this->isStripeWebhooksSetup() ? $this->render_template(
+						'row-item',
+						[
+							'class'       => 'setup-item-completed',
+							'icon'        => $this->image( 'check-circle.min.png' ),
+							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
+							'title'       => esc_html__( 'Connect to Stripe', 'give' ),
+							'description' => esc_html__( 'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations.', 'give' ),
+							'action'      => $this->render_template(
+								'action-link',
+								[
+									'href'             => add_query_arg(
+										[
+											'post_type' => 'give_forms',
+											'page'      => 'give-settings',
+											'tab'       => 'gateways',
+											'section'   => 'stripe',
+										],
+										esc_url_raw( admin_url( 'edit.php' ) )
+									),
+									'screenReaderText' => 'Configure GiveWP',
+								]
+							),
 						]
 					) : '',
 				],
