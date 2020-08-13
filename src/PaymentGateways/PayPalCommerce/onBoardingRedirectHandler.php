@@ -337,7 +337,11 @@ class onBoardingRedirectHandler {
 		}
 
 		if ( array_diff( [ 'products', 'capabilities' ], array_keys( $onBoardedData ) ) ) {
-			$errorMessages[] = esc_html__( 'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.', 'give' );
+			$errorMessages[] = esc_html__(
+				'Your account was expected to be able to accept custom payments, but is not. Please make sure your
+				account country matches the country setting. If the problem persists, please contact PayPal.',
+				'give'
+			);
 
 			// Return here since the rest of the validations will definitely fail
 			return $errorMessages;
