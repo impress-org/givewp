@@ -1,36 +1,14 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners;
+namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce;
 
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
-use Give\Repositories\PaymentsRepository;
-
-class PaymentCaptureRefunded implements EventListener {
-	/**
-	 * @since 2.8.0
-	 *
-	 * @var PaymentsRepository
-	 */
-	private $paymentsRepository;
-
-	/**
-	 * @var MerchantDetails
-	 */
-	private $merchantDetails;
-
-	/**
-	 * PaymentCaptureRefunded constructor.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param PaymentsRepository $paymentsRepository
-	 * @param MerchantDetails    $merchantDetails
-	 */
-	public function __construct( PaymentsRepository $paymentsRepository, MerchantDetails $merchantDetails ) {
-		$this->paymentsRepository = $paymentsRepository;
-		$this->merchantDetails    = $merchantDetails;
-	}
-
+/**
+ * Class PaymentCaptureRefunded
+ * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
+ *
+ * @sicne 2.8.0
+ */
+class PaymentCaptureRefunded extends PaymentEventListener {
 	/**
 	 * @inheritDoc
 	 */
@@ -44,7 +22,11 @@ class PaymentCaptureRefunded implements EventListener {
 			return;
 		}
 
-		give_update_payment_status( $donation->ID, 'refunded' );
+		// Exit if donation status already set to refunded.
+		if ( ! give_update_payment_status( $donation->ID, 'refunded' ) ) {
+			return;
+		}
+
 		give_insert_payment_note( $donation->ID, __( 'Charge refunded in PayPal', 'give' ) );
 
 		/**
@@ -68,7 +50,7 @@ class PaymentCaptureRefunded implements EventListener {
 		$link = current(
 			array_filter(
 				$refund->links,
-				function ( $link ) {
+				static function ( $link ) {
 					return $link->rel === 'up';
 				}
 			)
