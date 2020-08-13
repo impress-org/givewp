@@ -144,7 +144,7 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
  * @param {requestCallback} dispatch Dispatch an action with the returned data
  * @since 2.8.0
  */
-export const genereateFormPreviewWithOnboardingAPI = ( dispatch ) => {
+export const generateFormPreviewWithOnboardingAPI = ( dispatch ) => {
 	axios.post( getAPIRoot() + 'give-api/v2/onboarding/form', {}, {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),

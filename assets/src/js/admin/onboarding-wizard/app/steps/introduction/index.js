@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 import './style.scss';
 
 // Import utilities
-import { genereateFormPreviewWithOnboardingAPI } from '../../../utils';
+import { generateFormPreviewWithOnboardingAPI } from '../../../utils';
 
 import Card from '../../../components/card';
 import GiveLogo from '../../../components/give-logo';
@@ -14,7 +14,7 @@ import DismissLink from '../../../components/dismiss-link';
 
 const Introduction = () => {
 	const onStartSetup = () => {
-		genereateFormPreviewWithOnboardingAPI();
+		generateFormPreviewWithOnboardingAPI();
 	};
 
 	return (
