@@ -6,7 +6,7 @@ use Exception;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
-use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PaymentCaptureCompleted;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\PaymentCaptureCompleted;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\PaymentCaptureDenied;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\PaymentCaptureRefunded;
 use InvalidArgumentException;
