@@ -47,27 +47,30 @@ class ScriptLoader {
 	 * @since 2.8.0
 	 */
 	public function loadAdminScripts() {
-		if ( Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
-			wp_enqueue_script(
-				'give-paypal-partner-js',
-				$this->getPartnerJsUrl(),
-				[],
-				null,
-				true
-			);
+		if ( ! Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
+			return;
+		}
 
-			wp_localize_script(
-				'give-paypal-partner-js',
-				'givePayPalCommerce',
-				[
-					'translations' => [
-						'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
-						'disconnectPayPalAccount' => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
-					],
-				]
-			);
+		wp_enqueue_script(
+			'give-paypal-partner-js',
+			$this->getPartnerJsUrl(),
+			[],
+			null,
+			true
+		);
 
-			$script = <<<EOT
+		wp_localize_script(
+			'give-paypal-partner-js',
+			'givePayPalCommerce',
+			[
+				'translations' => [
+					'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
+					'disconnectPayPalAccount'           => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
+				],
+			]
+		);
+
+		$script = <<<EOT
 				function givePayPalOnBoardedCallback(authCode, sharedId) {
 					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
 					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
@@ -81,11 +84,10 @@ class ScriptLoader {
 				}
 EOT;
 
-			wp_add_inline_script(
-				'give-paypal-partner-js',
-				$script
-			);
-		}
+		wp_add_inline_script(
+			'give-paypal-partner-js',
+			$script
+		);
 	}
 
 	/**
@@ -94,18 +96,28 @@ EOT;
 	 * @since 2.8.0
 	 */
 	public function loadPublicAssets() {
+		if ( ! $this->merchantRepository->getDetails() || ! Utils::gatewayIsActive() ) {
+			return;
+		}
+
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
+		/**
+		 * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
+		 */
+		$payPalSdkQueryParameters = [
+			'client-id'       => $merchant->clientId,
+			'merchant-id'     => $merchant->merchantIdInPayPal,
+			'currency'        => give_get_currency(),
+			'components'      => 'hosted-fields,buttons',
+			'locale'          => get_locale(),
+			'disable-funding' => 'credit',
+		];
+
 		wp_enqueue_script(
 			$this->paypalSdkScriptHandle,
-			sprintf(
-				'https://www.paypal.com/sdk/js?components=%1$s&client-id=%2$s&merchant-id=%3$s&currency=%4$s&intent=capture&disable-funding=credit',
-				'hosted-fields,buttons',
-				$merchant->clientId,
-				$merchant->merchantIdInPayPal,
-				give_get_currency()
-			),
+			add_query_arg( $payPalSdkQueryParameters, 'https://www.paypal.com/sdk/js' ),
 			[ 'give' ],
 			null,
 			false
