@@ -1,5 +1,5 @@
 // Import vendor dependencies
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // Import store dependencies
@@ -15,6 +15,10 @@ import './style.scss';
 const Wizard = ( { children } ) => {
 	const [ { currentStep } ] = useStoreValue();
 	const steps = children;
+
+	useEffect( () => {
+		window.scrollTo( 0, 0 );
+	}, [ currentStep ] );
 
 	const app = useRef( null );
 
