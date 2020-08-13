@@ -80,8 +80,6 @@ class Page {
 	 **/
 	public function render_page() {
 
-		$this->formRepository->getOrMake();
-
 		ob_start();
 		include_once plugin_dir_path( __FILE__ ) . 'templates/index.php';
 		exit;
