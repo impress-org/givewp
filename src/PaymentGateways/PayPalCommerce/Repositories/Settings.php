@@ -8,7 +8,7 @@ class Settings {
 	 *
 	 * @since 2.8.0
 	 */
-	const COUNTRY_KEY = 'give_paypal_commerce_account_country';
+	const COUNTRY_KEY = 'paypal_commerce_account_country';
 
 	/**
 	 * wp_options key for the access token
@@ -32,7 +32,7 @@ class Settings {
 	 * @return string|null
 	 */
 	public function getAccountCountry() {
-		return get_option( self::COUNTRY_KEY, null );
+		return give_get_option( self::COUNTRY_KEY, null );
 	}
 
 	/**

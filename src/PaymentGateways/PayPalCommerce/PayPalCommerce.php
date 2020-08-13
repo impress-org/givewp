@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 
 /**
  * Class PayPalCommerce
@@ -62,7 +63,7 @@ class PayPalCommerce implements PaymentGateway {
 			[
 				'name'       => __( 'Account Country', 'give' ),
 				'desc'       => __( 'The country of your PayPal account.', 'give' ),
-				'id'         => 'give_paypal_commerce_country',
+				'id'         => Settings::COUNTRY_KEY,
 				'type'       => 'select',
 				'options'    => give_get_country_list(),
 				'class'      => 'give-select give-select-chosen',
