@@ -1,0 +1,35 @@
+.give-obw-location {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	> svg {
+		top: 50px;
+		position: absolute;
+	}
+
+	> h1 {
+		font-family: Montserrat, Arial, Helvetica, sans-serif;
+		font-weight: 600;
+		font-size: 24px;
+		line-height: 34px;
+		color: #333;
+
+		margin: 0 0 52px 0;
+	}
+
+	.give-obw-card {
+		padding: 40px;
+		margin-bottom: 85px;
+	}
+
+	.give-obw-select-input {
+		width: 100%;
+		margin-bottom: 42px;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+}

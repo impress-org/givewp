@@ -9,6 +9,8 @@
  * @since       1.8
  */
 
+use Give\Onboarding\Setup\Page as SetupPage;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -131,11 +133,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							],
 						],
 						[
-							'name'    => __( 'Welcome Screen', 'give' ),
+							'name'    => __( 'Setup Page', 'give' ),
 							/* translators: %s: about page URL */
 							'desc'    => sprintf(
 								wp_kses(
-									__( 'Enable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Welcome screen</a> that displays each time GiveWP is activated or updated.', 'give' ),
+									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first installed.', 'give' ),
 									[
 										'a' => [
 											'href'   => [],
@@ -143,14 +145,18 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 										],
 									]
 								),
-								esc_url( admin_url( 'index.php?page=give-getting-started' ) )
+								esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
 							),
-							'id'      => 'welcome',
+							'id'      => 'setup_page_enabled',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => give_is_setting_enabled(
+								SetupPage::getSetupPageEnabledOrDisabled()
+							)
+								? SetupPage::ENABLED
+								: SetupPage::DISABLED,
 							'options' => [
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
+								SetupPage::ENABLED  => __( 'Enabled', 'give' ),
+								SetupPage::DISABLED => __( 'Disabled', 'give' ),
 							],
 						],
 						[

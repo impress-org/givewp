@@ -46,6 +46,7 @@ use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
+use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -134,6 +135,7 @@ final class Give {
 		RestAPI::class,
 		Routes::class,
 		PaymentGateways::class,
+		Onboarding::class,
 	];
 
 	/**
