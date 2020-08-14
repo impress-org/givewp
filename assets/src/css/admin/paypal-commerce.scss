@@ -1,0 +1,30 @@
+.give-modal.paypal-commerce-connect {
+	max-width: 596px;
+
+	.give-modal {
+		&__title {
+			color: #333;
+			font-size: 22px;
+			margin-bottom: 30px;
+		}
+
+		&__body {
+			padding: 33px;
+		}
+
+		&__description {
+			& > * {
+				font-size: 17px;
+				color: #939393;
+			}
+
+			ul {
+				padding: 10px 0 0 40px;
+			}
+
+			&__warning {
+				color: #ff8c00;
+			}
+		}
+	}
+}
