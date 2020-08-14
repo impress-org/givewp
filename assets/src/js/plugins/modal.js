@@ -57,8 +57,9 @@ class GiveModal {
 				<div class="give-modal__body">
 					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${ this.config.modalContent.title }</h2>` : '' }
 					${ this.config.modalContent.desc ? `<p class="give-modal__description">${ this.config.modalContent.desc }</p>` : '' }
+					${ this.config.modalContent.body ? this.config.modalContent.body : '' }
 				</div>
-	
+
 				<div class="give-modal__controls">
 
 					${ ( 'form' === this.config.type ) ? '<div class="spinner"></div>' : '' }
@@ -73,7 +74,7 @@ class GiveModal {
 						${ this.config.modalContent.confirmBtnTitle ? this.config.modalContent.confirmBtnTitle : Give.fn.getGlobalVar( 'confirm' ) }
 					</button>` }
 				</div>
-				
+
 			</div>`;
 		}
 
@@ -283,7 +284,7 @@ class GiveSuccessAlert extends GiveModal {
 	constructor( obj ) {
 		obj.type = 'alert';
 		super( obj );
-		this.config.classes.modalWrapper = 'give-modal--success';
+		this.config.classes.modalWrapper += ' give-modal--success';
 
 		this.init();
 	}
