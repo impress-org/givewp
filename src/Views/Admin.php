@@ -8,6 +8,8 @@
 
 namespace Give\Views;
 
+use Give\Onboarding\Onboarding;
+
 defined( 'ABSPATH' ) || exit;
 
 /**

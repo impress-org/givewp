@@ -32,6 +32,10 @@ function give_stripe_connect_save_options() {
 
 	$get_vars = give_clean( $_GET );
 
+	if ( ! isset( $get_vars['page'] ) || 'give-settings' !== $get_vars['page'] ) {
+		return;
+	}
+
 	// If we don't have values here, bounce.
 	if (
 		! isset( $get_vars['stripe_publishable_key'] ) ||
@@ -303,13 +307,6 @@ function give_stripe_show_connect_banner() {
 
 	// Don't show if already connected.
 	if ( Give\Helpers\Gateways\Stripe::isAccountConfigured() ) {
-		$status = false;
-	}
-
-	$hide_on_pages = [ 'give-about', 'give-getting-started', 'give-credits', 'give-addons' ];
-
-	// Don't show if on the about page.
-	if ( in_array( give_get_current_setting_page(), $hide_on_pages, true ) ) {
 		$status = false;
 	}
 

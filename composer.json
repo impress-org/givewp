@@ -15,7 +15,8 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.6",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpcompatibility/phpcompatibility-wp": "*",
-        "wp-coding-standards/wpcs": "*"
+        "wp-coding-standards/wpcs": "*",
+        "phpunit/phpunit": "^9"
     },
     "keywords": [
         "wordpress",
@@ -26,6 +27,7 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
+        "test": "./vendor/bin/phpunit --bootstrap tests/src/bootstrap.php --no-configuration tests/src/",
         "post-install-cmd": [
             "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
             "@install-codestandards"

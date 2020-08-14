@@ -223,6 +223,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.8.0: ??? =
+* New: New installs now direct users to the new Onboarding Wizard, rather than a Welcome Page.
+* New: Introduces a new Setup Page for tracking progress towards accepting the first donation.
+
 = 2.7.5: August 11th, 2020 =
 * New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain". [#4952](https://github.com/impress-org/givewp/issues/4952)
 * New: The Donations search bar now allows you to search by like keywords for rather than exact match which makes it a lot easier to find proper results. [#4994](https://github.com/impress-org/givewp/issues/4994)

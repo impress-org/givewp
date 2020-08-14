@@ -16,7 +16,9 @@
         "lint:php:fix": "./vendor/bin/phpcbf -v --colors --standard=phpcs.ruleset.xml",
         "lint:textdomain": "node ./wp-textdomain.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
-        "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles"
+        "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles",
+        "storybook": "start-storybook -p 6006",
+        "storybook:build": "build-storybook -c .storybook -o .storybook-static"
     },
     "repository": {
         "type": "git",
@@ -37,7 +39,10 @@
         "@babel/preset-env": "^7.4.2",
         "@babel/runtime": "^7.4.2",
         "@prettier/plugin-php": "^0.12.0",
+        "@storybook/addon-a11y": "^5.3.19",
+        "@storybook/html": "^5.3.19",
         "autoprefixer": "^9.5.0",
+        "axios-mock-adapter": "^1.18.2",
         "babel-eslint": "^10.0.3",
         "babel-loader": "^8.0.5",
         "browser-sync": "^2.26.3",
@@ -101,6 +106,7 @@
         "react-dom": "^16.12.0",
         "react-router": "^5.1.2",
         "react-router-dom": "^5.1.2",
+        "react-select": "^3.1.0",
         "uiblocker": "latest"
     }
 }
