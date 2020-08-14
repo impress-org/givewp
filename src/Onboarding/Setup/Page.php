@@ -92,19 +92,6 @@ class Page {
 			GIVE_VERSION,
 			$in_footer = true
 		);
-		wp_enqueue_style(
-			'give-admin-setup-google-fonts',
-			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
-			[],
-			GIVE_VERSION
-		);
-		wp_enqueue_script(
-			'give-admin-setup-script',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin-setup.js',
-			[],
-			GIVE_VERSION,
-			$in_footer = true
-		);
 	}
 
 	/**
