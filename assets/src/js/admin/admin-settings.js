@@ -9,7 +9,10 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/* globals Give, jQuery */
+/* globals Give, jQuery, givePayPalCommerce */
+
+import { GiveConfirmModal } from './../plugins/modal';
+
 jQuery( document ).ready( function( $ ) {
 	/**
 	 *  Sortable payment gateways.
@@ -370,4 +373,56 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			return false;
 		} );
 	} );
+} );
+
+// Handle paypal onboarding.
+document.addEventListener( 'DOMContentLoaded', () => {
+	const onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
+		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
+		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
+		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' );
+
+	if ( onBoardingButton ) {
+		onBoardingButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
+			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+
+			fetch( ajaxurl + '?action=give_paypal_commerce_get_partner_url' )
+				.then( response => response.json() )
+				.then( function( res ) {
+					// @todo handle error.
+					if ( true === res.success ) {
+						const payPalLink = document.querySelector( '[data-paypal-button]' );
+
+						payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+						payPalLink.click();
+					}
+				}
+				);
+
+			return false;
+		} );
+	}
+
+	if ( disconnectPayPalAccountButton ) {
+		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
+			new GiveConfirmModal( {
+				modalContent: {
+					title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
+					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
+				},
+				successConfirm: () => {
+					connectionSettingContainer.classList.remove( 'give-hidden' );
+					disConnectionSettingContainer.classList.add( 'give-hidden' );
+
+					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+				},
+			} ).render();
+
+			return false;
+		} );
+	}
 } );

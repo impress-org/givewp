@@ -3,8 +3,8 @@
 /**
  * Handle Embed Donation Form Route
  *
- * @package Give
  * @since 2.7.0
+ * @package Give
  */
 
 namespace Give\Route;
@@ -45,13 +45,28 @@ class Form {
 	private $base;
 
 	/**
+	 * @since 2.8.0
+	 * @var Controller
+	 */
+	private $controller;
+
+	/**
 	 * Form constructor.
+	 *
+	 * @since 2.8.0
 	 *
 	 * @param Controller $controller
 	 */
-	public function init( $controller ) {
+	public function __construct( Controller $controller ) {
+		$this->controller = $controller;
+	}
+
+	/**
+	 * Form constructor.
+	 */
+	public function init() {
 		$this->setBasePrefix();
-		$controller->init();
+		$this->controller->init();
 
 		add_action( 'init', [ $this, 'addRule' ] );
 		add_action( 'query_vars', [ $this, 'addQueryVar' ] );
@@ -89,6 +104,7 @@ class Form {
 	 * Add query var
 	 *
 	 * @since 2.7.0
+	 *
 	 * @param array $queryVars
 	 *
 	 * @return array

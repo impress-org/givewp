@@ -639,6 +639,9 @@
 				case 'paypalpro_payflow':
 					icon = 'far fa-credit-card';
 					break;
+				case 'paypal-commerce':
+					icon = 'far fa-credit-card';
+					break;
 				case 'stripe_google_pay':
 					icon = 'fab fa-google';
 					break;

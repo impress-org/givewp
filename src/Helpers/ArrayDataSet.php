@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Helpers;
 
 class ArrayDataSet {
@@ -8,11 +9,13 @@ class ArrayDataSet {
 	 * This function only support one dimensional array.
 	 * You can pass a multi dimensional array but only zero level array keys will be renamed.
 	 *
-	 * @param array $array
+	 * @since 2.7.0
+	 *
 	 * @param array $renameTo Pass array of existing key name as key and new key name as value.
 	 *
+	 * @param array $array
+	 *
 	 * @return array
-	 * @since 2.7.0
 	 */
 	public static function renameKeys( $array, $renameTo ) {
 		// Rename key if property name exist for them.
@@ -60,5 +63,29 @@ class ArrayDataSet {
 		}
 
 		return $array;
+	}
+
+
+	/**
+	 * Creates a new array from the old one with all of the index keys converted to camel case.
+	 * This is only intended for associative arrays.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param $array
+	 *
+	 * @return array
+	 */
+	public static function camelCaseKeys( $array ) {
+		$newArray = [];
+
+		foreach ( $array as $key => $value ) {
+			$studlyKey = ucwords( str_replace( [ '-', '_' ], ' ', $key ) );
+			$studlyKey = lcfirst( str_replace( ' ', '', $studlyKey ) );
+
+			$newArray[ $studlyKey ] = $value;
+		}
+
+		return $newArray;
 	}
 }

@@ -1,0 +1,21 @@
+// Separator with center text.
+// Style for src/Views/Utils/separator-with-center-text.php
+.separator-with-text {
+	font-size: 16px;
+	font-style: italic;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30px 0;
+
+	.dashed-line {
+		border: 1px solid #d4d4d4;
+		flex-grow: 1;
+	}
+
+	.label {
+		padding: 0 6px;
+		font-size: 14px;
+		color: #8d8e8e;
+	}
+}

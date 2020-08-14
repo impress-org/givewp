@@ -37,6 +37,7 @@ const config = {
 		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 		'admin-widgets': [ './assets/src/js/admin/admin-widgets.js', './assets/src/css/admin/widgets.scss' ],
+		'paypal-commerce': [ './assets/src/js/frontend/paypal-commerce/index.js', './assets/src/css/frontend/paypal-commerce/index.scss' ],
 		'admin-onboarding-wizard': [ './assets/src/js/admin/onboarding-wizard/index.js' ],
 	},
 	output: {
