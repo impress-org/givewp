@@ -44,6 +44,7 @@ class GiveModal {
 	/**
 	 * Get template
 	 *
+	 * @since 2.8.0 add support for modalContent.body for full body markup
 	 * @since 2.1.0
 	 *
 	 * @return {string} Template HTML.
@@ -278,6 +279,7 @@ class GiveNoticeAlert extends GiveModal {
 /**
  * This class will handle success alert modal
  *
+ * @since 2.8.0 extend the classes rather than override
  * @since 2.1.0
  */
 class GiveSuccessAlert extends GiveModal {
