@@ -87,6 +87,11 @@ class DefaultFormFactory {
 					'_give_donation-receipt_email_mesage'  => give_get_default_donation_receipt_email(),
 					'_give_donation-receipt_email_content_type' => 'text/html',
 					'_give_form_goal_progress'             => -1,
+					'_give_offline_checkout_notes'         => '<em>You can customize instructions in the forms settings.</em>'
+															. '<br /><br />'
+															. '<strong>Please make checks payable to "{sitename}".</strong>'
+															. '<br /><br />'
+															. 'Your donation is greatly appreciated!',
 				],
 			]
 		);
