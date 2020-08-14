@@ -20,7 +20,7 @@ export function observeAction( action ) {
  * the change in form height. In order to normalize
  * visual movement, set the overflow-y to scroll.
  *
- * After the first step, after the introduction, set the overflow to scroll.
+ * Starting with the first step, after the introduction, set the overflow to scroll.
  */
 subscribe( 'GO_TO_STEP', ( action ) => {
 	if ( action.payload.step === 1 ) {
