@@ -115,6 +115,17 @@ EOT;
 			'disable-funding' => 'credit',
 		];
 
+		/**
+		 * Filter value query parameter for PayPal SDK.
+		 *
+		 * Set vault to true if the transaction sets up a billing agreement or subscription.
+		 *
+		 * @see https://developer.paypal.com/docs/checkout/reference/customize-sdk/#vault
+		 *
+		 * @since 2.8.0
+		 */
+		$payPalSdkQueryParameters['vault'] = apply_filters( 'give_paypal_commerce_sdk_edit_vault', false );
+
 		wp_enqueue_script(
 			$this->paypalSdkScriptHandle,
 			add_query_arg( $payPalSdkQueryParameters, 'https://www.paypal.com/sdk/js' ),
