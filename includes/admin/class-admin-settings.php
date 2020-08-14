@@ -333,57 +333,97 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$current_section = give_get_current_setting_section();
 			$groups          = give_get_settings_groups();
 
-			if ( is_array( $groups ) && count( $groups ) > 0 ) {
+			if ( $groups ) {
+				$defaultGroup = current( array_keys( $groups ) );
 				?>
 				<div class="give-settings-section-content">
 					<div class="give-settings-section-group-menu">
 						<ul>
 							<?php
-							if ( is_array( $groups ) && count( $groups ) > 0 ) {
-								$count = 1;
+							foreach ( $groups as $slug => $group ) {
+								$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $defaultGroup;
+								$active_class  = ( $slug === $current_group ) ? 'active' : '';
 
-								foreach ( $groups as $slug => $group ) {
-									$default_group = ( 1 === $count && empty( $_GET['group'] ) ) ? $slug : '';
-									$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $default_group;
-									$active_class  = ( $slug === $current_group ) ? 'active' : '';
-
-									echo sprintf(
-										'<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
-										esc_html( $active_class ),
-										esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}" ) ),
-										esc_html( $slug ),
-										esc_html( $group )
-									);
-									$count++;
-								}
+								echo sprintf(
+									'<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
+									esc_html( $active_class ),
+									esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}" ) ),
+									esc_html( $slug ),
+									esc_html( $group )
+								);
 							}
 							?>
 						</ul>
 					</div>
 					<div class="give-settings-section-group-content">
 						<?php
-						$count = 1;
 						foreach ( $sections as $group => $fields ) {
-							if ( ! empty( $group ) ) {
+							$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $defaultGroup;
+							$hide_class    = $group !== $current_group ? 'give-hidden' : '';
 
-								$default_group = ( 1 === $count && empty( $_GET['group'] ) ) ? $group : '';
-								$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $default_group;
-								$hide_class    = $group !== $current_group ? 'give-hidden' : '';
-								?>
-								<div id="give-settings-section-group-<?php echo esc_attr( $group ); ?>" class="give-settings-section-group <?php echo esc_html( $hide_class ); ?>">
-									<?php
-									foreach ( $fields as $value ) {
-										if ( ! isset( $value['type'] ) ) {
+							printf(
+								'<div id="give-settings-section-group-%1$s" class="give-settings-section-group %2$s">',
+								esc_attr( $group ),
+								esc_html( $hide_class )
+							);
+
+							/**
+							 * Filter sub group settings.
+							 *
+							 * @since 2.8.0
+							 */
+							$subGroups = apply_filters( "give_get_groups_{$current_section}_{$group}", [] );
+
+							if ( $subGroups ) {
+								$subGroupIds     = array_keys( $subGroups );
+								$defaultSubGroup = current( $subGroupIds );
+								$lastSubGroupId  = end( $subGroupIds );
+
+								echo '<ul class="give-subsubsub">';
+								foreach ( $subGroups as $id => $label ) {
+									$separator       = $lastSubGroupId === $id ? '' : '&nbsp;|&nbsp;';
+									$currentSubGroup = ! empty( $_GET['sub-group'] ) ? give_clean( $_GET['sub-group'] ) : $defaultSubGroup;
+									$class           = $id === $currentSubGroup ? 'current' : '';
+									printf(
+										'<li><a data-subgroup="%1$s" href="%2$s" class="%5$s">%3$s</a>%4$s</li>',
+										$id,
+										esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$group}&sub-group={$id}" ) ),
+										$label,
+										$separator,
+										$class
+									);
+								}
+								echo '</ul>';
+
+								foreach ( $fields as $id => $subgroup ) {
+									$current_group = ! empty( $_GET['sub-group'] ) ? give_clean( $_GET['sub-group'] ) : $defaultSubGroup;
+									$hide_class    = $id !== $current_group ? 'give-hidden' : '';
+
+									printf(
+										'<div id="give-settings-section-subgroup-%1$s" class="give-settings-section-subgroup %2$s">',
+										esc_attr( $id ),
+										esc_html( $hide_class )
+									);
+
+									foreach ( $subgroup as $setting ) {
+										if ( ! isset( $setting['type'] ) ) {
 											continue;
 										}
-										self::prepare_settings_field( $value, $option_name );
+										self::prepare_settings_field( $setting, $option_name );
 									}
-									?>
-								</div>
-								<?php
+
+									echo '</div>';
+								}
+							} else {
+								foreach ( $fields as $value ) {
+									if ( ! isset( $value['type'] ) ) {
+										continue;
+									}
+									self::prepare_settings_field( $value, $option_name );
+								}
 							}
 
-							$count++;
+							echo '</div>';
 						}
 						?>
 					</div>
@@ -1069,6 +1109,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 				// Loop through each vertical tabs related field options to destructure into single array.
 				foreach ( $options as $option ) {
+					// Get option from a sub group (if any).
+					if ( ! is_numeric( array_keys( $option )[0] ) ) {
+						foreach ( $option as $subGroup ) {
+							$new_options = array_merge( $new_options, $subGroup );
+						}
+						continue;
+					}
+
 					$new_options = array_merge( $new_options, $option );
 				}
 
