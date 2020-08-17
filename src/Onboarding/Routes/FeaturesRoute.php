@@ -44,6 +44,7 @@ class FeaturesRoute implements RestRoute {
 		update_post_meta( $formID, '_give_goal_option', in_array( 'donation-goal', $features ) ? 'enabled' : 'disabled' );
 		update_post_meta( $formID, '_give_donor_comment', in_array( 'donation-comments', $features ) ? 'enabled' : 'disabled' );
 		update_post_meta( $formID, '_give_terms_option', in_array( 'terms-conditions', $features ) ? 'enabled' : 'disabled' );
+		update_post_meta( $formID, '_give_customize_offline_donations', in_array( 'offline-donations', $features ) ? 'enabled' : 'disabled' );
 		update_post_meta( $formID, '_give_anonymous_donation', in_array( 'anonymous-donations', $features ) ? 'enabled' : 'disabled' );
 		update_post_meta( $formID, '_give_company_field', in_array( 'company-donations', $features ) ? 'optional' : 'disabled' ); // Note: The company field has two values for enabled, "required" and "optional".
 
