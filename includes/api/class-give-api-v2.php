@@ -101,7 +101,7 @@ class Give_API_V2 {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'get_forms_data' ],
-				'permission_callback' => __return_true(),
+				'permission_callback' => '__return_true',
 			]
 		);
 
@@ -111,7 +111,7 @@ class Give_API_V2 {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'get_donation_grid' ],
-				'permission_callback' => __return_true(),
+				'permission_callback' => '__return_true',
 			]
 		);
 
@@ -121,7 +121,7 @@ class Give_API_V2 {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'get_donor_wall' ],
-				'permission_callback' => __return_true(),
+				'permission_callback' => '__return_true',
 			]
 		);
 	}
