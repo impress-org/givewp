@@ -79,19 +79,17 @@ class ScriptLoader {
 							'PayPal allows you to accept credit or debit cards directly on your website. Because of
 							this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
 							GiveWP never stores sensitive information like card details to your server and works
-							seamlessly with SSL certificates. However, to achieve full compliance:',
+							seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
 							'give'
 						),
 						'https://givewp.com/documentation/resources/pci-compliance/'
 					),
 					'pciComplianceInstructions'         => [
-						esc_html__( 'Choose a trusted, secure hosting provider – preferably one which claims and actively promotes PCI compliance.', 'give' ),
-						esc_html__( 'Use security best practices when setting passwords and limit access to your server.', 'give' ),
-						esc_html__( 'Never store credit card details anywhere.', 'give' ),
-						esc_html__( 'With the aid of your hosting provider, implement SSL to keep your checkout secure.', 'give' ),
-						esc_html__( 'Keep installed plugins to a minimum; remember, compliance covers all installed software so that includes plugins and WordPress itself.', 'give' ),
+						esc_html__( 'Using a trusted, secure hosting provider – preferably one which claims and actively promotes PCI compliance.', 'give' ),
+						esc_html__( 'Maintain security best practices when setting passwords and limit access to your server.', 'give' ),
+						esc_html__( 'Implement an SSL certificate to keep your donations secure.', 'give' ),
+						esc_html__( 'Keep installed plugins to a minimum.', 'give' ),
 						esc_html__( 'Keep plugins up to date to ensure latest security fixes are present.', 'give' ),
-						esc_html__( 'Working with your payment processor, use an ASV (approved scanning vendor) to scan your site and find issues – fixing any identified issues until passing the scan.', 'give' ),
 					],
 					'liveWarning'                       => give_is_test_mode() ? esc_html__(
 						'You have connected your account for test mode. You will need to connect again once you
