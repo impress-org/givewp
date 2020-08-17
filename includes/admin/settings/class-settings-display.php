@@ -267,7 +267,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						],
 						[
 							'name'    => __( 'Terms and Conditions', 'give' ),
-							'desc'    => __( 'Would you like donors to require that donors agree to your terms when donating? Note: You can enable/disable this option and customize the terms per form as well.', 'give' ),
+							'desc'    => __( 'Would you like to require that donors agree to your terms when donating? Note: You can enable/disable this option and customize the terms per form as well.', 'give' ),
 							'id'      => 'terms',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
