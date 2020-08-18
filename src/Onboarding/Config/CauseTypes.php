@@ -2,7 +2,7 @@
 
 return [
 	'advocacy'      => __( 'Advocacy', 'give' ),
-	'education'     => __( 'Education', 'give' ),
+	'education'     => __( 'Educational', 'give' ),
 	'environmental' => __( 'Environmental', 'give' ),
 	'health'        => __( 'Health', 'give' ),
 	'political'     => __( 'Political', 'give' ),
