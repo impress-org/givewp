@@ -4,6 +4,7 @@ const { __ } = wp.i18n;
 // Import store dependencies
 import { useStoreValue } from '../../store';
 import { setUserType, setCauseType } from '../../store/actions';
+import { getCauseTypes } from '../../../utils';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -45,18 +46,7 @@ const YourCause = () => {
 			</CardInput>
 			<h2>{ __( 'What is your cause?', 'give' ) }</h2>
 			<span className="screen-reader-text">{ __( 'What is your cause?', 'give' ) }</span>
-			<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={
-				[
-					{
-						value: 'religous',
-						label: 'Religous',
-					},
-					{
-						value: 'school',
-						label: 'School',
-					},
-				]
-			} />
+			<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
 			<ContinueButton />
 		</div>
 	);
