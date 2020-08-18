@@ -1,0 +1,31 @@
+.give-obw-donation-form-preview {
+	position: relative;
+}
+
+.give-obw-donation-form-preview__iframe {
+	border: none;
+	width: 560px;
+	overflow: hidden;
+	transition: opacity 0.2s ease, height 0.2s ease;
+}
+
+.give-obw-donation-form-preview__loading-message {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	border: none;
+	width: 542px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transition: opacity 0.2s ease;
+	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 6px;
+	pointer-events: none;
+
+	> h3 {
+		margin-top: 30px;
+	}
+}
