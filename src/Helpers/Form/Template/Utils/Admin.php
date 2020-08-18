@@ -34,7 +34,7 @@ class Admin {
 
 			printf(
 				'<div class="give-row-head">
-							<button type="button" class="handlediv" aria-expanded="true">
+							<button type="button" class="give-handlediv" aria-expanded="true">
 								<span class="toggle-indicator"/>
 							</button>
 							<h2 class="hndle"><span>%1$s</span></h2>
