@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A `register_rest_route` notice no longer displays when creating a new page in the block editor (#5115)
 -   A typo in the Terms & Conditions field description has been fixed (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6 (#5100)
+-   Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand / collapse, and repeater elements. (#5118)
 
 [unreleased]: https://github.com/impress-org/givewp/releases/tag/2.8.0-alpha.1...HEAD
 [2.8.0-alpha.1]: https://github.com/impress-org/givewp/releases/tag/2.8.0-alpha.1
