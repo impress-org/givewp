@@ -269,6 +269,7 @@
 					$this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item',
 							'icon'        => $this->image( 'addons@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'Add-ons', 'give' ),
 							'title'       => esc_html__( 'GiveWP Add-ons', 'give' ),
@@ -297,6 +298,7 @@
 					$this->render_template(
 						'row-item',
 						[
+							'class'       => 'setup-item',
 							'icon'        => $this->image( 'givewp101@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'GiveWP Getting Started Guide', 'give' ),
 							'title'       => esc_html__( 'GiveWP Getting Started Guide', 'give' ),
