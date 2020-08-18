@@ -38,7 +38,7 @@ document.getElementById( 'stripeWebhooksCopyHandler' ).addEventListener( 'click'
 } );
 
 document.getElementById( 'stripeWebhooksConfigureButton' ).addEventListener( 'click', function( event ) {
-	event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+	event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Waiting for webhooks';
 } );
 
 function pollStripeWebhookRecieved() {
