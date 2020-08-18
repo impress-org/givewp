@@ -44,9 +44,12 @@ if ( stripeWebhooksCopyHandler ) {
 	} );
 }
 
-document.getElementById( 'stripeWebhooksConfigureButton' ).addEventListener( 'click', function( event ) {
-	event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Waiting for webhooks';
-} );
+const stripeWebhooksConfigureButton = document.getElementById( 'stripeWebhooksConfigureButton' );
+if ( stripeWebhooksConfigureButton ) {
+	stripeWebhooksConfigureButton.addEventListener( 'click', function( event ) {
+		event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+	} );
+}
 
 function pollStripeWebhookRecieved() {
 	const endpoint = wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved';
