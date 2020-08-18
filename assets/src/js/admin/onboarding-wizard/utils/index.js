@@ -58,6 +58,10 @@ export const getLocaleCurrency = ( countryCode ) => {
 	return lookup[ countryCode ] ?? '';
 };
 
+export const getCauseTypes = () => {
+	return getWindowData( 'causeTypes' );
+};
+
 export const getFeaturesEnabledDefault = () => {
 	const features = getWindowData( 'features' );
 	return features.filter( ( feature ) => {
