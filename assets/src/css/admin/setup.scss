@@ -189,6 +189,7 @@ article.stripe .action button {
 	input {
 		width: 300px;
 		margin-left: -2px; /* Align input with sibling p.description */
+		color: inherit;
 		border-color: transparent;
 		outline-color: transparent;
 	}
