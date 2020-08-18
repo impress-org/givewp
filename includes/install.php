@@ -367,7 +367,6 @@ function give_get_default_settings() {
 		'gateways'                                    => [
 			'manual'  => 1,
 			'offline' => 1,
-			'stripe'  => 1,
 		],
 		'default_gateway'                             => 'manual',
 
