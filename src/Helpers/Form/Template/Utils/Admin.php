@@ -37,7 +37,7 @@ class Admin {
 							<button type="button" class="give-handlediv" aria-expanded="true">
 								<span class="toggle-indicator"/>
 							</button>
-							<h2 class="hndle"><span>%1$s</span></h2>
+							<h2><span>%1$s</span></h2>
 						</div>',
 				$group->name
 			);
