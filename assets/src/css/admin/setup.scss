@@ -8,6 +8,10 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
+.give_forms_page_give-setup .wrap {
+	margin: 10px 40px 0 40px;
+}
+
 .wp-heading-inline {
 	font-family: 'Open Sans', sans-serif;
 }
@@ -18,7 +22,6 @@ section * {
 }
 
 section {
-	margin: 20px;
 	margin-bottom: 40px;
 	color: #424242;
 	background-color: #fff;
@@ -86,6 +89,16 @@ header .badge.badge-review {
 	border: #ddd 1px solid;
 	background: transparent;
 }
+
+.intro-text {
+	font-size: 20px;
+	text-align: center;
+	margin: 30px auto;
+	font-style: italic;
+	font-weight: 600;
+	color: #9ea3a8;
+}
+
 article {
 	padding: 20px 0;
 	border-bottom: 1px solid #ddd;
@@ -176,6 +189,7 @@ article.stripe .action button {
 	input {
 		width: 300px;
 		margin-left: -2px; /* Align input with sibling p.description */
+		color: inherit;
 		border-color: transparent;
 		outline-color: transparent;
 	}
