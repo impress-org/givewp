@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   First-time installs now redirect the user to the Onboarding Wizard which can be dismissed (#5014)
+-   Increased the minimum donation amount default value from $1.00 to $5.00 to help prevent card testing (#5119)
 
 ### Removed
 
