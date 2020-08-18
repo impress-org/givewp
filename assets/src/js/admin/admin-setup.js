@@ -21,25 +21,35 @@ Array.from( document.querySelectorAll( '.setup-item' ) ).forEach( ( setupItem ) 
 	}
 } );
 
-document.getElementById( 'stripeWebhooksCopyHandler' ).addEventListener( 'click', function() {
-	const webhooksURL = document.getElementById( 'stripeWebhooksCopy' );
-	webhooksURL.disabled = false; // Copying requires the input to not be disabled.
-	webhooksURL.select();
-	document.execCommand( 'copy' );
-	webhooksURL.disabled = true;
+const stripeWebhooksCopyHandler = document.getElementById( 'stripeWebhooksCopyHandler' );
+if ( stripeWebhooksCopyHandler ) {
+	stripeWebhooksCopyHandler.addEventListener( 'click', function() {
+		const webhooksURL = document.getElementById( 'stripeWebhooksCopy' );
+		if ( webhooksURL ) {
+			webhooksURL.disabled = false; // Copying requires the input to not be disabled.
+			webhooksURL.select();
+			document.execCommand( 'copy' );
+			webhooksURL.disabled = true;
+		}
 
-	const icon = document.getElementById( 'stripeWebhooksCopyIcon' );
-	icon.classList.remove( 'fa-clipboard' );
-	icon.classList.add( 'fa-clipboard-check' );
-	setTimeout( function() {
-		icon.classList.remove( 'fa-clipboard-check' );
-		icon.classList.add( 'fa-clipboard' );
-	}, 3000 );
-} );
+		const icon = document.getElementById( 'stripeWebhooksCopyIcon' );
+		if ( icon ) {
+			icon.classList.remove( 'fa-clipboard' );
+			icon.classList.add( 'fa-clipboard-check' );
+			setTimeout( function() {
+				icon.classList.remove( 'fa-clipboard-check' );
+				icon.classList.add( 'fa-clipboard' );
+			}, 3000 );
+		}
+	} );
+}
 
-document.getElementById( 'stripeWebhooksConfigureButton' ).addEventListener( 'click', function( event ) {
-	event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-} );
+const stripeWebhooksConfigureButton = document.getElementById( 'stripeWebhooksConfigureButton' );
+if ( stripeWebhooksConfigureButton ) {
+	stripeWebhooksConfigureButton.addEventListener( 'click', function( event ) {
+		event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+	} );
+}
 
 function pollStripeWebhookRecieved() {
 	const endpoint = wpApiSettings.root + 'give-api/v2/onboarding/stripe-webhook-recieved';
@@ -48,7 +58,7 @@ function pollStripeWebhookRecieved() {
 			setTimeout( pollStripeWebhookRecieved, 5000 );
 		} else {
 			document.getElementById( 'stripeWebhooks' ).classList.add( 'hidden' );
-			document.getElementById( 'stripeConnected' ).classList.remove( 'hidden' );
+			document.getElementById( 'stripeWebhooksConnected' ).classList.remove( 'hidden' );
 		}
 	} );
 }
