@@ -185,8 +185,8 @@ class Give_MetaBox_Form_Data {
 								],
 								'options'       => [
 									'display_label' => __( 'Donation Limits: ', 'give' ),
-									'minimum'       => give_format_decimal( [ 'amount' => '5.00' ] ),
-									'maximum'       => give_format_decimal( [ 'amount' => '999999.99' ] ),
+									'minimum'       => give_format_decimal( ['amount' => '5.00' ] ),
+									'maximum'       => give_format_decimal( ['amount' => '999999.99' ] ),
 								],
 							],
 							[
