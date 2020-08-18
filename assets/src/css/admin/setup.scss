@@ -181,17 +181,22 @@ article.stripe .action button {
 	background: #46aae4;
 }
 
-.stripe-webhooks .stripe-webhooks-url {
-	cursor: pointer;
-	display: inline-block;
-	margin-top: 10px;
+.stripe-webhooks {
+	.fa-spinner {
+		margin-right: 10px;
+	}
 
-	input {
-		width: 300px;
-		margin-left: -2px; /* Align input with sibling p.description */
-		color: inherit;
-		border-color: transparent;
-		outline-color: transparent;
+	.stripe-webhooks-url {
+		cursor: pointer;
+		display: inline-block;
+		margin-top: 10px;
+
+		input {
+			width: 300px;
+			margin-left: -2px; /* Align input with sibling p.description */
+			border-color: transparent;
+			outline-color: transparent;
+		}
 	}
 }
 

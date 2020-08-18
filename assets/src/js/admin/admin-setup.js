@@ -44,10 +44,11 @@ if ( stripeWebhooksCopyHandler ) {
 	} );
 }
 
+
 const stripeWebhooksConfigureButton = document.getElementById( 'stripeWebhooksConfigureButton' );
 if ( stripeWebhooksConfigureButton ) {
 	stripeWebhooksConfigureButton.addEventListener( 'click', function( event ) {
-		event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+		event.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Waiting for webhooks';
 	} );
 }
 
