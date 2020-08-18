@@ -58,7 +58,7 @@
 												: $this->image( 'paypal@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'PayPal', 'give' ),
 							'title'       => esc_html__( 'Connect to PayPal', 'give' ),
-							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It’s been the go-to payment merchant for many of the world\'s top NGOs. Accept PayPal, Credit and Debit Cards, and more using PayPal’s Smart Buttons without any added platform fees.', 'give' ),
+							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It’s been the go-to payment merchant for many of the world\'s top NGOs. Allow donors to log in to their PayPal account to complete the donation.', 'give' ),
 							'action'      => sprintf(
 								'<a href="%s"><i class="fab fa-paypal"></i>&nbsp;&nbsp;Connect to PayPal</a>',
 								add_query_arg(
@@ -80,7 +80,7 @@
 							'icon'        => $this->image( 'stripe-connect@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
 							'title'       => esc_html__( 'Connect to Stripe', 'give' ),
-							'description' => esc_html__( 'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations.', 'give' ),
+							'description' => esc_html__( 'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations. Remove the fee with the premium Stripe add-on.', 'give' ),
 							'action'      => sprintf(
 								'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect with Stripe</a>',
 								add_query_arg(
@@ -237,7 +237,7 @@
 							'icon'        => $this->image( 'currency-switcher@2x.min.png' ),
 							'icon_alt'    => __( 'Currency Switcher', 'give' ),
 							'title'       => __( 'Currency Switcher', 'give' ),
-							'description' => __( 'Allow your donors to switch to their currency of choice and increase your overall giving with the GiveWP Currency Switcher add-on. Select from an extensive list of currencies, set the currency based on your users’ location, pull from live exchange rates and more!', 'give' ),
+							'description' => __( 'Allow your donors to switch to their currency of choice and increase your overall giving with the GiveWP Currency Switcher add-on. Select from an extensive list of currencies, set the currency based on your donor\'s location, pull from live exchange rates and more!', 'give' ),
 							'action'      => $this->render_template(
 								'action-link',
 								[
@@ -255,7 +255,7 @@
 							'icon'        => $this->image( 'tributes@2x.min.png' ),
 							'icon_alt'    => __( 'Tributes', 'give' ),
 							'title'       => __( 'Tributes', 'give' ),
-							'description' => __( 'Allow donors to give to your cause via customizable tributes like “In honor of,” “In memory of,” or any dedication you prefer. Also, you are able to send eCards and produce customizable mailable cards that your donors and their honorees will love.', 'give' ),
+							'description' => __( 'Allow donors to give to your cause via customizable tributes like “In honor of,” “In memory of,” or any dedication you prefer. Send eCards and produce customizable mailable cards that your donors and their honorees will love.', 'give' ),
 							'action'      => $this->render_template(
 								'action-link',
 								[
@@ -272,7 +272,7 @@
 							'icon'        => $this->image( 'addons@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'Add-ons', 'give' ),
 							'title'       => esc_html__( 'GiveWP Add-ons', 'give' ),
-							'description' => esc_html__( 'Make your fundraising even more effective with powerful features like Recurring Donations, ask donor\'s to cover processing fees, multiple currencies, eCard dedications, and much more. View our growing library of 35+ add-ons and extend your fundraising now.', 'give' ),
+							'description' => esc_html__( 'Make your fundraising even more effective with powerful add-ons like Recurring Donations, Fee Recovery, Google Analytics Donation Tracking, MailChimp, and much more. View our growing library of 35+ add-ons and extend your fundraising now.', 'give' ),
 							'action'      => $this->render_template(
 								'action-link',
 								[
