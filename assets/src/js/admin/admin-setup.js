@@ -48,7 +48,7 @@ function pollStripeWebhookRecieved() {
 			setTimeout( pollStripeWebhookRecieved, 5000 );
 		} else {
 			document.getElementById( 'stripeWebhooks' ).classList.add( 'hidden' );
-			document.getElementById( 'stripeConnected' ).classList.remove( 'hidden' );
+			document.getElementById( 'stripeWebhooksConnected' ).classList.remove( 'hidden' );
 		}
 	} );
 }
