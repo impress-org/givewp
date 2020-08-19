@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Wizard feature "One-Time Donations" replaced with "Offline Donations". (#5103)
 -   Wizard now prompts when exiting without completing required steps. (#5111)
 -   Plugin links updated with short URLs (#5156)
+-   Denotes optional fields in the Multi-Step form template to differentiate from required. (#5157)
 
 ### Fixed
 
