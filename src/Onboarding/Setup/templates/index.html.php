@@ -165,6 +165,12 @@
 			[
 				'title'    => sprintf( '%s 3: %s', __( 'Step', 'give' ), __( 'Level up your fundraising', 'give' ) ),
 				'contents' => [
+					! empty( $settings['addons'] ) ? $this->render_template(
+						'sub-header',
+						[
+							'text' => 'Based on your selections, Give recommends the following add-ons to support your fundraising.',
+						]
+					) : '',
 					in_array( 'recurring-donations', $settings['addons'] ) ? $this->render_template(
 						'row-item',
 						[

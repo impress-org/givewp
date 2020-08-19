@@ -200,6 +200,11 @@ article.stripe .action button {
 	}
 }
 
+.setup-item-sub-header {
+	display: block; // Override inherited grid layout.
+	padding-left: 20px;
+}
+
 .setup-item-completed .header {
 	text-decoration: line-through;
 }
