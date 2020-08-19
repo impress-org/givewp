@@ -604,7 +604,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							__( 'If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href="%1$s" target="_blank">Stripe SDK</a> (Software Development Kit) either through <a href="%2$s" target="_blank">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href="%3$s" target="_blank">contact support</a>.', 'give' ),
 							esc_url_raw( 'https://github.com/stripe/stripe-php' ),
 							esc_url_raw( 'http://getcomposer.org/' ),
-							esc_url_raw( 'https://givewp.com/support' )
+							esc_url_raw( 'http://docs.givewp.com/settings-support' )
 						),
 						'id'      => 'stripe_sdk_incompatibility',
 						'type'    => 'radio_inline',
