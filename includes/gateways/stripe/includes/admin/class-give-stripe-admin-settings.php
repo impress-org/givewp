@@ -287,7 +287,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings['credit-card'][] = [
 						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_credit_card_docs_link',
-						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
+						'url'   => esc_url( 'http://docs.givewp.com/stripe-ccfields' ),
 						'title' => __( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
@@ -388,7 +388,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings['checkout'][] = [
 						'name'  => __( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_checkout_docs_link',
-						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
+						'url'   => esc_url( 'http://docs.givewp.com/settings-stripe-checkout' ),
 						'title' => __( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
