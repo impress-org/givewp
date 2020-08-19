@@ -41,7 +41,12 @@ export const getCountryList = () => {
 };
 
 export const getDefaultStateList = () => {
-	return getWindowData( 'states' );
+	return getWindowData( 'states' ).map( ( state ) => {
+		return {
+			value: state.value,
+			label: decodeHTMLEntity( state.label ),
+		};
+	} );
 };
 
 export const getCurrencyList = () => {
