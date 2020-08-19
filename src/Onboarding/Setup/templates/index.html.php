@@ -148,7 +148,7 @@
 							__( 'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more! %s', 'give' ),
 							sprintf(
 								'<a href="%s" target="_blank">%s <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
-								$this->give_link( 'https://givewp.com/addons/category/payment-gateways/' ),
+								'http://docs.givewp.com/payment-gateways', // UTM included.
 								__( 'View all gateways', 'give' )
 							)
 						),
@@ -177,7 +177,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/recurring-donations/' ),
+									'href'             => 'http://docs.givewp.com/setup-recurring', // UTM included.
 									'screenReaderText' => __( 'Learn more about Recurring Donations', 'give' ),
 								]
 							),
@@ -195,7 +195,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/fee-recovery/' ),
+									'href'             => 'http://docs.givewp.com/setup-fee-recovery', // UTM included.
 									'screenReaderText' => __( 'Learn more about Fee Recovery', 'give' ),
 								]
 							),
@@ -213,7 +213,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/pdf-receipts/' ),
+									'href'             => 'http://docs.givewp.com/setup-pdf-receipts', // UTM included.
 									'screenReaderText' => __( 'Learn more about PDF Receipts', 'give' ),
 								]
 							),
@@ -231,7 +231,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/form-field-manager/' ),
+									'href'             => 'http://docs.givewp.com/setup-ffm', // UTM included.
 									'screenReaderText' => __( 'Learn more about Form Field Manager', 'give' ),
 								]
 							),
@@ -249,7 +249,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/currency-switcher/' ),
+									'href'             => 'http://docs.givewp.com/setup-currency-switcher', // UTM included.
 									'screenReaderText' => __( 'Learn more about Currency Switcher', 'give' ),
 								]
 							),
@@ -267,7 +267,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/tributes/' ),
+									'href'             => 'http://docs.givewp.com/setup-tributes', // UTM included.
 									'screenReaderText' => __( 'Learn more about Tributes', 'give' ),
 								]
 							),
@@ -285,7 +285,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => $this->give_link( 'https://givewp.com/addons/' ),
+									'href'             => 'http://docs.givewp.com/setup-addons', // UTM included.
 									'screenReaderText' => __( 'View Add-ons for GiveWP', 'give' ),
 								]
 							),
@@ -314,7 +314,7 @@
 								'action-link',
 								[
 									'target'           => '_blank',
-									'href'             => 'http://docs.givewp.com/getting-started', // Shortlink includes UTM tracking.
+									'href'             => 'http://docs.givewp.com/getting-started', // UTM included.
 									'screenReaderText' => __( 'Learn more about GiveWP', 'give' ),
 								]
 							),
