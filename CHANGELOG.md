@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Setup Page header logo now aligns with content container. (#5135)
 -   Setup Page assets now load from the correct directory in production. (#5108)
 -   Missing block links in Setup Page now added. (#5128)
+-   Location settings in the Wizard now default to current setting value. (#5150)
 
 ## [2.8.0-alpha.1] - 2020-08-17
 
