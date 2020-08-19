@@ -28,6 +28,9 @@ class Page {
 	/** @var SettingsRepository */
 	protected $settingsRepository;
 
+	/** @var SettingsRepository */
+	protected $onboardingSettingsRepository;
+
 	/** @var LocaleCollection */
 	protected $localeCollection;
 
@@ -40,9 +43,10 @@ class Page {
 		SettingsRepositoryFactory $settingsRepositoryFactory,
 		LocaleCollection $localeCollection
 	) {
-		$this->formRepository     = $formRepository;
-		$this->settingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
-		$this->localeCollection   = $localeCollection;
+		$this->formRepository               = $formRepository;
+		$this->settingsRepository           = $settingsRepositoryFactory->make( 'give_settings' );
+		$this->onboardingSettingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
+		$this->localeCollection             = $localeCollection;
 	}
 
 	/**
@@ -142,19 +146,26 @@ class Page {
 		$featureAnonymous = get_post_meta( $formID, '_give_anonymous_donation', true );
 		$featureCompany   = get_post_meta( $formID, '_give_company_field', true );
 
+		$currency    = $this->settingsRepository->get( 'currency' ) ?: 'USD';
+		$baseCountry = $this->settingsRepository->get( 'base_country' ) ?: 'US';
+		$baseState   = $this->settingsRepository->get( 'base_state' ) ?: '';
+
 		wp_localize_script(
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
 			[
-				'apiRoot'        => esc_url_raw( rest_url() ),
-				'apiNonce'       => wp_create_nonce( 'wp_rest' ),
-				'setupUrl'       => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
-				'formPreviewUrl' => admin_url( '?page=give-form-preview' ),
-				'localeCurrency' => $this->localeCollection->pluck( 'currency_code' ),
-				'currencies'     => FormatList::fromKeyValue( give_get_currencies_list() ),
-				'countries'      => FormatList::fromKeyValue( give_get_country_list() ),
-				'states'         => FormatList::fromKeyValue( give_get_states( 'US' ) ),
-				'features'       => FormatList::fromValueKey(
+				'apiRoot'          => esc_url_raw( rest_url() ),
+				'apiNonce'         => wp_create_nonce( 'wp_rest' ),
+				'setupUrl'         => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
+				'formPreviewUrl'   => admin_url( '?page=give-form-preview' ),
+				'localeCurrency'   => $this->localeCollection->pluck( 'currency_code' ),
+				'currencies'       => FormatList::fromKeyValue( give_get_currencies_list() ),
+				'currencySelected' => $currency,
+				'countries'        => FormatList::fromKeyValue( give_get_country_list() ),
+				'countrySelected'  => $baseCountry,
+				'states'           => FormatList::fromKeyValue( give_get_states( $baseCountry ) ),
+				'stateSelected'    => $baseState,
+				'features'         => FormatList::fromValueKey(
 					[
 						'donation-goal'       => ( 'enabled' == $featureGoal ),
 						'donation-comments'   => ( 'enabled' == $featureComments ),
@@ -164,8 +175,8 @@ class Page {
 						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
-				'causeTypes'     => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
-				'addons'         => $this->settingsRepository->get( 'addons' ) ?: [],
+				'causeTypes'       => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
+				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);
 
