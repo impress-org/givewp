@@ -144,7 +144,13 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
 	} )
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
-			dispatch( setStateList( data.states ) );
+			const stateList = data.states.map( ( state ) => {
+				return {
+					value: state.value,
+					label: decodeHTMLEntity( state.label ),
+				};
+			} );
+			dispatch( setStateList( stateList ) );
 			dispatch( setFetchingStatesList( false ) );
 		} );
 };
