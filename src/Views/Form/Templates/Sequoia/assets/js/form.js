@@ -415,6 +415,25 @@
 		setupSelectInputs();
 	}
 
+	setupOptionalInputLables(
+		Array.from( document.querySelectorAll( 'input[type="text"]' ) )
+	);
+
+	/**
+	 * Denote non-required fields as optional.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {array} inputs An iteratable list of input elements.
+	 */
+	function setupOptionalInputLables( inputs ) {
+		inputs.filter( function( input ) {
+			return ! input.required;
+		} ).map( function( input ) {
+			input.placeholder += templateL10n.optionalLabel;
+		} );
+	}
+
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
 	 */
