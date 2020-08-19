@@ -26,6 +26,9 @@ import {
 	getCurrencyList,
 	getFeaturesEnabledDefault,
 	getAddonsSelectedDefault,
+	getDefaultCountry,
+	getDefaultState,
+	getDefaultCurrency,
 } from '../utils';
 
 /**
@@ -42,9 +45,9 @@ const App = () => {
 		configuration: {
 			userType: 'individual',
 			causeType: '',
-			country: 'US',
-			state: null,
-			currency: 'USD',
+			country: getDefaultCountry(),
+			state: getDefaultState(),
+			currency: getDefaultCurrency(),
 			features: getFeaturesEnabledDefault(),
 			addons: getAddonsSelectedDefault(),
 		},
