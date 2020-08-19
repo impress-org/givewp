@@ -279,6 +279,13 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 		wp_enqueue_script( 'give-sequoia-template-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-template.js', [ 'give' ], GIVE_VERSION, true );
 		wp_localize_script( 'give-sequoia-template-js', 'sequoiaTemplateOptions', $templateOptions );
+		wp_localize_script(
+			'give-sequoia-template-js',
+			'sequoiaTemplateL10n',
+			[
+				'optionalLabel' => sprintf( '&nbsp;(%s)', esc_html__( 'optional', 'give' ) ),
+			]
+		);
 	}
 
 	/**

@@ -10,6 +10,10 @@
 .give-obw-card-input__option {
 	position: relative;
 
+	label {
+		cursor: pointer;
+	}
+
 	.card-input-selected {
 		position: absolute;
 		top: 10px;

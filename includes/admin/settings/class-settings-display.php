@@ -112,7 +112,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						[
 							'name'  => __( 'Display Settings Docs Link', 'give' ),
 							'id'    => 'display_settings_docs_link',
-							'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),
+							'url'   => esc_url( 'http://docs.givewp.com/settings-form-options' ),
 							'title' => __( 'Display Options Settings', 'give' ),
 							'type'  => 'give_docs_link',
 						],

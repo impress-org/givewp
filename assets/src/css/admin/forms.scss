@@ -381,6 +381,17 @@ Shortcode Copy & Paste
 		.give-row.closed .toggle-indicator::before {
 			content: '\f140';
 		}
+
+		.give-handlediv {
+			float: right;
+			width: 36px;
+			height: 36px;
+			margin: 0;
+			padding: 0;
+			border: 0;
+			background: none;
+			cursor: pointer;
+		}
 	}
 
 	.give-minmax-wrap {
@@ -499,6 +510,7 @@ Shortcode Copy & Paste
 
 				> .give-row-head {
 					background-color: #f1f1f1;
+					border-bottom: 1px solid #ccd0d4;
 				}
 			}
 		}
