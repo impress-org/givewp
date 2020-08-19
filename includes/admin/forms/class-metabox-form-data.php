@@ -819,8 +819,8 @@ class Give_MetaBox_Form_Data {
 			return '';
 		}
 
-		$addon_link_url   = esc_url( 'https://go.givewp.com/addons-recurring-inlinelink' );
-		$addon_button_url = esc_url( 'https://go.givewp.com/addons-recurring-button' );
+		$addon_link_url   = esc_url( 'http://docs.givewp.com/form-recurring' );
+		$addon_button_url = esc_url( 'http://docs.givewp.com/form-recurring' );
 
 		return sprintf(
 			'
