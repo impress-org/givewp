@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Stripe button to configure webhooks now communicates polling state while waiting for configuration. (#5131)
 -   Wizard feature "One-Time Donations" replaced with "Offline Donations". (#5103)
 -   Wizard now prompts when exiting without completing required steps. (#5111)
-
+-   Plugin links updated with short URLs (#5156)
 
 ### Fixed
 
