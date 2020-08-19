@@ -100,6 +100,7 @@
 										esc_url_raw( admin_url( 'edit.php' ) )
 									),
 									__( 'Stripe Settings', 'give' )
+								)
 								: sprintf(
 									'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect with Stripe</a>',
 									add_query_arg(
