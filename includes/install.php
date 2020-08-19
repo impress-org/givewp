@@ -73,6 +73,11 @@ function give_run_install() {
 	// Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
 		$options = array_merge( $options, give_get_default_settings() );
+	} else {
+		// Otherwise, disable the Onboarding experience
+		$options = [
+			'setup_page_enabled' => 'disabled',
+		];
 	}
 
 	// Populate the default values.
