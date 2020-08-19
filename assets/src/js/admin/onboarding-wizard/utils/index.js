@@ -63,6 +63,18 @@ export const getLocaleCurrency = ( countryCode ) => {
 	return lookup[ countryCode ] ?? '';
 };
 
+export const getDefaultCountry = () => {
+	return getWindowData( 'countrySelected' );
+};
+
+export const getDefaultState = () => {
+	return getWindowData( 'stateSelected' );
+};
+
+export const getDefaultCurrency = () => {
+	return getWindowData( 'currencySelected' );
+};
+
 export const getCauseTypes = () => {
 	return getWindowData( 'causeTypes' );
 };

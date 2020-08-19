@@ -162,9 +162,9 @@ class Page {
 				'localeCurrency'   => $this->localeCollection->pluck( 'currency_code' ),
 				'currencies'       => FormatList::fromKeyValue( give_get_currencies_list() ),
 				'currencySelected' => $currency,
-				'countries'        => LocationList::getCountries(),
+				'countries'        => FormatList::fromKeyValue( give_get_country_list() ),
 				'countrySelected'  => $baseCountry,
-				'states'           => LocationList::getStates( $baseCountry ),
+				'states'           => FormatList::fromKeyValue( give_get_states( $baseCountry ) ),
 				'stateSelected'    => $baseState,
 				'features'         => FormatList::fromValueKey(
 					[
@@ -176,8 +176,8 @@ class Page {
 						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
-				'causeTypes'     => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
-				'addons'         => $this->settingsRepository->get( 'addons' ) ?: [],
+				'causeTypes'       => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
+				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);
 
