@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- Changes made since the last release are stored here until a release is ready. -->
 
+### Changed
+
+-   Note on test mode added to instructions for configuring Strip Webhooks in the Setup Page. (#5149)
+-   Add-ons listed on the Setup Page now denoted as suggestions based on selections made in the Wizard. (#5145)
+-   Setup Page links now using short URLs that can be changed without updating the plugin. (#5146)
+-   Stripe colors in the Setup Page now further differentiate from PayPal. (#5148)
+-   Cause Types presented in the Wizard now include full list of options. (#5141)
+-   Stripe account in Setup Page now communicates connected state as completed. (#5132)
+-   Stripe button to configure webhooks now communicates polling state while waiting for configuration. (#5131)
+-   Wizard feature "One-Time Donations" replaced with "Offline Donations". (#5103)
+-   Wizard now prompts when exiting without completing required steps. (#5111)
+
+
+### Fixed
+
+-   Clickable elements in the Wizard now denoted visually with a cursor pointer. (#5127)
+-   Wizard now maintains a consistent width when scrolling is toggled be changes in page height. (#5107)
+-   Setup Page header logo now aligns with content container. (#5135)
+-   Setup Page assets now load from the correct directory in production. (#5108)
+-   Missing block links in Setup Page now added. (#5128)
+
 ## [2.8.0-alpha.1] - 2020-08-17
 
 ### Added
