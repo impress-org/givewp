@@ -1,4 +1,4 @@
-/* globals paypal, Give, FormData, givePayPalCommerce */
+/* globals paypal, Give, FormData, givePayPalCommerce, jQuery */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
@@ -75,6 +75,8 @@ class SmartButtons extends PaymentMethod {
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
+			jQuery( document ).trigger( 'GivePayPalCommerce:onClickSmartButton', [ this ] );
+
 			return actions.resolve();
 		}
 
