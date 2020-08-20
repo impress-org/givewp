@@ -75,7 +75,12 @@ class SmartButtons extends PaymentMethod {
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
-			jQuery( document ).trigger( 'GivePayPalCommerce:onClickSmartButton', [ this ] );
+			// Allow external logic to handler onclick event
+			if ( this.smartButtonHasExternalOnClickHandler() ) {
+				jQuery( document ).trigger( 'GivePayPalCommerce:onClickSmartButton', [ this ] );
+
+				return actions.reject();
+			}
 
 			return actions.resolve();
 		}
@@ -198,6 +203,20 @@ class SmartButtons extends PaymentMethod {
 	 */
 	removeCreditCardFields() {
 		this.jQueryForm.find( 'input[name="card_name"]' ).remove();
+	}
+
+	/**
+	 * Return whether or not smart button has external or click handler.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return {boolean} Return boolean whether or not fire custom event.
+	 */
+	smartButtonHasExternalOnClickHandler() {
+		// This property allow us to submit donation form instead of processing payment withing PayPal model when click on smart button.
+		// Set it to true if you want to handle form submission on server.
+		// If donor is opted in for subscription (recurring add-on) then you do not have to overwrite this because we are handling it in recurring addon: give-recurring.js::init().
+		return !! window.PayPalCommerceSmartButtonHasExternalOnClickHandler;
 	}
 }
 
