@@ -159,7 +159,7 @@ function give_do_automatic_upgrades() {
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
+		update_option( 'give_version', GIVE_VERSION, false );
 	}
 }
 
@@ -692,7 +692,7 @@ function give_v152_cleanup_users() {
 		$roles->add_caps();
 
 		// The Update Ran.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ), false );
+		update_option( 'give_version', GIVE_VERSION, false );
 		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
 		delete_option( 'give_doing_upgrade' );
 
