@@ -162,9 +162,9 @@ class Page {
 				'localeCurrency'   => $this->localeCollection->pluck( 'currency_code' ),
 				'currencies'       => FormatList::fromKeyValue( give_get_currencies_list() ),
 				'currencySelected' => $currency,
-				'countries'        => FormatList::fromKeyValue( give_get_country_list() ),
+				'countries'        => LocationList::getCountries(),
 				'countrySelected'  => $baseCountry,
-				'states'           => FormatList::fromKeyValue( give_get_states( $baseCountry ) ),
+				'states'           => LocationList::getStates( $baseCountry ),
 				'stateSelected'    => $baseState,
 				'features'         => FormatList::fromValueKey(
 					[
