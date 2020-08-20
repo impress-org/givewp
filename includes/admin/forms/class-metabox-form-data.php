@@ -184,8 +184,8 @@ class Give_MetaBox_Form_Data {
 								],
 								'options'       => [
 									'display_label' => __( 'Donation Limits: ', 'give' ),
-									'minimum'       => give_format_decimal( '1.00', false, false ),
-									'maximum'       => give_format_decimal( '999999.99', false, false ),
+									'minimum'       => give_format_decimal( ['amount' => '5.00' ] ),
+									'maximum'       => give_format_decimal( ['amount' => '999999.99' ] ),
 								],
 							],
 							[
@@ -819,8 +819,8 @@ class Give_MetaBox_Form_Data {
 			return '';
 		}
 
-		$addon_link_url   = esc_url( 'https://go.givewp.com/addons-recurring-inlinelink' );
-		$addon_button_url = esc_url( 'https://go.givewp.com/addons-recurring-button' );
+		$addon_link_url   = esc_url( 'http://docs.givewp.com/form-recurring' );
+		$addon_button_url = esc_url( 'http://docs.givewp.com/form-recurring' );
 
 		return sprintf(
 			'

@@ -287,8 +287,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings['credit-card'][] = [
 						'name'  => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_credit_card_docs_link',
-						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
-						'title' => esc_html__( 'Stripe Gateway Documentation', 'give' ),
+						'url'   => esc_url( 'http://docs.givewp.com/stripe-ccfields' ),
+						'title' => __( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
 
@@ -367,8 +367,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings['checkout'][] = [
 						'name'  => esc_html__( 'Stripe Gateway Documentation', 'give' ),
 						'id'    => 'display_settings_checkout_docs_link',
-						'url'   => esc_url( 'http://docs.givewp.com/addon-stripe' ),
-						'title' => esc_html__( 'Stripe Gateway Documentation', 'give' ),
+						'url'   => esc_url( 'http://docs.givewp.com/settings-stripe-checkout' ),
+						'title' => __( 'Stripe Gateway Documentation', 'give' ),
 						'type'  => 'give_docs_link',
 					];
 
@@ -582,7 +582,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							__( 'If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href="%1$s" target="_blank">Stripe SDK</a> (Software Development Kit) either through <a href="%2$s" target="_blank">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href="%3$s" target="_blank">contact support</a>.', 'give' ),
 							esc_url_raw( 'https://github.com/stripe/stripe-php' ),
 							esc_url_raw( 'http://getcomposer.org/' ),
-							esc_url_raw( 'https://givewp.com/support' )
+							esc_url_raw( 'http://docs.givewp.com/settings-support' )
 						),
 						'id'      => 'stripe_sdk_incompatibility',
 						'type'    => 'radio_inline',
@@ -730,9 +730,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								<?php
 								echo sprintf(
 									__( 'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
-									esc_url( 'https://givewp.com/addons/stripe-gateway/' ),
-									esc_url( 'https://givewp.com/addons/recurring-donations/' ),
-									esc_url( 'http://docs.givewp.com/addon-stripe' )
+									esc_url( 'http://docs.givewp.com/settings-stripe-addon' ),
+									esc_url( 'http://docs.givewp.com/settings-stripe-recurring' ),
+									esc_url( 'http://docs.givewp.com/settings-stripe-free' )
 								);
 								?>
 							</p>

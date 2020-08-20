@@ -106,16 +106,4 @@ class PageView {
 	public function image( $src ) {
 		return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
 	}
-
-	public function give_link( $href ) {
-		return add_query_arg(
-			[
-				'utm_source'   => 'GiveWPPlugin',
-				'utm_medium'   => 'admin',
-				'utm_campaign' => 'Plugin_Links',
-				'utm_content'  => 'Setup',
-			],
-			$href
-		);
-	}
 }

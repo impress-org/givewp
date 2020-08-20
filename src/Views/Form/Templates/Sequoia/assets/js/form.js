@@ -1,5 +1,6 @@
 /* globals jQuery, Give */
 ( function( $ ) {
+	const templateL10n = window.sequoiaTemplateL10n;
 	const templateOptions = window.sequoiaTemplateOptions;
 	const $container = $( '.give-embed-form' );
 	const $advanceButton = $( '.advance-btn', $container );
@@ -412,6 +413,25 @@
 	} else {
 		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
 		setupSelectInputs();
+	}
+
+	setupOptionalInputLables(
+		Array.from( document.querySelectorAll( 'input[type="text"]' ) )
+	);
+
+	/**
+	 * Denote non-required fields as optional.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param {array} inputs An iteratable list of input elements.
+	 */
+	function setupOptionalInputLables( inputs ) {
+		inputs.filter( function( input ) {
+			return ! input.required;
+		} ).map( function( input ) {
+			input.placeholder += templateL10n.optionalLabel;
+		} );
 	}
 
 	/**

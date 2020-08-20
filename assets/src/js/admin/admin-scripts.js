@@ -2514,7 +2514,7 @@ const gravatar = require( 'gravatar' );
 				$body = $( 'body' );
 
 			// Auto toggle repeater group
-			$body.on( 'click', '.give-row-head button', function() {
+			$body.on( 'click', '.give-row-head .give-handlediv', function() {
 				const $parent = $( this ).closest( '.give-row' );
 				$parent.toggleClass( 'closed' );
 				$( '.give-row-body', $parent ).toggle();
@@ -2794,10 +2794,10 @@ const gravatar = require( 'gravatar' );
 	var handle_metabox_repeater_field_row_remove = function( container ) {
 		let $container = $( container ),
 			$parent = $container.parents( '.give-repeatable-field-section' ),
-			row_count = $( container ).attr( 'data-rf-row-count' );
+			row_count = $( container ).prop( 'data-rf-row-count' );
 
 		// Reduce row count.
-		$container.attr( 'data-rf-row-count', --row_count );
+		$container.prop( 'data-rf-row-count', --row_count );
 
 		// Fire event: Row deleted.
 		$parent.trigger( 'repeater_field_row_deleted' );
