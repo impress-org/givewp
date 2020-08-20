@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Reduced the scope of marked optional fields in the Multi-Step template to the User Info fieldset. (#5161)
 -   Added hover styles to the Wizard buttons to match the form preview. (#5167)
 
 ## [2.8.0-alpha.2] - 2020-08-19
