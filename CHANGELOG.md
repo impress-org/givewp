@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- Changes made since the last release are stored here until a release is ready. -->
 
+### Changed
+
+-   Update Onboarding copy text and typos. (#5168)
+
 ## [2.8.0-alpha.2] - 2020-08-19
 
 ### Changed
