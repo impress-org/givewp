@@ -12,10 +12,6 @@
 	</div>
 	<?php endif; ?>
 
-	<p class="intro-text">
-		<?php echo __( 'You\'re almost ready to start fundraising for your cause! Below we’ll guide you through the final steps to get up and running quickly.', 'give' ); ?>
-	</p>
-
 	<!-- Configuration -->
 	<?php
 		echo $this->render_template(
