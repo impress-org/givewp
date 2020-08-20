@@ -6,6 +6,7 @@ use WP_REST_Request;
 use Give\API\RestRoute;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\CountryCode;
+use Give\Onboarding\Helpers\LocationList;
 
 /**
  * @since 2.8.0
@@ -23,14 +24,10 @@ class LocationRoute implements RestRoute {
 	 * @since 2.8.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-
-		$countryCode = $request->get_param( 'countryCode' );
-		$statesList  = give_get_states( $countryCode );
-
-		$statesList[''] = '-';
-
 		return [
-			'states' => FormatList::fromKeyValue( $statesList ),
+			'states' => LocationList::getStates(
+				$request->get_param( 'countryCode' )
+			),
 		];
 	}
 
