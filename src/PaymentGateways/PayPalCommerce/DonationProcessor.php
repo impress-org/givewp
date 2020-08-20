@@ -29,12 +29,13 @@ class DonationProcessor {
 	 * @since 2.8.0
 	 */
 	public function handle( $donationFormData ) {
+		$this->donationFormData = (array) $donationFormData;
+
 		if ( ! $this->isOneTimeDonation() ) {
 			return;
 		}
 
-		$this->donationFormData = $donationFormData;
-		$this->formId           = absint( $this->donationFormData['post_data']['give-form-id'] );
+		$this->formId = absint( $this->donationFormData['post_data']['give-form-id'] );
 
 		$donationData = [
 			'price'           => $this->donationFormData['price'],
