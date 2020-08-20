@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Reduced padding on the Setup Page container. (#5165)
 -   Normalizes format for country and state selects, with states having an empty option and countries not. (#5163)
 -   Reduced the scope of marked optional fields in the Multi-Step template to the User Info fieldset. (#5161)
+-   Added hover styles to the Wizard buttons to match the form preview. (#5167)
 
 ### Fixed
 
