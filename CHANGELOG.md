@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Update Onboarding copy text and typos. (#5168)
+-   Reduced padding on the Setup Page container. (#5165)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
