@@ -301,8 +301,6 @@ jQuery( document ).ready( function( $ ) {
 
 // Vertical tabs feature.
 document.addEventListener( 'DOMContentLoaded', () => {
-	const currentUrl = window.location.href.split( '#' );
-	const currentGroup = currentUrl[ 1 ];
 	const mainContentWrap = document.querySelector( '.give-settings-section-content' );
 
 	// Bailout, if main content wrap not exists.
@@ -311,14 +309,16 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	const menuContentWrap = mainContentWrap.querySelector( '.give-settings-section-group-menu' );
-	const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
 
 	// Bailout, if menu content wrap not exists.
 	if ( null === menuContentWrap ) {
 		return;
 	}
 
-	const menuButtons = Array.prototype.slice.call( menuContentWrap.querySelectorAll( 'ul li a' ) );
+	const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
+
+	const menuButtons = Array.from( menuContentWrap.querySelectorAll( 'ul li a' ) )
+		.concat( Array.from( mainContentWrap.querySelectorAll( 'ul.give-subsubsub li a' ) ) );
 
 	// Bailout, if menu content wrap not exists.
 	if ( null === menuButtons ) {
@@ -327,19 +327,40 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	menuButtons.forEach( ( element ) => {
 		element.addEventListener( 'click', ( e ) => {
-			const selectedGroup = e.target.getAttribute( 'data-group' );
-			const selectedContent = mainContentWrap.querySelector( '#give-settings-section-group-' + selectedGroup );
+			const hasSubGroup = e.target.hasAttribute( 'data-subgroup' );
+			let selectedGroup, selectedContent;
 
-			// Loop through menu button and remove `active` class.
-			menuButtons.forEach( ( element ) => {
-				element.classList.remove( 'active' );
-			} );
+			if ( hasSubGroup ) {
+				const menuContainer = e.target.parentElement.parentElement;
+				const sectionGroup = menuContainer.parentElement;
+				selectedGroup = e.target.getAttribute( 'data-subgroup' );
+				selectedContent = mainContentWrap.querySelector( `#give-settings-section-subgroup-${ selectedGroup }` );
 
-			// Loop through content sections and add `give-hidden` class.
-			allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
+				// Loop through menu button and remove `current` class.
+				menuContainer.querySelectorAll( 'a' ).forEach( ( element ) => {
+					element.classList.remove( 'current' );
+				} );
 
-			// Add `active` class to menu buttons of selected element.
-			e.target.classList.add( 'active' );
+				// Loop through content sections and add `give-hidden` class.
+				sectionGroup.querySelectorAll( '.give-settings-section-subgroup ' ).forEach( contentElement => contentElement.classList.add( 'give-hidden' ) );
+
+				// Add `active` class to menu buttons of selected element.
+				e.target.classList.add( 'current' );
+			} else {
+				selectedGroup = e.target.getAttribute( 'data-group' );
+				selectedContent = mainContentWrap.querySelector( `#give-settings-section-group-${ selectedGroup }` );
+
+				// Loop through menu button and remove `active` class.
+				menuButtons.forEach( ( element ) => {
+					element.classList.remove( 'active' );
+				} );
+
+				// Loop through content sections and add `give-hidden` class.
+				allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
+
+				// Add `active` class to menu buttons of selected element.
+				e.target.classList.add( 'active' );
+			}
 
 			// Remove `give-hidden` class from content section of selected element.
 			selectedContent.classList.remove( 'give-hidden' );
