@@ -81,7 +81,7 @@ class Page {
 		);
 		wp_enqueue_style(
 			'give-admin-setup-google-fonts',
-			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap',
 			[],
 			GIVE_VERSION
 		);
