@@ -438,28 +438,6 @@
 	}
 
 	/**
-	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
-	 */
-	setupOptionalInputLables(
-		Array.from( document.querySelectorAll( '#give_checkout_user_info input[type="text"]' ) )
-	);
-
-	/**
-	 * Denote non-required fields as optional.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param {array} inputs An iteratable list of input elements.
-	 */
-	function setupOptionalInputLables( inputs ) {
-		inputs.filter( function( input ) {
-			return ! input.required;
-		} ).map( function( input ) {
-			input.placeholder += templateL10n.optionalLabel;
-		} );
-	}
-
-	/**
 	 * Move error notices to error notice container at the top of the payment section
 	 * @since 2.7.0
 	 * @param {node} node The error notice node to be moved
