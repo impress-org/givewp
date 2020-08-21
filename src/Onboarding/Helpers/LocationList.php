@@ -7,6 +7,7 @@ namespace Give\Onboarding\Helpers;
  * @since 2.8.0
  */
 class LocationList {
+
 	public static function getCountries() {
 		$countries = give_get_country_list();
 		unset( $countries[''] );
