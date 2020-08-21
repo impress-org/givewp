@@ -54,9 +54,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   New Onboarding Wizard guides new users through first-time configuration. (#5014)
--   New Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)
--   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place. (#5117)
+-   New Onboarding Wizard guides new users through first-time configuration (#5014)
+-   New Setup Page clarifies required steps that must be completed prior to accepting live donations (#5014)
+-   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place (#5117)
+-   Update Stripe Checkout to use Stripe Elements (#4964)
 
 ### Changed
 

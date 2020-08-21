@@ -359,8 +359,17 @@ function give_load_gateway( form_object, payment_mode ) {
 		}
 		);
 	} ).then( function( response ) {
-		// trigger an event on success for hooks
+		// trigger an event on success for hooks.
 		jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
+
+		// The Future is here! Dispatch the Javascript Custom Event so that we can use it in add-ons.
+		// @todo Make it form specific in future for granular control.
+		const gatewayLoadedEvent = new CustomEvent( 'give_gateway_loaded', {
+			detail: {
+				selectedGateway: payment_mode,
+			},
+		} );
+		document.dispatchEvent( gatewayLoadedEvent );
 
 		// Unblock form.
 		jQuery( form_object ).unblock();

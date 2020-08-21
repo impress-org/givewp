@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Gateways\Stripe;
 
 /**
  * Check for Give_Stripe_Checkout existence.
@@ -55,12 +56,14 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 			$this->stripe_checkout_session = new Give_Stripe_Checkout_Session();
 
 			// Remove CC fieldset.
-			add_action( 'give_stripe_checkout_cc_form', [ $this, 'output_redirect_notice' ] );
+			add_action( 'give_stripe_checkout_cc_form', [ $this, 'output_redirect_notice' ], 10, 2 );
 
 			// Load the `redirect_to_checkout` function only when `redirect` is set as checkout type.
 			if ( 'redirect' === give_stripe_get_checkout_type() ) {
 				add_action( 'wp_footer', [ $this, 'redirect_to_checkout' ], 99999 );
 				add_action( 'give_embed_footer', [ $this, 'redirect_to_checkout' ], 99999 );
+			} else {
+				add_action( 'give_stripe_checkout_cc_form', [ $this, 'showCheckoutModal' ], 10, 2 );
 			}
 
 		}
@@ -68,14 +71,19 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		/**
 		 * Render redirection notice.
 		 *
+		 * @param int   $formId Donation Form ID.
+		 * @param array $args   List of arguments.
+		 *
 		 * @return bool
 		 * @since 2.7.0
 		 */
-		public function output_redirect_notice( $form_id ) {
-			if ( FormUtils::isLegacyForm( $form_id ) ) {
-				return false;
+		public function output_redirect_notice( $formId, $args ) {
+			if ( FormUtils::isLegacyForm( $formId ) ) {
+				// For Legacy Form Template.
+				return Stripe::canShowBillingAddress( $formId, $args );
 			}
 
+			// For Multi-step Sequoia Form Template.
 			printf(
 				'
 					<fieldset class="no-fields">
@@ -98,10 +106,10 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					',
 				esc_html__( 'Make your donations quickly and securely with Stripe', 'give' ),
 				esc_html__( 'How it works:', 'give' ),
-				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' )
+				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' ),
 			);
 
-			return true;
+			return Stripe::canShowBillingAddress( $formId, $args );
 		}
 
 		/**
@@ -115,7 +123,6 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		 * @return void
 		 */
 		public function process_payment( $donation_data ) {
-
 			// Bailout, if the current gateway and the posted gateway mismatched.
 			if ( $this->id !== $donation_data['post_data']['give-gateway'] ) {
 				return;
@@ -191,7 +198,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					give_update_meta( $donation_id, '_give_stripe_customer_id', $stripe_customer_id );
 
 					if ( 'modal' === give_stripe_get_checkout_type() ) {
-						$this->process_legacy_checkout( $donation_id, $donation_data );
+						$this->processModalCheckout( $donation_id, $donation_data );
 					} elseif ( 'redirect' === give_stripe_get_checkout_type() ) {
 						$this->process_checkout( $donation_id, $donation_data );
 					} else {
@@ -216,63 +223,63 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 		}
 
 		/**
-		 * This function is used to process donations via legacy Stripe Checkout which will be deprecated soon.
+		 * Process Donation via Stripe Checkout Modal loaded with Stripe Elements.
 		 *
-		 * @param int   $donation_id   Donation ID.
-		 * @param array $donation_data List of submitted data for donation processing.
+		 * @param int   $donationId   Donation ID.
+		 * @param array $donationData Donation Data.
 		 *
-		 * @since  2.5.5
-		 * @access public
+		 * @since 2.8.0
 		 *
 		 * @return void
 		 */
-		public function process_legacy_checkout( $donation_id, $donation_data ) {
+		public function processModalCheckout( $donationId, $donationData ) {
+			$formId = ! empty( $donationData['post_data']['give-form-id'] ) ? intval( $donationData['post_data']['give-form-id'] ) : 0;
 
-			$stripe_customer_id = ! empty( $donation_data['customer_id'] ) ? $donation_data['customer_id'] : '';
+			/**
+			 * This filter hook is used to update the payment intent arguments.
+			 *
+			 * @since 2.5.0
+			 */
+			$intentArgs = apply_filters(
+				'give_stripe_create_intent_args',
+				[
+					'amount'               => $this->format_amount( $donationData['price'] ),
+					'currency'             => give_get_currency( $formId ),
+					'payment_method_types' => [ 'card' ],
+					'statement_descriptor' => give_stripe_get_statement_descriptor(),
+					'description'          => give_payment_gateway_donation_summary( $donationData ),
+					'metadata'             => $this->prepare_metadata( $donationId, $donationData ),
+					'customer'             => $donationData['customer_id'],
+					'payment_method'       => $donationData['source_id'],
+					'confirm'              => true,
+					'return_url'           => give_get_success_page_uri(),
+				]
+			);
 
-			// Process charge w/ support for preapproval.
-			$charge = $this->process_charge( $donation_data, $stripe_customer_id );
+			// Send Stripe Receipt emails when enabled.
+			if ( give_is_setting_enabled( give_get_option( 'stripe_receipt_emails' ) ) ) {
+				$intentArgs['receipt_email'] = $donationData['user_email'];
+			}
 
-			// Verify the Stripe payment.
-			$this->verify_payment( $donation_id, $stripe_customer_id, $charge );
+			$intent = $this->payment_intent->create( $intentArgs );
 
-		}
+			// Save Payment Intent Client Secret to donation note and DB.
+			give_insert_payment_note( $donationId, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+			give_update_meta( $donationId, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
 
-		/**
-		 * Process One Time Charge.
-		 *
-		 * @param array  $donation_data      List of donation data.
-		 * @param string $stripe_customer_id Customer ID.
-		 *
-		 * @return bool|\Stripe\Charge
-		 */
-		public function process_charge( $donation_data, $stripe_customer_id ) {
+			// Set Payment Intent ID as transaction ID for the donation.
+			give_set_payment_transaction_id( $donationId, $intent->id );
+			give_insert_payment_note( $donationId, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
 
-			$form_id     = ! empty( $donation_data['post_data']['give-form-id'] ) ? intval( $donation_data['post_data']['give-form-id'] ) : 0;
-			$donation_id = ! empty( $donation_data['donation_id'] ) ? intval( $donation_data['donation_id'] ) : 0;
-			$description = ! empty( $donation_data['description'] ) ? $donation_data['description'] : false;
+			// Process additional steps for SCA or 3D secure.
+			give_stripe_process_additional_authentication( $donationId, $intent );
 
-			// Format the donation amount as required by Stripe.
-			$amount = $this->format_amount( $donation_data['price'] );
-
-			// Prepare charge arguments.
-			$charge_args = [
-				'amount'               => $amount,
-				'customer'             => $stripe_customer_id,
-				'currency'             => give_get_currency( $form_id ),
-				'description'          => html_entity_decode( $description, ENT_COMPAT, 'UTF-8' ),
-				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
-				'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
-			];
-
-			// Process the charge.
-			$charge = $this->create_charge( $donation_id, $charge_args );
-
-			// Return charge if set.
-			if ( isset( $charge ) ) {
-				return $charge;
+			if ( ! empty( $intent->status ) && 'succeeded' === $intent->status ) {
+				// Process to success page, only if intent is successful.
+				give_send_to_success_page();
 			} else {
-				return false;
+				// Show error message instead of confirmation page.
+				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 			}
 		}
 
@@ -432,6 +439,140 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					});
 				})
 			</script>
+			<?php
+		}
+
+		/**
+		 * Stripe Checkout Modal HTML.
+		 *
+		 * @param int   $formId Donation Form ID.
+		 * @param array $args   List of arguments.
+		 *
+		 * @since  2.8.0
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function showCheckoutModal( $formId, $args ) {
+			$idPrefix           = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : "{$formId}-1";
+			$backgroundImageUrl = give_get_option( 'stripe_checkout_background_image', '' );
+			$backgroundItem     = 'background-color: #000000;';
+
+			// Load Background Image, if exists.
+			if ( ! empty( $backgroundImageUrl ) ) {
+				$backgroundImageUrl = esc_url_raw( $backgroundImageUrl );
+				$backgroundItem     = "background-image: url('{$backgroundImageUrl}'); background-size: cover;";
+			}
+			?>
+			<div id="give-stripe-checkout-modal-<?php echo $idPrefix; ?>" class="give-stripe-checkout-modal">
+				<div class="give-stripe-checkout-modal-content">
+					<div class="give-stripe-checkout-modal-container">
+						<div class="give-stripe-checkout-modal-header" style="<?php echo $backgroundItem; ?>">
+							<button class="give-stripe-checkout-modal-close">
+								<svg
+									width="20px"
+									height="20px"
+									viewBox="0 0 20 20"
+									version="1.1"
+									xmlns="http://www.w3.org/2000/svg"
+									xmlns:xlink="http://www.w3.org/1999/xlink"
+								>
+									<defs>
+										<path
+											d="M10,8.8766862 L13.6440403,5.2326459 C13.9542348,4.92245137 14.4571596,4.92245137 14.7673541,5.2326459 C15.0775486,5.54284044 15.0775486,6.04576516 14.7673541,6.3559597 L11.1238333,9.99948051 L14.7673541,13.6430016 C15.0775486,13.9531961 15.0775486,14.4561209 14.7673541,14.7663154 C14.4571596,15.0765099 13.9542348,15.0765099 13.6440403,14.7663154 L10,11.1222751 L6.3559597,14.7663154 C6.04576516,15.0765099 5.54284044,15.0765099 5.2326459,14.7663154 C4.92245137,14.4561209 4.92245137,13.9531961 5.2326459,13.6430016 L8.87616671,9.99948051 L5.2326459,6.3559597 C4.92245137,6.04576516 4.92245137,5.54284044 5.2326459,5.2326459 C5.54284044,4.92245137 6.04576516,4.92245137 6.3559597,5.2326459 L10,8.8766862 Z"
+											id="path-1"
+										></path>
+									</defs>
+									<g
+										id="Payment-recipes"
+										stroke="none"
+										stroke-width="1"
+										fill="none"
+										fill-rule="evenodd"
+									>
+										<g
+											id="Elements-Popup"
+											transform="translate(-816.000000, -97.000000)"
+										>
+											<g id="close-btn" transform="translate(816.000000, 97.000000)">
+												<circle
+													id="Oval"
+													fill-opacity="0.3"
+													fill="#AEAEAE"
+													cx="10"
+													cy="10"
+													r="10"
+												></circle>
+												<mask id="mask-2" fill="white">
+													<use xlink:href="#path-1"></use>
+												</mask>
+												<use
+													id="Mask"
+													fill-opacity="0.5"
+													fill="#FFFFFF"
+													opacity="0.5"
+													xlink:href="#path-1"
+												></use>
+											</g>
+										</g>
+									</g>
+								</svg>
+							</button>
+							<h3><?php echo give_get_option( 'stripe_checkout_name' ); ?></h3>
+							<div class="give-stripe-checkout-donation-amount">
+								<?php echo give_get_form_price( $formId ); ?>
+							</div>
+							<div class="give-stripe-checkout-donor-email"></div>
+							<div class="give-stripe-checkout-form-title">
+								<?php echo get_the_title( $formId ); ?>
+							</div>
+						</div>
+						<div class="give-stripe-checkout-modal-body">
+							<?php
+							/**
+							 * This action hook will be trigger in Stripe Checkout Modal before CC fields.
+							 *
+							 * @since 2.7.3
+							 */
+							do_action( 'give_stripe_checkout_modal_before_cc_fields', $formId, $args );
+
+							// Load Credit Card Fields for Stripe Checkout.
+							echo Stripe::showCreditCardFields( $idPrefix );
+
+							/**
+							 * This action hook will be trigger in Stripe Checkout Modal after CC fields.
+							 *
+							 * @since 2.7.3
+							 */
+							do_action( 'give_stripe_checkout_modal_after_cc_fields', $formId, $args );
+							?>
+							<input type="hidden" name="give_validate_stripe_payment_fields" value="0"/>
+						</div>
+						<div class="give-stripe-checkout-modal-footer">
+							<div class="card-errors"></div>
+							<?php
+							$display_label_field = give_get_meta( $formId, '_give_checkout_label', true );
+							$display_label_field = apply_filters( 'give_donation_form_submit_button_text', $display_label_field, $formId, $args );
+							$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
+							ob_start();
+							?>
+							<div class="give-submit-button-wrap give-stripe-checkout-modal-btn-wrap give-clearfix">
+								<?php
+								echo sprintf(
+									'<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" data-is_legacy_form="%5$s" disabled/>',
+									FormUtils::isLegacyForm() ? 'give-btn give-stripe-checkout-modal-donate-button' : 'give-btn give-stripe-checkout-modal-sequoia-donate-button',
+									"give-stripe-checkout-modal-donate-button-{$idPrefix}",
+									$display_label,
+									'give_stripe_modal_donate',
+									FormUtils::isLegacyForm()
+								);
+								?>
+								<span class="give-loading-animation"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<?php
 		}
 	}
