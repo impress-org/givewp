@@ -9,7 +9,7 @@ import { setFeatures } from '../../store/actions';
 import Card from '../../../components/card';
 import CardInput from '../../../components/card-input';
 import ContinueButton from '../../../components/continue-button';
-import OneTimeDonationIcon from '../../../components/icons/one-time-donation';
+import OfflineDonationsIcon from '../../../components/icons/offline-donations';
 import DonationGoalIcon from '../../../components/icons/donation-goal';
 import DonationCommentsIcon from '../../../components/icons/donation-comments';
 import TermsConditionsIcon from '../../../components/icons/terms-conditions';
@@ -30,10 +30,6 @@ const Features = () => {
 				{ __( 'Don\'t worry, these settings can always be changed later.', 'give' ) }
 			</p>
 			<CardInput values={ features } onChange={ ( value ) => dispatch( setFeatures( value ) ) } >
-				<Card value="one-time-donations">
-					<OneTimeDonationIcon />
-					<strong>{ __( 'One-Time Donations', 'give' ) }</strong>
-				</Card>
 				<Card value="donation-goal">
 					<DonationGoalIcon />
 					<strong>{ __( 'Donation Goal', 'give' ) }</strong>
@@ -45,6 +41,10 @@ const Features = () => {
 				<Card value="terms-conditions">
 					<TermsConditionsIcon />
 					<strong>{ __( 'Terms & Conditions', 'give' ) }</strong>
+				</Card>
+				<Card value="offline-donations">
+					<OfflineDonationsIcon />
+					<strong>{ __( 'Offline Donations', 'give' ) }</strong>
 				</Card>
 				<Card value="anonymous-donations">
 					<AnonymousDonationsIcon />

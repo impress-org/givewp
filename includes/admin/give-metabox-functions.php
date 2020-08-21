@@ -1324,7 +1324,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 			<tr class="give-template give-row">
 				<td class="give-repeater-field-wrap give-column" colspan="2">
 					<div class="give-row-head give-move">
-						<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span>
+						<button type="button" class="give-handlediv button-link"><span class="toggle-indicator"></span>
 						</button>
 						<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</span>
 						<h2>
@@ -1359,7 +1359,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					<tr class="give-row">
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
-								<button type="button" class="handlediv button-link">
+								<button type="button" class="give-handlediv button-link">
 									<span class="toggle-indicator"></span></button>
 								<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
 								</span>
@@ -1398,7 +1398,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 				<tr class="give-row">
 					<td class="give-repeater-field-wrap give-column" colspan="2">
 						<div class="give-row-head give-move">
-							<button type="button" class="handlediv button-link">
+							<button type="button" class="give-handlediv button-link">
 								<span class="toggle-indicator"></span></button>
 							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
 							</span>

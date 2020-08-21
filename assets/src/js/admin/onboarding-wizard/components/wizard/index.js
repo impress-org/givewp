@@ -13,11 +13,23 @@ import Step from '../step';
 import './style.scss';
 
 const Wizard = ( { children } ) => {
-	const [ { currentStep } ] = useStoreValue();
+	const [ { currentStep, lastStep } ] = useStoreValue();
 	const steps = children;
 
 	useEffect( () => {
 		window.scrollTo( 0, 0 );
+		const handleUnload = ( event ) => {
+			event.preventDefault();
+			event.returnValue = '';
+		};
+		if ( currentStep > 0 && currentStep !== lastStep ) {
+			window.addEventListener( 'beforeunload', handleUnload );
+		}
+		return () => {
+			if ( currentStep > 0 ) {
+				window.removeEventListener( 'beforeunload', handleUnload );
+			}
+		};
 	}, [ currentStep ] );
 
 	const app = useRef( null );

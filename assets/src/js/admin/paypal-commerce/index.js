@@ -19,4 +19,32 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			}
 		} );
 	}
+
+	if ( window.location.search.match( /paypal-commerce-account-connected=1/i ) ) {
+		const pciWarnings = window.givePayPalCommerce.translations.pciComplianceInstructions
+			.map( instruction => `<li>${ instruction }</li>` )
+			.join( '' );
+
+		const liveWarning = window.givePayPalCommerce.translations.liveWarning ?
+			`<p class="give-modal__description__warning">${ window.givePayPalCommerce.translations.liveWarning }</p>` :
+			'';
+
+		// eslint-disable-next-line no-undef
+		new Give.modal.GiveSuccessAlert( {
+			classes: {
+				modalWrapper: 'paypal-commerce-connect',
+			},
+			modalContent: {
+				title: window.givePayPalCommerce.translations.connectSuccessTitle,
+				body: `
+					<div class="give-modal__description">
+						${ liveWarning }
+						<p>${ window.givePayPalCommerce.translations.pciWarning }</p>
+						<ul>${ pciWarnings }</ul>
+					</div>
+				`.trim(),
+			},
+			closeOnBgClick: true,
+		} ).render();
+	}
 } );
