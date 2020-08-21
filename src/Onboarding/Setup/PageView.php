@@ -83,10 +83,6 @@ class PageView {
 		return \Give\Helpers\Gateways\Stripe::isAccountConfigured();
 	}
 
-	public function isStripeWebhooksSetup() {
-		return ! empty( give_get_option( 'give_stripe_last_webhook_received_timestamp' ) );
-	}
-
 	/**
 	 * @return bool
 	 *
@@ -105,5 +101,26 @@ class PageView {
 	 */
 	public function image( $src ) {
 		return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
+	}
+
+	/**
+	 * Prepared Stripe Connect URL
+	 *
+	 * Copied from includes/gateways/stripe/includes/admin/admin-helpers.php
+	 *      See `give_stripe_connect_button()`
+	 *
+	 * @since 2.8.0
+	 */
+	public function stripeConnectURL() {
+		return add_query_arg(
+			[
+				'stripe_action'         => 'connect',
+				'mode'                  => give_is_test_mode() ? 'test' : 'live',
+				'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+				'website_url'           => get_bloginfo( 'url' ),
+				'give_stripe_connected' => '0',
+			],
+			esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		);
 	}
 }
