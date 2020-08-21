@@ -8,9 +8,6 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-.give_forms_page_give-setup .wrap {
-	margin: 10px 15px 0 15px;
-}
 .give_forms_page_give-setup .wp-header-end {
 	margin-bottom: 20px;
 }
@@ -30,6 +27,7 @@ section {
 	background-color: #fff;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
 	border-radius: 6px;
+	overflow: hidden;
 }
 
 .section-dismiss {
@@ -62,6 +60,7 @@ header {
 	}
 }
 footer {
+	background-color: #fafafa;
 	padding: 20px 20px 20px 25px;
 	font-size: 16px;
 	display: flex;
@@ -70,7 +69,6 @@ footer {
 footer a {
 	color: #0073aa;
 	text-decoration: none;
-	font-style: italic;
 
 	> .fa {
 		margin-left: 6px;
@@ -106,10 +104,10 @@ article .action {
 	justify-content: center;
 }
 article .icon {
-	margin: auto;
+	margin: 8px auto 0;
+	align-self: start;
 	flex: 1;
 	width: 75px;
-	padding: 25px 0 25px 0;
 	grid-area: icon;
 }
 article .action a {
@@ -129,6 +127,7 @@ article .content {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	padding-right: 24px;
 }
 article .header {
 	margin: 10px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
@@ -139,7 +138,7 @@ article .description {
 	grid-area: description;
 	color: #595959;
 	font-size: 16px;
-	line-height: 22px;
+	line-height: 1.5;
 	font-weight: 400;
 }
 
@@ -159,6 +158,7 @@ article.stripe .action button {
 	width: 223px;
 	height: 38px;
 	font-size: 16px;
+	font-weight: 600;
 	line-height: 35px;
 	text-align: center;
 	color: #fff;
@@ -202,6 +202,7 @@ article.stripe .action button {
 
 .setup-item-completed .header {
 	text-decoration: line-through;
+	text-decoration-color: rgba(66, 66, 66, 0.75);
 }
 
 /** Normalize icon sizes. */

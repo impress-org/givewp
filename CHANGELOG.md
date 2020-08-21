@@ -21,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--    Set a specific placeholder for the base country select setting, no longer reads "Select a form". (#5163)
+-   Set a specific placeholder for the base country select setting, no longer reads "Select a form". (#5163)
+-   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
