@@ -3,7 +3,11 @@ import {
 	fetchStatesListWithOnboardingAPI,
 } from '../../utils';
 
+import { observeAction } from './observers';
+
 export const reducer = ( state, action ) => {
+	observeAction( action );
+
 	switch ( action.type ) {
 		case 'GO_TO_STEP':
 			return {

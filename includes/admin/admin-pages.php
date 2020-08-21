@@ -59,10 +59,10 @@ function give_add_options_links() {
 		esc_html__( 'Settings', 'give' ),
 		'manage_give_settings',
 		'give-settings',
-		array(
+		[
 			Give()->give_settings,
 			'output',
-		)
+		]
 	);
 
 	// Tools.
@@ -72,10 +72,10 @@ function give_add_options_links() {
 		esc_html__( 'Tools', 'give' ),
 		'manage_give_settings',
 		'give-tools',
-		array(
+		[
 			Give()->give_settings,
 			'output',
-		)
+		]
 	);
 }
 
@@ -109,7 +109,7 @@ function give_add_add_ons_option_link() {
 		 *
 		 * @since 2.6.0
 		 */
-		apply_filters( 'give_addon_menu_item_url', esc_url( 'https://go.givewp.com/addons-menu-link' ) ),
+		apply_filters( 'give_addon_menu_item_url', esc_url( 'http://docs.givewp.com/addons-menu-link' ) ),
 	];
 
 }
@@ -133,23 +133,23 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	global $pagenow, $typenow;
 
 	$found          = true;
-	$get_query_args = ! empty( $_GET ) ? @array_map( 'strtolower', $_GET ) : array();
+	$get_query_args = ! empty( $_GET ) ? @array_map( 'strtolower', $_GET ) : [];
 
 	// Set default argument, if not passed.
-	$query_args = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
+	$query_args = wp_parse_args( $get_query_args, array_fill_keys( [ 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ], false ) );
 
 	switch ( $passed_page ) {
 		case 'categories':
 		case 'tags':
-			$has_view = in_array( $passed_view, array( 'list-table', 'edit', 'new' ), true );
+			$has_view = in_array( $passed_view, [ 'list-table', 'edit', 'new' ], true );
 
 			if (
-				! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true ) &&
+				! in_array( $query_args['taxonomy'], [ 'give_forms_category', 'give_forms_tag' ], true ) &&
 				'edit-tags.php' !== $pagenow &&
 				(
 					$has_view ||
 					(
-						( in_array( $passed_view, array( 'list-table', 'new' ), true ) && 'edit' === $query_args['action'] ) ||
+						( in_array( $passed_view, [ 'list-table', 'new' ], true ) && 'edit' === $query_args['action'] ) ||
 						( 'edit' !== $passed_view && 'edit' !== $query_args['action'] ) &&
 						! $has_view
 					)
@@ -160,7 +160,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			break;
 		// Give Donation form page.
 		case 'give_forms':
-			$has_view = in_array( $passed_view, array( 'new', 'list-table', 'edit' ), true );
+			$has_view = in_array( $passed_view, [ 'new', 'list-table', 'edit' ], true );
 
 			if (
 				'give_forms' !== $typenow &&
@@ -179,7 +179,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			break;
 		// Give Donors page.
 		case 'donors':
-			$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
+			$has_view = array_intersect( [ $passed_view, $query_args['view'] ], [ 'list-table', 'overview', 'notes' ] );
 
 			if (
 				( 'give-donors' !== $query_args['page'] || 'edit.php' !== $pagenow ) &&
@@ -196,7 +196,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			if (
 				( 'give-payment-history' !== $query_args['page'] || 'edit.php' !== $pagenow ) &&
 				(
-					! in_array( $passed_view, array( 'list-table', 'edit' ), true ) ||
+					! in_array( $passed_view, [ 'list-table', 'edit' ], true ) ||
 					(
 						( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
 						( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] )
@@ -211,7 +211,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		case 'addons':
 			// Get current tab.
 			$current_tab       = empty( $passed_view ) ? $query_args['tab'] : $passed_view;
-			$give_setting_page = in_array( $query_args['page'], array( 'give-reports', 'give-settings', 'give-addons' ), true );
+			$give_setting_page = in_array( $query_args['page'], [ 'give-reports', 'give-settings', 'give-addons' ], true );
 
 			// Check if it's Give Setting page or not.
 			if (
@@ -225,7 +225,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_settings_export, $give_donors_page, $give_tools_page;
 			$admin_pages = apply_filters(
 				'give_admin_pages',
-				array(
+				[
 					$give_payments_page,
 					$give_settings_page,
 					$give_reports_page,
@@ -233,10 +233,10 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					$give_settings_export,
 					$give_donors_page,
 					$give_tools_page,
-				)
+				]
 			);
 
-			$found = ( 'give_forms' === $typenow || in_array( $pagenow, array_merge( $admin_pages, array( 'index.php', 'post-new.php', 'post.php', 'widgets.php', 'customize.php' ) ), true ) ) ? true : false;
+			$found = ( 'give_forms' === $typenow || in_array( $pagenow, array_merge( $admin_pages, [ 'index.php', 'post-new.php', 'post.php', 'widgets.php', 'customize.php' ] ), true ) ) ? true : false;
 	}
 	return (bool) apply_filters( 'give_is_admin_page', $found, $query_args['page'], $query_args['view'], $passed_page, $passed_view );
 }
@@ -251,7 +251,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 function give_settings_page_pages( $settings ) {
 	include 'abstract-admin-settings-page.php';
 
-	$settings = array(
+	$settings = [
 		// General settings.
 		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-general.php',
 
@@ -272,7 +272,7 @@ function give_settings_page_pages( $settings ) {
 
 		// Advanced settings.
 		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php',
-	);
+	];
 
 	// Output.
 	return $settings;
@@ -290,7 +290,7 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
 function give_reports_page_pages( $settings ) {
 	include 'abstract-admin-settings-page.php';
 
-	$settings = array(
+	$settings = [
 		// Earnings.
 		include 'reports/class-earnings-report.php',
 
@@ -300,7 +300,7 @@ function give_reports_page_pages( $settings ) {
 		// Gateways.
 		include 'reports/class-gateways-report.php',
 
-	);
+	];
 
 	// Output.
 	return $settings;
@@ -317,7 +317,7 @@ add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 )
 function give_tools_page_pages( $settings ) {
 	include 'abstract-admin-settings-page.php';
 
-	$settings = array(
+	$settings = [
 
 		// Export.
 		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php',
@@ -336,7 +336,7 @@ function give_tools_page_pages( $settings ) {
 
 		// System Info.
 		include GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php',
-	);
+	];
 
 	// Output.
 	return $settings;

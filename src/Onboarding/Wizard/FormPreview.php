@@ -90,7 +90,7 @@ class FormPreview {
 			'give',
 			GIVE_PLUGIN_URL . 'assets/dist/js/give.js',
 			[ 'jquery' ],
-			GIVE_VERSION,
+			GIVE_VERSION
 		);
 
 	}

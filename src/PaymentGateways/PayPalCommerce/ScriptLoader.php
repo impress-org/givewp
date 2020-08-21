@@ -59,6 +59,13 @@ class ScriptLoader {
 			true
 		);
 
+		wp_enqueue_style(
+			'give-admin-paypal-commerce-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/admin-paypal-commerce.css',
+			[],
+			GIVE_VERSION
+		);
+
 		wp_localize_script(
 			'give-paypal-partner-js',
 			'givePayPalCommerce',
@@ -66,6 +73,29 @@ class ScriptLoader {
 				'translations' => [
 					'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
 					'disconnectPayPalAccount'           => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
+					'connectSuccessTitle'               => esc_html__( 'You’re connected to PayPal! Here’s what’s next...', 'give' ),
+					'pciWarning'                        => sprintf(
+						__(
+							'PayPal allows you to accept credit or debit cards directly on your website. Because of
+							this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
+							GiveWP never stores sensitive information like card details to your server and works
+							seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
+							'give'
+						),
+						'https://givewp.com/documentation/resources/pci-compliance/'
+					),
+					'pciComplianceInstructions'         => [
+						esc_html__( 'Using a trusted, secure hosting provider – preferably one which claims and actively promotes PCI compliance.', 'give' ),
+						esc_html__( 'Maintain security best practices when setting passwords and limit access to your server.', 'give' ),
+						esc_html__( 'Implement an SSL certificate to keep your donations secure.', 'give' ),
+						esc_html__( 'Keep installed plugins to a minimum.', 'give' ),
+						esc_html__( 'Keep plugins up to date to ensure latest security fixes are present.', 'give' ),
+					],
+					'liveWarning'                       => give_is_test_mode() ? esc_html__(
+						'You have connected your account for test mode. You will need to connect again once you
+						are in live mode.',
+						'give'
+					) : '',
 				],
 			]
 		);

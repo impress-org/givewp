@@ -25,9 +25,9 @@ const Addons = () => {
 
 	return (
 		<div className="give-obw-fundraising-needs">
-			<h1>{ __( 'What do you need to support your cause?', 'give' ) }</h1>
+			<h1>{ __( 'What else do you need to support your cause?', 'give' ) }</h1>
 			<p>
-				{ __( 'Take your fundraising to the next level with free and premium add-ons.', 'give' ) }
+				{ __( 'Take your fundraising to the next level with these premium add-ons.', 'give' ) }
 			</p>
 			<CardInput values={ addons } onChange={ ( value ) => dispatch( setAddons( value ) ) } >
 				<Card value="recurring-donations">

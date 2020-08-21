@@ -131,7 +131,7 @@ class onBoardingRedirectHandler {
 	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
 		$this->refreshAccountStatus();
 
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-account-connected=1' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-commerce-account-connected=1' ) );
 
 		exit();
 	}
@@ -227,7 +227,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function registerPayPalAccountConnectedNotice() {
-		Give_Admin_Settings::add_message( 'paypal-account-connected', esc_html__( 'PayPal account connected successfully.', 'give' ) );
+		Give_Admin_Settings::add_message( 'paypal-commerce-account-connected', esc_html__( 'PayPal account connected successfully.', 'give' ) );
 	}
 
 	/**
@@ -260,7 +260,7 @@ class onBoardingRedirectHandler {
 	 * @return bool
 	 */
 	private function isPayPalAccountDetailsSaved() {
-		return isset( $_GET['paypal-account-connected'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
+		return isset( $_GET['paypal-commerce-account-connected'] ) && Give_Admin_Settings::is_setting_page( 'gateways', 'paypal' );
 	}
 
 	/**
