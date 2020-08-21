@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Normalizes format for country and state selects, with states having an empty option and countries not. (#5163)
 -   Reduced the scope of marked optional fields in the Multi-Step template to the User Info fieldset. (#5161)
 -   Added hover styles to the Wizard buttons to match the form preview. (#5167)
--   Setup Page no longer managers connecting to Stripe or configuring webhooks. (#5171)
+-   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
 
 ### Fixed
 
