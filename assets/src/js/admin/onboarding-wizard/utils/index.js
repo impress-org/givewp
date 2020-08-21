@@ -41,7 +41,12 @@ export const getCountryList = () => {
 };
 
 export const getDefaultStateList = () => {
-	return getWindowData( 'states' );
+	return getWindowData( 'states' ).map( ( state ) => {
+		return {
+			value: state.value,
+			label: decodeHTMLEntity( state.label ),
+		};
+	} );
 };
 
 export const getCurrencyList = () => {
@@ -56,6 +61,22 @@ export const getCurrencyList = () => {
 export const getLocaleCurrency = ( countryCode ) => {
 	const lookup = getWindowData( 'localeCurrency' );
 	return lookup[ countryCode ] ?? '';
+};
+
+export const getDefaultCountry = () => {
+	return getWindowData( 'countrySelected' );
+};
+
+export const getDefaultState = () => {
+	return getWindowData( 'stateSelected' );
+};
+
+export const getDefaultCurrency = () => {
+	return getWindowData( 'currencySelected' );
+};
+
+export const getCauseTypes = () => {
+	return getWindowData( 'causeTypes' );
 };
 
 export const getFeaturesEnabledDefault = () => {
@@ -135,7 +156,13 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
 	} )
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
-			dispatch( setStateList( data.states ) );
+			const stateList = data.states.map( ( state ) => {
+				return {
+					value: state.value,
+					label: decodeHTMLEntity( state.label ),
+				};
+			} );
+			dispatch( setStateList( stateList ) );
 			dispatch( setFetchingStatesList( false ) );
 		} );
 };
