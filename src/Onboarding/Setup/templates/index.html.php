@@ -12,10 +12,6 @@
 	</div>
 	<?php endif; ?>
 
-	<p class="intro-text">
-		<?php echo __( 'You\'re almost ready to start fundraising for your cause! Below we’ll guide you through the final steps to get up and running quickly.', 'give' ); ?>
-	</p>
-
 	<!-- Configuration -->
 	<?php
 		echo $this->render_template(
@@ -62,7 +58,7 @@
 												: $this->image( 'paypal@2x.min.png' ),
 							'icon_alt'    => esc_html__( 'PayPal', 'give' ),
 							'title'       => esc_html__( 'Connect to PayPal', 'give' ),
-							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It\’s been the go-to payment merchant for many of the world\'s top NGOs. Accept PayPal, credit and debit cards without any added platform fees.', 'give' ),
+							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It\'s been the go-to payment merchant for many of the world\'s top NGOs. Accept PayPal, credit and debit cards without any added platform fees.', 'give' ),
 							'action'      => sprintf(
 								'<a href="%s"><i class="fab fa-paypal"></i>&nbsp;&nbsp;Connect to PayPal</a>',
 								add_query_arg(
@@ -87,64 +83,24 @@
 							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
 							'title'       => esc_html__( 'Connect to Stripe', 'give' ),
 							'description' => esc_html__( 'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations. Remove the fee by installing and activating the premium Stripe add-on.', 'give' ),
-							'action'      => ( $this->isStripeSetup() )
-								? sprintf(
-									'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;%s</a>',
-									add_query_arg(
-										[
-											'post_type' => 'give_forms',
-											'page'      => 'give-settings',
-											'tab'       => 'gateways',
-											'section'   => 'stripe-settings',
-										],
-										esc_url_raw( admin_url( 'edit.php' ) )
-									),
-									__( 'Stripe Settings', 'give' )
+							'action'      => ( $this->isStripeSetup() ) ? sprintf(
+								'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Stripe Settings</a>',
+								add_query_arg(
+									[
+										'post_type' => 'give_forms',
+										'page'      => 'give-settings',
+										'tab'       => 'gateways',
+										'section'   => 'stripe-settings',
+									],
+									esc_url_raw( admin_url( 'edit.php' ) )
 								)
-								: sprintf(
-									'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect with Stripe</a>',
-									add_query_arg(
-										[
-											'stripe_action' => 'connect',
-											'mode'        => give_is_test_mode() ? 'test' : 'live',
-											'return_url'  => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) ),
-											'website_url' => get_bloginfo( 'url' ),
-											'give_stripe_connected' => '0',
-										],
-										esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
-									)
-								),
-						]
-					) : '',
-					$this->isStripeSetup() && ! $this->isPayPalSetup() && ! $this->isStripeWebhooksSetup() ? $this->render_template(
-						'row-item',
-						[
-							'id'          => 'stripeWebhooks',
-							'class'       => 'stripe stripe-webhooks',
-							'icon'        => $this->image( 'stripe@2x.min.png' ),
-							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
-							'title'       => esc_html__( 'Please configure your Stripe webhook to finalize the setup.', 'give' ),
-							'description' => sprintf(
-								'%s<br /><br />%s<br /><br /><em>%s</em>',
-								esc_html__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the Webhooks Section of your Stripe Dashboard and click the Add endpoint button and paste the following URL: ', 'give' ),
-								'<span id="stripeWebhooksCopyHandler" class="stripe-webhooks-url"><input disabled="disabled" id="stripeWebhooksCopy" value="' . add_query_arg( 'give-listener', 'stripe', site_url() ) . '" /> &nbsp; <i id="stripeWebhooksCopyIcon" class="fa fa-clipboard"></i></input>',
-								esc_html__( 'Note: If you plan on testing Stripe you will need to set the webhook for both live and test mode.', 'give' )
+							)
+							: sprintf(
+								'<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect to Stripe</a>',
+								$this->stripeConnectURL()
 							),
-							'action'      =>
-								sprintf( '<a id="stripeWebhooksConfigureButton" href="%s" target="_blank">%s</a>', esc_url_raw( 'https://dashboard.stripe.com/webhooks' ), __( 'Configure Webhooks', 'give' ) ),
 						]
 					) : '',
-					$this->render_template(
-						'row-item',
-						[
-							'id'          => 'stripeWebhooksConnected',
-							'class'       => ( $this->isStripeWebhooksSetup() ) ? 'stripe setup-item-completed' : 'stripe setup-item-completed hidden',
-							'icon'        => $this->image( 'check-circle.min.png' ),
-							'icon_alt'    => esc_html__( 'Stripe', 'give' ),
-							'title'       => esc_html__( 'Please configure your Stripe webhook to finalize the setup.', 'give' ),
-							'description' => esc_html__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. ', 'give' ),
-						]
-					),
 				],
 				'footer'   => $this->render_template(
 					'footer',

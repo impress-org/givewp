@@ -415,8 +415,11 @@
 		setupSelectInputs();
 	}
 
+	/**
+	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
+	 */
 	setupOptionalInputLables(
-		Array.from( document.querySelectorAll( 'input[type="text"]' ) )
+		Array.from( document.querySelectorAll( '#give_checkout_user_info input[type="text"]' ) )
 	);
 
 	/**

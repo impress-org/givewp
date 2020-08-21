@@ -9,7 +9,10 @@
 */
 
 .give_forms_page_give-setup .wrap {
-	margin: 10px 40px 0 40px;
+	margin: 10px 15px 0 15px;
+}
+.give_forms_page_give-setup .wp-header-end {
+	margin-bottom: 20px;
 }
 
 .wp-heading-inline {
@@ -90,15 +93,6 @@ header .badge.badge-review {
 	background: transparent;
 }
 
-.intro-text {
-	font-size: 20px;
-	text-align: center;
-	margin: 30px auto;
-	font-style: italic;
-	font-weight: 600;
-	color: #9ea3a8;
-}
-
 article {
 	padding: 20px 0;
 	border-bottom: 1px solid #ddd;
@@ -146,6 +140,7 @@ article .description {
 	color: #595959;
 	font-size: 16px;
 	line-height: 22px;
+	font-weight: 400;
 }
 
 .configuration .icon {
