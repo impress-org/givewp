@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Added hover styles to the Wizard buttons to match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
 -   Removed preg_match that prevented version numbers with tags from being stored (#5172)
+-   Admin notice animation has been removed. (#5182)
 
 ### Fixed
 
