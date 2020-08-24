@@ -12,9 +12,9 @@ class SmartButtons extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	renderPaymentMethodOption() {
-		const smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+		this.smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
 
-		if ( ! smartButtonContainer ) {
+		if ( ! this.smartButtonContainer ) {
 			return;
 		}
 
@@ -36,7 +36,7 @@ class SmartButtons extends PaymentMethod {
 				color: 'gold',
 				tagline: false,
 			},
-		} ).render( smartButtonContainer );
+		} ).render( this.smartButtonContainer );
 	}
 
 	/**
@@ -213,11 +213,11 @@ class SmartButtons extends PaymentMethod {
 	 * @return {boolean} Return boolean whether or not fire custom event.
 	 */
 	smartButtonHasExternalOnClickHandler() {
-		// Note: "PayPalCommerceSmartButtonHasExternalOnClickHandler" is only for internal use, so do not use it in production.
+		// Note: "data-customClickHandler" is only for internal use, so do not use it in production.
 		// This property allow us to submit donation form instead of processing payment withing PayPal model when click on smart button.
 		// Set it to true if you want to handle form submission on server.
 		// If donor is opted in for subscription (recurring add-on) then you do not have to overwrite this because we are handling it in recurring addon: give-recurring.js::init().
-		return !! window.PayPalCommerceSmartButtonHasExternalOnClickHandler;
+		return 'true' === this.smartButtonContainer.getAttribute( 'data-customClickHandler' );
 	}
 }
 
