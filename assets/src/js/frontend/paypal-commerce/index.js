@@ -1,4 +1,4 @@
-/* globals jQuery */
+/* globals jQuery, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';

@@ -12,6 +12,16 @@ use PayPalCheckoutSdk\Orders\OrdersGetRequest;
  */
 class DonationProcessor {
 	/**
+	 * @var array
+	 */
+	private $donationFormData;
+
+	/**
+	 * @var int
+	 */
+	private $formId;
+
+	/**
 	 * Handle donation form submission.
 	 *
 	 * @param array $donationFormData
@@ -19,29 +29,35 @@ class DonationProcessor {
 	 * @since 2.8.0
 	 */
 	public function handle( $donationFormData ) {
-		$formId = absint( $donationFormData['post_data']['give-form-id'] );
+		$this->donationFormData = (array) $donationFormData;
+
+		if ( ! $this->isOneTimeDonation() ) {
+			return;
+		}
+
+		$this->formId = absint( $this->donationFormData['post_data']['give-form-id'] );
 
 		$donationData = [
-			'price'           => $donationFormData['price'],
-			'give_form_title' => $donationFormData['post_data']['give-form-title'],
-			'give_form_id'    => $formId,
-			'give_price_id'   => isset( $donationFormData['post_data']['give-price-id'] ) ? $donationFormData['post_data']['give-price-id'] : '',
-			'date'            => $donationFormData['date'],
-			'user_email'      => $donationFormData['user_email'],
-			'purchase_key'    => $donationFormData['purchase_key'],
+			'price'           => $this->donationFormData['price'],
+			'give_form_title' => $this->donationFormData['post_data']['give-form-title'],
+			'give_form_id'    => $this->formId,
+			'give_price_id'   => isset( $this->donationFormData['post_data']['give-price-id'] ) ? $this->donationFormData['post_data']['give-price-id'] : '',
+			'date'            => $this->donationFormData['date'],
+			'user_email'      => $this->donationFormData['user_email'],
+			'purchase_key'    => $this->donationFormData['purchase_key'],
 			'currency'        => give_get_currency(),
-			'user_info'       => $donationFormData['user_info'],
+			'user_info'       => $this->donationFormData['user_info'],
 			'status'          => 'pending',
-			'gateway'         => $donationFormData['gateway'],
+			'gateway'         => $this->donationFormData['gateway'],
 		];
 
 		$donationId = give_insert_payment( $donationData );
 
 		if ( ! $donationId ) {
-			$this->redirectBackToDonationForm( $donationFormData );
+			$this->redirectBackToDonationForm();
 		}
 
-		$this->redirectDonorToSuccessPage( $donationFormData, $donationId, $formId );
+		$this->redirectDonorToSuccessPage( $donationId );
 
 		exit();
 	}
@@ -50,16 +66,15 @@ class DonationProcessor {
 	 * Return back to donation form page after logging error.
 	 *
 	 * @since 2.8.0
-	 * @param array $donationFormData
 	 */
-	private function redirectBackToDonationForm( $donationFormData ) {
+	private function redirectBackToDonationForm() {
 		// Record the error.
 		give_record_gateway_error(
 			esc_html__( 'Payment Error', 'give' ),
 			/* translators: %s: payment data */
 			sprintf(
 				esc_html__( 'The payment creation failed before processing the PayPalCommerce gateway request. Payment data: %s', 'give' ),
-				print_r( $donationFormData, true )
+				print_r( $this->donationFormData, true )
 			)
 		);
 
@@ -72,15 +87,13 @@ class DonationProcessor {
 	/**
 	 * Redirect donor to success page.
 	 *
-	 * @param array $donationFormData
 	 * @param  int  $donationId
-	 * @param  int  $formId
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
-	private function redirectDonorToSuccessPage( $donationFormData, $donationId, $formId ) {
+	private function redirectDonorToSuccessPage( $donationId ) {
 
-		$orderDetailRequest = new OrdersGetRequest( $donationFormData['post_data']['payPalOrderId'] );
+		$orderDetailRequest = new OrdersGetRequest( $this->donationFormData['post_data']['payPalOrderId'] );
 		$orderDetails       = (array) give( PayPalClient::class )->getHttpClient()->execute( $orderDetailRequest )->result;
 
 		$order = PayPalOrder::fromArray( $orderDetails );
@@ -109,5 +122,16 @@ class DonationProcessor {
 		);
 
 		exit();
+	}
+
+	/**
+	 * Return whether or not donation is onetime.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return bool
+	 */
+	private function isOneTimeDonation() {
+		return array_key_exists( 'post_data', $this->donationFormData ) && array_key_exists( 'payPalOrderId', $this->donationFormData['post_data'] );
 	}
 }

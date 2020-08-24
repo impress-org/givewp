@@ -1,4 +1,4 @@
-/* globals paypal, Give, FormData, givePayPalCommerce */
+/* globals paypal, Give, FormData, givePayPalCommerce, jQuery */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
@@ -12,9 +12,9 @@ class SmartButtons extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	renderPaymentMethodOption() {
-		const smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+		this.smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
 
-		if ( ! smartButtonContainer ) {
+		if ( ! this.smartButtonContainer ) {
 			return;
 		}
 
@@ -36,7 +36,7 @@ class SmartButtons extends PaymentMethod {
 				color: 'gold',
 				tagline: false,
 			},
-		} ).render( smartButtonContainer );
+		} ).render( this.smartButtonContainer );
 	}
 
 	/**
@@ -75,6 +75,13 @@ class SmartButtons extends PaymentMethod {
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
+			// Allow external logic to handler onclick event
+			if ( this.smartButtonHasExternalOnClickHandler() ) {
+				jQuery( document ).trigger( 'GivePayPalCommerce:onClickSmartButton', [ this ] );
+
+				return actions.reject();
+			}
+
 			return actions.resolve();
 		}
 
@@ -196,6 +203,21 @@ class SmartButtons extends PaymentMethod {
 	 */
 	removeCreditCardFields() {
 		this.jQueryForm.find( 'input[name="card_name"]' ).remove();
+	}
+
+	/**
+	 * Return whether or not smart button has external or click handler.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return {boolean} Return boolean whether or not fire custom event.
+	 */
+	smartButtonHasExternalOnClickHandler() {
+		// Note: "data-customClickHandler" is only for internal use, so do not use it in production.
+		// This property allow us to submit donation form instead of processing payment withing PayPal model when click on smart button.
+		// Set it to true if you want to handle form submission on server.
+		// If donor is opted in for subscription (recurring add-on) then you do not have to overwrite this because we are handling it in recurring addon: give-recurring.js::init().
+		return 'true' === this.smartButtonContainer.getAttribute( 'data-customClickHandler' );
 	}
 }
 
