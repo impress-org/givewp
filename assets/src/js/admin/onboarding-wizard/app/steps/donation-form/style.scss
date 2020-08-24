@@ -4,6 +4,7 @@
 	grid-template-columns: repeat(2, 1fr);
 	width: 1200px;
 	grid-gap: 62px;
+	align-items: center;
 }
 
 .give-obw-donation-form__content {
@@ -11,6 +12,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
+	align-self: flex-start;
 	height: calc(100vh - 190px);
 
 	.give-obw-donation-form__fixed {
@@ -53,7 +55,7 @@
 			font-family: Montserrat, Arial, Helvetica, sans-serif;
 			font-weight: 500;
 			font-size: 16px;
-			line-height: 24px;
+			line-height: 2;
 			color: #333;
 
 			padding: 0;

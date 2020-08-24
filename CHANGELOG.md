@@ -16,11 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Normalizes format for country and state selects, with states having an empty option and countries not. (#5163)
 -   Reduced the scope of marked optional fields in the Multi-Step template to the User Info fieldset. (#5161)
 -   Added hover styles to the Wizard buttons to match the form preview. (#5167)
+-   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
 -   Removed preg_match that prevented version numbers with tags from being stored (#5172)
 
 ### Fixed
 
--    Set a specific placeholder for the base country select setting, no longer reads "Select a form". (#5163)
+-   Set a specific placeholder for the base country select setting, no longer reads "Select a form". (#5163)
+-   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
@@ -53,9 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   New Onboarding Wizard guides new users through first-time configuration. (#5014)
--   New Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)
--   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place. (#5117)
+-   New Onboarding Wizard guides new users through first-time configuration (#5014)
+-   New Setup Page clarifies required steps that must be completed prior to accepting live donations (#5014)
+-   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place (#5117)
+-   Update Stripe Checkout to use Stripe Elements (#4964)
 
 ### Changed
 

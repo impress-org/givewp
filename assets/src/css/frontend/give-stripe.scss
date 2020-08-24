@@ -7,35 +7,172 @@
 	background-color: #fdfdfd;
 	border: 1px solid #ccc;
 	margin: 0;
-	padding: .5em;
-  }
+	padding: 0.5em;
+}
 
-  .give-stripe-cc-field.give-fl-input {
+.give-stripe-cc-field.give-fl-input {
 	height: auto;
 	min-height: 50px;
 	line-height: inherit;
 	padding: 14px 10px;
-	background-color: #FFF;
-  }
+	background-color: #fff;
+}
 
-  .give-stripe-cc-field-wrap .give-fl-is-active .give-fl-input {
+.give-stripe-cc-field-wrap .give-fl-is-active .give-fl-input {
 	padding: 20px 12px 4px;
 	transition: padding 0.2s ease-in-out, border 0.2s ease-in-out;
-  }
+}
 
-  .give-stripe-cc-field-wrap .give-fl-label span {
+.give-stripe-cc-field-wrap .give-fl-label span {
 	display: none;
-  }
+}
 
-  .give-stripe-single-cc-field-wrap {
-	border: 1px solid #CCCCCC;
-	background-color: #FDFDFD;
+.give-stripe-single-cc-field-wrap {
+	border: 1px solid #ccc;
+	background-color: #fdfdfd;
 	padding: 10px;
 	height: 40px;
 	margin: 0 0 15px 0;
-  }
+}
 
-  .give-form .give-stripe-cc-field.focus,
-  .give-form .give-stripe-cc-field:focus {
-	background-color: #FFFFFF;
-  }
+.give-form .give-stripe-cc-field.focus,
+.give-form .give-stripe-cc-field:focus {
+	background-color: #fff;
+}
+
+.give-stripe-checkout-modal {
+	all: initial;
+	box-sizing: border-box;
+	position: fixed;
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 0;
+	visibility: hidden;
+	transform: scale(1.1);
+	transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+	z-index: 100001 !important;
+
+	&.give-stripe-checkout-show-modal {
+		opacity: 1;
+		visibility: visible;
+		transform: scale(1);
+		transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+	}
+
+	.give-stripe-checkout-modal-content {
+		position: absolute;
+		top: 42%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: rgb(255, 255, 255);
+		overflow: hidden;
+		width: 385px;
+		border-radius: 0.5rem;
+
+		.give-stripe-checkout-modal-container {
+			.give-stripe-checkout-modal-header {
+				background-color: #000;
+				color: #fff;
+				padding: 20px;
+				text-align: center;
+
+				.give-stripe-checkout-modal-close {
+					background: none;
+					padding: 0;
+					margin: 15px;
+					font: inherit;
+					outline: inherit;
+					color: rgb(255, 255, 255);
+					cursor: pointer;
+					position: absolute;
+					top: 0;
+					right: 0;
+					border: none;
+				}
+
+				h3 {
+					color: #fff;
+					text-transform: uppercase;
+					font-size: 18px;
+					font-weight: bold;
+					margin: 0 0 10px 0;
+				}
+
+				.give-stripe-checkout-form-title {
+					color: #f5f5f5;
+					font-size: 18px;
+					font-weight: bold;
+					margin: 10px 0 0 0;
+				}
+
+				.give-stripe-checkout-donor-email {
+					color: #e5e5e5;
+					font-size: 14px;
+					font-weight: 400;
+					margin: 5px 0;
+				}
+
+				.give-stripe-checkout-donation-amount {
+					font-size: 36px;
+					font-weight: 600;
+				}
+			}
+
+			.give-stripe-checkout-modal-body {
+				padding: 20px;
+				display: block;
+				overflow: hidden;
+
+				hr {
+					margin: 20px 0;
+					border: 1px solid #e5e5e5;
+				}
+
+				.give-stripe-checkout-modal-else-part {
+					margin: -5px 0 20px 0;
+					text-align: center;
+					font-size: 14px;
+				}
+
+				.give-stripe-single-cc-field-wrap {
+					margin: 0;
+				}
+			}
+
+			.give-stripe-checkout-modal-footer {
+				padding: 20px;
+				text-align: center;
+				background-color: #f5f5f5;
+
+				.give-stripe-checkout-modal-btn-wrap {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					.sequoia-loader {
+						bottom: 20px;
+					}
+				}
+
+				.give-stripe-checkout-modal-sequoia-donate-button {
+					order: 99 !important;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 20px 28px !important;
+					border-radius: 4px;
+					border: none;
+					font-size: 22px;
+					line-height: 20px;
+					min-width: 236px;
+					filter: brightness(1);
+					transition: filter 0.2s ease;
+				}
+			}
+		}
+	}
+}

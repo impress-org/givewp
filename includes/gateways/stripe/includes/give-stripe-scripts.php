@@ -35,29 +35,23 @@ function give_stripe_frontend_scripts() {
 	// Get publishable key.
 	$publishable_key = give_stripe_get_publishable_key();
 
-	// Checkout options.
-	// @TODO: convert checkboxes to radios.
-	$zip_option      = give_is_setting_enabled( give_get_option( 'stripe_checkout_zip_verify' ) );
-	$remember_option = give_is_setting_enabled( give_get_option( 'stripe_checkout_remember_me' ) );
-
 	// Set vars for AJAX.
 	$stripe_vars = apply_filters(
 		'give_stripe_global_parameters',
-		array(
+		[
 			'zero_based_currency'          => give_is_zero_based_currency(),
 			'zero_based_currencies_list'   => give_get_zero_based_currencies(),
 			'sitename'                     => give_get_option( 'stripe_checkout_name' ),
+			'checkoutBtnTitle'             => esc_html__( 'Donate', 'give' ),
 			'publishable_key'              => $publishable_key,
 			'checkout_image'               => give_get_option( 'stripe_checkout_image' ),
 			'checkout_address'             => give_get_option( 'stripe_collect_billing' ),
 			'checkout_processing_text'     => give_get_option( 'stripe_checkout_processing_text', __( 'Donation Processing...', 'give' ) ),
-			'zipcode_option'               => $zip_option,
-			'remember_option'              => $remember_option,
 			'give_version'                 => get_option( 'give_version' ),
 			'cc_fields_format'             => give_get_option( 'stripe_cc_fields_format', 'multi' ),
-			'card_number_placeholder_text' => __( 'Card Number', 'give' ),
-			'card_cvc_placeholder_text'    => __( 'CVC', 'give' ),
-			'donate_button_text'           => __( 'Donate Now', 'give' ),
+			'card_number_placeholder_text' => esc_html__( 'Card Number', 'give' ),
+			'card_cvc_placeholder_text'    => esc_html__( 'CVC', 'give' ),
+			'donate_button_text'           => esc_html__( 'Donate Now', 'give' ),
 			'element_font_styles'          => give_stripe_get_element_font_styles(),
 			'element_base_styles'          => give_stripe_get_element_base_styles(),
 			'element_complete_styles'      => give_stripe_get_element_complete_styles(),
@@ -70,50 +64,31 @@ function give_stripe_frontend_scripts() {
 			),
 			'base_country'                 => give_get_option( 'base_country' ),
 			'preferred_locale'             => give_stripe_get_preferred_locale(),
-		)
+		]
 	);
 
 	// Load third-party stripe js when required gateways are active.
 	if ( apply_filters( 'give_stripe_js_loading_conditions', give_stripe_is_any_payment_method_active() ) ) {
-		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', array(), GIVE_VERSION );
+		Give_Scripts::register_script( 'give-stripe-js', 'https://js.stripe.com/v3/', [], GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-js' );
 		wp_localize_script( 'give-stripe-js', 'give_stripe_vars', $stripe_vars );
 	}
 
-	// Load legacy Stripe checkout when the checkout type is `modal`.
-	if ( 'modal' === give_stripe_get_checkout_type() ) {
-
-		// Stripe checkout js.
-		Give_Scripts::register_script( 'give-stripe-checkout-js', 'https://checkout.stripe.com/checkout.js', array( 'jquery' ), GIVE_VERSION );
-		wp_enqueue_script( 'give-stripe-checkout-js' );
-
-		$deps = array(
-			'jquery',
-			'give',
-			'give-stripe-checkout-js',
-		);
-
-		// Give Stripe Checkout JS.
-		Give_Scripts::register_script( 'give-stripe-popup-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-checkout.js', $deps, GIVE_VERSION );
-		wp_enqueue_script( 'give-stripe-popup-js' );
-		wp_localize_script( 'give-stripe-popup-js', 'give_stripe_vars', $stripe_vars );
-	}
-
 	// Load Stripe onpage credit card JS when Stripe credit card payment method is active.
-	if ( give_is_gateway_active( 'stripe' ) ) {
-		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', array( 'give-stripe-js' ), GIVE_VERSION );
+	if ( give_is_gateway_active( 'stripe' ) || give_is_gateway_active( 'stripe_checkout' ) ) {
+		Give_Scripts::register_script( 'give-stripe-onpage-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe.js', [ 'give-stripe-js' ], GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-onpage-js' );
 	}
 
 	// Load Stripe SEPA Direct Debit JS when the gateway is active.
 	if ( give_is_gateway_active( 'stripe_sepa' ) ) {
-		Give_Scripts::register_script( 'give-stripe-sepa', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-sepa.js', array( 'give-stripe-js' ), GIVE_VERSION );
+		Give_Scripts::register_script( 'give-stripe-sepa', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-sepa.js', [ 'give-stripe-js' ], GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-sepa' );
 	}
 
 	// Load Stripe BECS Direct Debit JS when the gateway is active.
 	if ( give_is_gateway_active( 'stripe_becs' ) ) {
-		Give_Scripts::register_script( 'give-stripe-becs', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-becs.js', array( 'give-stripe-js' ), GIVE_VERSION );
+		Give_Scripts::register_script( 'give-stripe-becs', GIVE_PLUGIN_URL . 'assets/dist/js/give-stripe-becs.js', [ 'give-stripe-js' ], GIVE_VERSION );
 		wp_enqueue_script( 'give-stripe-becs' );
 	}
 }

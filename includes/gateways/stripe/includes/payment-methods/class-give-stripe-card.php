@@ -8,6 +8,8 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+use Give\Helpers\Gateways\Stripe;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -66,8 +68,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		public function addCreditCardForm( $form_id, $args, $echo = true ) {
 
 			ob_start();
-			$id_prefix              = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
-			$stripe_cc_field_format = give_get_option( 'stripe_cc_fields_format', 'multi' );
+			$idPrefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 			do_action( 'give_before_cc_fields', $form_id ); ?>
 
@@ -89,71 +90,8 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 				}
 
 				if ( $this->canShowFields() ) {
-					if ( 'single' === $stripe_cc_field_format ) {
-
-						// Display the stripe container which can be occupied by Stripe for CC fields.
-						echo '<div id="give-stripe-single-cc-fields-' . esc_html( $id_prefix ) . '" class="give-stripe-single-cc-field-wrap"></div>';
-
-					} elseif ( 'multi' === $stripe_cc_field_format ) {
-						?>
-						<div id="give-card-number-wrap" class="form-row form-row-two-thirds form-row-responsive give-stripe-cc-field-wrap">
-							<div>
-								<label for="give-card-number-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
-									<?php esc_attr_e( 'Card Number', 'give' ); ?>
-									<span class="give-required-indicator">*</span>
-									<span class="give-tooltip give-icon give-icon-question"
-										  data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
-									<span class="card-type"></span>
-								</label>
-								<div id="give-card-number-field-<?php echo esc_html( $id_prefix ); ?>" class="input empty give-stripe-cc-field give-stripe-card-number-field"></div>
-							</div>
-						</div>
-
-						<div id="give-card-cvc-wrap" class="form-row form-row-one-third form-row-responsive give-stripe-cc-field-wrap">
-							<div>
-								<label for="give-card-cvc-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
-									<?php esc_attr_e( 'CVC', 'give' ); ?>
-									<span class="give-required-indicator">*</span>
-									<span class="give-tooltip give-icon give-icon-question"
-										  data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
-								</label>
-								<div id="give-card-cvc-field-<?php echo esc_html( $id_prefix ); ?>" class="input empty give-stripe-cc-field give-stripe-card-cvc-field"></div>
-							</div>
-						</div>
-
-						<div id="give-card-name-wrap" class="form-row form-row-two-thirds form-row-responsive">
-							<label for="card_name" class="give-label">
-								<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>
-								<span class="give-required-indicator">*</span>
-								<span class="give-tooltip give-icon give-icon-question"
-									  data-tooltip="<?php esc_attr_e( 'The name of the credit card account holder.', 'give' ); ?>"></span>
-							</label>
-							<input
-								type="text"
-								autocomplete="off"
-								id="card_name"
-								name="card_name"
-								class="card-name give-input required"
-								placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
-							/>
-						</div>
-
-						<?php do_action( 'give_before_cc_expiration' ); ?>
-
-						<div id="give-card-expiration-wrap" class="card-expiration form-row form-row-one-third form-row-responsive give-stripe-cc-field-wrap">
-							<div>
-								<label for="give-card-expiration-field-<?php echo esc_html( $id_prefix ); ?>" class="give-label">
-									<?php esc_attr_e( 'Expiration', 'give' ); ?>
-									<span class="give-required-indicator">*</span>
-									<span class="give-tooltip give-icon give-icon-question"
-										  data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
-								</label>
-
-								<div id="give-card-expiration-field-<?php echo esc_html( $id_prefix ); ?>" class="input empty give-stripe-cc-field give-stripe-card-expiration-field"></div>
-							</div>
-						</div>
-						<?php
-					} // End if().
+					// Show Credit Card Fields.
+					echo Stripe::showCreditCardFields( $idPrefix );
 
 					/**
 					 * This action hook is used to display content after the Credit Card expiration field.
@@ -195,96 +133,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 			}
 
 			return $form;
-		}
-
-		/**
-		 * Check for the Stripe Source.
-		 *
-		 * @param array $donation_data List of Donation Data.
-		 *
-		 * @since 2.0.6
-		 *
-		 * @return string
-		 */
-		public function check_for_source( $donation_data ) {
-
-			$source_id          = $donation_data['post_data']['give_stripe_payment_method'];
-			$stripe_js_fallback = give_get_option( 'stripe_js_fallback' );
-
-			if ( ! isset( $source_id ) ) {
-
-				// check for fallback mode.
-				if ( ! empty( $stripe_js_fallback ) ) {
-
-					$card_data = $this->prepare_card_data( $donation_data );
-
-					// Set Application Info.
-					give_stripe_set_app_info();
-
-					try {
-
-						$source    = \Stripe\Source::create(
-							array(
-								'card' => $card_data,
-							)
-						);
-						$source_id = $source->id;
-
-					} catch ( \Stripe\Error\Base $e ) {
-						$this->log_error( $e );
-
-					} catch ( Exception $e ) {
-
-						give_record_gateway_error(
-							__( 'Stripe Error', 'give' ),
-							sprintf(
-								/* translators: %s Exception Message Body */
-								__( 'The Stripe Gateway returned an error while creating the customer payment source. Details: %s', 'give' ),
-								$e->getMessage()
-							)
-						);
-						give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
-						give_send_back_to_checkout( "?payment-mode={$this->id}&form_id={$donation_data['post_data']['give-form-id']}" );
-					}
-				} elseif ( ! $this->is_stripe_popup_enabled() ) {
-
-					// No Stripe source and fallback mode is disabled.
-					give_set_error( 'no_token', __( 'Missing Stripe Source. Please contact support.', 'give' ) );
-					give_record_gateway_error( __( 'Missing Stripe Source', 'give' ), __( 'A Stripe token failed to be generated. Please check Stripe logs for more information.', 'give' ) );
-
-				}
-			} // End if().
-
-			return $source_id;
-
-		}
-
-		/**
-		 * Process the POST Data for the Credit Card Form, if a source was not supplied.
-		 *
-		 * @since 2.5.0
-		 *
-		 * @param array $donation_data List of donation data.
-		 *
-		 * @return array The credit card data from the $_POST
-		 */
-		public function prepare_card_data( $donation_data ) {
-
-			$card_data = array(
-				'number'          => $donation_data['card_info']['card_number'],
-				'name'            => $donation_data['card_info']['card_name'],
-				'exp_month'       => $donation_data['card_info']['card_exp_month'],
-				'exp_year'        => $donation_data['card_info']['card_exp_year'],
-				'cvc'             => $donation_data['card_info']['card_cvc'],
-				'address_line1'   => $donation_data['card_info']['card_address'],
-				'address_line2'   => $donation_data['card_info']['card_address_2'],
-				'address_city'    => $donation_data['card_info']['card_city'],
-				'address_zip'     => $donation_data['card_info']['card_zip'],
-				'address_state'   => $donation_data['card_info']['card_state'],
-				'address_country' => $donation_data['card_info']['card_country'],
-			);
-
-			return $card_data;
 		}
 
 		/**
@@ -345,7 +193,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					$payment_method_id = $payment_method->id;
 
 					// Setup the payment details.
-					$payment_data = array(
+					$payment_data = [
 						'price'           => $donation_data['price'],
 						'give_form_title' => $donation_data['post_data']['give-form-title'],
 						'give_form_id'    => $form_id,
@@ -357,7 +205,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 						'user_info'       => $donation_data['user_info'],
 						'status'          => 'pending',
 						'gateway'         => $this->id,
-					);
+					];
 
 					// Record the pending payment in Give.
 					$donation_id = give_insert_payment( $payment_data );
@@ -401,10 +249,10 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 					 */
 					$intent_args = apply_filters(
 						'give_stripe_create_intent_args',
-						array(
+						[
 							'amount'               => $this->format_amount( $donation_data['price'] ),
 							'currency'             => give_get_currency( $form_id ),
-							'payment_method_types' => array( 'card' ),
+							'payment_method_types' => [ 'card' ],
 							'statement_descriptor' => give_stripe_get_statement_descriptor(),
 							'description'          => give_payment_gateway_donation_summary( $donation_data ),
 							'metadata'             => $this->prepare_metadata( $donation_id, $donation_data ),
@@ -412,7 +260,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 							'payment_method'       => $payment_method_id,
 							'confirm'              => true,
 							'return_url'           => give_get_success_page_uri(),
-						)
+						]
 					);
 
 					// Send Stripe Receipt emails when enabled.

@@ -627,8 +627,17 @@ function give_get_required_fields( $form_id ) {
 
 		// Validate card name field for empty check.
 		if (
-			isset( $posted_data['card_name'] ) &&
-			empty( $posted_data['card_name'] )
+			(
+				isset( $posted_data['give_validate_stripe_payment_fields'] ) &&
+				'1' === $posted_data['give_validate_stripe_payment_fields'] &&
+				isset( $posted_data['card_name'] ) &&
+				empty( $posted_data['card_name'] )
+			) ||
+			(
+				! isset( $posted_data['give_validate_stripe_payment_fields'] ) &&
+				isset( $posted_data['card_name'] ) &&
+				empty( $posted_data['card_name'] )
+			)
 		) {
 			$required_fields['card_name'] = [
 				'error_id'      => 'empty_card_name',

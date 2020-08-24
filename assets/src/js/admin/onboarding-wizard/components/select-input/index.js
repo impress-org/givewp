@@ -26,7 +26,7 @@ const SelectInput = ( { label, value, isLoading, onChange, options } ) => {
 			boxSizing: 'border-box',
 			marginTop: '10px',
 			border: '1px solid #b8b8b8',
-			boxShadow: state.isFocused ? 	'0 0 0 2px #7ec980, 0 0 0 3px #4fa651' : '0 1px 4px rgba(0, 0, 0, 0.158927)',
+			boxShadow: state.isFocused ? 	'0 0 0 2px #7ec980, 0 0 0 3px #4fa651' : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
 			borderRadius: '4px',
 		} ),
 		input: ( provided ) => ( {

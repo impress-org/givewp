@@ -9,6 +9,8 @@
 
 .give-obw-card-input__option {
 	position: relative;
+	transition: all 0.2s ease-out;
+	transform: scale(1) translateY(0);
 
 	label {
 		cursor: pointer;
@@ -22,8 +24,10 @@
 	}
 
 	&:hover {
+		transform: scale(1.02) translateY(-2px);
+
 		.give-obw-card {
-			box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+			box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 		}
 	}
 }
@@ -33,7 +37,9 @@ input:focus + .give-obw-card-input__option .give-obw-card {
 	// Using a border as a selected state with border-box box-sizing,
 	// creates a change in available content space within the box.
 	// Instead, a box-shadow maintains width and border-radius.
-	box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651, 0 3px 8px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651, 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	transform: scale(1) translateY(0);
 }
 
 input[type='checkbox'] {
