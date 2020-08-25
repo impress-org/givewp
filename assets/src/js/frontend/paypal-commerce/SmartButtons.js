@@ -7,12 +7,37 @@ import PaymentMethod from './PaymentMethod';
  */
 class SmartButtons extends PaymentMethod {
 	/**
+	 * Get smart button container.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return {object} Smart button container selector.
+	 */
+	getButtonContainer() {
+		let smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+
+		if ( ! smartButtonContainer ) {
+			const ccFields = this.form.querySelector( '[id^="give_cc_fields-"]' );
+			const smartButtonWrap = document.createElement( 'div' );
+			const buttonDiv = document.createElement( 'div' );
+
+			buttonDiv.setAttribute( 'id', `smart-buttons-${ this.form.getAttribute( 'data-id' ) }` );
+			smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
+
+			smartButtonWrap.appendChild( buttonDiv );
+			smartButtonContainer = ccFields.insertBefore( smartButtonWrap, ccFields.querySelector( '[id^=give-card-number-wrap-]' ) );
+		}
+
+		return smartButtonContainer;
+	}
+
+	/**
 	 * Render smart buttons.
 	 *
 	 * @since 2.8.0
 	 */
 	renderPaymentMethodOption() {
-		this.smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+		this.smartButtonContainer = this.getButtonContainer();
 
 		if ( ! this.smartButtonContainer ) {
 			return;
