@@ -916,7 +916,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<p>
 							<a
 							class="give-stripe-disconnect-account-btn"
-								href="<?php echo esc_attr( give_stripe_disconnect_url( $stripe_accounts[ $default_account ]['account_id'] ) ); ?>"
+								href="<?php echo esc_attr( give_stripe_disconnect_url( $stripe_accounts[ $default_account ]['account_id'], $default_account ) ); ?>"
 								data-disconnect-message="<?php esc_attr_e( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ); ?>"
 							>
 								<?php esc_html_e( 'Disconnect all connected Stripe accounts', 'give' ); ?>
