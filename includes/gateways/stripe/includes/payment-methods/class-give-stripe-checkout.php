@@ -106,7 +106,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 					',
 				esc_html__( 'Make your donations quickly and securely with Stripe', 'give' ),
 				esc_html__( 'How it works:', 'give' ),
-				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' ),
+				esc_html__( 'A Stripe window will open after you click the Donate Now button where you can securely make your donation. You will then be brought back to this page to view your receipt.', 'give' )
 			);
 
 			return Stripe::canShowBillingAddress( $formId, $args );
