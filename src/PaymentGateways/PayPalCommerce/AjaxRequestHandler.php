@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Helpers\ArrayDataSet;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -49,20 +48,6 @@ class AjaxRequestHandler {
 	/**
 	 * @since 2.8.0
 	 *
-	 * @var PayPalClient
-	 */
-	private $paypalClient;
-
-	/**
-	 * @since 2.8.0
-	 *
-	 * @var ConnectClient
-	 */
-	private $connectClient;
-
-	/**
-	 * @since 2.8.0
-	 *
 	 * @var ConnectClient
 	 */
 	private $refreshToken;
@@ -81,8 +66,6 @@ class AjaxRequestHandler {
 	 *
 	 * @param Webhooks        $webhooksRepository
 	 * @param MerchantDetail  $merchantDetails
-	 * @param PayPalClient    $paypalClient
-	 * @param ConnectClient   $connectClient
 	 * @param MerchantDetails $merchantRepository
 	 * @param RefreshToken    $refreshToken
 	 * @param Settings        $settings
@@ -90,16 +73,12 @@ class AjaxRequestHandler {
 	public function __construct(
 		Webhooks $webhooksRepository,
 		MerchantDetail $merchantDetails,
-		PayPalClient $paypalClient,
-		ConnectClient $connectClient,
 		MerchantDetails $merchantRepository,
 		RefreshToken $refreshToken,
 		Settings $settings
 	) {
 		$this->webhooksRepository = $webhooksRepository;
 		$this->merchantDetails    = $merchantDetails;
-		$this->paypalClient       = $paypalClient;
-		$this->connectClient      = $connectClient;
 		$this->merchantRepository = $merchantRepository;
 		$this->refreshToken       = $refreshToken;
 		$this->settings           = $settings;
