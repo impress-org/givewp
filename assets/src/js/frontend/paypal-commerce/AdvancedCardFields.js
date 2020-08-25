@@ -147,7 +147,7 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Return wether or not payment approved successfully.
+	 * Return whether or not payment approved successfully.
 	 *
 	 * @since 2.8.0
 	 *
