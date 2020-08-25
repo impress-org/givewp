@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- Changes made since the last release are stored here until a release is ready. -->
 
+### Fixed
+
+-   Removed trailing comma in function call for PHP 5.6 support. (#)
+
 ## [2.8.0-beta.1] - 2020-08-24
 
 ### Changed
