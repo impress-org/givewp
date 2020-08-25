@@ -36,7 +36,7 @@ class AdvancedCardFields extends PaymentMethod {
 			'input:placeholder': {},
 		};
 
-		this.setStyles();
+		this.setFocusStyle();
 	}
 	/**
 	 * Return whether or not render credit card fields.
@@ -55,6 +55,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	async renderPaymentMethodOption() {
+		this.setStyles();
 		this.addInitialStyleToHostedFieldsContainer();
 		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 
@@ -340,6 +341,43 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	setStyles() {
+		const cardField = this.form.querySelector( 'input[name="card_name"]' );
+		const computedStyle = window.getComputedStyle( cardField, null );
+
+		if ( ! Array.from( this.styles.container ).length ) {
+			this.hostedFieldContainerStyleProperties.forEach( property => {
+				this.styles.container = {
+					[ property ]: computedStyle.getPropertyValue( property ),
+					...	this.styles.container,
+				};
+			} );
+
+			this.hostedInputFieldStyleProperties.forEach( property => {
+				this.styles.input = {
+					[ property ]: computedStyle.getPropertyValue( property ),
+					...	this.styles.input,
+				};
+			} );
+
+			this.hostedInputFieldPlaceholderStyleProperties.forEach( property => {
+				this.styles[ 'input:placeholder' ] = {
+					[ property ]: computedStyle.getPropertyValue( property ),
+					...	this.styles[ 'input:placeholder' ],
+				};
+			} );
+
+			// Set style properties for container input field and input, placeholder.
+			const event = new Event( 'blur' );
+			cardField.dispatchEvent( event );
+		}
+	}
+
+	/**
+	 * Set style properties for hosted card field and its container for focus state
+	 *
+	 * @since 2.8.0
+	 */
+	setFocusStyle() {
 		const sources = this.form.querySelectorAll( 'input[type="text"]' );
 		sources.forEach( source => {
 			// Get style properties for focused input field.
@@ -357,40 +395,7 @@ class AdvancedCardFields extends PaymentMethod {
 					};
 				} );
 			}, { once: true } );
-
-			source.addEventListener( 'blur', event => {
-				if ( Array.from( this.styles.container ).length ) {
-					return;
-				}
-
-				const computedStyle = window.getComputedStyle( event.target, null );
-
-				this.hostedFieldContainerStyleProperties.forEach( property => {
-					this.styles.container = {
-						[ property ]: computedStyle.getPropertyValue( property ),
-						...	this.styles.container,
-					};
-				} );
-
-				this.hostedInputFieldStyleProperties.forEach( property => {
-					this.styles.input = {
-						[ property ]: computedStyle.getPropertyValue( property ),
-						...	this.styles.input,
-					};
-				} );
-
-				this.hostedInputFieldPlaceholderStyleProperties.forEach( property => {
-					this.styles[ 'input:placeholder' ] = {
-						[ property ]: computedStyle.getPropertyValue( property ),
-						...	this.styles[ 'input:placeholder' ],
-					};
-				} );
-			}, { once: true } );
 		} );
-
-		// Set style properties for container input field and input, placeholder.
-		const event = new Event( 'blur' );
-		this.form.querySelector( 'input[name="card_name"]' ).dispatchEvent( event );
 	}
 
 	/**
