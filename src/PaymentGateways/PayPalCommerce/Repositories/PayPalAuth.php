@@ -77,7 +77,7 @@ class PayPalAuth {
 	public function getTokenFromAuthorizationCode( $authCode, $sharedId, $nonce ) {
 		$response = wp_remote_retrieve_body(
 			wp_remote_post(
-				$this->connectClient->getApiUrl( 'v1/oauth2/token' ),
+				$this->payPalClient->getApiUrl( 'v1/oauth2/token' ),
 				[
 					'headers' => [
 						'Authorization' => sprintf(

@@ -69,19 +69,22 @@ class AjaxRequestHandler {
 	 * @param MerchantDetails $merchantRepository
 	 * @param RefreshToken    $refreshToken
 	 * @param Settings        $settings
+	 * @param PayPalAuth      $payPalAuth
 	 */
 	public function __construct(
 		Webhooks $webhooksRepository,
 		MerchantDetail $merchantDetails,
 		MerchantDetails $merchantRepository,
 		RefreshToken $refreshToken,
-		Settings $settings
+		Settings $settings,
+		PayPalAuth $payPalAuth
 	) {
 		$this->webhooksRepository = $webhooksRepository;
 		$this->merchantDetails    = $merchantDetails;
 		$this->merchantRepository = $merchantRepository;
 		$this->refreshToken       = $refreshToken;
 		$this->settings           = $settings;
+		$this->payPalAuth         = $payPalAuth;
 	}
 
 	/**
