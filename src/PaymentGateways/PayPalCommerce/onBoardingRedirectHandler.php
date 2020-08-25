@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
+use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
@@ -104,6 +105,9 @@ class onBoardingRedirectHandler {
 
 		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
+
+		// Temporary, read the method description for details
+		$tokenInfo = $this->getTokenFromClientCredentials( $restApiCredentials['client_id'], $restApiCredentials['client_secret'] );
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
@@ -208,6 +212,40 @@ class onBoardingRedirectHandler {
 		);
 
 		return json_decode( wp_remote_retrieve_body( $request ), true );
+	}
+
+	/**
+	 * Requests an OAuth token based on the client credentials. This is only used in the temporary workaround since the
+	 * authorization_code auth grant type is not working properly (does not have permissions to create Subscriptions).
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param $client_id
+	 * @param $client_secret
+	 *
+	 * @return array
+	 */
+	private function getTokenFromClientCredentials( $client_id, $client_secret ) {
+		$auth = base64_encode( "$client_id:$client_secret" );
+
+		$request = wp_remote_post(
+			$this->payPalClient->getApiUrl( 'v1/oauth2/token' ),
+			[
+				'headers' => [
+					'Authorization' => "Basic $auth",
+					'Content-Type'  => 'application/x-www-form-urlencoded',
+				],
+				'body'    => [
+					'grant_type' => 'client_credentials',
+				],
+			]
+		);
+
+		$tokenInfo = ArrayDataSet::camelCaseKeys( json_decode( wp_remote_retrieve_body( $request ), true ) );
+
+		$this->settings->updateAccessToken( $tokenInfo );
+
+		return $tokenInfo;
 	}
 
 	/**
