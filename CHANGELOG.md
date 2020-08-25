@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- Changes made since the last release are stored here until a release is ready. -->
 
+## [2.8.0-beta.2] - 2020-08-25
+
 ### Fixed
 
 -   Trailing comma in function call is removed for PHP 5.6 support. (#5195)
+-   Fixed translation of common text to support WordPress 5.5, with backwards compatibility for `commonL10n`. (#5186)
 
 ## [2.8.0-beta.1] - 2020-08-24
 
@@ -29,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Placeholder for the Base Country setting no longer reads "Select a form". (#5163)
 -   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
--   Fixed translation of common text to support WordPress 5.5, with backwards compatibility for `commonL10n`. (#5186)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
