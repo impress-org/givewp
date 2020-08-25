@@ -743,4 +743,15 @@
 			} );
 		}
 	}
+
+	/**
+	 * Setup select inputs
+	 *
+	 * @since 2.8.0
+	 * @return {boolean}
+	 */
+	function isRTL() {
+		return $( 'html' ).attr( 'dir' ) === 'rtl';
+	}
+
 }( jQuery ) );
