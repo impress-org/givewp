@@ -38,9 +38,12 @@ class AdvancedCardFields extends PaymentMethod {
 			'input:placeholder': {},
 		};
 
+		this.recurringChoiceField = this.form.querySelector( 'input[name="give-recurring-period"]' );
+
 		this.setupContainerForHostedCardFields();
 		this.setFocusStyle();
 	}
+
 	/**
 	 * Return whether or not render credit card fields.
 	 *
@@ -48,7 +51,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * @return {boolean} Return boolean value whether we can render card fields or not.
 	 */
-	canRenderFields() {
+	static canRenderFields() {
 		return paypal.HostedFields.isEligible() === true;
 	}
 
@@ -58,19 +61,6 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.8.0
 	 */
 	async renderPaymentMethodOption() {
-		if ( ! this.canRenderFields() ) {
-			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
-				el => {
-					// Remove separator.
-					if ( el.previousElementSibling.classList.contains( 'separator-with-text' ) ) {
-						el.previousElementSibling.remove();
-					}
-					el.remove();
-				}
-			);
-			return;
-		}
-
 		this.setStyles();
 		this.addInitialStyleToHostedFieldsContainer();
 		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
@@ -85,6 +75,8 @@ class AdvancedCardFields extends PaymentMethod {
 
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
+
+		this.recurringChoiceField.addEventListener( 'change', this.toggleCardFields.bind( this ) );
 	}
 
 	/**
@@ -96,11 +88,14 @@ class AdvancedCardFields extends PaymentMethod {
 		const cardFields = this.getCardFields();
 		let objectKey = '';
 		let fieldType = '';
+		const isDonorOptedInForRecurringDonation = this.isRecurringDonation();
 
 		for ( const cardFieldsKey in cardFields ) {
 			const container = document.createElement( 'div' );
+
 			fieldType = cardFields[ cardFieldsKey ].el.getAttribute( 'name' );
 			container.setAttribute( 'id', `give-${ cardFields[ cardFieldsKey ].el.getAttribute( 'id' ) }` );
+			container.setAttribute( 'class', 'give-paypal-commerce-host-card-field-container' );
 
 			cardFields[ cardFieldsKey ].el.after( container );
 
@@ -113,6 +108,11 @@ class AdvancedCardFields extends PaymentMethod {
 			}
 
 			this.hostedCardFieldsContainers[ objectKey ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
+
+			// Toggle card field or hosted card field on basis of donation type: recurring or one time.
+			// We can not process recurring donation with advanced card fields, so let hide and use card field to process recurring donation with PayPal subscription api.
+			this.hostedCardFieldsContainers[ objectKey ].style.display = isDonorOptedInForRecurringDonation ? 'none' : 'block';
+			cardFields[ cardFieldsKey ].el.style.display = isDonorOptedInForRecurringDonation ? 'block' : 'none';
 		}
 	}
 
@@ -574,9 +574,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @return {boolean}  Return whether or not donor opted in for subscription.
 	 */
 	isRecurringDonation() {
-		const choiceField = this.form.querySelector( 'input[name="give-recurring-period"]' );
-
-		return choiceField && choiceField.checked;
+		return this.recurringChoiceField && this.recurringChoiceField.checked;
 	}
 
 	/**
@@ -587,6 +585,21 @@ class AdvancedCardFields extends PaymentMethod {
 	submitDonationForm() {
 		this.jQueryForm.off( 'submit' );
 		this.jQueryForm.submit();
+	}
+
+	/**
+	 * Toggle hosted card fields if donor opted in/out for recurring donation.
+	 *
+	 * @since 2.9.0
+	 */
+	toggleCardFields() {
+		const isDonorOptedInForRecurringDonation = this.isRecurringDonation();
+		const cardFields = this.getCardFields();
+
+		for ( const key in cardFields ) {
+			this.hostedCardFieldsContainers[ key ].style.display = isDonorOptedInForRecurringDonation ? 'none' : 'block';
+			cardFields[ key ].el.style.display = isDonorOptedInForRecurringDonation ? 'block' : 'none';
+		}
 	}
 }
 
