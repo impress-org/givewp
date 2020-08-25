@@ -262,6 +262,7 @@ class AdvancedCardFields extends PaymentMethod {
 
 		if ( this.isRecurringDonation() ) {
 			this.submitDonationForm();
+			return;
 		}
 
 		const hostedFieldOnSubmitErrorHandler = this.hostedFieldOnSubmitErrorHandler.bind( this );
