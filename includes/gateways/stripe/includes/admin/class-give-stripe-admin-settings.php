@@ -79,6 +79,19 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
+
+			add_action(
+				'give_disconnect_connected_stripe_accout',
+				function() {
+					$data = give_clean( $_GET );
+					if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
+						return;
+					}
+					give_stripe_disconnect_account(
+						$data['give_stripe_disconnect_slug']
+					);
+				}
+			);
 		}
 
 		/**
@@ -759,24 +772,20 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									$account_name       = $details['account_name'];
 									$account_email      = $details['account_email'];
 									$stripe_account_id  = $details['account_id'];
-									$disconnect_message = ( 'connect' === $details['type'] ) ?
-										sprintf(
-											esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
-											$stripe_account_id
-										) :
-										esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe?', 'give' );
-									$disconnect_url     = ( 'connect' === $details['type'] ) ?
-										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
-										add_query_arg(
-											[
-												'post_type' => 'give_forms',
-												'page'    => 'give-settings',
-												'tab'     => 'gateways',
-												'section' => 'stripe-settings',
-												'give_action' => 'disconnect_manual_stripe_account',
-											],
-											admin_url( 'edit.php' )
-										);
+									$disconnect_message = esc_html__( 'Are you sure you want to disconnect this Stripe account?', 'give' );
+									$disconnect_url     = add_query_arg(
+										[
+											'post_type'   => 'give_forms',
+											'page'        => 'give-settings',
+											'tab'         => 'gateways',
+											'section'     => 'stripe-settings',
+											'give_action' => ( 'connect' === $details['type'] )
+												? 'disconnect_connected_stripe_accout'
+												: 'disconnect_manual_stripe_account',
+											'give_stripe_disconnect_slug' => $slug,
+										],
+										admin_url( 'edit.php' )
+									);
 
 									?>
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
