@@ -897,7 +897,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					<!-- TODO: Extract inline styles to stylesheet. -->
 					<hr style="margin: 40px auto;" />
 					<div style="padding:10px;border:1px solid #e5e5e5;border-left:4px solid #ffba00;">
-						<strong><?php esc_html_e( 'Disconnect all connected Stripe accounts', 'give' ); ?><?php esc_html_e( 'Disconnect all connected Stripe accounts', 'give' ); ?></strong> 
+						<strong><?php esc_html_e( 'Disconnect all connected Stripe accounts', 'give' ); ?></strong> 
 						<p style="color:#666666;">
 							<?php esc_html_e( 'If disconnected, this website and any others sharing the same Stripe account that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ); ?>
 						</p>
