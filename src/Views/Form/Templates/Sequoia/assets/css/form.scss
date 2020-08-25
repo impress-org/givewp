@@ -1433,3 +1433,89 @@ body > *:not([class^='give']):not([id^='give']) {
 		transform: translate3d(-100%, 0, 0);
 	}
 }
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir="rtl"] {
+
+	.payment {
+
+		fieldset {
+			p {
+				> i {
+					right: 14px !important;
+				}
+			}
+		}
+
+		ul {
+			> li {
+
+				.give-gateway-option {
+					text-align: right !important;
+					padding-right: 23px !important;
+					padding-left: 12px !important;
+				}
+			}
+
+			.give-gateway-option::before {
+				right: 15px !important;
+			}
+
+			input[type='radio'] + .give-gateway-option::after {
+				right: 20px !important;
+			}
+
+		}
+
+		#give-anonymous-donation-wrap {
+			.give-label {
+				padding: 0 32px 0 0 !important;
+				margin-right: 0 !important;
+
+				&::before {
+					right: 0 !important;
+				}
+
+				&::after {
+					right: 0 !important;
+				}
+			}
+		}
+
+	}
+
+	.choose-amount {
+		.give-donation-amount {
+			span.give-currency-symbol {
+				&.give-currency-position-before {
+					padding-right: 0 !important;
+					padding-left: 24px !important;
+					border-right: none !important;
+					border-left: dotted #aaa 1px !important;
+				}
+			}
+		}
+	}
+
+	form[id*='give-form'] .form-row select,
+	#give-recurring-form .form-row select,
+	form.give-form .form-row select,
+	form[id*='give-form'] .form-row select.required,
+	#give-recurring-form .form-row select.required,
+	form.give-form .form-row select.required,
+	.give-select {
+		background-position: left 0.7em top 50%, 0 0 !important;
+	}
+
+	.advance-btn,
+	.give-submit,
+	.download-btn {
+		> i {
+			margin-left: 0 !important;
+			margin-right: 15px;
+		}
+	}
+}
