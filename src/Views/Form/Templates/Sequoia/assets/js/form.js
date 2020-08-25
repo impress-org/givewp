@@ -566,9 +566,10 @@
 	function setupInputIcon( selector, icon ) {
 		$( selector ).each( function() {
 			if ( $( this ).html() !== '' && $( this ).html().includes( `<i class="fas fa-${ icon }"></i>` ) === false ) {
+				const property = isRTL() ? 'padding-right' : 'padding-left';
 				$( this ).prepend( `<i class="fas fa-${ icon }"></i>` );
 				$( this ).children( 'input, selector' ).each( function() {
-					$( this ).attr( 'style', 'padding-left: 33px!important;' );
+					$( this ).attr( 'style', property + ': 33px!important;' );
 				} );
 			}
 		} );
