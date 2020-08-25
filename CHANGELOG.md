@@ -18,12 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Added hover styles to the Wizard buttons to match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
 -   Removed preg_match that prevented version numbers with tags from being stored (#5172)
+-   Admin notice animation has been removed. (#5182)
 
 ### Fixed
 
 -   Set a specific placeholder for the base country select setting, no longer reads "Select a form". (#5163)
 -   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
 -   Specify Form Route URL scheme to avoid mixed content when loaded in the admin. (#5189)
+-   Onboaridng Wizard no longer shows empty submenu under Dashboard. (#5190)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 

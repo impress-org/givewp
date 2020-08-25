@@ -58,7 +58,7 @@ class Page {
 	 * @since 2.8.0
 	 **/
 	public function add_page() {
-		add_dashboard_page( '', '', 'manage_options', $this->slug, '' );
+		add_submenu_page( '', '', '', 'manage_options', $this->slug );
 	}
 
 	/**
