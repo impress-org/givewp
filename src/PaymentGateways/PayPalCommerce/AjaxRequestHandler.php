@@ -6,6 +6,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
@@ -30,6 +31,13 @@ class AjaxRequestHandler {
 	 * @var MerchantDetail
 	 */
 	private $merchantDetails;
+
+	/**
+	 * @since 2.9.0
+	 *
+	 * @var PayPalAuth
+	 */
+	private $payPalAuth;
 
 	/**
 	 * @since 2.8.0
@@ -107,31 +115,15 @@ class AjaxRequestHandler {
 
 		$partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
-		$payPalResponse = wp_remote_retrieve_body(
-			wp_remote_post(
-				$this->paypalClient->getApiUrl( 'v1/oauth2/token' ),
-				[
-					'headers' => [
-						'Authorization' => sprintf(
-							'Basic %1$s',
-							base64_encode( give_clean( $_GET['sharedId'] ) )
-						),
-						'Content-Type'  => 'application/x-www-form-urlencoded',
-					],
-					'body'    => [
-						'grant_type'    => 'authorization_code',
-						'code'          => give_clean( $_GET['authCode'] ),
-						'code_verifier' => $partnerLinkInfo['nonce'], // Seller nonce.
-					],
-				]
-			)
+		$payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
+			give_clean( $_GET['authCode'] ),
+			give_clean( $_GET['sharedId'] ),
+			$partnerLinkInfo['nonce']
 		);
 
 		if ( ! $payPalResponse ) {
 			wp_send_json_error();
 		}
-
-		$payPalResponse = ArrayDataSet::camelCaseKeys( json_decode( $payPalResponse, true ) );
 
 		$this->settings->updateAccessToken( $payPalResponse );
 
@@ -148,26 +140,15 @@ class AjaxRequestHandler {
 	public function onGetPartnerUrlAjaxRequestHandler() {
 		$this->validateAdminRequest();
 
-		$response = wp_remote_retrieve_body(
-			wp_remote_post(
-				sprintf(
-					$this->connectClient->getApiUrl( 'paypal?mode=%1$s&request=partner-link' ),
-					$this->paypalClient->mode
-				),
-				[
-					'body' => [
-						'return_url'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
-						'country_code' => $this->settings->getAccountCountry(),
-					],
-				]
-			)
+		$data = $this->payPalAuth->getSellerPartnerLink(
+			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
+			$this->settings->getAccountCountry()
 		);
 
-		if ( ! $response ) {
+		if ( ! $data ) {
 			wp_send_json_error();
 		}
 
-		$data = json_decode( $response, true );
 		$this->settings->updatePartnerLinkDetails( $data );
 
 		wp_send_json_success( $data );
