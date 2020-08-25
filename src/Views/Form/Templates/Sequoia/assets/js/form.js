@@ -666,7 +666,7 @@
 		}
 
 		// Persist checkbox input border when selected
-		$( label ).on( 'click touchend', function( evt ) {
+		$( document ).on( 'click touchend', label, function( evt ) {
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
