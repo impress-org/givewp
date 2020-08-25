@@ -76,12 +76,14 @@ class AdvancedCardFields extends PaymentMethod {
 		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 
 		const createOrder = this.createOrderHandler.bind( this );
-		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		const styles = await this.getComputedInputFieldForHostedField();
 		const fields = this.getPayPalHostedCardFields();
 
 		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
+
 		this.addEventToHostedFields( hostedCardFields );
+
+		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 	}
 
