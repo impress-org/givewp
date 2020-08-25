@@ -79,19 +79,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
-
-			add_action(
-				'give_disconnect_connected_stripe_accout',
-				function() {
-					$data = give_clean( $_GET );
-					if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
-						return;
-					}
-					give_stripe_disconnect_account(
-						$data['give_stripe_disconnect_slug']
-					);
-				}
-			);
+			add_action( 'give_disconnect_connected_stripe_accout', [ $this, 'disconnect_connected_stripe_accout' ] );
 		}
 
 		/**
@@ -1091,6 +1079,19 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				</td>
 			</tr>
 			<?php
+		}
+
+		/**
+		 * @since 2.8.0
+		 */
+		public function disconnect_connected_stripe_accout() {
+			$data = give_clean( $_GET );
+			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
+				return;
+			}
+			give_stripe_disconnect_account(
+				$data['give_stripe_disconnect_slug']
+			);
 		}
 	}
 }
