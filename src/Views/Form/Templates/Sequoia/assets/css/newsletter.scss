@@ -83,3 +83,29 @@
 		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 }
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir='rtl'] {
+	.give-activecampaign-fieldset,
+	.give-mailchimp-fieldset,
+	.give-constant-contact-fieldset {
+		span {
+			margin-left: 0 !important;
+			margin-right: 40px !important;
+		}
+
+		span::before {
+			top: calc(50% - 11px);
+			right: 22px;
+		}
+
+		input[type='checkbox'] + span::after {
+			top: calc(50% - 10px);
+			right: 22px;
+			margin-right: 1px;
+		}
+	}
+}
