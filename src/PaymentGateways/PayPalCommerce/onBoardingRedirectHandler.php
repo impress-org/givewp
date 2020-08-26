@@ -148,9 +148,9 @@ class onBoardingRedirectHandler {
 			return;
 		}
 
-		$webhookId = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
+		$webhookConfig = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
 
-		$this->webhooksRepository->saveWebhookId( $webhookId );
+		$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
 	}
 
 	/**
@@ -414,7 +414,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 */
 	private function registerPayPalSSLNotice() {
-		if ( is_ssl() && empty( $this->webhooksRepository->getWebhookId() ) ) {
+		if ( is_ssl() && empty( $this->webhooksRepository->getWebhookConfig() ) ) {
 			Give_Admin_Settings::add_error(
 				'paypal-webhook-error',
 				esc_html__(

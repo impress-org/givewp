@@ -182,9 +182,9 @@ class AjaxRequestHandler {
 		$this->validateAdminRequest();
 
 		// Remove the webhook from PayPal if there is one
-		if ( $webhookId = $this->webhooksRepository->getWebhookId() ) {
-			$this->webhooksRepository->deleteWebhook( $this->merchantDetails->accessToken, $webhookId );
-			$this->webhooksRepository->deleteWebhookId();
+		if ( $webhookConfig = $this->webhooksRepository->getWebhookConfig() ) {
+			$this->webhooksRepository->deleteWebhook( $this->merchantDetails->accessToken, $webhookConfig->id );
+			$this->webhooksRepository->deleteWebhookConfig();
 		}
 
 		$this->merchantRepository->delete();

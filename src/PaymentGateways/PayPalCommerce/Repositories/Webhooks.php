@@ -2,24 +2,27 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Exception;
+use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use Give\Route\PayPalWebhooks;
+use Give\Controller\PayPalWebhooks as WebhooksController;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 use Give\Route\PayPalWebhooks as WebhooksRoute;
 
 class Webhooks {
-	/**
-	 * The wp_options key the webhook id is stored under
-	 *
-	 * @since 2.8.0
-	 */
-	const OPTION_KEY = 'give_paypal_commerce_webhook_id';
+	use HasMode;
 
 	/**
 	 * @since 2.8.0
 	 *
-	 * @var PayPalWebhooks
+	 * @var WebhooksRoute
 	 */
 	private $webhookRoute;
+
+	/**
+	 * @var WebhooksController
+	 */
+	private $webhookController;
 
 	/**
 	 * @var PayPalClient
@@ -27,29 +30,18 @@ class Webhooks {
 	private $payPalClient;
 
 	/**
-	 * The webhook events registered with PayPal
-	 *
-	 * @since 2.8.0
-	 *
-	 * @var string[]
-	 */
-	private $webhookEvents = [
-		'PAYMENT.CAPTURE.REFUNDED',
-		'PAYMENT.CAPTURE.COMPLETED',
-		'PAYMENT.CAPTURE.DENIED',
-	];
-
-	/**
 	 * Webhooks constructor.
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param PayPalWebhooks $webhookRoute
-	 * @param PayPalClient   $payPalClient
+	 * @param WebhooksRoute      $webhookRoute
+	 * @param PayPalClient       $payPalClient
+	 * @param WebhooksController $webhookController
 	 */
-	public function __construct( WebhooksRoute $webhookRoute, PayPalClient $payPalClient ) {
-		$this->webhookRoute = $webhookRoute;
-		$this->payPalClient = $payPalClient;
+	public function __construct( WebhooksRoute $webhookRoute, PayPalClient $payPalClient, WebhooksController $webhookController ) {
+		$this->webhookRoute      = $webhookRoute;
+		$this->payPalClient      = $payPalClient;
+		$this->webhookController = $webhookController;
 	}
 
 	/**
@@ -67,7 +59,7 @@ class Webhooks {
 	public function verifyEventSignature( $token, $event, $headers ) {
 		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/verify-webhook-signature' );
 
-		$webhookId = $this->getWebhookId();
+		$webhookConfig = $this->getWebhookConfig();
 
 		$response = wp_remote_post(
 			$apiUrl,
@@ -83,7 +75,7 @@ class Webhooks {
 						'transmission_sig'  => $headers['Paypal-Transmission-Sig'],
 						'cert_url'          => $headers['Paypal-Cert-Url'],
 						'auth_algo'         => $headers['Paypal-Auth-Algo'],
-						'webhook_id'        => $webhookId,
+						'webhook_id'        => $webhookConfig->id,
 						'webhook_event'     => $event,
 					]
 				),
@@ -107,11 +99,13 @@ class Webhooks {
 	 *
 	 * @param string $token
 	 *
-	 * @return mixed
+	 * @return WebhookConfig
+	 * @throws Exception
 	 */
 	public function createWebhook( $token ) {
 		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/webhooks' );
 
+		$events     = $this->webhookController->getRegisteredEvents();
 		$webhookUrl = $this->webhookRoute->getRouteUrl();
 
 		$response = wp_remote_post(
@@ -130,7 +124,7 @@ class Webhooks {
 									'name' => $eventType,
 								];
 							},
-							$this->webhookEvents
+							$this->webhookController->getRegisteredEvents()
 						),
 					]
 				),
@@ -142,10 +136,60 @@ class Webhooks {
 		if ( ! isset( $response->id ) ) {
 			give_record_gateway_error( 'Create PayPal Commerce Webhook Failure', print_r( $response, true ) );
 
-			return null;
+			throw new Exception( 'Failed to create webhook' );
 		}
 
-		return $response->id;
+		return new WebhookConfig( $response->id, $webhookUrl, $events );
+	}
+
+	/**
+	 * Updates the webhook url and events
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param string $token
+	 * @param string $webhookId
+	 *
+	 * @return bool Whether the webhook successfully updated or not
+	 */
+	public function updateWebhook( $token, $webhookId ) {
+		$apiUrl = $this->payPalClient->getApiUrl( "v1/notifications/webhooks/$webhookId" );
+
+		$webhookUrl = $this->webhookRoute->getRouteUrl();
+
+		$response = wp_remote_request(
+			$apiUrl,
+			[
+				'method'  => 'PATCH',
+				'headers' => [
+					'Content-Type'  => 'application/json',
+					'Authorization' => "Bearer $token",
+				],
+				'body'    => [
+					[
+						'op'    => 'replace',
+						'path'  => '/url',
+						'value' => $webhookUrl,
+					],
+					[
+						'op'    => 'replace',
+						'path'  => '/event_types',
+						'value' => array_map(
+							static function ( $eventType ) {
+								return [
+									'name' => $eventType,
+								];
+							},
+							$this->webhookController->getRegisteredEvents()
+						),
+					],
+				],
+			]
+		);
+
+		$response = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		return ! empty( $response ) && $webhookId === $response['id'];
 	}
 
 	/**
@@ -178,48 +222,44 @@ class Webhooks {
 	}
 
 	/**
-	 * Stores the webhook id
+	 * Saves the webhook config in the database
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
-	 * @param string $id
+	 * @param WebhookConfig $config
 	 */
-	public function saveWebhookId( $id ) {
-		update_option( self::OPTION_KEY, $id, false );
+	public function saveWebhookConfig( WebhookConfig $config ) {
+		update_option( $this->getOptionKey(), $config->toArray(), false );
 	}
 
 	/**
-	 * Returns the stored webhook id
+	 * Retrieves the WebhookConfig from the database
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
+	 *
+	 * @return WebhookConfig|null
+	 */
+	public function getWebhookConfig() {
+		$data = get_option( $this->getOptionKey(), null );
+
+		return $data ? WebhookConfig::fromArray( $data ) : null;
+	}
+
+	/**
+	 * Deletes the stored webhook config
+	 *
+	 * @since 2.9.0
+	 */
+	public function deleteWebhookConfig() {
+		delete_option( $this->getOptionKey() );
+	}
+
+	/**
+	 * Returns the option key for the given mode
 	 *
 	 * @return string
 	 */
-	public function getWebhookId() {
-		return get_option( self::OPTION_KEY );
-	}
-
-	/**
-	 * Deletes the webhook id
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return bool
-	 */
-	public function deleteWebhookId() {
-		return delete_option( self::OPTION_KEY );
-	}
-
-	/**
-	 * Adds an event to be listened for by the webhook
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param string $event
-	 */
-	public function addWebhookEvent( $event ) {
-		if ( ! in_array( $event, $this->webhookEvents ) ) {
-			$this->webhookEvents[] = $event;
-		}
+	private function getOptionKey() {
+		return "give_paypal_commerce_{$this->mode}_webhook_config";
 	}
 }

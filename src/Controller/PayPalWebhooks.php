@@ -31,13 +31,6 @@ class PayPalWebhooks {
 	/**
 	 * @since 2.8.0
 	 *
-	 * @var Webhooks
-	 */
-	private $webhooksRepository;
-
-	/**
-	 * @since 2.8.0
-	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;
@@ -45,14 +38,11 @@ class PayPalWebhooks {
 	/**
 	 * PayPalWebhooks constructor.
 	 *
-	 * @param  Webhooks  $webhooksRepository
-	 * @param  MerchantDetails  $merchantRepository
-	 *
 	 * @since 2.8.0
 	 *
+	 * @param MerchantDetails $merchantRepository
 	 */
-	public function __construct( Webhooks $webhooksRepository, MerchantDetails $merchantRepository ) {
-		$this->webhooksRepository = $webhooksRepository;
+	public function __construct( MerchantDetails $merchantRepository ) {
 		$this->merchantRepository = $merchantRepository;
 	}
 
@@ -102,7 +92,10 @@ class PayPalWebhooks {
 			return;
 		}
 
-		if ( ! $this->webhooksRepository->verifyEventSignature( $merchantDetails->accessToken, $event, getallheaders() ) ) {
+		/** @var Webhooks $webhooksRepository */
+		$webhooksRepository = give( Webhooks::class );
+
+		if ( ! $webhooksRepository->verifyEventSignature( $merchantDetails->accessToken, $event, getallheaders() ) ) {
 			throw new Exception( 'Failed event verification' );
 		}
 
@@ -110,5 +103,16 @@ class PayPalWebhooks {
 		$handler = give( $this->eventHandlers[ $event->event_type ] );
 
 		$handler->processEvent( $event );
+	}
+
+	/**
+	 * Returns an array of the registered events
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return string[]
+	 */
+	public function getRegisteredEvents() {
+		return array_keys( $this->eventHandlers );
 	}
 }
