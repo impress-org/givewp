@@ -10,6 +10,7 @@ use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -122,6 +123,7 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( ScriptLoader::class );
 		give()->singleton( Webhooks::class );
 		give()->singleton( MerchantDetails::class );
+		give()->singleton( PayPalAuth::class );
 
 		give()->singleton(
 			MerchantDetail::class,

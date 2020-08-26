@@ -3,8 +3,10 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\ConnectClient\ConnectClient;
+use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give_Admin_Settings;
@@ -17,11 +19,11 @@ use Give_Admin_Settings;
  */
 class onBoardingRedirectHandler {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
-	 * @var PayPalClient
+	 * @var PayPalAuth
 	 */
-	private $payPalClient;
+	private $payPalAuth;
 
 	/**
 	 * @since 2.8.0
@@ -50,15 +52,15 @@ class onBoardingRedirectHandler {
 	 * @since 2.8.0
 	 *
 	 * @param Webhooks        $webhooks
-	 * @param PayPalClient    $payPalClient
 	 * @param MerchantDetails $merchantRepository
 	 * @param Settings        $settings
+	 * @param PayPalAuth      $payPalAuth
 	 */
-	public function __construct( Webhooks $webhooks, PayPalClient $payPalClient, MerchantDetails $merchantRepository, Repositories\Settings $settings ) {
+	public function __construct( Webhooks $webhooks, MerchantDetails $merchantRepository, Settings $settings, PayPalAuth $payPalAuth ) {
 		$this->webhooksRepository = $webhooks;
-		$this->payPalClient       = $payPalClient;
 		$this->merchantRepository = $merchantRepository;
 		$this->settings           = $settings;
+		$this->payPalAuth         = $payPalAuth;
 	}
 
 	/**
@@ -103,7 +105,10 @@ class onBoardingRedirectHandler {
 		];
 
 		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
-		$restApiCredentials = (array) $this->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
+		$restApiCredentials = (array) $this->payPalAuth->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
+
+		$tokenInfo = $this->payPalAuth->getTokenFromClientCredentials( $restApiCredentials['client_id'], $restApiCredentials['client_secret'] );
+		$this->settings->updateAccessToken( $tokenInfo );
 
 		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
@@ -151,63 +156,6 @@ class onBoardingRedirectHandler {
 		$webhookConfig = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
 
 		$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
-	}
-
-	/**
-	 * Get seller rest API credentials
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param string $accessToken
-	 *
-	 * @return array
-	 */
-	private function getSellerRestAPICredentials( $accessToken ) {
-		$request = wp_remote_post(
-			give( ConnectClient::class )->getApiUrl(
-				sprintf(
-					'paypal?mode=%1$s&request=seller-credentials',
-					$this->payPalClient->mode
-				)
-			),
-			[
-				'body' => [
-					'token' => $accessToken,
-				],
-			]
-		);
-
-		return json_decode( wp_remote_retrieve_body( $request ), true );
-	}
-
-	/**
-	 * Get seller onboarding details from seller.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param string $accessToken
-	 *
-	 * @param string $merchantId
-	 *
-	 * @return array
-	 */
-	private function getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken ) {
-		$request = wp_remote_post(
-			give( ConnectClient::class )->getApiUrl(
-				sprintf(
-					'paypal?mode=%1$s&request=seller-status',
-					$this->payPalClient->mode
-				)
-			),
-			[
-				'body' => [
-					'merchant_id' => $merchantId,
-					'token'       => $accessToken,
-				],
-			]
-		);
-
-		return json_decode( wp_remote_retrieve_body( $request ), true );
 	}
 
 	/**
@@ -315,7 +263,7 @@ class onBoardingRedirectHandler {
 	 * @return true|string[]
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken, $usesCustomPayments ) {
-		$onBoardedData = (array) $this->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
+		$onBoardedData = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
 		$errorMessages = [];
 
