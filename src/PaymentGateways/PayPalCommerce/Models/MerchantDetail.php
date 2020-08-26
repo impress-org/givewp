@@ -174,16 +174,6 @@ class MerchantDetail {
 	 * Get refresh token code.
 	 *
 	 * @since 2.8.0
-	 * @return mixed
-	 */
-	public function getRefreshToken() {
-		return $this->tokenDetails['refreshToken'];
-	}
-
-	/**
-	 * Get refresh token code.
-	 *
-	 * @since 2.8.0
 	 *
 	 * @param array $tokenDetails
 	 *
