@@ -16,6 +16,7 @@ use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 
@@ -121,6 +122,7 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( RefreshToken::class );
 		give()->singleton( AjaxRequestHandler::class );
 		give()->singleton( ScriptLoader::class );
+		give()->singleton( WebhookRegister::class );
 		give()->singleton( Webhooks::class );
 		give()->singleton( MerchantDetails::class );
 		give()->singleton( PayPalAuth::class );

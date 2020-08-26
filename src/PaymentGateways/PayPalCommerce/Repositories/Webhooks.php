@@ -5,8 +5,8 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 use Exception;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use Give\Controller\PayPalWebhooks as WebhooksController;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\Route\PayPalWebhooks as WebhooksRoute;
 
 class Webhooks {
@@ -20,9 +20,9 @@ class Webhooks {
 	private $webhookRoute;
 
 	/**
-	 * @var WebhooksController
+	 * @var WebhookRegister
 	 */
-	private $webhookController;
+	private $webhooksRegister;
 
 	/**
 	 * @var PayPalClient
@@ -34,14 +34,14 @@ class Webhooks {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param WebhooksRoute      $webhookRoute
-	 * @param PayPalClient       $payPalClient
-	 * @param WebhooksController $webhookController
+	 * @param WebhooksRoute   $webhookRoute
+	 * @param PayPalClient    $payPalClient
+	 * @param WebhookRegister $webhooksRegister
 	 */
-	public function __construct( WebhooksRoute $webhookRoute, PayPalClient $payPalClient, WebhooksController $webhookController ) {
-		$this->webhookRoute      = $webhookRoute;
-		$this->payPalClient      = $payPalClient;
-		$this->webhookController = $webhookController;
+	public function __construct( WebhooksRoute $webhookRoute, PayPalClient $payPalClient, WebhookRegister $webhooksRegister ) {
+		$this->webhookRoute     = $webhookRoute;
+		$this->payPalClient     = $payPalClient;
+		$this->webhooksRegister = $webhooksRegister;
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Webhooks {
 	public function createWebhook( $token ) {
 		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/webhooks' );
 
-		$events     = $this->webhookController->getRegisteredEvents();
+		$events     = $this->webhooksRegister->getRegisteredEvents();
 		$webhookUrl = $this->webhookRoute->getRouteUrl();
 
 		$response = wp_remote_post(
@@ -124,7 +124,7 @@ class Webhooks {
 									'name' => $eventType,
 								];
 							},
-							$this->webhookController->getRegisteredEvents()
+							$events
 						),
 					]
 				),
@@ -177,11 +177,11 @@ class Webhooks {
 							'path'  => '/event_types',
 							'value' => array_map(
 								static function ( $eventType ) {
-									 return [
-										 'name' => $eventType,
-									 ];
+									return [
+										'name' => $eventType,
+									];
 								},
-								$this->webhookController->getRegisteredEvents()
+								$this->webhooksRegister->getRegisteredEvents()
 							),
 						],
 					],

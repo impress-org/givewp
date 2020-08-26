@@ -59,7 +59,7 @@ class WebhookChecker {
 	 * @since 2.9.0
 	 */
 	public function checkWebhookCriteria() {
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		if ( wp_doing_ajax() || wp_doing_cron() ) {
 			return;
 		}
 

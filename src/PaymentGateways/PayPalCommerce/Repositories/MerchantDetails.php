@@ -4,10 +4,8 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\OptionId;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
-use InvalidArgumentException;
 
 /**
  * Class MerchantDetails
