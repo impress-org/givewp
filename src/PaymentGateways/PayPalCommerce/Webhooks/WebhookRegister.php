@@ -50,6 +50,19 @@ class WebhookRegister {
 	}
 
 	/**
+	 * Registers multiple event handlers using an array where the key is the
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param array $handlers = [ 'PAYPAL.EVENT' => EventHandler::class ]
+	 */
+	public function registerEventHandlers( array $handlers ) {
+		foreach ( $handlers as $event => $handler ) {
+			$this->registerEventHandler( $event, $handler );
+		}
+	}
+
+	/**
 	 * Returns Event Listener instance for given event
 	 *
 	 * @since 2.9.0
