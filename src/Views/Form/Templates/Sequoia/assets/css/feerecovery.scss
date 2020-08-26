@@ -140,4 +140,10 @@ html[dir='rtl'] {
 			right: 22px;
 		}
 	}
+
+	input[type='checkbox'] + .give-fee-message-label-text::after {
+		right: 22px;
+		margin-right: 1px;
+		top: calc(50% - 11px);
+	}
 }

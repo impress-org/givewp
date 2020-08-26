@@ -1479,6 +1479,11 @@ html[dir='rtl'] {
 					right: 0 !important;
 				}
 			}
+
+			.give-label::after {
+				top: calc(50% - 10px);
+				margin-right: 1px;
+			}
 		}
 	}
 
@@ -1500,7 +1505,6 @@ html[dir='rtl'] {
 
 		input[type='checkbox'] + label {
 			padding: 0 32px 0 0 !important;
-			margin-right: 0;
 
 			&::before {
 				right: 0;
@@ -1508,6 +1512,8 @@ html[dir='rtl'] {
 
 			&::after {
 				right: 0;
+				top: calc(50% - 11px);
+				margin-right: 1px;
 			}
 		}
 	}
