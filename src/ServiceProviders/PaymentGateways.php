@@ -10,6 +10,7 @@ use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -120,11 +121,12 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( RefreshToken::class );
 		give()->singleton( AjaxRequestHandler::class );
 		give()->singleton( ScriptLoader::class );
+		give()->singleton( PayPalAuth::class );
 		give()->singleton(
 			MerchantDetails::class,
 			static function () {
 				return ( new MerchantDetails() )
-				->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
+					->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
 			}
 		);
 
