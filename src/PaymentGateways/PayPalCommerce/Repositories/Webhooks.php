@@ -159,32 +159,34 @@ class Webhooks {
 
 		$response = wp_remote_request(
 			$apiUrl,
-			[
-				'method'  => 'PATCH',
-				'headers' => [
-					'Content-Type'  => 'application/json',
-					'Authorization' => "Bearer $token",
-				],
-				'body'    => [
-					[
-						'op'    => 'replace',
-						'path'  => '/url',
-						'value' => $webhookUrl,
+			json_encode(
+				[
+					'method'  => 'PATCH',
+					'headers' => [
+						'Content-Type'  => 'application/json',
+						'Authorization' => "Bearer $token",
 					],
-					[
-						'op'    => 'replace',
-						'path'  => '/event_types',
-						'value' => array_map(
-							static function ( $eventType ) {
-								return [
-									'name' => $eventType,
-								];
-							},
-							$this->webhookController->getRegisteredEvents()
-						),
+					'body'    => [
+						[
+							'op'    => 'replace',
+							'path'  => '/url',
+							'value' => $webhookUrl,
+						],
+						[
+							'op'    => 'replace',
+							'path'  => '/event_types',
+							'value' => array_map(
+								static function ( $eventType ) {
+									 return [
+										 'name' => $eventType,
+									 ];
+								},
+								$this->webhookController->getRegisteredEvents()
+							),
+						],
 					],
-				],
-			]
+				]
+			)
 		);
 
 		$response = json_decode( wp_remote_retrieve_body( $response ), true );
