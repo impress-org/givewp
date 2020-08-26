@@ -71,7 +71,7 @@
 		background: rgb(255, 255, 255);
 		overflow: hidden;
 		width: 90%;
-		max-width: 425px;
+		max-width: fit-content;
 		border-radius: 0.5rem;
 
 		.give-stripe-checkout-modal-container {
