@@ -2,10 +2,11 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Webhooks;
 
-use Give\Controller\PayPalWebhooks;
+use Exception;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\Route\PayPalWebhooks as WebhooksRoute;
+use Give_Admin_Settings;
 
 class WebhookChecker {
 	/**
@@ -18,16 +19,14 @@ class WebhookChecker {
 	/**
 	 * @since 2.9.0
 	 *
-	 * @var PayPalWebhooks
-	 */
-	private $webhooksController;
-
-	/**
-	 * @since 2.9.0
-	 *
 	 * @var WebhooksRoute
 	 */
 	private $webhooksRoute;
+
+	/**
+	 * @var WebhookRegister
+	 */
+	private $webhookRegister;
 
 	/**
 	 * @since 2.9.0
@@ -41,16 +40,16 @@ class WebhookChecker {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param Webhooks       $webhooksRepository
-	 * @param PayPalWebhooks $webhooksController
-	 * @param MerchantDetail $merchantDetails
-	 * @param WebhooksRoute  $webhooksRoute
+	 * @param Webhooks        $webhooksRepository
+	 * @param MerchantDetail  $merchantDetails
+	 * @param WebhooksRoute   $webhooksRoute
+	 * @param WebhookRegister $webhookRegister
 	 */
-	public function __construct( Webhooks $webhooksRepository, PayPalWebhooks $webhooksController, MerchantDetail $merchantDetails, WebhooksRoute $webhooksRoute ) {
+	public function __construct( Webhooks $webhooksRepository, MerchantDetail $merchantDetails, WebhooksRoute $webhooksRoute, WebhookRegister $webhookRegister ) {
 		$this->webhooksRepository = $webhooksRepository;
-		$this->webhooksController = $webhooksController;
 		$this->merchantDetails    = $merchantDetails;
 		$this->webhooksRoute      = $webhooksRoute;
+		$this->webhookRegister    = $webhookRegister;
 	}
 
 	/**
@@ -74,7 +73,7 @@ class WebhookChecker {
 		}
 
 		$webhookUrl       = $this->webhooksRoute->getRouteUrl();
-		$registeredEvents = $this->webhooksController->getRegisteredEvents();
+		$registeredEvents = $this->webhookRegister->getRegisteredEvents();
 
 		$hasMissingEvents = ! empty(
 			array_merge(
@@ -85,12 +84,19 @@ class WebhookChecker {
 
 		// Update the webhook if the return url or events have changed
 		if ( $webhookUrl !== $webhookConfig->returnUrl || $hasMissingEvents ) {
-			$this->webhooksRepository->updateWebhook( $this->merchantDetails->accessToken, $webhookConfig->id );
+			try {
+				$this->webhooksRepository->updateWebhook( $this->merchantDetails->accessToken, $webhookConfig->id );
 
-			$webhookConfig->returnUrl = $webhookUrl;
-			$webhookConfig->events    = $registeredEvents;
+				$webhookConfig->returnUrl = $webhookUrl;
+				$webhookConfig->events    = $registeredEvents;
 
-			$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
+				$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
+			} catch ( Exception $exception ) {
+				Give_Admin_Settings::add_error(
+					'paypal-webhook-update-error',
+					'There was a problem updating your PayPal Donations webhook. Please disconnect your account and reconnect it.'
+				);
+			}
 		}
 	}
 }

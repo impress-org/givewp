@@ -150,7 +150,7 @@ class Webhooks {
 	 * @param string $token
 	 * @param string $webhookId
 	 *
-	 * @return bool Whether the webhook successfully updated or not
+	 * @throws Exception
 	 */
 	public function updateWebhook( $token, $webhookId ) {
 		$apiUrl = $this->payPalClient->getApiUrl( "v1/notifications/webhooks/$webhookId" );
@@ -159,14 +159,14 @@ class Webhooks {
 
 		$response = wp_remote_request(
 			$apiUrl,
-			json_encode(
-				[
-					'method'  => 'PATCH',
-					'headers' => [
-						'Content-Type'  => 'application/json',
-						'Authorization' => "Bearer $token",
-					],
-					'body'    => [
+			[
+				'method'  => 'PATCH',
+				'headers' => [
+					'Content-Type'  => 'application/json',
+					'Authorization' => "Bearer $token",
+				],
+				'body'    => json_encode(
+					[
 						[
 							'op'    => 'replace',
 							'path'  => '/url',
@@ -177,21 +177,25 @@ class Webhooks {
 							'path'  => '/event_types',
 							'value' => array_map(
 								static function ( $eventType ) {
-									return [
-										'name' => $eventType,
-									];
+									 return [
+										 'name' => $eventType,
+									 ];
 								},
 								$this->webhooksRegister->getRegisteredEvents()
 							),
 						],
-					],
-				]
-			)
+					]
+				),
+			]
 		);
 
 		$response = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		return ! empty( $response ) && $webhookId === $response['id'];
+		if ( empty( $response ) || ! isset( $response['id'] ) ) {
+			give_record_gateway_error( 'Failed to update PayPal Commerce webhook', print_r( $response, true ) );
+
+			throw new Exception( 'Failed to update PayPal Commerce webhook' );
+		}
 	}
 
 	/**
