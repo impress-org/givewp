@@ -70,7 +70,8 @@
 		transform: translate(-50%, -50%);
 		background: rgb(255, 255, 255);
 		overflow: hidden;
-		width: 385px;
+		width: 90%;
+		max-width: 425px;
 		border-radius: 0.5rem;
 
 		.give-stripe-checkout-modal-container {
@@ -98,14 +99,14 @@
 					color: #fff;
 					text-transform: uppercase;
 					font-size: 18px;
-					font-weight: bold;
+					font-weight: 600;
 					margin: 0 0 10px 0;
 				}
 
 				.give-stripe-checkout-form-title {
 					color: #f5f5f5;
 					font-size: 18px;
-					font-weight: bold;
+					font-weight: 600;
 					margin: 10px 0 0 0;
 				}
 
