@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Onboarding Form Preview default image has been updated. (#5203)
+-   Stripe Checkout modal max-width has been increased to fit-content (#5209)
 
 ## [2.8.0-beta.2] - 2020-08-25
 
