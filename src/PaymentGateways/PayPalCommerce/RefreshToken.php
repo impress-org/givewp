@@ -3,10 +3,9 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 
-use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
-use PayPalCheckoutSdk\Core\RefreshTokenRequest;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 
 /**
  * Class RefreshToken
@@ -22,16 +21,24 @@ class RefreshToken {
 	private $detailsRepository;
 
 	/**
+	 * @since 2.9.0
+	 *
+	 * @var PayPalAuth
+	 */
+	private $payPalAuth;
+
+	/**
 	 * RefreshToken constructor.
 	 *
 	 * @since 2.8.0
 	 *
 	 * @param MerchantDetails $detailsRepository
+	 * @param PayPalAuth      $payPalAuth
 	 */
-	public function __construct( MerchantDetails $detailsRepository ) {
+	public function __construct( MerchantDetails $detailsRepository, PayPalAuth $payPalAuth ) {
 		$this->detailsRepository = $detailsRepository;
+		$this->payPalAuth        = $payPalAuth;
 	}
-
 
 	/**
 	 * Return cron json name which uses to refresh token.
@@ -81,21 +88,7 @@ class RefreshToken {
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
 
-		/* @var PayPalClient $paypalClient */
-		$paypalClient = give( PayPalClient::class );
-
-		$refreshToken  = $merchant->getRefreshToken();
-		$request       = new RefreshTokenRequest(
-			$paypalClient->getEnvironment(),
-			$refreshToken
-		);
-		$request->body = [
-			'grant_type'    => 'refresh_token',
-			'refresh_token' => $refreshToken,
-		];
-
-		$response     = $paypalClient->getHttpClient()->execute( $request );
-		$tokenDetails = ArrayDataSet::camelCaseKeys( (array) $response->result );
+		$tokenDetails = $this->payPalAuth->getTokenFromClientCredentials( $merchant->clientId, $merchant->clientSecret );
 
 		$merchant->setTokenDetails( $tokenDetails );
 		$this->detailsRepository->save( $merchant );
