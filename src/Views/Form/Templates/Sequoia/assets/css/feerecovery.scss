@@ -124,3 +124,20 @@
 		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 }
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir='rtl'] {
+	.give-fee-recovery-donors-choice.give-fee-message {
+		.give-fee-message-label-text {
+			margin-left: 0 !important;
+			margin-right: 40px !important;
+		}
+
+		.give-fee-message-label-text::before {
+			right: 22px;
+		}
+	}
+}
