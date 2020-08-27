@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   If the Setup Page is disabled, Onboarding Wizard now directs users to the All Forms page. (#5211)
 -   On a fresh install, the donation forms archive is now enabled by default. (#5214)
 -   Specify Form Route URL scheme to avoid mixed content when loaded in the admin. (#5189)
+-   Multi-step forms now support RTL styles (#5196)
+-   Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway (#5191)
 
 ## [2.8.0-beta.2] - 2020-08-25
 
@@ -35,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
 -   Removed preg_match that prevented version numbers with tags from being stored (#5172)
 -   Admin notice animation has been removed. (#5182)
--   Multi-step forms now support RTL styles (#5196)
 -   Setup Page margins are now consistent with other GiveWP admin pages. (#5180)
 -   Version numbers with tags (e.g. `2.8.0-beta.1`) can now be saved in full to the database. (#5172)
 
@@ -44,7 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Placeholder for the Base Country setting no longer reads "Select a form". (#5163)
 -   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
 -   Onboarding Wizard no longer shows empty submenu under Dashboard. (#5190)
--   Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway (#5191)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
