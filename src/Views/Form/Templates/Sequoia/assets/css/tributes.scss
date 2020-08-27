@@ -89,3 +89,32 @@
 		padding-bottom: 8px;
 	}
 }
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir="rtl"] {
+
+	.give-tributes-dedicate-donation {
+
+		.give-tributes-add-recipient {
+			margin-right: 8px;
+		}
+
+		input[type='radio'] + label {
+
+			padding-right: 32px;
+
+			&::before {
+				right: 0;
+			}
+
+			&::after {
+				right: 5px;
+			}
+		}
+
+	}
+
+}

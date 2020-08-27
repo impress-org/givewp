@@ -44,7 +44,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	// Add hintcss tooltip to dynamically created qtip.
-	$( 'body' ).on( 'hover', '[data-tooltip]', function() {
+	$( 'body' ).on( 'mouseenter mouseleave', '[data-tooltip]', function() {
 		reset_qtip( $( this ) );
 	} );
 

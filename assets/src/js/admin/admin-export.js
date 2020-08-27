@@ -155,11 +155,9 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	const checkboxes = $( '.give-export-option-fields input[type="checkbox"]' );
 
-	$( '.give-toggle-checkbox-selection' ).toggle( function() {
-		checkboxes.removeAttr( 'checked' );
-		swapAndUpdateAttribute( this );
-	}, function() {
-		checkboxes.attr( 'checked', true );
+	$( '.give-toggle-checkbox-selection' ).click( function() {
+		$( this ).data( 'clicked', ! $( this ).data( 'clicked' ) );
+		checkboxes.prop( 'checked', ! $( this ).data( 'clicked' ) );
 		swapAndUpdateAttribute( this );
 	} );
 

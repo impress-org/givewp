@@ -257,10 +257,11 @@ class Actions {
 	public function getStartWrapperHTMLForAmountSection() {
 		$content = isset( $this->templateOptions['payment_amount']['content'] ) && !empty($this->templateOptions['payment_amount']['content']) ? $this->templateOptions['payment_amount']['content'] : sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo('sitename') );
 		$label   = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
-
+		$arrow   = is_rtl() ? 'left' : 'right';
 		printf(
-			'<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-right"></i></button></div>',
-			$label
+			'<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
+			$label,
+			$arrow
 		);
 
 		if ( ! empty( $content ) ) {
@@ -280,10 +281,12 @@ class Actions {
 	 */
 	public function getCloseWrapperHTMLForAmountSection() {
 		$label = isset( $this->templateOptions['payment_amount']['next_label'] ) ? $this->templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
+		$arrow = is_rtl() ? 'left' : 'right';
 
 		printf(
-			'<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-right"></i></button></div>',
-			$label
+			'<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
+			$label,
+			$arrow
 		);
 	}
 
