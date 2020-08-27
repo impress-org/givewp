@@ -24,6 +24,8 @@ class WebhookChecker {
 	private $webhooksRoute;
 
 	/**
+	 * @since 2.9.0
+	 *
 	 * @var WebhookRegister
 	 */
 	private $webhookRegister;
