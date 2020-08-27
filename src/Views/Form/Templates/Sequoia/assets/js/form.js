@@ -536,7 +536,7 @@
 				checked = $( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked' );
 				$( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).remove();
 			}
-			$( '.choose-amount' ).append( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ) );
+			$( '#donate-fieldset' ).prepend( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ) );
 			$( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked', checked );
 		}
 
