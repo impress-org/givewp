@@ -122,6 +122,11 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
+
+			// If Fee Recovery input is not inside any step, move it to above payment options
+			if ( $( '.give-fee-recovery-donors-choice' ).parent().hasClass( 'give-form' ) ) {
+				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
+			}
 			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
