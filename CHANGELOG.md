@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.8.0-beta.2] - 2020-08-25
 
+### Changed
+
+-   Specify Form Route URL scheme to avoid mixed content when loaded in the admin. (#5189)
+
 ### Fixed
 
 -   Trailing comma in function call is removed for PHP 5.6 support. (#5195)
@@ -32,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Scope of marked optional fields in the Multi-Step template is reduced to the User Info fieldset. (#5161)
 -   Wizard buttons now match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
+-   Removed preg_match that prevented version numbers with tags from being stored (#5172)
+-   Admin notice animation has been removed. (#5182)
 -   Setup Page margins are now consistent with other GiveWP admin pages. (#5180)
 -   Version numbers with tags (e.g. `2.8.0-beta.1`) can now be saved in full to the database. (#5172)
 
@@ -39,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Placeholder for the Base Country setting no longer reads "Select a form". (#5163)
 -   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
+-   Onboaridng Wizard no longer shows empty submenu under Dashboard. (#5190)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
