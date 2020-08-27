@@ -508,7 +508,7 @@
 		// Check if donate fieldset area has been created, if not set it up below payment gateways
 		// This area is necessary for correctly placing various elements (fee recovery notice, newsletters, submit button, etc)
 		if ( $( '#donate-fieldset' ).length === 0 ) {
-			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
+			$( '.give-section.payment' ).append( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
 		// Elements to move into donate fieldset (located at bottom of form)
