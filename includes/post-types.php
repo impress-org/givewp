@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_setup_post_types() {
 
 	// Give Forms single post and archive options.
-	$give_forms_singular = give_is_setting_enabled( give_get_option( 'forms_singular' ) );
+	$give_forms_singular = give_is_setting_enabled( give_get_option( 'forms_singular', 'enabled' ) );
 	$give_forms_archives = give_is_setting_enabled( give_get_option( 'forms_archives', 'enabled' ) );
 
 	// Enable/Disable give_forms links if form is saving.
