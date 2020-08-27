@@ -123,3 +123,12 @@
 		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 	}
 }
+
+#donate-fieldset {
+	.give-fee-total-wrap.fee-coverage-required.give-fee-message,
+	.give-fee-recovery-donors-choice.give-fee-message,
+	.fee-break-down-message {
+		margin-right: 0 !important;
+		margin-left: 0 !important;
+	}
+}
