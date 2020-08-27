@@ -13,7 +13,7 @@ class Webhooks {
 	use HasMode;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var WebhooksRoute
 	 */
@@ -32,7 +32,7 @@ class Webhooks {
 	/**
 	 * Webhooks constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param WebhooksRoute   $webhookRoute
 	 * @param PayPalClient    $payPalClient
@@ -48,7 +48,7 @@ class Webhooks {
 	 * Verifies with PayPal that the given event is securely from PayPal and not some sneaking sneaker
 	 *
 	 * @see https://developer.paypal.com/docs/api/webhooks/v1/#verify-webhook-signature
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $token
 	 * @param object $event The event to verify
@@ -95,7 +95,7 @@ class Webhooks {
 	 * Creates a webhook with the given event types registered.
 	 *
 	 * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $token
 	 *
@@ -201,7 +201,7 @@ class Webhooks {
 	/**
 	 * Deletes the webhook with the given id.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $token
 	 * @param string $webhookId

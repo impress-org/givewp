@@ -6,28 +6,28 @@ class Settings {
 	/**
 	 * wp_options key for the account country
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	const COUNTRY_KEY = 'paypal_commerce_account_country';
 
 	/**
 	 * wp_options key for the access token
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	const ACCESS_TOKEN_KEY = 'temp_give_paypal_commerce_seller_access_token';
 
 	/**
 	 * wp_options key for the partner link details
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	const PARTNER_LINK_DETAIL_KEY = 'temp_give_paypal_commerce_partner_link';
 
 	/**
 	 * Returns the country for the account
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string|null
 	 */
@@ -38,7 +38,7 @@ class Settings {
 	/**
 	 * Returns the account access token
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string|null
 	 */
@@ -69,7 +69,7 @@ class Settings {
 	/**
 	 * Returns the partner link details
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string|null
 	 */

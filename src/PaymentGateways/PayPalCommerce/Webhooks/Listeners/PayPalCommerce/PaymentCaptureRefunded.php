@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce;
  * Class PaymentCaptureRefunded
  * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
  *
- * @sicne 2.8.0
+ * @sicne 2.9.0
  */
 class PaymentCaptureRefunded extends PaymentEventListener {
 	/**
@@ -32,7 +32,7 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 		/**
 		 * Fires when a charge has been refunded via webhook
 		 *
-		 * @since 2.8.0
+		 * @since 2.9.0
 		 */
 		do_action( 'give_paypal_commerce_webhook_charge_refunded', $event, $donation );
 	}
@@ -40,7 +40,7 @@ class PaymentCaptureRefunded extends PaymentEventListener {
 	/**
 	 * This uses the links property of the refund to retrieve the refunded Payment from PayPal
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param object $refund
 	 *

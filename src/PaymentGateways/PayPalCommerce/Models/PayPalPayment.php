@@ -8,13 +8,13 @@ use InvalidArgumentException;
  * Class PayPalPayment
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PayPalPayment {
 	/**
 	 * Payment Id.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -23,7 +23,7 @@ class PayPalPayment {
 	/**
 	 * Payment Amount.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -33,7 +33,7 @@ class PayPalPayment {
 	/**
 	 * Payment status.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -42,7 +42,7 @@ class PayPalPayment {
 	/**
 	 * Payment creation time.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -51,7 +51,7 @@ class PayPalPayment {
 	/**
 	 * Payment update time.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -60,7 +60,7 @@ class PayPalPayment {
 	/**
 	 * PayPal Payment action links.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -72,7 +72,7 @@ class PayPalPayment {
 	/**
 	 * Create PayPalPayment object from given array.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param $array
 	 *
@@ -96,7 +96,7 @@ class PayPalPayment {
 	/**
 	 * Validate order given in array format.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $array
 	 * @throws InvalidArgumentException

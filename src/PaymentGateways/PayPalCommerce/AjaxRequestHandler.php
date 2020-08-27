@@ -14,18 +14,18 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
  * Class AjaxRequestHandler
  * @package Give\PaymentGateways\PaypalCommerce
  *
- * @sicne 2.8.0
+ * @sicne 2.9.0
  */
 class AjaxRequestHandler {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetail
 	 */
@@ -39,21 +39,21 @@ class AjaxRequestHandler {
 	private $payPalAuth;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var ConnectClient
 	 */
 	private $refreshToken;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var Settings
 	 */
@@ -62,7 +62,7 @@ class AjaxRequestHandler {
 	/**
 	 * AjaxRequestHandler constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param Webhooks        $webhooksRepository
 	 * @param MerchantDetail  $merchantDetails
@@ -90,7 +90,7 @@ class AjaxRequestHandler {
 	/**
 	 *  give_paypal_commerce_user_onboarded ajax action handler
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function onBoardedUserAjaxRequestHandler() {
 		$this->validateAdminRequest();
@@ -117,7 +117,7 @@ class AjaxRequestHandler {
 	/**
 	 * give_paypal_commerce_get_partner_url action handler
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function onGetPartnerUrlAjaxRequestHandler() {
 		$this->validateAdminRequest();
@@ -139,7 +139,7 @@ class AjaxRequestHandler {
 	/**
 	 * give_paypal_commerce_disconnect_account ajax request handler.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function removePayPalAccount() {
 		$this->validateAdminRequest();
@@ -163,7 +163,7 @@ class AjaxRequestHandler {
 	 *
 	 * @todo: handle payment create error on frontend.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function createOrder() {
 		$this->validateFrontendRequest();
@@ -206,7 +206,7 @@ class AjaxRequestHandler {
 	 *
 	 * @todo: handle payment capture error on frontend.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function approveOrder() {
 		$this->validateFrontendRequest();
@@ -232,7 +232,7 @@ class AjaxRequestHandler {
 	/**
 	 * Validate admin ajax request.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function validateAdminRequest() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
@@ -243,7 +243,7 @@ class AjaxRequestHandler {
 	/**
 	 * Validate frontend ajax request.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function validateFrontendRequest() {
 		$formId = absint( $_POST['give-form-id'] );

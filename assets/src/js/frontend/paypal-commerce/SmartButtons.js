@@ -9,7 +9,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * Render smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	renderPaymentMethodOption() {
 		this.smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
@@ -42,7 +42,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * On init event handler for smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
@@ -54,7 +54,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * On click event handler for smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
@@ -92,7 +92,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * Create order event handler for smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
@@ -128,7 +128,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * On approve event handler for smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
@@ -190,7 +190,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * Reset Card fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	resetCreditCardFields() {
 		this.jQueryForm.find( 'input[name="card_name"]' ).val( '' );
@@ -199,7 +199,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * Remove Card fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	removeCreditCardFields() {
 		this.jQueryForm.find( 'input[name="card_name"]' ).remove();

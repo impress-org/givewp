@@ -10,7 +10,7 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 /**
  * Class MerchantDetails
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class MerchantDetails {
 	use HasMode;
@@ -18,7 +18,7 @@ class MerchantDetails {
 	/**
 	 * Returns whether or not the account has been connected
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -29,7 +29,7 @@ class MerchantDetails {
 	/**
 	 * Get merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return MerchantDetail
 	 */
@@ -40,7 +40,7 @@ class MerchantDetails {
 	/**
 	 * Save merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetail $merchantDetails
 	 *
@@ -53,7 +53,7 @@ class MerchantDetails {
 	/**
 	 * Delete merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -64,7 +64,7 @@ class MerchantDetails {
 	/**
 	 * Returns the account errors if there are any
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string[]|null
 	 */
@@ -75,7 +75,7 @@ class MerchantDetails {
 	/**
 	 * Saves the account error message
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string[] $errorMessage
 	 *
@@ -88,7 +88,7 @@ class MerchantDetails {
 	/**
 	 * Deletes the errors for the account
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -99,7 +99,7 @@ class MerchantDetails {
 	/**
 	 * Deletes the client token for the account
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -110,7 +110,7 @@ class MerchantDetails {
 	/**
 	 * Get client token for hosted credit card fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -163,7 +163,7 @@ class MerchantDetails {
 	/**
 	 * Returns the options key for the account in the give mode
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -174,7 +174,7 @@ class MerchantDetails {
 	/**
 	 * Returns the options key for the account errors in the give mode
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -186,7 +186,7 @@ class MerchantDetails {
 	/**
 	 * Returns the options key for the client token in the give mode
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */

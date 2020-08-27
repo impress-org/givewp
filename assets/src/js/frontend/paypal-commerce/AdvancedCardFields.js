@@ -41,7 +41,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Return whether or not render credit card fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return {boolean} Return boolean value whether we can render card fields or not.
 	 */
@@ -52,7 +52,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Render payment method.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	async renderPaymentMethodOption() {
 		this.setStyles();
@@ -85,7 +85,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Create order event handler for smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
@@ -107,7 +107,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Get fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 * @return {object} Return object of card input field container details.
 	 */
 	getFields() {
@@ -130,7 +130,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Approve PayPal payment after successfully payment.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {string} orderId Order id.
 	 *
@@ -149,7 +149,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Return wether or not payment approved successfully.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return {Promise<boolean>} Return boolean whether Payment approved or not.
 	 */
@@ -164,7 +164,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return {object} Return object of style properties.
 	 */
@@ -190,7 +190,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle donation form submit event.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} event jQuery event object.
 	 *
@@ -242,7 +242,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle PayPal payment on approve event.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} payload PayPal response object after payment completion.
 	 */
@@ -283,7 +283,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * In future we can add billing field: https://developer.paypal.com/docs/business/checkout/advanced-card-payments/
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return {{cardholderName: *}} Card details object.
 	 */
@@ -296,7 +296,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Add style to hosted field's container.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	addInitialStyleToHostedFieldsContainer() {
 		const fields = this.getFields();
@@ -317,7 +317,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Add initial style to hosted card field container.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} hostedCardFields Hosted card field object
 	 */
@@ -338,7 +338,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Set style properties for hosted card field and its container.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	setStyles() {
 		const cardField = this.form.querySelector( 'input[name="card_name"]' );
@@ -375,7 +375,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Set style properties for hosted card field and its container for focus state
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	setFocusStyle() {
 		const sources = this.form.querySelectorAll( 'input[type="text"]' );
@@ -401,7 +401,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Set hosted field's container height.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	setHostedFieldContainerHeight() {
 		const fields = this.getFields();
@@ -421,7 +421,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Return whether or not 3ds authorize card Can authorize card.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} payload Hosted field response
 	 * @return {boolean} true if card can be authorize with 3ds or vice versa
@@ -433,7 +433,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Return whether or not card 3ds authorized to process payment.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 * @param {object} payload Hosted field response
 	 * @return {boolean} true if card is 3ds authorized or vice versa
 	 */
@@ -444,7 +444,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle hosted fields on submit errors.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} error Collection of hosted field on submit error
 	 */

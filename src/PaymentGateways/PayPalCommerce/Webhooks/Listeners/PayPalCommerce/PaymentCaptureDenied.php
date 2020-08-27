@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce;
  * Class PaymentCaptureDenied
  * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PaymentCaptureDenied extends PaymentEventListener {
 	/**
@@ -30,7 +30,7 @@ class PaymentCaptureDenied extends PaymentEventListener {
 		/**
 		 * Fires when a charge has been denied via webhook
 		 *
-		 * @since 2.8.0
+		 * @since 2.9.0
 		 */
 		do_action( 'give_paypal_commerce_webhook_charge_denied', $event, $donation );
 	}

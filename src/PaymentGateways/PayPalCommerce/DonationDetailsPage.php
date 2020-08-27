@@ -6,7 +6,7 @@ class DonationDetailsPage {
 	/**
 	 * Return PayPal Commerce payment details page url.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $transactionId donation transaction id.
 	 *

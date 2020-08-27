@@ -6,7 +6,7 @@ interface EventListener {
 	/**
 	 * This processes the PayPal Commerce webhook event passed to it.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param object $event
 	 *

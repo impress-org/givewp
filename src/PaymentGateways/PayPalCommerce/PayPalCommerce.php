@@ -12,7 +12,7 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
  *
  * Boots the PayPalCommerce gateway and provides its basic registration properties
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PayPalCommerce implements PaymentGateway {
 	const GATEWAY_ID = 'paypal-commerce';

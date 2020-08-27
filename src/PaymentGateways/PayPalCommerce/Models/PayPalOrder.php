@@ -10,7 +10,7 @@ use stdClass;
 
 /**
  * Class PayPalOrder
- * @since 2.8.0
+ * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
  */
@@ -18,7 +18,7 @@ class PayPalOrder {
 	/**
 	 * Order Id.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -27,7 +27,7 @@ class PayPalOrder {
 	/**
 	 * Order intent.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -36,7 +36,7 @@ class PayPalOrder {
 	/**
 	 * Order status.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -45,7 +45,7 @@ class PayPalOrder {
 	/**
 	 * Order creation time.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -54,7 +54,7 @@ class PayPalOrder {
 	/**
 	 * Order update time.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -63,7 +63,7 @@ class PayPalOrder {
 	/**
 	 * PayPal Order action links.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -72,7 +72,7 @@ class PayPalOrder {
 	/**
 	 * Payer information.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var stdClass
 	 */
@@ -81,7 +81,7 @@ class PayPalOrder {
 	/**
 	 * Order purchase unit details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var stdClass
 	 */
@@ -90,7 +90,7 @@ class PayPalOrder {
 	/**
 	 * Payment details for order.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var PayPalPayment
 	 */
@@ -99,7 +99,7 @@ class PayPalOrder {
 	/**
 	 * Create PayPalOrder object from given array.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param $array
 	 *
@@ -131,7 +131,7 @@ class PayPalOrder {
 	/**
 	 * Validate order given in array format.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $array
 	 *

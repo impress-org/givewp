@@ -6,7 +6,7 @@ use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 
 class AdvancedCardFields {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetail
 	 */
@@ -15,7 +15,7 @@ class AdvancedCardFields {
 	/**
 	 * AdvancedCardFields constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetail $merchantDetails
 	 */
@@ -26,7 +26,7 @@ class AdvancedCardFields {
 	/**
 	 * PayPal commerce uses smart buttons to accept payment.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param int  $formId Donation Form ID.
 	 * @param int  $args Donation Form Arguments.
@@ -81,7 +81,7 @@ class AdvancedCardFields {
 	/**
 	 * Remove Address Fields if user has option enabled.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function removeBillingField() {
 		remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
@@ -91,7 +91,7 @@ class AdvancedCardFields {
 	/**
 	 * Get ssl notice.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -109,7 +109,7 @@ class AdvancedCardFields {
 	/**
 	 * Return card number field html.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $idPrefix
 	 *
@@ -135,7 +135,7 @@ EOT;
 	/**
 	 * Return card cvc field html.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $idPrefix
 	 *
@@ -160,7 +160,7 @@ EOT;
 	/**
 	 * Return card name field html.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -191,7 +191,7 @@ EOT;
 	/**
 	 * Return card expiration  field html.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $idPrefix
 	 *
@@ -216,7 +216,7 @@ EOT;
 	/**
 	 *  Return separator html.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */

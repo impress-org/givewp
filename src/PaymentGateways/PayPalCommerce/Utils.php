@@ -5,13 +5,13 @@ namespace Give\PaymentGateways\PayPalCommerce;
 /**
  * Class Utils
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class Utils {
 	/**
 	 * Returns whether or not the PayPal Commerce gateway is active
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */

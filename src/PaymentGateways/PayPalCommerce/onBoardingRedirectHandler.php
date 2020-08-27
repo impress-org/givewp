@@ -13,7 +13,7 @@ use Give_Admin_Settings;
 
 /**
  * Class PayPalOnBoardingRedirectHandler
- * @since 2.8.0
+ * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
  */
@@ -26,21 +26,21 @@ class onBoardingRedirectHandler {
 	private $payPalAuth;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var Webhooks
 	 */
 	private $webhooksRepository;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetails
 	 */
 	private $merchantRepository;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var Settings
 	 */
@@ -49,7 +49,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * onBoardingRedirectHandler constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param Webhooks        $webhooks
 	 * @param MerchantDetails $merchantRepository
@@ -66,7 +66,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Bootstrap class
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function boot() {
 		if ( $this->isPayPalUserRedirected() ) {
@@ -90,7 +90,7 @@ class onBoardingRedirectHandler {
 	 *
 	 * @todo: Confirm `primary_email_confirmed` set to true via PayPal api to confirm onboarding process status.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return MerchantDetail
 	 */
@@ -129,7 +129,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Redirects the user to the account connected url
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetail $merchant_detail
 	 */
@@ -144,7 +144,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Sets up the webhook for the connected account
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetail $merchant_details
 	 */
@@ -161,7 +161,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Delete temp data
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 * @return void
 	 */
 	private function deleteTempOptions() {
@@ -172,7 +172,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Register notice if account connect success fully.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function registerPayPalAccountConnectedNotice() {
 		Give_Admin_Settings::add_message( 'paypal-commerce-account-connected', esc_html__( 'PayPal account connected successfully.', 'give' ) );
@@ -181,7 +181,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Returns whether or not the current request is for refreshing the account status
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -192,7 +192,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -203,7 +203,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Return whether or not PayPal account details saved.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -214,7 +214,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * validate rest api credential.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $array
 	 *
@@ -233,7 +233,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Handles the request for refreshing the account status
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function refreshAccountStatus() {
 		$merchantDetails = $this->merchantRepository->getDetails();
@@ -254,7 +254,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Validate seller on Boarding status
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $merchantId
 	 * @param string $accessToken
@@ -338,7 +338,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Redirect admin to setting section with error.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param $errorMessage
 	 *
@@ -359,7 +359,7 @@ class onBoardingRedirectHandler {
 	/**
 	 * Displays a notice of the site is not using SSL
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function registerPayPalSSLNotice() {
 		if ( is_ssl() && empty( $this->webhooksRepository->getWebhookConfig() ) ) {

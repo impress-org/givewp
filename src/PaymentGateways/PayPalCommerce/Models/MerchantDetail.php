@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 /**
  * Class MerchantDetail
- * @since 2.8.0
+ * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
  */
@@ -15,7 +15,7 @@ class MerchantDetail {
 	/**
 	 * PayPal merchant Id  (email address)
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var null|string
 	 */
@@ -24,7 +24,7 @@ class MerchantDetail {
 	/**
 	 * PayPal merchant id
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var null|string
 	 */
@@ -33,7 +33,7 @@ class MerchantDetail {
 	/**
 	 * Client id.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var null |string
 	 */
@@ -42,7 +42,7 @@ class MerchantDetail {
 	/**
 	 * Client Secret
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var null|string
 	 */
@@ -51,7 +51,7 @@ class MerchantDetail {
 	/**
 	 * Access token.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var null|string
 	 */
@@ -60,7 +60,7 @@ class MerchantDetail {
 	/**
 	 * Whether or not the connected account is ready to process donations.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var bool
 	 */
@@ -69,7 +69,7 @@ class MerchantDetail {
 	/**
 	 * Whether or not the account can make custom payments (i.e Advanced Fields & PPCP)
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var bool
 	 */
@@ -78,7 +78,7 @@ class MerchantDetail {
 	/**
 	 * Access token.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var array
 	 */
@@ -87,7 +87,7 @@ class MerchantDetail {
 	/**
 	 * Return array of merchant details.
 	 *
-	 * @sicne 2.8.0
+	 * @sicne 2.9.0
 	 *
 	 * @return array
 	 */
@@ -106,7 +106,7 @@ class MerchantDetail {
 	/**
 	 * Make MerchantDetail object from array.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $merchantDetails
 	 *
@@ -128,7 +128,7 @@ class MerchantDetail {
 	/**
 	 * Setup properties from array.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param $merchantDetails
 	 *
@@ -148,7 +148,7 @@ class MerchantDetail {
 	/**
 	 * Validate merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $merchantDetails
 	 */
@@ -173,7 +173,7 @@ class MerchantDetail {
 	/**
 	 * Get refresh token code.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $tokenDetails
 	 *
