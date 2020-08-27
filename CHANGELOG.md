@@ -7,14 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<!-- Changes made since the last release are stored here until a release is ready. -->
+## [2.8.0-beta.3] - 2020-08-27
 
 ### Changed
 
 -   Onboarding Form Preview default image has been updated. (#5203)
--   Stripe Checkout modal max-width has been increased to fit-content (#5209)
--   If the Setup Page is disabled, Onboarding Wizard now directs users to the All Forms page (#5211)
--   On a fresh install, the donation forms archive is now enabled by default (#5214)
+-   Stripe Checkout modal max-width has been increased to fit-content. (#5209)
+-   If the Setup Page is disabled, Onboarding Wizard now directs users to the All Forms page. (#5211)
+-   On a fresh install, the donation forms archive is now enabled by default. (#5214)
 
 ## [2.8.0-beta.2] - 2020-08-25
 
@@ -87,7 +87,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
 
-[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0-beta.1...HEAD
+[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...HEAD
+[2.8.0-beta.3]: https://github.com/impress-org/givewp/compare/2.8.0-beta.2...2.8.0-beta.3
+[2.8.0-beta.2]: https://github.com/impress-org/givewp/compare/2.8.0-beta.1...2.8.0-beta.2
 [2.8.0-beta.1]: https://github.com/impress-org/givewp/compare/2.8.0-alpha.2...2.8.0-beta.1
 [2.8.0-alpha.2]: https://github.com/impress-org/givewp/compare/2.8.0-alpha.1...2.8.0-alpha.2
 [2.8.0-alpha.1]: https://github.com/impress-org/givewp/releases/tag/2.8.0-alpha.1
