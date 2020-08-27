@@ -4,9 +4,8 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\OptionId;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use InvalidArgumentException;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 
 /**
  * Class MerchantDetails
@@ -14,33 +13,7 @@ use InvalidArgumentException;
  * @since 2.8.0
  */
 class MerchantDetails {
-	/**
-	 * The current working mode: live or sandbox
-	 *
-	 * @since 2.8.0
-	 *
-	 * @var string
-	 */
-	private $mode;
-
-	/**
-	 * Sets the mode for the repository for handling operations
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param $mode
-	 *
-	 * @return MerchantDetails
-	 */
-	public function setMode( $mode ) {
-		if ( ! in_array( $mode, [ 'live', 'sandbox' ], true ) ) {
-			throw new InvalidArgumentException( "Must be either 'live' or 'sandbox', received: $mode" );
-		}
-
-		$this->mode = $mode;
-
-		return $this;
-	}
+	use HasMode;
 
 	/**
 	 * Returns whether or not the account has been connected
