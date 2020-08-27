@@ -64,6 +64,21 @@ class DonationForm {
 	static addErrors( $form, errors ) {
 		$form.find( '#give-paypal-commerce-smart-buttons-wrap' ).before( errors );
 	}
+
+	/**
+	 * Return whether or not current donation is recurring.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} form Form Selector.
+	 *
+	 * @return {boolean}  Return whether or not donor opted in for subscription.
+	 */
+	static isRecurringDonation( form ) {
+		const recurringChoiceField = form.querySelector( 'input[name="give-recurring-period"]' );
+
+		return recurringChoiceField && recurringChoiceField.checked;
+	}
 }
 
 export default DonationForm;

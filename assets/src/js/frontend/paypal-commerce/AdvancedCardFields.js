@@ -38,8 +38,6 @@ class AdvancedCardFields extends PaymentMethod {
 			'input:placeholder': {},
 		};
 
-		this.recurringChoiceField = this.form.querySelector( 'input[name="give-recurring-period"]' );
-
 		this.setupContainerForHostedCardFields();
 		this.setFocusStyle();
 	}
@@ -88,7 +86,7 @@ class AdvancedCardFields extends PaymentMethod {
 		const cardFields = this.getCardFields();
 		let objectKey = '';
 		let fieldType = '';
-		const isDonorOptedInForRecurringDonation = this.isRecurringDonation();
+		const isDonorOptedInForRecurringDonation = DonationForm.isRecurringDonation( this.form );
 
 		for ( const cardFieldsKey in cardFields ) {
 			const container = document.createElement( 'div' );
@@ -260,7 +258,7 @@ class AdvancedCardFields extends PaymentMethod {
 			return true;
 		}
 
-		if ( this.isRecurringDonation() ) {
+		if ( DonationForm.isRecurringDonation( this.form ) ) {
 			this.submitDonationForm();
 			return;
 		}
@@ -568,17 +566,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Return whether or not current donation is recurring.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return {boolean}  Return whether or not donor opted in for subscription.
-	 */
-	isRecurringDonation() {
-		return this.recurringChoiceField && this.recurringChoiceField.checked;
-	}
-
-	/**
 	 * Submit donation form.
 	 *
 	 * @since 2.9.0
@@ -594,7 +581,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	toggleCardFields() {
-		const isDonorOptedInForRecurringDonation = this.isRecurringDonation();
+		const isDonorOptedInForRecurringDonation = DonationForm.isRecurringDonation( this.form );
 		const cardFields = this.getCardFields();
 
 		for ( const key in cardFields ) {
