@@ -533,18 +533,6 @@
 			}
 		} );
 
-		// Handle per-Gateway fee option
-		// If the fee recovery option wrapper is present, move it to the choose amount screen
-		if ( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
-			let checked = false;
-			if ( $( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
-				checked = $( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked' );
-				$( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).remove();
-			}
-			$( '#donate-fieldset' ).prepend( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ) );
-			$( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked', checked );
-		}
-
 		// Move purchase fields (credit card, billing, etc)
 		$( 'li.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
 
