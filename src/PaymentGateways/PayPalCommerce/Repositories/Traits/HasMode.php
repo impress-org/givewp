@@ -7,7 +7,7 @@ trait HasMode {
 	/**
 	 * The current working mode: live or sandbox
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -16,7 +16,7 @@ trait HasMode {
 	/**
 	 * Sets the mode for the repository for handling operations
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param $mode
 	 *
