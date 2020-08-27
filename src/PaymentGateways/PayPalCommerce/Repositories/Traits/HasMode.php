@@ -1,6 +1,4 @@
 <?php
-declare( strict_types=1 );
-
 namespace Give\PaymentGateways\PayPalCommerce\Repositories\Traits;
 
 use InvalidArgumentException;
