@@ -4,22 +4,30 @@ namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 class WebhookConfig {
 	/**
+	 * @since 2.9.0
+	 *
 	 * @var string
 	 */
 	public $id;
 
 	/**
+	 * @since 2.9.0
+	 *
 	 * @var string
 	 */
 	public $returnUrl;
 
 	/**
+	 * @since 2.9.0
+	 *
 	 * @var string[]
 	 */
 	public $events;
 
 	/**
 	 * WebhookConfig constructor.
+	 *
+	 * @since 2.9.0
 	 *
 	 * @param string   $id
 	 * @param string   $returnUrl
@@ -34,6 +42,8 @@ class WebhookConfig {
 	/**
 	 * Generates an instance from serialized data
 	 *
+	 * @since 2.9.0
+	 *
 	 * @param array $data
 	 *
 	 * @return WebhookConfig
@@ -44,6 +54,8 @@ class WebhookConfig {
 
 	/**
 	 * Generates an array for serialization
+	 *
+	 * @since 2.9.0
 	 *
 	 * @return array
 	 */
