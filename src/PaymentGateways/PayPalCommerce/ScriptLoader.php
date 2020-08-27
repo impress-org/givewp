@@ -9,7 +9,7 @@ use PayPalCheckoutSdk\Core\AccessTokenRequest;
 
 /**
  * Class ScriptLoader
- * @since 2.8.0
+ * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
  */
@@ -17,14 +17,14 @@ class ScriptLoader {
 	/**
 	 * Paypal SDK handle.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
 	private $paypalSdkScriptHandle = 'give-paypal-sdk-js';
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetails
 	 */
@@ -33,7 +33,7 @@ class ScriptLoader {
 	/**
 	 * ScriptLoader constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetails $merchantRepository
 	 */
@@ -44,7 +44,7 @@ class ScriptLoader {
 	/**
 	 * Load admin scripts
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function loadAdminScripts() {
 		if ( ! Give_Admin_Settings::is_setting_page( 'gateway', 'paypal' ) ) {
@@ -123,7 +123,7 @@ EOT;
 	/**
 	 * Load public assets.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function loadPublicAssets() {
 		if ( ! $this->merchantRepository->getDetails() || ! Utils::gatewayIsActive() ) {
@@ -198,7 +198,7 @@ EOT;
 	/**
 	 * Add attributes to PayPal sdk.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $handle
 	 *
@@ -227,7 +227,7 @@ EOT;
 	/**
 	 * Get PayPal partner js url.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */

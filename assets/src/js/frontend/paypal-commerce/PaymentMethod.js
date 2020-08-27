@@ -5,7 +5,7 @@ class PaymentMethod {
 	/**
 	 * Constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} form selector.
 	 */
@@ -18,7 +18,7 @@ class PaymentMethod {
 	/**
 	 * Render PayPal smart buttons.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	boot() {
 		jQuery( document ).on( 'give_gateway_loaded', { self: this }, this.onGatewayLoadBoot );
@@ -31,7 +31,7 @@ class PaymentMethod {
 	/**
 	 * Render paypal buttons when reload payment gateways.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} evt Event object.
 	 * @param {*} response Form fields HTML for gateway.
@@ -47,7 +47,7 @@ class PaymentMethod {
 	/**
 	 * Render payment method.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	renderPaymentMethodOption() {}
 }

@@ -10,7 +10,7 @@ use function give_get_current_setting_section as getCurrentSettingSection;
  * Class PaypalSettingSection
  * @package Give\PaymentGateways
  *
- * @sicne 2.8.0
+ * @sicne 2.9.0
  */
 class PaypalSettingPage implements SettingPage {
 	/**
@@ -29,7 +29,7 @@ class PaypalSettingPage implements SettingPage {
 	 * @param  PayPalCommerce  $payPalCommerce
 	 * @param  PayPalStandard  $paypalStandard
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function __construct( PayPalCommerce $payPalCommerce, PayPalStandard $paypalStandard ) {
 		$this->payPalCommerce = $payPalCommerce;
@@ -76,7 +76,7 @@ class PaypalSettingPage implements SettingPage {
 	/**
 	 * Get groups.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return array
 	 */
@@ -92,7 +92,7 @@ class PaypalSettingPage implements SettingPage {
 	 *
 	 * @param array $settings
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return array
 	 */
@@ -109,7 +109,7 @@ class PaypalSettingPage implements SettingPage {
 	 *
 	 * @param array $sections
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return array
 	 */

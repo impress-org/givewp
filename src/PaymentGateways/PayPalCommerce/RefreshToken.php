@@ -10,11 +10,11 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 /**
  * Class RefreshToken
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class RefreshToken {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetails
 	 */
@@ -30,7 +30,7 @@ class RefreshToken {
 	/**
 	 * RefreshToken constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetails $detailsRepository
 	 * @param PayPalAuth      $payPalAuth
@@ -43,7 +43,7 @@ class RefreshToken {
 	/**
 	 * Return cron json name which uses to refresh token.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -55,7 +55,7 @@ class RefreshToken {
 	 * Register cron job to refresh access token.
 	 * Note: only for internal use.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $tokenExpires
 	 *
@@ -71,7 +71,7 @@ class RefreshToken {
 	 * Delete cron job which refresh access token.
 	 * Note: only for internal use.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 */
 	public function deleteRefreshTokenCronJob() {
@@ -82,7 +82,7 @@ class RefreshToken {
 	 * Refresh token.
 	 * Note: only for internal use
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function refreshToken() {
 		/* @var MerchantDetail $merchant */

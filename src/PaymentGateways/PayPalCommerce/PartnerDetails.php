@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
  * Class PartnerDetails
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PartnerDetails {
 	/**

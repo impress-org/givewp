@@ -14,20 +14,20 @@ use function give_record_gateway_error as logError;
 
 /**
  * Class PayPalOrder
- * @since 2.8.0
+ * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce\Repositories
  *
  */
 class PayPalOrder {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var PayPalClient
 	 */
 	private $paypalClient;
 
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetail
 	 */
@@ -36,7 +36,7 @@ class PayPalOrder {
 	/**
 	 * PayPalOrder constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetail $merchantDetails
 	 *
@@ -50,7 +50,7 @@ class PayPalOrder {
 	/**
 	 * Approve order.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string $orderId
 	 *
@@ -78,7 +78,7 @@ class PayPalOrder {
 	/**
 	 * Create order.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $array
 	 *
@@ -139,7 +139,7 @@ class PayPalOrder {
 	/**
 	 * Refunds a processed payment
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param $captureId
 	 *
@@ -167,7 +167,7 @@ class PayPalOrder {
 	/**
 	 * Validate argument given to create PayPal order.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param array $array
 	 *

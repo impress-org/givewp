@@ -9,7 +9,7 @@ use Give_License;
 
 /**
  * Class AdminSettingFields
- * @since 2.8.0
+ * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce
  *
  */
@@ -17,7 +17,7 @@ class AdminSettingFields {
 	/**
 	 * Bootstrap fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function boot() {
 		add_action( 'give_admin_field_paypal_commerce_account_manger', [ $this, 'payPalCommerceAccountManagerField' ] );
@@ -27,7 +27,7 @@ class AdminSettingFields {
 	/**
 	 * Paypal Checkout account manager custom field
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function payPalCommerceAccountManagerField() {
 		$recurringAddonInfo     = Give_License::get_plugin_by_slug( 'give-recurring' );
@@ -139,7 +139,7 @@ class AdminSettingFields {
 	/**
 	 * PayPal Commerce introduction section.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function introductionSection() {
 		?>

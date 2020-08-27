@@ -8,7 +8,7 @@ use Give_Admin_Settings;
 
 class AccountAdminNotices {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var MerchantDetails
 	 */
@@ -26,7 +26,7 @@ class AccountAdminNotices {
 	/**
 	 * Displays the admin notices in the right conditions
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function displayNotices() {
 		if ( Utils::gatewayIsActive() && ! give_is_test_mode() ) {
@@ -38,7 +38,7 @@ class AccountAdminNotices {
 	/**
 	 * Displays a notice if the account is not connected
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function checkForConnectedLiveAccount() {
 		if ( ! $this->merchantRepository->accountIsConnected() ) {
@@ -58,7 +58,7 @@ class AccountAdminNotices {
 	/**
 	 * Displays a notice if the account is connected but not ready
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function checkForAccountReadiness() {
 		if ( ! $this->merchantRepository->accountIsConnected() ) {

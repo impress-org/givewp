@@ -5,13 +5,13 @@ namespace  Give\PaymentGateways;
  * Interface SettingSection
  * @package Give\Views\Admin\Settings
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 interface SettingPage {
 	/**
 	 * Provides the section id to be use to render setting page.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -20,7 +20,7 @@ interface SettingPage {
 	/**
 	 * Provides the section title to be displayed to the user.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -29,7 +29,7 @@ interface SettingPage {
 	/**
 	 * Provides the section settings to be displayed to the user.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return array
 	 */
@@ -38,7 +38,7 @@ interface SettingPage {
 	/**
 	 * Boot functionality
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function boot();
 }

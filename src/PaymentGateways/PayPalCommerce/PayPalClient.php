@@ -11,13 +11,13 @@ use PayPalCheckoutSdk\Core\SandboxEnvironment;
  * Class PayPalClient
  * @package Give\PaymentGateways\PaypalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PayPalClient {
 	/**
 	 * Environment mode.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var string
 	 */
@@ -33,7 +33,7 @@ class PayPalClient {
 	/**
 	 * Get environment.
 	 *
-	 * @sicne 2.8.0
+	 * @sicne 2.9.0
 	 *
 	 * @return ProductionEnvironment|SandboxEnvironment
 	 */
@@ -49,7 +49,7 @@ class PayPalClient {
 	/**
 	 * Get http client.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return PayPalHttpClient
 	 */
@@ -63,7 +63,7 @@ class PayPalClient {
 	 * @param  string  $endpoint
 	 *
 	 * @return string
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function getApiUrl( $endpoint ) {
 		$baseUrl = $this->getEnvironment()->baseUrl();
@@ -74,7 +74,7 @@ class PayPalClient {
 	/**
 	 * Get PayPal homepage url.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */

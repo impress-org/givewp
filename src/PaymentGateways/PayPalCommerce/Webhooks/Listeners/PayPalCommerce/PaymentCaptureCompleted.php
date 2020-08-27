@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce;
  * Class PaymentCaptureCompleted
  * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PaymentCaptureCompleted extends PaymentEventListener {
 	/**
@@ -30,7 +30,7 @@ class PaymentCaptureCompleted extends PaymentEventListener {
 		/**
 		 * Fires when a charge has been completed via webhook
 		 *
-		 * @since 2.8.0
+		 * @since 2.9.0
 		 */
 		do_action( 'give_paypal_commerce_webhook_charge_completed', $event, $donation );
 	}

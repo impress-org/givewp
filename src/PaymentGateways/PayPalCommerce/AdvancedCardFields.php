@@ -8,7 +8,7 @@ class AdvancedCardFields {
 	/**
 	 * PayPal commerce uses smart buttons to accept payment.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param int  $formId Donation Form ID.
 	 *
@@ -24,7 +24,7 @@ class AdvancedCardFields {
 	/**
 	 * Remove Address Fields if user has option enabled.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function removeBillingField() {
 		remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );

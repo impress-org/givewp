@@ -5,13 +5,14 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
  * Class PayPalCommerce
  *
  * Boots the PayPalCommerce gateway and provides its basic registration properties
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class PayPalCommerce implements PaymentGateway {
 	const GATEWAY_ID = 'paypal-commerce';
@@ -109,5 +110,7 @@ class PayPalCommerce implements PaymentGateway {
 		Hooks::addAction( 'give_update_edited_donation', RefundPaymentHandler::class, 'refundPayment' );
 		Hooks::addAction( 'admin_notices', RefundPaymentHandler::class, 'showPaymentRefundFailureNotice' );
 		Hooks::addAction( 'give_view_donation_details_totals_after', RefundPaymentHandler::class, 'optInForRefundFormField' );
+
+		Hooks::addAction( 'admin_init', WebhookChecker::class, 'checkWebhookCriteria' );
 	}
 }

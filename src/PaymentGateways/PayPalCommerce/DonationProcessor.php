@@ -8,7 +8,7 @@ use PayPalCheckoutSdk\Orders\OrdersGetRequest;
  * Class DonationProcessor
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class DonationProcessor {
 	/**
@@ -26,7 +26,7 @@ class DonationProcessor {
 	 *
 	 * @param array $donationFormData
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function handle( $donationFormData ) {
 		$this->donationFormData = (array) $donationFormData;
@@ -65,7 +65,7 @@ class DonationProcessor {
 	/**
 	 * Return back to donation form page after logging error.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	private function redirectBackToDonationForm() {
 		// Record the error.

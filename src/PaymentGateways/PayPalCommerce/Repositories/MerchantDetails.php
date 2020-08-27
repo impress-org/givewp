@@ -4,48 +4,21 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\OptionId;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use InvalidArgumentException;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 
 /**
  * Class MerchantDetails
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class MerchantDetails {
-	/**
-	 * The current working mode: live or sandbox
-	 *
-	 * @since 2.8.0
-	 *
-	 * @var string
-	 */
-	private $mode;
-
-	/**
-	 * Sets the mode for the repository for handling operations
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param $mode
-	 *
-	 * @return MerchantDetails
-	 */
-	public function setMode( $mode ) {
-		if ( ! in_array( $mode, [ 'live', 'sandbox' ], true ) ) {
-			throw new InvalidArgumentException( "Must be either 'live' or 'sandbox', received: $mode" );
-		}
-
-		$this->mode = $mode;
-
-		return $this;
-	}
+	use HasMode;
 
 	/**
 	 * Returns whether or not the account has been connected
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -56,7 +29,7 @@ class MerchantDetails {
 	/**
 	 * Get merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return MerchantDetail
 	 */
@@ -67,7 +40,7 @@ class MerchantDetails {
 	/**
 	 * Save merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param MerchantDetail $merchantDetails
 	 *
@@ -80,7 +53,7 @@ class MerchantDetails {
 	/**
 	 * Delete merchant details.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -91,7 +64,7 @@ class MerchantDetails {
 	/**
 	 * Returns the account errors if there are any
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string[]|null
 	 */
@@ -102,7 +75,7 @@ class MerchantDetails {
 	/**
 	 * Saves the account error message
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param string[] $errorMessage
 	 *
@@ -115,7 +88,7 @@ class MerchantDetails {
 	/**
 	 * Deletes the errors for the account
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -126,7 +99,7 @@ class MerchantDetails {
 	/**
 	 * Deletes the client token for the account
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */
@@ -137,7 +110,7 @@ class MerchantDetails {
 	/**
 	 * Get client token for hosted credit card fields.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -190,7 +163,7 @@ class MerchantDetails {
 	/**
 	 * Returns the options key for the account in the give mode
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -201,7 +174,7 @@ class MerchantDetails {
 	/**
 	 * Returns the options key for the account errors in the give mode
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -213,7 +186,7 @@ class MerchantDetails {
 	/**
 	 * Returns the options key for the client token in the give mode
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */

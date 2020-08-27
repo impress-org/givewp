@@ -16,6 +16,7 @@ use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 
@@ -121,14 +122,10 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( RefreshToken::class );
 		give()->singleton( AjaxRequestHandler::class );
 		give()->singleton( ScriptLoader::class );
+		give()->singleton( WebhookRegister::class );
+		give()->singleton( Webhooks::class );
+		give()->singleton( MerchantDetails::class );
 		give()->singleton( PayPalAuth::class );
-		give()->singleton(
-			MerchantDetails::class,
-			static function () {
-				return ( new MerchantDetails() )
-					->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
-			}
-		);
 
 		give()->singleton(
 			MerchantDetail::class,
@@ -137,6 +134,20 @@ class PaymentGateways implements ServiceProvider {
 				$repository = give( MerchantDetails::class );
 
 				return $repository->getDetails();
+			}
+		);
+
+		give()->resolving(
+			MerchantDetails::class,
+			static function ( MerchantDetails $details ) {
+				$details->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
+			}
+		);
+
+		give()->resolving(
+			Webhooks::class,
+			static function ( Webhooks $repository ) {
+				$repository->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
 			}
 		);
 	}

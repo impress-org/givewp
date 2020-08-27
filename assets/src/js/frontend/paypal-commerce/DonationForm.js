@@ -3,7 +3,7 @@ class DonationForm {
 	/**
 	 * Get form Data.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} $form Form selector.
 	 *
@@ -20,7 +20,7 @@ class DonationForm {
 	/**
 	 * Add PayPal order id as hidden type input field to donation form.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} $form Form selector.
 	 * @param {string} orderId PayPal order id.
@@ -42,7 +42,7 @@ class DonationForm {
 	/**
 	 * Check if donor selected PayPal Commerce payment gateway or not.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} $form Form object.
 	 *
@@ -56,7 +56,7 @@ class DonationForm {
 	 * Add error notices to donation form.
 	 * Note: this function will add error at beginning of credit card fields section.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param {object} $form Jquery Form object
 	 * @param {string} errors Error list HTML.

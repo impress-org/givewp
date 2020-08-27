@@ -9,11 +9,11 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 /**
  * Class RefundPaymentHandler
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 class RefundPaymentHandler {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var PayPalOrder
 	 */
@@ -22,7 +22,7 @@ class RefundPaymentHandler {
 	/**
 	 * RefundPaymentHandler constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param PayPalOrder $ordersRepository
 	 */
@@ -33,7 +33,7 @@ class RefundPaymentHandler {
 	/**
 	 * Refunds the payment when the donation is marked as refunded
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param int $donationId
 	 *
@@ -64,7 +64,7 @@ class RefundPaymentHandler {
 	/**
 	 * show Paypal Commerce payment refund failure notice.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 */
 	public function showPaymentRefundFailureNotice() {
 		if ( ! isset( $_GET['paypal-error'] ) || 'refund-failure' !== $_GET['paypal-error'] ) {
@@ -120,7 +120,7 @@ class RefundPaymentHandler {
 	/**
 	 * Return whether or not admin optin for refund payment in PayPal
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @return bool
 	 */

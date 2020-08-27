@@ -11,11 +11,11 @@ use Give\Repositories\PaymentsRepository;
  * Class PaymentEventListener
  * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
  *
- * @since 2.8.0
+ * @since 2.9.0
  */
 abstract class PaymentEventListener implements EventListener {
 	/**
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @var PaymentsRepository
 	 */
@@ -29,7 +29,7 @@ abstract class PaymentEventListener implements EventListener {
 	/**
 	 * PaymentEventListener constructor.
 	 *
-	 * @since 2.8.0
+	 * @since 2.9.0
 	 *
 	 * @param PaymentsRepository $paymentsRepository
 	 * @param MerchantDetails    $merchantDetails
