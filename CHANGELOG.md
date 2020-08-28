@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed 
+
+-   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (#5218)
+
 ## [2.8.0-beta.3] - 2020-08-27
 
 ### Fixed
