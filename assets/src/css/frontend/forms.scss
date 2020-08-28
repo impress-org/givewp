@@ -897,3 +897,66 @@ Button with Loader
 		display: inline;
 	}
 }
+
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir="rtl"] {
+
+	form.give-form {
+
+		@media (min-width: 481px) {
+			.give-title-prefix-wrap {
+				.form-row-first,
+				.form-row-last {
+					float: right !important;
+				}
+
+				.form-row-title {
+					float: right !important;
+				}
+			}
+		}
+
+		.form-row-title,
+		.form-row-first {
+			margin-right: 0 !important;
+			margin-left: 2.5%;
+		}
+
+		.form-row-first,
+		.form-row-last {
+			float: right !important;
+		}
+
+		.form-row-last {
+			float: left !important;
+		}
+
+		.form-row-two-thirds {
+			float: right !important;
+
+			&.form-row-first {
+				margin-right: 0 !important;
+			}
+		}
+
+		.form-row-one-third {
+			float: right !important;
+			margin-right: 3%;
+			margin-left: 0 !important;
+
+			&.form-row-first {
+				margin-right: 0 !important;
+			}
+		}
+
+		.card-expiration {
+			select.card-expiry-year {
+				float: left !important;
+			}
+		}
+	}
+}

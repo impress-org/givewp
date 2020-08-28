@@ -583,9 +583,10 @@
 	function setupInputIcon( selector, icon ) {
 		$( selector ).each( function() {
 			if ( $( this ).html() !== '' && $( this ).html().includes( `<i class="fas fa-${ icon }"></i>` ) === false ) {
+				const property = isRTL() ? 'padding-right' : 'padding-left';
 				$( this ).prepend( `<i class="fas fa-${ icon }"></i>` );
 				$( this ).children( 'input, selector' ).each( function() {
-					$( this ).attr( 'style', 'padding-left: 33px!important;' );
+					$( this ).attr( 'style', property + ': 33px!important;' );
 				} );
 			}
 		} );
@@ -683,7 +684,7 @@
 		}
 
 		// Persist checkbox input border when selected
-		$( label ).on( 'click touchend', function( evt ) {
+		$( document ).on( 'click touchend', label, function( evt ) {
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
@@ -760,4 +761,15 @@
 			} );
 		}
 	}
+
+	/**
+	 * Setup select inputs
+	 *
+	 * @since 2.8.0
+	 * @return {boolean}
+	 */
+	function isRTL() {
+		return $( 'html' ).attr( 'dir' ) === 'rtl';
+	}
+
 }( jQuery ) );

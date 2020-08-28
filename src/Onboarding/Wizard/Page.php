@@ -9,6 +9,7 @@ use Give\Onboarding\FormRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\LocaleCollection;
 use Give\Onboarding\Helpers\LocationList;
+use Give\Onboarding\Setup\Page as SetupPage;
 
 /**
  * Onboarding Wizard admin page class
@@ -157,7 +158,7 @@ class Page {
 			[
 				'apiRoot'          => esc_url_raw( rest_url() ),
 				'apiNonce'         => wp_create_nonce( 'wp_rest' ),
-				'setupUrl'         => admin_url( 'edit.php?post_type=give_forms&page=give-setup' ),
+				'setupUrl'         => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ? admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) : admin_url( 'edit.php?post_type=give_forms' ),
 				'formPreviewUrl'   => admin_url( '?page=give-form-preview' ),
 				'localeCurrency'   => $this->localeCollection->pluck( 'currency_code' ),
 				'currencies'       => FormatList::fromKeyValue( give_get_currencies_list() ),
