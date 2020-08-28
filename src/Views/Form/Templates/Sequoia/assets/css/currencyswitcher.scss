@@ -1,0 +1,33 @@
+form[data-currency_position='before'] .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown {
+	position: absolute;
+	padding: 0;
+	width: calc(100% - 24px) !important;
+	left: 0;
+	opacity: 0;
+
+	~ span.give-currency-symbol.give-currency-position-before {
+		padding-right: 30px !important;
+
+		&::before {
+			right: 10px;
+			border-color: #6f6f6f transparent transparent;
+		}
+	}
+}
+
+.give-currency-switcher-msg {
+	margin: 5px 30px -15px 30px !important;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 1.4;
+	padding: 20px 20px 20px 22px !important;
+	color: #333;
+	display: inline-block;
+	text-align: center;
+	background: #fff;
+	border: 1px solid rgba(255, 255, 255, 0);
+	box-sizing: border-box;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+	border-radius: 5px;
+	position: relative;
+}
