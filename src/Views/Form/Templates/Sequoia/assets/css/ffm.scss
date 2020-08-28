@@ -18,7 +18,7 @@
 		font-weight: 500;
 		font-size: 16px;
 		line-height: 1.4;
-		padding: 0 0 15px 32px;
+		padding: 0 0 2px 32px;
 		width: 100%;
 		margin-left: 0;
 		color: #333;
@@ -147,14 +147,11 @@
 	}
 }
 
-
 /*---------------------------------
 RTL styles
 -----------------------------------*/
 
-html[dir="rtl"] {
-
-
+html[dir='rtl'] {
 	.ffm-checkbox-field {
 		label {
 			top: 6px;
