@@ -14,21 +14,16 @@ class SmartButtons extends PaymentMethod {
 	 * @return {object} Smart button container selector.
 	 */
 	getButtonContainer() {
-		let smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+		const ccFields = this.form.querySelector( '[id^="give_cc_fields-"]' );
+		const smartButtonWrap = document.createElement( 'div' );
+		const buttonDiv = document.createElement( 'div' );
 
-		if ( ! smartButtonContainer ) {
-			const ccFields = this.form.querySelector( '[id^="give_cc_fields-"]' );
-			const smartButtonWrap = document.createElement( 'div' );
-			const buttonDiv = document.createElement( 'div' );
+		buttonDiv.setAttribute( 'id', `smart-buttons-${ this.form.getAttribute( 'data-id' ) }` );
+		smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
 
-			buttonDiv.setAttribute( 'id', `smart-buttons-${ this.form.getAttribute( 'data-id' ) }` );
-			smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
+		smartButtonWrap.appendChild( buttonDiv );
 
-			smartButtonWrap.appendChild( buttonDiv );
-			smartButtonContainer = ccFields.insertBefore( smartButtonWrap, ccFields.querySelector( '[id^=give-card-number-wrap-]' ) );
-		}
-
-		return smartButtonContainer;
+		return ccFields.insertBefore( smartButtonWrap, ccFields.querySelector( '[id^=give-card-number-wrap-]' ) );
 	}
 
 	/**
