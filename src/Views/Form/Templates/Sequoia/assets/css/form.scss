@@ -457,7 +457,8 @@ p {
 	.give-donation-amount {
 		@include before-after-content-none;
 		display: flex;
-		width: 207px;
+		width: fit-content;
+		max-width: 80%;
 		position: relative;
 		align-items: center;
 		background-color: #fff;
@@ -478,7 +479,7 @@ p {
 		.give-amount-top {
 			font-family: 'Montserrat', sans-serif;
 			height: auto !important;
-			width: auto !important;
+			width: 164px !important;
 			text-align: center;
 			font-weight: 500 !important;
 			font-size: 42px !important;
@@ -499,6 +500,7 @@ p {
 			z-index: 3;
 			padding: 0 !important;
 			color: #555;
+			white-space: nowrap;
 
 			&.give-currency-position-before {
 				padding-right: 24px !important;
