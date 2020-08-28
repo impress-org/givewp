@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Improved Mutli-Step form's placement of Fee Recovery checkbox to match location setting (#5205)
+
 ## [2.8.0-beta.3] - 2020-08-27
 
 ### Changed
