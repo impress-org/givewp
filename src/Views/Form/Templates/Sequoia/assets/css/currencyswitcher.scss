@@ -1,27 +1,18 @@
-form[data-currency_position='before'] .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown {
-	position: absolute;
-	padding: 0;
-	width: calc(100% - 24px) !important;
-	left: 0;
-	opacity: 0;
-
-	~ span.give-currency-symbol.give-currency-position-before {
-		padding-right: 30px !important;
-
-		&::before {
-			right: 10px;
-			border-color: #6f6f6f transparent transparent;
-		}
-	}
-}
-
+/* stylelint-disable no-descending-specificity */
 form[data-currency_position='after'] .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown {
 	position: absolute;
 	padding: 0;
 	width: calc(100% - 24px) !important;
 	right: 0;
-	opacity: 0;
+	border: none;
+	background: none;
+	color: rgba(255, 255, 255, 0);
 	margin-right: 0 !important;
+
+	&:focus {
+		box-shadow: 0 0 8px #28c77b;
+		outline: none;
+	}
 
 	~ span.give-currency-symbol.give-currency-position-after {
 		padding-left: 30px !important;
@@ -29,6 +20,30 @@ form[data-currency_position='after'] .give-donation-amount .give-cs-select-curre
 		&::before {
 			left: 10px;
 			right: unset;
+			border-color: #6f6f6f transparent transparent;
+		}
+	}
+}
+
+form[data-currency_position='before'] .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown {
+	position: absolute;
+	padding: 0;
+	width: calc(100% - 24px) !important;
+	left: 0;
+	border: none;
+	background: none;
+	color: rgba(255, 255, 255, 0);
+
+	&:focus {
+		box-shadow: 0 0 8px #28c77b;
+		outline: none;
+	}
+
+	~ span.give-currency-symbol.give-currency-position-before {
+		padding-right: 30px !important;
+
+		&::before {
+			right: 10px;
 			border-color: #6f6f6f transparent transparent;
 		}
 	}
