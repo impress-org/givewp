@@ -21,6 +21,7 @@ form[data-currency_position='after'] .give-donation-amount .give-cs-select-curre
 	width: calc(100% - 24px) !important;
 	right: 0;
 	opacity: 0;
+	margin-right: 0 !important;
 
 	~ span.give-currency-symbol.give-currency-position-after {
 		padding-left: 30px !important;
