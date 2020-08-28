@@ -361,7 +361,9 @@
 
 							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
 								const placeholder = $( node ).attr( 'placeholder' );
-								$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+								if ( placeholder ) {
+									$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+								}
 							}
 						}
 					} );
@@ -766,10 +768,9 @@
 	 * Setup select inputs
 	 *
 	 * @since 2.8.0
-	 * @return {boolean}
+	 * @return {boolean} Whether document is RTL
 	 */
 	function isRTL() {
 		return $( 'html' ).attr( 'dir' ) === 'rtl';
 	}
-
 }( jQuery ) );
