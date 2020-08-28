@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.8.0-beta.3] - 2020-08-27
 
+### Fixed
+
+-   Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. (#5184)
+
 ### Changed
 
 -   Onboarding Form Preview default image has been updated. (#5203)
