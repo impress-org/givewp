@@ -109,8 +109,23 @@ class AdvancedCardFields extends PaymentMethod {
 
 			// Toggle card field or hosted card field on basis of donation type: recurring or one time.
 			// We can not process recurring donation with advanced card fields, so let hide and use card field to process recurring donation with PayPal subscription api.
-			this.hostedCardFieldsContainers[ objectKey ].style.display = isDonorOptedInForRecurringDonation ? 'none' : 'block';
-			cardFields[ cardFieldsKey ].el.style.display = isDonorOptedInForRecurringDonation ? 'block' : 'none';
+			if ( isDonorOptedInForRecurringDonation ) {
+				this.hostedCardFieldsContainers[ objectKey ].style.display = 'none';
+
+				// Subscription with card only allow in US and AU regions.
+				// https://developer.paypal.com/docs/api/subscriptions/v1/#definition-subscriber_request
+				if ( [ 'US', 'AU' ].includes( window.givePayPalCommerce.accountCountry ) ) {
+					cardFields[ cardFieldsKey ].el.style.display = 'block';
+					cardFields[ cardFieldsKey ].el.disabled = false;
+				} else {
+					cardFields[ cardFieldsKey ].el.style.display = 'none';
+					cardFields[ cardFieldsKey ].el.disabled = true;
+				}
+			} else {
+				this.hostedCardFieldsContainers[ objectKey ].style.display = 'block';
+				cardFields[ cardFieldsKey ].el.style.display = 'none';
+				cardFields[ cardFieldsKey ].el.disabled = true;
+			}
 		}
 	}
 
@@ -585,8 +600,23 @@ class AdvancedCardFields extends PaymentMethod {
 		const cardFields = this.getCardFields();
 
 		for ( const key in cardFields ) {
-			this.hostedCardFieldsContainers[ key ].style.display = isDonorOptedInForRecurringDonation ? 'none' : 'block';
-			cardFields[ key ].el.style.display = isDonorOptedInForRecurringDonation ? 'block' : 'none';
+			if ( isDonorOptedInForRecurringDonation ) {
+				this.hostedCardFieldsContainers[ key ].style.display = 'none';
+
+				// Subscription with card only allow in US and AU regions.
+				// https://developer.paypal.com/docs/api/subscriptions/v1/#definition-subscriber_request
+				if ( [ 'US', 'AU' ].includes( window.givePayPalCommerce.accountCountry ) ) {
+					cardFields[ key ].el.style.display = 'block';
+					cardFields[ key ].el.disabled = false;
+				} else {
+					cardFields[ key ].el.style.display = 'none';
+					cardFields[ key ].el.disabled = true;
+				}
+			} else {
+				this.hostedCardFieldsContainers[ key ].style.display = 'block';
+				cardFields[ key ].el.style.display = 'none';
+				cardFields[ key ].el.disabled = true;
+			}
 		}
 	}
 }
