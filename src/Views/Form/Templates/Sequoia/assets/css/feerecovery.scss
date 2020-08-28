@@ -22,7 +22,15 @@
 	.give-fee-total-wrap.fee-coverage-required.give-fee-message,
 	.give-fee-recovery-donors-choice.give-fee-message,
 	.fee-break-down-message {
-		margin: 20px 0 0 0 !important;
+		margin: 20px 0 20px 0 !important;
+	}
+}
+
+.give-section.payment {
+	.give-fee-total-wrap.fee-coverage-required.give-fee-message,
+	.give-fee-recovery-donors-choice.give-fee-message,
+	.fee-break-down-message {
+		margin: 20px 20px 10px 20px !important;
 	}
 }
 
