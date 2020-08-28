@@ -160,6 +160,7 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			tabOrder: [
+				'select.give-cs-select-currency',
 				'input.give-amount-top',
 				'.give-donation-levels-wrap button',
 				'.give-recurring-period',
