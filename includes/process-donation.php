@@ -202,8 +202,16 @@ function give_process_donation_form() {
 	// Used for showing data to non logged-in users after donation, and for other plugins needing donation data.
 	give_set_purchase_session( $session_data );
 
+	/**
+	 * Prevent PHP notices from breaking receipt display.
+	 * This is specifically an issue with the Stripe SDK.
+	 *
+	 * @link https://github.com/impress-org/givewp/issues/5199
+	 */
+	ob_start();
 	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
+	ob_get_clean();
 	give_die();
 }
 
