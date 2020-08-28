@@ -943,10 +943,7 @@ function give_donor_information_profile_fields( $user ) {
 	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
 
 	// Display Donor Information, only if donor is attached with User.
-	if ( ! empty( $donor->user_id ) ) {
-		?>
-		<table class="form-table">
-			<tbody>
+	if ( ! empty( $donor->user_id ) ) : ?>
 			<tr>
 				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
 				<td>
@@ -955,10 +952,7 @@ function give_donor_information_profile_fields( $user ) {
 					</a>
 				</td>
 			</tr>
-			</tbody>
-		</table>
-		<?php
-	}
+	<?php endif;
 }
 
 add_action( 'personal_options', 'give_donor_information_profile_fields' );
