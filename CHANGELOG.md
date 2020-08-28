@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Improved Mutli-Step form's placement of Fee Recovery checkbox to match location setting (#5205)
 
+### Added
+
+-   Introduced Currency Switcher compatability styles for the Multi-Step form (#5220)
+
 ## [2.8.0-beta.3] - 2020-08-27
 
 ### Changed
