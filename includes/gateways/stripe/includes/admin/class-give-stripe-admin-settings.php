@@ -895,17 +895,13 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					<?php if ( count( $stripe_accounts ) ) : ?>
 					<!-- DESTRUCTIVE: Disconnect all Stripe accounts. -->
 					<div class="give-stripe-disconnect-all">
-						<h3><?php esc_html_e( 'Disconnect all connected Stripe accounts', 'give' ); ?></h3> 
+						<h3><?php esc_html_e( 'Disconnect all GiveWP sites connected my Stripe account.', 'give' ); ?></h3> 
 						<p class="give-stripe-disconnect-all--description">
-							<?php esc_html_e( 'If disconnected, this website and any others sharing the same Stripe account that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ); ?>
+							<?php esc_html_e( 'This website and any others sharing the same Stripe account that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ); ?>
 						</p>
 						<p>
-							<a
-							class="give-stripe-disconnect-account-btn"
-								href="<?php echo esc_attr( give_stripe_disconnect_url( $stripe_accounts[ $default_account ]['account_id'], $default_account ) ); ?>"
-								data-disconnect-message="<?php esc_attr_e( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ); ?>"
-							>
-								<?php esc_html_e( 'Disconnect all connected Stripe accounts', 'give' ); ?>
+							<a target="_blank" href="https://dashboard.stripe.com/account/applications">
+								<?php esc_html_e( 'Revoke application access', 'give' ); ?>
 							</a>
 						</p>
 					</div>
