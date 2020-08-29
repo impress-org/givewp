@@ -90,6 +90,8 @@ export default {
 		 * Note: use only in WP Backend
 		 *
 		 * @since 2.5.0
+		 * @since 2.8.0 Localization updated to support changes in WordPress 5.5.
+		 *
 		 * @param {string} notice Notice description.
 		 * @param {string} type   Notice type.
 		 * @param {object} args   Notice type.
@@ -97,7 +99,13 @@ export default {
 		 * @return {string} Notice HTML.
 		 */
 		getAdminNoticeHTML: function( notice, type = 'info', args = { dismissible: true } ) {
-			const btnText = commonL10n.dismiss || '';
+			/**
+			 * WordPress 5.5 removed the localized `commonL10n` in favor of translation in JavaScript.
+			 */
+			const btnText = ( 'undefined' !== typeof commonL10n ) ?
+				commonL10n.dismiss :
+				wp.i18n.__( 'Dismiss this notice.' );
+
 			return `<div class="give-notice notice notice-${ type }${ args.dismissible ? ' is-dismissible' : '' }"><p>${ notice }${ args.dismissible ? ` <button type="button" class="notice-dismiss"><span class="screen-reader-text">${ btnText }</span></button>` : '' }</p</div>`;
 		},
 	},

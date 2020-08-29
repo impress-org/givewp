@@ -233,3 +233,16 @@
 		}
 	}
 }
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir="rtl"] {
+	.details-row {
+		> i {
+			padding-right: 0 !important;
+			padding-left: 10px;
+		}
+	}
+}
