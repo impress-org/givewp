@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+### Fixed
 
--   Improved Mutli-Step form's placement of Fee Recovery checkbox to match location setting (#5205)
+-   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting (#5205)
+-   FFM inputs are now setup on init of the Multi-Step form, to ensure they work with only a single gateway enabled (#5216)
 
 ## [2.8.0-beta.3] - 2020-08-27
 
