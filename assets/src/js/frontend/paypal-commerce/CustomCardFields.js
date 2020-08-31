@@ -1,5 +1,6 @@
 import PaymentMethod from './PaymentMethod';
 import DonationForm from './DonationForm';
+import AdvancedCardFields from './AdvancedCardFields';
 
 class CustomCardFields extends PaymentMethod {
 	/**
@@ -70,7 +71,9 @@ class CustomCardFields extends PaymentMethod {
 	 * @return {boolean} Return whether or not display custom card fields.
 	 */
 	canShow() {
-		return DonationForm.isRecurringDonation( this.form ) && this.payPalSupportedCountriesForCardSubscription.includes( window.givePayPalCommerce.accountCountry );
+		return AdvancedCardFields.canShow() &&
+			DonationForm.isRecurringDonation( this.form ) &&
+			this.payPalSupportedCountriesForCardSubscription.includes( window.givePayPalCommerce.accountCountry );
 	}
 }
 
