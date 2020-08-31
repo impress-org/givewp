@@ -5,7 +5,8 @@ import PaymentMethod from './PaymentMethod';
 class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * @since 2.9.0
-	 * @param {CustomCardFields} customCardFields
+	 *
+	 * @param {CustomCardFields} customCardFields CustomCardFields class object.
 	 */
 	constructor( customCardFields ) {
 		super( customCardFields.form );
@@ -43,8 +44,6 @@ class AdvancedCardFields extends PaymentMethod {
 			'input:placeholder': {},
 		};
 
-		this.recurringChoiceField = this.form.querySelector( 'input[name="give-recurring-period"]' )
-
 		this.setFocusStyle();
 	}
 
@@ -81,8 +80,8 @@ class AdvancedCardFields extends PaymentMethod {
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 
-		if( this.recurringChoiceField ) {
-			this.recurringChoiceField.addEventListener( 'change', this.donorRecurringDonationOptInHandler.bind( this ) );
+		if ( this.customCardFields.recurringChoiceField ) {
+			this.customCardFields.recurringChoiceField.addEventListener( 'change', this.toggleFields.bind( this ) );
 		}
 	}
 
@@ -92,10 +91,9 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	setupContainerForHostedCardFields() {
-		const cardFields = this.customCardFields.getCardFields();
+		const cardFields = this.customCardFields.cardFields;
 		let objectKey = '';
 		let fieldType = '';
-		const isDonorOptedInForRecurringDonation = DonationForm.isRecurringDonation( this.form );
 
 		for ( const cardFieldsKey in cardFields ) {
 			const container = document.createElement( 'div' );
@@ -115,10 +113,9 @@ class AdvancedCardFields extends PaymentMethod {
 			}
 
 			this.hostedCardFieldsContainers[ objectKey ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
-
-			// Toggle card field or hosted card field on basis of donation type: recurring or one time.
-			this.hostedCardFieldsContainers[ objectKey ].style.display = isDonorOptedInForRecurringDonation ? 'none' : 'block';
 		}
+
+		this.toggleFields();
 	}
 
 	/**
@@ -560,16 +557,36 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Toggle hosted card fields if donor opted in/out for recurring donation.
+	 * Toggle fields.
 	 *
 	 * @since 2.9.0
 	 */
-	donorRecurringDonationOptInHandler() {
-		const isDonorOptedInForRecurringDonation = DonationForm.isRecurringDonation( this.form );
+	toggleFields() {
+		const display = DonationForm.isRecurringDonation( this.form ) ? 'none' : 'block';
+		const canHideParentContainer = 'none' === display && ! this.customCardFields.canShow();
 
 		for ( const key in this.hostedCardFieldsContainers ) {
-			this.hostedCardFieldsContainers[ key ].style.display = isDonorOptedInForRecurringDonation ? 'none' : 'block';
+			this.hostedCardFieldsContainers[ key ].style.display = display;
+
+			// Hide parent container only if custom card fields is not available to process subscriptions.
+			this.hostedCardFieldsContainers[ key ].parentElement.style.display = canHideParentContainer ? 'none' : 'block';
 		}
+
+		this.toggleCardNameField( canHideParentContainer );
+	}
+
+	/**
+	 * Handle card name field display logic.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {boolean} hide Flag to decide shor/hide card name field.
+	 */
+	toggleCardNameField( hide ) {
+		const cardField = this.form.querySelector( 'input[name="card_name"]' );
+
+		cardField.parentElement.style.display = hide ? 'none' : 'block';
+		cardField.disabled = hide;
 	}
 }
 

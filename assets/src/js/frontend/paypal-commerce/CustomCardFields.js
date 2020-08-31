@@ -1,18 +1,18 @@
 import PaymentMethod from './PaymentMethod';
-import DonationForm from "./DonationForm";
+import DonationForm from './DonationForm';
 
-class CustomCardFields extends PaymentMethod{
+class CustomCardFields extends PaymentMethod {
 	/**
 	 * @inheritDoc
 	 */
 	constructor( form ) {
-		super(form);
+		super( form );
 
 		this.payPalSupportedCountriesForCardSubscription = [ 'US', 'AU' ];
 		this.cardFields = this.getCardFields();
-		this.recurringChoiceField = this.form.querySelector( 'input[name="give-recurring-period"]' )
+		this.recurringChoiceField = this.form.querySelector( 'input[name="give-recurring-period"]' );
 
-		if( this.recurringChoiceField ) {
+		if ( this.recurringChoiceField ) {
 			this.recurringChoiceField.addEventListener( 'change', this.renderPaymentMethodOption.bind( this ) );
 		}
 	}
@@ -23,16 +23,8 @@ class CustomCardFields extends PaymentMethod{
 	renderPaymentMethodOption() {
 		// Show custom card field only if donor opted for recurring donation.
 		// And PayPal account is from supported country.
-		if(
-			! DonationForm.isRecurringDonation( this.form ) ||
-			! this.payPalSupportedCountriesForCardSubscription.includes( window.givePayPalCommerce.accountCountry )
-		) {
-			this.toggleFields(false);
-			return;
-		}
-
 		// We can not process recurring donation with advanced card fields, so let hide and use card field to process recurring donation with PayPal subscription api.
-		this.toggleFields(true);
+		this.toggleFields();
 	}
 
 	/**
@@ -43,11 +35,6 @@ class CustomCardFields extends PaymentMethod{
 	 * @return {object} object of card field selectors.
 	 */
 	getCardFields() {
-		// Return property if set..
-		if ( Array.from( this.cardFields ).length ) {
-			return this.cardFields;
-		}
-
 		return {
 			number: {
 				el: this.form.querySelector( 'input[name="card_number"]' ),
@@ -65,14 +52,25 @@ class CustomCardFields extends PaymentMethod{
 	 * Toggle fields.
 	 *
 	 * @since 2.9.0
-	 *
-	 * @param {boolean} show Flag to show/hide custom card fields.
 	 */
-	toggleFields( show){
-		this.cardFields.forEach( card => {
-			card.el.style.display = show ? 'block' : 'none';
-			card.el.disabled = ! show;
-		});
+	toggleFields() {
+		const display = this.canShow() ? 'block' : 'none';
+
+		for ( const type in this.cardFields ) {
+			this.cardFields[ type ].el.style.display = display;
+			this.cardFields[ type ].el.disabled = 'none' === display;
+		}
+	}
+
+	/**
+	 * Return whether or not custom card field available to process subscriptions.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return {boolean} Return whether or not display custom card fields.
+	 */
+	canShow() {
+		return DonationForm.isRecurringDonation( this.form ) && this.payPalSupportedCountriesForCardSubscription.includes( window.givePayPalCommerce.accountCountry );
 	}
 }
 
