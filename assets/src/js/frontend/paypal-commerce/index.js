@@ -2,6 +2,7 @@
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';
+import CustomCardFields from './CustomCardFields';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
@@ -13,13 +14,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	$formWraps.forEach( $formWrap => {
 		const $form = $formWrap.querySelector( '.give-form' );
 		const smartButtons = new SmartButtons( $form );
-
-		if ( !! window.givePayPalCommerce.supportsCustomPayments ) {
-			const advancedCardFields = new AdvancedCardFields( $form );
-			advancedCardFields.boot();
-		}
+		const customCardFields = new CustomCardFields( $form );
 
 		smartButtons.boot();
+		customCardFields.boot();
+
+		if ( !! window.givePayPalCommerce.supportsCustomPayments ) {
+			const advancedCardFields = new AdvancedCardFields( customCardFields );
+			advancedCardFields.boot();
+		}
 	} );
 
 	// On form submit prevent submission for PayPal commerce.
