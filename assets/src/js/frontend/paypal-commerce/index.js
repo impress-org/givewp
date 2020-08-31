@@ -23,6 +23,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			customCardFields.boot();
 			advancedCardFields.boot();
+		} else {
+			const customCardFields = new CustomCardFields( $form );
+			customCardFields.removeFields();
 		}
 	} );
 

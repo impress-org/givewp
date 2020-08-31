@@ -75,6 +75,19 @@ class CustomCardFields extends PaymentMethod {
 			DonationForm.isRecurringDonation( this.form ) &&
 			this.payPalSupportedCountriesForCardSubscription.includes( window.givePayPalCommerce.accountCountry );
 	}
+
+	/**
+	 * Remove card fields.
+	 *
+	 * @since 2.9.0
+	 */
+	removeFields() {
+		for ( const type in this.cardFields ) {
+			this.cardFields[ type ].el.parentElement.remove();
+		}
+
+		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
+	}
 }
 
 export default CustomCardFields;
