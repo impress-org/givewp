@@ -602,6 +602,7 @@ class AdvancedCardFields extends PaymentMethod {
 		if ( 'card_number' === fieldName ) {
 			return 'number';
 		}
+
 		if ( 'card_cvc' === fieldName ) {
 			return 'cvv';
 		}
