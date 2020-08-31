@@ -181,19 +181,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Return whether or not payment approved successfully.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return {Promise<boolean>} Return boolean whether Payment approved or not.
-	 */
-	async isPaymentApproved() {
-		const result = await this.approvePayment();
-
-		return true === result.success;
-	}
-
-	/**
 	 * Get computed style for hosted card fields.
 	 *
 	 * List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
