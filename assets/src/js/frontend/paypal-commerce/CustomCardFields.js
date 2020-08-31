@@ -30,6 +30,8 @@ class CustomCardFields extends PaymentMethod {
 		if ( this.recurringChoiceField ) {
 			this.recurringChoiceField.addEventListener( 'change', this.renderPaymentMethodOption.bind( this ) );
 		}
+
+		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', CustomCardFields.separatorHtml() );
 	}
 
 	/**
@@ -48,8 +50,6 @@ class CustomCardFields extends PaymentMethod {
 	 * @inheritDoc
 	 */
 	renderPaymentMethodOption() {
-		this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', CustomCardFields.separatorHtml() );
-
 		// Show custom card field only if donor opted for recurring donation.
 		// And PayPal account is from supported country.
 		// We can not process recurring donation with advanced card fields, so let hide and use card field to process recurring donation with PayPal subscription api.

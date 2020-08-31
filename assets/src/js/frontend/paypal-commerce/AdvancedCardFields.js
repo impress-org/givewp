@@ -568,6 +568,9 @@ class AdvancedCardFields extends PaymentMethod {
 			// Hide parent container only if custom card fields is not available to process subscriptions.
 			this.hostedCardFieldsContainers[ key ].parentElement.style.display = canHideParentContainer ? 'none' : 'block';
 		}
+
+		// Hide separator only if custom card is not available for subscription.
+		this.customCardFields.separator.style.display = canHideParentContainer ? 'none' : 'flex';
 	}
 
 	/**
