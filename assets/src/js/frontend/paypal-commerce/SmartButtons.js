@@ -95,7 +95,7 @@ class SmartButtons extends PaymentMethod {
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
-			if ( DonationForm.isRecurringDonation( ) ) {
+			if ( DonationForm.isRecurringDonation( this.form ) ) {
 				this.submitDonationForm();
 
 				return actions.reject();
