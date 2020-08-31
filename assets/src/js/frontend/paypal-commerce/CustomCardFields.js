@@ -31,7 +31,7 @@ class CustomCardFields extends PaymentMethod {
 			this.recurringChoiceField.addEventListener( 'change', this.renderPaymentMethodOption.bind( this ) );
 		}
 
-		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', CustomCardFields.separatorHtml() );
+		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
 	}
 
 	/**
@@ -125,7 +125,7 @@ class CustomCardFields extends PaymentMethod {
 	 *
 	 * @return {object} separator Node.
 	 */
-	static separatorHtml() {
+	separatorHtml() {
 		const div = document.createElement( 'div' );
 
 		div.setAttribute( 'class', 'separator-with-text' );
