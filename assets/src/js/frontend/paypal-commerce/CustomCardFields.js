@@ -9,13 +9,39 @@ class CustomCardFields extends PaymentMethod {
 	constructor( form ) {
 		super( form );
 
+		this.setUpProperties();
+	}
+
+	/**
+	 * Setup properties.
+	 *
+	 * @since 2.9.0
+	 */
+	setUpProperties() {
 		this.payPalSupportedCountriesForCardSubscription = [ 'US', 'AU' ];
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceField = this.form.querySelector( 'input[name="give-recurring-period"]' );
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	registerEvents() {
 		if ( this.recurringChoiceField ) {
 			this.recurringChoiceField.addEventListener( 'change', this.renderPaymentMethodOption.bind( this ) );
 		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	onGatewayLoadBoot( evt, response, formIdAttr ) {
+		const self = evt.data.self;
+
+		self.setUpProperties();
+		self.registerEvents();
+
+		super.onGatewayLoadBoot( evt, response, formIdAttr );
 	}
 
 	/**
