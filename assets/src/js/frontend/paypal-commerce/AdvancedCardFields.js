@@ -109,7 +109,7 @@ class AdvancedCardFields extends PaymentMethod {
 
 			fieldType = cardFields[ cardFieldsKey ].el.getAttribute( 'name' );
 			container.setAttribute( 'id', `give-${ cardFields[ cardFieldsKey ].el.getAttribute( 'id' ) }` );
-			container.setAttribute( 'class', 'give-paypal-commerce-host-card-field-container' );
+			container.setAttribute( 'class', 'give-paypal-commerce-cc-field' );
 
 			this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
 		}
