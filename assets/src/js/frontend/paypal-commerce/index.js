@@ -1,4 +1,4 @@
-/* globals jQuery, givePayPalCommerce */
+/* globals jQuery */
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';
@@ -17,10 +17,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const customCardFields = new CustomCardFields( $form );
 
 		smartButtons.boot();
-		customCardFields.boot();
 
 		if ( !! window.givePayPalCommerce.supportsCustomPayments ) {
 			const advancedCardFields = new AdvancedCardFields( customCardFields );
+
+			customCardFields.boot();
 			advancedCardFields.boot();
 		}
 	} );
