@@ -66,16 +66,15 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	async renderPaymentMethodOption() {
 		this.setupContainerForHostedCardFields();
+		this.applyStyleToContainer();
 
 		const createOrder = this.createOrderHandler.bind( this );
 		const styles = await this.getComputedInputFieldForHostedField();
 		const fields = this.getPayPalHostedCardFields();
-
 		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
+		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 
 		this.addEventToHostedFields( hostedCardFields );
-
-		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 
 		if ( this.customCardFields.recurringChoiceField ) {
@@ -84,11 +83,11 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Apply style when hosted card field container re rendered.
+	 * Apply style when hosted card field container rendered.
 	 *
 	 * @since 2.9.0
 	 */
-	applyStyleWhenContainerReRendered() {
+	applyStyleToContainer() {
 		this.setStyles();
 		this.addInitialStyleToHostedFieldsContainer();
 		this.setHostedFieldContainerHeight();
@@ -568,10 +567,6 @@ class AdvancedCardFields extends PaymentMethod {
 
 			// Hide parent container only if custom card fields is not available to process subscriptions.
 			this.hostedCardFieldsContainers[ key ].parentElement.style.display = canHideParentContainer ? 'none' : 'block';
-		}
-
-		if ( 'block' === display ) {
-			this.applyStyleWhenContainerReRendered();
 		}
 	}
 
