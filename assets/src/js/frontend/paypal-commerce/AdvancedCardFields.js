@@ -375,7 +375,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	computedStyles() {
-		const cardField = this.form.querySelector( 'input[name="give_first"]' );
+		const cardField = this.form.querySelector( 'input[name="card_name"]' );
 		const computedStyle = window.getComputedStyle( cardField, null );
 
 		if ( ! Array.from( this.styles.container ).length ) {
