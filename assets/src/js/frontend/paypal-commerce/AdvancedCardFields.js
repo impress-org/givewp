@@ -45,6 +45,7 @@ class AdvancedCardFields extends PaymentMethod {
 		};
 
 		this.setFocusStyle();
+		this.computedStyles();
 	}
 
 	/**
@@ -65,9 +66,6 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	async renderPaymentMethodOption() {
 		this.setupContainerForHostedCardFields();
-		this.setStyles();
-		this.addInitialStyleToHostedFieldsContainer();
-		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 
 		const createOrder = this.createOrderHandler.bind( this );
 		const styles = await this.getComputedInputFieldForHostedField();
@@ -86,13 +84,23 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
+	 * Apply style when hosted card field container re rendered.
+	 *
+	 * @since 2.9.0
+	 */
+	applyStyleWhenContainerReRendered() {
+		this.setStyles();
+		this.addInitialStyleToHostedFieldsContainer();
+		this.setHostedFieldContainerHeight();
+	}
+
+	/**
 	 * Set container for histed card fields.
 	 *
 	 * @since 2.9.0
 	 */
 	setupContainerForHostedCardFields() {
 		const cardFields = this.customCardFields.cardFields;
-		let objectKey = '';
 		let fieldType = '';
 
 		for ( const cardFieldsKey in cardFields ) {
@@ -102,17 +110,7 @@ class AdvancedCardFields extends PaymentMethod {
 			container.setAttribute( 'id', `give-${ cardFields[ cardFieldsKey ].el.getAttribute( 'id' ) }` );
 			container.setAttribute( 'class', 'give-paypal-commerce-host-card-field-container' );
 
-			cardFields[ cardFieldsKey ].el.after( container );
-
-			if ( 'card_number' === fieldType ) {
-				objectKey = 'number';
-			} else if ( 'card_cvc' === fieldType ) {
-				objectKey = 'cvv';
-			} else if ( 'card_expiry' === fieldType ) {
-				objectKey = 'expirationDate';
-			}
-
-			this.hostedCardFieldsContainers[ objectKey ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
+			this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
 		}
 
 		this.toggleFields();
@@ -377,7 +375,20 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	setStyles() {
+		this.computedStyles();
+
+		const event = new Event( 'blur' );
 		const cardField = this.form.querySelector( 'input[name="card_name"]' );
+		cardField.dispatchEvent( event );
+	}
+
+	/**
+	 * Computed styles for hosted card field container and iframe input field.
+	 *
+	 * @since 2.9.0
+	 */
+	computedStyles() {
+		const cardField = this.form.querySelector( 'input[name="give_first"]' );
 		const computedStyle = window.getComputedStyle( cardField, null );
 
 		if ( ! Array.from( this.styles.container ).length ) {
@@ -401,10 +412,6 @@ class AdvancedCardFields extends PaymentMethod {
 					...	this.styles[ 'input:placeholder' ],
 				};
 			} );
-
-			// Set style properties for container input field and input, placeholder.
-			const event = new Event( 'blur' );
-			cardField.dispatchEvent( event );
 		}
 	}
 
@@ -565,6 +572,8 @@ class AdvancedCardFields extends PaymentMethod {
 		const display = DonationForm.isRecurringDonation( this.form ) ? 'none' : 'block';
 		const canHideParentContainer = 'none' === display && ! this.customCardFields.canShow();
 
+		this.toggleCardNameField( canHideParentContainer );
+
 		for ( const key in this.hostedCardFieldsContainers ) {
 			this.hostedCardFieldsContainers[ key ].style.display = display;
 
@@ -572,7 +581,9 @@ class AdvancedCardFields extends PaymentMethod {
 			this.hostedCardFieldsContainers[ key ].parentElement.style.display = canHideParentContainer ? 'none' : 'block';
 		}
 
-		this.toggleCardNameField( canHideParentContainer );
+		if ( 'block' === display ) {
+			this.applyStyleWhenContainerReRendered();
+		}
 	}
 
 	/**
@@ -587,6 +598,28 @@ class AdvancedCardFields extends PaymentMethod {
 
 		cardField.parentElement.style.display = hide ? 'none' : 'block';
 		cardField.disabled = hide;
+	}
+
+	/**
+	 * Get field type by field name.
+	 *
+	 * 2since 2.9.0
+	 *
+	 * @param {string} fieldName field name. Support only "card_number", "card_cvc", and "card_expiry"
+	 *
+	 * @return {string} field type.
+	 */
+	getFieldTypeByFieldName( fieldName ) {
+		if ( 'card_number' === fieldName ) {
+			return 'number';
+		}
+		if ( 'card_cvc' === fieldName ) {
+			return 'cvv';
+		}
+
+		if ( 'card_expiry' === fieldName ) {
+			return 'expirationDate';
+		}
 	}
 }
 
