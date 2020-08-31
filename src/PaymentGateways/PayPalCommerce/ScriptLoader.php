@@ -192,6 +192,7 @@ EOT;
 				'hostedCardFieldStyles'                 => apply_filters( 'give_paypal_commerce_hosted_field_style', [] ),
 				'supportsCustomPayments'                => $merchant->supportsCustomPayments ? 1 : '',
 				'accountCountry'                        => $merchant->accountCountry,
+				'separatorLabel'                        => esc_html__( 'Or pay with card', 'give' ),
 			]
 		);
 	}
