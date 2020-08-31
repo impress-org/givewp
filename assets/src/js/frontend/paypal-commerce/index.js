@@ -14,11 +14,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	$formWraps.forEach( $formWrap => {
 		const $form = $formWrap.querySelector( '.give-form' );
 		const smartButtons = new SmartButtons( $form );
-		const customCardFields = new CustomCardFields( $form );
 
 		smartButtons.boot();
 
 		if ( AdvancedCardFields.canShow() ) {
+			const customCardFields = new CustomCardFields( $form );
 			const advancedCardFields = new AdvancedCardFields( customCardFields );
 
 			customCardFields.boot();
