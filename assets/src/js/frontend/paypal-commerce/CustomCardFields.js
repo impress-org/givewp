@@ -48,6 +48,8 @@ class CustomCardFields extends PaymentMethod {
 	 * @inheritDoc
 	 */
 	renderPaymentMethodOption() {
+		this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', CustomCardFields.separatorHtml() );
+
 		// Show custom card field only if donor opted for recurring donation.
 		// And PayPal account is from supported country.
 		// We can not process recurring donation with advanced card fields, so let hide and use card field to process recurring donation with PayPal subscription api.
@@ -113,6 +115,23 @@ class CustomCardFields extends PaymentMethod {
 		}
 
 		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
+		this.form.querySelector( '[id*="give_cc_fields-"] .separator-with-text' ).parentElement.remove();
+	}
+
+	/**
+	 * Return separator html.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return {object} separator Node.
+	 */
+	static separatorHtml() {
+		const div = document.createElement( 'div' );
+
+		div.setAttribute( 'class', 'separator-with-text' );
+		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ window.givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
+
+		return div;
 	}
 }
 
