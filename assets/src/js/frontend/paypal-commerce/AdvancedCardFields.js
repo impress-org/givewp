@@ -91,6 +91,8 @@ class AdvancedCardFields extends PaymentMethod {
 		this.setStyles();
 		this.addInitialStyleToHostedFieldsContainer();
 		this.setHostedFieldContainerHeight();
+
+		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 	}
 
 	/**
