@@ -54,8 +54,8 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * @return {boolean} Return boolean value whether we can render card fields or not.
 	 */
-	static canRenderFields() {
-		return paypal.HostedFields.isEligible() === true;
+	static canShow() {
+		return paypal.HostedFields.isEligible() === true && !! window.givePayPalCommerce.supportsCustomPayments;
 	}
 
 	/**

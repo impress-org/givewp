@@ -18,7 +18,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		smartButtons.boot();
 
-		if ( !! window.givePayPalCommerce.supportsCustomPayments ) {
+		if ( AdvancedCardFields.canShow() ) {
 			const advancedCardFields = new AdvancedCardFields( customCardFields );
 
 			customCardFields.boot();
