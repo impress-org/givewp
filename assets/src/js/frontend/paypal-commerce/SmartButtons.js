@@ -16,12 +16,8 @@ class SmartButtons extends PaymentMethod {
 	getButtonContainer() {
 		const ccFields = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		const smartButtonWrap = document.createElement( 'div' );
-		const buttonDiv = document.createElement( 'div' );
 
-		buttonDiv.setAttribute( 'id', `smart-buttons-${ this.form.getAttribute( 'data-id' ) }` );
 		smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
-
-		smartButtonWrap.appendChild( buttonDiv );
 
 		return ccFields.insertBefore( smartButtonWrap, ccFields.querySelector( '[id^=give-card-number-wrap-]' ) );
 	}
