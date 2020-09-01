@@ -217,7 +217,7 @@ EOT;
 			'src=',
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
-				PartnerDetails::$attributionId,
+				give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ),
 				$this->merchantRepository->getClientToken()
 			),
 			$tag

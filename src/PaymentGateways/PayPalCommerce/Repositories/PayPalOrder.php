@@ -89,7 +89,7 @@ class PayPalOrder {
 		$this->validateCreateOrderArguments( $array );
 
 		$request = new OrdersCreateRequest();
-		$request->payPalPartnerAttributionId( PartnerDetails::$attributionId );
+		$request->payPalPartnerAttributionId( give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ) );
 		$request->body = [
 			'intent'              => 'CAPTURE',
 			'purchase_units'      => [

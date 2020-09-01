@@ -51,6 +51,13 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
+		give()->bind(
+			'PAYPAL_COMMERCE_ATTRIBUTION_ID',
+			static function() {
+				return 'GiveWP_SP_PCP';
+			}
+		); // storage
+
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
 		$this->registerPayPalCommerceClasses();
