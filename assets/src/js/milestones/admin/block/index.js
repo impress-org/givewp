@@ -14,7 +14,7 @@ const registerMilestoneBlock = () => registerBlockType( 'give/milestone', {
 		__( 'milestone' ),
 	],
 
-	edit: function( { attributes } ) {
+	edit: ( { attributes } ) => {
 		return (
 			<ServerSideRender
 				block="give/milestone"
