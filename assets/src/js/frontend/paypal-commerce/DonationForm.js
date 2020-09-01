@@ -77,7 +77,15 @@ class DonationForm {
 	static isRecurringDonation( form ) {
 		const recurringChoiceField = form.querySelector( 'input[name="give-recurring-period"]' );
 
-		return recurringChoiceField && recurringChoiceField.checked;
+		if ( recurringChoiceField ) {
+			return recurringChoiceField && recurringChoiceField.checked;
+		}
+
+		// Recurring choice field will be not available if donation form set to "Admin Defined" Recurring Donations.
+		// In that case we can still find type of donation by checking "_give_is_donation_recurring" field value.
+		const recurringChoiceHiddenField = form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+
+		return recurringChoiceHiddenField && '1' === recurringChoiceHiddenField.value;
 	}
 }
 
