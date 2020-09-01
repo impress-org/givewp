@@ -38,7 +38,7 @@ class CustomCardFields extends PaymentMethod {
 	 * @inheritDoc
 	 */
 	onGatewayLoadBoot( evt, self ) {
-		if ( evt.detail.formIdAttr === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
+		if ( evt.detail.formIdAttribute === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
 			self.setUpProperties();
 			self.registerEvents();
 		}
