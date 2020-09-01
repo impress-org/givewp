@@ -8,18 +8,17 @@ class Block {
 			'give/milestone',
 			[
 				'render_callback' => [ $this, 'render_callback' ],
+				'attributes'      => [
+					'title' => [
+						'type'    => 'string',
+						'default' => __( 'Back to School Fundraiser', 'give' ),
+					],
+				],
+
 			]
 		);
 	}
-	public function enqueue_assets() {
-		wp_enqueue_script(
-			'give-admin-milestones',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin-milestones.js',
-			[ 'wp-blocks', 'wp-element' ],
-			GIVE_VERSION
-		);
-	}
-	public function render_callback() {
+	public function render_callback( $attributes ) {
 		ob_start();
 		$output = '';
 		require $this->get_template_path();

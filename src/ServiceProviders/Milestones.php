@@ -11,6 +11,5 @@ class Milestones implements ServiceProvider {
 	}
 	public function boot() {
 		Hooks::addAction( 'init', MilestoneBlock::class, 'add_block' );
-		Hooks::addAction( 'admin_enqueue_scripts', MilestoneBlock::class, 'enqueue_assets' );
 	}
 }
