@@ -28,10 +28,9 @@ class PaymentMethod {
 		} );
 
 		if ( DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
+			this.registerEvents();
 			this.renderPaymentMethodOption();
 		}
-
-		this.registerEvents();
 	}
 
 	/**
