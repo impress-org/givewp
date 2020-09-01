@@ -1,5 +1,5 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, give, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, gutenberg, gutenberg donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.8
@@ -224,21 +224,21 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 
 = 2.8.0: August 31st, 2020 =
-* Added: Onboarding Wizard guides new users through first-time configuration. (#5014)
-* Added: Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)
-* Added: Multi-step forms now support RTL styles. (#5196)
-* Changed: Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. (#4964)
-* Changed: Default minimum donation amount is increased from $1.00 to $5.00 to help prevent card testing spam. (#5120)
-* Changed: Optional fields in the Multi-Step form template are denoted to appear distinct from required fields. (#5157)
-* Removed: Old Welcome Page has been removed in favor of the new Onboarding Wizard & Setup Page. (#5014)
-* Removed: Admin notice animation has been removed. (#5182)
-* Fixed: Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. (#5184)
-* Fixed: The `[give_receipt]` shortcode is more compatible alongside other shortcodes, which is especially relevant for page builders. (#5044)
-* Fixed: Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. (#5126)
-* Fixed: A `register_rest_route` notice no longer displays when creating a new page in the block editor. (#5115)
-* Fixed: Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway. (#5191)
-* Fixed: Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
-* Fixed: Form Field Manager controls are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
+* Added: Onboarding Wizard guides new users through first-time configuration. [#5014](https://github.com/impress-org/givewp/pull/5014)
+* Added: Setup Page clarifies required steps that must be completed prior to accepting live donations. [#5014](https://github.com/impress-org/givewp/pull/5014)
+* Added: Multi-step forms now support RTL styles. [#5196](https://github.com/impress-org/givewp/pull/5196)
+* Changed: Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. [#4964](https://github.com/impress-org/givewp/pull/4964)
+* Changed: Default minimum donation amount is increased from $1.00 to $5.00 to help prevent card testing spam. [#5120](https://github.com/impress-org/givewp/pull/5120)
+* Changed: Optional fields in the Multi-Step form template are denoted to appear distinct from required fields. [#5157](https://github.com/impress-org/givewp/pull/5157)
+* Removed: Old Welcome Page has been removed in favor of the new Onboarding Wizard & Setup Page. [#5014](https://github.com/impress-org/givewp/pull/5014)
+* Removed: Admin notice animation has been removed. [#5182](https://github.com/impress-org/givewp/pull/5182)
+* Fixed: Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. [#5184](https://github.com/impress-org/givewp/pull/5184)
+* Fixed: The `[give_receipt]` shortcode is more compatible alongside other shortcodes, which is especially relevant for page builders. [#5044](https://github.com/impress-org/givewp/pull/5044)
+* Fixed: Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. [#5126](https://github.com/impress-org/givewp/pull/5126)
+* Fixed: A `register_rest_route` notice no longer displays when creating a new page in the block editor. [#5115](https://github.com/impress-org/givewp/pull/5115)
+* Fixed: Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway. [#5191](https://github.com/impress-org/givewp/pull/5191)
+* Fixed: Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. [#5205](https://github.com/impress-org/givewp/pull/5205)
+* Fixed: Form Field Manager controls are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. [#5216](https://github.com/impress-org/givewp/pull/5216)
 
 = 2.7.5: August 11th, 2020 =
 * New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain". [#4952](https://github.com/impress-org/givewp/issues/4952)
@@ -699,7 +699,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: GiveWP was conflicting with Beaver Builder preventing users from seeing the builder options within the WP-admin single page/post view. [#3207](https://github.com/impress-org/givewp/issues/3207)
 * Fix: GiveWP's API was not respecting the date range parameters passed to it. Now it does so you can filter the API by date ranges as expected. [#3191](https://github.com/impress-org/givewp/issues/3191)
 * Fix: This version contains a database cleanup routine to delete donation payment meta that is not attached to any payment. For instance, if you deleted a payment the metadata associated with it still remained prior to this version. With this upgrade the orphaned data will be removed. [#3205](https://github.com/impress-org/givewp/issues/3205)
-* Fix: Resolved PHP notices when exporting donor in lower PHP versions. (#3222)[https://github.com/impress-org/givewp/issues/3222], [#3218](https://github.com/impress-org/givewp/issues/3218)
+* Fix: Resolved PHP notices when exporting donor in lower PHP versions. [#3222](https://github.com/impress-org/givewp/issues/3222), [#3218](https://github.com/impress-org/givewp/issues/3218)
 * Fix: We've updated the donation form's form HTML tag ID so it's unique per form for better W3C compatibility and to ensure Stripe elements works as expected with multiple forms on a single page. [#3139](https://github.com/impress-org/givewp/issues/3139)
 * Fix: Several typos on the welcome guide were corrected. [#3230](https://github.com/impress-org/givewp/issues/3230)
 * Fix: Inline plugin upgrade notices were not displaying properly in previous versions. [#2789](https://github.com/impress-org/givewp/issues/2789)
