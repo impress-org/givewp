@@ -7,20 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2020-08-31
+
 ## [2.8.0-rc.1] - 2020-08-31
 
 ### Fixed
 
 -   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (#5218)
 -   PHP Notices no longer break multi-step form receipt step. (#5219)
--   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting (#5205)
--   FFM inputs are now setup on init of the Multi-Step form, to ensure they work with only a single gateway enabled (#5216)
+-   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
+-   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
 
 ## [2.8.0-beta.3] - 2020-08-27
+
+### Added
+
+-   Multi-step forms now support RTL styles. (#5196)
 
 ### Fixed
 
 -   Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. (#5184)
+-   Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway. (#5191)
 
 ### Changed
 
@@ -29,8 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   If the Setup Page is disabled, Onboarding Wizard now directs users to the All Forms page. (#5211)
 -   On a fresh install, the donation forms archive is now enabled by default. (#5214)
 -   Specify Form Route URL scheme to avoid mixed content when loaded in the admin. (#5189)
--   Multi-step forms now support RTL styles (#5196)
--   Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway (#5191)
 
 ## [2.8.0-beta.2] - 2020-08-25
 
@@ -44,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. (#4964)
--   Format for country and state select fields is normalized so states have an empty option but countries do not (#5163)
+-   Format for country and state select fields is normalized so states have an empty option but countries do not. (#5163)
 -   Scope of marked optional fields in the Multi-Step template is reduced to the User Info fieldset. (#5161)
 -   Wizard buttons now match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
@@ -86,10 +91,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   New Onboarding Wizard guides new users through first-time configuration (#5014)
--   New Setup Page clarifies required steps that must be completed prior to accepting live donations (#5014)
--   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place (#5117)
--   Update Stripe Checkout to use Stripe Elements (#4964)
+-   New Onboarding Wizard guides new users through first-time configuration. (#5014)
+-   New Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)
+-   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place. (#5117)
+-   Update Stripe Checkout to use Stripe Elements. (#4964)
 
 ### Changed
 
@@ -106,7 +111,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
 
-[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0-rc.1...HEAD
+[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0...HEAD
+[2.8.0]: https://github.com/impress-org/givewp/compare/2.8.0-rc.1...2.8.0
 [2.8.0-rc.1]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...2.8.0-rc.1
 [2.8.0-beta.3]: https://github.com/impress-org/givewp/compare/2.8.0-beta.2...2.8.0-beta.3
 [2.8.0-beta.2]: https://github.com/impress-org/givewp/compare/2.8.0-beta.1...2.8.0-beta.2
