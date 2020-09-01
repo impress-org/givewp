@@ -1,6 +1,8 @@
 /* globals paypal, Give, FormData, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
+import CustomCardFields from './CustomCardFields';
+import AdvancedCardFields from './AdvancedCardFields';
 
 /**
  * PayPal Smart Buttons.
@@ -80,11 +82,11 @@ class SmartButtons extends PaymentMethod {
 	async onClickHandler(data, actions) { // eslint-disable-line
 		const formData = new FormData( this.form );
 
-		formData.delete( 'card_name' );
-		this.resetCreditCardFields();
-
-		if ( ! Give.form.fn.isDonationFormHtml5Valid( this.form, true ) ) {
-			return actions.reject();
+		if ( AdvancedCardFields.canShow() ) {
+			formData.delete( 'card_name' );
+			formData.delete( 'card_cvc' );
+			formData.delete( 'card_number' );
+			formData.delete( 'card_expiry' );
 		}
 
 		Give.form.fn.removeErrors( this.jQueryForm );
@@ -212,21 +214,21 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
-	 * Reset Card fields.
-	 *
-	 * @since 2.9.0
-	 */
-	resetCreditCardFields() {
-		this.jQueryForm.find( 'input[name="card_name"]' ).val( '' );
-	}
-
-	/**
 	 * Remove Card fields.
 	 *
 	 * @since 2.9.0
 	 */
 	removeCreditCardFields() {
-		this.jQueryForm.find( 'input[name="card_name"]' ).remove();
+		// Remove custom card fields.
+		if ( AdvancedCardFields.canShow() ) {
+			this.jQueryForm.find( 'input[name="card_name"]' ).remove();
+
+			const $customCardFields = new CustomCardFields( this.form );
+
+			for ( const key in $customCardFields.cardFields ) {
+				$customCardFields.cardFields[ key ].el.remove();
+			}
+		}
 	}
 }
 
