@@ -845,11 +845,11 @@ msgstr ""
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/class-give-scripts.php:513, includes/process-donation.php:588, includes/shortcodes.php:449, includes/admin/admin-actions.php:924
+#: includes/class-give-scripts.php:513, includes/process-donation.php:596, includes/shortcodes.php:449, includes/admin/admin-actions.php:924
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/class-give-scripts.php:514, includes/process-donation.php:584
+#: includes/class-give-scripts.php:514, includes/process-donation.php:592
 msgid "Please enter a valid email address."
 msgstr ""
 
@@ -857,7 +857,7 @@ msgstr ""
 msgid "Invalid email address or username."
 msgstr ""
 
-#: includes/class-give-scripts.php:516, includes/process-donation.php:976, includes/user-functions.php:419
+#: includes/class-give-scripts.php:516, includes/process-donation.php:984, includes/user-functions.php:419
 msgid "Enter a password."
 msgstr ""
 
@@ -865,7 +865,7 @@ msgstr ""
 msgid "Enter the password confirmation."
 msgstr ""
 
-#: includes/class-give-scripts.php:518, includes/process-donation.php:562
+#: includes/class-give-scripts.php:518, includes/process-donation.php:570
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
@@ -5593,7 +5593,7 @@ msgstr ""
 msgid "%s trillion"
 msgstr ""
 
-#: includes/formatting.php:766, includes/formatting.php:803, includes/process-donation.php:865, includes/api/class-give-api.php:1961, includes/forms/functions.php:312, includes/gateways/actions.php:48, includes/gateways/manual.php:80, includes/admin/donors/donor-actions.php:419, includes/admin/donors/donor-actions.php:498, includes/admin/donors/donor-actions.php:549, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:27, includes/admin/tools/export/pdf-reports.php:35
+#: includes/formatting.php:766, includes/formatting.php:803, includes/process-donation.php:873, includes/api/class-give-api.php:1961, includes/forms/functions.php:312, includes/gateways/actions.php:48, includes/gateways/manual.php:80, includes/admin/donors/donor-actions.php:419, includes/admin/donors/donor-actions.php:498, includes/admin/donors/donor-actions.php:549, includes/admin/forms/class-give-form-duplicator.php:87, includes/admin/tools/export/export-actions.php:27, includes/admin/tools/export/pdf-reports.php:35
 msgid "We're unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance."
 msgstr ""
 
@@ -5617,11 +5617,11 @@ msgstr ""
 msgid "Donation History"
 msgstr ""
 
-#: includes/login-register.php:125, includes/process-donation.php:980
+#: includes/login-register.php:125, includes/process-donation.php:988
 msgid "The username you entered does not exist."
 msgstr ""
 
-#: includes/login-register.php:122, includes/process-donation.php:956
+#: includes/login-register.php:122, includes/process-donation.php:964
 msgid "The password you entered is incorrect."
 msgstr ""
 
@@ -5637,7 +5637,7 @@ msgstr ""
 msgid "Email address already taken."
 msgstr ""
 
-#: includes/login-register.php:267, includes/process-donation.php:821, includes/process-donation.php:1021, includes/user-functions.php:373, includes/admin/donors/donor-actions.php:424
+#: includes/login-register.php:267, includes/process-donation.php:829, includes/process-donation.php:1029, includes/user-functions.php:373, includes/admin/donors/donor-actions.php:424
 msgid "Invalid email."
 msgstr ""
 
@@ -6008,114 +6008,114 @@ msgid "Widgets in this area will be shown on the single GiveWP forms aside area.
 msgstr ""
 
 #. translators: 1. Donor Email, 2. Submitted Email
-#: includes/process-donation.php:259
+#: includes/process-donation.php:267
 msgid "You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address."
 msgstr ""
 
 #. translators: %s: user first name
-#: includes/process-donation.php:306
+#: includes/process-donation.php:314
 msgid "Welcome %s! You have successfully logged into your account."
 msgstr ""
 
-#: includes/process-donation.php:336
+#: includes/process-donation.php:344
 msgid "Honeypot field detected. Go away bad bot!"
 msgstr ""
 
-#: includes/process-donation.php:344
+#: includes/process-donation.php:352
 msgid "The email you are using has been flagged as one used in SPAM comments or donations by our system. Please try using a different email address or contact the site administrator if you have any questions."
 msgstr ""
 
 #. translators: %s: Maximum donation amount
-#: includes/process-donation.php:474
+#: includes/process-donation.php:482
 msgid "This form has a maximum donation amount of %s."
 msgstr ""
 
-#: includes/process-donation.php:457
+#: includes/process-donation.php:465
 msgid "This form has a minimum donation amount of %s."
 msgstr ""
 
-#: includes/process-donation.php:449
+#: includes/process-donation.php:457
 msgid "Please insert a valid donation amount."
 msgstr ""
 
-#: includes/process-donation.php:445
+#: includes/process-donation.php:453
 msgid "The selected payment gateway is not enabled."
 msgstr ""
 
-#: includes/process-donation.php:441
+#: includes/process-donation.php:449
 msgid "The donation form will process with a valid payment gateway."
 msgstr ""
 
-#: includes/process-donation.php:596
+#: includes/process-donation.php:604
 msgid "Please enter your title."
 msgstr ""
 
-#: includes/process-donation.php:613
+#: includes/process-donation.php:621
 msgid "Please enter a credit card number."
 msgstr ""
 
-#: includes/process-donation.php:624
+#: includes/process-donation.php:632
 msgid "Please enter a credit card CVC information."
 msgstr ""
 
-#: includes/process-donation.php:644
+#: includes/process-donation.php:652
 msgid "Please enter a name of your credit card account holder."
 msgstr ""
 
-#: includes/process-donation.php:655
+#: includes/process-donation.php:663
 msgid "Please enter a credit card expiry date."
 msgstr ""
 
-#: includes/process-donation.php:665
+#: includes/process-donation.php:673
 msgid "Please enter your primary billing address."
 msgstr ""
 
-#: includes/process-donation.php:669
+#: includes/process-donation.php:677
 msgid "Please enter your zip / postal code."
 msgstr ""
 
-#: includes/process-donation.php:673
+#: includes/process-donation.php:681
 msgid "Please enter your billing city."
 msgstr ""
 
-#: includes/process-donation.php:677
+#: includes/process-donation.php:685
 msgid "Please select your billing country."
 msgstr ""
 
-#: includes/process-donation.php:682
+#: includes/process-donation.php:690
 msgid "Please enter billing state / province / County."
 msgstr ""
 
-#: includes/process-donation.php:730
+#: includes/process-donation.php:738
 msgid "Please enter Company Name."
 msgstr ""
 
-#: includes/process-donation.php:826
+#: includes/process-donation.php:834
 msgid "The user information is invalid."
 msgstr ""
 
-#: includes/process-donation.php:923
+#: includes/process-donation.php:931
 msgid "Please enter your username or email to log in."
 msgstr ""
 
-#: includes/process-donation.php:958, includes/forms/template.php:1563, templates/shortcode-login.php:52
+#: includes/process-donation.php:966, includes/forms/template.php:1563, templates/shortcode-login.php:52
 msgid "Reset Password"
 msgstr ""
 
-#: includes/process-donation.php:1047, includes/user-functions.php:363
+#: includes/process-donation.php:1055, includes/user-functions.php:363
 msgid "Enter an email."
 msgstr ""
 
-#: includes/process-donation.php:1235
+#: includes/process-donation.php:1243
 msgid "The zip / postal code you entered for your billing address is invalid."
 msgstr ""
 
 #. translators: %s: invalid donation amount
-#: includes/process-donation.php:1544
+#: includes/process-donation.php:1552
 msgid "Donation amount %s is invalid."
 msgstr ""
 
-#: includes/process-donation.php:1595
+#: includes/process-donation.php:1603
 msgid "The First Name and Last Name fields cannot contain an email address or numbers."
 msgstr ""
 
@@ -6386,69 +6386,69 @@ msgstr ""
 msgid "ERROR"
 msgstr ""
 
-#: includes/admin/admin-actions.php:951, includes/admin/donors/class-donor-table.php:65, includes/admin/emails/abstract-email-notification.php:153, includes/admin/emails/class-donation-receipt-email.php:46, includes/admin/emails/class-donor-note-email.php:45, includes/admin/emails/class-donor-register-email.php:41, includes/admin/emails/class-email-access-email.php:42, includes/admin/reports/class-donor-reports-table.php:67, templates/history-donations.php:70, templates/shortcode-receipt.php:41
+#: includes/admin/admin-actions.php:948, includes/admin/donors/class-donor-table.php:65, includes/admin/emails/abstract-email-notification.php:153, includes/admin/emails/class-donation-receipt-email.php:46, includes/admin/emails/class-donor-note-email.php:45, includes/admin/emails/class-donor-register-email.php:41, includes/admin/emails/class-email-access-email.php:42, includes/admin/reports/class-donor-reports-table.php:67, templates/history-donations.php:70, templates/shortcode-receipt.php:41
 msgid "Donor"
 msgstr ""
 
-#: includes/admin/admin-actions.php:954
+#: includes/admin/admin-actions.php:951
 msgid "View Donor Information"
 msgstr ""
 
-#: includes/admin/admin-actions.php:1025
+#: includes/admin/admin-actions.php:1019
 msgid "Error: Security issue."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1059
+#: includes/admin/admin-actions.php:1053
 msgid "Error: Unable to save the address. Please check if address already exist."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1088
+#: includes/admin/admin-actions.php:1082
 msgid "Successfully added a new address to the donor."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1104
+#: includes/admin/admin-actions.php:1098
 msgid "Error: Unable to delete address."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1112
+#: includes/admin/admin-actions.php:1106
 msgid "Successfully removed a address of donor."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1124
+#: includes/admin/admin-actions.php:1118
 msgid "Error: Unable to update address. Please check if address already exist."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1142
+#: includes/admin/admin-actions.php:1136
 msgid "Successfully updated a address of donor"
 msgstr ""
 
-#: includes/admin/admin-actions.php:1162, includes/admin/payments/view-payment-details.php:734, src/Receipt/DonationReceipt.php:148
+#: includes/admin/admin-actions.php:1156, includes/admin/payments/view-payment-details.php:734, src/Receipt/DonationReceipt.php:148
 msgid "Billing Address"
 msgstr ""
 
-#: includes/admin/admin-actions.php:1178
+#: includes/admin/admin-actions.php:1172
 msgid "Personal Address"
 msgstr ""
 
-#: includes/admin/admin-actions.php:1308
+#: includes/admin/admin-actions.php:1302
 msgid "An error occurred while flushing the cache."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1302
+#: includes/admin/admin-actions.php:1296
 msgid "Cache flushed successfully."
 msgstr ""
 
-#: includes/admin/admin-actions.php:1406
+#: includes/admin/admin-actions.php:1400
 msgid "Your GiveWP add-on is not receiving critical updates and new features because you have %1$s license key. Please <a href=\"%2$s\" title=\"%3$s\">activate your license</a> to receive updates and <a href=\"%4$s\" target=\"_blank\" title=\"%5$s\">priority support</a>"
 msgid_plural "Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license keys. Please <a href=\"%2$s\" title=\"%3$s\">activate your license</a> to receive updates and <a href=\"%4$s\" target=\"_blank\" title=\"%5$s\">priority support</a>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/admin-actions.php:1414, includes/admin/settings/class-settings-license.php:114, includes/admin/settings/class-settings-license.php:125, includes/admin/settings/class-settings-license.php:127
+#: includes/admin/admin-actions.php:1408, includes/admin/settings/class-settings-license.php:114, includes/admin/settings/class-settings-license.php:125, includes/admin/settings/class-settings-license.php:127
 msgid "Activate License"
 msgstr ""
 
-#: includes/admin/admin-actions.php:1416
+#: includes/admin/admin-actions.php:1410
 msgid "Priority Support"
 msgstr ""
 

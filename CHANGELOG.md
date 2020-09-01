@@ -106,7 +106,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
 
-[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...HEAD
+[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0-rc.1...HEAD
+[2.8.0-rc.1]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...2.8.0-rc.1
 [2.8.0-beta.3]: https://github.com/impress-org/givewp/compare/2.8.0-beta.2...2.8.0-beta.3
 [2.8.0-beta.2]: https://github.com/impress-org/givewp/compare/2.8.0-beta.1...2.8.0-beta.2
 [2.8.0-beta.1]: https://github.com/impress-org/givewp/compare/2.8.0-alpha.2...2.8.0-beta.1
