@@ -24,7 +24,7 @@ class CustomCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * @inheritDoc
+	 * @inheritDocregisterEvents
 	 */
 	registerEvents() {
 		if ( this.recurringChoiceField ) {
@@ -37,13 +37,13 @@ class CustomCardFields extends PaymentMethod {
 	/**
 	 * @inheritDoc
 	 */
-	onGatewayLoadBoot( evt, response, formIdAttr ) {
-		const self = evt.data.self;
+	onGatewayLoadBoot( evt, self ) {
+		if ( evt.detail.formIdAttr === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
+			self.setUpProperties();
+			self.registerEvents();
+		}
 
-		self.setUpProperties();
-		self.registerEvents();
-
-		super.onGatewayLoadBoot( evt, response, formIdAttr );
+		super.onGatewayLoadBoot( evt, self );
 	}
 
 	/**
