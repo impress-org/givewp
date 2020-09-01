@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Milestone block is now available in the block editor (#5224)
+
 ## [2.8.0] - 2020-08-31
 
 ## [2.8.0-rc.1] - 2020-08-31
@@ -17,10 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   PHP Notices no longer break multi-step form receipt step. (#5219)
 -   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
 -   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
-
-### Added
-
--   Milestone block is now available in the block editor (#5224)
 
 ## [2.8.0-beta.3] - 2020-08-27
 
