@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Milestone block is now available in the block editor
+-   Milestone block is now available in the block editor (#5224)
 
 ## [2.8.0-beta.3] - 2020-08-27
 
