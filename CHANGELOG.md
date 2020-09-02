@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Milestone block is now available in the block editor (#5224)
+-   Milestone block now supports a title and description (#5229)
 
 ## [2.8.0] - 2020-08-31
 
