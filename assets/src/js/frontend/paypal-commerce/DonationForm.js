@@ -75,17 +75,31 @@ class DonationForm {
 	 * @return {boolean}  Return whether or not donor opted in for subscription.
 	 */
 	static isRecurringDonation( form ) {
-		const recurringChoiceField = form.querySelector( 'input[name="give-recurring-period"]' );
-
-		if ( recurringChoiceField ) {
-			return recurringChoiceField && recurringChoiceField.checked;
-		}
-
 		// Recurring choice field will be not available if donation form set to "Admin Defined" Recurring Donations.
 		// In that case we can still find type of donation by checking "_give_is_donation_recurring" field value.
 		const recurringChoiceHiddenField = form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 
 		return recurringChoiceHiddenField && '1' === recurringChoiceHiddenField.value;
+	}
+
+	/**
+	 * Call function when change field attribute.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} element Javascript selector
+	 * @param {object} handler Function
+	 */
+	static trackRecurringHiddenFieldChange( element, handler ) {
+		const MutationObserver = new window.MutationObserver( function( mutations ) {
+			if ( 'value' === mutations[ 0 ].attributeName ) {
+				handler.call();
+			}
+		} );
+
+		MutationObserver.observe( element, {
+			attributes: true,
+		} );
 	}
 }
 

@@ -78,7 +78,7 @@ class AdvancedCardFields extends PaymentMethod {
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
 
 		if ( this.customCardFields.recurringChoiceField ) {
-			this.customCardFields.recurringChoiceField.addEventListener( 'change', this.toggleFields.bind( this ) );
+			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceField, this.toggleFields.bind( this ) );
 		}
 	}
 
