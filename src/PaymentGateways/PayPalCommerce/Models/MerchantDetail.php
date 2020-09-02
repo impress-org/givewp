@@ -76,6 +76,15 @@ class MerchantDetail {
 	public $supportsCustomPayments;
 
 	/**
+	 * PayPal account accountCountry.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @var bool
+	 */
+	public $accountCountry;
+
+	/**
 	 * Access token.
 	 *
 	 * @since 2.9.0
@@ -100,6 +109,7 @@ class MerchantDetail {
 			'token'                  => $this->tokenDetails,
 			'accountIsReady'         => $this->accountIsReady,
 			'supportsCustomPayments' => $this->supportsCustomPayments,
+			'accountCountry'         => $this->accountCountry,
 		];
 	}
 
@@ -142,6 +152,7 @@ class MerchantDetail {
 		$this->tokenDetails           = $merchantDetails['token'];
 		$this->accountIsReady         = $merchantDetails['accountIsReady'];
 		$this->supportsCustomPayments = $merchantDetails['supportsCustomPayments'];
+		$this->accountCountry         = $merchantDetails['accountCountry'];
 		$this->accessToken            = $this->tokenDetails['accessToken'];
 	}
 
@@ -161,6 +172,7 @@ class MerchantDetail {
 			'token',
 			'accountIsReady',
 			'supportsCustomPayments',
+			'accountCountry',
 		];
 
 		if ( array_diff( $required, array_keys( $merchantDetails ) ) ) {

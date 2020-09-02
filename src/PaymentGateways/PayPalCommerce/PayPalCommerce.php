@@ -101,7 +101,7 @@ class PayPalCommerce implements PaymentGateway {
 		Hooks::addAction( 'wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets' );
 
 		Hooks::addAction( 'give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken' );
-		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm', 10, 3 );
+		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm' );
 		Hooks::addAction( 'give_gateway_paypal-commerce', DonationProcessor::class, 'handle' );
 
 		Hooks::addAction( 'admin_init', AccountAdminNotices::class, 'displayNotices' );

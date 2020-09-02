@@ -1,7 +1,8 @@
-/* globals jQuery, givePayPalCommerce */
+/* globals jQuery */
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';
+import CustomCardFields from './CustomCardFields';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
@@ -14,12 +15,19 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const $form = $formWrap.querySelector( '.give-form' );
 		const smartButtons = new SmartButtons( $form );
 
-		if ( !! window.givePayPalCommerce.supportsCustomPayments ) {
-			const advancedCardFields = new AdvancedCardFields( $form );
-			advancedCardFields.boot();
-		}
-
 		smartButtons.boot();
+
+		// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
+		if ( AdvancedCardFields.canShow() ) {
+			const customCardFields = new CustomCardFields( $form );
+			const advancedCardFields = new AdvancedCardFields( customCardFields );
+
+			customCardFields.boot();
+			advancedCardFields.boot();
+		} else {
+			const customCardFields = new CustomCardFields( $form );
+			customCardFields.removeFields();
+		}
 	} );
 
 	// On form submit prevent submission for PayPal commerce.

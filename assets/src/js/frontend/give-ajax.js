@@ -367,6 +367,7 @@ function give_load_gateway( form_object, payment_mode ) {
 		const gatewayLoadedEvent = new CustomEvent( 'give_gateway_loaded', {
 			detail: {
 				selectedGateway: payment_mode,
+				formIdAttribute: jQuery( form_object ).attr( 'id' ),
 			},
 		} );
 		document.dispatchEvent( gatewayLoadedEvent );

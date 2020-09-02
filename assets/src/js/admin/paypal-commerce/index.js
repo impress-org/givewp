@@ -33,6 +33,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		new Give.modal.GiveSuccessAlert( {
 			classes: {
 				modalWrapper: 'paypal-commerce-connect',
+				cancelBtn: 'give-button--primary',
 			},
 			modalContent: {
 				title: window.givePayPalCommerce.translations.connectSuccessTitle,
@@ -43,6 +44,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 						<ul>${ pciWarnings }</ul>
 					</div>
 				`.trim(),
+				cancelBtnTitle: Give.fn.getGlobalVar( 'confirm' ),
 			},
 			closeOnBgClick: true,
 		} ).render();

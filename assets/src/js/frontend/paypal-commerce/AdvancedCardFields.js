@@ -3,9 +3,17 @@ import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 
 class AdvancedCardFields extends PaymentMethod {
-	constructor( form ) {
-		super( form );
+	/**
+	 * @since 2.9.0
+	 *
+	 * @param {CustomCardFields} customCardFields CustomCardFields class object.
+	 */
+	constructor( customCardFields ) {
+		super( customCardFields.form );
 
+		this.customCardFields = customCardFields;
+		this.cardFields = {};
+		this.hostedCardFieldsContainers = {};
 		this.hostedFieldContainerStyleProperties = [
 			'background-color',
 			'box-sizing',
@@ -37,7 +45,9 @@ class AdvancedCardFields extends PaymentMethod {
 		};
 
 		this.setFocusStyle();
+		this.computedStyles();
 	}
+
 	/**
 	 * Return whether or not render credit card fields.
 	 *
@@ -45,8 +55,8 @@ class AdvancedCardFields extends PaymentMethod {
 	 *
 	 * @return {boolean} Return boolean value whether we can render card fields or not.
 	 */
-	canRenderFields() {
-		return paypal.HostedFields.isEligible() === true;
+	static canShow() {
+		return paypal.HostedFields.isEligible() === true && !! window.givePayPalCommerce.supportsCustomPayments;
 	}
 
 	/**
@@ -55,31 +65,56 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	async renderPaymentMethodOption() {
-		this.setStyles();
-		this.addInitialStyleToHostedFieldsContainer();
-		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
-
-		if ( ! this.canRenderFields() ) {
-			Array.from( this.form.getElementsByClassName( 'give-paypal-commerce-cc-field-wrap' ) ).forEach(
-				el => {
-					// Remove separator.
-					if ( el.previousElementSibling.classList.contains( 'separator-with-text' ) ) {
-						el.previousElementSibling.remove();
-					}
-					el.remove();
-				}
-			);
-			return;
-		}
+		this.setupContainerForHostedCardFields();
+		this.applyStyleToContainer();
 
 		const createOrder = this.createOrderHandler.bind( this );
-		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 		const styles = await this.getComputedInputFieldForHostedField();
-		const fields = this.getFields();
-
+		const fields = this.getPayPalHostedCardFields();
 		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
-		this.applyStyleWhenEventTriggerOnHostedFields( hostedCardFields );
+		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
+
+		this.addEventToHostedFields( hostedCardFields );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
+
+		if ( this.customCardFields.recurringChoiceField ) {
+			this.customCardFields.recurringChoiceField.addEventListener( 'change', this.toggleFields.bind( this ) );
+		}
+	}
+
+	/**
+	 * Apply style when hosted card field container rendered.
+	 *
+	 * @since 2.9.0
+	 */
+	applyStyleToContainer() {
+		this.setStyles();
+		this.addInitialStyleToHostedFieldsContainer();
+		this.setHostedFieldContainerHeight();
+
+		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
+	}
+
+	/**
+	 * Set container for histed card fields.
+	 *
+	 * @since 2.9.0
+	 */
+	setupContainerForHostedCardFields() {
+		const cardFields = this.customCardFields.cardFields;
+		let fieldType = '';
+
+		for ( const cardFieldsKey in cardFields ) {
+			const container = document.createElement( 'div' );
+
+			fieldType = cardFields[ cardFieldsKey ].el.getAttribute( 'name' );
+			container.setAttribute( 'id', `give-${ cardFields[ cardFieldsKey ].el.getAttribute( 'id' ) }` );
+			container.setAttribute( 'class', 'give-paypal-commerce-cc-field' );
+
+			this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
+		}
+
+		this.toggleFields();
 	}
 
 	/**
@@ -110,18 +145,18 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 * @return {object} Return object of card input field container details.
 	 */
-	getFields() {
+	getPayPalHostedCardFields() {
 		return {
 			number: {
-				selector: `#${ this.form.querySelector( 'div[id^="give-card-number-field-"]' ).getAttribute( 'id' ) }`,
+				selector: `#${ this.hostedCardFieldsContainers.number.getAttribute( 'id' ) }`,
 				placeholder: givePayPalCommerce.cardFieldPlaceholders.cardNumber,
 			},
 			cvv: {
-				selector: `#${ this.form.querySelector( 'div[id^="give-card-cvc-field-"]' ).getAttribute( 'id' ) }`,
+				selector: `#${ this.hostedCardFieldsContainers.cvv.getAttribute( 'id' ) }`,
 				placeholder: givePayPalCommerce.cardFieldPlaceholders.cardCvc,
 			},
 			expirationDate: {
-				selector: `#${ this.form.querySelector( 'div[id^="give-card-expiration-field-"]' ).getAttribute( 'id' ) }`,
+				selector: `#${ this.hostedCardFieldsContainers.expirationDate.getAttribute( 'id' ) }`,
 				placeholder: givePayPalCommerce.cardFieldPlaceholders.expirationDate,
 			},
 		};
@@ -144,19 +179,6 @@ class AdvancedCardFields extends PaymentMethod {
 		} );
 
 		return await response.json();
-	}
-
-	/**
-	 * Return wether or not payment approved successfully.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return {Promise<boolean>} Return boolean whether Payment approved or not.
-	 */
-	async isPaymentApproved() {
-		const result = await this.approvePayment();
-
-		return true === result.success;
 	}
 
 	/**
@@ -199,6 +221,13 @@ class AdvancedCardFields extends PaymentMethod {
 	async onSubmitHandlerForDonationForm( event ) {
 		if ( ! DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
 			return true;
+		}
+
+		// If donor opted in for recurring donation then submit donation form because PayPal advanced card fields does not support subscription
+		// So, we'll create subscription on server with PayPal Subscription API.
+		if ( DonationForm.isRecurringDonation( this.form ) ) {
+			this.submitDonationForm();
+			return;
 		}
 
 		const hostedFieldOnSubmitErrorHandler = this.hostedFieldOnSubmitErrorHandler.bind( this );
@@ -274,8 +303,7 @@ class AdvancedCardFields extends PaymentMethod {
 
 		await DonationForm.attachOrderIdToForm( this.form, result.data.order.id );
 
-		this.jQueryForm.off( 'submit' );
-		this.jQueryForm.submit();
+		this.submitDonationForm();
 	}
 
 	/**
@@ -299,39 +327,33 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	addInitialStyleToHostedFieldsContainer() {
-		const fields = this.getFields();
-
 		// Apply styles
-		for ( const fieldKey in fields ) {
-			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
-
+		for ( const fieldKey in this.hostedCardFieldsContainers ) {
 			this.hostedFieldContainerStyleProperties.forEach( property => {
 				if ( 'height' === property && [ 'auto', '0px' ].includes( this.styles.container[ property ] ) ) {
 					return;
 				}
-				target.style.setProperty( property, this.styles.container[ property ] );
+				this.hostedCardFieldsContainers[ fieldKey ].style.setProperty( property, this.styles.container[ property ] );
 			} );
 		}
 	}
 
 	/**
-	 * Add initial style to hosted card field container.
+	 * Add event to hosted card fields.
 	 *
 	 * @since 2.9.0
 	 *
 	 * @param {object} hostedCardFields Hosted card field object
 	 */
-	applyStyleWhenEventTriggerOnHostedFields( hostedCardFields ) {
+	addEventToHostedFields( hostedCardFields ) {
 		const self = this;
 
 		hostedCardFields.on( 'focus', function( event ) {
-			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
-			target.style.border = self.styles[ 'input:focus' ].border;
+			self.hostedCardFieldsContainers[ event.emittedBy ].style.border = self.styles[ 'input:focus' ].border;
 		} );
 
 		hostedCardFields.on( 'blur', function( event ) {
-			const target = document.querySelector( self.getFields()[ event.emittedBy ].selector );
-			target.style.border = self.styles.container.border;
+			self.hostedCardFieldsContainers[ event.emittedBy ].style.border = self.styles.container.border;
 		} );
 	}
 
@@ -341,6 +363,19 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	setStyles() {
+		this.computedStyles();
+
+		const event = new Event( 'blur' );
+		const cardField = this.form.querySelector( 'input[name="card_name"]' );
+		cardField.dispatchEvent( event );
+	}
+
+	/**
+	 * Computed styles for hosted card field container and iframe input field.
+	 *
+	 * @since 2.9.0
+	 */
+	computedStyles() {
 		const cardField = this.form.querySelector( 'input[name="card_name"]' );
 		const computedStyle = window.getComputedStyle( cardField, null );
 
@@ -365,10 +400,6 @@ class AdvancedCardFields extends PaymentMethod {
 					...	this.styles[ 'input:placeholder' ],
 				};
 			} );
-
-			// Set style properties for container input field and input, placeholder.
-			const event = new Event( 'blur' );
-			cardField.dispatchEvent( event );
 		}
 	}
 
@@ -394,6 +425,8 @@ class AdvancedCardFields extends PaymentMethod {
 						...	this.styles[ 'input:focus' ],
 					};
 				} );
+
+				this.setHostedFieldContainerHeight();
 			}, { once: true } );
 		} );
 	}
@@ -404,7 +437,6 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	setHostedFieldContainerHeight() {
-		const fields = this.getFields();
 		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
 
 		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
@@ -412,9 +444,10 @@ class AdvancedCardFields extends PaymentMethod {
 		}
 
 		// Apply styles
-		for ( const fieldKey in fields ) {
-			const target = document.getElementById( fields[ fieldKey ].selector.replace( '#', '' ) );
-			target.style.setProperty( 'height', this.styles.container.height );
+		for ( const fieldKey in this.hostedCardFieldsContainers ) {
+			this.hostedCardFieldsContainers[ fieldKey ]
+				.style
+				.setProperty( 'height', this.styles.container.height );
 		}
 	}
 
@@ -508,6 +541,75 @@ class AdvancedCardFields extends PaymentMethod {
 			this.jQueryForm,
 			Give.form.fn.getErrorHTML( errors )
 		);
+	}
+
+	/**
+	 * Submit donation form.
+	 *
+	 * @since 2.9.0
+	 */
+	submitDonationForm() {
+		this.jQueryForm.off( 'submit' );
+		this.jQueryForm.submit();
+	}
+
+	/**
+	 * Toggle fields.
+	 *
+	 * @since 2.9.0
+	 */
+	toggleFields() {
+		const display = DonationForm.isRecurringDonation( this.form ) ? 'none' : 'block';
+		const canHideParentContainer = 'none' === display && ! this.customCardFields.canShow();
+
+		this.toggleCardNameField( canHideParentContainer );
+
+		for ( const key in this.hostedCardFieldsContainers ) {
+			this.hostedCardFieldsContainers[ key ].style.display = display;
+
+			// Hide parent container only if custom card fields is not available to process subscriptions.
+			this.hostedCardFieldsContainers[ key ].parentElement.style.display = canHideParentContainer ? 'none' : 'block';
+		}
+
+		// Hide separator only if custom card is not available for subscription.
+		this.customCardFields.separator.style.display = canHideParentContainer ? 'none' : 'flex';
+	}
+
+	/**
+	 * Handle card name field display logic.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {boolean} hide Flag to decide shor/hide card name field.
+	 */
+	toggleCardNameField( hide ) {
+		const cardField = this.form.querySelector( 'input[name="card_name"]' );
+
+		cardField.parentElement.style.display = hide ? 'none' : 'block';
+		cardField.disabled = hide;
+	}
+
+	/**
+	 * Get field type by field name.
+	 *
+	 * 2since 2.9.0
+	 *
+	 * @param {string} fieldName field name. Support only "card_number", "card_cvc", and "card_expiry"
+	 *
+	 * @return {string} field type.
+	 */
+	getFieldTypeByFieldName( fieldName ) {
+		if ( 'card_number' === fieldName ) {
+			return 'number';
+		}
+
+		if ( 'card_cvc' === fieldName ) {
+			return 'cvv';
+		}
+
+		if ( 'card_expiry' === fieldName ) {
+			return 'expirationDate';
+		}
 	}
 }
 

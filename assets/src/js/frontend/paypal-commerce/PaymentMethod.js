@@ -21,9 +21,14 @@ class PaymentMethod {
 	 * @since 2.9.0
 	 */
 	boot() {
-		jQuery( document ).on( 'give_gateway_loaded', { self: this }, this.onGatewayLoadBoot );
+		const self = this;
+
+		document.addEventListener( 'give_gateway_loaded', evt => {
+			this.onGatewayLoadBoot( evt, self );
+		} );
 
 		if ( DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
+			this.registerEvents();
 			this.renderPaymentMethodOption();
 		}
 	}
@@ -34,12 +39,10 @@ class PaymentMethod {
 	 * @since 2.9.0
 	 *
 	 * @param {object} evt Event object.
-	 * @param {*} response Form fields HTML for gateway.
-	 * @param {string} formIdAttr Form Id attribute value.
+	 * @param {object} self Class object.
 	 */
-	onGatewayLoadBoot( evt, response, formIdAttr ) {
-		const self = evt.data.self;
-		if ( formIdAttr === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
+	onGatewayLoadBoot( evt, self ) {
+		if ( evt.detail.formIdAttribute === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
 			self.renderPaymentMethodOption();
 		}
 	}
@@ -50,6 +53,13 @@ class PaymentMethod {
 	 * @since 2.9.0
 	 */
 	renderPaymentMethodOption() {}
+
+	/**
+	 * Register events.
+	 *
+	 * @since 2.9.0
+	 */
+	registerEvents() {}
 }
 
 export default PaymentMethod;

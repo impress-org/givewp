@@ -89,7 +89,7 @@ class PayPalOrder {
 		$this->validateCreateOrderArguments( $array );
 
 		$request = new OrdersCreateRequest();
-		$request->payPalPartnerAttributionId( PartnerDetails::$attributionId );
+		$request->payPalPartnerAttributionId( give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ) );
 		$request->body = [
 			'intent'              => 'CAPTURE',
 			'purchase_units'      => [
@@ -97,7 +97,7 @@ class PayPalOrder {
 					'reference_id'        => get_post_field( 'post_name', $array['formId'] ),
 					'description'         => '',
 					'amount'              => [
-						'value'         => give_maybe_sanitize_amount( $array['donationAmount'] ),
+						'value'         => give_maybe_sanitize_amount( $array['donationAmount'], [ 'currency' => give_get_currency( $array['formId'] ) ] ),
 						'currency_code' => give_get_currency( $array['formId'] ),
 					],
 					'payee'               => [

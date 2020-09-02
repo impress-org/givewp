@@ -22,7 +22,7 @@ class GiveModal {
 				type: '',
 				triggerSelector: '',
 				externalPlugin: 'magnificPopup',
-				classes: { modalWrapper: '' },
+				classes: { modalWrapper: '', cancelBtn: '' },
 				modalContent: {},
 			},
 			obj
@@ -66,7 +66,7 @@ class GiveModal {
 					${ ( 'form' === this.config.type ) ? '<div class="spinner"></div>' : '' }
 					${ ( 'form' === this.config.type ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }">${ this.config.modalContent.link_text }</a>` : '' }
 
-					<button class="give-button give-button--secondary give-popup-close-button">
+					<button class="give-button give-popup-close-button${ this.config.classes.cancelBtn ? ` ${ this.config.classes.cancelBtn }` : ' give-button--secondary' }">
 						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? Give.fn.getGlobalVar( 'cancel' ) : Give.fn.getGlobalVar( 'close' ) ) }
 					</button>
 

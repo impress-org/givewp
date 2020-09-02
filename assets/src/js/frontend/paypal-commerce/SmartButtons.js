@@ -1,18 +1,41 @@
-/* globals paypal, Give, FormData, givePayPalCommerce, jQuery */
+/* globals paypal, Give, FormData, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
+import CustomCardFields from './CustomCardFields';
+import AdvancedCardFields from './AdvancedCardFields';
 
 /**
  * PayPal Smart Buttons.
  */
 class SmartButtons extends PaymentMethod {
+	constructor( form ) {
+		super( form );
+
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
+	}
+	/**
+	 * Get smart button container.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return {object} Smart button container selector.
+	 */
+	getButtonContainer() {
+		const smartButtonWrap = document.createElement( 'div' );
+		this.ccFieldsContainer = this.ccFieldsContainer.length ? this.ccFieldsContainer : this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
+
+		smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
+
+		return this.ccFieldsContainer.insertBefore( smartButtonWrap, this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' ) );
+	}
+
 	/**
 	 * Render smart buttons.
 	 *
 	 * @since 2.9.0
 	 */
 	renderPaymentMethodOption() {
-		this.smartButtonContainer = this.form.querySelector( '#give-paypal-commerce-smart-buttons-wrap div' );
+		this.smartButtonContainer = this.getButtonContainer();
 
 		if ( ! this.smartButtonContainer ) {
 			return;
@@ -64,20 +87,19 @@ class SmartButtons extends PaymentMethod {
 	async onClickHandler(data, actions) { // eslint-disable-line
 		const formData = new FormData( this.form );
 
-		formData.delete( 'card_name' );
-		this.resetCreditCardFields();
-
-		if ( ! Give.form.fn.isDonationFormHtml5Valid( this.form, true ) ) {
-			return actions.reject();
+		if ( AdvancedCardFields.canShow() ) {
+			formData.delete( 'card_name' );
+			formData.delete( 'card_cvc' );
+			formData.delete( 'card_number' );
+			formData.delete( 'card_expiry' );
 		}
 
 		Give.form.fn.removeErrors( this.jQueryForm );
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
-			// Allow external logic to handler onclick event
-			if ( this.smartButtonHasExternalOnClickHandler() ) {
-				jQuery( document ).trigger( 'GivePayPalCommerce:onClickSmartButton', [ this ] );
+			if ( DonationForm.isRecurringDonation( this.form ) ) {
+				this.submitDonationForm();
 
 				return actions.reject();
 			}
@@ -179,6 +201,15 @@ class SmartButtons extends PaymentMethod {
 		const orderData = responseJson.data.order;
 		await DonationForm.attachOrderIdToForm( this.form, orderData.id );
 
+		this.submitDonationForm();
+	}
+
+	/**
+	 * Submit donation form.
+	 *
+	 * @since 2.9.0
+	 */
+	submitDonationForm() {
 		// Do not submit  empty or filled Name credit card field with form.
 		// If we do that we will get `empty_card_name` error or other.
 		// We are removing this field before form submission because this donation processed with smart button.
@@ -188,36 +219,22 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
-	 * Reset Card fields.
-	 *
-	 * @since 2.9.0
-	 */
-	resetCreditCardFields() {
-		this.jQueryForm.find( 'input[name="card_name"]' ).val( '' );
-	}
-
-	/**
 	 * Remove Card fields.
 	 *
 	 * @since 2.9.0
 	 */
 	removeCreditCardFields() {
-		this.jQueryForm.find( 'input[name="card_name"]' ).remove();
-	}
+		// Remove custom card fields.
+		if ( AdvancedCardFields.canShow() ) {
+			this.jQueryForm.find( 'input[name="card_name"]' ).parent().remove();
+			this.ccFieldsContainer.querySelector( '.separator-with-text' ).remove(); // Remove separator.
 
-	/**
-	 * Return whether or not smart button has external or click handler.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return {boolean} Return boolean whether or not fire custom event.
-	 */
-	smartButtonHasExternalOnClickHandler() {
-		// Note: "data-customClickHandler" is only for internal use, so do not use it in production.
-		// This property allow us to submit donation form instead of processing payment withing PayPal model when click on smart button.
-		// Set it to true if you want to handle form submission on server.
-		// If donor is opted in for subscription (recurring add-on) then you do not have to overwrite this because we are handling it in recurring addon: give-recurring.js::init().
-		return 'true' === this.smartButtonContainer.getAttribute( 'data-customClickHandler' );
+			const $customCardFields = new CustomCardFields( this.form );
+
+			for ( const key in $customCardFields.cardFields ) {
+				$customCardFields.cardFields[ key ].el.parentElement.remove();
+			}
+		}
 	}
 }
 

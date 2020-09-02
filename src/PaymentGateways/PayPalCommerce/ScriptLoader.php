@@ -191,6 +191,8 @@ EOT;
 				// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 				'hostedCardFieldStyles'                 => apply_filters( 'give_paypal_commerce_hosted_field_style', [] ),
 				'supportsCustomPayments'                => $merchant->supportsCustomPayments ? 1 : '',
+				'accountCountry'                        => $merchant->accountCountry,
+				'separatorLabel'                        => esc_html__( 'Or pay with card', 'give' ),
 			]
 		);
 	}
@@ -215,7 +217,7 @@ EOT;
 			'src=',
 			sprintf(
 				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
-				PartnerDetails::$attributionId,
+				give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ),
 				$this->merchantRepository->getClientToken()
 			),
 			$tag
