@@ -51,9 +51,15 @@ const MultiSelectControl = ( { name, label, help, className, value, hideLabelFro
 
 MultiSelectControl.propTypes = {
 	label: PropTypes.string,
-	value: PropTypes.string.isRequired,
+	value: PropTypes.any.isRequired,
 	onChange: PropTypes.func,
 	options: PropTypes.array.isRequired,
+	name: PropTypes.string.isRequired,
+	help: PropTypes.string,
+	className: PropTypes.string,
+	hideLabelFromVision: PropTypes.bool,
+	isLoading: PropTypes.bool,
+	isDisabled: PropTypes.bool,
 };
 
 MultiSelectControl.defaultProps = {
