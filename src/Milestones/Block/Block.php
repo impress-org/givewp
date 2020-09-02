@@ -9,11 +9,11 @@ class Block {
 	 *
 	 * @since 2.9.0
 	 **/
-	public function add_block() {
+	public function addBlock() {
 		register_block_type(
 			'give/milestone',
 			[
-				'render_callback' => [ $this, 'render_callback' ],
+				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
 					'title' => [
 						'type'    => 'string',
@@ -30,10 +30,10 @@ class Block {
 	 *
 	 * @since 2.9.0
 	 **/
-	public function render_callback( $attributes ) {
+	public function renderCallback( $attributes ) {
 		ob_start();
 		$output = '';
-		require $this->get_template_path();
+		require $this->getTemplatePath();
 		$output = ob_get_contents();
 		ob_end_clean();
 		return $output;
@@ -44,7 +44,7 @@ class Block {
 	 *
 	 * @since 2.9.0
 	 **/
-	public function get_template_path() {
+	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/Milestones/templates/milestone-block.php';
 	}
 }

@@ -18,6 +18,6 @@ class Milestones implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function boot() {
-		Hooks::addAction( 'init', MilestoneBlock::class, 'add_block' );
+		Hooks::addAction( 'init', MilestoneBlock::class, 'addBlock' );
 	}
 }
