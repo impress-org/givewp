@@ -98,7 +98,7 @@ class DonationForm {
 		} );
 
 		MutationObserver.observe( element, {
-			attributes: true,
+			attributeFilter: [ 'value' ],
 		} );
 	}
 }
