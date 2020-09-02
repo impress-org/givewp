@@ -14,7 +14,7 @@ const blockAttributes = {
 	},
 	description: {
 		type: 'string',
-		default: __( 'This is a sampel description for a Milestone block.', 'give' ),
+		default: __( 'This is a sample description for a Milestone block.', 'give' ),
 	},
 };
 
