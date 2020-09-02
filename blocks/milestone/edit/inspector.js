@@ -47,7 +47,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Forms', 'give' ) }
 					value={ formOptions.filter( option => forms.includes( option.value ) ) }
 					options={ formOptions }
-					onChange={ ( value ) => saveSetting( 'forms', value.map( ( option ) => option.value ) ) } />
+					onChange={ ( value ) => saveSetting( 'forms', value ? value.map( ( option ) => option.value ) : [] ) } />
 			</PanelBody>
 		</InspectorControls>
 	);
