@@ -8,6 +8,11 @@ import AdvancedCardFields from './AdvancedCardFields';
  * PayPal Smart Buttons.
  */
 class SmartButtons extends PaymentMethod {
+	constructor( form ) {
+		super( form );
+
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
+	}
 	/**
 	 * Get smart button container.
 	 *
@@ -16,12 +21,12 @@ class SmartButtons extends PaymentMethod {
 	 * @return {object} Smart button container selector.
 	 */
 	getButtonContainer() {
-		const ccFields = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		const smartButtonWrap = document.createElement( 'div' );
+		this.ccFieldsContainer = this.ccFieldsContainer.length ? this.ccFieldsContainer : this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
 
 		smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
 
-		return ccFields.insertBefore( smartButtonWrap, ccFields.querySelector( '[id^=give-card-number-wrap-]' ) );
+		return this.ccFieldsContainer.insertBefore( smartButtonWrap, this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' ) );
 	}
 
 	/**
@@ -221,12 +226,13 @@ class SmartButtons extends PaymentMethod {
 	removeCreditCardFields() {
 		// Remove custom card fields.
 		if ( AdvancedCardFields.canShow() ) {
-			this.jQueryForm.find( 'input[name="card_name"]' ).remove();
+			this.jQueryForm.find( 'input[name="card_name"]' ).parent().remove();
+			this.ccFieldsContainer.querySelector( '.separator-with-text' ).remove(); // Remove separator.
 
 			const $customCardFields = new CustomCardFields( this.form );
 
 			for ( const key in $customCardFields.cardFields ) {
-				$customCardFields.cardFields[ key ].el.remove();
+				$customCardFields.cardFields[ key ].el.parentElement.remove();
 			}
 		}
 	}
