@@ -22,13 +22,13 @@ import './editor.scss';
  */
 
 export default registerBlockType( 'give/milestone', {
-	title: __( 'Milestone' ),
+	title: __( 'Milestone', 'give' ),
 	description: __( 'The GiveWP Milestone block inserts an progress bar indicating donations raised across multiple forms. Each Milestone\'s presentation can be customized below.' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [
-		__( 'donation' ),
-		__( 'milestone' ),
+		__( 'donation', 'give' ),
+		__( 'milestone', 'give' ),
 	],
 	attributes: blockAttributes,
 	edit: Milestone,
