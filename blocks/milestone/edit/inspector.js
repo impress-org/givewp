@@ -1,9 +1,16 @@
 /**
  * WordPress dependencies
  */
+
 const { __ } = wp.i18n;
-const { InspectorControls, MediaUpload } = wp.blockEditor;
-const { PanelBody, TextControl, Button } = wp.components;
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+
+import ImageControl from '../../components/image-control';
 
 /**
  * Render Inspector Controls
@@ -25,21 +32,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
-				<MediaUpload
-					onSelect={ ( value ) => saveSetting( 'image', value.sizes.full.url ) }
-					render={ ( { open } ) => {
-						return image ? (
-							<img
-								src={ image }
-								onClick={ open }
-							/>
-						) : (
-							<Button onClick={ open }>
-								Set Milestone Image
-							</Button>
-						);
-					} }
-				/>
+				<ImageControl
+					name="image"
+					label={ __( 'Featured Image', 'give' ) }
+					value={ image }
+					onChange={ ( value ) => saveSetting( 'image', value ) } />
 			</PanelBody>
 		</InspectorControls>
 	);
