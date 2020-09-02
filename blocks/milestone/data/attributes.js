@@ -12,6 +12,10 @@ const blockAttributes = {
 		type: 'title',
 		default: __( 'Back to School Fundraiser', 'give' ),
 	},
+	image: {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default blockAttributes;

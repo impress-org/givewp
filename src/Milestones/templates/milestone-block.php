@@ -11,9 +11,11 @@
 
 <div class="give-milestone">
 	<div class="give-milestone__section">
+		<?php if ( ! empty( $attributes['image'] ) ) : ?>
 		<div class="give-milestone__image">
-			<img />
+			<img src="<?php echo $attributes['image']; ?>"/>
 		</div>
+		<?php endif; ?>
 	</div>
 	<div class="give-milestone__section">
 		<div class="give-milestone__title">

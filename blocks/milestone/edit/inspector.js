@@ -2,15 +2,15 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl } = wp.components;
+const { InspectorControls, MediaUpload } = wp.blockEditor;
+const { PanelBody, TextControl, Button } = wp.components;
 
 /**
  * Render Inspector Controls
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title } = attributes;
+	const { title, image } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -25,6 +25,21 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
+				<MediaUpload
+					onSelect={ ( value ) => saveSetting( 'image', value.sizes.full.url ) }
+					render={ ( { open } ) => {
+						return image ? (
+							<img
+								src={ image }
+								onClick={ open }
+							/>
+						) : (
+							<Button onClick={ open }>
+								Set Milestone Image
+							</Button>
+						);
+					} }
+				/>
 			</PanelBody>
 		</InspectorControls>
 	);
