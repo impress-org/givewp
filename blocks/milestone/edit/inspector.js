@@ -19,7 +19,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Donor Wall Settings' ) }>
+			<PanelBody title={ __( 'Milestone Settings', 'give' ) }>
 				<TextControl
 					name="title"
 					label={ __( 'Title', 'give' ) }
