@@ -23,6 +23,7 @@ const ImageControl = ( { name, label, help, className, value, hideLabelFromVisio
 			className={ className }
 		>
 			<MediaUpload
+				allowedTypes={ [ 'image' ] }
 				onSelect={ ( media ) => onChange( media.sizes.full.url ) }
 				render={ ( { open } ) => {
 					return value ? (
