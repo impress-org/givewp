@@ -9,8 +9,12 @@ const { __ } = wp.i18n;
 
 const blockAttributes = {
 	title: {
-		type: 'title',
+		type: 'string',
 		default: __( 'Back to School Fundraiser', 'give' ),
+	},
+	forms: {
+		type: 'array',
+		default: [],
 	},
 };
 

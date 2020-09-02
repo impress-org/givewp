@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const ServerSideRender = wp.serverSideRender;
-const { withSelect } = wp.data;
 const { Fragment } = wp.element;
 
 /**
@@ -23,8 +22,4 @@ const Milestone = ( { attributes, setAttributes } ) => {
 	);
 };
 
-export default withSelect( ( select ) => {
-	return {
-		forms: select( 'core' ).getEntityRecords( 'postType', 'give_forms' ),
-	};
-} )( Milestone );
+export default Milestone;
