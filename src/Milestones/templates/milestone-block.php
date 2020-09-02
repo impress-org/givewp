@@ -19,6 +19,9 @@
 		<div class="give-milestone__title">
 			<?php echo $attributes['title']; ?>
 		</div>
+		<div class="give-milestone__description">
+			<?php echo $attributes['description']; ?>
+		</div>
 		<div class="give-milestone__progress">
 			<div class="give-milestone__progress-bar" style="width: 60%"></div>
 		</div>
