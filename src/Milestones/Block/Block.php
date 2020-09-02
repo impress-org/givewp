@@ -15,9 +15,13 @@ class Block {
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
-					'title' => [
+					'title'       => [
 						'type'    => 'string',
 						'default' => __( 'Back to School Fundraiser', 'give' ),
+					],
+					'description' => [
+						'type'    => 'string',
+						'default' => __( 'This is a sample description for a Milestone block.', 'give' ),
 					],
 				],
 
