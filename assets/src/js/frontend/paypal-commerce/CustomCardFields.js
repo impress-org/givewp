@@ -20,15 +20,15 @@ class CustomCardFields extends PaymentMethod {
 	setUpProperties() {
 		this.payPalSupportedCountriesForCardSubscription = [ 'US', 'AU' ];
 		this.cardFields = this.getCardFields();
-		this.recurringChoiceField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 	}
 
 	/**
 	 * @inheritDocregisterEvents
 	 */
 	registerEvents() {
-		if ( this.recurringChoiceField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceField, this.renderPaymentMethodOption.bind( this ) );
+		if ( this.recurringChoiceHiddenField ) {
+			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, this.renderPaymentMethodOption.bind( this ) );
 		}
 
 		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
