@@ -8,14 +8,14 @@ const { registerBlockType } = wp.blocks;
  * Internal dependencies
  */
 import blockAttributes from './data/attributes';
-import GiveLogo from '../components/logo';
+import GiveLogo from './components/logo';
 import Milestone from './edit';
 
 /**
  * Required styles (both common and editor styles)
  */
-import './common.scss';
-import './editor.scss';
+import '../css/common.scss';
+import '../css/editor.scss';
 
 /**
  * Register Block

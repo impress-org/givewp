@@ -7,16 +7,18 @@ const { PanelBody, TextControl } = wp.components;
 const { useSelect } = wp.data;
 
 /**
- * Internal Dependencies
+ * Internal dependencies
  */
-import MultiSelectControl from '../../components/multi-select-control';
+
+import ImageControl from '../components/image-control';
+import MultiSelectControl from '../components/multi-select-control';
 
 /**
  * Render Inspector Controls
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, ids } = attributes;
+	const { title, description, image, ids } = attributes;
 	const formOptions = useSelect( ( select ) => {
 		const records = select( 'core' ).getEntityRecords( 'postType', 'give_forms' );
 		if ( records ) {
@@ -42,6 +44,16 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
+				<TextControl
+					name="description"
+					label={ __( 'Description', 'give' ) }
+					value={ description }
+					onChange={ ( value ) => saveSetting( 'description', value ) } />
+				<ImageControl
+					name="image"
+					label={ __( 'Featured Image', 'give' ) }
+					value={ image }
+					onChange={ ( value ) => saveSetting( 'image', value ) } />
 				<MultiSelectControl
 					name="ids"
 					label={ __( 'Forms', 'give' ) }

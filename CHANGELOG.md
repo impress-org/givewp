@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Milestone block is now available in the block editor (#5224)
+-   Milestone block now supports a title and description (#5229)
+-   Milestone now supports a featured image (#5234)
 -   Milestone can now be associated with one or many forms (#5230)
 -   Milestone now displays aggregated earnings based on associated forms (#5236)
 
