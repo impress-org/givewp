@@ -33,6 +33,10 @@ class Block {
 						'type'    => 'array',
 						'default' => [],
 					],
+					'deadline'    => [
+						'type'    => 'string',
+						'default' => '',
+					],
 				],
 
 			]
@@ -51,6 +55,7 @@ class Block {
 				'description' => $attributes['description'],
 				'image'       => $attributes['image'],
 				'ids'         => $attributes['ids'],
+				'deadline'    => $attributes['deadline'],
 			]
 		);
 		return $milestone->getOutput();
