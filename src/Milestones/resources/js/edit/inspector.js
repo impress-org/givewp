@@ -10,7 +10,7 @@ const { PanelBody, TextControl } = wp.components;
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title } = attributes;
+	const { title, description } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -25,6 +25,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
+				<TextControl
+					name="description"
+					label={ __( 'Description', 'give' ) }
+					value={ description }
+					onChange={ ( value ) => saveSetting( 'description', value ) } />
 			</PanelBody>
 		</InspectorControls>
 	);

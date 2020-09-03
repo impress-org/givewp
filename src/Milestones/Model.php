@@ -7,6 +7,7 @@ class Model {
 
 	// Settings
 	protected $title;
+	protected $description;
 
 	/**
 	 * Constructs and sets up setting variables for a new Milestone model
@@ -15,7 +16,8 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['title'] ) ? $this->title = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
+		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
+		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
 	}
 
 	/**
@@ -41,6 +43,16 @@ class Model {
 	 **/
 	protected function getTitle() {
 		return $this->title;
+	}
+
+	/**
+	 * Get description for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getDescription() {
+		return $this->description;
 	}
 
 	/**

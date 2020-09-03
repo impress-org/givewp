@@ -16,6 +16,9 @@
 		<div class="give-milestone__title">
 			<?php echo $this->getTitle(); ?>
 		</div>
+		<div class="give-milestone__description">
+			<?php echo $this->getDescription(); ?>
+		</div>
 		<div class="give-milestone__progress">
 			<div class="give-milestone__progress-bar" style="width: 60%"></div>
 		</div>
