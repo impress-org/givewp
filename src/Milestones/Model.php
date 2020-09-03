@@ -9,6 +9,7 @@ class Model {
 	protected $title;
 	protected $description;
 	protected $image;
+	protected $goal;
 
 	/**
 	 * Constructs and sets up setting variables for a new Milestone model
@@ -20,6 +21,7 @@ class Model {
 		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
 		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
+		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 	}
 
 	/**
@@ -65,6 +67,16 @@ class Model {
 	 **/
 	protected function getImage() {
 		return $this->image;
+	}
+
+	/**
+	 * Get goal for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getGoal() {
+		return $this->goal;
 	}
 
 	/**
