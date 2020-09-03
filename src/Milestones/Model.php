@@ -10,6 +10,7 @@ class Model {
 	protected $description;
 	protected $image;
 	protected $ids;
+	protected $goal;
 
 	// Internal
 	protected $forms = [];
@@ -25,6 +26,7 @@ class Model {
 		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
+		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 	}
 
 	/**
@@ -117,6 +119,16 @@ class Model {
 	 **/
 	protected function getImage() {
 		return $this->image;
+	}
+
+	/**
+	 * Get goal for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getGoal() {
+		return $this->goal;
 	}
 
 	/**

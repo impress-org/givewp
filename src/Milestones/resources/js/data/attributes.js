@@ -24,6 +24,10 @@ const blockAttributes = {
 		type: 'array',
 		default: [],
 	},
+	goal: {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default blockAttributes;

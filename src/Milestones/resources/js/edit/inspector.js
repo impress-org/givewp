@@ -18,7 +18,7 @@ import MultiSelectControl from '../components/multi-select-control';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids } = attributes;
+	const { title, description, image, ids, goal } = attributes;
 	const formOptions = useSelect( ( select ) => {
 		const records = select( 'core' ).getEntityRecords( 'postType', 'give_forms' );
 		if ( records ) {
@@ -60,6 +60,13 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ formOptions.filter( option => ids.includes( option.value ) ) }
 					options={ formOptions }
 					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
+				<TextControl
+					name="goal"
+					label={ __( 'Goal', 'give' ) }
+					type="number"
+					onChange={ ( value ) => saveSetting( 'goal', value ) }
+					value={ goal }
+				/>
 			</PanelBody>
 		</InspectorControls>
 	);
