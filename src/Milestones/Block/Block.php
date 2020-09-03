@@ -19,7 +19,7 @@ class Block {
 						'type'    => 'string',
 						'default' => __( 'Back to School Fundraiser', 'give' ),
 					],
-					'forms' => [
+					'ids'   => [
 						'type'    => 'array',
 						'default' => [],
 					],
