@@ -2,6 +2,7 @@
 
 namespace Give\Milestones\Model;
 
+
 class Model {
 
 	// Settings
@@ -11,11 +12,23 @@ class Model {
 	// Internal
 	protected $forms = [];
 
+	/**
+	 * Constructs and sets up setting variables for a new Milestone model
+	 *
+	 * @param array $args Arguments for new Milestone, including 'ids' and 'title'
+	 * @since 2.9.0
+	 **/
 	public function __construct( array $args ) {
 		isset( $args['ids'] ) ? $this->ids     = $args['ids'] : $this->ids = [];
 		isset( $args['title'] ) ? $this->title = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
 	}
 
+	/**
+	 * Get forms associated with Milestone
+	 *
+	 * @return array
+	 * @since 2.9.0
+	 **/
 	protected function getForms() {
 
 		if ( ! empty( $this->forms ) ) {
@@ -42,6 +55,12 @@ class Model {
 		}
 	}
 
+	/**
+	 * Get output markup for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
 	public function getOutput() {
 		ob_start();
 		$output = '';
@@ -51,6 +70,12 @@ class Model {
 		return $output;
 	}
 
+	/**
+	 * Get raw earnings value for Milestone
+	 *
+	 * @return int
+	 * @since 2.9.0
+	 **/
 	protected function getEarnings() {
 		$forms    = $this->getForms();
 		$earnings = 0;
@@ -60,10 +85,22 @@ class Model {
 		return $earnings;
 	}
 
+	/**
+	 * Get title for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
 	protected function getTitle() {
 		return $this->title;
 	}
 
+	/**
+	 * Get template path for Milestone component template
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/Milestones/templates/milestone.php';
 	}
