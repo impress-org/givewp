@@ -25,6 +25,10 @@ class Block {
 						'type'    => 'string',
 						'default' => __( 'This is a sample description.', 'give' ),
 					],
+					'image'       => [
+						'type'    => 'string',
+						'default' => '',
+					],
 				],
 
 			]
@@ -41,6 +45,7 @@ class Block {
 			[
 				'title'       => $attributes['title'],
 				'description' => $attributes['description'],
+				'image'       => $attributes['image'],
 			]
 		);
 		return $milestone->getOutput();

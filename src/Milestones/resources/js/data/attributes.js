@@ -16,6 +16,10 @@ const blockAttributes = {
 		type: 'string',
 		default: __( 'This is a sample description.', 'give' ),
 	},
+	image: {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default blockAttributes;
