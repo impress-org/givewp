@@ -8,9 +8,9 @@
 
 <div class="give-milestone">
 	<div class="give-milestone__section">
-		<?php if ( ! empty( $attributes['image'] ) ) : ?>
+		<?php if ( ! empty( $this->getImage() ) ) : ?>
 		<div class="give-milestone__image">
-			<img src="<?php echo $attributes['image']; ?>"/>
+			<img src="<?php echo $this->getImage(); ?>"/>
 		</div>
 		<?php endif; ?>
 	</div>

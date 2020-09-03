@@ -7,6 +7,7 @@ class Model {
 
 	// Settings
 	protected $title;
+	protected $image;
 
 	/**
 	 * Constructs and sets up setting variables for a new Milestone model
@@ -16,6 +17,7 @@ class Model {
 	 **/
 	public function __construct( array $args ) {
 		isset( $args['title'] ) ? $this->title = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
+		isset( $args['image'] ) ? $this->image = $args['image'] : $this->image = '';
 	}
 
 	/**
@@ -41,6 +43,16 @@ class Model {
 	 **/
 	protected function getTitle() {
 		return $this->title;
+	}
+
+	/**
+	 * Get image for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getImage() {
+		return $this->image;
 	}
 
 	/**

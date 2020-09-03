@@ -8,7 +8,7 @@ const { registerBlockType } = wp.blocks;
  * Internal dependencies
  */
 import blockAttributes from './data/attributes';
-import GiveLogo from '../components/logo';
+import GiveLogo from './components/logo';
 import Milestone from './edit';
 
 /**

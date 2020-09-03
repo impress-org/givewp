@@ -40,6 +40,7 @@ class Block {
 		$milestone = new Milestone(
 			[
 				'title' => $attributes['title'],
+				'image' => $attributes['image'],
 			]
 		);
 		return $milestone->getOutput();

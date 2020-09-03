@@ -10,7 +10,7 @@ const { PanelBody, TextControl } = wp.components;
  * Internal dependencies
  */
 
-import ImageControl from '../../components/image-control';
+import ImageControl from '../components/image-control';
 
 /**
  * Render Inspector Controls
