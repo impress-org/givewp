@@ -111,6 +111,12 @@ class Model {
 		return $this->deadline;
 	}
 
+	/**
+	 * Get days remaining before Milestone deadline
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
 	protected function getDaysToGo() {
 		$now      = new \DateTime();
 		$deadline = new \DateTime( $this->getDeadline() );
