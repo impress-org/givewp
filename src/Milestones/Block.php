@@ -1,6 +1,8 @@
 <?php
 
-namespace Give\Milestones\Block;
+namespace Give\Milestones;
+
+use Give\Milestones\Model as Milestone;
 
 class Block {
 
@@ -35,20 +37,11 @@ class Block {
 	 * @since 2.9.0
 	 **/
 	public function renderCallback( $attributes ) {
-		ob_start();
-		$output = '';
-		require $this->getTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
-		return $output;
-	}
-
-	/**
-	 * Returns template path used to render Milestone block
-	 *
-	 * @since 2.9.0
-	 **/
-	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/Milestones/templates/milestone-block.php';
+		$milestone = new Milestone(
+			[
+				'title' => $attributes['title'],
+			]
+		);
+		return $milestone->getOutput();
 	}
 }

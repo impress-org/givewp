@@ -26,8 +26,8 @@
 @import 'modal';
 @import '_components.donor';
 
-// Give Blocks common styles (used on frontend and in editor)
-@import '../../../../blocks/milestone/common.scss';
+// Load common Milestones css from the src directory
+@import '../../../../src//Milestones/resources/css/common.scss';
 
 // Stripe Core
 @import 'give-stripe';
