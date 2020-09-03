@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Milestone now supports a featured image (#5234)
 -   Milestone can now be associated with one or many forms (#5230)
 -   Milestone now displays aggregated earnings based on associated forms (#5236)
+-   Milestone now supports a deadline (#5239)
 
 ## [2.8.0] - 2020-08-31
 
