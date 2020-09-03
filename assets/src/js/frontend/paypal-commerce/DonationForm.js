@@ -44,7 +44,7 @@ class DonationForm {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param {object} $form Form object.
+	 * @param {object} $form Form jQuery object.
 	 *
 	 * @return {boolean} Return whether or not donor selected PayPal Commerce payment gateway.
 	 */
