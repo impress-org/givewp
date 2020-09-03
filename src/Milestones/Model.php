@@ -50,6 +50,6 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/Milestones/templates/milestone.php';
+		return GIVE_PLUGIN_DIR . '/src/Milestones/resources/views/milestone.php';
 	}
 }
