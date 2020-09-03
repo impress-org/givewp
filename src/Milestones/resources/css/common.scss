@@ -1,0 +1,54 @@
+// This file used for Milestone styles common to the frontend and editor
+
+.give-milestone {
+	display: grid;
+	grid-template-columns: 2fr 3fr;
+	padding: 16px;
+	grid-gap: 16px;
+	border: 1px solid #000;
+
+	.give-milestone__section {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+}
+
+.give-milestone__image {
+	width: 100%;
+	height: 0;
+	padding-top: 56.25%;
+	background: #888;
+	border: 1px solid #000;
+	position: relative;
+	overflow: hidden;
+
+	img {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		top: 0;
+		left: 0;
+	}
+}
+
+.give-milestone__progress {
+	height: 20px;
+	position: relative;
+	border: 1px solid #000;
+
+	.give-milestone__progress-bar {
+		position: absolute;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background: #888;
+	}
+}
+
+.give-milestone__context {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

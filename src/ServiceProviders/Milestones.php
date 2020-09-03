@@ -3,7 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Give\Helpers\Hooks;
-use Give\Milestones\Block\Block as MilestoneBlock;
+use Give\Milestones\Block as MilestoneBlock;
 
 class Milestones implements ServiceProvider {
 
