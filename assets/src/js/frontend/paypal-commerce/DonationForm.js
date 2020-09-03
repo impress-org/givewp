@@ -92,13 +92,22 @@ class DonationForm {
 	 */
 	static trackRecurringHiddenFieldChange( element, handler ) {
 		const MutationObserver = new window.MutationObserver( function( mutations ) {
-			if ( 'value' === mutations[ 0 ].attributeName ) {
-				handler.call();
+			// Exit if value does not change.
+			if ( mutations[ 0 ].oldValue === mutations[ 0 ].target.value ) {
+				return;
 			}
+
+			// Exit if paypal-commerce is not selected.
+			if ( ! DonationForm.isPayPalCommerceSelected( jQuery( mutations[ 0 ].target ).closest( '.give-form' ) ) ) {
+				return;
+			}
+
+			handler.call();
 		} );
 
 		MutationObserver.observe( element, {
 			attributeFilter: [ 'value' ],
+			attributeOldValue: true,
 		} );
 	}
 }
