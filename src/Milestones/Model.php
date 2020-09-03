@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Milestones\Model;
+namespace Give\Milestones;
 
 
 class Model {

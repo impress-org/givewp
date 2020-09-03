@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Milestones\Block;
+namespace Give\Milestones;
 
-use Give\Milestones\Model\Model as Milestone;
+use Give\Milestones\Model as Milestone;
 
 class Block {
 
