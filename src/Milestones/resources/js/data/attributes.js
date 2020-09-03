@@ -12,6 +12,14 @@ const blockAttributes = {
 		type: 'string',
 		default: __( 'Back to School Fundraiser', 'give' ),
 	},
+	description: {
+		type: 'string',
+		default: __( 'This is a sample description.', 'give' ),
+	},
+	image: {
+		type: 'string',
+		default: '',
+	},
 	ids: {
 		type: 'array',
 		default: [],
