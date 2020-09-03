@@ -3,9 +3,6 @@
  * Milestone block/shortcode template
  * Styles for this template are defined in 'blocks/milestone/common.scss'
  *
- * @param array $attributes[
- *  'title' => 'string',
- * ]
  */
 ?>
 
@@ -17,7 +14,7 @@
 	</div>
 	<div class="give-milestone__section">
 		<div class="give-milestone__title">
-			<?php echo $attributes['title']; ?>
+			<?php echo $this->getTitle(); ?>
 		</div>
 		<div class="give-milestone__progress">
 			<div class="give-milestone__progress-bar" style="width: 60%"></div>
