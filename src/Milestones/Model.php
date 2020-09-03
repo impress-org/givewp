@@ -9,6 +9,10 @@ class Model {
 	protected $title;
 	protected $description;
 	protected $image;
+	protected $ids;
+
+	// Internal
+	protected $forms = [];
 
 	/**
 	 * Constructs and sets up setting variables for a new Milestone model
@@ -20,6 +24,39 @@ class Model {
 		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
 		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
+		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
+	}
+
+	/**
+	 * Get forms associated with Milestone
+	 *
+	 * @return array
+	 * @since 2.9.0
+	 **/
+	protected function getForms() {
+
+		if ( ! empty( $this->forms ) ) {
+			return $this->forms;
+		}
+
+		$query_args = [
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'post__in'       => $this->ids,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'tax_query'      => [
+				'relation' => 'AND',
+			],
+		];
+		$query      = new \WP_Query( $query_args );
+
+		if ( $query->posts ) {
+			$this->forms = $query->posts;
+			return $query->posts;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -35,6 +72,21 @@ class Model {
 		$output = ob_get_contents();
 		ob_end_clean();
 		return $output;
+	}
+
+	/**
+	 * Get raw earnings value for Milestone
+	 *
+	 * @return int
+	 * @since 2.9.0
+	 **/
+	protected function getEarnings() {
+		$forms    = $this->getForms();
+		$earnings = 0;
+		foreach ( $forms as $form ) {
+			$earnings += ! empty( give_get_meta( $form, '_give_form_earnings', true ) ) ? give_get_meta( $form, '_give_form_earnings', true ) : 0;
+		}
+		return $earnings;
 	}
 
 	/**
@@ -58,7 +110,7 @@ class Model {
 	}
 
 	/**
-	 * Get template path for Milestone component template
+	 * Get image for Milestone
 	 *
 	 * @return string
 	 * @since 2.9.0

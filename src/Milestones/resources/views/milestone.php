@@ -26,7 +26,18 @@
 		</div>
 		<div class="give-milestone__context">
 			<span>
-				$600 of $1,000
+				<?php
+				echo give_currency_filter(
+					give_format_amount(
+						$this->getEarnings(),
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+				?>
+				 of $1,000
 			</span>
 			<span>
 				15 Days to Go
