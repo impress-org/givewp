@@ -53,9 +53,11 @@
 				);
 				?>
 			</span>
+			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
 			<span>
-				15 Days to Go
+				<?php echo $this->getDaysToGo(); ?> Days To Go
 			</span>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

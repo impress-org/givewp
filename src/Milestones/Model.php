@@ -10,6 +10,7 @@ class Model {
 	protected $description;
 	protected $image;
 	protected $ids;
+	protected $deadline;
 	protected $goal;
 
 	// Internal
@@ -26,6 +27,7 @@ class Model {
 		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
+		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 	}
 
@@ -99,6 +101,28 @@ class Model {
 	 **/
 	protected function getTitle() {
 		return $this->title;
+	}
+
+	/**
+	 * Get deadline for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getDeadline() {
+		return $this->deadline;
+	}
+
+	/**
+	 * Get days remaining before Milestone deadline
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getDaysToGo() {
+		$now      = new \DateTime();
+		$deadline = new \DateTime( $this->getDeadline() );
+		return $now < $deadline ? $deadline->diff( $now )->format( '%a' ) + 1 : 0;
 	}
 
 	/**

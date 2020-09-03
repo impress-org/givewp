@@ -33,6 +33,10 @@ class Block {
 						'type'    => 'array',
 						'default' => [],
 					],
+					'deadline'    => [
+						'type'    => 'string',
+						'default' => '',
+					],
 					'goal'        => [
 						'type'    => 'string',
 						'default' => '',
@@ -55,6 +59,7 @@ class Block {
 				'description' => $attributes['description'],
 				'image'       => $attributes['image'],
 				'ids'         => $attributes['ids'],
+				'deadline'    => $attributes['deadline'],
 				'goal'        => $attributes['goal'],
 			]
 		);
