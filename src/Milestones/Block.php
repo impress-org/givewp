@@ -54,6 +54,7 @@ class Block {
 				'title'       => $attributes['title'],
 				'description' => $attributes['description'],
 				'image'       => $attributes['image'],
+				'ids'         => $attributes['ids'],
 				'goal'        => $attributes['goal'],
 			]
 		);

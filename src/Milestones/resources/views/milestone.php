@@ -27,8 +27,7 @@
 		</div>
 		<?php endif; ?>
 		<div class="give-milestone__context">
-			<span>
-				$600 of 
+			<span> 
 				<?php
 				echo give_currency_filter(
 					give_format_amount(
@@ -38,7 +37,19 @@
 							'decimal'  => false,
 						]
 					)
-				)
+				);
+				?>
+				 of 
+				<?php
+				echo give_currency_filter(
+					give_format_amount(
+						$this->getEarnings(),
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
 				?>
 			</span>
 			<span>
