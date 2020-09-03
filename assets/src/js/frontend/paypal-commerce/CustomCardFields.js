@@ -38,7 +38,7 @@ class CustomCardFields extends PaymentMethod {
 	 * @inheritDoc
 	 */
 	onGatewayLoadBoot( evt, self ) {
-		if ( evt.detail.formIdAttribute === self.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( self.jQueryForm ) ) {
+		if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
 			self.setUpProperties();
 			self.registerEvents();
 		}
@@ -115,7 +115,22 @@ class CustomCardFields extends PaymentMethod {
 		}
 
 		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
-		this.form.querySelector( '[id*="give_cc_fields-"] .separator-with-text' ).parentElement.remove();
+	}
+
+	/**
+	 * Remove custom card fields on gateway load.
+	 *
+	 * @since 2.9.0
+	 */
+	removeFieldsOnGatewayLoad() {
+		const self = this;
+
+		document.addEventListener( 'give_gateway_loaded', evt => {
+			if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
+				self.setUpProperties();
+				self.removeFields.bind( self ).call();
+			}
+		} );
 	}
 
 	/**
@@ -132,6 +147,18 @@ class CustomCardFields extends PaymentMethod {
 		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ window.givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
 
 		return div;
+	}
+
+	/**
+	 * Return wther or not process donation form same donation form.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {string} formId Donation form id attribute value.
+	 * @return {boolean|boolean} Retrun true if processing same form otherwise false.
+	 */
+	isProcessingEventForForm( formId ) {
+		return formId === this.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( this.jQueryForm );
 	}
 }
 
