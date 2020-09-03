@@ -7,15 +7,11 @@ const { PanelBody, TextControl } = wp.components;
 const { useSelect } = wp.data;
 
 /**
- * Internal Dependencies
- */
-import MultiSelectControl from '../../components/multi-select-control';
-
-/**
  * Internal dependencies
  */
 
 import ImageControl from '../components/image-control';
+import MultiSelectControl from '../components/multi-select-control';
 
 /**
  * Render Inspector Controls
