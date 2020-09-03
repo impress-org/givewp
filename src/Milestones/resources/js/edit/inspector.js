@@ -16,7 +16,7 @@ import ImageControl from '../components/image-control';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, image } = attributes;
+	const { title, description, image } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -31,6 +31,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
+				<TextControl
+					name="description"
+					label={ __( 'Description', 'give' ) }
+					value={ description }
+					onChange={ ( value ) => saveSetting( 'description', value ) } />
 				<ImageControl
 					name="image"
 					label={ __( 'Featured Image', 'give' ) }
