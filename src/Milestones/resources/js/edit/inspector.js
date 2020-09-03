@@ -6,11 +6,17 @@ const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+
+import ImageControl from '../components/image-control';
+
+/**
  * Render Inspector Controls
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title } = attributes;
+	const { title, image } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -25,6 +31,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
+				<ImageControl
+					name="image"
+					label={ __( 'Featured Image', 'give' ) }
+					value={ image }
+					onChange={ ( value ) => saveSetting( 'image', value ) } />
 			</PanelBody>
 		</InspectorControls>
 	);

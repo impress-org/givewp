@@ -21,6 +21,10 @@ class Block {
 						'type'    => 'string',
 						'default' => __( 'Back to School Fundraiser', 'give' ),
 					],
+					'image' => [
+						'type'    => 'string',
+						'default' => '',
+					],
 				],
 
 			]
@@ -36,6 +40,7 @@ class Block {
 		$milestone = new Milestone(
 			[
 				'title' => $attributes['title'],
+				'image' => $attributes['image'],
 			]
 		);
 		return $milestone->getOutput();
