@@ -46,7 +46,6 @@ class Model {
 	}
 
 	/**
-	 * Get image for Milestone
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -57,8 +56,6 @@ class Model {
 
 	/**
 	 * Get template path for Milestone component template
-	 *
-	 * @return string
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {
