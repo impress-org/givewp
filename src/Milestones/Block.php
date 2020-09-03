@@ -29,6 +29,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '',
 					],
+					'ids'         => [
+						'type'    => 'array',
+						'default' => [],
+					],
 				],
 
 			]

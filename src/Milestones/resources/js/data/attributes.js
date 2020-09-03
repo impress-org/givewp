@@ -20,6 +20,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+	ids: {
+		type: 'array',
+		default: [],
+	},
 };
 
 export default blockAttributes;
