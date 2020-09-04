@@ -17,7 +17,7 @@ const Milestone = ( { attributes, setAttributes } ) => {
 	return (
 		<Fragment>
 			<Inspector { ... { attributes, setAttributes } } />
-			<ServerSideRender block="give/milestone" attributes={ attributes } />;
+			<ServerSideRender block="give/milestone" attributes={ attributes } />
 		</Fragment>
 	);
 };
