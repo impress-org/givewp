@@ -40,17 +40,19 @@
 					)
 				);
 				?>
-				 of 
 				<?php
-				echo give_currency_filter(
-					give_format_amount(
-						$this->getGoal(),
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
+				if ( ! empty( $this->getGoal() ) ) {
+					echo __( 'of ', 'give' );
+					echo give_currency_filter(
+						give_format_amount(
+							$this->getGoal(),
+							[
+								'sanitize' => false,
+								'decimal'  => false,
+							]
+						)
+					);
+				}
 				?>
 			</span>
 			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
