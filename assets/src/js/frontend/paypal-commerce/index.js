@@ -27,6 +27,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} else {
 			const customCardFields = new CustomCardFields( $form );
 			customCardFields.removeFields();
+			customCardFields.removeFieldsOnGatewayLoad();
 		}
 	} );
 

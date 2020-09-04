@@ -44,7 +44,7 @@ class DonationForm {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param {object} $form Form object.
+	 * @param {object} $form Form jQuery object.
 	 *
 	 * @return {boolean} Return whether or not donor selected PayPal Commerce payment gateway.
 	 */
@@ -75,17 +75,40 @@ class DonationForm {
 	 * @return {boolean}  Return whether or not donor opted in for subscription.
 	 */
 	static isRecurringDonation( form ) {
-		const recurringChoiceField = form.querySelector( 'input[name="give-recurring-period"]' );
-
-		if ( recurringChoiceField ) {
-			return recurringChoiceField && recurringChoiceField.checked;
-		}
-
 		// Recurring choice field will be not available if donation form set to "Admin Defined" Recurring Donations.
 		// In that case we can still find type of donation by checking "_give_is_donation_recurring" field value.
 		const recurringChoiceHiddenField = form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 
 		return recurringChoiceHiddenField && '1' === recurringChoiceHiddenField.value;
+	}
+
+	/**
+	 * Call function when change field attribute.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} element Javascript selector
+	 * @param {object} handler Function
+	 */
+	static trackRecurringHiddenFieldChange( element, handler ) {
+		const MutationObserver = new window.MutationObserver( function( mutations ) {
+			// Exit if value does not change.
+			if ( mutations[ 0 ].oldValue === mutations[ 0 ].target.value ) {
+				return;
+			}
+
+			// Exit if paypal-commerce is not selected.
+			if ( ! DonationForm.isPayPalCommerceSelected( jQuery( mutations[ 0 ].target ).closest( '.give-form' ) ) ) {
+				return;
+			}
+
+			handler.call();
+		} );
+
+		MutationObserver.observe( element, {
+			attributeFilter: [ 'value' ],
+			attributeOldValue: true,
+		} );
 	}
 }
 
