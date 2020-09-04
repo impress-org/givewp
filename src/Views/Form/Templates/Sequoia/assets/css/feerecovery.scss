@@ -2,13 +2,12 @@
 .give-fee-total-wrap.fee-coverage-required.give-fee-message,
 .give-fee-recovery-donors-choice.give-fee-message,
 .fee-break-down-message {
-	order: 3;
 	background: #fff;
 	border: 1px solid rgba(255, 255, 255, 0);
 	box-sizing: border-box;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
 	border-radius: 5px;
-	margin: 20px 30px 0 30px !important;
+	margin: 20px 30px 10px 30px !important;
 	padding: 0 !important;
 	position: relative;
 	transition: border 0.2s ease;
@@ -23,7 +22,15 @@
 	.give-fee-total-wrap.fee-coverage-required.give-fee-message,
 	.give-fee-recovery-donors-choice.give-fee-message,
 	.fee-break-down-message {
-		margin: 20px 0 0 0 !important;
+		margin: 20px 0 20px 0 !important;
+	}
+}
+
+.give-section.payment {
+	.give-fee-total-wrap.fee-coverage-required.give-fee-message,
+	.give-fee-recovery-donors-choice.give-fee-message,
+	.fee-break-down-message {
+		margin: 20px 20px 10px 20px !important;
 	}
 }
 
@@ -122,5 +129,27 @@
 		background-position: center;
 		clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
 		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+	}
+}
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+html[dir='rtl'] {
+	.give-fee-recovery-donors-choice.give-fee-message {
+		.give-fee-message-label-text {
+			margin-left: 0 !important;
+			margin-right: 40px !important;
+		}
+
+		.give-fee-message-label-text::before {
+			right: 22px;
+		}
+	}
+
+	input[type='checkbox'] + .give-fee-message-label-text::after {
+		right: 22px;
+		margin-right: 1px;
+		top: calc(50% - 11px);
 	}
 }

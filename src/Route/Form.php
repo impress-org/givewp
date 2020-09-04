@@ -121,20 +121,22 @@ class Form {
 	 *
 	 * @since 2.7.0
 	 * @since 2.8.0 Add support for all permalink settings.
+	 * @since 2.8.0 Specify URL scheme to avoid mixed content when loaded in the admin.
 	 *
 	 * @param int $form_id
 	 *
 	 * @return string
 	 */
 	public function getURL( $form_id ) {
+		$scheme = ( is_ssl() ) ? 'https' : 'http';
 		return get_option( 'permalink_structure' )
-			? home_url( "/{$this->base}/{$form_id}" )
+			? home_url( "/{$this->base}/{$form_id}", $scheme )
 			: add_query_arg(
 				[
 					'give_form_id' => $form_id,
 					'url_prefix'   => $this->base,
 				],
-				home_url()
+				home_url( '', $scheme )
 			);
 	}
 

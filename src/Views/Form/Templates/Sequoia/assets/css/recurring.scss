@@ -125,3 +125,25 @@
 		}
 	}
 }
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir='rtl'] {
+	.give-recurring-donors-choice {
+		label {
+			margin-right: 40px !important;
+			margin-left: 0 !important;
+		}
+
+		label::before {
+			right: 22px !important;
+		}
+
+		input[type='checkbox'] + label::after {
+			right: 22px;
+			margin-right: 1px;
+		}
+	}
+}

@@ -122,6 +122,11 @@
 				}
 				$( '.form-footer' ).css( 'margin-top', `${ height }px` );
 			} );
+
+			// If Fee Recovery input is not inside any step, move it to above payment options
+			if ( $( '.give-fee-recovery-donors-choice' ).parent().hasClass( 'give-form' ) ) {
+				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
+			}
 			navigator.goToStep( getInitialStep() );
 		},
 		back: () => {
@@ -315,6 +320,12 @@
 				// Setup gateway icons
 				setupGatewayIcons();
 
+				// Setup Form Field Manager input listeners
+				setupFFMInputs();
+
+				// Setup Icons for inputs
+				setupInputIcons();
+
 				const observer = new window.MutationObserver( function( mutations ) {
 					mutations.forEach( function( mutation ) {
 						if ( ! mutation.addedNodes ) {
@@ -503,7 +514,7 @@
 		// Check if donate fieldset area has been created, if not set it up below payment gateways
 		// This area is necessary for correctly placing various elements (fee recovery notice, newsletters, submit button, etc)
 		if ( $( '#donate-fieldset' ).length === 0 ) {
-			$( '#give-payment-mode-select' ).after( '<fieldset id="donate-fieldset"></fieldset>' );
+			$( '.give-section.payment' ).append( '<fieldset id="donate-fieldset"></fieldset>' );
 		}
 
 		// Elements to move into donate fieldset (located at bottom of form)
@@ -519,6 +530,7 @@
 		// Handle moving elements into donate fieldset
 		donateFieldsetElements.forEach( function( selector ) {
 			if ( $( `#donate-fieldset  ${ selector }` ).length === 0 ) {
+				$( `#donate-fieldset  ${ selector }` ).remove();
 				$( '#donate-fieldset' ).append( $( `#give_purchase_form_wrap ${ selector }` ) );
 			} else if ( $( `#donate-fieldset  ${ selector }` ).html() !== $( `#give_purchase_form_wrap  ${ selector }` ).html() && $( `#give_purchase_form_wrap  ${ selector }` ).html() !== undefined ) {
 				$( `#donate-fieldset  ${ selector }` ).remove();
@@ -527,18 +539,6 @@
 				$( `#give_purchase_form_wrap ${ selector }` ).remove();
 			}
 		} );
-
-		// Handle per-Gateway fee option
-		// If the fee recovery option wrapper is present, move it to the choose amount screen
-		if ( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
-			let checked = false;
-			if ( $( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).length !== 0 ) {
-				checked = $( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked' );
-				$( '.choose-amount fieldset[id*="give-fee-recovery-wrap"]' ).remove();
-			}
-			$( '.choose-amount' ).append( $( '#give_purchase_form_wrap fieldset[id*="give-fee-recovery-wrap"]' ) );
-			$( 'input[name="give_fee_mode_checkbox"]' ).prop( 'checked', checked );
-		}
 
 		// Move purchase fields (credit card, billing, etc)
 		$( 'li.give-gateway-option-selected' ).after( $( '#give_purchase_form_wrap' ) );
@@ -589,9 +589,10 @@
 	function setupInputIcon( selector, icon ) {
 		$( selector ).each( function() {
 			if ( $( this ).html() !== '' && $( this ).html().includes( `<i class="fas fa-${ icon }"></i>` ) === false ) {
+				const property = isRTL() ? 'padding-right' : 'padding-left';
 				$( this ).prepend( `<i class="fas fa-${ icon }"></i>` );
 				$( this ).children( 'input, selector' ).each( function() {
-					$( this ).attr( 'style', 'padding-left: 33px!important;' );
+					$( this ).attr( 'style', property + ': 33px!important;' );
 				} );
 			}
 		} );
@@ -692,7 +693,7 @@
 		}
 
 		// Persist checkbox input border when selected
-		$( label ).on( 'click touchend', function( evt ) {
+		$( document ).on( 'click touchend', label, function( evt ) {
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
@@ -768,5 +769,15 @@
 				}
 			} );
 		}
+	}
+
+	/**
+	 * Check if document is RTL
+	 *
+	 * @since 2.8.0
+	 * @return {boolean} Whether or not document is RTL
+	 */
+	function isRTL() {
+		return $( 'html' ).attr( 'dir' ) === 'rtl';
 	}
 }( jQuery ) );
