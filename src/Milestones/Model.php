@@ -135,6 +135,11 @@ class Model {
 		return $this->formatMessage( $this->description );
 	}
 
+	/**
+	 * Get formatted total (ex: $100)
+	 *
+	 * @since 2.9.0
+	 */
 	protected function getFormattedTotal() {
 		return give_currency_filter(
 			give_format_amount(
@@ -147,6 +152,11 @@ class Model {
 		);
 	}
 
+	/**
+	 * Get formatted total remaining (ex: $75)
+	 *
+	 * @since 2.9.0
+	 */
 	protected function getFormattedTotalRemaining() {
 		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
 		return give_currency_filter(
@@ -160,6 +170,9 @@ class Model {
 		);
 	}
 
+	/**
+	 * Get formatted goal (ex: $175)
+	 */
 	protected function getFormattedGoal() {
 		return give_currency_filter(
 			give_format_amount(
@@ -172,6 +185,11 @@ class Model {
 		);
 	}
 
+	/**
+	 * Format message containing special {} tags (ex: {total})
+	 *
+	 * @since 2.9.0
+	 */
 	protected function formatMessage( $message ) {
 		$codes = [
 			[ 'total', $this->getFormattedTotal() ],
