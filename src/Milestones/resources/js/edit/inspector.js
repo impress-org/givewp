@@ -61,18 +61,18 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					options={ formOptions }
 					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
 				<TextControl
-					name="deadline"
-					label={ __( 'Deadline', 'give' ) }
-					type="date"
-					value={ deadline }
-					onChange={ ( value ) => saveSetting( 'deadline', value ) }
-				/>
-				<TextControl
 					name="goal"
 					label={ __( 'Goal', 'give' ) }
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
+				/>
+				<TextControl
+					name="deadline"
+					label={ __( 'Deadline', 'give' ) }
+					type="date"
+					value={ deadline }
+					onChange={ ( value ) => saveSetting( 'deadline', value ) }
 				/>
 			</PanelBody>
 		</InspectorControls>
