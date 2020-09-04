@@ -10,6 +10,8 @@ class Model {
 	protected $description;
 	protected $image;
 	protected $ids;
+	protected $tags;
+	protected $categories;
 	protected $deadline;
 	protected $goal;
 
@@ -27,6 +29,8 @@ class Model {
 		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
+		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
+		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 	}
@@ -53,7 +57,22 @@ class Model {
 				'relation' => 'AND',
 			],
 		];
-		$query      = new \WP_Query( $query_args );
+
+		if ( ! empty( $this->tags ) ) {
+			$query_args['tax_query'][] = [
+				'taxonomy' => 'give_forms_tag',
+				'terms'    => $this->tags,
+			];
+		}
+
+		if ( ! empty( $this->categories ) ) {
+			$query_args['tax_query'][] = [
+				'taxonomy' => 'give_forms_category',
+				'terms'    => $this->categories,
+			];
+		}
+
+		$query = new \WP_Query( $query_args );
 
 		if ( $query->posts ) {
 			$this->forms = $query->posts;
