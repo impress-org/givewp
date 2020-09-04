@@ -24,6 +24,14 @@ const blockAttributes = {
 		type: 'array',
 		default: [],
 	},
+	categories: {
+		type: 'array',
+		default: [],
+	},
+	tags: {
+		type: 'array',
+		default: [],
+	},
 	deadline: {
 		type: 'string',
 		default: '',
