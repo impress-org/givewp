@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Milestone now displays aggregated earnings based on associated forms (#5236)
 -   Milestone now supports a deadline (#5239)
 -   Milestone now supports a custom goal (#5237)
+-   Milestone title and description now support {} tags (#5242)
 
 ## [2.8.0] - 2020-08-31
 
