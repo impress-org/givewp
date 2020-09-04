@@ -23,8 +23,8 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
-		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
+		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'We\'ve raised {total} so far!', 'give' );
+		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';

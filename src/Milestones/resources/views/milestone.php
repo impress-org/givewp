@@ -28,15 +28,15 @@
 		</div>
 		<?php endif; ?>
 		<div class="give-milestone__context">
-			<?php if ( ! empty( $this->getGoal() ) ) : ?>
 			<span> 
+				<?php echo $this->getFormattedTotal(); ?>
 				<?php
-					echo $this->getFormattedTotal();
+				if ( ! empty( $this->getGoal() ) ) {
 					echo __( ' of ', 'give' );
 					echo $this->getFormattedGoal();
+				}
 				?>
 			</span>
-			<?php endif; ?>
 			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
 			<span>
 				<?php echo $this->getDaysToGo(); ?> Days To Go
