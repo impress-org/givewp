@@ -14,7 +14,7 @@ const MultiSelectControl = ( { name, label, help, className, value, hideLabelFro
 	const instanceId = useInstanceId( MultiSelectControl );
 	const id = `give-multi-select-control-${ name }-${ instanceId }`;
 
-	if ( options && options.length < 2 ) {
+	if ( options && options.length < 1 ) {
 		return null;
 	}
 	return (
