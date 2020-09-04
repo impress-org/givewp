@@ -28,33 +28,15 @@
 		</div>
 		<?php endif; ?>
 		<div class="give-milestone__context">
+			<?php if ( ! empty( $this->getGoal() ) ) : ?>
 			<span> 
 				<?php
-				echo give_currency_filter(
-					give_format_amount(
-						$this->getEarnings(),
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
-				?>
-				<?php
-				if ( ! empty( $this->getGoal() ) ) {
-					echo __( 'of ', 'give' );
-					echo give_currency_filter(
-						give_format_amount(
-							$this->getGoal(),
-							[
-								'sanitize' => false,
-								'decimal'  => false,
-							]
-						)
-					);
-				}
+					echo $this->getFormattedTotal();
+					echo __( ' of ', 'give' );
+					echo $this->getFormattedGoal();
 				?>
 			</span>
+			<?php endif; ?>
 			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
 			<span>
 				<?php echo $this->getDaysToGo(); ?> Days To Go

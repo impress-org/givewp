@@ -100,7 +100,7 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getTitle() {
-		return $this->title;
+		return $this->formatMessage( $this->title );
 	}
 
 	/**
@@ -132,7 +132,61 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getDescription() {
-		return $this->description;
+		return $this->formatMessage( $this->description );
+	}
+
+	protected function getFormattedTotal() {
+		return give_currency_filter(
+			give_format_amount(
+				$this->getEarnings(),
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
+	}
+
+	protected function getFormattedTotalRemaining() {
+		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
+		return give_currency_filter(
+			give_format_amount(
+				$total_remaining,
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
+	}
+
+	protected function getFormattedGoal() {
+		return give_currency_filter(
+			give_format_amount(
+				$this->getGoal(),
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
+	}
+
+	protected function formatMessage( $message ) {
+		$codes = [
+			[ 'total', $this->getFormattedTotal() ],
+			[ 'total_goal', $this->getFormattedGoal() ],
+			[ 'total_remaining', $this->getFormattedTotalRemaining() ],
+			[ 'days_remaining', $this->getDaysToGo() ],
+		];
+		foreach ( $codes as $code ) {
+			$message = str_replace(
+				"{{$code[0]}}",
+				$code[1],
+				esc_html( $message )
+			);
+		}
+		return $message;
 	}
 
 	/**
