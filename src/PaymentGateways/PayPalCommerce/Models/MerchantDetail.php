@@ -177,7 +177,7 @@ class MerchantDetail {
 
 		if ( array_diff( $required, array_keys( $merchantDetails ) ) ) {
 			throw new InvalidArgumentException(
-				esc_html__( 'To create a MerchantDetail object, please provide the following: ' . implode( ', ', $required ), 'give' ),
+				esc_html__( 'To create a MerchantDetail object, please provide the following: ' . implode( ', ', $required ), 'give' )
 			);
 		}
 	}
