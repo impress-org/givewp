@@ -45,7 +45,6 @@ class AdvancedCardFields extends PaymentMethod {
 		};
 
 		this.setFocusStyle();
-		this.computedStyles();
 	}
 
 	/**
@@ -425,8 +424,6 @@ class AdvancedCardFields extends PaymentMethod {
 						...	this.styles[ 'input:focus' ],
 					};
 				} );
-
-				this.setHostedFieldContainerHeight();
 			}, { once: true } );
 		} );
 	}
