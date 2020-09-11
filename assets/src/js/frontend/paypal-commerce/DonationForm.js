@@ -1,4 +1,7 @@
 /* globals Give, Promise  */
+import AdvancedCardFields from './AdvancedCardFields';
+import CustomCardFields from './CustomCardFields';
+
 class DonationForm {
 	/**
 	 * Get form Data.
@@ -109,6 +112,25 @@ class DonationForm {
 			attributeFilter: [ 'value' ],
 			attributeOldValue: true,
 		} );
+	}
+
+	/**
+	 * Hide donate now button if only PayPal smart buttons payment method available.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} form form javascript selector.
+	 */
+	static toggleDonateNowButton( form ) {
+		let display = '';
+
+		if ( ! AdvancedCardFields.canShow() ) {
+			display = 'none';
+		} else if ( DonationForm.isRecurringDonation( form ) && ! CustomCardFields.canShow( form ) ) {
+			display = 'none';
+		}
+
+		form.querySelector( 'input[name="give-purchase"]' ).style.display = display;
 	}
 }
 

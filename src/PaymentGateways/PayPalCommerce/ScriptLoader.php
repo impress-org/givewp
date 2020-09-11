@@ -191,7 +191,8 @@ EOT;
 				// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 				'hostedCardFieldStyles'                 => apply_filters( 'give_paypal_commerce_hosted_field_style', [] ),
 				'supportsCustomPayments'                => $merchant->supportsCustomPayments ? 1 : '',
-				'accountCountry'                        => $merchant->accountCountry,
+				// 'accountCountry'                        => $merchant->accountCountry,
+				'accountCountry'                        => 'IN',
 				'separatorLabel'                        => esc_html__( 'Or pay with card', 'give' ),
 			]
 		);

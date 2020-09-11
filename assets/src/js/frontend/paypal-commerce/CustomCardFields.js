@@ -18,7 +18,6 @@ class CustomCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	setUpProperties() {
-		this.payPalSupportedCountriesForCardSubscription = [ 'US', 'AU' ];
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 	}
@@ -83,7 +82,7 @@ class CustomCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	toggleFields() {
-		const display = this.canShow() ? 'block' : 'none';
+		const display = CustomCardFields.canShow( this.form ) ? 'block' : 'none';
 
 		for ( const type in this.cardFields ) {
 			this.cardFields[ type ].el.style.display = display;
@@ -96,12 +95,14 @@ class CustomCardFields extends PaymentMethod {
 	 *
 	 * @since 2.9.0
 	 *
+	 * @param {object} form Form javascript selector
+	 *
 	 * @return {boolean} Return whether or not display custom card fields.
 	 */
-	canShow() {
+	static canShow( form ) {
 		return AdvancedCardFields.canShow() &&
-			DonationForm.isRecurringDonation( this.form ) &&
-			this.payPalSupportedCountriesForCardSubscription.includes( window.givePayPalCommerce.accountCountry );
+			DonationForm.isRecurringDonation( form ) &&
+			[ 'US', 'AU' ].includes( window.givePayPalCommerce.accountCountry );
 	}
 
 	/**
