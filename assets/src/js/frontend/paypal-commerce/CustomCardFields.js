@@ -23,7 +23,7 @@ class CustomCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * @inheritDocregisterEvents
+	 * @inheritDoc
 	 */
 	registerEvents() {
 		if ( this.recurringChoiceHiddenField ) {
