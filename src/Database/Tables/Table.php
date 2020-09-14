@@ -50,6 +50,16 @@ abstract class Table {
 	 */
 	protected $primaryKey;
 
+
+	/**
+	 * Database table columns.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @var string[]
+	 */
+	protected $columns = [];
+
 	/**
 	 * Cache group name
 	 *
@@ -135,6 +145,17 @@ abstract class Table {
 	}
 
 	/**
+	 * Set table version.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return string
+	 */
+	protected function setVersion() {
+		return update_option( $this->getName() . '_db_version', $this->version, false );
+	}
+
+	/**
 	 * Check if the given table exists
 	 *
 	 * @since  1.3.2
@@ -196,7 +217,7 @@ abstract class Table {
 		$current_version = $this->getVersion();
 
 		if ( ! $current_version || version_compare( $current_version, $this->version, '<' ) ) {
-			$this->create_table();
+			$this->createTable();
 		}
 	}
 
@@ -204,14 +225,15 @@ abstract class Table {
 	 * Create table
 	 *
 	 * @since  2.9.0
-	 * @access public
+	 * @access protected
 	 */
-	abstract public function create_table();
+	abstract protected function createTable();
 
 	/**
 	 * Setup cache group.
 	 *
 	 * @since 2.9.0
+	 * @access protected
 	 */
 	protected function setCacheKeys() {
 		$current_blog_id = get_current_blog_id();
@@ -220,5 +242,18 @@ abstract class Table {
 		$incrementerValue                = wp_cache_get( $this->cacheGroupIncrementerName ) ?: microtime( true );
 
 		$this->cacheGroupName = "{$this->cacheGroupName}_{$current_blog_id}_{$incrementerValue}";
+	}
+
+	/**
+	 * Add new column to database table.
+	 *
+	 * @since 2.9.0
+	 * @access public
+	 *
+	 * @param string $name Table column name
+	 * @param string $placeholder Column placeholder
+	 */
+	public function addColumn( $name, $placeholder ) {
+		$this->columns[ $name ] = $placeholder;
 	}
 }
