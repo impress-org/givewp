@@ -197,23 +197,6 @@ class Model {
 	}
 
 	/**
-	 * Get formatted total (ex: $100)
-	 *
-	 * @since 2.9.0
-	 */
-	protected function getFormattedTotal() {
-		return give_currency_filter(
-			give_format_amount(
-				$this->getEarnings(),
-				[
-					'sanitize' => false,
-					'decimal'  => false,
-				]
-			)
-		);
-	}
-
-	/**
 	 * Get formatted total remaining (ex: $75)
 	 *
 	 * @since 2.9.0
@@ -223,21 +206,6 @@ class Model {
 		return give_currency_filter(
 			give_format_amount(
 				$total_remaining,
-				[
-					'sanitize' => false,
-					'decimal'  => false,
-				]
-			)
-		);
-	}
-
-	/**
-	 * Get formatted goal (ex: $175)
-	 */
-	protected function getFormattedGoal() {
-		return give_currency_filter(
-			give_format_amount(
-				$this->getGoal(),
 				[
 					'sanitize' => false,
 					'decimal'  => false,
