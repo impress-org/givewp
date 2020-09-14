@@ -139,6 +139,10 @@ class AdvancedCardFields extends PaymentMethod {
 
 		const responseJson = await response.json();
 
+		if ( ! responseJson.success ) {
+			throw responseJson.data.error;
+		}
+
 		return responseJson.data.id;
 	}
 
