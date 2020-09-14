@@ -12,6 +12,7 @@ class Model {
 	protected $ids;
 	protected $tags;
 	protected $categories;
+	protected $metric;
 	protected $deadline;
 	protected $goal;
 
@@ -31,6 +32,7 @@ class Model {
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
+		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 	}
@@ -82,6 +84,28 @@ class Model {
 		}
 	}
 
+	protected function getDonations() {
+
+		$forms    = $this->getForms();
+		$form_ids = [];
+		foreach ( $forms as $form ) {
+			$form_ids += $form['ID'];
+		}
+
+		$query_args = [
+			'post_status' => [
+				'publish',
+				'give_subscription',
+			],
+			'number'      => -1,
+			'paged'       => 1,
+			'give_forms'  => $form_ids,
+		];
+
+		$query = new \Give_Payments_Query( $query_args );
+		return $query->get_payments();
+	}
+
 	/**
 	 * Get output markup for Milestone
 	 *
@@ -110,6 +134,33 @@ class Model {
 			$earnings += ! empty( give_get_meta( $form, '_give_form_earnings', true ) ) ? give_get_meta( $form, '_give_form_earnings', true ) : 0;
 		}
 		return $earnings;
+	}
+
+	/**
+	 * Get number of donors for Milestone
+	 *
+	 * @return int
+	 * @since 2.9.0
+	 **/
+	protected function getDonorCount() {
+		$donations = $this->getDonations();
+		$donors    = [];
+		foreach ( $donations as $donation ) {
+			$donors += ! empty( $donation->donor_id ) ? $donation->donor_id : 0;
+		}
+		$unique = array_unique( $donors );
+		return count( $unique );
+	}
+
+	/**
+	 * Get number of donations for Milestone
+	 *
+	 * @return int
+	 * @since 2.9.0
+	 **/
+	protected function getDonationCount() {
+		$donations = $this->getDonations();
+		return count( $donations );
 	}
 
 	/**
@@ -180,5 +231,59 @@ class Model {
 	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/Milestones/resources/views/milestone.php';
+	}
+
+	protected function getFormattedTotal() {
+		$total = $this->getTotal();
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return give_currency_filter(
+					give_format_amount(
+						$total,
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+			}
+			default: {
+				return $total;
+			}
+		}
+	}
+
+	protected function getTotal() {
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return $this->getEarnings();
+			}
+			case 'donor-count': {
+				return $this->getDonorCount();
+			}
+			case 'donation-count': {
+				return $this->getDonationCount();
+			}
+		}
+	}
+
+	protected function getFormattedGoal() {
+		$goal = $this->getGoal();
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return give_currency_filter(
+					give_format_amount(
+						$goal,
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+			}
+			default: {
+				return $goal;
+			}
+		}
 	}
 }

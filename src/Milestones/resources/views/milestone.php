@@ -23,35 +23,19 @@
 		</div>
 		<?php if ( ! empty( $this->getGoal() ) ) : ?>
 		<div class="give-milestone__progress">
-			<?php $percent = ( $this->getEarnings() / $this->getGoal() ) * 100; ?>
+			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>
 			<div class="give-milestone__progress-bar" style="width: <?php echo $percent < 100 ? $percent : 100; ?>%"></div>
 		</div>
 		<?php endif; ?>
 		<div class="give-milestone__context">
 			<span> 
 				<?php
-				echo give_currency_filter(
-					give_format_amount(
-						$this->getEarnings(),
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
+				echo $this->getFormattedTotal();
 				?>
 				<?php
 				if ( ! empty( $this->getGoal() ) ) {
 					echo __( 'of ', 'give' );
-					echo give_currency_filter(
-						give_format_amount(
-							$this->getGoal(),
-							[
-								'sanitize' => false,
-								'decimal'  => false,
-							]
-						)
-					);
+					echo $this->getFormattedGoal();
 				}
 				?>
 			</span>
