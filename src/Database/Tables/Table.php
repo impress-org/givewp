@@ -212,7 +212,7 @@ abstract class Table {
 	 * @since  2.9.0
 	 * @access public
 	 */
-	public function register_table() {
+	public function registerTable() {
 		$current_version = $this->getVersion();
 
 		if ( ! $current_version || version_compare( $current_version, $this->version, '<' ) ) {
