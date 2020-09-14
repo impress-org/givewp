@@ -32,6 +32,10 @@ const blockAttributes = {
 		type: 'array',
 		default: [],
 	},
+	metric: {
+		type: 'string',
+		default: 'revenue',
+	},
 	deadline: {
 		type: 'string',
 		default: '',
