@@ -124,9 +124,8 @@ class DonationForm {
 	static toggleDonateNowButton( form ) {
 		let display = '';
 
-		if ( ! AdvancedCardFields.canShow() ) {
-			display = 'none';
-		} else if ( DonationForm.isRecurringDonation( form ) && ! CustomCardFields.canShow( form ) ) {
+		// Hide the buttons if there are no custom credit card fields
+		if ( ! AdvancedCardFields.canShow() || ( DonationForm.isRecurringDonation( form ) && ! CustomCardFields.canShow( form ) ) ) {
 			display = 'none';
 		}
 
