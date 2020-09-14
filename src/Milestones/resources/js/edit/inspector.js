@@ -68,7 +68,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ metric }
 					options={ [
 						{ label: __( 'Revenue', 'give' ), value: 'revenue' },
-						{ label: __( 'Donors', 'give' ), value: 'donor-count' },
+						{ label: __( 'Number of Donors', 'give' ), value: 'donor-count' },
 						{ label: __( 'Number of Donations', 'give' ), value: 'donation-count' },
 					] }
 					onChange={ ( value ) => saveSetting( 'metric', value ) }
