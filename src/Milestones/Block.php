@@ -53,6 +53,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '',
 					],
+					'link'        => [
+						'type'    => 'string',
+						'default' => '',
+					],
 				],
 
 			]

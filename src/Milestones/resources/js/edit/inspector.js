@@ -4,7 +4,6 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl, SelectControl, TextareaControl } = wp.components;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -19,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline } = attributes;
+	const { title, description, image, ids, categories, tags, metric, goal, deadline, link } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -87,6 +86,13 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="date"
 					value={ deadline }
 					onChange={ ( value ) => saveSetting( 'deadline', value ) }
+				/>
+				<TextControl
+					name="link"
+					type="url"
+					label={ __( 'Custom Link', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'link', value ) }
+					value={ link }
 				/>
 			</PanelBody>
 		</InspectorControls>

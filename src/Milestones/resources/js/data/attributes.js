@@ -44,6 +44,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+	link: {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default blockAttributes;
