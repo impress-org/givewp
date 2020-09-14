@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl } = wp.components;
+const { PanelBody, TextControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, goal, deadline } = attributes;
+	const { title, description, image, ids, categories, tags, metric, goal, deadline } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -63,6 +63,16 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ categoryOptions.filter( option => categories.includes( option.value ) ) }
 					options={ categoryOptions }
 					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
+				<SelectControl
+					label={ __( 'Metric', 'give' ) }
+					value={ metric }
+					options={ [
+						{ label: __( 'Revenue', 'give' ), value: 'revenue' },
+						{ label: __( 'Donors', 'give' ), value: 'donor-count' },
+						{ label: __( 'Number of Donations', 'give' ), value: 'donation-count' },
+					] }
+					onChange={ ( value ) => saveSetting( 'metric', value ) }
+				/>
 				<TextControl
 					name="goal"
 					label={ __( 'Goal', 'give' ) }
