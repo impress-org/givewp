@@ -41,7 +41,13 @@
 			</span>
 			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
 			<span>
-				<?php echo $this->getDaysToGo(); ?> Days To Go
+				<?php
+					$days = $this->getDaysToGo();
+				if ( $days > 0 ) {
+					$format = _n( '%s Day to Go', '%s Days to Go', $days, 'give' );
+					echo sprintf( $format, $days );
+				}
+				?>
 			</span>
 			<?php endif; ?>
 		</div>
