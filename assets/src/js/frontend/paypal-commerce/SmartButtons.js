@@ -60,6 +60,8 @@ class SmartButtons extends PaymentMethod {
 				tagline: false,
 			},
 		} ).render( this.smartButtonContainer );
+
+		DonationForm.toggleDonateNowButton( this.form );
 	}
 
 	/**

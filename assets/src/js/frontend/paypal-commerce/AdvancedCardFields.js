@@ -1,6 +1,7 @@
 /* globals paypal, Give, givePayPalCommerce, Event */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
+import CustomCardFields from './CustomCardFields';
 
 class AdvancedCardFields extends PaymentMethod {
 	/**
@@ -78,6 +79,9 @@ class AdvancedCardFields extends PaymentMethod {
 
 		if ( this.customCardFields.recurringChoiceHiddenField ) {
 			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, this.toggleFields.bind( this ) );
+			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
+				DonationForm.toggleDonateNowButton( this.form );
+			} );
 		}
 	}
 
@@ -557,7 +561,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	toggleFields() {
 		const display = DonationForm.isRecurringDonation( this.form ) ? 'none' : 'block';
-		const canHideParentContainer = 'none' === display && ! this.customCardFields.canShow();
+		const canHideParentContainer = 'none' === display && ! CustomCardFields.canShow( this.form );
 
 		this.toggleCardNameField( canHideParentContainer );
 

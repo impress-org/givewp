@@ -14,19 +14,21 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	$formWraps.forEach( $formWrap => {
 		const $form = $formWrap.querySelector( '.give-form' );
 		const smartButtons = new SmartButtons( $form );
+		const customCardFields = new CustomCardFields( $form );
 
 		smartButtons.boot();
 
 		// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
 		if ( AdvancedCardFields.canShow() ) {
-			const customCardFields = new CustomCardFields( $form );
 			const advancedCardFields = new AdvancedCardFields( customCardFields );
 
 			customCardFields.boot();
 			advancedCardFields.boot();
 		} else {
-			const customCardFields = new CustomCardFields( $form );
-			customCardFields.removeFields();
+			if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+				customCardFields.removeFields();
+			}
+
 			customCardFields.removeFieldsOnGatewayLoad();
 		}
 	} );
