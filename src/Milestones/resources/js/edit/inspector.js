@@ -3,7 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl } = wp.components;
+const { PanelBody, TextControl, SelectControl, TextareaControl } = wp.components;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -35,7 +36,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Title', 'give' ) }
 					value={ title }
 					onChange={ ( value ) => saveSetting( 'title', value ) } />
-				<TextControl
+				<TextareaControl
 					name="description"
 					label={ __( 'Description', 'give' ) }
 					value={ description }

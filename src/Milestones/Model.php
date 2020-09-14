@@ -26,8 +26,8 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'Sample Milestone Title', 'give' );
-		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'This is a sample description.', 'give' );
+		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'We\'ve raised {total} so far!', 'give' );
+		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
@@ -161,7 +161,7 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getTitle() {
-		return $this->title;
+		return $this->formatMessage( $this->title );
 	}
 
 	/**
@@ -193,7 +193,79 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getDescription() {
-		return $this->description;
+		return $this->formatMessage( $this->description );
+	}
+
+	/**
+	 * Get formatted total (ex: $100)
+	 *
+	 * @since 2.9.0
+	 */
+	protected function getFormattedTotal() {
+		return give_currency_filter(
+			give_format_amount(
+				$this->getEarnings(),
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
+	}
+
+	/**
+	 * Get formatted total remaining (ex: $75)
+	 *
+	 * @since 2.9.0
+	 */
+	protected function getFormattedTotalRemaining() {
+		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
+		return give_currency_filter(
+			give_format_amount(
+				$total_remaining,
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
+	}
+
+	/**
+	 * Get formatted goal (ex: $175)
+	 */
+	protected function getFormattedGoal() {
+		return give_currency_filter(
+			give_format_amount(
+				$this->getGoal(),
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
+	}
+
+	/**
+	 * Format message containing special {} tags (ex: {total})
+	 *
+	 * @since 2.9.0
+	 */
+	protected function formatMessage( $message ) {
+		$codes = [
+			[ 'total', $this->getFormattedTotal() ],
+			[ 'total_goal', $this->getFormattedGoal() ],
+			[ 'total_remaining', $this->getFormattedTotalRemaining() ],
+			[ 'days_remaining', $this->getDaysToGo() ],
+		];
+		foreach ( $codes as $code ) {
+			$message = str_replace(
+				"{{$code[0]}}",
+				$code[1],
+				esc_html( $message )
+			);
+		}
+		return $message;
 	}
 
 	/**

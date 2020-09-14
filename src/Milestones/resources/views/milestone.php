@@ -29,12 +29,10 @@
 		<?php endif; ?>
 		<div class="give-milestone__context">
 			<span> 
-				<?php
-				echo $this->getFormattedTotal();
-				?>
+				<?php echo $this->getFormattedTotal(); ?>
 				<?php
 				if ( ! empty( $this->getGoal() ) ) {
-					echo __( 'of ', 'give' );
+					echo __( ' of ', 'give' );
 					echo $this->getFormattedGoal();
 				}
 				?>

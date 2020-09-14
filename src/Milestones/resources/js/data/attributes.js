@@ -10,11 +10,11 @@ const { __ } = wp.i18n;
 const blockAttributes = {
 	title: {
 		type: 'string',
-		default: __( 'Back to School Fundraiser', 'give' ),
+		default: __( 'We\'ve raised {total} so far!', 'give' ),
 	},
 	description: {
 		type: 'string',
-		default: __( 'This is a sample description.', 'give' ),
+		default: __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
 	},
 	image: {
 		type: 'string',
