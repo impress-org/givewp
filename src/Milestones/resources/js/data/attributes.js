@@ -52,6 +52,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+	target: {
+		type: 'string',
+		default: '_self',
+	},
 };
 
 export default blockAttributes;

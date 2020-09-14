@@ -23,7 +23,7 @@
 		</div>
 		<?php if ( ! empty( $this->getUrl() ) && ! empty( $this->getCta() ) ) : ?>
 			<div class="give-milestone__cta">
-				<a href="<?php echo $this->getUrl(); ?>"><?php echo $this->getCta(); ?></a>
+				<a href="<?php echo $this->getUrl(); ?>" target="<?php echo $this->getTarget(); ?>"><?php echo $this->getCta(); ?></a>
 			</div>
 		<?php endif; ?>
 		<?php if ( ! empty( $this->getGoal() ) ) : ?>

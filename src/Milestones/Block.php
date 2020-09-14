@@ -61,6 +61,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '',
 					],
+					'target'      => [
+						'type'    => 'string',
+						'default' => '_self',
+					],
 				],
 
 			]
@@ -86,6 +90,7 @@ class Block {
 				'goal'        => $attributes['goal'],
 				'cta'         => $attributes['cta'],
 				'url'         => $attributes['url'],
+				'target'      => $attributes['target'],
 			]
 		);
 		return $milestone->getOutput();

@@ -3,7 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, TextareaControl } = wp.components;
+const { PanelBody, TextControl, SelectControl, TextareaControl, ToggleControl } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -18,7 +19,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline, cta, url } = attributes;
+	const { title, description, image, ids, categories, tags, metric, goal, deadline, cta, url, target } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -26,6 +27,15 @@ const Inspector = ( { attributes, setAttributes } ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
+	};
+	const [ openInNewTab, setOpenInNewTab ] = useState( target === '_self' ? false : true );
+	const toggleTarget = ( value ) => {
+		setOpenInNewTab( value );
+		if ( value === true ) {
+			saveSetting( 'target', '_blank' );
+		} else {
+			saveSetting( 'target', '_self' );
+		}
 	};
 	return (
 		<InspectorControls key="inspector">
@@ -99,6 +109,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Call To Action URL', 'give' ) }
 					onChange={ ( value ) => saveSetting( 'url', value ) }
 					value={ url }
+				/>
+				<ToggleControl
+					name="target"
+					label={ __( 'Open Call To Action in a new tab?', 'give' ) }
+					onChange={ ( value ) => toggleTarget( value ) }
+					checked={ openInNewTab }
 				/>
 			</PanelBody>
 		</InspectorControls>

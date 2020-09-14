@@ -17,6 +17,7 @@ class Model {
 	protected $goal;
 	protected $cta;
 	protected $url;
+	protected $target;
 
 	// Internal
 	protected $forms = [];
@@ -39,6 +40,7 @@ class Model {
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 		isset( $args['url'] ) ? $this->url                 = $args['url'] : $this->url = '';
 		isset( $args['cta'] ) ? $this->cta                 = $args['cta'] : $this->cta = __( 'Learn More', 'give' );
+		isset( $args['target'] ) ? $this->target           = $args['target'] : $this->target = '_self';
 	}
 
 	/**
@@ -186,6 +188,16 @@ class Model {
 	 **/
 	protected function getUrl() {
 		return $this->url;
+	}
+
+	/**
+	 * Get call to action url for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getTarget() {
+		return $this->target;
 	}
 
 	/**
