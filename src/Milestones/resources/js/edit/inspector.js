@@ -18,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline, link } = attributes;
+	const { title, description, image, ids, categories, tags, metric, goal, deadline, cta, url } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -88,11 +88,17 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'deadline', value ) }
 				/>
 				<TextControl
-					name="link"
+					name="cta"
+					label={ __( 'Call To Action', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'cta', value ) }
+					value={ cta }
+				/>
+				<TextControl
+					name="url"
 					type="url"
-					label={ __( 'Custom Link', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'link', value ) }
-					value={ link }
+					label={ __( 'Call To Action URL', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'url', value ) }
+					value={ url }
 				/>
 			</PanelBody>
 		</InspectorControls>

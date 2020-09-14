@@ -15,6 +15,8 @@ class Model {
 	protected $metric;
 	protected $deadline;
 	protected $goal;
+	protected $cta;
+	protected $url;
 
 	// Internal
 	protected $forms = [];
@@ -35,6 +37,8 @@ class Model {
 		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
+		isset( $args['url'] ) ? $this->url                 = $args['url'] : $this->url = '';
+		isset( $args['cta'] ) ? $this->cta                 = $args['cta'] : $this->cta = __( 'Learn More', 'give' );
 	}
 
 	/**
@@ -172,6 +176,26 @@ class Model {
 	 **/
 	protected function getDeadline() {
 		return $this->deadline;
+	}
+
+	/**
+	 * Get call to action url for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getUrl() {
+		return $this->url;
+	}
+
+	/**
+	 * Get call to action text for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getCta() {
+		return $this->cta;
 	}
 
 	/**

@@ -53,7 +53,11 @@ class Block {
 						'type'    => 'string',
 						'default' => '',
 					],
-					'link'        => [
+					'cta'         => [
+						'type'    => 'string',
+						'default' => __( 'Learn More', 'give' ),
+					],
+					'url'         => [
 						'type'    => 'string',
 						'default' => '',
 					],
@@ -80,6 +84,8 @@ class Block {
 				'metric'      => $attributes['metric'],
 				'deadline'    => $attributes['deadline'],
 				'goal'        => $attributes['goal'],
+				'cta'         => $attributes['cta'],
+				'url'         => $attributes['url'],
 			]
 		);
 		return $milestone->getOutput();
