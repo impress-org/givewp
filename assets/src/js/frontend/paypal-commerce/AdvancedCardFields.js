@@ -140,6 +140,10 @@ class AdvancedCardFields extends PaymentMethod {
 		const responseJson = await response.json();
 
 		if ( ! responseJson.success ) {
+			if ( null === responseJson.data.error ) {
+				throw {};
+			}
+
 			throw responseJson.data.error;
 		}
 
@@ -489,6 +493,15 @@ class AdvancedCardFields extends PaymentMethod {
 	hostedFieldOnSubmitErrorHandler( error ) {
 		const errorStringByGroup = {};
 		const errors = [];
+
+		if ( ! Object.values( error ).length ) {
+			Give.form.fn.addErrorsAndResetDonationButton(
+				this.jQueryForm,
+				Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.failedPaymentProcessingNotice } ] )
+			);
+
+			return;
+		}
 
 		error.details.forEach( detail => {
 			// If details is not about card field then insert notice into errors object.
