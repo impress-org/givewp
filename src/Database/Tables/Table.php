@@ -50,7 +50,6 @@ abstract class Table {
 	 */
 	protected $primaryKey;
 
-
 	/**
 	 * Database table columns.
 	 *
