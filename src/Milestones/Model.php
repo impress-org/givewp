@@ -85,24 +85,15 @@ class Model {
 	}
 
 	protected function getDonations() {
-
-		$forms    = $this->getForms();
-		$form_ids = [];
-		foreach ( $forms as $form ) {
-			$form_ids += $form['ID'];
-		}
-
 		$query_args = [
 			'post_status' => [
 				'publish',
 				'give_subscription',
 			],
 			'number'      => -1,
-			'paged'       => 1,
-			'give_forms'  => $form_ids,
+			'give_forms'  => $this->getForms(),
 		];
-
-		$query = new \Give_Payments_Query( $query_args );
+		$query      = new \Give_Payments_Query( $query_args );
 		return $query->get_payments();
 	}
 
@@ -146,7 +137,7 @@ class Model {
 		$donations = $this->getDonations();
 		$donors    = [];
 		foreach ( $donations as $donation ) {
-			$donors += ! empty( $donation->donor_id ) ? $donation->donor_id : 0;
+			$donors[] = ! empty( $donation->donor_id ) ? $donation->donor_id : 0;
 		}
 		$unique = array_unique( $donors );
 		return count( $unique );
