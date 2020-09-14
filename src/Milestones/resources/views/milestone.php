@@ -23,7 +23,7 @@
 		</div>
 		<?php if ( ! empty( $this->getGoal() ) ) : ?>
 		<div class="give-milestone__progress">
-			<?php $percent = ( $this->getEarnings() / $this->getGoal() ) * 100; ?>
+			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>
 			<div class="give-milestone__progress-bar" style="width: <?php echo $percent < 100 ? $percent : 100; ?>%"></div>
 		</div>
 		<?php endif; ?>
@@ -39,7 +39,13 @@
 			</span>
 			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
 			<span>
-				<?php echo $this->getDaysToGo(); ?> Days To Go
+				<?php
+					$days = $this->getDaysToGo();
+				if ( $days > 0 ) {
+					$format = _n( '%s Day To Go', '%s Days To Go', $days, 'give' );
+					echo sprintf( $format, $days );
+				}
+				?>
 			</span>
 			<?php endif; ?>
 		</div>

@@ -10,6 +10,9 @@ class Model {
 	protected $description;
 	protected $image;
 	protected $ids;
+	protected $tags;
+	protected $categories;
+	protected $metric;
 	protected $deadline;
 	protected $goal;
 
@@ -27,6 +30,9 @@ class Model {
 		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
 		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
+		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
+		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
+		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
 	}
@@ -53,7 +59,22 @@ class Model {
 				'relation' => 'AND',
 			],
 		];
-		$query      = new \WP_Query( $query_args );
+
+		if ( ! empty( $this->tags ) ) {
+			$query_args['tax_query'][] = [
+				'taxonomy' => 'give_forms_tag',
+				'terms'    => $this->tags,
+			];
+		}
+
+		if ( ! empty( $this->categories ) ) {
+			$query_args['tax_query'][] = [
+				'taxonomy' => 'give_forms_category',
+				'terms'    => $this->categories,
+			];
+		}
+
+		$query = new \WP_Query( $query_args );
 
 		if ( $query->posts ) {
 			$this->forms = $query->posts;
@@ -61,6 +82,19 @@ class Model {
 		} else {
 			return false;
 		}
+	}
+
+	protected function getDonations() {
+		$query_args = [
+			'post_status' => [
+				'publish',
+				'give_subscription',
+			],
+			'number'      => -1,
+			'give_forms'  => $this->getForms(),
+		];
+		$query      = new \Give_Payments_Query( $query_args );
+		return $query->get_payments();
 	}
 
 	/**
@@ -91,6 +125,33 @@ class Model {
 			$earnings += ! empty( give_get_meta( $form, '_give_form_earnings', true ) ) ? give_get_meta( $form, '_give_form_earnings', true ) : 0;
 		}
 		return $earnings;
+	}
+
+	/**
+	 * Get number of donors for Milestone
+	 *
+	 * @return int
+	 * @since 2.9.0
+	 **/
+	protected function getDonorCount() {
+		$donations = $this->getDonations();
+		$donors    = [];
+		foreach ( $donations as $donation ) {
+			$donors[] = ! empty( $donation->donor_id ) ? $donation->donor_id : 0;
+		}
+		$unique = array_unique( $donors );
+		return count( $unique );
+	}
+
+	/**
+	 * Get number of donations for Milestone
+	 *
+	 * @return int
+	 * @since 2.9.0
+	 **/
+	protected function getDonationCount() {
+		$donations = $this->getDonations();
+		return count( $donations );
 	}
 
 	/**
@@ -233,5 +294,59 @@ class Model {
 	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/Milestones/resources/views/milestone.php';
+	}
+
+	protected function getFormattedTotal() {
+		$total = $this->getTotal();
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return give_currency_filter(
+					give_format_amount(
+						$total,
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+			}
+			default: {
+				return $total;
+			}
+		}
+	}
+
+	protected function getTotal() {
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return $this->getEarnings();
+			}
+			case 'donor-count': {
+				return $this->getDonorCount();
+			}
+			case 'donation-count': {
+				return $this->getDonationCount();
+			}
+		}
+	}
+
+	protected function getFormattedGoal() {
+		$goal = $this->getGoal();
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return give_currency_filter(
+					give_format_amount(
+						$goal,
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+			}
+			default: {
+				return $goal;
+			}
+		}
 	}
 }

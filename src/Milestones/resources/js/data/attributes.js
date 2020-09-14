@@ -24,6 +24,18 @@ const blockAttributes = {
 		type: 'array',
 		default: [],
 	},
+	categories: {
+		type: 'array',
+		default: [],
+	},
+	tags: {
+		type: 'array',
+		default: [],
+	},
+	metric: {
+		type: 'string',
+		default: 'revenue',
+	},
 	deadline: {
 		type: 'string',
 		default: '',

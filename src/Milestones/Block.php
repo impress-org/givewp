@@ -33,6 +33,18 @@ class Block {
 						'type'    => 'array',
 						'default' => [],
 					],
+					'categories'  => [
+						'type'    => 'array',
+						'default' => [],
+					],
+					'tags'        => [
+						'type'    => 'array',
+						'default' => [],
+					],
+					'metric'      => [
+						'type'    => 'string',
+						'default' => 'revenue',
+					],
 					'deadline'    => [
 						'type'    => 'string',
 						'default' => '',
@@ -59,6 +71,9 @@ class Block {
 				'description' => $attributes['description'],
 				'image'       => $attributes['image'],
 				'ids'         => $attributes['ids'],
+				'tags'        => $attributes['tags'],
+				'categories'  => $attributes['categories'],
+				'metric'      => $attributes['metric'],
 				'deadline'    => $attributes['deadline'],
 				'goal'        => $attributes['goal'],
 			]
