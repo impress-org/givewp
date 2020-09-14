@@ -29,29 +29,11 @@
 		<?php endif; ?>
 		<div class="give-milestone__context">
 			<span> 
-				<?php
-				echo give_currency_filter(
-					give_format_amount(
-						$this->getEarnings(),
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
-				?>
+				<?php echo $this->getFormattedTotal(); ?>
 				<?php
 				if ( ! empty( $this->getGoal() ) ) {
-					echo __( 'of ', 'give' );
-					echo give_currency_filter(
-						give_format_amount(
-							$this->getGoal(),
-							[
-								'sanitize' => false,
-								'decimal'  => false,
-							]
-						)
-					);
+					echo __( ' of ', 'give' );
+					echo $this->getFormattedGoal();
 				}
 				?>
 			</span>
