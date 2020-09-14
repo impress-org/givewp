@@ -40,8 +40,8 @@ class Revenue extends Table {
 		$sql = "CREATE TABLE {$this->getName()} (
   			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   			donation_id bigint(20) NOT NULL,
-			form_id bigint(20) NOT NULL,
-			amount int UNSIGNED NOT NULL,
+  			form_id bigint(20) NOT NULL,
+  			amount int UNSIGNED NOT NULL,
   			PRIMARY KEY  (id),
 		) {$charset_collate};";
 
