@@ -32,6 +32,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '100',
 	},
+	color: {
+		type: 'string',
+		default: '#',
+	},
 	linkText: {
 		type: 'string',
 		default: __( 'Learn More', 'give' ),

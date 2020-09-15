@@ -19,7 +19,7 @@
 	<div class="give-totals__goal">
 		<div class="give-totals__progress">
 			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>
-			<div class="give-totals__progress-bar" style="width: <?php echo $percent < 100 ? $percent : 100; ?>%"></div>
+			<div class="give-totals__progress-bar" style="width: <?php echo $percent < 100 ? $percent : 100; ?>%; background: linear-gradient(180deg, <?php echo $this->getColor(); ?> 0%, <?php echo $this->getColor(); ?> 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);"></div>
 		</div>
 		<p class="give-totals__progress-text"> 
 			<?php

@@ -62,6 +62,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '100',
 					],
+					'color'      => [
+						'type'    => 'string',
+						'default' => '#28c77b',
+					],
 					'linkText'   => [
 						'type'    => 'string',
 						'default' => __( 'Learn More', 'give' ),
@@ -94,6 +98,7 @@ class Block {
 				'categories' => $attributes['categories'],
 				'metric'     => $attributes['metric'],
 				'goal'       => $attributes['goal'],
+				'color'      => $attributes['color'],
 				'linkText'   => $attributes['linkText'],
 				'linkUrl'    => $attributes['linkUrl'],
 				'linkTarget' => $attributes['linkTarget'],

@@ -12,6 +12,7 @@ class Model {
 	protected $categories;
 	protected $metric;
 	protected $goal;
+	protected $color;
 	protected $linkText;
 	protected $linkUrl;
 	protected $linkTarget;
@@ -32,6 +33,7 @@ class Model {
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '100';
+		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
 		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
 		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
 		isset( $args['linkTarget'] ) ? $this->linkTarget = $args['linkTarget'] : $this->linkTarget = '_self';
@@ -255,6 +257,15 @@ class Model {
 		return $this->goal;
 	}
 
+	/**
+	 * Get goal color for Totals
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getColor() {
+		return $this->color;
+	}
 	/**
 	 * Get template path for Totals component template
 	 * @since 2.9.0

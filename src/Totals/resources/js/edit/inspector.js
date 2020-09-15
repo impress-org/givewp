@@ -11,6 +11,7 @@ const { useState } = wp.element;
  */
 
 import MultiSelectControl from '../components/multi-select-control';
+import ColorControl from '../components/color-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
 /**
@@ -18,7 +19,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { message, ids, categories, tags, metric, goal, linkText, linkUrl, linkTarget } = attributes;
+	const { message, ids, categories, tags, metric, goal, color, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -78,6 +79,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
+				/>
+				<ColorControl
+					name="color"
+					label={ __( 'Goal Color', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'color', value ) }
+					value={ color }
 				/>
 				<TextControl
 					name="linkText"
