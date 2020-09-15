@@ -23,7 +23,7 @@ import '../css/editor.scss';
 
 export default registerBlockType( 'give/totals', {
 	title: __( 'Totals', 'give' ),
-	description: __( 'The Totals block lets you show progress made across donation forms towards a common goal.', 'give' ),
+	description: __( 'The Totals block let\'s you show progress made across donation forms towards a common goal.', 'give' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [
