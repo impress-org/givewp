@@ -26,7 +26,7 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'So far, we have {total}. But we still need {total_remaining} to reach our goal of {total_goal}!', 'give' );
+		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'So far, we have {total}. We still need {total_remaining} to reach our goal of {total_goal}!', 'give' );
 		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
