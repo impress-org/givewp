@@ -21,9 +21,9 @@
 		<div class="give-milestone__description">
 			<?php echo $this->getDescription(); ?>
 		</div>
-		<?php if ( ! empty( $this->getUrl() ) && ! empty( $this->getCta() ) ) : ?>
-			<div class="give-milestone__cta">
-				<a href="<?php echo $this->getUrl(); ?>" target="<?php echo $this->getTarget(); ?>"><?php echo $this->getCta(); ?></a>
+		<?php if ( ! empty( $this->getLinkUrl() ) && ! empty( $this->getLinkText() ) ) : ?>
+			<div class="give-milestone__link">
+				<a href="<?php echo $this->getLinkUrl(); ?>" target="<?php echo $this->getLinkTarget(); ?>"><?php echo $this->getLinkText(); ?></a>
 			</div>
 		<?php endif; ?>
 		<?php if ( ! empty( $this->getGoal() ) ) : ?>

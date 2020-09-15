@@ -44,15 +44,15 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
-	cta: {
+	linkText: {
 		type: 'string',
 		default: __( 'Learn More', 'give' ),
 	},
-	url: {
+	linkUrl: {
 		type: 'string',
 		default: '',
 	},
-	target: {
+	linkTarget: {
 		type: 'string',
 		default: '_self',
 	},

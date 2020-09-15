@@ -15,9 +15,9 @@ class Model {
 	protected $metric;
 	protected $deadline;
 	protected $goal;
-	protected $cta;
-	protected $url;
-	protected $target;
+	protected $linkText;
+	protected $linkUrl;
+	protected $linkTarget;
 
 	// Internal
 	protected $forms = [];
@@ -38,9 +38,9 @@ class Model {
 		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
-		isset( $args['url'] ) ? $this->url                 = $args['url'] : $this->url = '';
-		isset( $args['cta'] ) ? $this->cta                 = $args['cta'] : $this->cta = __( 'Learn More', 'give' );
-		isset( $args['target'] ) ? $this->target           = $args['target'] : $this->target = '_self';
+		isset( $args['linkUrl'] ) ? $this->linkUrl         = $args['linkUrl'] : $this->linkUrl = '';
+		isset( $args['linkText'] ) ? $this->linkText       = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
+		isset( $args['linkTarget'] ) ? $this->linkTarget   = $args['linkTarget'] : $this->linkTarget = '_self';
 	}
 
 	/**
@@ -186,8 +186,8 @@ class Model {
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getUrl() {
-		return $this->url;
+	protected function getLinkUrl() {
+		return $this->linkUrl;
 	}
 
 	/**
@@ -196,8 +196,8 @@ class Model {
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getTarget() {
-		return $this->target;
+	protected function getLinkTarget() {
+		return $this->linkTarget;
 	}
 
 	/**
@@ -206,8 +206,8 @@ class Model {
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getCta() {
-		return $this->cta;
+	protected function getLinkText() {
+		return $this->linkText;
 	}
 
 	/**

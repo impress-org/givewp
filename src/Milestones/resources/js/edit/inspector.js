@@ -19,7 +19,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline, cta, url, target } = attributes;
+	const { title, description, image, ids, categories, tags, metric, goal, deadline, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -28,13 +28,13 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			[ name ]: value,
 		} );
 	};
-	const [ openInNewTab, setOpenInNewTab ] = useState( target === '_self' ? false : true );
-	const toggleTarget = ( value ) => {
+	const [ openInNewTab, setOpenInNewTab ] = useState( linkTarget === '_self' ? false : true );
+	const toggleLinkTarget = ( value ) => {
 		setOpenInNewTab( value );
 		if ( value === true ) {
-			saveSetting( 'target', '_blank' );
+			saveSetting( 'linkTarget', '_blank' );
 		} else {
-			saveSetting( 'target', '_self' );
+			saveSetting( 'linkTarget', '_self' );
 		}
 	};
 	return (
@@ -98,22 +98,22 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'deadline', value ) }
 				/>
 				<TextControl
-					name="cta"
-					label={ __( 'Call To Action', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'cta', value ) }
-					value={ cta }
+					name="linkText"
+					label={ __( 'Link Text', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'linkText', value ) }
+					value={ linkText }
 				/>
 				<TextControl
-					name="url"
+					name="linkUrl"
 					type="url"
-					label={ __( 'Call To Action URL', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'url', value ) }
-					value={ url }
+					label={ __( 'Link URL', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'linkUrl', value ) }
+					value={ linkUrl }
 				/>
 				<ToggleControl
-					name="target"
-					label={ __( 'Open Call To Action in a new tab?', 'give' ) }
-					onChange={ ( value ) => toggleTarget( value ) }
+					name="linkTarget"
+					label={ __( 'Open link in a new tab?', 'give' ) }
+					onChange={ ( value ) => toggleLinkTarget( value ) }
 					checked={ openInNewTab }
 				/>
 			</PanelBody>
