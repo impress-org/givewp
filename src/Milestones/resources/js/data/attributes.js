@@ -8,10 +8,6 @@ const { __ } = wp.i18n;
 */
 
 const blockAttributes = {
-	title: {
-		type: 'string',
-		default: __( 'We\'ve raised {total} so far!', 'give' ),
-	},
 	description: {
 		type: 'string',
 		default: __( 'But we still need {total_remaining} to reach our goal!', 'give' ),

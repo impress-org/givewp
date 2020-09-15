@@ -17,10 +17,6 @@ class Block {
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
-					'title'       => [
-						'type'    => 'string',
-						'default' => __( 'We\'ve raised {total} so far!', 'give' ),
-					],
 					'description' => [
 						'type'    => 'string',
 						'default' => __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
@@ -75,7 +71,6 @@ class Block {
 	public function renderCallback( $attributes ) {
 		$milestone = new Milestone(
 			[
-				'title'       => $attributes['title'],
 				'description' => $attributes['description'],
 				'ids'         => $attributes['ids'],
 				'tags'        => $attributes['tags'],

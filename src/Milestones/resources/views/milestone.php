@@ -8,9 +8,6 @@
 
 <div class="give-milestone">
 	<div class="give-milestone__section">
-		<div class="give-milestone__title">
-			<?php echo $this->getTitle(); ?>
-		</div>
 		<div class="give-milestone__description">
 			<?php echo $this->getDescription(); ?>
 		</div>
