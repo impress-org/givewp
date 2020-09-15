@@ -1,17 +1,48 @@
 <?xml version="1.0"?>
 <ruleset name="GiveWP Coding Standards">
-	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
-	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/WordPress-Core/ruleset.xml -->
-
-	<!-- Set a description for this ruleset. -->
 	<description>We love clean code for GiveWP. This will let us enforce that easily.</description>
 
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	#############################################################################
+	-->
+
+	<file>.</file>
+
 	<!-- Exclude directories we don't want checked. -->
-	<exclude-pattern>node_modules/*</exclude-pattern>
-	<exclude-pattern>vendor/*</exclude-pattern>
-	<exclude-pattern>sample-data/*</exclude-pattern>
-	<exclude-pattern>languages/*</exclude-pattern>
-	<exclude-pattern>assets/*</exclude-pattern>
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/includes/libraries/*</exclude-pattern>
+	<exclude-pattern>/languages/*</exclude-pattern>
+	<exclude-pattern>/sample-data/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+
+	<!-- Exclude directories related to external dependencies. -->
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- Show progress, show the error codes for each message (source). -->
+	<arg value="ps"/>
+
+	<!-- Only check PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 8 files simultaneously. -->
+	<arg name="parallel" value="8"/>
+
+	<!-- Show colourized output. -->
+	<arg name="colors"/>
+
+
+	<!--
+	#############################################################################
+	USE THE WPCS AND THE PHPCOMPATIBILITYWP RULESETS
+	#############################################################################
+	-->
 
 	<!-- Bring in WP rules. -->
 	<rule ref="WordPress-Core">
@@ -29,4 +60,9 @@
 			<property name="text_domain" type="array" value="give"/>
 		</properties>
 	</rule>
+
+	<!-- Test for code compatibility with PHP 5.6 and higher. -->
+	<config name="testVersion" value="5.6-"/>
+	<rule ref="PHPCompatibilityWP"/>
+
 </ruleset>
