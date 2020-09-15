@@ -2,6 +2,7 @@
 namespace  Give\ServiceProviders;
 
 use Give\Database\Tables\Revenue;
+use Give\Database\Repositories\Revenue as RevenueRepository;
 
 /**
  * Class DatabaseTables
@@ -25,7 +26,7 @@ class DatabaseTables implements ServiceProvider {
 	 * @var string[]
 	 */
 	private $repositories = [
-		Revenue::class => \Give\Database\Repositories\Revenue::class,
+		Revenue::class => RevenueRepository::class,
 	];
 
 	/**
