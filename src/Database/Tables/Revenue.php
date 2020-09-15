@@ -42,11 +42,11 @@ class Revenue extends Table {
   			donation_id bigint(20) NOT NULL,
   			form_id bigint(20) NOT NULL,
   			amount int UNSIGNED NOT NULL,
-  			PRIMARY KEY  (id),
+  			PRIMARY KEY  (id)
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
+		$status = dbDelta( $sql );
 
 		$this->setVersion();
 	}
