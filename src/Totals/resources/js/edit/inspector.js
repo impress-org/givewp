@@ -46,7 +46,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'message', value ) } />
 				<MultiSelectControl
 					name="ids"
-					label={ __( 'Forms', 'give' ) }
+					label={ __( 'Filter by Forms', 'give' ) }
 					value={ formOptions.filter( option => ids.includes( option.value ) ) }
 					options={ formOptions }
 					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
