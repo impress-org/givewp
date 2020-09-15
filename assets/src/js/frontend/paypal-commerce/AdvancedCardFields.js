@@ -121,36 +121,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Create order event handler for smart buttons.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {object} data PayPal button data.
-	 * @param {object} actions PayPal button actions.
-	 *
-	 * @return {Promise<unknown>} Return PayPal order id.
-	 */
-	async createOrderHandler( data, actions ) { // eslint-disable-line
-		// eslint-disable-next-line
-		const response = await fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
-			method: 'POST',
-			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} );
-
-		const responseJson = await response.json();
-
-		if ( ! responseJson.success ) {
-			if ( null === responseJson.data.error ) {
-				throw {};
-			}
-
-			throw responseJson.data.error;
-		}
-
-		return responseJson.data.id;
-	}
-
-	/**
 	 * Get fields.
 	 *
 	 * @since 2.9.0

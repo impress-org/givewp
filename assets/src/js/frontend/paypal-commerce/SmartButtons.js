@@ -51,6 +51,10 @@ class SmartButtons extends PaymentMethod {
 			onClick: onClickHandler,
 			createOrder: createOrderHandler,
 			onApprove: onApproveHandler,
+			onError: function( error ) {
+				// eslint-disable-next-line no-console
+				console.log( 'caught error', error );
+			},
 			style: {
 				layout: 'vertical',
 				size: 'responsive',
@@ -111,42 +115,6 @@ class SmartButtons extends PaymentMethod {
 
 		Give.form.fn.addErrors( this.jQueryForm, result );
 		return actions.reject();
-	}
-
-	/**
-	 * Create order event handler for smart buttons.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {object} data PayPal button data.
-	 * @param {object} actions PayPal button actions.
-	 *
-	 * @return {Promise<unknown>} Return PayPal order id.
-	 */
-	async createOrderHandler(data, actions) { // eslint-disable-line
-		Give.form.fn.removeErrors( this.jQueryForm );
-
-		// eslint-disable-next-line
-		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
-			method: 'POST',
-			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} );
-		const responseJson = await response.json();
-		let errorDetail = {};
-
-		if ( ! responseJson.success ) {
-			if ( null === responseJson.data.error ) {
-				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
-				return null;
-			}
-
-			errorDetail = responseJson.data.error.details[ 0 ];
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
-
-			return null;
-		}
-
-		return responseJson.data.id;
 	}
 
 	/**

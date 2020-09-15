@@ -73,9 +73,9 @@ class Give_Scripts {
 	 * @access public
 	 *
 	 * @param string $handle Script Handle.
-	 * @param string $src    Script Source URL.
-	 * @param array  $dep    Dependency on a script.
-	 * @param mixed  $ver    Script Version
+	 * @param string $src Script Source URL.
+	 * @param array  $dep Dependency on a script.
+	 * @param mixed  $ver Script Version
 	 */
 	public static function register_script( $handle, $src, $dep = [], $ver = false ) {
 		wp_register_script( $handle, $src, $dep, $ver, self::$scripts_footer );
@@ -473,10 +473,11 @@ class Give_Scripts {
 		/**
 		 * Filter to modify access mail send notice
 		 *
+		 * @since 2.1.3
+		 *
 		 * @param string Send notice message for email access.
 		 *
 		 * @return  string $message Send notice message for email access.
-		 * @since 2.1.3
 		 */
 		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
 
@@ -498,6 +499,7 @@ class Give_Scripts {
 				'purchase_loading'            => __( 'Please Wait...', 'give' ),
 				'textForOverlayScreen'        => esc_html__( 'Please Wait...', 'give' ),
 				'number_decimals'             => give_get_price_decimals(),
+				'is_test_mode'                => give_is_test_mode(),
 				'give_version'                => GIVE_VERSION,
 				'magnific_options'            => apply_filters(
 					'give_magnific_options',
@@ -519,6 +521,7 @@ class Give_Scripts {
 						'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 					]
 				),
+				'generic_error_message'       => __( 'There was an error processing your donation. Please contact the administrator.', 'give' ),
 				'confirm_email_sent_message'  => $message,
 				'ajax_vars'                   => apply_filters(
 					'give_global_ajax_vars',
