@@ -10,7 +10,7 @@ const { __ } = wp.i18n;
 const blockAttributes = {
 	message: {
 		type: 'string',
-		default: __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
+		default: __( 'So far, we have {total}. But we still need {total_remaining} to reach our goal of {total_goal}!', 'give' ),
 	},
 	ids: {
 		type: 'array',
@@ -30,7 +30,7 @@ const blockAttributes = {
 	},
 	goal: {
 		type: 'string',
-		default: '',
+		default: '100',
 	},
 	linkText: {
 		type: 'string',

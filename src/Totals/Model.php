@@ -26,12 +26,12 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
+		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'So far, we have {total}. But we still need {total_remaining} to reach our goal of {total_goal}!', 'give' );
 		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
-		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '';
+		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '100';
 		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
 		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
 		isset( $args['linkTarget'] ) ? $this->linkTarget = $args['linkTarget'] : $this->linkTarget = '_self';
@@ -200,9 +200,9 @@ class Model {
 	 * @since 2.9.0
 	 */
 	protected function getFormattedTotalRemaining() {
-		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
 		switch ( $this->metric ) {
 			case 'revenue': {
+				$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
 				return give_currency_filter(
 					give_format_amount(
 						$total_remaining,
@@ -214,10 +214,12 @@ class Model {
 				);
 			}
 			case 'donor-count': {
-				return _n( '%s donor', '%s donors', $total_remaining, 'give' );
+				$total_remaining = ( $this->getGoal() - $this->getDonorCount() ) > 0 ? ( $this->getGoal() - $this->getDonorCount() ) : 0;
+				return sprintf( _n( '%d donor', '%d donors', $total_remaining, 'give' ), $total_remaining );
 			}
 			case 'donation-count': {
-				return _n( '%s donation', '%s donations', $total_remaining, 'give' );
+				$total_remaining = ( $this->getGoal() - $this->getDonationCount() ) > 0 ? ( $this->getGoal() - $this->getDonationCount() ) : 0;
+				return sprintf( _n( '%d donation', '%d donations', $total_remaining, 'give' ), $total_remaining );
 			}
 		}
 	}
@@ -275,8 +277,11 @@ class Model {
 					)
 				);
 			}
-			default: {
-				return $total;
+			case 'donor-count': {
+				return sprintf( _n( '%d donor', '%d donors', $total, 'give' ), $total );
+			}
+			case 'donation-count': {
+				return sprintf( _n( '%d donation', '%d donations', $total, 'give' ), $total );
 			}
 		}
 	}
@@ -309,15 +314,12 @@ class Model {
 					)
 				);
 			}
-			default: {
-				return $goal;
+			case 'donor-count': {
+				return sprintf( _n( '%d donor', '%d donors', $goal, 'give' ), $goal );
 			}
-			// case 'donor-count': {
-			// 	return _n( '%s donor', '%s donors', $goal, 'give' );
-			// }
-			// case 'donation-count': {
-			// 	return _n( '%s donation', '%s donations', $goal, 'give' );
-			// }
+			case 'donation-count': {
+				return sprintf( _n( '%d donation', '%d donations', $goal, 'give' ), $goal );
+			}
 		}
 	}
 }
