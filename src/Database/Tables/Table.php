@@ -144,6 +144,28 @@ abstract class Table {
 	}
 
 	/**
+	 * Get table primary key.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return string
+	 */
+	public function getPrimaryKey() {
+		return $this->primaryKey;
+	}
+
+	/**
+	 * Return wpdb.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return wpdb
+	 */
+	public function getDb() {
+		return $this->db;
+	}
+
+	/**
 	 * Set table version.
 	 *
 	 * @since 2.9.0
