@@ -1,54 +1,38 @@
 // This file used for Total styles common to the frontend and editor
 
-.give-total {
-	display: grid;
-	grid-template-columns: 2fr 3fr;
+.give-totals {
+	border: 1px solid #000;
+}
+
+.give-totals__content {
 	padding: 16px;
-	grid-gap: 16px;
-	border: 1px solid #000;
-
-	.give-total__section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
 }
 
-.give-total__image {
-	width: 100%;
-	height: 0;
-	padding-top: 56.25%;
-	background: #888;
-	border: 1px solid #000;
-	position: relative;
-	overflow: hidden;
-
-	img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		top: 0;
-		left: 0;
-	}
+.give-totals__goal {
+	padding: 16px;
+	height: auto;
+	border-top: 1px solid #000;
 }
 
-.give-total__progress {
-	height: 20px;
+.give-totals__progress {
+	height: auto;
+	display: flex;
+	align-items: center;
 	position: relative;
 	border: 1px solid #000;
 
-	.give-total__progress-bar {
+	.give-totals__progress-bar {
 		position: absolute;
 		height: 100%;
 		left: 0;
 		top: 0;
 		background: #888;
 	}
-}
 
-.give-total__context {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	.give-totals__progress-text {
+		font-size: 22px;
+		line-height: 1;
+		padding: 8px;
+		position: relative;
+	}
 }
