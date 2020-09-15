@@ -23,7 +23,7 @@ import '../css/editor.scss';
 
 export default registerBlockType( 'give/totals', {
 	title: __( 'Totals', 'give' ),
-	description: __( 'The GiveWP Totals block inserts an progress bar indicating donations raised across multiple forms. Each Totals\'s presentation can be customized below.' ),
+	description: __( 'The Totals block lets you show progress made across forms towards a common goal.', 'give' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [
