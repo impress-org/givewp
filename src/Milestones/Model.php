@@ -6,14 +6,11 @@ namespace Give\Milestones;
 class Model {
 
 	// Settings
-	protected $title;
 	protected $message;
-	protected $image;
 	protected $ids;
 	protected $tags;
 	protected $categories;
 	protected $metric;
-	protected $deadline;
 	protected $goal;
 	protected $linkText;
 	protected $linkUrl;
@@ -25,18 +22,15 @@ class Model {
 	/**
 	 * Constructs and sets up setting variables for a new Milestone model
 	 *
-	 * @param array $args Arguments for new Milestone, including 'ids' and 'title'
+	 * @param array $args Arguments for new Milestone, including 'ids'
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['title'] ) ? $this->title           = $args['title'] : $this->title = __( 'We\'ve raised {total} so far!', 'give' );
 		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
-		isset( $args['image'] ) ? $this->image           = $args['image'] : $this->image = '';
 		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
-		isset( $args['deadline'] ) ? $this->deadline     = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '';
 		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
 		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
@@ -161,26 +155,6 @@ class Model {
 	}
 
 	/**
-	 * Get title for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getTitle() {
-		return $this->formatMessage( $this->title );
-	}
-
-	/**
-	 * Get deadline for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getDeadline() {
-		return $this->deadline;
-	}
-
-	/**
 	 * Get call to action url for Milestone
 	 *
 	 * @return string
@@ -208,18 +182,6 @@ class Model {
 	 **/
 	protected function getLinkText() {
 		return $this->linkText;
-	}
-
-	/**
-	 * Get days remaining before Milestone deadline
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getDaysToGo() {
-		$now      = new \DateTime();
-		$deadline = new \DateTime( $this->getDeadline() );
-		return $now < $deadline ? $deadline->diff( $now )->format( '%a' ) + 1 : 0;
 	}
 
 	/**
@@ -270,16 +232,6 @@ class Model {
 			);
 		}
 		return $message;
-	}
-
-	/**
-	 * Get image for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getImage() {
-		return $this->image;
 	}
 
 	/**
