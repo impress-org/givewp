@@ -17,15 +17,15 @@
 		</div>
 		<?php endif; ?>
 	</div>
+	<?php if ( ! empty( $this->getGoal() ) ) : ?>
 	<div class="give-totals__goal">
-		<?php if ( ! empty( $this->getGoal() ) ) : ?>
 		<div class="give-totals__progress">
 			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>
 			<div class="give-totals__progress-bar" style="width: <?php echo $percent < 100 ? $percent : 100; ?>%"></div>
 			<div class="give-totals__progress-text"> 
-				<?php echo sprintf( __( '%1$d of %2$s', 'give' ), $this->getFormattedTotal(), $this->getFormattedGoal() ); ?>
+				<?php echo sprintf( __( '%1$s of %2$s', 'give' ), $this->getFormattedTotal(), $this->getFormattedGoal() ); ?>
 			</div>
 		</div>
-		<?php endif; ?>
 	</div>
+	<?php endif; ?>
 </div>

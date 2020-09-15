@@ -309,12 +309,15 @@ class Model {
 					)
 				);
 			}
-			case 'donor-count': {
-				return _n( '%s donor', '%s donors', $goal, 'give' );
+			default: {
+				return $goal;
 			}
-			case 'donation-count': {
-				return _n( '%s donation', '%s donations', $goal, 'give' );
-			}
+			// case 'donor-count': {
+			// 	return _n( '%s donor', '%s donors', $goal, 'give' );
+			// }
+			// case 'donation-count': {
+			// 	return _n( '%s donation', '%s donations', $goal, 'give' );
+			// }
 		}
 	}
 }
