@@ -38,7 +38,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 	};
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Total Settings', 'give' ) }>
+			<PanelBody title={ __( 'Totals Settings', 'give' ) }>
 				<TextareaControl
 					name="message"
 					label={ __( 'Message', 'give' ) }
