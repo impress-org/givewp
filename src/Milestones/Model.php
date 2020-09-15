@@ -201,15 +201,25 @@ class Model {
 	 */
 	protected function getFormattedTotalRemaining() {
 		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
-		return give_currency_filter(
-			give_format_amount(
-				$total_remaining,
-				[
-					'sanitize' => false,
-					'decimal'  => false,
-				]
-			)
-		);
+		switch ( $this->metric ) {
+			case 'revenue': {
+				return give_currency_filter(
+					give_format_amount(
+						$total_remaining,
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+			}
+			case 'donor-count': {
+				return _n( '%s donor', '%s donors', $total_remaining, 'give' );
+			}
+			case 'donation-count': {
+				return _n( '%s donation', '%s donations', $total_remaining, 'give' );
+			}
+		}
 	}
 
 	/**
@@ -222,7 +232,6 @@ class Model {
 			[ 'total', $this->getFormattedTotal() ],
 			[ 'total_goal', $this->getFormattedGoal() ],
 			[ 'total_remaining', $this->getFormattedTotalRemaining() ],
-			[ 'days_remaining', $this->getDaysToGo() ],
 		];
 		foreach ( $codes as $code ) {
 			$message = str_replace(
@@ -300,8 +309,11 @@ class Model {
 					)
 				);
 			}
-			default: {
-				return $goal;
+			case 'donor-count': {
+				return _n( '%s donor', '%s donors', $goal, 'give' );
+			}
+			case 'donation-count': {
+				return _n( '%s donation', '%s donations', $goal, 'give' );
 			}
 		}
 	}
