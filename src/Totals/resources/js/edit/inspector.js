@@ -39,52 +39,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 	};
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Totals Settings', 'give' ) }>
+			<PanelBody title={ __( 'Content', 'give' ) }>
 				<TextareaControl
 					name="message"
 					label={ __( 'Message', 'give' ) }
 					value={ message }
-					onChange={ ( value ) => saveSetting( 'message', value ) } />
-				<MultiSelectControl
-					name="ids"
-					label={ __( 'Filter by Forms', 'give' ) }
-					value={ formOptions.filter( option => ids.includes( option.value ) ) }
-					options={ formOptions }
-					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
-				<MultiSelectControl
-					name="tags"
-					label={ __( 'Filter by Tags', 'give' ) }
-					value={ tagOptions.filter( option => tags.includes( option.value ) ) }
-					options={ tagOptions }
-					onChange={ ( value ) => saveSetting( 'tags', value ? value.map( ( option ) => option.value ) : [] ) } />
-				<MultiSelectControl
-					name="categories"
-					label={ __( 'Filter by Categories', 'give' ) }
-					value={ categoryOptions.filter( option => categories.includes( option.value ) ) }
-					options={ categoryOptions }
-					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
-				<SelectControl
-					label={ __( 'Metric', 'give' ) }
-					value={ metric }
-					options={ [
-						{ label: __( 'Revenue', 'give' ), value: 'revenue' },
-						{ label: __( 'Number of Donors', 'give' ), value: 'donor-count' },
-						{ label: __( 'Number of Donations', 'give' ), value: 'donation-count' },
-					] }
-					onChange={ ( value ) => saveSetting( 'metric', value ) }
-				/>
-				<TextControl
-					name="goal"
-					label={ __( 'Goal', 'give' ) }
-					type="number"
-					onChange={ ( value ) => saveSetting( 'goal', value ) }
-					value={ goal }
-				/>
-				<ColorControl
-					name="color"
-					label={ __( 'Goal Color', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'color', value ) }
-					value={ color }
+					onChange={ ( value ) => saveSetting( 'message', value ) }
 				/>
 				<TextControl
 					name="linkText"
@@ -104,6 +64,51 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Open link in a new tab?', 'give' ) }
 					onChange={ ( value ) => toggleLinkTarget( value ) }
 					checked={ openInNewTab }
+				/>
+			</PanelBody>
+			<PanelBody title={ __( 'Total', 'give' ) } initialOpen={ false }>
+				<MultiSelectControl
+					name="ids"
+					label={ __( 'Filter by Forms', 'give' ) }
+					value={ formOptions.filter( option => ids.includes( option.value ) ) }
+					options={ formOptions }
+					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
+				<MultiSelectControl
+					name="tags"
+					label={ __( 'Filter by Tags', 'give' ) }
+					value={ tagOptions.filter( option => tags.includes( option.value ) ) }
+					options={ tagOptions }
+					onChange={ ( value ) => saveSetting( 'tags', value ? value.map( ( option ) => option.value ) : [] ) } />
+				<MultiSelectControl
+					name="categories"
+					label={ __( 'Filter by Categories', 'give' ) }
+					value={ categoryOptions.filter( option => categories.includes( option.value ) ) }
+					options={ categoryOptions }
+					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
+			</PanelBody>
+			<PanelBody title={ __( 'Goal', 'give' ) } initialOpen={ false }>
+				<TextControl
+					name="goal"
+					label={ __( 'Goal', 'give' ) }
+					type="number"
+					onChange={ ( value ) => saveSetting( 'goal', value ) }
+					value={ goal }
+				/>
+				<SelectControl
+					label={ __( 'Goal Format', 'give' ) }
+					value={ metric }
+					options={ [
+						{ label: __( 'Revenue', 'give' ), value: 'revenue' },
+						{ label: __( 'Number of Donors', 'give' ), value: 'donor-count' },
+						{ label: __( 'Number of Donations', 'give' ), value: 'donation-count' },
+					] }
+					onChange={ ( value ) => saveSetting( 'metric', value ) }
+				/>
+				<ColorControl
+					name="color"
+					label={ __( 'Goal Color', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'color', value ) }
+					value={ color }
 				/>
 			</PanelBody>
 		</InspectorControls>
