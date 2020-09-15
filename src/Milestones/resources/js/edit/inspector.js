@@ -3,8 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, TextareaControl } = wp.components;
-const { useSelect } = wp.data;
+const { PanelBody, TextControl, SelectControl, TextareaControl, ToggleControl } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -19,7 +19,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline } = attributes;
+	const { title, description, image, ids, categories, tags, metric, goal, deadline, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -27,6 +27,15 @@ const Inspector = ( { attributes, setAttributes } ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
+	};
+	const [ openInNewTab, setOpenInNewTab ] = useState( linkTarget === '_self' ? false : true );
+	const toggleLinkTarget = ( value ) => {
+		setOpenInNewTab( value );
+		if ( value === true ) {
+			saveSetting( 'linkTarget', '_blank' );
+		} else {
+			saveSetting( 'linkTarget', '_self' );
+		}
 	};
 	return (
 		<InspectorControls key="inspector">
@@ -87,6 +96,25 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="date"
 					value={ deadline }
 					onChange={ ( value ) => saveSetting( 'deadline', value ) }
+				/>
+				<TextControl
+					name="linkText"
+					label={ __( 'Link Text', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'linkText', value ) }
+					value={ linkText }
+				/>
+				<TextControl
+					name="linkUrl"
+					type="url"
+					label={ __( 'Link URL', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'linkUrl', value ) }
+					value={ linkUrl }
+				/>
+				<ToggleControl
+					name="linkTarget"
+					label={ __( 'Open link in a new tab?', 'give' ) }
+					onChange={ ( value ) => toggleLinkTarget( value ) }
+					checked={ openInNewTab }
 				/>
 			</PanelBody>
 		</InspectorControls>

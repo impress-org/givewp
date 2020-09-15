@@ -15,6 +15,9 @@ class Model {
 	protected $metric;
 	protected $deadline;
 	protected $goal;
+	protected $linkText;
+	protected $linkUrl;
+	protected $linkTarget;
 
 	// Internal
 	protected $forms = [];
@@ -35,6 +38,9 @@ class Model {
 		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
+		isset( $args['linkUrl'] ) ? $this->linkUrl         = $args['linkUrl'] : $this->linkUrl = '';
+		isset( $args['linkText'] ) ? $this->linkText       = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
+		isset( $args['linkTarget'] ) ? $this->linkTarget   = $args['linkTarget'] : $this->linkTarget = '_self';
 	}
 
 	/**
@@ -172,6 +178,36 @@ class Model {
 	 **/
 	protected function getDeadline() {
 		return $this->deadline;
+	}
+
+	/**
+	 * Get call to action url for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getLinkUrl() {
+		return $this->linkUrl;
+	}
+
+	/**
+	 * Get call to action url for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getLinkTarget() {
+		return $this->linkTarget;
+	}
+
+	/**
+	 * Get call to action text for Milestone
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getLinkText() {
+		return $this->linkText;
 	}
 
 	/**

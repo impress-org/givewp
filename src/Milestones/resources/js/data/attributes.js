@@ -44,6 +44,18 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+	linkText: {
+		type: 'string',
+		default: __( 'Learn More', 'give' ),
+	},
+	linkUrl: {
+		type: 'string',
+		default: '',
+	},
+	linkTarget: {
+		type: 'string',
+		default: '_self',
+	},
 };
 
 export default blockAttributes;

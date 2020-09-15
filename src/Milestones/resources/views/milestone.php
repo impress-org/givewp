@@ -21,6 +21,11 @@
 		<div class="give-milestone__description">
 			<?php echo $this->getDescription(); ?>
 		</div>
+		<?php if ( ! empty( $this->getLinkUrl() ) && ! empty( $this->getLinkText() ) ) : ?>
+			<div class="give-milestone__link">
+				<a href="<?php echo $this->getLinkUrl(); ?>" target="<?php echo $this->getLinkTarget(); ?>"><?php echo $this->getLinkText(); ?></a>
+			</div>
+		<?php endif; ?>
 		<?php if ( ! empty( $this->getGoal() ) ) : ?>
 		<div class="give-milestone__progress">
 			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>

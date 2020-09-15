@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Milestone now supports sorting forms by tag and category (#5244)
 -   Milestone now supports aggregating different metrics (Revenue, Donations, Donors) (#5244)
 -   Milestone title and description now support {} tags (#5242)
+-   Milestone now supports a custom Call To Action URL and text (#5262)
 
 ## [2.8.0] - 2020-08-31
 
