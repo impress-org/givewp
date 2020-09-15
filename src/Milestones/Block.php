@@ -17,39 +17,39 @@ class Block {
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
-					'description' => [
+					'message'    => [
 						'type'    => 'string',
 						'default' => __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
 					],
-					'ids'         => [
+					'ids'        => [
 						'type'    => 'array',
 						'default' => [],
 					],
-					'categories'  => [
+					'categories' => [
 						'type'    => 'array',
 						'default' => [],
 					],
-					'tags'        => [
+					'tags'       => [
 						'type'    => 'array',
 						'default' => [],
 					],
-					'metric'      => [
+					'metric'     => [
 						'type'    => 'string',
 						'default' => 'revenue',
 					],
-					'goal'        => [
+					'goal'       => [
 						'type'    => 'string',
 						'default' => '',
 					],
-					'linkText'    => [
+					'linkText'   => [
 						'type'    => 'string',
 						'default' => __( 'Learn More', 'give' ),
 					],
-					'linkUrl'     => [
+					'linkUrl'    => [
 						'type'    => 'string',
 						'default' => '',
 					],
-					'linkTarget'  => [
+					'linkTarget' => [
 						'type'    => 'string',
 						'default' => '_self',
 					],
@@ -67,15 +67,15 @@ class Block {
 	public function renderCallback( $attributes ) {
 		$milestone = new Milestone(
 			[
-				'description' => $attributes['description'],
-				'ids'         => $attributes['ids'],
-				'tags'        => $attributes['tags'],
-				'categories'  => $attributes['categories'],
-				'metric'      => $attributes['metric'],
-				'goal'        => $attributes['goal'],
-				'linkText'    => $attributes['linkText'],
-				'linkUrl'     => $attributes['linkUrl'],
-				'linkTarget'  => $attributes['linkTarget'],
+				'message'    => $attributes['message'],
+				'ids'        => $attributes['ids'],
+				'tags'       => $attributes['tags'],
+				'categories' => $attributes['categories'],
+				'metric'     => $attributes['metric'],
+				'goal'       => $attributes['goal'],
+				'linkText'   => $attributes['linkText'],
+				'linkUrl'    => $attributes['linkUrl'],
+				'linkTarget' => $attributes['linkTarget'],
 			]
 		);
 		return $milestone->getOutput();

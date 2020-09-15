@@ -8,8 +8,8 @@
 
 <div class="give-milestone">
 	<div class="give-milestone__section">
-		<div class="give-milestone__description">
-			<?php echo $this->getDescription(); ?>
+		<div class="give-milestone__message">
+			<?php echo $this->getMessage(); ?>
 		</div>
 		<?php if ( ! empty( $this->getLinkUrl() ) && ! empty( $this->getLinkText() ) ) : ?>
 			<div class="give-milestone__link">

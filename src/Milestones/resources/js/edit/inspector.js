@@ -18,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { description, ids, categories, tags, metric, goal, linkText, linkUrl, linkTarget } = attributes;
+	const { message, ids, categories, tags, metric, goal, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -40,10 +40,10 @@ const Inspector = ( { attributes, setAttributes } ) => {
 		<InspectorControls key="inspector">
 			<PanelBody title={ __( 'Milestone Settings', 'give' ) }>
 				<TextareaControl
-					name="description"
-					label={ __( 'Description', 'give' ) }
-					value={ description }
-					onChange={ ( value ) => saveSetting( 'description', value ) } />
+					name="message"
+					label={ __( 'Message', 'give' ) }
+					value={ message }
+					onChange={ ( value ) => saveSetting( 'message', value ) } />
 				<MultiSelectControl
 					name="ids"
 					label={ __( 'Forms', 'give' ) }

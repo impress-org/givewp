@@ -8,7 +8,7 @@ const { __ } = wp.i18n;
 */
 
 const blockAttributes = {
-	description: {
+	message: {
 		type: 'string',
 		default: __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
 	},

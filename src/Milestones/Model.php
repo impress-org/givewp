@@ -7,7 +7,7 @@ class Model {
 
 	// Settings
 	protected $title;
-	protected $description;
+	protected $message;
 	protected $image;
 	protected $ids;
 	protected $tags;
@@ -29,18 +29,18 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'We\'ve raised {total} so far!', 'give' );
-		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
-		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
-		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
-		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
-		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
-		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
-		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
-		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
-		isset( $args['linkUrl'] ) ? $this->linkUrl         = $args['linkUrl'] : $this->linkUrl = '';
-		isset( $args['linkText'] ) ? $this->linkText       = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
-		isset( $args['linkTarget'] ) ? $this->linkTarget   = $args['linkTarget'] : $this->linkTarget = '_self';
+		isset( $args['title'] ) ? $this->title           = $args['title'] : $this->title = __( 'We\'ve raised {total} so far!', 'give' );
+		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
+		isset( $args['image'] ) ? $this->image           = $args['image'] : $this->image = '';
+		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
+		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
+		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
+		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
+		isset( $args['deadline'] ) ? $this->deadline     = $args['deadline'] : $this->deadline = '';
+		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '';
+		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
+		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
+		isset( $args['linkTarget'] ) ? $this->linkTarget = $args['linkTarget'] : $this->linkTarget = '_self';
 	}
 
 	/**
@@ -223,13 +223,13 @@ class Model {
 	}
 
 	/**
-	 * Get description for Milestone
+	 * Get message for Milestone
 	 *
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getDescription() {
-		return $this->formatMessage( $this->description );
+	protected function getMessage() {
+		return $this->formatMessage( $this->message );
 	}
 
 	/**
