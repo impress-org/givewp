@@ -25,10 +25,6 @@ class Block {
 						'type'    => 'string',
 						'default' => __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
 					],
-					'image'       => [
-						'type'    => 'string',
-						'default' => '',
-					],
 					'ids'         => [
 						'type'    => 'array',
 						'default' => [],
@@ -81,7 +77,6 @@ class Block {
 			[
 				'title'       => $attributes['title'],
 				'description' => $attributes['description'],
-				'image'       => $attributes['image'],
 				'ids'         => $attributes['ids'],
 				'tags'        => $attributes['tags'],
 				'categories'  => $attributes['categories'],

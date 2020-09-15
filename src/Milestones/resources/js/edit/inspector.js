@@ -10,7 +10,6 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 
-import ImageControl from '../components/image-control';
 import MultiSelectControl from '../components/multi-select-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
@@ -19,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline, linkText, linkUrl, linkTarget } = attributes;
+	const { title, description, ids, categories, tags, metric, goal, deadline, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -50,11 +49,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Description', 'give' ) }
 					value={ description }
 					onChange={ ( value ) => saveSetting( 'description', value ) } />
-				<ImageControl
-					name="image"
-					label={ __( 'Featured Image', 'give' ) }
-					value={ image }
-					onChange={ ( value ) => saveSetting( 'image', value ) } />
 				<MultiSelectControl
 					name="ids"
 					label={ __( 'Forms', 'give' ) }

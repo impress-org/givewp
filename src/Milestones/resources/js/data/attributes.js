@@ -16,10 +16,6 @@ const blockAttributes = {
 		type: 'string',
 		default: __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
 	},
-	image: {
-		type: 'string',
-		default: '',
-	},
 	ids: {
 		type: 'array',
 		default: [],
