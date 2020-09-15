@@ -10,6 +10,11 @@ import Select from 'react-select';
 const { useInstanceId } = wp.compose;
 const { BaseControl } = wp.components;
 
+/**
+ * Styles
+ */
+import './style.scss';
+
 const MultiSelectControl = ( { name, label, help, className, value, hideLabelFromVision, isLoading, isDisabled, onChange, options } ) => {
 	const instanceId = useInstanceId( MultiSelectControl );
 	const id = `give-multi-select-control-${ name }-${ instanceId }`;
