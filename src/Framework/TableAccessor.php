@@ -1,7 +1,6 @@
 <?php
-namespace Give\Database\Repositories;
+namespace Give\Framework;
 
-use Give\Database\Tables\Table;
 use http\Exception\InvalidArgumentException;
 use wpdb;
 

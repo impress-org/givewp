@@ -47,6 +47,7 @@ use Give\ServiceProviders\DatabaseTables;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
+use Give\ServiceProviders\RevenueServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -134,7 +135,7 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
-		DatabaseTables::class,
+		RevenueServiceProvider::class,
 	];
 
 	/**

@@ -1,5 +1,5 @@
 <?php
-namespace Give\Database\Tables;
+namespace Give\Framework;
 
 use wpdb;
 
