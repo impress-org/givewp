@@ -12,10 +12,31 @@ class Block {
 	 * @since 2.9.0
 	 **/
 	public function addBlock() {
+		wp_register_style(
+			'give-google-font-montserrat',
+			'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap',
+			[],
+			null
+		);
+
+		wp_register_style(
+			'give-google-font-open-sans',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+			[],
+			null
+		);
+
+		wp_register_style(
+			'give-totals-block-style',
+			'',
+			[ 'give-google-font-montserrat' ]
+		);
+
 		register_block_type(
 			'give/totals',
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
+				'style'           => 'give-totals-block-style',
 				'attributes'      => [
 					'message'    => [
 						'type'    => 'string',

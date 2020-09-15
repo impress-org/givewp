@@ -1,43 +1,84 @@
 // This file used for Total styles common to the frontend and editor
 
-.give-totals {
-	border: 1px solid #000;
+.give-totals--card {
+	background: #fff;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	border-radius: 8px;
+	overflow: hidden;
+	font-family: Montserrat, sans-serif;
 }
 
 .give-totals__content {
-	padding: 16px;
+	padding: 24px 18px;
+	display: flex;
+	align-items: center;
 }
 
 .give-totals__message {
-	font-size: 32px;
+	font-size: 20px;
 	line-height: 1.4;
+	font-weight: 600;
+	color: #6f6f6f;
+	margin-right: 32px;
+}
+
+.give-totals__link {
+	a {
+		padding: 8px 16px;
+		background: #28c77b;
+		white-space: nowrap;
+		box-shadow: 0 2px 10px #28c77a85;
+		border-radius: 4px;
+		border: none;
+		color: #fff;
+		font-size: 20px;
+		text-decoration: none;
+		font-weight: 600;
+
+		&:focus {
+			box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
+			outline: none;
+		}
+	}
 }
 
 .give-totals__goal {
-	padding: 16px;
+	padding: 24px 18px;
 	height: auto;
-	border-top: 1px solid #000;
+}
+
+.give-totals--card .give-totals__goal {
+	border-top: 1px solid #f2f2f2;
 }
 
 .give-totals__progress {
-	height: auto;
+	height: 20px;
 	display: flex;
 	align-items: center;
 	position: relative;
-	border: 1px solid #000;
+	border-radius: 20px;
+	overflow: hidden;
+	background: #f1f1f1;
+	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
 
 	.give-totals__progress-bar {
 		position: absolute;
 		height: 100%;
 		left: 0;
 		top: 0;
-		background: #888;
+		border-radius: 20px;
+		background: linear-gradient(180deg, #28c77b 0%, #28c77b 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
+		background-blend-mode: multiply;
+		overflow: hidden;
 	}
+}
 
-	.give-totals__progress-text {
-		font-size: 22px;
-		line-height: 1;
-		padding: 8px;
-		position: relative;
-	}
+.give-totals__progress-text {
+	font-size: 16px;
+	line-height: 1;
+	position: relative;
+	display: block;
+	margin-top: 16px;
+	color: rgb(148, 148, 148);
+	font-weight: 500;
 }
