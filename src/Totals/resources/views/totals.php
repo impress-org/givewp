@@ -6,29 +6,27 @@
  */
 ?>
 
-<div class="give-totals give-totals--card">
-	<div class="give-totals__content">
-		<div class="give-totals__message">
-			<?php echo $this->getMessage(); ?>
-		</div>
+<div class="give-totals">
+	<?php if ( ! empty( $this->getMessage() ) || ! empty( $this->getLinkUrl() ) ) : ?>
+	<p class="give-totals__message">
+		<?php echo $this->getMessage(); ?>
 		<?php if ( ! empty( $this->getLinkUrl() ) && ! empty( $this->getLinkText() ) ) : ?>
-		<div class="give-totals__link">
-			<a href="<?php echo $this->getLinkUrl(); ?>" target="<?php echo $this->getLinkTarget(); ?>"><?php echo $this->getLinkText(); ?></a>
-		</div>
+		<a href="<?php echo $this->getLinkUrl(); ?>" target="<?php echo $this->getLinkTarget(); ?>"><?php echo $this->getLinkText(); ?></a>
 		<?php endif; ?>
-	</div>
+	</p>
+	<?php endif; ?>
 	<?php if ( ! empty( $this->getGoal() ) ) : ?>
 	<div class="give-totals__goal">
 		<div class="give-totals__progress">
 			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>
 			<div class="give-totals__progress-bar" style="width: <?php echo $percent < 100 ? $percent : 100; ?>%"></div>
 		</div>
-		<div class="give-totals__progress-text"> 
+		<p class="give-totals__progress-text"> 
 			<?php
 				$total = $this->metric === 'revenue' ? $this->getFormattedTotal() : $this->getTotal();
 				echo sprintf( __( '%1$s of %2$s', 'give' ), $total, $this->getFormattedGoal() );
 			?>
-		</div>
+		</p>
 	</div>
 	<?php endif; ?>
 </div>

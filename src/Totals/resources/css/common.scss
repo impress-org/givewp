@@ -1,54 +1,11 @@
 // This file used for Total styles common to the frontend and editor
 
-.give-totals--card {
-	background: #fff;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	border-radius: 8px;
-	overflow: hidden;
-	font-family: Montserrat, sans-serif;
-}
-
 .give-totals__content {
-	padding: 24px 18px;
-	display: flex;
-	align-items: center;
-}
-
-.give-totals__message {
-	font-size: 20px;
-	line-height: 1.4;
-	font-weight: 600;
-	color: #6f6f6f;
-	margin-right: 32px;
-}
-
-.give-totals__link {
-	a {
-		padding: 8px 16px;
-		background: #28c77b;
-		white-space: nowrap;
-		box-shadow: 0 2px 10px #28c77a85;
-		border-radius: 4px;
-		border: none;
-		color: #fff;
-		font-size: 20px;
-		text-decoration: none;
-		font-weight: 600;
-
-		&:focus {
-			box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
-			outline: none;
-		}
-	}
+	padding-bottom: 24px;
 }
 
 .give-totals__goal {
-	padding: 24px 18px;
 	height: auto;
-}
-
-.give-totals--card .give-totals__goal {
-	border-top: 1px solid #f2f2f2;
 }
 
 .give-totals__progress {
@@ -78,7 +35,7 @@
 	line-height: 1;
 	position: relative;
 	display: block;
-	margin-top: 16px;
-	color: rgb(148, 148, 148);
+	opacity: 0.8;
 	font-weight: 500;
+	margin: 10px 0 0 0 !important;
 }
