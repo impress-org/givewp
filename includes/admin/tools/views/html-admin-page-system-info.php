@@ -3,6 +3,8 @@
  * Admin View: System Info
  */
 
+use Give\Database\Tables\Revenue;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -19,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $wpdb;
 $give_options = give_get_settings();
 $plugins      = give_get_plugins();
-$give_add_ons = give_get_plugins( array( 'only_add_on' => true ) );
+$give_add_ons = give_get_plugins( [ 'only_add_on' => true ] );
 
-$give_plugin_authors = array( 'WordImpress', 'GiveWP' );
+$give_plugin_authors = [ 'WordImpress', 'GiveWP' ];
 
 /* @var  Give_Updates $give_updates */
 $give_updates = Give_Updates::get_instance();
@@ -330,7 +332,7 @@ $give_updates = Give_Updates::get_instance();
 			</td>
 		</tr>
 		<?php
-		$posting = array();
+		$posting = [];
 
 		// fsockopen/cURL.
 		$posting['fsockopen_curl']['name'] = 'fsockopen/cURL';
@@ -399,14 +401,14 @@ $give_updates = Give_Updates::get_instance();
 
 		$response = wp_safe_remote_post(
 			'https://www.paypal.com/cgi-bin/webscr',
-			array(
+			[
 				'timeout'     => 60,
 				'user-agent'  => 'Give/' . GIVE_VERSION,
 				'httpversion' => '1.1',
-				'body'        => array(
+				'body'        => [
 					'cmd' => '_notify-validate',
-				),
-			)
+				],
+			]
 		);
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
@@ -534,6 +536,14 @@ $give_updates = Give_Updates::get_instance();
 					);
 				}
 
+				$db_table_list .= sprintf(
+					'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s -  %4$s</li>',
+					give( Revenue::class )->installed() ? 'yes' : 'error',
+					give( Revenue::class )->installed() ? 'yes' : 'no-alt',
+					give( Revenue::class )->getName(),
+					give( Revenue::class )->getVersion()
+				);
+
 				echo "<ul>{$db_table_list}</ul>";
 				?>
 			</td>
@@ -634,7 +644,7 @@ $give_updates = Give_Updates::get_instance();
 				$default_gateway = __( 'Test Donation', 'give' );
 			}
 
-			$gateways = array();
+			$gateways = [];
 
 			foreach ( $active_gateways as $gateway ) {
 				$gateways[] = $gateway['admin_label'];
