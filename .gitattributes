@@ -2,7 +2,7 @@
 CHANGELOG.txt export-ignore
 composer.* export-ignore
 package.json export-ignore
-phpcs.ruleset.xml export-ignore
+phpcs.xml.dist export-ignore
 phpunit.* export-ignore
 README.md export-ignore
 tests export-ignore
