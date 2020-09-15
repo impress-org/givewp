@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Milestones;
+namespace Give\Totals;
 
 
 class Model {
@@ -20,9 +20,9 @@ class Model {
 	protected $forms = [];
 
 	/**
-	 * Constructs and sets up setting variables for a new Milestone model
+	 * Constructs and sets up setting variables for a new Totals model
 	 *
-	 * @param array $args Arguments for new Milestone, including 'ids'
+	 * @param array $args Arguments for new Totals, including 'ids'
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
@@ -38,7 +38,7 @@ class Model {
 	}
 
 	/**
-	 * Get forms associated with Milestone
+	 * Get forms associated with Totals
 	 *
 	 * @return array
 	 * @since 2.9.0
@@ -98,7 +98,7 @@ class Model {
 	}
 
 	/**
-	 * Get output markup for Milestone
+	 * Get output markup for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -113,7 +113,7 @@ class Model {
 	}
 
 	/**
-	 * Get raw earnings value for Milestone
+	 * Get raw earnings value for Totals
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -128,7 +128,7 @@ class Model {
 	}
 
 	/**
-	 * Get number of donors for Milestone
+	 * Get number of donors for Totals
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -144,7 +144,7 @@ class Model {
 	}
 
 	/**
-	 * Get number of donations for Milestone
+	 * Get number of donations for Totals
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -155,7 +155,7 @@ class Model {
 	}
 
 	/**
-	 * Get call to action url for Milestone
+	 * Get call to action url for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -165,7 +165,7 @@ class Model {
 	}
 
 	/**
-	 * Get call to action url for Milestone
+	 * Get call to action url for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -175,7 +175,7 @@ class Model {
 	}
 
 	/**
-	 * Get call to action text for Milestone
+	 * Get call to action text for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -185,7 +185,7 @@ class Model {
 	}
 
 	/**
-	 * Get message for Milestone
+	 * Get message for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -244,7 +244,7 @@ class Model {
 	}
 
 	/**
-	 * Get goal for Milestone
+	 * Get goal for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -254,11 +254,11 @@ class Model {
 	}
 
 	/**
-	 * Get template path for Milestone component template
+	 * Get template path for Totals component template
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/Milestones/resources/views/milestone.php';
+		return GIVE_PLUGIN_DIR . '/src/Totals/resources/views/totals.php';
 	}
 
 	protected function getFormattedTotal() {

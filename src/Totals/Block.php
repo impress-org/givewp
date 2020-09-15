@@ -1,19 +1,19 @@
 <?php
 
-namespace Give\Milestones;
+namespace Give\Totals;
 
-use Give\Milestones\Model as Milestone;
+use Give\Totals\Model as TotalsModel;
 
 class Block {
 
 	/**
-	 * Registers Milestone block
+	 * Registers Totals block
 	 *
 	 * @since 2.9.0
 	 **/
 	public function addBlock() {
 		register_block_type(
-			'give/milestone',
+			'give/totals',
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
@@ -60,12 +60,12 @@ class Block {
 	}
 
 	/**
-	 * Returns Milestone block markup
+	 * Returns Totals block markup
 	 *
 	 * @since 2.9.0
 	 **/
 	public function renderCallback( $attributes ) {
-		$milestone = new Milestone(
+		$totals = new TotalsModel(
 			[
 				'message'    => $attributes['message'],
 				'ids'        => $attributes['ids'],
@@ -78,6 +78,6 @@ class Block {
 				'linkTarget' => $attributes['linkTarget'],
 			]
 		);
-		return $milestone->getOutput();
+		return $totals->getOutput();
 	}
 }

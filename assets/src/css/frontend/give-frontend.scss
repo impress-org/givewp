@@ -26,8 +26,8 @@
 @import 'modal';
 @import '_components.donor';
 
-// Load common Milestones css from the src directory
-@import '../../../../src/Milestones/resources/css/common.scss';
+// Load common Totals css from the src directory
+@import '../../../../src/Totals/resources/css/common.scss';
 
 // Stripe Core
 @import 'give-stripe';

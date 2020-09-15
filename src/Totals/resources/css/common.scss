@@ -1,20 +1,20 @@
-// This file used for Milestone styles common to the frontend and editor
+// This file used for Total styles common to the frontend and editor
 
-.give-milestone {
+.give-total {
 	display: grid;
 	grid-template-columns: 2fr 3fr;
 	padding: 16px;
 	grid-gap: 16px;
 	border: 1px solid #000;
 
-	.give-milestone__section {
+	.give-total__section {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 	}
 }
 
-.give-milestone__image {
+.give-total__image {
 	width: 100%;
 	height: 0;
 	padding-top: 56.25%;
@@ -33,12 +33,12 @@
 	}
 }
 
-.give-milestone__progress {
+.give-total__progress {
 	height: 20px;
 	position: relative;
 	border: 1px solid #000;
 
-	.give-milestone__progress-bar {
+	.give-total__progress-bar {
 		position: absolute;
 		height: 100%;
 		left: 0;
@@ -47,7 +47,7 @@
 	}
 }
 
-.give-milestone__context {
+.give-total__context {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

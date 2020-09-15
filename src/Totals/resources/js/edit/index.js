@@ -13,13 +13,13 @@ import Inspector from './inspector';
  * Render Block UI For Editor
  */
 
-const Milestone = ( { attributes, setAttributes } ) => {
+const Totals = ( { attributes, setAttributes } ) => {
 	return (
 		<Fragment>
 			<Inspector { ... { attributes, setAttributes } } />
-			<ServerSideRender block="give/milestone" attributes={ attributes } />
+			<ServerSideRender block="give/totals" attributes={ attributes } />
 		</Fragment>
 	);
 };
 
-export default Milestone;
+export default Totals;
