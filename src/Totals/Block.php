@@ -68,7 +68,7 @@ class Block {
 					],
 					'linkText'   => [
 						'type'    => 'string',
-						'default' => __( 'Learn More', 'give' ),
+						'default' => __( 'Donate Now', 'give' ),
 					],
 					'linkUrl'    => [
 						'type'    => 'string',
