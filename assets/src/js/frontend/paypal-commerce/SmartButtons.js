@@ -88,7 +88,7 @@ class SmartButtons extends PaymentMethod {
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
 	 *
-	 * @return {Promise<unknown>} Return wther or not open PayPal checkout window.
+	 * @return {Promise<unknown>} Return whether or not open PayPal checkout window.
 	 */
 	async onClickHandler(data, actions) { // eslint-disable-line
 		const formData = new FormData( this.form );
