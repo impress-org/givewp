@@ -8,17 +8,9 @@ const { __ } = wp.i18n;
 */
 
 const blockAttributes = {
-	title: {
+	message: {
 		type: 'string',
-		default: __( 'We\'ve raised {total} so far!', 'give' ),
-	},
-	description: {
-		type: 'string',
-		default: __( 'But we still need {total_remaining} to reach our goal!', 'give' ),
-	},
-	image: {
-		type: 'string',
-		default: '',
+		default: __( 'So far, we have {total}. We still need {total_remaining} to reach our goal of {total_goal}!', 'give' ),
 	},
 	ids: {
 		type: 'array',
@@ -36,13 +28,9 @@ const blockAttributes = {
 		type: 'string',
 		default: 'revenue',
 	},
-	deadline: {
-		type: 'string',
-		default: '',
-	},
 	goal: {
 		type: 'string',
-		default: '',
+		default: '100',
 	},
 	linkText: {
 		type: 'string',

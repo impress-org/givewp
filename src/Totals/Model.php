@@ -1,19 +1,16 @@
 <?php
 
-namespace Give\Milestones;
+namespace Give\Totals;
 
 
 class Model {
 
 	// Settings
-	protected $title;
-	protected $description;
-	protected $image;
+	protected $message;
 	protected $ids;
 	protected $tags;
 	protected $categories;
 	protected $metric;
-	protected $deadline;
 	protected $goal;
 	protected $linkText;
 	protected $linkUrl;
@@ -23,28 +20,25 @@ class Model {
 	protected $forms = [];
 
 	/**
-	 * Constructs and sets up setting variables for a new Milestone model
+	 * Constructs and sets up setting variables for a new Totals model
 	 *
-	 * @param array $args Arguments for new Milestone, including 'ids' and 'title'
+	 * @param array $args Arguments for new Totals, including 'ids'
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['title'] ) ? $this->title             = $args['title'] : $this->title = __( 'We\'ve raised {total} so far!', 'give' );
-		isset( $args['description'] ) ? $this->description = $args['description'] : $this->description = __( 'But we still need {total_remaining} to reach our goal!', 'give' );
-		isset( $args['image'] ) ? $this->image             = $args['image'] : $this->image = '';
-		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
-		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
-		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
-		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
-		isset( $args['deadline'] ) ? $this->deadline       = $args['deadline'] : $this->deadline = '';
-		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '';
-		isset( $args['linkUrl'] ) ? $this->linkUrl         = $args['linkUrl'] : $this->linkUrl = '';
-		isset( $args['linkText'] ) ? $this->linkText       = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
-		isset( $args['linkTarget'] ) ? $this->linkTarget   = $args['linkTarget'] : $this->linkTarget = '_self';
+		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'So far, we have {total}. We still need {total_remaining} to reach our goal of {total_goal}!', 'give' );
+		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
+		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
+		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
+		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
+		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '100';
+		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
+		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Learn More', 'give' );
+		isset( $args['linkTarget'] ) ? $this->linkTarget = $args['linkTarget'] : $this->linkTarget = '_self';
 	}
 
 	/**
-	 * Get forms associated with Milestone
+	 * Get forms associated with Totals
 	 *
 	 * @return array
 	 * @since 2.9.0
@@ -104,7 +98,7 @@ class Model {
 	}
 
 	/**
-	 * Get output markup for Milestone
+	 * Get output markup for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -119,7 +113,7 @@ class Model {
 	}
 
 	/**
-	 * Get raw earnings value for Milestone
+	 * Get raw earnings value for Totals
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -134,7 +128,7 @@ class Model {
 	}
 
 	/**
-	 * Get number of donors for Milestone
+	 * Get number of donors for Totals
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -150,7 +144,7 @@ class Model {
 	}
 
 	/**
-	 * Get number of donations for Milestone
+	 * Get number of donations for Totals
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -161,27 +155,7 @@ class Model {
 	}
 
 	/**
-	 * Get title for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getTitle() {
-		return $this->formatMessage( $this->title );
-	}
-
-	/**
-	 * Get deadline for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getDeadline() {
-		return $this->deadline;
-	}
-
-	/**
-	 * Get call to action url for Milestone
+	 * Get call to action url for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -191,7 +165,7 @@ class Model {
 	}
 
 	/**
-	 * Get call to action url for Milestone
+	 * Get call to action url for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -201,7 +175,7 @@ class Model {
 	}
 
 	/**
-	 * Get call to action text for Milestone
+	 * Get call to action text for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -211,25 +185,13 @@ class Model {
 	}
 
 	/**
-	 * Get days remaining before Milestone deadline
+	 * Get message for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getDaysToGo() {
-		$now      = new \DateTime();
-		$deadline = new \DateTime( $this->getDeadline() );
-		return $now < $deadline ? $deadline->diff( $now )->format( '%a' ) + 1 : 0;
-	}
-
-	/**
-	 * Get description for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getDescription() {
-		return $this->formatMessage( $this->description );
+	protected function getMessage() {
+		return $this->formatMessage( $this->message );
 	}
 
 	/**
@@ -238,16 +200,28 @@ class Model {
 	 * @since 2.9.0
 	 */
 	protected function getFormattedTotalRemaining() {
-		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
-		return give_currency_filter(
-			give_format_amount(
-				$total_remaining,
-				[
-					'sanitize' => false,
-					'decimal'  => false,
-				]
-			)
-		);
+		switch ( $this->metric ) {
+			case 'revenue': {
+				$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
+				return give_currency_filter(
+					give_format_amount(
+						$total_remaining,
+						[
+							'sanitize' => false,
+							'decimal'  => false,
+						]
+					)
+				);
+			}
+			case 'donor-count': {
+				$total_remaining = ( $this->getGoal() - $this->getDonorCount() ) > 0 ? ( $this->getGoal() - $this->getDonorCount() ) : 0;
+				return sprintf( _n( '%d donor', '%d donors', $total_remaining, 'give' ), $total_remaining );
+			}
+			case 'donation-count': {
+				$total_remaining = ( $this->getGoal() - $this->getDonationCount() ) > 0 ? ( $this->getGoal() - $this->getDonationCount() ) : 0;
+				return sprintf( _n( '%d donation', '%d donations', $total_remaining, 'give' ), $total_remaining );
+			}
+		}
 	}
 
 	/**
@@ -260,7 +234,6 @@ class Model {
 			[ 'total', $this->getFormattedTotal() ],
 			[ 'total_goal', $this->getFormattedGoal() ],
 			[ 'total_remaining', $this->getFormattedTotalRemaining() ],
-			[ 'days_remaining', $this->getDaysToGo() ],
 		];
 		foreach ( $codes as $code ) {
 			$message = str_replace(
@@ -273,17 +246,7 @@ class Model {
 	}
 
 	/**
-	 * Get image for Milestone
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getImage() {
-		return $this->image;
-	}
-
-	/**
-	 * Get goal for Milestone
+	 * Get goal for Totals
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -293,11 +256,11 @@ class Model {
 	}
 
 	/**
-	 * Get template path for Milestone component template
+	 * Get template path for Totals component template
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/Milestones/resources/views/milestone.php';
+		return GIVE_PLUGIN_DIR . '/src/Totals/resources/views/totals.php';
 	}
 
 	protected function getFormattedTotal() {
@@ -314,8 +277,11 @@ class Model {
 					)
 				);
 			}
-			default: {
-				return $total;
+			case 'donor-count': {
+				return sprintf( _n( '%d donor', '%d donors', $total, 'give' ), $total );
+			}
+			case 'donation-count': {
+				return sprintf( _n( '%d donation', '%d donations', $total, 'give' ), $total );
 			}
 		}
 	}
@@ -348,8 +314,11 @@ class Model {
 					)
 				);
 			}
-			default: {
-				return $goal;
+			case 'donor-count': {
+				return sprintf( _n( '%d donor', '%d donors', $goal, 'give' ), $goal );
+			}
+			case 'donation-count': {
+				return sprintf( _n( '%d donation', '%d donations', $goal, 'give' ), $goal );
 			}
 		}
 	}

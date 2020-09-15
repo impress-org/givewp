@@ -10,7 +10,6 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 
-import ImageControl from '../components/image-control';
 import MultiSelectControl from '../components/multi-select-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
@@ -19,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { title, description, image, ids, categories, tags, metric, goal, deadline, linkText, linkUrl, linkTarget } = attributes;
+	const { message, ids, categories, tags, metric, goal, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -39,25 +38,15 @@ const Inspector = ( { attributes, setAttributes } ) => {
 	};
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Milestone Settings', 'give' ) }>
-				<TextControl
-					name="title"
-					label={ __( 'Title', 'give' ) }
-					value={ title }
-					onChange={ ( value ) => saveSetting( 'title', value ) } />
+			<PanelBody title={ __( 'Totals Settings', 'give' ) }>
 				<TextareaControl
-					name="description"
-					label={ __( 'Description', 'give' ) }
-					value={ description }
-					onChange={ ( value ) => saveSetting( 'description', value ) } />
-				<ImageControl
-					name="image"
-					label={ __( 'Featured Image', 'give' ) }
-					value={ image }
-					onChange={ ( value ) => saveSetting( 'image', value ) } />
+					name="message"
+					label={ __( 'Message', 'give' ) }
+					value={ message }
+					onChange={ ( value ) => saveSetting( 'message', value ) } />
 				<MultiSelectControl
 					name="ids"
-					label={ __( 'Forms', 'give' ) }
+					label={ __( 'Filter by Forms', 'give' ) }
 					value={ formOptions.filter( option => ids.includes( option.value ) ) }
 					options={ formOptions }
 					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
@@ -89,13 +78,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
-				/>
-				<TextControl
-					name="deadline"
-					label={ __( 'Deadline', 'give' ) }
-					type="date"
-					value={ deadline }
-					onChange={ ( value ) => saveSetting( 'deadline', value ) }
 				/>
 				<TextControl
 					name="linkText"

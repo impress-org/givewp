@@ -1,0 +1,43 @@
+// This file used for Total styles common to the frontend and editor
+
+.give-totals {
+	border: 1px solid #000;
+}
+
+.give-totals__content {
+	padding: 16px;
+}
+
+.give-totals__message {
+	font-size: 32px;
+	line-height: 1.4;
+}
+
+.give-totals__goal {
+	padding: 16px;
+	height: auto;
+	border-top: 1px solid #000;
+}
+
+.give-totals__progress {
+	height: auto;
+	display: flex;
+	align-items: center;
+	position: relative;
+	border: 1px solid #000;
+
+	.give-totals__progress-bar {
+		position: absolute;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background: #888;
+	}
+
+	.give-totals__progress-text {
+		font-size: 22px;
+		line-height: 1;
+		padding: 8px;
+		position: relative;
+	}
+}
