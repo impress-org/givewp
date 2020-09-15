@@ -43,7 +43,6 @@ use Give\Container\Container;
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
-use Give\ServiceProviders\DatabaseTables;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
