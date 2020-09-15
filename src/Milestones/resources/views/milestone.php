@@ -32,17 +32,6 @@
 				}
 				?>
 			</span>
-			<?php if ( ! empty( $this->getDeadline() ) ) : ?>
-			<span>
-				<?php
-					$days = $this->getDaysToGo();
-				if ( $days > 0 ) {
-					$format = _n( '%s Day To Go', '%s Days To Go', $days, 'give' );
-					echo sprintf( $format, $days );
-				}
-				?>
-			</span>
-			<?php endif; ?>
 		</div>
 	</div>
 </div>

@@ -18,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { description, ids, categories, tags, metric, goal, deadline, linkText, linkUrl, linkTarget } = attributes;
+	const { description, ids, categories, tags, metric, goal, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -78,13 +78,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
-				/>
-				<TextControl
-					name="deadline"
-					label={ __( 'Deadline', 'give' ) }
-					type="date"
-					value={ deadline }
-					onChange={ ( value ) => saveSetting( 'deadline', value ) }
 				/>
 				<TextControl
 					name="linkText"

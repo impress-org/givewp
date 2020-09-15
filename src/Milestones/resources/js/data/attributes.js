@@ -28,10 +28,6 @@ const blockAttributes = {
 		type: 'string',
 		default: 'revenue',
 	},
-	deadline: {
-		type: 'string',
-		default: '',
-	},
 	goal: {
 		type: 'string',
 		default: '',

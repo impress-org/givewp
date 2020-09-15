@@ -37,10 +37,6 @@ class Block {
 						'type'    => 'string',
 						'default' => 'revenue',
 					],
-					'deadline'    => [
-						'type'    => 'string',
-						'default' => '',
-					],
 					'goal'        => [
 						'type'    => 'string',
 						'default' => '',
@@ -76,7 +72,6 @@ class Block {
 				'tags'        => $attributes['tags'],
 				'categories'  => $attributes['categories'],
 				'metric'      => $attributes['metric'],
-				'deadline'    => $attributes['deadline'],
 				'goal'        => $attributes['goal'],
 				'linkText'    => $attributes['linkText'],
 				'linkUrl'     => $attributes['linkUrl'],
