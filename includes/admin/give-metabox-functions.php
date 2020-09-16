@@ -751,7 +751,7 @@ function give_checkbox( $field ) {
 /**
  * Output multi checkbox input box.
  *
- * @since  2.8.0
+ * @since  2.9.0
  *
  * @param  array $field         {
  *                              Optional. Array of checkbox field arguments.
