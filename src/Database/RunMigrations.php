@@ -29,13 +29,6 @@ class RunMigrations {
 	private $completedMigrations = [];
 
 	/**
-	 *  RunMigrations constructor.
-	 */
-	public function __construct() {
-		$this->completedMigrations = get_option( $this->optionNameToStoreCompletedMigrations, [] );
-	}
-
-	/**
 	 * List of database migrations.
 	 *
 	 * @since 2.9.0
@@ -45,6 +38,13 @@ class RunMigrations {
 	private $migrations = [
 		CreateRevenueTable::class,
 	];
+
+	/**
+	 *  RunMigrations constructor.
+	 */
+	public function __construct() {
+		$this->completedMigrations = get_option( $this->optionNameToStoreCompletedMigrations, [] );
+	}
 
 	/**
 	 * Run database migrations.

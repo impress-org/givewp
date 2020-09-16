@@ -7,6 +7,8 @@ use Give\Helpers\Hooks;
 /**
  * Class DatabaseServiceProvider
  * @package Give\Database
+ *
+ * @since 2.9.0
  */
 class DatabaseServiceProvider implements ServiceProvider {
 
