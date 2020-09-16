@@ -20,7 +20,7 @@ class CreateRevenueTable extends Migration {
 		$charset_collate = $wpdb->get_charset_collate();
 		$tableName       = Table::getName( 'give_revenue' );
 
-		$sql = "CREATE TABLE { $tableName } (
+		$sql = "CREATE TABLE {$tableName} (
   			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   			donation_id bigint(20) NOT NULL,
   			form_id bigint(20) NOT NULL,
