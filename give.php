@@ -46,7 +46,7 @@ use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
-use Give\ServiceProviders\RevenueServiceProvider;
+use Give\Revenue\RevenueServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.

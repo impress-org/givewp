@@ -1,8 +1,9 @@
 <?php
-namespace  Give\ServiceProviders;
+namespace  Give\Revenue;
 
 use Give\Revenue\Repositories\Revenue as RevenueRepository;
 use Give\Revenue\Database\Revenue;
+use Give\ServiceProviders\ServiceProvider;
 
 /**
  * Class DatabaseTables
