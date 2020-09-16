@@ -9,4 +9,6 @@ use Give\Framework\Database\TableAccessor;
  *
  * @since 2.9.0
  */
-class Revenue extends TableAccessor {}
+class Revenue {
+	use TableAccessor;
+}

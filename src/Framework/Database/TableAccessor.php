@@ -1,54 +1,32 @@
 <?php
 namespace Give\Framework\Database;
 
-use http\Exception\InvalidArgumentException;
-use wpdb;
-
 /**
  * Class Table
  * @package Give\Database\Tables
  *
  * @since 2.9.0
  */
-abstract class TableAccessor {
-	/**
-	 * @since 2.9.0
-	 * @var Table
-	 */
-	protected $table;
-
-	/**
-	 * @since 2.9.0
-	 * @var wpdb
-	 */
-	private $db;
-
-	/**
-	 * Table constructor.
-	 *
-	 * @param  Table  $table
-	 */
-	public function __construct( Table $table ) {
-		$this->table = $table;
-		$this->db    = $this->table->getDb();
-	}
-
+trait TableAccessor {
 	/**
 	 * Retrieve a row by the primary key
 	 *
-	 * @since  2.9.0
-	 * @access public
-	 *
-	 * @param  int $primaryKeyValue Primary key value.
+	 * @param string $tableName
+	 * @param string $primaryKey
+	 * @param int  $primaryKeyValue  Primary key value.
 	 *
 	 * @return object
+	 * @since  2.9.0
+	 * @access public
 	 */
-	public function get( $primaryKeyValue ) {
-		return $this->db->get_row(
-			$this->db->prepare(
+	public static function get( $tableName, $primaryKey, $primaryKeyValue ) {
+		global $wpdb;
+
+		return $wpdb->get_row(
+			$wpdb->prepare(
 				"
-					SELECT * FROM {$this->table->getName()}
-					WHERE {$this->table->getPrimaryKey()} = %s LIMIT 1;
+					SELECT * FROM {$tableName}
+					WHERE {$primaryKey} = %s LIMIT 1;
 				",
 				$primaryKeyValue
 			)
@@ -58,22 +36,25 @@ abstract class TableAccessor {
 	/**
 	 * Retrieve a row by a specific column / value
 	 *
+	 * @param string $tableName
+	 * @param string $columnName
+	 * @param int  $columnValue  Row ID.
+	 *
+	 * @return object
 	 * @since  2.9.0
 	 * @access public
 	 *
-	 * @param  int $column Column ID.
-	 * @param  int $columnValue Row ID.
-	 *
-	 * @return object
 	 */
-	public function getBy( $column, $columnValue ) {
-		$this->validateColumn( $column );
+	public static function getBy( $tableName, $columnName, $columnValue ) {
+		global $wpdb;
 
-		return $this->db->get_row(
-			$this->db->prepare(
+		$columnName = esc_sql( $columnName );
+
+		return $wpdb->get_row(
+			$wpdb->prepare(
 				"
-			SELECT * FROM {$this->table->getName()}
-			WHERE {$column} = %s
+			SELECT * FROM {$tableName}
+			WHERE {$columnName} = %s
 			LIMIT 1;",
 				$columnValue
 			)
@@ -84,15 +65,16 @@ abstract class TableAccessor {
 	 * Retrieve all rows by a specific column / value
 	 * Note: currently support string comparison
 	 *
+	 * @param $tableName
+	 * @param  array  $columnArgs  Array contains column key and expected value.
+	 *
+	 * @return array
 	 * @since  2.9.0
 	 * @access public
 	 *
-	 * @param array $columnArgs Array contains column key and expected value.
-	 *
-	 * @return array
 	 */
-	public function getResultsBy( $columnArgs ) {
-		$this->validateColumns( $columnArgs );
+	public static function getResultsBy( $tableName, $columnArgs ) {
+		global $wpdb;
 
 		$columnArgs = wp_parse_args(
 			$columnArgs,
@@ -111,9 +93,9 @@ abstract class TableAccessor {
 		}
 		$where = implode( " {$relation} ", $where );
 
-		return $this->db->get_results(
+		return $wpdb->get_results(
 			"
-			SELECT * FROM {$this->table->getName()}
+			SELECT * FROM {$tableName}
 			WHERE {$where};"
 		);
 	}
@@ -121,25 +103,28 @@ abstract class TableAccessor {
 	/**
 	 * Retrieve a specific column's value by the primary key
 	 *
+	 * @param $tableName
+	 * @param $primaryKey
+	 * @param  int  $primaryKeyValue  Row ID.
+	 *
+	 * @param $columnName
+	 *
+	 * @return string      Column value.
 	 * @since  2.9.0
 	 * @access public
 	 *
-	 * @param  string $column Column ID.
-	 * @param  int $primaryKeyValue Row ID.
-	 *
-	 * @return string      Column value.
 	 */
-	public function getColumn( $column, $primaryKeyValue ) {
-		$this->validateColumn( $column );
+	public static function getColumn( $tableName, $primaryKey, $primaryKeyValue, $columnName ) {
+		global $wpdb;
 
-		$column = esc_sql( $column );
+		$columnName = esc_sql( $columnName );
 
-		return $this->db->get_var(
-			$this->db->prepare(
+		return $wpdb->get_var(
+			$wpdb->prepare(
 				"
-			SELECT {$column}
-			FROM {$this->table->getName()}
-			WHERE {$this->table->getPrimaryKey()} = %s
+			SELECT {$columnName}
+			FROM {$tableName}
+			WHERE {$primaryKey} = %s
 			LIMIT 1;",
 				$primaryKeyValue
 			)
@@ -149,27 +134,27 @@ abstract class TableAccessor {
 	/**
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
+	 * @param string $tableName
+	 * @param string $columnName  Column name
+	 * @param string  $columnWhere .
+	 * @param string  $columnValue  Column value.
+	 *
+	 * @return string
 	 * @since  2.9.0
 	 * @access public
 	 *
-	 * @param  string    $column       Column ID.
-	 * @param  string $columnWhere Column name.
-	 * @param  string $columnValue Column value.
-	 *
-	 * @return string
 	 */
-	public function getColumnBy( $column, $columnWhere, $columnValue ) {
-		$this->validateColumn( $column );
-		$this->validateColumn( $columnWhere );
+	public static function getColumnBy( $tableName, $columnName, $columnWhere, $columnValue ) {
+		global $wpdb;
 
 		$columnWhere = esc_sql( $columnWhere );
-		$column      = esc_sql( $column );
+		$columnName  = esc_sql( $columnName );
 
-		return $this->db->get_var(
-			$this->db->prepare(
+		return $wpdb->get_var(
+			$wpdb->prepare(
 				"
-			SELECT {$column}
-			FROM {$this->table->getName()}
+			SELECT {$columnName}
+			FROM {$tableName}
 			WHERE {$columnWhere} = %s
 			LIMIT 1;",
 				$columnValue
@@ -178,125 +163,27 @@ abstract class TableAccessor {
 	}
 
 	/**
-	 * Insert a new row
-	 *
-	 * @since  2.9.0
-	 * @access public
-	 *
-	 * @param  array  $data
-	 *
-	 * @return int
-	 */
-	public function insert( $data ) {
-		// Set default values.
-		$data = wp_parse_args( $data, $this->table->get_column_defaults() );
-
-		// Initialise column format array
-		$column_formats = $this->table->getColumns();
-
-		// White list columns
-		$data = array_intersect_key( $data, $column_formats );
-
-		// Reorder $column_formats to match the order of columns given in $data
-		$data_keys      = array_keys( $data );
-		$column_formats = array_merge( array_flip( $data_keys ), $column_formats );
-
-		$this->db->insert( $this->table->getName(), $data, $column_formats );
-
-		return $this->db->insert_id;
-	}
-
-	/**
-	 * Update a row
-	 *
-	 * @since  2.9.0
-	 * @access public
-	 *
-	 * @param  int    $rowId Column ID
-	 * @param  array  $data
-	 * @param  string $where  Column value
-	 *
-	 * @return int|bool
-	 */
-	public function update( $rowId, $data = [], $where = '' ) {
-		// Row ID must be positive integer
-		$rowId = absint( $rowId );
-
-		if ( empty( $rowId ) ) {
-			return false;
-		}
-
-		if ( empty( $where ) ) {
-			$where = $this->table->getPrimaryKey();
-		}
-
-		// Initialise column format array
-		$column_formats = $this->table->getColumns();
-
-		// Force fields to lower case
-		$data = array_change_key_case( $data );
-
-		// White list columns
-		$data = array_intersect_key( $data, $column_formats );
-
-		// Reorder $column_formats to match the order of columns given in $data
-		$data_keys      = array_keys( $data );
-		$column_formats = array_merge( array_flip( $data_keys ), $column_formats );
-
-		return $this->db->update( $this->table->getName(), $data, [ $where => $rowId ], $column_formats );
-	}
-
-	/**
 	 * Delete a row identified by the primary key
 	 *
+	 * @param string $tableName
+	 * @param string $primaryKey
+	 * @param int $primaryKeyValue
+	 *
+	 * @return int|bool
 	 * @since  2.9.0
 	 * @access public
 	 *
-	 * @param  int $rowId Column ID.
-	 *
-	 * @return int|bool
 	 */
-	public function delete( $rowId = 0 ) {
-		// Row ID must be positive integer
-		$rowId = absint( $rowId );
+	public static function delete( $tableName, $primaryKey, $primaryKeyValue ) {
+		global $wpdb;
 
-		if ( empty( $rowId ) ) {
-			return false;
-		}
-
-		return $this->db->query(
-			$this->db->prepare(
+		return $wpdb->query(
+			$wpdb->prepare(
 				"
-			DELETE FROM {$this->table->getName()}
-			WHERE {$this->table->getPrimaryKey()} = %d",
-				$rowId
+			DELETE FROM {$tableName}
+			WHERE {$primaryKey} = %d",
+				$primaryKeyValue
 			)
 		);
-	}
-
-	/**
-	 * Throw an error if column does not exist in database table.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param string $column Table column name.
-	 */
-	public function validateColumn( $column ) {
-		if ( ! array_key_exists( $column, $this->table->getColumns() ) ) {
-			throw new InvalidArgumentException( "Column does not exist in {$this->table->getName()}. Please query a valid column." );
-		}
-	}
-
-	/**
-	 * Throw an error if column does not exist in database table.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param $data
-	 */
-	public function validateColumns( $data ) {
-		if ( ! array_diff_key( $data, $this->table->getColumns() ) ) {
-			throw new InvalidArgumentException( "Column does not exist in {$this->table->getName()}. Please query a valid column." );
-		}
 	}
 }
