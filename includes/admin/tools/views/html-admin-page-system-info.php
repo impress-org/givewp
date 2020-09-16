@@ -3,6 +3,7 @@
  * Admin View: System Info
  */
 
+use Give\Helpers\Table;
 use Give\Revenue\Database\Revenue;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -536,13 +537,12 @@ $give_updates = Give_Updates::get_instance();
 					);
 				}
 
-				$revenueTable   = give( Revenue::class );
-				$db_table_list .= sprintf(
+				$isRevenueTableExist = Table::tableExists( 'give_revenue' );
+				$db_table_list      .= sprintf(
 					'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s -  %4$s</li>',
-					$revenueTable->installed() ? 'yes' : 'error',
-					$revenueTable->installed() ? 'yes' : 'no-alt',
-					$revenueTable->getName(),
-					$revenueTable->getVersion()
+					$isRevenueTableExist ? 'yes' : 'error',
+					$isRevenueTableExist ? 'yes' : 'no-alt',
+					Table::getName( 'give_revenue' )
 				);
 
 				echo "<ul>{$db_table_list}</ul>";
