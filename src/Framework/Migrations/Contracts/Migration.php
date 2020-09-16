@@ -20,7 +20,18 @@ abstract class Migration {
 	abstract public function run();
 
 	/**
-	 * Return migration timestamp.
+	 * Return a unique identifier for the migration
+	 *
+	 * @return string
+	 */
+	public static function id() {
+		throw new RuntimeException( 'A unique ID must be provided for the migration' );
+	}
+
+	/**
+	 * Return a Unix Timestamp for when the migration was created
+	 *
+	 * Example: strtotime( '2020-09-16 ')
 	 *
 	 * @since 2.9.0
 	 *

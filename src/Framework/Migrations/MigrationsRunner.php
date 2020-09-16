@@ -68,7 +68,9 @@ class MigrationsRunner {
 		$newMigrations = [];
 
 		foreach ( $migrations as $migrationClass ) {
-			if ( in_array( $migrationClass, $this->completedMigrations, true ) ) {
+			$migrationId = $migrationClass::id();
+
+			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
 				continue;
 			}
 
@@ -76,7 +78,7 @@ class MigrationsRunner {
 			$migration = give( $migrationClass );
 			$migration->run();
 
-			$newMigrations[] = $migrationClass;
+			$newMigrations[] = $migrationId;
 		}
 
 		// Save processed migrations.
@@ -98,6 +100,6 @@ class MigrationsRunner {
 	 * @return bool
 	 */
 	private function hasMigrationToRun() {
-		return (bool) array_diff( $this->migrationRegister->getMigrations(), $this->completedMigrations );
+		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->completedMigrations );
 	}
 }

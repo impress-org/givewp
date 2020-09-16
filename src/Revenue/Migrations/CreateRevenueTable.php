@@ -11,6 +11,24 @@ class CreateRevenueTable extends Migration {
 	 *
 	 * @since 2.9.0
 	 */
+	public static function id() {
+		return 'create_revenue_table';
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * @since 2.9.0
+	 */
+	public static function timestamp() {
+		return strtotime( '2019-09-16' );
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * @since 2.9.0
+	 */
 	public function run() {
 		global $wpdb;
 
@@ -27,14 +45,5 @@ class CreateRevenueTable extends Migration {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
-	}
-
-	/**
-	 * @inheritDoc
-	 *
-	 * @since 2.9.0
-	 */
-	public static function timestamp() {
-		return strtotime( '2019-09-16' );
 	}
 }
