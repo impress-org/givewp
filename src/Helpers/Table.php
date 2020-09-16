@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Helpers;
 
 /**
@@ -17,7 +18,7 @@ class Table {
 	 *
 	 * @return string
 	 */
-	public static function getName( $tableName ) {
+	public static function prefixTableName( $tableName ) {
 		global $wpdb;
 
 		return "{$wpdb->prefix}{$tableName}";
@@ -26,26 +27,28 @@ class Table {
 	/**
 	 * Check if the given table exists
 	 *
+	 * @since  2.9.0
+	 * @access public
+	 *
 	 * @param $tableName
 	 *
 	 * @return bool          If the table name exists.
-	 * @since  2.9.0
-	 * @access public
 	 */
 	public static function tableExists( $tableName ) {
 		global $wpdb;
 
-		return (bool) $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", self::getName( $tableName ) ) );
+		return (bool) $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", $tableName ) );
 	}
 
 	/**
 	 * Checks whether column exists in a table or not.
 	 *
-	 * @param $tableName
+	 * @since 2.9.0
+	 *
 	 * @param $columnName
+	 * @param $tableName
 	 *
 	 * @return bool
-	 * @since 2.9.0
 	 */
 	public static function doesColumnExist( $tableName, $columnName ) {
 		global $wpdb;
@@ -57,7 +60,7 @@ class Table {
 						AND TABLE_NAME = %s
 						AND COLUMN_NAME = %s ',
 				DB_NAME,
-				self::getName( $tableName ),
+				$tableName,
 				$columnName
 			)
 		);
