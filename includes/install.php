@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-use Give\Database\Tables\Revenue;
+use Give\Revenue\Database\Revenue;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -564,5 +564,5 @@ function __give_register_tables() {
 		}
 	}
 
-	give( Revenue::class )->registerTable();
+	give( Revenue::class )->register();
 }
