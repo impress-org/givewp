@@ -1,20 +1,17 @@
 <?php
-namespace Give\Database\Migrations;
 
-use Give\Framework\Migrations\Migration;
+namespace Give\Revenue\Migrations;
+
+use Give\Framework\Migrations\Contracts\Migration;
 use Give\Helpers\Table;
 
-/**
- * Class Revenue
- * @package Give\Database\Tables
- *
- * @since 2.9.0
- */
 class CreateRevenueTable extends Migration {
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
+	 *
+	 * @since 2.9.0
 	 */
-	public static function run() {
+	public function run() {
 		global $wpdb;
 
 		$charset_collate = $wpdb->get_charset_collate();
@@ -33,9 +30,11 @@ class CreateRevenueTable extends Migration {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
+	 *
+	 * @since 2.9.0
 	 */
 	public static function timestamp() {
-		return '20190916000000';
+		return strtotime( '2019-09-16' );
 	}
 }
