@@ -77,11 +77,13 @@ class RunMigrations {
 			$newMigrations[] = $migration;
 		}
 
+		$this->completedMigrations = array_unique( array_merge( $this->completedMigrations, $newMigrations ) );
+
 		// Save processed migrations.
 		if ( $newMigrations ) {
 			update_option(
 				$this->optionNameToStoreCompletedMigrations,
-				array_merge( $this->completedMigrations, $newMigrations )
+				$this->completedMigrations
 			);
 		}
 	}
