@@ -4,7 +4,6 @@
  */
 
 use Give\Helpers\Table;
-use Give\Revenue\Database\Revenue;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
