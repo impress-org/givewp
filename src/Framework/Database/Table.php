@@ -7,6 +7,8 @@ use wpdb;
  * Class Table
  * @package Give\Database\Tables
  *
+ * For use when defining database table, see the method docs for when to use them
+ *
  * @since 2.9.0
  */
 abstract class Table {
