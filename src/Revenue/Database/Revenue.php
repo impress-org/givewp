@@ -48,7 +48,7 @@ class Revenue extends Table {
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		$status = dbDelta( $sql );
+		dbDelta( $sql );
 
 		$this->setVersion();
 	}
