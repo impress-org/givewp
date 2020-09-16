@@ -133,6 +133,7 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
+		\Give\Campaigns\ServiceProvider::class,
 	];
 
 	/**
