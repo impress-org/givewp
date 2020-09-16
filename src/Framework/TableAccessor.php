@@ -46,10 +46,10 @@ abstract class TableAccessor {
 	 */
 	public function get( $primaryKeyValue ) {
 		return $this->db->get_row(
-			$this->db->prepare(
-				"
-			SELECT * FROM {$this->table->getName()}
-			WHERE {$this->table->getPrimaryKey()} = %s LIMIT 1;",
+			$this->db->prepare("
+					SELECT * FROM {$this->table->getName()}
+					WHERE {$this->table->getPrimaryKey()} = %s LIMIT 1;
+				",
 				$primaryKeyValue
 			)
 		);
