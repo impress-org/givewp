@@ -3,7 +3,7 @@
  * Admin View: System Info
  */
 
-use Give\Database\Tables\Revenue;
+use Give\Revenue\Database\Revenue;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -536,12 +536,13 @@ $give_updates = Give_Updates::get_instance();
 					);
 				}
 
+				$revenueTable   = give( Revenue::class );
 				$db_table_list .= sprintf(
 					'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s -  %4$s</li>',
-					give( Revenue::class )->installed() ? 'yes' : 'error',
-					give( Revenue::class )->installed() ? 'yes' : 'no-alt',
-					give( Revenue::class )->getName(),
-					give( Revenue::class )->getVersion()
+					$revenueTable->installed() ? 'yes' : 'error',
+					$revenueTable->installed() ? 'yes' : 'no-alt',
+					$revenueTable->getName(),
+					$revenueTable->getVersion()
 				);
 
 				echo "<ul>{$db_table_list}</ul>";
