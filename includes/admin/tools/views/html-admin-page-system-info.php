@@ -3,6 +3,7 @@
  * Admin View: System Info
  */
 
+use Give\Database\RunMigrations;
 use Give\Helpers\Table;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -515,6 +516,11 @@ $give_updates = Give_Updates::get_instance();
 			</td>
 		</tr>
 		<tr>
+			<td data-export-label="Database Updates"><?php _e( 'Database Migrations', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'This will inform you whether database migration completed or not.', 'give' ) ); ?></td>
+			<td><?php echo give( RunMigrations::class )->hasMigrationToRun() ? esc_html__( 'Few Database Migrations still need to run.', 'give' ) : esc_html__( 'All Database Migrations Completed.', 'give' ); ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Database Tables"><?php _e( 'Database Tables', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'This will show list of installed database tables.', 'give' ) ); ?></td>
 			<td>
@@ -524,15 +530,14 @@ $give_updates = Give_Updates::get_instance();
 				/* @var  Give_DB $table */
 				foreach ( __give_get_tables() as $table ) {
 					$db_table_list .= sprintf(
-						'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s -  %4$s</li>',
+						'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s</li>',
 						$table->installed()
 							? 'yes'
 							: 'error',
 						$table->installed()
 							? 'yes'
 							: 'no-alt',
-						$table->table_name,
-						$table->version
+						$table->table_name
 					);
 				}
 

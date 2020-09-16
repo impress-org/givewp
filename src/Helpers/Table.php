@@ -35,7 +35,7 @@ class Table {
 	public static function tableExists( $tableName ) {
 		global $wpdb;
 
-		return $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", self::getName( $tableName ) ) ) === $tableName;
+		return (bool) $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", self::getName( $tableName ) ) );
 	}
 
 	/**

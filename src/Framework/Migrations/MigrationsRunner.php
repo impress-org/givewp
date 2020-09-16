@@ -80,10 +80,12 @@ class MigrationsRunner {
 		}
 
 		// Save processed migrations.
+		$this->completedMigrations = array_unique( array_merge( $this->completedMigrations, $newMigrations ) );
+
 		if ( $newMigrations ) {
 			update_option(
 				$this->optionNameToStoreCompletedMigrations,
-				array_merge( $this->completedMigrations, $newMigrations )
+				$this->completedMigrations
 			);
 		}
 	}
