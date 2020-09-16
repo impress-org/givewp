@@ -84,7 +84,6 @@
     },
     "dependencies": {
         "@wordpress/components": "^10.1.0",
-        "@wordpress/scripts": "^12.2.0",
         "accounting": "latest",
         "chart.js": "^2.9.3",
         "chartjs-plugin-crosshair": "^1.1.4",
