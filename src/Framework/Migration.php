@@ -23,7 +23,7 @@ abstract class Migration {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @return string Return static date in mysql format but do not contain '-', ':', ' '. For example "20190916000000"
+	 * @return string Static date in mysql format. Date string does not contain '-', ':', ' '. For example "20190916000000"
 	 */
 	public static function timestamp(){}
 }
