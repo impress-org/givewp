@@ -1,7 +1,7 @@
 <?php
 namespace Give\Database\Migrations;
 
-use Give\Framework\Migration;
+use Give\Framework\Migrations\Migration;
 use Give\Helpers\Table;
 
 /**

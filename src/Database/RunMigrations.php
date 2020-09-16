@@ -1,7 +1,7 @@
 <?php
 namespace Give\Database;
 
-use Give\Framework\Migration;
+use Give\Framework\Migrations\Migration;
 use Give\Database\Migrations\CreateRevenueTable;
 use http\Exception\InvalidArgumentException;
 
