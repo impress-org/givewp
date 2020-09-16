@@ -1,5 +1,5 @@
 <?php
-namespace Give\Revenue\Database\Migrations;
+namespace Give\Database\Migrations;
 
 use Give\Framework\Migration;
 use Give\Helpers\Table;
@@ -12,11 +12,9 @@ use Give\Helpers\Table;
  */
 class CreateRevenueTable extends Migration {
 	/**
-	 * Create Meta Tables.
-	 *
-	 * @since  2.9.0
+	 * @inheritdoc
 	 */
-	public function up() {
+	public static function run() {
 		global $wpdb;
 
 		$charset_collate = $wpdb->get_charset_collate();
@@ -32,5 +30,12 @@ class CreateRevenueTable extends Migration {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public static function timestamp() {
+		return '20190916000000';
 	}
 }

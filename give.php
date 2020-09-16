@@ -40,6 +40,7 @@
  */
 
 use Give\Container\Container;
+use Give\Database\DatabaseServiceProvider;
 use Give\Form\Templates;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
@@ -133,6 +134,7 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
+		DatabaseServiceProvider::class,
 	];
 
 	/**
