@@ -49,6 +49,7 @@ use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\ServiceProvider;
+use Give\Campaigns\ServiceProvider as CampaignsServiceProvider
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -135,6 +136,7 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
+		CampaignsServiceProvider::class,
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 	];

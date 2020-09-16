@@ -37,6 +37,7 @@ const config = {
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 		'admin-widgets': [ './assets/src/js/admin/admin-widgets.js', './assets/src/css/admin/widgets.scss' ],
 		'admin-onboarding-wizard': [ './assets/src/js/admin/onboarding-wizard/index.js' ],
+		campaigns: [ './src/Campaigns/resources/js/app/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
