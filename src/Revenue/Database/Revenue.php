@@ -1,7 +1,7 @@
 <?php
 namespace Give\Revenue\Database;
 
-use Give\Framework\Table;
+use Give\Framework\Database\Table;
 
 /**
  * Class Revenue
