@@ -749,6 +749,68 @@ function give_checkbox( $field ) {
 }
 
 /**
+ * Output multi checkbox input box.
+ *
+ * @since  2.9.0
+ *
+ * @param  array $field         {
+ *                              Optional. Array of checkbox field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * @type array   $options       List of options. Default array().
+ *                                               for example: 'options' => array( 'option1' => 'Option 1', 'option2' =>
+ *                                               'Option 2' )
+ * }
+ * @return void
+ */
+function give_multicheck( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['value']         = is_array( $field['value'] ) ? $field['value'] : [];
+	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+
+	?>
+	<fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<span class="give-field-label"><?php echo wp_kses_post( $field['name'] ); ?></span>
+		<legend class="screen-reader-text"><?php echo wp_kses_post( $field['name'] ); ?></legend>
+
+		<ul>
+		<?php foreach ( $field['options'] as $key => $value ) : ?>
+			<li>
+				<label>
+					<input
+						type="checkbox"
+						name="<?php echo give_get_field_name( $field ); ?>[]"
+						value="<?php echo esc_attr( $key ); ?>"
+						style="<?php echo esc_attr( $field['style'] ); ?>"
+						<?php echo give_get_attribute_str( $field ); ?>
+						<?php
+						if ( in_array( $key, $field['value'] ) ) {
+							echo 'checked="checked"';}
+						?>
+						/> <?php echo esc_html( $value ); ?>
+				</label>
+			</li>
+		<?php endforeach; ?>
+		</ul>
+		<?php echo give_get_field_description( $field ); ?>
+	</fieldset>
+	<?php
+}
+
+/**
  * Output a select input box.
  *
  * @since  1.8
