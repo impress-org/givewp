@@ -113,7 +113,7 @@ abstract class TableAccessor {
 
 		return $this->db->get_results(
 			"
-			SELECT * FROM {$this->table_name}
+			SELECT * FROM {$this->table->getName()}
 			WHERE {$where};"
 		);
 	}
