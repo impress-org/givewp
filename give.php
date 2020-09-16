@@ -41,6 +41,7 @@
 
 use Give\Container\Container;
 use Give\Form\Templates;
+use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -133,6 +134,7 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
+		MigrationsServiceProvider::class,
 	];
 
 	/**
