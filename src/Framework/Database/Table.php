@@ -266,17 +266,4 @@ abstract class Table {
 
 		$this->cacheGroupName = "{$this->cacheGroupName}_{$current_blog_id}_{$incrementerValue}";
 	}
-
-	/**
-	 * Add new column to database table.
-	 *
-	 * @since 2.9.0
-	 * @access public
-	 *
-	 * @param string $name Table column name
-	 * @param string $placeholder Column placeholder
-	 */
-	public function addColumn( $name, $placeholder ) {
-		$this->columns[ $name ] = $placeholder;
-	}
 }
