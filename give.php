@@ -46,7 +46,6 @@ use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
-use Give\Revenue\RevenueServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -134,7 +133,6 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
-		RevenueServiceProvider::class,
 	];
 
 	/**
