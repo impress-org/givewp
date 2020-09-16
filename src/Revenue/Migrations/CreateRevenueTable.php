@@ -33,7 +33,7 @@ class CreateRevenueTable extends Migration {
 		global $wpdb;
 
 		$charset_collate = $wpdb->get_charset_collate();
-		$tableName       = Table::getName( 'give_revenue' );
+		$tableName       = "{$wpdb->prefix}give_revenue";
 
 		$sql = "CREATE TABLE {$tableName} (
   			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
