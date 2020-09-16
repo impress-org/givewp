@@ -1,7 +1,6 @@
 <?php
-namespace Give\Framework;
+namespace Give\Framework\Database;
 
-use Give\Framework\Database\Table;
 use http\Exception\InvalidArgumentException;
 use wpdb;
 
@@ -46,7 +45,8 @@ abstract class TableAccessor {
 	 */
 	public function get( $primaryKeyValue ) {
 		return $this->db->get_row(
-			$this->db->prepare("
+			$this->db->prepare(
+				"
 					SELECT * FROM {$this->table->getName()}
 					WHERE {$this->table->getPrimaryKey()} = %s LIMIT 1;
 				",
