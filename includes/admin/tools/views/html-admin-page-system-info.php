@@ -3,7 +3,7 @@
  * Admin View: System Info
  */
 
-use Give\Database\RunMigrations;
+use Give\Framework\Migrations\MigrationsRunner;
 use Give\Helpers\Table;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -523,7 +523,16 @@ $give_updates = Give_Updates::get_instance();
 	<tr>
 		<td data-export-label="Database Updates"><?php _e( 'Database Migrations', 'give' ); ?>:</td>
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'This will inform you whether database migration completed or not.', 'give' ) ); ?></td>
-		<td><?php echo give( RunMigrations::class )->hasMigrationToRun() ? esc_html__( 'Few Database Migrations still need to run.', 'give' ) : esc_html__( 'All Database Migrations Completed.', 'give' ); ?></td>
+		<td>
+			<?php
+			/* @var MigrationsRunner $migrationRunner */
+			$migrationRunner = give( MigrationsRunner::class );
+
+			echo $migrationRunner->hasMigrationToRun() ?
+				esc_html__( 'Few Database Migrations still need to run.', 'give' ) :
+				esc_html__( 'All Database Migrations Completed.', 'give' );
+			?>
+			</td>
 	</tr>
 	<tr>
 		<td data-export-label="Database Tables"><?php _e( 'Database Tables', 'give' ); ?>:</td>

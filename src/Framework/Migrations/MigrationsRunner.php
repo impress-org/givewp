@@ -34,7 +34,7 @@ class MigrationsRunner {
 	private $migrationRegister;
 
 	/**
-	 *  RunMigrations constructor.
+	 *  MigrationsRunner constructor.
 	 *
 	 * @param MigrationsRegister $migrationRegister
 	 */
@@ -99,7 +99,7 @@ class MigrationsRunner {
 	 *
 	 * @return bool
 	 */
-	private function hasMigrationToRun() {
+	public function hasMigrationToRun() {
 		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->completedMigrations );
 	}
 }
