@@ -32,8 +32,9 @@ class CreateRevenueTable extends Migration {
 	public function run() {
 		global $wpdb;
 
-		$charset_collate = $wpdb->get_charset_collate();
-		$tableName       = "{$wpdb->prefix}give_revenue";
+		$charset_collate     = $wpdb->get_charset_collate();
+		$tableName           = "{$wpdb->prefix}give_revenue";
+		$referencedTableName = "{$wpdb->prefix}posts";
 
 		$sql = "CREATE TABLE {$tableName} (
   			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -41,6 +42,8 @@ class CreateRevenueTable extends Migration {
   			form_id bigint(20) NOT NULL,
   			amount int UNSIGNED NOT NULL,
   			PRIMARY KEY  (id)
+  			FOREIGN KEY (donation_id) REFERENCES {$referencedTableName}(ID)
+  			FOREIGN KEY (form_id) REFERENCES {$referencedTableName}(ID)
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
