@@ -59,13 +59,12 @@ class MigrationsRunner {
 
 		foreach ( $this->migrationRegister->getMigrations() as $migrationClass ) {
 			/* @var Migration $migrationClass */
-			$migrations[ $migrationClass ] = $migrationClass::timestamp();
+			$migrations[ $migrationClass::timestamp() . '_' . $migrationClass::id() ] = $migrationClass;
 		}
 
-		asort( $migrations );
+		ksort( $migrations );
 
 		// Process migrations.
-		$migrations    = array_keys( $migrations );
 		$newMigrations = [];
 
 		foreach ( $migrations as $migrationClass ) {
