@@ -34,7 +34,7 @@ class MigrationsRunner {
 	private $migrationRegister;
 
 	/**
-	 *  RunMigrations constructor.
+	 *  MigrationsRunner constructor.
 	 *
 	 * @param MigrationsRegister $migrationRegister
 	 */
@@ -59,7 +59,7 @@ class MigrationsRunner {
 
 		foreach ( $this->migrationRegister->getMigrations() as $migrationClass ) {
 			/* @var Migration $migrationClass */
-			$migrations[ $migrationClass::timestamp() ] = $migrationClass;
+			$migrations[ $migrationClass::timestamp() . '_' . $migrationClass::id() ] = $migrationClass;
 		}
 
 		ksort( $migrations );
@@ -99,7 +99,7 @@ class MigrationsRunner {
 	 *
 	 * @return bool
 	 */
-	private function hasMigrationToRun() {
+	public function hasMigrationToRun() {
 		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->completedMigrations );
 	}
 }
