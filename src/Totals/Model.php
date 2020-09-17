@@ -33,7 +33,7 @@ class Model {
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
-		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '100';
+		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '1000';
 		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
 		isset( $args['showGoal'] ) ? $this->showGoal     = $args['showGoal'] : $this->showGoal = true;
 		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';

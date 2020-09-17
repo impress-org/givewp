@@ -39,7 +39,7 @@ class Block {
 					],
 					'goal'       => [
 						'type'    => 'string',
-						'default' => '100',
+						'default' => '1000',
 					],
 					'color'      => [
 						'type'    => 'string',
