@@ -45,6 +45,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '#28c77b',
 					],
+					'showGoal'   => [
+						'type'    => 'boolean',
+						'default' => true,
+					],
 					'linkText'   => [
 						'type'    => 'string',
 						'default' => __( 'Donate Now', 'give' ),
@@ -78,6 +82,7 @@ class Block {
 				'metric'     => $attributes['metric'],
 				'goal'       => $attributes['goal'],
 				'color'      => $attributes['color'],
+				'showGoal'   => $attributes['showGoal'],
 				'linkText'   => $attributes['linkText'],
 				'linkUrl'    => $attributes['linkUrl'],
 				'linkTarget' => $attributes['linkTarget'],

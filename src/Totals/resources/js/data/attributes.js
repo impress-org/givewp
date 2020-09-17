@@ -36,6 +36,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '#',
 	},
+	showGoal: {
+		type: 'boolean',
+		default: true,
+	},
 	linkText: {
 		type: 'string',
 		default: __( 'Donate Now', 'give' ),

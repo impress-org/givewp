@@ -13,6 +13,7 @@ class Model {
 	protected $metric;
 	protected $goal;
 	protected $color;
+	protected $showGoal;
 	protected $linkText;
 	protected $linkUrl;
 	protected $linkTarget;
@@ -34,6 +35,7 @@ class Model {
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '100';
 		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
+		isset( $args['showGoal'] ) ? $this->showGoal     = $args['showGoal'] : $this->showGoal = true;
 		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
 		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Donate Now', 'give' );
 		isset( $args['linkTarget'] ) ? $this->linkTarget = $args['linkTarget'] : $this->linkTarget = '_self';
@@ -255,6 +257,16 @@ class Model {
 	 **/
 	protected function getGoal() {
 		return $this->goal;
+	}
+
+	/**
+	 * Get show goal for Totals
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getShowGoal() {
+		return $this->showGoal;
 	}
 
 	/**

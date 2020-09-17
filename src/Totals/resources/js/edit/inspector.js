@@ -19,7 +19,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { message, ids, categories, tags, metric, goal, color, linkText, linkUrl, linkTarget } = attributes;
+	const { message, ids, categories, tags, metric, goal, color, showGoal, linkText, linkUrl, linkTarget } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -57,12 +57,20 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					] }
 					onChange={ ( value ) => saveSetting( 'metric', value ) }
 				/>
-				<ColorControl
-					name="color"
-					label={ __( 'Goal Color', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'color', value ) }
-					value={ color }
+				<ToggleControl
+					name="showGoal"
+					label={ __( 'Show goal in block?', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'showGoal', value ) }
+					checked={ showGoal }
 				/>
+				{ showGoal && (
+					<ColorControl
+						name="color"
+						label={ __( 'Goal Color', 'give' ) }
+						onChange={ ( value ) => saveSetting( 'color', value ) }
+						value={ color }
+					/>
+				) }
 			</PanelBody>
 			<PanelBody title={ __( 'Filters', 'give' ) } initialOpen={ false }>
 				<MultiSelectControl

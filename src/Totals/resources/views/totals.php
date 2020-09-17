@@ -7,7 +7,7 @@
 ?>
 
 <div class="give-totals">
-	<?php if ( ! empty( $this->getGoal() ) ) : ?>
+	<?php if ( $this->getShowGoal() === true ) : ?>
 	<div class="give-totals__goal">
 		<p class="give-totals__progress-text"> 
 			<?php
