@@ -66,7 +66,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					checked={ openInNewTab }
 				/>
 			</PanelBody>
-			<PanelBody title={ __( 'Total', 'give' ) } initialOpen={ false }>
+			<PanelBody title={ __( 'Filters', 'give' ) } initialOpen={ false }>
 				<MultiSelectControl
 					name="ids"
 					label={ __( 'Filter by Forms', 'give' ) }
