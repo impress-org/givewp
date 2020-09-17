@@ -38,11 +38,11 @@ class CreateRevenueTable extends Migration {
 
 		$sql = "CREATE TABLE {$tableName} (
   			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  			donation_id bigint(20) NOT NULL,
-  			form_id bigint(20) NOT NULL,
+  			donation_id bigint(20) UNSIGNED NOT NULL,
+  			form_id bigint(20) UNSIGNED NOT NULL,
   			amount int UNSIGNED NOT NULL,
-  			PRIMARY KEY  (id)
-  			FOREIGN KEY (donation_id) REFERENCES {$referencedTableName}(ID)
+  			PRIMARY KEY  (id),
+  			FOREIGN KEY (donation_id) REFERENCES {$referencedTableName}(ID),
   			FOREIGN KEY (form_id) REFERENCES {$referencedTableName}(ID)
 		) {$charset_collate};";
 
