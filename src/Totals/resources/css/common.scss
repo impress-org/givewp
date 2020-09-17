@@ -1,9 +1,5 @@
 // This file used for Total styles common to the frontend and editor
 
-.give-totals__content {
-	padding-bottom: 24px;
-}
-
 .give-totals__goal {
 	height: auto;
 }
@@ -31,11 +27,10 @@
 }
 
 .give-totals__progress-text {
-	font-size: 16px;
 	line-height: 1;
 	position: relative;
 	display: block;
 	opacity: 0.8;
 	font-weight: 500;
-	margin: 10px 0 0 0 !important;
+	margin: 0 !important;
 }
