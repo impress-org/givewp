@@ -66,7 +66,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 				{ showGoal && (
 					<ColorControl
 						name="color"
-						label={ __( 'Goal Color', 'give' ) }
+						label={ __( 'Progress Bar Color', 'give' ) }
 						onChange={ ( value ) => saveSetting( 'color', value ) }
 						value={ color }
 					/>
