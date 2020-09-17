@@ -39,7 +39,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 	};
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Goal', 'give' ) } initialOpen={ false }>
+			<PanelBody title={ __( 'Goal', 'give' ) } initialOpen={ true }>
 				<TextControl
 					name="goal"
 					label={ __( 'Goal', 'give' ) }
@@ -92,7 +92,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					options={ categoryOptions }
 					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
 			</PanelBody>
-			<PanelBody title={ __( 'Content', 'give' ) }>
+			<PanelBody title={ __( 'Content', 'give' ) } initialOpen={ false }>
 				<TextareaControl
 					name="message"
 					label={ __( 'Message', 'give' ) }
