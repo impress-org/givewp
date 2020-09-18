@@ -47,6 +47,17 @@ class Settings {
 	}
 
 	/**
+	 * Updates the country account
+	 *
+	 * @param string $country
+	 *
+	 * @return bool
+	 */
+	public function updateAccountCountry( $country ) {
+		return update_option( self::COUNTRY_KEY, $country );
+	}
+
+	/**
 	 * Updates the account access token
 	 *
 	 * @param $token
