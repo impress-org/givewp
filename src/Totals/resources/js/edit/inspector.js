@@ -59,7 +59,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 				/>
 				<ToggleControl
 					name="showGoal"
-					label={ __( 'Show goal in block?', 'give' ) }
+					label={ __( 'Show progress bar', 'give' ) }
 					onChange={ ( value ) => saveSetting( 'showGoal', value ) }
 					checked={ showGoal }
 				/>
