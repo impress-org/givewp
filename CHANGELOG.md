@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+-   Milestone block is now available in the block editor (#5224)
+-   Milestone block now supports a title and description (#5229)
+-   Milestone now supports a featured image (#5234)
+-   Milestone can now be associated with one or many forms (#5230)
+-   Milestone now displays aggregated earnings based on associated forms (#5236)
+-   Milestone now supports a deadline (#5239)
+-   Milestone now supports a custom goal (#5237)
+-   Milestone now supports sorting forms by tag and category (#5244)
+-   Milestone now supports aggregating different metrics (Revenue, Donations, Donors) (#5244)
+-   Milestone title and description now support {} tags (#5242)
+-   Milestone now supports a custom Call To Action URL and text (#5262)
+-   Milestone block has been replaced by the Totals block, with features to match the Give Totals shortcode (#5264)
+-   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
 
 ## [2.8.0] - 2020-08-31
