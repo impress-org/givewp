@@ -40,7 +40,9 @@
  */
 
 use Give\Container\Container;
+use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
+use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -135,6 +137,8 @@ final class Give {
 		RestAPI::class,
 		Onboarding::class,
 		Totals::class,
+		MigrationsServiceProvider::class,
+		RevenueServiceProvider::class,
 	];
 
 	/**
