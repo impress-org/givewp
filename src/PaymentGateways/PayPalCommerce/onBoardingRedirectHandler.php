@@ -117,7 +117,7 @@ class onBoardingRedirectHandler {
 		$payPalAccount['token']                  = $tokenInfo;
 		$payPalAccount['supportsCustomPayments'] = 'PPCP' === $partnerLinkInfo['product'];
 		$payPalAccount['accountIsReady']         = true;
-		$payPalAccount['accountCountry']         = give( Settings::class )->getAccountCountry();
+		$payPalAccount['accountCountry']         = $this->settings->getAccountCountry();
 
 		$merchantDetails = MerchantDetail::fromArray( $payPalAccount );
 		$this->merchantRepository->save( $merchantDetails );
