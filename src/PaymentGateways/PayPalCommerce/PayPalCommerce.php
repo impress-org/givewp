@@ -4,9 +4,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
-use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
