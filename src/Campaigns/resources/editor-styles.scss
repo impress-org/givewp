@@ -1,3 +1,5 @@
+/* stylelint-disable no-duplicate-selectors */
+
 .post-type-give_campaign {
 
 	/* Hide responsive "preview" in header. */
@@ -28,6 +30,12 @@
 	padding: 20px 10px;
 }
 
+.wp-block[data-type='give/campaign-featured-image'] {
+	.components-button:not(.editor-post-featured-image__preview):not(.editor-post-featured-image__toggle) {
+		display: none;
+	}
+}
+
 .wp-block[data-type='give/campaign-editor'] {
 	background-color: #fff;
 	border-radius: 8px;
@@ -50,13 +58,24 @@
 			height: auto;
 		}
 
-		.wp-block[data-type='core/image'],
+		/* "Deep" set height through nested elements. */
+		.wp-block[data-type='give/campaign-featured-image'] {
+			.editor-post-featured-image,
+			.editor-post-featured-image__container,
+			.editor-post-featured-image__toggle {
+				height: 100%;
+			}
+		}
+
+		.wp-block[data-type='give/campaign-featured-image'],
 		.wp-block[data-type='core/heading'] {
 			margin-top: 30px;
 		}
 
-		.wp-block[data-type='core/image'] {
+		.wp-block[data-type='give/campaign-featured-image'] {
 			grid-area: image;
+			width: 100%;
+			padding: 0 20px;
 		}
 		.wp-block[data-type='core/heading'] {
 			grid-area: heading;

@@ -66,10 +66,7 @@ return [
 			[],
 			[
 				[
-					'core/image',
-					[
-						'url' => GIVE_PLUGIN_URL . 'src/Campaigns/blocks/GivingTuesday.png',
-					],
+					'give/campaign-featured-image',
 				],
 				[
 					'core/heading',

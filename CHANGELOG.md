@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -   Migrations framework for database migrations
 -   Campaigns UI scaffolded. (#5280)
+-   Campaigns Featured Image block syncs with post featured image.
 
 ## [2.8.0] - 2020-08-31
 

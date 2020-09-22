@@ -39,7 +39,10 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 
 		wp_register_script(
 			'give-block-campaigns',
-			GIVE_PLUGIN_URL . 'assets/dist/js/campaigns-block.js'
+			GIVE_PLUGIN_URL . 'assets/dist/js/campaigns-block.js',
+			[],
+			false,
+			$footer = true
 		);
 
 		register_block_type(
@@ -51,6 +54,13 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 
 		register_block_type(
 			'give/campaign-progress-bar',
+			[
+				'editor_script' => 'give-block-campaigns',
+			]
+		);
+
+		register_block_type(
+			'give/campaign-featured-image',
 			[
 				'editor_script' => 'give-block-campaigns',
 			]
