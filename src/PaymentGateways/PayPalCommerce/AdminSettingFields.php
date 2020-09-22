@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\Views\Admin\UpsellNotice;
 use Give_HTML_Elements;
 use Give_License;
@@ -47,6 +48,9 @@ class AdminSettingFields {
 				/* @var Give_HTML_Elements $htmlElements */
 				$htmlElements = give( 'html' );
 
+				/* @var Settings $settingRepository */
+				$settingRepository = give( Settings::class );
+
 				echo $htmlElements->select(
 					[
 						'id'               => 'paypal_commerce_account_country',
@@ -58,7 +62,7 @@ class AdminSettingFields {
 						'data'             => [
 							'search-type' => 'no_ajax',
 						],
-						'selected'         => $merchantModel->accountCountry ?: give_get_country(),
+						'selected'         => $merchantModel->accountCountry ?: $settingRepository->getAccountCountry(),
 					]
 				);
 
