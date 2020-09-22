@@ -20,12 +20,6 @@ const CardFooter = ( props ) => {
 		footerLayout: {
 			display: 'flex',
 		},
-		footerLayoutItem: {
-			flex: 1,
-			padding: '20px',
-			borderRadius: '0 0 8px 8px',
-			border: '1px solid #F2F2F2',
-		},
 	};
 
 	return (
@@ -46,6 +40,8 @@ const FooterItem = ( props ) => {
 			textAlign: 'center',
 			borderRadius: '0 0 8px 8px',
 			lineHeight: '29px',
+			border: '1px solid #F2F2F2',
+			borderWidth: '0 1px',
 		},
 		strong: {
 			fontSize: '24px',
