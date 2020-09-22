@@ -593,6 +593,8 @@ a.give-delete {
 // Paypal setting page
 //--------------------------------------------------------------
 .give-settings-paypal-section {
+	// Hide with position helps element to keep browser computed styling like width.
+	// Few javascript extensions use browser computed styling. for example: chosen uses browser computed style to style custom select field.
 	.hide-with-position {
 		position: absolute;
 		top: -9999px;
