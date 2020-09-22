@@ -32,7 +32,7 @@ class Settings {
 	 * @return string|null
 	 */
 	public function getAccountCountry() {
-		return give_get_option( self::COUNTRY_KEY, give_get_country() );
+		return get_option( self::COUNTRY_KEY, give_get_country() );
 	}
 
 	/**
