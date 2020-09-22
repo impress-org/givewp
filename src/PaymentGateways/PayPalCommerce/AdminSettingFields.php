@@ -38,7 +38,7 @@ class AdminSettingFields {
 		/* @var MerchantDetails $merchantRepository */
 		$merchantRepository = give( MerchantDetails::class );
 		?>
-		<tr valign="top" class="<?php echo $merchantRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
+		<tr valign="top" class="js-fields-has-custom-saving-logic<?php echo $merchantRepository->accountIsConnected() ? ' give-hidden' : ''; ?>">
 			<th scope="row" class="titledesc">
 				<label for="give_paypal_commerce_country"><?php esc_html_e( 'Account Country', 'give' ); ?></label>
 			</th>
