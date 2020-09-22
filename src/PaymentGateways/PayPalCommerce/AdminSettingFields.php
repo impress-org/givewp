@@ -218,6 +218,8 @@ class AdminSettingFields {
 				</div>
 				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'PayPal, Apple and Google Pay', 'give' ); ?>
 				</div>
+				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'Supports 3D Secure payments', 'give' ); ?>
+				</div>
 			</div>
 		</div>
 		<?php

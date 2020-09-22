@@ -42,7 +42,7 @@ class PaypalSettingPage implements SettingPage {
 	public function boot() {
 		add_action( 'give_get_groups_paypal', [ $this, 'getGroups' ] );
 		add_filter( 'give_get_settings_gateways', [ $this, 'registerPaypalSettings' ] );
-		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ] );
+		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ], 5 );
 
 		// Load custom setting fields.
 		$adminSettingFields = new AdminSettingFields();
