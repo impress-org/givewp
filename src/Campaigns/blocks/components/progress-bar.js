@@ -1,7 +1,3 @@
-/* eslint-disable no-unused-vars */
-
-import React from 'react';
-
 const ProgressBar = ( props ) => {
 	const styles = {
 		wrapper: {
@@ -18,7 +14,7 @@ const ProgressBar = ( props ) => {
 			width: props.percent + '%',
 			height: 'inherit',
 			borderRadius: 'inherit',
-			background: 'linear-gradient(180deg, #2bc253 0%, #2bc253 100%), linear-gradient(180deg, #fff 0%, #ccc 100%)',
+			background: props.color,
 			backgroundBlendMode: 'multiply',
 		},
 	};

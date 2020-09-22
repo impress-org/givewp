@@ -3,7 +3,6 @@
 namespace Give\Campaigns;
 
 use Give\Helpers\Hooks;
-use Give\Campaigns\AdminPageView;
 
 class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 
@@ -11,12 +10,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
-		give()->bind(
-			AdminPageView::class,
-			function ( $app ) {
-				return new AdminPageView( plugin_dir_path( __FILE__ ) . 'resources/templates/' );
-			}
-		);
+		// ...
 	}
 
 	/**
@@ -24,44 +18,41 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	 */
 	public function boot() {
 		include_once plugin_dir_path( __FILE__ ) . 'functions.php';
-		add_action( 'admin_menu', [ $this, 'registerMenus' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'adminEnqueueScripts' ] );
-	}
-
-	public function registerMenus() {
-		add_submenu_page(
-			'edit.php?post_type=give_forms',
-			esc_html__( 'Campaigns', 'give' ),
-			esc_html__( 'Campaigns', 'give' ),
-			'manage_give_settings',
-			'give-campaigns',
-			[ give()->make( AdminPageView::class ), 'render' ],
-			$position = 0
+		add_action( 'init', [ $this, 'registerPostTypes' ] );
+		add_action( 'init', [ $this, 'initBlocks' ] );
+		add_action(
+			'enqueue_block_editor_assets',
+			function() {
+				wp_enqueue_style( 'campaigns-cpt-styles', GIVE_PLUGIN_URL . 'assets/dist/css/campaigns-cpt.css' );
+			}
 		);
 	}
 
-	public function adminEnqueueScripts() {
+	public function registerPostTypes() {
+		register_post_type(
+			'give_campaign',
+			include 'config/give_campaigns.cpt.php'
+		);
+	}
 
-		$data = give_campaings_get_aggregate_total_query();
+	public function initBLocks() {
 
-		$appURL = GIVE_PLUGIN_URL . 'assets/dist/js/campaigns.js';
-		wp_enqueue_script( 'give-campaigns-app', $appURL, [ 'react', 'react-dom', 'wp-components', 'wp-element', 'wp-polyfill' ], GIVE_VERSION, $in_footer = true );
+		wp_register_script(
+			'give-block-campaigns',
+			GIVE_PLUGIN_URL . 'assets/dist/js/campaigns-block.js'
+		);
 
-		wp_localize_script(
-			'give-campaigns-app',
-			'giveCampaigns',
+		register_block_type(
+			'give/campaign-editor',
 			[
-				'campaings' => [
-					[
-						'title'    => 'My First Campaign',
-						'progress' => $data->total / 100000,
-						'meta'     => [
-							'raised'    => '$' . number_format( $data->total ),
-							'donations' => $data->count,
-							'goal'      => '$100,000',
-						],
-					],
-				],
+				'editor_script' => 'give-block-campaigns',
+			]
+		);
+
+		register_block_type(
+			'give/campaign-progress-bar',
+			[
+				'editor_script' => 'give-block-campaigns',
 			]
 		);
 	}

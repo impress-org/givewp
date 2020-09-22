@@ -49,7 +49,7 @@ use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Campaigns\ServiceProvider as CampaignsServiceProvider
+use Give\Campaigns\ServiceProvider as CampaignsServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
