@@ -38,36 +38,41 @@ class AdminSettingFields {
 
 		/* @var MerchantDetails $merchantRepository */
 		$merchantRepository = give( MerchantDetails::class );
+
+		/* @var Give_HTML_Elements $htmlElements */
+		$htmlElements = give( 'html' );
+
+		/* @var Settings $settingRepository */
+		$settingRepository = give( Settings::class );
+
+		$settingHtml = $htmlElements->select(
+			[
+				'id'               => 'paypal_commerce_account_country',
+				'options'          => give_get_country_list(),
+				'chosen'           => true,
+				'placeholder'      => esc_html__( 'Choose a country', 'give' ),
+				'show_option_all'  => false,
+				'show_option_none' => false,
+				'data'             => [
+					'search-type' => 'no_ajax',
+				],
+				'selected'         => $merchantModel->accountCountry ?: $settingRepository->getAccountCountry(),
+			]
+		);
+
+		$trClass = $merchantRepository->accountIsConnected() ?
+			'js-fields-has-custom-saving-logic hide-with-position' :
+			'js-fields-has-custom-saving-logic';
 		?>
-		<tr valign="top" class="js-fields-has-custom-saving-logic<?php echo $merchantRepository->accountIsConnected() ? ' hide-with-position' : ''; ?>">
+		<tr valign="top" class="<?php echo $trClass; ?>">
 			<th scope="row" class="titledesc">
 				<label for="give_paypal_commerce_country"><?php esc_html_e( 'Account Country', 'give' ); ?></label>
 			</th>
 			<td class="give-forminp">
 				<?php
-				/* @var Give_HTML_Elements $htmlElements */
-				$htmlElements = give( 'html' );
-
-				/* @var Settings $settingRepository */
-				$settingRepository = give( Settings::class );
-
-				echo $htmlElements->select(
-					[
-						'id'               => 'paypal_commerce_account_country',
-						'options'          => give_get_country_list(),
-						'chosen'           => true,
-						'placeholder'      => esc_html__( 'Choose a country', 'give' ),
-						'show_option_all'  => false,
-						'show_option_none' => false,
-						'data'             => [
-							'search-type' => 'no_ajax',
-						],
-						'selected'         => $merchantModel->accountCountry ?: $settingRepository->getAccountCountry(),
-					]
-				);
-
 				printf(
-					'<div class="give-field-description">%1$s</div>',
+					'%1$s<div class="give-field-description">%2$s</div>',
+					$settingHtml,
 					esc_html__( 'The country your site operates from.', 'give' )
 				)
 				?>
