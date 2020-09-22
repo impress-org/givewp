@@ -388,6 +388,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		onBoardingButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
 
+			onBoardingButton.disabled = true;
+
 			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
 
 			const countryCode = countryField.value;
