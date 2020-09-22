@@ -592,6 +592,14 @@ a.give-delete {
 //--------------------------------------------------------------
 // Paypal setting page
 //--------------------------------------------------------------
+.give-settings-paypal-section {
+	.hide-with-position {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+}
+
 #give-paypal-commerce-account-manager-field-wrap {
 	.connect-button-wrap {
 		display: flex;

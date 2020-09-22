@@ -421,7 +421,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				successConfirm: () => {
 					connectionSettingContainer.classList.remove( 'give-hidden' );
 					disConnectionSettingContainer.classList.add( 'give-hidden' );
-					countryFieldContainer.classList.remove( 'give-hidden' );
+					countryFieldContainer.classList.remove( 'hide-with-position' );
 
 					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
 				},
