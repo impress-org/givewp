@@ -4,7 +4,10 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\Views\Admin\UpsellNotice;
+use Give_Admin_Settings;
+use Give_HTML_Elements;
 use Give_License;
 
 /**
@@ -21,7 +24,52 @@ class AdminSettingFields {
 	 */
 	public function boot() {
 		add_action( 'give_admin_field_paypal_commerce_account_manger', [ $this, 'payPalCommerceAccountManagerField' ] );
+		add_action( 'give_admin_field_paypal_commerce_account_country', [ $this, 'accountCountryField' ] );
 		add_action( 'give_admin_field_paypal_commerce_introduction', [ $this, 'introductionSection' ] );
+	}
+
+	/**
+	 * Render account country field.
+	 *
+	 * @since 2.9.0
+	 */
+	public function accountCountryField() {
+		/* @var MerchantDetail $merchantDetails */
+		$merchantDetails = give( MerchantDetail::class );
+
+		?>
+		<tr valign="top">
+			<th scope="row" class="titledesc">
+				<label for="give_paypal_commerce_country"><?php esc_html_e( 'Account Country', 'give' ); ?></label>
+			</th>
+			<td class="give-forminp">
+				<?php
+				/* @var Give_HTML_Elements $htmlElements */
+				$htmlElements = give( 'html' );
+
+				echo $htmlElements->select(
+					[
+						'id'               => 'paypal_commerce_account_country',
+						'options'          => give_get_country_list(),
+						'chosen'           => true,
+						'placeholder'      => esc_html__( 'Choose a country', 'give' ),
+						'show_option_all'  => false,
+						'show_option_none' => false,
+						'data'             => [
+							'search-type' => 'no_ajax',
+						],
+						'selected'         => $merchantDetails->accountCountry ?: give_get_country(),
+					]
+				);
+
+				printf(
+					'<div class="give-field-description">%1$s</div>',
+					esc_html__( 'The country your site operates from.', 'give' )
+				)
+				?>
+			</td>
+		</tr>
+		<?php
 	}
 
 	/**
