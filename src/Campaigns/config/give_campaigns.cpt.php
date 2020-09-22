@@ -71,8 +71,7 @@ return [
 				[
 					'core/heading',
 					[
-						'placeholder' => 'Title',
-						'content'     => 'Giving Tuesday',
+						'placeholder' => 'Add a heading',
 					],
 				],
 				[
