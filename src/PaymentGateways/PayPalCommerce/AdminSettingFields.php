@@ -34,7 +34,6 @@ class AdminSettingFields {
 	public function accountCountryField() {
 		/* @var MerchantDetail $merchantDetails */
 		$merchantDetails = give( MerchantDetail::class );
-
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
