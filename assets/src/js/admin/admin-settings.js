@@ -380,7 +380,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	const onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
 		disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
 		connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
-		disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' );
+		disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
+		countryField = document.getElementById( 'paypal_commerce_account_country' ),
+		countryFieldContainer = countryField.parentElement.parentElement;
 
 	if ( onBoardingButton ) {
 		onBoardingButton.addEventListener( 'click', function( evt ) {
@@ -388,7 +390,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
 
-			const countryCode = document.getElementById( 'paypal_commerce_account_country' ).value;
+			const countryCode = countryField.value;
 
 			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
 				.then( response => response.json() )
@@ -419,6 +421,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				successConfirm: () => {
 					connectionSettingContainer.classList.remove( 'give-hidden' );
 					disConnectionSettingContainer.classList.add( 'give-hidden' );
+					countryFieldContainer.classList.remove( 'give-hidden' );
 
 					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
 				},
