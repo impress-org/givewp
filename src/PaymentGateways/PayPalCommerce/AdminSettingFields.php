@@ -32,10 +32,13 @@ class AdminSettingFields {
 	 * @since 2.9.0
 	 */
 	public function accountCountryField() {
-		/* @var MerchantDetail $merchantDetails */
-		$merchantDetails = give( MerchantDetail::class );
+		/* @var MerchantDetail $merchantModel */
+		$merchantModel = give( MerchantDetail::class );
+
+		/* @var MerchantDetails $merchantRepository */
+		$merchantRepository = give( MerchantDetails::class );
 		?>
-		<tr valign="top">
+		<tr valign="top" class="<?php echo $merchantRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
 			<th scope="row" class="titledesc">
 				<label for="give_paypal_commerce_country"><?php esc_html_e( 'Account Country', 'give' ); ?></label>
 			</th>
@@ -55,7 +58,7 @@ class AdminSettingFields {
 						'data'             => [
 							'search-type' => 'no_ajax',
 						],
-						'selected'         => $merchantDetails->accountCountry ?: give_get_country(),
+						'selected'         => $merchantModel->accountCountry ?: give_get_country(),
 					]
 				);
 
