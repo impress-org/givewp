@@ -122,15 +122,20 @@ class AjaxRequestHandler {
 	public function onGetPartnerUrlAjaxRequestHandler() {
 		$this->validateAdminRequest();
 
+		if ( empty( $country = $_GET['countryCode'] ) || ! isset( give_get_country_list()[ $country ] ) ) {
+			wp_send_json_error( 'Must include valid 2-character country code' );
+		}
+
 		$data = $this->payPalAuth->getSellerPartnerLink(
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce' ),
-			$this->settings->getAccountCountry()
+			$country
 		);
 
 		if ( ! $data ) {
 			wp_send_json_error();
 		}
 
+		$this->settings->updateAccountCountry( $country );
 		$this->settings->updatePartnerLinkDetails( $data );
 
 		wp_send_json_success( $data );
@@ -235,6 +240,7 @@ class AjaxRequestHandler {
 	 * @since 2.9.0
 	 */
 	private function validateAdminRequest() {
+
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die();
 		}
