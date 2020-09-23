@@ -5,9 +5,10 @@ const { InspectorControls } = wp.blockEditor;
 const { PanelBody, BaseControl, ColorPalette } = wp.components;
 
 import ProgressBar from '../components/progress-bar';
+import { Footer, FooterItem } from '../components/footer';
 
-export default registerBlockType( 'give/campaign-progress-bar', {
-	title: __( 'Progress Bar' ),
+export default registerBlockType( 'give/campaign-progress', {
+	title: __( 'Progress' ),
 	description: __( '...' ),
 	category: 'give',
 	keywords: [
@@ -72,7 +73,15 @@ export default registerBlockType( 'give/campaign-progress-bar', {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<ProgressBar percent={ 33 } color={ color } />
+				<div style={ { padding: '20px 10px' } }>
+					<ProgressBar percent={ 33 } color={ color } />
+				</div>
+				<Footer>
+					<FooterItem title="$3,000" subtitle="raised!" />
+					<FooterItem title="50" subtitle="donations" />
+					<FooterItem title="$10,000" subtitle="goal" />
+					<FooterItem title="30" subtitle="days to go" />
+				</Footer>
 			</>
 		);
 	},

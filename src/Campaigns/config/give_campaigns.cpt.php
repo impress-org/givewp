@@ -113,7 +113,7 @@ return [
 					],
 				],
 				[
-					'give/campaign-progress-bar',
+					'give/campaign-progress',
 					[
 						'percent' => '45',
 					],

@@ -17,12 +17,11 @@
 	}
 }
 
-.wp-block[data-type='give/campaign-progress-bar'] {
+.wp-block[data-type='give/campaign-progress'] {
 	margin: 20px auto 0 !important;
 	width: 100%;
 	border: 1px solid #ebebeb;
 	border-width: 1px 0;
-	padding: 20px 10px;
 }
 
 .wp-block[data-type='give/campaign-featured-image'] {
@@ -85,7 +84,7 @@
 		.wp-block[data-type='core/buttons'] {
 			grid-area: buttons;
 		}
-		.wp-block[data-type='give/campaign-progress-bar'] {
+		.wp-block[data-type='give/campaign-progress'] {
 			grid-area: progress;
 		}
 
