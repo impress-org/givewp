@@ -10,12 +10,15 @@ form[data-currency_position='after'] .give-donation-amount .give-cs-select-curre
 	margin-right: 0 !important;
 
 	&:focus {
-		box-shadow: 0 0 8px #28c77b;
 		outline: none;
+		& + .give-currency-symbol {
+			box-shadow: 0 0 8px #28c77b;
+		}
 	}
 
 	~ span.give-currency-symbol.give-currency-position-after {
-		padding-left: 30px !important;
+		padding: 0 30px !important;
+		margin-right: -30px !important;
 
 		&::before {
 			left: 10px;
@@ -35,12 +38,15 @@ form[data-currency_position='before'] .give-donation-amount .give-cs-select-curr
 	color: rgba(255, 255, 255, 0);
 
 	&:focus {
-		box-shadow: 0 0 8px #28c77b;
 		outline: none;
+		& + .give-currency-symbol {
+			box-shadow: 0 0 8px #28c77b;
+		}
 	}
 
 	~ span.give-currency-symbol.give-currency-position-before {
-		padding-right: 30px !important;
+		padding: 0 30px !important;
+		margin-left: -30px !important;
 
 		&::before {
 			right: 10px;
