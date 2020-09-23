@@ -381,8 +381,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
 		connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
 		disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
-		countryField = document.getElementById( 'paypal_commerce_account_country' ),
-		countryFieldContainer = countryField.parentElement.parentElement;
+		countryField = document.getElementById( 'paypal_commerce_account_country' );
 
 	if ( onBoardingButton ) {
 		onBoardingButton.addEventListener( 'click', function( evt ) {
@@ -423,7 +422,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				successConfirm: () => {
 					connectionSettingContainer.classList.remove( 'give-hidden' );
 					disConnectionSettingContainer.classList.add( 'give-hidden' );
-					countryFieldContainer.classList.remove( 'hide-with-position' );
+					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
 
 					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
 				},
