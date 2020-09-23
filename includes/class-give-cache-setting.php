@@ -55,18 +55,18 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	private $settings = array(
-		'give_settings'                        => array(),
+	private $settings = [
+		'give_settings'                        => [],
 		'give_version'                         => '',
-		'give_completed_upgrades'              => array(),
-		'give_doing_upgrade'                   => array(),
-		'give_paused_batches'                  => array(),
+		'give_completed_upgrades'              => [],
+		'give_doing_upgrade'                   => [],
+		'give_paused_batches'                  => [],
 		'give_install_pages_created'           => '',
 		'give_show_db_upgrade_complete_notice' => '',
 		'give_addon_last_activated'            => '',
-		'currencies'                           => array(),
-		'gateways'                             => array(),
-	);
+		'currencies'                           => [],
+		'gateways'                             => [],
+	];
 
 	/**
 	 * Array of cached setting db option names
@@ -75,7 +75,7 @@ class Give_Cache_Setting {
 	 * @access private
 	 * @var array
 	 */
-	private $db_option_ids = array(
+	private $db_option_ids = [
 		'give_settings',
 		'give_version',
 		'give_completed_upgrades',
@@ -84,7 +84,7 @@ class Give_Cache_Setting {
 		'give_show_db_upgrade_complete_notice',
 		'give_addon_last_activated',
 		'give_paused_batches',
-	);
+	];
 
 	/**
 	 * Array of cached setting option names
@@ -133,12 +133,12 @@ class Give_Cache_Setting {
 
 		$this->load_plugin_settings();
 
-		add_action( 'added_option', array( $this, 'reload_plugin_settings' ) );
-		add_action( 'updated_option', array( $this, 'reload_plugin_settings' ) );
-		add_action( 'deleted_option', array( $this, 'reload_plugin_settings' ) );
+		add_action( 'added_option', [ $this, 'reload_plugin_settings' ] );
+		add_action( 'updated_option', [ $this, 'reload_plugin_settings' ] );
+		add_action( 'deleted_option', [ $this, 'reload_plugin_settings' ] );
 
-		add_action( 'give_init', array( $this, 'setup_currencies_list' ), 11 );
-		add_action( 'give_init', array( $this, 'setup_gateways_list' ), 11 );
+		add_action( 'give_init', [ $this, 'setup_currencies_list' ], 11 );
+		add_action( 'give_init', [ $this, 'setup_gateways_list' ], 11 );
 	}
 
 	/**
@@ -231,20 +231,16 @@ class Give_Cache_Setting {
 	 */
 	public function setup_gateways_list() {
 		// Default, built-in gateways
-		$gateways = array(
-			'paypal'  => array(
-				'admin_label'    => __( 'PayPal Standard', 'give' ),
-				'checkout_label' => __( 'PayPal', 'give' ),
-			),
-			'manual'  => array(
+		$gateways = [
+			'manual'  => [
 				'admin_label'    => __( 'Test Donation', 'give' ),
 				'checkout_label' => __( 'Test Donation', 'give' ),
-			),
-			'offline' => array(
+			],
+			'offline' => [
 				'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
 				'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
-			),
-		);
+			],
+		];
 
 		/**
 		 * Filter the supported gateways list
@@ -291,7 +287,7 @@ class Give_Cache_Setting {
 		/**
 		 * Filter the plugin setting
 		 */
-		return (array) apply_filters( 'give_get_settings', self::get_option( 'give_settings', array() ) );
+		return (array) apply_filters( 'give_get_settings', self::get_option( 'give_settings', [] ) );
 	}
 }
 

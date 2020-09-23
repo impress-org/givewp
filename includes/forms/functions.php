@@ -170,7 +170,7 @@ function give_send_to_success_page( $query_string = null ) {
  * @since  1.0
  * @return Void
  */
-function give_send_back_to_checkout( $args = array() ) {
+function give_send_back_to_checkout( $args = [] ) {
 
 	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
 	$form_id = 0;
@@ -186,9 +186,9 @@ function give_send_back_to_checkout( $args = array() ) {
 		give_die();
 	}
 
-	$defaults = array(
+	$defaults = [
 		'form-id' => (int) $form_id,
-	);
+	];
 
 	// Set the $level_id.
 	if ( isset( $_POST['give-price-id'] ) ) {
@@ -206,7 +206,7 @@ function give_send_back_to_checkout( $args = array() ) {
 	$redirect = add_query_arg( $args, $url );
 
 	// Precaution: don't allow any CC info.
-	$redirect = remove_query_arg( array( 'card_number', 'card_cvc' ), $redirect );
+	$redirect = remove_query_arg( [ 'card_number', 'card_cvc' ], $redirect );
 
 	// Redirect them.
 	$redirect .= "#give-form-{$form_id}-wrap";
@@ -303,13 +303,8 @@ function give_listen_for_failed_payments() {
 	$nonce      = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
 
 	// Bailout.
-	if ( ! give_is_failed_transaction_page() || ! $payment_id || ! $nonce ) {
+	if ( ! $payment_id || ! wp_verify_nonce( $nonce, "give-failed-donation-{$payment_id}" ) ) {
 		return false;
-	}
-
-	// Security check.
-	if ( ! wp_verify_nonce( $nonce, "give-failed-donation-{$payment_id}" ) ) {
-		wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ) );
 	}
 
 	// Set payment status to failure
@@ -381,17 +376,17 @@ function give_field_is_required( $field, $form_id ) {
  * @return void
  */
 function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
-	$log_data = array(
+	$log_data = [
 		'log_parent'   => $payment_id,
 		'log_type'     => 'sale',
 		'log_date'     => isset( $donation_date ) ? $donation_date : null,
 		'log_date_gmt' => isset( $donation_date ) ? $donation_date : null,
-	);
+	];
 
-	$log_meta = array(
+	$log_meta = [
 		'form_id'  => $give_form_id,
 		'price_id' => (int) $price_id,
-	);
+	];
 
 	Give()->logs->insert_log( $log_data, $log_meta );
 }
@@ -622,9 +617,9 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 				give_currency_filter(
 					give_format_amount(
 						$price['_give_amount'],
-						array( 'sanitize' => false )
+						[ 'sanitize' => false ]
 					),
-					array( 'decode_currency' => true )
+					[ 'decode_currency' => true ]
 				) : '';
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
@@ -653,9 +648,9 @@ function give_price_range( $form_id = 0, $formatted = true ) {
 	$range = sprintf(
 		'<span class="give_price_range_%1$s">%2$s</span><span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span><span class="give_price_range_%3$s">%4$s</span>',
 		'asc' === $order_type ? 'low' : 'high',
-		'asc' === $order_type ? give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ),
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $low, [ 'sanitize' => false ] ) ) : give_currency_filter( give_format_amount( $high, [ 'sanitize' => false ] ) ),
 		'asc' === $order_type ? 'high' : 'low',
-		'asc' === $order_type ? give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) )
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $high, [ 'sanitize' => false ] ) ) : give_currency_filter( give_format_amount( $low, [ 'sanitize' => false ] ) )
 	);
 
 	if ( ! $formatted ) {
@@ -914,7 +909,7 @@ function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 	 */
 	return apply_filters(
 		'give_get_price_option_amount',
-		give_maybe_sanitize_amount( $amount, array( 'currency' => give_get_currency( $form_id ) ) ),
+		give_maybe_sanitize_amount( $amount, [ 'currency' => give_get_currency( $form_id ) ] ),
 		$form_id,
 		$price_id
 	);
@@ -1054,7 +1049,7 @@ function give_show_login_register_option( $form_id ) {
  * @return array
  */
 function _give_get_prefill_form_field_values( $form_id ) {
-	$logged_in_donor_info = array();
+	$logged_in_donor_info = [];
 
 	if ( is_user_logged_in() ) :
 		$donor_data    = get_userdata( get_current_user_id() );
@@ -1062,7 +1057,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 		$donor_address = $donor->get_donor_address();
 		$company_name  = $donor->get_company_name();
 
-		$logged_in_donor_info = array(
+		$logged_in_donor_info = [
 			// First name.
 			'give_first'      => $donor_data->first_name,
 
@@ -1095,7 +1090,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 			// Zipcode
 			'card_zip'        => $donor_address['zip'],
-		);
+		];
 	endif;
 
 	// Bailout: Auto fill form field values only form form which donor is donating.
@@ -1112,7 +1107,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	// Get donor info from form data.
 	$give_donor_info_in_session = empty( $give_purchase_data['post_data'] )
-		? array()
+		? []
 		: $give_purchase_data['post_data'];
 
 	// Output.
@@ -1129,7 +1124,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
  *
  * @return int
  */
-function give_get_form_donor_count( $form_id, $args = array() ) {
+function give_get_form_donor_count( $form_id, $args = [] ) {
 	global $wpdb;
 
 	$cache_key   = Give_Cache::get_key( "form_donor_count_{$form_id}", $args, false );
@@ -1139,9 +1134,9 @@ function give_get_form_donor_count( $form_id, $args = array() ) {
 		// Set arguments.
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'unique' => true,
-			)
+			]
 		);
 
 		$donation_meta_table  = Give()->payment_meta->table_name;
@@ -1407,9 +1402,9 @@ function give_get_name_title_prefixes( $form_id = 0 ) {
  */
 function give_is_name_title_prefix_enabled( $form_id = 0, $status = '' ) {
 	if ( empty( $status ) ) {
-		$status = array( 'required', 'optional' );
+		$status = [ 'required', 'optional' ];
 	} else {
-		$status = array( $status );
+		$status = [ $status ];
 	}
 
 	$title_prefix_status = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
@@ -1491,11 +1486,11 @@ function give_get_default_title_prefixes() {
 	 */
 	return apply_filters(
 		'give_get_default_title_prefixes',
-		array(
+		[
 			'Mr.'  => __( 'Mr.', 'give' ),
 			'Mrs.' => __( 'Mrs.', 'give' ),
 			'Ms.'  => __( 'Ms.', 'give' ),
-		)
+		]
 	);
 }
 
@@ -1515,7 +1510,7 @@ function give_is_name_title_prefix_required( $form_id = 0 ) {
 		return false;
 	}
 
-	$status      = array( 'optional' );
+	$status      = [ 'optional' ];
 	$is_optional = give_is_setting_enabled( give_get_option( 'name_title_prefix' ), $status );
 
 	if ( intval( $form_id ) > 0 ) {
@@ -1569,7 +1564,7 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
  * @since 2.4.1
  */
 function give_get_default_form_shortcode_args() {
-	$default = array(
+	$default = [
 		'id'                    => '',
 		'show_title'            => true,
 		'show_goal'             => true,
@@ -1581,7 +1576,7 @@ function give_get_default_form_shortcode_args() {
 		// This attribute belong to form template functionality.
 		// You can use this attribute to set modal open button background color.
 		'button_color'          => '#28C77B',
-	);
+	];
 
 	/**
 	 * Fire the filter

@@ -9,7 +9,10 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/* globals Give, jQuery */
+/* globals Give, jQuery, givePayPalCommerce */
+
+import { GiveConfirmModal } from './../plugins/modal';
+
 jQuery( document ).ready( function( $ ) {
 	/**
 	 *  Sortable payment gateways.
@@ -26,8 +29,8 @@ jQuery( document ).ready( function( $ ) {
 	const give_settings_position = '#give-mainform #currency_position';
 	$( 'body' ).on( 'change', give_settings_currency, function() {
 		const $currency = $( give_settings_currency + ' option:selected' ),
-			  currencyCode = $currency.val(),
-			  currencyList = JSON.parse( $( this ).attr( 'data-formatting-setting' ) );
+			currencyCode = $currency.val(),
+			currencyList = JSON.parse( $( this ).attr( 'data-formatting-setting' ) );
 
 		let beforeText = afterText = {},
 			formattingSetting = currencyList[ currencyCode ],
@@ -187,9 +190,9 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	let dTemp = Give.fn.getGlobalVar( 'decimal_separator' ), // Temporary variable to store decimal separator.
-	    tTemp = Give.fn.getGlobalVar( 'thousands_separator' ), // Temporary variable to store thousand separator.
-	    symbolRegex = /\(([^)]+)\)/, // Regex to extract currency symbol.
-	    formatterArgs = {
+		tTemp = Give.fn.getGlobalVar( 'thousands_separator' ), // Temporary variable to store thousand separator.
+		symbolRegex = /\(([^)]+)\)/, // Regex to extract currency symbol.
+		formatterArgs = {
 			position: Give.fn.getGlobalVar( 'currency_pos' ),
 			symbol: Give.fn.getGlobalVar( 'currency_sign' ),
 			precision: Give.fn.getGlobalVar( 'number_decimals' ),
@@ -204,10 +207,10 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( '#number_decimals, #decimal_separator, #thousands_separator, #currency_position, #currency' ).on( 'input blur change', function( e ) {
 		const preview = $( '#currency_preview' ),
-		    dSeparator = $( '#decimal_separator' ),
-		    tSeparator = $( '#thousands_separator' ),
-		    targetName = e.target.name,
-		    targetValue = e.target.value;
+			dSeparator = $( '#decimal_separator' ),
+			tSeparator = $( '#thousands_separator' ),
+			targetName = e.target.name,
+			targetValue = e.target.value;
 
 		/**
 		 * Sets the precision (number of decimals) for the formatted amount.
@@ -298,8 +301,6 @@ jQuery( document ).ready( function( $ ) {
 
 // Vertical tabs feature.
 document.addEventListener( 'DOMContentLoaded', () => {
-	const currentUrl = window.location.href.split( '#' );
-	const currentGroup = currentUrl[ 1 ];
 	const mainContentWrap = document.querySelector( '.give-settings-section-content' );
 
 	// Bailout, if main content wrap not exists.
@@ -308,14 +309,16 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	const menuContentWrap = mainContentWrap.querySelector( '.give-settings-section-group-menu' );
-	const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
 
 	// Bailout, if menu content wrap not exists.
 	if ( null === menuContentWrap ) {
 		return;
 	}
 
-	const menuButtons = Array.prototype.slice.call( menuContentWrap.querySelectorAll( 'ul li a' ) );
+	const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
+
+	const menuButtons = Array.from( menuContentWrap.querySelectorAll( 'ul li a' ) )
+		.concat( Array.from( mainContentWrap.querySelectorAll( 'ul.give-subsubsub li a' ) ) );
 
 	// Bailout, if menu content wrap not exists.
 	if ( null === menuButtons ) {
@@ -324,19 +327,40 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	menuButtons.forEach( ( element ) => {
 		element.addEventListener( 'click', ( e ) => {
-			const selectedGroup = e.target.getAttribute( 'data-group' );
-			const selectedContent = mainContentWrap.querySelector( '#give-settings-section-group-' + selectedGroup );
+			const hasSubGroup = e.target.hasAttribute( 'data-subgroup' );
+			let selectedGroup, selectedContent;
 
-			// Loop through menu button and remove `active` class.
-			menuButtons.forEach( ( element ) => {
-				element.classList.remove( 'active' );
-			} );
+			if ( hasSubGroup ) {
+				const menuContainer = e.target.parentElement.parentElement;
+				const sectionGroup = menuContainer.parentElement;
+				selectedGroup = e.target.getAttribute( 'data-subgroup' );
+				selectedContent = mainContentWrap.querySelector( `#give-settings-section-subgroup-${ selectedGroup }` );
 
-			// Loop through content sections and add `give-hidden` class.
-			allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
+				// Loop through menu button and remove `current` class.
+				menuContainer.querySelectorAll( 'a' ).forEach( ( element ) => {
+					element.classList.remove( 'current' );
+				} );
 
-			// Add `active` class to menu buttons of selected element.
-			e.target.classList.add( 'active' );
+				// Loop through content sections and add `give-hidden` class.
+				sectionGroup.querySelectorAll( '.give-settings-section-subgroup ' ).forEach( contentElement => contentElement.classList.add( 'give-hidden' ) );
+
+				// Add `active` class to menu buttons of selected element.
+				e.target.classList.add( 'current' );
+			} else {
+				selectedGroup = e.target.getAttribute( 'data-group' );
+				selectedContent = mainContentWrap.querySelector( `#give-settings-section-group-${ selectedGroup }` );
+
+				// Loop through menu button and remove `active` class.
+				menuButtons.forEach( ( element ) => {
+					element.classList.remove( 'active' );
+				} );
+
+				// Loop through content sections and add `give-hidden` class.
+				allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
+
+				// Add `active` class to menu buttons of selected element.
+				e.target.classList.add( 'active' );
+			}
 
 			// Remove `give-hidden` class from content section of selected element.
 			selectedContent.classList.remove( 'give-hidden' );
@@ -349,4 +373,62 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			return false;
 		} );
 	} );
+} );
+
+// Handle paypal onboarding.
+document.addEventListener( 'DOMContentLoaded', () => {
+	const onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
+		disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
+		connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
+		disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
+		countryField = document.getElementById( 'paypal_commerce_account_country' );
+
+	if ( onBoardingButton ) {
+		onBoardingButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
+			onBoardingButton.disabled = true;
+
+			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+
+			const countryCode = countryField.value;
+
+			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
+				.then( response => response.json() )
+				.then( function( res ) {
+					// @todo handle error.
+					if ( true === res.success ) {
+						const payPalLink = document.querySelector( '[data-paypal-button]' );
+
+						payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+						payPalLink.click();
+					}
+				}
+				);
+
+			return false;
+		} );
+	}
+
+	if ( disconnectPayPalAccountButton ) {
+		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
+			evt.preventDefault();
+
+			new GiveConfirmModal( {
+				modalContent: {
+					title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
+					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
+				},
+				successConfirm: () => {
+					connectionSettingContainer.classList.remove( 'give-hidden' );
+					disConnectionSettingContainer.classList.add( 'give-hidden' );
+					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
+
+					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+				},
+			} ).render();
+
+			return false;
+		} );
+	}
 } );
