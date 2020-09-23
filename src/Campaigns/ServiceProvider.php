@@ -33,6 +33,15 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 			'give_campaign',
 			include 'config/give_campaigns.cpt.php'
 		);
+		register_post_meta(
+			'give_campaign',
+			'goal_amount',
+			[
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+			]
+		);
 	}
 
 	public function initBLocks() {

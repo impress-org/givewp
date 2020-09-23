@@ -50,6 +50,7 @@ return [
 		'title',
 		'editor',
 		'thumbnail',
+		'custom-fields', // Required by [register_post_meta](https://developer.wordpress.org/block-editor/tutorials/metabox/meta-block-2-register-meta/)
 	],
 
 	/**

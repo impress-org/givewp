@@ -1,7 +1,9 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { InspectorControls, InnerBlocks } = wp.blockEditor;
-const { PanelBody } = wp.components;
+const { InnerBlocks } = wp.blockEditor;
+const { PluginDocumentSettingPanel } = wp.editPost;
+
+import GoalAmountSetting from '../components/goal-amount-setting';
 
 export default registerBlockType( 'give/campaign-preview', {
 	title: __( 'Campaign Preview' ),
@@ -16,11 +18,13 @@ export default registerBlockType( 'give/campaign-preview', {
 	edit: () => {
 		return (
 			<>
-				<InspectorControls key="inspector">
-					<PanelBody title={ __( 'Settings' ) }>
-						HERE
-					</PanelBody>
-				</InspectorControls>
+				<PluginDocumentSettingPanel
+					open={ true }
+					name="campaign-preview"
+					title="Campaign Settings"
+				>
+					<GoalAmountSetting />
+				</PluginDocumentSettingPanel>
 				<InnerBlocks templateLock="all" />
 			</>
 		);

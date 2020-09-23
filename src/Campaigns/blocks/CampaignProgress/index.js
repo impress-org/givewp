@@ -1,4 +1,6 @@
 const { __ } = wp.i18n;
+const { useSelect } = wp.data;
+const { useEntityProp } = wp.coreData;
 const { useInstanceId } = wp.compose;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.blockEditor;
@@ -6,10 +8,11 @@ const { PanelBody, BaseControl, ColorPalette } = wp.components;
 
 import ProgressBar from '../components/progress-bar';
 import { Footer, FooterItem } from '../components/footer';
+import GoalAmountSetting from '../components/goal-amount-setting';
 
 export default registerBlockType( 'give/campaign-progress', {
 	title: __( 'Progress' ),
-	description: __( '...' ),
+	description: __( '' ),
 	category: 'give',
 	keywords: [
 		// ...
@@ -24,6 +27,20 @@ export default registerBlockType( 'give/campaign-progress', {
 		},
 	},
 	edit: ( { attributes, setAttributes } ) => {
+		const postType = useSelect(
+			( select ) => select( 'core/editor' ).getCurrentPostType(),
+			[]
+		);
+		/* eslint-disable-next-line no-unused-vars */
+		const [ meta, setMeta ] = useEntityProp(
+			'postType',
+			postType,
+			'meta'
+		);
+
+		/* eslint-disable-next-line no-undef */
+		const goalAmount = Give.fn.formatCurrency( meta[ 'goal_amount' ], { precision: 0 } );
+
 		const { color } = attributes;
 
 		const saveSetting = ( name, value ) => {
@@ -44,20 +61,23 @@ export default registerBlockType( 'give/campaign-progress', {
 				{ name: __( 'Grey', 'give' ), color: '#777777' },
 			];
 			return (
-				<BaseControl
-					label={ label }
-					hideLabelFromVision={ hideLabelFromVision }
-					id={ id }
-					help={ help }
-					className={ className }
-				>
-					<ColorPalette
-						value={ value }
-						colors={ colors }
-						onChange={ ( newValue ) => saveSetting( 'color', newValue ) }
-						clearable={ false }
-					/>
-				</BaseControl>
+				<>
+					<GoalAmountSetting />
+					<BaseControl
+						label={ label }
+						hideLabelFromVision={ hideLabelFromVision }
+						id={ id }
+						help={ help }
+						className={ className }
+					>
+						<ColorPalette
+							value={ value }
+							colors={ colors }
+							onChange={ ( newValue ) => saveSetting( 'color', newValue ) }
+							clearable={ false }
+						/>
+					</BaseControl>
+				</>
 			);
 		};
 
@@ -79,7 +99,7 @@ export default registerBlockType( 'give/campaign-progress', {
 				<Footer>
 					<FooterItem title="$3,000" subtitle="raised!" />
 					<FooterItem title="50" subtitle="donations" />
-					<FooterItem title="$10,000" subtitle="goal" />
+					<FooterItem title={ '$' + goalAmount } subtitle="goal" />
 					<FooterItem title="30" subtitle="days to go" />
 				</Footer>
 			</>
