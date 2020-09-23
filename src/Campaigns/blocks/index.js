@@ -1,9 +1,9 @@
-import CampaignEditor from './CampaignEditor';
+import CampaignPreview from './CampaignPreview';
 import CampaignProgressBar from './CampaignProgressBar';
-import CampaignFeaturedImage from './CampaignFeaturedImage';
+import FeaturedImage from './FeaturedImage';
 
 export {
-	CampaignEditor,
+	CampaignPreview,
 	CampaignProgressBar,
-	CampaignFeaturedImage,
+	FeaturedImage,
 };

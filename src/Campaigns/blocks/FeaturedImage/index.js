@@ -7,7 +7,7 @@ wp.hooks.addFilter( 'editor.PostFeaturedImage.imageSize', 'give/campaigns', func
 } );
 
 export default registerBlockType( 'give/campaign-featured-image', {
-	title: __( 'Campaign Featured Image' ),
+	title: __( 'Featured Image' ),
 	edit: () => {
 		return <PostFeaturedImage />;
 	},

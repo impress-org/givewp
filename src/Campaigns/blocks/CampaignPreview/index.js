@@ -56,8 +56,8 @@ const FooterItem = ( props ) => {
 	);
 };
 
-export default registerBlockType( 'give/campaign-editor', {
-	title: __( 'Campaign Editor' ),
+export default registerBlockType( 'give/campaign-preview', {
+	title: __( 'Campaign Preview' ),
 	description: __( '...' ),
 	category: 'give',
 	keywords: [

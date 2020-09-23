@@ -46,7 +46,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 		);
 
 		register_block_type(
-			'give/campaign-editor',
+			'give/campaign-preview',
 			[
 				'editor_script' => 'give-block-campaigns',
 			]
