@@ -40,13 +40,16 @@
  */
 
 use Give\Container\Container;
+use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
+use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
+use Give\ServiceProviders\Totals;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -136,6 +139,9 @@ final class Give {
 		Routes::class,
 		PaymentGateways::class,
 		Onboarding::class,
+		Totals::class,
+		MigrationsServiceProvider::class,
+		RevenueServiceProvider::class,
 	];
 
 	/**
