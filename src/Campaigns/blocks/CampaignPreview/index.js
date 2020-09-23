@@ -3,8 +3,8 @@ const { registerBlockType } = wp.blocks;
 const { InspectorControls, InnerBlocks } = wp.blockEditor;
 const { PanelBody } = wp.components;
 
-export default registerBlockType( 'give/campaign-editor', {
-	title: __( 'Campaign Editor' ),
+export default registerBlockType( 'give/campaign-preview', {
+	title: __( 'Campaign Preview' ),
 	description: __( '...' ),
 	category: 'give',
 	keywords: [
