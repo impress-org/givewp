@@ -62,7 +62,7 @@ return [
 	 */
 	'template'      => [
 		[
-			'give/campaign-editor',
+			'give/campaign-preview',
 			[],
 			[
 				[
