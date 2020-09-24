@@ -26,7 +26,7 @@ class AddPastDonationsToRevenueTable extends Migration {
 	public function register() {
 		Give_Updates::get_instance()->register(
 			[
-				'id'       => self::timestamp() . self::id(),
+				'id'       => self::id(),
 				'version'  => '2.9.0',
 				'callback' => [ $this, 'run' ],
 			]
@@ -95,14 +95,14 @@ class AddPastDonationsToRevenueTable extends Migration {
 		}
 
 		// Update Ran Successfully.
-		give_set_upgrade_complete( self::timestamp() . self::id() );
+		give_set_upgrade_complete( self::id() );
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public static function id() {
-		return 'add-past-donation-data-to-revenue-table-3';
+		return 'add-past-donation-data-to-revenue-table';
 	}
 
 	/**
