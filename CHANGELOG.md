@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 -   Campaigns preview heading is differentiated from the post title. (#5285)
 -   Campaigns Progress Block contains Progress Bar and Footer Stats. (#5290)
+-   Campaigns progress bar uses the theme's editor color palette. (#5300)
 
 ## [2.8.0] - 2020-08-31
 
