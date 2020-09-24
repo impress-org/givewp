@@ -42,7 +42,7 @@ class CreateRevenueTable extends Migration {
   			form_id bigint(20) UNSIGNED NOT NULL,
   			amount int UNSIGNED NOT NULL,
   			PRIMARY KEY  (id),
-  			FOREIGN KEY (donation_id) REFERENCES {$referencedTableName}(ID),
+  			FOREIGN KEY (donation_id) REFERENCES {$referencedTableName}(ID) ON DELETE CASCADE,
   			FOREIGN KEY (form_id) REFERENCES {$referencedTableName}(ID)
 		) {$charset_collate};";
 

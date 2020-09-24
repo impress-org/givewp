@@ -3,6 +3,7 @@
 namespace Give\Revenue;
 
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Helpers\Hooks;
 use Give\Revenue\Migrations\CreateRevenueTable;
 use Give\ServiceProviders\ServiceProvider;
 
@@ -13,6 +14,9 @@ class RevenueServiceProvider implements ServiceProvider {
 	 * @since 2.9.0
 	 */
 	public function register() {
+		global $wpdb;
+
+		$wpdb->give_revenue = "{$wpdb->prefix}give_revenue";
 	}
 
 	/**
@@ -22,6 +26,8 @@ class RevenueServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		$this->registerMigrations();
+
+		Hooks::addAction( 'give_insert_payment', OnDonationHandler::class, 'handle', 10, 2 );
 	}
 
 	/**
