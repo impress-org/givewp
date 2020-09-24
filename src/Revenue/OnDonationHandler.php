@@ -19,7 +19,7 @@ class OnDonationHandler {
 	 * @param int $donationId
 	 * @param array $donationData
 	 */
-	public function handler( $donationId, $donationData ) {
+	public function handle( $donationId, $donationData ) {
 		/* @var Revenue $revenue */
 		$revenue              = give( Revenue::class );
 		$donationAmountInCent = give_maybe_sanitize_amount( $donationData['price'], [ 'currency' => $donationData['currency'] ] ) * 100;
