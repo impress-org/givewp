@@ -45,7 +45,7 @@ class Revenue {
 		return $wpdb->insert(
 			$wpdb->give_revenue,
 			$revenueData,
-			$this->getDataFormatType( $revenueData )
+			$this->getPlaceholderForPrepareQuery( $revenueData )
 		);
 	}
 
@@ -72,22 +72,19 @@ class Revenue {
 	}
 
 	/**
-	 * Get data format type for data.
+	 * Get placeholder for prepare query.
 	 *
-	 * We are storing only string '%s' and integer '%d' in revenue table. this function will auto generate format array for INSERT.
-	 *
-	 * @param $data
+	 * @param array $data
 	 *
 	 * @return string[] Array of value format type
 	 */
-	private function getDataFormatType( $data ) {
-		array_walk(
-			$data,
-			static function( $value ) {
-				return is_numeric( $value ) ? '%d' : '%s';
-			}
-		);
+	private function getPlaceholderForPrepareQuery( $data ) {
+		$format = [];
 
-		return $data;
+		foreach ( $data as $value ) {
+			$format[] = is_numeric( $value ) ? '%d' : '%s';
+		}
+
+		return $format;
 	}
 }
