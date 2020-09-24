@@ -27,7 +27,7 @@ class Revenue {
 		$this->validateNewRevenueData( $revenueData );
 
 		/**
-		 * Filter data name for revenue table.
+		 * Filter new revenue data for revenue table.
 		 *
 		 * @since 2.9.0
 		 */
