@@ -13,6 +13,9 @@ class RevenueServiceProvider implements ServiceProvider {
 	 * @since 2.9.0
 	 */
 	public function register() {
+		global $wpdb;
+
+		$wpdb->give_revenue = "{$wpdb->prefix}give_revenue";
 	}
 
 	/**
