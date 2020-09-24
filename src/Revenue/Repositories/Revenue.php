@@ -81,4 +81,28 @@ class Revenue {
 
 		return $format;
 	}
+
+	/**
+	 * Return whether or not donation id exist in give_revenue table.
+	 *
+	 * @sicne 2.9.0
+	 *
+	 * @param int $donationId
+	 *
+	 * @return bool
+	 */
+	public function isDonationExist( $donationId ) {
+		global $wpdb;
+
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT donation_id
+				FROM {$wpdb->give_revenue}
+				WHERE donation_id = %d
+				",
+				$donationId
+			)
+		);
+	}
 }
