@@ -45,6 +45,15 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 			$footer = true
 		);
 
+		$editorColorPalette = get_theme_support( 'editor-color-palette' ); // Return value is in a nested array.
+		wp_localize_script(
+			'give-block-campaigns',
+			'giveCampaignsThemeSupport',
+			[
+				'editorColorPalette' => array_shift( $editorColorPalette ),
+			]
+		);
+
 		register_block_type(
 			'give/campaign-preview',
 			[
