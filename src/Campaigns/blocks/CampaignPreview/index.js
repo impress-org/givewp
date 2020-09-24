@@ -3,7 +3,7 @@ const { registerBlockType } = wp.blocks;
 const { InnerBlocks } = wp.blockEditor;
 const { PluginDocumentSettingPanel } = wp.editPost;
 
-import GoalAmountSetting from '../components/goal-amount-setting';
+import { GoalAmountSetting } from '../components/goal-amount';
 
 export default registerBlockType( 'give/campaign-preview', {
 	title: __( 'Campaign Preview' ),

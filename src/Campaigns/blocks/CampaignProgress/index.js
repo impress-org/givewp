@@ -1,6 +1,4 @@
 const { __ } = wp.i18n;
-const { useSelect } = wp.data;
-const { useEntityProp } = wp.coreData;
 const { useInstanceId } = wp.compose;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.blockEditor;
@@ -8,7 +6,7 @@ const { PanelBody, BaseControl, ColorPalette } = wp.components;
 
 import ProgressBar from '../components/progress-bar';
 import { Footer, FooterItem } from '../components/footer';
-import GoalAmountSetting from '../components/goal-amount-setting';
+import { GoalAmountMeta, GoalAmountSetting } from '../components/goal-amount';
 
 export default registerBlockType( 'give/campaign-progress', {
 	title: __( 'Progress' ),
@@ -27,19 +25,7 @@ export default registerBlockType( 'give/campaign-progress', {
 		},
 	},
 	edit: ( { attributes, setAttributes } ) => {
-		const postType = useSelect(
-			( select ) => select( 'core/editor' ).getCurrentPostType(),
-			[]
-		);
-		/* eslint-disable-next-line no-unused-vars */
-		const [ meta, setMeta ] = useEntityProp(
-			'postType',
-			postType,
-			'meta'
-		);
-
-		/* eslint-disable-next-line no-undef */
-		const goalAmount = Give.fn.formatCurrency( meta[ 'goal_amount' ], { precision: 0 } );
+		const { goalAmountFormatted } = GoalAmountMeta();
 
 		const { color } = attributes;
 
@@ -99,7 +85,7 @@ export default registerBlockType( 'give/campaign-progress', {
 				<Footer>
 					<FooterItem title="$3,000" subtitle="raised!" />
 					<FooterItem title="50" subtitle="donations" />
-					<FooterItem title={ '$' + goalAmount } subtitle="goal" />
+					<FooterItem title={ '$' + goalAmountFormatted } subtitle="goal" />
 					<FooterItem title="30" subtitle="days to go" />
 				</Footer>
 			</>
