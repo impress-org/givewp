@@ -48,7 +48,6 @@ export default registerBlockType( 'give/campaign-progress', {
 			];
 			return (
 				<>
-					<GoalAmountSetting />
 					<BaseControl
 						label={ label }
 						hideLabelFromVision={ hideLabelFromVision }
@@ -71,6 +70,7 @@ export default registerBlockType( 'give/campaign-progress', {
 			<>
 				<InspectorControls key="inspector">
 					<PanelBody title={ __( 'Settings' ) }>
+						<GoalAmountSetting />
 						<ColorControl
 							name="color"
 							label={ __( 'Progress Bar Color', 'give' ) }
