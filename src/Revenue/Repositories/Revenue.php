@@ -64,15 +64,7 @@ class Revenue {
 	 * @param array $array
 	 */
 	private function validateDataFormInsertion( $array ) {
-		/**
-		 * Filter required data names for revenue table.
-		 *
-		 * @since 2.9.0
-		 */
-		$required = apply_filters(
-			'give_revenue_required_data_for_insertion',
-			[ 'donation_id', 'form_id', 'amount' ]
-		);
+		$required = [ 'donation_id', 'form_id', 'amount' ];
 
 		$array = array_filter( $array ); // Remove empty values.
 
