@@ -18,18 +18,12 @@ class Revenue {
 	private $db;
 
 	/**
-	 * @var string
-	 */
-	private $tableName;
-
-	/**
 	 * Revenue constructor
 	 */
 	public function constructor() {
 		global $wpdb;
 
-		$this->db        = $wpdb;
-		$this->tableName = "{$this->db->prefix}give_revenue";
+		$this->db = $wpdb;
 	}
 
 	/**
@@ -37,7 +31,7 @@ class Revenue {
 	 */
 	public function create() {
 		return $this->db->insert(
-			$this->tableName,
+			$this->db->give_revenue,
 			[]
 		);
 	}
