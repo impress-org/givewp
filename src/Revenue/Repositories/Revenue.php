@@ -13,12 +13,6 @@ use InvalidArgumentException;
  */
 class Revenue {
 	/**
-	 * Revenue constructor
-	 */
-	public function constructor() {
-	}
-
-	/**
 	 * Insert revenue.
 	 *
 	 * @since 2.9.0
@@ -30,10 +24,10 @@ class Revenue {
 	public function insert( $revenueData ) {
 		global $wpdb;
 
-		$this->validateDataFormInsertion( $revenueData );
+		$this->validateNewRevenueData( $revenueData );
 
 		/**
-		 * Filter data name for revenue table.
+		 * Filter new revenue data for revenue table.
 		 *
 		 * @since 2.9.0
 		 */
@@ -50,13 +44,13 @@ class Revenue {
 	}
 
 	/**
-	 * Validate revenue data for insertion.
+	 * Validate new revenue data.
 	 *
 	 * @since 2.9.0
 	 *
 	 * @param array $array
 	 */
-	private function validateDataFormInsertion( $array ) {
+	private function validateNewRevenueData( $array ) {
 		$required = [ 'donation_id', 'form_id', 'amount' ];
 
 		$array = array_filter( $array ); // Remove empty values.
