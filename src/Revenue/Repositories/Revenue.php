@@ -13,12 +13,6 @@ use InvalidArgumentException;
  */
 class Revenue {
 	/**
-	 * Revenue constructor
-	 */
-	public function constructor() {
-	}
-
-	/**
 	 * Insert revenue.
 	 *
 	 * @since 2.9.0
