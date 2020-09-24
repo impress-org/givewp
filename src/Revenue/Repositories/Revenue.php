@@ -2,7 +2,6 @@
 namespace Give\Revenue\Repositories;
 
 use InvalidArgumentException;
-use wpdb;
 
 /**
  * Class Revenue
@@ -14,17 +13,9 @@ use wpdb;
  */
 class Revenue {
 	/**
-	 * @var wpdb
-	 */
-	private $db;
-
-	/**
 	 * Revenue constructor
 	 */
 	public function constructor() {
-		global $wpdb;
-
-		$this->db = $wpdb;
 	}
 
 	/**
@@ -37,6 +28,8 @@ class Revenue {
 	 * @return bool|int
 	 */
 	public function insert( $revenueData ) {
+		global $wpdb;
+
 		$this->validateDataFormInsertion( $revenueData );
 
 		/**
@@ -49,8 +42,8 @@ class Revenue {
 			$revenueData
 		);
 
-		return $this->db->insert(
-			$this->db->give_revenue,
+		return $wpdb->insert(
+			$wpdb->give_revenue,
 			$revenueData,
 			$this->getDataFormatType( $revenueData )
 		);
