@@ -12,7 +12,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  *
  * @since 2.9.0
  */
-class AddPastDonationToRevenueTable extends Migration {
+class AddPastDonationsToRevenueTable extends Migration {
 
 	/**
 	 * @inheritdoc
