@@ -6,36 +6,60 @@ import CustomCardFields from './CustomCardFields';
 import { loadScript } from '@paypal/paypal-js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
-	loadScript( givePayPalCommerce.payPalSdkQueryParameters )
-		.then( () => {
-			const $formWraps = document.querySelectorAll( '.give-form-wrap' );
+	/**
+	 * Setup PayPal payment methods
+	 *
+	 * @since 2.9.0
+	 */
+	function setupPaymentMethods() {
+		const $formWraps = document.querySelectorAll( '.give-form-wrap' );
 
-			if ( ! $formWraps.length ) {
-				return false;
-			}
+		if ( ! $formWraps.length ) {
+			return;
+		}
 
-			$formWraps.forEach( $formWrap => {
-				const $form = $formWrap.querySelector( '.give-form' );
-				const smartButtons = new SmartButtons( $form );
-				const customCardFields = new CustomCardFields( $form );
+		$formWraps.forEach( $formWrap => {
+			const $form = $formWrap.querySelector( '.give-form' );
+			const smartButtons = new SmartButtons( $form );
+			const customCardFields = new CustomCardFields( $form );
 
-				smartButtons.boot();
+			smartButtons.boot();
 
-				// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
-				if ( AdvancedCardFields.canShow() ) {
-					const advancedCardFields = new AdvancedCardFields( customCardFields );
+			// if( DonationForm.isRecurringDonation($form ) ) {
+			// 	DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
+			// 		loadPayPalScript( { vault: true });
+			// 	} );
+			// }
 
-					customCardFields.boot();
-					advancedCardFields.boot();
-				} else {
-					if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
-						customCardFields.removeFields();
-					}
+			// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
+			if ( AdvancedCardFields.canShow() ) {
+				const advancedCardFields = new AdvancedCardFields( customCardFields );
 
-					customCardFields.removeFieldsOnGatewayLoad();
+				customCardFields.boot();
+				advancedCardFields.boot();
+			} else {
+				if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+					customCardFields.removeFields();
 				}
-			} );
+
+				customCardFields.removeFieldsOnGatewayLoad();
+			}
 		} );
+	}
+
+	/**
+	 * Load PayPal script.
+	 *
+	 * @since 2.9.0
+	 * @param {object} options PayPal script query arguments
+	 */
+	function loadPayPalScript( options = {} ) {
+		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
+			setupPaymentMethods();
+		} );
+	}
+
+	loadPayPalScript();
 
 	// On form submit prevent submission for PayPal commerce.
 	// Form submission will be take care internally by smart buttons or advanced card fields.
