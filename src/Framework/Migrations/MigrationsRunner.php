@@ -2,7 +2,9 @@
 
 namespace Give\Framework\Migrations;
 
+use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give_Notices;
 
 /**
  * Class MigrationsRunner
@@ -50,6 +52,8 @@ class MigrationsRunner {
 	 * @since 2.9.0
 	 */
 	public function run() {
+		global $wpdb;
+
 		if ( ! $this->hasMigrationToRun() ) {
 			return;
 		}
@@ -67,19 +71,43 @@ class MigrationsRunner {
 		// Process migrations.
 		$newMigrations = [];
 
-		foreach ( $migrations as $migrationClass ) {
-			$migrationId = $migrationClass::id();
+		// Begin transaction
+		$wpdb->query( 'START TRANSACTION' );
 
-			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
-				continue;
+		try {
+			foreach ( $migrations as $migrationClass ) {
+				$migrationId = $migrationClass::id();
+
+				if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
+					continue;
+				}
+
+				/** @var Migration $migration */
+				$migration = give( $migrationClass );
+
+				$migration->run();
+
+				$newMigrations[] = $migrationId;
 			}
+		} catch ( Exception $exception ) {
+			$wpdb->query( 'ROLLBACK' );
 
-			/** @var Migration $migration */
-			$migration = give( $migrationClass );
-			$migration->run();
+			give_record_log( 'Migration Failed', print_r( $exception, true ), 0, 'update' );
+			give()->notices->register_notice(
+				[
+					'id'          => 'migration-failure',
+					'description' => sprintf(
+						'%1$s <a href="https://givewp.com/support/">https://givewp.com/support</a>',
+						esc_html__( 'There was a problem running the migrations. Please reach out to GiveWP support for assistance:', 'give' )
+					),
+				]
+			);
 
-			$newMigrations[] = $migrationId;
+			return;
 		}
+
+		// Commit transaction if successful
+		$wpdb->query( 'COMMIT' );
 
 		// Save processed migrations.
 		$this->completedMigrations = array_unique( array_merge( $this->completedMigrations, $newMigrations ) );
