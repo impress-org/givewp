@@ -41,16 +41,15 @@ class SmartButtons extends PaymentMethod {
 			return;
 		}
 
-		const onInitHandler = this.onInitHandler.bind( this );
-		const onClickHandler = this.onClickHandler.bind( this );
-		const createOrderHandler = this.createOrderHandler.bind( this );
-		const onApproveHandler = this.onApproveHandler.bind( this );
-
-		paypal.Buttons( {
-			onInit: onInitHandler,
-			onClick: onClickHandler,
-			createOrder: createOrderHandler,
-			onApprove: onApproveHandler,
+		const options = {
+			onInit: this.onInitHandler.bind( this ),
+			onClick: this.onClickHandler.bind( this ),
+			createOrder: this.createOrderHandler.bind( this ),
+			onApprove: this.orderApproveHandler.bind( this ),
+			onCancel: function( data ) {
+				console.log( data ); alert( 'Your subscription has been cancelled.' );
+			},
+			onError: function( err ) {},
 			style: {
 				layout: 'vertical',
 				size: 'responsive',
@@ -59,7 +58,18 @@ class SmartButtons extends PaymentMethod {
 				color: 'gold',
 				tagline: false,
 			},
-		} ).render( this.smartButtonContainer );
+		};
+
+		if ( DonationForm.isRecurringDonation( this.form ) ) {
+			options.createSubscription = function( data, actions ) {
+				return actions.subscription.create( { plan_id: 'P-1FC78328VP844114WL5NXL5A' } );
+			};
+			options.onApprove = this.subscriptionApproveHandler.bind( this );
+
+			delete options.createOrder;
+		}
+
+		paypal.Buttons( options ).render( this.smartButtonContainer );
 
 		DonationForm.toggleDonateNowButton( this.form );
 	}
@@ -100,12 +110,6 @@ class SmartButtons extends PaymentMethod {
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
-			if ( DonationForm.isRecurringDonation( this.form ) ) {
-				this.submitDonationForm();
-
-				return actions.reject();
-			}
-
 			return actions.resolve();
 		}
 
@@ -150,7 +154,8 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
-	 * On approve event handler for smart buttons.
+	 * Subscription approve event handler for smart buttons.
+	 * @todo handle error and subscription cancellation
 	 *
 	 * @since 2.9.0
 	 *
@@ -159,7 +164,21 @@ class SmartButtons extends PaymentMethod {
 	 *
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
-	async onApproveHandler( data, actions ) {
+	async subscriptionApproveHandler( data, actions ) {
+		alert( 'You have successfully created subscription ' + data.subscriptionID );
+	}
+
+	/**
+	 * Order approve event handler for smart buttons.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
+	 *
+	 * @return {*} Return whether or not PayPal payment captured.
+	 */
+	async orderApproveHandler( data, actions ) {
 		Give.form.fn.showProcessingState();
 		Give.form.fn.disable( this.jQueryForm, true );
 		Give.form.fn.removeErrors( this.jQueryForm );
