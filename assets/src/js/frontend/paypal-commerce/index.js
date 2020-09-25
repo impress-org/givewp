@@ -25,12 +25,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			smartButtons.boot();
 
-			// if( DonationForm.isRecurringDonation($form ) ) {
-			// 	DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
-			// 		loadPayPalScript( { vault: true });
-			// 	} );
-			// }
-
 			// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
 			if ( AdvancedCardFields.canShow() ) {
 				const advancedCardFields = new AdvancedCardFields( customCardFields );
@@ -51,10 +45,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	 * Load PayPal script.
 	 *
 	 * @since 2.9.0
-	 * @param {object} options PayPal script query arguments
 	 */
-	function loadPayPalScript( options = {} ) {
-		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
+	function loadPayPalScript() {
+		loadScript( givePayPalCommerce.payPalSdkQueryParameters ).then( () => {
 			setupPaymentMethods();
 		} );
 	}
