@@ -71,43 +71,43 @@ class MigrationsRunner {
 		// Process migrations.
 		$newMigrations = [];
 
-		// Begin transaction
-		$wpdb->query( 'START TRANSACTION' );
+		foreach ( $migrations as $migrationClass ) {
+			$migrationId = $migrationClass::id();
 
-		try {
-			foreach ( $migrations as $migrationClass ) {
-				$migrationId = $migrationClass::id();
+			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
+				continue;
+			}
 
-				if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
-					continue;
-				}
+			// Begin transaction
+			$wpdb->query( 'START TRANSACTION' );
 
+			try {
 				/** @var Migration $migration */
 				$migration = give( $migrationClass );
 
 				$migration->run();
+			} catch ( Exception $exception ) {
+				$wpdb->query( 'ROLLBACK' );
 
-				$newMigrations[] = $migrationId;
+				give_record_log( 'Migration Failed', print_r( $exception, true ), 0, 'update' );
+				give()->notices->register_notice(
+					[
+						'id'          => 'migration-failure',
+						'description' => sprintf(
+							'%1$s <a href="https://givewp.com/support/">https://givewp.com/support</a>',
+							esc_html__( 'There was a problem running the migrations. Please reach out to GiveWP support for assistance:', 'give' )
+						),
+					]
+				);
+
+				break;
 			}
-		} catch ( Exception $exception ) {
-			$wpdb->query( 'ROLLBACK' );
 
-			give_record_log( 'Migration Failed', print_r( $exception, true ), 0, 'update' );
-			give()->notices->register_notice(
-				[
-					'id'          => 'migration-failure',
-					'description' => sprintf(
-						'%1$s <a href="https://givewp.com/support/">https://givewp.com/support</a>',
-						esc_html__( 'There was a problem running the migrations. Please reach out to GiveWP support for assistance:', 'give' )
-					),
-				]
-			);
+			// Commit transaction if successful
+			$wpdb->query( 'COMMIT' );
 
-			return;
+			$newMigrations[] = $migrationId;
 		}
-
-		// Commit transaction if successful
-		$wpdb->query( 'COMMIT' );
 
 		// Save processed migrations.
 		$this->completedMigrations = array_unique( array_merge( $this->completedMigrations, $newMigrations ) );
