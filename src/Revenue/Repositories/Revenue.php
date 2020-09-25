@@ -24,8 +24,6 @@ class Revenue {
 	public function insert( $revenueData ) {
 		global $wpdb;
 
-		$this->validateNewRevenueData( $revenueData );
-
 		/**
 		 * Filter new revenue data for revenue table.
 		 *
@@ -35,6 +33,8 @@ class Revenue {
 			'give_revenue_data_for_insertion',
 			$revenueData
 		);
+
+		$this->validateNewRevenueData( $revenueData );
 
 		return $wpdb->insert(
 			$wpdb->give_revenue,
