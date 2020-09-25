@@ -4,6 +4,7 @@ namespace Give\Revenue;
 
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
+use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
 use Give\Revenue\Migrations\CreateRevenueTable;
 use Give\ServiceProviders\ServiceProvider;
 
@@ -28,6 +29,7 @@ class RevenueServiceProvider implements ServiceProvider {
 		$this->registerMigrations();
 
 		Hooks::addAction( 'give_insert_payment', OnDonationHandler::class, 'handle', 10, 2 );
+		Hooks::addAction( 'give_register_updates', AddPastDonationsToRevenueTable::class, 'register' );
 	}
 
 	/**
