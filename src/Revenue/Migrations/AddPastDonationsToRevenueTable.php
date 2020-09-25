@@ -70,7 +70,7 @@ class AddPastDonationsToRevenueTable extends Migration {
 				];
 
 				try {
-					$this->validateRevenueData( $revenueData );
+					$revenueRepository->insert( $revenueData );
 
 				} catch ( Exception $e ) {
 					give()->logs->add(
@@ -86,8 +86,6 @@ class AddPastDonationsToRevenueTable extends Migration {
 
 					continue;
 				}
-
-				$revenueRepository->insert( $revenueData );
 			}
 
 			wp_reset_postdata();
@@ -110,21 +108,5 @@ class AddPastDonationsToRevenueTable extends Migration {
 	 */
 	public static function timestamp() {
 		return strtotime( '2019-09-24' );
-	}
-
-	/**
-	 * Validate revenue data.
-	 *
-	 * @sicne 2.9.0
-	 *
-	 * @param array  $array
-	 * @throws InvalidArgumentException
-	 */
-	private function validateRevenueData( $array ) {
-		foreach ( $array as $value ) {
-			if ( empty( $value ) ) {
-				throw new InvalidArgumentException( 'Empty value is not allowed to create revenue.' );
-			}
-		}
 	}
 }

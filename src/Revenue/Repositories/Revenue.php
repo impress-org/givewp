@@ -64,6 +64,12 @@ class Revenue {
 				)
 			);
 		}
+
+		foreach ( $required as $columnName ) {
+			if ( empty( $array[ $columnName ] ) ) {
+				throw new InvalidArgumentException( 'Empty value is not allowed to create revenue.' );
+			}
+		}
 	}
 
 	/**
