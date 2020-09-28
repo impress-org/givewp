@@ -190,7 +190,10 @@ class SmartButtons extends PaymentMethod {
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
 	async creatSubscriptionHandler( data, actions ) {
-		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, { // eslint-disable-line
+		Give.form.fn.removeErrors( this.jQueryForm );
+
+		// eslint-disable-next-line
+		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
