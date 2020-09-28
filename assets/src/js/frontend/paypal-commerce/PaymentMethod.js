@@ -1,4 +1,4 @@
-/* globals jQuery, Give */
+/* globals jQuery, Give, givePayPalCommerce */
 import DonationForm from './DonationForm';
 
 class PaymentMethod {
@@ -60,6 +60,23 @@ class PaymentMethod {
 	 * @since 2.9.0
 	 */
 	registerEvents() {}
+
+	/**
+	 * Show error on donation form.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} error PayPal error object
+	 */
+	showError( error = null ) {
+		if ( null === error ) {
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+			return;
+		}
+
+		const errorDetail = error.details[ 0 ];
+		DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+	}
 }
 
 export default PaymentMethod;
