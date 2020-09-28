@@ -11,8 +11,30 @@ class SmartButtons extends PaymentMethod {
 	constructor( form ) {
 		super( form );
 
-		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
+		this.setupProperties();
 	}
+
+	/**
+	 * Setup properties.
+	 *
+	 * @since 2.9.0
+	 */
+	setupProperties(){
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
+		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	onGatewayLoadBoot( evt, self ) {
+		if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
+			self.setUpProperties();
+		}
+
+		super.onGatewayLoadBoot( evt, self );
+	}
+
 	/**
 	 * Get smart button container.
 	 *
@@ -21,12 +43,19 @@ class SmartButtons extends PaymentMethod {
 	 * @return {object} Smart button container selector.
 	 */
 	getButtonContainer() {
-		const smartButtonWrap = document.createElement( 'div' );
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
+		const oldSmartButtonWrap = this.ccFieldsContainer.querySelector('#give-paypal-commerce-smart-buttons-wrap');
 
-		smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
+		if( oldSmartButtonWrap ) {
+			oldSmartButtonWrap.remove();
+		}
 
-		return this.ccFieldsContainer.insertBefore( smartButtonWrap, this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' ) );
+		const smartButtonWrap = document.createElement( 'div' );
+		const separator = this.ccFieldsContainer.querySelector('.separator-with-text');
+		smartButtonWrap.setAttribute( 'id', 'give-paypal-commerce-smart-buttons-wrap' );
+		const cardNumberWarp = this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' );
+
+		return this.ccFieldsContainer.insertBefore( smartButtonWrap, separator ? separator : cardNumberWarp );
 	}
 
 	/**
@@ -61,9 +90,7 @@ class SmartButtons extends PaymentMethod {
 		};
 
 		if ( DonationForm.isRecurringDonation( this.form ) ) {
-			options.createSubscription = function( data, actions ) {
-				return actions.subscription.create( { plan_id: 'P-1FC78328VP844114WL5NXL5A' } );
-			};
+			options.createSubscription = this.creatSubscriptionHandler.bind(this);
 			options.onApprove = this.subscriptionApproveHandler.bind( this );
 
 			delete options.createOrder;
@@ -72,6 +99,12 @@ class SmartButtons extends PaymentMethod {
 		paypal.Buttons( options ).render( this.smartButtonContainer );
 
 		DonationForm.toggleDonateNowButton( this.form );
+
+		if ( this.recurringChoiceHiddenField ) {
+			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, () => {
+				this.renderPaymentMethodOption();
+			} );
+		}
 	}
 
 	/**
@@ -136,21 +169,39 @@ class SmartButtons extends PaymentMethod {
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
 		const responseJson = await response.json();
-		let errorDetail = {};
 
 		if ( ! responseJson.success ) {
-			if ( null === responseJson.data.error ) {
-				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
-				return null;
-			}
-
-			errorDetail = responseJson.data.error.details[ 0 ];
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
-
+			this.showError( responseJson.data.error );
 			return null;
 		}
 
 		return responseJson.data.id;
+	}
+
+	/**
+	 * Create subscription event handler for smart buttons.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
+	 *
+	 * @return {Promise<unknown>} Return PayPal order id.
+	 */
+	async creatSubscriptionHandler( data, actions ) {
+		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_plan_id`, {
+			method: 'POST',
+			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
+		} );
+
+		const responseJson = await response.json();
+
+		if ( ! responseJson.success ) {
+			this.showError( responseJson.data.error );
+			return null;
+		}
+
+		return actions.subscription.create( { plan_id: responseJson.data.id } );
 	}
 
 	/**
