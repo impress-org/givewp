@@ -304,7 +304,7 @@ class AdvancedCardFields extends PaymentMethod {
 			return;
 		}
 
-		await DonationForm.attachOrderIdToForm( this.form, result.data.order.id );
+		await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
 
 		this.submitDonationForm();
 	}

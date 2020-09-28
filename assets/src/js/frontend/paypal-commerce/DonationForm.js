@@ -27,14 +27,15 @@ class DonationForm {
 	 *
 	 * @param {object} $form Form selector.
 	 * @param {string} orderId PayPal order id.
+	 * @param {string} fieldName Field name.
 	 *
 	 * @return {Promise} Promise of appending hidden input field to donation form.
 	 */
-	static attachOrderIdToForm( $form, orderId ) {
+	static addFieldToForm( $form, orderId, fieldName ) {
 		const input = document.createElement( 'input' );
 
 		input.type = 'hidden';
-		input.name = 'payPalOrderId';
+		input.name = fieldName;
 		input.value = orderId;
 
 		return new Promise( ( resolve, reject ) => { // eslint-disable-line

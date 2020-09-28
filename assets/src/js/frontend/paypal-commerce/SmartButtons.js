@@ -271,7 +271,7 @@ class SmartButtons extends PaymentMethod {
 		}
 
 		const orderData = responseJson.data.order;
-		await DonationForm.attachOrderIdToForm( this.form, orderData.id );
+		await DonationForm.addFieldToForm( this.form, orderData.id, 'payPalOrderId' );
 
 		this.submitDonationForm();
 	}
