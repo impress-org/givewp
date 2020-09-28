@@ -78,7 +78,7 @@ class SmartButtons extends PaymentMethod {
 			onCancel: function( data ) {
 				console.log( data ); alert( 'Your subscription has been cancelled.' );
 			},
-			onError: function( err ) {},
+			// onError: function( err ) {},
 			style: {
 				layout: 'vertical',
 				size: 'responsive',
@@ -189,7 +189,7 @@ class SmartButtons extends PaymentMethod {
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
 	async creatSubscriptionHandler( data, actions ) {
-		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
+		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, { // eslint-disable-line
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
@@ -215,8 +215,10 @@ class SmartButtons extends PaymentMethod {
 	 *
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
-	async subscriptionApproveHandler( data, actions ) {
-		alert( 'You have successfully created subscription ' + data.subscriptionID );
+	async subscriptionApproveHandler( data, actions ) { // eslint-disable-line
+		await DonationForm.addFieldToForm( this.form, data.subscriptionID, 'payPalSubscriptionId' );
+
+		this.submitDonationForm();
 	}
 
 	/**
