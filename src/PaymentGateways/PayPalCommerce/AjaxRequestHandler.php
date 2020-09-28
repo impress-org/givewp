@@ -178,7 +178,7 @@ class AjaxRequestHandler {
 
 		$data = [
 			'formId'              => $formId,
-			'donationAmount'      => $postData['give-amount'],
+			'donationAmount'      => isset( $postData['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $postData['give-amount'], [ 'currency' => give_get_currency( $formId ) ] ) ) : '0.00',
 			'payer'               => [
 				'firstName' => $postData['give_first'],
 				'lastName'  => $postData['give_last'],
