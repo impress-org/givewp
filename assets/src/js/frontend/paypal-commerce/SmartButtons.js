@@ -19,7 +19,7 @@ class SmartButtons extends PaymentMethod {
 	 *
 	 * @since 2.9.0
 	 */
-	setupProperties(){
+	setupProperties() {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 	}
@@ -44,14 +44,14 @@ class SmartButtons extends PaymentMethod {
 	 */
 	getButtonContainer() {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
-		const oldSmartButtonWrap = this.ccFieldsContainer.querySelector('#give-paypal-commerce-smart-buttons-wrap');
+		const oldSmartButtonWrap = this.ccFieldsContainer.querySelector( '#give-paypal-commerce-smart-buttons-wrap' );
 
-		if( oldSmartButtonWrap ) {
+		if ( oldSmartButtonWrap ) {
 			oldSmartButtonWrap.remove();
 		}
 
 		const smartButtonWrap = document.createElement( 'div' );
-		const separator = this.ccFieldsContainer.querySelector('.separator-with-text');
+		const separator = this.ccFieldsContainer.querySelector( '.separator-with-text' );
 		smartButtonWrap.setAttribute( 'id', 'give-paypal-commerce-smart-buttons-wrap' );
 		const cardNumberWarp = this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' );
 
@@ -90,7 +90,7 @@ class SmartButtons extends PaymentMethod {
 		};
 
 		if ( DonationForm.isRecurringDonation( this.form ) ) {
-			options.createSubscription = this.creatSubscriptionHandler.bind(this);
+			options.createSubscription = this.creatSubscriptionHandler.bind( this );
 			options.onApprove = this.subscriptionApproveHandler.bind( this );
 
 			delete options.createOrder;
@@ -189,7 +189,7 @@ class SmartButtons extends PaymentMethod {
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
 	async creatSubscriptionHandler( data, actions ) {
-		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_plan_id`, {
+		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
