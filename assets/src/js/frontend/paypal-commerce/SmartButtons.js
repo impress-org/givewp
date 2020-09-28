@@ -22,6 +22,7 @@ class SmartButtons extends PaymentMethod {
 	setupProperties() {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+		this.smartButton = null;
 	}
 
 	/**
@@ -44,10 +45,9 @@ class SmartButtons extends PaymentMethod {
 	 */
 	getButtonContainer() {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
-		const oldSmartButtonWrap = this.ccFieldsContainer.querySelector( '#give-paypal-commerce-smart-buttons-wrap' );
 
-		if ( oldSmartButtonWrap ) {
-			oldSmartButtonWrap.remove();
+		if ( this.smartButton ) {
+			this.smartButton.close();
 		}
 
 		const smartButtonWrap = document.createElement( 'div' );
@@ -97,7 +97,8 @@ class SmartButtons extends PaymentMethod {
 			delete options.createOrder;
 		}
 
-		paypal.Buttons( options ).render( this.smartButtonContainer );
+		this.smartButton = paypal.Buttons( options );
+		this.smartButton.render( this.smartButtonContainer );
 
 		DonationForm.toggleDonateNowButton( this.form );
 
