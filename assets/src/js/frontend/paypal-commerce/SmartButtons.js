@@ -80,7 +80,6 @@ class SmartButtons extends PaymentMethod {
 	 */
 	renderPaymentMethodOption() {
 		this.smartButtonContainer = this.getButtonContainer();
-		const onCancelError = () => DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
 
 		if ( this.smartButton ) {
 			this.smartButton.close();
@@ -91,10 +90,6 @@ class SmartButtons extends PaymentMethod {
 			onClick: this.onClickHandler.bind( this ),
 			createOrder: this.createOrderHandler.bind( this ),
 			onApprove: this.orderApproveHandler.bind( this ),
-			onCancel: function() {
-				onCancelError();
-			},
-			// onError: function( err ) {},
 			style: {
 				layout: 'vertical',
 				size: 'responsive',
