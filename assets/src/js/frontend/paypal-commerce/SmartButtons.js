@@ -22,9 +22,6 @@ class SmartButtons extends PaymentMethod {
 	registerEvents() {
 		if ( this.recurringChoiceHiddenField ) {
 			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, () => {
-				if ( this.smartButton ) {
-					this.smartButton.close();
-				}
 				this.renderPaymentMethodOption();
 			} );
 		}
@@ -47,7 +44,6 @@ class SmartButtons extends PaymentMethod {
 	onGatewayLoadBoot( evt, self ) {
 		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
 			self.setupProperties();
-			self.registerEvents();
 		}
 
 		super.onGatewayLoadBoot( evt, self );
@@ -85,8 +81,8 @@ class SmartButtons extends PaymentMethod {
 		this.smartButtonContainer = this.getButtonContainer();
 		const onCancelError = () => DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
 
-		if ( ! this.smartButtonContainer ) {
-			return;
+		if ( this.smartButton ) {
+			this.smartButton.close();
 		}
 
 		const options = {

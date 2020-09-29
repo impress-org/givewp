@@ -20,6 +20,7 @@ class CustomCardFields extends PaymentMethod {
 	setupProperties() {
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
 	}
 
 	/**
@@ -29,8 +30,6 @@ class CustomCardFields extends PaymentMethod {
 		if ( this.recurringChoiceHiddenField ) {
 			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, this.renderPaymentMethodOption.bind( this ) );
 		}
-
-		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
 	}
 
 	/**
@@ -39,7 +38,6 @@ class CustomCardFields extends PaymentMethod {
 	onGatewayLoadBoot( evt, self ) {
 		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
 			self.setupProperties();
-			self.registerEvents();
 		}
 
 		super.onGatewayLoadBoot( evt, self );
