@@ -10,8 +10,8 @@ const { useInstanceId } = wp.compose;
 const { BaseControl, ColorPalette } = wp.components;
 const { __ } = wp.i18n;
 
-const ImageControl = ( { name, label, help, className, value, hideLabelFromVision, onChange } ) => {
-	const instanceId = useInstanceId( ImageControl );
+const ColorControl = ( { name, label, help, className, value, hideLabelFromVision, onChange } ) => {
+	const instanceId = useInstanceId( ColorControl );
 	const id = `give-color-control-${ name }-${ instanceId }`;
 	const colors = [
 		{ name: __( 'Red', 'give' ), color: '#dd3333' },
@@ -39,7 +39,7 @@ const ImageControl = ( { name, label, help, className, value, hideLabelFromVisio
 	);
 };
 
-ImageControl.propTypes = {
+ColorControl.propTypes = {
 	label: PropTypes.string,
 	value: PropTypes.any.isRequired,
 	onChange: PropTypes.func,
@@ -49,9 +49,9 @@ ImageControl.propTypes = {
 	hideLabelFromVision: PropTypes.bool,
 };
 
-ImageControl.defaultProps = {
+ColorControl.defaultProps = {
 	onChange: null,
 	options: null,
 };
 
-export default ImageControl;
+export default ColorControl;

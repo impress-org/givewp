@@ -31,7 +31,7 @@ class Shortcode {
 				'deadline'   => '',
 				'color'      => '#28c77b',
 				'heading'    => 'Example Heading',
-				'img'        => 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+				'imageSrc'   => 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
 				'summary'    => 'This is a summary.',
 
 			],
@@ -48,7 +48,7 @@ class Shortcode {
 				'deadline'   => $attributes['deadline'],
 				'color'      => $attributes['color'],
 				'heading'    => $attributes['heading'],
-				'img'        => $attributes['img'],
+				'imageSrc'   => $attributes['imageSrc'],
 				'summary'    => $attributes['summary'],
 			]
 		);

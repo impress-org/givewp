@@ -15,7 +15,7 @@ class Model {
 	protected $color;
 	protected $heading;
 	protected $summary;
-	protected $img;
+	protected $imageSrc;
 
 	// Settings for block context
 	protected $innerBlocks;
@@ -35,7 +35,7 @@ class Model {
 		isset( $args['color'] ) ? $this->color             = $args['color'] : $this->color = '#28c77b';
 		isset( $args['heading'] ) ? $this->heading         = $args['heading'] : $this->heading = 'Example Heading';
 		isset( $args['summary'] ) ? $this->summary         = $args['summary'] : $this->color = 'This is a summary.';
-		isset( $args['img'] ) ? $this->img                 = $args['img'] : $this->color = 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
+		isset( $args['imageSrc'] ) ? $this->imageSrc       = $args['imageSrc'] : $this->color = 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
 		isset( $args['innerBlocks'] ) ? $this->innerBlocks = $args['innerBlocks'] : $this->innerBlocks = false;
 	}
 
@@ -61,7 +61,7 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function getImageSrc() {
-		return $this->img;
+		return $this->imageSrc;
 	}
 
 	/**
