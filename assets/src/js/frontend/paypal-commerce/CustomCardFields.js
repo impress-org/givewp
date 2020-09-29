@@ -1,3 +1,4 @@
+/* globals givePayPalCommerce */
 import PaymentMethod from './PaymentMethod';
 import DonationForm from './DonationForm';
 import AdvancedCardFields from './AdvancedCardFields';
@@ -114,6 +115,7 @@ class CustomCardFields extends PaymentMethod {
 		}
 
 		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
+		this.separator && this.separator.remove(); // eslint-disable-line
 	}
 
 	/**
@@ -143,7 +145,7 @@ class CustomCardFields extends PaymentMethod {
 		const div = document.createElement( 'div' );
 
 		div.setAttribute( 'class', 'separator-with-text' );
-		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ window.givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
+		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
 
 		return div;
 	}
