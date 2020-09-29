@@ -37,6 +37,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '1000',
 					],
+					'deadline'   => [
+						'type'    => 'string',
+						'default' => '',
+					],
 					'color'      => [
 						'type'    => 'string',
 						'default' => '#28c77b',
@@ -60,6 +64,7 @@ class Block {
 				'categories' => $attributes['categories'],
 				'metric'     => $attributes['metric'],
 				'goal'       => $attributes['goal'],
+				'deadline'   => $attributes['deadline'],
 				'color'      => $attributes['color'],
 			]
 		);

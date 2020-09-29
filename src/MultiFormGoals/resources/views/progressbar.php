@@ -15,13 +15,20 @@
 	</div>
 	<div class="give-progress-bar-block__stats">
 		<div class="give-progress-bar-block__stat">
-			<?php echo $this->getFormattedTotal(); ?>
+			<div><?php echo $this->getFormattedTotal(); ?></div>
+			<div><?php echo __( 'raised', 'give' ); ?></div>
 		</div>
 		<div class="give-progress-bar-block__stat">
-			<?php echo $this->getDonationCount(); ?>
+			<div><?php echo $this->getDonationCount(); ?></div>
+			<div><?php echo _n( 'donation', 'donations', $this->getDonationCount(), 'give' ); ?></div>
 		</div>
 		<div class="give-progress-bar-block__stat">
-			<?php echo $this->getFormattedGoal(); ?>
+			<div><?php echo $this->getFormattedGoal(); ?></div>
+			<div><?php echo __( 'goal', 'give' ); ?></div>
+		</div>
+		<div class="give-progress-bar-block__stat">
+			<div><?php echo $this->getDaysToGo(); ?></div>
+			<div><?php echo _n( 'day to go', 'days to go', $this->getDaysToGo(), 'give' ); ?></div>
 		</div>
 	</div>
 </div>

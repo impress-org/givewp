@@ -23,6 +23,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '1000',
 	},
+	deadline: {
+		type: 'string',
+		default: '',
+	},
 	color: {
 		type: 'string',
 		default: '#',

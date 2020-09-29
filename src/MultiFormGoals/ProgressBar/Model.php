@@ -11,6 +11,7 @@ class Model {
 	protected $categories;
 	protected $metric;
 	protected $goal;
+	protected $deadline;
 	protected $color;
 
 	// Internal
@@ -28,6 +29,7 @@ class Model {
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '1000';
+		isset( $args['deadline'] ) ? $this->deadline     = $args['deadline'] : $this->deadline = '';
 		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
 	}
 
@@ -263,5 +265,27 @@ class Model {
 				return sprintf( _n( '%d donation', '%d donations', $goal, 'give' ), $goal );
 			}
 		}
+	}
+
+	/**
+	 * Get deadline for Progress Bar
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getDeadline() {
+		return $this->deadline;
+	}
+
+	/**
+	 * Get days remaining before Progress Bar deadline
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getDaysToGo() {
+		$now      = new \DateTime();
+		$deadline = new \DateTime( $this->getDeadline() );
+		return $now < $deadline ? $deadline->diff( $now )->format( '%a' ) + 1 : 0;
 	}
 }
