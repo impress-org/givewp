@@ -1,22 +1,17 @@
 <?php
 
-namespace Give\MultiFormGoals;
+namespace Give\MultiFormGoals\ProgressBar;
 
 
 class Model {
 
 	// Settings
-	protected $message;
 	protected $ids;
 	protected $tags;
 	protected $categories;
 	protected $metric;
 	protected $goal;
 	protected $color;
-	protected $showGoal;
-	protected $linkText;
-	protected $linkUrl;
-	protected $linkTarget;
 
 	// Internal
 	protected $forms = [];
@@ -28,17 +23,12 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
-		isset( $args['message'] ) ? $this->message       = $args['message'] : $this->message = __( 'So far, we have {total}. We still need {total_remaining} to reach our goal of {total_goal}!', 'give' );
 		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '1000';
 		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
-		isset( $args['showGoal'] ) ? $this->showGoal     = $args['showGoal'] : $this->showGoal = true;
-		isset( $args['linkUrl'] ) ? $this->linkUrl       = $args['linkUrl'] : $this->linkUrl = '';
-		isset( $args['linkText'] ) ? $this->linkText     = $args['linkText'] : $this->linkText = __( 'Donate Now', 'give' );
-		isset( $args['linkTarget'] ) ? $this->linkTarget = $args['linkTarget'] : $this->linkTarget = '_self';
 	}
 
 	/**
@@ -159,46 +149,6 @@ class Model {
 	}
 
 	/**
-	 * Get call to action url for Totals
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getLinkUrl() {
-		return $this->linkUrl;
-	}
-
-	/**
-	 * Get call to action url for Totals
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getLinkTarget() {
-		return $this->linkTarget;
-	}
-
-	/**
-	 * Get call to action text for Totals
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getLinkText() {
-		return $this->linkText;
-	}
-
-	/**
-	 * Get message for Totals
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getMessage() {
-		return $this->formatMessage( $this->message );
-	}
-
-	/**
 	 * Get formatted total remaining (ex: $75)
 	 *
 	 * @since 2.9.0
@@ -229,27 +179,6 @@ class Model {
 	}
 
 	/**
-	 * Format message containing special {} tags (ex: {total})
-	 *
-	 * @since 2.9.0
-	 */
-	protected function formatMessage( $message ) {
-		$codes = [
-			[ 'total', $this->getFormattedTotal() ],
-			[ 'total_goal', $this->getFormattedGoal() ],
-			[ 'total_remaining', $this->getFormattedTotalRemaining() ],
-		];
-		foreach ( $codes as $code ) {
-			$message = str_replace(
-				"{{$code[0]}}",
-				$code[1],
-				esc_html( $message )
-			);
-		}
-		return $message;
-	}
-
-	/**
 	 * Get goal for Totals
 	 *
 	 * @return string
@@ -257,16 +186,6 @@ class Model {
 	 **/
 	protected function getGoal() {
 		return $this->goal;
-	}
-
-	/**
-	 * Get show goal for Totals
-	 *
-	 * @return string
-	 * @since 2.9.0
-	 **/
-	protected function getShowGoal() {
-		return $this->showGoal;
 	}
 
 	/**
@@ -283,7 +202,7 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/Totals/resources/views/totals.php';
+		return GIVE_PLUGIN_DIR . '/src/MultiFormGoals/resources/views/progressbar.php';
 	}
 
 	protected function getFormattedTotal() {

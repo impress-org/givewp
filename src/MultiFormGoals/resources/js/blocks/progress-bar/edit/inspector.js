@@ -3,15 +3,14 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, TextareaControl, ToggleControl } = wp.components;
-const { useState } = wp.element;
+const { PanelBody, TextControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
  */
 
-import MultiSelectControl from '../components/multi-select-control';
-import ColorControl from '../components/color-control';
+import MultiSelectControl from '../../../components/multi-select-control';
+import ColorControl from '../../../components/color-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
 /**
@@ -19,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { message, ids, categories, tags, metric, goal, color, showGoal, linkText, linkUrl, linkTarget } = attributes;
+	const { ids, categories, tags, metric, goal, color } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -27,15 +26,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
-	};
-	const [ openInNewTab, setOpenInNewTab ] = useState( linkTarget === '_self' ? false : true );
-	const toggleLinkTarget = ( value ) => {
-		setOpenInNewTab( value );
-		if ( value === true ) {
-			saveSetting( 'linkTarget', '_blank' );
-		} else {
-			saveSetting( 'linkTarget', '_self' );
-		}
 	};
 	return (
 		<InspectorControls key="inspector">
@@ -57,20 +47,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					] }
 					onChange={ ( value ) => saveSetting( 'metric', value ) }
 				/>
-				<ToggleControl
-					name="showGoal"
-					label={ __( 'Show progress bar', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'showGoal', value ) }
-					checked={ showGoal }
+				<ColorControl
+					name="color"
+					label={ __( 'Progress Bar Color', 'give' ) }
+					onChange={ ( value ) => saveSetting( 'color', value ) }
+					value={ color }
 				/>
-				{ showGoal && (
-					<ColorControl
-						name="color"
-						label={ __( 'Progress Bar Color', 'give' ) }
-						onChange={ ( value ) => saveSetting( 'color', value ) }
-						value={ color }
-					/>
-				) }
 			</PanelBody>
 			<PanelBody title={ __( 'Filters', 'give' ) } initialOpen={ false }>
 				<MultiSelectControl
@@ -91,33 +73,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ categoryOptions.filter( option => categories.includes( option.value ) ) }
 					options={ categoryOptions }
 					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
-			</PanelBody>
-			<PanelBody title={ __( 'Content', 'give' ) } initialOpen={ false }>
-				<TextareaControl
-					name="message"
-					label={ __( 'Message', 'give' ) }
-					value={ message }
-					onChange={ ( value ) => saveSetting( 'message', value ) }
-				/>
-				<TextControl
-					name="linkText"
-					label={ __( 'Link Text', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'linkText', value ) }
-					value={ linkText }
-				/>
-				<TextControl
-					name="linkUrl"
-					type="url"
-					label={ __( 'Link URL', 'give' ) }
-					onChange={ ( value ) => saveSetting( 'linkUrl', value ) }
-					value={ linkUrl }
-				/>
-				<ToggleControl
-					name="linkTarget"
-					label={ __( 'Open link in a new tab?', 'give' ) }
-					onChange={ ( value ) => toggleLinkTarget( value ) }
-					checked={ openInNewTab }
-				/>
 			</PanelBody>
 		</InspectorControls>
 	);

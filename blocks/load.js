@@ -6,5 +6,5 @@ import './donor-wall/index';
 import '../src/Totals/resources/js/index';
 
 // Import multi-form goals block from multi-form goals src
-import '../src/MultiFormGoals/resources/js/index';
+import '../src/MultiFormGoals/resources/js/blocks/multi-form-goal/index';
 import '../src/MultiFormGoals/resources/js/blocks/progress-bar/index';

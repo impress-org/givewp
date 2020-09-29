@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\MultiFormGoals;
+namespace Give\MultiFormGoals\ProgressBar;
 
-use Give\MultiFormGoals\Model as MultiFormGoalsModel;
+use Give\MultiFormGoals\ProgressBar\Model as ProgressBar;
 
 class Block {
 
@@ -13,14 +13,10 @@ class Block {
 	 **/
 	public function addBlock() {
 		register_block_type(
-			'give/multi-form-goals',
+			'give/progress-bar',
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
-					'message'    => [
-						'type'    => 'string',
-						'default' => __( 'So far, we have {total}. We still need {total_remaining} to reach our goal of {total_goal}!', 'give' ),
-					],
 					'ids'        => [
 						'type'    => 'array',
 						'default' => [],
@@ -45,22 +41,6 @@ class Block {
 						'type'    => 'string',
 						'default' => '#28c77b',
 					],
-					'showGoal'   => [
-						'type'    => 'boolean',
-						'default' => true,
-					],
-					'linkText'   => [
-						'type'    => 'string',
-						'default' => __( 'Donate Now', 'give' ),
-					],
-					'linkUrl'    => [
-						'type'    => 'string',
-						'default' => '',
-					],
-					'linkTarget' => [
-						'type'    => 'string',
-						'default' => '_self',
-					],
 				],
 
 			]
@@ -68,26 +48,21 @@ class Block {
 	}
 
 	/**
-	 * Returns Multi-Form Goals block markup
+	 * Returns Progress Bar block markup
 	 *
 	 * @since 2.9.0
 	 **/
 	public function renderCallback( $attributes ) {
-		$totals = new MultiFormGoalsModel(
+		$progressBar = new ProgressBar(
 			[
-				'message'    => $attributes['message'],
 				'ids'        => $attributes['ids'],
 				'tags'       => $attributes['tags'],
 				'categories' => $attributes['categories'],
 				'metric'     => $attributes['metric'],
 				'goal'       => $attributes['goal'],
 				'color'      => $attributes['color'],
-				'showGoal'   => $attributes['showGoal'],
-				'linkText'   => $attributes['linkText'],
-				'linkUrl'    => $attributes['linkUrl'],
-				'linkTarget' => $attributes['linkTarget'],
 			]
 		);
-		return $totals->getOutput();
+		return $progressBar->getOutput();
 	}
 }

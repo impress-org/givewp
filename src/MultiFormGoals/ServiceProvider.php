@@ -4,7 +4,8 @@ namespace Give\MultiFormGoals;
 
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Helpers\Hooks;
-use Give\MultiFormGoals\Block as MultiFormGoalsBlock;
+use Give\MultiFormGoals\MultiFormGoal\Block as MultiFormGoalBlock;
+use Give\MultiFormGoals\ProgressBar\Block as ProgressBarBlock;
 
 class ServiceProvider implements ServiceProviderInterface {
 
@@ -12,13 +13,15 @@ class ServiceProvider implements ServiceProviderInterface {
 	 * @inheritDoc
 	 */
 	public function register() {
-		give()->singleton( MultiFormGoalsBlock::class );
+		give()->singleton( MultiFormGoalBlock::class );
+		give()->singleton( ProgressBarBlock::class );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function boot() {
-		Hooks::addAction( 'init', MultiFormGoalsBlock::class, 'addBlock' );
+		Hooks::addAction( 'init', MultiFormGoalBlock::class, 'addBlock' );
+		Hooks::addAction( 'init', ProgressBarBlock::class, 'addBlock' );
 	}
 }

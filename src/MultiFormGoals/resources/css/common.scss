@@ -1,20 +1,17 @@
 // This file used for Total styles common to the frontend and editor
 
-.give-multi-form-goals {
+.give-multi-form-goal-block {
 	background: #fff;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.305862);
 	border-radius: 8px;
 	overflow: hidden;
 }
-.give-multi-form-goals__message {
-	margin: 1rem 0;
-}
 
-.give-multi-form-goals__goal {
+.give-progress-bar-block__goal {
 	height: auto;
 }
 
-.give-multi-form-goals__progress {
+.give-progress-bar-block__progress {
 	height: 20px;
 	display: flex;
 	align-items: center;
@@ -24,7 +21,7 @@
 	background: #f1f1f1;
 	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
 
-	.give-multi-form-goals__progress-bar {
+	.give-progress-bar-block__progress-bar {
 		position: absolute;
 		height: 100%;
 		left: 0;
@@ -36,11 +33,7 @@
 	}
 }
 
-.give-multi-form-goals__progress-text {
-	line-height: 1;
-	position: relative;
-	display: block;
-	opacity: 0.8;
-	font-weight: 500;
-	margin: 1rem 0 0.5rem 0;
+.give-progress-bar-block__stats {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
 }
