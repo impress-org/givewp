@@ -15,7 +15,9 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
-	 * Add recurring field tracker.
+	 * This function setup a tracker to listen change on recurring hidden field.
+	 *
+	 * When changes occur then smart button will be re render to support onetime or subscription payment.
 	 *
 	 * @since 2.9.0
 	 */
