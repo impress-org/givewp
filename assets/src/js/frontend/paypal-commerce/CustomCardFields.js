@@ -9,7 +9,7 @@ class CustomCardFields extends PaymentMethod {
 	constructor( form ) {
 		super( form );
 
-		this.setUpProperties();
+		this.setupProperties();
 	}
 
 	/**
@@ -17,7 +17,7 @@ class CustomCardFields extends PaymentMethod {
 	 *
 	 * @since 2.9.0
 	 */
-	setUpProperties() {
+	setupProperties() {
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 	}
@@ -37,8 +37,8 @@ class CustomCardFields extends PaymentMethod {
 	 * @inheritDoc
 	 */
 	onGatewayLoadBoot( evt, self ) {
-		if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-			self.setUpProperties();
+		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
+			self.setupProperties();
 			self.registerEvents();
 		}
 
@@ -124,14 +124,14 @@ class CustomCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	removeFieldsOnGatewayLoad() {
-		const self = this;
-
-		document.addEventListener( 'give_gateway_loaded', evt => {
+		const handler = evt => {
 			if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-				self.setUpProperties();
-				self.removeFields.bind( self ).call();
+				this.setupProperties();
+				this.removeFields.bind( this ).call();
 			}
-		} );
+		};
+
+		document.addEventListener( 'give_gateway_loaded', evt => handler( evt ) );
 	}
 
 	/**
@@ -148,18 +148,6 @@ class CustomCardFields extends PaymentMethod {
 		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ window.givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
 
 		return div;
-	}
-
-	/**
-	 * Return wther or not process donation form same donation form.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {string} formId Donation form id attribute value.
-	 * @return {boolean|boolean} Retrun true if processing same form otherwise false.
-	 */
-	isProcessingEventForForm( formId ) {
-		return formId === this.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( this.jQueryForm );
 	}
 }
 

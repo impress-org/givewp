@@ -16,6 +16,13 @@ class PaymentMethod {
 	}
 
 	/**
+	 * Setup properties.
+	 *
+	 * @since 2.9.0
+	 */
+	setupProperties() {}
+
+	/**
 	 * Render PayPal smart buttons.
 	 *
 	 * @since 2.9.0
@@ -76,6 +83,18 @@ class PaymentMethod {
 
 		const errorDetail = error.details[ 0 ];
 		DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+	}
+
+	/**
+	 * Return whether or not process donation form same donation form.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {string} formId Donation form id attribute value.
+	 * @return {boolean|boolean} Return true if processing same form otherwise false.
+	 */
+	isProcessingEventForForm( formId ) {
+		return formId === this.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( this.jQueryForm );
 	}
 }
 

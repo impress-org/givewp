@@ -29,8 +29,8 @@ class SmartButtons extends PaymentMethod {
 	 * @inheritDoc
 	 */
 	onGatewayLoadBoot( evt, self ) {
-		if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-			self.setUpProperties();
+		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
+			self.setupProperties();
 		}
 
 		super.onGatewayLoadBoot( evt, self );
