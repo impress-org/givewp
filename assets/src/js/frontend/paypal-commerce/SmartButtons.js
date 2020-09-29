@@ -15,6 +15,22 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
+	 * Add recurring field tracker.
+	 *
+	 * @since 2.9.0
+	 */
+	registerEvents() {
+		if ( this.recurringChoiceHiddenField ) {
+			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, () => {
+				if ( this.smartButton ) {
+					this.smartButton.close();
+				}
+				this.renderPaymentMethodOption();
+			} );
+		}
+	}
+
+	/**
 	 * Setup properties.
 	 *
 	 * @since 2.9.0
@@ -31,6 +47,7 @@ class SmartButtons extends PaymentMethod {
 	onGatewayLoadBoot( evt, self ) {
 		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
 			self.setupProperties();
+			self.registerEvents();
 		}
 
 		super.onGatewayLoadBoot( evt, self );
@@ -45,9 +62,10 @@ class SmartButtons extends PaymentMethod {
 	 */
 	getButtonContainer() {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
+		const oldSmartButtonWrap = this.ccFieldsContainer.querySelector( '#give-paypal-commerce-smart-buttons-wrap' );
 
-		if ( this.smartButton ) {
-			this.smartButton.close();
+		if ( oldSmartButtonWrap ) {
+			return oldSmartButtonWrap;
 		}
 
 		const smartButtonWrap = document.createElement( 'div' );
@@ -101,12 +119,6 @@ class SmartButtons extends PaymentMethod {
 		this.smartButton.render( this.smartButtonContainer );
 
 		DonationForm.toggleDonateNowButton( this.form );
-
-		if ( this.recurringChoiceHiddenField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, () => {
-				this.renderPaymentMethodOption();
-			} );
-		}
 	}
 
 	/**

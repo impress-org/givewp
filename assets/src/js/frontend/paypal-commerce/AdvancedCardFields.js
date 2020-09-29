@@ -49,6 +49,20 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
+	 * Add recurring field tracker.
+	 *
+	 * @since 2.9.0
+	 */
+	registerEvents() {
+		if ( this.customCardFields.recurringChoiceHiddenField ) {
+			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, this.toggleFields.bind( this ) );
+			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
+				DonationForm.toggleDonateNowButton( this.form );
+			} );
+		}
+	}
+
+	/**
 	 * Return whether or not render credit card fields.
 	 *
 	 * @since 2.9.0
@@ -76,13 +90,6 @@ class AdvancedCardFields extends PaymentMethod {
 
 		this.addEventToHostedFields( hostedCardFields );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
-
-		if ( this.customCardFields.recurringChoiceHiddenField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, this.toggleFields.bind( this ) );
-			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
-				DonationForm.toggleDonateNowButton( this.form );
-			} );
-		}
 	}
 
 	/**
