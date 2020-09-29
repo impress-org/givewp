@@ -57,14 +57,14 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct(
-			array(
+			[
 				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
 				'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
 				'ajax'     => false,                        // Does this table support ajax?
-			)
+			]
 		);
 
-		add_action( 'give_report_view_actions', array( $this, 'category_filter' ) );
+		add_action( 'give_report_view_actions', [ $this, 'category_filter' ] );
 		$this->query();
 
 	}
@@ -97,11 +97,11 @@ class Give_Form_Reports_Table extends WP_List_Table {
 					$item['sales']
 				);
 			case 'earnings':
-				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
+				return give_currency_filter( give_format_amount( $item[ $column_name ], [ 'sanitize' => false ] ) );
 			case 'average_sales':
 				return round( $item[ $column_name ] );
 			case 'average_earnings':
-				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
+				return give_currency_filter( give_format_amount( $item[ $column_name ], [ 'sanitize' => false ] ) );
 			case 'details':
 				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:
@@ -118,14 +118,14 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
-		$columns = array(
+		$columns = [
 			'title'            => esc_html__( 'Form', 'give' ),
 			'sales'            => esc_html__( 'Donations', 'give' ),
-			'earnings'         => esc_html__( 'Income', 'give' ),
+			'earnings'         => esc_html__( 'Revenue', 'give' ),
 			'average_sales'    => esc_html__( 'Monthly Average Donations', 'give' ),
-			'average_earnings' => esc_html__( 'Monthly Average Income', 'give' ),
+			'average_earnings' => esc_html__( 'Monthly Average Revenue', 'give' ),
 			'details'          => esc_html__( 'Detailed Report', 'give' ),
-		);
+		];
 
 		return $columns;
 	}
@@ -139,11 +139,11 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return array Array of all the sortable columns
 	 */
 	public function get_sortable_columns() {
-		return array(
-			'title'    => array( 'title', true ),
-			'sales'    => array( 'sales', false ),
-			'earnings' => array( 'earnings', false ),
-		);
+		return [
+			'title'    => [ 'title', true ],
+			'sales'    => [ 'sales', false ],
+			'earnings' => [ 'earnings', false ],
+		];
 	}
 
 	/**
@@ -250,7 +250,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		$order    = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
 		$category = $this->get_category();
 
-		$args = array(
+		$args = [
 			'post_type'        => 'give_forms',
 			'post_status'      => 'publish',
 			'order'            => $order,
@@ -258,15 +258,15 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			'posts_per_page'   => $this->per_page,
 			'paged'            => $this->get_paged(),
 			'suppress_filters' => true,
-		);
+		];
 
 		if ( ! empty( $category ) ) {
-			$args['tax_query'] = array(
-				array(
+			$args['tax_query'] = [
+				[
 					'taxonomy' => 'form_category',
 					'terms'    => $category,
-				),
-			);
+				],
+			];
 		}
 
 		switch ( $orderby ) :
@@ -303,20 +303,20 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return array $reports_data All the data for donor reports
 	 */
 	public function reports_data() {
-		$reports_data = array();
+		$reports_data = [];
 
 		$give_forms = $this->donation_forms->posts;
 
 		if ( $give_forms ) {
 			foreach ( $give_forms as $form ) {
-				$reports_data[] = array(
+				$reports_data[] = [
 					'ID'               => $form,
 					'title'            => get_the_title( $form ),
 					'sales'            => give_get_form_sales_stats( $form ),
 					'earnings'         => give_get_form_earnings_stats( $form ),
 					'average_sales'    => give_get_average_monthly_form_sales( $form ),
 					'average_earnings' => give_get_average_monthly_form_earnings( $form ),
-				);
+				];
 			}
 		}
 
@@ -338,18 +338,18 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 */
 	public function prepare_items() {
 		$columns               = $this->get_columns();
-		$hidden                = array(); // No hidden columns
+		$hidden                = []; // No hidden columns
 		$sortable              = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = [ $columns, $hidden, $sortable ];
 		$this->items           = $this->reports_data();
 		$total_items           = $this->count;
 
 		$this->set_pagination_args(
-			array(
+			[
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
 				'total_pages' => ceil( $total_items / $this->per_page ),
-			)
+			]
 		);
 	}
 }

@@ -35,11 +35,11 @@ if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'earnings';
-			$this->label = esc_html__( 'Income', 'give' );
+			$this->label = esc_html__( 'Revenue', 'give' );
 
 			parent::__construct();
 
-			add_action( 'give_admin_field_report_earnings', array( $this, 'render_report_earnings_field' ), 10, 2 );
+			add_action( 'give_admin_field_report_earnings', [ $this, 'render_report_earnings_field' ], 10, 2 );
 
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
@@ -65,23 +65,23 @@ if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 			 */
 			$settings = apply_filters(
 				'give_get_settings_' . $this->id,
-				array(
-					array(
+				[
+					[
 						'id'         => 'give_tools_earnings',
 						'type'       => 'title',
 						'table_html' => false,
-					),
-					array(
+					],
+					[
 						'id'   => 'earnings',
-						'name' => esc_html__( 'Income', 'give' ),
+						'name' => esc_html__( 'Revenue', 'give' ),
 						'type' => 'report_earnings',
-					),
-					array(
+					],
+					[
 						'id'         => 'give_tools_earnings',
 						'type'       => 'sectionend',
 						'table_html' => false,
-					),
-				)
+					],
+				]
 			);
 
 			// Output.

@@ -41,7 +41,7 @@ const Widget = () => {
 				</Card>
 				<Card width={ 6 }>
 					<RESTMiniChart
-						title={ __( 'Total Income', 'give' ) }
+						title={ __( 'Total Revenue', 'give' ) }
 						endpoint="total-income"
 					/>
 				</Card>
