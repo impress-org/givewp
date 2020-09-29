@@ -18,9 +18,9 @@ class Model {
 	protected $forms = [];
 
 	/**
-	 * Constructs and sets up setting variables for a new Totals model
+	 * Constructs and sets up setting variables for a new Progress Bar model
 	 *
-	 * @param array $args Arguments for new Totals, including 'ids'
+	 * @param array $args Arguments for new Progress Bar, including 'ids'
 	 * @since 2.9.0
 	 **/
 	public function __construct( array $args ) {
@@ -34,7 +34,7 @@ class Model {
 	}
 
 	/**
-	 * Get forms associated with Totals
+	 * Get forms associated with Progress Bar
 	 *
 	 * @return array
 	 * @since 2.9.0
@@ -94,7 +94,7 @@ class Model {
 	}
 
 	/**
-	 * Get output markup for Totals
+	 * Get output markup for Progress Bar
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -109,7 +109,7 @@ class Model {
 	}
 
 	/**
-	 * Get raw earnings value for Totals
+	 * Get raw earnings value for Progress Bar
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -124,7 +124,7 @@ class Model {
 	}
 
 	/**
-	 * Get number of donors for Totals
+	 * Get number of donors for Progress Bar
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -140,7 +140,7 @@ class Model {
 	}
 
 	/**
-	 * Get number of donations for Totals
+	 * Get number of donations for Progress Bar
 	 *
 	 * @return int
 	 * @since 2.9.0
@@ -181,7 +181,7 @@ class Model {
 	}
 
 	/**
-	 * Get goal for Totals
+	 * Get goal for Progress Bar
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -191,7 +191,7 @@ class Model {
 	}
 
 	/**
-	 * Get goal color for Totals
+	 * Get goal color for Progress Bar
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -200,7 +200,7 @@ class Model {
 		return $this->color;
 	}
 	/**
-	 * Get template path for Totals component template
+	 * Get template path for Progress Bar component template
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {

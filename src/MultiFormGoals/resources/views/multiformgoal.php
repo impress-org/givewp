@@ -11,7 +11,20 @@
 	if ( ! empty( $this->innerBlocks ) ) {
 		echo $this->innerBlocks;
 	} else {
-		echo $this->getProgressBarOutput();
-	}
-	?>
+		?>
+		<div class="give-multi-form-goal-block__content">
+			<div class="give-multi-form-goal-block__image">
+				<img src="<?php echo $this->getImageSrc(); ?>" />
+			</div>
+			<div class="give-multi-form-goal-block__text">
+				<div class="give-multi-form-goal-block__heading">
+					<?php echo $this->getHeading(); ?>
+				</div>
+				<div class="give-multi-form-goal-block__summary">
+					<?php echo $this->getSummary(); ?>
+				</div>
+			</div>
+		</div>
+		<?php echo $this->getProgressBarOutput(); ?>
+	<?php } ?>
 </div>

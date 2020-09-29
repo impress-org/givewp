@@ -13,6 +13,9 @@ class Model {
 	protected $metric;
 	protected $goal;
 	protected $color;
+	protected $heading;
+	protected $summary;
+	protected $img;
 
 	// Settings for block context
 	protected $innerBlocks;
@@ -30,11 +33,14 @@ class Model {
 		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '1000';
 		isset( $args['color'] ) ? $this->color             = $args['color'] : $this->color = '#28c77b';
+		isset( $args['heading'] ) ? $this->heading         = $args['heading'] : $this->heading = 'Example Heading';
+		isset( $args['summary'] ) ? $this->summary         = $args['summary'] : $this->color = 'This is a summary.';
+		isset( $args['img'] ) ? $this->img                 = $args['img'] : $this->color = 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
 		isset( $args['innerBlocks'] ) ? $this->innerBlocks = $args['innerBlocks'] : $this->innerBlocks = false;
 	}
 
 	/**
-	 * Get output markup for Totals
+	 * Get output markup for Multi-Form Goal
 	 *
 	 * @return string
 	 * @since 2.9.0
@@ -46,6 +52,36 @@ class Model {
 		$output = ob_get_contents();
 		ob_end_clean();
 		return $output;
+	}
+
+	/**
+	 * Get image source for MultiFormGoal
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	public function getImageSrc() {
+		return $this->img;
+	}
+
+	/**
+	 * Get heading for MultiFormGoal
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	public function getHeading() {
+		return $this->heading;
+	}
+
+	/**
+	 * Get summary for MultiFormGoal
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	public function getSummary() {
+		return $this->summary;
 	}
 
 	/**
@@ -69,7 +105,7 @@ class Model {
 	}
 
 	/**
-	 * Get template path for Totals component template
+	 * Get template path for Multi-Form Goal component template
 	 * @since 2.9.0
 	 **/
 	public function getTemplatePath() {

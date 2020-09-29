@@ -7,6 +7,11 @@
 	overflow: hidden;
 }
 
+.give-multi-form-goal-block__content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
 .give-progress-bar-block__goal {
 	height: auto;
 }
