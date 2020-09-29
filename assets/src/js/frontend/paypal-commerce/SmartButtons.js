@@ -22,7 +22,7 @@ class SmartButtons extends PaymentMethod {
 	registerEvents() {
 		if ( this.recurringChoiceHiddenField ) {
 			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, () => {
-				this.renderPaymentMethodOption();
+				this.onChangeRecurringDonationStatus();
 			} );
 		}
 	}
@@ -76,6 +76,7 @@ class SmartButtons extends PaymentMethod {
 	 * Render smart buttons.
 	 *
 	 * @since 2.9.0
+	 * @return {object} Return Promise
 	 */
 	renderPaymentMethodOption() {
 		this.smartButtonContainer = this.getButtonContainer();
@@ -111,10 +112,29 @@ class SmartButtons extends PaymentMethod {
 			delete options.createOrder;
 		}
 
-		this.smartButton = paypal.Buttons( options );
-		this.smartButton.render( this.smartButtonContainer );
-
 		DonationForm.toggleDonateNowButton( this.form );
+
+		this.smartButton = paypal.Buttons( options );
+
+		return this.smartButton.render( this.smartButtonContainer );
+	}
+
+	/**
+	 * Render payment method when recurring option changes.
+	 *
+	 * This method locks recurring option till render payment method render.
+	 * Disabled recurring option prevent quick changes to option value which prevent javascript error because smart button take time to setup after changes in recurring option value.
+	 *
+	 * @since 2.9.0
+	 */
+	onChangeRecurringDonationStatus() {
+		const field = this.form.querySelector( 'input[name="give-recurring-period"]' );
+
+		field && ( field.disabled = true ); // eslint-disable-line
+
+		this.renderPaymentMethodOption().then( () => {
+			field && ( field.disabled = false ); // eslint-disable-line
+		} );
 	}
 
 	/**
