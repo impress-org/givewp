@@ -106,7 +106,7 @@ export class ServerSideRenderX extends Component {
 		const prevResponse = this.state.prevResponse;
 		let prevResponseHTML = '';
 		if ( prevResponse !== null ) {
-			prevResponseHTML = `<div style="position:relative;">${ prevResponse }</div>`;
+			prevResponseHTML = `<div style="position:relative;"><div style="position:absolute;right: 50%;top: calc(50% - 22px); z-index: 1"><span class="components-spinner"></span></div>${ prevResponse }</div>`;
 		}
 
 		const {
