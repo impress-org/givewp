@@ -42,6 +42,11 @@ export default registerBlockType( 'give/multi-form-goal', {
 		__( 'donation', 'give' ),
 		__( 'multi form goals', 'give' ),
 	],
+	supports: {
+		align: [
+			'wide',
+		],
+	},
 	edit: () => {
 		return (
 			<div className="give-multi-form-goal-block">
