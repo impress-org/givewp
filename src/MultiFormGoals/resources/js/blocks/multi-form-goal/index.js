@@ -20,9 +20,15 @@ import '../../../css/editor.scss';
  * Register Block
  */
 const blockTemplate = [
-	[ 'core/media-text', {}, [
-		[ 'core/heading', { placeholder: __( 'Heading', 'give' ) } ],
-		[ 'core/paragraph', { placeholder: __( 'Summary', 'give' ) } ],
+	[ 'core/media-text', {
+		imageFill: true,
+	}, [
+		[ 'core/heading', {
+			placeholder: __( 'Heading', 'give' ),
+		} ],
+		[ 'core/paragraph', {
+			placeholder: __( 'Summary', 'give' ),
+		} ],
 	] ],
 	[ 'give/progress-bar', {} ],
 ];
