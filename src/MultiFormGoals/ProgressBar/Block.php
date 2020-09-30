@@ -60,4 +60,15 @@ class Block {
 		);
 		return $progressBar->getOutput();
 	}
+
+	public function localizeAssets() {
+		$editorColorPalette = get_theme_support( 'editor-color-palette' ); // Return value is in a nested array.
+		wp_localize_script(
+			'give-blocks-js',
+			'giveProgressBarThemeSupport',
+			[
+				'editorColorPalette' => array_shift( $editorColorPalette ),
+			]
+		);
+	}
 }

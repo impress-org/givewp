@@ -8,19 +8,10 @@ import PropTypes from 'prop-types';
  */
 const { useInstanceId } = wp.compose;
 const { BaseControl, ColorPalette } = wp.components;
-const { __ } = wp.i18n;
 
-const ColorControl = ( { name, label, help, className, value, hideLabelFromVision, onChange } ) => {
+const ColorControl = ( { name, label, help, className, value, hideLabelFromVision, onChange, colors } ) => {
 	const instanceId = useInstanceId( ColorControl );
 	const id = `give-color-control-${ name }-${ instanceId }`;
-	const colors = [
-		{ name: __( 'Red', 'give' ), color: '#dd3333' },
-		{ name: __( 'Orange', 'give' ), color: '#dd9933' },
-		{ name: __( 'Green', 'give' ), color: '#28C77B' },
-		{ name: __( 'Blue', 'give' ), color: '#1e73be' },
-		{ name: __( 'Purple', 'give' ), color: '#8224e3' },
-		{ name: __( 'Grey', 'give' ), color: '#777777' },
-	];
 	return (
 		<BaseControl
 			label={ label }
@@ -33,7 +24,7 @@ const ColorControl = ( { name, label, help, className, value, hideLabelFromVisio
 				value={ value }
 				colors={ colors }
 				onChange={ ( newValue ) => onChange( newValue ) }
-				clearable={ false }
+				clearable={ true }
 			/>
 		</BaseControl>
 	);

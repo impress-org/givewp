@@ -13,6 +13,9 @@ import MultiSelectControl from '../../../components/multi-select-control';
 import ColorControl from '../../../components/color-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
+/* eslint-disable-next-line no-undef */
+const editorColorPalette = giveProgressBarThemeSupport.editorColorPalette;
+
 /**
  * Render Inspector Controls
 */
@@ -38,6 +41,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ goal }
 				/>
 				<ColorControl
+					colors={ editorColorPalette }
 					name="color"
 					label={ __( 'Progress Bar Color', 'give' ) }
 					onChange={ ( value ) => saveSetting( 'color', value ) }

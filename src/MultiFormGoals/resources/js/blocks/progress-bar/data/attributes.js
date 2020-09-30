@@ -21,7 +21,7 @@ const blockAttributes = {
 	},
 	color: {
 		type: 'string',
-		default: '#',
+		default: '#66bb6a',
 	},
 };
 

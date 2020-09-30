@@ -26,5 +26,6 @@ class ServiceProvider implements ServiceProviderInterface {
 		Hooks::addAction( 'init', MultiFormGoalShortcode::class, 'addShortcode' );
 		Hooks::addAction( 'init', MultiFormGoalBlock::class, 'addBlock' );
 		Hooks::addAction( 'init', ProgressBarBlock::class, 'addBlock' );
+		Hooks::addAction( 'enqueue_block_editor_assets', ProgressBarBlock::class, 'localizeAssets' );
 	}
 }
