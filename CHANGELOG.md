@@ -25,6 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Migrations framework for database migrations
 -   Multi-Form Goal block and shortcode are now available (#5307)
 
+### Changed
+
+-   Multi-Form Goal Block now defaults to image filling the height (#5314)
+
+
 ## [2.8.0] - 2020-08-31
 
 ## [2.8.0-rc.1] - 2020-08-31
