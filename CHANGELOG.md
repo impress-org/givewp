@@ -24,7 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
 -   Multi-Form Goal block and shortcode are now available (#5307)
--   Multi-Form Goal block now supports "wide" and "full" alignment (#)
+-   Multi-Form Goal block now supports "wide" and "full" alignment (#5315)
+
+### Changed
+
+-   Multi-Form Goal wrapper only added for non-block output (#5315)
+
 
 ## [2.8.0] - 2020-08-31
 
