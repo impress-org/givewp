@@ -1,13 +1,17 @@
 /**
  * WordPress dependencies
  */
-const ServerSideRender = wp.serverSideRender;
 const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
+
+/**
+ * Vendor dependencies
+ */
+import ServerSideRender from '../../../components/server-side-render-x';
 
 /**
  * Render Block UI For Editor
