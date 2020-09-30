@@ -26,9 +26,5 @@
 			<div><?php echo $this->getFormattedGoal(); ?></div>
 			<div><?php echo __( 'goal', 'give' ); ?></div>
 		</div>
-		<div class="give-progress-bar-block__stat">
-			<div><?php echo $this->getDaysToGo(); ?></div>
-			<div><?php echo _n( 'day to go', 'days to go', $this->getDaysToGo(), 'give' ); ?></div>
-		</div>
 	</div>
 </div>
