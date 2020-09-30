@@ -2,11 +2,8 @@
  * NOTE: This is a fork of the original ServerSideRenderX component.
  * You can find more about that project here: https://github.com/dgwyer/server-side-render-x
  *
- * Specifically, for GiveWP we have opted to remove the spinner/loading state that ServerSideRenderX uses entirely.
- * That change can be found in line 106, where the prevResponseHTML is now only storing the block markup, and
- * does not include a spinner/loading state.
- *
- * Additionally, some minor clean up was done to remove references to variables which were never actually used.
+ * Changes:
+ * - some minor clean up was done to remove references to variables which were never actually used.
  */
 
 /**
