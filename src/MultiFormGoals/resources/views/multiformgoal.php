@@ -6,12 +6,13 @@
  */
 ?>
 
-<div class="give-multi-form-goal-block">
-	<?php
-	if ( ! empty( $this->innerBlocks ) ) {
-		echo $this->innerBlocks;
-	} else {
-		?>
+
+<?php
+if ( ! empty( $this->innerBlocks ) ) {
+	echo $this->innerBlocks;
+} else {
+	?>
+	<div class="give-multi-form-goal-block">
 		<div class="give-multi-form-goal-block__content">
 			<div class="give-multi-form-goal-block__image">
 				<img src="<?php echo $this->getImageSrc(); ?>" />
@@ -26,5 +27,5 @@
 			</div>
 		</div>
 		<?php echo $this->getProgressBarOutput(); ?>
-	<?php } ?>
-</div>
+	</div>
+<?php } ?>
