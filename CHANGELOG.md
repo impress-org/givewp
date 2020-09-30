@@ -25,6 +25,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Migrations framework for database migrations
 -   Multi-Form Goal block and shortcode are now available (#5307)
 -   Progress Bar block now features improved SSR previews (#5316)
+-   Multi-Form Goal block now supports "wide" alignment (#5315)
+
+### Changed
+
+-   Multi-Form Goal wrapper only added for non-block output (#5315)
+
+
+### Changed
+
+-   Multi-Form Goal Block now defaults to image filling the height (#5314)
 
 ## [2.8.0] - 2020-08-31
 

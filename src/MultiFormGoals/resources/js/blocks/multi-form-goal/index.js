@@ -20,9 +20,15 @@ import '../../../css/editor.scss';
  * Register Block
  */
 const blockTemplate = [
-	[ 'core/media-text', {}, [
-		[ 'core/heading', { placeholder: __( 'Heading', 'give' ) } ],
-		[ 'core/paragraph', { placeholder: __( 'Summary', 'give' ) } ],
+	[ 'core/media-text', {
+		imageFill: true,
+	}, [
+		[ 'core/heading', {
+			placeholder: __( 'Heading', 'give' ),
+		} ],
+		[ 'core/paragraph', {
+			placeholder: __( 'Summary', 'give' ),
+		} ],
 	] ],
 	[ 'give/progress-bar', {} ],
 ];
@@ -36,6 +42,11 @@ export default registerBlockType( 'give/multi-form-goal', {
 		__( 'donation', 'give' ),
 		__( 'multi form goals', 'give' ),
 	],
+	supports: {
+		align: [
+			'wide',
+		],
+	},
 	edit: () => {
 		return (
 			<div className="give-multi-form-goal-block">
