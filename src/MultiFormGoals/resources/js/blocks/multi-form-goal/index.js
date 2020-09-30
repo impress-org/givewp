@@ -39,7 +39,6 @@ export default registerBlockType( 'give/multi-form-goal', {
 	supports: {
 		align: [
 			'wide',
-			'full',
 		],
 	},
 	edit: () => {
