@@ -29,16 +29,28 @@ class OnDonationHandler {
 		}
 
 		/* @var Revenue $revenue */
-		$revenue              = give( Revenue::class );
+		$revenue = give( Revenue::class );
+
+		$revenue->insert( $this->getData( $donationId ) );
+	}
+
+	/**
+	 * Get revenue data.
+	 *
+	 * @since 2.9.0
+	 * @param int $donationId
+	 *
+	 * @return array
+	 */
+	public function getData( $donationId ) {
+		/* @var Revenue $revenue */
 		$donationAmountInCent = give_donation_amount( $donationId ) * 100;
 		$formId               = give_get_payment_form_id( $donationId );
 
-		$revenueData = [
+		return [
 			'donation_id' => $donationId,
 			'form_id'     => $formId,
 			'amount'      => $donationAmountInCent,
 		];
-
-		$revenue->insert( $revenueData );
 	}
 }
