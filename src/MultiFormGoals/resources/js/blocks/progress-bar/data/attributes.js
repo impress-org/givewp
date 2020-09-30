@@ -15,17 +15,9 @@ const blockAttributes = {
 		type: 'array',
 		default: [],
 	},
-	metric: {
-		type: 'string',
-		default: 'revenue',
-	},
 	goal: {
 		type: 'string',
 		default: '1000',
-	},
-	deadline: {
-		type: 'string',
-		default: '',
 	},
 	color: {
 		type: 'string',

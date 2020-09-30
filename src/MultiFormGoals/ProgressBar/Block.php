@@ -29,17 +29,9 @@ class Block {
 						'type'    => 'array',
 						'default' => [],
 					],
-					'metric'     => [
-						'type'    => 'string',
-						'default' => 'revenue',
-					],
 					'goal'       => [
 						'type'    => 'string',
 						'default' => '1000',
-					],
-					'deadline'   => [
-						'type'    => 'string',
-						'default' => '',
 					],
 					'color'      => [
 						'type'    => 'string',
@@ -62,9 +54,7 @@ class Block {
 				'ids'        => $attributes['ids'],
 				'tags'       => $attributes['tags'],
 				'categories' => $attributes['categories'],
-				'metric'     => $attributes['metric'],
 				'goal'       => $attributes['goal'],
-				'deadline'   => $attributes['deadline'],
 				'color'      => $attributes['color'],
 			]
 		);

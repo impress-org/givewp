@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl } = wp.components;
+const { PanelBody, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { ids, categories, tags, metric, goal, deadline, color } = attributes;
+	const { ids, categories, tags, goal, color } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -36,23 +36,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
-				/>
-				<SelectControl
-					label={ __( 'Goal Format', 'give' ) }
-					value={ metric }
-					options={ [
-						{ label: __( 'Revenue', 'give' ), value: 'revenue' },
-						{ label: __( 'Number of Donors', 'give' ), value: 'donor-count' },
-						{ label: __( 'Number of Donations', 'give' ), value: 'donation-count' },
-					] }
-					onChange={ ( value ) => saveSetting( 'metric', value ) }
-				/>
-				<TextControl
-					name="deadline"
-					label={ __( 'Deadline', 'give' ) }
-					type="date"
-					value={ deadline }
-					onChange={ ( value ) => saveSetting( 'deadline', value ) }
 				/>
 				<ColorControl
 					name="color"
