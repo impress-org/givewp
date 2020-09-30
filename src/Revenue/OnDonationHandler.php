@@ -2,6 +2,7 @@
 namespace Give\Revenue;
 
 use Give\Revenue\Repositories\Revenue;
+use WP_Post;
 
 /**
  * Class OnDonationHandler
@@ -14,16 +15,23 @@ class OnDonationHandler {
 	/**
 	 * Handle new donation.
 	 *
+	 * @param  int  $donationId
+	 * @param  WP_Post  $donation
+	 * @param bool $isUpdated
+	 *
 	 * @since 2.9.0
 	 *
-	 * @param int $donationId
-	 * @param array $donationData
 	 */
-	public function handle( $donationId, $donationData ) {
+	public function handle( $donationId, $donation, $isUpdated ) {
+		// Exit if it is not a new donation.
+		if ( ! $isUpdated ) {
+			return;
+		}
+
 		/* @var Revenue $revenue */
 		$revenue              = give( Revenue::class );
-		$donationAmountInCent = give_maybe_sanitize_amount( $donationData['price'], [ 'currency' => $donationData['currency'] ] ) * 100;
-		$formId               = (int) $donationData['give_form_id'];
+		$donationAmountInCent = give_donation_amount( $donationId ) * 100;
+		$formId               = give_get_payment_form_id( $donationId );
 
 		$revenueData = [
 			'donation_id' => $donationId,
