@@ -41,7 +41,7 @@ class Revenue {
 	 *
 	 * @param array $array
 	 */
-	private function validateNewRevenueData( $array ) {
+	protected function validateNewRevenueData( $array ) {
 		$required = [ 'donation_id', 'form_id', 'amount' ];
 
 		$array = array_filter( $array ); // Remove empty values.
