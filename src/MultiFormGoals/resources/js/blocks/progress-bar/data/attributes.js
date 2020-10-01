@@ -19,6 +19,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '1000',
 	},
+	enddate: {
+		type: 'string',
+		default: '',
+	},
 	color: {
 		type: 'string',
 		default: '#66bb6a',

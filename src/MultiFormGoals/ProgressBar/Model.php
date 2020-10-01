@@ -10,6 +10,7 @@ class Model {
 	protected $tags;
 	protected $categories;
 	protected $goal;
+	protected $enddate;
 	protected $color;
 
 	// Internal
@@ -26,6 +27,7 @@ class Model {
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '1000';
+		isset( $args['enddate'] ) ? $this->enddate       = $args['enddate'] : $this->enddate = '';
 		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
 	}
 
@@ -217,5 +219,27 @@ class Model {
 				]
 			)
 		);
+	}
+
+	/**
+	 * Get end date for Progress Bar
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getEndDate() {
+		return $this->enddate;
+	}
+
+	/**
+	 * Get days remaining before Progress Bar end date
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getDaysToGo() {
+		$now     = new \DateTime();
+		$enddate = new \DateTime( $this->getEndDate() );
+		return $now < $enddate ? $enddate->diff( $now )->format( '%a' ) + 1 : 0;
 	}
 }

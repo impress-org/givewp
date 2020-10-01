@@ -33,6 +33,10 @@ class Block {
 						'type'    => 'string',
 						'default' => '1000',
 					],
+					'enddate'    => [
+						'type'    => 'string',
+						'default' => '',
+					],
 					'color'      => [
 						'type'    => 'string',
 						'default' => '#28c77b',
@@ -55,6 +59,7 @@ class Block {
 				'tags'       => $attributes['tags'],
 				'categories' => $attributes['categories'],
 				'goal'       => $attributes['goal'],
+				'enddate'    => $attributes['enddate'],
 				'color'      => $attributes['color'],
 			]
 		);
@@ -67,7 +72,7 @@ class Block {
 			'give-blocks-js',
 			'giveProgressBarThemeSupport',
 			[
-				'editorColorPalette' => array_shift( $editorColorPalette ),
+				'editorColorPalette' => $editorColorPalette ? array_shift( $editorColorPalette ) : [],
 			]
 		);
 	}

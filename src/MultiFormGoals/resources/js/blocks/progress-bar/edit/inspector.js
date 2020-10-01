@@ -21,7 +21,7 @@ const editorColorPalette = giveProgressBarThemeSupport.editorColorPalette;
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { ids, categories, tags, goal, color } = attributes;
+	const { ids, categories, tags, goal, enddate, color } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -39,6 +39,13 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
+				/>
+				<TextControl
+					name="enddate"
+					label={ __( 'Goal End Date', 'give' ) }
+					type="date"
+					onChange={ ( value ) => saveSetting( 'enddate', value ) }
+					value={ enddate }
 				/>
 				<ColorControl
 					colors={ editorColorPalette }
