@@ -238,8 +238,13 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getDaysToGo() {
-		$now     = new \DateTime();
-		$enddate = new \DateTime( $this->getEndDate() );
-		return $now < $enddate ? $enddate->diff( $now )->format( '%a' ) + 1 : 0;
+		$now       = new \DateTime();
+		$timestamp = strtotime( $this->getEndDate() );
+		if ( $timestamp ) {
+			$enddate = new \DateTime( date( 'Y-m-d', $timestamp ) );
+			return $now < $enddate ? $enddate->diff( $now )->format( '%a' ) + 1 : 0;
+		} else {
+			return false;
+		}
 	}
 }
