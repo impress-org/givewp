@@ -67,12 +67,38 @@ class Block {
 	}
 
 	public function localizeAssets() {
-		$editorColorPalette = get_theme_support( 'editor-color-palette' ); // Return value is in a nested array.
+		$defaultColorPalette = [
+			[
+				'name'  => __( 'Red', 'give' ),
+				'color' => '#dd3333',
+			],
+			[
+				'name'  => __( 'Orange', 'give' ),
+				'color' => '#dd9933',
+			],
+			[
+				'name'  => __( 'Green', 'give' ),
+				'color' => '#28C77B',
+			],
+			[
+				'name'  => __( 'Blue', 'give' ),
+				'color' => '#1e73be',
+			],
+			[
+				'name'  => __( 'Purple', 'give' ),
+				'color' => '#8224e3',
+			],
+			[
+				'name'  => __( 'Grey', 'give' ),
+				'color' => '#777777',
+			],
+		];
+		$editorColorPalette  = get_theme_support( 'editor-color-palette' ); // Return value is in a nested array.
 		wp_localize_script(
 			'give-blocks-js',
 			'giveProgressBarThemeSupport',
 			[
-				'editorColorPalette' => $editorColorPalette ? array_shift( $editorColorPalette ) : [],
+				'editorColorPalette' => $editorColorPalette ? array_shift( $editorColorPalette ) : $defaultColorPalette,
 			]
 		);
 	}
