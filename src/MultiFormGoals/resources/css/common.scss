@@ -31,7 +31,10 @@
 }
 
 .give-multi-form-goal-block__text {
-	padding: var(--global--spacing-vertical);
+	padding-left: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 
 	h2 {
 		margin-bottom: var(--global--spacing-vertical);
