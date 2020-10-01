@@ -18,12 +18,12 @@ if ( ! empty( $this->innerBlocks ) ) {
 				<img src="<?php echo $this->getImageSrc(); ?>" />
 			</div>
 			<div class="give-multi-form-goal-block__text">
-				<div class="give-multi-form-goal-block__heading">
+				<h2>
 					<?php echo $this->getHeading(); ?>
-				</div>
-				<div class="give-multi-form-goal-block__summary">
+				</h2>
+				<p>
 					<?php echo $this->getSummary(); ?>
-				</div>
+				</p>
 			</div>
 		</div>
 		<?php echo $this->getProgressBarOutput(); ?>

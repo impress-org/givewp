@@ -21,7 +21,7 @@ const ProgressBar = ( { attributes, setAttributes } ) => {
 	return (
 		<Fragment>
 			<Inspector { ... { attributes, setAttributes } } />
-			<ServerSideRender block="give/progress-bar" attributes={ attributes } />
+			<ServerSideRender block="give/progress-bar" attributes={ attributes } spinnerLocation={ { right: 0, top: -30, unit: 'px' } } />
 		</Fragment>
 	);
 };

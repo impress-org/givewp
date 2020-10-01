@@ -2,11 +2,8 @@
  * NOTE: This is a fork of the original ServerSideRenderX component.
  * You can find more about that project here: https://github.com/dgwyer/server-side-render-x
  *
- * Specifically, for GiveWP we have opted to remove the spinner/loading state that ServerSideRenderX uses entirely.
- * That change can be found in line 106, where the prevResponseHTML is now only storing the block markup, and
- * does not include a spinner/loading state.
- *
- * Additionally, some minor clean up was done to remove references to variables which were never actually used.
+ * Changes:
+ * - some minor clean up was done to remove references to variables which were never actually used.
  */
 
 /**
@@ -102,11 +99,12 @@ export class ServerSideRenderX extends Component {
 	}
 
 	render() {
+		const { right, top, unit } = this.props.spinnerLocation;
 		const response = this.state.response;
 		const prevResponse = this.state.prevResponse;
 		let prevResponseHTML = '';
 		if ( prevResponse !== null ) {
-			prevResponseHTML = `<div style="position:relative;">${ prevResponse }</div>`;
+			prevResponseHTML = `<div style="position:relative;"><div style="position:absolute;right:${ right }${ unit };top:${ top }${ unit };z-index:1"><span class="components-spinner"></span></div>${ prevResponse }</div>`;
 		}
 
 		const {
