@@ -11,6 +11,7 @@ class Model {
 	protected $tags;
 	protected $categories;
 	protected $goal;
+	protected $enddate;
 	protected $color;
 	protected $heading;
 	protected $summary;
@@ -30,10 +31,11 @@ class Model {
 		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '1000';
+		isset( $args['enddate'] ) ? $this->enddate         = $args['enddate'] : $this->enddate = '';
 		isset( $args['color'] ) ? $this->color             = $args['color'] : $this->color = '#28c77b';
 		isset( $args['heading'] ) ? $this->heading         = $args['heading'] : $this->heading = 'Example Heading';
-		isset( $args['summary'] ) ? $this->summary         = $args['summary'] : $this->color = 'This is a summary.';
-		isset( $args['imageSrc'] ) ? $this->imageSrc       = $args['imageSrc'] : $this->color = 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
+		isset( $args['summary'] ) ? $this->summary         = $args['summary'] : $this->summary = 'This is a summary.';
+		isset( $args['imageSrc'] ) ? $this->imageSrc       = $args['imageSrc'] : $this->imageSrc = GIVE_PLUGIN_URL . 'assets/dist/images/onboarding-preview-form-image.min.jpg';
 		isset( $args['innerBlocks'] ) ? $this->innerBlocks = $args['innerBlocks'] : $this->innerBlocks = false;
 	}
 
@@ -95,6 +97,7 @@ class Model {
 				'tags'       => $this->tags,
 				'categories' => $this->categories,
 				'goal'       => $this->goal,
+				'enddate'    => $this->enddate,
 				'color'      => $this->color,
 			]
 		);

@@ -21,6 +21,7 @@ class Shortcode {
 	 * @since 2.9.0
 	 **/
 	public function renderCallback( $attributes ) {
+		error_log( serialize( $attributes ) );
 		$attributes = shortcode_atts(
 			[
 				'ids'        => [],
@@ -30,7 +31,7 @@ class Shortcode {
 				'enddate'    => '',
 				'color'      => '#28c77b',
 				'heading'    => 'Example Heading',
-				'imageSrc'   => 'https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+				'image'      => GIVE_PLUGIN_URL . 'assets/dist/images/onboarding-preview-form-image.min.jpg',
 				'summary'    => 'This is a summary.',
 
 			],
@@ -46,7 +47,7 @@ class Shortcode {
 				'enddate'    => $attributes['enddate'],
 				'color'      => $attributes['color'],
 				'heading'    => $attributes['heading'],
-				'imageSrc'   => $attributes['imageSrc'],
+				'imageSrc'   => $attributes['image'],
 				'summary'    => $attributes['summary'],
 			]
 		);
