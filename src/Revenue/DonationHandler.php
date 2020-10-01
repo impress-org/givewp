@@ -11,7 +11,7 @@ use WP_Post;
  *
  * use this class to insert revenue when new donation create.
  */
-class OnDonationHandler {
+class DonationHandler {
 	/**
 	 * Handle new donation.
 	 *

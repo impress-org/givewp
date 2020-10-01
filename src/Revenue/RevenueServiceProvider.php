@@ -28,7 +28,7 @@ class RevenueServiceProvider implements ServiceProvider {
 	public function boot() {
 		$this->registerMigrations();
 
-		Hooks::addAction( 'save_post_give_payment', OnDonationHandler::class, 'handle', 999, 3 );
+		Hooks::addAction( 'save_post_give_payment', DonationHandler::class, 'handle', 999, 3 );
 		Hooks::addAction( 'give_register_updates', AddPastDonationsToRevenueTable::class, 'register' );
 	}
 
