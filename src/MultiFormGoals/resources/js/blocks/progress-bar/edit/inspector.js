@@ -35,7 +35,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			<PanelBody title={ __( 'Goal', 'give' ) } initialOpen={ true }>
 				<TextControl
 					name="goal"
-					label={ __( 'Goal', 'give' ) }
+					label={ __( 'Goal Amount', 'give' ) }
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
