@@ -16,18 +16,11 @@ class DonationHandler {
 	 * Handle new donation.
 	 *
 	 * @param  int  $donationId
-	 * @param  WP_Post  $donation
-	 * @param bool $isUpdated
 	 *
 	 * @since 2.9.0
 	 *
 	 */
-	public function handle( $donationId, $donation, $isUpdated ) {
-		// Exit if it is not a new donation.
-		if ( $isUpdated ) {
-			return;
-		}
-
+	public function handle( $donationId ) {
 		/* @var Revenue $revenue */
 		$revenue = give( Revenue::class );
 
