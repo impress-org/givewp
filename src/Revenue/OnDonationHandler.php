@@ -24,7 +24,7 @@ class OnDonationHandler {
 	 */
 	public function handle( $donationId, $donation, $isUpdated ) {
 		// Exit if it is not a new donation.
-		if ( ! $isUpdated ) {
+		if ( $isUpdated ) {
 			return;
 		}
 
