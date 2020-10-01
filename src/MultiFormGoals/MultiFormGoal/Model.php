@@ -10,7 +10,6 @@ class Model {
 	protected $ids;
 	protected $tags;
 	protected $categories;
-	protected $metric;
 	protected $goal;
 	protected $color;
 	protected $heading;
@@ -30,7 +29,6 @@ class Model {
 		isset( $args['ids'] ) ? $this->ids                 = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags               = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories   = $args['categories'] : $this->categories = [];
-		isset( $args['metric'] ) ? $this->metric           = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal               = $args['goal'] : $this->goal = '1000';
 		isset( $args['color'] ) ? $this->color             = $args['color'] : $this->color = '#28c77b';
 		isset( $args['heading'] ) ? $this->heading         = $args['heading'] : $this->heading = 'Example Heading';
@@ -96,7 +94,6 @@ class Model {
 				'ids'        => $this->ids,
 				'tags'       => $this->tags,
 				'categories' => $this->categories,
-				'metric'     => $this->metric,
 				'goal'       => $this->goal,
 				'color'      => $this->color,
 			]

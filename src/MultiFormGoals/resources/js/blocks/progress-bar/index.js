@@ -23,7 +23,7 @@ import '../../../css/editor.scss';
 
 export default registerBlockType( 'give/progress-bar', {
 	title: __( 'Progress Bar', 'give' ),
-	description: __( 'The Totals block displays progress made across donation forms towards a common goal.', 'give' ),
+	description: __( 'The Progress Bar block displays progress made across donation forms towards a common goal.', 'give' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [

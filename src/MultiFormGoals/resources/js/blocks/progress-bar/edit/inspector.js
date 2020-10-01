@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl } = wp.components;
+const { PanelBody, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -13,12 +13,15 @@ import MultiSelectControl from '../../../components/multi-select-control';
 import ColorControl from '../../../components/color-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
+/* eslint-disable-next-line no-undef */
+const editorColorPalette = giveProgressBarThemeSupport.editorColorPalette;
+
 /**
  * Render Inspector Controls
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { ids, categories, tags, metric, goal, deadline, color } = attributes;
+	const { ids, categories, tags, goal, enddate, color } = attributes;
 	const formOptions = useFormOptions();
 	const tagOptions = useTagOptions();
 	const categoryOptions = useCategoryOptions();
@@ -32,29 +35,20 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			<PanelBody title={ __( 'Goal', 'give' ) } initialOpen={ true }>
 				<TextControl
 					name="goal"
-					label={ __( 'Goal', 'give' ) }
+					label={ __( 'Goal Amount', 'give' ) }
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
 				/>
-				<SelectControl
-					label={ __( 'Goal Format', 'give' ) }
-					value={ metric }
-					options={ [
-						{ label: __( 'Revenue', 'give' ), value: 'revenue' },
-						{ label: __( 'Number of Donors', 'give' ), value: 'donor-count' },
-						{ label: __( 'Number of Donations', 'give' ), value: 'donation-count' },
-					] }
-					onChange={ ( value ) => saveSetting( 'metric', value ) }
-				/>
 				<TextControl
-					name="deadline"
-					label={ __( 'Deadline', 'give' ) }
+					name="enddate"
+					label={ __( 'Goal End Date', 'give' ) }
 					type="date"
-					value={ deadline }
-					onChange={ ( value ) => saveSetting( 'deadline', value ) }
+					onChange={ ( value ) => saveSetting( 'enddate', value ) }
+					value={ enddate }
 				/>
 				<ColorControl
+					colors={ editorColorPalette }
 					name="color"
 					label={ __( 'Progress Bar Color', 'give' ) }
 					onChange={ ( value ) => saveSetting( 'color', value ) }

@@ -29,15 +29,11 @@ class Block {
 						'type'    => 'array',
 						'default' => [],
 					],
-					'metric'     => [
-						'type'    => 'string',
-						'default' => 'revenue',
-					],
 					'goal'       => [
 						'type'    => 'string',
 						'default' => '1000',
 					],
-					'deadline'   => [
+					'enddate'    => [
 						'type'    => 'string',
 						'default' => '',
 					],
@@ -62,12 +58,48 @@ class Block {
 				'ids'        => $attributes['ids'],
 				'tags'       => $attributes['tags'],
 				'categories' => $attributes['categories'],
-				'metric'     => $attributes['metric'],
 				'goal'       => $attributes['goal'],
-				'deadline'   => $attributes['deadline'],
+				'enddate'    => $attributes['enddate'],
 				'color'      => $attributes['color'],
 			]
 		);
 		return $progressBar->getOutput();
+	}
+
+	public function localizeAssets() {
+		$defaultColorPalette = [
+			[
+				'name'  => __( 'Red', 'give' ),
+				'color' => '#dd3333',
+			],
+			[
+				'name'  => __( 'Orange', 'give' ),
+				'color' => '#dd9933',
+			],
+			[
+				'name'  => __( 'Green', 'give' ),
+				'color' => '#28C77B',
+			],
+			[
+				'name'  => __( 'Blue', 'give' ),
+				'color' => '#1e73be',
+			],
+			[
+				'name'  => __( 'Purple', 'give' ),
+				'color' => '#8224e3',
+			],
+			[
+				'name'  => __( 'Grey', 'give' ),
+				'color' => '#777777',
+			],
+		];
+		$editorColorPalette  = get_theme_support( 'editor-color-palette' ); // Return value is in a nested array.
+		wp_localize_script(
+			'give-blocks-js',
+			'giveProgressBarThemeSupport',
+			[
+				'editorColorPalette' => $editorColorPalette ? array_shift( $editorColorPalette ) : $defaultColorPalette,
+			]
+		);
 	}
 }

@@ -9,9 +9,8 @@ class Model {
 	protected $ids;
 	protected $tags;
 	protected $categories;
-	protected $metric;
 	protected $goal;
-	protected $deadline;
+	protected $enddate;
 	protected $color;
 
 	// Internal
@@ -27,9 +26,8 @@ class Model {
 		isset( $args['ids'] ) ? $this->ids               = $args['ids'] : $this->ids = [];
 		isset( $args['tags'] ) ? $this->tags             = $args['tags'] : $this->tags = [];
 		isset( $args['categories'] ) ? $this->categories = $args['categories'] : $this->categories = [];
-		isset( $args['metric'] ) ? $this->metric         = $args['metric'] : $this->metric = 'revenue';
 		isset( $args['goal'] ) ? $this->goal             = $args['goal'] : $this->goal = '1000';
-		isset( $args['deadline'] ) ? $this->deadline     = $args['deadline'] : $this->deadline = '';
+		isset( $args['enddate'] ) ? $this->enddate       = $args['enddate'] : $this->enddate = '';
 		isset( $args['color'] ) ? $this->color           = $args['color'] : $this->color = '#28c77b';
 	}
 
@@ -156,28 +154,16 @@ class Model {
 	 * @since 2.9.0
 	 */
 	protected function getFormattedTotalRemaining() {
-		switch ( $this->metric ) {
-			case 'revenue': {
-				$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
-				return give_currency_filter(
-					give_format_amount(
-						$total_remaining,
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
-			}
-			case 'donor-count': {
-				$total_remaining = ( $this->getGoal() - $this->getDonorCount() ) > 0 ? ( $this->getGoal() - $this->getDonorCount() ) : 0;
-				return sprintf( _n( '%d donor', '%d donors', $total_remaining, 'give' ), $total_remaining );
-			}
-			case 'donation-count': {
-				$total_remaining = ( $this->getGoal() - $this->getDonationCount() ) > 0 ? ( $this->getGoal() - $this->getDonationCount() ) : 0;
-				return sprintf( _n( '%d donation', '%d donations', $total_remaining, 'give' ), $total_remaining );
-			}
-		}
+		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
+		return give_currency_filter(
+			give_format_amount(
+				$total_remaining,
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
 	}
 
 	/**
@@ -208,84 +194,52 @@ class Model {
 	}
 
 	protected function getFormattedTotal() {
-		$total = $this->getTotal();
-		switch ( $this->metric ) {
-			case 'revenue': {
-				return give_currency_filter(
-					give_format_amount(
-						$total,
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
-			}
-			case 'donor-count': {
-				return sprintf( _n( '%d donor', '%d donors', $total, 'give' ), $total );
-			}
-			case 'donation-count': {
-				return sprintf( _n( '%d donation', '%d donations', $total, 'give' ), $total );
-			}
-		}
+		return give_currency_filter(
+			give_format_amount(
+				$this->getTotal(),
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
 	}
 
 	protected function getTotal() {
-		switch ( $this->metric ) {
-			case 'revenue': {
-				return $this->getEarnings();
-			}
-			case 'donor-count': {
-				return $this->getDonorCount();
-			}
-			case 'donation-count': {
-				return $this->getDonationCount();
-			}
-		}
+		return $this->getEarnings();
 	}
 
 	protected function getFormattedGoal() {
-		$goal = $this->getGoal();
-		switch ( $this->metric ) {
-			case 'revenue': {
-				return give_currency_filter(
-					give_format_amount(
-						$goal,
-						[
-							'sanitize' => false,
-							'decimal'  => false,
-						]
-					)
-				);
-			}
-			case 'donor-count': {
-				return sprintf( _n( '%d donor', '%d donors', $goal, 'give' ), $goal );
-			}
-			case 'donation-count': {
-				return sprintf( _n( '%d donation', '%d donations', $goal, 'give' ), $goal );
-			}
-		}
+		return give_currency_filter(
+			give_format_amount(
+				$this->getGoal(),
+				[
+					'sanitize' => false,
+					'decimal'  => false,
+				]
+			)
+		);
 	}
 
 	/**
-	 * Get deadline for Progress Bar
+	 * Get end date for Progress Bar
 	 *
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getDeadline() {
-		return $this->deadline;
+	protected function getEndDate() {
+		return $this->enddate;
 	}
 
 	/**
-	 * Get days remaining before Progress Bar deadline
+	 * Get days remaining before Progress Bar end date
 	 *
 	 * @return string
 	 * @since 2.9.0
 	 **/
 	protected function getDaysToGo() {
-		$now      = new \DateTime();
-		$deadline = new \DateTime( $this->getDeadline() );
-		return $now < $deadline ? $deadline->diff( $now )->format( '%a' ) + 1 : 0;
+		$now     = new \DateTime();
+		$enddate = new \DateTime( $this->getEndDate() );
+		return $now < $enddate ? $enddate->diff( $now )->format( '%a' ) + 1 : 0;
 	}
 }
