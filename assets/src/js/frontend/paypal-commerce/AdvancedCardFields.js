@@ -104,10 +104,18 @@ class AdvancedCardFields extends PaymentMethod {
 			const container = document.createElement( 'div' );
 
 			fieldType = cardFields[ cardFieldsKey ].el.getAttribute( 'name' );
-			container.setAttribute( 'id', `give-${ cardFields[ cardFieldsKey ].el.getAttribute( 'id' ) }` );
-			container.setAttribute( 'class', 'give-paypal-commerce-cc-field' );
+			const fieldId = `give-${ cardFields[ cardFieldsKey ].el.getAttribute( 'id' ) }`;
+			let field;
 
-			this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
+			if ( field = this.form.querySelector( `#${ fieldId }` ) ) { // eslint-disable-line
+				// If field container already exist in form then remove paypal field from inside and return same div.
+				field.innerHTML = '';
+				this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = field;
+			} else {
+				container.setAttribute( 'id', fieldId );
+				container.setAttribute( 'class', 'give-paypal-commerce-cc-field' );
+				this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
+			}
 		}
 
 		this.toggleFields();
