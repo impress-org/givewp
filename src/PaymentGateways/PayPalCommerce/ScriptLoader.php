@@ -15,15 +15,6 @@ use PayPalCheckoutSdk\Core\AccessTokenRequest;
  */
 class ScriptLoader {
 	/**
-	 * Paypal SDK handle.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @var string
-	 */
-	private $paypalSdkScriptHandle = 'give-paypal-sdk-js';
-
-	/**
 	 * @since 2.9.0
 	 *
 	 * @var MerchantDetails
