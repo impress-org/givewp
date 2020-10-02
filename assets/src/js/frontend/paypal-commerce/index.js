@@ -15,9 +15,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function setRecurringFieldTrackerToReloadPaypalSDK( $formWraps ) {
 		$formWraps.forEach( $formWrap => {
 			const $form = $formWrap.querySelector( '.give-form' );
-			DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
-				loadPayPalScript( $form );
-			} );
+			const recurringField = $form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+
+			if ( recurringField ) {
+				DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
+					loadPayPalScript( $form );
+				} );
+			}
 		} );
 	}
 
@@ -78,7 +82,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const isRecurring = DonationForm.isRecurringDonation( form );
 		// options.intent = isRecurring ? 'subscription' : 'capture';
 		options.intent = 'capture';
-		options.vault = isRecurring;
+		options.vault = !! isRecurring;
 		options.currency = Give.form.fn.getInfo( 'currency_code', jQuery( form ) );
 
 		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
