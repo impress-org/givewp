@@ -23,6 +23,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Milestone block has been replaced by the Totals block, with features to match the Give Totals shortcode (#5264)
 -   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
+-   Multi-Form Goal block and shortcode are now available (#5307)
+-   Progress Bar block now features improved SSR previews (#5316)
+-   Multi-Form Goal block now supports "wide" alignment (#5315)
+-   Multi-Form Goal block now supports the theme's color palette (#5319)
+-   Multi-Form Goal block and shortcode appearance is now consistent (#5320)
+
+### Changed
+
+-   Multi-Form Goal wrapper only added for non-block output (#5315)
+-   Multi-Form Goal output has a bottom margin (#5333)
+
+
+### Changed
+
+-   Multi-Form Goal Block now defaults to image filling the height (#5314)
 
 ## [2.8.0] - 2020-08-31
 
