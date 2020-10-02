@@ -12,13 +12,14 @@ form[data-currency_position='after'] .give-donation-amount .give-cs-select-curre
 	&:focus {
 		outline: none;
 		& + .give-currency-symbol {
-			box-shadow: 0 0 8px #28c77b;
+			border: 1px solid #28c77b !important;
+			border-radius: 3px;
 		}
 	}
 
 	~ span.give-currency-symbol.give-currency-position-after {
-		padding: 0 30px !important;
-		margin-right: -30px !important;
+		padding: 0 10px 0 30px !important;
+		margin-right: -10px !important;
 
 		&::before {
 			left: 10px;
@@ -40,13 +41,14 @@ form[data-currency_position='before'] .give-donation-amount .give-cs-select-curr
 	&:focus {
 		outline: none;
 		& + .give-currency-symbol {
-			box-shadow: 0 0 8px #28c77b;
+			border: 1px solid #28c77b !important;
+			border-radius: 3px;
 		}
 	}
 
 	~ span.give-currency-symbol.give-currency-position-before {
-		padding: 0 30px !important;
-		margin-left: -30px !important;
+		padding: 0 30px 0 10px !important;
+		margin-left: -10px !important;
 
 		&::before {
 			right: 10px;
