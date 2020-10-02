@@ -74,7 +74,7 @@ MultiSelectControl.defaultProps = {
 	label: null,
 	value: null,
 	onChange: null,
-	placeholder: __( 'Select...', 'give' ),
+	placeholder: `${ __( 'Select', 'give' ) }...`,
 	options: null,
 };
 
