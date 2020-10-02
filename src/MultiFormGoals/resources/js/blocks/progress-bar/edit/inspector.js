@@ -35,14 +35,14 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			<PanelBody title={ __( 'Goal', 'give' ) } initialOpen={ true }>
 				<TextControl
 					name="goal"
-					label={ __( 'Goal Amount', 'give' ) }
+					label={ __( 'Goal amount', 'give' ) }
 					type="number"
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
 				/>
 				<TextControl
 					name="enddate"
-					label={ __( 'Goal End Date', 'give' ) }
+					label={ __( 'Goal end date', 'give' ) }
 					type="date"
 					onChange={ ( value ) => saveSetting( 'enddate', value ) }
 					value={ enddate }
@@ -50,7 +50,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 				<ColorControl
 					colors={ editorColorPalette }
 					name="color"
-					label={ __( 'Progress Bar Color', 'give' ) }
+					label={ __( 'Progress bar color', 'give' ) }
 					onChange={ ( value ) => saveSetting( 'color', value ) }
 					value={ color }
 				/>
@@ -58,22 +58,25 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			<PanelBody title={ __( 'Filters', 'give' ) } initialOpen={ false }>
 				<MultiSelectControl
 					name="ids"
-					label={ __( 'Filter by Forms', 'give' ) }
+					label={ __( 'Filter by forms', 'give' ) }
 					value={ formOptions.filter( option => ids.includes( option.value ) ) }
+					placeholder={ `${ __( 'All forms', 'give' ) }...` }
 					options={ formOptions }
 					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
 				<MultiSelectControl
-					name="tags"
-					label={ __( 'Filter by Tags', 'give' ) }
-					value={ tagOptions.filter( option => tags.includes( option.value ) ) }
-					options={ tagOptions }
-					onChange={ ( value ) => saveSetting( 'tags', value ? value.map( ( option ) => option.value ) : [] ) } />
-				<MultiSelectControl
 					name="categories"
-					label={ __( 'Filter by Categories', 'give' ) }
+					label={ __( 'Filter by categories', 'give' ) }
 					value={ categoryOptions.filter( option => categories.includes( option.value ) ) }
+					placeholder={ `${ __( 'All categories', 'give' ) }...` }
 					options={ categoryOptions }
 					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
+				<MultiSelectControl
+					name="tags"
+					label={ __( 'Filter by tags', 'give' ) }
+					value={ tagOptions.filter( option => tags.includes( option.value ) ) }
+					placeholder={ `${ __( 'All tags', 'give' ) }...` }
+					options={ tagOptions }
+					onChange={ ( value ) => saveSetting( 'tags', value ? value.map( ( option ) => option.value ) : [] ) } />
 			</PanelBody>
 		</InspectorControls>
 	);

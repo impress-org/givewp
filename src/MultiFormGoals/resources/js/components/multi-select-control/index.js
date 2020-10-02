@@ -9,13 +9,14 @@ import Select from 'react-select';
  */
 const { useInstanceId } = wp.compose;
 const { BaseControl } = wp.components;
+const { __ } = wp.i18n;
 
 /**
  * Styles
  */
 import './style.scss';
 
-const MultiSelectControl = ( { name, label, help, className, value, hideLabelFromVision, isLoading, isDisabled, onChange, options } ) => {
+const MultiSelectControl = ( { name, label, help, className, value, placeholder, hideLabelFromVision, isLoading, isDisabled, onChange, options } ) => {
 	const instanceId = useInstanceId( MultiSelectControl );
 	const id = `give-multi-select-control-${ name }-${ instanceId }`;
 
@@ -38,6 +39,7 @@ const MultiSelectControl = ( { name, label, help, className, value, hideLabelFro
 				options={ options }
 				maxMenuHeight="200px"
 				isDisabled={ isDisabled }
+				placeholder={ placeholder }
 				isMulti={ true }
 				theme={ ( theme ) => ( {
 					...theme,
@@ -65,12 +67,14 @@ MultiSelectControl.propTypes = {
 	hideLabelFromVision: PropTypes.bool,
 	isLoading: PropTypes.bool,
 	isDisabled: PropTypes.bool,
+	placeholder: PropTypes.string,
 };
 
 MultiSelectControl.defaultProps = {
 	label: null,
 	value: null,
 	onChange: null,
+	placeholder: `${ __( 'Select', 'give' ) }...`,
 	options: null,
 };
 
