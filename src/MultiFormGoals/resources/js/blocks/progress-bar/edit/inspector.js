@@ -41,16 +41,9 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
 				/>
-				{ /* <TextControl
-					name="enddate"
-					label={ __( 'Goal end date', 'give' ) }
-					type="date"
-					onChange={ ( value ) => saveSetting( 'enddate', value ) }
-					value={ enddate }
-				/> */ }
 				<DateTimeControl
 					name="enddate"
-					label={ __( 'Goal End Date', 'give' ) }
+					label={ __( 'Goal end date', 'give' ) }
 					value={ enddate }
 					onChange={ ( value ) => saveSetting( 'enddate', value ) }
 				/>
