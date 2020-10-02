@@ -7,17 +7,27 @@ import { loadScript } from '@paypal/paypal-js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	/**
+	 * Setup recurring field tracker to reload paypal sdk.
+	 *
+	 * @since 2.9.0
+	 * @param {object} $formWraps Form container selectors
+	 */
+	function setRecurringFieldTrackerToReloadPaypalSDK( $formWraps ) {
+		$formWraps.forEach( $formWrap => {
+			const $form = $formWrap.querySelector( '.give-form' );
+			DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
+				loadPayPalScript( $form );
+			} );
+		} );
+	}
+
+	/**
 	 * Setup PayPal payment methods
 	 *
 	 * @since 2.9.0
+	 * @param {object} $formWraps Form container selectors
 	 */
-	function setupPaymentMethods() {
-		const $formWraps = document.querySelectorAll( '.give-form-wrap' );
-
-		if ( ! $formWraps.length ) {
-			return;
-		}
-
+	function setupPaymentMethods( $formWraps ) {
 		$formWraps.forEach( $formWrap => {
 			const $form = $formWrap.querySelector( '.give-form' );
 			const smartButtons = new SmartButtons( $form );
@@ -44,15 +54,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	/**
 	 * Load PayPal script.
 	 *
+	 * @param {object} form Form selector
+	 *
 	 * @since 2.9.0
 	 */
-	function loadPayPalScript() {
-		loadScript( givePayPalCommerce.payPalSdkQueryParameters ).then( () => {
-			setupPaymentMethods();
+	function loadPayPalScript( form ) {
+		const options = {};
+		const isRecurring = DonationForm.isRecurringDonation( form );
+		options.intent = isRecurring ? 'subscription' : 'order';
+		options.vault = isRecurring;
+
+		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
+			setupPaymentMethods( $formWraps );
 		} );
 	}
 
-	loadPayPalScript();
+	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
+	if ( $formWraps.length ) {
+		setRecurringFieldTrackerToReloadPaypalSDK( $formWraps );
+		loadPayPalScript( $formWraps[ 0 ] );
+	}
 
 	// On form submit prevent submission for PayPal commerce.
 	// Form submission will be take care internally by smart buttons or advanced card fields.
