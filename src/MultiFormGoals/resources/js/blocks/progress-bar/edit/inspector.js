@@ -11,6 +11,7 @@ const { PanelBody, TextControl } = wp.components;
 
 import MultiSelectControl from '../../../components/multi-select-control';
 import ColorControl from '../../../components/color-control';
+import DateTimeControl from '../../../components/date-time-control';
 import { useFormOptions, useTagOptions, useCategoryOptions } from '../data/utils';
 
 /* eslint-disable-next-line no-undef */
@@ -40,12 +41,18 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'goal', value ) }
 					value={ goal }
 				/>
-				<TextControl
+				{ /* <TextControl
 					name="enddate"
 					label={ __( 'Goal End Date', 'give' ) }
 					type="date"
 					onChange={ ( value ) => saveSetting( 'enddate', value ) }
 					value={ enddate }
+				/> */ }
+				<DateTimeControl
+					name="enddate"
+					label={ __( 'Goal End Date', 'give' ) }
+					value={ enddate }
+					onChange={ ( value ) => saveSetting( 'enddate', value ) }
 				/>
 				<ColorControl
 					colors={ editorColorPalette }
