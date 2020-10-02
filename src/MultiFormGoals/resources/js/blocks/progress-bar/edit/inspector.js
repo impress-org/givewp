@@ -63,17 +63,17 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					options={ formOptions }
 					onChange={ ( value ) => saveSetting( 'ids', value ? value.map( ( option ) => option.value ) : [] ) } />
 				<MultiSelectControl
-					name="tags"
-					label={ __( 'Filter by tags', 'give' ) }
-					value={ tagOptions.filter( option => tags.includes( option.value ) ) }
-					options={ tagOptions }
-					onChange={ ( value ) => saveSetting( 'tags', value ? value.map( ( option ) => option.value ) : [] ) } />
-				<MultiSelectControl
 					name="categories"
 					label={ __( 'Filter by categories', 'give' ) }
 					value={ categoryOptions.filter( option => categories.includes( option.value ) ) }
 					options={ categoryOptions }
 					onChange={ ( value ) => saveSetting( 'categories', value ? value.map( ( option ) => option.value ) : [] ) } />
+				<MultiSelectControl
+					name="tags"
+					label={ __( 'Filter by tags', 'give' ) }
+					value={ tagOptions.filter( option => tags.includes( option.value ) ) }
+					options={ tagOptions }
+					onChange={ ( value ) => saveSetting( 'tags', value ? value.map( ( option ) => option.value ) : [] ) } />
 			</PanelBody>
 		</InspectorControls>
 	);
