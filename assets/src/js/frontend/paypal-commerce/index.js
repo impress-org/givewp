@@ -1,4 +1,4 @@
-/* globals jQuery, givePayPalCommerce */
+/* globals Give, jQuery, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';
@@ -16,6 +16,21 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		$formWraps.forEach( $formWrap => {
 			const $form = $formWrap.querySelector( '.give-form' );
 			DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
+				loadPayPalScript( $form );
+			} );
+		} );
+	}
+
+	/**
+	 * Setup form currency tracker to reload paypal sdk.
+	 *
+	 * @since 2.9.0
+	 * @param {object} $formWraps Form container selectors
+	 */
+	function setFormCurrencyTrackerToReloadPaypalSDK( $formWraps ) {
+		$formWraps.forEach( $formWrap => {
+			const $form = $formWrap.querySelector( '.give-form' );
+			DonationForm.trackDonationCurrencyChange( $form, () => {
 				loadPayPalScript( $form );
 			} );
 		} );
@@ -64,6 +79,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		// options.intent = isRecurring ? 'subscription' : 'capture';
 		options.intent = 'capture';
 		options.vault = isRecurring;
+		options.currency = Give.form.fn.getInfo( 'currency_code', jQuery( form ) );
 
 		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
 			setupPaymentMethods( $formWraps );
@@ -72,8 +88,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
 	if ( $formWraps.length ) {
-		loadPayPalScript( $formWraps[ 0 ] );
+		loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) );
 		setRecurringFieldTrackerToReloadPaypalSDK( $formWraps );
+		setFormCurrencyTrackerToReloadPaypalSDK( $formWraps );
 	}
 
 	// On form submit prevent submission for PayPal commerce.

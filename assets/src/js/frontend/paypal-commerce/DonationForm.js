@@ -116,6 +116,35 @@ class DonationForm {
 	}
 
 	/**
+	 * Call function when change field attribute.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} element Javascript selector
+	 * @param {object} handler Function
+	 */
+	static trackDonationCurrencyChange( element, handler ) {
+		const MutationObserver = new window.MutationObserver( function( mutations ) {
+			// Exit if data attribute does not change does not change.
+			if ( mutations[ 0 ].oldValue === mutations[ 0 ].target.getAttribute( 'data-currency_code' ) ) {
+				return;
+			}
+
+			// Exit if paypal-commerce is not selected.
+			if ( ! DonationForm.isPayPalCommerceSelected( jQuery( mutations[ 0 ].target ) ) ) {
+				return;
+			}
+
+			handler.call();
+		} );
+
+		MutationObserver.observe( element, {
+			attributeFilter: [ 'data-currency_code' ],
+			attributeOldValue: true,
+		} );
+	}
+
+	/**
 	 * Hide donate now button if only PayPal smart buttons payment method available.
 	 *
 	 * @since 2.9.0
