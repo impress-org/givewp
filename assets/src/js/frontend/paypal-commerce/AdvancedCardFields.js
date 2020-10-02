@@ -49,6 +49,20 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
+	 * Add recurring field tracker.
+	 *
+	 * @since 2.9.0
+	 */
+	registerEvents() {
+		if ( this.customCardFields.recurringChoiceHiddenField ) {
+			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, this.toggleFields.bind( this ) );
+			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
+				DonationForm.toggleDonateNowButton( this.form );
+			} );
+		}
+	}
+
+	/**
 	 * Return whether or not render credit card fields.
 	 *
 	 * @since 2.9.0
@@ -76,13 +90,6 @@ class AdvancedCardFields extends PaymentMethod {
 
 		this.addEventToHostedFields( hostedCardFields );
 		this.jQueryForm.on( 'submit', { hostedCardFields }, onSubmitHandlerForDonationForm );
-
-		if ( this.customCardFields.recurringChoiceHiddenField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, this.toggleFields.bind( this ) );
-			DonationForm.trackRecurringHiddenFieldChange( this.customCardFields.recurringChoiceHiddenField, () => {
-				DonationForm.toggleDonateNowButton( this.form );
-			} );
-		}
 	}
 
 	/**
@@ -118,28 +125,6 @@ class AdvancedCardFields extends PaymentMethod {
 		}
 
 		this.toggleFields();
-	}
-
-	/**
-	 * Create order event handler for smart buttons.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {object} data PayPal button data.
-	 * @param {object} actions PayPal button actions.
-	 *
-	 * @return {Promise<unknown>} Return PayPal order id.
-	 */
-	async createOrderHandler( data, actions ) { // eslint-disable-line
-		// eslint-disable-next-line
-		const response = await fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }?action=give_paypal_commerce_create_order`, {
-			method: 'POST',
-			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} );
-
-		const responseJson = await response.json();
-
-		return responseJson.data.id;
 	}
 
 	/**
@@ -304,7 +289,7 @@ class AdvancedCardFields extends PaymentMethod {
 			return;
 		}
 
-		await DonationForm.attachOrderIdToForm( this.form, result.data.order.id );
+		await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
 
 		this.submitDonationForm();
 	}

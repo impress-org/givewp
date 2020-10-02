@@ -132,33 +132,27 @@ EOT;
 
 		/* @var MerchantDetail $merchant */
 		$merchant = give( MerchantDetail::class );
+		$scriptId = 'give-paypal-commerce-js';
 
 		/**
 		 * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
 		 */
 		$payPalSdkQueryParameters = [
-			'client-id'       => $merchant->clientId,
-			'merchant-id'     => $merchant->merchantIdInPayPal,
-			'currency'        => give_get_currency(),
-			'components'      => 'hosted-fields,buttons',
-			'locale'          => get_locale(),
-			'disable-funding' => 'credit',
+			'client-id'                   => $merchant->clientId,
+			'merchant-id'                 => $merchant->merchantIdInPayPal,
+			'currency'                    => give_get_currency(),
+			'components'                  => 'hosted-fields,buttons',
+			'locale'                      => get_locale(),
+			'disable-funding'             => 'credit',
+			'vault'                       => true,
+			'data-partner-attribution-id' => give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ),
+			'data-client-token'           => $this->merchantRepository->getClientToken(),
 		];
 
 		wp_enqueue_script(
-			$this->paypalSdkScriptHandle,
-			add_query_arg( $payPalSdkQueryParameters, 'https://www.paypal.com/sdk/js' ),
-			[ 'give' ],
-			null,
-			false
-		);
-
-		add_filter( 'script_loader_tag', [ $this, 'addAttributesToPayPalSdkScript' ], 10, 2 );
-
-		wp_enqueue_script(
-			'give-paypal-commerce-js',
+			$scriptId,
 			GIVE_PLUGIN_URL . 'assets/dist/js/paypal-commerce.js',
-			[ $this->paypalSdkScriptHandle ],
+			[],
 			GIVE_VERSION,
 			true
 		);
@@ -171,7 +165,7 @@ EOT;
 		);
 
 		wp_localize_script(
-			'give-paypal-commerce-js',
+			$scriptId,
 			'givePayPalCommerce',
 			[
 				'paypalCardInfoErrorPrefixes'           => [
@@ -193,37 +187,9 @@ EOT;
 				'supportsCustomPayments'                => $merchant->supportsCustomPayments ? 1 : '',
 				'accountCountry'                        => $merchant->accountCountry,
 				'separatorLabel'                        => esc_html__( 'Or pay with card', 'give' ),
+				'payPalSdkQueryParameters'              => $payPalSdkQueryParameters,
 			]
 		);
-	}
-
-	/**
-	 * Add attributes to PayPal sdk.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param string $handle
-	 *
-	 * @param string $tag
-	 *
-	 * @return string
-	 */
-	public function addAttributesToPayPalSdkScript( $tag, $handle ) {
-		if ( $this->paypalSdkScriptHandle !== $handle ) {
-			return $tag;
-		}
-
-		$tag = str_replace(
-			'src=',
-			sprintf(
-				'data-partner-attribution-id="%1$s" data-client-token="%2$s" src=',
-				give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ),
-				$this->merchantRepository->getClientToken()
-			),
-			$tag
-		);
-
-		return $tag;
 	}
 
 	/**

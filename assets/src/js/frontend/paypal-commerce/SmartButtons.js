@@ -11,8 +11,46 @@ class SmartButtons extends PaymentMethod {
 	constructor( form ) {
 		super( form );
 
-		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
+		this.setupProperties();
 	}
+
+	/**
+	 * This function setup a tracker to listen change on recurring hidden field.
+	 *
+	 * When changes occur then smart button will be re render to support onetime or subscription payment.
+	 *
+	 * @since 2.9.0
+	 */
+	registerEvents() {
+		if ( this.recurringChoiceHiddenField ) {
+			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, () => {
+				this.onChangeRecurringDonationStatus();
+			} );
+		}
+	}
+
+	/**
+	 * Setup properties.
+	 *
+	 * @since 2.9.0
+	 */
+	setupProperties() {
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
+		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+		this.smartButton = null;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	onGatewayLoadBoot( evt, self ) {
+		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
+			self.setupProperties();
+		}
+
+		super.onGatewayLoadBoot( evt, self );
+	}
+
 	/**
 	 * Get smart button container.
 	 *
@@ -21,36 +59,39 @@ class SmartButtons extends PaymentMethod {
 	 * @return {object} Smart button container selector.
 	 */
 	getButtonContainer() {
-		const smartButtonWrap = document.createElement( 'div' );
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' ); // Refresh cc field container selector.
+		const oldSmartButtonWrap = this.ccFieldsContainer.querySelector( '#give-paypal-commerce-smart-buttons-wrap' );
 
-		smartButtonWrap.setAttribute( 'id', '#give-paypal-commerce-smart-buttons-wrap' );
+		if ( oldSmartButtonWrap ) {
+			return oldSmartButtonWrap;
+		}
 
-		return this.ccFieldsContainer.insertBefore( smartButtonWrap, this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' ) );
+		const smartButtonWrap = document.createElement( 'div' );
+		const separator = this.ccFieldsContainer.querySelector( '.separator-with-text' );
+		smartButtonWrap.setAttribute( 'id', 'give-paypal-commerce-smart-buttons-wrap' );
+		const cardNumberWarp = this.ccFieldsContainer.querySelector( '[id^=give-card-number-wrap-]' );
+
+		return this.ccFieldsContainer.insertBefore( smartButtonWrap, separator ? separator : cardNumberWarp );
 	}
 
 	/**
 	 * Render smart buttons.
 	 *
 	 * @since 2.9.0
+	 * @return {object} Return Promise
 	 */
 	renderPaymentMethodOption() {
 		this.smartButtonContainer = this.getButtonContainer();
 
-		if ( ! this.smartButtonContainer ) {
-			return;
+		if ( this.smartButton ) {
+			this.smartButton.close();
 		}
 
-		const onInitHandler = this.onInitHandler.bind( this );
-		const onClickHandler = this.onClickHandler.bind( this );
-		const createOrderHandler = this.createOrderHandler.bind( this );
-		const onApproveHandler = this.onApproveHandler.bind( this );
-
-		paypal.Buttons( {
-			onInit: onInitHandler,
-			onClick: onClickHandler,
-			createOrder: createOrderHandler,
-			onApprove: onApproveHandler,
+		const options = {
+			onInit: this.onInitHandler.bind( this ),
+			onClick: this.onClickHandler.bind( this ),
+			createOrder: this.createOrderHandler.bind( this ),
+			onApprove: this.orderApproveHandler.bind( this ),
 			style: {
 				layout: 'vertical',
 				size: 'responsive',
@@ -59,9 +100,38 @@ class SmartButtons extends PaymentMethod {
 				color: 'gold',
 				tagline: false,
 			},
-		} ).render( this.smartButtonContainer );
+		};
+
+		if ( DonationForm.isRecurringDonation( this.form ) ) {
+			options.createSubscription = this.creatSubscriptionHandler.bind( this );
+			options.onApprove = this.subscriptionApproveHandler.bind( this );
+
+			delete options.createOrder;
+		}
 
 		DonationForm.toggleDonateNowButton( this.form );
+
+		this.smartButton = paypal.Buttons( options );
+
+		return this.smartButton.render( this.smartButtonContainer );
+	}
+
+	/**
+	 * Render payment method when recurring option changes.
+	 *
+	 * This method locks recurring option till render payment method render.
+	 * Disabled recurring option prevent quick changes to option value which prevent javascript error because smart button take time to setup after changes in recurring option value.
+	 *
+	 * @since 2.9.0
+	 */
+	onChangeRecurringDonationStatus() {
+		const field = this.form.querySelector( 'input[name="give-recurring-period"]' );
+
+		field && ( field.disabled = true ); // eslint-disable-line
+
+		this.renderPaymentMethodOption().then( () => {
+			field && ( field.disabled = false ); // eslint-disable-line
+		} );
 	}
 
 	/**
@@ -84,7 +154,7 @@ class SmartButtons extends PaymentMethod {
 	 * @param {object} data PayPal button data.
 	 * @param {object} actions PayPal button actions.
 	 *
-	 * @return {Promise<unknown>} Return wther or not open PayPal checkout window.
+	 * @return {Promise<unknown>} Return whether or not open PayPal checkout window.
 	 */
 	async onClickHandler(data, actions) { // eslint-disable-line
 		const formData = new FormData( this.form );
@@ -100,12 +170,6 @@ class SmartButtons extends PaymentMethod {
 		const result = await Give.form.fn.isDonorFilledValidData( this.form, formData );
 
 		if ( 'success' === result ) {
-			if ( DonationForm.isRecurringDonation( this.form ) ) {
-				this.submitDonationForm();
-
-				return actions.reject();
-			}
-
 			return actions.resolve();
 		}
 
@@ -114,7 +178,7 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
-	 * Create order event handler for smart buttons.
+	 * Create subscription event handler for smart buttons.
 	 *
 	 * @since 2.9.0
 	 *
@@ -123,34 +187,28 @@ class SmartButtons extends PaymentMethod {
 	 *
 	 * @return {Promise<unknown>} Return PayPal order id.
 	 */
-	async createOrderHandler(data, actions) { // eslint-disable-line
+	async creatSubscriptionHandler( data, actions ) {
 		Give.form.fn.removeErrors( this.jQueryForm );
 
 		// eslint-disable-next-line
-		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
+		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
 			method: 'POST',
 			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
 		} );
+
 		const responseJson = await response.json();
-		let errorDetail = {};
 
 		if ( ! responseJson.success ) {
-			if ( null === responseJson.data.error ) {
-				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
-				return null;
-			}
-
-			errorDetail = responseJson.data.error.details[ 0 ];
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
-
+			this.showError( responseJson.data.error );
 			return null;
 		}
 
-		return responseJson.data.id;
+		return actions.subscription.create( { plan_id: responseJson.data.id } );
 	}
 
 	/**
-	 * On approve event handler for smart buttons.
+	 * Subscription approve event handler for smart buttons.
+	 * @todo handle error and subscription cancellation
 	 *
 	 * @since 2.9.0
 	 *
@@ -159,7 +217,23 @@ class SmartButtons extends PaymentMethod {
 	 *
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
-	async onApproveHandler( data, actions ) {
+	async subscriptionApproveHandler( data, actions ) { // eslint-disable-line
+		await DonationForm.addFieldToForm( this.form, data.subscriptionID, 'payPalSubscriptionId' );
+
+		this.submitDonationForm();
+	}
+
+	/**
+	 * Order approve event handler for smart buttons.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} data PayPal button data.
+	 * @param {object} actions PayPal button actions.
+	 *
+	 * @return {*} Return whether or not PayPal payment captured.
+	 */
+	async orderApproveHandler( data, actions ) {
 		Give.form.fn.showProcessingState();
 		Give.form.fn.disable( this.jQueryForm, true );
 		Give.form.fn.removeErrors( this.jQueryForm );
@@ -201,7 +275,7 @@ class SmartButtons extends PaymentMethod {
 		}
 
 		const orderData = responseJson.data.order;
-		await DonationForm.attachOrderIdToForm( this.form, orderData.id );
+		await DonationForm.addFieldToForm( this.form, orderData.id, 'payPalOrderId' );
 
 		this.submitDonationForm();
 	}
