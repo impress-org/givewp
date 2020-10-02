@@ -61,7 +61,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function loadPayPalScript( form ) {
 		const options = {};
 		const isRecurring = DonationForm.isRecurringDonation( form );
-		options.intent = isRecurring ? 'subscription' : 'order';
+		// options.intent = isRecurring ? 'subscription' : 'capture';
+		options.intent = 'capture';
 		options.vault = isRecurring;
 
 		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
@@ -71,8 +72,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
 	if ( $formWraps.length ) {
-		setRecurringFieldTrackerToReloadPaypalSDK( $formWraps );
 		loadPayPalScript( $formWraps[ 0 ] );
+		setRecurringFieldTrackerToReloadPaypalSDK( $formWraps );
 	}
 
 	// On form submit prevent submission for PayPal commerce.
