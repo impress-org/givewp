@@ -31,5 +31,6 @@ export default registerBlockType( 'give/progress-bar', {
 		__( 'progress-bar', 'give' ),
 	],
 	attributes: blockAttributes,
+	parent: [ 'give/multi-form-goal' ],
 	edit: ProgressBar,
 } );
