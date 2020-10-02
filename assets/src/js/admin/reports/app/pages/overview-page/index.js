@@ -34,7 +34,7 @@ const OverviewPage = () => {
 			<Grid visible={ pageLoaded }>
 				<Card width={ 12 }>
 					<RESTChart
-						title={ __( 'Income for Period', 'give' ) }
+						title={ __( 'Revenue for Period', 'give' ) }
 						type="line"
 						aspectRatio={ 0.4 }
 						endpoint="income"
@@ -43,7 +43,7 @@ const OverviewPage = () => {
 				</Card>
 				<Card width={ 3 }>
 					<RESTMiniChart
-						title={ __( 'Total Income', 'give' ) }
+						title={ __( 'Total Revenue', 'give' ) }
 						endpoint="total-income"
 					/>
 				</Card>
@@ -67,7 +67,7 @@ const OverviewPage = () => {
 				</Card>
 				<Card width={ 12 }>
 					<RESTTable
-						title={ __( 'Income Breakdown', 'give' ) }
+						title={ __( 'Revenue Breakdown', 'give' ) }
 						endpoint="income-breakdown"
 					/>
 				</Card>

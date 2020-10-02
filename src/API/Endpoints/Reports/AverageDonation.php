@@ -103,7 +103,7 @@ class AverageDonation extends Endpoint {
 						'sanitize'        => false,
 					]
 				),
-				'body'   => __( 'Avg Income', 'give' ),
+				'body'   => __( 'Avg Revenue', 'give' ),
 				'footer' => $periodLabel,
 			];
 
