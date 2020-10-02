@@ -27,15 +27,6 @@ class CustomCardFields extends PaymentMethod {
 	/**
 	 * @inheritDoc
 	 */
-	registerEvents() {
-		if ( this.recurringChoiceHiddenField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, this.renderPaymentMethodOption.bind( this ) );
-		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	onGatewayLoadBoot( evt, self ) {
 		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
 			self.setupProperties();

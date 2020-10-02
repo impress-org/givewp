@@ -35,7 +35,6 @@ class PaymentMethod {
 		} );
 
 		if ( DonationForm.isPayPalCommerceSelected( this.jQueryForm ) ) {
-			this.registerEvents();
 			this.renderPaymentMethodOption();
 		}
 	}
@@ -60,13 +59,6 @@ class PaymentMethod {
 	 * @since 2.9.0
 	 */
 	renderPaymentMethodOption() {}
-
-	/**
-	 * Register events.
-	 *
-	 * @since 2.9.0
-	 */
-	registerEvents() {}
 
 	/**
 	 * Show error on donation form.
