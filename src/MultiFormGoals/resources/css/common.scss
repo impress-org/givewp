@@ -7,10 +7,12 @@
 }
 
 .give-multi-form-goal-block {
+	display: flex;
+	flex-direction: column;
+
 	background: #fff;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.305862);
 	border-radius: 8px;
-	overflow: hidden;
 
 	.wp-block-media-text {
 		margin: 24px !important;
@@ -75,6 +77,7 @@
 	background: #f5f5f5;
 	height: auto;
 	border-top: 1px solid #ebebeb;
+	border-radius: 0 0 8px 8px;
 }
 
 .give-progress-bar-block__stat {
