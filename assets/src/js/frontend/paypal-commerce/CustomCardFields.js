@@ -21,7 +21,7 @@ class CustomCardFields extends PaymentMethod {
 	setupProperties() {
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
-		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
+		this.separator = this.cardFields.number.el ? this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) : null;
 	}
 
 	/**
@@ -111,10 +111,12 @@ class CustomCardFields extends PaymentMethod {
 	 */
 	removeFields() {
 		for ( const type in this.cardFields ) {
-			this.cardFields[ type ].el.parentElement.remove();
+			this.cardFields[ type ].el && this.cardFields[ type ].el.parentElement.remove(); // eslint-disable-line
 		}
 
-		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
+		const cardNameField = this.form.querySelector( 'input[name="card_name"]' );
+
+		cardNameField && cardNameField.parentElement.remove(); // eslint-disable-line
 		this.separator && this.separator.remove(); // eslint-disable-line
 	}
 
