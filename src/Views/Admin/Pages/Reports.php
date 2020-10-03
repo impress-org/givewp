@@ -58,7 +58,7 @@ class Reports {
 		wp_enqueue_script(
 			'give-admin-reports-v3-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
-			[ 'wp-element', 'wp-api', 'wp-i18n' ],
+			[ 'wp-element', 'wp-api', 'wp-i18n', 'wp-hooks' ],
 			'0.0.1',
 			true
 		);
