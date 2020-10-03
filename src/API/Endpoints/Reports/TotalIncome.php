@@ -91,7 +91,7 @@ class TotalIncome extends Endpoint {
 						'sanitize'        => false,
 					]
 				),
-				'body'   => __( 'Total Income', 'give' ),
+				'body'   => __( 'Total Revenue', 'give' ),
 				'footer' => $periodLabel,
 			];
 

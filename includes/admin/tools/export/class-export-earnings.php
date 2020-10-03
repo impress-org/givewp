@@ -57,12 +57,12 @@ class Give_Earnings_Export extends Give_Export {
 	 */
 	public function csv_cols() {
 
-		$cols = array(
+		$cols = [
 			'date'      => __( 'Date', 'give' ),
 			'donations' => __( 'Donations', 'give' ),
 			/* translators: %s: currency */
-			'earnings'  => sprintf( __( 'Income (%s)', 'give' ), give_currency_symbol( '', true ) ),
-		);
+			'earnings'  => sprintf( __( 'Revenue (%s)', 'give' ), give_currency_symbol( '', true ) ),
+		];
 
 		return $cols;
 	}
@@ -81,7 +81,7 @@ class Give_Earnings_Export extends Give_Export {
 		$start_month = isset( $_POST['start_month'] ) ? absint( $_POST['start_month'] ) : date( 'n' );
 		$end_month   = isset( $_POST['end_month'] ) ? absint( $_POST['end_month'] ) : date( 'n' );
 
-		$data  = array();
+		$data  = [];
 		$year  = $start_year;
 		$stats = new Give_Payment_Stats();
 
@@ -114,11 +114,11 @@ class Give_Earnings_Export extends Give_Export {
 				$date1 = mktime( 0, 0, 0, $m1, 1, $year );
 				$date2 = mktime( 0, 0, 0, $m1, cal_days_in_month( CAL_GREGORIAN, $m1, $year ), $year );
 
-				$data[] = array(
+				$data[] = [
 					'date'      => date_i18n( 'F Y', $date1 ),
 					'donations' => $stats->get_sales( 0, $date1, $date2 ),
-					'earnings'  => give_format_amount( $stats->get_earnings( 0, $date1, $date2 ), array( 'sanitize' => false ) ),
-				);
+					'earnings'  => give_format_amount( $stats->get_earnings( 0, $date1, $date2 ), [ 'sanitize' => false ] ),
+				];
 
 				$m1 ++;
 

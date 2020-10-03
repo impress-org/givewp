@@ -52,8 +52,8 @@ function give_reports_graph() {
 	$earnings_totals = 0.00; // Total earnings for time period shown.
 	$sales_totals    = 0; // Total sales for time period shown.
 
-	$earnings_data = array();
-	$sales_data    = array();
+	$earnings_data = [];
+	$sales_data    = [];
 
 	if ( 'today' === $dates['range'] || 'yesterday' === $dates['range'] ) {
 
@@ -70,8 +70,8 @@ function give_reports_graph() {
 			$sales_totals    += $sales;
 			$earnings_totals += $earnings;
 
-			$sales_data[]    = array( $start_date * 1000, $sales );
-			$earnings_data[] = array( $start_date * 1000, $earnings );
+			$sales_data[]    = [ $start_date * 1000, $sales ];
+			$earnings_data[] = [ $start_date * 1000, $earnings ];
 
 			$hour ++;
 		endwhile;
@@ -92,8 +92,8 @@ function give_reports_graph() {
 			$sales_totals    += $sales;
 			$earnings_totals += $earnings;
 
-			$sales_data[]    = array( $start_date * 1000, $sales );
-			$earnings_data[] = array( $start_date * 1000, $earnings );
+			$sales_data[]    = [ $start_date * 1000, $sales ];
+			$earnings_data[] = [ $start_date * 1000, $earnings ];
 			$day ++;
 		endwhile;
 
@@ -143,8 +143,8 @@ function give_reports_graph() {
 						$sales_totals    += $sales;
 						$earnings_totals += $earnings;
 
-						$sales_data[]    = array( $start_date * 1000, $sales );
-						$earnings_data[] = array( $start_date * 1000, $earnings );
+						$sales_data[]    = [ $start_date * 1000, $sales ];
+						$earnings_data[] = [ $start_date * 1000, $earnings ];
 
 						$d ++;
 
@@ -161,8 +161,8 @@ function give_reports_graph() {
 					$sales_totals    += $sales;
 					$earnings_totals += $earnings;
 
-					$sales_data[]    = array( $start_date * 1000, $sales );
-					$earnings_data[] = array( $start_date * 1000, $earnings );
+					$sales_data[]    = [ $start_date * 1000, $sales ];
+					$earnings_data[] = [ $start_date * 1000, $earnings ];
 
 				}
 
@@ -175,10 +175,10 @@ function give_reports_graph() {
 
 	}
 
-	$data = array(
-		__( 'Income', 'give' )    => $earnings_data,
+	$data = [
+		__( 'Revenue', 'give' )   => $earnings_data,
 		__( 'Donations', 'give' ) => $sales_data,
-	);
+	];
 
 	// start our own output buffer.
 	ob_start();
@@ -190,7 +190,7 @@ function give_reports_graph() {
 				<div class="inside">
 					<?php give_reports_graph_controls(); ?>
 					<?php
-					$graph = new Give_Graph( $data, array( 'dataType' => array( 'amount', 'count' ) ) );
+					$graph = new Give_Graph( $data, [ 'dataType' => [ 'amount', 'count' ] ] );
 					$graph->set( 'x_mode', 'time' );
 					$graph->set( 'multiple_y_axes', true );
 					$graph->display();
@@ -204,8 +204,8 @@ function give_reports_graph() {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Total income for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, array( 'sanitize' => false ) ) ); ?></td>
+					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
@@ -213,8 +213,8 @@ function give_reports_graph() {
 				</tr>
 				<?php if ( 'this_month' === $dates['range'] ) : ?>
 					<tr>
-						<th scope="row"><strong><?php _e( 'Estimated monthly income:', 'give' ); ?></strong></th>
-						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], array( 'sanitize' => false ) ) ); ?></td>
+						<th scope="row"><strong><?php _e( 'Estimated monthly revenue:', 'give' ); ?></strong></th>
+						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], [ 'sanitize' => false ] ) ); ?></td>
 					</tr>
 					<tr class="alternate">
 						<th scope="row"><strong><?php _e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
@@ -290,8 +290,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	$earnings_totals = (float) 0.00; // Total earnings for time period shown.
 	$sales_totals    = 0;            // Total sales for time period shown.
 
-	$earnings_data = array();
-	$sales_data    = array();
+	$earnings_data = [];
+	$sales_data    = [];
 	$stats         = new Give_Payment_Stats();
 
 	if ( $dates['range'] == 'today' || $dates['range'] == 'yesterday' ) {
@@ -316,8 +316,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			$earnings         = $stats->get_earnings( $form_id, $date, $date_end );
 			$earnings_totals += $earnings;
 
-			$sales_data[]    = array( $date * 1000, $sales );
-			$earnings_data[] = array( $date * 1000, $earnings );
+			$sales_data[]    = [ $date * 1000, $sales ];
+			$earnings_data[] = [ $date * 1000, $earnings ];
 
 			$hour ++;
 		endwhile;
@@ -338,8 +338,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			$earnings         = $stats->get_earnings( $form_id, $date, $date_end );
 			$earnings_totals += $earnings;
 
-			$sales_data[]    = array( $date * 1000, $sales );
-			$earnings_data[] = array( $date * 1000, $earnings );
+			$sales_data[]    = [ $date * 1000, $sales ];
+			$earnings_data[] = [ $date * 1000, $earnings ];
 
 			$day ++;
 		endwhile;
@@ -391,8 +391,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 						$earnings         = $stats->get_earnings( $form_id, $date, $end_date );
 						$earnings_totals += $earnings;
 
-						$sales_data[]    = array( $date * 1000, $sales );
-						$earnings_data[] = array( $date * 1000, $earnings );
+						$sales_data[]    = [ $date * 1000, $sales ];
+						$earnings_data[] = [ $date * 1000, $earnings ];
 						$d ++;
 
 					endwhile;
@@ -410,8 +410,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 					$earnings         = $stats->get_earnings( $form_id, $date, $end_date );
 					$earnings_totals += $earnings;
 
-					$sales_data[]    = array( $date * 1000, $sales );
-					$earnings_data[] = array( $date * 1000, $earnings );
+					$sales_data[]    = [ $date * 1000, $sales ];
+					$earnings_data[] = [ $date * 1000, $earnings ];
 
 				}
 
@@ -424,17 +424,17 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	}
 
-	$data = array(
-		__( 'Income', 'give' )    => $earnings_data,
+	$data = [
+		__( 'Revenue', 'give' )   => $earnings_data,
 		__( 'Donations', 'give' ) => $sales_data,
-	);
+	];
 
 	?>
 	<h3><span>
 	<?php
 			printf(
 				/* translators: %s: form title */
-				esc_html__( 'Income Report for %s', 'give' ),
+				esc_html__( 'Revenue Report for %s', 'give' ),
 				get_the_title( $form_id )
 			);
 	?>
@@ -445,7 +445,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				<div class="inside">
 					<?php give_reports_graph_controls(); ?>
 					<?php
-					$graph = new Give_Graph( $data, array( 'dataType' => array( 'amount', 'count' ) ) );
+					$graph = new Give_Graph( $data, [ 'dataType' => [ 'amount', 'count' ] ] );
 					$graph->set( 'x_mode', 'time' );
 					$graph->set( 'multiple_y_axes', true );
 					$graph->display();
@@ -456,16 +456,16 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Total income for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, array( 'sanitize' => false ) ) ); ?></td>
+					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?></strong></th>
 					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Average monthly income:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), array( 'sanitize' => false ) ) ); ?></td>
+					<th scope="row"><strong><?php _e( 'Average monthly revenue:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), [ 'sanitize' => false ] ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php _e( 'Average monthly donations:', 'give' ); ?></strong></th>
@@ -502,7 +502,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 function give_reports_graph_controls() {
 	$date_options = apply_filters(
 		'give_report_date_options',
-		array(
+		[
 			'today'        => __( 'Today', 'give' ),
 			'yesterday'    => __( 'Yesterday', 'give' ),
 			'this_week'    => __( 'This Week', 'give' ),
@@ -514,7 +514,7 @@ function give_reports_graph_controls() {
 			'this_year'    => __( 'This Year', 'give' ),
 			'last_year'    => __( 'Last Year', 'give' ),
 			'other'        => __( 'Custom', 'give' ),
-		)
+		]
 	);
 
 	$dates   = give_get_report_dates();
@@ -614,7 +614,7 @@ function give_reports_graph_controls() {
  * @return array
  */
 function give_get_report_dates() {
-	$dates = array();
+	$dates = [];
 
 	$current_time = current_time( 'timestamp' );
 
@@ -827,24 +827,24 @@ function give_reports_refresh_button() {
 
 	$url = wp_nonce_url(
 		add_query_arg(
-			array(
+			[
 				'give_action'     => 'refresh_reports_transients',
 				'give-messages[]' => 'refreshed-reports',
-			)
+			]
 		),
 		'give-refresh-reports'
 	);
 
 	echo Give()->tooltips->render_link(
-		array(
+		[
 			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
 			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
 			'link'        => $url,
 			'position'    => 'left',
-			'attributes'  => array(
+			'attributes'  => [
 				'class' => 'button alignright give-admin-button',
-			),
-		)
+			],
+		]
 	);
 }
 
