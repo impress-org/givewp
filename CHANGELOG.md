@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Milestone block has been replaced by the Totals block, with features to match the Give Totals shortcode (#5264)
 -   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
+-   Reports page main menu is now extendable ( #5339 ) 
 
 ## [2.8.0] - 2020-08-31
 
