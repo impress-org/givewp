@@ -8,20 +8,22 @@ import { loadScript } from '@paypal/paypal-js';
 document.addEventListener( 'DOMContentLoaded', () => {
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
 
-	if ( $formWraps.length ) {
-		// Setup initial PayPal script on basis of first form on webpage.
-		loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) )
-			.then( () => {
-				setupPaymentMethods();
-			} );
-
-		$formWraps.forEach( $formWrap => {
-			const $form = $formWrap.querySelector( '.give-form' );
-			setRecurringFieldTrackerToReloadPaypalSDK( $form );
-			setFormCurrencyTrackerToReloadPaypalSDK( $form );
-			setupGatewayLoadEventToRenderPaymentMethods( $form );
-		} );
+	if ( ! $formWraps.length ) {
+		return;
 	}
+
+	// Setup initial PayPal script on basis of first form on webpage.
+	loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) )
+		.then( () => {
+			setupPaymentMethods();
+		} );
+
+	$formWraps.forEach( $formWrap => {
+		const $form = $formWrap.querySelector( '.give-form' );
+		setRecurringFieldTrackerToReloadPaypalSDK( $form );
+		setFormCurrencyTrackerToReloadPaypalSDK( $form );
+		setupGatewayLoadEventToRenderPaymentMethods( $form );
+	} );
 
 	// On form submit prevent submission for PayPal commerce.
 	// Form submission will be take care internally by smart buttons or advanced card fields.
