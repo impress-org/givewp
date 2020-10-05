@@ -98,23 +98,6 @@ class CustomCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Remove custom card fields on gateway load.
-	 *
-	 * @since 2.9.0
-	 * @param {object} evt Event
-	 *
-	 * @return {function} Function
-	 */
-	removeFieldsOnGatewayLoad( evt ) {
-		const self = this;
-		return () => {
-			if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-				self.removeFields.bind( self ).call();
-			}
-		};
-	}
-
-	/**
 	 * Return separator html.
 	 *
 	 * @since 2.9.0
