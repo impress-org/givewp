@@ -6,53 +6,77 @@ import CustomCardFields from './CustomCardFields';
 import { loadScript } from '@paypal/paypal-js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
+	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
+
+	if ( $formWraps.length ) {
+		// Setup initial PayPal script on basis of first form on webpage.
+		loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) )
+			.then( () => {
+				setupPaymentMethods();
+			} );
+
+		$formWraps.forEach( $formWrap => {
+			const $form = $formWrap.querySelector( '.give-form' );
+			setRecurringFieldTrackerToReloadPaypalSDK( $form );
+			setFormCurrencyTrackerToReloadPaypalSDK( $form );
+			setupGatewayLoadEventToRenderPaymentMethods( $form );
+		} );
+	}
+
+	// On form submit prevent submission for PayPal commerce.
+	// Form submission will be take care internally by smart buttons or advanced card fields.
+	jQuery( 'form.give-form' ).on( 'submit', e => {
+		if ( ! DonationForm.isPayPalCommerceSelected( jQuery( this ) ) ) {
+			return true;
+		}
+
+		e.preventDefault();
+
+		return false;
+	} );
+
 	/**
 	 * Setup recurring field tracker to reload paypal sdk.
 	 *
 	 * @since 2.9.0
-	 * @param {object} $formWraps Form container selectors
+	 * @param {object} $form Form selector
 	 */
-	function setRecurringFieldTrackerToReloadPaypalSDK( $formWraps ) {
-		$formWraps.forEach( $formWrap => {
-			const $form = $formWrap.querySelector( '.give-form' );
-			const recurringField = $form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+	function setRecurringFieldTrackerToReloadPaypalSDK( $form ) {
+		const recurringField = $form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 
-			if ( recurringField ) {
-				DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
-					loadPayPalScript( $form );
+		if ( recurringField ) {
+			DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
+				loadPayPalScript( $form ).then( () => {
+					setupPaymentMethods();
 				} );
-			}
-		} );
+			} );
+		}
 	}
 
 	/**
 	 * Setup gateway load event to render payment methods.
 	 *
 	 * @since 2.9.0
-	 * @param {object} $formWraps Form container selectors
+	 * @param {object} $form Form selector
 	 */
-	function setupGatewayLoadEventToRenderPaymentMethods( $formWraps ) {
+	function setupGatewayLoadEventToRenderPaymentMethods( $form ) {
 		document.addEventListener( 'give_gateway_loaded', () => {
-			$formWraps.forEach( $formWrap => {
-				const $form = $formWrap.querySelector( '.give-form' );
+			if ( ! DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+				return;
+			}
 
-				if ( ! DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
-					return;
-				}
+			const smartButtons = new SmartButtons( $form );
+			const customCardFields = new CustomCardFields( $form );
 
-				const smartButtons = new SmartButtons( $form );
-				const customCardFields = new CustomCardFields( $form );
+			smartButtons.boot();
 
-				smartButtons.boot();
+			// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
+			if ( AdvancedCardFields.canShow() ) {
+				const advancedCardFields = new AdvancedCardFields( customCardFields );
 
-				// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
-				if ( AdvancedCardFields.canShow() ) {
-					const advancedCardFields = new AdvancedCardFields( customCardFields );
-
-					customCardFields.boot();
-					advancedCardFields.boot();
-				}
-			} );
+				customCardFields.boot();
+				advancedCardFields.boot();
+			}
 		} );
 	}
 
@@ -60,13 +84,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	 * Setup form currency tracker to reload paypal sdk.
 	 *
 	 * @since 2.9.0
-	 * @param {object} $formWraps Form container selectors
+	 * @param {object} $form Form selector
 	 */
-	function setFormCurrencyTrackerToReloadPaypalSDK( $formWraps ) {
-		$formWraps.forEach( $formWrap => {
-			const $form = $formWrap.querySelector( '.give-form' );
-			DonationForm.trackDonationCurrencyChange( $form, () => {
-				loadPayPalScript( $form );
+	function setFormCurrencyTrackerToReloadPaypalSDK( $form ) {
+		DonationForm.trackDonationCurrencyChange( $form, () => {
+			loadPayPalScript( $form ).then( () => {
+				setupPaymentMethod( $formWraps );
 			} );
 		} );
 	}
@@ -75,9 +98,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	 * Setup PayPal payment methods
 	 *
 	 * @since 2.9.0
-	 * @param {object} $formWraps Form container selectors
 	 */
-	function setupPaymentMethods( $formWraps ) {
+	function setupPaymentMethods() {
 		$formWraps.forEach( $formWrap => {
 			const $form = $formWrap.querySelector( '.give-form' );
 
@@ -108,13 +130,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			customCardFields.boot();
 			advancedCardFields.boot();
-		} else {
-			if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
-				customCardFields.removeFields();
-			}
 
-			customCardFields.removeFieldsOnGatewayLoad();
+			return;
 		}
+
+		if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+			customCardFields.removeFields();
+		}
+
+		document.addEventListener( 'give_gateway_loaded', evt => customCardFields.removeFieldsOnGatewayLoad( evt ) );
 	}
 
 	/**
@@ -123,6 +147,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	 * @param {object} form Form selector
 	 *
 	 * @since 2.9.0
+	 *
+	 * @return {Promise}  PayPal sdk load promise.
 	 */
 	function loadPayPalScript( form ) {
 		const options = {};
@@ -132,28 +158,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		options.vault = !! isRecurring;
 		options.currency = Give.form.fn.getInfo( 'currency_code', jQuery( form ) );
 
-		loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } ).then( () => {
-			setupPaymentMethods( $formWraps );
-		} );
+		return loadScript( { ...givePayPalCommerce.payPalSdkQueryParameters, ...options } );
 	}
-
-	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
-	if ( $formWraps.length ) {
-		loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) );
-		setRecurringFieldTrackerToReloadPaypalSDK( $formWraps );
-		setFormCurrencyTrackerToReloadPaypalSDK( $formWraps );
-		setupGatewayLoadEventToRenderPaymentMethods( $formWraps );
-	}
-
-	// On form submit prevent submission for PayPal commerce.
-	// Form submission will be take care internally by smart buttons or advanced card fields.
-	jQuery( 'form.give-form' ).on( 'submit', e => {
-		if ( ! DonationForm.isPayPalCommerceSelected( jQuery( this ) ) ) {
-			return true;
-		}
-
-		e.preventDefault();
-
-		return false;
-	} );
 } );
