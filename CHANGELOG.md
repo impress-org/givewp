@@ -51,6 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
 -   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
 
+### Added
+
+-   Introduced Currency Switcher compatability styles for the Multi-Step form (#5220)
+
 ## [2.8.0-beta.3] - 2020-08-27
 
 ### Added
