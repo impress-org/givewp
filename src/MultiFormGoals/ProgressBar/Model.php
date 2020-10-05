@@ -232,19 +232,60 @@ class Model {
 	}
 
 	/**
-	 * Get days remaining before Progress Bar end date
+	 * Get minutes remaining before Progress Bar end date
 	 *
 	 * @return string
 	 * @since 2.9.0
 	 **/
-	protected function getDaysToGo() {
-		$now       = new \DateTime();
-		$timestamp = strtotime( $this->getEndDate() );
-		if ( $timestamp ) {
-			$enddate = new \DateTime( date( 'Y-m-d', $timestamp ) );
-			return $now < $enddate ? $enddate->diff( $now )->format( '%a' ) + 1 : 0;
+	protected function getMinutesRemaining() {
+		$enddate = strtotime( $this->getEndDate() );
+		if ( $enddate ) {
+			$now = time();
+			return $now < $enddate ? ( $enddate - $now ) / 60 : 0;
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * Get time remaining before Progress Bar end date
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getTimeToGo() {
+		$minutes = $this->getMinutesRemaining();
+		switch ( $minutes ) {
+			case $minutes > 1440: {
+				return round( $minutes / 1440 );
+			}
+			case $minutes < 1440 && $minutes > 60: {
+				return round( $minutes / 60 );
+			}
+			case $minutes < 60: {
+				return $minutes;
+			}
+		}
+	}
+
+	/**
+	 * Get time remaining before Progress Bar end date
+	 *
+	 * @return string
+	 * @since 2.9.0
+	 **/
+	protected function getTimeToGoLabel() {
+		$minutes = $this->getMinutesRemaining();
+		switch ( $minutes ) {
+			case $minutes > 1440: {
+				return _n( 'day to go', 'days to go', $this->getTimeToGo(), 'give' );
+			}
+			case $minutes < 1440 && $minutes > 60: {
+				return _n( 'hour to go', 'hours to go', $this->getTimeToGo(), 'give' );
+			}
+			case $minutes < 60: {
+				return _n( 'minute to go', 'minutes to go', $this->getTimeToGo(), 'give' );
+			}
 		}
 	}
 }

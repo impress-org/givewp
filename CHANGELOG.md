@@ -22,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Multi-Form Goal wrapper only added for non-block output (#5315)
 -   Multi-Form Goal output has a bottom margin (#5333)
+-   Multi-Form Goal end date now allows for specific time (#5336)
 -   Progress Bar block is no longer available outside of Multi-form Goal (#5338)
-
 
 ### Changed
 
