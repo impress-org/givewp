@@ -321,6 +321,12 @@
 				// Setup gateway icons
 				setupGatewayIcons();
 
+				// Setup Form Field Manager input listeners
+				setupFFMInputs();
+
+				// Setup Icons for inputs
+				setupInputIcons();
+
 				const observer = new window.MutationObserver( function( mutations ) {
 					mutations.forEach( function( mutation ) {
 						if ( ! mutation.addedNodes ) {
@@ -766,10 +772,10 @@
 	}
 
 	/**
-	 * Setup select inputs
+	 * Check if document is RTL
 	 *
 	 * @since 2.8.0
-	 * @return {boolean} Whether document is RTL
+	 * @return {boolean} Whether or not document is RTL
 	 */
 	function isRTL() {
 		return $( 'html' ).attr( 'dir' ) === 'rtl';

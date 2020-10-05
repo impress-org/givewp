@@ -7,15 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Milestone block is now available in the block editor (#5224)
+-   Milestone block now supports a title and description (#5229)
+-   Milestone now supports a featured image (#5234)
+-   Milestone can now be associated with one or many forms (#5230)
+-   Milestone now displays aggregated earnings based on associated forms (#5236)
+-   Milestone now supports a deadline (#5239)
+-   Milestone now supports a custom goal (#5237)
+-   Milestone now supports sorting forms by tag and category (#5244)
+-   Milestone now supports aggregating different metrics (Revenue, Donations, Donors) (#5244)
+-   Milestone title and description now support {} tags (#5242)
+-   Milestone now supports a custom Call To Action URL and text (#5262)
+-   Milestone block has been replaced by the Totals block, with features to match the Give Totals shortcode (#5264)
+-   Totals block now supports custom goal color (#5267)
+-   Migrations framework for database migrations
+-   Multi-Form Goal block and shortcode are now available (#5307)
+-   Progress Bar block now features improved SSR previews (#5316)
+-   Multi-Form Goal block now supports "wide" alignment (#5315)
+-   Multi-Form Goal block now supports the theme's color palette (#5319)
+-   Multi-Form Goal block and shortcode appearance is now consistent (#5320)
+
 ### Changed
 
--   Improved Mutli-Step form's placement of Fee Recovery checkbox to match location setting (#5205)
+-   Multi-Form Goal wrapper only added for non-block output (#5315)
+-   Multi-Form Goal output has a bottom margin (#5333)
+-   Progress Bar block is no longer available outside of Multi-form Goal (#5338)
+
+
+### Changed
+
+-   Multi-Form Goal Block now defaults to image filling the height (#5314)
+
+## [2.8.0] - 2020-08-31
+
+## [2.8.0-rc.1] - 2020-08-31
+
+### Fixed
+
+-   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (#5218)
+-   PHP Notices no longer break multi-step form receipt step. (#5219)
+-   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
+-   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
 
 ### Added
 
 -   Introduced Currency Switcher compatability styles for the Multi-Step form (#5220)
 
 ## [2.8.0-beta.3] - 2020-08-27
+
+### Added
+
+-   Multi-step forms now support RTL styles. (#5196)
+
+### Fixed
+
+-   Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. (#5184)
+-   Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway. (#5191)
 
 ### Changed
 
@@ -37,13 +86,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. (#4964)
--   Format for country and state select fields is normalized so states have an empty option but countries do not (#5163)
+-   Format for country and state select fields is normalized so states have an empty option but countries do not. (#5163)
 -   Scope of marked optional fields in the Multi-Step template is reduced to the User Info fieldset. (#5161)
 -   Wizard buttons now match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
 -   Removed preg_match that prevented version numbers with tags from being stored (#5172)
 -   Admin notice animation has been removed. (#5182)
--   Multi-step forms now support RTL styles (#5196)
 -   Setup Page margins are now consistent with other GiveWP admin pages. (#5180)
 -   Version numbers with tags (e.g. `2.8.0-beta.1`) can now be saved in full to the database. (#5172)
 
@@ -52,7 +100,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Placeholder for the Base Country setting no longer reads "Select a form". (#5163)
 -   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
 -   Onboarding Wizard no longer shows empty submenu under Dashboard. (#5190)
--   Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway (#5191)
 
 ## [2.8.0-alpha.2] - 2020-08-19
 
@@ -81,10 +128,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   New Onboarding Wizard guides new users through first-time configuration (#5014)
--   New Setup Page clarifies required steps that must be completed prior to accepting live donations (#5014)
--   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place (#5117)
--   Update Stripe Checkout to use Stripe Elements (#4964)
+-   New Onboarding Wizard guides new users through first-time configuration. (#5014)
+-   New Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)
+-   New `CHANGELOG.md`, Keep a Changelog, and Semantic Versioning standards are now in place. (#5117)
+-   Update Stripe Checkout to use Stripe Elements. (#4964)
 
 ### Changed
 
@@ -101,7 +148,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
 
-[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...HEAD
+[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0...HEAD
+[2.8.0]: https://github.com/impress-org/givewp/compare/2.8.0-rc.1...2.8.0
+[2.8.0-rc.1]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...2.8.0-rc.1
 [2.8.0-beta.3]: https://github.com/impress-org/givewp/compare/2.8.0-beta.2...2.8.0-beta.3
 [2.8.0-beta.2]: https://github.com/impress-org/givewp/compare/2.8.0-beta.1...2.8.0-beta.2
 [2.8.0-beta.1]: https://github.com/impress-org/givewp/compare/2.8.0-alpha.2...2.8.0-beta.1

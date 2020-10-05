@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo add_query_arg( array( 'type' => 'export_donations' ) ); ?>">
+							<a class="button" href="<?php echo add_query_arg( [ 'type' => 'export_donations' ] ); ?>">
 								<?php esc_html_e( 'Generate CSV', 'give' ); ?>
 							</a>
 						</td>
@@ -58,12 +58,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-pdf-sales-earnings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export PDF of Donations and Income', 'give' ); ?></span>
+								<span><?php esc_html_e( 'Export PDF of Donations and Revenue', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download a PDF of Donations and Income reports for all forms for the current year.', 'give' ); ?></p>
+							<p><?php esc_html_e( 'Download a PDF of Donations and Revenue reports for all forms for the current year.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>">
+							<a class="button" href="<?php echo wp_nonce_url( add_query_arg( [ 'give-action' => 'generate_pdf' ] ), 'give_generate_pdf' ); ?>">
 								<?php esc_html_e( 'Generate PDF', 'give' ); ?>
 							</a>
 						</td>
@@ -71,9 +71,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-sales-earnings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export Income and Donation Stats', 'give' ); ?></span>
+								<span><?php esc_html_e( 'Export Revenue and Donation Stats', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download a CSV of income and donations over time.', 'give' ); ?></p>
+							<p><?php esc_html_e( 'Download a CSV of revenue and donations over time.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post">
@@ -103,32 +103,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<?php
 								// Start Date form field for donors.
 								echo Give()->html->date_field(
-									array(
+									[
 										'id'           => 'give_donor_export_start_date',
 										'name'         => 'donor_export_start_date',
 										'placeholder'  => esc_attr__( 'Start Date', 'give' ),
 										'autocomplete' => 'off',
-									)
+									]
 								);
 
 								// End Date form field for donors.
 								echo Give()->html->date_field(
-									array(
+									[
 										'id'           => 'give_donor_export_end_date',
 										'name'         => 'donor_export_end_date',
 										'placeholder'  => esc_attr__( 'End Date', 'give' ),
 										'autocomplete' => 'off',
-									)
+									]
 								);
 
 								// Donation forms dropdown for donors export.
 								echo Give()->html->forms_dropdown(
-									array(
+									[
 										'name'   => 'forms',
 										'id'     => 'give_donor_export_form',
 										'chosen' => true,
 										'class'  => 'give-width-25em',
-									)
+									]
 								);
 								?>
 								<br>
@@ -175,7 +175,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<td>
 							<form method="post">
 								<?php
-								$export_excludes = apply_filters( 'give_settings_export_excludes', array() );
+								$export_excludes = apply_filters( 'give_settings_export_excludes', [] );
 								if ( ! empty( $export_excludes ) ) {
 									?>
 									<i class="settings-excludes-title"><?php esc_html_e( 'Checked options from the list will not be exported.', 'give' ); ?></i>

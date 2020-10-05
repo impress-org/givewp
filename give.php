@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.8.0-beta.3
+ * Version: 2.8.0
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -40,12 +40,16 @@
  */
 
 use Give\Container\Container;
+use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
+use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\Controller\Form as FormRouteController;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
+use Give\ServiceProviders\Totals;
+use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -133,6 +137,10 @@ final class Give {
 		LegacyServiceProvider::class,
 		RestAPI::class,
 		Onboarding::class,
+		Totals::class,
+		MigrationsServiceProvider::class,
+		RevenueServiceProvider::class,
+		MultiFormGoalsServiceProvider::class,
 	];
 
 	/**
@@ -241,7 +249,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.8.0-beta.3' );
+			define( 'GIVE_VERSION', '2.8.0' );
 		}
 
 		// Plugin Root File.
@@ -418,7 +426,7 @@ final class Give {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param $serviceProvider
+	 * @param string $serviceProvider
 	 */
 	public function registerServiceProvider( $serviceProvider ) {
 		$this->serviceProviders[] = $serviceProvider;
