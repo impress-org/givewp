@@ -10,3 +10,9 @@
 		max-width: 100% !important;
 	}
 }
+
+[data-type='give/multi-form-goal-content'] {
+	.block-editor-inner-blocks {
+		padding: 0 !important;
+	}
+}

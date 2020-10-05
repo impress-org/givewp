@@ -20,41 +20,43 @@ import '../../../css/editor.scss';
  * Register Block
  */
 const blockTemplate = [
-	[ 'core/media-text', {
-		imageFill: true,
-	}, [
-		[ 'give/multi-form-goal-content', {} ],
-	] ],
-	[ 'give/progress-bar', {} ],
+	[ 'core/heading', {
+		placeholder: __( 'Heading', 'give' ),
+	} ],
+	[ 'core/paragraph', {
+		placeholder: __( 'Summary', 'give' ),
+	} ],
 ];
 
-export default registerBlockType( 'give/multi-form-goal', {
-	title: __( 'Multi-Form Goal', 'give' ),
+const allowedBlocks = [
+	'core/paragraph',
+	'core/buttons',
+];
+
+export default registerBlockType( 'give/multi-form-goal-content', {
+	title: __( 'Multi-Form Goal Content', 'give' ),
 	description: __( 'The Multi-Form Goals block displays progress made across donation forms towards a common goal.', 'give' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
+	parent: [ 'give/multi-form-goal' ],
 	keywords: [
 		__( 'donation', 'give' ),
 		__( 'multi form goals', 'give' ),
 	],
-	supports: {
-		align: [
-			'wide',
-		],
-	},
 	edit: () => {
 		return (
-			<div className="give-multi-form-goal-block">
+			<div className="give-multi-form-goal-content-block">
 				<InnerBlocks
 					template={ blockTemplate }
-					templateLock="all"
+					allowedBlocks={ allowedBlocks }
+					templateLock={ false }
 				/>
 			</div>
 		);
 	},
 	save: () => {
 		return (
-			<div className="give-multi-form-goal-block">
+			<div className="give-multi-form-goal-content-block">
 				<InnerBlocks.Content />
 			</div>
 		);
