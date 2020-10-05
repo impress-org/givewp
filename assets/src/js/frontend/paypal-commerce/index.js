@@ -142,7 +142,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function loadPayPalScript( form ) {
 		const options = {};
 		const isRecurring = DonationForm.isRecurringDonation( form );
+
+		// This is the preferred way of setting the intent, but there is a bug with the PayPal SDK.
+		// Setting it to "capture" works for now.
 		// options.intent = isRecurring ? 'subscription' : 'capture';
+
 		options.intent = 'capture';
 		options.vault = !! isRecurring;
 		options.currency = Give.form.fn.getInfo( 'currency_code', jQuery( form ) );
