@@ -6,6 +6,12 @@
 	object-fit: cover;
 }
 
+.give-multi-form-goal-content-block {
+	> * {
+		margin: revert;
+	}
+}
+
 .give-multi-form-goal-block {
 	display: flex;
 	flex-direction: column;
