@@ -47,7 +47,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const recurringField = $form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 
 		if ( recurringField ) {
-			DonationForm.trackRecurringHiddenFieldChange( $form.querySelector( 'input[name="_give_is_donation_recurring"]' ), () => {
+			DonationForm.trackRecurringHiddenFieldChange( recurringField, () => {
 				loadPayPalScript( $form ).then( () => {
 					setupPaymentMethods();
 				} );
@@ -67,7 +67,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				return;
 			}
 
-			setupPaymentMethod( $form );
+			loadPayPalScript( $form ).then( () => {
+				setupPaymentMethod( $form );
+			} );
 		} );
 	}
 
@@ -140,6 +142,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function loadPayPalScript( form ) {
 		const options = {};
 		const isRecurring = DonationForm.isRecurringDonation( form );
+		console.log( 'isRecurring', isRecurring );
 		// options.intent = isRecurring ? 'subscription' : 'capture';
 		options.intent = 'capture';
 		options.vault = !! isRecurring;
