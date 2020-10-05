@@ -89,7 +89,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function setFormCurrencyTrackerToReloadPaypalSDK( $form ) {
 		DonationForm.trackDonationCurrencyChange( $form, () => {
 			loadPayPalScript( $form ).then( () => {
-				setupPaymentMethod( $formWraps );
+				setupPaymentMethods();
 			} );
 		} );
 	}
@@ -134,10 +134,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			return;
 		}
 
-		if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
-			customCardFields.removeFields();
-		}
-
+		customCardFields.removeFields();
 		document.addEventListener( 'give_gateway_loaded', evt => customCardFields.removeFieldsOnGatewayLoad( evt ) );
 	}
 
