@@ -8,12 +8,6 @@ import AdvancedCardFields from './AdvancedCardFields';
  * PayPal Smart Buttons.
  */
 class SmartButtons extends PaymentMethod {
-	constructor( form ) {
-		super( form );
-
-		this.setupProperties();
-	}
-
 	/**
 	 * Setup properties.
 	 *
@@ -23,17 +17,6 @@ class SmartButtons extends PaymentMethod {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 		this.smartButton = null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	onGatewayLoadBoot( evt, self ) {
-		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-			self.setupProperties();
-		}
-
-		super.onGatewayLoadBoot( evt, self );
 	}
 
 	/**

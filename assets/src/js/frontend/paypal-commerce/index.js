@@ -26,6 +26,37 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	/**
+	 * Setup gateway load event to render payment methods.
+	 *
+	 * @since 2.9.0
+	 * @param {object} $formWraps Form container selectors
+	 */
+	function setupGatewayLoadEventToRenderPaymentMethods( $formWraps ) {
+		document.addEventListener( 'give_gateway_loaded', () => {
+			$formWraps.forEach( $formWrap => {
+				const $form = $formWrap.querySelector( '.give-form' );
+
+				if ( ! DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+					return;
+				}
+
+				const smartButtons = new SmartButtons( $form );
+				const customCardFields = new CustomCardFields( $form );
+
+				smartButtons.boot();
+
+				// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
+				if ( AdvancedCardFields.canShow() ) {
+					const advancedCardFields = new AdvancedCardFields( customCardFields );
+
+					customCardFields.boot();
+					advancedCardFields.boot();
+				}
+			} );
+		} );
+	}
+
+	/**
 	 * Setup form currency tracker to reload paypal sdk.
 	 *
 	 * @since 2.9.0
@@ -49,25 +80,41 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function setupPaymentMethods( $formWraps ) {
 		$formWraps.forEach( $formWrap => {
 			const $form = $formWrap.querySelector( '.give-form' );
-			const smartButtons = new SmartButtons( $form );
-			const customCardFields = new CustomCardFields( $form );
 
-			smartButtons.boot();
-
-			// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
-			if ( AdvancedCardFields.canShow() ) {
-				const advancedCardFields = new AdvancedCardFields( customCardFields );
-
-				customCardFields.boot();
-				advancedCardFields.boot();
-			} else {
-				if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
-					customCardFields.removeFields();
-				}
-
-				customCardFields.removeFieldsOnGatewayLoad();
+			if ( ! DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+				return;
 			}
+
+			setupPaymentMethod( $form );
 		} );
+	}
+
+	/**
+	 * Setup payment  method.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {object} $form Form selector
+	 */
+	function setupPaymentMethod( $form ) {
+		const smartButtons = new SmartButtons( $form );
+		const customCardFields = new CustomCardFields( $form );
+
+		smartButtons.boot();
+
+		// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
+		if ( AdvancedCardFields.canShow() ) {
+			const advancedCardFields = new AdvancedCardFields( customCardFields );
+
+			customCardFields.boot();
+			advancedCardFields.boot();
+		} else {
+			if ( DonationForm.isPayPalCommerceSelected( jQuery( $form ) ) ) {
+				customCardFields.removeFields();
+			}
+
+			customCardFields.removeFieldsOnGatewayLoad();
+		}
 	}
 
 	/**
@@ -95,6 +142,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) );
 		setRecurringFieldTrackerToReloadPaypalSDK( $formWraps );
 		setFormCurrencyTrackerToReloadPaypalSDK( $formWraps );
+		setupGatewayLoadEventToRenderPaymentMethods( $formWraps );
 	}
 
 	// On form submit prevent submission for PayPal commerce.

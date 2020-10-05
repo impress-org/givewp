@@ -11,8 +11,17 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	constructor( customCardFields ) {
 		super( customCardFields.form );
-
 		this.customCardFields = customCardFields;
+
+		this.setFocusStyle();
+	}
+
+	/**
+	 * Setup properties.
+	 *
+	 * @since 2.9.0
+	 */
+	setupProperties() {
 		this.cardFields = {};
 		this.hostedCardFieldsContainers = {};
 		this.hostedFieldContainerStyleProperties = [
@@ -44,8 +53,6 @@ class AdvancedCardFields extends PaymentMethod {
 			'input:focus': {},
 			'input:placeholder': {},
 		};
-
-		this.setFocusStyle();
 	}
 
 	/**

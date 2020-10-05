@@ -5,15 +5,6 @@ import AdvancedCardFields from './AdvancedCardFields';
 
 class CustomCardFields extends PaymentMethod {
 	/**
-	 * @inheritDoc
-	 */
-	constructor( form ) {
-		super( form );
-
-		this.setupProperties();
-	}
-
-	/**
 	 * Setup properties.
 	 *
 	 * @since 2.9.0
@@ -28,17 +19,6 @@ class CustomCardFields extends PaymentMethod {
 				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
 				null;
 		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	onGatewayLoadBoot( evt, self ) {
-		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-			self.setupProperties();
-		}
-
-		super.onGatewayLoadBoot( evt, self );
 	}
 
 	/**
