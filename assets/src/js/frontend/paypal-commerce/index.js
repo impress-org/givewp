@@ -142,7 +142,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	function loadPayPalScript( form ) {
 		const options = {};
 		const isRecurring = DonationForm.isRecurringDonation( form );
-		console.log( 'isRecurring', isRecurring );
 		// options.intent = isRecurring ? 'subscription' : 'capture';
 		options.intent = 'capture';
 		options.vault = !! isRecurring;
