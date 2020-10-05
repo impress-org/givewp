@@ -19,9 +19,15 @@ class CustomCardFields extends PaymentMethod {
 	 * @since 2.9.0
 	 */
 	setupProperties() {
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
-		this.separator = this.cardFields.number.el ? this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) : null;
+
+		if ( ! ( this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' ) ) ) {
+			this.separator = this.cardFields.number.el ?
+				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
+				null;
+		}
 	}
 
 	/**
