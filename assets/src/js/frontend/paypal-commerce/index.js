@@ -65,18 +65,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				return;
 			}
 
-			const smartButtons = new SmartButtons( $form );
-			const customCardFields = new CustomCardFields( $form );
-
-			smartButtons.boot();
-
-			// Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
-			if ( AdvancedCardFields.canShow() ) {
-				const advancedCardFields = new AdvancedCardFields( customCardFields );
-
-				customCardFields.boot();
-				advancedCardFields.boot();
-			}
+			setupPaymentMethod( $form );
 		} );
 	}
 
@@ -135,7 +124,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 
 		customCardFields.removeFields();
-		document.addEventListener( 'give_gateway_loaded', evt => customCardFields.removeFieldsOnGatewayLoad( evt ) );
 	}
 
 	/**
