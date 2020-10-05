@@ -5,43 +5,20 @@ import AdvancedCardFields from './AdvancedCardFields';
 
 class CustomCardFields extends PaymentMethod {
 	/**
-	 * @inheritDoc
-	 */
-	constructor( form ) {
-		super( form );
-
-		this.setupProperties();
-	}
-
-	/**
 	 * Setup properties.
 	 *
 	 * @since 2.9.0
 	 */
 	setupProperties() {
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
-		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
-	}
 
-	/**
-	 * @inheritDoc
-	 */
-	registerEvents() {
-		if ( this.recurringChoiceHiddenField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, this.renderPaymentMethodOption.bind( this ) );
+		if ( ! ( this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' ) ) ) {
+			this.separator = this.cardFields.number.el ?
+				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
+				null;
 		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	onGatewayLoadBoot( evt, self ) {
-		if ( self.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-			self.setupProperties();
-		}
-
-		super.onGatewayLoadBoot( evt, self );
 	}
 
 	/**
@@ -111,27 +88,13 @@ class CustomCardFields extends PaymentMethod {
 	 */
 	removeFields() {
 		for ( const type in this.cardFields ) {
-			this.cardFields[ type ].el.parentElement.remove();
+			this.cardFields[ type ].el && this.cardFields[ type ].el.parentElement.remove(); // eslint-disable-line
 		}
 
-		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
+		const cardNameField = this.form.querySelector( 'input[name="card_name"]' );
+
+		cardNameField && cardNameField.parentElement.remove(); // eslint-disable-line
 		this.separator && this.separator.remove(); // eslint-disable-line
-	}
-
-	/**
-	 * Remove custom card fields on gateway load.
-	 *
-	 * @since 2.9.0
-	 */
-	removeFieldsOnGatewayLoad() {
-		const handler = evt => {
-			if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-				this.setupProperties();
-				this.removeFields.bind( this ).call();
-			}
-		};
-
-		document.addEventListener( 'give_gateway_loaded', evt => handler( evt ) );
 	}
 
 	/**
