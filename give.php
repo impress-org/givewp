@@ -426,7 +426,7 @@ final class Give {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param $serviceProvider
+	 * @param string $serviceProvider
 	 */
 	public function registerServiceProvider( $serviceProvider ) {
 		$this->serviceProviders[] = $serviceProvider;

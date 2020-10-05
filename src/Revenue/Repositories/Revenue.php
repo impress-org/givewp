@@ -24,16 +24,6 @@ class Revenue {
 	public function insert( $revenueData ) {
 		global $wpdb;
 
-		/**
-		 * Filter new revenue data for revenue table.
-		 *
-		 * @since 2.9.0
-		 */
-		$revenueData = apply_filters(
-			'give_revenue_data_for_insertion',
-			$revenueData
-		);
-
 		// Validate revenue data
 		$this->validateNewRevenueData( $revenueData );
 
@@ -51,7 +41,7 @@ class Revenue {
 	 *
 	 * @param array $array
 	 */
-	private function validateNewRevenueData( $array ) {
+	protected function validateNewRevenueData( $array ) {
 		$required = [ 'donation_id', 'form_id', 'amount' ];
 
 		$array = array_filter( $array ); // Remove empty values.
