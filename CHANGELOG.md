@@ -7,28 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0-alpha.1] - 2020-10-06
+
 ### Added
 
--   Totals block is now available in the block editor (#5264)
--   Totals block now supports custom goal color (#5267)
--   Migrations framework for database migrations
--   Multi-Form Goal block and shortcode are now available (#5307)
--   Progress Bar block now features improved SSR previews (#5316)
--   Multi-Form Goal block now supports "wide" alignment (#5315)
--   Multi-Form Goal block now supports the theme's color palette (#5319)
--   Multi-Form Goal block and shortcode appearance is now consistent (#5320)
--   Revenue database table for reports (#5257)
+-   Totals block is now available in the block editor. (#5264)
+-   Totals block now supports custom goal color. (#5267)
+-   Migrations framework can now be used for more reliable database migrations.
+-   Multi-Form Goal block and shortcode are now available. (#5307)
+-   Multi-Form Goal block now supports "wide" alignment. (#5315)
+-   Multi-Form Goal block now supports the theme's color palette. (#5319)
+-   Multi-Form Goal block and shortcode appearance is now consistent. (#5320)
+-   New database table handles revenue independently from donations. (#5257)
 
 ### Changed
 
--   Multi-Form Goal wrapper only added for non-block output (#5315)
--   Multi-Form Goal output has a bottom margin (#5333)
--   Multi-Form Goal end date now allows for specific time (#5336)
--   Progress Bar block is no longer available outside of Multi-form Goal (#5338)
-
-### Changed
-
--   Multi-Form Goal Block now defaults to image filling the height (#5314)
+-   Multi-Form Goal wrapper only added for non-block output. (#5315)
+-   Multi-Form Goal output has a bottom margin. (#5333)
+-   Multi-Form Goal end date now allows for specific time. (#5336)
+-   Multi-Form Goal Block now defaults to image filling the height. (#5314)
 
 ## [2.8.0] - 2020-08-31
 
@@ -138,7 +135,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
 
-[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0...HEAD
+[unreleased]: https://github.com/impress-org/givewp/compare/2.9.0-alpha.1...HEAD
+[2.9.0-alpha.1]: https://github.com/impress-org/givewp/compare/2.8.0...2.9.0-alpha.1
 [2.8.0]: https://github.com/impress-org/givewp/compare/2.8.0-rc.1...2.8.0
 [2.8.0-rc.1]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...2.8.0-rc.1
 [2.8.0-beta.3]: https://github.com/impress-org/givewp/compare/2.8.0-beta.2...2.8.0-beta.3
