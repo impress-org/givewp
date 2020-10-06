@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Multi-Form Goal end date now allows for specific time (#5336)
 -   Progress Bar block is no longer available outside of Multi-form Goal (#5338)
 -   Multi-Form Goal Block now defaults to image filling the height (#5314)
--   Multi-Form Goal Block metric calculations are more performant. (#5345)
+-   Multi-Form Goal Block metric calculations are more performant (#5345)
 
 ## [2.8.0] - 2020-08-31
 
