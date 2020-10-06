@@ -62,8 +62,8 @@ class ScriptLoader {
 			'givePayPalCommerce',
 			[
 				'translations' => [
-					'confirmPaypalAccountDisconnection' => esc_html__( 'Confirm PayPal account disconnection', 'give' ),
-					'disconnectPayPalAccount'           => esc_html__( 'Do you want to disconnect PayPal account?', 'give' ),
+					'confirmPaypalAccountDisconnection' => esc_html__( 'Disconnect PayPal Account', 'give' ),
+					'disconnectPayPalAccount'           => esc_html__( 'Are you sure you want to disconnect your PayPal account?', 'give' ),
 					'connectSuccessTitle'               => esc_html__( 'You’re connected to PayPal! Here’s what’s next...', 'give' ),
 					'pciWarning'                        => sprintf(
 						__(
