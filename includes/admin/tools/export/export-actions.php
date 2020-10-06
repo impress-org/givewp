@@ -26,9 +26,9 @@ function give_process_batch_export_form() {
 		wp_die(
 			esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
 			esc_html__( 'Error', 'give' ),
-			array(
+			[
 				'response' => 403,
-			)
+			]
 		);
 	}
 
@@ -43,7 +43,9 @@ function give_process_batch_export_form() {
 	 */
 	do_action( 'give_batch_export_class_include', $_REQUEST['class'] );
 
-	$export = new $_REQUEST['class']();
+	$filename = $_REQUEST['file_name'];
+
+	$export = new $_REQUEST['class'](1, $filename);
 	$export->export();
 
 }

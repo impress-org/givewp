@@ -5,10 +5,10 @@
  * This is the base class for all batch export methods. Each data export type (donors, payments, etc) extend this class.
  *
  * @package     Give
- * @subpackage  Admin/Export
+ * @since       1.5
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.5
+ * @subpackage  Admin/Export
  */
 
 // Exit if accessed directly.
@@ -116,16 +116,24 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
-	 * @param int $_step
+	 * @param int         $_step
+	 * @param string|null $filename
 	 */
-	public function __construct( $_step = 1 ) {
+	public function __construct( $_step = 1, $filename = null ) {
 
 		$upload_dir     = wp_upload_dir();
 		$this->filetype = '.csv';
-		$this->filename = 'give-' . $this->export_type . $this->filetype;
-		$this->file     = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
 
-		if ( ! is_writeable( $upload_dir['basedir'] ) ) {
+		if ( null === $filename ) {
+			$hash           = uniqid();
+			$this->filename = "give-{$hash}-{$this->export_type}{$this->filetype}";
+		} else {
+			$this->filename = $filename;
+		}
+
+		$this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
+
+		if ( ! is_writable( $upload_dir['basedir'] ) ) {
 			$this->is_writable = false;
 		}
 
@@ -145,9 +153,9 @@ class Give_Batch_Export extends Give_Export {
 			wp_die(
 				esc_html__( 'You do not have permission to export data.', 'give' ),
 				esc_html__( 'Error', 'give' ),
-				array(
+				[
 					'response' => 403,
-				)
+				]
 			);
 		}
 
@@ -168,8 +176,8 @@ class Give_Batch_Export extends Give_Export {
 	 *
 	 * @access public
 	 * @since  1.5
-	 * @uses   Give_Export::get_csv_cols()
 	 * @return string
+	 * @uses   Give_Export::get_csv_cols()
 	 */
 	public function print_csv_cols() {
 
@@ -248,7 +256,7 @@ class Give_Batch_Export extends Give_Export {
 
 		if ( @file_exists( $this->file ) ) {
 
-			if ( ! is_writeable( $this->file ) ) {
+			if ( ! is_writable( $this->file ) ) {
 				$this->is_writable = false;
 			}
 
