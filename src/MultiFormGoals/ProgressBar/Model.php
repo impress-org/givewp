@@ -112,29 +112,10 @@ class Model {
 	 * @return int
 	 * @since 2.9.0
 	 **/
-	protected function getEarnings() {
-		$forms    = $this->getForms();
-		$earnings = 0;
-		foreach ( $forms as $form ) {
-			$earnings += ! empty( give_get_meta( $form, '_give_form_earnings', true ) ) ? give_get_meta( $form, '_give_form_earnings', true ) : 0;
-		}
-		return $earnings;
-	}
-
-	/**
-	 * Get number of donors for Progress Bar
-	 *
-	 * @return int
-	 * @since 2.9.0
-	 **/
-	protected function getDonorCount() {
-		$donations = $this->getDonations();
-		$donors    = [];
-		foreach ( $donations as $donation ) {
-			$donors[] = ! empty( $donation->donor_id ) ? $donation->donor_id : 0;
-		}
-		$unique = array_unique( $donors );
-		return count( $unique );
+	protected function getTotal() {
+		$query   = new Query( $this->getForms() );
+		$results = $query->getResults();
+		return $results->total;
 	}
 
 	/**
@@ -144,8 +125,9 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getDonationCount() {
-		$donations = $this->getDonations();
-		return count( $donations );
+		$query   = new Query( $this->getForms() );
+		$results = $query->getResults();
+		return $results->count;
 	}
 
 	/**
@@ -154,7 +136,7 @@ class Model {
 	 * @since 2.9.0
 	 */
 	protected function getFormattedTotalRemaining() {
-		$total_remaining = ( $this->getGoal() - $this->getEarnings() ) > 0 ? ( $this->getGoal() - $this->getEarnings() ) : 0;
+		$total_remaining = ( $this->getGoal() - $this->getTotal() ) > 0 ? ( $this->getGoal() - $this->getTotal() ) : 0;
 		return give_currency_filter(
 			give_format_amount(
 				$total_remaining,
@@ -203,10 +185,6 @@ class Model {
 				]
 			)
 		);
-	}
-
-	protected function getTotal() {
-		return $this->getEarnings();
 	}
 
 	protected function getFormattedGoal() {
