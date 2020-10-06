@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Multi-Form Goal block now supports "wide" alignment (#5315)
 -   Multi-Form Goal block now supports the theme's color palette (#5319)
 -   Multi-Form Goal block and shortcode appearance is now consistent (#5320)
+-   Revenue database table for reports (#5257)
 
 ### Changed
 
