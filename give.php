@@ -44,7 +44,8 @@ use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
-use Give\Controller\Form as FormRouteController;
+use Give\ServiceProviders\PaymentGateways;
+use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
@@ -136,6 +137,8 @@ final class Give {
 	private $serviceProviders = [
 		LegacyServiceProvider::class,
 		RestAPI::class,
+		Routes::class,
+		PaymentGateways::class,
 		Onboarding::class,
 		Totals::class,
 		MigrationsServiceProvider::class,
@@ -215,7 +218,7 @@ final class Give {
 		$this->templates->load();
 
 		// Load routes.
-		$this->routeForm->init( new FormRouteController() );
+		$this->routeForm->init();
 
 		/**
 		 * Fire the action after Give core loads.

@@ -3,10 +3,10 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Gateways
+ * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.8
+ * @subpackage  Classes/Give_Settings_Gateways
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,8 +35,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
-				add_action( 'give_admin_field_gateway_notice', array( $this, 'render_gateway_notice' ), 10, 2 );
-				add_action( 'give_admin_field_enabled_gateways', array( $this, 'render_enabled_gateways' ), 10, 2 );
+				add_action( 'give_admin_field_gateway_notice', [ $this, 'render_gateway_notice' ], 10, 2 );
+				add_action( 'give_admin_field_enabled_gateways', [ $this, 'render_enabled_gateways' ], 10, 2 );
 			}
 		}
 
@@ -47,153 +47,80 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			$settings        = array();
+			$settings        = [];
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
-				case 'paypal-standard':
-					$settings = array(
-						// Section 2: PayPal Standard.
-						array(
-							'type' => 'title',
-							'id'   => 'give_title_gateway_settings_2',
-						),
-						array(
-							'name' => __( 'PayPal Email', 'give' ),
-							'desc' => __( 'Enter the email address associated with your PayPal account to connect with the gateway.', 'give' ),
-							'id'   => 'paypal_email',
-							'type' => 'email',
-						),
-						array(
-							'name' => __( 'PayPal Page Style', 'give' ),
-							'desc' => __( 'Enter the name of the PayPal page style to use, or leave blank to use the default.', 'give' ),
-							'id'   => 'paypal_page_style',
-							'type' => 'text',
-						),
-						array(
-							'name'    => __( 'PayPal Transaction Type', 'give' ),
-							'desc'    => __( 'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.', 'give' ),
-							'id'      => 'paypal_button_type',
-							'type'    => 'radio_inline',
-							'options' => array(
-								'donation' => __( 'Donation', 'give' ),
-								'standard' => __( 'Standard Transaction', 'give' ),
-							),
-							'default' => 'donation',
-						),
-						array(
-							'name'    => __( 'Billing Details', 'give' ),
-							'desc'    => __( 'If enabled, required billing address fields are added to PayPal Standard forms. These fields are not required by PayPal to process the transaction, but you may have a need to collect the data. Billing address details are added to both the donation and donor record in GiveWP.', 'give' ),
-							'id'      => 'paypal_standard_billing_details',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
-							'name'    => __( 'PayPal IPN Verification', 'give' ),
-							'desc'    => __( 'If enabled, IPN (Instant Payment Notification) messages sent to your site from PayPal are verified with an extra (background) step. The IPN is what marks PayPal donations as complete on GiveWP\'s side. If donations are not getting marked as complete, disabling this extra verification step can resolve it. Only disable this setting to resolve the pending donation issue, since it is technically less secure.', 'give' ),
-							'id'      => 'paypal_verification',
-							'type'    => 'radio_inline',
-							'default' => 'enabled',
-							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
-							'id'      => 'paypal_invoice_prefix',
-							'name'    => esc_html__( 'Invoice ID Prefix', 'give' ),
-							'desc'    => esc_html__( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.', 'give' ),
-							'type'    => 'text',
-							'default' => 'GIVE-',
-						),
-						array(
-							'name'  => __( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
-							'id'    => 'paypal_standard_gateway_settings_docs_link',
-							'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-paypal-standard' ),
-							'title' => __( 'PayPal Standard Gateway Settings', 'give' ),
-							'type'  => 'give_docs_link',
-						),
-						array(
-							'type' => 'sectionend',
-							'id'   => 'give_title_gateway_settings_2',
-						),
-					);
-					break;
-
 				case 'offline-donations':
-					$settings = array(
+					$settings = [
 						// Section 3: Offline gateway.
-						array(
+						[
 							'type' => 'title',
 							'id'   => 'give_title_gateway_settings_3',
-						),
-						array(
+						],
+						[
 							'name'    => __( 'Collect Billing Details', 'give' ),
 							'desc'    => __( 'If enabled, required billing address fields are added to Offline Donation forms. These fields are not required to process the transaction, but you may have a need to collect the data. Billing address details are added to both the donation and donor record in GiveWP. ', 'give' ),
 							'id'      => 'give_offline_donation_enable_billing_fields',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
-							'options' => array(
+							'options' => [
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
+							],
+						],
+						[
 							'name'    => __( 'Offline Donation Instructions', 'give' ),
 							'desc'    => __( 'The Offline Donation Instructions are a chance for you to educate the donor on how to best submit offline donations. These instructions appear directly on the form, and after submission of the form. Note: You may also customize the instructions on individual forms as needed.', 'give' ),
 							'id'      => 'global_offline_donation_content',
 							'default' => give_get_default_offline_donation_content(),
 							'type'    => 'wysiwyg',
-							'options' => array(
+							'options' => [
 								'textarea_rows' => 6,
-							),
-						),
-						array(
+							],
+						],
+						[
 							'name'  => esc_html__( 'Offline Donations Settings Docs Link', 'give' ),
 							'id'    => 'offline_gateway_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/offlinegateway' ),
 							'title' => __( 'Offline Gateway Settings', 'give' ),
 							'type'  => 'give_docs_link',
-						),
-						array(
+						],
+						[
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_3',
-						),
-					);
+						],
+					];
 					break;
 
 				case 'gateways-settings':
-					$settings = array(
+					$settings = [
 						// Section 1: Gateways.
-						array(
+						[
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'title',
-						),
-						array(
+						],
+						[
 							'id'   => 'gateway_notice',
 							'type' => 'gateway_notice',
-						),
-						array(
+						],
+						[
 							'name'    => __( 'Test Mode', 'give' ),
 							'desc'    => __( 'If enabled, donations are processed through the sandbox/test accounts configured in each gateway\'s settings. This prevents having to use real money for tests. See the payment gateway documentation for instructions on configuring sandbox accounts.', 'give' ),
 							'id'      => 'test_mode',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
-							'options' => array(
+							'options' => [
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
+							],
+						],
+						[
 							'name' => __( 'Enabled Gateways', 'give' ),
 							'desc' => __( 'Enable your payment gateway. Can be ordered by dragging.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways',
-						),
+						],
 
 						/**
 						 * "Enabled Gateways" setting field contains gateways label setting but when you save gateway settings then label will not save
@@ -201,12 +128,12 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						 *
 						 * This setting will not render on admin setting screen but help internal code to recognize "gateways_label"  setting and add them to give setting when save.
 						 */
-						array(
+						[
 							'name' => __( 'Gateways Label', 'give' ),
 							'desc' => '',
 							'id'   => 'gateways_label',
 							'type' => 'gateways_label_hidden',
-						),
+						],
 
 						/**
 						 * "Enabled Gateways" setting field contains default gateway setting but when you save gateway settings then this setting will not save
@@ -214,25 +141,25 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						 *
 						 * This setting will not render on admin setting screen but help internal code to recognize "default_gateway"  setting and add them to give setting when save.
 						 */
-						array(
+						[
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'The gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway_hidden',
-						),
+						],
 
-						array(
+						[
 							'name'  => __( 'Gateways Docs Link', 'give' ),
 							'id'    => 'gateway_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-gateways' ),
 							'title' => __( 'Gateway Settings', 'give' ),
 							'type'  => 'give_docs_link',
-						),
-						array(
+						],
+						[
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'sectionend',
-						),
-					);
+						],
+					];
 					break;
 			}
 
@@ -247,7 +174,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			 *
 			 * @since  1.8
 			 *
-			 * @param  array $settings
+			 * @param array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
 
@@ -258,17 +185,22 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		/**
 		 * Get sections.
 		 *
+		 * @since 2.9.0 move offline-donations to end of gateway list
 		 * @since 1.8
+		 *
 		 * @return array
 		 */
 		public function get_sections() {
-			$sections = array(
-				'gateways-settings' => __( 'Gateways', 'give' ),
-				'paypal-standard'   => __( 'PayPal Standard', 'give' ),
-				'offline-donations' => __( 'Offline Donations', 'give' ),
+			$sections = apply_filters(
+				'give_get_sections_' . $this->id,
+				[
+					'gateways-settings' => __( 'Gateways', 'give' ),
+				]
 			);
 
-			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+			$sections['offline-donations'] = __( 'Offline Donations', 'give' );
+
+			return $sections;
 		}
 
 
@@ -292,9 +224,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 				?>
 				<div class="give-gateways-notice">
 					<div class="give-gateways-cc-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35" height="29" viewBox="0 0 35 29">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35"
+							 height="29" viewBox="0 0 35 29">
 							<defs>
-								<path id="credit-card-a" d="M32.0772569,3.88888889 L2.92274306,3.88888889 C1.30642361,3.88888889 0,5.1953125 0,6.80555556 L0,28.1944444 C0,29.8046875 1.30642361,31.1111111 2.92274306,31.1111111 L32.0772569,31.1111111 C33.6935764,31.1111111 35,29.8046875 35,28.1944444 L35,6.80555556 C35,5.1953125 33.6935764,3.88888889 32.0772569,3.88888889 Z M3.28732639,6.80555556 L31.7126736,6.80555556 C31.9131944,6.80555556 32.0772569,6.96961806 32.0772569,7.17013889 L32.0772569,9.72222222 L2.92274306,9.72222222 L2.92274306,7.17013889 C2.92274306,6.96961806 3.08680556,6.80555556 3.28732639,6.80555556 Z M31.7126736,28.1944444 L3.28732639,28.1944444 C3.08680556,28.1944444 2.92274306,28.0303819 2.92274306,27.8298611 L2.92274306,17.5 L32.0772569,17.5 L32.0772569,27.8298611 C32.0772569,28.0303819 31.9131944,28.1944444 31.7126736,28.1944444 Z M11.6666667,22.1180556 L11.6666667,24.5486111 C11.6666667,24.9496528 11.3385417,25.2777778 10.9375,25.2777778 L6.5625,25.2777778 C6.16145833,25.2777778 5.83333333,24.9496528 5.83333333,24.5486111 L5.83333333,22.1180556 C5.83333333,21.7170139 6.16145833,21.3888889 6.5625,21.3888889 L10.9375,21.3888889 C11.3385417,21.3888889 11.6666667,21.7170139 11.6666667,22.1180556 Z M23.3333333,22.1180556 L23.3333333,24.5486111 C23.3333333,24.9496528 23.0052083,25.2777778 22.6041667,25.2777778 L14.3402778,25.2777778 C13.9392361,25.2777778 13.6111111,24.9496528 13.6111111,24.5486111 L13.6111111,22.1180556 C13.6111111,21.7170139 13.9392361,21.3888889 14.3402778,21.3888889 L22.6041667,21.3888889 C23.0052083,21.3888889 23.3333333,21.7170139 23.3333333,22.1180556 Z"/>
+								<path id="credit-card-a"
+									  d="M32.0772569,3.88888889 L2.92274306,3.88888889 C1.30642361,3.88888889 0,5.1953125 0,6.80555556 L0,28.1944444 C0,29.8046875 1.30642361,31.1111111 2.92274306,31.1111111 L32.0772569,31.1111111 C33.6935764,31.1111111 35,29.8046875 35,28.1944444 L35,6.80555556 C35,5.1953125 33.6935764,3.88888889 32.0772569,3.88888889 Z M3.28732639,6.80555556 L31.7126736,6.80555556 C31.9131944,6.80555556 32.0772569,6.96961806 32.0772569,7.17013889 L32.0772569,9.72222222 L2.92274306,9.72222222 L2.92274306,7.17013889 C2.92274306,6.96961806 3.08680556,6.80555556 3.28732639,6.80555556 Z M31.7126736,28.1944444 L3.28732639,28.1944444 C3.08680556,28.1944444 2.92274306,28.0303819 2.92274306,27.8298611 L2.92274306,17.5 L32.0772569,17.5 L32.0772569,27.8298611 C32.0772569,28.0303819 31.9131944,28.1944444 31.7126736,28.1944444 Z M11.6666667,22.1180556 L11.6666667,24.5486111 C11.6666667,24.9496528 11.3385417,25.2777778 10.9375,25.2777778 L6.5625,25.2777778 C6.16145833,25.2777778 5.83333333,24.9496528 5.83333333,24.5486111 L5.83333333,22.1180556 C5.83333333,21.7170139 6.16145833,21.3888889 6.5625,21.3888889 L10.9375,21.3888889 C11.3385417,21.3888889 11.6666667,21.7170139 11.6666667,22.1180556 Z M23.3333333,22.1180556 L23.3333333,24.5486111 C23.3333333,24.9496528 23.0052083,25.2777778 22.6041667,25.2777778 L14.3402778,25.2777778 C13.9392361,25.2777778 13.6111111,24.9496528 13.6111111,24.5486111 L13.6111111,22.1180556 C13.6111111,21.7170139 13.9392361,21.3888889 14.3402778,21.3888889 L22.6041667,21.3888889 C23.0052083,21.3888889 23.3333333,21.7170139 23.3333333,22.1180556 Z"/>
 							</defs>
 							<g fill="none" fill-rule="evenodd" opacity=".341" transform="translate(0 -3)">
 								<mask id="credit-card-b" fill="#fff">
@@ -327,7 +261,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 					<div class="give-gateways-notice-button">
 						<?php echo give_stripe_connect_button(); ?>
-						<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner" target="_blank" class="give-view-gateways-btn button">
+						<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner"
+						   target="_blank" class="give-view-gateways-btn button">
 							<?php esc_html_e( 'View Premium Gateways', 'give' ); ?>
 						</a>
 					</div>
@@ -348,7 +283,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		public function render_enabled_gateways( $field, $settings ) {
 			$id              = $field['id'];
 			$gateways        = give_get_ordered_payment_gateways( give_get_payment_gateways() );
-			$gateways_label  = give_get_option( 'gateways_label', array() );
+			$gateways_label  = give_get_option( 'gateways_label', [] );
 			$default_gateway = give_get_option( 'default_gateway', current( array_keys( $gateways ) ) );
 
 			ob_start();

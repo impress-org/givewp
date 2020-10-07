@@ -777,12 +777,41 @@ add_filter( 'give_donation_purchase_key', 'give_paypal_purchase_key', 10, 3 );
  */
 function give_paypal_connect_button() {
 
-	// Prepare Stripe Connect URL.
-	$link = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal-standard' );
+	ob_start(); ?>
 
-	return sprintf(
-		'<a href="%1$s" id="give-paypal-connect"><span>%2$s</span></a>',
-		esc_url( $link ),
-		esc_html__( 'Connect to PayPal', 'give' )
-	);
+	<script>
+		function onboardedCallback(authCode, sharedId) {
+			fetch('/seller-server/login-seller', {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify({
+					authCode: authCode,
+					sharedId: sharedId
+				})
+			}).then(function(res) {
+				if (!response.ok) {
+					alert("Something went wrong!");
+				}
+			});
+		}
+	</script>
+	<a target="_blank" data-paypal-onboard-complete="onboardedCallback" href="<Action-URL>&displayMode=minibrowser" data-paypal-button="true">Sign up for PayPal</a>
+	<script id="paypal-js" src="https://www.sandbox.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js"></script>
+
+	<?php return ob_get_clean();
+
+	// Prepare Stripe Connect URL.
+//	$link = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal-standard' );
+//
+//	return sprintf(
+//		'<a href="%1$s" id="give-paypal-connect"><span>%2$s</span></a>',
+//		esc_url( $link ),
+//		esc_html__( 'Connect to PayPal', 'give' )
+//	);
+
+
+
+
 }
