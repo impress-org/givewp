@@ -97,7 +97,8 @@ class PayPalOrder {
 					'description'         => '',
 					'amount'              => [
 						'value'         => give_maybe_sanitize_amount( $array['donationAmount'], [ 'currency' => give_get_currency( $array['formId'] ) ] ),
-						'currency_code' => give_get_currency( $array['formId'] ),
+						// 'currency_code' => give_get_currency( $array['formId'] ),
+						'currency_code' => 'INR',
 					],
 					'payee'               => [
 						'email_address' => $this->merchantDetails->merchantId,

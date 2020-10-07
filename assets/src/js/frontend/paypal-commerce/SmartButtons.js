@@ -1,4 +1,4 @@
-/* globals paypal, Give, FormData, givePayPalCommerce */
+/* globals paypal, Give, FormData */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 import CustomCardFields from './CustomCardFields';
@@ -67,6 +67,9 @@ class SmartButtons extends PaymentMethod {
 				label: 'paypal',
 				color: 'gold',
 				tagline: false,
+			},
+			onError: ( error ) =>{
+				this.showError( error );
 			},
 		};
 
@@ -149,8 +152,7 @@ class SmartButtons extends PaymentMethod {
 		const responseJson = await response.json();
 
 		if ( ! responseJson.success ) {
-			this.showError( responseJson.data.error );
-			return null;
+			throw responseJson.data.error;
 		}
 
 		return actions.subscription.create( { plan_id: responseJson.data.id } );
@@ -204,11 +206,6 @@ class SmartButtons extends PaymentMethod {
 			Give.form.fn.disable( this.jQueryForm, false );
 			Give.form.fn.hideProcessingState();
 
-			if ( null === responseJson.data.error ) {
-				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
-				return;
-			}
-
 			errorDetail = responseJson.data.error.details[ 0 ];
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
 				Give.form.fn.hideProcessingState();
@@ -219,8 +216,7 @@ class SmartButtons extends PaymentMethod {
 				return actions.restart();
 			}
 
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
-			return;
+			throw responseJson.data.error;
 		}
 
 		const orderData = responseJson.data.order;

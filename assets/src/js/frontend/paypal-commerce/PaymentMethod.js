@@ -121,8 +121,7 @@ class PaymentMethod {
 		const responseJson = await response.json();
 
 		if ( ! responseJson.success ) {
-			this.showError( responseJson.data.error );
-			return null;
+			throw responseJson.data.error;
 		}
 
 		return responseJson.data.id;
