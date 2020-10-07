@@ -26,10 +26,10 @@
 			<div><?php echo $this->getFormattedGoal(); ?></div>
 			<div><?php echo __( 'goal', 'give' ); ?></div>
 		</div>
-		<?php if ( ! empty( $this->getEndDate() ) && $this->getDaysToGo() !== false ) : ?>
+		<?php if ( ! empty( $this->getEndDate() ) ) : ?>
 			<div class="give-progress-bar-block__stat">
-				<div><?php echo $this->getDaysToGo(); ?></div>
-				<div><?php echo _n( 'day to go', 'days to go', $this->getDaysToGo(), 'give' ); ?></div>
+				<div><?php echo $this->getTimeToGo(); ?></div>
+				<div><?php echo $this->getTimeToGoLabel(); ?></div>
 			</div>
 		<?php endif; ?>
 	</div>

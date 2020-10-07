@@ -184,8 +184,8 @@ class Give_MetaBox_Form_Data {
 								],
 								'options'       => [
 									'display_label' => __( 'Donation Limits: ', 'give' ),
-									'minimum'       => give_format_decimal( ['amount' => '5.00' ] ),
-									'maximum'       => give_format_decimal( ['amount' => '999999.99' ] ),
+									'minimum'       => give_format_decimal( [ 'amount' => '5.00' ] ),
+									'maximum'       => give_format_decimal( [ 'amount' => '999999.99' ] ),
 								],
 							],
 							[
@@ -949,7 +949,7 @@ class Give_MetaBox_Form_Data {
 				// Set default value for checkbox fields.
 				if (
 					! isset( $_POST[ $form_meta_key ] ) &&
-					in_array( $this->get_field_type( $form_meta_key ), [ 'checkbox', 'chosen' ] )
+					in_array( $this->get_field_type( $form_meta_key ), [ 'checkbox', 'chosen', 'multicheck' ] )
 				) {
 					$_POST[ $form_meta_key ] = '';
 				}
