@@ -37,7 +37,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @var array
 	 * @since 1.5
 	 */
-	private $data = array();
+	private $data = [];
 
 	/**
 	 * Array of donor ids which is already included in csv file.
@@ -45,7 +45,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @since 1.8
 	 * @var array
 	 */
-	private $donor_ids = array();
+	private $donor_ids = [];
 
 	/**
 	 * Array of payment stats which is already included in csv file.
@@ -53,7 +53,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @since 1.8.9
 	 * @var array
 	 */
-	private $payment_stats = array();
+	private $payment_stats = [];
 
 	/**
 	 * Export query id.
@@ -66,16 +66,17 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
-	 * @param int $_step
-	 *
+	 * @since 2.9.0 add filename to support parent constructor
 	 * @since 2.1.0
+	 *
+	 * @param null $filename
+	 * @param int  $_step
 	 */
-	public function __construct( $_step = 1 ) {
-
-		parent::__construct( $_step );
+	public function __construct( $_step = 1, $filename = null ) {
+		parent::__construct( $_step, $filename );
 
 		// Filter to change the filename.
-		add_filter( 'give_export_filename', array( $this, 'give_export_filename' ), 10, 2 );
+		add_filter( 'give_export_filename', [ $this, 'give_export_filename' ], 10, 2 );
 	}
 
 	/**
@@ -129,7 +130,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		}
 
 		$this->price_id = give_clean( $request['give_price_option'] );
-		$this->price_id = isset( $request['give_price_option'] ) && ! in_array( $this->price_id, array( 'all', '' ) )
+		$this->price_id = isset( $request['give_price_option'] ) && ! in_array( $this->price_id, [ 'all', '' ] )
 			? absint( $request['give_price_option'] )
 			: null;
 	}
@@ -176,7 +177,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 */
 	private function get_cols( $columns ) {
 
-		$cols = array();
+		$cols = [];
 
 		foreach ( $columns as $key => $value ) {
 
@@ -210,15 +211,15 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 */
 	private function get_donation_query_args() {
 		// Export donors for a specific donation form and also within specified time frame.
-		$args = array(
+		$args = [
 			'output'     => 'payments',
-			'post_type'  => array( 'give_payment' ),
+			'post_type'  => [ 'give_payment' ],
 			'number'     => 30,
 			'paged'      => $this->step,
 			'status'     => 'publish',
 			'meta_key'   => '_give_payment_form_id',
 			'meta_value' => absint( $this->form ),
-		);
+		];
 
 		// Check for date option filter.
 		if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
@@ -239,12 +240,12 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		// Check for price option.
 		if ( null !== $this->price_id ) {
-			$args['meta_query'] = array(
-				array(
+			$args['meta_query'] = [
+				[
 					'key'   => '_give_payment_price_id',
 					'value' => (int) $this->price_id,
-				),
-			);
+				],
+			];
 		}
 
 		return $args;
@@ -260,7 +261,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	public function get_data() {
 		$i = 0;
 
-		$data             = array();
+		$data             = [];
 		$cached_donor_ids = Give_Cache::get( $this->query_id, true );
 
 		if ( ! empty( $this->form ) ) {
@@ -315,10 +316,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 
-			$args = array(
+			$args = [
 				'number' => 30,
 				'offset' => $offset,
-			);
+			];
 
 			// Check for date option filter.
 			if (
@@ -454,7 +455,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$data[ $i ]['donations'] = $donor->purchase_count;
 		}
 		if ( ! empty( $columns['donation_sum'] ) ) {
-			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) );
+			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value, [ 'sanitize' => false ] );
 		}
 
 		$data[ $i ] = apply_filters( 'give_export_set_donor_data', $data[ $i ], $donor );

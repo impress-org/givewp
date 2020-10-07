@@ -116,6 +116,9 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
+	 * @since 2.9.0 add hash to filename to avoid collisions
+	 * @since 1.5
+	 *
 	 * @param int         $_step
 	 * @param string|null $filename
 	 */
