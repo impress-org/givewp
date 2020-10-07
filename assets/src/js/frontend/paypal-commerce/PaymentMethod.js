@@ -53,6 +53,11 @@ class PaymentMethod {
 			return;
 		}
 
+		if ( 'string' === typeof error ) {
+			DonationForm.addErrors( this.jQueryForm, error );
+			return;
+		}
+
 		const errorDetail = error.details[ 0 ];
 		DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
 	}
