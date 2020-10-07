@@ -10,13 +10,21 @@ const Tabs = () => {
 	const url = getWindowData( 'legacyReportsUrl' );
 
 	const renderItems = () => {
-		const items = applyFilters( 'givewp-reports-page-menu-items', [] );
+		const displayItems = [];
+		const items = applyFilters( 'givewp-reports-page-menu-links', [] );
 
 		if ( Array.isArray( items ) && items.length ) {
-			return items
-				.filter( ( item ) => item.hasOwnProperty( 'href' ) && item.hasOwnProperty( 'text' ) )
-				.map( ( item, i ) => <a key={ i } className="nav-tab" href={ item.href }>{ item.text }</a> );
+			items.forEach( ( item, i ) => {
+				if ( item.hasOwnProperty( 'href' ) && item.hasOwnProperty( 'text' ) ) {
+					displayItems.push( <a key={ i } className="nav-tab" href={ item.href }>{ item.text }</a> );
+				} else {
+					// eslint-disable-next-line no-console
+					console.warn( 'Extending GiveWP Reports Menu requires both href and text property for each menu item' );
+				}
+			} );
 		}
+
+		return displayItems;
 	};
 
 	return (
