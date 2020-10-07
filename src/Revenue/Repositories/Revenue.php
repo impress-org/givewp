@@ -27,6 +27,13 @@ class Revenue {
 		// Validate revenue data
 		$this->validateNewRevenueData( $revenueData );
 
+		/**
+		 * Filter revenue data before inserting to revenue table.
+		 *
+		 * @since 2.9.0
+		 */
+		$revenueData = apply_filters( 'give_revenue_insert_data', $revenueData );
+
 		return $wpdb->insert(
 			$wpdb->give_revenue,
 			$revenueData,
