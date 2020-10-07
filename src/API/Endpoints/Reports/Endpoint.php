@@ -361,10 +361,13 @@ abstract class Endpoint implements RestRoute {
 		$gateway = array_keys( $gatewayObjects );
 
 		$args = [
-			'post_status' => [
-				'publish',
-				'give_subscription',
-			],
+			'post_status' => apply_filters(
+				'give_reports_add_post_status',
+				[
+					'publish',
+					'give_subscription',
+				]
+			),
 			'number'      => $number,
 			'paged'       => 1,
 			'orderby'     => $orderBy,
