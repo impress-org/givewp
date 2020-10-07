@@ -1,0 +1,12 @@
+// This file used for styles specific to the Totals block, as displayed in the block editor
+
+[data-type='give/multi-form-goal'] {
+	[data-type='give/progress-bar'] {
+		margin: 0 !important;
+		max-width: 100% !important;
+	}
+	[data-type='core/media-text'] {
+		margin: 24px !important;
+		max-width: 100% !important;
+	}
+}

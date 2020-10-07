@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_form_columns( $give_form_columns ) {
 
 	// Standard columns
-	$give_form_columns = array(
+	$give_form_columns = [
 		'cb'            => '<input type="checkbox"/>',
 		'title'         => __( 'Name', 'give' ),
 		'form_category' => __( 'Categories', 'give' ),
@@ -38,10 +38,10 @@ function give_form_columns( $give_form_columns ) {
 		'price'         => __( 'Amount', 'give' ),
 		'goal'          => __( 'Goal', 'give' ),
 		'donations'     => __( 'Donations', 'give' ),
-		'earnings'      => __( 'Income', 'give' ),
+		'earnings'      => __( 'Revenue', 'give' ),
 		'shortcode'     => __( 'Shortcode', 'give' ),
 		'date'          => __( 'Date', 'give' ),
-	);
+	];
 
 	// Does the user want categories / tags?
 	if ( ! give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
@@ -116,7 +116,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-						give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), array( 'sanitize' => false ) ) )
+						give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
 					);
 				} else {
 					echo '-';
@@ -185,10 +185,10 @@ function give_sort_forms( $vars ) {
 		case 'sales':
 			$vars = array_merge(
 				$vars,
-				array(
+				[
 					'meta_key' => '_give_form_sales',
 					'orderby'  => 'meta_value_num',
-				)
+				]
 			);
 			break;
 
@@ -196,10 +196,10 @@ function give_sort_forms( $vars ) {
 		case 'earnings':
 			$vars = array_merge(
 				$vars,
-				array(
+				[
 					'meta_key' => '_give_form_earnings',
 					'orderby'  => 'meta_value_num',
-				)
+				]
 			);
 			break;
 
@@ -208,17 +208,17 @@ function give_sort_forms( $vars ) {
 			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
 
 			$vars['orderby']    = 'meta_value_num';
-			$vars['meta_query'] = array(
+			$vars['meta_query'] = [
 				'relation' => 'OR',
-				array(
+				[
 					'key'  => $multi_level_meta_key,
 					'type' => 'NUMERIC',
-				),
-				array(
+				],
+				[
 					'key'  => '_give_set_price',
 					'type' => 'NUMERIC',
-				),
-			);
+				],
+			];
 
 			break;
 
@@ -230,10 +230,10 @@ function give_sort_forms( $vars ) {
 
 			$vars = array_merge(
 				$vars,
-				array(
+				[
 					'meta_key' => $meta_key,
 					'orderby'  => 'meta_value_num',
-				)
+				]
 			);
 			break;
 
@@ -241,10 +241,10 @@ function give_sort_forms( $vars ) {
 		case 'donations':
 			$vars = array_merge(
 				$vars,
-				array(
+				[
 					'meta_key' => '_give_form_sales',
 					'orderby'  => 'meta_value_num',
-				)
+				]
 			);
 			break;
 	}// End switch().
@@ -272,16 +272,16 @@ function give_filter_forms( $vars ) {
 				wp_die(
 					esc_html__( 'You do not have permission to view this data.', 'give' ),
 					esc_html__( 'Error', 'give' ),
-					array(
+					[
 						'response' => 403,
-					)
+					]
 				);
 			}
 			$vars = array_merge(
 				$vars,
-				array(
+				[
 					'author' => get_current_user_id(),
-				)
+				]
 			);
 
 		}
@@ -321,7 +321,7 @@ function give_remove_month_filter( $dates ) {
 	global $typenow;
 
 	if ( $typenow == 'give_forms' ) {
-		$dates = array();
+		$dates = [];
 	}
 
 	return $dates;
@@ -383,51 +383,51 @@ function give_form_search_query_filter( $wp ) {
 	) {
 
 		$wp->query_vars['date_query'] =
-			array(
+			[
 				'after'     => ! empty( $_GET['start-date'] ) ? date( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
 				'before'    => ! empty( $_GET['end-date'] ) ? date( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
 				'inclusive' => true,
-			);
+			];
 		switch ( $_GET['give-forms-goal-filter'] ) {
 			case 'goal_in_progress':
 				$wp->query_vars['meta_query'] =
-					array(
+					[
 						'relation' => 'AND',
-						array(
+						[
 							'key'     => '_give_form_goal_progress',
-							'value'   => array( 1, 99 ),
+							'value'   => [ 1, 99 ],
 							'compare' => 'BETWEEN',
 							'type'    => 'NUMERIC',
-						),
-					);
+						],
+					];
 
 				break;
 			case 'goal_achieved':
 				$wp->query_vars['meta_query'] =
-					array(
+					[
 						'relation' => 'AND',
-						array(
+						[
 							'key'     => '_give_form_goal_progress',
 							'value'   => 100,
 							'compare' => '>=',
 							'type'    => 'NUMERIC',
-						),
-					);
+						],
+					];
 				break;
 			case 'goal_not_set':
 				$wp->query_vars['meta_query'] =
-					array(
+					[
 						'relation' => 'OR',
-						array(
+						[
 							'key'     => '_give_goal_option',
 							'value'   => 'disabled',
 							'compare' => '=',
-						),
-						array(
+						],
+						[
 							'key'     => '_give_goal_option',
 							'compare' => 'NOT EXISTS',
-						),
-					);
+						],
+					];
 				break;
 		}
 	}
@@ -498,9 +498,9 @@ function give_forms_advanced_filter( $which ) {
 				'button',
 				false,
 				false,
-				array(
+				[
 					'ID' => 'form-search-submit',
-				)
+				]
 			);
 			?>
 		</div>

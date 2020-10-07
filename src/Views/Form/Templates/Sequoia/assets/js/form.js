@@ -160,6 +160,7 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			tabOrder: [
+				'select.give-cs-select-currency',
 				'input.give-amount-top',
 				'.give-donation-levels-wrap button',
 				'.give-recurring-period',
@@ -367,7 +368,9 @@
 
 							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
 								const placeholder = $( node ).attr( 'placeholder' );
-								$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+								if ( placeholder ) {
+									$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+								}
 							}
 						}
 					} );
