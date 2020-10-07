@@ -1,48 +1,24 @@
+/* globals givePayPalCommerce */
 import PaymentMethod from './PaymentMethod';
 import DonationForm from './DonationForm';
 import AdvancedCardFields from './AdvancedCardFields';
 
 class CustomCardFields extends PaymentMethod {
 	/**
-	 * @inheritDoc
-	 */
-	constructor( form ) {
-		super( form );
-
-		this.setUpProperties();
-	}
-
-	/**
 	 * Setup properties.
 	 *
 	 * @since 2.9.0
 	 */
-	setUpProperties() {
+	setupProperties() {
+		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
-	}
 
-	/**
-	 * @inheritDoc
-	 */
-	registerEvents() {
-		if ( this.recurringChoiceHiddenField ) {
-			DonationForm.trackRecurringHiddenFieldChange( this.recurringChoiceHiddenField, this.renderPaymentMethodOption.bind( this ) );
+		if ( ! ( this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' ) ) ) {
+			this.separator = this.cardFields.number.el ?
+				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
+				null;
 		}
-
-		this.separator = this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() );
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	onGatewayLoadBoot( evt, self ) {
-		if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-			self.setUpProperties();
-			self.registerEvents();
-		}
-
-		super.onGatewayLoadBoot( evt, self );
 	}
 
 	/**
@@ -112,26 +88,13 @@ class CustomCardFields extends PaymentMethod {
 	 */
 	removeFields() {
 		for ( const type in this.cardFields ) {
-			this.cardFields[ type ].el.parentElement.remove();
+			this.cardFields[ type ].el && this.cardFields[ type ].el.parentElement.remove(); // eslint-disable-line
 		}
 
-		this.form.querySelector( 'input[name="card_name"]' ).parentElement.remove();
-	}
+		const cardNameField = this.form.querySelector( 'input[name="card_name"]' );
 
-	/**
-	 * Remove custom card fields on gateway load.
-	 *
-	 * @since 2.9.0
-	 */
-	removeFieldsOnGatewayLoad() {
-		const self = this;
-
-		document.addEventListener( 'give_gateway_loaded', evt => {
-			if ( this.isProcessingEventForForm( evt.detail.formIdAttribute ) ) {
-				self.setUpProperties();
-				self.removeFields.bind( self ).call();
-			}
-		} );
+		cardNameField && cardNameField.parentElement.remove(); // eslint-disable-line
+		this.separator && this.separator.remove(); // eslint-disable-line
 	}
 
 	/**
@@ -145,21 +108,9 @@ class CustomCardFields extends PaymentMethod {
 		const div = document.createElement( 'div' );
 
 		div.setAttribute( 'class', 'separator-with-text' );
-		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ window.givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
+		div.innerHTML = `<div class="dashed-line"></div><div class="label">${ givePayPalCommerce.separatorLabel }</div><div class="dashed-line"></div>`;
 
 		return div;
-	}
-
-	/**
-	 * Return wther or not process donation form same donation form.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {string} formId Donation form id attribute value.
-	 * @return {boolean|boolean} Retrun true if processing same form otherwise false.
-	 */
-	isProcessingEventForForm( formId ) {
-		return formId === this.form.getAttribute( 'id' ) && DonationForm.isPayPalCommerceSelected( this.jQueryForm );
 	}
 }
 

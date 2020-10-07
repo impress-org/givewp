@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
-use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
@@ -62,16 +61,9 @@ class PayPalCommerce implements PaymentGateway {
 				'id'   => 'give_gateway_settings_2',
 			],
 			[
-				'name'       => __( 'Account Country', 'give' ),
-				'desc'       => __( 'The country of your PayPal account.', 'give' ),
-				'id'         => Settings::COUNTRY_KEY,
-				'type'       => 'select',
-				'options'    => give_get_country_list(),
-				'class'      => 'give-select give-select-chosen',
-				'attributes' => [
-					'data-search-type' => 'no_ajax',
-				],
-				'default'    => give_get_country(),
+				'name' => esc_html__( 'Account Country', 'give' ),
+				'id'   => 'paypal_commerce_account_country',
+				'type' => 'paypal_commerce_account_country',
 			],
 			[
 				'name' => esc_html__( 'Connect With Paypal', 'give' ),

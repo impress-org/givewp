@@ -66,7 +66,8 @@
 										'post_type' => 'give_forms',
 										'page'      => 'give-settings',
 										'tab'       => 'gateways',
-										'section'   => 'paypal-standard',
+										'section'   => 'paypal',
+										'group'     => 'paypal-commerce',
 									],
 									esc_url_raw( admin_url( 'edit.php' ) )
 								)

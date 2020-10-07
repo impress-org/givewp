@@ -174,6 +174,7 @@ function give_setup_taxonomies() {
 			'hierarchical' => true,
 			'labels'       => apply_filters( 'give_forms_category_labels', $category_labels ),
 			'show_ui'      => true,
+			'show_in_rest' => true,
 			'query_var'    => 'give_forms_category',
 			'rewrite'      => [
 				'slug'         => $slug . '/category',
@@ -211,6 +212,7 @@ function give_setup_taxonomies() {
 			'hierarchical' => false,
 			'labels'       => apply_filters( 'give_forms_tag_labels', $tag_labels ),
 			'show_ui'      => true,
+			'show_in_rest' => true,
 			'query_var'    => 'give_forms_tag',
 			'rewrite'      => [
 				'slug'         => $slug . '/tag',

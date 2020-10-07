@@ -71,7 +71,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				return;
 			}
 
-			add_filter( 'give_get_sections_gateways', [ $this, 'register_sections' ] );
+			add_filter( 'give_get_sections_gateways', [ $this, 'register_sections' ], 1 );
 			add_filter( 'give_get_groups_stripe-settings', [ $this, 'register_groups' ] );
 			add_filter( 'give_get_settings_gateways', [ $this, 'register_settings' ] );
 			add_filter( 'give_get_sections_advanced', [ $this, 'register_advanced_sections' ] );

@@ -3,10 +3,10 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Gateways
+ * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.8
+ * @subpackage  Classes/Give_Settings_Gateways
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -174,7 +174,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			 *
 			 * @since  1.8
 			 *
-			 * @param  array $settings
+			 * @param array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
 
@@ -185,16 +185,22 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		/**
 		 * Get sections.
 		 *
+		 * @since 2.9.0 move offline-donations to end of gateway list
 		 * @since 1.8
+		 *
 		 * @return array
 		 */
 		public function get_sections() {
-			$sections = [
-				'gateways-settings' => __( 'Gateways', 'give' ),
-				'offline-donations' => __( 'Offline Donations', 'give' ),
-			];
+			$sections = apply_filters(
+				'give_get_sections_' . $this->id,
+				[
+					'gateways-settings' => __( 'Gateways', 'give' ),
+				]
+			);
 
-			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+			$sections['offline-donations'] = __( 'Offline Donations', 'give' );
+
+			return $sections;
 		}
 
 
@@ -218,9 +224,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 				?>
 				<div class="give-gateways-notice">
 					<div class="give-gateways-cc-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35" height="29" viewBox="0 0 35 29">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35"
+							 height="29" viewBox="0 0 35 29">
 							<defs>
-								<path id="credit-card-a" d="M32.0772569,3.88888889 L2.92274306,3.88888889 C1.30642361,3.88888889 0,5.1953125 0,6.80555556 L0,28.1944444 C0,29.8046875 1.30642361,31.1111111 2.92274306,31.1111111 L32.0772569,31.1111111 C33.6935764,31.1111111 35,29.8046875 35,28.1944444 L35,6.80555556 C35,5.1953125 33.6935764,3.88888889 32.0772569,3.88888889 Z M3.28732639,6.80555556 L31.7126736,6.80555556 C31.9131944,6.80555556 32.0772569,6.96961806 32.0772569,7.17013889 L32.0772569,9.72222222 L2.92274306,9.72222222 L2.92274306,7.17013889 C2.92274306,6.96961806 3.08680556,6.80555556 3.28732639,6.80555556 Z M31.7126736,28.1944444 L3.28732639,28.1944444 C3.08680556,28.1944444 2.92274306,28.0303819 2.92274306,27.8298611 L2.92274306,17.5 L32.0772569,17.5 L32.0772569,27.8298611 C32.0772569,28.0303819 31.9131944,28.1944444 31.7126736,28.1944444 Z M11.6666667,22.1180556 L11.6666667,24.5486111 C11.6666667,24.9496528 11.3385417,25.2777778 10.9375,25.2777778 L6.5625,25.2777778 C6.16145833,25.2777778 5.83333333,24.9496528 5.83333333,24.5486111 L5.83333333,22.1180556 C5.83333333,21.7170139 6.16145833,21.3888889 6.5625,21.3888889 L10.9375,21.3888889 C11.3385417,21.3888889 11.6666667,21.7170139 11.6666667,22.1180556 Z M23.3333333,22.1180556 L23.3333333,24.5486111 C23.3333333,24.9496528 23.0052083,25.2777778 22.6041667,25.2777778 L14.3402778,25.2777778 C13.9392361,25.2777778 13.6111111,24.9496528 13.6111111,24.5486111 L13.6111111,22.1180556 C13.6111111,21.7170139 13.9392361,21.3888889 14.3402778,21.3888889 L22.6041667,21.3888889 C23.0052083,21.3888889 23.3333333,21.7170139 23.3333333,22.1180556 Z"/>
+								<path id="credit-card-a"
+									  d="M32.0772569,3.88888889 L2.92274306,3.88888889 C1.30642361,3.88888889 0,5.1953125 0,6.80555556 L0,28.1944444 C0,29.8046875 1.30642361,31.1111111 2.92274306,31.1111111 L32.0772569,31.1111111 C33.6935764,31.1111111 35,29.8046875 35,28.1944444 L35,6.80555556 C35,5.1953125 33.6935764,3.88888889 32.0772569,3.88888889 Z M3.28732639,6.80555556 L31.7126736,6.80555556 C31.9131944,6.80555556 32.0772569,6.96961806 32.0772569,7.17013889 L32.0772569,9.72222222 L2.92274306,9.72222222 L2.92274306,7.17013889 C2.92274306,6.96961806 3.08680556,6.80555556 3.28732639,6.80555556 Z M31.7126736,28.1944444 L3.28732639,28.1944444 C3.08680556,28.1944444 2.92274306,28.0303819 2.92274306,27.8298611 L2.92274306,17.5 L32.0772569,17.5 L32.0772569,27.8298611 C32.0772569,28.0303819 31.9131944,28.1944444 31.7126736,28.1944444 Z M11.6666667,22.1180556 L11.6666667,24.5486111 C11.6666667,24.9496528 11.3385417,25.2777778 10.9375,25.2777778 L6.5625,25.2777778 C6.16145833,25.2777778 5.83333333,24.9496528 5.83333333,24.5486111 L5.83333333,22.1180556 C5.83333333,21.7170139 6.16145833,21.3888889 6.5625,21.3888889 L10.9375,21.3888889 C11.3385417,21.3888889 11.6666667,21.7170139 11.6666667,22.1180556 Z M23.3333333,22.1180556 L23.3333333,24.5486111 C23.3333333,24.9496528 23.0052083,25.2777778 22.6041667,25.2777778 L14.3402778,25.2777778 C13.9392361,25.2777778 13.6111111,24.9496528 13.6111111,24.5486111 L13.6111111,22.1180556 C13.6111111,21.7170139 13.9392361,21.3888889 14.3402778,21.3888889 L22.6041667,21.3888889 C23.0052083,21.3888889 23.3333333,21.7170139 23.3333333,22.1180556 Z"/>
 							</defs>
 							<g fill="none" fill-rule="evenodd" opacity=".341" transform="translate(0 -3)">
 								<mask id="credit-card-b" fill="#fff">
@@ -253,7 +261,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 					<div class="give-gateways-notice-button">
 						<?php echo give_stripe_connect_button(); ?>
-						<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner" target="_blank" class="give-view-gateways-btn button">
+						<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner"
+						   target="_blank" class="give-view-gateways-btn button">
 							<?php esc_html_e( 'View Premium Gateways', 'give' ); ?>
 						</a>
 					</div>

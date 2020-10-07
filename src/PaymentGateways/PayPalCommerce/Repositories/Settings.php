@@ -32,7 +32,7 @@ class Settings {
 	 * @return string|null
 	 */
 	public function getAccountCountry() {
-		return give_get_option( self::COUNTRY_KEY, give_get_country() );
+		return get_option( self::COUNTRY_KEY, give_get_country() );
 	}
 
 	/**
@@ -44,6 +44,17 @@ class Settings {
 	 */
 	public function getAccessToken() {
 		return get_option( self::ACCESS_TOKEN_KEY, null );
+	}
+
+	/**
+	 * Updates the country account
+	 *
+	 * @param string $country
+	 *
+	 * @return bool
+	 */
+	public function updateAccountCountry( $country ) {
+		return update_option( self::COUNTRY_KEY, $country );
 	}
 
 	/**

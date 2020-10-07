@@ -29,8 +29,8 @@ jQuery( document ).ready( function( $ ) {
 	const give_settings_position = '#give-mainform #currency_position';
 	$( 'body' ).on( 'change', give_settings_currency, function() {
 		const $currency = $( give_settings_currency + ' option:selected' ),
-			  currencyCode = $currency.val(),
-			  currencyList = JSON.parse( $( this ).attr( 'data-formatting-setting' ) );
+			currencyCode = $currency.val(),
+			currencyList = JSON.parse( $( this ).attr( 'data-formatting-setting' ) );
 
 		let beforeText = afterText = {},
 			formattingSetting = currencyList[ currencyCode ],
@@ -190,9 +190,9 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	let dTemp = Give.fn.getGlobalVar( 'decimal_separator' ), // Temporary variable to store decimal separator.
-	    tTemp = Give.fn.getGlobalVar( 'thousands_separator' ), // Temporary variable to store thousand separator.
-	    symbolRegex = /\(([^)]+)\)/, // Regex to extract currency symbol.
-	    formatterArgs = {
+		tTemp = Give.fn.getGlobalVar( 'thousands_separator' ), // Temporary variable to store thousand separator.
+		symbolRegex = /\(([^)]+)\)/, // Regex to extract currency symbol.
+		formatterArgs = {
 			position: Give.fn.getGlobalVar( 'currency_pos' ),
 			symbol: Give.fn.getGlobalVar( 'currency_sign' ),
 			precision: Give.fn.getGlobalVar( 'number_decimals' ),
@@ -207,10 +207,10 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( '#number_decimals, #decimal_separator, #thousands_separator, #currency_position, #currency' ).on( 'input blur change', function( e ) {
 		const preview = $( '#currency_preview' ),
-		    dSeparator = $( '#decimal_separator' ),
-		    tSeparator = $( '#thousands_separator' ),
-		    targetName = e.target.name,
-		    targetValue = e.target.value;
+			dSeparator = $( '#decimal_separator' ),
+			tSeparator = $( '#thousands_separator' ),
+			targetName = e.target.name,
+			targetValue = e.target.value;
 
 		/**
 		 * Sets the precision (number of decimals) for the formatted amount.
@@ -378,17 +378,22 @@ document.addEventListener( 'DOMContentLoaded', () => {
 // Handle paypal onboarding.
 document.addEventListener( 'DOMContentLoaded', () => {
 	const onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
-		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
-		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
-		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' );
+		disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
+		connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
+		disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
+		countryField = document.getElementById( 'paypal_commerce_account_country' );
 
 	if ( onBoardingButton ) {
 		onBoardingButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
 
+			onBoardingButton.disabled = true;
+
 			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
 
-			fetch( ajaxurl + '?action=give_paypal_commerce_get_partner_url' )
+			const countryCode = countryField.value;
+
+			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
 				.then( response => response.json() )
 				.then( function( res ) {
 					// @todo handle error.
@@ -417,6 +422,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				successConfirm: () => {
 					connectionSettingContainer.classList.remove( 'give-hidden' );
 					disConnectionSettingContainer.classList.add( 'give-hidden' );
+					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
 
 					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
 				},
