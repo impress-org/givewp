@@ -66,7 +66,7 @@ class SmartButtons extends PaymentMethod {
 				shape: 'rect',
 				label: 'paypal',
 				color: 'gold',
-				tagline: false
+				tagline: false,
 			},
 		};
 
@@ -128,9 +128,6 @@ class SmartButtons extends PaymentMethod {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * On approve event handler for smart buttons.
-=======
 	 * Create subscription event handler for smart buttons.
 	 *
 	 * @since 2.9.0
@@ -161,7 +158,6 @@ class SmartButtons extends PaymentMethod {
 
 	/**
 	 * Subscription approve event handler for smart buttons.
-	 * @todo handle error and subscription cancellation
 	 *
 	 * @since 2.9.0
 	 *
@@ -178,7 +174,6 @@ class SmartButtons extends PaymentMethod {
 
 	/**
 	 * Order approve event handler for smart buttons.
->>>>>>> epic/paypal-commerce-integration-4886
 	 *
 	 * @since 2.9.0
 	 *
