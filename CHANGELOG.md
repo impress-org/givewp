@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Changed
+### Changed
 
+-   Reports page main menu is now extendable ( #5339 )
+-   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
 -   Multi-Form Goal Progress Bar styles are encapsulated via a Shadow DOM (#5348)
 
 ## [2.9.0-alpha.1] - 2020-10-06

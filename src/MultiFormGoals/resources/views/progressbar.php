@@ -31,7 +31,7 @@ $uniqid = uniqid();
 			<div part="stat-goal-value"><?php echo $this->getFormattedGoal(); ?></div>
 			<div part="stat-goal-label"><?php echo __( 'goal', 'give' ); ?></div>
 		</div>
-		<?php if ( ! empty( $this->getEndDate() ) ) : ?>
+		<?php if ( ! empty( $this->getEndDate() ) && $this->getMinutesRemaining() ) : ?>
 			<div part="stat-time" class="give-progress-bar-block__stat">
 				<div part="stat-time-value"><?php echo $this->getTimeToGo(); ?></div>
 				<div part="stat-time-label"><?php echo $this->getTimeToGoLabel(); ?></div>
