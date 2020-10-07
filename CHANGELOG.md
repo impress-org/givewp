@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Reports page main menu is now extendable ( #5339 )
 -   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
 
+### Fixed
+
+-    Multi-Form Goal block no longer obscure column controls (#5352)
+
 ## [2.9.0-alpha.1] - 2020-10-06
 
 ### Added
