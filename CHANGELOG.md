@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Multi-Form Goal output has a bottom margin. (#5333)
 -   Multi-Form Goal end date now allows for specific time. (#5336)
 -   Multi-Form Goal Block now defaults to image filling the height. (#5314)
--   Introduced Currency Switcher compatability styles for the Multi-Step form (#5220)
+-   Introduced Currency Switcher compatibility styles for the Multi-Step form (#5220)
 
 ## [2.8.0] - 2020-08-31
 
