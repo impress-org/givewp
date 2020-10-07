@@ -2,11 +2,15 @@
 /**
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
- *
  */
+
+$uniqid = uniqid();
 ?>
 
-<div class="give-progress-bar-block">
+<div id="<?php echo $uniqid; ?>" class="give-progress-bar-block">
+	<style>
+		<?php echo file_get_contents( GIVE_PLUGIN_DIR . 'assets/dist/css/multi-form-goal-block.css' ); ?>
+	</style>
 	<div class="give-progress-bar-block__goal">
 		<div class="give-progress-bar-block__progress">
 			<?php $percent = ( $this->getTotal() / $this->getGoal() ) * 100; ?>
@@ -34,3 +38,9 @@
 		<?php endif; ?>
 	</div>
 </div>
+<script>
+	const container = document.getElementById('<?php echo $uniqid; ?>')
+	const content = container.innerHTML
+	let shadow = container.attachShadow({mode: 'closed'});
+	shadow.innerHTML = content
+</script>
