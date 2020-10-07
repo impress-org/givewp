@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Avoid filename collisions when exporting users and donations (#5346)
+
 ## [2.9.0-alpha.1] - 2020-10-06
 
 ### Added
