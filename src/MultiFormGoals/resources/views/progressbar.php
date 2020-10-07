@@ -39,8 +39,10 @@ $uniqid = uniqid();
 	</div>
 </div>
 <script>
-	const container = document.getElementById('<?php echo $uniqid; ?>')
-	const content = container.innerHTML
-	let shadow = container.attachShadow({mode: 'closed'});
-	shadow.innerHTML = content
+	(function() {
+		const container = document.getElementById('<?php echo $uniqid; ?>')
+		const content = container.innerHTML
+		const shadow = container.attachShadow({mode: 'closed'});
+		shadow.innerHTML = content
+	})()
 </script>
