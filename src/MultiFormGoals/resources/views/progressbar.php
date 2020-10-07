@@ -42,7 +42,7 @@ $uniqid = uniqid();
 	(function() {
 		const container = document.getElementById('<?php echo $uniqid; ?>')
 		const content = container.innerHTML
-		const shadow = container.attachShadow({mode: 'closed'});
+		const shadow = container.attachShadow({mode: 'open'});
 		shadow.innerHTML = content
 	})()
 </script>
