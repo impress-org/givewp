@@ -25,29 +25,21 @@ class Query {
 	public function getSQL() {
 		$sql = "
             SELECT
-                sum( meta_value ) as total,
-                count( meta_value ) as count,
-                avg( meta_value ) as average
+                sum( revenue.amount ) as total,
+                count( payment.ID ) as count
             FROM wp_posts as payment
-                JOIN wp_give_donationmeta as meta
-                    ON meta.donation_id = payment.ID
+                JOIN wp_give_revenue as revenue
+                    ON revenue.donation_id = payment.ID
             WHERE
                 payment.post_type = 'give_payment'
-                AND
-                meta.meta_key = '_give_payment_total'
                 AND
                 payment.post_status = 'publish'
         ";
 
 		if ( ! empty( $this->formIDs ) ) {
-			$sql .= "
+			$sql .= '
                 AND
-                payment.ID IN (
-                    SELECT donation_id  
-                    FROM wp_give_donationmeta
-                    WHERE meta_key = '_give_payment_form_id'
-                    AND meta_value IN ( " . $this->getFormsString() . ' )
-                )
+                revenue.form_id IN ( ' . $this->getFormsString() . ' )
             ';
 		}
 
@@ -65,8 +57,7 @@ class Query {
 	 * @return stdClass
 	 */
 	public function getResults() {
-		return $this->wpdb->get_row(
-			$this->getSQL()
-		);
+		$sql = $this->getSQL();
+		return $this->wpdb->get_row( $sql );
 	}
 }
