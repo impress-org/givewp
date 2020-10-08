@@ -5,11 +5,17 @@ Since GiveWP 2.8.0, all notable changes to this project will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
-## [2.8.0] - 2020-08-31
+## 2.8.1 - 2020-10-08
 
-## [2.8.0-rc.1] - 2020-08-31
+### Fixed
+
+-   Donations now process for non-US countries using billing details (#5355)
+
+## 2.8.0 - 2020-08-31
+
+## 2.8.0-rc.1 - 2020-08-31
 
 ### Fixed
 
@@ -18,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
 -   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
 
-## [2.8.0-beta.3] - 2020-08-27
+## 2.8.0-beta.3 - 2020-08-27
 
 ### Added
 
@@ -37,14 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   On a fresh install, the donation forms archive is now enabled by default. (#5214)
 -   Specify Form Route URL scheme to avoid mixed content when loaded in the admin. (#5189)
 
-## [2.8.0-beta.2] - 2020-08-25
+## 2.8.0-beta.2 - 2020-08-25
 
 ### Fixed
 
 -   Trailing comma in function call is removed for PHP 5.6 support. (#5195)
 -   Fixed translation of common text to support WordPress 5.5, with backwards compatibility for `commonL10n`. (#5186)
 
-## [2.8.0-beta.1] - 2020-08-24
+## 2.8.0-beta.1 - 2020-08-24
 
 ### Changed
 
@@ -64,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Form preview within the Onboarding Wizard now remains centered on larger viewports. (#5180)
 -   Onboarding Wizard no longer shows empty submenu under Dashboard. (#5190)
 
-## [2.8.0-alpha.2] - 2020-08-19
+## 2.8.0-alpha.2 - 2020-08-19
 
 ### Changed
 
@@ -87,7 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Location settings in the Wizard now default to current setting value. (#5150)
 -   Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. (#5126)
 
-## [2.8.0-alpha.1] - 2020-08-17
+## 2.8.0-alpha.1 - 2020-08-17
 
 ### Added
 
@@ -110,12 +116,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A `register_rest_route` notice no longer displays when creating a new page in the block editor. (#5115)
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
-
-[unreleased]: https://github.com/impress-org/givewp/compare/2.8.0...HEAD
-[2.8.0]: https://github.com/impress-org/givewp/compare/2.8.0-rc.1...2.8.0
-[2.8.0-rc.1]: https://github.com/impress-org/givewp/compare/2.8.0-beta.3...2.8.0-rc.1
-[2.8.0-beta.3]: https://github.com/impress-org/givewp/compare/2.8.0-beta.2...2.8.0-beta.3
-[2.8.0-beta.2]: https://github.com/impress-org/givewp/compare/2.8.0-beta.1...2.8.0-beta.2
-[2.8.0-beta.1]: https://github.com/impress-org/givewp/compare/2.8.0-alpha.2...2.8.0-beta.1
-[2.8.0-alpha.2]: https://github.com/impress-org/givewp/compare/2.8.0-alpha.1...2.8.0-alpha.2
-[2.8.0-alpha.1]: https://github.com/impress-org/givewp/releases/tag/2.8.0-alpha.1
