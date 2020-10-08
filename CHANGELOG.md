@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Reports page main menu is now extendable ( #5339 )
 -   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
 -   Multi-Form Goal Block uses the Revenue table to calculate progress towards a goal. (#5357)
+-   Multi-Form Goal total includes renewals (#5359)
 
 ### Fixed
 
