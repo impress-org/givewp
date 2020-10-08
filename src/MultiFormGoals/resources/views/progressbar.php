@@ -26,7 +26,7 @@
 			<div><?php echo $this->getFormattedGoal(); ?></div>
 			<div><?php echo __( 'goal', 'give' ); ?></div>
 		</div>
-		<?php if ( ! empty( $this->getEndDate() ) ) : ?>
+		<?php if ( ! empty( $this->getEndDate() ) && $this->getMinutesRemaining() ) : ?>
 			<div class="give-progress-bar-block__stat">
 				<div><?php echo $this->getTimeToGo(); ?></div>
 				<div><?php echo $this->getTimeToGoLabel(); ?></div>
