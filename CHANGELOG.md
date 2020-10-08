@@ -12,10 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   PayPal Donations is a new payment gateway (#5079)
 -   PayPal Donations supports currency switcher (#5335)
 -   PayPal Donations supports subscriptions (#5173, #5221, #5308)
+
 ### Changed
 
 -   Reports page main menu is now extendable ( #5339 )
 -   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
+-   Multi-Form Goal Block uses the Revenue table to calculate progress towards a goal. (#5357)
 
 ### Fixed
 
