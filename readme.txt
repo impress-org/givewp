@@ -223,6 +223,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.8.1: October 8th, 2020 =
+* Fixed: Donations now process for non-US countries using billing details [#5355](https://github.com/impress-org/givewp/pull/5355)
+
 = 2.8.0: August 31st, 2020 =
 * Added: Onboarding Wizard guides new users through first-time configuration. [#5014](https://github.com/impress-org/givewp/pull/5014)
 * Added: Setup Page clarifies required steps that must be completed prior to accepting live donations. [#5014](https://github.com/impress-org/givewp/pull/5014)
