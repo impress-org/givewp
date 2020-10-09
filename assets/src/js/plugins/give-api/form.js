@@ -40,6 +40,33 @@ export default {
 		},
 
 		/**
+		 * Show processing state template.
+		 *
+		 * @since 2.8.0
+		 */
+		showProcessingState: function() {
+			const loader = document.createElement( 'div' );
+			const textNode = document.createElement( 'div' );
+
+			textNode.innerText = Give.fn.getGlobalVar( 'textForOverlayScreen' );
+
+			loader.setAttribute( 'id', 'give-processing-state-template' );
+			loader.append( textNode );
+
+			loader.classList.add( 'active' );
+			document.body.appendChild( loader );
+		},
+
+		/**
+		 * Hide processing state template.
+		 *
+		 * @since 2.8.0
+		 */
+		hideProcessingState: function( ) {
+			document.getElementById( 'give-processing-state-template' ).remove();
+		},
+
+		/**
 		 * Get formatted amount
 		 *
 		 * @param {string/number} amount
@@ -657,6 +684,128 @@ export default {
 
 				Give.cache[ 'form_' + Give.form.fn.getInfo( 'form-id', $item ) ] = [];
 			} );
+		},
+
+		/**
+		 * Check donation form pass HTML5 validation.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form
+		 * @param {boolean} reportValidity Set to true if want to show HTML5 error notices on form field.
+		 * @return {boolean}
+		 */
+		isDonationFormHtml5Valid: function( $form, reportValidity = false ) {
+			if ( typeof $form.checkValidity === 'function' && $form.checkValidity() === false ) {
+				//Check for Safari (doesn't support HTML5 required)
+				if ( ( navigator.userAgent.indexOf( 'Safari' ) != -1 && navigator.userAgent.indexOf( 'Chrome' ) == -1 ) === false ) {
+					if ( reportValidity ) {
+						$form.reportValidity();
+					}
+
+					//Not safari: Support HTML5 "required" so skip the rest of this function
+					return false;
+				}
+			}
+
+			return true;
+		},
+
+		/**
+		 * Check donation form pass HTML5 validation.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form
+		 * @param {FormData} formData
+		 * @return {string}
+		 */
+		isDonorFilledValidData: async function( $form, formData = {} ) {
+			formData = formData instanceof FormData ? formData : new FormData( $form );
+
+			formData.append( 'action', 'give_process_donation' );
+			formData.append( 'give_ajax', true );
+
+			const response = await fetch( `${ Give.fn.getGlobalVar( 'ajaxurl' ) }`, {
+				method: 'POST',
+				body: formData,
+			} );
+			const result = await response.text();
+
+			return result.trim();
+		},
+
+		/**
+		 * Add error notices to donation form.
+		 * Note: this function will add error before "Donate Now" button.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Jquery Form object
+		 * @param {string} errors Error list HTML.
+		 */
+		addErrors: function( $form, errors ) {
+			$form.find( '#give_purchase_submit input[type="submit"].give-submit' ).before( errors );
+		},
+
+		/**
+		 * Remove error notices to donation form.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Jquery Form object
+		 */
+		removeErrors: function( $form ) {
+			$form.find( '.give_errors' ).remove();
+		},
+
+		/**
+		 * Get error HTML.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {array} errors List of Error messages.
+		 *
+		 * @return {Element} Error HTML object.
+		 */
+		getErrorHTML: function( errors ) {
+			const $errorContainer = document.createElement( 'div' );
+
+			$errorContainer.classList.add( 'give_errors' );
+
+			errors.forEach( error => {
+				const $error = document.createElement( 'p' );
+				$error.classList.add( 'give_error' );
+
+				$error.innerHTML = error.message;
+
+				$errorContainer.append( $error );
+			} );
+
+			return $errorContainer;
+		},
+
+		/**
+		 * Add errors to donation form and reset "Donate Now" button state.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Javascript form selector.
+		 * @param {*} $errors Errors list.
+		 */
+		addErrorsAndResetDonationButton: function( $form, $errors = null ) {
+			const $submitButton = $form.find( '#give_purchase_submit input[type="submit"].give-submit' );
+			const $container = $submitButton.closest( 'div' );
+
+			//There was an error / remove old errors and prepend new ones
+			$submitButton.val( $submitButton.data( 'before-validation-label' ) );
+			$container.find( '.give-loading-animation' ).fadeOut();
+			$form.find( '.give_errors' ).remove();
+
+			$errors && this.addErrors( $form, $errors );
+
+			// Enable the form donation button.
+			Give.form.fn.disable( $form, false );
 		},
 
 		field: {

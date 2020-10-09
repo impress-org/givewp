@@ -7,14 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   PayPal Donations is a new payment gateway (#5079)
+-   PayPal Donations supports currency switcher (#5335)
+-   PayPal Donations supports subscriptions (#5173, #5221, #5308)
+### Changed
+
+-   Reports page main menu is now extendable ( #5339 )
+-   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
+
 ### Fixed
 
 -   Avoid filename collisions when exporting users and donations (#5346)
+-    Multi-Form Goal block no longer obscure column controls (#5352)
 
 ## [2.9.0-alpha.1] - 2020-10-06
 
 ### Added
 
+-   Milestone block is now available in the block editor (#5224)
+-   Milestone block now supports a title and description (#5229)
+-   Milestone now supports a featured image (#5234)
+-   Milestone can now be associated with one or many forms (#5230)
+-   Milestone now displays aggregated earnings based on associated forms (#5236)
+-   Milestone now supports a deadline (#5239)
+-   Milestone now supports a custom goal (#5237)
+-   Milestone now supports sorting forms by tag and category (#5244)
+-   Milestone now supports aggregating different metrics (Revenue, Donations, Donors) (#5244)
+-   Milestone title and description now support {} tags (#5242)
+-   Milestone now supports a custom Call To Action URL and text (#5262)
+-   Milestone block has been replaced by the Totals block, with features to match the Give Totals shortcode (#5264)
+-   Totals block now supports custom goal color (#5267)
+-   Migrations framework for database migrations
 -   Multi-Form Goal wrapper only added for non-block output (#5315)
 -   Multi-Form Goal output has a bottom margin (#5333)
 -   Multi-Form Goal end date now allows for specific time (#5336)
@@ -34,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Multi-Form Goal output has a bottom margin. (#5333)
 -   Multi-Form Goal end date now allows for specific time. (#5336)
 -   Multi-Form Goal Block now defaults to image filling the height. (#5314)
--   Introduced Currency Switcher compatability styles for the Multi-Step form (#5220)
+-   Introduced Currency Switcher compatibility styles for the Multi-Step form (#5220)
 
 ## [2.8.0] - 2020-08-31
 

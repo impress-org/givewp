@@ -18,8 +18,10 @@
 @import 'square';
 @import 'currencyswitcher';
 
-// Structure
+// Payment gateways
+@import 'paypal-commerce';
 
+// Structure
 html {
 	margin: 0;
 	padding: 0;
@@ -1399,7 +1401,9 @@ form.give-form .form-row select.multiselect {
 }
 
 /* Hide everything which is not output by Give core or addon */
-body > *:not([class^='give']):not([id^='give']) {
+// exclude PayPal payment contingency handler.
+// This is popup used by PayPal to verify 3ds card.
+body > *:not([class^='give']):not([id^='give']):not([class*='payments-sdk-contingency-handler']) {
 	display: none;
 }
 

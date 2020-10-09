@@ -22,7 +22,7 @@ class GiveModal {
 				type: '',
 				triggerSelector: '',
 				externalPlugin: 'magnificPopup',
-				classes: { modalWrapper: '' },
+				classes: { modalWrapper: '', cancelBtn: '' },
 				modalContent: {},
 			},
 			obj
@@ -44,6 +44,7 @@ class GiveModal {
 	/**
 	 * Get template
 	 *
+	 * @since 2.8.0 add support for modalContent.body for full body markup
 	 * @since 2.1.0
 	 *
 	 * @return {string} Template HTML.
@@ -57,6 +58,7 @@ class GiveModal {
 				<div class="give-modal__body">
 					${ this.config.modalContent.title ? `<h2 class="give-modal__title">${ this.config.modalContent.title }</h2>` : '' }
 					${ this.config.modalContent.desc ? `<p class="give-modal__description">${ this.config.modalContent.desc }</p>` : '' }
+					${ this.config.modalContent.body ? this.config.modalContent.body : '' }
 				</div>
 
 				<div class="give-modal__controls">
@@ -64,7 +66,7 @@ class GiveModal {
 					${ ( 'form' === this.config.type ) ? '<div class="spinner"></div>' : '' }
 					${ ( 'form' === this.config.type ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }">${ this.config.modalContent.link_text }</a>` : '' }
 
-					<button class="give-button give-button--secondary give-popup-close-button">
+					<button class="give-button give-popup-close-button${ this.config.classes.cancelBtn ? ` ${ this.config.classes.cancelBtn }` : ' give-button--secondary' }">
 						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? Give.fn.getGlobalVar( 'cancel' ) : Give.fn.getGlobalVar( 'close' ) ) }
 					</button>
 
@@ -277,13 +279,14 @@ class GiveNoticeAlert extends GiveModal {
 /**
  * This class will handle success alert modal
  *
+ * @since 2.8.0 extend the classes rather than override
  * @since 2.1.0
  */
 class GiveSuccessAlert extends GiveModal {
 	constructor( obj ) {
 		obj.type = 'alert';
 		super( obj );
-		this.config.classes.modalWrapper = 'give-modal--success';
+		this.config.classes.modalWrapper += ' give-modal--success';
 
 		this.init();
 	}

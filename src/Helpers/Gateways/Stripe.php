@@ -95,7 +95,7 @@ class Stripe {
 						<?php esc_attr_e( 'Card Number', 'give' ); ?>
 						<span class="give-required-indicator">*</span>
 						<span class="give-tooltip give-icon give-icon-question"
-						      data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
+							  data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
 						<span class="card-type"></span>
 					</label>
 					<div id="give-card-number-field-<?php echo esc_html( $idPrefix ); ?>" class="input empty give-stripe-cc-field give-stripe-card-number-field"></div>
@@ -108,7 +108,7 @@ class Stripe {
 						<?php esc_attr_e( 'CVC', 'give' ); ?>
 						<span class="give-required-indicator">*</span>
 						<span class="give-tooltip give-icon give-icon-question"
-						      data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
+							  data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 					</label>
 					<div id="give-card-cvc-field-<?php echo esc_html( $idPrefix ); ?>" class="input empty give-stripe-cc-field give-stripe-card-cvc-field"></div>
 				</div>
@@ -119,7 +119,7 @@ class Stripe {
 					<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>
 					<span class="give-required-indicator">*</span>
 					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php esc_attr_e( 'The name of the credit card account holder.', 'give' ); ?>"></span>
+						  data-tooltip="<?php esc_attr_e( 'The name of the credit card account holder.', 'give' ); ?>"></span>
 				</label>
 				<input
 					type="text"
@@ -139,7 +139,7 @@ class Stripe {
 						<?php esc_attr_e( 'Expiration', 'give' ); ?>
 						<span class="give-required-indicator">*</span>
 						<span class="give-tooltip give-icon give-icon-question"
-						      data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
+							  data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 					</label>
 
 					<div id="give-card-expiration-field-<?php echo esc_html( $idPrefix ); ?>" class="input empty give-stripe-cc-field give-stripe-card-expiration-field"></div>
