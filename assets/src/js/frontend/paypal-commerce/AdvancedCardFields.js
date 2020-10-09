@@ -243,16 +243,9 @@ class AdvancedCardFields extends PaymentMethod {
 		}
 
 		if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
-			throw givePayPalCommerce.threeDsCardAuthenticationFailedNotice;;
 			// Handle no 3D Secure contingency passed scenario
-			Give.form.fn.addErrorsAndResetDonationButton(
-				this.jQueryForm,
-				Give.form.fn.getErrorHTML( [ {
-					message: givePayPalCommerce.threeDsCardAuthenticationFailedNotice,
-				} ] )
-			);
-
-			return false;
+			Give.form.fn.resetDonationButton( this.jQueryForm );
+			throw givePayPalCommerce.threeDsCardAuthenticationFailedNotice;
 		}
 
 		// Approve payment on if we did not get any error.
@@ -277,21 +270,12 @@ class AdvancedCardFields extends PaymentMethod {
 			Give.form.fn.hideProcessingState();
 
 			if ( null === result.data.error ) {
-				Give.form.fn.addErrorsAndResetDonationButton(
-					this.jQueryForm,
-					Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.genericDonorErrorMessage } ] )
-				);
-
-				return;
+				Give.form.fn.resetDonationButton( this.jQueryForm );
+				throw window.givePayPalCommerce.genericDonorErrorMessage;
 			}
 
-			const errorDetail = result.data.error.details[ 0 ];
-			Give.form.fn.addErrorsAndResetDonationButton(
-				this.jQueryForm,
-				Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] )
-			);
-
-			return;
+			Give.form.fn.resetDonationButton( this.jQueryForm );
+			throw result.data.error;
 		}
 
 		await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
@@ -477,14 +461,11 @@ class AdvancedCardFields extends PaymentMethod {
 		const errors = [];
 
 		if ( ! Object.values( error ).length ) {
-			Give.form.fn.addErrorsAndResetDonationButton(
-				this.jQueryForm,
-				Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.genericDonorErrorMessage } ] )
-			);
-
-			return;
+			Give.form.fn.resetDonationButton( this.jQueryForm );
+			throw window.givePayPalCommerce.genericDonorErrorMessage;
 		}
 
+		// Group credit card error notices.
 		error.details.forEach( detail => {
 			// If details is not about card field then insert notice into errors object.
 			if ( ! detail.hasOwnProperty( 'field' ) ) {
