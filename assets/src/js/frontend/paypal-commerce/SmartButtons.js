@@ -206,17 +206,16 @@ class SmartButtons extends PaymentMethod {
 			Give.form.fn.disable( this.jQueryForm, false );
 			Give.form.fn.hideProcessingState();
 
+			this.displayErrorMessage( responseJson.data.error, true );
+
 			errorDetail = responseJson.data.error.details[ 0 ];
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-				Give.form.fn.hideProcessingState();
-				Give.form.fn.disable( this.jQueryForm, false );
-
 				// Recoverable state, see: "Handle Funding Failures"
 				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
 				return actions.restart();
 			}
 
-			throw responseJson.data.error;
+			return;
 		}
 
 		const orderData = responseJson.data.order;
