@@ -42,6 +42,10 @@ export const initializeIframeResize = function( iframe ) {
 							parent.style.height = null;
 						}
 						break;
+
+					case 'giveScrollIframeInToView':
+						iframe.scrollIntoView( { behavior: 'smooth', inline: 'nearest' } );
+						break;
 				}
 			},
 			onInit: function() {

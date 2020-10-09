@@ -339,18 +339,23 @@
 
 							if ( $( node ).find( '.give_error' ).length > 0 ) {
 								moveErrorNotice( $( node ).find( '.give_error' ) );
+								window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
 							}
 
-							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
-								$( node ).children( '.give_errors' ).each( function() {
-									const notice = $( this );
-									moveErrorNotice( notice );
-								} );
+							if ( $( node ).children().hasClass( 'give_errors' ) ) {
+								if ( ! $( node ).parent().hasClass( 'donation-errors' ) ) {
+									$( node ).children( '.give_errors' ).each( function() {
+										const notice = $( this );
+										moveErrorNotice( notice );
+									} );
+								}
+								window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
 							}
 
 							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
 								moveErrorNotice( $( node ) );
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
+								window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
 							}
 
 							if ( $( node ).attr( 'id' ) === 'give_tributes_address_state' ) {
