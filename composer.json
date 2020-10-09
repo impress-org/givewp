@@ -43,5 +43,10 @@
         "psr-4": {
             "Give\\": "src/"
         }
+    },
+    "config": {
+        "platform": {
+            "php": "5.6.40"
+        }
     }
 }
