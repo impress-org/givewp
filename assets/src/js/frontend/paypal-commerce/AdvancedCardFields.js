@@ -244,8 +244,14 @@ class AdvancedCardFields extends PaymentMethod {
 
 		if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
 			// Handle no 3D Secure contingency passed scenario
-			Give.form.fn.resetDonationButton( this.jQueryForm );
-			throw givePayPalCommerce.threeDsCardAuthenticationFailedNotice;
+			Give.form.fn.addErrorsAndResetDonationButton(
+				this.jQueryForm,
+				Give.form.fn.getErrorHTML( [ {
+					message: givePayPalCommerce.threeDsCardAuthenticationFailedNotice,
+				} ] )
+			);
+
+			return false;
 		}
 
 		// Approve payment on if we did not get any error.
@@ -270,12 +276,18 @@ class AdvancedCardFields extends PaymentMethod {
 			Give.form.fn.hideProcessingState();
 
 			if ( null === result.data.error ) {
-				Give.form.fn.resetDonationButton( this.jQueryForm );
-				throw window.givePayPalCommerce.genericDonorErrorMessage;
+				Give.form.fn.addErrorsAndResetDonationButton(
+					this.jQueryForm,
+					Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] )
+				);
+
+				return;
 			}
 
-			Give.form.fn.resetDonationButton( this.jQueryForm );
-			throw result.data.error;
+			Give.form.fn.addErrorsAndResetDonationButton(
+				this.jQueryForm,
+				Give.form.fn.getErrorHTML( [ { message: result.data.error.details[ 0 ].description } ] )
+			);
 		}
 
 		await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
