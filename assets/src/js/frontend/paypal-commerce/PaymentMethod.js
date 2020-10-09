@@ -45,16 +45,15 @@ class PaymentMethod {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param {object|string} error PayPal error object
+	 * @param {object} error PayPal error object
 	 */
 	showError( error ) {
-		if ( 'string' === typeof error ) {
-			DonationForm.addErrors( this.jQueryForm, error );
+		if ( error.hasOwnProperty( 'details' ) ) {
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: error.details[ 0 ].description } ] ) );
 			return;
 		}
 
-		const errorDetail = error.details[ 0 ];
-		DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+		DonationForm.addErrors( this.jQueryForm, error );
 	}
 
 	/**
@@ -65,7 +64,7 @@ class PaymentMethod {
 	 * @returns {boolean} whether or not GiveWP is in test mode
 	 */
 	isInTestMode() {
-		return Give.fn.getGlobalVar( 'is_test_mode' ) === '1';
+		return Give.fn.getGlobalVar( 'is_test_mode' ) === '0';
 	}
 
 	/**
@@ -77,7 +76,7 @@ class PaymentMethod {
 	 * @param {boolean} showToDonor Whether the message is safe to show donors. default false
 	 */
 	displayErrorMessage( error, showToDonor = false ) {
-		let errorToDisplay = window.givePayPalCommerce.genericDonorErrorMessage;
+		let errorToDisplay = Give.form.fn.getErrorHTML( [ { message: window.givePayPalCommerce.genericDonorErrorMessage } ] );
 
 		if ( showToDonor || this.isInTestMode() ) {
 			errorToDisplay = error;
