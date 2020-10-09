@@ -499,6 +499,7 @@ class Give_Scripts {
 				'purchase_loading'            => __( 'Please Wait...', 'give' ),
 				'textForOverlayScreen'        => esc_html__( 'Please Wait...', 'give' ),
 				'number_decimals'             => give_get_price_decimals(),
+				'is_test_mode'                => give_is_test_mode(),
 				'give_version'                => GIVE_VERSION,
 				'magnific_options'            => apply_filters(
 					'give_magnific_options',

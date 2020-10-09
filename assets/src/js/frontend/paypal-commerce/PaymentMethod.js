@@ -70,7 +70,7 @@ class PaymentMethod {
 	 * @returns {boolean} whether or not GiveWP is in test mode
 	 */
 	isInTestMode() {
-		return window.give_global_vars.is_test_mode === '1';
+		return Give.fn.getGlobalVar( 'is_test_mode' ) === '1';
 	}
 
 	/**
