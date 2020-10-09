@@ -794,6 +794,18 @@ export default {
 		 * @param {*} $errors Errors list.
 		 */
 		addErrorsAndResetDonationButton: function( $form, $errors = null ) {
+			$errors && this.addErrors( $form, $errors );
+			this.resetDonationButton( $form );
+		},
+
+		/**
+		 * Reset "Donate Now" button state.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Javascript form selector.
+		 */
+		resetDonationButton: function( $form ) {
 			const $submitButton = $form.find( '#give_purchase_submit input[type="submit"].give-submit' );
 			const $container = $submitButton.closest( 'div' );
 
@@ -801,8 +813,6 @@ export default {
 			$submitButton.val( $submitButton.data( 'before-validation-label' ) );
 			$container.find( '.give-loading-animation' ).fadeOut();
 			$form.find( '.give_errors' ).remove();
-
-			$errors && this.addErrors( $form, $errors );
 
 			// Enable the form donation button.
 			Give.form.fn.disable( $form, false );

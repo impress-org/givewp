@@ -243,6 +243,7 @@ class AdvancedCardFields extends PaymentMethod {
 		}
 
 		if ( this.canThreeDsAuthorizeCard( payload ) && ! this.IsCardThreeDsAuthorized( payload ) ) {
+			throw givePayPalCommerce.threeDsCardAuthenticationFailedNotice;;
 			// Handle no 3D Secure contingency passed scenario
 			Give.form.fn.addErrorsAndResetDonationButton(
 				this.jQueryForm,
