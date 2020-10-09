@@ -130,6 +130,7 @@ class Actions {
 	 */
 	public function loadCommonHooks( $formId, $args ) {
 		remove_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
+		remove_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888 );
 	}
 
 	/**
@@ -151,6 +152,7 @@ class Actions {
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 		add_action( 'give_payment_mode_top', [ $this, 'getStartWrapperHTMLForPaymentSection' ], 0 );
 		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ], 999 );
+		add_action( 'give_payment_mode_top', 'give_terms_agreement', 9999 );
 
 		/**
 		 * Remove actions
@@ -255,7 +257,7 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
-		$content = isset( $this->templateOptions['payment_amount']['content'] ) && !empty($this->templateOptions['payment_amount']['content']) ? $this->templateOptions['payment_amount']['content'] : sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo('sitename') );
+		$content = isset( $this->templateOptions['payment_amount']['content'] ) && ! empty( $this->templateOptions['payment_amount']['content'] ) ? $this->templateOptions['payment_amount']['content'] : sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo( 'sitename' ) );
 		$label   = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 		$arrow   = is_rtl() ? 'left' : 'right';
 		printf(
