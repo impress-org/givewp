@@ -278,7 +278,7 @@ class AdvancedCardFields extends PaymentMethod {
 			if ( null === result.data.error ) {
 				Give.form.fn.addErrorsAndResetDonationButton(
 					this.jQueryForm,
-					Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] )
+					Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.genericDonorErrorMessage } ] )
 				);
 
 				return;
@@ -478,7 +478,7 @@ class AdvancedCardFields extends PaymentMethod {
 		if ( ! Object.values( error ).length ) {
 			Give.form.fn.addErrorsAndResetDonationButton(
 				this.jQueryForm,
-				Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.failedPaymentProcessingNotice } ] )
+				Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.genericDonorErrorMessage } ] )
 			);
 
 			return;
@@ -515,7 +515,7 @@ class AdvancedCardFields extends PaymentMethod {
 					}
 
 					errors.push( {
-						message: `${ givePayPalCommerce.failedPaymentProcessingNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
+						message: `${ givePayPalCommerce.genericDonorErrorMessage } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
 					} );
 					return;
 				}

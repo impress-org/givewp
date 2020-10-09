@@ -49,7 +49,7 @@ class PaymentMethod {
 	 */
 	showError( error = null ) {
 		if ( null === error ) {
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.genericDonorErrorMessage } ] ) );
 			return;
 		}
 
@@ -87,7 +87,7 @@ class PaymentMethod {
 		if ( showToDonor || this.isInTestMode() ) {
 			errorToDisplay = error;
 		} else {
-			errorToDisplay = window.give_global_vars.generic_error_message;
+			errorToDisplay = window.givePayPalCommerce.genericDonorErrorMessage;
 		}
 
 		Give.form.fn.getErrorHTML( [ { message: errorToDisplay } ] );
