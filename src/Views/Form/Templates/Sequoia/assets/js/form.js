@@ -531,7 +531,6 @@
 			'.give-constant-contact-fieldset',
 			'.give-activecampaign-fieldset',
 			'.give-mailchimp-fieldset',
-			'#give_terms_agreement',
 			'.give-donation-submit',
 		];
 
