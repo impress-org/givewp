@@ -82,15 +82,13 @@ class PaymentMethod {
 	 * @param {boolean} showToDonor Whether the message is safe to show donors
 	 */
 	displayErrorMessage( error, showToDonor ) {
-		let errorToDisplay;
+		let errorToDisplay = window.givePayPalCommerce.genericDonorErrorMessage;
 
 		if ( showToDonor || this.isInTestMode() ) {
 			errorToDisplay = error;
-		} else {
-			errorToDisplay = window.givePayPalCommerce.genericDonorErrorMessage;
 		}
 
-		Give.form.fn.getErrorHTML( [ { message: errorToDisplay } ] );
+		this.showError( errorToDisplay );
 	}
 
 	/**
