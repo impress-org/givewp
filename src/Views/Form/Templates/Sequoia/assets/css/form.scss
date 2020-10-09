@@ -667,6 +667,7 @@ p {
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
+		position: relative;
 
 		input[type='checkbox'] {
 			bottom: 14px;
