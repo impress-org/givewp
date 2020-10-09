@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0-alpha.2] - 2020-10-09
+
 ### Added
 
 -   PayPal Donations is a new payment gateway (#5079)
 -   PayPal Donations supports currency switcher (#5335)
 -   PayPal Donations supports subscriptions (#5173, #5221, #5308)
+
 ### Changed
 
 -   Reports page main menu is now extendable ( #5339 )
@@ -19,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--    Multi-Form Goal block no longer obscure column controls (#5352)
+-   Multi-Form Goal block no longer obscure column controls (#5352)
 
 ## [2.9.0-alpha.1] - 2020-10-06
 
