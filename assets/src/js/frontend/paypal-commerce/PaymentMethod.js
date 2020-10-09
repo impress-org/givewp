@@ -79,9 +79,9 @@ class PaymentMethod {
 	 * @since 2.9.0
 	 *
 	 * @param {string} error Message to display
-	 * @param {boolean} showToDonor Whether the message is safe to show donors
+	 * @param {boolean} showToDonor Whether the message is safe to show donors. default false
 	 */
-	displayErrorMessage( error, showToDonor ) {
+	displayErrorMessage( error, showToDonor = false ) {
 		let errorToDisplay = window.givePayPalCommerce.genericDonorErrorMessage;
 
 		if ( showToDonor || this.isInTestMode() ) {

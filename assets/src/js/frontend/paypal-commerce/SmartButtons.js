@@ -69,7 +69,7 @@ class SmartButtons extends PaymentMethod {
 				tagline: false,
 			},
 			onError: ( error ) =>{
-				this.showError( error );
+				this.displayErrorMessage( error );
 			},
 		};
 
