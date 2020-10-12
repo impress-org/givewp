@@ -1,4 +1,4 @@
-/* globals jQuery, Give, givePayPalCommerce */
+/* globals jQuery, Give */
 import DonationForm from './DonationForm';
 
 class PaymentMethod {
@@ -47,14 +47,42 @@ class PaymentMethod {
 	 *
 	 * @param {object} error PayPal error object
 	 */
-	showError( error = null ) {
-		if ( null === error ) {
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
+	showError( error ) {
+		if ( error.hasOwnProperty( 'details' ) ) {
+			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: error.details[ 0 ].description } ] ) );
 			return;
 		}
 
-		const errorDetail = error.details[ 0 ];
-		DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
+		DonationForm.addErrors( this.jQueryForm, error );
+	}
+
+	/**
+	 * Checks whether GiveWP is in test mode
+	 *
+	 * @since 2.9.0
+	 *
+	 * @returns {boolean} whether or not GiveWP is in test mode
+	 */
+	isInTestMode() {
+		return Give.fn.getGlobalVar( 'is_test_mode' ) === '1';
+	}
+
+	/**
+	 * Display an error message to the user
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param {string} error Message to display
+	 * @param {boolean} showToDonor Whether the message is safe to show donors. default false
+	 */
+	displayErrorMessage( error, showToDonor = false ) {
+		let errorToDisplay = Give.form.fn.getErrorHTML( [ { message: window.givePayPalCommerce.genericDonorErrorMessage } ] );
+
+		if ( showToDonor || this.isInTestMode() ) {
+			errorToDisplay = error;
+		}
+
+		this.showError( errorToDisplay );
 	}
 
 	/**
@@ -90,8 +118,7 @@ class PaymentMethod {
 		const responseJson = await response.json();
 
 		if ( ! responseJson.success ) {
-			this.showError( responseJson.data.error );
-			return null;
+			throw responseJson.data.error;
 		}
 
 		return responseJson.data.id;
