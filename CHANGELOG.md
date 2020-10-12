@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Set composer platform PHP version to 5.6 to ensure package compatibility (#5266)
+
+### Changed
+
+-   Multi-Form Goal Blocks now auto-focus the Progress Bar on insert (#5364)
+
+## [2.9.0-alpha.2] - 2020-10-09
+
 ### Added
 
 -   PayPal Donations is a new payment gateway (#5079)
@@ -18,10 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Reports page main menu is now extendable ( #5339 )
 -   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
 -   Multi-Form Goal Block uses the Revenue table to calculate progress towards a goal. (#5357)
+-   Multi-Form Goal Progress Bar styles are encapsulated via a Shadow DOM (#5348)
 
 ### Fixed
 
--    Multi-Form Goal block no longer obscure column controls (#5352)
+-   Multi-Form Goal block no longer obscure column controls (#5352)
 
 ## [2.9.0-alpha.1] - 2020-10-06
 
