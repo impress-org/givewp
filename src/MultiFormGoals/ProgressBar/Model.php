@@ -115,7 +115,7 @@ class Model {
 	protected function getTotal() {
 		$query   = new Query( $this->getForms() );
 		$results = $query->getResults();
-		return $results->total;
+		return $results->total / 100;
 	}
 
 	/**
