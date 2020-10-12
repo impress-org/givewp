@@ -130,7 +130,6 @@ class Actions {
 	 */
 	public function loadCommonHooks( $formId, $args ) {
 		remove_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
-		remove_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888 );
 	}
 
 	/**
@@ -152,7 +151,6 @@ class Actions {
 		add_action( 'give_payment_mode_top', 'give_show_register_login_fields' );
 		add_action( 'give_payment_mode_top', [ $this, 'getStartWrapperHTMLForPaymentSection' ], 0 );
 		add_action( 'give_donation_form_after_submit', [ $this, 'getCloseWrapperHTMLForPaymentSection' ], 999 );
-		add_action( 'give_payment_mode_top', 'give_terms_agreement', 9999 );
 
 		/**
 		 * Remove actions

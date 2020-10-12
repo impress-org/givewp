@@ -658,16 +658,20 @@ p {
 	}
 
 	#give_terms_agreement {
+		order: 3;
 		background: #fff;
+		border: 1px solid rgba(255, 255, 255, 0);
 		box-sizing: border-box;
-		margin: 20px 0 20px 0 !important;
+		box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+		border-radius: 5px;
+		margin: 20px 0 0 0 !important;
+		position: relative;
 		transition: border 0.2s ease;
 		width: auto !important;
 		padding: 17px 20px 17px 22px !important;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
-		position: relative;
 
 		input[type='checkbox'] {
 			bottom: 14px;
