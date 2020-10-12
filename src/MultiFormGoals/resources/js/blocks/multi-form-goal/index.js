@@ -3,12 +3,13 @@
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { InnerBlocks } = wp.blockEditor;
 
 /**
  * Internal dependencies
  */
 import GiveLogo from '../../components/logo';
+import edit from './edit';
+import save from './save';
 
 /**
  * Required styles (both common and editor styles)
@@ -19,19 +20,6 @@ import '../../../css/editor.scss';
 /**
  * Register Block
  */
-const blockTemplate = [
-	[ 'core/media-text', {
-		imageFill: true,
-	}, [
-		[ 'core/heading', {
-			placeholder: __( 'Heading', 'give' ),
-		} ],
-		[ 'core/paragraph', {
-			placeholder: __( 'Summary', 'give' ),
-		} ],
-	] ],
-	[ 'give/progress-bar', {} ],
-];
 
 export default registerBlockType( 'give/multi-form-goal', {
 	title: __( 'Multi-Form Goal', 'give' ),
@@ -47,21 +35,6 @@ export default registerBlockType( 'give/multi-form-goal', {
 			'wide',
 		],
 	},
-	edit: () => {
-		return (
-			<div className="give-multi-form-goal-block">
-				<InnerBlocks
-					template={ blockTemplate }
-					templateLock="all"
-				/>
-			</div>
-		);
-	},
-	save: () => {
-		return (
-			<div className="give-multi-form-goal-block">
-				<InnerBlocks.Content />
-			</div>
-		);
-	},
+	edit: edit,
+	save: save,
 } );
