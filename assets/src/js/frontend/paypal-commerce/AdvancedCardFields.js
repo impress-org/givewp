@@ -79,7 +79,9 @@ class AdvancedCardFields extends PaymentMethod {
 		const createOrder = this.createOrderHandler.bind( this );
 		const styles = await this.getComputedInputFieldForHostedField();
 		const fields = this.getPayPalHostedCardFields();
-		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } );
+		const hostedCardFields = await paypal.HostedFields.render( { createOrder, styles, fields } ).catch( ( error ) => {
+			this.displayErrorMessage( error );
+		} );
 		const onSubmitHandlerForDonationForm = this.onSubmitHandlerForDonationForm.bind( this );
 
 		this.addEventToHostedFields( hostedCardFields );
@@ -282,13 +284,10 @@ class AdvancedCardFields extends PaymentMethod {
 				return;
 			}
 
-			const errorDetail = result.data.error.details[ 0 ];
 			Give.form.fn.addErrorsAndResetDonationButton(
 				this.jQueryForm,
-				Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] )
+				Give.form.fn.getErrorHTML( [ { message: result.data.error.details[ 0 ].description } ] )
 			);
-
-			return;
 		}
 
 		await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
@@ -473,6 +472,12 @@ class AdvancedCardFields extends PaymentMethod {
 		const errorStringByGroup = {};
 		const errors = [];
 
+		if ( ! Object.values( error ).length ) {
+			Give.form.fn.resetDonationButton( this.jQueryForm );
+			throw window.givePayPalCommerce.genericDonorErrorMessage;
+		}
+
+		// Group credit card error notices.
 		error.details.forEach( detail => {
 			// If details is not about card field then insert notice into errors object.
 			if ( ! detail.hasOwnProperty( 'field' ) ) {
@@ -504,7 +509,7 @@ class AdvancedCardFields extends PaymentMethod {
 					}
 
 					errors.push( {
-						message: `${ givePayPalCommerce.failedPaymentProcessingNotice } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
+						message: `${ givePayPalCommerce.genericDonorErrorMessage } ${ givePayPalCommerce.errorCodeLabel }: ${ detail.issue }`,
 					} );
 					return;
 				}

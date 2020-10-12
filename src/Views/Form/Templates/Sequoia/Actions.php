@@ -255,7 +255,7 @@ class Actions {
 	 * @since 2.7.0
 	 */
 	public function getStartWrapperHTMLForAmountSection() {
-		$content = isset( $this->templateOptions['payment_amount']['content'] ) && !empty($this->templateOptions['payment_amount']['content']) ? $this->templateOptions['payment_amount']['content'] : sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo('sitename') );
+		$content = isset( $this->templateOptions['payment_amount']['content'] ) && ! empty( $this->templateOptions['payment_amount']['content'] ) ? $this->templateOptions['payment_amount']['content'] : sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your goes directly to supporting our cause. Thank you for your generosity!', 'give' ), get_bloginfo( 'sitename' ) );
 		$label   = ! empty( $this->templateOptions['introduction']['donate_label'] ) ? $this->templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 		$arrow   = is_rtl() ? 'left' : 'right';
 		printf(
