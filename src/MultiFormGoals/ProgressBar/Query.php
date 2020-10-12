@@ -33,7 +33,7 @@ class Query {
             WHERE
                 payment.post_type = 'give_payment'
                 AND
-                payment.post_status = 'publish'
+                payment.post_status IN ( 'publish', 'give_subscription' )
         ";
 
 		if ( ! empty( $this->formIDs ) ) {
