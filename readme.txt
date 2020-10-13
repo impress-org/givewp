@@ -809,8 +809,6 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Donors are now required to actually add content into the First Name field and not just use a space character to pass the validation. [#2562](https://github.com/impress-org/givewp/issues/2562)
 
 
-[See full changelog here >>](https://plugins.svn.wordpress.org/give/trunk/changelog.txt)
-
 == Upgrade Notice ==
 
 = 2.7.0 =
