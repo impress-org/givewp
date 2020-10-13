@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Multi-Form Goal Blocks now auto-focus the Progress Bar on insert (#5364)
 -   Improve PayPal Donations payment gateway setting page UX ( #5369 )
+-   Update composer setup (#5361)
 
 ## [2.9.0-alpha.2] - 2020-10-09
 
