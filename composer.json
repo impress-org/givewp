@@ -11,9 +11,7 @@
         "paypal/paypal-checkout-sdk": "^1.0"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "*",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.6",
-        "phpcompatibility/php-compatibility": "^9.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "^5"
@@ -27,17 +25,7 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --bootstrap tests/src/bootstrap.php --no-configuration tests/src/",
-        "post-install-cmd": [
-            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true",
-            "@install-codestandards"
-        ],
-        "post-update-cmd": [
-            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs || true"
-        ],
-        "install-codestandards": [
-            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
-        ]
+        "test": "./vendor/bin/phpunit --bootstrap tests/src/bootstrap.php --no-configuration tests/src/"
     },
     "autoload": {
         "psr-4": {

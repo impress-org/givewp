@@ -48,3 +48,7 @@ assets/dist/
 
 # Composer
 vendor
+
+# PHPCS
+.phpcs.xml
+phpcs.xml
