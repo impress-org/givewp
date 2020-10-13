@@ -79,7 +79,6 @@ class ScriptLoader {
 						esc_html__( 'Using a trusted, secure hosting provider – preferably one which claims and actively promotes PCI compliance.', 'give' ),
 						esc_html__( 'Maintain security best practices when setting passwords and limit access to your server.', 'give' ),
 						esc_html__( 'Implement an SSL certificate to keep your donations secure.', 'give' ),
-						esc_html__( 'Keep installed plugins to a minimum.', 'give' ),
 						esc_html__( 'Keep plugins up to date to ensure latest security fixes are present.', 'give' ),
 					],
 					'liveWarning'                       => give_is_test_mode() ? esc_html__(

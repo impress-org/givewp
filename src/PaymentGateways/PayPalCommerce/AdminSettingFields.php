@@ -179,9 +179,7 @@ class AdminSettingFields {
 								</div>
 							<?php endif; ?>
 						</div>
-
 					</div>
-					<?php echo UpsellNotice::recurringAddon(); ?>
 				</div>
 			</td>
 		</tr>
