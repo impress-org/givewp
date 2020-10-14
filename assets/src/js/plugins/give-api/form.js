@@ -33,7 +33,7 @@ export default {
 		 */
 		hasDonationForm: function( $container ) {
 			const actionHiddenField = $container.querySelector( 'form input[name="give_action"]' );
-			return actionHiddenField && 'give_purchase' === actionHiddenField.value;
+			return actionHiddenField && 'purchase' === actionHiddenField.value;
 		},
 
 		/**

@@ -6,11 +6,21 @@ import CustomCardFields from './CustomCardFields';
 import { loadScript } from '@paypal/paypal-js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
-	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
+	let $formWraps = document.querySelectorAll( '.give-form-wrap' );
+	const $tmpFormWraps = [];
 
-	if ( ! $formWraps.length || ! Give.form.fn.hasDonationForm( $formWraps[ 0 ] ) ) {
+	// Filter container who has donation form.
+	$formWraps.forEach( $formWrap => {
+		if ( Give.form.fn.hasDonationForm( $formWrap ) ) {
+			$tmpFormWraps.push( $formWrap );
+		}
+	} );
+
+	if ( ! $tmpFormWraps.length ) {
 		return;
 	}
+
+	$formWraps = $tmpFormWraps;
 
 	// Setup initial PayPal script on basis of first form on webpage.
 	loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) )
