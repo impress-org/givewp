@@ -8,7 +8,7 @@ import { loadScript } from '@paypal/paypal-js';
 document.addEventListener( 'DOMContentLoaded', () => {
 	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
 
-	if ( ! $formWraps.length ) {
+	if ( ! $formWraps.length || ! Give.form.fn.hasDonationForm( $formWraps[ 0 ] ) ) {
 		return;
 	}
 
