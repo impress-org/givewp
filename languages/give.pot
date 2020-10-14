@@ -129,7 +129,7 @@ msgstr[1] ""
 msgid "Unable to send email. Please try again."
 msgstr ""
 
-#: includes/ajax-functions.php:711, includes/class-give-scripts.php:481, templates/email-login-form.php:33
+#: includes/ajax-functions.php:711, includes/class-give-scripts.php:482, templates/email-login-form.php:33
 msgid "Please check your email and click on the link to access your complete donation history."
 msgstr ""
 
@@ -801,7 +801,7 @@ msgstr ""
 msgid "Updating..."
 msgstr ""
 
-#: includes/class-give-scripts.php:395, includes/class-give-scripts.php:497
+#: includes/class-give-scripts.php:395, includes/class-give-scripts.php:498
 msgid "Loading..."
 msgstr ""
 
@@ -817,55 +817,55 @@ msgstr ""
 msgid "Activating..."
 msgstr ""
 
-#: includes/class-give-scripts.php:494
+#: includes/class-give-scripts.php:495
 msgid "Please select a payment method."
 msgstr ""
 
-#: includes/class-give-scripts.php:495
+#: includes/class-give-scripts.php:496
 msgid "The minimum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:496
+#: includes/class-give-scripts.php:497
 msgid "The maximum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:498, includes/class-give-scripts.php:499
+#: includes/class-give-scripts.php:499, includes/class-give-scripts.php:500
 msgid "Please Wait..."
 msgstr ""
 
-#: includes/class-give-scripts.php:513
+#: includes/class-give-scripts.php:515
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/class-give-scripts.php:514, includes/process-donation.php:596, includes/shortcodes.php:449, includes/admin/admin-actions.php:924
+#: includes/class-give-scripts.php:516, includes/process-donation.php:596, includes/shortcodes.php:449, includes/admin/admin-actions.php:924
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/class-give-scripts.php:515, includes/process-donation.php:592
+#: includes/class-give-scripts.php:517, includes/process-donation.php:592
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/class-give-scripts.php:516
+#: includes/class-give-scripts.php:518
 msgid "Invalid email address or username."
 msgstr ""
 
-#: includes/class-give-scripts.php:517, includes/process-donation.php:984, includes/user-functions.php:419
+#: includes/class-give-scripts.php:519, includes/process-donation.php:984, includes/user-functions.php:419
 msgid "Enter a password."
 msgstr ""
 
-#: includes/class-give-scripts.php:518, includes/user-functions.php:423
+#: includes/class-give-scripts.php:520, includes/user-functions.php:423
 msgid "Enter the password confirmation."
 msgstr ""
 
-#: includes/class-give-scripts.php:519, includes/process-donation.php:570
+#: includes/class-give-scripts.php:521, includes/process-donation.php:570
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
-#: includes/class-give-scripts.php:528
+#: includes/class-give-scripts.php:530
 msgid "Loading"
 msgstr ""
 
-#: includes/class-give-scripts.php:530, includes/admin/tools/views/html-admin-page-data.php:33
+#: includes/class-give-scripts.php:532, includes/admin/tools/views/html-admin-page-data.php:33
 msgid "Please select an option"
 msgstr ""
 
@@ -7448,7 +7448,7 @@ msgstr ""
 msgid "This is a secure SSL encrypted payment."
 msgstr ""
 
-#: includes/forms/template.php:1010, includes/forms/template.php:1017, includes/gateways/stripe/includes/give-stripe-scripts.php:52, src/Helpers/Gateways/Stripe.php:95, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:167
+#: includes/forms/template.php:1010, includes/forms/template.php:1017, includes/gateways/stripe/includes/give-stripe-scripts.php:52, src/Helpers/Gateways/Stripe.php:95, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:166
 msgid "Card Number"
 msgstr ""
 
@@ -7456,7 +7456,7 @@ msgstr ""
 msgid "The (typically) 16 digits on the front of your credit card."
 msgstr ""
 
-#: includes/forms/template.php:1023, includes/forms/template.php:1029, includes/gateways/stripe/includes/give-stripe-scripts.php:53, src/Helpers/Gateways/Stripe.php:108, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:168
+#: includes/forms/template.php:1023, includes/forms/template.php:1029, includes/gateways/stripe/includes/give-stripe-scripts.php:53, src/Helpers/Gateways/Stripe.php:108, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:167
 msgid "CVC"
 msgstr ""
 
@@ -9974,11 +9974,11 @@ msgstr ""
 msgid "Base Country"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:320, src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:76
+#: includes/admin/settings/class-settings-general.php:320, src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:75
 msgid "The country your site operates from."
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:327, src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:53
+#: includes/admin/settings/class-settings-general.php:327, src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:52
 msgid "Choose a country"
 msgstr ""
 
@@ -11334,7 +11334,7 @@ msgstr ""
 msgid "forms"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:269, includes/admin/tools/import/class-give-import-donations.php:275, src/MultiFormGoals/resources/views/progressbar.php:23, src/Views/Form/Templates/Sequoia/sections/income-stats.php:24
+#: includes/admin/tools/import/class-give-import-donations.php:269, includes/admin/tools/import/class-give-import-donations.php:275, src/MultiFormGoals/resources/views/progressbar.php:28, src/Views/Form/Templates/Sequoia/sections/income-stats.php:24
 msgid "donation"
 msgid_plural "donations"
 msgstr[0] ""
@@ -13214,7 +13214,7 @@ msgstr ""
 msgid "Connection Method:"
 msgstr ""
 
-#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:832, src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:151
+#: includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php:832, src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:150
 msgid "Disconnect"
 msgstr ""
 
@@ -13696,95 +13696,95 @@ msgstr ""
 msgid "Account Status"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:69, src/PaymentGateways/PayPalCommerce/PayPalCommerce.php:64
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:68, src/PaymentGateways/PayPalCommerce/PayPalCommerce.php:64
 msgid "Account Country"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:95
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:94
 msgid "PayPal Connection"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:110
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:109
 msgid "Connect with PayPal"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:119
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:118
 msgid "Sign up for PayPal"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:123
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:122
 msgid "Click to get started!"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:128
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:127
 msgid "PayPal is currently NOT connected."
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:135
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:134
 msgid "Connected"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:144
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:143
 msgid "Connected for payments as"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:155
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:154
 msgid "APIs Connected:"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:157, src/API/Endpoints/Reports/PaymentMethods.php:70, src/API/Endpoints/Reports/PaymentStatuses.php:79, src/API/Endpoints/Reports/PaymentStatuses.php:84, src/API/Endpoints/Reports/PaymentStatuses.php:89, src/API/Endpoints/Reports/PaymentStatuses.php:94, src/API/Endpoints/Reports/PaymentStatuses.php:99, src/API/Endpoints/Reports/PaymentStatuses.php:104
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:156, src/API/Endpoints/Reports/PaymentMethods.php:70, src/API/Endpoints/Reports/PaymentStatuses.php:79, src/API/Endpoints/Reports/PaymentStatuses.php:84, src/API/Endpoints/Reports/PaymentStatuses.php:89, src/API/Endpoints/Reports/PaymentStatuses.php:94, src/API/Endpoints/Reports/PaymentStatuses.php:99, src/API/Endpoints/Reports/PaymentStatuses.php:104
 msgid "Payments"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:159
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:158
 msgid "Subscriptions"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:161
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:160
 msgid "Refunds"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:169
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:168
 msgid "Warning, your account is not ready to accept donations. Please review the following list:"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:177
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:176
 msgid "Re-Check Account Status"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:202
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:199
 msgid "Accept Donations with PayPal Donations"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:203
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:200
 msgid "Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees. Upgrade to PayPal Pro and provide your donors with even more payment options using PayPal Smart Buttons."
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:206
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:203
 msgid "PayPal Logo Image"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:210
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:207
 msgid "Credit and Debit Card Donations"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:213
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:210
 msgid "Improve donation conversion rates"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:215
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:212
 msgid "Easy no-API key connection"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:217
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:214
 msgid "Accept payments from around the world"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:219
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:216
 msgid "PayPal, Apple and Google Pay"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:221
+#: src/PaymentGateways/PayPalCommerce/AdminSettingFields.php:218
 msgid "Supports 3D Secure payments"
 msgstr ""
 
@@ -13797,7 +13797,7 @@ msgstr ""
 msgid "The payment creation failed before processing the PayPalCommerce gateway request. Payment data: %s"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/DonationProcessor.php:81, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:171
+#: src/PaymentGateways/PayPalCommerce/DonationProcessor.php:81
 msgid "An error occurred while processing your payment. Please try again."
 msgstr ""
 
@@ -13908,48 +13908,44 @@ msgid "Implement an SSL certificate to keep your donations secure."
 msgstr ""
 
 #: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:82
-msgid "Keep installed plugins to a minimum."
-msgstr ""
-
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:83
 msgid "Keep plugins up to date to ensure latest security fixes are present."
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:85
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:84
 msgid ""
 "You have connected your account for test mode. You will need to connect again once you\n"
 "						are in live mode."
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:162
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:161
 msgid "Card Expiration Date:"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:163
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:162
 msgid "Card Number:"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:164
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:163
 msgid "Card CVC:"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:169
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:168
 msgid "MM/YY"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:172
-msgid "There was a problem processing your credit card. Please try again. If the problem persists, please try another payment method."
-msgstr ""
-
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:173
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:170
 msgid "There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method."
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:174
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:171
 msgid "Error Code"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:179
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:172
+msgid "There was an error processing your donation. Please contact the administrator."
+msgstr ""
+
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:177
 msgid "Or pay with card"
 msgstr ""
 
@@ -14021,7 +14017,7 @@ msgstr ""
 msgid "View Add-on"
 msgstr ""
 
-#: src/Views/Form/defaultFormDonationProcessing.php:12
+#: src/Views/Form/defaultFormDonationProcessing.php:12, src/Views/Form/defaultRedirectHandlerTemplate.php:14
 msgid "Redirecting..."
 msgstr ""
 
@@ -14067,11 +14063,11 @@ msgstr ""
 msgid "Total Refunds"
 msgstr ""
 
-#: src/MultiFormGoals/resources/views/progressbar.php:19, src/Views/Form/Templates/Sequoia/sections/income-stats.php:61
+#: src/MultiFormGoals/resources/views/progressbar.php:24, src/Views/Form/Templates/Sequoia/sections/income-stats.php:61
 msgid "raised"
 msgstr ""
 
-#: src/MultiFormGoals/resources/views/progressbar.php:27, src/Views/Form/Templates/Sequoia/sections/income-stats.php:73
+#: src/MultiFormGoals/resources/views/progressbar.php:32, src/Views/Form/Templates/Sequoia/sections/income-stats.php:73
 msgid "goal"
 msgstr ""
 
@@ -14243,7 +14239,7 @@ msgstr ""
 msgid "To create a PayPalPayment object, please provide valid id, amount, status, create_time, update_time and links"
 msgstr ""
 
-#: src/PaymentGateways/PayPalCommerce/Repositories/PayPalOrder.php:181
+#: src/PaymentGateways/PayPalCommerce/Repositories/PayPalOrder.php:180
 msgid "To create a paypal order, please provide formId, donationAmount and payer"
 msgstr ""
 
