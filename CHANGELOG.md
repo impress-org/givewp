@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0-beta.1 - 2020-10-13
+
 ### Fixed
 
 -   Set composer platform PHP version to 5.6 to ensure package compatibility (#5266)
