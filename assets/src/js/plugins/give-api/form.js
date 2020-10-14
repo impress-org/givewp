@@ -24,6 +24,19 @@ export default {
 		},
 
 		/**
+		 * Return whether or not container has a donation form.
+		 *
+		 * @since 2.9.0
+		 * @param {Element} $container Form container.
+		 *
+		 * @return {boolean} Boolean value.
+		 */
+		hasDonationForm: function( $container ) {
+			const actionHiddenField = $container.querySelector( 'form input[name="give_action"]' );
+			return actionHiddenField && 'give_purchase' === actionHiddenField.value;
+		},
+
+		/**
 		 * Disable donation form.
 		 *
 		 * @param {object} $form
