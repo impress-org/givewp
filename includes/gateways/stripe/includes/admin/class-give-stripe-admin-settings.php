@@ -693,6 +693,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @return mixed|void
 		 * @since 2.7.0
+		 * @since 2.9.0 Stripe accounts are now disconnected locally, meaning that GiveWP remains an Authorized Application in the Stripe account.
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 			$stripe_accounts = give_stripe_get_all_accounts();
