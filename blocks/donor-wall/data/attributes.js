@@ -44,6 +44,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+	showCompanyName: {
+		type: 'boolean',
+		default: false,
+	},
 	showTotal: {
 		type: 'boolean',
 		default: true,
