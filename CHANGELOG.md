@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Load PayPal SDK only on a page that has a donation form (#5376)
+
 ## 2.9.0-beta.1 - 2020-10-13
 
 ### Fixed
