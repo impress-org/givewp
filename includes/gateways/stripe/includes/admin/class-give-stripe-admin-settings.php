@@ -891,6 +891,19 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							?>
 						</div>
 					</div>
+					<!-- DESTRUCTIVE: Disconnect all Stripe accounts. -->
+					<hr class="give-stripe-disconnect-all-divider" />
+					<div class="give-stripe-disconnect-all">
+						<h3><?php esc_html_e( 'Remove GiveWP as an Authorized Application for my Stripe account.', 'give' ); ?></h3> 
+						<p class="give-stripe-disconnect-all--description">
+							<?php esc_html_e( 'Removing GiveWP as an Authorized Application for your Stripe account will remove the connection between the website you are disconnecting as well as any other sites that you have connected to GiveWP using the same Stripe account and connect method. Proceed with caution when disconnecting if you have multiple sites connected.', 'give' ); ?>
+						</p>
+						<p>
+							<a target="_blank" href="https://dashboard.stripe.com/account/applications">
+								<?php esc_html_e( 'View authorized applications in Stripe', 'give' ); ?>
+							</a>
+						</p>
+					</div>
 				</td>
 			</tr>
 			<?php
