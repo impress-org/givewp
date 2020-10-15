@@ -56,18 +56,27 @@ export default {
 		 * Show processing state template.
 		 *
 		 * @since 2.8.0
+		 * @since {string} none
 		 */
-		showProcessingState: function() {
+		showProcessingState: function( html ) {
+			const container = document.createElement( 'div' );
 			const loader = document.createElement( 'div' );
-			const textNode = document.createElement( 'div' );
+			const divNode = document.createElement( 'div' );
 
-			textNode.innerText = Give.fn.getGlobalVar( 'textForOverlayScreen' );
+			// if( html ) {
+			// 	divNode.innerHTML = html;
+			// } else{
+			divNode.innerHTML = Give.fn.getGlobalVar( 'textForOverlayScreen' );
+			// }
 
-			loader.setAttribute( 'id', 'give-processing-state-template' );
-			loader.append( textNode );
+			loader.setAttribute( 'class', 'loader spinning' );
+			container.setAttribute( 'id', 'give-processing-state-template' );
 
-			loader.classList.add( 'active' );
-			document.body.appendChild( loader );
+			container.append( loader );
+			container.append( divNode );
+
+			container.classList.add( 'active' );
+			document.body.appendChild( container );
 		},
 
 		/**
