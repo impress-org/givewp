@@ -24,7 +24,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Donor Wall Settings' ) }>
+			<PanelBody title={ __( 'Donor Wall Settings', 'give' ) }>
 				<TextControl
 					name="donorsPerPage"
 					label={ __( 'Donors Per Page', 'give' ) }
