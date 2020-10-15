@@ -56,4 +56,14 @@
 			animation: load 0.6s linear infinite;
 		}
 	}
+
+	@keyframes load {
+		from {
+			transform: rotateZ(0deg);
+		}
+
+		to {
+			transform: rotateZ(180deg);
+		}
+	}
 }
