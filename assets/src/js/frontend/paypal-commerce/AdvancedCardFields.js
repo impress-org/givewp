@@ -268,7 +268,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @param {object} payload PayPal response object after payment completion.
 	 */
 	async onApproveHandler( payload ) {
-		Give.form.fn.showProcessingState();
+		Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 
 		const result = await this.approvePayment( payload.orderId );
 

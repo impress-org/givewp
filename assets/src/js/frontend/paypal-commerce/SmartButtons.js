@@ -185,7 +185,7 @@ class SmartButtons extends PaymentMethod {
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
 	async orderApproveHandler( data, actions ) {
-		Give.form.fn.showProcessingState();
+		Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 		Give.form.fn.disable( this.jQueryForm, true );
 		Give.form.fn.removeErrors( this.jQueryForm );
 

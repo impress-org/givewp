@@ -63,11 +63,11 @@ export default {
 			const loader = document.createElement( 'div' );
 			const divNode = document.createElement( 'div' );
 
-			// if( html ) {
-			// 	divNode.innerHTML = html;
-			// } else{
-			divNode.innerHTML = Give.fn.getGlobalVar( 'textForOverlayScreen' );
-			// }
+			if ( html ) {
+				divNode.innerHTML = html;
+			} else {
+				divNode.innerHTML = Give.fn.getGlobalVar( 'textForOverlayScreen' );
+			}
 
 			loader.setAttribute( 'class', 'loader spinning' );
 			container.setAttribute( 'id', 'give-processing-state-template' );
