@@ -218,6 +218,7 @@ class AdvancedCardFields extends PaymentMethod {
 		// If donor opted in for recurring donation then submit donation form because PayPal advanced card fields does not support subscription
 		// So, we'll create subscription on server with PayPal Subscription API.
 		if ( DonationForm.isRecurringDonation( this.form ) ) {
+			Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 			this.submitDonationForm();
 			return;
 		}

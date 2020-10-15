@@ -169,6 +169,7 @@ class SmartButtons extends PaymentMethod {
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
 	async subscriptionApproveHandler( data, actions ) { // eslint-disable-line
+		Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 		await DonationForm.addFieldToForm( this.form, data.subscriptionID, 'payPalSubscriptionId' );
 
 		this.submitDonationForm();
