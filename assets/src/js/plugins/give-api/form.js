@@ -1,4 +1,6 @@
 /* globals Give, jQuery */
+import Util from './util';
+
 export default {
 	init: function() {
 		this.fn.field.formatCreditCard( jQuery( 'form.give-form' ) );
@@ -56,18 +58,10 @@ export default {
 		 * Show processing state template.
 		 *
 		 * @since 2.8.0
+		 * @since {string} html Message html string or plain text.
 		 */
-		showProcessingState: function() {
-			const loader = document.createElement( 'div' );
-			const textNode = document.createElement( 'div' );
-
-			textNode.innerText = Give.fn.getGlobalVar( 'textForOverlayScreen' );
-
-			loader.setAttribute( 'id', 'give-processing-state-template' );
-			loader.append( textNode );
-
-			loader.classList.add( 'active' );
-			document.body.appendChild( loader );
+		showProcessingState: function( html ) {
+			Util.fn.showOverlay( html );
 		},
 
 		/**
@@ -76,7 +70,7 @@ export default {
 		 * @since 2.8.0
 		 */
 		hideProcessingState: function( ) {
-			document.getElementById( 'give-processing-state-template' ).remove();
+			Util.fn.hideOverlay();
 		},
 
 		/**
