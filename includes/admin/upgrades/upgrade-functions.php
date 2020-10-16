@@ -3828,6 +3828,4 @@ function give_v270_store_stripe_account_for_donation_callback() {
 function give_v290_remove_old_export_files() {
 	@unlink( WP_CONTENT_DIR . '/uploads/give-payments.csv' );
 	@unlink( WP_CONTENT_DIR . '/uploads/give-donors.csv' );
-
-	give_set_upgrade_complete( 'v290_remove_old_export_files' );
 }
