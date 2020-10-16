@@ -63,10 +63,14 @@ class AddPastDonationsToRevenueTable extends Migration {
 					continue;
 				}
 
+				if ( ! ( $amount = give()->payment_meta->get_meta( $post->ID, '_give_cs_base_amount', true ) ) ) {
+					$amount = give_donation_amount( $post->ID );
+				}
+
 				$revenueData = [
 					'donation_id' => $post->ID,
 					'form_id'     => give_get_payment_form_id( $post->ID ),
-					'amount'      => give_donation_amount( $post->ID ) * 100,
+					'amount'      => $amount * 100,
 				];
 
 				try {
