@@ -6,11 +6,21 @@ import CustomCardFields from './CustomCardFields';
 import { loadScript } from '@paypal/paypal-js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
-	const $formWraps = document.querySelectorAll( '.give-form-wrap' );
+	let $formWraps = document.querySelectorAll( '.give-form-wrap' );
+	const $tmpFormWraps = [];
 
-	if ( ! $formWraps.length ) {
+	// Filter container who has donation form.
+	$formWraps.forEach( $formWrap => {
+		if ( Give.form.fn.hasDonationForm( $formWrap ) ) {
+			$tmpFormWraps.push( $formWrap );
+		}
+	} );
+
+	if ( ! $tmpFormWraps.length ) {
 		return;
 	}
+
+	$formWraps = $tmpFormWraps;
 
 	// Setup initial PayPal script on basis of first form on webpage.
 	loadPayPalScript( $formWraps[ 0 ].querySelector( '.give-form' ) )
@@ -143,11 +153,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const options = {};
 		const isRecurring = DonationForm.isRecurringDonation( form );
 
-		// This is the preferred way of setting the intent, but there is a bug with the PayPal SDK.
-		// Setting it to "capture" works for now.
-		// options.intent = isRecurring ? 'subscription' : 'capture';
-
-		options.intent = 'capture';
+		options.intent = isRecurring ? 'subscription' : 'capture';
 		options.vault = !! isRecurring;
 		options.currency = Give.form.fn.getInfo( 'currency_code', jQuery( form ) );
 

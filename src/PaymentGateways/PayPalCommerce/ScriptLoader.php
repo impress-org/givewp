@@ -79,7 +79,6 @@ class ScriptLoader {
 						esc_html__( 'Using a trusted, secure hosting provider – preferably one which claims and actively promotes PCI compliance.', 'give' ),
 						esc_html__( 'Maintain security best practices when setting passwords and limit access to your server.', 'give' ),
 						esc_html__( 'Implement an SSL certificate to keep your donations secure.', 'give' ),
-						esc_html__( 'Keep installed plugins to a minimum.', 'give' ),
 						esc_html__( 'Keep plugins up to date to ensure latest security fixes are present.', 'give' ),
 					],
 					'liveWarning'                       => give_is_test_mode() ? esc_html__(
@@ -168,16 +167,21 @@ EOT;
 					'cardCvc'        => esc_html__( 'CVC', 'give' ),
 					'expirationDate' => esc_html__( 'MM/YY', 'give' ),
 				],
-				'defaultDonationCreationError'          => esc_html__( 'An error occurred while processing your payment. Please try again.', 'give' ),
-				'failedPaymentProcessingNotice'         => esc_html__( 'There was a problem processing your credit card. Please try again. If the problem persists, please try another payment method.', 'give' ),
 				'threeDsCardAuthenticationFailedNotice' => esc_html__( 'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.', 'give' ),
 				'errorCodeLabel'                        => esc_html__( 'Error Code', 'give' ),
+				'genericDonorErrorMessage'              => __( 'There was an error processing your donation. Please contact the administrator.', 'give' ),
 				// List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
 				'hostedCardFieldStyles'                 => apply_filters( 'give_paypal_commerce_hosted_field_style', [] ),
 				'supportsCustomPayments'                => $merchant->supportsCustomPayments ? 1 : '',
 				'accountCountry'                        => $merchant->accountCountry,
 				'separatorLabel'                        => esc_html__( 'Or pay with card', 'give' ),
 				'payPalSdkQueryParameters'              => $payPalSdkQueryParameters,
+				'textForOverlayScreen'                  => sprintf(
+					'<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
+					esc_html__( 'Donation Processing...', 'give' ),
+					esc_html__( 'Checking donation status with PayPal.', 'give' ),
+					esc_html__( 'This will only take a second!', 'give' )
+				),
 			]
 		);
 	}

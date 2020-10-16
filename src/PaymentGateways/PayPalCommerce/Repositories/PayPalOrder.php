@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\PartnerDetails;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use InvalidArgumentException;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;

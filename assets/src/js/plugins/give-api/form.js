@@ -1,4 +1,6 @@
 /* globals Give, jQuery */
+import Util from './util';
+
 export default {
 	init: function() {
 		this.fn.field.formatCreditCard( jQuery( 'form.give-form' ) );
@@ -24,6 +26,19 @@ export default {
 		},
 
 		/**
+		 * Return whether or not container has a donation form.
+		 *
+		 * @since 2.9.0
+		 * @param {Element} $container Form container.
+		 *
+		 * @return {boolean} Boolean value.
+		 */
+		hasDonationForm: function( $container ) {
+			const actionHiddenField = $container.querySelector( 'form input[name="give_action"]' );
+			return actionHiddenField && 'purchase' === actionHiddenField.value;
+		},
+
+		/**
 		 * Disable donation form.
 		 *
 		 * @param {object} $form
@@ -43,18 +58,10 @@ export default {
 		 * Show processing state template.
 		 *
 		 * @since 2.8.0
+		 * @since {string} html Message html string or plain text.
 		 */
-		showProcessingState: function() {
-			const loader = document.createElement( 'div' );
-			const textNode = document.createElement( 'div' );
-
-			textNode.innerText = Give.fn.getGlobalVar( 'textForOverlayScreen' );
-
-			loader.setAttribute( 'id', 'give-processing-state-template' );
-			loader.append( textNode );
-
-			loader.classList.add( 'active' );
-			document.body.appendChild( loader );
+		showProcessingState: function( html ) {
+			Util.fn.showOverlay( html );
 		},
 
 		/**
@@ -63,7 +70,7 @@ export default {
 		 * @since 2.8.0
 		 */
 		hideProcessingState: function( ) {
-			document.getElementById( 'give-processing-state-template' ).remove();
+			Util.fn.hideOverlay();
 		},
 
 		/**
@@ -794,6 +801,18 @@ export default {
 		 * @param {*} $errors Errors list.
 		 */
 		addErrorsAndResetDonationButton: function( $form, $errors = null ) {
+			$errors && this.addErrors( $form, $errors );
+			this.resetDonationButton( $form );
+		},
+
+		/**
+		 * Reset "Donate Now" button state.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param {object} $form Javascript form selector.
+		 */
+		resetDonationButton: function( $form ) {
 			const $submitButton = $form.find( '#give_purchase_submit input[type="submit"].give-submit' );
 			const $container = $submitButton.closest( 'div' );
 
@@ -801,8 +820,6 @@ export default {
 			$submitButton.val( $submitButton.data( 'before-validation-label' ) );
 			$container.find( '.give-loading-animation' ).fadeOut();
 			$form.find( '.give_errors' ).remove();
-
-			$errors && this.addErrors( $form, $errors );
 
 			// Enable the form donation button.
 			Give.form.fn.disable( $form, false );

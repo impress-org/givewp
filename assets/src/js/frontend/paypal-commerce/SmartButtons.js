@@ -1,4 +1,4 @@
-/* globals paypal, Give, FormData, givePayPalCommerce */
+/* globals paypal, Give, FormData */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 import CustomCardFields from './CustomCardFields';
@@ -67,6 +67,9 @@ class SmartButtons extends PaymentMethod {
 				label: 'paypal',
 				color: 'gold',
 				tagline: false,
+			},
+			onError: ( error ) =>{
+				this.displayErrorMessage( error );
 			},
 		};
 
@@ -149,8 +152,7 @@ class SmartButtons extends PaymentMethod {
 		const responseJson = await response.json();
 
 		if ( ! responseJson.success ) {
-			this.showError( responseJson.data.error );
-			return null;
+			throw responseJson.data.error;
 		}
 
 		return actions.subscription.create( { plan_id: responseJson.data.id } );
@@ -158,7 +160,6 @@ class SmartButtons extends PaymentMethod {
 
 	/**
 	 * Subscription approve event handler for smart buttons.
-	 * @todo handle error and subscription cancellation
 	 *
 	 * @since 2.9.0
 	 *
@@ -168,6 +169,7 @@ class SmartButtons extends PaymentMethod {
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
 	async subscriptionApproveHandler( data, actions ) { // eslint-disable-line
+		Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 		await DonationForm.addFieldToForm( this.form, data.subscriptionID, 'payPalSubscriptionId' );
 
 		this.submitDonationForm();
@@ -184,7 +186,7 @@ class SmartButtons extends PaymentMethod {
 	 * @return {*} Return whether or not PayPal payment captured.
 	 */
 	async orderApproveHandler( data, actions ) {
-		Give.form.fn.showProcessingState();
+		Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 		Give.form.fn.disable( this.jQueryForm, true );
 		Give.form.fn.removeErrors( this.jQueryForm );
 
@@ -205,22 +207,15 @@ class SmartButtons extends PaymentMethod {
 			Give.form.fn.disable( this.jQueryForm, false );
 			Give.form.fn.hideProcessingState();
 
-			if ( null === responseJson.data.error ) {
-				DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] ) );
-				return;
-			}
+			this.displayErrorMessage( responseJson.data.error, true );
 
 			errorDetail = responseJson.data.error.details[ 0 ];
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
-				Give.form.fn.hideProcessingState();
-				Give.form.fn.disable( this.jQueryForm, false );
-
 				// Recoverable state, see: "Handle Funding Failures"
 				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
 				return actions.restart();
 			}
 
-			DonationForm.addErrors( this.jQueryForm, Give.form.fn.getErrorHTML( [ { message: errorDetail.description } ] ) );
 			return;
 		}
 

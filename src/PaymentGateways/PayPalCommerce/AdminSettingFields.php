@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
-use Give\Views\Admin\UpsellNotice;
 use Give_HTML_Elements;
 use Give_License;
 
@@ -179,9 +178,7 @@ class AdminSettingFields {
 								</div>
 							<?php endif; ?>
 						</div>
-
 					</div>
-					<?php echo UpsellNotice::recurringAddon(); ?>
 				</div>
 			</td>
 		</tr>
