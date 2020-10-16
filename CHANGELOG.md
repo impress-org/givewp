@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 -   Option to display Company Name on Donor Wall (#5374)
 -   Past donation data migration for revenue database table is compatible with currency switcher (#5381)
+-   Support for multi-line radio options (#5383) 
 
 ### Fixed
 

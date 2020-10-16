@@ -176,6 +176,12 @@ EOT;
 				'accountCountry'                        => $merchant->accountCountry,
 				'separatorLabel'                        => esc_html__( 'Or pay with card', 'give' ),
 				'payPalSdkQueryParameters'              => $payPalSdkQueryParameters,
+				'textForOverlayScreen'                  => sprintf(
+					'<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
+					esc_html__( 'Donation Processing...', 'give' ),
+					esc_html__( 'Checking donation status with PayPal.', 'give' ),
+					esc_html__( 'This will only take a second!', 'give' )
+				),
 			]
 		);
 	}

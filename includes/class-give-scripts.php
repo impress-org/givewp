@@ -497,7 +497,7 @@ class Give_Scripts {
 				'bad_maximum'                 => __( 'The maximum custom donation amount for this form is', 'give' ),
 				'general_loading'             => __( 'Loading...', 'give' ),
 				'purchase_loading'            => __( 'Please Wait...', 'give' ),
-				'textForOverlayScreen'        => esc_html__( 'Please Wait...', 'give' ),
+				'textForOverlayScreen'        => sprintf( '<h3>%1$s</h3><p>%2$s</p>', esc_html__( 'Processing...', 'give' ), esc_html__( 'This will only take a second!', 'give' ) ),
 				'number_decimals'             => give_get_price_decimals(),
 				'is_test_mode'                => give_is_test_mode(),
 				'give_version'                => GIVE_VERSION,
