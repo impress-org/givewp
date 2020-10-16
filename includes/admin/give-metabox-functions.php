@@ -962,7 +962,7 @@ function give_multiradio( $field ) {
 				</label>
 				<?php if ( isset( $data['description'] ) ) : ?>
 					<span class="give-field-description">
-						<?php esc_html( $data['description'] ); ?>
+						<?php echo esc_html( $data['description'] ); ?>
 					</span>
 				<?php endif; ?>
 			</li>
