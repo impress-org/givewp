@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0-beta.1 - 2020-10-19
+
 ### Added
+
 -   Option to display Company Name on Donor Wall (#5374)
--   Support for multi-line radio options (#5383) 
+-   Support for multi-line radio options (#5383)
 
 ### Fixed
 
