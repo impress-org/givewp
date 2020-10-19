@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
+-   Credit Card fields tabbing (#5380)
 
 ## 2.9.0-beta.1 - 2020-10-13
 

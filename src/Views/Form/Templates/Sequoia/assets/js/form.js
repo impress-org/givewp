@@ -83,9 +83,9 @@
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 			}
 			navigator.currentStep = step;
-			setupTabOrder();
 
 			setTimeout( function() {
+				setupTabOrder();
 				// Do not auto-focus form on the page load if the first step is disabled
 				if ( ! navigator.firstFocus && templateOptions.introduction.enabled === 'disabled' ) {
 					return navigator.firstFocus = true;
@@ -400,7 +400,7 @@
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
-			setupTabOrder();
+			setTimeout( setupTabOrder, 200 );
 			moveFieldsUnderPaymentGateway( true );
 			setupSelectInputs();
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
