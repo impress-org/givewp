@@ -23,8 +23,7 @@ jobs:
 
       - name: Install npm dependencies
         run: |
-          npm install cross-env
-          npm install
+          npm ci
           sudo npm run build
           
       - name: Generate plugin artifact
