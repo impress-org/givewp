@@ -14,7 +14,7 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');"
 
 # Build & Compile
-composer install
+composer install --no-dev
 npm install cross-env
 npm install
 npm run build
@@ -22,11 +22,14 @@ npm run build
 # Remove files that should not be bundled
 echo "Removing unwanted files"
 
-while IFS= read -r file ; do rm -- "$file" ; done < .releaseignore
+rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" release/ --delete --delete-excluded
 
 # Zip up the artifact
 echo "Zipping Artifact"
 
-zip -r give.zip ./*
+cd "${GITHUB_WORKSPACE}/release" || exit
+zip -r "${GITHUB_WORKSPACE}/give.zip" .
+
+echo "✅ Artifact Zipped!"
 
 # That's it! Leave the zip for another Action
