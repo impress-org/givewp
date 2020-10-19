@@ -1,0 +1,25 @@
+name: Build Plugin Pre-Release
+
+on:
+  release:
+    types: [ prereleased ]
+
+jobs:
+  build:
+    name:    Build Plugin Artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate the plugin artifact
+        uses: skx/github-action-build@master
+        with:
+          builder: .github/prerelease.sh
+
+      - name: Upload the artifact to release
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: '*.zip'
