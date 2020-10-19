@@ -11,12 +11,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+          
+      - name: Install dependencies
+        run: apt-get update \
+          && apt-get install -y rsync \
+          && apt-get clean -y
 
       - name: Generate the plugin artifact
-        uses: skx/github-action-build@master
-        with:
-          builder: .github/prerelease.sh
-
+        run: |
+          composer install --no-dev
+          npm install cross-env
+          npm install
+          npm run build
+          
+      - name: Bundle ZIP
+        run: |
+          rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" release/ --delete --delete-excluded
+          cd "${GITHUB_WORKSPACE}/release" || exit
+          zip -r "${GITHUB_WORKSPACE}/give.zip" .
+          
       - name: Upload the artifact to release
         uses: skx/github-action-publish-binaries@master
         env:
