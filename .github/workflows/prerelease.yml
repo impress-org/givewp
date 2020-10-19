@@ -21,13 +21,13 @@ jobs:
         with:
           node-version: '12'
 
-      - name: Generate the plugin artifact
+      - name: Install npm dependencies
         run: |
           npm install cross-env
           npm install
-          npm run build
+          sudo npm run build
           
-      - name: Bundle ZIP
+      - name: Generate plugin artifact
         run: |
           rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" release/ --delete --delete-excluded
           cd "${GITHUB_WORKSPACE}/release" || exit
