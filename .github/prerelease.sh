@@ -5,7 +5,7 @@ curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 
 # Update package source and install packages
 apt-get update
-apt-get install php libapache2-mod-php nodejs zip -y
+apt-get install php libapache2-mod-php nodejs zip rsync -y
 
 # Install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
