@@ -12,15 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
           
-      - name: Install dependencies
-        run: |
-          apt-get update
-          apt-get install -y rsync
-          apt-get clean -y
+      - name: Install composer dependencies
+        uses: php-actions/composer@v2
+        with:
+          dev: no
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
 
       - name: Generate the plugin artifact
         run: |
-          composer install --no-dev
           npm install cross-env
           npm install
           npm run build
