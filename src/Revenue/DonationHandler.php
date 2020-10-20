@@ -2,6 +2,7 @@
 namespace Give\Revenue;
 
 use Give\Revenue\Repositories\Revenue;
+use Give\ValueObjects\Money;
 use WP_Post;
 
 /**
@@ -37,7 +38,7 @@ class DonationHandler {
 	 */
 	public function getData( $donationId ) {
 		/* @var Revenue $revenue */
-		$donationAmountInCent = give_donation_amount( $donationId ) * 100;
+		$donationAmountInCent = Money::of( give_donation_amount( $donationId ), give_get_payment_currency_code( $donationId ) )->getMinorAmount();
 		$formId               = give_get_payment_form_id( $donationId );
 
 		return [
