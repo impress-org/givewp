@@ -41,25 +41,25 @@ msgstr ""
 msgid "Need help? Get started with %1$sGive 101%2$s."
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:152, includes/donors/class-give-donor-wall.php:194, includes/admin/shortcodes/shortcode-give-donor-wall.php:99
+#: blocks/donor-wall/class-give-donor-wall.php:156, includes/donors/class-give-donor-wall.php:196, includes/admin/shortcodes/shortcode-give-donor-wall.php:99
 msgid "Read more"
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:156, includes/donors/class-give-donor-wall.php:195, includes/admin/shortcodes/shortcode-give-donor-wall.php:106
+#: blocks/donor-wall/class-give-donor-wall.php:160, includes/donors/class-give-donor-wall.php:197, includes/admin/shortcodes/shortcode-give-donor-wall.php:106
 msgid "Load more"
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:219, includes/admin/class-blank-slate.php:259
+#: blocks/donor-wall/class-give-donor-wall.php:224, includes/admin/class-blank-slate.php:259
 msgid "GiveWP Icon"
 msgstr ""
 
-#: blocks/donor-wall/class-give-donor-wall.php:220, includes/class-give-cli-commands.php:470, includes/admin/class-blank-slate.php:295, includes/admin/class-give-html-elements.php:274, includes/api/class-give-api.php:1002
+#: blocks/donor-wall/class-give-donor-wall.php:225, includes/class-give-cli-commands.php:470, includes/admin/class-blank-slate.php:295, includes/admin/class-give-html-elements.php:274, includes/api/class-give-api.php:1002
 msgid "No donors found."
 msgstr ""
 
 #. translators: 1: Opening anchor tag. 2: Closing anchor tag.
 #. translators: 1: Opening anchor tag. 2: Closing anchor tag.
-#: blocks/donor-wall/class-give-donor-wall.php:223, includes/admin/class-blank-slate.php:301
+#: blocks/donor-wall/class-give-donor-wall.php:228, includes/admin/class-blank-slate.php:301
 msgid "Need help? Learn more about %1$sDonors%2$s."
 msgstr ""
 
@@ -809,7 +809,7 @@ msgstr ""
 msgid "Uploading..."
 msgstr ""
 
-#: includes/class-give-scripts.php:397
+#: includes/class-give-scripts.php:397, includes/class-give-scripts.php:500
 msgid "Processing..."
 msgstr ""
 
@@ -829,8 +829,12 @@ msgstr ""
 msgid "The maximum custom donation amount for this form is"
 msgstr ""
 
-#: includes/class-give-scripts.php:499, includes/class-give-scripts.php:500
+#: includes/class-give-scripts.php:499
 msgid "Please Wait..."
+msgstr ""
+
+#: includes/class-give-scripts.php:500, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:183
+msgid "This will only take a second!"
 msgstr ""
 
 #: includes/class-give-scripts.php:515
@@ -6535,20 +6539,20 @@ msgstr ""
 msgid "Remove setting field"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:816, includes/admin/give-metabox-functions.php:981
+#: includes/admin/class-admin-settings.php:816, includes/admin/give-metabox-functions.php:1044
 msgid "Add or Upload %s"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:816, includes/admin/give-metabox-functions.php:981
+#: includes/admin/class-admin-settings.php:816, includes/admin/give-metabox-functions.php:1044
 msgid "File"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:816, includes/admin/give-metabox-functions.php:981, src/Views/Form/Templates/Sequoia/optionConfig.php:51, src/Views/Form/Templates/Sequoia/optionConfig.php:152
+#: includes/admin/class-admin-settings.php:816, includes/admin/give-metabox-functions.php:1044, src/Views/Form/Templates/Sequoia/optionConfig.php:51, src/Views/Form/Templates/Sequoia/optionConfig.php:152
 msgid "Image"
 msgstr ""
 
 #. translators: %s Title
-#: includes/admin/class-admin-settings.php:1014, includes/admin/give-metabox-functions.php:1073
+#: includes/admin/class-admin-settings.php:1014, includes/admin/give-metabox-functions.php:1136
 msgid "Need Help? See docs on \"%s\""
 msgstr ""
 
@@ -6700,27 +6704,27 @@ msgstr ""
 msgid "Maximum amount"
 msgstr ""
 
-#: includes/admin/give-metabox-functions.php:1041
+#: includes/admin/give-metabox-functions.php:1104
 msgid "Global Default"
 msgstr ""
 
-#: includes/admin/give-metabox-functions.php:1124, includes/emails/template.php:142
+#: includes/admin/give-metabox-functions.php:1187, includes/emails/template.php:142
 msgid "Send Test Email."
 msgstr ""
 
-#: includes/admin/give-metabox-functions.php:1125, includes/emails/template.php:143
+#: includes/admin/give-metabox-functions.php:1188, includes/emails/template.php:143
 msgid "Send Test Email"
 msgstr ""
 
-#: includes/admin/give-metabox-functions.php:1372, src/FormAPI/Form/Group.php:34
+#: includes/admin/give-metabox-functions.php:1435, src/FormAPI/Form/Group.php:34
 msgid "Group"
 msgstr ""
 
-#: includes/admin/give-metabox-functions.php:1391, includes/admin/give-metabox-functions.php:1465, includes/admin/give-metabox-functions.php:1426
+#: includes/admin/give-metabox-functions.php:1454, includes/admin/give-metabox-functions.php:1528, includes/admin/give-metabox-functions.php:1489
 msgid "Remove Group"
 msgstr ""
 
-#: includes/admin/give-metabox-functions.php:1505, src/FormAPI/Form/Group.php:35
+#: includes/admin/give-metabox-functions.php:1568, src/FormAPI/Form/Group.php:35
 msgid "Add Row"
 msgstr ""
 
@@ -12837,7 +12841,7 @@ msgstr ""
 msgid "Donate"
 msgstr ""
 
-#: includes/gateways/stripe/includes/give-stripe-scripts.php:49
+#: includes/gateways/stripe/includes/give-stripe-scripts.php:49, src/PaymentGateways/PayPalCommerce/ScriptLoader.php:181
 msgid "Donation Processing..."
 msgstr ""
 
@@ -13947,6 +13951,10 @@ msgstr ""
 
 #: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:177
 msgid "Or pay with card"
+msgstr ""
+
+#: src/PaymentGateways/PayPalCommerce/ScriptLoader.php:182
+msgid "Checking donation status with PayPal."
 msgstr ""
 
 #: src/PaymentGateways/PayPalStandard/PayPalStandard.php:19
