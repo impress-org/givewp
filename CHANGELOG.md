@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Field description text is now accessible and aligned (#5396)
+
 ## 2.9.0-beta.2 - 2020-10-19
 
 ### Added
