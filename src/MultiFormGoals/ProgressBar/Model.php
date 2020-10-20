@@ -241,7 +241,7 @@ class Model {
 				return round( $minutes / 60 );
 			}
 			case $minutes < 60: {
-				return $minutes;
+				return round( $minutes );
 			}
 		}
 	}
