@@ -218,7 +218,7 @@ class Model {
 	protected function getMinutesRemaining() {
 		$enddate = strtotime( $this->getEndDate() );
 		if ( $enddate ) {
-			$now = time();
+			$now = current_time( 'timestamp', false );
 			return $now < $enddate ? ( $enddate - $now ) / 60 : 0;
 		} else {
 			return false;
