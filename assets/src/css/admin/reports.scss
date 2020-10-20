@@ -12,49 +12,53 @@
 // Dashboard Widget
 //---------------------------------------------------------
 #give-dashboard-widgets-wrap {
-	.inside {
-		padding-top: 0;
-		padding-bottom: 0;
 
-		/* counteract extra padding in Income Report graph */
-		.give_forms_page_give-reports & {
-			padding-left: 0;
-		}
+  .inside {
+    padding-top: 0;
+    padding-bottom: 0;
 
-		#give-graphs-filter {
-			float: none;
-		}
-	}
+    /* counteract extra padding in Income Report graph */
+    .give_forms_page_give-reports & {
+      padding-left: 0;
+    }
 
-	.postbox {
-		margin-bottom: 10px;
-	}
+    #give-graphs-filter {
+      float:none;
+    }
+  }
 
-	table.reports-table {
-		clear: none;
-	}
+  .postbox {
+    margin-bottom: 10px;
+  }
 
-	#give-date-range-options {
-		float: left;
+  table.reports-table {
+    clear: none;
+  }
 
-		> span {
-			float: left;
-			line-height: 30px;
-			font-style: italic;
-			padding: 0 5px 0 0;
-		}
-	}
+  #give-date-range-options {
+    float: left;
+
+    > span {
+      float: left;
+      line-height: 30px;
+      font-style: italic;
+      padding: 0 5px 0 0;
+    }
+
+  }
+
 }
 
-#give-graphs-filter {
-	float: right;
 
-	.tablenav {
-		margin: 0 0 0 17px;
-		.actions {
-			padding: 0;
-		}
-	}
+#give-graphs-filter {
+  float:right;
+
+  .tablenav {
+    margin: 0 0 0 17px;
+    .actions {
+      padding: 0;
+    }
+  }
 }
 
 //---------------------------------------------------------
@@ -62,212 +66,219 @@
 //---------------------------------------------------------
 
 .give-graph {
-	.y1Axis {
-		color: #66bb6a !important;
-	}
-	.y2Axis {
-		color: #546e7a !important;
-	}
+  .y1Axis {
+    color: #66bb6a !important;
+  }
+  .y2Axis {
+    color: #546e7a !important;
+  }
 }
 
 //---------------------------------------------------------
 //Donor Filter
 //---------------------------------------------------------
-body.give_forms_page_give-reports,
-body.give_forms_page_give-payment-history {
-	h1.nav-tab-wrapper,
-	h2.nav-tab-wrapper {
-		margin-bottom: 10px;
-	}
-	.actions {
-		padding-top: 0;
-	}
+body.give_forms_page_give-reports, body.give_forms_page_give-payment-history {
 
-	.pagination-links {
-		margin-left: 10px;
-	}
+  h1.nav-tab-wrapper, h2.nav-tab-wrapper {
+    margin-bottom: 10px;
+  }
+  .actions {
+    padding-top: 0;
+  }
 
-	p.donor-search {
-		margin-right: 10px;
-	}
+  .pagination-links {
+    margin-left: 10px;
+  }
 
-	.tablenav-right {
-		.tablenav-pages {
-			float: right;
-		}
-		#give-reports-view {
-			margin-top: 0;
-		}
-		.actions {
-			float: left;
-		}
-	}
+  p.donor-search {
+    margin-right: 10px;
+  }
 
-	p.search-box {
-		float: left;
-	}
+  .tablenav-right {
 
-	.reports-table-nav.tablenav.top {
-		width: 100%;
-		float: none;
-		margin: 0 0 10px;
-	}
+    .tablenav-pages {
+      float: right;
+    }
+    #give-reports-view {
+      margin-top: 0;
+    }
+    .actions {
+      float: left;
+    }
 
-	.reports-forms-details-wrap.top {
-		float: right;
-		overflow: hidden;
+  }
 
-		#give-reports-filter {
-			float: left;
-		}
-		> .actions {
-			padding-right: 0;
-		}
-	}
+  p.search-box {
+    float: left;
+  }
 
-	.tablenav.bottom {
-		margin-top: 10px;
-	}
+  .reports-table-nav.tablenav.top {
+    width: 100%;
+    float: none;
+    margin: 0 0 10px;
+  }
 
-	h2.reports-earnings-title {
-		margin: 7px 0 0;
-	}
+  .reports-forms-details-wrap.top {
+    float: right;
+    overflow: hidden;
 
-	.reports-views-wrap {
-		padding: 3px 0 0;
-	}
+    #give-reports-filter {
+      float: left;
+    }
+    > .actions {
+      padding-right: 0;
+    }
+  }
 
-	.wrap.give-reports-donors-wrap {
-		margin-right: 0;
-		margin-bottom: 10px;
-	}
+  .tablenav.bottom {
+    margin-top: 10px;
+  }
 
-	.widefat tbody td,
-	.widefat tbody th {
-		padding-top: 12px;
-		padding-bottom: 12px;
-	}
+  h2.reports-earnings-title {
+    margin: 7px 0 0;
+  }
+
+  .reports-views-wrap {
+    padding: 3px 0 0;
+  }
+
+  .wrap.give-reports-donors-wrap {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .widefat tbody td, .widefat tbody th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
 }
 
 //---------------------------------------------------------
 //Export Options Styles
 //---------------------------------------------------------
 body.give_forms_page_give-reports table.export-options-table {
-	tbody td {
-		padding: 20px 12px;
-		vertical-align: top;
-	}
-	.give-export-form {
-		position: relative;
-		.notice-wrap {
-			background-color: transparent;
-			padding: 12px 12px 4px;
-			margin: 2px 0 -16px -11px;
-			overflow: auto;
-			.spinner {
-				margin: -2px -12px 8px 0;
-			}
-		}
-	}
+  tbody td {
+    padding: 20px 12px;
+    vertical-align: top;
+  }
+  .give-export-form {
+    position: relative;
+    .notice-wrap {
+      background-color: transparent;
+      padding: 12px 12px 4px;
+      margin: 2px 0 -16px -11px;
+      overflow: auto;
+      .spinner {
+        margin: -2px -12px 8px 0;
+      }
+    }
+  }
 
-	span#give-start-wrap,
-	span#give-end-wrap {
-		input {
-			width: 100px;
-		}
-	}
+  span#give-start-wrap, span#give-end-wrap {
+    input {
+      width: 100px;
+    }
+  }
+
 }
 
 #export-donor-options-wrap {
-	p {
-		padding: 20px 0 0;
-		margin: 0;
-		font-weight: bold;
-	}
-	ul {
-		max-width: 900px;
-		overflow: hidden;
+  p {
+    padding: 20px 0 0;
+    margin: 0;
+    font-weight: bold;
+  }
+  ul {
+    max-width: 900px;
+    overflow: hidden;
 
-		li {
-			margin: 0;
-			padding: 0 5px 5px 0;
-			box-sizing: border-box;
-			float: left;
-			width: 33%;
-		}
-	}
+    li {
+      margin: 0;
+      padding: 0 5px 5px 0;
+      box-sizing: border-box;
+      float: left;
+      width: 33%;
+    }
+  }
+
 }
 
 .settings-excludes-list {
-	max-height: 120px;
-	overflow: auto;
-	padding: 0.5rem;
-	border: 1px solid #ddd;
+  max-height: 120px;
+  overflow: auto;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
 }
 
 .settings-excludes-list li {
-	margin: 3px 0;
+  margin: 3px 0;
 }
 //---------------------------------------------------------
 //Recount Stats Form
 //---------------------------------------------------------
 
 #give-tools-recount-form {
-	.notice-wrap {
-		position: relative;
-		min-height: 25px;
-		margin: 10px -12px -12px;
-		background: #efefef;
-		padding: 10px 12px 12px;
-		border-top: 1px solid #e5e5e5;
 
-		.give-progress {
-			position: absolute;
-			top: 15px;
-		}
+  .notice-wrap {
+    position: relative;
+    min-height: 25px;
+    margin: 10px -12px -12px;
+    background: #EFEFEF;
+    padding: 10px 12px 12px;
+    border-top: 1px solid #E5E5E5;
 
-		.spinner {
-			position: absolute;
-			right: 14px;
-			top: 13px;
-			margin: 0;
-		}
+    .give-progress {
+      position: absolute;
+      top: 15px;
+    }
 
-		#give-batch-success {
-			margin-bottom: 6px;
-		}
-	}
+    .spinner {
+      position: absolute;
+      right: 14px;
+      top: 13px;
+      margin: 0;
+    }
+
+    #give-batch-success {
+      margin-bottom: 6px;
+    }
+
+  }
+
 }
+
 
 //---------------------------------------------------------
 //Tools
 //---------------------------------------------------------
 
 .recount-stats-controls form {
-	display: inline;
+  display: inline;
 }
 
 .give-recount-stats-descriptions {
-	margin: 8px 0 0;
-	display: block;
+  margin: 8px 0 0;
+  display: block;
 
-	span {
-		line-height: 24px;
-		font-size: 13px;
-		font-weight: normal;
-		color: #666;
-		margin: 0;
-		display: none;
-	}
+  span {
+    line-height: 24px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    color: #aaa;
+    margin: 0;
+    display: none;
+  }
 }
 
 //---------------------------------------------------------
 //Payment Methods
 //---------------------------------------------------------
 .gateways-report-tablenav {
-	.actions.bulkactions {
-		padding-right: 0;
-	}
+  .actions.bulkactions {
+    padding-right: 0;
+  }
 }
 
 //---------------------------------------------------------
@@ -275,38 +286,40 @@ body.give_forms_page_give-reports table.export-options-table {
 //---------------------------------------------------------
 
 table.give-table {
-	td {
-		vertical-align: middle;
-	}
-	td.row-title {
-		h3 {
-			margin: 0 0 0.4em;
-			font-size: 1.2em;
-		}
-		p {
-			font-size: 13px;
-			font-style: italic;
-			font-weight: normal;
-			color: #aaa;
-			margin: 0;
-		}
-	}
+
+  td {
+    vertical-align: middle;
+  }
+  td.row-title {
+    h3 {
+      margin: 0 0 0.4em;
+      font-size: 1.2em;
+    }
+    p {
+      font-size: 13px;
+      font-style: italic;
+      font-weight: normal;
+      color: #aaa;
+      margin: 0;
+    }
+  }
+
 }
 
 #give-graphs-filter > .tablenav {
-	height: auto;
+  height: auto;
 }
 
 //---------------------------------------------------------
 //Logs
 //---------------------------------------------------------
 #give-logs-filter {
-	.search-box {
-		float: right;
-	}
-	.tablenav.top {
-		float: left;
-		clear: none;
-		margin-top: 0;
-	}
+  .search-box {
+    float: right;
+  }
+  .tablenav.top {
+    float: left;
+    clear: none;
+    margin-top: 0;
+  }
 }
