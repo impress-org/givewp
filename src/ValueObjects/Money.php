@@ -100,9 +100,9 @@ class Money {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param string $currency
+	 * @param string $currency Currency code.
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public static function currencyInfo( $currency ) {
 		return give_get_currency_formatting_settings( $currency );
