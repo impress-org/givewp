@@ -38,7 +38,7 @@ class DonationHandler {
 	 */
 	public function getData( $donationId ) {
 		/* @var Revenue $revenue */
-		$donationAmountInCent = Money::of( give_donation_amount( $donationId ), give_get_payment_currency_code( $donationId ) )->getMinorAmount();
+		$donationAmountInCent = Money::of( give_donation_amount( $donationId ), give_get_option( 'currency' ) )->getMinorAmount();
 		$formId               = give_get_payment_form_id( $donationId );
 
 		return [

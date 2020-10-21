@@ -71,7 +71,7 @@ class AddPastDonationsToRevenueTable extends Migration {
 				$revenueData = [
 					'donation_id' => $post->ID,
 					'form_id'     => give_get_payment_form_id( $post->ID ),
-					'amount'      => Money::of( $amount, give_get_payment_currency( $post->ID ) )->getMinorAmount(),
+					'amount'      => Money::of( $amount, give_get_option( 'currency' ) )->getMinorAmount(),
 				];
 
 				try {
