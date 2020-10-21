@@ -24,11 +24,6 @@ class Money {
 	private $currency;
 
 	/**
-	 * @var array
-	 */
-	private $currencyConfig;
-
-	/**
 	 * Return Money class object.
 	 *
 	 * @since 2.9.0
@@ -41,9 +36,8 @@ class Money {
 	public static function of( $amount, $currency ) {
 		$object = new static();
 
-		$object->currencyConfig = give_get_currency_formatting_settings( $currency );
-		$object->amount         = $amount;
-		$object->currency       = $currency;
+		$object->amount   = $amount;
+		$object->currency = $currency;
 
 		return $object;
 	}
@@ -61,9 +55,8 @@ class Money {
 	public static function ofMinor( $amount, $currency ) {
 		$object = new static();
 
-		$object->currencyConfig = give_get_currency_formatting_settings( $currency );
-		$object->minorAmount    = $amount;
-		$object->currency       = $currency;
+		$object->minorAmount = $amount;
+		$object->currency    = $currency;
 
 		return $object;
 	}
@@ -80,7 +73,7 @@ class Money {
 			return $this->minorAmount;
 		}
 
-		$this->minorAmount = absint( $this->amount * ( 10 ** $this->currencyConfig['number_decimals'] ) );
+		$this->minorAmount = absint( $this->amount * ( 10 ** self::currencyInfo( $this->currency )['number_decimals'] ) );
 
 		return $this->minorAmount;
 	}
@@ -97,8 +90,21 @@ class Money {
 			return $this->amount;
 		}
 
-		$this->amount = (string) ( $this->amount / ( 10 ** $this->currencyConfig['number_decimals'] ) );
+		$this->amount = (string) ( $this->amount / ( 10 ** self::currencyInfo( $this->currency )['number_decimals'] ) );
 
 		return $this->amount;
+	}
+
+	/**
+	 * Get currency information.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param string $currency
+	 *
+	 * @return mixed
+	 */
+	public static function currencyInfo( $currency ) {
+		return give_get_currency_formatting_settings( $currency );
 	}
 }
