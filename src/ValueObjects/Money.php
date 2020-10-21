@@ -33,7 +33,7 @@ class Money {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param int|string $amount
+	 * @param int|string $amount Amount value without currency formatting
 	 * @param string $currency
 	 *
 	 * @return Money
