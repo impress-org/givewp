@@ -93,7 +93,7 @@ class PageView {
 	 * @since 2.8.0
 	 */
 	public function isPayPalSetup() {
-		return (bool) give( MerchantDetails::class )->getDetails();
+		return (bool) give( MerchantDetails::class )->accountIsConnected();
 	}
 
 	/**
