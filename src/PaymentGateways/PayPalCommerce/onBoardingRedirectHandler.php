@@ -364,12 +364,20 @@ class onBoardingRedirectHandler {
 	 */
 	private function registerPayPalSSLNotice() {
 		if ( is_ssl() && empty( $this->webhooksRepository->getWebhookConfig() ) ) {
+			$logLink = sprintf(
+				'<a href="%1$s">%2$s</a>',
+				admin_url( '/edit.php?post_type=give_forms&page=give-tools&tab=logs' ),
+				esc_html__( 'logs data', 'give' )
+			);
+
 			Give_Admin_Settings::add_error(
 				'paypal-webhook-error',
-				esc_html__(
-					'There was a problem creating a webhook for your account. Please try disconnecting and then
-					reconnect. If the problem persists, please contact support',
-					'give'
+				sprintf(
+					esc_html__(
+						'There was a problem setting up the webhooks for your PayPal account. Please try disconnecting and reconnecting your PayPal account. If the problem persists, please contact support and provide them with the latest %1$s',
+						'give'
+					),
+					$logLink
 				)
 			);
 		}
