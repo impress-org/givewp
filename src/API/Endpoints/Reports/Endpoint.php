@@ -164,7 +164,7 @@ abstract class Endpoint implements RestRoute {
 
 		$sanitizedDate = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]}";
 
-		if( 'end' === $key ) {
+		if ( 'end' === $key ) {
 			/**
 			 * For the end date manually specify an end time.
 			 */
