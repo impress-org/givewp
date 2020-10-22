@@ -90,7 +90,7 @@ class Money {
 			return $this->amount;
 		}
 
-		$this->amount = (string) ( $this->amount / ( 10 ** self::currencyInfo( $this->currency )['number_decimals'] ) );
+		$this->amount = (string) ( $this->minorAmount / ( 10 ** self::currencyInfo( $this->currency )['number_decimals'] ) );
 
 		return $this->amount;
 	}
