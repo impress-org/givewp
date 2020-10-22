@@ -230,12 +230,14 @@ Shortcode Copy & Paste
 			}
 
 			.give-field-description {
-				color: #aaa;
+				color: #666;
 				font-size: 12px;
 				line-height: 18px;
 				display: block;
 				padding-top: 10px;
-				font-style: italic;
+			}
+			.give-radios .give-field-description {
+				margin-left: 25px;
 			}
 
 			ul {
@@ -360,7 +362,7 @@ Shortcode Copy & Paste
 			}
 
 			.give-repeater-field-description {
-				color: #aaa;
+				color: #666;
 				font-size: 12px;
 				line-height: 18px;
 				display: block;
