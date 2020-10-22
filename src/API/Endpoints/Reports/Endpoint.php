@@ -162,7 +162,16 @@ abstract class Endpoint implements RestRoute {
 		// Return Date object from parameter
 		$exploded = explode( '-', $param );
 
-		return "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
+		$sanitizedDate = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]}";
+
+		if( 'end' === $key ) {
+			/**
+			 * For the end date manually specify an end time.
+			 */
+			$sanitizedDate .= ' 24:00:00';
+		}
+
+		return $sanitizedDate;
 	}
 
 	/**
