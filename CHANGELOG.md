@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Legacy form loading spinner (#5397)
 -   Multi-Form Goal end date now reflects time zone (#5394)
 -   Field description text is now accessible and aligned (#5396)
+-   Renewal payments are now included in reports. (#5401)
 
 ## 2.9.0-beta.2 - 2020-10-19
 
