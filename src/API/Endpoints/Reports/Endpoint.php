@@ -354,6 +354,9 @@ abstract class Endpoint implements RestRoute {
 	/**
 	 * Get payment.
 	 *
+	 * @since 2.6.1
+	 * @since UNRELEASED Run a second query to include renewal payments in results.
+	 *
 	 * @param string $startStr
 	 * @param string $endStr
 	 * @param string $orderBy
@@ -409,6 +412,35 @@ abstract class Endpoint implements RestRoute {
 
 		$payments = new \Give_Payments_Query( $args );
 		$payments = $payments->get_payments();
+
+		/**
+		 * Query renewal payments based on parent payments.
+		 * Because the renewal does not have a payment mode stored
+		 * the results are not included in the payment query,
+		 * so we have to run a second query and combine results.
+		 */
+		$renewalArgs = array_merge(
+			$args,
+			[
+				'post_status'     => 'give_subscription',
+				'meta_query'      => [
+					[
+						'key'     => '_give_payment_currency',
+						'value'   => $this->currency,
+						'compare' => '=',
+					],
+				],
+				'post_parent__in' => array_map(
+					function( $payment ) {
+						return $payment->ID;
+					},
+					$payments
+				),
+			]
+		);
+		$renewals    = new \Give_Payments_Query( $renewalArgs );
+
+		$payments = array_merge( $payments, $renewals->get_payments() );
 
 		// Cache the report data
 		$this->cachePayments( $args, $payments );
