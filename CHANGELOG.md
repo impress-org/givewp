@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-    Reports for "All Time" are now inclusive of the first day. (#5400)
+
 ## 2.9.0-beta.2 - 2020-10-19
 
 ### Added
