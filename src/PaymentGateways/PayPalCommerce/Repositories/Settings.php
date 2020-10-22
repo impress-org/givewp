@@ -40,7 +40,7 @@ class Settings {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @return string|null
+	 * @return array|null
 	 */
 	public function getAccessToken() {
 		return get_option( self::ACCESS_TOKEN_KEY, null );

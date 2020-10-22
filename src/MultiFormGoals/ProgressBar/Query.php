@@ -23,12 +23,14 @@ class Query {
 	 * @return string
 	 */
 	public function getSQL() {
+		global $wpdb;
+
 		$sql = "
             SELECT
                 sum( revenue.amount ) as total,
                 count( payment.ID ) as count
-            FROM wp_posts as payment
-                JOIN wp_give_revenue as revenue
+            FROM {$wpdb->posts} as payment
+                JOIN {$wpdb->give_revenue} as revenue
                     ON revenue.donation_id = payment.ID
             WHERE
                 payment.post_type = 'give_payment'
