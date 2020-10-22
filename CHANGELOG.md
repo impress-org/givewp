@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Changed
+### Added
 -   Past donation data migration for revenue database table is compatible with currency switcher (#5382)
+
+### Fixed
+
+-   Credit Card fields tabbing (#5380)
+-   Long text overflowing outside of the container in Donation receipt (#5390)
+-   Legacy form loading spinner (#5397)
+-   Multi-Form Goal end date now reflects time zone (#5394)
 
 ## 2.9.0-beta.2 - 2020-10-19
 
@@ -20,8 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
--   Credit Card fields tabbing (#5380)
--   Multi-Form Goal end date now reflects time zone (#5394)
 
 ## 2.9.0-beta.1 - 2020-10-13
 

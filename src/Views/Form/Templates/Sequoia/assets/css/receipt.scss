@@ -180,7 +180,7 @@
 					flex: 1;
 					text-align: right;
 					color: #555;
-					white-space: nowrap;
+					white-space: pre-wrap;
 
 					@media screen and (max-width: $break-phone) {
 						flex: 0;
@@ -238,7 +238,7 @@
 RTL styles
 -----------------------------------*/
 
-html[dir="rtl"] {
+html[dir='rtl'] {
 	.details-row {
 		> i {
 			padding-right: 0 !important;

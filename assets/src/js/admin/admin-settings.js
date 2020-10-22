@@ -9,7 +9,7 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/* globals Give, jQuery, givePayPalCommerce */
+/* globals Give, jQuery, givePayPalCommerce, ajaxurl */
 
 import { GiveConfirmModal } from './../plugins/modal';
 
@@ -386,23 +386,37 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	if ( onBoardingButton ) {
 		onBoardingButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
+			const buttonState = {
+				enable: () => {
+					onBoardingButton.disabled = false;
+					evt.target.innerText = onBoardingButton.getAttribute( 'data-initial-label' );
+				},
+				disable: () => {
+					// Preserve initial label.
+					if ( ! onBoardingButton.hasAttribute( 'data-initial-label' ) ) {
+						onBoardingButton.setAttribute( 'data-initial-label', onBoardingButton.innerText );
+					}
 
-			onBoardingButton.disabled = true;
+					onBoardingButton.disabled = true;
+					evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+				},
+			};
 
-			evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+			buttonState.disable();
 
 			const countryCode = countryField.value;
 
 			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
 				.then( response => response.json() )
 				.then( function( res ) {
-					// @todo handle error.
 					if ( true === res.success ) {
 						const payPalLink = document.querySelector( '[data-paypal-button]' );
 
 						payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
 						payPalLink.click();
 					}
+
+					buttonState.enable();
 				}
 				);
 
