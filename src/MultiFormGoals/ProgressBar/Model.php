@@ -3,6 +3,8 @@
 namespace Give\MultiFormGoals\ProgressBar;
 
 
+use Give\ValueObjects\Money;
+
 class Model {
 
 	// Settings
@@ -109,13 +111,13 @@ class Model {
 	/**
 	 * Get raw earnings value for Progress Bar
 	 *
-	 * @return int
+	 * @return string
 	 * @since 2.9.0
 	 **/
 	protected function getTotal() {
 		$query   = new Query( $this->getForms() );
 		$results = $query->getResults();
-		return $results->total / 100;
+		return Money::ofMinor( $results->total, give_get_option( 'currency' ) )->getAmount();
 	}
 
 	/**

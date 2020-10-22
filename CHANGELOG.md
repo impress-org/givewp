@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+-   Past donation data migration for revenue database table is compatible with currency switcher (#5382)
+
 ### Fixed
 
 -   Credit Card fields tabbing (#5380)
