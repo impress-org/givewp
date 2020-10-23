@@ -128,7 +128,7 @@ class Give_Batch_Export extends Give_Export {
 		$this->filetype = '.csv';
 
 		if ( null === $filename ) {
-			$hash           = uniqid();
+			$hash           = md5( get_current_user_id() );
 			$this->filename = "give-{$hash}-{$this->export_type}{$this->filetype}";
 		} else {
 			$this->filename = $filename;
