@@ -80,6 +80,7 @@ function give_do_ajax_export() {
 		$json_data = [
 			'step'       => $step,
 			'percentage' => $percentage,
+			'file_name'  => $export->filename,
 		];
 
 	} elseif ( true === $export->is_empty ) {
