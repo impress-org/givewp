@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0-beta.3 - 2020-10-22
+
 ### Added
 
 -   Past donation data migration for revenue database table is compatible with currency switcher (#5382)
