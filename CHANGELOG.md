@@ -69,7 +69,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
 -   Multi-Form Goal wrapper only added for non-block output (#5315)
 -   Multi-Form Goal output has a bottom margin (#5333)
