@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Avoid filename collisions when exporting users and donations (#5346)
 -   Reports for "All Time" are now inclusive of the first day (#5400)
 
 ## 2.9.0-beta.3 - 2020-10-22
