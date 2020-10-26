@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Avoid filename collisions when exporting users and donations (#5346)
+
 ## 2.9.0-beta.3 - 2020-10-22
 
 ### Added
@@ -63,7 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Avoid filename collisions when exporting users and donations (#5346)
 -   Multi-Form Goal block no longer obscure column controls (#5352)
 
 ## 2.9.0-alpha.1 - 2020-10-06
