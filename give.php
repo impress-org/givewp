@@ -49,7 +49,6 @@ use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
-use Give\ServiceProviders\Totals;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
@@ -140,7 +139,6 @@ final class Give {
 		Routes::class,
 		PaymentGateways::class,
 		Onboarding::class,
-		Totals::class,
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
