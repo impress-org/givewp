@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\ValueObjects;
 
 /**
@@ -24,20 +25,26 @@ class Money {
 	private $currency;
 
 	/**
+	 * @var array
+	 */
+	private $currencyData;
+
+	/**
 	 * Return Money class object.
 	 *
 	 * @since 2.9.0
 	 *
 	 * @param int|string $amount Amount value without currency formatting
-	 * @param string $currency
+	 * @param string     $currency
 	 *
 	 * @return Money
 	 */
 	public static function of( $amount, $currency ) {
 		$object = new static();
 
-		$object->amount   = $amount;
-		$object->currency = $currency;
+		$object->amount       = $amount;
+		$object->currency     = $currency;
+		$object->currencyData = self::getCurrencyData( $currency );
 
 		return $object;
 	}
@@ -48,17 +55,38 @@ class Money {
 	 * @since 2.9.0
 	 *
 	 * @param int|string $amount
-	 * @param string $currency
+	 * @param string     $currency
 	 *
 	 * @return Money
 	 */
 	public static function ofMinor( $amount, $currency ) {
 		$object = new static();
 
-		$object->minorAmount = $amount;
-		$object->currency    = $currency;
+		$object->minorAmount  = $amount;
+		$object->currency     = $currency;
+		$object->currencyData = self::getCurrencyData( $currency );
 
 		return $object;
+	}
+
+	/**
+	 * Retrieves the currency data for a given currency with some optimizations to avoid loading all the currencies more
+	 * than once.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param $currency
+	 *
+	 * @return array
+	 */
+	private static function getCurrencyData( $currency ) {
+		static $currenciesData = null;
+
+		if ( $currenciesData === null ) {
+			$currenciesData = give_get_currencies( 'all' );
+		}
+
+		return $currenciesData[ $currency ];
 	}
 
 	/**
@@ -73,9 +101,11 @@ class Money {
 			return $this->minorAmount;
 		}
 
-		$this->minorAmount = absint( $this->amount * ( 10 ** self::currencyInfo( $this->currency )['number_decimals'] ) );
+		$decimals = $this->getNumberDecimals();
 
-		return $this->minorAmount;
+		$tensMultiplier = 10 ** $decimals;
+
+		return $this->minorAmount = absint( $this->amount * $tensMultiplier );
 	}
 
 	/**
@@ -90,21 +120,21 @@ class Money {
 			return $this->amount;
 		}
 
-		$this->amount = (string) ( $this->minorAmount / ( 10 ** self::currencyInfo( $this->currency )['number_decimals'] ) );
+		$decimals = $this->getNumberDecimals();
 
-		return $this->amount;
+		$tensMultiplier = 10 ** $decimals;
+
+		return $this->amount = absint( $this->minorAmount / $tensMultiplier );
 	}
 
 	/**
-	 * Get currency information.
+	 * Returns the number of decimals based on the currency
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param string $currency Currency code.
-	 *
-	 * @return array
+	 * @return int
 	 */
-	public static function currencyInfo( $currency ) {
-		return give_get_currency_formatting_settings( $currency );
+	private function getNumberDecimals() {
+		return $this->currencyData['setting']['number_decimals'];
 	}
 }
