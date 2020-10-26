@@ -1,0 +1,40 @@
+name: Build Plugin Pre-Release
+
+on:
+  release:
+    types: [ prereleased ]
+
+jobs:
+  build:
+    name:    Build Plugin Artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+          
+      - name: Install composer dependencies
+        uses: php-actions/composer@v2
+        with:
+          dev: no
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install npm dependencies
+        run: |
+          npm ci
+          sudo npm run build
+          
+      - name: Generate plugin artifact
+        run: |
+          rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" release/ --delete --delete-excluded
+          cd "${GITHUB_WORKSPACE}/release" || exit
+          zip -r "${GITHUB_WORKSPACE}/give.zip" .
+          
+      - name: Upload the artifact to release
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: '*.zip'

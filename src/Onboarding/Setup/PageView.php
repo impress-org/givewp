@@ -10,7 +10,9 @@ namespace Give\Onboarding\Setup;
 
 defined( 'ABSPATH' ) || exit;
 
+use Give\Helpers\Gateways\Stripe;
 use Give\Onboarding\FormRepository;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 
 /**
  * @since 2.8.0
@@ -80,16 +82,18 @@ class PageView {
 	 * @since 2.8.0
 	 */
 	public function isStripeSetup() {
-		return \Give\Helpers\Gateways\Stripe::isAccountConfigured();
+		return Stripe::isAccountConfigured();
 	}
 
 	/**
+	 * Return whether ot not PayPal account connected.
+	 *
 	 * @return bool
 	 *
 	 * @since 2.8.0
 	 */
 	public function isPayPalSetup() {
-		return false;
+		return (bool) give( MerchantDetails::class )->accountIsConnected();
 	}
 
 	/**

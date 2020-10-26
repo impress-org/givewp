@@ -65,11 +65,26 @@ class PayPalWebhooks {
 		}
 
 		if ( ! $this->webhookRepository->verifyEventSignature( $merchantDetails->accessToken, $event, getallheaders() ) ) {
+			give_record_gateway_error(
+				'Failed webhook event verfication',
+				[
+					'event'   => $event,
+					'headers' => getallheaders(),
+				]
+			);
 			throw new Exception( 'Failed event verification' );
 		}
 
-		$this->webhookRegister
-			->getEventHandler( $event->event_type )
-			->processEvent( $event );
+		try {
+			$this->webhookRegister
+				->getEventHandler( $event->event_type )
+				->processEvent( $event );
+
+		} catch ( Exception $exception ) {
+			$eventType = empty( $event->event_type ) ? 'Unknown' : $event->event_type;
+			give_record_gateway_error( "Error processing webhook: {$eventType}", $event );
+
+			throw $exception;
+		}
 	}
 }
