@@ -773,7 +773,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 												: 'disconnect_manual_stripe_account',
 											'give_stripe_disconnect_slug' => $slug,
 										],
-										admin_url( 'edit.php' )
+										wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $slug )
 									);
 									?>
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
@@ -1085,6 +1085,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
 				return;
 			}
+			check_admin_referer( 'give_disconnect_connected_stripe_account_' . $data['give_stripe_disconnect_slug'] );
 			give_stripe_disconnect_account(
 				$data['give_stripe_disconnect_slug']
 			);
