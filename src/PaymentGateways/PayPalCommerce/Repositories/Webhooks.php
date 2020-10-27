@@ -6,6 +6,7 @@ use Exception;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
+use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\Route\PayPalWebhooks as WebhooksRoute;
 
@@ -50,13 +51,13 @@ class Webhooks {
 	 * @see https://developer.paypal.com/docs/api/webhooks/v1/#verify-webhook-signature
 	 * @since 2.9.0
 	 *
-	 * @param string $token
-	 * @param object $event The event to verify
-	 * @param array  $headers The request headers
+	 * @param string               $token
+	 * @param object               $event The event to verify
+	 * @param PayPalWebhookHeaders $payPalHeaders
 	 *
 	 * @return bool
 	 */
-	public function verifyEventSignature( $token, $event, $headers ) {
+	public function verifyEventSignature( $token, $event, $payPalHeaders ) {
 		$apiUrl = $this->payPalClient->getApiUrl( 'v1/notifications/verify-webhook-signature' );
 
 		$webhookConfig = $this->getWebhookConfig();
@@ -70,11 +71,11 @@ class Webhooks {
 				],
 				'body'    => wp_json_encode(
 					[
-						'transmission_id'   => $headers['Paypal-Transmission-Id'],
-						'transmission_time' => $headers['Paypal-Transmission-Time'],
-						'transmission_sig'  => $headers['Paypal-Transmission-Sig'],
-						'cert_url'          => $headers['Paypal-Cert-Url'],
-						'auth_algo'         => $headers['Paypal-Auth-Algo'],
+						'transmission_id'   => $payPalHeaders->transmissionId,
+						'transmission_time' => $payPalHeaders->transmissionTime,
+						'transmission_sig'  => $payPalHeaders->transmissionSig,
+						'cert_url'          => $payPalHeaders->certUrl,
+						'auth_algo'         => $payPalHeaders->authAlgo,
 						'webhook_id'        => $webhookConfig->id,
 						'webhook_event'     => $event,
 					]
@@ -83,6 +84,8 @@ class Webhooks {
 		);
 
 		if ( is_wp_error( $response ) ) {
+			give_record_gateway_error( 'Webhook signature failure response', print_r( $response, true ) );
+
 			return false;
 		}
 
@@ -177,9 +180,9 @@ class Webhooks {
 							'path'  => '/event_types',
 							'value' => array_map(
 								static function ( $eventType ) {
-									 return [
-										 'name' => $eventType,
-									 ];
+									return [
+										'name' => $eventType,
+									];
 								},
 								$this->webhooksRegister->getRegisteredEvents()
 							),
