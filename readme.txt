@@ -825,6 +825,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Upgrade Notice ==
 
+= 2.9.0 =
+This version contains a database upgrade that improves performance by migrating donation meta to a new revenue table. Please ensure you have a backup in place prior to updating and be sure to update GiveWP Core and then your GiveWP Add-ons to the latest versions for maximum compatibility.
+
 = 2.7.0 =
 This version contains a database upgrade for donation forms and Stripe. Please ensure you have a backup in place prior to updating and be sure to update GiveWP Core and then your GiveWP Add-ons to the latest versions for maximum compatibility. 
 
