@@ -1078,6 +1078,9 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @since 2.8.0
 		 */
 		public function disconnect_connected_stripe_account() {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
 			$data = give_clean( $_GET );
 			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
 				return;
