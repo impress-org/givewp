@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Reports for "All Time" are now inclusive of the first day (#5400)
 -   Fix PayPal Donation webhooks in live mode (#5403)
 -   Imported donations now store the correct revenue amount (#5407)
+-   Renewal payments are now included in reports (#5409)
 
 ## 2.9.0-beta.3 - 2020-10-22
 
