@@ -77,7 +77,7 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Works with Stripe** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our [Stripe Premium add-on](https://go.givewp.com/addon-stripe).* **PayPal Standard** -- Allow worldwide donations with PayPal Standard. No additional fees applied.
+* **Works with Stripe** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our [Stripe Premium add-on](https://go.givewp.com/addon-stripe).
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
