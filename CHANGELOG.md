@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Fix PayPal Donation webhooks in live mode (#5403)
+
 ## 2.9.0-beta.3 - 2020-10-22
 
 ### Added
@@ -21,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Multi-Form Goal end date now reflects time zone (#5394)
 -   Field description text is now accessible and aligned (#5396)
 -   Reports for "All Time" are now inclusive of the first day. (#5400)
--   Fix PayPal Donation webhooks in live mode (#5403)
 
 ## 2.9.0-beta.2 - 2020-10-19
 
