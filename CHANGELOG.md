@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Imported donations now store the correct revenue amount (#5407)
--   Imported donations do not affect form suggestions anymore (#5410)
+-   Imported donations do not affect donation levels anymore (#5410)
 
 ### Changed
 
@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Credit Card fields tabbing (#5380)
+-   Tabbing through credit card fields now works in the expected order (#5380)
 -   Long text overflowing outside of the container in Donation receipt (#5390)
 -   Legacy form loading spinner (#5397)
 -   Multi-Form Goal end date now reflects time zone (#5394)
@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Option to display Company Name on Donor Wall (#5374)
+-   Company Name can now be displayed on Donor Wall (#5374)
 -   Support for multi-line radio options (#5383)
 
 ### Fixed

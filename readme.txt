@@ -237,6 +237,18 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.9.0: October 27th, 2020 =
+* Added: New [PayPal Donations](https://givewp.com/lps/paypal-donations) gateway allows your donors to give using Debit or Credit Cards directly on your website with no additional fees
+* Added: New Multi-form Goal block combines progress from multiple donation forms towards a common goal
+* Added: Company Name can now be displayed on Donor Wall (#5374)
+* Added: Multi-step form styles are now compatible with Currency Switcher (#5220)
+* Changed: New database table handles revenue independently from donations for improved performance (#5257)
+* Fixed: Imported donations do not affect donation levels anymore (#5410)
+* Fixed: Reports for "All Time" are now inclusive of the first day (#5400)
+* Fixed: Tabbing through credit card fields now works in the expected order (#5380)
+* Fixed: Legacy form loading spinner no longer stutters (#5397)
+* Fixed: Field description text is now accessible and aligned (#5396)
+
 = 2.8.0: August 31st, 2020 =
 * Added: Onboarding Wizard guides new users through first-time configuration. (#5014)
 * Added: Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)

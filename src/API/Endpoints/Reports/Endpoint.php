@@ -159,8 +159,8 @@ abstract class Endpoint implements RestRoute {
 	}
 
 	/**
+	 * @since 2.9.0 Restrict appended time to only the end date.
 	 * @since 2.6.1
-	 * @since UNRELEASED Restrict appended time to only the end date.
 	 */
 	public function sanitizeDate( $param, $request, $key ) {
 		// Return Date object from parameter
