@@ -172,7 +172,7 @@ abstract class Endpoint implements RestRoute {
 			/**
 			 * For the end date manually specify an end time.
 			 */
-			$sanitizedDate .= ' 24:00:00';
+			$sanitizedDate .= ' 23:59:59';
 		}
 
 		return $sanitizedDate;
@@ -419,34 +419,62 @@ abstract class Endpoint implements RestRoute {
 		 * the results are not included in the payment query,
 		 * so we have to run a second query and combine results.
 		 */
-		$renewalArgs = array_merge(
-			$args,
-			[
-				'post_status'     => 'give_subscription',
-				'meta_query'      => [
-					[
-						'key'     => '_give_payment_currency',
-						'value'   => $this->currency,
-						'compare' => '=',
-					],
-				],
-				'post_parent__in' => array_map(
-					function( $payment ) {
-						return $payment->ID;
-					},
-					$payments
-				),
-			]
+		$payments = array_merge(
+			$payments,
+			$this->getRenewalPayments( $startStr, $endStr, $gateway )
 		);
-		$renewals    = new \Give_Payments_Query( $renewalArgs );
-
-		$payments = array_merge( $payments, $renewals->get_payments() );
 
 		// Cache the report data
 		$this->cachePayments( $args, $payments );
 
 		return $payments;
 
+	}
+
+	public function getRenewalPayments( $startStr, $endStr, $gateways ) {
+		global $wpdb;
+		$gateways          = implode(
+			',',
+			array_map(
+				function( $gateway ) use ( $wpdb ) {
+					return $wpdb->prepare( '%s', $gateway );
+				},
+				$gateways
+			)
+		);
+		$renewalPaymentIDs = $wpdb->get_col(
+			$wpdb->prepare(
+				"
+			SELECT renewals.ID
+			FROM {$wpdb->prefix}posts AS renewals
+			LEFT JOIN {$wpdb->prefix}give_donationmeta AS payment_mode
+				ON renewals.post_parent = payment_mode.donation_id
+			LEFT JOIN {$wpdb->prefix}give_donationmeta as payment_currency
+				ON renewals.ID = payment_currency.donation_id
+			LEFT JOIN {$wpdb->prefix}give_donationmeta as payment_gateway
+				ON renewals.ID = payment_gateway.donation_id
+			WHERE renewals.post_type = 'give_payment'
+			  AND renewals.post_parent != 0
+			  AND ( renewals.post_date BETWEEN '%s' AND '%s' )
+			  AND payment_mode.meta_key = '_give_payment_mode'
+			  AND payment_mode.meta_value = '%s'
+			  AND payment_currency.meta_key = '_give_payment_currency'
+			  AND payment_currency.meta_value = '%s'
+			  AND payment_gateway.meta_key = '_give_payment_gateway'
+			  AND payment_gateway.meta_value IN ($gateways)
+		",
+				$startStr,
+				$endStr,
+				( $this->testMode ) ? 'test' : 'live',
+				$this->currency
+			)
+		);
+		return array_map(
+			function( $renewalPaymentID ) {
+				return new Give_Payment( $renewalPaymentID );
+			},
+			$renewalPaymentIDs
+		);
 	}
 
 	public function getGiveStatus() {
