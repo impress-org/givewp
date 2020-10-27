@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Imported donations now store the correct revenue amount (#5407)
--   Importing donations are not affecting form suggestions anymore (#5410)
+-   Imported donations do not affect form suggestions anymore (#5410)
 
 ## 2.9.0-beta.4 - 2020-10-26
 
