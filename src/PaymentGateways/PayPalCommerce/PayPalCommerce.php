@@ -71,6 +71,13 @@ class PayPalCommerce implements PaymentGateway {
 				'type' => 'paypal_commerce_account_manger',
 			],
 			[
+				'name'  => esc_html__( 'PayPal Donations Gateway Settings Docs Link', 'give' ),
+				'id'    => 'paypal_commerce_gateway_settings_docs_link',
+				'url'   => esc_url( 'http://docs.givewp.com/paypal-donations' ),
+				'title' => esc_html__( 'PayPal Donations Gateway Settings', 'give' ),
+				'type'  => 'give_docs_link',
+			],
+			[
 				'type' => 'sectionend',
 				'id'   => 'give_gateway_settings_2',
 			],

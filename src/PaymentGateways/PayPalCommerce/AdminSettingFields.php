@@ -197,7 +197,7 @@ class AdminSettingFields {
 			<div class="hero-section">
 				<div>
 					<h2><?php esc_html_e( 'Accept Donations with PayPal Donations', 'give' ); ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees. Upgrade to PayPal Pro and provide your donors with even more payment options using PayPal Smart Buttons.', 'give' ); ?></p>
+					<p class="give-field-description"><?php esc_html_e( 'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees.', 'give' ); ?></p>
 				</div>
 				<div class="paypal-logo">
 					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>" width="316" height="84" alt="<?php esc_attr_e( 'PayPal Logo Image', 'give' ); ?>">
@@ -213,7 +213,7 @@ class AdminSettingFields {
 				<div>
 					<i class="fa fa-angle-right"></i><?php esc_html_e( 'Accept payments from around the world', 'give' ); ?>
 				</div>
-				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'PayPal, Apple and Google Pay', 'give' ); ?>
+				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'Donate via PayPal accounts', 'give' ); ?>
 				</div>
 				<div><i class="fa fa-angle-right"></i><?php esc_html_e( 'Supports 3D Secure payments', 'give' ); ?>
 				</div>
