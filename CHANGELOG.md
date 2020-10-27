@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Imported donations now store the correct revenue amount (#5407)
+-   Importing donations are not affecting form suggestions anymore (#5410)
+
+## 2.9.0-beta.4 - 2020-10-26
+
+### Fixed
+
 -   Avoid filename collisions when exporting users and donations (#5346)
 -   Reports for "All Time" are now inclusive of the first day (#5400)
 -   Fix PayPal Donation webhooks in live mode (#5403)
--   Imported donations now store the correct revenue amount (#5407)
--   Importing donations are not affecting form suggestions anymore (#5410)
 
 ## 2.9.0-beta.3 - 2020-10-22
 
