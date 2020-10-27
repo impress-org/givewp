@@ -79,7 +79,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
-			add_action( 'give_disconnect_connected_stripe_accout', [ $this, 'disconnect_connected_stripe_accout' ] );
+			add_action( 'give_disconnect_connected_stripe_account', [ $this, 'disconnect_connected_stripe_account' ] );
 		}
 
 		/**
@@ -769,7 +769,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 											'tab'         => 'gateways',
 											'section'     => 'stripe-settings',
 											'give_action' => ( 'connect' === $details['type'] )
-												? 'disconnect_connected_stripe_accout'
+												? 'disconnect_connected_stripe_account'
 												: 'disconnect_manual_stripe_account',
 											'give_stripe_disconnect_slug' => $slug,
 										],
@@ -1077,7 +1077,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * @since 2.8.0
 		 */
-		public function disconnect_connected_stripe_accout() {
+		public function disconnect_connected_stripe_account() {
 			$data = give_clean( $_GET );
 			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
 				return;
