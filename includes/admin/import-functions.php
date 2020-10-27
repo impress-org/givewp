@@ -139,8 +139,6 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				$price_text[ $new_level ] = strtolower( preg_replace( '/\s+/', '', $data['form_level'] ) );
 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
-					$prices = wp_parse_args( $multi_level_donations, $prices );
-
 					// Sort $prices by amount in ascending order.
 					$prices = wp_list_sort( $prices, '_give_amount', 'ASC' );
 				} else {
