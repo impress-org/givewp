@@ -7,10 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0-rc.1 - 2020-10-27
+
+### Added
+
+-   Upgrade notice now clarifies the purpose of the 2.9.0 database upgrade
+
 ### Fixed
 
 -   Imported donations now store the correct revenue amount (#5407)
 -   Imported donations do not affect form suggestions anymore (#5410)
+
+### Changed
+
+-   Plugin's readme.txt is updated with new content for the Plugin Directory (#5413)
 
 ## 2.9.0-beta.4 - 2020-10-26
 
