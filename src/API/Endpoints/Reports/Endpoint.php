@@ -158,11 +158,24 @@ abstract class Endpoint implements RestRoute {
 		return $valid;
 	}
 
+	/**
+	 * @since 2.9.0 Restrict appended time to only the end date.
+	 * @since 2.6.1
+	 */
 	public function sanitizeDate( $param, $request, $key ) {
 		// Return Date object from parameter
 		$exploded = explode( '-', $param );
 
-		return "{$exploded[0]}-{$exploded[1]}-{$exploded[2]} 24:00:00";
+		$sanitizedDate = "{$exploded[0]}-{$exploded[1]}-{$exploded[2]}";
+
+		if ( 'end' === $key ) {
+			/**
+			 * For the end date manually specify an end time.
+			 */
+			$sanitizedDate .= ' 24:00:00';
+		}
+
+		return $sanitizedDate;
 	}
 
 	/**

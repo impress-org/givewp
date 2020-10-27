@@ -3,13 +3,13 @@
  * Upgrade Functions
  *
  * @package     Give
- * @subpackage  Admin/Upgrades
- * @copyright   Copyright (c) 2016, GiveWP
- * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  *
  * NOTICE: When adding new upgrade notices, please be sure to put the action into the upgrades array during install:
  * /includes/install.php @ Appox Line 156
+ * @copyright   Copyright (c) 2016, GiveWP
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @subpackage  Admin/Upgrades
  */
 
 // Exit if accessed directly.
@@ -155,6 +155,10 @@ function give_do_automatic_upgrades() {
 
 			give_v270_upgrades();
 
+			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.9.0', '<' ):
+			give_v290_remove_old_export_files();
 			$did_upgrade = true;
 	}
 
@@ -1913,8 +1917,8 @@ function give_v20_upgrades_form_metadata_callback() {
  * Upgrade payment metadata for new metabox settings.
  *
  * @since  2.0
- * @global wpdb $wpdb
  * @return void
+ * @global wpdb $wpdb
  */
 function give_v20_upgrades_payment_metadata_callback() {
 	global $wpdb;
@@ -2249,9 +2253,9 @@ function give_v20_upgrades_donor_name() {
  * Upgrade routine for user addresses.
  *
  * @since 2.0
+ * @return void
  * @global wpdb $wpdb
  *
- * @return void
  */
 function give_v20_upgrades_user_address() {
 	global $wpdb;
@@ -2313,8 +2317,8 @@ function give_v20_upgrades_user_address() {
  * Upgrade logs data.
  *
  * @since  2.0
- * @global wpdb $wpdb
  * @return void
+ * @global wpdb $wpdb
  */
 function give_v20_rename_donor_tables_callback() {
 	global $wpdb;
@@ -2356,8 +2360,8 @@ function give_v20_rename_donor_tables_callback() {
  * Create missing meta tables.
  *
  * @since  2.0.1
- * @global wpdb $wpdb
  * @return void
+ * @global wpdb $wpdb
  */
 function give_v201_create_tables() {
 	global $wpdb;
@@ -2383,8 +2387,8 @@ function give_v201_create_tables() {
  * Upgrade payment metadata for new metabox settings.
  *
  * @since  2.0.1
- * @global wpdb $wpdb
  * @return void
+ * @global wpdb $wpdb
  */
 function give_v201_upgrades_payment_metadata_callback() {
 	global $wpdb, $post;
@@ -3650,8 +3654,8 @@ function give_v263_upgrades() {
  * Upgrade routine to call for backward compatibility to manage default Stripe account.
  *
  * @since 2.7.0
- * @global wpdb $wpdb
  * @return void
+ * @global wpdb $wpdb
  */
 function give_v270_upgrades() {
 	global $wpdb;
@@ -3814,4 +3818,14 @@ function give_v270_store_stripe_account_for_donation_callback() {
 		// Update Ran Successfully.
 		give_set_upgrade_complete( 'v270_store_stripe_account_for_donation' );
 	}
+}
+
+/**
+ * Removes any leftover export files that should've been deleted
+ *
+ * @since 2.9.0
+ */
+function give_v290_remove_old_export_files() {
+	@unlink( WP_CONTENT_DIR . '/uploads/give-payments.csv' );
+	@unlink( WP_CONTENT_DIR . '/uploads/give-donors.csv' );
 }

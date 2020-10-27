@@ -92,22 +92,22 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 			// Do not render main export tools page.
 			remove_action(
 				'give_admin_field_tools_export',
-				array(
+				[
 					'Give_Settings_Export',
 					'render_export_field',
-				),
+				],
 				10
 			);
 
 			// Render donation export page
-			add_action( 'give_admin_field_tools_export', array( $this, 'render_page' ) );
+			add_action( 'give_admin_field_tools_export', [ $this, 'render_page' ] );
 
 			// Print the HTML.
-			add_action( 'give_tools_export_donations_form_start', array( $this, 'html' ) );
+			add_action( 'give_tools_export_donations_form_start', [ $this, 'html' ] );
 		}
 
 		/**
-		 * Filter to modity the Taxonomy args
+		 * Filter to modify the Taxonomy args
 		 *
 		 * @since 2.1
 		 *
@@ -140,7 +140,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 
 					<?php
 					if ( give_is_setting_enabled( give_get_option( 'categories' ) ) ) {
-						add_filter( 'give_forms_category_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
+						add_filter( 'give_forms_category_dropdown', [ $this, 'give_forms_taxonomy_dropdown' ] );
 						?>
 						<tr>
 							<td scope="row" class="row-title">
@@ -153,27 +153,27 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									echo Give()->html->category_dropdown(
 										'give_forms_categories[]',
 										0,
-										array(
+										[
 											'id'          => 'give_forms_categories',
 											'class'       => 'give_forms_categories',
 											'chosen'      => true,
 											'multiple'    => true,
-											'selected'    => array(),
+											'selected'    => [],
 											'show_option_all' => false,
 											'placeholder' => __( 'Choose one or more from categories', 'give' ),
-											'data'        => array( 'search-type' => 'categories' ),
-										)
+											'data'        => [ 'search-type' => 'categories' ],
+										]
 									);
 									?>
 								</div>
 							</td>
 						</tr>
 						<?php
-						remove_filter( 'give_forms_category_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
+						remove_filter( 'give_forms_category_dropdown', [ $this, 'give_forms_taxonomy_dropdown' ] );
 					}
 
 					if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
-						add_filter( 'give_forms_tag_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
+						add_filter( 'give_forms_tag_dropdown', [ $this, 'give_forms_taxonomy_dropdown' ] );
 						?>
 						<tr>
 							<td scope="row" class="row-title">
@@ -186,23 +186,23 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									echo Give()->html->tags_dropdown(
 										'give_forms_tags[]',
 										0,
-										array(
+										[
 											'id'          => 'give_forms_tags',
 											'class'       => 'give_forms_tags',
 											'chosen'      => true,
 											'multiple'    => true,
-											'selected'    => array(),
+											'selected'    => [],
 											'show_option_all' => false,
 											'placeholder' => __( 'Choose one or more from tags', 'give' ),
-											'data'        => array( 'search-type' => 'tags' ),
-										)
+											'data'        => [ 'search-type' => 'tags' ],
+										]
 									);
 									?>
 								</div>
 							</td>
 						</tr>
 						<?php
-						remove_filter( 'give_forms_tag_dropdown', array( $this, 'give_forms_taxonomy_dropdown' ) );
+						remove_filter( 'give_forms_tag_dropdown', [ $this, 'give_forms_taxonomy_dropdown' ] );
 					}
 					?>
 
@@ -214,14 +214,14 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td class="give-field-wrap">
 							<div class="give-clearfix">
 								<?php
-								$args = array(
+								$args = [
 									'name'        => 'forms',
 									'id'          => 'give-payment-form-select',
 									'class'       => 'give-width-25em',
 									'chosen'      => true,
 									'placeholder' => __( 'All Forms', 'give' ),
-									'data'        => array( 'no-form' => __( 'No donation forms found', 'give' ) ),
-								);
+									'data'        => [ 'no-form' => __( 'No donation forms found', 'give' ) ],
+								];
 								echo Give()->html->forms_dropdown( $args );
 								?>
 
@@ -237,21 +237,21 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<td class="give-field-wrap">
 							<div class="give-clearfix">
 								<?php
-								$args = array(
+								$args = [
 									'id'           => 'give-payment-export-start',
 									'name'         => 'start',
 									'placeholder'  => __( 'Start Date', 'give' ),
 									'autocomplete' => 'off',
-								);
+								];
 								echo Give()->html->date_field( $args );
 								?>
 								<?php
-								$args = array(
+								$args = [
 									'id'           => 'give-payment-export-end',
 									'name'         => 'end',
 									'placeholder'  => __( 'End Date', 'give' ),
 									'autocomplete' => 'off',
-								);
+								];
 								echo Give()->html->date_field( $args );
 								?>
 							</div>

@@ -87,79 +87,79 @@ class Give_Donor_Wall_Block {
 			[
 				'render_callback' => [ $this, 'render_block' ],
 				'attributes'      => [
-					'donorsPerPage' => [
+					'donorsPerPage'   => [
 						'type'    => 'string',
 						'default' => '12',
 					],
-					'formID'        => [
+					'formID'          => [
 						'type'    => 'string',
 						'default' => '0',
 					],
-					'ids'           => [
+					'ids'             => [
 						'type'    => 'string',
 						'default' => '',
 					],
-					'orderBy'       => [
+					'orderBy'         => [
 						'type'    => 'string',
 						'default' => 'post_date',
 					],
-					'order'         => [
+					'order'           => [
 						'type'    => 'string',
 						'default' => 'DESC',
 					],
-					'paged'         => [
+					'paged'           => [
 						'type'    => 'string',
 						'default' => '1',
 					],
-					'columns'       => [
+					'columns'         => [
 						'type'    => 'string',
 						'default' => 'best-fit',
 					],
-					'showAvatar'    => [
+					'showAvatar'      => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showName'      => [
+					'showName'        => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showCompanyName'      => [
+					'showCompanyName' => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
-					'showTotal'     => [
+					'showTotal'       => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showDate'      => [
+					'showDate'        => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showComments'  => [
+					'showComments'    => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showAnonymous' => [
+					'showAnonymous'   => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'onlyComments'  => [
+					'onlyComments'    => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
-					'commentLength' => [
+					'commentLength'   => [
 						'type'    => 'string',
 						'default' => '140',
 					],
-					'readMoreText'  => [
+					'readMoreText'    => [
 						'type'    => 'string',
 						'default' => __( 'Read more', 'give' ),
 					],
-					'loadMoreText'  => [
+					'loadMoreText'    => [
 						'type'    => 'string',
 						'default' => __( 'Load more', 'give' ),
 					],
-					'avatarSize'    => [
+					'avatarSize'      => [
 						'type'    => 'string',
 						'default' => '60',
 					],

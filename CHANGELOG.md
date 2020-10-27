@@ -7,15 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0-rc.1 - 2020-10-27
+
 ### Added
--   Option to display Company Name on Donor Wall (#5374)
--   Support for multi-line radio options (#5383) 
+
+-   Upgrade notice now clarifies the purpose of the 2.9.0 database upgrade
+
+### Fixed
+
+-   Imported donations now store the correct revenue amount (#5407)
+-   Imported donations do not affect donation levels anymore (#5410)
+
+### Changed
+
+-   Plugin's readme.txt is updated with new content for the Plugin Directory (#5413)
+
+## 2.9.0-beta.4 - 2020-10-26
+
+### Fixed
+
+-   Avoid filename collisions when exporting users and donations (#5346)
+-   Reports for "All Time" are now inclusive of the first day (#5400)
+-   Fix PayPal Donation webhooks in live mode (#5403)
+
+## 2.9.0-beta.3 - 2020-10-22
+
+### Added
+
+-   Past donation data migration for revenue database table is compatible with currency switcher (#5382)
+
+### Fixed
+
+-   Tabbing through credit card fields now works in the expected order (#5380)
+-   Long text overflowing outside of the container in Donation receipt (#5390)
+-   Legacy form loading spinner (#5397)
+-   Multi-Form Goal end date now reflects time zone (#5394)
+-   Field description text is now accessible and aligned (#5396)
+
+## 2.9.0-beta.2 - 2020-10-19
+
+### Added
+
+-   Company Name can now be displayed on Donor Wall (#5374)
+-   Support for multi-line radio options (#5383)
 
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
--   Credit Card fields tabbing (#5380)
--   Long text overflowing outside of the container in Donation receipt (#5390)
 
 ## 2.9.0-beta.1 - 2020-10-13
 
@@ -27,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Multi-Form Goal Blocks now auto-focus the Progress Bar on insert (#5364)
 -   Improve PayPal Donations payment gateway setting page UX ( #5369 )
--    Multi-Form Goal query results are cached (#5371)
+-   Multi-Form Goal query results are cached (#5371)
 -   Update composer setup (#5361)
 
 ## 2.9.0-alpha.2 - 2020-10-09
@@ -54,7 +92,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
 -   Multi-Form Goal wrapper only added for non-block output (#5315)
 -   Multi-Form Goal output has a bottom margin (#5333)
