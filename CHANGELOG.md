@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Avoid filename collisions when exporting users and donations (#5346)
+-   Reports for "All Time" are now inclusive of the first day (#5400)
 -   Fix PayPal Donation webhooks in live mode (#5403)
 
 ## 2.9.0-beta.3 - 2020-10-22
@@ -24,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Legacy form loading spinner (#5397)
 -   Multi-Form Goal end date now reflects time zone (#5394)
 -   Field description text is now accessible and aligned (#5396)
--   Reports for "All Time" are now inclusive of the first day. (#5400)
 
 ## 2.9.0-beta.2 - 2020-10-19
 
@@ -73,7 +74,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Totals block now supports custom goal color (#5267)
 -   Migrations framework for database migrations
 -   Multi-Form Goal wrapper only added for non-block output (#5315)
 -   Multi-Form Goal output has a bottom margin (#5333)
