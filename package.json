@@ -12,8 +12,8 @@
         "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
         "lint:js": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js",
         "lint:js-fix": "eslint assets/src/**/*.js blocks/**/*.js includes/**/*.js tests/**/*.js --fix",
-        "lint:php": "./vendor/bin/phpcs -v --colors --standard=phpcs.ruleset.xml",
-        "lint:php:fix": "./vendor/bin/phpcbf -v --colors --standard=phpcs.ruleset.xml",
+        "lint:php": "./vendor/bin/phpcs",
+        "lint:php:fix": "./vendor/bin/phpcbf",
         "lint:textdomain": "node ./wp-textdomain.js",
         "lint:scss": "stylelint assets/src/**/*.scss",
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles",
@@ -49,7 +49,7 @@
         "browser-sync-webpack-plugin": "^2.2.2",
         "clean-webpack-plugin": "^1.0.0",
         "copy-webpack-plugin": "^4.6.0",
-        "cross-env": "^5.2.0",
+        "cross-env": "^5.2.1",
         "css-loader": "^2.1.0",
         "cssnano": "^4.1.8",
         "cssnano-preset-advanced": "^4.0.6",
@@ -83,6 +83,7 @@
         "wp-textdomain": "^1.0.1"
     },
     "dependencies": {
+        "@paypal/paypal-js": "^1.0.2",
         "accounting": "latest",
         "chart.js": "^2.9.3",
         "chartjs-plugin-crosshair": "^1.1.4",

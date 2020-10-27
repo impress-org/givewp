@@ -83,9 +83,9 @@
 				$( steps[ step ].selector ).show().removeClass( directionClasses ).addClass( `slide-in-${ inDirection }` );
 			}
 			navigator.currentStep = step;
-			setupTabOrder();
 
 			setTimeout( function() {
+				setupTabOrder();
 				// Do not auto-focus form on the page load if the first step is disabled
 				if ( ! navigator.firstFocus && templateOptions.introduction.enabled === 'disabled' ) {
 					return navigator.firstFocus = true;
@@ -160,6 +160,7 @@
 			label: templateOptions.payment_amount.next_label,
 			showErrors: false,
 			tabOrder: [
+				'select.give-cs-select-currency',
 				'input.give-amount-top',
 				'.give-donation-levels-wrap button',
 				'.give-recurring-period',
@@ -338,18 +339,23 @@
 
 							if ( $( node ).find( '.give_error' ).length > 0 ) {
 								moveErrorNotice( $( node ).find( '.give_error' ) );
+								scrollToIframeTop();
 							}
 
-							if ( $( node ).children().hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
-								$( node ).children( '.give_errors' ).each( function() {
-									const notice = $( this );
-									moveErrorNotice( notice );
-								} );
+							if ( $( node ).children().hasClass( 'give_errors' ) ) {
+								if ( ! $( node ).parent().hasClass( 'donation-errors' ) ) {
+									$( node ).children( '.give_errors' ).each( function() {
+										const notice = $( this );
+										moveErrorNotice( notice );
+									} );
+								}
+								scrollToIframeTop();
 							}
 
 							if ( $( node ).hasClass( 'give_errors' ) && ! $( node ).parent().hasClass( 'donation-errors' ) ) {
 								moveErrorNotice( $( node ) );
 								$( '.sequoia-loader' ).removeClass( 'spinning' );
+								scrollToIframeTop();
 							}
 
 							if ( $( node ).attr( 'id' ) === 'give_tributes_address_state' ) {
@@ -367,7 +373,9 @@
 
 							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
 								const placeholder = $( node ).attr( 'placeholder' );
-								$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+								if ( placeholder ) {
+									$( node ).prepend( `<option value="" disabled selected>${ placeholder }</option>` );
+								}
 							}
 						}
 					} );
@@ -392,7 +400,7 @@
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
-			setupTabOrder();
+			setTimeout( setupTabOrder, 200 );
 			moveFieldsUnderPaymentGateway( true );
 			setupSelectInputs();
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
@@ -663,6 +671,9 @@
 				case 'paypalpro_payflow':
 					icon = 'far fa-credit-card';
 					break;
+				case 'paypal-commerce':
+					icon = 'far fa-credit-card';
+					break;
 				case 'stripe_google_pay':
 					icon = 'fab fa-google';
 					break;
@@ -776,5 +787,16 @@
 	 */
 	function isRTL() {
 		return $( 'html' ).attr( 'dir' ) === 'rtl';
+	}
+
+	/**
+	 * Scroll to parent window to iframe top
+	 *
+	 * @since 2.9.0
+	 */
+	function scrollToIframeTop() {
+		if ( 'parentIFrame' in window ) {
+			window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
+		}
 	}
 }( jQuery ) );

@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -154,6 +156,7 @@ function give_run_install() {
 			'v240_update_form_goal_progress',
 			'v241_remove_sale_logs',
 			'v270_store_stripe_account_for_donation',
+			AddPastDonationsToRevenueTable::id(),
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {

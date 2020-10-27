@@ -1570,16 +1570,17 @@ add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 1
 function give_validate_required_form_fields( $form_id ) {
 
 	// Sanitize values submitted with donation form.
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data          = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$requiredFormFields = give_get_required_fields( $form_id );
 
 	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+	foreach ( $requiredFormFields as $field_name => $value ) {
 
 		// Clean Up Data of the input fields.
 		$field_value = $post_data[ $field_name ];
 
 		// Check whether the required field is empty, then show the error message.
-		if ( in_array( $value, give_get_required_fields( $form_id ), true ) && empty( $field_value ) ) {
+		if ( empty( $field_value ) && in_array( $value, $requiredFormFields, true ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}

@@ -13,9 +13,9 @@
 		display: flex;
 		background-color: #f4f4f4;
 		border-radius: 8px;
-		-webkit-box-shadow: 0px 0px 5px 0px rgba(221,221,221,1);
-		-moz-box-shadow: 0px 0px 5px 0px rgba(221,221,221,1);
-		box-shadow: 0px 0px 5px 0px rgba(221,221,221,1);
+		-webkit-box-shadow: 0 0 5px 0 rgba(221, 221, 221, 1);
+		-moz-box-shadow: 0 0 5px 0 rgba(221, 221, 221, 1);
+		box-shadow: 0 0 5px 0 rgba(221, 221, 221, 1);
 
 		.give-settings-section-group-menu {
 			width: 250px;
@@ -30,7 +30,7 @@
 						display: block;
 						padding: 20px;
 						text-decoration: none;
-						color: #333333;
+						color: #333;
 						font-weight: 600;
 						outline: none;
 						box-shadow: none;
@@ -40,9 +40,9 @@
 						}
 
 						&.active {
-							background-color: #ffffff;
-							border-left: 4px solid #66BB6A;
-							color: #333333;
+							background-color: #fff;
+							border-left: 4px solid #66bb6a;
+							color: #333;
 						}
 					}
 				}
@@ -51,7 +51,7 @@
 
 		.give-settings-section-group-content {
 			width: 100%;
-			background: #ffffff;
+			background: #fff;
 			padding: 10px 30px;
 			border-bottom-right-radius: 8px;
 			border-top-right-radius: 8px;
@@ -89,7 +89,7 @@
 
 	// White bg header.
 	.give-settings-header {
-		background: #FFF;
+		background: #fff;
 		padding: 10px 20px;
 		margin: 0 -20px 0 -22px;
 	}
@@ -103,7 +103,6 @@
 	.nav-tab-wrapper {
 		height: 54px;
 		margin: 0 -20px 0 -22px;
-
 	}
 
 	.give-subsubsub {
@@ -124,7 +123,7 @@
 
 		a {
 			line-height: 2;
-			padding: .2em;
+			padding: 0.2em;
 			margin: 0 3px 0 0;
 			text-decoration: none;
 			font-size: 14px;
@@ -155,7 +154,7 @@
 		width: 25em;
 	}
 
-	table table input[type="text"] {
+	table table input[type='text'] {
 		width: 15em;
 	}
 
@@ -180,7 +179,6 @@
 			color: white;
 			border-radius: 30px;
 		}
-
 	}
 
 	.give-forminp p:first-child .give-remove-setting-field {
@@ -245,13 +243,13 @@
 
 p.give-field-description,
 div.give-field-description {
-	color: #666666;
+	color: #666;
 	font-style: italic;
 	font-size: 14px !important;
 	line-height: 22px;
 
 	strong {
-		color: #777777;
+		color: #777;
 	}
 }
 
@@ -260,7 +258,7 @@ div.give-field-description {
 	display: inline-block;
 	width: 220px;
 	font-style: italic;
-	color: #AAA;
+	color: #aaa;
 	margin: 0;
 	font-size: 14px;
 }
@@ -275,7 +273,7 @@ div.give-field-description {
 
 	.gateway-enabled-settings-title {
 		display: grid;
-		grid-template-columns: .5fr 2.5fr 5fr 1fr 1fr;
+		grid-template-columns: 0.5fr 2.5fr 5fr 1fr 1fr;
 		grid-gap: 20px;
 		border-bottom: 1px solid #e5e5e5;
 		padding: 1rem;
@@ -292,7 +290,7 @@ div.give-field-description {
 		background-color: #fafafa;
 		box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.25);
 		border: 1px solid #e5e5e5;
-		padding: .5rem .5rem !important;
+		padding: 0.5rem 0.5rem !important;
 	}
 }
 
@@ -302,13 +300,12 @@ div.give-field-description {
 }
 
 .give-payment-gatways-list li {
-
 	display: grid;
-	grid-template-columns: .5fr 2.5fr 5fr 1fr 1fr;
+	grid-template-columns: 0.5fr 2.5fr 5fr 1fr 1fr;
 	align-items: center;
 	grid-gap: 20px;
 	margin: 0;
-	padding: .5rem 0;
+	padding: 0.5rem 0;
 
 	&:first-child {
 		padding-top: 0;
@@ -337,19 +334,17 @@ div.give-field-description {
 		&:hover {
 			color: #333;
 		}
-
 	}
-
 }
 
 .give-gateways-notice {
 	display: table;
 	width: 100%;
 	max-width: 1240px;
-	background: #FFF;
+	background: #fff;
 	margin: 15px 0 0;
 	padding: 0;
-	border: 1px solid #E3E3E3;
+	border: 1px solid #e3e3e3;
 
 	.give-gateways-cc-icon {
 		margin: 0;
@@ -365,7 +360,6 @@ div.give-field-description {
 			width: 50px;
 			height: 40px;
 		}
-
 	}
 
 	.give-gateways-notice-title {
@@ -396,9 +390,7 @@ div.give-field-description {
 			text-align: center;
 			width: 190px;
 		}
-
 	}
-
 }
 
 //--------------------------------------------------------------
@@ -416,7 +408,7 @@ div.give-field-description {
 
 	span {
 		display: block;
-		color: #AAA;
+		color: #aaa;
 		font-style: italic;
 		margin: 0 0 2px;
 		font-size: 13px;
@@ -454,7 +446,6 @@ div.give-field-description {
 			display: block;
 		}
 	}
-
 }
 
 // Email notification list.
@@ -473,7 +464,7 @@ div.give-field-description {
 			color: white;
 			cursor: pointer;
 
-			&[data-edit="1"] i.dashicons {
+			&[data-edit='1'] i.dashicons {
 				border-radius: 1em;
 				padding: 2px;
 			}
@@ -490,19 +481,19 @@ div.give-field-description {
 
 		.give-email-notification-disabled .dashicons-no-alt,
 		.give-email-notification-enabled:hover .dashicons-yes {
-			background: #bbbbbb;
+			background: #bbb;
 		}
 
 		.give-email-notification-disabled .dashicons-lock {
-			color: #bbbbbb;
+			color: #bbb;
 		}
 
-		.dashicons-no-alt:hover:before {
-			content: "\f147" !important;
+		.dashicons-no-alt:hover::before {
+			content: '\f147' !important;
 		}
 
-		.dashicons-yes:hover:before {
-			content: "\f335" !important;
+		.dashicons-yes:hover::before {
+			content: '\f335' !important;
 		}
 	}
 
@@ -510,7 +501,6 @@ div.give-field-description {
 		margin: 0 0 0 2px;
 		float: none;
 	}
-
 }
 
 //--------------------------------------------------------------
@@ -521,10 +511,11 @@ div.give-field-description {
 	width: 800px;
 	height: 600px;
 	font-family: Menlo, Monaco, monospace;
-	background: #FFF;
+	background: #fff;
 	white-space: pre;
 	overflow: auto;
 	display: block;
+
 	/*rtl:ignore*/
 	direction: ltr;
 }
@@ -550,13 +541,11 @@ a.give-delete {
 /* Tables */
 
 .give-table {
-
 	thead {
 		th {
 			padding: 8px 10px !important;
 		}
 	}
-
 }
 
 //Set a min-height for TinyMCE so it's not too small when hidden in a tab and then revealed
@@ -567,10 +556,9 @@ a.give-delete {
 
 // Widget Page
 .give-field-description {
-	color: #aaaaaa;
-	font-style: italic;
+	color: #666;
 	margin: 0;
-	padding-top: .5em;
+	padding-top: 0.5em;
 }
 
 //--------------------------------------------------------------
@@ -596,7 +584,207 @@ a.give-delete {
 	}
 }
 
-
 .give_email_access_link_tag {
 	display: none;
+}
+
+//--------------------------------------------------------------
+// Paypal setting page
+//--------------------------------------------------------------
+.give-settings-paypal-section {
+	// Hide with position helps element to keep browser computed styling like width.
+	// Few javascript extensions use browser computed styling. for example: chosen uses browser computed style to style custom select field.
+	.hide-with-position {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+}
+
+#give-paypal-commerce-account-manager-field-wrap {
+	.connect-button-wrap {
+		display: flex;
+		align-items: end;
+		justify-content: flex-start;
+
+		.label {
+			font-weight: bold;
+			margin: 0;
+		}
+
+		.button-wrap {
+			display: grid;
+			justify-content: flex-start;
+			flex-grow: 1;
+			grid-template-columns: 1fr;
+		}
+
+		.button-wrap > div {
+			margin-bottom: 10px;
+		}
+
+		.fa {
+			color: #ffb800;
+			border: 2px solid #ffb800;
+			border-radius: 20px;
+			padding: 5px 6px;
+			font-size: 11px;
+			line-height: 7px;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+
+		.fa.fa-check {
+			color: #1fb11f;
+			border: 2px solid #1fb11f;
+			padding: 5px 3px;
+		}
+
+		.actions {
+			margin-left: 30px;
+		}
+
+		.api-access-feature-list-wrap {
+			color: #aaa;
+			ul {
+				list-style: none;
+				margin: 0;
+			}
+
+			p,
+			li {
+				margin-bottom: 7px;
+			}
+
+			p {
+				font-weight: bold;
+			}
+		}
+
+		.paypal-account-email {
+			color: #807e7e;
+			font-weight: bold;
+		}
+
+		.disconnection-setting {
+			.button {
+				font-weight: 600;
+				color: #333 !important;
+
+				.fa-paypal {
+					color: #636363;
+				}
+			}
+		}
+
+		.give-hidden {
+			display: none !important;
+		}
+
+		span.tooltip {
+			position: absolute;
+			margin-left: 50px;
+			border-radius: 0 6px 6px 0;
+			vertical-align: middle;
+			color: #556e79;
+			padding: 6px 6px;
+			border-width: 1px;
+			border-color: rgba(0, 0, 0, 0.25);
+			border-style: solid;
+			border-left-width: 0;
+			animation: bounce 2s infinite;
+
+			.left-arrow {
+				position: relative;
+
+				&::after,
+				&::before {
+					content: '';
+					display: block;
+					position: absolute;
+					left: 100%;
+					width: 0;
+					height: 0;
+					border-style: solid;
+				}
+
+				&::after {
+					left: -35px;
+					top: -7px;
+					border-color: transparent #fdfdfd transparent transparent;
+					border-width: 15px;
+				}
+
+				&::before {
+					top: -8px;
+					border-color: transparent rgba(0, 0, 0, 0.25) transparent transparent;
+					border-width: 16px;
+					left: -38px;
+				}
+			}
+		}
+	}
+
+	.give-upsell-notice {
+		margin: 30px 0 0 0 !important;
+	}
+}
+
+#give-paypal-commerce-introduction-wrap {
+	.hero-section {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+
+		img {
+			width: 100%;
+		}
+
+		h2 {
+			font-size: 1.6em !important;
+		}
+
+		.give-field-description {
+			font-size: 1.2em !important;
+		}
+
+		div:last-child {
+			margin-top: 1.6em;
+		}
+	}
+
+	.feature-list {
+		background: #f8f8f8;
+		border-radius: 8px;
+		padding: 20px;
+		display: grid;
+		grid-template-columns: repeat(3, auto);
+		margin: 2em 0;
+		font-size: 1.2em !important;
+		line-height: 2em;
+
+		div {
+			font-style: italic;
+			color: #939393;
+		}
+
+		.fa {
+			padding-right: 10px;
+		}
+	}
+}
+
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateX(0);
+	}
+	40% {
+		transform: translateX(-30px);
+	}
+	60% {
+		transform: translateX(-15px);
+	}
 }

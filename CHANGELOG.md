@@ -7,13 +7,118 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0-rc.1 - 2020-10-27
+
+### Added
+
+-   Upgrade notice now clarifies the purpose of the 2.9.0 database upgrade
+
+### Fixed
+
+-   Imported donations now store the correct revenue amount (#5407)
+-   Imported donations do not affect donation levels anymore (#5410)
+
+### Changed
+
+-   Plugin's readme.txt is updated with new content for the Plugin Directory (#5413)
+
+## 2.9.0-beta.4 - 2020-10-26
+
+### Fixed
+
+-   Avoid filename collisions when exporting users and donations (#5346)
+-   Reports for "All Time" are now inclusive of the first day (#5400)
+-   Fix PayPal Donation webhooks in live mode (#5403)
+
+## 2.9.0-beta.3 - 2020-10-22
+
+### Added
+
+-   Past donation data migration for revenue database table is compatible with currency switcher (#5382)
+
+### Fixed
+
+-   Tabbing through credit card fields now works in the expected order (#5380)
+-   Long text overflowing outside of the container in Donation receipt (#5390)
+-   Legacy form loading spinner (#5397)
+-   Multi-Form Goal end date now reflects time zone (#5394)
+-   Field description text is now accessible and aligned (#5396)
+
+## 2.9.0-beta.2 - 2020-10-19
+
+### Added
+
+-   Company Name can now be displayed on Donor Wall (#5374)
+-   Support for multi-line radio options (#5383)
+
+### Fixed
+
+-   Load PayPal SDK only on a page that has a donation form (#5376)
+
+## 2.9.0-beta.1 - 2020-10-13
+
+### Fixed
+
+-   Set composer platform PHP version to 5.6 to ensure package compatibility (#5266)
+
+### Changed
+
+-   Multi-Form Goal Blocks now auto-focus the Progress Bar on insert (#5364)
+-   Improve PayPal Donations payment gateway setting page UX ( #5369 )
+-   Update composer setup (#5361)
+
+## 2.9.0-alpha.2 - 2020-10-09
+
+### Added
+
+-   PayPal Donations is a new payment gateway (#5079)
+-   PayPal Donations supports currency switcher (#5335)
+-   PayPal Donations supports subscriptions (#5173, #5221, #5308)
+
+### Changed
+
+-   Reports page main menu is now extendable ( #5339 )
+-   Multi-Form Goal Progress Bar only shows "time to go" if the end date has not passed (#5350)
+-   Multi-Form Goal Block uses the Revenue table to calculate progress towards a goal. (#5357)
+-   Multi-Form Goal total includes renewals (#5359)
+-   Multi-Form Goal Progress Bar styles are encapsulated via a Shadow DOM (#5348)
+
+### Fixed
+
+-   Multi-Form Goal block no longer obscure column controls (#5352)
+
+## 2.9.0-alpha.1 - 2020-10-06
+
+### Added
+
+-   Migrations framework for database migrations
+-   Multi-Form Goal wrapper only added for non-block output (#5315)
+-   Multi-Form Goal output has a bottom margin (#5333)
+-   Multi-Form Goal end date now allows for specific time (#5336)
+-   Progress Bar block is no longer available outside of Multi-form Goal (#5338)
+-   Multi-Form Goal Block now defaults to image filling the height (#5314)
+-   Multi-Form Goal Block metric calculations are more performant (#5345)
+-   Migrations framework can now be used for more reliable database migrations.
+-   Multi-Form Goal block and shortcode are now available. (#5307)
+-   Multi-Form Goal block now supports "wide" alignment. (#5315)
+-   Multi-Form Goal block now supports the theme's color palette. (#5319)
+-   Multi-Form Goal block and shortcode appearance is now consistent. (#5320)
+-   New database table handles revenue independently from donations. (#5257)
+
+### Changed
+
+-   Milestone block is now known as the Multi-form Goal block.
+-   Multi-Form Goal wrapper only added for non-block output. (#5315)
+-   Multi-Form Goal output has a bottom margin. (#5333)
+-   Multi-Form Goal end date now allows for specific time. (#5336)
+-   Multi-Form Goal Block now defaults to image filling the height. (#5314)
+-   Introduced Currency Switcher compatibility styles for the Multi-Step form (#5220)
+
 ## 2.8.1 - 2020-10-08
 
 ### Fixed
 
 -   Donations now process for non-US countries using billing details (#5355)
-
-## 2.8.0 - 2020-08-31
 
 ## 2.8.0-rc.1 - 2020-08-31
 

@@ -93,6 +93,7 @@ class Give_Donor_Wall {
 	 *                                   Accepts 'best-fit', '1', '2', '3', '4'.
 	 * @type bool   $show_avatar         Whether to display the donor's gravatar image if available. Default 'true'.
 	 * @type bool   $show_name           Whether to display the donor's full name, first and last. Default 'true'.
+	 * @type bool   $show_company_name   Whether to display the donor's company name. Default 'false'.
 	 * @type bool   $show_total          Whether to display the donor's donation amount. Default 'true'.
 	 * @type bool   $show_time           Whether to display date of the last donation. Default 'true'.
 	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
@@ -178,26 +179,27 @@ class Give_Donor_Wall {
 	public function parse_atts( $atts ) {
 		$atts = shortcode_atts(
 			[
-				'donors_per_page' => 12,
-				'form_id'         => 0,
-				'paged'           => 1,
-				'ids'             => '',
-				'columns'         => 'best-fit',
-				'anonymous'       => true,
-				'show_avatar'     => true,
-				'show_name'       => true,
-				'show_total'      => true,
-				'show_time'       => true,
-				'show_comments'   => true,
-				'comment_length'  => 140,
-				'only_comments'   => false,
-				'readmore_text'   => esc_html__( 'Read more', 'give' ),
-				'loadmore_text'   => esc_html__( 'Load more', 'give' ),
-				'avatar_size'     => 60,
-				'orderby'         => 'post_date',
-				'order'           => 'DESC',
-				'hide_empty'      => true,  // Deprecated in 2.3.0
-				'only_donor_html' => false, // Only for internal use.
+				'donors_per_page'   => 12,
+				'form_id'           => 0,
+				'paged'             => 1,
+				'ids'               => '',
+				'columns'           => 'best-fit',
+				'anonymous'         => true,
+				'show_avatar'       => true,
+				'show_name'         => true,
+				'show_company_name' => false,
+				'show_total'        => true,
+				'show_time'         => true,
+				'show_comments'     => true,
+				'comment_length'    => 140,
+				'only_comments'     => false,
+				'readmore_text'     => esc_html__( 'Read more', 'give' ),
+				'loadmore_text'     => esc_html__( 'Load more', 'give' ),
+				'avatar_size'       => 60,
+				'orderby'           => 'post_date',
+				'order'             => 'DESC',
+				'hide_empty'        => true,  // Deprecated in 2.3.0
+				'only_donor_html'   => false, // Only for internal use.
 			],
 			$atts
 		);
@@ -207,6 +209,7 @@ class Give_Donor_Wall {
 			'anonymous',
 			'show_avatar',
 			'show_name',
+			'show_company_name',
 			'show_total',
 			'show_time',
 			'show_comments',

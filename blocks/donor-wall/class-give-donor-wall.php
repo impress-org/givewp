@@ -87,75 +87,79 @@ class Give_Donor_Wall_Block {
 			[
 				'render_callback' => [ $this, 'render_block' ],
 				'attributes'      => [
-					'donorsPerPage' => [
+					'donorsPerPage'   => [
 						'type'    => 'string',
 						'default' => '12',
 					],
-					'formID'        => [
+					'formID'          => [
 						'type'    => 'string',
 						'default' => '0',
 					],
-					'ids'           => [
+					'ids'             => [
 						'type'    => 'string',
 						'default' => '',
 					],
-					'orderBy'       => [
+					'orderBy'         => [
 						'type'    => 'string',
 						'default' => 'post_date',
 					],
-					'order'         => [
+					'order'           => [
 						'type'    => 'string',
 						'default' => 'DESC',
 					],
-					'paged'         => [
+					'paged'           => [
 						'type'    => 'string',
 						'default' => '1',
 					],
-					'columns'       => [
+					'columns'         => [
 						'type'    => 'string',
 						'default' => 'best-fit',
 					],
-					'showAvatar'    => [
+					'showAvatar'      => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showName'      => [
+					'showName'        => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showTotal'     => [
-						'type'    => 'boolean',
-						'default' => true,
-					],
-					'showDate'      => [
-						'type'    => 'boolean',
-						'default' => true,
-					],
-					'showComments'  => [
-						'type'    => 'boolean',
-						'default' => true,
-					],
-					'showAnonymous' => [
-						'type'    => 'boolean',
-						'default' => true,
-					],
-					'onlyComments'  => [
+					'showCompanyName' => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
-					'commentLength' => [
+					'showTotal'       => [
+						'type'    => 'boolean',
+						'default' => true,
+					],
+					'showDate'        => [
+						'type'    => 'boolean',
+						'default' => true,
+					],
+					'showComments'    => [
+						'type'    => 'boolean',
+						'default' => true,
+					],
+					'showAnonymous'   => [
+						'type'    => 'boolean',
+						'default' => true,
+					],
+					'onlyComments'    => [
+						'type'    => 'boolean',
+						'default' => false,
+					],
+					'commentLength'   => [
 						'type'    => 'string',
 						'default' => '140',
 					],
-					'readMoreText'  => [
+					'readMoreText'    => [
 						'type'    => 'string',
 						'default' => __( 'Read more', 'give' ),
 					],
-					'loadMoreText'  => [
+					'loadMoreText'    => [
 						'type'    => 'string',
 						'default' => __( 'Load more', 'give' ),
 					],
-					'avatarSize'    => [
+					'avatarSize'      => [
 						'type'    => 'string',
 						'default' => '60',
 					],
@@ -174,24 +178,25 @@ class Give_Donor_Wall_Block {
 	 */
 	public function render_block( $attributes ) {
 		$parameters = [
-			'donors_per_page' => absint( $attributes['donorsPerPage'] ),
-			'form_id'         => absint( $attributes['formID'] ),
-			'ids'             => $attributes['ids'],
-			'orderby'         => $attributes['orderBy'],
-			'order'           => $attributes['order'],
-			'pages'           => absint( $attributes['paged'] ),
-			'columns'         => $attributes['columns'],
-			'show_avatar'     => $attributes['showAvatar'],
-			'show_name'       => $attributes['showName'],
-			'show_total'      => $attributes['showTotal'],
-			'show_time'       => $attributes['showDate'],
-			'show_comments'   => $attributes['showComments'],
-			'anonymous'       => $attributes['showAnonymous'],
-			'comment_length'  => absint( $attributes['commentLength'] ),
-			'only_comments'   => $attributes['onlyComments'],
-			'readmore_text'   => $attributes['readMoreText'],
-			'loadmore_text'   => $attributes['loadMoreText'],
-			'avatar_size'     => absint( $attributes['avatarSize'] ),
+			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
+			'form_id'           => absint( $attributes['formID'] ),
+			'ids'               => $attributes['ids'],
+			'orderby'           => $attributes['orderBy'],
+			'order'             => $attributes['order'],
+			'pages'             => absint( $attributes['paged'] ),
+			'columns'           => $attributes['columns'],
+			'show_avatar'       => $attributes['showAvatar'],
+			'show_name'         => $attributes['showName'],
+			'show_company_name' => $attributes['showCompanyName'],
+			'show_total'        => $attributes['showTotal'],
+			'show_time'         => $attributes['showDate'],
+			'show_comments'     => $attributes['showComments'],
+			'anonymous'         => $attributes['showAnonymous'],
+			'comment_length'    => absint( $attributes['commentLength'] ),
+			'only_comments'     => $attributes['onlyComments'],
+			'readmore_text'     => $attributes['readMoreText'],
+			'loadmore_text'     => $attributes['loadMoreText'],
+			'avatar_size'       => absint( $attributes['avatarSize'] ),
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );

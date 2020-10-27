@@ -60,16 +60,18 @@
 							'title'       => esc_html__( 'Connect to PayPal', 'give' ),
 							'description' => esc_html__( 'PayPal is synonymous with nonprofits and online charitable gifts. It\'s been the go-to payment merchant for many of the world\'s top NGOs. Accept PayPal, credit and debit cards without any added platform fees.', 'give' ),
 							'action'      => sprintf(
-								'<a href="%s"><i class="fab fa-paypal"></i>&nbsp;&nbsp;Connect to PayPal</a>',
+								'<a href="%1$s"><i class="fab fa-paypal"></i>&nbsp;&nbsp;%2$s</a>',
 								add_query_arg(
 									[
 										'post_type' => 'give_forms',
 										'page'      => 'give-settings',
 										'tab'       => 'gateways',
-										'section'   => 'paypal-standard',
+										'section'   => 'paypal',
+										'group'     => 'paypal-commerce',
 									],
 									esc_url_raw( admin_url( 'edit.php' ) )
-								)
+								),
+								! $this->isPayPalSetup() ? esc_html__( 'Connect to PayPal', 'give' ) : esc_html__( 'PayPal Settings', 'give' )
 							),
 						]
 					) : '',

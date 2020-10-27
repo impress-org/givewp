@@ -31,9 +31,9 @@ do_action( 'give_tools_recount_stats_before' );
 
 					<select name="give-export-class" id="recount-stats-type">
 						<option value="0" selected="selected" disabled="disabled"><?php esc_html_e( 'Please select an option', 'give' ); ?></option>
-						<option data-type="recount-stats" value="Give_Tools_Recount_Income"><?php esc_html_e( 'Recalculate Total Donation Income Amount', 'give' ); ?></option>
-						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for a Form', 'give' ); ?></option>
-						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
+						<option data-type="recount-stats" value="Give_Tools_Recount_Income"><?php esc_html_e( 'Recalculate Total Donation Revenue Amount', 'give' ); ?></option>
+						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php esc_html_e( 'Recalculate Revenue Amount and Donation Counts for a Form', 'give' ); ?></option>
+						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php esc_html_e( 'Recalculate Revenue Amount and Donation Counts for All Forms', 'give' ); ?></option>
 						<option data-type="recount-donor-stats" value="Give_Tools_Recount_Donor_Stats"><?php esc_html_e( 'Recalculate Donor Statistics', 'give' ); ?></option>
 						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Donations', 'give' ); ?></option>
 						<option data-type="delete-donations" value="Give_Tools_Delete_Donations"><?php esc_html_e( 'Delete Live and Test Donations', 'give' ); ?></option>
@@ -54,12 +54,12 @@ do_action( 'give_tools_recount_stats_before' );
 
 					<span class="tools-form-dropdown tools-form-dropdown-recount-form" style="display: none">
 						<?php
-						$args = array(
+						$args = [
 							'class'       => 'tools-form-dropdown-recount-form-select',
 							'name'        => 'form_id',
 							'chosen'      => true,
 							'placeholder' => esc_attr__( 'Select Form', 'give' ),
-						);
+						];
 						echo Give()->html->forms_dropdown( $args );
 						?>
 					</span>
@@ -67,21 +67,21 @@ do_action( 'give_tools_recount_stats_before' );
 					<span class="tools-date-dropdown tools-date-dropdown-delete-donations" style="display: none">
 						<?php
 						echo Give()->html->date_field(
-							array(
+							[
 								'id'           => 'give_delete_donations_start_date',
 								'name'         => 'delete_donations_start_date',
 								'placeholder'  => esc_attr__( 'Start date', 'give' ),
 								'autocomplete' => 'off',
-							)
+							]
 						);
 
 						echo Give()->html->date_field(
-							array(
+							[
 								'id'           => 'give_delete_donations_end_date',
 								'name'         => 'delete_donations_end_date',
 								'placeholder'  => esc_attr__( 'End date', 'give' ),
 								'autocomplete' => 'off',
-							)
+							]
 						);
 						?>
 					</span>
@@ -89,7 +89,7 @@ do_action( 'give_tools_recount_stats_before' );
 					<span class="tools-form-dropdown tools-form-dropdown-delete-import-donors" style="display: none">
 						<label for="delete-import-donors">
 							<?php
-							echo Give()->html->checkbox( array( 'name' => 'delete-import-donors' ) );
+							echo Give()->html->checkbox( [ 'name' => 'delete-import-donors' ] );
 							esc_html_e( 'Delete imported WordPress users', 'give' );
 							?>
 						</label>
@@ -100,8 +100,8 @@ do_action( 'give_tools_recount_stats_before' );
 					<br/>
 
 					<span class="give-recount-stats-descriptions">
-						<span id="recount-stats"><?php esc_html_e( 'Recalculates the overall donation income amount.', 'give' ); ?></span>
-						<span id="recount-form"><?php esc_html_e( 'Recalculates the donation and income stats for a specific form.', 'give' ); ?></span>
+						<span id="recount-stats"><?php esc_html_e( 'Recalculates the overall donation revenue amount.', 'give' ); ?></span>
+						<span id="recount-form"><?php esc_html_e( 'Recalculates the donation and revenue stats for a specific form.', 'give' ); ?></span>
 						<span id="recount-all"><?php esc_html_e( 'Recalculates the earnings and sales stats for all forms.', 'give' ); ?></span>
 						<span id="recount-customer-stats"><?php esc_html_e( 'Recalculates the lifetime value and donation counts for all donors.', 'give' ); ?></span>
 						<?php

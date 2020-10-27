@@ -17,7 +17,7 @@ function give_export_donations_get_custom_fields() {
 	}
 
 	$post_type              = 'give_payment';
-	$responses              = array();
+	$responses              = [];
 	$donationmeta_table_key = Give()->payment_meta->get_meta_type() . '_id';
 
 	$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : '';
@@ -26,11 +26,11 @@ function give_export_donations_get_custom_fields() {
 		wp_send_json_error();
 	}
 
-	$args = array(
-		'give_forms'     => array( $form_id ),
+	$args = [
+		'give_forms'     => [ $form_id ],
 		'posts_per_page' => - 1,
 		'fields'         => 'ids',
-	);
+	];
 
 	$donation_list = implode( ',', (array) give_get_payments( $args ) );
 
@@ -83,7 +83,7 @@ function give_export_donations_get_custom_fields() {
 	 */
 	$ignore_hidden_keys = apply_filters(
 		'give_export_donations_ignore_hidden_keys',
-		array(
+		[
 			'_give_payment_meta',
 			'_give_payment_gateway',
 			'_give_payment_mode',
@@ -113,7 +113,7 @@ function give_export_donations_get_custom_fields() {
 			'_give_payment_import_id',
 			'_give_payment_donor_ip',
 			'_give_payment_donor_title_prefix',
-		),
+		],
 		$form_id
 	);
 
@@ -193,7 +193,7 @@ function give_export_donation_form_search_args( $args ) {
 	}
 
 	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : '';
-	$fields = array_map( 'give_clean', wp_parse_args( $fields, array() ) );
+	$fields = array_map( 'give_clean', wp_parse_args( $fields, [] ) );
 
 	if ( ! empty( $fields['give_forms_categories'] ) || ! empty( $fields['give_forms_tags'] ) ) {
 		$args['posts_per_page'] = - 1;
@@ -204,21 +204,21 @@ function give_export_donation_form_search_args( $args ) {
 	}
 
 	if ( ! empty( $fields['give_forms_categories'] ) ) {
-		$args['tax_query'][] = array(
+		$args['tax_query'][] = [
 			'taxonomy' => 'give_forms_category',
 			'field'    => 'term_id',
 			'terms'    => $fields['give_forms_categories'],
 			'operator' => 'AND',
-		);
+		];
 	}
 
 	if ( ! empty( $fields['give_forms_tags'] ) ) {
-		$args['tax_query'][] = array(
+		$args['tax_query'][] = [
 			'taxonomy' => 'give_forms_tag',
 			'field'    => 'term_id',
 			'terms'    => $fields['give_forms_tags'],
 			'operator' => 'AND',
-		);
+		];
 	}
 
 	return $args;
@@ -572,7 +572,7 @@ function give_export_donation_hidden_fields() {
 		<td class="give-field-wrap">
 			<div class="give-clearfix">
 				<ul class="give-export-option-ul"></ul>
-				<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by GiveWP Core, a GiveWP Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but you may contain data you would like to export.', 'give' ); ?></p>
+				<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by GiveWP Core, a GiveWP Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but may contain data you would like to export.', 'give' ); ?></p>
 			</div>
 		</td>
 	</tr>

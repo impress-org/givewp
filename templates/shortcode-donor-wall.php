@@ -57,6 +57,12 @@ $atts          = $args[2]; // Shortcode attributes.
 					</h3>
 				<?php endif; ?>
 
+				<?php if ( true === $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
+					<h3 class="give-donor__name">
+						<?php echo esc_html( $donation['_give_donation_company'] ); ?>
+					</h3>
+				<?php endif; ?>
+
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
 						<?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>

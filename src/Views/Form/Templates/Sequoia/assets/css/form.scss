@@ -16,9 +16,12 @@
 @import 'tributes';
 @import 'newsletter';
 @import 'square';
+@import 'currencyswitcher';
+
+// Payment gateways
+@import 'paypal-commerce';
 
 // Structure
-
 html {
 	margin: 0;
 	padding: 0;
@@ -456,7 +459,9 @@ p {
 	.give-donation-amount {
 		@include before-after-content-none;
 		display: flex;
-		width: 207px;
+		width: fit-content;
+		max-width: 80%;
+		position: relative;
 		align-items: center;
 		background-color: #fff;
 		box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.22);
@@ -476,13 +481,14 @@ p {
 		.give-amount-top {
 			font-family: 'Montserrat', sans-serif;
 			height: auto !important;
-			width: auto !important;
+			width: 164px !important;
 			text-align: center;
 			font-weight: 500 !important;
 			font-size: 42px !important;
 			line-height: 1 !important;
 			color: #333;
 			border: 0 !important;
+			z-index: 1;
 
 			&:focus {
 				outline: none;
@@ -491,11 +497,12 @@ p {
 
 		span.give-currency-symbol {
 			background-color: transparent !important;
-			border: 0 !important;
+			border: 1px solid rgba(255, 255, 255, 0) !important;
 			position: relative;
 			z-index: 3;
 			padding: 0 !important;
 			color: #555;
+			white-space: nowrap;
 
 			&.give-currency-position-before {
 				padding-right: 24px !important;
@@ -658,7 +665,6 @@ p {
 		box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
 		border-radius: 5px;
 		margin: 20px 0 0 0 !important;
-		padding: 0 !important;
 		position: relative;
 		transition: border 0.2s ease;
 		width: auto !important;
@@ -1394,7 +1400,9 @@ form.give-form .form-row select.multiselect {
 }
 
 /* Hide everything which is not output by Give core or addon */
-body > *:not([class^='give']):not([id^='give']) {
+// exclude PayPal payment contingency handler.
+// This is popup used by PayPal to verify 3ds card.
+body > *:not([class^='give']):not([id^='give']):not([class*='payments-sdk-contingency-handler']) {
 	display: none;
 }
 
