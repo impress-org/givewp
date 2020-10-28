@@ -144,6 +144,7 @@ final class Give {
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
+		\Give\TestData\ServiceProvider::class,
 	];
 
 	/**
