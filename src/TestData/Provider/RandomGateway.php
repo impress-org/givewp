@@ -2,6 +2,8 @@
 
 namespace Give\TestData\Provider;
 
+use Give\TestData\RandomProvider;
+
 class RandomGateway extends RandomProvider {
 
 	/** @var array [ gatewaySlug, ... ] */

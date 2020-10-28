@@ -12,7 +12,7 @@ class SeedCommand {
 	/**
 	 * @param DonationFactory $factory
 	 */
-	public function __construct( DonationFactory $factory ) {
+	public function __construct( Factory\DonationFactory $factory ) {
 		$this->factory = $factory;
 	}
 

@@ -2,6 +2,8 @@
 
 namespace Give\TestData\Provider;
 
+use Give\TestData\RandomProvider;
+
 class RandomPaymentMode extends RandomProvider {
 
 	public function __invoke() {

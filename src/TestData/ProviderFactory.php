@@ -2,12 +2,7 @@
 
 namespace Give\TestData;
 
-use Faker\Generator;
-
-abstract class Factory {
-
-	/** @var \Faker\Generator */
-	protected $faker;
+abstract class ProviderFactory extends BaseFactory {
 
 	protected $providers = [
 		'currency'    => Provider\RandomCurrency::class,
@@ -17,22 +12,11 @@ abstract class Factory {
 	];
 
 	public function __construct() {
-		$this->faker = \Faker\Factory::create();
+		parent::__construct();
 		foreach ( $this->providers as $alias => $providerClass ) {
 			$this->$alias = new $providerClass( $this->faker );
 		}
 	}
-
-	public function make( $count ) {
-		return array_map(
-			function() {
-				return $this->definition();
-			},
-			range( 1, $count )
-		);
-	}
-
-	abstract public function definition();
 
 	/**
 	 * Forward provider calls

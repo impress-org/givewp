@@ -1,8 +1,10 @@
 <?php
 
-namespace Give\TestData;
+namespace Give\TestData\Factory;
 
-class DonationFactory extends Factory {
+use Give\TestData\ProviderFactory;
+
+class DonationFactory extends ProviderFactory {
 
 	public function definition() {
 		return [
