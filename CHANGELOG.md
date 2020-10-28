@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Prevent Onboarding wizard and setup from displaying for WP < 5.x (#5416)
+-   Retain WP 4.9 compatibility by preventing block registration (#5416)
+
 ## 2.9.0-rc.1 - 2020-10-27
 
 ### Added
