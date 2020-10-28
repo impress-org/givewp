@@ -1,5 +1,5 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
@@ -67,7 +67,7 @@ The strength of GiveWP lies within its optimized donation forms. When creating a
 
 = First Time Users =
 
-[https://youtu.be/UNRa8Dc6Ayc]
+[youtube https://www.youtube.com/watch?v=UNRa8Dc6Ayc&feature=youtu.be]
 
 For new users, we suggest reviewing our [Getting Started Guide](https://go.givewp.com/rmgettingstarted "Visit the GiveWP Getting Started Guide") to get an understanding of how the plugin works. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the GiveWP support page on WordPress.org") to help you with your issues, questions, and concerns.
 
@@ -125,7 +125,7 @@ Stay in touch with us for important plugin news and updates:
 * **[GiveWP Newsletter](https://go.givewp.com/subscribe "Subscribe to GiveWP via MailChimp")**
 * **[Facebook](https://go.givewp.com/fb "Visit the GiveWP on Facebook")**
 * **[GiveWP Add-ons](https://go.givewp.com/addons "View all GiveWP Add-ons")**
-* **[Write for GiveWP](https://go.givewp.com/rmwrite4us)
+* **[Write for GiveWP](https://go.givewp.com/rmwrite4us)**
 
 = Contribute to GiveWP =
 
@@ -732,7 +732,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: GiveWP was conflicting with Beaver Builder preventing users from seeing the builder options within the WP-admin single page/post view. [#3207](https://github.com/impress-org/givewp/issues/3207)
 * Fix: GiveWP's API was not respecting the date range parameters passed to it. Now it does so you can filter the API by date ranges as expected. [#3191](https://github.com/impress-org/givewp/issues/3191)
 * Fix: This version contains a database cleanup routine to delete donation payment meta that is not attached to any payment. For instance, if you deleted a payment the metadata associated with it still remained prior to this version. With this upgrade the orphaned data will be removed. [#3205](https://github.com/impress-org/givewp/issues/3205)
-* Fix: Resolved PHP notices when exporting donor in lower PHP versions. [#3222](https://github.com/impress-org/givewp/issues/3222), [#3218](https://github.com/impress-org/givewp/issues/3218)
+* Fix: Resolved PHP notices when exporting donor in lower PHP versions. (#3222)[https://github.com/impress-org/givewp/issues/3222], [#3218](https://github.com/impress-org/givewp/issues/3218)
 * Fix: We've updated the donation form's form HTML tag ID so it's unique per form for better W3C compatibility and to ensure Stripe elements works as expected with multiple forms on a single page. [#3139](https://github.com/impress-org/givewp/issues/3139)
 * Fix: Several typos on the welcome guide were corrected. [#3230](https://github.com/impress-org/givewp/issues/3230)
 * Fix: Inline plugin upgrade notices were not displaying properly in previous versions. [#2789](https://github.com/impress-org/givewp/issues/2789)
@@ -855,6 +855,3 @@ This version contains a database cleanup routine to delete donation payment meta
 
 = 2.1.0 =
 This new version is full of many great features and enhancements. Please ensure you have a backup in place prior to updating and be sure to update GiveWP Core and then your GiveWP Add-ons to the latest versions for maximum compatibility.
-
-
-
