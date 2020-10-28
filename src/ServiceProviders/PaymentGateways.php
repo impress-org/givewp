@@ -53,8 +53,6 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
-		$this->registerMigrations();
-
 		give()->bind(
 			'PAYPAL_COMMERCE_ATTRIBUTION_ID',
 			static function() {
@@ -74,6 +72,8 @@ class PaymentGateways implements ServiceProvider {
 		add_filter( 'give_register_gateway', [ $this, 'bootGateways' ] );
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
+
+		$this->registerMigrations();
 	}
 
 	/**
