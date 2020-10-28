@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
 -   Prevent Onboarding wizard and setup from displaying for WP < 5.x (#5416)
 -   Retain WP 4.9 compatibility by preventing block registration (#5416)
 

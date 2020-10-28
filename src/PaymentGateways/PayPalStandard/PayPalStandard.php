@@ -9,7 +9,7 @@ class PayPalStandard implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getId() {
-		return 'paypal-standard';
+		return 'paypal';
 	}
 
 	/**
