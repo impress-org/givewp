@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
-Requires at least: 4.8
+Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.9.0
+Stable tag: 2.9.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -237,6 +237,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 
+= 2.9.1: October 28th, 2020 =
+* Fixed: Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
+* Fixed: Restore compatibility with WordPress 4.9
+
 = 2.9.0: October 27th, 2020 =
 * Added: New [PayPal Donations](https://givewp.com/lps/paypal-donations) gateway allows your donors to give using Debit or Credit Cards directly on your website with no additional fees
 * Added: New Multi-form Goal block combines progress from multiple donation forms towards a common goal
@@ -249,22 +253,25 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fixed: Legacy form loading spinner no longer stutters (#5397)
 * Fixed: Field description text is now accessible and aligned (#5396)
 
+= 2.8.1: October 8th, 2020 =
+* Fixed: Donations now process for non-US countries using billing details [#5355](https://github.com/impress-org/givewp/pull/5355)
+
 = 2.8.0: August 31st, 2020 =
-* Added: Onboarding Wizard guides new users through first-time configuration. (#5014)
-* Added: Setup Page clarifies required steps that must be completed prior to accepting live donations. (#5014)
-* Added: Multi-step forms now support RTL styles. (#5196)
-* Changed: Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. (#4964)
-* Changed: Default minimum donation amount is increased from $1.00 to $5.00 to help prevent card testing spam. (#5120)
-* Changed: Optional fields in the Multi-Step form template are denoted to appear distinct from required fields. (#5157)
-* Removed: Old Welcome Page has been removed in favor of the new Onboarding Wizard & Setup Page. (#5014)
-* Removed: Admin notice animation has been removed. (#5182)
-* Fixed: Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. (#5184)
-* Fixed: The `[give_receipt]` shortcode is more compatible alongside other shortcodes, which is especially relevant for page builders. (#5044)
-* Fixed: Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. (#5126)
-* Fixed: A `register_rest_route` notice no longer displays when creating a new page in the block editor. (#5115)
-* Fixed: Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway. (#5191)
-* Fixed: Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
-* Fixed: Form Field Manager controls are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
+* Added: Onboarding Wizard guides new users through first-time configuration. [#5014](https://github.com/impress-org/givewp/pull/5014)
+* Added: Setup Page clarifies required steps that must be completed prior to accepting live donations. [#5014](https://github.com/impress-org/givewp/pull/5014)
+* Added: Multi-step forms now support RTL styles. [#5196](https://github.com/impress-org/givewp/pull/5196)
+* Changed: Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. [#4964](https://github.com/impress-org/givewp/pull/4964)
+* Changed: Default minimum donation amount is increased from $1.00 to $5.00 to help prevent card testing spam. [#5120](https://github.com/impress-org/givewp/pull/5120)
+* Changed: Optional fields in the Multi-Step form template are denoted to appear distinct from required fields. [#5157](https://github.com/impress-org/givewp/pull/5157)
+* Removed: Old Welcome Page has been removed in favor of the new Onboarding Wizard & Setup Page. [#5014](https://github.com/impress-org/givewp/pull/5014)
+* Removed: Admin notice animation has been removed. [#5182](https://github.com/impress-org/givewp/pull/5182)
+* Fixed: Deprecated jQuery warnings no longer appear when jQuery Migrate Helper plugin is active. [#5184](https://github.com/impress-org/givewp/pull/5184)
+* Fixed: The `[give_receipt]` shortcode is more compatible alongside other shortcodes, which is especially relevant for page builders. [#5044](https://github.com/impress-org/givewp/pull/5044)
+* Fixed: Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. [#5126](https://github.com/impress-org/givewp/pull/5126)
+* Fixed: A `register_rest_route` notice no longer displays when creating a new page in the block editor. [#5115](https://github.com/impress-org/givewp/pull/5115)
+* Fixed: Multi-step form anonymous donation checkbox is now checkable after changing the payment gateway. [#5191](https://github.com/impress-org/givewp/pull/5191)
+* Fixed: Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. [#5205](https://github.com/impress-org/givewp/pull/5205)
+* Fixed: Form Field Manager controls are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. [#5216](https://github.com/impress-org/givewp/pull/5216)
 
 = 2.7.5: August 11th, 2020 =
 * New: Form Templates now support all permalink configurations (or lack there of), including the default value of "plain". [#4952](https://github.com/impress-org/givewp/issues/4952)

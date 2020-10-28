@@ -133,9 +133,9 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							],
 						],
 						[
-							'name'    => __( 'Setup Page', 'give' ),
+							'name'          => __( 'Setup Page', 'give' ),
 							/* translators: %s: about page URL */
-							'desc'    => sprintf(
+							'desc'          => sprintf(
 								wp_kses(
 									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first installed.', 'give' ),
 									[
@@ -147,17 +147,18 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 								),
 								esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
 							),
-							'id'      => 'setup_page_enabled',
-							'type'    => 'radio_inline',
-							'default' => give_is_setting_enabled(
+							'id'            => 'setup_page_enabled',
+							'type'          => 'radio_inline',
+							'default'       => give_is_setting_enabled(
 								SetupPage::getSetupPageEnabledOrDisabled()
 							)
 								? SetupPage::ENABLED
 								: SetupPage::DISABLED,
-							'options' => [
+							'options'       => [
 								SetupPage::ENABLED  => __( 'Enabled', 'give' ),
 								SetupPage::DISABLED => __( 'Disabled', 'give' ),
 							],
+							'wrapper_class' => version_compare( get_bloginfo( 'version' ), '5.0', '<=' ) ? 'give-hidden' : null,
 						],
 						[
 							'name'    => __( 'Form Page URL Prefix', 'give' ),

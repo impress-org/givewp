@@ -27,6 +27,12 @@ class Onboarding implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
+
+		// Onboarding Wizard and Setup page require WP v5.0.x or greater
+		if ( version_compare( get_bloginfo( 'version' ), '5.0', '<=' ) ) {
+			return;
+		}
+
 		give()->singleton( SetupPage::class );
 		give()->singleton( WizardPage::class );
 		give()->singleton( FormPreview::class );
@@ -47,6 +53,11 @@ class Onboarding implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function boot() {
+
+		// Onboarding Wizard and Setup page require WP v5.0.x or greater
+		if ( version_compare( get_bloginfo( 'version' ), '5.0', '<=' ) ) {
+			return;
+		}
 
 		// Load Wizard Page
 		Hooks::addAction( 'admin_menu', WizardPage::class, 'add_page' );

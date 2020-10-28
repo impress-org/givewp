@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### 2.9.1 - 2020-10-28
+
+### Fixed
+
+-   Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
+-   Prevent Onboarding wizard and setup from displaying for WP < 5.x (#5416)
+-   Retain WP 4.9 compatibility by preventing block registration (#5416)
+
 ## 2.9.0-rc.1 - 2020-10-27
 
 ### Added
@@ -115,7 +123,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Multi-Form Goal Block now defaults to image filling the height. (#5314)
 -   Introduced Currency Switcher compatibility styles for the Multi-Step form (#5220)
 
-## 2.8.0 - 2020-08-31
+## 2.8.1 - 2020-10-08
+
+### Fixed
+
+-   Donations now process for non-US countries using billing details (#5355)
 
 ## 2.8.0-rc.1 - 2020-08-31
 
