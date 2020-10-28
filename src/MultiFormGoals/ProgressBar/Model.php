@@ -17,6 +17,7 @@ class Model {
 
 	// Internal
 	protected $forms = [];
+	protected $donationRevenueResults;
 
 	/**
 	 * Constructs and sets up setting variables for a new Progress Bar model
@@ -109,6 +110,19 @@ class Model {
 	}
 
 	/**
+	 * Returns query results for Donation Revenue.
+	 * @since 2.9.0
+	 * @return stdClass seem MultiFormGoals/ProgressBar/Query.php
+	 */
+	protected function getDonationRevenueResults() {
+		if ( ! $this->donationRevenueResults ) {
+			$query                        = new Query( $this->getForms() );
+			$this->donationRevenueResults = $query->getResults();
+		}
+		return $this->donationRevenueResults;
+	}
+
+	/**
 	 * Get raw earnings value for Progress Bar
 	 *
 	 * @return string
@@ -127,8 +141,7 @@ class Model {
 	 * @since 2.9.0
 	 **/
 	protected function getDonationCount() {
-		$query   = new Query( $this->getForms() );
-		$results = $query->getResults();
+		$results = $this->getDonationRevenueResults();
 		return $results->count;
 	}
 
