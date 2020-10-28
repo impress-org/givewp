@@ -2,8 +2,6 @@
 
 namespace Give\TestData\Provider;
 
-use Give\TestData\RandomProvider;
-
 class RandomAmount extends RandomProvider {
 
 	/** @var array [ int, ... ] */

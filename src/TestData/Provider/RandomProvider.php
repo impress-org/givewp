@@ -1,8 +1,10 @@
 <?php
 
-namespace Give\TestData;
+namespace Give\TestData\Provider;
 
-abstract class RandomProvider implements Contract\Provider {
+use Give\TestData\Contract\Provider;
+
+abstract class RandomProvider implements Provider {
 
 	public function __construct( \Faker\Generator $faker ) {
 		$this->faker = $faker;
