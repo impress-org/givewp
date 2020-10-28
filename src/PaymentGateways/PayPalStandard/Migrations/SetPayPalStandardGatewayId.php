@@ -16,7 +16,8 @@ class SetPayPalStandardGatewayId extends Migration {
 	 */
 	public function run() {
 		// Reset paypal gateway id to paypal.
-		$gateways = give_get_option( 'gateways' );
+		$give_settings = give_get_settings();
+		$gateways      = $give_settings['gateways'];
 		if ( array_key_exists( 'paypal-standard', $gateways ) ) {
 			unset( $gateways['paypal-standard'] );
 			$gateways['paypal'] = '1';
