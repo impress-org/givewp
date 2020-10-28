@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -   Option to display Company Name on Donor Wall (#5374)
 -   Support for multi-line radio options (#5383) 
+-   Donation test data can now be generated. #5417
 
 ### Fixed
 
