@@ -162,7 +162,7 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.9.1', '<' ):
-			give_v290_upgrades();
+			give_v291_upgrades();
 			$did_upgrade = true;
 	}
 
@@ -3839,7 +3839,7 @@ function give_v290_remove_old_export_files() {
  *
  * @since 2.9.1
  */
-function give_v290_upgrades() {
+function give_v291_upgrades() {
 	$gateways = give_get_option( 'gateways' );
 
 	if ( ! array_key_exists( 'paypal-standard', $gateways, true ) ) {
