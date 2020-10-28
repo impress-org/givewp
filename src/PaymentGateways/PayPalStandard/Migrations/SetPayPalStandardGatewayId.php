@@ -15,6 +15,7 @@ class SetPayPalStandardGatewayId extends Migration {
 	 * @inheritdoc
 	 */
 	public function run() {
+		// Reset paypal gateway id to paypal.
 		$gateways = give_get_option( 'gateways' );
 		if ( array_key_exists( 'paypal-standard', $gateways ) ) {
 			unset( $gateways['paypal-standard'] );
@@ -22,6 +23,7 @@ class SetPayPalStandardGatewayId extends Migration {
 			give_update_option( 'gateways', $gateways );
 		}
 
+		// Reset paypal gateway custom label.
 		$gateways_label = give_get_option( 'gateways_label' );
 		if ( array_key_exists( 'paypal-standard', $gateways_label ) ) {
 			$gateways['paypal'] = $gateways['paypal-standard'];
