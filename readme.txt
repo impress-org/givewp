@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.9.0
+Stable tag: 2.9.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -236,6 +236,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.9.1: October 28th, 2020 =
+* Fixed: Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
+* Fixed: Restore compatibility with WordPress 4.9
 
 = 2.9.0: October 27th, 2020 =
 * Added: New [PayPal Donations](https://givewp.com/lps/paypal-donations) gateway allows your donors to give using Debit or Credit Cards directly on your website with no additional fees
