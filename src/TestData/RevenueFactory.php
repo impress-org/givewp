@@ -28,7 +28,7 @@ class RevenueFactory {
 			'lastName'    => $this->faker->lastName,
 			'email'       => $this->faker->safeEmail,
 			'amount'      => $this->randomAmount(),
-			'currency'    => $this->randomCurrency(),
+			'currency'    => 'USD', // Set a base currency and delegate multi-currency to Currency Switcher.
 			'gateway'     => $this->randomGateway(),
 			'mode'        => $this->randomPaymentMode(),
 			'purchaseKey' => $this->faker->md5(),
