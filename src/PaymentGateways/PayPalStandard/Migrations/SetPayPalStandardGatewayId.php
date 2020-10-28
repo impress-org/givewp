@@ -26,9 +26,9 @@ class SetPayPalStandardGatewayId extends Migration {
 		// Reset paypal gateway custom label.
 		$gateways_label = give_get_option( 'gateways_label' );
 		if ( array_key_exists( 'paypal-standard', $gateways_label ) ) {
-			$gateways['paypal'] = $gateways['paypal-standard'];
-			unset( $gateways['paypal-standard'] );
-			give_update_option( 'gateways_label', $gateways );
+			$gateways_label['paypal'] = $gateways_label['paypal-standard'];
+			unset( $gateways_label['paypal-standard'] );
+			give_update_option( 'gateways_label', $gateways_label );
 		}
 	}
 
