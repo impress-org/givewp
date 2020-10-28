@@ -36,7 +36,7 @@ class SetPayPalStandardGatewayId extends Migration {
 	 * @inheritdoc
 	 */
 	public static function id() {
-		return 'set-paypal-standard-id-to-paypal-from-paypal-standard';
+		return 'set_paypal_standard_id_to_paypal_from_paypal_standard';
 	}
 
 	/**
