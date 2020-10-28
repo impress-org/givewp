@@ -160,6 +160,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.9.0', '<' ):
 			give_v290_remove_old_export_files();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.9.1', '<' ):
+			give_v290_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -3828,4 +3832,22 @@ function give_v270_store_stripe_account_for_donation_callback() {
 function give_v290_remove_old_export_files() {
 	@unlink( WP_CONTENT_DIR . '/uploads/give-payments.csv' );
 	@unlink( WP_CONTENT_DIR . '/uploads/give-donors.csv' );
+}
+
+/**
+ * Upgrade for Give 2.9.1
+ *
+ * @since 2.9.1
+ */
+function give_v290_upgrades() {
+	$gateways = give_get_option( 'gateways' );
+
+	if ( ! array_key_exists( 'paypal-standard', $gateways, true ) ) {
+		)
+		return;
+	}
+
+	$paypalStandardId              = 'paypal';
+	$gateways[ $paypalStandardId ] = '1';
+	give_update_option( 'gateways', $gateways );
 }
