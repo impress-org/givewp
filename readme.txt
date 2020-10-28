@@ -67,7 +67,7 @@ The strength of GiveWP lies within its optimized donation forms. When creating a
 
 = First Time Users =
 
-[https://youtu.be/UNRa8Dc6Ayc]
+[youtube https://www.youtube.com/watch?v=UNRa8Dc6Ayc&feature=youtu.be]
 
 For new users, we suggest reviewing our [Getting Started Guide](https://go.givewp.com/rmgettingstarted "Visit the GiveWP Getting Started Guide") to get an understanding of how the plugin works. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the GiveWP support page on WordPress.org") to help you with your issues, questions, and concerns.
 
@@ -125,7 +125,7 @@ Stay in touch with us for important plugin news and updates:
 * **[GiveWP Newsletter](https://go.givewp.com/subscribe "Subscribe to GiveWP via MailChimp")**
 * **[Facebook](https://go.givewp.com/fb "Visit the GiveWP on Facebook")**
 * **[GiveWP Add-ons](https://go.givewp.com/addons "View all GiveWP Add-ons")**
-* **[Write for GiveWP](https://go.givewp.com/rmwrite4us)
+* **[Write for GiveWP](https://go.givewp.com/rmwrite4us)**
 
 = Contribute to GiveWP =
 
@@ -848,6 +848,3 @@ This version contains a database cleanup routine to delete donation payment meta
 
 = 2.1.0 =
 This new version is full of many great features and enhancements. Please ensure you have a backup in place prior to updating and be sure to update GiveWP Core and then your GiveWP Add-ons to the latest versions for maximum compatibility.
-
-
-
