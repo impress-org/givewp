@@ -16,20 +16,29 @@ class SetPayPalStandardGatewayId extends Migration {
 	 */
 	public function run() {
 		// Reset paypal gateway id to paypal.
-		$give_settings = give_get_settings();
-		$gateways      = $give_settings['gateways'];
+		$give_settings  = give_get_settings();
+		$gateways       = $give_settings['gateways'];
+		$updateSettings = false;
+
 		if ( array_key_exists( 'paypal-standard', $gateways ) ) {
 			unset( $gateways['paypal-standard'] );
-			$gateways['paypal'] = '1';
-			give_update_option( 'gateways', $gateways );
+			$gateways['paypal']        = '1';
+			$give_settings['gateways'] = $gateways;
+
+			$updateSettings = true;
 		}
 
 		// Reset paypal gateway custom label.
-		$gateways_label = give_get_option( 'gateways_label' );
+		$gateways_label = $give_settings['gateways_label'];
 		if ( array_key_exists( 'paypal-standard', $gateways_label ) ) {
 			$gateways_label['paypal'] = $gateways_label['paypal-standard'];
 			unset( $gateways_label['paypal-standard'] );
-			give_update_option( 'gateways_label', $gateways_label );
+			$give_settings['gateways_label'] = $gateways_label;
+			$updateSettings                  = true;
+		}
+
+		if ( $updateSettings ) {
+			update_option( 'give_settings', $give_settings );
 		}
 	}
 
