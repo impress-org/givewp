@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### 2.9.1 - 2020-10-28
+
 ### Fixed
 
 -   Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
