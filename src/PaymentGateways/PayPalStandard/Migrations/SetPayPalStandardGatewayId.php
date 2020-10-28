@@ -34,12 +34,14 @@ class SetPayPalStandardGatewayId extends Migration {
 		}
 
 		// Reset paypal gateway custom label.
-		$gateways_label = $give_settings['gateways_label'];
-		if ( array_key_exists( 'paypal-standard', $gateways_label ) ) {
-			$gateways_label['paypal'] = $gateways_label['paypal-standard'];
-			unset( $gateways_label['paypal-standard'] );
-			$give_settings['gateways_label'] = $gateways_label;
-			$updateSettings                  = true;
+		if ( isset( $give_settings['gateways_label'] ) ) {
+			$gateways_label = $give_settings['gateways_label'];
+			if ( array_key_exists( 'paypal-standard', $gateways_label ) ) {
+				$gateways_label['paypal'] = $gateways_label['paypal-standard'];
+				unset( $gateways_label['paypal-standard'] );
+				$give_settings['gateways_label'] = $gateways_label;
+				$updateSettings                  = true;
+			}
 		}
 
 		// Set paypal standard as default payment gateway.
