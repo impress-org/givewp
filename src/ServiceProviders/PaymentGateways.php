@@ -3,6 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Give\Controller\PayPalWebhooks;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
@@ -17,6 +18,7 @@ use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
+use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 
@@ -51,6 +53,8 @@ class PaymentGateways implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function register() {
+		$this->registerMigrations();
+
 		give()->bind(
 			'PAYPAL_COMMERCE_ATTRIBUTION_ID',
 			static function() {
@@ -157,5 +161,17 @@ class PaymentGateways implements ServiceProvider {
 				$repository->setMode( give_is_test_mode() ? 'sandbox' : 'live' );
 			}
 		);
+	}
+
+	/**
+	 * Register migrations
+	 *
+	 * @since 2.9.1
+	 */
+	private function registerMigrations() {
+		/* @var MigrationsRegister $migrationRegisterer */
+		$migrationRegisterer = give( MigrationsRegister::class );
+
+		$migrationRegisterer->addMigration( SetPayPalStandardGatewayId::class );
 	}
 }
