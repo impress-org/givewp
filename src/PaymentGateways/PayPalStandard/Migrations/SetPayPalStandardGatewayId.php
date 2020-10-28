@@ -37,6 +37,12 @@ class SetPayPalStandardGatewayId extends Migration {
 			$updateSettings                  = true;
 		}
 
+		// Set paypal standard as default payment gateway.
+		if ( 'paypal-standard' === $give_settings['default_gateway'] ) {
+			$give_settings['default_gateway'] = 'paypal';
+			$updateSettings                   = true;
+		}
+
 		if ( $updateSettings ) {
 			update_option( 'give_settings', $give_settings );
 		}
