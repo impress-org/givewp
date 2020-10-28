@@ -13,7 +13,13 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	 * @since UNRELEASED
 	 */
 	public function register() {
-		// ...
+		// Instead of passing around an instance, bind a singleton to the container.
+		give()->singleton(
+			\Faker\Generator::class,
+			function() {
+				return \Faker\Factory::create();
+			}
+		);
 	}
 
 	/**
