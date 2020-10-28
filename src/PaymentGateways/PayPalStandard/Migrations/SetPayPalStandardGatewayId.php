@@ -33,22 +33,14 @@ class SetPayPalStandardGatewayId extends Migration {
 	}
 
 	/**
-	 * Return a unique identifier for the migration
-	 *
-	 * @return string
+	 * @inheritdoc
 	 */
 	public static function id() {
 		return 'set-paypal-standard-id-to-paypal-from-paypal-standard';
 	}
 
 	/**
-	 * Return a Unix Timestamp for when the migration was created
-	 *
-	 * Example: strtotime( '2020-09-16 ')
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return int Unix timestamp for when the migration was created
+	 * @inheritdoc
 	 */
 	public static function timestamp() {
 		return strtotime( '2020-10-28' );
