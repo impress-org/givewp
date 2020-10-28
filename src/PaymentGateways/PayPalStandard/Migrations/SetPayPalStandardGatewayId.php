@@ -24,7 +24,6 @@ class SetPayPalStandardGatewayId extends Migration {
 
 		$gateways_label = give_get_option( 'gateways_label' );
 		if ( array_key_exists( 'paypal-standard', $gateways_label ) ) {
-			)
 			$gateways['paypal'] = $gateways['paypal-standard'];
 			unset( $gateways['paypal-standard'] );
 			give_update_option( 'gateways_label', $gateways );
