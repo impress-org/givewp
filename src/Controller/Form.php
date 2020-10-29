@@ -93,10 +93,10 @@ class Form {
 					 */
 					do_action( 'give_handle_donation_confirmation', $donationId );
 
+					ConfirmDonation::removePostedDataFromDonationSession();
+
 					// Load payment processing view only if donation is in pending status.
 					if ( 'pending' === get_post_status( $donationId ) ) {
-						ConfirmDonation::removePostedDataFromDonationSession();
-
 						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 						exit();
 					}
