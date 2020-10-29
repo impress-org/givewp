@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Stripe Modal renders without any issue across all screens (#5423)
+
 ### 2.9.1 - 2020-10-28
 
 ### Fixed
