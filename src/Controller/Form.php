@@ -86,17 +86,19 @@ class Form {
 					 * Fire the action hook.
 					 *
 					 * If developer wants to verify payment before showing receipt then use `give_handle_donation_confirm` action hook to verify donation.
-					 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
+					 * Developer can access query parameters return by payment gateway. for example
+					 * $session = new DonationAccessor();
+					 * $session->getByKey( "postDataFor{$paymentGatewayId}" )
 					 *
 					 * @since 2.7.0
 					 * @param int $donationId
 					 */
 					do_action( 'give_handle_donation_confirmation', $donationId );
 
+					ConfirmDonation::removePostedDataFromDonationSession();
+
 					// Load payment processing view only if donation is in pending status.
 					if ( 'pending' === get_post_status( $donationId ) ) {
-						ConfirmDonation::removePostedDataFromDonationSession();
-
 						include GIVE_PLUGIN_DIR . 'src/Views/Form/defaultFormDonationProcessing.php';
 						exit();
 					}

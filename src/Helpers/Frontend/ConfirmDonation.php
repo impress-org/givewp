@@ -23,16 +23,16 @@ class ConfirmDonation {
 	public static function storePostedDataInDonationSession() {
 		$isShowingDonationReceipt = ! empty( $_REQUEST['giveDonationAction'] ) && 'showReceipt' === give_clean( $_REQUEST['giveDonationAction'] );
 
-		if ( $isShowingDonationReceipt ) {
-			$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
-
-			$session = new DonationAccessor();
-			$session->store( "postDataFor{$paymentGatewayId}", array_map( 'give_clean', $_POST ) );
-
-			return true;
+		if ( ! $isShowingDonationReceipt || ! isset( $_GET['payment-confirmation'] ) ) {
+			return false;
 		}
 
-		return false;
+		$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
+
+		$session = new DonationAccessor();
+		$session->store( "postDataFor{$paymentGatewayId}", array_map( 'give_clean', $_POST ) );
+
+		return true;
 	}
 
 	/**
