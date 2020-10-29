@@ -43,10 +43,6 @@ class ConfirmDonation {
 	 * @since 2.7.0
 	 */
 	public static function removePostedDataFromDonationSession() {
-		if ( ! isset( $_GET['payment-confirmation'] ) ) {
-			return;
-		}
-
 		$paymentGatewayId = ucfirst( give_clean( $_GET['payment-confirmation'] ) );
 
 		$session = new DonationAccessor();
