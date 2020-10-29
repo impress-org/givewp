@@ -86,7 +86,9 @@ class Form {
 					 * Fire the action hook.
 					 *
 					 * If developer wants to verify payment before showing receipt then use `give_handle_donation_confirm` action hook to verify donation.
-					 * You can use src/Helpers/Session/DonationConfirmation/Frontend.php::getPostedData function to get response from payment gateway (if any).
+					 * Developer can access query parameters return by payment gateway. for example
+					 * $session = new DonationAccessor();
+					 * $session->getByKey( "postDataFor{$paymentGatewayId}" )
 					 *
 					 * @since 2.7.0
 					 * @param int $donationId
