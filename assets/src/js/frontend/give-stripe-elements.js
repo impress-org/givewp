@@ -278,25 +278,18 @@ class GiveStripeElements {
 			billing_details: billing_details,
 		} ).then( function( result ) {
 			if ( result.error ) {
-				const donateBtn = formElement.getElementById( 'give-purchase-button' );
+				const jQueryFormElement = jQuery( formElement );
 				const error = `<div class="give_errors"><p class="give_error">${ result.error.message }</p></div>`;
+				const formId = formElement.getAttribute( 'data-id' );
 
-				// re-enable the submit button.
-				donateBtn.setAttribute( 'disabled', false );
+				Give.form.fn.resetDonationButton( jQueryFormElement );
+				formElement.querySelector( `#give-stripe-payment-errors-${ formId }` ).innerHTML = error;
 
-				// Display Error on the form.
-				formElement.getElementById( `give-stripe-payment-errors-${ formId }` ).innerHTML = error;
-
-				// Reset Donate Button.
-				if ( give_global_vars.complete_purchase ) {
-					formElement.value = give_global_vars.complete_purchase;
-				} else {
-					formElement.value = formElement.getAttribute( 'data-before-validation-label' );
-				}
-			} else {
-				formElement.querySelector( 'input[name="give_stripe_payment_method"]' ).value = result.paymentMethod.id;
-				formElement.submit();
+				return;
 			}
+
+			formElement.querySelector( 'input[name="give_stripe_payment_method"]' ).value = result.paymentMethod.id;
+			formElement.submit();
 		} );
 	}
 
