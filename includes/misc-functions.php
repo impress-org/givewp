@@ -844,24 +844,15 @@ function give_get_plugins( $args = [] ) {
 			require_once GIVE_PLUGIN_DIR . '/includes/admin/misc-functions.php';
 		}
 
-		$premium_addons_list = give_get_premium_add_ons();
+		$premium_addons_list = give_get_premium_addons_url();
 
 		foreach ( $plugins as $key => $plugin ) {
-			$addon_shortname = str_replace( 'give-', '', $plugin['Dir'] );
-			$tmp             = $premium_addons_list;
-			$is_premium      = count(
-				array_filter(
-					$tmp,
-					function( $plugin ) use ( $addon_shortname ) {
-						return false !== strpos( $plugin, $addon_shortname );
-					}
-				)
-			);
+			if ( 'add-on' !== $plugin['Type'] ) {
+				unset( $plugins[ $key ] );
+			}
 
-			if (
-				'add-on' !== $plugin['Type']
-				|| ( false === strpos( $plugin['PluginURI'], 'givewp.com' ) && ! $is_premium )
-			) {
+			$addonUrl = untrailingslashit( $plugin['PluginURI'] );
+			if ( ! in_array( $addonUrl, $premium_addons_list, true ) ) {
 				unset( $plugins[ $key ] );
 			}
 		}
