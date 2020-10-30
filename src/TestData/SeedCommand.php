@@ -12,8 +12,9 @@ class SeedCommand {
 	/**
 	 * @param DonationFactory $factory
 	 */
-	public function __construct( RevenueFactory $factory ) {
-		$this->factory = $factory;
+	public function __construct( DonationFactory $donationFactory, DonorFactory $donorFactory ) {
+		$this->donationFactory = $donationFactory;
+		$this->donorFactory    = $donorFactory;
 	}
 
 	/**
@@ -21,12 +22,38 @@ class SeedCommand {
 	 * @param array $assocArgs
 	 */
 	public function __invoke( $args, $assocArgs ) {
-		$count         = WP_CLI\Utils\get_flag_value( $assocArgs, 'count', $default = 10 );
-		$format        = WP_CLI\Utils\get_flag_value( $assocArgs, 'format', $default = 'table' );
+		$count  = WP_CLI\Utils\get_flag_value( $assocArgs, 'count', $default = 10 );
+		$dryRun = WP_CLI\Utils\get_flag_value( $assocArgs, 'dryrun', $default = false );
+
+		$donors = $this->donorFactory->make( $count );
+
+		global $wpdb;
+		$progress = \WP_CLI\Utils\make_progress_bar( 'Generating donors', $count );
+		foreach ( $donors as $donor ) {
+			$wpdb->insert(
+				"{$wpdb->prefix}give_donors",
+				[
+					'email' => $donor['email'],
+					'name'  => sprintf( '%s %s', $donor['first_name'], $donor['last_name'] ),
+				]
+			);
+			$donorID        = $wpdb->insert_id;
+			$metaRepository = new Framework\MetaRepository( 'give_donormeta', 'donor_id' );
+			$metaRepository->persist(
+				$donorID,
+				[
+					'_give_donor_first_name' => $donor['first_name'],
+					'_give_donor_last_name'  => $donor['last_name'],
+				]
+			);
+			$progress->tick();
+		}
+		$progress->finish();
+
 		WP_CLI\Utils\format_items(
-			$format,
-			$donations = $this->factory->make( $count ),
-			$keys      = array_keys( $this->factory->definition() )
+			'table',
+			$donations = $donors,
+			$keys      = array_keys( $this->donorFactory->definition() )
 		);
 	}
 }

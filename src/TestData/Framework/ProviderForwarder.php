@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\TestData;
+namespace Give\TestData\Framework;
 
 trait ProviderForwarder {
 
@@ -28,7 +28,7 @@ trait ProviderForwarder {
 	 * @return Contract\Provider
 	 */
 	protected function loadProvider( $name ) {
-		$providerClass                         = __NAMESPACE__ . '\Provider\\' . ucfirst( $name );
+		$providerClass                         = sprintf( '%s\%s\%s', __NAMESPACE__, 'Provider', ucfirst( $name ) );
 		return $this->loadedProviders[ $name ] = give()->make( $providerClass );
 	}
 }

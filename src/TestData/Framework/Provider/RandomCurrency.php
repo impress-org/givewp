@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\TestData\Provider;
+namespace Give\TestData\Framework\Provider;
 
 class RandomCurrency extends RandomProvider {
 
