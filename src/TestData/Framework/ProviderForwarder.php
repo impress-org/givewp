@@ -16,7 +16,7 @@ trait ProviderForwarder {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$provider = $this->loadedProviders[ $name ] ?: $this->loadProvider( $name );
+		$provider = isset( $this->loadedProviders[ $name ] ) ? $this->loadedProviders[ $name ] : $this->loadProvider( $name );
 		return call_user_func_array( $this->loadedProviders[ $name ], $arguments );
 	}
 
