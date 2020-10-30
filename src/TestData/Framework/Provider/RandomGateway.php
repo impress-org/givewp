@@ -6,7 +6,7 @@ class RandomGateway extends RandomProvider {
 
 	/** @var array [ gatewaySlug, ... ] */
 	protected $gateways = [
-		'paypal',
+		'paypal-commerce',
 		'stripe',
 		'manual',
 	];
