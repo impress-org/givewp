@@ -44,7 +44,15 @@ class DonationSeedCommand {
 						'post_date' => $donation['completed_date'],
 					]
 				);
-				$donationID     = $wpdb->insert_id;
+				$donationID = $wpdb->insert_id;
+				$wpdb->insert(
+					"{$wpdb->prefix}give_revenue",
+					[
+						'donation_id' => $donationID,
+						'form_id'     => $donation['payment_form_id'],
+						'amount'      => $donation['payment_total'],
+					]
+				);
 				$metaRepository = new Framework\MetaRepository( 'give_donationmeta', 'donation_id' );
 				$metaRepository->persist(
 					$donationID,
