@@ -5,8 +5,11 @@ namespace Give\TestData;
 class DonationFactory extends Framework\Factory {
 
 	public function definition() {
+		$donationForm = $this->randomDonationForm();
 		return [
 			'donor_id'             => $this->randomDonor(),
+			'payment_form_id'      => $donationForm['id'],
+			'payment_form_title'   => $donationForm['post_title'],
 			'payment_total'        => $this->randomAmount(),
 			'payment_currency'     => 'USD', // Set a base currency and delegate multi-currency to Currency Switcher.
 			'payment_gateway'      => $this->randomGateway(),

@@ -49,6 +49,8 @@ class DonationSeedCommand {
 				$metaRepository->persist(
 					$donationID,
 					[
+						'_give_payment_form_id'      => $donation['payment_form_id'],
+						'_give_payment_form_title'   => $donation['payment_form_title'],
 						'_give_payment_donor_id'     => $donation['donor_id'],
 						'_give_payment_total'        => $donation['payment_total'],
 						'_give_payment_currency'     => $donation['payment_currency'],
