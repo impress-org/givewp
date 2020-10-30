@@ -29,7 +29,8 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	 */
 	public function boot() {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'give test-data', give()->make( SeedCommand::class ) );
+			WP_CLI::add_command( 'give test-donors', give()->make( DonorSeedCommand::class ) );
+			WP_CLI::add_command( 'give test-donations', give()->make( DonationSeedCommand::class ) );
 		}
 	}
 }
