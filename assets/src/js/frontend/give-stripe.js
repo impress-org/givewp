@@ -27,9 +27,12 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const stripeElements = new GiveStripeElements( formElement );
 		const setupStripeElement = stripeElements.setupStripeElement();
 		const getStripeElements = stripeElements.getElements( setupStripeElement );
+		const stripeCheckoutTypeHiddenField = formElement.querySelector( 'input[name="stripe-checkout-type"]' );
+		const isCheckoutTypeModal = stripeCheckoutTypeHiddenField && 'modal' === stripeCheckoutTypeHiddenField.value;
+		const isStripeModalCheckoutGateway = 'stripe_checkout' === formGateway.value && isCheckoutTypeModal;
 		let cardElements = stripeElements.createElement( getStripeElements, formElement );
 
-		if ( 'stripe' === formGateway.value || 'stripe_checkout' === formGateway.value ) {
+		if ( 'stripe' === formGateway.value || isStripeModalCheckoutGateway ) {
 			stripeElements.mountElement(cardElements);
 		}
 
@@ -38,18 +41,18 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			const getStripeElements = stripeElements.getElements( setupStripeElement );
 			cardElements = stripeElements.createElement( getStripeElements, formElement );
 
-			if ( 'stripe' === selectedGateway || 'stripe_checkout' === selectedGateway ) {
+			if ( 'stripe' === selectedGateway || isStripeModalCheckoutGateway ) {
 				stripeElements.mountElement( cardElements );
 			} else {
 				stripeElements.unMountElement( cardElements );
 			}
 
-			if ( 'stripe_checkout' === selectedGateway ) {
+			if ( isStripeModalCheckoutGateway ) {
 				stripeElements.triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements );
 			}
 		});
 
-		if ( 'stripe_checkout' === formGateway.value ) {
+		if ( isStripeModalCheckoutGateway) {
 			stripeElements.triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements );
 		}
 
@@ -60,7 +63,9 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			if ( 'stripe' === selectedGateway ) {
 				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
 				e.preventDefault();
-			} else if ( 'stripe_checkout' === selectedGateway ) {
+			}
+
+			if ( isStripeModalCheckoutGateway ) {
 				const stripeModal = formElement.querySelector( '.give-stripe-checkout-modal' );
 				const modalAmountElement = stripeModal.querySelector( '.give-stripe-checkout-donation-amount' );
 				const modalEmailElement = stripeModal.querySelector( '.give-stripe-checkout-donor-email' );

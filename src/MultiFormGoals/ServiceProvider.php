@@ -15,8 +15,11 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function register() {
 		give()->singleton( MultiFormGoalShortcode::class );
-		give()->singleton( MultiFormGoalBlock::class );
-		give()->singleton( ProgressBarBlock::class );
+
+		if ( function_exists( 'register_block_type' ) ) {
+			give()->singleton( MultiFormGoalBlock::class );
+			give()->singleton( ProgressBarBlock::class );
+		}
 	}
 
 	/**
@@ -24,8 +27,11 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot() {
 		Hooks::addAction( 'init', MultiFormGoalShortcode::class, 'addShortcode' );
-		Hooks::addAction( 'init', MultiFormGoalBlock::class, 'addBlock' );
-		Hooks::addAction( 'init', ProgressBarBlock::class, 'addBlock' );
-		Hooks::addAction( 'enqueue_block_editor_assets', ProgressBarBlock::class, 'localizeAssets' );
+
+		if ( function_exists( 'register_block_type' ) ) {
+			Hooks::addAction( 'init', MultiFormGoalBlock::class, 'addBlock' );
+			Hooks::addAction( 'init', ProgressBarBlock::class, 'addBlock' );
+			Hooks::addAction( 'enqueue_block_editor_assets', ProgressBarBlock::class, 'localizeAssets' );
+		}
 	}
 }

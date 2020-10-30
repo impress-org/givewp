@@ -5,6 +5,7 @@ namespace Give\Controller;
 use Exception;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 
 class PayPalWebhooks {
@@ -64,12 +65,33 @@ class PayPalWebhooks {
 			return;
 		}
 
-		if ( ! $this->webhookRepository->verifyEventSignature( $merchantDetails->accessToken, $event, getallheaders() ) ) {
+		$payPalHeaders = PayPalWebhookHeaders::fromHeaders( getallheaders() );
+
+		if ( ! $this->webhookRepository->verifyEventSignature( $merchantDetails->accessToken, $event, $payPalHeaders ) ) {
+			give_record_gateway_error(
+				'Failed webhook event verification',
+				print_r(
+					[
+						'merchant' => $merchantDetails,
+						'event'    => $event,
+						'headers'  => getallheaders(),
+					],
+					true
+				)
+			);
 			throw new Exception( 'Failed event verification' );
 		}
 
-		$this->webhookRegister
-			->getEventHandler( $event->event_type )
-			->processEvent( $event );
+		try {
+			$this->webhookRegister
+				->getEventHandler( $event->event_type )
+				->processEvent( $event );
+
+		} catch ( Exception $exception ) {
+			$eventType = empty( $event->event_type ) ? 'Unknown' : $event->event_type;
+			give_record_gateway_error( "Error processing webhook: {$eventType}", print_r( $event, true ) );
+
+			throw $exception;
+		}
 	}
 }

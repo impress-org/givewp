@@ -52,3 +52,6 @@ vendor
 # PHPCS
 .phpcs.xml
 phpcs.xml
+
+# POT File
+languages/give.pot

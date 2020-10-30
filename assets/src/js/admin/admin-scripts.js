@@ -1053,7 +1053,7 @@ const gravatar = require( 'gravatar' );
 			} );
 		},
 
-		process_step: function( step, data, self, form ) {
+		process_step: function( step, data, self, form, file ) {
 			/**
 			 * Do not allow user to reload the page
 			 *
@@ -1070,6 +1070,7 @@ const gravatar = require( 'gravatar' );
 					form: data,
 					action: 'give_do_ajax_export',
 					step: step,
+					file_name: file,
 				},
 				dataType: 'json',
 				success: function( response ) {
@@ -1106,7 +1107,7 @@ const gravatar = require( 'gravatar' );
 						}, 50, function() {
 							// Animation complete.
 						} );
-						self.process_step( parseInt( response.step ), data, self, form );
+						self.process_step( parseInt( response.step ), data, self, form, response.file_name );
 					}
 
 					if ( true === reset_form && $( '#give-tools-recount-form' ).length > 0 ) {

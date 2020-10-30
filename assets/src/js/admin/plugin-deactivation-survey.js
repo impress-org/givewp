@@ -135,7 +135,7 @@ class GiveDeactivationSurvey {
 	 * @param {number} step The current iteration of the batch process.
 	 * @param {string} formData The Form Data.
 	 */
-	static deleteAllData( step, formData ) {
+	static deleteAllData( step, formData, file ) {
 		jQuery.ajax( {
 			url: ajaxurl,
 			type: 'POST',
@@ -143,11 +143,12 @@ class GiveDeactivationSurvey {
 				form: formData,
 				action: 'give_do_ajax_export',
 				step: step,
+				file_name: file,
 			},
 			dataType: 'json',
 		} ).done( function( response ) {
 			if ( true !== response.success && ! response.error ) {
-				GiveDeactivationSurvey.deleteAllData( parseInt( response.step ), formData );
+				GiveDeactivationSurvey.deleteAllData( parseInt( response.step ), formData, response.file_name );
 			} else if ( true === response.success ) {
 				jQuery.magnificPopup.close();
 				window.location.replace( window.deactivationLink );

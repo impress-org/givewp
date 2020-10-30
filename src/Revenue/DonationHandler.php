@@ -1,7 +1,9 @@
 <?php
+
 namespace Give\Revenue;
 
 use Give\Revenue\Repositories\Revenue;
+use Give\ValueObjects\Money;
 use WP_Post;
 
 /**
@@ -15,9 +17,9 @@ class DonationHandler {
 	/**
 	 * Handle new donation.
 	 *
-	 * @param  int  $donationId
-	 *
 	 * @since 2.9.0
+	 *
+	 * @param int $donationId
 	 *
 	 */
 	public function handle( $donationId ) {
@@ -31,19 +33,22 @@ class DonationHandler {
 	 * Get revenue data.
 	 *
 	 * @since 2.9.0
+	 *
 	 * @param int $donationId
 	 *
 	 * @return array
 	 */
 	public function getData( $donationId ) {
 		/* @var Revenue $revenue */
-		$donationAmountInCent = give_donation_amount( $donationId ) * 100;
-		$formId               = give_get_payment_form_id( $donationId );
+		$amount   = give_donation_amount( $donationId );
+		$currency = give_get_option( 'currency' );
+		$money    = Money::of( $amount, $currency );
+		$formId   = give_get_payment_form_id( $donationId );
 
 		return [
 			'donation_id' => $donationId,
 			'form_id'     => $formId,
-			'amount'      => $donationAmountInCent,
+			'amount'      => $money->getMinorAmount(),
 		];
 	}
 }

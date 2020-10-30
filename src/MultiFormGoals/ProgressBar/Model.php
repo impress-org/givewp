@@ -3,6 +3,8 @@
 namespace Give\MultiFormGoals\ProgressBar;
 
 
+use Give\ValueObjects\Money;
+
 class Model {
 
 	// Settings
@@ -123,12 +125,13 @@ class Model {
 	/**
 	 * Get raw earnings value for Progress Bar
 	 *
-	 * @return int
+	 * @return string
 	 * @since 2.9.0
 	 **/
 	protected function getTotal() {
-		$results = $this->getDonationRevenueResults();
-		return $results->total / 100;
+		$query   = new Query( $this->getForms() );
+		$results = $query->getResults();
+		return Money::ofMinor( $results->total, give_get_option( 'currency' ) )->getAmount();
 	}
 
 	/**
@@ -230,7 +233,7 @@ class Model {
 	protected function getMinutesRemaining() {
 		$enddate = strtotime( $this->getEndDate() );
 		if ( $enddate ) {
-			$now = time();
+			$now = current_time( 'timestamp', false );
 			return $now < $enddate ? ( $enddate - $now ) / 60 : 0;
 		} else {
 			return false;
@@ -253,7 +256,7 @@ class Model {
 				return round( $minutes / 60 );
 			}
 			case $minutes < 60: {
-				return $minutes;
+				return round( $minutes );
 			}
 		}
 	}

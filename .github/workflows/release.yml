@@ -1,0 +1,47 @@
+name: Deploy to WordPress.org
+
+on:
+  release:
+    types: [ released ]
+    
+jobs:
+  tag:
+    name: New release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Install composer dependencies
+        uses: php-actions/composer@v2
+        with:
+          dev: no
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install npm dependencies
+        run: |
+          npm ci
+          sudo npm run build
+          
+      - name: WordPress Plugin Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: give
+          
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{github.workspace}}/give.zip
+          asset_name: ${{ github.event.repository.name }}.zip
+          asset_content_type: application/zip

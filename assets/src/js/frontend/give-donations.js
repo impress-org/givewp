@@ -52,7 +52,7 @@ jQuery( function( $ ) {
 					) {
 						new_state_field = $( response.data );
 					} else {
-						new_state_field = `<input type="text" id="card_state" name="card_state" class="cart-state give-input required" placeholder="${ states_label }" value="${ response.default_state }" autocomplete="address-level4"/>`;
+						new_state_field = `<input type="text" id="card_state" name="card_state" class="card_state give-input required" placeholder="${ states_label }" value="${ response.default_state }" autocomplete="address-level4"/>`;
 						new_state_field = $( new_state_field );
 					}
 
