@@ -13,12 +13,9 @@ abstract class Factory implements FactoryContract {
 	}
 
 	public function make( $count ) {
-		return array_map(
-			function() {
-				return $this->definition();
-			},
-			range( 1, $count )
-		);
+		for ( $i = 0; $i < $count; $i++ ) {
+			yield $this->definition();
+		}
 	}
 
 	abstract public function definition();
