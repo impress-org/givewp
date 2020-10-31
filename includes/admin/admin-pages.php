@@ -29,14 +29,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_add_options_links() {
 	global $give_settings_page, $give_payments_page, $give_reports_page, $give_donors_page, $give_tools_page;
+	$give_donation_menu_title = apply_filters( 'give_donation_admin_menu_title', $give_payment->labels->menu_name );
+	$give_donation_page_title = apply_filters( 'give_donation_admin_page_title', $give_payment->labels->name );
+
+
+	$give_doners_menu_title = apply_filters( 'give_doners_admin_menu_title', esc_html__( 'Donors', 'give' ) );
+	$give_doners_page_title = apply_filters( 'give_doners_admin_page_title', esc_html__( 'Donors', 'give' ) );
+
+
+	$give_settings_menu_title = apply_filters( 'give_settings_admin_menu_title', esc_html__( 'Settings', 'give' ) );
+	$give_settings_page_title = apply_filters( 'give_settings_admin_page_title', esc_html__( 'GiveWP Settings', 'give' ) );
+
+
+	$give_tools_menu_title = apply_filters( 'give_tools_admin_menu_title', esc_html__( 'Tools', 'give' ) );
+	$give_tools_page_title = apply_filters( 'give_tools_admin_page_title', esc_html__( 'GiveWP Tools', 'give' ) );
 
 	// Payments
 	/* @var WP_Post_Type $give_payment */
 	$give_payment       = get_post_type_object( 'give_payment' );
 	$give_payments_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		$give_payment->labels->name,
-		$give_payment->labels->menu_name,
+		$give_donation_page_title,
+		$give_donation_menu_title,
 		'edit_give_payments',
 		'give-payment-history',
 		'give_payment_history_page'
@@ -45,8 +59,8 @@ function give_add_options_links() {
 	// Donors
 	$give_donors_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		esc_html__( 'Donors', 'give' ),
-		esc_html__( 'Donors', 'give' ),
+		$give_doners_page_title,
+		$give_doners_menu_title,
 		'view_give_reports',
 		'give-donors',
 		'give_donors_page'
@@ -55,8 +69,8 @@ function give_add_options_links() {
 	// Settings
 	$give_settings_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		esc_html__( 'GiveWP Settings', 'give' ),
-		esc_html__( 'Settings', 'give' ),
+		$give_settings_page_title,
+		$give_settings_menu_title,
 		'manage_give_settings',
 		'give-settings',
 		[
@@ -68,8 +82,8 @@ function give_add_options_links() {
 	// Tools.
 	$give_tools_page = add_submenu_page(
 		'edit.php?post_type=give_forms',
-		esc_html__( 'GiveWP Tools', 'give' ),
-		esc_html__( 'Tools', 'give' ),
+		$give_tools_page_title,
+		$give_tools_menu_title,
 		'manage_give_settings',
 		'give-tools',
 		[
