@@ -11,7 +11,7 @@
  */
 function give_cmb2_get_post_options( $query_args, $force = false ) {
 
-	$post_options = array( '' => '' ); // Blank option
+	$post_options = [ '' => '' ]; // Blank option
 
 	if ( ( ! isset( $_GET['page'] ) || 'give-settings' != $_GET['page'] ) && ! $force ) {
 		return $post_options;
@@ -19,10 +19,10 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 
 	$args = wp_parse_args(
 		$query_args,
-		array(
+		[
 			'post_type'   => 'page',
 			'numberposts' => 10,
-		)
+		]
 	);
 
 	$posts = get_posts( $args );
@@ -53,12 +53,12 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 function give_get_featured_image_sizes() {
 	global $_wp_additional_image_sizes;
 
-	$sizes            = array();
+	$sizes            = [];
 	$get_sizes        = get_intermediate_image_sizes();
-	$core_image_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large' );
+	$core_image_sizes = [ 'thumbnail', 'medium', 'medium_large', 'large' ];
 
 	// This will help us to filter special characters from a string
-	$filter_slug_items = array( '_', '-' );
+	$filter_slug_items = [ '_', '-' ];
 
 	foreach ( $get_sizes as $_size ) {
 
@@ -96,7 +96,7 @@ function give_get_featured_image_sizes() {
  *
  * @return string $string
  */
-function give_slug_to_title( $string, $filters = array() ) {
+function give_slug_to_title( $string, $filters = [] ) {
 
 	foreach ( $filters as $filter_item ) {
 		$string = str_replace( $filter_item, ' ', $string );
@@ -223,9 +223,9 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
 		}
 
 		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
-			$feed = vip_safe_wp_remote_get( $feed_url, false, 3, 1, 20, array( 'sslverify' => false ) );
+			$feed = vip_safe_wp_remote_get( $feed_url, false, 3, 1, 20, [ 'sslverify' => false ] );
 		} else {
-			$feed = wp_remote_get( $feed_url, array( 'sslverify' => false ) );
+			$feed = wp_remote_get( $feed_url, [ 'sslverify' => false ] );
 		}
 
 		if ( ! is_wp_error( $feed ) ) {
@@ -276,4 +276,32 @@ function give_get_premium_add_ons() {
 		},
 		$list
 	);
+}
+
+/**
+ * Get list of premium add-ons urls
+ *
+ * @return array
+ * @since 2.5.0
+ */
+function give_get_premium_addons_url() {
+	$list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
+
+	$urls = array_values(
+		array_filter(
+			$list,
+			static function ( $url ) {
+				return false !== strpos( $url, 'givewp.com/addons' );
+			}
+		)
+	);
+
+	$urls = array_map(
+		static function( $url ) {
+			return untrailingslashit( $url );
+		},
+		$urls
+	);
+
+	return $urls;
 }
