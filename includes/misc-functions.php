@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\License\PremiumAddonsListManager;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -833,26 +835,22 @@ function give_get_plugins( $args = [] ) {
 	if ( ! empty( $args['only_add_on'] ) ) {
 		$plugins = array_filter(
 			$plugins,
-			function( $plugin ) {
+			static function( $plugin ) {
 				return 'add-on' === $plugin['Type'];
 			}
 		);
 	}
 
 	if ( ! empty( $args['only_premium_add_ons'] ) ) {
-		if ( ! function_exists( 'give_get_premium_add_ons' ) ) {
-			require_once GIVE_PLUGIN_DIR . '/includes/admin/misc-functions.php';
-		}
-
-		$premium_addons_list = give_get_premium_addons_url();
+		/* @var PremiumAddonsListManager $premiumAddonsListManger */
+		$premiumAddonsListManger = give( PremiumAddonsListManager::class );
 
 		foreach ( $plugins as $key => $plugin ) {
 			if ( 'add-on' !== $plugin['Type'] ) {
 				unset( $plugins[ $key ] );
 			}
 
-			$addonUrl = untrailingslashit( $plugin['PluginURI'] );
-			if ( ! in_array( $addonUrl, $premium_addons_list, true ) ) {
+			if ( ! $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ) {
 				unset( $plugins[ $key ] );
 			}
 		}

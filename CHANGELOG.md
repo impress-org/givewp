@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 
+### Changed
+
+-   Use easy digital download rest api endpoint to confirm addon is premium or not (#5426)
+
 ### 2.9.1 - 2020-10-28
 
 ### Fixed
