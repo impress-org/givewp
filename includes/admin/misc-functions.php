@@ -249,31 +249,3 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
 
 	return $cache;
 }
-
-
-/**
- * Get list of premium add-ons
- *
- * @return array
- * @since 2.5.0
- */
-function give_get_premium_add_ons() {
-	$list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
-	$list = array_values(
-		array_filter(
-			$list,
-			function ( $url ) {
-				return false !== strpos( $url, 'givewp.com/addons' );
-			}
-		)
-	);
-
-	return array_map(
-		function ( $url ) {
-				$path = wp_parse_url( untrailingslashit( $url ) )['path'];
-
-				return str_replace( '/addons/', '', $path );
-		},
-		$list
-	);
-}
