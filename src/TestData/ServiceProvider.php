@@ -10,7 +10,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	/**
 	 * @inheritDoc
 	 *
-	 * @since UNRELEASED
+	 * @since 2.10.0
 	 */
 	public function register() {
 		// Instead of passing around an instance, bind a singleton to the container.
@@ -25,7 +25,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	/**
 	 * @inheritDoc
 	 *
-	 * @since UNRELEASED
+	 * @since 2.10.0
 	 */
 	public function boot() {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
