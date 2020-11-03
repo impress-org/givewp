@@ -25,7 +25,8 @@ class PremiumAddonsListManager {
 	 * @return array
 	 */
 	private function getAddonsIds() {
-		$cachedResult = get_transient( 'give_premium_addons_ids' );
+		$optionName   = 'give_premium_addons_ids';
+		$cachedResult = get_transient( $optionName );
 		if ( $cachedResult ) {
 			return  $cachedResult;
 		}
@@ -43,7 +44,7 @@ class PremiumAddonsListManager {
 		}
 
 		if ( $productsIds ) {
-			set_transient( 'give_premium_addons_ids', $productsIds, DAY_IN_SECONDS );
+			set_transient( $optionName, $productsIds, DAY_IN_SECONDS );
 		}
 
 		return $productsIds;
