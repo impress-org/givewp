@@ -277,31 +277,3 @@ function give_get_premium_add_ons() {
 		$list
 	);
 }
-
-/**
- * Get list of premium add-ons urls
- *
- * @return array
- * @since 2.5.0
- */
-function give_get_premium_addons_url() {
-	$list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
-
-	$urls = array_values(
-		array_filter(
-			$list,
-			static function ( $url ) {
-				return false !== strpos( $url, 'givewp.com/addons' );
-			}
-		)
-	);
-
-	$urls = array_map(
-		static function( $url ) {
-			return untrailingslashit( $url );
-		},
-		$urls
-	);
-
-	return $urls;
-}
