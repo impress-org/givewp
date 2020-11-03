@@ -27,7 +27,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const stripeElements = new GiveStripeElements( formElement );
 		const setupStripeElement = stripeElements.setupStripeElement();
 		const getStripeElements = stripeElements.getElements( setupStripeElement );
-		const stripeCheckoutTypeHiddenField = formElement.querySelector( 'input[name="stripe-checkout-type"]' );
+		const stripeCheckoutTypeHiddenField = Give.form.fn.getInfo( 'stripe-checkout-type' );
 		const isCheckoutTypeModal = stripeCheckoutTypeHiddenField && 'modal' === stripeCheckoutTypeHiddenField.value;
 		const isStripeModalCheckoutGateway = 'stripe_checkout' === formGateway.value && isCheckoutTypeModal;
 		let cardElements = stripeElements.createElement( getStripeElements, formElement );

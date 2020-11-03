@@ -10,12 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Donation test data can now be generated. (#5417)
+-   Free add-ons does not trigger GiveWP add-on license errors (#5424)
+-   Stripe Modal renders without any issue across all screens (#5423)
+-   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
+-   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 
-### Fixed
+### Changed
 
 -    Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -    Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 -    Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
+-   Use easy digital download rest api endpoint to confirm addon is premium or not (#5426)
 
 ### 2.9.1 - 2020-10-28
 
