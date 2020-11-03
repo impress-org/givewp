@@ -55,6 +55,10 @@
 	transform: scale(1.1);
 	transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
 	z-index: 100001 !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: scroll;
 
 	&.give-stripe-checkout-show-modal {
 		opacity: 1;
@@ -64,15 +68,13 @@
 	}
 
 	.give-stripe-checkout-modal-content {
-		position: absolute;
-		top: 42%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		position: relative;
 		background: rgb(255, 255, 255);
 		overflow: hidden;
-		width: 90%;
-		max-width: fit-content;
+		width: 96%;
+		max-width: 500px;
 		border-radius: 0.5rem;
+		margin: auto;
 
 		.give-stripe-checkout-modal-container {
 			.give-stripe-checkout-modal-header {

@@ -11,16 +11,19 @@ namespace Give\PaymentGateways\Stripe;
  */
 class DonationFormElements {
 	/**
-	 * Add hidden fields to donation forms.
+	 * Add html tags to form .
 	 *
 	 * @since 2.9.2
+	 *
+	 * @param array $htmlTags Array of form html tags
+	 *
+	 * @return array
 	 */
-	public function addHiddenFields() {
+	public function addFormHtmlTags( $htmlTags ) {
 		if ( give_is_gateway_active( 'stripe_checkout' ) ) {
-			printf(
-				'<input type="hidden" name="stripe-checkout-type" value="%1$s">',
-				give_stripe_get_checkout_type()
-			);
+			$htmlTags['data-stripe-checkout-type'] = give_stripe_get_checkout_type();
 		}
+
+		return $htmlTags;
 	}
 }
