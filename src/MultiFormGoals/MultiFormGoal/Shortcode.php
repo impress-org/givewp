@@ -7,12 +7,18 @@ use Give\MultiFormGoals\MultiFormGoal\Model as MultiFormGoal;
 class Shortcode {
 
 	/**
+	 * @since 2.10.0 Extracted from harded-coded value in `addShortcode()`.
+	 * @var string Shortcode tag to be searched in post content.
+	 * */
+	protected $tag = 'give_multi_form_goal';
+
+	/**
 	 * Registers Multi-Form Goal Shortcode
 	 *
 	 * @since 2.9.0
 	 **/
 	public function addShortcode() {
-		add_shortcode( 'give_multi_form_goal', [ $this, 'renderCallback' ] );
+		add_shortcode( $this->tag, [ $this, 'renderCallback' ] );
 	}
 
 	/**
@@ -22,7 +28,8 @@ class Shortcode {
 	 **/
 	public function renderCallback( $attributes ) {
 		error_log( serialize( $attributes ) );
-		$attributes = shortcode_atts(
+
+		$attributes = $this->parseAttributes(
 			[
 				'ids'        => [],
 				'tags'       => [],
@@ -52,5 +59,36 @@ class Shortcode {
 			]
 		);
 		return $multiFormGoal->getOutput();
+	}
+
+	/**
+	 * Parse multiple attributes with defualt values and types (infered from the default values).
+	 * @link https://developer.wordpress.org/reference/functions/shortcode_atts/
+	 * @since 2.10.0
+	 * @param array $pairs Entire list of supported attributes and their defaults.
+	 * @param array $attributes User defined attributes.
+	 * @reutrn array
+	 */
+	protected function parseAttributes( $pairs, $attributes ) {
+		foreach ( $attributes as $key => &$attribute ) {
+			if ( is_array( $pairs[ $key ] ) ) {
+				$attribute = $this->parseAttributeArray( $attribute );
+			}
+		}
+
+		return shortcode_atts( $pairs, $attributes, $this->tag );
+	}
+
+	/**
+	 * Parses an individual attributes as an array (or from a comma-separated string).
+	 * @since 2.10.0
+	 * @param string|array $value
+	 * @return array
+	 */
+	protected function parseAttributeArray( $value ) {
+		if ( ! is_array( $value ) ) {
+			$value = explode( ',', $value );
+		}
+		return $value;
 	}
 }
