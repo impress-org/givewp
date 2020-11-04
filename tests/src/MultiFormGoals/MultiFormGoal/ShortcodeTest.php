@@ -19,15 +19,21 @@ final class ShortcodeTest extends TestCase {
 		$pairs = [
 			'string' => 'default',
 			'array' => [],
+			'listSingle' => [],
+			'listMultiple' => [],
 		];
 
 		$attributes = [
 			'string' => 'this is a string.',
-			'array' => '1,2,3', // Should be parsed into an array.
+			'array' => [],
+			'listSingle' => '1', //Should be parsed into an array.
+			'listMultiple' => '1,2,3', // Should be parsed into an array.
 		];
 
 		$attributes = $method->invokeArgs( $shortcodeClass, [ $pairs, $attributes ] );
 		$this->assertTrue( is_string( $attributes[ 'string' ] ) );
 		$this->assertTrue( is_array( $attributes[ 'array' ] ) );
+		$this->assertTrue( is_array( $attributes[ 'listSingle' ] ) );
+		$this->assertTrue( is_array( $attributes[ 'listMultiple' ] ) );
 	}
 }
