@@ -14,8 +14,8 @@ class ServiceProvider implements ServiceProviderInterface {
 	 * @inheritDoc
 	 */
 	public function register() {
-		give()->singleton( DonorProfileShortcode::class );
 		give()->singleton( DonorProfile::class );
+		give()->singleton( DonorProfileShortcode::class );
 
 		if ( function_exists( 'register_block_type' ) ) {
 			give()->singleton( DonorProfileBlock::class );
