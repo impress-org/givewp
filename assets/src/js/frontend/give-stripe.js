@@ -21,6 +21,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			return;
 		}
 
+		/**
+		 * Bailout, if Stripe publishable key does not found.
+		 */
+		if( ! formElement.getAttribute( 'data-publishable-key' ) ) {
+			return;
+		}
+
 		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
 		const isUpdatingPaymentInfo = give_stripe_vars.hasOwnProperty( 'stripe_card_update' ) && parseInt( give_stripe_vars.stripe_card_update );
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
