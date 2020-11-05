@@ -1,7 +1,13 @@
 <?php
 use Give\Helpers\Form\Template as FormTemplateUtils;
 
-$templateOptions = FormTemplateUtils::getOptions();
+/**
+ * The following variables should be in scope when including this view
+ *
+ * @var int $formId
+ */
+
+$templateOptions = FormTemplateUtils::getOptions( $formId );
 $primaryColor    = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
 $primaryColor    = trim( $primaryColor, '#' );
 
