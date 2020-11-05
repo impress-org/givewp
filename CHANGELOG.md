@@ -13,10 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
+-   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
 
 ### Changed
 
--   Use easy digital download rest api endpoint to confirm addon is premium or not (#5426)
+-   Use easy digital download rest api endpoint to confirm if the add-on is premium or not (#5426)
 
 ### 2.9.1 - 2020-10-28
 
