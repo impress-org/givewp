@@ -162,11 +162,12 @@ class GiveDonorWall {
 
 			if ( hasValidGravatar ) {
 				const gravatarElement = document.createElement( 'IMG' );
+				const size = gravatarContainer.getAttribute( 'data-avatar-size' );
 
 				gravatarContainer.innerHTML = '';
 				gravatarElement.setAttribute( 'src', gravatar.url( donorEmail ) );
-				gravatarElement.setAttribute( 'width', '60' );
-				gravatarElement.setAttribute( 'height', '60' );
+				gravatarElement.setAttribute( 'width', size );
+				gravatarElement.setAttribute( 'height', size );
 				gravatarContainer.appendChild( gravatarElement );
 			}
 
