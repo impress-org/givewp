@@ -40,6 +40,8 @@ const config = {
 		'admin-paypal-commerce': [ './assets/src/css/admin/paypal-commerce.scss' ],
 		'admin-onboarding-wizard': [ './assets/src/js/admin/onboarding-wizard/index.js' ],
 		'multi-form-goal-block': [ './src/MultiFormGoals/resources/css/common.scss' ],
+		'donor-profiles-app': [ './src/DonorProfiles/resources/js/app/index.js' ],
+		'donor-profiles-block': [ './src/DonorProfiles/resources/js/block/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),

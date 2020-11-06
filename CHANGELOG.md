@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   Front-end donor profiles are scaffolded (#5441)
+
 ### Fixed
 
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
