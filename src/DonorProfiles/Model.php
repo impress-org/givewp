@@ -14,7 +14,7 @@ class Model {
 	 * Constructs and sets up setting variables for a new Donor Profile model
 	 *
 	 * @param array $args Arguments for new Donor Profile, including 'enabled'
-	 * @since 2.9.0
+	 * @since 2.10.0
 	 **/
 	public function __construct() {
 		$this->enabled = [];
@@ -25,7 +25,7 @@ class Model {
 	 * Get output markup for Multi-Form Goal
 	 *
 	 * @return string
-	 * @since 2.9.0
+	 * @since 2.10.0
 	 **/
 	public function getOutput() {
 		ob_start();
@@ -40,7 +40,7 @@ class Model {
 	 * Get enabled tabs for Donor Profile
 	 *
 	 * @return string
-	 * @since 2.9.0
+	 * @since 2.10.0
 	 **/
 	public function getEnabled() {
 		return $this->enabled;
@@ -58,7 +58,7 @@ class Model {
 	 * Enqueue assets for front-end donor profiles
 	 *
 	 * @return void
-	 * @since 2.9.0
+	 * @since 2.10.0
 	 **/
 	public function loadAssets() {
 		wp_enqueue_script(

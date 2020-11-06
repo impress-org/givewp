@@ -15,7 +15,7 @@ class Shortcode {
 	/**
 	 * Registers Donor Profile Shortcode
 	 *
-	 * @since 2.9.0
+	 * @since 2.10.0
 	 **/
 	public function addShortcode() {
 		add_shortcode( 'give_donor_profile', [ $this, 'renderCallback' ] );
@@ -36,7 +36,7 @@ class Shortcode {
 	/**
 	 * Returns Shortcode markup
 	 *
-	 * @since 2.9.0
+	 * @since 2.10.0
 	 **/
 	public function renderCallback( $attributes ) {
 		$attributes = shortcode_atts(
