@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\ValueObjects\Money;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -1040,7 +1042,7 @@ function give_stripe_cents_to_dollars( $cents ) {
  * @return string
  */
 function give_stripe_dollars_to_cents( $dollars ) {
-	return give_is_zero_based_currency() ? round( $dollars ) : round( $dollars, give_get_price_decimals() ) * 100;
+	return Money::of( $dollars, give_get_country() )->getMinorAmount();
 }
 
 /**
