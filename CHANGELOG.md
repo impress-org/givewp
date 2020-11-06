@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Covert donation amount to cent only if currency is not zero-decimal when donation donated with Stripe payment gateway (#5440)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
