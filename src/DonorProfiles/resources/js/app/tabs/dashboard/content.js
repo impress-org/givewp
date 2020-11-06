@@ -1,9 +1,10 @@
 import Heading from '../../components/heading';
 import Stats from './stats';
+import { Fragment } from 'react';
 
 const Content = () => {
 	return (
-		<div>
+		<Fragment>
 			<Heading icon="chart-line">
 				Your Giving Stats
 			</Heading>
@@ -11,7 +12,7 @@ const Content = () => {
 			<Heading icon="calendar-alt">
 				Recent Donations
 			</Heading>
-		</div>
+		</Fragment>
 	);
 };
 export default Content;
