@@ -1039,7 +1039,7 @@ function give_stripe_cents_to_dollars( $cents ) {
  * @return string
  */
 function give_stripe_dollars_to_cents( $dollars ) {
-	return round( $dollars, give_currency_decimal_filter() ) * 100;
+	return give_is_zero_based_currency() ? round( $dollars ) : round( $dollars, give_get_price_decimals() ) * 100;
 }
 
 /**
