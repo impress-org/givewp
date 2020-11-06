@@ -1042,7 +1042,7 @@ function give_stripe_cents_to_dollars( $cents ) {
  * @return string
  */
 function give_stripe_dollars_to_cents( $dollars ) {
-	return Money::of( $dollars, give_get_country() )->getMinorAmount();
+	return Money::of( $dollars, give_get_currency() )->getMinorAmount();
 }
 
 /**
