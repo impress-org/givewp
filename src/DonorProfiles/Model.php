@@ -68,5 +68,12 @@ class Model {
 			GIVE_VERSION,
 			true
 		);
+
+		wp_enqueue_style(
+			'give-donor-profiles-app',
+			GIVE_PLUGIN_URL . 'assets/dist/css/donor-profiles-app.css',
+			[],
+			GIVE_VERSION
+		);
 	}
 }
