@@ -1035,6 +1035,7 @@ function give_stripe_cents_to_dollars( $cents ) {
  * @param string $dollars Amount in dollars.
  *
  * @since  2.5.0
+ * @since 2.9.2  Return amount in cent only if currency is not zero-decimal currency.
  *
  * @return string
  */
