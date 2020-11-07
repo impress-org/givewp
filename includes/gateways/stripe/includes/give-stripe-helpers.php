@@ -10,6 +10,8 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+use Give\ValueObjects\Money;
+
 // Exit, if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -1035,11 +1037,12 @@ function give_stripe_cents_to_dollars( $cents ) {
  * @param string $dollars Amount in dollars.
  *
  * @since  2.5.0
+ * @since 2.9.2  Return amount in cent only if currency is not zero-decimal currency.
  *
  * @return string
  */
 function give_stripe_dollars_to_cents( $dollars ) {
-	return round( $dollars, give_currency_decimal_filter() ) * 100;
+	return Money::of( $dollars, give_get_currency() )->getMinorAmount();
 }
 
 /**
