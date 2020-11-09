@@ -1,8 +1,13 @@
+import Heading from '../../components/heading';
+import { Fragment } from 'react';
+
 const Content = () => {
 	return (
-		<div>
-			<h3>Edit Profile Content</h3>
-		</div>
+		<Fragment>
+			<Heading>
+				Edit Profile
+			</Heading>
+		</Fragment>
 	);
 };
 export default Content;

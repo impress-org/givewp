@@ -1,8 +1,13 @@
+import Heading from '../../components/heading';
+import { Fragment } from 'react';
+
 const Content = () => {
 	return (
-		<div>
-			<h3>Annual Receipt Content</h3>
-		</div>
+		<Fragment>
+			<Heading>
+				Annual Receipt
+			</Heading>
+		</Fragment>
 	);
 };
 export default Content;
