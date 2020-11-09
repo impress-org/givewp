@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const DonationRow = () => {
 	return (
 		<div className="give-donor-profile-table__row">
@@ -19,7 +21,9 @@ const DonationRow = () => {
 			<div className="give-donor-profile-table__pill">
 				<div className="give-donor-profile-table__donation-id">ID: 4</div>
 				<div className="give-donor-profile-table__donation-receipt">
-					<a>View Receipt</a>
+					<Link to="/donation-history/4">
+						View Receipt
+					</Link>
 				</div>
 			</div>
 		</div>

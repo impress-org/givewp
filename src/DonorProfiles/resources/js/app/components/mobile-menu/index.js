@@ -31,7 +31,7 @@ const MobileMenu = ( { children } ) => {
 	const location = useLocation();
 	const tabsSelector = useSelector( state => state.tabs );
 
-	const slug = location.pathname.length > 2 ? location.pathname.substr( 1 ) : 'dashboard';
+	const slug = location.pathname.length > 2 ? location.pathname.split( '/' )[ 1 ] : 'dashboard';
 	const label = tabsSelector[ slug ] ? tabsSelector[ slug ].label : null;
 
 	return (
