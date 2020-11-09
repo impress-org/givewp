@@ -1,6 +1,6 @@
-.give-donor-profile-desktop-layout {
-	display: grid;
-	grid-template-columns: 240px auto;
+.give-donor-profile-mobile-layout {
+	display: flex;
+	flex-direction: column;
 
 	background: #fff;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.305862);
@@ -8,13 +8,7 @@
 	overflow: hidden;
 }
 
-.give-donor-profile-desktop-layout__donor-info {
-	grid-row: 1;
-	grid-column: span 2;
-}
-
-.give-donor-profile-desktop-layout__tab-menu {
-	grid-row: 2;
+.give-donor-profile-mobile-layout__tab-menu {
 	background: #fbfbfb;
 	border-right: 1px solid #e2e6ec;
 
@@ -34,7 +28,6 @@
 	}
 }
 
-.give-donor-profile-desktop-layout__tab-content {
-	grid-row: 2;
-	padding: 30px;
+.give-donor-profile-mobile-layout__tab-content {
+	padding: 12px;
 }

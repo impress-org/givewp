@@ -1,5 +1,10 @@
 #give-donor-profile {
-	max-width: fit-content !important;
+	width: 100% !important;
+	max-width: 920px !important;
 	font-family: Montserrat, sans-serif !important;
 	font-weight: 500;
+
+	@media screen and (max-width: 920px) {
+		max-width: 90% !important;
+	}
 }
