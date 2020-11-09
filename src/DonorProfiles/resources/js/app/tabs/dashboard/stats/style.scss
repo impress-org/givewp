@@ -18,9 +18,17 @@
 	}
 
 	.give-donor-profile-dashboard__figure {
-		color: #3398db;
+		color: #68bb6c;
 		font-size: 34px;
 		text-align: center;
+		display: flex;
+		align-items: flex-start;
+		line-height: 1;
+
+		.give-donor-profile-dashboard__figure-currency {
+			font-size: 16px;
+			padding: 4px 2px 0 0;
+		}
 	}
 
 	.give-donor-profile-dashboard__detail {

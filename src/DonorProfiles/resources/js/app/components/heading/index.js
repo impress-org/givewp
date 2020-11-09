@@ -5,7 +5,7 @@ import './style.scss';
 const Heading = ( { icon, children } ) => {
 	return (
 		<div className="give-donor-profile-heading">
-			<FontAwesomeIcon icon={ icon } />
+			{ icon && ( <FontAwesomeIcon icon={ icon } /> ) }
 			{ children }
 		</div>
 	);

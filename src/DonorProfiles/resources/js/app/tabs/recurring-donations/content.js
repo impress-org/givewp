@@ -1,8 +1,16 @@
+import Heading from '../../components/heading';
+import RESTSubscriptionTable from '../../components/rest-subscription-table';
+
+import { Fragment } from 'react';
+
 const Content = () => {
 	return (
-		<div>
-			<h3>Recurring Donations Content</h3>
-		</div>
+		<Fragment>
+			<Heading>
+				2 Recurring Donations
+			</Heading>
+			<RESTSubscriptionTable />
+		</Fragment>
 	);
 };
 export default Content;

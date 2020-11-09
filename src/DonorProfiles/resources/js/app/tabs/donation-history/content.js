@@ -1,8 +1,15 @@
+import Heading from '../../components/heading';
+import RESTDonationTable from '../../components/rest-donation-table';
+import { Fragment } from 'react';
+
 const Content = () => {
 	return (
-		<div>
-			<h3>Donation History Content</h3>
-		</div>
+		<Fragment>
+			<Heading>
+				10 Total Donations
+			</Heading>
+			<RESTDonationTable />
+		</Fragment>
 	);
 };
 export default Content;
