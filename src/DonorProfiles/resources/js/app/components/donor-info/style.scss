@@ -29,4 +29,7 @@
 
 .give-donor-profile-donor-info__badges {
 	grid-column: 3;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
 }

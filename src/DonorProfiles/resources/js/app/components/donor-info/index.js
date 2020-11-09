@@ -1,3 +1,4 @@
+import Badge from '../badge';
 import './style.scss';
 
 const DonorInfo = () => {
@@ -23,15 +24,9 @@ const DonorInfo = () => {
 				</div>
 			</div>
 			<div className="give-donor-profile-donor-info__badges">
-				<div className="give-donor-profile-donor-info__badge">
-					Recurring Giver
-				</div>
-				<div className="give-donor-profile-donor-info__badge">
-					Team Captain
-				</div>
-				<div className="give-donor-profile-donor-info__badge">
-					Recurring Giver
-				</div>
+				<Badge icon="sync" label="Recurring Giver" />
+				<Badge icon="user" label="Team Captain" />
+				<Badge icon="trophy" label="Top Donor" />
 			</div>
 		</div>
 	);

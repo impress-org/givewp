@@ -1,0 +1,19 @@
+.give-donor-profile-badge {
+	background: #fff;
+	box-shadow: 0 1.60377px 6.41509px rgba(0, 0, 0, 0.11);
+	border-radius: 50px;
+	padding: 10px 22px;
+	font-size: 14px;
+	line-height: 1px;
+	display: flex;
+	align-items: center;
+	margin: 8px 0;
+
+	&:first-of-type {
+		margin-top: 0;
+	}
+
+	svg {
+		margin-left: 8px;
+	}
+}
