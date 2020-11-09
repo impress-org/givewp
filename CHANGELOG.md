@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.2 - 2020-11-09
+
+### Fixed
+
+-   Properly handle currency unit size for donations (#5440)
+-   Free add-ons does not trigger GiveWP add-on license errors (#5424)
+-   Stripe Modal renders without any issue across all screens (#5423)
+-   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
+-   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
+-   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
+-   MultiForm Goal Shortcode now supports comma separated lists (#5432)
+
+### Changed
+
+-   Use easy digital download rest api endpoint to confirm addon is premium or not (#5426)
+
 ### 2.9.1 - 2020-10-28
 
 ### Fixed
@@ -73,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Multi-Form Goal Blocks now auto-focus the Progress Bar on insert (#5364)
 -   Improve PayPal Donations payment gateway setting page UX ( #5369 )
+-   Multi-Form Goal query results are cached (#5371)
 -   Update composer setup (#5361)
 
 ## 2.9.0-alpha.2 - 2020-10-09

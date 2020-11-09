@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\Controller\PayPalWebhooks;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
@@ -21,6 +22,7 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
+use Give\PaymentGateways\Stripe\DonationFormElements;
 
 /**
  * Class PaymentGateways
@@ -62,6 +64,7 @@ class PaymentGateways implements ServiceProvider {
 
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
+		give()->singleton( DonationFormElements::class );
 		$this->registerPayPalCommerceClasses();
 	}
 
@@ -72,6 +75,7 @@ class PaymentGateways implements ServiceProvider {
 		add_filter( 'give_register_gateway', [ $this, 'bootGateways' ] );
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
+		Hooks::addFilter( 'give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99 );
 
 		$this->registerMigrations();
 	}

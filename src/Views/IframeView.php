@@ -200,7 +200,8 @@ class IframeView {
 	 */
 	private function getIframeHTML() {
 		ob_start();
-		include $this->template->getLoadingView();
+
+		$this->template->renderLoadingView( $this->formId );
 
 		$loader = sprintf(
 			'<div class="iframe-loader">%1$s</div>',
