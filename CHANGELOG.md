@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Covert donation amount to cent only if currency is not zero-decimal when donation donated with Stripe payment gateway (#5440)
 -   Add missing payment information update support in Stripe javascript (#5439)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
+-   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
+-   MultForm Goal Shortcode now supports comma separated lists (#5432)
 
 ### Changed
 
