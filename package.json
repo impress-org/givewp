@@ -1,7 +1,5 @@
 {
     "name": "give",
-    "version": "2.7.0",
-    "description": "",
     "main": "index.js",
     "scripts": {
         "start": "npm install && npm run watch",
@@ -64,10 +62,10 @@
         "jest-puppeteer": "^4.1.0",
         "lint-staged": "^9.5.0",
         "mini-css-extract-plugin": "^0.5.0",
-        "node-sass": "^4.11.0",
         "optimize-css-assets-webpack-plugin": "^5.0.1",
         "prettier": "^1.19.1",
         "puppeteer": "^1.14.0",
+        "sass": "^1.29.0",
         "sass-loader": "^7.1.0",
         "script-loader": "^0.7.2",
         "style-loader": "^1.1.2",

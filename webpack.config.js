@@ -99,7 +99,7 @@ const config = {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							outputStyle: ( inProduction ? 'compressed' : 'nested' ),
+							outputStyle: ( inProduction ? 'compressed' : 'expanded' ),
 						},
 					} ],
 			},
