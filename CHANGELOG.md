@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 -   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
--   MultForm Goal Shortcode now supports comma separated lists (#5432)
+-   Multi-Form Goal Shortcode now supports comma separated lists (#5432)
 
 ### Changed
 
