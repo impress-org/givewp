@@ -21,18 +21,26 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			return;
 		}
 
-		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+		/**
+		 * Bailout, if Stripe publishable key does not found.
+		 */
+		if( ! formElement.getAttribute( 'data-publishable-key' ) ) {
+			return;
+		}
 
+		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+		const isUpdatingPaymentInfo = give_stripe_vars.hasOwnProperty( 'stripe_card_update' ) && parseInt( give_stripe_vars.stripe_card_update );
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
 		const stripeElements = new GiveStripeElements( formElement );
 		const setupStripeElement = stripeElements.setupStripeElement();
 		const getStripeElements = stripeElements.getElements( setupStripeElement );
 		const stripeCheckoutTypeHiddenField = Give.form.fn.getInfo( 'stripe-checkout-type' );
+		const selectedGatewayId = formGateway ? formGateway.value : '';
 		const isCheckoutTypeModal = stripeCheckoutTypeHiddenField && 'modal' === stripeCheckoutTypeHiddenField.value;
-		const isStripeModalCheckoutGateway = 'stripe_checkout' === formGateway.value && isCheckoutTypeModal;
+		const isStripeModalCheckoutGateway = formGateway && 'stripe_checkout' === selectedGatewayId && isCheckoutTypeModal;
 		let cardElements = stripeElements.createElement( getStripeElements, formElement );
 
-		if ( 'stripe' === formGateway.value || isStripeModalCheckoutGateway ) {
+		if ( isUpdatingPaymentInfo || 'stripe' === selectedGatewayId || isStripeModalCheckoutGateway ) {
 			stripeElements.mountElement(cardElements);
 		}
 
@@ -57,10 +65,8 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		}
 
 		formElement.onsubmit = ( e ) => {
-			const selectedGateway = formElement.querySelector( '.give-gateway:checked' ).value;
-
 			// Bailout, if Stripe is not the selected gateway.
-			if ( 'stripe' === selectedGateway ) {
+			if ( isUpdatingPaymentInfo || 'stripe' === selectedGatewayId ) {
 				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
 				e.preventDefault();
 			}
