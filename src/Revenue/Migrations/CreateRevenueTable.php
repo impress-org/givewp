@@ -3,6 +3,7 @@
 namespace Give\Revenue\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Helpers\Table;
 
 class CreateRevenueTable extends Migration {
@@ -48,5 +49,9 @@ class CreateRevenueTable extends Migration {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
+
+		if ( ! empty( $wpdb->last_error ) ) {
+			throw new DatabaseMigrationException( 'An error occurred creating the revenue table: ' . $wpdb->last_error );
+		}
 	}
 }
