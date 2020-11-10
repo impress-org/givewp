@@ -7,7 +7,7 @@ const DonationRow = () => {
 				<div className="give-donor-profile-table__donation-amount">$2,124.40</div>
 			</div>
 			<div className="give-donor-profile-table__column">
-				Save the Whales
+				Save Friar Tuck
 			</div>
 			<div className="give-donor-profile-table__column">
 				October 24, 2020 <br />

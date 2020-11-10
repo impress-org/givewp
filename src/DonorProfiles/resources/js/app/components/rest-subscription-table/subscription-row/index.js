@@ -3,7 +3,7 @@ const SubscriptionRow = () => {
 		<div className="give-donor-profile-table__row">
 			<div className="give-donor-profile-table__column">
 				<div className="give-donor-profile-table__subscription-amount">$200 / Monthly</div>
-				<div className="give-donor-profile-table__subscription-campaign">Save the Whales</div>
+				<div className="give-donor-profile-table__subscription-campaign">Save Friar Tuck</div>
 			</div>
 			<div className="give-donor-profile-table__column">
 				<div className="give-donor-profile-table__subscription-status">

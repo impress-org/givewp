@@ -25,6 +25,26 @@
 
 .give-donor-profile-donor-info__details {
 	grid-column: 2;
+
+	.give-donor-profile-donor-info__name {
+		font-weight: 600;
+		font-size: 22px;
+		color: #424242;
+		line-height: 1;
+		margin: 0 0 4px 0;
+	}
+
+	.give-donor-profile-donor-info__detail {
+		display: flex;
+		align-items: center;
+		font-size: 15px;
+		margin: 4px 0;
+		color: #6b6b6b;
+
+		svg {
+			margin-right: 8px;
+		}
+	}
 }
 
 .give-donor-profile-donor-info__badges {
