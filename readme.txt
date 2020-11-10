@@ -238,8 +238,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 
 = 2.9.2: November 9th, 2020 =
-* Fixed: Resolved an issue when creating donations for currencies with different decimal ranges (#5440)
+* Fixed: Resolved an issue when creating donations for currencies with different decimal ranges
 * Fixed: Free add-ons no longer cause license errors
+* Fixed: Resolved issue that prevented some donors from updating their subscription card or amount
 * Fixed: Stripe Modal now renders without any issues on different screen sizes
 * Fixed: Recover donation form to be ready for a retry after Stripe error
 * Fixed: Multi-step form now reflects form color when embedded on a page
