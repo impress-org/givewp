@@ -1,8 +1,9 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 
 import Heading from '../../components/heading';
 import RESTDonationTable from '../../components/rest-donation-table';
+import DonationReceipt from '../../components/donation-receipt';
 
 const Content = () => {
 	const location = useLocation();
@@ -11,8 +12,12 @@ const Content = () => {
 	return id ? (
 		<Fragment>
 			<Heading>
-				Donation ID: { id }
+				Donation #{ id }
 			</Heading>
+			<DonationReceipt />
+			<Link to="/donation-history">
+				Back to Donation History
+			</Link>
 		</Fragment>
 	) : (
 		<Fragment>
