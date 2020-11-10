@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.9.1
+Stable tag: 2.9.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -236,6 +236,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.9.2: November 9th, 2020 =
+* Fixed: Resolved an issue when creating donations for currencies with different decimal ranges (#5440)
+* Fixed: Free add-ons no longer cause license errors
+* Fixed: Stripe Modal now renders without any issues on different screen sizes
+* Fixed: Recover donation form to be ready for a retry after Stripe error
+* Fixed: Multi-step form now reflects form color when embedded on a page
+* Fixed: MultiForm Goal shortcode now supports comma separated lists
 
 = 2.9.1: October 28th, 2020 =
 * Fixed: Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
