@@ -80,10 +80,7 @@ class ManualMigration {
 	 */
 	private function runMigration( $migrationId ) {
 		if ( ! $this->migrationsRegister->hasMigration( $migrationId ) ) {
-			Give_Admin_Settings::add_error(
-				'invalid-migration-id',
-				__( "There is no migration with the ID: {$migrationId}", 'give' )
-			);
+			Give_Admin_Settings::add_error( 'invalid-migration-id', "There is no migration with the ID: {$migrationId}" );
 
 			return;
 		}
