@@ -39,8 +39,8 @@ class ManualMigration {
 			$migrationToRun = $_GET['give-run-migration'];
 		}
 
-		if ( ! empty( $_GET['give-clear-migration'] ) ) {
-			$migrationToClear = $_GET['give-clear-migration'];
+		if ( ! empty( $_GET['give-clear-update'] ) ) {
+			$migrationToClear = $_GET['give-clear-update'];
 		}
 
 		$hasMigration = isset( $migrationToRun ) || isset( $migrationToClear );
@@ -66,7 +66,7 @@ class ManualMigration {
 			$uriDetails = parse_url( $_SERVER['REQUEST_URI'] );
 			parse_str( $uriDetails['query'], $queryData );
 
-			unset( $queryData['give-run-migration'], $queryData['give-clear-migration'] );
+			unset( $queryData['give-run-migration'], $queryData['give-clear-update'] );
 
 			wp_safe_redirect( $uriDetails['path'] . '?' . http_build_query( $queryData ) );
 		}
@@ -96,6 +96,8 @@ class ManualMigration {
 		$manualRunner = give( ManuallyRunMigration::class );
 
 		$manualRunner( $migration );
+
+		Give_Admin_Settings::add_message( 'automatic-migration-run', "The $migrationId migration was manually triggered" );
 	}
 
 	/**
@@ -114,5 +116,7 @@ class ManualMigration {
 		} catch ( Exception $exception ) {
 			Give_Admin_Settings::add_error( 'clear-migration-failed', "Unable to reset migration. Error: {$exception->getMessage()}" );
 		}
+
+		Give_Admin_Settings::add_message( 'automatic-migration-cleared', "The $migrationToClear update was cleared and may be run again." );
 	}
 }
