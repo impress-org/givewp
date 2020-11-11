@@ -48,7 +48,12 @@ class ManualMigration {
 		$hasMigration = isset( $migrationToRun ) || isset( $migrationToClear );
 
 		if ( $hasMigration && ! current_user_can( 'manage_options' ) ) {
-			Give_Admin_Settings::add_error( 'invalid-migration-permissions', 'You do not have the permissions to manually run or clear migrations' );
+			give()->notices->register_notice(
+				[
+					'id'          => 'invalid-migration-permissions',
+					'description' => 'You do not have the permissions to manually run or clear migrations',
+				]
+			);
 
 			return;
 		}
@@ -59,15 +64,6 @@ class ManualMigration {
 
 		if ( isset( $migrationToClear ) ) {
 			$this->clearMigration( $migrationToClear );
-		}
-
-		if ( $hasMigration ) {
-			$uriDetails = parse_url( $_SERVER['REQUEST_URI'] );
-			parse_str( $uriDetails['query'], $queryData );
-
-			unset( $queryData['give-run-migration'], $queryData['give-clear-update'] );
-
-			wp_safe_redirect( $uriDetails['path'] . '?' . http_build_query( $queryData ) );
 		}
 	}
 
@@ -80,7 +76,12 @@ class ManualMigration {
 	 */
 	private function runMigration( $migrationId ) {
 		if ( ! $this->migrationsRegister->hasMigration( $migrationId ) ) {
-			Give_Admin_Settings::add_error( 'invalid-migration-id', "There is no migration with the ID: {$migrationId}" );
+			give()->notices->register_notice(
+				[
+					'id'          => 'invalid-migration-id',
+					'description' => "There is no migration with the ID: {$migrationId}",
+				]
+			);
 
 			return;
 		}
@@ -93,7 +94,12 @@ class ManualMigration {
 
 		$manualRunner( $migration );
 
-		Give_Admin_Settings::add_message( 'automatic-migration-run', "The {$migrationId} migration was manually triggered" );
+		give()->notices->register_notice(
+			[
+				'id'          => 'automatic-migration-run',
+				'description' => "The {$migrationId} migration was manually triggered",
+			]
+		);
 	}
 
 	/**
@@ -110,9 +116,19 @@ class ManualMigration {
 		try {
 			$clearUpgrade( $migrationToClear );
 		} catch ( Exception $exception ) {
-			Give_Admin_Settings::add_error( 'clear-migration-failed', "Unable to reset migration. Error: {$exception->getMessage()}" );
+			give()->notices->register_notice(
+				[
+					'id'          => 'clear-migration-failed',
+					'description' => "Unable to reset migration. Error: {$exception->getMessage()}",
+				]
+			);
 		}
 
-		Give_Admin_Settings::add_message( 'automatic-migration-cleared', "The {$migrationToClear} update was cleared and may be run again." );
+		give()->notices->register_notice(
+			[
+				'id'          => 'automatic-migration-cleared',
+				'description' => "The {$migrationToClear} update was cleared and may be run again.",
+			]
+		);
 	}
 }
