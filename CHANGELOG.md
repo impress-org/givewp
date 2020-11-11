@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2.9.2 - 2020-11-09
 
+### New
+
+-   Added support method of running migrations and clearing updates (#5447)
+
 ### Fixed
 
 -   Properly handle currency unit size for donations (#5440)
