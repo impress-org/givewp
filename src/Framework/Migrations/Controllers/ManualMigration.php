@@ -123,11 +123,14 @@ class ManualMigration {
 					'description' => "Unable to reset migration. Error: {$exception->getMessage()}",
 				]
 			);
+
+			return;
 		}
 
 		give()->notices->register_notice(
 			[
 				'id'          => 'automatic-migration-cleared',
+				'type'        => 'success',
 				'description' => "The {$migrationToClear} update was cleared and may be run again.",
 			]
 		);
