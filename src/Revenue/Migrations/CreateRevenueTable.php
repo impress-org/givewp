@@ -28,6 +28,7 @@ class CreateRevenueTable extends Migration {
 	/**
 	 * @inheritDoc
 	 *
+	 * @since 2.9.2 throw an exception if there is a SQL error
 	 * @since 2.9.0
 	 */
 	public function run() {
