@@ -97,6 +97,7 @@ class ManualMigration {
 		give()->notices->register_notice(
 			[
 				'id'          => 'automatic-migration-run',
+				'type'        => 'success',
 				'description' => "The {$migrationId} migration was manually triggered",
 			]
 		);
