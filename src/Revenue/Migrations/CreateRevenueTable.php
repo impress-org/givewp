@@ -28,8 +28,10 @@ class CreateRevenueTable extends Migration {
 	/**
 	 * @inheritDoc
 	 *
-	 * @since 2.9.2 throw an exception if there is a SQL error
 	 * @since 2.9.0
+	 * @since 2.9.2 throw an exception if there is a SQL error and add log
+	 *
+	 * @throws DatabaseMigrationException
 	 */
 	public function run() {
 		global $wpdb;
@@ -52,6 +54,7 @@ class CreateRevenueTable extends Migration {
 		dbDelta( $sql );
 
 		if ( ! empty( $wpdb->last_error ) ) {
+			give_record_log( 'Migration Failed', 'An error occurred creating the revenue table: ' . $wpdb->last_error, 0, 'update' );
 			throw new DatabaseMigrationException( 'An error occurred creating the revenue table: ' . $wpdb->last_error );
 		}
 	}

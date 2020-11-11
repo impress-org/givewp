@@ -10,6 +10,8 @@ class ManuallyRunMigration {
 	/**
 	 * Manually runs the migration and then marks the migration as finished if successful
 	 *
+	 * @param  Migration  $migration
+	 *
 	 * @since 2.9.2
 	 */
 	public function __invoke( Migration $migration ) {

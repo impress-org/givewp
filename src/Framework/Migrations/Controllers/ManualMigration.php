@@ -25,6 +25,8 @@ class ManualMigration {
 	/**
 	 * ManualMigration constructor.
 	 *
+	 * @param  MigrationsRegister  $migrationsRegister
+	 *
 	 * @since 2.9.2
 	 */
 	public function __construct( MigrationsRegister $migrationsRegister ) {
@@ -46,10 +48,7 @@ class ManualMigration {
 		$hasMigration = isset( $migrationToRun ) || isset( $migrationToClear );
 
 		if ( $hasMigration && ! current_user_can( 'manage_options' ) ) {
-			Give_Admin_Settings::add_error(
-				'invalid-migration-permissions',
-				__( 'You do not have the permissions to manually run or clear migrations', 'give' )
-			);
+			Give_Admin_Settings::add_error( 'invalid-migration-permissions', 'You do not have the permissions to manually run or clear migrations' );
 
 			return;
 		}
@@ -83,7 +82,7 @@ class ManualMigration {
 		if ( ! $this->migrationsRegister->hasMigration( $migrationId ) ) {
 			Give_Admin_Settings::add_error(
 				'invalid-migration-id',
-				__( "There is no migration with the ID: $migrationId", 'give' )
+				__( "There is no migration with the ID: {$migrationId}", 'give' )
 			);
 
 			return;
@@ -97,7 +96,7 @@ class ManualMigration {
 
 		$manualRunner( $migration );
 
-		Give_Admin_Settings::add_message( 'automatic-migration-run', "The $migrationId migration was manually triggered" );
+		Give_Admin_Settings::add_message( 'automatic-migration-run', "The {$migrationId} migration was manually triggered" );
 	}
 
 	/**
@@ -117,6 +116,6 @@ class ManualMigration {
 			Give_Admin_Settings::add_error( 'clear-migration-failed', "Unable to reset migration. Error: {$exception->getMessage()}" );
 		}
 
-		Give_Admin_Settings::add_message( 'automatic-migration-cleared', "The $migrationToClear update was cleared and may be run again." );
+		Give_Admin_Settings::add_message( 'automatic-migration-cleared', "The {$migrationToClear} update was cleared and may be run again." );
 	}
 }
