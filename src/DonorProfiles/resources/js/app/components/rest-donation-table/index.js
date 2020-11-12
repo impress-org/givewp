@@ -1,9 +1,21 @@
+import axios from 'axios';
 import { Fragment } from 'react';
 
 import Table from '../table';
 import DonationRow from './donation-row';
+import { getAPIRoot, getAPINonce } from '../../utils';
 
 const RESTDonationTable = () => {
+	axios.get( getAPIRoot() + 'give-api/v2/donor-profile/donation-history', {
+		headers: {
+			'X-WP-Nonce': getAPINonce(),
+		},
+	} )
+		.then( ( response ) => response.data );
+	// .then( ( data ) => {
+	// 	console.log( 'api!!', data );
+	// } );
+
 	return (
 		<Table
 			header={

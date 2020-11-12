@@ -69,6 +69,15 @@ class Model {
 			true
 		);
 
+		wp_localize_script(
+			'give-donor-profiles-app',
+			'giveDonorProfileData',
+			[
+				'apiRoot'  => esc_url_raw( rest_url() ),
+				'apiNonce' => wp_create_nonce( 'wp_rest' ),
+			]
+		);
+
 		wp_enqueue_style(
 			'give-google-font-montserrat',
 			'https://fonts.googleapis.com/css?family=Montserrat:500,500i,600,600i,700,700i&display=swap',

@@ -4,7 +4,7 @@ namespace Give\DonorProfiles\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
-use Give\Onboarding\FormRepository;
+use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
 
 /**
  * @since 2.10.0
@@ -32,9 +32,9 @@ class DonationHistoryRoute implements RestRoute {
 				'schema' => [ $this, 'getSchema' ],
 			]
 		);
-    }
-    
-    /**
+	}
+
+	/**
 	 * @param WP_REST_Request $request
 	 *
 	 * @return array
@@ -43,62 +43,7 @@ class DonationHistoryRoute implements RestRoute {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 		return [
-			'data' => [
-				'donations' => [
-                    '2' => [
-                        'form' => [
-                            'title' => 'Save the Trees',
-                            'id' => '3',
-                        ],
-                        'payment' => [
-                            'amount' => '33.00',
-                            'currency' => 'USD',
-                            'fee' => '5.00',
-                            'total' => '38.00',
-                            'method' => 'paypal',
-                            'status' => 'pending',
-                            'date' => '04-01-2020 12:00:00'
-                        ],
-                        'donor' => [
-                            'name' => 'Ben Smith',
-                            'email' => 'bensmith@gmail.com',
-                            'address' => [
-                                'street' => '875 26th St',
-                                'city' => 'San Diego',
-                                'state' => 'CA',
-                                'zipcode' => '92081',
-                                'country' => 'USA',
-                            ]
-                        ]
-                    ],
-                    '7' => [
-                        'form' => [
-                            'title' => 'Save the Whales',
-                            'id' => '5',
-                        ],
-                        'payment' => [
-                            'amount' => '30.00',
-                            'currency' => 'USD',
-                            'fee' => '5.00',
-                            'total' => '35.00',
-                            'method' => 'paypal',
-                            'status' => 'pending',
-                            'date' => '04-04-2020 12:00:00'
-                        ],
-                        'donor' => [
-                            'name' => 'Ben Smith',
-                            'email' => 'bensmith@gmail.com',
-                            'address' => [
-                                'street' => '875 26th St',
-                                'city' => 'San Diego',
-                                'state' => 'CA',
-                                'zipcode' => '92081',
-                                'country' => 'USA',
-                            ]
-                        ]
-                    ],
-                ],
-			],
+			'data' => $this->getData(),
 		];
 	}
 
@@ -119,5 +64,76 @@ class DonationHistoryRoute implements RestRoute {
 				// ...
 			],
 		];
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 2.10.0
+	 */
+	protected function getData() {
+
+		$repository = new DonationsRepository();
+
+		return [
+			'donations'      => $repository->getDonations( 1 ),
+			'donationsCount' => $repository->getDonationCount( 1 ),
+			'revenue'        => $repository->getRevenue( 1 ),
+		];
+
+		// return [
+		//     '2' => [
+		//         'form' => [
+		//             'title' => 'Save the Trees',
+		//             'id' => '3',
+		//         ],
+		//         'payment' => [
+		//             'amount' => '33.00',
+		//             'currency' => 'USD',
+		//             'fee' => '5.00',
+		//             'total' => '38.00',
+		//             'method' => 'paypal',
+		//             'status' => 'pending',
+		//             'date' => '04-01-2020 12:00:00'
+		//         ],
+		//         'donor' => [
+		//             'name' => 'Ben Smith',
+		//             'email' => 'bensmith@gmail.com',
+		//             'address' => [
+		//                 'street' => '875 26th St',
+		//                 'city' => 'San Diego',
+		//                 'state' => 'CA',
+		//                 'zipcode' => '92081',
+		//                 'country' => 'USA',
+		//             ]
+		//         ]
+		//     ],
+		//     '7' => [
+		//         'form' => [
+		//             'title' => 'Save the Whales',
+		//             'id' => '5',
+		//         ],
+		//         'payment' => [
+		//             'amount' => '30.00',
+		//             'currency' => 'USD',
+		//             'fee' => '5.00',
+		//             'total' => '35.00',
+		//             'method' => 'paypal',
+		//             'status' => 'pending',
+		//             'date' => '04-04-2020 12:00:00'
+		//         ],
+		//         'donor' => [
+		//             'name' => 'Ben Smith',
+		//             'email' => 'bensmith@gmail.com',
+		//             'address' => [
+		//                 'street' => '875 26th St',
+		//                 'city' => 'San Diego',
+		//                 'state' => 'CA',
+		//                 'zipcode' => '92081',
+		//                 'country' => 'USA',
+		//             ]
+		//         ]
+		//     ],
+		// ];
 	}
 }
