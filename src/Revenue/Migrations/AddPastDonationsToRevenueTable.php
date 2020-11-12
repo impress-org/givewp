@@ -23,10 +23,13 @@ use Exception;
 class AddPastDonationsToRevenueTable extends Migration {
 	/**
 	 * Register background update.
+	 *
+	 * @param Give_Updates $give_updates
+	 *
 	 * @since 2.9.0
 	 */
-	public function register() {
-		Give_Updates::get_instance()->register(
+	public function register( $give_updates ) {
+		$give_updates->register(
 			[
 				'id'       => self::id(),
 				'version'  => '2.9.0',
