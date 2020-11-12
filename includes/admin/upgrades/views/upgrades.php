@@ -39,7 +39,7 @@ $give_updates = Give_Updates::get_instance();
 			?>
 			<?php
 			$is_doing_updates = $give_updates->is_doing_updates();
-			$db_update_url    = add_query_arg( array( 'type' => 'database' ) );
+			$db_update_url    = add_query_arg( [ 'type' => 'database' ] );
 			$resume_updates   = get_option( 'give_doing_upgrade' );
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
@@ -83,7 +83,15 @@ $give_updates = Give_Updates::get_instance();
 									<span
 										class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
 										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
-											&nbsp<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
+											&nbsp
+											<?php
+											printf(
+												'%1$s <br> %2$s <a href="http://docs.givewp.com/troubleshooting-db-updates" target="_blank">%3$s &raquo;</a>',
+												esc_html__( 'An unexpected issue occurred during the database update which caused it to stop automatically.', 'give' ),
+												esc_html__( 'Please contact support for assistance.', 'give' ),
+												esc_html__( 'Read More', 'give' )
+											);
+											?>
 										<?php else : ?>
 											<?php _e( 'The updates have been paused.', 'give' ); ?>
 										<?php endif; ?>
@@ -148,9 +156,9 @@ $give_updates = Give_Updates::get_instance();
 			?>
 			<?php
 			$plugin_update_url = add_query_arg(
-				array(
+				[
 					'plugin_status' => 'give',
-				),
+				],
 				admin_url( '/plugins.php' )
 			);
 			?>
