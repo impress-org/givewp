@@ -2,6 +2,7 @@
 namespace Give\Revenue\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Revenue\Repositories\Revenue;
 use Give\ValueObjects\Money;
 use Give_Updates;
@@ -74,23 +75,8 @@ class AddPastDonationsToRevenueTable extends Migration {
 					'amount'      => Money::of( $amount, give_get_option( 'currency' ) )->getMinorAmount(),
 				];
 
-				try {
-					$revenueRepository->insert( $revenueData );
-
-				} catch ( Exception $e ) {
-					give()->logs->add(
-						'Update Error',
-						sprintf(
-							'Unable to create revenue for this data: ' . "\n" . '%1$s' . "\n" . '%2$s',
-							print_r( $revenueData, true ),
-							$e->getMessage()
-						),
-						0,
-						'update'
-					);
-
-					continue;
-				}
+				$revenueRepository->insert( $revenueData );
+				$this->pauseUpdateOnError( $give_updates );
 			}
 
 			wp_reset_postdata();
@@ -113,5 +99,34 @@ class AddPastDonationsToRevenueTable extends Migration {
 	 */
 	public static function timestamp() {
 		return strtotime( '2019-09-24' );
+	}
+
+	/**
+	 * Pause update process and add log.
+	 *
+	 * @param Give_Updates $give_updates
+	 *
+	 * @since 2.9.2
+	 */
+	private function pauseUpdateOnError( $give_updates ) {
+		global $wpdb;
+
+		if ( ! $wpdb->last_error ) {
+			return;
+		}
+
+		give()->logs->add(
+			'Update Error',
+			sprintf(
+				'An error occurred inserting data into the revenue table: ' . "\n" . '%1$s',
+				$wpdb->last_error
+			),
+			0,
+			'update'
+		);
+
+		$give_updates->__pause_db_update( true );
+		update_option( 'give_upgrade_error', 1, false );
+		wp_die();
 	}
 }
