@@ -27,9 +27,6 @@ const RESTSubscriptionTable = () => {
 				<Fragment>
 					<SubscriptionRow />
 					<SubscriptionRow />
-					<SubscriptionRow />
-					<SubscriptionRow />
-					<SubscriptionRow />
 				</Fragment>
 			}
 

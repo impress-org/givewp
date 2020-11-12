@@ -7,8 +7,8 @@ import { registerRecurringDonationsTab } from './recurring-donations';
 
 export const registerDefaultTabs = () => {
 	registerDashboardTab();
-	registerAnnualReceiptsTab();
 	registerDonationHistoryTab();
 	registerRecurringDonationsTab();
+	registerAnnualReceiptsTab();
 	registerEditProfileTab();
 };
