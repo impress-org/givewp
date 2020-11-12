@@ -155,12 +155,7 @@ $give_updates = Give_Updates::get_instance();
 		if ( ! empty( $plugin_updates ) ) :
 			?>
 			<?php
-			$plugin_update_url = add_query_arg(
-				[
-					'plugin_status' => 'give',
-				],
-				admin_url( '/plugins.php' )
-			);
+			$plugin_update_url = add_query_arg( [ 'plugin_status' => 'give' ], admin_url( '/plugins.php' ) );
 			?>
 			<div id="give-plugin-updates">
 				<div class="postbox-container">
