@@ -1,6 +1,7 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
 
 /**
@@ -13,10 +14,14 @@ class TrackingServiceProvider implements ServiceProvider {
 	/**
 	 * @inheritdoc
 	 */
-	public function register() {}
+	public function register() {
+		give()->singleton( AdminSettings::class );
+	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function boot() {}
+	public function boot() {
+		Hooks::addAction( 'admin_init', AdminSettings::class, 'register' );
+	}
 }
