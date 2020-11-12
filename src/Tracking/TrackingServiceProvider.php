@@ -4,12 +4,12 @@ namespace Give\Tracking;
 use Give\ServiceProviders\ServiceProvider;
 
 /**
- * Class TracingServiceProvider
+ * Class TrackingServiceProvider
  * @package Give\Tracking
  *
  * @since 2.10.0
  */
-class TracingServiceProvider implements ServiceProvider {
+class TrackingServiceProvider implements ServiceProvider {
 	/**
 	 * @inheritdoc
 	 */

@@ -51,7 +51,7 @@ use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Tracking\TracingServiceProvider;
+use Give\Tracking\TrackingServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -143,7 +143,7 @@ final class Give {
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
-		TracingServiceProvider::class,
+		TrackingServiceProvider::class,
 	];
 
 	/**
