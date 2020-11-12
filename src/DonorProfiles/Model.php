@@ -68,5 +68,19 @@ class Model {
 			GIVE_VERSION,
 			true
 		);
+
+		wp_enqueue_style(
+			'give-google-font-montserrat',
+			'https://fonts.googleapis.com/css?family=Montserrat:500,500i,600,600i,700,700i&display=swap',
+			[],
+			null
+		);
+
+		wp_enqueue_style(
+			'give-donor-profiles-app',
+			GIVE_PLUGIN_URL . 'assets/dist/css/donor-profiles-app.css',
+			[ 'give-google-font-montserrat' ],
+			GIVE_VERSION
+		);
 	}
 }
