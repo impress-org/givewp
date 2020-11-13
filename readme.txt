@@ -238,6 +238,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 
 = 2.9.2: November 9th, 2020 =
+* New: Added a method for manually triggering migrations to re-attempt failed migrations
 * Fixed: Resolved an issue when creating donations for currencies with different decimal ranges
 * Fixed: Free add-ons no longer cause license errors
 * Fixed: Resolved issue that prevented some donors from updating their subscription card or amount
@@ -245,6 +246,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fixed: Recover donation form to be ready for a retry after Stripe error
 * Fixed: Multi-step form now reflects form color when embedded on a page
 * Fixed: MultiForm Goal shortcode now supports comma separated lists
+* Fixed: Resolved issue with revenue table migration failing on MyISAM tables
 
 = 2.9.1: October 28th, 2020 =
 * Fixed: Restore PayPal Standard functionality that was affected by a name change in GiveWP 2.9.0 (#5414)
