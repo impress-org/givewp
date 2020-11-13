@@ -5,7 +5,7 @@ const Content = () => {
 	return (
 		<Fragment>
 			<Heading>
-				Annual Receipt
+				Annual Receipts
 			</Heading>
 		</Fragment>
 	);

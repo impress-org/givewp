@@ -3,7 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
 
-const DonationReceipt = () => {
+const DonationReceipt = ( { donation } ) => {
+	if ( donation === undefined ) {
+		return null;
+	}
+
+	const { donor, payment } = donation;
+
 	return (
 		<Fragment>
 			<div className="give-donor-profile-donation-receipt__table">
@@ -12,7 +18,7 @@ const DonationReceipt = () => {
 						<FontAwesomeIcon icon="user" /> Donor Name:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						Robin Hood
+						{ `${ donor.first_name } ${ donor.last_name }` }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
@@ -20,7 +26,7 @@ const DonationReceipt = () => {
 						<FontAwesomeIcon icon="envelope" /> Email Address:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						robin@sherwood.net
+						{ donor.email }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
@@ -28,19 +34,19 @@ const DonationReceipt = () => {
 						<FontAwesomeIcon icon="calendar" /> Donation Date:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						October 21, 2020
+						{ payment.date }
 					</div>
 				</div>
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="globe" /> Address:
+				{ donor.address && (
+					<div className="give-donor-profile-donation-receipt__row">
+						<div className="give-donor-profile-donation-receipt__detail">
+							<FontAwesomeIcon icon="globe" /> Address:
+						</div>
+						<div className="give-donor-profile-donation-receipt__value">
+							{ donor.address }
+						</div>
 					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						12 King John Way <br />
-						Sherwood Forest, GB <br />
-						UK
-					</div>
-				</div>
+				) }
 			</div>
 			<div className="give-donor-profile-donation-receipt__table">
 				<div className="give-donor-profile-donation-receipt__row">
@@ -48,7 +54,7 @@ const DonationReceipt = () => {
 						Payment Method:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						Credit Card
+						{ payment.method }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
@@ -56,7 +62,7 @@ const DonationReceipt = () => {
 						Payment Status:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						Pending
+						{ payment.status }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
@@ -64,7 +70,7 @@ const DonationReceipt = () => {
 						Payment Amount:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						$50
+						{ payment.amount }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
@@ -72,7 +78,7 @@ const DonationReceipt = () => {
 						Processing Fee:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						$5
+						{ payment.fee }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row give-donor-profile-donation-receipt__row--footer">
@@ -80,7 +86,7 @@ const DonationReceipt = () => {
 						Donation Total:
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						$55
+						{ payment.total }
 					</div>
 				</div>
 			</div>

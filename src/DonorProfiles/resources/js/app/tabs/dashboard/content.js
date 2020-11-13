@@ -1,5 +1,5 @@
 import Heading from '../../components/heading';
-import RESTDonationTable from '../../components/rest-donation-table';
+import DashboardContent from '../../components/dashboard-content';
 import Stats from './stats';
 import { Fragment } from 'react';
 
@@ -10,10 +10,7 @@ const Content = () => {
 				Your Giving Stats
 			</Heading>
 			<Stats />
-			<Heading icon="calendar-alt">
-				Recent Donations
-			</Heading>
-			<RESTDonationTable />
+			<DashboardContent />
 		</Fragment>
 	);
 };
