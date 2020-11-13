@@ -58,10 +58,21 @@ class TotalIncome extends Endpoint {
 		// Subtract interval to set up period start
 		date_sub( $periodStart, $interval );
 
-		while ( $periodStart < $end ) {
+		$totalIncomeForPeriod = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
-			$incomeForPeriod = $this->get_income( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
-			$time            = $periodEnd->format( 'Y-m-d H:i:s' );
+		$count = 0;
+		while ( $periodStart < $end ) {
+			$count++;
+
+			$incomeForPeriod = array_filter(
+				$totalIncomeForPeriod,
+				function( $income ) {
+					return strtotime( $income->date ) > strtotime( $start->format( 'Y-m-d H:i:s' ) )
+					&& strtotime( $income->date ) <= strtotime( $end->format( 'Y-m-d H:i:s' ) );
+				}
+			);
+
+			$time = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			switch ( $intervalStr ) {
 				case 'P1D':
@@ -105,8 +116,7 @@ class TotalIncome extends Endpoint {
 			$tooltips = array_slice( $tooltips, 1 );
 		}
 
-		$totalIncomeForPeriod = $this->get_income( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
-		$trend                = $this->get_trend( $start, $end, $income );
+		$trend = $this->get_trend( $start, $end, $income, $totalIncomeForPeriod );
 
 		$diff = date_diff( $start, $end );
 		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
@@ -135,7 +145,7 @@ class TotalIncome extends Endpoint {
 
 	}
 
-	public function get_trend( $start, $end, $income ) {
+	public function get_trend( $start, $end, $income, $totalIncomeForPeriod ) {
 
 		$interval = $start->diff( $end );
 
@@ -144,8 +154,22 @@ class TotalIncome extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevIncome    = $this->get_income( $prevStart->format( 'Y-m-d' ), $prevEnd->format( 'Y-m-d' ) );
-		$currentIncome = $this->get_income( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
+		// $prevIncome    = $this->get_income( $prevStart->format( 'Y-m-d' ), $prevEnd->format( 'Y-m-d' ) );
+		$prevIncome = array_filter(
+			$totalIncomeForPeriod,
+			function( $income ) {
+				return strtotime( $income->date ) > strtotime( $prevStart->format( 'Y-m-d H:i:s' ) )
+				&& strtotime( $income->date ) <= strtotime( $prevEnd->format( 'Y-m-d H:i:s' ) );
+			}
+		);
+		// $currentIncome = $this->get_income( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) );
+		$currentIncome = array_filter(
+			$totalIncomeForPeriod,
+			function( $income ) {
+				return strtotime( $income->date ) > strtotime( $start->format( 'Y-m-d H:i:s' ) )
+				&& strtotime( $income->date ) <= strtotime( $end->format( 'Y-m-d H:i:s' ) );
+			}
+		);
 
 		// Set default trend to 0
 		$trend = 0;

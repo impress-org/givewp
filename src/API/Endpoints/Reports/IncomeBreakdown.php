@@ -53,9 +53,11 @@ class IncomeBreakdown extends Endpoint {
 		// Subtract interval to set up period start
 		date_sub( $periodStart, $interval );
 
+		$paymentObjects = $this->getPayments( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+
 		while ( $periodStart < $end ) {
 
-			$values = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$values = $this->get_values( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ), $paymentObjects );
 
 			$incomeForPeriod  = $values['income'];
 			$donorsForPeriod  = $values['donors'];
@@ -93,9 +95,7 @@ class IncomeBreakdown extends Endpoint {
 
 	}
 
-	public function get_values( $startStr, $endStr ) {
-
-		$paymentObjects = $this->getPayments( $startStr, $endStr );
+	public function get_values( $startStr, $endStr, $paymentObjects ) {
 
 		$income      = 0;
 		$refundTotal = 0;

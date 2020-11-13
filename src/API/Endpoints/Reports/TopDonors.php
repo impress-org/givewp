@@ -23,46 +23,53 @@ class TopDonors extends Endpoint {
 
 	public function get_data( $start, $end ) {
 
-		$paymentObjects = $this->getPayments( $start->format( 'Y-m-d' ), $end->format( 'Y-m-d 23:i:s' ), 'date', -1 );
+		global $wpdb;
+		$donors = $wpdb->get_results(
+			"
+			SELECT
+				SUM( donationAmount.meta_value ) as earnings,
+				COUNT( donation.ID ) as donations,
+				donorID.meta_value as donor_id,
+				donor.name,
+				donor.email
+			FROM {$wpdb->prefix}posts as donation
+			JOIN {$wpdb->prefix}give_donationmeta as donationMode
+				ON donation.ID = donationMode.donation_id
+				AND donationMode.meta_key = '_give_payment_mode'
+				AND donationMode.meta_value = 'test'
+			JOIN {$wpdb->prefix}give_donationmeta as donationAmount
+				ON donation.ID = donationAmount.donation_id
+				AND donationAmount.meta_key = '_give_payment_total'
+			JOIN {$wpdb->prefix}give_donationmeta as donorID
+				ON donation.ID = donorID.donation_id
+				AND donorID.meta_key = '_give_payment_donor_id'
+			JOIN {$wpdb->prefix}give_donors as donor
+				ON donorID.meta_value = donor.id
+			WHERE donation.post_type = 'give_payment'
+				AND donation.post_date BETWEEN '2020-11-6' AND '2020-11-13'
+			GROUP BY donor_id
+			ORDER BY earnings DESC
+		",
+			ARRAY_A
+		);
 
-		$donors = [];
-
-		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->status === 'publish' || $paymentObject->status === 'give_subscription' ) {
-				$donors[ $paymentObject->donor_id ]['type']      = 'donor';
-				$donors[ $paymentObject->donor_id ]['earnings']  = isset( $donors[ $paymentObject->donor_id ]['earnings'] ) ? $donors[ $paymentObject->donor_id ]['earnings'] += $paymentObject->total : $paymentObject->total;
-				$donors[ $paymentObject->donor_id ]['total']     = give_currency_filter(
-					give_format_amount( $donors[ $paymentObject->donor_id ]['earnings'], [ 'sanitize' => false ] ),
+		$donors = array_map(
+			function( $donor ) {
+				$donor['type']  = 'donor';
+				$donor['total'] = give_currency_filter(
+					give_format_amount( $donor['earnings'], [ 'sanitize' => false ] ),
 					[
 						'currency_code'   => $this->currency,
 						'decode_currency' => true,
 						'sanitize'        => false,
 					]
 				);
-				$donors[ $paymentObject->donor_id ]['donations'] = isset( $donors[ $paymentObject->donor_id ]['donations'] ) ? $donors[ $paymentObject->donor_id ]['donations'] += 1 : 1;
-				$countLabel                                      = _n( 'Donation', 'Donations', $donors[ $paymentObject->donor_id ]['donations'], 'give' );
-				$donors[ $paymentObject->donor_id ]['count']     = $donors[ $paymentObject->donor_id ]['donations'] . ' ' . $countLabel;
-				$donors[ $paymentObject->donor_id ]['name']      = $paymentObject->first_name . ' ' . $paymentObject->last_name;
-				$donors[ $paymentObject->donor_id ]['email']     = $paymentObject->email;
-				$donors[ $paymentObject->donor_id ]['image']     = give_validate_gravatar( $paymentObject->email ) ? get_avatar_url( $paymentObject->email, 60 ) : null;
-				$donors[ $paymentObject->donor_id ]['url']       = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $paymentObject->donor_id ) );
-			}
-		}
-
-		$sorted = usort(
-			$donors,
-			function ( $a, $b ) {
-				if ( $a['earnings'] == $b['earnings'] ) {
-					return 0;
-				}
-				return ( $a['earnings'] > $b['earnings'] ) ? -1 : 1;
-			}
+				$donor['image'] = give_validate_gravatar( $donor['email'] ) ? get_avatar_url( $donor['email'], 60 ) : null;
+				$donor['url']   = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . absint( $donor['donor_id'] ) );
+				return $donor;
+			},
+			$donors
 		);
-
-		if ( $sorted === true ) {
-			$donors = array_slice( $donors, 0, 25 );
-			$donors = array_values( $donors );
-		}
 
 		return $donors;
 
