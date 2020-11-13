@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 -   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
 -   Multi-Form Goal Shortcode now supports comma separated lists (#5432)
+-   Remove foreign keys from revenue table for MyISAM support (#5447)
 
 ### Changed
 
