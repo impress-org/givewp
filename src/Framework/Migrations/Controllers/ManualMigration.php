@@ -25,9 +25,10 @@ class ManualMigration {
 	/**
 	 * ManualMigration constructor.
 	 *
-	 * @param  MigrationsRegister  $migrationsRegister
-	 *
 	 * @since 2.9.2
+	 *
+	 * @param MigrationsRegister $migrationsRegister
+	 *
 	 */
 	public function __construct( MigrationsRegister $migrationsRegister ) {
 		$this->migrationsRegister = $migrationsRegister;
@@ -92,15 +93,25 @@ class ManualMigration {
 		/** @var ManuallyRunMigration $manualRunner */
 		$manualRunner = give( ManuallyRunMigration::class );
 
-		$manualRunner( $migration );
+		try {
+			$manualRunner( $migration );
 
-		give()->notices->register_notice(
-			[
-				'id'          => 'automatic-migration-run',
-				'type'        => 'success',
-				'description' => "The {$migrationId} migration was manually triggered",
-			]
-		);
+			give()->notices->register_notice(
+				[
+					'id'          => 'automatic-migration-run',
+					'type'        => 'success',
+					'description' => "The {$migrationId} migration was manually triggered",
+				]
+			);
+		} catch ( Exception $exception ) {
+
+			give()->notices->register_notice(
+				[
+					'id'          => 'automatic-migration-run-failure',
+					'description' => "The manually triggered {$migrationId} migration ran but failed",
+				]
+			);
+		}
 	}
 
 	/**
