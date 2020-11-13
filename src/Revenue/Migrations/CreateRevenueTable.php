@@ -4,6 +4,7 @@ namespace Give\Revenue\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
+use Give\Helpers\DB;
 use Give\Helpers\Table;
 
 class CreateRevenueTable extends Migration {
@@ -36,26 +37,23 @@ class CreateRevenueTable extends Migration {
 	public function run() {
 		global $wpdb;
 
-		$charset_collate     = $wpdb->get_charset_collate();
-		$tableName           = "{$wpdb->prefix}give_revenue";
-		$referencedTableName = "{$wpdb->prefix}posts";
+		$charset_collate = $wpdb->get_charset_collate();
+		$tableName       = "{$wpdb->prefix}give_revenue";
 
 		$sql = "CREATE TABLE {$tableName} (
   			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  			donation_id bigint(20) UNSIGNED NOT NULL,
-  			form_id bigint(20) UNSIGNED NOT NULL,
+  			donation_id bigint UNSIGNED NOT NULL,
+  			form_id bigint UNSIGNED NOT NULL,
   			amount int UNSIGNED NOT NULL,
   			PRIMARY KEY  (id),
-  			FOREIGN KEY (donation_id) REFERENCES {$referencedTableName}(ID) ON DELETE CASCADE,
-  			FOREIGN KEY (form_id) REFERENCES {$referencedTableName}(ID)
+  			FOREIGN KEY (donation_id) REFERENCES {$wpdb->posts}(ID) ON DELETE CASCADE,
+  			FOREIGN KEY (form_id) REFERENCES {$wpdb->posts}(ID)
 		) {$charset_collate};";
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
+		$check = DB::delta( $sql );
 
-		if ( ! empty( $wpdb->last_error ) ) {
-			give_record_log( 'Migration Failed', 'An error occurred creating the revenue table: ' . $wpdb->last_error, 0, 'update' );
-			throw new DatabaseMigrationException( 'An error occurred creating the revenue table: ' . $wpdb->last_error );
+		if ( $check->has_errors() ) {
+			throw new DatabaseMigrationException( 'An error occurred creating the revenue table: ' . print_r( $check->get_error_messages(), true ) );
 		}
 	}
 }
