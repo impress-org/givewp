@@ -2,9 +2,10 @@
 
 namespace Give\Revenue\Migrations;
 
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
-use Give\Helpers\DB;
+use Give\Framework\Database\DB;
 use Give\Helpers\Table;
 
 class CreateRevenueTable extends Migration {
@@ -45,15 +46,13 @@ class CreateRevenueTable extends Migration {
   			donation_id bigint UNSIGNED NOT NULL,
   			form_id bigint UNSIGNED NOT NULL,
   			amount int UNSIGNED NOT NULL,
-  			PRIMARY KEY  (id),
-  			FOREIGN KEY (donation_id) REFERENCES {$wpdb->posts}(ID) ON DELETE CASCADE,
-  			FOREIGN KEY (form_id) REFERENCES {$wpdb->posts}(ID)
+  			PRIMARY KEY  (id)
 		) {$charset_collate};";
 
-		$check = DB::delta( $sql );
-
-		if ( $check->has_errors() ) {
-			throw new DatabaseMigrationException( 'An error occurred creating the revenue table: ' . print_r( $check->get_error_messages(), true ) );
+		try {
+			DB::delta( $sql );
+		} catch ( DatabaseQueryException $exception ) {
+			throw new DatabaseMigrationException( 'An error occurred creating the revenue table: ' . print_r( $exception->getQueryErrors(), true ) );
 		}
 	}
 }
