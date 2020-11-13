@@ -42,9 +42,7 @@ class DonationHistoryRoute implements RestRoute {
 	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-		return [
-			'data' => $this->getData(),
-		];
+		return $this->getData();
 	}
 
 	/**

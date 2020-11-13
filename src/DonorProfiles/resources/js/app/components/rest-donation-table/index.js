@@ -1,20 +1,31 @@
 import axios from 'axios';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 import Table from '../table';
 import DonationRow from './donation-row';
 import { getAPIRoot, getAPINonce } from '../../utils';
 
 const RESTDonationTable = () => {
-	axios.get( getAPIRoot() + 'give-api/v2/donor-profile/donation-history', {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
-		.then( ( response ) => response.data );
-	// .then( ( data ) => {
-	// 	console.log( 'api!!', data );
-	// } );
+	const [ donations, setDonations ] = useState( [] );
+	const [ donationRows, setDonationRows ] = useState( null );
+
+	useEffect( () => {
+		axios.get( getAPIRoot() + 'give-api/v2/donor-profile/donation-history', {
+			headers: {
+				'X-WP-Nonce': getAPINonce(),
+			},
+		} )
+			.then( ( response ) => response.data )
+			.then( ( data ) => {
+				setDonations( data.donations );
+			} );
+	}, [] );
+
+	useEffect( () => {
+		if ( donations ) {
+			setDonationRows( Object.entries( donations ).map( ( donation, index ) => <DonationRow donation={ donation } key={ index } /> ) );
+		}
+	}, [ donations ] );
 
 	return (
 		<Table
@@ -37,11 +48,7 @@ const RESTDonationTable = () => {
 
 			rows={
 				<Fragment>
-					<DonationRow />
-					<DonationRow />
-					<DonationRow />
-					<DonationRow />
-					<DonationRow />
+					{ donationRows }
 				</Fragment>
 			}
 

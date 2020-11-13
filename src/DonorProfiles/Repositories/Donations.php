@@ -181,6 +181,6 @@ class Donations {
 	 * @return array Donor info
 	 */
 	protected function getDonorInfo( $payment ) {
-		return $payment->donor_info;
+		return $payment->user_info;
 	}
 }
