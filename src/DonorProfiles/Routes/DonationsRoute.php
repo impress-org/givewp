@@ -72,12 +72,13 @@ class DonationsRoute implements RestRoute {
 	protected function getData() {
 
 		$repository = new DonationsRepository();
+		$donorId    = get_current_user_id();
 
 		return [
-			'donations' => $repository->getDonations( 1 ),
-			'count'     => $repository->getDonationCount( 1 ),
-			'revenue'   => $repository->getRevenue( 1 ),
-			'average'   => $repository->getAverageRevenue( 1 ),
+			'donations' => $repository->getDonations( $donorId ),
+			'count'     => $repository->getDonationCount( $donorId ),
+			'revenue'   => $repository->getRevenue( $donorId ),
+			'average'   => $repository->getAverageRevenue( $donorId ),
 		];
 	}
 }
