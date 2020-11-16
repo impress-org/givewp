@@ -1,30 +1,21 @@
-import axios from 'axios';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment } from 'react';
 
 import DonationTable from '../../components/donation-table';
 import Heading from '../../components/heading';
 
-import { getAPIRoot, getAPINonce } from '../../utils';
+import { useSelector } from './hooks';
 
 const DashboardContent = () => {
-	const [ donations, setDonations ] = useState( {} );
-	useEffect( () => {
-		axios.get( getAPIRoot() + 'give-api/v2/donor-profile/donations', {
-			headers: {
-				'X-WP-Nonce': getAPINonce(),
-			},
-		} )
-			.then( ( response ) => response.data )
-			.then( ( data ) => {
-				setDonations( data.donations );
-			} );
-	}, [] );
+	const donations = useSelector( ( state ) => state.donations );
+	const querying = useSelector( ( state ) => state.querying );
 
 	return <Fragment>
 		<Heading icon="calendar-alt">
-			Recent Donations
+			{ querying ? 'Loading...' : 'Recent Donations' }
 		</Heading>
-		<DonationTable donations={ donations } />
+		{ ! querying && (
+			<DonationTable donations={ donations } />
+		) }
 	</Fragment>;
 };
 export default DashboardContent;

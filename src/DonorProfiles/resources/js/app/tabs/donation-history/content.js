@@ -1,32 +1,18 @@
-import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment } from 'react';
 
 import Heading from '../../components/heading';
 import DonationReceipt from '../../components/donation-receipt';
 import DonationTable from '../../components/donation-table';
 
-import { getAPIRoot, getAPINonce } from '../../utils';
+import { useSelector } from './hooks';
 
 const Content = () => {
+	const donations = useSelector( ( state ) => state.donations );
+	const querying = useSelector( ( state ) => state.querying );
+
 	const location = useLocation();
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
-	const [ querying, setQuerying ] = useState( false );
-
-	const [ donations, setDonations ] = useState( {} );
-	useEffect( () => {
-		setQuerying( true );
-		axios.get( getAPIRoot() + 'give-api/v2/donor-profile/donations', {
-			headers: {
-				'X-WP-Nonce': getAPINonce(),
-			},
-		} )
-			.then( ( response ) => response.data )
-			.then( ( data ) => {
-				setDonations( data.donations );
-				setQuerying( false );
-			} );
-	}, [] );
 
 	if ( id ) {
 		return querying ? (
@@ -50,6 +36,7 @@ const Content = () => {
 			</Fragment>
 		);
 	}
+
 	return querying ? (
 		<Fragment>
 			<Heading>
