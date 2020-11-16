@@ -1,6 +1,7 @@
 .give-donor-profile-desktop-layout {
 	display: grid;
 	grid-template-columns: 240px auto;
+	grid-template-rows: auto 1fr;
 	min-height: 700px;
 
 	background: #fff;
