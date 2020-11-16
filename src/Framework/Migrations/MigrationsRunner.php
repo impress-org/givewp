@@ -41,7 +41,7 @@ class MigrationsRunner {
 	public function __construct( MigrationsRegister $migrationRegister ) {
 		$this->migrationRegister = $migrationRegister;
 
-		$this->completedMigrations = get_option( self::MIGRATION_OPTION );
+		$this->completedMigrations = get_option( self::MIGRATION_OPTION, [] );
 	}
 
 	/**
