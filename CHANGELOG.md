@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Corrected a warning being thrown by the MigrationRunner (#5457)
+
 ## 2.9.2 - 2020-11-09
 
 ### New
