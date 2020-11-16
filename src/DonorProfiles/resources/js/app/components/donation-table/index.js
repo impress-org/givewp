@@ -1,12 +1,27 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import Table from '../table';
 import DonationRow from './donation-row';
 
-const DonationTable = ( { donations } ) => {
+const DonationTable = ( { donations, perPage } ) => {
+	const [ page, setPage ] = useState( 1 );
+
 	let donationRows = [];
+	let start = 0;
+	let end = perPage;
+	let lastPage = 1;
+
 	if ( donations ) {
-		donationRows = Object.entries( donations ).map( ( donation, index ) => <DonationRow donation={ donation } key={ index } /> );
+		start = ( page - 1 ) * perPage;
+		end = start + perPage <= Object.entries( donations ).length ? start + perPage : Object.entries( donations ).length;
+		lastPage = Math.ceil( Object.entries( donations ).length / perPage );
+
+		donationRows = Object.entries( donations ).reduce( ( rows, donation, index ) => {
+			if ( index >= start && index < end ) {
+				rows.push( <DonationRow donation={ donation } /> );
+			}
+			return rows;
+		}, [] );
 	}
 
 	return (
@@ -37,10 +52,19 @@ const DonationTable = ( { donations } ) => {
 			footer={
 				<Fragment>
 					<div className="give-donor-profile-table__footer-text">
-						Showing 1-5 of 10 Donations
+						{ donations && `Showing ${ start + 1 } - ${ end } of ${ Object.entries( donations ).length } Donations` }
 					</div>
 					<div className="give-donor-profile-table__footer-nav">
-						Buttons
+						{ page - 1 >= 1 && (
+							<a onClick={ () => setPage( page - 1 ) }>
+								Prev
+							</a>
+						) }
+						{ page <= lastPage && (
+							<a onClick={ () => setPage( page + 1 ) }>
+								Next
+							</a>
+						) }
 					</div>
 				</Fragment>
 			}

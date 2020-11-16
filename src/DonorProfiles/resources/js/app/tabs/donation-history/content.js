@@ -37,7 +37,7 @@ const Content = () => {
 		);
 	}
 
-	return querying ? (
+	return querying === true ? (
 		<Fragment>
 			<Heading>
 				Loading
@@ -47,9 +47,9 @@ const Content = () => {
 	) : (
 		<Fragment>
 			<Heading>
-				10 Total Donations
+				{ `${ Object.entries( donations ).length } Total Donations` }
 			</Heading>
-			<DonationTable donations={ donations } />
+			<DonationTable donations={ donations } perPage={ 5 } />
 		</Fragment>
 	);
 };

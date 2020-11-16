@@ -14,7 +14,7 @@ const DashboardContent = () => {
 			{ querying ? 'Loading...' : 'Recent Donations' }
 		</Heading>
 		{ ! querying && (
-			<DonationTable donations={ donations } />
+			<DonationTable donations={ donations } perPage={ 3 } />
 		) }
 	</Fragment>;
 };
