@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Front-end donor profiles are scaffolded (#5441)
 -   Donor Profiles UI is implemented (#5444)
+-   Donation History and Dashboard tabs are now dynamically populated (#5455)
 
 ### Fixed
 
