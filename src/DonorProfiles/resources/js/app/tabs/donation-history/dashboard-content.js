@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 
 import DonationTable from '../../components/donation-table';
 import Heading from '../../components/heading';
+import Stats from './stats';
 
 import { useSelector } from './hooks';
 
@@ -10,6 +11,10 @@ const DashboardContent = () => {
 	const querying = useSelector( ( state ) => state.querying );
 
 	return <Fragment>
+		<Heading icon="chart-line">
+			Your Giving Stats
+		</Heading>
+		<Stats />
 		<Heading icon="calendar-alt">
 			{ querying ? 'Loading...' : 'Recent Donations' }
 		</Heading>

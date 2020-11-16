@@ -37,7 +37,6 @@ class Donations {
 		return $result->count;
 	}
 
-
 	/**
 	 * Get donor revenue
 	 *
@@ -53,6 +52,38 @@ class Donations {
 			$wpdb->prepare(
 				"
 				SELECT SUM(revenue.amount) as amount
+				FROM {$wpdb->give_revenue} as revenue
+				INNER JOIN {$wpdb->posts} as posts
+				ON revenue.donation_id = posts.ID
+				WHERE posts.post_author = %d
+				AND posts.post_status IN ( 'publish', 'give_subscription' )
+				",
+				$donorId
+			)
+		);
+
+		if ( ! $result ) {
+			return 0;
+		}
+
+		return Money::ofMinor( $result->amount, give_get_option( 'currency' ) )->getAmount();
+	}
+
+	/**
+	 * Get average donor revenue
+	 *
+	 * @param int $donorId
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public function getAverageRevenue( $donorId ) {
+		global $wpdb;
+
+		$result = $wpdb->get_row(
+			$wpdb->prepare(
+				"
+				SELECT AVG(revenue.amount) as amount
 				FROM {$wpdb->give_revenue} as revenue
 				INNER JOIN {$wpdb->posts} as posts
 				ON revenue.donation_id = posts.ID

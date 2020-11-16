@@ -74,9 +74,10 @@ class DonationsRoute implements RestRoute {
 		$repository = new DonationsRepository();
 
 		return [
-			'donations'      => $repository->getDonations( 1 ),
-			'donationsCount' => $repository->getDonationCount( 1 ),
-			'revenue'        => $repository->getRevenue( 1 ),
+			'donations' => $repository->getDonations( 1 ),
+			'count'     => $repository->getDonationCount( 1 ),
+			'revenue'   => $repository->getRevenue( 1 ),
+			'average'   => $repository->getAverageRevenue( 1 ),
 		];
 	}
 }

@@ -1,7 +1,10 @@
 import { Fragment, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Table from '../table';
 import DonationRow from './donation-row';
+
+import './style.scss';
 
 const DonationTable = ( { donations, perPage } ) => {
 	const [ page, setPage ] = useState( 1 );
@@ -57,12 +60,12 @@ const DonationTable = ( { donations, perPage } ) => {
 					<div className="give-donor-profile-table__footer-nav">
 						{ page - 1 >= 1 && (
 							<a onClick={ () => setPage( page - 1 ) }>
-								Prev
+								<FontAwesomeIcon icon="chevron-left" />
 							</a>
 						) }
 						{ page <= lastPage && (
 							<a onClick={ () => setPage( page + 1 ) }>
-								Next
+								<FontAwesomeIcon icon="chevron-right" />
 							</a>
 						) }
 					</div>

@@ -5,7 +5,7 @@ import Content from './content';
 import DashboardContent from './dashboard-content';
 import { store } from './store';
 import { getAPIRoot, getAPINonce } from '../../utils';
-import { setDonations, setQuerying } from './store/actions';
+import { setDonations, setQuerying, setCount, setRevenue, setAverage } from './store/actions';
 
 export const registerDonationHistoryTab = () => {
 	const { dispatch } = store;
@@ -19,6 +19,9 @@ export const registerDonationHistoryTab = () => {
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
 			dispatch( setDonations( data.donations ) );
+			dispatch( setCount( data.count ) );
+			dispatch( setRevenue( data.revenue ) );
+			dispatch( setAverage( data.average ) );
 			dispatch( setQuerying( false ) );
 		} );
 
