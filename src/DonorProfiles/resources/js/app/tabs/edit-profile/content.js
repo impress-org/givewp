@@ -4,6 +4,7 @@ import AvatarControl from '../../components/avatar-control';
 import FieldRow from '../../components/field-row';
 import SelectControl from '../../components/select-control';
 import TextControl from '../../components/text-control';
+import RadioControl from '../../components/radio-control';
 
 import { Fragment, useState } from 'react';
 const { __ } = wp.i18n;
@@ -11,7 +12,7 @@ const { __ } = wp.i18n;
 import './style.scss';
 
 const Content = () => {
-	const [ prefix, setPrefix ] = useState( null );
+	const [ prefix, setPrefix ] = useState( 'mr' );
 	const prefixOptions = [
 		{
 			value: 'mr',
@@ -26,13 +27,13 @@ const Content = () => {
 		},
 	];
 
-	const [ firstName, setFirstName ] = useState( '' );
-	const [ lastName, setLastName ] = useState( '' );
+	const [ firstName, setFirstName ] = useState( 'Robin' );
+	const [ lastName, setLastName ] = useState( 'Hood' );
 
-	const [ primaryEmail, setPrimaryEmail ] = useState( '' );
-	const [ additionalEmail, setAdditionalEmail ] = useState( '' );
+	const [ primaryEmail, setPrimaryEmail ] = useState( 'robin@merrymen.biz' );
+	const [ additionalEmail, setAdditionalEmail ] = useState( 'give2th3p00r@sherwood.net' );
 
-	const [ country, setCountry ] = useState( '' );
+	const [ country, setCountry ] = useState( 'UK' );
 	const countryOptions = [
 		{
 			value: 'USA',
@@ -46,10 +47,10 @@ const Content = () => {
 			label: 'Canada',
 		},
 	];
-	const [ addressOne, setAddressOne ] = useState( '' );
-	const [ addressTwo, setAddressTwo ] = useState( '' );
-	const [ city, setCity ] = useState( '' );
-	const [ state, setState ] = useState( '' );
+	const [ addressOne, setAddressOne ] = useState( '12 King John Way' );
+	const [ addressTwo, setAddressTwo ] = useState( 'Unit B' );
+	const [ city, setCity ] = useState( 'Sherwood Forest' );
+	const [ state, setState ] = useState( 'NY' );
 	const stateOptions = [
 		{
 			value: 'NY',
@@ -63,12 +64,24 @@ const Content = () => {
 			label: 'California',
 		},
 	];
-	const [ zip, setZip ] = useState( '' );
+	const [ zip, setZip ] = useState( '01234' );
+
+	const [ anonymous, setAnonymous ] = useState( 'public' );
+	const anonymousOptions = [
+		{
+			value: 'public',
+			label: __( 'Public - show my donations publicly', 'give' ),
+		},
+		{
+			value: 'private',
+			label: __( 'Private - only organization admins can view my info' ),
+		},
+	];
 
 	return (
 		<Fragment>
 			<Heading>
-				Profile Information
+				{ __( 'Profile Information', 'give' ) }
 			</Heading>
 			<Divider />
 			<AvatarControl />
@@ -117,7 +130,7 @@ const Content = () => {
 				</div>
 			</FieldRow>
 			<Heading>
-				Address
+				{ __( 'Address', 'give' ) }
 			</Heading>
 			<Divider />
 			<SelectControl
@@ -155,6 +168,17 @@ const Content = () => {
 					onChange={ ( value ) => setZip( value ) }
 				/>
 			</FieldRow>
+			<Heading>
+				{ __( 'Additional Info', 'give' ) }
+			</Heading>
+			<Divider />
+			<RadioControl
+				label={ __( 'Anonymous Giving' ) }
+				description={ __( 'This will prevent your avatar, first name, and donation comments and other information from appearing publicly on this orgization’s website.', 'give' ) }
+				options={ anonymousOptions }
+				onChange={ ( value ) => setAnonymous( value ) }
+				value={ anonymous }
+			/>
 		</Fragment>
 	);
 };
