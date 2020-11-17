@@ -12,15 +12,19 @@ const DashboardContent = () => {
 
 	useEffect( () => {
 		if ( tabs.length > 2 ) {
-			setDashboardContent( tabs.reduce( ( content, tab ) => {
-				if ( tab[ 1 ].dashboardContent ) {
-					const Content = tab[ 1 ].dashboardContent;
-					content.push( <Content /> );
-				}
-				return content;
-			}, [] ) );
+			setDashboardContent( getDashboardContent( tabs ) );
 		}
 	}, [ tabs ] );
+
+	const getDashboardContent = ( tabsArray ) => {
+		return tabsArray.reduce( ( content, tab ) => {
+			if ( tab[ 1 ].dashboardContent ) {
+				const Content = tab[ 1 ].dashboardContent;
+				content.push( <Content /> );
+			}
+			return content;
+		}, [] );
+	};
 
 	return (
 		<div className="give-donor-profile-dashboard-content">
