@@ -8,6 +8,8 @@ import TextControl from '../../components/text-control';
 import { Fragment, useState } from 'react';
 const { __ } = wp.i18n;
 
+import './style.scss';
+
 const Content = () => {
 	const [ prefix, setPrefix ] = useState( null );
 	const prefixOptions = [
@@ -28,6 +30,7 @@ const Content = () => {
 	const [ lastName, setLastName ] = useState( '' );
 
 	const [ primaryEmail, setPrimaryEmail ] = useState( '' );
+	const [ additionalEmail, setAdditionalEmail ] = useState( '' );
 
 	const [ country, setCountry ] = useState( '' );
 	const countryOptions = [
@@ -96,6 +99,23 @@ const Content = () => {
 				onChange={ ( value ) => setPrimaryEmail( value ) }
 				icon="envelope"
 			/>
+			<FieldRow>
+				<TextControl
+					label={ __( 'Additional Emails', 'give' ) }
+					value={ additionalEmail }
+					onChange={ ( value ) => setAdditionalEmail( value ) }
+					icon="envelope"
+				/>
+				<div className="give-donor-profile__email-controls">
+					<div className="give-donor-profile__make-primary-email">
+						{ __( 'Make Primary', 'give' ) }
+					</div>
+					|
+					<div className="give-donor-profile__delete-email">
+						{ __( 'Delete', 'give' ) }
+					</div>
+				</div>
+			</FieldRow>
 			<Heading>
 				Address
 			</Heading>
