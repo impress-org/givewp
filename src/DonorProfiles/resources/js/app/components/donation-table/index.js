@@ -10,20 +10,6 @@ import './style.scss';
 const DonationTable = ( { donations, perPage } ) => {
 	const [ page, setPage ] = useState( 1 );
 
-	let donationRows = [];
-	let donationsArray = [];
-	let start = 0;
-	let end = perPage;
-	let lastPage = 1;
-
-	if ( donations ) {
-		donationsArray = Object.entries( donations );
-		start = getStartIndex();
-		end = getEndIndex();
-		lastPage = Math.ceil( donationsArray.length / perPage );
-		donationRows = getDonationRows();
-	}
-
 	const getStartIndex = () => {
 		return ( page - 1 ) * perPage;
 	};
@@ -40,6 +26,20 @@ const DonationTable = ( { donations, perPage } ) => {
 			return rows;
 		}, [] );
 	};
+
+	let donationRows = [];
+	let donationsArray = [];
+	let start = 0;
+	let end = perPage;
+	let lastPage = 1;
+
+	if ( donations ) {
+		donationsArray = Object.entries( donations );
+		start = getStartIndex();
+		end = getEndIndex();
+		lastPage = Math.ceil( donationsArray.length / perPage );
+		donationRows = getDonationRows();
+	}
 
 	return (
 		<Table
