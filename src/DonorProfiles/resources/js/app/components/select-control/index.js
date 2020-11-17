@@ -24,9 +24,8 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 			fontWeight: '500',
 			color: '#828382',
 			lineHeight: '1.2',
-			width: width,
 			boxSizing: 'border-box',
-			marginTop: '12px',
+			marginTop: '8px',
 			border: '1px solid #b8b8b8',
 			borderRadius: '4px',
 		} ),
@@ -56,7 +55,7 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 	};
 
 	return (
-		<div className="give-donor-profile-select-control">
+		<div className="give-donor-profile-select-control" style={ width ? { maxWidth: width } : null }>
 			{ label && ( <label className="give-donor-profile-select-control__label" htmlFor={ toKebabCase( label ) }>{ label }</label> ) }
 			<Select
 				placeholder={ placeholder }
@@ -98,7 +97,7 @@ SelectControl.defaultProps = {
 	onChange: null,
 	options: null,
 	placeholder: __( 'Select...', 'give' ),
-	width: '200px',
+	width: null,
 };
 
 export default SelectControl;

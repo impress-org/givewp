@@ -105,7 +105,7 @@ const Content = () => {
 				value={ country }
 				onChange={ ( value ) => setCountry( value ) }
 				options={ countryOptions }
-				width="580px"
+				width={ null }
 			/>
 			<TextControl
 				label={ __( 'Address 1', 'give' ) }
