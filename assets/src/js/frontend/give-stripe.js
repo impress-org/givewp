@@ -36,6 +36,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		const cardElements = stripeElements.createElement( getStripeElements, formElement );
 		const stripeCheckoutTypeHiddenField = Give.form.fn.getInfo( 'stripe-checkout-type', formElement );
 
+		/**
+		 * Returns the state of the
+		 *
+		 * @since 2.9.3
+		 *
+		 * @returns {{selectedGatewayId: string, formGateway: Element, isCheckoutTypeModal: boolean, isStripeModalCheckoutGateway: boolean}}
+		 */
 		function getFormState() {
 			const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
 			const selectedGatewayId = formGateway ? formGateway.value : '';
@@ -49,6 +56,13 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			}
 		}
 
+		/**
+		 * Mounts and unmounts the Stripe Elements to the form
+		 *
+		 * @since 2.9.3
+		 *
+		 * @param {boolean} doUnmount
+		 */
 		function mountStripeElements(doUnmount = true) {
 			const { selectedGatewayId, isStripeModalCheckoutGateway } = getFormState();
 
@@ -66,6 +80,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		// Do initial mount
 		mountStripeElements(false);
 
+		// Mount & unmount when the users selects a gateway
 		document.addEventListener( 'give_gateway_loaded', mountStripeElements );
 
 		formElement.onsubmit = ( e ) => {
