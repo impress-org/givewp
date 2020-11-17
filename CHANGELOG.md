@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Stripe CC donations now work when not the default gateway (#5459)
+-   Stripe modal checkout donations now work when not the default gateway (#5459)
+
 ## 2.9.2 - 2020-11-09
 
 ### New
