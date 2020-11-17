@@ -18,16 +18,28 @@ const DonationTable = ( { donations, perPage } ) => {
 
 	if ( donations ) {
 		donationsArray = Object.entries( donations );
-		start = ( page - 1 ) * perPage;
-		end = start + perPage <= donationsArray.length ? start + perPage : donationsArray.length;
+		start = getStartIndex();
+		end = getEndIndex();
 		lastPage = Math.ceil( donationsArray.length / perPage );
-		donationRows = donationsArray.reduce( ( rows, donation, index ) => {
+		donationRows = getDonationRows();
+	}
+
+	const getStartIndex = () => {
+		return ( page - 1 ) * perPage;
+	};
+
+	const getEndIndex = () => {
+		return start + perPage <= donationsArray.length ? start + perPage : donationsArray.length;
+	};
+
+	const getDonationRows = () => {
+		return donationsArray.reduce( ( rows, donation, index ) => {
 			if ( index >= start && index < end ) {
 				rows.push( <DonationRow donation={ donation } /> );
 			}
 			return rows;
 		}, [] );
-	}
+	};
 
 	return (
 		<Table
