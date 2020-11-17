@@ -21,9 +21,8 @@ const isValidTab = ( tab ) => {
 
 	const isValid = Object.keys( tabPropTypes ).reduce( ( acc, key ) => {
 		if ( typeof tab[ key ] !== tabPropTypes[ key ] ) {
-			/* eslint-disable no-console */
+			/* eslint-disable-next-line */
 			console.error( `Error registering tab! The '${ key }' property must be a ${ tabPropTypes[ key ] }.` );
-			/* eslint-enable no-console */
 			return false;
 		} else if ( acc === false ) {
 			return false;
