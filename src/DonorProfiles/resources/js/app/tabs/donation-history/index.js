@@ -1,4 +1,5 @@
 import axios from 'axios';
+const { __ } = wp.i18n;
 
 // Internal dependencies
 import Content from './content';
@@ -26,7 +27,7 @@ export const registerDonationHistoryTab = () => {
 		} );
 
 	window.giveDonorProfile.utils.registerTab( {
-		label: 'Donation History',
+		label: __( 'Donation History', 'give' ),
 		icon: 'calendar-alt',
 		slug: 'donation-history',
 		content: Content,

@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+const { __ } = wp.i18n;
 
 import Table from '../table';
 import DonationRow from './donation-row';
@@ -32,16 +33,16 @@ const DonationTable = ( { donations, perPage } ) => {
 			header={
 				<Fragment>
 					<div className="give-donor-profile-table__column">
-						Donation
+						{ __( 'Donation', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						Campaign
+						{ __( 'Campaign', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						Date
+						{ __( 'Date', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						Status
+						{ __( 'Status', 'give' ) }
 					</div>
 				</Fragment>
 			}
@@ -55,7 +56,7 @@ const DonationTable = ( { donations, perPage } ) => {
 			footer={
 				<Fragment>
 					<div className="give-donor-profile-table__footer-text">
-						{ donations && `Showing ${ start + 1 } - ${ end } of ${ Object.entries( donations ).length } Donations` }
+						{ donations && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ Object.entries( donations ).length } ${ __( 'Donations', 'give' ) }` }
 					</div>
 					<div className="give-donor-profile-table__footer-nav">
 						{ page - 1 >= 1 && (

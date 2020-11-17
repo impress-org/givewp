@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+const { __ } = wp.i18n;
 
 import './style.scss';
 
@@ -15,7 +16,7 @@ const DonationReceipt = ( { donation } ) => {
 			<div className="give-donor-profile-donation-receipt__table">
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="user" /> Donor Name:
+						<FontAwesomeIcon icon="user" /> { __( 'Donor Name:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ `${ donor.first_name } ${ donor.last_name }` }
@@ -23,7 +24,7 @@ const DonationReceipt = ( { donation } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="envelope" /> Email Address:
+						<FontAwesomeIcon icon="envelope" /> { __( 'Email Address:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ donor.email }
@@ -31,7 +32,7 @@ const DonationReceipt = ( { donation } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="calendar" /> Donation Date:
+						<FontAwesomeIcon icon="calendar" /> { __( 'Donation Date:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ payment.date }
@@ -40,7 +41,7 @@ const DonationReceipt = ( { donation } ) => {
 				{ donor.address && (
 					<div className="give-donor-profile-donation-receipt__row">
 						<div className="give-donor-profile-donation-receipt__detail">
-							<FontAwesomeIcon icon="globe" /> Address:
+							<FontAwesomeIcon icon="globe" /> { __( 'Address:', 'give' ) }
 						</div>
 						<div className="give-donor-profile-donation-receipt__value">
 							{ donor.address }
@@ -51,7 +52,7 @@ const DonationReceipt = ( { donation } ) => {
 			<div className="give-donor-profile-donation-receipt__table">
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						Payment Method:
+						{ __( 'Payment Method:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ payment.method }
@@ -59,7 +60,7 @@ const DonationReceipt = ( { donation } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						Payment Status:
+						{ __( 'Payment Status:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ payment.status }
@@ -67,7 +68,7 @@ const DonationReceipt = ( { donation } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						Payment Amount:
+						{ __( 'Payment Amount:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ payment.amount }
@@ -75,7 +76,7 @@ const DonationReceipt = ( { donation } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						Processing Fee:
+						{ __( 'Processing Fee:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ payment.fee }
@@ -83,7 +84,7 @@ const DonationReceipt = ( { donation } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row give-donor-profile-donation-receipt__row--footer">
 					<div className="give-donor-profile-donation-receipt__detail">
-						Donation Total:
+						{ __( 'Donation Total:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
 						{ payment.total }

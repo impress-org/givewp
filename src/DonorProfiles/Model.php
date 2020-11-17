@@ -64,7 +64,7 @@ class Model {
 		wp_enqueue_script(
 			'give-donor-profiles-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/donor-profiles-app.js',
-			[ 'wp-element' ],
+			[ 'wp-element', 'wp-i18n' ],
 			GIVE_VERSION,
 			true
 		);

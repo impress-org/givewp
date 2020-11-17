@@ -1,6 +1,8 @@
 import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 
+const { __ } = wp.i18n;
+
 import Heading from '../../components/heading';
 import DonationReceipt from '../../components/donation-receipt';
 import DonationTable from '../../components/donation-table';
@@ -18,20 +20,20 @@ const Content = () => {
 		return querying ? (
 			<Fragment>
 				<Heading>
-					Loading...
+					{ __( 'Loading...', 'give' ) }
 				</Heading>
 				<Link to="/donation-history">
-					Back to Donation History
+					{ __( 'Back to Donation History', 'give' ) }
 				</Link>
 			</Fragment>
 		) : (
 			<Fragment>
 				<Heading>
-					Donation #{ id }
+					{ __( 'Donation', 'give' ) } #{ id }
 				</Heading>
 				<DonationReceipt donation={ donations[ id ] } />
 				<Link to="/donation-history">
-					Back to Donation History
+					{ __( 'Back to Donation History', 'give' ) }
 				</Link>
 			</Fragment>
 		);
@@ -40,14 +42,14 @@ const Content = () => {
 	return querying === true ? (
 		<Fragment>
 			<Heading>
-				Loading
+				{ __( 'Loading...', 'give' ) }
 			</Heading>
 			<DonationTable />
 		</Fragment>
 	) : (
 		<Fragment>
 			<Heading>
-				{ `${ Object.entries( donations ).length } Total Donations` }
+				{ `${ Object.entries( donations ).length } ${ __( 'Total Donations', 'give' ) }` }
 			</Heading>
 			<DonationTable donations={ donations } perPage={ 5 } />
 		</Fragment>

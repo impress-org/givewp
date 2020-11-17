@@ -1,4 +1,7 @@
 import { useSelector } from '../hooks';
+
+const { __ } = wp.i18n;
+
 import './style.scss';
 
 const Stats = () => {
@@ -14,7 +17,7 @@ const Stats = () => {
 						{ count }
 					</div>
 					<div className="give-donor-profile-dashboard__detail">
-						Number of donations
+						{ __( 'Number of donations', 'give' ) }
 					</div>
 				</div>
 			) }
@@ -24,7 +27,7 @@ const Stats = () => {
 						<span className="give-donor-profile-dashboard__figure-currency">$</span>{ revenue }
 					</div>
 					<div className="give-donor-profile-dashboard__detail">
-						Lifetime donations
+						{ __( 'Lifetime donations', 'give' ) }
 					</div>
 				</div>
 			) }
@@ -34,7 +37,7 @@ const Stats = () => {
 						<span className="give-donor-profile-dashboard__figure-currency">$</span>{ average }
 					</div>
 					<div className="give-donor-profile-dashboard__detail">
-						Average donation
+						{ __( 'Average donation', 'give' ) }
 					</div>
 				</div>
 			) }

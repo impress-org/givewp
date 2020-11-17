@@ -6,17 +6,19 @@ import Stats from './stats';
 
 import { useSelector } from './hooks';
 
+const { __ } = wp.i18n;
+
 const DashboardContent = () => {
 	const donations = useSelector( ( state ) => state.donations );
 	const querying = useSelector( ( state ) => state.querying );
 
 	return <Fragment>
 		<Heading icon="chart-line">
-			Your Giving Stats
+			{ __( 'Your Giving Stats', 'give' ) }
 		</Heading>
 		<Stats />
 		<Heading icon="calendar-alt">
-			{ querying ? 'Loading...' : 'Recent Donations' }
+			{ querying ? __( 'Loading...', 'give' ) : __( 'Recent Donations', 'give' ) }
 		</Heading>
 		{ ! querying && (
 			<DonationTable donations={ donations } perPage={ 3 } />

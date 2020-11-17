@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+const { __ } = wp.i18n;
 
 const DonationRow = ( { donation } ) => {
 	const id = donation[ 0 ];
@@ -24,7 +25,7 @@ const DonationRow = ( { donation } ) => {
 				<div className="give-donor-profile-table__donation-id">ID: { id }</div>
 				<div className="give-donor-profile-table__donation-receipt">
 					<Link to={ `/donation-history/${ id }` }>
-						View Receipt
+						{ __( 'View Receipt', 'give' ) }
 					</Link>
 				</div>
 			</div>
