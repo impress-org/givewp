@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.9.2
+Stable tag: 2.9.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -236,6 +236,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 11. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.9.3: November 17th, 2020 =
+* Fixed: Stripe Credit Card donations now work when it is not the default gateway
+* Fixed: Stripe Checkout Modal are working again as well
+* Fixed: A MigrationRunner warning no longer displays on fresh installs and sites upgrading from 2.8.0
 
 = 2.9.2: November 9th, 2020 =
 * New: Added a method for manually triggering migrations to re-attempt failed migrations
