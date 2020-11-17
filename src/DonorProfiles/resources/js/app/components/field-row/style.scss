@@ -1,0 +1,17 @@
+.give-donor-profile-field-row {
+	display: flex;
+	align-items: center;
+	margin: 20px 0;
+
+	> * {
+		margin: 0 10px;
+	}
+
+	> *:first-child {
+		margin-left: 0;
+	}
+
+	> *:last-child {
+		margin-right: 0;
+	}
+}
