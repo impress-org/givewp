@@ -11,16 +11,17 @@ const DonationTable = ( { donations, perPage } ) => {
 	const [ page, setPage ] = useState( 1 );
 
 	let donationRows = [];
+	let donationsArray = [];
 	let start = 0;
 	let end = perPage;
 	let lastPage = 1;
 
 	if ( donations ) {
+		donationsArray = Object.entries( donations );
 		start = ( page - 1 ) * perPage;
-		end = start + perPage <= Object.entries( donations ).length ? start + perPage : Object.entries( donations ).length;
-		lastPage = Math.ceil( Object.entries( donations ).length / perPage );
-
-		donationRows = Object.entries( donations ).reduce( ( rows, donation, index ) => {
+		end = start + perPage <= donationsArray.length ? start + perPage : donationsArray.length;
+		lastPage = Math.ceil( donationsArray.length / perPage );
+		donationRows = donationsArray.reduce( ( rows, donation, index ) => {
 			if ( index >= start && index < end ) {
 				rows.push( <DonationRow donation={ donation } /> );
 			}
@@ -56,7 +57,7 @@ const DonationTable = ( { donations, perPage } ) => {
 			footer={
 				<Fragment>
 					<div className="give-donor-profile-table__footer-text">
-						{ donations && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ Object.entries( donations ).length } ${ __( 'Donations', 'give' ) }` }
+						{ donations && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ donationsArray.length } ${ __( 'Donations', 'give' ) }` }
 					</div>
 					<div className="give-donor-profile-table__footer-nav">
 						{ page - 1 >= 1 && (
