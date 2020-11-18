@@ -14,12 +14,18 @@ class AdminSettings {
 
 	/**
 	 * Bootstrap
+	 *
+	 * @since 2.10.0
 	 */
 	public function boot() {
 		add_filter( 'give_get_settings_advanced', [ $this, 'addSettings' ] );
 	}
 
 	/**
+	 * Add admin settings.
+	 *
+	 * @since 2.10.0
+	 *
 	 * @param array $settings
 	 *
 	 * @return mixed
