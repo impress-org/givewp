@@ -17,13 +17,20 @@ class TrackingServiceProvider implements ServiceProvider {
 		give()->singleton( AdminSettings::class );
 		give()->singleton( UsageTrackingOnBoarding::class );
 		give()->singleton( AdminActionHandler::class );
+		give()->singleton( HandleUsageTrackingRoutine::class );
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function boot() {
-		if ( is_admin() ) {
+		$isAdmin = is_admin();
+
+		if ( $isAdmin || wp_doing_cron() ) {
+			give( HandleUsageTrackingRoutine::class )->boot();
+		}
+
+		if ( $isAdmin ) {
 			give( AdminSettings::class )->boot();
 			give( UsageTrackingOnBoarding::class )->boot();
 			give( AdminActionHandler::class )->boot();

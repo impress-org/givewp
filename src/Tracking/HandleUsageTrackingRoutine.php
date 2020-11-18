@@ -32,14 +32,14 @@ class HandleUsageTrackingRoutine {
 	 *
 	 * @var int
 	 */
-	protected $threshold = 0;
+	protected $threshold = WEEK_IN_SECONDS * 2;
 
 	/**
 	 * The endpoint to send the data to.
 	 *
 	 * @var string
 	 */
-	protected $endpoint = '';
+	protected $endpoint = 'https//stats.givewp.com';
 
 	/**
 	 * The current time.
@@ -138,7 +138,7 @@ class HandleUsageTrackingRoutine {
 
 		wp_remote_post( $this->endpoint, $tracking_request_args );
 
-		update_option( self::OPTION_NAME, $this->currentTime, 'yes' );
+		update_option( self::OPTION_NAME, $this->currentTime );
 	}
 
 	/**
