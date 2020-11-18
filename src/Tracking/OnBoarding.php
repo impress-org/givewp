@@ -38,7 +38,7 @@ class OnBoarding {
 		);
 
 		$allowTrackingLink = sprintf(
-			'<br><br><a href="%3$s" target="_blank" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" target="_blank" class="button-secondary">%2$s</a>',
+			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
 			esc_html__( 'Allow', 'give' ),
 			esc_html__( 'Do not allow', 'give' ),
 			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
