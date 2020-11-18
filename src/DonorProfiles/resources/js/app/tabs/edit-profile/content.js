@@ -5,6 +5,7 @@ import FieldRow from '../../components/field-row';
 import SelectControl from '../../components/select-control';
 import TextControl from '../../components/text-control';
 import RadioControl from '../../components/radio-control';
+import Button from '../../components/button';
 
 import { Fragment, useState } from 'react';
 const { __ } = wp.i18n;
@@ -179,6 +180,9 @@ const Content = () => {
 				onChange={ ( value ) => setAnonymous( value ) }
 				value={ anonymous }
 			/>
+			<Button icon="save">
+				Update Profile
+			</Button>
 		</Fragment>
 	);
 };
