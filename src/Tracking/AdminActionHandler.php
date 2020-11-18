@@ -14,6 +14,8 @@ use Give_Cache;
 class AdminActionHandler {
 	/**
 	 * Bootstrap
+	 *
+	 * @since 2.10.0
 	 */
 	public function boot() {
 		add_action( 'give_opt_in_into_tracking', [ $this, 'optInToUsageTracking' ] );
