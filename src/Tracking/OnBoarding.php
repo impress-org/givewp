@@ -32,7 +32,7 @@ class OnBoarding {
 		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
 		$readMoreLink = sprintf(
 			'<a href="#" target="_blank">%1$s</a>',
-			esc_html__( 'Read more about information which we are recording.', 'give' )
+			esc_html__( 'Read more GiveWP.com Usage Tracking.', 'give' )
 		);
 
 		$allowTrackingLink = sprintf(
