@@ -24,11 +24,14 @@ class AdminActionHandler {
 	 * @since 2.10.0
 	 */
 	public function optOutFromUsageTracking() {
-		if ( ! current_user_can( 'manage_give_setting' ) ) {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
 		}
 
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' );
+
+		wp_safe_redirect( remove_query_arg( 'give_action' ) );
+		exit();
 	}
 
 	/**
@@ -37,10 +40,13 @@ class AdminActionHandler {
 	 * @since 2.10.0
 	 */
 	public function optInToUsageTracking() {
-		if ( ! current_user_can( 'manage_give_setting' ) ) {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
 		}
 
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
+
+		wp_safe_redirect( remove_query_arg( 'give_action' ) );
+		exit();
 	}
 }
