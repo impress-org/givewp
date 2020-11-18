@@ -13,7 +13,7 @@ use Give_Cache;
  */
 class AdminActionHandler {
 	/**
-	 * Boostrap
+	 * Bootstrap
 	 */
 	public function boot() {
 		add_action( 'give_opt_in_into_tracking', [ $this, 'optInToUsageTracking' ] );
