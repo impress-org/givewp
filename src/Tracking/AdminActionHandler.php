@@ -1,6 +1,8 @@
 <?php
 namespace Give\Tracking;
 
+use Give_Cache;
+
 /**
  * Class AdminActionHandler
  * @package Give\Tracking
@@ -28,6 +30,7 @@ class AdminActionHandler {
 			return;
 		}
 
+		Give_Cache::set( give( OnBoarding::class )->getNoticeOptionKey(), true, DAY_IN_SECONDS, true );
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' );
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );

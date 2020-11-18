@@ -49,8 +49,21 @@ class OnBoarding {
 			[
 				'id'               => 'usage-tracking-nag',
 				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
-				'dismiss_interval' => 'dismiss_interval',
+				'dismissible_type' => 'user',
+				'dismiss_interval' => 'shortly',
 			]
 		);
+	}
+
+	/**
+	 * Get option name of notice.
+	 *
+	 * We use this option key to disable notice nag for specific user for a interval.
+	 *
+	 * @since 2.10.0
+	 * @return string
+	 */
+	public function getNoticeOptionKey() {
+		return give()->notices->get_notice_key( 'usage-tracking-nag', 'shortly', wp_get_current_user()->ID );
 	}
 }
