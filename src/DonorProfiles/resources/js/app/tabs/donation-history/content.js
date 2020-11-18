@@ -1,30 +1,57 @@
 import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 
+const { __ } = wp.i18n;
+
 import Heading from '../../components/heading';
-import RESTDonationTable from '../../components/rest-donation-table';
 import DonationReceipt from '../../components/donation-receipt';
+import DonationTable from '../../components/donation-table';
+
+import { useSelector } from './hooks';
 
 const Content = () => {
+	const donations = useSelector( ( state ) => state.donations );
+	const querying = useSelector( ( state ) => state.querying );
+
 	const location = useLocation();
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
 
-	return id ? (
+	if ( id ) {
+		return querying ? (
+			<Fragment>
+				<Heading>
+					{ __( 'Loading...', 'give' ) }
+				</Heading>
+				<Link to="/donation-history">
+					{ __( 'Back to Donation History', 'give' ) }
+				</Link>
+			</Fragment>
+		) : (
+			<Fragment>
+				<Heading>
+					{ __( 'Donation', 'give' ) } #{ id }
+				</Heading>
+				<DonationReceipt donation={ donations[ id ] } />
+				<Link to="/donation-history">
+					{ __( 'Back to Donation History', 'give' ) }
+				</Link>
+			</Fragment>
+		);
+	}
+
+	return querying === true ? (
 		<Fragment>
 			<Heading>
-				Donation #{ id }
+				{ __( 'Loading...', 'give' ) }
 			</Heading>
-			<DonationReceipt />
-			<Link to="/donation-history">
-				Back to Donation History
-			</Link>
+			<DonationTable />
 		</Fragment>
 	) : (
 		<Fragment>
 			<Heading>
-				10 Total Donations
+				{ `${ Object.entries( donations ).length } ${ __( 'Total Donations', 'give' ) }` }
 			</Heading>
-			<RESTDonationTable />
+			<DonationTable donations={ donations } perPage={ 5 } />
 		</Fragment>
 	);
 };
