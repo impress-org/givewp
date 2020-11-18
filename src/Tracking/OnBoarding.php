@@ -25,7 +25,7 @@ class OnBoarding {
 	 * @sicne 2.10.0
 	 */
 	public function addNotice() {
-		if ( give_is_setting_enabled( give_get_option( 'usage_tracking', 'disabled' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'usage_tracking', 'disabled' ) ) || ! current_user_can( 'manage_give_settings' ) ) {
 			return;
 		}
 
