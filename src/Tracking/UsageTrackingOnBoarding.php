@@ -9,7 +9,7 @@ namespace Give\Tracking;
  *
  * @since 2.10.0
  */
-class OnBoarding {
+class UsageTrackingOnBoarding {
 	/**
 	 * Bootstrap
 	 *
