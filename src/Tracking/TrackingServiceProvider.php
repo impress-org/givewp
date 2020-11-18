@@ -17,13 +17,17 @@ class TrackingServiceProvider implements ServiceProvider {
 	public function register() {
 		give()->singleton( AdminSettings::class );
 		give()->singleton( OnBoarding::class );
+		give()->singleton( AdminActionHandler::class );
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function boot() {
-		give( AdminSettings::class )->boot();
-		give( OnBoarding::class )->boot();
+		if ( is_admin() ) {
+			give( AdminSettings::class )->boot();
+			give( OnBoarding::class )->boot();
+			give( AdminActionHandler::class )->boot();
+		}
 	}
 }

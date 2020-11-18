@@ -10,6 +10,8 @@ use Give_Admin_Settings;
  * @since 2.10.0
  */
 class AdminSettings {
+	const USAGE_TRACKING_OPTION_NAME = 'usage_tracking';
+
 	/**
 	 * Bootstrap
 	 */
@@ -41,7 +43,7 @@ class AdminSettings {
 						'#',
 						esc_html__( 'GiveWP.com Usage Tracking Documentation', 'give' )
 					),
-					'id'      => 'usage_tracking',
+					'id'      => self::USAGE_TRACKING_OPTION_NAME,
 					'type'    => 'radio_inline',
 					'default' => 'disabled',
 					'options' => [
