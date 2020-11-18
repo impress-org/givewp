@@ -153,8 +153,6 @@ class HandleUsageTrackingRoutine {
 	 * @return bool True when tracking data should be sent.
 	 */
 	protected function shouldSendTracking( $ignore_time_threshold = false ) {
-		global $pagenow;
-
 		// Only send tracking on the main site of a multi-site instance. This returns true on non-multisite installs.
 		if ( ! is_main_site() ) {
 			return false;
