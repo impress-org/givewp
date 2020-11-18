@@ -48,6 +48,7 @@ class UsageTrackingOnBoarding {
 		give()->notices->register_notice(
 			[
 				'id'               => 'usage-tracking-nag',
+				'type'             => 'info',
 				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
 				'dismissible_type' => 'user',
 				'dismiss_interval' => 'shortly',
