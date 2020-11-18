@@ -81,6 +81,8 @@ class HandleUsageTrackingRoutine {
 
 		// Call `wp_schedule_single_event()` after a WordPress core update.
 		add_action( 'upgrader_process_complete', [ $this, 'scheduleTrackingDataSending' ], 10, 2 );
+
+		// @todo send data when update givewp addon.
 	}
 
 	/**
