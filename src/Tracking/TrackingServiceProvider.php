@@ -1,7 +1,6 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
 
 /**
