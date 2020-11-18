@@ -11,9 +11,9 @@ use Give_Admin_Settings;
  */
 class AdminSettings {
 	/**
-	 *
+	 * Bootstrap
 	 */
-	public function register() {
+	public function boot() {
 		add_filter( 'give_get_settings_advanced', [ $this, 'addSettings' ] );
 	}
 
@@ -51,8 +51,6 @@ class AdminSettings {
 				],
 			]
 		);
-
-		error_log( print_r( $settings, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 		return $settings;
 	}
