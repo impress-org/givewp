@@ -25,6 +25,10 @@ class OnBoarding {
 	 * @sicne 2.10.0
 	 */
 	public function addNotice() {
+		if ( give_is_setting_enabled( give_get_option( 'usage_tracking', 'disabled' ) ) ) {
+			return;
+		}
+
 		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
 		$readMoreLink = sprintf(
 			'<a href="#" target="_blank">%1$s</a>',

@@ -399,6 +399,9 @@ function give_get_default_settings() {
 
 		// Onboarding
 		'setup_page_enabled'                          => 'enabled',
+
+		// Advanced settings
+		'usage_tracking'                              => 'disabled',
 	];
 
 	return $options;

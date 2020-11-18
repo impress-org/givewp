@@ -43,7 +43,7 @@ class AdminSettings {
 					),
 					'id'      => 'usage_tracking',
 					'type'    => 'radio_inline',
-					'default' => 'enabled',
+					'default' => 'disabled',
 					'options' => [
 						'enabled'  => esc_html__( 'Enabled', 'give' ),
 						'disabled' => esc_html__( 'Disabled', 'give' ),
