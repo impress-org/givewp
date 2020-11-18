@@ -5,7 +5,7 @@ namespace Give\Tracking;
  * Class OnBoarding
  * @package Give\Tracking
  *
- * This class uses to setup notice nag to website administrator if admin is not opt in for usage tracking.
+ * This class uses to setup notice nag to website administrator if admin is not opt in for usage tracking and give admin an option to directly opt-in.
  *
  * @since 2.10.0
  */
