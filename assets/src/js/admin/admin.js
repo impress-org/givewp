@@ -17,6 +17,7 @@ import { initializeIframeResize } from '../plugins/form-template/utils';
 import * as Modals from '../plugins/modal.js';
 
 // Give core.
+import './admin-migrations';
 import './admin-forms';
 import './admin-settings';
 import './admin-export';

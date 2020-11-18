@@ -13,11 +13,9 @@ use Give_Notices;
  */
 class MigrationsRunner {
 	/**
-	 * Option name to store competed migrations.
-	 *
-	 * @var string
+	 * Option name for completed migrations
 	 */
-	private $optionNameToStoreCompletedMigrations = 'give_database_migrations';
+	const MIGRATION_OPTION = 'give_database_migrations';
 
 	/**
 	 * List of completed migrations.
@@ -43,7 +41,7 @@ class MigrationsRunner {
 	public function __construct( MigrationsRegister $migrationRegister ) {
 		$this->migrationRegister = $migrationRegister;
 
-		$this->completedMigrations = get_option( $this->optionNameToStoreCompletedMigrations, [] );
+		$this->completedMigrations = get_option( self::MIGRATION_OPTION, [] );
 	}
 
 	/**
@@ -114,7 +112,7 @@ class MigrationsRunner {
 
 		if ( $newMigrations ) {
 			update_option(
-				$this->optionNameToStoreCompletedMigrations,
+				self::MIGRATION_OPTION,
 				$this->completedMigrations
 			);
 		}

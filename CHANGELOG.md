@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.3 - 2020-11-17
+
+### Fixed
+
+-   Corrected a warning being thrown by the MigrationRunner (#5457)
+-   Stripe CC donations now work when not the default gateway (#5459)
+-   Stripe modal checkout donations now work when not the default gateway (#5459)
+
 ## 2.9.2 - 2020-11-09
+
+### New
+
+-   Added support method of running migrations and clearing updates (#5447)
 
 ### Fixed
 
@@ -19,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 -   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
 -   Multi-Form Goal Shortcode now supports comma separated lists (#5432)
+-   Remove foreign keys from revenue table for MyISAM support (#5447)
 
 ### Changed
 
