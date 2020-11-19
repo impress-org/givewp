@@ -4,6 +4,7 @@ namespace Give\Tracking\TrackingData;
 use Give\Framework\Collection;
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\AdminSettings;
+use Give\ValueObjects\Money;
 use Give_Donors_Query;
 use WP_Query;
 
@@ -90,7 +91,22 @@ class GiveDonationPluginData implements Collection {
 	 * @return string
 	 */
 	private function getRevenueTillNow() {
-		return '';
+		global $wpdb;
+
+		$currency = give_get_option( 'currency' );
+		$result   = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT SUM(amount)
+				FROM {$wpdb->give_revenue} as r
+				INNER JOIN {$wpdb->posts} as p
+				ON r.donation_id=p.id
+				WHERE p.post_date<=%s
+				",
+				current_time( 'mysql' )
+			)
+		);
+		return $result ? Money::ofMinor( $result, $currency )->getAmount() : '';
 	}
 
 	/**
