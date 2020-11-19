@@ -4,6 +4,8 @@ namespace Give\Tracking\TrackingData;
 use Give\Framework\Collection;
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\AdminSettings;
+use Give_Donors_Query;
+use WP_Query;
 
 /**
  * Class GiveDonationPluginData
@@ -20,7 +22,6 @@ class GiveDonationPluginData implements Collection {
 	 * @return array
 	 */
 	public function get() {
-		// @todo add organization type
 		return [
 			'givewp' => [
 				'installDate'       => $this->getPluginInstallDate(),
@@ -41,7 +42,9 @@ class GiveDonationPluginData implements Collection {
 	 * @return int
 	 */
 	private function getPluginInstallDate() {
-		return 0;
+		$confirmationPageID = give_get_option( 'success_page' );
+
+		return strtotime( get_post_field( 'post_date', $confirmationPageID, 'db' ) );
 	}
 
 	/**
@@ -51,17 +54,33 @@ class GiveDonationPluginData implements Collection {
 	 * @return int
 	 */
 	private function getDonationFormCount() {
-		return 0;
+		$formQuery = new WP_Query(
+			[
+				'post_type' => 'give_forms',
+				'status'    => 'publish',
+				'fields'    => 'ids',
+				'number'    => -1,
+			]
+		);
+
+		return $formQuery->found_posts;
 	}
 
 	/**
 	 * Returns donor count
 	 *
 	 * @since 2.10.0
-	 * @return int
+	 * @return string
 	 */
 	private function getDonorCount() {
-		return 0;
+		$donorQuery = new Give_Donors_Query(
+			[
+				'number' => -1,
+				'count'  => true,
+			]
+		);
+
+		return $donorQuery->get_donors();
 	}
 
 	/**
