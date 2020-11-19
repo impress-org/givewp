@@ -4,14 +4,14 @@ namespace Give\Tracking\TrackingData;
 use Give\Framework\Collection;
 
 /**
- * Class PluginData
+ * Class ActivePluginsData
  *
  * Represents the plugin data.
  *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class PluginData implements Collection {
+class ActivePluginsData implements Collection {
 
 	/**
 	 * Returns the collection data.

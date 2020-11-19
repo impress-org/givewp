@@ -27,6 +27,7 @@ class WebsiteData implements Collection {
 			'wpVersion'    => $wp_version,
 			'homeURL'      => home_url(),
 			'adminURL'     => admin_url(),
+			'email'        => bloginfo( 'email' ),
 			'isMultisite'  => absint( is_multisite() ),
 			'siteLanguage' => get_bloginfo( 'language' ),
 		];

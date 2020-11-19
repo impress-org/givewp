@@ -4,12 +4,12 @@ namespace Give\Tracking\TrackingData;
 use Give\Framework\Collection;
 
 /**
- * Class SettingsData
+ * Class GiveDonationPluginData
  *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class SettingsData implements Collection {
+class GiveDonationPluginData implements Collection {
 
 	/**
 	 * Return Give plugin settings data.
