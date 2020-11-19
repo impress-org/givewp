@@ -129,9 +129,11 @@ class HandleUsageTrackingRoutine {
 
 		// Set a 'content-type' header of 'application/json'.
 		$tracking_request_args = [
-			'headers'     => [
-				'content-type:' => 'application/json',
-			],
+			'headers'     => [ 'content-type:' => 'application/json' ],
+			'timeout'     => 8,
+			'httpversion' => '1.1',
+			'blocking'    => false,
+			'user-agent'  => 'GIVE/' . GIVE_VERSION . ' ' . get_bloginfo( 'url' ),
 			'body'        => $this->getCollector()->get_as_json(),
 			'data_format' => 'body',
 		];
