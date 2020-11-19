@@ -98,7 +98,7 @@ class GiveDonationPluginData implements Collection {
 			$data[ $setting ] = give_get_option( $setting, '' );
 		}
 
-		$data                          = ArrayDataSet::camelCaseKeys( $settings );
+		$data                          = ArrayDataSet::camelCaseKeys( $data );
 		$data['activePaymentGateways'] = give_get_enabled_payment_gateways();
 
 		return $data;
