@@ -52,16 +52,12 @@ class HandleUsageTrackingRoutine {
 	 * HandleUsageTrackingRoutine constructor.
 	 *
 	 * @since 2.10.0
-	 * @param  string  $endpoint  The endpoint to send the data to.
-	 * @param  int  $threshold  The limit for the option.
 	 */
-	public function __construct( $endpoint, $threshold ) {
+	public function __construct() {
 		if ( ! $this->isTrackingEnabled() ) {
 			return;
 		}
 
-		$this->endpoint    = $endpoint;
-		$this->threshold   = $threshold;
 		$this->currentTime = time();
 	}
 
@@ -207,17 +203,16 @@ class HandleUsageTrackingRoutine {
 	 * @return bool True when we can track, false when we can't.
 	 */
 	private function isTrackingEnabled() {
+		if (
+			function_exists( 'wp_get_environment_type' ) &&
+			wp_get_environment_type() !== 'production'
+		) {
+			return false;
+		}
+
 		// Check if we're allowing tracking.
 		$tracking = give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME );
 
-		if ( $tracking === false ) {
-			return false;
-		}
-
-		if ( wp_get_environment_type() !== 'production' ) {
-			return false;
-		}
-
-		return true;
+		return give_is_setting_enabled( $tracking );
 	}
 }
