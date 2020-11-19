@@ -12,8 +12,12 @@ use Give\Framework\Collection;
 class SettingsData implements Collection {
 
 	/**
-	 * @return array|void
+	 * Return Give plugin settings data.
+	 *
+	 * @since 2.10.0
+	 * @return array
 	 */
 	public function get() {
+		return [];
 	}
 }
