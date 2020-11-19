@@ -29,14 +29,9 @@ class ActivePluginsData implements Collection {
 	 *
 	 * @return array The formatted plugins.
 	 */
-	protected function getPluginData() {
-
-		if ( ! function_exists( 'get_plugin_data' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
-		$plugins = wp_get_active_and_valid_plugins();
-		$plugins = array_map( 'get_plugin_data', $plugins );
+	private function getPluginData() {
+		$plugins = give_get_plugins();
+		$plugins = array_filter( $plugins, [ $this, 'isPluginActive' ] );
 		$plugins = array_map( [ $this, 'formatPlugin' ], $plugins );
 
 		$plugin_data = [];
@@ -49,16 +44,32 @@ class ActivePluginsData implements Collection {
 	}
 
 	/**
+	 * Returns whether or not plugin active.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param  array  $plugin  The plugin details.
+	 *
+	 * @return bool
+	 */
+	private function isPluginActive( array $plugin ) {
+		return 'active' === $plugin['Status'];
+	}
+
+	/**
 	 * Formats the plugin array.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @param  array  $plugin  The plugin details.
 	 *
 	 * @return array The formatted array.
 	 */
-	protected function formatPlugin( array $plugin ) {
+	private function formatPlugin( array $plugin ) {
 		return [
 			'name'    => $plugin['Name'],
 			'version' => $plugin['Version'],
+			'type'    => $plugin['Type'],
 		];
 	}
 }
