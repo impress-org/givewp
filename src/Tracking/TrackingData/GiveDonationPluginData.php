@@ -18,6 +18,42 @@ class GiveDonationPluginData implements Collection {
 	 * @return array
 	 */
 	public function get() {
-		return [];
+		return [
+			'givewp' => [
+				'installDate'       => $this->getPluginInstallDate(),
+				'donationFormCount' => $this->getDonationFormCount(),
+				'revenue'           => $this->getRevenueTillNow(),
+			],
+		];
+	}
+
+	/**
+	 * Returns plugin install date
+	 *
+	 * @since 2.10.0
+	 * @return int
+	 */
+	private function getPluginInstallDate() {
+		return 0;
+	}
+
+	/**
+	 * Returns donation form count
+	 *
+	 * @since 2.10.0
+	 * @return int
+	 */
+	private function getDonationFormCount() {
+		return 0;
+	}
+
+	/**
+	 * Returns revenue till current date.
+	 *
+	 * @since 2.10.0
+	 * @return string
+	 */
+	private function getRevenueTillNow() {
+		return '';
 	}
 }
