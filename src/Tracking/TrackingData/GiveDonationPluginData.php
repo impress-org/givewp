@@ -81,11 +81,14 @@ class GiveDonationPluginData implements Collection {
 	 * @return array
 	 */
 	private function getGlobalSettings() {
-		$settings = [
+		$generalSettings = [
 			'currency',
 			'base_country',
 			'base_state',
 			'currency',
+		];
+
+		$trueFalseSettings = [
 			'name_title_prefix',
 			'company_field',
 			'anonymous_donation',
@@ -94,8 +97,13 @@ class GiveDonationPluginData implements Collection {
 		];
 
 		$data = [];
-		foreach ( $settings as $setting ) {
+
+		foreach ( $generalSettings as $setting ) {
 			$data[ $setting ] = give_get_option( $setting, '' );
+		}
+
+		foreach ( $trueFalseSettings as $setting ) {
+			$data[ $setting ] = absint( give_is_setting_enabled( give_get_option( $setting, 'disabled' ) ) );
 		}
 
 		$data                          = ArrayDataSet::camelCaseKeys( $data );
