@@ -58,7 +58,7 @@ class Collector {
 	 * @since 2.10.0
 	 * @return false|string The encode string.
 	 */
-	public function get_as_json() {
+	public function getAsJson() {
 		return wp_json_encode( $this->collect() );
 	}
 }
