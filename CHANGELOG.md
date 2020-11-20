@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Stripe single-input credit card field works again (#5469)
 -   Updating a Stripe subscription from the update payment info screen works again (#5467)
 
 ## 2.9.3 - 2020-11-17
