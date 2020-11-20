@@ -6,7 +6,7 @@ use Give\Framework\Collection;
 /**
  * Class WebsiteData
  *
- * Represents the default data.
+ * Represents the website data.
  *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
@@ -15,6 +15,8 @@ class WebsiteData implements Collection {
 
 	/**
 	 * Returns the collection data.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @return array The collection data.
 	 */

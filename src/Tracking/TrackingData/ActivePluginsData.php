@@ -16,6 +16,8 @@ class ActivePluginsData implements Collection {
 	/**
 	 * Returns the collection data.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @return array The collection data.
 	 */
 	public function get() {
@@ -26,6 +28,8 @@ class ActivePluginsData implements Collection {
 
 	/**
 	 * Returns all plugins.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @return array The formatted plugins.
 	 */

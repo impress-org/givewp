@@ -11,6 +11,8 @@ use WP_Query;
 /**
  * Class GiveDonationPluginData
  *
+ * Represents Give plugin settings data.
+ *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */

@@ -17,6 +17,8 @@ class ThemeData implements Collection {
 	/**
 	 * Returns the collection data.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @return array The collection data.
 	 */
 	public function get() {
@@ -39,6 +41,8 @@ class ThemeData implements Collection {
 
 	/**
 	 * Returns the name of the parent theme.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @param  WP_Theme  $theme  The theme object.
 	 *

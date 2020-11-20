@@ -1,7 +1,6 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-
 use Give\Framework\Collection;
 
 /**
@@ -17,6 +16,8 @@ class ServerData implements Collection {
 	/**
 	 * Returns the collection data.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @return array The collection data.
 	 */
 	public function get() {
@@ -27,6 +28,8 @@ class ServerData implements Collection {
 
 	/**
 	 * Returns the values with server details.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @return array Array with the value.
 	 */
@@ -49,6 +52,8 @@ class ServerData implements Collection {
 
 	/**
 	 * Returns details about the curl version.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @return array|null The curl info. Or null when curl isn't available..
 	 */
