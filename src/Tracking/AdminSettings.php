@@ -10,7 +10,7 @@ use Give_Admin_Settings;
  * @since 2.10.0
  */
 class AdminSettings {
-	const USAGE_TRACKING_OPTION_NAME = 'usage_tracking';
+	const USAGE_TRACKING_OPTION_NAME = 'anonymous_usage_tracking';
 
 	/**
 	 * Bootstrap
