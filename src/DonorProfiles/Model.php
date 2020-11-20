@@ -2,6 +2,8 @@
 
 namespace Give\DonorProfiles;
 
+use \Give_Donor as Donor;
+
 class Model {
 
 	// Settings
@@ -75,6 +77,7 @@ class Model {
 			[
 				'apiRoot'  => esc_url_raw( rest_url() ),
 				'apiNonce' => wp_create_nonce( 'wp_rest' ),
+				'profile'  => $this->getProfile(),
 			]
 		);
 
@@ -91,5 +94,31 @@ class Model {
 			[ 'give-google-font-montserrat' ],
 			GIVE_VERSION
 		);
+	}
+
+	/**
+	 * Return array of donor profile data
+	 *
+	 * @return void
+	 * @since 2.10.0
+	 **/
+	public function getProfile() {
+
+		$donorId = get_current_user_id();
+		$donor   = new Donor( $donorId );
+
+		$titlePrefix = Give()->donor_meta->get_meta( $donorId, '_give_donor_title_prefix', true );
+
+		return [
+			'name'              => give_get_donor_name_with_title_prefixes( $titlePrefix, $donor->name ),
+			'emails'            => $donor->emails,
+			'sinceLastDonation' => human_time_diff( strtotime( $donor->get_last_donation_date() ) ),
+			'avatarUrl'         => give_validate_gravatar( $donor->email ) ? get_avatar_url( $donor->email, 140 ) : null,
+			'sinceCreated'      => human_time_diff( strtotime( $donor->date_created ) ),
+			'company'           => $donor->get_company_name(),
+			'initials'          => $donor->get_donor_initals(),
+			'titlePrefix'       => Give()->donor_meta->get_meta( $donorId, '_give_donor_title_prefix', true ),
+			'addresses'         => $donor->address,
+		];
 	}
 }

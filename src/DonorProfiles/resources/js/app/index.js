@@ -15,7 +15,7 @@ import { store } from './store';
 
 // Internal dependencies
 import { registerDefaultTabs } from './tabs';
-import { registerTab } from './utils';
+import { registerTab, setProfile } from './utils';
 
 // DonorProfiles app
 import App from './components/app';
@@ -26,6 +26,7 @@ window.giveDonorProfile = {
 	store,
 	utils: {
 		registerTab,
+		setProfile,
 	},
 };
 
