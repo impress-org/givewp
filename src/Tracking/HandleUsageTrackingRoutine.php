@@ -201,10 +201,13 @@ class HandleUsageTrackingRoutine {
 	 * @return bool True when we can track, false when we can't.
 	 */
 	private function isTrackingEnabled() {
-		if (
-			function_exists( 'wp_get_environment_type' ) &&
-			wp_get_environment_type() !== 'production'
-		) {
+		// Track data only if website is in production mode.
+		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
+			return false;
+		}
+
+		// Track data only if give is in live mode.
+		if ( ! give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
 			return false;
 		}
 
