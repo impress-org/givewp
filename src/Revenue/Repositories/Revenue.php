@@ -84,7 +84,17 @@ class Revenue {
 	protected function validateNewRevenueData( $array ) {
 		$required = [ 'donation_id', 'form_id', 'amount' ];
 
-		$array = array_filter( $array ); // Remove empty values.
+		if ( empty( $array['donation_id'] ) ) {
+			unset( $array['donation_id'] );
+		}
+
+		if ( empty( $array['form_id'] ) ) {
+			unset( $array['form_id'] );
+		}
+
+		if ( ! is_numeric( $array['amount'] ) || (int) $array['amount'] < 0 ) {
+			unset( $array['amount'] );
+		}
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			$errorMessage = '';
