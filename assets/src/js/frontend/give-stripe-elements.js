@@ -24,6 +24,7 @@ class GiveStripeElements {
 		this.idPrefix = formElement.getAttribute( 'data-id' ) ? formElement.getAttribute( 'data-id' ) : '';
 		this.locale = give_stripe_vars.preferred_locale;
 		this.fieldsFormat = give_stripe_vars.cc_fields_format;
+		this.isSingleInputField = this.fieldsFormat === 'single';
 		this.isMounted = false;
 		this.fontStyles = [];
 
@@ -188,7 +189,7 @@ class GiveStripeElements {
 			cardExpiry: `#give-card-expiration-field-${ this.idPrefix }`,
 		};
 
-		if ( 'single' === this.fieldsFormat ) {
+		if ( this.isSingleInputField ) {
 			elementsToMountOn = {
 				card: `#give-stripe-single-cc-fields-${ this.idPrefix }`,
 			};
@@ -239,7 +240,10 @@ class GiveStripeElements {
 	createPaymentMethod( formElement, stripeElement, cardElements ) {
 		const billing_details = {};
 
-		billing_details.name = formElement.querySelector( 'input[name="card_name"]' ).value;
+		if ( ! this.isSingleInputField ) {
+			billing_details.name = formElement.querySelector( 'input[name="card_name"]' ).value;
+		}
+
 		if ( ! give_stripe_vars.stripe_card_update ) {
 			const firstName = formElement.querySelector( 'input[name="give_first"]' ).value;
 			const lastName = formElement.querySelector( 'input[name="give_last"]' ).value;
