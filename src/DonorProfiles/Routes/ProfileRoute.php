@@ -5,6 +5,7 @@ namespace Give\DonorProfiles\Routes;
 use WP_REST_Request;
 use Give\API\RestRoute;
 use \Give_Donor as Donor;
+use Give\DonorProfiles\Model as Model;
 
 /**
  * @since 2.10.0
@@ -102,9 +103,11 @@ class ProfileRoute implements RestRoute {
 	 */
 	protected function updateProfile( $data ) {
 
+		error_log( $data );
+
 		$donorId = get_current_user_id();
 		$donor   = new Donor( $donorId );
-		$updated = $donor->update( $data );
+		$updated = true; //$donor->update( $data );
 
 		return [
 			'updated' => $updated ? true : false,
