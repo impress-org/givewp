@@ -79,7 +79,7 @@ class AddPastDonationsToRevenueTable extends Migration {
 				];
 
 				$revenueRepository->insert( $revenueData );
-				$this->pauseUpdateOnError( $give_updates );
+				$this->pauseUpdateOnError( $give_updates, $revenueData );
 			}
 
 			wp_reset_postdata();
@@ -107,11 +107,14 @@ class AddPastDonationsToRevenueTable extends Migration {
 	/**
 	 * Pause update process and add log.
 	 *
-	 * @param Give_Updates $give_updates
-	 *
 	 * @since 2.9.2
+	 * @since 2.9.4 add second argument to function.
+	 *
+	 * @param  Give_Updates  $give_updates
+	 *
+	 * @param array $revenueData Donation data to insert into revenue table
 	 */
-	private function pauseUpdateOnError( $give_updates ) {
+	private function pauseUpdateOnError( $give_updates, $revenueData ) {
 		global $wpdb;
 
 		if ( ! $wpdb->last_error ) {
@@ -121,8 +124,9 @@ class AddPastDonationsToRevenueTable extends Migration {
 		give()->logs->add(
 			'Update Error',
 			sprintf(
-				'An error occurred inserting data into the revenue table: ' . "\n" . '%1$s',
-				$wpdb->last_error
+				'An error occurred inserting data into the revenue table: ' . "\n" . '%1$s' . "\n" . '%2$s',
+				$wpdb->last_error,
+				print_r( $revenueData, true )
 			),
 			0,
 			'update'
