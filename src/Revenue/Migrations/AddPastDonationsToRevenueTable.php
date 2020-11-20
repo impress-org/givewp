@@ -108,7 +108,7 @@ class AddPastDonationsToRevenueTable extends Migration {
 	 * Pause update process and add log.
 	 *
 	 * @since 2.9.2
-	 * @since 2.9.4 add second argument to function.
+	 * @since 2.9.4 Add second argument to function.
 	 *
 	 * @param  Give_Updates  $give_updates
 	 *
