@@ -100,7 +100,9 @@ export default {
 		 */
 		getInfo: function( str, $form ) {
 			let data = '';
-			$form = 'undefined' !== typeof $form ? $form : {};
+
+			// Check if form is provided and wrap in jQuery in case its a node
+			$form = 'undefined' !== typeof $form ? jQuery( $form ) : {};
 
 			// Bailout.
 			if ( ! str.length || ! $form.length ) {
