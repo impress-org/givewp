@@ -25,7 +25,7 @@ class HandleUsageTrackingRoutine {
 	 *
 	 * @var string
 	 */
-	const OPTION_NAME = 'give_usage_tracking_last_request';
+	const OPTION_NAME = 'give_anonymous_usage_tracking_last_request';
 
 	/**
 	 * The limit for the option.

@@ -14,6 +14,7 @@ interface Collection {
 	/**
 	 * Returns the collection data.
 	 *
+	 * @since 2.10.0
 	 * @return array The collection data.
 	 */
 	public function get();
