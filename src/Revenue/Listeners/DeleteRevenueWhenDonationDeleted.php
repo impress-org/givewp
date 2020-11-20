@@ -25,6 +25,7 @@ class DeleteRevenueWhenDonationDeleted {
 	 * Deletes the revenue associated with a donation when a donation is deleted
 	 *
 	 * @since 2.9.2
+	 * @since 2.9.4 removed $post parameter for < WP 5.5 compatibility
 	 *
 	 * @param  int  $postId
 	 *
