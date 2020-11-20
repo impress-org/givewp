@@ -77,8 +77,6 @@ class HandleUsageTrackingRoutine {
 
 		// Call `wp_schedule_single_event()` after a WordPress core update.
 		add_action( 'upgrader_process_complete', [ $this, 'scheduleTrackingDataSending' ], 10, 2 );
-
-		// @todo send data when update givewp addon.
 	}
 
 	/**
@@ -94,7 +92,7 @@ class HandleUsageTrackingRoutine {
 	 */
 	public function scheduleTrackingDataSending( $upgrader = false, $data = [] ) {
 		// Return if it's not a WordPress core update.
-		if ( ! $upgrader || ! isset( $data['type'] ) || $data['type'] !== 'core' ) {
+		if ( ! $upgrader || ! isset( $data['type'] ) || ! in_array( $data['type'], [ 'core', 'plugin' ] ) ) {
 			return;
 		}
 
