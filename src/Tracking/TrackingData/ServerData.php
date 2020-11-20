@@ -40,10 +40,9 @@ class ServerData implements Collection {
 			$server_data['Hostname'] = gethostbyaddr( $ipaddress );
 		}
 
-		$server_data['os']            = php_uname();
-		$server_data['PhpVersion']    = PHP_VERSION;
-		$server_data['CurlVersion']   = $this->getCurlInfo();
-		$server_data['PhpExtensions'] = $this->getPhpExtensions();
+		$server_data['os']          = php_uname();
+		$server_data['PhpVersion']  = PHP_VERSION;
+		$server_data['CurlVersion'] = $this->getCurlInfo();
 
 		return $server_data;
 	}
@@ -68,22 +67,6 @@ class ServerData implements Collection {
 		return [
 			'version'    => $curl['version'],
 			'sslSupport' => $ssl_support,
-		];
-	}
-
-	/**
-	 * Returns a list with php extensions.
-	 *
-	 * @return array Returns the state of the php extensions.
-	 */
-	protected function getPhpExtensions() {
-		return [
-			'imagick'   => extension_loaded( 'imagick' ),
-			'filter'    => extension_loaded( 'filter' ),
-			'bcmath'    => extension_loaded( 'bcmath' ),
-			'pcre'      => extension_loaded( 'pcre' ),
-			'xml'       => extension_loaded( 'xml' ),
-			'pdo_mysql' => extension_loaded( 'pdo_mysql' ),
 		];
 	}
 }
