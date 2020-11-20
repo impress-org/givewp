@@ -30,7 +30,7 @@ class ServerData implements Collection {
 	 *
 	 * @return array Array with the value.
 	 */
-	protected function getServerData() {
+	private function getServerData() {
 		$server_data = [];
 
 		// Validate if the server address is a valid IP-address.
@@ -52,7 +52,7 @@ class ServerData implements Collection {
 	 *
 	 * @return array|null The curl info. Or null when curl isn't available..
 	 */
-	protected function getCurlInfo() {
+	private function getCurlInfo() {
 		if ( ! function_exists( 'curl_version' ) ) {
 			return null;
 		}
