@@ -235,6 +235,7 @@ class GiveStripeElements {
 	 * @param stripeElement
 	 * @param cardElements
 	 *
+	 * @since 2.9.4 only add card name for multi-input field
 	 * @since 2.8.0
 	 */
 	createPaymentMethod( formElement, stripeElement, cardElements ) {
