@@ -50,6 +50,7 @@ class Revenue {
 	 * @param $revenueId
 	 *
 	 * @return false|int
+	 * @throws DatabaseQueryException
 	 */
 	public function deleteByDonationId( $revenueId ) {
 		global $wpdb;
