@@ -63,6 +63,8 @@ class HandleUsageTrackingRoutine {
 
 	/**
 	 * Registers all hooks to WordPress.
+	 *
+	 * @since 2.10.0
 	 */
 	public function boot() {
 		if ( ! $this->isTrackingEnabled() ) {
@@ -81,6 +83,8 @@ class HandleUsageTrackingRoutine {
 
 	/**
 	 * Schedules a new sending of the tracking data after a WordPress core update.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @param  bool|WP_Upgrader  $upgrader  Optional. WP_Upgrader instance or false.
 	 *                                   Depending on context, it might be a Theme_Upgrader,
@@ -112,6 +116,8 @@ class HandleUsageTrackingRoutine {
 
 	/**
 	 * Sends the tracking data.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @param  bool  $force  Whether to send the tracking data ignoring the two
 	 *                    weeks time threshold. Default false.
@@ -145,12 +151,14 @@ class HandleUsageTrackingRoutine {
 	 * the data was sent more than two weeks ago. The two weeks interval is set
 	 * when instantiating the class.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @param  bool  $ignore_time_threshold  Whether to send the tracking data ignoring
 	 *                                    the two weeks time threshold. Default false.
 	 *
 	 * @return bool True when tracking data should be sent.
 	 */
-	protected function shouldSendTracking( $ignore_time_threshold = false ) {
+	private function shouldSendTracking( $ignore_time_threshold = false ) {
 		// Only send tracking on the main site of a multi-site instance. This returns true on non-multisite installs.
 		if ( ! is_main_site() ) {
 			return false;
@@ -169,20 +177,24 @@ class HandleUsageTrackingRoutine {
 	/**
 	 * Checks if the given amount of seconds exceeds the set threshold.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @param  int  $seconds  The amount of seconds to check.
 	 *
 	 * @return bool True when seconds is bigger than threshold.
 	 */
-	protected function exceedsThreshold( $seconds ) {
+	private function exceedsThreshold( $seconds ) {
 		return ( $seconds > $this->threshold );
 	}
 
 	/**
 	 * Returns the collector for collecting the data.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @return Collector The instance of the collector.
 	 */
-	public function getCollector() {
+	private function getCollector() {
 		/* @var Collector $collector */
 		$collector = give( Collector::class );
 
@@ -197,6 +209,8 @@ class HandleUsageTrackingRoutine {
 
 	/**
 	 * See if we should run tracking at all.
+	 *
+	 * @since 2.10.0
 	 *
 	 * @return bool True when we can track, false when we can't.
 	 */
