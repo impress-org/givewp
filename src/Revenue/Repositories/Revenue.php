@@ -88,7 +88,7 @@ class Revenue {
 
 		$errorMessage = '';
 		if ( isset( $array['donation_id'] ) ) {
-			$errorMessage = "An error occurred when processing {$array['donation_id']}. ";
+			$errorMessage = "An error occurred when processing Donation #{$array['donation_id']}. ";
 		}
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
