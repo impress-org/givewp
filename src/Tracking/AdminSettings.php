@@ -43,12 +43,7 @@ class AdminSettings {
 				[
 					'name'    => __( 'Anonymous Usage Tracking', 'give' ),
 					'label'   => esc_html__( 'Allow usage of GiveWP to be tracked.', 'give' ),
-					'desc'    => sprintf(
-						'%1$s <a href="%2$s">%3$s</a>',
-						esc_html__( 'Can GiveWP collect data about the usage of the plugin? Usage data is completely anonymous, does not include any personal information, and will only be used to improve the software', 'give' ),
-						'https://givewp.com',
-						esc_html__( 'GiveWP.com Usage Tracking Documentation', 'give' )
-					),
+					'desc'    => esc_html__( 'Can GiveWP collect data about the usage of the plugin? Usage data is completely anonymous, does not include any personal information, and will only be used to improve the software.', 'give' ),
 					'id'      => self::USAGE_TRACKING_OPTION_NAME,
 					'type'    => 'radio_inline',
 					'default' => 'disabled',
