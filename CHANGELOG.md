@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Prevent fatal error when delete donation on WP < 5.5.0 (#5470)
 -   Stripe single-input credit card field works again (#5469)
 -   Updating a Stripe subscription from the update payment info screen works again (#5467)
 
