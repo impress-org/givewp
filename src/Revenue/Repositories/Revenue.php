@@ -77,6 +77,7 @@ class Revenue {
 	 * Validate new revenue data.
 	 *
 	 * @since 2.9.0
+	 * @since 2.9.4 Mention donation id in exception message.
 	 *
 	 * @param array $array
 	 */
