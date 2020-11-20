@@ -73,7 +73,7 @@ class HandleUsageTrackingRoutine {
 		add_action( 'admin_init', [ $this, 'send' ], 1 );
 
 		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
-		add_action( 'give_send_usage_tracking_data_after_core_update', [ $this, 'send' ] );
+		add_action( 'give_send_anonymous_usage_tracking_data', [ $this, 'send' ] );
 
 		// Call `wp_schedule_single_event()` after a WordPress core update.
 		add_action( 'upgrader_process_complete', [ $this, 'scheduleTrackingDataSending' ], 10, 2 );
@@ -103,12 +103,12 @@ class HandleUsageTrackingRoutine {
 		 * needs to receive the same arguments as those used when originally
 		 * scheduling the event otherwise it will always return false.
 		 */
-		if ( ! wp_next_scheduled( 'give_send_usage_tracking_data_after_core_update', true ) ) {
+		if ( ! wp_next_scheduled( 'give_send_anonymous_usage_tracking_data', true ) ) {
 			/*
 			 * Schedule sending of data tracking 6 hours after a WordPress core
 			 * update. Pass a `true` parameter for the callback `$force` argument.
 			 */
-			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_usage_tracking_data_after_core_update', true );
+			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_anonymous_usage_tracking_data', true );
 		}
 	}
 
