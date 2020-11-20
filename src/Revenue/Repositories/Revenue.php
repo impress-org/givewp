@@ -86,12 +86,12 @@ class Revenue {
 
 		$array = array_filter( $array ); // Remove empty values.
 
-		$errorMessage = '';
-		if ( isset( $array['donation_id'] ) ) {
-			$errorMessage = "An error occurred when processing Donation #{$array['donation_id']}. ";
-		}
-
 		if ( array_diff( $required, array_keys( $array ) ) ) {
+			$errorMessage = '';
+			if ( isset( $array['donation_id'] ) ) {
+				$errorMessage = "An error occurred when processing Donation #{$array['donation_id']}. ";
+			}
+
 			throw new InvalidArgumentException(
 				sprintf(
 					'%2$sTo insert revenue, please provide valid %1$s.',
