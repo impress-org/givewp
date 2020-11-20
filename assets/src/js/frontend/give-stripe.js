@@ -66,7 +66,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		function mountStripeElements(doUnmount = true) {
 			const { selectedGatewayId, isStripeModalCheckoutGateway } = getFormState();
 
-			if ( 'stripe' === selectedGatewayId || isStripeModalCheckoutGateway ) {
+			if ( isUpdatingPaymentInfo || 'stripe' === selectedGatewayId || isStripeModalCheckoutGateway ) {
 				stripeElements.mountElement( cardElements );
 			} else if( doUnmount ) {
 				stripeElements.unMountElement( cardElements );
