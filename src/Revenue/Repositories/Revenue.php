@@ -50,6 +50,7 @@ class Revenue {
 	 * @param $revenueId
 	 *
 	 * @return false|int
+	 * @throws DatabaseQueryException
 	 */
 	public function deleteByDonationId( $revenueId ) {
 		global $wpdb;
@@ -76,27 +77,38 @@ class Revenue {
 	 * Validate new revenue data.
 	 *
 	 * @since 2.9.0
+	 * @since 2.9.4 Mention donation id in exception message.
 	 *
 	 * @param array $array
 	 */
 	protected function validateNewRevenueData( $array ) {
 		$required = [ 'donation_id', 'form_id', 'amount' ];
 
-		$array = array_filter( $array ); // Remove empty values.
-
-		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException(
-				sprintf(
-					'To insert revenue, please provide valid %1$s.',
-					implode( ', ', $required )
-				)
-			);
+		if ( empty( $array['donation_id'] ) ) {
+			unset( $array['donation_id'] );
 		}
 
-		foreach ( $required as $columnName ) {
-			if ( empty( $array[ $columnName ] ) ) {
-				throw new InvalidArgumentException( 'Empty value is not allowed to create revenue.' );
+		if ( empty( $array['form_id'] ) ) {
+			unset( $array['form_id'] );
+		}
+
+		if ( ! is_numeric( $array['amount'] ) || (int) $array['amount'] < 0 ) {
+			unset( $array['amount'] );
+		}
+
+		if ( array_diff( $required, array_keys( $array ) ) ) {
+			$errorMessage = '';
+			if ( isset( $array['donation_id'] ) ) {
+				$errorMessage = "An error occurred when processing Donation #{$array['donation_id']}. ";
 			}
+
+			throw new InvalidArgumentException(
+				sprintf(
+					'%2$sTo insert revenue, please provide valid %1$s.',
+					implode( ', ', $required ),
+					$errorMessage
+				)
+			);
 		}
 	}
 
