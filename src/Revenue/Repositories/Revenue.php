@@ -84,18 +84,29 @@ class Revenue {
 
 		$array = array_filter( $array ); // Remove empty values.
 
+		$errorMessage = '';
+		if ( isset( $array['donation_id'] ) ) {
+			$errorMessage = "An error occurred when processing {$array['donation_id']}. ";
+		}
+
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			throw new InvalidArgumentException(
 				sprintf(
-					'To insert revenue, please provide valid %1$s.',
-					implode( ', ', $required )
+					'%2$sTo insert revenue, please provide valid %1$s.',
+					implode( ', ', $required ),
+					$errorMessage
 				)
 			);
 		}
 
 		foreach ( $required as $columnName ) {
 			if ( empty( $array[ $columnName ] ) ) {
-				throw new InvalidArgumentException( 'Empty value is not allowed to create revenue.' );
+				throw new InvalidArgumentException(
+					sprintf(
+						'%1$sEmpty value is not allowed to create revenue.',
+						$errorMessage
+					)
+				);
 			}
 		}
 	}
