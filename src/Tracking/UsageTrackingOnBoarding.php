@@ -31,16 +31,16 @@ class UsageTrackingOnBoarding {
 			return;
 		}
 
-		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
-		$readMoreLink = sprintf(
-			'<a href="#" target="_blank">%1$s</a>',
-			esc_html__( 'Read more GiveWP.com Usage Tracking.', 'give' )
+		$notice = sprintf(
+			'<strong>%1$s</strong><br><i>%2$s</i>',
+			esc_html__( 'Can GiveWP collect data about the usage of the plugin?', 'give' ),
+			esc_html__( 'Usage data is completely anonymous, does not include any personal information, and will only be used to improve the software.', 'give' )
 		);
 
 		$allowTrackingLink = sprintf(
 			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
-			esc_html__( 'Allow', 'give' ),
-			esc_html__( 'Do not allow', 'give' ),
+			esc_html__( 'Yes', 'give' ),
+			esc_html__( 'No', 'give' ),
 			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
 			add_query_arg( [ 'give_action' => 'opt_out_into_tracking' ] )
 		);
@@ -49,7 +49,7 @@ class UsageTrackingOnBoarding {
 			[
 				'id'               => 'usage-tracking-nag',
 				'type'             => 'info',
-				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
+				'description'      => "{$notice}{$allowTrackingLink}",
 				'dismissible_type' => 'user',
 				'dismiss_interval' => 'shortly',
 			]
