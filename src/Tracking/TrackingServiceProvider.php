@@ -15,7 +15,7 @@ class TrackingServiceProvider implements ServiceProvider {
 	 */
 	public function register() {
 		give()->singleton( AdminSettings::class );
-		give()->singleton( UsageTrackingOnBoarding::class );
+		give()->singleton( AnonymousUsageTrackingOnBoarding::class );
 		give()->singleton( AdminActionHandler::class );
 		give()->singleton( HandleUsageTrackingRoutine::class );
 	}
@@ -32,7 +32,7 @@ class TrackingServiceProvider implements ServiceProvider {
 
 		if ( $isAdmin ) {
 			give( AdminSettings::class )->boot();
-			give( UsageTrackingOnBoarding::class )->boot();
+			give( AnonymousUsageTrackingOnBoarding::class )->boot();
 			give( AdminActionHandler::class )->boot();
 		}
 	}

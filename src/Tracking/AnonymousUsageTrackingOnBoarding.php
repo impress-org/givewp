@@ -9,8 +9,8 @@ namespace Give\Tracking;
  *
  * @since 2.10.0
  */
-class UsageTrackingOnBoarding {
-	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'usage-tracking-nag';
+class AnonymousUsageTrackingOnBoarding {
+	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'anonymous-usage-tracking-nag';
 
 	/**
 	 * Bootstrap
@@ -61,10 +61,10 @@ class UsageTrackingOnBoarding {
 	 * @return string[]
 	 */
 	private function getNotice() {
-		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
+		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Anonymous Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
 		$readMoreLink = sprintf(
 			'<a href="#" target="_blank">%1$s</a>',
-			esc_html__( 'Read more GiveWP.com Usage Tracking.', 'give' )
+			esc_html__( 'Read more GiveWP.com Anonymous Usage Tracking.', 'give' )
 		);
 
 		$allowTrackingLink = sprintf(

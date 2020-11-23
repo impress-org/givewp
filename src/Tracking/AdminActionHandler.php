@@ -13,14 +13,14 @@ use Give_Cache;
  */
 class AdminActionHandler {
 	/**
-	 * @var UsageTrackingOnBoarding
+	 * @var AnonymousUsageTrackingOnBoarding
 	 */
 	public $usageTrackingOnBoarding;
 
 	/**
-	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
+	 * @param  AnonymousUsageTrackingOnBoarding  $usageTrackingOnBoarding
 	 */
-	public function constructor( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
+	public function constructor( AnonymousUsageTrackingOnBoarding $usageTrackingOnBoarding ) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
 	}
 
