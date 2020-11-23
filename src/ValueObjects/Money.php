@@ -109,7 +109,7 @@ class Money {
 	}
 
 	/**
-	 * Get amount in smallest unit of currency.
+	 * Get amount in decimal of currency.
 	 *
 	 * @sicne 2.9.0
 	 *
