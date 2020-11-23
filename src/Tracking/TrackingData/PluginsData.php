@@ -2,6 +2,7 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Framework\Collection;
+use Give\License\PremiumAddonsListManager;
 
 /**
  * Class ActivePluginsData
@@ -35,7 +36,6 @@ class PluginsData implements Collection {
 	 */
 	private function getPluginData() {
 		$plugins = give_get_plugins();
-		$plugins = array_filter( $plugins, [ $this, 'isPluginActive' ] );
 		$plugins = array_map( [ $this, 'formatPlugin' ], $plugins );
 
 		$plugin_data = [];
@@ -48,19 +48,6 @@ class PluginsData implements Collection {
 	}
 
 	/**
-	 * Returns whether or not plugin active.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @param  array  $plugin  The plugin details.
-	 *
-	 * @return bool
-	 */
-	private function isPluginActive( array $plugin ) {
-		return 'active' === $plugin['Status'];
-	}
-
-	/**
 	 * Formats the plugin array.
 	 *
 	 * @since 2.10.0
@@ -69,11 +56,16 @@ class PluginsData implements Collection {
 	 *
 	 * @return array The formatted array.
 	 */
-	private function formatPlugin( array $plugin ) {
+	private function formatPlugin( $plugin ) {
+		/* @var PremiumAddonsListManager $premiumAddonsListManger */
+		$premiumAddonsListManger = give( PremiumAddonsListManager::class );
+
 		return [
-			'name'    => $plugin['Name'],
-			'version' => $plugin['Version'],
-			'type'    => $plugin['Type'],
+			'name'      => $plugin['Name'],
+			'version'   => $plugin['Version'],
+			'status'    => $plugin['Status'],
+			'type'      => $plugin['Type'],
+			'isPremium' => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
 		];
 	}
 }
