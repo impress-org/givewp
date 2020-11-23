@@ -6,9 +6,9 @@
  * @package Give
  */
 
-namespace Give\API\Endpoints\Reports;
+namespace Give\Reports\Endpoints;
 
-class TopDonors extends Endpoint {
+class TopDonors extends BaseEndpoint {
 
 	public function __construct() {
 		$this->endpoint = 'top-donors';

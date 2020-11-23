@@ -6,9 +6,9 @@
  * @package Give
  */
 
-namespace Give\API\Endpoints\Reports;
+namespace Give\Reports\Endpoints;
 
-class DonationsVsIncome extends Endpoint {
+class DonationsVsIncome extends BaseEndpoint {
 
 	public function __construct() {
 		$this->endpoint = 'donations-vs-income';

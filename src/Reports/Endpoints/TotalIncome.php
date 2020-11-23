@@ -6,9 +6,9 @@
  * @package Give
  */
 
-namespace Give\API\Endpoints\Reports;
+namespace Give\Reports\Endpoints;
 
-class TotalIncome extends Endpoint {
+class TotalIncome extends BaseEndpoint {
 
 	protected $payments;
 

@@ -6,18 +6,18 @@
  * @package Give
  */
 
-namespace Give\API\Endpoints\Reports;
+namespace Give\Reports\Endpoints;
 
 use DateInterval;
 use DateTime;
-use Give\API\RestRoute;
+use Give\Framework\RestRoute;
 use \Give_Cache;
 use Give_Payment;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
-abstract class Endpoint implements RestRoute {
+abstract class BaseEndpoint implements RestRoute {
 	/**
 	 * @since 2.6.1
 	 * @var WP_REST_Request

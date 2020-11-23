@@ -6,9 +6,9 @@
  * @package Give
  */
 
-namespace Give\API\Endpoints\Reports;
+namespace Give\Reports\Endpoints;
 
-class PaymentMethods extends Endpoint {
+class PaymentMethods extends BaseEndpoint {
 
 	public function __construct() {
 		$this->endpoint = 'payment-methods';

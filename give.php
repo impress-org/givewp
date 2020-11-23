@@ -47,7 +47,7 @@ use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
-use Give\ServiceProviders\RestAPI;
+use Give\Reports\ServiceProvider as ReportsServiceProvider;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
@@ -135,7 +135,7 @@ final class Give {
 	 */
 	private $serviceProviders = [
 		LegacyServiceProvider::class,
-		RestAPI::class,
+		ReportsServiceProvider::class,
 		Routes::class,
 		PaymentGateways::class,
 		Onboarding::class,

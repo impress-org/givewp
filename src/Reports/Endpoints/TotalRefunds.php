@@ -1,19 +1,21 @@
 <?php
 
 /**
- * Total donors endpoint
+ * Refunds over time endpoint
  *
  * @package Give
  */
 
-namespace Give\API\Endpoints\Reports;
+namespace Give\Reports\Endpoints;
 
-class TotalDonors extends Endpoint {
+use DateInterval;
+
+class TotalRefunds extends BaseEndpoint {
 
 	protected $payments;
 
 	public function __construct() {
-		$this->endpoint = 'total-donors';
+		$this->endpoint = 'total-refunds';
 	}
 
 	public function getReport( $request ) {
@@ -48,7 +50,7 @@ class TotalDonors extends Endpoint {
 	public function get_data( $start, $end, $intervalStr ) {
 
 		$tooltips = [];
-		$donors   = [];
+		$refunds  = [];
 
 		$interval = new \DateInterval( $intervalStr );
 
@@ -60,8 +62,8 @@ class TotalDonors extends Endpoint {
 
 		while ( $periodStart < $end ) {
 
-			$donorsForPeriod = $this->get_donors( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
-			$time            = $periodEnd->format( 'Y-m-d H:i:s' );
+			$refundsForPeriod = $this->get_refunds( $periodStart->format( 'Y-m-d H:i:s' ), $periodEnd->format( 'Y-m-d H:i:s' ) );
+			$time             = $periodEnd->format( 'Y-m-d H:i:s' );
 
 			switch ( $intervalStr ) {
 				case 'P1D':
@@ -77,14 +79,14 @@ class TotalDonors extends Endpoint {
 					$periodLabel = $periodStart->format( 'M j, Y' ) . ' - ' . $periodEnd->format( 'M j, Y' );
 			}
 
-			$donors[] = [
+			$refunds[] = [
 				'x' => $time,
-				'y' => $donorsForPeriod,
+				'y' => $refundsForPeriod,
 			];
 
 			$tooltips[] = [
-				'title'  => sprintf( _n( '%d Donor', '%d Donors', $donorsForPeriod, 'give' ), $donorsForPeriod ),
-				'body'   => __( 'Total Donors', 'give' ),
+				'title'  => sprintf( _n( '%d Donor', '%d Donors', $refundsForPeriod, 'give' ), $refundsForPeriod ),
+				'body'   => __( 'Total Refunds', 'give' ),
 				'footer' => $periodLabel,
 			];
 
@@ -94,12 +96,12 @@ class TotalDonors extends Endpoint {
 		}
 
 		if ( $intervalStr === 'P1D' ) {
-			$donors   = array_slice( $donors, 1 );
+			$refunds  = array_slice( $refunds, 1 );
 			$tooltips = array_slice( $tooltips, 1 );
 		}
 
-		$totalDonorsForPeriod = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
-		$trend                = $this->get_trend( $start, $end, $donors );
+		$totalRefundsForPeriod = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$trend                 = $this->get_trend( $start, $end, $refunds );
 
 		$diff = date_diff( $start, $end );
 		$info = $diff->days > 1 ? __( 'VS previous', 'give' ) . ' ' . $diff->days . ' ' . __( 'days', 'give' ) : __( 'VS previous day', 'give' );
@@ -108,11 +110,11 @@ class TotalDonors extends Endpoint {
 		$data = [
 			'datasets' => [
 				[
-					'data'      => $donors,
+					'data'      => $refunds,
 					'tooltips'  => $tooltips,
 					'trend'     => $trend,
 					'info'      => $info,
-					'highlight' => $totalDonorsForPeriod,
+					'highlight' => $totalRefundsForPeriod,
 				],
 			],
 		];
@@ -121,7 +123,7 @@ class TotalDonors extends Endpoint {
 
 	}
 
-	public function get_trend( $start, $end, $income ) {
+	public function get_trend( $start, $end, $refunds ) {
 
 		$interval = $start->diff( $end );
 
@@ -130,45 +132,40 @@ class TotalDonors extends Endpoint {
 
 		$prevEnd = clone $start;
 
-		$prevDonors    = $this->get_donors( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
-		$currentDonors = $this->get_donors( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
+		$prevRefunds    = $this->get_refunds( $prevStart->format( 'Y-m-d H:i:s' ), $prevEnd->format( 'Y-m-d H:i:s' ) );
+		$currentRefunds = $this->get_refunds( $start->format( 'Y-m-d H:i:s' ), $end->format( 'Y-m-d H:i:s' ) );
 
 		// Set default trend to 0
 		$trend = 0;
 
 		// Check that prev value and current value are > 0 (can't divide by 0)
-		if ( $prevDonors > 0 && $currentDonors > 0 ) {
+		if ( $prevRefunds > 0 && $currentRefunds > 0 ) {
 
 			// Check if it is a percent decreate, or increase
-			if ( $prevDonors > $currentDonors ) {
+			if ( $prevRefunds > $currentRefunds ) {
 				// Calculate a percent decrease
-				$trend = ( ( ( $prevDonors - $currentDonors ) / $prevDonors ) * 100 ) * -1;
-			} elseif ( $currentDonors > $prevDonors ) {
+				$trend = ( ( ( $prevRefunds - $currentRefunds ) / $prevRefunds ) * 100 ) * -1;
+			} elseif ( $currentRefunds > $prevRefunds ) {
 				// Calculate a percent increase
-				$trend = ( ( $currentDonors - $prevDonors ) / $prevDonors ) * 100;
+				$trend = ( ( $currentRefunds - $prevRefunds ) / $prevRefunds ) * 100;
 			}
 		}
 
 		return $trend;
 	}
 
-	public function get_donors( $startStr, $endStr ) {
+	public function get_refunds( $startStr, $endStr ) {
 
 		$paymentObjects = $this->getPayments( $startStr, $endStr );
 
-		$donors = [];
-
+		$refunds = 0;
 		foreach ( $paymentObjects as $paymentObject ) {
-			if ( $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
-				if ( $paymentObject->status == 'publish' || $paymentObject->status == 'give_subscription' ) {
-					$donors[] = $paymentObject->donor_id;
-				}
+			if ( $paymentObject->status == 'refunded' && $paymentObject->date >= $startStr && $paymentObject->date < $endStr ) {
+				$refunds += 1;
 			}
 		}
 
-		$unique     = array_unique( $donors );
-		$donorCount = count( $unique );
-
-		return $donorCount;
+		return $refunds;
 	}
+
 }
