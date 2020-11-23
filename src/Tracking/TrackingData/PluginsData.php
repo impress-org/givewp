@@ -11,7 +11,7 @@ use Give\Framework\Collection;
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class ActivePluginsData implements Collection {
+class PluginsData implements Collection {
 
 	/**
 	 * Returns the collection data.

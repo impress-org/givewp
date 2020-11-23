@@ -3,7 +3,7 @@ namespace Give\Tracking;
 
 
 use Give\Framework\Collector;
-use Give\Tracking\TrackingData\ActivePluginsData;
+use Give\Tracking\TrackingData\PluginsData;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\GiveDonationPluginData;
 use Give\Tracking\TrackingData\ThemeData;
@@ -201,7 +201,7 @@ class HandleUsageTrackingRoutine {
 		$collector->addCollection( WebsiteData::class );
 		$collector->addCollection( ServerData::class );
 		$collector->addCollection( ThemeData::class );
-		$collector->addCollection( ActivePluginsData::class );
+		$collector->addCollection( PluginsData::class );
 		$collector->addCollection( GiveDonationPluginData::class );
 
 		return $collector;
