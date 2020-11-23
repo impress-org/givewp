@@ -10,6 +10,8 @@ namespace Give\Tracking;
  * @since 2.10.0
  */
 class UsageTrackingOnBoarding {
+	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'usage-tracking-nag';
+
 	/**
 	 * Bootstrap
 	 *
@@ -25,35 +27,18 @@ class UsageTrackingOnBoarding {
 	 * @sicne 2.10.0
 	 */
 	public function addNotice() {
-		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
-
-		if ( $isAdminOptedIn || ! current_user_can( 'manage_give_settings' ) ) {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
 		}
 
-		$notice = sprintf(
-			'<strong>%1$s</strong><br><i>%2$s</i>',
-			esc_html__( 'Can GiveWP collect data about the usage of the plugin?', 'give' ),
-			esc_html__( 'Usage data is completely anonymous, does not include any personal information, and will only be used to improve the software.', 'give' )
-		);
+		$notice = $this->getNotice();
 
-		$allowTrackingLink = sprintf(
-			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
-			esc_html__( 'Yes', 'give' ),
-			esc_html__( 'No', 'give' ),
-			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
-			add_query_arg( [ 'give_action' => 'opt_out_into_tracking' ] )
-		);
+		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		if ( $isAdminOptedIn || give()->notices->is_notice_dismissed( $notice ) ) {
+			return;
+		}
 
-		give()->notices->register_notice(
-			[
-				'id'               => 'usage-tracking-nag',
-				'type'             => 'info',
-				'description'      => "{$notice}{$allowTrackingLink}",
-				'dismissible_type' => 'user',
-				'dismiss_interval' => 'shortly',
-			]
-		);
+		give()->notices->register_notice( $notice );
 	}
 
 	/**
@@ -65,6 +50,37 @@ class UsageTrackingOnBoarding {
 	 * @return string
 	 */
 	public function getNoticeOptionKey() {
-		return give()->notices->get_notice_key( 'usage-tracking-nag', 'shortly', wp_get_current_user()->ID );
+		return give()->notices->get_notice_key( self::ANONYMOUS_USAGE_TRACING_NOTICE_ID, 'permanent' );
+	}
+
+	/**
+	 * Get notice.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string[]
+	 */
+	private function getNotice() {
+		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
+		$readMoreLink = sprintf(
+			'<a href="#" target="_blank">%1$s</a>',
+			esc_html__( 'Read more GiveWP.com Usage Tracking.', 'give' )
+		);
+
+		$allowTrackingLink = sprintf(
+			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
+			esc_html__( 'Yes', 'give' ),
+			esc_html__( 'No', 'give' ),
+			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
+			add_query_arg( [ 'give_action' => 'opt_out_into_tracking' ] )
+		);
+
+			return [
+				'id'               => self::ANONYMOUS_USAGE_TRACING_NOTICE_ID,
+				'type'             => 'info',
+				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
+				'dismissible_type' => 'all',
+				'dismiss_interval' => 'permanent',
+			];
 	}
 }
