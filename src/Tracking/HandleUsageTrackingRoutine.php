@@ -3,9 +3,9 @@ namespace Give\Tracking;
 
 
 use Give\Framework\Collector;
+use Give\Tracking\TrackingData\GivePluginData;
 use Give\Tracking\TrackingData\PluginsData;
 use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\GiveDonationPluginData;
 use Give\Tracking\TrackingData\ThemeData;
 use Give\Tracking\TrackingData\WebsiteData;
 use WP_Upgrader;
@@ -202,7 +202,7 @@ class HandleUsageTrackingRoutine {
 		$collector->addCollection( ServerData::class );
 		$collector->addCollection( ThemeData::class );
 		$collector->addCollection( PluginsData::class );
-		$collector->addCollection( GiveDonationPluginData::class );
+		$collector->addCollection( GivePluginData::class );
 
 		return $collector;
 	}
