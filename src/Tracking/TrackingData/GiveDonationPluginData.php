@@ -31,7 +31,7 @@ class GiveDonationPluginData implements Collection {
 				'donationFormCount' => $this->getDonationFormCount(),
 				'donorCount'        => $this->getDonorCount(),
 				'revenue'           => $this->getRevenueTillNow(),
-				'settings'          => $this->getGlobalSettings(),
+				'globalSettings'    => $this->getGlobalSettings(),
 				'userType'          => give_get_option( 'user_type' ),
 				'causeType'         => give_get_option( 'cause_type' ),
 			],
