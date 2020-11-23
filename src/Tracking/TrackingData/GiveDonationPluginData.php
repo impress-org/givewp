@@ -28,16 +28,16 @@ class GiveDonationPluginData implements Collection {
 	public function get() {
 		return [
 			'givewp' => [
-				'installDate'        => $this->getPluginInstallDate(),
-				'donationFormCount'  => $this->getDonationFormCount(),
-				'firstDonationDate'  => $this->getFirstDonationDate(),
-				'lastDonationDate'   => $this->getLastDonationDate(),
-				'donorCount'         => $this->getDonorCount(),
-				'avgDonationByDonor' => $this->getAvgDonorDonation(),
-				'revenue'            => $this->getRevenueTillNow(),
-				'globalSettings'     => $this->getGlobalSettings(),
-				'userType'           => give_get_option( 'user_type' ),
-				'causeType'          => give_get_option( 'cause_type' ),
+				'installDate'              => $this->getPluginInstallDate(),
+				'donationFormCount'        => $this->getDonationFormCount(),
+				'firstDonationDate'        => $this->getFirstDonationDate(),
+				'lastDonationDate'         => $this->getLastDonationDate(),
+				'donorCount'               => $this->getDonorCount(),
+				'avgDonationAmountByDonor' => $this->getAvgDonationAmountByDonor(),
+				'revenue'                  => $this->getRevenueTillNow(),
+				'globalSettings'           => $this->getGlobalSettings(),
+				'userType'                 => give_get_option( 'user_type' ),
+				'causeType'                => give_get_option( 'cause_type' ),
 			],
 		];
 	}
@@ -141,7 +141,7 @@ class GiveDonationPluginData implements Collection {
 	 * @since 2.10.0
 	 * @return string
 	 */
-	private function getAvgDonorDonation() {
+	private function getAvgDonationAmountByDonor() {
 		try {
 			$amount   = $this->getRevenueTillNow() / $this->getDonorCount();
 			$currency = give_get_option( 'currency' );
