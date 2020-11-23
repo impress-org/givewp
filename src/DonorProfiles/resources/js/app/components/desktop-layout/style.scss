@@ -7,7 +7,6 @@
 	background: #fff;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	border-radius: 8px;
-	overflow: hidden;
 }
 
 .give-donor-profile-desktop-layout__donor-info {
@@ -19,6 +18,7 @@
 	grid-row: 2;
 	background: #fbfbfb;
 	border-right: 1px solid #e2e6ec;
+	border-radius: 0 0 0 8px;
 
 	.give-donor-profile-tab-link {
 		font-size: 15px;

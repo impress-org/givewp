@@ -1,0 +1,29 @@
+.give-donor-profile__email-controls {
+	display: flex;
+	align-self: stretch;
+	align-items: center;
+	justify-content: center;
+	padding-top: 48px;
+	max-width: fit-content;
+	font-size: 14px;
+
+	.give-donor-profile__make-primary-email {
+		margin-right: 10px;
+		color: #3398db;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.give-donor-profile__delete-email {
+		margin-left: 10px;
+		color: rgb(199, 81, 81);
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
