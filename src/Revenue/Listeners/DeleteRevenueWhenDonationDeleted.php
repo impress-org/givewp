@@ -1,10 +1,8 @@
 <?php
-
 namespace Give\Revenue\Listeners;
 
-use Give\Framework\Database\DB;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Revenue\Repositories\Revenue;
-use WP_Post;
 
 class DeleteRevenueWhenDonationDeleted {
 	/**
@@ -16,6 +14,8 @@ class DeleteRevenueWhenDonationDeleted {
 	 * DeleteRevenueWhenDonationDeleted constructor.
 	 *
 	 * @since 2.9.2
+	 *
+	 * @param  Revenue  $revenueRepository
 	 */
 	public function __construct( Revenue $revenueRepository ) {
 		$this->revenueRepository = $revenueRepository;
@@ -25,12 +25,14 @@ class DeleteRevenueWhenDonationDeleted {
 	 * Deletes the revenue associated with a donation when a donation is deleted
 	 *
 	 * @since 2.9.2
+	 * @since 2.9.4 removed $post parameter for < WP 5.5 compatibility
 	 *
-	 * @param int     $postId
-	 * @param WP_Post $post
+	 * @param  int  $postId
+	 *
+	 * @throws DatabaseQueryException
 	 */
-	public function __invoke( $postId, WP_Post $post ) {
-		if ( $post->post_type !== 'give_payment' ) {
+	public function __invoke( $postId ) {
+		if ( 'give_payment' !== get_post_type( $postId ) ) {
 			return;
 		}
 
