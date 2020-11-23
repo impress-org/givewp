@@ -13,6 +13,18 @@ use Give_Cache;
  */
 class AdminActionHandler {
 	/**
+	 * @var UsageTrackingOnBoarding
+	 */
+	public $usageTrackingOnBoarding;
+
+	/**
+	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
+	 */
+	public function constructor( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
+		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
+	}
+
+	/**
 	 * Bootstrap
 	 *
 	 * @since 2.10.0
@@ -32,7 +44,9 @@ class AdminActionHandler {
 			return;
 		}
 
-		Give_Cache::set( give( UsageTrackingOnBoarding::class )->getNoticeOptionKey(), true, DAY_IN_SECONDS, true );
+		// Hide notice.
+		Give_Cache::set( $this->usageTrackingOnBoarding->getNoticeOptionKey(), true, null, true );
+
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' );
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
