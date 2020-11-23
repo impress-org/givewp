@@ -50,8 +50,8 @@ class UsageTrackingOnBoarding {
 				'id'               => 'usage-tracking-nag',
 				'type'             => 'info',
 				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
-				'dismissible_type' => 'user',
-				'dismiss_interval' => 'shortly',
+				'dismissible_type' => 'all',
+				'dismiss_interval' => 'permanent',
 			]
 		);
 	}
