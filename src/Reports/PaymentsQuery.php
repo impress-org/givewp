@@ -3,7 +3,7 @@
 namespace Give\Reports;
 
 /**
- * Builds the complicated SQL of Donations joined with various donation meta.
+ * Builds the optimized SQL of Donations joined with various donation meta.
  */
 class PaymentsQuery {
 
