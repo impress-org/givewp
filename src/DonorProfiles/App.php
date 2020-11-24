@@ -14,7 +14,7 @@ class App {
 	}
 
 	/**
-	 * Get output markup for Multi-Form Goal
+	 * Get output markup for Donor Profile app
 	 *
 	 * @return string
 	 * @since 2.10.0
@@ -57,7 +57,7 @@ class App {
 			[
 				'apiRoot'  => esc_url_raw( rest_url() ),
 				'apiNonce' => wp_create_nonce( 'wp_rest' ),
-				'profile'  => $this->getProfile(),
+				'profile'  => $this->profile->getProfile(),
 			]
 		);
 

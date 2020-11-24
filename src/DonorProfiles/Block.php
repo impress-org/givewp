@@ -2,7 +2,7 @@
 
 namespace Give\DonorProfiles;
 
-use Give\DonorProfiles\Model as DonorProfile;
+use Give\DonorProfiles\App as DonorProfile;
 
 class Block {
 

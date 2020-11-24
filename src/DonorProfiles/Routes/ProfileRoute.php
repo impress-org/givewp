@@ -5,7 +5,7 @@ namespace Give\DonorProfiles\Routes;
 use WP_REST_Request;
 use Give\API\RestRoute;
 use \Give_Donor as Donor;
-use Give\DonorProfiles\Model as Model;
+use Give\DonorProfiles\Profile as Model;
 
 /**
  * @since 2.10.0
