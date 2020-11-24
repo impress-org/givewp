@@ -3,6 +3,7 @@ namespace Give\Tracking;
 
 use Give\Tracking\Contracts\Collection;
 use InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * Class Collector
@@ -12,7 +13,7 @@ use InvalidArgumentException;
  * @since 2.10.0
  * @package Give\Tracking
  */
-class Collector {
+class Collector implements JsonSerializable {
 
 	/**
 	 * Holds the collections.
@@ -54,12 +55,10 @@ class Collector {
 	}
 
 	/**
-	 * Returns the collected data as a JSON encoded string.
-	 *
-	 * @since 2.10.0
-	 * @return false|string The encode string.
+	 * @inheritdoc
+	 * @return false|mixed|string
 	 */
-	public function getAsJson() {
+	public function jsonSerialize() {
 		return wp_json_encode( $this->collect() );
 	}
 }

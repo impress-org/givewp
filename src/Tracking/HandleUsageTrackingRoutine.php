@@ -134,7 +134,7 @@ class HandleUsageTrackingRoutine {
 			'httpversion' => '1.1',
 			'blocking'    => false,
 			'user-agent'  => 'GIVE/' . GIVE_VERSION . ' ' . get_bloginfo( 'url' ),
-			'body'        => $this->getCollector()->getAsJson(),
+			'body'        => wp_json_encode( $this->getCollector() ),
 			'data_format' => 'body',
 		];
 
