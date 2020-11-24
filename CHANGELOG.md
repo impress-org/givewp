@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Currency Switcher options are visible in the dropdown on a windows machine (#5453)
+
+## 2.9.4 - 2020-11-20
+
+### Fixed
+
+-   Donation id mentions in exception and log message when insert query for revenue table fails  (#5472)
+-   Allow revenue with a 0 amount to be inserted  (#5472)
+-   Prevent fatal error when delete donation on WP < 5.5.0 (#5470)
+-   Stripe single-input credit card field works again (#5469)
+-   Updating a Stripe subscription from the update payment info screen works again (#5467)
+
 ## 2.9.3 - 2020-11-17
 
 ### Fixed
