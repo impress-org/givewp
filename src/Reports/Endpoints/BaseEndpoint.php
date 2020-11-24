@@ -354,6 +354,8 @@ abstract class BaseEndpoint implements RestRoute {
 	/**
 	 * Get payment.
 	 *
+	 * @since 2.9.5 Replaced `Give_Payments_Query` with an optimized query.
+	 *
 	 * @param string $startStr
 	 * @param string $endStr
 	 * @param string $orderBy
