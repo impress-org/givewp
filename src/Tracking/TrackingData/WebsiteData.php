@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Framework\Collection;
+use Give\Tracking\Contracts\Collection;
 
 /**
  * Class WebsiteData

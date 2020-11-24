@@ -2,7 +2,7 @@
 namespace Give\Tracking\TrackingData;
 
 use Exception;
-use Give\Framework\Collection;
+use Give\Tracking\Contracts\Collection;
 use Give_Donors_Query;
 
 /**

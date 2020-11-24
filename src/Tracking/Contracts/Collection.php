@@ -1,5 +1,5 @@
 <?php
-namespace Give\Framework;
+namespace Give\Tracking\Contracts;
 
 /**
  * Class Collection
@@ -7,7 +7,7 @@ namespace Give\Framework;
  * Interface that represents a collection.
  *
  * @since 2.10.0
- * @package Give\Framework
+ * @package Give\Tracking
  */
 interface Collection {
 

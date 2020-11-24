@@ -1,6 +1,7 @@
 <?php
-namespace Give\Framework;
+namespace Give\Tracking;
 
+use Give\Tracking\Contracts\Collection;
 use InvalidArgumentException;
 
 /**
@@ -9,7 +10,7 @@ use InvalidArgumentException;
  * Collects the data from the added collection objects.
  *
  * @since 2.10.0
- * @package Give\Framework
+ * @package Give\Tracking
  */
 class Collector {
 

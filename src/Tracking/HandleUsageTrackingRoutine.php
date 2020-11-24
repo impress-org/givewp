@@ -2,7 +2,7 @@
 namespace Give\Tracking;
 
 
-use Give\Framework\Collector;
+use Give\Tracking\Collector;
 use Give\Tracking\TrackingData\GivePluginData;
 use Give\Tracking\TrackingData\PluginsData;
 use Give\Tracking\TrackingData\ServerData;
