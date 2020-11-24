@@ -10,7 +10,7 @@ import './style.scss';
 
 const { __ } = wp.i18n;
 
-const SelectControl = ( { label, value, isLoading, onChange, options, placeholder, width } ) => {
+const SelectControl = ( { label, value, isLoading, onChange, options, placeholder, width, isClearable } ) => {
 	if ( options && options.length < 2 ) {
 		return null;
 	}
@@ -41,6 +41,14 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 			...provided,
 			padding: '7px 12px',
 		} ),
+		clearIndicator: ( provided ) => ( {
+			...provided,
+			padding: '0px',
+		} ),
+		dropdownIndicator: ( provided ) => ( {
+			...provided,
+			padding: '0 8px 0 0',
+		} ),
 		option: ( provided, state ) => ( {
 			...provided,
 			fontSize: '14px',
@@ -62,11 +70,12 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 				isLoading={ isLoading }
 				inputId={ label && toKebabCase( label ) }
 				value={ selectedOptionValue }
-				onChange={ ( selectedOption ) => onChange( selectedOption.value ) }
+				onChange={ ( selectedOption ) => onChange( selectedOption ? selectedOption.value : null ) }
 				options={ options }
 				styles={ selectStyles }
 				maxMenuHeight="200px"
 				isDisabled={ isLoading }
+				isClearable={ isClearable }
 				theme={ ( theme ) => ( {
 					...theme,
 					colors: {
@@ -89,6 +98,7 @@ SelectControl.propTypes = {
 	options: PropTypes.array.isRequired,
 	placeholder: PropTypes.string,
 	width: PropTypes.string,
+	isClearable: PropTypes.bool,
 };
 
 SelectControl.defaultProps = {
@@ -98,6 +108,7 @@ SelectControl.defaultProps = {
 	options: null,
 	placeholder: __( 'Select...', 'give' ),
 	width: null,
+	isClearable: false,
 };
 
 export default SelectControl;
