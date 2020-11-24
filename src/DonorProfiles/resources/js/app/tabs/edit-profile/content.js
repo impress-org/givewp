@@ -99,7 +99,8 @@ const Content = () => {
 					onChange={ ( value ) => setPrefix( value ) }
 					options={ prefixOptions }
 					placeholder="--"
-					width="80px"
+					width="120px"
+					isClearable={ true }
 				/>
 				<TextControl
 					label={ __( 'First Name', 'give' ) }
