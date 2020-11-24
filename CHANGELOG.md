@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New
+
+-    Onboarding locales now include Jamaica (#5474)
+
 ### Fixed
 
 -   Currency Switcher options are visible in the dropdown on a windows machine (#5453)
