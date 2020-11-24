@@ -409,58 +409,13 @@ abstract class BaseEndpoint implements RestRoute {
 
 		global $wpdb;
 
-		$testMode = ( $this->testMode ) ? 'test' : 'live';
-		$sql      = "
-		SELECT
-			Donation.ID as ID,
-			Donation.post_date as date,
-			Donation.post_status as status,
-			DonationTotal.meta_value as total,
-			DonorID.meta_value as donor_id,
-			FormID.meta_value as form_id,
-			FormTitle.meta_value as form_title,
-			DonationCurrency.meta_value as currency,
-			PaymentGateway.meta_value as gateway,
-			DonorFirstName.meta_value as first_name,
-			DonorLastName.meta_value as last_name
-		FROM {$wpdb->prefix}posts as Donation
-		JOIN {$wpdb->prefix}give_donationmeta as DonationMode
-			ON Donation.ID = DonationMode.donation_id
-			AND DonationMode.meta_key = '_give_payment_mode'
-			AND DonationMode.meta_value = '{$testMode}'
-		JOIN {$wpdb->prefix}give_donationmeta as DonationTotal
-			ON Donation.ID = DonationTotal.donation_id
-			AND DonationTotal.meta_key = '_give_payment_total'
-		JOIN {$wpdb->prefix}give_donationmeta as DonorID
-			ON Donation.ID = DonorID.donation_id
-			AND DonorID.meta_key = '_give_payment_donor_id'
-		JOIN {$wpdb->prefix}give_donationmeta as FormID
-			ON Donation.ID = FormID.donation_id
-			AND FormID.meta_key = '_give_payment_form_id'
-		JOIN {$wpdb->prefix}give_donationmeta as FormTitle
-			ON Donation.ID = FormTitle.donation_id
-			AND FormTitle.meta_key = '_give_payment_form_title'
-		JOIN {$wpdb->prefix}give_donationmeta as DonationCurrency
-			ON Donation.ID = DonationCurrency.donation_id
-			AND DonationCurrency.meta_key = '_give_payment_currency'
-			AND DonationCurrency.meta_value = '{$this->currency}'
-		JOIN {$wpdb->prefix}give_donationmeta as PaymentGateway
-			ON Donation.ID = PaymentGateway.donation_id
-			AND PaymentGateway.meta_key = '_give_payment_gateway'
-		JOIN {$wpdb->prefix}give_donormeta as DonorFirstName
-			ON DonorID.meta_value = DonorFirstName.donor_id
-			AND DonorFirstName.meta_key = '_give_donor_first_name'
-		JOIN {$wpdb->prefix}give_donormeta as DonorLastName
-			ON DonorID.meta_value = DonorLastName.donor_id
-			AND DonorLastName.meta_key = '_give_donor_last_name'
-		WHERE Donation.post_type = 'give_payment'
-			AND DATE( Donation.post_date ) BETWEEN '{$startStr}' AND '{$endStr}'
-		";
+		$query = ( new \Give\Reports\PaymentsQuery() )
+			->testMode( $this->testMode )
+			->currency( $this->currency )
+			->between( $startStr, $endStr )
+			->limit( $number );
 
-		if ( -1 !== $number ) {
-			$sql .= " LIMIT {$number}";
-		}
-
+		$sql      = $query->getSQL( $wpdb );
 		$payments = $wpdb->get_results( $sql );
 
 		// Cache the report data
