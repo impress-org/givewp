@@ -8,50 +8,56 @@ import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
 
 import { Fragment, useState } from 'react';
+import { useSelector } from 'react-redux';
 const { __ } = wp.i18n;
 
 import './style.scss';
 
 const Content = () => {
-	const [ prefix, setPrefix ] = useState( 'mr' );
+	const storedProfile = useSelector( state => state.profile );
+	storedProfile.address = storedProfile.addresses ? storedProfile.addresses.billing[ 0 ] : null;
+
+	const [ prefix, setPrefix ] = useState( storedProfile.titlePrefix );
 	const prefixOptions = [
 		{
-			value: 'mr',
+			value: 'Mr.',
 			label: 'Mr.',
 		},
 		{
-			value: 'ms',
+			value: 'Ms.',
 			label: 'Ms.',
 		},		{
-			value: 'mrs',
+			value: 'Mrs.',
 			label: 'Mrs.',
 		},
 	];
 
-	const [ firstName, setFirstName ] = useState( 'Robin' );
-	const [ lastName, setLastName ] = useState( 'Hood' );
+	const [ avatarUrl, setAvatarUrl ] = useState( storedProfile.avatarUrl );
 
-	const [ primaryEmail, setPrimaryEmail ] = useState( 'robin@merrymen.biz' );
+	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
+	const [ lastName, setLastName ] = useState( storedProfile.lastName );
+
+	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails.primary );
 	const [ additionalEmail, setAdditionalEmail ] = useState( 'give2th3p00r@sherwood.net' );
 
-	const [ country, setCountry ] = useState( 'UK' );
+	const [ country, setCountry ] = useState( storedProfile.address.country );
 	const countryOptions = [
 		{
-			value: 'USA',
+			value: 'US',
 			label: 'United States',
 		},
 		{
 			value: 'UK',
 			label: 'United Kingdom',
 		},		{
-			value: 'CAN',
+			value: 'CA',
 			label: 'Canada',
 		},
 	];
-	const [ addressOne, setAddressOne ] = useState( '12 King John Way' );
-	const [ addressTwo, setAddressTwo ] = useState( 'Unit B' );
-	const [ city, setCity ] = useState( 'Sherwood Forest' );
-	const [ state, setState ] = useState( 'NY' );
+	const [ addressOne, setAddressOne ] = useState( storedProfile.address.line1 );
+	const [ addressTwo, setAddressTwo ] = useState( storedProfile.address.line2 );
+	const [ city, setCity ] = useState( storedProfile.address.city );
+	const [ state, setState ] = useState( storedProfile.address.state );
 	const stateOptions = [
 		{
 			value: 'NY',
@@ -61,13 +67,13 @@ const Content = () => {
 			value: 'MI',
 			label: 'Michigan',
 		},		{
-			value: 'CA',
-			label: 'California',
+			value: 'TX',
+			label: 'Texas',
 		},
 	];
-	const [ zip, setZip ] = useState( '01234' );
+	const [ zip, setZip ] = useState( storedProfile.address.zip );
 
-	const [ anonymous, setAnonymous ] = useState( 'public' );
+	const [ anonymous, setAnonymous ] = useState( storedProfile.isAnonymous );
 	const anonymousOptions = [
 		{
 			value: 'public',
@@ -85,7 +91,7 @@ const Content = () => {
 				{ __( 'Profile Information', 'give' ) }
 			</Heading>
 			<Divider />
-			<AvatarControl />
+			<AvatarControl value={ avatarUrl } onChange={ ( value ) => setAvatarUrl( value ) } />
 			<FieldRow>
 				<SelectControl
 					label={ __( 'Prefix', 'give' ) }

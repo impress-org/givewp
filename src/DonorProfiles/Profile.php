@@ -16,7 +16,7 @@ class Profile {
 		//$this->donor->update([]);
 		return [
 			'updated' => true,
-			'profile' => $this->getProfile(),
+			'profile' => $this->getProfileData(),
 		];
 	}
 
@@ -26,12 +26,14 @@ class Profile {
 	 * @return void
 	 * @since 2.10.0
 	 **/
-	public function getProfile() {
+	public function getProfileData() {
 
 		$titlePrefix = Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
 
 		return [
 			'name'              => give_get_donor_name_with_title_prefixes( $titlePrefix, $this->donor->name ),
+			'firstName'         => $this->donor->get_first_name(),
+			'lastName'          => $this->donor->get_last_name(),
 			'emails'            => $this->donor->emails,
 			'sinceLastDonation' => human_time_diff( strtotime( $this->donor->get_last_donation_date() ) ),
 			'avatarUrl'         => give_validate_gravatar( $this->donor->email ) ? get_avatar_url( $this->donor->email, 140 ) : null,
@@ -40,6 +42,7 @@ class Profile {
 			'initials'          => $this->donor->get_donor_initals(),
 			'titlePrefix'       => $titlePrefix,
 			'addresses'         => $this->donor->address,
+			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', false )[0] !== '0' ? 'private' : 'public',
 		];
 	}
 }

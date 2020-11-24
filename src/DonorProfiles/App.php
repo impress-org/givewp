@@ -57,7 +57,7 @@ class App {
 			[
 				'apiRoot'  => esc_url_raw( rest_url() ),
 				'apiNonce' => wp_create_nonce( 'wp_rest' ),
-				'profile'  => $this->profile->getProfile(),
+				'profile'  => $this->profile->getProfileData(),
 			]
 		);
 
