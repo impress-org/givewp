@@ -88,4 +88,19 @@ class ArrayDataSet {
 
 		return $newArray;
 	}
+
+	/**
+	 * Creates a comma separated string and each value enclosed with single quote from array.
+	 *
+	 * @since 2.10.0
+	 * @param array $array
+	 *
+	 * @return string
+	 */
+	public static function getStringSeparatedByCommaEnclosedWithSingleQuote( $array ) {
+		return sprintf(
+			'\'%s\'',
+			implode( '\',\'', $array )
+		);
+	}
 }
