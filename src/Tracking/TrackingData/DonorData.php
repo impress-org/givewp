@@ -2,7 +2,7 @@
 namespace Give\Tracking\TrackingData;
 
 use Exception;
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 use Give_Donors_Query;
 
 /**
@@ -13,7 +13,7 @@ use Give_Donors_Query;
  *
  * @since 2.10.0
  */
-class DonorData implements Collection {
+class DonorData implements TrackData {
 	/* @var DonationData $donationData */
 	private $donationData;
 
@@ -32,10 +32,8 @@ class DonorData implements Collection {
 	 */
 	public function get() {
 		return [
-			'donor' => [
-				'donorCount'               => $this->getDonorCount(),
-				'avgDonationAmountByDonor' => $this->getAvgDonationAmountByDonor(),
-			],
+			'donorCount'               => $this->getDonorCount(),
+			'avgDonationAmountByDonor' => $this->getAvgDonationAmountByDonor(),
 		];
 	}
 

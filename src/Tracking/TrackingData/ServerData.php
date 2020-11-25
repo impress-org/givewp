@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 
 /**
  * Class ServerData
@@ -11,7 +11,7 @@ use Give\Tracking\Contracts\Collection;
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class ServerData implements Collection {
+class ServerData implements TrackData {
 
 	/**
 	 * Returns the collection data.
@@ -21,9 +21,7 @@ class ServerData implements Collection {
 	 * @return array The collection data.
 	 */
 	public function get() {
-		return [
-			'server' => $this->getServerData(),
-		];
+		return $this->getServerData();
 	}
 
 	/**

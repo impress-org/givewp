@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 use WP_Query;
 
 /**
@@ -12,7 +12,7 @@ use WP_Query;
  *
  * @since 2.10.0
  */
-class DonationFormData implements Collection {
+class DonationFormData implements TrackData {
 
 	/**
 	 * @inheritdoc
@@ -20,9 +20,7 @@ class DonationFormData implements Collection {
 	 */
 	public function get() {
 		return [
-			'form' => [
-				'donationFormCount' => $this->getDonationFormCount(),
-			],
+			'donationFormCount' => $this->getDonationFormCount(),
 		];
 	}
 

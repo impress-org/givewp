@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 use Give\License\PremiumAddonsListManager;
 
 /**
@@ -12,7 +12,7 @@ use Give\License\PremiumAddonsListManager;
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class PluginsData implements Collection {
+class PluginsData implements TrackData {
 
 	/**
 	 * Returns the collection data.

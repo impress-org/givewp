@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 
 /**
  * Class WebsiteData
@@ -11,7 +11,7 @@ use Give\Tracking\Contracts\Collection;
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class WebsiteData implements Collection {
+class WebsiteData implements TrackData {
 
 	/**
 	 * Returns the collection data.

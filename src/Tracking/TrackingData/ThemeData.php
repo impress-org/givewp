@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 use WP_Theme;
 
 /**
@@ -12,7 +12,7 @@ use WP_Theme;
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class ThemeData implements Collection {
+class ThemeData implements TrackData {
 
 	/**
 	 * Returns the collection data.
@@ -26,16 +26,14 @@ class ThemeData implements Collection {
 		$theme = wp_get_theme();
 
 		return [
-			'theme' => [
-				'name'        => $theme->get( 'Name' ),
-				'url'         => $theme->get( 'ThemeURI' ),
-				'version'     => $theme->get( 'Version' ),
-				'author'      => [
-					'name' => $theme->get( 'Author' ),
-					'url'  => $theme->get( 'AuthorURI' ),
-				],
-				'parentTheme' => $this->getParentTheme( $theme ),
+			'name'        => $theme->get( 'Name' ),
+			'url'         => $theme->get( 'ThemeURI' ),
+			'version'     => $theme->get( 'Version' ),
+			'author'      => [
+				'name' => $theme->get( 'Author' ),
+				'url'  => $theme->get( 'AuthorURI' ),
 			],
+			'parentTheme' => $this->getParentTheme( $theme ),
 		];
 	}
 

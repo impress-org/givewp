@@ -9,7 +9,7 @@ namespace Give\Tracking\Contracts;
  * @since 2.10.0
  * @package Give\Tracking
  */
-interface Collection {
+interface TrackData {
 
 	/**
 	 * Returns the collection data.

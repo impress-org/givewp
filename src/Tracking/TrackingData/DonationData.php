@@ -1,7 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 use Give\ValueObjects\Money;
 
 /**
@@ -12,18 +12,16 @@ use Give\ValueObjects\Money;
  *
  * @since 2.10.0
  */
-class DonationData implements Collection {
+class DonationData implements TrackData {
 	/**
 	 * @inheritdoc
 	 * @return array|void
 	 */
 	public function get() {
 		return [
-			'donation' => [
-				'firstDonationDate' => $this->getFirstDonationDate(),
-				'lastDonationDate'  => $this->getLastDonationDate(),
-				'revenue'           => $this->getRevenueTillNow(),
-			],
+			'firstDonationDate' => $this->getFirstDonationDate(),
+			'lastDonationDate'  => $this->getLastDonationDate(),
+			'revenue'           => $this->getRevenueTillNow(),
 		];
 	}
 

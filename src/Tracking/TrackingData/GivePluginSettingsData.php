@@ -1,46 +1,19 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Contracts\Collection;
+use Give\Tracking\Contracts\TrackData;
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\AdminSettings;
 
 /**
- * Class GiveDonationPluginData
+ * Class GivePluginSettingsData
  *
  * Represents Give plugin data.
  *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */
-class GivePluginData implements Collection {
-	/**
-	 * @var DonorData
-	 */
-	private $donorData;
-
-	/**
-	 * @var DonationData
-	 */
-	private $donationData;
-
-	/**
-	 * @var DonationFormData
-	 */
-	private $donationFormData;
-
-	/**
-	 * GiveDonationPluginData constructor.
-	 *
-	 * @param  DonorData  $donorData
-	 * @param  DonationFormData  $donationFormData
-	 * @param  DonationData  $donationData
-	 */
-	public function __construct( DonorData $donorData, DonationFormData $donationFormData, DonationData $donationData ) {
-		$this->donorData        = $donorData;
-		$this->donationData     = $donationData;
-		$this->donationFormData = $donationFormData;
-	}
+class GivePluginSettingsData implements TrackData {
 
 	/**
 	 * Return Give plugin settings data.
@@ -49,16 +22,10 @@ class GivePluginData implements Collection {
 	 * @return array
 	 */
 	public function get() {
-		$data = [
+		return [
 			'installDate'    => $this->getPluginInstallDate(),
 			'globalSettings' => $this->getGlobalSettings(),
 		];
-
-		$data = array_merge( $data, $this->donorData->get() );
-		$data = array_merge( $data, $this->donationData->get() );
-		$data = array_merge( $data, $this->donationFormData->get() );
-
-		return [ 'givewp' => $data ];
 	}
 
 	/**

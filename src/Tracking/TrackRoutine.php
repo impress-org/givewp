@@ -1,31 +1,20 @@
 <?php
 namespace Give\Tracking;
 
-
-use Give\Tracking\Collector;
-use Give\Tracking\TrackingData\GivePluginData;
-use Give\Tracking\TrackingData\PluginsData;
-use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\ThemeData;
-use Give\Tracking\TrackingData\WebsiteData;
+use Give\Tracking\Track;
+use Give\Tracking\TrackingData\DonationData;
+use Give\Tracking\TrackingData\DonationFormData;
+use Give\Tracking\TrackingData\DonorData;
 use WP_Upgrader;
 
 /**
- * Class HandleUsageTrackingRoutine
- *
- * This class handles the tracking routine.
+ * Class TrackRoutine
  *
  * @since 2.10.0
  * @package Give\Tracking
  */
-class HandleUsageTrackingRoutine {
-
-	/**
-	 * The tracking option name.
-	 *
-	 * @var string
-	 */
-	const OPTION_NAME = 'give_anonymous_usage_tracking_last_request';
+class TrackRoutine {
+	const LAST_REQUEST_OPTION_NAME = 'give_anonymous_usage_tracking_last_request';
 
 	/**
 	 * The limit for the option.
@@ -35,39 +24,15 @@ class HandleUsageTrackingRoutine {
 	protected $threshold = WEEK_IN_SECONDS * 2;
 
 	/**
-	 * The endpoint to send the data to.
-	 *
-	 * @var string
-	 */
-	protected $endpoint = 'https//stats.givewp.com';
-
-	/**
-	 * The current time.
-	 *
-	 * @var int
-	 */
-	private $currentTime;
-
-	/**
-	 * HandleUsageTrackingRoutine constructor.
-	 *
-	 * @since 2.10.0
-	 */
-	public function __construct() {
-		if ( ! $this->isTrackingEnabled() ) {
-			return;
-		}
-
-		$this->currentTime = time();
-	}
-
-	/**
 	 * Registers all hooks to WordPress.
 	 *
 	 * @since 2.10.0
 	 */
 	public function boot() {
-		if ( ! $this->isTrackingEnabled() ) {
+		/* @var Track $adminTrack */
+		$adminTrack = give( Track::class );
+
+		if ( ! $adminTrack->isTrackingEnabled() ) {
 			return;
 		}
 
@@ -84,8 +49,6 @@ class HandleUsageTrackingRoutine {
 	/**
 	 * Schedules a new sending of the tracking data after a WordPress core update.
 	 *
-	 * @since 2.10.0
-	 *
 	 * @param  bool|WP_Upgrader  $upgrader  Optional. WP_Upgrader instance or false.
 	 *                                   Depending on context, it might be a Theme_Upgrader,
 	 *                                   Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader.
@@ -93,6 +56,8 @@ class HandleUsageTrackingRoutine {
 	 * @param  array  $data  Array of update data.
 	 *
 	 * @return void
+	 *@since 2.10.0
+	 *
 	 */
 	public function scheduleTrackingDataSending( $upgrader = false, $data = [] ) {
 		// Return if it's not a WordPress core update.
@@ -127,20 +92,31 @@ class HandleUsageTrackingRoutine {
 			return;
 		}
 
-		// Set a 'content-type' header of 'application/json'.
-		$tracking_request_args = [
-			'headers'     => [ 'content-type:' => 'application/json' ],
-			'timeout'     => 8,
-			'httpversion' => '1.1',
-			'blocking'    => false,
-			'user-agent'  => 'GIVE/' . GIVE_VERSION . ' ' . get_bloginfo( 'url' ),
-			'body'        => wp_json_encode( $this->getCollector() ),
-			'data_format' => 'body',
-		];
+		/* @var TrackClient $trackClient */
+		$trackClient = give( TrackClient::class );
 
-		wp_remote_post( $this->endpoint, $tracking_request_args );
+		/* @var DonorData $donorData */
+		$donorData = give( DonorData::class );
 
-		update_option( self::OPTION_NAME, $this->currentTime );
+		/* @var DonationFormData $donationFormData */
+		$donationFormData = give( DonationFormData::class );
+
+		/* @var DonationData $donationData */
+		$donationData = give( DonationData::class );
+
+		$trackingData['donor']    = $donorData->get();
+		$trackingData['form']     = $donationFormData->get();
+		$trackingData['donation'] = $donationData->get();
+
+		/**
+		 * Filter biweekly tracked data.
+		 *
+		 * @since 2.10.0
+		 */
+		$trackingData = apply_filters( 'give_biweekly_tracked_data', $trackingData );
+
+		$trackClient->send( 'track-routine', $trackingData );
+		update_option( self::LAST_REQUEST_OPTION_NAME, time() );
 	}
 
 	/**
@@ -164,14 +140,14 @@ class HandleUsageTrackingRoutine {
 			return false;
 		}
 
-		$lastTime = get_option( self::OPTION_NAME );
+		$lastTime = get_option( self::LAST_REQUEST_OPTION_NAME );
 
 		// When tracking data haven't been sent yet or when sending data is forced.
 		if ( ! $lastTime || $ignore_time_threshold ) {
 			return true;
 		}
 
-		return $this->exceedsThreshold( $this->currentTime - $lastTime );
+		return $this->exceedsThreshold( time() - $lastTime );
 	}
 
 	/**
@@ -185,49 +161,5 @@ class HandleUsageTrackingRoutine {
 	 */
 	private function exceedsThreshold( $seconds ) {
 		return ( $seconds > $this->threshold );
-	}
-
-	/**
-	 * Returns the collector for collecting the data.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return Collector The instance of the collector.
-	 */
-	private function getCollector() {
-		/* @var Collector $collector */
-		$collector = give( Collector::class );
-
-		$collector->addCollection( WebsiteData::class );
-		$collector->addCollection( ServerData::class );
-		$collector->addCollection( ThemeData::class );
-		$collector->addCollection( PluginsData::class );
-		$collector->addCollection( GivePluginData::class );
-
-		return $collector;
-	}
-
-	/**
-	 * See if we should run tracking at all.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return bool True when we can track, false when we can't.
-	 */
-	private function isTrackingEnabled() {
-		// Track data only if website is in production mode.
-		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
-			return false;
-		}
-
-		// Track data only if give is in live mode.
-		if ( ! give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
-			return false;
-		}
-
-		// Check if we're allowing tracking.
-		$tracking = give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME );
-
-		return give_is_setting_enabled( $tracking );
 	}
 }
