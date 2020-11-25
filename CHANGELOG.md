@@ -9,11 +9,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Currency Switcher options are visible in the dropdown on a windows machine (#5453)
+-   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
+
+## 2.9.4 - 2020-11-20
+
+### Fixed
+
+-   Donation id mentions in exception and log message when insert query for revenue table fails  (#5472)
+-   Allow revenue with a 0 amount to be inserted  (#5472)
+-   Prevent fatal error when delete donation on WP < 5.5.0 (#5470)
+-   Stripe single-input credit card field works again (#5469)
+-   Updating a Stripe subscription from the update payment info screen works again (#5467)
+
+## 2.9.3 - 2020-11-17
+
+### Fixed
+
+-   Corrected a warning being thrown by the MigrationRunner (#5457)
+-   Stripe CC donations now work when not the default gateway (#5459)
+-   Stripe modal checkout donations now work when not the default gateway (#5459)
+
+## 2.9.2 - 2020-11-09
+
+### New
+
+-   Added support method of running migrations and clearing updates (#5447)
+
+### Fixed
+
+-   Properly handle currency unit size for donations (#5440)
+-   Add missing payment information update support in Stripe javascript (#5439)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
--   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
+-   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
+-   Multi-Form Goal Shortcode now supports comma separated lists (#5432)
+-   Remove foreign keys from revenue table for MyISAM support (#5447)
 
 ### Changed
 

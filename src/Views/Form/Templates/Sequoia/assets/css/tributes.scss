@@ -18,7 +18,7 @@
 	legend,
 	.give-tributes-legend,
 	.give-tributes-label {
-		display: inline-block;
+		display: block;
 		font-size: 14px !important;
 		font-weight: 400 !important;
 		border-bottom: none !important;
@@ -32,8 +32,10 @@
 	}
 
 	.give-tributes-add-recipient {
-		margin-top: -3px;
 		margin-left: 8px;
+		float: none;
+		display: inline-block;
+		margin-top: 0;
 	}
 
 	input[type='radio'] {

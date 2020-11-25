@@ -3,6 +3,7 @@
 
 /.idea
 /.github
+/.storybook
 
 /tests
 /node_modules
@@ -24,6 +25,8 @@
 .stylelintrc.json
 .huskyrc.json
 .lintstagedrc.json
+.distignore
+.stylelintignore
 
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
@@ -38,6 +41,7 @@ CHANGELOG.md
 README.md
 readme.md
 phpcs.ruleset.xml
+phpcs.xml.dist
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 contributing.md
