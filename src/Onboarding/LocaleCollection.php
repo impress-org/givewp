@@ -154,6 +154,15 @@ class LocaleCollection {
 			'weight_unit'    => 'kg',
 			'dimension_unit' => 'cm',
 		],
+		'JM' => [
+			'currency_code'  => 'JMD',
+			'currency_pos'   => 'left',
+			'thousand_sep'   => ',',
+			'decimal_sep'    => '.',
+			'num_decimals'   => 2,
+			'weight_unit'    => 'lb',
+			'dimension_unit' => 'in',
+		],
 		'JP' => [
 			'currency_code'  => 'JPY',
 			'currency_pos'   => 'left',
