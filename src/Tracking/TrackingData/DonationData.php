@@ -1,6 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
+use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
 use Give\ValueObjects\Money;
 
@@ -79,7 +80,14 @@ class DonationData implements TrackData {
 		global $wpdb;
 
 		$currency = give_get_option( 'currency' );
-		$result   = $wpdb->get_var(
+		$statues  = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
+			[
+				'publish', // One time donation
+				'give_subscription', // Renewal
+			]
+		);
+
+		$result = $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT SUM(amount)
@@ -87,30 +95,11 @@ class DonationData implements TrackData {
 				INNER JOIN {$wpdb->posts} as p
 				ON r.donation_id=p.id
 				WHERE p.post_date<=%s
-				AND post_status IN ({$this->getDonationStatuses()})
+				AND post_status IN ({$statues})
 				",
 				current_time( 'mysql' )
 			)
 		);
 		return $result ? Money::ofMinor( $result, $currency )->getAmount() : '';
-	}
-
-	/**
-	 * Get donation statuses.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	private function getDonationStatuses() {
-		$statuses = implode(
-			'\',\'',
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
-
-		return "'{$statuses}'";
 	}
 }

@@ -1,9 +1,11 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\DonationData;
 use Give\Tracking\TrackingData\DonationFormData;
+use Give\Tracking\TrackingData\DonationFormsData;
 use Give\Tracking\TrackingData\DonorData;
 use WP_Upgrader;
 
@@ -92,6 +94,12 @@ class TrackRoutine {
 			return;
 		}
 
+		$newDonationIds = $this->getNewDonationIdsSinceLastRequest();
+
+		if ( ! $newDonationIds ) {
+			return;
+		}
+
 		/* @var TrackClient $trackClient */
 		$trackClient = give( TrackClient::class );
 
@@ -101,11 +109,16 @@ class TrackRoutine {
 		/* @var DonationFormData $donationFormData */
 		$donationFormData = give( DonationFormData::class );
 
+		/* @var DonationFormsData $donationFormsData */
+		$donationFormsData = give( DonationFormsData::class );
+		$donationFormsData->setFormIdsByDonationIds( $newDonationIds );
+
 		/* @var DonationData $donationData */
 		$donationData = give( DonationData::class );
 
 		$trackingData['donor']    = $donorData->get();
 		$trackingData['form']     = $donationFormData->get();
+		$trackingData['forms']    = $donationFormsData->get();
 		$trackingData['donation'] = $donationData->get();
 
 		/**
@@ -161,5 +174,33 @@ class TrackRoutine {
 	 */
 	private function exceedsThreshold( $seconds ) {
 		return ( $seconds > $this->threshold );
+	}
+
+	/**
+	 * Return whether or not website get donation after last tracked request date.
+	 *
+	 * @sicne 2.10.0
+	 * @return array
+	 */
+	private function getNewDonationIdsSinceLastRequest() {
+		global $wpdb;
+
+		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
+			[
+				'publish', // One time donation
+				'give_subscription', // Renewal
+			]
+		);
+		$time    = date( 'Y-m-d H:i:s', get_option( self::LAST_REQUEST_OPTION_NAME, time() ) );
+
+		return (array) $wpdb->get_results(
+			"
+				SELECT ID
+				FROM {$wpdb->posts}
+				WHERE post_date_gmt >= {$time}
+				AND post_status IN ({$statues})
+				",
+			ARRAY_N
+		);
 	}
 }
