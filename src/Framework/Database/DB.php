@@ -73,10 +73,10 @@ class DB {
 			$wpdb->show_errors();
 		}
 
-		$errors = self::getQueryErrors( $errorCount );
+		$wpError = self::getQueryErrors( $errorCount );
 
-		if ( $errors->has_errors() ) {
-			throw DatabaseQueryException::create( $errors->get_error_messages() );
+		if ( ! empty( $wpError->errors ) ) {
+			throw DatabaseQueryException::create( $wpError->get_error_messages() );
 		}
 
 		return $output;
