@@ -6,6 +6,7 @@ import SelectControl from '../../components/select-control';
 import TextControl from '../../components/text-control';
 import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
+import { updateProfileWithAPI } from './utils';
 
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,11 +15,12 @@ const { __ } = wp.i18n;
 import './style.scss';
 
 const Content = () => {
+	const id = useSelector( state => state.id );
 	const storedProfile = useSelector( state => state.profile );
 	storedProfile.address = storedProfile.addresses ? storedProfile.addresses.billing[ 0 ] : null;
 
-	const [ prefix, setPrefix ] = useState( storedProfile.titlePrefix );
-	const prefixOptions = [
+	const [ titlePrefix, setTitlePrefix ] = useState( storedProfile.titlePrefix );
+	const titlePrefixOptions = [
 		{
 			value: 'Mr.',
 			label: 'Mr.',
@@ -85,6 +87,18 @@ const Content = () => {
 		},
 	];
 
+	const handleUpdate = () => {
+		updateProfileWithAPI( {
+			data: {
+				titlePrefix,
+				firstName,
+				lastName,
+				primaryEmail,
+			},
+			id: id,
+		} );
+	};
+
 	return (
 		<Fragment>
 			<Heading>
@@ -95,9 +109,9 @@ const Content = () => {
 			<FieldRow>
 				<SelectControl
 					label={ __( 'Prefix', 'give' ) }
-					value={ prefix }
-					onChange={ ( value ) => setPrefix( value ) }
-					options={ prefixOptions }
+					value={ titlePrefix }
+					onChange={ ( value ) => setTitlePrefix( value ) }
+					options={ titlePrefixOptions }
 					placeholder="--"
 					width="120px"
 					isClearable={ true }
@@ -187,7 +201,7 @@ const Content = () => {
 				onChange={ ( value ) => setAnonymous( value ) }
 				value={ anonymous }
 			/>
-			<Button icon="save">
+			<Button icon="save" onClick={ () => handleUpdate() }>
 				Update Profile
 			</Button>
 		</Fragment>

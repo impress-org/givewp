@@ -13,7 +13,7 @@ const DonorInfo = () => {
 		<div className="give-donor-profile-donor-info">
 			<div className="give-donor-profile-donor-info__avatar">
 				<div className="give-donor-profile-donor-info__avatar-container">
-					{ avatarUrl.length > 0 ? (
+					{ avatarUrl ? (
 						<img src={ avatarUrl } />
 					) : (
 						<span className="give-donor-profile-donor-info__avatar-initials">

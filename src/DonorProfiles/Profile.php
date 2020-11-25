@@ -7,17 +7,52 @@ use \Give_Donor as DonorModel;
 class Profile {
 
 	protected $donor;
+	protected $id;
 
 	public function __construct( int $donorId ) {
+		$this->id    = $donorId;
 		$this->donor = new DonorModel( $donorId );
 	}
 
-	public function updateProfile( $profileData ) {
-		//$this->donor->update([]);
-		return [
-			'updated' => true,
-			'profile' => $this->getProfileData(),
+	public function update( $data ) {
+
+		$this->updateDonorMetaDB( $data );
+		$this->updateDonorDB( $data );
+
+		return $this->getProfileData();
+
+	}
+
+	protected function updateDonorMetaDB( $data ) {
+
+		$attributeMetaMap = [
+			'firstName'   => '_give_donor_first_name',
+			'lastName'    => '_give_donor_last_name',
+			'titlePrefix' => '_give_donor_title_prefix',
 		];
+
+		foreach ( $attributeMetaMap as $attribute => $metaKey ) {
+			if ( property_exists( $data, $attribute ) ) {
+				$this->donor->update_meta( $metaKey, $data->{$attribute} );
+			}
+		}
+
+	}
+
+	protected function updateDonorDB( $data ) {
+
+		$updateArgs = [];
+
+		if ( ! empty( $data->firstName ) && ! empty( $data->lastName ) ) {
+			$updateArgs['name'] = "{$data->firstName} {$data->lastName}";
+		}
+
+		if ( ! empty( $data->primaryEmail ) ) {
+			$updateArgs['email'] = $data->primaryEmail;
+		}
+
+		$this->donor->update( $updateArgs );
+
 	}
 
 	/**
@@ -44,5 +79,9 @@ class Profile {
 			'addresses'         => $this->donor->address,
 			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', false )[0] !== '0' ? 'private' : 'public',
 		];
+	}
+
+	public function getId() {
+		return $this->id;
 	}
 }

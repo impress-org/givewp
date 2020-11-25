@@ -3,18 +3,18 @@ import { getAPIRoot, getAPINonce } from '../../../utils';
 import { store } from '../../../store';
 import { setProfile } from '../../../store/actions';
 
-export const updateProfileWithAPI = ( profile ) => {
+export const updateProfileWithAPI = ( { data, id } ) => {
 	const { dispatch } = store;
-
-	axios.get( getAPIRoot() + 'give-api/v2/donor-profile/profile', {
-		profile: JSON.stringify( profile ),
+	axios.post( getAPIRoot() + 'give-api/v2/donor-profile/profile', {
+		data: JSON.stringify( data ),
+		id: id,
 	}, {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
 		},
 	} )
 		.then( ( response ) => response.data )
-		.then( ( data ) => {
-			dispatch( setProfile( data.profile ) );
+		.then( ( responseData ) => {
+			dispatch( setProfile( responseData.profile ) );
 		} );
 };

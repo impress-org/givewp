@@ -70,7 +70,7 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 				isLoading={ isLoading }
 				inputId={ label && toKebabCase( label ) }
 				value={ selectedOptionValue }
-				onChange={ ( selectedOption ) => onChange( selectedOption ? selectedOption.value : null ) }
+				onChange={ ( selectedOption ) => onChange( selectedOption ? selectedOption.value : '' ) }
 				options={ options }
 				styles={ selectStyles }
 				maxMenuHeight="200px"

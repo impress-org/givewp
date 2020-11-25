@@ -4,8 +4,7 @@ namespace Give\DonorProfiles\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
-use \Give_Donor as Donor;
-use Give\DonorProfiles\Profile as Model;
+use Give\DonorProfiles\Profile as Profile;
 
 /**
  * @since 2.10.0
@@ -24,20 +23,27 @@ class ProfileRoute implements RestRoute {
 			$this->endpoint,
 			[
 				[
-					'methods'             => 'Get',
-					'callback'            => [ $this, 'handleGetRequest' ],
-					'permission_callback' => function() {
-						return is_user_logged_in();
-					},
-				],
-				[
 					'methods'             => 'POST',
-					'callback'            => [ $this, 'handlePostRequest' ],
+					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => function() {
-						return is_user_logged_in();
+						return true; //is_user_logged_in();
 					},
 				],
 				'schema' => [ $this, 'getSchema' ],
+				'args'   => [
+					'data' => [
+						'type'              => 'string',
+						'required'          => false,
+						// 'validate_callback' => [ $this, 'validateValue' ],
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+					'id'   => [
+						'type'     => 'int',
+						'required' => true,
+						// 'validate_callback' => [ $this, 'validateValue' ],
+						// 'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
 			]
 		);
 	}
@@ -50,18 +56,7 @@ class ProfileRoute implements RestRoute {
 	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-		return $this->getProfile();
-	}
-
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array
-	 *
-	 * @since 2.10.0
-	 */
-	public function handlePostRequest( WP_REST_Request $request ) {
-		return $this->updateProfile( json_decode( $request->get_param( 'data' ) ) );
+		return $this->updateProfile( json_decode( $request->get_param( 'data' ) ), $request->get_param( 'id' ) );
 	}
 
 	/**
@@ -91,9 +86,8 @@ class ProfileRoute implements RestRoute {
 	protected function getProfile() {
 
 		$donorId = get_current_user_id();
-		$donor   = new Donor( $donorId );
-
-		return $donor;
+		$profile = new Profile( $donorId );
+		return $profile->getProfileData();
 	}
 
 	/**
@@ -101,17 +95,11 @@ class ProfileRoute implements RestRoute {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function updateProfile( $data ) {
-
-		error_log( $data );
-
-		$donorId = get_current_user_id();
-		$donor   = new Donor( $donorId );
-		$updated = true; //$donor->update( $data );
-
+	protected function updateProfile( $data, $id ) {
+		$profile = new Profile( $id );
+		$profile->update( $data );
 		return [
-			'updated' => $updated ? true : false,
-			'donor'   => $donor,
+			'profile' => $profile->getProfileData(),
 		];
 	}
 }

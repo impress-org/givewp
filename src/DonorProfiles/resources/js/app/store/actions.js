@@ -6,3 +6,12 @@ export const addTab = ( tab ) => {
 		},
 	};
 };
+
+export const setProfile = ( profile ) => {
+	return {
+		type: 'SET_PROFILE',
+		payload: {
+			profile,
+		},
+	};
+};
