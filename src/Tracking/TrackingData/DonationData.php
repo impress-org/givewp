@@ -80,12 +80,7 @@ class DonationData implements TrackData {
 		global $wpdb;
 
 		$currency = give_get_option( 'currency' );
-		$statues  = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
+		$statues  = $this->getDonationStatuses();
 
 		$result = $wpdb->get_var(
 			$wpdb->prepare(
@@ -101,5 +96,21 @@ class DonationData implements TrackData {
 			)
 		);
 		return $result ? Money::ofMinor( $result, $currency )->getAmount() : '';
+	}
+
+	/**
+	 * Get donation statuses string.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	private function getDonationStatuses() {
+		return ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
+			[
+				'publish', // One time donation
+				'give_subscription', // Renewal
+			]
+		);
 	}
 }

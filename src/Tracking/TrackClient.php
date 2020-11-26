@@ -57,9 +57,6 @@ class TrackClient {
 			'data_format' => 'body',
 		];
 
-		error_log( print_r( $url, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( $tracking_request_args, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 		wp_remote_post( $url, $tracking_request_args );
 	}
 }

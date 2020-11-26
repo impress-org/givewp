@@ -111,7 +111,7 @@ class TrackRoutine {
 
 		/* @var DonationFormsData $donationFormsData */
 		$donationFormsData = give( DonationFormsData::class );
-		$donationFormsData->setFormIdsByDonationIds( $newDonationIds );
+		$donationFormsData->setDonationIds( $newDonationIds )->setFormIdsByDonationIds();
 
 		/* @var DonationData $donationData */
 		$donationData = give( DonationData::class );
@@ -193,14 +193,14 @@ class TrackRoutine {
 		);
 		$time    = date( 'Y-m-d H:i:s', get_option( self::LAST_REQUEST_OPTION_NAME, time() ) );
 
-		return (array) $wpdb->get_results(
+		return $wpdb->get_col(
 			"
 				SELECT ID
 				FROM {$wpdb->posts}
-				WHERE post_date_gmt >= {$time}
+				WHERE post_date_gmt >= '{$time}'
 				AND post_status IN ({$statues})
-				",
-			ARRAY_N
+				AND post_type='give_payment'
+				"
 		);
 	}
 }
