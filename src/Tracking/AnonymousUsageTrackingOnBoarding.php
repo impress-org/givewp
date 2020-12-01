@@ -61,7 +61,7 @@ class AnonymousUsageTrackingOnBoarding {
 	 * @return string[]
 	 */
 	private function getNotice() {
-		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Anonymous Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
+		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Anonymous Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve the plugin.', 'give' );
 		$readMoreLink = sprintf(
 			'<a href="#" target="_blank">%1$s</a>',
 			esc_html__( 'Read more GiveWP.com Anonymous Usage Tracking.', 'give' )
