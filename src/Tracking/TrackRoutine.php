@@ -109,13 +109,6 @@ class TrackRoutine {
 		$trackingData['forms']    = $donationFormsData->get();
 		$trackingData['donation'] = $donationData->get();
 
-		/**
-		 * Filter biweekly tracked data.
-		 *
-		 * @since 2.10.0
-		 */
-		$trackingData = apply_filters( 'give_biweekly_tracked_data', $trackingData );
-
 		$trackClient->send( 'track-routine', $trackingData );
 		update_option( self::LAST_REQUEST_OPTION_NAME, time() );
 	}

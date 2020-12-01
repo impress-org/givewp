@@ -47,6 +47,13 @@ class TrackClient {
 		$trackData['server']  = $serverData->get();
 		$trackData['website'] = $websiteData->get();
 
+		/**
+		 * Filter tracked data.
+		 *
+		 * @since 2.10.0
+		 */
+		$trackData = apply_filters( "give_tracked_data_{$trackId}", $trackData );
+
 		// Set a 'content-type' header of 'application/json'.
 		$tracking_request_args = [
 			'headers'     => [ 'content-type:' => 'application/json' ],
