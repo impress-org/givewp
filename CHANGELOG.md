@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Currency Switcher options are visible in the dropdown on a windows machine (#5453)
+-   Currency Switcher options are visible in the dropdown on Windows machines (#5453)
 -   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
 
 ## 2.9.4 - 2020-11-20
