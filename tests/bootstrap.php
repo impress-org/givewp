@@ -75,9 +75,6 @@ class Give_Unit_Tests_Bootstrap {
 
 		update_option( 'give_settings', $giveSettings );
 
-		// Prevent missing object issue.
-		Give()->roles = new Give_Roles();
-
 		// clean existing install first
 		define( 'WP_UNINSTALL_PLUGIN', true );
 		include $this->plugin_dir . '/uninstall.php';
