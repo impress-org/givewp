@@ -40,8 +40,7 @@ class Track {
 			return;
 		}
 
-		/* @var TrackClient $trackClient */
-		$trackClient = give( TrackClient::class );
+		$trackClient = new TrackClient();
 
 		foreach ( $this->tracks as $trackId => $trackData ) {
 			$trackClient->send( $trackId, $trackData );
