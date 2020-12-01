@@ -40,30 +40,16 @@ class DonationFormsData implements TrackData {
 			return [];
 		}
 
-		$data          = [];
-		$defaultValues = [
-			'donorCount'         => 0,
-			'revenue'            => 0,
-			'isRecurring'        => 0,
-			'isFeeRecovery'      => 0,
-			'isFormFieldManager' => 0,
-		];
+		$data = [];
 
 		foreach ( $this->formIds as $formId ) {
-			$recurringType    = give()->form_meta->get_meta( $formId, '_give_recurring', true );
-			$formTemplate     = Template::getActiveID( $formId );
-			$customFormFields = give()->form_meta->get_meta( $formId, 'give-form-fields', true );
+			$formTemplate = Template::getActiveID( $formId );
 
 			$data[ $formId ]['slug']         = get_post_field( 'post_name', $formId, 'db' );
 			$data[ $formId ]['formType']     = give()->form_meta->get_meta( $formId, '_give_price_option', true );
 			$data[ $formId ]['formTemplate'] = ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate;
 			$data[ $formId ]['donorCount']   = $this->getDonorCount( $formId );
 			$data[ $formId ]['revenue']      = $this->getRevenueTillNow( $formId );
-			$data[ $formId ]['isRecurring']  = (int) ( $recurringType && $recurringType !== 'no' );
-			// $data[$formId]['isFeeRecovery'] = absint( $formsMetaData[$formId]['_give_recurring'] !== 'no' );
-			$data[ $formId ]['isFormFieldManager'] = (int) ! empty( $customFormFields );
-
-			$data[ $formId ] = wp_parse_args( $data[ $formId ], $defaultValues );
 		}
 
 		return $data;
