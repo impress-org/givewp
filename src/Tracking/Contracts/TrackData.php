@@ -2,9 +2,9 @@
 namespace Give\Tracking\Contracts;
 
 /**
- * Class Collection
+ * Class TrackData
  *
- * Interface that represents a collection.
+ * This interface represents a Track Data collection
  *
  * @since 2.10.0
  * @package Give\Tracking

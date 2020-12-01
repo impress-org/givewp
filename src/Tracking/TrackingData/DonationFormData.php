@@ -6,9 +6,10 @@ use WP_Query;
 
 /**
  * Class DonationFormData
- * @package Give\Tracking\TrackingData
  *
  * Represents donation form data
+ *
+ * @package Give\Tracking\TrackingData
  *
  * @since 2.10.0
  */

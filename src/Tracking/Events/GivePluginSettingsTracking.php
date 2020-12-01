@@ -8,6 +8,8 @@ use Give\Tracking\TrackingData\GivePluginSettingsData;
 /**
  * Class GivePluginSettingsTracking
  *
+ * This class setup event to send tracked data request when Give plugin settings update.
+ *
  * @since 2.10.0
  * @package Give\Tracking\Events
  */

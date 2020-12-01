@@ -7,6 +7,7 @@ use Give\Tracking\TrackingData\WebsiteData;
 
 /**
  * Class TrackClient
+ *
  * This class has responsibility to send tracking information
  *
  * @since 2.10.0
@@ -17,15 +18,15 @@ class TrackClient {
 	/**
 	 * Server URL.
 	 *
-	 * @since string
+	 * @var string
 	 */
 	const SERVER_URL = 'https://stats.givewp.com';
 
 	/**
 	 * Send a track event.
 	 *
-	 * @param $trackId
-	 * @param $trackData
+	 * @param string $trackId
+	 * @param array $trackData
 	 *
 	 * @since 2.10.0
 	 */

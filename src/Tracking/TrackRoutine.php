@@ -51,10 +51,7 @@ class TrackRoutine {
 	/**
 	 * Schedules a new sending of the tracking data after a WordPress core update.
 	 *
-	 * @param  bool|WP_Upgrader  $upgrader  Optional. WP_Upgrader instance or false.
-	 *                                   Depending on context, it might be a Theme_Upgrader,
-	 *                                   Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader.
-	 *                                   instance. Default false.
+	 * @param  bool|WP_Upgrader  $upgrader
 	 * @param  array  $data  Array of update data.
 	 *
 	 * @return void
@@ -67,16 +64,7 @@ class TrackRoutine {
 			return;
 		}
 
-		/*
-		 * To uniquely identify the scheduled cron event, `wp_next_scheduled()`
-		 * needs to receive the same arguments as those used when originally
-		 * scheduling the event otherwise it will always return false.
-		 */
 		if ( ! wp_next_scheduled( 'give_send_anonymous_usage_tracking_data', true ) ) {
-			/*
-			 * Schedule sending of data tracking 6 hours after a WordPress core
-			 * update. Pass a `true` parameter for the callback `$force` argument.
-			 */
 			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_anonymous_usage_tracking_data', true );
 		}
 	}
@@ -135,15 +123,9 @@ class TrackRoutine {
 	/**
 	 * Determines whether to send the tracking data.
 	 *
-	 * Returns false if tracking is disabled or the current page is one of the
-	 * admin plugins pages. Returns true when there's no tracking data stored or
-	 * the data was sent more than two weeks ago. The two weeks interval is set
-	 * when instantiating the class.
-	 *
 	 * @since 2.10.0
 	 *
-	 * @param  bool  $ignore_time_threshold  Whether to send the tracking data ignoring
-	 *                                    the two weeks time threshold. Default false.
+	 * @param  bool  $ignore_time_threshold  Whether to send the tracking data ignoring the two weeks time threshold. Default false.
 	 *
 	 * @return bool True when tracking data should be sent.
 	 */

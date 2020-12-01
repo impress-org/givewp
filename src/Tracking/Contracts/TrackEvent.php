@@ -4,6 +4,8 @@ namespace Give\Tracking\Contracts;
 /**
  * Class TrackEvent
  *
+ * This class represents a send tracked data request event
+ *
  * @since 2.10.0
  * @package Give\Tracking\Contracts
  */

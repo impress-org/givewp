@@ -11,6 +11,8 @@ use Give_Donors_Query;
 /**
  * Class DonationFormsData
  *
+ * Represents donation forms data
+ *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData
  */

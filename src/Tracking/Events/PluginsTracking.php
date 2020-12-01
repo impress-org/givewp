@@ -1,16 +1,19 @@
 <?php
 namespace Give\Tracking\Events;
 
+use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\PluginsData;
 
 /**
  * Class PluginsTracking
  *
+ * This class setup event to send tracked data request when active plugin list update.
+ *
  * @since 2.10.0
  * @package Give\Tracking\Events
  */
-class PluginsTracking {
+class PluginsTracking implements TrackEvent {
 	/**
 	 * @inheritdoc
 	 */

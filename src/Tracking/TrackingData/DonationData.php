@@ -7,9 +7,10 @@ use Give\ValueObjects\Money;
 
 /**
  * Class DonationData
- * @package Give\Tracking\TrackingData
  *
  * Represents donation data.
+ *
+ * @package Give\Tracking\TrackingData
  *
  * @since 2.10.0
  */

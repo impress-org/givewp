@@ -8,7 +8,7 @@ use Give\Tracking\AdminSettings;
 /**
  * Class GivePluginSettingsData
  *
- * Represents Give plugin data.
+ * This class represents Give plugin data.
  *
  * @since 2.10.0
  * @package Give\Tracking\TrackingData

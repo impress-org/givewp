@@ -8,6 +8,8 @@ use Give\Tracking\TrackingData\ThemeData;
 /**
  * Class ThemeTracking
  *
+ * This class setup event to send tracked data request when active theme changes.
+ *
  * @since 2.10.0
  * @package Give\Tracking\Admin\Events
  */

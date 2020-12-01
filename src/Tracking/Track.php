@@ -7,6 +7,8 @@ use Give\Tracking\Events\TrackTracking;
 /**
  * Class Track
  *
+ * This class uses to recode tracks and send them to sever on "shutdown" action hook.
+ *
  * @since 2.10.0
  * @package Give\Tracking
  */
@@ -49,8 +51,8 @@ class Track {
 	/**
 	 * Record track.
 	 *
-	 * @param $trackId
-	 * @param $trackData
+	 * @param string $trackId
+	 * @param array $trackData
 	 *
 	 * @since 2.10.0
 	 */

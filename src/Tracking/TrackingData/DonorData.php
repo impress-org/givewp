@@ -7,9 +7,10 @@ use Give_Donors_Query;
 
 /**
  * Class DonorData
- * @package Give\Tracking\TrackingData
  *
  * Represents donor data.
+ *
+ * @package Give\Tracking\TrackingData
  *
  * @since 2.10.0
  */
