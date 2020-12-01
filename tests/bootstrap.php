@@ -70,7 +70,10 @@ class Give_Unit_Tests_Bootstrap {
 	 * @access public
 	 */
 	public function uninstall_give() {
-		give_update_option( 'uninstall_on_delete', 'enabled' );
+		$giveSettings = get_option('give_settings');
+		$giveSettings['uninstall_on_delete'] = 'enabled';
+
+		update_option( 'give_settings', $giveSettings );
 
 		// Prevent missing object issue.
 		Give()->roles = new Give_Roles();
