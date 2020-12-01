@@ -85,6 +85,9 @@ function give_run_install() {
 	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ), false );
 
+	// Create databases.
+	__give_register_tables();
+
 	/**
 	 * Run plugin upgrades.
 	 *
@@ -105,9 +108,6 @@ function give_run_install() {
 	$api = new Give_API();
 	$api->add_endpoint();
 	update_option( 'give_default_api_version', 'v' . $api->get_version(), false );
-
-	// Create databases.
-	__give_register_tables();
 
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );

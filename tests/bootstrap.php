@@ -112,7 +112,6 @@ class Give_Unit_Tests_Bootstrap {
 			)
 		);
 		add_filter( 'give_log_email_errors', '__return_false' );
-
 	}
 
 	/**
