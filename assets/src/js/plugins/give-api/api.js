@@ -106,7 +106,7 @@ const Give = {
 			} else {
 				// Properly position symbol after if selected.
 				if ( 'after' === args.position ) {
-					args.format = '%v%s';
+					args.format = '%v %s';
 				}
 
 				price = accounting.formatMoney( price, args );
