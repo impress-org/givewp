@@ -8,6 +8,8 @@ import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
 import { updateProfileWithAPI } from './utils';
 
+import EmailControls from './email-controls';
+
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 const { __ } = wp.i18n;
@@ -40,7 +42,15 @@ const Content = () => {
 	const [ lastName, setLastName ] = useState( storedProfile.lastName );
 
 	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails.primary );
-	const [ additionalEmail, setAdditionalEmail ] = useState( 'give2th3p00r@sherwood.net' );
+
+	const reducedAdditionalEmails = Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
+		if ( key !== 'primary' ) {
+			newArray.push( storedProfile.emails[ key ] );
+		}
+		return newArray;
+	}, [] );
+
+	const [ additionalEmails, setAdditionalEmails ] = useState( reducedAdditionalEmails );
 
 	const [ country, setCountry ] = useState( storedProfile.address.country );
 	const countryOptions = [
@@ -94,6 +104,7 @@ const Content = () => {
 				firstName,
 				lastName,
 				primaryEmail,
+				additionalEmails,
 			},
 			id: id,
 		} );
@@ -128,29 +139,12 @@ const Content = () => {
 					onChange={ ( value ) => setLastName( value ) }
 				/>
 			</FieldRow>
-			<TextControl
-				label={ __( 'Primary Email', 'give' ) }
-				value={ primaryEmail }
-				onChange={ ( value ) => setPrimaryEmail( value ) }
-				icon="envelope"
+			<EmailControls
+				primaryEmail={ primaryEmail }
+				additionalEmails={ additionalEmails }
+				onChangePrimaryEmail={ ( value ) => setPrimaryEmail( value ) }
+				onChangeAdditionalEmails={ ( value ) => setAdditionalEmails( value ) }
 			/>
-			<FieldRow>
-				<TextControl
-					label={ __( 'Additional Emails', 'give' ) }
-					value={ additionalEmail }
-					onChange={ ( value ) => setAdditionalEmail( value ) }
-					icon="envelope"
-				/>
-				<div className="give-donor-profile__email-controls">
-					<div className="give-donor-profile__make-primary-email">
-						{ __( 'Make Primary', 'give' ) }
-					</div>
-					|
-					<div className="give-donor-profile__delete-email">
-						{ __( 'Delete', 'give' ) }
-					</div>
-				</div>
-			</FieldRow>
 			<Heading>
 				{ __( 'Address', 'give' ) }
 			</Heading>
