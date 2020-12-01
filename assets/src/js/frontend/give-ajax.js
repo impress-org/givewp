@@ -223,12 +223,7 @@ jQuery( document ).ready( function( $ ) {
 		if ( typeof give_purchase_form.checkValidity === 'function' && give_purchase_form.checkValidity() === false ) {
 			//Don't leave any hanging loading animations
 			loading_animation.fadeOut();
-
-			//Check for Safari (doesn't support HTML5 required)
-			if ( ( navigator.userAgent.indexOf( 'Safari' ) != -1 && navigator.userAgent.indexOf( 'Chrome' ) == -1 ) === false ) {
-				//Not safari: Support HTML5 "required" so skip the rest of this function
-				return;
-			}
+			return;
 		}
 
 		//prevent form from submitting normally
