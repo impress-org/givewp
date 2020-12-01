@@ -46,7 +46,7 @@ class DonationData implements TrackData {
 				"
 		);
 
-		return $date ? strtotime( $date ) : 'NULL';
+		return $date ? strtotime( $date ) : '';
 	}
 
 	/**
@@ -68,7 +68,7 @@ class DonationData implements TrackData {
 				"
 		);
 
-		return $date ? strtotime( $date ) : 'NULL';
+		return $date ? strtotime( $date ) : '';
 	}
 
 	/**
@@ -96,7 +96,7 @@ class DonationData implements TrackData {
 				current_time( 'mysql' )
 			)
 		);
-		return $result ? Money::ofMinor( $result, $currency )->getAmount() : '';
+		return $result ?: '';
 	}
 
 	/**

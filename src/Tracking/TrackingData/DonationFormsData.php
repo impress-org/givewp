@@ -105,8 +105,7 @@ class DonationFormsData implements TrackData {
 	public function getRevenueTillNow( $formId ) {
 		global $wpdb;
 
-		$currency = give_get_option( 'currency' );
-		$statues  = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
+		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
 			[
 				'publish', // One time donation
 				'give_subscription', // Renewal
@@ -128,7 +127,7 @@ class DonationFormsData implements TrackData {
 				$formId
 			)
 		);
-		return $result ? Money::ofMinor( $result, $currency )->getAmount() : '';
+		return $result ?: '';
 	}
 
 	/**

@@ -64,11 +64,9 @@ class DonorData implements TrackData {
 	 */
 	private function getAvgDonationAmountByDonor() {
 		try {
-			$amount   = $this->donationData->getRevenueTillNow() / $this->getDonorCount();
-			$currency = give_get_option( 'currency' );
-			$amount   = round( $amount, give_get_price_decimals( $currency ) );
+			$amount = $this->donationData->getRevenueTillNow() / $this->getDonorCount();
 		} catch ( Exception $e ) {
-			$amount = 'NULL';
+			$amount = '';
 		}
 
 		return $amount;
