@@ -1,9 +1,9 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\Events\TrackTracking;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\WebsiteData;
+use InvalidArgumentException;
 
 /**
  * Class TrackClient
@@ -25,12 +25,18 @@ class TrackClient {
 	/**
 	 * Send a track event.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @param string $trackId
 	 * @param array $trackData
 	 *
-	 * @since 2.10.0
+	 * @throws InvalidArgumentException
 	 */
 	public function send( $trackId, $trackData ) {
+		if ( ! $trackId || ! $trackData ) {
+			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
+		}
+
 		$url = add_query_arg(
 			[
 				'en' => $trackId,
@@ -39,13 +45,8 @@ class TrackClient {
 			self::SERVER_URL
 		);
 
-		/* @var ServerData $serverData */
-		$serverData = give( ServerData::class );
-		/* @var  WebsiteData $websiteData */
-		$websiteData = give( WebsiteData::class );
-
-		$trackData['server']  = $serverData->get();
-		$trackData['website'] = $websiteData->get();
+		$trackData['server']  = ( new ServerData() )->get();
+		$trackData['website'] = ( new WebsiteData() )->get();
 
 		/**
 		 * Filter tracked data.

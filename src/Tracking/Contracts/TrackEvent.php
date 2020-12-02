@@ -1,6 +1,8 @@
 <?php
 namespace Give\Tracking\Contracts;
 
+use Give\Tracking\Track;
+
 /**
  * Class TrackEvent
  *
@@ -9,18 +11,39 @@ namespace Give\Tracking\Contracts;
  * @since 2.10.0
  * @package Give\Tracking\Contracts
  */
-interface TrackEvent {
+abstract class TrackEvent {
 	/**
-	 * Bootstrap.
-	 *
-	 * @since 2.10.0
+	 * @var string
 	 */
-	public function boot();
+	protected $trackId = '';
+
+	/**
+	 * @var Track
+	 */
+	protected $track;
+
+	/**
+	 * @var TrackData
+	 */
+	protected $data;
+
+	/**
+	 * TrackEvent constructor.
+	 *
+	 * @param  Track  $track
+	 * @param  TrackData  $data
+	 */
+	public function __construct( Track $track, TrackData $data ) {
+		$this->track = $track;
+		$this->data  = $data;
+	}
 
 	/**
 	 * Record track id and data.
 	 *
 	 * @since 2.10.0
 	 */
-	public function record();
+	public function record() {
+		$this->track->recordTrack( $this->trackId, $this->data->get() );
+	}
 }

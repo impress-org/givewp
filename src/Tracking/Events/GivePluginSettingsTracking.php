@@ -13,25 +13,19 @@ use Give\Tracking\TrackingData\GivePluginSettingsData;
  * @since 2.10.0
  * @package Give\Tracking\Events
  */
-class GivePluginSettingsTracking implements TrackEvent {
+class GivePluginSettingsTracking extends TrackEvent {
 	/**
-	 * @inheritdoc
+	 * @var string
 	 */
-	public function boot() {
-		add_action( 'update_option_give_settings', [ $this, 'record' ] );
-	}
+	protected $trackId = 'givewp_plugin_settings_updated';
 
 	/**
-	 * Send track
+	 * GivePluginSettingsTracking constructor.
 	 *
-	 * @since 2.10.0
+	 * @param  Track  $track
+	 * @param  GivePluginSettingsData  $givePluginSettingsData
 	 */
-	public function record() {
-		/* @var Track $track */
-		$track = give( Track::class );
-		/* @var GivePluginSettingsData $trackData */
-		$trackData = give( GivePluginSettingsData::class );
-
-		$track->recordTrack( 'givewp_plugin_settings_updated', $trackData->get() );
+	public function __construct( Track $track, GivePluginSettingsData $givePluginSettingsData ) {
+		parent::__construct( $track, $givePluginSettingsData );
 	}
 }

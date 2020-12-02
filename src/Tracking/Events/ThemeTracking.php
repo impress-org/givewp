@@ -13,26 +13,19 @@ use Give\Tracking\TrackingData\ThemeData;
  * @since 2.10.0
  * @package Give\Tracking\Admin\Events
  */
-class ThemeTracking implements TrackEvent {
-
+class ThemeTracking extends TrackEvent {
 	/**
-	 * @inheritdoc
+	 * @var string
 	 */
-	public function boot() {
-		add_action( 'switch_theme', [ $this, 'record' ] );
-	}
+	protected $trackId = 'theme_updated';
 
 	/**
-	 * Send track
+	 * GivePluginSettingsTracking constructor.
 	 *
-	 * @since 2.10.0
+	 * @param  Track  $track
+	 * @param  ThemeData  $themeData
 	 */
-	public function record() {
-		/* @var Track $track */
-		$track = give( Track::class );
-		/* @var ThemeData $trackData */
-		$trackData = give( ThemeData::class );
-
-		$track->recordTrack( 'theme_updated', $trackData->get() );
+	public function __construct( Track $track, ThemeData $themeData ) {
+		parent::__construct( $track, $themeData );
 	}
 }

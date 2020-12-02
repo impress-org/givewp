@@ -13,15 +13,6 @@ class AnonymousUsageTrackingOnBoarding {
 	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'anonymous-usage-tracking-nag';
 
 	/**
-	 * Bootstrap
-	 *
-	 * @since 2.10.0
-	 */
-	public function boot() {
-		add_action( 'admin_notices', [ $this, 'addNotice' ] );
-	}
-
-	/**
 	 * Register notice.
 	 *
 	 * @sicne 2.10.0
@@ -33,7 +24,7 @@ class AnonymousUsageTrackingOnBoarding {
 
 		$notice = $this->getNotice();
 
-		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
 		if ( $isAdminOptedIn || give()->notices->is_notice_dismissed( $notice ) ) {
 			return;
 		}

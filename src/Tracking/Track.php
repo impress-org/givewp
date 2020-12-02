@@ -22,15 +22,6 @@ class Track {
 	private $tracks;
 
 	/**
-	 * Bootstrap.
-	 *
-	 * @siince 2.10.0
-	 */
-	public function boot() {
-		add_action( 'shutdown', [ $this, 'send' ] );
-	}
-
-	/**
 	 * Send tracks.
 	 *
 	 * @since 2.10.0
@@ -57,29 +48,5 @@ class Track {
 	 */
 	public function recordTrack( $trackId, $trackData ) {
 		$this->tracks[ $trackId ] = $trackData;
-	}
-
-	/**
-	 * See if we should run tracking at all.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return bool True when we can track, false when we can't.
-	 */
-	public function isTrackingEnabled() {
-		// Track data only if website is in production mode.
-		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
-			return false;
-		}
-
-		// Track data only if give is in live mode.
-		if ( ! give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
-			return false;
-		}
-
-		// Check if we're allowing tracking.
-		$tracking = give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME );
-
-		return give_is_setting_enabled( $tracking );
 	}
 }

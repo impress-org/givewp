@@ -26,29 +26,6 @@ class TrackRoutine {
 	protected $threshold = WEEK_IN_SECONDS * 2;
 
 	/**
-	 * Registers all hooks to WordPress.
-	 *
-	 * @since 2.10.0
-	 */
-	public function boot() {
-		/* @var Track $adminTrack */
-		$adminTrack = give( Track::class );
-
-		if ( ! $adminTrack->isTrackingEnabled() ) {
-			return;
-		}
-
-		// Send tracking data on `admin_init`.
-		add_action( 'admin_init', [ $this, 'send' ], 1 );
-
-		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
-		add_action( 'give_send_anonymous_usage_tracking_data', [ $this, 'send' ] );
-
-		// Call `wp_schedule_single_event()` after a WordPress core update.
-		add_action( 'upgrader_process_complete', [ $this, 'scheduleTrackingDataSending' ], 10, 2 );
-	}
-
-	/**
 	 * Schedules a new sending of the tracking data after a WordPress core update.
 	 *
 	 * @param  bool|WP_Upgrader  $upgrader
@@ -88,21 +65,13 @@ class TrackRoutine {
 			return;
 		}
 
-		/* @var TrackClient $trackClient */
-		$trackClient = give( TrackClient::class );
+		$trackClient       = new TrackClient();
+		$donorData         = new DonorData();
+		$donationFormData  = new DonationFormData();
+		$donationFormsData = new DonationFormsData();
+		$donationData      = new DonationData();
 
-		/* @var DonorData $donorData */
-		$donorData = give( DonorData::class );
-
-		/* @var DonationFormData $donationFormData */
-		$donationFormData = give( DonationFormData::class );
-
-		/* @var DonationFormsData $donationFormsData */
-		$donationFormsData = give( DonationFormsData::class );
 		$donationFormsData->setDonationIds( $newDonationIds )->setFormIdsByDonationIds();
-
-		/* @var DonationData $donationData */
-		$donationData = give( DonationData::class );
 
 		$trackingData['donor']    = $donorData->get();
 		$trackingData['form']     = $donationFormData->get();

@@ -10,16 +10,7 @@ use Give_Admin_Settings;
  * @since 2.10.0
  */
 class AdminSettings {
-	const USAGE_TRACKING_OPTION_NAME = 'anonymous_usage_tracking';
-
-	/**
-	 * Bootstrap
-	 *
-	 * @since 2.10.0
-	 */
-	public function boot() {
-		add_filter( 'give_get_settings_advanced', [ $this, 'addSettings' ] );
-	}
+	const ANONYMOUS_USAGE_TRACKING_OPTION_NAME = 'anonymous_usage_tracking';
 
 	/**
 	 * Add admin settings.
@@ -44,7 +35,7 @@ class AdminSettings {
 					'name'    => __( 'Anonymous Usage Tracking', 'give' ),
 					'label'   => esc_html__( 'Allow usage of GiveWP to be tracked.', 'give' ),
 					'desc'    => esc_html__( 'Can GiveWP collect data about the usage of the plugin? Usage data is completely anonymous, does not include any personal information, and will only be used to improve the software.', 'give' ),
-					'id'      => self::USAGE_TRACKING_OPTION_NAME,
+					'id'      => self::ANONYMOUS_USAGE_TRACKING_OPTION_NAME,
 					'type'    => 'radio_inline',
 					'default' => 'disabled',
 					'options' => [

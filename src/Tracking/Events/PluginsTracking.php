@@ -13,25 +13,19 @@ use Give\Tracking\TrackingData\PluginsData;
  * @since 2.10.0
  * @package Give\Tracking\Events
  */
-class PluginsTracking implements TrackEvent {
+class PluginsTracking extends TrackEvent {
 	/**
-	 * @inheritdoc
+	 * @var string
 	 */
-	public function boot() {
-		add_action( 'update_option_active_plugins', [ $this, 'record' ] );
-	}
+	protected $trackId = 'plugin_list_updated';
 
 	/**
-	 * Send track
+	 * GivePluginSettingsTracking constructor.
 	 *
-	 * @since 2.10.0
+	 * @param  Track  $track
+	 * @param  PluginsData  $pluginData
 	 */
-	public function record() {
-		/* @var Track $track */
-		$track = give( Track::class );
-		/* @var PluginsData $trackData */
-		$trackData = give( PluginsData::class );
-
-		$track->recordTrack( 'plugin_list_updated', $trackData->get() );
+	public function __construct( Track $track, PluginsData $pluginData ) {
+		parent::__construct( $track, $pluginData );
 	}
 }

@@ -15,18 +15,6 @@ use Give_Donors_Query;
  * @since 2.10.0
  */
 class DonorData implements TrackData {
-	/* @var DonationData $donationData */
-	private $donationData;
-
-	/**
-	 * DonorData constructor.
-	 *
-	 * @param  DonationData  $donationData
-	 */
-	public function __construct( DonationData $donationData ) {
-		$this->donationData = $donationData;
-	}
-
 	/**
 	 * @inheritdoc
 	 * @return array|void
@@ -64,7 +52,8 @@ class DonorData implements TrackData {
 	 */
 	private function getAvgDonationAmountByDonor() {
 		try {
-			$amount = $this->donationData->getRevenueTillNow() / $this->getDonorCount();
+			$donationData = new DonationData();
+			$amount       = $donationData->getRevenueTillNow() / $this->getDonorCount();
 		} catch ( Exception $e ) {
 			$amount = '';
 		}
