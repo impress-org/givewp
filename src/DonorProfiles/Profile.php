@@ -91,9 +91,12 @@ class Profile {
 	protected function getStoredAdditionalAddresses() {
 		$storedAddresses           = $this->donor->address;
 		$storedAdditionalAddresses = [];
-		foreach ( $storedAddresses['billing'] as $key => $address ) {
-			if ( $key !== 0 ) {
-				$storedAdditionalAddresses[ $key ] = $address;
+
+		if ( isset( $storedAddresses['billing'] ) ) {
+			foreach ( $storedAddresses['billing'] as $key => $address ) {
+				if ( $key !== 0 ) {
+					$storedAdditionalAddresses[ $key ] = $address;
+				}
 			}
 		}
 		return $storedAdditionalAddresses;

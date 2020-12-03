@@ -7,7 +7,7 @@ import './style.scss';
 
 const DonorInfo = () => {
 	const { name, addresses, company, sinceLastDonation, sinceCreated, avatarUrl, initials } = useSelector( state => state.profile );
-	const address = addresses ? addresses.billing[ 0 ] : null;
+	const address = addresses.billing ? addresses.billing[ 0 ] : null;
 
 	return (
 		<div className="give-donor-profile-donor-info">

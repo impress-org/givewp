@@ -60,7 +60,7 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 		);
 	} );
 
-	return (
+	return primaryAddress ? (
 		<Fragment>
 			<Heading>
 				{ __( 'Primary Address', 'give' ) }
@@ -75,6 +75,15 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 				{ __( 'Add Address', 'give' ) }
 			</Button>
 		</Fragment>
+	) : (
+		<div className="give-donor-profile__add-primary-address">
+			<Heading>
+				{ __( 'Looks like you have not setup an address!', 'give' ) }
+			</Heading>
+			<Button onClick={ () => setPrimaryAddress( {} ) } icon="plus">
+				{ __( 'Add Address', 'give' ) }
+			</Button>
+		</div>
 	);
 };
 export default AddressControls;
