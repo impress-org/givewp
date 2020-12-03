@@ -54,6 +54,23 @@ class Profile {
 			$this->donor->update_address( 'billing_0', (array) $data->primaryAddress );
 		}
 
+		$storedAddresses           = $this->donor->address;
+		$storedAdditionalAddresses = [];
+		foreach ( $storedAddresses['billing'] as $key => $address ) {
+			if ( $key !== 0 ) {
+				$storedAdditionalAddresses[ $key ] = $address;
+			}
+		}
+
+		foreach ( $storedAdditionalAddresses as $key => $storedAdditionalAddress ) {
+			$this->donor->remove_address( "billing_{$key}" );
+		}
+
+		foreach ( $data->additionalAddresses as $key => $additionalAddress ) {
+			$addressId = 'billing_' . ( $key + 1 );
+			$this->donor->add_address( $addressId, (array) $additionalAddress );
+		}
+
 	}
 
 	protected function updateDonorDB( $data ) {
