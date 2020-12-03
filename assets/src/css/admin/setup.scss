@@ -146,10 +146,12 @@ article .description {
 	margin-top: -25px;
 	margin-left: 15px;
 }
+
 article.paypal .action a,
 article.paypal .action button,
 article.stripe .action a,
-article.stripe .action button {
+article.stripe .action button,
+article.anonymous-usage-tracking .action a.button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -164,6 +166,42 @@ article.stripe .action button {
 	color: #fff;
 	border: 0;
 	border-radius: 6px;
+}
+
+article.anonymous-usage-tracking {
+	.action {
+		display: flex;
+		flex-direction: column;
+
+		a.button {
+			background-color: #66bc6b;
+		}
+
+		.sub-links {
+			display: flex;
+			margin: 15px 30px 0 15px;
+
+			a {
+				font-size: 14px;
+				color: #9ea3a8;
+				margin-right: 0;
+				flex-grow: 1;
+				text-decoration: underline;
+			}
+
+			:first-child {
+				text-align: left;
+			}
+
+			:last-child {
+				text-align: right;
+			}
+		}
+	}
+
+	.learn-more-link {
+		text-decoration: none;
+	}
 }
 
 article.paypal .action a,
