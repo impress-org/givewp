@@ -20,81 +20,83 @@ div.anonymous-usage-tracking {
 		display: grid;
 		grid-template-columns: 125px 3fr 1fr;
 		grid-template-areas: 'icon content action';
+	}
 
-		.header {
-			margin: 10px 0 10px;
-			font-size: 20px;
-			line-height: 25px;
-		}
+	.header {
+		margin: 10px 0 10px;
+		font-size: 20px;
+		line-height: 25px;
+	}
 
-		.action {
+	.icon,
+	.action {
+		align-self: center;
+		justify-content: center;
+	}
+
+	.icon {
+		margin: 8px auto 0;
+		align-self: start;
+		flex: 1;
+		width: 75px;
+		grid-area: icon;
+	}
+
+	.description {
+		grid-area: description;
+		color: #595959;
+		font-size: 16px;
+		line-height: 1.5;
+		font-weight: 400;
+	}
+}
+
+.anonymous-usage-tracking {
+	.learn-more-link {
+		text-decoration: none;
+	}
+
+	.action {
+		display: flex;
+		flex-direction: column;
+
+		a.button {
 			display: flex;
-			flex-direction: column;
-
-			a.button {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-left: 15px;
-				margin-right: 30px;
-				width: 223px;
-				height: 38px;
-				font-size: 16px;
-				font-weight: 600;
-				line-height: 35px;
-				text-align: center;
-				color: #fff;
-				border: 0;
-				border-radius: 6px;
-				background-color: #66bc6b;
-			}
-
-			.sub-links {
-				display: flex;
-				margin: 15px 30px 0 15px;
-
-				a {
-					font-size: 14px;
-					color: #9ea3a8;
-					margin-right: 0;
-					flex-grow: 1;
-					text-decoration: underline;
-				}
-
-				:first-child {
-					text-align: left;
-				}
-
-				:last-child {
-					text-align: right;
-				}
-			}
-		}
-
-		.learn-more-link {
-			text-decoration: none;
-		}
-
-		.icon,
-		.action {
-			align-self: center;
+			align-items: center;
 			justify-content: center;
-		}
-
-		.icon {
-			margin: 8px auto 0;
-			align-self: start;
-			flex: 1;
-			width: 75px;
-			grid-area: icon;
-		}
-
-		.description {
-			grid-area: description;
-			color: #595959;
+			margin-left: 15px;
+			margin-right: 30px;
+			width: 223px;
+			height: 38px;
 			font-size: 16px;
-			line-height: 1.5;
-			font-weight: 400;
+			font-weight: 600;
+			line-height: 35px;
+			text-align: center;
+			color: #fff;
+			border: 0;
+			border-radius: 6px;
+			background-color: #66bc6b;
+		}
+	}
+
+	.sub-links {
+		display: flex;
+		margin: 15px 30px 0 15px;
+
+		a {
+			font-size: 14px;
+			color: #9ea3a8;
+			margin-right: 0;
+			flex-grow: 1;
+			text-decoration: underline;
+		}
+
+		:first-child {
+			text-align: left;
+		}
+
+		:last-child {
+			text-align: right;
 		}
 	}
 }
