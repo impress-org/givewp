@@ -43,7 +43,7 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );
 			Hooks::addAction( 'give_opt_in_into_tracking', AdminActionHandler::class, 'optInToUsageTracking' );
 			Hooks::addAction( 'give_opt_out_into_tracking', AdminActionHandler::class, 'optOutFromUsageTracking' );
-			Hooks::addAction( 'admin_notices', AnonymousUsageTrackingOnBoarding::class, 'renderNotice', 999 );
+			Hooks::addAction( 'admin_notices', AnonymousUsageTrackingOnBoarding::class, 'addNotice', 999 );
 
 			// Register track events.
 			Hooks::addAction( 'update_option_give_settings', GivePluginSettingsTracking::class, 'record' );

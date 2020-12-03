@@ -47,20 +47,13 @@ class AnonymousUsageTrackingOnBoarding {
 	}
 
 	/**
-	 * Render notice.
-	 *
-	 * @since 2.10.0
-	 */
-	public function renderNotice() {
-		echo $this->getNotice( true );
-	}
-
-	/**
 	 * Get notice.
 	 *
-	 * @since 2.10.0
+	 * @param  bool  $wrapper
 	 *
 	 * @return string
+	 * @since 2.10.0
+	 *
 	 */
 	public function getNotice( $wrapper = false ) {
 		/* @var PageView $pageView */
