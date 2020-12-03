@@ -78,7 +78,7 @@ class AnonymousUsageTrackingOnBoarding {
 						'title'       => esc_html__( 'Help us improve yor fundraising experience', 'give' ),
 						'description' => sprintf(
 							'%1$s<br><br><a href="https://givewp.com" class="learn-more-link">%2$s</a>',
-							esc_html__( 'You can contribute to improve GiveWP. the Give Team uses non-sensitive data to improve donation from conversion rates, increase average donation amounts, and streamline the fundraising experience. We never share this information with anyone and we never spam', 'give' ),
+							esc_html__( 'You can contribute to improve GiveWP. the Give Team uses non-sensitive data to improve donation from conversion rates, increase average donation amounts, and streamline the fundraising experience. We never share this information with anyone and we never spam.', 'give' ),
 							esc_html__( 'Learn more about how GiveWP respects your privacy while improving the plugin >', 'give' )
 						),
 						'action'      => sprintf(
@@ -88,7 +88,7 @@ class AnonymousUsageTrackingOnBoarding {
 							add_query_arg( [ 'give_action' => 'hide_opt_in_notice_shortly' ] ),
 							esc_html__( 'Not Right Now', 'give' ),
 							add_query_arg( [ 'give_action' => 'hide_opt_in_notice_permanently' ] ),
-							esc_html__( 'Dismiss Forever', 'give' ),
+							esc_html__( 'Dismiss Forever', 'give' )
 						),
 					]
 				),
