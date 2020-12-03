@@ -19,24 +19,8 @@ class Profile {
 		$this->updateDonorMetaDB( $data );
 		$this->updateDonorDB( $data );
 
-		$this->updateEmails( $data->primaryEmail, $data->additionalEmails );
-
 		return $this->getProfileData();
 
-	}
-
-	public function updateEmails( $primaryEmail, $additionalEmails ) {
-		$storedAdditionalEmails = $this->donor->get_meta( 'additional_email' );
-		foreach ( $storedAdditionalEmails as $key => $storedAdditionalEmail ) {
-			$this->donor->remove_email( $storedAdditionalEmail );
-		}
-
-		$this->donor->add_email( $primaryEmail, true );
-
-		foreach ( $additionalEmails as $key => $additionalEmail ) {
-			error_log( serialize( $additionalEmail ) );
-			$this->donor->add_email( $additionalEmail );
-		}
 	}
 
 	protected function updateDonorMetaDB( $data ) {
@@ -53,6 +37,17 @@ class Profile {
 			}
 		}
 
+		$storedAdditionalEmails = $this->donor->get_meta( 'additional_email', false );
+		$diffEmails             = array_diff( $storedAdditionalEmails, $data->additionalEmails );
+
+		foreach ( $diffEmails as $diffEmail ) {
+			$this->donor->delete_meta( 'additional_email', $diffEmail );
+		}
+
+		foreach ( $data->additionalEmails as $email ) {
+			$this->donor->add_meta( 'additional_email', $email );
+		}
+
 	}
 
 	protected function updateDonorDB( $data ) {
@@ -61,6 +56,10 @@ class Profile {
 
 		if ( ! empty( $data->firstName ) && ! empty( $data->lastName ) ) {
 			$updateArgs['name'] = "{$data->firstName} {$data->lastName}";
+		}
+
+		if ( ! empty( $data->primaryEmail ) ) {
+			$updateArgs['email'] = $data->primaryEmail;
 		}
 
 		$this->donor->update( $updateArgs );
