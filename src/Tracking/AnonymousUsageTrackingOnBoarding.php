@@ -20,18 +20,11 @@ class AnonymousUsageTrackingOnBoarding {
 	 * @since 2.10.0
 	 */
 	public function addNotice() {
-		if ( ! current_user_can( 'manage_give_settings' ) ) {
+		if ( ! $this->canShowNotice() ) {
 			return;
 		}
 
-		$notice = $this->getNotice();
-
-		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
-		if ( $isAdminOptedIn || give()->notices->is_notice_dismissed( $notice ) ) {
-			return;
-		}
-
-		give()->notices->register_notice( $notice );
+		echo $this->getNotice( true );
 	}
 
 	/**
@@ -89,5 +82,30 @@ class AnonymousUsageTrackingOnBoarding {
 		);
 
 		return $wrapper ? sprintf( '<div class="anonymous-usage-tracking notice">%1$s</div>', $notice ) : $notice;
+	}
+
+	/**
+	 * Return whether or not user can see notice.
+	 *
+	 * @since 2.10.0
+	 */
+	public function canShowNotice() {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			return false;
+		}
+
+		$optionValue = get_option( 'give_anonymous_usage_tracking_notice', null );
+
+		if ( is_numeric( $optionValue ) ) {
+			if ( '0' === $optionValue ) {
+				return false;
+			}
+
+			if ( $optionValue > time() ) {
+				return false;
+			}
+		}
+
+		return ! give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
 	}
 }

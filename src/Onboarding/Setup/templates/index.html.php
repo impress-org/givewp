@@ -124,7 +124,10 @@
 	<!-- Anonymous usage tracking opt-in notice -->
 	<?php
 	$anonymousUsageTrackingNotice = new \Give\Tracking\AnonymousUsageTrackingOnBoarding();
-	echo $anonymousUsageTrackingNotice->getNotice();
+
+	if ( $anonymousUsageTrackingNotice->canShowNotice() ) {
+		echo $anonymousUsageTrackingNotice->getNotice();
+	}
 	?>
 
 	<!-- Resources -->
