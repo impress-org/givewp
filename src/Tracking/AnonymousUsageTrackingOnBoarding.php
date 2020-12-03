@@ -17,7 +17,7 @@ class AnonymousUsageTrackingOnBoarding {
 	/**
 	 * Register notice.
 	 *
-	 * @sicne 2.10.0
+	 * @since 2.10.0
 	 */
 	public function addNotice() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
