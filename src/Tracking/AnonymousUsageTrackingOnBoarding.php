@@ -1,6 +1,8 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Onboarding\Setup\PageView;
+
 /**
  * Class OnBoarding
  * @package Give\Tracking
@@ -52,26 +54,38 @@ class AnonymousUsageTrackingOnBoarding {
 	 * @return string[]
 	 */
 	private function getNotice() {
-		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Anonymous Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve the plugin.', 'give' );
-		$readMoreLink = sprintf(
-			'<a href="#" target="_blank">%1$s</a>',
-			esc_html__( 'Read more GiveWP.com Anonymous Usage Tracking.', 'give' )
-		);
+		/* @var PageView $pageView */
+		$pageView = give()->make( PageView::class );
 
-		$allowTrackingLink = sprintf(
-			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
-			esc_html__( 'Yes', 'give' ),
-			esc_html__( 'No', 'give' ),
-			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
-			add_query_arg( [ 'give_action' => 'opt_out_into_tracking' ] )
+		echo sprintf(
+			'<div class="anonymous-usage-tracking notice">%1$s</div>',
+			$pageView->render_template(
+				'section',
+				[
+					'contents' => $pageView->render_template(
+						'row-item',
+						[
+							'icon'        => $pageView->image( 'hands-in.svg' ),
+							'icon_alt'    => esc_html__( 'Anonymous usage tracking icon', 'give' ),
+							'title'       => esc_html__( 'Help us improve yor fundraising experience', 'give' ),
+							'description' => sprintf(
+								'%1$s<br><br><a href="https://givewp.com" class="learn-more-link">%2$s</a>',
+								esc_html__( 'You can contribute to improve GiveWP. the Give Team uses non-sensitive data to improve donation from conversion rates, increase average donation amounts, and streamline the fundraising experience. We never share this information with anyone and we never spam', 'give' ),
+								esc_html__( 'Learn more about how GiveWP respects your privacy while improving the plugin >', 'give' )
+							),
+							'action'      => sprintf(
+								'<a class="button" href="%1$s">%2$s</a><div class="sub-links"><a href="%3$s">%4$s</a><a href="%5$s">%6$s</a></div>',
+								add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
+								esc_html__( 'Opt-in', 'give' ),
+								add_query_arg( [ 'give_action' => 'hide_opt_in_notice_shortly' ] ),
+								esc_html__( 'Not Right Now', 'give' ),
+								add_query_arg( [ 'give_action' => 'hide_opt_in_notice_permanently' ] ),
+								esc_html__( 'Dismiss Forever', 'give' ),
+							),
+						]
+					),
+				]
+			)
 		);
-
-			return [
-				'id'               => self::ANONYMOUS_USAGE_TRACING_NOTICE_ID,
-				'type'             => 'info',
-				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
-				'dismissible_type' => 'all',
-				'dismiss_interval' => 'permanent',
-			];
 	}
 }
