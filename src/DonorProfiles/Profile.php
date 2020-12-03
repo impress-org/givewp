@@ -16,14 +16,23 @@ class Profile {
 
 	public function update( $data ) {
 
+		// Handle updates to the donor meta table
 		$this->updateDonorMetaDB( $data );
+
+		// Handle updates to the donor table
 		$this->updateDonorDB( $data );
 
+		// Return updated donor profile data
 		return $this->getProfileData();
 
 	}
 
 	protected function updateDonorMetaDB( $data ) {
+
+		/**
+		 * For simple meta updates, use this map to update the correct meta keys
+		 * based on parameters in the REST request
+		 **/
 
 		$attributeMetaMap = [
 			'firstName'   => '_give_donor_first_name',
@@ -37,6 +46,12 @@ class Profile {
 			}
 		}
 
+		/**
+		 * For more complex meta updates, logic has been refactored into seperate methods
+		 * - update additional emails
+		 * - update addresses
+		 */
+
 		$this->updateDonorAdditionalEmailsMeta( isset( $data->addiitonalEmails ) ? $data->addiitonalEmails : [] );
 		$this->updateDonorAddressMeta( isset( $data->primaryAddress ) ? $data->primaryAddress : null, isset( $data->additionalAddresses ) ? $data->additionalAddresses : [] );
 
@@ -44,21 +59,26 @@ class Profile {
 
 	protected function updateDonorAddressMeta( $primaryAddress, $additionalAddresses ) {
 
+		/**
+		 * If a primary address is provided, update billing address with id '0'
+		 */
+
 		if ( ! empty( $primaryAddress ) ) {
 			$this->donor->add_address( 'billing_0', (array) $primaryAddress );
 		}
 
-		$storedAddresses           = $this->donor->address;
-		$storedAdditionalAddresses = [];
-		foreach ( $storedAddresses['billing'] as $key => $address ) {
-			if ( $key !== 0 ) {
-				$storedAdditionalAddresses[ $key ] = $address;
-			}
-		}
+		/**
+		 * Clear out existing additional addresses
+		 */
 
+		$storedAdditionalAddresses = $this->getStoredAdditionalAddresses();
 		foreach ( $storedAdditionalAddresses as $key => $storedAdditionalAddress ) {
 			$this->donor->remove_address( "billing_{$key}" );
 		}
+
+		/**
+		 * If additional addresses are provided, add them to the donor meta table
+		 */
 
 		if ( ! empty( $additionalAddresses ) ) {
 			foreach ( $additionalAddresses as $key => $additionalAddress ) {
@@ -68,13 +88,34 @@ class Profile {
 		}
 	}
 
+	protected function getStoredAdditionalAddresses() {
+		$storedAddresses           = $this->donor->address;
+		$storedAdditionalAddresses = [];
+		foreach ( $storedAddresses['billing'] as $key => $address ) {
+			if ( $key !== 0 ) {
+				$storedAdditionalAddresses[ $key ] = $address;
+			}
+		}
+		return $storedAdditionalAddresses;
+	}
+
 	protected function updateDonorAdditionalEmailsMeta( $additionalEmails ) {
+
+		/**
+		 * Remove additional emails that exist in the donor meta table,
+		 * but do not appear in the new array of additional emails
+		 */
+
 		$storedAdditionalEmails = $this->donor->get_meta( 'additional_email', false );
 		$diffEmails             = array_diff( $storedAdditionalEmails, $additionalEmails );
 
 		foreach ( $diffEmails as $diffEmail ) {
 			$this->donor->delete_meta( 'additional_email', $diffEmail );
 		}
+
+		/**
+		 * Add any new additional emails
+		 */
 
 		foreach ( $additionalEmails as $email ) {
 			if ( ! in_array( $email, $storedAdditionalEmails ) ) {
