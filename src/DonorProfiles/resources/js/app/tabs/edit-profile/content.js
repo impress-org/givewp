@@ -9,6 +9,7 @@ import Button from '../../components/button';
 import { updateProfileWithAPI } from './utils';
 
 import EmailControls from './email-controls';
+import AddressControls from './address-controls';
 
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -19,7 +20,6 @@ import './style.scss';
 const Content = () => {
 	const id = useSelector( state => state.id );
 	const storedProfile = useSelector( state => state.profile );
-	storedProfile.address = storedProfile.addresses ? storedProfile.addresses.billing[ 0 ] : null;
 
 	const [ titlePrefix, setTitlePrefix ] = useState( storedProfile.titlePrefix );
 	const titlePrefixOptions = [
@@ -52,38 +52,15 @@ const Content = () => {
 
 	const [ additionalEmails, setAdditionalEmails ] = useState( reducedAdditionalEmails );
 
-	const [ country, setCountry ] = useState( storedProfile.address.country );
-	const countryOptions = [
-		{
-			value: 'US',
-			label: 'United States',
-		},
-		{
-			value: 'UK',
-			label: 'United Kingdom',
-		},		{
-			value: 'CA',
-			label: 'Canada',
-		},
-	];
-	const [ addressOne, setAddressOne ] = useState( storedProfile.address.line1 );
-	const [ addressTwo, setAddressTwo ] = useState( storedProfile.address.line2 );
-	const [ city, setCity ] = useState( storedProfile.address.city );
-	const [ state, setState ] = useState( storedProfile.address.state );
-	const stateOptions = [
-		{
-			value: 'NY',
-			label: 'New York',
-		},
-		{
-			value: 'MI',
-			label: 'Michigan',
-		},		{
-			value: 'TX',
-			label: 'Texas',
-		},
-	];
-	const [ zip, setZip ] = useState( storedProfile.address.zip );
+	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses.billing[ 0 ] );
+
+	const reducedAdditionalAddresses = storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
+		if ( index !== 0 ) {
+			newArray.push( address );
+		}
+		return newArray;
+	}, [] );
+	const [ additionalAddresses, setAdditionalAddresses ] = useState( reducedAdditionalAddresses );
 
 	const [ anonymous, setAnonymous ] = useState( storedProfile.isAnonymous );
 	const anonymousOptions = [
@@ -145,45 +122,12 @@ const Content = () => {
 				onChangePrimaryEmail={ ( value ) => setPrimaryEmail( value ) }
 				onChangeAdditionalEmails={ ( value ) => setAdditionalEmails( value ) }
 			/>
-			<Heading>
-				{ __( 'Address', 'give' ) }
-			</Heading>
-			<Divider />
-			<SelectControl
-				label={ __( 'Country', 'give' ) }
-				value={ country }
-				onChange={ ( value ) => setCountry( value ) }
-				options={ countryOptions }
-				width={ null }
+			<AddressControls
+				primaryAddress={ primaryAddress }
+				additionalAddresses={ additionalAddresses }
+				onChangePrimaryAddress={ ( value ) => setPrimaryAddress( value ) }
+				onChangeAdditionalAddresses={ ( value ) => setAdditionalAddresses( value ) }
 			/>
-			<TextControl
-				label={ __( 'Address 1', 'give' ) }
-				value={ addressOne }
-				onChange={ ( value ) => setAddressOne( value ) }
-			/>
-			<TextControl
-				label={ __( 'Address 2', 'give' ) }
-				value={ addressTwo }
-				onChange={ ( value ) => setAddressTwo( value ) }
-			/>
-			<TextControl
-				label={ __( 'City', 'give' ) }
-				value={ city }
-				onChange={ ( value ) => setCity( value ) }
-			/>
-			<FieldRow>
-				<SelectControl
-					label={ __( 'State', 'give' ) }
-					value={ state }
-					onChange={ ( value ) => setState( value ) }
-					options={ stateOptions }
-				/>
-				<TextControl
-					label={ __( 'Zip', 'give' ) }
-					value={ zip }
-					onChange={ ( value ) => setZip( value ) }
-				/>
-			</FieldRow>
 			<Heading>
 				{ __( 'Additional Info', 'give' ) }
 			</Heading>

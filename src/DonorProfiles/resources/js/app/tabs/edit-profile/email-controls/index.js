@@ -31,7 +31,7 @@ const EmailControls = ( { primaryEmail, additionalEmails, onChangePrimaryEmail, 
 		setAdditionalEmail( oldPrimaryEmail, index );
 	};
 
-	const additionalEmailFields = additionalEmails.map( ( email, index ) => {
+	const additionalEmailControls = additionalEmails.map( ( email, index ) => {
 		return (
 			<FieldRow key={ index } >
 				<TextControl
@@ -61,7 +61,7 @@ const EmailControls = ( { primaryEmail, additionalEmails, onChangePrimaryEmail, 
 				onChange={ ( value ) => setPrimaryEmail( value ) }
 				icon="envelope"
 			/>
-			{ additionalEmailFields }
+			{ additionalEmailControls }
 			<Button onClick={ () => addAdditionalEmail( '' ) } icon="plus">
 				{ __( 'Add Email', 'give' ) }
 			</Button>
