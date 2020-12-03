@@ -82,6 +82,8 @@ const Content = () => {
 				lastName,
 				primaryEmail,
 				additionalEmails,
+				primaryAddress,
+				additionalAddresses,
 			},
 			id: id,
 		} );

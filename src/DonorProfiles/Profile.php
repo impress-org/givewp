@@ -45,7 +45,13 @@ class Profile {
 		}
 
 		foreach ( $data->additionalEmails as $email ) {
-			$this->donor->add_meta( 'additional_email', $email );
+			if ( ! in_array( $email, $storedAdditionalEmails ) ) {
+				$this->donor->add_meta( 'additional_email', $email );
+			}
+		}
+
+		if ( ! empty( $data->primaryAddress ) ) {
+			$this->donor->update_address( 'billing_0', (array) $data->primaryAddress );
 		}
 
 	}
