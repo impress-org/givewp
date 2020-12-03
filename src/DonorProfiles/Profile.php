@@ -37,21 +37,15 @@ class Profile {
 			}
 		}
 
-		$storedAdditionalEmails = $this->donor->get_meta( 'additional_email', false );
-		$diffEmails             = array_diff( $storedAdditionalEmails, $data->additionalEmails );
+		$this->updateDonorAdditionalEmailsMeta( isset( $data->addiitonalEmails ) ? $data->addiitonalEmails : [] );
+		$this->updateDonorAddressMeta( isset( $data->primaryAddress ) ? $data->primaryAddress : null, isset( $data->additionalAddresses ) ? $data->additionalAddresses : [] );
 
-		foreach ( $diffEmails as $diffEmail ) {
-			$this->donor->delete_meta( 'additional_email', $diffEmail );
-		}
+	}
 
-		foreach ( $data->additionalEmails as $email ) {
-			if ( ! in_array( $email, $storedAdditionalEmails ) ) {
-				$this->donor->add_meta( 'additional_email', $email );
-			}
-		}
+	protected function updateDonorAddressMeta( $primaryAddress, $additionalAddresses ) {
 
-		if ( ! empty( $data->primaryAddress ) ) {
-			$this->donor->update_address( 'billing_0', (array) $data->primaryAddress );
+		if ( ! empty( $primaryAddress ) ) {
+			$this->donor->add_address( 'billing_0', (array) $primaryAddress );
 		}
 
 		$storedAddresses           = $this->donor->address;
@@ -66,11 +60,27 @@ class Profile {
 			$this->donor->remove_address( "billing_{$key}" );
 		}
 
-		foreach ( $data->additionalAddresses as $key => $additionalAddress ) {
-			$addressId = 'billing_' . ( $key + 1 );
-			$this->donor->add_address( $addressId, (array) $additionalAddress );
+		if ( ! empty( $additionalAddresses ) ) {
+			foreach ( $additionalAddresses as $key => $additionalAddress ) {
+				$addressId = 'billing_' . ( $key + 1 );
+				$this->donor->add_address( $addressId, (array) $additionalAddress );
+			}
+		}
+	}
+
+	protected function updateDonorAdditionalEmailsMeta( $additionalEmails ) {
+		$storedAdditionalEmails = $this->donor->get_meta( 'additional_email', false );
+		$diffEmails             = array_diff( $storedAdditionalEmails, $additionalEmails );
+
+		foreach ( $diffEmails as $diffEmail ) {
+			$this->donor->delete_meta( 'additional_email', $diffEmail );
 		}
 
+		foreach ( $additionalEmails as $email ) {
+			if ( ! in_array( $email, $storedAdditionalEmails ) ) {
+				$this->donor->add_meta( 'additional_email', $email );
+			}
+		}
 	}
 
 	protected function updateDonorDB( $data ) {
