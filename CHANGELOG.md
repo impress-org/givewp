@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.5 - 2020-12-03
+
 ### New
 
 -    Onboarding locales now include Jamaica (#5474)
