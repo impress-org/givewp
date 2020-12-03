@@ -13,25 +13,15 @@ use Give_Cache;
  */
 class AdminActionHandler {
 	/**
-	 * @var UsageTrackingOnBoarding
+	 * @var AnonymousUsageTrackingOnBoarding
 	 */
 	public $usageTrackingOnBoarding;
 
 	/**
-	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
+	 * @param  AnonymousUsageTrackingOnBoarding  $usageTrackingOnBoarding
 	 */
-	public function constructor( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
+	public function constructor( AnonymousUsageTrackingOnBoarding $usageTrackingOnBoarding ) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
-	}
-
-	/**
-	 * Bootstrap
-	 *
-	 * @since 2.10.0
-	 */
-	public function boot() {
-		add_action( 'give_opt_in_into_tracking', [ $this, 'optInToUsageTracking' ] );
-		add_action( 'give_opt_out_into_tracking', [ $this, 'optOutFromUsageTracking' ] );
 	}
 
 	/**
@@ -47,7 +37,7 @@ class AdminActionHandler {
 		// Hide notice.
 		Give_Cache::set( $this->usageTrackingOnBoarding->getNoticeOptionKey(), true, null, true );
 
-		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' );
+		give_update_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' );
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
@@ -63,7 +53,7 @@ class AdminActionHandler {
 			return;
 		}
 
-		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
+		give_update_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'enabled' );
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();

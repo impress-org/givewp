@@ -9,17 +9,8 @@ namespace Give\Tracking;
  *
  * @since 2.10.0
  */
-class UsageTrackingOnBoarding {
-	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'usage-tracking-nag';
-
-	/**
-	 * Bootstrap
-	 *
-	 * @since 2.10.0
-	 */
-	public function boot() {
-		add_action( 'admin_notices', [ $this, 'addNotice' ] );
-	}
+class AnonymousUsageTrackingOnBoarding {
+	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'anonymous-usage-tracking-nag';
 
 	/**
 	 * Register notice.
@@ -33,7 +24,7 @@ class UsageTrackingOnBoarding {
 
 		$notice = $this->getNotice();
 
-		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
 		if ( $isAdminOptedIn || give()->notices->is_notice_dismissed( $notice ) ) {
 			return;
 		}
@@ -61,16 +52,16 @@ class UsageTrackingOnBoarding {
 	 * @return string[]
 	 */
 	private function getNotice() {
-		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve plugin.', 'give' );
+		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Anonymous Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve the plugin.', 'give' );
 		$readMoreLink = sprintf(
 			'<a href="#" target="_blank">%1$s</a>',
-			esc_html__( 'Read more GiveWP.com Usage Tracking.', 'give' )
+			esc_html__( 'Read more GiveWP.com Anonymous Usage Tracking.', 'give' )
 		);
 
 		$allowTrackingLink = sprintf(
 			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
-			esc_html__( 'Allow', 'give' ),
-			esc_html__( 'Do not allow', 'give' ),
+			esc_html__( 'Yes', 'give' ),
+			esc_html__( 'No', 'give' ),
 			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
 			add_query_arg( [ 'give_action' => 'opt_out_into_tracking' ] )
 		);
