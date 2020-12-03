@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.5 - 2020-12-03
+
+### New
+
+-    Onboarding locales now include Jamaica (#5474)
+
+### Fixed
+
+-   Currency Switcher options are visible in the dropdown on Windows machines (#5453)
+-   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
+
 ## 2.9.4 - 2020-11-20
 
 ### Fixed
@@ -45,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   Use easy digital download rest api endpoint to confirm addon is premium or not (#5426)
+-   Use easy digital download rest api endpoint to confirm if the add-on is premium or not (#5426)
 
 ### 2.9.1 - 2020-10-28
 
@@ -102,6 +113,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
+-   Disconnecting a Stripe account no longer revokes GiveWP as an Authorized Application (#5378)
 
 ## 2.9.0-beta.1 - 2020-10-13
 
