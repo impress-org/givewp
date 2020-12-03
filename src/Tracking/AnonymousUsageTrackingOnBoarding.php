@@ -96,16 +96,37 @@ class AnonymousUsageTrackingOnBoarding {
 
 		$optionValue = get_option( 'give_anonymous_usage_tracking_notice', null );
 
-		if ( is_numeric( $optionValue ) ) {
-			if ( '0' === $optionValue ) {
-				return false;
-			}
-
-			if ( $optionValue > time() ) {
-				return false;
-			}
+		if ( is_numeric( $optionValue ) && ( '0' === $optionValue || $optionValue > time() ) ) {
+			return false;
 		}
 
 		return ! give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+	}
+
+	/**
+	 * Disable notice.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param $timestamp
+	 *
+	 * @return bool
+	 */
+	public function disableNotice( $timestamp ) {
+		if ( is_string( $timestamp ) ) {
+			if ( 'shortly' === $timestamp ) {
+				$timestamp = time() + DAY_IN_SECONDS * 2;
+			}
+
+			if ( 'permanently' === $timestamp ) {
+				$timestamp = 0;
+			}
+		}
+
+		if ( ! is_numeric( $timestamp ) ) {
+			$timestamp = 0;
+		}
+
+		return update_option( 'give_anonymous_usage_tracking_notice', $timestamp );
 	}
 }
