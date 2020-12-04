@@ -11,7 +11,7 @@ import { updateProfileWithAPI } from './utils';
 import EmailControls from './email-controls';
 import AddressControls from './address-controls';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 const { __ } = wp.i18n;
 
@@ -20,6 +20,11 @@ import './style.scss';
 const Content = () => {
 	const id = useSelector( state => state.id );
 	const storedProfile = useSelector( state => state.profile );
+
+	useEffect( () => {
+		setAvatarFile( null );
+		setAvatarUrl( storedProfile.avatarUrl );
+	}, [ storedProfile ] );
 
 	const [ titlePrefix, setTitlePrefix ] = useState( storedProfile.titlePrefix );
 	const titlePrefixOptions = [
@@ -37,6 +42,7 @@ const Content = () => {
 	];
 
 	const [ avatarFile, setAvatarFile ] = useState( null );
+	const [ avatarUrl, setAvatarUrl ] = useState( storedProfile.avatarUrl );
 
 	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
 	const [ lastName, setLastName ] = useState( storedProfile.lastName );
@@ -95,8 +101,8 @@ const Content = () => {
 			</Heading>
 			<Divider />
 			<AvatarControl
-				storedValue={ storedProfile.avatarUrl }
-				value={ avatarFile }
+				url={ avatarUrl }
+				file={ avatarFile }
 				onChange={ ( value ) => setAvatarFile( value ) }
 			/>
 			<FieldRow>
