@@ -12,14 +12,7 @@
 	</div>
 	<?php endif; ?>
 
-	<!-- usage tracking opt-in notice -->
-	<?php
-	$usageTrackingNotice = new \Give\Tracking\UsageTrackingOnBoarding();
-
-	if ( $usageTrackingNotice->canShowNotice() ) {
-		echo $usageTrackingNotice->getNotice( true );
-	}
-	?>
+	<?php echo do_action( 'give_setup_page_before_sectioins' ); ?>
 
 	<!-- Configuration -->
 	<?php
