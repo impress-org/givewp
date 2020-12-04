@@ -17,7 +17,7 @@ class GivePluginSettingsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId = 'givewp_plugin_settings_updated';
+	protected $trackId = 'give_plugin_settings_updated';
 
 	/**
 	 * GivePluginSettingsTracking constructor.

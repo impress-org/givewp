@@ -23,6 +23,7 @@ class GivePluginSettingsData implements TrackData {
 	 */
 	public function get() {
 		return [
+			'version'        => GIVE_VERSION,
 			'installDate'    => $this->getPluginInstallDate(),
 			'globalSettings' => $this->getGlobalSettings(),
 		];
