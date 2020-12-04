@@ -32,9 +32,9 @@ class AdminActionHandler {
 			return;
 		}
 
-		$timestamp = 'permanently';
+		$timestamp = '0';
 		if ( 'hide_opt_in_notice_shortly' === $_GET['give_action'] ) {
-			$timestamp = 'shortly';
+			$timestamp = DAY_IN_SECONDS * 2 + time();
 		}
 
 		$this->usageTrackingOnBoarding->disableNotice( $timestamp );
