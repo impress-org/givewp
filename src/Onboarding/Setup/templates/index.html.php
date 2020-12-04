@@ -12,6 +12,15 @@
 	</div>
 	<?php endif; ?>
 
+	<!-- usage tracking opt-in notice -->
+	<?php
+	$usageTrackingNotice = new \Give\Tracking\UsageTrackingOnBoarding();
+
+	if ( $usageTrackingNotice->canShowNotice() ) {
+		echo $usageTrackingNotice->getNotice( true );
+	}
+	?>
+
 	<!-- Configuration -->
 	<?php
 		echo $this->render_template(
@@ -120,15 +129,6 @@
 			]
 		);
 		?>
-
-	<!-- usage tracking opt-in notice -->
-	<?php
-	$usageTrackingNotice = new \Give\Tracking\UsageTrackingOnBoarding();
-
-	if ( $usageTrackingNotice->canShowNotice() ) {
-		echo $usageTrackingNotice->getNotice();
-	}
-	?>
 
 	<!-- Resources -->
 	<?php
