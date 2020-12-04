@@ -2,6 +2,7 @@
 namespace Give\Tracking;
 
 use Give\Onboarding\Setup\PageView;
+use Give_Admin_Settings;
 
 /**
  * Class OnBoarding
@@ -92,6 +93,11 @@ class UsageTrackingOnBoarding {
 	 */
 	public function canShowNotice() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			return false;
+		}
+
+		$section = isset( $_GET['section'] ) ? 'advanced-options' : '';
+		if ( Give_Admin_Settings::is_setting_page( 'advanced', $section ) ) {
 			return false;
 		}
 
