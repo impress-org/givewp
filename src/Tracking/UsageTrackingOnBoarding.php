@@ -101,7 +101,7 @@ class UsageTrackingOnBoarding {
 			return false;
 		}
 
-		$optionValue = get_option( 'give_usage_tracking_notice', null );
+		$optionValue = get_option( 'give_hide_usage_tracking_notice', null );
 
 		if ( is_numeric( $optionValue ) && ( '0' === $optionValue || $optionValue > time() ) ) {
 			return false;
@@ -120,6 +120,6 @@ class UsageTrackingOnBoarding {
 	 * @return bool
 	 */
 	public function disableNotice( $timestamp ) {
-		return update_option( 'give_usage_tracking_notice', $timestamp );
+		return update_option( 'give_hide_usage_tracking_notice', $timestamp );
 	}
 }
