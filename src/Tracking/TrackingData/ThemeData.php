@@ -25,33 +25,47 @@ class ThemeData implements TrackData {
 		/* @var WP_Theme $theme */
 		$theme = wp_get_theme();
 
-		return [
-			'name'        => $theme->get( 'Name' ),
-			'url'         => $theme->get( 'ThemeURI' ),
-			'version'     => $theme->get( 'Version' ),
-			'author'      => [
+		$themeSlug = $theme->offsetGet( 'Stylesheet' );
+		$data      = [
+			'name'    => $theme->get( 'Name' ),
+			'slug'    => $themeSlug,
+			'url'     => $theme->get( 'ThemeURI' ),
+			'version' => $theme->get( 'Version' ),
+			'author'  => [
 				'name' => $theme->get( 'Author' ),
 				'url'  => $theme->get( 'AuthorURI' ),
 			],
-			'parentTheme' => $this->getParentTheme( $theme ),
 		];
+
+		$themeTemplate = $theme->offsetGet( 'Template' );
+		if ( $themeSlug !== $themeTemplate ) {
+			$parentTheme         = wp_get_theme( $themeTemplate );
+			$data['parentTheme'] = $this->getParentTheme( $parentTheme );
+		}
+
+		return $data;
 	}
 
 	/**
-	 * Returns the name of the parent theme.
+	 * Returns parent theme data.
 	 *
 	 * @since 2.10.0
 	 *
 	 * @param  WP_Theme  $theme  The theme object.
 	 *
-	 * @return null|string The name of the parent theme or null.
+	 * @return array TParent theme data.
 	 */
 	private function getParentTheme( WP_Theme $theme ) {
-		if ( is_child_theme() ) {
-			return $theme->get( 'Template' );
-		}
-
-		return null;
+		return [
+			'name'    => $theme->get( 'Name' ),
+			'slug'    => $theme->offsetGet( 'Stylesheet' ),
+			'url'     => $theme->get( 'ThemeURI' ),
+			'version' => $theme->get( 'Version' ),
+			'author'  => [
+				'name' => $theme->get( 'Author' ),
+				'url'  => $theme->get( 'AuthorURI' ),
+			],
+		];
 	}
 }
 
