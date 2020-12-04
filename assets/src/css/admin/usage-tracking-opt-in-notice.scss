@@ -1,4 +1,4 @@
-/* Anonymous usage tracking notice */
+/* Admin notice style */
 div.anonymous-usage-tracking {
 	padding: 0;
 	background-color: transparent;
@@ -50,6 +50,7 @@ div.anonymous-usage-tracking {
 	}
 }
 
+/* Give setting page styling */
 .give-settings-page {
 	div.anonymous-usage-tracking {
 		section {
@@ -63,6 +64,7 @@ div.anonymous-usage-tracking {
 	}
 }
 
+/* Common style. Applies for setup page notice and admin notice */
 .anonymous-usage-tracking {
 	.learn-more-link {
 		text-decoration: none;
