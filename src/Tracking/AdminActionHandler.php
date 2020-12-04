@@ -1,8 +1,6 @@
 <?php
 namespace Give\Tracking;
 
-use Give_Cache;
-
 /**
  * Class AdminActionHandler
  * @package Give\Tracking
@@ -34,10 +32,12 @@ class AdminActionHandler {
 			return;
 		}
 
-		// Hide notice.
-		Give_Cache::set( $this->usageTrackingOnBoarding->getNoticeOptionKey(), true, null, true );
+		$timestamp = '0';
+		if ( 'hide_opt_in_notice_shortly' === $_GET['give_action'] ) {
+			$timestamp = DAY_IN_SECONDS * 2 + time();
+		}
 
-		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' );
+		$this->usageTrackingOnBoarding->disableNotice( $timestamp );
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
@@ -54,6 +54,7 @@ class AdminActionHandler {
 		}
 
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
+		$this->usageTrackingOnBoarding->disableNotice( 'permanently' );
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();

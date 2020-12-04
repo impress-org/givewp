@@ -1,6 +1,9 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Onboarding\Setup\PageView;
+use Give_Admin_Settings;
+
 /**
  * Class OnBoarding
  * @package Give\Tracking
@@ -15,21 +18,14 @@ class UsageTrackingOnBoarding {
 	/**
 	 * Register notice.
 	 *
-	 * @sicne 2.10.0
+	 * @since 2.10.0
 	 */
 	public function addNotice() {
-		if ( ! current_user_can( 'manage_give_settings' ) ) {
+		if ( ! $this->canShowNotice() ) {
 			return;
 		}
 
-		$notice = $this->getNotice();
-
-		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
-		if ( $isAdminOptedIn || give()->notices->is_notice_dismissed( $notice ) ) {
-			return;
-		}
-
-		give()->notices->register_notice( $notice );
+		echo $this->getNotice( true );
 	}
 
 	/**
@@ -47,31 +43,78 @@ class UsageTrackingOnBoarding {
 	/**
 	 * Get notice.
 	 *
+	 * @param  bool  $wrapper
+	 *
+	 * @return string
 	 * @since 2.10.0
 	 *
-	 * @return string[]
 	 */
-	private function getNotice() {
-		$notice       = esc_html__( 'You can contribute to improve GiveWP. If you opt-in to "Anonymous Usage Tracking" then we will track non-sensitive data of your website. We will use this information to improve the plugin.', 'give' );
-		$readMoreLink = sprintf(
-			'<a href="#" target="_blank">%1$s</a>',
-			esc_html__( 'Read more GiveWP.com Anonymous Usage Tracking.', 'give' )
+	public function getNotice( $wrapper = false ) {
+		/* @var PageView $pageView */
+		$pageView = give()->make( PageView::class );
+
+		$notice = $pageView->render_template(
+			'row-item',
+			[
+				'icon'        => $pageView->image( 'hands-in.svg' ),
+				'class'       => ! $wrapper ? 'usage-tracking' : '',
+				'icon_alt'    => esc_html__( 'Anonymous usage tracking icon', 'give' ),
+				'title'       => esc_html__( 'Help us improve yor fundraising experience', 'give' ),
+				'description' => sprintf(
+					'%1$s<br><br><a href="https://givewp.com" class="learn-more-link" target="_blank">%2$s</a>',
+					esc_html__( 'You can contribute to improve GiveWP. the Give Team uses non-sensitive data to improve donation from conversion rates, increase average donation amounts, and streamline the fundraising experience. We never share this information with anyone and we never spam.', 'give' ),
+					esc_html__( 'Learn more about how GiveWP respects your privacy while improving the plugin >', 'give' )
+				),
+				'action'      => sprintf(
+					'<a class="button" href="%1$s">%2$s</a><div class="sub-links"><a href="%3$s" title="%7$s">%4$s</a><a href="%5$s">%6$s</a></div>',
+					add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
+					esc_html__( 'Opt-in', 'give' ),
+					add_query_arg( [ 'give_action' => 'hide_opt_in_notice_shortly' ] ),
+					esc_html__( 'Not Right Now', 'give' ),
+					add_query_arg( [ 'give_action' => 'hide_opt_in_notice_permanently' ] ),
+					esc_html__( 'Dismiss Forever', 'give' ),
+					esc_html__( 'Disable notice for 48 hours', 'give' )
+				),
+			]
 		);
 
-		$allowTrackingLink = sprintf(
-			'<br><br><a href="%3$s" class="button-secondary">%1$s</a>&nbsp;&nbsp;<a href="%4$s" class="button-secondary">%2$s</a>',
-			esc_html__( 'Yes', 'give' ),
-			esc_html__( 'No', 'give' ),
-			add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
-			add_query_arg( [ 'give_action' => 'opt_out_into_tracking' ] )
-		);
+		return $wrapper ? sprintf( '<div class="usage-tracking notice"><section><main>%1$s</main></section></div>', $notice ) : $notice;
+	}
 
-			return [
-				'id'               => self::USAGE_TRACKING_NOTICE_ID,
-				'type'             => 'info',
-				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
-				'dismissible_type' => 'all',
-				'dismiss_interval' => 'permanent',
-			];
+	/**
+	 * Return whether or not user can see notice.
+	 *
+	 * @since 2.10.0
+	 */
+	public function canShowNotice() {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			return false;
+		}
+
+		$section = isset( $_GET['section'] ) ? 'advanced-options' : '';
+		if ( Give_Admin_Settings::is_setting_page( 'advanced', $section ) ) {
+			return false;
+		}
+
+		$optionValue = get_option( 'give_hide_usage_tracking_notice', null );
+
+		if ( is_numeric( $optionValue ) && ( '0' === $optionValue || $optionValue > time() ) ) {
+			return false;
+		}
+
+		return ! give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+	}
+
+	/**
+	 * Disable notice.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param $timestamp
+	 *
+	 * @return bool
+	 */
+	public function disableNotice( $timestamp ) {
+		return update_option( 'give_hide_usage_tracking_notice', $timestamp );
 	}
 }

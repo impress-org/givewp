@@ -12,6 +12,8 @@
 	</div>
 	<?php endif; ?>
 
+	<?php echo do_action( 'give_setup_page_before_sectioins' ); ?>
+
 	<!-- Configuration -->
 	<?php
 		echo $this->render_template(
