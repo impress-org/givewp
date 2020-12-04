@@ -61,7 +61,7 @@ class GivePluginSettingsData implements TrackData {
 			'company_field',
 			'anonymous_donation',
 			'donor_comment',
-			AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME,
+			AdminSettings::USAGE_TRACKING_OPTION_NAME,
 		];
 
 		$data = [];

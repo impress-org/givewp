@@ -9,8 +9,8 @@ namespace Give\Tracking;
  *
  * @since 2.10.0
  */
-class AnonymousUsageTrackingOnBoarding {
-	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'anonymous-usage-tracking-nag';
+class UsageTrackingOnBoarding {
+	const USAGE_TRACKING_NOTICE_ID = 'usage-tracking-nag';
 
 	/**
 	 * Register notice.
@@ -24,7 +24,7 @@ class AnonymousUsageTrackingOnBoarding {
 
 		$notice = $this->getNotice();
 
-		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		$isAdminOptedIn = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
 		if ( $isAdminOptedIn || give()->notices->is_notice_dismissed( $notice ) ) {
 			return;
 		}
@@ -41,7 +41,7 @@ class AnonymousUsageTrackingOnBoarding {
 	 * @return string
 	 */
 	public function getNoticeOptionKey() {
-		return give()->notices->get_notice_key( self::ANONYMOUS_USAGE_TRACING_NOTICE_ID, 'permanent' );
+		return give()->notices->get_notice_key( self::USAGE_TRACKING_NOTICE_ID, 'permanent' );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class AnonymousUsageTrackingOnBoarding {
 		);
 
 			return [
-				'id'               => self::ANONYMOUS_USAGE_TRACING_NOTICE_ID,
+				'id'               => self::USAGE_TRACKING_NOTICE_ID,
 				'type'             => 'info',
 				'description'      => "{$notice} {$readMoreLink} {$allowTrackingLink}",
 				'dismissible_type' => 'all',
