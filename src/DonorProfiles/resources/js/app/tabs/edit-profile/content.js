@@ -36,7 +36,7 @@ const Content = () => {
 		},
 	];
 
-	const [ avatarUrl, setAvatarUrl ] = useState( storedProfile.avatarUrl );
+	const [ avatarFile, setAvatarFile ] = useState( null );
 
 	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
 	const [ lastName, setLastName ] = useState( storedProfile.lastName );
@@ -95,7 +95,11 @@ const Content = () => {
 				{ __( 'Profile Information', 'give' ) }
 			</Heading>
 			<Divider />
-			<AvatarControl value={ avatarUrl } onChange={ ( value ) => setAvatarUrl( value ) } />
+			<AvatarControl
+				storedValue={ storedProfile.avatarUrl }
+				value={ avatarFile }
+				onChange={ ( value ) => setAvatarFile( value ) }
+			/>
 			<FieldRow>
 				<SelectControl
 					label={ __( 'Prefix', 'give' ) }
