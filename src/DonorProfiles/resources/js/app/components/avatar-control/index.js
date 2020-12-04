@@ -25,11 +25,16 @@ const AvatarControl = ( { storedValue, value, onChange } ) => {
 			// If dropped items aren't files, reject them
 			if ( evt.dataTransfer.items[ 0 ].kind === 'file' ) {
 				const file = evt.dataTransfer.items[ 0 ].getAsFile();
-				onChange( file );
+				if ( file.type.includes( 'image' ) ) {
+					onChange( evt.dataTransfer.files[ 0 ] );
+				}
 			}
 		} else {
 			// Use DataTransfer interface to access the file(s)
-			onChange( evt.dataTransfer.files[ 0 ] );
+			const file = evt.dataTransfer.files[ 0 ];
+			if ( file.type.includes( 'image' ) ) {
+				onChange( evt.dataTransfer.files[ 0 ] );
+			}
 		}
 		setHighlight( false );
 	};
