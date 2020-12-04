@@ -6,7 +6,7 @@ import SelectControl from '../../components/select-control';
 import TextControl from '../../components/text-control';
 import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
-import { updateProfileWithAPI } from './utils';
+import { updateProfileWithAPI, updateAvatarWithAPI } from './utils';
 
 import EmailControls from './email-controls';
 import AddressControls from './address-controls';
@@ -87,6 +87,10 @@ const Content = () => {
 			},
 			id: id,
 		} );
+
+		if ( avatarFile ) {
+			updateAvatarWithAPI( { file: avatarFile, id } );
+		}
 	};
 
 	return (

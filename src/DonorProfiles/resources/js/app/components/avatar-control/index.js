@@ -31,7 +31,6 @@ const AvatarControl = ( { storedValue, value, onChange } ) => {
 			// Use DataTransfer interface to access the file(s)
 			onChange( evt.dataTransfer.files[ 0 ] );
 		}
-
 		setHighlight( false );
 	};
 

@@ -38,6 +38,7 @@ class Profile {
 			'firstName'   => '_give_donor_first_name',
 			'lastName'    => '_give_donor_last_name',
 			'titlePrefix' => '_give_donor_title_prefix',
+			'avatarId'    => '_give_donor_avatar_id',
 		];
 
 		foreach ( $attributeMetaMap as $attribute => $metaKey ) {
@@ -159,7 +160,7 @@ class Profile {
 			'lastName'          => $this->donor->get_last_name(),
 			'emails'            => $this->donor->emails,
 			'sinceLastDonation' => human_time_diff( strtotime( $this->donor->get_last_donation_date() ) ),
-			'avatarUrl'         => give_validate_gravatar( $this->donor->email ) ? get_avatar_url( $this->donor->email, 140 ) : null,
+			'avatarUrl'         => $this->getAvatarUrl(),
 			'sinceCreated'      => human_time_diff( strtotime( $this->donor->date_created ) ),
 			'company'           => $this->donor->get_company_name(),
 			'initials'          => $this->donor->get_donor_initals(),
@@ -171,5 +172,14 @@ class Profile {
 
 	public function getId() {
 		return $this->id;
+	}
+
+	public function getAvatarUrl() {
+		$avatarId = $this->donor->get_meta( '_give_donor_avatar_id' );
+		if ( $avatarId ) {
+			return wp_get_attachment_url( $avatarId );
+		} else {
+			return give_validate_gravatar( $this->donor->email ) ? get_avatar_url( $this->donor->email, 140 ) : null;
+		}
 	}
 }
