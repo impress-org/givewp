@@ -1,5 +1,5 @@
 /* Admin notice style */
-div.anonymous-usage-tracking {
+div.usage-tracking {
 	padding: 0;
 	background-color: transparent;
 	border-width: 0;
@@ -52,7 +52,7 @@ div.anonymous-usage-tracking {
 
 /* Give setting page styling */
 .give-settings-page {
-	div.anonymous-usage-tracking {
+	div.usage-tracking {
 		section {
 			border: 1px solid rgba(0, 0, 0, 0.09);
 			box-shadow: none;
@@ -65,7 +65,7 @@ div.anonymous-usage-tracking {
 }
 
 /* Common style. Applies for setup page notice and admin notice */
-.anonymous-usage-tracking {
+.usage-tracking {
 	.learn-more-link {
 		text-decoration: none;
 	}
