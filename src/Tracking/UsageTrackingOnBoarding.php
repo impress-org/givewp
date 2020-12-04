@@ -11,8 +11,8 @@ use Give\Onboarding\Setup\PageView;
  *
  * @since 2.10.0
  */
-class AnonymousUsageTrackingOnBoarding {
-	const ANONYMOUS_USAGE_TRACING_NOTICE_ID = 'anonymous-usage-tracking-nag';
+class UsageTrackingOnBoarding {
+	const USAGE_TRACKING_NOTICE_ID = 'usage-tracking-nag';
 
 	/**
 	 * Register notice.
@@ -36,7 +36,7 @@ class AnonymousUsageTrackingOnBoarding {
 	 * @return string
 	 */
 	public function getNoticeOptionKey() {
-		return give()->notices->get_notice_key( self::ANONYMOUS_USAGE_TRACING_NOTICE_ID, 'permanent' );
+		return give()->notices->get_notice_key( self::USAGE_TRACKING_NOTICE_ID, 'permanent' );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class AnonymousUsageTrackingOnBoarding {
 			return false;
 		}
 
-		return ! give_is_setting_enabled( give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		return ! give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
 	}
 
 	/**

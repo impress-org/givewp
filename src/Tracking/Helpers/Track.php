@@ -13,7 +13,7 @@ use Give\Tracking\AdminSettings;
  */
 class Track {
 	/**
-	 * Return whether or not admin opted in for anonymous tracking.
+	 * Return whether or not admin opted in for usage tracking.
 	 *
 	 * @since 2.10.0
 	 *
@@ -31,7 +31,7 @@ class Track {
 		}
 
 		// Check if we're allowing tracking.
-		$tracking = give_get_option( AdminSettings::ANONYMOUS_USAGE_TRACKING_OPTION_NAME );
+		$tracking = give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME );
 
 		return give_is_setting_enabled( $tracking );
 	}

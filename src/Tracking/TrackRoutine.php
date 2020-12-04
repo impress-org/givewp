@@ -16,7 +16,7 @@ use WP_Upgrader;
  * @package Give\Tracking
  */
 class TrackRoutine {
-	const LAST_REQUEST_OPTION_NAME = 'give_anonymous_usage_tracking_last_request';
+	const LAST_REQUEST_OPTION_NAME = 'give_usage_tracking_last_request';
 
 	/**
 	 * The limit for the option.
@@ -41,8 +41,8 @@ class TrackRoutine {
 			return;
 		}
 
-		if ( ! wp_next_scheduled( 'give_send_anonymous_usage_tracking_data', true ) ) {
-			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_anonymous_usage_tracking_data', true );
+		if ( ! wp_next_scheduled( 'give_send_usage_tracking_data', true ) ) {
+			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_usage_tracking_data', true );
 		}
 	}
 
