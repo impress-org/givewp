@@ -3,9 +3,9 @@ div.usage-tracking {
 	padding: 0;
 	background-color: transparent;
 	border-width: 0;
+	box-shadow: none;
 
 	section {
-		margin-bottom: 40px;
 		color: #424242;
 		background-color: #fff;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
@@ -54,7 +54,7 @@ div.usage-tracking {
 .give-settings-page {
 	div.usage-tracking {
 		section {
-			border: 1px solid rgba(0, 0, 0, 0.09);
+			border: 1px solid #ccd0d4;
 			box-shadow: none;
 		}
 
