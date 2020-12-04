@@ -121,12 +121,12 @@
 		);
 		?>
 
-	<!-- Anonymous usage tracking opt-in notice -->
+	<!-- usage tracking opt-in notice -->
 	<?php
-	$anonymousUsageTrackingNotice = new \Give\Tracking\AnonymousUsageTrackingOnBoarding();
+	$usageTrackingNotice = new \Give\Tracking\UsageTrackingOnBoarding();
 
-	if ( $anonymousUsageTrackingNotice->canShowNotice() ) {
-		echo $anonymousUsageTrackingNotice->getNotice();
+	if ( $usageTrackingNotice->canShowNotice() ) {
+		echo $usageTrackingNotice->getNotice();
 	}
 	?>
 

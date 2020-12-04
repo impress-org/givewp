@@ -59,7 +59,7 @@ class UsageTrackingOnBoarding {
 					'row-item',
 					[
 						'icon'        => $pageView->image( 'hands-in.svg' ),
-						'class'       => ! $wrapper ? 'anonymous-usage-tracking' : '',
+						'class'       => ! $wrapper ? 'usage-tracking' : '',
 						'icon_alt'    => esc_html__( 'Anonymous usage tracking icon', 'give' ),
 						'title'       => esc_html__( 'Help us improve yor fundraising experience', 'give' ),
 						'description' => sprintf(
@@ -81,7 +81,7 @@ class UsageTrackingOnBoarding {
 			]
 		);
 
-		return $wrapper ? sprintf( '<div class="anonymous-usage-tracking notice">%1$s</div>', $notice ) : $notice;
+		return $wrapper ? sprintf( '<div class="usage-tracking notice">%1$s</div>', $notice ) : $notice;
 	}
 
 	/**
@@ -94,7 +94,7 @@ class UsageTrackingOnBoarding {
 			return false;
 		}
 
-		$optionValue = get_option( 'give_anonymous_usage_tracking_notice', null );
+		$optionValue = get_option( 'give_usage_tracking_notice', null );
 
 		if ( is_numeric( $optionValue ) && ( '0' === $optionValue || $optionValue > time() ) ) {
 			return false;
@@ -127,6 +127,6 @@ class UsageTrackingOnBoarding {
 			$timestamp = 0;
 		}
 
-		return update_option( 'give_anonymous_usage_tracking_notice', $timestamp );
+		return update_option( 'give_usage_tracking_notice', $timestamp );
 	}
 }
