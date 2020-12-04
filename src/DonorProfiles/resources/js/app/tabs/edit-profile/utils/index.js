@@ -69,3 +69,29 @@ export const uploadAvatarWithAPI = ( file ) => {
 		.then( ( response ) => response.data )
 		.then( ( responseData ) => responseData.id );
 };
+
+export const fetchStatesWithAPI = ( country ) => {
+	return axios.get( getAPIRoot() + 'give-api/v2/donor-profile/location', {
+		params: {
+			countryCode: country,
+		},
+		headers: {
+			'X-WP-Nonce': getAPINonce(),
+		},
+	} )
+		.then( ( response ) => response.data )
+		.then( ( data ) => {
+			return data.states.map( ( state ) => {
+				return {
+					value: state.value,
+					label: decodeHTMLEntity( state.label ),
+				};
+			} );
+		} );
+};
+
+export const decodeHTMLEntity = ( entity ) => {
+	const div = document.createElement( 'div' );
+	div.innerHTML = entity;
+	return div.innerText;
+};

@@ -15,3 +15,21 @@ export const setProfile = ( profile ) => {
 		},
 	};
 };
+
+export const setStates = ( states ) => {
+	return {
+		type: 'SET_STATES',
+		payload: {
+			states,
+		},
+	};
+};
+
+export const setFetchingStates = ( fetchingStates ) => {
+	return {
+		type: 'SET_FETCHING_STATES',
+		payload: {
+			fetchingStates,
+		},
+	};
+};

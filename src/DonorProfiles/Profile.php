@@ -187,4 +187,13 @@ class Profile {
 	public function getAvatarId() {
 		return $this->donor->get_meta( '_give_donor_avatar_id' );
 	}
+
+	public function getCountry() {
+		$address = $this->donor->get_donor_address();
+		if ( $address ) {
+			return $address['country'];
+		} else {
+			return 'US';
+		}
+	}
 }

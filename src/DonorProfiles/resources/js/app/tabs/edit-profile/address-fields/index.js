@@ -1,43 +1,34 @@
 import { Fragment, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setStates } from '../../../store/actions';
 const { __ } = wp.i18n;
 
 import SelectControl from '../../../components/select-control';
 import TextControl from '../../../components/text-control';
 import FieldRow from '../../../components/field-row';
 
+import { fetchStatesWithAPI } from '../utils';
+
 const AddressFields = ( { address, onChange } ) => {
+	const dispatch = useDispatch();
+	const countryOptions = useSelector( state => state.countries );
+	const stateOptions = useSelector( state => state.states );
+
 	const [ country, setCountry ] = useState( address.country );
-	const countryOptions = [
-		{
-			value: 'US',
-			label: 'United States',
-		},
-		{
-			value: 'UK',
-			label: 'United Kingdom',
-		},		{
-			value: 'CA',
-			label: 'Canada',
-		},
-	];
 	const [ line1, setLine1 ] = useState( address.line1 );
 	const [ line2, setLine2 ] = useState( address.line2 );
 	const [ city, setCity ] = useState( address.city );
 	const [ state, setState ] = useState( address.state );
-	const stateOptions = [
-		{
-			value: 'NY',
-			label: 'New York',
-		},
-		{
-			value: 'MI',
-			label: 'Michigan',
-		},		{
-			value: 'TX',
-			label: 'Texas',
-		},
-	];
 	const [ zip, setZip ] = useState( address.zip );
+
+	const updateStates = async( countryCode ) => {
+		const newStates = await fetchStatesWithAPI( countryCode );
+		dispatch( setStates( newStates ) );
+	};
+
+	useEffect( () => {
+		updateStates( country );
+	}, [ country ] );
 
 	useEffect( () => {
 		const newAddress = {
