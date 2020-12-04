@@ -68,13 +68,14 @@ class UsageTrackingOnBoarding {
 							esc_html__( 'Learn more about how GiveWP respects your privacy while improving the plugin >', 'give' )
 						),
 						'action'      => sprintf(
-							'<a class="button" href="%1$s">%2$s</a><div class="sub-links"><a href="%3$s">%4$s</a><a href="%5$s">%6$s</a></div>',
+							'<a class="button" href="%1$s">%2$s</a><div class="sub-links"><a href="%3$s" title="%7$s">%4$s</a><a href="%5$s">%6$s</a></div>',
 							add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
 							esc_html__( 'Opt-in', 'give' ),
 							add_query_arg( [ 'give_action' => 'hide_opt_in_notice_shortly' ] ),
 							esc_html__( 'Not Right Now', 'give' ),
 							add_query_arg( [ 'give_action' => 'hide_opt_in_notice_permanently' ] ),
-							esc_html__( 'Dismiss Forever', 'give' )
+							esc_html__( 'Dismiss Forever', 'give' ),
+							esc_html__( 'Disable notice for 48 hours', 'give' )
 						),
 					]
 				),
