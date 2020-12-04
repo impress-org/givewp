@@ -3,10 +3,35 @@ import { getAPIRoot, getAPINonce } from '../../../utils';
 import { store } from '../../../store';
 import { setProfile } from '../../../store/actions';
 
-export const updateProfileWithAPI = ( { data, id } ) => {
+export const updateProfileWithAPI = async( {
+	titlePrefix,
+	firstName,
+	lastName,
+	primaryEmail,
+	additionalEmails,
+	primaryAddress,
+	additionalAddresses,
+	avatarFile,
+	id,
+} ) => {
+	const { profile } = store.getState();
+	let { avatarId } = profile;
+	if ( avatarFile ) {
+		avatarId = await uploadAvatarWithAPI( avatarFile );
+	}
+
 	const { dispatch } = store;
 	axios.post( getAPIRoot() + 'give-api/v2/donor-profile/profile', {
-		data: JSON.stringify( data ),
+		data: JSON.stringify( {
+			titlePrefix,
+			firstName,
+			lastName,
+			primaryEmail,
+			additionalEmails,
+			primaryAddress,
+			additionalAddresses,
+			avatarId,
+		} ),
 		id,
 	}, {
 		headers: {
@@ -19,22 +44,15 @@ export const updateProfileWithAPI = ( { data, id } ) => {
 		} );
 };
 
-export const updateAvatarWithAPI = ( { file, id } ) => {
+export const uploadAvatarWithAPI = ( file ) => {
 	const formData = new window.FormData();
 	formData.append( 'file', file );
 
-	axios.post( getAPIRoot() + 'wp/v2/media', formData, {
+	return axios.post( getAPIRoot() + 'wp/v2/media', formData, {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
 		},
 	} )
 		.then( ( response ) => response.data )
-		.then( ( responseData ) => {
-			updateProfileWithAPI( {
-				data: {
-					avatarId: responseData.id,
-				},
-				id,
-			} );
-		} );
+		.then( ( responseData ) => responseData.id );
 };

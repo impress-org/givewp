@@ -161,6 +161,7 @@ class Profile {
 			'emails'            => $this->donor->emails,
 			'sinceLastDonation' => human_time_diff( strtotime( $this->donor->get_last_donation_date() ) ),
 			'avatarUrl'         => $this->getAvatarUrl(),
+			'avatarId'          => $this->getAvatarId(),
 			'sinceCreated'      => human_time_diff( strtotime( $this->donor->date_created ) ),
 			'company'           => $this->donor->get_company_name(),
 			'initials'          => $this->donor->get_donor_initals(),
@@ -175,11 +176,15 @@ class Profile {
 	}
 
 	public function getAvatarUrl() {
-		$avatarId = $this->donor->get_meta( '_give_donor_avatar_id' );
+		$avatarId = $this->getAvatarId();
 		if ( $avatarId ) {
 			return wp_get_attachment_url( $avatarId );
 		} else {
 			return give_validate_gravatar( $this->donor->email ) ? get_avatar_url( $this->donor->email, 140 ) : null;
 		}
+	}
+
+	public function getAvatarId() {
+		return $this->donor->get_meta( '_give_donor_avatar_id' );
 	}
 }
