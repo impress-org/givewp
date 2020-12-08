@@ -57,6 +57,11 @@ form[data-currency_position='before'] .give-donation-amount .give-cs-select-curr
 	}
 }
 
+/* @link https://github.com/impress-org/givewp/issues/5452 */
+form .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown option {
+	color: initial;
+}
+
 .give-currency-switcher-msg {
 	margin: 5px 30px -15px 30px !important;
 	font-weight: 500;

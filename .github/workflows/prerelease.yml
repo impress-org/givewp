@@ -32,9 +32,12 @@ jobs:
           cd "${GITHUB_WORKSPACE}/release" || exit
           zip -r "${GITHUB_WORKSPACE}/give.zip" .
           
-      - name: Upload the artifact to release
-        uses: skx/github-action-publish-binaries@master
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: '*.zip'
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{github.workspace}}/give.zip
+          asset_name: ${{ github.event.repository.name }}.zip
+          asset_content_type: application/zip

@@ -7,19 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.5 - 2020-12-03
+
+### New
+
+-    Onboarding locales now include Jamaica (#5474)
+
+### Fixed
+
+-   Currency Switcher options are visible in the dropdown on Windows machines (#5453)
+-   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
+-   Restored compatibility with < WP 5.1.1 (#5473)
+
+## 2.9.4 - 2020-11-20
+
+### Fixed
+
+-   Donation id mentions in exception and log message when insert query for revenue table fails  (#5472)
+-   Allow revenue with a 0 amount to be inserted  (#5472)
+-   Prevent fatal error when delete donation on WP < 5.5.0 (#5470)
+-   Stripe single-input credit card field works again (#5469)
+-   Updating a Stripe subscription from the update payment info screen works again (#5467)
+
+## 2.9.3 - 2020-11-17
+
+### Fixed
+
+-   Corrected a warning being thrown by the MigrationRunner (#5457)
+-   Stripe CC donations now work when not the default gateway (#5459)
+-   Stripe modal checkout donations now work when not the default gateway (#5459)
+
+## 2.9.2 - 2020-11-09
+
+### New
+
+-   Added support method of running migrations and clearing updates (#5447)
+
 ### Fixed
 
 -   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
+-   Properly handle currency unit size for donations (#5440)
+-   Add missing payment information update support in Stripe javascript (#5439)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
 -   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
--   MultForm Goal Shortcode now supports comma separated lists (#5432)
+-   Multi-Form Goal Shortcode now supports comma separated lists (#5432)
+-   Remove foreign keys from revenue table for MyISAM support (#5447)
 
 ### Changed
 
--   Use easy digital download rest api endpoint to confirm addon is premium or not (#5426)
+-   Use easy digital download rest api endpoint to confirm if the add-on is premium or not (#5426)
 
 ### 2.9.1 - 2020-10-28
 
@@ -76,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
+-   Disconnecting a Stripe account no longer revokes GiveWP as an Authorized Application (#5378)
 
 ## 2.9.0-beta.1 - 2020-10-13
 

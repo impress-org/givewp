@@ -27,6 +27,36 @@ class MigrationsRegister {
 	}
 
 	/**
+	 * Checks to see if a migration is registered with the given ID
+	 *
+	 * @since 2.9.2
+	 *
+	 * @param string $id
+	 *
+	 * @return bool
+	 */
+	public function hasMigration( $id ) {
+		return isset( $this->migrations[ $id ] );
+	}
+
+	/**
+	 * Returns a migration with the given ID
+	 *
+	 * @since 2.9.2
+	 *
+	 * @param string $id
+	 *
+	 * @return string
+	 */
+	public function getMigration( $id ) {
+		if ( ! isset( $this->migrations[ $id ] ) ) {
+			throw new InvalidArgumentException( "No migration exists with the ID {$id}" );
+		}
+
+		return $this->migrations[ $id ];
+	}
+
+	/**
 	 * Returns all of the registered migration ids
 	 *
 	 * @since 2.9.0

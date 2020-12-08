@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\ValueObjects\Money;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -91,7 +93,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			$this->payment_intent = new Give_Stripe_Payment_Intent();
 			$this->payment_method = new Give_Stripe_Payment_Method();
 
-			add_action( "give_gateway_{$this->id}", array( $this, 'process_payment' ) );
+			add_action( "give_gateway_{$this->id}", [ $this, 'process_payment' ] );
 
 		}
 
@@ -211,7 +213,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 *
 		 * @return \Stripe\Token
 		 */
-		public function get_token_details( $id, $args = array() ) {
+		public function get_token_details( $id, $args = [] ) {
 
 			// Set Application Info.
 			give_stripe_set_app_info();
@@ -351,9 +353,9 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 					// Attach Source to existing Customer.
 					$card = $stripe_customer->sources->create(
-						array(
+						[
 							'source' => $id,
-						)
+						]
 					);
 
 				} catch ( \Stripe\Error\Base $e ) {
@@ -481,13 +483,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 		 * @return mixed
 		 */
 		public function format_amount( $amount ) {
-
-			// Get the donation amount.
-			if ( give_stripe_is_zero_decimal_currency() ) {
-				return $amount;
-			} else {
-				return $amount * 100;
-			}
+			return Money::of( $amount, give_get_currency() )->getMinorAmount();
 		}
 
 		/**
@@ -622,24 +618,24 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			$donation_amount = give_donation_amount( $donation_id );
 
 			// Prepare basic source args.
-			$source_args = array(
+			$source_args = [
 				'amount'               => $this->format_amount( $donation_amount ),
 				'currency'             => give_get_currency( $form_id ),
 				'type'                 => 'three_d_secure',
-				'three_d_secure'       => array(
+				'three_d_secure'       => [
 					'card' => $source_id,
-				),
+				],
 				'statement_descriptor' => give_stripe_get_statement_descriptor(),
-				'redirect'             => array(
+				'redirect'             => [
 					'return_url' => add_query_arg(
-						array(
+						[
 							'give-listener' => 'stripe_three_d_secure',
 							'donation_id'   => $donation_id,
-						),
+						],
 						give_get_success_page_uri()
 					),
-				),
-			);
+				],
+			];
 
 			$source = $this->prepare_source( $source_args );
 
@@ -701,7 +697,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 			// Process the charge.
 			$amount = $this->format_amount( $donation_data['price'] );
 
-			$charge_args = array(
+			$charge_args = [
 				'amount'               => $amount,
 				'currency'             => give_get_currency( $form_id ),
 				'customer'             => $stripe_customer_id,
@@ -709,7 +705,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				'statement_descriptor' => give_stripe_get_statement_descriptor( $donation_data ),
 				'metadata'             => $this->prepare_metadata( $donation_id ),
 				'source'               => $source_id,
-			);
+			];
 
 			// Create charge with general gateway fn.
 			$charge = $this->create_charge( $donation_id, $charge_args );
