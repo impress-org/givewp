@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
