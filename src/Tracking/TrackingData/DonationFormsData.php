@@ -52,6 +52,8 @@ class DonationFormsData implements TrackData {
 			$data[ $formId ]['formTemplate'] = ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate;
 			$data[ $formId ]['donorCount']   = $this->getDonorCount( $formId );
 			$data[ $formId ]['revenue']      = $this->getRevenueTillNow( $formId );
+
+			$this->addAddonsInformation( $data, $formId );
 		}
 
 		return $data;
@@ -150,5 +152,19 @@ class DonationFormsData implements TrackData {
 		);
 
 		return $donorQuery->get_donors();
+	}
+
+	/**
+	 * Add addon information whether or not they active for donation form.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param array $array
+	 * @param int $formId
+	 */
+	private function addAddonsInformation( &$array, $formId ) {
+		$array['isRecurringDonationsAddonActive'] = (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId );
+		$array['isFeeRecoveryAddonActive']        = (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId );
+		$array['isFormFieldManagerActive']        = (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId );
 	}
 }
