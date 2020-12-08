@@ -211,7 +211,7 @@ class Give_Cache_Setting {
 	 * @since 2.4.0
 	 */
 	public function setup_currencies_list() {
-		$currencies = require_once GIVE_PLUGIN_DIR . 'includes/currencies-list.php';
+		$currencies = require GIVE_PLUGIN_DIR . 'includes/currencies-list.php';
 
 		/**
 		 * Filter the supported currency list
