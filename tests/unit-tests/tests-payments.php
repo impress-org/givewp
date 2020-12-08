@@ -456,10 +456,6 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$ret = give_update_payment_meta( $this->_payment_id, '_give_payment_purchase_key', $new_value );
 
-		var_dump( $old_value );
-		var_dump( $new_value );
-		var_dump( give_update_payment_meta( $this->_payment_id, '_give_payment_purchase_key', $new_value ) );
-
 		$this->assertTrue( $ret );
 
 		$this->assertEquals( $new_value, give_get_payment_meta( $this->_payment_id, '_give_payment_purchase_key' ) );
