@@ -46,7 +46,7 @@ class Give_Unit_Tests_Bootstrap {
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load_give' ) );
 
 		// Uninstall Give.
-		// tests_add_filter( 'plugins_loaded', array( $this, 'uninstall_give' ), 0 );
+		tests_add_filter( 'plugins_loaded', array( $this, 'uninstall_give' ), 0 );
 
 		// Install Give
 		tests_add_filter( 'setup_theme', array( $this, 'install_give' ) );
