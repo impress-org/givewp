@@ -455,6 +455,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertNotEquals( $old_value, $new_value );
 
 		$ret = give_update_payment_meta( $this->_payment_id, '_give_payment_purchase_key', $new_value );
+		global $wpdb;
+		var_dump( $wpdb->last_error );
 
 		$this->assertTrue( $ret );
 
