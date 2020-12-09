@@ -5,10 +5,10 @@ jQuery( function( $ ) {
 
 	/**
 	 * Donation Form fields state
-	 * @type {{fields: {}}}
+	 * @type {{forms: {}}}
 	 */
 	const fieldsState = {
-		fields: {},
+		forms: {},
 	};
 
 	// Toggle validation classes
@@ -157,10 +157,18 @@ jQuery( function( $ ) {
 	 */
 	function setFieldState( e ) {
 		const element = e.target;
-		fieldsState.fields = {
-			...fieldsState.fields,
-			[ element.name ]: element.value,
-		};
+		const form = element.parentElement.closest( 'form.give-form' );
+
+		if ( form ) {
+			const formId = form.getAttribute( 'id' );
+			fieldsState.forms = {
+				...fieldsState.forms,
+				[ formId ]: {
+					...fieldsState.forms[ formId ],
+					[ element.name ]: element.value,
+				},
+			};
+		}
 	}
 
 	/**
@@ -178,14 +186,12 @@ jQuery( function( $ ) {
 	doc.on(
 		'give_gateway_loaded',
 		function() {
-			if ( ! Object.keys( fieldsState.fields ).length ) {
-				return;
-			}
-
-			for ( const [ name, value ] of Object.entries( fieldsState.fields ) ) {
-				const element = document.querySelector( `[name="${ name }"]` );
-				if ( element ) {
-					element.value = value;
+			for ( const [ formId, formData ] of Object.entries( fieldsState.forms ) ) {
+				for ( const [ name, value ] of Object.entries( formData ) ) {
+					const element = document.querySelector( `form#${ formId } [name="${ name }"]` );
+					if ( element ) {
+						element.value = value;
+					}
 				}
 			}
 		}
