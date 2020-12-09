@@ -250,7 +250,7 @@ class Give_Payments_Query extends Give_Stats {
 				( isset( $this->args['nopaging'] ) && true !== (bool) $this->args['nopaging'] )
 				|| ( isset( $this->args['posts_per_page'] ) && 0 < $this->args['posts_per_page'] )
 			) {
-				self::update_meta_cache( wp_list_pluck( $query->posts, 'ID' ) );
+				self::update_meta_cache( $query->posts );
 			}
 
 			if ( ! in_array( $this->args['output'], $custom_output ) ) {
