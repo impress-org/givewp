@@ -3,6 +3,14 @@ jQuery( function( $ ) {
 	const $forms = jQuery( 'form.give-form' ),
 		doc = $( document );
 
+	/**
+	 * Donation Form fields state
+	 * @type {{fields: {}}}
+	 */
+	const fieldsState = {
+		fields: {},
+	};
+
 	// Toggle validation classes
 	$.fn.toggleError = function( errored ) {
 		this.toggleClass( 'error', errored );
@@ -141,6 +149,47 @@ jQuery( function( $ ) {
 
 		return false;
 	}
+
+	/**
+	 * Update fields state
+	 *
+	 * @param {Object} e Element
+	 */
+	function setFieldState( e ) {
+		const element = e.target;
+		fieldsState.fields = {
+			...fieldsState.fields,
+			[ element.name ]: element.value,
+		};
+	}
+
+	/**
+	 * Attach events to First Name, Last Name and the Email fields
+	 */
+	doc.on(
+		'keyup',
+		'#give-first, #give-last, #give-email',
+		setFieldState
+	);
+
+	/**
+	 * Restore saved state values when gateway changes.
+	 */
+	doc.on(
+		'give_gateway_loaded',
+		function() {
+			if ( ! Object.keys( fieldsState.fields ).length ) {
+				return;
+			}
+
+			for ( const [ name, value ] of Object.entries( fieldsState.fields ) ) {
+				const element = document.querySelector( `[name="${ name }"]` );
+				if ( element ) {
+					element.value = value;
+				}
+			}
+		}
+	);
 
 	// Sync state field with country.
 	doc.on(
