@@ -55,7 +55,7 @@ $atts          = $args[2]; // Shortcode attributes.
 						<?php
 						// Get donor name based on donation parameter.
 						$donor_name = ! empty( $donation['_give_anonymous_donation'] )
-							? __( 'Anonymous', 'give' )
+							? esc_html__( 'Anonymous', 'give' )
 							: trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
 						?>
 						<?php echo esc_html( $donor_name ); ?>
