@@ -68,7 +68,7 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 			<Select
 				placeholder={ placeholder }
 				isLoading={ isLoading }
-				inputId={ label && toKebabCase( label ) }
+				inputId={ label && toKebabCase( `${ label }-${ Math.floor( Math.random() * Math.floor( 1000 ) ) }` ) }
 				value={ selectedOptionValue }
 				onChange={ ( selectedOption ) => onChange( selectedOption ? selectedOption.value : '' ) }
 				options={ options }

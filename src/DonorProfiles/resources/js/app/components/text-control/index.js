@@ -12,7 +12,7 @@ const TextControl = ( { label, value, onChange, icon, type } ) => {
 					<FontAwesomeIcon icon={ icon } />
 				) }
 				<input
-					id={ label && toKebabCase( label ) }
+					id={ label && toKebabCase( `${ label }-${ Math.floor( Math.random() * Math.floor( 1000 ) ) }` ) }
 					type={ type }
 					value={ value }
 					onChange={ ( evt ) => onChange( evt.target.value ) }

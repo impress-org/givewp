@@ -29,12 +29,12 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 	};
 
 	const makePrimaryAddress = async( newAddress, index ) => {
-		const oldPrimaryAddress = primaryAddress;
+		const oldPrimaryAddress = Object.assign( {}, primaryAddress );
 		setPrimaryAddress( newAddress );
 		setAdditionalAddress( oldPrimaryAddress, index );
 	};
 
-	const additionalAddressControls = additionalAddresses.map( ( address, index ) => {
+	const additionalAddressControls = additionalAddresses ? additionalAddresses.map( ( address, index ) => {
 		return (
 			<Fragment key={ index }>
 				<FieldRow>
@@ -58,7 +58,7 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 				/>
 			</Fragment>
 		);
-	} );
+	} ) : null;
 
 	return primaryAddress ? (
 		<Fragment>
