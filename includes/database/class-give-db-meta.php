@@ -446,6 +446,8 @@ class Give_DB_Meta extends Give_DB {
 	 * Add support for hidden functions.
 	 *
 	 * @since  2.0
+	 * @since 2.9.6 Added a Short circuit check when updating meta.
+	 *
 	 * @access public
 	 *
 	 * @param $name
@@ -493,7 +495,7 @@ class Give_DB_Meta extends Give_DB {
 				$meta_value               = $arguments[3];
 				$this->is_filter_callback = true;
 
-				// Short-ciruit if the meta value has already been updated.
+				// Short circuit if the meta value has already been updated.
 				if ( null !== $this->check ) {
 					return $this->check;
 				}
