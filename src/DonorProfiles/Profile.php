@@ -14,6 +14,15 @@ class Profile {
 		$this->donor = new DonorModel( $donorId );
 	}
 
+	/**
+	 * Handles updating relevant profile fields in donor database and meta database
+	 *
+	 * @param object $data Object representing profile data to update
+	 *
+	 * @return array
+	 *
+	 * @since 2.11.0
+	 */
 	public function update( $data ) {
 
 		// Handle updates to the donor meta table
@@ -27,6 +36,15 @@ class Profile {
 
 	}
 
+	/**
+	 * Updates relevant profile fields found in meta database
+	 *
+	 * @param object $data Object representing profile data to update
+	 *
+	 * @return void
+	 *
+	 * @since 2.11.0
+	 */
 	protected function updateDonorMetaDB( $data ) {
 
 		/**
@@ -58,6 +76,16 @@ class Profile {
 
 	}
 
+	/**
+	 * Updates donor address fields found in meta database
+	 *
+	 * @param array|object $primaryAddress Array or object representing primary donor address
+	 * @param array $additionalAddresses Array containing additional donor addresses
+	 *
+	 * @return void
+	 *
+	 * @since 2.11.0
+	 */
 	protected function updateDonorAddressMeta( $primaryAddress, $additionalAddresses ) {
 
 		/**
@@ -89,6 +117,13 @@ class Profile {
 		}
 	}
 
+	/**
+	 * Retrieves additional addresses stored in meta database
+	 *
+	 * @return array
+	 *
+	 * @since 2.11.0
+	 */
 	protected function getStoredAdditionalAddresses() {
 		$storedAddresses           = $this->donor->address;
 		$storedAdditionalAddresses = [];
@@ -103,6 +138,15 @@ class Profile {
 		return $storedAdditionalAddresses;
 	}
 
+	/**
+	 * Updates additional emails stored in meta database
+	 *
+	 * @param array $additionalEmails Array of additional emails to store
+	 *
+	 * @return void
+	 *
+	 * @since 2.11.0
+	 */
 	protected function updateDonorAdditionalEmailsMeta( $additionalEmails ) {
 
 		/**
@@ -128,6 +172,14 @@ class Profile {
 		}
 	}
 
+	/**
+	 * Updates relevant profile fields found in donor database
+	 *
+	 * @param object $data Object representing profile data to update
+	 *
+	 * @return void
+	 * @since 2.11.0
+	 */
 	protected function updateDonorDB( $data ) {
 
 		$updateArgs = [];
@@ -148,7 +200,7 @@ class Profile {
 	 * Return array of donor profile data
 	 *
 	 * @return void
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function getProfileData() {
 
@@ -171,10 +223,24 @@ class Profile {
 		];
 	}
 
+	/**
+	 * Returns profile model's donor id
+	 *
+	 * @return int
+	 *
+	 * @since 2.11.0
+	 */
 	public function getId() {
 		return $this->id;
 	}
 
+	/**
+	 * Returns profile's avatar URL
+	 *   *
+	 * @return string
+	 *
+	 * @since 2.11.0
+	 */
 	public function getAvatarUrl() {
 		$avatarId = $this->getAvatarId();
 		if ( $avatarId ) {
@@ -184,16 +250,30 @@ class Profile {
 		}
 	}
 
+	/**
+	 * Returns profile's avatar media ID
+	 *   *
+	 * @return int
+	 *
+	 * @since 2.11.0
+	 */
 	public function getAvatarId() {
 		return $this->donor->get_meta( '_give_donor_avatar_id' );
 	}
 
+	/**
+	 * Returns profile's stored country, or global default if none is set
+	 *   *
+	 * @return string
+	 *
+	 * @since 2.11.0
+	 */
 	public function getCountry() {
 		$address = $this->donor->get_donor_address();
 		if ( $address ) {
 			return $address['country'];
 		} else {
-			return 'US';
+			return give_get_country();
 		}
 	}
 }

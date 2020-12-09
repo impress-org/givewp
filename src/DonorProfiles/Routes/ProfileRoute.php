@@ -7,7 +7,7 @@ use Give\API\RestRoute;
 use Give\DonorProfiles\Profile as Profile;
 
 /**
- * @since 2.10.0
+ * @since 2.11.0
  */
 class ProfileRoute implements RestRoute {
 
@@ -44,6 +44,17 @@ class ProfileRoute implements RestRoute {
 		);
 	}
 
+	/**
+	 * Sanitize profile data object
+	 *
+	 * @param string $value JSON encoded string representing profile data
+	 * @param \WP_REST_Request $request
+	 * @param string $param
+	 *
+	 * @return object
+	 *
+	 * @since 2.11.0
+	 */
 	public function sanitizeData( $value, $request, $param ) {
 
 		$sanitizeHelper = '\Give\DonorProfiles\Helpers\SanitizeProfileData';
@@ -93,20 +104,27 @@ class ProfileRoute implements RestRoute {
 	}
 
 	/**
+	 * Handles profile update, and returns updated profile array
+	 *
 	 * @param WP_REST_Request $request
 	 *
 	 * @return array
 	 *
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 		return $this->updateProfile( $request->get_param( 'data' ), $request->get_param( 'id' ) );
 	}
 
 	/**
+	 * Updates profile model, then gets newly stored profile data to return
+	 *
+	 * @param object $data Object representing profile data to update
+	 * @param int $id Profile id to update
+	 *
 	 * @return array
 	 *
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 */
 	protected function updateProfile( $data, $id ) {
 		$profile = new Profile( $id );
