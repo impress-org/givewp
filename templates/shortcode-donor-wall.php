@@ -34,8 +34,7 @@ $atts          = $args[2]; // Shortcode attributes.
 				);
 
 				// Get donor avatar image based on donation parameter.
-				// $donor_avatar = ! empty( $donation['_give_anonymous_donation'] ) ? $anonymous_donor_img : $donor_name_initial;
-				$donor_avatar = $anonymous_donor_img;
+				$donor_avatar = ! empty( $donation['_give_anonymous_donation'] ) ? $anonymous_donor_img : $donor_name_initial;
 
 				// Validate donor gravatar.
 				$validate_gravatar = ! empty( $donation['_give_anonymous_donation'] ) ? 0 : give_validate_gravatar( $donation['_give_payment_donor_email'] );
