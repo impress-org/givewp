@@ -70,8 +70,8 @@ $donor-space-triple: $donor-space * 3;
 			position: absolute;
 		}
 
-		&[data-anonymous-donation='1'] img,
-		&[data-anonymous-donation='0'] .give-donor__name_initial {
+		&[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
+		&[data-anonymous-donation='1'] .give-donor__name_initial {
 			visibility: hidden;
 		}
 	}
