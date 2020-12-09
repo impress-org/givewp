@@ -29,19 +29,15 @@ class ProfileRoute implements RestRoute {
 						return is_user_logged_in();
 					},
 				],
-				'schema' => [ $this, 'getSchema' ],
-				'args'   => [
+				'args' => [
 					'data' => [
 						'type'              => 'string',
-						'required'          => false,
-						// 'validate_callback' => [ $this, 'validateValue' ],
+						'required'          => true,
 						'sanitize_callback' => [ $this, 'sanitizeData' ],
 					],
 					'id'   => [
 						'type'     => 'int',
 						'required' => true,
-						// 'validate_callback' => [ $this, 'validateValue' ],
-						// 'sanitize_callback' => 'sanitize_text_field',
 					],
 				],
 			]
@@ -50,6 +46,7 @@ class ProfileRoute implements RestRoute {
 
 	public function sanitizeData( $value, $request, $param ) {
 
+		$sanitizeHelper = '\Give\DonorProfiles\Helpers\SanitizeProfileData';
 		$sanitizedValue = json_decode( $value );
 
 		$attributesMap = [
@@ -62,11 +59,11 @@ class ProfileRoute implements RestRoute {
 				'default'          => '',
 			],
 			'additionalEmails'    => [
-				'sanitizeCallback' => [ $this, 'sanitizeAdditionalEmails' ],
+				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeAdditionalEmails' ],
 				'default'          => [],
 			],
 			'additionalAddresses' => [
-				'sanitizeCallback' => [ $this, 'sanitizeAdditionalAddresses' ],
+				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeAdditionalAddresses' ],
 				'default'          => [],
 			],
 			'primaryEmail'        => [
@@ -74,7 +71,7 @@ class ProfileRoute implements RestRoute {
 				'default'          => '',
 			],
 			'primaryAddress'      => [
-				'sanitizeCallback' => [ $this, 'sanitizeAddress' ],
+				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeAddress' ],
 				'default'          => [],
 			],
 			'titlePrefix'         => [
@@ -82,7 +79,7 @@ class ProfileRoute implements RestRoute {
 				'default'          => '',
 			],
 			'avatarId'            => [
-				'sanitizeCallback' => [ $this, 'sanitizeAvatarId' ],
+				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeInt' ],
 				'default'          => 0,
 			],
 		];
@@ -92,41 +89,7 @@ class ProfileRoute implements RestRoute {
 		}
 
 		return $sanitizedValue;
-	}
 
-	protected function sanitizeAvatarId( $avatarId ) {
-		return intval( $avatarId );
-	}
-
-	protected function sanitizeAdditionalAddresses( $addresses ) {
-		$sanitizedAddresses = [];
-		foreach ( $addresses as $key => $value ) {
-			$sanitizeAddresses[ $key ] = $this->sanitizeAddress( $value );
-		}
-		return $sanitizedAddresses;
-	}
-
-	protected function sanitizeAddress( $address ) {
-		foreach ( $address as $key => $value ) {
-			$address->{$key} = sanitize_text_field( $value );
-		}
-		return $address;
-	}
-
-	protected function sanitizeAdditionalEmails( $emails ) {
-		$sanitizedEmails = [];
-		foreach ( $emails as $key => $value ) {
-			$sanitizeEmails[ $key ] = sanitize_email( $value );
-		}
-		return $sanitizedEmails;
-	}
-
-	protected function sanitizeValue( $value, $config ) {
-		if ( ! empty( $value ) && is_callable( $config['sanitizeCallback'] ) ) {
-			return $config['sanitizeCallback']( $value );
-		} else {
-			return $config['default'];
-		}
 	}
 
 	/**
@@ -145,42 +108,19 @@ class ProfileRoute implements RestRoute {
 	 *
 	 * @since 2.10.0
 	 */
-	public function getSchema() {
-		return [
-			// This tells the spec of JSON Schema we are using which is draft 4.
-			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			// The title property marks the identity of the resource.
-			'title'      => 'donor-profile',
-			'type'       => 'object',
-			// In JSON Schema you can specify object properties in the properties attribute.
-			'properties' => [
-				// ...
-			],
-		];
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since 2.10.0
-	 */
-	protected function getProfile() {
-
-		$donorId = get_current_user_id();
-		$profile = new Profile( $donorId );
-		return $profile->getProfileData();
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since 2.10.0
-	 */
 	protected function updateProfile( $data, $id ) {
 		$profile = new Profile( $id );
 		$profile->update( $data );
 		return [
 			'profile' => $profile->getProfileData(),
 		];
+	}
+
+	protected function sanitizeValue( $value, $config ) {
+		if ( ! empty( $value ) && is_callable( $config['sanitizeCallback'] ) ) {
+			return $config['sanitizeCallback']( $value );
+		} else {
+			return $config['default'];
+		}
 	}
 }
