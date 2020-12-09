@@ -214,6 +214,8 @@ class Give_Payments_Query extends Give_Stats {
 	 * compatibility).
 	 *
 	 * @since  1.0
+	 * @since 2.9.6 Normalize post IDs from either an array of IDs or Post objects.
+	 *
 	 * @access public
 	 *
 	 * @return array
