@@ -53,7 +53,7 @@ class Profile {
 		 * - update addresses
 		 */
 
-		$this->updateDonorAdditionalEmailsMeta( isset( $data->addiitonalEmails ) ? $data->addiitonalEmails : [] );
+		$this->updateDonorAdditionalEmailsMeta( isset( $data->additionalEmails ) ? $data->additionalEmails : [] );
 		$this->updateDonorAddressMeta( isset( $data->primaryAddress ) ? $data->primaryAddress : null, isset( $data->additionalAddresses ) ? $data->additionalAddresses : [] );
 
 	}
