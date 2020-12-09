@@ -26,7 +26,7 @@ class ProfileRoute implements RestRoute {
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => function() {
-						return true; //is_user_logged_in();
+						return is_user_logged_in();
 					},
 				],
 				'schema' => [ $this, 'getSchema' ],
@@ -35,7 +35,7 @@ class ProfileRoute implements RestRoute {
 						'type'              => 'string',
 						'required'          => false,
 						// 'validate_callback' => [ $this, 'validateValue' ],
-						'sanitize_callback' => 'sanitize_text_field',
+						'sanitize_callback' => [ $this, 'sanitizeData' ],
 					],
 					'id'   => [
 						'type'     => 'int',
@@ -48,6 +48,87 @@ class ProfileRoute implements RestRoute {
 		);
 	}
 
+	public function sanitizeData( $value, $request, $param ) {
+
+		$sanitizedValue = json_decode( $value );
+
+		$attributesMap = [
+			'firstName'           => [
+				'sanitizeCallback' => 'sanitize_text_field',
+				'default'          => '',
+			],
+			'lastName'            => [
+				'sanitizeCallback' => 'sanitize_text_field',
+				'default'          => '',
+			],
+			'additionalEmails'    => [
+				'sanitizeCallback' => [ $this, 'sanitizeAdditionalEmails' ],
+				'default'          => [],
+			],
+			'additionalAddresses' => [
+				'sanitizeCallback' => [ $this, 'sanitizeAdditionalAddresses' ],
+				'default'          => [],
+			],
+			'primaryEmail'        => [
+				'sanitizeCallback' => 'sanitize_email',
+				'default'          => '',
+			],
+			'primaryAddress'      => [
+				'sanitizeCallback' => [ $this, 'sanitizeAddress' ],
+				'default'          => [],
+			],
+			'titlePrefix'         => [
+				'sanitizeCallback' => 'sanitize_text_field',
+				'default'          => '',
+			],
+			'avatarId'            => [
+				'sanitizeCallback' => [ $this, 'sanitizeAvatarId' ],
+				'default'          => 0,
+			],
+		];
+
+		foreach ( $attributesMap as $key => $value ) {
+			$sanitizedValue->{$key} = $this->sanitizeValue( $sanitizedValue->{$key}, $value );
+		}
+
+		return $sanitizedValue;
+	}
+
+	protected function sanitizeAvatarId( $avatarId ) {
+		return intval( $avatarId );
+	}
+
+	protected function sanitizeAdditionalAddresses( $addresses ) {
+		$sanitizedAddresses = [];
+		foreach ( $addresses as $key => $value ) {
+			$sanitizeAddresses[ $key ] = $this->sanitizeAddress( $value );
+		}
+		return $sanitizedAddresses;
+	}
+
+	protected function sanitizeAddress( $address ) {
+		foreach ( $address as $key => $value ) {
+			$address->{$key} = sanitize_text_field( $value );
+		}
+		return $address;
+	}
+
+	protected function sanitizeAdditionalEmails( $emails ) {
+		$sanitizedEmails = [];
+		foreach ( $emails as $key => $value ) {
+			$sanitizeEmails[ $key ] = sanitize_email( $value );
+		}
+		return $sanitizedEmails;
+	}
+
+	protected function sanitizeValue( $value, $config ) {
+		if ( ! empty( $value ) && is_callable( $config['sanitizeCallback'] ) ) {
+			return $config['sanitizeCallback']( $value );
+		} else {
+			return $config['default'];
+		}
+	}
+
 	/**
 	 * @param WP_REST_Request $request
 	 *
@@ -56,7 +137,7 @@ class ProfileRoute implements RestRoute {
 	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-		return $this->updateProfile( json_decode( $request->get_param( 'data' ) ), $request->get_param( 'id' ) );
+		return $this->updateProfile( $request->get_param( 'data' ), $request->get_param( 'id' ) );
 	}
 
 	/**
