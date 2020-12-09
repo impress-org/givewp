@@ -54,13 +54,12 @@ $donor-space-triple: $donor-space * 3;
 
 		border: 1px solid $give-card-border;
 		background: #fff;
-		flex-shrink: 0;
 		margin-right: $donor-space-half;
 		overflow: hidden;
 		border-radius: 50%;
+		flex-basis: 40%;
 
 		img {
-			display: block;
 			object-fit: cover;
 			width: 100%;
 		}
@@ -71,6 +70,7 @@ $donor-space-triple: $donor-space * 3;
 		/* [3] */
 		flex-grow: 1;
 		overflow: hidden;
+		flex-basis: 60%;
 	}
 
 	&__name {

@@ -166,8 +166,6 @@ class GiveDonorWall {
 
 				gravatarContainer.innerHTML = '';
 				gravatarElement.setAttribute( 'src', gravatar.url( donorEmail, { s: parseInt( size ) * 2 } ) );
-				gravatarElement.setAttribute( 'width', size );
-				gravatarElement.setAttribute( 'height', size );
 				gravatarContainer.appendChild( gravatarElement );
 			}
 
