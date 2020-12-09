@@ -23,6 +23,9 @@ jobs:
       matrix:
         php: [ 5.6, 7.2 ]
         wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
+        exclude:
+          - wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5' ]
+            if: ${{ github.base_ref == 'develop' }} # Reduce test matrix for PRs on develop.
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
