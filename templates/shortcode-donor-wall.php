@@ -25,7 +25,7 @@ $atts          = $args[2]; // Shortcode attributes.
 				$anonymous_donor_img = sprintf(
 					'<img src="%1$s" alt="%2$s">',
 					esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg' ),
-					esc_attr__( 'Anonymous User', 'give' ),
+					esc_attr__( 'Anonymous User', 'give' )
 				);
 
 				$donor_avatar = sprintf(
