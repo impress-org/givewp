@@ -29,7 +29,7 @@ $donor-space-triple: $donor-space * 3;
 
 .give-donor {
 	border: 1px solid $give-card-border;
-	background: #FFF;
+	background: #fff;
 	color: $donor-color;
 	font-size: 1em;
 	margin-bottom: $donor-space;
@@ -38,33 +38,37 @@ $donor-space-triple: $donor-space * 3;
 	transition: all 0.2s ease-out;
 	width: 100%;
 
-	&__header { /* [1] */
+	&__header {
+
+		/* [1] */
 		align-items: center;
 		display: flex;
 	}
 
-	&__image { /* [2] */
+	&__image {
+
+		/* [2] */
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
 		border: 1px solid $give-card-border;
-		background: #FFF;
-		text-align: center;
-		flex-basis: $donor-space * 3;
+		background: #fff;
 		flex-shrink: 0;
-		line-height: $donor-space * 3;
-		height: $donor-space * 3;
 		margin-right: $donor-space-half;
 		overflow: hidden;
 		border-radius: 50%;
 
 		img {
-			border-radius: 50%;
 			display: block;
-			height: ( $donor-space * 3 ) - 2;
 			object-fit: cover;
 			width: 100%;
 		}
 	}
 
-	&__details { /* [3] */
+	&__details {
+
+		/* [3] */
 		flex-grow: 1;
 		overflow: hidden;
 	}
@@ -108,15 +112,14 @@ $donor-space-triple: $donor-space * 3;
 		}
 	}
 
-	&__read-more{
+	&__read-more {
 		cursor: pointer;
 		white-space: nowrap;
 	}
 
-	&__excerpt + &__comment{
+	&__excerpt + &__comment {
 		display: none;
 	}
-
 }
 
 .give-donor-wall-modal {

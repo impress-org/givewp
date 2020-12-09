@@ -23,21 +23,25 @@ $atts          = $args[2]; // Shortcode attributes.
 
 				// Get anonymous donor image.
 				$anonymous_donor_img = sprintf(
-					'<img src="%1$s" alt="%2$s" width="%3$s" height="%3$s">',
+					'<img src="%1$s" alt="%2$s">',
 					esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg' ),
-					esc_attr__( 'Anonymous User', 'give' ),
-					$atts['avatar_size']
+					esc_attr__( 'Anonymous User', 'give' )
+				);
+
+				$donor_name_initial = sprintf(
+					'<div class="give-donor__name_initial">%1$s</div>',
+					$donation['name_initial']
 				);
 
 				// Get donor avatar image based on donation parameter.
-				$donor_avatar = ! empty( $donation['_give_anonymous_donation'] ) ? $anonymous_donor_img : $donation['name_initial'];
+				$donor_avatar = ! empty( $donation['_give_anonymous_donation'] ) ? $anonymous_donor_img : $donor_name_initial;
 
 				// Validate donor gravatar.
 				$validate_gravatar = ! empty( $donation['_give_anonymous_donation'] ) ? 0 : give_validate_gravatar( $donation['_give_payment_donor_email'] );
 
 				// Maybe display the Avatar.
 				echo sprintf(
-					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s" data-avatar-size="%3$s">%4$s</div>',
+					'<div class="give-donor__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s" data-avatar-size="%3$s" style="flex-basis:%3$spx;width:%3$spx;height:%3$spx">%4$s</div>',
 					md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
 					absint( $validate_gravatar ),
 					$atts['avatar_size'],
