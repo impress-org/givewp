@@ -18,7 +18,7 @@ class App {
 	 * Get output markup for Donor Profile app
 	 *
 	 * @return string
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function getOutput() {
 		ob_start();
@@ -31,7 +31,7 @@ class App {
 
 	/**
 	 * Get template path for Donor Profile component template
-	 * @since 2.9.0
+	 * @since 2.11.0
 	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofile.php';
@@ -41,7 +41,7 @@ class App {
 	 * Enqueue assets for front-end donor profiles
 	 *
 	 * @return void
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function loadAssets() {
 		wp_enqueue_script(

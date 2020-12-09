@@ -15,7 +15,7 @@ class Block {
 	/**
 	 * Registers Donor Profile block
 	 *
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function addBlock() {
 		register_block_type(
@@ -35,7 +35,7 @@ class Block {
 	/**
 	 * Returns Donor Profile block markup
 	 *
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function renderCallback( $attributes ) {
 		return $this->donorProfile->getOutput( $attributes );
@@ -44,7 +44,7 @@ class Block {
 	/**
 	 * Load Donor Profile frontend assets
 	 *
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function loadFrontendAssets() {
 		if ( has_block( 'give/donor-profile' ) ) {
@@ -55,7 +55,7 @@ class Block {
 	/**
 	 * Load Donor Profile block editor assets
 	 *
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function loadEditorAssets() {
 		wp_enqueue_script(
