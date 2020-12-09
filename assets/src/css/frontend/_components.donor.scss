@@ -52,7 +52,6 @@ $donor-space-triple: $donor-space * 3;
 		align-items: center;
 		justify-content: center;
 
-		border: 1px solid $give-card-border;
 		background: #fff;
 		margin-right: $donor-space-half;
 		overflow: hidden;
@@ -73,6 +72,10 @@ $donor-space-triple: $donor-space * 3;
 		&[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
 		&[data-anonymous-donation='1'] .give-donor__name_initial {
 			visibility: hidden;
+		}
+
+		&[data-anonymous-donation='0'][data-has-valid-gravatar='0'] {
+			border: 1px solid $give-card-border;
 		}
 	}
 
