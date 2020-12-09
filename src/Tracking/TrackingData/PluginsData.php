@@ -40,8 +40,7 @@ class PluginsData implements TrackData {
 
 		$plugin_data = [];
 		foreach ( $plugins as $plugin ) {
-			$plugin_key                 = sanitize_title( $plugin['name'] );
-			$plugin_data[ $plugin_key ] = $plugin;
+			$plugin_data[] = $plugin;
 		}
 
 		return $plugin_data;
@@ -61,9 +60,15 @@ class PluginsData implements TrackData {
 
 		return [
 			'name'      => $plugin['Name'],
+			'url'       => $plugin['PluginURI'],
+			'slug'      => $plugin['Dir'],
 			'version'   => $plugin['Version'],
 			'status'    => $plugin['Status'],
 			'type'      => $plugin['Type'],
+			'author'    => [
+				'name' => $plugin['Author'],
+				'url'  => $plugin['AuthorURI'],
+			],
 			'isPremium' => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
 		];
 	}
