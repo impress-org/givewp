@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-    The current state of the Donation Form fields are now preserved when the payment method changes (#5491)
+
 ## 2.9.5 - 2020-12-03
 
 ### New
