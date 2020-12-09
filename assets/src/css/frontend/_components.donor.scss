@@ -59,9 +59,20 @@ $donor-space-triple: $donor-space * 3;
 		border-radius: 50%;
 		flex-basis: 40%;
 
+		position: relative;
+
 		img {
 			object-fit: cover;
 			width: 100%;
+		}
+
+		.give-donor__name_initial {
+			position: absolute;
+		}
+
+		&[data-anonymous-donation='1'] img,
+		&[data-anonymous-donation='0'] .give-donor__name_initial {
+			visibility: hidden;
 		}
 	}
 
