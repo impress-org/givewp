@@ -236,13 +236,15 @@ function give_get_history_session() {
  * Generate Item Title for Payment Gateway.
  *
  * @since 1.8.14
- * @since 2.10.0  Function will return form title with selected form level if price id set to zero.
+ * @since 2.10.0  Function will return form title with selected form level if price id set to zero. Added second param to return result with requested character length.
  *
- * @param array $payment_data Payment Data.
+ * @param  array  $payment_data  Payment Data.
+ *
+ * @param  string|null  $length
  *
  * @return string By default, the name of the form. Then the price level text if any is found.
  */
-function give_payment_gateway_item_title( $payment_data ) {
+function give_payment_gateway_item_title( $payment_data, $length = null ) {
 
 	$form_id   = intval( $payment_data['post_data']['give-form-id'] );
 	$item_name = isset( $payment_data['post_data']['give-form-title'] ) ? $payment_data['post_data']['give-form-title'] : '';
@@ -263,6 +265,11 @@ function give_payment_gateway_item_title( $payment_data ) {
 			// Matches a donation level - append level text.
 			$item_name .= ' - ' . $item_price_level_text;
 		}
+	}
+
+	// Cut the length
+	if ( $length ) {
+		$item_name = substr( $item_name, 0, $length );
 	}
 
 	/**
