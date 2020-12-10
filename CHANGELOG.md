@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
+
 ### Fixed
 
+-   Automated unit and integrations tests are now executing (#5489)
 -   Use an absolute path for the autoloader to avoid relative path issues (#5493)
 
 ## 2.9.5 - 2020-12-03
