@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+
 ## 2.9.5 - 2020-12-03
 
 ### New
