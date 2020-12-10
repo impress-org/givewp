@@ -494,6 +494,6 @@ function Give( $abstract = null ) {
 	return $instance;
 }
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 Give()->boot();
