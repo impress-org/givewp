@@ -9,10 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
-
 ### Fixed
 
+- Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
 -   Use an absolute path for the autoloader to avoid relative path issues (#5493)
 
 ## 2.9.5 - 2020-12-03
@@ -53,7 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
 -   Properly handle currency unit size for donations (#5440)
 -   Add missing payment information update support in Stripe javascript (#5439)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
