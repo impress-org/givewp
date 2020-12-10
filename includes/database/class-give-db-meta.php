@@ -65,7 +65,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @access protected
 	 * @var array
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'add_post_metadata',
 		'get_post_metadata',
 		'update_post_metadata',
@@ -74,7 +74,7 @@ class Give_DB_Meta extends Give_DB {
 		'posts_join',
 		'posts_groupby',
 		'posts_orderby',
-	);
+	];
 
 	/**
 	 * Give_DB_Meta constructor.
@@ -90,35 +90,35 @@ class Give_DB_Meta extends Give_DB {
 		}
 
 		if ( in_array( 'add_post_metadata', $this->supports ) ) {
-			add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 5 );
+			add_filter( 'add_post_metadata', [ $this, '__add_meta' ], 0, 5 );
 		}
 
 		if ( in_array( 'get_post_metadata', $this->supports ) ) {
-			add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 10, 4 );
+			add_filter( 'get_post_metadata', [ $this, '__get_meta' ], 10, 4 );
 		}
 
 		if ( in_array( 'update_post_metadata', $this->supports ) ) {
-			add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 5 );
+			add_filter( 'update_post_metadata', [ $this, '__update_meta' ], 0, 5 );
 		}
 
 		if ( in_array( 'delete_post_metadata', $this->supports ) ) {
-			add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 5 );
+			add_filter( 'delete_post_metadata', [ $this, '__delete_meta' ], 0, 5 );
 		}
 
 		if ( in_array( 'posts_where', $this->supports ) ) {
-			add_filter( 'posts_where', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
+			add_filter( 'posts_where', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
 		}
 
 		if ( in_array( 'posts_join', $this->supports ) ) {
-			add_filter( 'posts_join', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
+			add_filter( 'posts_join', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
 		}
 
 		if ( in_array( 'posts_groupby', $this->supports ) ) {
-			add_filter( 'posts_groupby', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
+			add_filter( 'posts_groupby', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
 		}
 
 		if ( in_array( 'posts_orderby', $this->supports ) ) {
-			add_filter( 'posts_orderby', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
+			add_filter( 'posts_orderby', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
 		}
 	}
 
@@ -318,7 +318,7 @@ class Give_DB_Meta extends Give_DB {
 
 		switch ( $filter ) {
 			case 'posts_join':
-				$joins = array( 'INNER JOIN', 'LEFT JOIN' );
+				$joins = [ 'INNER JOIN', 'LEFT JOIN' ];
 
 				foreach ( $joins as $join ) {
 					if ( false !== strpos( $clause, $join ) ) {
@@ -343,11 +343,11 @@ class Give_DB_Meta extends Give_DB {
 
 			case 'posts_where':
 				$clause = str_replace(
-					array( 'mt2.post_id', 'mt1.post_id' ),
-					array(
+					[ 'mt2.post_id', 'mt1.post_id' ],
+					[
 						"mt2.{$this->meta_type}_id",
 						"mt1.{$this->meta_type}_id",
-					),
+					],
 					$clause
 				);
 				break;
@@ -429,12 +429,12 @@ class Give_DB_Meta extends Give_DB {
 	private function delete_cache( $id, $meta_type = '' ) {
 		$meta_type = empty( $meta_type ) ? $this->meta_type : $meta_type;
 
-		$group = array(
+		$group = [
 			'payment'  => 'give-donations', // Backward compatibility
 			'donation' => 'give-donations',
 			'donor'    => 'give-donors',
 			'customer' => 'give-donors', // Backward compatibility for pre upgrade in 2.0
-		);
+		];
 
 		if ( array_key_exists( $meta_type, $group ) ) {
 			Give_Cache::delete_group( $id, $group[ $meta_type ] );
@@ -446,6 +446,8 @@ class Give_DB_Meta extends Give_DB {
 	 * Add support for hidden functions.
 	 *
 	 * @since  2.0
+	 * @since 2.9.6 Added a Short circuit check when updating meta.
+	 *
 	 * @access public
 	 *
 	 * @param $name
@@ -492,6 +494,11 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key                 = $arguments[2];
 				$meta_value               = $arguments[3];
 				$this->is_filter_callback = true;
+
+				// Short circuit if the meta value has already been updated.
+				if ( null !== $this->check ) {
+					return $this->check;
+				}
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
@@ -569,7 +576,7 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	public function delete_all_meta( $id = 0 ) {
 		global $wpdb;
-		$status = $wpdb->delete( $this->table_name, array( "{$this->meta_type}_id" => $id ), array( '%d' ) );
+		$status = $wpdb->delete( $this->table_name, [ "{$this->meta_type}_id" => $id ], [ '%d' ] );
 
 		if ( $status ) {
 			$this->delete_cache( $id, $this->meta_type );

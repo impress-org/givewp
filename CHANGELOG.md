@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
+
 ### Fixed
 
 -   Send form title to PayPal (#5495)
