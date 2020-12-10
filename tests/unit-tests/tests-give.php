@@ -16,13 +16,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @covers Give
-	 */
-	public function test_give_instance() {
-		$this->assertClassHasStaticAttribute( '_instance', 'Give' );
-	}
-
-	/**
 	 * @covers Give::setup_constants
 	 */
 	public function test_constants() {
