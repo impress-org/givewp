@@ -247,7 +247,7 @@ function give_payment_gateway_item_title( $payment_data ) {
 	$price_id  = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
 
 	// Verify has variable prices.
-	if ( give_has_variable_prices( $form_id ) && ! empty( $price_id ) ) {
+	if ( give_has_variable_prices( $form_id ) ) {
 
 		$item_price_level_text = give_get_price_option_name( $form_id, $price_id, 0, false );
 
