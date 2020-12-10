@@ -267,11 +267,6 @@ function give_payment_gateway_item_title( $payment_data, $length = null ) {
 		}
 	}
 
-	// Cut the length
-	if ( $length ) {
-		$item_name = substr( $item_name, 0, $length );
-	}
-
 	/**
 	 * Filter the Item Title of Payment Gateway.
 	 *
@@ -282,7 +277,14 @@ function give_payment_gateway_item_title( $payment_data, $length = null ) {
 	 * @return string
 	 * @since 1.8.14
 	 */
-	return apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
+	$item_name = apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
+
+	// Cut the length
+	if ( $length ) {
+		$item_name = substr( $item_name, 0, $length );
+	}
+
+	return $item_name;
 }
 
 /**
