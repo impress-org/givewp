@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## Added
+### Added
 
 - Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
+
+### Fixed
+
+-   Use an absolute path for the autoloader to avoid relative path issues (#5493)
 
 ## 2.9.5 - 2020-12-03
 
