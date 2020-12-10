@@ -235,10 +235,12 @@ function give_get_history_session() {
 /**
  * Generate Item Title for Payment Gateway.
  *
+ * @since 1.8.14
+ * @since 2.10.0  Function will return form title with selected form level if price id set to zero.
+ *
  * @param array $payment_data Payment Data.
  *
  * @return string By default, the name of the form. Then the price level text if any is found.
- * @since 1.8.14
  */
 function give_payment_gateway_item_title( $payment_data ) {
 
