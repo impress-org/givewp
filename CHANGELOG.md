@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Add filter hook to filter PayPal settings (#5502)
+
 ### Changed
 
 -   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
