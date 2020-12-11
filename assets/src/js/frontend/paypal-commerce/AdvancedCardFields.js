@@ -1,4 +1,4 @@
-/* globals paypal, Give, givePayPalCommerce, Event */
+/* globals paypal, Give, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 import CustomCardFields from './CustomCardFields';
@@ -24,15 +24,6 @@ class AdvancedCardFields extends PaymentMethod {
 	setupProperties() {
 		this.cardFields = {};
 		this.hostedCardFieldsContainers = {};
-		this.hostedFieldContainerStyleProperties = [
-			'background-color',
-			'box-sizing',
-			'box-shadow',
-			'border-left-color',
-			'border-radius',
-			'margin',
-			'height',
-		];
 
 		this.hostedInputFieldStyleProperties = [
 			'color',
@@ -72,7 +63,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	async renderPaymentMethodOption() {
 		this.setupContainerForHostedCardFields();
-		this.applyStyleToContainer();
+		this.computedStyles();
 
 		const submitEventName = `submit.${ this.form.getAttribute( 'id' ) }`;
 		const createOrder = this.createOrderHandler.bind( this );
@@ -85,19 +76,6 @@ class AdvancedCardFields extends PaymentMethod {
 
 		this.addEventToHostedFields( hostedCardFields );
 		this.jQueryForm.off( submitEventName ).on( submitEventName, { hostedCardFields }, onSubmitHandlerForDonationForm );
-	}
-
-	/**
-	 * Apply style when hosted card field container rendered.
-	 *
-	 * @since 2.9.0
-	 */
-	applyStyleToContainer() {
-		this.setStyles();
-		this.addInitialStyleToHostedFieldsContainer();
-		this.setHostedFieldContainerHeight();
-
-		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 	}
 
 	/**
@@ -311,23 +289,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Add style to hosted field's container.
-	 *
-	 * @since 2.9.0
-	 */
-	addInitialStyleToHostedFieldsContainer() {
-		// Apply styles
-		for ( const fieldKey in this.hostedCardFieldsContainers ) {
-			this.hostedFieldContainerStyleProperties.forEach( property => {
-				if ( 'height' === property && [ 'auto', '0px' ].includes( this.styles.container[ property ] ) ) {
-					return;
-				}
-				this.hostedCardFieldsContainers[ fieldKey ].style.setProperty( property, this.styles.container[ property ] );
-			} );
-		}
-	}
-
-	/**
 	 * Add event to hosted card fields.
 	 *
 	 * @since 2.9.0
@@ -347,19 +308,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Set style properties for hosted card field and its container.
-	 *
-	 * @since 2.9.0
-	 */
-	setStyles() {
-		this.computedStyles();
-
-		const event = new Event( 'blur' );
-		const cardField = this.form.querySelector( 'input[name="card_name"]' );
-		cardField.dispatchEvent( event );
-	}
-
-	/**
 	 * Computed styles for hosted card field container and iframe input field.
 	 *
 	 * @since 2.9.0
@@ -369,13 +317,6 @@ class AdvancedCardFields extends PaymentMethod {
 		const computedStyle = window.getComputedStyle( cardField, null );
 
 		if ( ! Array.from( this.styles.container ).length ) {
-			this.hostedFieldContainerStyleProperties.forEach( property => {
-				this.styles.container = {
-					[ property ]: computedStyle.getPropertyValue( property ),
-					...	this.styles.container,
-				};
-			} );
-
 			this.hostedInputFieldStyleProperties.forEach( property => {
 				this.styles.input = {
 					[ property ]: computedStyle.getPropertyValue( property ),
@@ -416,26 +357,6 @@ class AdvancedCardFields extends PaymentMethod {
 				} );
 			}, { once: true } );
 		} );
-	}
-
-	/**
-	 * Set hosted field's container height.
-	 *
-	 * @since 2.9.0
-	 */
-	setHostedFieldContainerHeight() {
-		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
-
-		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
-			return;
-		}
-
-		// Apply styles
-		for ( const fieldKey in this.hostedCardFieldsContainers ) {
-			this.hostedCardFieldsContainers[ fieldKey ]
-				.style
-				.setProperty( 'height', this.styles.container.height );
-		}
 	}
 
 	/**
