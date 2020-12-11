@@ -99,9 +99,20 @@ class PaypalSettingPage implements SettingPage {
 	public function registerPaypalSettings( $settings ) {
 		$currentSection = getCurrentSettingSection();
 
-		return $currentSection === $this->getId() ?
-			$this->getSettings() :
-			$settings;
+		if ( $currentSection === $this->getId() ) {
+			$settings = $this->getSettings();
+
+			foreach ( $settings as $subGroupId => $subGroupSetting ) {
+				/**
+				 * Filter sub section settings
+				 *
+				 * @since 1.11.2
+				 */
+				$settings[ $subGroupId ] = apply_filters( "give_get_settings_paypal_{$subGroupId}", $subGroupSetting );
+			}
+		}
+
+		return $settings;
 	}
 
 	/**
