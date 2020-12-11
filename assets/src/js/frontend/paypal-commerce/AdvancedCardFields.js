@@ -1,4 +1,4 @@
-/* globals paypal, Give, givePayPalCommerce, Event */
+/* globals paypal, Give, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 import CustomCardFields from './CustomCardFields';
@@ -24,26 +24,16 @@ class AdvancedCardFields extends PaymentMethod {
 	setupProperties() {
 		this.cardFields = {};
 		this.hostedCardFieldsContainers = {};
-		this.hostedFieldContainerStyleProperties = [
-			'background-color',
-			'box-sizing',
-			'box-shadow',
-			'border',
-			'border-radius',
-			'margin',
-			'height',
-		];
-
+		this.hostedFieldContainerStyleProperties = [ 'height' ];
 		this.hostedInputFieldStyleProperties = [
 			'color',
 			'direction',
 			'font-size',
 			'letter-spacing',
 			'line-height',
-			'padding',
 		];
 
-		this.hostedFocusedInputFieldStyleProperties = [ 'color', 'border' ];
+		this.hostedFocusedInputFieldStyleProperties = [ 'color', 'border-left-color' ];
 
 		this.hostedInputFieldPlaceholderStyleProperties = [ 'color' ];
 
@@ -89,19 +79,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Apply style when hosted card field container rendered.
-	 *
-	 * @since 2.9.0
-	 */
-	applyStyleToContainer() {
-		this.setStyles();
-		this.addInitialStyleToHostedFieldsContainer();
-		this.setHostedFieldContainerHeight();
-
-		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
-	}
-
-	/**
 	 * Set container for histed card fields.
 	 *
 	 * @since 2.9.0
@@ -123,7 +100,7 @@ class AdvancedCardFields extends PaymentMethod {
 				this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = field;
 			} else {
 				container.setAttribute( 'id', fieldId );
-				container.setAttribute( 'class', 'give-paypal-commerce-cc-field' );
+				container.setAttribute( 'class', 'give-paypal-commerce-cc-field give-input-field-wrapper' );
 				this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
 			}
 		}
@@ -312,23 +289,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Add style to hosted field's container.
-	 *
-	 * @since 2.9.0
-	 */
-	addInitialStyleToHostedFieldsContainer() {
-		// Apply styles
-		for ( const fieldKey in this.hostedCardFieldsContainers ) {
-			this.hostedFieldContainerStyleProperties.forEach( property => {
-				if ( 'height' === property && [ 'auto', '0px' ].includes( this.styles.container[ property ] ) ) {
-					return;
-				}
-				this.hostedCardFieldsContainers[ fieldKey ].style.setProperty( property, this.styles.container[ property ] );
-			} );
-		}
-	}
-
-	/**
 	 * Add event to hosted card fields.
 	 *
 	 * @since 2.9.0
@@ -339,25 +299,23 @@ class AdvancedCardFields extends PaymentMethod {
 		const self = this;
 
 		hostedCardFields.on( 'focus', function( event ) {
-			self.hostedCardFieldsContainers[ event.emittedBy ].style.border = self.styles[ 'input:focus' ].border;
+			self.hostedCardFieldsContainers[ event.emittedBy ].classList.add( 'has-focus' );
 		} );
 
 		hostedCardFields.on( 'blur', function( event ) {
-			self.hostedCardFieldsContainers[ event.emittedBy ].style.border = self.styles.container.border;
+			self.hostedCardFieldsContainers[ event.emittedBy ].classList.remove( 'has-focus' );
 		} );
 	}
 
 	/**
-	 * Set style properties for hosted card field and its container.
+	 * Apply style when hosted card field container rendered.
 	 *
 	 * @since 2.9.0
 	 */
-	setStyles() {
+	applyStyleToContainer() {
 		this.computedStyles();
-
-		const event = new Event( 'blur' );
-		const cardField = this.form.querySelector( 'input[name="card_name"]' );
-		cardField.dispatchEvent( event );
+		this.setHostedFieldContainerHeight();
+		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
 	}
 
 	/**
@@ -394,6 +352,26 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
+	 * Set hosted field's container height.
+	 *
+	 * @since 2.9.0
+	 */
+	setHostedFieldContainerHeight() {
+		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
+
+		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
+			return;
+		}
+
+		// Apply styles
+		for ( const fieldKey in this.hostedCardFieldsContainers ) {
+			this.hostedCardFieldsContainers[ fieldKey ]
+				.style
+				.setProperty( 'height', this.styles.container.height );
+		}
+	}
+
+	/**
 	 * Set style properties for hosted card field and its container for focus state
 	 *
 	 * @since 2.9.0
@@ -417,26 +395,6 @@ class AdvancedCardFields extends PaymentMethod {
 				} );
 			}, { once: true } );
 		} );
-	}
-
-	/**
-	 * Set hosted field's container height.
-	 *
-	 * @since 2.9.0
-	 */
-	setHostedFieldContainerHeight() {
-		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
-
-		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
-			return;
-		}
-
-		// Apply styles
-		for ( const fieldKey in this.hostedCardFieldsContainers ) {
-			this.hostedCardFieldsContainers[ fieldKey ]
-				.style
-				.setProperty( 'height', this.styles.container.height );
-		}
 	}
 
 	/**
