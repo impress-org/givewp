@@ -28,7 +28,7 @@ class AdvancedCardFields extends PaymentMethod {
 			'background-color',
 			'box-sizing',
 			'box-shadow',
-			'border',
+			'border-left-color',
 			'border-radius',
 			'margin',
 			'height',
@@ -40,10 +40,9 @@ class AdvancedCardFields extends PaymentMethod {
 			'font-size',
 			'letter-spacing',
 			'line-height',
-			'padding',
 		];
 
-		this.hostedFocusedInputFieldStyleProperties = [ 'color', 'border' ];
+		this.hostedFocusedInputFieldStyleProperties = [ 'color', 'border-left-color' ];
 
 		this.hostedInputFieldPlaceholderStyleProperties = [ 'color' ];
 
@@ -123,7 +122,7 @@ class AdvancedCardFields extends PaymentMethod {
 				this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = field;
 			} else {
 				container.setAttribute( 'id', fieldId );
-				container.setAttribute( 'class', 'give-paypal-commerce-cc-field' );
+				container.setAttribute( 'class', 'give-paypal-commerce-cc-field give-input-field-wrapper' );
 				this.hostedCardFieldsContainers[ this.getFieldTypeByFieldName( fieldType ) ] = cardFields[ cardFieldsKey ].el.parentElement.appendChild( container );
 			}
 		}
@@ -339,11 +338,11 @@ class AdvancedCardFields extends PaymentMethod {
 		const self = this;
 
 		hostedCardFields.on( 'focus', function( event ) {
-			self.hostedCardFieldsContainers[ event.emittedBy ].style.border = self.styles[ 'input:focus' ].border;
+			self.hostedCardFieldsContainers[ event.emittedBy ].classList.add( 'has-focus' );
 		} );
 
 		hostedCardFields.on( 'blur', function( event ) {
-			self.hostedCardFieldsContainers[ event.emittedBy ].style.border = self.styles.container.border;
+			self.hostedCardFieldsContainers[ event.emittedBy ].classList.remove( 'has-focus' );
 		} );
 	}
 

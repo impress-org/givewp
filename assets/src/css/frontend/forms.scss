@@ -221,7 +221,8 @@ form.give-form {
 		input[type='tel'],
 		input[type='email'],
 		input[type='password'],
-		input[type='url'] {
+		input[type='url'],
+		.give-input-field-wrapper {
 			@include box-sizing(border-box);
 			width: 100%;
 			border-radius: 0;
@@ -898,15 +899,12 @@ Button with Loader
 	}
 }
 
-
 /*---------------------------------
 RTL styles
 -----------------------------------*/
 
-html[dir="rtl"] {
-
+html[dir='rtl'] {
 	form.give-form {
-
 		@media (min-width: 481px) {
 			.give-title-prefix-wrap {
 				.form-row-first,

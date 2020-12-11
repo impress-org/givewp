@@ -146,13 +146,6 @@ EOT;
 			true
 		);
 
-		wp_enqueue_style(
-			'give-paypal-commerce-css',
-			GIVE_PLUGIN_URL . 'assets/dist/css/paypal-commerce.css',
-			[ 'give-styles' ],
-			GIVE_VERSION
-		);
-
 		wp_localize_script(
 			$scriptId,
 			'givePayPalCommerce',
