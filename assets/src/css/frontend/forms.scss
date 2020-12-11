@@ -241,6 +241,10 @@ form.give-form {
 				color: $dark;
 			}
 		}
+
+		.give-input-field-wrapper iframe {
+			margin-bottom: 0;
+		}
 	}
 
 	.form-row-title,

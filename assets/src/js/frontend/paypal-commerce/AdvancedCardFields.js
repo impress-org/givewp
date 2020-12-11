@@ -24,7 +24,7 @@ class AdvancedCardFields extends PaymentMethod {
 	setupProperties() {
 		this.cardFields = {};
 		this.hostedCardFieldsContainers = {};
-
+		this.hostedFieldContainerStyleProperties = [ 'height' ];
 		this.hostedInputFieldStyleProperties = [
 			'color',
 			'direction',
@@ -63,7 +63,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 */
 	async renderPaymentMethodOption() {
 		this.setupContainerForHostedCardFields();
-		this.computedStyles();
+		this.applyStyleToContainer();
 
 		const submitEventName = `submit.${ this.form.getAttribute( 'id' ) }`;
 		const createOrder = this.createOrderHandler.bind( this );
@@ -308,6 +308,17 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
+	 * Apply style when hosted card field container rendered.
+	 *
+	 * @since 2.9.0
+	 */
+	applyStyleToContainer() {
+		this.computedStyles();
+		this.setHostedFieldContainerHeight();
+		window.addEventListener( 'load', this.setHostedFieldContainerHeight.bind( this ) );
+	}
+
+	/**
 	 * Computed styles for hosted card field container and iframe input field.
 	 *
 	 * @since 2.9.0
@@ -317,6 +328,13 @@ class AdvancedCardFields extends PaymentMethod {
 		const computedStyle = window.getComputedStyle( cardField, null );
 
 		if ( ! Array.from( this.styles.container ).length ) {
+			this.hostedFieldContainerStyleProperties.forEach( property => {
+				this.styles.container = {
+					[ property ]: computedStyle.getPropertyValue( property ),
+					...	this.styles.container,
+				};
+			} );
+
 			this.hostedInputFieldStyleProperties.forEach( property => {
 				this.styles.input = {
 					[ property ]: computedStyle.getPropertyValue( property ),
@@ -330,6 +348,26 @@ class AdvancedCardFields extends PaymentMethod {
 					...	this.styles[ 'input:placeholder' ],
 				};
 			} );
+		}
+	}
+
+	/**
+	 * Set hosted field's container height.
+	 *
+	 * @since 2.9.0
+	 */
+	setHostedFieldContainerHeight() {
+		this.styles.container.height = `${ this.form.querySelector( 'input[name="card_name"]' ).offsetHeight }px`;
+
+		if ( [ 'auto', '0px' ].includes( this.styles.container.height ) ) {
+			return;
+		}
+
+		// Apply styles
+		for ( const fieldKey in this.hostedCardFieldsContainers ) {
+			this.hostedCardFieldsContainers[ fieldKey ]
+				.style
+				.setProperty( 'height', this.styles.container.height );
 		}
 	}
 
