@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
 -   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
+-   Onboarding Form Preview template now loads scripts inside of the closing body tag (#5510)
 
 ### Fixed
 
