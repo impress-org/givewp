@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.9.4
+ * Version: 2.9.5
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -252,7 +252,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.9.4' );
+			define( 'GIVE_VERSION', '2.9.5' );
 		}
 
 		// Plugin Root File.
@@ -496,6 +496,6 @@ function Give( $abstract = null ) {
 	return $instance;
 }
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 Give()->boot();

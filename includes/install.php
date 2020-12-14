@@ -85,17 +85,6 @@ function give_run_install() {
 	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ), false );
 
-	/**
-	 * Run plugin upgrades.
-	 *
-	 * @since 1.8
-	 */
-	do_action( 'give_upgrades' );
-
-	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
-		update_option( 'give_version', GIVE_VERSION, false );
-	}
-
 	// Create Give roles.
 	$roles = new Give_Roles();
 	$roles->add_roles();
@@ -111,6 +100,17 @@ function give_run_install() {
 
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
+
+	/**
+	 * Run plugin upgrades.
+	 *
+	 * @since 1.8
+	 */
+	do_action( 'give_upgrades' );
+
+	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
+		update_option( 'give_version', GIVE_VERSION, false );
+	}
 
 	if ( ! $current_version ) {
 
