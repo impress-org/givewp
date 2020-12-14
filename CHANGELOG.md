@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   PayPal Donations CC fields have border in Firefox browser (#5500)
 -   Automated unit and integrations tests are now executing (#5489)
 -   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+-   Create an account checkbox only displays when Guest Checkout is enabled (#5516)
 
 ## 2.9.5 - 2020-12-03
 
