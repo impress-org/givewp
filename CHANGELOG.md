@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 -   Reporting Revenue is now more performant and scaleable (#5476)
+-   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
+-   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
+
+### Fixed
+
+-   PayPal Donations CC fields have border in Firefox browser (#5500)
+-   Automated unit and integrations tests are now executing (#5489)
+-   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+
+## 2.9.5 - 2020-12-03
 
 ### New
 
@@ -17,8 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Currency Switcher options are visible in the dropdown on a windows machine (#5453)
+-   Currency Switcher options are visible in the dropdown on Windows machines (#5453)
 -   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
+-   Restored compatibility with < WP 5.1.1 (#5473)
 
 ## 2.9.4 - 2020-11-20
 
@@ -115,6 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
+-   Disconnecting a Stripe account no longer revokes GiveWP as an Authorized Application (#5378)
 
 ## 2.9.0-beta.1 - 2020-10-13
 

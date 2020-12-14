@@ -52,14 +52,14 @@ class Give_Payment_Stats extends Give_Stats {
 			return $this->end_date;
 		}
 
-		$args = array(
+		$args = [
 			'status'     => 'publish',
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
 			'output'     => '',
-		);
+		];
 
 		if ( ! empty( $form_id ) ) {
 			$args['give_forms'] = $form_id;
@@ -100,29 +100,29 @@ class Give_Payment_Stats extends Give_Stats {
 			return $this->end_date;
 		}
 
-		$args = array(
+		$args = [
 			'status'     => 'publish',
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
 			'output'     => '',
-		);
+		];
 
 		// Filter by Gateway ID meta_key
 		if ( $gateway_id ) {
-			$args['meta_query'][] = array(
+			$args['meta_query'][] = [
 				'key'   => '_give_payment_gateway',
 				'value' => $gateway_id,
-			);
+			];
 		}
 
 		// Filter by Gateway ID meta_key
 		if ( $form_id ) {
-			$args['meta_query'][] = array(
+			$args['meta_query'][] = [
 				'key'   => '_give_payment_form_id',
 				'value' => $form_id,
-			);
+			];
 		}
 
 		if ( ! empty( $args['meta_query'] ) && 1 < count( $args['meta_query'] ) ) {
@@ -163,17 +163,17 @@ class Give_Payment_Stats extends Give_Stats {
 						 */
 						$formatted_amount = apply_filters(
 							'give_donation_amount',
-							give_format_amount( $payment['total'], array( 'donation_id' => $payment['id'] ) ),
+							give_format_amount( $payment['total'], [ 'donation_id' => $payment['id'] ] ),
 							$payment['total'],
 							$payment['id'],
-							array(
+							[
 								'type'     => 'stats',
 								'currency' => false,
 								'amount'   => false,
-							)
+							]
 						);
 
-						$earnings += (float) give_maybe_sanitize_amount( $formatted_amount, array( 'currency' => $currency_code ) );
+						$earnings += (float) give_maybe_sanitize_amount( $formatted_amount, [ 'currency' => $currency_code ] );
 					}
 				}
 			}
@@ -227,28 +227,28 @@ class Give_Payment_Stats extends Give_Stats {
 			return $this->end_date;
 		}
 
-		$args = array(
+		$args = [
 			'status'     => 'publish',
 			'start_date' => $this->start_date,
 			'end_date'   => $this->end_date,
 			'fields'     => 'ids',
 			'number'     => - 1,
-		);
+		];
 
 		// Filter by Gateway ID meta_key
 		if ( $gateway_id ) {
-			$args['meta_query'][] = array(
+			$args['meta_query'][] = [
 				'key'   => '_give_payment_gateway',
 				'value' => $gateway_id,
-			);
+			];
 		}
 
 		// Filter by Gateway ID meta_key
 		if ( $form_id ) {
-			$args['meta_query'][] = array(
+			$args['meta_query'][] = [
 				'key'   => '_give_payment_form_id',
 				'value' => $form_id,
-			);
+			];
 		}
 
 		if ( ! empty( $args['meta_query'] ) && 1 < count( $args['meta_query'] ) ) {
@@ -267,6 +267,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Get the best selling forms
 	 *
 	 * @since  1.0
+	 * @since 2.9.6 Added an explicit ORDER BY on which to apply a DESC order.
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
@@ -284,7 +285,8 @@ class Give_Payment_Stats extends Give_Stats {
 				"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
 				FROM {$meta_table['name']} WHERE meta_key='_give_form_sales' AND meta_value > 0
 				GROUP BY meta_value+0
-				DESC LIMIT %d;",
+				ORDER BY sales DESC
+				LIMIT %d;",
 				$number
 			)
 		);

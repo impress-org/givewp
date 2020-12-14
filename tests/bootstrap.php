@@ -70,14 +70,14 @@ class Give_Unit_Tests_Bootstrap {
 	 * @access public
 	 */
 	public function uninstall_give() {
-		give_update_option( 'uninstall_on_delete', 'enabled' );
+		$giveSettings = get_option('give_settings');
+		$giveSettings['uninstall_on_delete'] = 'enabled';
 
-		// Prevent missing object issue.
-		Give()->roles = new Give_Roles();
+		update_option( 'give_settings', $giveSettings );
 
 		// clean existing install first
 		define( 'WP_UNINSTALL_PLUGIN', true );
-		include $this->plugin_dir . '/uninstall.php';
+		include $this->plugin_dir . '/uninstall.php'; 
 	}
 
 	/**

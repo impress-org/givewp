@@ -177,6 +177,8 @@ class Give_Donor_Wall_Block {
 	 * @return string;
 	 */
 	public function render_block( $attributes ) {
+		$avatarSize = absint( $attributes['avatarSize'] );
+
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
 			'form_id'           => absint( $attributes['formID'] ),
@@ -196,7 +198,7 @@ class Give_Donor_Wall_Block {
 			'only_comments'     => $attributes['onlyComments'],
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
-			'avatar_size'       => absint( $attributes['avatarSize'] ),
+			'avatar_size'       => $avatarSize ?: 60,
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );

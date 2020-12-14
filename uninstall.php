@@ -79,8 +79,7 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	}
 
 	// Delete Capabilities.
-	Give()->roles = new Give_Roles();
-	Give()->roles->remove_caps();
+	give()->roles->remove_caps();
 
 	// Delete the Roles.
 	$give_roles = [ 'give_manager', 'give_accountant', 'give_worker', 'give_donor' ];

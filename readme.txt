@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.9.4
+Stable tag: 2.9.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -230,6 +230,12 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.9.5: December 3rd, 2020 =
+* New: Added Jamaica to list of countries for onboarding
+* Fixed: Currency Switcher options display correctly on Windows machines
+* Fixed: Corrected style issues in Multi-Step forms on iOS devices
+* Fixed: Restored compatibility with WP versions prior to 5.1.1
 
 = 2.9.4: November 20th, 2020 =
 * Fixed: Revenue database migration for donations with an amount of 0 now work
