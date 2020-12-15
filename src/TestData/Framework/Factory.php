@@ -34,7 +34,7 @@ abstract class Factory implements FactoryContract {
 	 */
 	public function consistent( $consistent = true ) {
 		if ( $consistent ) {
-			$this->faker->seed( true );
+			$this->faker->seed( mt_getrandmax() );
 		}
 
 		return $this;
