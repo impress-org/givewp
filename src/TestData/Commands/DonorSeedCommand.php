@@ -59,7 +59,7 @@ class DonorSeedCommand {
 	public function __invoke( $args, $assocArgs ) {
 		$count      = WP_CLI\Utils\get_flag_value( $assocArgs, 'count', $default = 10 );
 		$preview    = WP_CLI\Utils\get_flag_value( $assocArgs, 'preview', $default = false );
-		$consistent = WP_CLI\Utils\get_flag_value( $assocArgs, 'consistent', $default = null );
+		$consistent = WP_CLI\Utils\get_flag_value( $assocArgs, 'consistent', $default = false );
 
 		$donors = $this->donorFactory->consistent( $consistent )->make( $count );
 

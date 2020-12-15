@@ -79,7 +79,7 @@ class FormSeedCommand {
 		$template   = WP_CLI\Utils\get_flag_value( $assocArgs, 'template', $default = 'random' );
 		$setGoal    = WP_CLI\Utils\get_flag_value( $assocArgs, 'set-goal', $default = false );
 		$setTerms   = WP_CLI\Utils\get_flag_value( $assocArgs, 'set-terms', $default = false );
-		$consistent = WP_CLI\Utils\get_flag_value( $assocArgs, 'consistent', $default = null );
+		$consistent = WP_CLI\Utils\get_flag_value( $assocArgs, 'consistent', $default = false );
 
 		// Check form template
 		if ( ! $this->donationFormFactory->checkFormTemplate( $template ) ) {
