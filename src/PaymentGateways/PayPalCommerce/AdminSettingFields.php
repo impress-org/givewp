@@ -192,8 +192,12 @@ class AdminSettingFields {
 										}
 										?>
 								</ul>
-								<p><?php echo $this->getAdminGuidanceNotice(); ?></p>
-								<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>"><?php esc_html_e( 'Re-Check Account Status', 'give' ); ?></a></p>
+								<p><strong><?php echo $this->getAdminGuidanceNotice(); ?></strong></p>
+								<p>
+									<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">
+										<?php esc_html_e( 'Re-Check Account Status', 'give' ); ?>
+									</a>
+								</p>
 							</span>
 								</div>
 							<?php endif; ?>
@@ -294,11 +298,11 @@ class AdminSettingFields {
 			);
 
 			return sprintf(
-				esc_html__( 'Call %1$s and make sure to tell them it’s for integrating with GiveWP', 'give' ),
+				esc_html__( 'Call PayPal support team on %1$s and make sure to tell them it’s for integrating with GiveWP.', 'give' ),
 				$telephone
 			);
 		}
 
-		return esc_html__( 'To resolve this issue go to your PayPal account, go to the Resolution Center, and submit a support request with the information GiveWP provides on what’s missing', 'give' );
+		return esc_html__( 'To resolve this issue login to your PayPal account and go to the Resolution Center, and submit a support request with the information mentioned in above list.', 'give' );
 	}
 }
