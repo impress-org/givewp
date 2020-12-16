@@ -88,8 +88,6 @@ class onBoardingRedirectHandler {
 	/**
 	 * Save PayPal merchant details
 	 *
-	 * @todo: Confirm `primary_email_confirmed` set to true via PayPal api to confirm onboarding process status.
-	 *
 	 * @since 2.9.0
 	 *
 	 * @return MerchantDetail
