@@ -16,6 +16,34 @@ use Give_License;
  */
 class AdminSettingFields {
 	/**
+	 * @var MerchantDetail
+	 */
+	private $merchantModel;
+
+	/**
+	 * @var Settings
+	 */
+	private $settingRepository;
+
+	/**
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
+
+	/**
+	 * AdminSettingFields constructor.
+	 *
+	 * @param  MerchantDetail  $merchantDetail
+	 * @param  MerchantDetails  $merchantDetailRepository
+	 * @param  Settings  $settings
+	 */
+	public function __construct( MerchantDetail $merchantDetail, MerchantDetails $merchantDetailRepository, Settings $settings ) {
+		$this->merchantModel      = $merchantDetail;
+		$this->merchantRepository = $merchantDetailRepository;
+		$this->settingRepository  = $settings;
+	}
+
+	/**
 	 * Bootstrap fields.
 	 *
 	 * @since 2.9.0
@@ -32,17 +60,8 @@ class AdminSettingFields {
 	 * @since 2.9.0
 	 */
 	public function accountCountryField() {
-		/* @var MerchantDetail $merchantModel */
-		$merchantModel = give( MerchantDetail::class );
-
-		/* @var MerchantDetails $merchantRepository */
-		$merchantRepository = give( MerchantDetails::class );
-
 		/* @var Give_HTML_Elements $htmlElements */
 		$htmlElements = give( 'html' );
-
-		/* @var Settings $settingRepository */
-		$settingRepository = give( Settings::class );
 
 		$settingHtml = $htmlElements->select(
 			[
@@ -55,11 +74,11 @@ class AdminSettingFields {
 				'data'             => [
 					'search-type' => 'no_ajax',
 				],
-				'selected'         => $merchantModel->accountCountry ?: $settingRepository->getAccountCountry(),
+				'selected'         => $this->merchantModel->accountCountry ?: $this->settingRepository->getAccountCountry(),
 			]
 		);
 
-		$trClass = $merchantRepository->accountIsConnected() ?
+		$trClass = $this->merchantRepository->accountIsConnected() ?
 			'js-fields-has-custom-saving-logic hide-with-position' :
 			'js-fields-has-custom-saving-logic';
 		?>
@@ -173,6 +192,7 @@ class AdminSettingFields {
 										}
 										?>
 								</ul>
+								<p><?php echo $this->getAdminGuidanceNotice(); ?></p>
 								<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>"><?php esc_html_e( 'Re-Check Account Status', 'give' ); ?></a></p>
 							</span>
 								</div>
@@ -220,5 +240,65 @@ class AdminSettingFields {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Return whether or not country is in North America
+	 *
+	 * @return boolean
+	 */
+	private function isCountryInNorthAmerica() {
+		// Countries list: https://en.wikipedia.org/wiki/List_of_North_American_countries_by_area#Countries
+		$northAmericaCountryList = [
+			'CA', // Canada
+			'US', // United States
+			'MX', // Mexico
+			'NI', // Nicaragua
+			'HN', // Honduras
+			'CU', // Cuba
+			'GT', // Guatemala
+			'PA', // Panama
+			'CR', // Costa Rica
+			'DO', // Dominican Republic
+			'HT', // Haiti
+			'BZ', // Belize
+			'SV', // EL Salvador
+			'BS', // The Bahamas
+			'JM', // Jamaica
+			'TT', // Trinidad and Tobago
+			'DM', // Dominica
+			'LC', // Saint Lucia
+			'AG', // Antigua and Barbuda
+			'BB', // Barbados
+			'VC', // Saint Vincent and the Grenadines
+			'GD', // Grenada
+			'KN', // Saint Kitts and Nevis
+		];
+
+		$accountCountry = $this->settingRepository->getAccountCountry();
+
+		return in_array( $accountCountry, $northAmericaCountryList, true );
+	}
+
+	/**
+	 * Return admin guidance notice to fix PayPal on boarding error.
+	 *
+	 * @since 2.9.6
+	 * @return string
+	 */
+	private function getAdminGuidanceNotice() {
+		if ( $this->isCountryInNorthAmerica() ) {
+			$telephone = sprintf(
+				'<a href="tel:%1$s">%1$s</a>',
+				'1-855-456-1330'
+			);
+
+			return sprintf(
+				esc_html__( 'Call %1$s and make sure to tell them it’s for integrating with GiveWP', 'give' ),
+				$telephone
+			);
+		}
+
+		return esc_html__( 'To resolve this issue go to your PayPal account, go to the Resolution Center, and submit a support request with the information GiveWP provides on what’s missing', 'give' );
 	}
 }
