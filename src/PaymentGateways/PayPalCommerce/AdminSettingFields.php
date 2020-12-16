@@ -186,7 +186,12 @@ class AdminSettingFields {
 							<span>
 								<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations. Please review the following list:', 'give' ); ?></p>
 								<ul class="ul-disc">
+										<li>
+											<?php esc_html_e( 'PayPal account on-boarding merchant status check api response:', 'give' ); ?><br>
+											<textarea readonly style="width: 100%"><?php echo $accountErrors[0]; ?></textarea>
+										</li>
 										<?php
+										unset( $accountErrors[0] );
 										foreach ( $accountErrors as $error ) {
 											echo "<li>{$error}</li>";
 										}

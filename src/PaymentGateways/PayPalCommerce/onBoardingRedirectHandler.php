@@ -262,9 +262,9 @@ class onBoardingRedirectHandler {
 	 * @return true|string[]
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken, $usesCustomPayments ) {
-		$onBoardedData = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
-		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessages = [];
+		$onBoardedData   = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
+		$onBoardedData   = array_filter( $onBoardedData ); // Remove empty values.
+		$errorMessages[] = wp_json_encode( $onBoardedData );
 
 		if ( ! is_ssl() ) {
 			$errorMessages[] = esc_html__(
