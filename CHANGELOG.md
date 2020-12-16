@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New
+-   Update warning message for unsuccessful PayPal account onboarding (#5522) 
+
 ### Changed
 
 -   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
