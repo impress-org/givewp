@@ -119,8 +119,7 @@ class AdminSettingFields {
 						/** @var MerchantDetails $accountRepository */
 						$accountRepository = give( MerchantDetails::class );
 						?>
-						<div
-							class="button-wrap connection-setting <?php echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
+						<div class="button-wrap connection-setting <?php echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
 							<div>
 								<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
 									<i class="fab fa-paypal"></i>&nbsp;&nbsp;
@@ -178,55 +177,8 @@ class AdminSettingFields {
 									<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
 								</ul>
 							</div>
-
-							<?php $accountErrors = give( MerchantDetails::class )->getAccountErrors(); ?>
-
-							<?php if ( ! $this->merchantRepository->doesAdminFinishOnBoarding() ) : ?>
-								<div>
-									<span>
-										<p class="error-message"><?php esc_html_e( 'Having trouble connecting to PayPal?.', 'give' ); ?></p>
-										<p><?php echo $this->getAdminGuidanceNotice( false ); ?></p>
-									</span>
-								</div>
-							<?php elseif ( ! empty( $accountErrors ) ) : ?>
-								<div>
-									<span>
-										<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations.', 'give' ); ?></p>
-										<p>
-											<?php
-											printf(
-												'%1$s %2$s',
-												esc_html__( 'Something is not quite ready with your PayPal account to accept online donations.', 'give' ),
-												$this->getAdminGuidanceNotice()
-											);
-											?>
-										</p>
-										<div class="paypal-message-template">
-											<?php esc_html_e( 'Greetings!', 'give' ); ?><br><br>
-											<?php esc_html_e( 'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:', 'give' ); ?><br>
-											<ul class="ul-disc">
-												<li>
-													<?php esc_html_e( 'PayPal account on-boarding merchant status check api response:', 'give' ); ?><br>
-													<textarea readonly style="width: 100%"><?php echo $accountErrors[0]; ?></textarea>
-												</li>
-												<?php
-												unset( $accountErrors[0] );
-												foreach ( $accountErrors as $error ) {
-													echo "<li>{$error}</li>";
-												}
-												?>
-											</ul>
-											<?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
-										</div>
-										<p>
-											<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">
-												<?php esc_html_e( 'Re-Check Account Status', 'give' ); ?>
-											</a>
-										</p>
-									</span>
-								</div>
-							<?php endif; ?>
 						</div>
+						<?php $this->printErrors(); ?>
 					</div>
 				</div>
 			</td>
@@ -335,5 +287,64 @@ class AdminSettingFields {
 		}
 
 		return $message;
+	}
+
+	/**
+	 * Print on boarding errors.
+	 *
+	 * @since 2.9.6
+	 */
+	private function printErrors() {
+		$accountErrors = give( MerchantDetails::class )->getAccountErrors();
+		if ( ! $this->merchantRepository->doesAdminFinishOnBoarding() ) :
+			?>
+			<div>
+				<span>
+					<p class="error-message"><?php esc_html_e( 'Having trouble connecting to PayPal?.', 'give' ); ?></p>
+					<p><?php echo $this->getAdminGuidanceNotice( false ); ?></p>
+				</span>
+			</div>
+		<?php elseif ( ! empty( $accountErrors ) ) : ?>
+			<div>
+				<span>
+					<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations.', 'give' ); ?></p>
+					<p>
+						<?php
+						printf(
+							'%1$s %2$s',
+							esc_html__(
+								'Something is not quite ready with your PayPal account to accept online donations.',
+								'give'
+							),
+							$this->getAdminGuidanceNotice()
+						);
+						?>
+					</p>
+					<div class="paypal-message-template">
+						<?php esc_html_e( 'Greetings!', 'give' ); ?><br><br>
+						<?php esc_html_e( 'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:', 'give' ); ?><br>
+						<ul class="ul-disc">
+							<li>
+								<?php esc_html_e( 'PayPal account on-boarding merchant status check api response:', 'give' ); ?><br>
+								<textarea readonly style="width: 100%"><?php echo $accountErrors[0]; ?></textarea>
+							</li>
+							<?php
+							unset( $accountErrors[0] );
+							foreach ( $accountErrors as $error ) {
+								echo "<li>{$error}</li>";
+							}
+							?>
+						</ul>
+						<?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
+					</div>
+					<p>
+						<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">
+							<?php esc_html_e( 'Re-Check Account Status', 'give' ); ?>
+						</a>
+					</p>
+				</span>
+			</div>
+			<?php
+		endif;
 	}
 }
