@@ -102,7 +102,18 @@ class onBoardingRedirectHandler {
 			'merchantIdInPayPal',
 		];
 
-		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+
+		if ( ! array_key_exists( 'merchantIdInPayPal', $payPalAccount ) || empty( $payPalAccount['merchantIdInPayPal'] ) ) {
+			$errors[] = sprintf(
+				'%1$s <br><textarea readonly>%2$s</textarea>',
+				esc_html__( 'We did get valid PayPal merchant id in return url. PayPal return URL is:', 'give' ),
+				urlencode( $_SERVER['REQUEST_URI'] )
+			);
+			$this->merchantRepository->saveAccountErrors( $errors );
+			$this->redirectWhenOnBoardingFail();
+		}
+
 		$restApiCredentials = (array) $this->payPalAuth->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
 
 		$tokenInfo = $this->payPalAuth->getTokenFromClientCredentials( $restApiCredentials['client_id'], $restApiCredentials['client_secret'] );
@@ -222,8 +233,13 @@ class onBoardingRedirectHandler {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			$errorMessage = isset( $restApiCredentials['error_description'] ) ? urlencode( $restApiCredentials['error_description'] ) : '';
-			$this->redirectWhenOnBoardingFail( $errorMessage );
+			$errors[] = sprintf(
+				'%1$s <br><textarea readonly>%2$s</textarea>',
+				esc_html__( 'We are unable to fetch client_id and client_secret. PayPal Response is:', 'give' ),
+				wp_json_encode( $array )
+			);
+			$this->merchantRepository->saveAccountErrors( $errors );
+			$this->redirectWhenOnBoardingFail();
 		}
 	}
 
@@ -337,19 +353,10 @@ class onBoardingRedirectHandler {
 	 * Redirect admin to setting section with error.
 	 *
 	 * @since 2.9.0
-	 *
-	 * @param $errorMessage
-	 *
 	 */
-	private function redirectWhenOnBoardingFail( $errorMessage ) {
-		wp_redirect(
-			admin_url(
-				sprintf(
-					'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
-					urlencode( $errorMessage )
-				)
-			)
-		);
+	private function redirectWhenOnBoardingFail() {
+		$this->merchantRepository->onBoardingEnd();
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1', ) );
 
 		exit();
 	}
