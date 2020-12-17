@@ -614,6 +614,11 @@ a.give-delete {
 		display: flex;
 		align-items: end;
 		justify-content: flex-start;
+		flex-direction: column;
+
+		> div {
+			padding-bottom: 10px;
+		}
 
 		.label {
 			font-weight: bold;
@@ -627,7 +632,7 @@ a.give-delete {
 			grid-template-columns: 1fr;
 		}
 
-		.button-wrap > div {
+		.button-wrap > div:not(:last-child) {
 			margin-bottom: 10px;
 		}
 
