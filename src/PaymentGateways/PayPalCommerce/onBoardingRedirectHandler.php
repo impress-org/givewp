@@ -72,7 +72,7 @@ class onBoardingRedirectHandler {
 		if ( $this->isPayPalUserRedirected() ) {
 			$details = $this->savePayPalMerchantDetails();
 			$this->setUpWebhook( $details );
-			$this->redirectAccountConnected( $details );
+			$this->redirectAccountConnected();
 		}
 
 		if ( $this->isPayPalAccountDetailsSaved() ) {
@@ -129,10 +129,8 @@ class onBoardingRedirectHandler {
 	 * Redirects the user to the account connected url
 	 *
 	 * @since 2.9.0
-	 *
-	 * @param MerchantDetail $merchant_detail
 	 */
-	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
+	private function redirectAccountConnected() {
 		$this->refreshAccountStatus();
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-commerce-account-connected=1' ) );
