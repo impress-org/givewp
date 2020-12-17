@@ -182,7 +182,6 @@ class MerchantDetails {
 		return "give_paypal_commerce_{$this->mode}_account_errors";
 	}
 
-
 	/**
 	 * Returns the options key for the client token in the give mode
 	 *
@@ -192,5 +191,46 @@ class MerchantDetails {
 	 */
 	private function getClientTokenKey() {
 		return "give_paypal_commerce_{$this->mode}_client_token";
+	}
+
+	/**
+	 * Returns the options key for the on boarding process
+	 *
+	 * @since 2.9.6
+	 *
+	 * @return string
+	 */
+	private function getOnBoardingProgressKey() {
+		return 'give_paypal_commerce_on_boarding_progress';
+	}
+
+	/**
+	 * Save flag in database to indicate that admin started on paypal boarding.
+	 *
+	 * @since 2.9.6
+	 * @return bool
+	 */
+	public function onBoardingStart() {
+		return update_option( $this->getOnBoardingProgressKey(), '1' );
+	}
+
+	/**
+	 * Deletes on boarding progress tracker.
+	 *
+	 * @since 2.9.6
+	 * @return bool
+	 */
+	public function onBoardingEnd() {
+		return delete_option( $this->getOnBoardingProgressKey() );
+	}
+
+	/**
+	 * Deletes on boarding progress tracker.
+	 *
+	 * @since 2.9.6
+	 * @return bool
+	 */
+	public function doesAdminFinishOnBoarding() {
+		return ! ( (bool) get_option( $this->getOnBoardingProgressKey() ) );
 	}
 }
