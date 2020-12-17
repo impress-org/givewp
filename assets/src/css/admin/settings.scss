@@ -58,6 +58,14 @@
 			min-height: 400px;
 		}
 	}
+
+	.paypal-message-template {
+		background: #eaeaea;
+		padding: 14px;
+		border-radius: 10px;
+		font-style: italic;
+		margin: 15px 0;
+	}
 }
 
 @media only screen and (max-width: 480px) {
