@@ -262,7 +262,6 @@ class onBoardingRedirectHandler {
 		}
 
 		$this->merchantRepository->save( $merchantDetails );
-		$this->merchantRepository->onBoardingEnd();
 	}
 
 	/**
@@ -355,7 +354,6 @@ class onBoardingRedirectHandler {
 	 * @since 2.9.0
 	 */
 	private function redirectWhenOnBoardingFail() {
-		$this->merchantRepository->onBoardingEnd();
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1', ) );
 
 		exit();

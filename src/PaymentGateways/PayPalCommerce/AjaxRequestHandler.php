@@ -138,7 +138,6 @@ class AjaxRequestHandler {
 		$this->settings->updateAccountCountry( $country );
 		$this->settings->updatePartnerLinkDetails( $data );
 
-		$this->merchantRepository->onBoardingStart();
 		wp_send_json_success( $data );
 	}
 
@@ -160,7 +159,6 @@ class AjaxRequestHandler {
 		$this->merchantRepository->deleteAccountErrors();
 		$this->merchantRepository->deleteClientToken();
 		$this->refreshToken->deleteRefreshTokenCronJob();
-		$this->merchantRepository->onBoardingEnd();
 
 		wp_send_json_success();
 	}
