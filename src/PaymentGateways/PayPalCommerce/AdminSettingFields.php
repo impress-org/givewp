@@ -180,7 +180,15 @@ class AdminSettingFields {
 							</div>
 
 							<?php $accountErrors = give( MerchantDetails::class )->getAccountErrors(); ?>
-							<?php if ( ! empty( $accountErrors ) ) : ?>
+
+							<?php if ( ! $this->merchantRepository->doesAdminFinishOnBoarding() ) : ?>
+								<div>
+									<span>
+										<p class="error-message"><?php esc_html_e( 'Having trouble connecting to PayPal?.', 'give' ); ?></p>
+										<p><?php echo $this->getAdminGuidanceNotice( false ); ?></p>
+									</span>
+								</div>
+							<?php elseif ( ! empty( $accountErrors ) ) : ?>
 								<div>
 									<span>
 										<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations.', 'give' ); ?></p>
