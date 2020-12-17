@@ -40,8 +40,6 @@ class DonationFormPaymentMethod {
 			unset( $gateways[ PayPalCommerce::GATEWAY_ID ] );
 		}
 
-		remove_filter( 'give_enabled_payment_gateways', [ $this, 'filterEnabledPayments' ] );
-
 		return $gateways;
 	}
 }
