@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give_Admin_Settings;
-use PayPalCheckoutSdk\Core\AccessTokenRequest;
 
 /**
  * Class ScriptLoader
@@ -116,7 +115,7 @@ EOT;
 	 * @since 2.9.0
 	 */
 	public function loadPublicAssets() {
-		if ( ! $this->merchantRepository->getDetails() || ! Utils::gatewayIsActive() ) {
+		if ( ! Utils::gatewayIsActive() || ! Utils::canPaymentGatewayAcceptPayment() ) {
 			return;
 		}
 
