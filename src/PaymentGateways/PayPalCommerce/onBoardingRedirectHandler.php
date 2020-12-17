@@ -246,6 +246,7 @@ class onBoardingRedirectHandler {
 		}
 
 		$this->merchantRepository->save( $merchantDetails );
+		$this->merchantRepository->onBoardingEnd();
 	}
 
 	/**

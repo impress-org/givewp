@@ -138,6 +138,7 @@ class AjaxRequestHandler {
 		$this->settings->updateAccountCountry( $country );
 		$this->settings->updatePartnerLinkDetails( $data );
 
+		$this->merchantRepository->onBoardingStart();
 		wp_send_json_success( $data );
 	}
 
