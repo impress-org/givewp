@@ -278,7 +278,11 @@ class onBoardingRedirectHandler {
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken, $usesCustomPayments ) {
 		$onBoardedData   = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$onBoardedData   = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessages[] = wp_json_encode( $onBoardedData );
+		$errorMessages[] = sprintf(
+			'%1$s<br><textarea readonly style="width: 100%">%2$s</textarea>',
+			esc_html__( 'PayPal account on-boarding merchant status check api response:', 'give' ),
+			wp_json_encode( $onBoardedData )
+		);
 
 		if ( ! is_ssl() ) {
 			$errorMessages[] = esc_html__(

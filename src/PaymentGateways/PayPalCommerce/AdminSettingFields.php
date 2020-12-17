@@ -317,12 +317,7 @@ class AdminSettingFields {
 						<?php esc_html_e( 'Greetings!', 'give' ); ?><br><br>
 						<?php esc_html_e( 'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:', 'give' ); ?><br>
 						<ul class="ul-disc">
-							<li>
-								<?php esc_html_e( 'PayPal account on-boarding merchant status check api response:', 'give' ); ?><br>
-								<textarea readonly style="width: 100%"><?php echo $accountErrors[0]; ?></textarea>
-							</li>
 							<?php
-							unset( $accountErrors[0] );
 							foreach ( $accountErrors as $error ) {
 								echo "<li>{$error}</li>";
 							}
