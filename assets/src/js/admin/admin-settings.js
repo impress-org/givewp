@@ -383,9 +383,25 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
 		countryField = document.getElementById( 'paypal_commerce_account_country' );
 
+	/**
+	 * Remove error container.
+	 *
+	 * @since 2.9.6
+	 */
+	function removeErrors() {
+		const errorsContainer = document.querySelector( '.paypal-message-template' );
+
+		if ( errorsContainer ) {
+			errorsContainer.parentElement.parentElement.remove();
+		}
+	}
+
 	if ( onBoardingButton ) {
 		onBoardingButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
+			removeErrors();
+
+			const countryCode = countryField.value;
 			const buttonState = {
 				enable: () => {
 					onBoardingButton.disabled = false;
@@ -403,8 +419,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			};
 
 			buttonState.disable();
-
-			const countryCode = countryField.value;
 
 			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
 				.then( response => response.json() )
@@ -427,6 +441,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	if ( disconnectPayPalAccountButton ) {
 		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
+			removeErrors();
 
 			new GiveConfirmModal( {
 				modalContent: {

@@ -319,7 +319,7 @@ class onBoardingRedirectHandler {
 		}
 
 		if ( ! $usesCustomPayments ) {
-			return empty( $errorMessages ) ? true : $errorMessages;
+			return count( $errorMessages ) > 1 ? $errorMessages : true;
 		}
 
 		if ( array_diff( [ 'products', 'capabilities' ], array_keys( $onBoardedData ) ) ) {
@@ -360,7 +360,7 @@ class onBoardingRedirectHandler {
 		}
 
 		// If there were errors then redirect the user with notices
-		return empty( $errorMessages ) ? true : $errorMessages;
+		return count( $errorMessages ) > 1 ? $errorMessages : true;
 	}
 
 	/**
