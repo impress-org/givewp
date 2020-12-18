@@ -3,8 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Exception;
-use Give\ConnectClient\ConnectClient;
-use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
