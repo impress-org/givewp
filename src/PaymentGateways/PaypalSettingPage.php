@@ -100,9 +100,11 @@ class PaypalSettingPage implements SettingPage {
 	public function registerPaypalSettings( $settings ) {
 		$currentSection = getCurrentSettingSection();
 
-		return $currentSection === $this->getId() ?
-			$this->getSettings() :
-			$settings;
+		if ( $currentSection === $this->getId() ) {
+			$settings = $this->getSettings();
+		}
+
+		return $settings;
 	}
 
 	/**
