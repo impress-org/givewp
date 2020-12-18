@@ -106,10 +106,9 @@ class onBoardingRedirectHandler {
 		if ( ! array_key_exists( 'merchantIdInPayPal', $payPalAccount ) || empty( $payPalAccount['merchantIdInPayPal'] ) ) {
 			$errors[] = [
 				'type'    => 'url',
-				'message' => esc_html__( 'Paypal return URL is:', 'give' ),
+				'message' => esc_html__( 'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:', 'give' ) . "\n",
 				'value'   => urlencode( $_SERVER['QUERY_STRING'] ),
 			];
-			$errors[] = esc_html__( 'There was a problem with PayPal return url and we could not find valid merchant ID.', 'give' );
 
 			$this->merchantRepository->saveAccountErrors( $errors );
 			$this->redirectWhenOnBoardingFail();

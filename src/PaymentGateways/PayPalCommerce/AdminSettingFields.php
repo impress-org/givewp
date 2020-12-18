@@ -318,10 +318,8 @@ class AdminSettingFields {
 					<div class="paypal-message-template">
 						<?php esc_html_e( 'Greetings!', 'give' ); ?><br><br>
 						<?php esc_html_e( 'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:', 'give' ); ?><br>
-						<ul class="ul-disc">
-							<?php echo $this->formatErrors( $accountErrors ); ?>
-						</ul>
-						<?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
+						<?php echo $this->formatErrors( $accountErrors ); ?>
+						<br><?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
 					</div>
 					<p>
 						<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">
@@ -343,20 +341,23 @@ class AdminSettingFields {
 	 * @return string
 	 */
 	private function formatErrors( $errors ) {
-		$formatedArray = array_map(
-			static function( $arr ) {
+		$isSingleError  = ! ( count( $errors ) > 1 );
+		$formattedArray = array_map(
+			static function( $arr ) use ( $isSingleError ) {
 				if ( is_array( $arr ) ) {
 					switch ( $arr['type'] ) {
 						case 'url':
 							return sprintf(
-								'<li>%1$s<br><code>%2$s</code></li>',
+								'<%1$s>%2$s<br><code>%3$s</code></%1$s>',
+								$isSingleError ? 'p' : 'li',
 								$arr['message'],
 								urldecode_deep( $arr['value'] )
 							);
 
 						case 'json':
 							return sprintf(
-								'<li>%1$s<br><textarea>%2$s</textarea></li>',
+								'<%1$s>%2$s<br><code>%3$s</code></%1$s>',
+								$isSingleError ? 'p' : 'li',
 								$arr['message'],
 								$arr['value']
 							);
@@ -364,7 +365,8 @@ class AdminSettingFields {
 				}
 
 				return sprintf(
-					'<li>%1$s</li>',
+					'<%1$s>%2$s<br><code>%3$s</code></%1$s>',
+					$isSingleError ? 'p' : 'li',
 					$arr
 				);
 
@@ -372,6 +374,15 @@ class AdminSettingFields {
 			$errors
 		);
 
-		return implode( '', $formatedArray );
+		$output = implode( '', $formattedArray );
+
+		if ( count( $errors ) > 1 ) {
+			$output = sprintf(
+				'<ul class="ui-disc">%1$s</ul>',
+				$output
+			);
+		}
+
+		return $output;
 	}
 }
