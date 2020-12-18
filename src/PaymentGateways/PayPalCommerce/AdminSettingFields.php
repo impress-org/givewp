@@ -317,11 +317,7 @@ class AdminSettingFields {
 						<?php esc_html_e( 'Greetings!', 'give' ); ?><br><br>
 						<?php esc_html_e( 'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:', 'give' ); ?><br>
 						<ul class="ul-disc">
-							<?php
-							foreach ( $accountErrors as $error ) {
-								echo "<li>{$error}</li>";
-							}
-							?>
+							<?php echo $this->formatErrors( $accountErrors ); ?>
 						</ul>
 						<?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
 					</div>
@@ -334,5 +330,46 @@ class AdminSettingFields {
 			</div>
 			<?php
 		endif;
+	}
+
+	/**
+	 * Return format errors string.
+	 *
+	 * @since 2.9.6
+	 * @param array $errors
+	 *
+	 * @return string
+	 */
+	private function formatErrors( $errors ) {
+		$formatedArray = array_map(
+			static function( $arr ) {
+				if ( is_array( $arr ) ) {
+					switch ( $arr['type'] ) {
+						case 'url':
+							return sprintf(
+								'<li>%1$s<br><code>%2$s</code></li>',
+								$arr['message'],
+								urldecode_deep( $arr['value'] )
+							);
+
+						case 'json':
+							return sprintf(
+								'<li>%1$s<br><textarea>%2$s</textarea></li>',
+								$arr['message'],
+								$arr['value']
+							);
+					}
+				}
+
+				return sprintf(
+					'<li>%1$s</li>',
+					$arr
+				);
+
+			},
+			$errors
+		);
+
+		return implode( '', $formatedArray );
 	}
 }

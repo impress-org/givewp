@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Exception;
 use Give\ConnectClient\ConnectClient;
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
@@ -105,11 +106,13 @@ class onBoardingRedirectHandler {
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
 		if ( ! array_key_exists( 'merchantIdInPayPal', $payPalAccount ) || empty( $payPalAccount['merchantIdInPayPal'] ) ) {
-			$errors[] = sprintf(
-				'%1$s <br><textarea readonly>%2$s</textarea>',
-				esc_html__( 'We did get valid PayPal merchant id in return url. PayPal return URL is:', 'give' ),
-				urlencode( $_SERVER['REQUEST_URI'] )
-			);
+			$errors[] = [
+				'type'    => 'url',
+				'message' => esc_html__( 'Paypal return URL is:', 'give' ),
+				'value'   => urlencode( $_SERVER['QUERY_STRING'] ),
+			];
+			$errors[] = esc_html__( 'There was a problem with PayPal return url and we could not find valid merchant ID.', 'give' );
+
 			$this->merchantRepository->saveAccountErrors( $errors );
 			$this->redirectWhenOnBoardingFail();
 		}
@@ -152,9 +155,11 @@ class onBoardingRedirectHandler {
 	/**
 	 * Sets up the webhook for the connected account
 	 *
+	 * @param  MerchantDetail  $merchant_details
+	 *
+	 * @throws Exception
 	 * @since 2.9.0
 	 *
-	 * @param MerchantDetail $merchant_details
 	 */
 	private function setUpWebhook( MerchantDetail $merchant_details ) {
 		if ( ! is_ssl() ) {
@@ -233,11 +238,13 @@ class onBoardingRedirectHandler {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			$errors[] = sprintf(
-				'%1$s <br><textarea readonly>%2$s</textarea>',
-				esc_html__( 'We are unable to fetch client_id and client_secret. PayPal Response is:', 'give' ),
-				wp_json_encode( $array )
-			);
+			$errors[] = [
+				'type'    => 'json',
+				'message' => esc_html__( 'PayPal client rest api credentials API request response is:', 'give' ),
+				'value'   => wp_json_encode( $array ),
+			];
+			$errors[] = esc_html__( 'There was a problem with PayPal client rest API request and we could not find valid client id and secret.', 'give' );
+
 			$this->merchantRepository->saveAccountErrors( $errors );
 			$this->redirectWhenOnBoardingFail();
 		}
@@ -278,11 +285,11 @@ class onBoardingRedirectHandler {
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken, $usesCustomPayments ) {
 		$onBoardedData   = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
 		$onBoardedData   = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessages[] = sprintf(
-			'%1$s<br><textarea readonly style="width: 100%">%2$s</textarea>',
-			esc_html__( 'PayPal account on-boarding merchant status check api response:', 'give' ),
-			wp_json_encode( $onBoardedData )
-		);
+		$errorMessages[] = [
+			'type'    => 'json',
+			'message' => esc_html__( 'PayPal merchant status check API request response is:', 'give' ),
+			'value'   => wp_json_encode( $onBoardedData ),
+		];
 
 		if ( ! is_ssl() ) {
 			$errorMessages[] = esc_html__(
@@ -358,7 +365,7 @@ class onBoardingRedirectHandler {
 	 * @since 2.9.0
 	 */
 	private function redirectWhenOnBoardingFail() {
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1', ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1' ) );
 
 		exit();
 	}
