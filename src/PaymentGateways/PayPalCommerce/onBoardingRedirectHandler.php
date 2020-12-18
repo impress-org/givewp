@@ -164,9 +164,15 @@ class onBoardingRedirectHandler {
 			return;
 		}
 
-		$webhookConfig = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
+		try {
+			$webhookConfig = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
+			$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
+		} catch ( Exception $ex ) {
+			$errors[] = esc_html__( 'There was a problem with creating webhook on PayPal. A gateway error log also added to get details information about PayPal response.', 'give' );
 
-		$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
+			$this->merchantRepository->saveAccountErrors( $errors );
+			$this->redirectWhenOnBoardingFail();
+		}
 	}
 
 	/**
