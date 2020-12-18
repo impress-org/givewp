@@ -27,7 +27,7 @@ class Utils {
 	 * @since 2.9.6
 	 * @return bool
 	 */
-	public static function canPaymentGatewayAcceptPayment() {
+	public static function isAccountReadyToAcceptPayment() {
 		/* @var MerchantDetail $merchantDetail */
 		$merchantDetail = give( MerchantDetail::class );
 

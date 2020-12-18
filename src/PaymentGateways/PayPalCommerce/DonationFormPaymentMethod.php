@@ -36,7 +36,7 @@ class DonationFormPaymentMethod {
 			return $gateways;
 		}
 
-		if ( ! Utils::canPaymentGatewayAcceptPayment() ) {
+		if ( ! Utils::isAccountReadyToAcceptPayment() ) {
 			unset( $gateways[ PayPalCommerce::GATEWAY_ID ] );
 		}
 

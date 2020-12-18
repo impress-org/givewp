@@ -115,7 +115,7 @@ EOT;
 	 * @since 2.9.0
 	 */
 	public function loadPublicAssets() {
-		if ( ! Utils::gatewayIsActive() || ! Utils::canPaymentGatewayAcceptPayment() ) {
+		if ( ! Utils::gatewayIsActive() || ! Utils::isAccountReadyToAcceptPayment() ) {
 			return;
 		}
 
