@@ -295,7 +295,8 @@ class AdminSettingFields {
 	 * @since 2.9.6
 	 */
 	private function printErrors() {
-		$accountErrors = give( MerchantDetails::class )->getAccountErrors();
+		$accountErrors         = give( MerchantDetails::class )->getAccountErrors();
+		$hasUnknownPayPalError = isset( $_GET['paypal-error'] );
 		if ( ! empty( $accountErrors ) ) :
 			?>
 			<div>
@@ -304,11 +305,12 @@ class AdminSettingFields {
 					<p>
 						<?php
 						printf(
-							'%1$s %2$s',
+							'%1$s %2$s %3$s',
 							esc_html__(
 								'Something is not quite ready with your PayPal account to accept online donations.',
 								'give'
 							),
+							! $hasUnknownPayPalError ? '' : esc_html__( 'We\'re not entirely sure what went wrong, but we want to help you figure out what happened.', 'give' ),
 							$this->getAdminGuidanceNotice()
 						);
 						?>
