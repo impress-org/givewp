@@ -382,7 +382,7 @@ class AdminSettingFields {
 
 		$output = implode( '', $formattedArray );
 
-		if ( count( $errors ) > 1 ) {
+		if ( $isSingleError ) {
 			$output = sprintf(
 				'<ul class="ui-disc">%1$s</ul>',
 				$output
