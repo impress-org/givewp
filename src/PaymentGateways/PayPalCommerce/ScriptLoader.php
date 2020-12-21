@@ -96,10 +96,14 @@ class ScriptLoader {
 						.then(function(res){ return res.json() })
 						.then(function(res) {
 							if ( true !== res.success ) {
-								alert("Something went wrong!");
-								}
+								alert('Something went wrong!');
+								return;
 							}
-						);
+
+							// Remove PayPal quick help container.
+							const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-quick-help');
+							paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+						});
 				}
 EOT;
 

@@ -297,10 +297,17 @@ class AdminSettingFields {
 	private function printErrors() {
 		$accountErrors         = give( MerchantDetails::class )->getAccountErrors();
 		$hasUnknownPayPalError = isset( $_GET['paypal-error'] );
+		$standardError         = sprintf(
+			'<div id="give-paypal-onboarding-quick-help" class="give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
+			esc_html__( 'Having trouble connecting to PayPal?', 'give' ),
+			$this->getAdminGuidanceNotice( false )
+		);
+
+		echo $standardError;
+
 		if ( ! empty( $accountErrors ) ) :
 			?>
 			<div>
-				<span>
 					<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations.', 'give' ); ?></p>
 					<p>
 						<?php
@@ -326,7 +333,6 @@ class AdminSettingFields {
 							<?php esc_html_e( 'Re-Check Account Status', 'give' ); ?>
 						</a>
 					</p>
-				</span>
 			</div>
 			<?php
 		endif;
