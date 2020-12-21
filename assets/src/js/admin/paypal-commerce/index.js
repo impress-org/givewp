@@ -76,7 +76,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		const errorsContainer = document.querySelector( '.paypal-message-template' );
 
 		if ( errorsContainer ) {
-			errorsContainer.parentElement.parentElement.remove();
+			errorsContainer.parentElement.remove();
 		}
 	}
 
