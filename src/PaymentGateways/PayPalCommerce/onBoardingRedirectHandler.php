@@ -103,8 +103,6 @@ class onBoardingRedirectHandler {
 
 		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
 
-		error_log( print_r( $payPalAccount, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 		if ( ! array_key_exists( 'merchantIdInPayPal', $payPalAccount ) || empty( $payPalAccount['merchantIdInPayPal'] ) ) {
 			$errors[] = [
 				'type'    => 'url',
