@@ -152,11 +152,9 @@ class onBoardingRedirectHandler {
 	/**
 	 * Sets up the webhook for the connected account
 	 *
-	 * @param  MerchantDetail  $merchant_details
-	 *
-	 * @throws Exception
 	 * @since 2.9.0
 	 *
+	 * @param  MerchantDetail  $merchant_details
 	 */
 	private function setUpWebhook( MerchantDetail $merchant_details ) {
 		if ( ! is_ssl() ) {
