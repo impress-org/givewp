@@ -14,7 +14,8 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
-        "phpunit/phpunit": "^5"
+        "phpunit/phpunit": "^5",
+        "fakerphp/faker": "^1.9"
     },
     "keywords": [
         "wordpress",
