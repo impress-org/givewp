@@ -89,6 +89,7 @@ class RefreshToken {
 	 * Note: only for internal use
 	 *
 	 * @since 2.9.0
+	 * @since 2.9.6 Refresh token only if paypal merchant id exist.
 	 */
 	public function refreshToken() {
 		// Exit if account is not connected.
