@@ -91,6 +91,11 @@ class RefreshToken {
 	 * @since 2.9.0
 	 */
 	public function refreshToken() {
+		// Exit if account is not connected.
+		if ( ! $this->detailsRepository->accountIsConnected() ) {
+			return;
+		}
+
 		$tokenDetails = $this->payPalAuth->getTokenFromClientCredentials( $this->merchantDetail->clientId, $this->merchantDetail->clientSecret );
 
 		$this->merchantDetail->setTokenDetails( $tokenDetails );
