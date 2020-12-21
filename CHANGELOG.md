@@ -7,15 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   Add filter hook to filter PayPal settings (#5502)
+
+### Changed
+
+-   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
+-   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
+-   Onboarding Form Preview template now loads scripts inside of the closing body tag (#5510)
+
+### Fixed
+
+-   Hover glitches of Fee Recovery checkbox are now fixed (#5508)
+-   PayPal Donations CC fields have border in Firefox browser (#5500)
+-   Automated unit and integrations tests are now executing (#5489)
+-   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+-   The current state of the Donation Form fields are now preserved when the payment method changes (#5491)
+
+## 2.9.5 - 2020-12-03
+
 ### New
 
 -    Onboarding locales now include Jamaica (#5474)
 
 ### Fixed
 
--   Currency Switcher options are visible in the dropdown on a windows machine (#5453)
+-   Currency Switcher options are visible in the dropdown on Windows machines (#5453)
 -   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
 -   Spacing between the amount and the currency is now preserved when the donnation amount is changed (#5479)
+-   Restored compatibility with < WP 5.1.1 (#5473)
 
 ## 2.9.4 - 2020-11-20
 
@@ -112,6 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
+-   Disconnecting a Stripe account no longer revokes GiveWP as an Authorized Application (#5378)
 
 ## 2.9.0-beta.1 - 2020-10-13
 

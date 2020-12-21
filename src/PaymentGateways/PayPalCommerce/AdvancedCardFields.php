@@ -1,9 +1,12 @@
 <?php
-
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-
+/**
+ * Class AdvancedCardFields
+ * @package Give\PaymentGateways\PayPalCommerce
+ *
+ * @since 2.9.0
+ */
 class AdvancedCardFields {
 	/**
 	 * PayPal commerce uses smart buttons to accept payment.

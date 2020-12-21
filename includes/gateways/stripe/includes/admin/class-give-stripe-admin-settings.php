@@ -79,6 +79,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
+			add_action( 'give_disconnect_connected_stripe_account', [ $this, 'disconnect_connected_stripe_account' ] );
 		}
 
 		/**
@@ -692,6 +693,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @return mixed|void
 		 * @since 2.7.0
+		 * @since 2.9.0 Stripe accounts are now disconnected locally, meaning that GiveWP remains an Authorized Application in the Stripe account.
 		 */
 		public function stripe_account_manager_field( $field, $option_value ) {
 			$stripe_accounts = give_stripe_get_all_accounts();
@@ -759,25 +761,20 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									$account_name       = $details['account_name'];
 									$account_email      = $details['account_email'];
 									$stripe_account_id  = $details['account_id'];
-									$disconnect_message = ( 'connect' === $details['type'] ) ?
-										sprintf(
-											esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe? If disconnected, this website and any others sharing the same Stripe account (%1$s) that are connected to GiveWP will need to reconnect in order to process payments.', 'give' ),
-											$stripe_account_id
-										) :
-										esc_html__( 'Are you sure you want to disconnect GiveWP from Stripe?', 'give' );
-									$disconnect_url     = ( 'connect' === $details['type'] ) ?
-										give_stripe_disconnect_url( $stripe_account_id, $slug ) :
-										add_query_arg(
-											[
-												'post_type' => 'give_forms',
-												'page'    => 'give-settings',
-												'tab'     => 'gateways',
-												'section' => 'stripe-settings',
-												'give_action' => 'disconnect_manual_stripe_account',
-											],
-											admin_url( 'edit.php' )
-										);
-
+									$disconnect_message = esc_html__( 'Are you sure you want to disconnect this Stripe account?', 'give' );
+									$disconnect_url     = add_query_arg(
+										[
+											'post_type'   => 'give_forms',
+											'page'        => 'give-settings',
+											'tab'         => 'gateways',
+											'section'     => 'stripe-settings',
+											'give_action' => ( 'connect' === $details['type'] )
+												? 'disconnect_connected_stripe_account'
+												: 'disconnect_manual_stripe_account',
+											'give_stripe_disconnect_slug' => $slug,
+										],
+										wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $slug )
+									);
 									?>
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
@@ -894,6 +891,19 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							}
 							?>
 						</div>
+					</div>
+					<!-- DESTRUCTIVE: Disconnect all Stripe accounts. -->
+					<hr class="give-stripe-disconnect-all-divider" />
+					<div class="give-stripe-disconnect-all">
+						<h3><?php esc_html_e( 'Remove GiveWP as an Authorized Application for my Stripe account.', 'give' ); ?></h3> 
+						<p class="give-stripe-disconnect-all--description">
+							<?php esc_html_e( 'Removing GiveWP as an Authorized Application for your Stripe account will remove the connection between the website you are disconnecting as well as any other sites that you have connected to GiveWP using the same Stripe account and connect method. Proceed with caution when disconnecting if you have multiple sites connected.', 'give' ); ?>
+						</p>
+						<p>
+							<a target="_blank" href="https://dashboard.stripe.com/account/applications">
+								<?php esc_html_e( 'View authorized applications in Stripe', 'give' ); ?>
+							</a>
+						</p>
 					</div>
 				</td>
 			</tr>
@@ -1062,6 +1072,23 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				</td>
 			</tr>
 			<?php
+		}
+
+		/**
+		 * @since 2.8.0
+		 */
+		public function disconnect_connected_stripe_account() {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+			$data = give_clean( $_GET );
+			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
+				return;
+			}
+			check_admin_referer( 'give_disconnect_connected_stripe_account_' . $data['give_stripe_disconnect_slug'] );
+			give_stripe_disconnect_account(
+				$data['give_stripe_disconnect_slug']
+			);
 		}
 	}
 }
