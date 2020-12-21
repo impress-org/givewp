@@ -382,9 +382,9 @@ class AdminSettingFields {
 
 		$output = implode( '', $formattedArray );
 
-		if ( $isSingleError ) {
+		if ( ! $isSingleError ) {
 			$output = sprintf(
-				'<ul class="ui-disc">%1$s</ul>',
+				'<ul class="ul-disc">%1$s</ul>',
 				$output
 			);
 		}
