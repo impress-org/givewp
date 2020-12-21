@@ -19,7 +19,7 @@ $donor-color: #333;
 $donor-space-eighth: $donor-space * 0.125;
 $donor-space-quarter: $donor-space * 0.25;
 $donor-space-fifth: $donor-space * 0.2;
-$donor-space-half: $donor-space * 0.5;
+$donor-space-half: $donor-space * 0.75;
 $donor-space-three-quarters: $donor-space * 0.75;
 $donor-space-and-quarter: $donor-space * 1.25;
 $donor-space-and-half: $donor-space * 1.5;
@@ -29,7 +29,7 @@ $donor-space-triple: $donor-space * 3;
 
 .give-donor {
 	border: 1px solid $give-card-border;
-	background: #FFF;
+	background: #fff;
 	color: $donor-color;
 	font-size: 1em;
 	margin-bottom: $donor-space;
@@ -38,35 +38,53 @@ $donor-space-triple: $donor-space * 3;
 	transition: all 0.2s ease-out;
 	width: 100%;
 
-	&__header { /* [1] */
+	&__header {
+
+		/* [1] */
 		align-items: center;
 		display: flex;
 	}
 
-	&__image { /* [2] */
-		border: 1px solid $give-card-border;
-		background: #FFF;
-		text-align: center;
-		flex-basis: $donor-space * 3;
-		flex-shrink: 0;
-		line-height: $donor-space * 3;
-		height: $donor-space * 3;
+	&__image {
+
+		/* [2] */
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		background: #fff;
 		margin-right: $donor-space-half;
 		overflow: hidden;
 		border-radius: 50%;
+		flex-basis: 40%;
+
+		position: relative;
 
 		img {
-			border-radius: 50%;
-			display: block;
-			height: ( $donor-space * 3 ) - 2;
 			object-fit: cover;
 			width: 100%;
 		}
+
+		.give-donor__name_initial {
+			position: absolute;
+		}
+
+		&[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
+		&[data-anonymous-donation='1'] .give-donor__name_initial {
+			visibility: hidden;
+		}
+
+		&[data-anonymous-donation='0'][data-has-valid-gravatar='0'] {
+			border: 1px solid $give-card-border;
+		}
 	}
 
-	&__details { /* [3] */
+	&__details {
+
+		/* [3] */
 		flex-grow: 1;
 		overflow: hidden;
+		flex-basis: 60%;
 	}
 
 	&__name {
@@ -108,15 +126,14 @@ $donor-space-triple: $donor-space * 3;
 		}
 	}
 
-	&__read-more{
+	&__read-more {
 		cursor: pointer;
 		white-space: nowrap;
 	}
 
-	&__excerpt + &__comment{
+	&__excerpt + &__comment {
 		display: none;
 	}
-
 }
 
 .give-donor-wall-modal {

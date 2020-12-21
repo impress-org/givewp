@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, orderBy, order, columns, showAvatar, showName, showCompanyName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -58,6 +58,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ columns }
 					options={ giveDonorWallOptions.columns }
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
+				<TextControl
+					name="avatarSize"
+					label={ __( 'Avatar Size', 'give' ) }
+					value={ avatarSize }
+					onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
 				<ToggleControl
 					name="showAvatar"
 					label={ __( 'Show Avatar', 'give' ) }
