@@ -235,6 +235,28 @@ class AjaxRequestHandler {
 	}
 
 	/**
+	 * Return on boarding trouble notice.
+	 *
+	 * @since 2.9.6
+	 */
+	public function onBoardingTroubleNotice() {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			wp_die();
+		}
+
+		/* @var AdminSettingFields $adminSettingFields */
+		$adminSettingFields = give( AdminSettingFields::class );
+
+		$standardError = sprintf(
+			'<div id="give-paypal-onboarding-trouble-notice" class="give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
+			esc_html__( 'Having trouble connecting to PayPal?', 'give' ),
+			$adminSettingFields->getAdminGuidanceNotice( false )
+		);
+
+		wp_send_json_success( $standardError );
+	}
+
+	/**
 	 * Validate admin ajax request.
 	 *
 	 * @since 2.9.0

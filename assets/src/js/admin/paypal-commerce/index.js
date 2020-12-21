@@ -11,7 +11,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			  mutationsRecord.forEach( function( record ) {
 			  	record.removedNodes.forEach( function( node ) {
 					if ( 'PPMiniWin' === node.getAttribute( 'id' ) ) {
-						const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-quick-help' );
+						const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
 						paypalErrorQuickHelp && paypalErrorQuickHelp.classList.remove( 'give-hidden' );
 					}
 				} );
@@ -105,7 +105,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			buttonState.disable();
 
 			// Hide paypal quick help message.
-			const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-quick-help' );
+			const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
 			paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
 
 			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
@@ -124,8 +124,24 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					}
 
 					buttonState.enable();
-				}
-				);
+				} )
+				.then( function() {
+					fetch( ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice' )
+						.then( response => response.json() )
+						.then( function( res ) {
+							if ( true === res.success ) {
+								function createElementFromHTML( htmlString ) {
+									const div = document.createElement( 'div' );
+									div.innerHTML = htmlString.trim();
+									return div.firstChild;
+								}
+
+								const buttonContainer = document.querySelector( '.connect-button-wrap' );
+								paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+								buttonContainer.append( createElementFromHTML( res.data ) );
+							}
+						} );
+				} );
 
 			return false;
 		} );

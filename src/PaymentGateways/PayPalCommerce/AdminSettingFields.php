@@ -265,10 +265,13 @@ class AdminSettingFields {
 	 * Return admin guidance notice to fix PayPal on boarding error.
 	 *
 	 * @since 2.9.6
+	 *
+	 * @param  bool  $completeMessage
+	 *
 	 * @return string
 	 */
-	private function getAdminGuidanceNotice( $completeMessage = true ) {
-		$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center', 'give' );
+	public function getAdminGuidanceNotice( $completeMessage = true ) {
+		$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center.', 'give' );
 
 		if ( $this->isCountryInNorthAmerica() ) {
 			$telephone = sprintf(
@@ -277,7 +280,7 @@ class AdminSettingFields {
 			);
 
 			$message = sprintf(
-				esc_html__( 'Please call a PayPal support representative at %1$s', 'give' ),
+				esc_html__( 'Please call a PayPal support representative at %1$s.', 'give' ),
 				$telephone
 			);
 		}
@@ -297,13 +300,6 @@ class AdminSettingFields {
 	private function printErrors() {
 		$accountErrors         = give( MerchantDetails::class )->getAccountErrors();
 		$hasUnknownPayPalError = isset( $_GET['paypal-error'] );
-		$standardError         = sprintf(
-			'<div id="give-paypal-onboarding-quick-help" class="give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
-			esc_html__( 'Having trouble connecting to PayPal?', 'give' ),
-			$this->getAdminGuidanceNotice( false )
-		);
-
-		echo $standardError;
 
 		if ( ! empty( $accountErrors ) ) :
 			?>

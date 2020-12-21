@@ -101,7 +101,7 @@ class ScriptLoader {
 							}
 
 							// Remove PayPal quick help container.
-							const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-quick-help');
+							const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
 							paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
 						});
 				}
