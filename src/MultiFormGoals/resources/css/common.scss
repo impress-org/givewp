@@ -1,11 +1,5 @@
 // This file used for Total styles common to the frontend and editor
 
-.give-multi-form-goal-block__image img {
-	height: 100%;
-	width: 100%;
-	object-fit: cover;
-}
-
 .give-multi-form-goal-block {
 	display: flex;
 	flex-direction: column;
@@ -32,19 +26,27 @@
 
 .give-multi-form-goal-block__content {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-gap: 16px;
 	margin: 24px !important;
 	min-height: 250px;
-}
 
-.give-multi-form-goal-block__text {
-	padding-left: 16px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	.give-multi-form-goal-block__text {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 
-	h2 {
-		margin-bottom: var(--global--spacing-vertical);
+		h2 {
+			margin-bottom: var(--global--spacing-vertical);
+		}
+	}
+
+	.give-multi-form-goal-block__image {
+		img {
+			height: 100%;
+			width: 100%;
+			object-fit: cover;
+		}
 	}
 }
 
