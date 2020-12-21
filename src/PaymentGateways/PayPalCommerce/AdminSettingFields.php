@@ -371,7 +371,7 @@ class AdminSettingFields {
 				}
 
 				return sprintf(
-					'<%1$s>%2$s<br><code>%3$s</code></%1$s>',
+					'<%1$s>%2$s</%1$s>',
 					$isSingleError ? 'p' : 'li',
 					$arr
 				);
