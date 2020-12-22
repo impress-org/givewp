@@ -24,8 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Send form title to PayPal (#5495)
 -   Automated unit and integrations tests are now executing (#5489)
 -   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+-   Error messages are instructive when an email address is already in the system (#5504)
 -   The current state of the Donation Form fields are now preserved when the payment method changes (#5491)
 -   Various Multi-Step form browser styling compatibility issues are now resolved (#5529)
+-   Checkbox click handler does not double trigger for touch devices (#5526)
 -   Multi-Form Goals added via shortcode now stack image and text when needed (#5528)
 
 ## 2.9.5 - 2020-12-03
