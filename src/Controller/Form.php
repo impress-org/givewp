@@ -260,7 +260,10 @@ class Form {
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
 		$redirect = add_query_arg(
-			[ 'showDonationProcessingError' => 1 ],
+			[
+				'showDonationProcessingError' => 1,
+				'giveDonationFormInIframe'    => 1,
+			],
 			$redirect
 		);
 
