@@ -365,7 +365,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 
 	} elseif ( email_exists( $email ) ) {
 		// Email already exists.
-		give_set_error( 'email_exists', __( 'Email already exists.', 'give' ) );
+		give_set_error( 'email_exists', __( 'The email address provided is already in use by a registered account on this site. Please log in and try again.', 'give' ) );
 		$valid = false;
 
 	} elseif ( ! is_email( $email ) ) {
@@ -378,7 +378,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		// If donor email is not primary.
 		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
 			// Check if email exists.
-			give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
+			give_set_error( 'email_used', __( 'The email address provided is already associated with another donor in the system. Please log in or use a different email', 'give' ) );
 			$valid = false;
 		}
 	}
