@@ -41,7 +41,7 @@ class PayPalCommerce implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getOptions() {
-		return [
+		$settings = [
 			[
 				'type'       => 'title',
 				'id'         => 'give_gateway_settings_1',
@@ -82,6 +82,13 @@ class PayPalCommerce implements PaymentGateway {
 				'id'   => 'give_gateway_settings_2',
 			],
 		];
+
+		/**
+		 * filter the settings
+		 *
+		 * @since 2.10.0
+		 */
+		return apply_filters( 'give_get_settings_paypal_commerce', $settings );
 	}
 
 	/**
