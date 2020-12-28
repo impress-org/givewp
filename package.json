@@ -17,6 +17,7 @@
         "test": "JEST_PUPPETEER_CONFIG=tests/e2e/jest-puppeteer.config.js jest -c tests/e2e/jest.config.js --runInBand --verbose --detectOpenHandles",
         "storybook": "start-storybook -p 6006",
         "storybook:build": "build-storybook -c .storybook -o .storybook-static",
+        "test:e2e": "wp-env start && cypress open",
         "wp-env": "wp-env",
         "cypress:open": "cypress open"
     },
