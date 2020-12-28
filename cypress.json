@@ -1,0 +1,9 @@
+{
+    "env": {
+        "wp_user": "admin",
+        "wp_pass": "password",
+        "site": {
+            "url": "http://localhost:8888"
+        }
+    }
+}
