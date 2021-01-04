@@ -253,14 +253,19 @@ class Form {
 	 *
 	 * These redirects mainly happen when donation form data is not valid.
 	 *
+	 * @since 2.7.0
+	 * @since 2.9.6 Adds giveDonationFormInIframe query param to url
+	 *
 	 * @param string $redirect
 	 *
 	 * @return string
-	 * @since 2.7.0
 	 */
 	public function handlePrePaymentProcessingErrorRedirect( $redirect ) {
 		$redirect = add_query_arg(
-			[ 'showDonationProcessingError' => 1 ],
+			[
+				'showDonationProcessingError' => 1,
+				'giveDonationFormInIframe'    => 1,
+			],
 			$redirect
 		);
 

@@ -345,6 +345,24 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
+.give-stripe-disconnect-all {
+	padding: 10px;
+	border: 1px solid #e5e5e5;
+	border-left: 4px solid #ffba00;
+
+	h3 {
+		margin: 0;
+		font-size: 1.1em;
+	}
+
+	.give-stripe-disconnect-all--description {
+		color: #666;
+	}
+}
+.give-stripe-disconnect-all-divider {
+	margin: 40px;
+}
+
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 	only screen and (min--moz-device-pixel-ratio: 1.5),
