@@ -9,7 +9,6 @@
 namespace Give\Reports\Endpoints;
 
 use WP_REST_Request;
-use WP_REST_Response;
 
 class AverageDonation extends BaseEndpoint {
 

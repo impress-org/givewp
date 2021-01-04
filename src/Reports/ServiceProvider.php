@@ -2,6 +2,8 @@
 
 namespace Give\Reports;
 
+use Give\Reports\Endpoints\BaseEndpoint;
+
 class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	/**
 	 * @var string[] array of RestRoute classes
@@ -40,7 +42,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 	 */
 	public function registerRoutes() {
 		foreach ( $this->reportRoutes as $route ) {
-			/** @var RestRoute $route */
+			/** @var BaseEndpoint $route */
 			$route = give()->make( $route );
 
 			$route->registerRoute();
