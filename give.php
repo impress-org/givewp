@@ -50,6 +50,7 @@ use Give\ServiceProviders\LegacyServiceProvider;
 use Give\Reports\ServiceProvider as ReportsServiceProvider;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
+use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -142,6 +143,7 @@ final class Give {
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
+		TestDataServiceProvider::class,
 	];
 
 	/**

@@ -70,9 +70,12 @@ class Shortcode {
 	 * @reutrn array
 	 */
 	protected function parseAttributes( $pairs, $attributes ) {
-		foreach ( $attributes as $key => &$attribute ) {
-			if ( is_array( $pairs[ $key ] ) ) {
-				$attribute = $this->parseAttributeArray( $attribute );
+
+		if ( $attributes ) {
+			foreach ( $attributes as $key => &$attribute ) {
+				if ( is_array( $pairs[ $key ] ) ) {
+					$attribute = $this->parseAttributeArray( $attribute );
+				}
 			}
 		}
 
