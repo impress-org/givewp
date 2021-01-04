@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Multiple error redirects does not break donation form view in Multi Step form template view (#5531)
 -   Hover glitches of Fee Recovery checkbox are now fixed (#5508)
 -   PayPal Donations CC fields have border in Firefox browser (#5500)
 -   Send form title to PayPal (#5495)
