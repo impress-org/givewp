@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## Changed
-
--   Reporting Revenue is now more performant and scaleable (#5476)
 ### Added
 
 -   Add filter hook to filter PayPal settings (#5502)
