@@ -86,7 +86,8 @@ class PaymentsQuery {
                 DonationCurrency.meta_value as currency,
                 PaymentGateway.meta_value as gateway,
                 DonorFirstName.meta_value as first_name,
-                DonorLastName.meta_value as last_name
+				DonorLastName.meta_value as last_name,
+				DonorEmail.email as email
             FROM {$wpdb->prefix}posts as Donation
             JOIN {$wpdb->prefix}give_donationmeta as DonationMode
                 ON Donation.ID = DonationMode.donation_id
@@ -117,6 +118,8 @@ class PaymentsQuery {
             JOIN {$wpdb->prefix}give_donormeta as DonorLastName
                 ON DonorID.meta_value = DonorLastName.donor_id
                 AND DonorLastName.meta_key = '_give_donor_last_name'
+			JOIN {$wpdb->prefix}give_donors as DonorEmail
+                ON DonorID.meta_value = DonorEmail.id
             WHERE Donation.post_type = 'give_payment'
         ";
 
