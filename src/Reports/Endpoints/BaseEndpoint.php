@@ -415,6 +415,7 @@ abstract class BaseEndpoint implements RestRoute {
 			->testMode( $this->testMode )
 			->currency( $this->currency )
 			->between( $startStr, $endStr )
+			->orderBy( $orderBy )
 			->limit( $number );
 
 		$sql      = $query->getSQL( $wpdb );

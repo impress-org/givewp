@@ -22,6 +22,9 @@ class PaymentsQuery {
 	/** @var int */
 	protected $number = -1;
 
+	/** @var string */
+	protected $orderBy = 'date';
+
 	/**
 	 * @param bool $testMode
 	 *
@@ -61,6 +64,16 @@ class PaymentsQuery {
 	 */
 	public function limit( $number ) {
 		$this->number = $number;
+		return $this;
+	}
+
+	/**
+	 * @param string $orderBy
+	 * 
+	 * @return PaymentsQuery
+	 */
+	public function orderBy( $orderBy ) {
+		$this->orderBy = $orderBy;
 		return $this;
 	}
 
@@ -120,12 +133,14 @@ class PaymentsQuery {
                 AND DonorLastName.meta_key = '_give_donor_last_name'
 			JOIN {$wpdb->prefix}give_donors as DonorEmail
                 ON DonorID.meta_value = DonorEmail.id
-            WHERE Donation.post_type = 'give_payment'
+			WHERE Donation.post_type = 'give_payment'
         ";
 
 		if ( $this->startDate && $this->endDate ) {
 			$sql .= " AND DATE( Donation.post_date ) BETWEEN '{$this->startDate}' AND '{$this->endDate}'";
 		}
+
+		$sql .= " ORDER BY {$this->orderBy} DESC";
 
 		if ( -1 !== $this->number ) {
 			$sql .= " LIMIT {$this->number}";
