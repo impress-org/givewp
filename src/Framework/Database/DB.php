@@ -5,6 +5,22 @@ namespace Give\Framework\Database;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use WP_Error;
 
+/**
+ * Class DB
+ *
+ * A static decorator for the $wpdb class and decorator function which does SQL error checking when performing queries.
+ * If a SQL error occurs a DatabaseQueryException is thrown.
+ *
+ * @method static int|bool query( string $query )
+ * @method static int|false insert( string $table, array $data, array|string $format )
+ * @method static int|false delete( string $table, array $where, array|string $where_format )
+ * @method static int|false update( string $table, array $where, array|string $where_format )
+ * @method static int|false replace( string $table, array $data, array|string $format )
+ * @method static null|string get_var( string $query = null, int $x = 0, int $y = 0 )
+ * @method static array|object|null|void get_row( string $query = null, string $output = OBJECT, int $y = 0 )
+ * @method static array get_col( string $query = null, int $x = 0 )
+ * @method static array|object|null get_results( string $query = null, string $output = OBJECT )
+ */
 class DB {
 	/**
 	 * Runs the dbDelta function and returns a WP_Error with any errors that occurred during the process
@@ -27,25 +43,40 @@ class DB {
 	}
 
 	/**
-	 * Runs the $wpdb::delete method with SQL error checking
+	 * A convenience method for the $wpdb->prepare method
 	 *
-	 * @see wpdb::delete() for parameter and return details
+	 * @see WPDB::prepare() for usage details
 	 *
-	 * @since 2.9.2
+	 * @since 2.9.6
 	 *
-	 * @param string $tableName
-	 * @param array  $data
-	 * @param array  $formats
+	 * @param string $query
+	 * @param mixed  ...$args
 	 *
-	 * @return int|false
+	 * @return false|mixed
+	 */
+	public static function prepare( $query, ...$args ) {
+		global $wpdb;
+
+		return $wpdb->prepare( $query, ...$args );
+	}
+
+	/**
+	 * Magic method which calls the static method on the $wpdb while performing error checking
+	 *
+	 * @since 2.9.6
+	 *
+	 * @param $name
+	 * @param $arguments
+	 *
+	 * @return mixed
 	 * @throws DatabaseQueryException
 	 */
-	public static function delete( $tableName, $data, $formats ) {
+	public static function __callStatic( $name, $arguments ) {
 		return self::runQueryWithErrorChecking(
-			function () use ( $tableName, $data, $formats ) {
+			function () use ( $name, $arguments ) {
 				global $wpdb;
 
-				return $wpdb->delete( $tableName, $data, $formats = null );
+				return call_user_func_array( [ $wpdb, $name ], $arguments );
 			}
 		);
 	}
