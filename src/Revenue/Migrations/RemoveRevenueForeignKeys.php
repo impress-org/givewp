@@ -5,6 +5,12 @@ namespace Give\Revenue\Migrations;
 use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
 
+/**
+ * Class RemoveRevenueForeignKeys
+ *
+ * @since 2.9.6
+ * @package Give\Revenue\Migrations
+ */
 class RemoveRevenueForeignKeys extends Migration {
 	/**
 	 * @inheritDoc
