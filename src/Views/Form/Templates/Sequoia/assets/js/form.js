@@ -612,6 +612,8 @@
 			} ).done( function() {
 				// Trigger float-labels
 				window.give_fl_trigger();
+
+				setupInputIcons();
 			} );
 		}
 	}
