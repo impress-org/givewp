@@ -747,11 +747,11 @@
 		if ( $( evt.target ).is( 'input' ) ) {
 			switch ( $( evt.target ).prop( 'type' ) ) {
 				case 'checkbox': {
-					$( evt.target ).parent().toggleClass( 'checked' );
+					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
 					break;
 				}
 				case 'radio': {
-					$( evt.target ).parent().addClass( 'selected' );
+					$( evt.target ).closest( 'label' ).addClass( 'selected' );
 					$( evt.target ).parent().siblings().removeClass( 'selected' );
 					break;
 				}
