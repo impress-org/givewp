@@ -368,7 +368,7 @@
 							}
 
 							if ( $( node ).attr( 'id' ) && $( node ).attr( 'id' ).includes( 'give-checkout-login-register' ) ) {
-								$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
+								setupRegistrationFormInputFields();
 							}
 
 							if ( $( node ).prop( 'tagName' ) && $( node ).prop( 'tagName' ).toLowerCase() === 'select' ) {
@@ -482,15 +482,49 @@
 	}
 
 	/**
+	 * Setup registration form input fields.
+	 * @since 2.9.6
+	 */
+	function setupRegistrationFormInputFields() {
+		const handleInput = function( evt ) {
+			if ( ! $( evt.target ).is( 'input' ) ) {
+				return;
+			}
+
+			switch ( $( evt.target ).prop( 'type' ) ) {
+				case 'checkbox': {
+					if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
+						return;
+					}
+
+					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
+					break;
+				}
+				case 'radio': {
+					if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
+						return;
+					}
+
+					$( evt.target ).closest( 'label' ).addClass( 'selected' );
+					$( evt.target ).parent().siblings().removeClass( 'selected' );
+					break;
+				}
+			}
+		};
+
+		$( '[id*="give-register-account-fields"]' )
+			.off( 'click', handleInput )
+			.on( 'click', handleInput );
+	}
+
+	/**
 	 * Add listeners and starting states to FFM inputs
 	 * @since 2.7.0
 	 */
 	function setupFFMInputs() {
-		$( '#give-ffm-section' ).off( 'click', handleFFMInput );
-		$( '[id*="give-register-account-fields"]' ).off( 'click', handleFFMInput );
-
-		$( '#give-ffm-section' ).on( 'click', handleFFMInput );
-		$( '[id*="give-register-account-fields"]' ).on( 'click', handleFFMInput );
+		$( '#give-ffm-section' )
+			.off( 'click', handleFFMInput )
+			.on( 'click', handleFFMInput );
 
 		$( '#give-ffm-section input' ).each( function() {
 			switch ( $( this ).prop( 'type' ) ) {
@@ -555,6 +589,7 @@
 		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
 		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
 
+		setupRegistrationFormInputFields();
 		setupFFMInputs();
 		setupInputIcons();
 	}
@@ -747,18 +782,10 @@
 		if ( $( evt.target ).is( 'input' ) ) {
 			switch ( $( evt.target ).prop( 'type' ) ) {
 				case 'checkbox': {
-					if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
-						return;
-					}
-
 					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
 					break;
 				}
 				case 'radio': {
-					if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
-						return;
-					}
-
 					$( evt.target ).closest( 'label' ).addClass( 'selected' );
 					$( evt.target ).parent().siblings().removeClass( 'selected' );
 					break;
