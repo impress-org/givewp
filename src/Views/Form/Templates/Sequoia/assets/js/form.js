@@ -491,25 +491,12 @@
 				return;
 			}
 
-			switch ( $( evt.target ).prop( 'type' ) ) {
-				case 'checkbox': {
-					if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
-						return;
-					}
-
-					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
-					break;
-				}
-				case 'radio': {
-					if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
-						return;
-					}
-
-					$( evt.target ).closest( 'label' ).addClass( 'selected' );
-					$( evt.target ).parent().siblings().removeClass( 'selected' );
-					break;
-				}
+			if ( $( evt.target ).hasClass( 'give-disabled' ) ) {
+				return;
 			}
+
+			// Registration account fields only contains checkboxes.
+			$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
 		};
 
 		$( '[id*="give-register-account-fields"]' )
