@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 // Import styles
 import './style.scss';
 
-const Button = ( { onClick, children } ) => {
+const Button = ( { onClick, testId, children } ) => {
 	return (
-		<button className="give-obw-button" onClick={ onClick }>
+		<button className="give-obw-button" data-givewp-test={ testId } onClick={ onClick }>
 			{ children }
 		</button>
 	);
@@ -14,11 +14,13 @@ const Button = ( { onClick, children } ) => {
 
 Button.propTypes = {
 	onClick: PropTypes.func,
+	testId: PropTypes.string,
 	children: PropTypes.node,
 };
 
 Button.defaultProps = {
 	onClick: null,
+	testId: null,
 	children: null,
 };
 

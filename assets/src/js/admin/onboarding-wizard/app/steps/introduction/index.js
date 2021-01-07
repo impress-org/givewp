@@ -28,7 +28,7 @@ const Introduction = () => {
 					<p>
 						{ __( 'You\'re minutes away from accepting donations on your website. Use the Onboarding Wizard if this is your first time using GiveWP.', 'give' ) }
 					</p>
-					<ContinueButton clickCallback={ () => onStartSetup() } label={ __( 'Start Setup', 'give' ) } />
+					<ContinueButton clickCallback={ () => onStartSetup() } label={ __( 'Start Setup', 'give' ) } testId="start-setup" />
 				</div>
 			</Card>
 			<DismissLink />
