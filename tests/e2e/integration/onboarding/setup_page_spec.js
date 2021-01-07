@@ -1,7 +1,7 @@
 const cy = window.cy;
 const baseURL = window.baseURL;
 
-describe( 'Test setup page options', function() {
+describe( 'Test setup page', function() {
 	it( 'can enable setup page', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced' );
 		cy.get( 'input[name="setup_page_enabled"][value="enabled"]' ).click();
