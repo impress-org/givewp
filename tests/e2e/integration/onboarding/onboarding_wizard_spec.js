@@ -11,7 +11,7 @@ describe( 'Test onboarding wizard', function() {
 	} );
 	it( 'can open the onboarding wizard', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
-		cy.get( 'article[data-givewp-test="onboarding-wizard-link"]' ).click();
-		cy.get( 'button[data-givewp-test="start-setup"]' ).should( 'exist' );
+		cy.getByTest( 'onboarding-wizard-link' ).click();
+		cy.getByTest( 'start-setup' ).should( 'exist' );
 	} );
 } );
