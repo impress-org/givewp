@@ -16,9 +16,8 @@
         "lint:scss": "stylelint assets/src/**/*.scss",
         "storybook": "start-storybook -p 6006",
         "storybook:build": "build-storybook -c .storybook -o .storybook-static",
-        "test:e2e": "wp-env start && cypress open",
-        "wp-env": "wp-env",
-        "cypress:open": "cypress open"
+        "test:e2e": "cypress open",
+        "env": "wp-env"
     },
     "repository": {
         "type": "git",

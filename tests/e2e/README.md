@@ -11,13 +11,8 @@ A sample `wordpress.sql` is provided within the `/sample-data/` folder that has 
 
 ### Testing
 
-After setting up the local development environment, running tests manually is fairly simple. Navigate to the Give root folder and get things started by running:
-
-```npm run test:e2e```
-
-This will use `wp-env` to spin up a new local version of WordPress with your current changes to GiveWP. Once setup, Cypress is then opened, and ready to run tests against it.
-
-When you're done with testing, simply close the Cypress GUI, and run `npm run wp-env stop` to stop the WP instance that was created.
-
+1. Start local development environment (with docker) by running `npm run env start`.
+1. Run `npm run test:e2e` to open the Cypress UI test runner in the browser.
+1. Stop the local development environment by running `npm run env stop`.
 ### Learn More
 You can find more information about what e2e testing achieves, how e2e tests are implemented in GiveWP, and how to write your own tests via the [GiveWP dev manual](https://app.gitbook.com/@give/s/givewp/testing/types-of-tests/end-to-end-testing). Happy testing!
