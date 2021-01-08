@@ -37,7 +37,7 @@ const Location = () => {
 				<SelectInput label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } isLoading={ fetchingStatesList } />
 				<SelectInput label={ __( 'Currency', 'give' ) } value={ currency } onChange={ ( value ) => dispatch( setCurrency( value ) ) } options={ currenciesList } />
 			</Card>
-			<ContinueButton />
+			<ContinueButton testId="location-continue-button" />
 		</div>
 	);
 };
