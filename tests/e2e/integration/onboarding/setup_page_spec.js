@@ -9,7 +9,12 @@ describe( 'Test setup page', function() {
 		cy.visit( baseURL + '/wp-admin' );
 		cy.get( 'a[href="edit.php?post_type=give_forms&page=give-setup"]' ).should( 'exist' );
 	} );
-	it( 'can dismiss setup -page', function() {
+	it( 'can manually launch wizard', function() {
+		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
+		cy.getByTest( 'setup-configuration' ).click();
+		cy.getByTest( 'start-setup' ).should( 'exist' );
+	})
+	it( 'can dismiss setup age', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
 		cy.getByTest( 'setup-dismiss' ).click();
 		cy.get( 'a[href="edit.php?post_type=give_forms&page=give-setup"]' ).should( 'not.exist' );
