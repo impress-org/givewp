@@ -9,6 +9,11 @@ describe( 'Test setup page', function() {
 		cy.visit( baseURL + '/wp-admin' );
 		cy.get( 'a[href="edit.php?post_type=give_forms&page=give-setup"]' ).should( 'exist' );
 	} );
+	it( 'can dismiss setup -page', function() {
+		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
+		cy.getByTest( 'setup-dismiss' ).click();
+		cy.get( 'a[href="edit.php?post_type=give_forms&page=give-setup"]' ).should( 'not.exist' );
+	})
 	it( 'can disable setup page', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced' );
 		cy.get( 'input[name="setup_page_enabled"][value="disabled"]' ).click();
