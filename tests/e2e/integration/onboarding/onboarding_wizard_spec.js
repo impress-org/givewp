@@ -41,6 +41,8 @@ describe( 'Test onboarding wizard', function() {
 		cy.getByTest( 'intro-continue-button' ).click();
 		cy.getByTest( 'cause-continue-button' ).should( 'exist' );
 
+		//
+
 		// Cause continue button should lead to location step
 		cy.getByTest( 'cause-continue-button' ).click();
 		cy.getByTest( 'location-continue-button' ).should( 'exist' );
