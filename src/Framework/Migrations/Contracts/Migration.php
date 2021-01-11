@@ -31,7 +31,7 @@ abstract class Migration {
 	/**
 	 * Return a Unix Timestamp for when the migration was created
 	 *
-	 * Example: strtotime( '2020-09-16 ')
+	 * Example: strtotime( '2020-09-16 12:30:00')
 	 *
 	 * @since 2.9.0
 	 *
