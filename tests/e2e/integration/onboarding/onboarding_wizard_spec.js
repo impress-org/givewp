@@ -31,7 +31,7 @@ describe( 'Test onboarding wizard', function() {
 	it( 'can dismess onboarding wizard', function() {
 		cy.visit( baseURL + '/wp-admin/?page=give-onboarding-wizard' );
 		cy.getByTest( 'dismiss-wizard-link' ).click();
-		cy.getByTest( 'onboarding-wizard-link' ).should( 'exist' );
+		cy.getByTest( 'setup-configuration' ).should( 'exist' );
 	} );
 
 	it( 'can navigate through the Onboarding Wizard', function() {
