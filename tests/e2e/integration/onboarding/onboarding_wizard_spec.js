@@ -113,6 +113,18 @@ describe( 'Test onboarding wizard', function() {
 		cy.getByTest( 'location-continue-button' ).click();
 		cy.getByTest( 'features-continue-button' ).should( 'exist' );
 
+		// Multiple feature cards can be selected
+		cy.get( 'label[for="donation-comments"]' ).click();
+		cy.get( 'label[for="terms-conditions"]' ).click();
+		cy.get( 'input[value="donation-comments"]' ).should( 'have.attr', 'checked' );
+		cy.get( 'input[value="terms-conditions"]' ).should( 'have.attr', 'checked' );
+
+		// Feature cards can be unselected
+		cy.get( 'label[for="donation-comments"]' ).click();
+		cy.get( 'label[for="terms-conditions"]' ).click();
+		cy.get( 'input[value="donation-comments"]' ).should( 'not.have.attr', 'checked' );
+		cy.get( 'input[value="terms-conditions"]' ).should( 'not.have.attr', 'checked' );
+
 		// Features continue button should lead to preview step
 		cy.getByTest( 'features-continue-button' ).click();
 		cy.getByTest( 'preview-continue-button' ).should( 'exist' );
