@@ -150,6 +150,20 @@ describe( 'Test onboarding wizard', function() {
 		cy.get( 'input[value="recurring-donations"]' ).should( 'not.have.attr', 'checked' );
 		cy.get( 'input[value="donors-cover-fees"]' ).should( 'not.have.attr', 'checked' );
 
+		// Top navigation should work as expected
+
+		// Check that first step link works as expected
+		cy.getByTest( 'navigation-step' ).eq( 0 ).click();
+		cy.getByTest( 'cause-continue-button' ).should( 'exist' );
+
+		// Check that third step link works as expected
+		cy.getByTest( 'navigation-step' ).eq( 2 ).click();
+		cy.getByTest( 'features-continue-button' ).should( 'exist' );
+
+		// Check that last step link works as expected
+		cy.getByTest( 'navigation-step' ).eq( 4 ).click();
+		cy.getByTest( 'addons-continue-button' ).should( 'exist' );
+
 		// Addons continue button should lead to setup page
 		cy.getByTest( 'addons-continue-button' ).click();
 		cy.getByTest( 'onboarding-wizard-link' ).should( 'exist' );
