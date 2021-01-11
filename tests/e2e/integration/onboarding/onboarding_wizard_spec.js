@@ -24,7 +24,7 @@ describe( 'Test onboarding wizard', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
 
 		// When not an input or anchor tag, use get by test to target elements by their data-givewp-test attribute
-		cy.getByTest( 'onboarding-wizard-link' ).click();
+		cy.getByTest( 'setup-configuration' ).click();
 		cy.getByTest( 'intro-continue-button' ).should( 'exist' );
 	} );
 
@@ -166,6 +166,6 @@ describe( 'Test onboarding wizard', function() {
 
 		// Addons continue button should lead to setup page
 		cy.getByTest( 'addons-continue-button' ).click();
-		cy.getByTest( 'onboarding-wizard-link' ).should( 'exist' );
+		cy.getByTest( 'setup-configuration' ).should( 'exist' );
 	} );
 } );
