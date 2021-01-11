@@ -46,6 +46,11 @@ describe( 'Test onboarding wizard', function() {
 		cy.get( 'input[value="organization"]' ).should( 'have.attr', 'checked' );
 		cy.get( 'input[value="individual"]' ).should( 'not.have.attr', 'checked' );
 
+		// Cause types should be selectable
+		cy.getByTest( 'cause-select' ).get( '.givewp-select__value-container' ).click();
+		cy.getByTest( 'cause-select' ).get( '.givewp-select__menu-list > div' ).eq( 2 ).click();
+		cy.getByTest( 'cause-select' ).get( '.givewp-select__value-container' ).contains( 'Environmental' );
+
 		// Cause continue button should lead to location step
 		cy.getByTest( 'cause-continue-button' ).click();
 		cy.getByTest( 'location-continue-button' ).should( 'exist' );

@@ -46,7 +46,7 @@ const YourCause = () => {
 			</CardInput>
 			<h2>{ __( 'What is your cause?', 'give' ) }</h2>
 			<span className="screen-reader-text">{ __( 'What is your cause?', 'give' ) }</span>
-			<SelectInput value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
+			<SelectInput testId="cause-select" value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
 			<ContinueButton testId="cause-continue-button" />
 		</div>
 	);
