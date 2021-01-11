@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Checkbox click handler does not double trigger for touch devices (#5526)
 -   Multi-Form Goals added via shortcode now stack image and text when needed (#5528)
 -   Added migration to remove any leftover foreign keys on the revenue table (#5540)
+-   Give Aid add-on description popup is now working when using multi-step form (#5549)
 
 ## 2.9.5 - 2020-12-03
 
