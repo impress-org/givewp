@@ -25,7 +25,7 @@ describe( 'Test onboarding wizard', function() {
 
 		// When not an input or anchor tag, use get by test to target elements by their data-givewp-test attribute
 		cy.getByTest( 'onboarding-wizard-link' ).click();
-		cy.getByTest( 'start-setup' ).should( 'exist' );
+		cy.getByTest( 'intro-continue-button' ).should( 'exist' );
 	} );
 
 	it( 'can dismess onboarding wizard', function() {
@@ -41,7 +41,10 @@ describe( 'Test onboarding wizard', function() {
 		cy.getByTest( 'intro-continue-button' ).click();
 		cy.getByTest( 'cause-continue-button' ).should( 'exist' );
 
-		//
+		// Only one fundraising type card should be selected at a time
+		cy.get( 'label[for="organization"]' ).click();
+		cy.get( 'input[value="organization"]' ).should( 'have.attr', 'checked' );
+		cy.get( 'input[value="individual"]' ).should( 'not.have.attr', 'checked' );
 
 		// Cause continue button should lead to location step
 		cy.getByTest( 'cause-continue-button' ).click();
