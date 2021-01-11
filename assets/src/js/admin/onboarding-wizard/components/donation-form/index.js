@@ -64,7 +64,7 @@ const DonationForm = () => {
 	};
 
 	return (
-		<div className="give-obw-donation-form-preview">
+		<div className="give-obw-donation-form-preview" data-givewp-test="preview-form">
 			<div className="give-obw-donation-form-preview__loading-message" style={ messageStyle }>
 				<ConfigurationIcon />
 				<h3>

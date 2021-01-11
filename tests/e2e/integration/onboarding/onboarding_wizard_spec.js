@@ -129,6 +129,11 @@ describe( 'Test onboarding wizard', function() {
 		cy.getByTest( 'features-continue-button' ).click();
 		cy.getByTest( 'preview-continue-button' ).should( 'exist' );
 
+		// Prevew form iframe should load
+		cy.getByTest( 'preview-form' ).within( () => {
+			cy.get( 'iframe' ).its( '0.contentDocument.body' ).should( 'be.visible' );
+		} );
+
 		// Preview continue button should lead to addons step
 		cy.getByTest( 'preview-continue-button' ).click();
 		cy.getByTest( 'addons-continue-button' ).should( 'exist' );
