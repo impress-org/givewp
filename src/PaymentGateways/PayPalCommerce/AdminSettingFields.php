@@ -271,7 +271,7 @@ class AdminSettingFields {
 	 * @return string
 	 */
 	public function getAdminGuidanceNotice( $completeMessage = true ) {
-		$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center.', 'give' );
+		$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center ', 'give' );
 
 		if ( $this->isCountryInNorthAmerica() ) {
 			$telephone = sprintf(
@@ -280,14 +280,12 @@ class AdminSettingFields {
 			);
 
 			$message = sprintf(
-				esc_html__( 'Please call a PayPal support representative at %1$s.', 'give' ),
+				esc_html__( 'Please call a PayPal support representative at %1$s ', 'give' ),
 				$telephone
 			);
 		}
 
-		if ( $completeMessage ) {
-			$message .= esc_html__( ' and relay the following message:', 'give' );
-		}
+		$message .= $completeMessage ? esc_html__( ' and relay the following message:', 'give' ) : '.';
 
 		return $message;
 	}
@@ -308,12 +306,11 @@ class AdminSettingFields {
 				<p>
 					<?php
 					printf(
-						'%1$s %2$s %3$s',
+						'%1$s %2$s',
 						esc_html__(
-							'Something is not quite ready with your PayPal account to accept online donations.',
+							'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
 							'give'
 						),
-						! $hasUnknownPayPalError ? '' : esc_html__( 'We\'re not entirely sure what went wrong, but we want to help you figure out what happened.', 'give' ),
 						$this->getAdminGuidanceNotice()
 					)
 					?>
