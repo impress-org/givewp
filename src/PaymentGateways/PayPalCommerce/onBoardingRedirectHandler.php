@@ -241,9 +241,16 @@ class onBoardingRedirectHandler {
 		if ( array_diff( $required, array_keys( $array ) ) ) {
 			$errors[] = [
 				'type'    => 'json',
+				'message' => esc_html__( 'PayPal client access token API request response is:', 'give' ),
+				'value'   => wp_json_encode( $this->settings->getAccessToken() ),
+			];
+
+			$errors[] = [
+				'type'    => 'json',
 				'message' => esc_html__( 'PayPal client rest api credentials API request response is:', 'give' ),
 				'value'   => wp_json_encode( $array ),
 			];
+
 			$errors[] = esc_html__( 'There was a problem with PayPal client rest API request and we could not find valid client id and secret.', 'give' );
 
 			$this->merchantRepository->saveAccountErrors( $errors );
