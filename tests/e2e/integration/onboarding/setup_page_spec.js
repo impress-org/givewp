@@ -12,7 +12,7 @@ describe( 'Test setup page', function() {
 	it( 'can manually launch wizard', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
 		cy.getByTest( 'setup-configuration' ).click();
-		cy.getByTest( 'start-setup' ).should( 'exist' );
+		cy.getByTest( 'intro-continue-button' ).should( 'exist' );
 	} );
 	it( 'can dismiss setup page', function() {
 		cy.visit( baseURL + '/wp-admin/edit.php?post_type=give_forms&page=give-setup' );
