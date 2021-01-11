@@ -47,13 +47,67 @@ describe( 'Test onboarding wizard', function() {
 		cy.get( 'input[value="individual"]' ).should( 'not.have.attr', 'checked' );
 
 		// Cause types should be selectable
-		cy.getByTest( 'cause-select' ).get( '.givewp-select__value-container' ).click();
-		cy.getByTest( 'cause-select' ).get( '.givewp-select__menu-list > div' ).eq( 2 ).click();
-		cy.getByTest( 'cause-select' ).get( '.givewp-select__value-container' ).contains( 'Environmental' );
+		cy.getByTest( 'cause-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).click();
+			cy.get( '.givewp-select__menu-list > div' ).eq( 2 ).click();
+			cy.get( '.givewp-select__value-container' ).contains( 'Environmental' );
+		} );
 
 		// Cause continue button should lead to location step
 		cy.getByTest( 'cause-continue-button' ).click();
 		cy.getByTest( 'location-continue-button' ).should( 'exist' );
+
+		// Changes to country should update options in state/province and currency inputs
+
+		// Set country to Canada
+		cy.getByTest( 'country-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).click();
+			cy.get( '.givewp-select__menu-list > div' ).eq( 1 ).click();
+		} );
+
+		// Check Canadian provinces
+		cy.getByTest( 'state-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).click();
+			cy.get( '.givewp-select__menu-list > div' ).eq( 1 ).contains( 'Alberta' );
+			cy.get( '.givewp-select__menu-list > div' ).eq( 2 ).contains( 'British Columbia' );
+		} );
+
+		// Check Candaian currency
+		cy.getByTest( 'currency-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).contains( 'Canadian Dollars ($)' );
+		} );
+
+		// Set country to UK
+		cy.getByTest( 'country-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).click();
+			cy.get( '.givewp-select__menu-list > div' ).eq( 2 ).click();
+		} );
+
+		// Check that state select input does not exist
+		cy.getByTest( 'state-select' ).should( 'not.exist' );
+
+		// Check UK currency
+		cy.getByTest( 'currency-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).contains( 'Pounds Sterling (£)' );
+		} );
+
+		// Set country to US
+		cy.getByTest( 'country-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).click();
+			cy.get( '.givewp-select__menu-list > div' ).eq( 0 ).click();
+		} );
+
+		// Check US states
+		cy.getByTest( 'state-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).click();
+			cy.get( '.givewp-select__menu-list > div' ).eq( 1 ).contains( 'Alabama' );
+			cy.get( '.givewp-select__menu-list > div' ).eq( 2 ).contains( 'Alaska' );
+		} );
+
+		// Check US currency
+		cy.getByTest( 'currency-select' ).within( () => {
+			cy.get( '.givewp-select__value-container' ).contains( 'US Dollars ($)' );
+		} );
 
 		// Location continue button should lead to features step
 		cy.getByTest( 'location-continue-button' ).click();
