@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add filter hook to filter PayPal settings (#5502)
 -   Sample onboarding tests are now implemented (#5543)
+-   Onboarding wizard e2e tests are now implemented (#5550)
 
 ### Changed
 
