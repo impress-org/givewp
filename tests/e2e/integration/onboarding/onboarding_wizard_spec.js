@@ -138,6 +138,18 @@ describe( 'Test onboarding wizard', function() {
 		cy.getByTest( 'preview-continue-button' ).click();
 		cy.getByTest( 'addons-continue-button' ).should( 'exist' );
 
+		// Multiple addon cards can be selected
+		cy.get( 'label[for="recurring-donations"]' ).click();
+		cy.get( 'label[for="donors-cover-fees"]' ).click();
+		cy.get( 'input[value="recurring-donations"]' ).should( 'have.attr', 'checked' );
+		cy.get( 'input[value="donors-cover-fees"]' ).should( 'have.attr', 'checked' );
+
+		// Addon cards can be unselected
+		cy.get( 'label[for="recurring-donations"]' ).click();
+		cy.get( 'label[for="donors-cover-fees"]' ).click();
+		cy.get( 'input[value="recurring-donations"]' ).should( 'not.have.attr', 'checked' );
+		cy.get( 'input[value="donors-cover-fees"]' ).should( 'not.have.attr', 'checked' );
+
 		// Addons continue button should lead to setup page
 		cy.getByTest( 'addons-continue-button' ).click();
 		cy.getByTest( 'onboarding-wizard-link' ).should( 'exist' );
