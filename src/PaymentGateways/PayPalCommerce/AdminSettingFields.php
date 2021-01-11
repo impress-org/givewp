@@ -324,11 +324,15 @@ class AdminSettingFields {
 					<?php echo $this->formatErrors( $accountErrors ); ?>
 					<br><?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
 				</div>
+
+				<?php if ( $this->merchantRepository->accountIsConnected() ) : ?>
 				<p>
 					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">
 						<?php esc_html_e( 'Re-Check Account Status', 'give' ); ?>
 					</a>
 				</p>
+				<?php endif; ?>
+
 			</div>
 			<?php
 		endif;
