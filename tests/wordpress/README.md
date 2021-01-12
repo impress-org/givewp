@@ -11,7 +11,7 @@ This folder contains instructions and test code for Give PHPUnit testing.
 2) Install WordPress and the WP Unit Test library using the `install.sh` script located in `give/tests/bin/` directory. Change to the plugin root directory and type:
 
 
-    $ tests/bin/install.sh <db-name> <db-user> <db-password> [db-host]
+    $ tests/wordpress/bin/install.sh <db-name> <db-user> <db-password> [db-host]
 
 Sample usage:
 
@@ -52,4 +52,4 @@ A text code coverage summary can be displayed using the `--coverage-text` option
 
 ## Automated Tests
 
-Tests are automatically run with [Travis-CI](https://travis-ci.org) for each commit and pull request.
+Tests are automatically run via [Github Actions](https://github.com/impress-org/givewp/actions) for each commit and pull request.
