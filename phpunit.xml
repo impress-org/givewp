@@ -11,7 +11,8 @@
 	>
 	<testsuites>
 		<testsuite name="Give Test Suite">
-			<directory prefix="tests-" suffix=".php">./tests/wordpress/tests</directory>
+			<directory prefix="tests-" suffix=".php">./tests/wordpress/tests/legacy</directory>
+			<directory suffix="Test.php">./tests/wordpress/tests</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

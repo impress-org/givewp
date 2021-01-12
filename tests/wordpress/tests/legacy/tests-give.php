@@ -21,7 +21,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 	public function test_constants() {
 
 		// Adjust for relative directory structure.
-		$filePath = dirname( dirname( dirname( __FILE__ ) ) );
+		$filePath = dirname( dirname( dirname( dirname( __FILE__ ) ) ) );
 		// Plugin Folder URL
 		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_url( $filePath ) );
 		$this->assertSame( GIVE_PLUGIN_URL, $path );
