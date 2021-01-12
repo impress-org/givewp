@@ -9,7 +9,6 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
-use function Weglot\Client\Api\array_keys_exists;
 
 /**
  * Class AjaxRequestHandler
