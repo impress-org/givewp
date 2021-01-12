@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 5.6 ]
-        wordpress: [ latest ]
+        php: [ 5.6, 7.2 ]
+        wordpress: [ 4.9, 5.6, latest ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
