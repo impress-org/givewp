@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-	bootstrap="tests/wordpress/bootstrap.php"
+	bootstrap="tests/unit/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
@@ -11,8 +11,8 @@
 	>
 	<testsuites>
 		<testsuite name="Give Test Suite">
-			<directory prefix="tests-" suffix=".php">./tests/wordpress/tests/legacy</directory>
-			<directory suffix="Test.php">./tests/wordpress/tests</directory>
+			<directory suffix="Test.php">./tests/unit/tests</directory>
+			<directory prefix="tests-" suffix=".php">./tests/unit/legacy</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
