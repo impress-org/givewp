@@ -115,11 +115,10 @@ class onBoardingRedirectHandler {
 		}
 
 		$restApiCredentials = (array) $this->payPalAuth->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
+		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
 		$tokenInfo = $this->payPalAuth->getTokenFromClientCredentials( $restApiCredentials['client_id'], $restApiCredentials['client_secret'] );
 		$this->settings->updateAccessToken( $tokenInfo );
-
-		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
 		$payPalAccount['clientId']               = $restApiCredentials['client_id'];
 		$payPalAccount['clientSecret']           = $restApiCredentials['client_secret'];
