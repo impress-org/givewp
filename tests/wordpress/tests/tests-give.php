@@ -20,7 +20,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 	 */
 	public function test_constants() {
 		// Plugin Folder URL
-		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_url( __FILE__ ) );
+		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_url( __DIR__ ) );
 		$this->assertSame( GIVE_PLUGIN_URL, $path );
 
 		// Plugin Folder Path
