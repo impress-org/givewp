@@ -461,6 +461,7 @@ p {
 		@include before-after-content-none;
 		display: flex;
 		width: fit-content;
+		width: -moz-fit-content;
 		max-width: 80%;
 		position: relative;
 		align-items: center;
@@ -1332,6 +1333,7 @@ form.give-form .form-row select.multiselect {
 	opacity: 0;
 
 	&.spinning {
+		z-index: 1;
 		opacity: 1;
 		transition: opacity 0.2s ease;
 		animation: load 0.6s linear infinite;
