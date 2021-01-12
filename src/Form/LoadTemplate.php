@@ -131,6 +131,14 @@ class LoadTemplate {
 			return;
 		}
 
+		/**
+		 * Fixes #5513 by clearing the payment post cache.
+		 * @link https://github.com/impress-org/givewp/issues/5513
+		 */
+		clean_post_cache(
+			( new DonationAccessor() )->getDonationId()
+		);
+
 		ob_start();
 		include_once $this->template->getReceiptView();
 		$data = ob_get_clean();
