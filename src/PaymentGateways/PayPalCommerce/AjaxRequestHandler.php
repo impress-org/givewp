@@ -248,10 +248,17 @@ class AjaxRequestHandler {
 		/* @var AdminSettingFields $adminSettingFields */
 		$adminSettingFields = give( AdminSettingFields::class );
 
+		$actionList = sprintf(
+			'<ol><li>%1$s</li><li>%2$s</li><li>%3$s</li></ol>',
+			esc_html__( 'Make sure to go through the entire PayPal process and do not close the window until then.', 'give' ),
+			esc_html__( 'The last screen of the PayPal onboarding includes a button to be sent back to your site, it’s important you click this and do not close the window yourself.', 'give' ),
+			esc_html__( 'If you’re still having problems connecting, then ', 'give' ) . $adminSettingFields->getAdminGuidanceNotice( false )
+		);
+
 		$standardError = sprintf(
 			'<div id="give-paypal-onboarding-trouble-notice" class="give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
 			esc_html__( 'Having trouble connecting to PayPal?', 'give' ),
-			$adminSettingFields->getAdminGuidanceNotice( false )
+			$actionList
 		);
 
 		wp_send_json_success( $standardError );
