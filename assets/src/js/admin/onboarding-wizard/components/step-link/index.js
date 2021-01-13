@@ -20,7 +20,7 @@ const StepLink = ( { title, stepNumber } ) => {
 	};
 
 	return (
-		<div className="give-obw-step-link">
+		<div className="give-obw-step-link" data-givewp-test="navigation-step">
 			<button className="give-obw-step-button" onClick={ () => dispatch( goToStep( stepNumber ) ) }>
 				<div className={ `give-obw-step-icon${ currentStep >= stepNumber ? ' give-obw-step-icon--green' : '' }` }>
 					{ currentStep <= stepNumber ? stepNumber : <Checkmark index={ stepNumber } /> }
