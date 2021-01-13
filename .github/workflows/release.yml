@@ -5,9 +5,51 @@ on:
     types: [ released ]
     
 jobs:
-  tag:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 5.6, 7.2 ]
+        wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      -   name: Cache dependencies
+          uses: actions/cache@v1
+          with:
+            path: ~/.composer/cache/files
+            key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+
+      - name: Install dependencies
+        run: |
+          composer self-update --1
+          composer require phpunit/phpunit:5.*
+          composer update --prefer-dist --no-interaction --no-suggest
+
+      - name: Setup tests
+        run: |
+          bash tests/bin/install.sh wordpress_test root root localhost ${{ matrix.wordpress }}
+
+      -   name: Execute tests
+          run: vendor/bin/phpunit
+          env:
+            DB_PORT: ${{ job.services.mysql.ports[3306] }}
+
+  release:
     name: New release
     runs-on: ubuntu-latest
+    needs: tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
