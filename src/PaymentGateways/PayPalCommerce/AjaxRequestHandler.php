@@ -250,9 +250,9 @@ class AjaxRequestHandler {
 
 		$actionList = sprintf(
 			'<ol><li>%1$s</li><li>%2$s</li><li>%3$s</li></ol>',
-			esc_html__( 'Make sure to go through the entire PayPal process and do not close the window until then.', 'give' ),
-			esc_html__( 'The last screen of the PayPal onboarding includes a button to be sent back to your site, it’s important you click this and do not close the window yourself.', 'give' ),
-			esc_html__( 'If you’re still having problems connecting, then ', 'give' ) . $adminSettingFields->getAdminGuidanceNotice( false )
+			esc_html__( 'Make sure to complete the entire PayPal process. Do not close the window you have finished the process.', 'give' ),
+			esc_html__( 'The last screen of the PayPal connect process includes a button to be sent back to your site. It is important you click this and do not close the window yourself.', 'give' ),
+			esc_html__( 'If you’re still having problems connecting: ', 'give' ) . $adminSettingFields->getAdminGuidanceNotice( false )
 		);
 
 		$standardError = sprintf(

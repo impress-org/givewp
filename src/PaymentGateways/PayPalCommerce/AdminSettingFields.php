@@ -271,8 +271,6 @@ class AdminSettingFields {
 	 * @return string
 	 */
 	public function getAdminGuidanceNotice( $completeMessage = true ) {
-		$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center ', 'give' );
-
 		if ( $this->isCountryInNorthAmerica() ) {
 			$telephone = sprintf(
 				'<a href="tel:%1$s">%1$s</a>',
@@ -280,9 +278,11 @@ class AdminSettingFields {
 			);
 
 			$message = sprintf(
-				esc_html__( 'Please call a PayPal support representative at %1$s ', 'give' ),
+				esc_html__( 'Please call a PayPal support representative at %1$s', 'give' ),
 				$telephone
 			);
+		} else {
+			$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center', 'give' );
 		}
 
 		$message .= $completeMessage ? esc_html__( ' and relay the following message:', 'give' ) : '.';
