@@ -19,11 +19,15 @@ class MerchantDetails {
 	 * Returns whether or not the account has been connected
 	 *
 	 * @since 2.9.0
+	 * @since 2.9.6 Check for PayPal merchant id to confirm whether or not account is connected.
 	 *
 	 * @return bool
 	 */
 	public function accountIsConnected() {
-		return (bool) get_option( $this->getAccountKey() );
+		/* @var $merchantDetails MerchantDetail */
+		$merchantDetails = give( MerchantDetail::class );
+
+		return (bool) $merchantDetails->merchantIdInPayPal;
 	}
 
 	/**
@@ -181,7 +185,6 @@ class MerchantDetails {
 	private function getAccountErrorsKey() {
 		return "give_paypal_commerce_{$this->mode}_account_errors";
 	}
-
 
 	/**
 	 * Returns the options key for the client token in the give mode

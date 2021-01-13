@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
-
+### New
+-   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
 
 ### Changed

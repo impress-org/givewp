@@ -103,7 +103,7 @@ class AjaxRequestHandler {
 			$partnerLinkInfo['nonce']
 		);
 
-		if ( ! $payPalResponse ) {
+		if ( ! $payPalResponse || array_key_exists( 'error', $payPalResponse ) ) {
 			wp_send_json_error();
 		}
 
@@ -233,6 +233,35 @@ class AjaxRequestHandler {
 				]
 			);
 		}
+	}
+
+	/**
+	 * Return on boarding trouble notice.
+	 *
+	 * @since 2.9.6
+	 */
+	public function onBoardingTroubleNotice() {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			wp_die();
+		}
+
+		/* @var AdminSettingFields $adminSettingFields */
+		$adminSettingFields = give( AdminSettingFields::class );
+
+		$actionList = sprintf(
+			'<ol><li>%1$s</li><li>%2$s</li><li>%3$s</li></ol>',
+			esc_html__( 'Make sure to complete the entire PayPal process. Do not close the window you have finished the process.', 'give' ),
+			esc_html__( 'The last screen of the PayPal connect process includes a button to be sent back to your site. It is important you click this and do not close the window yourself.', 'give' ),
+			esc_html__( 'If you’re still having problems connecting: ', 'give' ) . $adminSettingFields->getAdminGuidanceNotice( false )
+		);
+
+		$standardError = sprintf(
+			'<div id="give-paypal-onboarding-trouble-notice" class="give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
+			esc_html__( 'Having trouble connecting to PayPal?', 'give' ),
+			$actionList
+		);
+
+		wp_send_json_success( $standardError );
 	}
 
 	/**
