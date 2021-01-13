@@ -10,7 +10,7 @@ import './style.scss';
 const DismissLink = () => {
 	const setupUrl = getWindowData( 'setupUrl' );
 	return (
-		<a className="give-obw-dismiss-link" href={ setupUrl }>
+		<a className="give-obw-dismiss-link" href={ setupUrl } data-givewp-test="dismiss-wizard-link">
 			{ __( 'Dismiss Setup Wizard', 'give' ) }
 		</a>
 	);

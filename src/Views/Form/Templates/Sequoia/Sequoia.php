@@ -147,7 +147,8 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			form.give-form .form-row select:focus,
 			.form-row select.required:focus,
 			#give-recurring-form .form-row select.required:focus,
-			form.give-form .form-row select.required:focus, .give-select:focus {
+			form.give-form .form-row select.required:focus, .give-select:focus,
+			 .give-input-field-wrapper.has-focus{
 				border-color: %1$s !important;
 			}
 			',

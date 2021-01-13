@@ -3,6 +3,14 @@ jQuery( function( $ ) {
 	const $forms = jQuery( 'form.give-form' ),
 		doc = $( document );
 
+	/**
+	 * Donation Form fields state
+	 * @type {{forms: {}}}
+	 */
+	const fieldsState = {
+		forms: {},
+	};
+
 	// Toggle validation classes
 	$.fn.toggleError = function( errored ) {
 		this.toggleClass( 'error', errored );
@@ -141,6 +149,53 @@ jQuery( function( $ ) {
 
 		return false;
 	}
+
+	/**
+	 * Update fields state
+	 *
+	 * @param {Object} e Element
+	 */
+	function setFieldState( e ) {
+		const element = e.target;
+		const form = element.parentElement.closest( 'form.give-form' );
+
+		if ( form ) {
+			const formId = form.getAttribute( 'id' );
+			fieldsState.forms = {
+				...fieldsState.forms,
+				[ formId ]: {
+					...fieldsState.forms[ formId ],
+					[ element.name ]: element.value,
+				},
+			};
+		}
+	}
+
+	/**
+	 * Attach events to First Name, Last Name and the Email fields
+	 */
+	doc.on(
+		'keyup',
+		'#give-first, #give-last, #give-email',
+		setFieldState
+	);
+
+	/**
+	 * Restore saved state values when gateway changes.
+	 */
+	doc.on(
+		'give_gateway_loaded',
+		function() {
+			for ( const [ formId, formData ] of Object.entries( fieldsState.forms ) ) {
+				for ( const [ name, value ] of Object.entries( formData ) ) {
+					const element = document.querySelector( `form#${ formId } [name="${ name }"]` );
+					if ( element ) {
+						element.value = value;
+					}
+				}
+			}
+		}
+	);
 
 	// Sync state field with country.
 	doc.on(

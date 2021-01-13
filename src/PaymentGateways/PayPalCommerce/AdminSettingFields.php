@@ -16,6 +16,34 @@ use Give_License;
  */
 class AdminSettingFields {
 	/**
+	 * @var MerchantDetail
+	 */
+	private $merchantModel;
+
+	/**
+	 * @var Settings
+	 */
+	private $settingRepository;
+
+	/**
+	 * @var MerchantDetails
+	 */
+	private $merchantRepository;
+
+	/**
+	 * AdminSettingFields constructor.
+	 *
+	 * @param  MerchantDetail  $merchantDetail
+	 * @param  MerchantDetails  $merchantDetailRepository
+	 * @param  Settings  $settings
+	 */
+	public function __construct( MerchantDetail $merchantDetail, MerchantDetails $merchantDetailRepository, Settings $settings ) {
+		$this->merchantModel      = $merchantDetail;
+		$this->merchantRepository = $merchantDetailRepository;
+		$this->settingRepository  = $settings;
+	}
+
+	/**
 	 * Bootstrap fields.
 	 *
 	 * @since 2.9.0
@@ -32,17 +60,8 @@ class AdminSettingFields {
 	 * @since 2.9.0
 	 */
 	public function accountCountryField() {
-		/* @var MerchantDetail $merchantModel */
-		$merchantModel = give( MerchantDetail::class );
-
-		/* @var MerchantDetails $merchantRepository */
-		$merchantRepository = give( MerchantDetails::class );
-
 		/* @var Give_HTML_Elements $htmlElements */
 		$htmlElements = give( 'html' );
-
-		/* @var Settings $settingRepository */
-		$settingRepository = give( Settings::class );
 
 		$settingHtml = $htmlElements->select(
 			[
@@ -55,11 +74,11 @@ class AdminSettingFields {
 				'data'             => [
 					'search-type' => 'no_ajax',
 				],
-				'selected'         => $merchantModel->accountCountry ?: $settingRepository->getAccountCountry(),
+				'selected'         => $this->merchantModel->accountCountry ?: $this->settingRepository->getAccountCountry(),
 			]
 		);
 
-		$trClass = $merchantRepository->accountIsConnected() ?
+		$trClass = $this->merchantRepository->accountIsConnected() ?
 			'js-fields-has-custom-saving-logic hide-with-position' :
 			'js-fields-has-custom-saving-logic';
 		?>
@@ -100,8 +119,7 @@ class AdminSettingFields {
 						/** @var MerchantDetails $accountRepository */
 						$accountRepository = give( MerchantDetails::class );
 						?>
-						<div
-							class="button-wrap connection-setting <?php echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
+						<div class="button-wrap connection-setting <?php echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
 							<div>
 								<button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
 									<i class="fab fa-paypal"></i>&nbsp;&nbsp;
@@ -127,8 +145,7 @@ class AdminSettingFields {
 							<?php esc_html_e( 'PayPal is currently NOT connected.', 'give' ); ?>
 						</span>
 						</div>
-						<div
-							class="button-wrap disconnection-setting <?php echo ! $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
+						<div class="button-wrap disconnection-setting <?php echo ! $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
 							<div>
 								<button class="button button-large disabled" disabled="disabled">
 									<i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php esc_html_e( 'Connected', 'give' ); ?>
@@ -160,24 +177,8 @@ class AdminSettingFields {
 									<li><?php esc_html_e( 'Refunds', 'give' ); ?></li>
 								</ul>
 							</div>
-
-							<?php $accountErrors = give( MerchantDetails::class )->getAccountErrors(); ?>
-							<?php if ( ! empty( $accountErrors ) ) : ?>
-								<div>
-							<span>
-								<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations. Please review the following list:', 'give' ); ?></p>
-								<ul class="ul-disc">
-										<?php
-										foreach ( $accountErrors as $error ) {
-											echo "<li>{$error}</li>";
-										}
-										?>
-								</ul>
-								<p><a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>"><?php esc_html_e( 'Re-Check Account Status', 'give' ); ?></a></p>
-							</span>
-								</div>
-							<?php endif; ?>
 						</div>
+						<?php $this->printErrors(); ?>
 					</div>
 				</div>
 			</td>
@@ -220,5 +221,171 @@ class AdminSettingFields {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Return whether or not country is in North America
+	 *
+	 * @return boolean
+	 */
+	private function isCountryInNorthAmerica() {
+		// Countries list: https://en.wikipedia.org/wiki/List_of_North_American_countries_by_area#Countries
+		$northAmericaCountryList = [
+			'CA', // Canada
+			'US', // United States
+			'MX', // Mexico
+			'NI', // Nicaragua
+			'HN', // Honduras
+			'CU', // Cuba
+			'GT', // Guatemala
+			'PA', // Panama
+			'CR', // Costa Rica
+			'DO', // Dominican Republic
+			'HT', // Haiti
+			'BZ', // Belize
+			'SV', // EL Salvador
+			'BS', // The Bahamas
+			'JM', // Jamaica
+			'TT', // Trinidad and Tobago
+			'DM', // Dominica
+			'LC', // Saint Lucia
+			'AG', // Antigua and Barbuda
+			'BB', // Barbados
+			'VC', // Saint Vincent and the Grenadines
+			'GD', // Grenada
+			'KN', // Saint Kitts and Nevis
+		];
+
+		$accountCountry = $this->settingRepository->getAccountCountry();
+
+		return in_array( $accountCountry, $northAmericaCountryList, true );
+	}
+
+	/**
+	 * Return admin guidance notice to fix PayPal on boarding error.
+	 *
+	 * @since 2.9.6
+	 *
+	 * @param  bool  $completeMessage
+	 *
+	 * @return string
+	 */
+	public function getAdminGuidanceNotice( $completeMessage = true ) {
+		if ( $this->isCountryInNorthAmerica() ) {
+			$telephone = sprintf(
+				'<a href="tel:%1$s">%1$s</a>',
+				'1-855-456-1330'
+			);
+
+			$message = sprintf(
+				esc_html__( 'Please call a PayPal support representative at %1$s', 'give' ),
+				$telephone
+			);
+		} else {
+			$message = esc_html__( 'Please reach out to PayPal support from your PayPal account Resolution Center', 'give' );
+		}
+
+		$message .= $completeMessage ? esc_html__( ' and relay the following message:', 'give' ) : '.';
+
+		return $message;
+	}
+
+	/**
+	 * Print on boarding errors.
+	 *
+	 * @since 2.9.6
+	 */
+	private function printErrors() {
+		$accountErrors         = give( MerchantDetails::class )->getAccountErrors();
+		$hasUnknownPayPalError = isset( $_GET['paypal-error'] );
+
+		if ( ! empty( $accountErrors ) ) :
+			?>
+			<div>
+				<p class="error-message"><?php esc_html_e( 'Warning, your account is not ready to accept donations.', 'give' ); ?></p>
+				<p>
+					<?php
+					printf(
+						'%1$s %2$s',
+						esc_html__(
+							'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
+							'give'
+						),
+						$this->getAdminGuidanceNotice()
+					)
+					?>
+				</p>
+				<div class="paypal-message-template">
+					<?php esc_html_e( 'Greetings!', 'give' ); ?><br><br>
+					<?php esc_html_e( 'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:', 'give' ); ?><br>
+					<?php echo $this->formatErrors( $accountErrors ); ?>
+					<br><?php esc_html_e( 'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.', 'give' ); ?>
+				</div>
+
+				<?php if ( $this->merchantRepository->accountIsConnected() ) : ?>
+				<p>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck' ); ?>">
+						<?php esc_html_e( 'Re-Check Account Status', 'give' ); ?>
+					</a>
+				</p>
+				<?php endif; ?>
+
+			</div>
+			<?php
+		endif;
+	}
+
+	/**
+	 * Return format errors string.
+	 *
+	 * @since 2.9.6
+	 * @param array $errors
+	 *
+	 * @return string
+	 */
+	private function formatErrors( $errors ) {
+		$isSingleError  = ! ( count( $errors ) > 1 );
+		$formattedArray = array_map(
+			static function( $arr ) use ( $isSingleError ) {
+				if ( is_array( $arr ) ) {
+					switch ( $arr['type'] ) {
+						case 'url':
+							return sprintf(
+								'<%1$s>%2$s<br><code>%3$s</code></%1$s>',
+								$isSingleError ? 'p' : 'li',
+								$arr['message'],
+								urldecode_deep( $arr['value'] )
+							);
+
+						case 'json':
+							return sprintf(
+								'<%1$s>%2$s<br><code>%3$s</code></%1$s>',
+								$isSingleError ? 'p' : 'li',
+								$arr['message'],
+								$arr['value']
+							);
+					}
+				}
+
+				return sprintf(
+					'<%1$s>%2$s</%1$s>',
+					$isSingleError ? 'p' : 'li',
+					$arr
+				);
+
+			},
+			$errors
+		);
+
+		$output = implode( '', $formattedArray );
+
+		if ( ! $isSingleError ) {
+			$output = sprintf(
+				'<ul class="ul-disc">%1$s</ul>',
+				$output
+			);
+		}
+
+		return $output;
 	}
 }

@@ -1374,15 +1374,14 @@ function give_get_register_fields( $form_id ) {
 			do_action( 'give_register_account_fields_before', $form_id );
 
 			$class = ( 'registration' === $show_register_form ) ? 'form-row-wide' : 'form-row-first';
+			// Add attributes to checkbox, if Guest Checkout is disabled.
+			$is_guest_checkout = give_is_setting_enabled( give_get_meta( $form_id, '_give_logged_in_only', true ) );
 			?>
-			<div id="give-create-account-wrap-<?php echo $form_id; ?>"
-				 class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
-				<label for="give-create-account-<?php echo $form_id; ?>">
+			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
+				<label for="give-create-account-<?php echo $form_id; ?>" class="<?php echo ! $is_guest_checkout ? 'checked' : ''; ?>">
 					<?php
-					// Add attributes to checkbox, if Guest Checkout is disabled.
-					$is_guest_checkout = give_get_meta( $form_id, '_give_logged_in_only', true );
-					$id                = 'give-create-account-' . $form_id;
-					if ( ! give_is_setting_enabled( $is_guest_checkout ) ) {
+					$id = 'give-create-account-' . $form_id;
+					if ( ! $is_guest_checkout ) {
 						echo Give()->tooltips->render(
 							[
 								'tag_content' => sprintf(

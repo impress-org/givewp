@@ -209,9 +209,10 @@ class Give_Cache_Setting {
 	 * Setup currencies list
 	 *
 	 * @since 2.4.0
+	 * @since 2.9.6 Replaced require_once with require to support multiple calls.
 	 */
 	public function setup_currencies_list() {
-		$currencies = require_once GIVE_PLUGIN_DIR . 'includes/currencies-list.php';
+		$currencies = require GIVE_PLUGIN_DIR . 'includes/currencies-list.php';
 
 		/**
 		 * Filter the supported currency list

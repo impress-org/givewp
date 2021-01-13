@@ -41,7 +41,7 @@ const DonationForm = () => {
 							{ __( 'Extend with add-ons and more!', 'give' ) }
 						</li>
 					</ul>
-					<ContinueButton />
+					<ContinueButton testId="preview-continue-button" />
 				</div>
 			</div>
 		</div>

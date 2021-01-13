@@ -55,7 +55,7 @@ const Addons = () => {
 					<strong>{ __( 'Dedicate Donations', 'give' ) }</strong>
 				</Card>
 			</CardInput>
-			<ContinueButton />
+			<ContinueButton testId="addons-continue-button" />
 		</div>
 	);
 };
