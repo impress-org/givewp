@@ -1383,6 +1383,7 @@ function give_get_register_fields( $form_id ) {
 			 * If Guest Checkout is enabled, display label and checkbox - unchecked.
 			 * If Guest Checkout it disabled, display hidden checkbox - checked.
 			 * @since 2.9.6
+			 * @since 2.9.7 Create account checkbox is hidden when guest registration is disabled.
 			 */
 			?>
 			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
