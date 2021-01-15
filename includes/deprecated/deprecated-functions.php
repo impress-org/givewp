@@ -64,11 +64,11 @@ function give_log_default_views() {
 
 	_give_deprecated_function( __FUNCTION__, '1.8', null, $backtrace );
 
-	$views = array(
+	$views = [
 		'sales'          => __( 'Donations', 'give' ),
 		'gateway_errors' => __( 'Payment Errors', 'give' ),
 		'api_requests'   => __( 'API Requests', 'give' ),
-	);
+	];
 
 	$views = apply_filters( 'give_log_views', $views );
 
@@ -258,7 +258,7 @@ function give_purchase_form_validate_new_user() {
  *
  * @param array $valid_data
  */
-function give_get_purchase_form_user( $valid_data = array() ) {
+function give_get_purchase_form_user( $valid_data = [] ) {
 
 	$backtrace = debug_backtrace();
 
@@ -819,10 +819,10 @@ function give_get_payment_form_title( $meta, $only_level = false, $separator = '
 		$donation = give_get_payment_by( 'key', $meta['key'] );
 	}
 
-	$args = array(
+	$args = [
 		'only_level' => $only_level,
 		'separator'  => $separator,
-	);
+	];
 
 	return give_get_donation_form_title( $donation, $args );
 }
@@ -860,7 +860,7 @@ function give_delete_donor( $args ) {
  *
  * @return array
  */
-function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $search = '' ) {
+function give_get_donor_donation_comments( $donor_id, $comment_args = [], $search = '' ) {
 	_give_deprecated_function(
 		__FUNCTION__,
 		'2.3.0',
@@ -874,7 +874,7 @@ function give_get_donor_donation_comments( $donor_id, $comment_args = array(), $
 		$search
 	);
 
-	return ( ! empty( $comments ) ? $comments : array() );
+	return ( ! empty( $comments ) ? $comments : [] );
 }
 
 /**
@@ -962,23 +962,23 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 	// Backward compatibility.
 	if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
 
-		$comment_args = array(
+		$comment_args = [
 			'post_id'    => 0,
 			'orderby'    => 'comment_ID',
 			'order'      => 'DESC',
 			'number'     => 1,
-			'meta_query' => array(
+			'meta_query' => [
 				'related' => 'AND',
-				array(
+				[
 					'key'   => '_give_donor_id',
 					'value' => $donor_id,
-				),
-				array(
+				],
+				[
 					'key'   => '_give_anonymous_donation',
 					'value' => 0,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		// Get donor donation comment for specific form.
 		if ( $form_id ) {
@@ -990,29 +990,29 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 		return $comment;
 	}
 
-	$comment_args = array(
+	$comment_args = [
 		'orderby'    => 'comment_ID',
 		'order'      => 'DESC',
 		'number'     => 1,
-		'meta_query' => array(
+		'meta_query' => [
 			'relation' => 'AND',
-			array(
+			[
 				'key'   => '_give_anonymous_donation',
 				'value' => 0,
-			),
-			array(
+			],
+			[
 				'key'   => '_give_donor_id',
 				'value' => $donor_id,
-			),
-		),
-	);
+			],
+		],
+	];
 
 	// Get donor donation comment for specific form.
 	if ( $form_id ) {
-		$comment_args['meta_query'][] = array(
+		$comment_args['meta_query'][] = [
 			'key'   => '_give_form_id',
 			'value' => $form_id,
-		);
+		];
 	}
 
 	$sql = Give()->comment->db->get_sql( $comment_args );
@@ -1139,4 +1139,34 @@ function give_is_host( $host = false ) {
 	}// End if().
 
 	return $return;
+}
+
+/**
+ * Get list of premium add-ons
+ *
+ * @since 2.5.0
+ * @deprecated 2.9.2
+ *
+ * @return array
+ *
+ */
+function give_get_premium_add_ons() {
+	$list = wp_extract_urls( give_add_ons_feed( 'addons-directory', false ) );
+	$list = array_values(
+		array_filter(
+			$list,
+			static function ( $url ) {
+				return false !== strpos( $url, 'givewp.com/addons' );
+			}
+		)
+	);
+
+	return array_map(
+		static function ( $url ) {
+			$path = wp_parse_url( untrailingslashit( $url ) )['path'];
+
+			return str_replace( '/addons/', '', $path );
+		},
+		$list
+	);
 }

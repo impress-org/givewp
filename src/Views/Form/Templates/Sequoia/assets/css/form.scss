@@ -121,6 +121,7 @@ p {
 	justify-content: center;
 	padding: 20px 28px !important;
 	border-radius: 4px;
+	-webkit-appearance: none;
 	border: none;
 	font-size: 22px;
 	line-height: 20px;
@@ -460,6 +461,7 @@ p {
 		@include before-after-content-none;
 		display: flex;
 		width: fit-content;
+		width: -moz-fit-content;
 		max-width: 80%;
 		position: relative;
 		align-items: center;
@@ -1228,7 +1230,8 @@ form.give-form .form-row input[type='text'],
 form.give-form .form-row input[type='tel'],
 form.give-form .form-row input[type='email'],
 form.give-form .form-row input[type='password'],
-form.give-form .form-row input[type='url'] {
+form.give-form .form-row input[type='url'],
+.give-input-field-wrapper {
 	font-family: 'Montserrat', sans-serif;
 	background: #fff;
 	border: 1px solid #b8b8b8 !important;
@@ -1330,6 +1333,7 @@ form.give-form .form-row select.multiselect {
 	opacity: 0;
 
 	&.spinning {
+		z-index: 1;
 		opacity: 1;
 		transition: opacity 0.2s ease;
 		animation: load 0.6s linear infinite;
@@ -1402,7 +1406,9 @@ form.give-form .form-row select.multiselect {
 /* Hide everything which is not output by Give core or addon */
 // exclude PayPal payment contingency handler.
 // This is popup used by PayPal to verify 3ds card.
-body > *:not([class^='give']):not([id^='give']):not([class*='payments-sdk-contingency-handler']) {
+// Exclude Give Aid add-on popup too by adding give-modal to the selector
+body
+	> *:not([class^='give']):not([id^='give']):not([class*='payments-sdk-contingency-handler']):not([class*='give-modal']) {
 	display: none;
 }
 

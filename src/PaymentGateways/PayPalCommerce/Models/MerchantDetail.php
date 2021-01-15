@@ -64,7 +64,7 @@ class MerchantDetail {
 	 *
 	 * @var bool
 	 */
-	public $accountIsReady = true;
+	public $accountIsReady = false;
 
 	/**
 	 * Whether or not the account can make custom payments (i.e Advanced Fields & PPCP)

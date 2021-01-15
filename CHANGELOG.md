@@ -8,19 +8,100 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
 -   Front-end donor profiles are scaffolded (#5441)
 -   Donor Profiles UI is implemented (#5444)
 -   Donation History and Dashboard tabs are now dynamically populated (#5455)
 -   Edit Profile UI is now implemented (#5463)
 -   Edit Profile tab now persists data (#5486)
 
+## 2.9.6 - 2021-01-13
+
+### New
+-   Update warning message for unsuccessful PayPal account onboarding (#5522) 
+-   Add filter hook to filter PayPal settings (#5502)
+-   Sample onboarding tests are now implemented (#5543)
+-   Onboarding wizard e2e tests are now implemented (#5550)
+-   Setup page is e2e tested (#5547)
+
+### Changed
+
+-   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
+-   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
+-   Onboarding Form Preview template now loads scripts inside of the closing body tag (#5510)
+-   Deprecated e2e tests have been removed, and replaced with Cypress tests (#5533)
+-   New `test:e2e` package script introduced (#5533)
+-   Decouple test:e2e command from wp-env #5545
+
 ### Fixed
 
+-   Show field icons on personal information input field when payment gateway switch (#5542)
+-   Multiple error redirects does not break donation form view in Multi Step form template view (#5531)
+-   Hover glitches of Fee Recovery checkbox are now fixed (#5508)
+-   PayPal Donations CC fields have border in Firefox browser (#5500)
+-   Send form title to PayPal (#5495)
+-   Automated unit and integrations tests are now executing (#5489)
+-   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+-   Donation Receipt accounts for latency in payment status changes (#5514)
+-   Create an account checkbox only displays when Guest Checkout is enabled (#5516)
+-   Error messages are instructive when an email address is already in the system (#5504)
+-   The current state of the Donation Form fields are now preserved when the payment method changes (#5491)
+-   Various Multi-Step form browser styling compatibility issues are now resolved (#5529)
+-   Checkbox click handler does not double trigger for touch devices (#5526)
+-   Multi-Form Goals added via shortcode now stack image and text when needed (#5528)
+-   Added migration to remove any leftover foreign keys on the revenue table (#5540)
+-   Give Aid add-on description popup is now working when using multi-step form (#5549)
+
+## 2.9.5 - 2020-12-03
+
+### New
+
+-    Onboarding locales now include Jamaica (#5474)
+
+### Fixed
+
+-   Currency Switcher options are visible in the dropdown on Windows machines (#5453)
+-   Prevent iOS from adding glare and pill-style rounded corners to the multi-step form template (#5438)
+-   Restored compatibility with < WP 5.1.1 (#5473)
+
+## 2.9.4 - 2020-11-20
+
+### Fixed
+
+-   Donation id mentions in exception and log message when insert query for revenue table fails  (#5472)
+-   Allow revenue with a 0 amount to be inserted  (#5472)
+-   Prevent fatal error when delete donation on WP < 5.5.0 (#5470)
+-   Stripe single-input credit card field works again (#5469)
+-   Updating a Stripe subscription from the update payment info screen works again (#5467)
+
+## 2.9.3 - 2020-11-17
+
+### Fixed
+
+-   Corrected a warning being thrown by the MigrationRunner (#5457)
+-   Stripe CC donations now work when not the default gateway (#5459)
+-   Stripe modal checkout donations now work when not the default gateway (#5459)
+
+## 2.9.2 - 2020-11-09
+
+### New
+
+-   Added support method of running migrations and clearing updates (#5447)
+
+### Fixed
+
+-   Properly handle currency unit size for donations (#5440)
+-   Add missing payment information update support in Stripe javascript (#5439)
 -   Free add-ons does not trigger GiveWP add-on license errors (#5424)
 -   Stripe Modal renders without any issue across all screens (#5423)
 -   Restore Donate Now button and show donor error after Stripe returns error when create payment method (#5421)
 -   Stripe Checkout payment method does not cause of javascript error on donation form page (#5419)
+-   Multi-step form loader color is incorrectly the default green color when embedded. (#5436)
+-   Multi-Form Goal Shortcode now supports comma separated lists (#5432)
+-   Remove foreign keys from revenue table for MyISAM support (#5447)
+
+### Changed
+
+-   Use easy digital download rest api endpoint to confirm if the add-on is premium or not (#5426)
 
 ### 2.9.1 - 2020-10-28
 
@@ -77,6 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Load PayPal SDK only on a page that has a donation form (#5376)
+-   Disconnecting a Stripe account no longer revokes GiveWP as an Authorized Application (#5378)
 
 ## 2.9.0-beta.1 - 2020-10-13
 

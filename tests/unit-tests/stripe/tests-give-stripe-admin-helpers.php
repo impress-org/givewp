@@ -56,6 +56,7 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 	 * This unit test function will check whether any of the Stripe supported payment method is active or not.
 	 *
 	 * @since  2.5.5
+	 * @since 2.8.0 Stripe is now disabled by default, see #5138, #5139
 	 * @access public
 	 *
 	 * @return void
@@ -63,10 +64,10 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 	public function test_give_stripe_is_any_payment_method_active() {
 
 		/**
-		 * Case 1: By default Stripe CC is enabled, so this fn will return true.
+		 * Case 1: By default Stripe CC is disabled, so this fn will return false.
 		 */
 		$is_stripe_active = give_stripe_is_any_payment_method_active();
-		$this->assertTrue( $is_stripe_active );
+		$this->assertFalse( $is_stripe_active );
 
 		/**
 		 * Case 2: Ensure Stripe is active when Stripe ACH is enabled.

@@ -22,6 +22,7 @@
 				'contents' => $this->render_template(
 					'row-item',
 					[
+						'testId'      => 'setup-configuration',
 						'class'       => ( $this->isFormConfigured() ) ? 'setup-item-configuration setup-item-completed' : 'setup-item-configuration',
 						'icon'        => ( $this->isFormConfigured() )
 											? $this->image( 'check-circle.min.png' )
