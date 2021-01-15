@@ -4,8 +4,10 @@ namespace Give\Revenue;
 
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
+use Give\Revenue\Listeners\DeleteRevenueWhenDonationDeleted;
 use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
 use Give\Revenue\Migrations\CreateRevenueTable;
+use Give\Revenue\Migrations\RemoveRevenueForeignKeys;
 use Give\ServiceProviders\ServiceProvider;
 
 class RevenueServiceProvider implements ServiceProvider {
@@ -28,8 +30,9 @@ class RevenueServiceProvider implements ServiceProvider {
 	public function boot() {
 		$this->registerMigrations();
 
+		Hooks::addAction( 'delete_post', DeleteRevenueWhenDonationDeleted::class, '__invoke', 10, 1 );
 		Hooks::addAction( 'give_insert_payment', DonationHandler::class, 'handle', 999, 1 );
-		Hooks::addAction( 'give_register_updates', AddPastDonationsToRevenueTable::class, 'register' );
+		Hooks::addAction( 'give_register_updates', AddPastDonationsToRevenueTable::class, 'register', 10, 1 );
 	}
 
 	/**
@@ -39,6 +42,11 @@ class RevenueServiceProvider implements ServiceProvider {
 		/** @var MigrationsRegister $register */
 		$register = give( MigrationsRegister::class );
 
-		$register->addMigration( CreateRevenueTable::class );
+		$register->addMigrations(
+			[
+				CreateRevenueTable::class,
+				RemoveRevenueForeignKeys::class,
+			]
+		);
 	}
 }

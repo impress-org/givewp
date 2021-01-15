@@ -24,7 +24,7 @@ const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 		const checked = values.includes( card.props.value );
 		return (
 			<div key={ index }>
-				<input type="checkbox" id={ card.props.value } value={ card.props.value } onChange={ ( evt ) => handleChange( evt.target.value ) } checked={ checked } />
+				<input type="checkbox" id={ card.props.value } value={ card.props.value } onChange={ ( evt ) => handleChange( evt.target.value ) } defaultChecked={ checked } />
 				<div className="give-obw-card-input__option">
 					{ !! checked &&
 						<Selected index={ index } />

@@ -16,6 +16,7 @@ use Give\Helpers\Form\Utils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Session\SessionDonation\DonationAccessor;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -130,6 +131,14 @@ class LoadTemplate {
 		if ( false === strpos( $referer, $successPageUrl ) ) {
 			return;
 		}
+
+		/**
+		 * Fixes #5513 by clearing the payment post cache.
+		 * @link https://github.com/impress-org/givewp/issues/5513
+		 */
+		clean_post_cache(
+			( new DonationAccessor() )->getDonationId()
+		);
 
 		ob_start();
 		include_once $this->template->getReceiptView();

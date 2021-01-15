@@ -26,63 +26,63 @@ set_current_screen();
 	</style>
 </head>
 	<body class="<?php echo esc_attr( $wp_version_class ); ?>">
-			<?php
-			echo give_form_shortcode(
-				[
-					'id' => $this->get_preview_form_id(),
-				]
-			);
-			?>
-			<?php wp_print_scripts( [ 'give' ] ); ?>
-	</body>
-	<script>
-		(function checkForBodySizeChange() {
-			var last_body_size = {
-				width: document.body.clientWidth,
-				height: document.body.clientHeight
-			};
+		<?php
+		echo give_form_shortcode(
+			[
+				'id' => $this->get_preview_form_id(),
+			]
+		);
+		?>
+		<?php wp_print_scripts( [ 'give' ] ); ?>
+		<script>
+			(function checkForBodySizeChange() {
+				var last_body_size = {
+					width: document.body.clientWidth,
+					height: document.body.clientHeight
+				};
 
-			function checkBodySizeChange()
-			{
-				var width_changed = last_body_size.width !== document.body.clientWidth,
-					height_changed = last_body_size.height !== document.body.clientHeight;
+				function checkBodySizeChange()
+				{
+					var width_changed = last_body_size.width !== document.body.clientWidth,
+						height_changed = last_body_size.height !== document.body.clientHeight;
 
 
-				if(width_changed || height_changed) {
-					handleBodySizeChange(document.body.clientWidth, document.body.clientHeight);
-					last_body_size = {
-						width: document.body.clientWidth,
-						height: document.body.clientHeight
-					};
+					if(width_changed || height_changed) {
+						handleBodySizeChange(document.body.clientWidth, document.body.clientHeight);
+						last_body_size = {
+							width: document.body.clientWidth,
+							height: document.body.clientHeight
+						};
+					}
+
+					window.requestAnimationFrame(checkBodySizeChange);
+				}
+
+				function handleBodySizeChange(width, height)
+				{
+					window.parent.postMessage({
+						action: 'resize',
+						payload: {
+							height,
+							width
+						}
+					});
 				}
 
 				window.requestAnimationFrame(checkBodySizeChange);
-			}
-
-			function handleBodySizeChange(width, height)
-			{
-				window.parent.postMessage({
-					action: 'resize',
-					payload: {
-						height,
-						width
-					}
-				});
-			}
-
-			window.requestAnimationFrame(checkBodySizeChange);
-		})();
-	</script>
-	<script>
-		(function listenForFormLoaded() {
-			function handleFormLoaded(width, height)
-			{
-				window.parent.postMessage({
-					action: 'loaded',
-					payload: {}
-				});
-			}
-			document.querySelector('iframe').addEventListener('load', handleFormLoaded );
-		})();
-	</script>
+			})();
+		</script>
+		<script>
+			(function listenForFormLoaded() {
+				function handleFormLoaded(width, height)
+				{
+					window.parent.postMessage({
+						action: 'loaded',
+						payload: {}
+					});
+				}
+				document.querySelector('iframe').addEventListener('load', handleFormLoaded );
+			})();
+		</script>
+	</body>
 </html>

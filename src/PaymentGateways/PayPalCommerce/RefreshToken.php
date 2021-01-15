@@ -13,6 +13,9 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
  * @since 2.9.0
  */
 class RefreshToken {
+	/* @var MerchantDetail */
+	private $merchantDetail;
+
 	/**
 	 * @since 2.9.0
 	 *
@@ -31,13 +34,16 @@ class RefreshToken {
 	 * RefreshToken constructor.
 	 *
 	 * @since 2.9.0
+	 * @since 2.9.6 Add MerchantDetail constructor param.
 	 *
-	 * @param MerchantDetails $detailsRepository
-	 * @param PayPalAuth      $payPalAuth
+	 * @param  MerchantDetails  $detailsRepository
+	 * @param  PayPalAuth  $payPalAuth
+	 * @param  MerchantDetail  $merchantDetail
 	 */
-	public function __construct( MerchantDetails $detailsRepository, PayPalAuth $payPalAuth ) {
+	public function __construct( MerchantDetails $detailsRepository, PayPalAuth $payPalAuth, MerchantDetail $merchantDetail ) {
 		$this->detailsRepository = $detailsRepository;
 		$this->payPalAuth        = $payPalAuth;
+		$this->merchantDetail    = $merchantDetail;
 	}
 
 	/**
@@ -83,15 +89,18 @@ class RefreshToken {
 	 * Note: only for internal use
 	 *
 	 * @since 2.9.0
+	 * @since 2.9.6 Refresh token only if paypal merchant id exist.
 	 */
 	public function refreshToken() {
-		/* @var MerchantDetail $merchant */
-		$merchant = give( MerchantDetail::class );
+		// Exit if account is not connected.
+		if ( ! $this->detailsRepository->accountIsConnected() ) {
+			return;
+		}
 
-		$tokenDetails = $this->payPalAuth->getTokenFromClientCredentials( $merchant->clientId, $merchant->clientSecret );
+		$tokenDetails = $this->payPalAuth->getTokenFromClientCredentials( $this->merchantDetail->clientId, $this->merchantDetail->clientSecret );
 
-		$merchant->setTokenDetails( $tokenDetails );
-		$this->detailsRepository->save( $merchant );
+		$this->merchantDetail->setTokenDetails( $tokenDetails );
+		$this->detailsRepository->save( $this->merchantDetail );
 
 		$this->registerCronJobToRefreshToken( $tokenDetails['expiresIn'] );
 	}

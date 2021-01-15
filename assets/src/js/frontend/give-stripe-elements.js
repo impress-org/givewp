@@ -24,6 +24,7 @@ class GiveStripeElements {
 		this.idPrefix = formElement.getAttribute( 'data-id' ) ? formElement.getAttribute( 'data-id' ) : '';
 		this.locale = give_stripe_vars.preferred_locale;
 		this.fieldsFormat = give_stripe_vars.cc_fields_format;
+		this.isSingleInputField = this.fieldsFormat === 'single';
 		this.isMounted = false;
 		this.fontStyles = [];
 
@@ -188,7 +189,7 @@ class GiveStripeElements {
 			cardExpiry: `#give-card-expiration-field-${ this.idPrefix }`,
 		};
 
-		if ( 'single' === this.fieldsFormat ) {
+		if ( this.isSingleInputField ) {
 			elementsToMountOn = {
 				card: `#give-stripe-single-cc-fields-${ this.idPrefix }`,
 			};
@@ -234,23 +235,29 @@ class GiveStripeElements {
 	 * @param stripeElement
 	 * @param cardElements
 	 *
+	 * @since 2.9.4 only add card name for multi-input field
 	 * @since 2.8.0
 	 */
 	createPaymentMethod( formElement, stripeElement, cardElements ) {
-		const billing_details = {
-			name: '',
-			email: '',
-		};
-		const firstName = formElement.querySelector( 'input[name="give_first"]' ).value;
-		const lastName = formElement.querySelector( 'input[name="give_last"]' ).value;
-		const email = formElement.querySelector( 'input[name="give_email"]' ).value;
-		const formSubmit = formElement.querySelector( '[id^=give-purchase-button]' );
+		const billing_details = {};
 
-		// Disable the submit button to prevent repeated clicks.
-		formSubmit.setAttribute( 'disabled', 'disabled' );
+		if ( ! this.isSingleInputField ) {
+			billing_details.name = formElement.querySelector( 'input[name="card_name"]' ).value;
+		}
 
-		billing_details.name = `${ firstName } ${ lastName }`;
-		billing_details.email = email;
+		if ( ! give_stripe_vars.stripe_card_update ) {
+			const firstName = formElement.querySelector( 'input[name="give_first"]' ).value;
+			const lastName = formElement.querySelector( 'input[name="give_last"]' ).value;
+			const email = formElement.querySelector( 'input[name="give_email"]' ).value;
+
+			billing_details.name = `${ firstName } ${ lastName }`;
+			billing_details.email = email;
+
+			const formSubmit = formElement.querySelector( '[id^=give-purchase-button]' );
+
+			// Disable the submit button to prevent repeated clicks.
+			formSubmit.setAttribute( 'disabled', 'disabled' );
+		}
 
 		// Gather additional customer data we may have collected in our form.
 		if ( give_stripe_vars.checkout_address && ! give_stripe_vars.stripe_card_update ) {

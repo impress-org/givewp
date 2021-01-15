@@ -21,46 +21,73 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 			return;
 		}
 
-		const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+		/**
+		 * Bailout, if Stripe publishable key does not found.
+		 */
+		if( ! formElement.getAttribute( 'data-publishable-key' ) ) {
+			return;
+		}
 
+		const isUpdatingPaymentInfo = give_stripe_vars.hasOwnProperty( 'stripe_card_update' ) && parseInt( give_stripe_vars.stripe_card_update );
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
 		const stripeElements = new GiveStripeElements( formElement );
 		const setupStripeElement = stripeElements.setupStripeElement();
 		const getStripeElements = stripeElements.getElements( setupStripeElement );
-		const stripeCheckoutTypeHiddenField = Give.form.fn.getInfo( 'stripe-checkout-type' );
-		const isCheckoutTypeModal = stripeCheckoutTypeHiddenField && 'modal' === stripeCheckoutTypeHiddenField.value;
-		const isStripeModalCheckoutGateway = 'stripe_checkout' === formGateway.value && isCheckoutTypeModal;
-		let cardElements = stripeElements.createElement( getStripeElements, formElement );
+		const cardElements = stripeElements.createElement( getStripeElements, formElement );
+		const stripeCheckoutTypeHiddenField = Give.form.fn.getInfo( 'stripe-checkout-type', formElement );
 
-		if ( 'stripe' === formGateway.value || isStripeModalCheckoutGateway ) {
-			stripeElements.mountElement(cardElements);
+		/**
+		 * Returns the state of the
+		 *
+		 * @since 2.9.3
+		 *
+		 * @returns {{selectedGatewayId: string, formGateway: Element, isCheckoutTypeModal: boolean, isStripeModalCheckoutGateway: boolean}}
+		 */
+		function getFormState() {
+			const formGateway = formElement.querySelector( 'input[name="give-gateway"]' );
+			const selectedGatewayId = formGateway ? formGateway.value : '';
+			const isCheckoutTypeModal = 'modal' === stripeCheckoutTypeHiddenField;
+
+			return {
+				formGateway,
+				selectedGatewayId,
+				isCheckoutTypeModal,
+				isStripeModalCheckoutGateway: formGateway && 'stripe_checkout' === selectedGatewayId && isCheckoutTypeModal
+			}
 		}
 
-		document.addEventListener( 'give_gateway_loaded', ( e ) => {
-			const selectedGateway = e.detail.selectedGateway;
-			const getStripeElements = stripeElements.getElements( setupStripeElement );
-			cardElements = stripeElements.createElement( getStripeElements, formElement );
+		/**
+		 * Mounts and unmounts the Stripe Elements to the form
+		 *
+		 * @since 2.9.3
+		 *
+		 * @param {boolean} doUnmount
+		 */
+		function mountStripeElements(doUnmount = true) {
+			const { selectedGatewayId, isStripeModalCheckoutGateway } = getFormState();
 
-			if ( 'stripe' === selectedGateway || isStripeModalCheckoutGateway ) {
+			if ( isUpdatingPaymentInfo || 'stripe' === selectedGatewayId || isStripeModalCheckoutGateway ) {
 				stripeElements.mountElement( cardElements );
-			} else {
+			} else if( doUnmount ) {
 				stripeElements.unMountElement( cardElements );
 			}
 
 			if ( isStripeModalCheckoutGateway ) {
 				stripeElements.triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements );
 			}
-		});
-
-		if ( isStripeModalCheckoutGateway) {
-			stripeElements.triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements );
 		}
 
+		// Do initial mount
+		mountStripeElements(false);
+
+		// Mount & unmount when the users selects a gateway
+		document.addEventListener( 'give_gateway_loaded', mountStripeElements );
+
 		formElement.onsubmit = ( e ) => {
-			const selectedGateway = formElement.querySelector( '.give-gateway:checked' ).value;
+			const { selectedGatewayId, isStripeModalCheckoutGateway } = getFormState();
 
 			// Bailout, if Stripe is not the selected gateway.
-			if ( 'stripe' === selectedGateway ) {
+			if ( isUpdatingPaymentInfo || 'stripe' === selectedGatewayId ) {
 				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
 				e.preventDefault();
 			}
