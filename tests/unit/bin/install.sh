@@ -96,11 +96,11 @@ install_db() {
 
 	if [ -n "$DB_HOSTNAME" ] ; then
 		if echo "$DB_SOCK_OR_PORT" | grep -q '^[0-9]\{1,\}$' ; then
-			EXTRA="--host=$DB_HOSTNAME --port=$DB_SOCK_OR_PORT --protocol=tcp"
+			EXTRA=--host="$DB_HOSTNAME" --port="$DB_SOCK_OR_PORT" --protocol=tcp
 		elif [ -n "$DB_SOCK_OR_PORT" ] ; then
 			EXTRA=--socket="$DB_SOCK_OR_PORT"
 		elif [ -n "$DB_HOSTNAME" ] ; then
-			EXTRA="--host=$DB_HOSTNAME --protocol=tcp"
+			EXTRA=--host="$DB_HOSTNAME" --protocol=tcp
 		fi
 	fi
 
