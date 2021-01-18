@@ -57,6 +57,6 @@ jobs:
             bash tests/unit/bin/install.sh wordpress_test root root localhost ${{ matrix.wordpress }}
 
       -   name: Execute tests
-          run: vendor/bin/phpunit
+          run: php -d memory_limit=-1 vendor/bin/phpunit
           env:
             DB_PORT: ${{ job.services.mysql.ports[3306] }}
