@@ -14,11 +14,6 @@ class MigrationsRunnerTest extends TestCase {
 	 * @see https://github.com/impress-org/givewp/issues/5454
 	 */
 	public function testNoMigrationsDoesNotThrowError() {
-		// Mock get_option to return the default.
-		function get_option( $option, $default = false ) {
-			return $default;
-		}
-
 		$runner = new MigrationsRunner( new MigrationsRegister );
 
 		self::assertFalse(
