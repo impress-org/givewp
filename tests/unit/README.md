@@ -16,6 +16,8 @@ This folder contains instructions and test code for Give PHPUnit testing.
 
 Sample usage: `$ tests/bin/install.sh give_tests root root`
 
+If you need to use a socket for your database, then your host will be colon-delimited: `localhost:/path/to/socket`
+
 Note: Running the installer a second time will not update the WordPress configuration. Instead, when making changes to the database and/or database user these values will need to be updated directly in `tmp/wordpress-tests-lib/wp-tests-config.php` (or the relative file on your operating system).
 
 **Important**: The `<db-name>` database will be created if it doesn't exist and all data will be removed during testing.
