@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 // Import utilities
-import { toKebabCase } from '../../utils';
+import { toUniqueId } from '../../utils';
 
 // Import styles
 import './style.scss';
@@ -14,6 +14,8 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 	if ( options && options.length < 2 ) {
 		return null;
 	}
+
+	const id = toUniqueId( label );
 
 	const selectedOptionValue = options !== null ? options.filter( option => option.value === value ) : null;
 	const selectStyles = {
@@ -64,11 +66,11 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 
 	return (
 		<div className="give-donor-profile-select-control" style={ width ? { maxWidth: width } : null }>
-			{ label && ( <label className="give-donor-profile-select-control__label" htmlFor={ toKebabCase( label ) }>{ label }</label> ) }
+			{ label && ( <label className="give-donor-profile-select-control__label" htmlFor={ id }>{ label }</label> ) }
 			<Select
 				placeholder={ placeholder }
 				isLoading={ isLoading }
-				inputId={ label && toKebabCase( `${ label }-${ Math.floor( Math.random() * Math.floor( 1000 ) ) }` ) }
+				inputId={ id }
 				value={ selectedOptionValue }
 				onChange={ ( selectedOption ) => onChange( selectedOption ? selectedOption.value : '' ) }
 				options={ options }
