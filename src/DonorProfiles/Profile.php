@@ -2,7 +2,7 @@
 
 namespace Give\DonorProfiles;
 
-use \Give_Donor as DonorModel;
+use Give\DonorProfiles\Factories\DonorFactory;
 
 class Profile {
 
@@ -10,8 +10,8 @@ class Profile {
 	protected $id;
 
 	public function __construct( int $donorId ) {
-		$this->id    = $donorId;
-		$this->donor = new DonorModel( $donorId );
+		$donorFactory = new DonorFactory;
+		$this->donor  = $donorFactory->make( $donorId );
 	}
 
 	/**
@@ -231,7 +231,7 @@ class Profile {
 	 * @since 2.11.0
 	 */
 	public function getId() {
-		return $this->id;
+		return $this->donor->id;
 	}
 
 	/**
