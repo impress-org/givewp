@@ -4,7 +4,7 @@ namespace Give\Onboarding\Wizard;
 
 defined( 'ABSPATH' ) || exit;
 
-use Give\Onboarding\Helpers\FormatList;
+use FormatObjectList;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\LocaleCollection;
@@ -161,13 +161,13 @@ class Page {
 				'setupUrl'         => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ? admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) : admin_url( 'edit.php?post_type=give_forms' ),
 				'formPreviewUrl'   => admin_url( '?page=give-form-preview' ),
 				'localeCurrency'   => $this->localeCollection->pluck( 'currency_code' ),
-				'currencies'       => FormatList::fromKeyValue( give_get_currencies_list() ),
+				'currencies'       => FormatObjectList\Factory::fromKeyValue( give_get_currencies_list() ),
 				'currencySelected' => $currency,
 				'countries'        => LocationList::getCountries(),
 				'countrySelected'  => $baseCountry,
 				'states'           => LocationList::getStates( $baseCountry ),
 				'stateSelected'    => $baseState,
-				'features'         => FormatList::fromValueKey(
+				'features'         => FormatObjectList\Factory::fromValueKey(
 					[
 						'donation-goal'       => ( 'enabled' == $featureGoal ),
 						'donation-comments'   => ( 'enabled' == $featureComments ),
@@ -177,7 +177,7 @@ class Page {
 						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
-				'causeTypes'       => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
+				'causeTypes'       => FormatObjectList\Factory::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
 				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);

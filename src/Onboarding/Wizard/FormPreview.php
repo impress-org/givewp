@@ -5,7 +5,6 @@ namespace Give\Onboarding\Wizard;
 defined( 'ABSPATH' ) || exit;
 
 use Give_Scripts;
-use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\FormRepository;
 
 /**

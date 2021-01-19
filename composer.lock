@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34069f70b082c3f3adc63a4c8d06d1b8",
+    "content-hash": "c6a38e38a660506e534704e82ea8403b",
     "packages": [
         {
             "name": "composer/installers",
@@ -144,6 +144,36 @@
             "time": "2020-04-07T06:57:05+00:00"
         },
         {
+            "name": "kjohnson/format-object-list",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kjohnson/format-object-list.git",
+                "reference": "aaf83123acbe4551379498345fea538f536f16f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kjohnson/format-object-list/zipball/aaf83123acbe4551379498345fea538f536f16f0",
+                "reference": "aaf83123acbe4551379498345fea538f536f16f0",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FormatObjectList\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Formats an associative array into a JS parsable array of objects.",
+            "time": "2021-01-18T22:22:25+00:00"
+        },
+        {
             "name": "paypal/paypal-checkout-sdk",
             "version": "1.0.1",
             "source": {
@@ -229,6 +259,7 @@
                     "homepage": "https://github.com/paypal/paypalhttp_php/contributors"
                 }
             ],
+            "abandoned": true,
             "time": "2019-11-06T21:27:12+00:00"
         },
         {
@@ -2142,7 +2173,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kjohnson/format-object-list": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
