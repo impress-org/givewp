@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Deprecated e2e tests have been removed, and replaced with Cypress tests (#5533)
 -   New `test:e2e` package script introduced (#5533)
 -   Decouple test:e2e command from wp-env #5545
+-   Unit test structure is refactored (#5554)
 
 ### Fixed
 

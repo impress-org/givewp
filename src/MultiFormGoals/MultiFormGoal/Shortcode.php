@@ -7,7 +7,7 @@ use Give\MultiFormGoals\MultiFormGoal\Model as MultiFormGoal;
 class Shortcode {
 
 	/**
-	 * @since 2.10.0 Extracted from harded-coded value in `addShortcode()`.
+	 * @since 2.9.6 Extracted from harded-coded value in `addShortcode()`.
 	 * @var string Shortcode tag to be searched in post content.
 	 * */
 	protected $tag = 'give_multi_form_goal';
@@ -64,7 +64,7 @@ class Shortcode {
 	/**
 	 * Parse multiple attributes with defualt values and types (infered from the default values).
 	 * @link https://developer.wordpress.org/reference/functions/shortcode_atts/
-	 * @since 2.10.0
+	 * @since 2.9.6
 	 * @param array $pairs Entire list of supported attributes and their defaults.
 	 * @param array $attributes User defined attributes.
 	 * @reutrn array
@@ -84,7 +84,7 @@ class Shortcode {
 
 	/**
 	 * Parses an individual attributes as an array (or from a comma-separated string).
-	 * @since 2.10.0
+	 * @since 2.9.6
 	 * @param string|array $value
 	 * @return array
 	 */
