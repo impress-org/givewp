@@ -152,6 +152,19 @@ class Page {
 		$baseCountry = $this->settingsRepository->get( 'base_country' ) ?: 'US';
 		$baseState   = $this->settingsRepository->get( 'base_state' ) ?: '';
 
+		$currenciesFormatter = FormatObjectList\Factory::fromKeyValue( give_get_currencies_list() );
+		$featuresFormatter   = FormatObjectList\Factory::fromValueKey(
+			[
+				'donation-goal'       => ( 'enabled' == $featureGoal ),
+				'donation-comments'   => ( 'enabled' == $featureComments ),
+				'terms-conditions'    => ( 'enabled' == $featureTerms ),
+				'offline-donations'   => ( 'enabled' == $offlineDonations ),
+				'anonymous-donations' => ( 'enabled' == $featureAnonymous ),
+				'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
+			]
+		);
+		$causesFormatter     = FormatObjectList\Factory::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' );
+
 		wp_localize_script(
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
@@ -161,23 +174,14 @@ class Page {
 				'setupUrl'         => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ? admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) : admin_url( 'edit.php?post_type=give_forms' ),
 				'formPreviewUrl'   => admin_url( '?page=give-form-preview' ),
 				'localeCurrency'   => $this->localeCollection->pluck( 'currency_code' ),
-				'currencies'       => FormatObjectList\Factory::fromKeyValue( give_get_currencies_list() ),
+				'currencies'       => $currenciesFormatter->format(),
 				'currencySelected' => $currency,
 				'countries'        => LocationList::getCountries(),
 				'countrySelected'  => $baseCountry,
 				'states'           => LocationList::getStates( $baseCountry ),
 				'stateSelected'    => $baseState,
-				'features'         => FormatObjectList\Factory::fromValueKey(
-					[
-						'donation-goal'       => ( 'enabled' == $featureGoal ),
-						'donation-comments'   => ( 'enabled' == $featureComments ),
-						'terms-conditions'    => ( 'enabled' == $featureTerms ),
-						'offline-donations'   => ( 'enabled' == $offlineDonations ),
-						'anonymous-donations' => ( 'enabled' == $featureAnonymous ),
-						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
-					]
-				),
-				'causeTypes'       => FormatObjectList\Factory::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
+				'features'         => $featuresFormatter->format(),
+				'causeTypes'       => $causesFormatter->format(),
 				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);

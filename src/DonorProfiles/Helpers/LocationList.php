@@ -13,12 +13,14 @@ class LocationList {
 	public static function getCountries() {
 		$countries = give_get_country_list();
 		unset( $countries[''] );
-		return FormatObjectList\Factory::fromKeyValue( $countries );
+		$formatter = FormatObjectList\Factory::fromKeyValue( $countries );
+		return $formatter->format();
 	}
 
 	public static function getStates( $country ) {
 		$states     = give_get_states( $country );
 		$states[''] = sprintf( '%s...', esc_html__( 'Select', 'give' ) );
-		return FormatObjectList\Factory::fromKeyValue( $states );
+		$formatter  = FormatObjectList\Factory::fromKeyValue( $states );
+		return $formatter->format();
 	}
 }
