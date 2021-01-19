@@ -31,10 +31,7 @@ class SanitizeProfileData {
 	 * @since 2.11.0
 	 */
 	public static function sanitizeAdditionalAddresses( $addresses ) {
-		foreach ( $addresses as $key => $value ) {
-			$addresses[ $key ] = self::sanitizeAddress( $value );
-		}
-		return $addresses;
+		return array_map( [ __CLASS__, 'sanitizeAddress' ], $addresses );
 	}
 
 	/**
