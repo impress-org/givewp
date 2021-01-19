@@ -1239,8 +1239,6 @@ class Give_Donor {
 	 */
 	public function remove_email( $email = '' ) {
 
-		error_log( $email );
-
 		if ( ! is_email( $email ) ) {
 			return false;
 		}
