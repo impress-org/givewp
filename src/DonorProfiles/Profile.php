@@ -34,7 +34,7 @@ class Profile {
 		$pipeline = ( new DonorProfilePipeline )
 			->pipe( new UpdateDonorName )
 			->pipe( new UpdateDonorAvatar )
-			->pipe( new UpdateDonorEMails )
+			->pipe( new UpdateDonorEmails )
 			->pipe( new UpdateDonorAddresses );
 
 		$pipeline->process(
