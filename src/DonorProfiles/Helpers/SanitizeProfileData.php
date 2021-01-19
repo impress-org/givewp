@@ -18,7 +18,11 @@ class SanitizeProfileData {
 	 * @since 2.11.0
 	 */
 	public static function sanitizeInt( $avatarId ) {
-		return intval( $avatarId );
+		if ( ! empty( $avatarId ) ) {
+			return intval( $avatarId );
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -31,7 +35,11 @@ class SanitizeProfileData {
 	 * @since 2.11.0
 	 */
 	public static function sanitizeAdditionalAddresses( $addresses ) {
-		return array_map( [ __CLASS__, 'sanitizeAddress' ], $addresses );
+		if ( ! empty( $addresses ) ) {
+			return array_map( [ __CLASS__, 'sanitizeAddress' ], $addresses );
+		} else {
+			return [];
+		}
 	}
 
 	/**
@@ -44,10 +52,14 @@ class SanitizeProfileData {
 	 * @since 2.11.0
 	 */
 	public static function sanitizeAddress( $address ) {
-		foreach ( $address as $key => $value ) {
-			$address->{$key} = sanitize_text_field( $value );
+		if ( ! empty( $address ) ) {
+			foreach ( $address as $key => $value ) {
+				$address->{$key} = sanitize_text_field( $value );
+			}
+			return $address;
+		} else {
+			return [];
 		}
-		return $address;
 	}
 
 	/**
@@ -60,9 +72,13 @@ class SanitizeProfileData {
 	 * @since 2.11.0
 	 */
 	public static function sanitizeAdditionalEmails( $emails ) {
-		foreach ( $emails as $key => $value ) {
-			$emails[ $key ] = sanitize_email( $value );
+		if ( ! empty( $emails ) ) {
+			foreach ( $emails as $key => $value ) {
+				$emails[ $key ] = sanitize_email( $value );
+			}
+			return $emails;
+		} else {
+			return [];
 		}
-		return $emails;
 	}
 }

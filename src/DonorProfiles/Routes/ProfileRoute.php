@@ -5,6 +5,7 @@ namespace Give\DonorProfiles\Routes;
 use WP_REST_Request;
 use Give\API\RestRoute;
 use Give\DonorProfiles\Profile as Profile;
+use Give\DonorProfiles\Helpers\SanitizeProfileData as SanitizeHelper;
 
 /**
  * @since 2.11.0
@@ -58,48 +59,18 @@ class ProfileRoute implements RestRoute {
 	public function sanitizeData( $value, $request, $param ) {
 
 		$sanitizeHelper = '\Give\DonorProfiles\Helpers\SanitizeProfileData';
-		$sanitizedValue = json_decode( $value );
+		$valuesArr      = json_decode( $value );
 
-		$attributesMap = [
-			'firstName'           => [
-				'sanitizeCallback' => 'sanitize_text_field',
-				'default'          => '',
-			],
-			'lastName'            => [
-				'sanitizeCallback' => 'sanitize_text_field',
-				'default'          => '',
-			],
-			'additionalEmails'    => [
-				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeAdditionalEmails' ],
-				'default'          => [],
-			],
-			'additionalAddresses' => [
-				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeAdditionalAddresses' ],
-				'default'          => [],
-			],
-			'primaryEmail'        => [
-				'sanitizeCallback' => 'sanitize_email',
-				'default'          => '',
-			],
-			'primaryAddress'      => [
-				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeAddress' ],
-				'default'          => [],
-			],
-			'titlePrefix'         => [
-				'sanitizeCallback' => 'sanitize_text_field',
-				'default'          => '',
-			],
-			'avatarId'            => [
-				'sanitizeCallback' => [ $sanitizeHelper, 'sanitizeInt' ],
-				'default'          => 0,
-			],
+		return [
+			'firstName'           => sanitize_text_field( $valuesArr['firstName'] ),
+			'lastName'            => sanitize_text_field( $valuesArr['lastName'] ),
+			'additionalEmails'    => SanitizeHelper::sanitizeAdditionalEmails( $valuesArr['additionalEmails'] ),
+			'additionalAddresses' => SanitizeHelper::sanitizeAdditionalAddresses( $valuesArr['additionalAddresses'] ),
+			'primaryEmail'        => sanitize_email( $valuesArr['primaryEmail'] ),
+			'primaryAddress'      => SanitizeHelper::sanitizeAddress( $valuesArr['primaryAddress'] ),
+			'titlePrefix'         => sanitize_text_field( $valuesArr['titlePrefix'] ),
+			'avatarId'            => SanitizeHelper::sanitizeInt( $valuesArr['avatarId'] ),
 		];
-
-		foreach ( $attributesMap as $key => $value ) {
-			$sanitizedValue->{$key} = $this->sanitizeValue( $sanitizedValue->{$key}, $value );
-		}
-
-		return $sanitizedValue;
 
 	}
 
