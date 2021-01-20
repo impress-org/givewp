@@ -27,3 +27,41 @@
 		}
 	}
 }
+
+.give-donor-profile__address-controls {
+	display: flex;
+	align-self: stretch;
+	align-items: center;
+	justify-content: center;
+	padding: 28px 0 20px 0;
+	max-width: fit-content;
+	font-size: 14px;
+
+	.give-donor-profile__make-primary-address {
+		margin-right: 10px;
+		color: #3398db;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.give-donor-profile__delete-address {
+		margin-left: 10px;
+		color: rgb(199, 81, 81);
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+.give-donor-profile__add-primary-address {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 16px;
+	border: 1px solid #e2e6ec;
+	background: #fbfbfb;
+}

@@ -2,30 +2,23 @@
 
 namespace Give\DonorProfiles;
 
-class Model {
+use Give\DonorProfiles\Profile;
+use Give\DonorProfiles\Helpers\LocationList;
 
-	// Settings
-	protected $enabled;
+class App {
 
-	// Internal variables
-	protected $tabs;
+	protected $profile;
 
-	/**
-	 * Constructs and sets up setting variables for a new Donor Profile model
-	 *
-	 * @param array $args Arguments for new Donor Profile, including 'enabled'
-	 * @since 2.10.0
-	 **/
 	public function __construct() {
-		$this->enabled = [];
-		$this->tabs    = [];
+		$id            = get_current_user_id();
+		$this->profile = new Profile( $id );
 	}
 
 	/**
-	 * Get output markup for Multi-Form Goal
+	 * Get output markup for Donor Profile app
 	 *
 	 * @return string
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function getOutput() {
 		ob_start();
@@ -37,18 +30,8 @@ class Model {
 	}
 
 	/**
-	 * Get enabled tabs for Donor Profile
-	 *
-	 * @return string
-	 * @since 2.10.0
-	 **/
-	public function getEnabled() {
-		return $this->enabled;
-	}
-
-	/**
 	 * Get template path for Donor Profile component template
-	 * @since 2.9.0
+	 * @since 2.11.0
 	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofile.php';
@@ -58,7 +41,7 @@ class Model {
 	 * Enqueue assets for front-end donor profiles
 	 *
 	 * @return void
-	 * @since 2.10.0
+	 * @since 2.11.0
 	 **/
 	public function loadAssets() {
 		wp_enqueue_script(
@@ -73,8 +56,12 @@ class Model {
 			'give-donor-profiles-app',
 			'giveDonorProfileData',
 			[
-				'apiRoot'  => esc_url_raw( rest_url() ),
-				'apiNonce' => wp_create_nonce( 'wp_rest' ),
+				'apiRoot'   => esc_url_raw( rest_url() ),
+				'apiNonce'  => wp_create_nonce( 'wp_rest' ),
+				'profile'   => $this->profile->getProfileData(),
+				'countries' => LocationList::getCountries(),
+				'states'    => LocationList::getStates( $this->profile->getCountry() ),
+				'id'        => $this->profile->getId(),
 			]
 		);
 

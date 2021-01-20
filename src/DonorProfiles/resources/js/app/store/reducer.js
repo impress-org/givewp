@@ -15,6 +15,21 @@ export const reducer = ( state = initialState, action ) => {
 				...state,
 				tabs: registeredTabs,
 			};
+		case 'SET_PROFILE':
+			return {
+				...state,
+				profile: action.payload.profile,
+			};
+		case 'SET_STATES':
+			return {
+				...state,
+				states: action.payload.states,
+			};
+		case 'SET_FETCHING_STATES':
+			return {
+				...state,
+				fetchingStates: action.payload.fetchingStates,
+			};
 		default:
 			return state;
 	}

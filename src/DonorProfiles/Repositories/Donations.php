@@ -196,7 +196,7 @@ class Donations {
 		return [
 			'amount'   => $payment->subtotal,
 			'currency' => $payment->currency,
-			'fee'      => $payment->fees,
+			'fee'      => ( $payment->total - $payment->subtotal ),
 			'total'    => $payment->total,
 			'method'   => $payment->gateway,
 			'status'   => $payment->status,

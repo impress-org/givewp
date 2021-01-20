@@ -6,68 +6,69 @@ import SelectControl from '../../components/select-control';
 import TextControl from '../../components/text-control';
 import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
+import { updateProfileWithAPI } from './utils';
 
-import { Fragment, useState } from 'react';
+import EmailControls from './email-controls';
+import AddressControls from './address-controls';
+
+import { Fragment, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 const { __ } = wp.i18n;
 
 import './style.scss';
 
 const Content = () => {
-	const [ prefix, setPrefix ] = useState( 'mr' );
-	const prefixOptions = [
+	const id = useSelector( state => state.id );
+	const storedProfile = useSelector( state => state.profile );
+
+	useEffect( () => {
+		setAvatarFile( null );
+		setAvatarUrl( storedProfile.avatarUrl );
+	}, [ storedProfile ] );
+
+	const [ titlePrefix, setTitlePrefix ] = useState( storedProfile.titlePrefix );
+	const titlePrefixOptions = [
 		{
-			value: 'mr',
+			value: 'Mr.',
 			label: 'Mr.',
 		},
 		{
-			value: 'ms',
+			value: 'Ms.',
 			label: 'Ms.',
 		},		{
-			value: 'mrs',
+			value: 'Mrs.',
 			label: 'Mrs.',
 		},
 	];
 
-	const [ firstName, setFirstName ] = useState( 'Robin' );
-	const [ lastName, setLastName ] = useState( 'Hood' );
+	const [ avatarFile, setAvatarFile ] = useState( null );
+	const [ avatarUrl, setAvatarUrl ] = useState( storedProfile.avatarUrl );
 
-	const [ primaryEmail, setPrimaryEmail ] = useState( 'robin@merrymen.biz' );
-	const [ additionalEmail, setAdditionalEmail ] = useState( 'give2th3p00r@sherwood.net' );
+	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
+	const [ lastName, setLastName ] = useState( storedProfile.lastName );
 
-	const [ country, setCountry ] = useState( 'UK' );
-	const countryOptions = [
-		{
-			value: 'USA',
-			label: 'United States',
-		},
-		{
-			value: 'UK',
-			label: 'United Kingdom',
-		},		{
-			value: 'CAN',
-			label: 'Canada',
-		},
-	];
-	const [ addressOne, setAddressOne ] = useState( '12 King John Way' );
-	const [ addressTwo, setAddressTwo ] = useState( 'Unit B' );
-	const [ city, setCity ] = useState( 'Sherwood Forest' );
-	const [ state, setState ] = useState( 'NY' );
-	const stateOptions = [
-		{
-			value: 'NY',
-			label: 'New York',
-		},
-		{
-			value: 'MI',
-			label: 'Michigan',
-		},		{
-			value: 'CA',
-			label: 'California',
-		},
-	];
-	const [ zip, setZip ] = useState( '01234' );
+	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails.primary );
 
-	const [ anonymous, setAnonymous ] = useState( 'public' );
+	const reducedAdditionalEmails = Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
+		if ( key !== 'primary' ) {
+			newArray.push( storedProfile.emails[ key ] );
+		}
+		return newArray;
+	}, [] );
+
+	const [ additionalEmails, setAdditionalEmails ] = useState( reducedAdditionalEmails );
+
+	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses.billing ? storedProfile.addresses.billing[ 0 ] : null );
+
+	const reducedAdditionalAddresses = storedProfile.addresses.billing ? storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
+		if ( index !== 0 ) {
+			newArray.push( address );
+		}
+		return newArray;
+	}, [] ) : [];
+	const [ additionalAddresses, setAdditionalAddresses ] = useState( reducedAdditionalAddresses );
+
+	const [ anonymous, setAnonymous ] = useState( storedProfile.isAnonymous );
 	const anonymousOptions = [
 		{
 			value: 'public',
@@ -79,19 +80,37 @@ const Content = () => {
 		},
 	];
 
+	const handleUpdate = () => {
+		updateProfileWithAPI( {
+			titlePrefix,
+			firstName,
+			lastName,
+			primaryEmail,
+			additionalEmails,
+			primaryAddress,
+			additionalAddresses,
+			avatarFile,
+			id,
+		} );
+	};
+
 	return (
 		<Fragment>
 			<Heading>
 				{ __( 'Profile Information', 'give' ) }
 			</Heading>
 			<Divider />
-			<AvatarControl />
+			<AvatarControl
+				url={ avatarUrl }
+				file={ avatarFile }
+				onChange={ ( value ) => setAvatarFile( value ) }
+			/>
 			<FieldRow>
 				<SelectControl
 					label={ __( 'Prefix', 'give' ) }
-					value={ prefix }
-					onChange={ ( value ) => setPrefix( value ) }
-					options={ prefixOptions }
+					value={ titlePrefix }
+					onChange={ ( value ) => setTitlePrefix( value ) }
+					options={ titlePrefixOptions }
 					placeholder="--"
 					width="120px"
 					isClearable={ true }
@@ -108,68 +127,18 @@ const Content = () => {
 					onChange={ ( value ) => setLastName( value ) }
 				/>
 			</FieldRow>
-			<TextControl
-				label={ __( 'Primary Email', 'give' ) }
-				value={ primaryEmail }
-				onChange={ ( value ) => setPrimaryEmail( value ) }
-				icon="envelope"
+			<EmailControls
+				primaryEmail={ primaryEmail }
+				additionalEmails={ additionalEmails }
+				onChangePrimaryEmail={ ( value ) => setPrimaryEmail( value ) }
+				onChangeAdditionalEmails={ ( value ) => setAdditionalEmails( value ) }
 			/>
-			<FieldRow>
-				<TextControl
-					label={ __( 'Additional Emails', 'give' ) }
-					value={ additionalEmail }
-					onChange={ ( value ) => setAdditionalEmail( value ) }
-					icon="envelope"
-				/>
-				<div className="give-donor-profile__email-controls">
-					<div className="give-donor-profile__make-primary-email">
-						{ __( 'Make Primary', 'give' ) }
-					</div>
-					|
-					<div className="give-donor-profile__delete-email">
-						{ __( 'Delete', 'give' ) }
-					</div>
-				</div>
-			</FieldRow>
-			<Heading>
-				{ __( 'Address', 'give' ) }
-			</Heading>
-			<Divider />
-			<SelectControl
-				label={ __( 'Country', 'give' ) }
-				value={ country }
-				onChange={ ( value ) => setCountry( value ) }
-				options={ countryOptions }
-				width={ null }
+			<AddressControls
+				primaryAddress={ primaryAddress }
+				additionalAddresses={ additionalAddresses }
+				onChangePrimaryAddress={ ( value ) => setPrimaryAddress( value ) }
+				onChangeAdditionalAddresses={ ( value ) => setAdditionalAddresses( value ) }
 			/>
-			<TextControl
-				label={ __( 'Address 1', 'give' ) }
-				value={ addressOne }
-				onChange={ ( value ) => setAddressOne( value ) }
-			/>
-			<TextControl
-				label={ __( 'Address 2', 'give' ) }
-				value={ addressTwo }
-				onChange={ ( value ) => setAddressTwo( value ) }
-			/>
-			<TextControl
-				label={ __( 'City', 'give' ) }
-				value={ city }
-				onChange={ ( value ) => setCity( value ) }
-			/>
-			<FieldRow>
-				<SelectControl
-					label={ __( 'State', 'give' ) }
-					value={ state }
-					onChange={ ( value ) => setState( value ) }
-					options={ stateOptions }
-				/>
-				<TextControl
-					label={ __( 'Zip', 'give' ) }
-					value={ zip }
-					onChange={ ( value ) => setZip( value ) }
-				/>
-			</FieldRow>
 			<Heading>
 				{ __( 'Additional Info', 'give' ) }
 			</Heading>
@@ -181,7 +150,7 @@ const Content = () => {
 				onChange={ ( value ) => setAnonymous( value ) }
 				value={ anonymous }
 			/>
-			<Button icon="save">
+			<Button icon="save" onClick={ () => handleUpdate() }>
 				Update Profile
 			</Button>
 		</Fragment>

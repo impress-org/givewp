@@ -34,6 +34,13 @@
 			align-items: center;
 			justify-content: center;
 
+			transition: background 0.2s ease;
+
+			&.give-donor-profile-avatar-control__dropzone--highlight {
+				background: #e0ebda;
+				border: 2px dashed #68bb6c;
+			}
+
 			.give-donor-profile-avatar-control__instructions {
 				text-align: center;
 

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donor Profiles UI is implemented (#5444)
 -   Donation History and Dashboard tabs are now dynamically populated (#5455)
 -   Edit Profile UI is now implemented (#5463)
+-   Edit Profile tab now persists data (#5486)
 
 ## 2.9.6 - 2021-01-13
 

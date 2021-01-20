@@ -59,3 +59,15 @@ export const toKebabCase = ( str ) => {
 		.replace( /\s+/g, '-' )
 		.toLowerCase();
 };
+
+/**
+ * Returns a unique id in kebab case for components
+ *
+ * @param {string} str String to be returned as unique id
+ * @return {string} String returned as unique id
+ * @since 2.8.0
+ */
+export const toUniqueId = ( str ) => {
+	const prefix = str.length ? str : 'component';
+	return toKebabCase( `${ prefix }-${ Math.floor( Math.random() * Math.floor( 1000 ) ) }` );
+};
