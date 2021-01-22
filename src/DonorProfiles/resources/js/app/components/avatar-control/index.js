@@ -8,7 +8,11 @@ const AvatarControl = ( { url, file, onChange } ) => {
 		onChange( acceptedFiles[ 0 ] );
 	}, [] );
 
-	const { getRootProps, getInputProps, isDragActive } = useDropzone( { onDrop } );
+	const { getRootProps, getInputProps, isDragActive } = useDropzone( {
+		onDrop,
+		accept: 'image/jpeg, image/png, image/gif',
+		maxFiles: 1,
+	} );
 	const [ previewSrc, setPreviewSrc ] = useState( url );
 
 	useEffect( () => {
