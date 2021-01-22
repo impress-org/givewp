@@ -35,9 +35,11 @@ const AvatarControl = ( { url, file, onChange } ) => {
 					<div className="give-donor-profile-avatar-control__instructions">
 						{
 							isDragActive ? (
-								<p>Drop the files here ...</p>
+								<p>Drop the image here...</p>
 							) : (
-								<p>Drag n drop some files here, or click to <span className="give-donor-profile-avatar-control__select-link">select files</span></p>
+								<p>Drag image here to set <br />
+									avatar of <span className="give-donor-profile-avatar-control__select-link">find image</span>
+								</p>
 							)
 						}
 					</div>
