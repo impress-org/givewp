@@ -28,10 +28,10 @@ const AvatarControl = ( { url, file, onChange } ) => {
 			</label>
 			<div className="give-donor-profile-avatar-control__input" { ...getRootProps() }>
 				<input { ...getInputProps() } />
-				<div className="give-donor-profile-avatar-control__dropzone">
-					<div className="give-donor-profile-avatar-control__preview">
-						<img src={ previewSrc } />
-					</div>
+				<div className="give-donor-profile-avatar-control__preview">
+					<img src={ previewSrc } />
+				</div>
+				<div className={ `give-donor-profile-avatar-control__dropzone${ isDragActive ? ' give-donor-profile-avatar-control__dropzone--highlight' : '' }` }>
 					<div className="give-donor-profile-avatar-control__instructions">
 						{
 							isDragActive ? (
