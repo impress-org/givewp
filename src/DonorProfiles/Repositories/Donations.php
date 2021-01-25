@@ -194,14 +194,31 @@ class Donations {
 	 */
 	protected function getPaymentInfo( $payment ) {
 		return [
-			'amount'   => $payment->subtotal,
+			'amount'   => $this->getFormattedAmount( $payment->subtotal, $payment ),
 			'currency' => $payment->currency,
-			'fee'      => ( $payment->total - $payment->subtotal ),
-			'total'    => $payment->total,
+			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
+			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
 			'method'   => $payment->gateway,
 			'status'   => $payment->status,
-			'date'     => $payment->date,
+			'date'     => date( 'F j, Y', strtotime( $payment->date ) ),
+			'time'     => date( 'g:i a', strtotime( $payment->date ) ),
 		];
+	}
+
+	protected function getformattedAmount( $amount, $payment ) {
+		return give_currency_filter(
+			give_format_amount(
+				$amount,
+				[
+					'donation_id' => $payment->ID,
+				]
+			),
+			[
+				'currency_code'   => $payment->currency,
+				'decode_currency' => true,
+				'sanitize'        => false,
+			]
+		);
 	}
 
 	/**
