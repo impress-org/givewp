@@ -199,9 +199,23 @@ class Donations {
 			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
 			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
 			'method'   => $payment->gateway,
-			'status'   => $payment->status,
+			'status'   => $this->getFormattedStatus( $payment->status ),
 			'date'     => date( 'F j, Y', strtotime( $payment->date ) ),
 			'time'     => date( 'g:i a', strtotime( $payment->date ) ),
+		];
+	}
+
+	protected function getFormattedStatus( $status ) {
+		$statusMap = [
+			'publish' => [
+				'color' => '#7AD03A',
+				'label' => __( 'Complete', 'give' ),
+			],
+		];
+
+		return $statusMap[ $status ] ? $statusMap[ $status ] : [
+			'color' => '#FFBA00',
+			'label' => 'Unknown',
 		];
 	}
 

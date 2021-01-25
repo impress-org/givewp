@@ -19,7 +19,10 @@ const DonationRow = ( { donation } ) => {
 			</div>
 			<div className="give-donor-profile-table__column">
 				<div className="give-donor-profile-table__donation-status">
-					{ payment.status }
+					<div className="give-donor-profile-table__donation-status-indicator" style={ { background: payment.status.color } } />
+					<div className="give-donor-profile-table__donation-status-label">
+						{ payment.status.label }
+					</div>
 				</div>
 			</div>
 			<div className="give-donor-profile-table__pill">
