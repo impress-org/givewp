@@ -14,7 +14,8 @@ const DonationRow = ( { donation } ) => {
 				{ form.title }
 			</div>
 			<div className="give-donor-profile-table__column">
-				{ payment.date }
+				<div className="give-donor-profile-table__donation-date">{ payment.date }</div>
+				<div className="give-donor-profile-table__donation-time">{ payment.time }</div>
 			</div>
 			<div className="give-donor-profile-table__column">
 				<div className="give-donor-profile-table__donation-status">
