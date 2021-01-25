@@ -44,7 +44,9 @@ const DonationReceipt = ( { donation } ) => {
 							<FontAwesomeIcon icon="globe" /> { __( 'Address:', 'give' ) }
 						</div>
 						<div className="give-donor-profile-donation-receipt__value">
-							{ donor.address }
+							{ donor.address.street } <br />
+							{ donor.address.city } { donor.address.state }, { donor.address.zip } <br />
+							{ donor.address.country }
 						</div>
 					</div>
 				) }
