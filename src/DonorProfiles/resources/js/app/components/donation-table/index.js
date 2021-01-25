@@ -49,7 +49,7 @@ const DonationTable = ( { donations, perPage } ) => {
 						{ __( 'Donation', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Campaign', 'give' ) }
+						{ __( 'Form', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
 						{ __( 'Date', 'give' ) }
