@@ -193,12 +193,15 @@ class Donations {
 	 * @return array Payment info
 	 */
 	protected function getPaymentInfo( $payment ) {
+
+		$gateways = give_get_payment_gateways();
+
 		return [
 			'amount'   => $this->getFormattedAmount( $payment->subtotal, $payment ),
 			'currency' => $payment->currency,
 			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
 			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
-			'method'   => $payment->gateway,
+			'method'   => $gateways[ $payment->gateway ]['checkout_label'],
 			'status'   => $this->getFormattedStatus( $payment->status ),
 			'date'     => date( 'F j, Y', strtotime( $payment->date ) ),
 			'time'     => date( 'g:i a', strtotime( $payment->date ) ),
