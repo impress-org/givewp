@@ -235,19 +235,23 @@ function give_get_history_session() {
 /**
  * Generate Item Title for Payment Gateway.
  *
- * @param array $payment_data Payment Data.
+ * @since 1.8.14
+ * @since 2.9.6  Function will return form title with selected form level if price id set to zero. Added second param to return result with requested character length.
+ *
+ * @param  array  $payment_data  Payment Data.
+ *
+ * @param  string|null  $length
  *
  * @return string By default, the name of the form. Then the price level text if any is found.
- * @since 1.8.14
  */
-function give_payment_gateway_item_title( $payment_data ) {
+function give_payment_gateway_item_title( $payment_data, $length = null ) {
 
 	$form_id   = intval( $payment_data['post_data']['give-form-id'] );
 	$item_name = isset( $payment_data['post_data']['give-form-title'] ) ? $payment_data['post_data']['give-form-title'] : '';
 	$price_id  = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
 
 	// Verify has variable prices.
-	if ( give_has_variable_prices( $form_id ) && ! empty( $price_id ) ) {
+	if ( give_has_variable_prices( $form_id ) ) {
 
 		$item_price_level_text = give_get_price_option_name( $form_id, $price_id, 0, false );
 
@@ -273,7 +277,14 @@ function give_payment_gateway_item_title( $payment_data ) {
 	 * @return string
 	 * @since 1.8.14
 	 */
-	return apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
+	$item_name = apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
+
+	// Cut the length
+	if ( $length ) {
+		$item_name = substr( $item_name, 0, $length );
+	}
+
+	return $item_name;
 }
 
 /**

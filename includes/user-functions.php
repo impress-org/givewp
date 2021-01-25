@@ -53,12 +53,12 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 
 	$args = apply_filters(
 		'give_get_users_donations_args',
-		array(
+		[
 			'user'    => $user,
 			'number'  => $number,
 			'status'  => $status,
 			'orderby' => 'date',
-		)
+		]
 	);
 
 	if ( $pagination ) {
@@ -125,7 +125,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 		Give_Payments_Query::update_meta_cache( $payment_ids );
 	}
 
-	$donation_data = array();
+	$donation_data = [];
 	foreach ( $payment_ids as $payment_id ) {
 		$donation_data[] = give_get_payment_meta( $payment_id );
 	}
@@ -135,7 +135,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 	}
 
 	// Grab only the post ids "form_id" of the forms donated on this order.
-	$completed_donations_ids = array();
+	$completed_donations_ids = [];
 	foreach ( $donation_data as $donation_meta ) {
 		$completed_donations_ids[] = isset( $donation_meta['form_id'] ) ? $donation_meta['form_id'] : '';
 	}
@@ -156,11 +156,11 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	$args = apply_filters(
 		'give_get_users_completed_donations_args',
-		array(
+		[
 			'include'        => $form_ids,
 			'post_type'      => $post_type,
 			'posts_per_page' => - 1,
-		)
+		]
 	);
 
 	return apply_filters( 'give_users_completed_donations_list', get_posts( $args ) );
@@ -215,7 +215,7 @@ function give_get_donation_stats_by_user( $user = '' ) {
 		$field = 'user_id';
 	}
 
-	$stats = array();
+	$stats = [];
 	$donor = Give()->donors->get_donor_by( $field, $user );
 
 	if ( $donor ) {
@@ -365,7 +365,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 
 	} elseif ( email_exists( $email ) ) {
 		// Email already exists.
-		give_set_error( 'email_exists', __( 'Email already exists.', 'give' ) );
+		give_set_error( 'email_exists', __( 'The email address provided is already in use by a registered account on this site. Please log in and try again.', 'give' ) );
 		$valid = false;
 
 	} elseif ( ! is_email( $email ) ) {
@@ -378,7 +378,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		// If donor email is not primary.
 		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
 			// Check if email exists.
-			give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
+			give_set_error( 'email_used', __( 'The email address provided is already associated with another donor in the system. Please log in or use a different email', 'give' ) );
 			$valid = false;
 		}
 	}
@@ -483,7 +483,7 @@ function give_count_total_donors() {
  *
  * @return array The donor's address, if any
  */
-function give_get_donor_address( $donor_id = null, $args = array() ) {
+function give_get_donor_address( $donor_id = null, $args = [] ) {
 
 	$args['by_user_id'] = false;
 
@@ -511,7 +511,7 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
  *
  * @return void
  */
-function give_new_user_notification( $donation_id = 0, $donation_data = array() ) {
+function give_new_user_notification( $donation_id = 0, $donation_data = [] ) {
 	// Bailout.
 	if (
 		empty( $donation_id )
@@ -527,13 +527,13 @@ function give_new_user_notification( $donation_id = 0, $donation_data = array() 
 
 	$donation_data['user_info'] = array_merge(
 		$donation_data['user_info'],
-		array(
+		[
 			'user_id'    => $donation_data['user_info']['id'],
 			'user_first' => $donation_data['user_info']['first_name'],
 			'user_last'  => $donation_data['user_info']['last_name'],
 			'user_email' => $donation_data['user_info']['email'],
 			'user_login' => $user->user_login,
-		)
+		]
 	);
 
 	do_action( 'give_new-donor-register_email_notification', $donation_data['user_info']['id'], $donation_data['user_info'], $donation_id );

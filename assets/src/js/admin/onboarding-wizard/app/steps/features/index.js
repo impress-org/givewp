@@ -55,7 +55,7 @@ const Features = () => {
 					<strong>{ __( 'Company Donations', 'give' ) }</strong>
 				</Card>
 			</CardInput>
-			<ContinueButton />
+			<ContinueButton testId="features-continue-button" />
 		</div>
 	);
 };

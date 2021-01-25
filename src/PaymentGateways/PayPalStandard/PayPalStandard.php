@@ -30,7 +30,7 @@ class PayPalStandard implements PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getOptions() {
-		return [
+		$setting = [
 			// Section 2: PayPal Standard.
 			[
 				'type' => 'title',
@@ -100,6 +100,13 @@ class PayPalStandard implements PaymentGateway {
 				'id'   => 'give_title_gateway_settings_2',
 			],
 		];
+
+		/**
+		 * filter the settings.
+		 *
+		 * @since 2.9.6
+		 */
+		return apply_filters( 'give_get_settings_paypal_standard', $setting );
 	}
 
 	/**

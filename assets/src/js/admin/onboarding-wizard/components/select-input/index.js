@@ -8,7 +8,7 @@ import { toKebabCase } from '../../utils';
 // Import styles
 import './style.scss';
 
-const SelectInput = ( { label, value, isLoading, onChange, options } ) => {
+const SelectInput = ( { label, value, testId, isLoading, onChange, options } ) => {
 	if ( options && options.length < 2 ) {
 		return null;
 	}
@@ -55,12 +55,13 @@ const SelectInput = ( { label, value, isLoading, onChange, options } ) => {
 	};
 
 	return (
-		<div className="give-obw-select-input">
+		<div className="give-obw-select-input" data-givewp-test={ testId }>
 			{ label && ( <label className="give-obw-select-input__label" htmlFor={ toKebabCase( label ) }>{ label }</label> ) }
 			<Select
 				isLoading={ isLoading }
 				inputId={ label && toKebabCase( label ) }
 				value={ selectedOptionValue }
+				classNamePrefix="givewp-select"
 				onChange={ ( selectedOption ) => onChange( selectedOption.value ) }
 				options={ options }
 				styles={ selectStyles }

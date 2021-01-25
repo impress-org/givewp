@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give_Admin_Settings;
-use PayPalCheckoutSdk\Core\AccessTokenRequest;
 
 /**
  * Class ScriptLoader
@@ -97,10 +96,14 @@ class ScriptLoader {
 						.then(function(res){ return res.json() })
 						.then(function(res) {
 							if ( true !== res.success ) {
-								alert("Something went wrong!");
-								}
+								alert('Something went wrong!');
+								return;
 							}
-						);
+
+							// Remove PayPal quick help container.
+							const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
+							paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+						});
 				}
 EOT;
 
@@ -116,7 +119,7 @@ EOT;
 	 * @since 2.9.0
 	 */
 	public function loadPublicAssets() {
-		if ( ! $this->merchantRepository->getDetails() || ! Utils::gatewayIsActive() ) {
+		if ( ! Utils::gatewayIsActive() || ! Utils::isAccountReadyToAcceptPayment() ) {
 			return;
 		}
 
