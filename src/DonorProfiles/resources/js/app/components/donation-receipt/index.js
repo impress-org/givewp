@@ -63,7 +63,7 @@ const DonationReceipt = ( { donation } ) => {
 						{ __( 'Payment Status:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.status }
+						{ payment.status.label }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
