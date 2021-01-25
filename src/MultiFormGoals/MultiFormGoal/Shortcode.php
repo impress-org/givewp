@@ -27,8 +27,6 @@ class Shortcode {
 	 * @since 2.9.0
 	 **/
 	public function renderCallback( $attributes ) {
-		error_log( serialize( $attributes ) );
-
 		$attributes = $this->parseAttributes(
 			[
 				'ids'        => [],
