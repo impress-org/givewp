@@ -209,6 +209,13 @@ class Donations {
 		];
 	}
 
+	/**
+	 * Get formatted status object (used for rendering status correctly in Donor Profile)
+	 *
+	 * @param string $status
+	 * @since 2.10.0
+	 * @return array Formatted status object (with color and label)
+	 */
 	protected function getFormattedStatus( $status ) {
 		$statusMap = [
 			'publish' => [
@@ -223,6 +230,14 @@ class Donations {
 		];
 	}
 
+	/**
+	 * Get formatted payment amount
+	 *
+	 * @param float $amount
+	 * @param Give_Payment $payment
+	 * @since 2.10.0
+	 * @return string Formatted payment amount (with correct decimals and currency symbol)
+	 */
 	protected function getformattedAmount( $amount, $payment ) {
 		return give_currency_filter(
 			give_format_amount(
