@@ -25,6 +25,11 @@ const DonationRow = ( { donation } ) => {
 						{ payment.status.label }
 					</div>
 				</div>
+				{ payment.mode !== 'live' && (
+					<div className="give-donor-profile-table__donation-test-tag">
+						{ __( 'Test Donation', 'givewp' ) }
+					</div>
+				) }
 			</div>
 			<div className="give-donor-profile-table__pill">
 				<div className="give-donor-profile-table__donation-id">ID: { id }</div>

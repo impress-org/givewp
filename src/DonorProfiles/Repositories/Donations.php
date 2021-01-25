@@ -205,6 +205,7 @@ class Donations {
 			'status'   => $this->getFormattedStatus( $payment->status ),
 			'date'     => date( 'F j, Y', strtotime( $payment->date ) ),
 			'time'     => date( 'g:i a', strtotime( $payment->date ) ),
+			'mode'     => $payment->get_meta( '_give_payment_mode' ),
 		];
 	}
 
