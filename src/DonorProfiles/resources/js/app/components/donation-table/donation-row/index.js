@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 const DonationRow = ( { donation } ) => {
@@ -29,7 +30,7 @@ const DonationRow = ( { donation } ) => {
 				<div className="give-donor-profile-table__donation-id">ID: { id }</div>
 				<div className="give-donor-profile-table__donation-receipt">
 					<Link to={ `/donation-history/${ id }` }>
-						{ __( 'View Receipt', 'give' ) }
+						{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
 					</Link>
 				</div>
 			</div>
