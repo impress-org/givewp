@@ -45,7 +45,7 @@ class LoginRoute implements RestRoute {
 	}
 
 	/**
-	 * Handles profile update, and returns updated profile array
+	 * Handles login request
 	 *
 	 * @param WP_REST_Request $request
 	 *

@@ -33,7 +33,7 @@ class LogoutRoute implements RestRoute {
 	}
 
 	/**
-	 * Handles profile update, and returns updated profile array
+	 * Handles logout request
 	 *
 	 * @param WP_REST_Request $request
 	 *
