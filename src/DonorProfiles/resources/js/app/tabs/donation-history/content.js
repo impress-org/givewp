@@ -49,7 +49,7 @@ const Content = () => {
 	) : (
 		<Fragment>
 			<Heading>
-				{ `${ Object.entries( donations ).length } ${ __( 'Total Donations', 'give' ) }` }
+				{ `${ donations ? Object.entries( donations ).length : 0 } ${ __( 'Total Donations', 'give' ) }` }
 			</Heading>
 			<DonationTable donations={ donations } perPage={ 5 } />
 		</Fragment>
