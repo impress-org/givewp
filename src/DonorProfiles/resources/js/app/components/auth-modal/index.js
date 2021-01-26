@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 import TextControl from '../text-control';
@@ -13,8 +14,10 @@ const AuthModal = () => {
 	const [ login, setLogin ] = useState( '' );
 	const [ password, setPassword ] = useState( '' );
 	const [ loginError, setLoginError ] = useState( null );
+	const [ loggingIn, setLoggingIn ] = useState( false );
 
 	const handleLogin = async() => {
+		setLoggingIn( true );
 		const { status, response } = await loginWithAPI( {
 			login,
 			password,
@@ -23,6 +26,7 @@ const AuthModal = () => {
 		if ( status === 200 ) {
 			window.location.reload();
 		} else {
+			setLoggingIn( false );
 			setLoginError( response );
 			if ( response === 'unidentified_login' ) {
 				setLogin( '' );
@@ -57,6 +61,7 @@ const AuthModal = () => {
 					<div className="give-donor-profile__auth-modal-row">
 						<Button onClick={ () => handleLogin() }>
 							{ __( 'Login', 'give' ) }
+							<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'arrow-right' } fixedWidth />
 						</Button>
 						{ loginError && (
 							<div className="give-donor-profile__auth-modal-error">
