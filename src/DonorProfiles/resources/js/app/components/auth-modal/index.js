@@ -17,22 +17,24 @@ const AuthModal = () => {
 	const [ loggingIn, setLoggingIn ] = useState( false );
 
 	const handleLogin = async() => {
-		setLoggingIn( true );
-		const { status, response } = await loginWithAPI( {
-			login,
-			password,
-		} );
+		if ( login && password ) {
+			setLoggingIn( true );
+			const { status, response } = await loginWithAPI( {
+				login,
+				password,
+			} );
 
-		if ( status === 200 ) {
-			window.location.reload();
-		} else {
-			setLoggingIn( false );
-			setLoginError( response );
-			if ( response === 'unidentified_login' ) {
-				setLogin( '' );
-				setPassword( '' );
+			if ( status === 200 ) {
+				window.location.reload();
 			} else {
-				setPassword( '' );
+				setLoggingIn( false );
+				setLoginError( response );
+				if ( response === 'unidentified_login' ) {
+					setLogin( '' );
+					setPassword( '' );
+				} else {
+					setPassword( '' );
+				}
 			}
 		}
 	};
