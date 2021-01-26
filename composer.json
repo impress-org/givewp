@@ -26,7 +26,7 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --bootstrap tests/src/bootstrap.php --no-configuration tests/src/"
+        "test": "./vendor/bin/phpunit --bootstrap tests/unit/bootstrap.php --no-configuration tests/unit/tests"
     },
     "autoload": {
         "psr-4": {
