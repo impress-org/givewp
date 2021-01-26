@@ -1,30 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { isLoggedIn } from '../../utils';
 
 import AuthModal from '../auth-modal';
 
 import './style.scss';
 
 const Auth = ( { children } ) => {
-	const [ loggedIn, setLoggedIn ] = useState( false );
-	const id = useSelector( ( state ) => state.id );
+	const loggedIn = isLoggedIn();
 
-	useEffect( () => {
-		if ( Number( id ) !== 0 ) {
-			setLoggedIn( true );
-		} else {
-			setLoggedIn( false );
-		}
-	}, [ id ] );
-
-	return (
+	return ! loggedIn ? (
 		<div className="give-donor-profile__auth">
-			{ ! loggedIn && <AuthModal /> }
+			<AuthModal />
 			<div className="give-donor-profile__auth-wrapper">
 				{ children }
 			</div>
 		</div>
-	);
+	) : children;
 };
 
 export default Auth;

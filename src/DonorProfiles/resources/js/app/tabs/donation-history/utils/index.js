@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { store } from '../store';
-import { getAPIRoot, getAPINonce, getWindowData } from '../../../utils';
+import { getAPIRoot, getAPINonce, isLoggedIn } from '../../../utils';
 import { setDonations, setQuerying, setCount, setRevenue, setAverage } from '../store/actions';
 
 export const fetchDonationsDataFromAPI = () => {
 	const { dispatch } = store;
-	const loggedIn = Number( getWindowData( 'id' ) ) !== 0 ? true : false;
+	const loggedIn = isLoggedIn();
 
 	if ( loggedIn ) {
 		dispatch( setQuerying( true ) );

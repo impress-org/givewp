@@ -38,6 +38,10 @@ export const getWindowData = ( value ) => {
 	return data[ value ];
 };
 
+export const isLoggedIn = () => {
+	return Number( getWindowData( 'id' ) ) !== 0 ? true : false;
+};
+
 export const getAPIRoot = () => {
 	return getWindowData( 'apiRoot' );
 };
