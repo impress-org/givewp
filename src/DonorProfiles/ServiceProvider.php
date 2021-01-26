@@ -11,6 +11,7 @@ use Give\DonorProfiles\Profile as Profile;
 use Give\DonorProfiles\Routes\DonationsRoute;
 use Give\DonorProfiles\Routes\ProfileRoute;
 use Give\DonorProfiles\Routes\LocationRoute;
+use Give\DonorProfiles\Routes\LoginRoute;
 
 class ServiceProvider implements ServiceProviderInterface {
 
@@ -25,6 +26,7 @@ class ServiceProvider implements ServiceProviderInterface {
 		give()->bind( DonationsRoute::class );
 		give()->bind( ProfileRoute::class );
 		give()->bind( LocationRoute::class );
+		give()->bind( LoginRoute::class );
 
 		if ( function_exists( 'register_block_type' ) ) {
 			give()->singleton( Block::class );
@@ -40,6 +42,7 @@ class ServiceProvider implements ServiceProviderInterface {
 		Hooks::addAction( 'rest_api_init', DonationsRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', ProfileRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', LocationRoute::class, 'registerRoute' );
+		Hooks::addAction( 'rest_api_init', LoginRoute::class, 'registerRoute' );
 
 		if ( function_exists( 'register_block_type' ) ) {
 			Hooks::addAction( 'init', Block::class, 'addBlock' );
