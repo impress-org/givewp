@@ -1,0 +1,36 @@
+.give-donor-profile__auth-modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 99;
+
+	.give-donor-profile__auth-modal-frame {
+		box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+		width: 90%;
+		max-width: 480px;
+		border-radius: 8px;
+		overflow: hidden;
+
+		.give-donor-profile__auth-modal-heading {
+			background: #68bb6c;
+			color: #fff;
+			padding: 34px;
+			font-size: 21px;
+		}
+
+		.give-donor-profile__auth-modal-content {
+			background: #fff;
+			padding: 30px 34px;
+			font-size: 15px;
+
+			.give-donor-profile__auth-modal-seperator {
+				margin: 30px -34px;
+				height: 1px;
+				background: #e2e6ec;
+			}
+		}
+	}
+}
