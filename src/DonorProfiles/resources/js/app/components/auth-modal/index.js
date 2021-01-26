@@ -50,6 +50,7 @@ const AuthModal = () => {
 					<TextControl icon="envelope" value={ email } onChange={ ( value ) => setEmail( value ) } />
 					<Button>
 						{ __( 'Email Access', 'give' ) }
+						<FontAwesomeIcon icon="chevron-right" fixedWidth />
 					</Button>
 					<div className="give-donor-profile__auth-modal-seperator" />
 					<div className="give-donor-profile__auth-modal-instruction">
@@ -61,7 +62,7 @@ const AuthModal = () => {
 					<div className="give-donor-profile__auth-modal-row">
 						<Button onClick={ () => handleLogin() }>
 							{ __( 'Login', 'give' ) }
-							<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'arrow-right' } fixedWidth />
+							<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
 						</Button>
 						{ loginError && (
 							<div className="give-donor-profile__auth-modal-error">
