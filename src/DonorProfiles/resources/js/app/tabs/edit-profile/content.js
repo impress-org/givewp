@@ -47,14 +47,14 @@ const Content = () => {
 	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
 	const [ lastName, setLastName ] = useState( storedProfile.lastName );
 
-	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails.primary );
+	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails ? storedProfile.emails.primary : '' );
 
-	const reducedAdditionalEmails = Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
+	const reducedAdditionalEmails = storedProfile.emails ? Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
 		if ( key !== 'primary' ) {
 			newArray.push( storedProfile.emails[ key ] );
 		}
 		return newArray;
-	}, [] );
+	}, [] ) : [];
 
 	const [ additionalEmails, setAdditionalEmails ] = useState( reducedAdditionalEmails );
 
