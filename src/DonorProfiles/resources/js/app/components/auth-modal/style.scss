@@ -31,6 +31,12 @@
 				height: 1px;
 				background: #e2e6ec;
 			}
+
+			.give-donor-profile__auth-modal-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
 		}
 	}
 }

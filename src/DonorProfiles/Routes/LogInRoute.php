@@ -66,29 +66,17 @@ class LoginRoute implements RestRoute {
 
 		if ( $user ) {
 			if ( wp_check_password( $password, $user->user_pass, $user->ID ) ) {
-				$loggedIn = give_log_user_in( $user->ID, $login, $password );
-				if ( $loggedIn ) {
-					return new WP_REST_Response(
-						[
-							'status'        => 200,
-							'response'      => 'login_successful',
-							'body_response' => [
-								'login' => $user->login,
-								'id'    => $user->ID,
-							],
-						]
-					);
-				} else {
-					return new WP_REST_Response(
-						[
-							'status'        => 400,
-							'response'      => 'login_unsuccessful',
-							'body_response' => [
-								'message' => 'An issue occured when calling the  give_log_user_in() function.',
-							],
-						]
-					);
-				}
+				give_log_user_in( $user->ID, $login, $password );
+				return new WP_REST_Response(
+					[
+						'status'        => 200,
+						'response'      => 'login_successful',
+						'body_response' => [
+							'login' => $user->login,
+							'id'    => $user->ID,
+						],
+					]
+				);
 			} else {
 				return new WP_REST_Response(
 					[

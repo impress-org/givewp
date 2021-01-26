@@ -4,12 +4,34 @@ const { __ } = wp.i18n;
 import TextControl from '../text-control';
 import Button from '../button';
 
+import { loginWithAPI } from './utils';
+
 import './style.scss';
 
 const AuthModal = () => {
 	const [ email, setEmail ] = useState( '' );
 	const [ login, setLogin ] = useState( '' );
 	const [ password, setPassword ] = useState( '' );
+	const [ loginError, setLoginError ] = useState( null );
+
+	const handleLogin = async() => {
+		const { status, response } = await loginWithAPI( {
+			login,
+			password,
+		} );
+
+		if ( status === 200 ) {
+			window.location.reload();
+		} else {
+			setLoginError( response );
+			if ( response === 'unidentified_login' ) {
+				setLogin( '' );
+				setPassword( '' );
+			} else {
+				setPassword( '' );
+			}
+		}
+	};
 
 	return (
 		<div className="give-donor-profile__auth-modal">
@@ -31,10 +53,17 @@ const AuthModal = () => {
 						{ __( 'Login below to access your profile', 'give' ) }
 					</div>
 					<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
-					<TextControl icon="lock" value={ password } onChange={ ( value ) => setPassword( value ) } />
-					<Button>
-						{ __( 'Login', 'give' ) }
-					</Button>
+					<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
+					<div className="give-donor-profile__auth-modal-row">
+						<Button onClick={ () => handleLogin() }>
+							{ __( 'Login', 'give' ) }
+						</Button>
+						{ loginError && (
+							<div className="give-donor-profile__auth-modal-error">
+								{ loginError }
+							</div>
+						) }
+					</div>
 				</div>
 			</div>
 		</div>
