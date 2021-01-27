@@ -17,7 +17,7 @@ const DonorInfo = () => {
 						<img src={ avatarUrl } />
 					) : (
 						<span className="give-donor-profile-donor-info__avatar-initials">
-							{ initials }
+							{ initials ? initials : <FontAwesomeIcon icon="user" /> }
 						</span>
 					) }
 				</div>
