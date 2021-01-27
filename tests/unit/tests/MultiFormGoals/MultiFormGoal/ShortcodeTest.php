@@ -1,15 +1,9 @@
-<?php declare(strict_types=1);
+<?php
 use PHPUnit\Framework\TestCase;
 
 final class ShortcodeTest extends TestCase {
 
-	public function setUp(): void {
-		function shortcode_atts( $pairs, $attributes, $tag ) {
-			return $attributes;
-		}
-	}
-
-	public function testParsedAttributes(): void {
+	public function testParsedAttributes() {
 		$shortcodeClass = new \Give\MultiFormGoals\MultiFormGoal\Shortcode();
 
         $class = new \ReflectionClass( $shortcodeClass );

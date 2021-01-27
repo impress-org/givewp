@@ -3,7 +3,7 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
 Stable tag: 2.9.6
 License: GPLv3

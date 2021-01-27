@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Fixed
-
 -   Using the CLI commands is not producing errors anymore (#5559)
+-   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
 
 ## 2.9.6 - 2021-01-13
 
@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Deprecated e2e tests have been removed, and replaced with Cypress tests (#5533)
 -   New `test:e2e` package script introduced (#5533)
 -   Decouple test:e2e command from wp-env #5545
+-   Unit test structure is refactored (#5554)
 
 ### Fixed
 

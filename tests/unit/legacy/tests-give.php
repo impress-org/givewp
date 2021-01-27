@@ -19,16 +19,19 @@ class Tests_Give extends Give_Unit_Test_Case {
 	 * @covers Give::setup_constants
 	 */
 	public function test_constants() {
+
+		// Adjust for relative directory structure.
+		$filePath = dirname( dirname( dirname( __FILE__ ) ) );
 		// Plugin Folder URL
-		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_url( __FILE__ ) );
+		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_url( $filePath ) );
 		$this->assertSame( GIVE_PLUGIN_URL, $path );
 
 		// Plugin Folder Path
-		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_path( __FILE__ ) );
+		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_path( $filePath ) );
 		$this->assertSame( GIVE_PLUGIN_DIR, $path );
 
 		// Plugin Root File
-		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_path( __FILE__ ) );
+		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_path( $filePath ) );
 		$this->assertSame( GIVE_PLUGIN_FILE, $path . 'give.php' );
 	}
 
