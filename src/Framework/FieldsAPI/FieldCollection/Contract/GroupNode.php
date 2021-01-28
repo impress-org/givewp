@@ -4,7 +4,7 @@ namespace Give\Framework\FieldsAPI\FieldCollection\Contract;
 
 use JsonSerializable;
 
-interface GroupNode extends FieldNode {
+interface GroupNode extends Node {
     public function flatten();
     public function getFields();
 }

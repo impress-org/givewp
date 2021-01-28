@@ -10,5 +10,5 @@ The field collection leverages Polymorphism to provide a single interface for th
 
 > Polymorphism is the provision of a single interface to entities of different types. <sup>[1](https://www.stroustrup.com/glossary.html#Gpolymorphism)</sup>
 
-Each item in a collection implements the `FieldNode` interface, with nested collections implementing the extended `GroupNode` interface to represent a group of Nodes. Each node, whether a field or a nested collection can be reference the same way. Collection method parameters are type hinted with `FieldNode` which support either a filed or a collection.
+Each item in a collection implements the `Node` interface, with nested collections implementing the extended `GroupNode` interface to represent a group of Nodes. Each node, whether a field or a nested collection can be reference the same way. Collection method parameters are type hinted with `Node` which support either a filed or a collection.
 

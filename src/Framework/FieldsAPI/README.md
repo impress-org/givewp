@@ -35,7 +35,7 @@ $collection->remove( 'my-nested-collection' );
 A field collection can be walked with a provided callback for each field in the collection.
 
 ```php
-$collection->walk( function( FieldNode $field ) {
+$collection->walk( function( Node $field ) {
     if( 'my-text-field' === $field->getName() ) {
         // ...
     }

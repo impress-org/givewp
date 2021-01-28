@@ -6,7 +6,7 @@ use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 
 /**
- * A declaritive iterator for each FieldNode in the tree.
+ * A declaritive iterator for each Node in the tree.
  */
 trait WalkNodes {
 

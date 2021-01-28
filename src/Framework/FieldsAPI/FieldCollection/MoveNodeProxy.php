@@ -13,7 +13,7 @@ class MoveNodeProxy {
     /** @var FieldCollection */
     protected $collection;
 
-    /** @var FieldNode */
+    /** @var Node */
     protected $targetNode;
 
     /**
@@ -24,7 +24,7 @@ class MoveNodeProxy {
     }
 
     /**
-     * @param FieldNode $node
+     * @param Node $node
      */
     public function move( $node ) {
         $this->targetNode = $node;

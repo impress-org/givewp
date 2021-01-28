@@ -2,7 +2,7 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\FieldsAPI\FieldCollection\Contract\FieldNode;
+use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
 use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 
 class FieldCollection implements GroupNode {
@@ -14,7 +14,7 @@ class FieldCollection implements GroupNode {
     /** @var string */
     protected $name;
 
-    /** @var FieldNode[] */
+    /** @var Node[] */
     protected $nodes = [];
 
     public function __construct( $name, array $nodes ) {
@@ -26,7 +26,7 @@ class FieldCollection implements GroupNode {
         return $this->name;
     }
 
-    public function insertAfter( $siblingName, FieldNode $node ) {
+    public function insertAfter( $siblingName, Node $node ) {
         $siblingIndex = $this->getNodeIndexByName( $siblingName );
         if( false !== $siblingIndex ) {
             $this->insertAtIndex(
@@ -43,7 +43,7 @@ class FieldCollection implements GroupNode {
         return $this;
     }
 
-    public function insertBefore( $siblingName, FieldNode $node ) {
+    public function insertBefore( $siblingName, Node $node ) {
         $siblingIndex = $this->getNodeIndexByName( $siblingName );
         if( false !== $siblingIndex ) {
             $this->insertAtIndex(

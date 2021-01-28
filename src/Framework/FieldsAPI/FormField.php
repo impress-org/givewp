@@ -2,9 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\FieldsAPI\FieldCollection\Contract\FieldNode;
+use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
 
-class FormField implements FieldNode {
+class FormField implements Node {
 
     use FormField\FieldLabel;
     use FormField\FieldRequired;
