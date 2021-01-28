@@ -30,6 +30,11 @@ final class FieldTest extends TestCase {
         $this->assertEquals( 'checkbox', $field->getType() );
     }
 
+    public function testMakeFile() {
+        $field = Field::file( 'my-upload-field' );
+        $this->assertEquals( 'file', $field->getType() );
+    }
+
     public function testTypeNotSupported() {
         $this->expectException(TypeNotSupported::class);
         Field::custom( 'my-custom-field-type' );
