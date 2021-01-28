@@ -12,6 +12,7 @@ trait FieldOptions {
     public function supportsOptions() {
         return in_array( $this->getType(), [
             FieldTypes::TYPE_SELECT,
+            FieldTypes::TYPE_RADIO,
         ] );
     }
 
