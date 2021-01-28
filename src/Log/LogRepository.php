@@ -13,52 +13,30 @@ class LogRepository {
 	 * Insert Log into database
 	 *
 	 * @param  string  $type
-	 * @param  string  $message
+	 * @param  string $message
 	 * @param  string  $category
 	 * @param  string  $source
+	 * @param  string  $migration_id
+	 * @param  array  $context
 	 *
 	 * @return int inserted log id
 	 */
-	public function insertLog( $type, $message, $category, $source ) {
+	public function insertLog( $type, $message, $category, $source, $migration_id = null, $context = [] ) {
 		global $wpdb;
 
-		$wpdb->insert(
-			$wpdb->give_logs,
-			[
-				'type'     => $type,
-				'message'  => $message,
-				'category' => $category,
-				'source'   => $source,
-				'date'     => current_time( 'mysql' ),
-			]
-		);
-
-		return $wpdb->insert_id;
-	}
-
-	/**
-	 * Insert log metadata
-	 *
-	 * @param  int  $logId
-	 * @param  string  $key
-	 * @param  mixed  $value
-	 *
-	 * @return int
-	 */
-	public function insertLogMeta( $logId, $key, $value ) {
-		global $wpdb;
-
-		// Prepare value
-		if ( is_array( $value ) || is_object( $value ) ) {
-			$value = print_r( $value, true );
-		}
+		$data = [
+			'message' => $message,
+			'context' => $context,
+		];
 
 		$wpdb->insert(
-			$wpdb->give_logs_meta,
+			$wpdb->give_log,
 			[
-				'log_id'    => $logId,
-				'log_key'   => $key,
-				'log_value' => $value,
+				'log_type'     => $type,
+				'migration_id' => $migration_id,
+				'data'         => json_encode( $data ),
+				'category'     => $category,
+				'source'       => $source,
 			]
 		);
 
@@ -73,7 +51,7 @@ class LogRepository {
 	public function getLogs() {
 		global $wpdb;
 
-		$result = $wpdb->get_results( "SELECT * FROM { $wpdb->give_logs } ORDER BY id DESC" );
+		$result = $wpdb->get_results( "SELECT * FROM { $wpdb->give_log } ORDER BY id DESC" );
 
 		if ( $result ) {
 			return $result;
@@ -93,7 +71,7 @@ class LogRepository {
 		global $wpdb;
 
 		$result = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_logs } WHERE id = %d", $logId )
+			$wpdb->prepare( "SELECT * FROM { $wpdb->give_log } WHERE id = %d", $logId )
 		);
 
 		if ( $result ) {
@@ -114,7 +92,7 @@ class LogRepository {
 		global $wpdb;
 
 		$result = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_logs } WHERE type = %s", $type )
+			$wpdb->prepare( "SELECT * FROM { $wpdb->give_log } WHERE type = %s", $type )
 		);
 
 		if ( $result ) {
@@ -135,7 +113,7 @@ class LogRepository {
 		global $wpdb;
 
 		$result = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_logs } WHERE category = %s", $category )
+			$wpdb->prepare( "SELECT * FROM { $wpdb->give_log } WHERE category = %s", $category )
 		);
 
 		if ( $result ) {
@@ -144,50 +122,6 @@ class LogRepository {
 
 		return [];
 	}
-
-	/**
-	 * Get log meta data
-	 *
-	 * @param $logId
-	 *
-	 * @return array
-	 */
-	public function getLogMeta( $logId ) {
-		global $wpdb;
-
-		$result = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_logs_meta } WHERE log_id = %d", $logId )
-		);
-
-		if ( $result ) {
-			return $result;
-		}
-
-		return [];
-	}
-
-	/**
-	 * Get log meta data by key
-	 *
-	 * @param  int  $logId
-	 * @param  string  $key
-	 *
-	 * @return object|null
-	 */
-	public function getLogMetaByKey( $logId, $key ) {
-		global $wpdb;
-
-		$result = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_logs_meta } WHERE log_id = %d AND meta_key = %s", $logId, $key )
-		);
-
-		if ( $result ) {
-			return $result;
-		}
-
-		return null;
-	}
-
 
 	/**
 	 * Get logs categories
@@ -198,7 +132,7 @@ class LogRepository {
 		global $wpdb;
 
 		$categories = [];
-		$result     = $wpdb->get_results( "SELECT DISTINCT category FROM { $wpdb->give_logs }" );
+		$result     = $wpdb->get_results( "SELECT DISTINCT category FROM { $wpdb->give_log }" );
 
 		if ( $result ) {
 			foreach ( $result as $category ) {
@@ -216,7 +150,7 @@ class LogRepository {
 	public function deleteLogs() {
 		global $wpdb;
 
-		$wpdb->query( "DELETE FROM { $wpdb->give_logs }, { $wpdb->give_logs_meta }" );
+		$wpdb->query( "DELETE FROM { $wpdb->give_log }" );
 	}
 
 	/**
@@ -228,11 +162,7 @@ class LogRepository {
 		global $wpdb;
 
 		$wpdb->query(
-			$wpdb->prepare( "DELETE FROM { $wpdb->give_logs } WHERE id = %d", $logId )
-		);
-
-		$wpdb->query(
-			$wpdb->prepare( "DELETE FROM { $wpdb->give_logs_meta } WHERE log_id = %d", $logId )
+			$wpdb->prepare( "DELETE FROM { $wpdb->give_log } WHERE id = %d", $logId )
 		);
 	}
 }

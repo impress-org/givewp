@@ -2,6 +2,7 @@
 
 namespace Give\Log;
 
+use Give\Log\ValueObjects\LogCategory;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Log\Migrations\CreateNewLogTables;
@@ -21,8 +22,7 @@ class LogServiceProvider implements ServiceProvider {
 	public function register() {
 		global $wpdb;
 
-		$wpdb->give_logs    = "{$wpdb->prefix}give_logs_v2";
-		$wpdb->give_logmeta = "{$wpdb->prefix}give_logmeta_v2";
+		$wpdb->give_log = "{$wpdb->prefix}give_log";
 
 		give()->singleton( LogRepository::class );
 	}
@@ -34,9 +34,35 @@ class LogServiceProvider implements ServiceProvider {
 		give( MigrationsRegister::class )->addMigrations(
 			[
 				CreateNewLogTables::class,
-				MigrateExistingLogs::class,
-				DeleteOldLogTables::class,
+			//              MigrateExistingLogs::class,
+			//              DeleteOldLogTables::class,
 			]
 		);
+
+		// Test it
+		if ( CreateNewLogTables::check() ) {
+			$this->testLogs();
+		}
+
+	}
+
+	/**
+	 * IGNORE - just for testing
+	 */
+	public function testLogs() {
+
+		Log::success( 'Its working' );
+
+		Log::error(
+			'Hey man, this is an error!',
+			[
+				'category' => LogCategory::PAYMENT,
+				'source'   => 'Stripe add-on',
+			]
+		);
+
+		Log::migration( CreateNewLogTables::class )->success( 'Worked like a charm', self::class );
+
+		Log::migration( CreateNewLogTables::class )->notice( 'Hmmm', self::class, [ 'info' => "Something isn't quite right" ] );
 	}
 }
