@@ -20,6 +20,11 @@ final class FieldTest extends TestCase {
         $this->assertEquals( 'textarea', $field->getType() );
     }
 
+    public function testMakeRadio() {
+        $field = Field::radio( 'my-radio-field' );
+        $this->assertEquals( 'radio', $field->getType() );
+    }
+
     public function testMakeCheckbox() {
         $field = Field::checkbox( 'my-checkbox-field' );
         $this->assertEquals( 'checkbox', $field->getType() );
