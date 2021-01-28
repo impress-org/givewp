@@ -15,8 +15,7 @@ class Field {
         if( ! isset( $types[ $type ] ) ) {
             throw new TypeNotSupported( $type );
         }
-        
-        return call_user_func_array( [ self, $type ], $parameters );
+        return self::make( $type, array_shift( $parameters ) );
     }
 
     protected static function make( $type, $name ) {
