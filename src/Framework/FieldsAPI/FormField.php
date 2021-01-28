@@ -34,8 +34,9 @@ class FormField implements Node {
         return [
             'type' => $this->getType(),
             'name' => $this->getName(),
-            // 'required' => $this->isRequired(),
-            // 'readOnly' => $this->isReadOnly(),
+            'required' => $this->isRequired(),
+            'readOnly' => $this->isReadOnly(),
+            'options' => $this->getOptions(),
         ];
     }
 }
