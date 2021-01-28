@@ -40,4 +40,15 @@ abstract class Migration {
 	public static function timestamp() {
 		throw new RuntimeException( 'This method must be overridden to return a valid unix timestamp' );
 	}
+
+	/**
+	 * Run the migration check
+	 *
+	 * @since 2.9.7
+	 *
+	 * @return bool
+	 */
+	public static function check() {
+		return true;
+	}
 }
