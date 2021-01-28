@@ -1,8 +1,6 @@
 # Fields API
 
-## Manipulating Field Collections
-
-### Inserting New Fields
+## Inserting New Fields
 
 Fields can be inserted at a specific index or before/after another field (or collection) by name.
 
@@ -12,7 +10,7 @@ $collection->insertAfter( 'my-text-field', new FormField( 'text', 'my-second-tex
 $collection->insertBefore( 'my-text-field', new FormField( 'text', 'my-second-text-field' ) );
 ```
 
-### Moving Existing Fields
+## Moving Existing Fields
 
 Existing fields can be moved before/after another field (or collection) by name.
 
@@ -21,7 +19,7 @@ $collection->move( 'my-second-text-field' )->after( 'my-text-field' );
 $collection->move( 'my-second-text-field' )->before( 'my-text-field' );
 ```
 
-### Removeing Existing Fields
+## Removeing Existing Fields
 
 Existing fields (or collections) can be removed by name.
 
@@ -30,7 +28,7 @@ $collection->remove( 'my-second-text-field' );
 $collection->remove( 'my-nested-collection' );
 ```
 
-### Walking Fields in a Collection
+## Walking Fields in a Collection
 
 A field collection can be walked with a provided callback for each field in the collection.
 
