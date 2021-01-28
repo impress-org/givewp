@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
 class FormField implements Node {
 
     use FormField\FieldLabel;
+    use FormField\FieldOptions;
     use FormField\FieldRequired;
     use FormField\FieldReadOnly;
 
