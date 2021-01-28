@@ -8,7 +8,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 /**
  * A declaritive iterator for each FieldNode in the tree.
  */
-trait NodeWalker {
+trait WalkNodes {
 
     /**
      * @param Callable $callback

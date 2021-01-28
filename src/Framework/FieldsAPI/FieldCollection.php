@@ -9,7 +9,7 @@ class FieldCollection implements GroupNode {
 
     use FieldCollection\MoveNode;
     use FieldCollection\RemoveNode;
-    use FieldCollection\NodeWalker;
+    use FieldCollection\WalkNodes;
 
     /** @var string */
     protected $name;
