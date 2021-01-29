@@ -48,7 +48,7 @@ abstract class Migration {
 	 *
 	 * @return bool
 	 */
-	public static function check() {
+	public function check() {
 		return true;
 	}
 }
