@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Log\ValueObjects;
+namespace Give\Log;
 
 /**
  * Class LogCategory
