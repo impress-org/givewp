@@ -27,6 +27,9 @@ class DeleteOldLogTables extends Migration {
 	public function run() {
 		global $wpdb;
 
-		DB::query( "DROP TABLE {$wpdb->give_logs}, {$wpdb->give_logmeta};" );
+		$logs_table    = "{$wpdb->prefix}give_logs";
+		$logmeta_table = "{$wpdb->prefix}give_logmeta";
+
+		DB::query( "DROP TABLE {$logs_table}, {$logmeta_table};" );
 	}
 }
