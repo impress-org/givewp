@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 import TextControl from '../text-control';
 import Button from '../button';
 
-import { loginWithAPI } from './utils';
+import { loginWithAPI, verifyEmailWithAPI } from './utils';
 
 import './style.scss';
 
@@ -15,6 +15,9 @@ const AuthModal = () => {
 	const [ password, setPassword ] = useState( '' );
 	const [ loginError, setLoginError ] = useState( null );
 	const [ loggingIn, setLoggingIn ] = useState( false );
+	const [ verifyingEmail, setVerifyingEmail ] = useState( false );
+	const [ emailSent, setEmailSent ] = useState( false );
+	const [ emailError, setEmailError ] = useState( null );
 
 	const handleLogin = async() => {
 		if ( login && password ) {
@@ -39,6 +42,25 @@ const AuthModal = () => {
 		}
 	};
 
+	const handleVerifyEmail = async() => {
+		if ( email ) {
+			setVerifyingEmail( true );
+			// eslint-disable-next-line camelcase
+			const { status, body_response } = await verifyEmailWithAPI( {
+				email,
+			} );
+
+			if ( status === 200 ) {
+				setVerifyingEmail( false );
+				setEmailSent( true );
+			} else {
+				setVerifyingEmail( false );
+				setEmailError( body_response.message );
+				setEmail( '' );
+			}
+		}
+	};
+
 	return (
 		<div className="give-donor-profile__auth-modal">
 			<div className="give-donor-profile__auth-modal-frame">
@@ -50,10 +72,17 @@ const AuthModal = () => {
 						{ __( 'Enter your email below and we\'ll send you a link to access your donor profile', 'give' ) }
 					</div>
 					<TextControl icon="envelope" value={ email } onChange={ ( value ) => setEmail( value ) } />
-					<Button>
-						{ __( 'Email Access', 'give' ) }
-						<FontAwesomeIcon icon="chevron-right" fixedWidth />
-					</Button>
+					<div className="give-donor-profile__auth-modal-row">
+						<Button onClick={ () => handleVerifyEmail() }>
+							{ emailSent === false ? __( 'Verify Email', 'give' ) : __( 'Email Sent', 'give' ) }
+							{ emailSent === false && <FontAwesomeIcon className={ verifyingEmail ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ verifyingEmail ? 'spinner' : 'chevron-right' } fixedWidth /> }
+						</Button>
+						{ emailError && (
+							<div className="give-donor-profile__auth-modal-error">
+								{ emailError }
+							</div>
+						) }
+					</div>
 					<div className="give-donor-profile__auth-modal-seperator" />
 					<div className="give-donor-profile__auth-modal-instruction">
 						{ __( 'Already have an account?', 'give' ) } <br />

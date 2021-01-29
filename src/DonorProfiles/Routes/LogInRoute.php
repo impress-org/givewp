@@ -6,7 +6,6 @@ use WP_REST_Request;
 use WP_REST_Response;
 use Give\API\RestRoute;
 use Give\DonorProfiles\Profile as Profile;
-use Give\DonorProfiles\Helpers\SanitizeProfileData as SanitizeHelper;
 
 /**
  * @since 2.11.0
