@@ -15,7 +15,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  *
  * @since 2.9.7
  */
-class CreateNewLogTables extends Migration {
+class CreateNewLogTable extends Migration {
 
 	/**
 	 * @return string
@@ -28,7 +28,7 @@ class CreateNewLogTables extends Migration {
 	 * @return int
 	 */
 	public static function timestamp() {
-		return strtotime( '2020-01-28 12:00' );
+		return strtotime( '2021-01-28 12:00' );
 	}
 
 
