@@ -57,7 +57,12 @@ class CreateNewLogTable extends Migration {
 		}
 	}
 
-	public static function check() {
+	/**
+	 * Check if give_log table exists
+	 *
+	 * @return bool
+	 */
+	public function check() {
 		global $wpdb;
 
 		return (bool) $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_log" ) );
