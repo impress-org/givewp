@@ -71,9 +71,12 @@ class LogModel {
 	}
 
 	/**
+	 * Set log type
+	 * If log type is not supported, it will fallback to NOTICE type
+	 *
 	 * @param string $type
 	 */
-	public function setType( $type ) {
+	private function setType( $type ) {
 		$this->type = array_key_exists( $type, LogType::getAllTypes() )
 			? $type
 			: LogType::NOTICE;
@@ -85,7 +88,7 @@ class LogModel {
 	 *
 	 * @param string|null $message
 	 */
-	public function setMessage( $message ) {
+	private function setMessage( $message ) {
 		$this->message = is_null( $message )
 			? esc_html__( 'Something went wrong', 'give' )
 			: $message;
@@ -97,7 +100,7 @@ class LogModel {
 	 *
 	 * @param string|null $source
 	 */
-	public function setSource( $source ) {
+	private function setSource( $source ) {
 		$this->source = is_null( $source )
 			? esc_html__( 'Give Core', 'give' )
 			: $source;
@@ -176,7 +179,7 @@ class LogModel {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function addContext( $key, $value ) {
+	private function addContext( $key, $value ) {
 		if ( is_array( $value ) || is_object( $value ) ) {
 			$value = print_r( $value, true );
 		}
