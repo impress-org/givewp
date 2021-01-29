@@ -2,6 +2,8 @@
 
 namespace Give\Log;
 
+use Give\Framework\Database\DB;
+
 /**
  * Class LogRepository
  * @package Give\Log\Repositories
@@ -12,32 +14,23 @@ class LogRepository {
 	/**
 	 * Insert Log into database
 	 *
-	 * @param  string  $type
-	 * @param  string $message
-	 * @param  string  $category
-	 * @param  string  $source
-	 * @param  string  $migration_id
-	 * @param  array  $context
+	 * @param  LogModel  $model
 	 *
 	 * @return int inserted log id
 	 */
-	public function insertLog( $type, $message, $category, $source, $migration_id = null, $context = [] ) {
+	public function insertLog( LogModel $model ) {
 		global $wpdb;
 
-		$data = [
-			'message' => $message,
-			'context' => $context,
-		];
-
-		$wpdb->insert(
+		DB::insert(
 			$wpdb->give_log,
 			[
-				'log_type'     => $type,
-				'migration_id' => $migration_id,
-				'data'         => json_encode( $data ),
-				'category'     => $category,
-				'source'       => $source,
-			]
+				'log_type'     => $model->getType(),
+				'migration_id' => $model->getMigrationId(),
+				'data'         => $model->getData( $jsonEncode = true ),
+				'category'     => $model->getCategory(),
+				'source'       => $model->getSource(),
+			],
+			null
 		);
 
 		return $wpdb->insert_id;
@@ -46,18 +39,32 @@ class LogRepository {
 	/**
 	 * Get all logs
 	 *
-	 * @return array
+	 * @return LogModel[]
 	 */
 	public function getLogs() {
 		global $wpdb;
 
-		$result = $wpdb->get_results( "SELECT * FROM { $wpdb->give_log } ORDER BY id DESC" );
+		$logs = [];
+
+		$result = DB::get_results( "SELECT * FROM {$wpdb->give_log} ORDER BY id DESC" );
 
 		if ( $result ) {
-			return $result;
+			foreach ( $result as $log ) {
+				$data = json_decode( $log->data, true );
+
+				$logs[] = LogFactory::make(
+					$log->log_type,
+					$data['message'],
+					$log->category,
+					$log->source,
+					$log->migration_id,
+					$data['context'],
+					$log->id
+				);
+			}
 		}
 
-		return [];
+		return $logs;
 	}
 
 	/**
@@ -65,17 +72,27 @@ class LogRepository {
 	 *
 	 * @param  int  $logId
 	 *
-	 * @return object|null
+	 * @return LogModel|null
 	 */
 	public function getLog( $logId ) {
 		global $wpdb;
 
-		$result = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_log } WHERE id = %d", $logId )
+		$log = DB::get_row(
+			DB::prepare( "SELECT * FROM {$wpdb->give_log} WHERE id = %d", $logId )
 		);
 
-		if ( $result ) {
-			return $result;
+		if ( $log ) {
+			$data = json_decode( $log->data, true );
+
+			return LogFactory::make(
+				$log->log_type,
+				$data['message'],
+				$log->category,
+				$log->source,
+				$log->migration_id,
+				$data['context'],
+				$log->id
+			);
 		}
 
 		return null;
@@ -86,20 +103,34 @@ class LogRepository {
 	 *
 	 * @param  string  $type
 	 *
-	 * @return array
+	 * @return LogModel[]
 	 */
 	public function getLogsByType( $type ) {
 		global $wpdb;
 
-		$result = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_log } WHERE type = %s", $type )
+		$logs = [];
+
+		$result = DB::get_results(
+			DB::prepare( "SELECT * FROM {$wpdb->give_log} WHERE type = %s", $type )
 		);
 
 		if ( $result ) {
-			return $result;
+			foreach ( $result as $log ) {
+				$data = json_decode( $log->data, true );
+
+				$logs[] = LogFactory::make(
+					$log->log_type,
+					$data['message'],
+					$log->category,
+					$log->source,
+					$log->migration_id,
+					$data['context'],
+					$log->id
+				);
+			}
 		}
 
-		return [];
+		return $logs;
 	}
 
 	/**
@@ -107,20 +138,34 @@ class LogRepository {
 	 *
 	 * @param  string  $category
 	 *
-	 * @return array
+	 * @return LogModel[]
 	 */
 	public function getLogsByCategory( $category ) {
 		global $wpdb;
 
-		$result = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM { $wpdb->give_log } WHERE category = %s", $category )
+		$logs = [];
+
+		$result = DB::get_results(
+			DB::prepare( "SELECT * FROM {$wpdb->give_log} WHERE category = %s", $category )
 		);
 
 		if ( $result ) {
-			return $result;
+			foreach ( $result as $log ) {
+				$data = json_decode( $log->data, true );
+
+				$logs[] = LogFactory::make(
+					$log->log_type,
+					$data['message'],
+					$log->category,
+					$log->source,
+					$log->migration_id,
+					$data['context'],
+					$log->id
+				);
+			}
 		}
 
-		return [];
+		return $logs;
 	}
 
 	/**
@@ -132,7 +177,7 @@ class LogRepository {
 		global $wpdb;
 
 		$categories = [];
-		$result     = $wpdb->get_results( "SELECT DISTINCT category FROM { $wpdb->give_log }" );
+		$result     = DB::get_results( "SELECT DISTINCT category FROM {$wpdb->give_log}" );
 
 		if ( $result ) {
 			foreach ( $result as $category ) {
@@ -150,7 +195,7 @@ class LogRepository {
 	public function deleteLogs() {
 		global $wpdb;
 
-		$wpdb->query( "DELETE FROM { $wpdb->give_log }" );
+		DB::query( "DELETE FROM {$wpdb->give_log}" );
 	}
 
 	/**
@@ -161,8 +206,8 @@ class LogRepository {
 	public function deleteLog( $logId ) {
 		global $wpdb;
 
-		$wpdb->query(
-			$wpdb->prepare( "DELETE FROM { $wpdb->give_log } WHERE id = %d", $logId )
+		DB::query(
+			DB::prepare( "DELETE FROM {$wpdb->give_log} WHERE id = %d", $logId )
 		);
 	}
 }

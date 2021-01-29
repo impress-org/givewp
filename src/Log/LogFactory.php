@@ -2,143 +2,66 @@
 
 namespace Give\Log;
 
-use Give\Log\ValueObjects\LogType;
-use Give\Log\ValueObjects\LogCategory;
-
 /**
  * Class LogFactory
  * @package Give\Log
  *
- * @method error( string $message, string $source, array $context = [] )
- * @method warning( string $message, string $source, array $context = [] )
- * @method notice( string $message, string $source, array $context = [] )
- * @method success( string $message, string $source, array $context = [] )
- * @method info( string $message, string $source, array $context = [] )
- * @method http( string $message, string $source, array $context = [] )
+ * @since 2.9.7
  */
 class LogFactory {
 	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
-	 * @var array
-	 */
-	private $context;
-
-	/**
-	 * LogModel constructor.
+	 * Make LogModel instance
 	 *
 	 * @param  string  $type
+	 * @param  string  $message
+	 * @param  string  $category
+	 * @param  string  $source
+	 * @param  string|null  $migrationId
 	 * @param  array  $context
+	 * @param  int|null  $logId
+	 *
+	 * @return LogModel
 	 */
-	private function __construct( $type, $context ) {
-		$this->type    = $this->getType( $type );
-		$this->context = $this->getContext( $context );
+	public static function make( $type, $message, $category, $source, $migrationId = null, $context = [], $logId = null ) {
+		return new LogModel( $type, $message, $category, $source, $migrationId, $context, $logId );
 	}
 
 	/**
-	 * Make log record instance
+	 * Make LogModel instance from array of data
 	 *
-	 * @param  string  $type
-	 * @param  array  $context
+	 * @param array $data
 	 *
-	 * @return LogFactory
+	 * @return LogModel
 	 */
-	public static function make( $type, $context ) {
-		return new self( $type, $context );
+	public static function makeFromArray( $data ) {
+		// Get default
+		$data = array_merge( static::getDefaults(), $data );
+
+		return new LogModel(
+			$data['type'],
+			$data['message'],
+			$data['category'],
+			$data['source'],
+			$data['migration_id'],
+			$data['context'],
+			$data['id']
+		);
 	}
 
 	/**
-	 * @param string $type
-	 * @param array $args
-	 */
-	public function __call( $type, $args ) {
-		list ( $message, $source, $additionalContext ) = array_pad( $args, 3, null );
-
-		$data = [
-			'message' => $message,
-			'source'  => $source,
-		];
-
-		// Update existing context
-		$context = array_merge( $this->context, $data );
-
-		// Add additional context
-		if ( is_array( $additionalContext ) ) {
-			$context['context'] = array_merge( $context['context'], $additionalContext );
-		}
-		// Set the type and context again
-		$this->type    = $this->getType( $type );
-		$this->context = $this->getContext( $context );
-
-		$this->save();
-	}
-
-	/**
-	 * Get the log type
-	 * If the log type is not supported, it fallbacks to notice type
-	 *
-	 * @param  string  $type
-	 *
-	 * @return string
-	 */
-	private function getType( $type ) {
-		if ( ! array_key_exists( $type, LogType::getAllTypes() ) ) {
-			return LogType::NOTICE;
-		}
-
-		return $type;
-	}
-
-	/**
-	 * Get the the log context
-	 *
-	 * @param  array  $context
+	 * Get log default fields array
 	 *
 	 * @return array
 	 */
-	private function getContext( $context ) {
-		$defaults = [
-			'migration_id' => null,
+	public static function getDefaults() {
+		return [
+			'type'         => LogType::NOTICE,
+			'message'      => esc_html__( 'Something went wrong', 'give' ),
 			'category'     => LogCategory::CORE,
 			'source'       => esc_html__( 'Give Core', 'give' ),
-			'message'      => esc_html__( 'Something went wrong', 'give' ),
+			'migration_id' => null,
+			'context'      => [],
+			'id'           => null,
 		];
-
-		$context = array_merge( $defaults, $context );
-
-		// Get default options from context
-		$data = array_filter(
-			$context,
-			function( $key ) use ( $defaults ) {
-				return array_key_exists( $key, $defaults );
-			},
-			ARRAY_FILTER_USE_KEY
-		);
-
-		// Get additional context
-		$data['context'] = array_diff(
-			isset( $context['context'] ) ? $context['context'] : $context,
-			$data
-		);
-
-		return $data;
-	}
-
-	/**
-	 * Save log record
-	 */
-	public function save() {
-		$logRepository = give( LogRepository::class );
-		$logRepository->insertLog(
-			$this->type,
-			$this->context['message'],
-			$this->context['category'],
-			$this->context['source'],
-			$this->context['migration_id'],
-			$this->context['context']
-		);
 	}
 }

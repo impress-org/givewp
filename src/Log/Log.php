@@ -3,8 +3,6 @@
 namespace Give\Log;
 
 use InvalidArgumentException;
-use Give\Log\ValueObjects\LogType;
-use Give\Log\ValueObjects\LogCategory;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
@@ -26,18 +24,51 @@ class Log {
 	 * @param  array  $args
 	 */
 	public static function __callStatic( $type, $args ) {
-		list ( $message, $additionalContext ) = array_pad( $args, 2, null );
+		$data = [];
 
-		$context = wp_parse_args( $additionalContext, [ 'message' => $message ] );
+		list ( $message, $context ) = array_pad( $args, 2, null );
 
-		LogFactory::make( $type, $context )->save();
+		if ( is_array( $context ) ) {
+			// Convert context values to string
+			$context = array_map(
+				function( $item ) {
+					if ( is_array( $item ) || is_object( $item ) ) {
+						  $item = print_r( $item, true );
+					}
+					return $item;
+				},
+				$context
+			);
+
+			// Default fields
+			$data = array_filter(
+				$context,
+				function( $key ) {
+					return array_key_exists( $key, LogFactory::getDefaults() );
+				},
+				ARRAY_FILTER_USE_KEY
+			);
+
+			// Additional context
+			$data['context'] = array_diff(
+				$context,
+				$data
+			);
+		}
+
+		// Set message
+		if ( ! is_null( $message ) ) {
+			$data['message'] = $message;
+		}
+
+		LogFactory::makeFromArray( $data )->save();
 	}
 
 
 	/**
 	 * @param string $migrationClass
 	 *
-	 * @return LogFactory
+	 * @return LogModel
 	 */
 	public static function migration( $migrationClass ) {
 		if ( ! is_subclass_of( $migrationClass, Migration::class ) ) {
@@ -46,12 +77,11 @@ class Log {
 			);
 		}
 
-		$context = [
+		$data = [
 			'category'     => LogCategory::MIGRATION,
-			'source'       => $migrationClass,
 			'migration_id' => $migrationClass::id(),
 		];
 
-		return LogFactory::make( LogType::MIGRATION, $context );
+		return LogFactory::makeFromArray( $data );
 	}
 }
