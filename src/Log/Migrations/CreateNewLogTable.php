@@ -36,18 +36,18 @@ class CreateNewLogTable extends Migration {
 		global $wpdb;
 
 		$sql = "CREATE TABLE {$wpdb->prefix}give_log (
-  			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  			log_type VARCHAR(16) NOT NULL,
-  			migration_id VARCHAR(64) NULL,
-  			data text NOT NULL,
-  			category VARCHAR(64) NOT NULL,
-  			source VARCHAR(64) NOT NULL,
-  			date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  			PRIMARY KEY  (id),
-            KEY log_type (log_type),
-            KEY migration_id (migration_id),
-            KEY category (category),
-            KEY source (source)
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			log_type VARCHAR(16) NOT NULL,
+			migration_id VARCHAR(64) NULL,
+			data text NOT NULL,
+			category VARCHAR(64) NOT NULL,
+			source VARCHAR(64) NOT NULL,
+			date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY  (id),
+			KEY log_type (log_type),
+			KEY migration_id (migration_id),
+			KEY category (category),
+			KEY source (source)
 		) {$wpdb->get_charset_collate()}";
 
 		try {
