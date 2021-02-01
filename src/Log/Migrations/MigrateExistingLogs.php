@@ -2,13 +2,32 @@
 
 namespace Give\Log\Migrations;
 
-use Give\Log\LogType;
+use Give\Log\Log;
 use Give\Log\LogFactory;
-use Give\Log\LogCategory;
 use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Log\ValueObjects\LogCategory;
+use Give\Log\ValueObjects\LogType;
+use Give_Updates;
 
 class MigrateExistingLogs extends Migration {
+	/**
+	 * Register background update.
+	 *
+	 * @param Give_Updates $give_updates
+	 *
+	 * @since 2.9.7
+	 */
+	public function register( $give_updates ) {
+		$give_updates->register(
+			[
+				'id'       => self::id(),
+				'version'  => '2.9.7',
+				'callback' => [ $this, 'run' ],
+			]
+		);
+	}
+
 	/**
 	 * @return string
 	 */
@@ -31,10 +50,24 @@ class MigrateExistingLogs extends Migration {
 
 		$logs_table    = "{$wpdb->prefix}give_logs";
 		$logmeta_table = "{$wpdb->prefix}give_logmeta";
+		$give_updates  = Give_Updates::get_instance();
 
-		$result = DB::get_results( "SELECT * FROM {$logs_table}" );
+		$perBatch = 100;
+
+		$result = DB::get_results(
+			DB::prepare(
+				"SELECT * FROM {$logs_table} LIMIT %d, %d",
+				$perBatch,
+				$give_updates->step * $perBatch
+			)
+		);
 
 		if ( $result ) {
+			$give_updates->set_percentage(
+				count( $result ),
+				$give_updates->step * 100
+			);
+
 			foreach ( $result as $log ) {
 				$context = [];
 
@@ -56,16 +89,28 @@ class MigrateExistingLogs extends Migration {
 				// Get new type and category
 				$data = $this->getNewDataFromType( $log->log_type );
 
-				LogFactory::make(
-					$data['type'],
-					$log->log_title,
-					$data['category'],
-					'Log Migration',
-					null,
-					$context
-				)->save();
+				try {
+					LogFactory::make(
+						$data['type'],
+						$log->log_title,
+						$data['category'],
+						'Log Migration',
+						null,
+						$context
+					)->save();
+				} catch ( \Exception $exception ) {
+					// Log migration error
+					Log::migration( self::class )
+					   ->error( 'Log migration failed', 'MigrateExistingLogs Migration', [ 'exception' => $exception ] );
+
+					$give_updates->__pause_db_update( true );
+					update_option( 'give_upgrade_error', 1, false );
+					wp_die();
+				}
 			}
 		}
+
+		give_set_upgrade_complete( self::id() );
 	}
 
 	/**
@@ -79,7 +124,7 @@ class MigrateExistingLogs extends Migration {
 		switch ( $type ) {
 			case 'update':
 				return [
-					'type'     => LogType::MIGRATION,
+					'type'     => LogType::ERROR,
 					'category' => LogCategory::MIGRATION,
 				];
 
