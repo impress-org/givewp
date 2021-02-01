@@ -2,6 +2,9 @@
 
 namespace Give\Log;
 
+use Give\Log\ValueObjects\LogType;
+use Give\Log\ValueObjects\LogCategory;
+
 /**
  * Class LogFactory
  * @package Give\Log
@@ -55,9 +58,9 @@ class LogFactory {
 	 */
 	public static function getDefaults() {
 		return [
-			'type'         => LogType::NOTICE,
+			'type'         => LogType::getDefault(),
 			'message'      => esc_html__( 'Something went wrong', 'give' ),
-			'category'     => LogCategory::CORE,
+			'category'     => LogCategory::getDefault(),
 			'source'       => esc_html__( 'Give Core', 'give' ),
 			'migration_id' => null,
 			'context'      => [],
