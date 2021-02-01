@@ -33,7 +33,7 @@ class LogRepository {
 			null
 		);
 
-		return $wpdb->insert_id;
+		return DB::last_insert_id();
 	}
 
 	/**

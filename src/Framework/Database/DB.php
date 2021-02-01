@@ -82,6 +82,16 @@ class DB {
 	}
 
 	/**
+	 * Get last insert ID
+	 *
+	 * @return int
+	 */
+	public static function last_insert_id() {
+		global $wpdb;
+		return $wpdb->insert_id;
+	}
+
+	/**
 	 * Runs a query callable and checks to see if any unique SQL errors occurred when it was run
 	 *
 	 * @since 2.9.2
