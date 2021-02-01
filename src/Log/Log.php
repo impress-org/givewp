@@ -7,8 +7,10 @@ use Give\Framework\Migrations\Contracts\Migration;
 
 /**
  * Class Log
- * @package Give\Log
  *
+ * The static facade intended to be the primary way of logging within GiveWP to make life easier.
+ *
+ * @package Give\Log
  * @since 2.9.7
  *
  * @method static error( string $message, array $context = [] )
