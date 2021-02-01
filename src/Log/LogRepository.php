@@ -11,6 +11,20 @@ use Give\Framework\Database\DB;
  * @since 2.9.7
  */
 class LogRepository {
+
+	/**
+	 * @var string
+	 */
+	private $log_table;
+
+	/**
+	 * LogRepository constructor.
+	 */
+	public function __construct() {
+		global $wpdb;
+		$this->log_table = "{$wpdb->prefix}give_log";
+	}
+
 	/**
 	 * Insert Log into database
 	 *
@@ -19,10 +33,8 @@ class LogRepository {
 	 * @return int inserted log id
 	 */
 	public function insertLog( LogModel $model ) {
-		global $wpdb;
-
 		DB::insert(
-			$wpdb->give_log,
+			$this->log_table,
 			[
 				'log_type'     => $model->getType(),
 				'migration_id' => $model->getMigrationId(),
@@ -37,16 +49,37 @@ class LogRepository {
 	}
 
 	/**
+	 * Update log
+	 *
+	 * @param  LogModel  $model
+	 *
+	 * @return false|int
+	 */
+	public function updateLog( LogModel $model ) {
+		return DB::update(
+			$this->log_table,
+			[
+				'log_type'     => $model->getType(),
+				'migration_id' => $model->getMigrationId(),
+				'data'         => $model->getData( $jsonEncode = true ),
+				'category'     => $model->getCategory(),
+				'source'       => $model->getSource(),
+			],
+			[
+				'id' => $model->getId(),
+			]
+		);
+	}
+
+	/**
 	 * Get all logs
 	 *
 	 * @return LogModel[]
 	 */
 	public function getLogs() {
-		global $wpdb;
-
 		$logs = [];
 
-		$result = DB::get_results( "SELECT * FROM {$wpdb->give_log} ORDER BY id DESC" );
+		$result = DB::get_results( "SELECT * FROM {$this->log_table} ORDER BY id DESC" );
 
 		if ( $result ) {
 			foreach ( $result as $log ) {
@@ -75,10 +108,8 @@ class LogRepository {
 	 * @return LogModel|null
 	 */
 	public function getLog( $logId ) {
-		global $wpdb;
-
 		$log = DB::get_row(
-			DB::prepare( "SELECT * FROM {$wpdb->give_log} WHERE id = %d", $logId )
+			DB::prepare( "SELECT * FROM {$this->log_table} WHERE id = %d", $logId )
 		);
 
 		if ( $log ) {
@@ -106,12 +137,10 @@ class LogRepository {
 	 * @return LogModel[]
 	 */
 	public function getLogsByType( $type ) {
-		global $wpdb;
-
 		$logs = [];
 
 		$result = DB::get_results(
-			DB::prepare( "SELECT * FROM {$wpdb->give_log} WHERE type = %s", $type )
+			DB::prepare( "SELECT * FROM {$this->log_table} WHERE type = %s", $type )
 		);
 
 		if ( $result ) {
@@ -141,12 +170,10 @@ class LogRepository {
 	 * @return LogModel[]
 	 */
 	public function getLogsByCategory( $category ) {
-		global $wpdb;
-
 		$logs = [];
 
 		$result = DB::get_results(
-			DB::prepare( "SELECT * FROM {$wpdb->give_log} WHERE category = %s", $category )
+			DB::prepare( "SELECT * FROM {$this->log_table} WHERE category = %s", $category )
 		);
 
 		if ( $result ) {
@@ -174,10 +201,8 @@ class LogRepository {
 	 * @return array
 	 */
 	public function getCategories() {
-		global $wpdb;
-
 		$categories = [];
-		$result     = DB::get_results( "SELECT DISTINCT category FROM {$wpdb->give_log}" );
+		$result     = DB::get_results( "SELECT DISTINCT category FROM {$this->log_table}" );
 
 		if ( $result ) {
 			foreach ( $result as $category ) {
@@ -193,9 +218,7 @@ class LogRepository {
 	 * Delete all logs
 	 */
 	public function deleteLogs() {
-		global $wpdb;
-
-		DB::query( "DELETE FROM {$wpdb->give_log}" );
+		DB::query( "DELETE FROM {$this->log_table}" );
 	}
 
 	/**
@@ -204,10 +227,8 @@ class LogRepository {
 	 * @param  int  $logId
 	 */
 	public function deleteLog( $logId ) {
-		global $wpdb;
-
 		DB::query(
-			DB::prepare( "DELETE FROM {$wpdb->give_log} WHERE id = %d", $logId )
+			DB::prepare( "DELETE FROM {$this->log_table} WHERE id = %d", $logId )
 		);
 	}
 }
