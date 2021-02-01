@@ -11,13 +11,16 @@ class DonorProfilePipeline {
 	}
 
 	public function pipe( callable $stage ) {
-		$pipeline       = clone $this;
+		//$pipeline       = clone $this;
 		$this->stages[] = $stage;
-		return $pipeline;
+		return $this;
 	}
 
-	public function process( $payload, callable ...$stages ) {
-		foreach ( $stages as $stage ) {
+	public function process( $payload ) {
+
+		error_log( 'pipeline stages' . serialize( $this->stages ) );
+
+		foreach ( $this->stages as $stage ) {
 			$payload = $stage( $payload );
 		}
 

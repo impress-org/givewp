@@ -27,8 +27,8 @@ class UpdateDonorName {
 		];
 
 		foreach ( $attributeMetaMap as $attribute => $metaKey ) {
-			if ( property_exists( $this->data, $attribute ) ) {
-				$this->donor->update_meta( $metaKey, $this->data->{$attribute} );
+			if ( key_exists( $attribute, $this->data ) ) {
+				$this->donor->update_meta( $metaKey, $this->data[ $attribute ] );
 			}
 		}
 	}
@@ -36,8 +36,10 @@ class UpdateDonorName {
 	protected function updateNameInDonorDB() {
 
 		$updateArgs = [];
-		if ( ! empty( $this->data->firstName ) && ! empty( $this->data->lastName ) ) {
-			$updateArgs['name'] = "{$this->data->firstName} {$this->data->lastName}";
+		if ( ! empty( $this->data['firstName'] ) && ! empty( $this->data['lastName'] ) ) {
+			$firstName          = $this->data['firstName'];
+			$lastName           = $this->data['lastName'];
+			$updateArgs['name'] = "{$firstName} {$lastName}";
 		}
 
 		$this->donor->update( $updateArgs );
