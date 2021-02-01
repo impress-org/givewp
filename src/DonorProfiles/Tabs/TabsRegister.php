@@ -87,7 +87,6 @@ class TabsRegister {
 
 		$this->tabs[ $tabId ] = $tabClass;
 
-		error_log( 'in addTab: ' . serialize( $this->tabs ) );
 	}
 
 	/**

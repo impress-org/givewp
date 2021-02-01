@@ -48,7 +48,6 @@ abstract class Tab {
 	 */
 	public function registerRoutes() {
 		$routeClasses = $this->routes();
-		error_log( serialize( $routeClasses ) );
 		foreach ( $routeClasses as $routeClass ) {
 			if ( ! is_subclass_of( $routeClass, RouteAbstract::class ) ) {
 				throw new \InvalidArgumentException( 'Class must extend the ' . RouteAbstract::class . ' class' );
@@ -58,7 +57,6 @@ abstract class Tab {
 	}
 
 	public function registerTab() {
-		error_log( serialize( give()->donorProfileTabs ) );
 		give()->donorProfileTabs->addTab( get_called_class() );
 	}
 }

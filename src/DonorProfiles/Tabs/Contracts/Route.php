@@ -49,7 +49,6 @@ abstract class Route implements RestRoute {
 	 * @inheritDoc
 	 */
 	public function registerRoute() {
-		error_log( 'register profile route!!' . $this->endpoint() );
 		register_rest_route(
 			'give-api/v2',
 			"{$this->root}{$this->endpoint()}",

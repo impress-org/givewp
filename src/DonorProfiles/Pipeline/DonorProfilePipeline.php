@@ -18,8 +18,6 @@ class DonorProfilePipeline {
 
 	public function process( $payload ) {
 
-		error_log( 'pipeline stages' . serialize( $this->stages ) );
-
 		foreach ( $this->stages as $stage ) {
 			$payload = $stage( $payload );
 		}

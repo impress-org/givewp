@@ -31,8 +31,6 @@ class Profile {
 	 */
 	public function update( $data ) {
 
-		//error_log("input: " . serialize($data));
-
 		$pipeline = ( new DonorProfilePipeline )
 			->pipe( new UpdateDonorName )
 			->pipe( new UpdateDonorAvatar )
@@ -45,8 +43,6 @@ class Profile {
 				'donor' => $this->donor,
 			]
 		);
-
-		//error_log("output: " . serialize($this->getProfileData()));
 
 		// Return updated donor profile data
 		return $this->getProfileData();
