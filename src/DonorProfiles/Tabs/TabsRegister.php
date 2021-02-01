@@ -82,10 +82,12 @@ class TabsRegister {
 		$tabId = $tabClass::id();
 
 		if ( isset( $this->tabs[ $tabId ] ) ) {
-			throw new \InvalidArgumentException( 'A migration can only be added once. Make sure there are not id conflicts.' );
+			throw new \InvalidArgumentException( 'A tab can only be added once. Make sure there are not id conflicts.' );
 		}
 
-		$this->migrations[ $tabId ] = $tabClass;
+		$this->tabs[ $tabId ] = $tabClass;
+
+		error_log( 'in addTab: ' . serialize( $this->tabs ) );
 	}
 
 	/**
@@ -98,6 +100,19 @@ class TabsRegister {
 	public function addTabs( array $tabClasses ) {
 		foreach ( $tabClasses as $tabClass ) {
 			$this->addTab( $tabClass );
+		}
+	}
+
+	public function registerTabRoutes() {
+		foreach ( give()->donorProfileTabs->tabs as $tabClass ) {
+			$tab = new $tabClass;
+			$tab->registerRoutes();
+		}
+	}
+
+	public function enqueueTabAssets() {
+		foreach ( $this->tabs as $tabClass ) {
+			( new $tabClass )->enqueueAssets();
 		}
 	}
 }

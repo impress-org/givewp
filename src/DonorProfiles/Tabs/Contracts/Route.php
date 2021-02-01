@@ -9,7 +9,7 @@ use Give\API\RestRoute;
 /**
  * @since 2.11.0
  */
-abstract class TabRoute implements RestRoute {
+abstract class Route implements RestRoute {
 
 	/**
 	 * Returns string to complete Route endpoint
@@ -49,6 +49,7 @@ abstract class TabRoute implements RestRoute {
 	 * @inheritDoc
 	 */
 	public function registerRoute() {
+		error_log( 'register profile route!!' );
 		register_rest_route(
 			'give-api/v2',
 			"{$this->root}{$this->endpoint()}",
