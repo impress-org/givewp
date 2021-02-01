@@ -16,6 +16,18 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * @since 2.9.7
  */
 class CreateNewLogTable extends Migration {
+	/**
+	 * @var string
+	 */
+	private $log_table;
+
+	/**
+	 * CreateNewLogTable constructor.
+	 */
+	public function __construct() {
+		global $wpdb;
+		$this->log_table = "{$wpdb->prefix}give_log";
+	}
 
 	/**
 	 * @return string
@@ -33,9 +45,9 @@ class CreateNewLogTable extends Migration {
 
 
 	public function run() {
-		global $wpdb;
+		$charset = DB::get_charset_collate();
 
-		$sql = "CREATE TABLE {$wpdb->prefix}give_log (
+		$sql = "CREATE TABLE {$this->log_table} (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 			log_type VARCHAR(16) NOT NULL,
 			migration_id VARCHAR(64) NULL,
@@ -48,7 +60,7 @@ class CreateNewLogTable extends Migration {
 			KEY migration_id (migration_id),
 			KEY category (category),
 			KEY source (source)
-		) {$wpdb->get_charset_collate()}";
+		) {$charset}";
 
 		try {
 			DB::delta( $sql );
@@ -63,10 +75,8 @@ class CreateNewLogTable extends Migration {
 	 * @return bool
 	 */
 	public function check() {
-		global $wpdb;
-
 		return (bool) DB::query(
-			DB::prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_log" )
+			DB::prepare( 'SHOW TABLES LIKE %s', $this->log_table )
 		);
 	}
 }
