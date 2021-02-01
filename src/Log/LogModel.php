@@ -211,6 +211,13 @@ class LogModel {
 	 * Save log record
 	 */
 	public function save() {
-		give( LogRepository::class )->insertLog( $this );
+		/**
+		 * var LogRepository $repository
+		 */
+		$repository = give( LogRepository::class );
+
+		$this->getId()
+			? $repository->updateLog( $this )
+			: $repository->insertLog( $this );
 	}
 }
