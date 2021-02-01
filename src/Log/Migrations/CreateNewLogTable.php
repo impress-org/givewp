@@ -53,7 +53,7 @@ class CreateNewLogTable extends Migration {
 		try {
 			DB::delta( $sql );
 		} catch ( DatabaseQueryException $exception ) {
-			throw DatabaseMigrationException::fromException( $exception, 'An error occurred while creating the give_log table' );
+			throw new DatabaseMigrationException( 'An error occurred while creating the give_log table', 0, $exception );
 		}
 	}
 
