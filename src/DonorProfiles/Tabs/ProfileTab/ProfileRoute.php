@@ -10,7 +10,7 @@ use Give\DonorProfiles\Helpers\SanitizeProfileData as SanitizeHelper;
 /**
  * @since 2.11.0
  */
-class Route extends RouteAbstract {
+class ProfileRoute extends RouteAbstract {
 
 	/**
 	 * @inheritdoc
