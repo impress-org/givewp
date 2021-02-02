@@ -17,19 +17,6 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  */
 class CreateNewLogTable extends Migration {
 	/**
-	 * @var string
-	 */
-	private $log_table;
-
-	/**
-	 * CreateNewLogTable constructor.
-	 */
-	public function __construct() {
-		global $wpdb;
-		$this->log_table = "{$wpdb->prefix}give_log";
-	}
-
-	/**
 	 * @return string
 	 */
 	public static function id() {
@@ -45,9 +32,12 @@ class CreateNewLogTable extends Migration {
 
 
 	public function run() {
+		global $wpdb;
+
+		$table   = "{$wpdb->prefix}give_log";
 		$charset = DB::get_charset_collate();
 
-		$sql = "CREATE TABLE {$this->log_table} (
+		$sql = "CREATE TABLE {$table} (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 			log_type VARCHAR(16) NOT NULL,
 			data text NOT NULL,
@@ -65,16 +55,5 @@ class CreateNewLogTable extends Migration {
 		} catch ( DatabaseQueryException $exception ) {
 			throw new DatabaseMigrationException( 'An error occurred while creating the give_log table', 0, $exception );
 		}
-	}
-
-	/**
-	 * Check if give_log table exists
-	 *
-	 * @return bool
-	 */
-	public function check() {
-		return (bool) DB::query(
-			DB::prepare( 'SHOW TABLES LIKE %s', $this->log_table )
-		);
 	}
 }
