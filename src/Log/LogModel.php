@@ -218,8 +218,10 @@ class LogModel {
 		 */
 		$repository = give( LogRepository::class );
 
-		$this->getId()
-			? $repository->updateLog( $this )
-			: $repository->insertLog( $this );
+		if ( $this->getId() ) {
+			$repository->updateLog( $this );
+		} else {
+			$this->id = $repository->insertLog( $this );
+		}
 	}
 }
