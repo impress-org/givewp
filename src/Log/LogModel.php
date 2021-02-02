@@ -2,6 +2,8 @@
 
 namespace Give\Log;
 
+use Give\Log\ValueObjects\LogType;
+
 /**
  * Class LogModel
  * @package Give\Log
@@ -79,9 +81,9 @@ class LogModel {
 	 * @param string $type
 	 */
 	private function setType( $type ) {
-		$this->type = array_key_exists( $type, LogType::getAllTypes() )
+		$this->type = array_key_exists( $type, LogType::getAll() )
 			? $type
-			: LogType::NOTICE;
+			: LogType::getDefault();
 	}
 
 	/**
