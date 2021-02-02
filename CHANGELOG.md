@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 -   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
-
+-   Setup Page gateway links now render styles correctly (#5576)
 ## 2.9.6 - 2021-01-13
 
 ### New
