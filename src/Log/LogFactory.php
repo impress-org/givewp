@@ -19,14 +19,13 @@ class LogFactory {
 	 * @param  string  $message
 	 * @param  string  $category
 	 * @param  string  $source
-	 * @param  string|null  $migrationId
 	 * @param  array  $context
 	 * @param  int|null  $logId
 	 *
 	 * @return LogModel
 	 */
-	public static function make( $type, $message, $category, $source, $migrationId = null, $context = [], $logId = null ) {
-		return new LogModel( $type, $message, $category, $source, $migrationId, $context, $logId );
+	public static function make( $type, $message, $category, $source, $context = [], $logId = null ) {
+		return new LogModel( $type, $message, $category, $source, $context, $logId );
 	}
 
 	/**
@@ -45,7 +44,6 @@ class LogFactory {
 			$data['message'],
 			$data['category'],
 			$data['source'],
-			$data['migration_id'],
 			$data['context'],
 			$data['id']
 		);
@@ -58,13 +56,12 @@ class LogFactory {
 	 */
 	public static function getDefaults() {
 		return [
-			'type'         => LogType::getDefault(),
-			'message'      => esc_html__( 'Something went wrong', 'give' ),
-			'category'     => LogCategory::getDefault(),
-			'source'       => esc_html__( 'Give Core', 'give' ),
-			'migration_id' => null,
-			'context'      => [],
-			'id'           => null,
+			'type'     => LogType::getDefault(),
+			'message'  => esc_html__( 'Something went wrong', 'give' ),
+			'category' => LogCategory::getDefault(),
+			'source'   => esc_html__( 'Give Core', 'give' ),
+			'context'  => [],
+			'id'       => null,
 		];
 	}
 }
