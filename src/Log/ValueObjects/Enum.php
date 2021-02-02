@@ -12,7 +12,7 @@ use ReflectionException;
  *
  * @since 2.9.7
  */
-abstract class ValueObject {
+abstract class Enum implements EnumInterface {
 	/**
 	 * @var mixed
 	 */
@@ -21,12 +21,16 @@ abstract class ValueObject {
 	/**
 	 * ValueObject constructor.
 	 *
-	 * @param string $value
+	 * @param mixed $value
 	 */
 	public function __construct( $value ) {
+		if ( $value instanceof static ) {
+			$value = $value->getValue();
+		}
+
 		if ( ! self::isValid( $value ) ) {
 			throw new InvalidArgumentException(
-				sprintf( 'Invalid property %s of class %s', $value, static::class )
+				sprintf( 'Invalid %s enumeration value provided %s', static::class, $value )
 			);
 		}
 
@@ -56,9 +60,7 @@ abstract class ValueObject {
 	}
 
 	/**
-	 * Get value
-	 *
-	 * @return mixed|null
+	 * @inheritDoc
 	 */
 	public function getValue() {
 		$constants = self::getAll();
@@ -69,13 +71,6 @@ abstract class ValueObject {
 
 		return null;
 	}
-
-	/**
-	 * Get default value
-	 *
-	 * @return string
-	 */
-	abstract public static function getDefault();
 
 	/**
 	 * Check if value is valid
@@ -91,12 +86,23 @@ abstract class ValueObject {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function equalsTo( $value ) {
+		return $value instanceof self && $this->getValue() === $value->getValue();
+	}
+
+	/**
 	 * @param  string  $name
 	 * @param  array  $args
 	 *
 	 * @return static
 	 */
 	public static function __callStatic( $name, $args ) {
-		return new static( $name );
+		if ( self::isValid( $name ) ) {
+			return new static( $name );
+		}
+
+		throw new InvalidArgumentException( "Invalid argument, does not match constant {$name}" );
 	}
 }
