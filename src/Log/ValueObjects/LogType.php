@@ -8,14 +8,14 @@ namespace Give\Log\ValueObjects;
  *
  * @since 2.9.7
  *
- * @method static error()
- * @method static warning()
- * @method static notice()
- * @method static success()
- * @method static info()
- * @method static http()
+ * @method static ERROR()
+ * @method static WARNING()
+ * @method static NOTICE()
+ * @method static SUCCESS()
+ * @method static INFO()
+ * @method static HTTP()
  */
-class LogType extends ValueObject {
+class LogType extends Enum {
 	const ERROR   = 'error';
 	const WARNING = 'warning';
 	const NOTICE  = 'notice';

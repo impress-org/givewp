@@ -8,14 +8,11 @@ namespace Give\Log\ValueObjects;
  *
  * @since 2.9.7
  *
- * @method static error()
- * @method static warning()
- * @method static notice()
- * @method static success()
- * @method static info()
- * @method static http()
+ * @method static CORE()
+ * @method static WARNING()
+ * @method static NOTICE()
  */
-class LogCategory extends ValueObject {
+class LogCategory extends Enum {
 	const CORE      = 'Core';
 	const PAYMENT   = 'Payment';
 	const MIGRATION = 'Migration';
