@@ -9,8 +9,8 @@ namespace Give\Log\ValueObjects;
  * @since 2.9.7
  *
  * @method static CORE()
- * @method static WARNING()
- * @method static NOTICE()
+ * @method static PAYMENT()
+ * @method static MIGRATION()
  */
 class LogCategory extends Enum {
 	const CORE      = 'Core';
