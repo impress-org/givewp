@@ -12,6 +12,8 @@ namespace Give\Log;
  * @method success( string $message, string $source, array $context = [] )
  * @method info( string $message, string $source, array $context = [] )
  * @method http( string $message, string $source, array $context = [] )
+ *
+ * @since 2.9.7
  */
 class LogModel {
 	/**

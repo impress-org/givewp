@@ -9,6 +9,8 @@ use ReflectionException;
 /**
  * Class ValueObject
  * @package Give\Log\ValueObjects
+ *
+ * @since 2.9.7
  */
 abstract class ValueObject {
 	/**
