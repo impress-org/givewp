@@ -81,7 +81,7 @@ class LogModel {
 	 * @param string $type
 	 */
 	private function setType( $type ) {
-		$this->type = array_key_exists( $type, LogType::getAll() )
+		$this->type = in_array( $type, LogType::getAll(), true )
 			? $type
 			: LogType::getDefault();
 	}
