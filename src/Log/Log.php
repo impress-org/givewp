@@ -3,6 +3,7 @@
 namespace Give\Log;
 
 use InvalidArgumentException;
+use Give\Log\ValueObjects\LogCategory;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
