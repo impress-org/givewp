@@ -8,11 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Fixed
+
+-   Using the CLI commands is not producing errors anymore (#5559)
 -   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
 -   Setup Page gateway links now render styles correctly (#5576)
+
 ## 2.9.6 - 2021-01-13
 
 ### New
+
 -   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
 -   Sample onboarding tests are now implemented (#5543)
