@@ -1,0 +1,49 @@
+.give-donor-profile-donation-receipt__table {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #e2e6ec;
+	border-radius: 6px;
+	font-size: 14px;
+	color: #555;
+	margin-bottom: 18px;
+
+	.give-donor-profile-donation-receipt__row {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		padding: 20px;
+	}
+
+	.give-donor-profile-donation-receipt__detail {
+		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+
+		svg {
+			color: #989898;
+			margin-right: 10px;
+		}
+	}
+
+	.give-donor-profile-donation-receipt__value {
+		text-align: right;
+	}
+
+	.give-donor-profile-donation-receipt__row--footer {
+		background: #fbfbfb;
+		border-top: 1px solid #e2e6ec;
+		align-items: center;
+
+		.give-donor-profile-donation-receipt__detail {
+			color: #6b6b6b;
+			font-size: 16px;
+			font-weight: 700;
+		}
+
+		.give-donor-profile-donation-receipt__value {
+			color: #68bb6c;
+			font-size: 22px;
+			font-weight: 700;
+		}
+	}
+}
