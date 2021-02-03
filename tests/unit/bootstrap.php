@@ -126,8 +126,16 @@ class Give_Unit_Tests_Bootstrap {
 	 */
 	public function includes() {
 
+		// class traits
+		require_once $this->tests_dir . '/framework/traits/AdminUser.php';
+		require_once $this->tests_dir . '/framework/traits/DonationForm.php';
+		require_once $this->tests_dir . '/framework/traits/Donor.php';
+		require_once $this->tests_dir . '/framework/traits/RefreshDonations.php';
+		require_once $this->tests_dir . '/framework/traits/RestServer.php';
+
 		// test cases
 		require_once $this->tests_dir . '/framework/class-give-unit-test-case.php';
+		require_once $this->tests_dir . '/framework/class-give-api-test-case.php';
 
 		// Helpers
 		require_once $this->tests_dir . '/framework/helpers/shims.php';
