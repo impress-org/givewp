@@ -4,6 +4,8 @@ namespace Give\Framework\Migrations;
 
 use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\MigrationLog\MigrationLogFactory;
+use Give\MigrationLog\MigrationLogStatus;
 use Give_Notices;
 
 /**
@@ -84,6 +86,10 @@ class MigrationsRunner {
 				$migration = give( $migrationClass );
 
 				$migration->run();
+
+				// Save migration status
+				$migrationLog = MigrationLogFactory::makeFromClass( $migrationClass );
+				$migrationLog->setStatus( MigrationLogStatus::SUCCESS )->save();
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );
 
