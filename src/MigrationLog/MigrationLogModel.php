@@ -3,8 +3,8 @@
 namespace Give\MigrationLog;
 
 /**
- * Class MigrationModel
- * @package Give\Log
+ * Class MigrationLogModel
+ * @package Give\MigrationLog
  *
  * @since 2.9.7
  */

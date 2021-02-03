@@ -8,10 +8,9 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 
-
 /**
- * Class CreateMigrationTable
- * @package Give\Log\Migrations
+ * Class CreateMigrationsTable
+ * @package Give\MigrationLog\Migrations
  *
  * @since 2.9.7
  */

@@ -7,8 +7,8 @@ use Give\Framework\Migrations\MigrationsRegister;
 use Give\MigrationLog\Migrations\CreateMigrationsTable;
 
 /**
- * Class LogServiceProvider
- * @package Give\Log
+ * Class MigrationLogServiceProvider
+ * @package Give\MigrationLog
  *
  * @since 2.9.7
  */

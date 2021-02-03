@@ -5,8 +5,8 @@ namespace Give\MigrationLog;
 use Give\Framework\Database\DB;
 
 /**
- * Class MigrationRepository
- * @package Give\Migration
+ * Class MigrationLogRepository
+ * @package Give\MigrationLog
  *
  * @since 2.9.7
  */

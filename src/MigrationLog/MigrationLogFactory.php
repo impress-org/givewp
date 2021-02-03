@@ -6,8 +6,8 @@ use InvalidArgumentException;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * Class MigrationFactory
- * @package Give\Migration
+ * Class MigrationLogFactory
+ * @package Give\MigrationLog
  *
  * @since 2.9.7
  */

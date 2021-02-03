@@ -3,8 +3,8 @@
 namespace Give\MigrationLog;
 
 /**
- * Class MigrationStatus
- * @package Give\Migration
+ * Class MigrationLogStatus
+ * @package Give\MigrationLog
  *
  * @since 2.9.7
  */
