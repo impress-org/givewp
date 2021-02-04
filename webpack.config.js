@@ -40,6 +40,7 @@ const config = {
 		'admin-paypal-commerce': [ './assets/src/css/admin/paypal-commerce.scss' ],
 		'admin-onboarding-wizard': [ './assets/src/js/admin/onboarding-wizard/index.js' ],
 		'multi-form-goal-block': [ './src/MultiFormGoals/resources/css/common.scss' ],
+		'give-log-list-table-app': [ './src/Log/Admin/App/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
@@ -79,8 +80,14 @@ const config = {
 				test: /\.css$/,
 				use: [
 					//MiniCSSExtractPlugin.loader,
-					'style-loader',
-					'css-loader',
+					{ loader: 'style-loader' },
+					{
+						loader: 'css-loader',
+						options: {
+							modules: true,
+							localIdentName: '[local]__[hash:base64:5]',
+						},
+					},
 				],
 			},
 
@@ -88,11 +95,16 @@ const config = {
 			{
 				test: /\.scss$/,
 				use: [
-					MiniCSSExtractPlugin.loader,
+					//MiniCSSExtractPlugin.loader,
+					{
+						loader: 'style-loader',
+					},
 					{
 						loader: 'css-loader',
 						options: {
 							sourceMap: true,
+							modules: true,
+							localIdentName: '[local]__[hash:base64:5]',
 						},
 					},
 					{
@@ -161,6 +173,12 @@ const config = {
 			proxy: 'give.test',
 		} ),
 	],
+
+	resolve: {
+		alias: {
+			GiveComponents: path.resolve( __dirname, 'src/Views/Components/' ),
+		},
+	},
 };
 
 if ( inProduction ) {
