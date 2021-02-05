@@ -5,8 +5,36 @@ import { LoadingOverlay } from 'GiveComponents';
 
 import styles from './style.module.scss';
 
-const Table = ( { title, headerRow, columns, data, columnFilters, stripped, isLoading } ) => {
+const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) => {
 	const [ state, setState ] = useState( {} );
+	const [ cachedData, setCachedData ] = useState( [] );
+
+	// Cache data so we can show that under overlay while new data is fetching
+	if ( data.length && data !== cachedData ) {
+		setCachedData( data );
+	}
+
+	// Display cached data while fetching new data
+	const allowedColumns = columns.map( ( column ) => column.key );
+	// Get additional row columns added manually
+	const additionalColumns = columns
+		.filter( ( column ) => 'append' in column && column.append )
+		.map( ( column ) => {
+			return {
+				[ column.key ]: column.defaultValue ?? '',
+			};
+		} );
+
+	// Used when additional columns are added, but they not exist in the result row.
+	// So we have to sort result row to match columns order
+	const sortResults = ( order, object ) => {
+		const newObject = {};
+
+		order.forEach( ( key ) => {
+			newObject[ key ] = object[ key ];
+		} );
+		return newObject;
+	};
 
 	const handleItemSort = ( item ) => {
 		const direction = ( state[ item.label ] === 'desc' ) ? 'asc' : 'desc';
@@ -16,7 +44,7 @@ const Table = ( { title, headerRow, columns, data, columnFilters, stripped, isLo
 		return item.sortCallback( direction );
 	};
 
-	const getItemDirectionIcon = ( item ) => {
+	const getItemSortDirectionIcon = ( item ) => {
 		if ( ! state[ item.label ] ) {
 			return <span className={ classNames( 'dashicons dashicons-sort', styles.sortIcons, styles.sortIconUndefined ) } />;
 		}
@@ -32,13 +60,13 @@ const Table = ( { title, headerRow, columns, data, columnFilters, stripped, isLo
 	};
 
 	const getHeaderRow = () => {
-		return headerRow.map( ( item, index ) => {
+		return columns.map( ( item, index ) => {
 			return (
 				<div className={ styles.label } key={ index }>
 					{ item.label }
 					{ item.sort && ( typeof item.sortCallback === 'function' ) && (
 						<span onClick={ () => handleItemSort( item ) }>
-							{ getItemDirectionIcon( item ) }
+							{ getItemSortDirectionIcon( item ) }
 						</span>
 					) }
 				</div>
@@ -47,10 +75,24 @@ const Table = ( { title, headerRow, columns, data, columnFilters, stripped, isLo
 	};
 
 	const getRows = () => {
+		if ( ! isLoading && data.length === 0 ) {
+			return (
+				<div className={ styles.noData }>
+					No data
+				</div>
+			);
+		}
+
+		if ( cachedData.length && isLoading ) {
+			data = cachedData;
+		}
+
 		return data.map( ( row, index ) => {
-			const RowItems = Object.entries( row )
-				// Only selected columns
-				.filter( ( [ key ] ) => columns.includes( key ) )
+			// Add additional row columns and sort the result row
+			const result = ( additionalColumns.length > 0 ) ? sortResults( allowedColumns, Object.assign( row, ...additionalColumns ) ) : row;
+			const RowItems = Object.entries( result )
+				// Display only provided columns
+				.filter( ( [ key ] ) => allowedColumns.includes( key ) )
 				.map( ( [ key, value ] ) => {
 					if ( columnFilters[ key ] && typeof columnFilters[ key ] === 'function' ) {
 						value = columnFilters[ key ]( value, data[ index ] );
@@ -74,17 +116,15 @@ const Table = ( { title, headerRow, columns, data, columnFilters, stripped, isLo
 	return (
 		<>
 			{ isLoading && (
-				<LoadingOverlay />
+				<LoadingOverlay spinnerSize="medium" />
 			) }
 			{ title && ( <div className={ styles.title }>
 				{ title }
 			</div> ) }
 			<div className={ styles.table }>
-				{ ( headerRow.length > 0 ) && (
-					<div className={ classNames( styles.header, { [ styles.headerStripped ]: stripped } ) }>
-						{ getHeaderRow() }
-					</div>
-				) }
+				<div className={ classNames( styles.header, { [ styles.headerStripped ]: stripped } ) }>
+					{ getHeaderRow() }
+				</div>
 				{ getRows() }
 			</div>
 		</>
@@ -94,8 +134,6 @@ const Table = ( { title, headerRow, columns, data, columnFilters, stripped, isLo
 Table.propTypes = {
 	// Table title
 	title: PropTypes.string,
-	// Table header columns
-	header: PropTypes.array,
 	// Columns to display
 	columns: PropTypes.array.isRequired,
 	// Table data rows
@@ -110,7 +148,6 @@ Table.propTypes = {
 
 Table.defaultProps = {
 	title: null,
-	header: [],
 	columns: [],
 	data: [],
 	columnFilters: [],
