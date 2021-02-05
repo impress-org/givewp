@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Create account checkbox is hidden when guest registration is disabled (#5557)
 -   Using the CLI commands is not producing errors anymore (#5559)
 -   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
 -   Setup Page gateway links now render styles correctly (#5576)
