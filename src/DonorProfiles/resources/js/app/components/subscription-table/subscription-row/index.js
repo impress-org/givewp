@@ -25,17 +25,17 @@ const SubscriptionRow = ( { subscription } ) => {
 			</div>
 			<div className="give-donor-profile-table__pill">
 				<div className="give-donor-profile-table__donation-receipt">
-					<Link to={ `/recurring-donations/${ id }` }>
+					<Link to={ `/recurring-donations/update-method/${ id }` }>
 						{ __( 'Update Payment Method', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
 					</Link>
 				</div>
 				<div className="give-donor-profile-table__donation-receipt">
-					<Link to={ `/recurring-donations/${ id }` }>
+					<Link to={ `/recurring-donations/receipt/${ id }` }>
 						{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
 					</Link>
 				</div>
 				<div className="give-donor-profile-table__donation-receipt">
-					<Link to={ `/recurring-donations/${ id }` }>
+					<Link to={ `/recurring-donations/cancel/${ id }` }>
 						{ __( 'Cancel Subscription', 'give' ) }
 					</Link>
 				</div>
