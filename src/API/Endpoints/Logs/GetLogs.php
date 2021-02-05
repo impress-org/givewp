@@ -16,8 +16,7 @@ use Give\Log\ValueObjects\LogType;
 class GetLogs extends Endpoint {
 
 	/** @var string */
-	protected $endpoint = 'logs/get';
-	//protected $endpoint = 'logs/get(?:/(?P<type>\s+))?(?:/(?P<limit>\d+))?(?:/(?P<offset>\d+))'; todo: check what is wrong with this
+	protected $endpoint = 'logs/get-logs';
 
 	/**
 	 * @var LogRepository
@@ -46,23 +45,32 @@ class GetLogs extends Endpoint {
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => [ $this, 'permissionsCheck' ],
 					'args'                => [
-						'type'   => [
+						'type'      => [
 							'validate_callback' => function( $param ) {
 								if ( 'all' === $param ) {
 									return true;
 								}
 								return LogType::isValid( $param );
 							},
+							'default'           => 'all',
 						],
-						'limit'  => [
+						'sort'      => [
 							'validate_callback' => function( $param ) {
-								return filter_var( FILTER_VALIDATE_INT, $param );
+								if ( empty( $param ) ) {
+									return true;
+								}
+								return in_array( $param, $this->logRepository->getSortableColumns(), true );
 							},
+							'default'           => 'id',
 						],
-						'offset' => [
+						'direction' => [
 							'validate_callback' => function( $param ) {
-								return filter_var( FILTER_VALIDATE_INT, $param );
+								if ( empty( $param ) ) {
+									return true;
+								}
+								return in_array( strtoupper( $param ), [ 'ASC', 'DESC' ], true );
 							},
+							'default'           => 'DESC',
 						],
 					],
 				],
@@ -80,17 +88,17 @@ class GetLogs extends Endpoint {
 			'title'      => 'logs',
 			'type'       => 'object',
 			'properties' => [
-				'type'   => [
+				'type'      => [
 					'type'        => 'string',
 					'description' => esc_html__( 'Log type', 'give' ),
 				],
-				'limit'  => [
-					'type'        => 'integer',
-					'description' => esc_html__( 'Limit number of logs returned', 'give' ),
+				'direction' => [
+					'type'        => 'string',
+					'description' => esc_html__( 'Sort direction', 'give' ),
 				],
-				'offset' => [
-					'type'        => 'integer',
-					'description' => esc_html__( 'Set offset', 'give' ),
+				'sort'      => [
+					'type'        => 'string',
+					'description' => esc_html__( 'Sort by column', 'give' ),
 				],
 			],
 		];
@@ -104,21 +112,37 @@ class GetLogs extends Endpoint {
 	public function handleRequest( WP_REST_Request $request ) {
 		$data = [];
 
-		$type = $request->get_param( 'type' );
+		$type      = $request->get_param( 'type' );
+		$category  = $request->get_param( 'category' );
+		$page      = $request->get_param( 'page' );
+		$sortBy    = $request->get_param( 'sort' );
+		$direction = $request->get_param( 'direction' );
 
-		$logs = ( ! empty( $type ) && 'all' !== $type )
-			? $this->logRepository->getLogsByType( $type )
-			: $this->logRepository->getLogs();
+		// By type
+		if ( 'all' !== $type ) {
+			$logs  = $this->logRepository->getLogsByType( $type );
+			$total = $this->logRepository->getLogCountBy( 'log_type', $type );
+		}
+		// By category
+		elseif ( ! empty( $category ) ) {
+			$logs  = $this->logRepository->getLogsByCategory( $category );
+			$total = $this->logRepository->getLogCountBy( 'category', $category );
+		}
+		// Get all
+		else {
+			$logs  = $this->logRepository->getLogs( 10, ( $page * 10 ), $sortBy, $direction );
+			$total = $this->logRepository->getTotalCount();
+		}
 
 		foreach ( $logs as $log ) {
 			$data[] = [
 				'id'       => $log->getId(),
-				'type'     => $log->getType(),
+				'log_type' => $log->getType(),
 				'category' => $log->getCategory(),
 				'source'   => $log->getSource(),
 				'message'  => $log->getMessage(),
 				'context'  => $log->getContext(),
-				'date'     => date( 'd.m.Y' ), // todo: log model doesnt have date property
+				'date'     => date( 'd.m.Y' ) . ' - ' . $log->getId(), // todo: log model doesnt have date property
 			];
 		}
 
@@ -126,6 +150,7 @@ class GetLogs extends Endpoint {
 			[
 				'status' => true,
 				'data'   => $data,
+				'total'  => floor( $total / 10 ),
 			]
 		);
 	}
