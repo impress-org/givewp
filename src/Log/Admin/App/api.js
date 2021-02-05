@@ -14,15 +14,21 @@ export default API;
 export const CancelToken = axios.CancelToken.source();
 
 // SWR Fetcher
-export const Fetcher = ( endpoint ) => API.get( endpoint ).then( res => res.data.data );
-
-export const useLogFetch = ( endpoint ) => {
-	const { data, error } = useSWR( endpoint, Fetcher );
-
+export const Fetcher = ( endpoint ) => API.get( endpoint ).then( ( res ) => {
+	const { data, ...rest } = res.data;
 	return {
 		data,
+		response: rest,
+	};
+} );
+
+export const useLogFetcher = ( endpoint, params = {} ) => {
+	const { data, error } = useSWR( endpoint, Fetcher, params );
+	return {
+		data: data ? data.data : undefined,
 		isLoading: ! error && ! data,
 		isError: error,
+		response: data ? data.response : undefined,
 	};
 };
 
