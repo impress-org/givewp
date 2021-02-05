@@ -4,10 +4,10 @@ import Spinner from 'GiveComponents/Spinner';
 // Styles
 import styles from './style.module.scss';
 
-const LoadingOverlay = () => {
+const LoadingOverlay = ( { spinnerSize } ) => {
 	return (
 		<div className={ styles.overlay }>
-			<Spinner />
+			<Spinner size={ spinnerSize } />
 		</div>
 	);
 };
