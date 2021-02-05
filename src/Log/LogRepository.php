@@ -2,6 +2,7 @@
 
 namespace Give\Log;
 
+use InvalidArgumentException;
 use Give\Framework\Database\DB;
 
 /**
@@ -11,6 +12,8 @@ use Give\Framework\Database\DB;
  * @since 2.9.7
  */
 class LogRepository {
+
+	const SORTABLE_COLUMNS = [ 'id', 'category', 'source', 'log_type', 'date' ];
 
 	/**
 	 * @var string
@@ -74,12 +77,34 @@ class LogRepository {
 	/**
 	 * Get all logs
 	 *
+	 * @param  int|null  $limit Number of rows to return
+	 * @param  int|null  $offset Limit offset
+	 * @param  string|null  $sortBy  Column name
+	 * @param  string|null  $sortDirection  ASC|DESC
+	 *
 	 * @return LogModel[]
 	 */
-	public function getLogs() {
+	public function getLogs( $limit = null, $offset = null, $sortBy = null, $sortDirection = null ) {
 		$logs = [];
 
-		$result = DB::get_results( "SELECT * FROM {$this->log_table} ORDER BY id DESC" );
+		if ( $sortBy ) {
+			$column    = ( in_array( $sortBy, self::SORTABLE_COLUMNS, true ) ) ? $sortBy : 'id';
+			$direction = ( $sortDirection && strtoupper( $sortDirection ) === 'ASC' ) ? 'ASC' : 'DESC';
+
+			$query = "SELECT * FROM {$this->log_table} ORDER BY {$column} {$direction}";
+		} else {
+			$query = "SELECT * FROM {$this->log_table} ORDER BY id DESC";
+		}
+
+		// Limit and offset
+		if ( $limit ) {
+			$query .= sprintf( ' LIMIT %d', $limit );
+			if ( $offset > 1 ) {
+				$query .= sprintf( ' OFFSET %d', $offset );
+			}
+		}
+
+		$result = DB::get_results( $query );
 
 		if ( $result ) {
 			foreach ( $result as $log ) {
@@ -230,5 +255,37 @@ class LogRepository {
 		DB::query(
 			DB::prepare( "DELETE FROM {$this->log_table} WHERE id = %d", $logId )
 		);
+	}
+
+	public function getTotalCount() {
+		return DB::get_var( "SELECT count(id) FROM {$this->log_table}" );
+	}
+
+	/**
+	 * Get log count by column name containing value
+	 *
+	 * @param string $columnName
+	 * @param string $value
+	 *
+	 * @return string|null
+	 */
+	public function getLogCountBy( $columnName, $value ) {
+		if ( ! in_array( $columnName, self::SORTABLE_COLUMNS, true ) ) {
+			throw new InvalidArgumentException(
+				sprintf( 'Invalid column %s', $columnName )
+			);
+		}
+		return DB::get_var(
+			DB::prepare( "SELECT count(id) FROM {$this->log_table} WHERE {$columnName}=%s", $value )
+		);
+	}
+
+	/**
+	 * Get sortable columns
+	 *
+	 * @return string[]
+	 */
+	public function getSortableColumns() {
+		return self::SORTABLE_COLUMNS;
 	}
 }
