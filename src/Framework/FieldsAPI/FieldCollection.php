@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 
 class FieldCollection implements GroupNode {
 
+    use FieldCollection\InsertNode;
     use FieldCollection\MoveNode;
     use FieldCollection\RemoveNode;
     use FieldCollection\WalkNodes;
@@ -17,7 +18,7 @@ class FieldCollection implements GroupNode {
     /** @var Node[] */
     protected $nodes = [];
 
-    public function __construct( $name, array $nodes ) {
+    public function __construct( $name, array $nodes = [] ) {
         $this->name = $name;
         $this->nodes = $nodes;
     }
@@ -26,37 +27,8 @@ class FieldCollection implements GroupNode {
         return $this->name;
     }
 
-    public function insertAfter( $siblingName, Node $node ) {
-        $siblingIndex = $this->getNodeIndexByName( $siblingName );
-        if( false !== $siblingIndex ) {
-            $this->insertAtIndex(
-                $siblingIndex + 1,
-                $node
-            );
-        } else {
-            foreach( $this->nodes as $childNode ) {
-                if( $childNode instanceof GroupNode ) {
-                    $childNode->insertAfter( $siblingName, $node );
-                }
-            }
-        }
-        return $this;
-    }
-
-    public function insertBefore( $siblingName, Node $node ) {
-        $siblingIndex = $this->getNodeIndexByName( $siblingName );
-        if( false !== $siblingIndex ) {
-            $this->insertAtIndex(
-                $siblingIndex - 1,
-                $node
-            );
-        } else {
-            foreach( $this->nodes as $childNode ) {
-                if( $childNode instanceof GroupNode ) {
-                    $childNode->insertBefore( $siblingName, $node );
-                }
-            }
-        }
+    public function append( Node $node ) {
+        $this->insertAtIndex( $this->count(), $node );
         return $this;
     }
 
@@ -81,26 +53,17 @@ class FieldCollection implements GroupNode {
         return false;
     }
 
-    public function insertAtIndex( $index, $node ) {
-        array_splice( $this->nodes, $index, 0, [ $node ] );
-    }
-
     public function jsonserialize() {
         return array_map( function( $node ) {
             return $node->jsonserialize();
         }, $this->nodes );
     }
 
-    public function flatten() {
-        return array_reduce( $this->nodes, function( $carry, $node ) {
-            if( $node instanceof GroupNode ) {
-                return array_merge( $carry, $node->flatten() );
-            }
-            return array_merge( $carry, [ $node ] );
-        }, [] );
-    }
-
     public function getFields() {
         return $this->nodes;
+    }
+
+    public function count() {
+        return count( $this->getFields() );
     }
 }

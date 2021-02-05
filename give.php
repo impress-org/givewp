@@ -144,6 +144,7 @@ final class Give {
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
 		TestDataServiceProvider::class,
+		\Give\Framework\FieldsAPI\FormConsumer\ServiceProvider::class,
 	];
 
 	/**

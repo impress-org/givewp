@@ -18,10 +18,11 @@ trait FieldOptions {
 
     public function addOptions( $options ) {
         $this->options = array_merge( $this->options, $options );
+        return $this;
     }
 
     public function addOption( $key, $value ) {
-        array_push( $this->options, [ $key => $value ] );
+        return $this->addOptions( [ $key => $value ] );
     }
 
     public function getOptions() {
