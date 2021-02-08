@@ -49,7 +49,7 @@ class TabsRegister {
 	 * @return string
 	 */
 	public function getTab( $id ) {
-		if ( ! isset( $this->tabs[ $id ] ) ) {
+		if ( ! $this->hasTab( $id ) ) {
 			throw new \InvalidArgumentException( "No tab exists with the ID {$id}" );
 		}
 
@@ -81,7 +81,7 @@ class TabsRegister {
 
 		$tabId = $tabClass::id();
 
-		if ( isset( $this->tabs[ $tabId ] ) ) {
+		if ( $this->hasTab( $tabId ) ) {
 			throw new \InvalidArgumentException( 'A tab can only be added once. Make sure there are not id conflicts.' );
 		}
 
