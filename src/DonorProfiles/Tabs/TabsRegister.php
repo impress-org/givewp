@@ -50,10 +50,10 @@ class TabsRegister {
 	 */
 	public function getTab( $id ) {
 		if ( ! isset( $this->tabs[ $id ] ) ) {
-			throw new \InvalidArgumentException( "No migration exists with the ID {$id}" );
+			throw new \InvalidArgumentException( "No tab exists with the ID {$id}" );
 		}
 
-		return $this->migrations[ $id ];
+		return $this->tabs[ $id ];
 	}
 
 	/**
