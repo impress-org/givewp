@@ -47,12 +47,24 @@ class GetLogs extends Endpoint {
 					'args'                => [
 						'type'      => [
 							'validate_callback' => function( $param ) {
-								if ( 'all' === $param ) {
+								if ( empty( $param ) || ( 'all' === $param ) ) {
 									return true;
 								}
 								return LogType::isValid( $param );
 							},
 							'default'           => 'all',
+						],
+						'category'  => [
+							'validate_callback' => function( $param ) {
+								return is_string( $param );
+							},
+							'default'           => '',
+						],
+						'source'    => [
+							'validate_callback' => function( $param ) {
+								return is_string( $param );
+							},
+							'default'           => '',
 						],
 						'sort'      => [
 							'validate_callback' => function( $param ) {
@@ -92,6 +104,14 @@ class GetLogs extends Endpoint {
 					'type'        => 'string',
 					'description' => esc_html__( 'Log type', 'give' ),
 				],
+				'category'  => [
+					'type'        => 'string',
+					'description' => esc_html__( 'Log category', 'give' ),
+				],
+				'source'    => [
+					'type'        => 'string',
+					'description' => esc_html__( 'Log source', 'give' ),
+				],
 				'direction' => [
 					'type'        => 'string',
 					'description' => esc_html__( 'Sort direction', 'give' ),
@@ -114,25 +134,17 @@ class GetLogs extends Endpoint {
 
 		$type      = $request->get_param( 'type' );
 		$category  = $request->get_param( 'category' );
+		$source    = $request->get_param( 'source' );
 		$page      = $request->get_param( 'page' );
 		$sortBy    = $request->get_param( 'sort' );
 		$direction = $request->get_param( 'direction' );
 
-		// By type
-		if ( 'all' !== $type ) {
-			$logs  = $this->logRepository->getLogsByType( $type );
-			$total = $this->logRepository->getLogCountBy( 'log_type', $type );
-		}
-		// By category
-		elseif ( ! empty( $category ) ) {
-			$logs  = $this->logRepository->getLogsByCategory( $category );
-			$total = $this->logRepository->getLogCountBy( 'category', $category );
-		}
-		// Get all
-		else {
-			$logs  = $this->logRepository->getLogs( 10, ( $page * 10 ), $sortBy, $direction );
-			$total = $this->logRepository->getTotalCount();
-		}
+		// Pagination
+		$perPage = 10;
+		$offset  = $page > 1 ? $page * $perPage : 0;
+
+		$logs  = $this->logRepository->getLogs( $type, $category, $source, $perPage, $offset, $sortBy, $direction );
+		$total = $this->logRepository->getLogCountForColumns( $type, $category, $source );
 
 		foreach ( $logs as $log ) {
 			$data[] = [
@@ -142,15 +154,19 @@ class GetLogs extends Endpoint {
 				'source'   => $log->getSource(),
 				'message'  => $log->getMessage(),
 				'context'  => $log->getContext(),
-				'date'     => date( 'd.m.Y' ) . ' - ' . $log->getId(), // todo: log model doesnt have date property
+				'date'     => $log->getDate(),
 			];
 		}
 
 		return new WP_REST_Response(
 			[
-				'status' => true,
-				'data'   => $data,
-				'total'  => floor( $total / 10 ),
+				'status'     => true,
+				'data'       => $data,
+				'total'      => floor( $total / $perPage ),
+				'categories' => $this->logRepository->getCategories(),
+				'sources'    => $this->logRepository->getSources(),
+				'statuses'   => LogType::getAll(),
+				'type'       => $type,
 			]
 		);
 	}
