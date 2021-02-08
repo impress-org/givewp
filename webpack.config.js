@@ -78,12 +78,23 @@ const config = {
 			// Create RTL styles.
 			{
 				test: /\.css$/,
+				exclude: /\.module\.css$/,
 				use: [
 					//MiniCSSExtractPlugin.loader,
-					{ loader: 'style-loader' },
+					'style-loader',
+					'css-loader',
+				],
+			},
+
+			{
+				test: /\.module\.css$/,
+				use: [
+					//MiniCSSExtractPlugin.loader,
+					'style-loader',
 					{
 						loader: 'css-loader',
 						options: {
+							sourceMap: true,
 							modules: true,
 							localIdentName: '[local]__[hash:base64:5]',
 						},
@@ -94,11 +105,29 @@ const config = {
 			// SASS to CSS.
 			{
 				test: /\.scss$/,
+				exclude: /\.module\.scss$/,
 				use: [
-					//MiniCSSExtractPlugin.loader,
+					MiniCSSExtractPlugin.loader,
 					{
-						loader: 'style-loader',
+						loader: 'css-loader',
+						options: {
+							sourceMap: true,
+						},
 					},
+					{
+						loader: 'sass-loader',
+						options: {
+							sourceMap: true,
+							outputStyle: ( inProduction ? 'compressed' : 'expanded' ),
+						},
+					} ],
+			},
+
+			// SASS to CSS.
+			{
+				test: /\.module\.scss$/,
+				use: [
+					'style-loader',
 					{
 						loader: 'css-loader',
 						options: {
