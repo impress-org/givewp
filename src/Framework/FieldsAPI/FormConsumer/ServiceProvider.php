@@ -19,15 +19,6 @@ class ServiceProvider implements ServiceProviderInterface {
 	 * @inheritDoc
 	 */
 	public function boot() {
-
-		add_action( 'init', function() {
-			$fieldCollection = new FieldCollection( 'root' );
-			do_action( 'give_fields_payment_mode_before_gateways', $fieldCollection );
-			add_action( 'give_payment_mode_before_gateways', function( $formID ) use ( $fieldCollection ) {
-				foreach( $fieldCollection->getFields() as $field ) {
-					FieldView::render( $field );
-				}
-			});
-		});
+		add_action( 'init', new FormFieldMediator() );
 	}
 }
