@@ -203,8 +203,8 @@ class Donations {
 			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
 			'method'   => $gateways[ $payment->gateway ]['checkout_label'],
 			'status'   => $this->getFormattedStatus( $payment->status ),
-			'date'     => date( 'F j, Y', strtotime( $payment->date ) ),
-			'time'     => date( 'g:i a', strtotime( $payment->date ) ),
+			'date'     => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
+			'time'     => date_i18n( 'g:i a', strtotime( $payment->date ) ),
 			'mode'     => $payment->get_meta( '_give_payment_mode' ),
 		];
 	}
