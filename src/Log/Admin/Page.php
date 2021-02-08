@@ -31,6 +31,6 @@ class Page {
 	 * Render app container
 	 */
 	public function renderContainer() {
-		echo '<div id="logs-list-table-app"></div>';
+		echo '<h1 class="wp-heading-inline">Logs</h1><div id="logs-list-table-app" style="padding-top: 50px; padding-right: 20px"></div>';
 	}
 }
