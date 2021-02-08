@@ -22,11 +22,12 @@ class LogFactory {
 	 * @param  string|null  $migrationId
 	 * @param  array  $context
 	 * @param  int|null  $logId
+	 * @param  string|null  $date
 	 *
 	 * @return LogModel
 	 */
-	public static function make( $type, $message, $category, $source, $migrationId = null, $context = [], $logId = null ) {
-		return new LogModel( $type, $message, $category, $source, $migrationId, $context, $logId );
+	public static function make( $type, $message, $category, $source, $migrationId = null, $context = [], $logId = null, $date = null ) {
+		return new LogModel( $type, $message, $category, $source, $migrationId, $context, $logId, $date );
 	}
 
 	/**
@@ -47,7 +48,8 @@ class LogFactory {
 			$data['source'],
 			$data['migration_id'],
 			$data['context'],
-			$data['id']
+			$data['id'],
+			$data['date']
 		);
 	}
 
@@ -65,6 +67,7 @@ class LogFactory {
 			'migration_id' => null,
 			'context'      => [],
 			'id'           => null,
+			'date'         => null,
 		];
 	}
 }
