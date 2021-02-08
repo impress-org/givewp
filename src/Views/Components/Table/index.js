@@ -119,7 +119,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 	return (
 		<>
 			{ isLoading && (
-				<LoadingOverlay spinnerSize="medium" />
+				<LoadingOverlay spinnerSize="small" />
 			) }
 			{ title && ( <div className={ styles.title }>
 				{ title }
