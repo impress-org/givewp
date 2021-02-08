@@ -36,6 +36,9 @@ class FormFieldMediator {
         'purchase_form_bottom',
     ];
 
+    /**
+     * The entrypoint for setting up template hooks on `init`.
+     */
     public function __invoke() {
         foreach( self::TEMPLATE_HOOKS as $hook ) {
             $this->setupTemplateHook( $hook );
