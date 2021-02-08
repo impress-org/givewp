@@ -2,9 +2,8 @@
 
 namespace Give\Framework\FieldsAPI\FormConsumer;
 
-use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Helpers\Hooks;
-use Give\Framework\FieldsAPI\FieldCollection;
+use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface {
 
