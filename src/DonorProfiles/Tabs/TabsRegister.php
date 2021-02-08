@@ -110,7 +110,7 @@ class TabsRegister {
 	}
 
 	public function enqueueTabAssets() {
-		foreach ( $this->tabs as $tabClass ) {
+		foreach ( give()->donorProfileTabs->tabs as $tabClass ) {
 			( new $tabClass )->enqueueAssets();
 		}
 	}
