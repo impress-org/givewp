@@ -9,8 +9,11 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 	const [ state, setState ] = useState( {} );
 	const [ cachedData, setCachedData ] = useState( [] );
 
-	// Cache data so we can show that under overlay while new data is fetching
-	if ( data.length && data !== cachedData ) {
+	// Clear cache if data is empty
+	if ( ! isLoading && ! data.length && cachedData.length ) {
+		setCachedData( [] );
+	} else if ( data.length && data !== cachedData ) {
+		// Cache data so we can show that under overlay while new data is fetching
 		setCachedData( data );
 	}
 
