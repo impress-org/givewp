@@ -15,7 +15,7 @@ class Profile {
 	protected $donor;
 	protected $id;
 
-	public function __construct( int $donorId ) {
+	public function __construct( $donorId ) {
 		$donorFactory = new DonorFactory;
 		$this->donor  = $donorFactory->make( $donorId );
 	}
