@@ -27,7 +27,7 @@ const DonationRow = ( { donation } ) => {
 				</div>
 				{ payment.mode !== 'live' && (
 					<div className="give-donor-profile-table__donation-test-tag">
-						{ __( 'Test Donation', 'givewp' ) }
+						{ __( 'Test Donation', 'give' ) }
 					</div>
 				) }
 			</div>
