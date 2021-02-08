@@ -72,7 +72,7 @@ class Profile {
 			'initials'          => $this->donor->get_donor_initals(),
 			'titlePrefix'       => $this->getTitlePrefix(),
 			'addresses'         => $this->donor->address,
-			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', false )[0] !== '0' ? 'private' : 'public',
+			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', true ) !== '0' ? 'private' : 'public',
 		];
 	}
 
