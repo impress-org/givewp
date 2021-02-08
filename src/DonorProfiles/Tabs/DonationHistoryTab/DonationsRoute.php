@@ -28,7 +28,12 @@ class DonationsRoute extends RouteAbstract {
 	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-		return $this->getData();
+
+		$repository = new DonationsRepository();
+		$donorId    = get_current_user_id();
+
+		return $this->getData( $repository, $donorId );
+
 	}
 
 	/**
@@ -36,11 +41,7 @@ class DonationsRoute extends RouteAbstract {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function getData() {
-
-		$repository = new DonationsRepository();
-		$donorId    = get_current_user_id();
-
+	protected function getData( DonationsRepository $repository, $donorId ) {
 		return [
 			'donations' => $repository->getDonations( $donorId ),
 			'count'     => $repository->getDonationCount( $donorId ),
