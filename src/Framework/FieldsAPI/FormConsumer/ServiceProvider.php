@@ -29,7 +29,5 @@ class ServiceProvider implements ServiceProviderInterface {
 				}
 			});
 		});
-
-		// include plugin_dir_path( __FILE__ ) . 'sandbox.php';
 	}
 }
