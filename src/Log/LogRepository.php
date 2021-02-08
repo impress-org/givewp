@@ -77,23 +77,40 @@ class LogRepository {
 	/**
 	 * Get all logs
 	 *
-	 * @param  int|null  $limit Number of rows to return
-	 * @param  int|null  $offset Limit offset
+	 * @param  string|null  $type
+	 * @param  string|null  $category
+	 * @param  string|null  $source
+	 * @param  int|null  $limit  Number of rows to return
+	 * @param  int|null  $offset  Limit offset
 	 * @param  string|null  $sortBy  Column name
 	 * @param  string|null  $sortDirection  ASC|DESC
 	 *
 	 * @return LogModel[]
 	 */
-	public function getLogs( $limit = null, $offset = null, $sortBy = null, $sortDirection = null ) {
+	public function getLogs( $type = null, $category = null, $source = null, $limit = null, $offset = null, $sortBy = null, $sortDirection = null ) {
 		$logs = [];
+
+		$query = "SELECT * FROM {$this->log_table} WHERE 1=1";
+
+		if ( $type ) {
+			$query .= sprintf( ' AND log_type = "%s"', esc_sql( $type ) );
+		}
+
+		if ( $category ) {
+			$query .= sprintf( ' AND category = "%s"', esc_sql( $category ) );
+		}
+
+		if ( $source ) {
+			$query .= sprintf( ' AND source = "%s"', esc_sql( $source ) );
+		}
 
 		if ( $sortBy ) {
 			$column    = ( in_array( $sortBy, self::SORTABLE_COLUMNS, true ) ) ? $sortBy : 'id';
 			$direction = ( $sortDirection && strtoupper( $sortDirection ) === 'ASC' ) ? 'ASC' : 'DESC';
 
-			$query = "SELECT * FROM {$this->log_table} ORDER BY {$column} {$direction}";
+			$query .= " ORDER BY `{$column}` {$direction}";
 		} else {
-			$query = "SELECT * FROM {$this->log_table} ORDER BY id DESC";
+			$query .= ' ORDER BY id DESC';
 		}
 
 		// Limit and offset
@@ -117,7 +134,8 @@ class LogRepository {
 					$log->source,
 					$log->migration_id,
 					$data['context'],
-					$log->id
+					$log->id,
+					$log->date
 				);
 			}
 		}
@@ -147,7 +165,8 @@ class LogRepository {
 				$log->source,
 				$log->migration_id,
 				$data['context'],
-				$log->id
+				$log->id,
+				$log->date
 			);
 		}
 
@@ -165,7 +184,7 @@ class LogRepository {
 		$logs = [];
 
 		$result = DB::get_results(
-			DB::prepare( "SELECT * FROM {$this->log_table} WHERE type = %s", $type )
+			DB::prepare( "SELECT * FROM {$this->log_table} WHERE log_type = %s", $type )
 		);
 
 		if ( $result ) {
@@ -179,7 +198,8 @@ class LogRepository {
 					$log->source,
 					$log->migration_id,
 					$data['context'],
-					$log->id
+					$log->id,
+					$log->date
 				);
 			}
 		}
@@ -212,7 +232,8 @@ class LogRepository {
 					$log->source,
 					$log->migration_id,
 					$data['context'],
-					$log->id
+					$log->id,
+					$log->date
 				);
 			}
 		}
@@ -231,11 +252,29 @@ class LogRepository {
 
 		if ( $result ) {
 			foreach ( $result as $category ) {
-				$category[] = $category->category;
+				$categories[] = $category->category;
 			}
 		}
 
 		return $categories;
+	}
+
+	/**
+	 * Get logs sources
+	 *
+	 * @return array
+	 */
+	public function getSources() {
+		$sources = [];
+		$result  = DB::get_results( "SELECT DISTINCT source FROM {$this->log_table}" );
+
+		if ( $result ) {
+			foreach ( $result as $source ) {
+				$sources[] = $source->source;
+			}
+		}
+
+		return $sources;
 	}
 
 
@@ -278,6 +317,34 @@ class LogRepository {
 		return DB::get_var(
 			DB::prepare( "SELECT count(id) FROM {$this->log_table} WHERE {$columnName}=%s", $value )
 		);
+	}
+
+
+	/**
+	 * Get log count by columns values
+	 *
+	 * @param  string|null  $type
+	 * @param  string|null  $category
+	 * @param  string|null  $source
+	 *
+	 * @return int|null
+	 */
+	public function getLogCountForColumns( $type = null, $category = null, $source = null ) {
+		$query = "SELECT count(id) FROM {$this->log_table} WHERE 1=1";
+
+		if ( $type ) {
+			$query .= sprintf( ' AND log_type = "%s"', esc_sql( $type ) );
+		}
+
+		if ( $category ) {
+			$query .= sprintf( ' AND category = "%s"', esc_sql( $category ) );
+		}
+
+		if ( $source ) {
+			$query .= sprintf( ' AND source = "%s"', esc_sql( $source ) );
+		}
+
+		return DB::get_var( $query );
 	}
 
 	/**
