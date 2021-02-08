@@ -220,13 +220,13 @@ class Donations {
 		$statusMap = [
 			'publish' => [
 				'color' => '#7AD03A',
-				'label' => __( 'Complete', 'give' ),
+				'label' => esc_html__( 'Complete', 'give' ),
 			],
 		];
 
 		return $statusMap[ $status ] ? $statusMap[ $status ] : [
 			'color' => '#FFBA00',
-			'label' => 'Unknown',
+			'label' => esc_html__( 'Unknown', 'give' ),
 		];
 	}
 
