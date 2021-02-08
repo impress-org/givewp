@@ -27,7 +27,7 @@ class Log {
 	 * @param  array  $args
 	 */
 	public static function __callStatic( $type, $args ) {
-		$data = [];
+		$data['type'] = $type;
 
 		list ( $message, $context ) = array_pad( $args, 2, null );
 
