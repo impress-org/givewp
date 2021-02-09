@@ -86,7 +86,7 @@ class PayPalCommerce implements PaymentGateway {
 		/**
 		 * filter the settings
 		 *
-		 * @since 2.10.0
+		 * @since 2.9.6
 		 */
 		return apply_filters( 'give_get_settings_paypal_commerce', $settings );
 	}

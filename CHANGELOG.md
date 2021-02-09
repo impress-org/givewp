@@ -7,9 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.7 - 2021-02-09
+
+### Fixed
+
+-   Create account checkbox is hidden when guest registration is disabled (#5557)
+-   Using the CLI commands is not producing errors anymore (#5559)
+-   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
+-   Setup Page gateway links now render styles correctly (#5576)
+
 ## 2.9.6 - 2021-01-13
 
 ### New
+
 -   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
 -   Sample onboarding tests are now implemented (#5543)
@@ -24,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Deprecated e2e tests have been removed, and replaced with Cypress tests (#5533)
 -   New `test:e2e` package script introduced (#5533)
 -   Decouple test:e2e command from wp-env #5545
+-   Unit test structure is refactored (#5554)
 
 ### Fixed
 
