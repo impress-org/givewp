@@ -14,7 +14,7 @@ const SubscriptionRow = ( { subscription } ) => {
 			</div>
 			<div className="give-donor-profile-table__column">
 				<div className="give-donor-profile-table__donation-status">
-					{ payment.status }
+					{ payment.status.label }
 				</div>
 			</div>
 			<div className="give-donor-profile-table__column">
@@ -24,18 +24,18 @@ const SubscriptionRow = ( { subscription } ) => {
 				{ payment.progress }
 			</div>
 			<div className="give-donor-profile-table__pill">
-				{ gateway.can_update && (
-					<div className="give-donor-profile-table__donation-receipt">
-						<Link to={ `/recurring-donations/update-method/${ id }` }>
-							{ __( 'Update Payment Method', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
-						</Link>
-					</div>
-				) }
 				<div className="give-donor-profile-table__donation-receipt">
 					<Link to={ `/recurring-donations/receipt/${ id }` }>
 						{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
 					</Link>
 				</div>
+				{ gateway.can_update && (
+					<div className="give-donor-profile-table__donation-receipt">
+						<Link to={ `/recurring-donations/manage/${ id }` }>
+							{ __( 'Manage Subscription', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
+						</Link>
+					</div>
+				) }
 				{ gateway.can_cancel && (
 					<div className="give-donor-profile-table__donation-receipt">
 						<Link to={ `/recurring-donations/cancel/${ id }` }>

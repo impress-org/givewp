@@ -60,10 +60,10 @@ const SubscriptionReceipt = ( { subscription } ) => {
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
 					<div className="give-donor-profile-donation-receipt__detail">
-						{ __( 'Payment Status:', 'give' ) }
+						{ __( 'Subscription Status:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.status }
+						{ payment.status.label }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">

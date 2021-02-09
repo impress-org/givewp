@@ -4,10 +4,16 @@ import { Fragment } from 'react';
 const { __ } = wp.i18n;
 
 import Heading from '../../components/heading';
+import Divider from '../../components/divider';
 import SubscriptionReceipt from '../../components/subscription-receipt';
+import SubscriptionManager from '../../components/subscription-manager';
 import SubscriptionTable from '../../components/subscription-table';
 
 import { useSelector } from './hooks';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import './style.scss';
 
 const Content = () => {
 	const subscriptions = useSelector( ( state ) => state.subscriptions );
@@ -41,7 +47,7 @@ const Content = () => {
 					</Fragment>
 				);
 			}
-			case 'update-method' : {
+			case 'manage' : {
 				return querying ? (
 					<Fragment>
 						<Heading>
@@ -54,12 +60,16 @@ const Content = () => {
 				) : (
 					<Fragment>
 						<Heading>
-							{ __( 'Update Payment Method', 'give' ) } #{ id }
+							{ __( 'Manage Subscription', 'give' ) } #{ id }
 						</Heading>
-						<SubscriptionReceipt subscription={ subscriptions[ id ] } />
-						<Link to="/recurring-donations">
-							{ __( 'Back to Recurring Donations', 'give' ) }
-						</Link>
+						<Divider />
+						<SubscriptionManager subscription={ subscriptions[ id ] } />
+						<Divider />
+						<div className="give-donor-profile__recurring-donations-link">
+							<Link to="/recurring-donations">
+								<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Recurring Donations', 'give' ) }
+							</Link>
+						</div>
 					</Fragment>
 				);
 			}
