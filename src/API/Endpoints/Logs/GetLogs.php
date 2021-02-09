@@ -130,21 +130,9 @@ class GetLogs extends Endpoint {
 	 * @return WP_REST_Response
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-		$data = [];
-
-		$type      = $request->get_param( 'type' );
-		$category  = $request->get_param( 'category' );
-		$source    = $request->get_param( 'source' );
-		$page      = $request->get_param( 'page' );
-		$sortBy    = $request->get_param( 'sort' );
-		$direction = $request->get_param( 'direction' );
-
-		// Pagination
-		$perPage = 10;
-		$offset  = $page > 1 ? $page * $perPage : 0;
-
-		$logs  = $this->logRepository->getLogs( $type, $category, $source, $perPage, $offset, $sortBy, $direction );
-		$total = $this->logRepository->getLogCountForColumns( $type, $category, $source );
+		$data  = [];
+		$logs  = $this->logRepository->getLogsForRequest( $request );
+		$total = $this->logRepository->getLogCountForRequest( $request );
 
 		foreach ( $logs as $log ) {
 			$data[] = [
@@ -162,11 +150,10 @@ class GetLogs extends Endpoint {
 			[
 				'status'     => true,
 				'data'       => $data,
-				'total'      => floor( $total / $perPage ),
+				'pages'      => floor( $total / $this->logRepository->getLogsPerPageLimit() ),
 				'categories' => $this->logRepository->getCategories(),
 				'sources'    => $this->logRepository->getSources(),
 				'statuses'   => LogType::getAll(),
-				'type'       => $type,
 			]
 		);
 	}
