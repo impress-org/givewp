@@ -9,6 +9,10 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 	const [ state, setState ] = useState( {} );
 	const [ cachedData, setCachedData ] = useState( [] );
 
+	Table.resetSortState = () => {
+		setState( {} );
+	};
+
 	// Clear cache if data is empty
 	if ( ! isLoading && ! data.length && cachedData.length ) {
 		setCachedData( [] );
