@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const PaymentMethodInputs = ( { gateway } ) => {
+const PaymentMethodInputs = ( { gateway, onChange, value } ) => {
 	const [ stripePromise, setStripePromise ] = useState( null );
 
 	useEffect( () => {
@@ -22,7 +22,7 @@ const PaymentMethodInputs = ( { gateway } ) => {
 	switch ( gateway ) {
 		case 'stripe': {
 			return <Elements stripe={ stripePromise }>
-				<StripeInputs />
+				<StripeInputs onChange={ ( val ) => onChange( val ) } value={ value } />
 			</Elements>; }
 		case 'paypal': {
 			return <PaypalInputs />;

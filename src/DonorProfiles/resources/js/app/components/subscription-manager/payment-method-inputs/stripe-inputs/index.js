@@ -2,12 +2,12 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useState, useEffect } from 'react';
 import './style.scss';
 
-const StripeInputs = ( { onChange } ) => {
+const StripeInputs = ( { onChange, value } ) => {
 	const stripe = useStripe();
 	const elements = useElements();
 
 	const [ focused, setFocused ] = useState( false );
-	const [ paymentMethodId, setPaymentMethodId ] = useState( null );
+	const [ paymentMethodId, setPaymentMethodId ] = useState( value );
 
 	useEffect( () => {
 		if ( paymentMethodId ) {
