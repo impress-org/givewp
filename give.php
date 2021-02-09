@@ -52,6 +52,7 @@ use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
+use \Give\FieldsAPI\ServiceProvider as FieldsAPIServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -144,7 +145,7 @@ final class Give {
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
 		TestDataServiceProvider::class,
-		\Give\Framework\FieldsAPI\FormConsumer\ServiceProvider::class,
+		FieldsAPIServiceProvider::class,
 	];
 
 	/**

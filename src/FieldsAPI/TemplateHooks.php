@@ -1,11 +1,8 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormConsumer;
+namespace Give\FieldsAPI;
 
-use Give\Framework\FieldsAPI\FieldCollection;
-
-class FormFieldMediator {
-
+class TemplateHooks {
     /**
      * A "full-ish" list of available actions.
      * @note The `give_` prefix has been removed for interoperability.
@@ -13,7 +10,7 @@ class FormFieldMediator {
      * @link https://givewp.com/documentation/developers/how-to-create-custom-form-fields/
      * @link https://givewp.com/add-content-donation-forms/
      */
-    const TEMPLATE_HOOKS = [
+    const TEMPLATE_HOOKS =  [
         'before_donation_levels',
         'after_donation_amount',
         'after_donation_levels',
@@ -36,25 +33,12 @@ class FormFieldMediator {
         'purchase_form_bottom',
     ];
 
-    /**
-     * The entrypoint for setting up template hooks on `init`.
-     */
-    public function __invoke() {
-        foreach( self::TEMPLATE_HOOKS as $hook ) {
-            $this->setupTemplateHook( $hook );
-        }
+    public function walk( callable $callback ) {
+        $hooks = $this->getHooks();
+        array_walk( $hooks, $callback );
     }
 
-    /**
-     * @param string $hook A template hook for custom field output.
-     */
-    public function setupTemplateHook( $hook ) {
-        $fieldCollection = new FieldCollection( 'root' );
-        do_action( "give_fields_$hook", $fieldCollection );
-        add_action( "give_$hook", function( $formID ) use ( $fieldCollection ) {
-            foreach( $fieldCollection->getFields() as $field ) {
-                FieldView::render( $field );
-            }
-        });
+    public function getHooks() {
+        return self::TEMPLATE_HOOKS;
     }
 }
