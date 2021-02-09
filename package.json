@@ -89,6 +89,8 @@
         "@fortawesome/free-solid-svg-icons": "^5.15.1",
         "@fortawesome/react-fontawesome": "^0.1.12",
         "@paypal/paypal-js": "^1.0.2",
+        "@stripe/react-stripe-js": "^1.2.2",
+        "@stripe/stripe-js": "^1.12.1",
         "accounting": "latest",
         "chart.js": "^2.9.3",
         "chartjs-plugin-crosshair": "^1.1.4",
