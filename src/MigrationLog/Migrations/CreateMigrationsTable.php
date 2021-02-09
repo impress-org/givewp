@@ -12,7 +12,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * Class CreateMigrationsTable
  * @package Give\MigrationLog\Migrations
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class CreateMigrationsTable extends Migration {
 	/**

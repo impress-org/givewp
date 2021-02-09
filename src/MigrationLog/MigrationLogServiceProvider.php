@@ -10,7 +10,7 @@ use Give\MigrationLog\Migrations\CreateMigrationsTable;
  * Class MigrationLogServiceProvider
  * @package Give\MigrationLog
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class MigrationLogServiceProvider implements ServiceProvider {
 	/**

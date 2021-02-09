@@ -6,7 +6,7 @@ namespace Give\MigrationLog;
  * Class MigrationLogStatus
  * @package Give\MigrationLog
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class MigrationLogStatus {
 	const SUCCESS = 'success';
