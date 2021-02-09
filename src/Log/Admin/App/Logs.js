@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Label, LoadingNotice, Pagination, Select, Table, Button, Input } from 'GiveComponents';
+import { Card, Label, LoadingNotice, Pagination, Select, Table, Button, PeriodSelector } from 'GiveComponents';
 import { useLogFetcher } from './api';
 
 import styles from './styles.module.scss';
@@ -15,9 +15,9 @@ const Logs = () => {
 		currentCategory: '',
 		sortColumn: '',
 		sortDirection: '',
-		startDate: '',
-		endDate: '',
-		total: 0,
+		startDate: null,
+		endDate: null,
+		pages: 0,
 		statuses: [],
 		sources: [],
 		categories: [],
@@ -33,7 +33,7 @@ const Logs = () => {
 		if ( data ) {
 			const queryString = new URLSearchParams( data );
 			// pretty url?
-			const separator = window.wpApiSettings.root.indexOf( '?' ) ? '&' : '?';
+			const separator = window.GiveLogs.apiRoot.indexOf( '?' ) ? '&' : '?';
 
 			return endpoint + separator + queryString.toString();
 		}
@@ -90,22 +90,12 @@ const Logs = () => {
 		} );
 	};
 
-	const setStartDate = ( e ) => {
-		const date = e.target.value;
+	const setDates = ( startDate, endDate ) => {
 		setState( ( previousState ) => {
 			return {
 				...previousState,
-				startDate: date,
-			};
-		} );
-	};
-
-	const setEndDate = ( e ) => {
-		const date = e.target.value;
-		setState( ( previousState ) => {
-			return {
-				...previousState,
-				endDate: date,
+				startDate,
+				endDate,
 			};
 		} );
 	};
@@ -159,6 +149,9 @@ const Logs = () => {
 	};
 
 	const resetQueryParameters = () => {
+		// Reset table sort state
+		Table.resetSortState();
+
 		setState( ( previousState ) => {
 			return {
 				...previousState,
@@ -168,8 +161,8 @@ const Logs = () => {
 				currentCategory: '',
 				sortColumn: '',
 				sortDirection: '',
-				startDate: '',
-				endDate: '',
+				startDate: null,
+				endDate: null,
 			};
 		} );
 	};
@@ -181,8 +174,8 @@ const Logs = () => {
 		type: state.currentStatus,
 		source: state.currentSource,
 		category: state.currentCategory,
-		start: state.startDate,
-		end: state.endDate,
+		start: state.startDate ? state.startDate.format( 'YYYY-MM-DD' ) : '',
+		end: state.endDate ? state.endDate.format( 'YYYY-MM-DD' ) : '',
 	};
 
 	const { data, isLoading } = useLogFetcher( getEndpoint( '/get-logs', parameters ), {
@@ -191,11 +184,11 @@ const Logs = () => {
 				return {
 					...previousState,
 					initialLoad: true,
-					total: response.total,
+					pages: response.pages,
 					statuses: response.statuses,
 					categories: response.categories,
 					sources: response.sources,
-					currentPage: state.currentPage > response.total ? 1 : state.currentPage,
+					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
 				};
 			} );
 		},
@@ -223,6 +216,8 @@ const Logs = () => {
 		{
 			key: 'date',
 			label: __( 'Date/Time', 'give' ),
+			sort: true,
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'date', direction ),
 		},
 		{
 			key: 'message',
@@ -278,20 +273,12 @@ const Logs = () => {
 					className={ styles.headerItem }
 				/>
 
-				<Input
-					type="date"
-					placeholder={ __( 'Start date', 'give' ) }
-					onChange={ setStartDate }
-					value={ state.startDate }
-					className={ styles.headerItem }
-				/>
-
-				<Input
-					type="date"
-					placeholder={ __( 'End date', 'give' ) }
-					onChange={ setEndDate }
-					value={ state.endDate }
-					className={ styles.headerItem }
+				<PeriodSelector
+					period={ {
+						startDate: state.startDate,
+						endDate: state.endDate,
+					} }
+					setDates={ setDates }
 				/>
 
 				<Button onClick={ resetQueryParameters }>
@@ -302,7 +289,7 @@ const Logs = () => {
 					<Pagination
 						currentPage={ state.currentPage }
 						setPage={ setCurrentPage }
-						totalPages={ state.total }
+						totalPages={ state.pages }
 						disabled={ isLoading }
 					/>
 				</div>
@@ -321,7 +308,7 @@ const Logs = () => {
 			<Pagination
 				currentPage={ state.currentPage }
 				setPage={ setCurrentPage }
-				totalPages={ state.total }
+				totalPages={ state.pages }
 				disabled={ isLoading }
 			/>
 		</>
