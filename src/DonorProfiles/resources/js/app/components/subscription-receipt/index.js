@@ -71,7 +71,7 @@ const SubscriptionReceipt = ( { subscription } ) => {
 						{ __( 'Payment Amount:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.amount }
+						{ payment.amount.formatted }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">

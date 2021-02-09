@@ -9,7 +9,7 @@ const SubscriptionRow = ( { subscription } ) => {
 	return (
 		<div className="give-donor-profile-table__row">
 			<div className="give-donor-profile-table__column">
-				<div className="give-donor-profile-table__donation-amount">{ payment.amount } / { payment.frequency }</div>
+				<div className="give-donor-profile-table__donation-amount">{ payment.amount.formatted } / { payment.frequency }</div>
 				{ form.title }
 			</div>
 			<div className="give-donor-profile-table__column">
