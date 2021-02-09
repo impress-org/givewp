@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.7 - 2021-02-09
+
 ### Fixed
 
 -   Create account checkbox is hidden when guest registration is disabled (#5557)
