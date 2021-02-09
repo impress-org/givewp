@@ -2,10 +2,10 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 const API = axios.create( {
-	baseURL: window.wpApiSettings.root + 'give-api/v2/logs',
+	baseURL: window.GiveLogs.apiRoot,
 	headers: {
 		'Content-Type': 'application/json',
-		'X-WP-Nonce': window.wpApiSettings.nonce,
+		'X-WP-Nonce': window.GiveLogs.apiNonce,
 	},
 } );
 

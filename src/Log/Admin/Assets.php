@@ -2,6 +2,8 @@
 
 namespace Give\Log\Admin;
 
+use Give\Log\LogRepository;
+
 /**
  * Class Assets
  * @package Give\Log\UserInterface
@@ -19,6 +21,15 @@ class Assets {
 			[ 'wp-element', 'wp-i18n' ],
 			GIVE_VERSION,
 			true
+		);
+
+		wp_localize_script(
+			'give-admin-log-list-table-app',
+			'GiveLogs',
+			[
+				'apiRoot'  => esc_url_raw( rest_url( 'give-api/v2/logs' ) ),
+				'apiNonce' => wp_create_nonce( 'wp_rest' ),
+			]
 		);
 	}
 }
