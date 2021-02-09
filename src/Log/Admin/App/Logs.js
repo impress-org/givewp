@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Label, LoadingNotice, Pagination, Select, Table, Button, PeriodSelector } from 'GiveComponents';
+import { Card, Label, LoadingNotice, Pagination, Select, Table, Button, PeriodSelector, Modal } from 'GiveComponents';
 import { useLogFetcher } from './api';
 
 import styles from './styles.module.scss';
@@ -23,9 +23,26 @@ const Logs = () => {
 		categories: [],
 	} );
 
-	const openModal = ( logId ) => {
-		// eslint-disable-next-line no-console
-		console.log( logId );
+	const [ logModal, setLogModal ] = useState( {
+		visible: false,
+	} );
+
+	const openLogModal = ( log ) => {
+		setLogModal( {
+			visible: true,
+			id: log.id,
+			type: log.log_type,
+			category: log.category,
+			source: log.source,
+			description: log.description,
+			date: log.date,
+			message: log.message,
+			context: log.context,
+		} );
+	};
+
+	const closeLogModal = () => {
+		setLogModal( { visible: false } );
 	};
 
 	// GET endpoint with additional parameters
@@ -148,6 +165,29 @@ const Logs = () => {
 		return [ defaultSource, ...sources ];
 	};
 
+	const getLogModal = () => {
+		return (
+			<Modal visible={ logModal.visible } type={ logModal.type }>
+				<Modal.Title>
+					<Label type={ logModal.type } />
+
+					<strong style={ { marginLeft: 20 } }>
+						{ __( 'Log ID', 'give' ) }: { logModal.id }
+					</strong>
+
+					<Modal.CloseIcon onClick={ closeLogModal } />
+				</Modal.Title>
+
+				<Modal.Section title={ __( 'Description', 'give' ) } content={ logModal.message } />
+				<Modal.Section title={ __( 'Category', 'give' ) } content={ logModal.category } />
+				<Modal.Section title={ __( 'Source', 'give' ) } content={ logModal.source } />
+				<Modal.Section title={ __( 'Date & Time', 'give' ) } content={ logModal.date } />
+
+				<Modal.LogContext context={ logModal.context } />
+			</Modal>
+		);
+	};
+
 	const resetQueryParameters = () => {
 		// Reset table sort state
 		Table.resetSortState();
@@ -232,9 +272,9 @@ const Logs = () => {
 
 	const columnFilters = {
 		log_type: ( type ) => <Label type={ type } />,
-		details: ( value, row ) => {
+		details: ( value, log ) => {
 			return (
-				<Button onClick={ () => openModal( row.id ) } icon={ true }>
+				<Button onClick={ () => openLogModal( log ) } icon={ true }>
 					<span className="dashicons dashicons-visibility" />
 				</Button>
 			);
@@ -311,6 +351,8 @@ const Logs = () => {
 				totalPages={ state.pages }
 				disabled={ isLoading }
 			/>
+
+			{ logModal.visible && getLogModal() }
 		</>
 	);
 };
