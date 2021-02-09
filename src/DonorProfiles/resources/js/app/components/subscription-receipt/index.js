@@ -4,12 +4,12 @@ const { __ } = wp.i18n;
 
 import './style.scss';
 
-const DonationReceipt = ( { donation } ) => {
-	if ( donation === undefined ) {
+const SubscriptionReceipt = ( { subscription } ) => {
+	if ( subscription === undefined ) {
 		return null;
 	}
 
-	const { donor, payment } = donation;
+	const { donor, payment } = subscription;
 
 	return (
 		<Fragment>
@@ -94,4 +94,4 @@ const DonationReceipt = ( { donation } ) => {
 		</Fragment>
 	);
 };
-export default DonationReceipt;
+export default SubscriptionReceipt;
