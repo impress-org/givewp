@@ -18,11 +18,19 @@ class MigrationLogRepository {
 	private $migration_table;
 
 	/**
-	 * MigrationRepository constructor.
+	 * @var MigrationLogFactory
 	 */
-	public function __construct() {
+	private $migrationFactory;
+
+	/**
+	 * MigrationRepository constructor.
+	 *
+	 * @param  MigrationLogFactory  $migrationFactory
+	 */
+	public function __construct( MigrationLogFactory $migrationFactory ) {
 		global $wpdb;
-		$this->migration_table = "{$wpdb->prefix}give_migrations";
+		$this->migration_table  = "{$wpdb->prefix}give_migrations";
+		$this->migrationFactory = $migrationFactory;
 	}
 
 	/**
@@ -56,7 +64,8 @@ class MigrationLogRepository {
 
 		if ( $result ) {
 			foreach ( $result as $migration ) {
-				$migrations[] = MigrationLogFactory::make(
+
+				$migrations[] = $this->migrationFactory->make(
 					$migration->id,
 					$migration->status,
 					$migration->last_run
@@ -80,7 +89,7 @@ class MigrationLogRepository {
 		);
 
 		if ( $migration ) {
-			return MigrationLogFactory::make(
+			return $this->migrationFactory->make(
 				$migration->id,
 				$migration->status,
 				$migration->last_run
@@ -106,7 +115,7 @@ class MigrationLogRepository {
 
 		if ( $result ) {
 			foreach ( $result as $migration ) {
-				$migrations[] = MigrationLogFactory::make(
+				$migrations[] = $this->migrationFactory->make(
 					$migration->id,
 					$migration->status,
 					$migration->last_run

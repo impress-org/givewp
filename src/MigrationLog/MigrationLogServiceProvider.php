@@ -22,6 +22,7 @@ class MigrationLogServiceProvider implements ServiceProvider {
 		$wpdb->give_log = "{$wpdb->prefix}give_migration";
 
 		give()->singleton( MigrationLogRepository::class );
+		give()->singleton( MigrationLogFactory::class );
 	}
 
 	/**

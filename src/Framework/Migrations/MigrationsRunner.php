@@ -36,12 +36,21 @@ class MigrationsRunner {
 	private $migrationRegister;
 
 	/**
+	 * @since 2.10.0
+	 *
+	 * @var MigrationLogFactory
+	 */
+	private $migrationLogFactory;
+
+	/**
 	 *  MigrationsRunner constructor.
 	 *
-	 * @param MigrationsRegister $migrationRegister
+	 * @param  MigrationsRegister  $migrationRegister
+	 * @param  MigrationLogFactory  $migrationLogFactory
 	 */
-	public function __construct( MigrationsRegister $migrationRegister ) {
-		$this->migrationRegister = $migrationRegister;
+	public function __construct( MigrationsRegister $migrationRegister, MigrationLogFactory $migrationLogFactory ) {
+		$this->migrationRegister   = $migrationRegister;
+		$this->migrationLogFactory = $migrationLogFactory;
 
 		$this->completedMigrations = get_option( self::MIGRATION_OPTION, [] );
 	}
@@ -88,7 +97,7 @@ class MigrationsRunner {
 				$migration->run();
 
 				// Save migration status
-				$migrationLog = MigrationLogFactory::makeFromClass( $migrationClass );
+				$migrationLog = $this->migrationLogFactory->makeFromClass( $migrationClass );
 				$migrationLog->setStatus( MigrationLogStatus::SUCCESS )->save();
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );

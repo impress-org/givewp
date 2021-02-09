@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  */
 class MigrationLogFactory {
 
-	public static function make( $id, $status = '', $lastRun = null ) {
+	public function make( $id, $status = '', $lastRun = null ) {
 		return new MigrationLogModel( $id, $status, $lastRun );
 	}
 
@@ -24,7 +24,7 @@ class MigrationLogFactory {
 	 *
 	 * @return MigrationLogModel
 	 */
-	public static function makeFromClass( $migrationClass ) {
+	public function makeFromClass( $migrationClass ) {
 		if ( ! is_subclass_of( $migrationClass, Migration::class ) ) {
 			throw new InvalidArgumentException(
 				sprintf( 'Migration class %s must extend the %s class', $migrationClass, Migration::class )
