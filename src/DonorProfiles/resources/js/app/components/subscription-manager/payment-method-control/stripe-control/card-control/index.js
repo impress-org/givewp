@@ -2,7 +2,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useState, useEffect } from 'react';
 import './style.scss';
 
-const StripeInputs = ( { onChange, value } ) => {
+const CardControl = ( { onChange, value } ) => {
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -41,12 +41,9 @@ const StripeInputs = ( { onChange, value } ) => {
 	};
 
 	return (
-		<div className="give-donor-profile-stripe-inputs">
-			<label className="give-donor-profile-stripe-inputs__label">Payment Method</label>
-			<div className={ focused ? 'give-donor-profile-stripe-inputs__card give-donor-profile-stripe-inputs__card--focused' : 'give-donor-profile-stripe-inputs__card' }>
-				<CardElement onFocus={ () => setFocused( true ) } onBlur={ () => handleBlur() } />
-			</div>
+		<div className={ focused ? 'give-donor-profile-stripe-control give-donor-profile-stripe-control--focused' : 'give-donor-profile-stripe-control' }>
+			<CardElement onFocus={ () => setFocused( true ) } onBlur={ () => handleBlur() } />
 		</div>
 	);
 };
-export default StripeInputs;
+export default CardControl;

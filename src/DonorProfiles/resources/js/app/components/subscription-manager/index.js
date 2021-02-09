@@ -3,7 +3,7 @@ import Button from '../button';
 import { Fragment, useState } from 'react';
 
 import AmountInputs from './amount-inputs';
-import PaymentMethodInputs from './payment-method-inputs';
+import PaymentMethodInputs from './payment-method-control';
 
 const SubscriptionManager = ( { subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
