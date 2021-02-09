@@ -4,6 +4,8 @@ namespace Give\Log;
 
 use InvalidArgumentException;
 use Give\Framework\Database\DB;
+use WP_REST_Request;
+use DateTime;
 
 /**
  * Class LogRepository
@@ -14,6 +16,8 @@ use Give\Framework\Database\DB;
 class LogRepository {
 
 	const SORTABLE_COLUMNS = [ 'id', 'category', 'source', 'log_type', 'date' ];
+
+	const LOGS_PER_PAGE = 20;
 
 	/**
 	 * @var string
@@ -77,18 +81,53 @@ class LogRepository {
 	/**
 	 * Get all logs
 	 *
-	 * @param  string|null  $type
-	 * @param  string|null  $category
-	 * @param  string|null  $source
-	 * @param  int|null  $limit  Number of rows to return
-	 * @param  int|null  $offset  Limit offset
-	 * @param  string|null  $sortBy  Column name
-	 * @param  string|null  $sortDirection  ASC|DESC
+	 * @return LogModel[]
+	 */
+	public function getLogs() {
+		$logs   = [];
+		$result = DB::get_results( "SELECT * FROM {$this->log_table} ORDER BY id DESC" );
+
+		if ( $result ) {
+			foreach ( $result as $log ) {
+				$data = json_decode( $log->data, true );
+
+				$logs[] = LogFactory::make(
+					$log->log_type,
+					$data['message'],
+					$log->category,
+					$log->source,
+					$log->migration_id,
+					$data['context'],
+					$log->id,
+					$log->date
+				);
+			}
+		}
+
+		return $logs;
+	}
+
+	/**
+	 * Get all logs for request
+	 *
+	 * @param  WP_REST_Request  $request
 	 *
 	 * @return LogModel[]
 	 */
-	public function getLogs( $type = null, $category = null, $source = null, $limit = null, $offset = null, $sortBy = null, $sortDirection = null ) {
+	public function getLogsForRequest( WP_REST_Request $request ) {
 		$logs = [];
+
+		$type          = $request->get_param( 'type' );
+		$category      = $request->get_param( 'category' );
+		$source        = $request->get_param( 'source' );
+		$page          = $request->get_param( 'page' );
+		$sortBy        = $request->get_param( 'sort' );
+		$startDate     = $request->get_param( 'start' );
+		$endDate       = $request->get_param( 'end' );
+		$sortDirection = $request->get_param( 'direction' );
+
+		$perPage = 10;
+		$offset  = $page > 1 ? $page * $perPage : 0;
 
 		$query = "SELECT * FROM {$this->log_table} WHERE 1=1";
 
@@ -104,6 +143,16 @@ class LogRepository {
 			$query .= sprintf( ' AND source = "%s"', esc_sql( $source ) );
 		}
 
+		if ( $startDate ) {
+			$startDate = new DateTime( $startDate );
+			$query    .= sprintf( " AND date(date) >= '%s'", $startDate->format( 'Y-m-d' ) );
+		}
+
+		if ( $endDate ) {
+			$endDate = new DateTime( $endDate );
+			$query  .= sprintf( " AND date(date) <= '%s'", $endDate->format( 'Y-m-d' ) );
+		}
+
 		if ( $sortBy ) {
 			$column    = ( in_array( $sortBy, self::SORTABLE_COLUMNS, true ) ) ? $sortBy : 'id';
 			$direction = ( $sortDirection && strtoupper( $sortDirection ) === 'ASC' ) ? 'ASC' : 'DESC';
@@ -113,12 +162,12 @@ class LogRepository {
 			$query .= ' ORDER BY id DESC';
 		}
 
-		// Limit and offset
-		if ( $limit ) {
-			$query .= sprintf( ' LIMIT %d', $limit );
-			if ( $offset > 1 ) {
-				$query .= sprintf( ' OFFSET %d', $offset );
-			}
+		// Limit
+		$query .= sprintf( ' LIMIT %d', self::LOGS_PER_PAGE );
+
+		// Offset
+		if ( $offset > 1 ) {
+			$query .= sprintf( ' OFFSET %d', $offset );
 		}
 
 		$result = DB::get_results( $query );
@@ -321,15 +370,19 @@ class LogRepository {
 
 
 	/**
-	 * Get log count by columns values
+	 * Get log count for request
 	 *
-	 * @param  string|null  $type
-	 * @param  string|null  $category
-	 * @param  string|null  $source
+	 * @param  WP_REST_Request  $request
 	 *
 	 * @return int|null
 	 */
-	public function getLogCountForColumns( $type = null, $category = null, $source = null ) {
+	public function getLogCountForRequest( WP_REST_Request $request ) {
+		$type      = $request->get_param( 'type' );
+		$category  = $request->get_param( 'category' );
+		$source    = $request->get_param( 'source' );
+		$startDate = $request->get_param( 'start' );
+		$endDate   = $request->get_param( 'end' );
+
 		$query = "SELECT count(id) FROM {$this->log_table} WHERE 1=1";
 
 		if ( $type ) {
@@ -344,6 +397,16 @@ class LogRepository {
 			$query .= sprintf( ' AND source = "%s"', esc_sql( $source ) );
 		}
 
+		if ( $startDate ) {
+			$startDate = new DateTime( $startDate );
+			$query    .= sprintf( " AND date(date) >= '%s'", $startDate->format( 'Y-m-d' ) );
+		}
+
+		if ( $endDate ) {
+			$endDate = new DateTime( $endDate );
+			$query  .= sprintf( " AND date(date) <= '%s'", $endDate->format( 'Y-m-d' ) );
+		}
+
 		return DB::get_var( $query );
 	}
 
@@ -354,5 +417,14 @@ class LogRepository {
 	 */
 	public function getSortableColumns() {
 		return self::SORTABLE_COLUMNS;
+	}
+
+	/**
+	 * Get logs per page limit
+	 *
+	 * @return int
+	 */
+	public function getLogsPerPageLimit() {
+		return self::LOGS_PER_PAGE;
 	}
 }
