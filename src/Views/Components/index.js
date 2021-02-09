@@ -9,3 +9,4 @@ export { default as Select } from './Select';
 export { default as LoadingNotice } from './LoadingNotice';
 export { default as Button } from './Button';
 export { default as Input } from './Input';
+export { default as PeriodSelector } from './PeriodSelector';
