@@ -44,6 +44,7 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addAction( 'give_opt_in_into_tracking', AdminActionHandler::class, 'optInToUsageTracking' );
 			Hooks::addAction( 'give_hide_opt_in_notice_shortly', AdminActionHandler::class, 'optOutFromUsageTracking' );
 			Hooks::addAction( 'give_hide_opt_in_notice_permanently', AdminActionHandler::class, 'optOutFromUsageTracking' );
+			Hooks::addAction( 'update_option_give_settings', AdminActionHandler::class, 'optInToUsageTrackingAdminGrantManually', 10, 2 );
 			Hooks::addAction( 'admin_notices', UsageTrackingOnBoarding::class, 'addNotice' );
 			Hooks::addAction( 'give_setup_page_before_sections', UsageTrackingOnBoarding::class, 'addNotice', 0 );
 
