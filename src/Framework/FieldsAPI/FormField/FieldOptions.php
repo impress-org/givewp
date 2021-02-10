@@ -16,13 +16,9 @@ trait FieldOptions {
         ] );
     }
 
-    public function addOptions( $options ) {
-        $this->options = array_merge( $this->options, $options );
+    public function options( $options ) {
+        $this->options = $options;
         return $this;
-    }
-
-    public function addOption( $key, $value ) {
-        return $this->addOptions( [ $key => $value ] );
     }
 
     public function getOptions() {
