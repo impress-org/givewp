@@ -24,14 +24,13 @@ class WebsiteData implements TrackData {
 		global $wp_version;
 
 		return [
-			'siteTitle'    => get_option( 'blogname' ),
-			'timestamp'    => (int) date( 'Uv' ),
-			'wpVersion'    => $wp_version,
-			'homeURL'      => home_url(),
-			'adminURL'     => admin_url(),
-			'email'        => get_bloginfo( 'admin_email' ),
-			'isMultisite'  => absint( is_multisite() ),
-			'siteLanguage' => get_bloginfo( 'language' ),
+			'site_title'     => get_option( 'blogname' ),
+			'wp_version'     => $wp_version,
+			'givewp_version' => GIVE_VERSION,
+			'home_url'       => home_url(),
+			'admin_url'      => admin_url(),
+			'is_multisite'   => absint( is_multisite() ),
+			'site_language'  => get_bloginfo( 'language' ),
 		];
 	}
 }

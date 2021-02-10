@@ -37,13 +37,13 @@ class ServerData implements TrackData {
 		// Validate if the server address is a valid IP-address.
 		$ipaddress = filter_input( INPUT_SERVER, 'SERVER_ADDR', FILTER_VALIDATE_IP );
 		if ( $ipaddress ) {
-			$server_data['ip']       = $ipaddress;
-			$server_data['Hostname'] = gethostbyaddr( $ipaddress );
+			$server_data['server_ip']       = $ipaddress;
+			$server_data['server_hostname'] = gethostbyaddr( $ipaddress );
 		}
 
-		$server_data['os']          = php_uname();
-		$server_data['PhpVersion']  = PHP_VERSION;
-		$server_data['CurlVersion'] = $this->getCurlInfo();
+		$server_data['server_os']   = php_uname();
+		$server_data['php_version'] = PHP_VERSION;
+		$server_data                = array_merge( $server_data, $this->getCurlInfo() );
 
 		return $server_data;
 	}
@@ -68,8 +68,8 @@ class ServerData implements TrackData {
 		}
 
 		return [
-			'version'    => $curl['version'],
-			'sslSupport' => $ssl_support,
+			'curl_version' => $curl['version'],
+			'is_ssl'       => $ssl_support,
 		];
 	}
 }
