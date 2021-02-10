@@ -22,7 +22,6 @@ class ThemeData implements TrackData {
 	 * @return array The collection data.
 	 */
 	public function get() {
-		/* @var WP_Theme $theme */
 		$theme = wp_get_theme();
 		$data  = $this->formatData( $theme );
 
