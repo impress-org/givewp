@@ -11,6 +11,7 @@ class FormField implements Node {
     use FormField\FieldRequired;
     use FormField\FieldReadOnly;
     use FormField\FieldHelpText;
+    use FormField\FieldDefaultValue;
 
     /** @var string */
     protected $type;
