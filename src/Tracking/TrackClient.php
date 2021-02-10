@@ -4,6 +4,7 @@ namespace Give\Tracking;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\WebsiteData;
 use InvalidArgumentException;
+use WP_Error;
 
 /**
  * Class TrackClient
@@ -27,10 +28,10 @@ class TrackClient {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param string $trackId
-	 * @param array $trackData
+	 * @param  string  $trackId
+	 * @param  array  $trackData
 	 *
-	 * @throws InvalidArgumentException
+	 * @return array|WP_Error
 	 */
 	public function send( $trackId, $trackData ) {
 		if ( ! $trackId || ! $trackData ) {
@@ -50,7 +51,8 @@ class TrackClient {
 			'data_format' => 'body',
 		];
 
-		wp_remote_post( $this->getApiUrl( $trackId ), $tracking_request_args );
+		return wp_remote_post( $this->getApiUrl( $trackId ), $tracking_request_args );
+
 	}
 
 	/**
@@ -62,7 +64,7 @@ class TrackClient {
 	 *
 	 * @return string
 	 */
-	private function getApiUrl( $trackId ) {
+	public function getApiUrl( $trackId ) {
 		return self::SERVER_URL . '/' . $trackId;
 	}
 }
