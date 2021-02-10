@@ -10,6 +10,7 @@ class FormField implements Node {
     use FormField\FieldOptions;
     use FormField\FieldRequired;
     use FormField\FieldReadOnly;
+    use FormField\FieldHelpText;
 
     /** @var string */
     protected $type;
