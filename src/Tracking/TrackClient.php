@@ -20,7 +20,7 @@ class TrackClient {
 	 *
 	 * @var string
 	 */
-	const SERVER_URL = 'https://stats.givewp.com';
+	const SERVER_URL = 'http://givetelemetryserver.test/api/v1/track-plugin-usage';
 
 	/**
 	 * Send a track event.
