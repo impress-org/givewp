@@ -4,6 +4,7 @@ namespace Give\Tracking;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\WebsiteData;
 use Give\Tracking\ValueObjects\EventId;
+use Give_Admin_Settings;
 
 /**
  * Class AdminActionHandler
@@ -63,6 +64,36 @@ class AdminActionHandler {
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
+	}
+
+	/**
+	 * OptIn website to telemetry server when admin grant by changing setting.
+	 *
+	 * @param  array  $oldValue
+	 * @param  array  $newValue
+	 *
+	 * @return false
+	 */
+	public function optInToUsageTrackingAdminGrantManually( $oldValue, $newValue ) {
+		$class = __CLASS__;
+		add_filter( "give_disable_hook-update_option_give_settings:{$class}@optInToUsageTrackingAdminGrantManually", '__return_true' );
+
+		$section = isset( $_GET['section'] ) ? 'advanced-options' : '';
+		if ( ! Give_Admin_Settings::is_setting_page( 'advanced', $section ) ) {
+			return false;
+		}
+
+		$usageTracking = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		// Exit if already has access token.
+		if ( $usageTracking || get_option( 'give_telemetry_server_access_token' ) ) {
+			return false;
+		}
+
+		$this->storeAccessToken();
+
+		remove_filter( "give_disable_hook-update_option_give_settings:{$class}@optInToUsageTrackingAdminGrantManually", '__return_false' );
+
+		return true;
 	}
 
 	/**
