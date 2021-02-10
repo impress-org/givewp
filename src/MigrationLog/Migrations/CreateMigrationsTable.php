@@ -43,6 +43,7 @@ class CreateMigrationsTable extends Migration {
 		$sql = "CREATE TABLE {$table} (
 			id VARCHAR(64) NOT NULL,
 			status VARCHAR(16) NOT NULL,
+			error text NULL,
 			last_run DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY  (id)
 		) {$charset}";
