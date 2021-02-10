@@ -32,3 +32,15 @@ export const useLogFetcher = ( endpoint, params = {} ) => {
 	};
 };
 
+// GET endpoint with additional parameters
+export const getEndpoint = ( endpoint, data ) => {
+	if ( data ) {
+		const queryString = new URLSearchParams( data );
+		// pretty url?
+		const separator = window.GiveLogs.apiRoot.indexOf( '?' ) ? '&' : '?';
+
+		return endpoint + separator + queryString.toString();
+	}
+
+	return endpoint;
+};

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Card, Label, LoadingNotice, Pagination, Select, Table, Button, PeriodSelector, Modal } from 'GiveComponents';
-import { useLogFetcher } from './api';
+import { Card, Label, Notice, Spinner, Pagination, Select, Table, Button, PeriodSelector, Modal } from 'GiveComponents';
+import API, { useLogFetcher, getEndpoint } from './api';
 
 import styles from './styles.module.scss';
 
 const { __ } = wp.i18n;
 
-const Logs = () => {
+const Index = () => {
 	const [ state, setState ] = useState( {
 		initialLoad: false,
 		currentPage: 1,
@@ -27,6 +27,37 @@ const Logs = () => {
 		visible: false,
 	} );
 
+	const [ logFlushModal, setLogFlushModal ] = useState( {
+		visible: false,
+	} );
+
+	const parameters = {
+		page: state.currentPage,
+		sort: state.sortColumn,
+		direction: state.sortDirection,
+		type: state.currentStatus,
+		source: state.currentSource,
+		category: state.currentCategory,
+		start: state.startDate ? state.startDate.format( 'YYYY-MM-DD' ) : '',
+		end: state.endDate ? state.endDate.format( 'YYYY-MM-DD' ) : '',
+	};
+
+	const { data, isLoading, isError } = useLogFetcher( getEndpoint( '/get-logs', parameters ), {
+		onSuccess: ( { response } ) => {
+			setState( ( previousState ) => {
+				return {
+					...previousState,
+					initialLoad: true,
+					pages: response.pages,
+					statuses: response.statuses,
+					categories: response.categories,
+					sources: response.sources,
+					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
+				};
+			} );
+		},
+	} );
+
 	const openLogModal = ( log ) => {
 		setLogModal( {
 			visible: true,
@@ -45,17 +76,33 @@ const Logs = () => {
 		setLogModal( { visible: false } );
 	};
 
-	// GET endpoint with additional parameters
-	const getEndpoint = ( endpoint, data ) => {
-		if ( data ) {
-			const queryString = new URLSearchParams( data );
-			// pretty url?
-			const separator = window.GiveLogs.apiRoot.indexOf( '?' ) ? '&' : '?';
+	const openLogFlushModal = () => {
+		setLogFlushModal( { visible: true } );
+	};
 
-			return endpoint + separator + queryString.toString();
-		}
+	const closeLogFlushModal = () => {
+		setLogFlushModal( { visible: false } );
+	};
 
-		return endpoint;
+	const flushLogs = () => {
+		setLogFlushModal( {
+			visible: true,
+			flushing: true,
+		} );
+
+		API.delete( '/flush-logs' )
+			.then( () => {
+				window.location.reload();
+			} )
+			.catch( () => {
+				setLogFlushModal( ( previousState ) => {
+					return {
+						...previousState,
+						type: 'error',
+						error: true,
+					};
+				} );
+			} );
 	};
 
 	const setSortDirectionForColumn = ( column, direction ) => {
@@ -167,7 +214,7 @@ const Logs = () => {
 
 	const getLogModal = () => {
 		return (
-			<Modal visible={ logModal.visible } type={ logModal.type }>
+			<Modal visible={ logModal.visible } type={ logModal.type } handleClose={ closeLogModal }>
 				<Modal.Title>
 					<Label type={ logModal.type } />
 
@@ -183,7 +230,52 @@ const Logs = () => {
 				<Modal.Section title={ __( 'Source', 'give' ) } content={ logModal.source } />
 				<Modal.Section title={ __( 'Date & Time', 'give' ) } content={ logModal.date } />
 
-				<Modal.LogContext context={ logModal.context } />
+				<Modal.AdditionalContext type={ logModal.type } context={ logModal.context } />
+			</Modal>
+		);
+	};
+
+	const getLogFlushConfirmationModal = () => {
+		return (
+			<Modal visible={ logFlushModal.visible } type={ logFlushModal.type } handleClose={ closeLogFlushModal }>
+				{ logFlushModal.flushing ? (
+					<Modal.Content align="center">
+						{ logFlushModal.error ? (
+							<>
+								<h2>{ __( 'Something went wrong!', 'give' ) }</h2>
+								<div>
+									Try to <a onClick={ () => window.location.reload() } href="#">reload</a> the browser
+								</div>
+							</>
+						) : (
+							<>
+								<Spinner />
+								<div style={ { marginTop: 20 } }>
+									{ __( 'Flushing logs', 'give' ) }
+								</div>
+							</>
+						) }
+					</Modal.Content>
+				) : (
+					<>
+						<Modal.Title>
+							{ __( 'Flush all logs', 'give' ) }
+						</Modal.Title>
+
+						<Modal.Content>
+							{ __( 'Do you want to flush all logs?', 'give' ) }
+						</Modal.Content>
+
+						<Modal.Content>
+							<button style={ { marginRight: 20 } } className="button button-primary" onClick={ flushLogs }>
+								{ __( 'Confirm', 'give' ) }
+							</button>
+							<button className="button" onClick={ closeLogFlushModal }>
+								{ __( 'Cancel', 'give' ) }
+							</button>
+						</Modal.Content>
+					</>
+				) }
 			</Modal>
 		);
 	};
@@ -206,33 +298,6 @@ const Logs = () => {
 			};
 		} );
 	};
-
-	const parameters = {
-		page: state.currentPage,
-		sort: state.sortColumn,
-		direction: state.sortDirection,
-		type: state.currentStatus,
-		source: state.currentSource,
-		category: state.currentCategory,
-		start: state.startDate ? state.startDate.format( 'YYYY-MM-DD' ) : '',
-		end: state.endDate ? state.endDate.format( 'YYYY-MM-DD' ) : '',
-	};
-
-	const { data, isLoading } = useLogFetcher( getEndpoint( '/get-logs', parameters ), {
-		onSuccess: ( { response } ) => {
-			setState( ( previousState ) => {
-				return {
-					...previousState,
-					initialLoad: true,
-					pages: response.pages,
-					statuses: response.statuses,
-					categories: response.categories,
-					sources: response.sources,
-					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
-				};
-			} );
-		},
-	} );
 
 	const columns = [
 		{
@@ -284,7 +349,22 @@ const Logs = () => {
 	// Initial load
 	if ( ! state.initialLoad && isLoading ) {
 		return (
-			<LoadingNotice notice={ __( 'Loading log activity', 'give' ) } />
+			<Notice>
+				<Spinner />
+				<h2>{ __( 'Loading log activity', 'give' ) }</h2>
+			</Notice>
+		);
+	}
+
+	// Is error?
+	if ( isError ) {
+		return (
+			<Notice>
+				<h2>{ __( 'Something went wrong!', 'give' ) }</h2>
+				<div>
+					Try to <a onClick={ () => window.location.reload() } href="#">reload</a> the browser
+				</div>
+			</Notice>
 		);
 	}
 
@@ -325,7 +405,7 @@ const Logs = () => {
 					{ __( 'Reset', 'give' ) }
 				</Button>
 
-				<div className={ styles.topPagination }>
+				<div className={ styles.pagination }>
 					<Pagination
 						currentPage={ state.currentPage }
 						setPage={ setCurrentPage }
@@ -345,16 +425,27 @@ const Logs = () => {
 				/>
 			</Card>
 
-			<Pagination
-				currentPage={ state.currentPage }
-				setPage={ setCurrentPage }
-				totalPages={ state.pages }
-				disabled={ isLoading }
-			/>
+			<div className={ styles.footerRow }>
+				{ data && ( data.length > 0 ) && (
+					<button className="button" onClick={ openLogFlushModal }>
+						{ __( 'Flush all logs', 'give' ) }
+					</button>
+				) }
+
+				<div className={ styles.pagination }>
+					<Pagination
+						currentPage={ state.currentPage }
+						setPage={ setCurrentPage }
+						totalPages={ state.pages }
+						disabled={ isLoading }
+					/>
+				</div>
+			</div>
 
 			{ logModal.visible && getLogModal() }
+			{ logFlushModal.visible && getLogFlushConfirmationModal() }
 		</>
 	);
 };
 
-export default Logs;
+export default Index;
