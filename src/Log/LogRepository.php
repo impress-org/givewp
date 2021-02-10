@@ -17,7 +17,7 @@ class LogRepository {
 
 	const SORTABLE_COLUMNS = [ 'id', 'category', 'source', 'log_type', 'date' ];
 
-	const LOGS_PER_PAGE = 20;
+	const LOGS_PER_PAGE = 10;
 
 	/**
 	 * @var string
@@ -426,5 +426,12 @@ class LogRepository {
 	 */
 	public function getLogsPerPageLimit() {
 		return self::LOGS_PER_PAGE;
+	}
+
+	/**
+	 * Flush logs
+	 */
+	public function flushLogs() {
+		DB::query( "DELETE FROM {$this->log_table}" );
 	}
 }
