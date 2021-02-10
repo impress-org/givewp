@@ -3,13 +3,13 @@
 namespace Give\Log;
 
 use Give\Helpers\Hooks;
-use Give\Log\Admin\Page as AdminPage;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Log\Migrations\CreateNewLogTable;
 use Give\Log\Migrations\MigrateExistingLogs;
 use Give\Log\Migrations\DeleteOldLogTables;
-use Give\Log\Admin\Assets;
+use Give\Log\Helpers\Assets;
+use Give\Log\Helpers\Environment;
 
 /**
  * Class LogServiceProvider
@@ -34,9 +34,10 @@ class LogServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		$this->registerMigrations();
-		// todo: remove, just for testing
-		Hooks::addAction( 'admin_menu', AdminPage::class, 'register' );
-		Hooks::addAction( 'admin_enqueue_scripts', Assets::class, 'enqueueScripts' );
+		// Hook up
+		if ( Environment::isLogsPage() ) {
+			Hooks::addAction( 'admin_enqueue_scripts', Assets::class, 'enqueueScripts' );
+		}
 	}
 
 	/**
