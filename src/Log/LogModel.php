@@ -153,7 +153,7 @@ class LogModel {
 	}
 
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function getDate() {
 		return $this->date;
