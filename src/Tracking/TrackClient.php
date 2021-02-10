@@ -1,6 +1,7 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\ValueObjects\OptionName;
 use InvalidArgumentException;
 use WP_Error;
 
@@ -31,16 +32,18 @@ class TrackClient {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function send( $trackId, $trackData ) {
+	public function send( $trackId, $trackData, $requestArgs = [] ) {
 		if ( ! $trackId || ! $trackData ) {
 			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
 		}
 
 		$trackData['request_timestamp'] = time();
 
-		// Set a 'content-type' header of 'application/json'.
-		$tracking_request_args = [
-			'headers'     => [ 'content-type:' => 'application/json' ],
+		$default_request_args = [
+			'headers'     => [
+				'content-type:' => 'application/json',
+				'Authorization' => 'Bearer ' . get_option( OptionName::TELEMETRY_ACCESS_TOKEN ),
+			],
 			'timeout'     => 8,
 			'httpversion' => '1.1',
 			'blocking'    => false,
@@ -49,8 +52,9 @@ class TrackClient {
 			'data_format' => 'body',
 		];
 
-		return wp_remote_post( $this->getApiUrl( $trackId ), $tracking_request_args );
+		$tracking_request_args = wp_parse_args( $requestArgs, $default_request_args );
 
+		return wp_remote_post( $this->getApiUrl( $trackId ), $tracking_request_args );
 	}
 
 	/**
