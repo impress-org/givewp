@@ -41,8 +41,8 @@ class TrackRoutine {
 			return;
 		}
 
-		if ( ! wp_next_scheduled( 'give_send_tracking_data_routine', true ) ) {
-			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_tracking_data_routine', true );
+		if ( ! wp_next_scheduled( 'give_send_tracking_data_routine_job', true ) ) {
+			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_tracking_data_routine_job', true );
 		}
 	}
 
@@ -59,7 +59,7 @@ class TrackRoutine {
 			return;
 		}
 
-		do_action( 'give_send_routine_tracking_data' );
+		do_action( 'give_send_tracking_data' );
 
 		$newDonationIds = $this->getNewDonationIdsSinceLastRequest();
 

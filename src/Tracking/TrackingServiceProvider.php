@@ -3,6 +3,7 @@ namespace Give\Tracking;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
+use Give\Tracking\Events\DonationMetrics;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
@@ -32,9 +33,6 @@ class TrackingServiceProvider implements ServiceProvider {
 			// Send tracking data on `admin_init`.
 			Hooks::addAction( 'admin_init', TrackRoutine::class, 'send', 1 );
 
-			// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
-			Hooks::addAction( 'give_send_usage_tracking_data', TrackRoutine::class, 'send' );
-
 			// Call `wp_schedule_single_event()` after a WordPress core update.
 			Hooks::addAction( 'upgrader_process_complete', TrackRoutine::class, 'scheduleTrackingDataSending', 10, 2 );
 		}
@@ -53,5 +51,8 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addAction( 'update_option_active_plugins', PluginsTracking::class, 'record' );
 			Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
 		}
+
+		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
+		Hooks::addAction( 'give_send_tracking_data', DonationMetrics::class, 'record' );
 	}
 }
