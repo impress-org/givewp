@@ -1,6 +1,10 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\TrackingData\ServerData;
+use Give\Tracking\TrackingData\WebsiteData;
+use Give\Tracking\ValueObjects\EventId;
+
 /**
  * Class AdminActionHandler
  * @package Give\Tracking
@@ -18,7 +22,7 @@ class AdminActionHandler {
 	/**
 	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
 	 */
-	public function constructor( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
+	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
 	}
 
@@ -55,8 +59,35 @@ class AdminActionHandler {
 
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
 		$this->usageTrackingOnBoarding->disableNotice( 'permanently' );
+		$this->storeAccessToken();
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
+	}
+
+	/**
+	 * Store access token
+	 *
+	 * @since 2.10.0
+	 */
+	private function storeAccessToken() {
+		$client = new TrackClient();
+		$data   = array_merge(
+			( new ServerData() )->get(),
+			( new WebsiteData() )->get()
+		);
+
+		$response = $client->send( EventId::CREATE_TOKEN, $data, [ 'blocking' => true ] );
+		if ( is_wp_error( $response ) ) {
+			return;
+		}
+
+		$response = json_decode( wp_remote_retrieve_body( $response ), true );
+		if ( empty( $response['success'] ) ) {
+			return;
+		}
+
+		$token = $response['data']['access_token'];
+		update_option( 'give_telemetry_server_access_token', $token );
 	}
 }
