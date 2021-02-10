@@ -62,9 +62,9 @@ class ServerData implements TrackData {
 
 		$curl = curl_version();
 
-		$ssl_support = true;
+		$ssl_support = 1;
 		if ( ! $curl['features'] && CURL_VERSION_SSL ) {
-			$ssl_support = false;
+			$ssl_support = 0;
 		}
 
 		return [
