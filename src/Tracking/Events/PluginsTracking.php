@@ -17,7 +17,7 @@ class PluginsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId = 'plugin_list_updated';
+	protected $trackId = 'plugin-list-updated';
 
 	/**
 	 * GivePluginSettingsTracking constructor.
