@@ -25,15 +25,22 @@ class MigrationLogModel {
 	private $last_run;
 
 	/**
+	 * @var mixed|null
+	 */
+	private $error;
+
+	/**
 	 * MigrationModel constructor.
 	 *
-	 * @param string $id
-	 * @param string $status
-	 * @param string|null $lastRun
+	 * @param  string  $id
+	 * @param  string  $status
+	 * @param  mixed|null  $error
+	 * @param  string|null  $lastRun
 	 */
-	public function __construct( $id, $status = '', $lastRun = null ) {
+	public function __construct( $id, $status = '', $error = null, $lastRun = null ) {
 		$this->id       = $id;
 		$this->last_run = $lastRun;
+		$this->setError( $error );
 		$this->setStatus( $status );
 	}
 
@@ -50,6 +57,23 @@ class MigrationLogModel {
 		$this->status = array_key_exists( $status, MigrationLogStatus::getAll() )
 			? $status
 			: MigrationLogStatus::getDefault();
+
+		return $this;
+	}
+
+	/**
+	 * Add migration error notice
+	 *
+	 * @param  mixed  $error
+	 *
+	 * @return MigrationLogModel
+	 */
+	public function setError( $error ) {
+		if ( is_array( $error ) || is_object( $error ) ) {
+			$error = print_r( $error, true );
+		}
+
+		$this->error = $error;
 
 		return $this;
 	}
@@ -73,6 +97,13 @@ class MigrationLogModel {
 	 */
 	public function getLastRunDate() {
 		return $this->last_run;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getError() {
+		return $this->error;
 	}
 
 	/**
