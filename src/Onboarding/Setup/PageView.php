@@ -66,7 +66,7 @@ class PageView {
 		}
 
 		// Stripe unmerged tags.
-		$output = preg_replace( '/{{\s*.*\s*}}/', '', $output );
+		$output = preg_replace( '/{{\s*\w*\s*}}/', '', $output );
 
 		return $output;
 	}

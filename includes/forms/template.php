@@ -1377,36 +1377,37 @@ function give_get_register_fields( $form_id ) {
 			// Add attributes to checkbox, if Guest Checkout is disabled.
 			$is_guest_checkout = give_is_setting_enabled( give_get_meta( $form_id, '_give_logged_in_only', true ) );
 			?>
-			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
-				<label for="give-create-account-<?php echo $form_id; ?>" class="<?php echo ! $is_guest_checkout ? 'checked' : ''; ?>">
-					<?php
-					$id = 'give-create-account-' . $form_id;
-					if ( ! $is_guest_checkout ) {
-						echo Give()->tooltips->render(
-							[
-								'tag_content' => sprintf(
-									'<input type="checkbox" name="give_create_account" value="on" id="%s" class="give-input give-disabled" checked />',
-									$id
-								),
-								'label'       => __( 'Registration is required to donate.', 'give' ),
-							]
-						);
-					} else {
-						?>
-						<input type="checkbox" name="give_create_account" value="on" id="<?php echo $id; ?>"
-							   class="give-input"/>
-						<?php
-					}
 
+			<?php
+			/**
+			 * If Guest Checkout is enabled, display label and checkbox - unchecked.
+			 * If Guest Checkout it disabled, display hidden checkbox - checked.
+			 * @since 2.9.6
+			 * @since 2.9.7 Create account checkbox is hidden when guest registration is disabled.
+			 */
+			?>
+			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
+				<?php
+				$is_guest_checkout = give_get_meta( $form_id, '_give_logged_in_only', true );
+				if ( give_is_setting_enabled( $is_guest_checkout ) ) {
+					?>
+				<label for="give-create-account-<?php echo $form_id; ?>">
+				<input type="checkbox" id="give-create-account-<?php echo $form_id; ?>" name="give_create_account" class="give-input" value="on" />
+					<?php
 					_e( 'Create an account', 'give' );
 					echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) );
+					?>
+				</label>
+				<?php } else { ?>
+				<input type="hidden" id="give-create-account-<?php echo $form_id; ?>" name="give_create_account" class="give-input" value="on" checked />
+				<?php } ?>
+				<?php
 					echo str_replace(
 						'/>',
 						'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
 						give_get_nonce_field( "give_form_create_user_nonce_{$form_id}", 'give-form-user-register-hash', false )
 					);
-	?>
-				</label>
+				?>
 			</div>
 
 			<?php if ( 'both' === $show_register_form ) { ?>
