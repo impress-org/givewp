@@ -26,8 +26,8 @@ class ThemeData implements TrackData {
 		$data  = $this->formatData( $theme );
 
 		if ( $this->isChildTheme( $theme ) ) {
-			$parentTheme         = wp_get_theme( $theme->offsetGet( 'Template' ) );
-			$data['parentTheme'] = $this->formatData( $parentTheme, true );
+			$parentTheme = wp_get_theme( $theme->offsetGet( 'Template' ) );
+			$data        = array_merge( $data, $this->formatData( $parentTheme, true ) );
 		}
 
 		return $data;
