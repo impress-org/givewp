@@ -39,11 +39,6 @@ class LogModel {
 	private $source;
 
 	/**
-	 * @var string|null
-	 */
-	private $migrationId;
-
-	/**
 	 * @var array
 	 */
 	private $context;
@@ -65,20 +60,18 @@ class LogModel {
 	 * @param  string  $message
 	 * @param  string  $category
 	 * @param  string  $source
-	 * @param  string|null  $migrationId
 	 * @param  array  $context
 	 * @param  int|null  $logId
 	 * @param  string|null $date
 	 */
-	public function __construct( $type, $message, $category, $source, $migrationId, $context, $logId, $date ) {
+	public function __construct( $type, $message, $category, $source, $context, $logId, $date ) {
 		$this->setType( $type );
-		$this->category    = $category;
-		$this->source      = $source;
-		$this->migrationId = $migrationId;
-		$this->context     = $context;
-		$this->message     = $message;
-		$this->id          = $logId;
-		$this->date        = $date;
+		$this->category = $category;
+		$this->source   = $source;
+		$this->context  = $context;
+		$this->message  = $message;
+		$this->id       = $logId;
+		$this->date     = $date;
 	}
 
 	/**
@@ -90,7 +83,7 @@ class LogModel {
 	private function setType( $type ) {
 		$this->type = in_array( $type, LogType::getAll(), true )
 			? $type
-			: LogType::WARNING();
+			: LogType::getDefault();
 	}
 
 	/**
@@ -143,13 +136,6 @@ class LogModel {
 	 */
 	public function getSource() {
 		return $this->source;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getMigrationId() {
-		return $this->migrationId;
 	}
 
 	/**

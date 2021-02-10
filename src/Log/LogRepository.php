@@ -43,11 +43,10 @@ class LogRepository {
 		DB::insert(
 			$this->log_table,
 			[
-				'log_type'     => $model->getType(),
-				'migration_id' => $model->getMigrationId(),
-				'data'         => $model->getData( $jsonEncode = true ),
-				'category'     => $model->getCategory(),
-				'source'       => $model->getSource(),
+				'log_type' => $model->getType(),
+				'data'     => $model->getData( $jsonEncode = true ),
+				'category' => $model->getCategory(),
+				'source'   => $model->getSource(),
 			],
 			null
 		);
@@ -66,11 +65,10 @@ class LogRepository {
 		return DB::update(
 			$this->log_table,
 			[
-				'log_type'     => $model->getType(),
-				'migration_id' => $model->getMigrationId(),
-				'data'         => $model->getData( $jsonEncode = true ),
-				'category'     => $model->getCategory(),
-				'source'       => $model->getSource(),
+				'log_type' => $model->getType(),
+				'data'     => $model->getData( $jsonEncode = true ),
+				'category' => $model->getCategory(),
+				'source'   => $model->getSource(),
 			],
 			[
 				'id' => $model->getId(),
@@ -181,7 +179,6 @@ class LogRepository {
 					$data['message'],
 					$log->category,
 					$log->source,
-					$log->migration_id,
 					$data['context'],
 					$log->id,
 					$log->date
@@ -212,7 +209,6 @@ class LogRepository {
 				$data['message'],
 				$log->category,
 				$log->source,
-				$log->migration_id,
 				$data['context'],
 				$log->id,
 				$log->date
@@ -245,7 +241,6 @@ class LogRepository {
 					$data['message'],
 					$log->category,
 					$log->source,
-					$log->migration_id,
 					$data['context'],
 					$log->id,
 					$log->date
@@ -279,7 +274,6 @@ class LogRepository {
 					$data['message'],
 					$log->category,
 					$log->source,
-					$log->migration_id,
 					$data['context'],
 					$log->id,
 					$log->date

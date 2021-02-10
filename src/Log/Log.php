@@ -66,25 +66,4 @@ class Log {
 
 		LogFactory::makeFromArray( $data )->save();
 	}
-
-
-	/**
-	 * @param string $migrationClass
-	 *
-	 * @return LogModel
-	 */
-	public static function migration( $migrationClass ) {
-		if ( ! is_subclass_of( $migrationClass, Migration::class ) ) {
-			throw new InvalidArgumentException(
-				sprintf( 'Migration class %s must extend the %s class', $migrationClass, Migration::class )
-			);
-		}
-
-		$data = [
-			'category'     => LogCategory::MIGRATION,
-			'migration_id' => $migrationClass::id(),
-		];
-
-		return LogFactory::makeFromArray( $data );
-	}
 }
