@@ -22,11 +22,7 @@ class GivePluginSettingsData implements TrackData {
 	 * @return array
 	 */
 	public function get() {
-		return [
-			'version'        => GIVE_VERSION,
-			'installDate'    => $this->getPluginInstallDate(),
-			'globalSettings' => $this->getGlobalSettings(),
-		];
+		return $this->getGlobalSettings();
 	}
 
 	/**
@@ -58,11 +54,11 @@ class GivePluginSettingsData implements TrackData {
 		];
 
 		$trueFalseSettings = [
-			'name_title_prefix',
-			'company_field',
-			'anonymous_donation',
-			'donor_comment',
-			AdminSettings::USAGE_TRACKING_OPTION_NAME,
+			'is_name_title'         => 'name_title_prefix',
+			'is_company'            => 'company_field',
+			'is_anonymous_donation' => 'anonymous_donation',
+			'is_donor_comment'      => 'donor_comment',
+			'is_anonymous_tracking' => AdminSettings::USAGE_TRACKING_OPTION_NAME,
 		];
 
 		$data = [];
@@ -71,12 +67,11 @@ class GivePluginSettingsData implements TrackData {
 			$data[ $setting ] = give_get_option( $setting, '' );
 		}
 
-		foreach ( $trueFalseSettings as $setting ) {
-			$data[ $setting ] = absint( give_is_setting_enabled( give_get_option( $setting, 'disabled' ) ) );
+		foreach ( $trueFalseSettings as $key => $setting ) {
+			$data[ $key ] = absint( give_is_setting_enabled( give_get_option( $setting, 'disabled' ) ) );
 		}
 
-		$data                          = ArrayDataSet::camelCaseKeys( $data );
-		$data['activePaymentGateways'] = give_get_enabled_payment_gateways();
+		$data['active_payment_gateways'] = give_get_enabled_payment_gateways();
 
 		return $data;
 	}
