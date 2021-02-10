@@ -94,7 +94,6 @@ class LogRepository {
 					$data['message'],
 					$log->category,
 					$log->source,
-					$log->migration_id,
 					$data['context'],
 					$log->id,
 					$log->date
