@@ -22,9 +22,7 @@ class PluginsData implements TrackData {
 	 * @return array The collection data.
 	 */
 	public function get() {
-		return [
-			'plugins' => $this->getPluginData(),
-		];
+		return $this->getPluginData();
 	}
 
 	/**
@@ -59,17 +57,11 @@ class PluginsData implements TrackData {
 		$premiumAddonsListManger = new PremiumAddonsListManager();
 
 		return [
-			'name'      => $plugin['Name'],
-			'url'       => $plugin['PluginURI'],
-			'slug'      => $plugin['Dir'],
-			'version'   => $plugin['Version'],
-			'status'    => $plugin['Status'],
-			'type'      => $plugin['Type'],
-			'author'    => [
-				'name' => $plugin['Author'],
-				'url'  => $plugin['AuthorURI'],
-			],
-			'isPremium' => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
+			'plugin_slug'    => $plugin['Dir'],
+			'plugin_version' => $plugin['Version'],
+			'plugin_status'  => $plugin['Status'],
+			'plugin_type'    => $plugin['Type'],
+			'is_premium'     => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
 		];
 	}
 }
