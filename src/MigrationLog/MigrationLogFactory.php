@@ -25,20 +25,4 @@ class MigrationLogFactory {
 	public function make( $id, $status = '', $error = null, $lastRun = null ) {
 		return new MigrationLogModel( $id, $status, $error, $lastRun );
 	}
-
-	/**
-	 * Make MigrationModel instance from Migration class
-	 *
-	 * @param string $migrationClass
-	 *
-	 * @return MigrationLogModel
-	 */
-	public function makeFromClass( $migrationClass ) {
-		if ( ! is_subclass_of( $migrationClass, Migration::class ) ) {
-			throw new InvalidArgumentException(
-				sprintf( 'Migration class %s must extend the %s class', $migrationClass, Migration::class )
-			);
-		}
-		return new MigrationLogModel( $migrationClass::id() );
-	}
 }
