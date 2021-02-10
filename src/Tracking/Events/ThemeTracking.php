@@ -17,7 +17,7 @@ class ThemeTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId = 'theme_updated';
+	protected $trackId = 'theme-switched';
 
 	/**
 	 * GivePluginSettingsTracking constructor.
