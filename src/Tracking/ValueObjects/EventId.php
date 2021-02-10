@@ -9,7 +9,6 @@ namespace Give\Tracking\ValueObjects;
  * @since 2.10.0
  */
 class EventId {
-
 	const CREATE_TOKEN            = 'create-token';
 	const PLUGIN_SETTINGS_UPDATED = 'plugin-settings-updated';
 	const THEME_SWITCHED          = 'theme-switched';
