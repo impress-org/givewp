@@ -3,6 +3,7 @@
 namespace Give\Framework\FieldsAPI\FieldCollection;
 
 use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
+use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 
 trait InsertNode {
 
