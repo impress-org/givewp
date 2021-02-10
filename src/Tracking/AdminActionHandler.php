@@ -4,6 +4,7 @@ namespace Give\Tracking;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\WebsiteData;
 use Give\Tracking\ValueObjects\EventId;
+use Give\Tracking\ValueObjects\OptionName;
 use Give_Admin_Settings;
 
 /**
@@ -87,7 +88,7 @@ class AdminActionHandler {
 
 		$usageTracking = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
 		// Exit if already has access token.
-		if ( $usageTracking || get_option( 'give_telemetry_server_access_token' ) ) {
+		if ( $usageTracking || get_option( OptionName::TELEMETRY_ACCESS_TOKEN ) ) {
 			return false;
 		}
 
@@ -121,6 +122,6 @@ class AdminActionHandler {
 		}
 
 		$token = $response['data']['access_token'];
-		update_option( 'give_telemetry_server_access_token', $token );
+		update_option( OptionName::TELEMETRY_ACCESS_TOKEN, $token );
 	}
 }
