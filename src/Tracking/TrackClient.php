@@ -1,8 +1,6 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\WebsiteData;
 use InvalidArgumentException;
 use WP_Error;
 
@@ -60,7 +58,7 @@ class TrackClient {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param $trackId
+	 * @param string $trackId
 	 *
 	 * @return string
 	 */

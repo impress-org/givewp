@@ -69,6 +69,8 @@ class AdminActionHandler {
 	/**
 	 * OptIn website to telemetry server when admin grant by changing setting.
 	 *
+	 * @since 2.10.0
+	 *
 	 * @param  array  $oldValue
 	 * @param  array  $newValue
 	 *
