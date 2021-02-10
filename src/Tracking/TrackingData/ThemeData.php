@@ -27,7 +27,7 @@ class ThemeData implements TrackData {
 
 		if ( $this->isChildTheme( $theme ) ) {
 			$parentTheme         = wp_get_theme( $theme->offsetGet( 'Template' ) );
-			$data['parentTheme'] = $this->formatData( $parentTheme );
+			$data['parentTheme'] = $this->formatData( $parentTheme, true );
 		}
 
 		return $data;
@@ -38,20 +38,22 @@ class ThemeData implements TrackData {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param WP_Theme $theme
+	 * @param  WP_Theme  $theme
+	 * @param  bool  $parentTheme
 	 *
 	 * @return array
 	 */
-	private function formatData( $theme ) {
+	private function formatData( $theme, $parentTheme = false ) {
+		$slugKey    = 'theme_slug';
+		$versionKey = 'theme_version';
+
+		if ( $parentTheme ) {
+			$slugKey    = 'parent_theme_slug';
+			$versionKey = 'parent_theme_version';
+		}
 		return [
-			'name'    => $theme->get( 'Name' ),
-			'slug'    => $theme->offsetGet( 'Stylesheet' ),
-			'url'     => $theme->get( 'ThemeURI' ),
-			'version' => $theme->get( 'Version' ),
-			'author'  => [
-				'name' => $theme->get( 'Author' ),
-				'url'  => $theme->get( 'AuthorURI' ),
-			],
+			$slugKey    => $theme->offsetGet( 'Stylesheet' ),
+			$versionKey => $theme->get( 'Version' ),
 		];
 	}
 
