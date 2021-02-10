@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 import Table from '../table';
-import SubscriptionRow from './subscription-row';
+import SubscriptionRow from '../subscription-row';
 
 import './style.scss';
 
