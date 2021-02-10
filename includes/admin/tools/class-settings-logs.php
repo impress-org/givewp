@@ -35,74 +35,12 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		public function __construct() {
 			$this->id    = 'logs';
 			$this->label = __( 'Logs', 'give' );
-
-			$this->default_tab = 'gateway_errors';
-
 			parent::__construct();
 
 		}
 
-		/**
-		 * Get settings array.
-		 *
-		 * @since  1.8
-		 * @return array
-		 */
-		public function get_settings() {
-			// Get settings.
-			$settings = apply_filters(
-				'give_settings_logs',
-				array(
-					array(
-						'id'         => 'give_tools_logs',
-						'type'       => 'title',
-						'table_html' => false,
-					),
-					array(
-						'id'   => 'logs',
-						'name' => __( 'Log', 'give' ),
-						'type' => 'logs',
-
-					),
-					array(
-						'id'         => 'give_tools_logs',
-						'type'       => 'sectionend',
-						'table_html' => false,
-					),
-				)
-			);
-
-			/**
-			 * Filter the settings.
-			 *
-			 * @since  1.8
-			 *
-			 * @param  array $settings
-			 */
-			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
-
-			// Output.
-			return $settings;
-		}
-
-		/**
-		 * Get sections.
-		 *
-		 * @return array
-		 * @since 1.8
-		 * @since 2.5.14 Add spam section
-		 */
-		public function get_sections() {
-			$sections = array(
-				'gateway_errors' => __( 'Payment Errors', 'give' ),
-				'api_requests'   => __( 'API Requests', 'give' ),
-				'updates'        => __( 'Updates', 'give' ),
-				'spam'           => __( 'Spam', 'give' ),
-			);
-
-			$sections = apply_filters( 'give_log_views', $sections );
-
-			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		public function output() {
+			echo '<div id="give-logs-list-table-app" style="padding-top: 20px;"></div>';
 		}
 	}
 
