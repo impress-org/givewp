@@ -1,8 +1,6 @@
 <?php
 
-namespace Give\Log\Admin;
-
-use Give\Log\LogRepository;
+namespace Give\Log\Helpers;
 
 /**
  * Class Assets
