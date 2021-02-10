@@ -27,8 +27,6 @@ class Log {
 	 * @param  array  $args
 	 */
 	public static function __callStatic( $type, $args ) {
-		$data['type'] = $type;
-
 		list ( $message, $context ) = array_pad( $args, 2, null );
 
 		if ( is_array( $context ) ) {
@@ -63,6 +61,9 @@ class Log {
 		if ( ! is_null( $message ) ) {
 			$data['message'] = $message;
 		}
+
+		// Set type
+		$data['type'] = $type;
 
 		LogFactory::makeFromArray( $data )->save();
 	}
