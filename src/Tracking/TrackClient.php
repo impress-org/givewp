@@ -37,8 +37,6 @@ class TrackClient {
 			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
 		}
 
-		//$trackData['request_timestamp'] = time();
-
 		$default_request_args = [
 			'headers'     => [
 				'content-type:' => 'application/json',
