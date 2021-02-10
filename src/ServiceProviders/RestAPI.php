@@ -14,6 +14,7 @@ use Give\API\Endpoints\Reports\TotalDonors;
 use Give\API\Endpoints\Reports\TotalIncome;
 use Give\API\Endpoints\Reports\TotalRefunds;
 use Give\API\Endpoints\Logs\GetLogs;
+use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\RestRoute;
 
 class RestAPI implements ServiceProvider {
@@ -33,6 +34,7 @@ class RestAPI implements ServiceProvider {
 		TotalIncome::class,
 		TotalRefunds::class,
 		GetLogs::class,
+		FlushLogs::class,
 	];
 
 	/**
