@@ -1,11 +1,27 @@
+import { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import LoadingOverlay from 'GiveComponents/LoadingOverlay';
 
 import styles from './styles.module.scss';
 
 const { __ } = wp.i18n;
 
-const Modal = ( { visible, type, children } ) => {
+const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
+	const closeModal = useCallback( ( event ) => {
+		if ( event.keyCode === 27 && typeof handleClose === 'function' ) {
+			handleClose();
+		}
+	}, [] );
+
+	useEffect( () => {
+		document.addEventListener( 'keydown', closeModal, false );
+
+		return () => {
+			document.removeEventListener( 'keydown', closeModal, false );
+		};
+	}, [] );
+
 	const modalStyles = classNames( {
 		[ styles.modal ]: true,
 		[ styles.error ]: type === 'error',
@@ -17,6 +33,9 @@ const Modal = ( { visible, type, children } ) => {
 		<div className={ classNames( { [ styles.overlay ]: visible } ) }>
 			<div className={ styles.container }>
 				<div className={ modalStyles }>
+					{ isLoading && (
+						<LoadingOverlay spinnerSize="small" />
+					) }
 					<div className={ styles.content }>
 						{ children }
 					</div>
@@ -51,15 +70,32 @@ Modal.Section = ( { title, content } ) => {
 	);
 };
 
-Modal.LogContext = ( { context } ) => {
+Modal.Content = ( { children, align } ) => {
+	const contentClasses = classNames( {
+		[ styles.innerContent ]: true,
+		[ styles.textCenter ]: align === 'center',
+		[ styles.textRight ]: align === 'right',
+		[ styles.textLeft ]: ! align || align === 'left',
+	} );
+
+	return (
+		<div className={ contentClasses }>
+			{ children }
+		</div>
+	);
+};
+
+Modal.AdditionalContext = ( { type, context } ) => {
+	const title = ( 'error' === type ) ? __( 'Error details', 'give' ) : __( 'Additional context', 'give' );
+
 	return (
 		<div className={ styles.section }>
-			<strong>{ __( 'Error details', 'give' ) }:</strong>
+			<strong>{ title }:</strong>
 			<div className={ styles.errorDetailsContainer }>
 				{ context && Object.entries( context ).map( ( [ key, value ] ) => {
 					return (
 						<div key={ key }>
-							<strong>{ key }:</strong>
+							<span>{ key }:</span>
 							{ value }
 						</div>
 					);
@@ -73,21 +109,50 @@ Modal.propTypes = {
 	// Is visible
 	visible: PropTypes.bool.isRequired,
 	// Is loading
-	loading: PropTypes.bool,
+	isLoading: PropTypes.bool,
 	// Modal type
 	type: PropTypes.string,
 	// Collection of react DOM elements
 	children: PropTypes.object,
+	// Handle close callback
+	handleClose: PropTypes.func,
+};
+
+Modal.Title.propTypes = {
 	// Collection of react DOM elements
-	onClose: PropTypes.func,
+	children: PropTypes.object,
+};
+
+Modal.CloseIcon.propTypes = {
+	// On click callback
+	onClick: PropTypes.func.isRequired,
+};
+
+Modal.Section.propTypes = {
+	// Section title
+	title: PropTypes.string.isRequired,
+	// Section content
+	content: PropTypes.string.isRequired,
+};
+
+Modal.Content.propTypes = {
+	// Collection of react DOM elements
+	children: PropTypes.object,
+};
+
+Modal.AdditionalContext.propTypes = {
+	// Log type
+	type: PropTypes.string.isRequired,
+	// Array of objects
+	context: PropTypes.array.isRequired,
 };
 
 Modal.defaultProps = {
 	visible: true,
-	loading: false,
+	isLoading: false,
 	type: 'notice',
 	children: {},
-	onClose: () => {},
+	handleClose: () => {},
 };
 
 export default Modal;
