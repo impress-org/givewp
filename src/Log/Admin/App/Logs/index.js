@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 
 const { __ } = wp.i18n;
 
-const Index = () => {
+const Logs = () => {
 	const [ state, setState ] = useState( {
 		initialLoad: false,
 		currentPage: 1,
@@ -448,4 +448,4 @@ const Index = () => {
 	);
 };
 
-export default Index;
+export default Logs;
