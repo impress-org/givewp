@@ -12,7 +12,7 @@
 	</div>
 	<?php endif; ?>
 
-	<?php echo do_action( 'give_setup_page_before_sectioins' ); ?>
+	<?php do_action( 'give_setup_page_before_sections' ); ?>
 
 	<!-- Configuration -->
 	<?php
