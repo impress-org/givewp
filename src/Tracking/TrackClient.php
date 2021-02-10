@@ -37,16 +37,7 @@ class TrackClient {
 			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
 		}
 
-		$url = add_query_arg(
-			[
-				'en' => $trackId,
-				'ts' => time(),
-			],
-			self::SERVER_URL
-		);
-
-		$trackData['server']  = ( new ServerData() )->get();
-		$trackData['website'] = ( new WebsiteData() )->get();
+		$trackData['request_timestamp'] = time();
 
 		// Set a 'content-type' header of 'application/json'.
 		$tracking_request_args = [
@@ -59,6 +50,19 @@ class TrackClient {
 			'data_format' => 'body',
 		];
 
-		wp_remote_post( $url, $tracking_request_args );
+		wp_remote_post( $this->getApiUrl( $trackId ), $tracking_request_args );
+	}
+
+	/**
+	 * Get api url.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param $trackId
+	 *
+	 * @return string
+	 */
+	private function getApiUrl( $trackId ) {
+		return self::SERVER_URL . '/' . $trackId;
 	}
 }
