@@ -4,5 +4,5 @@ import Logs from './Logs';
 
 ReactDOM.render(
 	<Logs />,
-	document.getElementById( 'logs-list-table-app' )
+	document.getElementById( 'give-logs-list-table-app' )
 );

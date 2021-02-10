@@ -76,7 +76,8 @@ const Logs = () => {
 		setLogModal( { visible: false } );
 	};
 
-	const openLogFlushModal = () => {
+	const openLogFlushModal = ( e ) => {
+		e.preventDefault();
 		setLogFlushModal( { visible: true } );
 	};
 
@@ -280,7 +281,9 @@ const Logs = () => {
 		);
 	};
 
-	const resetQueryParameters = () => {
+	const resetQueryParameters = ( e ) => {
+		e.preventDefault();
+
 		// Reset table sort state
 		Table.resetSortState();
 
@@ -339,7 +342,12 @@ const Logs = () => {
 		log_type: ( type ) => <Label type={ type } />,
 		details: ( value, log ) => {
 			return (
-				<Button onClick={ () => openLogModal( log ) } icon={ true }>
+				<Button
+					onClick={ ( e ) => {
+						e.preventDefault();
+						openLogModal( log );
+					} }
+					icon={ true }>
 					<span className="dashicons dashicons-visibility" />
 				</Button>
 			);
