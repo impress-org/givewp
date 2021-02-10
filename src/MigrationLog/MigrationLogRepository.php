@@ -40,15 +40,23 @@ class MigrationLogRepository {
 	 */
 	public function save( MigrationLogModel $model ) {
 		$query = "
-			INSERT INTO {$this->migration_table} (id, status) 
-			VALUES (%s, %s) 
+			INSERT INTO {$this->migration_table} (id, status, error ) 
+			VALUES (%s, %s, %s) 
 			ON DUPLICATE KEY UPDATE
 			status = %s,
+			error = %s,
 			last_run = NOW()
 		";
 
 		DB::query(
-			DB::prepare( $query, $model->getId(), $model->getStatus(), $model->getStatus() )
+			DB::prepare(
+				$query,
+				$model->getId(),
+				$model->getStatus(),
+				$model->getError(),
+				$model->getStatus(),
+				$model->getError()
+			)
 		);
 	}
 
@@ -68,6 +76,7 @@ class MigrationLogRepository {
 				$migrations[] = $this->migrationFactory->make(
 					$migration->id,
 					$migration->status,
+					$migration->error,
 					$migration->last_run
 				);
 			}
@@ -92,6 +101,7 @@ class MigrationLogRepository {
 			return $this->migrationFactory->make(
 				$migration->id,
 				$migration->status,
+				$migration->error,
 				$migration->last_run
 			);
 		}
@@ -118,8 +128,39 @@ class MigrationLogRepository {
 				$migrations[] = $this->migrationFactory->make(
 					$migration->id,
 					$migration->status,
+					$migration->error,
 					$migration->last_run
 				);
+			}
+		}
+
+		return $migrations;
+	}
+
+	/**
+	 * Get completed migrations IDs
+	 *
+	 * @return array
+	 */
+	public function getCompletedMigrationsIDs() {
+		$migrations = [];
+
+		try {
+			$result = DB::get_results(
+				DB::prepare( "SELECT * FROM {$this->migration_table} WHERE status = %s", MigrationLogStatus::SUCCESS )
+			);
+		} catch ( \Exception $exception ) {
+			// This exception should happen only once, during the migration system storage update.
+			// But, we will log this error just in case to see if this is a repeating problem.
+			error_log( $exception->getMessage() );
+
+			// Fallback to legacy migration storage system
+			return get_option( 'give_database_migrations', [] );
+		}
+
+		if ( $result ) {
+			foreach ( $result as $migration ) {
+				$migrations[] = $migration->id;
 			}
 		}
 
