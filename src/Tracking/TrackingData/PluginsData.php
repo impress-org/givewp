@@ -57,19 +57,11 @@ class PluginsData implements TrackData {
 		$premiumAddonsListManger = new PremiumAddonsListManager();
 
 		return [
-			<< << << < Updated upstream
-							'plugin_slug' => $plugin['Dir'],
-			'plugin_version'              => $plugin['Version'],
-			'plugin_status'               => $plugin['Status'],
-			'plugin_type'                 => $plugin['Type'],
-			'is_premium'                  => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
-			=== === =
-							'plugin_slug' => $plugin['Dir'],
-			'plugin_version'              => $plugin['Version'],
-			'plugin_status'               => $plugin['Status'],
-			'plugin_type'                 => $plugin['Type'],
-			'is_premium'                  => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
-			>> >> >> > Stashed changes,
+			'plugin_slug'    => $plugin['Dir'],
+			'plugin_version' => $plugin['Version'],
+			'plugin_status'  => $plugin['Status'],
+			'plugin_type'    => $plugin['Type'],
+			'is_premium'     => absint( $premiumAddonsListManger->isPremiumAddons( $plugin['PluginURI'] ) ),
 		];
 	}
 }
