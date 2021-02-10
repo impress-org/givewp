@@ -11,7 +11,7 @@ trait FieldDefaultValue {
      * @param string $defaultValue
      * @return $this
      */
-    public function default( $defaultValue ) {
+    public function defaultValue( $defaultValue ) {
         $this->defaultValue = $defaultValue;
         return $this;
     }

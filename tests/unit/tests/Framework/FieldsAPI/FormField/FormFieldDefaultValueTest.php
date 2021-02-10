@@ -7,7 +7,7 @@ final class FieldDefaultValueTest extends TestCase {
 
     public function testDefaultValue() {
         $field = new FormField( 'text', 'my-text-field' );
-        $field->default( 'Hello world' );
+        $field->defaultValue( 'Hello world' );
         $this->assertEquals( 'Hello world' , $field->getDefaultValue() );
     }
 }
