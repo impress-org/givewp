@@ -18,6 +18,7 @@
 }
 
 .modal {
+	display: block;
 	max-width: 600px;
 	width: 100%;
 	position: absolute;
@@ -36,11 +37,27 @@
 	position: relative;
 }
 
+.innerContent {
+	padding: 20px 0;
+}
+
+.textLeft {
+	text-align: left;
+}
+
+.textRight {
+	text-align: right;
+}
+
+.textCenter {
+	text-align: center;
+}
+
 .title {
 	display: flex;
 	align-items: center;
 	width: 100%;
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 600;
 	padding-bottom: 20px;
 	border-bottom: 1px solid #ddd;
@@ -75,6 +92,11 @@
 	max-height: 240px;
 	overflow-x: auto;
 	font-size: 15px;
+
+	span {
+		font-weight: 600;
+		margin-right: 10px;
+	}
 }
 
 .error {
