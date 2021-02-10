@@ -36,7 +36,7 @@ class AdminActionHandler {
 			return;
 		}
 
-		$timestamp = '0';
+		$timestamp = '0'; // permanently.
 		if ( 'hide_opt_in_notice_shortly' === $_GET['give_action'] ) {
 			$timestamp = DAY_IN_SECONDS * 2 + time();
 		}
@@ -58,7 +58,7 @@ class AdminActionHandler {
 		}
 
 		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
-		$this->usageTrackingOnBoarding->disableNotice( 'permanently' );
+		$this->usageTrackingOnBoarding->disableNotice( 0 );
 		$this->storeAccessToken();
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
