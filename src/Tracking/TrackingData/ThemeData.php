@@ -2,6 +2,7 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Tracking\Contracts\TrackData;
+use Give\Traits\HasWpTheme;
 use WP_Theme;
 
 /**
@@ -13,6 +14,7 @@ use WP_Theme;
  * @package Give\Tracking\TrackingData
  */
 class ThemeData implements TrackData {
+	use HasWpTheme;
 
 	/**
 	 * Returns the collection data.
@@ -55,23 +57,6 @@ class ThemeData implements TrackData {
 			$slugKey    => $theme->offsetGet( 'Stylesheet' ),
 			$versionKey => $theme->get( 'Version' ),
 		];
-	}
-
-	/**
-	 * Return whether or not active theme is child them or not.
-	 * Note: is_child_theme WordPress  function does not return correct return immediately after switching theme.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @param $theme
-	 *
-	 * @return bool
-	 */
-	private function isChildTheme( $theme ) {
-		$themeSlug     = $theme->offsetGet( 'Stylesheet' );
-		$themeTemplate = $theme->offsetGet( 'Template' );
-
-		return $themeSlug !== $themeTemplate;
 	}
 }
 
