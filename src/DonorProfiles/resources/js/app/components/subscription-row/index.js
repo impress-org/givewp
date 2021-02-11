@@ -5,8 +5,7 @@ import { useState, Fragment } from 'react';
 import SubscriptionCancelModal from '../subscription-cancel-modal';
 
 const SubscriptionRow = ( { subscription } ) => {
-	const id = subscription[ 0 ];
-	const { payment, form, gateway } = subscription[ 1 ];
+	const { id, payment, form, gateway } = subscription;
 
 	const [ cancelModalOpen, setCancelModalOpen ] = useState( false );
 

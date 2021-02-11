@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getAPIRoot, getAPINonce } from '../../../utils';
+import { fetchSubscriptionsDataFromAPI } from '../../../tabs/recurring-donations/utils';
 
 export const saveSubscriptionWithAPI = ( { id, amount, paymentMethod } ) => {
 	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/recurring-donations/subscription/update', {
@@ -12,7 +13,8 @@ export const saveSubscriptionWithAPI = ( { id, amount, paymentMethod } ) => {
 			'X-WP-Nonce': getAPINonce(),
 		},
 	} )
-		.then( ( response ) => {
+		.then( async( response ) => {
+			await fetchSubscriptionsDataFromAPI();
 			return response;
 		} );
 };

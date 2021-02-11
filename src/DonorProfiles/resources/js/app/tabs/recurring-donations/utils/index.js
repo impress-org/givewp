@@ -7,7 +7,7 @@ export const fetchSubscriptionsDataFromAPI = () => {
 	const { dispatch } = store;
 
 	dispatch( setQuerying( true ) );
-	axios.post( getAPIRoot() + 'give-api/v2/donor-profile/recurring-donations/subscriptions', {},
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/recurring-donations/subscriptions', {},
 		{
 			headers: {
 				'X-WP-Nonce': getAPINonce(),
@@ -17,5 +17,6 @@ export const fetchSubscriptionsDataFromAPI = () => {
 		.then( ( data ) => {
 			dispatch( setSubscriptions( data.subscriptions ) );
 			dispatch( setQuerying( false ) );
+			return data;
 		} );
 };

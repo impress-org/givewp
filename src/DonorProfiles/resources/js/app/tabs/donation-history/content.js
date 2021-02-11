@@ -16,6 +16,14 @@ const Content = () => {
 	const location = useLocation();
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
 
+	const getDonationById = ( donationId ) => {
+		const filter = donations.filter( ( donation ) => donation.id === parseInt( donationId ) ? true : false );
+		if ( filter.length ) {
+			return filter[ 0 ];
+		}
+		return null;
+	};
+
 	if ( id ) {
 		return querying ? (
 			<Fragment>
@@ -31,7 +39,7 @@ const Content = () => {
 				<Heading>
 					{ __( 'Donation', 'give' ) } #{ id }
 				</Heading>
-				<DonationReceipt donation={ donations[ id ] } />
+				<DonationReceipt donation={ getDonationById( id ) } />
 				<Link to="/donation-history">
 					{ __( 'Back to Donation History', 'give' ) }
 				</Link>

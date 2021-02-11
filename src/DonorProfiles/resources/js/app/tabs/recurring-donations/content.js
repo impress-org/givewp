@@ -23,6 +23,14 @@ const Content = () => {
 	const route = location ? location.pathname.split( '/' )[ 2 ] : null;
 	const id = location ? location.pathname.split( '/' )[ 3 ] : null;
 
+	const getSubscriptionById = ( subscriptionId ) => {
+		const filter = subscriptions.filter( ( subscription ) => subscription.id === parseInt( subscriptionId ) ? true : false );
+		if ( filter.length ) {
+			return filter[ 0 ];
+		}
+		return null;
+	};
+
 	if ( id ) {
 		switch ( route ) {
 			case 'receipt' : {
@@ -40,7 +48,7 @@ const Content = () => {
 						<Heading>
 							{ __( 'Subscription', 'give' ) } #{ id }
 						</Heading>
-						<SubscriptionReceipt subscription={ subscriptions[ id ] } />
+						<SubscriptionReceipt subscription={ getSubscriptionById( id ) } />
 						<Link to="/recurring-donations">
 							{ __( 'Back to Recurring Donations', 'give' ) }
 						</Link>
@@ -48,7 +56,7 @@ const Content = () => {
 				);
 			}
 			case 'manage' : {
-				return querying ? (
+				return querying && subscriptions === null ? (
 					<Fragment>
 						<Heading>
 							{ __( 'Loading...', 'give' ) }
@@ -63,7 +71,7 @@ const Content = () => {
 							{ __( 'Manage Subscription', 'give' ) } #{ id }
 						</Heading>
 						<Divider />
-						<SubscriptionManager id={ id } subscription={ subscriptions[ id ] } />
+						<SubscriptionManager id={ id } subscription={ getSubscriptionById( id ) } />
 						<Divider />
 						<div className="give-donor-profile__recurring-donations-link">
 							<Link to="/recurring-donations">
@@ -73,32 +81,10 @@ const Content = () => {
 					</Fragment>
 				);
 			}
-			case 'cancel' : {
-				return querying ? (
-					<Fragment>
-						<Heading>
-							{ __( 'Loading...', 'give' ) }
-						</Heading>
-						<Link to="/recurring-donations">
-							{ __( 'Back to Recurring Donations', 'give' ) }
-						</Link>
-					</Fragment>
-				) : (
-					<Fragment>
-						<Heading>
-							{ __( 'Cancel Subscription', 'give' ) } #{ id }
-						</Heading>
-						<SubscriptionReceipt subscription={ subscriptions[ id ] } />
-						<Link to="/recurring-donations">
-							{ __( 'Back to Recurring Donations', 'give' ) }
-						</Link>
-					</Fragment>
-				);
-			}
 		}
 	}
 
-	return querying === true ? (
+	return querying && subscriptions === null ? (
 		<Fragment>
 			<Heading>
 				{ __( 'Loading...', 'give' ) }

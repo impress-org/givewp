@@ -28,13 +28,15 @@ const SubscriptionTable = ( { subscriptions, perPage } ) => {
 	};
 
 	let subscriptionRows = [];
-	let subscriptionsArray = [];
+	const subscriptionsArray = [];
 	let start = 0;
 	let end = perPage;
 	let lastPage = 1;
 
 	if ( subscriptions ) {
-		subscriptionsArray = Object.entries( subscriptions );
+		Object.entries( subscriptions ).forEach( ( subscription ) => {
+			subscriptionsArray[ subscription[ 0 ] ] = subscription[ 1 ];
+		} );
 		start = getStartIndex();
 		end = getEndIndex();
 		lastPage = Math.ceil( subscriptionsArray.length / perPage );

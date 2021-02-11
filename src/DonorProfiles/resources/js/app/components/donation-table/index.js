@@ -28,13 +28,15 @@ const DonationTable = ( { donations, perPage } ) => {
 	};
 
 	let donationRows = [];
-	let donationsArray = [];
+	const donationsArray = [];
 	let start = 0;
 	let end = perPage;
 	let lastPage = 1;
 
 	if ( donations ) {
-		donationsArray = Object.entries( donations );
+		Object.entries( donations ).forEach( ( donation ) => {
+			donationsArray[ donation[ 0 ] ] = donation[ 1 ];
+		} );
 		start = getStartIndex();
 		end = getEndIndex();
 		lastPage = Math.ceil( donationsArray.length / perPage );
