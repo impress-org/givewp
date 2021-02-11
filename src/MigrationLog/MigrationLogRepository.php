@@ -2,6 +2,7 @@
 
 namespace Give\MigrationLog;
 
+use WP_REST_Request;
 use Give\Framework\Database\DB;
 
 /**
@@ -11,6 +12,15 @@ use Give\Framework\Database\DB;
  * @since 2.10.0
  */
 class MigrationLogRepository {
+	/**
+	 * Limit number of logs returned per page
+	 */
+	const MIGRATIONS_PER_PAGE = 10;
+
+	/**
+	 * Define sortable columns
+	 */
+	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run' ];
 
 	/**
 	 * @var string
@@ -166,4 +176,99 @@ class MigrationLogRepository {
 
 		return $migrations;
 	}
+
+	/**
+	 * Get sortable columns
+	 *
+	 * @return string[]
+	 */
+	public function getSortableColumns() {
+		return self::SORTABLE_COLUMNS;
+	}
+
+	/**
+	 * Get migrations per page limit
+	 *
+	 * @return int
+	 */
+	public function getMigrationsPerPageLimit() {
+		return self::MIGRATIONS_PER_PAGE;
+	}
+
+	/**
+	 * Get all migrations for request
+	 *
+	 * @param  WP_REST_Request  $request
+	 *
+	 * @return MigrationLogModel[]
+	 */
+	public function getMigrationsForRequest( WP_REST_Request $request ) {
+		$migrations    = [];
+		$status        = $request->get_param( 'status' );
+		$page          = $request->get_param( 'page' );
+		$sortBy        = $request->get_param( 'sort' );
+		$sortDirection = $request->get_param( 'direction' );
+
+		$perPage = 10;
+		$offset  = $page > 1 ? $page * $perPage : 0;
+
+		$query = "SELECT * FROM {$this->migration_table} WHERE 1=1";
+
+		if ( ! empty( $status ) && 'all' !== $status ) {
+			$query .= sprintf( ' AND status = "%s"', esc_sql( $status ) );
+		}
+
+		if ( $sortBy ) {
+			$column    = ( in_array( $sortBy, self::SORTABLE_COLUMNS, true ) ) ? $sortBy : 'id';
+			$direction = ( $sortDirection && strtoupper( $sortDirection ) === 'ASC' ) ? 'ASC' : 'DESC';
+
+			$query .= " ORDER BY `{$column}` {$direction}";
+		} else {
+			$query .= ' ORDER BY id DESC';
+		}
+
+		// Limit
+		$query .= sprintf( ' LIMIT %d', self::MIGRATIONS_PER_PAGE );
+
+		// Offset
+		if ( $offset > 1 ) {
+			$query .= sprintf( ' OFFSET %d', $offset );
+		}
+
+		$result = DB::get_results( $query );
+
+		if ( $result ) {
+			foreach ( $result as $migration ) {
+				$migrations[] = $this->migrationFactory->make(
+					$migration->id,
+					$migration->status,
+					$migration->error,
+					$migration->last_run
+				);
+			}
+		}
+
+		return $migrations;
+	}
+
+
+	/**
+	 * Get migration count for request
+	 *
+	 * @param  WP_REST_Request  $request
+	 *
+	 * @return int|null
+	 */
+	public function getMigrationsCountForRequest( WP_REST_Request $request ) {
+		$status = $request->get_param( 'status' );
+
+		$query = "SELECT count(id) FROM {$this->migration_table} WHERE 1=1";
+
+		if ( $status ) {
+			$query .= sprintf( ' AND status = "%s"', esc_sql( $status ) );
+		}
+
+		return DB::get_var( $query );
+	}
+
 }
