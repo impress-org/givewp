@@ -19,10 +19,27 @@ trait HasWpTheme {
 	 *
 	 * @return bool
 	 */
-	private function isParentTheme( $theme ) {
+	protected function isParentTheme( $theme ) {
 		$currentTheme  = wp_get_theme();
 		$themeTemplate = $currentTheme->offsetGet( 'Template' );
 
 		return $theme === $themeTemplate;
+	}
+
+	/**
+	 * Return whether or not active theme is child them or not.
+	 * Note: is_child_theme WordPress  function does not return correct return immediately after switching theme.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param $theme
+	 *
+	 * @return bool
+	 */
+	protected function isChildTheme( $theme ) {
+		$themeSlug     = $theme->offsetGet( 'Stylesheet' );
+		$themeTemplate = $theme->offsetGet( 'Template' );
+
+		return $themeSlug !== $themeTemplate;
 	}
 }
