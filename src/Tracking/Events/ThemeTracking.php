@@ -4,6 +4,7 @@ namespace Give\Tracking\Events;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\ThemeData;
+use Give\Traits\HasWpTheme;
 use WP_Upgrader;
 
 /**
@@ -15,6 +16,8 @@ use WP_Upgrader;
  * @package Give\Tracking\Admin\Events
  */
 class ThemeTracking extends TrackEvent {
+	use HasWpTheme;
+
 	/**
 	 * @var string
 	 */
@@ -45,7 +48,7 @@ class ThemeTracking extends TrackEvent {
 		}
 
 		foreach ( $data['themes'] as $theme ) {
-			if ( get_stylesheet() === $theme || get_template() === $theme ) {
+			if ( get_stylesheet() === $theme || get_template() === $theme || $this->isParentTheme( $theme ) ) {
 				$this->trackId = 'theme-updated';
 				$this->record();
 			}
