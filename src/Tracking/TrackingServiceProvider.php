@@ -57,14 +57,8 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addAction( 'update_option_give_settings', AdminActionHandler::class, 'optInToUsageTrackingAdminGrantManually', 10, 2 );
 			Hooks::addAction( 'admin_notices', UsageTrackingOnBoarding::class, 'addNotice' );
 			Hooks::addAction( 'give_setup_page_before_sections', UsageTrackingOnBoarding::class, 'addNotice', 0 );
-
-			// Register track events.
-			Hooks::addAction( 'update_option_give_settings', GivePluginSettingsTracking::class, 'record' );
-			Hooks::addAction( 'update_option_active_plugins', PluginsTracking::class, 'record' );
-			Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
 		}
 
-		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
 		$this->registerTrackEvents();
 	}
 
@@ -79,5 +73,10 @@ class TrackingServiceProvider implements ServiceProvider {
 		foreach ( $this->trackingEvents as $eventClassName ) {
 			Hooks::addAction( 'give_send_tracking_data', $eventClassName, 'record' );
 		}
+
+		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
+		Hooks::addAction( 'update_option_give_settings', GivePluginSettingsTracking::class, 'record' );
+		Hooks::addAction( 'update_option_active_plugins', PluginsTracking::class, 'record' );
+		Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
 	}
 }
