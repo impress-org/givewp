@@ -12,10 +12,6 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 	const [ amountOptions, setAmountOptions ] = useState( [] );
 
 	useEffect( () => {
-		const amounts = form.amounts.map( ( amount ) => {
-			return parseFloat( amount.raw );
-		} );
-
 		const options = form.amounts.map( ( amount ) => {
 			return {
 				value: amount.raw,
@@ -31,17 +27,25 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 		}
 
 		setAmountOptions( options );
+	}, [] );
 
-		if ( value ) {
-			const float = parseFloat( value );
-			if ( amounts.includes( float ) ) {
-				setSelectValue( float );
-			} else {
-				setSelectValue( 'custom_amount' );
-				setCustomAmount( float );
+	useEffect( () => {
+		if ( amountOptions.length ) {
+			const amountFloats = amountOptions.map( ( option ) => {
+				return parseFloat( option.value );
+			} );
+			if ( value ) {
+				const float = parseFloat( value );
+				if ( amountFloats.includes( float ) ) {
+					const option = amountOptions.filter( ( curr ) => parseFloat( curr.value ) === float ? true : false )[ 0 ];
+					setSelectValue( option.value );
+				} else {
+					setSelectValue( 'custom_amount' );
+					setCustomAmount( float.toFixed( payment.currency.numberDecimals ) );
+				}
 			}
 		}
-	}, [] );
+	}, [ amountOptions ] );
 
 	useEffect( () => {
 		if ( selectValue ) {

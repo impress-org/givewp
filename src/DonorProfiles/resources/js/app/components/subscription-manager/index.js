@@ -12,14 +12,17 @@ import { saveSubscriptionWithAPI } from './utils';
 const SubscriptionManager = ( { id, subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
+	const [ saving, setSaving ] = useState( false );
 
 	const handleSave = async() => {
 		// Save with REST API
+		setSaving( true );
 		await saveSubscriptionWithAPI( {
 			id,
 			amount,
 			paymentMethod,
 		} );
+		setSaving( false );
 	};
 
 	return (
@@ -37,7 +40,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			<FieldRow>
 				<div>
 					<Button icon="save" onClick={ () => handleSave() }>
-						Save
+						{ saving ? __( 'Saving', 'give' ) : __( 'Save', 'give' ) }
 					</Button>
 				</div>
 			</FieldRow>
