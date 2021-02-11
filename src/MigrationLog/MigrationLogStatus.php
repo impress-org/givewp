@@ -34,4 +34,15 @@ class MigrationLogStatus {
 			MigrationLogStatus::PENDING => esc_html__( 'Pending', 'give' ),
 		];
 	}
+
+	/**
+	 * Check if value is a valid migration status
+	 *
+	 * @param string $status
+	 *
+	 * @return bool
+	 */
+	public static function isValid( $status ) {
+		return array_key_exists( $status, self::getAll() );
+	}
 }
