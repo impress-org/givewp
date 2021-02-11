@@ -3,6 +3,7 @@ namespace Give\Tracking;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
+use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
@@ -18,6 +19,15 @@ use Give\Tracking\Helpers\Track as TrackHelper;
  * @since 2.10.0
  */
 class TrackingServiceProvider implements ServiceProvider {
+	/**
+	 * @var TrackEvent[]
+	 */
+	private $trackingEvents = [
+		DonationMetricsTracking::class,
+		DonationFormsTracking::class,
+		WebsiteTracking::class,
+	];
+
 	/**
 	 * @inheritdoc
 	 */
@@ -54,9 +64,19 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
 		}
 
-		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
-		Hooks::addAction( 'give_send_tracking_data', DonationMetricsTracking::class, 'record' );
-		Hooks::addAction( 'give_send_tracking_data', DonationFormsTracking::class, 'record' );
-		Hooks::addAction( 'give_send_tracking_data', WebsiteTracking::class, 'record' );
+		$this->registerTrackEvents();
+	}
+
+	/**
+	 * Register track events.
+	 *
+	 * 'give_send_tracking_data' action hook that will be triggered track routine cron job.
+	 *
+	 * @since 2.10.0
+	 */
+	private function registerTrackEvents() {
+		foreach ( $this->trackingEvents as $eventClassName ) {
+			Hooks::addAction( 'give_send_tracking_data', $eventClassName, 'record' );
+		}
 	}
 }
