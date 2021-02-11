@@ -2,6 +2,9 @@
 
 namespace Give\MigrationLog;
 
+use Give\Helpers\Hooks;
+use Give\MigrationLog\Helpers\Assets;
+use Give\MigrationLog\Helpers\Environment;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\MigrationLog\Migrations\CreateMigrationsTable;
@@ -30,5 +33,10 @@ class MigrationLogServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		give( MigrationsRegister::class )->addMigration( CreateMigrationsTable::class );
+
+		// Hook up
+		if ( Environment::isMigrationsPage() ) {
+			Hooks::addAction( 'admin_enqueue_scripts', Assets::class, 'enqueueScripts' );
+		}
 	}
 }
