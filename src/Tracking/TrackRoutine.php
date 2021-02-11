@@ -20,27 +20,6 @@ class TrackRoutine {
 	protected $threshold = WEEK_IN_SECONDS * 2;
 
 	/**
-	 * Schedules a new sending of the tracking data after a WordPress core update.
-	 *
-	 * @param  bool|WP_Upgrader  $upgrader
-	 * @param  array  $data  Array of update data.
-	 *
-	 * @return void
-	 *@since 2.10.0
-	 *
-	 */
-	public function scheduleTrackingDataSending( $upgrader = false, $data = [] ) {
-		// Return if it's not a WordPress core update.
-		if ( ! $upgrader || ! isset( $data['type'] ) || ! in_array( $data['type'], [ 'core', 'plugin' ] ) ) {
-			return;
-		}
-
-		if ( ! wp_next_scheduled( 'give_send_tracking_data_routine_job', true ) ) {
-			wp_schedule_single_event( ( time() + ( HOUR_IN_SECONDS * 6 ) ), 'give_send_tracking_data_routine_job', true );
-		}
-	}
-
-	/**
 	 * Sends the tracking data.
 	 *
 	 * @since 2.10.0
@@ -53,6 +32,13 @@ class TrackRoutine {
 			return;
 		}
 
+		update_option( self::LAST_REQUEST_OPTION_NAME, time() );
+
+		/**
+		 * Fire action to send routine tracking events.
+		 *
+		 * @since 2.10.0
+		 */
 		do_action( 'give_send_tracking_data' );
 	}
 
@@ -71,7 +57,7 @@ class TrackRoutine {
 			return false;
 		}
 
-		$lastTime = get_option( self::LAST_REQUEST_OPTION_NAME );
+		$lastTime = get_option( self::LAST_REQUEST_OPTION_NAME, 0 );
 
 		// When tracking data haven't been sent yet or when sending data is forced.
 		if ( ! $lastTime || $ignore_time_threshold ) {

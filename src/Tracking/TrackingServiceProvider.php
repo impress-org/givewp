@@ -39,15 +39,9 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @inheritdoc
 	 */
 	public function boot() {
+		$this->registerTrackEvents();
 		Hooks::addAction( 'shutdown', Track::class, 'send' );
-
-		if ( ! TrackHelper::isTrackingEnabled() ) {
-			// Send tracking data on `admin_init`.
-			Hooks::addAction( 'admin_init', TrackRoutine::class, 'send', 1 );
-
-			// Call `wp_schedule_single_event()` after a WordPress core update.
-			Hooks::addAction( 'upgrader_process_complete', TrackRoutine::class, 'scheduleTrackingDataSending', 10, 2 );
-		}
+		Hooks::addAction( 'admin_init', TrackRoutine::class, 'send', 1 );
 
 		if ( is_admin() ) {
 			Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );
@@ -58,8 +52,6 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addAction( 'admin_notices', UsageTrackingOnBoarding::class, 'addNotice' );
 			Hooks::addAction( 'give_setup_page_before_sections', UsageTrackingOnBoarding::class, 'addNotice', 0 );
 		}
-
-		$this->registerTrackEvents();
 	}
 
 	/**

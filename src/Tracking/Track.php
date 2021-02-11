@@ -3,6 +3,7 @@ namespace Give\Tracking;
 
 use Give\Tracking\AdminSettings;
 use Give\Tracking\Events\TrackTracking;
+use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
  * Class Track
@@ -27,7 +28,7 @@ class Track {
 	 * @since 2.10.0
 	 */
 	public function send() {
-		if ( empty( $this->tracks ) ) {
+		if ( empty( $this->tracks ) || ! TrackHelper::isTrackingEnabled() ) {
 			return;
 		}
 
