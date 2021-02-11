@@ -68,8 +68,9 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 
 	const getHeaderRow = () => {
 		return columns.map( ( item, index ) => {
+			const columnStyles = ( item.styles ) ? { style: item.styles } : null;
 			return (
-				<div className={ styles.label } key={ index }>
+				<div className={ styles.label } key={ index } { ...columnStyles }>
 					{ item.label }
 					{ item.sort && ( typeof item.sortCallback === 'function' ) && (
 						<span onClick={ () => handleItemSort( item ) }>
@@ -105,8 +106,11 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 						value = columnFilters[ key ]( value, data[ index ] );
 					}
 
+					const currentColumn = columns.find( ( column ) => column.key === key );
+					const columnStyles = ( currentColumn.styles ) ? { style: currentColumn.styles } : null;
+
 					return (
-						<div className={ styles.item } key={ key }>
+						<div className={ styles.item } key={ key } { ...columnStyles }>
 							{ value }
 						</div>
 					);

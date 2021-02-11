@@ -335,6 +335,11 @@ const Logs = () => {
 			key: 'details',
 			label: __( 'Details', 'give' ),
 			append: true,
+			styles: {
+				maxWidth: 100,
+				textAlign: 'center',
+				justifyContent: 'center',
+			},
 		},
 	];
 
