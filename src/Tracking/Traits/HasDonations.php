@@ -12,7 +12,6 @@ use Give\Tracking\TrackRoutine;
  * @since 2.10.0
  */
 trait HasDonations {
-
 	/**
 	 * Return donation ids after last tracked request date.
 	 *
