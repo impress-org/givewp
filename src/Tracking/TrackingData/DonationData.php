@@ -3,7 +3,6 @@ namespace Give\Tracking\TrackingData;
 
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
-use Give\ValueObjects\Money;
 
 /**
  * Class DonationData

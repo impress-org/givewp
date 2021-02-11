@@ -2,7 +2,6 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Tracking\Contracts\TrackData;
-use Give\Helpers\ArrayDataSet;
 use Give\Tracking\AdminSettings;
 
 /**
@@ -23,18 +22,6 @@ class GivePluginSettingsData implements TrackData {
 	 */
 	public function get() {
 		return $this->getGlobalSettings();
-	}
-
-	/**
-	 * Returns plugin install date
-	 *
-	 * @since 2.10.0
-	 * @return int
-	 */
-	private function getPluginInstallDate() {
-		$confirmationPageID = give_get_option( 'success_page' );
-
-		return strtotime( get_post_field( 'post_date', $confirmationPageID, 'db' ) );
 	}
 
 	/**
