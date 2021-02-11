@@ -64,6 +64,7 @@ class TrackingServiceProvider implements ServiceProvider {
 			Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
 		}
 
+		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
 		$this->registerTrackEvents();
 	}
 
