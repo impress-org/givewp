@@ -129,7 +129,7 @@ class AdminActionHandler {
 		$token = $response['data']['access_token'];
 		update_option( OptionName::TELEMETRY_ACCESS_TOKEN, $token );
 
-		// Send first set of tracking information.
+		// Access token saved, now send first set of tracking information.
 		( new TrackRoutine() )->send();
 		give( ThemeTracking::class )->record();
 		give( GivePluginSettingsTracking::class )->record();
