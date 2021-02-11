@@ -54,5 +54,6 @@ class TrackingServiceProvider implements ServiceProvider {
 
 		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
 		Hooks::addAction( 'give_send_tracking_data', DonationMetrics::class, 'record' );
+		do_action('give_send_tracking_data');
 	}
 }
