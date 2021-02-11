@@ -44,19 +44,13 @@ class TrackClient {
 			],
 			'timeout'     => 8,
 			'httpversion' => '1.1',
-			'blocking'    => true,
-			'sslverify'   => false,
+			'blocking'    => false,
 			'user-agent'  => 'GIVE/' . GIVE_VERSION . ' ' . get_bloginfo( 'url' ),
 			'body'        => wp_json_encode( $trackData ),
 			'data_format' => 'body',
 		];
 
-		$tracking_request_args = wp_parse_args( $requestArgs, $default_request_args );
-
-		$response = wp_remote_post( $this->getApiUrl( $trackId ), $tracking_request_args );
-
-		error_log( print_r( $tracking_request_args, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( $response, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		return wp_remote_post( $this->getApiUrl( $trackId ), wp_parse_args( $requestArgs, $default_request_args ) );
 	}
 
 	/**
