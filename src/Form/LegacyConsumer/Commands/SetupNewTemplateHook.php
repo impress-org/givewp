@@ -7,9 +7,9 @@ use Give\Form\LegacyConsumer\FieldView;
 
 class SetupNewTemplateHook implements HookCommandInterface {
     public function __invoke( $hook ) {
-        $fieldCollection = new FieldCollection( 'root' );
-        do_action( "give_fields_$hook", $fieldCollection );
-        add_action( "give_$hook", function( $formID ) use ( $fieldCollection ) {
+        add_action( "give_$hook", function( $formID ) use ( $hook ) {
+            $fieldCollection = new FieldCollection( 'root' );
+            do_action( "give_fields_$hook", $fieldCollection, $formID );
             foreach( $fieldCollection->getFields() as $field ) {
                 FieldView::render( $field );
             }
