@@ -20,9 +20,9 @@ class DonationData implements TrackData {
 	 */
 	public function get() {
 		return [
-			'firstDonationDate' => $this->getFirstDonationDate(),
-			'lastDonationDate'  => $this->getLastDonationDate(),
-			'revenue'           => $this->getRevenueTillNow(),
+			'first_donation_date' => $this->getFirstDonationDate(),
+			'last_donation_date'  => $this->getLastDonationDate(),
+			'revenue'             => $this->getRevenueTillNow(),
 		];
 	}
 
@@ -37,12 +37,12 @@ class DonationData implements TrackData {
 
 		$date = $wpdb->get_var(
 			"
-				SELECT post_date_gmt
-				FROM {$wpdb->posts}
-				WHERE post_status IN ({$this->getDonationStatuses()})
-				ORDER BY post_date_gmt DESC
-				LIMIT 1
-				"
+			SELECT post_date_gmt
+			FROM {$wpdb->posts}
+			WHERE post_status IN ({$this->getDonationStatuses()})
+			ORDER BY post_date_gmt DESC
+			LIMIT 1
+			"
 		);
 
 		return $date ? strtotime( $date ) : '';
@@ -59,12 +59,12 @@ class DonationData implements TrackData {
 
 		$date = $wpdb->get_var(
 			"
-				SELECT post_date_gmt
-				FROM {$wpdb->posts}
-				WHERE post_status IN ({$this->getDonationStatuses()})
-				ORDER BY post_date_gmt ASC
-				LIMIT 1
-				"
+			SELECT post_date_gmt
+			FROM {$wpdb->posts}
+			WHERE post_status IN ({$this->getDonationStatuses()})
+			ORDER BY post_date_gmt ASC
+			LIMIT 1
+			"
 		);
 
 		return $date ? strtotime( $date ) : '';
@@ -74,15 +74,14 @@ class DonationData implements TrackData {
 	 * Returns revenue till current date.
 	 *
 	 * @since 2.10.0
-	 * @return string
+	 * @return int
 	 */
 	public function getRevenueTillNow() {
 		global $wpdb;
 
-		$currency = give_get_option( 'currency' );
-		$statues  = $this->getDonationStatuses();
+		$statues = $this->getDonationStatuses();
 
-		$result = $wpdb->get_var(
+		$result = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT SUM(amount)
@@ -95,7 +94,7 @@ class DonationData implements TrackData {
 				current_time( 'mysql' )
 			)
 		);
-		return $result ?: '';
+		return $result ?: 0;
 	}
 
 	/**
