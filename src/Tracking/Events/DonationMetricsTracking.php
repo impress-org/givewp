@@ -8,12 +8,12 @@ use Give\Tracking\TrackingData\DonationMetricsData;
 use Give\Tracking\TrackingData\ThemeData;
 
 /**
- * Class DonationMetrics
+ * Class DonationMetricsTracking
  * @package Give\Tracking\Events
  *
  * @since 2.10.0
  */
-class DonationMetrics extends TrackEvent {
+class DonationMetricsTracking extends TrackEvent {
 
 	/**
 	 * @var string
