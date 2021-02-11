@@ -29,6 +29,7 @@ class TrackClient {
 	 *
 	 * @param  string  $trackId
 	 * @param  array  $trackData
+	 * @param  array  $requestArgs
 	 *
 	 * @return array|WP_Error
 	 */
