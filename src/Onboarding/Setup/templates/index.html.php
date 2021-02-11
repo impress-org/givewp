@@ -12,7 +12,14 @@
 	</div>
 	<?php endif; ?>
 
-	<?php do_action( 'give_setup_page_before_sections' ); ?>
+	<?php
+	/**
+	 * Use this action to perform task before section loads.
+	 *
+	 * @since 2.10.0
+	 */
+	do_action( 'give_setup_page_before_sections' );
+	?>
 
 	<!-- Configuration -->
 	<?php
