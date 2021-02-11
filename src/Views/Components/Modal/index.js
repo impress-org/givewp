@@ -24,7 +24,7 @@ const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
 
 	const modalStyles = classNames( {
 		[ styles.modal ]: true,
-		[ styles.error ]: type === 'error',
+		[ styles.error ]: type === 'error' || type === 'failed',
 		[ styles.warning ]: type === 'warning',
 		[ styles.success ]: type === 'success',
 	} );
@@ -86,20 +86,24 @@ Modal.Content = ( { children, align } ) => {
 };
 
 Modal.AdditionalContext = ( { type, context } ) => {
-	const title = ( 'error' === type ) ? __( 'Error details', 'give' ) : __( 'Additional context', 'give' );
+	const title = ( [ 'error', 'failed' ].includes( type ) ) ? __( 'Error details', 'give' ) : __( 'Additional context', 'give' );
 
 	return (
 		<div className={ styles.section }>
 			<strong>{ title }:</strong>
 			<div className={ styles.errorDetailsContainer }>
-				{ context && Object.entries( context ).map( ( [ key, value ] ) => {
-					return (
-						<div key={ key }>
-							<span>{ key }:</span>
-							{ value }
-						</div>
-					);
-				} ) }
+				<pre>
+					{ Array.isArray( context ) ? (
+						Object.entries( context ).map( ( [ key, value ] ) => {
+							return (
+								<div key={ key }>
+									<span>{ key }:</span>
+									{ value }
+								</div>
+							);
+						} )
+					) : context }
+				</pre>
 			</div>
 		</div>
 	);
@@ -143,8 +147,8 @@ Modal.Content.propTypes = {
 Modal.AdditionalContext.propTypes = {
 	// Log type
 	type: PropTypes.string.isRequired,
-	// Array of objects
-	context: PropTypes.array.isRequired,
+	// String or Array of objects
+	context: PropTypes.any.isRequired,
 };
 
 Modal.defaultProps = {
