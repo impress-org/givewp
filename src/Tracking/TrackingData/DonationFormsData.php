@@ -5,6 +5,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
 use Give\Helpers\Utils;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Traits\HasDonations;
 use Give\ValueObjects\Money;
 use Give_Donors_Query;
 
@@ -17,6 +18,8 @@ use Give_Donors_Query;
  * @package Give\Tracking\TrackingData
  */
 class DonationFormsData implements TrackData {
+	use HasDonations;
+
 	private $formIds     = [];
 	private $donationIds = [];
 
@@ -24,6 +27,8 @@ class DonationFormsData implements TrackData {
 	 * @inheritdoc
 	 */
 	public function get() {
+		$this->setDonationIds()->setFormIdsByDonationIds();
+
 		if ( ! $this->formIds ) {
 			return [];
 		}
@@ -47,11 +52,12 @@ class DonationFormsData implements TrackData {
 		foreach ( $this->formIds as $formId ) {
 			$formTemplate = Template::getActiveID( $formId );
 
-			$data[ $formId ]['slug']         = get_post_field( 'post_name', $formId, 'db' );
-			$data[ $formId ]['formType']     = give()->form_meta->get_meta( $formId, '_give_price_option', true );
-			$data[ $formId ]['formTemplate'] = ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate;
-			$data[ $formId ]['donorCount']   = $this->getDonorCount( $formId );
-			$data[ $formId ]['revenue']      = $this->getRevenueTillNow( $formId );
+			$data[]['form_id']       = $formId;
+			$data[]['form_name']     = get_post_field( 'post_name', $formId, 'db' );
+			$data[]['form_type']     = give()->form_meta->get_meta( $formId, '_give_price_option', true );
+			$data[]['form_template'] = ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate;
+			$data[]['donor_count']   = $this->getDonorCount( $formId );
+			$data[]['revenue']       = $this->getRevenueTillNow( $formId );
 
 			$this->addAddonsInformation( $data, $formId );
 		}
@@ -64,12 +70,10 @@ class DonationFormsData implements TrackData {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param  array  $donationIds
-	 *
 	 * @return DonationFormsData
 	 */
-	public function setDonationIds( $donationIds ) {
-		$this->donationIds = $donationIds;
+	public function setDonationIds() {
+		$this->donationIds = $this->getNewDonationIdsSinceLastRequest();
 
 		return $this;
 	}
@@ -163,8 +167,8 @@ class DonationFormsData implements TrackData {
 	 * @param int $formId
 	 */
 	private function addAddonsInformation( &$array, $formId ) {
-		$array['isRecurringDonationsAddonActive'] = (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId );
-		$array['isFeeRecoveryAddonActive']        = (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId );
-		$array['isFormFieldManagerActive']        = (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId );
+		$array['recurring_donation'] = (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId );
+		$array['fee_recovery']       = (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId );
+		$array['form_field_manager'] = (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId );
 	}
 }

@@ -12,10 +12,10 @@ use Give\Tracking\TrackingData\DonationFormsData;
  *
  * @since 2.10.0
  */
-class DonationFormsTracking extends TrackEvent
-{/**
- * @var string
- */
+class DonationFormsTracking extends TrackEvent {
+	/**
+	 * @var string
+	 */
 	protected $trackId = 'donation-form-updated';
 
 	/**

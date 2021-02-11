@@ -3,7 +3,8 @@ namespace Give\Tracking;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Tracking\Events\DonationMetrics;
+use Give\Tracking\Events\DonationFormsTracking;
+use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
@@ -53,7 +54,7 @@ class TrackingServiceProvider implements ServiceProvider {
 		}
 
 		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
-		Hooks::addAction( 'give_send_tracking_data', DonationMetrics::class, 'record' );
-		do_action('give_send_tracking_data');
+		Hooks::addAction( 'give_send_tracking_data', DonationMetricsTracking::class, 'record' );
+		Hooks::addAction( 'give_send_tracking_data', DonationFormsTracking::class, 'record' );
 	}
 }
