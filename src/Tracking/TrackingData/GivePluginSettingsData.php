@@ -48,14 +48,15 @@ class GivePluginSettingsData implements TrackData {
 			'is_anonymous_tracking' => AdminSettings::USAGE_TRACKING_OPTION_NAME,
 		];
 
-		$data = [];
-
+		$data     = [];
+		$settings = get_option( 'give_settings', give_get_default_settings() );
 		foreach ( $generalSettings as $setting ) {
-			$data[ $setting ] = give_get_option( $setting, '' );
+			$data[ $setting ] = $settings[ $setting ] ?: '';
 		}
 
 		foreach ( $trueFalseSettings as $key => $setting ) {
-			$data[ $key ] = absint( give_is_setting_enabled( give_get_option( $setting, 'disabled' ) ) );
+			$value        = $settings[ $setting ] ?: 'disabled';
+			$data[ $key ] = absint( give_is_setting_enabled( $value ) );
 		}
 
 		$data['active_payment_gateways'] = give_get_enabled_payment_gateways();
