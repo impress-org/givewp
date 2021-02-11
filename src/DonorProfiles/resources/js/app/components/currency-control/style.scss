@@ -1,0 +1,51 @@
+/* stylelint-disable  function-url-quotes */
+
+.give-donor-profile-currency-control {
+	margin-top: 10px;
+
+	.give-donor-profile-currency-control__label {
+		font-family: Montserrat, Arial, Helvetica, sans-serif;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 1;
+		color: #555;
+	}
+
+	.give-donor-profile-currency-control__input {
+		align-items: center;
+		background-color: hsl(0, 0%, 100%);
+		border-radius: 4px;
+		cursor: default;
+		display: flex;
+		min-height: 38px;
+		outline: 0 !important;
+		font-size: 14px;
+		font-family: Montserrat, Arial, Helvetica, sans-serif;
+		font-weight: 500;
+		color: #828382;
+		line-height: 1.2;
+		min-width: 190px;
+		width: 100%;
+		margin-top: 8px;
+		border: 1px solid #b8b8b8;
+		overflow: hidden;
+		padding: 11px 12px;
+		box-shadow: 0 0 0 0 #4fa651;
+		transition: box-shadow 0.1s ease;
+
+		&:focus-within {
+			box-shadow: 0 0 0 1px #4fa651;
+		}
+
+		svg {
+			margin-right: 12px;
+		}
+
+		input {
+			outline: none;
+			border: none;
+			padding: 0;
+			width: 100%;
+		}
+	}
+}

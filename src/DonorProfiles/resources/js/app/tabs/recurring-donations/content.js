@@ -63,7 +63,7 @@ const Content = () => {
 							{ __( 'Manage Subscription', 'give' ) } #{ id }
 						</Heading>
 						<Divider />
-						<SubscriptionManager subscription={ subscriptions[ id ] } />
+						<SubscriptionManager id={ id } subscription={ subscriptions[ id ] } />
 						<Divider />
 						<div className="give-donor-profile__recurring-donations-link">
 							<Link to="/recurring-donations">

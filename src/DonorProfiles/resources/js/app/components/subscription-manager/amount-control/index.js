@@ -1,42 +1,44 @@
-import TextControl from '../../text-control';
+import CurrencyControl from '../../currency-control';
 import FieldRow from '../../field-row';
 import SelectControl from '../../select-control';
 import { useState, useEffect } from 'react';
 
-const AmountInputs = ( { form, onChange, value } ) => {
-	const [ customAmount, setCustomAmount ] = useState( 0 );
+const { __ } = wp.i18n;
+
+const AmountControl = ( { form, payment, onChange, value } ) => {
+	const [ customAmount, setCustomAmount ] = useState( null );
 	const [ selectValue, setSelectValue ] = useState( null );
 	const [ prevSelectValue, setPrevSelectValue ] = useState( null );
 	const [ amountOptions, setAmountOptions ] = useState( [] );
 
 	useEffect( () => {
 		const amounts = form.amounts.map( ( amount ) => {
-			return parseInt( amount._give_amount ).toString();
+			return parseFloat( amount.raw );
 		} );
 
-		const options = amounts.map( ( amount ) => {
+		const options = form.amounts.map( ( amount ) => {
 			return {
-				value: amount,
-				label: amount,
+				value: amount.raw,
+				label: amount.formatted,
 			};
 		} );
 
 		if ( form.custom_amount ) {
 			options.push( {
 				value: 'custom_amount',
-				label: 'Custom Amount',
+				label: __( 'Custom Amount', 'give' ),
 			} );
 		}
 
 		setAmountOptions( options );
 
 		if ( value ) {
-			const formatted = parseInt( value ).toString();
-			if ( amounts.includes( formatted ) ) {
-				setSelectValue( formatted );
+			const float = parseFloat( value );
+			if ( amounts.includes( float ) ) {
+				setSelectValue( float );
 			} else {
 				setSelectValue( 'custom_amount' );
-				setCustomAmount( formatted );
+				setCustomAmount( float );
 			}
 		}
 	}, [] );
@@ -46,12 +48,18 @@ const AmountInputs = ( { form, onChange, value } ) => {
 			if ( selectValue !== 'custom_amount' ) {
 				onChange( selectValue );
 				setPrevSelectValue( selectValue );
-			} else {
-				setCustomAmount( prevSelectValue );
-				onChange( customAmount );
+			} else if ( prevSelectValue ) {
+				setCustomAmount( parseFloat( prevSelectValue ).toFixed( payment.currency.numberDecimals ) );
 			}
 		}
-	}, [ customAmount, selectValue ] );
+	}, [ selectValue ] );
+
+	useEffect( () => {
+		if ( customAmount ) {
+			const float = parseFloat( customAmount );
+			onChange( float );
+		}
+	}, [ customAmount ] );
 
 	return (
 		<div className="give-donor-profile-amount-inputs">
@@ -61,7 +69,7 @@ const AmountInputs = ( { form, onChange, value } ) => {
 				</div>
 				<div>
 					{ selectValue === 'custom_amount' && (
-						<TextControl label="Custom Amount" value={ customAmount } onChange={ ( val ) => setCustomAmount( val ) } />
+						<CurrencyControl label="Custom Amount" value={ customAmount } onChange={ ( val ) => setCustomAmount( val ) } currency={ payment.currency } />
 					) }
 				</div>
 			</FieldRow>
@@ -69,4 +77,4 @@ const AmountInputs = ( { form, onChange, value } ) => {
 	);
 };
 
-export default AmountInputs;
+export default AmountControl;

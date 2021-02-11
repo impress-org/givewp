@@ -2,7 +2,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useState, useEffect } from 'react';
 
-import CardControl from './card-control';
+import StripeCardControl from './stripe-card-control';
 
 const StripeControl = ( { onChange, value } ) => {
 	const [ stripePromise, setStripePromise ] = useState( null );
@@ -14,9 +14,14 @@ const StripeControl = ( { onChange, value } ) => {
 		}
 	}, [] );
 
+	const fonts = [ {
+		src: 'url(https://fonts.googleapis.com/css2?family=Montserrat:wght@500)',
+		family: 'Montserrat',
+	} ];
+
 	return (
-		<Elements stripe={ stripePromise }>
-			<CardControl onChange={ ( val ) => onChange( val ) } value={ value } />
+		<Elements stripe={ stripePromise } fonts={ fonts }>
+			<StripeCardControl onChange={ ( val ) => onChange( val ) } value={ value } />
 		</Elements>
 	);
 };

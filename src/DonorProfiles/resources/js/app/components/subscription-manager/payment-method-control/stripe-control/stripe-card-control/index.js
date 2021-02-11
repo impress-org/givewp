@@ -2,7 +2,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useState, useEffect } from 'react';
 import './style.scss';
 
-const CardControl = ( { onChange, value } ) => {
+const CardControl = ( { label, onChange, value } ) => {
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -11,7 +11,9 @@ const CardControl = ( { onChange, value } ) => {
 
 	useEffect( () => {
 		if ( paymentMethodId ) {
-			onChange( paymentMethodId );
+			onChange( {
+				give_stripe_payment_method: paymentMethodId,
+			} );
 		}
 	}, [ paymentMethodId ] );
 
@@ -41,8 +43,14 @@ const CardControl = ( { onChange, value } ) => {
 	};
 
 	return (
-		<div className={ focused ? 'give-donor-profile-stripe-control give-donor-profile-stripe-control--focused' : 'give-donor-profile-stripe-control' }>
-			<CardElement onFocus={ () => setFocused( true ) } onBlur={ () => handleBlur() } />
+		<div className="give-donor-profile-stripe-card-control">
+			<label className="give-donor-profile-stripe-card-control__label">{ label }</label>
+			<div className={ focused ? 'give-donor-profile-stripe-card-control__input give-donor-profile-stripe-card-control__input--focused' : 'give-donor-profile-stripe-card-control__input' }>
+				<CardElement
+					style={ { base: { fontFamily: 'Montserrat' } } }
+					onFocus={ () => setFocused( true ) } onBlur={ () => handleBlur() }
+				/>
+			</div>
 		</div>
 	);
 };

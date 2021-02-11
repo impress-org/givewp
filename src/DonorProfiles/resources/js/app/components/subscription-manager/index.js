@@ -2,21 +2,38 @@ import FieldRow from '../field-row';
 import Button from '../button';
 import { Fragment, useState } from 'react';
 
-import AmountInputs from './amount-inputs';
-import PaymentMethodInputs from './payment-method-control';
+const { __ } = wp.i18n;
 
-const SubscriptionManager = ( { subscription } ) => {
+import AmountControl from './amount-control';
+import PaymentMethodControl from './payment-method-control';
+
+import { saveSubscriptionWithAPI } from './utils';
+
+const SubscriptionManager = ( { id, subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
 
-	const handleSave = () => {
+	const handleSave = async() => {
 		// Save with REST API
+		await saveSubscriptionWithAPI( {
+			id,
+			amount,
+			paymentMethod,
+		} );
 	};
 
 	return (
 		<Fragment>
-			<AmountInputs form={ subscription.form } onChange={ ( val ) => setAmount( val ) } value={ amount } />
-			<PaymentMethodInputs gateway={ subscription.gateway.id } onChange={ ( val ) => setPaymentMethod( val ) } value={ paymentMethod } />
+			<AmountControl
+				form={ subscription.form }
+				payment={ subscription.payment }
+				onChange={ ( val ) => setAmount( val ) } value={ amount }
+			/>
+			<PaymentMethodControl
+				label={ __( 'Payment Method', 'give' ) }
+				gateway={ subscription.gateway.id }
+				onChange={ ( val ) => setPaymentMethod( val ) }
+			/>
 			<FieldRow>
 				<div>
 					<Button icon="save" onClick={ () => handleSave() }>
