@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\FieldsAPI\Commands;
+namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\FieldCollection;
-use Give\FieldsAPI\FieldView;
+use Give\Form\LegacyConsumer\FieldView;
 
 class SetupNewTemplateHook implements HookCommandInterface {
     public function __invoke( $hook ) {

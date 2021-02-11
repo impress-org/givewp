@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\FieldsAPI\Commands;
+namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\FieldsAPI\FilterCallbackCollection;
+use Give\Form\LegacyConsumer\FilterCallbackCollection;
 
 class DeprecateOldTemplateHook implements HookCommandInterface {
 

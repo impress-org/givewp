@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\FieldsAPI;
+namespace Give\Form\LegacyConsumer;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-use Give\FieldsAPI\Commands\DeprecateOldTemplateHook;
+use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
 
 class ServiceProvider implements ServiceProviderInterface {
 
