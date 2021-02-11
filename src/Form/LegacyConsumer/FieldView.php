@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormConsumer;
+namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\FormField;
 
