@@ -17,7 +17,7 @@ const Content = () => {
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
 
 	const getDonationById = ( donationId ) => {
-		const filter = donations.filter( ( donation ) => donation.id === parseInt( donationId ) ? true : false );
+		const filter = donations.filter( ( donation ) => parseInt( donation.id ) === parseInt( donationId ) ? true : false );
 		if ( filter.length ) {
 			return filter[ 0 ];
 		}

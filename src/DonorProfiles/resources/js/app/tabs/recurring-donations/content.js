@@ -24,7 +24,7 @@ const Content = () => {
 	const id = location ? location.pathname.split( '/' )[ 3 ] : null;
 
 	const getSubscriptionById = ( subscriptionId ) => {
-		const filter = subscriptions.filter( ( subscription ) => subscription.id === parseInt( subscriptionId ) ? true : false );
+		const filter = subscriptions.filter( ( subscription ) => parseInt( subscription.id ) === parseInt( subscriptionId ) ? true : false );
 		if ( filter.length ) {
 			return filter[ 0 ];
 		}
