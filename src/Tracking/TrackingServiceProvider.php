@@ -8,6 +8,7 @@ use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
+use Give\Tracking\Events\WebsiteTracking;
 use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
@@ -56,5 +57,6 @@ class TrackingServiceProvider implements ServiceProvider {
 		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
 		Hooks::addAction( 'give_send_tracking_data', DonationMetricsTracking::class, 'record' );
 		Hooks::addAction( 'give_send_tracking_data', DonationFormsTracking::class, 'record' );
+		Hooks::addAction( 'give_send_tracking_data', WebsiteTracking::class, 'record' );
 	}
 }
