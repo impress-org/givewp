@@ -27,8 +27,8 @@ class WebsiteData implements TrackData {
 			'site_title'     => get_option( 'blogname' ),
 			'wp_version'     => $wp_version,
 			'givewp_version' => GIVE_VERSION,
-			'home_url'       => home_url(),
-			'admin_url'      => admin_url(),
+			'home_url'       => untrailingslashit( home_url() ),
+			'admin_url'      => untrailingslashit( admin_url() ),
 			'is_multisite'   => absint( is_multisite() ),
 			'site_language'  => get_bloginfo( 'language' ),
 		];

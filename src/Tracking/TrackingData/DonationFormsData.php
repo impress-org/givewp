@@ -54,7 +54,7 @@ class DonationFormsData implements TrackData {
 
 			$temp = [
 				'form_id'       => (int) $formId,
-				'form_url'      => get_permalink( $formId ),
+				'form_url'      => untrailingslashit( get_permalink( $formId ) ),
 				'form_name'     => get_post_field( 'post_name', $formId, 'db' ),
 				'form_type'     => give()->form_meta->get_meta( $formId, '_give_price_option', true ),
 				'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
