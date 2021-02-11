@@ -2,6 +2,8 @@
 
 namespace Give\Traits;
 
+use WP_Theme;
+
 /**
  * Trait HasWpTheme
  * @package Give\Traits
@@ -32,7 +34,7 @@ trait HasWpTheme {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param $theme
+	 * @param WP_Theme $theme
 	 *
 	 * @return bool
 	 */
