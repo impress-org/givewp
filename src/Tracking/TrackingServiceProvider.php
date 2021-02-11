@@ -10,7 +10,6 @@ use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
 use Give\Tracking\Events\WebsiteTracking;
-use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
  * Class TrackingServiceProvider

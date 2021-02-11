@@ -1,8 +1,6 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\AdminSettings;
-use Give\Tracking\Events\TrackTracking;
 use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
