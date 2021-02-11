@@ -1,6 +1,9 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\Events\GivePluginSettingsTracking;
+use Give\Tracking\Events\PluginsTracking;
+use Give\Tracking\Events\ThemeTracking;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\WebsiteData;
 use Give\Tracking\ValueObjects\EventId;
@@ -86,7 +89,9 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$usageTracking = give_is_setting_enabled( $newValue[ AdminSettings::USAGE_TRACKING_OPTION_NAME ] ?: 'disabled' );
+		$usageTracking = $newValue[ AdminSettings::USAGE_TRACKING_OPTION_NAME ] ?: 'disabled';
+		$usageTracking = give_is_setting_enabled( $usageTracking );
+
 		// Exit if already has access token.
 		if ( $usageTracking || get_option( OptionName::TELEMETRY_ACCESS_TOKEN ) ) {
 			return false;
@@ -123,5 +128,11 @@ class AdminActionHandler {
 
 		$token = $response['data']['access_token'];
 		update_option( OptionName::TELEMETRY_ACCESS_TOKEN, $token );
+
+		// Send first set of tracking information.
+		( new TrackRoutine() )->send();
+		give( ThemeTracking::class )->record();
+		give( GivePluginSettingsTracking::class )->record();
+		give( PluginsTracking::class )->record();
 	}
 }
