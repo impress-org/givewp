@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import StripeCardControl from './stripe-card-control';
 
-const StripeControl = ( { onChange, value } ) => {
+const StripeControl = ( { label, onChange, value } ) => {
 	const [ stripePromise, setStripePromise ] = useState( null );
 
 	useEffect( () => {
@@ -21,7 +21,7 @@ const StripeControl = ( { onChange, value } ) => {
 
 	return (
 		<Elements stripe={ stripePromise } fonts={ fonts }>
-			<StripeCardControl onChange={ ( val ) => onChange( val ) } value={ value } />
+			<StripeCardControl label={ label } onChange={ ( val ) => onChange( val ) } value={ value } />
 		</Elements>
 	);
 };
