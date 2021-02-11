@@ -51,6 +51,7 @@ use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
+use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
@@ -145,6 +146,7 @@ final class Give {
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
 		TestDataServiceProvider::class,
+		MigrationLogServiceProvider::class,
 		LogServiceProvider::class,
 	];
 
