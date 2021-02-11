@@ -5,6 +5,8 @@ import { LoadingOverlay } from 'GiveComponents';
 
 import styles from './style.module.scss';
 
+const { __ } = wp.i18n;
+
 const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) => {
 	const [ state, setState ] = useState( {} );
 	const [ cachedData, setCachedData ] = useState( [] );
@@ -86,7 +88,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 		if ( ! isLoading && data.length === 0 ) {
 			return (
 				<div className={ styles.noData }>
-					No data
+					{ __( 'No data', 'give' ) }
 				</div>
 			);
 		}
