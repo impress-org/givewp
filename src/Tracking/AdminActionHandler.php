@@ -86,7 +86,7 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$usageTracking = give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		$usageTracking = give_is_setting_enabled( $newValue[ AdminSettings::USAGE_TRACKING_OPTION_NAME ] ?: 'disabled' );
 		// Exit if already has access token.
 		if ( $usageTracking || get_option( OptionName::TELEMETRY_ACCESS_TOKEN ) ) {
 			return false;
