@@ -10,9 +10,22 @@ import './style.scss';
 
 const { __ } = wp.i18n;
 
-const CurrencyControl = ( { label, onChange, value, placeholder, currency, width } ) => {
+const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, max, width } ) => {
 	const id = toUniqueId( label );
 	const name = toKebabCase( label );
+
+	const handleBlur = () => {
+		switch ( true ) {
+			case ( max && value > max ): {
+				onChange( max.toFixed( currency.numberDecimals ) );
+				break;
+			}
+			case ( min && value < min ): {
+				onChange( min.toFixed( currency.numberDecimals ) );
+				break;
+			}
+		}
+	};
 
 	return (
 		<div className="give-donor-profile-currency-control" style={ width ? { maxWidth: width } : null }>
@@ -24,9 +37,10 @@ const CurrencyControl = ( { label, onChange, value, placeholder, currency, width
 					placeholder={ placeholder }
 					value={ value }
 					onValueChange={ ( val ) => onChange( val ) }
+					onBlur={ () => handleBlur() }
 					allowNegativeValue={ false }
 					decimalsLimit={ currency.numberDecimals }
-					fixedDecimalLength={ currency.numberDecimals }
+					decimalScale={ currency.numberDecimals }
 					prefix={ currency.currencyPosition === 'before' ? currency.symbol : null }
 					suffix={ currency.currencyPosition === 'after' ? currency.symbol : null }
 					decimalSeparator={ currency.decimalSeparator }

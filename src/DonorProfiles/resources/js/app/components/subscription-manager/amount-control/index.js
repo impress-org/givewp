@@ -73,7 +73,13 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 				</div>
 				<div>
 					{ selectValue === 'custom_amount' && (
-						<CurrencyControl label="Custom Amount" value={ customAmount } onChange={ ( val ) => setCustomAmount( val ) } currency={ payment.currency } />
+						<CurrencyControl
+							label="Custom Amount"
+							min={ form.custom_amount.minimum ? parseFloat( form.custom_amount.minimum ) : null }
+							max={ form.custom_amount.maximum ? parseFloat( form.custom_amount.maximum ) : null }
+							value={ customAmount }
+							onChange={ ( val ) => setCustomAmount( val ) } currency={ payment.currency }
+						/>
 					) }
 				</div>
 			</FieldRow>
