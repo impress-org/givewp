@@ -39,12 +39,12 @@ class DonationMetricsData implements TrackData {
 
 		$date = $wpdb->get_var(
 			"
-				SELECT post_date_gmt
-				FROM {$wpdb->posts}
-				WHERE post_status IN ({$this->getDonationStatuses()})
-				ORDER BY post_date_gmt DESC
-				LIMIT 1
-				"
+			SELECT post_date_gmt
+			FROM {$wpdb->posts}
+			WHERE post_status IN ({$this->getDonationStatuses()})
+			ORDER BY post_date_gmt DESC
+			LIMIT 1
+			"
 		);
 
 		return $date ? strtotime( $date ) : '';
@@ -61,12 +61,12 @@ class DonationMetricsData implements TrackData {
 
 		$date = $wpdb->get_var(
 			"
-				SELECT post_date_gmt
-				FROM {$wpdb->posts}
-				WHERE post_status IN ({$this->getDonationStatuses()})
-				ORDER BY post_date_gmt ASC
-				LIMIT 1
-				"
+			SELECT post_date_gmt
+			FROM {$wpdb->posts}
+			WHERE post_status IN ({$this->getDonationStatuses()})
+			ORDER BY post_date_gmt ASC
+			LIMIT 1
+			"
 		);
 
 		return $date ? strtotime( $date ) : '';
