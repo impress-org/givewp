@@ -41,6 +41,7 @@ const config = {
 		'admin-onboarding-wizard': [ './assets/src/js/admin/onboarding-wizard/index.js' ],
 		'multi-form-goal-block': [ './src/MultiFormGoals/resources/css/common.scss' ],
 		'give-log-list-table-app': [ './src/Log/Admin/index.js' ],
+		'give-migrations-list-table-app': [ './src/MigrationLog/Admin/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
