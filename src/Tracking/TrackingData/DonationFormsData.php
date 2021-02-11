@@ -52,14 +52,18 @@ class DonationFormsData implements TrackData {
 		foreach ( $this->formIds as $formId ) {
 			$formTemplate = Template::getActiveID( $formId );
 
-			$data[]['form_id']       = $formId;
-			$data[]['form_name']     = get_post_field( 'post_name', $formId, 'db' );
-			$data[]['form_type']     = give()->form_meta->get_meta( $formId, '_give_price_option', true );
-			$data[]['form_template'] = ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate;
-			$data[]['donor_count']   = $this->getDonorCount( $formId );
-			$data[]['revenue']       = $this->getRevenueTillNow( $formId );
+			$temp = [
+				'form_id'       => (int) $formId,
+				'form_url'      => get_permalink( $formId ),
+				'form_name'     => get_post_field( 'post_name', $formId, 'db' ),
+				'form_type'     => give()->form_meta->get_meta( $formId, '_give_price_option', true ),
+				'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
+				'donor_count'   => $this->getDonorCount( $formId ),
+				'revenue'       => $this->getRevenueTillNow( $formId ),
+			];
 
-			$this->addAddonsInformation( $data, $formId );
+			$this->addAddonsInformation( $temp, $formId );
+			$data[] = $temp;
 		}
 
 		return $data;
@@ -118,7 +122,7 @@ class DonationFormsData implements TrackData {
 			]
 		);
 
-		$result = $wpdb->get_var(
+		$result = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT SUM(amount)
@@ -133,7 +137,7 @@ class DonationFormsData implements TrackData {
 				$formId
 			)
 		);
-		return $result ?: '';
+		return $result ?: 0;
 	}
 
 	/**
@@ -143,7 +147,7 @@ class DonationFormsData implements TrackData {
 	 *
 	 * @param int $formId
 	 *
-	 * @return array|object|string|null
+	 * @return int
 	 */
 	private function getDonorCount( $formId ) {
 		$donorQuery = new Give_Donors_Query(
@@ -155,7 +159,7 @@ class DonationFormsData implements TrackData {
 			]
 		);
 
-		return $donorQuery->get_donors();
+		return (int) $donorQuery->get_donors();
 	}
 
 	/**
@@ -167,8 +171,13 @@ class DonationFormsData implements TrackData {
 	 * @param int $formId
 	 */
 	private function addAddonsInformation( &$array, $formId ) {
-		$array['recurring_donation'] = (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId );
-		$array['fee_recovery']       = (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId );
-		$array['form_field_manager'] = (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId );
+		$array = array_merge(
+			$array,
+			[
+				'recurring_donations' => (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId ),
+				'fee_recovery'        => (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId ),
+				'form_field_manager'  => (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId ),
+			]
+		);
 	}
 }
