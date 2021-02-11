@@ -1,9 +1,11 @@
 import Button from '../button';
 import { cancelSubscriptionWithAPI } from './utils';
 
+const { __ } = wp.i18n;
+
 import './style.scss';
 
-const SubscriptionCancelModal = ( { id, form, onRequestClose } ) => {
+const SubscriptionCancelModal = ( { id, onRequestClose } ) => {
 	const handleCancel = async() => {
 		await cancelSubscriptionWithAPI( id );
 		onRequestClose();
@@ -13,16 +15,15 @@ const SubscriptionCancelModal = ( { id, form, onRequestClose } ) => {
 		<div className="give-donor-profile-cancel-modal">
 			<div className="give-donor-profile-cancel-modal__frame">
 				<div className="give-donor-profile-cancel-modal__header">
-					Cancel Subscription?
+					{ __( 'Cancel Subscription?', 'give' ) }
 				</div>
 				<div className="give-donor-profile-cancel-modal__body">
-					{ form.title }
 					<div className="give-donor-profile-cancel-modal__buttons">
 						<Button onClick={ () => handleCancel() }>
-							Yes, cancel.
+							{ __( 'Yes, cancel', 'give' ) }
 						</Button>
 						<a onClick={ () => onRequestClose() }>
-							Nevermind
+							{ __( 'Nevermind', 'give' ) }
 						</a>
 					</div>
 				</div>
