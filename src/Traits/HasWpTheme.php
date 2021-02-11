@@ -27,7 +27,7 @@ trait HasWpTheme {
 	}
 
 	/**
-	 * Return whether or not active theme is child them or not.
+	 * Return whether or not given theme is child them or not.
 	 * Note: is_child_theme WordPress  function does not return correct return immediately after switching theme.
 	 *
 	 * @since 2.10.0
