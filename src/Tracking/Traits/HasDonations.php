@@ -31,12 +31,12 @@ trait HasDonations {
 
 		return $wpdb->get_col(
 			"
-				SELECT ID
-				FROM {$wpdb->posts}
-				WHERE post_date_gmt >= '{$time}'
-				AND post_status IN ({$statues})
-				AND post_type='give_payment'
-				"
+			SELECT ID
+			FROM {$wpdb->posts}
+			WHERE post_date_gmt >= '{$time}'
+			AND post_status IN ({$statues})
+			AND post_type='give_payment'
+			"
 		);
 	}
 }
