@@ -33,7 +33,7 @@ class Track {
 		$trackClient = new TrackClient();
 
 		foreach ( $this->tracks as $trackId => $trackData ) {
-			$trackClient->send( $trackId, $trackData );
+			$trackClient->post( $trackId, $trackData );
 		}
 	}
 

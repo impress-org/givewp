@@ -111,7 +111,7 @@ class AdminActionHandler {
 			( new WebsiteData() )->get()
 		);
 
-		$response = $client->send( EventId::CREATE_TOKEN, $data, [ 'blocking' => true ] );
+		$response = $client->post( EventId::CREATE_TOKEN, $data, [ 'blocking' => true ] );
 		if ( is_wp_error( $response ) ) {
 			return;
 		}

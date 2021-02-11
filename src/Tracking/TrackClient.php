@@ -33,7 +33,7 @@ class TrackClient {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function send( $trackId, $trackData, $requestArgs = [] ) {
+	public function post( $trackId, $trackData, $requestArgs = [] ) {
 		if ( ! $trackId || ! $trackData ) {
 			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
 		}
