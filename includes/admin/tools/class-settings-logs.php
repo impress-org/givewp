@@ -45,6 +45,11 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 
 		}
 
+		/**
+		 * Logs list table app container
+		 *
+		 * @since 2.10.0
+		 */
 		public function output() {
 			echo '<div id="give-logs-list-table-app" style="padding-top: 20px;"></div>';
 		}
