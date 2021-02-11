@@ -38,7 +38,7 @@ class AdminActionHandler {
 			return;
 		}
 
-		$timestamp = '0'; // permanently.
+		$timestamp = '0'; // zero value disable notice permanently.
 		if ( 'hide_opt_in_notice_shortly' === $_GET['give_action'] ) {
 			$timestamp = DAY_IN_SECONDS * 2 + time();
 		}
