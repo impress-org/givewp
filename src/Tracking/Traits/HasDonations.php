@@ -32,10 +32,14 @@ trait HasDonations {
 		return $wpdb->get_col(
 			"
 			SELECT ID
-			FROM {$wpdb->posts}
+			FROM {$wpdb->posts} as p
+			INNER JOIN {$wpdb->donationmeta} as dm
+			ON p.id=dm.id
 			WHERE post_date_gmt >= '{$time}'
 			AND post_status IN ({$statues})
 			AND post_type='give_payment'
+			AND dm.meta_key='_give_payment_mode'
+			AND dm.meta_value='live'
 			"
 		);
 	}

@@ -38,8 +38,12 @@ class DonationData implements TrackData {
 		$date = $wpdb->get_var(
 			"
 			SELECT post_date_gmt
-			FROM {$wpdb->posts}
+			FROM {$wpdb->posts} as p
+			INNER JOIN {$wpdb->donationmeta} as dm
+			ON p.id=dm.id
 			WHERE post_status IN ({$this->getDonationStatuses()})
+			AND dm.meta_key='_give_payment_mode'
+			AND dm.meta_value='live'
 			ORDER BY post_date_gmt DESC
 			LIMIT 1
 			"
@@ -60,8 +64,12 @@ class DonationData implements TrackData {
 		$date = $wpdb->get_var(
 			"
 			SELECT post_date_gmt
-			FROM {$wpdb->posts}
+			FROM {$wpdb->posts} as p
+			INNER JOIN {$wpdb->donationmeta} as dm
+			ON p.id=dm.id
 			WHERE post_status IN ({$this->getDonationStatuses()})
+			AND dm.meta_key='_give_payment_mode'
+			AND dm.meta_value='live'
 			ORDER BY post_date_gmt ASC
 			LIMIT 1
 			"
@@ -87,9 +95,13 @@ class DonationData implements TrackData {
 				SELECT SUM(amount)
 				FROM {$wpdb->give_revenue} as r
 				INNER JOIN {$wpdb->posts} as p
+				INNER JOIN {$wpdb->donationmeta} as dm
 				ON r.donation_id=p.id
+				ON p.id=dm.id
 				WHERE p.post_date<=%s
 				AND post_status IN ({$statues})
+				AND dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
 				",
 				current_time( 'mysql' )
 			)

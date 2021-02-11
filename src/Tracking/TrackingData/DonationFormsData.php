@@ -126,10 +126,14 @@ class DonationFormsData implements TrackData {
 				SELECT SUM(amount)
 				FROM {$wpdb->give_revenue} as r
 				INNER JOIN {$wpdb->posts} as p
+				INNER JOIN {$wpdb->donationmeta} as dm
 				ON r.donation_id=p.id
+				ON p.id=dm.id
 				WHERE p.post_date<=%s
 				AND post_status IN ({$statues})
 				AND r.form_id=%d
+				AND dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
 				",
 				current_time( 'mysql' ),
 				$formId
