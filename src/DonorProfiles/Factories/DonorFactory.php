@@ -6,7 +6,7 @@ use \Give_Donor as DonorModel;
 
 class DonorFactory {
 
-	public function make( int $donorId ) {
+	public function make( $donorId ) {
 		return new DonorModel( $donorId );
 	}
 }

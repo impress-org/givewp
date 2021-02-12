@@ -83,7 +83,7 @@ class ProfileRoute implements RestRoute {
 	 *
 	 * @since 2.11.0
 	 */
-	public function handleRequest( WP_REST_Request $request ) {
+	public function handleRequest( $request ) {
 		return $this->updateProfile( $request->get_param( 'data' ), $request->get_param( 'id' ) );
 	}
 
