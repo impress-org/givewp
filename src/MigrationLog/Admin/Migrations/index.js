@@ -11,8 +11,8 @@ const Migrations = () => {
 	const [ state, setState ] = useState( {
 		initialLoad: false,
 		currentPage: 1,
-		sortColumn: '',
-		sortDirection: '',
+		sortColumn: 'run_order',
+		sortDirection: 'asc',
 		pages: 0,
 	} );
 
@@ -30,16 +30,13 @@ const Migrations = () => {
 		direction: state.sortDirection,
 	};
 
-	const { data, isLoading, isError } = useMigrationFetcher( getEndpoint( '/get-migrations', parameters ), {
+	const { data, isLoading, isError, mutate } = useMigrationFetcher( getEndpoint( '/get-migrations', parameters ), {
 		onSuccess: ( { response } ) => {
 			setState( ( previousState ) => {
 				return {
 					...previousState,
 					initialLoad: true,
 					pages: response.pages,
-					statuses: response.statuses,
-					categories: response.categories,
-					sources: response.sources,
 					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
 				};
 			} );
@@ -56,8 +53,22 @@ const Migrations = () => {
 		} );
 
 		API.post( '/run-migration', { id: migrationRunModal.id } )
-			.then( () => {
-				window.location.reload();
+			.then( ( response ) => {
+				if ( response.data.status ) {
+					return window.location.reload();
+				}
+
+				setMigrationRunModal( ( previousState ) => {
+					return {
+						...previousState,
+						type: 'error',
+						error: true,
+						errorMessage: response.data.message,
+					};
+				} );
+
+				// Invalidate the cache
+				mutate( getEndpoint( '/get-migrations', parameters ) );
 			} )
 			.catch( () => {
 				setMigrationRunModal( ( previousState ) => {
@@ -84,9 +95,9 @@ const Migrations = () => {
 		setMigrationModal( { visible: false } );
 	};
 
-	const openMigrationRunModal = ( e ) => {
-		e.preventDefault();
+	const openMigrationRunModal = ( migrationId ) => {
 		setMigrationRunModal( {
+			id: migrationId,
 			visible: true,
 			type: 'warning',
 		} );
@@ -141,10 +152,16 @@ const Migrations = () => {
 					<Modal.Content align="center">
 						{ migrationRunModal.error ? (
 							<>
-								<h2>{ __( 'Something went wrong!', 'give' ) }</h2>
-								<div>
-									Try to <a onClick={ () => window.location.reload() } href="#">reload</a> the browser
-								</div>
+								<Modal.CloseIcon onClick={ closeMigrationRunModal } />
+								<h2>{ __( 'Database update failed!', 'give' ) }</h2>
+								{ migrationRunModal.errorMessage && (
+									<Modal.Content align="center">
+										{ migrationRunModal.errorMessage }
+									</Modal.Content>
+								) }
+								<Modal.Content align="center">
+									{ __( 'Check migration details for more information', 'give' ) }
+								</Modal.Content>
 							</>
 						) : (
 							<>
@@ -200,15 +217,30 @@ const Migrations = () => {
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'id', direction ),
 		},
 		{
+			key: 'run_order',
+			label: __( 'Run Order', 'give' ),
+			sort: true,
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'position', direction ),
+			styles: {
+				maxWidth: 150,
+			},
+		},
+		{
 			key: 'last_run',
 			label: __( 'Last run', 'give' ),
 			sort: true,
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'last_run', direction ),
+			styles: {
+				maxWidth: 220,
+			},
 		},
 		{
 			key: 'actions',
 			label: __( 'Actions', 'give' ),
 			append: true,
+			styles: {
+				maxWidth: 150,
+			},
 		},
 		{
 			key: 'details',
@@ -229,7 +261,7 @@ const Migrations = () => {
 				return (
 					<button
 						className="button"
-						onClick={ openMigrationRunModal }>
+						onClick={ () => openMigrationRunModal( migration.id ) }>
 						{ __( 'Run Update', 'give' ) }
 					</button>
 				);
@@ -258,7 +290,7 @@ const Migrations = () => {
 		return (
 			<Notice>
 				<Spinner />
-				<h2>{ __( 'Loading migrations activity', 'give' ) }</h2>
+				<h2>{ __( 'Loading updates activity', 'give' ) }</h2>
 			</Notice>
 		);
 	}
