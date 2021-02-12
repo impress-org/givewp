@@ -123,8 +123,7 @@ class LogRepository {
 		$endDate       = $request->get_param( 'end' );
 		$sortDirection = $request->get_param( 'direction' );
 
-		$perPage = 10;
-		$offset  = $page > 1 ? $page * $perPage : 0;
+		$offset = ( $page - 1 ) * self::LOGS_PER_PAGE;
 
 		$query = "SELECT * FROM {$this->log_table} WHERE 1=1";
 
