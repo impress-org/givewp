@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 
 class FieldCollection implements GroupNode {
 
+    use FieldCollection\NameCollision;
     use FieldCollection\InsertNode;
     use FieldCollection\MoveNode;
     use FieldCollection\RemoveNode;

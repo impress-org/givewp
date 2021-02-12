@@ -8,6 +8,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 trait InsertNode {
 
     public function insertAfter( $siblingName, Node $node ) {
+        $this->checkNameCollisionDeep( $node );
         $siblingIndex = $this->getNodeIndexByName( $siblingName );
         if( false !== $siblingIndex ) {
             $this->insertAtIndex(
@@ -25,6 +26,7 @@ trait InsertNode {
     }
 
     public function insertBefore( $siblingName, Node $node ) {
+        $this->checkNameCollisionDeep( $node );
         $siblingIndex = $this->getNodeIndexByName( $siblingName );
         if( false !== $siblingIndex ) {
             $this->insertAtIndex(
@@ -33,7 +35,7 @@ trait InsertNode {
             );
         } else {
             foreach( $this->nodes as $childNode ) {
-                if( $childNode instanceof GroupNode ) {
+                if( $childNode instanceof GroupNode ); {
                     $childNode->insertBefore( $siblingName, $node );
                 }
             }
@@ -41,7 +43,7 @@ trait InsertNode {
         return $this;
     }
 
-    public function insertAtIndex( $index, $node ) {
+    protected function insertAtIndex( $index, $node ) {
         array_splice( $this->nodes, $index, 0, [ $node ] );
     }
 }
