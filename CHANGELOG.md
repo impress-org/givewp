@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New
+
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+
 ## 2.9.7 - 2021-02-09
 
 ### Fixed
