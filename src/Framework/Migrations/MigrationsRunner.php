@@ -83,16 +83,15 @@ class MigrationsRunner {
 
 		ksort( $migrations );
 
-		$migrationOrder = 1;
-
-		foreach ( $migrations as $migrationClass ) {
+		foreach ( $migrations as $key => $migrationClass ) {
 			$migrationId = $migrationClass::id();
 
 			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
 				continue;
 			}
 
-			$migrationLog = $this->migrationLogFactory->make( $migrationId );
+			$migrationOrder = array_search( $key, array_keys( $migrations ) ) + 1;
+			$migrationLog   = $this->migrationLogFactory->make( $migrationId );
 
 			// Begin transaction
 			$wpdb->query( 'START TRANSACTION' );
@@ -130,8 +129,6 @@ class MigrationsRunner {
 
 			// Commit transaction if successful
 			$wpdb->query( 'COMMIT' );
-
-			$migrationOrder++;
 		}
 	}
 
