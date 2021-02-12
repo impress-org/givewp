@@ -23,12 +23,13 @@ export const Fetcher = ( endpoint ) => API.get( endpoint ).then( ( res ) => {
 } );
 
 export const useMigrationFetcher = ( endpoint, params = {} ) => {
-	const { data, error } = useSWR( endpoint, Fetcher, params );
+	const { data, error, mutate } = useSWR( endpoint, Fetcher, params );
 	return {
 		data: data ? data.data : undefined,
 		isLoading: ! error && ! data,
 		isError: error,
 		response: data ? data.response : undefined,
+		mutate,
 	};
 };
 
