@@ -20,7 +20,7 @@ class MigrationLogRepository {
 	/**
 	 * Define sortable columns
 	 */
-	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run' ];
+	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run', 'run_order' ];
 
 	/**
 	 * @var string
@@ -50,8 +50,8 @@ class MigrationLogRepository {
 	 */
 	public function save( MigrationLogModel $model ) {
 		$query = "
-			INSERT INTO {$this->migration_table} (id, status, error ) 
-			VALUES (%s, %s, %s) 
+			INSERT INTO {$this->migration_table} (id, status, error, run_order ) 
+			VALUES (%s, %s, %s, %s) 
 			ON DUPLICATE KEY UPDATE
 			status = %s,
 			error = %s,
@@ -64,6 +64,7 @@ class MigrationLogRepository {
 				$model->getId(),
 				$model->getStatus(),
 				$model->getError(),
+				$model->getRunOrder(),
 				$model->getStatus(),
 				$model->getError()
 			)
@@ -78,7 +79,7 @@ class MigrationLogRepository {
 	public function getMigrations() {
 		$migrations = [];
 
-		$result = DB::get_results( "SELECT * FROM {$this->migration_table}" );
+		$result = DB::get_results( "SELECT * FROM {$this->migration_table} ORDER BY position ASC" );
 
 		if ( $result ) {
 			foreach ( $result as $migration ) {
@@ -87,7 +88,8 @@ class MigrationLogRepository {
 					$migration->id,
 					$migration->status,
 					$migration->error,
-					$migration->last_run
+					$migration->last_run,
+					$migration->run_order
 				);
 			}
 		}
@@ -112,7 +114,8 @@ class MigrationLogRepository {
 				$migration->id,
 				$migration->status,
 				$migration->error,
-				$migration->last_run
+				$migration->last_run,
+				$migration->run_order
 			);
 		}
 
@@ -130,7 +133,7 @@ class MigrationLogRepository {
 		$migrations = [];
 
 		$result = DB::get_results(
-			DB::prepare( "SELECT * FROM {$this->migration_table} WHERE status = %s", $status )
+			DB::prepare( "SELECT * FROM {$this->migration_table} WHERE status = %s ORDER BY position ASC", $status )
 		);
 
 		if ( $result ) {
@@ -139,7 +142,8 @@ class MigrationLogRepository {
 					$migration->id,
 					$migration->status,
 					$migration->error,
-					$migration->last_run
+					$migration->last_run,
+					$migration->run_order
 				);
 			}
 		}
@@ -209,8 +213,8 @@ class MigrationLogRepository {
 		$sortBy        = $request->get_param( 'sort' );
 		$sortDirection = $request->get_param( 'direction' );
 
-		$perPage = 10;
-		$offset  = $page > 1 ? $page * $perPage : 0;
+		$perPage = self::MIGRATIONS_PER_PAGE;
+		$offset  = ( $page - 1 ) * $perPage;
 
 		$query = "SELECT * FROM {$this->migration_table} WHERE 1=1";
 
@@ -219,7 +223,7 @@ class MigrationLogRepository {
 		}
 
 		if ( $sortBy ) {
-			$column    = ( in_array( $sortBy, self::SORTABLE_COLUMNS, true ) ) ? $sortBy : 'id';
+			$column    = ( in_array( $sortBy, self::SORTABLE_COLUMNS, true ) ) ? $sortBy : 'run_order';
 			$direction = ( $sortDirection && strtoupper( $sortDirection ) === 'ASC' ) ? 'ASC' : 'DESC';
 
 			$query .= " ORDER BY `{$column}` {$direction}";
@@ -243,7 +247,8 @@ class MigrationLogRepository {
 					$migration->id,
 					$migration->status,
 					$migration->error,
-					$migration->last_run
+					$migration->last_run,
+					$migration->run_order
 				);
 			}
 		}
@@ -253,22 +258,12 @@ class MigrationLogRepository {
 
 
 	/**
-	 * Get migration count for request
-	 *
-	 * @param  WP_REST_Request  $request
+	 * Get migration count
 	 *
 	 * @return int|null
 	 */
-	public function getMigrationsCountForRequest( WP_REST_Request $request ) {
-		$status = $request->get_param( 'status' );
-
-		$query = "SELECT count(id) FROM {$this->migration_table} WHERE 1=1";
-
-		if ( $status ) {
-			$query .= sprintf( ' AND status = "%s"', esc_sql( $status ) );
-		}
-
-		return DB::get_var( $query );
+	public function getMigrationsCount() {
+		return DB::get_var( "SELECT count(id) FROM {$this->migration_table}" );
 	}
 
 }

@@ -15,14 +15,15 @@ class MigrationLogFactory {
 	/**
 	 * Make MigrationModel instance
 	 *
-	 * @param string $id
-	 * @param string  $status
-	 * @param mixed|null  $error
-	 * @param string|null  $lastRun
+	 * @param  string  $id
+	 * @param  string  $status
+	 * @param  mixed|null  $error
+	 * @param  string|null  $lastRun
+	 * @param  int|null  $runOrder
 	 *
 	 * @return MigrationLogModel
 	 */
-	public function make( $id, $status = '', $error = null, $lastRun = null ) {
-		return new MigrationLogModel( $id, $status, $error, $lastRun );
+	public function make( $id, $status = '', $error = null, $lastRun = null, $runOrder = null ) {
+		return new MigrationLogModel( $id, $status, $error, $lastRun, $runOrder );
 	}
 }

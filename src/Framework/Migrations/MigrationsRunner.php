@@ -83,6 +83,8 @@ class MigrationsRunner {
 
 		ksort( $migrations );
 
+		$migrationOrder = 1;
+
 		foreach ( $migrations as $migrationClass ) {
 			$migrationId = $migrationClass::id();
 
@@ -103,11 +105,13 @@ class MigrationsRunner {
 
 				// Save migration status
 				$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
+				$migrationLog->setRunOrder( $migrationOrder );
 				$migrationLog->save();
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				$migrationLog->setStatus( MigrationLogStatus::FAILED );
+				$migrationLog->setRunOrder( $migrationOrder );
 				$migrationLog->setError( $exception );
 				$migrationLog->save();
 
@@ -126,6 +130,8 @@ class MigrationsRunner {
 
 			// Commit transaction if successful
 			$wpdb->query( 'COMMIT' );
+
+			$migrationOrder++;
 		}
 	}
 

@@ -61,7 +61,7 @@ class GetMigrations extends Endpoint {
 								}
 								return in_array( $param, $this->migrationRepository->getSortableColumns(), true );
 							},
-							'default'           => 'last_run',
+							'default'           => 'run_order',
 						],
 						'direction' => [
 							'validate_callback' => function( $param ) {
@@ -70,7 +70,7 @@ class GetMigrations extends Endpoint {
 								}
 								return in_array( strtoupper( $param ), [ 'ASC', 'DESC' ], true );
 							},
-							'default'           => 'DESC',
+							'default'           => 'ASC',
 						],
 					],
 				],
@@ -112,23 +112,23 @@ class GetMigrations extends Endpoint {
 	public function handleRequest( WP_REST_Request $request ) {
 		$data            = [];
 		$migrations      = $this->migrationRepository->getMigrationsForRequest( $request );
-		$migrationsCount = $this->migrationRepository->getMigrationsCountForRequest( $request );
+		$migrationsCount = $this->migrationRepository->getMigrationsCount();
 
 		foreach ( $migrations as $migration ) {
 			$data[] = [
-				'id'       => $migration->getId(),
-				'status'   => $migration->getStatus(),
-				'error'    => $migration->getError(),
-				'last_run' => $migration->getLastRunDate(),
+				'id'        => $migration->getId(),
+				'status'    => $migration->getStatus(),
+				'error'     => $migration->getError(),
+				'last_run'  => $migration->getLastRunDate(),
+				'run_order' => $migration->getRunOrder(),
 			];
 		}
 
 		return new WP_REST_Response(
 			[
-				'status'   => true,
-				'data'     => $data,
-				'pages'    => floor( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
-				'statuses' => MigrationLogStatus::getAll(),
+				'status' => true,
+				'data'   => $data,
+				'pages'  => floor( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
 			]
 		);
 	}
