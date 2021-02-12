@@ -1,6 +1,7 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
@@ -16,7 +17,7 @@ class Track {
 	 * Collection of track events.
 	 *
 	 * @ssicne 2.10.0
-	 * @var array
+	 * @var TrackData[]
 	 */
 	private $tracks;
 
@@ -33,7 +34,7 @@ class Track {
 		$trackClient = new TrackClient();
 
 		foreach ( $this->tracks as $trackId => $trackData ) {
-			$trackClient->post( $trackId, $trackData );
+			$trackClient->post( $trackId, $trackData->get() );
 		}
 	}
 
@@ -41,11 +42,11 @@ class Track {
 	 * Record track.
 	 *
 	 * @param string $trackId
-	 * @param array $trackData
+	 * @param TrackData $trackData
 	 *
 	 * @since 2.10.0
 	 */
-	public function recordTrack( $trackId, $trackData ) {
+	public function recordTrack( $trackId, TrackData $trackData ) {
 		$this->tracks[ $trackId ] = $trackData;
 	}
 }
