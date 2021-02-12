@@ -193,15 +193,65 @@ class Donations {
 	 * @return array Payment info
 	 */
 	protected function getPaymentInfo( $payment ) {
+
+		$gateways = give_get_payment_gateways();
+
 		return [
-			'amount'   => $payment->subtotal,
+			'amount'   => $this->getFormattedAmount( $payment->subtotal, $payment ),
 			'currency' => $payment->currency,
-			'fee'      => ( $payment->total - $payment->subtotal ),
-			'total'    => $payment->total,
-			'method'   => $payment->gateway,
-			'status'   => $payment->status,
-			'date'     => $payment->date,
+			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
+			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
+			'method'   => $gateways[ $payment->gateway ]['checkout_label'],
+			'status'   => $this->getFormattedStatus( $payment->status ),
+			'date'     => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
+			'time'     => date_i18n( 'g:i a', strtotime( $payment->date ) ),
+			'mode'     => $payment->get_meta( '_give_payment_mode' ),
 		];
+	}
+
+	/**
+	 * Get formatted status object (used for rendering status correctly in Donor Profile)
+	 *
+	 * @param string $status
+	 * @since 2.10.0
+	 * @return array Formatted status object (with color and label)
+	 */
+	protected function getFormattedStatus( $status ) {
+		$statusMap = [
+			'publish' => [
+				'color' => '#7AD03A',
+				'label' => esc_html__( 'Complete', 'give' ),
+			],
+		];
+
+		return isset( $statusMap[ $status ] ) ? $statusMap[ $status ] : [
+			'color' => '#FFBA00',
+			'label' => esc_html__( 'Unknown', 'give' ),
+		];
+	}
+
+	/**
+	 * Get formatted payment amount
+	 *
+	 * @param float $amount
+	 * @param Give_Payment $payment
+	 * @since 2.10.0
+	 * @return string Formatted payment amount (with correct decimals and currency symbol)
+	 */
+	protected function getformattedAmount( $amount, $payment ) {
+		return give_currency_filter(
+			give_format_amount(
+				$amount,
+				[
+					'donation_id' => $payment->ID,
+				]
+			),
+			[
+				'currency_code'   => $payment->currency,
+				'decode_currency' => true,
+				'sanitize'        => false,
+			]
+		);
 	}
 
 	/**
