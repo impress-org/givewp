@@ -49,10 +49,14 @@ class VerifyEmailRoute implements RestRoute {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
+		Give()->email_access->init();
+
 		$email = $request->get_param( 'email' );
 
 		$donor = Give()->donors->get_donor_by( 'email', give_clean( $email ) );
-		if ( Give()->email_access->can_send_email( $donor->id ) ) {
+
+		if ( $donor && Give()->email_access->can_send_email( $donor->id ) ) {
+
 			$sent = Give()->email_access->send_email( $donor->id, $donor->email );
 
 			if ( $sent === true ) {
