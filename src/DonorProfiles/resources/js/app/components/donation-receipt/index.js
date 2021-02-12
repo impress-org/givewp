@@ -44,7 +44,9 @@ const DonationReceipt = ( { donation } ) => {
 							<FontAwesomeIcon icon="globe" /> { __( 'Address:', 'give' ) }
 						</div>
 						<div className="give-donor-profile-donation-receipt__value">
-							{ donor.address }
+							{ donor.address.street && ( <div> { donor.address.street } </div> ) }
+							{ donor.address.city && donor.address.state && donor.address.zip && ( <div> { donor.address.city } { donor.address.state }, { donor.address.zip } </div> ) }
+							{ donor.address.country && ( <div> { donor.address.country } </div> ) }
 						</div>
 					</div>
 				) }
@@ -63,7 +65,7 @@ const DonationReceipt = ( { donation } ) => {
 						{ __( 'Payment Status:', 'give' ) }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.status }
+						{ payment.status.label }
 					</div>
 				</div>
 				<div className="give-donor-profile-donation-receipt__row">
