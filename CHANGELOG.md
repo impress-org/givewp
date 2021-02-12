@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Edit Profile tab now persists data (#5486)
 -   Donor Profile authentication logic is now implemented (#5569)
 
+### Changed
+-   Donor Profile Donation History UI is now polished (#5566)
+-   Donor Profile edit UI now uses React Dropzone (#5563)
+
 ## 2.9.6 - 2021-01-13
 
 ### New

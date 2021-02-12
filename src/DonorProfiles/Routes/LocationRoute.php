@@ -41,7 +41,7 @@ class LocationRoute implements RestRoute {
 	 *
 	 * @since 2.10.0
 	 */
-	public function handleRequest( WP_REST_Request $request ) {
+	public function handleRequest( $request ) {
 		return [
 			'states' => LocationList::getStates(
 				$request->get_param( 'countryCode' )

@@ -15,7 +15,7 @@ class Profile {
 	protected $donor;
 	protected $id;
 
-	public function __construct( int $donorId ) {
+	public function __construct( $donorId ) {
 		$donorFactory = new DonorFactory;
 		$this->donor  = $donorFactory->make( $donorId );
 	}
@@ -52,9 +52,10 @@ class Profile {
 	/**
 	 * Return array of donor profile data
 	 *
-	 * @return void
 	 * @since 2.11.0
-	 **/
+	 *
+	 * @return array
+	 */
 	public function getProfileData() {
 
 		$titlePrefix = Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
@@ -72,7 +73,7 @@ class Profile {
 			'initials'          => $this->donor->get_donor_initals(),
 			'titlePrefix'       => $this->getTitlePrefix(),
 			'addresses'         => $this->donor->address,
-			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', false )[0] !== '0' ? 'private' : 'public',
+			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', true ) !== '0' ? 'private' : 'public',
 		];
 	}
 
