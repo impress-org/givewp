@@ -24,7 +24,8 @@ const AuthModal = () => {
 	const handleLogin = async() => {
 		if ( login && password ) {
 			setLoggingIn( true );
-			const { status, response } = await loginWithAPI( {
+			// eslint-disable-next-line camelcase
+			const { status, response, body_response } = await loginWithAPI( {
 				login,
 				password,
 			} );
@@ -33,7 +34,7 @@ const AuthModal = () => {
 				window.location.reload();
 			} else {
 				setLoggingIn( false );
-				setLoginError( response );
+				setLoginError( body_response.message );
 				if ( response === 'unidentified_login' ) {
 					setLogin( '' );
 					setPassword( '' );
