@@ -9,7 +9,7 @@ use Exception;
  */
 class DuplicateTabException extends Exception {
 
-	// Redefine the exception so message isn't optional
+	// Redefine the exception so message is pre-defined
 	public function __construct( $message = 'A tab can only be added once. Make sure there are not id conflicts.', $code = 0, Exception $previous = null ) {
 		// some code
 
