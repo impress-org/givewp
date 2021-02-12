@@ -24,8 +24,8 @@ class UpdateDonorAvatar {
 		];
 
 		foreach ( $attributeMetaMap as $attribute => $metaKey ) {
-			if ( property_exists( $this->data, $attribute ) ) {
-				$this->donor->update_meta( $metaKey, $this->data->{$attribute} );
+			if ( key_exists( $attribute, $this->data ) ) {
+				$this->donor->update_meta( $metaKey, $this->data[ $attribute ] );
 			}
 		}
 	}

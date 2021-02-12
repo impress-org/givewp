@@ -71,10 +71,9 @@ export const uploadAvatarWithAPI = ( file ) => {
 };
 
 export const fetchStatesWithAPI = ( country ) => {
-	return axios.get( getAPIRoot() + 'give-api/v2/donor-profile/location', {
-		params: {
-			countryCode: country,
-		},
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/location', {
+		countryCode: country,
+	}, {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
 		},

@@ -9,11 +9,12 @@ export const fetchDonationsDataFromAPI = () => {
 
 	if ( loggedIn ) {
 		dispatch( setQuerying( true ) );
-		axios.get( getAPIRoot() + 'give-api/v2/donor-profile/donations', {
-			headers: {
-				'X-WP-Nonce': getAPINonce(),
-			},
-		} )
+		axios.post( getAPIRoot() + 'give-api/v2/donor-profile/donations', {},
+			{
+				headers: {
+					'X-WP-Nonce': getAPINonce(),
+				},
+			} )
 			.then( ( response ) => response.data )
 			.then( ( data ) => {
 				dispatch( setDonations( data.donations ) );

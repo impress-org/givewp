@@ -28,7 +28,7 @@ class UpdateDonorEmails {
 	 */
 	protected function updateEmailsInMetaDB() {
 
-		$additionalEmails = $this->data->additionalEmails ? $this->data->additionalEmails : [];
+		$additionalEmails = $this->data['additionalEmails'] ? $this->data['additionalEmails'] : [];
 
 		/**
 		 * Remove additional emails that exist in the donor meta table,
@@ -56,8 +56,8 @@ class UpdateDonorEmails {
 	protected function updateEmailsInDonorDB() {
 
 		$updateArgs = [];
-		if ( ! empty( $this->data->primaryEmail ) ) {
-			$updateArgs['email'] = $this->data->primaryEmail;
+		if ( ! empty( $this->data['primaryEmail'] ) ) {
+			$updateArgs['email'] = $this->data['primaryEmail'];
 		}
 
 		$this->donor->update( $updateArgs );
