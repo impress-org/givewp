@@ -55,8 +55,10 @@ Modal.Title = ( { children } ) => {
 
 Modal.CloseIcon = ( { onClick } ) => {
 	return (
-		<div className={ styles.close } onClick={ onClick }>
-			<span className="dashicons dashicons-no" />
+		<div className={ styles.closeIconContainer }>
+			<div className={ styles.close } onClick={ onClick }>
+				<span className="dashicons dashicons-no" />
+			</div>
 		</div>
 	);
 };
