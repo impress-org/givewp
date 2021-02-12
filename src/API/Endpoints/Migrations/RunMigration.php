@@ -24,7 +24,7 @@ class RunMigration extends Endpoint {
 	/**
 	 * @var MigrationsRegister
 	 */
-	private $migrationsRegister;
+	private $migrationRegister;
 
 	/**
 	 * @var MigrationLogRepository
@@ -48,7 +48,7 @@ class RunMigration extends Endpoint {
 		MigrationLogRepository $migrationLogRepository,
 		MigrationLogFactory $migrationLogFactory
 	) {
-		$this->migrationsRegister     = $migrationsRegister;
+		$this->migrationRegister      = $migrationsRegister;
 		$this->migrationLogRepository = $migrationLogRepository;
 		$this->migrationLogFactory    = $migrationLogFactory;
 	}
@@ -103,7 +103,7 @@ class RunMigration extends Endpoint {
 	public function handleRequest( WP_REST_Request $request ) {
 		global $wpdb;
 		$migrationId    = $request->get_param( 'id' );
-		$migrationClass = $this->migrationsRegister->getMigration( $migrationId );
+		$migrationClass = $this->migrationRegister->getMigration( $migrationId );
 		$migrationLog   = $this->migrationLogFactory->make( $migrationId );
 
 		// Begin transaction
@@ -116,12 +116,7 @@ class RunMigration extends Endpoint {
 			$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
 			$migrationLog->save();
 
-			return new WP_REST_Response(
-				[
-					'status'  => true,
-					'message' => 'Migration ',
-				]
-			);
+			return new WP_REST_Response( [ 'status' => true ] );
 
 		} catch ( Exception $exception ) {
 			$wpdb->query( 'ROLLBACK' );
@@ -134,7 +129,7 @@ class RunMigration extends Endpoint {
 		return new WP_REST_Response(
 			[
 				'status'  => false,
-				'message' => 'Something went wrong',
+				'message' => $exception->getMessage(),
 			]
 		);
 	}
