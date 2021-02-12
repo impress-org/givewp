@@ -52,7 +52,7 @@ class TabsRegister {
 	 */
 	public function getTab( $id ) {
 		if ( ! $this->hasTab( $id ) ) {
-			throw new MissingTabException( "No tab exists with the ID {$id}" );
+			throw new MissingTabException( $id );
 		}
 
 		return $this->tabs[ $id ];

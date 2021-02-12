@@ -9,9 +9,10 @@ use Exception;
  */
 class MissingTabException extends Exception {
 
-	// Redefine the exception so message isn't optional
-	public function __construct( $message, $code = 0, Exception $previous = null ) {
-		// some code
+	// Redefine the exception so tab ID isn't optional
+	public function __construct( $tabId, $code = 0, Exception $previous = null ) {
+
+		$message = "No tab exists with the ID {$tabId}";
 
 		// make sure everything is assigned properly
 		parent::__construct( $message, $code, $previous );
