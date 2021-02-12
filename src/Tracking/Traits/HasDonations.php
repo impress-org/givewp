@@ -34,7 +34,7 @@ trait HasDonations {
 			SELECT ID
 			FROM {$wpdb->posts} as p
 			INNER JOIN {$wpdb->donationmeta} as dm
-			ON p.id=dm.id
+			ON p.id=dm.donation_id
 			WHERE post_date_gmt >= '{$time}'
 			AND post_status IN ({$statues})
 			AND post_type='give_payment'
