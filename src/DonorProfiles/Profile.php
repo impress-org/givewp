@@ -52,9 +52,10 @@ class Profile {
 	/**
 	 * Return array of donor profile data
 	 *
-	 * @return void
 	 * @since 2.11.0
-	 **/
+	 *
+	 * @return array
+	 */
 	public function getProfileData() {
 
 		$titlePrefix = Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
