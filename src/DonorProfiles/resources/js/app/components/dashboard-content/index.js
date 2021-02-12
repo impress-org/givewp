@@ -17,10 +17,10 @@ const DashboardContent = () => {
 	}, [ tabs ] );
 
 	const getDashboardContent = ( tabsArray ) => {
-		return tabsArray.reduce( ( content, tab ) => {
+		return tabsArray.reduce( ( content, tab, index ) => {
 			if ( tab[ 1 ].dashboardContent ) {
 				const Content = tab[ 1 ].dashboardContent;
-				content.push( <Content /> );
+				content.push( <Content key={ index } /> );
 			}
 			return content;
 		}, [] );
