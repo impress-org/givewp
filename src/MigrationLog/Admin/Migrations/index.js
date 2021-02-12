@@ -220,7 +220,7 @@ const Migrations = () => {
 			key: 'run_order',
 			label: __( 'Run Order', 'give' ),
 			sort: true,
-			sortCallback: ( direction ) => setSortDirectionForColumn( 'position', direction ),
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'run_order', direction ),
 			styles: {
 				maxWidth: 150,
 			},
