@@ -104,7 +104,7 @@ class RunMigration extends Endpoint {
 		global $wpdb;
 		$migrationId    = $request->get_param( 'id' );
 		$migrationClass = $this->migrationRegister->getMigration( $migrationId );
-		$migrationLog   = $this->migrationLogFactory->make( $migrationId );
+		$migrationLog   = $this->migrationLogRepository->getMigration( $migrationId );
 
 		// Begin transaction
 		$wpdb->query( 'START TRANSACTION' );
