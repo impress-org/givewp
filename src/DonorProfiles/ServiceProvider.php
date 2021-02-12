@@ -51,7 +51,10 @@ class ServiceProvider implements ServiceProviderInterface {
 		Hooks::addAction( 'rest_api_init', LocationRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', LoginRoute::class, 'registerRoute' );
 		Hooks::addAction( 'rest_api_init', LogoutRoute::class, 'registerRoute' );
-		Hooks::addAction( 'rest_api_init', VerifyEmailRoute::class, 'registerRoute' );
+
+		if ( give_is_setting_enabled( give_get_option( 'email_access' ) ) ) {
+			Hooks::addAction( 'rest_api_init', VerifyEmailRoute::class, 'registerRoute' );
+		}
 
 		if ( function_exists( 'register_block_type' ) ) {
 			Hooks::addAction( 'init', Block::class, 'addBlock' );
