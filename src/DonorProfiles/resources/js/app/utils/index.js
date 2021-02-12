@@ -68,6 +68,6 @@ export const toKebabCase = ( str ) => {
  * @since 2.8.0
  */
 export const toUniqueId = ( str ) => {
-	const prefix = str.length ? str : 'component';
+	const prefix = str ? str : 'component';
 	return toKebabCase( `${ prefix }-${ Math.floor( Math.random() * Math.floor( 1000 ) ) }` );
 };
