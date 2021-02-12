@@ -13,7 +13,7 @@ class DonorProfilePipeline {
 	public function pipe( $stage ) {
 		$pipeline       = clone $this;
 		$this->stages[] = $stage;
-		return $pipeline;
+		return $this;
 	}
 
 	public function process( $payload ) {

@@ -27,8 +27,8 @@ class UpdateDonorAddresses {
 	 */
 	protected function updateAddressesInMetaDB() {
 
-		$primaryAddress      = isset( $this->data->primaryAddress ) ? $this->data->primaryAddress : null;
-		$additionalAddresses = isset( $this->data->additionalAddresses ) ? $this->data->additionalAddresses : [];
+		$primaryAddress      = isset( $this->data['primaryAddress'] ) ? $this->data['primaryAddress'] : null;
+		$additionalAddresses = isset( $this->data['additionalAddresses'] ) ? $this->data['additionalAddresses'] : [];
 
 		/**
 		 * If a primary address is provided, update billing address with id '0'
