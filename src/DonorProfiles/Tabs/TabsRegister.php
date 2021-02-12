@@ -3,6 +3,8 @@
 namespace Give\DonorProfiles\Tabs;
 
 use Give\DonorProfiles\Tabs\Contracts\Tab;
+use Give\DonorProfiles\Exceptions\MissingTabException;
+use Give\DonorProfiles\Exceptions\DuplicateTabException;
 use http\Exception\InvalidArgumentException;
 
 class TabsRegister {
@@ -50,7 +52,7 @@ class TabsRegister {
 	 */
 	public function getTab( $id ) {
 		if ( ! $this->hasTab( $id ) ) {
-			throw new \InvalidArgumentException( "No tab exists with the ID {$id}" );
+			throw new MissingTabException( "No tab exists with the ID {$id}" );
 		}
 
 		return $this->tabs[ $id ];
@@ -82,7 +84,7 @@ class TabsRegister {
 		$tabId = $tabClass::id();
 
 		if ( $this->hasTab( $tabId ) ) {
-			throw new \InvalidArgumentException( 'A tab can only be added once. Make sure there are not id conflicts.' );
+			throw new DuplicateTabException();
 		}
 
 		$this->tabs[ $tabId ] = $tabClass;
