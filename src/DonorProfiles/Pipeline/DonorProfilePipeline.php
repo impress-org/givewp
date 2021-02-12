@@ -10,14 +10,13 @@ class DonorProfilePipeline {
 		$this->stages = [];
 	}
 
-	public function pipe( callable $stage ) {
-		//$pipeline       = clone $this;
+	public function pipe( $stage ) {
+		$pipeline       = clone $this;
 		$this->stages[] = $stage;
 		return $this;
 	}
 
 	public function process( $payload ) {
-
 		foreach ( $this->stages as $stage ) {
 			$payload = $stage( $payload );
 		}

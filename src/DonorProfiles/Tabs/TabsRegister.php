@@ -3,6 +3,8 @@
 namespace Give\DonorProfiles\Tabs;
 
 use Give\DonorProfiles\Tabs\Contracts\Tab;
+use Give\DonorProfiles\Exceptions\MissingTabException;
+use Give\DonorProfiles\Exceptions\DuplicateTabException;
 use http\Exception\InvalidArgumentException;
 
 class TabsRegister {
@@ -49,11 +51,11 @@ class TabsRegister {
 	 * @return string
 	 */
 	public function getTab( $id ) {
-		if ( ! isset( $this->tabs[ $id ] ) ) {
-			throw new \InvalidArgumentException( "No migration exists with the ID {$id}" );
+		if ( ! $this->hasTab( $id ) ) {
+			throw new MissingTabException( $id );
 		}
 
-		return $this->migrations[ $id ];
+		return $this->tabs[ $id ];
 	}
 
 	/**
@@ -81,8 +83,8 @@ class TabsRegister {
 
 		$tabId = $tabClass::id();
 
-		if ( isset( $this->tabs[ $tabId ] ) ) {
-			throw new \InvalidArgumentException( 'A tab can only be added once. Make sure there are not id conflicts.' );
+		if ( $this->hasTab( $tabId ) ) {
+			throw new DuplicateTabException();
 		}
 
 		$this->tabs[ $tabId ] = $tabClass;
@@ -110,7 +112,7 @@ class TabsRegister {
 	}
 
 	public function enqueueTabAssets() {
-		foreach ( $this->tabs as $tabClass ) {
+		foreach ( give()->donorProfileTabs->tabs as $tabClass ) {
 			( new $tabClass )->enqueueAssets();
 		}
 	}

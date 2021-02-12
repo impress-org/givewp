@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Recurring Donations tab UI now connects to addon (#5584)
 
 ### Changed
+-   Donor Profile Donation History UI is now polished (#5566)
 -   Donor Profile edit UI now uses React Dropzone (#5563)
 -   Donor Profiles are now extensible (#5577)
 

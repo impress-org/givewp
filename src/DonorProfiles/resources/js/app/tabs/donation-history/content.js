@@ -1,5 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const { __ } = wp.i18n;
 
@@ -8,6 +9,8 @@ import DonationReceipt from '../../components/donation-receipt';
 import DonationTable from '../../components/donation-table';
 
 import { useSelector } from './hooks';
+
+import './style.scss';
 
 const Content = () => {
 	const donations = useSelector( ( state ) => state.donations );
@@ -30,9 +33,11 @@ const Content = () => {
 				<Heading>
 					{ __( 'Loading...', 'give' ) }
 				</Heading>
-				<Link to="/donation-history">
-					{ __( 'Back to Donation History', 'give' ) }
-				</Link>
+				<div className="give-donor-profile__donation-history-link">
+					<Link to="/donation-history">
+						<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Donation History', 'give' ) }
+					</Link>
+				</div>
 			</Fragment>
 		) : (
 			<Fragment>
@@ -40,9 +45,11 @@ const Content = () => {
 					{ __( 'Donation', 'give' ) } #{ id }
 				</Heading>
 				<DonationReceipt donation={ getDonationById( id ) } />
-				<Link to="/donation-history">
-					{ __( 'Back to Donation History', 'give' ) }
-				</Link>
+				<div className="give-donor-profile__donation-history-link">
+					<Link to="/donation-history">
+						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
+					</Link>
+				</div>
 			</Fragment>
 		);
 	}

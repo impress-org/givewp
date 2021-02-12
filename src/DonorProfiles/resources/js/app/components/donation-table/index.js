@@ -21,7 +21,7 @@ const DonationTable = ( { donations, perPage } ) => {
 	const getDonationRows = () => {
 		return donationsArray.reduce( ( rows, donation, index ) => {
 			if ( index >= start && index < end ) {
-				rows.push( <DonationRow donation={ donation } /> );
+				rows.push( <DonationRow key={ index } donation={ donation } /> );
 			}
 			return rows;
 		}, [] );
@@ -51,7 +51,7 @@ const DonationTable = ( { donations, perPage } ) => {
 						{ __( 'Donation', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Campaign', 'give' ) }
+						{ __( 'Form', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
 						{ __( 'Date', 'give' ) }

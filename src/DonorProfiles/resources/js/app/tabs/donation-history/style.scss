@@ -1,0 +1,16 @@
+.give-donor-profile__donation-history-link {
+	display: inline-block;
+
+	a {
+		color: #3398db;
+		font-size: 14px;
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		border: none;
+
+		svg {
+			margin-right: 6px;
+		}
+	}
+}
