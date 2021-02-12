@@ -51,11 +51,11 @@ class GivePluginSettingsData implements TrackData {
 		$data     = [];
 		$settings = get_option( 'give_settings', give_get_default_settings() );
 		foreach ( $generalSettings as $setting ) {
-			$data[ $setting ] = $settings[ $setting ] ?: '';
+			$data[ $setting ] = isset( $settings[ $setting ] ) ? $settings[ $setting ] : '';
 		}
 
 		foreach ( $trueFalseSettings as $key => $setting ) {
-			$value        = $settings[ $setting ] ?: 'disabled';
+			$value        = isset( $settings[ $setting ] ) ? $settings[ $setting ] : 'disabled';
 			$data[ $key ] = absint( give_is_setting_enabled( $value ) );
 		}
 
