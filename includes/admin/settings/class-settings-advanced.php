@@ -173,7 +173,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						[
 							'name'    => __( 'Database Updates', 'give' ),
 							'desc'    => __( 'Enable database updates options only if you know what are you doing.', 'give' ),
-							'id'      => 'show_migration_options',
+							'id'      => 'enable_database_updates',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => [
