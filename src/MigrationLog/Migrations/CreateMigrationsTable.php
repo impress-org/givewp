@@ -45,7 +45,7 @@ class CreateMigrationsTable extends Migration {
 			status VARCHAR(16) NOT NULL,
 			error text NULL,
 			last_run DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			run_order TINYINT NULL,
+			run_order DATETIME NULL,
 			PRIMARY KEY  (id)
 		) {$charset}";
 
