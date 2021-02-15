@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New
+-   Migrations table (#5580)
+
+### Fixed
+-   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
+
 ## 2.9.6 - 2021-01-13
 
 ### New
