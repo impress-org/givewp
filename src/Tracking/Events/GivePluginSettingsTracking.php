@@ -27,7 +27,7 @@ class GivePluginSettingsTracking extends TrackEvent {
 	 * @param  GivePluginSettingsData  $givePluginSettingsData
 	 */
 	public function __construct( Track $track, GivePluginSettingsData $givePluginSettingsData ) {
-		$this->trackId = ( new EventType() )->getDonationMetrics();
+		$this->trackId = ( new EventType() )->getPluginSettingsUpdated();
 		parent::__construct( $track, $givePluginSettingsData );
 	}
 }
