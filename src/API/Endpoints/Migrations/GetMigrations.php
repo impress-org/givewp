@@ -126,9 +126,10 @@ class GetMigrations extends Endpoint {
 
 		return new WP_REST_Response(
 			[
-				'status' => true,
-				'data'   => $data,
-				'pages'  => floor( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
+				'status'      => true,
+				'data'        => $data,
+				'pages'       => floor( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
+				'showOptions' => 'enabled' === give_get_option( 'show_migration_options' ),
 			]
 		);
 	}
