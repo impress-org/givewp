@@ -2,7 +2,6 @@
 
 namespace Give\Tracking\TrackingData;
 
-use Exception;
 use Give\Tracking\Contracts\TrackData;
 use Give_Donors_Query;
 use WP_Query;
@@ -58,10 +57,10 @@ class DonationMetricsData implements TrackData {
 	 * @return int
 	 */
 	private function getAvgDonationAmountByDonor() {
-		try {
+		$amount = 0;
+
+		if ( $this->donationData['revenue'] ) {
 			$amount = (int) ( $this->donationData['revenue'] / $this->getDonorCount() );
-		} catch ( Exception $e ) {
-			$amount = 0;
 		}
 
 		return $amount;
