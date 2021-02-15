@@ -15,7 +15,7 @@ class MigrationLogRepository {
 	/**
 	 * Limit number of logs returned per page
 	 */
-	const MIGRATIONS_PER_PAGE = 10;
+	const MIGRATIONS_PER_PAGE = 15;
 
 	/**
 	 * Define sortable columns
@@ -79,7 +79,7 @@ class MigrationLogRepository {
 	public function getMigrations() {
 		$migrations = [];
 
-		$result = DB::get_results( "SELECT * FROM {$this->migration_table} ORDER BY position ASC" );
+		$result = DB::get_results( "SELECT * FROM {$this->migration_table} ORDER BY run_order ASC" );
 
 		if ( $result ) {
 			foreach ( $result as $migration ) {
@@ -133,7 +133,7 @@ class MigrationLogRepository {
 		$migrations = [];
 
 		$result = DB::get_results(
-			DB::prepare( "SELECT * FROM {$this->migration_table} WHERE status = %s ORDER BY position ASC", $status )
+			DB::prepare( "SELECT * FROM {$this->migration_table} WHERE status = %s ORDER BY run_order ASC", $status )
 		);
 
 		if ( $result ) {
@@ -266,7 +266,23 @@ class MigrationLogRepository {
 		try {
 			return DB::get_var( "SELECT count(id) FROM {$this->migration_table}" );
 		} catch ( \Exception $exception ) {
-			return null;
+			return 0;
+		}
+	}
+
+	/**
+	 * Get failed migrations count
+	 *
+	 * @return int
+	 */
+	public function getFailedMigrationsCount() {
+		try {
+			return DB::get_var(
+				DB::prepare( "SELECT count(id) FROM {$this->migration_table} WHERE status != %s", MigrationLogStatus::SUCCESS )
+			);
+		} catch ( \Exception $exception ) {
+			// Fallback
+			return 0;
 		}
 	}
 
