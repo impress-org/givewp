@@ -79,7 +79,7 @@ class EventType {
 	 * @since 2.10.0
 	 */
 	public function getSiteUpdated() {
-		return $this->donationFormUpdated;
+		return $this->siteUpdated;
 	}
 
 }
