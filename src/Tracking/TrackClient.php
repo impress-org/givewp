@@ -35,7 +35,7 @@ class TrackClient {
 	 */
 	public function post( $trackId, $trackData, $requestArgs = [] ) {
 		if ( ! $trackId || ! $trackData ) {
-			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
+			return new WP_Error( 'invalid-telemetry-request', 'Pass valid track id and tracked data to TrackClient' );
 		}
 
 		$default_request_args = [
