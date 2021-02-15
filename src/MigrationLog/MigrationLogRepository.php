@@ -263,7 +263,11 @@ class MigrationLogRepository {
 	 * @return int|null
 	 */
 	public function getMigrationsCount() {
-		return DB::get_var( "SELECT count(id) FROM {$this->migration_table}" );
+		try {
+			return DB::get_var( "SELECT count(id) FROM {$this->migration_table}" );
+		} catch ( \Exception $exception ) {
+			return null;
+		}
 	}
 
 }
