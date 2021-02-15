@@ -6,6 +6,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use Give\MigrationLog\MigrationLogStatus;
 use Give\MigrationLog\MigrationLogRepository;
+use Give\MigrationLog\Helpers\MigrationOrder;
 
 /**
  * Class GetMigrations
@@ -24,12 +25,22 @@ class GetMigrations extends Endpoint {
 	private $migrationRepository;
 
 	/**
+	 * @var MigrationOrder
+	 */
+	private $migrationOrder;
+
+	/**
 	 * GetLogs constructor.
 	 *
 	 * @param  MigrationLogRepository  $repository
+	 * @param  MigrationOrder  $migrationOrder
 	 */
-	public function __construct( MigrationLogRepository $repository ) {
+	public function __construct(
+		MigrationLogRepository $repository,
+		MigrationOrder $migrationOrder
+	) {
 		$this->migrationRepository = $repository;
+		$this->migrationOrder      = $migrationOrder;
 	}
 
 	/**
@@ -120,7 +131,7 @@ class GetMigrations extends Endpoint {
 				'status'    => $migration->getStatus(),
 				'error'     => $migration->getError(),
 				'last_run'  => $migration->getLastRunDate(),
-				'run_order' => $migration->getRunOrder(),
+				'run_order' => $this->migrationOrder->getRunOrderForMigration( $migration->getId() ),
 			];
 		}
 
@@ -128,7 +139,7 @@ class GetMigrations extends Endpoint {
 			[
 				'status'      => true,
 				'data'        => $data,
-				'pages'       => floor( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
+				'pages'       => ceil( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
 				'showOptions' => 'enabled' === give_get_option( 'show_migration_options' ),
 			]
 		);
