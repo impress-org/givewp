@@ -4,6 +4,9 @@ namespace Give\DonorProfiles\Repositories;
 use Give\ValueObjects\Money;
 use InvalidArgumentException;
 
+/**
+ * @since 2.10.0
+ */
 class Donations {
 	/**
 	 * Get donations count for donor

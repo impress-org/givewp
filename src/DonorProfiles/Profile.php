@@ -27,7 +27,7 @@ class Profile {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function update( $data ) {
 
@@ -52,7 +52,7 @@ class Profile {
 	/**
 	 * Return array of donor profile data
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @return array
 	 */
@@ -82,7 +82,7 @@ class Profile {
 	 *
 	 * @return int
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getId() {
 		return $this->donor->id;
@@ -93,7 +93,7 @@ class Profile {
 	 *   *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getTitlePrefix() {
 		return Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
@@ -104,7 +104,7 @@ class Profile {
 	 *   *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getAvatarUrl() {
 		$avatarId = $this->getAvatarId();
@@ -120,7 +120,7 @@ class Profile {
 	 *   *
 	 * @return int
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getAvatarId() {
 		return $this->donor->get_meta( '_give_donor_avatar_id' );
@@ -131,7 +131,7 @@ class Profile {
 	 *   *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getCountry() {
 		$address = $this->donor->get_donor_address();

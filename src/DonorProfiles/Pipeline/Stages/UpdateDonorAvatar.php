@@ -2,6 +2,9 @@
 
 namespace Give\DonorProfiles\Pipeline\Stages;
 
+/**
+ * @since 2.10.0
+ */
 class UpdateDonorAvatar {
 
 	protected $data;

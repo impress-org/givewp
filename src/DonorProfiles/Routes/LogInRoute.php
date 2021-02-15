@@ -8,7 +8,7 @@ use Give\API\RestRoute;
 use Give\DonorProfiles\Profile as Profile;
 
 /**
- * @since 2.11.0
+ * @since 2.10.0
  */
 class LoginRoute implements RestRoute {
 
@@ -50,7 +50,7 @@ class LoginRoute implements RestRoute {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 

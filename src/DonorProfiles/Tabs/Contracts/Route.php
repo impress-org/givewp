@@ -7,7 +7,7 @@ use WP_REST_Response;
 use Give\API\RestRoute;
 
 /**
- * @since 2.11.0
+ * @since 2.10.0
  */
 abstract class Route implements RestRoute {
 
@@ -17,7 +17,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function endpoint();
 
@@ -27,7 +27,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function args();
 
@@ -38,7 +38,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @return WP_REST_Response
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function handleRequest( WP_REST_Request $request );
 

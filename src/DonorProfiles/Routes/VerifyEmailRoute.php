@@ -8,7 +8,7 @@ use Give\API\RestRoute;
 use Give\DonorProfiles\Profile as Profile;
 
 /**
- * @since 2.11.0
+ * @since 2.10.0
  */
 class VerifyEmailRoute implements RestRoute {
 
@@ -45,7 +45,7 @@ class VerifyEmailRoute implements RestRoute {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
