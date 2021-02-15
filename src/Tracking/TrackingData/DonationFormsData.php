@@ -129,13 +129,11 @@ class DonationFormsData implements TrackData {
 				ON r.donation_id=p.id
 				INNER JOIN {$wpdb->donationmeta} as dm
 				ON p.id=dm.donation_id
-				WHERE p.post_date<=%s
 				AND post_status IN ({$statues})
 				AND r.form_id=%d
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
 				",
-				current_time( 'mysql' ),
 				$formId
 			)
 		);
