@@ -14,8 +14,7 @@ const Migrations = () => {
 		sortColumn: 'run_order',
 		sortDirection: 'asc',
 		pages: 0,
-		failedMigrations: [],
-		showMigrationRunWarning: false,
+		showOptions: false,
 	} );
 
 	const [ migrationModal, setMigrationModal ] = useState( {
@@ -33,14 +32,14 @@ const Migrations = () => {
 	};
 
 	const { data, isLoading, isError, mutate } = useMigrationFetcher( getEndpoint( '/get-migrations', parameters ), {
-		onSuccess: ( { data: result, response } ) => {
+		onSuccess: ( { response } ) => {
 			setState( ( previousState ) => {
 				return {
 					...previousState,
 					initialLoad: true,
 					pages: response.pages,
 					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
-					failedMigrations: result ? result.filter( ( migration ) => migration.status !== 'success' ).map( ( migration ) => migration.run_order ) : [],
+					showOptions: response.showOptions,
 				};
 			} );
 		},
@@ -58,18 +57,17 @@ const Migrations = () => {
 		API.post( '/run-migration', { id: migrationRunModal.id } )
 			.then( ( response ) => {
 				if ( response.data.status ) {
-					return window.location.reload();
+					closeMigrationRunModal();
+				} else {
+					setMigrationRunModal( ( previousState ) => {
+						return {
+							...previousState,
+							type: 'error',
+							error: true,
+							errorMessage: response.data.message,
+						};
+					} );
 				}
-
-				setMigrationRunModal( ( previousState ) => {
-					return {
-						...previousState,
-						type: 'error',
-						error: true,
-						errorMessage: response.data.message,
-					};
-				} );
-
 				// Invalidate the cache
 				mutate( getEndpoint( '/get-migrations', parameters ) );
 			} )
@@ -98,43 +96,10 @@ const Migrations = () => {
 		setMigrationModal( { visible: false } );
 	};
 
-	const closeMigrationWarningModal = () => {
-		setState( ( previousState ) => {
-			return {
-				...previousState,
-				showMigrationRunWarning: false,
-			};
-		} );
-	};
-
-	const proceedWithRunMigration = () => {
-		closeMigrationWarningModal();
-
-		setMigrationRunModal( ( previousState ) => {
-			return {
-				...previousState,
-				visible: true,
-			};
-		} );
-	};
-
-	const openMigrationRunModal = ( migrationId, runOrder ) => {
-		const firstInQueue = Math.min( ...state.failedMigrations );
-
-		const inOrder = ( ! firstInQueue || firstInQueue === runOrder );
-
-		if ( ! inOrder ) {
-			setState( ( previousState ) => {
-				return {
-					...previousState,
-					showMigrationRunWarning: true,
-				};
-			} );
-		}
-
+	const openMigrationRunModal = ( migrationId ) => {
 		setMigrationRunModal( {
 			id: migrationId,
-			visible: inOrder,
+			visible: true,
 			type: 'warning',
 		} );
 	};
@@ -236,33 +201,6 @@ const Migrations = () => {
 		);
 	};
 
-	const getMigrationRunWarning = () => {
-		return (
-			<Modal visible={ state.showMigrationRunWarning } type="warning" handleClose={ closeMigrationWarningModal }>
-				<Modal.Title>
-					<span className={ classNames( styles.titleIcon ) }>
-						<span className="dashicons dashicons-warning" />
-					</span>
-					{ __( 'Invalid run order', 'give' ) }
-				</Modal.Title>
-
-				<Modal.Content>
-					{ __( 'We strongly recommend you to follow the migrations run order.', 'give' ) }
-				</Modal.Content>
-
-				<Modal.Content>
-					<button style={ { marginRight: 20 } } className="button button-primary" onClick={ closeMigrationWarningModal }>
-						{ __( 'Cancel', 'give' ) }
-					</button>
-					<button className="button" onClick={ proceedWithRunMigration }>
-						{ __( 'Continue anyway', 'give' ) }
-					</button>
-				</Modal.Content>
-
-			</Modal>
-		);
-	};
-
 	const columns = [
 		{
 			key: 'status',
@@ -280,15 +218,6 @@ const Migrations = () => {
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'id', direction ),
 		},
 		{
-			key: 'run_order',
-			label: __( 'Run Order', 'give' ),
-			sort: true,
-			sortCallback: ( direction ) => setSortDirectionForColumn( 'run_order', direction ),
-			styles: {
-				maxWidth: 150,
-			},
-		},
-		{
 			key: 'last_run',
 			label: __( 'Last run', 'give' ),
 			sort: true,
@@ -298,9 +227,20 @@ const Migrations = () => {
 			},
 		},
 		{
+			key: 'run_order',
+			label: __( 'Run Order', 'give' ),
+			sort: true,
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'run_order', direction ),
+			visible: state.showOptions,
+			styles: {
+				maxWidth: 150,
+			},
+		},
+		{
 			key: 'actions',
 			label: __( 'Actions', 'give' ),
 			append: true,
+			visible: state.showOptions,
 			styles: {
 				maxWidth: 150,
 			},
@@ -320,15 +260,13 @@ const Migrations = () => {
 	const columnFilters = {
 		status: ( type ) => <Label type={ type } />,
 		actions: ( type, migration ) => {
-			if ( 'success' !== migration.status ) {
-				return (
-					<button
-						className="button"
-						onClick={ () => openMigrationRunModal( migration.id, migration.run_order ) }>
-						{ __( 'Run Update', 'give' ) }
-					</button>
-				);
-			}
+			return (
+				<button
+					className="button"
+					onClick={ () => openMigrationRunModal( migration.id ) }>
+					{ __( 'Run Update', 'give' ) }
+				</button>
+			);
 		},
 		details: ( value, migration ) => {
 			if ( migration.status === 'success' ) {
@@ -394,7 +332,6 @@ const Migrations = () => {
 			</div>
 
 			{ migrationModal.visible && getMigrationModal() }
-			{ state.showMigrationRunWarning && getMigrationRunWarning() }
 			{ migrationRunModal.visible && getMigrationRunModal() }
 		</>
 	);
