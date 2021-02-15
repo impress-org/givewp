@@ -73,6 +73,11 @@ class MigrationsRunner {
 			return;
 		}
 
+		// Stop Migration Runner if there are failed migrations
+		if ( $this->hasFailedMigrations() ) {
+			return;
+		}
+
 		// Store and sort migrations by timestamp
 		$migrations = [];
 
@@ -141,5 +146,16 @@ class MigrationsRunner {
 	 */
 	public function hasMigrationToRun() {
 		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->completedMigrations );
+	}
+
+	/**
+	 * Return whether or not all migrations ran successfully.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return bool
+	 */
+	public function hasFailedMigrations() {
+		return count( $this->completedMigrations ) !== $this->migrationLogRepository->getMigrationsCount();
 	}
 }
