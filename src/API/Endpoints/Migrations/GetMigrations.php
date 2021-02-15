@@ -140,7 +140,7 @@ class GetMigrations extends Endpoint {
 				'status'      => true,
 				'data'        => $data,
 				'pages'       => ceil( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
-				'showOptions' => 'enabled' === give_get_option( 'show_migration_options' ),
+				'showOptions' => 'enabled' === give_get_option( 'enable_database_updates' ),
 			]
 		);
 	}
