@@ -82,7 +82,7 @@ class LoginRoute implements RestRoute {
 						'status'        => 400,
 						'response'      => 'incorrect_password',
 						'body_response' => [
-							'message' => 'The provided password was incorrect.',
+							'message' => __( 'The provided password was incorrect.', 'give' ),
 						],
 					]
 				);
@@ -93,7 +93,7 @@ class LoginRoute implements RestRoute {
 					'status'        => 400,
 					'response'      => 'unidentified_login',
 					'body_response' => [
-						'message' => "A record for the provided login ('{$login}') could not be found.",
+						'message' => sprintf( __( 'A record for the provided login (%s) could not be found.', 'give' ), $login ),
 					],
 				]
 			);

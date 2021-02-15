@@ -67,7 +67,7 @@ class LogoutRoute implements RestRoute {
 				'status'        => 200,
 				'response'      => 'logout_successful',
 				'body_response' => [
-					'message' => 'User was logged out succesfully.',
+					'message' => __( 'User was logged out succesfully.', 'give' ),
 				],
 			]
 		);
