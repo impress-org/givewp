@@ -6,7 +6,7 @@ use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
 use Give\Tracking\TrackingData\ServerData;
 use Give\Tracking\TrackingData\WebsiteData;
-use Give\Tracking\ValueObjects\EventId;
+use Give\Tracking\ValueObjects\EventType;
 use Give\Tracking\ValueObjects\OptionName;
 use Give_Admin_Settings;
 
@@ -93,7 +93,7 @@ class AdminActionHandler {
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
 		// Exit if already has access token.
-		if ( $usageTracking || get_option( OptionName::TELEMETRY_ACCESS_TOKEN ) ) {
+		if ( ! $usageTracking || get_option( OptionName::TELEMETRY_ACCESS_TOKEN ) ) {
 			return false;
 		}
 
@@ -116,7 +116,7 @@ class AdminActionHandler {
 			( new WebsiteData() )->get()
 		);
 
-		$response = $client->post( EventId::CREATE_TOKEN, $data, [ 'blocking' => true ] );
+		$response = $client->post( ( new EventType() )->getCreateToken(), [ 'blocking' => true ] );
 		if ( is_wp_error( $response ) ) {
 			return;
 		}

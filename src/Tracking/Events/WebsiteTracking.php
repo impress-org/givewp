@@ -2,12 +2,10 @@
 
 namespace Give\Tracking\Events;
 
-use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
-use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\ThemeData;
 use Give\Tracking\TrackingData\WebsiteData;
+use Give\Tracking\ValueObjects\EventType;
 
 /**
  * Class WebsiteTracking
@@ -16,7 +14,7 @@ use Give\Tracking\TrackingData\WebsiteData;
  * @since 2.10.0
  */
 class WebsiteTracking extends TrackEvent {
-	protected $trackId = 'site-updated';
+	protected $trackId;
 
 	/**
 	 * GivePluginSettingsTracking constructor.
@@ -27,6 +25,7 @@ class WebsiteTracking extends TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function __construct( Track $track, WebsiteData $themeData ) {
+		$this->trackId = ( new EventType() )->getSiteUpdated();
 		parent::__construct( $track, $themeData );
 	}
 }

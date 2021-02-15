@@ -5,6 +5,7 @@ namespace Give\Tracking\Events;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\DonationFormsData;
+use Give\Tracking\ValueObjects\EventType;
 
 /**
  * Class DonationFormsTracking
@@ -16,7 +17,7 @@ class DonationFormsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId = 'donation-form-updated';
+	protected $trackId;
 
 	/**
 	 * GivePluginSettingsTracking constructor.
@@ -27,6 +28,7 @@ class DonationFormsTracking extends TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function __construct( Track $track, DonationFormsData $themeData ) {
+		$this->trackId = ( new EventType() )->getDonationFormUpdated();
 		parent::__construct( $track, $themeData );
 	}
 

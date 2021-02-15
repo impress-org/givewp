@@ -5,7 +5,7 @@ namespace Give\Tracking\Events;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\DonationMetricsData;
-use Give\Tracking\TrackingData\ThemeData;
+use Give\Tracking\ValueObjects\EventType;
 
 /**
  * Class DonationMetricsTracking
@@ -18,7 +18,7 @@ class DonationMetricsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId = 'donation-metrics';
+	protected $trackId;
 
 	/**
 	 * GivePluginSettingsTracking constructor.
@@ -29,6 +29,7 @@ class DonationMetricsTracking extends TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function __construct( Track $track, DonationMetricsData $themeData ) {
+		$this->trackId = ( new EventType() )->getDonationMetrics();
 		parent::__construct( $track, $themeData );
 	}
 }
