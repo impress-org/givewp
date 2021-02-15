@@ -74,7 +74,7 @@ class MigrationsRunner {
 		}
 
 		// Stop Migration Runner if there are failed migrations
-		if ( $this->hasFailedMigrations() ) {
+		if ( $this->migrationLogRepository->getFailedMigrationsCount() ) {
 			return;
 		}
 
@@ -95,8 +95,7 @@ class MigrationsRunner {
 				continue;
 			}
 
-			$migrationOrder = array_search( $key, array_keys( $migrations ) ) + 1;
-			$migrationLog   = $this->migrationLogFactory->make( $migrationId );
+			$migrationLog = $this->migrationLogFactory->make( $migrationId );
 
 			// Begin transaction
 			$wpdb->query( 'START TRANSACTION' );
@@ -109,13 +108,13 @@ class MigrationsRunner {
 
 				// Save migration status
 				$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
-				$migrationLog->setRunOrder( $migrationOrder );
+				$migrationLog->setRunOrder( $migrationClass::timestamp() );
 				$migrationLog->save();
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				$migrationLog->setStatus( MigrationLogStatus::FAILED );
-				$migrationLog->setRunOrder( $migrationOrder );
+				$migrationLog->setRunOrder( $migrationClass::timestamp() );
 				$migrationLog->setError( $exception );
 				$migrationLog->save();
 
@@ -146,16 +145,5 @@ class MigrationsRunner {
 	 */
 	public function hasMigrationToRun() {
 		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->completedMigrations );
-	}
-
-	/**
-	 * Return whether or not all migrations ran successfully.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return bool
-	 */
-	public function hasFailedMigrations() {
-		return count( $this->completedMigrations ) !== $this->migrationLogRepository->getMigrationsCount();
 	}
 }
