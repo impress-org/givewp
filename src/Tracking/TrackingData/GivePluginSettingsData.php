@@ -2,7 +2,6 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Tracking\Contracts\TrackData;
-use Give\Helpers\ArrayDataSet;
 use Give\Tracking\AdminSettings;
 
 /**
@@ -22,23 +21,7 @@ class GivePluginSettingsData implements TrackData {
 	 * @return array
 	 */
 	public function get() {
-		return [
-			'version'        => GIVE_VERSION,
-			'installDate'    => $this->getPluginInstallDate(),
-			'globalSettings' => $this->getGlobalSettings(),
-		];
-	}
-
-	/**
-	 * Returns plugin install date
-	 *
-	 * @since 2.10.0
-	 * @return int
-	 */
-	private function getPluginInstallDate() {
-		$confirmationPageID = give_get_option( 'success_page' );
-
-		return strtotime( get_post_field( 'post_date', $confirmationPageID, 'db' ) );
+		return $this->getGlobalSettings();
 	}
 
 	/**
@@ -58,25 +41,25 @@ class GivePluginSettingsData implements TrackData {
 		];
 
 		$trueFalseSettings = [
-			'name_title_prefix',
-			'company_field',
-			'anonymous_donation',
-			'donor_comment',
-			AdminSettings::USAGE_TRACKING_OPTION_NAME,
+			'is_name_title'         => 'name_title_prefix',
+			'is_company'            => 'company_field',
+			'is_anonymous_donation' => 'anonymous_donation',
+			'is_donor_comment'      => 'donor_comment',
+			'is_anonymous_tracking' => AdminSettings::USAGE_TRACKING_OPTION_NAME,
 		];
 
-		$data = [];
-
+		$data     = [];
+		$settings = get_option( 'give_settings', give_get_default_settings() );
 		foreach ( $generalSettings as $setting ) {
-			$data[ $setting ] = give_get_option( $setting, '' );
+			$data[ $setting ] = isset( $settings[ $setting ] ) ? $settings[ $setting ] : '';
 		}
 
-		foreach ( $trueFalseSettings as $setting ) {
-			$data[ $setting ] = absint( give_is_setting_enabled( give_get_option( $setting, 'disabled' ) ) );
+		foreach ( $trueFalseSettings as $key => $setting ) {
+			$value        = isset( $settings[ $setting ] ) ? $settings[ $setting ] : 'disabled';
+			$data[ $key ] = absint( give_is_setting_enabled( $value ) );
 		}
 
-		$data                          = ArrayDataSet::camelCaseKeys( $data );
-		$data['activePaymentGateways'] = give_get_enabled_payment_gateways();
+		$data['active_payment_gateways'] = give_get_enabled_payment_gateways();
 
 		return $data;
 	}

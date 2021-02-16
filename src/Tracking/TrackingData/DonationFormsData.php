@@ -3,9 +3,8 @@ namespace Give\Tracking\TrackingData;
 
 use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
-use Give\Helpers\Utils;
 use Give\Tracking\Contracts\TrackData;
-use Give\ValueObjects\Money;
+use Give\Tracking\Traits\HasDonations;
 use Give_Donors_Query;
 
 /**
@@ -17,6 +16,8 @@ use Give_Donors_Query;
  * @package Give\Tracking\TrackingData
  */
 class DonationFormsData implements TrackData {
+	use HasDonations;
+
 	private $formIds     = [];
 	private $donationIds = [];
 
@@ -24,6 +25,8 @@ class DonationFormsData implements TrackData {
 	 * @inheritdoc
 	 */
 	public function get() {
+		$this->setDonationIds()->setFormIdsByDonationIds();
+
 		if ( ! $this->formIds ) {
 			return [];
 		}
@@ -47,13 +50,18 @@ class DonationFormsData implements TrackData {
 		foreach ( $this->formIds as $formId ) {
 			$formTemplate = Template::getActiveID( $formId );
 
-			$data[ $formId ]['slug']         = get_post_field( 'post_name', $formId, 'db' );
-			$data[ $formId ]['formType']     = give()->form_meta->get_meta( $formId, '_give_price_option', true );
-			$data[ $formId ]['formTemplate'] = ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate;
-			$data[ $formId ]['donorCount']   = $this->getDonorCount( $formId );
-			$data[ $formId ]['revenue']      = $this->getRevenueTillNow( $formId );
+			$temp = [
+				'form_id'       => (int) $formId,
+				'form_url'      => untrailingslashit( get_permalink( $formId ) ),
+				'form_name'     => get_post_field( 'post_name', $formId, 'db' ),
+				'form_type'     => give()->form_meta->get_meta( $formId, '_give_price_option', true ),
+				'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
+				'donor_count'   => $this->getDonorCount( $formId ),
+				'revenue'       => $this->getRevenueTillNow( $formId ),
+			];
 
-			$this->addAddonsInformation( $data, $formId );
+			$this->addAddonsInformation( $temp, $formId );
+			$data[] = $temp;
 		}
 
 		return $data;
@@ -64,12 +72,10 @@ class DonationFormsData implements TrackData {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param  array  $donationIds
-	 *
 	 * @return DonationFormsData
 	 */
-	public function setDonationIds( $donationIds ) {
-		$this->donationIds = $donationIds;
+	public function setDonationIds() {
+		$this->donationIds = $this->getNewDonationIdsSinceLastRequest();
 
 		return $this;
 	}
@@ -114,22 +120,24 @@ class DonationFormsData implements TrackData {
 			]
 		);
 
-		$result = $wpdb->get_var(
+		$result = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT SUM(amount)
 				FROM {$wpdb->give_revenue} as r
 				INNER JOIN {$wpdb->posts} as p
 				ON r.donation_id=p.id
-				WHERE p.post_date<=%s
+				INNER JOIN {$wpdb->donationmeta} as dm
+				ON p.id=dm.donation_id
 				AND post_status IN ({$statues})
 				AND r.form_id=%d
+				AND dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
 				",
-				current_time( 'mysql' ),
 				$formId
 			)
 		);
-		return $result ?: '';
+		return $result ?: 0;
 	}
 
 	/**
@@ -139,7 +147,7 @@ class DonationFormsData implements TrackData {
 	 *
 	 * @param int $formId
 	 *
-	 * @return array|object|string|null
+	 * @return int
 	 */
 	private function getDonorCount( $formId ) {
 		$donorQuery = new Give_Donors_Query(
@@ -151,7 +159,7 @@ class DonationFormsData implements TrackData {
 			]
 		);
 
-		return $donorQuery->get_donors();
+		return (int) $donorQuery->get_donors();
 	}
 
 	/**
@@ -163,8 +171,13 @@ class DonationFormsData implements TrackData {
 	 * @param int $formId
 	 */
 	private function addAddonsInformation( &$array, $formId ) {
-		$array['isRecurringDonationsAddonActive'] = (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId );
-		$array['isFeeRecoveryAddonActive']        = (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId );
-		$array['isFormFieldManagerActive']        = (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId );
+		$array = array_merge(
+			$array,
+			[
+				'recurring_donations' => (int) apply_filters( 'give_telemetry_form_uses_addon_recurring', false, $formId ),
+				'fee_recovery'        => (int) apply_filters( 'give_telemetry_form_uses_addon_fee_recovery', false, $formId ),
+				'form_field_manager'  => (int) apply_filters( 'give_telemetry_form_uses_addon_form_field_manager', false, $formId ),
+			]
+		);
 	}
 }

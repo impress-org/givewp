@@ -1,9 +1,9 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\WebsiteData;
+use Give\Tracking\ValueObjects\OptionName;
 use InvalidArgumentException;
+use WP_Error;
 
 /**
  * Class TrackClient
@@ -20,37 +20,29 @@ class TrackClient {
 	 *
 	 * @var string
 	 */
-	const SERVER_URL = 'https://stats.givewp.com';
+	const SERVER_URL = 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
 
 	/**
 	 * Send a track event.
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param string $trackId
-	 * @param array $trackData
+	 * @param  string  $trackId
+	 * @param  array  $trackData
+	 * @param  array  $requestArgs
 	 *
-	 * @throws InvalidArgumentException
+	 * @return array|WP_Error
 	 */
-	public function send( $trackId, $trackData ) {
+	public function post( $trackId, $trackData, $requestArgs = [] ) {
 		if ( ! $trackId || ! $trackData ) {
-			throw new InvalidArgumentException( 'Pass valid track id and tracked data to TrackClient' );
+			return new WP_Error( 'invalid-telemetry-request', 'Pass valid track id and tracked data to TrackClient' );
 		}
 
-		$url = add_query_arg(
-			[
-				'en' => $trackId,
-				'ts' => time(),
+		$default_request_args = [
+			'headers'     => [
+				'content-type:' => 'application/json',
+				'Authorization' => 'Bearer ' . get_option( OptionName::TELEMETRY_ACCESS_TOKEN ),
 			],
-			self::SERVER_URL
-		);
-
-		$trackData['server']  = ( new ServerData() )->get();
-		$trackData['website'] = ( new WebsiteData() )->get();
-
-		// Set a 'content-type' header of 'application/json'.
-		$tracking_request_args = [
-			'headers'     => [ 'content-type:' => 'application/json' ],
 			'timeout'     => 8,
 			'httpversion' => '1.1',
 			'blocking'    => false,
@@ -59,6 +51,19 @@ class TrackClient {
 			'data_format' => 'body',
 		];
 
-		wp_remote_post( $url, $tracking_request_args );
+		return wp_remote_post( $this->getApiUrl( $trackId ), wp_parse_args( $requestArgs, $default_request_args ) );
+	}
+
+	/**
+	 * Get api url.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param string $trackId
+	 *
+	 * @return string
+	 */
+	public function getApiUrl( $trackId ) {
+		return self::SERVER_URL . '/' . $trackId;
 	}
 }

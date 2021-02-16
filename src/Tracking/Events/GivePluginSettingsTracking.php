@@ -4,6 +4,7 @@ namespace Give\Tracking\Events;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\GivePluginSettingsData;
+use Give\Tracking\ValueObjects\EventType;
 
 /**
  * Class GivePluginSettingsTracking
@@ -17,7 +18,7 @@ class GivePluginSettingsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId = 'give_plugin_settings_updated';
+	protected $trackId;
 
 	/**
 	 * GivePluginSettingsTracking constructor.
@@ -26,6 +27,7 @@ class GivePluginSettingsTracking extends TrackEvent {
 	 * @param  GivePluginSettingsData  $givePluginSettingsData
 	 */
 	public function __construct( Track $track, GivePluginSettingsData $givePluginSettingsData ) {
+		$this->trackId = ( new EventType() )->getPluginSettingsUpdated();
 		parent::__construct( $track, $givePluginSettingsData );
 	}
 }

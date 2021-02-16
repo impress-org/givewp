@@ -23,16 +23,30 @@ class WebsiteData implements TrackData {
 	public function get() {
 		global $wp_version;
 
-		return [
-			'siteTitle'    => get_option( 'blogname' ),
-			'timestamp'    => (int) date( 'Uv' ),
-			'wpVersion'    => $wp_version,
-			'homeURL'      => home_url(),
-			'adminURL'     => admin_url(),
-			'email'        => get_bloginfo( 'admin_email' ),
-			'isMultisite'  => absint( is_multisite() ),
-			'siteLanguage' => get_bloginfo( 'language' ),
+		$data = [
+			'site_title'     => get_option( 'blogname' ),
+			'wp_version'     => $wp_version,
+			'givewp_version' => GIVE_VERSION,
+			'home_url'       => untrailingslashit( home_url() ),
+			'admin_url'      => untrailingslashit( admin_url() ),
+			'is_multisite'   => absint( is_multisite() ),
+			'site_language'  => get_bloginfo( 'language' ),
+			'install_date'   => $this->getPluginInstallDate(),
 		];
+
+		return array_merge( $data, ( new ServerData() )->get() );
+	}
+
+	/**
+	 * Returns plugin install date
+	 *
+	 * @since 2.10.0
+	 * @return int
+	 */
+	private function getPluginInstallDate() {
+		$confirmationPageID = give_get_option( 'success_page' );
+
+		return strtotime( get_post_field( 'post_date', $confirmationPageID, 'db' ) );
 	}
 }
 

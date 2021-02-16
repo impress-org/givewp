@@ -1,8 +1,8 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\AdminSettings;
-use Give\Tracking\Events\TrackTracking;
+use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
  * Class Track
@@ -17,7 +17,7 @@ class Track {
 	 * Collection of track events.
 	 *
 	 * @ssicne 2.10.0
-	 * @var array
+	 * @var TrackData[]
 	 */
 	private $tracks;
 
@@ -27,14 +27,14 @@ class Track {
 	 * @since 2.10.0
 	 */
 	public function send() {
-		if ( empty( $this->tracks ) ) {
+		if ( empty( $this->tracks ) || ! TrackHelper::isTrackingEnabled() ) {
 			return;
 		}
 
 		$trackClient = new TrackClient();
 
 		foreach ( $this->tracks as $trackId => $trackData ) {
-			$trackClient->send( $trackId, $trackData );
+			$trackClient->post( $trackId, $trackData->get() );
 		}
 	}
 
@@ -42,11 +42,11 @@ class Track {
 	 * Record track.
 	 *
 	 * @param string $trackId
-	 * @param array $trackData
+	 * @param TrackData $trackData
 	 *
 	 * @since 2.10.0
 	 */
-	public function recordTrack( $trackId, $trackData ) {
+	public function recordTrack( $trackId, TrackData $trackData ) {
 		$this->tracks[ $trackId ] = $trackData;
 	}
 }
