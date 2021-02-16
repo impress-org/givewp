@@ -26,7 +26,7 @@ class LogoutRoute implements RestRoute {
 				[
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
-					'permission_callback' => '__return_true',
+					'permission_callback' => [ $this, 'permissionsCheck' ],
 				],
 			]
 		);
@@ -81,6 +81,10 @@ class LogoutRoute implements RestRoute {
 	 * @return bool
 	 */
 	public function permissionsCheck() {
-		return is_user_logged_in();
+		if ( Give()->session->get_session_expiration() !== false || is_user_logged_in() ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
