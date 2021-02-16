@@ -6,7 +6,9 @@ use WP_REST_Request;
 use WP_REST_Response;
 use Give\MigrationLog\MigrationLogStatus;
 use Give\MigrationLog\MigrationLogRepository;
-use Give\MigrationLog\Helpers\MigrationOrder;
+use Give\MigrationLog\Helpers\MigrationHelper;
+use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\MigrationsRegister;
 
 /**
  * Class GetMigrations
@@ -25,22 +27,30 @@ class GetMigrations extends Endpoint {
 	private $migrationRepository;
 
 	/**
-	 * @var MigrationOrder
+	 * @var MigrationHelper
 	 */
-	private $migrationOrder;
+	private $migrationHelper;
+
+	/**
+	 * @var MigrationsRegister
+	 */
+	private $migrationRegister;
 
 	/**
 	 * GetLogs constructor.
 	 *
 	 * @param  MigrationLogRepository  $repository
-	 * @param  MigrationOrder  $migrationOrder
+	 * @param  MigrationHelper  $migrationHelper
+	 * @param  MigrationsRegister  $migrationRegister
 	 */
 	public function __construct(
 		MigrationLogRepository $repository,
-		MigrationOrder $migrationOrder
+		MigrationHelper $migrationHelper,
+		MigrationsRegister $migrationRegister
 	) {
 		$this->migrationRepository = $repository;
-		$this->migrationOrder      = $migrationOrder;
+		$this->migrationHelper     = $migrationHelper;
+		$this->migrationRegister   = $migrationRegister;
 	}
 
 	/**
@@ -121,9 +131,10 @@ class GetMigrations extends Endpoint {
 	 * @return WP_REST_Response
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
-		$data            = [];
-		$migrations      = $this->migrationRepository->getMigrationsForRequest( $request );
-		$migrationsCount = $this->migrationRepository->getMigrationsCount();
+		$data              = [];
+		$migrations        = $this->migrationRepository->getMigrationsForRequest( $request );
+		$migrationsCount   = $this->migrationRepository->getMigrationsCount();
+		$pendingMigrations = $this->migrationHelper->getPendingMigrations();
 
 		foreach ( $migrations as $migration ) {
 			$data[] = [
@@ -131,7 +142,19 @@ class GetMigrations extends Endpoint {
 				'status'    => $migration->getStatus(),
 				'error'     => $migration->getError(),
 				'last_run'  => $migration->getLastRunDate(),
-				'run_order' => $this->migrationOrder->getRunOrderForMigration( $migration->getId() ),
+				'run_order' => $this->migrationHelper->getRunOrderForMigration( $migration->getId() ),
+			];
+		}
+
+		// Check for pending migrations
+		/* @var Migration $migration */
+		foreach ( $pendingMigrations as $migration ) {
+			$data[] = [
+				'id'        => $migration::id(),
+				'status'    => MigrationLogStatus::PENDING,
+				'error'     => '',
+				'last_run'  => '',
+				'run_order' => $this->migrationHelper->getRunOrderForMigration( $migration::id() ),
 			];
 		}
 
