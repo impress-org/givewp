@@ -2,6 +2,11 @@
 /tmp
 /tests/bin/tmp
 
+# Cypress
+/cypress
+/tests/e2e/videos
+/tests/e2e/screenshots
+
 # Numerous always-ignore extensions
 .diff
 .err

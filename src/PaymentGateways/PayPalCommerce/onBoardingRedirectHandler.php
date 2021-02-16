@@ -2,8 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\ConnectClient\ConnectClient;
-use Give\Helpers\ArrayDataSet;
+use Exception;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
@@ -72,7 +71,7 @@ class onBoardingRedirectHandler {
 		if ( $this->isPayPalUserRedirected() ) {
 			$details = $this->savePayPalMerchantDetails();
 			$this->setUpWebhook( $details );
-			$this->redirectAccountConnected( $details );
+			$this->redirectAccountConnected();
 		}
 
 		if ( $this->isPayPalAccountDetailsSaved() ) {
@@ -88,8 +87,6 @@ class onBoardingRedirectHandler {
 	/**
 	 * Save PayPal merchant details
 	 *
-	 * @todo: Confirm `primary_email_confirmed` set to true via PayPal api to confirm onboarding process status.
-	 *
 	 * @since 2.9.0
 	 *
 	 * @return MerchantDetail
@@ -104,13 +101,24 @@ class onBoardingRedirectHandler {
 			'merchantIdInPayPal',
 		];
 
-		$payPalAccount      = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+		$payPalAccount = array_intersect_key( $paypalGetData, array_flip( $allowedPayPalData ) );
+
+		if ( ! array_key_exists( 'merchantIdInPayPal', $payPalAccount ) || empty( $payPalAccount['merchantIdInPayPal'] ) ) {
+			$errors[] = [
+				'type'    => 'url',
+				'message' => esc_html__( 'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:', 'give' ) . "\n",
+				'value'   => urlencode( $_SERVER['QUERY_STRING'] ),
+			];
+
+			$this->merchantRepository->saveAccountErrors( $errors );
+			$this->redirectWhenOnBoardingFail();
+		}
+
 		$restApiCredentials = (array) $this->payPalAuth->getSellerRestAPICredentials( $tokenInfo ? $tokenInfo['accessToken'] : '' );
+		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
 		$tokenInfo = $this->payPalAuth->getTokenFromClientCredentials( $restApiCredentials['client_id'], $restApiCredentials['client_secret'] );
 		$this->settings->updateAccessToken( $tokenInfo );
-
-		$this->didWeGetValidSellerRestApiCredentials( $restApiCredentials );
 
 		$payPalAccount['clientId']               = $restApiCredentials['client_id'];
 		$payPalAccount['clientSecret']           = $restApiCredentials['client_secret'];
@@ -131,10 +139,8 @@ class onBoardingRedirectHandler {
 	 * Redirects the user to the account connected url
 	 *
 	 * @since 2.9.0
-	 *
-	 * @param MerchantDetail $merchant_detail
 	 */
-	private function redirectAccountConnected( MerchantDetail $merchant_detail ) {
+	private function redirectAccountConnected() {
 		$this->refreshAccountStatus();
 
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-commerce-account-connected=1' ) );
@@ -147,16 +153,22 @@ class onBoardingRedirectHandler {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param MerchantDetail $merchant_details
+	 * @param  MerchantDetail  $merchant_details
 	 */
 	private function setUpWebhook( MerchantDetail $merchant_details ) {
 		if ( ! is_ssl() ) {
 			return;
 		}
 
-		$webhookConfig = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
+		try {
+			$webhookConfig = $this->webhooksRepository->createWebhook( $merchant_details->accessToken );
+			$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
+		} catch ( Exception $ex ) {
+			$errors[] = esc_html__( 'There was a problem with creating webhook on PayPal. A gateway error log also added to get details information about PayPal response.', 'give' );
 
-		$this->webhooksRepository->saveWebhookConfig( $webhookConfig );
+			$this->merchantRepository->saveAccountErrors( $errors );
+			$this->redirectWhenOnBoardingFail();
+		}
 	}
 
 	/**
@@ -226,8 +238,22 @@ class onBoardingRedirectHandler {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			$errorMessage = isset( $restApiCredentials['error_description'] ) ? urlencode( $restApiCredentials['error_description'] ) : '';
-			$this->redirectWhenOnBoardingFail( $errorMessage );
+			$errors[] = [
+				'type'    => 'json',
+				'message' => esc_html__( 'PayPal client access token API request response is:', 'give' ),
+				'value'   => wp_json_encode( $this->settings->getAccessToken() ),
+			];
+
+			$errors[] = [
+				'type'    => 'json',
+				'message' => esc_html__( 'PayPal client rest api credentials API request response is:', 'give' ),
+				'value'   => wp_json_encode( $array ),
+			];
+
+			$errors[] = esc_html__( 'There was a problem with PayPal client rest API request and we could not find valid client id and secret.', 'give' );
+
+			$this->merchantRepository->saveAccountErrors( $errors );
+			$this->redirectWhenOnBoardingFail();
 		}
 	}
 
@@ -264,9 +290,13 @@ class onBoardingRedirectHandler {
 	 * @return true|string[]
 	 */
 	private function isAdminSuccessfullyOnBoarded( $merchantId, $accessToken, $usesCustomPayments ) {
-		$onBoardedData = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
-		$onBoardedData = array_filter( $onBoardedData ); // Remove empty values.
-		$errorMessages = [];
+		$onBoardedData   = (array) $this->payPalAuth->getSellerOnBoardingDetailsFromPayPal( $merchantId, $accessToken );
+		$onBoardedData   = array_filter( $onBoardedData ); // Remove empty values.
+		$errorMessages[] = [
+			'type'    => 'json',
+			'message' => esc_html__( 'PayPal merchant status check API request response is:', 'give' ),
+			'value'   => wp_json_encode( $onBoardedData ),
+		];
 
 		if ( ! is_ssl() ) {
 			$errorMessages[] = esc_html__(
@@ -292,7 +322,7 @@ class onBoardingRedirectHandler {
 		}
 
 		if ( ! $usesCustomPayments ) {
-			return empty( $errorMessages ) ? true : $errorMessages;
+			return count( $errorMessages ) > 1 ? $errorMessages : true;
 		}
 
 		if ( array_diff( [ 'products', 'capabilities' ], array_keys( $onBoardedData ) ) ) {
@@ -333,26 +363,16 @@ class onBoardingRedirectHandler {
 		}
 
 		// If there were errors then redirect the user with notices
-		return empty( $errorMessages ) ? true : $errorMessages;
+		return count( $errorMessages ) > 1 ? $errorMessages : true;
 	}
 
 	/**
 	 * Redirect admin to setting section with error.
 	 *
 	 * @since 2.9.0
-	 *
-	 * @param $errorMessage
-	 *
 	 */
-	private function redirectWhenOnBoardingFail( $errorMessage ) {
-		wp_redirect(
-			admin_url(
-				sprintf(
-					'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=%1$s',
-					urlencode( $errorMessage )
-				)
-			)
-		);
+	private function redirectWhenOnBoardingFail() {
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1' ) );
 
 		exit();
 	}

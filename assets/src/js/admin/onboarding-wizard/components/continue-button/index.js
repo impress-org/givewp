@@ -16,11 +16,11 @@ import Chevron from '../icons/chevron';
 // Import styles
 import './style.scss';
 
-const ContinueButton = ( { label, clickCallback } ) => {
+const ContinueButton = ( { label, testId, clickCallback } ) => {
 	const [ { currentStep, lastStep }, dispatch ] = useStoreValue();
 
 	return (
-		<Button onClick={ () => {
+		<Button testId={ testId } onClick={ () => {
 			clickCallback();
 			if ( currentStep + 1 <= lastStep ) {
 				dispatch( goToStep( currentStep + 1 ) );
@@ -38,11 +38,13 @@ const ContinueButton = ( { label, clickCallback } ) => {
 
 ContinueButton.propTypes = {
 	label: PropTypes.string,
+	testId: PropTypes.string,
 	clickCallback: PropTypes.IsCallable,
 };
 
 ContinueButton.defaultProps = {
 	label: __( 'Continue', 'give' ),
+	testId: null,
 	clickCallback: () => {},
 };
 

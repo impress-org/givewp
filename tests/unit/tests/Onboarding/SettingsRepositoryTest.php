@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 use PHPUnit\Framework\TestCase;
 use Give\Onboarding\SettingsRepository;
 
 final class SettingsRepositoryTest extends TestCase {
 
-	public function testGetValue(): void {
+	public function testGetValue() {
 		$settingsRepository = new SettingsRepository(
 			[
 				'foo' => 'bar',
@@ -14,13 +15,13 @@ final class SettingsRepositoryTest extends TestCase {
 		$this->assertEquals( $settingsRepository->get( 'foo' ), 'bar' );
 	}
 
-	public function testSetValue(): void {
+	public function testSetValue() {
 		$settingsRepository = new SettingsRepository( [], function() {} );
 		$settingsRepository->set( 'foo', 'bar' );
 		$this->assertEquals( $settingsRepository->get( 'foo' ), 'bar' );
 	}
 
-	public function testSaveCallback(): void {
+	public function testSaveCallback() {
 		$mockCallback = $this->getMockBuilder( \stdClass::class )
 			->setMethods( [ '__invoke' ] )
 			->getMock();

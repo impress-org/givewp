@@ -30,6 +30,8 @@ const Cypress = window.Cypress;
 window.baseURL = Cypress.env( 'site' ).url;
 const baseURL = window.baseURL;
 
+Cypress.Commands.add( 'getByTest', name => cy.get( `[data-givewp-test="${ name }"]` ) );
+
 beforeEach( function() {
 	cy.visit( baseURL + '/wp-login.php' );
 	cy.wait( 1000 );

@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.9.5
+Stable tag: 2.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -230,6 +230,29 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.9.7: February 9th, 2021 =
+* Fixed: Using CLI commands no longer throws a fatal error due to a missing dev package
+* Fixed: When guest registration is disabled the checkbox to create an account is hidden
+* Fixed: Multi Form Goal component no longer throws an error when used in Divi
+* Fixed: Corrected some styles in the Setup Page for gateway links
+
+= 2.9.6: January 13th, 2021 =
+* New: Additional logging and improved messaging for PayPal Donations onboarding
+* New: Added ability to adjust gravatar size for the Donor Wall block
+* Fixed: Personal information field icons are preserved when switching payment gateways
+* Fixed: Fee Recovery checkbox no longer has weird visual glitches on hover
+* Fixed: Corrected missing borders for PayPal Donation credit card fields in Firefox
+* Fixed: The form title is now reflected in PayPal for donations made through PayPal Donation
+* Fixed: Resolved an error where some servers had a trouble with the autoloader using a relative path
+* Fixed: Made sure that caching does not cause donations to incorrectly show up as pending in receipt
+* Fixed: Create an Account checkbox only shows up when Guest Checkout is enabled
+* Fixed: Form fields now preserve their values when the payment gateway changes
+* Fixed: Took care of a few cross-browser compatibility issues with the multi-step form
+* Fixed: Stopped taps from registering as double-clicks on checkboxes in donation forms
+* Fixed: Multi-Form Goals added via shortcode now stack image and text when needed
+* Fixed: Foreign keys are no longer used on Give tables and are now removed
+* Fixed: Give Aid description popup now works properly on Multi-Step forms
 
 = 2.9.5: December 3rd, 2020 =
 * New: Added Jamaica to list of countries for onboarding

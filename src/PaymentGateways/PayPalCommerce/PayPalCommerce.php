@@ -86,7 +86,7 @@ class PayPalCommerce implements PaymentGateway {
 		/**
 		 * filter the settings
 		 *
-		 * @since 2.10.0
+		 * @since 2.9.6
 		 */
 		return apply_filters( 'give_get_settings_paypal_commerce', $settings );
 	}
@@ -99,12 +99,14 @@ class PayPalCommerce implements PaymentGateway {
 		Hooks::addAction( 'wp_ajax_give_paypal_commerce_get_partner_url', AjaxRequestHandler::class, 'onGetPartnerUrlAjaxRequestHandler' );
 		Hooks::addAction( 'wp_ajax_give_paypal_commerce_disconnect_account', AjaxRequestHandler::class, 'removePayPalAccount' );
 		Hooks::addAction( 'wp_ajax_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder' );
+		Hooks::addAction( 'wp_ajax_give_paypal_commerce_onboarding_trouble_notice', AjaxRequestHandler::class, 'onBoardingTroubleNotice' );
 		Hooks::addAction( 'wp_ajax_nopriv_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder' );
 		Hooks::addAction( 'wp_ajax_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder' );
 		Hooks::addAction( 'wp_ajax_nopriv_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder' );
 
 		Hooks::addAction( 'admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts' );
 		Hooks::addAction( 'wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets' );
+		Hooks::addAction( 'give_pre_form_output', DonationFormPaymentMethod::class, 'handle' );
 
 		Hooks::addAction( 'give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken' );
 		Hooks::addAction( 'give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm' );

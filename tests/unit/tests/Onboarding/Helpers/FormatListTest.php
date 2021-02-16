@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 use PHPUnit\Framework\TestCase;
 use Give\Onboarding\Helpers\FormatList;
 
 final class FormatListTest extends TestCase {
 
-	public function testFromKeyValue(): void {
+	public function testFromKeyValue() {
 		$data          = [ 'foo' => 'bar' ];
 		$formattedList = FormatList::fromKeyValue( $data );
 		$expectedList  = [
@@ -16,7 +17,7 @@ final class FormatListTest extends TestCase {
 		$this->assertEquals( $expectedList, $formattedList );
 	}
 
-	public function testFromValueKey(): void {
+	public function testFromValueKey() {
 		$data          = [ 'foo' => 'bar' ];
 		$formattedList = FormatList::fromValueKey( $data );
 		$expectedList  = [

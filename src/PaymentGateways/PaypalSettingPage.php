@@ -45,7 +45,8 @@ class PaypalSettingPage implements SettingPage {
 		add_filter( 'give_get_sections_gateways', [ $this, 'registerPaypalSettingSection' ], 5 );
 
 		// Load custom setting fields.
-		$adminSettingFields = new AdminSettingFields();
+		/* @var AdminSettingFields $adminSettingFields */
+		$adminSettingFields = give( AdminSettingFields::class );
 		$adminSettingFields->boot();
 	}
 

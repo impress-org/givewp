@@ -7,9 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
+### New
 
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+
+## 2.9.7 - 2021-02-09
+
+### Fixed
+
+-   Create account checkbox is hidden when guest registration is disabled (#5557)
+-   Using the CLI commands is not producing errors anymore (#5559)
+-   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
+-   Setup Page gateway links now render styles correctly (#5576)
+
+## 2.9.6 - 2021-01-13
+
+### New
+
+-   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
+-   Sample onboarding tests are now implemented (#5543)
+-   Onboarding wizard e2e tests are now implemented (#5550)
+-   Setup page is e2e tested (#5547)
 
 ### Changed
 
@@ -19,20 +38,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Onboarding Form Preview template now loads scripts inside of the closing body tag (#5510)
 -   Deprecated e2e tests have been removed, and replaced with Cypress tests (#5533)
 -   New `test:e2e` package script introduced (#5533)
+-   Decouple test:e2e command from wp-env #5545
+-   Unit test structure is refactored (#5554)
 
 ### Fixed
 
+-   Show field icons on personal information input field when payment gateway switch (#5542)
 -   Multiple error redirects does not break donation form view in Multi Step form template view (#5531)
 -   Hover glitches of Fee Recovery checkbox are now fixed (#5508)
 -   PayPal Donations CC fields have border in Firefox browser (#5500)
 -   Send form title to PayPal (#5495)
 -   Automated unit and integrations tests are now executing (#5489)
 -   Use an absolute path for the autoloader to avoid relative path issues (#5493)
+-   Donation Receipt accounts for latency in payment status changes (#5514)
+-   Create an account checkbox only displays when Guest Checkout is enabled (#5516)
 -   Error messages are instructive when an email address is already in the system (#5504)
 -   The current state of the Donation Form fields are now preserved when the payment method changes (#5491)
 -   Various Multi-Step form browser styling compatibility issues are now resolved (#5529)
 -   Checkbox click handler does not double trigger for touch devices (#5526)
 -   Multi-Form Goals added via shortcode now stack image and text when needed (#5528)
+-   Added migration to remove any leftover foreign keys on the revenue table (#5540)
+-   Give Aid add-on description popup is now working when using multi-step form (#5549)
 
 ## 2.9.5 - 2020-12-03
 
