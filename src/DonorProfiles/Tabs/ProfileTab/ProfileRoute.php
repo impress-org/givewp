@@ -46,7 +46,7 @@ class ProfileRoute extends RouteAbstract {
 	 * @since 2.10.0
 	 */
 	public function handleRequest( $request ) {
-		return $this->updateProfile( $request->get_param( 'data' ), $request->get_param( 'id' ) );
+		return $this->updateProfile( $request->get_param( 'data' ), give()->donorProfile->getId() );
 	}
 
 	/**

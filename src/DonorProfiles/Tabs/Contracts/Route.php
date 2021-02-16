@@ -57,7 +57,7 @@ abstract class Route implements RestRoute {
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => function() {
-						return is_user_logged_in();
+						return Give()->session->get_session_expiration() !== false ? true : false;
 					},
 				],
 				'args' => $this->args(),

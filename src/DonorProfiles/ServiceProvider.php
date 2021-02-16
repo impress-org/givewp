@@ -27,20 +27,8 @@ class ServiceProvider implements ServiceProviderInterface {
 	public function register() {
 
 		give()->singleton( 'donorProfileTabs', TabsRegister::class );
+		give()->singleton( 'donorProfile', Profile::class );
 
-		give()->singleton( App::class );
-		give()->singleton( Shortcode::class );
-
-		give()->bind( LoginRoute::class );
-		give()->bind( LogoutRoute::class );
-
-		if ( give_is_setting_enabled( give_get_option( 'email_access' ) ) ) {
-			give()->bind( VerifyEmailRoute::class );
-		}
-
-		if ( function_exists( 'register_block_type' ) ) {
-			give()->singleton( Block::class );
-		}
 	}
 
 	/**

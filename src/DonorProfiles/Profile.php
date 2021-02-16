@@ -9,13 +9,16 @@ use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorEmails;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
 
+use Give\DonorProfiles\Helpers as DonorProfileHelpers;
+
 
 class Profile {
 
 	protected $donor;
 	protected $id;
 
-	public function __construct( $donorId ) {
+	public function __construct() {
+		$donorId      = DonorProfileHelpers::getCurrentDonorId();
 		$donorFactory = new DonorFactory;
 		$this->donor  = $donorFactory->make( $donorId );
 	}

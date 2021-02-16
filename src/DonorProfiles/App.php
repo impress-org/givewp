@@ -4,15 +4,9 @@ namespace Give\DonorProfiles;
 
 use Give\DonorProfiles\Profile;
 use Give\DonorProfiles\Helpers\LocationList;
+use Give\DonorProfiles\Helpers;
 
 class App {
-
-	protected $profile;
-
-	public function __construct() {
-		$id            = get_current_user_id();
-		$this->profile = new Profile( $id );
-	}
 
 	/**
 	 * Get output markup for Donor Profile app
@@ -58,10 +52,10 @@ class App {
 			[
 				'apiRoot'            => esc_url_raw( rest_url() ),
 				'apiNonce'           => wp_create_nonce( 'wp_rest' ),
-				'profile'            => $this->profile->getProfileData(),
+				'profile'            => give()->donorProfile->getProfileData(),
 				'countries'          => LocationList::getCountries(),
-				'states'             => LocationList::getStates( $this->profile->getCountry() ),
-				'id'                 => $this->profile->getId(),
+				'states'             => LocationList::getStates( give()->donorProfile->getCountry() ),
+				'id'                 => give()->donorProfile->getId(),
 				'emailAccessEnabled' => give_is_setting_enabled( give_get_option( 'email_access' ) ),
 			]
 		);
