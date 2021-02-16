@@ -138,10 +138,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "DELETE FROM {$wpdb->give_comments}";
 						$sql[] = "DELETE FROM {$wpdb->give_commentmeta}";
 
-						// Delete all the Give related logs and its meta.
-						$sql[] = "DELETE FROM {$wpdb->prefix}give_logs";
-						$sql[] = "DELETE FROM {$wpdb->logmeta}";
-
 						// Delete all the Give sessions data.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sessions";
 
