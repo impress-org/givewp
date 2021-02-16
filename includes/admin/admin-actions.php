@@ -943,7 +943,8 @@ function give_donor_information_profile_fields( $user ) {
 	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
 
 	// Display Donor Information, only if donor is attached with User.
-	if ( ! empty( $donor->user_id ) ) : ?>
+	if ( ! empty( $donor->user_id ) ) :
+		?>
 			<tr>
 				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
 				<td>
@@ -952,7 +953,8 @@ function give_donor_information_profile_fields( $user ) {
 					</a>
 				</td>
 			</tr>
-	<?php endif;
+		<?php
+	endif;
 }
 
 add_action( 'personal_options', 'give_donor_information_profile_fields' );
@@ -1561,12 +1563,6 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 		array_unshift( $emails, $email );
 
 		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
-
-		// Remove log, metadata and cache.
-		if ( Give()->log_db->delete( $log ) ) {
-			Give()->logmeta_db->delete_all_meta( $log );
-			Give()->logs->delete_cache();
-		}
 
 		// Redirect to Akismet setting page.
 		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );
