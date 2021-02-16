@@ -27,7 +27,6 @@ class Shortcode {
 	 * @since 2.9.0
 	 **/
 	public function renderCallback( $attributes ) {
-
 		$attributes = $this->parseAttributes(
 			[
 				'ids'        => [],
@@ -72,7 +71,7 @@ class Shortcode {
 
 		if ( $attributes ) {
 			foreach ( $attributes as $key => &$attribute ) {
-				if ( is_array( $pairs[ $key ] ) ) {
+				if ( isset( $pairs[ $key ] ) && is_array( $pairs[ $key ] ) ) {
 					$attribute = $this->parseAttributeArray( $attribute );
 				}
 			}
