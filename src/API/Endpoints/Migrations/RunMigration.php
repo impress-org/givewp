@@ -7,7 +7,6 @@ use WP_REST_Request;
 use WP_REST_Response;
 use Give\MigrationLog\MigrationLogStatus;
 use Give\MigrationLog\MigrationLogFactory;
-use Give\MigrationLog\MigrationLogRepository;
 use Give\Framework\Migrations\MigrationsRegister;
 
 /**
@@ -27,11 +26,6 @@ class RunMigration extends Endpoint {
 	private $migrationRegister;
 
 	/**
-	 * @var MigrationLogRepository
-	 */
-	private $migrationLogRepository;
-
-	/**
 	 * @var MigrationLogFactory
 	 */
 	private $migrationLogFactory;
@@ -40,17 +34,14 @@ class RunMigration extends Endpoint {
 	 * RunMigration constructor.
 	 *
 	 * @param  MigrationsRegister  $migrationsRegister
-	 * @param  MigrationLogRepository  $migrationLogRepository
 	 * @param  MigrationLogFactory  $migrationLogFactory
 	 */
 	public function __construct(
 		MigrationsRegister $migrationsRegister,
-		MigrationLogRepository $migrationLogRepository,
 		MigrationLogFactory $migrationLogFactory
 	) {
-		$this->migrationRegister      = $migrationsRegister;
-		$this->migrationLogRepository = $migrationLogRepository;
-		$this->migrationLogFactory    = $migrationLogFactory;
+		$this->migrationRegister   = $migrationsRegister;
+		$this->migrationLogFactory = $migrationLogFactory;
 	}
 
 	/**
@@ -64,7 +55,7 @@ class RunMigration extends Endpoint {
 				[
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
-					'permission_callback' => [ $this, 'permissionsRunCheck' ],
+					'permission_callback' => [ $this, 'runPermissionsCheck' ],
 					'args'                => [
 						'id' => [
 							'validate_callback' => function( $param ) {
@@ -102,18 +93,19 @@ class RunMigration extends Endpoint {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 		global $wpdb;
-		$migrationId    = $request->get_param( 'id' );
-		$migrationClass = $this->migrationRegister->getMigration( $migrationId );
-		$migrationLog   = $this->migrationLogRepository->getMigration( $migrationId );
+		$migrationId  = $request->get_param( 'id' );
+		$migrationLog = $this->migrationLogFactory->make( $migrationId );
 
 		// Begin transaction
 		$wpdb->query( 'START TRANSACTION' );
 
 		try {
-			$migration = give( $migrationClass );
+			$migrationClass = $this->migrationRegister->getMigration( $migrationId );
+			$migration      = give( $migrationClass );
 			$migration->run();
 			// Save migration status
 			$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
+			$migrationLog->setError( null );
 			$migrationLog->save();
 
 			return new WP_REST_Response( [ 'status' => true ] );
