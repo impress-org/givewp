@@ -15,7 +15,7 @@ class MigrationLogRepository {
 	/**
 	 * Limit number of logs returned per page
 	 */
-	const MIGRATIONS_PER_PAGE = 15;
+	const MIGRATIONS_PER_PAGE = 50;
 
 	/**
 	 * Define sortable columns
