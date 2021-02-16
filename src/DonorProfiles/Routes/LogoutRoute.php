@@ -5,7 +5,7 @@ namespace Give\DonorProfiles\Routes;
 use WP_REST_Request;
 use WP_REST_Response;
 use Give\API\RestRoute;
-use Give\DonorProfiles\Profile as Profile;
+use WP_Error;
 
 /**
  * @since 2.10.0
@@ -24,8 +24,9 @@ class LogoutRoute implements RestRoute {
 			$this->endpoint,
 			[
 				[
-					'methods'  => 'POST',
-					'callback' => [ $this, 'handleRequest' ],
+					'methods'             => 'POST',
+					'callback'            => [ $this, 'handleRequest' ],
+					'permission_callback' => [ $this, 'permissionsCheck' ],
 				],
 			]
 		);
@@ -71,6 +72,17 @@ class LogoutRoute implements RestRoute {
 				],
 			]
 		);
+	}
 
+	/**
+	 * Check permissions
+	 * @todo: need to check if donor logged as wp user or email access
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 *
+	 * @return bool|WP_Error
+	 */
+	public function permissionsCheck( $request ) {
+		return is_user_logged_in();
 	}
 }
