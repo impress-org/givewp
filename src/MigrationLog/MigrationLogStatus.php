@@ -11,6 +11,7 @@ namespace Give\MigrationLog;
 class MigrationLogStatus {
 	const SUCCESS = 'success';
 	const FAILED  = 'failed';
+	const PENDING = 'pending';
 
 	/**
 	 * Get default migration status
@@ -30,6 +31,7 @@ class MigrationLogStatus {
 		return [
 			MigrationLogStatus::SUCCESS => esc_html__( 'Success', 'give' ),
 			MigrationLogStatus::FAILED  => esc_html__( 'Failed', 'give' ),
+			MigrationLogStatus::PENDING => esc_html__( 'Pending', 'give' ),
 		];
 	}
 
