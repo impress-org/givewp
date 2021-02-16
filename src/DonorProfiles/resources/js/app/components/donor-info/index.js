@@ -7,7 +7,7 @@ import './style.scss';
 
 const DonorInfo = () => {
 	const { name, addresses, company, sinceLastDonation, sinceCreated, avatarUrl, initials } = useSelector( state => state.profile );
-	const address = addresses.billing ? addresses.billing[ 0 ] : null;
+	const address = addresses && addresses.billing ? addresses.billing[ 0 ] : null;
 
 	return (
 		<div className="give-donor-profile-donor-info">
@@ -23,9 +23,11 @@ const DonorInfo = () => {
 				</div>
 			</div>
 			<div className="give-donor-profile-donor-info__details">
-				<div className="give-donor-profile-donor-info__name">
-					{ name }
-				</div>
+				{ name && (
+					<div className="give-donor-profile-donor-info__name">
+						{ name }
+					</div>
+				) }
 				{ address && (
 					<div className="give-donor-profile-donor-info__detail">
 						<FontAwesomeIcon icon="map-pin" /> { address.city }, { address.state.length > 0 ? address.state : address.country }
@@ -36,12 +38,16 @@ const DonorInfo = () => {
 						<FontAwesomeIcon icon="building" /> { company }
 					</div>
 				) }
-				<div className="give-donor-profile-donor-info__detail">
-					<FontAwesomeIcon icon="clock" /> Last donated { sinceLastDonation } ago
-				</div>
-				<div className="give-donor-profile-donor-info__detail">
-					<FontAwesomeIcon icon="heart" /> Donor for { sinceCreated }
-				</div>
+				{ sinceLastDonation && (
+					<div className="give-donor-profile-donor-info__detail">
+						<FontAwesomeIcon icon="clock" /> Last donated { sinceLastDonation } ago
+					</div>
+				) }
+				{ sinceCreated && (
+					<div className="give-donor-profile-donor-info__detail">
+						<FontAwesomeIcon icon="heart" /> Donor for { sinceCreated }
+					</div>
+				) }
 			</div>
 			<div className="give-donor-profile-donor-info__badges">
 				<Badge icon="sync" label="Recurring Giver" />

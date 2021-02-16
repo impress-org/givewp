@@ -26,7 +26,7 @@ class LogoutRoute implements RestRoute {
 				[
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
-					'permission_callback' => [ $this, 'permissionsCheck' ],
+					'permission_callback' => '__return_true',
 				],
 			]
 		);

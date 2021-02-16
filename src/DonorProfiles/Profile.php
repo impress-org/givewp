@@ -18,9 +18,11 @@ class Profile {
 	protected $id;
 
 	public function __construct() {
-		$donorId      = DonorProfileHelpers::getCurrentDonorId();
-		$donorFactory = new DonorFactory;
-		$this->donor  = $donorFactory->make( $donorId );
+		$donorId = DonorProfileHelpers::getCurrentDonorId();
+		if ( $donorId ) {
+			$donorFactory = new DonorFactory;
+			$this->donor  = $donorFactory->make( $donorId );
+		}
 	}
 
 	/**
@@ -61,6 +63,10 @@ class Profile {
 	 */
 	public function getProfileData() {
 
+		if ( ! $this->donor ) {
+			return null;
+		}
+
 		$titlePrefix = Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
 
 		return [
@@ -88,6 +94,11 @@ class Profile {
 	 * @since 2.10.0
 	 */
 	public function getId() {
+
+		if ( ! $this->donor ) {
+			return null;
+		}
+
 		return $this->donor->id;
 	}
 
@@ -137,6 +148,10 @@ class Profile {
 	 * @since 2.10.0
 	 */
 	public function getCountry() {
+		if ( ! $this->donor ) {
+			return give_get_country();
+		}
+
 		$address = $this->donor->get_donor_address();
 		if ( $address ) {
 			return $address['country'];

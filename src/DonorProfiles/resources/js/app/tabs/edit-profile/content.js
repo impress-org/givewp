@@ -58,9 +58,9 @@ const Content = () => {
 
 	const [ additionalEmails, setAdditionalEmails ] = useState( reducedAdditionalEmails );
 
-	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses.billing ? storedProfile.addresses.billing[ 0 ] : null );
+	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses && storedProfile.addresses.billing ? storedProfile.addresses.billing[ 0 ] : null );
 
-	const reducedAdditionalAddresses = storedProfile.addresses.billing ? storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
+	const reducedAdditionalAddresses = storedProfile.addresses && storedProfile.addresses.billing ? storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
 		if ( index !== 0 ) {
 			newArray.push( address );
 		}

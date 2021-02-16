@@ -20,8 +20,17 @@ class Helpers {
 			$donor = give()->donors->get_donor_by( 'email', give()->email_access->token_email );
 			return $donor->id;
 		} else {
-			$donor = give()->donors->get_donor_by( 'user_id', get_current_user_id() );
-			return $donor->id;
+			if ( get_current_user_id() !== 0 ) {
+				$donor = give()->donors->get_donor_by( 'user_id', get_current_user_id() );
+				if ( $donor ) {
+					return $donor->id;
+				} else {
+					return null;
+				}
+				return $donor->id;
+			} else {
+				return null;
+			}
 		}
 	}
 }
