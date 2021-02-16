@@ -37,7 +37,7 @@ class LogoutRoute implements RestRoute {
 	 *
 	 * @param WP_REST_Request $request
 	 *
-	 * @return array
+	 * @return WP_REST_Request
 	 *
 	 * @since 2.10.0
 	 */
@@ -78,11 +78,9 @@ class LogoutRoute implements RestRoute {
 	 * Check permissions
 	 * @todo: need to check if donor logged as wp user or email access
 	 *
-	 * @param WP_REST_Request $request Current request.
-	 *
-	 * @return bool|WP_Error
+	 * @return bool
 	 */
-	public function permissionsCheck( $request ) {
+	public function permissionsCheck() {
 		return is_user_logged_in();
 	}
 }
