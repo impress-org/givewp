@@ -57,7 +57,7 @@ class PluginsData implements TrackData {
 		$premiumAddonsListManger = new PremiumAddonsListManager();
 
 		return [
-			'plugin_slug'    => $plugin['Dir'],
+			'plugin'         => $plugin['Path'],
 			'plugin_version' => $plugin['Version'],
 			'plugin_status'  => $plugin['Status'],
 			'plugin_type'    => $plugin['Type'],
