@@ -19,18 +19,15 @@ class Helpers {
 		if ( $useToken ) {
 			$donor = give()->donors->get_donor_by( 'email', give()->email_access->token_email );
 			return $donor->id;
-		} else {
-			if ( get_current_user_id() !== 0 ) {
-				$donor = give()->donors->get_donor_by( 'user_id', get_current_user_id() );
-				if ( $donor ) {
-					return $donor->id;
-				} else {
-					return null;
-				}
+		}
+
+		if ( get_current_user_id() ) {
+			$donor = give()->donors->get_donor_by( 'user_id', get_current_user_id() );
+			if ( $donor ) {
 				return $donor->id;
-			} else {
-				return null;
 			}
 		}
+
+		return null;
 	}
 }
