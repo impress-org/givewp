@@ -83,15 +83,19 @@ class Donations {
 	public function getAverageRevenue( $donorId ) {
 		global $wpdb;
 
+		// To do: check against _give_payment_donor_id in give_donationmeta table
+		// (instead of posts.post_author)
+
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
 				"
 				SELECT AVG(revenue.amount) as amount
 				FROM {$wpdb->give_revenue} as revenue
-				INNER JOIN {$wpdb->posts} as posts
-				ON revenue.donation_id = posts.ID
-				WHERE posts.post_author = %d
-				AND posts.post_status IN ( 'publish', 'give_subscription' )
+				INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
+				INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
+				WHERE donationmeta.meta_key = '_give_payment_donor_id'
+					AND donationmeta.meta_value = %d
+					AND posts.post_status IN ( 'publish', 'give_subscription' )
 				",
 				$donorId
 			)
