@@ -263,6 +263,8 @@ class Give_Email_Access {
 
 			return true;
 		}
+
+		return false;
 	}
 
 	/**
