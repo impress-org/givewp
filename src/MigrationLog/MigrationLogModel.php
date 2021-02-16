@@ -95,7 +95,7 @@ class MigrationLogModel {
 	public function setRunOrder( $order ) {
 		$this->run_order = is_int( $order )
 			? date( 'Y-m-d H:i:s', $order )
-			: date( 'Y-m-d H:i:s' );
+			: date( 'Y-m-d H:i:s', strtotime( $order ) );
 
 		return $this;
 	}
