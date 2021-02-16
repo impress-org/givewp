@@ -326,7 +326,6 @@ class Give_Session {
 	 * @return int
 	 */
 	public function get_donor_id() {
-		error_log( 'in get_donor_id' . serialize( $this->donor_id ) );
 		return $this->donor_id;
 	}
 

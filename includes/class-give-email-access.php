@@ -388,9 +388,7 @@ class Give_Email_Access {
 	 * @return mixed
 	 */
 	public function users_donations_args( $args ) {
-		error_log( 'call users_donations_args' );
 		$args['user'] = $this->token_email;
-
 		return $args;
 	}
 
