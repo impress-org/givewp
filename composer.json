@@ -16,7 +16,7 @@
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "^5",
-        "fakerphp/faker": "^1.9"
+        "kjohnson/since-unreleased": "dev-master"
     },
     "keywords": [
         "wordpress",
@@ -27,7 +27,8 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --bootstrap tests/src/bootstrap.php --no-configuration tests/src/"
+        "test": "./vendor/bin/phpunit",
+        "unreleased": "./vendor/bin/since-unreleased.sh"
     },
     "autoload": {
         "psr-4": {
