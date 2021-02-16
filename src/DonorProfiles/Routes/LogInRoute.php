@@ -24,8 +24,9 @@ class LoginRoute implements RestRoute {
 			$this->endpoint,
 			[
 				[
-					'methods'  => 'POST',
-					'callback' => [ $this, 'handleRequest' ],
+					'methods'             => 'POST',
+					'callback'            => [ $this, 'handleRequest' ],
+					'permission_callback' => '__return_true',
 				],
 				'args' => [
 					'login'    => [
