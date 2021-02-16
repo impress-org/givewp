@@ -269,7 +269,7 @@ const Migrations = () => {
 			);
 		},
 		details: ( value, migration ) => {
-			if ( migration.status === 'success' ) {
+			if ( ! migration.error.length ) {
 				return null;
 			}
 
