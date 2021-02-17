@@ -8,6 +8,8 @@ use Give\Tracking\TrackRegisterer;
 /**
  * Class EventRecord
  * @package Give\Tracking\Repositories
+ *
+ * @since 2.10.0
  */
 class EventRecord {
 	/**
