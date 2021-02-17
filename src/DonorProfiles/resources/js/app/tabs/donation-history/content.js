@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 import Heading from '../../components/heading';
+import Button from '../../components/button';
 import DonationReceipt from '../../components/donation-receipt';
 import DonationTable from '../../components/donation-table';
 
@@ -37,10 +38,15 @@ const Content = () => {
 					{ __( 'Donation', 'give' ) } #{ id }
 				</Heading>
 				<DonationReceipt donation={ donations[ id ] } />
-				<div className="give-donor-profile__donation-history-link">
+				<div className="give-donor-profile__donation-history-footer">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
 					</Link>
+					{ donations[ id ].payment.pdfReceiptUrl.length && (
+						<Button icon="file-pdf" onClick={ () => window.location = donations[ id ].payment.pdfReceiptUrl }>
+							{ __( 'Download Receipt', 'give' ) }
+						</Button>
+					) }
 				</div>
 			</Fragment>
 		);

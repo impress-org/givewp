@@ -194,18 +194,24 @@ class Donations {
 	 */
 	protected function getPaymentInfo( $payment ) {
 
+		$pdfReceiptUrl = '';
+		if ( class_exists( 'Give_PDF_Receipts' ) ) {
+			$pdfReceiptUrl = \Give_PDF_Receipts::get_instance()->engine->get_pdf_receipt_url( $payment->id );
+		}
+
 		$gateways = give_get_payment_gateways();
 
 		return [
-			'amount'   => $this->getFormattedAmount( $payment->subtotal, $payment ),
-			'currency' => $payment->currency,
-			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
-			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
-			'method'   => $gateways[ $payment->gateway ]['checkout_label'],
-			'status'   => $this->getFormattedStatus( $payment->status ),
-			'date'     => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
-			'time'     => date_i18n( 'g:i a', strtotime( $payment->date ) ),
-			'mode'     => $payment->get_meta( '_give_payment_mode' ),
+			'amount'        => $this->getFormattedAmount( $payment->subtotal, $payment ),
+			'currency'      => $payment->currency,
+			'fee'           => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
+			'total'         => $this->getFormattedAmount( $payment->total, $payment ),
+			'method'        => $gateways[ $payment->gateway ]['checkout_label'],
+			'status'        => $this->getFormattedStatus( $payment->status ),
+			'date'          => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
+			'time'          => date_i18n( 'g:i a', strtotime( $payment->date ) ),
+			'mode'          => $payment->get_meta( '_give_payment_mode' ),
+			'pdfReceiptUrl' => $pdfReceiptUrl,
 		];
 	}
 

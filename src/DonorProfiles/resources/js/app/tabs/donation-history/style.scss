@@ -1,5 +1,6 @@
-.give-donor-profile__donation-history-link {
-	display: inline-block;
+.give-donor-profile__donation-history-footer {
+	display: flex;
+	justify-content: space-between;
 
 	a {
 		color: #3398db;
