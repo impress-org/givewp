@@ -18,17 +18,17 @@ class TrackJobScheduler {
 	/**
 	 * @var TrackEvents
 	 */
-	private $eventRecord;
+	private $trackEvents;
 
 	/**
 	 * TrackJobScheduler constructor.
 	 *
 	 * @param  TrackRegisterer  $track
-	 * @param  TrackEvents  $eventRecord
+	 * @param  TrackEvents  $trackEvents
 	 */
-	public function __construct( TrackRegisterer $track, TrackEvents $eventRecord ) {
+	public function __construct( TrackRegisterer $track, TrackEvents $trackEvents ) {
 		$this->track       = $track;
-		$this->eventRecord = $eventRecord;
+		$this->trackEvents = $trackEvents;
 	}
 
 	/**
@@ -42,7 +42,7 @@ class TrackJobScheduler {
 		}
 
 		$hookName = $this->getCronJobHookName();
-		$this->eventRecord->saveTrackList();
+		$this->trackEvents->saveTrackList();
 		if ( ! wp_next_scheduled( $hookName ) ) {
 			wp_schedule_single_event( strtotime( 'tomorrow midnight', current_time( 'timestamp' ) ), $hookName );
 		}
