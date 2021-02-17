@@ -74,6 +74,15 @@ class Track {
 	}
 
 	/**
+	 * Remove tracks.
+	 *
+	 * @since 2.10.0
+	 */
+	public function remove() {
+		delete_option( self::TRACK_RECORDS_OPTION_NAME );
+	}
+
+	/**
 	 * Return whether or not new tracks registered.
 	 *
 	 * @since 2.10.0
