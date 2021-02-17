@@ -3,6 +3,7 @@ namespace Give\Tracking;
 
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Enum\EventType;
+use Give\Tracking\Repositories\TelemetryAccessDetails;
 use WP_Error;
 
 /**
@@ -16,16 +17,13 @@ use WP_Error;
  */
 class TrackClient {
 	/**
-	 * Server URL.
-	 *
-	 * @var string
+	 * @var TelemetryAccessDetails
 	 */
-	const SERVER_URL = 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
+	private $telemetryAccessDetails;
 
-	/**
-	 * Option name
-	 */
-	const TELEMETRY_ACCESS_TOKEN = 'give_telemetry_server_access_token';
+	public function __construct( TelemetryAccessDetails $telemetryAccessDetails ) {
+		$this->telemetryAccessDetails = $telemetryAccessDetails;
+	}
 
 	/**
 	 * Send a track event.
@@ -49,7 +47,7 @@ class TrackClient {
 		$default_request_args = [
 			'headers'     => [
 				'content-type:' => 'application/json',
-				'Authorization' => 'Bearer ' . get_option( self::TELEMETRY_ACCESS_TOKEN ),
+				'Authorization' => 'Bearer ' . $this->telemetryAccessDetails->getAccessTokenOptionValue(),
 			],
 			'timeout'     => 8,
 			'httpversion' => '1.1',
@@ -72,6 +70,6 @@ class TrackClient {
 	 * @return string
 	 */
 	public function getApiUrl( $trackId ) {
-		return self::SERVER_URL . '/' . $trackId;
+		return $this->telemetryAccessDetails->getServerUrl() . '/' . $trackId;
 	}
 }

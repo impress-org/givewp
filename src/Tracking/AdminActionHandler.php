@@ -6,6 +6,7 @@ use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
 use Give\Tracking\Enum\EventType;
 use Give\Tracking\Repositories\Settings;
+use Give\Tracking\Repositories\TelemetryAccessDetails;
 use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give_Admin_Settings;
 
@@ -29,12 +30,19 @@ class AdminActionHandler {
 	private $settings;
 
 	/**
+	 * @var TelemetryAccessDetails
+	 */
+	private $telemetryAccessDetails;
+
+	/**
 	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
 	 * @param  Settings  $settings
+	 * @param  TelemetryAccessDetails  $telemetryAccessDetails
 	 */
-	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding, Settings $settings ) {
+	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding, Settings $settings, TelemetryAccessDetails $telemetryAccessDetails ) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
 		$this->settings                = $settings;
+		$this->telemetryAccessDetails  = $telemetryAccessDetails;
 	}
 
 	/**
@@ -99,7 +107,7 @@ class AdminActionHandler {
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
 		// Exit if already has access token.
-		if ( ! $usageTracking || get_option( TrackClient::TELEMETRY_ACCESS_TOKEN ) ) {
+		if ( ! $usageTracking || $this->telemetryAccessDetails->getAccessTokenOptionValue() ) {
 			return false;
 		}
 
@@ -132,7 +140,7 @@ class AdminActionHandler {
 		}
 
 		$token = $response['data']['access_token'];
-		update_option( TrackClient::TELEMETRY_ACCESS_TOKEN, $token );
+		$this->telemetryAccessDetails->saveAccessTokenOptionValue( $token );
 
 		// Access token saved, now send first set of tracking information.
 		give( TrackJob::class )->send();
