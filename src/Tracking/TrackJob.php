@@ -28,6 +28,7 @@ class TrackJob {
 	 * TrackJob constructor.
 	 *
 	 * @param  Track  $track
+	 * @param  TrackClient  $trackClient
 	 */
 	public function __construct( Track $track, TrackClient $trackClient ) {
 		$this->track       = $track;
