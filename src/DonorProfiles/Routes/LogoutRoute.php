@@ -83,8 +83,7 @@ class LogoutRoute implements RestRoute {
 	public function permissionsCheck() {
 		if ( Give()->session->get_session_expiration() !== false || is_user_logged_in() ) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }
