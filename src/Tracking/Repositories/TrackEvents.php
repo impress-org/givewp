@@ -77,8 +77,6 @@ class TrackEvents {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param  int|null  $default Timestamp
-	 *
 	 * @return false|string
 	 */
 	public function getRequestTime() {
