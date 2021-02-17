@@ -56,7 +56,7 @@ class TrackJob {
 			}
 		}
 
-		update_option( self::LAST_REQUEST_OPTION_NAME, current_time( 'timestamp' ) );
+		update_option( self::LAST_REQUEST_OPTION_NAME, strtotime( 'today', current_time( 'timestamp' ) ) );
 		$this->track->remove();
 	}
 }
