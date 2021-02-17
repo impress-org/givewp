@@ -196,7 +196,7 @@ class Donations {
 
 		$pdfReceiptUrl = '';
 		if ( class_exists( 'Give_PDF_Receipts' ) ) {
-			$pdfReceiptUrl = \Give_PDF_Receipts::get_instance()->engine->get_pdf_receipt_url( $payment->id );
+			$pdfReceiptUrl = esc_url( \Give_PDF_Receipts::get_instance()->engine->get_pdf_receipt_url( $payment->id ) );
 		}
 
 		$gateways = give_get_payment_gateways();
