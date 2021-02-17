@@ -18,11 +18,6 @@ class PluginsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId;
-
-	/**
-	 * @var string
-	 */
 	protected $dataClassName = PluginsData::class;
 
 	/**
@@ -31,7 +26,7 @@ class PluginsTracking extends TrackEvent {
 	 * @param  TrackRegisterer  $track
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->trackId = new EventType( 'plugin-list-updated' );
+		$this->eventType = new EventType( 'plugin-list-updated' );
 		parent::__construct( $track );
 	}
 }

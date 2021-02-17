@@ -14,12 +14,6 @@ use Give\Tracking\Enum\EventType;
  * @since 2.10.0
  */
 class DonationMetricsTracking extends TrackEvent {
-
-	/**
-	 * @var string
-	 */
-	protected $trackId;
-
 	/**
 	 * @var string
 	 */
@@ -34,7 +28,7 @@ class DonationMetricsTracking extends TrackEvent {
 	 *
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->trackId = new EventType( 'donation-metrics' );
+		$this->eventType = new EventType( 'donation-metrics' );
 		parent::__construct( $track );
 	}
 }

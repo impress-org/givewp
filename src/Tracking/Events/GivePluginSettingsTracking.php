@@ -18,11 +18,6 @@ class GivePluginSettingsTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId;
-
-	/**
-	 * @var string
-	 */
 	protected $dataClassName = GivePluginSettingsData::class;
 
 	/**
@@ -31,7 +26,7 @@ class GivePluginSettingsTracking extends TrackEvent {
 	 * @param  TrackRegisterer  $track
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->trackId = new EventType( 'plugin-settings-updated' );
+		$this->eventType = new EventType( 'plugin-settings-updated' );
 		parent::__construct( $track );
 	}
 }

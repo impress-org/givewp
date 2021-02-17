@@ -22,11 +22,6 @@ class ThemeTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId;
-
-	/**
-	 * @var string
-	 */
 	protected $dataClassName = ThemeData::class;
 
 	/**
@@ -35,7 +30,7 @@ class ThemeTracking extends TrackEvent {
 	 * @param  TrackRegisterer  $track
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->trackId = new EventType( 'theme-switched' );
+		$this->eventType = new EventType( 'theme-switched' );
 		parent::__construct( $track );
 	}
 

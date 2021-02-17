@@ -19,11 +19,6 @@ class WebsiteTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $trackId;
-
-	/**
-	 * @var string
-	 */
 	protected $dataClassName = WebsiteInfoData::class;
 
 	/**
@@ -35,7 +30,7 @@ class WebsiteTracking extends TrackEvent {
 	 *
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->trackId = new EventType( 'site-updated' );
+		$this->eventType = new EventType( 'site-updated' );
 		parent::__construct( $track );
 	}
 
