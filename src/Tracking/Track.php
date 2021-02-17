@@ -52,13 +52,13 @@ class Track {
 	 * @since 2.10.0
 	 */
 	public function send() {
-		if ( empty( $this->newTracks ) || ! TrackHelper::isTrackingEnabled() ) {
+		if ( empty( $this->recordedTracks ) || ! TrackHelper::isTrackingEnabled() ) {
 			return;
 		}
 
 		$trackClient = new TrackClient();
 
-		foreach ( $this->newTracks as $trackId => $trackData ) {
+		foreach ( $this->recordedTracks as $trackId => $trackData ) {
 			$trackClient->post( $trackId, $trackData->get() );
 		}
 	}

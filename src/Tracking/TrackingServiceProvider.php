@@ -40,6 +40,7 @@ class TrackingServiceProvider implements ServiceProvider {
 	public function boot() {
 		$this->registerTrackEvents();
 		Hooks::addAction( 'shutdown', Track::class, 'scheduleCronJob' );
+		Hooks::addAction( Track::CRON_JOB_NAME, Track::class, 'send' );
 		Hooks::addAction( 'admin_init', TrackRoutine::class, 'send', 1 );
 
 		if ( is_admin() ) {
