@@ -2,6 +2,7 @@
 
 namespace Give\Tracking;
 
+use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
@@ -19,12 +20,18 @@ class TrackJob {
 	private $track;
 
 	/**
+	 * @var TrackClient
+	 */
+	private $trackClient;
+
+	/**
 	 * TrackJob constructor.
 	 *
 	 * @param  Track  $track
 	 */
-	public function __construct( Track $track ) {
-		$this->track = $track;
+	public function __construct( Track $track, TrackClient $trackClient ) {
+		$this->track       = $track;
+		$this->trackClient = $trackClient;
 	}
 
 	/**
@@ -39,8 +46,13 @@ class TrackJob {
 			return;
 		}
 
-		foreach ( $recordedTracks as $trackId => $trackData ) {
-			$this->track->post( $trackId, $trackData->get() );
+		foreach ( $recordedTracks as $trackId => $className ) {
+			/* @var TrackData $class */
+			$class = give( $className );
+
+			if ( $class instanceof TrackData ) {
+				$this->trackClient->post( $trackId, $class->get() );
+			}
 		}
 	}
 }

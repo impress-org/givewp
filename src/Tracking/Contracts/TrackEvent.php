@@ -23,19 +23,17 @@ abstract class TrackEvent {
 	protected $track;
 
 	/**
-	 * @var TrackData
+	 * @var string
 	 */
-	protected $data;
+	protected $dataClassName;
 
 	/**
 	 * TrackEvent constructor.
 	 *
 	 * @param  Track  $track
-	 * @param  TrackData  $data
 	 */
-	public function __construct( Track $track, TrackData $data ) {
+	public function __construct( Track $track ) {
 		$this->track = $track;
-		$this->data  = $data;
 	}
 
 	/**
@@ -44,6 +42,6 @@ abstract class TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function record() {
-		$this->track->recordTrack( $this->trackId, $this->data );
+		$this->track->recordTrack( $this->trackId, $this->dataClassName );
 	}
 }

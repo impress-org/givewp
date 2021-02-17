@@ -25,14 +25,18 @@ class ThemeTracking extends TrackEvent {
 	protected $trackId;
 
 	/**
+	 * @var string
+	 */
+	protected $dataClassName = ThemeData::class;
+
+	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
 	 * @param  Track  $track
-	 * @param  ThemeData  $themeData
 	 */
-	public function __construct( Track $track, ThemeData $themeData ) {
+	public function __construct( Track $track ) {
 		$this->trackId = ( new EventType() )->getThemeSwitched();
-		parent::__construct( $track, $themeData );
+		parent::__construct( $track );
 	}
 
 	/**

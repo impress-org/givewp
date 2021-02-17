@@ -21,15 +21,19 @@ class DonationMetricsTracking extends TrackEvent {
 	protected $trackId;
 
 	/**
+	 * @var string
+	 */
+	protected $dataClassName = DonationMetricsData::class;
+
+	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
 	 * @param  Track  $track
-	 * @param  DonationMetricsData  $themeData
 	 *
 	 * @since 2.10.0
 	 */
-	public function __construct( Track $track, DonationMetricsData $themeData ) {
+	public function __construct( Track $track ) {
 		$this->trackId = ( new EventType() )->getDonationMetrics();
-		parent::__construct( $track, $themeData );
+		parent::__construct( $track );
 	}
 }

@@ -16,7 +16,7 @@ class Track {
 	 * Collection of track events.
 	 *
 	 * @sicne 2.10.0
-	 * @var TrackData[]
+	 * @var array
 	 */
 	private $newTracks;
 
@@ -60,7 +60,7 @@ class Track {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @return TrackData[]
+	 * @return array
 	 */
 	public function get() {
 		return array_merge( $this->recordedTracks, $this->newTracks );

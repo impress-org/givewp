@@ -20,16 +20,20 @@ class DonationFormsTracking extends TrackEvent {
 	protected $trackId;
 
 	/**
+	 * @var string
+	 */
+	protected $dataClassName = DonationFormsData::class;
+
+	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
 	 * @param  Track  $track
-	 * @param  DonationFormsData  $themeData
 	 *
 	 * @since 2.10.0
 	 */
-	public function __construct( Track $track, DonationFormsData $themeData ) {
+	public function __construct( Track $track ) {
 		$this->trackId = ( new EventType() )->getDonationFormUpdated();
-		parent::__construct( $track, $themeData );
+		parent::__construct( $track );
 	}
 
 }

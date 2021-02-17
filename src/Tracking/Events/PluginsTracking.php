@@ -21,13 +21,17 @@ class PluginsTracking extends TrackEvent {
 	protected $trackId;
 
 	/**
+	 * @var string
+	 */
+	protected $dataClassName = PluginsData::class;
+
+	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
 	 * @param  Track  $track
-	 * @param  PluginsData  $pluginData
 	 */
-	public function __construct( Track $track, PluginsData $pluginData ) {
+	public function __construct( Track $track ) {
 		$this->trackId = ( new EventType() )->getPluginListUpdated();
-		parent::__construct( $track, $pluginData );
+		parent::__construct( $track );
 	}
 }

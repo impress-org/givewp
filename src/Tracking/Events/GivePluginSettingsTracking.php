@@ -21,13 +21,17 @@ class GivePluginSettingsTracking extends TrackEvent {
 	protected $trackId;
 
 	/**
+	 * @var string
+	 */
+	protected $dataClassName = GivePluginSettingsData::class;
+
+	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
 	 * @param  Track  $track
-	 * @param  GivePluginSettingsData  $givePluginSettingsData
 	 */
-	public function __construct( Track $track, GivePluginSettingsData $givePluginSettingsData ) {
+	public function __construct( Track $track ) {
 		$this->trackId = ( new EventType() )->getPluginSettingsUpdated();
-		parent::__construct( $track, $givePluginSettingsData );
+		parent::__construct( $track );
 	}
 }
