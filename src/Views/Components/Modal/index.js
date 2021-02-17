@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import LoadingOverlay from 'GiveComponents/LoadingOverlay';
+import LoadingOverlay from '@givewp/components/LoadingOverlay';
 
 import styles from './styles.module.scss';
 

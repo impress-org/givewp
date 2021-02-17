@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Label, Notice, Spinner, Pagination, Select, Table, Button, PeriodSelector, Modal } from 'GiveComponents';
+import { Card, Label, Notice, Spinner, Pagination, Select, Table, Button, PeriodSelector, Modal } from '@givewp/components';
 import API, { useLogFetcher, getEndpoint } from './api';
 
 import styles from './styles.module.scss';
