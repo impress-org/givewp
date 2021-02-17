@@ -95,7 +95,7 @@ Modal.AdditionalContext = ( { type, context } ) => {
 			<strong>{ title }:</strong>
 			<div className={ styles.errorDetailsContainer }>
 				<pre>
-					{ Array.isArray( context ) ? (
+					{ ( context instanceof Object ) ? (
 						Object.entries( context ).map( ( [ key, value ] ) => {
 							return (
 								<div key={ key }>
