@@ -77,14 +77,12 @@ class TrackEvents {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param  bool  $default
+	 * @param  int|null  $default Timestamp
 	 *
 	 * @return false|string
 	 */
-	public function getRequestTime( $default = true ) {
-		$defaultTime = $default ? strtotime( 'today', current_time( 'timestamp' ) ) : null;
-
-		return date( 'Y-m-d H:i:s', get_option( $this->getTelemetryRequestTimeOptionKey(), $defaultTime ) );
+	public function getRequestTime() {
+		return date( 'Y-m-d H:i:s', get_option( $this->getTelemetryRequestTimeOptionKey(), 0 ) );
 	}
 
 	/**
