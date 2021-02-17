@@ -145,7 +145,7 @@ class AdminActionHandler {
 		$token = $response['data']['access_token'];
 		$this->telemetryAccessDetails->saveAccessTokenOptionValue( $token );
 
-		// Access token saved, now send first set of tracking information.
+		// Access token saved, schedule first set of tracking information.
 		give( DonationFormsTracking::class )->record();
 		give( DonationMetricsTracking::class )->record();
 		give( ThemeTracking::class )->record();
