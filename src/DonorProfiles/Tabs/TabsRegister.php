@@ -7,11 +7,14 @@ use Give\DonorProfiles\Exceptions\MissingTabException;
 use Give\DonorProfiles\Exceptions\DuplicateTabException;
 use http\Exception\InvalidArgumentException;
 
+/**
+ * @since 2.10.0
+ */
 class TabsRegister {
 	/**
 	 * FQCN of Tab classes
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @var string[]
 	 */
@@ -20,7 +23,7 @@ class TabsRegister {
 	/**
 	 * Returns all of the registered tabs
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @return string[]
 	 */
@@ -31,7 +34,7 @@ class TabsRegister {
 	/**
 	 * Checks to see if a tab is registered with the given ID
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @param string $id
 	 *
@@ -44,7 +47,7 @@ class TabsRegister {
 	/**
 	 * Returns a tab with the given ID
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @param string $id
 	 *
@@ -61,7 +64,7 @@ class TabsRegister {
 	/**
 	 * Returns all of the registered tab ids
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @return string[]
 	 */
@@ -72,7 +75,7 @@ class TabsRegister {
 	/**
 	 * Add a tab to the list of tabs
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @param string $tabClass FQCN of the Tab Class
 	 */
@@ -94,7 +97,7 @@ class TabsRegister {
 	/**
 	 * Helper for adding a bunch of tabs at once
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @param string[] $tabClasses
 	 */

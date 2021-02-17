@@ -2,6 +2,9 @@
 
 namespace Give\DonorProfiles\Pipeline;
 
+/**
+ * @since 2.10.0
+ */
 class DonorProfilePipeline {
 
 	protected $stages;
