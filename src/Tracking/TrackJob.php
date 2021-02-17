@@ -55,5 +55,7 @@ class TrackJob {
 				$this->trackClient->post( $trackId, $class->get() );
 			}
 		}
+
+		update_option( self::LAST_REQUEST_OPTION_NAME, current_time( 'timestamp' ) );
 	}
 }
