@@ -1,6 +1,8 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\Events\DonationFormsTracking;
+use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
@@ -144,7 +146,8 @@ class AdminActionHandler {
 		$this->telemetryAccessDetails->saveAccessTokenOptionValue( $token );
 
 		// Access token saved, now send first set of tracking information.
-		give( TrackJob::class )->send();
+		give( DonationFormsTracking::class )->record();
+		give( DonationMetricsTracking::class )->record();
 		give( ThemeTracking::class )->record();
 		give( GivePluginSettingsTracking::class )->record();
 		give( PluginsTracking::class )->record();
