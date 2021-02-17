@@ -2,7 +2,7 @@
 namespace Give\Tracking;
 
 use Give\Tracking\Enum\EventType;
-use Give\Tracking\Repositories\EventRecord;
+use Give\Tracking\Repositories\TrackEvents;
 
 /**
  * Class TrackRegisterer
@@ -28,10 +28,18 @@ class TrackRegisterer {
 	private $recordedTracks;
 
 	/**
-	 * Track constructor.
+	 * @var TrackEvents
 	 */
-	public function __construct() {
-		$this->recordedTracks = EventRecord::getTrackList();
+	private $trackEvents;
+
+	/**
+	 * Track constructor.
+	 *
+	 * @param  TrackEvents  $trackEvents
+	 */
+	public function __construct( TrackEvents $trackEvents ) {
+		$this->trackEvents    = $trackEvents;
+		$this->recordedTracks = $this->trackEvents->getTrackList();
 	}
 
 	/**

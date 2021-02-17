@@ -4,6 +4,7 @@ namespace Give\Tracking\TrackingData;
 use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Repositories\TrackEvents;
 use Give\Tracking\Traits\HasDonations;
 use Give_Donors_Query;
 
@@ -20,6 +21,15 @@ class DonationFormsData implements TrackData {
 
 	private $formIds     = [];
 	private $donationIds = [];
+
+	/**
+	 * DonationFormsData constructor.
+	 *
+	 * @param  TrackEvents  $trackEvents
+	 */
+	public function __construct( TrackEvents $trackEvents ) {
+		$this->trackEvents = $trackEvents;
+	}
 
 	/**
 	 * @inheritdoc

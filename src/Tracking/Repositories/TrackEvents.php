@@ -11,17 +11,7 @@ use Give\Tracking\TrackRegisterer;
  *
  * @since 2.10.0
  */
-class EventRecord {
-	/**
-	 * Option name to store last request time.
-	 */
-	const LAST_REQUEST_OPTION_NAME = 'give_usage_tracking_last_request';
-
-	/**
-	 * Option name to record tracks.
-	 */
-	const TRACK_RECORDS_OPTION_NAME = 'give_telemetry_records';
-
+class TrackEvents {
 	/**
 	 * @var TrackRegisterer
 	 */
@@ -39,12 +29,34 @@ class EventRecord {
 	}
 
 	/**
+	 * Get option key for usage tracking last request.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public function getTelemetryRequestTimeOptionKey() {
+		return 'give_usage_tracking_last_request';
+	}
+
+	/**
+	 * Get option key for tracking events record.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public function getTrackingEventsRecordOptionKey() {
+		return 'give_telemetry_records';
+	}
+
+	/**
 	 * Remove tracks.
 	 *
 	 * @since 2.10.0
 	 */
-	public static function remove() {
-		delete_option( self::TRACK_RECORDS_OPTION_NAME );
+	public function remove() {
+		delete_option( $this->getTrackingEventsRecordOptionKey() );
 	}
 
 	/**
@@ -53,7 +65,7 @@ class EventRecord {
 	 * @since 2.10.0
 	 */
 	public function saveTrackList() {
-		update_option( self::TRACK_RECORDS_OPTION_NAME, $this->trackRegisterer->getTrackList() );
+		update_option( $this->getTrackingEventsRecordOptionKey(), $this->trackRegisterer->getTrackList() );
 	}
 
 	/**
@@ -61,8 +73,8 @@ class EventRecord {
 	 *
 	 * @since 2.10.0
 	 */
-	public static function getTrackList() {
-		return get_option( self::TRACK_RECORDS_OPTION_NAME, [] );
+	public function getTrackList() {
+		return get_option( $this->getTrackingEventsRecordOptionKey(), [] );
 	}
 
 	/**
@@ -70,8 +82,8 @@ class EventRecord {
 	 *
 	 * @since 2.10.0
 	 */
-	public static function saveRequestTime() {
-		update_option( self::LAST_REQUEST_OPTION_NAME, strtotime( 'today', current_time( 'timestamp' ) ) );
+	public function saveRequestTime() {
+		update_option( $this->getTelemetryRequestTimeOptionKey(), strtotime( 'today', current_time( 'timestamp' ) ) );
 	}
 
 	/**
@@ -83,10 +95,10 @@ class EventRecord {
 	 *
 	 * @return false|string
 	 */
-	public static function getRequestTime( $default = true ) {
+	public function getRequestTime( $default = true ) {
 		$defaultTime = $default ? strtotime( 'today', current_time( 'timestamp' ) ) : null;
 
-		return date( 'Y-m-d H:i:s', get_option( self::LAST_REQUEST_OPTION_NAME, $defaultTime ) );
+		return date( 'Y-m-d H:i:s', get_option( $this->getTelemetryRequestTimeOptionKey(), $defaultTime ) );
 	}
 
 	/**
@@ -94,7 +106,7 @@ class EventRecord {
 	 *
 	 * @since 2.10.0
 	 */
-	public static function storeWebsiteTrackingEvent() {
+	public function storeWebsiteTrackingEvent() {
 		/* @var WebsiteInfoData $dataClass */
 		$dataClass        = give( WebsiteInfoData::class );
 		$optionName       = 'give_telemetry_website_data_checksum';

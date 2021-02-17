@@ -2,7 +2,7 @@
 
 namespace Give\Tracking;
 
-use Give\Tracking\Repositories\EventRecord;
+use Give\Tracking\Repositories\TrackEvents;
 
 /**
  * Class TrackJobScheduler
@@ -16,7 +16,7 @@ class TrackJobScheduler {
 	private $track;
 
 	/**
-	 * @var EventRecord
+	 * @var TrackEvents
 	 */
 	private $eventRecord;
 
@@ -24,9 +24,9 @@ class TrackJobScheduler {
 	 * TrackJobScheduler constructor.
 	 *
 	 * @param  TrackRegisterer  $track
-	 * @param  EventRecord  $eventRecord
+	 * @param  TrackEvents  $eventRecord
 	 */
-	public function __construct( TrackRegisterer $track, EventRecord $eventRecord ) {
+	public function __construct( TrackRegisterer $track, TrackEvents $eventRecord ) {
 		$this->track       = $track;
 		$this->eventRecord = $eventRecord;
 	}

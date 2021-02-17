@@ -2,11 +2,10 @@
 
 namespace Give\Tracking;
 
-use Braintree\Exception;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Enum\EventType;
 use Give\Tracking\Helpers\Track as TrackHelper;
-use Give\Tracking\Repositories\EventRecord;
+use Give\Tracking\Repositories\TrackEvents;
 
 /**
  * Class TrackJob
@@ -21,12 +20,19 @@ class TrackJob {
 	private $trackClient;
 
 	/**
+	 * @var TrackEvents
+	 */
+	private $trackEvents;
+
+	/**
 	 * TrackJob constructor.
 	 *
 	 * @param  TrackClient  $trackClient
+	 * @param  TrackEvents  $trackEvents
 	 */
-	public function __construct( TrackClient $trackClient ) {
+	public function __construct( TrackClient $trackClient, TrackEvents $trackEvents ) {
 		$this->trackClient = $trackClient;
+		$this->trackEvents = $trackEvents;
 	}
 
 	/**
@@ -35,7 +41,7 @@ class TrackJob {
 	 * @since 2.10.0
 	 */
 	public function send() {
-		$recordedTracks = EventRecord::getTrackList();
+		$recordedTracks = $this->trackEvents->getTrackList();
 
 		if ( ! $recordedTracks || ! TrackHelper::isTrackingEnabled() ) {
 			return;
@@ -51,7 +57,7 @@ class TrackJob {
 			}
 		}
 
-		EventRecord::saveRequestTime();
-		EventRecord::remove();
+		$this->trackEvents->saveRequestTime();
+		$this->trackEvents->remove();
 	}
 }

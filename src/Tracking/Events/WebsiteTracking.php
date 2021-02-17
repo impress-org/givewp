@@ -3,10 +3,9 @@
 namespace Give\Tracking\Events;
 
 use Give\Tracking\Contracts\TrackEvent;
-use Give\Tracking\Repositories\EventRecord;
+use Give\Tracking\Repositories\TrackEvents;
 use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give\Tracking\TrackRegisterer;
-use Give\Tracking\TrackingData\WebsiteData;
 use Give\Tracking\Enum\EventType;
 
 /**
@@ -22,15 +21,22 @@ class WebsiteTracking extends TrackEvent {
 	protected $dataClassName = WebsiteInfoData::class;
 
 	/**
+	 * @var TrackEvents
+	 */
+	private $trackEvents;
+
+	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
 	 * @since 2.10.0
 	 *
 	 * @param  TrackRegisterer  $track
-	 *
+	 * @param  TrackEvent  $trackEvents
 	 */
-	public function __construct( TrackRegisterer $track ) {
-		$this->eventType = new EventType( 'site-updated' );
+	public function __construct( TrackRegisterer $track, TrackEvent $trackEvents ) {
+		$this->eventType   = new EventType( 'site-updated' );
+		$this->trackEvents = $trackEvents;
+
 		parent::__construct( $track );
 	}
 
@@ -40,7 +46,7 @@ class WebsiteTracking extends TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function websiteUpdateTrackingHandler() {
-		if ( EventRecord::storeWebsiteTrackingEvent() ) {
+		if ( $this->trackEvents->storeWebsiteTrackingEvent() ) {
 			$this->record();
 		}
 	}
