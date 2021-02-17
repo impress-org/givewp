@@ -1,13 +1,13 @@
 <?php
 namespace Give\Tracking;
 
-/**
+use Give\Tracking\Enum\EventType;/**
  * Class Track
  *
  * This class uses to recode tracks and send them to sever on "shutdown" action hook.
  *
- * @since 2.10.0
  * @package Give\Tracking
+ *@since 2.10.0
  */
 class Track {
 	/**
@@ -40,17 +40,18 @@ class Track {
 	/**
 	 * Record track.
 	 *
-	 * @param string $trackId
+	 * @param EventType $eventType
 	 * @param string $trackData
 	 *
 	 * @since 2.10.0
 	 */
-	public function recordTrack( $trackId, $trackData ) {
-		if ( array_key_exists( $trackId, $this->recordedTracks ) || ! $trackData ) {
+	public function recordTrack( $eventType, $trackData ) {
+		$id = $eventType->getValue();
+		if ( array_key_exists( $id, $this->recordedTracks ) || ! $trackData ) {
 			return;
 		}
 
-		$this->newTracks[ $trackId ] = $trackData;
+		$this->newTracks[ $id ] = $trackData;
 	}
 
 	/**
