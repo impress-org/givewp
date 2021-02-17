@@ -2,7 +2,7 @@
 namespace Give\Tracking\Events;
 
 use Give\Tracking\Contracts\TrackEvent;
-use Give\Tracking\Track;
+use Give\Tracking\TrackRegisterer;
 use Give\Tracking\TrackingData\ThemeData;
 use Give\Tracking\Enum\EventType;
 use Give\Traits\HasWpTheme;
@@ -32,9 +32,9 @@ class ThemeTracking extends TrackEvent {
 	/**
 	 * GivePluginSettingsTracking constructor.
 	 *
-	 * @param  Track  $track
+	 * @param  TrackRegisterer  $track
 	 */
-	public function __construct( Track $track ) {
+	public function __construct( TrackRegisterer $track ) {
 		$this->trackId = new EventType( 'theme-switched' );
 		parent::__construct( $track );
 	}

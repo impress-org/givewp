@@ -1,15 +1,17 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\Enum\EventType;/**
- * Class Track
+use Give\Tracking\Enum\EventType;
+
+/**
+ * Class TrackRegisterer
  *
  * This class uses to recode tracks and send them to sever on "shutdown" action hook.
  *
  * @package Give\Tracking
- *@since 2.10.0
+ * @since 2.10.0
  */
-class Track {
+class TrackRegisterer {
 	/**
 	 * Collection of track events.
 	 *

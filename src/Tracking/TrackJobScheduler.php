@@ -15,16 +15,16 @@ class TrackJobScheduler {
 	const CRON_JOB_NAME = 'give_telemetry_send_requests';
 
 	/**
-	 * @var Track
+	 * @var TrackRegisterer
 	 */
 	private $track;
 
 	/**
 	 * TrackJobScheduler constructor.
 	 *
-	 * @param  Track  $track
+	 * @param  TrackRegisterer  $track
 	 */
-	public function __construct( Track $track ) {
+	public function __construct( TrackRegisterer $track ) {
 		$this->track = $track;
 	}
 

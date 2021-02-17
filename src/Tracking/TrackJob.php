@@ -17,7 +17,7 @@ class TrackJob {
 	const LAST_REQUEST_OPTION_NAME = 'give_usage_tracking_last_request';
 
 	/**
-	 * @var Track
+	 * @var TrackRegisterer
 	 */
 	private $track;
 
@@ -29,10 +29,10 @@ class TrackJob {
 	/**
 	 * TrackJob constructor.
 	 *
-	 * @param  Track  $track
+	 * @param  TrackRegisterer  $track
 	 * @param  TrackClient  $trackClient
 	 */
-	public function __construct( Track $track, TrackClient $trackClient ) {
+	public function __construct( TrackRegisterer $track, TrackClient $trackClient ) {
 		$this->track       = $track;
 		$this->trackClient = $trackClient;
 	}

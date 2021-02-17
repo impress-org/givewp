@@ -21,7 +21,7 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @inheritdoc
 	 */
 	public function register() {
-		give()->singleton( Track::class );
+		give()->singleton( TrackRegisterer::class );
 	}
 
 	/**

@@ -2,7 +2,7 @@
 namespace Give\Tracking\Contracts;
 
 use Give\Tracking\Enum\EventType;
-use Give\Tracking\Track;
+use Give\Tracking\TrackRegisterer;
 
 /**
  * Class TrackEvent
@@ -19,7 +19,7 @@ abstract class TrackEvent {
 	protected $eventType;
 
 	/**
-	 * @var Track
+	 * @var TrackRegisterer
 	 */
 	protected $track;
 
@@ -31,9 +31,9 @@ abstract class TrackEvent {
 	/**
 	 * TrackEvent constructor.
 	 *
-	 * @param  Track  $track
+	 * @param  TrackRegisterer  $track
 	 */
-	public function __construct( Track $track ) {
+	public function __construct( TrackRegisterer $track ) {
 		$this->track = $track;
 	}
 
