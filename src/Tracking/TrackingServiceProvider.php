@@ -3,7 +3,6 @@ namespace Give\Tracking;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
@@ -19,15 +18,6 @@ use Give\Tracking\Events\WebsiteTracking;
  */
 class TrackingServiceProvider implements ServiceProvider {
 	/**
-	 * @var TrackEvent[]
-	 */
-	private $trackingEvents = [
-		DonationMetricsTracking::class,
-		DonationFormsTracking::class,
-		WebsiteTracking::class,
-	];
-
-	/**
 	 * @inheritdoc
 	 */
 	public function register() {
@@ -39,9 +29,8 @@ class TrackingServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		$this->registerTrackEvents();
-		Hooks::addAction( 'shutdown', Track::class, 'scheduleCronJob' );
-		Hooks::addAction( Track::CRON_JOB_NAME, Track::class, 'send' );
-		Hooks::addAction( 'admin_init', TrackRoutine::class, 'send', 1 );
+		Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule' );
+		Hooks::addAction( TrackJobScheduler::CRON_JOB_NAME, TrackJob::class, 'send' );
 
 		if ( is_admin() ) {
 			Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );

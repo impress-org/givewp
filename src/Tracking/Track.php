@@ -2,7 +2,6 @@
 namespace Give\Tracking;
 
 use Give\Tracking\Contracts\TrackData;
-use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
  * Class Track
@@ -34,50 +33,10 @@ class Track {
 	const  TRACK_RECORDS_OPTION_NAME = 'give_telemetry_records';
 
 	/**
-	 * Cron job name.
-	 * @var string
-	 */
-	const CRON_JOB_NAME = 'give_telemetry_send_requests';
-
-	/**
 	 * Track constructor.
 	 */
 	public function __construct() {
 		$this->recordedTracks = get_option( self::TRACK_RECORDS_OPTION_NAME, [] );
-	}
-
-	/**
-	 * Send tracks.
-	 *
-	 * @since 2.10.0
-	 */
-	public function send() {
-		if ( empty( $this->recordedTracks ) || ! TrackHelper::isTrackingEnabled() ) {
-			return;
-		}
-
-		$trackClient = new TrackClient();
-
-		foreach ( $this->recordedTracks as $trackId => $trackData ) {
-			$trackClient->post( $trackId, $trackData->get() );
-		}
-	}
-
-	/**
-	 * Schedule cron job to send request to telemetry server.
-	 *
-	 * @since 2.10.0
-	 */
-	public function scheduleCronJob() {
-		if ( ! $this->newTracks ) {
-			return;
-		}
-
-		update_option( self::TRACK_RECORDS_OPTION_NAME, array_merge( $this->recordedTracks, $this->newTracks ) );
-
-		if ( ! wp_next_scheduled( self::CRON_JOB_NAME ) ) {
-			wp_schedule_single_event( strtotime( 'tomorrow - 1 day', current_time( 'timestamp' ) ), self::CRON_JOB_NAME );
-		}
 	}
 
 	/**
@@ -94,5 +53,36 @@ class Track {
 		}
 
 		$this->newTracks[ $trackId ] = $trackData;
+	}
+
+	/**
+	 * Get new tracks.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return TrackData[]
+	 */
+	public function get() {
+		return array_merge( $this->recordedTracks, $this->newTracks );
+	}
+
+	/**
+	 * Save tracks.
+	 *
+	 * @since 2.10.0
+	 */
+	public function save() {
+		update_option( self::TRACK_RECORDS_OPTION_NAME, $this->get() );
+	}
+
+	/**
+	 * Return whether or not new tracks registered.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return bool
+	 */
+	public function hasNewTracks() {
+		return (bool) $this->newTracks;
 	}
 }

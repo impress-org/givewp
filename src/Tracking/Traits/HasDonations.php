@@ -3,7 +3,7 @@
 namespace Give\Tracking\Traits;
 
 use Give\Helpers\ArrayDataSet;
-use Give\Tracking\TrackRoutine;
+use Give\Tracking\TrackJob;
 
 /**
  * Trait HasDonations
@@ -27,7 +27,7 @@ trait HasDonations {
 				'give_subscription', // Renewal
 			]
 		);
-		$time    = date( 'Y-m-d H:i:s', get_option( TrackRoutine::LAST_REQUEST_OPTION_NAME, time() ) );
+		$time    = date( 'Y-m-d H:i:s', get_option( TrackJob::LAST_REQUEST_OPTION_NAME, time() ) );
 
 		return $wpdb->get_col(
 			"
