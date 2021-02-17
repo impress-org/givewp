@@ -1,7 +1,6 @@
 <?php
-namespace Give\Tracking;
 
-use WP_Upgrader;
+namespace Give\Tracking;
 
 /**
  * Class TrackRoutine
