@@ -21,13 +21,14 @@ trait HasDonations {
 	private function getNewDonationIdsSinceLastRequest() {
 		global $wpdb;
 
-		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
+		$statues     = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
 			[
 				'publish', // One time donation
 				'give_subscription', // Renewal
 			]
 		);
-		$time    = date( 'Y-m-d H:i:s', get_option( TrackJob::LAST_REQUEST_OPTION_NAME, time() ) );
+		$defaultTime = strtotime( 'today', current_time( 'timestamp' ) );
+		$time        = date( 'Y-m-d H:i:s', get_option( TrackJob::LAST_REQUEST_OPTION_NAME, $defaultTime ) );
 
 		return $wpdb->get_col(
 			"
