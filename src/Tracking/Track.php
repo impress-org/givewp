@@ -4,8 +4,6 @@ namespace Give\Tracking;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\Track as TrackHelper;
 
-use function Weglot\Client\Api\array_keys_exists;
-
 /**
  * Class Track
  *
