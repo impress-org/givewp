@@ -20,7 +20,7 @@ class TrackEvents {
 	 * @return string
 	 */
 	public function getTelemetryRequestTimeOptionKey() {
-		return 'give_usage_tracking_last_request';
+		return 'give_telemetry_usage_tracking_last_request';
 	}
 
 	/**
