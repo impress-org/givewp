@@ -75,7 +75,7 @@ class Track {
 			return;
 		}
 
-		update_option( $this->optionKey, $this->newTracks );
+		update_option( $this->optionKey, array_merge( $this->recordedTracks, $this->newTracks ) );
 
 		if ( ! wp_next_scheduled( $this->cronJobName ) ) {
 			wp_schedule_single_event( strtotime( 'tomorrow - 1 day', current_time( 'timestamp' ) ), $this->cronJobName );
