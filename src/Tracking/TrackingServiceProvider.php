@@ -29,7 +29,7 @@ class TrackingServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		$this->registerTrackEvents();
-		Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule' );
+		Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
 		Hooks::addAction( TrackJobScheduler::CRON_JOB_NAME, TrackJob::class, 'send' );
 
 		if ( is_admin() ) {
@@ -55,7 +55,7 @@ class TrackingServiceProvider implements ServiceProvider {
 		Hooks::addAction( 'save_post_give_payment', DonationFormsTracking::class, 'record' );
 		Hooks::addAction( 'save_post_give_payment', DonationMetricsTracking::class, 'record' );
 		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
-		Hooks::addAction( 'shutdown', WebsiteTracking::class, 'websiteUpdateTrackingHandler', 10, 2 );
+		Hooks::addAction( 'shutdown', WebsiteTracking::class, 'websiteUpdateTrackingHandler' );
 		Hooks::addAction( 'update_option_give_settings', GivePluginSettingsTracking::class, 'record' );
 		Hooks::addAction( 'update_option_active_plugins', PluginsTracking::class, 'record' );
 		Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
