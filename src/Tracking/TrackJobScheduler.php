@@ -41,7 +41,7 @@ class TrackJobScheduler {
 		$this->track->save();
 
 		if ( ! wp_next_scheduled( self::CRON_JOB_NAME ) ) {
-			wp_schedule_single_event( strtotime( 'tomorrow - 1 day', current_time( 'timestamp' ) ), self::CRON_JOB_NAME );
+			wp_schedule_single_event( strtotime( 'tomorrow midnight', current_time( 'timestamp' ) ), self::CRON_JOB_NAME );
 		}
 	}
 }
