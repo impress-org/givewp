@@ -124,7 +124,8 @@ class AdminActionHandler {
 	 * @since 2.10.0
 	 */
 	private function storeAccessToken() {
-		$client = new TrackClient();
+		/* @var TrackClient $client */
+		$client = give( TrackClient::class );
 
 		/* @var WebsiteInfoData $dataClass */
 		$dataClass = give( WebsiteInfoData::class );
