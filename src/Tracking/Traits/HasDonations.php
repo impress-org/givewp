@@ -4,7 +4,6 @@ namespace Give\Tracking\Traits;
 
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Repositories\EventRecord;
-use Give\Tracking\TrackJob;
 
 /**
  * Trait HasDonations
@@ -28,7 +27,7 @@ trait HasDonations {
 				'give_subscription', // Renewal
 			]
 		);
-		$time    = EventRecord::getRequestTimeWithDefault();
+		$time    = EventRecord::getRequestTime();
 
 		return $wpdb->get_col(
 			"

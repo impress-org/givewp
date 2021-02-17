@@ -3,6 +3,7 @@ namespace Give\Tracking\TrackingData;
 
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\AdminSettings;
+use Give\Tracking\Repositories\Settings;
 
 /**
  * Class GivePluginSettingsData
@@ -13,7 +14,6 @@ use Give\Tracking\AdminSettings;
  * @package Give\Tracking\TrackingData
  */
 class GivePluginSettingsData implements TrackData {
-
 	/**
 	 * Return Give plugin settings data.
 	 *
@@ -40,12 +40,14 @@ class GivePluginSettingsData implements TrackData {
 			'cause_type',
 		];
 
+		/* @var Settings $settings */
+		$settings          = give( Settings::class );
 		$trueFalseSettings = [
 			'is_name_title'         => 'name_title_prefix',
 			'is_company'            => 'company_field',
 			'is_anonymous_donation' => 'anonymous_donation',
 			'is_donor_comment'      => 'donor_comment',
-			'is_anonymous_tracking' => AdminSettings::USAGE_TRACKING_OPTION_NAME,
+			'is_anonymous_tracking' => $settings->getUsageTrackingOptionKey(),
 		];
 
 		$data     = [];

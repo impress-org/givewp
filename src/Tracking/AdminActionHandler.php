@@ -4,9 +4,8 @@ namespace Give\Tracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
-use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\WebsiteData;
 use Give\Tracking\Enum\EventType;
+use Give\Tracking\Repositories\Settings;
 use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give_Admin_Settings;
 
@@ -22,13 +21,20 @@ class AdminActionHandler {
 	/**
 	 * @var UsageTrackingOnBoarding
 	 */
-	public $usageTrackingOnBoarding;
+	private $usageTrackingOnBoarding;
+
+	/**
+	 * @var Settings
+	 */
+	private $settings;
 
 	/**
 	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
+	 * @param  Settings  $settings
 	 */
-	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
+	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding, Settings $settings ) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
+		$this->settings                = $settings;
 	}
 
 	/**
@@ -62,7 +68,7 @@ class AdminActionHandler {
 			return;
 		}
 
-		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
+		$this->settings->saveUsageTrackingOptionValue( 'enabled' );
 		$this->usageTrackingOnBoarding->disableNotice( 0 );
 		$this->storeAccessToken();
 
@@ -89,7 +95,7 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$usageTracking = $newValue[ AdminSettings::USAGE_TRACKING_OPTION_NAME ] ?: 'disabled';
+		$usageTracking = $newValue[ $this->settings->getUsageTrackingOptionKey() ] ?: 'disabled';
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
 		// Exit if already has access token.

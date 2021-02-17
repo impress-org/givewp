@@ -78,9 +78,13 @@ class EventRecord {
 	 * Get request time.
 	 *
 	 * @since 2.10.0
+	 *
+	 * @param  bool  $default
+	 *
+	 * @return false|string
 	 */
-	public static function getRequestTimeWithDefault() {
-		$defaultTime = strtotime( 'today', current_time( 'timestamp' ) );
+	public static function getRequestTime( $default = true ) {
+		$defaultTime = $default ? strtotime( 'today', current_time( 'timestamp' ) ) : null;
 
 		return date( 'Y-m-d H:i:s', get_option( self::LAST_REQUEST_OPTION_NAME, $defaultTime ) );
 	}
