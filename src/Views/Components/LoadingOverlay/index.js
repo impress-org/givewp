@@ -1,5 +1,5 @@
 // Components
-import Spinner from 'GiveComponents/Spinner';
+import Spinner from '@givewp/components/Spinner';
 
 // Styles
 import styles from './style.module.scss';

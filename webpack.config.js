@@ -206,7 +206,7 @@ const config = {
 
 	resolve: {
 		alias: {
-			GiveComponents: path.resolve( __dirname, 'src/Views/Components/' ),
+			'@givewp/components': path.resolve( __dirname, 'src/Views/Components/' ),
 		},
 	},
 };

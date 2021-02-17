@@ -8,7 +8,6 @@ use Give\Framework\Migrations\MigrationsRegister;
 use Give\Log\Migrations\CreateNewLogTable;
 use Give\Log\Migrations\MigrateExistingLogs;
 use Give\Log\Migrations\DeleteOldLogTables;
-use Give\Log\Helpers\Assets;
 use Give\Log\Helpers\Environment;
 
 /**

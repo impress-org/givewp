@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { LoadingOverlay } from 'GiveComponents';
+import { LoadingOverlay } from '@givewp/components';
 
 import styles from './style.module.scss';
 
