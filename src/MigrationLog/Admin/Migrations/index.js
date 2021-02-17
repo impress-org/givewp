@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import { Card, Label, Notice, Spinner, Pagination, Table, Button, Modal } from 'GiveComponents';
+import { Card, Label, Notice, Spinner, Pagination, Table, Button, Modal } from '@givewp/components';
 import API, { useMigrationFetcher, getEndpoint } from './api';
 
 import styles from './styles.module.scss';
