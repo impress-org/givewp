@@ -2,7 +2,9 @@
 
 namespace Give\Tracking;
 
+use Braintree\Exception;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Enum\EventType;
 use Give\Tracking\Helpers\Track as TrackHelper;
 
 /**
@@ -51,8 +53,15 @@ class TrackJob {
 			/* @var TrackData $class */
 			$class = give( $className );
 
+			try {
+				$eventType = new EventType( $trackId );
+			} catch ( Exception $e ) {
+				// Skip non exiting enum values
+				continue;
+			}
+
 			if ( $class instanceof TrackData ) {
-				$this->trackClient->post( $trackId, $class->get() );
+				$this->trackClient->post( $eventType, $class );
 			}
 		}
 

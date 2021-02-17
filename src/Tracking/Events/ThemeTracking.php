@@ -4,7 +4,7 @@ namespace Give\Tracking\Events;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\ThemeData;
-use Give\Tracking\ValueObjects\EventType;
+use Give\Tracking\Enum\EventType;
 use Give\Traits\HasWpTheme;
 use WP_Upgrader;
 
@@ -35,7 +35,7 @@ class ThemeTracking extends TrackEvent {
 	 * @param  Track  $track
 	 */
 	public function __construct( Track $track ) {
-		$this->trackId = ( new EventType() )->getThemeSwitched();
+		$this->trackId = new EventType( 'theme-switched' );
 		parent::__construct( $track );
 	}
 
@@ -55,7 +55,7 @@ class ThemeTracking extends TrackEvent {
 
 		foreach ( $data['themes'] as $theme ) {
 			if ( get_stylesheet() === $theme || get_template() === $theme || $this->isParentTheme( $theme ) ) {
-				$this->trackId = ( new EventType() )->getThemeUpdated();
+				$this->trackId = new EventType( 'theme-updated' );
 				$this->record();
 			}
 		}

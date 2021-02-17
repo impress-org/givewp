@@ -5,7 +5,7 @@ namespace Give\Tracking\Events;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Track;
 use Give\Tracking\TrackingData\WebsiteData;
-use Give\Tracking\ValueObjects\EventType;
+use Give\Tracking\Enum\EventType;
 
 /**
  * Class WebsiteTracking
@@ -32,7 +32,7 @@ class WebsiteTracking extends TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function __construct( Track $track ) {
-		$this->trackId = ( new EventType() )->getSiteUpdated();
+		$this->trackId = new EventType( 'site-updated' );
 		parent::__construct( $track );
 	}
 
