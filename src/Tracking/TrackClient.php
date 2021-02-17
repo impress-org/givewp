@@ -21,6 +21,11 @@ class TrackClient {
 	 */
 	private $telemetryAccessDetails;
 
+	/**
+	 * TrackClient constructor.
+	 *
+	 * @param  TelemetryAccessDetails  $telemetryAccessDetails
+	 */
 	public function __construct( TelemetryAccessDetails $telemetryAccessDetails ) {
 		$this->telemetryAccessDetails = $telemetryAccessDetails;
 	}
