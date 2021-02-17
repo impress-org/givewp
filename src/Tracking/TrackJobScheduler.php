@@ -11,12 +11,6 @@ use Give\Tracking\Repositories\EventRecord;
  */
 class TrackJobScheduler {
 	/**
-	 * Cron job name.
-	 * @var string
-	 */
-	const CRON_JOB_NAME = 'give_telemetry_send_requests';
-
-	/**
 	 * @var TrackRegisterer
 	 */
 	private $track;
@@ -47,9 +41,20 @@ class TrackJobScheduler {
 			return;
 		}
 
+		$hookName = $this->getCronJobHookName();
 		$this->eventRecord->saveTrackList();
-		if ( ! wp_next_scheduled( self::CRON_JOB_NAME ) ) {
-			wp_schedule_single_event( strtotime( 'tomorrow midnight', current_time( 'timestamp' ) ), self::CRON_JOB_NAME );
+		if ( ! wp_next_scheduled( $hookName ) ) {
+			wp_schedule_single_event( strtotime( 'tomorrow midnight', current_time( 'timestamp' ) ), $hookName );
 		}
+	}
+
+	/**
+	 * Get cron job name.
+	 *
+	 * @since 2.10.0
+	 * @return string
+	 */
+	public function getCronJobHookName() {
+		return 'give_telemetry_send_requests';
 	}
 }

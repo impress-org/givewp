@@ -28,9 +28,12 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @inheritdoc
 	 */
 	public function boot() {
+		/* @var TrackJobScheduler $trackJobScheduler */
+		$trackJobScheduler = give( TrackJobScheduler::class );
+
 		$this->registerTrackEvents();
 		Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
-		Hooks::addAction( TrackJobScheduler::CRON_JOB_NAME, TrackJob::class, 'send' );
+		Hooks::addAction( $trackJobScheduler->getCronJobHookName(), TrackJob::class, 'send' );
 
 		if ( is_admin() ) {
 			Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );
