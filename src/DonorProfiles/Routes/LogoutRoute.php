@@ -76,7 +76,6 @@ class LogoutRoute implements RestRoute {
 
 	/**
 	 * Check permissions
-	 * @todo: need to check if donor logged as wp user or email access
 	 *
 	 * @return bool
 	 */
