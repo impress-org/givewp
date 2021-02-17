@@ -3,6 +3,8 @@
 namespace Give\Tracking\Events;
 
 use Give\Tracking\Contracts\TrackEvent;
+use Give\Tracking\Repositories\EventRecord;
+use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give\Tracking\TrackRegisterer;
 use Give\Tracking\TrackingData\WebsiteData;
 use Give\Tracking\Enum\EventType;
@@ -22,7 +24,7 @@ class WebsiteTracking extends TrackEvent {
 	/**
 	 * @var string
 	 */
-	protected $dataClassName = WebsiteData::class;
+	protected $dataClassName = WebsiteInfoData::class;
 
 	/**
 	 * GivePluginSettingsTracking constructor.
@@ -43,17 +45,8 @@ class WebsiteTracking extends TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function websiteUpdateTrackingHandler() {
-		/* @var WebsiteData $dataClass */
-		$dataClass        = give( $this->dataClassName );
-		$optionName       = 'give_telemetry_website_data_checksum';
-		$previousChecksum = get_option( $optionName, '' );
-		$checksum         = substr( md5( serialize( $dataClass->get() ) ), 0, 32 );
-
-		if ( $previousChecksum === $checksum ) {
-			return;
+		if ( EventRecord::storeWebsiteTrackingEvent() ) {
+			$this->record();
 		}
-
-		update_option( $optionName, $checksum );
-		$this->record();
 	}
 }

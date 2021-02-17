@@ -43,6 +43,6 @@ abstract class TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function record() {
-		$this->track->recordTrack( $this->eventType, $this->dataClassName );
+		$this->track->register( $this->eventType, $this->dataClassName );
 	}
 }

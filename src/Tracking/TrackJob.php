@@ -6,6 +6,7 @@ use Braintree\Exception;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Enum\EventType;
 use Give\Tracking\Helpers\Track as TrackHelper;
+use Give\Tracking\Repositories\EventRecord;
 
 /**
  * Class TrackJob
@@ -14,13 +15,6 @@ use Give\Tracking\Helpers\Track as TrackHelper;
  * @since 2.10.0
  */
 class TrackJob {
-	const LAST_REQUEST_OPTION_NAME = 'give_usage_tracking_last_request';
-
-	/**
-	 * @var TrackRegisterer
-	 */
-	private $track;
-
 	/**
 	 * @var TrackClient
 	 */
@@ -29,11 +23,9 @@ class TrackJob {
 	/**
 	 * TrackJob constructor.
 	 *
-	 * @param  TrackRegisterer  $track
 	 * @param  TrackClient  $trackClient
 	 */
-	public function __construct( TrackRegisterer $track, TrackClient $trackClient ) {
-		$this->track       = $track;
+	public function __construct( TrackClient $trackClient ) {
 		$this->trackClient = $trackClient;
 	}
 
@@ -43,7 +35,7 @@ class TrackJob {
 	 * @since 2.10.0
 	 */
 	public function send() {
-		$recordedTracks = $this->track->get();
+		$recordedTracks = EventRecord::getTrackList();
 
 		if ( ! $recordedTracks || ! TrackHelper::isTrackingEnabled() ) {
 			return;
@@ -59,7 +51,7 @@ class TrackJob {
 			}
 		}
 
-		update_option( self::LAST_REQUEST_OPTION_NAME, strtotime( 'today', current_time( 'timestamp' ) ) );
-		$this->track->remove();
+		EventRecord::saveRequestTime();
+		EventRecord::remove();
 	}
 }

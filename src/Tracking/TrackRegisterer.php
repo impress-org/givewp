@@ -2,6 +2,7 @@
 namespace Give\Tracking;
 
 use Give\Tracking\Enum\EventType;
+use Give\Tracking\Repositories\EventRecord;
 
 /**
  * Class TrackRegisterer
@@ -27,27 +28,21 @@ class TrackRegisterer {
 	private $recordedTracks;
 
 	/**
-	 * Option name to record tracks.
-	 * @var string
-	 */
-	const  TRACK_RECORDS_OPTION_NAME = 'give_telemetry_records';
-
-	/**
 	 * Track constructor.
 	 */
 	public function __construct() {
-		$this->recordedTracks = get_option( self::TRACK_RECORDS_OPTION_NAME, [] );
+		$this->recordedTracks = EventRecord::getTrackList();
 	}
 
 	/**
-	 * Record track.
+	 * Register track.
 	 *
 	 * @param EventType $eventType
 	 * @param string $trackData
 	 *
 	 * @since 2.10.0
 	 */
-	public function recordTrack( $eventType, $trackData ) {
+	public function register( $eventType, $trackData ) {
 		$id = $eventType->getValue();
 		if ( array_key_exists( $id, $this->recordedTracks ) || ! $trackData ) {
 			return;
@@ -63,26 +58,8 @@ class TrackRegisterer {
 	 *
 	 * @return array
 	 */
-	public function get() {
+	public function getTrackList() {
 		return array_merge( $this->recordedTracks, $this->newTracks );
-	}
-
-	/**
-	 * Save tracks.
-	 *
-	 * @since 2.10.0
-	 */
-	public function save() {
-		update_option( self::TRACK_RECORDS_OPTION_NAME, $this->get() );
-	}
-
-	/**
-	 * Remove tracks.
-	 *
-	 * @since 2.10.0
-	 */
-	public function remove() {
-		delete_option( self::TRACK_RECORDS_OPTION_NAME );
 	}
 
 	/**

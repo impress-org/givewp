@@ -2,6 +2,8 @@
 
 namespace Give\Tracking;
 
+use Give\Tracking\Repositories\EventRecord;
+
 /**
  * Class TrackJobScheduler
  * @package Give\Tracking
@@ -20,12 +22,19 @@ class TrackJobScheduler {
 	private $track;
 
 	/**
+	 * @var EventRecord
+	 */
+	private $eventRecord;
+
+	/**
 	 * TrackJobScheduler constructor.
 	 *
 	 * @param  TrackRegisterer  $track
+	 * @param  EventRecord  $eventRecord
 	 */
-	public function __construct( TrackRegisterer $track ) {
-		$this->track = $track;
+	public function __construct( TrackRegisterer $track, EventRecord $eventRecord ) {
+		$this->track       = $track;
+		$this->eventRecord = $eventRecord;
 	}
 
 	/**
@@ -38,8 +47,7 @@ class TrackJobScheduler {
 			return;
 		}
 
-		$this->track->save();
-
+		$this->eventRecord->saveTrackList();
 		if ( ! wp_next_scheduled( self::CRON_JOB_NAME ) ) {
 			wp_schedule_single_event( strtotime( 'tomorrow midnight', current_time( 'timestamp' ) ), self::CRON_JOB_NAME );
 		}
