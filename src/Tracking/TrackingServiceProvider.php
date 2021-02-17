@@ -62,11 +62,10 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @since 2.10.0
 	 */
 	private function registerTrackEvents() {
-		foreach ( $this->trackingEvents as $eventClassName ) {
-			Hooks::addAction( 'give_send_tracking_data', $eventClassName, 'record' );
-		}
-
+		Hooks::addAction( 'save_post_give_forms', DonationMetricsTracking::class, 'record' );
+		Hooks::addAction( 'save_post_give_payment', DonationFormsTracking::class, 'record' );
 		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
+		Hooks::addAction( 'shutdown', WebsiteTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
 		Hooks::addAction( 'update_option_give_settings', GivePluginSettingsTracking::class, 'record' );
 		Hooks::addAction( 'update_option_active_plugins', PluginsTracking::class, 'record' );
 		Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );
