@@ -201,7 +201,7 @@ class Donations {
 			'currency' => $payment->currency,
 			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
 			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
-			'method'   => $gateways[ $payment->gateway ]['checkout_label'],
+			'method'   => isset( $gateways[ $payment->gateway ]['checkout_label'] ) ? $gateways[ $payment->gateway ]['checkout_label'] : '',
 			'status'   => $this->getFormattedStatus( $payment->status ),
 			'date'     => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
 			'time'     => date_i18n( 'g:i a', strtotime( $payment->date ) ),
