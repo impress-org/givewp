@@ -31,19 +31,19 @@ class Track {
 	 * Option name to record tracks.
 	 * @var string
 	 */
-	private $optionKey = 'give_telemetry_records';
+	const  TRACK_RECORDS_OPTION_NAME = 'give_telemetry_records';
 
 	/**
 	 * Cron job name.
 	 * @var string
 	 */
-	private $cronJobName = 'give_telemetry_send_requests';
+	const CRON_JOB_NAME = 'give_telemetry_send_requests';
 
 	/**
 	 * Track constructor.
 	 */
 	public function __construct() {
-		$this->recordedTracks = get_option( $this->optionKey, [] );
+		$this->recordedTracks = get_option( self::TRACK_RECORDS_OPTION_NAME, [] );
 	}
 
 	/**
@@ -73,10 +73,10 @@ class Track {
 			return;
 		}
 
-		update_option( $this->optionKey, array_merge( $this->recordedTracks, $this->newTracks ) );
+		update_option( self::TRACK_RECORDS_OPTION_NAME, array_merge( $this->recordedTracks, $this->newTracks ) );
 
-		if ( ! wp_next_scheduled( $this->cronJobName ) ) {
-			wp_schedule_single_event( strtotime( 'tomorrow - 1 day', current_time( 'timestamp' ) ), $this->cronJobName );
+		if ( ! wp_next_scheduled( self::CRON_JOB_NAME ) ) {
+			wp_schedule_single_event( strtotime( 'tomorrow - 1 day', current_time( 'timestamp' ) ), self::CRON_JOB_NAME );
 		}
 	}
 
