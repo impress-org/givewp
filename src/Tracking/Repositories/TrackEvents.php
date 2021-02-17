@@ -13,22 +13,6 @@ use Give\Tracking\TrackRegisterer;
  */
 class TrackEvents {
 	/**
-	 * @var TrackRegisterer
-	 */
-	private $trackRegisterer;
-
-	/**
-	 * EventRecord constructor.
-	 *
-	 * @param  TrackRegisterer  $trackRegisterer
-	 *
-	 * @since 2.10.0
-	 */
-	public function __construct( TrackRegisterer $trackRegisterer ) {
-		$this->trackRegisterer = $trackRegisterer;
-	}
-
-	/**
 	 * Get option key for usage tracking last request.
 	 *
 	 * @since 2.10.0
@@ -65,7 +49,9 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function saveTrackList() {
-		update_option( $this->getTrackingEventsRecordOptionKey(), $this->trackRegisterer->getTrackList() );
+		/* @var TrackRegisterer $trackRegisterer */
+		$trackRegisterer = give( TrackRegisterer::class );
+		update_option( $this->getTrackingEventsRecordOptionKey(), $trackRegisterer->getTrackList() );
 	}
 
 	/**
