@@ -1,0 +1,17 @@
+.input {
+	background: #fff;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 150px;
+	border-radius: 5px;
+	border: 1px solid #ddd !important;
+	border-bottom: 3px solid #ddd !important;
+
+	&:active,
+	&:focus {
+		box-shadow: none !important;
+		outline: 0 !important;
+	}
+}
