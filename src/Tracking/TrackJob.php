@@ -51,14 +51,8 @@ class TrackJob {
 
 		foreach ( $recordedTracks as $trackId => $className ) {
 			/* @var TrackData $class */
-			$class = give( $className );
-
-			try {
-				$eventType = new EventType( $trackId );
-			} catch ( Exception $e ) {
-				// Skip non exiting enum values
-				continue;
-			}
+			$class     = give( $className );
+			$eventType = new EventType( $trackId );
 
 			if ( $class instanceof TrackData ) {
 				$this->trackClient->post( $eventType, $class );
