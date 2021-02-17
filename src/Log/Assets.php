@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Log\Helpers;
+namespace Give\Log;
 
 /**
  * Class Assets
