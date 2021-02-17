@@ -46,7 +46,7 @@ class WebsiteTracking extends TrackEvent {
 		$dataClass        = give( $this->dataClassName );
 		$optionName       = 'give_telemetry_website_data_checksum';
 		$previousChecksum = get_option( $optionName, '' );
-		$checksum         = substr( md5( serialize( $dataClass->get() ) ), 0, 16 );
+		$checksum         = substr( md5( serialize( $dataClass->get() ) ), 0, 32 );
 
 		if ( $previousChecksum === $checksum ) {
 			return;
