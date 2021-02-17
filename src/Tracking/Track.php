@@ -43,11 +43,11 @@ class Track {
 	 * Record track.
 	 *
 	 * @param string $trackId
-	 * @param TrackData $trackData
+	 * @param string $trackData
 	 *
 	 * @since 2.10.0
 	 */
-	public function recordTrack( $trackId, TrackData $trackData ) {
+	public function recordTrack( $trackId, $trackData ) {
 		if ( array_key_exists( $trackId, $this->recordedTracks ) ) {
 			return;
 		}
