@@ -1,8 +1,6 @@
 <?php
 namespace Give\Tracking;
 
-use Give\Tracking\Contracts\TrackData;
-
 /**
  * Class Track
  *
@@ -18,7 +16,7 @@ class Track {
 	 * @sicne 2.10.0
 	 * @var array
 	 */
-	private $newTracks;
+	private $newTracks = [];
 
 	/**
 	 * Recoded tracks.
@@ -48,7 +46,7 @@ class Track {
 	 * @since 2.10.0
 	 */
 	public function recordTrack( $trackId, $trackData ) {
-		if ( array_key_exists( $trackId, $this->recordedTracks ) ) {
+		if ( array_key_exists( $trackId, $this->recordedTracks ) || ! $trackData ) {
 			return;
 		}
 
