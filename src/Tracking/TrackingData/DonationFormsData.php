@@ -143,9 +143,12 @@ class DonationFormsData implements TrackData {
 		);
 
 		if ( $result ) {
-			$result = array_combine(
-				wp_list_pluck( $result, 'form_id' ),
-				wp_list_pluck( $result, 'amount' )
+			$result = array_map(
+				'absint',
+				array_combine(
+					wp_list_pluck( $result, 'form_id' ),
+					wp_list_pluck( $result, 'amount' )
+				)
 			);
 		}
 
@@ -188,9 +191,12 @@ class DonationFormsData implements TrackData {
 		);
 
 		if ( $result ) {
-			$result = array_combine(
-				wp_list_pluck( $result, 'form_id' ),
-				wp_list_pluck( $result, 'donor_count' )
+			$result = array_map(
+				'absint',
+				array_combine(
+					wp_list_pluck( $result, 'form_id' ),
+					wp_list_pluck( $result, 'donor_count' )
+				)
 			);
 		}
 
