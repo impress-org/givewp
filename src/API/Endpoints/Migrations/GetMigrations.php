@@ -17,6 +17,10 @@ use Give\Framework\Migrations\MigrationsRegister;
  * @since 2.10.0
  */
 class GetMigrations extends Endpoint {
+	/**
+	 * Enable sorting by these columns
+	 */
+	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run', 'run_order' ];
 
 	/** @var string */
 	protected $endpoint = 'migrations/get-migrations';
@@ -80,7 +84,7 @@ class GetMigrations extends Endpoint {
 								if ( empty( $param ) ) {
 									return true;
 								}
-								return in_array( $param, $this->migrationRepository->getSortableColumns(), true );
+								return in_array( $param, self::SORTABLE_COLUMNS, true );
 							},
 							'default'           => 'run_order',
 						],
@@ -132,11 +136,17 @@ class GetMigrations extends Endpoint {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 		$data              = [];
-		$migrations        = $this->migrationRepository->getMigrationsForRequest( $request );
-		$migrationsCount   = $this->migrationRepository->getMigrationsCount();
+		$migrationsPerPage = 10;
+		$migrations        = $this->migrationRepository->getMigrations();
+		$migrationsCount   = count( $this->migrationRegister->getRegisteredIds() );
 		$pendingMigrations = $this->migrationHelper->getPendingMigrations();
 
 		foreach ( $migrations as $migration ) {
+			// Get only registered migrations
+			if ( ! $this->migrationRegister->hasMigration( $migration->getId() ) ) {
+				continue;
+			}
+
 			$data[] = [
 				'id'        => $migration->getId(),
 				'status'    => $migration->getStatus(),
@@ -158,11 +168,22 @@ class GetMigrations extends Endpoint {
 			];
 		}
 
+		// Sort migrations
+		$sortColumn    = array_column( $data, $request->get_param( 'sort' ) );
+		$sortDirection = ( 'DESC' === strtoupper( $request->get_param( 'direction' ) ) ) ? SORT_DESC : SORT_ASC;
+
+		array_multisort( $sortColumn, $sortDirection, $data );
+
+		// Pagination
+		$page   = $request->get_param( 'page' );
+		$offset = ( $page - 1 ) * $migrationsPerPage;
+		$data   = array_slice( $data, $offset, $migrationsPerPage );
+
 		return new WP_REST_Response(
 			[
 				'status'      => true,
 				'data'        => $data,
-				'pages'       => ceil( $migrationsCount / $this->migrationRepository->getMigrationsPerPageLimit() ),
+				'pages'       => ceil( $migrationsCount / $migrationsPerPage ),
 				'showOptions' => 'enabled' === give_get_option( 'enable_database_updates' ),
 			]
 		);
