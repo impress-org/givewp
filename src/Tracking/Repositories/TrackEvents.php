@@ -5,6 +5,8 @@ namespace Give\Tracking\Repositories;
 use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give\Tracking\TrackRegisterer;
 
+use function GuzzleHttp\Psr7\str;
+
 /**
  * Class EventRecord
  * @package Give\Tracking\Repositories
@@ -80,7 +82,8 @@ class TrackEvents {
 	 * @return false|string
 	 */
 	public function getRequestTime() {
-		return date( 'Y-m-d H:i:s', get_option( $this->getTelemetryRequestTimeOptionKey(), 0 ) );
+		$today = strtotime( 'today', current_time( 'timestamp' ) );
+		return date( 'Y-m-d H:i:s', get_option( $this->getTelemetryRequestTimeOptionKey(), $today ) );
 	}
 
 	/**
