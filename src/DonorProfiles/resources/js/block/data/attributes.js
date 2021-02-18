@@ -3,9 +3,9 @@
 */
 
 const blockAttributes = {
-	enabled: {
-		type: 'array',
-		default: [],
+	align: {
+		type: 'string',
+		default: 'wide',
 	},
 };
 

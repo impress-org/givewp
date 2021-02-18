@@ -16,7 +16,7 @@ class App {
 		$this->profile = new Profile( $id );
 	}
 
-	public function getOutput() {
+	public function getOutput( $attributes ) {
 
 		$url = get_site_url() . '/?give-embed=donor-profile';
 

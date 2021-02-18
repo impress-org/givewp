@@ -23,9 +23,9 @@ class Block {
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
-					'enabled' => [
-						'type'    => 'array',
-						'default' => [],
+					'align' => [
+						'type'    => 'string',
+						'default' => 'wide',
 					],
 				],
 			]
