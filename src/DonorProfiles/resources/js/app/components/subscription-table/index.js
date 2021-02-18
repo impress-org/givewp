@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 import Table from '../table';
-import DonationRow from '../donation-row';
+import SubscriptionRow from '../subscription-row';
 
 import './style.scss';
 
-const DonationTable = ( { donations, perPage } ) => {
+const SubscriptionTable = ( { subscriptions, perPage } ) => {
 	const [ page, setPage ] = useState( 1 );
 
 	const getStartIndex = () => {
@@ -15,32 +15,32 @@ const DonationTable = ( { donations, perPage } ) => {
 	};
 
 	const getEndIndex = () => {
-		return start + perPage <= donationsArray.length ? start + perPage : donationsArray.length;
+		return start + perPage <= subscriptionsArray.length ? start + perPage : subscriptionsArray.length;
 	};
 
-	const getDonationRows = () => {
-		return donationsArray.reduce( ( rows, donation, index ) => {
+	const getSubscriptionRows = () => {
+		return subscriptionsArray.reduce( ( rows, subscription, index ) => {
 			if ( index >= start && index < end ) {
-				rows.push( <DonationRow key={ index } donation={ donation } /> );
+				rows.push( <SubscriptionRow subscription={ subscription } /> );
 			}
 			return rows;
 		}, [] );
 	};
 
-	let donationRows = [];
-	const donationsArray = [];
+	let subscriptionRows = [];
+	const subscriptionsArray = [];
 	let start = 0;
 	let end = perPage;
 	let lastPage = 1;
 
-	if ( donations ) {
-		Object.entries( donations ).forEach( ( donation ) => {
-			donationsArray[ donation[ 0 ] ] = donation[ 1 ];
+	if ( subscriptions ) {
+		Object.entries( subscriptions ).forEach( ( subscription ) => {
+			subscriptionsArray[ subscription[ 0 ] ] = subscription[ 1 ];
 		} );
 		start = getStartIndex();
 		end = getEndIndex();
-		lastPage = Math.ceil( donationsArray.length / perPage );
-		donationRows = getDonationRows();
+		lastPage = Math.ceil( subscriptionsArray.length / perPage );
+		subscriptionRows = getSubscriptionRows();
 	}
 
 	return (
@@ -48,30 +48,30 @@ const DonationTable = ( { donations, perPage } ) => {
 			header={
 				<Fragment>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Donation', 'give' ) }
-					</div>
-					<div className="give-donor-profile-table__column">
-						{ __( 'Form', 'give' ) }
-					</div>
-					<div className="give-donor-profile-table__column">
-						{ __( 'Date', 'give' ) }
+						{ __( 'Subscription', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
 						{ __( 'Status', 'give' ) }
+					</div>
+					<div className="give-donor-profile-table__column">
+						{ __( 'Next Renewal', 'give' ) }
+					</div>
+					<div className="give-donor-profile-table__column">
+						{ __( 'Progress', 'give' ) }
 					</div>
 				</Fragment>
 			}
 
 			rows={
 				<Fragment>
-					{ donationRows }
+					{ subscriptionRows }
 				</Fragment>
 			}
 
 			footer={
 				<Fragment>
 					<div className="give-donor-profile-table__footer-text">
-						{ donations && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ donationsArray.length } ${ __( 'Donations', 'give' ) }` }
+						{ subscriptions && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ subscriptionsArray.length } ${ __( 'Subscriptions', 'give' ) }` }
 					</div>
 					<div className="give-donor-profile-table__footer-nav">
 						{ page - 1 >= 1 && (
@@ -91,4 +91,4 @@ const DonationTable = ( { donations, perPage } ) => {
 	);
 };
 
-export default DonationTable;
+export default SubscriptionTable;
