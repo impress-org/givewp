@@ -17,7 +17,7 @@ class App {
 	}
 
 	public function getOutput() {
-		return '<iframe src="https://give.test/?give-embed=donor-profile"></iframe>';
+		return '<iframe src="' . get_site_url() . '/?give-embed=donor-profile"></iframe>';
 	}
 
 	/**
