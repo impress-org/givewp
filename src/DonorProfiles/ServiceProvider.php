@@ -20,6 +20,9 @@ use Give\DonorProfiles\Tabs\DonationHistoryTab\Tab as DonationHistoryTab;
 
 use Give\DonorProfiles\Tabs\TabsRegister;
 
+/**
+ * @since 2.10.0
+ */
 class ServiceProvider implements ServiceProviderInterface {
 
 	/**

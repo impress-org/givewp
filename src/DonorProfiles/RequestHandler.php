@@ -4,13 +4,28 @@ namespace Give\DonorProfiles;
 
 use Give\DonorProfiles\App;
 
+/**
+ * @since 2.10.0
+ */
 class RequestHandler {
 
+	/**
+	 * Register 'give-embed' query var
+	 *
+	 * @param array $vars
+	 * @return array
+	 */
 	public function filterQueryVars( $vars ) {
 		$vars[] = 'give-embed';
 		return $vars;
 	}
 
+	/**
+	 * Load donor profile markup, if donor profile exists in query vars
+	 *
+	 * @param WP_Query $query
+	 * @return void
+	 */
 	public function parseRequest( $query ) {
 		if ( is_admin() ) {
 			return null;
@@ -30,7 +45,7 @@ class RequestHandler {
 	/**
 	 * Setup frontend hooks
 	 *
-	 * @since 2.7.0
+	 * @since 2.10.0
 	 */
 	public function setUpFrontendHooks() {
 		add_action( 'give_embed_head', [ $this, 'noRobots' ] );
@@ -46,7 +61,7 @@ class RequestHandler {
 	 *
 	 * Outputs a noindex meta tag that tells web robots not to index and follow content.
 	 *
-	 * @since 2.7.0
+	 * @since 2.10.0
 	 */
 	public function noRobots() {
 		echo "<meta name='robots' content='noindex,nofollow'/>\n";
@@ -55,7 +70,7 @@ class RequestHandler {
 	/**
 	 * Handle enqueue script
 	 *
-	 * @since 2.7.0
+	 * @since 2.10.0
 	 */
 	public function handleEnqueueScripts() {
 		global $wp_scripts, $wp_styles;
@@ -71,7 +86,7 @@ class RequestHandler {
 	 * @param array $scripts
 	 *
 	 * @return array
-	 * @since 2.7.0
+	 * @since 2.10.0
 	 */
 	private function getListOfScriptsToDequeue( $scripts ) {
 		$list     = [];
