@@ -92,8 +92,10 @@ class AdminActionHandler {
 
 		$this->settings->saveUsageTrackingOptionValue( 'enabled' );
 		$this->usageTrackingOnBoarding->disableNotice( 0 );
-		$this->accessToken->store();
-		$this->recordTracks();
+
+		if ( $this->accessToken->store() ) {
+			$this->recordTracks();
+		}
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
@@ -126,8 +128,9 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$this->accessToken->store();
-		$this->recordTracks();
+		if ( $this->accessToken->store() ) {
+			$this->recordTracks();
+		}
 
 		remove_filter( "give_disable_hook-update_option_give_settings:{$class}@optInToUsageTrackingAdminGrantManually", '__return_false' );
 
