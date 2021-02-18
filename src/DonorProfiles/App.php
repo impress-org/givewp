@@ -26,7 +26,7 @@ class App {
 
 		$iframe = sprintf(
 			'<iframe
-				name="give-embed-form"
+				name="give-embed-donor-profile"
 				%1$s
 				%4$s
 				data-autoScroll="%2$s"
@@ -34,7 +34,7 @@ class App {
 				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
 			"src=\"{$url}\"",
 			true,
-			'min-height: 776px;',
+			'min-height: 776px; width: 100%; max-width: 100% !important',
 			'',
 			$loader
 		);
