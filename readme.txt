@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.9.6
+Stable tag: 2.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -230,6 +230,12 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.9.7: February 9th, 2021 =
+* Fixed: Using CLI commands no longer throws a fatal error due to a missing dev package
+* Fixed: When guest registration is disabled the checkbox to create an account is hidden
+* Fixed: Multi Form Goal component no longer throws an error when used in Divi
+* Fixed: Corrected some styles in the Setup Page for gateway links
 
 = 2.9.6: January 13th, 2021 =
 * New: Additional logging and improved messaging for PayPal Donations onboarding

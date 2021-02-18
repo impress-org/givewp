@@ -39,7 +39,7 @@ jobs:
 
       - name: Setup tests
         run: |
-          bash tests/bin/install.sh wordpress_test root root localhost ${{ matrix.wordpress }}
+          bash tests/unit/bin/install.sh wordpress_test root root localhost ${{ matrix.wordpress }}
 
       -   name: Execute tests
           run: vendor/bin/phpunit

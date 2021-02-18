@@ -9,15 +9,20 @@ use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorEmails;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
 
+use Give\DonorProfiles\Helpers as DonorProfileHelpers;
+
 
 class Profile {
 
 	protected $donor;
 	protected $id;
 
-	public function __construct( $donorId ) {
-		$donorFactory = new DonorFactory;
-		$this->donor  = $donorFactory->make( $donorId );
+	public function __construct() {
+		$donorId = DonorProfileHelpers::getCurrentDonorId();
+		if ( $donorId ) {
+			$donorFactory = new DonorFactory;
+			$this->donor  = $donorFactory->make( $donorId );
+		}
 	}
 
 	/**
@@ -27,7 +32,7 @@ class Profile {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function update( $data ) {
 
@@ -52,11 +57,15 @@ class Profile {
 	/**
 	 * Return array of donor profile data
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 *
 	 * @return array
 	 */
 	public function getProfileData() {
+
+		if ( ! $this->donor ) {
+			return null;
+		}
 
 		$titlePrefix = Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
 
@@ -82,9 +91,14 @@ class Profile {
 	 *
 	 * @return int
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getId() {
+
+		if ( ! $this->donor ) {
+			return null;
+		}
+
 		return $this->donor->id;
 	}
 
@@ -93,7 +107,7 @@ class Profile {
 	 *   *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getTitlePrefix() {
 		return Give()->donor_meta->get_meta( $this->donor->id, '_give_donor_title_prefix', true );
@@ -104,7 +118,7 @@ class Profile {
 	 *   *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getAvatarUrl() {
 		$avatarId = $this->getAvatarId();
@@ -120,7 +134,7 @@ class Profile {
 	 *   *
 	 * @return int
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getAvatarId() {
 		return $this->donor->get_meta( '_give_donor_avatar_id' );
@@ -131,9 +145,13 @@ class Profile {
 	 *   *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function getCountry() {
+		if ( ! $this->donor ) {
+			return give_get_country();
+		}
+
 		$address = $this->donor->get_donor_address();
 		if ( $address ) {
 			return $address['country'];

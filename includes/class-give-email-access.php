@@ -263,6 +263,8 @@ class Give_Email_Access {
 
 			return true;
 		}
+
+		return false;
 	}
 
 	/**
@@ -389,7 +391,6 @@ class Give_Email_Access {
 	 */
 	public function users_donations_args( $args ) {
 		$args['user'] = $this->token_email;
-
 		return $args;
 	}
 
