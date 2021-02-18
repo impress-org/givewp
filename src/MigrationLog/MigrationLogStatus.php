@@ -19,7 +19,7 @@ class MigrationLogStatus {
 	 * @return string
 	 */
 	public static function getDefault() {
-		return MigrationLogStatus::PENDING;
+		return MigrationLogStatus::FAILED;
 	}
 
 	/**
@@ -33,5 +33,16 @@ class MigrationLogStatus {
 			MigrationLogStatus::FAILED  => esc_html__( 'Failed', 'give' ),
 			MigrationLogStatus::PENDING => esc_html__( 'Pending', 'give' ),
 		];
+	}
+
+	/**
+	 * Check if value is a valid migration status
+	 *
+	 * @param string $status
+	 *
+	 * @return bool
+	 */
+	public static function isValid( $status ) {
+		return array_key_exists( $status, self::getAll() );
 	}
 }

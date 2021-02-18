@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 const Label = ( { type, text } ) => {
 	const labelClasses = classNames(
 		styles.label,
-		{ [ styles.error ]: type === 'error' },
+		{ [ styles.error ]: type === 'error' || type === 'failed' },
 		{ [ styles.warning ]: type === 'warning' },
 		{ [ styles.notice ]: type === 'notice' },
 		{ [ styles.success ]: type === 'success' },

@@ -75,10 +75,12 @@ class MigrateExistingLogs extends Migration {
 			)
 		);
 
+		$totalLogs = DB::get_var( "SELECT COUNT(id) FROM {$logs_table}" );
+
 		if ( $result ) {
 			$give_updates->set_percentage(
-				count( $result ),
-				$give_updates->step * 100
+				$totalLogs,
+				$give_updates->step * $perBatch
 			);
 
 			foreach ( $result as $log ) {
@@ -113,11 +115,10 @@ class MigrateExistingLogs extends Migration {
 				} catch ( \Exception $exception ) {
 					$give_updates->__pause_db_update( true );
 					update_option( 'give_upgrade_error', 1, false );
-					wp_die();
 				}
 			}
+		} else {
+			give_set_upgrade_complete( self::id() );
 		}
-
-		give_set_upgrade_complete( self::id() );
 	}
 }

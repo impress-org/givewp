@@ -15,10 +15,10 @@ class MigrationLogFactory {
 	/**
 	 * Make MigrationModel instance
 	 *
-	 * @param string $id
-	 * @param string  $status
-	 * @param mixed|null  $error
-	 * @param string|null  $lastRun
+	 * @param  string  $id
+	 * @param  string  $status
+	 * @param  mixed|null  $error
+	 * @param  string|null  $lastRun
 	 *
 	 * @return MigrationLogModel
 	 */

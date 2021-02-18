@@ -978,21 +978,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					<?php
 					break;
 
-				// Custom: Log field.
-				case 'logs':
-					// Get current section.
-					$current_section = $_GET['section'] = give_get_current_setting_section();
-
-					/**
-					 * Fires for each tab of logs view.
-					 *
-					 * @since 1.0
-					 */
-					do_action( "give_logs_view_{$current_section}" );
-
-					echo $description;
-					break;
-
 				// Custom: Data field.
 				case 'data':
 					include GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php';

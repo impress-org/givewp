@@ -102,8 +102,6 @@ class Give_Admin {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/class-give-graph.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/graphing.php';
 
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
-
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/tools-actions.php';
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/abstract-shortcode-generator.php';
