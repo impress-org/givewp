@@ -539,8 +539,6 @@ function __give_get_tables() {
 		'comment_db'      => new Give_DB_Comments(),
 		'comment_db_meta' => new Give_DB_Comment_Meta(),
 		'give_session'    => new Give_DB_Sessions(),
-		'log_db'          => new Give_DB_Logs(),
-		'logmeta_db'      => new Give_DB_Log_Meta(),
 		'formmeta_db'     => new Give_DB_Form_Meta(),
 		'sequential_db'   => new Give_DB_Sequential_Ordering(),
 		'donation_meta'   => new Give_DB_Payment_Meta(),
