@@ -17,7 +17,29 @@ class App {
 	}
 
 	public function getOutput() {
-		return '<iframe src="' . get_site_url() . '/?give-embed=donor-profile"></iframe>';
+
+		$url = get_site_url() . '/?give-embed=donor-profile';
+
+		$loader = sprintf(
+			'<div class="iframe-loader">Loading...</div>',
+		);
+
+		$iframe = sprintf(
+			'<iframe
+				name="give-embed-form"
+				%1$s
+				%4$s
+				data-autoScroll="%2$s"
+				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
+				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
+			"src=\"{$url}\"",
+			true,
+			'min-height: 776px;',
+			'',
+			$loader
+		);
+
+		return $iframe;
 	}
 
 	/**
