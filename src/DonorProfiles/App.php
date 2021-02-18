@@ -4,6 +4,7 @@ namespace Give\DonorProfiles;
 
 use Give\DonorProfiles\Profile;
 use Give\DonorProfiles\Helpers\LocationList;
+use Give\Views\IframeContentView;
 
 class App {
 
@@ -14,13 +15,17 @@ class App {
 		$this->profile = new Profile( $id );
 	}
 
+	public function getOutput() {
+		return '<iframe src="https://give.test/?give-embed=donor-profile"></iframe>';
+	}
+
 	/**
 	 * Get output markup for Donor Profile app
 	 *
 	 * @return string
 	 * @since 2.11.0
 	 **/
-	public function getOutput() {
+	public function getIframeContent() {
 		ob_start();
 		$output = '';
 		require $this->getTemplatePath();
