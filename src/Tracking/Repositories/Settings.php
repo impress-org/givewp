@@ -26,7 +26,7 @@ class Settings {
 	 * @return string
 	 */
 	public function getUsageTrackingNoticeNagOptionKey() {
-		return 'give_hide_usage_tracking_notice';
+		return 'give_telemetry_hide_usage_tracking_notice';
 	}
 
 	/**
