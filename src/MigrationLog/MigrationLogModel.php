@@ -41,14 +41,12 @@ class MigrationLogModel {
 	 * @param  string  $status
 	 * @param  mixed|null  $error
 	 * @param  string|null  $lastRun
-	 * @param  int|null  $order
 	 */
-	public function __construct( $id, $status = '', $error = null, $lastRun = null, $order = null ) {
+	public function __construct( $id, $status = '', $error = null, $lastRun = null ) {
 		$this->id       = $id;
 		$this->last_run = $lastRun;
 		$this->setError( $error );
 		$this->setStatus( $status );
-		$this->setRunOrder( $order );
 	}
 
 	/**
@@ -86,23 +84,6 @@ class MigrationLogModel {
 	}
 
 	/**
-	 * Set migration run order position
-	 *
-	 * @param int $order
-	 *
-	 * @return MigrationLogModel
-	 */
-	public function setRunOrder( $order ) {
-		$this->run_order = is_int( $order )
-			? date( 'Y-m-d H:i:s', $order )
-			: date( 'Y-m-d H:i:s', strtotime( $order ) );
-
-		return $this;
-	}
-
-
-
-	/**
 	 * @return int
 	 */
 	public function getId() {
@@ -128,13 +109,6 @@ class MigrationLogModel {
 	 */
 	public function getError() {
 		return $this->error;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getRunOrder() {
-		return $this->run_order;
 	}
 
 	/**

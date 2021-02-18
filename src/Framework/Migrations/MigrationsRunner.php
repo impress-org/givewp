@@ -108,13 +108,11 @@ class MigrationsRunner {
 
 				// Save migration status
 				$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
-				$migrationLog->setRunOrder( $migrationClass::timestamp() );
 				$migrationLog->save();
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				$migrationLog->setStatus( MigrationLogStatus::FAILED );
-				$migrationLog->setRunOrder( $migrationClass::timestamp() );
 				$migrationLog->setError( $exception );
 				$migrationLog->save();
 
