@@ -150,5 +150,10 @@ class AdminActionHandler {
 		give( ThemeTracking::class )->record();
 		give( GivePluginSettingsTracking::class )->record();
 		give( PluginsTracking::class )->record();
+
+		/* @var TrackJobScheduler $trackJobScheduler*/
+		$trackJobScheduler = give( TrackJobScheduler::class );
+
+		$trackJobScheduler->schedule();
 	}
 }
