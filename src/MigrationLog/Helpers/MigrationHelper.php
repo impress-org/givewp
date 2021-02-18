@@ -48,22 +48,17 @@ class MigrationHelper {
 	}
 
 	/**
-	 * Get all migrations from memory and database combined
+	 * Get migrations sorted by run order
 	 *
 	 * @return array
 	 */
-	public function getAllMigrations() {
+	private function getMigrationsSorted() {
 		static $migrations = [];
 
 		if ( empty( $migrations ) ) {
-			foreach ( $this->migrationsInDatabase as $migration ) {
-				$migrations[ strtotime( $migration->getRunOrder() ) . '_' . $migration->getId() ] = $migration->getId();
-			}
-
-			// Check for pending migrations
 			/* @var Migration $migrationClass */
-			foreach ( $this->getPendingMigrations() as $migrationClass ) {
-				$migrations[ $migrationClass::timestamp() . '_' . $migrationClass::id() ] = $migrationClass::id();
+			foreach ( $this->migrationRegister->getMigrations() as $migrationClass ) {
+				$migrations[ $migrationClass::timestamp() ] = $migrationClass::id();
 			}
 
 			ksort( $migrations );
@@ -100,6 +95,6 @@ class MigrationHelper {
 	 * @return int
 	 */
 	public function getRunOrderForMigration( $migrationId ) {
-		return array_search( $migrationId, array_values( $this->getAllMigrations() ) ) + 1;
+		return array_search( $migrationId, array_values( $this->getMigrationsSorted() ) ) + 1;
 	}
 }
