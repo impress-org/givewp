@@ -95,6 +95,8 @@ class AdminActionHandler {
 
 		if ( $this->accessToken->store() ) {
 			$this->recordTracks();
+		} else {
+			$this->settings->saveUsageTrackingOptionValue( 'disabled' );
 		}
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
@@ -130,6 +132,8 @@ class AdminActionHandler {
 
 		if ( $this->accessToken->store() ) {
 			$this->recordTracks();
+		} else {
+			$this->settings->saveUsageTrackingOptionValue( 'disabled' );
 		}
 
 		remove_filter( "give_disable_hook-update_option_give_settings:{$class}@optInToUsageTrackingAdminGrantManually", '__return_false' );
