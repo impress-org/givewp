@@ -6,7 +6,6 @@ use Give\Helpers\Form\Template;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Repositories\TrackEvents;
 use Give\Tracking\Traits\HasDonations;
-use Give_Donors_Query;
 
 /**
  * Class DonationFormsData
@@ -19,8 +18,10 @@ use Give_Donors_Query;
 class DonationFormsData implements TrackData {
 	use HasDonations;
 
-	private $formIds     = [];
-	private $donationIds = [];
+	private $formIds         = [];
+	private $donationIds     = [];
+	private $formRevenues    = [];
+	private $formDonorCounts = [];
 
 	/**
 	 * DonationFormsData constructor.
@@ -35,7 +36,10 @@ class DonationFormsData implements TrackData {
 	 * @inheritdoc
 	 */
 	public function get() {
-		$this->setDonationIds()->setFormIdsByDonationIds();
+		$this->setDonationIds()
+			 ->setFormIdsByDonationIds()
+			 ->setRevenues()
+			 ->setDonorCounts();
 
 		if ( ! $this->formIds ) {
 			return [];
@@ -66,8 +70,8 @@ class DonationFormsData implements TrackData {
 				'form_name'     => get_post_field( 'post_name', $formId, 'db' ),
 				'form_type'     => give()->form_meta->get_meta( $formId, '_give_price_option', true ),
 				'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
-				'donor_count'   => $this->getDonorCount( $formId ),
-				'revenue'       => $this->getRevenueTillNow( $formId ),
+				'donor_count'   => $this->formDonorCounts[ $formId ],
+				'revenue'       => $this->formRevenues[ $formId ],
 			];
 
 			$this->addAddonsInformation( $temp, $formId );
@@ -93,9 +97,8 @@ class DonationFormsData implements TrackData {
 	/**
 	 * Set form ids by donation ids.
 	 *
-	 * @return void
 	 * @since 2.10.0
-	 *
+	 * @return self
 	 */
 	public function setFormIdsByDonationIds() {
 		global $wpdb;
@@ -110,66 +113,90 @@ class DonationFormsData implements TrackData {
 				AND donation_id IN ({$donationIdsList})
 				"
 		);
+
+		return $this;
 	}
 
 	/**
-	 * Returns revenue till current date.
+	 * Set forms revenues.
 	 *
-	 * @param int $formId
-	 *
-	 * @return string
 	 * @since 2.10.0
+	 * @return self
 	 */
-	public function getRevenueTillNow( $formId ) {
+	private function setRevenues() {
 		global $wpdb;
 
-		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
+		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
+		$defaultResult = array_combine(
+			$this->formIds,
+			array_fill( 0, count( $this->formIds ), 0 ) // Set default revenue to 0
 		);
 
-		$result = (int) $wpdb->get_var(
-			$wpdb->prepare(
-				"
-				SELECT SUM(amount)
-				FROM {$wpdb->give_revenue} as r
-				INNER JOIN {$wpdb->posts} as p
-				ON r.donation_id=p.id
-				INNER JOIN {$wpdb->donationmeta} as dm
-				ON p.id=dm.donation_id
-				AND post_status IN ({$statues})
-				AND r.form_id=%d
-				AND dm.meta_key='_give_payment_mode'
-				AND dm.meta_value='live'
-				",
-				$formId
-			)
+		$result = $wpdb->get_results(
+			"
+			SELECT SUM(amount) as amount, form_id
+			FROM {$wpdb->give_revenue}
+			WHERE form_id IN ({$formIds})
+			GROUP BY form_id
+			",
+			ARRAY_A
 		);
-		return $result ?: 0;
+
+		if ( $result ) {
+			$result = array_combine(
+				wp_list_pluck( $result, 'form_id' ),
+				wp_list_pluck( $result, 'amount' )
+			);
+		}
+
+		$this->formRevenues = array_replace( $defaultResult, $result );
+
+		return $this;
 	}
 
 	/**
-	 * Get donor count.
+	 * Set forms revenues till current date.
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param int $formId
-	 *
-	 * @return int
+	 * @return self
 	 */
-	private function getDonorCount( $formId ) {
-		$donorQuery = new Give_Donors_Query(
-			[
-				'number'          => -1,
-				'count'           => true,
-				'donation_amount' => 0,
-				'give_forms'      => [ $formId ],
-			]
+	private function setDonorCounts() {
+		global $wpdb;
+
+		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
+		$defaultResult = array_combine(
+			$this->formIds,
+			array_fill( 0, count( $this->formIds ), 0 ) // Set default donor count to 0
 		);
 
-		return (int) $donorQuery->get_donors();
+		$result = $wpdb->get_results(
+			"
+			SELECT COUNT(DISTINCT dm2.meta_value) as donor_count, dm.meta_value as form_id
+			FROM {$wpdb->donationmeta} as dm
+			INNER JOIN {$wpdb->donationmeta} as dm2
+			ON dm.donation_id = dm2.donation_id
+			INNER JOIN {$wpdb->donors} as donor
+			ON dm2.meta_value = donor.id
+			WHERE dm.meta_key='_give_payment_form_id'
+			AND dm.meta_value IN ({$formIds})
+			AND dm2.meta_key='_give_payment_donor_id'
+			AND donor.purchase_value > 0
+			GROUP BY dm.meta_value
+			",
+			ARRAY_A
+		);
+
+		if ( $result ) {
+			$result = array_combine(
+				wp_list_pluck( $result, 'form_id' ),
+				wp_list_pluck( $result, 'donor_count' )
+			);
+		}
+
+		$this->formDonorCounts = array_replace( $defaultResult, $result );
+
+		return $this;
 	}
 
 	/**
