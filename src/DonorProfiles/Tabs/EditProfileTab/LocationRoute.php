@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonorProfiles\Tabs\ProfileTab;
+namespace Give\DonorProfiles\Tabs\EditProfileTab;
 
 use WP_REST_Request;
 use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;

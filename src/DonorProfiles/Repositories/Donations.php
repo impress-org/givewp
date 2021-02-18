@@ -126,15 +126,16 @@ class Donations {
 		$query    = new \Give_Payments_Query( $args );
 		$payments = $query->get_payments();
 
-		$data = [];
+		$donations = [];
 		foreach ( $payments as $payment ) {
-			$data[ $payment->ID ] = [
+			$donations[] = [
+				'id'      => $payment->ID,
 				'form'    => $this->getFormInfo( $payment ),
 				'payment' => $this->getPaymentInfo( $payment ),
 				'donor'   => $this->getDonorInfo( $payment ),
 			];
 		}
-		return $data;
+		return $donations;
 	}
 
 	/**

@@ -57,6 +57,7 @@ class App {
 				'states'             => LocationList::getStates( give()->donorProfile->getCountry() ),
 				'id'                 => give()->donorProfile->getId(),
 				'emailAccessEnabled' => give_is_setting_enabled( give_get_option( 'email_access' ) ),
+				'registeredTabs'     => give()->donorProfileTabs->getRegisteredIds(),
 			]
 		);
 
