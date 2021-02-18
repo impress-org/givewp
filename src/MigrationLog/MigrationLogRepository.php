@@ -11,7 +11,6 @@ use Give\Framework\Database\DB;
  * @since 2.10.0
  */
 class MigrationLogRepository {
-
 	/**
 	 * @var string
 	 */
@@ -166,4 +165,41 @@ class MigrationLogRepository {
 
 		return $migrations;
 	}
+
+	/**
+	 * Get migration count
+	 *
+	 * @return int|null
+	 */
+	public function getMigrationsCount() {
+		try {
+			return DB::get_var( "SELECT count(id) FROM {$this->migration_table}" );
+		} catch ( \Exception $exception ) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Get failed migrations count by list of migrations ids
+	 *
+	 * @param array $migrationIds
+	 *
+	 * @return int
+	 */
+	public function getFailedMigrationsCountByIds( $migrationIds ) {
+		try {
+			$query = sprintf(
+				"SELECT count(id) FROM %s WHERE id IN ('%s') AND status != '%s'",
+				$this->migration_table,
+				implode( "','", array_map( 'esc_sql', $migrationIds ) ),
+				MigrationLogStatus::SUCCESS
+			);
+
+			return DB::get_var( $query );
+		} catch ( \Exception $exception ) {
+			// Fallback
+			return 0;
+		}
+	}
+
 }

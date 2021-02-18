@@ -33,6 +33,9 @@ class LogServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		$this->registerMigrations();
+
+		Hooks::addAction( 'give_register_updates', MigrateExistingLogs::class, 'register' );
+
 		// Hook up
 		if ( Environment::isLogsPage() ) {
 			Hooks::addAction( 'admin_enqueue_scripts', Assets::class, 'enqueueScripts' );
@@ -47,8 +50,12 @@ class LogServiceProvider implements ServiceProvider {
 			[
 				CreateNewLogTable::class,
 				MigrateExistingLogs::class,
-				DeleteOldLogTables::class,
 			]
 		);
+
+		// Check if Logs migration batch processing is completed
+		if ( give_has_upgrade_completed( MigrateExistingLogs::id() ) ) {
+			give( MigrationsRegister::class )->addMigration( DeleteOldLogTables::class );
+		}
 	}
 }

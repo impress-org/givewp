@@ -64,8 +64,13 @@
 	margin-bottom: 20px;
 }
 
+.closeIconContainer {
+	position: absolute;
+	right: 20px;
+	top: 15px;
+}
+
 .close {
-	margin-left: auto;
 	cursor: pointer;
 	span {
 		font-size: 30px;

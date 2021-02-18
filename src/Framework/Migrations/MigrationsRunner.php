@@ -73,6 +73,11 @@ class MigrationsRunner {
 			return;
 		}
 
+		// Stop Migration Runner if there are failed migrations
+		if ( $this->migrationLogRepository->getFailedMigrationsCountByIds( $this->migrationRegister->getRegisteredIds() ) ) {
+			return;
+		}
+
 		// Store and sort migrations by timestamp
 		$migrations = [];
 
@@ -83,7 +88,7 @@ class MigrationsRunner {
 
 		ksort( $migrations );
 
-		foreach ( $migrations as $migrationClass ) {
+		foreach ( $migrations as $key => $migrationClass ) {
 			$migrationId = $migrationClass::id();
 
 			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {

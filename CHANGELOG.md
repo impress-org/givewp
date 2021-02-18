@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### New
--   The new Logs UI is implemented (#5591)
 -   Migrations table (#5580)
+-   The new Logs UI is implemented (#5591)
 
 ### Fixed
 -   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)

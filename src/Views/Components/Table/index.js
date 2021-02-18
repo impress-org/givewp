@@ -5,6 +5,8 @@ import { LoadingOverlay } from '@givewp/components';
 
 import styles from './style.module.scss';
 
+const { __ } = wp.i18n;
+
 const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) => {
 	const [ state, setState ] = useState( {} );
 	const [ cachedData, setCachedData ] = useState( [] );
@@ -21,10 +23,10 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 		setCachedData( data );
 	}
 
-	// Display cached data while fetching new data
-	const allowedColumns = columns.map( ( column ) => column.key );
+	const visibleColumns = columns.filter( ( column ) => column.visible || column.visible === undefined );
+	const allowedColumns = visibleColumns.map( ( column ) => column.key );
 	// Get additional row columns added manually
-	const additionalColumns = columns
+	const additionalColumns = visibleColumns
 		.filter( ( column ) => 'append' in column && column.append )
 		.map( ( column ) => {
 			return {
@@ -67,7 +69,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 	};
 
 	const getHeaderRow = () => {
-		return columns.map( ( item, index ) => {
+		return visibleColumns.map( ( item, index ) => {
 			const columnStyles = ( item.styles ) ? { style: item.styles } : null;
 			return (
 				<div className={ styles.label } key={ index } { ...columnStyles }>
@@ -86,7 +88,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 		if ( ! isLoading && data.length === 0 ) {
 			return (
 				<div className={ styles.noData }>
-					No data
+					{ __( 'No data', 'give' ) }
 				</div>
 			);
 		}
@@ -106,7 +108,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 						value = columnFilters[ key ]( value, data[ index ] );
 					}
 
-					const currentColumn = columns.find( ( column ) => column.key === key );
+					const currentColumn = visibleColumns.find( ( column ) => column.key === key );
 					const columnStyles = ( currentColumn.styles ) ? { style: currentColumn.styles } : null;
 
 					return (

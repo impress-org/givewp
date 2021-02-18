@@ -30,6 +30,11 @@ class MigrationLogModel {
 	private $error;
 
 	/**
+	 * @var int
+	 */
+	private $run_order;
+
+	/**
 	 * MigrationModel constructor.
 	 *
 	 * @param  string  $id
