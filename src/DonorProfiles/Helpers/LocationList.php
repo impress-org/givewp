@@ -6,7 +6,7 @@ use FormatObjectList;
 
 /**
  * Normalize format of location type lists.
- * @since 2.8.0
+ * @since 2.10.0
  */
 class LocationList {
 

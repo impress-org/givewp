@@ -5,6 +5,7 @@ namespace Give\DonorProfiles\Tabs\DonationHistoryTab;
 use WP_REST_Request;
 use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
 use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
+use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 
 /**
  * @since 2.10.0
@@ -29,9 +30,9 @@ class DonationsRoute extends RouteAbstract {
 	 */
 	public function handleRequest( $request ) {
 
-		$repository = new DonationsRepository();
-		$donorId    = get_current_user_id();
+		$donorId = give()->donorProfile->getId();
 
+		$repository = new DonationsRepository();
 		return $this->getData( $repository, $donorId );
 
 	}

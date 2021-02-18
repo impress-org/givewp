@@ -5,7 +5,7 @@ namespace Give\DonorProfiles\Exceptions;
 use Exception;
 
 /**
- * Define a custom exception class
+ * @since 2.10.0
  */
 class DuplicateTabException extends Exception {
 
