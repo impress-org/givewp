@@ -49,6 +49,11 @@ class LogModel {
 	private $id;
 
 	/**
+	 * @var string|null
+	 */
+	private $date;
+
+	/**
 	 * LogModel constructor.
 	 *
 	 * @param  string  $type
@@ -56,15 +61,17 @@ class LogModel {
 	 * @param  string  $category
 	 * @param  string  $source
 	 * @param  array  $context
-	 * @param  int|null $logId
+	 * @param  int|null  $logId
+	 * @param  string|null $date
 	 */
-	public function __construct( $type, $message, $category, $source, $context, $logId ) {
+	public function __construct( $type, $message, $category, $source, $context, $logId, $date ) {
 		$this->setType( $type );
 		$this->category = $category;
 		$this->source   = $source;
 		$this->context  = $context;
 		$this->message  = $message;
 		$this->id       = $logId;
+		$this->date     = $date;
 	}
 
 	/**
@@ -143,6 +150,13 @@ class LogModel {
 	 */
 	public function getContext() {
 		return $this->context;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return $this->date;
 	}
 
 	/**

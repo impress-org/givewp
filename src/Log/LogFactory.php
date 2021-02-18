@@ -21,11 +21,12 @@ class LogFactory {
 	 * @param  string  $source
 	 * @param  array  $context
 	 * @param  int|null  $logId
+	 * @param  string|null  $date
 	 *
 	 * @return LogModel
 	 */
-	public static function make( $type, $message, $category, $source, $context = [], $logId = null ) {
-		return new LogModel( $type, $message, $category, $source, $context, $logId );
+	public static function make( $type, $message, $category, $source, $context = [], $logId = null, $date = null ) {
+		return new LogModel( $type, $message, $category, $source, $context, $logId, $date );
 	}
 
 	/**
@@ -45,7 +46,8 @@ class LogFactory {
 			$data['category'],
 			$data['source'],
 			$data['context'],
-			$data['id']
+			$data['id'],
+			$data['date']
 		);
 	}
 
@@ -62,6 +64,7 @@ class LogFactory {
 			'source'   => esc_html__( 'Give Core', 'give' ),
 			'context'  => [],
 			'id'       => null,
+			'date'     => null,
 		];
 	}
 }
