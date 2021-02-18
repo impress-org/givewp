@@ -9,6 +9,7 @@ use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
 use Give\Tracking\Events\WebsiteTracking;
+use Give\Tracking\Helpers\Track;
 
 /**
  * Class TrackingServiceProvider
@@ -28,12 +29,14 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @inheritdoc
 	 */
 	public function boot() {
-		/* @var TrackJobScheduler $trackJobScheduler */
-		$trackJobScheduler = give( TrackJobScheduler::class );
+		if ( Track::isTrackingEnabled() ) {
+			/* @var TrackJobScheduler $trackJobScheduler */
+			$trackJobScheduler = give( TrackJobScheduler::class );
 
-		$this->registerTrackEvents();
-		Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
-		Hooks::addAction( $trackJobScheduler->getCronJobHookName(), TrackJob::class, 'send' );
+			$this->registerTrackEvents();
+			Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
+			Hooks::addAction( $trackJobScheduler->getCronJobHookName(), TrackJob::class, 'send' );
+		}
 
 		if ( is_admin() ) {
 			Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );
