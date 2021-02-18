@@ -56,12 +56,13 @@ class App {
 			'give-donor-profiles-app',
 			'giveDonorProfileData',
 			[
-				'apiRoot'   => esc_url_raw( rest_url() ),
-				'apiNonce'  => wp_create_nonce( 'wp_rest' ),
-				'profile'   => $this->profile->getProfileData(),
-				'countries' => LocationList::getCountries(),
-				'states'    => LocationList::getStates( $this->profile->getCountry() ),
-				'id'        => $this->profile->getId(),
+				'apiRoot'        => esc_url_raw( rest_url() ),
+				'apiNonce'       => wp_create_nonce( 'wp_rest' ),
+				'profile'        => $this->profile->getProfileData(),
+				'countries'      => LocationList::getCountries(),
+				'states'         => LocationList::getStates( $this->profile->getCountry() ),
+				'id'             => $this->profile->getId(),
+				'registeredTabs' => give()->donorProfileTabs->getRegisteredIds(),
 			]
 		);
 
