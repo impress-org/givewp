@@ -109,7 +109,7 @@ class UsageTrackingOnBoarding {
 			return false;
 		}
 
-		$optionValue = get_option( 'give_hide_usage_tracking_notice', null );
+		$optionValue = $this->settings->getUsageTrackingNoticeNagOptionValue();
 
 		if ( is_numeric( $optionValue ) && ( '0' === $optionValue || $optionValue > time() ) ) {
 			return false;

@@ -40,6 +40,17 @@ class Settings {
 	}
 
 	/**
+	 * Get "give_telemetry_hide_usage_tracking_notice" option value.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public function getUsageTrackingNoticeNagOptionValue() {
+		return get_option( $this->getUsageTrackingNoticeNagOptionKey(), null );
+	}
+
+	/**
 	 * Store "usage_tracking" give setting option value.
 	 *
 	 * @since 2.10.0
@@ -62,6 +73,6 @@ class Settings {
 	 * @return string
 	 */
 	public function saveUsageTrackingNoticeNagOptionValue( $optionValue ) {
-		return give_update_option( $this->getUsageTrackingNoticeNagOptionKey(), $optionValue );
+		return update_option( $this->getUsageTrackingNoticeNagOptionKey(), $optionValue );
 	}
 }
