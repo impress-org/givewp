@@ -37,14 +37,26 @@ class AdminActionHandler {
 	private $telemetryAccessDetails;
 
 	/**
+	 * @var AccessToken
+	 */
+	private $accessToken;
+
+	/**
 	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
 	 * @param  Settings  $settings
 	 * @param  TelemetryAccessDetails  $telemetryAccessDetails
+	 * @param  AccessToken  $accessToken
 	 */
-	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding, Settings $settings, TelemetryAccessDetails $telemetryAccessDetails ) {
+	public function __construct(
+		UsageTrackingOnBoarding $usageTrackingOnBoarding,
+		Settings $settings,
+		TelemetryAccessDetails $telemetryAccessDetails,
+		AccessToken $accessToken
+	) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
 		$this->settings                = $settings;
 		$this->telemetryAccessDetails  = $telemetryAccessDetails;
+		$this->accessToken             = $accessToken;
 	}
 
 	/**
@@ -80,7 +92,8 @@ class AdminActionHandler {
 
 		$this->settings->saveUsageTrackingOptionValue( 'enabled' );
 		$this->usageTrackingOnBoarding->disableNotice( 0 );
-		$this->storeAccessToken();
+		$this->accessToken->store();
+		$this->recordTracks();
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
@@ -113,7 +126,8 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$this->storeAccessToken();
+		$this->accessToken->store();
+		$this->recordTracks();
 
 		remove_filter( "give_disable_hook-update_option_give_settings:{$class}@optInToUsageTrackingAdminGrantManually", '__return_false' );
 
@@ -121,31 +135,11 @@ class AdminActionHandler {
 	}
 
 	/**
-	 * Store access token
+	 * Schedule first set of tracking information.
 	 *
 	 * @since 2.10.0
 	 */
-	private function storeAccessToken() {
-		/* @var TrackClient $client */
-		$client = give( TrackClient::class );
-
-		/* @var WebsiteInfoData $dataClass */
-		$dataClass = give( WebsiteInfoData::class );
-
-		$response = $client->post( new EventType( 'create-token' ), $dataClass, [ 'blocking' => true ] );
-		if ( is_wp_error( $response ) ) {
-			return;
-		}
-
-		$response = json_decode( wp_remote_retrieve_body( $response ), true );
-		if ( empty( $response['success'] ) ) {
-			return;
-		}
-
-		$token = $response['data']['access_token'];
-		$this->telemetryAccessDetails->saveAccessTokenOptionValue( $token );
-
-		// Access token saved, schedule first set of tracking information.
+	private function recordTracks() {
 		give( DonationFormsTracking::class )->record();
 		give( DonationMetricsTracking::class )->record();
 		give( ThemeTracking::class )->record();
