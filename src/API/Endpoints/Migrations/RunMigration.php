@@ -108,6 +108,8 @@ class RunMigration extends Endpoint {
 			$migrationLog->setError( null );
 			$migrationLog->save();
 
+			$wpdb->query( 'COMMIT' );
+
 			return new WP_REST_Response( [ 'status' => true ] );
 
 		} catch ( Exception $exception ) {
