@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const ServerSideRender = wp.serverSideRender;
 
 /**
  * Internal dependencies
@@ -13,9 +13,7 @@ const edit = ( { attributes, setAttributes } ) => {
 	return (
 		<Fragment>
 			<Inspector { ... { attributes, setAttributes } } />
-			<div className="give-donor-profile">
-				<h2>{ __( 'Donor Profile!', 'give' ) }</h2>
-			</div>
+			<ServerSideRender block="give/donor-profile" attributes={ attributes } />
 		</Fragment>
 	);
 };
