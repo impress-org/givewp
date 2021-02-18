@@ -9,8 +9,6 @@ use MyCLabs\Enum\Enum;
  * @package Give\Tracking\ValueObjects
  *
  * @since 2.10.0
- *
- * @method public static self from($value)
  */
 final class EventType extends Enum {
 	const CREATE_TOKEN            = 'create-token';

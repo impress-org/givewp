@@ -5,8 +5,6 @@ namespace Give\Tracking\Repositories;
 use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give\Tracking\TrackRegisterer;
 
-use function GuzzleHttp\Psr7\str;
-
 /**
  * Class EventRecord
  * @package Give\Tracking\Repositories

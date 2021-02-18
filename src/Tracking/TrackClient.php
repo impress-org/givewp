@@ -31,6 +31,17 @@ class TrackClient {
 	}
 
 	/**
+	 * Get telemetry server url.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public function getServerUrl() {
+		return 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
+	}
+
+	/**
 	 * Send a track event.
 	 *
 	 * @since 2.10.0
@@ -75,6 +86,6 @@ class TrackClient {
 	 * @return string
 	 */
 	public function getApiUrl( $trackId ) {
-		return $this->telemetryAccessDetails->getServerUrl() . '/' . $trackId;
+		return $this->getServerUrl() . '/' . $trackId;
 	}
 }

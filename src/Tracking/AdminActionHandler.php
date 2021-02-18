@@ -6,10 +6,8 @@ use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
-use Give\Tracking\Enum\EventType;
 use Give\Tracking\Repositories\Settings;
 use Give\Tracking\Repositories\TelemetryAccessDetails;
-use Give\Tracking\TrackingData\WebsiteInfoData;
 use Give_Admin_Settings;
 
 /**

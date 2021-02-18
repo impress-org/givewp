@@ -23,6 +23,12 @@ class AccessToken {
 	 */
 	private $telemetryAccessDetails;
 
+	/**
+	 * AccessToken constructor.
+	 *
+	 * @param  TrackClient  $trackClient
+	 * @param  TelemetryAccessDetails  $telemetryAccessDetails
+	 */
 	public function __construct( TrackClient $trackClient, TelemetryAccessDetails $telemetryAccessDetails ) {
 		$this->trackClient            = $trackClient;
 		$this->telemetryAccessDetails = $telemetryAccessDetails;

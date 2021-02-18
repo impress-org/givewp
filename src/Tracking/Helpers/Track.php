@@ -5,10 +5,10 @@ use Give\Tracking\Repositories\Settings;
 
 /**
  * Class Track
- * @package Give\Tracking\Helpers
  *
  * This class contains helpers functions related to tracks
  *
+ * @package Give\Tracking\Helpers
  * @since 2.10.0
  */
 class Track {

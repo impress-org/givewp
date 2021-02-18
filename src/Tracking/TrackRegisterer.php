@@ -27,10 +27,6 @@ class TrackRegisterer {
 	 */
 	private $recordedTracks;
 
-	/**
-	 * @var TrackEvents
-	 */
-	private $trackEvents;
 
 	/**
 	 * Track constructor.
@@ -38,8 +34,7 @@ class TrackRegisterer {
 	 * @param  TrackEvents  $trackEvents
 	 */
 	public function __construct( TrackEvents $trackEvents ) {
-		$this->trackEvents    = $trackEvents;
-		$this->recordedTracks = $this->trackEvents->getTrackList();
+		$this->recordedTracks = $trackEvents->getTrackList();
 	}
 
 	/**

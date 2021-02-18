@@ -10,17 +10,6 @@ namespace Give\Tracking\Repositories;
  */
 class TelemetryAccessDetails {
 	/**
-	 * Get telemetry server url.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	public function getServerUrl() {
-		return 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
-	}
-
-	/**
 	 * Get option key for telemetry access token.
 	 *
 	 * @since 2.10.0
