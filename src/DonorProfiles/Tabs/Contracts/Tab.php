@@ -50,7 +50,7 @@ abstract class Tab {
 		$routeClasses = $this->routes();
 		foreach ( $routeClasses as $routeClass ) {
 			if ( ! is_subclass_of( $routeClass, RouteAbstract::class ) ) {
-				throw new \InvalidArgumentException( 'Class must extend the ' . RouteAbstract::class . ' class' );
+				throw new \InvalidArgumentException( $routeClass . ' must extend the ' . RouteAbstract::class . ' class' );
 			}
 			( new $routeClass )->registerRoute();
 		}
