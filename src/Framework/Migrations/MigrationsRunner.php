@@ -74,7 +74,7 @@ class MigrationsRunner {
 		}
 
 		// Stop Migration Runner if there are failed migrations
-		if ( $this->migrationLogRepository->getFailedMigrationsCount() ) {
+		if ( $this->migrationLogRepository->getFailedMigrationsCountByIds( $this->migrationRegister->getRegisteredIds() ) ) {
 			return;
 		}
 
