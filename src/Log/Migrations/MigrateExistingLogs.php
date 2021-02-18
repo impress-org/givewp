@@ -105,12 +105,11 @@ class MigrateExistingLogs extends Migration {
 
 					$give_updates->__pause_db_update( true );
 					update_option( 'give_upgrade_error', 1, false );
-					wp_die();
 				}
 			}
+		} else {
+			give_set_upgrade_complete( self::id() );
 		}
-
-		give_set_upgrade_complete( self::id() );
 	}
 
 	/**
