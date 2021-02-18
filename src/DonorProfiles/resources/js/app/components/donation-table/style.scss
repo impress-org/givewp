@@ -53,7 +53,7 @@
 	}
 
 	.give-donor-profile-table__donation-receipt a {
-		color: #3398db;
+		color: var(--give-donor-profile-accent-color);
 		text-decoration: none;
 		border: none;
 	}

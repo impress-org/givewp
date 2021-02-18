@@ -2,13 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAccentColor } from '../../hooks';
 
 import './style.scss';
 
 const MobileMenu = ( { children } ) => {
-	const accentColor = useAccentColor();
-
 	const [ isOpen, setIsOpen ] = useState( false );
 
 	const contentRef = useRef( null );
@@ -39,7 +36,7 @@ const MobileMenu = ( { children } ) => {
 
 	return (
 		<div className="give-donor-profile-mobile-menu">
-			<div className="give-donor-profile-mobile-menu__header" style={ { background: accentColor } }>
+			<div className="give-donor-profile-mobile-menu__header">
 				<div className="give-donor-profile-mobile-menu__label">
 					{ label }
 				</div>

@@ -56,7 +56,7 @@
 				border-radius: 50%;
 				background: #fff;
 				border: 1px solid #b4b9be;
-				box-shadow: 0 0 0 0 #4fa651, inset 0 1px 2px rgba(0, 0, 0, 0.25);
+				box-shadow: 0 0 0 0 var(--give-donor-profile-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
 				transition: box-shadow 0.1s ease;
 			}
 
@@ -71,7 +71,7 @@
 				left: 5px;
 				content: ' ';
 				display: block;
-				background: #68bb6c;
+				background: var(--give-donor-profile-accent-color);
 			}
 		}
 
@@ -81,7 +81,7 @@
 
 			&:focus {
 				+ label::before {
-					box-shadow: 0 0 0 1px #4fa651, inset 0 1px 2px rgba(0, 0, 0, 0.25);
+					box-shadow: 0 0 0 1px var(--give-donor-profile-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
 				}
 			}
 

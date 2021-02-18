@@ -7,7 +7,7 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 6px 8px 6px 20px;
-	background: #68bb6c;
+	background: var(--give-donor-profile-accent-color);
 	color: #fff;
 	border-radius: 8px 8px 0 0;
 }
@@ -21,7 +21,7 @@
 	border-radius: 6px;
 
 	&.give-donor-profile-mobile-menu__toggle--toggled {
-		background: rgba(0, 0, 0, 0.4);
+		background: rgba(0, 0, 0, 0.2);
 		box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
 	}
 }

@@ -1,5 +1,4 @@
 import { useState, Fragment } from 'react';
-import { useAccentColor } from '../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
@@ -12,8 +11,6 @@ import { getWindowData } from '../../utils';
 import './style.scss';
 
 const AuthModal = () => {
-	const accentColor = useAccentColor();
-
 	const [ email, setEmail ] = useState( '' );
 	const [ login, setLogin ] = useState( '' );
 	const [ password, setPassword ] = useState( '' );
@@ -70,7 +67,7 @@ const AuthModal = () => {
 	return (
 		<div className="give-donor-profile__auth-modal">
 			<div className="give-donor-profile__auth-modal-frame">
-				<div className="give-donor-profile__auth-modal-heading" style={ { background: accentColor } }>
+				<div className="give-donor-profile__auth-modal-heading">
 					{ __( 'Log in to your donor profile', 'give' ) }
 				</div>
 				<div className="give-donor-profile__auth-modal-content">

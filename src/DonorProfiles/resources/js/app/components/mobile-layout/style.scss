@@ -24,7 +24,7 @@
 		transition: border-left 0.2s ease;
 
 		&.give-donor-profile-tab-link--is-active {
-			border-left: 4px solid #68bb6c;
+			border-left: 4px solid var(--give-donor-profile-accent-color);
 		}
 	}
 }
