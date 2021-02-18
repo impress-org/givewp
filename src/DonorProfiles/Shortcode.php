@@ -41,7 +41,7 @@ class Shortcode {
 	public function renderCallback( $attributes ) {
 		$attributes = shortcode_atts(
 			[
-				'enabled' => [],
+				'accent_color' => '#68bb6c',
 			],
 			$attributes,
 			'give_donor_profile'

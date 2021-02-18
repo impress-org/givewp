@@ -23,9 +23,13 @@ class Block {
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
-					'align' => [
+					'align'        => [
 						'type'    => 'string',
 						'default' => 'wide',
+					],
+					'accent_color' => [
+						'type'    => 'string',
+						'default' => '#68bb6c',
 					],
 				],
 			]

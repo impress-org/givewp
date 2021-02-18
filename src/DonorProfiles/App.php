@@ -20,6 +20,10 @@ class App {
 
 		$url = get_site_url() . '/?give-embed=donor-profile';
 
+		if ( isset( $attributes['accent_color'] ) ) {
+			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
+		}
+
 		$loader = sprintf(
 			'<div class="iframe-loader">Loading...</div>',
 		);

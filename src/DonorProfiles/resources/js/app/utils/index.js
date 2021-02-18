@@ -38,6 +38,11 @@ export const getWindowData = ( value ) => {
 	return data[ value ];
 };
 
+export const getQueryParam = ( param ) => {
+	const urlParams = new URLSearchParams( window.location.search );
+	return urlParams.get( param );
+};
+
 export const isLoggedIn = () => {
 	return Number( getWindowData( 'id' ) ) !== 0 ? true : false;
 };
