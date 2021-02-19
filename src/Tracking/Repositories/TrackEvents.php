@@ -69,7 +69,7 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function saveRequestTime() {
-		update_option( $this->getTelemetryRequestTimeOptionKey(), strtotime( 'today', current_time( 'timestamp' ) ) );
+		update_option( $this->getTelemetryRequestTimeOptionKey(), strtotime( '- 1 hour', current_time( 'timestamp' ) ) );
 	}
 
 	/**

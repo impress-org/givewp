@@ -44,7 +44,7 @@ class TrackJobScheduler {
 		$hookName = $this->getCronJobHookName();
 		$this->trackEvents->saveTrackList();
 		if ( ! wp_next_scheduled( $hookName ) ) {
-			wp_schedule_single_event( strtotime( 'tomorrow midnight', current_time( 'timestamp' ) ), $hookName );
+			wp_schedule_single_event( strtotime( '+24 hours', current_time( 'timestamp' ) ), $hookName );
 		}
 	}
 
