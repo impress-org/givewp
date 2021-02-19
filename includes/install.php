@@ -1,4 +1,8 @@
 <?php
+
+use Give\Log\Migrations\MigrateExistingLogs;
+use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
+
 /**
  * Install Function
  *
@@ -10,8 +14,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -157,6 +159,7 @@ function give_run_install() {
 			'v241_remove_sale_logs',
 			'v270_store_stripe_account_for_donation',
 			AddPastDonationsToRevenueTable::id(),
+			MigrateExistingLogs::id(),
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {
