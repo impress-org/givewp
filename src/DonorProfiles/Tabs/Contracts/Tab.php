@@ -10,14 +10,14 @@ use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
  *
  * Extend this class when creating Donor Profile tabs.
  *
- * @since 2.11.0
+ * @since 2.10.0
  */
 abstract class Tab {
 	/**
 	 * Return array of routes (must extend DonorProfile Route class)
 	 *
 	 * @return array
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function routes();
 
@@ -25,7 +25,7 @@ abstract class Tab {
 	 * Return a unique identifier for the tab
 	 *
 	 * @return string
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public static function id() {
 		throw new RuntimeException( 'A unique ID must be provided for the tab' );
@@ -35,7 +35,7 @@ abstract class Tab {
 	/**
 	 * Enqueue assets required for frontend rendering of tab
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function enqueueAssets() {
 		return null;
@@ -44,13 +44,13 @@ abstract class Tab {
 	/**
 	 * Registers routes with WP REST api
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function registerRoutes() {
 		$routeClasses = $this->routes();
 		foreach ( $routeClasses as $routeClass ) {
 			if ( ! is_subclass_of( $routeClass, RouteAbstract::class ) ) {
-				throw new \InvalidArgumentException( 'Class must extend the ' . RouteAbstract::class . ' class' );
+				throw new \InvalidArgumentException( $routeClass . ' must extend the ' . RouteAbstract::class . ' class' );
 			}
 			( new $routeClass )->registerRoute();
 		}

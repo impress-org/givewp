@@ -3,24 +3,56 @@
 namespace Give\DonorProfiles;
 
 use Give\DonorProfiles\Profile;
+use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 use Give\DonorProfiles\Helpers\LocationList;
+use Give\Views\IframeContentView;
 
 class App {
 
 	protected $profile;
 
 	public function __construct() {
-		$id            = get_current_user_id();
+		$id            = DonorProfileHelpers::getCurrentDonorId();
 		$this->profile = new Profile( $id );
+	}
+
+	public function getOutput( $attributes ) {
+
+		$url = get_site_url() . '/?give-embed=donor-profile';
+
+		if ( isset( $attributes['accent_color'] ) ) {
+			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
+		}
+
+		$loader = sprintf(
+			'<div class="iframe-loader">Loading...</div>',
+		);
+
+		$iframe = sprintf(
+			'<iframe
+				name="give-embed-donor-profile"
+				%1$s
+				%4$s
+				data-autoScroll="%2$s"
+				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
+				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
+			"src=\"{$url}\"",
+			true,
+			'min-height: 776px; width: 100%; max-width: 100% !important',
+			'',
+			$loader
+		);
+
+		return $iframe;
 	}
 
 	/**
 	 * Get output markup for Donor Profile app
 	 *
 	 * @return string
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 **/
-	public function getOutput() {
+	public function getIframeContent() {
 		ob_start();
 		$output = '';
 		require $this->getTemplatePath();
@@ -31,7 +63,7 @@ class App {
 
 	/**
 	 * Get template path for Donor Profile component template
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofile.php';
@@ -41,7 +73,7 @@ class App {
 	 * Enqueue assets for front-end donor profiles
 	 *
 	 * @return void
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 **/
 	public function loadAssets() {
 		wp_enqueue_script(
@@ -56,12 +88,14 @@ class App {
 			'give-donor-profiles-app',
 			'giveDonorProfileData',
 			[
-				'apiRoot'   => esc_url_raw( rest_url() ),
-				'apiNonce'  => wp_create_nonce( 'wp_rest' ),
-				'profile'   => $this->profile->getProfileData(),
-				'countries' => LocationList::getCountries(),
-				'states'    => LocationList::getStates( $this->profile->getCountry() ),
-				'id'        => $this->profile->getId(),
+				'apiRoot'            => esc_url_raw( rest_url() ),
+				'apiNonce'           => wp_create_nonce( 'wp_rest' ),
+				'profile'            => give()->donorProfile->getProfileData(),
+				'countries'          => LocationList::getCountries(),
+				'states'             => LocationList::getStates( give()->donorProfile->getCountry() ),
+				'id'                 => give()->donorProfile->getId(),
+				'emailAccessEnabled' => give_is_setting_enabled( give_get_option( 'email_access' ) ),
+				'registeredTabs'     => give()->donorProfileTabs->getRegisteredIds(),
 			]
 		);
 

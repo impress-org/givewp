@@ -38,6 +38,15 @@ export const getWindowData = ( value ) => {
 	return data[ value ];
 };
 
+export const getQueryParam = ( param ) => {
+	const urlParams = new URLSearchParams( window.location.search );
+	return urlParams.get( param );
+};
+
+export const isLoggedIn = () => {
+	return Number( getWindowData( 'id' ) ) !== 0 ? true : false;
+};
+
 export const getAPIRoot = () => {
 	return getWindowData( 'apiRoot' );
 };
@@ -68,6 +77,6 @@ export const toKebabCase = ( str ) => {
  * @since 2.8.0
  */
 export const toUniqueId = ( str ) => {
-	const prefix = str.length ? str : 'component';
+	const prefix = str ? str : 'component';
 	return toKebabCase( `${ prefix }-${ Math.floor( Math.random() * Math.floor( 1000 ) ) }` );
 };

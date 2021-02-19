@@ -2,6 +2,9 @@
 
 namespace Give\DonorProfiles\Pipeline\Stages;
 
+/**
+ * @since 2.10.0
+ */
 class UpdateDonorEmails {
 
 	protected $data;
@@ -24,7 +27,7 @@ class UpdateDonorEmails {
 	 *
 	 * @return void
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	protected function updateEmailsInMetaDB() {
 

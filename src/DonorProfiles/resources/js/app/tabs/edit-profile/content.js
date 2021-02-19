@@ -47,20 +47,20 @@ const Content = () => {
 	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
 	const [ lastName, setLastName ] = useState( storedProfile.lastName );
 
-	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails.primary );
+	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails ? storedProfile.emails.primary : '' );
 
-	const reducedAdditionalEmails = Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
+	const reducedAdditionalEmails = storedProfile.emails ? Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
 		if ( key !== 'primary' ) {
 			newArray.push( storedProfile.emails[ key ] );
 		}
 		return newArray;
-	}, [] );
+	}, [] ) : [];
 
 	const [ additionalEmails, setAdditionalEmails ] = useState( reducedAdditionalEmails );
 
-	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses.billing ? storedProfile.addresses.billing[ 0 ] : null );
+	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses && storedProfile.addresses.billing ? storedProfile.addresses.billing[ 0 ] : null );
 
-	const reducedAdditionalAddresses = storedProfile.addresses.billing ? storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
+	const reducedAdditionalAddresses = storedProfile.addresses && storedProfile.addresses.billing ? storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
 		if ( index !== 0 ) {
 			newArray.push( address );
 		}

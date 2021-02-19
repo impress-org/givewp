@@ -4,6 +4,7 @@ import Select from 'react-select';
 
 // Import utilities
 import { toUniqueId } from '../../utils';
+import { useAccentColor } from '../../hooks';
 
 // Import styles
 import './style.scss';
@@ -14,6 +15,8 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 	if ( options && options.length < 2 ) {
 		return null;
 	}
+
+	const accentColor = useAccentColor();
 
 	const id = toUniqueId( label );
 
@@ -82,10 +85,7 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 					...theme,
 					colors: {
 						...theme.colors,
-						primary: '#4fa651',
-						primary75: '#77b579',
-						primary50: '#c5e0c7',
-						primary25: '#e6f5e7',
+						primary: accentColor,
 					},
 				} ) }
 			/>

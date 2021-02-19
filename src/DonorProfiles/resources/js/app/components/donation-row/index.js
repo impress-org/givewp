@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 const DonationRow = ( { donation } ) => {
-	const id = donation[ 0 ];
-	const { form, payment } = donation[ 1 ];
+	const { id, form, payment } = donation;
 
 	return (
 		<div className="give-donor-profile-table__row">

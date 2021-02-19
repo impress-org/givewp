@@ -2,8 +2,12 @@
 namespace Give\DonorProfiles\Repositories;
 
 use Give\ValueObjects\Money;
+use Give\Framework\Database\DB;
 use InvalidArgumentException;
 
+/**
+ * @since 2.10.0
+ */
 class Donations {
 	/**
 	 * Get donations count for donor
@@ -14,27 +18,8 @@ class Donations {
 	 * @return int
 	 */
 	public function getDonationCount( $donorId ) {
-		global $wpdb;
-
-		$result = $wpdb->get_row(
-			$wpdb->prepare(
-				"
-				SELECT count(revenue.id) as count
-				FROM {$wpdb->give_revenue} as revenue
-				INNER JOIN {$wpdb->posts} as posts
-				ON revenue.donation_id = posts.ID
-				WHERE posts.post_author = %d
-				AND posts.post_status IN ( 'publish', 'give_subscription' )
-				",
-				$donorId
-			)
-		);
-
-		if ( ! $result ) {
-			return 0;
-		}
-
-		return $result->count;
+		$aggregate = $this->getDonationAggregate( 'count(revenue.id)', $donorId );
+		return $aggregate->result;
 	}
 
 	/**
@@ -46,27 +31,9 @@ class Donations {
 	 * @return string
 	 */
 	public function getRevenue( $donorId ) {
-		global $wpdb;
-
-		$result = $wpdb->get_row(
-			$wpdb->prepare(
-				"
-				SELECT SUM(revenue.amount) as amount
-				FROM {$wpdb->give_revenue} as revenue
-				INNER JOIN {$wpdb->posts} as posts
-				ON revenue.donation_id = posts.ID
-				WHERE posts.post_author = %d
-				AND posts.post_status IN ( 'publish', 'give_subscription' )
-				",
-				$donorId
-			)
-		);
-
-		if ( ! $result ) {
-			return 0;
-		}
-
-		return Money::ofMinor( $result->amount, give_get_option( 'currency' ) )->getAmount();
+		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
+		error_log( serialize( $aggregate ) );
+		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
 	}
 
 	/**
@@ -78,27 +45,26 @@ class Donations {
 	 * @return string
 	 */
 	public function getAverageRevenue( $donorId ) {
-		global $wpdb;
+		;
+		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
+		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+	}
 
-		$result = $wpdb->get_row(
-			$wpdb->prepare(
+	private function getDonationAggregate( $rawAggregate, $donorId ) {
+		global $wpdb;
+		return DB::get_row(
+			DB::prepare(
 				"
-				SELECT AVG(revenue.amount) as amount
+				SELECT {$rawAggregate} as result
 				FROM {$wpdb->give_revenue} as revenue
-				INNER JOIN {$wpdb->posts} as posts
-				ON revenue.donation_id = posts.ID
-				WHERE posts.post_author = %d
-				AND posts.post_status IN ( 'publish', 'give_subscription' )
-				",
-				$donorId
+					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
+					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
+				WHERE donationmeta.meta_key = '_give_payment_donor_id'
+					AND donationmeta.meta_value = {$donorId}
+					AND posts.post_status IN ( 'publish', 'give_subscription' )
+			"
 			)
 		);
-
-		if ( ! $result ) {
-			return 0;
-		}
-
-		return Money::ofMinor( $result->amount, give_get_option( 'currency' ) )->getAmount();
 	}
 
 	/**
@@ -160,15 +126,16 @@ class Donations {
 		$query    = new \Give_Payments_Query( $args );
 		$payments = $query->get_payments();
 
-		$data = [];
+		$donations = [];
 		foreach ( $payments as $payment ) {
-			$data[ $payment->ID ] = [
+			$donations[] = [
+				'id'      => $payment->ID,
 				'form'    => $this->getFormInfo( $payment ),
 				'payment' => $this->getPaymentInfo( $payment ),
 				'donor'   => $this->getDonorInfo( $payment ),
 			];
 		}
-		return $data;
+		return $donations;
 	}
 
 	/**

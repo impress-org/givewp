@@ -19,6 +19,14 @@ const Content = () => {
 	const location = useLocation();
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
 
+	const getDonationById = ( donationId ) => {
+		const filter = donations.filter( ( donation ) => parseInt( donation.id ) === parseInt( donationId ) ? true : false );
+		if ( filter.length ) {
+			return filter[ 0 ];
+		}
+		return null;
+	};
+
 	if ( id ) {
 		return querying ? (
 			<Fragment>
@@ -36,7 +44,7 @@ const Content = () => {
 				<Heading>
 					{ __( 'Donation', 'give' ) } #{ id }
 				</Heading>
-				<DonationReceipt donation={ donations[ id ] } />
+				<DonationReceipt donation={ getDonationById( id ) } />
 				<div className="give-donor-profile__donation-history-link">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
@@ -56,7 +64,7 @@ const Content = () => {
 	) : (
 		<Fragment>
 			<Heading>
-				{ `${ Object.entries( donations ).length } ${ __( 'Total Donations', 'give' ) }` }
+				{ `${ donations ? Object.entries( donations ).length : 0 } ${ __( 'Total Donations', 'give' ) }` }
 			</Heading>
 			<DonationTable donations={ donations } perPage={ 5 } />
 		</Fragment>
