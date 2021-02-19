@@ -5,6 +5,11 @@ namespace Give\Form\LegacyConsumer\Commands;
 use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
+/**
+ * Persist custom field values as donation meta.
+ *
+ * @unreleased
+ */
 class SetupFieldPersistance implements HookCommandInterface {
 	public function __invoke( $hook ) {
 		add_action(
