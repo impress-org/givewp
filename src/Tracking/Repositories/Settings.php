@@ -9,8 +9,8 @@ namespace Give\Tracking\Repositories;
  * @since 2.10.0
  */
 class Settings {
-	const USAGE_TRACKING_OPTION_KEY             = 'usage_tracking';
-	const USAGE_TRACKING_NOTICE_NAG_OOPTION_KEY = 'give_telemetry_hide_usage_tracking_notice';
+	const USAGE_TRACKING_OPTION_KEY            = 'usage_tracking';
+	const USAGE_TRACKING_NOTICE_NAG_OPTION_KEY = 'give_telemetry_hide_usage_tracking_notice';
 
 	/**
 	 * Return "usage_tracking" give setting option value.
@@ -30,7 +30,7 @@ class Settings {
 	 * @return string
 	 */
 	public function getUsageTrackingNoticeNagOptionValue() {
-		return get_option( self::USAGE_TRACKING_NOTICE_NAG_OOPTION_KEY, null );
+		return get_option( self::USAGE_TRACKING_NOTICE_NAG_OPTION_KEY, null );
 	}
 
 	/**
@@ -56,6 +56,6 @@ class Settings {
 	 * @return string
 	 */
 	public function saveUsageTrackingNoticeNagOptionValue( $optionValue ) {
-		return update_option( self::USAGE_TRACKING_NOTICE_NAG_OOPTION_KEY, $optionValue );
+		return update_option( self::USAGE_TRACKING_NOTICE_NAG_OPTION_KEY, $optionValue );
 	}
 }
