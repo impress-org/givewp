@@ -18,10 +18,10 @@ use Give\Tracking\Traits\HasDonations;
 class DonationFormsData implements TrackData {
 	use HasDonations;
 
-	private $formIds         = [];
-	private $donationIds     = [];
-	private $formRevenues    = [];
-	private $formDonorCounts = [];
+	protected $formIds         = [];
+	protected $donationIds     = [];
+	protected $formRevenues    = [];
+	protected $formDonorCounts = [];
 
 	/**
 	 * DonationFormsData constructor.
@@ -37,13 +37,14 @@ class DonationFormsData implements TrackData {
 	 */
 	public function get() {
 		$this->setDonationIds()
-			 ->setFormIdsByDonationIds()
-			 ->setRevenues()
-			 ->setDonorCounts();
+			 ->setFormIdsByDonationIds();
 
 		if ( ! $this->formIds ) {
 			return [];
 		}
+
+		$this->setRevenues()
+			 ->setDonorCounts();
 
 		return $this->getData();
 	}
@@ -54,7 +55,7 @@ class DonationFormsData implements TrackData {
 	 * @since 2.10.0
 	 * @return array
 	 */
-	private function getData() {
+	protected function getData() {
 		if ( ! $this->formIds ) {
 			return [];
 		}
@@ -88,7 +89,7 @@ class DonationFormsData implements TrackData {
 	 *
 	 * @return DonationFormsData
 	 */
-	public function setDonationIds() {
+	protected function setDonationIds() {
 		$this->donationIds = $this->getNewDonationIdsSinceLastRequest();
 
 		return $this;
@@ -100,7 +101,7 @@ class DonationFormsData implements TrackData {
 	 * @since 2.10.0
 	 * @return self
 	 */
-	public function setFormIdsByDonationIds() {
+	protected function setFormIdsByDonationIds() {
 		global $wpdb;
 
 		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
@@ -123,7 +124,7 @@ class DonationFormsData implements TrackData {
 	 * @since 2.10.0
 	 * @return self
 	 */
-	private function setRevenues() {
+	protected function setRevenues() {
 		global $wpdb;
 
 		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
@@ -164,7 +165,7 @@ class DonationFormsData implements TrackData {
 	 *
 	 * @return self
 	 */
-	private function setDonorCounts() {
+	protected function setDonorCounts() {
 		global $wpdb;
 
 		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
