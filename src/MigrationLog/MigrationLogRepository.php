@@ -28,7 +28,7 @@ class MigrationLogRepository {
 	 */
 	public function __construct( MigrationLogFactory $migrationFactory ) {
 		global $wpdb;
-		$this->migration_table  = "{$wpdb->prefix}give_migrations";
+		$this->migration_table  = $wpdb->give_migrations;
 		$this->migrationFactory = $migrationFactory;
 	}
 
