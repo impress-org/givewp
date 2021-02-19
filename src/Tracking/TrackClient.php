@@ -16,6 +16,8 @@ use WP_Error;
  *
  */
 class TrackClient {
+	const SERVER_URL = 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
+
 	/**
 	 * @var TelemetryAccessDetails
 	 */
@@ -28,17 +30,6 @@ class TrackClient {
 	 */
 	public function __construct( TelemetryAccessDetails $telemetryAccessDetails ) {
 		$this->telemetryAccessDetails = $telemetryAccessDetails;
-	}
-
-	/**
-	 * Get telemetry server url.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	public function getServerUrl() {
-		return 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
 	}
 
 	/**
@@ -86,6 +77,6 @@ class TrackClient {
 	 * @return string
 	 */
 	public function getApiUrl( $trackId ) {
-		return $this->getServerUrl() . '/' . $trackId;
+		return self::SERVER_URL . '/' . $trackId;
 	}
 }
