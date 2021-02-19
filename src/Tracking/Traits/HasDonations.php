@@ -38,13 +38,12 @@ trait HasDonations {
 			"
 			SELECT ID
 			FROM {$wpdb->posts} as p
-			INNER JOIN {$wpdb->donationmeta} as dm
-			ON p.id=dm.donation_id
+				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
 			WHERE post_date >= '{$time}'
-			AND post_status IN ({$statues})
-			AND post_type='give_payment'
-			AND dm.meta_key='_give_payment_mode'
-			AND dm.meta_value='live'
+				AND post_status IN ({$statues})
+				AND post_type='give_payment'
+				AND dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
 			"
 		);
 	}
