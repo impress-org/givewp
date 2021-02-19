@@ -27,11 +27,10 @@ const Inspector = ( { attributes, setAttributes } ) => {
 	return (
 		<InspectorControls key="inspector">
 			<PanelBody title={ __( 'Tabs', 'give' ) } initialOpen={ true }>
-				<h2>{ __( 'This is a test', 'give' ) }</h2>
 				<ColorControl
 					colors={ editorColorPalette }
 					name="color"
-					label={ __( 'Progress bar color', 'give' ) }
+					label={ __( 'Accent Color', 'give' ) }
 					onChange={ ( value ) => saveSetting( 'accent_color', value ) }
 					// eslint-disable-next-line camelcase
 					value={ accent_color }
