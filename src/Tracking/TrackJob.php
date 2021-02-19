@@ -58,6 +58,6 @@ class TrackJob {
 		}
 
 		$this->trackEvents->saveRequestTime();
-		$this->trackEvents->remove();
+		$this->trackEvents->removeTrackList();
 	}
 }

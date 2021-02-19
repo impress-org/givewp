@@ -15,24 +15,14 @@ class TrackEvents {
 	const TELEMETRY_REQUEST_TIME_OPTION_KEY = 'give_telemetry_usage_tracking_last_request';
 	const TRACKING_EVENTS_RECORD_OPTION_KEY = 'give_telemetry_records';
 
-	/**
-	 * Get option key for tracking events record.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	public function getTrackingEventsRecordOptionKey() {
-		return 'give_telemetry_records';
-	}
 
 	/**
 	 * Remove tracks.
 	 *
 	 * @since 2.10.0
 	 */
-	public function remove() {
-		delete_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY );
+	public function removeTrackList() {
+		delete_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY );
 	}
 
 	/**
@@ -43,7 +33,7 @@ class TrackEvents {
 	public function saveTrackList() {
 		/* @var TrackRegisterer $trackRegisterer */
 		$trackRegisterer = give( TrackRegisterer::class );
-		update_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, $trackRegisterer->getTrackList() );
+		update_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY, $trackRegisterer->getTrackList() );
 	}
 
 	/**
@@ -52,7 +42,7 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function getTrackList() {
-		return get_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, [] );
+		return get_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY, [] );
 	}
 
 	/**
