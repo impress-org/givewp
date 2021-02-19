@@ -1,4 +1,8 @@
 <?php
+
+use Give\Log\Log;
+use Give\Framework\Database\DB;
+use Give\Log\ValueObjects\LogType;
 /**
  * Front-end Filters
  *
@@ -82,7 +86,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  */
 function give_akismet( $spam ) {
 	// Build args array.
-	$args = array();
+	$args = [];
 
 	// Bail out, If spam.
 	if ( $spam || ! give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) ) ) {
@@ -129,7 +133,7 @@ function give_akismet( $spam ) {
 		$args['comment_content'] = $give_comment;
 	}
 
-	$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
+	$ignore = [ 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' ];
 
 	foreach ( $_SERVER as $key => $value ) {
 		if ( ! in_array( $key, $ignore, true ) ) {
@@ -142,27 +146,29 @@ function give_akismet( $spam ) {
 
 	// Log spam information.
 	if ( $spam && ! give_akismet_is_email_logged( $args['comment_author_email'] ) ) {
-		$log_id = give_record_log(
-			sprintf(
-				'<p>This donor\'s email (<strong>%1$s%2$s</strong> - <strong>%3$s</strong>) has been flagged as SPAM. <a href="#noncelink" title="%4$s" target="_blank">Click here</a> to whitelist this email if you feel it was flagged incorrectly.</p>',
-				$args['comment_author'],
-				$donor_last_name,
-				$args['comment_author_email'],
-				__( 'Click on this link to whitelist this email address to process donation.', 'give' )
-			),
-			sprintf(
-				'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
-				__( 'Request', 'give' ),
-				print_r( $args, true ),
-				__( 'Response', 'give' ),
-				print_r( $response, true )
-			),
-			0,
-			'spam'
+
+		$title = sprintf(
+			'This donor\'s email (%1$s%2$s - %3$s) has been flagged as SPAM',
+			$args['comment_author'],
+			$donor_last_name,
+			$args['comment_author_email']
 		);
 
-		Give()->logmeta_db->add_meta( $log_id, 'donor_email', $args['comment_author_email'] );
-		Give()->logmeta_db->add_meta( $log_id, 'filter', 'akismet' );
+		$message = sprintf(
+			'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
+			__( 'Request', 'give' ),
+			print_r( $args, true ),
+			__( 'Response', 'give' ),
+			print_r( $response, true )
+		);
+
+		$context = [
+			'donor_email' => $args['comment_author_email'],
+			'filter'      => 'akismet',
+			'message'     => $message,
+		];
+
+		Log::spam( $title, $context );
 	}
 
 	// It will return Akismet spam detect API response.
@@ -180,7 +186,7 @@ add_filter( 'give_spam', 'give_akismet' );
  * @return bool
  */
 function give_check_akismet_key() {
-	if ( is_callable( array( 'Akismet', 'get_api_key' ) ) ) { // Akismet v3.0+
+	if ( is_callable( [ 'Akismet', 'get_api_key' ] ) ) { // Akismet v3.0+
 		return (bool) Akismet::get_api_key();
 	}
 
@@ -224,7 +230,7 @@ function give_akismet_spam_check_post( $args ) {
 
 	$query_string = http_build_query( $args );
 
-	if ( is_callable( array( 'Akismet', 'http_post' ) ) ) { // Akismet v3.0+
+	if ( is_callable( [ 'Akismet', 'http_post' ] ) ) { // Akismet v3.0+
 		$response = Akismet::http_post( $query_string, 'comment-check' );
 	} else {
 		$response = akismet_http_post(
@@ -248,21 +254,10 @@ function give_akismet_spam_check_post( $args ) {
  * @since 2.5.13
  */
 function give_akismet_is_email_logged( $email ) {
-	return (bool) Give()->log_db->count(
-		array(
-			'log_type'   => 'spam',
-			'meta_query' => array(
-				'relation' => 'AND',
-				array(
-					'key'   => 'donor_email',
-					'value' => $email,
-				),
-				array(
-					'key'   => 'filter',
-					'value' => 'akismet',
-				),
-			),
-		)
+	global $wpdb;
+
+	return (bool) DB::get_var(
+		DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND data LIKE '%%%s%%';", LogType::SPAM, esc_sql( $email ) )
 	);
 }
 
@@ -342,7 +337,7 @@ add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_support
  */
 function __give_validate_active_gateways( $value ) {
 	$gateways        = array_keys( give_get_payment_gateways() );
-	$active_gateways = is_array( $value ) ? array_keys( $value ) : array();
+	$active_gateways = is_array( $value ) ? array_keys( $value ) : [];
 
 	// Remove deactivated payment gateways.
 	if ( ! empty( $active_gateways ) ) {
@@ -361,9 +356,9 @@ function __give_validate_active_gateways( $value ) {
 		 */
 		$value = apply_filters(
 			'give_default_active_gateways',
-			array(
+			[
 				'manual' => 1,
-			)
+			]
 		);
 	}
 
