@@ -20,6 +20,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  * @method static success( string $message, array $context = [] )
  * @method static info( string $message, array $context = [] )
  * @method static http( string $message, array $context = [] )
+ * @method static spam( string $message, array $context = [] )
  */
 class Log {
 	/**

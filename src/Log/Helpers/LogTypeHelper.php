@@ -28,6 +28,12 @@ class LogTypeHelper {
 					'category' => LogCategory::MIGRATION,
 				];
 
+			case 'spam':
+				return [
+					'type'     => LogType::SPAM,
+					'category' => LogCategory::CORE,
+				];
+
 			case 'sale':
 			case 'stripe':
 			case 'gateway_error':

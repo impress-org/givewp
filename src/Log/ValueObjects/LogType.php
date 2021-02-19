@@ -14,6 +14,7 @@ namespace Give\Log\ValueObjects;
  * @method static SUCCESS()
  * @method static INFO()
  * @method static HTTP()
+ * @method static SPAM()
  */
 class LogType extends Enum {
 	const ERROR   = 'error';
@@ -22,6 +23,7 @@ class LogType extends Enum {
 	const SUCCESS = 'success';
 	const INFO    = 'info';
 	const HTTP    = 'http';
+	const SPAM    = 'spam';
 
 	/**
 	 * @inheritDoc
