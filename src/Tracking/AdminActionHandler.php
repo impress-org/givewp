@@ -1,13 +1,17 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\Events\ActiveDonationFormsFirstTimeTracking;
 use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
+use Give\Tracking\Helpers\Track;
 use Give\Tracking\Repositories\Settings;
 use Give\Tracking\Repositories\TelemetryAccessDetails;
+use Give\Tracking\Repositories\TrackEvents;
+use Give\Tracking\TrackingData\ActiveDonationFormsData;
 use Give_Admin_Settings;
 
 /**
@@ -145,15 +149,18 @@ class AdminActionHandler {
 	 * @since 2.10.0
 	 */
 	private function recordTracks() {
-		give( DonationFormsTracking::class )->record();
+		give( ActiveDonationFormsFirstTimeTracking::class )->record();
 		give( DonationMetricsTracking::class )->record();
 		give( ThemeTracking::class )->record();
 		give( GivePluginSettingsTracking::class )->record();
 		give( PluginsTracking::class )->record();
 
-		/* @var TrackJobScheduler $trackJobScheduler*/
-		$trackJobScheduler = give( TrackJobScheduler::class );
+		/* @var TrackEvents $trackEvents */
+		$trackEvents = give( TrackEvents::class );
+		$trackEvents->saveTrackList();
 
-		$trackJobScheduler->schedule();
+		/* @var TrackJob $trackJob */
+		$trackJob = give( TrackJob::class );
+		$trackJob->send();
 	}
 }

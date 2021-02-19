@@ -20,6 +20,8 @@ class Track {
 	 * @return bool True when we can track, false when we can't.
 	 */
 	public static function isTrackingEnabled() {
+		return true;
+
 		// Track data only if website is in production mode.
 		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
 			return false;
