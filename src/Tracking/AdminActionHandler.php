@@ -2,16 +2,13 @@
 namespace Give\Tracking;
 
 use Give\Tracking\Events\ActiveDonationFormsFirstTimeTracking;
-use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
-use Give\Tracking\Helpers\Track;
 use Give\Tracking\Repositories\Settings;
 use Give\Tracking\Repositories\TelemetryAccessDetails;
 use Give\Tracking\Repositories\TrackEvents;
-use Give\Tracking\TrackingData\ActiveDonationFormsData;
 use Give_Admin_Settings;
 
 /**
@@ -162,5 +159,9 @@ class AdminActionHandler {
 		/* @var TrackJob $trackJob */
 		$trackJob = give( TrackJob::class );
 		$trackJob->send();
+
+		// Do not setup cron job.
+		$class = TrackJobScheduler::class;
+		add_filter( "give_disable_hook-shutdown:{$class}@schedule", '__return_true' );
 	}
 }
