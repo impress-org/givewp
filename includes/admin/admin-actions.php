@@ -1,4 +1,7 @@
 <?php
+
+use Give\Framework\Database\DB;
+use Give\Log\ValueObjects\LogType;
 /**
  * Admin Actions
  *
@@ -526,21 +529,14 @@ function _give_register_admin_notices() {
 		current_user_can( 'manage_give_settings' ) &&
 		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
 	) {
+		global $wpdb;
+
 		$current_time               = current_time( 'timestamp' );
 		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
 		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
 
-		$spam_count = Give()->log_db->count(
-			[
-				'log_type'   => 'spam',
-				'date_query' => [
-					[
-						'after'     => date( 'Y-m-d 00:00:00', $current_time ),
-						'before'    => date( 'Y-m-d 23:59:59', $current_time ),
-						'inclusive' => true,
-					],
-				],
-			]
+		$spam_count = DB::get_var(
+			DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND date >= CURDATE();", LogType::SPAM )
 		);
 
 		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
