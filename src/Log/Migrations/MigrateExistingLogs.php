@@ -5,12 +5,25 @@ namespace Give\Log\Migrations;
 use Give\Log\Log;
 use Give\Log\LogFactory;
 use Give\Framework\Database\DB;
+use Give\Log\Helpers\LogTypeHelper;
 use Give\Framework\Migrations\Contracts\Migration;
-use Give\Log\ValueObjects\LogCategory;
-use Give\Log\ValueObjects\LogType;
 use Give_Updates;
 
 class MigrateExistingLogs extends Migration {
+
+	/**
+	 * @var LogTypeHelper
+	 */
+	private $logTypeHelper;
+
+	/**
+	 * MigrateExistingLogs constructor.
+	 *
+	 * @param  LogTypeHelper  $logTypeHelper
+	 */
+	public function __construct( LogTypeHelper $logTypeHelper ) {
+		$this->logTypeHelper = $logTypeHelper;
+	}
 	/**
 	 * Register background update.
 	 *
@@ -89,7 +102,7 @@ class MigrateExistingLogs extends Migration {
 				}
 
 				// Get new type and category
-				$data = $this->getNewDataFromType( $log->log_type );
+				$data = $this->logTypeHelper->getDataFromType( $log->log_type );
 
 				try {
 					LogFactory::make(
@@ -97,7 +110,6 @@ class MigrateExistingLogs extends Migration {
 						$log->log_title,
 						$data['category'],
 						'Log Migration',
-						null,
 						$context
 					)->save();
 				} catch ( \Exception $exception ) {
@@ -108,37 +120,5 @@ class MigrateExistingLogs extends Migration {
 		} else {
 			give_set_upgrade_complete( self::id() );
 		}
-	}
-
-	/**
-	 * Helper method to get new log type and category based on the old log type value
-	 *
-	 * @param string $type
-	 *
-	 * @return array
-	 */
-	private function getNewDataFromType( $type ) {
-		switch ( $type ) {
-			case 'update':
-				return [
-					'type'     => LogType::ERROR,
-					'category' => LogCategory::MIGRATION,
-				];
-
-			case 'sale':
-			case 'stripe':
-			case 'gateway_error':
-				return [
-					'type'     => LogType::ERROR,
-					'category' => LogCategory::PAYMENT,
-				];
-
-			default:
-				return [
-					'type'     => LogType::ERROR,
-					'category' => LogCategory::CORE,
-				];
-		}
-
 	}
 }

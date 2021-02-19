@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_payment_gateways() {
 	// Default, built-in gateways
-	$gateways = Give_Cache_Setting::get_option( 'gateways', array() );
+	$gateways = Give_Cache_Setting::get_option( 'gateways', [] );
 
 	return apply_filters( 'give_payment_gateways', $gateways );
 
@@ -43,7 +43,7 @@ function give_get_enabled_payment_gateways( $form_id = 0 ) {
 
 	$enabled = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
 
-	$gateway_list = array();
+	$gateway_list = [];
 
 	foreach ( $gateways as $key => $gateway ) {
 		if ( isset( $enabled[ $key ] ) && $enabled[ $key ] == 1 ) {
@@ -155,7 +155,7 @@ function give_get_gateway_checkout_label( $gateway ) {
  */
 function give_get_gateway_supports( $gateway ) {
 	$gateways = give_get_enabled_payment_gateways();
-	$supports = isset( $gateways[ $gateway ]['supports'] ) ? $gateways[ $gateway ]['supports'] : array();
+	$supports = isset( $gateways[ $gateway ]['supports'] ) ? $gateways[ $gateway ]['supports'] : [];
 
 	return apply_filters( 'give_gateway_supports', $supports, $gateway );
 }
@@ -233,6 +233,10 @@ function give_get_chosen_gateway( $form_id ) {
  *
  * A wrapper function for the Give_Logging class add() method.
  *
+ * @deprecated 2.10.0
+ * @use Log::LOG_TYPE( $message );
+ * @see Log
+ *
  * @since  1.0
  * @since  2.0 Use global logs object
  *
@@ -251,6 +255,10 @@ function give_record_log( $title = '', $message = '', $parent = 0, $type = null 
  * Record a gateway error.
  *
  * A simple wrapper function for give_record_log().
+ *
+ * @deprecated 2.10.0
+ * @use Log::LOG_TYPE( $message );
+ * @see Log
  *
  * @access public
  * @since  1.0
@@ -280,14 +288,14 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
 function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish' ) {
 
 	$ret  = 0;
-	$args = array(
+	$args = [
 		'meta_key'    => '_give_payment_gateway',
 		'meta_value'  => $gateway_id,
 		'nopaging'    => true,
 		'post_type'   => 'give_payment',
 		'post_status' => $status,
 		'fields'      => 'ids',
-	);
+	];
 
 	$payments = new WP_Query( $args );
 
@@ -328,7 +336,7 @@ function give_get_ordered_payment_gateways( $gateways ) {
 		unset( $gateways[ $gateway_key ] );
 
 		if ( ! empty( $new_gateway_value ) ) {
-			$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
+			$gateways = array_merge( [ $gateway_key => $new_gateway_value ], $gateways );
 		}
 	}
 

@@ -12,7 +12,7 @@ This folder contains instructions and test code for Give PHPUnit testing.
 
 2) Install WordPress and the WP Unit Test library using the `install.sh` script located in `give/tests/bin/` directory. Change to the plugin root directory and type:
 
-    `$ tests/wordpress/bin/install.sh <db-name> <db-user> <db-password> [db-host]`
+    `$ tests/unit/bin/install.sh <db-name> <db-user> <db-password> [db-host]`
 
 Sample usage: `$ tests/bin/install.sh give_tests root root`
 

@@ -9,14 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New
 -   Migrations table (#5580)
+-   Legacy functions used for logging are now updated to use the new Logging API (#5614)
 -   The new Logs UI is implemented (#5591)
 
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+
+## 2.9.7 - 2021-02-09
+
 ### Fixed
+
+-   Create account checkbox is hidden when guest registration is disabled (#5557)
+-   Using the CLI commands is not producing errors anymore (#5559)
 -   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
+-   Setup Page gateway links now render styles correctly (#5576)
 
 ## 2.9.6 - 2021-01-13
 
 ### New
+
 -   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
 -   Sample onboarding tests are now implemented (#5543)
