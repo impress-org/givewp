@@ -177,14 +177,12 @@ class DonationFormsData implements TrackData {
 			"
 			SELECT COUNT(DISTINCT dm2.meta_value) as donor_count, dm.meta_value as form_id
 			FROM {$wpdb->donationmeta} as dm
-			INNER JOIN {$wpdb->donationmeta} as dm2
-			ON dm.donation_id = dm2.donation_id
-			INNER JOIN {$wpdb->donors} as donor
-			ON dm2.meta_value = donor.id
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
+				INNER JOIN {$wpdb->donors} as donor ON dm2.meta_value = donor.id
 			WHERE dm.meta_key='_give_payment_form_id'
-			AND dm.meta_value IN ({$formIds})
-			AND dm2.meta_key='_give_payment_donor_id'
-			AND donor.purchase_value > 0
+				AND dm.meta_value IN ({$formIds})
+				AND dm2.meta_key='_give_payment_donor_id'
+				AND donor.purchase_value > 0
 			GROUP BY dm.meta_value
 			",
 			ARRAY_A
