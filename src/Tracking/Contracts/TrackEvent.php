@@ -1,7 +1,8 @@
 <?php
 namespace Give\Tracking\Contracts;
 
-use Give\Tracking\Track;
+use Give\Tracking\Enum\EventType;
+use Give\Tracking\TrackRegisterer;
 
 /**
  * Class TrackEvent
@@ -13,29 +14,27 @@ use Give\Tracking\Track;
  */
 abstract class TrackEvent {
 	/**
-	 * @var string
+	 * @var EventType
 	 */
-	protected $trackId = '';
+	protected $eventType;
 
 	/**
-	 * @var Track
+	 * @var TrackRegisterer
 	 */
 	protected $track;
 
 	/**
-	 * @var TrackData
+	 * @var string
 	 */
-	protected $data;
+	protected $dataClassName;
 
 	/**
 	 * TrackEvent constructor.
 	 *
-	 * @param  Track  $track
-	 * @param  TrackData  $data
+	 * @param  TrackRegisterer  $track
 	 */
-	public function __construct( Track $track, TrackData $data ) {
+	public function __construct( TrackRegisterer $track ) {
 		$this->track = $track;
-		$this->data  = $data;
 	}
 
 	/**
@@ -44,6 +43,6 @@ abstract class TrackEvent {
 	 * @since 2.10.0
 	 */
 	public function record() {
-		$this->track->recordTrack( $this->trackId, $this->data );
+		$this->track->register( $this->eventType, $this->dataClassName );
 	}
 }

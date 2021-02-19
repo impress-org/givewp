@@ -1,13 +1,14 @@
 <?php
 namespace Give\Tracking;
 
+use Give\Tracking\Events\ActiveDonationFormsFirstTimeTracking;
+use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
-use Give\Tracking\TrackingData\ServerData;
-use Give\Tracking\TrackingData\WebsiteData;
-use Give\Tracking\ValueObjects\EventType;
-use Give\Tracking\ValueObjects\OptionName;
+use Give\Tracking\Repositories\Settings;
+use Give\Tracking\Repositories\TelemetryAccessDetails;
+use Give\Tracking\Repositories\TrackEvents;
 use Give_Admin_Settings;
 
 /**
@@ -22,13 +23,39 @@ class AdminActionHandler {
 	/**
 	 * @var UsageTrackingOnBoarding
 	 */
-	public $usageTrackingOnBoarding;
+	private $usageTrackingOnBoarding;
+
+	/**
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * @var TelemetryAccessDetails
+	 */
+	private $telemetryAccessDetails;
+
+	/**
+	 * @var AccessToken
+	 */
+	private $accessToken;
 
 	/**
 	 * @param  UsageTrackingOnBoarding  $usageTrackingOnBoarding
+	 * @param  Settings  $settings
+	 * @param  TelemetryAccessDetails  $telemetryAccessDetails
+	 * @param  AccessToken  $accessToken
 	 */
-	public function __construct( UsageTrackingOnBoarding $usageTrackingOnBoarding ) {
+	public function __construct(
+		UsageTrackingOnBoarding $usageTrackingOnBoarding,
+		Settings $settings,
+		TelemetryAccessDetails $telemetryAccessDetails,
+		AccessToken $accessToken
+	) {
 		$this->usageTrackingOnBoarding = $usageTrackingOnBoarding;
+		$this->settings                = $settings;
+		$this->telemetryAccessDetails  = $telemetryAccessDetails;
+		$this->accessToken             = $accessToken;
 	}
 
 	/**
@@ -62,9 +89,14 @@ class AdminActionHandler {
 			return;
 		}
 
-		give_update_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'enabled' );
+		$this->settings->saveUsageTrackingOptionValue( 'enabled' );
 		$this->usageTrackingOnBoarding->disableNotice( 0 );
-		$this->storeAccessToken();
+
+		if ( $this->accessToken->store() ) {
+			$this->recordTracks();
+		} else {
+			$this->settings->saveUsageTrackingOptionValue( 'disabled' );
+		}
 
 		wp_safe_redirect( remove_query_arg( 'give_action' ) );
 		exit();
@@ -89,15 +121,19 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$usageTracking = $newValue[ AdminSettings::USAGE_TRACKING_OPTION_NAME ] ?: 'disabled';
+		$usageTracking = $newValue[ Settings::USAGE_TRACKING_OPTION_KEY ] ?: 'disabled';
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
 		// Exit if already has access token.
-		if ( ! $usageTracking || get_option( OptionName::TELEMETRY_ACCESS_TOKEN ) ) {
+		if ( ! $usageTracking || $this->telemetryAccessDetails->getAccessTokenOptionValue() ) {
 			return false;
 		}
 
-		$this->storeAccessToken();
+		if ( $this->accessToken->store() ) {
+			$this->recordTracks();
+		} else {
+			$this->settings->saveUsageTrackingOptionValue( 'disabled' );
+		}
 
 		remove_filter( "give_disable_hook-update_option_give_settings:{$class}@optInToUsageTrackingAdminGrantManually", '__return_false' );
 
@@ -105,34 +141,27 @@ class AdminActionHandler {
 	}
 
 	/**
-	 * Store access token
+	 * Schedule first set of tracking information.
 	 *
 	 * @since 2.10.0
 	 */
-	private function storeAccessToken() {
-		$client = new TrackClient();
-		$data   = array_merge(
-			( new ServerData() )->get(),
-			( new WebsiteData() )->get()
-		);
-
-		$response = $client->post( ( new EventType() )->getCreateToken(), $data, [ 'blocking' => true ] );
-		if ( is_wp_error( $response ) ) {
-			return;
-		}
-
-		$response = json_decode( wp_remote_retrieve_body( $response ), true );
-		if ( empty( $response['success'] ) ) {
-			return;
-		}
-
-		$token = $response['data']['access_token'];
-		update_option( OptionName::TELEMETRY_ACCESS_TOKEN, $token );
-
-		// Access token saved, now send first set of tracking information.
-		( new TrackRoutine() )->send();
+	private function recordTracks() {
+		give( ActiveDonationFormsFirstTimeTracking::class )->record();
+		give( DonationMetricsTracking::class )->record();
 		give( ThemeTracking::class )->record();
 		give( GivePluginSettingsTracking::class )->record();
 		give( PluginsTracking::class )->record();
+
+		/* @var TrackEvents $trackEvents */
+		$trackEvents = give( TrackEvents::class );
+		$trackEvents->saveTrackList();
+
+		/* @var TrackJob $trackJob */
+		$trackJob = give( TrackJob::class );
+		$trackJob->send();
+
+		// Do not setup cron job.
+		$class = TrackJobScheduler::class;
+		add_filter( "give_disable_hook-shutdown:{$class}@schedule", '__return_true' );
 	}
 }

@@ -1,14 +1,14 @@
 <?php
 namespace Give\Tracking\Helpers;
 
-use Give\Tracking\AdminSettings;
+use Give\Tracking\Repositories\Settings;
 
 /**
  * Class Track
- * @package Give\Tracking\Helpers
  *
  * This class contains helpers functions related to tracks
  *
+ * @package Give\Tracking\Helpers
  * @since 2.10.0
  */
 class Track {
@@ -31,7 +31,9 @@ class Track {
 		}
 
 		// Check if we're allowing tracking.
-		$tracking = give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME );
+		/* @var Settings $settings */
+		$settings = give( Settings::class );
+		$tracking = $settings->getUsageTrackingOptionValue();
 
 		return give_is_setting_enabled( $tracking );
 	}

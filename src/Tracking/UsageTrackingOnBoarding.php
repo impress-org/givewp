@@ -2,6 +2,7 @@
 namespace Give\Tracking;
 
 use Give\Onboarding\Setup\PageView;
+use Give\Tracking\Repositories\Settings;
 use Give_Admin_Settings;
 
 /**
@@ -13,7 +14,19 @@ use Give_Admin_Settings;
  * @since 2.10.0
  */
 class UsageTrackingOnBoarding {
-	const USAGE_TRACKING_NOTICE_ID = 'usage-tracking-nag';
+	/**
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * UsageTrackingOnBoarding constructor.
+	 *
+	 * @param  Settings  $settings
+	 */
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
+	}
 
 	/**
 	 * Register notice.
@@ -37,7 +50,7 @@ class UsageTrackingOnBoarding {
 	 * @return string
 	 */
 	public function getNoticeOptionKey() {
-		return give()->notices->get_notice_key( self::USAGE_TRACKING_NOTICE_ID, 'permanent' );
+		return give()->notices->get_notice_key( 'usage-tracking-nag', 'permanent' );
 	}
 
 	/**
@@ -96,13 +109,13 @@ class UsageTrackingOnBoarding {
 			return false;
 		}
 
-		$optionValue = get_option( 'give_hide_usage_tracking_notice', null );
+		$optionValue = $this->settings->getUsageTrackingNoticeNagOptionValue();
 
 		if ( is_numeric( $optionValue ) && ( '0' === $optionValue || $optionValue > time() ) ) {
 			return false;
 		}
 
-		return ! give_is_setting_enabled( give_get_option( AdminSettings::USAGE_TRACKING_OPTION_NAME, 'disabled' ) );
+		return ! give_is_setting_enabled( $this->settings->getUsageTrackingOptionValue() );
 	}
 
 	/**
@@ -110,11 +123,11 @@ class UsageTrackingOnBoarding {
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param $timestamp
+	 * @param int $timestamp
 	 *
 	 * @return bool
 	 */
 	public function disableNotice( $timestamp ) {
-		return update_option( 'give_hide_usage_tracking_notice', $timestamp );
+		return $this->settings->saveUsageTrackingNoticeNagOptionValue( $timestamp );
 	}
 }

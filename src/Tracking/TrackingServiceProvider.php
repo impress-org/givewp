@@ -3,13 +3,13 @@ namespace Give\Tracking;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
 use Give\Tracking\Events\WebsiteTracking;
+use Give\Tracking\Helpers\Track;
 
 /**
  * Class TrackingServiceProvider
@@ -19,28 +19,24 @@ use Give\Tracking\Events\WebsiteTracking;
  */
 class TrackingServiceProvider implements ServiceProvider {
 	/**
-	 * @var TrackEvent[]
-	 */
-	private $trackingEvents = [
-		DonationMetricsTracking::class,
-		DonationFormsTracking::class,
-		WebsiteTracking::class,
-	];
-
-	/**
 	 * @inheritdoc
 	 */
 	public function register() {
-		give()->singleton( Track::class );
+		give()->singleton( TrackRegisterer::class );
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function boot() {
-		$this->registerTrackEvents();
-		Hooks::addAction( 'shutdown', Track::class, 'send' );
-		Hooks::addAction( 'admin_init', TrackRoutine::class, 'send', 1 );
+		if ( Track::isTrackingEnabled() ) {
+			/* @var TrackJobScheduler $trackJobScheduler */
+			$trackJobScheduler = give( TrackJobScheduler::class );
+
+			$this->registerTrackEvents();
+			Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
+			Hooks::addAction( $trackJobScheduler->getCronJobHookName(), TrackJob::class, 'send' );
+		}
 
 		if ( is_admin() ) {
 			Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );
@@ -61,11 +57,11 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @since 2.10.0
 	 */
 	private function registerTrackEvents() {
-		foreach ( $this->trackingEvents as $eventClassName ) {
-			Hooks::addAction( 'give_send_tracking_data', $eventClassName, 'record' );
-		}
-
+		Hooks::addAction( 'save_post_give_forms', DonationFormsTracking::class, 'record' );
+		Hooks::addAction( 'save_post_give_payment', DonationFormsTracking::class, 'record' );
+		Hooks::addAction( 'save_post_give_payment', DonationMetricsTracking::class, 'record' );
 		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
+		Hooks::addAction( 'shutdown', WebsiteTracking::class, 'websiteUpdateTrackingHandler' );
 		Hooks::addAction( 'update_option_give_settings', GivePluginSettingsTracking::class, 'record' );
 		Hooks::addAction( 'update_option_active_plugins', PluginsTracking::class, 'record' );
 		Hooks::addAction( 'switch_theme', ThemeTracking::class, 'record' );

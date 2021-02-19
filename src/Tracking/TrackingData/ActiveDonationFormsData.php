@@ -1,29 +1,31 @@
 <?php
 
-namespace Give\Tracking\Traits;
+namespace Give\Tracking\TrackingData;
 
 use Give\Helpers\ArrayDataSet;
-use Give\Tracking\Repositories\TrackEvents;
 
 /**
- * Trait HasDonations
- * @package Give\Tracking\Traits
+ * Class AllActiveDonationFormsData
+ * @package Give\Tracking\TrackingData
  *
  * @since 2.10.0
  */
-trait HasDonations {
+class ActiveDonationFormsData extends DonationFormsData {
 	/**
-	 * @var TrackEvents
-	 */
-	protected $trackEvents;
-
-	/**
-	 * Return donation ids after last tracked request date.
+	 * Set donation Ids.
 	 *
-	 * @sicne 2.10.0
-	 * @return array
+	 * @since 2.10.0
+	 *
+	 * @return self
 	 */
-	private function getNewDonationIdsSinceLastRequest() {
+	/**
+	 * Set donation ids.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return DonationFormsData
+	 */
+	protected function setDonationIds() {
 		global $wpdb;
 
 		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
@@ -32,19 +34,19 @@ trait HasDonations {
 				'give_subscription', // Renewal
 			]
 		);
-		$time    = $this->trackEvents->getRequestTime();
 
-		return $wpdb->get_col(
+		$this->donationIds = $wpdb->get_col(
 			"
 			SELECT ID
 			FROM {$wpdb->posts} as p
 				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_date >= '{$time}'
-				AND post_status IN ({$statues})
+			WHERE post_status IN ({$statues})
 				AND post_type='give_payment'
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
 			"
 		);
+
+		return $this;
 	}
 }
