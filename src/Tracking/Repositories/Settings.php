@@ -56,6 +56,6 @@ class Settings {
 	 * @return string
 	 */
 	public function saveUsageTrackingNoticeNagOptionValue( $optionValue ) {
-		return update_option( self::USAGE_TRACKING_NOTICE_NAG_OPTION_KEY, $optionValue );
+		return update_option( self::USAGE_TRACKING_NOTICE_NAG_OPTION_KEY, $optionValue, false );
 	}
 }

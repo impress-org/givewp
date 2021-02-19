@@ -33,7 +33,7 @@ class TrackEvents {
 	public function saveTrackList() {
 		/* @var TrackRegisterer $trackRegisterer */
 		$trackRegisterer = give( TrackRegisterer::class );
-		update_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY, $trackRegisterer->getTrackList() );
+		update_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY, $trackRegisterer->getTrackList(), false );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function saveRequestTime() {
-		update_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, strtotime( '- 1 hour', current_time( 'timestamp' ) ) );
+		update_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, strtotime( '- 1 hour', current_time( 'timestamp' ) ), false );
 	}
 
 	/**
@@ -82,7 +82,7 @@ class TrackEvents {
 			return false;
 		}
 
-		update_option( $optionName, $checksum );
+		update_option( $optionName, $checksum, false );
 
 		return true;
 	}

@@ -31,6 +31,6 @@ class TelemetryAccessDetails {
 	 * @return string
 	 */
 	public function saveAccessTokenOptionValue( $optionValue ) {
-		return update_option( self::ACCESS_TOKEN_OPTION_KEY, $optionValue );
+		return update_option( self::ACCESS_TOKEN_OPTION_KEY, $optionValue, false );
 	}
 }
