@@ -9,15 +9,7 @@ namespace Give\Tracking\Repositories;
  * @since 2.10.0
  */
 class TelemetryAccessDetails {
-	/**
-	 * Get option key for telemetry access token.
-	 *
-	 * @since 2.10.0
-	 * @return string
-	 */
-	public function getAccessTokenOptionKey() {
-		return 'give_telemetry_server_access_token';
-	}
+	const ACCESS_TOKEN_OPTION_KEY = 'give_telemetry_server_access_token';
 
 	/**
 	 * Get option value for telemetry access token.
@@ -26,7 +18,7 @@ class TelemetryAccessDetails {
 	 * @return string
 	 */
 	public function getAccessTokenOptionValue() {
-		return get_option( $this->getAccessTokenOptionKey(), '' );
+		return get_option( self::ACCESS_TOKEN_OPTION_KEY, '' );
 	}
 
 	/**
@@ -39,6 +31,6 @@ class TelemetryAccessDetails {
 	 * @return string
 	 */
 	public function saveAccessTokenOptionValue( $optionValue ) {
-		return update_option( $this->getAccessTokenOptionKey(), $optionValue );
+		return update_option( self::ACCESS_TOKEN_OPTION_KEY, $optionValue );
 	}
 }

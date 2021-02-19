@@ -12,16 +12,8 @@ use Give\Tracking\TrackRegisterer;
  * @since 2.10.0
  */
 class TrackEvents {
-	/**
-	 * Get option key for usage tracking last request.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	public function getTelemetryRequestTimeOptionKey() {
-		return 'give_telemetry_usage_tracking_last_request';
-	}
+	const TELEMETRY_REQUEST_TIME_OPTION_KEY = 'give_telemetry_usage_tracking_last_request';
+	const TRACKING_EVENTS_RECORD_OPTION_KEY = 'give_telemetry_records';
 
 	/**
 	 * Get option key for tracking events record.
@@ -40,7 +32,7 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function remove() {
-		delete_option( $this->getTrackingEventsRecordOptionKey() );
+		delete_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY );
 	}
 
 	/**
@@ -51,7 +43,7 @@ class TrackEvents {
 	public function saveTrackList() {
 		/* @var TrackRegisterer $trackRegisterer */
 		$trackRegisterer = give( TrackRegisterer::class );
-		update_option( $this->getTrackingEventsRecordOptionKey(), $trackRegisterer->getTrackList() );
+		update_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, $trackRegisterer->getTrackList() );
 	}
 
 	/**
@@ -60,7 +52,7 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function getTrackList() {
-		return get_option( $this->getTrackingEventsRecordOptionKey(), [] );
+		return get_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, [] );
 	}
 
 	/**
@@ -69,7 +61,7 @@ class TrackEvents {
 	 * @since 2.10.0
 	 */
 	public function saveRequestTime() {
-		update_option( $this->getTelemetryRequestTimeOptionKey(), strtotime( '- 1 hour', current_time( 'timestamp' ) ) );
+		update_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, strtotime( '- 1 hour', current_time( 'timestamp' ) ) );
 	}
 
 	/**
@@ -81,7 +73,7 @@ class TrackEvents {
 	 */
 	public function getRequestTime() {
 		$today = strtotime( 'today', current_time( 'timestamp' ) );
-		return date( 'Y-m-d H:i:s', get_option( $this->getTelemetryRequestTimeOptionKey(), $today ) );
+		return date( 'Y-m-d H:i:s', get_option( self::TELEMETRY_REQUEST_TIME_OPTION_KEY, $today ) );
 	}
 
 	/**

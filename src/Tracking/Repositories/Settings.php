@@ -9,25 +9,8 @@ namespace Give\Tracking\Repositories;
  * @since 2.10.0
  */
 class Settings {
-	/**
-	 * Return "usage_tracking" give setting option key name.
-	 *
-	 * @since 2.10.0
-	 * @return string
-	 */
-	public function getUsageTrackingOptionKey() {
-		return 'usage_tracking';
-	}
-
-	/**
-	 * Return "give_hide_usage_tracking_notice" option key name which we use to show hide notice.
-	 *
-	 * @since 2.10.0
-	 * @return string
-	 */
-	public function getUsageTrackingNoticeNagOptionKey() {
-		return 'give_telemetry_hide_usage_tracking_notice';
-	}
+	const USAGE_TRACKING_OPTION_KEY             = 'usage_tracking';
+	const USAGE_TRACKING_NOTICE_NAG_OOPTION_KEY = 'give_telemetry_hide_usage_tracking_notice';
 
 	/**
 	 * Return "usage_tracking" give setting option value.
@@ -36,7 +19,7 @@ class Settings {
 	 * @return string
 	 */
 	public function getUsageTrackingOptionValue() {
-		return give_get_option( $this->getUsageTrackingOptionKey(), 'disabled' );
+		return give_get_option( self::USAGE_TRACKING_OPTION_KEY, 'disabled' );
 	}
 
 	/**
@@ -47,7 +30,7 @@ class Settings {
 	 * @return string
 	 */
 	public function getUsageTrackingNoticeNagOptionValue() {
-		return get_option( $this->getUsageTrackingNoticeNagOptionKey(), null );
+		return get_option( self::USAGE_TRACKING_NOTICE_NAG_OOPTION_KEY, null );
 	}
 
 	/**
@@ -60,7 +43,7 @@ class Settings {
 	 * @return boolean
 	 */
 	public function saveUsageTrackingOptionValue( $optionValue ) {
-		return give_update_option( $this->getUsageTrackingOptionKey(), $optionValue );
+		return give_update_option( self::USAGE_TRACKING_OPTION_KEY, $optionValue );
 	}
 
 	/**
@@ -73,6 +56,6 @@ class Settings {
 	 * @return string
 	 */
 	public function saveUsageTrackingNoticeNagOptionValue( $optionValue ) {
-		return update_option( $this->getUsageTrackingNoticeNagOptionKey(), $optionValue );
+		return update_option( self::USAGE_TRACKING_NOTICE_NAG_OOPTION_KEY, $optionValue );
 	}
 }

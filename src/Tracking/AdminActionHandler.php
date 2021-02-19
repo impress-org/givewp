@@ -120,7 +120,7 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$usageTracking = $newValue[ $this->settings->getUsageTrackingOptionKey() ] ?: 'disabled';
+		$usageTracking = $newValue[ Settings::USAGE_TRACKING_OPTION_KEY ] ?: 'disabled';
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
 		// Exit if already has access token.

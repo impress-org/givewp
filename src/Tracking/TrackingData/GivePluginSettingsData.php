@@ -40,14 +40,12 @@ class GivePluginSettingsData implements TrackData {
 			'cause_type',
 		];
 
-		/* @var Settings $settings */
-		$settings          = give( Settings::class );
 		$trueFalseSettings = [
 			'is_name_title'         => 'name_title_prefix',
 			'is_company'            => 'company_field',
 			'is_anonymous_donation' => 'anonymous_donation',
 			'is_donor_comment'      => 'donor_comment',
-			'is_anonymous_tracking' => $settings->getUsageTrackingOptionKey(),
+			'is_anonymous_tracking' => Settings::USAGE_TRACKING_OPTION_KEY,
 		];
 
 		$data     = [];
