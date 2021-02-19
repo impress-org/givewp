@@ -3,7 +3,6 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\FieldCollection;
-use Give\Form\LegacyConsumer\FieldView;
 
 /**
  * Setup field validation for custom fields on the required fields hook.
