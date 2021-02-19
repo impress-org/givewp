@@ -59,7 +59,6 @@ class TrackClient {
 			'timeout'     => 8,
 			'httpversion' => '1.1',
 			'blocking'    => false,
-			'sslverify'   => false,
 			'user-agent'  => 'GIVE/' . GIVE_VERSION . ' ' . get_bloginfo( 'url' ),
 			'body'        => wp_json_encode( $data ),
 			'data_format' => 'body',
