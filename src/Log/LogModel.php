@@ -191,6 +191,18 @@ class LogModel {
 	}
 
 	/**
+	 * Add supplemental information to existing log.
+	 * Supplemental data will be added as a context with a key prefixed with the current timestamp.
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function addSupplemental( $key, $value ) {
+		$contextName = sprintf( '[%s] %s', date( 'Y-m-d H:i:s' ), $key );
+		$this->addContext( $contextName, $value );
+	}
+
+	/**
 	 * @param string $type
 	 * @param array $args
 	 */
