@@ -13,10 +13,13 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function register() {
 		include_once plugin_dir_path( __FILE__ ) . '/functions.php';
-		give()->bind( DeprecateOldTemplateHook::class, function() {
-			global $wp_filter;
-			return new DeprecateOldTemplateHook( $wp_filter );
-		} );
+		give()->bind(
+			DeprecateOldTemplateHook::class,
+			function() {
+				global $wp_filter;
+				return new DeprecateOldTemplateHook( $wp_filter );
+			}
+		);
 	}
 
 	/**
@@ -24,7 +27,8 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot() {
 		give( TemplateHooks::class )->walk( give( Commands\SetupNewTemplateHook::class ) );
-		if( ! wp_doing_ajax() ) {
+		give( TemplateHooks::class )->walk( give( Commands\SetupFieldPersistance::class ) );
+		if ( ! wp_doing_ajax() ) {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
 		}
 	}
