@@ -3,10 +3,48 @@
 namespace Give\DonorProfiles;
 
 use Give\DonorProfiles\Profile;
+use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 use Give\DonorProfiles\Helpers\LocationList;
-use Give\DonorProfiles\Helpers;
+use Give\Views\IframeContentView;
 
 class App {
+
+	protected $profile;
+
+	public function __construct() {
+		$id            = DonorProfileHelpers::getCurrentDonorId();
+		$this->profile = new Profile( $id );
+	}
+
+	public function getOutput( $attributes ) {
+
+		$url = get_site_url() . '/?give-embed=donor-profile';
+
+		if ( isset( $attributes['accent_color'] ) ) {
+			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
+		}
+
+		$loader = sprintf(
+			'<div class="iframe-loader">Loading...</div>',
+		);
+
+		$iframe = sprintf(
+			'<iframe
+				name="give-embed-donor-profile"
+				%1$s
+				%4$s
+				data-autoScroll="%2$s"
+				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
+				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
+			"src=\"{$url}\"",
+			true,
+			'min-height: 776px; width: 100%; max-width: 100% !important',
+			'',
+			$loader
+		);
+
+		return $iframe;
+	}
 
 	/**
 	 * Get output markup for Donor Profile app
@@ -14,7 +52,7 @@ class App {
 	 * @return string
 	 * @since 2.10.0
 	 **/
-	public function getOutput() {
+	public function getIframeContent() {
 		ob_start();
 		$output = '';
 		require $this->getTemplatePath();

@@ -13,12 +13,14 @@ class Helpers {
 	 */
 	public static function getCurrentDonorId() {
 
-		give()->email_access->init();
-		$useToken = give()->email_access->check_for_token();
+		if ( give()->email_access ) {
+			give()->email_access->init();
+			$useToken = give()->email_access->check_for_token();
 
-		if ( $useToken ) {
-			$donor = give()->donors->get_donor_by( 'email', give()->email_access->token_email );
-			return $donor->id;
+			if ( $useToken ) {
+				$donor = give()->donors->get_donor_by( 'email', give()->email_access->token_email );
+				return $donor->id;
+			}
 		}
 
 		if ( get_current_user_id() ) {

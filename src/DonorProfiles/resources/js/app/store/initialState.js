@@ -1,4 +1,4 @@
-import { getWindowData } from '../utils';
+import { getWindowData, getQueryParam } from '../utils';
 
 export const initialState = {
 	tabs: {},
@@ -7,4 +7,5 @@ export const initialState = {
 	countries: getWindowData( 'countries' ),
 	states: getWindowData( 'states' ),
 	fetchingStates: false,
+	accentColor: getQueryParam( 'accent-color' ),
 };

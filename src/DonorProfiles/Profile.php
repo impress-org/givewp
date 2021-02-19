@@ -11,7 +11,9 @@ use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
 
 use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 
-
+/**
+ * @since 2.10.0
+ */
 class Profile {
 
 	protected $donor;

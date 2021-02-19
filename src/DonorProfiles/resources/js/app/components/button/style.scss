@@ -4,7 +4,7 @@
 	padding: 12px 20px;
 	font-size: 16px;
 	font-weight: 600;
-	border: 1px solid #68bb6c;
+	border: 1px solid var(--give-donor-profile-accent-color);
 	border-radius: 3px;
 	display: inline-flex;
 	align-items: center;
@@ -22,6 +22,6 @@
 
 	&.give-donor-profile-button--primary {
 		color: #fff;
-		background: #68bb6c;
+		background: var(--give-donor-profile-accent-color);
 	}
 }
