@@ -53,6 +53,7 @@
 					! $this->isStripeSetup() ? $this->render_template(
 						'row-item',
 						[
+							'testId'      => 'paypal',
 							'class'       => ( $this->isPayPalSetup() ) ? 'paypal setup-item-completed' : 'paypal',
 							'icon'        => ( $this->isPayPalSetup() )
 												? $this->image( 'check-circle.min.png' )
@@ -79,6 +80,7 @@
 					! $this->isPayPalSetup() ? $this->render_template(
 						'row-item',
 						[
+							'testId'      => 'stripe',
 							'class'       => ( $this->isStripeSetup() ) ? 'stripe setup-item-completed' : 'stripe',
 							'icon'        => ( $this->isStripeSetup() )
 											 ? $this->image( 'check-circle.min.png' )
