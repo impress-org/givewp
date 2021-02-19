@@ -8,6 +8,7 @@ use Give\MigrationLog\Helpers\Environment;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\MigrationLog\Migrations\CreateMigrationsTable;
+use Give\MigrationLog\Migrations\MigrateCompletedMigrations;
 
 /**
  * Class MigrationLogServiceProvider
@@ -32,7 +33,12 @@ class MigrationLogServiceProvider implements ServiceProvider {
 	 * @inheritdoc
 	 */
 	public function boot() {
-		give( MigrationsRegister::class )->addMigration( CreateMigrationsTable::class );
+		give( MigrationsRegister::class )->addMigrations(
+			[
+				CreateMigrationsTable::class,
+				MigrateCompletedMigrations::class,
+			]
+		);
 
 		// Hook up
 		if ( Environment::isMigrationsPage() ) {
