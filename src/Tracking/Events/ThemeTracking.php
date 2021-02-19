@@ -30,7 +30,7 @@ class ThemeTracking extends TrackEvent {
 	 * @param  TrackRegisterer  $track
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->eventType = new EventType( 'theme-switched' );
+		$this->eventType = new EventType( EventType::THEME_SWITCHED );
 		parent::__construct( $track );
 	}
 
@@ -50,7 +50,7 @@ class ThemeTracking extends TrackEvent {
 
 		foreach ( $data['themes'] as $theme ) {
 			if ( get_stylesheet() === $theme || get_template() === $theme || $this->isParentTheme( $theme ) ) {
-				$this->trackId = new EventType( 'theme-updated' );
+				$this->trackId = new EventType( EventType::THEME_UPDATED );
 				$this->record();
 			}
 		}

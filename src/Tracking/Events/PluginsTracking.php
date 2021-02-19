@@ -26,7 +26,7 @@ class PluginsTracking extends TrackEvent {
 	 * @param  TrackRegisterer  $track
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->eventType = new EventType( 'plugin-list-updated' );
+		$this->eventType = new EventType( EventType::PLUGIN_LIST_UPDATED );
 		parent::__construct( $track );
 	}
 }

@@ -26,7 +26,7 @@ class GivePluginSettingsTracking extends TrackEvent {
 	 * @param  TrackRegisterer  $track
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->eventType = new EventType( 'plugin-settings-updated' );
+		$this->eventType = new EventType( EventType::PLUGIN_SETTINGS_UPDATED );
 		parent::__construct( $track );
 	}
 }

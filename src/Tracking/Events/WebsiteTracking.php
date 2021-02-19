@@ -34,7 +34,7 @@ class WebsiteTracking extends TrackEvent {
 	 * @param  TrackEvents  $trackEvents
 	 */
 	public function __construct( TrackRegisterer $track, TrackEvents $trackEvents ) {
-		$this->eventType   = new EventType( 'site-updated' );
+		$this->eventType   = new EventType( EventType::SITE_UPDATED );
 		$this->trackEvents = $trackEvents;
 
 		parent::__construct( $track );

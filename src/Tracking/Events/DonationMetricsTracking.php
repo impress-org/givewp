@@ -28,7 +28,7 @@ class DonationMetricsTracking extends TrackEvent {
 	 *
 	 */
 	public function __construct( TrackRegisterer $track ) {
-		$this->eventType = new EventType( 'donation-metrics' );
+		$this->eventType = new EventType( EventType::DONATION_METRICS );
 		parent::__construct( $track );
 	}
 }

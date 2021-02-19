@@ -43,7 +43,7 @@ class AccessToken {
 		/* @var WebsiteInfoData $dataClass */
 		$dataClass = give( WebsiteInfoData::class );
 
-		$response = $this->trackClient->post( new EventType( 'create-token' ), $dataClass, [ 'blocking' => true ] );
+		$response = $this->trackClient->post( new EventType( EventType::CREATE_TOKEN ), $dataClass, [ 'blocking' => true ] );
 		if ( is_wp_error( $response ) ) {
 			return false;
 		}
