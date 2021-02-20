@@ -52,6 +52,8 @@ use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\DonorProfiles\ServiceProvider as DonorProfilesServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
+use Give\MigrationLog\MigrationLogServiceProvider;
+use Give\Log\LogServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
 
 // Exit if accessed directly.
@@ -76,8 +78,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property-read Give_Admin_Settings             $give_settings
  * @property-read Give_HTML_Elements              $html
  * @property-read Give_Logging                    $logs
- * @property-read Give_DB_Logs                    $log_db
- * @property-read Give_DB_Log_Meta                $logmeta_db
  * @property-read Give_Notices                    $notices
  * @property-read Give_DB_Payment_Meta            $payment_meta
  * @property-read Give_Roles                      $roles
@@ -146,6 +146,8 @@ final class Give {
 		MultiFormGoalsServiceProvider::class,
 		DonorProfilesServiceProvider::class,
 		TestDataServiceProvider::class,
+		MigrationLogServiceProvider::class,
+		LogServiceProvider::class,
 	];
 
 	/**

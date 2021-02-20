@@ -42,6 +42,8 @@ const config = {
 		'multi-form-goal-block': [ './src/MultiFormGoals/resources/css/common.scss' ],
 		'donor-profiles-app': [ './src/DonorProfiles/resources/js/app/index.js' ],
 		'donor-profiles-block': [ './src/DonorProfiles/resources/js/block/index.js' ],
+		'give-log-list-table-app': [ './src/Log/Admin/index.js' ],
+		'give-migrations-list-table-app': [ './src/MigrationLog/Admin/index.js' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
@@ -79,6 +81,7 @@ const config = {
 			// Create RTL styles.
 			{
 				test: /\.css$/,
+				exclude: /\.module\.css$/,
 				use: [
 					//MiniCSSExtractPlugin.loader,
 					'style-loader',
@@ -86,15 +89,54 @@ const config = {
 				],
 			},
 
+			{
+				test: /\.module\.css$/,
+				use: [
+					//MiniCSSExtractPlugin.loader,
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: true,
+							modules: true,
+							localIdentName: '[local]__[hash:base64:5]',
+						},
+					},
+				],
+			},
+
 			// SASS to CSS.
 			{
 				test: /\.scss$/,
+				exclude: /\.module\.scss$/,
 				use: [
 					MiniCSSExtractPlugin.loader,
 					{
 						loader: 'css-loader',
 						options: {
 							sourceMap: true,
+						},
+					},
+					{
+						loader: 'sass-loader',
+						options: {
+							sourceMap: true,
+							outputStyle: ( inProduction ? 'compressed' : 'expanded' ),
+						},
+					} ],
+			},
+
+			// SASS to CSS.
+			{
+				test: /\.module\.scss$/,
+				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: true,
+							modules: true,
+							localIdentName: '[local]__[hash:base64:5]',
 						},
 					},
 					{
@@ -163,6 +205,12 @@ const config = {
 			proxy: 'give.test',
 		} ),
 	],
+
+	resolve: {
+		alias: {
+			'@givewp/components': path.resolve( __dirname, 'src/Views/Components/' ),
+		},
+	},
 };
 
 if ( inProduction ) {

@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 */
 		public function __construct() {
 
-			add_filter( 'give_payment_gateways', array( $this, 'register_gateway' ) );
+			add_filter( 'give_payment_gateways', [ $this, 'register_gateway' ] );
 
 			/**
 			 * Using hardcoded constant for backward compatibility of Give 2.5.0 with Recurring 1.8.13 when Stripe Premium is not active.
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 								// Register error notice.
 								Give()->notices->register_notice(
-									array(
+									[
 										'id'          => 'give-recurring-fatal-error',
 										'type'        => 'error',
 										'description' => sprintf(
@@ -110,7 +110,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 											'https://givewp.com/support/'
 										),
 										'show'        => true,
-									)
+									]
 								);
 							}
 						);
@@ -147,7 +147,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 			// Load these files when accessed from admin.
 			if ( is_admin() ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-admin-settings.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/admin/class-give-stripe-logs.php';
 			}
 		}
 
@@ -196,28 +195,28 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		public function register_gateway( $gateways ) {
 
 			// Stripe - On page credit card.
-			$gateways['stripe'] = array(
+			$gateways['stripe'] = [
 				'admin_label'    => __( 'Stripe - Credit Card', 'give' ),
 				'checkout_label' => __( 'Credit Card', 'give' ),
-			);
+			];
 
 			// Stripe - Off page credit card (also known as Checkout).
-			$gateways['stripe_checkout'] = array(
+			$gateways['stripe_checkout'] = [
 				'admin_label'    => __( 'Stripe - Checkout', 'give' ),
 				'checkout_label' => __( 'Credit Card', 'give' ),
-			);
+			];
 
 			// Stripe - SEPA Direct Debit.
-			$gateways['stripe_sepa'] = array(
+			$gateways['stripe_sepa'] = [
 				'admin_label'    => __( 'Stripe - SEPA Direct Debit', 'give' ),
 				'checkout_label' => __( 'SEPA Direct Debit', 'give' ),
-			);
+			];
 
 			// Stripe - BECS Direct Debit.
-			$gateways['stripe_becs'] = array(
+			$gateways['stripe_becs'] = [
 				'admin_label'    => __( 'Stripe - BECS Direct Debit', 'give' ),
 				'checkout_label' => __( 'BECS Direct Debit', 'give' ),
-			);
+			];
 
 			return $gateways;
 		}

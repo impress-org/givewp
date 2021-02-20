@@ -4,7 +4,9 @@ namespace Give\Framework\Migrations;
 
 use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
-use Give_Notices;
+use Give\MigrationLog\MigrationLogFactory;
+use Give\MigrationLog\MigrationLogRepository;
+use Give\MigrationLog\MigrationLogStatus;
 
 /**
  * Class MigrationsRunner
@@ -12,11 +14,6 @@ use Give_Notices;
  * @since 2.9.0
  */
 class MigrationsRunner {
-	/**
-	 * Option name for completed migrations
-	 */
-	const MIGRATION_OPTION = 'give_database_migrations';
-
 	/**
 	 * List of completed migrations.
 	 *
@@ -34,14 +31,34 @@ class MigrationsRunner {
 	private $migrationRegister;
 
 	/**
+	 * @since 2.10.0
+	 *
+	 * @var MigrationLogFactory
+	 */
+	private $migrationLogFactory;
+
+	/**
+	 * @since 2.10.0
+	 * @var MigrationLogRepository
+	 */
+	private $migrationLogRepository;
+
+	/**
 	 *  MigrationsRunner constructor.
 	 *
-	 * @param MigrationsRegister $migrationRegister
+	 * @param  MigrationsRegister  $migrationRegister
+	 * @param  MigrationLogFactory  $migrationLogFactory
+	 * @param  MigrationLogRepository  $migrationLogRepository
 	 */
-	public function __construct( MigrationsRegister $migrationRegister ) {
-		$this->migrationRegister = $migrationRegister;
-
-		$this->completedMigrations = get_option( self::MIGRATION_OPTION, [] );
+	public function __construct(
+		MigrationsRegister $migrationRegister,
+		MigrationLogFactory $migrationLogFactory,
+		MigrationLogRepository $migrationLogRepository
+	) {
+		$this->migrationRegister      = $migrationRegister;
+		$this->migrationLogFactory    = $migrationLogFactory;
+		$this->migrationLogRepository = $migrationLogRepository;
+		$this->completedMigrations    = $this->migrationLogRepository->getCompletedMigrationsIDs();
 	}
 
 	/**
@@ -56,6 +73,11 @@ class MigrationsRunner {
 			return;
 		}
 
+		// Stop Migration Runner if there are failed migrations
+		if ( $this->migrationLogRepository->getFailedMigrationsCountByIds( $this->migrationRegister->getRegisteredIds() ) ) {
+			return;
+		}
+
 		// Store and sort migrations by timestamp
 		$migrations = [];
 
@@ -66,15 +88,14 @@ class MigrationsRunner {
 
 		ksort( $migrations );
 
-		// Process migrations.
-		$newMigrations = [];
-
-		foreach ( $migrations as $migrationClass ) {
+		foreach ( $migrations as $key => $migrationClass ) {
 			$migrationId = $migrationClass::id();
 
 			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
 				continue;
 			}
+
+			$migrationLog = $this->migrationLogFactory->make( $migrationId );
 
 			// Begin transaction
 			$wpdb->query( 'START TRANSACTION' );
@@ -84,10 +105,17 @@ class MigrationsRunner {
 				$migration = give( $migrationClass );
 
 				$migration->run();
+
+				// Save migration status
+				$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
+				$migrationLog->save();
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );
 
-				give_record_log( 'Migration Failed', print_r( $exception, true ), 0, 'update' );
+				$migrationLog->setStatus( MigrationLogStatus::FAILED );
+				$migrationLog->setError( $exception );
+				$migrationLog->save();
+
 				give()->notices->register_notice(
 					[
 						'id'          => 'migration-failure',
@@ -103,18 +131,6 @@ class MigrationsRunner {
 
 			// Commit transaction if successful
 			$wpdb->query( 'COMMIT' );
-
-			$newMigrations[] = $migrationId;
-		}
-
-		// Save processed migrations.
-		$this->completedMigrations = array_unique( array_merge( $this->completedMigrations, $newMigrations ) );
-
-		if ( $newMigrations ) {
-			update_option(
-				self::MIGRATION_OPTION,
-				$this->completedMigrations
-			);
 		}
 	}
 

@@ -171,6 +171,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'default' => Give()->routeForm->getBase(),
 						],
 						[
+							'name'    => __( 'Database Updates', 'give' ),
+							'desc'    => __( 'Enable database updates options only if you know what are you doing.', 'give' ),
+							'id'      => 'enable_database_updates',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => [
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							],
+						],
+						[
 							'name'        => 'GiveWP Cache',
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),
