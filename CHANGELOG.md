@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
+## 2.10.0-alpha.1
+
+### New
 -   Front-end donor profiles are scaffolded (#5441)
 -   Donor Profiles UI is implemented (#5444)
 -   Donation History and Dashboard tabs are now dynamically populated (#5455)
@@ -16,18 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Recurring Donations tab UI now connects to addon (#5584)
 -   Donor Profile authentication logic is now implemented (#5569)
 -   Admin can now set Donor Profile accent color (#5615)
+-   Migrations table (#5580)
+-   Legacy functions used for logging are now updated to use the new Logging API (#5614)
+-   The new Logs UI is implemented (#5591)
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
 ### Changed
 -   Donor Profile Donation History UI is now polished (#5566)
 -   Donor Profile edit UI now uses React Dropzone (#5563)
 -   Donor Profiles are now extensible (#5577)
-
-### New
--   Migrations table (#5580)
--   Legacy functions used for logging are now updated to use the new Logging API (#5614)
--   The new Logs UI is implemented (#5591)
-
--   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
 ## 2.9.7 - 2021-02-09
 
