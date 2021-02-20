@@ -25,7 +25,8 @@ class App {
 		}
 
 		$loader = sprintf(
-			'<div class="iframe-loader">Loading...</div>',
+			'<div class="iframe-loader">%1$s...</div>',
+			esc_html__( 'Loading', 'give' )
 		);
 
 		$iframe = sprintf(
@@ -49,15 +50,16 @@ class App {
 	/**
 	 * Get output markup for Donor Profile app
 	 *
-	 * @return string
 	 * @since 2.10.0
-	 **/
+	 **@return string
+	 */
 	public function getIframeContent() {
 		ob_start();
 		$output = '';
 		require $this->getTemplatePath();
 		$output = ob_get_contents();
 		ob_end_clean();
+
 		return $output;
 	}
 
@@ -72,9 +74,9 @@ class App {
 	/**
 	 * Enqueue assets for front-end donor profiles
 	 *
-	 * @return void
 	 * @since 2.10.0
-	 **/
+	 **@return void
+	 */
 	public function loadAssets() {
 		wp_enqueue_script(
 			'give-donor-profiles-app',
