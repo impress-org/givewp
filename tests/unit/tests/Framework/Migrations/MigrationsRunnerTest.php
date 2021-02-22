@@ -1,6 +1,5 @@
 <?php
 
-use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Migrations\MigrationsRunner;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +13,7 @@ class MigrationsRunnerTest extends TestCase {
 	 * @see https://github.com/impress-org/givewp/issues/5454
 	 */
 	public function testNoMigrationsDoesNotThrowError() {
-		$runner = new MigrationsRunner( new MigrationsRegister );
+		$runner = give( MigrationsRunner::class );
 
 		self::assertFalse(
 			$runner->hasMigrationToRun()
