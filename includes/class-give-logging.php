@@ -194,6 +194,19 @@ class Give_Logging {
 		// Extract data from parameters
 		$data = $this->getLogData( $log_data, $log_meta );
 
+		$backtrace = debug_backtrace();
+
+		// Add more context
+		if (
+			isset( $backtrace[1] ) &&
+			! array_diff( [ 'file', 'line', 'function', 'class' ], array_keys( $backtrace[1] ) )
+		) {
+			$data['context']['file']     = $backtrace[1]['file'];
+			$data['context']['line']     = $backtrace[1]['line'];
+			$data['context']['function'] = $backtrace[1]['function'];
+			$data['context']['class']    = $backtrace[1]['class'];
+		}
+
 		$log = LogFactory::make(
 			$data['type'],
 			$data['message'],
