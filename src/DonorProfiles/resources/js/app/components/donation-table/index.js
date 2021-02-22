@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 import Table from '../table';
-import DonationRow from './donation-row';
+import DonationRow from '../donation-row';
 
 import './style.scss';
 
@@ -28,13 +28,15 @@ const DonationTable = ( { donations, perPage } ) => {
 	};
 
 	let donationRows = [];
-	let donationsArray = [];
+	const donationsArray = [];
 	let start = 0;
 	let end = perPage;
 	let lastPage = 1;
 
 	if ( donations ) {
-		donationsArray = Object.entries( donations );
+		Object.entries( donations ).forEach( ( donation ) => {
+			donationsArray[ donation[ 0 ] ] = donation[ 1 ];
+		} );
 		start = getStartIndex();
 		end = getEndIndex();
 		lastPage = Math.ceil( donationsArray.length / perPage );

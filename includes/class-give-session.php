@@ -318,6 +318,18 @@ class Give_Session {
 	}
 
 	/**
+	 * Get session donor id
+	 *
+	 * @since  2.10.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_donor_id() {
+		return $this->donor_id;
+	}
+
+	/**
 	 * Get Session
 	 *
 	 * Retrieve session variable for a given session key.

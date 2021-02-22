@@ -2,6 +2,9 @@
 
 namespace Give\DonorProfiles\Pipeline\Stages;
 
+/**
+ * @since 2.10.0
+ */
 class UpdateDonorAddresses {
 
 	protected $data;
@@ -23,7 +26,7 @@ class UpdateDonorAddresses {
 	 *
 	 * @return void
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	protected function updateAddressesInMetaDB() {
 
@@ -64,7 +67,7 @@ class UpdateDonorAddresses {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	protected function getStoredAdditionalAddresses() {
 		$storedAddresses           = $this->donor->address;

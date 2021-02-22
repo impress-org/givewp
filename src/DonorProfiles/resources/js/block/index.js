@@ -31,4 +31,8 @@ export default registerBlockType( 'give/donor-profile', {
 		],
 	},
 	edit: edit,
+	save: () => {
+		// Server side rendering via shortcode
+		return null;
+	},
 } );

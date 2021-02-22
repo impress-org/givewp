@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonorProfiles\Tabs\ProfileTab;
+namespace Give\DonorProfiles\Tabs\EditProfileTab;
 
 use WP_REST_Request;
 use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
@@ -8,7 +8,7 @@ use Give\DonorProfiles\Profile as Profile;
 use Give\DonorProfiles\Helpers\SanitizeProfileData as SanitizeHelper;
 
 /**
- * @since 2.11.0
+ * @since 2.10.0
  */
 class ProfileRoute extends RouteAbstract {
 
@@ -43,10 +43,10 @@ class ProfileRoute extends RouteAbstract {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function handleRequest( $request ) {
-		return $this->updateProfile( $request->get_param( 'data' ), $request->get_param( 'id' ) );
+		return $this->updateProfile( $request->get_param( 'data' ), give()->donorProfile->getId() );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class ProfileRoute extends RouteAbstract {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	protected function updateProfile( $data, $id ) {
 		$profile = new Profile( $id );
@@ -76,7 +76,7 @@ class ProfileRoute extends RouteAbstract {
 	 *
 	 * @return object
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public function sanitizeData( $value, $request, $param ) {
 

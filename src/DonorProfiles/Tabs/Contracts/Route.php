@@ -7,7 +7,7 @@ use WP_REST_Response;
 use Give\API\RestRoute;
 
 /**
- * @since 2.11.0
+ * @since 2.10.0
  */
 abstract class Route implements RestRoute {
 
@@ -17,7 +17,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @return string
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function endpoint();
 
@@ -27,7 +27,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function args();
 
@@ -38,7 +38,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @return WP_REST_Response
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	abstract public function handleRequest( WP_REST_Request $request );
 
@@ -57,7 +57,7 @@ abstract class Route implements RestRoute {
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => function() {
-						return is_user_logged_in();
+						return Give()->session->get_session_expiration() !== false;
 					},
 				],
 				'args' => $this->args(),

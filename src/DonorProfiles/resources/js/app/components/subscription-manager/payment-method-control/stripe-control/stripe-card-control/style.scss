@@ -1,0 +1,23 @@
+.give-donor-profile-stripe-card-control {
+	.give-donor-profile-stripe-card-control__label {
+		font-family: Montserrat, Arial, Helvetica, sans-serif;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 1;
+		color: #555;
+	}
+
+	.give-donor-profile-stripe-card-control__input {
+		margin-top: 8px;
+		border: 1px solid #b8b8b8;
+		overflow: hidden;
+		padding: 14px 14px;
+		box-shadow: 0 0 0 0 #4fa651;
+		transition: box-shadow 0.1s ease;
+		border-radius: 4px;
+	}
+
+	.give-donor-profile-stripe-card-control__input--focused {
+		box-shadow: 0 0 0 1px #4fa651;
+	}
+}

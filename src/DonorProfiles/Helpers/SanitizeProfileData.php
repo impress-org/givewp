@@ -4,7 +4,7 @@ namespace Give\DonorProfiles\Helpers;
 
 /**
  * Normalize format of location type lists.
- * @since 2.8.0
+ * @since 2.10.0
  */
 class SanitizeProfileData {
 
@@ -15,7 +15,7 @@ class SanitizeProfileData {
 	 *
 	 * @return int
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public static function sanitizeInt( $avatarId ) {
 		if ( ! empty( $avatarId ) ) {
@@ -32,7 +32,7 @@ class SanitizeProfileData {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public static function sanitizeAdditionalAddresses( $addresses ) {
 		if ( ! empty( $addresses ) ) {
@@ -49,7 +49,7 @@ class SanitizeProfileData {
 	 *
 	 * @return object
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public static function sanitizeAddress( $address ) {
 		if ( ! empty( $address ) ) {
@@ -69,7 +69,7 @@ class SanitizeProfileData {
 	 *
 	 * @return array
 	 *
-	 * @since 2.11.0
+	 * @since 2.10.0
 	 */
 	public static function sanitizeAdditionalEmails( $emails ) {
 		if ( ! empty( $emails ) ) {

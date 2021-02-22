@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 // From use hooks, see: https://usehooks.com/useWindowSize/
+
+export const useAccentColor = () => {
+	return useSelector( ( state ) => state.accentColor );
+};
 
 export const useWindowSize = () => {
 	// Initialize state with undefined width/height so server and client renders match
