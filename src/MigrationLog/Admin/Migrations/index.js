@@ -231,7 +231,6 @@ const Migrations = () => {
 			label: __( 'Run Order', 'give' ),
 			sort: true,
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'run_order', direction ),
-			visible: state.showOptions,
 			styles: {
 				maxWidth: 150,
 			},
@@ -240,7 +239,6 @@ const Migrations = () => {
 			key: 'actions',
 			label: __( 'Actions', 'give' ),
 			append: true,
-			visible: state.showOptions,
 			styles: {
 				maxWidth: 150,
 			},
@@ -260,6 +258,10 @@ const Migrations = () => {
 	const columnFilters = {
 		status: ( type ) => <Label type={ type } />,
 		actions: ( type, migration ) => {
+			if ( ! state.showOptions && migration.status !== 'failed' ) {
+				return null;
+			}
+
 			return (
 				<button
 					className="button"
