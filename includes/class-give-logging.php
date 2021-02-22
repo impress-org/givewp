@@ -102,14 +102,77 @@ class Give_Logging {
 
 		$data = $this->logTypeHelper->getDataFromType( $oldType );
 
+		$content = esc_html__( 'Something went wrong', 'give' );
+
+		if ( isset( $logData['log_content'] ) ) {
+			$content = $logData['log_content'];
+		} else {
+			if ( isset( $logData['post_title'] ) ) {
+				$content = $logData['post_title'];
+			}
+		}
+
 		return [
 			'type'     => $data['type'],
 			'category' => $data['category'],
-			'message'  => isset( $logData['post_title'] )
-				? $logData['post_title']
-				: esc_html__( 'Something went wrong', 'give' ),
+			'message'  => $content,
 			'context'  => array_merge( $logData, $logMeta ),
 		];
+	}
+
+	/**
+	 * Get Logs
+	 *
+	 * Retrieves log items for a particular object ID.
+	 *
+	 * @deprecated 2.10.0
+	 * @use LogRepository::getLogs();
+	 * @see LogRepository
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  int    $object_id Log object ID. Default is 0.
+	 * @param  string $type      Log type. Default is empty string.
+	 * @param  int    $paged     Page number Default is null.
+	 *
+	 * @return array             An array of the connected logs.
+	 */
+	public function get_logs( $object_id = 0, $type = '', $paged = null ) {
+		if ( $object_id ) {
+			$log = $this->logRepository->getLog( $object_id );
+
+			return [
+				(object) [
+					'ID'           => $log->getId(),
+					'log_date'     => $log->getDate(),
+					'log_date_gmt' => '',
+					'log_content'  => $log->getMessage(),
+					'log_title'    => $log->getCategory() . ' - ' . $log->getSource(),
+					'log_type'     => $log->getType(),
+				],
+			];
+		}
+
+		if ( ! empty( $type ) ) {
+			$data = [];
+			$logs = $this->logRepository->getLogsByType( $type );
+
+			foreach ( $logs as $log ) {
+				$data[] = (object) [
+					'ID'           => $log->getId(),
+					'log_date'     => $log->getDate(),
+					'log_date_gmt' => '',
+					'log_content'  => $log->getMessage(),
+					'log_title'    => $log->getCategory() . ' - ' . $log->getSource(),
+					'log_type'     => $log->getType(),
+				];
+			}
+
+			return $data;
+		}
+
+		return [];
 	}
 
 	/**
@@ -205,6 +268,11 @@ class Give_Logging {
 	public function get_log_count( $object_id = 0, $type = '', $meta_query = null, $date_query = null ) {
 		if ( $object_id ) {
 			return 0;
+		}
+
+		if ( ! empty( $type ) ) {
+			$logs = $this->logRepository->getLogsByType( $type );
+			return count( $logs );
 		}
 
 		return $this->logRepository->getTotalCount();
