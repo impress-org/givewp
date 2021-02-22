@@ -5,6 +5,7 @@ namespace Give\DonorProfiles;
 use Give\DonorProfiles\Factories\DonorFactory;
 use Give\DonorProfiles\Pipeline\DonorProfilePipeline;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorName;
+use Give\DonorProfiles\Pipeline\Stages\UpdateDonorCompany;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorEmails;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
@@ -41,6 +42,7 @@ class Profile {
 
 		$pipeline = ( new DonorProfilePipeline )
 			->pipe( new UpdateDonorName )
+			->pipe( new UpdateDonorCompany )
 			->pipe( new UpdateDonorAvatar )
 			->pipe( new UpdateDonorEmails )
 			->pipe( new UpdateDonorAddresses )
