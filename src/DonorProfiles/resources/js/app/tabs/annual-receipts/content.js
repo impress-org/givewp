@@ -12,6 +12,8 @@ const Content = () => {
 	const annualReceipts = useSelector( ( state ) => state.annualReceipts );
 	const querying = useSelector( ( state ) => state.querying );
 
+	const annualReceiptsCount = annualReceipts ? Object.entries( annualReceipts ).length : 0;
+
 	useEffect( () => {
 		fetchAnnualReceiptsFromAPI();
 	}, [] );
@@ -26,7 +28,7 @@ const Content = () => {
 	) : (
 		<Fragment>
 			<Heading>
-				{ annualReceipts ? `${ Object.entries( annualReceipts ).length } ${ __( 'Total Annual Receipts', 'give' ) }` : __( '0 Total Annual Receipts', 'give' ) }
+				{ `${ annualReceiptsCount } ${ __( 'Total Annual Receipts', 'give' ) }` }
 			</Heading>
 			<AnnualReceiptTable annualReceipts={ annualReceipts } perPage={ 5 } />
 		</Fragment>
