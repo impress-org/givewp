@@ -92,6 +92,7 @@ class ProfileRoute extends RouteAbstract {
 			'primaryAddress'      => SanitizeHelper::sanitizeAddress( $values->primaryAddress ),
 			'titlePrefix'         => sanitize_text_field( $values->titlePrefix ),
 			'avatarId'            => SanitizeHelper::sanitizeInt( $values->avatarId ),
+			'isAnonymous'         => intval( $values->isAnonymous ),
 		];
 
 	}

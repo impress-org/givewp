@@ -68,14 +68,14 @@ const Content = () => {
 	}, [] ) : [];
 	const [ additionalAddresses, setAdditionalAddresses ] = useState( reducedAdditionalAddresses );
 
-	const [ anonymous, setAnonymous ] = useState( storedProfile.isAnonymous );
+	const [ isAnonymous, setIsAnonymous ] = useState( storedProfile.isAnonymous );
 	const anonymousOptions = [
 		{
-			value: 'public',
+			value: '0',
 			label: __( 'Public - show my donations publicly', 'give' ),
 		},
 		{
-			value: 'private',
+			value: '1',
 			label: __( 'Private - only organization admins can view my info' ),
 		},
 	];
@@ -90,6 +90,7 @@ const Content = () => {
 			primaryAddress,
 			additionalAddresses,
 			avatarFile,
+			isAnonymous,
 			id,
 		} );
 	};
@@ -147,8 +148,8 @@ const Content = () => {
 				label={ __( 'Anonymous Giving' ) }
 				description={ __( 'This will prevent your avatar, first name, and donation comments and other information from appearing publicly on this orgization’s website.', 'give' ) }
 				options={ anonymousOptions }
-				onChange={ ( value ) => setAnonymous( value ) }
-				value={ anonymous }
+				onChange={ ( value ) => setIsAnonymous( value ) }
+				value={ isAnonymous }
 			/>
 			<Button icon="save" onClick={ () => handleUpdate() }>
 				Update Profile
