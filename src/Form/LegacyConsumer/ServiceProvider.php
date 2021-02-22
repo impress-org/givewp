@@ -27,6 +27,7 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot() {
 		give( TemplateHooks::class )->walk( give( Commands\SetupNewTemplateHook::class ) );
+		give( TemplateHooks::class )->walk( give( Commands\SetupFieldPersistance::class ) );
 		give( TemplateHooks::class )->walk( give( Commands\SetupFieldValidation::class ) );
 		if ( ! wp_doing_ajax() ) {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
