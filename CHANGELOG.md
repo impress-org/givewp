@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Edit Profile UI is now implemented (#5463)
 -   Edit Profile tab now persists data (#5486)
 -   PDF Receipts are now available from Donation Receipt pages (#5613)
+-   Annual Receipts UI now connects to addon (#5611)
 -   Recurring Donations tab UI now connects to addon (#5584)
 -   Donor Profile authentication logic is now implemented (#5569)
 -   Admin can now set Donor Profile accent color (#5615)

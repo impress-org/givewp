@@ -1,12 +1,36 @@
+import { Fragment, useEffect } from 'react';
+
+const { __ } = wp.i18n;
+
 import Heading from '../../components/heading';
-import { Fragment } from 'react';
+import AnnualReceiptTable from '../../components/annual-receipt-table';
+
+import { useSelector } from './hooks';
+import { fetchAnnualReceiptsFromAPI } from './utils';
 
 const Content = () => {
-	return (
+	const annualReceipts = useSelector( ( state ) => state.annualReceipts );
+	const querying = useSelector( ( state ) => state.querying );
+
+	const annualReceiptsCount = annualReceipts ? Object.entries( annualReceipts ).length : 0;
+
+	useEffect( () => {
+		fetchAnnualReceiptsFromAPI();
+	}, [] );
+
+	return querying === true && annualReceipts === null ? (
 		<Fragment>
 			<Heading>
-				Annual Receipts
+				{ __( 'Loading...', 'give' ) }
 			</Heading>
+			<AnnualReceiptTable />
+		</Fragment>
+	) : (
+		<Fragment>
+			<Heading>
+				{ `${ annualReceiptsCount } ${ __( 'Total Annual Receipts', 'give' ) }` }
+			</Heading>
+			<AnnualReceiptTable annualReceipts={ annualReceipts } perPage={ 5 } />
 		</Fragment>
 	);
 };
