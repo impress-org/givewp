@@ -51,7 +51,7 @@ const Content = () => {
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
 					</Link>
 					{ getDonationById( id ).payment.pdfReceiptUrl.length && (
-						<Button icon="file-pdf" onClick={ () => window.location = getDonationById( id ).payment.pdfReceiptUrl }>
+						<Button icon="file-pdf" href={ getDonationById( id ).payment.pdfReceiptUrl }>
 							{ __( 'Download Receipt', 'give' ) }
 						</Button>
 					) }
