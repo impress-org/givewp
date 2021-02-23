@@ -7,6 +7,7 @@
 		required="" aria-required="true"
 	<?php endif; ?>
 	tabindex="1"
+	@attributes
 >
 	<?php foreach ( $field->getOptions() as $key => $value ) : ?>
 	<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
