@@ -11,7 +11,7 @@ trait FieldAttributes {
 	 * @unreleased
 	 * @var array
 	 */
-	public $attributes;
+	public $attributes = [];
 
 	/**
 	 * @unreleased
