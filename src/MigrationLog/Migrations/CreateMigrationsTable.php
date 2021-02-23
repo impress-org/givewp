@@ -23,6 +23,13 @@ class CreateMigrationsTable extends Migration {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function title() {
+		return  esc_html__( 'Create new give_migrations table' );
+	}
+
+	/**
 	 * @return int
 	 */
 	public static function timestamp() {

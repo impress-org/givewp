@@ -49,7 +49,7 @@ abstract class Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return self::id();
+		return static::id();
 	}
 
 
@@ -61,6 +61,6 @@ abstract class Migration {
 	 * @return string
 	 */
 	public static function source() {
-		return esc_html__( 'Core', 'give' );
+		return esc_html__( 'GiveWP Core', 'give' );
 	}
 }

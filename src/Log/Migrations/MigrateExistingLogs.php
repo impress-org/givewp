@@ -49,6 +49,13 @@ class MigrateExistingLogs extends Migration {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function title() {
+		return  esc_html__( 'Migrate existing logs to give_log table' );
+	}
+
+	/**
 	 * @return int
 	 */
 	public static function timestamp() {

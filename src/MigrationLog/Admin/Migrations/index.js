@@ -212,10 +212,10 @@ const Migrations = () => {
 			},
 		},
 		{
-			key: 'id',
-			label: __( 'Migration ID', 'give' ),
+			key: 'title',
+			label: __( 'Migration Title', 'give' ),
 			sort: true,
-			sortCallback: ( direction ) => setSortDirectionForColumn( 'id', direction ),
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'title', direction ),
 		},
 		{
 			key: 'last_run',
@@ -223,7 +223,16 @@ const Migrations = () => {
 			sort: true,
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'last_run', direction ),
 			styles: {
-				maxWidth: 220,
+				maxWidth: 200,
+			},
+		},
+		{
+			key: 'source',
+			label: __( 'Source', 'give' ),
+			sort: true,
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'source', direction ),
+			styles: {
+				maxWidth: 200,
 			},
 		},
 		{
@@ -240,7 +249,7 @@ const Migrations = () => {
 			label: __( 'Actions', 'give' ),
 			append: true,
 			styles: {
-				maxWidth: 150,
+				maxWidth: 100,
 			},
 		},
 		{
