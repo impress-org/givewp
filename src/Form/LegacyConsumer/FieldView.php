@@ -37,7 +37,7 @@ class FieldView {
 	protected static function mergeAttributes( $html, $field ) {
 		$attributes = array_map(
 			function( $key, $value ) {
-				return sprintf( '%s="%s"', $key, $value );
+				return sprintf( '%s="%s"', $key, esc_attr( $value ) );
 			},
 			array_keys( $field->getAttributes() ),
 			array_values( $field->getAttributes() )
