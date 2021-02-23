@@ -8,7 +8,7 @@ final class FieldViewTest extends TestCase {
 
     public function testSupportsAttributes() {
         $field = new FormField( 'text', 'my-text-field' );
-        $field->setAttributes([
+        $field->attributes([
             'foo' => 'bar',
             'baz' => 'qux quux',
         ]);

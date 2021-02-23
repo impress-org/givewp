@@ -7,7 +7,7 @@ final class FieldAttributesTest extends TestCase {
 
     public function testHasAttributes() {
         $field = new FormField( 'text', 'my-text-field' );
-        $field->setAttributes( $attributes = [
+        $field->attributes( $attributes = [
             'foo' => 'bar',
         ]);
         $this->assertEquals( $attributes, $field->getAttributes() );

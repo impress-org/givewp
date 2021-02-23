@@ -18,7 +18,7 @@ trait FieldAttributes {
 	 * @param array $attributes
 	 * @return $this
 	 */
-	public function setAttributes( $attributes ) {
+	public function attributes( $attributes ) {
 		$this->attributes = $attributes;
 		return $this;
 	}
