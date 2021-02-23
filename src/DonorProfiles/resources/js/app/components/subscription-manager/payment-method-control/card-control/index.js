@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { PaymentInputsWrapper, usePaymentInputs } from 'react-payment-inputs';
 import images from 'react-payment-inputs/images';
+import { useAccentColor } from '../../../../hooks';
 
 import './style.scss';
 
@@ -10,6 +11,7 @@ const CardControl = ( { label, onChange, value } ) => {
 	const [ cardExpiryDate, setCardExpiryDate ] = useState( value ? `${ value.card_exp_month } \ ${ value.card_exp_year }` : '' );
 	const [ cardCVC, setCardCVC ] = useState( value ? value.card_cvc : '' );
 	const [ cardZIP, setCardZIP ] = useState( value ? value.card_zip : '' );
+	const accentColor = useAccentColor();
 
 	useEffect( () => {
 		if ( onChange ) {
@@ -48,7 +50,7 @@ const CardControl = ( { label, onChange, value } ) => {
 					border: '1px solid #b8b8b8',
 					overflow: 'hidden',
 					padding: '14px 14px',
-					boxShadow: '0 0 0 0 #4fa651',
+					boxShadow: `0 0 0 0 ${ accentColor }`,
 					transition: 'box-shadow 0.1s ease',
 					borderRadius: '4px',
 				},
@@ -58,7 +60,7 @@ const CardControl = ( { label, onChange, value } ) => {
 				},
 				focused: {
 					border: '1px solid #b8b8b8',
-					boxShadow: '0 0 0 1px #4fa651',
+					boxShadow: `0 0 0 1px ${ accentColor }`,
 				},
 			},
 			input: {
