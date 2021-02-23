@@ -70,14 +70,11 @@ class GetMigrations extends Endpoint {
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => [ $this, 'permissionsCheck' ],
 					'args'                => [
-						'status'    => [
+						'page'      => [
 							'validate_callback' => function( $param ) {
-								if ( empty( $param ) || ( 'all' === $param ) ) {
-									return true;
-								}
-								return MigrationLogStatus::isValid( $param );
+								return filter_var( $param, FILTER_VALIDATE_INT );
 							},
-							'default'           => 'all',
+							'default'           => '1',
 						],
 						'sort'      => [
 							'validate_callback' => function( $param ) {
@@ -113,9 +110,9 @@ class GetMigrations extends Endpoint {
 			'title'      => 'logs',
 			'type'       => 'object',
 			'properties' => [
-				'status'    => [
-					'type'        => 'string',
-					'description' => esc_html__( 'Migration status', 'give' ),
+				'page'      => [
+					'type'        => 'integer',
+					'description' => esc_html__( 'Current page', 'give' ),
 				],
 				'sort'      => [
 					'type'        => 'string',
