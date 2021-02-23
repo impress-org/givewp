@@ -86,12 +86,14 @@ class ProfileRoute extends RouteAbstract {
 		return [
 			'firstName'           => sanitize_text_field( $values->firstName ),
 			'lastName'            => sanitize_text_field( $values->lastName ),
+			'company'             => sanitize_text_field( $values->company ),
 			'additionalEmails'    => SanitizeHelper::sanitizeAdditionalEmails( $values->additionalEmails ),
 			'additionalAddresses' => SanitizeHelper::sanitizeAdditionalAddresses( $values->additionalAddresses ),
 			'primaryEmail'        => sanitize_email( $values->primaryEmail ),
 			'primaryAddress'      => SanitizeHelper::sanitizeAddress( $values->primaryAddress ),
 			'titlePrefix'         => sanitize_text_field( $values->titlePrefix ),
 			'avatarId'            => SanitizeHelper::sanitizeInt( $values->avatarId ),
+			'isAnonymous'         => intval( $values->isAnonymous ),
 		];
 
 	}

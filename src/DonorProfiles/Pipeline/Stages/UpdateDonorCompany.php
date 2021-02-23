@@ -7,7 +7,7 @@ use Give\DonorProfiles\Pipeline\Stages\Stage;
 /**
  * @since 2.10.0
  */
-class UpdateDonorAvatar implements Stage {
+class UpdateDonorCompany implements Stage {
 
 	protected $data;
 	protected $donor;
@@ -17,15 +17,14 @@ class UpdateDonorAvatar implements Stage {
 		$this->data  = $payload['data'];
 		$this->donor = $payload['donor'];
 
-		$this->updateAvatarInMetaDB();
+		$this->updateCompanyInMetaDB();
 
 		return $payload;
-
 	}
 
-	protected function updateAvatarInMetaDB() {
+	protected function updateCompanyInMetaDB() {
 		$attributeMetaMap = [
-			'avatarId' => '_give_donor_avatar_id',
+			'company' => '_give_donor_company',
 		];
 
 		foreach ( $attributeMetaMap as $attribute => $metaKey ) {

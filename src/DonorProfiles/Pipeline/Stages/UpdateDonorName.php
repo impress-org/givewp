@@ -2,10 +2,12 @@
 
 namespace Give\DonorProfiles\Pipeline\Stages;
 
+use Give\DonorProfiles\Pipeline\Stages\Stage;
+
 /**
  * @since 2.10.0
  */
-class UpdateDonorName {
+class UpdateDonorName implements Stage {
 
 	protected $data;
 	protected $donor;
