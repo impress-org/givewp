@@ -4,7 +4,18 @@ namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\FormField;
 
+/**
+ * @unreleased
+ */
 class FieldView {
+
+	/**
+	 * @unreleased
+	 *
+	 * @param FormField $field
+	 *
+	 * @return void
+	 */
 	public static function render( FormField $field ) {
 		echo $field->getType();
 		echo '<div class="form-row form-row-wide">';
@@ -15,6 +26,14 @@ class FieldView {
 		echo '</div>';
 	}
 
+	/**
+	 * @unreleased
+	 *
+	 * @param string $html
+	 * @param FormField $field
+	 *
+	 * @return string
+	 */
 	protected static function mergeAttributes( $html, $field ) {
 		$attributes = array_map(
 			function( $key, $value ) {
