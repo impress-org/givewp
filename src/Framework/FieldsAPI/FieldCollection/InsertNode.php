@@ -13,27 +13,40 @@ trait InsertNode {
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $siblingName
+	 * @param Node $node
+	 *
+	 * @return $this
 	 */
 	public function insertAfter( $siblingName, Node $node ) {
 		$this->checkNameCollisionDeep( $node );
-		$this->_insertAfter( $siblingName, $node );
+		$this->insertAfterRecursive( $siblingName, $node );
 		return $this;
 	}
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $siblingName
+	 * @param Node $node
+	 *
+	 * @throws ReferenceNodeNotFoundException
+	 *
+	 * @return void
 	 */
-	protected function _insertAfter( $siblingName, Node $node ) {
+	protected function insertAfterRecursive( $siblingName, Node $node ) {
 		$siblingIndex = $this->getNodeIndexByName( $siblingName );
 		if ( false !== $siblingIndex ) {
-			return $this->insertAtIndex(
+			$this->insertAtIndex(
 				$siblingIndex + 1,
 				$node
 			);
+			return;
 		} elseif ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
 				if ( $childNode instanceof GroupNode ) {
-					$childNode->_insertAfter( $siblingName, $node );
+					$childNode->insertAfterRecursive( $siblingName, $node );
 				}
 			}
 			return;
@@ -43,27 +56,40 @@ trait InsertNode {
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $siblingName
+	 * @param Node $node
+	 *
+	 * @return $this
 	 */
 	public function insertBefore( $siblingName, Node $node ) {
 		$this->checkNameCollisionDeep( $node );
-		$this->_insertBefore( $siblingName, $node );
+		$this->insertBeforeRecursive( $siblingName, $node );
 		return $this;
 	}
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $siblingName
+	 * @param Node $node
+	 *
+	 * @throws ReferenceNodeNotFoundException
+	 *
+	 * @return void
 	 */
-	protected function _insertBefore( $siblingName, Node $node ) {
+	protected function insertBeforeRecursive( $siblingName, Node $node ) {
 		$siblingIndex = $this->getNodeIndexByName( $siblingName );
 		if ( false !== $siblingIndex ) {
-			return $this->insertAtIndex(
+			$this->insertAtIndex(
 				$siblingIndex - 1,
 				$node
 			);
+			return;
 		} elseif ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
 				if ( $childNode instanceof GroupNode ) {
-					$childNode->_insertBefore( $siblingName, $node );
+					$childNode->insertBeforeRecursive( $siblingName, $node );
 				}
 			}
 			return;
