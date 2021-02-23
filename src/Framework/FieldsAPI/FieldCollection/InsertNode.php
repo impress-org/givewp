@@ -4,6 +4,7 @@ namespace Give\Framework\FieldsAPI\FieldCollection;
 
 use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
 use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
+use Give\Framework\FieldsAPI\FieldCollection\Exception\ReferenceNodeNotFoundException;
 
 /**
  * @unreleased
@@ -11,41 +12,53 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 trait InsertNode {
 
 	public function insertAfter( $siblingName, Node $node ) {
+		// Check that reference node exists.
 		$this->checkNameCollisionDeep( $node );
-		$siblingIndex = $this->getNodeIndexByName( $siblingName );
-		if ( false !== $siblingIndex ) {
-			$this->insertAtIndex(
-				$siblingIndex + 1,
-				$node
-			);
-		} else {
-			foreach ( $this->nodes as $childNode ) {
-				if ( $childNode instanceof GroupNode ) {
-					$childNode->insertAfter( $siblingName, $node );
-				}
-			}
-		}
+		$this->_insertAfter( $siblingName, $node );
 		return $this;
 	}
 
-	public function insertBefore( $siblingName, Node $node ) {
-		$this->checkNameCollisionDeep( $node );
+	protected function _insertAfter( $siblingName, Node $node ) {
 		$siblingIndex = $this->getNodeIndexByName( $siblingName );
 		if ( false !== $siblingIndex ) {
-			$this->insertAtIndex(
+			return $this->insertAtIndex(
+				$siblingIndex + 1,
+				$node
+			);
+		} elseif ( $this->nodes ) {
+			foreach ( $this->nodes as $childNode ) {
+				if ( $childNode instanceof GroupNode ) {
+					$childNode->_insertAfter( $siblingName, $node );
+				}
+			}
+			return;
+		}
+		throw new ReferenceNodeNotFoundException( $siblingName );
+	}
+
+	public function insertBefore( $siblingName, Node $node ) {
+		// Check that reference node exists.
+		$this->checkNameCollisionDeep( $node );
+		$this->_insertBefore( $siblingName, $node );
+		return $this;
+	}
+
+	protected function _insertBefore( $siblingName, Node $node ) {
+		$siblingIndex = $this->getNodeIndexByName( $siblingName );
+		if ( false !== $siblingIndex ) {
+			return $this->insertAtIndex(
 				$siblingIndex - 1,
 				$node
 			);
-		} else {
+		} elseif ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
 				if ( $childNode instanceof GroupNode ) {
-					;
-				} {
-					$childNode->insertBefore( $siblingName, $node );
+					$childNode->_insertBefore( $siblingName, $node );
 				}
 			}
+			return;
 		}
-		return $this;
+		throw new ReferenceNodeNotFoundException( $siblingName );
 	}
 
 	protected function insertAtIndex( $index, $node ) {
