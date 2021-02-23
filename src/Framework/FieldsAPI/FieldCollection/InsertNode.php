@@ -11,13 +11,18 @@ use Give\Framework\FieldsAPI\FieldCollection\Exception\ReferenceNodeNotFoundExce
  */
 trait InsertNode {
 
+	/**
+	 * @unreleased
+	 */
 	public function insertAfter( $siblingName, Node $node ) {
-		// Check that reference node exists.
 		$this->checkNameCollisionDeep( $node );
 		$this->_insertAfter( $siblingName, $node );
 		return $this;
 	}
 
+	/**
+	 * @unreleased
+	 */
 	protected function _insertAfter( $siblingName, Node $node ) {
 		$siblingIndex = $this->getNodeIndexByName( $siblingName );
 		if ( false !== $siblingIndex ) {
@@ -36,13 +41,18 @@ trait InsertNode {
 		throw new ReferenceNodeNotFoundException( $siblingName );
 	}
 
+	/**
+	 * @unreleased
+	 */
 	public function insertBefore( $siblingName, Node $node ) {
-		// Check that reference node exists.
 		$this->checkNameCollisionDeep( $node );
 		$this->_insertBefore( $siblingName, $node );
 		return $this;
 	}
 
+	/**
+	 * @unreleased
+	 */
 	protected function _insertBefore( $siblingName, Node $node ) {
 		$siblingIndex = $this->getNodeIndexByName( $siblingName );
 		if ( false !== $siblingIndex ) {
@@ -61,6 +71,9 @@ trait InsertNode {
 		throw new ReferenceNodeNotFoundException( $siblingName );
 	}
 
+	/**
+	 * @unreleased
+	 */
 	protected function insertAtIndex( $index, $node ) {
 		array_splice( $this->nodes, $index, 0, [ $node ] );
 	}
