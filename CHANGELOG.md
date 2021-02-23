@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Fields API throws an exception when inserting relative to a node that does not exist (#5640)
+-   Form Templates now support custom checkbox fields. (#5643)
 
 ## 2.9.6 - 2021-01-13
 
