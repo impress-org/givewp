@@ -28,7 +28,7 @@ export const updateProfileWithAPI = async( {
 	 * Pass new profile data to the Profile REST endpoint
 	 */
 	const { dispatch } = store;
-	axios.post( getAPIRoot() + 'give-api/v2/donor-profile/profile', {
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/profile', {
 		data: JSON.stringify( {
 			titlePrefix,
 			firstName,
@@ -52,6 +52,7 @@ export const updateProfileWithAPI = async( {
 			 * the donor's profile data
 			 */
 			dispatch( setProfile( responseData.profile ) );
+			return responseData;
 		} );
 };
 
