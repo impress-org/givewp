@@ -20,7 +20,7 @@ class GetMigrations extends Endpoint {
 	/**
 	 * Enable sorting by these columns
 	 */
-	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run', 'run_order' ];
+	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run', 'run_order', 'title', 'source' ];
 
 	/** @var string */
 	protected $endpoint = 'migrations/get-migrations';
@@ -144,12 +144,17 @@ class GetMigrations extends Endpoint {
 				continue;
 			}
 
+			/* @var Migration $migrationClass */
+			$migrationClass = $this->migrationRegister->getMigration( $migration->getId() );
+
 			$data[] = [
 				'id'        => $migration->getId(),
 				'status'    => $migration->getStatus(),
 				'error'     => $migration->getError(),
 				'last_run'  => $migration->getLastRunDate(),
 				'run_order' => $this->migrationHelper->getRunOrderForMigration( $migration->getId() ),
+				'source'    => $migrationClass::source(),
+				'title'     => $migrationClass::title(),
 			];
 		}
 
@@ -162,6 +167,8 @@ class GetMigrations extends Endpoint {
 				'error'     => '',
 				'last_run'  => '',
 				'run_order' => $this->migrationHelper->getRunOrderForMigration( $migration::id() ),
+				'source'    => $migration::source(),
+				'title'     => $migration::title(),
 			];
 		}
 

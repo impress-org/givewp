@@ -42,13 +42,25 @@ abstract class Migration {
 	}
 
 	/**
-	 * Run the migration check
+	 * Return migration title
 	 *
-	 * @since 2.9.7
+	 * @since 2.10.0
 	 *
-	 * @return bool
+	 * @return string
 	 */
-	public function check() {
-		return true;
+	public static function title() {
+		return static::id();
+	}
+
+
+	/**
+	 * Return migration source
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public static function source() {
+		return esc_html__( 'GiveWP Core', 'give' );
 	}
 }

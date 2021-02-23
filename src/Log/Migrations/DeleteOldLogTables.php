@@ -18,6 +18,13 @@ class DeleteOldLogTables extends Migration {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function title() {
+		return  esc_html__( 'Delete give_logs and give_logmeta tables' );
+	}
+
+	/**
 	 * @return int
 	 */
 	public static function timestamp() {
