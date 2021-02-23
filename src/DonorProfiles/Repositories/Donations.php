@@ -179,6 +179,7 @@ class Donations {
 			'time'          => date_i18n( 'g:i a', strtotime( $payment->date ) ),
 			'mode'          => $payment->get_meta( '_give_payment_mode' ),
 			'pdfReceiptUrl' => $pdfReceiptUrl,
+			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
 		];
 	}
 

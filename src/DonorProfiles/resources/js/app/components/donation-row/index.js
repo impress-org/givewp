@@ -31,7 +31,7 @@ const DonationRow = ( { donation } ) => {
 				) }
 			</div>
 			<div className="give-donor-profile-table__pill">
-				<div className="give-donor-profile-table__donation-id">ID: { id }</div>
+				<div className="give-donor-profile-table__donation-id">ID: { payment.serialCode }</div>
 				<div className="give-donor-profile-table__donation-receipt">
 					<Link to={ `/donation-history/${ id }` }>
 						{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
