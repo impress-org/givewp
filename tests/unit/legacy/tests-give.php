@@ -55,8 +55,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donor-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donors.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-form-meta.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs-meta.php' );
+		// $this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs.php' );
+		// $this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-payment-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sequential-ordering.php' );
@@ -66,7 +66,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-session.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-give-html-elements.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-logging.php' );
+		// $this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-logging.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/country-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/template-functions.php' );
@@ -151,9 +151,9 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/give-export-donations-functions.php' );
 
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
+		// $this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
+		// $this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
+		// $this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-exports.php' );
