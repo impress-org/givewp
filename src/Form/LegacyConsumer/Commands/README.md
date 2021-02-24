@@ -1,4 +1,4 @@
-# Making sense of the nested interations
+# Making sense of the nested callbacks
 
 Why is this so complicated?
 
