@@ -14,14 +14,6 @@ use Give\MigrationLog\MigrationLogStatus;
  * @since 2.9.0
  */
 class MigrationsRunner {
-	/**
-	 * List of completed migrations.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @var array
-	 */
-	private $completedMigrations;
 
 	/**
 	 * @since 2.9.0
@@ -58,7 +50,6 @@ class MigrationsRunner {
 		$this->migrationRegister      = $migrationRegister;
 		$this->migrationLogFactory    = $migrationLogFactory;
 		$this->migrationLogRepository = $migrationLogRepository;
-		$this->completedMigrations    = $this->migrationLogRepository->getCompletedMigrationsIDs();
 	}
 
 	/**
@@ -91,7 +82,7 @@ class MigrationsRunner {
 		foreach ( $migrations as $key => $migrationClass ) {
 			$migrationId = $migrationClass::id();
 
-			if ( in_array( $migrationId, $this->completedMigrations, true ) ) {
+			if ( in_array( $migrationId, $this->migrationLogRepository->getCompletedMigrationsIDs(), true ) ) {
 				continue;
 			}
 
@@ -142,6 +133,6 @@ class MigrationsRunner {
 	 * @return bool
 	 */
 	public function hasMigrationToRun() {
-		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->completedMigrations );
+		return (bool) array_diff( $this->migrationRegister->getRegisteredIds(), $this->migrationLogRepository->getCompletedMigrationsIDs() );
 	}
 }
