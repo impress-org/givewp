@@ -21,7 +21,26 @@ class FieldView {
 			ob_start();
 			include plugin_dir_path( __FILE__ ) . '/templates/label.html.php';
 			include plugin_dir_path( __FILE__ ) . '/templates/' . $field->getType() . '.html.php';
-			echo ob_get_clean();
+			echo self::mergeAttributes( ob_get_clean(), $field );
 		echo '</div>';
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $html
+	 * @param FormField $field
+	 *
+	 * @return string
+	 */
+	protected static function mergeAttributes( $html, $field ) {
+		$attributes = array_map(
+			function( $key, $value ) {
+				return sprintf( '%s="%s"', $key, esc_attr( $value ) );
+			},
+			array_keys( $field->getAttributes() ),
+			array_values( $field->getAttributes() )
+		);
+		return str_replace( '@attributes', implode( ' ', $attributes ), $html );
 	}
 }
