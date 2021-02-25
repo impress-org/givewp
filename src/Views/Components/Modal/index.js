@@ -33,6 +33,7 @@ const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
 		[ styles.error ]: type === 'error' || type === 'failed',
 		[ styles.warning ]: type === 'warning',
 		[ styles.success ]: type === 'success',
+		[ styles.http ]: type === 'http',
 	} );
 
 	return (

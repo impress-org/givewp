@@ -91,7 +91,7 @@
 .errorDetailsContainer {
 	background-color: #f1f1f1;
 	border-radius: 10px;
-	padding: 20px;
+	padding: 10px 20px;
 	height: auto;
 	min-height: 40px;
 	max-height: 240px;
@@ -101,6 +101,7 @@
 	span {
 		font-weight: 600;
 		margin-right: 10px;
+		margin-bottom: 10px;
 	}
 }
 
@@ -114,4 +115,8 @@
 
 .success {
 	border-top-color: $success;
+}
+
+.http {
+	border-top-color: $http;
 }
