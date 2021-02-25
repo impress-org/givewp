@@ -45,6 +45,11 @@
 
 	:global .DateRangePicker_picker {
 		border-radius: 3px;
+		top: 48px !important;
+	}
+
+	:global .DateInput_fang {
+		top: 38px !important;
 	}
 
 	:global .DateInput {

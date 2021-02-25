@@ -21,6 +21,7 @@ const Logs = () => {
 		statuses: [],
 		sources: [],
 		categories: [],
+		isSorting: false,
 	} );
 
 	const [ logModal, setLogModal ] = useState( {
@@ -53,6 +54,7 @@ const Logs = () => {
 					categories: response.categories,
 					sources: response.sources,
 					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
+					isSorting: false,
 				};
 			} );
 		},
@@ -112,6 +114,7 @@ const Logs = () => {
 				...previousState,
 				sortColumn: column,
 				sortDirection: direction,
+				isSorting: true,
 			};
 		} );
 	};
@@ -187,7 +190,7 @@ const Logs = () => {
 			label: __( 'All statuses', 'give' ),
 		};
 
-		const statuses = Object.entries( state.statuses ).map( ( [ label, value ] ) => {
+		const statuses = Object.entries( state.statuses ).map( ( [ value, label ] ) => {
 			return {
 				label,
 				value,
@@ -217,7 +220,7 @@ const Logs = () => {
 		return (
 			<Modal visible={ logModal.visible } type={ logModal.type } handleClose={ closeLogModal }>
 				<Modal.Title>
-					<Label type={ logModal.type } />
+					<Label type={ logModal.type } text={ getLogTypeText( logModal.type ) } />
 
 					<strong style={ { marginLeft: 20 } }>
 						{ __( 'Log ID', 'give' ) }: { logModal.id }
@@ -279,6 +282,13 @@ const Logs = () => {
 				) }
 			</Modal>
 		);
+	};
+
+	const getLogTypeText = ( type ) => {
+		if ( type in window.GiveLogs.logTypes ) {
+			return window.GiveLogs.logTypes[ type ];
+		}
+		return type;
 	};
 
 	const resetQueryParameters = ( e ) => {
@@ -344,7 +354,7 @@ const Logs = () => {
 	];
 
 	const columnFilters = {
-		log_type: ( type ) => <Label type={ type } />,
+		log_type: ( type ) => <Label type={ type } text={ getLogTypeText( type ) } />,
 		details: ( value, log ) => {
 			return (
 				<Button
@@ -434,6 +444,7 @@ const Logs = () => {
 					data={ data }
 					columnFilters={ columnFilters }
 					isLoading={ isLoading }
+					isSorting={ state.isSorting }
 					stripped={ false }
 				/>
 			</Card>
