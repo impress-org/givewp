@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New
+
+-   Custom field values now display in payment details (#5647)
+
 ### Changed
 
 -   Fields API throws an exception when inserting relative to a node that does not exist (#5640)
