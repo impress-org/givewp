@@ -39,7 +39,7 @@ const DonationTable = ( { donations, perPage } ) => {
 		} );
 		start = getStartIndex();
 		end = getEndIndex();
-		lastPage = Math.ceil( donationsArray.length / perPage );
+		lastPage = Math.ceil( donationsArray.length / perPage ) - 1;
 		donationRows = getDonationRows();
 	}
 

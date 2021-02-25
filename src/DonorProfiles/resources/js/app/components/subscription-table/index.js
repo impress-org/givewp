@@ -39,7 +39,7 @@ const SubscriptionTable = ( { subscriptions, perPage } ) => {
 		} );
 		start = getStartIndex();
 		end = getEndIndex();
-		lastPage = Math.ceil( subscriptionsArray.length / perPage );
+		lastPage = Math.ceil( subscriptionsArray.length / perPage ) - 1;
 		subscriptionRows = getSubscriptionRows();
 	}
 
