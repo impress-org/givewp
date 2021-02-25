@@ -1,8 +1,13 @@
 .give-donor-profile-tab-menu {
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 }
 
 .give-donor-profile-logout {
+	margin-top: auto;
+	padding: 38px 16px !important;
+	color: var(--give-donor-profile-accent-color) !important;
+	border-top: 1px solid #e2e6ec;
 	cursor: pointer;
 }

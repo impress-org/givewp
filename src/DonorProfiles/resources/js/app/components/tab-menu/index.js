@@ -29,7 +29,7 @@ const TabMenu = () => {
 		<div className="give-donor-profile-tab-menu">
 			{ tabLinks }
 			<div className="give-donor-profile-logout give-donor-profile-tab-link" onClick={ () => handleLogout() }>
-				<FontAwesomeIcon icon="door-open" /> { __( 'Logout', 'give' ) }
+				<FontAwesomeIcon icon="sign-out-alt" /> { __( 'Logout', 'give' ) }
 			</div>
 		</div>
 	);
