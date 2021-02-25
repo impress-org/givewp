@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New
 
 -   Custom field values now display in payment details (#5647)
+-   Custom field values now show in Donation Receipt (#5654)
 
 ### Changed
 
