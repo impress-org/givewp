@@ -31,4 +31,21 @@ class LogType extends Enum {
 	public static function getDefault() {
 		return LogType::ERROR;
 	}
+
+	/**
+	 * Get types translated
+	 *
+	 * @return array
+	 */
+	public static function getTypesTranslated() {
+		return [
+			self::ERROR   => esc_html__( 'Error', 'give' ),
+			self::WARNING => esc_html__( 'Warning', 'give' ),
+			self::NOTICE  => esc_html__( 'Notice', 'give' ),
+			self::SUCCESS => esc_html__( 'Success', 'give' ),
+			self::INFO    => esc_html__( 'Info', 'give' ),
+			self::HTTP    => esc_html__( 'HTTP', 'give' ),
+			self::SPAM    => esc_html__( 'Spam', 'give' ),
+		];
+	}
 }

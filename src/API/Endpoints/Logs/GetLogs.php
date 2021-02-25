@@ -163,7 +163,7 @@ class GetLogs extends Endpoint {
 				'pages'      => floor( $total / $this->logRepository->getLogsPerPageLimit() ),
 				'categories' => $this->logRepository->getCategories(),
 				'sources'    => $this->logRepository->getSources(),
-				'statuses'   => LogType::getAll(),
+				'statuses'   => LogType::getTypesTranslated(),
 			]
 		);
 	}
