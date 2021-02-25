@@ -33,7 +33,7 @@ class Donations {
 	public function getRevenue( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
 		error_log( serialize( $aggregate ) );
-		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Donations {
 	public function getAverageRevenue( $donorId ) {
 		;
 		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
 	}
 
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
@@ -202,6 +202,17 @@ class Donations {
 			'color' => '#FFBA00',
 			'label' => esc_html__( 'Unknown', 'give' ),
 		];
+	}
+
+	protected function getAmountWithSeparators( $amount ) {
+		$formatted = give_format_amount(
+			$amount,
+			[
+				'decimal' => false,
+			],
+		);
+
+		return $formatted;
 	}
 
 	/**
