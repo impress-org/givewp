@@ -49,6 +49,8 @@ const Content = () => {
 	const [ firstName, setFirstName ] = useState( storedProfile.firstName );
 	const [ lastName, setLastName ] = useState( storedProfile.lastName );
 
+	const [ company, setCompany ] = useState( storedProfile.company );
+
 	const [ primaryEmail, setPrimaryEmail ] = useState( storedProfile.emails ? storedProfile.emails.primary : '' );
 
 	const reducedAdditionalEmails = storedProfile.emails ? Object.keys( storedProfile.emails ).reduce( ( newArray, key ) => {
@@ -70,14 +72,14 @@ const Content = () => {
 	}, [] ) : [];
 	const [ additionalAddresses, setAdditionalAddresses ] = useState( reducedAdditionalAddresses );
 
-	const [ anonymous, setAnonymous ] = useState( storedProfile.isAnonymous );
+	const [ isAnonymous, setIsAnonymous ] = useState( storedProfile.isAnonymous );
 	const anonymousOptions = [
 		{
-			value: 'public',
+			value: '0',
 			label: __( 'Public - show my donations publicly', 'give' ),
 		},
 		{
-			value: 'private',
+			value: '1',
 			label: __( 'Private - only organization admins can view my info' ),
 		},
 	];
@@ -88,11 +90,13 @@ const Content = () => {
 			titlePrefix,
 			firstName,
 			lastName,
+			company,
 			primaryEmail,
 			additionalEmails,
 			primaryAddress,
 			additionalAddresses,
 			avatarFile,
+			isAnonymous,
 			id,
 		} );
 		setIsUpdating( false );
@@ -131,6 +135,11 @@ const Content = () => {
 					onChange={ ( value ) => setLastName( value ) }
 				/>
 			</FieldRow>
+			<TextControl
+				label={ __( 'Company', 'give' ) }
+				value={ company }
+				onChange={ ( value ) => setCompany( value ) }
+			/>
 			<EmailControls
 				primaryEmail={ primaryEmail }
 				additionalEmails={ additionalEmails }
@@ -151,8 +160,8 @@ const Content = () => {
 				label={ __( 'Anonymous Giving' ) }
 				description={ __( 'This will prevent your avatar, first name, and donation comments and other information from appearing publicly on this orgization’s website.', 'give' ) }
 				options={ anonymousOptions }
-				onChange={ ( value ) => setAnonymous( value ) }
-				value={ anonymous }
+				onChange={ ( value ) => setIsAnonymous( value ) }
+				value={ isAnonymous }
 			/>
 			<Button onClick={ () => handleUpdate() }>
 				{ __( 'Update Profile', 'give' ) }

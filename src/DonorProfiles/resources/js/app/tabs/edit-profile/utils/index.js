@@ -7,11 +7,13 @@ export const updateProfileWithAPI = async( {
 	titlePrefix,
 	firstName,
 	lastName,
+	company,
 	primaryEmail,
 	additionalEmails,
 	primaryAddress,
 	additionalAddresses,
 	avatarFile,
+	isAnonymous,
 	id,
 } ) => {
 	/**
@@ -33,11 +35,13 @@ export const updateProfileWithAPI = async( {
 			titlePrefix,
 			firstName,
 			lastName,
+			company,
 			primaryEmail,
 			additionalEmails,
 			primaryAddress,
 			additionalAddresses,
 			avatarId,
+			isAnonymous,
 		} ),
 		id,
 	}, {
