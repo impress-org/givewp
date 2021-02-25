@@ -37,7 +37,7 @@ class App {
 				data-autoScroll="%2$s"
 				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
 				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
-			"src=\"{$url}\"",
+			"src=\"{$url}#/dashboard\"",
 			true,
 			'min-height: 776px; width: 100%; max-width: 100% !important',
 			'',
