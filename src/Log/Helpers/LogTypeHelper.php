@@ -47,6 +47,12 @@ class LogTypeHelper {
 					'category' => LogCategory::PAYMENT,
 				];
 
+			case 'zapier':
+				return [
+					'type'     => LogType::HTTP,
+					'category' => 'Zapier',
+				];
+
 			default:
 				return [
 					'type'     => LogType::ERROR,
