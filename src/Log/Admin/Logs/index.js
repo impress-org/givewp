@@ -21,6 +21,7 @@ const Logs = () => {
 		statuses: [],
 		sources: [],
 		categories: [],
+		isSorting: false,
 	} );
 
 	const [ logModal, setLogModal ] = useState( {
@@ -53,6 +54,7 @@ const Logs = () => {
 					categories: response.categories,
 					sources: response.sources,
 					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
+					isSorting: false,
 				};
 			} );
 		},
@@ -112,6 +114,7 @@ const Logs = () => {
 				...previousState,
 				sortColumn: column,
 				sortDirection: direction,
+				isSorting: true,
 			};
 		} );
 	};
@@ -441,6 +444,7 @@ const Logs = () => {
 					data={ data }
 					columnFilters={ columnFilters }
 					isLoading={ isLoading }
+					isSorting={ state.isSorting }
 					stripped={ false }
 				/>
 			</Card>

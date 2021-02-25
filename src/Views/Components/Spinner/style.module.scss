@@ -2,6 +2,11 @@
 	display: inline-block;
 }
 
+.tiny {
+	width: 16px;
+	height: 16px;
+}
+
 .small {
 	width: 30px;
 	height: 30px;
@@ -25,6 +30,10 @@
 	border-radius: 50%;
 	border-color: #66bb6a transparent #66bb6a transparent !important;
 	animation: givewp-spinner 1.2s linear infinite !important;
+}
+
+.spinner.tiny::after {
+	border: 2px solid #66bb6a;
 }
 
 .spinner.small::after {

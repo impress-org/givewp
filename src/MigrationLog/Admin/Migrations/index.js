@@ -15,6 +15,7 @@ const Migrations = () => {
 		sortDirection: 'asc',
 		pages: 0,
 		showOptions: false,
+		isSorting: false,
 	} );
 
 	const [ migrationModal, setMigrationModal ] = useState( {
@@ -40,6 +41,7 @@ const Migrations = () => {
 					pages: response.pages,
 					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
 					showOptions: response.showOptions,
+					isSorting: false,
 				};
 			} );
 		},
@@ -114,6 +116,7 @@ const Migrations = () => {
 				...previousState,
 				sortColumn: column,
 				sortDirection: direction,
+				isSorting: true,
 			};
 		} );
 	};
@@ -327,6 +330,7 @@ const Migrations = () => {
 					data={ data }
 					columnFilters={ columnFilters }
 					isLoading={ isLoading }
+					isSorting={ state.isSorting }
 					stripped={ false }
 				/>
 			</Card>
