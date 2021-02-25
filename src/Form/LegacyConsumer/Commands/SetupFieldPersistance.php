@@ -21,7 +21,6 @@ class SetupFieldPersistance implements HookCommandInterface {
 					function( $field ) use ( $donationID ) {
 						if ( isset( $_POST[ $field->getName() ] ) ) {
 							$value = wp_strip_all_tags( $_POST[ $field->getName() ], true );
-<<<<<<< HEAD
 
 							if ( $field->shouldStoreAsDonationMeta() ) {
 								give_update_payment_meta( $donationID, $field->getName(), $value );
@@ -31,9 +30,6 @@ class SetupFieldPersistance implements HookCommandInterface {
 								$donorID = give_get_payment_meta( $donationID, '_give_payment_donor_id' );
 								Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
 							}
-=======
-							give_update_payment_meta( $donationID, $field->getName(), $value );
->>>>>>> epic/fields-api
 						}
 					}
 				);
