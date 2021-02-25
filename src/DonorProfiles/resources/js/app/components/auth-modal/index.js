@@ -20,6 +20,7 @@ const AuthModal = () => {
 	const [ emailSent, setEmailSent ] = useState( false );
 	const [ emailError, setEmailError ] = useState( null );
 	const emailAccessEnabled = getWindowData( 'emailAccessEnabled' );
+	const loggedInWithoutDonor = getWindowData( 'loggedInWithoutDonor' );
 
 	const handleLogin = async() => {
 		if ( login && password ) {
@@ -71,6 +72,11 @@ const AuthModal = () => {
 					{ __( 'Log in to your donor profile', 'give' ) }
 				</div>
 				<div className="give-donor-profile__auth-modal-content">
+					{ loggedInWithoutDonor && (
+						<div className="give-donor-profile__auth-modal-notice">
+							{ __( 'The account you are logged in with does not have an associated donor profile. Consider donating or contacting the site administrator to get one setup.' ) }
+						</div>
+					) }
 					{ emailAccessEnabled && (
 						<Fragment>
 							<div className="give-donor-profile__auth-modal-instruction">

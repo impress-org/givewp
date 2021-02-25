@@ -90,14 +90,15 @@ class App {
 			'give-donor-profiles-app',
 			'giveDonorProfileData',
 			[
-				'apiRoot'            => esc_url_raw( rest_url() ),
-				'apiNonce'           => wp_create_nonce( 'wp_rest' ),
-				'profile'            => give()->donorProfile->getProfileData(),
-				'countries'          => LocationList::getCountries(),
-				'states'             => LocationList::getStates( give()->donorProfile->getCountry() ),
-				'id'                 => give()->donorProfile->getId(),
-				'emailAccessEnabled' => give_is_setting_enabled( give_get_option( 'email_access' ) ),
-				'registeredTabs'     => give()->donorProfileTabs->getRegisteredIds(),
+				'apiRoot'              => esc_url_raw( rest_url() ),
+				'apiNonce'             => wp_create_nonce( 'wp_rest' ),
+				'profile'              => give()->donorProfile->getProfileData(),
+				'countries'            => LocationList::getCountries(),
+				'states'               => LocationList::getStates( give()->donorProfile->getCountry() ),
+				'id'                   => give()->donorProfile->getId(),
+				'emailAccessEnabled'   => give_is_setting_enabled( give_get_option( 'email_access' ) ),
+				'registeredTabs'       => give()->donorProfileTabs->getRegisteredIds(),
+				'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorProfile->getId() === null ? true : false,
 			]
 		);
 
