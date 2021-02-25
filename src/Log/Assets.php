@@ -6,7 +6,7 @@ namespace Give\Log;
  * Class Assets
  * @package Give\Log\UserInterface
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class Assets {
 	/**

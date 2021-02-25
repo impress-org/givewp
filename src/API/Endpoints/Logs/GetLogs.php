@@ -11,7 +11,7 @@ use Give\Log\ValueObjects\LogType;
  * Class GetLogs
  * @package Give\API\Endpoints\Logs
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class GetLogs extends Endpoint {
 

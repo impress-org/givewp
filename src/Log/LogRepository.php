@@ -11,7 +11,7 @@ use DateTime;
  * Class LogRepository
  * @package Give\Log\Repositories
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class LogRepository {
 

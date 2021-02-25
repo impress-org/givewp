@@ -14,7 +14,7 @@ use Give\Log\Helpers\Environment;
  * Class LogServiceProvider
  * @package Give\Log
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class LogServiceProvider implements ServiceProvider {
 	/**

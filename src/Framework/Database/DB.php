@@ -85,7 +85,7 @@ class DB {
 	/**
 	 * Get last insert ID
 	 *
-	 * @since 2.9.7
+	 * @since 2.10.0
 	 * @return int
 	 */
 	public static function last_insert_id() {

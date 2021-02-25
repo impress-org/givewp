@@ -6,7 +6,7 @@ namespace Give\Log\ValueObjects;
  * Class LogCategory
  * @package Give\Log\ValueObjects
  *
- * @since 2.9.7
+ * @since 2.10.0
  *
  * @method static CORE()
  * @method static PAYMENT()

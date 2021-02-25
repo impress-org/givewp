@@ -15,7 +15,7 @@ use Give\Log\ValueObjects\LogType;
  * @method info( string $message, string $source, array $context = [] )
  * @method http( string $message, string $source, array $context = [] )
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class LogModel {
 	/**

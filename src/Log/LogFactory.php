@@ -9,7 +9,7 @@ use Give\Log\ValueObjects\LogCategory;
  * Class LogFactory
  * @package Give\Log
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class LogFactory {
 	/**

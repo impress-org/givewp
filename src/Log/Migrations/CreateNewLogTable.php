@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * Class CreateNewLogTables
  * @package Give\Log\Migrations
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class CreateNewLogTable extends Migration {
 	/**
