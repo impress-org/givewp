@@ -40,8 +40,10 @@ class SetupFieldReciept {
 		$this->donorSection                 = $receipt->getSections()[ DonationReceipt::DONORSECTIONID ];
 		$this->additionalInformationSection = $receipt->getSections()[ DonationReceipt::ADDITIONALINFORMATIONSECTIONID ];
 
+		$formID = give_get_payment_meta( $this->donationId, '_give_payment_form_id' );
+
 		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$this->hook}", $fieldCollection, get_the_ID() );
+		do_action( "give_fields_{$this->hook}", $fieldCollection, $formID );
 
 		$fieldCollection->walk( [ $this, 'apply' ] );
 	}
