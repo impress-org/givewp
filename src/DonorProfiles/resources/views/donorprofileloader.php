@@ -13,7 +13,7 @@ $loaderBG = "&quot;data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encodin
 		width: calc(90% - 12px); 
 		height: 100%; 
 		max-width: 920px; 
-		margin: 12px auto; 
+		margin: 8px auto; 
 		border-radius: 8px; 
 		display: flex; 
 		align-items: center; 
