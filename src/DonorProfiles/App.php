@@ -24,10 +24,7 @@ class App {
 			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
 		}
 
-		$loader = sprintf(
-			'<div class="iframe-loader">%1$s...</div>',
-			esc_html__( 'Loading', 'give' )
-		);
+		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
 		$iframe = sprintf(
 			'<iframe
@@ -53,6 +50,22 @@ class App {
 	 * @since 2.10.0
 	 **@return string
 	 */
+	public function getIframeLoader( $accentColor ) {
+		ob_start();
+		$output = '';
+		require $this->getLoaderTemplatePath();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		return $output;
+	}
+
+	/**
+	 * Get output markup for Donor Profile app
+	 *
+	 * @since 2.10.0
+	 **@return string
+	 */
 	public function getIframeContent() {
 		ob_start();
 		$output = '';
@@ -69,6 +82,14 @@ class App {
 	 **/
 	public function getTemplatePath() {
 		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofile.php';
+	}
+
+	/**
+	 * Get template path for Donor Profile component template
+	 * @since 2.10.0
+	 **/
+	public function getLoaderTemplatePath() {
+		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofileloader.php';
 	}
 
 	/**
