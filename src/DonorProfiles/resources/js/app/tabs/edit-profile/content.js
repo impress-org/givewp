@@ -158,7 +158,7 @@ const Content = () => {
 			<Divider />
 			<RadioControl
 				label={ __( 'Anonymous Giving' ) }
-				description={ __( 'This will prevent your avatar, first name, and donation comments and other information from appearing publicly on this orgization’s website.', 'give' ) }
+				description={ __( 'This will prevent your avatar, first name, donation comments, and other information from appearing publicly on this organization’s website.', 'give' ) }
 				options={ anonymousOptions }
 				onChange={ ( value ) => setIsAnonymous( value ) }
 				value={ isAnonymous }
