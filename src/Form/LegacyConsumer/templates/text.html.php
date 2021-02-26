@@ -8,4 +8,5 @@
 		required="" aria-required="true"
 	<?php endif; ?>
 	tabindex="1"
+	@attributes
 	/>
