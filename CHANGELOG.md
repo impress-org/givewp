@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
+### Fixed
+
+-   Reports endpoints no longer throw an error due to missing $schema property (#5642)
+
 ## 2.9.7 - 2021-02-09
 
 ### Fixed
