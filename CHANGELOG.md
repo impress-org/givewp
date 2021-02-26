@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.10.0-alpha.2 - 2021-02-25
+
 ### New
 -   PDF Receipts are now available from Donation Receipt pages (#5613)
 -   Annual Receipts UI now connects to addon (#5611)
@@ -17,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   MigrationsRunnerTest unit test has been removed (#5653)
 -   Donor Profile UI is polished to align with original designs (#5648)
 
-## 2.10.0-alpha.1
+## 2.10.0-alpha.1 - 2021-02-19
 
 ### New
 -   Front-end donor profiles are scaffolded (#5441)
