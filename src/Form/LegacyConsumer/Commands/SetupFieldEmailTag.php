@@ -60,32 +60,15 @@ class SetupFieldEmailTag {
 	public function register( FormField $field ) {
 		give_add_email_tag(
 			[
-				'tag'      => $field->getName(), // The tag name.
+				'tag'      => $field->getEmailTag() ?: $field->getName(), // The tag name.
 				'desc'     => $field->getLabel(), // For admins.
-				'func'     => [ $this, 'render' ], // Callback to function below.
 				'context'  => 'donation',
 				'is_admin' => false, // default is false.
+				'func'     => function( $args, $tag ) use ( $field ) {
+					$value = give_get_meta( $args['payment_id'], $field->getName(), true );
+					return ( ! empty( $value ) ) ? wp_kses_post( $value ) : '';
+				},
 			]
 		);
 	}
-
-	/**
-	 * @unreleased
-	 *
-	 * @param array $args
-	 * @param string $tag
-	 *
-	 * @return string
-	 */
-	public function render( $args, $tag ) {
-
-		$value = give_get_meta( $args['payment_id'], $tag, true );
-
-		if ( ! empty( $value ) ) {
-			return wp_kses_post( $value );
-		}
-
-		return '';
-	}
-
 }
