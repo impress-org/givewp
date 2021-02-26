@@ -27,7 +27,7 @@ class App {
 		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
 		$iframe = sprintf(
-			'<div style="position: relative;"><iframe
+			'<div style="position: relative; max-width: 100%%;"><iframe
 				name="give-embed-donor-profile"
 				%1$s
 				%4$s
