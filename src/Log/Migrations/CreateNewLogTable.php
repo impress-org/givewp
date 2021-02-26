@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * Class CreateNewLogTables
  * @package Give\Log\Migrations
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class CreateNewLogTable extends Migration {
 	/**
@@ -21,6 +21,13 @@ class CreateNewLogTable extends Migration {
 	 */
 	public static function id() {
 		return 'create_new_log_table';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function title() {
+		return  esc_html__( 'Create new give_log table' );
 	}
 
 	/**

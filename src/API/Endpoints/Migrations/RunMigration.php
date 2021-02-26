@@ -55,7 +55,7 @@ class RunMigration extends Endpoint {
 				[
 					'methods'             => 'POST',
 					'callback'            => [ $this, 'handleRequest' ],
-					'permission_callback' => [ $this, 'runPermissionsCheck' ],
+					'permission_callback' => [ $this, 'permissionsCheck' ],
 					'args'                => [
 						'id' => [
 							'validate_callback' => function( $param ) {

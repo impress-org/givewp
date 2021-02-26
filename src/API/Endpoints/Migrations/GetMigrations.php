@@ -20,7 +20,7 @@ class GetMigrations extends Endpoint {
 	/**
 	 * Enable sorting by these columns
 	 */
-	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run', 'run_order' ];
+	const SORTABLE_COLUMNS = [ 'id', 'status', 'last_run', 'run_order', 'title', 'source' ];
 
 	/** @var string */
 	protected $endpoint = 'migrations/get-migrations';
@@ -70,14 +70,11 @@ class GetMigrations extends Endpoint {
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => [ $this, 'permissionsCheck' ],
 					'args'                => [
-						'status'    => [
+						'page'      => [
 							'validate_callback' => function( $param ) {
-								if ( empty( $param ) || ( 'all' === $param ) ) {
-									return true;
-								}
-								return MigrationLogStatus::isValid( $param );
+								return filter_var( $param, FILTER_VALIDATE_INT );
 							},
-							'default'           => 'all',
+							'default'           => '1',
 						],
 						'sort'      => [
 							'validate_callback' => function( $param ) {
@@ -113,9 +110,9 @@ class GetMigrations extends Endpoint {
 			'title'      => 'logs',
 			'type'       => 'object',
 			'properties' => [
-				'status'    => [
-					'type'        => 'string',
-					'description' => esc_html__( 'Migration status', 'give' ),
+				'page'      => [
+					'type'        => 'integer',
+					'description' => esc_html__( 'Current page', 'give' ),
 				],
 				'sort'      => [
 					'type'        => 'string',
@@ -147,12 +144,17 @@ class GetMigrations extends Endpoint {
 				continue;
 			}
 
+			/* @var Migration $migrationClass */
+			$migrationClass = $this->migrationRegister->getMigration( $migration->getId() );
+
 			$data[] = [
 				'id'        => $migration->getId(),
 				'status'    => $migration->getStatus(),
 				'error'     => $migration->getError(),
 				'last_run'  => $migration->getLastRunDate(),
 				'run_order' => $this->migrationHelper->getRunOrderForMigration( $migration->getId() ),
+				'source'    => $migrationClass::source(),
+				'title'     => $migrationClass::title(),
 			];
 		}
 
@@ -165,6 +167,8 @@ class GetMigrations extends Endpoint {
 				'error'     => '',
 				'last_run'  => '',
 				'run_order' => $this->migrationHelper->getRunOrderForMigration( $migration::id() ),
+				'source'    => $migration::source(),
+				'title'     => $migration::title(),
 			];
 		}
 

@@ -22,15 +22,22 @@ const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
 		};
 	}, [] );
 
+	const handleOverlayClick = ( e ) => {
+		if ( e.target.classList.contains( styles.overlay ) && typeof handleClose === 'function' ) {
+			handleClose();
+		}
+	};
+
 	const modalStyles = classNames( {
 		[ styles.modal ]: true,
 		[ styles.error ]: type === 'error' || type === 'failed',
 		[ styles.warning ]: type === 'warning',
 		[ styles.success ]: type === 'success',
+		[ styles.http ]: type === 'http',
 	} );
 
 	return (
-		<div className={ classNames( { [ styles.overlay ]: visible } ) }>
+		<div className={ classNames( { [ styles.overlay ]: visible } ) } onClick={ handleOverlayClick }>
 			<div className={ styles.container }>
 				<div className={ modalStyles }>
 					{ isLoading && (

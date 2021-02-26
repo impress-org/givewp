@@ -37,7 +37,7 @@ export const getEndpoint = ( endpoint, data ) => {
 	if ( data ) {
 		const queryString = new URLSearchParams( data );
 		// pretty url?
-		const separator = window.GiveLogs.apiRoot.indexOf( '?' ) ? '&' : '?';
+		const separator = ( window.GiveLogs.apiRoot.indexOf( '?' ) === -1 ) ? '?' : '&';
 
 		return endpoint + separator + queryString.toString();
 	}

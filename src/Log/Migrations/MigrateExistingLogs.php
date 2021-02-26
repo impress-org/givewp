@@ -2,7 +2,6 @@
 
 namespace Give\Log\Migrations;
 
-use Give\Log\Log;
 use Give\Log\LogFactory;
 use Give\Framework\Database\DB;
 use Give\Log\Helpers\LogTypeHelper;
@@ -29,13 +28,13 @@ class MigrateExistingLogs extends Migration {
 	 *
 	 * @param Give_Updates $give_updates
 	 *
-	 * @since 2.9.7
+	 * @since 2.10.0
 	 */
 	public function register( $give_updates ) {
 		$give_updates->register(
 			[
 				'id'       => self::id(),
-				'version'  => '2.9.7',
+				'version'  => '2.10.0',
 				'callback' => [ $this, 'run' ],
 			]
 		);
@@ -46,6 +45,13 @@ class MigrateExistingLogs extends Migration {
 	 */
 	public static function id() {
 		return 'migrate_existing_logs';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function title() {
+		return  esc_html__( 'Migrate existing logs to give_log table' );
 	}
 
 	/**

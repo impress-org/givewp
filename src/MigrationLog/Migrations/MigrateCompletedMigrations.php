@@ -35,6 +35,13 @@ class MigrateCompletedMigrations extends Migration {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function title() {
+		return  esc_html__( 'Migrate completed migrations to give_migrations table' );
+	}
+
+	/**
 	 * @return int
 	 */
 	public static function timestamp() {

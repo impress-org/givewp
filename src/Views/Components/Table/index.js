@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { LoadingOverlay } from '@givewp/components';
+import { LoadingOverlay, Spinner } from '@givewp/components';
 
 import styles from './style.module.scss';
 
 const { __ } = wp.i18n;
 
-const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) => {
+const Table = ( { title, columns, data, columnFilters, stripped, isLoading, isSorting } ) => {
 	const [ state, setState ] = useState( {} );
 	const [ cachedData, setCachedData ] = useState( [] );
 
@@ -79,6 +79,9 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 							{ getItemSortDirectionIcon( item ) }
 						</span>
 					) }
+					{ isLoading && isSorting && state[ item.label ] !== undefined && (
+						<Spinner size="tiny" style={ { marginLeft: 10 } } />
+					) }
 				</div>
 			);
 		} );
@@ -128,7 +131,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading } ) =
 
 	return (
 		<>
-			{ isLoading && (
+			{ isLoading && ! isSorting && (
 				<LoadingOverlay spinnerSize="small" />
 			) }
 			{ title && ( <div className={ styles.title }>

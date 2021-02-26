@@ -9,7 +9,7 @@ use WP_Error;
  * Class Endpoint
  * @package GiveDivi\Divi\Routes
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 abstract class Endpoint implements RestRoute {
 

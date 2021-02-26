@@ -36,10 +36,21 @@ class LogTypeHelper {
 
 			case 'sale':
 			case 'stripe':
+				return [
+					'type'     => LogType::INFO,
+					'category' => LogCategory::PAYMENT,
+				];
+
 			case 'gateway_error':
 				return [
 					'type'     => LogType::ERROR,
 					'category' => LogCategory::PAYMENT,
+				];
+
+			case 'zapier':
+				return [
+					'type'     => LogType::HTTP,
+					'category' => 'Zapier',
 				];
 
 			default:

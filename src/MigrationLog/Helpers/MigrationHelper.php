@@ -58,7 +58,7 @@ class MigrationHelper {
 		if ( empty( $migrations ) ) {
 			/* @var Migration $migrationClass */
 			foreach ( $this->migrationRegister->getMigrations() as $migrationClass ) {
-				$migrations[ $migrationClass::timestamp() ] = $migrationClass::id();
+				$migrations[ $migrationClass::timestamp() . '_' . $migrationClass::id() ] = $migrationClass::id();
 			}
 
 			ksort( $migrations );

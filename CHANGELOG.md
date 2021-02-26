@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   MigrationsRunnerTest unit test has been removed (#5653)
+
 ## 2.10.0-alpha.1
 
 ### New

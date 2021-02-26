@@ -15,6 +15,7 @@ const Migrations = () => {
 		sortDirection: 'asc',
 		pages: 0,
 		showOptions: false,
+		isSorting: false,
 	} );
 
 	const [ migrationModal, setMigrationModal ] = useState( {
@@ -40,6 +41,7 @@ const Migrations = () => {
 					pages: response.pages,
 					currentPage: state.currentPage > response.pages ? 1 : state.currentPage,
 					showOptions: response.showOptions,
+					isSorting: false,
 				};
 			} );
 		},
@@ -114,6 +116,7 @@ const Migrations = () => {
 				...previousState,
 				sortColumn: column,
 				sortDirection: direction,
+				isSorting: true,
 			};
 		} );
 	};
@@ -212,10 +215,10 @@ const Migrations = () => {
 			},
 		},
 		{
-			key: 'id',
-			label: __( 'Migration ID', 'give' ),
+			key: 'title',
+			label: __( 'Migration Title', 'give' ),
 			sort: true,
-			sortCallback: ( direction ) => setSortDirectionForColumn( 'id', direction ),
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'title', direction ),
 		},
 		{
 			key: 'last_run',
@@ -223,7 +226,16 @@ const Migrations = () => {
 			sort: true,
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'last_run', direction ),
 			styles: {
-				maxWidth: 220,
+				maxWidth: 200,
+			},
+		},
+		{
+			key: 'source',
+			label: __( 'Source', 'give' ),
+			sort: true,
+			sortCallback: ( direction ) => setSortDirectionForColumn( 'source', direction ),
+			styles: {
+				maxWidth: 200,
 			},
 		},
 		{
@@ -231,7 +243,6 @@ const Migrations = () => {
 			label: __( 'Run Order', 'give' ),
 			sort: true,
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'run_order', direction ),
-			visible: state.showOptions,
 			styles: {
 				maxWidth: 150,
 			},
@@ -240,9 +251,8 @@ const Migrations = () => {
 			key: 'actions',
 			label: __( 'Actions', 'give' ),
 			append: true,
-			visible: state.showOptions,
 			styles: {
-				maxWidth: 150,
+				maxWidth: 100,
 			},
 		},
 		{
@@ -260,6 +270,10 @@ const Migrations = () => {
 	const columnFilters = {
 		status: ( type ) => <Label type={ type } />,
 		actions: ( type, migration ) => {
+			if ( ! state.showOptions && migration.status !== 'failed' ) {
+				return null;
+			}
+
 			return (
 				<button
 					className="button"
@@ -316,6 +330,7 @@ const Migrations = () => {
 					data={ data }
 					columnFilters={ columnFilters }
 					isLoading={ isLoading }
+					isSorting={ state.isSorting }
 					stripped={ false }
 				/>
 			</Card>

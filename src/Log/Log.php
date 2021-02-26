@@ -2,17 +2,13 @@
 
 namespace Give\Log;
 
-use InvalidArgumentException;
-use Give\Log\ValueObjects\LogCategory;
-use Give\Framework\Migrations\Contracts\Migration;
-
 /**
  * Class Log
  *
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
  * @package Give\Log
- * @since 2.9.7
+ * @since 2.10.0
  *
  * @method static error( string $message, array $context = [] )
  * @method static warning( string $message, array $context = [] )

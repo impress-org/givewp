@@ -11,7 +11,7 @@ use Give\Log\ValueObjects\LogType;
  * Class GetLogs
  * @package Give\API\Endpoints\Logs
  *
- * @since 2.9.7
+ * @since 2.10.0
  */
 class GetLogs extends Endpoint {
 
@@ -45,6 +45,12 @@ class GetLogs extends Endpoint {
 					'callback'            => [ $this, 'handleRequest' ],
 					'permission_callback' => [ $this, 'permissionsCheck' ],
 					'args'                => [
+						'page'      => [
+							'validate_callback' => function( $param ) {
+								return filter_var( $param, FILTER_VALIDATE_INT );
+							},
+							'default'           => '1',
+						],
 						'type'      => [
 							'validate_callback' => function( $param ) {
 								if ( empty( $param ) || ( 'all' === $param ) ) {
@@ -100,6 +106,10 @@ class GetLogs extends Endpoint {
 			'title'      => 'logs',
 			'type'       => 'object',
 			'properties' => [
+				'page'      => [
+					'type'        => 'integer',
+					'description' => esc_html__( 'Current page', 'give' ),
+				],
 				'type'      => [
 					'type'        => 'string',
 					'description' => esc_html__( 'Log type', 'give' ),
@@ -153,7 +163,7 @@ class GetLogs extends Endpoint {
 				'pages'      => floor( $total / $this->logRepository->getLogsPerPageLimit() ),
 				'categories' => $this->logRepository->getCategories(),
 				'sources'    => $this->logRepository->getSources(),
-				'statuses'   => LogType::getAll(),
+				'statuses'   => LogType::getTypesTranslated(),
 			]
 		);
 	}
