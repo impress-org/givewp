@@ -51,7 +51,7 @@ class MigrateExistingLogs extends Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return  esc_html__( 'Migrate existing logs to give_log table' );
+		return  esc_html__( 'Migrate existing logs to give_log table', 'give' );
 	}
 
 	/**
@@ -71,13 +71,15 @@ class MigrateExistingLogs extends Migration {
 		$logmeta_table = "{$wpdb->prefix}give_logmeta";
 		$give_updates  = Give_Updates::get_instance();
 
-		$perBatch = 100;
+		$perBatch = 500;
+
+		$offset = ( $give_updates->step - 1 ) * $perBatch;
 
 		$result = DB::get_results(
 			DB::prepare(
-				"SELECT * FROM {$logs_table} LIMIT %d, %d",
+				"SELECT * FROM {$logs_table} LIMIT %d OFFSET %d",
 				$perBatch,
-				$give_updates->step * $perBatch
+				$offset
 			)
 		);
 
