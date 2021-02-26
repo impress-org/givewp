@@ -12,12 +12,12 @@
 		border: 1px solid #b8b8b8;
 		overflow: hidden;
 		padding: 14px 14px;
-		box-shadow: 0 0 0 0 #4fa651;
+		box-shadow: 0 0 0 0 var(--give-donor-profile-accent-color);
 		transition: box-shadow 0.1s ease;
 		border-radius: 4px;
 	}
 
 	.give-donor-profile-stripe-card-control__input--focused {
-		box-shadow: 0 0 0 1px #4fa651;
+		box-shadow: 0 0 0 1px var(--give-donor-profile-accent-color);
 	}
 }

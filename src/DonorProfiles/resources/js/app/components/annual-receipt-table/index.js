@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 
 import Table from '../table';
-import DonationRow from '../donation-row';
+import AnnualReceiptRow from './annual-receipt-row';
 
 import './style.scss';
 
-const DonationTable = ( { donations, perPage } ) => {
+const AnnualReceiptTable = ( { annualReceipts, perPage } ) => {
 	const [ page, setPage ] = useState( 1 );
 
 	const getStartIndex = () => {
@@ -15,32 +15,30 @@ const DonationTable = ( { donations, perPage } ) => {
 	};
 
 	const getEndIndex = () => {
-		return start + perPage <= donationsArray.length ? start + perPage : donationsArray.length;
+		return start + perPage <= annualReceiptsArray.length ? start + perPage : annualReceiptsArray.length;
 	};
 
-	const getDonationRows = () => {
-		return donationsArray.reduce( ( rows, donation, index ) => {
+	const getAnnualReceiptRows = () => {
+		return annualReceiptsArray.reduce( ( rows, annualReceipt, index ) => {
 			if ( index >= start && index < end ) {
-				rows.push( <DonationRow key={ index } donation={ donation } /> );
+				rows.push( <AnnualReceiptRow key={ index } annualReceipt={ annualReceipt } /> );
 			}
 			return rows;
 		}, [] );
 	};
 
-	let donationRows = [];
-	const donationsArray = [];
+	let annualReceiptRows = [];
+	let annualReceiptsArray = [];
 	let start = 0;
 	let end = perPage;
 	let lastPage = 1;
 
-	if ( donations ) {
-		Object.entries( donations ).forEach( ( donation ) => {
-			donationsArray[ donation[ 0 ] ] = donation[ 1 ];
-		} );
+	if ( annualReceipts ) {
+		annualReceiptsArray = Object.entries( annualReceipts );
 		start = getStartIndex();
 		end = getEndIndex();
-		lastPage = Math.ceil( donationsArray.length / perPage ) - 1;
-		donationRows = getDonationRows();
+		lastPage = Math.ceil( annualReceiptsArray.length / perPage ) - 1;
+		annualReceiptRows = getAnnualReceiptRows();
 	}
 
 	return (
@@ -48,30 +46,30 @@ const DonationTable = ( { donations, perPage } ) => {
 			header={
 				<Fragment>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Donation', 'give' ) }
+						{ __( 'Year', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Form', 'give' ) }
+						{ __( 'Amount', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Date', 'give' ) }
+						{ __( 'Count', 'give' ) }
 					</div>
 					<div className="give-donor-profile-table__column">
-						{ __( 'Status', 'give' ) }
+						{ __( 'Statement', 'give' ) }
 					</div>
 				</Fragment>
 			}
 
 			rows={
 				<Fragment>
-					{ donationRows }
+					{ annualReceiptRows }
 				</Fragment>
 			}
 
 			footer={
 				<Fragment>
 					<div className="give-donor-profile-table__footer-text">
-						{ donations && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ donationsArray.length } ${ __( 'Donations', 'give' ) }` }
+						{ annualReceipts && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ annualReceiptsArray.length } ${ __( 'Donations', 'give' ) }` }
 					</div>
 					<div className="give-donor-profile-table__footer-nav">
 						{ page - 1 >= 1 && (
@@ -91,4 +89,4 @@ const DonationTable = ( { donations, perPage } ) => {
 	);
 };
 
-export default DonationTable;
+export default AnnualReceiptTable;

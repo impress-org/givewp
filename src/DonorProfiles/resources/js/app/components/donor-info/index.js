@@ -1,8 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 
-import Badge from '../badge';
-
 import './style.scss';
 
 const DonorInfo = () => {
@@ -30,29 +28,26 @@ const DonorInfo = () => {
 				) }
 				{ address && (
 					<div className="give-donor-profile-donor-info__detail">
-						<FontAwesomeIcon icon="map-pin" /> { address.city }, { address.state.length > 0 ? address.state : address.country }
+						<FontAwesomeIcon icon="map-pin" fixedWidth={ true } /> { address.city }, { address.state.length > 0 ? address.state : address.country }
 					</div>
 				) }
 				{ company && (
 					<div className="give-donor-profile-donor-info__detail">
-						<FontAwesomeIcon icon="building" /> { company }
+						<FontAwesomeIcon icon="building" fixedWidth={ true } /> { company }
 					</div>
 				) }
 				{ sinceLastDonation && (
 					<div className="give-donor-profile-donor-info__detail">
-						<FontAwesomeIcon icon="clock" /> Last donated { sinceLastDonation } ago
+						<FontAwesomeIcon icon="clock" fixedWidth={ true } /> Last donated { sinceLastDonation } ago
 					</div>
 				) }
 				{ sinceCreated && (
 					<div className="give-donor-profile-donor-info__detail">
-						<FontAwesomeIcon icon="heart" /> Donor for { sinceCreated }
+						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> Donor for { sinceCreated }
 					</div>
 				) }
 			</div>
 			<div className="give-donor-profile-donor-info__badges">
-				<Badge icon="sync" label="Recurring Giver" />
-				<Badge icon="user" label="Team Captain" />
-				<Badge icon="trophy" label="Top Donor" />
 			</div>
 		</div>
 	);

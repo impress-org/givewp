@@ -24,21 +24,19 @@ class App {
 			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
 		}
 
-		$loader = sprintf(
-			'<div class="iframe-loader">Loading...</div>',
-		);
+		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
 		$iframe = sprintf(
-			'<iframe
+			'<div style="position: relative; max-width: 100%%;"><iframe
 				name="give-embed-donor-profile"
 				%1$s
 				%4$s
 				data-autoScroll="%2$s"
 				onload="if( \'undefined\' !== typeof Give ) { Give.initializeIframeResize(this) }"
-				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s',
-			"src=\"{$url}\"",
+				style="border: 0;visibility: hidden;%3$s"></iframe>%5$s</div>',
+			"src=\"{$url}#/dashboard\"",
 			true,
-			'min-height: 776px; width: 100%; max-width: 100% !important',
+			'min-height: 776px; width: 100%; max-width: 100% !important;',
 			'',
 			$loader
 		);
@@ -49,15 +47,32 @@ class App {
 	/**
 	 * Get output markup for Donor Profile app
 	 *
-	 * @return string
 	 * @since 2.10.0
-	 **/
+	 **@return string
+	 */
+	public function getIframeLoader( $accentColor ) {
+		ob_start();
+		$output = '';
+		require $this->getLoaderTemplatePath();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		return $output;
+	}
+
+	/**
+	 * Get output markup for Donor Profile app
+	 *
+	 * @since 2.10.0
+	 **@return string
+	 */
 	public function getIframeContent() {
 		ob_start();
 		$output = '';
 		require $this->getTemplatePath();
 		$output = ob_get_contents();
 		ob_end_clean();
+
 		return $output;
 	}
 
@@ -70,11 +85,19 @@ class App {
 	}
 
 	/**
-	 * Enqueue assets for front-end donor profiles
-	 *
-	 * @return void
+	 * Get template path for Donor Profile component template
 	 * @since 2.10.0
 	 **/
+	public function getLoaderTemplatePath() {
+		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofileloader.php';
+	}
+
+	/**
+	 * Enqueue assets for front-end donor profiles
+	 *
+	 * @since 2.10.0
+	 **@return void
+	 */
 	public function loadAssets() {
 		wp_enqueue_script(
 			'give-donor-profiles-app',
@@ -88,14 +111,15 @@ class App {
 			'give-donor-profiles-app',
 			'giveDonorProfileData',
 			[
-				'apiRoot'            => esc_url_raw( rest_url() ),
-				'apiNonce'           => wp_create_nonce( 'wp_rest' ),
-				'profile'            => give()->donorProfile->getProfileData(),
-				'countries'          => LocationList::getCountries(),
-				'states'             => LocationList::getStates( give()->donorProfile->getCountry() ),
-				'id'                 => give()->donorProfile->getId(),
-				'emailAccessEnabled' => give_is_setting_enabled( give_get_option( 'email_access' ) ),
-				'registeredTabs'     => give()->donorProfileTabs->getRegisteredIds(),
+				'apiRoot'              => esc_url_raw( rest_url() ),
+				'apiNonce'             => wp_create_nonce( 'wp_rest' ),
+				'profile'              => give()->donorProfile->getProfileData(),
+				'countries'            => LocationList::getCountries(),
+				'states'               => LocationList::getStates( give()->donorProfile->getCountry() ),
+				'id'                   => give()->donorProfile->getId(),
+				'emailAccessEnabled'   => give_is_setting_enabled( give_get_option( 'email_access' ) ),
+				'registeredTabs'       => give()->donorProfileTabs->getRegisteredIds(),
+				'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorProfile->getId() === null ? true : false,
 			]
 		);
 

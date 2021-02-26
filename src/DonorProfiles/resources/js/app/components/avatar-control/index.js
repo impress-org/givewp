@@ -42,7 +42,7 @@ const AvatarControl = ( { url, file, onChange } ) => {
 								<p>Drop the image here...</p>
 							) : (
 								<p>Drag image here to set <br />
-									avatar of <span className="give-donor-profile-avatar-control__select-link">find image</span>
+									avatar or <span className="give-donor-profile-avatar-control__select-link">find image</span>
 								</p>
 							)
 						}

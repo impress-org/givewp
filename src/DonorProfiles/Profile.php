@@ -5,9 +5,11 @@ namespace Give\DonorProfiles;
 use Give\DonorProfiles\Factories\DonorFactory;
 use Give\DonorProfiles\Pipeline\DonorProfilePipeline;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorName;
+use Give\DonorProfiles\Pipeline\Stages\UpdateDonorCompany;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorEmails;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
+use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAnonymousGiving;
 
 use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 
@@ -40,9 +42,11 @@ class Profile {
 
 		$pipeline = ( new DonorProfilePipeline )
 			->pipe( new UpdateDonorName )
+			->pipe( new UpdateDonorCompany )
 			->pipe( new UpdateDonorAvatar )
 			->pipe( new UpdateDonorEmails )
-			->pipe( new UpdateDonorAddresses );
+			->pipe( new UpdateDonorAddresses )
+			->pipe( new UpdateDonorAnonymousGiving );
 
 		$pipeline->process(
 			[
@@ -84,7 +88,7 @@ class Profile {
 			'initials'          => $this->donor->get_donor_initals(),
 			'titlePrefix'       => $this->getTitlePrefix(),
 			'addresses'         => $this->donor->address,
-			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', true ) !== '0' ? 'private' : 'public',
+			'isAnonymous'       => $this->donor->get_meta( '_give_anonymous_donor', true ) !== '0' ? '1' : '0',
 		];
 	}
 

@@ -33,7 +33,7 @@ class Donations {
 	public function getRevenue( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
 		error_log( serialize( $aggregate ) );
-		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Donations {
 	public function getAverageRevenue( $donorId ) {
 		;
 		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
 	}
 
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
@@ -161,18 +161,25 @@ class Donations {
 	 */
 	protected function getPaymentInfo( $payment ) {
 
+		$pdfReceiptUrl = '';
+		if ( class_exists( 'Give_PDF_Receipts' ) ) {
+			$pdfReceiptUrl = html_entity_decode( give_pdf_receipts()->engine->get_pdf_receipt_url( $payment->ID ) );
+		}
+
 		$gateways = give_get_payment_gateways();
 
 		return [
-			'amount'   => $this->getFormattedAmount( $payment->subtotal, $payment ),
-			'currency' => $payment->currency,
-			'fee'      => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
-			'total'    => $this->getFormattedAmount( $payment->total, $payment ),
-			'method'   => isset( $gateways[ $payment->gateway ]['checkout_label'] ) ? $gateways[ $payment->gateway ]['checkout_label'] : '',
-			'status'   => $this->getFormattedStatus( $payment->status ),
-			'date'     => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
-			'time'     => date_i18n( 'g:i a', strtotime( $payment->date ) ),
-			'mode'     => $payment->get_meta( '_give_payment_mode' ),
+			'amount'        => $this->getFormattedAmount( $payment->subtotal, $payment ),
+			'currency'      => $payment->currency,
+			'fee'           => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
+			'total'         => $this->getFormattedAmount( $payment->total, $payment ),
+			'method'        => isset( $gateways[ $payment->gateway ]['checkout_label'] ) ? $gateways[ $payment->gateway ]['checkout_label'] : '',
+			'status'        => $this->getFormattedStatus( $payment->status ),
+			'date'          => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
+			'time'          => date_i18n( 'g:i a', strtotime( $payment->date ) ),
+			'mode'          => $payment->get_meta( '_give_payment_mode' ),
+			'pdfReceiptUrl' => $pdfReceiptUrl,
+			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
 		];
 	}
 
@@ -195,6 +202,17 @@ class Donations {
 			'color' => '#FFBA00',
 			'label' => esc_html__( 'Unknown', 'give' ),
 		];
+	}
+
+	protected function getAmountWithSeparators( $amount ) {
+		$formatted = give_format_amount(
+			$amount,
+			[
+				'decimal' => false,
+			],
+		);
+
+		return $formatted;
 	}
 
 	/**
