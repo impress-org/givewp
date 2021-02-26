@@ -37,7 +37,7 @@ const AnnualReceiptTable = ( { annualReceipts, perPage } ) => {
 		annualReceiptsArray = Object.entries( annualReceipts );
 		start = getStartIndex();
 		end = getEndIndex();
-		lastPage = Math.ceil( annualReceiptsArray.length / perPage );
+		lastPage = Math.ceil( annualReceiptsArray.length / perPage ) - 1;
 		annualReceiptRows = getAnnualReceiptRows();
 	}
 

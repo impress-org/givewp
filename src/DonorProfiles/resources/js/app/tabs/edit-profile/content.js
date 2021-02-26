@@ -7,6 +7,7 @@ import TextControl from '../../components/text-control';
 import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
 import { updateProfileWithAPI } from './utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import EmailControls from './email-controls';
 import AddressControls from './address-controls';
@@ -20,6 +21,7 @@ import './style.scss';
 const Content = () => {
 	const id = useSelector( state => state.id );
 	const storedProfile = useSelector( state => state.profile );
+	const [ isUpdating, setIsUpdating ] = useState( false );
 
 	useEffect( () => {
 		setAvatarFile( null );
@@ -82,8 +84,9 @@ const Content = () => {
 		},
 	];
 
-	const handleUpdate = () => {
-		updateProfileWithAPI( {
+	const handleUpdate = async() => {
+		setIsUpdating( true );
+		await updateProfileWithAPI( {
 			titlePrefix,
 			firstName,
 			lastName,
@@ -96,6 +99,7 @@ const Content = () => {
 			isAnonymous,
 			id,
 		} );
+		setIsUpdating( false );
 	};
 
 	return (
@@ -159,8 +163,9 @@ const Content = () => {
 				onChange={ ( value ) => setIsAnonymous( value ) }
 				value={ isAnonymous }
 			/>
-			<Button icon="save" onClick={ () => handleUpdate() }>
-				Update Profile
+			<Button onClick={ () => handleUpdate() }>
+				{ __( 'Update Profile', 'give' ) }
+				<FontAwesomeIcon className={ isUpdating ? 'give-donor-profile__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
 			</Button>
 		</Fragment>
 	);

@@ -20,6 +20,7 @@ const AuthModal = () => {
 	const [ emailSent, setEmailSent ] = useState( false );
 	const [ emailError, setEmailError ] = useState( null );
 	const emailAccessEnabled = getWindowData( 'emailAccessEnabled' );
+	const loggedInWithoutDonor = getWindowData( 'loggedInWithoutDonor' );
 
 	const handleLogin = async() => {
 		if ( login && password ) {
@@ -71,23 +72,30 @@ const AuthModal = () => {
 					{ __( 'Log in to your donor profile', 'give' ) }
 				</div>
 				<div className="give-donor-profile__auth-modal-content">
+					{ loggedInWithoutDonor && (
+						<div className="give-donor-profile__auth-modal-notice">
+							{ __( 'The account you are logged in with does not have an associated donor profile. Consider donating or contacting the site administrator to get one setup.' ) }
+						</div>
+					) }
 					{ emailAccessEnabled && (
 						<Fragment>
 							<div className="give-donor-profile__auth-modal-instruction">
 								{ __( 'Enter your email below and we\'ll send you a link to access your donor profile', 'give' ) }
 							</div>
-							<TextControl icon="envelope" value={ email } onChange={ ( value ) => setEmail( value ) } />
-							<div className="give-donor-profile__auth-modal-row">
-								<Button onClick={ () => handleVerifyEmail() }>
-									{ emailSent === false ? __( 'Verify Email', 'give' ) : __( 'Email Sent', 'give' ) }
-									{ emailSent === false && <FontAwesomeIcon className={ verifyingEmail ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ verifyingEmail ? 'spinner' : 'chevron-right' } fixedWidth /> }
-								</Button>
-								{ emailError && (
-									<div className="give-donor-profile__auth-modal-error">
-										{ emailError }
-									</div>
-								) }
-							</div>
+							<form className="give-donor-profile__auth-modal-form">
+								<TextControl icon="envelope" value={ email } onChange={ ( value ) => setEmail( value ) } />
+								<div className="give-donor-profile__auth-modal-row">
+									<Button onClick={ () => handleVerifyEmail() }>
+										{ emailSent === false ? __( 'Verify Email', 'give' ) : __( 'Email Sent', 'give' ) }
+										{ emailSent === false && <FontAwesomeIcon className={ verifyingEmail ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ verifyingEmail ? 'spinner' : 'chevron-right' } fixedWidth /> }
+									</Button>
+									{ emailError && (
+										<div className="give-donor-profile__auth-modal-error">
+											{ emailError }
+										</div>
+									) }
+								</div>
+							</form>
 							<div className="give-donor-profile__auth-modal-seperator" />
 						</Fragment>
 					) }
@@ -99,19 +107,21 @@ const AuthModal = () => {
 						) }
 						{ __( 'Login below to access your profile', 'give' ) }
 					</div>
-					<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
-					<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
-					<div className="give-donor-profile__auth-modal-row">
-						<Button onClick={ () => handleLogin() }>
-							{ __( 'Login', 'give' ) }
-							<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
-						</Button>
-						{ loginError && (
-							<div className="give-donor-profile__auth-modal-error">
-								{ loginError }
-							</div>
-						) }
-					</div>
+					<form className="give-donor-profile__auth-modal-form">
+						<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
+						<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
+						<div className="give-donor-profile__auth-modal-row">
+							<Button onClick={ () => handleLogin() } type="submit">
+								{ __( 'Login', 'give' ) }
+								<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
+							</Button>
+							{ loginError && (
+								<div className="give-donor-profile__auth-modal-error">
+									{ loginError }
+								</div>
+							) }
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

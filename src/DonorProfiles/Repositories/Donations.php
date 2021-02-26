@@ -33,7 +33,7 @@ class Donations {
 	public function getRevenue( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
 		error_log( serialize( $aggregate ) );
-		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Donations {
 	public function getAverageRevenue( $donorId ) {
 		;
 		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount();
+		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
 	}
 
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
@@ -179,6 +179,7 @@ class Donations {
 			'time'          => date_i18n( 'g:i a', strtotime( $payment->date ) ),
 			'mode'          => $payment->get_meta( '_give_payment_mode' ),
 			'pdfReceiptUrl' => $pdfReceiptUrl,
+			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
 		];
 	}
 
@@ -201,6 +202,17 @@ class Donations {
 			'color' => '#FFBA00',
 			'label' => esc_html__( 'Unknown', 'give' ),
 		];
+	}
+
+	protected function getAmountWithSeparators( $amount ) {
+		$formatted = give_format_amount(
+			$amount,
+			[
+				'decimal' => false,
+			],
+		);
+
+		return $formatted;
 	}
 
 	/**
