@@ -21,9 +21,16 @@ class Settings {
 	}
 
 	protected function getDonorProfilePageSetting() {
+
+		$generateDonorProfilePageUrl = add_query_arg(
+			[
+				'give-donor-profile-action' => 'generate-donor-profile-page',
+			]
+		);
+
 		return [
 			'name'       => __( 'Donor Profile Page', 'give' ),
-			'desc'       => __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Profile block or <code>[give_donor_profile]</code> shortcode should be on this page. Need helping setting one up? Let us <a href="#">generate one for you.</a>', 'give' ),
+			'desc'       => sprintf( __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Profile block or <code>[give_donor_profile]</code> shortcode should be on this page. Need helping setting one up? Let us <a href="%s">generate one for you.</a>', 'give' ), $generateDonorProfilePageUrl ),
 			'id'         => 'donor_profile_page',
 			'type'       => 'select',
 			'class'      => 'give-select give-select-chosen',
@@ -55,5 +62,35 @@ class Settings {
 		];
 	}
 
+	public function generateDonorProfilePage() {
+
+		error_log( 'generate donor profile page!!!!' );
+
+		$block = [
+			'blockName' => 'give/donor-profile',
+		];
+
+		$markup = render_block( $block );
+
+		error_log( $markup );
+
+		$content = apply_filters( 'the_content', $markup );
+
+		$pageId = wp_insert_post(
+			[
+				'comment_status' => 'close',
+				'ping_status'    => 'close',
+				'post_author'    => 1,
+				'post_title'     => __( 'Donor Profile', 'give' ),
+				'post_status'    => 'publish',
+				'post_content'   => $content,
+				'post_type'      => 'page',
+			]
+		);
+
+		if ( $pageId ) {
+			give_update_option( 'donor_profile_page', $pageId );
+		}
+	}
 
 }

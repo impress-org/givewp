@@ -14,8 +14,11 @@ class UpgradeNotice {
 
 		// Give Admin Only.
 		if ( give_is_admin_page() ) {
-			$donorProfilePageIsSet = empty( give_get_option( 'donor_profile_page' ) ) ? false : true;
-			if ( $donorProfilePageIsSet === false ) {
+
+			$donorProfilePageIsSet = empty( give_get_option( 'donor_profile_page' ) ) || get_post_status( give_get_option( 'donor_profile_page' ) ) === false ? false : true;
+			$historyPageIsSet      = empty( give_get_option( 'history_page' ) ) ? false : true;
+
+			if ( $donorProfilePageIsSet === false && $historyPageIsSet === true ) {
 				return true;
 			} else {
 				return false;

@@ -3,6 +3,7 @@
 namespace Give\DonorProfiles;
 
 use Give\DonorProfiles\App;
+use Give\DonorProfiles\Admin\Settings;
 
 /**
  * @since 2.10.0
@@ -17,6 +18,7 @@ class RequestHandler {
 	 */
 	public function filterQueryVars( $vars ) {
 		$vars[] = 'give-embed';
+		$vars[] = 'give-donor-profile-action';
 		return $vars;
 	}
 
@@ -27,7 +29,12 @@ class RequestHandler {
 	 * @return void
 	 */
 	public function parseRequest( $query ) {
-		if ( is_admin() ) {
+
+		error_log( serialize( $query ) );
+
+		if ( array_key_exists( 'give-donor-profile-action', $query->query_vars ) && $query->query_vars['give-donor-profile-action'] === 'generate-donor-profile-page' ) {
+			error_log( 'generate donor profile page!!' );
+			( new Settings() )->generateDonorProfilePage();
 			return null;
 		}
 
