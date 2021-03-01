@@ -14,6 +14,7 @@ class FormField implements Node {
 	use FormField\FieldDefaultValue;
 	use FormField\FieldAttributes;
 	use FormField\FieldEmailTag;
+	use FormField\FieldStoreAsMeta;
 
 	/** @var string */
 	protected $type;
