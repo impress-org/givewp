@@ -22,13 +22,12 @@ class SetupFieldPersistance implements HookCommandInterface {
 						if ( isset( $_POST[ $field->getName() ] ) ) {
 							$value = wp_strip_all_tags( $_POST[ $field->getName() ], true );
 
-							if ( $field->shouldStoreAsDonationMeta() ) {
-								give_update_payment_meta( $donationID, $field->getName(), $value );
-							}
-
 							if ( $field->shouldStoreAsDonorMeta() ) {
 								$donorID = give_get_payment_meta( $donationID, '_give_payment_donor_id' );
 								Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
+							} else {
+								// Store as Donation Meta - default behavior.
+								give_update_payment_meta( $donationID, $field->getName(), $value );
 							}
 						}
 					}
