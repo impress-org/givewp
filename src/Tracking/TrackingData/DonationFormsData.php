@@ -108,11 +108,11 @@ class DonationFormsData implements TrackData {
 
 		$this->formIds = $wpdb->get_col(
 			"
-				SELECT DISTINCT meta_value
-				FROM {$wpdb->donationmeta}
-				WHERE meta_key='_give_payment_form_id'
-				AND donation_id IN ({$donationIdsList})
-				"
+			SELECT DISTINCT meta_value
+			FROM {$wpdb->donationmeta}
+			WHERE meta_key='_give_payment_form_id'
+			AND donation_id IN ({$donationIdsList})
+			"
 		);
 
 		return $this;
