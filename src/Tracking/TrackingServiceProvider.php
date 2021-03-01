@@ -35,7 +35,7 @@ class TrackingServiceProvider implements ServiceProvider {
 
 			$this->registerTrackEvents();
 			Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
-			Hooks::addAction( $trackJobScheduler->getCronJobHookName(), TrackJob::class, 'send' );
+			Hooks::addAction( TrackJobScheduler::CRON_JOB_HOOK_NAME, TrackJob::class, 'send' );
 		}
 
 		if ( is_admin() ) {

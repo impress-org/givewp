@@ -10,6 +10,8 @@ use Give\Tracking\Repositories\TrackEvents;
  * @since 2.10.0
  */
 class TrackJobScheduler {
+	const CRON_JOB_HOOK_NAME = 'give_telemetry_send_requests';
+
 	/**
 	 * @var TrackRegisterer
 	 */
@@ -41,20 +43,10 @@ class TrackJobScheduler {
 			return;
 		}
 
-		$hookName = $this->getCronJobHookName();
+		$hookName = self::CRON_JOB_HOOK_NAME;
 		$this->trackEvents->saveTrackList();
 		if ( ! wp_next_scheduled( $hookName ) ) {
 			wp_schedule_single_event( strtotime( '+24 hours', current_time( 'timestamp' ) ), $hookName );
 		}
-	}
-
-	/**
-	 * Get cron job name.
-	 *
-	 * @since 2.10.0
-	 * @return string
-	 */
-	public function getCronJobHookName() {
-		return 'give_telemetry_send_requests';
 	}
 }
