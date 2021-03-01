@@ -11,7 +11,19 @@ class UpgradeNotice {
 	}
 
 	protected function shouldRenderOutput() {
-		return true;
+
+		// Give Admin Only.
+		if ( give_is_admin_page() ) {
+			$donorProfilePageIsSet = empty( give_get_option( 'donor_profile_page' ) ) ? false : true;
+			if ( $donorProfilePageIsSet === false ) {
+				return true;
+			} else {
+				return false;
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	protected function renderOutput() {
