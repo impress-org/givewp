@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
+### Fixed
+
+-   Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
+
 ## 2.9.7 - 2021-02-09
 
 ### Fixed
