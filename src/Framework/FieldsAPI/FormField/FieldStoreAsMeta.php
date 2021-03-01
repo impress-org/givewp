@@ -11,7 +11,7 @@ trait FieldStoreAsMeta {
 	 * @unreleased
 	 * @var bool
 	 */
-	public $storeAsDonorMeta = false;
+	protected $storeAsDonorMeta = false;
 
 	/**
 	 * @unreleased
