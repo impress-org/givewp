@@ -12,13 +12,6 @@ use Give\Helpers\ArrayDataSet;
  */
 class ActiveDonationFormsData extends DonationFormsData {
 	/**
-	 * Set donation Ids.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return self
-	 */
-	/**
 	 * Set donation ids.
 	 *
 	 * @since 2.10.0
