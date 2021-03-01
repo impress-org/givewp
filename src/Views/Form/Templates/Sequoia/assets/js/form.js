@@ -128,6 +128,17 @@
 				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
 			}
 			navigator.goToStep( getInitialStep() );
+
+			// Fields API: Run setup for custom checkbox fields.
+			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"' );
+			Array.from( customCheckboxes ).forEach( ( el ) => {
+				const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
+				setupCheckbox( {
+					container: containerSelector,
+					label: containerSelector + ' label',
+					input: containerSelector + ' input[type="checkbox"]',
+				} );
+			} );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
