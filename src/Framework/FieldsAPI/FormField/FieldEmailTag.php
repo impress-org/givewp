@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI\FormField;
 trait FieldEmailTag {
 
 	/** @var string */
-	public $emailTag;
+	protected $emailTag;
 
 	/**
 	 * @param string $emailTag
