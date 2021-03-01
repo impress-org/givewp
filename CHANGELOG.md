@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New
 
 -   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+-   Add non-sensitive information tracker. (#5658)
 
 ### Fixed
 
