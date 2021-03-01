@@ -40,9 +40,7 @@ class SetupFieldEmailTag {
 	 *
 	 * @return void
 	 */
-	public function process( $donationID ) {
-
-		$this->donationID = $donationID;
+	public function process() {
 
 		$fieldCollection = new FieldCollection( 'root' );
 		do_action( "give_fields_{$this->hook}", $fieldCollection, get_the_ID() );
@@ -58,6 +56,7 @@ class SetupFieldEmailTag {
 	 * @return void
 	 */
 	public function register( FormField $field ) {
+
 		give_add_email_tag(
 			[
 				'tag'      => $field->getEmailTag() ?: $field->getName(), // The tag name.
@@ -65,7 +64,14 @@ class SetupFieldEmailTag {
 				'context'  => 'donation',
 				'is_admin' => false, // default is false.
 				'func'     => function( $args, $tag ) use ( $field ) {
-					$value = give_get_meta( $args['payment_id'], $field->getName(), true );
+
+					if ( $field->shouldStoreAsDonorMeta() ) {
+						$donorID = give_get_payment_meta( $args['payment_id'], '_give_payment_donor_id' );
+						$value   = Give()->donor_meta->get_meta( $donorID, $field->getName(), true );
+					} else {
+						$value = give_get_meta( $args['payment_id'], $field->getName(), true );
+					}
+
 					return ( ! empty( $value ) ) ? wp_kses_post( $value ) : '';
 				},
 			]
