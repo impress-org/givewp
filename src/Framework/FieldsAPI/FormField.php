@@ -13,6 +13,7 @@ class FormField implements Node {
 	use FormField\FieldHelpText;
 	use FormField\FieldAttributes;
 	use FormField\FieldDefaultValue;
+	use FormField\FieldStoreAsMeta;
 
 	/** @var string */
 	protected $type;
