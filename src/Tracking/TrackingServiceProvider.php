@@ -30,9 +30,6 @@ class TrackingServiceProvider implements ServiceProvider {
 	 */
 	public function boot() {
 		if ( Track::isTrackingEnabled() ) {
-			/* @var TrackJobScheduler $trackJobScheduler */
-			$trackJobScheduler = give( TrackJobScheduler::class );
-
 			$this->registerTrackEvents();
 			Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
 			Hooks::addAction( TrackJobScheduler::CRON_JOB_HOOK_NAME, TrackJob::class, 'send' );
