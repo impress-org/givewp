@@ -57,6 +57,11 @@ class SetupFieldConfirmation {
 	}
 
 	public function render( FormField $field ) {
+
+		if ( ! $field->shouldShowInReceipt() ) {
+			return;
+		}
+
 		?>
 			<tr>
 				<td scope="row">
@@ -66,12 +71,12 @@ class SetupFieldConfirmation {
 				</td>
 				<td>
 				<?php if ( $field->shouldStoreAsDonorMeta() ) : ?>
-					<?php echo give_get_payment_meta( $this->donationID, $field->getName() ); ?>
-				<?php elseif ( $field->shouldStoreAsDonorMeta() ) : ?>
 					<?php
-						$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
+						$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
 						echo Give()->donor_meta->get_meta( $donorID, $field->getName(), true );
 					?>
+				<?php else : ?>
+					<?php echo give_get_payment_meta( $this->donationID, $field->getName() ); ?>
 				<?php endif; ?>
 				</td>
 			</tr>
