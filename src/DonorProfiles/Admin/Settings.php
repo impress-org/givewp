@@ -126,10 +126,18 @@ class Settings {
 		// Only override settings if the the override legacy donation management pages setting is enabled
 		if ( $this->donorProfilePageIsPublished() && give_is_setting_enabled( give_get_option( 'override_legacy_donation_management_pages', 'enabled' ) ) ) {
 
+			$pageId = give_get_option( 'donor_profile_page' );
+
 			$overrideSettingsMap = [
 				'history_page',
 				'subscriptions_page',
 			];
+
+			foreach ( $overrideSettingsMap as $setting ) {
+				if ( give_get_option( $setting ) !== $pageId ) {
+					give_update_option( $setting, $pageId );
+				}
+			}
 
 			// Hide settings that are overriden by Donor Profile setting
 			$key = 0;
