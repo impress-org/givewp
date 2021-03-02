@@ -271,19 +271,18 @@ function give_after_install() {
 			// Create the donor database.
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->donors->create_table();
-
-			/**
-			 * Fires after plugin installation.
-			 *
-			 * @since 1.0
-			 *
-			 * @param array $give_options Give plugin options.
-			 */
-			do_action( 'give_after_install', $give_options );
 		}
 
-		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
+		/**
+		 * Fires after plugin installation.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $give_options Give plugin options.
+		 */
+		do_action( 'give_after_install', $give_options );
 
+		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
 	}
 
 	// Delete the transient
