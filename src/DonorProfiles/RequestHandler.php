@@ -18,7 +18,7 @@ class RequestHandler {
 	 */
 	public function filterQueryVars( $vars ) {
 		$vars[] = 'give-embed';
-		$vars[] = 'give-donor-profile-action';
+		$vars[] = 'give-generate-donor-profile-page';
 		return $vars;
 	}
 
@@ -30,12 +30,10 @@ class RequestHandler {
 	 */
 	public function parseRequest( $query ) {
 
-		error_log( serialize( $query ) );
-
-		if ( array_key_exists( 'give-donor-profile-action', $query->query_vars ) && $query->query_vars['give-donor-profile-action'] === 'generate-donor-profile-page' ) {
-			error_log( 'generate donor profile page!!' );
+		if ( is_admin() && array_key_exists( 'give-generate-donor-profile-page', $query->query_vars ) ) {
 			( new Settings() )->generateDonorProfilePage();
-			return null;
+			wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) );
+			exit;
 		}
 
 		if ( array_key_exists( 'give-embed', $query->query_vars ) && $query->query_vars['give-embed'] === 'donor-profile' ) {

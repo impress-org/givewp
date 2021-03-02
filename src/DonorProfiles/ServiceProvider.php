@@ -45,6 +45,7 @@ class ServiceProvider implements ServiceProviderInterface {
 
 		Hooks::addAction( 'admin_notices', UpgradeNotice::class, 'register' );
 		Hooks::addFilter( 'give_settings_general', Settings::class, 'register' );
+		Hooks::addFilter( 'give_settings_general', Settings::class, 'overrideLegacyDonationManagementPageSettings', 999 );
 
 		Hooks::addAction( 'give_embed_head', App::class, 'loadAssets' );
 
