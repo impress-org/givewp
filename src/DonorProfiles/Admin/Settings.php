@@ -2,13 +2,19 @@
 
 namespace Give\DonorProfiles\Admin;
 
+/**
+ * @since 2.10.0
+ */
 class Settings {
 
-	protected function donorProfilePageIsPublished() {
-		$donorProfilePageId = ! empty( give_get_option( 'donor_profile_page' ) ) ? give_get_option( 'donor_profile_page' ) : null;
-		return $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish' ? true : false;
-	}
-
+	/**
+	 * Register settings related to Donor Profiles
+	 *
+	 * @param array $settings
+	 * @return array
+	 *
+	 * @since 2.10.0
+	 */
 	public function register( $settings ) {
 
 		$donorProfileSettings = [
@@ -23,6 +29,25 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Return true if donor profile page is defined and published, false if not
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.10.0
+	 */
+	protected function donorProfilePageIsPublished() {
+		$donorProfilePageId = ! empty( give_get_option( 'donor_profile_page' ) ) ? give_get_option( 'donor_profile_page' ) : null;
+		return $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish' ? true : false;
+	}
+
+	/**
+	 * Return CMB2 compatible array used to render/control donor profile page setting
+	 *
+	 * @return array
+	 *
+	 * @since 2.10.0
+	 */
 	protected function getDonorProfilePageSetting() {
 
 		$generateDonorProfilePageUrl = add_query_arg(
@@ -51,6 +76,13 @@ class Settings {
 		];
 	}
 
+	/**
+	 * Return CMB2 compatible array used to render/control override legacy donation manamgent pages setting
+	 *
+	 * @return array
+	 *
+	 * @since 2.10.0
+	 */
 	protected function getOverrideLegacyDonationManagementPagesSetting() {
 		return [
 			'name'          => esc_html__( 'Override Legacy Donation Managment Pages', 'give' ),
@@ -66,6 +98,13 @@ class Settings {
 		];
 	}
 
+	/**
+	 * Generate donor profile page, and update site setting to use it
+	 *
+	 * @return void
+	 *
+	 * @since 2.10.0
+	 */
 	public function generateDonorProfilePage() {
 
 		$content = $this->getDonorProfilePageContent( 'block' );
@@ -102,6 +141,14 @@ class Settings {
 
 	}
 
+	/**
+	 * Get default content for donor profile page, based on format (block vs shortcode)
+	 *
+	 * @param string $format
+	 * @return string
+	 *
+	 * @since 2.10.0
+	 */
 	protected function getDonorProfilePageContent( $format ) {
 
 		switch ( $format ) {
@@ -114,6 +161,9 @@ class Settings {
 					null
 				);
 			}
+			case 'shortcode': {
+				return '[give_donor_profile]';
+			}
 			default: {
 				return null;
 			}
@@ -121,6 +171,14 @@ class Settings {
 
 	}
 
+	/**
+	 * Filter and override legacy donation management page settings
+	 *
+	 * @param array $settings
+	 * @return array
+	 *
+	 * @since 2.10.0
+	 */
 	public function overrideLegacyDonationManagementPageSettings( $settings ) {
 
 		// Only override settings if the the override legacy donation management pages setting is enabled
