@@ -3,6 +3,7 @@
 namespace Give\Tracking;
 
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Enum\EventType;
 use Give\Tracking\Helpers\Track as TrackHelper;
 use Give\Tracking\Repositories\TrackEvents;
@@ -59,5 +60,27 @@ class TrackJob {
 
 		$this->trackEvents->saveRequestTime();
 		$this->trackEvents->removeTrackList();
+	}
+
+	/**
+	 * Send tracked information immediately.
+	 *
+	 * @unreleased
+	 * @param array $trackedEvents
+	 */
+	public function sendNow( $trackedEvents ) {
+		/* @var TrackEvents $trackEvents */
+		$trackEvents = give( TrackEvents::class );
+
+		foreach ( $trackedEvents as $trackEvent ) {
+			give( $trackEvent )->record();
+		}
+
+		$trackEvents->saveTrackList();
+		$this->send();
+
+		// Do not setup cron job.
+		$class = TrackJobScheduler::class;
+		add_filter( "give_disable_hook-shutdown:{$class}@schedule", '__return_true' );
 	}
 }

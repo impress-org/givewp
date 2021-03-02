@@ -127,19 +127,9 @@ class AdminActionHandler {
 
 		// Send last set of information.
 		if ( $hasAccessToken ) {
-			give( GivePluginSettingsTracking::class )->record();
-
-			/* @var TrackEvents $trackEvents */
-			$trackEvents = give( TrackEvents::class );
-			$trackEvents->saveTrackList();
-
 			/* @var TrackJob $trackJob */
 			$trackJob = give( TrackJob::class );
-			$trackJob->send();
-
-			// Do not setup cron job.
-			$class = TrackJobScheduler::class;
-			add_filter( "give_disable_hook-shutdown:{$class}@schedule", '__return_true' );
+			$trackJob->sendNow( [ GivePluginSettingsTracking::class ] );
 		}
 
 		// Exit if already has access token.
@@ -164,22 +154,16 @@ class AdminActionHandler {
 	 * @since 2.10.0
 	 */
 	private function recordTracks() {
-		give( ActiveDonationFormsFirstTimeTracking::class )->record();
-		give( DonationMetricsTracking::class )->record();
-		give( ThemeTracking::class )->record();
-		give( GivePluginSettingsTracking::class )->record();
-		give( PluginsTracking::class )->record();
-
-		/* @var TrackEvents $trackEvents */
-		$trackEvents = give( TrackEvents::class );
-		$trackEvents->saveTrackList();
-
 		/* @var TrackJob $trackJob */
 		$trackJob = give( TrackJob::class );
-		$trackJob->send();
-
-		// Do not setup cron job.
-		$class = TrackJobScheduler::class;
-		add_filter( "give_disable_hook-shutdown:{$class}@schedule", '__return_true' );
+		$trackJob->sendNow(
+			[
+				ActiveDonationFormsFirstTimeTracking::class,
+				DonationMetricsTracking::class,
+				ThemeTracking::class,
+				GivePluginSettingsTracking::class,
+				PluginsTracking::class,
+			]
+		);
 	}
 }
