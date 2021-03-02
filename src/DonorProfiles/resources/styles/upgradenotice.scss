@@ -1,11 +1,16 @@
 .give-donor-profile-upgrade-notice {
 	padding: 20px;
+	padding-right: 20px !important;
 	display: flex;
 	align-items: center;
 	background: #fff;
 	width: calc(100% - 40px);
 	border: 1px solid #ccd0d4;
 	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+
+	&.hidden {
+		display: none;
+	}
 
 	.give-donor-profile-upgrade-notice__graphic {
 		width: 225px;

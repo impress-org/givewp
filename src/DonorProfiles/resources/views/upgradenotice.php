@@ -4,7 +4,7 @@ $setupUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings' );
 
 ?>
 
-<div class="notice give-donor-profile-upgrade-notice">
+<div class="notice give-donor-profile-upgrade-notice is-dismissible hidden" data-give-dismissible="upgrade-donor-profiles-notice-210" >
 	<div class="give-donor-profile-upgrade-notice__graphic">
 		Donor Profile Graphic
 	</div>
