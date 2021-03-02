@@ -11,8 +11,6 @@ use Give\API\RestRoute;
  */
 class LoginRoute implements RestRoute {
 
-	use Captcha\ProtectedRoute;
-
 	/** @var string */
 	protected $endpoint = 'donor-profile/login';
 
@@ -31,20 +29,15 @@ class LoginRoute implements RestRoute {
 					'permission_callback' => '__return_true',
 				],
 				'args' => [
-					'login'                => [
+					'login'    => [
 						'type'              => 'string',
 						'required'          => true,
 						'sanitize_callback' => 'sanitize_text_field',
 					],
-					'password'             => [
+					'password' => [
 						'type'              => 'string',
 						'required'          => true,
 						'sanitize_callback' => 'sanitize_text_field',
-					],
-					'g-recaptcha-response' => [
-						'type'              => 'string',
-						'required'          => $this->isCaptchaEnabled(),
-						'validate_callback' => [ $this, 'validateRecaptcha' ],
 					],
 				],
 			]
