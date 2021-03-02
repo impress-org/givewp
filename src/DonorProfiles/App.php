@@ -107,6 +107,10 @@ class App {
 			true
 		);
 
+		$recaptcha_key     = give_get_option( 'recaptcha_key' );
+		$recaptcha_secret  = give_get_option( 'recaptcha_secret' );
+		$recaptcha_enabled = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
+
 		wp_localize_script(
 			'give-donor-profiles-app',
 			'giveDonorProfileData',
@@ -120,6 +124,7 @@ class App {
 				'emailAccessEnabled'   => give_is_setting_enabled( give_get_option( 'email_access' ) ),
 				'registeredTabs'       => give()->donorProfileTabs->getRegisteredIds(),
 				'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorProfile->getId() === null ? true : false,
+				'recaptchaKey'         => $recaptcha_enabled ? $recaptcha_key : '',
 			]
 		);
 
