@@ -11,6 +11,8 @@ use Give\API\RestRoute;
  */
 class VerifyEmailRoute implements RestRoute {
 
+	use Captcha\ProtectedRoute;
+
 	/** @var string */
 	protected $endpoint = 'donor-profile/verify-email';
 
@@ -28,10 +30,15 @@ class VerifyEmailRoute implements RestRoute {
 					'permission_callback' => '__return_true',
 				],
 				'args' => [
-					'email' => [
+					'email'                => [
 						'type'              => 'string',
 						'required'          => true,
 						'sanitize_callback' => 'sanitize_text_field',
+					],
+					'g-recaptcha-response' => [
+						'type'              => 'string',
+						'required'          => $this->isCaptchaEnabled(),
+						'validate_callback' => [ $this, 'validateRecaptcha' ],
 					],
 				],
 			]
