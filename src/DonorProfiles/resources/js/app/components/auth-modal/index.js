@@ -22,7 +22,8 @@ const AuthModal = () => {
 	const emailAccessEnabled = getWindowData( 'emailAccessEnabled' );
 	const loggedInWithoutDonor = getWindowData( 'loggedInWithoutDonor' );
 
-	const handleLogin = async() => {
+	const handleLogin = async( e ) => {
+		e.preventDefault();
 		if ( login && password ) {
 			setLoggingIn( true );
 			// eslint-disable-next-line camelcase
@@ -107,11 +108,11 @@ const AuthModal = () => {
 						) }
 						{ __( 'Login below to access your profile', 'give' ) }
 					</div>
-					<form className="give-donor-profile__auth-modal-form">
+					<form className="give-donor-profile__auth-modal-form" onSubmit={ ( e ) => handleLogin( e ) }>
 						<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
 						<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
 						<div className="give-donor-profile__auth-modal-row">
-							<Button onClick={ () => handleLogin() } type="submit">
+							<Button type="submit">
 								{ __( 'Login', 'give' ) }
 								<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
 							</Button>
