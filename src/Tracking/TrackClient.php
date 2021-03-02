@@ -16,7 +16,7 @@ use WP_Error;
  *
  */
 class TrackClient {
-	const SERVER_URL = 'https://givetelemetryserver.test/api/v1/track-plugin-usage';
+	const SERVER_URL = 'https://telemetry.givewp.com/api/v1/track-plugin-usage';
 
 	/**
 	 * @var TelemetryAccessDetails
