@@ -121,11 +121,12 @@ class AdminActionHandler {
 			return false;
 		}
 
-		$usageTracking = $newValue[ Settings::USAGE_TRACKING_OPTION_KEY ] ?: 'disabled';
-		$usageTracking = give_is_setting_enabled( $usageTracking );
+		$usageTracking  = $newValue[ Settings::USAGE_TRACKING_OPTION_KEY ] ?: 'disabled';
+		$usageTracking  = give_is_setting_enabled( $usageTracking );
+		$hasAccessToken = $this->telemetryAccessDetails->hasAccessTokenOptionValue();
 
 		// Send last set of information.
-		if ( ! $usageTracking && $this->telemetryAccessDetails->hasAccessTokenOptionValue() ) {
+		if ( $hasAccessToken ) {
 			give( GivePluginSettingsTracking::class )->record();
 
 			/* @var TrackEvents $trackEvents */
@@ -142,7 +143,7 @@ class AdminActionHandler {
 		}
 
 		// Exit if already has access token.
-		if ( ! $usageTracking || $this->telemetryAccessDetails->hasAccessTokenOptionValue() ) {
+		if ( ! $usageTracking || $hasAccessToken ) {
 			return false;
 		}
 
