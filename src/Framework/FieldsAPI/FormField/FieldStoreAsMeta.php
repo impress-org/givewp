@@ -11,21 +11,14 @@ trait FieldStoreAsMeta {
 	 * @unreleased
 	 * @var bool
 	 */
-	public $storeAsDonorMeta = false;
+	protected $storeAsDonorMeta = false;
 
 	/**
 	 * @unreleased
-	 * @var bool
-	 */
-	public $storeAsDonationMeta = false;
-
-	/**
-	 * @unreleased
-	 * @param bool $storeAsDonorMeta
 	 * @return $this
 	 */
-	public function storeAsDonorMeta( $storeAsDonorMeta = true ) {
-		$this->storeAsDonorMeta = $storeAsDonorMeta;
+	public function storeAsDonorMeta() {
+		$this->storeAsDonorMeta = true;
 		return $this;
 	}
 
@@ -35,23 +28,5 @@ trait FieldStoreAsMeta {
 	 */
 	public function shouldStoreAsDonorMeta() {
 		return $this->storeAsDonorMeta;
-	}
-
-	/**
-	 * @unreleased
-	 * @param bool $storeAsDonationMeta
-	 * @return $this
-	 */
-	public function storeAsDonationMeta( $storeAsDonationMeta = true ) {
-		$this->storeAsDonationMeta = $storeAsDonationMeta;
-		return $this;
-	}
-
-	/**
-	 * @unreleased
-	 * @return bool
-	 */
-	public function shouldStoreAsDonationMeta() {
-		return $this->storeAsDonationMeta;
 	}
 }
