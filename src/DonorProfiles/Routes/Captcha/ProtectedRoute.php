@@ -4,9 +4,16 @@ namespace Give\DonorProfiles\Routes\Captcha;
 
 /**
  * Note: Functionality forked from `give_email_access_login()`.
+ *
+ * @unreleased
  */
 trait ProtectedRoute {
 
+	/**
+	 * @unreleased
+	 *
+	 * @return bool
+	 */
 	public function isCaptchaEnabled() {
 		$recaptcha_key     = give_get_option( 'recaptcha_key' );
 		$recaptcha_secret  = give_get_option( 'recaptcha_secret' );
@@ -14,6 +21,15 @@ trait ProtectedRoute {
 		return $recaptcha_enabled;
 	}
 
+	/**
+	 * @unreleased
+	 *
+	 * @param string $value
+	 * @param WP_REST_Request $request
+	 * @param string $param The name of the parameter.
+	 *
+	 * @return bool
+	 */
 	public function validateRecaptcha( $value, $request, $param ) {
 
 		$request = wp_remote_post(
