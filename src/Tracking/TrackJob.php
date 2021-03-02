@@ -44,7 +44,7 @@ class TrackJob {
 	public function send() {
 		$recordedTracks = $this->trackEvents->getTrackList();
 
-		if ( ! $recordedTracks || ! TrackHelper::isTrackingEnabled() ) {
+		if ( ! $recordedTracks ) {
 			return;
 		}
 
