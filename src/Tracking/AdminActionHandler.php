@@ -125,7 +125,7 @@ class AdminActionHandler {
 		$usageTracking  = give_is_setting_enabled( $usageTracking );
 		$hasAccessToken = $this->telemetryAccessDetails->hasAccessTokenOptionValue();
 
-		// Send last set of information.
+		// Send plugin information immediately when edit tracking setting.
 		if ( $hasAccessToken ) {
 			/* @var TrackJob $trackJob */
 			$trackJob = give( TrackJob::class );
