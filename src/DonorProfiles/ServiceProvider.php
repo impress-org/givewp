@@ -21,6 +21,7 @@ use Give\DonorProfiles\Tabs\EditProfileTab\Tab as EditProfileTab;
 use Give\DonorProfiles\Tabs\TabsRegister;
 
 use Give\DonorProfiles\Admin\UpgradeNotice;
+use Give\DonorProfiles\Admin\SuccessNotice;
 use Give\DonorProfiles\Admin\Settings;
 
 /**
@@ -46,6 +47,8 @@ class ServiceProvider implements ServiceProviderInterface {
 		Hooks::addAction( 'give_after_install', Settings::class, 'generateDonorProfilePage' );
 
 		Hooks::addAction( 'admin_notices', UpgradeNotice::class, 'register' );
+		Hooks::addAction( 'admin_notices', SuccessNotice::class, 'register' );
+
 		Hooks::addFilter( 'give_settings_general', Settings::class, 'register' );
 		Hooks::addFilter( 'give_settings_general', Settings::class, 'overrideLegacyDonationManagementPageSettings', 999 );
 
