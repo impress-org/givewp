@@ -124,6 +124,23 @@ class AdminActionHandler {
 		$usageTracking = $newValue[ Settings::USAGE_TRACKING_OPTION_KEY ] ?: 'disabled';
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
+		// Send last set of information.
+		if ( ! $usageTracking && $this->telemetryAccessDetails->hasAccessTokenOptionValue() ) {
+			give( GivePluginSettingsTracking::class )->record();
+
+			/* @var TrackEvents $trackEvents */
+			$trackEvents = give( TrackEvents::class );
+			$trackEvents->saveTrackList();
+
+			/* @var TrackJob $trackJob */
+			$trackJob = give( TrackJob::class );
+			$trackJob->send();
+
+			// Do not setup cron job.
+			$class = TrackJobScheduler::class;
+			add_filter( "give_disable_hook-shutdown:{$class}@schedule", '__return_true' );
+		}
+
 		// Exit if already has access token.
 		if ( ! $usageTracking || $this->telemetryAccessDetails->hasAccessTokenOptionValue() ) {
 			return false;
