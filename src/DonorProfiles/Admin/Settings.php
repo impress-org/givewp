@@ -66,13 +66,7 @@ class Settings {
 
 	public function generateDonorProfilePage() {
 
-		$block = [
-			'blockName' => 'give/donor-profile',
-		];
-
-		$markup = render_block( $block );
-
-		$content = apply_filters( 'the_content', $markup );
+		$content = $this->getDonorProfilePageContent( 'block' );
 
 		$pageId = wp_insert_post(
 			[
@@ -89,6 +83,25 @@ class Settings {
 		if ( $pageId ) {
 			give_update_option( 'donor_profile_page', $pageId );
 		}
+	}
+
+	protected function getDonorProfilePageContent( $format ) {
+
+		switch ( $format ) {
+			case 'block': {
+				return get_comment_delimited_block_content(
+					'give/donor-profile',
+					[
+						'align' => 'wide',
+					],
+					null
+				);
+			}
+			default: {
+				return null;
+			}
+		}
+
 	}
 
 	public function overrideLegacyDonationManagementPageSettings( $settings ) {
