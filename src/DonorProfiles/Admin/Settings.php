@@ -4,14 +4,16 @@ namespace Give\DonorProfiles\Admin;
 
 class Settings {
 
-	public function register( $settings ) {
+	protected function donorProfilePageIsPublished() {
+		$donorProfilePageId = ! empty( give_get_option( 'donor_profile_page' ) ) ? give_get_option( 'donor_profile_page' ) : null;
+		return $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish' ? true : false;
+	}
 
-		$donorProfilePageId          = ! empty( give_get_option( 'donor_profile_page' ) ) ? give_get_option( 'donor_profile_page' ) : null;
-		$donorProfilePageIsPublished = $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish' ? true : false;
+	public function register( $settings ) {
 
 		$donorProfileSettings = [
 			$this->getDonorProfilePageSetting(),
-			$donorProfilePageIsPublished ? $this->getOverrideLegacyDonationManagementPagesSetting() : null,
+			$this->donorProfilePageIsPublished() ? $this->getOverrideLegacyDonationManagementPagesSetting() : null,
 		];
 
 		return give_settings_array_insert(
@@ -81,8 +83,23 @@ class Settings {
 		);
 
 		if ( $pageId ) {
+
 			give_update_option( 'donor_profile_page', $pageId );
+
+			give_update_option( 'override_legacy_donation_management_pages', 'enabled' );
+
+			$overrideSettingsMap = [
+				'history_page',
+				'subscriptions_page',
+			];
+
+			foreach ( $overrideSettingsMap as $setting ) {
+				if ( give_get_option( $setting ) !== $pageId ) {
+					give_update_option( $setting, $pageId );
+				}
+			}
 		}
+
 	}
 
 	protected function getDonorProfilePageContent( $format ) {
@@ -107,20 +124,12 @@ class Settings {
 	public function overrideLegacyDonationManagementPageSettings( $settings ) {
 
 		// Only override settings if the the override legacy donation management pages setting is enabled
-		if ( give_is_setting_enabled( give_get_option( 'override_legacy_donation_management_pages', 'enabled' ) ) ) {
+		if ( $this->donorProfilePageIsPublished() && give_is_setting_enabled( give_get_option( 'override_legacy_donation_management_pages', 'enabled' ) ) ) {
 
 			$overrideSettingsMap = [
 				'history_page',
 				'subscriptions_page',
 			];
-
-			// If setting does not match Donor Profile setting, override it
-			$donorProfilePageId = give_get_option( 'donor_profile_page' );
-			foreach ( $overrideSettingsMap as $setting ) {
-				if ( give_get_option( $setting ) !== $donorProfilePageId ) {
-					give_update_option( $setting, $donorProfilePageId );
-				}
-			}
 
 			// Hide settings that are overriden by Donor Profile setting
 			$key = 0;
