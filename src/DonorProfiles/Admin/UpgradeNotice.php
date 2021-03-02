@@ -25,22 +25,13 @@ class UpgradeNotice {
 	 * @since 2.10.0
 	 */
 	protected function shouldRenderOutput() {
-
-		// Give Admin Only.
-		if ( give_is_admin_page() ) {
-
-			$donorProfilePageIsSet = empty( give_get_option( 'donor_profile_page' ) ) || get_post_status( give_get_option( 'donor_profile_page' ) ) === false ? false : true;
-			$historyPageIsSet      = empty( give_get_option( 'history_page' ) ) ? false : true;
-
-			if ( $donorProfilePageIsSet === false && $historyPageIsSet === true ) {
-				return true;
-			} else {
-				return false;
-			}
-			return true;
-		} else {
+		if ( ! give_is_admin_page() ) {
 			return false;
 		}
+
+		$donorProfilePageIsSet = ! empty( give_get_option( 'donor_profile_page' ) ) && get_post_status( give_get_option( 'donor_profile_page' ) );
+		$historyPageIsSet      = ! empty( give_get_option( 'history_page' ) );
+		return ! $donorProfilePageIsSet && $historyPageIsSet;
 	}
 
 	/**

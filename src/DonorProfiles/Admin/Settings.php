@@ -38,7 +38,7 @@ class Settings {
 	 */
 	protected function donorProfilePageIsPublished() {
 		$donorProfilePageId = ! empty( give_get_option( 'donor_profile_page' ) ) ? give_get_option( 'donor_profile_page' ) : null;
-		return $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish' ? true : false;
+		return $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish';
 	}
 
 	/**
