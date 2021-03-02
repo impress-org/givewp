@@ -1,7 +1,8 @@
 .periodSelector {
 	display: inline-flex;
 	align-items: center;
-	min-width: 330px;
+	max-width: 330px;
+	width: 100%;
 }
 
 .datepicker {
