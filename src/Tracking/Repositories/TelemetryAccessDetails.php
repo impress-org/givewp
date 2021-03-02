@@ -22,6 +22,16 @@ class TelemetryAccessDetails {
 	}
 
 	/**
+	 * Return whether or not website has telemetry access token.
+	 *
+	 * @since 2.10.0
+	 * @return string
+	 */
+	public function hasAccessTokenOptionValue() {
+		return (bool) $this->getAccessTokenOptionValue();
+	}
+
+	/**
 	 * Get option value for telemetry access token.
 	 *
 	 * @since 2.10.0

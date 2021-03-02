@@ -125,7 +125,7 @@ class AdminActionHandler {
 		$usageTracking = give_is_setting_enabled( $usageTracking );
 
 		// Exit if already has access token.
-		if ( ! $usageTracking || $this->telemetryAccessDetails->getAccessTokenOptionValue() ) {
+		if ( ! $usageTracking || $this->telemetryAccessDetails->hasAccessTokenOptionValue() ) {
 			return false;
 		}
 
