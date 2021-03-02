@@ -480,23 +480,6 @@ function give_create_pages() {
 		$options['failure_page'] = $failed;
 	}
 
-	// Checks if the History Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
-		// Donation History Page
-		$history = wp_insert_post(
-			[
-				'post_title'     => esc_html__( 'Donation History', 'give' ),
-				'post_content'   => '[donation_history]',
-				'post_status'    => 'publish',
-				'post_author'    => 1,
-				'post_type'      => 'page',
-				'comment_status' => 'closed',
-			]
-		);
-
-		$options['history_page'] = $history;
-	}
-
 	if ( ! empty( $options ) ) {
 		update_option( 'give_settings', array_merge( give_get_settings(), $options ), false );
 	}
