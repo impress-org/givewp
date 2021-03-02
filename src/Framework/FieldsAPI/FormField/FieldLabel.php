@@ -4,22 +4,22 @@ namespace Give\Framework\FieldsAPI\FormField;
 
 trait FieldLabel {
 
-    /** @var string */
-    public $label;
+	/** @var string */
+	protected $label;
 
-    /**
-     * @param string $label
-     * @return $this
-     */
-    public function label( $label ) {
-        $this->label = $label;
-        return $this;
-    }
+	/**
+	 * @param string $label
+	 * @return $this
+	 */
+	public function label( $label ) {
+		$this->label = $label;
+		return $this;
+	}
 
-    /**
-     * @return string
-     */
-    public function getLabel() {
-        return $this->label;
-    }
+	/**
+	 * @return string
+	 */
+	public function getLabel() {
+		return $this->label;
+	}
 }
