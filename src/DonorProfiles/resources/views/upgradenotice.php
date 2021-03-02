@@ -1,6 +1,11 @@
 <?php
 
-$setupUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings' );
+$setupUrl = add_query_arg(
+	[
+		'give-generate-donor-profile-page' => '1',
+	],
+	admin_url( 'edit.php' )
+);
 
 ?>
 
