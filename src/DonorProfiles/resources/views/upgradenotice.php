@@ -26,8 +26,5 @@ $setupUrl = admin_url( 'edit.php?post_type=give_forms&page=give-settings' );
 		<a class="give-donor-profile-upgrade-notice__button" href="<?php echo $setupUrl; ?>">
 			Setup Donor Profiles
 		</a>
-		<a>
-			I'll setup Donor Profiles later.
-		</a>
 	</div>
 </div>
