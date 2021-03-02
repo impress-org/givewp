@@ -283,7 +283,7 @@ const Migrations = () => {
 				<button
 					className="button"
 					onClick={ () => openMigrationRunModal( migration.id ) }>
-					{ __( 'Re-run Update', 'give' ) }
+					{ __( 'Run Update', 'give' ) }
 				</button>
 			);
 		},
