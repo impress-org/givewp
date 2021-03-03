@@ -3,6 +3,7 @@ namespace Give\DonorProfiles\Repositories;
 
 use Give\ValueObjects\Money;
 use Give\Framework\Database\DB;
+use Give\Receipt\DonationReceipt;
 use InvalidArgumentException;
 
 /**
@@ -133,6 +134,7 @@ class Donations {
 				'form'    => $this->getFormInfo( $payment ),
 				'payment' => $this->getPaymentInfo( $payment ),
 				'donor'   => $this->getDonorInfo( $payment ),
+				'receipt' => $this->getReceiptInfo( $payment ),
 			];
 		}
 		return $donations;
@@ -181,6 +183,64 @@ class Donations {
 			'pdfReceiptUrl' => $pdfReceiptUrl,
 			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
 		];
+	}
+
+	protected function getReceiptInfo( $payment ) {
+
+		$receipt = new DonationReceipt( $payment->ID );
+
+		/**
+		 * Fire the action for receipt object.
+		 *
+		 * @since 2.7.0
+		 */
+		do_action( 'give_new_receipt', $receipt );
+
+		$receiptArr = [];
+
+		$sectionIndex = 0;
+		foreach ( $receipt as $section ) {
+			// Continue if section does not have line items.
+			if ( ! $section->getLineItems() ) {
+				continue;
+			}
+
+			if ( 'PDFReceipt' === $section->id ) {
+				continue;
+			}
+
+			$receiptArr[ $sectionIndex ]['id'] = $section->id;
+
+			if ( $section->label ) {
+				$receiptArr[ $sectionIndex ]['label'] = $section->label;
+			}
+
+			/* @var LineItem $lineItem */
+			foreach ( $section as $lineItem ) {
+				// Continue if line item does not have value.
+				if ( ! $lineItem->value ) {
+					continue;
+				}
+
+				// This class is required to highlight total donation amount in receipt.
+				$detailRowClass = '';
+				if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
+					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+				}
+
+				$receiptArr[ $sectionIndex ]['lineItems'][] = [
+					'class' => $detailRowClass,
+					'icon'  => '', // Todo: get FontAwesome icon name from stored HTML string $lineItem->icon,
+					'label' => html_entity_decode( wp_strip_all_tags( $lineItem->label ) ),
+					'value' => html_entity_decode( wp_strip_all_tags( $lineItem->value ) ),
+				];
+
+			}
+
+			$sectionIndex++;
+		}
+
+		return $receiptArr;
 	}
 
 	/**
