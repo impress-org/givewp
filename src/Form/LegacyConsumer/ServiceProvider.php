@@ -27,7 +27,17 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot() {
 		give( TemplateHooks::class )->walk( give( Commands\SetupNewTemplateHook::class ) );
-		give( TemplateHooks::class )->walk( give( Commands\SetupFieldValidation::class ) );
+
+		add_action(
+			'give_donation_form_required_fields',
+			function( $requiredFields, $formID ) {
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldValidation( $requiredFields, $formID ) );
+				return $requiredFields;
+			},
+			10,
+			2
+		);
+
 		give( TemplateHooks::class )->walk( give( Commands\SetupFieldPersistance::class ) );
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupPaymentDetailsDisplay::class ) );
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldReciept::class ) );
