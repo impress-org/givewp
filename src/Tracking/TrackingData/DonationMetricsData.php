@@ -65,6 +65,7 @@ class DonationMetricsData implements TrackData {
 				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
 				INNER JOIN {$wpdb->donors} as donor ON dm.meta_value = donor.id
 			WHERE p.post_status IN ({$statues})
+				AND p.post_status='give_payment'
 				AND dm2.meta_key='_give_payment_mode'
 				AND dm2.meta_value='live'
 				AND dm.meta_key='_give_payment_donor_id'
@@ -109,6 +110,7 @@ class DonationMetricsData implements TrackData {
 				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
 				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
 			WHERE p.post_status IN ({$statues})
+			  	AND p.post_status='give_payment'
 				AND dm2.meta_key='_give_payment_mode'
 				AND dm2.meta_value='live'
 				AND dm.meta_key='_give_payment_form_id'
