@@ -127,8 +127,9 @@ class DonationFormsData implements TrackData {
 	protected function setRevenues() {
 		global $wpdb;
 
-		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
-		$defaultResult = array_combine(
+		$formIds         = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
+		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
+		$defaultResult   = array_combine(
 			$this->formIds,
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default revenue to 0
 		);
@@ -138,6 +139,7 @@ class DonationFormsData implements TrackData {
 			SELECT SUM(amount) as amount, form_id
 			FROM {$wpdb->give_revenue}
 			WHERE form_id IN ({$formIds})
+				AND donation_id IN ({$donationIdsList})
 			GROUP BY form_id
 			",
 			ARRAY_A
