@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2.10.0-beta.1 - 2021-03-02
 
-## New
+### New
 
 -   Anonymous donation and company setting choices are now persisted (#5633)
 -   Admin are now shown Donor Profiles upgrade notice (#5660)
