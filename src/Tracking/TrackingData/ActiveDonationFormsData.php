@@ -2,7 +2,6 @@
 
 namespace Give\Tracking\TrackingData;
 
-use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Helpers\DonationStatuses;
 
 /**
