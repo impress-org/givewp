@@ -53,7 +53,7 @@ class DonationData implements TrackData {
 			WHERE post_status IN ({$this->donationStatuses})
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
-			ORDER BY post_date_gmt DESC
+			ORDER BY post_date_gmt ASC
 			LIMIT 1
 			"
 		);
@@ -78,7 +78,7 @@ class DonationData implements TrackData {
 			WHERE post_status IN ({$this->donationStatuses})
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
-			ORDER BY post_date_gmt ASC
+			ORDER BY post_date_gmt DESC
 			LIMIT 1
 			"
 		);
