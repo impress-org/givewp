@@ -123,7 +123,6 @@ class DonationFormsData implements TrackData {
 		global $wpdb;
 
 		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
-		$statues       = DonationStatuses::getCompletedDonationsStatues( true );
 		$defaultResult = array_combine(
 			$this->formIds,
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default revenue to 0
@@ -131,14 +130,12 @@ class DonationFormsData implements TrackData {
 
 		$result = $wpdb->get_results(
 			"
-			SELECT SUM(amount) as amount, form_id
-			FROM {$wpdb->give_revenue}
-			    INNER JOIN {$wpdb->posts} as p ON donation_id = p.ID
-				INNER JOIN {$wpdb->donationmeta} as dm ON donation_id = dm.donation_id
-			WHERE p.post_status IN ({$statues})
-			  	AND dm.meta_key='_give_payment_mode'
+			SELECT SUM(r.amount) as amount, r.form_id
+			FROM {$wpdb->give_revenue} as r
+				INNER JOIN {$wpdb->donationmeta} as dm ON r.donation_id = dm.donation_id
+			WHERE dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
-				AND form_id IN ({$formIds})
+				AND r.form_id IN ({$formIds})
 			GROUP BY form_id
 			",
 			ARRAY_A

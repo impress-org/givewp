@@ -95,17 +95,13 @@ class DonationData implements TrackData {
 	public function getRevenueTillNow() {
 		global $wpdb;
 
-		$statues = $this->donationStatuses;
-
 		$result = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT SUM(amount)
 				FROM {$wpdb->give_revenue} as r
-					INNER JOIN {$wpdb->posts} as p ON r.donation_id=p.id
 					INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-				WHERE post_status IN ({$statues})
-					AND dm.meta_key='_give_payment_mode'
+				WHERE dm.meta_key='_give_payment_mode'
 					AND dm.meta_value='live'
 				"
 			)
