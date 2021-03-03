@@ -170,8 +170,9 @@ class DonationFormsData implements TrackData {
 	protected function setDonorCounts() {
 		global $wpdb;
 
-		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
-		$defaultResult = array_combine(
+		$formIds         = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
+		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
+		$defaultResult   = array_combine(
 			$this->formIds,
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default donor count to 0
 		);
@@ -182,7 +183,8 @@ class DonationFormsData implements TrackData {
 			FROM {$wpdb->donationmeta} as dm
 				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
 				INNER JOIN {$wpdb->donors} as donor ON dm2.meta_value = donor.id
-			WHERE dm.meta_key='_give_payment_form_id'
+			WHERE dm.donation_id IN ({$donationIdsList})
+			    AND dm.meta_key='_give_payment_form_id'
 				AND dm.meta_value IN ({$formIds})
 				AND dm2.meta_key='_give_payment_donor_id'
 				AND donor.purchase_value > 0
