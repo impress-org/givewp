@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donor Profile authentication logic is now implemented (#5569)
 -   Admin can now set Donor Profile accent color (#5615)
 -   Anonymous donation and company setting choices are now persisted (#5633)
+-   Admin are now shown Donor Profiles upgrade notice (#5660)
+-   Donor Profile page is now generated on new installs (#5600)
 
 ### Changed
 -   Donor Profile Donation History UI is now polished (#5566)
