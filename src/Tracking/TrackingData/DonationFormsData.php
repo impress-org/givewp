@@ -6,7 +6,6 @@ use Give\Helpers\Form\Template;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
 use Give\Tracking\Repositories\TrackEvents;
-use Give\Tracking\Traits\HasDonations;
 
 /**
  * Class DonationFormsData
@@ -17,8 +16,6 @@ use Give\Tracking\Traits\HasDonations;
  * @package Give\Tracking\TrackingData
  */
 class DonationFormsData implements TrackData {
-	use HasDonations;
-
 	protected $formIds         = [];
 	protected $formRevenues    = [];
 	protected $formDonorCounts = [];
