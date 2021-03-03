@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Reports endpoints no longer throw an error due to missing $schema property (#5642)
+-   Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
+
 ## 2.10.0-alpha.2 - 2021-02-25
 
 ### New
