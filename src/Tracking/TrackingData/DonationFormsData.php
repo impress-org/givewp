@@ -38,7 +38,7 @@ class DonationFormsData implements TrackData {
 	 * @inheritdoc
 	 */
 	public function get() {
-		$this->setFormIdsByDonationIds();
+		$this->setFormIds();
 
 		if ( ! $this->formIds ) {
 			return [];
@@ -84,12 +84,12 @@ class DonationFormsData implements TrackData {
 	}
 
 	/**
-	 * Set form ids by donation ids.
+	 * Set form ids.
 	 *
 	 * @since 2.10.0
 	 * @return self
 	 */
-	protected function setFormIdsByDonationIds() {
+	protected function setFormIds() {
 		global $wpdb;
 
 		$statues = DonationStatuses::getCompletedDonationsStatues( true );

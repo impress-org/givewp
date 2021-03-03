@@ -18,7 +18,7 @@ class ActiveDonationFormsData extends DonationFormsData {
 	 *
 	 * @return DonationFormsData
 	 */
-	protected function setFormIdsByDonationIds() {
+	protected function setFormIds() {
 		global $wpdb;
 
 		$this->formIds = $wpdb->get_col(

@@ -14,7 +14,7 @@ class EditedDonationFormsData extends DonationFormsData {
 	 * @unreleased
 	 * @return EditedDonationFormsData|void
 	 */
-	protected function setFormIdsByDonationIds() {
+	protected function setFormIds() {
 		$this->formIds = $this->trackEvents->getRecentlyEditedDonationFormsList();
 
 		return $this;
