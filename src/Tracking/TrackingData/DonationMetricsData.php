@@ -24,8 +24,6 @@ class DonationMetricsData implements TrackData {
 	public function get() {
 		$this->setDonationIds();
 
-		update_option( 'give_telemetry_donationIds', $this->donationIds );
-
 		if ( ! $this->donationIds ) {
 			return [];
 		}
