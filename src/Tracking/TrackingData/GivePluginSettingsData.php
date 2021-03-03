@@ -59,8 +59,25 @@ class GivePluginSettingsData implements TrackData {
 			$data[ $key ] = absint( give_is_setting_enabled( $value ) );
 		}
 
-		$data['active_payment_gateways'] = give_get_enabled_payment_gateways();
+		$data['active_payment_gateways'] = $this->getGatewaysLabels();
 
 		return $data;
+	}
+
+	/**
+	 * Return active gateways labels.
+	 *
+	 * @return array
+	 */
+	private function getGatewaysLabels() {
+		$gateways = give_get_enabled_payment_gateways();
+		$labels   = [];
+
+		foreach ( $gateways as $id => $data ) {
+			$labels[ $id ]['admin_label']    = $data['admin_label'];
+			$labels[ $id ]['checkout_label'] = $data['checkout_label'];
+		}
+
+		return $labels;
 	}
 }
