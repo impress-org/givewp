@@ -56,18 +56,18 @@ const AuthModal = () => {
 		if ( email ) {
 			setVerifyingEmail( true );
 			// eslint-disable-next-line camelcase
+
 			const { status, body_response } = await verifyEmailWithAPI( {
 				email,
 				recaptcha,
 			} );
 
+			setVerifyingEmail( false );
+
 			if ( status === 200 ) {
-				setVerifyingEmail( false );
 				setEmailSent( true );
 			} else {
-				setVerifyingEmail( false );
 				setEmailError( body_response.message );
-				setEmail( '' );
 			}
 		}
 	};

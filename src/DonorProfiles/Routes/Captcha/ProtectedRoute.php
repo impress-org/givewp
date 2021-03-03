@@ -32,6 +32,14 @@ trait ProtectedRoute {
 	 */
 	public function validateRecaptcha( $value, $request, $param ) {
 
+		if ( ! $this->isCaptchaEnabled() ) {
+			return true;
+		}
+
+		if ( ! $value ) {
+			return false;
+		}
+
 		$request = wp_remote_post(
 			'https://www.google.com/recaptcha/api/siteverify',
 			[
