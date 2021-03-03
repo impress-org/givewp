@@ -30,6 +30,7 @@ class ServiceProvider implements ServiceProviderInterface {
 		give( TemplateHooks::class )->walk( give( Commands\SetupFieldValidation::class ) );
 		give( TemplateHooks::class )->walk( give( Commands\SetupFieldPersistance::class ) );
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupPaymentDetailsDisplay::class ) );
+		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldEmailTag::class ) );
 		if ( ! wp_doing_ajax() ) {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
 		}
