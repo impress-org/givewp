@@ -4,22 +4,22 @@ namespace Give\Framework\FieldsAPI\FormField;
 
 trait FieldDefaultValue {
 
-    /** @var string */
-    public $defaultValue;
+	/** @var string */
+	protected $defaultValue;
 
-    /**
-     * @param string $defaultValue
-     * @return $this
-     */
-    public function defaultValue( $defaultValue ) {
-        $this->defaultValue = $defaultValue;
-        return $this;
-    }
+	/**
+	 * @param string $defaultValue
+	 * @return $this
+	 */
+	public function defaultValue( $defaultValue ) {
+		$this->defaultValue = $defaultValue;
+		return $this;
+	}
 
-    /**
-     * @return string
-     */
-    public function getDefaultValue() {
-        return $this->defaultValue;
-    }
+	/**
+	 * @return string
+	 */
+	public function getDefaultValue() {
+		return $this->defaultValue;
+	}
 }
