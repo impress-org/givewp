@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Admin are now shown Donor Profiles upgrade notice (#5660)
 -   Donor Profile page is now generated on new installs (#5600)
 -   Donor Profile receipt content should match receipt displayed during donation (#5666)
+-   Donor Profile Verify Email now supports reCAPTCHA (#5661)
 
 ### Changed
 -   Donor Profile Donation History UI is now polished (#5566)

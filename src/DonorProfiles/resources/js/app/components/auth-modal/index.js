@@ -8,9 +8,12 @@ import Button from '../button';
 import { loginWithAPI, verifyEmailWithAPI } from './utils';
 import { getWindowData } from '../../utils';
 
+import ReCAPTCHA from 'react-google-recaptcha';
+
 import './style.scss';
 
 const AuthModal = () => {
+	const [ recaptcha, setRecaptcha ] = useState( '' );
 	const [ email, setEmail ] = useState( '' );
 	const [ login, setLogin ] = useState( '' );
 	const [ password, setPassword ] = useState( '' );
@@ -21,6 +24,7 @@ const AuthModal = () => {
 	const [ emailError, setEmailError ] = useState( null );
 	const emailAccessEnabled = getWindowData( 'emailAccessEnabled' );
 	const loggedInWithoutDonor = getWindowData( 'loggedInWithoutDonor' );
+	const recaptchaKey = getWindowData( 'recaptchaKey' );
 
 	const handleLogin = async( e ) => {
 		e.preventDefault();
@@ -47,21 +51,23 @@ const AuthModal = () => {
 		}
 	};
 
-	const handleVerifyEmail = async() => {
+	const handleVerifyEmail = async( e ) => {
+		e.preventDefault();
 		if ( email ) {
 			setVerifyingEmail( true );
 			// eslint-disable-next-line camelcase
+
 			const { status, body_response } = await verifyEmailWithAPI( {
 				email,
+				recaptcha,
 			} );
 
+			setVerifyingEmail( false );
+
 			if ( status === 200 ) {
-				setVerifyingEmail( false );
 				setEmailSent( true );
 			} else {
-				setVerifyingEmail( false );
 				setEmailError( body_response.message );
-				setEmail( '' );
 			}
 		}
 	};
@@ -83,10 +89,13 @@ const AuthModal = () => {
 							<div className="give-donor-profile__auth-modal-instruction">
 								{ __( 'Enter your email below and we\'ll send you a link to access your donor profile', 'give' ) }
 							</div>
-							<form className="give-donor-profile__auth-modal-form">
+							<form className="give-donor-profile__auth-modal-form" onSubmit={ ( e ) => handleVerifyEmail( e ) }>
 								<TextControl icon="envelope" value={ email } onChange={ ( value ) => setEmail( value ) } />
+								{ recaptchaKey && (
+									<ReCAPTCHA sitekey={ recaptchaKey } onChange={ setRecaptcha } />
+								) }
 								<div className="give-donor-profile__auth-modal-row">
-									<Button onClick={ () => handleVerifyEmail() }>
+									<Button type="submit">
 										{ emailSent === false ? __( 'Verify Email', 'give' ) : __( 'Email Sent', 'give' ) }
 										{ emailSent === false && <FontAwesomeIcon className={ verifyingEmail ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ verifyingEmail ? 'spinner' : 'chevron-right' } fixedWidth /> }
 									</Button>
