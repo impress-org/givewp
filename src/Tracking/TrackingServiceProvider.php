@@ -5,6 +5,7 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
+use Give\Tracking\Events\EditedDonationFormsTracking;
 use Give\Tracking\Events\GivePluginSettingsTracking;
 use Give\Tracking\Events\PluginsTracking;
 use Give\Tracking\Events\ThemeTracking;
@@ -54,7 +55,7 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @since 2.10.0
 	 */
 	private function registerTrackEvents() {
-		Hooks::addAction( 'save_post_give_forms', DonationFormsTracking::class, 'record' );
+		Hooks::addAction( 'save_post_give_forms', EditedDonationFormsTracking::class, 'record' );
 		Hooks::addAction( 'save_post_give_payment', DonationFormsTracking::class, 'record' );
 		Hooks::addAction( 'save_post_give_payment', DonationMetricsTracking::class, 'record' );
 		Hooks::addAction( 'upgrader_process_complete', ThemeTracking::class, 'themeUpdateTrackingHandler', 10, 2 );
