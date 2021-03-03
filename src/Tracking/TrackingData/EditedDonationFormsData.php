@@ -15,7 +15,7 @@ class EditedDonationFormsData extends DonationFormsData {
 	 * @inheritdoc
 	 */
 	public function get() {
-		$this->setFormIds();
+		$this->formIds = $this->trackEvents->getRecentlyEditedDonationFormsList();
 
 		if ( ! $this->formIds ) {
 			return [];
@@ -27,29 +27,6 @@ class EditedDonationFormsData extends DonationFormsData {
 			 ->setDonorCounts();
 
 		return $this->getData();
-	}
-
-	/**
-	 * Set recently edited form ids.
-	 *
-	 * @since 2.10.0
-	 * @return self
-	 */
-	protected function setFormIds() {
-		global $wpdb;
-		$lastRequestTime = $this->trackEvents->getRequestTime();
-
-		$this->formIds = $wpdb->get_col(
-			"
-			SELECT ID
-			FROM {$wpdb->posts} as p
-			WHERE post_status='publish'
-				AND post_type='give_forms'
-				AND post_modified>='{$lastRequestTime}'
-			"
-		);
-
-		return $this;
 	}
 
 	/**
