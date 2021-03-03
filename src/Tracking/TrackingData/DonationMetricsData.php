@@ -13,22 +13,26 @@ use Give\Tracking\Helpers\DonationStatuses;
  * @unreleased
  */
 class DonationMetricsData implements TrackData {
+	/**
+	 * @var array
+	 */
 	private $donationData = [];
-	private $donationIds  = [];
-	private $donorCount   = 0;
-	private $formCount    = 0;
+
+	/**
+	 * @var int
+	 */
+	private $donorCount = 0;
+
+	/**
+	 * @var int
+	 */
+	private $formCount = 0;
 
 	/**
 	 * @inheritdoc
 	 * @return array|void
 	 */
 	public function get() {
-		$this->setDonationIds();
-
-		if ( ! $this->donationIds ) {
-			return [];
-		}
-
 		$this->donorCount   = $this->getDonorCount();
 		$this->formCount    = $this->getDonationFormCount();
 		$this->donationData = ( new DonationData() )->get();
@@ -43,28 +47,6 @@ class DonationMetricsData implements TrackData {
 	}
 
 	/**
-	 * Set donation ids.
-	 *
-	 * @unreleased
-	 */
-	private function setDonationIds() {
-		global $wpdb;
-
-		$statues = DonationStatuses::getCompletedDonationsStatues( true );
-
-		$this->donationIds = $wpdb->get_col(
-			"
-			SELECT ID
-			FROM {$wpdb->posts} as p
-				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$statues})
-				AND dm.meta_key='_give_payment_mode'
-				AND dm.meta_value='live'
-			"
-		);
-	}
-
-	/**
 	 * Returns donor count which donated greater then zero
 	 *
 	 * @since 2.10.0
@@ -73,14 +55,18 @@ class DonationMetricsData implements TrackData {
 	private function getDonorCount() {
 		global $wpdb;
 
-		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
-		$donorCount      = $wpdb->get_var(
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+
+		$donorCount = $wpdb->get_var(
 			"
 			SELECT COUNT(DISTINCT dm.meta_value)
 			FROM {$wpdb->donationmeta} as dm
 				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
 				INNER JOIN {$wpdb->donors} as donor ON dm.meta_value = donor.id
-			WHERE p.ID IN ({$donationIdsList})
+			WHERE p.post_status IN ({$statues})
+				AND dm2.meta_key='_give_payment_mode'
+				AND dm2.meta_value='live'
 				AND dm.meta_key='_give_payment_donor_id'
 				AND donor.purchase_value > 0
 			"
@@ -114,13 +100,17 @@ class DonationMetricsData implements TrackData {
 	private function getDonationFormCount() {
 		global $wpdb;
 
-		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
-		$formCount       = $wpdb->get_var(
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+
+		$formCount = $wpdb->get_var(
 			"
 			SELECT COUNT(DISTINCT dm.meta_value)
 			FROM {$wpdb->donationmeta} as dm
 				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
-			WHERE p.ID IN ({$donationIdsList})
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
+			WHERE p.post_status IN ({$statues})
+				AND dm2.meta_key='_give_payment_mode'
+				AND dm2.meta_value='live'
 				AND dm.meta_key='_give_payment_form_id'
 			"
 		);
