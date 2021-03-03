@@ -2,9 +2,8 @@
 
 namespace Give\Tracking\TrackingData;
 
+use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
-use Give_Donors_Query;
-use WP_Query;
 
 /**
  * Class DonationMetricsData
@@ -14,21 +13,61 @@ use WP_Query;
  */
 class DonationMetricsData implements TrackData {
 	private $donationData = [];
+	private $donationIds  = [];
+	private $donorCount   = 0;
+	private $formCount    = 0;
 
 	/**
 	 * @inheritdoc
 	 * @return array|void
 	 */
 	public function get() {
+		$this->setDonationIds();
+
+		update_option( 'give_telemetry_donationIds', $this->donationIds );
+
+		if ( ! $this->donationIds ) {
+			return [];
+		}
+
+		$this->donorCount   = $this->getDonorCount();
+		$this->formCount    = $this->getDonationFormCount();
 		$this->donationData = ( new DonationData() )->get();
 
 		$data = [
-			'form_count'                   => $this->getDonationFormCount(),
-			'donor_count'                  => $this->getDonorCount(),
+			'form_count'                   => $this->formCount,
+			'donor_count'                  => $this->donorCount,
 			'avg_donation_amount_by_donor' => $this->getAvgDonationAmountByDonor(),
 		];
 
 		return array_merge( $data, $this->donationData );
+	}
+
+	/**
+	 * Set donation ids.
+	 *
+	 * @unreleased
+	 */
+	private function setDonationIds() {
+		global $wpdb;
+
+		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
+			[
+				'publish', // One time donation
+				'give_subscription', // Renewal
+			]
+		);
+
+		$this->donationIds = $wpdb->get_col(
+			"
+			SELECT ID
+			FROM {$wpdb->posts} as p
+				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
+			WHERE post_status IN ({$statues})
+				AND dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
+			"
+		);
 	}
 
 	/**
@@ -38,18 +77,22 @@ class DonationMetricsData implements TrackData {
 	 * @return int
 	 */
 	private function getDonorCount() {
-		$donorQuery = new Give_Donors_Query(
-			[
-				'number'          => -1,
-				'count'           => true,
-				'donation_amount' => [
-					'compare' => '>',
-					'amount'  => 0,
-				],
-			]
+		global $wpdb;
+
+		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
+		$donorCount      = $wpdb->get_var(
+			"
+			SELECT COUNT(DISTINCT dm.meta_value)
+			FROM {$wpdb->donationmeta} as dm
+				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+				INNER JOIN {$wpdb->donors} as donor ON dm.meta_value = donor.id
+			WHERE p.ID IN ({$donationIdsList})
+				AND dm.meta_key='_give_payment_donor_id'
+				AND donor.purchase_value > 0
+			"
 		);
 
-		return (int) $donorQuery->get_donors();
+		return (int) $donorCount;
 	}
 
 	/**
@@ -62,7 +105,7 @@ class DonationMetricsData implements TrackData {
 		$amount = 0;
 
 		if ( $this->donationData['revenue'] ) {
-			$amount = (int) ( $this->donationData['revenue'] / $this->getDonorCount() );
+			$amount = (int) ( $this->donationData['revenue'] / $this->donorCount );
 		}
 
 		return $amount;
@@ -75,15 +118,19 @@ class DonationMetricsData implements TrackData {
 	 * @return int
 	 */
 	private function getDonationFormCount() {
-		$formQuery = new WP_Query(
-			[
-				'post_type' => 'give_forms',
-				'status'    => 'publish',
-				'fields'    => 'ids',
-				'number'    => -1,
-			]
+		global $wpdb;
+
+		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
+		$formCount       = $wpdb->get_var(
+			"
+			SELECT COUNT(DISTINCT dm.meta_value)
+			FROM {$wpdb->donationmeta} as dm
+				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+			WHERE p.ID IN ({$donationIdsList})
+				AND dm.meta_key='_give_payment_form_id'
+			"
 		);
 
-		return (int) $formQuery->found_posts;
+		return (int) $formCount;
 	}
 }
