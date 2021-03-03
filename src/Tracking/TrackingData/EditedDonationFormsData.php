@@ -3,6 +3,7 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Helpers\ArrayDataSet;
+use Give\Tracking\Helpers\DonationStatuses;
 
 /**
  * Class EditedDonationFormsData
@@ -39,12 +40,7 @@ class EditedDonationFormsData extends DonationFormsData {
 	protected function setDonationIds() {
 		global $wpdb;
 
-		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 
 		$formIdsList       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
 		$this->donationIds = $wpdb->get_col(

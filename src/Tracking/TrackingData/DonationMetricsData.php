@@ -4,6 +4,7 @@ namespace Give\Tracking\TrackingData;
 
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Helpers\DonationStatuses;
 
 /**
  * Class DonationMetricsData
@@ -49,12 +50,7 @@ class DonationMetricsData implements TrackData {
 	private function setDonationIds() {
 		global $wpdb;
 
-		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 
 		$this->donationIds = $wpdb->get_col(
 			"

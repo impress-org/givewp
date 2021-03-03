@@ -3,6 +3,7 @@ namespace Give\Tracking\TrackingData;
 
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Helpers\DonationStatuses;
 
 /**
  * Class DonationData
@@ -14,6 +15,15 @@ use Give\Tracking\Contracts\TrackData;
  * @since 2.10.0
  */
 class DonationData implements TrackData {
+	private $donationStatuses;
+
+	/**
+	 * DonationData constructor.
+	 */
+	public function __construct() {
+		$this->donationStatuses = DonationStatuses::getCompletedDonationsStatues( true );
+	}
+
 	/**
 	 * @inheritdoc
 	 * @return array|void
@@ -40,7 +50,7 @@ class DonationData implements TrackData {
 			SELECT post_date_gmt
 			FROM {$wpdb->posts} as p
 				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$this->getDonationStatuses()})
+			WHERE post_status IN ({$this->donationStatuses})
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
 			ORDER BY post_date_gmt DESC
@@ -65,7 +75,7 @@ class DonationData implements TrackData {
 			SELECT post_date_gmt
 			FROM {$wpdb->posts} as p
 				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$this->getDonationStatuses()})
+			WHERE post_status IN ({$this->donationStatuses})
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
 			ORDER BY post_date_gmt ASC
@@ -85,7 +95,7 @@ class DonationData implements TrackData {
 	public function getRevenueTillNow() {
 		global $wpdb;
 
-		$statues = $this->getDonationStatuses();
+		$statues = $this->donationStatuses;
 
 		$result = (int) $wpdb->get_var(
 			$wpdb->prepare(
@@ -101,21 +111,5 @@ class DonationData implements TrackData {
 			)
 		);
 		return $result ?: 0;
-	}
-
-	/**
-	 * Get donation statuses string.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	private function getDonationStatuses() {
-		return ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
 	}
 }

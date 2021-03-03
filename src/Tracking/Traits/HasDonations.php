@@ -3,6 +3,7 @@
 namespace Give\Tracking\Traits;
 
 use Give\Helpers\ArrayDataSet;
+use Give\Tracking\Helpers\DonationStatuses;
 use Give\Tracking\Repositories\TrackEvents;
 
 /**
@@ -26,12 +27,7 @@ trait HasDonations {
 	private function getNewDonationIdsSinceLastRequest() {
 		global $wpdb;
 
-		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 		$time    = $this->trackEvents->getRequestTime();
 
 		return $wpdb->get_col(
