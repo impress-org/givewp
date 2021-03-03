@@ -185,6 +185,13 @@ class Donations {
 		];
 	}
 
+	/**
+	 * Get array containing dynamic receipt information
+	 *
+	 * @param Give_Payment $payment
+	 * @return array
+	 * @since 2.10.0
+	 */
 	protected function getReceiptInfo( $payment ) {
 
 		$receipt = new DonationReceipt( $payment->ID );
