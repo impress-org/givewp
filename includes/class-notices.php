@@ -170,7 +170,7 @@ class Give_Notices {
 			if ( ! empty( $extra_notice_dismiss_link ) ) {
 				$extra_notice_dismiss_links = array_chunk( current( $extra_notice_dismiss_link ), 3 );
 				foreach ( $extra_notice_dismiss_links as $extra_notice_dismiss_link ) {
-					// Create array og key ==> value by parsing query string created after renaming data attributes.
+					// Create array of key ==> value by parsing query string created after renaming data attributes.
 					$data_attribute_query_str = str_replace(
 						[ 'data-', '-', '"' ],
 						[
