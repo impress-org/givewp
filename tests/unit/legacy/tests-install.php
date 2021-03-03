@@ -117,7 +117,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 
 		$give_options = give_get_settings();
 
-		$this->assertArrayHasKey( 'history_page', $give_options );
 		$this->assertArrayHasKey( 'success_page', $give_options );
 		$this->assertArrayHasKey( 'failure_page', $give_options );
 

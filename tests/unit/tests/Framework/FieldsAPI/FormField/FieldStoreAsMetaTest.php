@@ -16,9 +16,5 @@ final class FieldStoreAsMetaTest extends TestCase {
 
         // False by default.
         $this->assertFalse( $field->shouldStoreAsDonorMeta() );
-
-        $field->storeAsDonorMeta(); // Toggle on.
-        $field->storeAsDonorMeta( false ); // Toggle off.
-        $this->assertFalse( $field->shouldStoreAsDonorMeta() );
     }
 }
