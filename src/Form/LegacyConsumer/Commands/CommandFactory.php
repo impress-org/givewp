@@ -5,6 +5,7 @@ namespace Give\Form\LegacyConsumer\Commands;
 /*
  * @unreleased
  */
+
 class CommandFactory implements HookCommandInterface {
 
 	/**
@@ -31,6 +32,7 @@ class CommandFactory implements HookCommandInterface {
 	 * @return void
 	 */
 	public function __invoke( $hook ) {
-		( new $this->commandClass( $hook ) )();
+		$command = new $this->commandClass( $hook );
+		$command();
 	}
 }
