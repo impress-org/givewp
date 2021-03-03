@@ -55,6 +55,7 @@ use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
+use \Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -148,6 +149,7 @@ final class Give {
 		TestDataServiceProvider::class,
 		MigrationLogServiceProvider::class,
 		LogServiceProvider::class,
+		FormLegacyConsumerServiceProvider::class,
 	];
 
 	/**

@@ -12,11 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Anonymous donation and company setting choices are now persisted (#5633)
 -   Admin are now shown Donor Profiles upgrade notice (#5660)
 -   Donor Profile page is now generated on new installs (#5600)
+-   Custom field values now display in payment details (#5647)
+-   Custom field values now show in Donation Receipt and Donation Confirmation (#5654)
+-   Fields API now supports custom field email tags (#5649)
 
 ### Fixed
 
 -   Reports endpoints no longer throw an error due to missing $schema property (#5642)
 -   Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
+
+### Changed
+
+-   Fields API throws an exception when inserting relative to a node that does not exist (#5640)
+-   Form Templates now support custom checkbox fields. (#5643)
+-   Custom fields now support arbitrary attributes (#5641)
 
 ## 2.10.0-alpha.2 - 2021-02-25
 

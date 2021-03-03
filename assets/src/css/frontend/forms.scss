@@ -492,6 +492,18 @@ form[id*='give-form'] {
 		margin: 0 0.25em 0 0;
 	}
 }
+// Align checkbox/label for custom checkbox fields.
+div[data-field-type='checkbox'] {
+	display: flex;
+
+	label {
+		order: 2;
+	}
+
+	input[type='checkbox'] {
+		order: 1;
+	}
+}
 
 /*---------------------------------
 Donation Level: Dropdown/Select
