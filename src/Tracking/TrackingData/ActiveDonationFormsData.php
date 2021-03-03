@@ -19,20 +19,22 @@ class ActiveDonationFormsData extends DonationFormsData {
 	 *
 	 * @return DonationFormsData
 	 */
-	protected function setDonationIds() {
+	protected function setFormIdsByDonationIds() {
 		global $wpdb;
 
 		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 
-		$this->donationIds = $wpdb->get_col(
+		$this->formIds = $wpdb->get_col(
 			"
-			SELECT ID
-			FROM {$wpdb->posts} as p
-				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$statues})
-				AND post_type='give_payment'
-				AND dm.meta_key='_give_payment_mode'
-				AND dm.meta_value='live'
+			SELECT DISTINCT meta_value
+			FROM {$wpdb->donationmeta} as dm
+				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
+			WHERE p.post_status IN ({$statues})
+			  	AND p.post_status='give_payment'
+				AND dm2.meta_key='_give_payment_mode'
+				AND dm2.meta_value='live'
+				AND dm.meta_key='_give_payment_form_id'
 			"
 		);
 
