@@ -31,7 +31,7 @@ class TrackEvents {
 	 * @unreleased
 	 */
 	public function removeRecentlyEditedDonationFormList() {
-		delete_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY );
+		delete_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class TrackEvents {
 		$formIds[] = $formId;
 
 		$formIds = array_unique( $formIds );
-		update_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY, $formIds, false );
+		update_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY, $formIds, false );
 	}
 
 	/**
