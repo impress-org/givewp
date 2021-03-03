@@ -11,6 +11,8 @@ use Give\API\RestRoute;
  */
 class VerifyEmailRoute implements RestRoute {
 
+	use Captcha\ProtectedRoute;
+
 	/** @var string */
 	protected $endpoint = 'donor-profile/verify-email';
 
@@ -28,10 +30,14 @@ class VerifyEmailRoute implements RestRoute {
 					'permission_callback' => '__return_true',
 				],
 				'args' => [
-					'email' => [
+					'email'                => [
 						'type'              => 'string',
 						'required'          => true,
 						'sanitize_callback' => 'sanitize_text_field',
+					],
+					'g-recaptcha-response' => [
+						'type'     => 'string',
+						'required' => false,
 					],
 				],
 			]
@@ -48,6 +54,19 @@ class VerifyEmailRoute implements RestRoute {
 	 * @since 2.10.0
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
+
+		if ( ! $this->validateRecaptcha( $request->get_param( 'g-recaptcha-response' ), $request, 'g-recaptcha-response' ) ) {
+			return new WP_REST_Response(
+				[
+					'status'        => 400,
+					'response'      => 'error',
+					'body_response' => [
+						'error'   => 'email_failed',
+						'message' => esc_html__( 'Unable to send email. Please try again.', 'give' ),
+					],
+				]
+			);
+		}
 
 		Give()->email_access->init();
 
