@@ -26,7 +26,7 @@ class Track {
 		}
 
 		// Track data only if give is in live mode.
-		if ( ! give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
 			return false;
 		}
 
