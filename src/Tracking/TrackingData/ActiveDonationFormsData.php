@@ -12,7 +12,7 @@ use Give\Tracking\Helpers\DonationStatuses;
  */
 class ActiveDonationFormsData extends DonationFormsData {
 	/**
-	 * Set donation ids.
+	 * Set form ids.
 	 *
 	 * @since 2.10.0
 	 *
