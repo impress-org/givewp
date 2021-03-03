@@ -84,6 +84,6 @@ class DonationMetricsData implements TrackData {
 			]
 		);
 
-		return $formQuery->found_posts;
+		return (int) $formQuery->found_posts;
 	}
 }
