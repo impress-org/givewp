@@ -45,7 +45,7 @@ class EditedDonationFormsData extends DonationFormsData {
 			FROM {$wpdb->posts} as p
 			WHERE post_status='publish'
 				AND post_type='give_forms'
-				AND post_modified>={$lastRequestTime}
+				AND post_modified>='{$lastRequestTime}'
 			"
 		);
 
