@@ -21,6 +21,11 @@ class DonationFormsData implements TrackData {
 	protected $formDonorCounts = [];
 
 	/**
+	 * @var TrackEvents
+	 */
+	protected $trackEvents;
+
+	/**
 	 * DonationFormsData constructor.
 	 *
 	 * @param  TrackEvents  $trackEvents
@@ -92,7 +97,7 @@ class DonationFormsData implements TrackData {
 
 		$this->formIds = $wpdb->get_col(
 			"
-			SELECT DISTINCT meta_value
+			SELECT DISTINCT dm.meta_value
 			FROM {$wpdb->donationmeta} as dm
 				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
 				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
