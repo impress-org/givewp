@@ -1,11 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use \Give\Receipt\DonationReceipt;
 use Give\Framework\FieldsAPI\FormField;
 use Give\Form\LegacyConsumer\TemplateHooks;
 
-final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
+final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
 
     /*
@@ -14,7 +13,7 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
     |--------------------------------------------------------------------------
     */
 
-    public function testReceiptHasDonationMeta() {
+    public function testConfirmationHasDonationMeta() {
 
         add_action( 'give_fields_donation_form', function( $fieldCollection ) {
             $fieldCollection->append(
@@ -28,15 +27,15 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
         give_update_payment_meta( $paymentID, 'my-text-field', 'foobar' );
 
-        $receipt = new DonationReceipt( $paymentID );
-        do_action( 'give_new_receipt', $receipt );
+        ob_start();
+        do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
+        $output = ob_get_clean();
 
-        $section = $receipt[ DonationReceipt::ADDITIONALINFORMATIONSECTIONID ];
-
-        $this->assertArrayHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertContains( 'foobar', $output, 'Donation confirmation does not have custom field value.' );
+        $this->assertContains( 'My Text Field', $output, 'Donation confirmation does not have custom field value label.' );
     }
 
-    public function testNotReceiptHasEmptyDonationMeta() {
+    public function testNotConfirmationHasEmptyDonationMeta() {
 
         add_action( 'give_fields_donation_form', function( $fieldCollection ) {
             $fieldCollection->append(
@@ -50,15 +49,15 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
         give_update_payment_meta( $paymentID, 'my-text-field', '' ); // NOTE: Empty value.
 
-        $receipt = new DonationReceipt( $paymentID );
-        do_action( 'give_new_receipt', $receipt );
+        ob_start();
+        do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
+        $output = ob_get_clean();
 
-        $section = $receipt[ DonationReceipt::ADDITIONALINFORMATIONSECTIONID ];
-
-        $this->assertArrayNotHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertNotContains( 'foobar', $output, 'Donation confirmation has empty custom field value.' );
+        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation has empty custom field value label.' );
     }
 
-    public function testNotReceiptHasDonationMeta() {
+    public function testNotConfirmationHasDonationMeta() {
 
         add_action( 'give_fields_donation_form', function( $fieldCollection ) {
             $fieldCollection->append(
@@ -72,12 +71,12 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
         give_update_payment_meta( $paymentID, 'my-text-field', 'foobar' );
 
-        $receipt = new DonationReceipt( $paymentID );
-        do_action( 'give_new_receipt', $receipt );
+        ob_start();
+        do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
+        $output = ob_get_clean();
 
-        $section = $receipt[ DonationReceipt::ADDITIONALINFORMATIONSECTIONID ];
-
-        $this->assertArrayNotHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertNotContains( 'foobar', $output, 'Donation confirmation shows hidden custom field value.' );
+        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation shows hidden custom field value label.' );
     }
 
     /*
@@ -86,7 +85,7 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
     |--------------------------------------------------------------------------
     */
 
-    public function testReceiptHasDonorMeta() {
+    public function testConfirmationHasDonorMeta() {
 
         add_action( 'give_fields_donation_form', function( $fieldCollection ) {
             $fieldCollection->append(
@@ -102,15 +101,15 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
         $donorID = give_get_payment_meta( $paymentID, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, 'my-text-field', 'foobar' );
 
-        $receipt = new DonationReceipt( $paymentID );
-        do_action( 'give_new_receipt', $receipt );
+        ob_start();
+        do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
+        $output = ob_get_clean();
 
-        $section = $receipt[ DonationReceipt::DONORSECTIONID ];
-
-        $this->assertArrayHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertContains( 'foobar', $output, 'Donation confirmation does not have custom field donor meta.' );
+        $this->assertContains( 'My Text Field', $output, 'Donation confirmation does not have custom field donor meta label.' );
     }
 
-    public function testNotReceiptHasEmptyDonorMeta() {
+    public function testNotConfirmationHasEmptyDonorMeta() {
 
         add_action( 'give_fields_donation_form', function( $fieldCollection ) {
             $fieldCollection->append(
@@ -126,15 +125,15 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
         $donorID = give_get_payment_meta( $paymentID, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, 'my-text-field', '' ); // NOTE: Empty value.
 
-        $receipt = new DonationReceipt( $paymentID );
-        do_action( 'give_new_receipt', $receipt );
+        ob_start();
+        do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
+        $output = ob_get_clean();
 
-        $section = $receipt[ DonationReceipt::DONORSECTIONID ];
-
-        $this->assertArrayNotHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertNotContains( 'foobar', $output, 'Donation confirmation has empty custom field donor meta value.' );
+        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation has empty custom field donor meta value label.' );
     }
 
-    public function testNotReceiptHasDonorMeta() {
+    public function testNotConfirmationHasDonorMeta() {
 
         add_action( 'give_fields_donation_form', function( $fieldCollection ) {
             $fieldCollection->append(
@@ -150,11 +149,11 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
         $donorID = give_get_payment_meta( $paymentID, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, 'my-text-field', 'foobar' );
 
-        $receipt = new DonationReceipt( $paymentID );
-        do_action( 'give_new_receipt', $receipt );
+        ob_start();
+        do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
+        $output = ob_get_clean();
 
-        $section = $receipt[ DonationReceipt::DONORSECTIONID ];
-
-        $this->assertArrayNotHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertNotContains( 'foobar', $output, 'Donation confirmation shows hidden custom field donor metea value.' );
+        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation shows hidden custom field donor meta value label.' );
     }
 }

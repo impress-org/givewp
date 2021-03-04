@@ -61,7 +61,15 @@ class ServiceProvider implements ServiceProviderInterface {
 			}
 		);
 
-		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldConfirmation::class ) );
+		add_action(
+			'give_payment_receipt_after',
+			function( $payment, $receipt_args ) {
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldConfirmation( $payment, $receipt_args ) );
+			},
+			10,
+			2
+		);
+
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldEmailTag::class ) );
 		if ( ! wp_doing_ajax() ) {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
