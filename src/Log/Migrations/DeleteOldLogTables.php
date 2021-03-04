@@ -21,7 +21,7 @@ class DeleteOldLogTables extends Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return  esc_html__( 'Delete give_logs and give_logmeta tables' );
+		return  esc_html__( 'Delete give_logs and give_logmeta tables', 'give' );
 	}
 
 	/**
@@ -37,6 +37,6 @@ class DeleteOldLogTables extends Migration {
 		$logs_table    = "{$wpdb->prefix}give_logs";
 		$logmeta_table = "{$wpdb->prefix}give_logmeta";
 
-		DB::query( "DROP TABLE {$logs_table}, {$logmeta_table};" );
+		DB::query( "DROP TABLE IF EXISTS {$logs_table}, {$logmeta_table};" );
 	}
 }
