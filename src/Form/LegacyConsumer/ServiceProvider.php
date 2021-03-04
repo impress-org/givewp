@@ -27,7 +27,11 @@ class ServiceProvider implements ServiceProviderInterface {
 	 * @inheritDoc
 	 */
 	public function boot() {
+
 		give( TemplateHooks::class )->walk( give( Commands\SetupNewTemplateHook::class ) );
+		if ( ! wp_doing_ajax() ) {
+			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
+		}
 
 		add_filter(
 			'give_donation_form_required_fields',
@@ -76,9 +80,5 @@ class ServiceProvider implements ServiceProviderInterface {
 				give( TemplateHooks::class )->walk( new Commands\SetupFieldEmailTag );
 			}
 		);
-
-		if ( ! wp_doing_ajax() ) {
-			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
-		}
 	}
 }
