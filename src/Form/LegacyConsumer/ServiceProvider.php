@@ -46,7 +46,13 @@ class ServiceProvider implements ServiceProviderInterface {
 			2
 		);
 
-		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupPaymentDetailsDisplay::class ) );
+		add_action(
+			'give_view_donation_details_billing_after',
+			function( $donationID ) {
+				give( TemplateHooks::class )->walk( new Commands\SetupPaymentDetailsDisplay( $donationID ) );
+			}
+		);
+
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldReciept::class ) );
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldConfirmation::class ) );
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldEmailTag::class ) );

@@ -16,36 +16,20 @@ class SetupPaymentDetailsDisplay {
 	 *
 	 * @param string $hook
 	 */
-	public function __construct( $hook ) {
-		$this->hook = $hook;
-	}
-
-
-	/**
-	 * @unreleased
-	 *
-	 * @return void
-	 */
-	public function __invoke() {
-		add_action(
-			'give_view_donation_details_billing_after',
-			[ $this, 'process' ]
-		);
-	}
-
-	/**
-	 * @unreleased
-	 *
-	 * @param int $donationID
-	 *
-	 * @return void
-	 */
-	public function process( $donationID ) {
-
+	public function __construct( $donationID ) {
 		$this->donationID = $donationID;
+	}
+
+
+	/**
+	 * @unreleased
+	 *
+	 * @return void
+	 */
+	public function __invoke( $hook ) {
 
 		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$this->hook}", $fieldCollection, get_the_ID() );
+		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
 
 		$fieldCollection->walk( [ $this, 'render' ] );
 	}
@@ -58,6 +42,9 @@ class SetupPaymentDetailsDisplay {
 	 * @return void
 	 */
 	public function render( FormField $field ) {
+		if ( $field->shouldStoreAsDonorMeta() ) {
+			return;
+		}
 		?>
 		<div class="referral-data postbox" style="padding-bottom: 15px;">
 			<h3 class="hndle">
