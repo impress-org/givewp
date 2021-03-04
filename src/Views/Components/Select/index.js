@@ -3,13 +3,13 @@ import classNames from 'classnames';
 
 import style from './style.module.scss';
 
-const Select = ( { options, onChange, defaultValue, className } ) => {
+const Select = ( { options, onChange, defaultValue, className, ...rest } ) => {
 	const optionElements = options.map( ( option ) =>
 		<option key={ option.value } value={ option.value }>{ option.label }</option>
 	);
 	return (
 		<div key={ defaultValue } className={ classNames( style.select, className ) }>
-			<select onChange={ onChange } defaultValue={ defaultValue }>
+			<select onChange={ onChange } defaultValue={ defaultValue } { ...rest }>
 				{ optionElements }
 			</select>
 		</div>

@@ -7,7 +7,7 @@ import styles from './style.module.scss';
 
 const { __ } = wp.i18n;
 
-const Table = ( { title, columns, data, columnFilters, stripped, isLoading, isSorting } ) => {
+const Table = ( { title, columns, data, columnFilters, stripped, isLoading, isSorting, ...rest } ) => {
 	const [ state, setState ] = useState( {} );
 	const [ cachedData, setCachedData ] = useState( [] );
 
@@ -121,8 +121,14 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading, isSo
 					);
 				} );
 
+			const rowClasses = classNames(
+				'give-table-row',
+				{ [ styles.rowStripped ]: stripped },
+				{ [ styles.row ]: ! stripped },
+			);
+
 			return (
-				<div className={ stripped ? styles.rowStripped : styles.row } key={ index }>
+				<div className={ rowClasses } key={ index }>
 					{ RowItems }
 				</div>
 			);
@@ -137,7 +143,7 @@ const Table = ( { title, columns, data, columnFilters, stripped, isLoading, isSo
 			{ title && ( <div className={ styles.title }>
 				{ title }
 			</div> ) }
-			<div className={ styles.table }>
+			<div className={ styles.table } { ...rest }>
 				<div className={ classNames( styles.header, { [ styles.headerStripped ]: stripped } ) }>
 					{ getHeaderRow() }
 				</div>
@@ -160,6 +166,8 @@ Table.propTypes = {
 	stripped: PropTypes.bool,
 	// Show spinner if data is loading
 	isLoading: PropTypes.bool,
+	// Set test id
+	testId: PropTypes.string,
 };
 
 Table.defaultProps = {
@@ -169,6 +177,7 @@ Table.defaultProps = {
 	columnFilters: [],
 	stripped: true,
 	isLoading: false,
+	testId: null,
 };
 
 export default Table;
