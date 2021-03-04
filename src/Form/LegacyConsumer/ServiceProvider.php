@@ -70,7 +70,13 @@ class ServiceProvider implements ServiceProviderInterface {
 			2
 		);
 
-		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldEmailTag::class ) );
+		add_action(
+			'give_add_email_tags',
+			function() {
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldEmailTag );
+			}
+		);
+
 		if ( ! wp_doing_ajax() ) {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
 		}

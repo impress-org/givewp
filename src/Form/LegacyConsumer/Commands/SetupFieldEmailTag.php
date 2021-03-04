@@ -11,26 +11,17 @@ use Give\Form\LegacyConsumer\FieldView;
  */
 class SetupFieldEmailTag {
 
-	/**
-	 * @unreleased
-	 *
-	 * @param string $hook
-	 */
-	public function __construct( $hook ) {
-		$this->hook = $hook;
-	}
-
 
 	/**
 	 * @unreleased
 	 *
 	 * @return void
 	 */
-	public function __invoke() {
-		add_action(
-			'give_add_email_tags',
-			[ $this, 'process' ]
-		);
+	public function __invoke( $hook ) {
+		$fieldCollection = new FieldCollection( 'root' );
+		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
+
+		$fieldCollection->walk( [ $this, 'register' ] );
 	}
 
 	/**
@@ -42,10 +33,6 @@ class SetupFieldEmailTag {
 	 */
 	public function process() {
 
-		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$this->hook}", $fieldCollection, get_the_ID() );
-
-		$fieldCollection->walk( [ $this, 'register' ] );
 	}
 
 	/**
