@@ -3,6 +3,7 @@
 namespace Give\Log;
 
 use Give\Helpers\Hooks;
+use Give\Log\Helpers\LegacyLogsTable;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Log\Migrations\CreateNewLogTable;
@@ -46,16 +47,18 @@ class LogServiceProvider implements ServiceProvider {
 	 * Register migration
 	 */
 	private function registerMigrations() {
-		give( MigrationsRegister::class )->addMigrations(
-			[
-				CreateNewLogTable::class,
-				MigrateExistingLogs::class,
-			]
-		);
+		give( MigrationsRegister::class )->addMigration( CreateNewLogTable::class );
 
-		// Check if Logs migration batch processing is completed
-		if ( give_has_upgrade_completed( MigrateExistingLogs::id() ) ) {
-			give( MigrationsRegister::class )->addMigration( DeleteOldLogTables::class );
+		$legacyLogsTable = give( LegacyLogsTable::class );
+
+		// Check if legacy table exist
+		if ( $legacyLogsTable->exist() ) {
+			give( MigrationsRegister::class )->addMigration( MigrateExistingLogs::class );
+
+			// Check if Logs migration batch processing is completed
+			if ( give_has_upgrade_completed( MigrateExistingLogs::id() ) ) {
+				give( MigrationsRegister::class )->addMigration( DeleteOldLogTables::class );
+			}
 		}
 	}
 }
