@@ -3,6 +3,7 @@
 namespace Give\Form\LegacyConsumer;
 
 use Give\Helpers\Hooks;
+use Give\Receipt\DonationReceipt;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
 
@@ -53,7 +54,13 @@ class ServiceProvider implements ServiceProviderInterface {
 			}
 		);
 
-		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldReciept::class ) );
+		add_action(
+			'give_new_receipt',
+			function( DonationReceipt $receipt ) {
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldReceipt( $receipt ) );
+			}
+		);
+
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldConfirmation::class ) );
 		give( TemplateHooks::class )->walk( new Commands\CommandFactory( Commands\SetupFieldEmailTag::class ) );
 		if ( ! wp_doing_ajax() ) {
