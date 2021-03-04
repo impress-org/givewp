@@ -5,6 +5,7 @@ namespace Give\Log\Migrations;
 use Give\Log\LogFactory;
 use Give\Framework\Database\DB;
 use Give\Log\Helpers\LogTypeHelper;
+use Give\Log\Helpers\LegacyLogsTable;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give_Updates;
 
@@ -14,14 +15,23 @@ class MigrateExistingLogs extends Migration {
 	 * @var LogTypeHelper
 	 */
 	private $logTypeHelper;
+	/**
+	 * @var LegacyLogsTable
+	 */
+	private $legacyLogsTable;
 
 	/**
 	 * MigrateExistingLogs constructor.
 	 *
 	 * @param  LogTypeHelper  $logTypeHelper
+	 * @param  LegacyLogsTable  $legacyLogsTable
 	 */
-	public function __construct( LogTypeHelper $logTypeHelper ) {
-		$this->logTypeHelper = $logTypeHelper;
+	public function __construct(
+		LogTypeHelper $logTypeHelper,
+		LegacyLogsTable $legacyLogsTable
+	) {
+		$this->logTypeHelper   = $logTypeHelper;
+		$this->legacyLogsTable = $legacyLogsTable;
 	}
 	/**
 	 * Register background update.
@@ -69,7 +79,13 @@ class MigrateExistingLogs extends Migration {
 
 		$logs_table    = "{$wpdb->prefix}give_logs";
 		$logmeta_table = "{$wpdb->prefix}give_logmeta";
-		$give_updates  = Give_Updates::get_instance();
+
+		// Check if legacy table exist
+		if ( ! $this->legacyLogsTable->exist() ) {
+			return;
+		}
+
+		$give_updates = Give_Updates::get_instance();
 
 		$perBatch = 500;
 
