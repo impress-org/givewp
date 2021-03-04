@@ -72,16 +72,16 @@ class UsageTrackingOnBoarding {
 				'icon'        => $pageView->image( 'hands-in.svg' ),
 				'class'       => ! $wrapper ? 'usage-tracking' : '',
 				'icon_alt'    => esc_html__( 'Anonymous usage tracking icon', 'give' ),
-				'title'       => esc_html__( 'Help us improve yor fundraising experience', 'give' ),
+				'title'       => esc_html__( 'Help GiveWP improve your fundraising experience', 'give' ),
 				'description' => sprintf(
 					'%1$s<br><br><a href="https://givewp.com" class="learn-more-link" target="_blank">%2$s</a>',
-					esc_html__( 'You can contribute to improve GiveWP. the Give Team uses non-sensitive data to improve donation from conversion rates, increase average donation amounts, and streamline the fundraising experience. We never share this information with anyone and we never spam.', 'give' ),
-					esc_html__( 'Learn more about how GiveWP respects your privacy while improving the plugin >', 'give' )
+					esc_html__( 'Can you help improve GiveWP? With your permission, the GiveWP team uses non-sensitive data from plugin users to optimize donation form conversion rates, increase average donation amounts, and streamline the fundraising experience. This data is never shared with any third party.', 'give' ),
+					esc_html__( 'Learn more about how GiveWP respects user and donor privacy while improving the plugin >', 'give' )
 				),
 				'action'      => sprintf(
 					'<a class="button" href="%1$s">%2$s</a><div class="sub-links"><a href="%3$s" title="%7$s">%4$s</a><a href="%5$s">%6$s</a></div>',
 					add_query_arg( [ 'give_action' => 'opt_in_into_tracking' ] ),
-					esc_html__( 'Opt-in', 'give' ),
+					esc_html__( 'Glad to Help', 'give' ),
 					add_query_arg( [ 'give_action' => 'hide_opt_in_notice_shortly' ] ),
 					esc_html__( 'Not Right Now', 'give' ),
 					add_query_arg( [ 'give_action' => 'hide_opt_in_notice_permanently' ] ),
