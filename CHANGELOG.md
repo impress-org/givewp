@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Form Templates now support custom checkbox fields. (#5643)
 -   Custom fields now support arbitrary attributes (#5641)
 
+### Fixed
+
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+
 ## 2.9.6 - 2021-01-13
 
 ### New
