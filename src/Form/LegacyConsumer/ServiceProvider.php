@@ -28,11 +28,10 @@ class ServiceProvider implements ServiceProviderInterface {
 	public function boot() {
 		give( TemplateHooks::class )->walk( give( Commands\SetupNewTemplateHook::class ) );
 
-		add_action(
+		add_filter(
 			'give_donation_form_required_fields',
 			function( $requiredFields, $formID ) {
-				give( TemplateHooks::class )->walk( new Commands\SetupFieldValidation( $requiredFields, $formID ) );
-				return $requiredFields;
+				return give( TemplateHooks::class )->reduce( new Commands\SetupFieldValidation( $formID ), $requiredFields );
 			},
 			10,
 			2

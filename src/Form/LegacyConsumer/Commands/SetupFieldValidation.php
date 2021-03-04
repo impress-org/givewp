@@ -9,23 +9,23 @@ use Give\Framework\FieldsAPI\FieldCollection;
  *
  * @unreleased
  */
-class SetupFieldValidation implements HookCommandInterface {
+class SetupFieldValidation {
 
-	public function __construct( &$requiredFields, $formID ) {
-		$this->requiredFields = $requiredFields;
-		$this->formID         = $formID;
+	public function __construct( $formID ) {
+		$this->formID = $formID;
 	}
 
-	public function __invoke( $hook ) {
+	public function __invoke( $requiredFields, $hook ) {
 		$fieldCollection = new FieldCollection( 'root' );
 		do_action( "give_fields_$hook", $fieldCollection, $this->formID );
-		$fieldCollection->walk( [ $this, 'process' ] );
-	}
-
-	public function process( $field ) {
-		if ( $field->isRequired() ) {
-			$this->requiredFields[ $field->getName() ] = $field->getRequiredError();
-		}
+		$fieldCollection->walk(
+			function( $field ) use ( &$requiredFields ) {
+				if ( $field->isRequired() ) {
+					$requiredFields[ $field->getName() ] = $field->getRequiredError();
+				}
+			}
+		);
+		return $requiredFields;
 	}
 }
 
