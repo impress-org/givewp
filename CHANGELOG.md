@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Custom fields now support arbitrary attributes (#5641)
 -   Form Consumer now limit hooks and instantiated classes (#5670)
 
+### Fixed
+
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+
 ## 2.9.6 - 2021-01-13
 
 ### New
