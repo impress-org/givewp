@@ -15,6 +15,8 @@ class SetupFieldEmailTag {
 	/**
 	 * @unreleased
 	 *
+	 * @param string $hook
+	 *
 	 * @return void
 	 */
 	public function __invoke( $hook ) {
@@ -22,17 +24,6 @@ class SetupFieldEmailTag {
 		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
 
 		$fieldCollection->walk( [ $this, 'register' ] );
-	}
-
-	/**
-	 * @unreleased
-	 *
-	 * @param int $donationID
-	 *
-	 * @return void
-	 */
-	public function process() {
-
 	}
 
 	/**

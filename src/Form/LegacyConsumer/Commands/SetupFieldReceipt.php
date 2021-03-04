@@ -15,7 +15,7 @@ class SetupFieldReceipt {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $hook
+	 * @param DonationReceipt $receipt
 	 */
 	public function __construct( DonationReceipt $receipt ) {
 		$this->receipt = $receipt;
@@ -24,6 +24,8 @@ class SetupFieldReceipt {
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $hook
 	 *
 	 * @return void
 	 */
@@ -57,7 +59,14 @@ class SetupFieldReceipt {
 		}
 	}
 
-	protected function addDonorLineItem( $field ) {
+	/**
+	 * @unreleased
+	 *
+	 * @param FormField $field
+	 *
+	 * @return void
+	 */
+	protected function addDonorLineItem( FormField $field ) {
 		$donorID = give_get_payment_meta( $this->receipt->donationId, '_give_payment_donor_id' );
 		if ( $value = Give()->donor_meta->get_meta( $donorID, $field->getName(), true ) ) {
 			$this->receipt
@@ -72,6 +81,13 @@ class SetupFieldReceipt {
 		}
 	}
 
+	/**
+	 * @unreleased
+	 *
+	 * @param FormField $field
+	 *
+	 * @return void
+	 */
 	protected function addAdditionalLineItems( $field ) {
 		if ( $value = give_get_payment_meta( $this->receipt->donationId, $field->getName() ) ) {
 			$this->receipt

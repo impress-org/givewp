@@ -14,7 +14,7 @@ class SetupPaymentDetailsDisplay {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $hook
+	 * @param int $donationID
 	 */
 	public function __construct( $donationID ) {
 		$this->donationID = $donationID;
@@ -23,6 +23,8 @@ class SetupPaymentDetailsDisplay {
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $hook
 	 *
 	 * @return void
 	 */

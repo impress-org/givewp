@@ -13,7 +13,8 @@ class SetupFieldConfirmation {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $hook
+	 * @param Donation $payment
+	 * @param array $receiptArgs
 	 */
 	public function __construct( $payment, $receiptArgs ) {
 		$this->payment     = $payment;
@@ -22,6 +23,8 @@ class SetupFieldConfirmation {
 
 	/**
 	 * @unreleased
+	 *
+	 * @param string $hook
 	 *
 	 * @return void
 	 */
@@ -35,6 +38,13 @@ class SetupFieldConfirmation {
 		$fieldCollection->walk( [ $this, 'render' ] );
 	}
 
+	/**
+	 * @unreleased
+	 *
+	 * @param FormField $field
+	 *
+	 * @return void
+	 */
 	public function render( FormField $field ) {
 
 		if ( ! $field->shouldShowInReceipt() ) {
