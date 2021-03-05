@@ -276,7 +276,7 @@ class Donations {
 			$amount,
 			[
 				'decimal' => false,
-			],
+			]
 		);
 
 		return $formatted;
