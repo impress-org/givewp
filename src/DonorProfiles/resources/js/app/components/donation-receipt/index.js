@@ -1,7 +1,3 @@
-import { Fragment } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const { __ } = wp.i18n;
-
 import './style.scss';
 
 const DonationReceipt = ( { donation } ) => {
@@ -9,91 +5,26 @@ const DonationReceipt = ( { donation } ) => {
 		return null;
 	}
 
-	const { donor, payment } = donation;
+	const { receipt } = donation;
 
-	return (
-		<Fragment>
-			<div className="give-donor-profile-donation-receipt__table">
-				<div className="give-donor-profile-donation-receipt__row">
+	return receipt.map( ( section, sectionIndex ) => {
+		const lineItems = section.lineItems.map( ( item, itemIndex ) => {
+			return (
+				<div className={ `give-donor-profile-donation-receipt__row${ item.class.includes( 'total' ) ? ' give-donor-profile-donation-receipt__row--footer' : '' }` } key={ itemIndex }>
 					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="user" /> { __( 'Donor Name:', 'give' ) }
+						{ item.icon && <span dangerouslySetInnerHTML={ { __html: item.icon } } /> } { item.label }
 					</div>
 					<div className="give-donor-profile-donation-receipt__value">
-						{ `${ donor.first_name } ${ donor.last_name }` }
+						{ item.value }
 					</div>
 				</div>
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="envelope" /> { __( 'Email Address:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ donor.email }
-					</div>
-				</div>
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						<FontAwesomeIcon icon="calendar" /> { __( 'Donation Date:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.date }
-					</div>
-				</div>
-				{ donor.address && (
-					<div className="give-donor-profile-donation-receipt__row">
-						<div className="give-donor-profile-donation-receipt__detail">
-							<FontAwesomeIcon icon="globe" /> { __( 'Address:', 'give' ) }
-						</div>
-						<div className="give-donor-profile-donation-receipt__value">
-							{ donor.address.street && ( <div> { donor.address.street } </div> ) }
-							{ donor.address.city && donor.address.state && donor.address.zip && ( <div> { donor.address.city } { donor.address.state }, { donor.address.zip } </div> ) }
-							{ donor.address.country && ( <div> { donor.address.country } </div> ) }
-						</div>
-					</div>
-				) }
+			);
+		} );
+		return (
+			<div className="give-donor-profile-donation-receipt__table" key={ sectionIndex }>
+				{ lineItems }
 			</div>
-			<div className="give-donor-profile-donation-receipt__table">
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						{ __( 'Payment Method:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.method }
-					</div>
-				</div>
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						{ __( 'Payment Status:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.status.label }
-					</div>
-				</div>
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						{ __( 'Payment Amount:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.amount }
-					</div>
-				</div>
-				<div className="give-donor-profile-donation-receipt__row">
-					<div className="give-donor-profile-donation-receipt__detail">
-						{ __( 'Processing Fee:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.fee }
-					</div>
-				</div>
-				<div className="give-donor-profile-donation-receipt__row give-donor-profile-donation-receipt__row--footer">
-					<div className="give-donor-profile-donation-receipt__detail">
-						{ __( 'Donation Total:', 'give' ) }
-					</div>
-					<div className="give-donor-profile-donation-receipt__value">
-						{ payment.total }
-					</div>
-				</div>
-			</div>
-		</Fragment>
-	);
+		);
+	} );
 };
 export default DonationReceipt;
