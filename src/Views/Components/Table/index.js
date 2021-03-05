@@ -166,8 +166,6 @@ Table.propTypes = {
 	stripped: PropTypes.bool,
 	// Show spinner if data is loading
 	isLoading: PropTypes.bool,
-	// Set test id
-	testId: PropTypes.string,
 };
 
 Table.defaultProps = {
@@ -177,7 +175,6 @@ Table.defaultProps = {
 	columnFilters: [],
 	stripped: true,
 	isLoading: false,
-	testId: null,
 };
 
 export default Table;
