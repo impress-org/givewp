@@ -77,13 +77,13 @@ class MigrateExistingLogs extends Migration {
 	public function run() {
 		global $wpdb;
 
-		$logs_table    = "{$wpdb->prefix}give_logs";
-		$logmeta_table = "{$wpdb->prefix}give_logmeta";
-
 		// Check if legacy table exist
 		if ( ! $this->legacyLogsTable->exist() ) {
 			return;
 		}
+
+		$logs_table    = "{$wpdb->prefix}give_logs";
+		$logmeta_table = "{$wpdb->prefix}give_logmeta";
 
 		$give_updates = Give_Updates::get_instance();
 
