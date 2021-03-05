@@ -6,7 +6,7 @@ namespace Give\Log\Helpers;
  * Class LogsLegacyTable
  * @package Give\Log\Helpers
  *
- * @since @unreleased
+ * @unreleased
  */
 class LegacyLogsTable {
 	/**
