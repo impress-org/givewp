@@ -15,6 +15,7 @@ class MigrateExistingLogs extends Migration {
 	 * @var LogTypeHelper
 	 */
 	private $logTypeHelper;
+
 	/**
 	 * @var LegacyLogsTable
 	 */
