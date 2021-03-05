@@ -2,7 +2,7 @@
 
 namespace Give\Tracking\TrackingData;
 
-use Give\Helpers\ArrayDataSet;
+use Give\Framework\Database\DB;
 
 /**
  * Class AllActiveDonationFormsData
@@ -12,30 +12,21 @@ use Give\Helpers\ArrayDataSet;
  */
 class ActiveDonationFormsData extends DonationFormsData {
 	/**
-	 * Set donation ids.
+	 * Set form ids.
 	 *
 	 * @since 2.10.0
 	 *
 	 * @return DonationFormsData
 	 */
-	protected function setDonationIds() {
+	protected function setFormIds() {
 		global $wpdb;
 
-		$statues = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
-
-		$this->donationIds = $wpdb->get_col(
+		$this->formIds = DB::get_col(
 			"
-			SELECT ID
-			FROM {$wpdb->posts} as p
-				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$statues})
-				AND post_type='give_payment'
-				AND dm.meta_key='_give_payment_mode'
+			SELECT DISTINCT r.form_id
+			FROM {$wpdb->give_revenue} as r
+				INNER JOIN {$wpdb->donationmeta} as dm ON r.donation_id = dm.donation_id
+			WHERE dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
 			"
 		);

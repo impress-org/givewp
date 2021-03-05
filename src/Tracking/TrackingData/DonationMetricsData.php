@@ -2,9 +2,9 @@
 
 namespace Give\Tracking\TrackingData;
 
+use Give\Framework\Database\DB;
 use Give\Tracking\Contracts\TrackData;
-use Give_Donors_Query;
-use WP_Query;
+use Give\Tracking\Helpers\DonationStatuses;
 
 /**
  * Class DonationMetricsData
@@ -13,18 +13,33 @@ use WP_Query;
  * @unreleased
  */
 class DonationMetricsData implements TrackData {
+	/**
+	 * @var array
+	 */
 	private $donationData = [];
+
+	/**
+	 * @var int
+	 */
+	private $donorCount = 0;
+
+	/**
+	 * @var int
+	 */
+	private $formCount = 0;
 
 	/**
 	 * @inheritdoc
 	 * @return array|void
 	 */
 	public function get() {
+		$this->donorCount   = $this->getDonorCount();
+		$this->formCount    = $this->getDonationFormCount();
 		$this->donationData = ( new DonationData() )->get();
 
 		$data = [
-			'form_count'                   => $this->getDonationFormCount(),
-			'donor_count'                  => $this->getDonorCount(),
+			'form_count'                   => $this->formCount,
+			'donor_count'                  => $this->donorCount,
 			'avg_donation_amount_by_donor' => $this->getAvgDonationAmountByDonor(),
 		];
 
@@ -38,18 +53,27 @@ class DonationMetricsData implements TrackData {
 	 * @return int
 	 */
 	private function getDonorCount() {
-		$donorQuery = new Give_Donors_Query(
-			[
-				'number'          => -1,
-				'count'           => true,
-				'donation_amount' => [
-					'compare' => '>',
-					'amount'  => 0,
-				],
-			]
+		global $wpdb;
+
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+
+		$donorCount = DB::get_var(
+			"
+			SELECT COUNT(DISTINCT dm.meta_value)
+			FROM {$wpdb->donationmeta} as dm
+				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
+				INNER JOIN {$wpdb->donors} as donor ON dm.meta_value = donor.id
+			WHERE p.post_status IN ({$statues})
+				AND p.post_type='give_payment'
+				AND dm2.meta_key='_give_payment_mode'
+				AND dm2.meta_value='live'
+				AND dm.meta_key='_give_payment_donor_id'
+				AND donor.purchase_value > 0
+			"
 		);
 
-		return (int) $donorQuery->get_donors();
+		return (int) $donorCount;
 	}
 
 	/**
@@ -62,7 +86,7 @@ class DonationMetricsData implements TrackData {
 		$amount = 0;
 
 		if ( $this->donationData['revenue'] ) {
-			$amount = (int) ( $this->donationData['revenue'] / $this->getDonorCount() );
+			$amount = (int) ( $this->donationData['revenue'] / $this->donorCount );
 		}
 
 		return $amount;
@@ -75,15 +99,24 @@ class DonationMetricsData implements TrackData {
 	 * @return int
 	 */
 	private function getDonationFormCount() {
-		$formQuery = new WP_Query(
-			[
-				'post_type' => 'give_forms',
-				'status'    => 'publish',
-				'fields'    => 'ids',
-				'number'    => -1,
-			]
+		global $wpdb;
+
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+
+		$formCount = DB::get_var(
+			"
+			SELECT COUNT(DISTINCT dm.meta_value)
+			FROM {$wpdb->donationmeta} as dm
+				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
+			WHERE p.post_status IN ({$statues})
+			  	AND p.post_type='give_payment'
+				AND dm2.meta_key='_give_payment_mode'
+				AND dm2.meta_value='live'
+				AND dm.meta_key='_give_payment_form_id'
+			"
 		);
 
-		return $formQuery->found_posts;
+		return (int) $formCount;
 	}
 }

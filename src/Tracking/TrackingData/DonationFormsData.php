@@ -1,11 +1,12 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
+use Give\Framework\Database\DB;
 use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Helpers\DonationStatuses;
 use Give\Tracking\Repositories\TrackEvents;
-use Give\Tracking\Traits\HasDonations;
 
 /**
  * Class DonationFormsData
@@ -16,12 +17,14 @@ use Give\Tracking\Traits\HasDonations;
  * @package Give\Tracking\TrackingData
  */
 class DonationFormsData implements TrackData {
-	use HasDonations;
-
 	protected $formIds         = [];
-	protected $donationIds     = [];
 	protected $formRevenues    = [];
 	protected $formDonorCounts = [];
+
+	/**
+	 * @var TrackEvents
+	 */
+	protected $trackEvents;
 
 	/**
 	 * DonationFormsData constructor.
@@ -36,8 +39,7 @@ class DonationFormsData implements TrackData {
 	 * @inheritdoc
 	 */
 	public function get() {
-		$this->setDonationIds()
-			 ->setFormIdsByDonationIds();
+		$this->setFormIds();
 
 		if ( ! $this->formIds ) {
 			return [];
@@ -83,35 +85,29 @@ class DonationFormsData implements TrackData {
 	}
 
 	/**
-	 * Set donation ids.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return DonationFormsData
-	 */
-	protected function setDonationIds() {
-		$this->donationIds = $this->getNewDonationIdsSinceLastRequest();
-
-		return $this;
-	}
-
-	/**
-	 * Set form ids by donation ids.
+	 * Set form ids.
 	 *
 	 * @since 2.10.0
 	 * @return self
 	 */
-	protected function setFormIdsByDonationIds() {
+	protected function setFormIds() {
 		global $wpdb;
 
-		$donationIdsList = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->donationIds );
+		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+		$time    = $this->trackEvents->getRequestTime();
 
-		$this->formIds = $wpdb->get_col(
+		$this->formIds = DB::get_col(
 			"
-			SELECT DISTINCT meta_value
-			FROM {$wpdb->donationmeta}
-			WHERE meta_key='_give_payment_form_id'
-			AND donation_id IN ({$donationIdsList})
+			SELECT DISTINCT dm.meta_value
+			FROM {$wpdb->donationmeta} as dm
+				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
+				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
+			WHERE p.post_status IN ({$statues})
+			  	AND p.post_date>='{$time}'
+			  	AND p.post_type='give_payment'
+				AND dm2.meta_key='_give_payment_mode'
+				AND dm2.meta_value='live'
+				AND dm.meta_key='_give_payment_form_id'
 			"
 		);
 
@@ -133,11 +129,14 @@ class DonationFormsData implements TrackData {
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default revenue to 0
 		);
 
-		$result = $wpdb->get_results(
+		$result = DB::get_results(
 			"
-			SELECT SUM(amount) as amount, form_id
-			FROM {$wpdb->give_revenue}
-			WHERE form_id IN ({$formIds})
+			SELECT SUM(r.amount) as amount, r.form_id
+			FROM {$wpdb->give_revenue} as r
+				INNER JOIN {$wpdb->donationmeta} as dm ON r.donation_id = dm.donation_id
+			WHERE dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
+				AND r.form_id IN ({$formIds})
 			GROUP BY form_id
 			",
 			ARRAY_A
@@ -169,18 +168,24 @@ class DonationFormsData implements TrackData {
 		global $wpdb;
 
 		$formIds       = ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote( $this->formIds );
+		$statues       = DonationStatuses::getCompletedDonationsStatues( true );
 		$defaultResult = array_combine(
 			$this->formIds,
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default donor count to 0
 		);
 
-		$result = $wpdb->get_results(
+		$result = DB::get_results(
 			"
 			SELECT COUNT(DISTINCT dm2.meta_value) as donor_count, dm.meta_value as form_id
 			FROM {$wpdb->donationmeta} as dm
+			    INNER JOIN {$wpdb->posts} as p ON donation_id = p.ID
 				INNER JOIN {$wpdb->donationmeta} as dm2 ON dm.donation_id = dm2.donation_id
 				INNER JOIN {$wpdb->donors} as donor ON dm2.meta_value = donor.id
-			WHERE dm.meta_key='_give_payment_form_id'
+				INNER JOIN {$wpdb->donationmeta} as dm3 ON dm.donation_id = dm3.donation_id
+			WHERE p.post_status IN ({$statues})
+			  	AND dm3.meta_key='_give_payment_mode'
+				AND dm3.meta_value='live'
+			    AND dm.meta_key='_give_payment_form_id'
 				AND dm.meta_value IN ({$formIds})
 				AND dm2.meta_key='_give_payment_donor_id'
 				AND donor.purchase_value > 0
