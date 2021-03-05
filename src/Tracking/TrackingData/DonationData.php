@@ -96,15 +96,13 @@ class DonationData implements TrackData {
 		global $wpdb;
 
 		$result = (int) $wpdb->get_var(
-			$wpdb->prepare(
-				"
-				SELECT SUM(r.amount)
-				FROM {$wpdb->give_revenue} as r
-					INNER JOIN {$wpdb->donationmeta} as dm ON r.donation_id=dm.donation_id
-				WHERE dm.meta_key='_give_payment_mode'
-					AND dm.meta_value='live'
-				"
-			)
+			"
+			SELECT SUM(r.amount)
+			FROM {$wpdb->give_revenue} as r
+				INNER JOIN {$wpdb->donationmeta} as dm ON r.donation_id=dm.donation_id
+			WHERE dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
+			"
 		);
 		return $result ?: 0;
 	}
