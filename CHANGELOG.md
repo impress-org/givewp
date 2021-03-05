@@ -23,10 +23,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Custom Fields on the Sequoia template now match alignment (#5669)
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+-   Reports endpoints no longer throw an error due to missing $schema property (#5642)
+-   Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
+
+## 2.9.7 - 2021-02-09
+
+### Fixed
+
+-   Create account checkbox is hidden when guest registration is disabled (#5557)
+-   Using the CLI commands is not producing errors anymore (#5559)
+-   Multi Form Goal is not producing errors and warnings when used as a Divi module (#5565)
+-   Setup Page gateway links now render styles correctly (#5576)
 
 ## 2.9.6 - 2021-01-13
 
 ### New
+
 -   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
 -   Sample onboarding tests are now implemented (#5543)
