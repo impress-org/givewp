@@ -37,6 +37,10 @@ class TemplateHooks {
 		array_walk( $hooks, $callback );
 	}
 
+	public function reduce( callable $callback, $initial = null ) {
+		return array_reduce( $this->getHooks(), $callback, $initial );
+	}
+
 	public function getHooks() {
 		return self::TEMPLATE_HOOKS;
 	}

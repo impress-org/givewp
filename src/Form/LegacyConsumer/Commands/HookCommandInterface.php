@@ -2,6 +2,15 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+/**
+ * @unreleased
+ */
 interface HookCommandInterface {
-    public function __invoke( $hook );
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $hook
+	 */
+	public function __invoke( $hook );
 }
