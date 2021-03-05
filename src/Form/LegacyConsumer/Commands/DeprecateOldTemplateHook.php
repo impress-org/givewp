@@ -4,8 +4,17 @@ namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Form\LegacyConsumer\FilterCallbackCollection;
 
+/**
+ * @unreleased
+ */
 class DeprecateOldTemplateHook implements HookCommandInterface {
-
+	/**
+	 * @unreleased
+	 *
+	 * @param string $hook
+	 *
+	 * @return void
+	 */
 	public function __invoke( $hook ) {
 		global $wp_filter;
 		if ( has_filter( "give_$hook" ) ) {

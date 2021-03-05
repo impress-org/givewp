@@ -14,7 +14,6 @@ class TemplateHooks {
 		'before_donation_levels',
 		'after_donation_amount',
 		'after_donation_levels',
-		'payment_mode_select',
 		'payment_mode_top',
 		'payment_mode_before_gateways',
 		'payment_mode_after_gateways',
@@ -36,6 +35,10 @@ class TemplateHooks {
 	public function walk( callable $callback ) {
 		$hooks = $this->getHooks();
 		array_walk( $hooks, $callback );
+	}
+
+	public function reduce( callable $callback, $initial = null ) {
+		return array_reduce( $this->getHooks(), $callback, $initial );
 	}
 
 	public function getHooks() {
