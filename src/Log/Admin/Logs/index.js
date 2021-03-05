@@ -271,7 +271,7 @@ const Logs = () => {
 						</Modal.Content>
 
 						<Modal.Content>
-							<button style={ { marginRight: 20 } } className="button button-primary" onClick={ flushLogs }>
+							<button style={ { marginRight: 20 } } className="button button-primary" onClick={ flushLogs } data-givewp-test="flush-logs-confirm-btn">
 								{ __( 'Confirm', 'give' ) }
 							</button>
 							<button className="button" onClick={ closeLogFlushModal }>
@@ -456,7 +456,7 @@ const Logs = () => {
 
 			<div className={ styles.footerRow }>
 				{ data && ( data.length > 0 ) && (
-					<button className="button" onClick={ openLogFlushModal }>
+					<button className="button" onClick={ openLogFlushModal } data-givewp-test="flush-logs-btn">
 						{ __( 'Flush all logs', 'give' ) }
 					</button>
 				) }
