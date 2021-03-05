@@ -46,12 +46,7 @@ class LogServiceProvider implements ServiceProvider {
 	 * Register migration
 	 */
 	private function registerMigrations() {
-		give( MigrationsRegister::class )->addMigrations(
-			[
-				CreateNewLogTable::class,
-				MigrateExistingLogs::class,
-			]
-		);
+		give( MigrationsRegister::class )->addMigration( CreateNewLogTable::class );
 
 		// Check if Logs migration batch processing is completed
 		if ( give_has_upgrade_completed( MigrateExistingLogs::id() ) ) {

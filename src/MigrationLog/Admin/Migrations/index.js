@@ -219,6 +219,11 @@ const Migrations = () => {
 			label: __( 'Migration Title', 'give' ),
 			sort: true,
 			sortCallback: ( direction ) => setSortDirectionForColumn( 'title', direction ),
+			styles: {
+				overflowWrap: 'break-word',
+				wordWrap: 'break-word',
+				wordBreak: 'break-all',
+			},
 		},
 		{
 			key: 'last_run',
@@ -278,7 +283,7 @@ const Migrations = () => {
 				<button
 					className="button"
 					onClick={ () => openMigrationRunModal( migration.id ) }>
-					{ __( 'Run Update', 'give' ) }
+					{ __( 'Re-run Update', 'give' ) }
 				</button>
 			);
 		},

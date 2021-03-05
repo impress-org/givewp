@@ -1,8 +1,8 @@
+/* stylelint-disable */
 .periodSelector {
 	display: inline-flex;
 	align-items: center;
-	max-width: 330px;
-	width: 100%;
+	min-width: 330px;
 }
 
 .datepicker {
@@ -13,7 +13,6 @@
 	border-radius: 3px;
 	padding-left: 22px;
 
-	/* stylelint-disable */
 	:global .CalendarDay__selected_span {
 		background: rgb(145, 200, 150); //background
 		color: #fff; //text
