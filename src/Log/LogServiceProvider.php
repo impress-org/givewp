@@ -2,7 +2,9 @@
 
 namespace Give\Log;
 
+use WP_CLI;
 use Give\Helpers\Hooks;
+use Give\Log\Commands\FlushLogsCommand;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Log\Migrations\CreateNewLogTable;
@@ -34,6 +36,10 @@ class LogServiceProvider implements ServiceProvider {
 	public function boot() {
 		$this->registerMigrations();
 
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$this->registerCliCommands();
+		}
+
 		Hooks::addAction( 'give_register_updates', MigrateExistingLogs::class, 'register' );
 
 		// Hook up
@@ -57,5 +63,12 @@ class LogServiceProvider implements ServiceProvider {
 		if ( give_has_upgrade_completed( MigrateExistingLogs::id() ) ) {
 			give( MigrationsRegister::class )->addMigration( DeleteOldLogTables::class );
 		}
+	}
+
+	/**
+	 * Register CLI commands
+	 */
+	private function registerCliCommands() {
+		WP_CLI::add_command( 'give flush-logs', give()->make( FlushLogsCommand::class ) );
 	}
 }
