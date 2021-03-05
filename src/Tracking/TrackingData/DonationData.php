@@ -47,15 +47,15 @@ class DonationData implements TrackData {
 
 		$date = DB::get_var(
 			"
-				SELECT post_date_gmt
-				FROM {$wpdb->posts} as p
-					INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-				WHERE post_status IN ({$this->donationStatuses})
-					AND dm.meta_key='_give_payment_mode'
-					AND dm.meta_value='live'
-				ORDER BY post_date_gmt ASC
-				LIMIT 1
-				"
+			SELECT post_date_gmt
+			FROM {$wpdb->posts} as p
+				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
+			WHERE post_status IN ({$this->donationStatuses})
+				AND dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
+			ORDER BY post_date_gmt ASC
+			LIMIT 1
+			"
 		);
 
 		return $date ? strtotime( $date ) : '';
