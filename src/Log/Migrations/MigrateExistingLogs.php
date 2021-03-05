@@ -15,6 +15,7 @@ class MigrateExistingLogs extends Migration {
 	 * @var LogTypeHelper
 	 */
 	private $logTypeHelper;
+
 	/**
 	 * @var LegacyLogsTable
 	 */
@@ -33,12 +34,14 @@ class MigrateExistingLogs extends Migration {
 		$this->logTypeHelper   = $logTypeHelper;
 		$this->legacyLogsTable = $legacyLogsTable;
 	}
+
 	/**
 	 * Register background update.
 	 *
-	 * @param Give_Updates $give_updates
-	 *
 	 * @since 2.10.0
+	 *
+	 * @param  Give_Updates  $give_updates
+	 *
 	 */
 	public function register( $give_updates ) {
 		$give_updates->register(
@@ -61,7 +64,7 @@ class MigrateExistingLogs extends Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return  esc_html__( 'Migrate existing logs to give_log table', 'give' );
+		return esc_html__( 'Migrate existing logs to give_log table', 'give' );
 	}
 
 	/**

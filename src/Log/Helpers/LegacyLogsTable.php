@@ -2,11 +2,13 @@
 
 namespace Give\Log\Helpers;
 
+use Give\Framework\Database\DB;
+
 /**
  * Class LogsLegacyTable
  * @package Give\Log\Helpers
  *
- * @since @unreleased
+ * @unreleased
  */
 class LegacyLogsTable {
 	/**
@@ -17,8 +19,8 @@ class LegacyLogsTable {
 	public function exist() {
 		global $wpdb;
 
-		return (bool) $wpdb->get_var(
-			$wpdb->prepare( "SHOW TABLES LIKE '%s'", "{$wpdb->prefix}give_logs" )
+		return (bool) DB::get_var(
+			DB::prepare( "SHOW TABLES LIKE '%s'", "{$wpdb->prefix}give_logs" )
 		);
 	}
 }
