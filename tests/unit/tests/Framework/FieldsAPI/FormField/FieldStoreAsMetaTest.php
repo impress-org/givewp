@@ -21,4 +21,11 @@ final class FieldStoreAsMetaTest extends TestCase {
         $field->storeAsDonorMeta( false ); // Toggle off.
         $this->assertFalse( $field->shouldStoreAsDonorMeta() );
     }
+
+    public function testStoreAsMetaMethodEnforcesBooleanType() {
+        $field = new FormField( 'text', 'my-text-field' );
+        $field->storeAsDonorMeta( 'foo' );
+
+        $this->assertInternalType( 'bool', $field->shouldStoreAsDonorMeta() );
+    }
 }
