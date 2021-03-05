@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New
+
+-   Donor Profile Verify Email now supports reCAPTCHA (#5661)
+
+### Changed
+
+-   Form Consumer now limit hooks and instantiated classes (#5670)
+-   Donor Profile receipt content now match receipt displayed during donation (#5666)
+
+### Fixed
+
+-   Legacy log migrations are not failing on fresh install now (#5672)
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+
 ## 2.10.0-beta.1 - 2021-03-02
 
 ### New
