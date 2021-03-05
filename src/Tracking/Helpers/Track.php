@@ -20,6 +20,24 @@ class Track {
 	 * @return bool True when we can track, false when we can't.
 	 */
 	public static function isTrackingEnabled() {
+		if ( ! self::checkEnvironment() ) {
+			return false;
+		}
+
+		// Check if we're allowing tracking.
+		/* @var Settings $settings */
+		$settings = give( Settings::class );
+		$tracking = $settings->getUsageTrackingOptionValue();
+
+		return give_is_setting_enabled( $tracking );
+	}
+
+	/**
+	 * Return whether or not environment for tracking satisfied.
+	 *
+	 * @return bool
+	 */
+	public static function checkEnvironment() {
 		// Track data only if website is in production mode.
 		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
 			return false;
@@ -30,11 +48,6 @@ class Track {
 			return false;
 		}
 
-		// Check if we're allowing tracking.
-		/* @var Settings $settings */
-		$settings = give( Settings::class );
-		$tracking = $settings->getUsageTrackingOptionValue();
-
-		return give_is_setting_enabled( $tracking );
+		return true;
 	}
 }
