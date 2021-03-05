@@ -2,6 +2,7 @@
 
 namespace Give\Tracking\TrackingData;
 
+use Give\Framework\Database\DB;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
 
@@ -56,7 +57,7 @@ class DonationMetricsData implements TrackData {
 
 		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 
-		$donorCount = $wpdb->get_var(
+		$donorCount = DB::get_var(
 			"
 			SELECT COUNT(DISTINCT dm.meta_value)
 			FROM {$wpdb->donationmeta} as dm
@@ -102,7 +103,7 @@ class DonationMetricsData implements TrackData {
 
 		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 
-		$formCount = $wpdb->get_var(
+		$formCount = DB::get_var(
 			"
 			SELECT COUNT(DISTINCT dm.meta_value)
 			FROM {$wpdb->donationmeta} as dm

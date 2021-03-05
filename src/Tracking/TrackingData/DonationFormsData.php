@@ -1,6 +1,7 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
+use Give\Framework\Database\DB;
 use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
 use Give\Tracking\Contracts\TrackData;
@@ -95,7 +96,7 @@ class DonationFormsData implements TrackData {
 		$statues = DonationStatuses::getCompletedDonationsStatues( true );
 		$time    = $this->trackEvents->getRequestTime();
 
-		$this->formIds = $wpdb->get_col(
+		$this->formIds = DB::get_col(
 			"
 			SELECT DISTINCT dm.meta_value
 			FROM {$wpdb->donationmeta} as dm
@@ -128,7 +129,7 @@ class DonationFormsData implements TrackData {
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default revenue to 0
 		);
 
-		$result = $wpdb->get_results(
+		$result = DB::get_results(
 			"
 			SELECT SUM(r.amount) as amount, r.form_id
 			FROM {$wpdb->give_revenue} as r
@@ -173,7 +174,7 @@ class DonationFormsData implements TrackData {
 			array_fill( 0, count( $this->formIds ), 0 ) // Set default donor count to 0
 		);
 
-		$result = $wpdb->get_results(
+		$result = DB::get_results(
 			"
 			SELECT COUNT(DISTINCT dm2.meta_value) as donor_count, dm.meta_value as form_id
 			FROM {$wpdb->donationmeta} as dm

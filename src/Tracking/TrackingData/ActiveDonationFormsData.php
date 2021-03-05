@@ -2,7 +2,8 @@
 
 namespace Give\Tracking\TrackingData;
 
-use Give\Tracking\Helpers\DonationStatuses;
+use Give\Framework\Database\DB;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 
 /**
  * Class AllActiveDonationFormsData
@@ -21,7 +22,7 @@ class ActiveDonationFormsData extends DonationFormsData {
 	protected function setFormIds() {
 		global $wpdb;
 
-		$this->formIds = $wpdb->get_col(
+		$this->formIds = DB::get_col(
 			"
 			SELECT DISTINCT r.form_id
 			FROM {$wpdb->give_revenue} as r

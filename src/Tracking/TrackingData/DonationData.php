@@ -1,6 +1,8 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
+use Give\Framework\Database\DB;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
@@ -45,17 +47,17 @@ class DonationData implements TrackData {
 	private function getFirstDonationDate() {
 		global $wpdb;
 
-		$date = $wpdb->get_var(
+		$date = DB::get_var(
 			"
-			SELECT post_date_gmt
-			FROM {$wpdb->posts} as p
-				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$this->donationStatuses})
-				AND dm.meta_key='_give_payment_mode'
-				AND dm.meta_value='live'
-			ORDER BY post_date_gmt ASC
-			LIMIT 1
-			"
+				SELECT post_date_gmt
+				FROM {$wpdb->posts} as p
+					INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
+				WHERE post_status IN ({$this->donationStatuses})
+					AND dm.meta_key='_give_payment_mode'
+					AND dm.meta_value='live'
+				ORDER BY post_date_gmt ASC
+				LIMIT 1
+				"
 		);
 
 		return $date ? strtotime( $date ) : '';
@@ -70,7 +72,7 @@ class DonationData implements TrackData {
 	private function getLastDonationDate() {
 		global $wpdb;
 
-		$date = $wpdb->get_var(
+		$date = DB::get_var(
 			"
 			SELECT post_date_gmt
 			FROM {$wpdb->posts} as p
@@ -95,7 +97,7 @@ class DonationData implements TrackData {
 	public function getRevenueTillNow() {
 		global $wpdb;
 
-		$result = (int) $wpdb->get_var(
+		$result = (int) DB::get_var(
 			"
 			SELECT SUM(r.amount)
 			FROM {$wpdb->give_revenue} as r
