@@ -16,11 +16,22 @@ export const fetchDonationsDataFromAPI = () => {
 				},
 			} )
 			.then( ( response ) => response.data )
-			.then( ( data ) => {
-				dispatch( setDonations( data.donations ) );
-				dispatch( setCount( data.count ) );
-				dispatch( setRevenue( data.revenue ) );
-				dispatch( setAverage( data.average ) );
+			// eslint-disable-next-line camelcase
+			.then( ( { status, body_response } ) => {
+				if ( status === 200 ) {
+					const { donations, count, revenue, average } = body_response[ 0 ];
+
+					dispatch( setDonations( donations ) );
+					dispatch( setCount( count ) );
+					dispatch( setRevenue( revenue ) );
+					dispatch( setAverage( average ) );
+				}
+
+				if ( status === 400 ) {
+					// eslint-disable-next-line no-console
+					console.error( body_response[ 0 ].message );
+				}
+
 				dispatch( setQuerying( false ) );
 			} );
 	}

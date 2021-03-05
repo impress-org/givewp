@@ -20,7 +20,7 @@ class Donations {
 	 */
 	public function getDonationCount( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'count(revenue.id)', $donorId );
-		return $aggregate->result;
+		return $aggregate ? $aggregate->result : null;
 	}
 
 	/**
@@ -33,8 +33,7 @@ class Donations {
 	 */
 	public function getRevenue( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
-		error_log( serialize( $aggregate ) );
-		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
+		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
 	}
 
 	/**
@@ -46,9 +45,8 @@ class Donations {
 	 * @return string
 	 */
 	public function getAverageRevenue( $donorId ) {
-		;
 		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
+		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
 	}
 
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
@@ -101,9 +99,11 @@ class Donations {
 			foreach ( $result as $donation ) {
 				$ids[] = $donation->id;
 			}
+
+			return $ids;
 		}
 
-		return $ids;
+		return null;
 	}
 
 
@@ -118,6 +118,10 @@ class Donations {
 	public function getDonations( $donorId ) {
 
 		$ids = $this->getDonationIds( $donorId );
+
+		if ( $ids === null ) {
+			return null;
+		}
 
 		$args = [
 			'number'   => -1,
