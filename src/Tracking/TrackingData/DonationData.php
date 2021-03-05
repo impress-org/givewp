@@ -2,8 +2,6 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
-use Give\Helpers\ArrayDataSet;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
 

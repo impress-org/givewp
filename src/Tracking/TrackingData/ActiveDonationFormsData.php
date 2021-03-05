@@ -3,7 +3,6 @@
 namespace Give\Tracking\TrackingData;
 
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
 
 /**
  * Class AllActiveDonationFormsData
