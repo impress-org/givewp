@@ -22,35 +22,33 @@ class DonationsRoute extends RouteAbstract {
 	}
 
 	/**
-	 * @param WP_REST_Request $request
+	 * @since 2.10.0
+	 *
+	 * @param  WP_REST_Request  $request
 	 *
 	 * @return array
 	 *
-	 * @since 2.10.0
 	 */
 	public function handleRequest( $request ) {
-
 		$donorId = give()->donorProfile->getId();
 
 		$repository = new DonationsRepository();
-		return $this->getData( $repository, $donorId );
 
+		return $this->getData( $repository, $donorId );
 	}
 
 	/**
+	 * @since 2.10.0
 	 * @return array
 	 *
-	 * @since 2.10.0
 	 */
 	protected function getData( DonationsRepository $repository, $donorId ) {
-
 		$donations = $repository->getDonations( $donorId );
 		$count     = $repository->getDonationCount( $donorId );
 		$revenue   = $repository->getRevenue( $donorId );
 		$average   = $repository->getAverageRevenue( $donorId );
 
 		if ( $donations && $count && $revenue && $average ) {
-
 			return new WP_REST_Response(
 				[
 					'status'        => 200,
@@ -76,6 +74,5 @@ class DonationsRoute extends RouteAbstract {
 				],
 			]
 		);
-
 	}
 }
