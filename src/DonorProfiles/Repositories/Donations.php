@@ -216,6 +216,10 @@ class Donations {
 				continue;
 			}
 
+			if ( 'Subscription' === $section->id ) {
+				continue;
+			}
+
 			$receiptArr[ $sectionIndex ]['id'] = $section->id;
 
 			if ( $section->label ) {
