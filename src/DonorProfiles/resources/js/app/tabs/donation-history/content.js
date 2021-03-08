@@ -50,7 +50,7 @@ const Content = () => {
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
 					</Link>
-					{ getDonationById( id ).payment.pdfReceiptUrl.length && (
+					{ getDonationById( id ).payment.pdfReceiptUrl.length > 0 && (
 						<Button icon="file-pdf" href={ getDonationById( id ).payment.pdfReceiptUrl }>
 							{ __( 'Download Receipt', 'give' ) }
 						</Button>
