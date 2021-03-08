@@ -4,4 +4,5 @@ export const initialState = {
 	count: null,
 	revenue: null,
 	average: null,
+	error: null,
 };
