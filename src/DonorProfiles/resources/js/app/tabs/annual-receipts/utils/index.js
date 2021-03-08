@@ -18,5 +18,8 @@ export const fetchAnnualReceiptsFromAPI = () => {
 			const { receipts } = data;
 			dispatch( setAnnualReceipts( receipts ) );
 			dispatch( setQuerying( false ) );
+		} )
+		.catch( () => {
+			dispatch( setQuerying( false ) );
 		} );
 };

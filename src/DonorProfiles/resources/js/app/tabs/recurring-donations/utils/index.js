@@ -18,5 +18,9 @@ export const fetchSubscriptionsDataFromAPI = () => {
 			dispatch( setSubscriptions( data.subscriptions ) );
 			dispatch( setQuerying( false ) );
 			return data;
+		} )
+		.catch( () => {
+			dispatch( setQuerying( false ) );
+			return null;
 		} );
 };

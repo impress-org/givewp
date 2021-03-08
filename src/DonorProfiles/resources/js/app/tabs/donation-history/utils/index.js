@@ -22,6 +22,9 @@ export const fetchDonationsDataFromAPI = () => {
 				dispatch( setRevenue( data.revenue ) );
 				dispatch( setAverage( data.average ) );
 				dispatch( setQuerying( false ) );
+			} )
+			.catch( () => {
+				dispatch( setQuerying( false ) );
 			} );
 	}
 };
