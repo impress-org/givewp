@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+-   Donors now only ever see their own donation history (#5676)
+
 ## 2.10.0-beta.2 - 2021-03-05
 
 ### New
