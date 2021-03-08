@@ -30,13 +30,17 @@ class TrackingServiceProvider implements ServiceProvider {
 	 * @inheritdoc
 	 */
 	public function boot() {
-		if ( Track::isTrackingEnabled() ) {
+		$isTrackingEnabled = Track::isTrackingEnabled();
+
+		if ( $isTrackingEnabled ) {
 			Hooks::addAction( TrackJobScheduler::CRON_JOB_HOOK_NAME, TrackJob::class, 'send' );
 		}
 
 		if ( is_admin() ) {
-			$this->registerTrackEvents();
-			Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
+			if ( $isTrackingEnabled ) {
+				$this->registerTrackEvents();
+				Hooks::addAction( 'shutdown', TrackJobScheduler::class, 'schedule', 999 );
+			}
 
 			if ( Track::checkEnvironment() ) {
 				Hooks::addFilter( 'give_get_settings_advanced', AdminSettings::class, 'addSettings' );
