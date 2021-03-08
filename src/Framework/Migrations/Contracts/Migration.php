@@ -40,4 +40,27 @@ abstract class Migration {
 	public static function timestamp() {
 		throw new RuntimeException( 'This method must be overridden to return a valid unix timestamp' );
 	}
+
+	/**
+	 * Return migration title
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public static function title() {
+		return static::id();
+	}
+
+
+	/**
+	 * Return migration source
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public static function source() {
+		return esc_html__( 'GiveWP Core', 'give' );
+	}
 }

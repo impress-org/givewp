@@ -1,4 +1,7 @@
 <?php
+
+use Give\Framework\Database\DB;
+use Give\Log\ValueObjects\LogType;
 /**
  * Admin Actions
  *
@@ -526,21 +529,14 @@ function _give_register_admin_notices() {
 		current_user_can( 'manage_give_settings' ) &&
 		give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
 	) {
+		global $wpdb;
+
 		$current_time               = current_time( 'timestamp' );
 		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
 		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
 
-		$spam_count = Give()->log_db->count(
-			[
-				'log_type'   => 'spam',
-				'date_query' => [
-					[
-						'after'     => date( 'Y-m-d 00:00:00', $current_time ),
-						'before'    => date( 'Y-m-d 23:59:59', $current_time ),
-						'inclusive' => true,
-					],
-				],
-			]
+		$spam_count = DB::get_var(
+			DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND date >= CURDATE();", LogType::SPAM )
 		);
 
 		if ( $spam_count && ! Give_Admin_Settings::is_setting_page( 'logs', 'spam' ) ) {
@@ -943,7 +939,8 @@ function give_donor_information_profile_fields( $user ) {
 	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
 
 	// Display Donor Information, only if donor is attached with User.
-	if ( ! empty( $donor->user_id ) ) : ?>
+	if ( ! empty( $donor->user_id ) ) :
+		?>
 			<tr>
 				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
 				<td>
@@ -952,7 +949,8 @@ function give_donor_information_profile_fields( $user ) {
 					</a>
 				</td>
 			</tr>
-	<?php endif;
+		<?php
+	endif;
 }
 
 add_action( 'personal_options', 'give_donor_information_profile_fields' );
@@ -1561,12 +1559,6 @@ function give_akismet_deblacklist_spammed_email_handler( $get ) {
 		array_unshift( $emails, $email );
 
 		give_update_option( 'akismet_whitelisted_email_addresses', $emails );
-
-		// Remove log, metadata and cache.
-		if ( Give()->log_db->delete( $log ) ) {
-			Give()->logmeta_db->delete_all_meta( $log );
-			Give()->logs->delete_cache();
-		}
 
 		// Redirect to Akismet setting page.
 		wp_safe_redirect( 'wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=advanced&section=akismet-spam-protection&give-message=akismet-deblacklisted-email' );

@@ -65,6 +65,7 @@ jobs:
 
       - name: Install npm dependencies
         run: |
+          npm install -g npm@7
           npm ci
           sudo npm run build
           

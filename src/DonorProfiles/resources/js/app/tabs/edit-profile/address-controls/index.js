@@ -78,7 +78,7 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 	) : (
 		<div className="give-donor-profile__add-primary-address">
 			<Heading>
-				{ __( 'Looks like you have not setup an address!', 'give' ) }
+				{ __( 'Looks like you have not set up an address!', 'give' ) }
 			</Heading>
 			<Button onClick={ () => setPrimaryAddress( {} ) } icon="plus">
 				{ __( 'Add Address', 'give' ) }

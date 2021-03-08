@@ -4,7 +4,7 @@ use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
 
 final class DonationsTest extends Give_Unit_Test_Case {
     
-    public function testReceiptInfoConatinsDonationData() {
+    public function testReceiptInfoContainsDonationData() {
         $class = new ReflectionClass( DonationsRepository::class );
         $getReceiptInfo = $class->getMethod( 'getReceiptInfo' );
         $getReceiptInfo->setAccessible(true);
@@ -13,7 +13,7 @@ final class DonationsTest extends Give_Unit_Test_Case {
             Give_Helper_Payment::create_simple_payment()
         );
 
-        $receiptInfo = $getReceiptInfo->invokeArgs( new DonationsRepository, [ $payment ]);
+        $receiptInfo = $getReceiptInfo->invokeArgs( new DonationsRepository, [ $payment ] );
         $receiptInfo = json_encode( $receiptInfo );
 
         // Expected values provided by sample data.

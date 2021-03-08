@@ -75,18 +75,18 @@ const AuthModal = () => {
 		<div className="give-donor-profile__auth-modal">
 			<div className="give-donor-profile__auth-modal-frame">
 				<div className="give-donor-profile__auth-modal-heading">
-					{ __( 'Log in to your donor profile', 'give' ) }
+					{ __( 'Log in to see your donor dashboard', 'give' ) }
 				</div>
 				<div className="give-donor-profile__auth-modal-content">
 					{ loggedInWithoutDonor && (
 						<div className="give-donor-profile__auth-modal-notice">
-							{ __( 'The account you are logged in with does not have an associated donor profile. Consider donating or contacting the site administrator to get one setup.' ) }
+							{ __( 'The account you are currently logged into the site with does not have an associated donor profile. Donate now or contact the site administrator associate this WordPress user with a donor profile.' ) }
 						</div>
 					) }
 					{ emailAccessEnabled && (
 						<Fragment>
 							<div className="give-donor-profile__auth-modal-instruction">
-								{ __( 'Enter your email below and we\'ll send you a link to access your donor profile', 'give' ) }
+								{ __( 'Enter your email below and we\'ll send you a link to access your donor dashboard', 'give' ) }
 							</div>
 							<form className="give-donor-profile__auth-modal-form" onSubmit={ ( e ) => handleVerifyEmail( e ) }>
 								<TextControl icon="envelope" value={ email } onChange={ ( value ) => setEmail( value ) } />
@@ -114,14 +114,14 @@ const AuthModal = () => {
 								{ __( 'Already have an account?', 'give' ) } <br />
 							</Fragment>
 						) }
-						{ __( 'Login below to access your profile', 'give' ) }
+						{ __( 'Log in below to access your dashboard', 'give' ) }
 					</div>
 					<form className="give-donor-profile__auth-modal-form" onSubmit={ ( e ) => handleLogin( e ) }>
 						<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
 						<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
 						<div className="give-donor-profile__auth-modal-row">
 							<Button type="submit">
-								{ __( 'Login', 'give' ) }
+								{ __( 'Log in', 'give' ) }
 								<FontAwesomeIcon className={ loggingIn ? 'give-donor-profile__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
 							</Button>
 							{ loginError && (

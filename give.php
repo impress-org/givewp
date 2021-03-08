@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.9.7
+ * Version: 2.10.0-beta.2
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -51,8 +51,13 @@ use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\DonorProfiles\ServiceProvider as DonorProfilesServiceProvider;
+use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
+use Give\MigrationLog\MigrationLogServiceProvider;
+use Give\Log\LogServiceProvider;
 use Give\ServiceProviders\ServiceProvider;
+use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
+use Give\Tracking\TrackingServiceProvider;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -76,8 +81,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property-read Give_Admin_Settings             $give_settings
  * @property-read Give_HTML_Elements              $html
  * @property-read Give_Logging                    $logs
- * @property-read Give_DB_Logs                    $log_db
- * @property-read Give_DB_Log_Meta                $logmeta_db
  * @property-read Give_Notices                    $notices
  * @property-read Give_DB_Payment_Meta            $payment_meta
  * @property-read Give_Roles                      $roles
@@ -145,7 +148,12 @@ final class Give {
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
 		DonorProfilesServiceProvider::class,
+		TrackingServiceProvider::class,
 		TestDataServiceProvider::class,
+		MigrationLogServiceProvider::class,
+		LogServiceProvider::class,
+		FormLegacyConsumerServiceProvider::class,
+		ShimsServiceProvider::class,
 	];
 
 	/**
@@ -254,7 +262,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.9.7' );
+			define( 'GIVE_VERSION', '2.10.0' );
 		}
 
 		// Plugin Root File.

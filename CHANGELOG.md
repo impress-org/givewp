@@ -7,32 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
+## 2.10.0-beta.2 - 2021-03-05
+
+### New
+
+-   Donor Profile Verify Email now supports reCAPTCHA (#5661)
+
+### Changed
+
+-   Form Consumer now limit hooks and instantiated classes (#5670)
+-   Donor Profile receipt content now match receipt displayed during donation (#5666)
+
+### Fixed
+
+-   Legacy log migrations are not failing on fresh install now (#5672)
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+
+## 2.10.0-beta.1 - 2021-03-02
+
+### New
+
+-   Anonymous donation and company setting choices are now persisted (#5633)
+-   Admin are now shown Donor Profiles upgrade notice (#5660)
+-   Donor Profile page is now generated on new installs (#5600)
+-   Custom field values now display in payment details (#5647)
+-   Custom field values now show in Donation Receipt and Donation Confirmation (#5654)
+-   Fields API now supports custom field email tags (#5649)
+-   Add non-sensitive information tracker. (#5658)
+
+### Fixed
+
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+-   Reports endpoints no longer throw an error due to missing $schema property (#5642)
+-   Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
+
+### Changed
+
+-   Fields API throws an exception when inserting relative to a node that does not exist (#5640)
+-   Form Templates now support custom checkbox fields. (#5643)
+-   Custom fields now support arbitrary attributes (#5641)
+
+## 2.10.0-alpha.2 - 2021-02-25
+
+### New
+
+-   PDF Receipts are now available from Donation Receipt pages (#5613)
+-   Annual Receipts UI now connects to addon (#5611)
+-   Anonymous donation and company setting choices are now persisted (#5633)
+
+### Changed
+
+-   MigrationsRunnerTest unit test has been removed (#5653)
+-   Donor Profile UI is polished to align with original designs (#5648)
+
+## 2.10.0-alpha.1 - 2021-02-19
+
+### New
 -   Front-end donor profiles are scaffolded (#5441)
 -   Donor Profiles UI is implemented (#5444)
 -   Donation History and Dashboard tabs are now dynamically populated (#5455)
 -   Edit Profile UI is now implemented (#5463)
 -   Edit Profile tab now persists data (#5486)
--   PDF Receipts are now available from Donation Receipt pages (#5613)
--   Annual Receipts UI now connects to addon (#5611)
 -   Recurring Donations tab UI now connects to addon (#5584)
 -   Donor Profile authentication logic is now implemented (#5569)
 -   Admin can now set Donor Profile accent color (#5615)
--   Anonymous donation and company setting choices are now persisted (#5633)
--   Admin are now shown Donor Profiles upgrade notice (#5660)
--   Donor Profile page is now generated on new installs (#5600)
--   Donor Profile receipt content should match receipt displayed during donation (#5666)
--   Donor Profile Verify Email now supports reCAPTCHA (#5661)
+-   Migrations table (#5580)
+-   Legacy functions used for logging are now updated to use the new Logging API (#5614)
+-   The new Logs UI is implemented (#5591)
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
 ### Changed
 -   Donor Profile Donation History UI is now polished (#5566)
 -   Donor Profile edit UI now uses React Dropzone (#5563)
 -   Donor Profiles are now extensible (#5577)
--   Donor Profile UI is polished to align with original designs (#5648)
-
-### New
-
--   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
 ## 2.9.7 - 2021-02-09
 

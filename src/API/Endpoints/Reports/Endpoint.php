@@ -55,6 +55,11 @@ abstract class Endpoint implements RestRoute {
 	protected $currency;
 
 	/**
+	 * @var array
+	 */
+	protected $schema;
+
+	/**
 	 * @inheritDoc
 	 */
 	public function registerRoute() {

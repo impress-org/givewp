@@ -1,4 +1,8 @@
 <?php
+
+use Give\Log\Migrations\MigrateExistingLogs;
+use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
+
 /**
  * Install Function
  *
@@ -10,8 +14,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -157,6 +159,7 @@ function give_run_install() {
 			'v241_remove_sale_logs',
 			'v270_store_stripe_account_for_donation',
 			AddPastDonationsToRevenueTable::id(),
+			MigrateExistingLogs::id(),
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -398,6 +401,9 @@ function give_get_default_settings() {
 
 		// Onboarding
 		'setup_page_enabled'                          => 'enabled',
+
+		// Advanced settings
+		'usage_tracking'                              => 'disabled',
 	];
 
 	return $options;
@@ -521,8 +527,6 @@ function __give_get_tables() {
 		'comment_db'      => new Give_DB_Comments(),
 		'comment_db_meta' => new Give_DB_Comment_Meta(),
 		'give_session'    => new Give_DB_Sessions(),
-		'log_db'          => new Give_DB_Logs(),
-		'logmeta_db'      => new Give_DB_Log_Meta(),
 		'formmeta_db'     => new Give_DB_Form_Meta(),
 		'sequential_db'   => new Give_DB_Sequential_Ordering(),
 		'donation_meta'   => new Give_DB_Payment_Meta(),

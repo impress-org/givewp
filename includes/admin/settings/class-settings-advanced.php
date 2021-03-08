@@ -69,7 +69,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						],
 						[
 							'name'    => __( 'Default GiveWP Styles', 'give' ),
-							'desc'    => __( 'You can disable Give\'s default styles for donation forms and other frontend elements.', 'give' ),
+							'desc'    => __( 'This controls GiveWP\'s default styles for legacy donation forms and other front end elements. Disabling this option means that you\'ll need to supply your own styles.', 'give' ),
 							'id'      => 'css',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						],
 						[
 							'name'    => __( 'Default User Role', 'give' ),
-							'desc'    => __( 'Assign default user roles for donors when donors opt to register as a WP User.', 'give' ),
+							'desc'    => __( 'Users are given this user role when they opt into creating a WordPress/site account along with their donation.', 'give' ),
 							'id'      => 'donor_default_user_role',
 							'type'    => 'select',
 							'default' => 'give_donor',
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							/* translators: %s: the_content */
 							'name'    => sprintf( __( '%s filter', 'give' ), '<code>the_content</code>' ),
 							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
-							'desc'    => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
+							'desc'    => sprintf( __( 'This controls whether or not GiveWP legacy form content is treated like WordPress content. Disabling this option means that things like social sharing and other theme- or plugin-added functionality to enhance or append things to content will not be applied to GiveWP legacy form content. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'      => 'the_content_filter',
 							'default' => 'enabled',
 							'type'    => 'radio_inline',
@@ -123,7 +123,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						],
 						[
 							'name'    => __( 'Babel Polyfill Script', 'give' ),
-							'desc'    => __( 'Decide whether to load the Babel polyfill, which provides backwards compatibility for older browsers such as IE 11. The polyfill may be disabled to avoid conflicts with other themes or plugins that load the same script.', 'give' ),
+							'desc'    => __( 'This controls loading the Babel polyfill, which provides backwards compatibility for older browsers such as IE 11. The polyfill may be disabled to avoid conflicts with other themes or plugins that load the same script.', 'give' ),
 							'id'      => 'babel_polyfill_script',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -137,7 +137,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							/* translators: %s: about page URL */
 							'desc'          => sprintf(
 								wp_kses(
-									__( 'Disable this option if you would like to disable the <a href="%s" target="_blank">GiveWP Setup page</a> that displays when GiveWP is first installed.', 'give' ),
+									__( 'This option controls the display of the <a href="%s" target="_blank">GiveWP Setup page</a> when GiveWP is first installed.', 'give' ),
 									[
 										'a' => [
 											'href'   => [],
@@ -163,7 +163,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						[
 							'name'    => __( 'Form Page URL Prefix', 'give' ),
 							'desc'    => sprintf(
-								__( 'This slug will be used as a base for the iframe URL that contains all form templates besides the legacy form template. Currently the iframe URLs look like %1$s. This options adds a rewrite rule that transforms the URL structure to a set of query vars. If you modify this URL prefix please ensure it is unique as it can cause a 404 error if a similar URL already exists.', 'give' ),
+								__( 'This slug is used as a base for the (invisible to users/site visitors) iframe URL that contains all form templates besides the legacy form template. The URL currently looks like this: %1$s. This option allows you to modify that URL to avoid conflicts that might exist with other pages and URLs on the site.', 'give' ),
 								'<code>' . trailingslashit( home_url() ) . Give()->routeForm->getBase() . '/{form-slug}</code>'
 							),
 							'id'      => Give()->routeForm->getOptionName(),
@@ -171,10 +171,21 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'default' => Give()->routeForm->getBase(),
 						],
 						[
+							'name'    => __( 'Advanced Database Updates', 'give' ),
+							'desc'    => __( 'This option is only for advanced users and/or those directed by GiveWP support. Once you enable this, you\'ll have the ability to override the run order and to force re-running for database updates at Donations > Tools > Data. If you don\'t know what you are doing, you can easily break things with this option enabled. Do not leave this option enabled after you\'re done troubleshooting.', 'give' ),
+							'id'      => 'enable_database_updates',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => [
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							],
+						],
+						[
 							'name'        => 'GiveWP Cache',
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),
-							'desc'        => __( 'Click this button if you want to clear Give\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
+							'desc'        => __( 'Click this button if you want to clear GiveWP\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
 							'type'        => 'remove_cache_button',
 						],
 						[
@@ -221,7 +232,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'id'               => 'akismet_whitelisted_email_addresses',
 							'type'             => 'email',
 							'attributes'       => [
-								'placeholder' => 'jon@email.com',
+								'placeholder' => 'test@example.com',
 							],
 							'repeat'           => true,
 							'repeat_btn_title' => esc_html__( 'Add Email', 'give' ),

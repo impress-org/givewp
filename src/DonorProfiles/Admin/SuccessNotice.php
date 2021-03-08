@@ -12,7 +12,6 @@ class SuccessNotice {
 	 * @since 2.10.0
 	 */
 	public function register() {
-		error_log( 'register success notice!!' );
 		if ( $this->shouldRenderOutput() ) {
 			$this->renderOutput();
 		}
