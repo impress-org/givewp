@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-donation-receipt__table {
 	display: flex;
 	flex-direction: column;
@@ -12,6 +14,11 @@
 		align-items: flex-start;
 		justify-content: space-between;
 		padding: 20px;
+
+		@media screen and (max-width: 920px) {
+			align-items: center !important;
+			flex-direction: column;
+		}
 	}
 
 	.give-donor-profile-donation-receipt__detail {
