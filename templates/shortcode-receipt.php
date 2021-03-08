@@ -1,4 +1,4 @@
-p<?php
+<?php
 /**
  * This template is used to display the donation summary with [give_receipt]
  */
