@@ -6,7 +6,6 @@ use WP_REST_Request;
 use WP_REST_Response;
 use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
 use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
-use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 
 /**
  * @since 2.10.0
