@@ -8,25 +8,30 @@ use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
 use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
 
 /**
- * @since 2.10.0
+ * @unreleased
  */
 class DonationsRoute extends RouteAbstract {
 
-	/** @var string */
+	/**
+	 * @return string
+	 */
 	public function endpoint() {
 		return 'donations';
 	}
 
+	/**
+	 * @return array
+	 */
 	public function args() {
 		return [];
 	}
 
 	/**
-	 * @since 2.10.0
+	 * @unreleased
 	 *
 	 * @param  WP_REST_Request  $request
 	 *
-	 * @return array
+	 * @return WP_REST_Response
 	 *
 	 */
 	public function handleRequest( $request ) {
@@ -38,9 +43,12 @@ class DonationsRoute extends RouteAbstract {
 	}
 
 	/**
-	 * @since 2.10.0
-	 * @return array
+	 * @unreleased
 	 *
+	 * @param  DonationsRepository  $repository
+	 * @param $donorId
+	 *
+	 * @return WP_REST_Response
 	 */
 	protected function getData( DonationsRepository $repository, $donorId ) {
 		$donations = $repository->getDonations( $donorId );
@@ -70,7 +78,7 @@ class DonationsRoute extends RouteAbstract {
 				'status'        => 400,
 				'response'      => 'database_error',
 				'body_response' => [
-					'message' => __( 'An error occured while retrieving your donation records.', 'give' ),
+					'message' => esc_html__( 'An error occurred while retrieving your donation records.', 'give' ),
 				],
 			]
 		);
