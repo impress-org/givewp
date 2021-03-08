@@ -16,25 +16,22 @@ $setupUrl = add_query_arg(
 	<div class="give-donor-profile-upgrade-notice__copy">
 		<div class="give-donor-profile-upgrade-notice__row">
 			<div class="give-donor-profile-upgrade-notice__title">
-				Introducing the Donor Dashboard
+				<?php _e( 'Introducing the Donor Dashboard', 'give' ); ?>
 			</div>
 			<div class="give-donor-profile-upgrade-notice__badge">
-				<i class="fas fa-bell"></i> New in GiveWP 2.10.0
+				<i class="fas fa-bell"></i> <?php _e( 'New in GiveWP 2.10.0', 'give' ); ?>
 			</div>
 		</div>
 		<div class="give-donor-profile-upgrade-notice__body">
-			The Donor Dashboard provides your donors with a one-stop location to manage all their giving history, profile, and more! Ready to get started? In order to use the new Donor Dashboard, GiveWP needs to create a new page on your site.
+			<?php _e( 'The Donor Dashboard provides your donors with a one-stop location to manage all their giving history, profile, and more! Ready to get started? In order to use the new Donor Dashboard, GiveWP needs to create a new page on your site.', 'give' ); ?>
 		</div>
 		<div class="give-donor-profile-upgrade-notice__row">
 			<a class="give-donor-profile-upgrade-notice__button" href="<?php echo $setupUrl; ?>">
-				Create Donor Dashboard Page
+				<?php _e( 'Create Donor Dashboard Page', 'give' ); ?>
 			</a>
 			<div class="give-donor-profile-upgrade-notice__pill">
-				Want to know more? Learn more about the <a href="#">new Donor Dashboard <i class="fas fa-external-link-alt"></i></a>
+				<?php printf( __( 'Want to know more? Learn more about the <a href="%s">new Donor Dashboard <i class="fas fa-external-link-alt"></i></a>', 'give' ), '#' ); ?>
 			</div>
 		</div>
-	</div>
-	<div class="give-donor-profile-upgrade-notice__cta">
-	
 	</div>
 </div>
