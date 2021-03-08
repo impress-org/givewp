@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { store } from '../store';
 import { getAPIRoot, getAPINonce, isLoggedIn } from '../../../utils';
-import { setDonations, setQuerying, setCount, setRevenue, setAverage } from '../store/actions';
+import { setDonations, setQuerying, setError, setCount, setRevenue, setAverage } from '../store/actions';
 
 export const fetchDonationsDataFromAPI = () => {
 	const { dispatch } = store;
@@ -28,8 +28,7 @@ export const fetchDonationsDataFromAPI = () => {
 				}
 
 				if ( status === 400 ) {
-					// eslint-disable-next-line no-console
-					console.error( body_response[ 0 ].message );
+					dispatch( setError( body_response.message ) );
 				}
 
 				dispatch( setQuerying( false ) );

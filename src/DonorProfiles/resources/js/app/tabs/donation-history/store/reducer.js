@@ -12,6 +12,11 @@ export const reducer = ( state = initialState, action ) => {
 				...state,
 				querying: action.payload.querying,
 			};
+		case 'SET_ERROR':
+			return {
+				...state,
+				error: action.payload.error,
+			};
 		case 'SET_COUNT':
 			return {
 				...state,
