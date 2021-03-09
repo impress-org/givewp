@@ -2,8 +2,9 @@
 
 namespace Give\DonorProfiles;
 
-use Give\DonorProfiles\App;
+use _WP_Dependency;
 use Give\DonorProfiles\Admin\Settings;
+use WP_Query;
 
 /**
  * @since 2.10.0
