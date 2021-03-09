@@ -38,7 +38,7 @@ class RequestHandler {
 			exit;
 		}
 
-		if ( array_key_exists( 'give-embed', $query->query_vars ) && $query->query_vars['give-embed'] === 'donor-profile' ) {
+		if ( self::isRequestingDonorDashboard() ) {
 
 			$this->setUpFrontendHooks();
 
@@ -126,5 +126,15 @@ class RequestHandler {
 		}
 
 		return $list;
+	}
+
+	/**
+	 * @unreleased
+	 * @return bool
+	 */
+	public static function isRequestingDonorDashboard() {
+		$giveEmbedQueryVar = get_query_var( 'give-embed', '' );
+
+		return $giveEmbedQueryVar && $giveEmbedQueryVar === 'donor-profile';
 	}
 }
