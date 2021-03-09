@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const { __ } = wp.i18n;
 import { useState, Fragment } from 'react';
 import SubscriptionCancelModal from '../subscription-cancel-modal';
+import { useWindowSize } from '../../hooks';
 
 const SubscriptionRow = ( { subscription } ) => {
 	const { id, payment, form, gateway } = subscription;
+	const { width } = useWindowSize();
 
 	const [ cancelModalOpen, setCancelModalOpen ] = useState( false );
 
@@ -14,18 +16,22 @@ const SubscriptionRow = ( { subscription } ) => {
 			{ cancelModalOpen && <SubscriptionCancelModal id={ id } form={ form } onRequestClose={ () => setCancelModalOpen( false ) } /> }
 			<div className="give-donor-profile-table__row">
 				<div className="give-donor-profile-table__column">
+					{ width < 920 && <div className="give-donor-profile-table__mobile-header">{ __( 'Amount', 'give' ) }</div> }
 					<div className="give-donor-profile-table__donation-amount">{ payment.amount.formatted } / { payment.frequency }</div>
 					{ form.title }
 				</div>
 				<div className="give-donor-profile-table__column">
+					{ width < 920 && <div className="give-donor-profile-table__mobile-header">{ __( 'Status', 'give' ) }</div> }
 					<div className="give-donor-profile-table__donation-status">
 						{ payment.status.label }
 					</div>
 				</div>
 				<div className="give-donor-profile-table__column">
+					{ width < 920 && <div className="give-donor-profile-table__mobile-header">{ __( 'Next Renewal', 'give' ) }</div> }
 					{ payment.renewalDate }
 				</div>
 				<div className="give-donor-profile-table__column">
+					{ width < 920 && <div className="give-donor-profile-table__mobile-header">{ __( 'Progress', 'give' ) }</div> }
 					{ payment.progress }
 				</div>
 				<div className="give-donor-profile-table__pill">
