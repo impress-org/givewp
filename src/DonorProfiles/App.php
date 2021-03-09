@@ -105,6 +105,11 @@ class App {
 	 **@return void
 	 */
 	public function loadAssets() {
+		// Load assets only if rendering donor dashboard.
+		if ( ! isset( $_GET['give-embed'] ) || ! 'donor-profile' === $_GET['give-embed'] ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'give-donor-profiles-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/donor-profiles-app.js',
