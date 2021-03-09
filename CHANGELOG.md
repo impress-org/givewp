@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.10.0-beta.3 - 2021-03-09
+
 ### Changed
 -   Donor Dashboard UI is now more polished (#5686)
 
