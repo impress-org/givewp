@@ -24,22 +24,24 @@ import './style.scss';
 
 const donorDashboardContainer = document.getElementById( 'give-donor-profile' );
 
-if ( donorDashboardContainer ) {
-	window.giveDonorProfile = {
-		store,
-		utils: {
-			registerTab,
-		},
-	};
-
-	ReactDOM.render(
-		<Provider store={ store }>
-			<Router>
-				<App />
-			</Router>
-		</Provider>,
-		donorDashboardContainer
-	);
-
-	registerDefaultTabs();
+if ( ! donorDashboardContainer ) {
+	return;
 }
+
+window.giveDonorProfile = {
+	store,
+	utils: {
+		registerTab,
+	},
+};
+
+ReactDOM.render(
+	<Provider store={ store }>
+		<Router>
+			<App />
+		</Router>
+	</Provider>,
+	donorDashboardContainer
+);
+
+registerDefaultTabs();
