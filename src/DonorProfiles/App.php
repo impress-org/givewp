@@ -66,9 +66,12 @@ class App {
 	public function getIframeLoader( $accentColor ) {
 		ob_start();
 
+		$output = '';
 		require $this->getLoaderTemplatePath();
+		$output = ob_get_contents();
+		ob_end_clean();
 
-		return ob_get_clean();
+		return $output;
 	}
 
 	/**
@@ -79,9 +82,13 @@ class App {
 	 */
 	public function getIframeContent() {
 		ob_start();
-		require $this->getTemplatePath();
 
-		return ob_get_clean();
+		$output = '';
+		require $this->getTemplatePath();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		return $output;
 	}
 
 	/**
