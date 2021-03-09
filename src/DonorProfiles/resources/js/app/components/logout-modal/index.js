@@ -22,7 +22,7 @@ const LogoutModal = ( { onRequestClose } ) => {
 						<Button onClick={ () => handleLogout() }>
 							{ __( 'Yes, logout', 'give' ) }
 						</Button>
-						<a onClick={ () => onRequestClose() }>
+						<a className="give-donor-profile-logout-modal__cancel" onClick={ () => onRequestClose() }>
 							{ __( 'Nevermind', 'give' ) }
 						</a>
 					</div>

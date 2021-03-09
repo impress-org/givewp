@@ -41,6 +41,10 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
+			a.give-donor-profile-logout-modal__cancel {
+				cursor: pointer;
+			}
 		}
 	}
 
