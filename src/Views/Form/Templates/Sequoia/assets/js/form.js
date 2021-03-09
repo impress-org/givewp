@@ -617,7 +617,11 @@
 
 			// AJAX get the payment fields.
 			$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( postResponse ) {
-				$form.find( '#give_checkout_user_info' ).remove();
+				// Remove existing personal information field if response contains new fields.
+				if ( postResponse.fields.includes( 'give_checkout_user_info' ) ) {
+					$form.find( '#give_checkout_user_info' ).remove();
+				}
+
 				$form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( postResponse.fields ) );
 				$form.find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
 				$form.find( '.give-submit-button-wrap' ).show();
