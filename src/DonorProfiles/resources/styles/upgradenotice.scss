@@ -8,7 +8,7 @@
 	background: #fff;
 	width: calc(100% - 72px);
 	border: 1px solid #ccd0d4;
-	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
 	&.hidden {
 		display: none;
@@ -30,6 +30,7 @@
 			font-size: 26px;
 			color: #333;
 			margin-right: 36px;
+			line-height: 1.4;
 		}
 
 		.give-donor-profile-upgrade-notice__badge {
