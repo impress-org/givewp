@@ -22,12 +22,6 @@ import App from './components/app';
 
 import './style.scss';
 
-const donorDashboardContainer = document.getElementById( 'give-donor-profile' );
-
-if ( ! donorDashboardContainer ) {
-	return;
-}
-
 window.giveDonorProfile = {
 	store,
 	utils: {
@@ -41,7 +35,7 @@ ReactDOM.render(
 			<App />
 		</Router>
 	</Provider>,
-	donorDashboardContainer
+	document.getElementById( 'give-donor-profile' )
 );
 
 registerDefaultTabs();
