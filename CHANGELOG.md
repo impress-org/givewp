@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+-   Donor Dashboard UI is now more polished (#5686)
+
 ### Fixed
 -   Donors now only ever see their own donation history (#5676)
 -   Usage tracking job scheduler should not reduce performance (#5678)
