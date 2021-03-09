@@ -36,7 +36,7 @@ class App {
 			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
 		}
 
-		$loader = $this->getIframeLoader();
+		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
 		return sprintf(
 			'<div style="position: relative; max-width: 100%%;"><iframe
@@ -59,9 +59,11 @@ class App {
 	 *
 	 * @since 2.10.0
 	 *
+	 * @param  string  $accentColor
+	 *
 	 * @return string
 	 */
-	public function getIframeLoader() {
+	public function getIframeLoader( $accentColor ) {
 		ob_start();
 
 		require $this->getLoaderTemplatePath();
