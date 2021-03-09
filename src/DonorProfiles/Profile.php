@@ -80,7 +80,7 @@ class Profile {
 			'firstName'         => $this->donor->get_first_name(),
 			'lastName'          => $this->donor->get_last_name(),
 			'emails'            => $this->donor->emails,
-			'sinceLastDonation' => ! empty( $this->donor->get_last_donation_date( true ) ) ? human_time_diff( strtotime( $this->donor->get_last_donation_date( true ) ) ) : '',
+			'sinceLastDonation' => ! empty( $this->donor->get_last_donation_date() ) ? human_time_diff( strtotime( $this->donor->get_last_donation_date() ) ) : '',
 			'avatarUrl'         => $this->getAvatarUrl(),
 			'avatarId'          => $this->getAvatarId(),
 			'sinceCreated'      => human_time_diff( strtotime( $this->donor->date_created ) ),
