@@ -437,13 +437,13 @@
 				}
 			} );
 		} );
-
-		// Refresh payment information section.
-		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 	} else {
 		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
 		setupSelectInputs();
 	}
+
+	// Refresh personal information section.
+	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
 
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
@@ -593,14 +593,14 @@
 	}
 
 	/**
-	 * Refresh payment information section
+	 * Refresh personal information section
 	 *
 	 * @since 2.7.0
 	 * @param {boolean} ev Event object
 	 * @param {object} response Response object
 	 * @param {number} formID Form ID
 	 */
-	function refreshPaymentInformationSection( ev, response, formID ) {
+	function refreshPersonalInformationSection( ev, response, formID ) {
 		if ( navigator.currentStep === 2 ) {
 			$( '.give-form-templates' ).css( 'min-height', '' );
 		}
@@ -617,6 +617,7 @@
 
 			// AJAX get the payment fields.
 			$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( postResponse ) {
+				$form.find( '#give_checkout_user_info' ).remove();
 				$form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( postResponse.fields ) );
 				$form.find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
 				$form.find( '.give-submit-button-wrap' ).show();
