@@ -43,7 +43,7 @@ const Content = () => {
 		) : (
 			<Fragment>
 				<Heading>
-					{ __( 'Receipt', 'give' ) } { getDonationById( id ).payment.serialCode }
+					{ __( 'Donation Receipt', 'give' ) } #{ getDonationById( id ).payment.serialCode }
 				</Heading>
 				<DonationReceipt donation={ getDonationById( id ) } />
 				<div className="give-donor-profile__donation-history-footer">
