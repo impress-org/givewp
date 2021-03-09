@@ -2,20 +2,32 @@
 
 namespace Give\DonorProfiles;
 
-use Give\DonorProfiles\Profile;
-use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 use Give\DonorProfiles\Helpers\LocationList;
-use Give\Views\IframeContentView;
 
+/**
+ * Class App
+ * @package Give\DonorProfiles
+ *
+ * @unreleased
+ */
 class App {
-
+	/**
+	 * @var Profile
+	 */
 	protected $profile;
 
+	/**
+	 * App constructor.
+	 */
 	public function __construct() {
-		$id            = DonorProfileHelpers::getCurrentDonorId();
-		$this->profile = new Profile( $id );
+		$this->profile = new Profile();
 	}
 
+	/**
+	 * @param array $attributes
+	 *
+	 * @return string
+	 */
 	public function getOutput( $attributes ) {
 
 		$url = get_site_url() . '/?give-embed=donor-profile';
@@ -26,7 +38,7 @@ class App {
 
 		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
-		$iframe = sprintf(
+		return sprintf(
 			'<div style="position: relative; max-width: 100%%;"><iframe
 				name="give-embed-donor-profile"
 				%1$s
@@ -40,40 +52,37 @@ class App {
 			'',
 			$loader
 		);
-
-		return $iframe;
 	}
 
 	/**
 	 * Get output markup for Donor Profile app
 	 *
 	 * @since 2.10.0
-	 **@return string
+	 *
+	 * @param  string  $accentColor
+	 *
+	 * @return string
 	 */
 	public function getIframeLoader( $accentColor ) {
 		ob_start();
-		$output = '';
-		require $this->getLoaderTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
 
-		return $output;
+		require $this->getLoaderTemplatePath();
+
+		return ob_get_clean();
 	}
 
 	/**
 	 * Get output markup for Donor Profile app
 	 *
 	 * @since 2.10.0
-	 **@return string
+	 * @return string
 	 */
 	public function getIframeContent() {
 		ob_start();
-		$output = '';
-		require $this->getTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
 
-		return $output;
+		require $this->getTemplatePath();
+
+		return ob_get_clean();
 	}
 
 	/**
@@ -99,6 +108,11 @@ class App {
 	 **@return void
 	 */
 	public function loadAssets() {
+		// Load assets only if rendering donor dashboard.
+		if ( ! isset( $_GET['give-embed'] ) || 'donor-profile' !== $_GET['give-embed'] ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'give-donor-profiles-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/donor-profiles-app.js',

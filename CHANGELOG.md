@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Fixed
+
 -   Donors now only ever see their own donation history (#5676)
 -   Usage tracking job scheduler should not reduce performance (#5678)
+-   Render donor dashboard react app only if container exist (#5684)
 
 ## 2.10.0-beta.2 - 2021-03-05
 
