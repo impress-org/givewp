@@ -245,7 +245,7 @@ class Donations {
 
 				$receiptArr[ $sectionIndex ]['lineItems'][] = [
 					'class' => $detailRowClass,
-					'icon'  => '', // Todo: get FontAwesome icon name from stored HTML string $lineItem->icon,
+					'icon'  => $this->getIcon( $lineItem->icon ),
 					'label' => html_entity_decode( wp_strip_all_tags( $lineItem->label ) ),
 					'value' => html_entity_decode( wp_strip_all_tags( $lineItem->value ) ),
 				];
@@ -256,6 +256,35 @@ class Donations {
 		}
 
 		return $receiptArr;
+	}
+
+	/**
+	 * Get icon based on icon HTML string
+	 *
+	 * @param string $iconHtml
+	 * @return string
+	 * @since 2.10.0
+	 */
+	protected function getIcon( $iconHtml ) {
+
+		if ( empty( $iconHtml ) ) {
+			return '';
+		}
+
+		$iconMap = [
+			'user',
+			'envelope',
+			'globe',
+			'calendar',
+			'building',
+		];
+
+		foreach ( $iconMap as $icon ) {
+			if ( strpos( $iconHtml, $icon ) !== false ) {
+				return $icon;
+			}
+		}
+
 	}
 
 	/**
