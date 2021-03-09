@@ -22,20 +22,24 @@ import App from './components/app';
 
 import './style.scss';
 
-window.giveDonorProfile = {
-	store,
-	utils: {
-		registerTab,
-	},
-};
+const donorDashboardContainer = document.getElementById( 'give-donor-profile' );
 
-ReactDOM.render(
-	<Provider store={ store }>
-		<Router>
-			<App />
-		</Router>
-	</Provider>,
-	document.getElementById( 'give-donor-profile' )
-);
+if ( donorDashboardContainer ) {
+	window.giveDonorProfile = {
+		store,
+		utils: {
+			registerTab,
+		},
+	};
 
-registerDefaultTabs();
+	ReactDOM.render(
+		<Provider store={ store }>
+			<Router>
+				<App />
+			</Router>
+		</Provider>,
+		donorDashboardContainer
+	);
+
+	registerDefaultTabs();
+}
