@@ -22,6 +22,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				if ( e.target.classList.contains( 'notice-dismiss' ) ) {
 					window.localStorage.setItem( storageId, Date.now() );
 				}
+
+				if ( e.target.classList.contains( 'give-donor-profile-upgrade-notice__dismiss-link' ) ) {
+					notice.classList.add( 'hidden' );
+					window.localStorage.setItem( storageId, Date.now() );
+				}
 			} );
 		}
 	} );

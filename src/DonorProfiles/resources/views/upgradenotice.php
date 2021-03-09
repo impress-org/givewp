@@ -33,5 +33,8 @@ $setupUrl = add_query_arg(
 				<?php printf( __( 'Want to know more? Learn more about the <a href="%s" target="_blank">new Donor Dashboard <i class="fas fa-external-link-alt"></i></a>', 'give' ), 'http://docs.givewp.com/donor-dashboard' ); ?>
 			</div>
 		</div>
+		<a class="give-donor-profile-upgrade-notice__dismiss-link">
+			<?php _e( 'I\'ll setup Donor Dashboards later', 'give' ); ?>
+		</a>
 	</div>
 </div>
