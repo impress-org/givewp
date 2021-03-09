@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-table {
 	background: #fff;
 	border: 1px solid #e2e6ec;
@@ -10,12 +12,29 @@
 	.give-donor-profile-table__column {
 		flex: 1;
 		padding: 14px;
+
+		@media screen and (max-width: 920px) {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 4px 12px;
+		}
 	}
 
 	.give-donor-profile-table__header {
 		background: #fbfbfb;
 		display: flex;
 		align-items: center;
+		text-transform: uppercase;
+		font-size: 12px;
+
+		@media screen and (max-width: 920px) {
+			display: none;
+		}
+	}
+
+	.give-donor-profile-table__mobile-header {
+		color: #555;
 		text-transform: uppercase;
 		font-size: 12px;
 	}
@@ -27,6 +46,13 @@
 			display: flex;
 			border-top: 1px solid #e2e6ec;
 			flex-wrap: wrap;
+			line-height: 1.6;
+
+			@media screen and (max-width: 920px) {
+				display: flex;
+				flex-direction: column;
+				padding-top: 12px;
+			}
 		}
 
 		.give-donor-profile-table__pill {
@@ -38,6 +64,13 @@
 			width: 100%;
 			border: 1px solid #e2e6ec;
 			justify-content: space-between;
+
+			@media screen and (max-width: 920px) {
+				border-radius: 8px;
+				margin: 12px;
+				padding: 12px;
+				width: calc(100% - 48px);
+			}
 		}
 	}
 

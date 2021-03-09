@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-field-row {
 	display: flex;
 	align-items: center;
@@ -14,5 +16,14 @@
 
 	> *:last-child {
 		margin-right: 0;
+	}
+
+	@media screen and (max-width: 920px) {
+		flex-direction: column;
+		align-items: stretch;
+
+		> * {
+			margin: 0;
+		}
 	}
 }

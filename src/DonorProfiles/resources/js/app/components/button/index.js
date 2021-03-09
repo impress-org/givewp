@@ -9,13 +9,13 @@ const Button = ( { icon, children, onClick, href, type } ) => {
 
 	if ( href ) {
 		return (
-			<a className="give-donor-profile-button give-donor-profile-button--primary" onClick={ ( e ) => handleHrefClick( e ) } href={ href }>
+			<a className="give-donor-profile-button give-donor-profile-button--primary" onClick={ onClick ? ( e ) => handleHrefClick( e ) : null } href={ href }>
 				{ children }{ icon && ( <FontAwesomeIcon icon={ icon } /> ) }
 			</a>
 		);
 	}
 	return (
-		<button className="give-donor-profile-button give-donor-profile-button--primary" onClick={ () => onClick() } type={ type }>
+		<button className="give-donor-profile-button give-donor-profile-button--primary" onClick={ onClick ? () => onClick() : null } type={ type }>
 			{ children }{ icon && ( <FontAwesomeIcon icon={ icon } /> ) }
 		</button>
 	);

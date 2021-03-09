@@ -32,6 +32,11 @@ export const reducer = ( state = initialState, action ) => {
 				...state,
 				revenue: action.payload.revenue,
 			};
+		case 'SET_CURRENCY':
+			return {
+				...state,
+				currency: action.payload.currency,
+			};
 		default:
 			return state;
 	}

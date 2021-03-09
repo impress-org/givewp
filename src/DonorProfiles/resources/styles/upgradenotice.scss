@@ -1,26 +1,17 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-upgrade-notice {
-	padding: 20px;
-	padding-right: 20px !important;
+	padding: 26px 36px;
+	padding-right: 36px !important;
 	display: flex;
 	align-items: center;
 	background: #fff;
-	width: calc(100% - 40px);
+	width: calc(100% - 72px);
 	border: 1px solid #ccd0d4;
-	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
 	&.hidden {
 		display: none;
-	}
-
-	.give-donor-profile-upgrade-notice__graphic {
-		width: 225px;
-		height: 180px;
-		background: rgb(200, 200, 200);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-right: 20px;
-		border-radius: 8px;
 	}
 
 	.give-donor-profile-upgrade-notice__copy {
@@ -28,49 +19,80 @@
 		flex-direction: column;
 		align-items: flex-start;
 		flex: 1;
+		max-width: 840px;
 
-		.give-donor-profile-upgrade-notice__subtitle {
-			font-size: 16px;
-			margin: 6px 0 12px 0;
+		.give-donor-profile-upgrade-notice__row {
+			display: flex;
+			align-items: center;
 		}
 
 		.give-donor-profile-upgrade-notice__title {
-			font-size: 36px;
-			margin: 6px 0 20px 0;
+			font-size: 26px;
+			color: #333;
+			margin-right: 36px;
+			line-height: 1.4;
+		}
+
+		.give-donor-profile-upgrade-notice__badge {
+			font-size: 16px;
+			color: #555;
+			font-weight: 500;
+			padding: 8px 16px;
+			border-radius: 40px;
+			overflow: hidden;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+			i {
+				margin-right: 4px;
+				color: #ffc700;
+			}
 		}
 
 		.give-donor-profile-upgrade-notice__body {
-			font-size: 16px;
-			margin: 6px 0 20px 0;
+			font-size: 18px;
+			color: #333;
+			line-height: 1.4;
+			margin: 20px 0;
 		}
 
-		a {
-			font-size: 12px;
-			font-style: italic;
-			text-decoration: underline;
-		}
-	}
+		.give-donor-profile-upgrade-notice__pill {
+			padding: 12px 24px;
+			background: #f8f8f8;
+			font-size: 15px;
+			color: #424242;
+			margin-left: 36px;
+			border-radius: 40px;
+			overflow: hidden;
 
-	.give-donor-profile-upgrade-notice__cta {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+			a {
+				text-decoration: underline;
+				color: #0073aa;
+			}
 
-		a {
-			font-size: 14px;
-			font-style: italic;
-			text-decoration: underline;
+			i {
+				margin-left: 4px;
+				color: #0073aa;
+			}
 		}
 
 		a.give-donor-profile-upgrade-notice__button {
 			font-size: 16px;
+			font-weight: 500;
 			font-style: normal;
 			text-decoration: none;
 			padding: 16px 28px;
 			margin: 16px 0;
 			border-radius: 4px;
-			background: #0073aa;
+			background: #0878b0;
 			color: #fff;
+		}
+
+		.give-donor-profile-upgrade-notice__dismiss-link {
+			padding: 12px 0;
+			font-size: 15px;
+			color: #878787;
+			text-decoration: underline;
+			font-style: italic;
 		}
 	}
 }
