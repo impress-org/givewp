@@ -115,7 +115,7 @@ class App {
 	 */
 	public function loadAssets() {
 		// Load assets only if rendering donor dashboard.
-		if ( ! RequestHandler::isRequestingDonorDashboard() ) {
+		if ( ! isset( $_GET['give-embed'] ) || ! 'donor-profile' === $_GET['give-embed'] ) {
 			return;
 		}
 
