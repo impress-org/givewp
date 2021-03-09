@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import './style.scss';
+
 const DashboardContent = () => {
 	const tabsSelector = useSelector( state => state.tabs );
 	const [ tabs, setTabs ] = useState( [] );
