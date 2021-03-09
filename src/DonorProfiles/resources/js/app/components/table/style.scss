@@ -14,6 +14,9 @@
 		padding: 14px;
 
 		@media screen and (max-width: 920px) {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 			padding: 4px 12px;
 		}
 	}
@@ -28,6 +31,12 @@
 		@media screen and (max-width: 920px) {
 			display: none;
 		}
+	}
+
+	.give-donor-profile-table__mobile-header {
+		color: #555;
+		text-transform: uppercase;
+		font-size: 12px;
 	}
 
 	.give-donor-profile-table__rows {
@@ -57,7 +66,6 @@
 			justify-content: space-between;
 
 			@media screen and (max-width: 920px) {
-				flex-direction: column;
 				border-radius: 8px;
 				margin: 12px;
 				padding: 12px;
