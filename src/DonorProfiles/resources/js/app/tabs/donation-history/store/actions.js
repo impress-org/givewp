@@ -16,6 +16,15 @@ export const setQuerying = ( querying ) => {
 	};
 };
 
+export const setError = ( error ) => {
+	return {
+		type: 'SET_ERROR',
+		payload: {
+			error,
+		},
+	};
+};
+
 export const setCount = ( count ) => {
 	return {
 		type: 'SET_COUNT',

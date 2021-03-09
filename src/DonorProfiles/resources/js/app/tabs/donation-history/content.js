@@ -16,6 +16,7 @@ import './style.scss';
 const Content = () => {
 	const donations = useSelector( ( state ) => state.donations );
 	const querying = useSelector( ( state ) => state.querying );
+	const error = useSelector( ( state ) => state.error );
 
 	const location = useLocation();
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
@@ -27,6 +28,19 @@ const Content = () => {
 		}
 		return null;
 	};
+
+	if ( error ) {
+		return (
+			<Fragment>
+				<Heading icon="exclamation-triangle">
+					{ __( 'Error', 'give' ) }
+				</Heading>
+				<p style={ { color: '#6b6b6b' } }>
+					{ error }
+				</p>
+			</Fragment>
+		);
+	}
 
 	if ( id ) {
 		return querying ? (
@@ -60,7 +74,7 @@ const Content = () => {
 		);
 	}
 
-	return querying === true ? (
+	return querying ? (
 		<Fragment>
 			<Heading>
 				{ __( 'Loading...', 'give' ) }
