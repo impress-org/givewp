@@ -22,6 +22,7 @@ const Content = () => {
 	const id = useSelector( state => state.id );
 	const storedProfile = useSelector( state => state.profile );
 	const [ isUpdating, setIsUpdating ] = useState( false );
+	const [ updated, setUpdated ] = useState( false );
 
 	useEffect( () => {
 		setAvatarFile( null );
@@ -84,6 +85,21 @@ const Content = () => {
 		},
 	];
 
+	useEffect( () => {
+		setUpdated( false );
+	}, [
+		titlePrefix,
+		firstName,
+		lastName,
+		company,
+		primaryEmail,
+		additionalEmails,
+		primaryAddress,
+		additionalAddresses,
+		avatarFile,
+		isAnonymous,
+	] );
+
 	const handleUpdate = async() => {
 		setIsUpdating( true );
 		await updateProfileWithAPI( {
@@ -99,6 +115,7 @@ const Content = () => {
 			isAnonymous,
 			id,
 		} );
+		setUpdated( true );
 		setIsUpdating( false );
 	};
 
@@ -164,8 +181,15 @@ const Content = () => {
 				value={ isAnonymous }
 			/>
 			<Button onClick={ () => handleUpdate() }>
-				{ __( 'Update Profile', 'give' ) }
-				<FontAwesomeIcon className={ isUpdating ? 'give-donor-profile__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
+				{ updated ? (
+					<Fragment>
+						{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />
+					</Fragment>
+				) : (
+					<Fragment>
+						{ __( 'Update Profile', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-profile__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
+					</Fragment>
+				) }
 			</Button>
 		</Fragment>
 	);
