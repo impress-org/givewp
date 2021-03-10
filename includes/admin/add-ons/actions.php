@@ -624,6 +624,7 @@ add_action( 'after_plugin_row', 'give_show_update_notification_on_multisite', 10
  * @param $plugin
  *
  * @since 2.5.0
+ * @unreleased update condition to verify givewp addons
  */
 function give_show_update_notification_on_single_site( $file, $plugin ) {
 	if ( ! current_user_can( 'update_plugins' ) || is_multisite() ) {
