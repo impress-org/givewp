@@ -130,7 +130,7 @@
 			navigator.goToStep( getInitialStep() );
 
 			// Fields API: Run setup for custom checkbox fields.
-			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"' );
+			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
 			Array.from( customCheckboxes ).forEach( ( el ) => {
 				const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
 				setupCheckbox( {
