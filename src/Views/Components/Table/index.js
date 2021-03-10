@@ -166,7 +166,7 @@ Table.defaultProps = {
 	title: null,
 	columns: [],
 	data: [],
-	columnFilters: [],
+	columnFilters: {},
 	stripped: true,
 	isLoading: false,
 };
