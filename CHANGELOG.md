@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Remove login form after a successful login in donation form with multi step form template (#5683)
+
 ## 2.10.0-beta.3 - 2021-03-09
 
 ### Changed
