@@ -596,6 +596,7 @@
 	 * Refresh personal information section
 	 *
 	 * @since 2.7.0
+	 * @unreleased Rename function
 	 * @param {boolean} ev Event object
 	 * @param {object} response Response object
 	 * @param {number} formID Form ID
