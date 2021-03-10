@@ -76,8 +76,8 @@ class Donations {
 	protected function getDonationIDs( $donorId ) {
 		global $wpdb;
 
-		$result = $wpdb->get_results(
-			$wpdb->prepare(
+		$result = DB::get_results(
+			DB::prepare(
 				"
                 SELECT 
                     donation_id as id

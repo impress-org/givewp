@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Remove login form after a successful login in donation form with multi step form template (#5683)
+-   Donors with no donations now see a "No Donations" notice in Donor Dashboard (#5694)
+-   Donor Dashboard iframe now resizes when the parent window resizes (#5693)
 
 ## 2.10.0-beta.3 - 2021-03-09
 
