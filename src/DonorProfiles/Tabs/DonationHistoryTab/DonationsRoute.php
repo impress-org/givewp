@@ -34,7 +34,7 @@ class DonationsRoute extends RouteAbstract {
 	 * @return WP_REST_Response
 	 *
 	 */
-	public function handleRequest( $request ) {
+	public function handleRequest( WP_REST_Request $request ) {
 		$donorId = give()->donorProfile->getId();
 
 		$repository = new DonationsRepository();
@@ -51,16 +51,16 @@ class DonationsRoute extends RouteAbstract {
 	 * @return WP_REST_Response
 	 */
 	protected function getData( DonationsRepository $repository, $donorId ) {
-		$donations = $repository->getDonations( $donorId );
-		$count     = $repository->getDonationCount( $donorId );
-		$revenue   = $repository->getRevenue( $donorId );
-		$average   = $repository->getAverageRevenue( $donorId );
-		$currency  = [
-			'symbol'   => give_currency_symbol( give_get_currency(), true ),
-			'position' => give_get_currency_position(),
-		];
+		try {
+			$donations = $repository->getDonations( $donorId );
+			$count     = $repository->getDonationCount( $donorId );
+			$revenue   = $repository->getRevenue( $donorId );
+			$average   = $repository->getAverageRevenue( $donorId );
+			$currency  = [
+				'symbol'   => give_currency_symbol( give_get_currency(), true ),
+				'position' => give_get_currency_position(),
+			];
 
-		if ( $donations && $count && $revenue && $average ) {
 			return new WP_REST_Response(
 				[
 					'status'        => 200,
@@ -76,16 +76,17 @@ class DonationsRoute extends RouteAbstract {
 					],
 				]
 			);
+		} catch ( \Exception $e ) {
+			return new WP_REST_Response(
+				[
+					'status'        => 400,
+					'response'      => 'database_error',
+					'body_response' => [
+						'message' => esc_html__( 'An error occurred while retrieving your donation records.', 'give' ),
+						'details' => $e->getMessage(),
+					],
+				]
+			);
 		}
-
-		return new WP_REST_Response(
-			[
-				'status'        => 400,
-				'response'      => 'database_error',
-				'body_response' => [
-					'message' => esc_html__( 'An error occurred while retrieving your donation records.', 'give' ),
-				],
-			]
-		);
 	}
 }
