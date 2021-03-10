@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Prevent PHP notices on plugin listing page (#5692)
+
 ## 2.10.0-beta.3 - 2021-03-09
 
 ### Changed
