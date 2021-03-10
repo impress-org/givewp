@@ -55,6 +55,10 @@ class DonationsRoute extends RouteAbstract {
 		$count     = $repository->getDonationCount( $donorId );
 		$revenue   = $repository->getRevenue( $donorId );
 		$average   = $repository->getAverageRevenue( $donorId );
+		$currency  = [
+			'symbol'   => give_currency_symbol( give_get_currency(), true ),
+			'position' => give_get_currency_position(),
+		];
 
 		if ( $donations && $count && $revenue && $average ) {
 			return new WP_REST_Response(
@@ -67,6 +71,7 @@ class DonationsRoute extends RouteAbstract {
 							'count'     => $count,
 							'revenue'   => $revenue,
 							'average'   => $average,
+							'currency'  => $currency,
 						],
 					],
 				]

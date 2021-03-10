@@ -22,7 +22,7 @@ const SubscriptionCancelModal = ( { id, onRequestClose } ) => {
 						<Button onClick={ () => handleCancel() }>
 							{ __( 'Yes, cancel', 'give' ) }
 						</Button>
-						<a onClick={ () => onRequestClose() }>
+						<a className="give-donor-profile-cancel-modal__cancel" onClick={ () => onRequestClose() }>
 							{ __( 'Nevermind', 'give' ) }
 						</a>
 					</div>

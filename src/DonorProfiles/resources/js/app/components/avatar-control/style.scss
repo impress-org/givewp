@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-avatar-control {
 	display: flex;
 	flex-direction: column;
@@ -19,6 +21,12 @@
 			overflow: hidden;
 			margin-right: 16px;
 
+			@media screen and (max-width: 920px) {
+				height: 60px;
+				width: 60px;
+				margin-right: 12px;
+			}
+
 			img {
 				object-fit: cover;
 				width: 100%;
@@ -33,6 +41,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			padding: 8px;
 
 			transition: background 0.2s ease;
 

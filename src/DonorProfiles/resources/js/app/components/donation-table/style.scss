@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-table__footer-nav {
 	a {
 		border: none;
@@ -15,12 +17,14 @@
 }
 
 .give-donor-profile-table__row {
-	line-height: 1.6;
-
 	.give-donor-profile-table__donation-amount {
 		font-size: 18px;
 		color: #424242;
 		font-weight: 500;
+
+		@media screen and (max-width: 920px) {
+			font-size: 24px;
+		}
 	}
 
 	.give-donor-profile-table__donation-status {
@@ -56,5 +60,6 @@
 		color: var(--give-donor-profile-accent-color);
 		text-decoration: none;
 		border: none;
+		cursor: pointer;
 	}
 }

@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-heading {
 	color: #555 !important;
 	font-size: 16px;
@@ -7,5 +9,18 @@
 
 	svg {
 		margin-right: 8px;
+	}
+
+	.give-donor-profile-heading__spinner {
+		animation: spin infinite 1s linear;
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
 	}
 }

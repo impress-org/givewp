@@ -6,7 +6,7 @@ const AnnualReceiptRow = ( { annualReceipt } ) => {
 
 	const handleHrefClick = ( e ) => {
 		e.preventDefault();
-		window.parent.location = e.target.href;
+		window.parent.open( e.target.href, '_blank' );
 	};
 
 	return (

@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 .give-donor-profile-dashboard__stats {
 	display: grid;
 	background: #fbfbfb;
@@ -5,6 +7,10 @@
 	padding: 20px 28px;
 	grid-gap: 24px;
 	grid-template-columns: repeat(3, 1fr);
+
+	@media screen and (max-width: 920px) {
+		grid-template-columns: 1fr;
+	}
 
 	.give-donor-profile-dashboard__stat {
 		background: #fff;
