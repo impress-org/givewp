@@ -407,13 +407,18 @@
 	// Check if only a single gateway is enabled
 	if ( $paymentGatewayContainer.length && $paymentGatewayContainer.css( 'display' ) !== 'none' ) {
 		// Move payment information section when document load.
-		moveFieldsUnderPaymentGateway( true );
+		moveFieldsUnderPaymentGateway();
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
 			setTimeout( setupTabOrder, 200 );
-			moveFieldsUnderPaymentGateway( true );
+
+			moveFieldsUnderPaymentGateway();
+			setupRegistrationFormInputFields();
+			setupFFMInputs();
+			setupInputIcons();
 			setupSelectInputs();
+
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
 				gatewayAnimating = false;
 			} );
@@ -439,11 +444,16 @@
 		} );
 	} else {
 		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
-		setupSelectInputs();
 	}
 
 	// Refresh personal information section.
 	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
+
+	// Setup fields.
+	setupSelectInputs();
+	setupRegistrationFormInputFields();
+	setupFFMInputs();
+	setupInputIcons();
 
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
@@ -586,10 +596,6 @@
 		// Add gateway class to fields wrapper, indicating which gateway is active
 		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
 		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
-
-		setupRegistrationFormInputFields();
-		setupFFMInputs();
-		setupInputIcons();
 	}
 
 	/**
