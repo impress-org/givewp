@@ -80,7 +80,7 @@ const AuthModal = () => {
 				<div className="give-donor-profile__auth-modal-content">
 					{ loggedInWithoutDonor && (
 						<div className="give-donor-profile__auth-modal-notice">
-							{ __( 'The account you are currently logged into the site with does not have an associated donor profile. Donate now or contact the site administrator associate this WordPress user with a donor profile.' ) }
+							{ __( 'The account you are currently logged into the site with does not have an associated donor profile. Donate now or contact the site administrator to associate this WordPress user with a donor profile.' ) }
 						</div>
 					) }
 					{ emailAccessEnabled && (
