@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-dashboard__stats {
+.give-donor-dashboard-dashboard__stats {
 	display: grid;
 	background: #fbfbfb;
 	border: 0.908065px solid #e2e6ec;
@@ -12,7 +12,7 @@
 		grid-template-columns: 1fr;
 	}
 
-	.give-donor-profile-dashboard__stat {
+	.give-donor-dashboard-dashboard__stat {
 		background: #fff;
 		border: 0.920968px solid #e2e6ec;
 		border-radius: 5.5px;
@@ -23,7 +23,7 @@
 		padding: 22px 16px;
 	}
 
-	.give-donor-profile-dashboard__figure {
+	.give-donor-dashboard-dashboard__figure {
 		color: #68bb6c;
 		font-size: 34px;
 		text-align: center;
@@ -32,13 +32,13 @@
 		line-height: 1;
 		margin-bottom: 8px;
 
-		.give-donor-profile-dashboard__figure-currency {
+		.give-donor-dashboard-dashboard__figure-currency {
 			font-size: 16px;
 			padding: 4px 2px 0 0;
 		}
 	}
 
-	.give-donor-profile-dashboard__detail {
+	.give-donor-dashboard-dashboard__detail {
 		color: #555;
 		font-size: 14px;
 		text-transform: uppercase;

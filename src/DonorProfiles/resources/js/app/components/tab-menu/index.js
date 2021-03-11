@@ -25,10 +25,10 @@ const TabMenu = () => {
 			{ logoutModalOpen && (
 				<LogoutModal onRequestClose={ () => setLogoutModalOpen( false ) } />
 			) }
-			<div className="give-donor-profile-tab-menu">
+			<div className="give-donor-dashboard-tab-menu">
 				{ tabLinks }
-				<div className="give-donor-profile-logout">
-					<div className="give-donor-profile-tab-link" onClick={ () => setLogoutModalOpen( true ) }>
+				<div className="give-donor-dashboard-logout">
+					<div className="give-donor-dashboard-tab-link" onClick={ () => setLogoutModalOpen( true ) }>
 						<FontAwesomeIcon icon="sign-out-alt" /> { __( 'Logout', 'give' ) }
 					</div>
 				</div>

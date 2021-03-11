@@ -51,7 +51,7 @@ const Content = () => {
 				<Heading>
 					{ __( 'Loading...', 'give' ) }
 				</Heading>
-				<div className="give-donor-profile__donation-history-link">
+				<div className="give-donor-dashboard__donation-history-link">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Donation History', 'give' ) }
 					</Link>
@@ -63,7 +63,7 @@ const Content = () => {
 					{ __( 'Donation Receipt', 'give' ) } #{ getDonationById( id ).payment.serialCode }
 				</Heading>
 				<DonationReceipt donation={ getDonationById( id ) } />
-				<div className="give-donor-profile__donation-history-footer">
+				<div className="give-donor-dashboard__donation-history-footer">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
 					</Link>

@@ -18,7 +18,7 @@ class Shortcode {
 	 * @since 2.10.0
 	 **/
 	public function addShortcode() {
-		add_shortcode( 'give_donor_profile', [ $this, 'renderCallback' ] );
+		add_shortcode( 'give_donor_dashboard', [ $this, 'renderCallback' ] );
 	}
 
 	/**
@@ -28,7 +28,7 @@ class Shortcode {
 	 **/
 	public function loadFrontendAssets() {
 		global $post;
-		if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'give_donor_profile' ) ) {
+		if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'give_donor_dashboard' ) ) {
 			return $this->donorProfile->loadAssets();
 		}
 	}
@@ -44,7 +44,7 @@ class Shortcode {
 				'accent_color' => '#68bb6c',
 			],
 			$attributes,
-			'give_donor_profile'
+			'give_donor_dashboard'
 		);
 		return $this->donorProfile->getOutput( $attributes );
 	}

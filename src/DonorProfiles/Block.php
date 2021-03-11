@@ -13,13 +13,13 @@ class Block {
 	}
 
 	/**
-	 * Registers Donor Profile block
+	 * Registers Donor Dashboard block
 	 *
 	 * @since 2.10.0
 	 **/
 	public function addBlock() {
 		register_block_type(
-			'give/donor-profile',
+			'give/donor-dashboard',
 			[
 				'render_callback' => [ $this, 'renderCallback' ],
 				'attributes'      => [
@@ -51,7 +51,7 @@ class Block {
 	 * @since 2.10.0
 	 **/
 	public function loadFrontendAssets() {
-		if ( has_block( 'give/donor-profile' ) ) {
+		if ( has_block( 'give/donor-dashboard' ) ) {
 			return $this->donorProfile->loadAssets();
 		}
 	}
@@ -63,8 +63,8 @@ class Block {
 	 **/
 	public function loadEditorAssets() {
 		wp_enqueue_script(
-			'give-donor-profiles-block',
-			GIVE_PLUGIN_URL . 'assets/dist/js/donor-profiles-block.js',
+			'give-donor-dashboards-block',
+			GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-block.js',
 			[],
 			GIVE_VERSION,
 			true

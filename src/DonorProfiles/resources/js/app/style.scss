@@ -1,4 +1,4 @@
-#give-donor-profile {
+#give-donor-dashboard {
 	width: 100% !important;
 	max-width: 920px !important;
 	font-family: Montserrat, sans-serif !important;
@@ -7,11 +7,11 @@
 	margin: 0 auto;
 
 	a {
-		color: var(--give-donor-profile-accent-color);
+		color: var(--give-donor-dashboard-accent-color);
 		text-decoration: none;
 
 		&:visited {
-			color: var(--give-donor-profile-accent-color);
+			color: var(--give-donor-dashboard-accent-color);
 		}
 	}
 

@@ -30,7 +30,7 @@ export const updateProfileWithAPI = async( {
 	 * Pass new profile data to the Profile REST endpoint
 	 */
 	const { dispatch } = store;
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/profile', {
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/profile', {
 		data: JSON.stringify( {
 			titlePrefix,
 			firstName,
@@ -76,7 +76,7 @@ export const uploadAvatarWithAPI = ( file ) => {
 };
 
 export const fetchStatesWithAPI = ( country ) => {
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/location', {
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/location', {
 		countryCode: country,
 	}, {
 		headers: {

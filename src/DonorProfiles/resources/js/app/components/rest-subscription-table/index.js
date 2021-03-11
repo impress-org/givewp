@@ -8,16 +8,16 @@ const RESTSubscriptionTable = () => {
 		<Table
 			header={
 				<Fragment>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						Subscription
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						Status
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						Next Renewal
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						Progress
 					</div>
 				</Fragment>
@@ -32,10 +32,10 @@ const RESTSubscriptionTable = () => {
 
 			footer={
 				<Fragment>
-					<div className="give-donor-profile-table__footer-text">
+					<div className="give-donor-dashboard-table__footer-text">
 						Showing 1-5 of 10 Subscriptions
 					</div>
-					<div className="give-donor-profile-table__footer-nav">
+					<div className="give-donor-dashboard-table__footer-nav">
 						Buttons
 					</div>
 				</Fragment>

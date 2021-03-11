@@ -1,7 +1,7 @@
 import { addTab } from '../store/actions';
 
 export const registerTab = ( tab ) => {
-	const { dispatch } = window.giveDonorProfile.store;
+	const { dispatch } = window.giveDonorDashboard.store;
 
 	// Validate the tab object
 	if ( isValidTab( tab ) === true ) {
@@ -34,7 +34,7 @@ const isValidTab = ( tab ) => {
 };
 
 export const getWindowData = ( value ) => {
-	const data = window.giveDonorProfileData;
+	const data = window.giveDonorDashboardData;
 	return data[ value ];
 };
 

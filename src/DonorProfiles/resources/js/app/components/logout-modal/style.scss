@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-logout-modal {
+.give-donor-dashboard-logout-modal {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -11,7 +11,7 @@
 	left: 0;
 	z-index: 99;
 
-	.give-donor-profile-logout-modal__frame {
+	.give-donor-dashboard-logout-modal__frame {
 		background: #fff;
 		z-index: 2;
 		box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
@@ -20,8 +20,8 @@
 		width: 90%;
 		max-width: 480px;
 
-		.give-donor-profile-logout-modal__header {
-			background: var(--give-donor-profile-accent-color);
+		.give-donor-dashboard-logout-modal__header {
+			background: var(--give-donor-dashboard-accent-color);
 			font-size: 21px;
 			font-weight: 500;
 			padding: 26px 36px;
@@ -29,7 +29,7 @@
 			color: #fff;
 		}
 
-		.give-donor-profile-logout-modal__body {
+		.give-donor-dashboard-logout-modal__body {
 			padding: 30px 36px 20px 36px;
 			font-size: 15px;
 			font-weight: 500;
@@ -37,18 +37,18 @@
 			color: #555;
 		}
 
-		.give-donor-profile-logout-modal__buttons {
+		.give-donor-dashboard-logout-modal__buttons {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
-			a.give-donor-profile-logout-modal__cancel {
+			a.give-donor-dashboard-logout-modal__cancel {
 				cursor: pointer;
 			}
 		}
 	}
 
-	.give-donor-profile-logout-modal__bg {
+	.give-donor-dashboard-logout-modal__bg {
 		position: absolute;
 		width: 100%;
 		height: 100%;

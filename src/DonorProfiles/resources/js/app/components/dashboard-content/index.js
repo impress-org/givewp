@@ -29,7 +29,7 @@ const DashboardContent = () => {
 	};
 
 	return (
-		<div className="give-donor-profile-dashboard-content">
+		<div className="give-donor-dashboard-dashboard-content">
 			{ dashboardContent }
 		</div>
 	);

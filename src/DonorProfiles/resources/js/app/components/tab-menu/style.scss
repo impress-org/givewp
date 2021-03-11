@@ -1,12 +1,12 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-tab-menu {
+.give-donor-dashboard-tab-menu {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 }
 
-.give-donor-profile-logout {
+.give-donor-dashboard-logout {
 	margin-top: auto;
 	padding: 16px 0 !important;
 	border-top: 1px solid #e2e6ec;
@@ -15,9 +15,9 @@
 		padding: 6px 0 !important;
 	}
 
-	.give-donor-profile-tab-link {
+	.give-donor-dashboard-tab-link {
 		display: inline-flex;
-		color: var(--give-donor-profile-accent-color) !important;
+		color: var(--give-donor-dashboard-accent-color) !important;
 		cursor: pointer;
 	}
 }
