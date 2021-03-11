@@ -59,7 +59,7 @@ class Settings {
 
 		return [
 			'name'       => __( 'Donor Profile Page', 'give' ),
-			'desc'       => sprintf( __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Profile block or <code>[give_donor_profile]</code> shortcode should be on this page. Need helping setting one up? Let us <a href="%s">generate one for you.</a>', 'give' ), $generateDonorProfilePageUrl ),
+			'desc'       => sprintf( __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Profile block or <code>[give_donor_profile]</code> shortcode should be on this page. Need helping setting one up? <a href="%s">Generate a new Donor Dashboard page.</a>', 'give' ), $generateDonorProfilePageUrl ),
 			'id'         => 'donor_profile_page',
 			'type'       => 'select',
 			'class'      => 'give-select give-select-chosen',
