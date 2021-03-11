@@ -18,7 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   While in the same session, donors are now able to see their donor dashboard (#5707)
     
 ### New
+
 -   Donor Dashboard errors are now logged (#5706)
+
+### Changed
+
+-   "Donor Profiles" are now renamed "Donor Dashboard" (#5708)
 
 ## 2.10.0-beta.3 - 2021-03-09
 
