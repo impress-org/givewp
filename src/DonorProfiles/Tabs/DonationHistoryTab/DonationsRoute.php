@@ -4,6 +4,7 @@ namespace Give\DonorProfiles\Tabs\DonationHistoryTab;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use Give\Log\Log;
 use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
 use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
 
@@ -77,13 +78,21 @@ class DonationsRoute extends RouteAbstract {
 				]
 			);
 		} catch ( \Exception $e ) {
+			Log::error(
+				esc_html__( 'An error occurred while retrieving donation records', 'give' ),
+				[
+					'source'   => 'Donor Dashboard',
+					'Donor ID' => $donorId,
+					'Error'    => $e->getMessage(),
+				]
+			);
+
 			return new WP_REST_Response(
 				[
 					'status'        => 400,
 					'response'      => 'database_error',
 					'body_response' => [
 						'message' => esc_html__( 'An error occurred while retrieving your donation records.', 'give' ),
-						'details' => $e->getMessage(),
 					],
 				]
 			);

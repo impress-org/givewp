@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donor Dashboard iframe now resizes when the parent window resizes (#5693)
 -   Migration table id column length is now increased (#5698)
 -   Email access now gives donor access to my donor dashboard (#5705)
+    
+### New
+-   Donor Dashboard errors are now logged (#5706)
 
 ## 2.10.0-beta.3 - 2021-03-09
 
