@@ -75,31 +75,25 @@ class Donations {
 	 */
 	protected function getDonationIDs( $donorId ) {
 		global $wpdb;
-
 		$result = DB::get_results(
 			DB::prepare(
 				"
-                SELECT 
-                    donation_id as id
-                FROM 
-                    {$wpdb->give_revenue} as revenue
-                INNER JOIN 
-                    {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
-                WHERE 
-                    posts.post_author = %d
-                AND 
-                    posts.post_status IN ( 'publish', 'give_subscription' )
-				",
-				$donorId
+				SELECT revenue.donation_id as id
+				FROM {$wpdb->give_revenue} as revenue
+					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
+					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
+				WHERE donationmeta.meta_key = '_give_payment_donor_id'
+					AND donationmeta.meta_value = {$donorId}
+					AND posts.post_status IN ( 'publish', 'give_subscription' )
+			"
 			)
 		);
 
 		$ids = [];
-		if ( $result ) {
+		if ( ! empty( $result ) ) {
 			foreach ( $result as $donation ) {
 				$ids[] = $donation->id;
 			}
-
 			return $ids;
 		}
 
