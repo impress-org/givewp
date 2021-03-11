@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Migration table id column length is now increased (#5698)
 -   Donor Dashboard feature domain no longer has typos (#5704)
 -   Email access now gives donor access to my donor dashboard (#5705)
+-   While in the same session, donors are now able to see their donor dashboard (#5707)
     
 ### New
 -   Donor Dashboard errors are now logged (#5706)
