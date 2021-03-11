@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donors with no donations now see a "No Donations" notice in Donor Dashboard (#5694)
 -   Donor Dashboard iframe now resizes when the parent window resizes (#5693)
 -   Migration table id column length is now increased (#5698)
+-   Donor Dashboard feature domain no longer has typos (#5704)
 
 ## 2.10.0-beta.3 - 2021-03-09
 
