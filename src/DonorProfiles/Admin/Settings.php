@@ -57,9 +57,11 @@ class Settings {
 			admin_url( 'edit.php' )
 		);
 
+		$generateDonorProfilePageDesc = $this->donorProfilePageIsPublished() ? '' : sprintf( __( ' Need helping setting one up? <a href="%s">Generate a new Donor Dashboard page.</a>', 'give' ), $generateDonorProfilePageUrl );
+
 		return [
 			'name'       => __( 'Donor Profile Page', 'give' ),
-			'desc'       => sprintf( __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Profile block or <code>[give_donor_profile]</code> shortcode should be on this page. Need helping setting one up? <a href="%s">Generate a new Donor Dashboard page.</a>', 'give' ), $generateDonorProfilePageUrl ),
+			'desc'       => __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Dashboard block or <code>[give_donor_dashboard]</code> shortcode should be on this page. ', 'give' ) . $generateDonorProfilePageDesc,
 			'id'         => 'donor_profile_page',
 			'type'       => 'select',
 			'class'      => 'give-select give-select-chosen',
