@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changes
+
+-   Apply Stripe fee when applicable (#5555)
+
 ## 2.10.0-beta.4 - 2021-03-12
 
 ### Changed
