@@ -10,13 +10,19 @@ namespace Give\PaymentGateways\Stripe;
  */
 class ApplicationFee {
 	/**
-	 * Return whether or not apple Stripe application fee.
-	 *
 	 * @unreleased
 	 *
 	 * @return bool
 	 */
-	public function canApply() {
-		return true;
+	public function canAddFee() {
+		return ! $this->isStripeProAddonActive();
+	}
+
+	/**
+	 * @unreleased
+	 * @return bool
+	 */
+	public function isStripeProAddonActive() {
+		return defined( 'GIVE_STRIPE_VERSION' );
 	}
 }
