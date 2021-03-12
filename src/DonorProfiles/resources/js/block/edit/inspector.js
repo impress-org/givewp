@@ -26,7 +26,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 	};
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Tabs', 'give' ) } initialOpen={ true }>
+			<PanelBody title={ __( 'Appearance', 'give' ) } initialOpen={ true }>
 				<ColorControl
 					colors={ editorColorPalette }
 					name="color"
