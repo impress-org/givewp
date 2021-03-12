@@ -23,6 +23,6 @@ class ApplicationFee {
 		$pluginSlug = 'give-stripe';
 		$hasLicense = (bool) Give_License::get_license_by_plugin_dirname( $pluginSlug );
 
-		return ! $isStripeProAddonActive || ! $hasLicense;
+		return ! ( $isStripeProAddonActive || $hasLicense );
 	}
 }
