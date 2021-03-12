@@ -85,8 +85,8 @@ const CardControl = ( { label, onChange, value } ) => {
 	};
 
 	return (
-		<div className="give-donor-profile-card-control">
-			<label className="give-donor-profile-card-control__label">{ label }</label>
+		<div className="give-donor-dashboard-card-control">
+			<label className="give-donor-dashboard-card-control__label">{ label }</label>
 			<PaymentInputsWrapper { ...inputProps }>
 				<svg { ...getCardImageProps( { images } ) } />
 				<input { ...getCardNumberProps( { onChange: ( e ) => setCardNumber( e.target.value ), value: cardNumber } ) } />

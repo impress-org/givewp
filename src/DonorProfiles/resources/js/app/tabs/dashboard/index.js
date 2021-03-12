@@ -1,7 +1,7 @@
 // Internal dependencies
 import Content from './content';
 
-export const registerDashboardTab = () => window.giveDonorProfile.utils.registerTab( {
+export const registerDashboardTab = () => window.giveDonorDashboard.utils.registerTab( {
 	label: 'Dashboard',
 	icon: 'home',
 	slug: 'dashboard',

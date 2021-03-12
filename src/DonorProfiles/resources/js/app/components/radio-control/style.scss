@@ -1,12 +1,12 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-radio-control {
+.give-donor-dashboard-radio-control {
 	margin-top: 20px;
 	outline: none;
 	border: none;
 	padding-left: 0;
 
-	.give-donor-profile-radio-control__legend {
+	.give-donor-dashboard-radio-control__legend {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 500;
 		font-size: 14px;
@@ -15,7 +15,7 @@
 		margin-bottom: 10px;
 	}
 
-	.give-donor-profile-radio-control__description {
+	.give-donor-dashboard-radio-control__description {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 500;
 		font-style: italic;
@@ -25,7 +25,7 @@
 		margin-bottom: 12px;
 	}
 
-	.give-donor-profile-radio-control__option {
+	.give-donor-dashboard-radio-control__option {
 		margin: 10px 0;
 
 		&:first-of-type {
@@ -59,7 +59,7 @@
 				border-radius: 50%;
 				background: #fff;
 				border: 1px solid #b4b9be;
-				box-shadow: 0 0 0 0 var(--give-donor-profile-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
+				box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
 				transition: box-shadow 0.1s ease;
 			}
 
@@ -74,7 +74,7 @@
 				left: 6px;
 				content: ' ';
 				display: block;
-				background: var(--give-donor-profile-accent-color);
+				background: var(--give-donor-dashboard-accent-color);
 			}
 		}
 
@@ -84,7 +84,7 @@
 
 			&:focus {
 				+ label::before {
-					box-shadow: 0 0 0 1px var(--give-donor-profile-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
+					box-shadow: 0 0 0 1px var(--give-donor-dashboard-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
 				}
 			}
 

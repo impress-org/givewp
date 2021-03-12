@@ -38,6 +38,9 @@ const Content = () => {
 				<p style={ { color: '#6b6b6b' } }>
 					{ error }
 				</p>
+				<p style={ { color: '#6b6b6b' } }>
+					{ __( 'Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ) }
+				</p>
 			</Fragment>
 		);
 	}
@@ -48,7 +51,7 @@ const Content = () => {
 				<Heading>
 					{ __( 'Loading...', 'give' ) }
 				</Heading>
-				<div className="give-donor-profile__donation-history-link">
+				<div className="give-donor-dashboard__donation-history-link">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Donation History', 'give' ) }
 					</Link>
@@ -60,7 +63,7 @@ const Content = () => {
 					{ __( 'Donation Receipt', 'give' ) } #{ getDonationById( id ).payment.serialCode }
 				</Heading>
 				<DonationReceipt donation={ getDonationById( id ) } />
-				<div className="give-donor-profile__donation-history-footer">
+				<div className="give-donor-dashboard__donation-history-footer">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
 					</Link>

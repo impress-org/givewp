@@ -11,7 +11,7 @@ const TabContent = () => {
 	const Content = tabsSelector[ slug ] ? tabsSelector[ slug ].content : null;
 
 	return (
-		<div className="give-donor-profile-tab-content">
+		<div className="give-donor-dashboard-tab-content">
 			{ Content ? <Content /> : null }
 		</div>
 	);

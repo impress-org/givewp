@@ -43,7 +43,7 @@ abstract class Route implements RestRoute {
 	abstract public function handleRequest( WP_REST_Request $request );
 
 	/** @var string */
-	protected $root = 'donor-profile/';
+	protected $root = 'donor-dashboard/';
 
 	/**
 	 * @inheritDoc

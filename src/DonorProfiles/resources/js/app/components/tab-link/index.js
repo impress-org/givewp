@@ -4,7 +4,7 @@ import './style.scss';
 
 const TabLink = ( { slug, label, icon } ) => {
 	return (
-		<NavLink to={ `/${ slug }` } className="give-donor-profile-tab-link" activeClassName="give-donor-profile-tab-link--is-active">
+		<NavLink to={ `/${ slug }` } className="give-donor-dashboard-tab-link" activeClassName="give-donor-dashboard-tab-link--is-active">
 			<FontAwesomeIcon icon={ icon } fixedWidth={ true } />
 			{ label }
 		</NavLink>

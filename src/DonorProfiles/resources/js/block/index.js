@@ -15,14 +15,14 @@ import edit from './edit';
  * Register Block
  */
 
-export default registerBlockType( 'give/donor-profile', {
-	title: __( 'Donor Profile', 'give' ),
-	description: __( 'The Donor Profile block allows donors to modify and review their donor information from the front-end.', 'give' ),
+export default registerBlockType( 'give/donor-dashboard', {
+	title: __( 'Donor Dashboard', 'give' ),
+	description: __( 'The Donor Dashboard block allows donors to modify and review their donor information from the front-end.', 'give' ),
 	category: 'give',
 	icon: <GiveLogo color="grey" />,
 	keywords: [
 		__( 'donor', 'give' ),
-		__( 'profile', 'give' ),
+		__( 'dashboard', 'give' ),
 	],
 	attributes: blockAttributes,
 	supports: {

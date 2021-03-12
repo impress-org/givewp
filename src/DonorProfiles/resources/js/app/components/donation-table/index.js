@@ -47,16 +47,16 @@ const DonationTable = ( { donations, perPage } ) => {
 		<Table
 			header={
 				<Fragment>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Donation', 'give' ) }
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Form', 'give' ) }
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Date', 'give' ) }
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Status', 'give' ) }
 					</div>
 				</Fragment>
@@ -70,10 +70,10 @@ const DonationTable = ( { donations, perPage } ) => {
 
 			footer={
 				<Fragment>
-					<div className="give-donor-profile-table__footer-text">
+					<div className="give-donor-dashboard-table__footer-text">
 						{ donations && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ donationsArray.length } ${ __( 'Donations', 'give' ) }` }
 					</div>
-					<div className="give-donor-profile-table__footer-nav">
+					<div className="give-donor-dashboard-table__footer-nav">
 						{ page - 1 >= 1 && (
 							<a onClick={ () => setPage( page - 1 ) }>
 								<FontAwesomeIcon icon="chevron-left" />

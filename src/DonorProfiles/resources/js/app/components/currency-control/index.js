@@ -28,9 +28,9 @@ const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, 
 	};
 
 	return (
-		<div className="give-donor-profile-currency-control" style={ width ? { maxWidth: width } : null }>
-			{ label && ( <label className="give-donor-profile-currency-control__label" htmlFor={ id }>{ label }</label> ) }
-			<div className="give-donor-profile-currency-control__input">
+		<div className="give-donor-dashboard-currency-control" style={ width ? { maxWidth: width } : null }>
+			{ label && ( <label className="give-donor-dashboard-currency-control__label" htmlFor={ id }>{ label }</label> ) }
+			<div className="give-donor-dashboard-currency-control__input">
 				<CurrencyInput
 					id={ id }
 					name={ name }

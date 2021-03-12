@@ -11,7 +11,7 @@ use Give\DonorProfiles\Pipeline\Stages\UpdateDonorEmails;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAnonymousGiving;
 
-use Give\DonorProfiles\Helpers as DonorProfileHelpers;
+use Give\DonorProfiles\Helpers as DonorDashboardHelpers;
 
 /**
  * @since 2.10.0
@@ -22,7 +22,7 @@ class Profile {
 	protected $id;
 
 	public function __construct() {
-		$donorId = DonorProfileHelpers::getCurrentDonorId();
+		$donorId = DonorDashboardHelpers::getCurrentDonorId();
 		if ( $donorId ) {
 			$donorFactory = new DonorFactory;
 			$this->donor  = $donorFactory->make( $donorId );

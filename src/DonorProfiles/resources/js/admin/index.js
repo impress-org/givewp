@@ -23,7 +23,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					window.localStorage.setItem( storageId, Date.now() );
 				}
 
-				if ( e.target.classList.contains( 'give-donor-profile-upgrade-notice__dismiss-link' ) ) {
+				if ( e.target.classList.contains( 'give-donor-dashboard-upgrade-notice__dismiss-link' ) ) {
 					notice.classList.add( 'hidden' );
 					window.localStorage.setItem( storageId, Date.now() );
 				}

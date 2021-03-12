@@ -7,9 +7,9 @@ const TextControl = ( { label, value, onChange, icon, type } ) => {
 	const id = toUniqueId( label );
 
 	return (
-		<div className="give-donor-profile-text-control">
-			{ label && ( <label className="give-donor-profile-text-control__label" htmlFor={ id }>{ label }</label> ) }
-			<div className="give-donor-profile-text-control__input">
+		<div className="give-donor-dashboard-text-control">
+			{ label && ( <label className="give-donor-dashboard-text-control__label" htmlFor={ id }>{ label }</label> ) }
+			<div className="give-donor-dashboard-text-control__input">
 				{ icon && (
 					<FontAwesomeIcon icon={ icon } />
 				) }

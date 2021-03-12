@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-heading {
+.give-donor-dashboard-heading {
 	color: #555 !important;
 	font-size: 16px;
 	margin: 20px 0 10px 0;
@@ -11,7 +11,7 @@
 		margin-right: 8px;
 	}
 
-	.give-donor-profile-heading__spinner {
+	.give-donor-dashboard-heading__spinner {
 		animation: spin infinite 1s linear;
 	}
 }

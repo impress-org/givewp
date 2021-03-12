@@ -35,17 +35,17 @@ const MobileMenu = ( { children } ) => {
 	const label = tabsSelector[ slug ] ? tabsSelector[ slug ].label : null;
 
 	return (
-		<div className="give-donor-profile-mobile-menu">
-			<div className="give-donor-profile-mobile-menu__header">
-				<div className="give-donor-profile-mobile-menu__label">
+		<div className="give-donor-dashboard-mobile-menu">
+			<div className="give-donor-dashboard-mobile-menu__header">
+				<div className="give-donor-dashboard-mobile-menu__label">
 					{ label }
 				</div>
-				<div className={ `give-donor-profile-mobile-menu__toggle ${ isOpen ? ( 'give-donor-profile-mobile-menu__toggle--toggled' ) : '' }` } onClick={ () => setIsOpen( ! isOpen ) }>
+				<div className={ `give-donor-dashboard-mobile-menu__toggle ${ isOpen ? ( 'give-donor-dashboard-mobile-menu__toggle--toggled' ) : '' }` } onClick={ () => setIsOpen( ! isOpen ) }>
 					<FontAwesomeIcon icon="bars" />
 				</div>
 			</div>
 			{ isOpen && (
-				<div className="give-donor-profile-mobile-menu__content" ref={ contentRef }>
+				<div className="give-donor-dashboard-mobile-menu__content" ref={ contentRef }>
 					{ children }
 				</div>
 			) }

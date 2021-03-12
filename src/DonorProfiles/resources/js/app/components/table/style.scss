@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-table {
+.give-donor-dashboard-table {
 	background: #fff;
 	border: 1px solid #e2e6ec;
 	border-radius: 6px;
@@ -9,7 +9,7 @@
 	flex-direction: column;
 	font-size: 14px;
 
-	.give-donor-profile-table__column {
+	.give-donor-dashboard-table__column {
 		flex: 1;
 		padding: 14px;
 
@@ -21,7 +21,7 @@
 		}
 	}
 
-	.give-donor-profile-table__header {
+	.give-donor-dashboard-table__header {
 		background: #fbfbfb;
 		display: flex;
 		align-items: center;
@@ -33,16 +33,16 @@
 		}
 	}
 
-	.give-donor-profile-table__mobile-header {
+	.give-donor-dashboard-table__mobile-header {
 		color: #555;
 		text-transform: uppercase;
 		font-size: 12px;
 	}
 
-	.give-donor-profile-table__rows {
+	.give-donor-dashboard-table__rows {
 		flex: 1;
 
-		.give-donor-profile-table__row {
+		.give-donor-dashboard-table__row {
 			display: flex;
 			border-top: 1px solid #e2e6ec;
 			flex-wrap: wrap;
@@ -55,7 +55,7 @@
 			}
 		}
 
-		.give-donor-profile-table__pill {
+		.give-donor-dashboard-table__pill {
 			display: flex;
 			background: #fbfbfb;
 			border-radius: 50px;
@@ -74,13 +74,13 @@
 		}
 	}
 
-	.give-donor-profile-table__footer {
+	.give-donor-dashboard-table__footer {
 		border-top: 1px solid #e2e6ec;
 		padding: 14px 18px;
 		display: flex;
 		align-items: center;
 
-		.give-donor-profile-table__footer-text {
+		.give-donor-dashboard-table__footer-text {
 			flex: 1;
 		}
 	}

@@ -47,16 +47,16 @@ const SubscriptionTable = ( { subscriptions, perPage } ) => {
 		<Table
 			header={
 				<Fragment>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Subscription', 'give' ) }
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Status', 'give' ) }
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Next Renewal', 'give' ) }
 					</div>
-					<div className="give-donor-profile-table__column">
+					<div className="give-donor-dashboard-table__column">
 						{ __( 'Progress', 'give' ) }
 					</div>
 				</Fragment>
@@ -70,10 +70,10 @@ const SubscriptionTable = ( { subscriptions, perPage } ) => {
 
 			footer={
 				<Fragment>
-					<div className="give-donor-profile-table__footer-text">
+					<div className="give-donor-dashboard-table__footer-text">
 						{ subscriptions && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ subscriptionsArray.length } ${ __( 'Subscriptions', 'give' ) }` }
 					</div>
-					<div className="give-donor-profile-table__footer-nav">
+					<div className="give-donor-dashboard-table__footer-nav">
 						{ page - 1 >= 1 && (
 							<a onClick={ () => setPage( page - 1 ) }>
 								<FontAwesomeIcon icon="chevron-left" />
