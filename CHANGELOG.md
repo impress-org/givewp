@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donors with no donations now see a "No Donations" notice in Donor Dashboard (#5694)
 -   Donor Dashboard iframe now resizes when the parent window resizes (#5693)
 -   Migration table id column length is now increased (#5698)
+-   Incorrect property type error is now fixed (#5699)
 -   Donor Dashboard feature domain no longer has typos (#5704)
 -   Email access now gives donor access to my donor dashboard (#5705)
 -   While in the same session, donors are now able to see their donor dashboard (#5707)
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New
 
 -   Donor Dashboard errors are now logged (#5706)
+
 
 ## 2.10.0-beta.3 - 2021-03-09
 
