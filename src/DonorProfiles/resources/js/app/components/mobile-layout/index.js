@@ -7,16 +7,16 @@ import './style.scss';
 
 const MobileLayout = () => {
 	return (
-		<div className="give-donor-profile-mobile-layout">
+		<div className="give-donor-dashboard-mobile-layout">
 			<MobileMenu>
-				<div className="give-donor-profile-mobile-layout__tab-menu">
+				<div className="give-donor-dashboard-mobile-layout__tab-menu">
 					<TabMenu />
 				</div>
 			</MobileMenu>
-			<div className="give-donor-profile-mobile-layout__donor-info">
+			<div className="give-donor-dashboard-mobile-layout__donor-info">
 				<DonorInfo />
 			</div>
-			<div className="give-donor-profile-mobile-layout__tab-content">
+			<div className="give-donor-dashboard-mobile-layout__tab-content">
 				<TabContent />
 			</div>
 		</div>

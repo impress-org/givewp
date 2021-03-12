@@ -1,9 +1,9 @@
-/* stylelint-disable  function-url-quotes */
+/* stylelint-disable  function-url-quotes, selector-class-pattern */
 
-.give-donor-profile-currency-control {
+.give-donor-dashboard-currency-control {
 	margin-top: 10px;
 
-	.give-donor-profile-currency-control__label {
+	.give-donor-dashboard-currency-control__label {
 		font-family: Montserrat, Arial, Helvetica, sans-serif;
 		font-weight: 500;
 		font-size: 14px;
@@ -11,7 +11,7 @@
 		color: #555;
 	}
 
-	.give-donor-profile-currency-control__input {
+	.give-donor-dashboard-currency-control__input {
 		align-items: center;
 		background-color: hsl(0, 0%, 100%);
 		border-radius: 4px;
@@ -25,11 +25,11 @@
 		border: 1px solid #b8b8b8;
 		overflow: hidden;
 		padding: 0;
-		box-shadow: 0 0 0 0 var(--give-donor-profile-accent-color);
+		box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color);
 		transition: box-shadow 0.1s ease;
 
 		&:focus-within {
-			box-shadow: 0 0 0 1px var(--give-donor-profile-accent-color);
+			box-shadow: 0 0 0 1px var(--give-donor-dashboard-accent-color);
 		}
 
 		svg {

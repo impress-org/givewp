@@ -41,12 +41,12 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 					<Heading>
 						{ __( 'Additional Address', 'give' ) }
 					</Heading>
-					<div className="give-donor-profile__address-controls">
-						<div className="give-donor-profile__make-primary-address" onClick={ () => makePrimaryAddress( address, index ) }>
+					<div className="give-donor-dashboard__address-controls">
+						<div className="give-donor-dashboard__make-primary-address" onClick={ () => makePrimaryAddress( address, index ) }>
 							{ __( 'Make Primary', 'give' ) }
 						</div>
 						|
-						<div className="give-donor-profile__delete-address" onClick={ () => removeAdditionalAddress( index ) }>
+						<div className="give-donor-dashboard__delete-address" onClick={ () => removeAdditionalAddress( index ) }>
 							{ __( 'Delete', 'give' ) }
 						</div>
 					</div>
@@ -76,7 +76,7 @@ const AddressControls = ( { primaryAddress, additionalAddresses, onChangePrimary
 			</Button>
 		</Fragment>
 	) : (
-		<div className="give-donor-profile__add-primary-address">
+		<div className="give-donor-dashboard__add-primary-address">
 			<Heading>
 				{ __( 'Looks like you have not set up an address!', 'give' ) }
 			</Heading>

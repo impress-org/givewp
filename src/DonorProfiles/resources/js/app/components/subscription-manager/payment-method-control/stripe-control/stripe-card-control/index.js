@@ -43,9 +43,9 @@ const CardControl = ( { label, onChange, value } ) => {
 	};
 
 	return (
-		<div className="give-donor-profile-stripe-card-control">
-			<label className="give-donor-profile-stripe-card-control__label">{ label }</label>
-			<div className={ focused ? 'give-donor-profile-stripe-card-control__input give-donor-profile-stripe-card-control__input--focused' : 'give-donor-profile-stripe-card-control__input' }>
+		<div className="give-donor-dashboard-stripe-card-control">
+			<label className="give-donor-dashboard-stripe-card-control__label">{ label }</label>
+			<div className={ focused ? 'give-donor-dashboard-stripe-card-control__input give-donor-dashboard-stripe-card-control__input--focused' : 'give-donor-dashboard-stripe-card-control__input' }>
 				<CardElement
 					style={ { base: { fontFamily: 'Montserrat' } } }
 					onFocus={ () => setFocused( true ) } onBlur={ () => handleBlur() }

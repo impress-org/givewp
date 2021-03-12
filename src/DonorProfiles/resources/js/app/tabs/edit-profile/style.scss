@@ -1,4 +1,6 @@
-.give-donor-profile__email-controls {
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard__email-controls {
 	display: flex;
 	align-self: stretch;
 	align-items: center;
@@ -7,7 +9,7 @@
 	max-width: fit-content;
 	font-size: 14px;
 
-	.give-donor-profile__make-primary-email {
+	.give-donor-dashboard__make-primary-email {
 		margin-right: 10px;
 		color: #3398db;
 		cursor: pointer;
@@ -17,7 +19,7 @@
 		}
 	}
 
-	.give-donor-profile__delete-email {
+	.give-donor-dashboard__delete-email {
 		margin-left: 10px;
 		color: rgb(199, 81, 81);
 		cursor: pointer;
@@ -28,7 +30,7 @@
 	}
 }
 
-.give-donor-profile__address-controls {
+.give-donor-dashboard__address-controls {
 	display: flex;
 	align-self: stretch;
 	align-items: center;
@@ -37,7 +39,7 @@
 	max-width: fit-content;
 	font-size: 14px;
 
-	.give-donor-profile__make-primary-address {
+	.give-donor-dashboard__make-primary-address {
 		margin-right: 10px;
 		color: #3398db;
 		cursor: pointer;
@@ -47,7 +49,7 @@
 		}
 	}
 
-	.give-donor-profile__delete-address {
+	.give-donor-dashboard__delete-address {
 		margin-left: 10px;
 		color: rgb(199, 81, 81);
 		cursor: pointer;
@@ -58,7 +60,7 @@
 	}
 }
 
-.give-donor-profile__add-primary-address {
+.give-donor-dashboard__add-primary-address {
 	display: flex;
 	justify-content: space-between;
 	padding: 0 16px;
@@ -66,7 +68,7 @@
 	background: #fbfbfb;
 }
 
-.give-donor-profile__edit-profile-spinner {
+.give-donor-dashboard__edit-profile-spinner {
 	animation: spin infinite 1s linear;
 }
 

@@ -25,7 +25,7 @@ class SuccessNotice {
 	 * @since 2.10.0
 	 */
 	protected function shouldRenderOutput() {
-		return isset( $_GET['give-generated-donor-profile-page'] );
+		return isset( $_GET['give-generated-donor-dashboard-page'] );
 	}
 
 	/**

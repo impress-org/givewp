@@ -187,7 +187,7 @@ const Content = () => {
 					</Fragment>
 				) : (
 					<Fragment>
-						{ __( 'Update Profile', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-profile__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
+						{ __( 'Update Profile', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-dashboard__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
 					</Fragment>
 				) }
 			</Button>

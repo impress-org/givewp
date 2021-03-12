@@ -30,7 +30,7 @@ class App {
 	 */
 	public function getOutput( $attributes ) {
 
-		$url = get_site_url() . '/?give-embed=donor-profile';
+		$url = get_site_url() . '/?give-embed=donor-dashboard';
 
 		if ( isset( $attributes['accent_color'] ) ) {
 			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
@@ -55,7 +55,7 @@ class App {
 	}
 
 	/**
-	 * Get output markup for Donor Profile app
+	 * Get output markup for Donor Dashboard app
 	 *
 	 * @since 2.10.0
 	 *
@@ -72,7 +72,7 @@ class App {
 	}
 
 	/**
-	 * Get output markup for Donor Profile app
+	 * Get output markup for Donor Dashboard app
 	 *
 	 * @since 2.10.0
 	 * @return string
@@ -86,36 +86,36 @@ class App {
 	}
 
 	/**
-	 * Get template path for Donor Profile component template
+	 * Get template path for Donor Dashboard component template
 	 * @since 2.10.0
 	 **/
 	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofile.php';
+		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donordashboard.php';
 	}
 
 	/**
-	 * Get template path for Donor Profile component template
+	 * Get template path for Donor Dashboard component template
 	 * @since 2.10.0
 	 **/
 	public function getLoaderTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofileloader.php';
+		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donordashboardloader.php';
 	}
 
 	/**
-	 * Enqueue assets for front-end donor profiles
+	 * Enqueue assets for front-end donor dashboards
 	 *
 	 * @since 2.10.0
 	 **@return void
 	 */
 	public function loadAssets() {
 		// Load assets only if rendering donor dashboard.
-		if ( ! isset( $_GET['give-embed'] ) || 'donor-profile' !== $_GET['give-embed'] ) {
+		if ( ! isset( $_GET['give-embed'] ) || 'donor-dashboard' !== $_GET['give-embed'] ) {
 			return;
 		}
 
 		wp_enqueue_script(
-			'give-donor-profiles-app',
-			GIVE_PLUGIN_URL . 'assets/dist/js/donor-profiles-app.js',
+			'give-donor-dashboards-app',
+			GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-app.js',
 			[ 'wp-element', 'wp-i18n' ],
 			GIVE_VERSION,
 			true
@@ -126,8 +126,8 @@ class App {
 		$recaptcha_enabled = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 
 		wp_localize_script(
-			'give-donor-profiles-app',
-			'giveDonorProfileData',
+			'give-donor-dashboards-app',
+			'giveDonorDashboardData',
 			[
 				'apiRoot'              => esc_url_raw( rest_url() ),
 				'apiNonce'             => wp_create_nonce( 'wp_rest' ),
@@ -150,8 +150,8 @@ class App {
 		);
 
 		wp_enqueue_style(
-			'give-donor-profiles-app',
-			GIVE_PLUGIN_URL . 'assets/dist/css/donor-profiles-app.css',
+			'give-donor-dashboards-app',
+			GIVE_PLUGIN_URL . 'assets/dist/css/donor-dashboards-app.css',
 			[ 'give-google-font-montserrat' ],
 			GIVE_VERSION
 		);

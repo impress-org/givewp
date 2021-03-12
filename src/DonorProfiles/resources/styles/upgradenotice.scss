@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-upgrade-notice {
+.give-donor-dashboard-upgrade-notice {
 	padding: 26px 36px;
 	padding-right: 36px !important;
 	display: flex;
@@ -14,26 +14,26 @@
 		display: none;
 	}
 
-	.give-donor-profile-upgrade-notice__copy {
+	.give-donor-dashboard-upgrade-notice__copy {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		flex: 1;
 		max-width: 840px;
 
-		.give-donor-profile-upgrade-notice__row {
+		.give-donor-dashboard-upgrade-notice__row {
 			display: flex;
 			align-items: center;
 		}
 
-		.give-donor-profile-upgrade-notice__title {
+		.give-donor-dashboard-upgrade-notice__title {
 			font-size: 26px;
 			color: #333;
 			margin-right: 36px;
 			line-height: 1.4;
 		}
 
-		.give-donor-profile-upgrade-notice__badge {
+		.give-donor-dashboard-upgrade-notice__badge {
 			font-size: 16px;
 			color: #555;
 			font-weight: 500;
@@ -48,14 +48,14 @@
 			}
 		}
 
-		.give-donor-profile-upgrade-notice__body {
+		.give-donor-dashboard-upgrade-notice__body {
 			font-size: 18px;
 			color: #333;
 			line-height: 1.4;
 			margin: 20px 0;
 		}
 
-		.give-donor-profile-upgrade-notice__pill {
+		.give-donor-dashboard-upgrade-notice__pill {
 			padding: 12px 24px;
 			background: #f8f8f8;
 			font-size: 15px;
@@ -75,7 +75,7 @@
 			}
 		}
 
-		a.give-donor-profile-upgrade-notice__button {
+		a.give-donor-dashboard-upgrade-notice__button {
 			font-size: 16px;
 			font-weight: 500;
 			font-style: normal;
@@ -87,7 +87,7 @@
 			color: #fff;
 		}
 
-		.give-donor-profile-upgrade-notice__dismiss-link {
+		.give-donor-dashboard-upgrade-notice__dismiss-link {
 			padding: 12px 0;
 			font-size: 15px;
 			color: #878787;

@@ -73,7 +73,7 @@ const Content = () => {
 						<Divider />
 						<SubscriptionManager id={ id } subscription={ getSubscriptionById( id ) } />
 						<Divider />
-						<div className="give-donor-profile__recurring-donations-link">
+						<div className="give-donor-dashboard__recurring-donations-link">
 							<Link to="/recurring-donations">
 								<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Recurring Donations', 'give' ) }
 							</Link>

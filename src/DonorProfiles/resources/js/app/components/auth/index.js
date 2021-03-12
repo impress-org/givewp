@@ -8,9 +8,9 @@ const Auth = ( { children } ) => {
 	const loggedIn = isLoggedIn();
 
 	return ! loggedIn ? (
-		<div className="give-donor-profile__auth">
+		<div className="give-donor-dashboard__auth">
 			<AuthModal />
-			<div className="give-donor-profile__auth-wrapper">
+			<div className="give-donor-dashboard__auth-wrapper">
 				{ children }
 			</div>
 		</div>

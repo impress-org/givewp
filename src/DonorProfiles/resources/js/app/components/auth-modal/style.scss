@@ -1,4 +1,6 @@
-.give-donor-profile__auth-modal {
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard__auth-modal {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -7,42 +9,42 @@
 	justify-content: center;
 	z-index: 99;
 
-	.give-donor-profile__auth-modal-frame {
+	.give-donor-dashboard__auth-modal-frame {
 		box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
 		width: 90%;
 		max-width: 480px;
 		border-radius: 8px;
 		overflow: hidden;
 
-		.give-donor-profile__auth-modal-heading {
-			background: var(--give-donor-profile-accent-color);
+		.give-donor-dashboard__auth-modal-heading {
+			background: var(--give-donor-dashboard-accent-color);
 			color: #fff;
 			padding: 34px;
 			font-size: 21px;
 		}
 
-		.give-donor-profile__auth-modal-content {
+		.give-donor-dashboard__auth-modal-content {
 			background: #fff;
 			padding: 30px 34px;
 			font-size: 15px;
 
-			.give-donor-profile__auth-modal-seperator {
+			.give-donor-dashboard__auth-modal-seperator {
 				margin: 30px -34px;
 				height: 1px;
 				background: #e2e6ec;
 			}
 
-			.give-donor-profile__auth-modal-form {
+			.give-donor-dashboard__auth-modal-form {
 				display: contents;
 			}
 
-			.give-donor-profile__auth-modal-row {
+			.give-donor-dashboard__auth-modal-row {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 			}
 
-			.give-donor-profile__auth-modal-notice {
+			.give-donor-dashboard__auth-modal-notice {
 				background: rgb(255, 244, 229);
 				border: 1px solid #ff9800;
 				color: rgb(102, 60, 0);
@@ -51,12 +53,12 @@
 				margin-bottom: 24px;
 			}
 
-			.give-donor-profile__auth-modal-error {
+			.give-donor-dashboard__auth-modal-error {
 				max-width: 40%;
 				font-size: 10px;
 			}
 
-			.give-donor-profile__auth-modal-spinner {
+			.give-donor-dashboard__auth-modal-spinner {
 				animation: spin infinite 1s linear;
 			}
 		}

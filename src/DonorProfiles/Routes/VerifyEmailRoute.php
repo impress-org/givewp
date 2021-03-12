@@ -14,7 +14,7 @@ class VerifyEmailRoute implements RestRoute {
 	use Captcha\ProtectedRoute;
 
 	/** @var string */
-	protected $endpoint = 'donor-profile/verify-email';
+	protected $endpoint = 'donor-dashboard/verify-email';
 
 	/**
 	 * @inheritDoc

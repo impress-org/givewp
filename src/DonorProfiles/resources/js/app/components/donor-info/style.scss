@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-profile-donor-info {
+.give-donor-dashboard-donor-info {
 	display: grid;
 	grid-template-columns: 140px 1fr auto;
 	grid-gap: 30px;
@@ -14,10 +14,10 @@
 	}
 }
 
-.give-donor-profile-donor-info__avatar {
+.give-donor-dashboard-donor-info__avatar {
 	grid-column: 1;
 
-	.give-donor-profile-donor-info__avatar-container {
+	.give-donor-dashboard-donor-info__avatar-container {
 		height: 140px;
 		width: 140px;
 		overflow: hidden;
@@ -25,7 +25,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--give-donor-profile-accent-color);
+		background: var(--give-donor-dashboard-accent-color);
 
 		@media screen and (max-width: 920px) {
 			height: 60px;
@@ -38,7 +38,7 @@
 			object-fit: cover;
 		}
 
-		.give-donor-profile-donor-info__avatar-initials {
+		.give-donor-dashboard-donor-info__avatar-initials {
 			font-size: 44px;
 			font-weight: 600;
 			color: #fff;
@@ -50,10 +50,10 @@
 	}
 }
 
-.give-donor-profile-donor-info__details {
+.give-donor-dashboard-donor-info__details {
 	grid-column: 2;
 
-	.give-donor-profile-donor-info__name {
+	.give-donor-dashboard-donor-info__name {
 		font-weight: 600;
 		font-size: 22px;
 		color: #424242;
@@ -65,7 +65,7 @@
 		}
 	}
 
-	.give-donor-profile-donor-info__detail {
+	.give-donor-dashboard-donor-info__detail {
 		display: flex;
 		align-items: center;
 		font-size: 15px;
@@ -92,7 +92,7 @@
 	}
 }
 
-.give-donor-profile-donor-info__badges {
+.give-donor-dashboard-donor-info__badges {
 	grid-column: 3;
 	display: flex;
 	flex-direction: column;

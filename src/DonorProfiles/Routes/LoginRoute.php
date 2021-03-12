@@ -12,7 +12,7 @@ use Give\API\RestRoute;
 class LoginRoute implements RestRoute {
 
 	/** @var string */
-	protected $endpoint = 'donor-profile/login';
+	protected $endpoint = 'donor-dashboard/login';
 
 	/**
 	 * @inheritDoc

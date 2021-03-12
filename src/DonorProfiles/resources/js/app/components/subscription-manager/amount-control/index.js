@@ -66,7 +66,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 	}, [ customAmount ] );
 
 	return (
-		<div className="give-donor-profile-amount-inputs">
+		<div className="give-donor-dashboard-amount-inputs">
 			<FieldRow>
 				<div>
 					<SelectControl label="Subscription Amount" options={ amountOptions } value={ selectValue } onChange={ ( val ) => setSelectValue( val ) } />
