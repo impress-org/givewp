@@ -18,7 +18,7 @@ class ApplicationFee {
 	 * @return bool
 	 */
 	public static function canAddFee() {
-		// Plugin slugs (which we get from givewp.com) are fixed and will never change, so we can hardcode it.
+		// Plugin slug (which we get from givewp.com) and plugin name are fixed and will never change, so we can hardcode it.
 		$pluginSlug = 'give-stripe';
 		$pluginName = 'Give - Stripe Gateway';
 
