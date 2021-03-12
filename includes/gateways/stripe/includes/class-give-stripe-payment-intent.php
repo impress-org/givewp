@@ -41,7 +41,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		public function create( $args ) {
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( give( \Give\PaymentGateways\Stripe\ApplicationFee::class )->canAddfee() ) {
+			if ( \Give\PaymentGateways\Stripe\ApplicationFee::class::canAddfee() ) {
 				$args['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['amount'] );
 			}
 
@@ -118,7 +118,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		public function update( $client_secret, $args ) {
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( give( \Give\PaymentGateways\Stripe\ApplicationFee::class )->canAddfee() ) {
+			if ( \Give\PaymentGateways\Stripe\ApplicationFee::class::canAddfee() ) {
 				$args['application_fee_amount'] = give_stripe_format_amount( give_stripe_get_application_fee_amount( $args['amount'] ) );
 			}
 
