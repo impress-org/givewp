@@ -12,17 +12,39 @@ use Give_License;
  */
 class ApplicationFee {
 	/**
+	 * @see https://github.com/impress-org/givewp/issues/5555#issuecomment-759596226
 	 * @unreleased
 	 *
 	 * @return bool
 	 */
 	public static function canAddFee() {
-		$isStripeProAddonActive = defined( 'GIVE_STRIPE_VERSION' );
-
 		// Plugin slugs (which we get from givewp.com) are fixed and will never change, so we can hardcode it.
 		$pluginSlug = 'give-stripe';
+		$pluginName = 'Give - Stripe Gateway';
+
+		$isStripeProAddonActive = defined( 'GIVE_STRIPE_VERSION' );
+
+		if ( $isStripeProAddonActive ) {
+			return true;
+		}
+
+		$isStripeProAddonInstalled = (bool) array_filter(
+			get_plugins(),
+			static function( $pluginsData ) use ( $pluginName ) {
+				return $pluginName === $pluginsData['Name'];
+			}
+		);
+
+		if ( $isStripeProAddonInstalled ) {
+			return true;
+		}
+
 		$hasLicense = (bool) Give_License::get_license_by_plugin_dirname( $pluginSlug );
 
-		return ! ( $isStripeProAddonActive || $hasLicense );
+		if ( $hasLicense ) {
+			return true;
+		}
+
+		return false;
 	}
 }
