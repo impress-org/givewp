@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.10.0-beta.4 - 2021-03-12
+
+### Changed
+
+-   "Donor Profile" is now renamed "Donor Dashboard" (#5708)
+
 ### Fixed
 
 -   Prevent PHP notices on plugin listing page (#5692)
@@ -21,10 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New
 
 -   Donor Dashboard errors are now logged (#5706)
-
-### Changed
-
--   "Donor Profiles" are now renamed "Donor Dashboard" (#5708)
 
 ## 2.10.0-beta.3 - 2021-03-09
 
