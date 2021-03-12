@@ -38,6 +38,9 @@ const Content = () => {
 				<p style={ { color: '#6b6b6b' } }>
 					{ error }
 				</p>
+				<p style={ { color: '#6b6b6b' } }>
+					{ __( 'Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ) }
+				</p>
 			</Fragment>
 		);
 	}
