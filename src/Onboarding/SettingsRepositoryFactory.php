@@ -11,6 +11,7 @@ class SettingsRepositoryFactory {
 	 * @param string $optionName
 	 *
 	 * @since 2.8.0
+	 * @unreleased Casts the option value as an array.
 	 */
 	public function make( $optionName ) {
 
