@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Onboarding Settings Repository Factory does not throw an exception (#5718)
+-   Onboarding Settings Repository Factory no longer triggers a fatal error for corrupted option values (#5718)
 
 ## 2.10.0-beta.4 - 2021-03-12
 
