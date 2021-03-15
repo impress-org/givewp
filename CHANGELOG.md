@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Donor Dashboard history now includes pending donations (#5721)
+
 ## 2.10.0-beta.4 - 2021-03-12
 
 ### Changed
