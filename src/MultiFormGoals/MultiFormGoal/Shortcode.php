@@ -87,7 +87,7 @@ class Shortcode {
 	 * @return array
 	 */
 	protected function parseAttributeArray( $value ) {
-		if ( ! is_array( $value ) ) {
+		if ( ! is_array( $value ) && ! empty( $value ) ) {
 			$value = explode( ',', $value );
 		}
 		return $value;
