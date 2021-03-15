@@ -20,6 +20,6 @@ class SettingsRepositoryFactory {
 			return update_option( $optionName, $settings );
 		};
 
-		return new SettingsRepository( $option, $persistCallback );
+		return new SettingsRepository( (array) $option, $persistCallback );
 	}
 }
