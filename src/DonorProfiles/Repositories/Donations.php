@@ -74,6 +74,10 @@ class Donations {
 	 * @return array Donation IDs
 	 */
 	protected function getDonationIDs( $donorId ) {
+
+		$statusKeys  = give_get_payment_status_keys();
+		$statusQuery = "'" . implode( "','", $statusKeys ) . "'";
+
 		global $wpdb;
 		$result = DB::get_results(
 			DB::prepare(
@@ -84,7 +88,7 @@ class Donations {
 					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
 				WHERE donationmeta.meta_key = '_give_payment_donor_id'
 					AND donationmeta.meta_value = {$donorId}
-					AND posts.post_status IN ( 'publish', 'give_subscription' )
+					AND posts.post_status IN ( {$statusQuery} )
 			"
 			)
 		);
@@ -289,12 +293,32 @@ class Donations {
 	 * @return array Formatted status object (with color and label)
 	 */
 	protected function getFormattedStatus( $status ) {
-		$statusMap = [
-			'publish' => [
-				'color' => '#7AD03A',
-				'label' => esc_html__( 'Complete', 'give' ),
-			],
+
+		$statusMap = [];
+
+		$colorMap = [
+			'publish'           => '#7AD03A',
+			'give_subscription' => '#3398DB',
+			'refunded'          => '#D75A4B',
 		];
+
+		foreach ( give_get_payment_statuses() as $key => $value ) {
+
+			if ( $status !== $key ) {
+				continue;
+			}
+
+			$color = '#FFBA00';
+			if ( in_array( $key, array_keys( $colorMap ) ) ) {
+				$color = $colorMap[ $key ];
+			}
+
+			$statusMap[ $key ] = [
+				'color' => $color,
+				'label' => $value,
+			];
+
+		}
 
 		return isset( $statusMap[ $status ] ) ? $statusMap[ $status ] : [
 			'color' => '#FFBA00',
