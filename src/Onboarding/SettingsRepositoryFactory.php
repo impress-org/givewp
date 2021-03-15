@@ -9,7 +9,6 @@ class SettingsRepositoryFactory {
 
 	/**
 	 * @since 2.8.0
-	 * @unreleased Casts the option value as an array.
 	 *
 	 * @param string $optionName
 	 *
@@ -28,6 +27,12 @@ class SettingsRepositoryFactory {
 			return update_option( $optionName, $settings );
 		};
 
-		return new SettingsRepository( (array) $option, $persistCallback );
+		try {
+			$settingsRepository = new SettingsRepository( $option, $persistCallback );
+		} catch ( \TypeError $e ) {
+			trigger_error( $e->getMessage(), E_USER_ERROR );
+		}
+
+		return $settingsRepository;
 	}
 }

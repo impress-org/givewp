@@ -5,16 +5,14 @@ use Give\Onboarding\SettingsRepositoryFactory;
 
 final class SettingsRepositoryFactoryTest extends TestCase {
 
-	public function testCatchTypeErrorException() {
+        public function testCatchTypeErrorException() {
 
-        $optionName = 'optionThatIsNotAnArrayAndDoesNotTriggerADefaultValue';
-        update_option( $optionName, true );
+                $this->expectException( PHPUnit_Framework_Error::class );
 
-        $factory = new SettingsRepositoryFactory;
-        $factory->make( $optionName );
+                $optionName = 'optionThatIsNotAnArrayAndDoesNotTriggerADefaultValue';
+                update_option( $optionName, true );
 
-        // There is not a declarative method for testing the absence of an exception,
-        // but we can imperically test that an exception is not thrown by asserting true.
-        $this->assertTrue( true );
-	}
+                $factory = new SettingsRepositoryFactory;
+                $factory->make( $optionName );
+        }
 }
