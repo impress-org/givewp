@@ -10,7 +10,7 @@ final class SettingsRepositoryFactoryTest extends TestCase {
         $optionName = 'optionThatIsNotAnArrayAndDoesNotTriggerADefaultValue';
         update_option( $optionName, true );
 
-		$factory = new SettingsRepositoryFactory;
+        $factory = new SettingsRepositoryFactory;
         $factory->make( $optionName );
 
         // There is not a declarative method for testing the absence of an exception,
