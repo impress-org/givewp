@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   The spinner should go away when the PDF Receipt is generated on the Donor Dashboard (#5719)
+
 ## 2.10.0-beta.4 - 2021-03-12
 
 ### Changed
