@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New 
+-   The new logging system UI is now e2e tested (#5723)
+
 ### Fixed
 
 -   The spinner should go away when the PDF Receipt is generated on the Donor Dashboard (#5719)
