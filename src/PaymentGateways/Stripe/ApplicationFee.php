@@ -25,7 +25,7 @@ class ApplicationFee {
 		$isStripeProAddonActive = defined( 'GIVE_STRIPE_VERSION' );
 
 		if ( $isStripeProAddonActive ) {
-			return true;
+			return false;
 		}
 
 		$isStripeProAddonInstalled = (bool) array_filter(
@@ -36,15 +36,15 @@ class ApplicationFee {
 		);
 
 		if ( $isStripeProAddonInstalled ) {
-			return true;
+			return false;
 		}
 
 		$hasLicense = (bool) Give_License::get_license_by_plugin_dirname( $pluginSlug );
 
 		if ( $hasLicense ) {
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 }
