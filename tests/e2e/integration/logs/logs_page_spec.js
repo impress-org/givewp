@@ -33,9 +33,12 @@ describe( 'Test Logs page', function() {
 		cy.getByTest( 'logs-status-dropdown' ).select( 'notice' );
 		cy.getByTest( 'logs-status-dropdown' ).should( 'have.value', 'notice' );
 
+		// Wait for the react state to update the DOM
+		cy.wait( 100 );
+
 		// Check sorted
-		cy.getByTest( 'logs-table' ).find( '.give-table-row div[class*=label]' ).should( 'satisfy', ( element ) => {
-			return element[ 0 ].className.indexOf( 'notice' ) !== -1;
+		cy.getByTest( 'logs-table' ).find( '.give-table-row' ).each( ( row ) => {
+			cy.wrap( row.children().eq( 0 ) ).should( 'contain.text', 'Notice' );
 		} );
 
 		// Reset status sort
@@ -45,9 +48,12 @@ describe( 'Test Logs page', function() {
 		cy.getByTest( 'logs-category-dropdown' ).select( 'CypressCategory' );
 		cy.getByTest( 'logs-category-dropdown' ).should( 'have.value', 'CypressCategory' );
 
+		// Wait for the react state to update the DOM
+		cy.wait( 100 );
+
 		// Check sorted
-		cy.getByTest( 'logs-table' ).find( '.give-table-row div[class*=item]:eq(1)' ).should( 'satisfy', ( element ) => {
-			return element[ 0 ].innerText === 'CypressCategory';
+		cy.getByTest( 'logs-table' ).find( '.give-table-row' ).each( ( row ) => {
+			cy.wrap( row.children().eq( 1 ) ).should( 'contain.text', 'CypressCategory' );
 		} );
 
 		// Reset category sort
@@ -57,9 +63,12 @@ describe( 'Test Logs page', function() {
 		cy.getByTest( 'logs-source-dropdown' ).select( 'CypressSource' );
 		cy.getByTest( 'logs-source-dropdown' ).should( 'have.value', 'CypressSource' );
 
+		// Wait for the react state to update the DOM
+		cy.wait( 100 );
+
 		// Check sorted
-		cy.getByTest( 'logs-table' ).find( '.give-table-row div[class*=item]:eq(2)' ).should( 'satisfy', ( element ) => {
-			return element[ 0 ].innerText === 'CypressSource';
+		cy.getByTest( 'logs-table' ).find( '.give-table-row' ).each( ( row ) => {
+			cy.wrap( row.children().eq( 2 ) ).should( 'contain.text', 'CypressSource' );
 		} );
 
 		// Flush logs
