@@ -13,15 +13,18 @@ use Give_License;
  * @unreleased
  */
 class ApplicationFee {
+	/**
+	 * Slug of the Stripe add-on on GiveWP.com
+	 */
+	const PluginSlug = 'give-stripe';
 
 	/**
-	* @note Plugin slug (which we get from givewp.com) and plugin name are fixed and will never change, so we can hardcode it.
-	*/
-
-	const PluginSlug = 'give-stripe';
+	 * Name of the Stripe add-on on GiveWP.com
+	 */
 	const PluginName = 'Give - Stripe Gateway';
 
 	/**
+	 * Returns true or false based on whether the Stripe fee should be applied or not
 	 *
 	 * @unreleased
 	 *
@@ -36,6 +39,10 @@ class ApplicationFee {
 	}
 
 	/**
+	 * Returns true or false based on whether the Stripe Pro add-on is activated
+	 *
+	 * @unreleased
+	 *
 	 * @return bool
 	 */
 	public function isStripeProAddonActive() {
@@ -43,6 +50,8 @@ class ApplicationFee {
 	}
 
 	/**
+	 * Returns true or false based on whether the plugin is installed (but not necessarily active)
+	 *
 	 * @param array $plugins Array of arrays of plugin data, keyed by plugin file name. See get_plugin_data().
 	 *
 	 * @return bool
@@ -57,6 +66,10 @@ class ApplicationFee {
 	}
 
 	/**
+	 * Returns true or false based on whether a license has been provided for the Stripe add-on
+	 *
+	 * @unreleased
+	 *
 	 * @return bool
 	 */
 	public function hasLicense() {
