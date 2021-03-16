@@ -303,6 +303,7 @@ class Donations {
 			'failed'            => '#a00',
 			'abandoned'         => '#333',
 			'revoked'           => '#d9534f',
+			'pending'           => '#ffba00',
 		];
 
 		foreach ( give_get_payment_statuses() as $key => $value ) {
