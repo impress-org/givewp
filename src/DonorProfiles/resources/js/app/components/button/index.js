@@ -9,7 +9,7 @@ const Button = ( { icon, children, onClick, href, type } ) => {
 
 	if ( href ) {
 		return (
-			<a className="give-donor-dashboard-button give-donor-dashboard-button--primary" onClick={ onClick ? ( e ) => handleHrefClick( e ) : null } href={ href }>
+			<a className="give-donor-dashboard-button give-donor-dashboard-button--primary" onClick={ ( e ) => handleHrefClick( e ) } href={ href }>
 				{ children }{ icon && ( <FontAwesomeIcon icon={ icon } /> ) }
 			</a>
 		);
