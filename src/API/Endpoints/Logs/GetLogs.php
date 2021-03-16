@@ -160,7 +160,7 @@ class GetLogs extends Endpoint {
 			[
 				'status'     => true,
 				'data'       => $data,
-				'pages'      => floor( $total / $this->logRepository->getLogsPerPageLimit() ),
+				'pages'      => ceil( $total / $this->logRepository->getLogsPerPageLimit() ),
 				'categories' => $this->logRepository->getCategories(),
 				'sources'    => $this->logRepository->getSources(),
 				'statuses'   => LogType::getTypesTranslated(),
