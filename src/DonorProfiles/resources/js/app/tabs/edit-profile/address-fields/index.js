@@ -10,6 +10,15 @@ import FieldRow from '../../../components/field-row';
 import { fetchStatesWithAPI } from '../utils';
 
 const AddressFields = ( { address, onChange } ) => {
+	useEffect( () => {
+		setCountry( address.country );
+		setLine1( address.line1 );
+		setLine2( address.line2 );
+		setCity( address.city );
+		setState( address.state );
+		setZip( address.zip );
+	}, [ address ] );
+
 	const dispatch = useDispatch();
 	const countryOptions = useSelector( state => state.countries );
 	const stateOptions = useSelector( state => state.states );
