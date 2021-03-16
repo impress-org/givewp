@@ -49,8 +49,17 @@ class Donations {
 		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
 	}
 
+	/**
+	 * Generates a donation aggregate for a given donor
+	 *
+	 * @param string $rawAggregate raw SELECT to determine what to aggregate over
+	 * @param int $donorId
+	 *
+	 * @return array
+	 */
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
 		global $wpdb;
+
 		return DB::get_row(
 			DB::prepare(
 				"
@@ -59,9 +68,10 @@ class Donations {
 					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
 					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
 				WHERE donationmeta.meta_key = '_give_payment_donor_id'
-					AND donationmeta.meta_value = {$donorId}
+					AND donationmeta.meta_value = %d
 					AND posts.post_status IN ( 'publish', 'give_subscription' )
-			"
+			",
+				$donorId
 			)
 		);
 	}
@@ -71,7 +81,7 @@ class Donations {
 	 *
 	 * @param int $donorId
 	 * @since 2.10.0
-	 * @return array Donation IDs
+	 * @return int[] Donation IDs
 	 */
 	protected function getDonationIDs( $donorId ) {
 
@@ -79,7 +89,7 @@ class Donations {
 		$statusQuery = "'" . implode( "','", $statusKeys ) . "'";
 
 		global $wpdb;
-		$result = DB::get_results(
+		return DB::get_col(
 			DB::prepare(
 				"
 				SELECT revenue.donation_id as id
@@ -87,23 +97,13 @@ class Donations {
 					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
 					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
 				WHERE donationmeta.meta_key = '_give_payment_donor_id'
-					AND donationmeta.meta_value = {$donorId}
+					AND donationmeta.meta_value = %d
 					AND posts.post_status IN ( {$statusQuery} )
-			"
+			",
+				$donorId
 			)
 		);
-
-		$ids = [];
-		if ( ! empty( $result ) ) {
-			foreach ( $result as $donation ) {
-				$ids[] = $donation->id;
-			}
-			return $ids;
-		}
-
-		return null;
 	}
-
 
 
 	/**
@@ -111,7 +111,7 @@ class Donations {
 	 *
 	 * @param int $donorId
 	 * @since 2.10.0
-	 * @return array Ddonations
+	 * @return array Donations
 	 */
 	public function getDonations( $donorId ) {
 
