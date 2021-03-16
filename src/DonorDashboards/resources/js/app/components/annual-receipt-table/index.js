@@ -69,7 +69,7 @@ const AnnualReceiptTable = ( { annualReceipts, perPage } ) => {
 			footer={
 				<Fragment>
 					<div className="give-donor-dashboard-table__footer-text">
-						{ annualReceipts && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ annualReceiptsArray.length } ${ __( 'Donations', 'give' ) }` }
+						{ annualReceipts && `${ __( 'Showing', 'give' ) } ${ start + 1 } - ${ end } ${ __( 'of', 'give' ) } ${ annualReceiptsArray.length } ${ __( 'Receipts', 'give' ) }` }
 					</div>
 					<div className="give-donor-dashboard-table__footer-nav">
 						{ page - 1 >= 1 && (
