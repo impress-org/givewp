@@ -297,9 +297,12 @@ class Donations {
 		$statusMap = [];
 
 		$colorMap = [
-			'publish'           => '#7AD03A',
-			'give_subscription' => '#3398DB',
-			'refunded'          => '#D75A4B',
+			'publish'           => '#7ad03a',
+			'give_subscription' => '#5bc0de',
+			'refunded'          => '#777',
+			'failed'            => '#a00',
+			'abandoned'         => '#333',
+			'revoked'           => '#d9534f',
 		];
 
 		foreach ( give_get_payment_statuses() as $key => $value ) {
@@ -308,7 +311,7 @@ class Donations {
 				continue;
 			}
 
-			$color = '#FFBA00';
+			$color = '#888';
 			if ( in_array( $key, array_keys( $colorMap ) ) ) {
 				$color = $colorMap[ $key ];
 			}
