@@ -34,7 +34,7 @@ import './stripe-admin';
 // PayPal donations
 import './paypal-commerce';
 
-import '../../../../src/DonorProfiles/resources/js/admin';
+import '../../../../src/DonorDashboards/resources/js/admin';
 
 GiveAPI.modal = Modals;
 const { init, fn, cache, modal, notice } = GiveAPI;
