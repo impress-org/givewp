@@ -28,25 +28,18 @@ class ApplicationFee {
 	 * @return bool
 	 */
 	public static function canAddFee() {
-
 		$gate = new static();
 
-		if (
-			$gate->hasLicense
-		 || $gate->isStripeProAddonActive
-		 || $gate->isStripeProAddonInstalled( get_plugins() )
-		) {
-			return false;
-		}
-
-		return true;
+		return ! ( $gate->hasLicense()
+			|| $gate->isStripeProAddonActive()
+			|| $gate->isStripeProAddonInstalled( get_plugins() ) );
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function isStripeProAddonActive() {
-		return (bool) defined( 'GIVE_STRIPE_VERSION' );
+		return defined( 'GIVE_STRIPE_VERSION' );
 	}
 
 	/**
@@ -57,7 +50,7 @@ class ApplicationFee {
 	public function isStripeProAddonInstalled( array $plugins ) {
 		return (bool) array_filter(
 			$plugins,
-			static function( $plugin ) {
+			static function ( $plugin ) {
 				return static::PluginName === $plugin['Name'];
 			}
 		);
