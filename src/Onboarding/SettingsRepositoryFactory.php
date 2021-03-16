@@ -27,11 +27,7 @@ class SettingsRepositoryFactory {
 			return update_option( $optionName, $settings );
 		};
 
-		try {
-			$settingsRepository = new SettingsRepository( $option, $persistCallback );
-		} catch ( \TypeError $e ) {
-			trigger_error( $e->getMessage(), E_USER_ERROR );
-		}
+		$settingsRepository = new SettingsRepository( $option, $persistCallback );
 
 		return $settingsRepository;
 	}

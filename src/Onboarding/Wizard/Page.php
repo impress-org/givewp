@@ -46,9 +46,15 @@ class Page {
 		LocaleCollection $localeCollection
 	) {
 		$this->formRepository               = $formRepository;
-		$this->settingsRepository           = $settingsRepositoryFactory->make( 'give_settings' );
-		$this->onboardingSettingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
 		$this->localeCollection             = $localeCollection;
+		$this->onboardingSettingsRepository = $settingsRepositoryFactory->make( 'give_onboarding' );
+
+		try {
+			$this->settingsRepository = $settingsRepositoryFactory->make( 'give_settings' );
+
+		} catch ( \TypeError $e ) {
+			trigger_error( $e->getMessage(), E_USER_ERROR );
+		}
 	}
 
 	/**
