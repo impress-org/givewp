@@ -17,7 +17,7 @@
         "storybook": "start-storybook -p 6006",
         "storybook:build": "build-storybook -c .storybook -o .storybook-static",
         "test:e2e": "cypress open",
-        "setup-e2e-tests-env": "npm install -D puppeteer@^1.14.0 cypress@^6.1.0 jest@^24.5.0 jest-puppeteer@^4.1.0"
+        "setup-e2e-tests-env": "npm install -D puppeteer@^1.14.0 cypress@^6.1.0 jest@^24.5.0 jest-puppeteer@^4.1.0 --no-save"
     },
     "repository": {
         "type": "git",
