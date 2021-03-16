@@ -105,7 +105,6 @@
         "magnific-popup": "latest",
         "moment": "^2.24.0",
         "prop-types": "^15.7.2",
-        "query-string": "^5.1.1",
         "react": "^16.12.0",
         "react-csv": "^2.0.1",
         "react-currency-input-field": "^3.2.4",
