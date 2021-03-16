@@ -218,7 +218,7 @@ const Logs = () => {
 
 	const getLogModal = () => {
 		return (
-			<Modal visible={ logModal.visible } type={ logModal.type } handleClose={ closeLogModal }>
+			<Modal visible={ logModal.visible } type={ logModal.type } handleClose={ closeLogModal } data-givewp-test="log-modal">
 				<Modal.Title>
 					<Label type={ logModal.type } text={ getLogTypeText( logModal.type ) } />
 
@@ -226,7 +226,7 @@ const Logs = () => {
 						{ __( 'Log ID', 'give' ) }: { logModal.id }
 					</strong>
 
-					<Modal.CloseIcon onClick={ closeLogModal } />
+					<Modal.CloseIcon onClick={ closeLogModal } data-givewp-test="log-modal-close" />
 				</Modal.Title>
 
 				<Modal.Section title={ __( 'Description', 'give' ) } content={ logModal.message } />
@@ -271,7 +271,7 @@ const Logs = () => {
 						</Modal.Content>
 
 						<Modal.Content>
-							<button style={ { marginRight: 20 } } className="button button-primary" onClick={ flushLogs }>
+							<button style={ { marginRight: 20 } } className="button button-primary" onClick={ flushLogs } data-givewp-test="flush-logs-confirm-btn">
 								{ __( 'Confirm', 'give' ) }
 							</button>
 							<button className="button" onClick={ closeLogFlushModal }>
@@ -358,6 +358,7 @@ const Logs = () => {
 		details: ( value, log ) => {
 			return (
 				<Button
+					data-givewp-test="view-log"
 					onClick={ ( e ) => {
 						e.preventDefault();
 						openLogModal( log );
@@ -400,6 +401,7 @@ const Logs = () => {
 					onChange={ setCurrentStatus }
 					defaultValue={ state.currentStatus }
 					className={ styles.headerItem }
+					data-givewp-test="logs-status-dropdown"
 				/>
 
 				<Select
@@ -407,6 +409,7 @@ const Logs = () => {
 					onChange={ setCurrentCategory }
 					defaultValue={ state.currentCategory }
 					className={ styles.headerItem }
+					data-givewp-test="logs-category-dropdown"
 				/>
 
 				<Select
@@ -414,6 +417,7 @@ const Logs = () => {
 					onChange={ setCurrentSource }
 					defaultValue={ state.currentSource }
 					className={ styles.headerItem }
+					data-givewp-test="logs-source-dropdown"
 				/>
 
 				<PeriodSelector
@@ -446,12 +450,13 @@ const Logs = () => {
 					isLoading={ isLoading }
 					isSorting={ state.isSorting }
 					stripped={ false }
+					data-givewp-test="logs-table"
 				/>
 			</Card>
 
 			<div className={ styles.footerRow }>
 				{ data && ( data.length > 0 ) && (
-					<button className="button" onClick={ openLogFlushModal }>
+					<button className="button" onClick={ openLogFlushModal } data-givewp-test="flush-logs-btn">
 						{ __( 'Flush all logs', 'give' ) }
 					</button>
 				) }

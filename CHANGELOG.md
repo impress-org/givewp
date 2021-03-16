@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### New 
+
+-   The new logging system UI is now e2e tested (#5723)
+
 ### Changes
 
 -   Apply Stripe fee when applicable (#5555)
