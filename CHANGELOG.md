@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donor Dashboard history now includes pending donations (#5721)
 -   Multi Form Goal Shortcode class is handleing the empty attributes correctly now (#5716)
 -   The spinner should go away when the PDF Receipt is generated on the Donor Dashboard (#5719)
+-   "Make Primary" address link for multiple addresses now works in Donor Dashboard (#5725)
 
 ## 2.10.0-beta.4 - 2021-03-12
 
