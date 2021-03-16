@@ -44,15 +44,6 @@ class UpdateDonorAddresses implements Stage {
 		}
 
 		/**
-		 * Clear out existing additional addresses
-		 */
-
-		$storedAdditionalAddresses = $this->getStoredAdditionalAddresses();
-		foreach ( $storedAdditionalAddresses as $key => $storedAdditionalAddress ) {
-			$this->donor->remove_address( "billing_{$key}" );
-		}
-
-		/**
 		 * If additional addresses are provided, add them to the donor meta table
 		 */
 
@@ -62,26 +53,20 @@ class UpdateDonorAddresses implements Stage {
 				$this->donor->add_address( $addressId, (array) $additionalAddress );
 			}
 		}
-	}
 
-	/**
-	 * Retrieves additional addresses stored in meta database
-	 *
-	 * @return array
-	 *
-	 * @since 2.10.0
-	 */
-	protected function getStoredAdditionalAddresses() {
-		$storedAddresses           = $this->donor->address;
-		$storedAdditionalAddresses = [];
+		/**
+		 * Clear deleted address keys
+		 */
 
-		if ( isset( $storedAddresses['billing'] ) ) {
-			foreach ( $storedAddresses['billing'] as $key => $address ) {
-				if ( $key !== 0 ) {
-					$storedAdditionalAddresses[ $key ] = $address;
-				}
+		$totalStoredAddresses = count( $this->donor->address['billing'] );
+		$totalNewAddresses    = count( $additionalAddresses ) + 1;
+
+		if ( $totalStoredAddresses > $totalNewAddresses ) {
+			$key = $totalNewAddresses;
+			while ( $key < $totalStoredAddresses ) {
+				$this->donor->remove_address( "billing_{$key}" );
+				$key++;
 			}
 		}
-		return $storedAdditionalAddresses;
 	}
 }
