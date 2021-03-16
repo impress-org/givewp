@@ -13,7 +13,7 @@ const edit = ( { attributes, setAttributes } ) => {
 	return (
 		<Fragment>
 			<Inspector { ... { attributes, setAttributes } } />
-			<ServerSideRender block="give/donor-profile" attributes={ attributes } />
+			<ServerSideRender block="give/donor-dashboard" attributes={ attributes } />
 		</Fragment>
 	);
 };

@@ -26,23 +26,23 @@ const AvatarControl = ( { url, file, onChange } ) => {
 	}, [ file ] );
 
 	return (
-		<div className="give-donor-profile-avatar-control">
-			<label className="give-donor-profile-avatar-control__label">
+		<div className="give-donor-dashboard-avatar-control">
+			<label className="give-donor-dashboard-avatar-control__label">
 				Avatar
 			</label>
-			<div className="give-donor-profile-avatar-control__input" { ...getRootProps() }>
+			<div className="give-donor-dashboard-avatar-control__input" { ...getRootProps() }>
 				<input { ...getInputProps() } />
-				<div className="give-donor-profile-avatar-control__preview">
+				<div className="give-donor-dashboard-avatar-control__preview">
 					<img src={ previewSrc } />
 				</div>
-				<div className={ `give-donor-profile-avatar-control__dropzone${ isDragActive ? ' give-donor-profile-avatar-control__dropzone--highlight' : '' }` }>
-					<div className="give-donor-profile-avatar-control__instructions">
+				<div className={ `give-donor-dashboard-avatar-control__dropzone${ isDragActive ? ' give-donor-dashboard-avatar-control__dropzone--highlight' : '' }` }>
+					<div className="give-donor-dashboard-avatar-control__instructions">
 						{
 							isDragActive ? (
 								<p>Drop the image here...</p>
 							) : (
 								<p>Drag image here to set <br />
-									avatar or <span className="give-donor-profile-avatar-control__select-link">find image</span>
+									avatar or <span className="give-donor-dashboard-avatar-control__select-link">find image</span>
 								</p>
 							)
 						}

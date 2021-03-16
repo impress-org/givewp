@@ -2,23 +2,35 @@
 
 namespace Give\DonorProfiles;
 
-use Give\DonorProfiles\Profile;
-use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 use Give\DonorProfiles\Helpers\LocationList;
-use Give\Views\IframeContentView;
 
+/**
+ * Class App
+ * @package Give\DonorProfiles
+ *
+ * @unreleased
+ */
 class App {
-
+	/**
+	 * @var Profile
+	 */
 	protected $profile;
 
+	/**
+	 * App constructor.
+	 */
 	public function __construct() {
-		$id            = DonorProfileHelpers::getCurrentDonorId();
-		$this->profile = new Profile( $id );
+		$this->profile = new Profile();
 	}
 
+	/**
+	 * @param array $attributes
+	 *
+	 * @return string
+	 */
 	public function getOutput( $attributes ) {
 
-		$url = get_site_url() . '/?give-embed=donor-profile';
+		$url = get_site_url() . '/?give-embed=donor-dashboard';
 
 		if ( isset( $attributes['accent_color'] ) ) {
 			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
@@ -26,7 +38,7 @@ class App {
 
 		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
-		$iframe = sprintf(
+		return sprintf(
 			'<div style="position: relative; max-width: 100%%;"><iframe
 				name="give-embed-donor-profile"
 				%1$s
@@ -40,76 +52,82 @@ class App {
 			'',
 			$loader
 		);
-
-		return $iframe;
 	}
 
 	/**
-	 * Get output markup for Donor Profile app
+	 * Get output markup for Donor Dashboard app
 	 *
 	 * @since 2.10.0
-	 **@return string
+	 *
+	 * @param  string  $accentColor
+	 *
+	 * @return string
 	 */
 	public function getIframeLoader( $accentColor ) {
 		ob_start();
-		$output = '';
-		require $this->getLoaderTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
 
-		return $output;
+		require $this->getLoaderTemplatePath();
+
+		return ob_get_clean();
 	}
 
 	/**
-	 * Get output markup for Donor Profile app
+	 * Get output markup for Donor Dashboard app
 	 *
 	 * @since 2.10.0
-	 **@return string
+	 * @return string
 	 */
 	public function getIframeContent() {
 		ob_start();
-		$output = '';
-		require $this->getTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
 
-		return $output;
+		require $this->getTemplatePath();
+
+		return ob_get_clean();
 	}
 
 	/**
-	 * Get template path for Donor Profile component template
+	 * Get template path for Donor Dashboard component template
 	 * @since 2.10.0
 	 **/
 	public function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofile.php';
+		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donordashboard.php';
 	}
 
 	/**
-	 * Get template path for Donor Profile component template
+	 * Get template path for Donor Dashboard component template
 	 * @since 2.10.0
 	 **/
 	public function getLoaderTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donorprofileloader.php';
+		return GIVE_PLUGIN_DIR . '/src/DonorProfiles/resources/views/donordashboardloader.php';
 	}
 
 	/**
-	 * Enqueue assets for front-end donor profiles
+	 * Enqueue assets for front-end donor dashboards
 	 *
 	 * @since 2.10.0
 	 **@return void
 	 */
 	public function loadAssets() {
+		// Load assets only if rendering donor dashboard.
+		if ( ! isset( $_GET['give-embed'] ) || 'donor-dashboard' !== $_GET['give-embed'] ) {
+			return;
+		}
+
 		wp_enqueue_script(
-			'give-donor-profiles-app',
-			GIVE_PLUGIN_URL . 'assets/dist/js/donor-profiles-app.js',
+			'give-donor-dashboards-app',
+			GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-app.js',
 			[ 'wp-element', 'wp-i18n' ],
 			GIVE_VERSION,
 			true
 		);
 
+		$recaptcha_key     = give_get_option( 'recaptcha_key' );
+		$recaptcha_secret  = give_get_option( 'recaptcha_secret' );
+		$recaptcha_enabled = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
+
 		wp_localize_script(
-			'give-donor-profiles-app',
-			'giveDonorProfileData',
+			'give-donor-dashboards-app',
+			'giveDonorDashboardData',
 			[
 				'apiRoot'              => esc_url_raw( rest_url() ),
 				'apiNonce'             => wp_create_nonce( 'wp_rest' ),
@@ -120,6 +138,7 @@ class App {
 				'emailAccessEnabled'   => give_is_setting_enabled( give_get_option( 'email_access' ) ),
 				'registeredTabs'       => give()->donorProfileTabs->getRegisteredIds(),
 				'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorProfile->getId() === null ? true : false,
+				'recaptchaKey'         => $recaptcha_enabled ? $recaptcha_key : '',
 			]
 		);
 
@@ -131,8 +150,8 @@ class App {
 		);
 
 		wp_enqueue_style(
-			'give-donor-profiles-app',
-			GIVE_PLUGIN_URL . 'assets/dist/css/donor-profiles-app.css',
+			'give-donor-dashboards-app',
+			GIVE_PLUGIN_URL . 'assets/dist/css/donor-dashboards-app.css',
 			[ 'give-google-font-montserrat' ],
 			GIVE_VERSION
 		);

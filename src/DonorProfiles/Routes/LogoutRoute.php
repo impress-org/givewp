@@ -13,7 +13,7 @@ use WP_Error;
 class LogoutRoute implements RestRoute {
 
 	/** @var string */
-	protected $endpoint = 'donor-profile/logout';
+	protected $endpoint = 'donor-dashboard/logout';
 
 	/**
 	 * @inheritDoc

@@ -12,9 +12,9 @@ use Give\Tracking\TrackRegisterer;
  * @since 2.10.0
  */
 class TrackEvents {
-	const TELEMETRY_REQUEST_TIME_OPTION_KEY = 'give_telemetry_usage_tracking_last_request';
-	const TRACKING_EVENTS_RECORD_OPTION_KEY = 'give_telemetry_records';
-
+	const TELEMETRY_REQUEST_TIME_OPTION_KEY        = 'give_telemetry_usage_tracking_last_request';
+	const TRACKING_EVENTS_RECORD_OPTION_KEY        = 'give_telemetry_records';
+	const RECENTLY_EDITED_DONATION_FORM_OPTION_KEY = 'give_telemetry_recently_edited_donation_form';
 
 	/**
 	 * Remove tracks.
@@ -26,6 +26,15 @@ class TrackEvents {
 	}
 
 	/**
+	 * Remove list of recently edited donaiton forms.
+	 *
+	 * @unreleased
+	 */
+	public function removeRecentlyEditedDonationFormList() {
+		delete_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY );
+	}
+
+	/**
 	 * Save tracks.
 	 *
 	 * @since 2.10.0
@@ -34,6 +43,28 @@ class TrackEvents {
 		/* @var TrackRegisterer $trackRegisterer */
 		$trackRegisterer = give( TrackRegisterer::class );
 		update_option( self::TRACKING_EVENTS_RECORD_OPTION_KEY, $trackRegisterer->getTrackList(), false );
+	}
+
+	/**
+	 * Save recently edited donation form.
+	 *
+	 * @unreleased
+	 */
+	public function saveRecentlyEditedDonationForm( $formId ) {
+		$formIds   = $this->getRecentlyEditedDonationFormsList();
+		$formIds[] = $formId;
+
+		$formIds = array_unique( $formIds );
+		update_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY, $formIds, false );
+	}
+
+	/**
+	 * Get recently edited donation form list.
+	 *
+	 * @unreleased
+	 */
+	public function getRecentlyEditedDonationFormsList() {
+		return get_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY, [] );
 	}
 
 	/**

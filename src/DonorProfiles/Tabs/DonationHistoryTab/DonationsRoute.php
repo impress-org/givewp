@@ -3,51 +3,99 @@
 namespace Give\DonorProfiles\Tabs\DonationHistoryTab;
 
 use WP_REST_Request;
+use WP_REST_Response;
+use Give\Log\Log;
 use Give\DonorProfiles\Tabs\Contracts\Route as RouteAbstract;
 use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
-use Give\DonorProfiles\Helpers as DonorProfileHelpers;
 
 /**
- * @since 2.10.0
+ * @unreleased
  */
 class DonationsRoute extends RouteAbstract {
 
-	/** @var string */
+	/**
+	 * @return string
+	 */
 	public function endpoint() {
 		return 'donations';
 	}
 
+	/**
+	 * @return array
+	 */
 	public function args() {
 		return [];
 	}
 
 	/**
-	 * @param WP_REST_Request $request
+	 * @unreleased
 	 *
-	 * @return array
+	 * @param  WP_REST_Request  $request
 	 *
-	 * @since 2.10.0
+	 * @return WP_REST_Response
+	 *
 	 */
-	public function handleRequest( $request ) {
-
+	public function handleRequest( WP_REST_Request $request ) {
 		$donorId = give()->donorProfile->getId();
 
 		$repository = new DonationsRepository();
-		return $this->getData( $repository, $donorId );
 
+		return $this->getData( $repository, $donorId );
 	}
 
 	/**
-	 * @return array
+	 * @unreleased
 	 *
-	 * @since 2.10.0
+	 * @param  DonationsRepository  $repository
+	 * @param $donorId
+	 *
+	 * @return WP_REST_Response
 	 */
 	protected function getData( DonationsRepository $repository, $donorId ) {
-		return [
-			'donations' => $repository->getDonations( $donorId ),
-			'count'     => $repository->getDonationCount( $donorId ),
-			'revenue'   => $repository->getRevenue( $donorId ),
-			'average'   => $repository->getAverageRevenue( $donorId ),
-		];
+		try {
+			$donations = $repository->getDonations( $donorId );
+			$count     = $repository->getDonationCount( $donorId );
+			$revenue   = $repository->getRevenue( $donorId );
+			$average   = $repository->getAverageRevenue( $donorId );
+			$currency  = [
+				'symbol'   => give_currency_symbol( give_get_currency(), true ),
+				'position' => give_get_currency_position(),
+			];
+
+			return new WP_REST_Response(
+				[
+					'status'        => 200,
+					'response'      => 'success',
+					'body_response' => [
+						[
+							'donations' => $donations,
+							'count'     => $count,
+							'revenue'   => $revenue,
+							'average'   => $average,
+							'currency'  => $currency,
+						],
+					],
+				]
+			);
+		} catch ( \Exception $e ) {
+			Log::error(
+				esc_html__( 'An error occurred while retrieving donation records', 'give' ),
+				[
+					'source'   => 'Donor Dashboard',
+					'Donor ID' => $donorId,
+					'Error'    => $e->getMessage(),
+				]
+			);
+
+			return new WP_REST_Response(
+				[
+					'status'        => 400,
+					'response'      => 'database_error',
+					'body_response' => [
+						'message' => esc_html__( 'An error occurred while retrieving your donation records.', 'give' ),
+					],
+				]
+			);
+		}
 	}
 }

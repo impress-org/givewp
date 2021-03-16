@@ -16,6 +16,7 @@ import './style.scss';
 const Content = () => {
 	const donations = useSelector( ( state ) => state.donations );
 	const querying = useSelector( ( state ) => state.querying );
+	const error = useSelector( ( state ) => state.error );
 
 	const location = useLocation();
 	const id = location ? location.pathname.split( '/' )[ 2 ] : null;
@@ -28,13 +29,29 @@ const Content = () => {
 		return null;
 	};
 
+	if ( error ) {
+		return (
+			<Fragment>
+				<Heading icon="exclamation-triangle">
+					{ __( 'Error', 'give' ) }
+				</Heading>
+				<p style={ { color: '#6b6b6b' } }>
+					{ error }
+				</p>
+				<p style={ { color: '#6b6b6b' } }>
+					{ __( 'Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ) }
+				</p>
+			</Fragment>
+		);
+	}
+
 	if ( id ) {
 		return querying ? (
 			<Fragment>
 				<Heading>
 					{ __( 'Loading...', 'give' ) }
 				</Heading>
-				<div className="give-donor-profile__donation-history-link">
+				<div className="give-donor-dashboard__donation-history-link">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Donation History', 'give' ) }
 					</Link>
@@ -43,14 +60,14 @@ const Content = () => {
 		) : (
 			<Fragment>
 				<Heading>
-					{ __( 'Donation', 'give' ) } { getDonationById( id ).payment.serialCode }
+					{ __( 'Donation Receipt', 'give' ) } #{ getDonationById( id ).payment.serialCode }
 				</Heading>
 				<DonationReceipt donation={ getDonationById( id ) } />
-				<div className="give-donor-profile__donation-history-footer">
+				<div className="give-donor-dashboard__donation-history-footer">
 					<Link to="/donation-history">
 						<FontAwesomeIcon icon="arrow-left" /> { __( 'Back to Donation History', 'give' ) }
 					</Link>
-					{ getDonationById( id ).payment.pdfReceiptUrl.length && (
+					{ getDonationById( id ).payment.pdfReceiptUrl.length > 0 && (
 						<Button icon="file-pdf" href={ getDonationById( id ).payment.pdfReceiptUrl }>
 							{ __( 'Download Receipt', 'give' ) }
 						</Button>
@@ -60,7 +77,7 @@ const Content = () => {
 		);
 	}
 
-	return querying === true ? (
+	return querying ? (
 		<Fragment>
 			<Heading>
 				{ __( 'Loading...', 'give' ) }
@@ -69,10 +86,20 @@ const Content = () => {
 		</Fragment>
 	) : (
 		<Fragment>
-			<Heading>
-				{ `${ donations ? Object.entries( donations ).length : 0 } ${ __( 'Total Donations', 'give' ) }` }
-			</Heading>
-			<DonationTable donations={ donations } perPage={ 5 } />
+			{ ( ! donations ) ? (
+				<Fragment>
+					<Heading icon="exclamation-triangle">
+						{ __( 'No Donations', 'give' ) }
+					</Heading>
+				</Fragment>
+			) : (
+				<Fragment>
+					<Heading>
+						{ `${ donations ? Object.entries( donations ).length : 0 } ${ __( 'Total Donations', 'give' ) }` }
+					</Heading>
+					<DonationTable donations={ donations } perPage={ 5 } />
+				</Fragment>
+			) }
 		</Fragment>
 	);
 };

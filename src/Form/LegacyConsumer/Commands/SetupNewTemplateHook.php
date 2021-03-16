@@ -5,7 +5,18 @@ namespace Give\Form\LegacyConsumer\Commands;
 use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
+/**
+ * @unreleased
+ */
 class SetupNewTemplateHook implements HookCommandInterface {
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $hook
+	 *
+	 * @return void
+	 */
 	public function __invoke( $hook ) {
 
 		// On the old hook, run the new hook and render the fields.

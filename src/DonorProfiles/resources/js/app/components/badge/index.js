@@ -3,7 +3,7 @@ import './style.scss';
 
 const Badge = ( { icon, label } ) => {
 	return (
-		<div className="give-donor-profile-badge">
+		<div className="give-donor-dashboard-badge">
 			{ label }
 			{ icon && ( <FontAwesomeIcon icon={ icon } /> ) }
 		</div>

@@ -68,8 +68,8 @@ const SelectControl = ( { label, value, isLoading, onChange, options, placeholde
 	};
 
 	return (
-		<div className="give-donor-profile-select-control" style={ width ? { maxWidth: width } : null }>
-			{ label && ( <label className="give-donor-profile-select-control__label" htmlFor={ id }>{ label }</label> ) }
+		<div className="give-donor-dashboard-select-control" style={ width ? { maxWidth: width } : null }>
+			{ label && ( <label className="give-donor-dashboard-select-control__label" htmlFor={ id }>{ label }</label> ) }
 			<Select
 				placeholder={ placeholder }
 				isLoading={ isLoading }

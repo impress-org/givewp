@@ -1,4 +1,6 @@
-.give-donor-profile-donation-receipt__table {
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard-donation-receipt__table {
 	display: flex;
 	flex-direction: column;
 	border: 1px solid #e2e6ec;
@@ -6,15 +8,21 @@
 	font-size: 14px;
 	color: #555;
 	margin-bottom: 18px;
+	overflow: hidden;
 
-	.give-donor-profile-donation-receipt__row {
+	.give-donor-dashboard-donation-receipt__row {
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
-		padding: 20px;
+		padding: 16px 20px;
+
+		@media screen and (max-width: 920px) {
+			align-items: center !important;
+			flex-direction: column;
+		}
 	}
 
-	.give-donor-profile-donation-receipt__detail {
+	.give-donor-dashboard-donation-receipt__detail {
 		text-transform: uppercase;
 		display: flex;
 		align-items: center;
@@ -25,23 +33,23 @@
 		}
 	}
 
-	.give-donor-profile-donation-receipt__value {
+	.give-donor-dashboard-donation-receipt__value {
 		text-align: right;
 	}
 
-	.give-donor-profile-donation-receipt__row--footer {
+	.give-donor-dashboard-donation-receipt__row--footer {
 		background: #fbfbfb;
 		border-top: 1px solid #e2e6ec;
 		align-items: center;
 
-		.give-donor-profile-donation-receipt__detail {
+		.give-donor-dashboard-donation-receipt__detail {
 			color: #6b6b6b;
 			font-size: 16px;
 			font-weight: 700;
 		}
 
-		.give-donor-profile-donation-receipt__value {
-			color: var(--give-donor-profile-accent-color);
+		.give-donor-dashboard-donation-receipt__value {
+			color: var(--give-donor-dashboard-accent-color);
 			font-size: 22px;
 			font-weight: 700;
 		}

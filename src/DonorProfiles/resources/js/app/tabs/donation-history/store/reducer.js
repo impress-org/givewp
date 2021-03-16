@@ -12,6 +12,11 @@ export const reducer = ( state = initialState, action ) => {
 				...state,
 				querying: action.payload.querying,
 			};
+		case 'SET_ERROR':
+			return {
+				...state,
+				error: action.payload.error,
+			};
 		case 'SET_COUNT':
 			return {
 				...state,
@@ -26,6 +31,11 @@ export const reducer = ( state = initialState, action ) => {
 			return {
 				...state,
 				revenue: action.payload.revenue,
+			};
+		case 'SET_CURRENCY':
+			return {
+				...state,
+				currency: action.payload.currency,
 			};
 		default:
 			return state;

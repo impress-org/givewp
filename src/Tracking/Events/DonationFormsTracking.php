@@ -31,5 +31,4 @@ class DonationFormsTracking extends TrackEvent {
 		$this->eventType = new EventType( EventType::DONATION_FORM_UPDATED );
 		parent::__construct( $track );
 	}
-
 }

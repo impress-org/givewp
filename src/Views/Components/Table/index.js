@@ -161,7 +161,7 @@ Table.propTypes = {
 	// Table data rows
 	data: PropTypes.array.isRequired,
 	// Column filters
-	columnFilters: PropTypes.array,
+	columnFilters: PropTypes.object,
 	// Stripped rows
 	stripped: PropTypes.bool,
 	// Show spinner if data is loading
@@ -172,7 +172,7 @@ Table.defaultProps = {
 	title: null,
 	columns: [],
 	data: [],
-	columnFilters: [],
+	columnFilters: {},
 	stripped: true,
 	isLoading: false,
 };

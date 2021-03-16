@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getAPIRoot, getAPINonce } from '../../../utils';
 
 export const loginWithAPI = ( { login, password } ) => {
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/login', {
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/login', {
 		login,
 		password,
 	}, 	{
@@ -13,9 +13,10 @@ export const loginWithAPI = ( { login, password } ) => {
 		.then( ( response ) => response.data );
 };
 
-export const verifyEmailWithAPI = ( { email } ) => {
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-profile/verify-email', {
+export const verifyEmailWithAPI = ( { email, recaptcha } ) => {
+	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/verify-email', {
 		email,
+		'g-recaptcha-response': recaptcha,
 	}, 	{
 		headers: {
 			'X-WP-Nonce': getAPINonce(),

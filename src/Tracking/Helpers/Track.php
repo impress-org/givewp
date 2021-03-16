@@ -20,13 +20,7 @@ class Track {
 	 * @return bool True when we can track, false when we can't.
 	 */
 	public static function isTrackingEnabled() {
-		// Track data only if website is in production mode.
-		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
-			return false;
-		}
-
-		// Track data only if give is in live mode.
-		if ( ! give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
+		if ( ! self::checkEnvironment() ) {
 			return false;
 		}
 
@@ -36,5 +30,24 @@ class Track {
 		$tracking = $settings->getUsageTrackingOptionValue();
 
 		return give_is_setting_enabled( $tracking );
+	}
+
+	/**
+	 * Return whether or not environment for tracking satisfied.
+	 *
+	 * @return bool
+	 */
+	public static function checkEnvironment() {
+		// Track data only if website is in production mode.
+		if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() !== 'production' ) {
+			return false;
+		}
+
+		// Track data only if give is in live mode.
+		if ( give_is_setting_enabled( give_get_option( 'test_mode' ) ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }

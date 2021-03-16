@@ -44,7 +44,7 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot() {
 
-		Hooks::addAction( 'give_after_install', Settings::class, 'generateDonorProfilePage' );
+		Hooks::addAction( 'give_after_install', Settings::class, 'generateDonorDashboardPage' );
 
 		Hooks::addAction( 'admin_notices', UpgradeNotice::class, 'register' );
 		Hooks::addAction( 'admin_notices', SuccessNotice::class, 'register' );

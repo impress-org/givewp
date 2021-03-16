@@ -11,7 +11,7 @@ const App = () => {
 
 	const GlobalStyles = createGlobalStyle`
 	:root {
-		--give-donor-profile-accent-color: ${ accentColor };
+		--give-donor-dashboard-accent-color: ${ accentColor };
 	}
 	`;
 

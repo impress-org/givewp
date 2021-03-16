@@ -7,7 +7,7 @@ export const fetchAnnualReceiptsFromAPI = () => {
 	const { dispatch } = store;
 
 	dispatch( setQuerying( true ) );
-	axios.post( getAPIRoot() + 'give-api/v2/donor-profile/annual-receipts', {},
+	axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/annual-receipts', {},
 		{
 			headers: {
 				'X-WP-Nonce': getAPINonce(),
@@ -17,6 +17,9 @@ export const fetchAnnualReceiptsFromAPI = () => {
 		.then( ( data ) => {
 			const { receipts } = data;
 			dispatch( setAnnualReceipts( receipts ) );
+			dispatch( setQuerying( false ) );
+		} )
+		.catch( () => {
 			dispatch( setQuerying( false ) );
 		} );
 };

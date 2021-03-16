@@ -11,7 +11,7 @@ use Give\DonorProfiles\Pipeline\Stages\UpdateDonorEmails;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAddresses;
 use Give\DonorProfiles\Pipeline\Stages\UpdateDonorAnonymousGiving;
 
-use Give\DonorProfiles\Helpers as DonorProfileHelpers;
+use Give\DonorProfiles\Helpers as DonorDashboardHelpers;
 
 /**
  * @since 2.10.0
@@ -22,7 +22,7 @@ class Profile {
 	protected $id;
 
 	public function __construct() {
-		$donorId = DonorProfileHelpers::getCurrentDonorId();
+		$donorId = DonorDashboardHelpers::getCurrentDonorId();
 		if ( $donorId ) {
 			$donorFactory = new DonorFactory;
 			$this->donor  = $donorFactory->make( $donorId );
@@ -80,7 +80,7 @@ class Profile {
 			'firstName'         => $this->donor->get_first_name(),
 			'lastName'          => $this->donor->get_last_name(),
 			'emails'            => $this->donor->emails,
-			'sinceLastDonation' => human_time_diff( strtotime( $this->donor->get_last_donation_date() ) ),
+			'sinceLastDonation' => ! empty( $this->donor->get_last_donation_date() ) ? human_time_diff( strtotime( $this->donor->get_last_donation_date() ) ) : '',
 			'avatarUrl'         => $this->getAvatarUrl(),
 			'avatarId'          => $this->getAvatarId(),
 			'sinceCreated'      => human_time_diff( strtotime( $this->donor->date_created ) ),

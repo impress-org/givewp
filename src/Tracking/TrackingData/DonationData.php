@@ -1,8 +1,9 @@
 <?php
 namespace Give\Tracking\TrackingData;
 
-use Give\Helpers\ArrayDataSet;
+use Give\Framework\Database\DB;
 use Give\Tracking\Contracts\TrackData;
+use Give\Tracking\Helpers\DonationStatuses;
 
 /**
  * Class DonationData
@@ -14,6 +15,15 @@ use Give\Tracking\Contracts\TrackData;
  * @since 2.10.0
  */
 class DonationData implements TrackData {
+	private $donationStatuses;
+
+	/**
+	 * DonationData constructor.
+	 */
+	public function __construct() {
+		$this->donationStatuses = DonationStatuses::getCompletedDonationsStatues( true );
+	}
+
 	/**
 	 * @inheritdoc
 	 * @return array|void
@@ -35,15 +45,15 @@ class DonationData implements TrackData {
 	private function getFirstDonationDate() {
 		global $wpdb;
 
-		$date = $wpdb->get_var(
+		$date = DB::get_var(
 			"
 			SELECT post_date_gmt
 			FROM {$wpdb->posts} as p
 				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$this->getDonationStatuses()})
+			WHERE post_status IN ({$this->donationStatuses})
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
-			ORDER BY post_date_gmt DESC
+			ORDER BY post_date_gmt ASC
 			LIMIT 1
 			"
 		);
@@ -60,15 +70,15 @@ class DonationData implements TrackData {
 	private function getLastDonationDate() {
 		global $wpdb;
 
-		$date = $wpdb->get_var(
+		$date = DB::get_var(
 			"
 			SELECT post_date_gmt
 			FROM {$wpdb->posts} as p
 				INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-			WHERE post_status IN ({$this->getDonationStatuses()})
+			WHERE post_status IN ({$this->donationStatuses})
 				AND dm.meta_key='_give_payment_mode'
 				AND dm.meta_value='live'
-			ORDER BY post_date_gmt ASC
+			ORDER BY post_date_gmt DESC
 			LIMIT 1
 			"
 		);
@@ -85,39 +95,15 @@ class DonationData implements TrackData {
 	public function getRevenueTillNow() {
 		global $wpdb;
 
-		$statues = $this->getDonationStatuses();
-
-		$result = (int) $wpdb->get_var(
-			$wpdb->prepare(
-				"
-				SELECT SUM(amount)
-				FROM {$wpdb->give_revenue} as r
-					INNER JOIN {$wpdb->posts} as p ON r.donation_id=p.id
-					INNER JOIN {$wpdb->donationmeta} as dm ON p.id=dm.donation_id
-				WHERE p.post_date<=%s
-					AND post_status IN ({$statues})
-					AND dm.meta_key='_give_payment_mode'
-					AND dm.meta_value='live'
-				",
-				current_time( 'mysql' )
-			)
+		$result = (int) DB::get_var(
+			"
+			SELECT SUM(r.amount)
+			FROM {$wpdb->give_revenue} as r
+				INNER JOIN {$wpdb->donationmeta} as dm ON r.donation_id=dm.donation_id
+			WHERE dm.meta_key='_give_payment_mode'
+				AND dm.meta_value='live'
+			"
 		);
 		return $result ?: 0;
-	}
-
-	/**
-	 * Get donation statuses string.
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	private function getDonationStatuses() {
-		return ArrayDataSet::getStringSeparatedByCommaEnclosedWithSingleQuote(
-			[
-				'publish', // One time donation
-				'give_subscription', // Renewal
-			]
-		);
 	}
 }

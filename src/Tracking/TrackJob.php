@@ -5,8 +5,10 @@ namespace Give\Tracking;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Enum\EventType;
+use Give\Tracking\Events\EditedDonationFormsTracking;
 use Give\Tracking\Helpers\Track as TrackHelper;
 use Give\Tracking\Repositories\TrackEvents;
+use Give\Tracking\TrackingData\EditedDonationFormsData;
 
 /**
  * Class TrackJob
@@ -60,6 +62,10 @@ class TrackJob {
 
 		$this->trackEvents->saveRequestTime();
 		$this->trackEvents->removeTrackList();
+
+		if ( in_array( EditedDonationFormsData::class, $recordedTracks, true ) ) {
+			$this->trackEvents->removeRecentlyEditedDonationFormList();
+		}
 	}
 
 	/**

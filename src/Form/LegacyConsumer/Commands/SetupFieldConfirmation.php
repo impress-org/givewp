@@ -13,52 +13,52 @@ class SetupFieldConfirmation {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $hook
+	 * @param Donation $payment
+	 * @param array $receiptArgs
 	 */
-	public function __construct( $hook ) {
-		$this->hook = $hook;
-	}
-
-
-	/**
-	 * @unreleased
-	 *
-	 * @return void
-	 */
-	public function __invoke() {
-		add_action(
-			'give_payment_receipt_after',
-			[ $this, 'process' ],
-			10,
-			2
-		);
-	}
-
-	/**
-	 * @unreleased
-	 *
-	 * @param $payment
-	 * @param array $receipt_args
-	 *
-	 * @return void
-	 */
-	public function process( $payment, $receipt_args ) {
-
+	public function __construct( $payment, $receiptArgs ) {
 		$this->payment     = $payment;
-		$this->receiptArgs = $receipt_args;
-		$this->donationID  = $payment->ID;
+		$this->receiptArgs = $receiptArgs;
+	}
 
-		$formID = give_get_payment_meta( $this->donationId, '_give_payment_form_id' );
+	/**
+	 * @unreleased
+	 *
+	 * @param string $hook
+	 *
+	 * @return void
+	 */
+	public function __invoke( $hook ) {
+
+		$formID = give_get_payment_meta( $this->payment->ID, '_give_payment_form_id' );
 
 		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$this->hook}", $fieldCollection, $formID );
+		do_action( "give_fields_{$hook}", $fieldCollection, $formID );
 
 		$fieldCollection->walk( [ $this, 'render' ] );
 	}
 
+	/**
+	 * @unreleased
+	 *
+	 * @param FormField $field
+	 *
+	 * @return void
+	 */
 	public function render( FormField $field ) {
 
 		if ( ! $field->shouldShowInReceipt() ) {
+			return;
+		}
+
+		if ( $field->shouldStoreAsDonorMeta() ) {
+			$donorID = give_get_payment_meta( $this->payment->ID, '_give_payment_donor_id' );
+			$value   = Give()->donor_meta->get_meta( $donorID, $field->getName(), true );
+		} else {
+			$value = give_get_payment_meta( $this->payment->ID, $field->getName() );
+		}
+
+		if ( ! $value ) {
 			return;
 		}
 
@@ -70,14 +70,7 @@ class SetupFieldConfirmation {
 					</strong>
 				</td>
 				<td>
-				<?php if ( $field->shouldStoreAsDonorMeta() ) : ?>
-					<?php
-						$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
-						echo Give()->donor_meta->get_meta( $donorID, $field->getName(), true );
-					?>
-				<?php else : ?>
-					<?php echo give_get_payment_meta( $this->donationID, $field->getName() ); ?>
-				<?php endif; ?>
+					<?php echo $value; ?>
 				</td>
 			</tr>
 		<?php

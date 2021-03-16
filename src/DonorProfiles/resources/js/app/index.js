@@ -17,12 +17,12 @@ import { store } from './store';
 import { registerDefaultTabs } from './tabs';
 import { registerTab } from './utils';
 
-// DonorProfiles app
+// DonorDashboards app
 import App from './components/app';
 
 import './style.scss';
 
-window.giveDonorProfile = {
+window.giveDonorDashboard = {
 	store,
 	utils: {
 		registerTab,
@@ -35,7 +35,7 @@ ReactDOM.render(
 			<App />
 		</Router>
 	</Provider>,
-	document.getElementById( 'give-donor-profile' )
+	document.getElementById( 'give-donor-dashboard' )
 );
 
 registerDefaultTabs();

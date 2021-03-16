@@ -26,7 +26,7 @@ class CreateMigrationsTable extends Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return  esc_html__( 'Create new give_migrations table' );
+		return  esc_html__( 'Create new give_migrations table', 'give' );
 	}
 
 	/**
@@ -48,7 +48,7 @@ class CreateMigrationsTable extends Migration {
 		$charset = DB::get_charset_collate();
 
 		$sql = "CREATE TABLE {$table} (
-			id VARCHAR(64) NOT NULL,
+			id VARCHAR(255) NOT NULL,
 			status VARCHAR(16) NOT NULL,
 			error text NULL,
 			last_run DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

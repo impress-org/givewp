@@ -6,14 +6,14 @@ import './style.scss';
 
 const DesktopLayout = () => {
 	return (
-		<div className="give-donor-profile-desktop-layout">
-			<div className="give-donor-profile-desktop-layout__donor-info">
+		<div className="give-donor-dashboard-desktop-layout">
+			<div className="give-donor-dashboard-desktop-layout__donor-info">
 				<DonorInfo />
 			</div>
-			<div className="give-donor-profile-desktop-layout__tab-menu">
+			<div className="give-donor-dashboard-desktop-layout__tab-menu">
 				<TabMenu />
 			</div>
-			<div className="give-donor-profile-desktop-layout__tab-content">
+			<div className="give-donor-dashboard-desktop-layout__tab-content">
 				<TabContent />
 			</div>
 		</div>

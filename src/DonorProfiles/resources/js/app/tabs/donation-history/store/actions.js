@@ -16,6 +16,15 @@ export const setQuerying = ( querying ) => {
 	};
 };
 
+export const setError = ( error ) => {
+	return {
+		type: 'SET_ERROR',
+		payload: {
+			error,
+		},
+	};
+};
+
 export const setCount = ( count ) => {
 	return {
 		type: 'SET_COUNT',
@@ -39,6 +48,15 @@ export const setRevenue = ( revenue ) => {
 		type: 'SET_REVENUE',
 		payload: {
 			revenue,
+		},
+	};
+};
+
+export const setCurrency = ( currency ) => {
+	return {
+		type: 'SET_CURRENCY',
+		payload: {
+			currency,
 		},
 	};
 };

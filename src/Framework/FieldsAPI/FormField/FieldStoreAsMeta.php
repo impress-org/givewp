@@ -17,8 +17,8 @@ trait FieldStoreAsMeta {
 	 * @unreleased
 	 * @return $this
 	 */
-	public function storeAsDonorMeta() {
-		$this->storeAsDonorMeta = true;
+	public function storeAsDonorMeta( $storeAsDonorMeta = true ) {
+		$this->storeAsDonorMeta = (bool) $storeAsDonorMeta;
 		return $this;
 	}
 

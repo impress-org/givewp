@@ -18,8 +18,8 @@ class Settings {
 	public function register( $settings ) {
 
 		$donorProfileSettings = [
-			$this->getDonorProfilePageSetting(),
-			$this->donorProfilePageIsPublished() ? $this->getOverrideLegacyDonationManagementPagesSetting() : null,
+			$this->getDonorDashboardPageSetting(),
+			$this->donorDashboardPageIsPublished() ? $this->getOverrideLegacyDonationManagementPagesSetting() : null,
 		];
 
 		return give_settings_array_insert(
@@ -36,9 +36,9 @@ class Settings {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function donorProfilePageIsPublished() {
-		$donorProfilePageId = ! empty( give_get_option( 'donor_profile_page' ) ) ? give_get_option( 'donor_profile_page' ) : null;
-		return $donorProfilePageId && get_post_status( $donorProfilePageId ) === 'publish';
+	protected function donorDashboardPageIsPublished() {
+		$donorDashboardPageId = ! empty( give_get_option( 'donor_dashboard_page' ) ) ? give_get_option( 'donor_dashboard_page' ) : null;
+		return $donorDashboardPageId && get_post_status( $donorDashboardPageId ) === 'publish';
 	}
 
 	/**
@@ -48,19 +48,21 @@ class Settings {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function getDonorProfilePageSetting() {
+	protected function getDonorDashboardPageSetting() {
 
-		$generateDonorProfilePageUrl = add_query_arg(
+		$generateDonorDashboardPageUrl = add_query_arg(
 			[
-				'give-generate-donor-profile-page' => '1',
+				'give-generate-donor-dashboard-page' => '1',
 			],
 			admin_url( 'edit.php' )
 		);
 
+		$generateDonorDashboardPageDesc = $this->donorDashboardPageIsPublished() ? '' : sprintf( __( ' Need helping setting one up? <a href="%s">Generate a new Donor Dashboard page.</a>', 'give' ), $generateDonorDashboardPageUrl );
+
 		return [
-			'name'       => __( 'Donor Profile Page', 'give' ),
-			'desc'       => sprintf( __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Profile block or <code>[give_donor_profile]</code> shortcode should be on this page. Need helping setting one up? Let us <a href="%s">generate one for you.</a>', 'give' ), $generateDonorProfilePageUrl ),
-			'id'         => 'donor_profile_page',
+			'name'       => __( 'Donor Dashboard Page', 'give' ),
+			'desc'       => __( 'This is the page where donors can manage their information, review history and more -- all in one place. The Donor Dashboard block or <code>[give_donor_dashboard]</code> shortcode should be on this page. ', 'give' ) . $generateDonorDashboardPageDesc,
+			'id'         => 'donor_dashboard_page',
 			'type'       => 'select',
 			'class'      => 'give-select give-select-chosen',
 			'options'    => give_cmb2_get_post_options(
@@ -85,8 +87,8 @@ class Settings {
 	 */
 	protected function getOverrideLegacyDonationManagementPagesSetting() {
 		return [
-			'name'          => esc_html__( 'Override Legacy Donation Managment Pages', 'give' ),
-			'desc'          => esc_html__( 'Use Donor Profile in favor of legacy donation management pages (Donation History, Edit Proifle, Subscriptions, etc).', 'give' ),
+			'name'          => esc_html__( 'Override Legacy Donation Management Pages', 'give' ),
+			'desc'          => esc_html__( 'Use Donor Dashboard in favor of legacy donation management pages (Donation History, Edit Proifle, Subscriptions, etc).', 'give' ),
 			'id'            => 'override_legacy_donation_management_pages',
 			'wrapper_class' => 'override-legacy-donation-management-pages',
 			'type'          => 'radio_inline',
@@ -105,16 +107,16 @@ class Settings {
 	 *
 	 * @since 2.10.0
 	 */
-	public function generateDonorProfilePage() {
+	public function generateDonorDashboardPage() {
 
-		$content = $this->getDonorProfilePageContent( 'block' );
+		$content = $this->getDonorDashboardPageContent( 'block' );
 
 		$pageId = wp_insert_post(
 			[
 				'comment_status' => 'close',
 				'ping_status'    => 'close',
 				'post_author'    => 1,
-				'post_title'     => __( 'Donor Profile', 'give' ),
+				'post_title'     => __( 'Donor Dashboard', 'give' ),
 				'post_status'    => 'publish',
 				'post_content'   => $content,
 				'post_type'      => 'page',
@@ -123,7 +125,7 @@ class Settings {
 
 		if ( $pageId ) {
 
-			give_update_option( 'donor_profile_page', $pageId );
+			give_update_option( 'donor_dashboard_page', $pageId );
 
 			give_update_option( 'override_legacy_donation_management_pages', 'enabled' );
 
@@ -149,12 +151,12 @@ class Settings {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function getDonorProfilePageContent( $format ) {
+	protected function getDonorDashboardPageContent( $format ) {
 
 		switch ( $format ) {
 			case 'block': {
 				return get_comment_delimited_block_content(
-					'give/donor-profile',
+					'give/donor-dashboard',
 					[
 						'align' => 'wide',
 					],
@@ -162,7 +164,7 @@ class Settings {
 				);
 			}
 			case 'shortcode': {
-				return '[give_donor_profile]';
+				return '[give_donor_dashboard]';
 			}
 			default: {
 				return null;
@@ -182,9 +184,9 @@ class Settings {
 	public function overrideLegacyDonationManagementPageSettings( $settings ) {
 
 		// Only override settings if the the override legacy donation management pages setting is enabled
-		if ( $this->donorProfilePageIsPublished() && give_is_setting_enabled( give_get_option( 'override_legacy_donation_management_pages', 'enabled' ) ) ) {
+		if ( $this->donorDashboardPageIsPublished() && give_is_setting_enabled( give_get_option( 'override_legacy_donation_management_pages', 'enabled' ) ) ) {
 
-			$pageId = give_get_option( 'donor_profile_page' );
+			$pageId = give_get_option( 'donor_dashboard_page' );
 
 			$overrideSettingsMap = [
 				'history_page',

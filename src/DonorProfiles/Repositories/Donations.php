@@ -3,6 +3,7 @@ namespace Give\DonorProfiles\Repositories;
 
 use Give\ValueObjects\Money;
 use Give\Framework\Database\DB;
+use Give\Receipt\DonationReceipt;
 use InvalidArgumentException;
 
 /**
@@ -19,7 +20,7 @@ class Donations {
 	 */
 	public function getDonationCount( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'count(revenue.id)', $donorId );
-		return $aggregate->result;
+		return $aggregate ? $aggregate->result : null;
 	}
 
 	/**
@@ -32,8 +33,7 @@ class Donations {
 	 */
 	public function getRevenue( $donorId ) {
 		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
-		error_log( serialize( $aggregate ) );
-		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
+		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
 	}
 
 	/**
@@ -45,9 +45,8 @@ class Donations {
 	 * @return string
 	 */
 	public function getAverageRevenue( $donorId ) {
-		;
 		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() );
+		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
 	}
 
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
@@ -76,33 +75,29 @@ class Donations {
 	 */
 	protected function getDonationIDs( $donorId ) {
 		global $wpdb;
-
-		$result = $wpdb->get_results(
-			$wpdb->prepare(
+		$result = DB::get_results(
+			DB::prepare(
 				"
-                SELECT 
-                    donation_id as id
-                FROM 
-                    {$wpdb->give_revenue} as revenue
-                INNER JOIN 
-                    {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
-                WHERE 
-                    posts.post_author = %d
-                AND 
-                    posts.post_status IN ( 'publish', 'give_subscription' )
-				",
-				$donorId
+				SELECT revenue.donation_id as id
+				FROM {$wpdb->give_revenue} as revenue
+					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
+					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
+				WHERE donationmeta.meta_key = '_give_payment_donor_id'
+					AND donationmeta.meta_value = {$donorId}
+					AND posts.post_status IN ( 'publish', 'give_subscription' )
+			"
 			)
 		);
 
 		$ids = [];
-		if ( $result ) {
+		if ( ! empty( $result ) ) {
 			foreach ( $result as $donation ) {
 				$ids[] = $donation->id;
 			}
+			return $ids;
 		}
 
-		return $ids;
+		return null;
 	}
 
 
@@ -117,6 +112,10 @@ class Donations {
 	public function getDonations( $donorId ) {
 
 		$ids = $this->getDonationIds( $donorId );
+
+		if ( $ids === null ) {
+			return null;
+		}
 
 		$args = [
 			'number'   => -1,
@@ -133,6 +132,7 @@ class Donations {
 				'form'    => $this->getFormInfo( $payment ),
 				'payment' => $this->getPaymentInfo( $payment ),
 				'donor'   => $this->getDonorInfo( $payment ),
+				'receipt' => $this->getReceiptInfo( $payment ),
 			];
 		}
 		return $donations;
@@ -184,6 +184,104 @@ class Donations {
 	}
 
 	/**
+	 * Get array containing dynamic receipt information
+	 *
+	 * @param Give_Payment $payment
+	 * @return array
+	 * @since 2.10.0
+	 */
+	protected function getReceiptInfo( $payment ) {
+
+		$receipt = new DonationReceipt( $payment->ID );
+
+		/**
+		 * Fire the action for receipt object.
+		 *
+		 * @since 2.7.0
+		 */
+		do_action( 'give_new_receipt', $receipt );
+
+		$receiptArr = [];
+
+		$sectionIndex = 0;
+		foreach ( $receipt as $section ) {
+			// Continue if section does not have line items.
+			if ( ! $section->getLineItems() ) {
+				continue;
+			}
+
+			if ( 'PDFReceipt' === $section->id ) {
+				continue;
+			}
+
+			if ( 'Subscription' === $section->id ) {
+				continue;
+			}
+
+			$receiptArr[ $sectionIndex ]['id'] = $section->id;
+
+			if ( $section->label ) {
+				$receiptArr[ $sectionIndex ]['label'] = $section->label;
+			}
+
+			/* @var LineItem $lineItem */
+			foreach ( $section as $lineItem ) {
+				// Continue if line item does not have value.
+				if ( ! $lineItem->value ) {
+					continue;
+				}
+
+				// This class is required to highlight total donation amount in receipt.
+				$detailRowClass = '';
+				if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
+					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+				}
+
+				$receiptArr[ $sectionIndex ]['lineItems'][] = [
+					'class' => $detailRowClass,
+					'icon'  => $this->getIcon( $lineItem->icon ),
+					'label' => html_entity_decode( wp_strip_all_tags( $lineItem->label ) ),
+					'value' => html_entity_decode( wp_strip_all_tags( $lineItem->value ) ),
+				];
+
+			}
+
+			$sectionIndex++;
+		}
+
+		return $receiptArr;
+	}
+
+	/**
+	 * Get icon based on icon HTML string
+	 *
+	 * @param string $iconHtml
+	 * @return string
+	 * @since 2.10.0
+	 */
+	protected function getIcon( $iconHtml ) {
+
+		if ( empty( $iconHtml ) ) {
+			return '';
+		}
+
+		$iconMap = [
+			'user',
+			'envelope',
+			'globe',
+			'calendar',
+			'building',
+		];
+
+		foreach ( $iconMap as $icon ) {
+			if ( strpos( $iconHtml, $icon ) !== false ) {
+				return $icon;
+			}
+		}
+
+	}
+
+	/**
 	 * Get formatted status object (used for rendering status correctly in Donor Profile)
 	 *
 	 * @param string $status
@@ -209,7 +307,7 @@ class Donations {
 			$amount,
 			[
 				'decimal' => false,
-			],
+			]
 		);
 
 		return $formatted;

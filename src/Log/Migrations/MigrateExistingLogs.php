@@ -5,6 +5,7 @@ namespace Give\Log\Migrations;
 use Give\Log\LogFactory;
 use Give\Framework\Database\DB;
 use Give\Log\Helpers\LogTypeHelper;
+use Give\Log\Helpers\LegacyLogsTable;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give_Updates;
 
@@ -16,19 +17,31 @@ class MigrateExistingLogs extends Migration {
 	private $logTypeHelper;
 
 	/**
+	 * @var LegacyLogsTable
+	 */
+	private $legacyLogsTable;
+
+	/**
 	 * MigrateExistingLogs constructor.
 	 *
 	 * @param  LogTypeHelper  $logTypeHelper
+	 * @param  LegacyLogsTable  $legacyLogsTable
 	 */
-	public function __construct( LogTypeHelper $logTypeHelper ) {
-		$this->logTypeHelper = $logTypeHelper;
+	public function __construct(
+		LogTypeHelper $logTypeHelper,
+		LegacyLogsTable $legacyLogsTable
+	) {
+		$this->logTypeHelper   = $logTypeHelper;
+		$this->legacyLogsTable = $legacyLogsTable;
 	}
+
 	/**
 	 * Register background update.
 	 *
-	 * @param Give_Updates $give_updates
-	 *
 	 * @since 2.10.0
+	 *
+	 * @param  Give_Updates  $give_updates
+	 *
 	 */
 	public function register( $give_updates ) {
 		$give_updates->register(
@@ -51,7 +64,7 @@ class MigrateExistingLogs extends Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return  esc_html__( 'Migrate existing logs to give_log table' );
+		return esc_html__( 'Migrate existing logs to give_log table', 'give' );
 	}
 
 	/**
@@ -67,17 +80,25 @@ class MigrateExistingLogs extends Migration {
 	public function run() {
 		global $wpdb;
 
+		// Check if legacy table exist
+		if ( ! $this->legacyLogsTable->exist() ) {
+			return;
+		}
+
 		$logs_table    = "{$wpdb->prefix}give_logs";
 		$logmeta_table = "{$wpdb->prefix}give_logmeta";
-		$give_updates  = Give_Updates::get_instance();
 
-		$perBatch = 100;
+		$give_updates = Give_Updates::get_instance();
+
+		$perBatch = 500;
+
+		$offset = ( $give_updates->step - 1 ) * $perBatch;
 
 		$result = DB::get_results(
 			DB::prepare(
-				"SELECT * FROM {$logs_table} LIMIT %d, %d",
+				"SELECT * FROM {$logs_table} LIMIT %d OFFSET %d",
 				$perBatch,
-				$give_updates->step * $perBatch
+				$offset
 			)
 		);
 

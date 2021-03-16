@@ -12,23 +12,23 @@ const SubscriptionCancelModal = ( { id, onRequestClose } ) => {
 	};
 
 	return (
-		<div className="give-donor-profile-cancel-modal">
-			<div className="give-donor-profile-cancel-modal__frame">
-				<div className="give-donor-profile-cancel-modal__header">
+		<div className="give-donor-dashboard-cancel-modal">
+			<div className="give-donor-dashboard-cancel-modal__frame">
+				<div className="give-donor-dashboard-cancel-modal__header">
 					{ __( 'Cancel Subscription?', 'give' ) }
 				</div>
-				<div className="give-donor-profile-cancel-modal__body">
-					<div className="give-donor-profile-cancel-modal__buttons">
+				<div className="give-donor-dashboard-cancel-modal__body">
+					<div className="give-donor-dashboard-cancel-modal__buttons">
 						<Button onClick={ () => handleCancel() }>
 							{ __( 'Yes, cancel', 'give' ) }
 						</Button>
-						<a onClick={ () => onRequestClose() }>
+						<a className="give-donor-dashboard-cancel-modal__cancel" onClick={ () => onRequestClose() }>
 							{ __( 'Nevermind', 'give' ) }
 						</a>
 					</div>
 				</div>
 			</div>
-			<div className="give-donor-profile-cancel-modal__bg" onClick={ () => onRequestClose() } />
+			<div className="give-donor-dashboard-cancel-modal__bg" onClick={ () => onRequestClose() } />
 		</div>
 	);
 };

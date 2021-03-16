@@ -40,12 +40,12 @@ const EmailControls = ( { primaryEmail, additionalEmails, onChangePrimaryEmail, 
 					onChange={ ( value ) => setAdditionalEmail( value, index ) }
 					icon="envelope"
 				/>
-				<div className="give-donor-profile__email-controls">
-					<div className="give-donor-profile__make-primary-email" onClick={ () => makePrimaryEmail( email, index ) }>
+				<div className="give-donor-dashboard__email-controls">
+					<div className="give-donor-dashboard__make-primary-email" onClick={ () => makePrimaryEmail( email, index ) }>
 						{ __( 'Make Primary', 'give' ) }
 					</div>
 					|
-					<div className="give-donor-profile__delete-email" onClick={ () => removeAdditionalEmail( index ) }>
+					<div className="give-donor-dashboard__delete-email" onClick={ () => removeAdditionalEmail( index ) }>
 						{ __( 'Delete', 'give' ) }
 					</div>
 				</div>

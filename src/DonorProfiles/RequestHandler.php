@@ -2,8 +2,9 @@
 
 namespace Give\DonorProfiles;
 
-use Give\DonorProfiles\App;
+use _WP_Dependency;
 use Give\DonorProfiles\Admin\Settings;
+use WP_Query;
 
 /**
  * @since 2.10.0
@@ -18,26 +19,26 @@ class RequestHandler {
 	 */
 	public function filterQueryVars( $vars ) {
 		$vars[] = 'give-embed';
-		$vars[] = 'give-generate-donor-profile-page';
-		$vars[] = 'give-generated-donor-profile-page';
+		$vars[] = 'give-generate-donor-dashboard-page';
+		$vars[] = 'give-generated-donor-dashboard-page';
 		return $vars;
 	}
 
 	/**
-	 * Load donor profile markup, if donor profile exists in query vars
+	 * Load donor dashboard markup, if donor dashboard exists in query vars
 	 *
 	 * @param WP_Query $query
 	 * @return void
 	 */
 	public function parseRequest( $query ) {
 
-		if ( is_admin() && array_key_exists( 'give-generate-donor-profile-page', $query->query_vars ) ) {
-			( new Settings() )->generateDonorProfilePage();
-			wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&give-generated-donor-profile-page=1' ) );
+		if ( is_admin() && array_key_exists( 'give-generate-donor-dashboard-page', $query->query_vars ) ) {
+			( new Settings() )->generateDonorDashboardPage();
+			wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&give-generated-donor-dashboard-page=1' ) );
 			exit;
 		}
 
-		if ( array_key_exists( 'give-embed', $query->query_vars ) && $query->query_vars['give-embed'] === 'donor-profile' ) {
+		if ( array_key_exists( 'give-embed', $query->query_vars ) && $query->query_vars['give-embed'] === 'donor-dashboard' ) {
 
 			$this->setUpFrontendHooks();
 

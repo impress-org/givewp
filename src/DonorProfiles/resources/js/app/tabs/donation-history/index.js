@@ -8,7 +8,7 @@ import { fetchDonationsDataFromAPI } from './utils';
 export const registerDonationHistoryTab = () => {
 	fetchDonationsDataFromAPI();
 
-	window.giveDonorProfile.utils.registerTab( {
+	window.giveDonorDashboard.utils.registerTab( {
 		label: __( 'Donation History', 'give' ),
 		icon: 'calendar-alt',
 		slug: 'donation-history',
