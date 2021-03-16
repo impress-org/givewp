@@ -8,43 +8,65 @@ use Give_License;
  * Class ApplicationFee
  * @package Give\PaymentGateways\Stripe
  *
+ * @see https://github.com/impress-org/givewp/issues/5555#issuecomment-759596226
+ *
  * @unreleased
  */
 class ApplicationFee {
+
 	/**
-	 * @see https://github.com/impress-org/givewp/issues/5555#issuecomment-759596226
+	* @note Plugin slug (which we get from givewp.com) and plugin name are fixed and will never change, so we can hardcode it.
+	*/
+
+	const PluginSlug = 'give-stripe';
+	const PluginName = 'Give - Stripe Gateway';
+
+	/**
+	 *
 	 * @unreleased
 	 *
 	 * @return bool
 	 */
 	public static function canAddFee() {
-		// Plugin slug (which we get from givewp.com) and plugin name are fixed and will never change, so we can hardcode it.
-		$pluginSlug = 'give-stripe';
-		$pluginName = 'Give - Stripe Gateway';
 
-		$isStripeProAddonActive = defined( 'GIVE_STRIPE_VERSION' );
+		$gate = new static();
 
-		if ( $isStripeProAddonActive ) {
-			return false;
-		}
-
-		$isStripeProAddonInstalled = (bool) array_filter(
-			get_plugins(),
-			static function( $pluginsData ) use ( $pluginName ) {
-				return $pluginName === $pluginsData['Name'];
-			}
-		);
-
-		if ( $isStripeProAddonInstalled ) {
-			return false;
-		}
-
-		$hasLicense = (bool) Give_License::get_license_by_plugin_dirname( $pluginSlug );
-
-		if ( $hasLicense ) {
+		if (
+			$gate->hasLicense
+		 || $gate->isStripeProAddonActive
+		 || $gate->isStripeProAddonInstalled( get_plugins() )
+		) {
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isStripeProAddonActive() {
+		return (bool) defined( 'GIVE_STRIPE_VERSION' );
+	}
+
+	/**
+	 * @param array $plugins Array of arrays of plugin data, keyed by plugin file name. See get_plugin_data().
+	 *
+	 * @return bool
+	 */
+	public function isStripeProAddonInstalled( array $plugins ) {
+		return (bool) array_filter(
+			$plugins,
+			static function( $plugin ) {
+				return static::PluginName === $plugin['Name'];
+			}
+		);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasLicense() {
+		return (bool) Give_License::get_license_by_plugin_dirname( static::PluginSlug );
 	}
 }
