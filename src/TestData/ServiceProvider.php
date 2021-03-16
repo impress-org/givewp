@@ -11,6 +11,7 @@ use Give\TestData\Commands\DonationSeedCommand;
 use Give\TestData\Commands\DonationStatusCommand;
 use Give\TestData\Commands\FormSeedCommand;
 use Give\TestData\Commands\PageSeedCommand;
+use Give\TestData\Commands\LogsSeedCommand;
 use Give\ServiceProviders\ServiceProvider as GiveServiceProvider;
 
 /**
@@ -79,5 +80,6 @@ class ServiceProvider implements GiveServiceProvider {
 		WP_CLI::add_command( 'give test-donation-statuses', give()->make( DonationStatusCommand::class ) );
 		WP_CLI::add_command( 'give test-demonstration-page', give()->make( PageSeedCommand::class ) );
 		WP_CLI::add_command( 'give test-donation-form', give()->make( FormSeedCommand::class ) );
+		WP_CLI::add_command( 'give test-logs', give()->make( LogsSeedCommand::class ) );
 	}
 }

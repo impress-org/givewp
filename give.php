@@ -50,7 +50,7 @@ use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
-use Give\DonorProfiles\ServiceProvider as DonorProfilesServiceProvider;
+use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -147,7 +147,7 @@ final class Give {
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
-		DonorProfilesServiceProvider::class,
+		DonorDashboardsServiceProvider::class,
 		TrackingServiceProvider::class,
 		TestDataServiceProvider::class,
 		MigrationLogServiceProvider::class,

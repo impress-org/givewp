@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 const { __ } = wp.i18n;
 
-const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
+const Modal = ( { visible, type, children, isLoading, handleClose, ...rest } ) => {
 	const closeModal = useCallback( ( event ) => {
 		if ( event.keyCode === 27 && typeof handleClose === 'function' ) {
 			handleClose();
@@ -37,7 +37,7 @@ const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
 	} );
 
 	return (
-		<div className={ classNames( { [ styles.overlay ]: visible } ) } onClick={ handleOverlayClick }>
+		<div className={ classNames( { [ styles.overlay ]: visible } ) } onClick={ handleOverlayClick } { ...rest }>
 			<div className={ styles.container }>
 				<div className={ modalStyles }>
 					{ isLoading && (
@@ -52,34 +52,34 @@ const Modal = ( { visible, type, children, isLoading, handleClose } ) => {
 	);
 };
 
-Modal.Title = ( { children } ) => {
+Modal.Title = ( { children, ...rest } ) => {
 	return (
-		<div className={ styles.title }>
+		<div className={ styles.title } { ...rest }>
 			{ children }
 		</div>
 	);
 };
 
-Modal.CloseIcon = ( { onClick } ) => {
+Modal.CloseIcon = ( { onClick, ...rest } ) => {
 	return (
 		<div className={ styles.closeIconContainer }>
-			<div className={ styles.close } onClick={ onClick }>
+			<div className={ styles.close } onClick={ onClick } { ...rest }>
 				<span className="dashicons dashicons-no" />
 			</div>
 		</div>
 	);
 };
 
-Modal.Section = ( { title, content } ) => {
+Modal.Section = ( { title, content, ...rest } ) => {
 	return (
-		<div className={ styles.section }>
+		<div className={ styles.section } { ...rest }>
 			<strong>{ title }:</strong>
 			{ content }
 		</div>
 	);
 };
 
-Modal.Content = ( { children, align } ) => {
+Modal.Content = ( { children, align, ...rest } ) => {
 	const contentClasses = classNames( {
 		[ styles.innerContent ]: true,
 		[ styles.textCenter ]: align === 'center',
@@ -88,17 +88,17 @@ Modal.Content = ( { children, align } ) => {
 	} );
 
 	return (
-		<div className={ contentClasses }>
+		<div className={ contentClasses } { ...rest }>
 			{ children }
 		</div>
 	);
 };
 
-Modal.AdditionalContext = ( { type, context } ) => {
+Modal.AdditionalContext = ( { type, context, ...rest } ) => {
 	const title = ( [ 'error', 'failed' ].includes( type ) ) ? __( 'Error details', 'give' ) : __( 'Additional context', 'give' );
 
 	return (
-		<div className={ styles.section }>
+		<div className={ styles.section } { ...rest }>
 			<strong>{ title }:</strong>
 			<div className={ styles.errorDetailsContainer }>
 				<pre>
