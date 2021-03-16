@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   The spinner should go away when the PDF Receipt is generated on the Donor Dashboard (#5719)
 -   "Make Primary" address link for multiple addresses now works in Donor Dashboard (#5725)
 
+### Changed
+
+-   DonorProfiles domain namespace is now DonorDashboards (#5728)
+
 ## 2.10.0-beta.4 - 2021-03-12
 
 ### Changed
