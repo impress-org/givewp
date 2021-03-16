@@ -65,12 +65,13 @@ const Content = () => {
 
 	const [ primaryAddress, setPrimaryAddress ] = useState( storedProfile.addresses && storedProfile.addresses.billing ? storedProfile.addresses.billing[ 0 ] : null );
 
-	const reducedAdditionalAddresses = storedProfile.addresses && storedProfile.addresses.billing ? storedProfile.addresses.billing.reduce( ( newArray, address, index ) => {
+	const reducedAdditionalAddresses = storedProfile.addresses && storedProfile.addresses.billing ? Object.values( storedProfile.addresses.billing ).reduce( ( newArray, address, index ) => {
 		if ( index !== 0 ) {
 			newArray.push( address );
 		}
 		return newArray;
 	}, [] ) : [];
+
 	const [ additionalAddresses, setAdditionalAddresses ] = useState( reducedAdditionalAddresses );
 
 	const [ isAnonymous, setIsAnonymous ] = useState( storedProfile.isAnonymous );
