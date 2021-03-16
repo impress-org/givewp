@@ -42,6 +42,7 @@
         "@storybook/addon-a11y": "^5.3.19",
         "@storybook/html": "^5.3.19",
         "@wordpress/eslint-plugin": "^8.0.2",
+        "@wordpress/stylelint-config": "^19.0.1",
         "autoprefixer": "^9.5.0",
         "axios-mock-adapter": "^1.18.2",
         "babel-loader": "^8.2.2",
