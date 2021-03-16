@@ -15,10 +15,29 @@ class LogFactory extends Factory {
 	private $type;
 
 	/**
+	 * @var string
+	 */
+	private $category;
+
+	/**
 	 * @param string $type
 	 */
 	public function setLogType( $type ) {
 		$this->type = $type;
+	}
+
+	/**
+	 * @param string $category
+	 */
+	public function setLogCategory( $category ) {
+		$this->category = $category;
+	}
+
+	/**
+	 * @param string $category
+	 */
+	public function setLogSource( $source ) {
+		$this->source = $source;
 	}
 
 	/**
@@ -31,6 +50,29 @@ class LogFactory extends Factory {
 
 		return $this->type;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getLogCategory() {
+		if ( 'random' === $this->category ) {
+			return $this->randomLogCategory()();
+		}
+
+		return $this->category;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLogSource() {
+		if ( 'random' === $this->source ) {
+			return $this->faker->sentence( $nbWords = 3 );
+		}
+
+		return $this->source;
+	}
+
 	/**
 	 * Donor definition
 	 *
@@ -41,8 +83,8 @@ class LogFactory extends Factory {
 		return [
 			'type'     => $this->getLogType(),
 			'message'  => $this->faker->sentence( $nbWords = 6 ),
-			'category' => $this->randomLogCategory(),
-			'source'   => $this->faker->sentence( $nbWords = 3 ),
+			'category' => $this->getLogCategory(),
+			'source'   => $this->getLogSource(),
 			'context'  => [
 				'Info' => $this->faker->sentence( $nbWords = 6 ),
 			],
