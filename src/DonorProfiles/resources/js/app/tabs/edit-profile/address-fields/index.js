@@ -31,8 +31,10 @@ const AddressFields = ( { address, onChange } ) => {
 	const [ zip, setZip ] = useState( address.zip );
 
 	const updateStates = async( countryCode ) => {
-		const newStates = await fetchStatesWithAPI( countryCode );
-		dispatch( setStates( newStates ) );
+		if ( countryCode ) {
+			const newStates = await fetchStatesWithAPI( countryCode );
+			dispatch( setStates( newStates ) );
+		}
 	};
 
 	useEffect( () => {
