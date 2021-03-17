@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.10.0-beta.4
+ * Version: 2.10.0-rc.1
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -50,7 +50,7 @@ use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
-use Give\DonorProfiles\ServiceProvider as DonorProfilesServiceProvider;
+use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -147,7 +147,7 @@ final class Give {
 		MigrationsServiceProvider::class,
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
-		DonorProfilesServiceProvider::class,
+		DonorDashboardsServiceProvider::class,
 		TrackingServiceProvider::class,
 		TestDataServiceProvider::class,
 		MigrationLogServiceProvider::class,

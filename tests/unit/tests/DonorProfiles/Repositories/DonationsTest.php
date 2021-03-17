@@ -1,6 +1,6 @@
 <?php
 
-use Give\DonorProfiles\Repositories\Donations as DonationsRepository;
+use Give\DonorDashboards\Repositories\Donations as DonationsRepository;
 
 final class DonationsTest extends Give_Unit_Test_Case {
     

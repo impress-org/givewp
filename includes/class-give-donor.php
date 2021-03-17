@@ -1365,7 +1365,7 @@ class Give_Donor {
 		}
 
 		// Bailout: do not save duplicate orders
-		if ( $this->does_address_exist( $address_type, $address ) ) {
+		if ( $this->does_address_exist( $address_type, $address ) && $multi_address_id === null ) {
 			return false;
 		}
 
