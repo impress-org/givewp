@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe;
 
+use Give\PaymentGateways\Stripe\Repository\AccountDetail;
 use Give_License;
 
 /**
@@ -28,14 +29,23 @@ class ApplicationFee {
 	 *
 	 * @unreleased
 	 *
+	 * @param $formId
+	 *
 	 * @return bool
 	 */
-	public static function canAddFee() {
+	public static function canAddFee( $formId ) {
 		$gate = new static();
 
-		return ! ( $gate->hasLicense()
+		/* @var $accountDetailRepository AccountDetail */
+		$accountDetailRepository = give( AccountDetail::class );
+		$stripeAccountDetail     = $accountDetailRepository->getDonationFormStripeAccountId( $formId );
+		$country                 = $stripeAccountDetail->accountCountry;
+
+		return $gate->isCountrySupportApplicationFee( $country )
 			|| $gate->isStripeProAddonActive()
-			|| $gate->isStripeProAddonInstalled( get_plugins() ) );
+			|| $gate->isStripeProAddonInstalled( get_plugins() )
+			|| $gate->isCountrySupportApplicationFee( $country )
+			|| ! $gate->hasLicense();
 	}
 
 	/**
@@ -74,5 +84,18 @@ class ApplicationFee {
 	 */
 	public function hasLicense() {
 		return (bool) Give_License::get_license_by_plugin_dirname( static::PluginSlug );
+	}
+
+	/**
+	 * Return whether or not country support application fee.
+	 *
+	 * @unreleased
+	 *
+	 * @param $country
+	 *
+	 * @return bool
+	 */
+	public function isCountrySupportApplicationFee( $country ) {
+		return 'BR' !== $country;
 	}
 }
