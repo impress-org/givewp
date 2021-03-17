@@ -74,7 +74,7 @@ class AccountDetailTest extends TestCase{
 	}
 
 	public function testValidStripeAccountId(){
-		$accountId = 'account_id';
+		$accountId = 'account_1';
 		give_update_option(
 			'_give_stripe_get_all_accounts',
 			[
@@ -98,7 +98,7 @@ class AccountDetailTest extends TestCase{
 	}
 
 	public function testNotValidStripeAccountId(){
-		$accountId = 'account_id';
+		$accountId = 'account_1';
 		give_update_option(
 			'_give_stripe_get_all_accounts',
 			[
