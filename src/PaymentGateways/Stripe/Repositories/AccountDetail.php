@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Stripe\Repository;
+namespace Give\PaymentGateways\Stripe\Repositories;
 
 /**
  * Class AccountDetail

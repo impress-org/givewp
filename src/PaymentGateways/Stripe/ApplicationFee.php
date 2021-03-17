@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe;
 
-use Give\PaymentGateways\Stripe\Repository\AccountDetail;
+use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give_License;
 
 /**
