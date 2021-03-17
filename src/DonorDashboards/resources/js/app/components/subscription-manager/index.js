@@ -1,6 +1,7 @@
 import FieldRow from '../field-row';
 import Button from '../button';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const { __ } = wp.i18n;
 
@@ -12,17 +13,23 @@ import { updateSubscriptionWithAPI } from './utils';
 const SubscriptionManager = ( { id, subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
-	const [ updating, setUpdating ] = useState( false );
+	const [ isUpdating, setIsUpdating ] = useState( false );
+	const [ updated, setUpdated ] = useState( true );
+
+	useEffect( () => {
+		setUpdated( false );
+	}, [ amount, paymentMethod ] );
 
 	const handleUpdate = async() => {
 		// Save with REST API
-		setUpdating( true );
+		setIsUpdating( true );
 		await updateSubscriptionWithAPI( {
 			id,
 			amount,
 			paymentMethod,
 		} );
-		setUpdating( false );
+		setUpdated( true );
+		setIsUpdating( false );
 	};
 
 	return (
@@ -39,8 +46,16 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			/>
 			<FieldRow>
 				<div>
-					<Button icon="save" onClick={ () => handleUpdate() }>
-						{ updating ? __( 'Updating', 'give' ) : __( 'Update', 'give' ) }
+					<Button onClick={ () => handleUpdate() }>
+						{ updated ? (
+							<Fragment>
+								{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />
+							</Fragment>
+						) : (
+							<Fragment>
+								{ __( 'Update Subscription', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-dashboard__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
+							</Fragment>
+						) }
 					</Button>
 				</div>
 			</FieldRow>
