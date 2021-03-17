@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Apply Stripe fee when applicable except Brazil (#5729)
+
 ## 2.10.0-rc.1 - 2021-03-16
 
 ### New 
 
 -   The new logging system UI is now e2e tested (#5723)
 
-### Changes
+### Changed
 
 -   Apply Stripe fee when applicable (#5555)
 
