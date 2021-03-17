@@ -41,8 +41,8 @@ const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, 
 					allowNegativeValue={ false }
 					decimalsLimit={ currency.numberDecimals }
 					decimalScale={ currency.numberDecimals }
-					prefix={ currency.currencyPosition === 'before' ? currency.symbol : null }
-					suffix={ currency.currencyPosition === 'after' ? currency.symbol : null }
+					prefix={ currency.currencyPosition === 'before' ? currency.symbol : '' }
+					suffix={ currency.currencyPosition === 'after' ? currency.symbol : '' }
 					decimalSeparator={ currency.decimalSeparator }
 					groupSeparator={ currency.thousandsSeparator }
 				/>
