@@ -31,7 +31,7 @@ class AccountDetailTest extends TestCase{
 					'account_slug' => $globalStripeAccountId,
 					'account_email' => '',
 					'account_country' => '',
-					'account_id' => '',
+					'account_id' => $globalStripeAccountId,
 					'live_secret_key' => 'dummy',
 					'test_secret_key' => 'dummy',
 					'live_publishable_key' => 'dummy',
@@ -40,7 +40,7 @@ class AccountDetailTest extends TestCase{
 			]
 		);
 		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
-		give_get_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', false );
+		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', false );
 
 		$this->assertSame( $globalStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() ) );
 	}
@@ -58,7 +58,7 @@ class AccountDetailTest extends TestCase{
 					'account_slug' => $manuallySelectedStripeAccountId,
 					'account_email' => '',
 					'account_country' => '',
-					'account_id' => '',
+					'account_id' => $manuallySelectedStripeAccountId,
 					'live_secret_key' => 'dummy',
 					'test_secret_key' => 'dummy',
 					'live_publishable_key' => 'dummy',
@@ -67,8 +67,8 @@ class AccountDetailTest extends TestCase{
 			]
 		);
 		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
-		give_get_meta( $this->form->get_ID(), '_give_stripe_default_account', true );
-		give_get_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', $manuallySelectedStripeAccountId );
+		give_update_meta( $this->form->get_ID(), '_give_stripe_default_account', true );
+		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', $manuallySelectedStripeAccountId );
 
 		$this->assertSame( $manuallySelectedStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() ) );
 	}
@@ -84,7 +84,7 @@ class AccountDetailTest extends TestCase{
 					'account_slug' => $accountId,
 					'account_email' => '',
 					'account_country' => '',
-					'account_id' => '',
+					'account_id' => $accountId,
 					'live_secret_key' => 'dummy',
 					'test_secret_key' => 'dummy',
 					'live_publishable_key' => 'dummy',
@@ -108,7 +108,7 @@ class AccountDetailTest extends TestCase{
 					'account_slug' => $accountId,
 					'account_email' => '',
 					'account_country' => '',
-					'account_id' => '',
+					'account_id' => $accountId,
 					'live_secret_key' => 'dummy',
 					'test_secret_key' => 'dummy',
 					'live_publishable_key' => 'dummy',
