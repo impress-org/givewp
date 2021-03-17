@@ -7,22 +7,22 @@ const { __ } = wp.i18n;
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';
 
-import { saveSubscriptionWithAPI } from './utils';
+import { updateSubscriptionWithAPI } from './utils';
 
 const SubscriptionManager = ( { id, subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
-	const [ saving, setSaving ] = useState( false );
+	const [ updating, setUpdating ] = useState( false );
 
-	const handleSave = async() => {
+	const handleUpdate = async() => {
 		// Save with REST API
-		setSaving( true );
-		await saveSubscriptionWithAPI( {
+		setUpdating( true );
+		await updateSubscriptionWithAPI( {
 			id,
 			amount,
 			paymentMethod,
 		} );
-		setSaving( false );
+		setUpdating( false );
 	};
 
 	return (
@@ -39,8 +39,8 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			/>
 			<FieldRow>
 				<div>
-					<Button icon="save" onClick={ () => handleSave() }>
-						{ saving ? __( 'Saving', 'give' ) : __( 'Save', 'give' ) }
+					<Button icon="save" onClick={ () => handleUpdate() }>
+						{ updating ? __( 'Updating', 'give' ) : __( 'Update', 'give' ) }
 					</Button>
 				</div>
 			</FieldRow>
