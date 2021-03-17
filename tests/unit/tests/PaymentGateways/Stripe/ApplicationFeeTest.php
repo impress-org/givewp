@@ -91,4 +91,18 @@ final class ApplicationFeeTest extends TestCase {
             $this->gate->hasLicense( 'give-stripe' )
         );
     }
+
+    public function testIsStripeAccountFromBrazil() {
+
+        $this->assertFalse(
+            $this->gate->isCountrySupportApplicationFee( 'BR' )
+        );
+    }
+
+    public function testIsStripeAccountNotFromBrazil() {
+
+        $this->assertTrue(
+            $this->gate->isCountrySupportApplicationFee( 'US' )
+        );
+    }
 }
