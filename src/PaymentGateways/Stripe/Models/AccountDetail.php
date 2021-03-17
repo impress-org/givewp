@@ -51,7 +51,7 @@ class AccountDetail {
 	/**
 	 * Validate array format.
 	 *
-	 * @since 2.9.0
+	 * @unreleased
 	 *
 	 * @param array $array
 	 * @throws InvalidArgumentException
