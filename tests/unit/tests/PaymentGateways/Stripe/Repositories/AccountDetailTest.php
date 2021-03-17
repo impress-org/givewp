@@ -70,7 +70,7 @@ class AccountDetailTest extends TestCase{
 		give_update_meta( $this->form->get_ID(), '_give_stripe_default_account', true );
 		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', $manuallySelectedStripeAccountId );
 
-		$this->assertSame( $manuallySelectedStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() ) );
+		$this->assertSame( $manuallySelectedStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() )->accountId );
 	}
 
 	public function testValidStripeAccountId(){
