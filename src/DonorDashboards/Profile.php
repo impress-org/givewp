@@ -3,7 +3,7 @@
 namespace Give\DonorDashboards;
 
 use Give\DonorDashboards\Factories\DonorFactory;
-use Give\DonorDashboards\Pipeline\DonorDashboardPipeline;
+use Give\DonorDashboards\Pipeline\DonorProfilePipeline;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorName;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorCompany;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAvatar;
@@ -40,7 +40,7 @@ class Profile {
 	 */
 	public function update( $data ) {
 
-		$pipeline = ( new DonorDashboardPipeline )
+		$pipeline = ( new DonorProfilePipeline )
 			->pipe( new UpdateDonorName )
 			->pipe( new UpdateDonorCompany )
 			->pipe( new UpdateDonorAvatar )

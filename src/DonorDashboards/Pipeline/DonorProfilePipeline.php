@@ -5,7 +5,7 @@ namespace Give\DonorDashboards\Pipeline;
 /**
  * @since 2.10.0
  */
-class DonorDashboardPipeline {
+class DonorProfilePipeline {
 
 	protected $stages;
 
