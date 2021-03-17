@@ -22,6 +22,23 @@ class AccountDetailTest extends TestCase{
 	public function testDonationFormUseGlobalDefaultStripeAccount(){
 		$globalStripeAccountId = 'account_1';
 
+		give_update_option(
+			'_give_stripe_get_all_accounts',
+			[
+				$globalStripeAccountId => [
+					'type' => 'manual',
+					'account_name' => 'Account 1',
+					'account_slug' => $globalStripeAccountId,
+					'account_email' => '',
+					'account_country' => '',
+					'account_id' => '',
+					'live_secret_key' => 'dummy',
+					'test_secret_key' => 'dummy',
+					'live_publishable_key' => 'dummy',
+					'test_publishable_key' => 'dummy',
+				]
+			]
+		);
 		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
 		give_get_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', false );
 
@@ -32,6 +49,23 @@ class AccountDetailTest extends TestCase{
 		$globalStripeAccountId = 'account_1';
 		$manuallySelectedStripeAccountId = 'account_2';
 
+		give_update_option(
+			'_give_stripe_get_all_accounts',
+			[
+				$manuallySelectedStripeAccountId => [
+					'type' => 'manual',
+					'account_name' => 'Account 1',
+					'account_slug' => $manuallySelectedStripeAccountId,
+					'account_email' => '',
+					'account_country' => '',
+					'account_id' => '',
+					'live_secret_key' => 'dummy',
+					'test_secret_key' => 'dummy',
+					'live_publishable_key' => 'dummy',
+					'test_publishable_key' => 'dummy',
+				]
+			]
+		);
 		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
 		give_get_meta( $this->form->get_ID(), '_give_stripe_default_account', true );
 		give_get_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', $manuallySelectedStripeAccountId );
@@ -82,7 +116,6 @@ class AccountDetailTest extends TestCase{
 				]
 			]
 		);
-
 
 		$this->expectException( InvalidArgumentException::class );
 		$this->repository->getAccountDetail( 'account_2' );
