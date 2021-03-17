@@ -9,8 +9,34 @@ class AccountDetailTest extends TestCase{
 	 */
 	private $repository;
 
+	/**
+	 * @var Give_Donate_Form
+	 */
+	private $form;
+
 	public function setUp() {
 		$this->repository = new Repositories\AccountDetail();
+		$this->form = Give_Helper_Form::create_simple_form();
+	}
+
+	public function testDonationFormUseGlobalDefaultStripeAccount(){
+		$globalStripeAccountId = 'account_1';
+
+		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
+		give_get_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', false );
+
+		$this->assertSame( $globalStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() ) );
+	}
+
+	public function testDonationFormUseManuallySelectedStripeAccount(){
+		$globalStripeAccountId = 'account_1';
+		$manuallySelectedStripeAccountId = 'account_2';
+
+		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
+		give_get_meta( $this->form->get_ID(), '_give_stripe_default_account', true );
+		give_get_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', $manuallySelectedStripeAccountId );
+
+		$this->assertSame( $manuallySelectedStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() ) );
 	}
 
 	public function testValidStripeAccountId(){
