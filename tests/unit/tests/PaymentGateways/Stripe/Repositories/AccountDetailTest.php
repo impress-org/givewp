@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Give\PaymentGateways\Stripe\Repositories;
 
-class AccountDetails extends TestCase{
+class AccountDetailTest extends TestCase{
 	/**
 	 * @var Repositories\AccountDetail
 	 */
