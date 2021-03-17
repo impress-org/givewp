@@ -44,7 +44,6 @@ class ApplicationFee {
 		return $gate->isCountrySupportApplicationFee( $country )
 			|| $gate->isStripeProAddonActive()
 			|| $gate->isStripeProAddonInstalled( get_plugins() )
-			|| $gate->isCountrySupportApplicationFee( $country )
 			|| ! $gate->hasLicense();
 	}
 
