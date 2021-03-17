@@ -36,7 +36,7 @@ const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, 
 					name={ name }
 					placeholder={ placeholder }
 					value={ value }
-					onValueChange={ ( val ) => onChange( val ) }
+					onValueChange={ ( val ) => isNaN( val ) ? onChange( min ) : onChange( val ) }
 					onBlur={ () => handleBlur() }
 					allowNegativeValue={ false }
 					decimalsLimit={ currency.numberDecimals }
