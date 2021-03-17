@@ -10,6 +10,8 @@ import PaymentMethodControl from './payment-method-control';
 
 import { updateSubscriptionWithAPI } from './utils';
 
+import './style.scss';
+
 const SubscriptionManager = ( { id, subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
@@ -53,7 +55,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 							</Fragment>
 						) : (
 							<Fragment>
-								{ __( 'Update Subscription', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-dashboard__edit-profile-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
+								{ __( 'Update Subscription', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-dashboard__subscription-manager-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
 							</Fragment>
 						) }
 					</Button>
