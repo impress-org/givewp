@@ -27,6 +27,18 @@ class AccountDetail {
 			$accountId = give_get_meta( $formId, '_give_stripe_default_account', true );
 		}
 
+		return $this->getAccountDetail( $accountId );
+	}
+
+	/**
+	 * Get account detail by Stripe account id.
+	 *
+	 * @unreleased
+	 * @param string $accountId
+	 *
+	 * @return \Give\PaymentGateways\Stripe\Models\AccountDetail
+	 */
+	public function getAccountDetail( $accountId ) {
 		$accountDetail = array_filter(
 			give_stripe_get_all_accounts(),
 			static function ( $data ) use ( $accountId ) {
@@ -34,8 +46,6 @@ class AccountDetail {
 			}
 		);
 
-		$accountDetail = \Give\PaymentGateways\Stripe\Models\AccountDetail::fromArray( $accountDetail );
-
-		return $accountDetail;
+		return \Give\PaymentGateways\Stripe\Models\AccountDetail::fromArray( $accountDetail );
 	}
 }

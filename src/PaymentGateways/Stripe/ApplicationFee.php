@@ -29,19 +29,18 @@ class ApplicationFee {
 	 *
 	 * @unreleased
 	 *
-	 * @param $formId
+	 * @param string $accountId
 	 *
 	 * @return bool
 	 */
-	public static function canAddFee( $formId ) {
+	public static function canAddFee( $accountId ) {
 		$gate = new static();
 
 		/* @var $accountDetailRepository AccountDetail */
 		$accountDetailRepository = give( AccountDetail::class );
-		$stripeAccountDetail     = $accountDetailRepository->getDonationFormStripeAccountId( $formId );
-		$country                 = $stripeAccountDetail->accountCountry;
+		$stripeAccountDetail     = $accountDetailRepository->getAccountDetail( $accountId );
 
-		return $gate->isCountrySupportApplicationFee( $country )
+		return $gate->isCountrySupportApplicationFee( $stripeAccountDetail->accountCountry )
 			|| $gate->isStripeProAddonActive()
 			|| $gate->isStripeProAddonInstalled( get_plugins() )
 			|| ! $gate->hasLicense();

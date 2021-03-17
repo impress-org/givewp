@@ -9,16 +9,16 @@ namespace Give\PaymentGateways\Stripe\Models;
  * @unreleased
  */
 class AccountDetail {
-	public $type;
-	public $accountName;
-	public $accountSlug;
-	public $accountEmail;
-	public $accountCountry;
-	public $accountId;
-	public $liveSecretKey;
-	public $livePublishableKey;
-	public $testSecretKey;
-	public $testPublishableKey;
+	public $type               = null;
+	public $accountName        = null;
+	public $accountSlug        = null;
+	public $accountEmail       = null;
+	public $accountCountry     = null;
+	public $accountId          = null;
+	public $liveSecretKey      = null;
+	public $livePublishableKey = null;
+	public $testSecretKey      = null;
+	public $testPublishableKey = null;
 
 	/**
 	 * Return AccountDetail model
