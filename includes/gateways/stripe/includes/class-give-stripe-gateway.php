@@ -562,17 +562,18 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 
 			try {
 
-				$charge_args = apply_filters( "give_{$this->id}_create_charge_args", $charge_args );
+				$charge_args     = apply_filters( "give_{$this->id}_create_charge_args", $charge_args );
+				$account_options = give_stripe_get_connected_account_options();
 
 				// Charge application fee, only if the Stripe premium add-on is not active.
-				if ( \Give\PaymentGateways\Stripe\ApplicationFee::canAddfee() ) {
+				if ( \Give\PaymentGateways\Stripe\ApplicationFee::canAddfee( $account_options['stripe_account'] ) ) {
 					// Set Application Fee Amount.
 					$charge_args['application_fee_amount'] = give_stripe_get_application_fee_amount( $charge_args['amount'] );
 				}
 
 				$charge = \Stripe\Charge::create(
 					$charge_args,
-					give_stripe_get_connected_account_options()
+					$account_options
 				);
 
 				// Add note for the charge.

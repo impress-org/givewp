@@ -40,15 +40,17 @@ class Give_Stripe_Checkout_Session {
 			 */
 			$args = apply_filters( 'give_stripe_create_checkout_session_args', $args );
 
+			$account_options = give_stripe_get_connected_account_options();
+
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( \Give\PaymentGateways\Stripe\ApplicationFee::canAddfee() && isset( $args['payment_intent_data'] ) ) {
+			if ( \Give\PaymentGateways\Stripe\ApplicationFee::canAddfee( $account_options['stripe_account'] ) && isset( $args['payment_intent_data'] ) ) {
 				$args['payment_intent_data']['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['line_items'][0]['amount'] );
 			}
 
 			// Process Checkout session.
 			$session = \Stripe\Checkout\Session::create(
 				$args,
-				give_stripe_get_connected_account_options()
+				$account_options
 			);
 
 			// Return Checkout Session Object.
