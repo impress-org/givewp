@@ -40,7 +40,7 @@ class AccountDetailTest extends TestCase{
 			]
 		);
 		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
-		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', false );
+		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', 'disabled' );
 
 		$this->assertSame( $globalStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() )->accountId );
 	}
@@ -67,7 +67,7 @@ class AccountDetailTest extends TestCase{
 			]
 		);
 		give_update_option( '_give_stripe_default_account', $globalStripeAccountId );
-		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', true );
+		give_update_meta( $this->form->get_ID(), 'give_stripe_per_form_accounts', 'enabled' );
 		give_update_meta( $this->form->get_ID(), '_give_stripe_default_account', $manuallySelectedStripeAccountId );
 
 		$this->assertSame( $manuallySelectedStripeAccountId, $this->repository->getDonationFormStripeAccountId( $this->form->get_ID() )->accountId );
