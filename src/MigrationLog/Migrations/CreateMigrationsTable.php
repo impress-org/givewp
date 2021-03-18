@@ -48,7 +48,7 @@ class CreateMigrationsTable extends Migration {
 		$charset = DB::get_charset_collate();
 
 		$sql = "CREATE TABLE {$table} (
-			id VARCHAR(255) NOT NULL,
+			id VARCHAR(180) NOT NULL,
 			status VARCHAR(16) NOT NULL,
 			error text NULL,
 			last_run DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
