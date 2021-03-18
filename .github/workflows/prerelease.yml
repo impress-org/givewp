@@ -82,5 +82,5 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ${{github.workspace}}/give.zip
-          asset_name: ${{ github.event.repository.name }}.zip
+          asset_name: give.zip
           asset_content_type: application/zip
