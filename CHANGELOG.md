@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 -   Apply Stripe fee when applicable (#5555)
+-   Cleanup and update deprecated npm packages (#5712)
 
 ### Fixed
 

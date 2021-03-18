@@ -1,6 +1,6 @@
 {
     "root": true,
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "extends": ["wordpress", "plugin:react/recommended"],
     "env": {
         "browser": false,
