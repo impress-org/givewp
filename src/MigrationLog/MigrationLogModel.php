@@ -34,10 +34,10 @@ class MigrationLogModel {
 	/**
 	 * MigrationModel constructor.
 	 *
-	 * @param  string  $id
-	 * @param  string  $status
-	 * @param  mixed|null  $error
-	 * @param  string|null  $lastRun
+	 * @param string      $id
+	 * @param string      $status
+	 * @param mixed|null  $error
+	 * @param string|null $lastRun
 	 */
 	public function __construct( $id, $status = '', $error = null, $lastRun = null ) {
 		$this->id       = $id;
@@ -49,11 +49,12 @@ class MigrationLogModel {
 	/**
 	 * Set migration status
 	 *
+	 * @see  MigrationLogStatus::STATUS_NAME
+	 *
 	 * @param string $status
-	 * @uses MigrationLogStatus
-	 * @see MigrationLogStatus::STATUS_NAME
 	 *
 	 * @return MigrationLogModel
+	 * @uses MigrationLogStatus
 	 */
 	public function setStatus( $status ) {
 		$this->status = array_key_exists( $status, MigrationLogStatus::getAll() )
@@ -66,7 +67,7 @@ class MigrationLogModel {
 	/**
 	 * Add migration error notice
 	 *
-	 * @param  mixed  $error
+	 * @param mixed $error
 	 *
 	 * @return MigrationLogModel
 	 */
@@ -112,11 +113,6 @@ class MigrationLogModel {
 	 * Save migration
 	 */
 	public function save() {
-		try {
-			give( MigrationLogRepository::class )->save( $this );
-		} catch ( DatabaseQueryException $e ) {
-			error_log( $e->getMessage() );
-			error_log( print_r( $e->getQueryErrors(), true ) );
-		}
+		give( MigrationLogRepository::class )->save( $this );
 	}
 }
