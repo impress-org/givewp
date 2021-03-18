@@ -2,6 +2,8 @@
 
 namespace Give\Log;
 
+use Exception;
+
 /**
  * Class Log
  *
@@ -20,8 +22,8 @@ namespace Give\Log;
  */
 class Log {
 	/**
-	 * @param  string  $type
-	 * @param  array  $args
+	 * @param string $type
+	 * @param array  $args
 	 */
 	public static function __callStatic( $type, $args ) {
 		list ( $message, $context ) = array_pad( $args, 2, null );
@@ -29,10 +31,11 @@ class Log {
 		if ( is_array( $context ) ) {
 			// Convert context values to string
 			$context = array_map(
-				function( $item ) {
+				function ( $item ) {
 					if ( is_array( $item ) || is_object( $item ) ) {
-						  $item = print_r( $item, true );
+						$item = print_r( $item, true );
 					}
+
 					return $item;
 				},
 				$context
@@ -41,7 +44,7 @@ class Log {
 			// Default fields
 			$data = array_filter(
 				$context,
-				function( $key ) {
+				function ( $key ) {
 					return array_key_exists( $key, LogFactory::getDefaults() );
 				},
 				ARRAY_FILTER_USE_KEY
@@ -62,6 +65,10 @@ class Log {
 		// Set type
 		$data['type'] = $type;
 
-		LogFactory::makeFromArray( $data )->save();
+		try {
+			LogFactory::makeFromArray( $data )->save();
+		} catch ( Exception $exception ) {
+			error_log( $exception->getMessage() );
+		}
 	}
 }

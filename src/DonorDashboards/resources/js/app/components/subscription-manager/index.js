@@ -1,28 +1,37 @@
 import FieldRow from '../field-row';
 import Button from '../button';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const { __ } = wp.i18n;
 
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';
 
-import { saveSubscriptionWithAPI } from './utils';
+import { updateSubscriptionWithAPI } from './utils';
+
+import './style.scss';
 
 const SubscriptionManager = ( { id, subscription } ) => {
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
-	const [ saving, setSaving ] = useState( false );
+	const [ isUpdating, setIsUpdating ] = useState( false );
+	const [ updated, setUpdated ] = useState( true );
 
-	const handleSave = async() => {
+	useEffect( () => {
+		setUpdated( false );
+	}, [ amount, paymentMethod ] );
+
+	const handleUpdate = async() => {
 		// Save with REST API
-		setSaving( true );
-		await saveSubscriptionWithAPI( {
+		setIsUpdating( true );
+		await updateSubscriptionWithAPI( {
 			id,
 			amount,
 			paymentMethod,
 		} );
-		setSaving( false );
+		setUpdated( true );
+		setIsUpdating( false );
 	};
 
 	return (
@@ -39,8 +48,16 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			/>
 			<FieldRow>
 				<div>
-					<Button icon="save" onClick={ () => handleSave() }>
-						{ saving ? __( 'Saving', 'give' ) : __( 'Save', 'give' ) }
+					<Button onClick={ () => handleUpdate() }>
+						{ updated ? (
+							<Fragment>
+								{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />
+							</Fragment>
+						) : (
+							<Fragment>
+								{ __( 'Update Subscription', 'give' ) } <FontAwesomeIcon className={ isUpdating ? 'give-donor-dashboard__subscription-manager-spinner' : '' } icon={ isUpdating ? 'spinner' : 'save' } fixedWidth />
+							</Fragment>
+						) }
 					</Button>
 				</div>
 			</FieldRow>

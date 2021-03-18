@@ -11,9 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Apply Stripe fee when applicable except Brazil (#5729)
 
+## 2.10.0-rc.2 - 2021-03-18
+
 ### Fixed
 
 -   Personal information section only reloads if condition met (#5727)
+-   Editing the recurring donation amount no longer displays "NaN" (#5735)
+-   Creation of the give_migrations table is not producing errors anymore (#5737)
+-   Logging can no longer cause a fatal error to occur (#5737)
 
 
 ## 2.10.0-rc.1 - 2021-03-16
@@ -25,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Apply Stripe fee when applicable (#5555)
+-   Cleanup and update deprecated npm packages (#5712)
 
 ### Fixed
 

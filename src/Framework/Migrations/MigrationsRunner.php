@@ -3,7 +3,9 @@
 namespace Give\Framework\Migrations;
 
 use Exception;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Log\Log;
 use Give\MigrationLog\MigrationLogFactory;
 use Give\MigrationLog\MigrationLogRepository;
 use Give\MigrationLog\MigrationLogStatus;
@@ -46,9 +48,9 @@ class MigrationsRunner {
 	/**
 	 *  MigrationsRunner constructor.
 	 *
-	 * @param  MigrationsRegister  $migrationRegister
-	 * @param  MigrationLogFactory  $migrationLogFactory
-	 * @param  MigrationLogRepository  $migrationLogRepository
+	 * @param MigrationsRegister     $migrationRegister
+	 * @param MigrationLogFactory    $migrationLogFactory
+	 * @param MigrationLogRepository $migrationLogRepository
 	 */
 	public function __construct(
 		MigrationsRegister $migrationRegister,
@@ -108,13 +110,12 @@ class MigrationsRunner {
 
 				// Save migration status
 				$migrationLog->setStatus( MigrationLogStatus::SUCCESS );
-				$migrationLog->save();
+
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				$migrationLog->setStatus( MigrationLogStatus::FAILED );
 				$migrationLog->setError( $exception );
-				$migrationLog->save();
 
 				give()->notices->register_notice(
 					[
@@ -127,6 +128,18 @@ class MigrationsRunner {
 				);
 
 				break;
+			}
+
+			try {
+				$migrationLog->save();
+			} catch ( DatabaseQueryException $e ) {
+				Log::error(
+					'Failed to save migration log',
+					[
+						'Error Message' => $e->getMessage(),
+						'Query Errors'  => $e->getQueryErrors(),
+					]
+				);
 			}
 
 			// Commit transaction if successful

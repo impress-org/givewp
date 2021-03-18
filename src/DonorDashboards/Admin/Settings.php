@@ -88,7 +88,7 @@ class Settings {
 	protected function getOverrideLegacyDonationManagementPagesSetting() {
 		return [
 			'name'          => esc_html__( 'Override Legacy Donation Management Pages', 'give' ),
-			'desc'          => esc_html__( 'Use Donor Dashboard in favor of legacy donation management pages (Donation History, Edit Proifle, Subscriptions, etc).', 'give' ),
+			'desc'          => esc_html__( 'Use the Donor Dashboard instead of the legacy donation management pages (Donation History, Edit Profile, Subscriptions, etc).', 'give' ),
 			'id'            => 'override_legacy_donation_management_pages',
 			'wrapper_class' => 'override-legacy-donation-management-pages',
 			'type'          => 'radio_inline',
