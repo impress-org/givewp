@@ -40,10 +40,10 @@ class ApplicationFee {
 		$accountDetailRepository = give( AccountDetail::class );
 		$stripeAccountDetail     = $accountDetailRepository->getAccountDetail( $accountId );
 
-		return $gate->isStripeProAddonActive()
+		return $gate->isCountrySupportApplicationFee( $stripeAccountDetail->accountCountry )
+			|| ! ( $gate->isStripeProAddonActive()
 			|| $gate->isStripeProAddonInstalled( get_plugins() )
-			|| $gate->isCountrySupportApplicationFee( $stripeAccountDetail->accountCountry )
-			|| ! $gate->hasLicense();
+			|| $gate->hasLicense() );
 	}
 
 	/**
