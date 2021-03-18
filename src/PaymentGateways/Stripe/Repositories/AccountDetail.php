@@ -47,6 +47,6 @@ class AccountDetail {
 		);
 
 		$accountDetail = $accountDetail ? current( $accountDetail ) : $accountDetail;
-		return \Give\PaymentGateways\Stripe\Models\AccountDetail::fromArray( $accountDetail );
+		return new \Give\PaymentGateways\Stripe\Models\AccountDetail( $accountDetail );
 	}
 }
