@@ -2,6 +2,8 @@
 
 namespace Give\MigrationLog;
 
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
+
 /**
  * Class MigrationLogModel
  * @package Give\MigrationLog
@@ -110,6 +112,11 @@ class MigrationLogModel {
 	 * Save migration
 	 */
 	public function save() {
-		give( MigrationLogRepository::class )->save( $this );
+		try {
+			give( MigrationLogRepository::class )->save( $this );
+		} catch ( DatabaseQueryException $e ) {
+			error_log( $e->getMessage() );
+			error_log( print_r( $e->getQueryErrors(), true ) );
+		}
 	}
 }
