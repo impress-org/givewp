@@ -92,14 +92,14 @@ final class ApplicationFeeTest extends TestCase {
         );
     }
 
-    public function testIsStripeAccountFromBrazil() {
+    public function isCountryNotSupportApplicationFee() {
 
         $this->assertFalse(
             $this->gate->isCountrySupportApplicationFee( 'BR' )
         );
     }
 
-    public function testIsStripeAccountNotFromBrazil() {
+    public function isCountrySupportApplicationFee() {
 
         $this->assertTrue(
             $this->gate->isCountrySupportApplicationFee( 'US' )
