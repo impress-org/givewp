@@ -18,13 +18,13 @@ class AccountDetail {
 	 * @return \Give\PaymentGateways\Stripe\Models\AccountDetail
 	 */
 	public function getDonationFormStripeAccountId( $formId ) {
-		// Global Stripe account.
-		$accountId = give_get_option( '_give_stripe_default_account', '' );
-
-		// Return default Stripe account of the form, if enabled.
 		$formHasStripeAccount = give_is_setting_enabled( give_get_meta( $formId, 'give_stripe_per_form_accounts', true ) );
 		if ( $formId > 0 && $formHasStripeAccount ) {
+			// Return default Stripe account of the form, if enabled.
 			$accountId = give_get_meta( $formId, '_give_stripe_default_account', true );
+		} else {
+			// Global Stripe account.
+			$accountId = give_get_option( '_give_stripe_default_account', '' );
 		}
 
 		return $this->getAccountDetail( $accountId );
