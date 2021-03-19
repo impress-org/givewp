@@ -46,7 +46,7 @@ const Content = () => {
 				) : (
 					<Fragment>
 						<Heading>
-							{ __( 'Subscription Receipt', 'give' ) }
+							{ __( 'Subscription', 'give' ) } #{ getSubscriptionById( id ).payment.serialCode }
 						</Heading>
 						<SubscriptionReceipt subscription={ getSubscriptionById( id ) } />
 						<Link to="/recurring-donations">
