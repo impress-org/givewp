@@ -35,6 +35,7 @@ const SubscriptionRow = ( { subscription } ) => {
 					{ payment.progress }
 				</div>
 				<div className="give-donor-dashboard-table__pill">
+					<div className="give-donor-dashboard-table__donation-id">ID: { payment.serialCode }</div>
 					<div className="give-donor-dashboard-table__donation-receipt">
 						<Link to={ `/recurring-donations/receipt/${ id }` }>
 							{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
