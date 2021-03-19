@@ -176,10 +176,11 @@ class Settings {
 	 */
 	private function shouldGenerateWithBlock() {
 
-		$usingBlocks        = $this->isBlockEditorActive() || $this->isGutenbergEditorActive() ? true : false;
-		$usingClassicEditor = $this->isClassicEditorActive();
+		$usingBlocks           = $this->isBlockEditorActive() || $this->isGutenbergEditorActive() ? true : false;
+		$usingClassicEditor    = $this->isClassicEditorActive();
+		$usingDisableGutenberg = $this->isDisableGutenbergActive();
 
-		if ( $usingClassicEditor === false && $usingBlocks ) {
+		if ( $usingClassicEditor === false && $usingDisableGutenberg === false && $usingBlocks ) {
 			return true;
 		}
 
@@ -229,6 +230,25 @@ class Settings {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 		if ( is_plugin_active( 'classic-editor/classic-editor.php' ) && ( get_option( 'classic-editor-replace' ) !== 'no-replace' ) ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Determine whether the Disable Gutenberg plugin is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isDisableGutenbergActive() {
+
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		if ( is_plugin_active( 'disable-gutenberg/disable-gutenberg.php' ) ) {
 			return true;
 		}
 
