@@ -14,12 +14,16 @@ export const registerDefaultTabs = () => {
 		'donation-history': registerDonationHistoryTab,
 		'annual-receipts': registerAnnualReceiptsTab,
 		'recurring-donations': registerRecurringDonationsTab,
-		'edit-profile': registerEditProfileTab,
 	};
 
 	const registeredTabs = getWindowData( 'registeredTabs' );
 
 	registeredTabs.forEach( ( tab ) => {
-		tabRegistrationMap[ tab ]();
+		if ( tabRegistrationMap[ tab ] ) {
+			tabRegistrationMap[ tab ]();
+		}
 	} );
+
+	// Make sure that Edit Profile tab is regitered last
+	registerEditProfileTab();
 };
