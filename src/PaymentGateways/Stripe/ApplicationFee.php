@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\Stripe;
 
-use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give_License;
 
 /**
@@ -25,23 +24,28 @@ class ApplicationFee {
 	const PluginName = 'Give - Stripe Gateway';
 
 	/**
+	 * @var Models\AccountDetail
+	 */
+	private $accountDetail;
+
+	/**
+	 * ApplicationFee constructor.
+	 *
+	 * @param  Models\AccountDetail  $accountDetail
+	 */
+	public function __construct( Models\AccountDetail $accountDetail ) {
+		$this->accountDetail = $accountDetail;
+	}
+
+	/**
 	 * Returns true or false based on whether the Stripe fee should be applied or not
 	 *
 	 * @unreleased
-	 *
-	 * @param string $accountId
-	 *
 	 * @return bool
 	 */
-	public static function canAddFee( $accountId ) {
-		$gate = new static();
-
-		/* @var $accountDetailRepository AccountDetail */
-		$accountDetailRepository = give( AccountDetail::class );
-		$stripeAccountDetail     = $accountDetailRepository->getAccountDetail( $accountId );
-
-		return $gate->isCountrySupportApplicationFee( $stripeAccountDetail->accountCountry )
-			&& ! ( $gate->isStripeProAddonActive() || $gate->isStripeProAddonInstalled( get_plugins() ) || $gate->hasLicense() );
+	public function canAddFee() {
+		return $this->isCountrySupportApplicationFee()
+			   && ! ( $this->isStripeProAddonActive() || $this->isStripeProAddonInstalled( get_plugins() ) || $this->hasLicense() );
 	}
 
 	/**
@@ -87,11 +91,9 @@ class ApplicationFee {
 	 *
 	 * @unreleased
 	 *
-	 * @param $country
-	 *
 	 * @return bool
 	 */
-	public function isCountrySupportApplicationFee( $country ) {
-		return 'BR' !== $country;
+	public function isCountrySupportApplicationFee() {
+		return 'BR' !== $this->accountDetail->accountCountry;
 	}
 }

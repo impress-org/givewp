@@ -23,6 +23,7 @@ use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Stripe\DonationFormElements;
+use Give\PaymentGateways\Stripe\ProcessingDonation;
 
 /**
  * Class PaymentGateways
@@ -65,6 +66,13 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
 		give()->singleton( DonationFormElements::class );
+		give()->singleton(
+			ProcessingDonation::class,
+			function() {
+				return ( new ProcessingDonation() )->setAccountDetail();
+			}
+		);
+
 		$this->registerPayPalCommerceClasses();
 	}
 

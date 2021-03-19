@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\PaymentGateways\Stripe\ProcessingDonation;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -39,10 +41,9 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		 * @return bool|\Stripe\PaymentIntent
 		 */
 		public function create( $args ) {
-			$account_options = give_stripe_get_connected_account_options();
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( \Give\PaymentGateways\Stripe\ApplicationFee::canAddfee( $account_options['stripe_account'] ) ) {
+			if ( ProcessingDonation::canAddfee() ) {
 				$args['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['amount'] );
 			}
 
@@ -52,7 +53,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 			try {
 				return \Stripe\PaymentIntent::create(
 					$args,
-					$account_options
+					give_stripe_get_connected_account_options()
 				);
 			} catch ( Exception $e ) {
 
@@ -117,10 +118,9 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		 * @return \Stripe\PaymentIntent
 		 */
 		public function update( $client_secret, $args ) {
-			$account_options = give_stripe_get_connected_account_options();
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( \Give\PaymentGateways\Stripe\ApplicationFee::canAddfee( $account_options['stripe_account'] ) ) {
+			if ( ProcessingDonation::canAddfee() ) {
 				$args['application_fee_amount'] = give_stripe_format_amount( give_stripe_get_application_fee_amount( $args['amount'] ) );
 			}
 
@@ -131,7 +131,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 				return \Stripe\PaymentIntent::update(
 					$client_secret,
 					$args,
-					$account_options
+					give_stripe_get_connected_account_options()
 				);
 			} catch ( Exception $e ) {
 
