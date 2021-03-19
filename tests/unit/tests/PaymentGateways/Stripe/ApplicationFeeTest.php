@@ -2,11 +2,69 @@
 
 use PHPUnit\Framework\TestCase;
 use Give\PaymentGateways\Stripe\ApplicationFee;
+use Give\PaymentGateways\Stripe\Repositories;
 
 final class ApplicationFeeTest extends TestCase {
 
-    public function setUp() {
-        $this->gate = new ApplicationFee;
+	/**
+	 * @var Repositories\AccountDetail
+	 */
+	private $repository;
+
+	/**
+	 * @var ApplicationFee
+	 */
+	private $gate;
+
+	public function setUp() {
+		$this->setUpStripeAccounts();
+		$this->repository = new Repositories\AccountDetail();
+		$this->gate       = new ApplicationFee( $this->repository->getAccountDetail( 'account_1' ) );
+	}
+
+    private function setUpStripeAccounts(){
+	    give_update_option(
+		    '_give_stripe_get_all_accounts',
+		    [
+			    'account_1' => [
+				    'type' => 'manual',
+				    'account_name' => 'Account 1',
+				    'account_slug' => 'account_1',
+				    'account_email' => '',
+				    'account_country' => 'BR',
+				    'account_id' => 'account_1',
+				    'live_secret_key' => 'dummy',
+				    'test_secret_key' => 'dummy',
+				    'live_publishable_key' => 'dummy',
+				    'test_publishable_key' => 'dummy',
+			    ],
+			    'account_2' => [
+				    'type' => 'manual',
+				    'account_name' => 'Account 2',
+				    'account_slug' => 'account_2',
+				    'account_email' => '',
+				    'account_country' => 'US',
+				    'account_id' => 'account_2',
+				    'live_secret_key' => 'dummy',
+				    'test_secret_key' => 'dummy',
+				    'live_publishable_key' => 'dummy',
+				    'test_publishable_key' => 'dummy',
+			    ]
+		    ]
+	    );
+    }
+
+	public function testCanAddFee(){
+		$applicationFee = new ApplicationFee($this->repository->getAccountDetail('account_2'));
+		$this->assertTrue(
+			$applicationFee->canAddFee()
+		);
+	}
+
+    public function testCanNotAddFee(){
+		$this->assertFalse(
+			$this->gate->canAddFee()
+		);
     }
 
     /**
@@ -60,7 +118,7 @@ final class ApplicationFeeTest extends TestCase {
         ]]);
 
         $this->assertTrue(
-            $this->gate->hasLicense( 'give-stripe' )
+            $this->gate->hasLicense()
         );
     }
 
@@ -73,7 +131,7 @@ final class ApplicationFeeTest extends TestCase {
         ]]);
 
         $this->assertFalse(
-            $this->gate->hasLicense( 'give-stripe' )
+            $this->gate->hasLicense()
         );
     }
 
@@ -88,21 +146,21 @@ final class ApplicationFeeTest extends TestCase {
         ]]);
 
         $this->assertTrue(
-            $this->gate->hasLicense( 'give-stripe' )
+            $this->gate->hasLicense()
         );
     }
 
-    public function isCountryNotSupportApplicationFee() {
+    public function testIsCountryNotSupportApplicationFee() {
 
         $this->assertFalse(
-            $this->gate->isCountrySupportApplicationFee( 'BR' )
+            $this->gate->isCountrySupportApplicationFee()
         );
     }
 
-    public function isCountrySupportApplicationFee() {
-
+    public function testIsCountrySupportApplicationFee() {
+		$applicationFee = new ApplicationFee($this->repository->getAccountDetail('account_2'));
         $this->assertTrue(
-            $this->gate->isCountrySupportApplicationFee( 'US' )
+	        $applicationFee->isCountrySupportApplicationFee()
         );
     }
 }
