@@ -153,7 +153,7 @@ class Settings {
 	 */
 	protected function getDonorDashboardPageContent() {
 
-		if ( $this->isBlockEditorActive() ) {
+		if ( $this->shouldGenerateWithBlock() ) {
 			return get_comment_delimited_block_content(
 				'give/donor-dashboard',
 				[
@@ -168,40 +168,72 @@ class Settings {
 	}
 
 	/**
-	 * Determine whether the block editor is active
+	 * Determine whether the Donor Dashboard page should be generated with a block
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function shouldGenerateWithBlock() {
+
+		$usingBlocks        = $this->isBlockEditorActive() || $this->isGutenbergEditorActive() ? true : false;
+		$usingClassicEditor = $this->isClassicEditorActive();
+
+		if ( $usingClassicEditor === false && $usingBlocks ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Determine whether the Gutenberg editor is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isGutenbergEditorActive() {
+		if ( has_filter( 'replace_editor', 'gutenberg_init' ) ) {
+			// Gutenberg is installed and activated.
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Determine whether block editor is active
 	 *
 	 * @return bool
 	 *
 	 * @since 2.10.0
 	 */
 	private function isBlockEditorActive() {
-
-		$gutenberg    = false;
-		$block_editor = false;
-
-		if ( has_filter( 'replace_editor', 'gutenberg_init' ) ) {
-			// Gutenberg is installed and activated.
-			$gutenberg = true;
-		}
-
 		if ( version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' ) ) {
 			// Block editor.
-			$block_editor = true;
+			return true;
 		}
+		return false;
+	}
 
-		if ( ! $gutenberg && ! $block_editor ) {
-			return false;
-		}
+	/**
+	 * Determine whether the Classic editor is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isClassicEditorActive() {
 
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		if ( ! is_plugin_active( 'classic-editor/classic-editor.php' ) ) {
+		if ( is_plugin_active( 'classic-editor/classic-editor.php' ) && ( get_option( 'classic-editor-replace' ) !== 'no-replace' ) ) {
 			return true;
 		}
 
-		$use_block_editor = ( get_option( 'classic-editor-replace' ) === 'no-replace' );
+		return false;
 
-		return $use_block_editor;
 	}
 
 	/**
