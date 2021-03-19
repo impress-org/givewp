@@ -167,6 +167,13 @@ class Settings {
 
 	}
 
+	/**
+	 * Determine whether the block editor is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
 	private function isBlockEditorActive() {
 
 		$gutenberg    = false;
