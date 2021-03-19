@@ -39,9 +39,11 @@ const Content = () => {
 						<Heading>
 							{ __( 'Loading...', 'give' ) }
 						</Heading>
-						<Link to="/recurring-donations">
-							{ __( 'Back to Recurring Donations', 'give' ) }
-						</Link>
+						<div className="give-donor-dashboard__recurring-donations-link">
+							<Link to="/recurring-donations">
+								<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Recurring Donations', 'give' ) }
+							</Link>
+						</div>
 					</Fragment>
 				) : (
 					<Fragment>
@@ -49,9 +51,11 @@ const Content = () => {
 							{ __( 'Subscription', 'give' ) } #{ getSubscriptionById( id ).payment.serialCode }
 						</Heading>
 						<SubscriptionReceipt subscription={ getSubscriptionById( id ) } />
-						<Link to="/recurring-donations">
-							{ __( 'Back to Recurring Donations', 'give' ) }
-						</Link>
+						<div className="give-donor-dashboard__recurring-donations-link">
+							<Link to="/recurring-donations">
+								<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Recurring Donations', 'give' ) }
+							</Link>
+						</div>
 					</Fragment>
 				);
 			}
@@ -61,9 +65,11 @@ const Content = () => {
 						<Heading>
 							{ __( 'Loading...', 'give' ) }
 						</Heading>
-						<Link to="/recurring-donations">
-							{ __( 'Back to Recurring Donations', 'give' ) }
-						</Link>
+						<div className="give-donor-dashboard__recurring-donations-link">
+							<Link to="/recurring-donations">
+								<FontAwesomeIcon icon="arrow-left" />  { __( 'Back to Recurring Donations', 'give' ) }
+							</Link>
+						</div>
 					</Fragment>
 				) : (
 					<Fragment>
