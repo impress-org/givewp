@@ -38,7 +38,7 @@ const SubscriptionRow = ( { subscription } ) => {
 					<div className="give-donor-dashboard-table__donation-id">ID: { payment.serialCode }</div>
 					<div className="give-donor-dashboard-table__donation-receipt">
 						<Link to={ `/recurring-donations/receipt/${ id }` }>
-							{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
+							{ __( 'View Subscription', 'give' ) } <FontAwesomeIcon icon="arrow-right" />
 						</Link>
 					</div>
 					{ gateway.can_update && (
