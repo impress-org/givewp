@@ -109,7 +109,7 @@ class Settings {
 	 */
 	public function generateDonorDashboardPage() {
 
-		$content = $this->getDonorDashboardPageContent( 'block' );
+		$content = $this->getDonorDashboardPageContent();
 
 		$pageId = wp_insert_post(
 			[
@@ -151,26 +151,50 @@ class Settings {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function getDonorDashboardPageContent( $format ) {
+	protected function getDonorDashboardPageContent() {
 
-		switch ( $format ) {
-			case 'block': {
-				return get_comment_delimited_block_content(
-					'give/donor-dashboard',
-					[
-						'align' => 'wide',
-					],
-					null
-				);
-			}
-			case 'shortcode': {
-				return '[give_donor_dashboard]';
-			}
-			default: {
-				return null;
-			}
+		if ( $this->isBlockEditorActive() ) {
+			return get_comment_delimited_block_content(
+				'give/donor-dashboard',
+				[
+					'align' => 'wide',
+				],
+				null
+			);
+		} else {
+			return '[give_donor_dashboard]';
 		}
 
+	}
+
+	private function isBlockEditorActive() {
+
+		$gutenberg    = false;
+		$block_editor = false;
+
+		if ( has_filter( 'replace_editor', 'gutenberg_init' ) ) {
+			// Gutenberg is installed and activated.
+			$gutenberg = true;
+		}
+
+		if ( version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' ) ) {
+			// Block editor.
+			$block_editor = true;
+		}
+
+		if ( ! $gutenberg && ! $block_editor ) {
+			return false;
+		}
+
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		if ( ! is_plugin_active( 'classic-editor/classic-editor.php' ) ) {
+			return true;
+		}
+
+		$use_block_editor = ( get_option( 'classic-editor-replace' ) === 'no-replace' );
+
+		return $use_block_editor;
 	}
 
 	/**
