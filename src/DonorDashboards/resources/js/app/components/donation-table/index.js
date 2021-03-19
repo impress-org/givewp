@@ -51,7 +51,7 @@ const DonationTable = ( { donations, perPage } ) => {
 						{ __( 'Donation', 'give' ) }
 					</div>
 					<div className="give-donor-dashboard-table__column">
-						{ __( 'Form', 'give' ) }
+						{ __( 'Campaign', 'give' ) }
 					</div>
 					<div className="give-donor-dashboard-table__column">
 						{ __( 'Date', 'give' ) }
