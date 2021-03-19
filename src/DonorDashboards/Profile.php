@@ -131,7 +131,7 @@ class Profile {
 		if ( $avatarId ) {
 			return wp_get_attachment_url( $avatarId );
 		} else {
-			return give_validate_gravatar( $this->donor->email ) ? get_avatar_url( $this->donor->email, 140 ) : null;
+			return give_validate_gravatar( $this->donor->email ) ? get_avatar_url( $this->donor->email, [ 'size' => 140 ] ) : null;
 		}
 	}
 
