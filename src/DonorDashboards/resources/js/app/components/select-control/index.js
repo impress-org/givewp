@@ -9,7 +9,8 @@ import { useAccentColor } from '../../hooks';
 // Import styles
 import './style.scss';
 
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 
 const SelectControl = ( { label, value, isLoading, onChange, options, placeholder, width, isClearable } ) => {
 	if ( options && options.length < 2 ) {

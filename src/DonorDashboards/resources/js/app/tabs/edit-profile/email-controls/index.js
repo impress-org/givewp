@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 import TextControl from '../../../components/text-control';
 import FieldRow from '../../../components/field-row';
 import Button from '../../../components/button';

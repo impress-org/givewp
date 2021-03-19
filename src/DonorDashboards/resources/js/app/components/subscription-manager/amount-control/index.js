@@ -3,7 +3,8 @@ import FieldRow from '../../field-row';
 import SelectControl from '../../select-control';
 import { useState, useEffect } from 'react';
 
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 
 const AmountControl = ( { form, payment, onChange, value } ) => {
 	const [ customAmount, setCustomAmount ] = useState( null );
