@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 import { useState, Fragment } from 'react';
 import SubscriptionCancelModal from '../subscription-cancel-modal';
 import { useWindowSize } from '../../hooks';

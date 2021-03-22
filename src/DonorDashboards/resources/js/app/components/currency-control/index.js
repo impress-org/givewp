@@ -8,7 +8,8 @@ import { toUniqueId, toKebabCase } from '../../utils';
 // Import styles
 import './style.scss';
 
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 
 const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, max, width } ) => {
 	const id = toUniqueId( label );
