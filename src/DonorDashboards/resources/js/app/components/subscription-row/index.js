@@ -23,7 +23,10 @@ const SubscriptionRow = ( { subscription } ) => {
 				<div className="give-donor-dashboard-table__column">
 					{ width < 920 && <div className="give-donor-dashboard-table__mobile-header">{ __( 'Status', 'give' ) }</div> }
 					<div className="give-donor-dashboard-table__donation-status">
-						{ payment.status.label }
+						<div className="give-donor-dashboard-table__donation-status-indicator" style={ { background: payment.status.color } } />
+						<div className="give-donor-dashboard-table__donation-status-label">
+							{ payment.status.label }
+						</div>
 					</div>
 				</div>
 				<div className="give-donor-dashboard-table__column">
