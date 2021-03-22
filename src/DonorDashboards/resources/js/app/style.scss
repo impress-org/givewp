@@ -10,6 +10,10 @@
 		color: var(--give-donor-dashboard-accent-color);
 		text-decoration: none;
 
+		&:hover {
+			text-decoration: underline;
+		}
+
 		&:visited {
 			color: var(--give-donor-dashboard-accent-color);
 		}
