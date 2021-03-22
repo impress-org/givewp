@@ -151,7 +151,7 @@ class Donations {
 	 */
 	protected function getFormInfo( $payment ) {
 		return [
-			'title' => $payment->form_title,
+			'title' => wp_trim_words( $payment->form_title, 6, ' [...]' ),
 			'id'    => $payment->form_id,
 		];
 	}
@@ -241,11 +241,14 @@ class Donations {
 					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
 				}
 
+				$label = html_entity_decode( wp_strip_all_tags( $lineItem->label ) );
+				$value = $lineItem->id === 'paymentStatus' ? $this->getFormattedStatus( $payment->status ) : html_entity_decode( wp_strip_all_tags( $lineItem->value ) );
+
 				$receiptArr[ $sectionIndex ]['lineItems'][] = [
 					'class' => $detailRowClass,
 					'icon'  => $this->getIcon( $lineItem->icon ),
-					'label' => html_entity_decode( wp_strip_all_tags( $lineItem->label ) ),
-					'value' => html_entity_decode( wp_strip_all_tags( $lineItem->value ) ),
+					'label' => $label,
+					'value' => $value,
 				];
 
 			}

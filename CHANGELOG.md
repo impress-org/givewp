@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Donor Dashboard UI is now consistent and polished (#5741)
+
 ### Fixed
 
 -   The Donor Dashboard shortcode now works on 4.9.x (#5739)
