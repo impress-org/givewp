@@ -14,7 +14,8 @@ import AddressControls from './address-controls';
 
 import { Fragment, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 
 import './style.scss';
 

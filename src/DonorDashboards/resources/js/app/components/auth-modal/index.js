@@ -1,6 +1,7 @@
 import { useState, Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 
 import TextControl from '../text-control';
 import Button from '../button';

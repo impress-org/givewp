@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Apply Stripe fee when applicable except Brazil (#5729)
 
+### Fixed
+
+-   The Donor Dashboard shortcode now works on 4.9.x (#5739)
+
 ## 2.10.0-rc.2 - 2021-03-18
 
 ### Fixed
