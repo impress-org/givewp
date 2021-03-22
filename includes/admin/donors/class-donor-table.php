@@ -364,7 +364,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		$search = get_query_var( 's' );
+		return ! empty( $search ) ? urldecode( trim( $search ) ) : false;
 	}
 
 	/**
