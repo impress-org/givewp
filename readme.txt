@@ -235,6 +235,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Donor Profile block with a whole new experience for donors to view and manage their donations
 * New: Rebuilt log system from the ground up for better log viewing and database management
 * New: Migration tool for viewing all GiveWP migrations and troubleshooting them
+* Fixed: Paypal Donations now sends Form title to PayPal for use in receipts
+* Fixed: PayPal Donations now works properly with forms using the "Button" Display Option.
+* Fixed: Form logins now work properly with the PayPal Donations gateway
 
 = 2.9.7: February 9th, 2021 =
 * Fixed: Using CLI commands no longer throws a fatal error due to a missing dev package
