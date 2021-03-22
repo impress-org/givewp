@@ -33,7 +33,7 @@ class Give_Donors_Query {
 	 *
 	 * @var    array
 	 */
-	public $args = array();
+	public $args = [];
 
 	/**
 	 * The donors found based on the criteria set
@@ -43,7 +43,7 @@ class Give_Donors_Query {
 	 *
 	 * @var    array
 	 */
-	public $donors = array();
+	public $donors = [];
 
 	/**
 	 * The donors found based on the criteria set
@@ -83,7 +83,7 @@ class Give_Donors_Query {
 	 *
 	 * @var    array
 	 */
-	public $_args = array();
+	public $_args = [];
 
 	/**
 	 * Default query arguments.
@@ -96,8 +96,8 @@ class Give_Donors_Query {
 	 *
 	 * @param  $args array The array of arguments that can be passed in and used for setting up this payment query.
 	 */
-	public function __construct( $args = array() ) {
-		$defaults = array(
+	public function __construct( $args = [] ) {
+		$defaults = [
 			'number'          => 20,
 			'offset'          => 0,
 			'paged'           => 1,
@@ -106,12 +106,12 @@ class Give_Donors_Query {
 			'user'            => null,
 			'email'           => null,
 			'donor'           => null,
-			'meta_query'      => array(),
-			'date_query'      => array(),
+			'meta_query'      => [],
+			'date_query'      => [],
 			's'               => null,
 			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.
 			'count'           => false,
-			'give_forms'      => array(),
+			'give_forms'      => [],
 			'start_date'      => false,
 			'end_date'        => false,
 
@@ -124,8 +124,8 @@ class Give_Donors_Query {
 			 *
 			 * You can also pass number value to this param then compare symbol will auto set to >
 			 */
-			'donation_amount' => array(),
-		);
+			'donation_amount' => [],
+		];
 
 		$this->args            = $this->_args = wp_parse_args( $args, $defaults );
 		$this->table_name      = Give()->donors->table_name;
@@ -159,7 +159,7 @@ class Give_Donors_Query {
 	 *
 	 * @global wpdb $wpdb
 	 *
-	 * @return array
+	 * @return array|object|string|null
 	 */
 	public function get_donors() {
 		global $wpdb;
@@ -358,16 +358,16 @@ class Give_Donors_Query {
 			$date_query_object = new WP_Date_Query( is_array( $this->args['date_query'] ) ? $this->args['date_query'] : wp_parse_args( $this->args['date_query'] ), "{$this->table_name}.date_created" );
 
 			$where .= str_replace(
-				array(
+				[
 					"\n",
 					'(   (',
 					'))',
-				),
-				array(
+				],
+				[
 					'',
 					'( (',
 					') )',
-				),
+				],
 				$date_query_object->get_sql()
 			);
 		}
@@ -453,13 +453,13 @@ class Give_Donors_Query {
 	private function get_order_query() {
 		$table_columns = Give()->donors->get_columns();
 
-		$query    = array();
+		$query    = [];
 		$ordersby = $this->args['orderby'];
 
 		if ( ! is_array( $ordersby ) ) {
-			$ordersby = array(
+			$ordersby = [
 				$this->args['orderby'] => $this->args['order'],
-			);
+			];
 		}
 
 		// Remove non existing column.
@@ -474,9 +474,9 @@ class Give_Donors_Query {
 		}
 
 		if ( empty( $ordersby ) ) {
-			$ordersby = array(
+			$ordersby = [
 				'id' => $this->args['order'],
-			);
+			];
 		}
 
 		// Create query.
@@ -623,7 +623,7 @@ class Give_Donors_Query {
 			return;
 		}
 
-		$date_query = array();
+		$date_query = [];
 
 		if ( ! empty( $this->args['start_date'] ) ) {
 			$date_query['after'] = date(
@@ -676,7 +676,7 @@ class Give_Donors_Query {
 	 * @param $value
 	 */
 	public function __set( $query_var, $value ) {
-		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
+		if ( in_array( $query_var, [ 'meta_query', 'tax_query' ] ) ) {
 			$this->args[ $query_var ][] = $value;
 		} else {
 			$this->args[ $query_var ] = $value;

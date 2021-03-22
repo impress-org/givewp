@@ -314,7 +314,7 @@ final class Give_Payment {
 	 *
 	 * @var    array
 	 */
-	private $user_info = array();
+	private $user_info = [];
 
 	/**
 	 * Legacy (not to be accessed) payment meta array
@@ -324,7 +324,7 @@ final class Give_Payment {
 	 *
 	 * @var    array
 	 */
-	private $payment_meta = array();
+	private $payment_meta = [];
 
 	/**
 	 * The physical address used for the payment if provided
@@ -334,7 +334,7 @@ final class Give_Payment {
 	 *
 	 * @var    array
 	 */
-	protected $address = array();
+	protected $address = [];
 
 	/**
 	 * The transaction ID returned by the gateway
@@ -430,7 +430,7 @@ final class Give_Payment {
 
 		if ( method_exists( $this, 'get_' . $key ) ) {
 
-			$value = call_user_func( array( $this, 'get_' . $key ) );
+			$value = call_user_func( [ $this, 'get_' . $key ] );
 
 		} else {
 
@@ -453,7 +453,7 @@ final class Give_Payment {
 	 * @param  mixed  $value The value of the property.
 	 */
 	public function __set( $key, $value ) {
-		$ignore = array( '_ID' );
+		$ignore = [ '_ID' ];
 
 		if ( 'status' === $key ) {
 			$this->old_status = $this->status;
@@ -497,7 +497,7 @@ final class Give_Payment {
 	 * @return bool            If the setup was successful or not
 	 */
 	private function setup_payment( $payment_id ) {
-		$this->pending = array();
+		$this->pending = [];
 
 		if ( empty( $payment_id ) ) {
 			return false;
@@ -513,7 +513,7 @@ final class Give_Payment {
 			return false;
 		}
 
-		Give_Payments_Query::update_meta_cache( array( $payment_id ) );
+		Give_Payments_Query::update_meta_cache( [ $payment_id ] );
 
 		/**
 		 * Fires before payment setup.
@@ -663,7 +663,7 @@ final class Give_Payment {
 
 		// @todo: payment data exist here only for backward compatibility
 		// issue: https://github.com/impress-org/give/issues/1132
-		$payment_data = array(
+		$payment_data = [
 			'price'        => $this->total,
 			'date'         => $this->date,
 			'user_email'   => $this->email,
@@ -673,27 +673,27 @@ final class Give_Payment {
 			'donor_id'     => $this->donor_id,
 			'price_id'     => $this->price_id,
 			'currency'     => $this->currency,
-			'user_info'    => array(
+			'user_info'    => [
 				'id'         => $this->user_id,
 				'title'      => $this->title_prefix,
 				'email'      => $this->email,
 				'first_name' => $this->first_name,
 				'last_name'  => $this->last_name,
 				'address'    => $this->address,
-			),
+			],
 			'status'       => $this->status,
-		);
+		];
 
 		$args = apply_filters(
 			'give_insert_payment_args',
-			array(
+			[
 				'post_title'    => $payment_title,
 				'post_status'   => $this->status,
 				'post_type'     => 'give_payment',
 				'post_date'     => ! empty( $this->date ) ? $this->date : null,
 				'post_date_gmt' => ! empty( $this->date ) ? get_gmt_from_date( $this->date ) : null,
 				'post_parent'   => $this->parent_payment,
-			),
+			],
 			$payment_data
 		);
 
@@ -722,11 +722,11 @@ final class Give_Payment {
 
 			if ( empty( $donor->id ) ) {
 
-				$donor_data = array(
+				$donor_data = [
 					'name'    => ! is_email( $payment_title ) ? $this->first_name . ' ' . $this->last_name : '',
 					'email'   => $this->email,
 					'user_id' => $this->user_id,
-				);
+				];
 
 				$donor->create( $donor_data );
 
@@ -857,7 +857,6 @@ final class Give_Payment {
 									break;
 
 								case 'remove':
-									$this->delete_sales_logs();
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
@@ -958,12 +957,12 @@ final class Give_Payment {
 						break;
 
 					case 'date':
-						$args = array(
+						$args = [
 							'ID'            => $this->ID,
 							'post_date'     => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
 							'post_date_gmt' => get_gmt_from_date( $this->date ),
 							'edit_date'     => true,
-						);
+						];
 
 						wp_update_post( $args );
 						break;
@@ -973,10 +972,10 @@ final class Give_Payment {
 						break;
 
 					case 'parent_payment':
-						$args = array(
+						$args = [
 							'ID'          => $this->ID,
 							'post_parent' => $this->parent_payment,
-						);
+						];
 
 						wp_update_post( $args );
 						break;
@@ -1027,7 +1026,7 @@ final class Give_Payment {
 				give_set_form_closed_status( $this->form_id );
 			}
 
-			$this->pending = array();
+			$this->pending = [];
 			$saved         = true;
 		} // End if().
 
@@ -1050,7 +1049,7 @@ final class Give_Payment {
 	 *
 	 * @return bool           True when successful, false otherwise
 	 */
-	public function add_donation( $form_id = 0, $args = array(), $options = array() ) {
+	public function add_donation( $form_id = 0, $args = [], $options = [] ) {
 
 		$donation = new Give_Donate_Form( $form_id );
 
@@ -1060,10 +1059,10 @@ final class Give_Payment {
 		}
 
 		// Set some defaults.
-		$defaults = array(
+		$defaults = [
 			'price'    => false,
 			'price_id' => false,
-		);
+		];
 
 		$args = wp_parse_args( apply_filters( 'give_payment_add_donation_args', $args, $donation->ID ), $defaults );
 
@@ -1106,7 +1105,7 @@ final class Give_Payment {
 		$total           = round( $donation_amount, give_get_price_decimals( $this->ID ) );
 
 		// Add Options.
-		$default_options = array();
+		$default_options = [];
 		if ( false !== $args['price_id'] ) {
 			$default_options['price_id'] = (int) $args['price_id'];
 		}
@@ -1117,7 +1116,7 @@ final class Give_Payment {
 			$total = 0;
 		}
 
-		$donation = array(
+		$donation = [
 			'name'     => $donation->post_title,
 			'id'       => $donation->ID,
 			'price'    => round( $total, give_get_price_decimals( $this->ID ) ),
@@ -1125,7 +1124,7 @@ final class Give_Payment {
 			'price_id' => $args['price_id'],
 			'action'   => 'add',
 			'options'  => $options,
-		);
+		];
 
 		$this->pending['donations'][] = $donation;
 
@@ -1146,14 +1145,14 @@ final class Give_Payment {
 	 *
 	 * @return bool           If the item was removed or not
 	 */
-	public function remove_donation( $form_id, $args = array() ) {
+	public function remove_donation( $form_id, $args = [] ) {
 
 		// Set some defaults.
-		$defaults = array(
+		$defaults = [
 			'quantity' => 1,
 			'price'    => false,
 			'price_id' => false,
-		);
+		];
 		$args     = wp_parse_args( $args, $defaults );
 
 		$form = new Give_Donate_Form( $form_id );
@@ -1288,11 +1287,11 @@ final class Give_Payment {
 			 */
 			do_action( 'give_before_payment_status_change', $this->ID, $status, $old_status );
 
-			$update_fields = array(
+			$update_fields = [
 				'ID'          => $this->ID,
 				'post_status' => $status,
 				'edit_date'   => current_time( 'mysql' ),
-			);
+			];
 
 			$updated = wp_update_post( apply_filters( 'give_update_payment_status_fields', $update_fields ) );
 
@@ -1367,7 +1366,7 @@ final class Give_Payment {
 		if ( is_serialized( $meta ) ) {
 			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $meta, $matches );
 			if ( ! empty( $matches ) ) {
-				$meta = array();
+				$meta = [];
 			}
 		}
 
@@ -1451,7 +1450,6 @@ final class Give_Payment {
 		$decrease_donation_count = apply_filters( "give_decrease_donors_donation_count_on_{$status}", true, $this );
 
 		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
-		$this->delete_sales_logs();
 
 		// @todo: Refresh only range related stat cache
 		give_delete_donation_stats();
@@ -1501,19 +1499,6 @@ final class Give_Payment {
 			}
 		}
 
-	}
-
-	/**
-	 * Delete sales logs for this donation
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function delete_sales_logs() {
-		// Remove related sale log entries.
-		Give()->logs->delete_logs( $this->ID );
 	}
 
 	/**
@@ -1734,18 +1719,18 @@ final class Give_Payment {
 	 * @return array The user info associated with the payment.
 	 */
 	private function setup_user_info() {
-		$defaults = array(
+		$defaults = [
 			'title'      => $this->title_prefix,
 			'first_name' => $this->first_name,
 			'last_name'  => $this->last_name,
-		);
+		];
 
-		$user_info = isset( $this->payment_meta['user_info'] ) ? $this->payment_meta['user_info'] : array();
+		$user_info = isset( $this->payment_meta['user_info'] ) ? $this->payment_meta['user_info'] : [];
 
 		if ( is_serialized( $user_info ) ) {
 			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $user_info, $matches );
 			if ( ! empty( $matches ) ) {
-				$user_info = array();
+				$user_info = [];
 			}
 		}
 
@@ -1756,12 +1741,12 @@ final class Give_Payment {
 			$donor = new Give_Donor( $this->customer_id );
 
 			if ( $donor->id > 0 ) {
-				$user_info = array(
+				$user_info = [
 					'first_name' => $donor->get_first_name(),
 					'last_name'  => $donor->get_last_name(),
 					'email'      => $donor->email,
 					'discount'   => 'none',
-				);
+				];
 			}
 		} else {
 			// Get the donor, but only if it's been created.
@@ -2088,7 +2073,7 @@ final class Give_Payment {
 	 *
 	 * @return string
 	 */
-	public function get_serial_code( $args = array() ) {
+	public function get_serial_code( $args = [] ) {
 		return Give()->seq_donation_number->get_serial_code( $this, $args );
 	}
 }

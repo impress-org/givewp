@@ -1,0 +1,19 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard__donation-history-footer {
+	display: flex;
+	justify-content: space-between;
+
+	a {
+		color: #3398db;
+		font-size: 14px;
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		border: none;
+
+		svg {
+			margin-right: 6px;
+		}
+	}
+}

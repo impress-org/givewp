@@ -853,8 +853,7 @@ function give_get_plugins( $args = [] ) {
 	}
 
 	if ( ! empty( $args['only_premium_add_ons'] ) ) {
-		/* @var PremiumAddonsListManager $premiumAddonsListManger */
-		$premiumAddonsListManger = give( PremiumAddonsListManager::class );
+		$premiumAddonsListManger = new PremiumAddonsListManager();
 
 		foreach ( $plugins as $key => $plugin ) {
 			if ( 'add-on' !== $plugin['Type'] ) {

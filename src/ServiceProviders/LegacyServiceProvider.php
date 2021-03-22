@@ -91,8 +91,6 @@ class LegacyServiceProvider implements ServiceProvider {
 		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-donor-meta.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-form-meta.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sequential-ordering.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-logs-meta.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-sessions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/database/class-give-db-payment-meta.php';
 
@@ -194,8 +192,6 @@ class LegacyServiceProvider implements ServiceProvider {
 		$this->bindInstance( 'tooltips', 'Give_Tooltips', 'class-give-tooltips.php' );
 		$this->bindInstance( 'notices', 'Give_Notices', 'class-notices.php' );
 		$this->bindInstance( 'payment_meta', 'Give_DB_Payment_Meta', 'database/class-give-db-payment-meta.php' );
-		$this->bindInstance( 'log_db', 'Give_DB_Logs', 'database/class-give-db-logs.php' );
-		$this->bindInstance( 'logmeta_db', 'Give_DB_Log_Meta', 'database/class-give-db-logs-meta.php' );
 		$this->bindInstance( 'logs', 'Give_Logging', 'class-give-logging.php' );
 		$this->bindInstance( 'form_meta', 'Give_DB_Form_Meta', 'database/class-give-db-form-meta.php' );
 		$this->bindInstance( 'sequential_donation_db', 'Give_DB_Sequential_Ordering', 'database/class-give-db-sequential-ordering.php' );

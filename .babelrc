@@ -11,10 +11,7 @@
   ],
   "plugins": [
     [
-      "@babel/transform-react-jsx",
-      {
-        "pragma": "wp.element.createElement"
-      }
+      "@babel/transform-react-jsx"
     ],
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-object-rest-spread"

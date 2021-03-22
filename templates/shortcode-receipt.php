@@ -37,11 +37,11 @@ $full_name = give_get_donor_name_with_title_prefixes( $user['title'], "{$user['f
  *
  * @since 1.8.8
  */
-$give_receipt_args['donation_receipt']['donor'] = array(
+$give_receipt_args['donation_receipt']['donor'] = [
 	'name'    => __( 'Donor', 'give' ),
 	'value'   => $full_name,
 	'display' => $give_receipt_args['donor'],
-);
+];
 
 /**
  * Show Company name on Donation receipt Page
@@ -52,55 +52,55 @@ $give_receipt_args['donation_receipt']['donor'] = array(
  *
  * @return bool show/hide company name in donation receipt page.
  */
-$give_receipt_args['donation_receipt']['company_name'] = array(
+$give_receipt_args['donation_receipt']['company_name'] = [
 	'name'    => __( 'Company Name', 'give' ),
 	'value'   => esc_attr( $company_name ),
 	// Do not show company field if empty
 	'display' => empty( $company_name ) ? false : $give_receipt_args['company_name'],
-);
+];
 
-$give_receipt_args['donation_receipt']['date'] = array(
+$give_receipt_args['donation_receipt']['date'] = [
 	'name'    => __( 'Date', 'give' ),
 	'value'   => date_i18n( give_date_format(), strtotime( give_get_payment_completed_date( $donation_id ) ) ),
 	'display' => $give_receipt_args['date'],
-);
+];
 
-$give_receipt_args['donation_receipt']['total_donation'] = array(
+$give_receipt_args['donation_receipt']['total_donation'] = [
 	'name'    => __( 'Total Donation', 'give' ),
 	'value'   => give_donation_amount(
 		$donation_id,
-		array(
+		[
 			'currency' => true,
 			'amount'   => true,
 			'type'     => 'receipt',
-		)
+		]
 	),
 	'display' => $give_receipt_args['price'],
-);
+];
 
-$give_receipt_args['donation_receipt']['donation'] = array(
+$give_receipt_args['donation_receipt']['donation'] = [
 	'name'    => __( 'Donation', 'give' ),
 	'value'   => $form_name,
 	'display' => true,
-);
+];
 
-$give_receipt_args['donation_receipt']['donation_status'] = array(
+$give_receipt_args['donation_receipt']['donation_status'] = [
 	'name'    => __( 'Donation Status', 'give' ),
 	'value'   => esc_attr( $status_label ),
 	'display' => $give_receipt_args['payment_status'],
-);
+];
 
-$give_receipt_args['donation_receipt']['donation_id'] = array(
+$give_receipt_args['donation_receipt']['donation_id'] = [
 	'name'    => __( 'Donation ID', 'give' ),
 	'value'   => $donation_number,
 	'display' => $give_receipt_args['payment_id'],
-);
+];
 
-$give_receipt_args['donation_receipt']['payment_method'] = array(
+$give_receipt_args['donation_receipt']['payment_method'] = [
 	'name'    => __( 'Payment Method', 'give' ),
 	'value'   => give_get_gateway_checkout_label( give_get_payment_gateway( $donation_id ) ),
 	'display' => $give_receipt_args['payment_method'],
-);
+];
 
 /**
  * Extend Give Donation Receipt

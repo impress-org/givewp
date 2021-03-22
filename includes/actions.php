@@ -110,7 +110,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ) {
 	if ( $donor->id && ! $donor->user_id ) {
 
 		// Update donor user_id.
-		if ( $donor->update( array( 'user_id' => $user_id ) ) ) {
+		if ( $donor->update( [ 'user_id' => $user_id ] ) ) {
 			$donor_note = sprintf( esc_html__( 'WordPress user #%1$d is connected to #%2$d', 'give' ), $user_id, $donor->id );
 			$donor->add_note( $donor_note );
 
@@ -210,35 +210,6 @@ function _give_save_donor_billing_address( $payment_id ) {
 
 add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 );
 
-
-/**
- * Update form id in payment logs
- *
- * @since 2.0
- *
- * @param array $args
- */
-function give_update_log_form_id( $args ) {
-	$new_form_id = absint( $args[0] );
-	$payment_id  = absint( $args[1] );
-	$logs        = Give()->logs->get_logs( $payment_id );
-
-	// Bailout.
-	if ( empty( $logs ) ) {
-		return;
-	}
-
-	/* @var object $log */
-	foreach ( $logs as $log ) {
-		Give()->logs->logmeta_db->update_meta( $log->ID, '_give_log_form_id', $new_form_id );
-	}
-
-	// Delete cache.
-	Give()->logs->delete_cache();
-}
-
-add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
-
 /**
  * Verify addon dependency before addon update
  *
@@ -317,7 +288,7 @@ function __give_wpml_total_goal_shortcode_agrs( $args ) {
  */
 function __give_remove_wpml_parse_query_filter() {
 	global $sitepress;
-	remove_action( 'parse_query', array( $sitepress, 'parse_query' ) );
+	remove_action( 'parse_query', [ $sitepress, 'parse_query' ] );
 }
 
 
@@ -329,7 +300,7 @@ function __give_remove_wpml_parse_query_filter() {
  */
 function __give_add_wpml_parse_query_filter() {
 	global $sitepress;
-	add_action( 'parse_query', array( $sitepress, 'parse_query' ) );
+	add_action( 'parse_query', [ $sitepress, 'parse_query' ] );
 }
 
 /**

@@ -50,6 +50,10 @@ export const initializeIframeResize = function( iframe ) {
 			},
 			onInit: function() {
 				const parent = iframe.parentElement;
+				// Set iframe width to parent window inner width
+				window.top.addEventListener( 'resize', function() {
+					iframe.style.width = window.top.innerWidth + 'px';
+				} );
 
 				let parentUnload = false;
 				window.addEventListener( 'beforeunload', function() {

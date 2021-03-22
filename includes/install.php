@@ -1,4 +1,8 @@
 <?php
+
+use Give\Log\Migrations\MigrateExistingLogs;
+use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
+
 /**
  * Install Function
  *
@@ -10,8 +14,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -157,6 +159,7 @@ function give_run_install() {
 			'v241_remove_sale_logs',
 			'v270_store_stripe_account_for_donation',
 			AddPastDonationsToRevenueTable::id(),
+			MigrateExistingLogs::id(),
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -271,19 +274,18 @@ function give_after_install() {
 			// Create the donor database.
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->donors->create_table();
-
-			/**
-			 * Fires after plugin installation.
-			 *
-			 * @since 1.0
-			 *
-			 * @param array $give_options Give plugin options.
-			 */
-			do_action( 'give_after_install', $give_options );
 		}
 
-		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
+		/**
+		 * Fires after plugin installation.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $give_options Give plugin options.
+		 */
+		do_action( 'give_after_install', $give_options );
 
+		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ), false );
 	}
 
 	// Delete the transient
@@ -399,6 +401,9 @@ function give_get_default_settings() {
 
 		// Onboarding
 		'setup_page_enabled'                          => 'enabled',
+
+		// Advanced settings
+		'usage_tracking'                              => 'disabled',
 	];
 
 	return $options;
@@ -480,23 +485,6 @@ function give_create_pages() {
 		$options['failure_page'] = $failed;
 	}
 
-	// Checks if the History Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
-		// Donation History Page
-		$history = wp_insert_post(
-			[
-				'post_title'     => esc_html__( 'Donation History', 'give' ),
-				'post_content'   => '[donation_history]',
-				'post_status'    => 'publish',
-				'post_author'    => 1,
-				'post_type'      => 'page',
-				'comment_status' => 'closed',
-			]
-		);
-
-		$options['history_page'] = $history;
-	}
-
 	if ( ! empty( $options ) ) {
 		update_option( 'give_settings', array_merge( give_get_settings(), $options ), false );
 	}
@@ -539,8 +527,6 @@ function __give_get_tables() {
 		'comment_db'      => new Give_DB_Comments(),
 		'comment_db_meta' => new Give_DB_Comment_Meta(),
 		'give_session'    => new Give_DB_Sessions(),
-		'log_db'          => new Give_DB_Logs(),
-		'logmeta_db'      => new Give_DB_Log_Meta(),
 		'formmeta_db'     => new Give_DB_Form_Meta(),
 		'sequential_db'   => new Give_DB_Sequential_Ordering(),
 		'donation_meta'   => new Give_DB_Payment_Meta(),

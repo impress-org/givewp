@@ -211,14 +211,6 @@ class Tests_API extends Give_Unit_Test_Case {
 	public function test_query_vars() {
 		global $wp_filter;
 
-		foreach ( $wp_filter['query_vars'][10] as $arr ) :
-
-			if ( 'query_vars' == $arr['function'][1] ) {
-				$this->assertTrue( true );
-			}
-
-		endforeach;
-
 		$out = $this->_api->query_vars( array() );
 		$this->assertEquals( 'token', $out[0] );
 		$this->assertEquals( 'key', $out[1] );

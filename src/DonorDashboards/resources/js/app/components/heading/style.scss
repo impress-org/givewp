@@ -1,0 +1,26 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard-heading {
+	color: #555 !important;
+	font-size: 16px;
+	margin: 20px 0 10px 0;
+	display: flex;
+	align-items: center;
+
+	svg {
+		margin-right: 8px;
+	}
+
+	.give-donor-dashboard-heading__spinner {
+		animation: spin infinite 1s linear;
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}

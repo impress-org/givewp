@@ -9,13 +9,16 @@
         "tecnickcom/tcpdf": "^6.2",
         "stripe/stripe-php": "^6.41",
         "paypal/paypal-checkout-sdk": "^1.0",
-        "fakerphp/faker": "^1.9"
+        "kjohnson/format-object-list": "dev-master",
+        "fakerphp/faker": "^1.9",
+        "myclabs/php-enum": "^1.6"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
-        "phpunit/phpunit": "^5"
+        "phpunit/phpunit": "^5",
+        "kjohnson/since-unreleased": "dev-master"
     },
     "keywords": [
         "wordpress",
@@ -26,7 +29,8 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "unreleased": "./vendor/bin/since-unreleased.sh"
     },
     "autoload": {
         "psr-4": {

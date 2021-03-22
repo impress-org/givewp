@@ -4,7 +4,6 @@ namespace Give\Onboarding\Routes;
 
 use WP_REST_Request;
 use Give\API\RestRoute;
-use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\CountryCode;
 use Give\Onboarding\Helpers\LocationList;
 

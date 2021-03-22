@@ -1,0 +1,29 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard-button {
+	margin: 20px 0;
+	font-family: Montserrat, Arial, Helvetica, sans-serif;
+	padding: 12px 20px;
+	font-size: 16px;
+	font-weight: 600;
+	border: 1px solid var(--give-donor-dashboard-accent-color);
+	border-radius: 3px;
+	display: inline-flex;
+	align-items: center;
+	box-shadow: 0 0 0 0 #7ec980, 0 0 0 0 #4fa651;
+	transition: box-shadow 0.1s ease;
+	cursor: pointer;
+
+	svg {
+		margin-left: 8px;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 1px #7ec980, 0 0 0 2px #4fa651;
+	}
+
+	&.give-donor-dashboard-button--primary {
+		color: #fff !important;
+		background: var(--give-donor-dashboard-accent-color);
+	}
+}

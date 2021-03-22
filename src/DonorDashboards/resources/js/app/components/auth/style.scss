@@ -1,0 +1,9 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard__auth {
+	position: relative;
+
+	.give-donor-dashboard__auth-wrapper {
+		filter: blur(5px) grayscale(100%);
+	}
+}

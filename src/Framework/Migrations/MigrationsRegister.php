@@ -3,7 +3,7 @@
 namespace Give\Framework\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 class MigrationsRegister {
 	/**

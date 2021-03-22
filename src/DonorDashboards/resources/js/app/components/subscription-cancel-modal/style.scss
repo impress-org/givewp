@@ -1,0 +1,61 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard-cancel-modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 99;
+
+	.give-donor-dashboard-cancel-modal__frame {
+		background: #fff;
+		z-index: 2;
+		box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
+		border-radius: 8px;
+		overflow: hidden;
+		width: 90%;
+		max-width: 480px;
+
+		.give-donor-dashboard-cancel-modal__header {
+			background: var(--give-donor-dashboard-accent-color);
+			font-size: 21px;
+			font-weight: 500;
+			padding: 26px 36px;
+			line-height: 26px;
+			color: #fff;
+		}
+
+		.give-donor-dashboard-cancel-modal__body {
+			padding: 30px 36px 20px 36px;
+			font-size: 15px;
+			font-weight: 500;
+			line-height: 24px;
+			color: #555;
+		}
+
+		.give-donor-dashboard-cancel-modal__buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			a.give-donor-dashboard-cancel-modal__cancel {
+				cursor: pointer;
+			}
+		}
+	}
+
+	.give-donor-dashboard-cancel-modal__bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background: rgba(255, 255, 255, 0.6);
+		border-radius: 8px;
+	}
+}

@@ -1,0 +1,29 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard-field-row {
+	display: flex;
+	align-items: center;
+	margin: 0;
+
+	> * {
+		margin: 0 10px;
+		flex: 1;
+	}
+
+	> *:first-child {
+		margin-left: 0;
+	}
+
+	> *:last-child {
+		margin-right: 0;
+	}
+
+	@media screen and (max-width: 920px) {
+		flex-direction: column;
+		align-items: stretch;
+
+		> * {
+			margin: 0;
+		}
+	}
+}

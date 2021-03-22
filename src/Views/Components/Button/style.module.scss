@@ -1,0 +1,22 @@
+.button {
+	background: #f7f7f7;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 35px;
+	border-radius: 3px;
+	border: 1px solid #ddd;
+	border-bottom: 3px solid #ddd;
+	cursor: pointer;
+	padding: 0 16px;
+
+	&:focus {
+		outline: none;
+		box-shadow: none;
+		border-color: #ddd;
+	}
+
+	&.icon {
+		padding: 0 8px;
+	}
+}

@@ -128,6 +128,17 @@
 				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
 			}
 			navigator.goToStep( getInitialStep() );
+
+			// Fields API: Run setup for custom checkbox fields.
+			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
+			Array.from( customCheckboxes ).forEach( ( el ) => {
+				const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
+				setupCheckbox( {
+					container: containerSelector,
+					label: containerSelector + ' label',
+					input: containerSelector + ' input[type="checkbox"]',
+				} );
+			} );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -396,13 +407,18 @@
 	// Check if only a single gateway is enabled
 	if ( $paymentGatewayContainer.length && $paymentGatewayContainer.css( 'display' ) !== 'none' ) {
 		// Move payment information section when document load.
-		moveFieldsUnderPaymentGateway( true );
+		moveFieldsUnderPaymentGateway();
 
 		// Move payment information section when gateway updated.
 		$( document ).on( 'give_gateway_loaded', function() {
 			setTimeout( setupTabOrder, 200 );
-			moveFieldsUnderPaymentGateway( true );
+
+			moveFieldsUnderPaymentGateway();
+			setupRegistrationFormInputFields();
+			setupFFMInputs();
+			setupInputIcons();
 			setupSelectInputs();
+
 			$( '#give_purchase_form_wrap' ).slideDown( 200, function() {
 				gatewayAnimating = false;
 			} );
@@ -426,13 +442,18 @@
 				}
 			} );
 		} );
-
-		// Refresh payment information section.
-		$( document ).on( 'give_gateway_loaded', refreshPaymentInformationSection );
 	} else {
 		$( '#give_purchase_form_wrap' ).addClass( 'give-single-gateway-wrap' );
-		setupSelectInputs();
 	}
+
+	// Refresh personal information section.
+	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
+
+	// Setup fields.
+	setupSelectInputs();
+	setupRegistrationFormInputFields();
+	setupFFMInputs();
+	setupInputIcons();
 
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
@@ -575,21 +596,18 @@
 		// Add gateway class to fields wrapper, indicating which gateway is active
 		const gatewayClass = 'gateway-' + $( '.give-gateway-option-selected input' ).attr( 'value' ).replace( '_', '-' );
 		$( '#give_purchase_form_wrap' ).attr( 'class', gatewayClass );
-
-		setupRegistrationFormInputFields();
-		setupFFMInputs();
-		setupInputIcons();
 	}
 
 	/**
-	 * Refresh payment information section
+	 * Refresh personal information section
 	 *
 	 * @since 2.7.0
+	 * @unreleased Rename function
 	 * @param {boolean} ev Event object
 	 * @param {object} response Response object
 	 * @param {number} formID Form ID
 	 */
-	function refreshPaymentInformationSection( ev, response, formID ) {
+	function refreshPersonalInformationSection( ev, response, formID ) {
 		if ( navigator.currentStep === 2 ) {
 			$( '.give-form-templates' ).css( 'min-height', '' );
 		}
@@ -606,8 +624,16 @@
 
 			// AJAX get the payment fields.
 			$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( postResponse ) {
-				$form.find( '[id^=give-checkout-login-register]' ).replaceWith( $.parseJSON( postResponse.fields ) );
-				$form.find( '[id^=give-checkout-login-register]' ).css( { display: 'block' } );
+				const container = $form.find( '[id^=give-checkout-login-register]' );
+
+				// Remove existing personal information field if response contains new fields.
+				if ( container.length && postResponse.fields.includes( 'give_checkout_user_info' ) ) {
+					$form.find( '#give_checkout_user_info' ).remove();
+				}
+
+				container.replaceWith( $.parseJSON( postResponse.fields ) );
+				container.css( { display: 'block' } );
+
 				$form.find( '.give-submit-button-wrap' ).show();
 			} ).done( function() {
 				// Trigger float-labels

@@ -1,0 +1,27 @@
+/* stylelint-disable selector-class-pattern */
+
+.give-donor-dashboard-stripe-card-control {
+	margin-top: 10px;
+
+	.give-donor-dashboard-stripe-card-control__label {
+		font-family: Montserrat, Arial, Helvetica, sans-serif;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 1;
+		color: #555;
+	}
+
+	.give-donor-dashboard-stripe-card-control__input {
+		margin-top: 8px;
+		border: 1px solid #b8b8b8;
+		overflow: hidden;
+		padding: 14px 14px;
+		box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color);
+		transition: box-shadow 0.1s ease;
+		border-radius: 4px;
+	}
+
+	.give-donor-dashboard-stripe-card-control__input--focused {
+		box-shadow: 0 0 0 1px var(--give-donor-dashboard-accent-color);
+	}
+}

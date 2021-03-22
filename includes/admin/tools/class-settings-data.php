@@ -21,6 +21,11 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 	 * @sine 1.8
 	 */
 	class Give_Settings_Data extends Give_Settings_Page {
+		/**
+		 * Migrations list table app container ID
+		 * @since 2.10.0
+		 */
+		const CONTAINER_ID = 'give_migrations_table_app';
 
 		/**
 		 * Flag to check if enable saving option for setting page or not
@@ -34,8 +39,9 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'data';
-			$this->label = esc_html__( 'Data', 'give' );
+			$this->id          = 'data';
+			$this->label       = esc_html__( 'Data', 'give' );
+			$this->default_tab = 'database_updates';
 
 			parent::__construct();
 
@@ -43,6 +49,11 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 			if ( give_get_current_setting_tab() === $this->id ) {
 				add_action( 'give-tools_open_form', '__return_empty_string' );
 				add_action( 'give-tools_close_form', '__return_empty_string' );
+				/**
+				 * Render app container
+				 * @since 2.10.0
+				 */
+				add_action( 'give_admin_field_' . self::CONTAINER_ID, [ $this, 'render_container' ] );
 			}
 		}
 
@@ -53,27 +64,44 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			// Get settings.
-			$settings = apply_filters(
-				'give_settings_data',
-				array(
-					array(
-						'id'         => 'give_tools_tools',
-						'type'       => 'title',
-						'table_html' => false,
-					),
-					array(
-						'id'   => 'api',
-						'name' => esc_html__( 'Tools', 'give' ),
-						'type' => 'data',
-					),
-					array(
-						'id'         => 'give_tools_tools',
-						'type'       => 'sectionend',
-						'table_html' => false,
-					),
-				)
-			);
+			$settings        = [];
+			$current_section = give_get_current_setting_section();
+
+			switch ( $current_section ) {
+				case 'give_recount_stats':
+					$settings = apply_filters(
+						'give_recount_stats_settings',
+						[
+							[
+								'id'         => 'give_tools_tools',
+								'type'       => 'title',
+								'table_html' => false,
+							],
+							[
+								'id'   => 'api',
+								'name' => esc_html__( 'Tools', 'give' ),
+								'type' => 'data',
+							],
+							[
+								'id'         => 'give_tools_tools',
+								'type'       => 'sectionend',
+								'table_html' => false,
+							],
+						]
+					);
+
+					break;
+
+				case 'database_updates':
+					$settings = [
+						[
+							'id'   => self::CONTAINER_ID,
+							'type' => self::CONTAINER_ID,
+						],
+					];
+
+					break;
+			}
 
 			/**
 			 * Filter the settings.
@@ -85,6 +113,33 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 
 			// Output.
 			return $settings;
+		}
+
+		/**
+		 * Get sections.
+		 *
+		 * @return array
+		 *
+		 * @since 2.10.0
+		 */
+		public function get_sections() {
+			$sections = [
+				'database_updates'   => __( 'Database updates', 'give' ),
+				'give_recount_stats' => __( 'Recount stats', 'give' ),
+			];
+
+			$sections = apply_filters( 'give_data_views', $sections );
+
+			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+		/**
+		 * Render Migrations list table app container
+		 *
+		 * @since 2.10.0
+		 */
+		public function render_container() {
+			printf( '<div id="%s" style="padding-top: 20px"></div>', self::CONTAINER_ID );
 		}
 	}
 

@@ -136,7 +136,7 @@ jQuery( function( $ ) {
 					$form.find( 'input#card_zip' ).toggleClass( 'required', zipRequired )
 						.attr( 'required', zipRequired )
 						.attr( 'aria-required', zipRequired );
-					$form.find( 'label[for="card_zip"] span.give-required-indicator' ).toggleClass( 'give-hidden', zipRequired );
+					$form.find( 'label[for="card_zip"] span.give-required-indicator' ).toggleClass( 'give-hidden', ! zipRequired );
 
 					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
 				},

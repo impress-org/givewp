@@ -92,8 +92,6 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donormeta" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donationmeta" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_formmeta" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_logs" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_logmeta" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_comments" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_commentmeta" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sequential_ordering" );

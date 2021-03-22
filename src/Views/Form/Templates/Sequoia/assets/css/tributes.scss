@@ -96,16 +96,13 @@
 RTL styles
 -----------------------------------*/
 
-html[dir="rtl"] {
-
+html[dir='rtl'] {
 	.give-tributes-dedicate-donation {
-
 		.give-tributes-add-recipient {
 			margin-right: 8px;
 		}
 
 		input[type='radio'] + label {
-
 			padding-right: 32px;
 
 			&::before {
@@ -116,7 +113,5 @@ html[dir="rtl"] {
 				right: 5px;
 			}
 		}
-
 	}
-
 }

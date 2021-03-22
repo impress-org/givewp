@@ -131,7 +131,7 @@ class Give_Donor {
 	 *
 	 * @var    array
 	 */
-	public $address = array();
+	public $address = [];
 
 	/**
 	 * The Database Abstraction
@@ -215,7 +215,7 @@ class Give_Donor {
 
 			// Get donor's all email including primary email.
 			$this->emails = (array) $this->get_meta( 'additional_email', false );
-			$this->emails = array( 'primary' => $this->email ) + $this->emails;
+			$this->emails = [ 'primary' => $this->email ] + $this->emails;
 
 			$this->setup_address();
 
@@ -289,7 +289,7 @@ class Give_Donor {
 	 */
 	private function get_addresses_from_meta_cache() {
 		$meta      = wp_cache_get( $this->id, 'donor_meta' );
-		$addresses = array();
+		$addresses = [];
 
 		if ( ! empty( $meta ) ) {
 			foreach ( $meta as $meta_key => $meta_value ) {
@@ -297,7 +297,7 @@ class Give_Donor {
 					continue;
 				}
 
-				$addresses[] = array( $meta_key, current( $meta_value ) );
+				$addresses[] = [ $meta_key, current( $meta_value ) ];
 			}
 		}
 
@@ -315,22 +315,22 @@ class Give_Donor {
 	 *
 	 * @return array The donor's address, if any
 	 */
-	public function get_donor_address( $args = array() ) {
+	public function get_donor_address( $args = [] ) {
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'address_type' => 'billing',
-			)
+			]
 		);
 
-		$default_address = array(
+		$default_address = [
 			'line1'   => '',
 			'line2'   => '',
 			'city'    => '',
 			'state'   => '',
 			'country' => '',
 			'zip'     => '',
-		);
+		];
 
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) ) {
@@ -371,7 +371,7 @@ class Give_Donor {
 
 		if ( method_exists( $this, 'get_' . $key ) ) {
 
-			return call_user_func( array( $this, 'get_' . $key ) );
+			return call_user_func( [ $this, 'get_' . $key ] );
 
 		} else {
 
@@ -392,15 +392,15 @@ class Give_Donor {
 	 *
 	 * @return bool|int    False if not a valid creation, donor ID if user is found or valid creation.
 	 */
-	public function create( $data = array() ) {
+	public function create( $data = [] ) {
 
 		if ( $this->id != 0 || empty( $data ) ) {
 			return false;
 		}
 
-		$defaults = array(
+		$defaults = [
 			'payment_ids' => '',
-		);
+		];
 
 		$args = wp_parse_args( $data, $defaults );
 		$args = $this->sanitize_columns( $args );
@@ -460,7 +460,7 @@ class Give_Donor {
 	 *
 	 * @return bool        If the update was successful or not.
 	 */
-	public function update( $data = array() ) {
+	public function update( $data = [] ) {
 
 		if ( empty( $data ) ) {
 			return false;
@@ -550,7 +550,7 @@ class Give_Donor {
 		 */
 		do_action( 'give_donor_pre_attach_payment', $payment_id, $this->id );
 
-		$payment_added = $this->update( array( 'payment_ids' => $new_payment_ids ) );
+		$payment_added = $this->update( [ 'payment_ids' => $new_payment_ids ] );
 
 		if ( $payment_added ) {
 
@@ -558,7 +558,7 @@ class Give_Donor {
 
 			// We added this payment successfully, increment the stats
 			if ( $update_stats ) {
-				$payment_amount = give_donation_amount( $payment_id, array( 'type' => 'stats' ) );
+				$payment_amount = give_donation_amount( $payment_id, [ 'type' => 'stats' ] );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->increase_value( $payment_amount );
@@ -635,7 +635,7 @@ class Give_Donor {
 		 */
 		do_action( 'give_donor_pre_remove_payment', $payment_id, $this->id );
 
-		$payment_removed = $this->update( array( 'payment_ids' => $new_payment_ids ) );
+		$payment_removed = $this->update( [ 'payment_ids' => $new_payment_ids ] );
 
 		if ( $payment_removed ) {
 
@@ -697,7 +697,7 @@ class Give_Donor {
 		 */
 		do_action( 'give_donor_pre_increase_donation_count', $count, $this->id );
 
-		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
+		if ( $this->update( [ 'purchase_count' => $new_total ] ) ) {
 			$this->purchase_count = $new_total;
 		}
 
@@ -748,7 +748,7 @@ class Give_Donor {
 		 */
 		do_action( 'give_donor_pre_decrease_donation_count', $count, $this->id );
 
-		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
+		if ( $this->update( [ 'purchase_count' => $new_total ] ) ) {
 			$this->purchase_count = $new_total;
 		}
 
@@ -790,7 +790,7 @@ class Give_Donor {
 		 */
 		do_action( 'give_donor_pre_increase_value', $value, $this->id );
 
-		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
+		if ( $this->update( [ 'purchase_value' => $new_value ] ) ) {
 			$this->purchase_value = $new_value;
 		}
 
@@ -836,7 +836,7 @@ class Give_Donor {
 		 */
 		do_action( 'give_donor_pre_decrease_value', $value, $this->id );
 
-		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
+		if ( $this->update( [ 'purchase_value' => $new_value ] ) ) {
 			$this->purchase_value = $new_value;
 		}
 
@@ -944,7 +944,7 @@ class Give_Donor {
 	 *
 	 * @return string|float
 	 */
-	public function get_total_donation_amount( $args = array() ) {
+	public function get_total_donation_amount( $args = [] ) {
 
 		/**
 		 * Filter total donation amount.
@@ -998,15 +998,15 @@ class Give_Donor {
 
 		if ( ! give_has_upgrade_completed( 'v230_move_donor_note' ) ) {
 			// Backward compatibility.
-			$updated = $this->update( array( 'notes' => $notes ) );
+			$updated = $this->update( [ 'notes' => $notes ] );
 		} else {
 			$updated = Give()->comment->db->add(
-				array(
+				[
 					'comment_content' => $note,
 					'user_id'         => get_current_user_id(),
 					'comment_parent'  => $this->id,
 					'comment_type'    => 'donor',
-				)
+				]
 			);
 		}
 
@@ -1039,7 +1039,7 @@ class Give_Donor {
 	 */
 	private function get_raw_notes() {
 		$all_notes = '';
-		$comments  = Give()->comment->db->get_results_by( array( 'comment_parent' => $this->id ) );
+		$comments  = Give()->comment->db->get_results_by( [ 'comment_parent' => $this->id ] );
 
 		// Generate notes output as we are doing before 2.3.0.
 		if ( ! empty( $comments ) ) {
@@ -1238,6 +1238,7 @@ class Give_Donor {
 	 * @return bool          If the email was removed successfully.
 	 */
 	public function remove_email( $email = '' ) {
+
 		if ( ! is_email( $email ) ) {
 			return false;
 		}
@@ -1280,7 +1281,7 @@ class Give_Donor {
 		$old_email = $this->email;
 
 		// Update donor record with new email.
-		$update = $this->update( array( 'email' => $new_primary_email ) );
+		$update = $this->update( [ 'email' => $new_primary_email ] );
 
 		// Remove new primary from list of additional emails.
 		$remove = $this->remove_email( $new_primary_email );
@@ -1315,7 +1316,7 @@ class Give_Donor {
 		// Address ready to process even if only one value set.
 		foreach ( $address as $address_type => $value ) {
 			// @todo: Handle state field validation on basis of country.
-			if ( in_array( $address_type, array( 'line2', 'state' ) ) ) {
+			if ( in_array( $address_type, [ 'line2', 'state' ] ) ) {
 				continue;
 			}
 
@@ -1364,21 +1365,21 @@ class Give_Donor {
 		}
 
 		// Bailout: do not save duplicate orders
-		if ( $this->does_address_exist( $address_type, $address ) ) {
+		if ( $this->does_address_exist( $address_type, $address ) && $multi_address_id === null ) {
 			return false;
 		}
 
 		// Set default address.
 		$address = wp_parse_args(
 			$address,
-			array(
+			[
 				'line1'   => '',
 				'line2'   => '',
 				'city'    => '',
 				'state'   => '',
 				'country' => '',
 				'zip'     => '',
-			)
+			]
 		);
 
 		// Set meta key prefix.
@@ -1632,10 +1633,10 @@ class Give_Donor {
 			$last_name = $split_donor_name[1];
 		}
 
-		return (object) array(
+		return (object) [
 			'first_name' => $first_name,
 			'last_name'  => $last_name,
-		);
+		];
 	}
 
 	/**
@@ -1742,10 +1743,10 @@ class Give_Donor {
 		return apply_filters(
 			'get_donor_initals',
 			give_get_name_initial(
-				array(
+				[
 					'firstname' => $this->get_first_name(),
 					'lastname'  => $this->get_last_name(),
-				)
+				]
 			)
 		);
 

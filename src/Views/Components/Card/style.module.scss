@@ -1,0 +1,27 @@
+.card {
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 0 3px 6px rgba(68, 68, 68, 0.05), 0 3px 6px rgba(68, 68, 68, 0.05);
+	display: flex;
+	flex-direction: column;
+
+	> .title {
+		font-weight: 900;
+		padding: 16px;
+		font-size: 15px;
+	}
+
+	> .content {
+		padding: 0;
+		flex: 1;
+		display: flex;
+		position: relative;
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 768px) {
+	.card {
+		grid-column: span 12 !important;
+	}
+}

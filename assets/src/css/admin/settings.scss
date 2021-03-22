@@ -9,6 +9,11 @@
 
 // Typical SCSS for vertical tabs.
 .give-settings-page {
+	.give-disabled-setting {
+		opacity: 50%;
+		pointer-events: none;
+	}
+
 	.give-settings-section-content {
 		display: flex;
 		background-color: #f4f4f4;

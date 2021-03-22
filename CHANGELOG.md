@@ -7,6 +7,157 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.10.0 - 2021-03-22
+
+### Changed
+
+-   Donor Dashboard UI is now consistent and polished (#5741)
+
+### Fixed
+
+-   The Donor Dashboard shortcode now works on 4.9.x (#5739)
+
+## 2.10.0-rc.2 - 2021-03-18
+
+### Fixed
+
+-   Personal information section only reloads if condition met (#5727)
+-   Editing the recurring donation amount no longer displays "NaN" (#5735)
+-   Creation of the give_migrations table is not producing errors anymore (#5737)
+-   Logging can no longer cause a fatal error to occur (#5737)
+
+## 2.10.0-rc.1 - 2021-03-16
+
+### New 
+
+-   The new logging system UI is now e2e tested (#5723)
+
+### Changes
+
+-   Apply Stripe fee when applicable (#5555)
+-   Cleanup and update deprecated npm packages (#5712)
+
+### Fixed
+
+-   Donor Dashboard history now includes pending donations (#5721)
+-   Multi Form Goal Shortcode class is handleing the empty attributes correctly now (#5716)
+-   The spinner should go away when the PDF Receipt is generated on the Donor Dashboard (#5719)
+-   "Make Primary" address link for multiple addresses now works in Donor Dashboard (#5725)
+
+### Changed
+
+-   DonorProfiles domain namespace is now DonorDashboards (#5728)
+
+## 2.10.0-beta.4 - 2021-03-12
+
+### Changed
+
+-   "Donor Profile" is now renamed "Donor Dashboard" (#5708)
+
+### Fixed
+
+-   Prevent PHP notices on plugin listing page (#5692)
+-   Remove login form after a successful login in donation form with multi step form template (#5683)
+-   Donors with no donations now see a "No Donations" notice in Donor Dashboard (#5694)
+-   Donor Dashboard iframe now resizes when the parent window resizes (#5693)
+-   Migration table id column length is now increased (#5698)
+-   Incorrect property type error is now fixed (#5699)
+-   Donor Dashboard feature domain no longer has typos (#5704)
+-   Email access now gives donor access to my donor dashboard (#5705)
+-   While in the same session, donors are now able to see their donor dashboard (#5707)
+    
+### New
+
+-   Donor Dashboard errors are now logged (#5706)
+
+
+## 2.10.0-beta.3 - 2021-03-09
+
+### Changed
+
+-   Donor Dashboard UI is now more polished (#5686)
+
+### Fixed
+
+-   Donors now only ever see their own donation history (#5676)
+-   Usage tracking job scheduler should not reduce performance (#5678)
+-   Render donor dashboard react app only if container exist (#5684)
+
+## 2.10.0-beta.2 - 2021-03-05
+
+### New
+
+-   Donor Profile Verify Email now supports reCAPTCHA (#5661)
+
+### Changed
+
+-   Form Consumer now limit hooks and instantiated classes (#5670)
+-   Donor Profile receipt content now match receipt displayed during donation (#5666)
+
+### Fixed
+
+-   Legacy log migrations are not failing on fresh install now (#5672)
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+
+## 2.10.0-beta.1 - 2021-03-02
+
+### New
+
+-   Anonymous donation and company setting choices are now persisted (#5633)
+-   Admin are now shown Donor Profiles upgrade notice (#5660)
+-   Donor Profile page is now generated on new installs (#5600)
+-   Custom field values now display in payment details (#5647)
+-   Custom field values now show in Donation Receipt and Donation Confirmation (#5654)
+-   Fields API now supports custom field email tags (#5649)
+-   Add non-sensitive information tracker. (#5658)
+
+### Fixed
+
+-   Custom Fields on the Sequoia template now match alignment (#5669)
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+-   Reports endpoints no longer throw an error due to missing $schema property (#5642)
+-   Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
+
+### Changed
+
+-   Fields API throws an exception when inserting relative to a node that does not exist (#5640)
+-   Form Templates now support custom checkbox fields. (#5643)
+-   Custom fields now support arbitrary attributes (#5641)
+
+## 2.10.0-alpha.2 - 2021-02-25
+
+### New
+
+-   PDF Receipts are now available from Donation Receipt pages (#5613)
+-   Annual Receipts UI now connects to addon (#5611)
+-   Anonymous donation and company setting choices are now persisted (#5633)
+
+### Changed
+
+-   MigrationsRunnerTest unit test has been removed (#5653)
+-   Donor Profile UI is polished to align with original designs (#5648)
+
+## 2.10.0-alpha.1 - 2021-02-19
+
+### New
+-   Front-end donor profiles are scaffolded (#5441)
+-   Donor Profiles UI is implemented (#5444)
+-   Donation History and Dashboard tabs are now dynamically populated (#5455)
+-   Edit Profile UI is now implemented (#5463)
+-   Edit Profile tab now persists data (#5486)
+-   Recurring Donations tab UI now connects to addon (#5584)
+-   Donor Profile authentication logic is now implemented (#5569)
+-   Admin can now set Donor Profile accent color (#5615)
+-   Migrations table (#5580)
+-   Legacy functions used for logging are now updated to use the new Logging API (#5614)
+-   The new Logs UI is implemented (#5591)
+-   Add since-unreleased script for updating @unreleased docblocks. (#5602)
+
+### Changed
+-   Donor Profile Donation History UI is now polished (#5566)
+-   Donor Profile edit UI now uses React Dropzone (#5563)
+-   Donor Profiles are now extensible (#5577)
+
 ## 2.9.7 - 2021-02-09
 
 ### Fixed
