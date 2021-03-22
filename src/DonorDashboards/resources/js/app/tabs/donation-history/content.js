@@ -2,7 +2,8 @@ import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+;
 
 import Heading from '../../components/heading';
 import Button from '../../components/button';

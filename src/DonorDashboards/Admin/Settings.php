@@ -109,7 +109,7 @@ class Settings {
 	 */
 	public function generateDonorDashboardPage() {
 
-		$content = $this->getDonorDashboardPageContent( 'block' );
+		$content = $this->getDonorDashboardPageContent();
 
 		$pageId = wp_insert_post(
 			[
@@ -151,25 +151,108 @@ class Settings {
 	 *
 	 * @since 2.10.0
 	 */
-	protected function getDonorDashboardPageContent( $format ) {
+	protected function getDonorDashboardPageContent() {
 
-		switch ( $format ) {
-			case 'block': {
-				return get_comment_delimited_block_content(
-					'give/donor-dashboard',
-					[
-						'align' => 'wide',
-					],
-					null
-				);
-			}
-			case 'shortcode': {
-				return '[give_donor_dashboard]';
-			}
-			default: {
-				return null;
-			}
+		if ( $this->shouldGenerateWithBlock() ) {
+			return get_comment_delimited_block_content(
+				'give/donor-dashboard',
+				[
+					'align' => 'wide',
+				],
+				null
+			);
+		} else {
+			return '[give_donor_dashboard]';
 		}
+
+	}
+
+	/**
+	 * Determine whether the Donor Dashboard page should be generated with a block
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function shouldGenerateWithBlock() {
+
+		$usingBlocks           = $this->isBlockEditorActive() || $this->isGutenbergEditorActive() ? true : false;
+		$usingClassicEditor    = $this->isClassicEditorActive();
+		$usingDisableGutenberg = $this->isDisableGutenbergActive();
+
+		if ( $usingClassicEditor === false && $usingDisableGutenberg === false && $usingBlocks ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Determine whether the Gutenberg editor is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isGutenbergEditorActive() {
+		if ( has_filter( 'replace_editor', 'gutenberg_init' ) ) {
+			// Gutenberg is installed and activated.
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Determine whether block editor is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isBlockEditorActive() {
+		if ( version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' ) ) {
+			// Block editor.
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Determine whether the Classic editor is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isClassicEditorActive() {
+
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		if ( is_plugin_active( 'classic-editor/classic-editor.php' ) && ( get_option( 'classic-editor-replace' ) !== 'no-replace' ) ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Determine whether the Disable Gutenberg plugin is active
+	 *
+	 * @return bool
+	 *
+	 * @since 2.10.0
+	 */
+	private function isDisableGutenbergActive() {
+
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		if ( is_plugin_active( 'disable-gutenberg/disable-gutenberg.php' ) ) {
+			return true;
+		}
+
+		return false;
 
 	}
 
