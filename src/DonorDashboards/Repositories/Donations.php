@@ -151,7 +151,7 @@ class Donations {
 	 */
 	protected function getFormInfo( $payment ) {
 		return [
-			'title' => $payment->form_title,
+			'title' => wp_trim_words( $payment->form_title, 6, ' [...]' ),
 			'id'    => $payment->form_id,
 		];
 	}
