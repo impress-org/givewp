@@ -4,6 +4,7 @@ namespace Give\DonorDashboards\Tabs\EditProfileTab;
 
 use WP_REST_Request;
 use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
+use WP_REST_Response;
 
 /**
  * @unreleased
@@ -103,4 +104,9 @@ class AvatarRoute extends RouteAbstract {
 			]
 		);
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function handleRequest( WP_REST_Request $request ) {}
 }
