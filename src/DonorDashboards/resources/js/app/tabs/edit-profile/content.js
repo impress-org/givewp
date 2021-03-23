@@ -98,9 +98,16 @@ const Content = () => {
 		additionalEmails,
 		primaryAddress,
 		additionalAddresses,
-		avatarFile,
 		isAnonymous,
 	] );
+
+	useEffect( () => {
+		if ( avatarFile !== null ) {
+			setUpdated(false)
+		}
+	}, [
+		avatarFile
+	])
 
 	const handleUpdate = async() => {
 		setIsUpdating( true );
