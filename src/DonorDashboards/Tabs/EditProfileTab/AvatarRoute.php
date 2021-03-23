@@ -4,11 +4,9 @@ namespace Give\DonorDashboards\Tabs\EditProfileTab;
 
 use WP_REST_Request;
 use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
-use Give\DonorDashboards\Profile as Profile;
-use Give\DonorDashboards\Helpers\SanitizeProfileData as SanitizeHelper;
 
 /**
- * @since 2.10.0
+ * @unreleased
  */
 class AvatarRoute extends RouteAbstract {
 
@@ -29,14 +27,13 @@ class AvatarRoute extends RouteAbstract {
 	/**
 	 * Handles profile update, and returns updated avatar attachment id
 	 *
-	 * @param WP_REST_Request $request
+	 * @param  WP_REST_Request  $request
 	 *
-	 * @return array
+	 * @return WP_REST_Request
 	 *
-	 * @since 2.10.0
+	 * @unreleased
 	 */
 	public function handleRequest( $request ) {
-
 		if ( ! ( is_array( $_POST ) && is_array( $_FILES ) ) ) {
 			return;
 		}
@@ -56,7 +53,6 @@ class AvatarRoute extends RouteAbstract {
 			);
 
 			if ( isset( $upload['url'] ) ) {
-
 				$path = $upload['url'];
 
 				// Check the type of file. We'll use this as the 'post_mime_type'.
@@ -88,6 +84,5 @@ class AvatarRoute extends RouteAbstract {
 		return [
 			'id' => $ids[0],
 		];
-
 	}
 }
