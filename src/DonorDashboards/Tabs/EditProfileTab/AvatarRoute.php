@@ -29,13 +29,13 @@ class AvatarRoute extends RouteAbstract {
 	 *
 	 * @param  WP_REST_Request  $request
 	 *
-	 * @return WP_REST_Request
+	 * @return array
 	 *
 	 * @unreleased
 	 */
-	public function handleRequest( $request ) {
+	public function handleAvatarUploadRequest( $request ) {
 		if ( ! ( is_array( $_POST ) && is_array( $_FILES ) ) ) {
-			return;
+			return [];
 		}
 
 		if ( ! function_exists( 'wp_handle_upload' ) ) {
@@ -84,5 +84,25 @@ class AvatarRoute extends RouteAbstract {
 		return [
 			'id' => $ids[0],
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function registerRoute() {
+		register_rest_route(
+			'give-api/v2',
+			"{$this->root}{$this->endpoint()}",
+			[
+				[
+					'methods'             => 'POST',
+					'callback'            => [ $this, 'handleAvatarUploadRequest' ],
+					'permission_callback' => function() {
+						return Give()->session->get_session_expiration() !== false;
+					},
+				],
+				'args' => $this->args(),
+			]
+		);
 	}
 }
