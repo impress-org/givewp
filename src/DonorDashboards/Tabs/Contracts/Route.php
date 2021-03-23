@@ -36,7 +36,7 @@ abstract class Route implements RestRoute {
 	 *
 	 * @param WP_REST_Request $request
 	 *
-	 * @return WP_REST_Response
+	 * @return WP_REST_Response|array
 	 *
 	 * @since 2.10.0
 	 */
