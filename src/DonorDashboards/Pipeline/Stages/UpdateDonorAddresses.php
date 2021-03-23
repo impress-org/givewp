@@ -58,7 +58,7 @@ class UpdateDonorAddresses implements Stage {
 		 * Clear deleted address keys
 		 */
 
-		$totalStoredAddresses = count( $this->donor->address['billing'] );
+		$totalStoredAddresses = isset( $this->donor->address['billing'] ) ? count( $this->donor->address['billing'] ) : 0;
 		$totalNewAddresses    = count( $additionalAddresses ) + 1;
 
 		if ( $totalStoredAddresses > $totalNewAddresses ) {
