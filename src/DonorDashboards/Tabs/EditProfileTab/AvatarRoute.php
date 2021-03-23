@@ -75,7 +75,7 @@ class AvatarRoute extends RouteAbstract {
 
 				// Generate the metadata for the attachment, and update the database record.
 				$attachmentData = wp_generate_attachment_metadata( $attachmentId, $path );
-				wp_update_attachment_metadata( $attach_id, $attachmentData );
+				wp_update_attachment_metadata( $attachmentId, $attachmentData );
 
 				$ids[] = $attachmentId;
 			}
