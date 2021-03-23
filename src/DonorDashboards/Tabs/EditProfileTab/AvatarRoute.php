@@ -42,8 +42,6 @@ class AvatarRoute extends RouteAbstract {
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 		}
 
-		$ids = [];
-
 		foreach ( $_FILES as $file ) {
 			$upload = wp_handle_upload(
 				$file,
@@ -77,13 +75,13 @@ class AvatarRoute extends RouteAbstract {
 				$attachmentData = wp_generate_attachment_metadata( $attachmentId, $path );
 				wp_update_attachment_metadata( $attachmentId, $attachmentData );
 
-				$ids[] = $attachmentId;
+				return [
+					'id' => $attachmentId,
+				];
 			}
 		}
 
-		return [
-			'id' => $ids[0],
-		];
+		return [];
 	}
 
 	/**
