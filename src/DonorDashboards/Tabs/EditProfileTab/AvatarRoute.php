@@ -27,6 +27,8 @@ class AvatarRoute extends RouteAbstract {
 
 	/**
 	 * @inheritDoc
+	 *
+	 * @return array
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
