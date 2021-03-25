@@ -61,11 +61,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 	public function __construct() {
 		// Set parent defaults.
 		parent::__construct(
-			array(
+			[
 				'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
 				'plural'   => __( 'Donors', 'give' ), // Plural name of the listed records.
 				'ajax'     => false, // Does this table support ajax?.
-			)
+			]
 		);
 
 	}
@@ -92,9 +92,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 					'button',
 					false,
 					false,
-					array(
+					[
 						'ID' => 'donor-search-submit',
-					)
+					]
 				);
 				?>
 			</div>
@@ -129,14 +129,14 @@ class Give_Donor_List_Table extends WP_List_Table {
 				<?php
 				// Filter Donations by Donation Forms.
 				echo Give()->html->forms_dropdown(
-					array(
+					[
 						'name'     => 'form_id',
 						'id'       => 'give-donation-forms-filter',
 						'class'    => 'give-donation-forms-filter',
 						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
 						'number'   => 30,
-					)
+					]
 				);
 				?>
 			</div>
@@ -197,7 +197,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				break;
 
 			case 'amount_spent':
-				$value = give_currency_filter( give_format_amount( $donor[ $column_name ], array( 'sanitize' => false ) ) );
+				$value = give_currency_filter( give_format_amount( $donor[ $column_name ], [ 'sanitize' => false ] ) );
 				break;
 
 			case 'date_created':
@@ -289,14 +289,14 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return array $columns Array of all the list table columns.
 	 */
 	public function get_columns() {
-		$columns = array(
+		$columns = [
 			'cb'            => '<input type="checkbox" />', // Render a checkbox instead of text.
 			'name'          => __( 'Name', 'give' ),
 			'email'         => __( 'Email', 'give' ),
 			'num_donations' => __( 'Donations', 'give' ),
 			'amount_spent'  => __( 'Total Donated', 'give' ),
 			'date_created'  => __( 'Date Created', 'give' ),
-		);
+		];
 
 		return apply_filters( 'give_list_donors_columns', $columns );
 
@@ -311,12 +311,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 
-		$columns = array(
-			'date_created'  => array( 'date_created', true ),
-			'name'          => array( 'name', true ),
-			'num_donations' => array( 'purchase_count', false ),
-			'amount_spent'  => array( 'purchase_value', false ),
-		);
+		$columns = [
+			'date_created'  => [ 'date_created', true ],
+			'name'          => [ 'name', true ],
+			'num_donations' => [ 'purchase_count', false ],
+			'amount_spent'  => [ 'purchase_value', false ],
+		];
 
 		return apply_filters( 'give_list_donors_sortable_columns', $columns );
 	}
@@ -333,11 +333,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_row_actions( $donor ) {
 
-		$actions = array(
+		$actions = [
 			'id'     => '<span class="give-donor-id">ID: ' . $donor['id'] . '  </span>',
 			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'View Donor', 'give' ) ),
 			'delete' => sprintf( '<a class="%1$s" data-id="%2$s" href="#" aria-label="%3$s">%4$s</a>', 'give-single-donor-delete', $donor['id'], sprintf( esc_attr__( 'Delete "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'Delete', 'give' ) ),
-		);
+		];
 
 		return apply_filters( 'give_donor_row_actions', $actions, $donor );
 
@@ -364,7 +364,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
-		$search = esc_attr( $_GET[ 's' ] );
+
+		if ( ! isset( $_GET['s'] ) ) {
+			return false;
+		}
+
+		$search = esc_attr( $_GET['s'] );
+
 		return ! empty( $search ) ? urldecode( trim( $search ) ) : false;
 	}
 
@@ -377,9 +383,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_bulk_actions() {
-		$actions = array(
+		$actions = [
 			'delete' => __( 'Delete', 'give' ),
-		);
+		];
 
 		return $actions;
 	}
@@ -422,7 +428,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function donor_data() {
 
-		$data = array();
+		$data = [];
 
 		// Get donor query.
 		$args   = $this->get_donor_query();
@@ -438,7 +444,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				// If title prefix is set, then update the donor name.
 				$donor->name = give_get_donor_name_with_title_prefixes( $title_prefix, $donor->name );
 
-				$data[] = array(
+				$data[] = [
 					'id'            => $donor->id,
 					'user_id'       => $user_id,
 					'name'          => $donor->name,
@@ -446,7 +452,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 					'num_donations' => $donor->purchase_count,
 					'amount_spent'  => $donor->purchase_value,
 					'date_created'  => $donor->date_created,
-				);
+				];
 			}
 		}
 
@@ -490,7 +496,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$order      = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
 		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
 
-		$args = array(
+		$args = [
 			'output'     => 'payments',
 			'number'     => $per_page,
 			'offset'     => $offset,
@@ -502,7 +508,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'start_date' => $start_date,
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
-		);
+		];
 
 		/**
 		 * Filter to modify donor table argument.
@@ -629,21 +635,21 @@ class Give_Donor_List_Table extends WP_List_Table {
 	public function prepare_items() {
 
 		$columns  = $this->get_columns();
-		$hidden   = array(); // No hidden columns.
+		$hidden   = []; // No hidden columns.
 		$sortable = $this->get_sortable_columns();
 
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = [ $columns, $hidden, $sortable ];
 
 		$this->items = $this->donor_data();
 
 		$this->total = $this->get_donor_count();
 
 		$this->set_pagination_args(
-			array(
+			[
 				'total_items' => $this->total,
 				'per_page'    => $this->per_page,
 				'total_pages' => ceil( $this->total / $this->per_page ),
-			)
+			]
 		);
 	}
 }
