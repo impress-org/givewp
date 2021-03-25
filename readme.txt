@@ -146,9 +146,10 @@ Here's a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 4.8 or greater
+* WordPress 4.9 or greater
 * PHP version 5.6 or greater
-* MySQL version 5.0.15 or greater
+* MySQL version 5.6 or greater
+* MariaDB version 10 or later
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
 * An SSL certificate -- while this is not strictly required, it is highly recommend. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](https://go.givewp.com/ssl).
