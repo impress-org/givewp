@@ -9,7 +9,7 @@
         "tecnickcom/tcpdf": "^6.2",
         "stripe/stripe-php": "^6.41",
         "paypal/paypal-checkout-sdk": "^1.0",
-        "kjohnson/format-object-list": "dev-master",
+        "kjohnson/format-object-list": "^0.1.0",
         "fakerphp/faker": "^1.9",
         "myclabs/php-enum": "^1.6"
     },
@@ -18,7 +18,7 @@
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "^5",
-        "kjohnson/since-unreleased": "dev-master"
+        "kjohnson/since-unreleased": "^0.1.0"
     },
     "keywords": [
         "wordpress",
