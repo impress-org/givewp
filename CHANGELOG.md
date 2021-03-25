@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fix broken link by correctly closing href tag (#5746)
+-   Stripe Application Fee checks that the connected account country supports application fees (#5755)
 
 ## 2.10.0 - 2021-03-22
 
