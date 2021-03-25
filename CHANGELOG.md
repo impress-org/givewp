@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fix broken link by correctly closing href tag (#5746)
-- 	Prevent PHP notice on system info page (#5606)
+-   Prevent PHP notice on system info page (#5606)
 
 ## 2.10.0 - 2021-03-22
 
