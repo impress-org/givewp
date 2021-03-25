@@ -33,9 +33,10 @@ class ApplicationFee {
 	public static function canAddFee() {
 		$gate = new static();
 
-		return ! ( $gate->hasLicense()
-			|| $gate->isStripeProAddonActive()
-			|| $gate->isStripeProAddonInstalled( get_plugins() ) );
+		return $gate->doesCountrySupportApplicationFee
+			&& ! $gate->hasLicense()
+			&& ! $gate->isStripeProAddonActive()
+			&& ! $gate->isStripeProAddonInstalled( get_plugins() );
 	}
 
 	/**
@@ -74,5 +75,19 @@ class ApplicationFee {
 	 */
 	public function hasLicense() {
 		return (bool) Give_License::get_license_by_plugin_dirname( static::PluginSlug );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @link https://github.com/impress-org/givewp/issues/5729
+	 *
+	 * @return bool
+	 */
+	public function doesCountrySupportApplicationFee() {
+		$connected     = give_stripe_get_connected_account_options();
+		$accountID     = $connected['stripe_account'];
+		$accountLookup = give_stripe_get_all_accounts();
+		return 'BR' !== $accountLookup[ $accountID ]['account_country'];
 	}
 }
