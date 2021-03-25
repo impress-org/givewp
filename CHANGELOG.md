@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fix broken link by correctly closing href tag (#5746)
+- 	Prevent PHP notice on system info page (#5606)
 
 ## 2.10.0 - 2021-03-22
 
@@ -20,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   The Donor Dashboard shortcode now works on 4.9.x (#5739)
--	Prevent PHP notice on system info page (#5606)
 
 ## 2.10.0-rc.2 - 2021-03-18
 
