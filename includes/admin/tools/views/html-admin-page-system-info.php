@@ -695,7 +695,8 @@ $give_updates = Give_Updates::get_instance();
 			$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
 			if ( is_array( $last_paypal_ipn_received ) ) {
 				$donation_id	 = $last_paypal_ipn_received['payment_id'];
-			}			if (
+			}			
+			if (
 				is_array( $last_paypal_ipn_received )
 				&& count( $last_paypal_ipn_received ) > 0
 				&& get_post( $donation_id ) instanceof WP_Post
