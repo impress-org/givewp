@@ -33,7 +33,7 @@ class ApplicationFee {
 	public static function canAddFee() {
 		$gate = new static();
 
-		return $gate->doesCountrySupportApplicationFee
+		return $gate->doesCountrySupportApplicationFee()
 			&& ! $gate->hasLicense()
 			&& ! $gate->isStripeProAddonActive()
 			&& ! $gate->isStripeProAddonInstalled( get_plugins() );
