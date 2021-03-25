@@ -111,10 +111,10 @@ final class ApplicationFeeTest extends TestCase {
         give_update_option( '_give_stripe_get_all_accounts', [
             'acct_foo' => [
                 'account_id' => 'acct_foo',
-                'account_country' => 'US'
+                'account_country' => 'BR'
             ]
         ] );
 
-        $this->assertTrue( $this->gate->doesCountrySupportApplicationFee() );
+        $this->assertFalse( $this->gate->doesCountrySupportApplicationFee() );
     }
 }
