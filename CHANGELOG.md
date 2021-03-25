@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Stop revenue migration on error (#5748)
+
 ## 2.10.0 - 2021-03-22
 
 ### Changed
