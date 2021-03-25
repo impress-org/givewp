@@ -91,4 +91,30 @@ final class ApplicationFeeTest extends TestCase {
             $this->gate->hasLicense( 'give-stripe' )
         );
     }
+
+    public function testConneectedAccontCountrySupportsApplicationFees() {
+
+        give_update_option( '_give_stripe_default_account', 'acct_foo' );
+        give_update_option( '_give_stripe_get_all_accounts', [
+            'acct_foo' => [
+                'account_id' => 'acct_foo',
+                'account_country' => 'US'
+            ]
+        ] );
+
+        $this->assertTrue( $this->gate->doesCountrySupportApplicationFee() );
+    }
+
+    public function testConneectedAccontCountryNotSupportsApplicationFees() {
+
+        give_update_option( '_give_stripe_default_account', 'acct_foo' );
+        give_update_option( '_give_stripe_get_all_accounts', [
+            'acct_foo' => [
+                'account_id' => 'acct_foo',
+                'account_country' => 'US'
+            ]
+        ] );
+
+        $this->assertTrue( $this->gate->doesCountrySupportApplicationFee() );
+    }
 }
