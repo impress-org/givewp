@@ -2,12 +2,10 @@
 namespace Give\Revenue\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
-use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Log\Log;
 use Give\Revenue\Repositories\Revenue;
 use Give\ValueObjects\Money;
 use Give_Updates;
-use InvalidArgumentException;
 use WP_Query;
 use Exception;
 
@@ -81,21 +79,28 @@ class AddPastDonationsToRevenueTable extends Migration {
 
 				try {
 					$revenueRepository->insert( $revenueData );
-				} catch ( Exception $ex ) {
+				} catch ( Exception $e ) {
 					$give_updates->__pause_db_update( true );
-					$this->logError( $ex->getMessage(), $revenueData );
-
 					update_option( 'give_upgrade_error', 1, false );
+
+					Log::error(
+						esc_html__( 'An error occurred inserting data into the revenue table', 'give' ),
+						[
+							'source' => 'Revenue Migration',
+							'Data'   => $revenueData,
+							'Error'  => $e->getMessage(),
+						]
+					);
+
 					wp_die();
 				}
 			}
 
 			wp_reset_postdata();
-			return;
+		} else {
+			// Update Ran Successfully.
+			give_set_upgrade_complete( self::id() );
 		}
-
-		// Update Ran Successfully.
-		give_set_upgrade_complete( self::id() );
 	}
 
 	/**
@@ -110,24 +115,5 @@ class AddPastDonationsToRevenueTable extends Migration {
 	 */
 	public static function timestamp() {
 		return strtotime( '2019-09-24' );
-	}
-
-	/**
-	 * Add log.
-	 *
-	 * @unreleased
-	 *
-	 * @param  string  $errorMessage
-	 * @param  array  $revenueData  Donation data to insert into revenue table
-	 */
-	private function logError( $errorMessage, $revenueData ) {
-		Log::error(
-			esc_html__( 'An error occurred inserting data into the revenue table', 'give' ),
-			[
-				'source' => 'Revenue Migration',
-				'Data'   => $revenueData,
-				'Error'  => $errorMessage,
-			]
-		);
 	}
 }
