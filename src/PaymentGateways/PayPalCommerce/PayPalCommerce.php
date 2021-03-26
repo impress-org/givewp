@@ -61,6 +61,17 @@ class PayPalCommerce implements PaymentGateway {
 				'id'   => 'give_gateway_settings_2',
 			],
 			[
+				'name'    => esc_html__( 'Collect Billing Details', 'give' ),
+				'id'      => 'paypal_commerce_collect_billing_details',
+				'type'    => 'radio_inline',
+				'desc'    => esc_html__( 'If enabled, required billing address fields are added to PayPal Donations Donation forms. These fields are required to process the transaction when enabled. Billing address details are added to both the donation and donor record in GiveWP.', 'give' ),
+				'default' => 'disabled',
+				'options' => [
+					'enabled'  => esc_html__( 'Enabled', 'give' ),
+					'disabled' => esc_html__( 'Disabled', 'give' ),
+				],
+			],
+			[
 				'name' => esc_html__( 'Account Country', 'give' ),
 				'id'   => 'paypal_commerce_account_country',
 				'type' => 'paypal_commerce_account_country',
