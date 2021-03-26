@@ -694,11 +694,12 @@ $give_updates = Give_Updates::get_instance();
 			<?php
 			$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
 			if ( is_array( $last_paypal_ipn_received ) ) {
-				$donation_id	 = $last_paypal_ipn_received['payment_id'];
+				$donation_id	 = isset($last_paypal_ipn_received['payment_id']) ? $last_paypal_ipn_received['payment_id'] : null;
 			}			
 			if (
 				is_array( $last_paypal_ipn_received )
 				&& count( $last_paypal_ipn_received ) > 0
+				&& $donation_id !== null
 				&& get_post( $donation_id ) instanceof WP_Post
 			) {
 				$ipn_timestamp   = give_get_meta( $donation_id, 'give_last_paypal_ipn_received', true );
