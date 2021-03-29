@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Stop revenue migration on error (#5748)
 -   Fix broken link by correctly closing href tag (#5746)
+-   Composer dependencies now reference releases instead of branches (#5763)
 -   Donor search no longer shows undefined index notice (#5752)
 -   Retrieve migrations only when necessary (#5760)
 
