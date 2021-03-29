@@ -18,7 +18,7 @@
         "phpcompatibility/phpcompatibility-wp": "*",
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "^5",
-        "kjohnson/since-unreleased": "^0.1.0"
+        "kjohnson/since-unreleased": "^1.0.0"
     },
     "keywords": [
         "wordpress",
