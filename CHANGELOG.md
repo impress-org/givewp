@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Composer dependencies now reference releases instead of branches (#5763)
 -   Donor search no longer shows undefined index notice (#5752)
 -   Retrieve migrations only when necessary (#5760)
+-   Donors are now able to log into Donor Dashboard on hosts with page caching (#5766)
 -   The Donor Dashboard are no only be generated in admin-side pages (#5768)
 
 ## 2.10.0 - 2021-03-22
