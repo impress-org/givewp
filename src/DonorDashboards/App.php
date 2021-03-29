@@ -48,10 +48,6 @@ class App {
 			$url = $url . '&action=' . urlencode( give_clean( $_GET['action'] ) );
 		}
 
-		if ( isset( $_GET['give_nl'] ) ) {
-			$url = $url . '&give_nl=' . urlencode( give_clean( $_GET['give_nl'] ) );
-		}
-
 		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
 		return sprintf(
