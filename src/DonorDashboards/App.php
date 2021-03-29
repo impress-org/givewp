@@ -50,7 +50,7 @@ class App {
 			$queryArgs['action'] = urlencode( give_clean( $_GET['action'] ) );
 		}
 
-		add_query_arg( $queryArgs, $url );
+		$url = add_query_arg( $queryArgs, $url );
 
 		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 
