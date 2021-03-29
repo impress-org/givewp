@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from '../store';
-import { getAPIRoot, getAPINonce } from '../../../utils';
+import { getAPIRoot } from '../../../utils';
 import { setAnnualReceipts, setQuerying } from '../store/actions';
 
 export const fetchAnnualReceiptsFromAPI = () => {
@@ -8,11 +8,7 @@ export const fetchAnnualReceiptsFromAPI = () => {
 
 	dispatch( setQuerying( true ) );
 	axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/annual-receipts', {},
-		{
-			headers: {
-				'X-WP-Nonce': getAPINonce(),
-			},
-		} )
+		{} )
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
 			const { receipts } = data;
