@@ -42,13 +42,14 @@ class MigrationHelper {
 		MigrationsRegister $migrationRegister,
 		MigrationLogRepository $migrationRepository
 	) {
-		$this->migrationRegister    = $migrationRegister;
-		$this->migrationRepository  = $migrationRepository;
-		$this->migrationsInDatabase = $this->migrationRepository->getMigrations();
+		$this->migrationRegister   = $migrationRegister;
+		$this->migrationRepository = $migrationRepository;
 	}
 
 	/**
 	 * Get migrations sorted by run order
+	 *
+	 * @since 2.10.0
 	 *
 	 * @return array
 	 */
@@ -70,6 +71,8 @@ class MigrationHelper {
 	/**
 	 * Get pending migrations
 	 *
+	 * @since 2.10.0
+	 *
 	 * @return string[]
 	 */
 	public function getPendingMigrations() {
@@ -77,7 +80,7 @@ class MigrationHelper {
 			$this->migrationRegister->getMigrations(),
 			function( $migrationClass ) {
 				/* @var Migration $migrationClass */
-				foreach ( $this->migrationsInDatabase as $migration ) {
+				foreach ( $this->getMigrationsInDatabase() as $migration ) {
 					if ( $migration->getId() === $migrationClass::id() ) {
 						return false;
 					}
@@ -90,11 +93,28 @@ class MigrationHelper {
 	/**
 	 * Get migration run order
 	 *
+	 * @since 2.10.0
+	 *
 	 * @param string $migrationId
 	 *
 	 * @return int
 	 */
 	public function getRunOrderForMigration( $migrationId ) {
 		return array_search( $migrationId, array_values( $this->getMigrationsSorted() ) ) + 1;
+	}
+
+	/**
+	 * Retrieves the migrations from the database, caching the results for future retrieval
+	 *
+	 * @since 2.10.1
+	 *
+	 * @return MigrationLogModel[]
+	 */
+	private function getMigrationsInDatabase() {
+		if ( $this->migrationsInDatabase === null ) {
+			$this->migrationsInDatabase = $this->migrationRepository->getMigrations();
+		}
+
+		return $this->migrationsInDatabase;
 	}
 }
