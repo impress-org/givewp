@@ -46,6 +46,8 @@ class Give_Earnings_Export extends Give_Export {
 		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_earnings_export_filename', 'give-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.csv' );
 		header( 'Expires: 0' );
 
+		// UTF-8 BOM
+		echo "\xEF\xBB\xBF";
 	}
 
 	/**

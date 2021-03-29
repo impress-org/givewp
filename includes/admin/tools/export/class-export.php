@@ -67,6 +67,9 @@ class Give_Export {
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=' . $file_name . '.csv' );
 		header( 'Expires: 0' );
+
+		// UTF-8 BOM
+		echo "\xEF\xBB\xBF";
 	}
 
 	/**
