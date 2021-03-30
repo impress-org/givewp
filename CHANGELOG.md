@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Prevent fatal error because of param declaration compatibility (#5769)
 -   Stop revenue migration on error (#5748)
 -   Fix broken link by correctly closing href tag (#5746)
 -   Prevent PHP notice on system info page (#5606)
