@@ -37,7 +37,7 @@ class Revenue {
 		 */
 		$revenueData = apply_filters( 'give_revenue_insert_data', $revenueData );
 
-		return $wpdb->insert(
+		return DB::insert(
 			$wpdb->give_revenue,
 			$revenueData,
 			$this->getPlaceholderForPrepareQuery( $revenueData )
@@ -141,8 +141,8 @@ class Revenue {
 	public function isDonationExist( $donationId ) {
 		global $wpdb;
 
-		return (bool) $wpdb->get_var(
-			$wpdb->prepare(
+		return (bool) DB::get_var(
+			DB::prepare(
 				"
 				SELECT donation_id
 				FROM {$wpdb->give_revenue}
