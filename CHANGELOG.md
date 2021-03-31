@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Donor Dashboard no longer freezes up when attempting to manage Stripe ACH subscriptions (#5771)
+
 ## 2.10.1 - 2021-03-30
 
 ### Fixed
