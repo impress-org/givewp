@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
+
 ## 2.10.1 - 2021-03-30
 
 ### Fixed
