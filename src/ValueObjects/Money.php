@@ -2,7 +2,6 @@
 
 namespace Give\ValueObjects;
 
-use Give_Cache_Setting;
 use InvalidArgumentException;
 
 /**
