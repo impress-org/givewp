@@ -2,6 +2,9 @@
 
 namespace Give\ValueObjects;
 
+use Give_Cache_Setting;
+use InvalidArgumentException;
+
 /**
  * Class Money
  * @package Give\ValueObjects
@@ -78,12 +81,22 @@ class Money {
 	 * @param $currency
 	 *
 	 * @return array
+	 * @throws InvalidArgumentException
 	 */
 	private static function getCurrencyData( $currency ) {
 		static $currenciesData = null;
 
 		if ( $currenciesData === null ) {
-			$currenciesData = give_get_currencies( 'all' );
+			$currenciesData = give_get_currencies_list( true );
+		}
+
+		if ( ! array_key_exists( $currency, $currenciesData ) ) {
+			throw new InvalidArgumentException(
+				sprintf(
+					'GiveWP core does not support %1$s currency. Please use another currency code.',
+					$currency
+				)
+			);
 		}
 
 		return $currenciesData[ $currency ];

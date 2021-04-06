@@ -59,10 +59,13 @@ function give_get_currency_position() {
  * Get Currencies List
  *
  * @since 1.8.17
+ * @unreleased Added $suppressFilter function argument
+ *
+ * @param  bool  $suppressFilter Disable filter and get unfiltered currency data.
  *
  * @return array $currencies A list of the available currencies
  */
-function give_get_currencies_list() {
+function give_get_currencies_list( $suppressFilter = false ) {
 	$currencies = Give_Cache_Setting::get_option( 'currencies' );
 
 	/**
@@ -79,7 +82,7 @@ function give_get_currencies_list() {
 	 *
 	 * @param array $currencies
 	 */
-	return (array) apply_filters( 'give_currencies', $currencies );
+	return $suppressFilter ? $currencies : (array) apply_filters( 'give_currencies', $currencies );
 }
 
 /**
