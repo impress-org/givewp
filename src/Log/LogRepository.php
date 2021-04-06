@@ -47,7 +47,7 @@ class LogRepository {
 				'data'     => $model->getData( $jsonEncode = true ),
 				'category' => $model->getCategory(),
 				'source'   => $model->getSource(),
-				'date'     => date( 'Y-m-d H:i:s' ),
+				'date'     => $model->getDate(),
 			],
 			null
 		);
@@ -70,7 +70,7 @@ class LogRepository {
 				'data'     => $model->getData( $jsonEncode = true ),
 				'category' => $model->getCategory(),
 				'source'   => $model->getSource(),
-				'date'     => date( 'Y-m-d H:i:s' ),
+				'date'     => $model->getDate(),
 			],
 			[
 				'id' => $model->getId(),
