@@ -15,6 +15,23 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  services:
+    mysql56:
+      image: mysql:5.6
+      env:
+        MYSQL_ROOT_PASSWORD: root
+      ports:
+        - 3307
+      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      
+    mysql80:
+      image: mysql:8.0
+      env:
+        MYSQL_ROOT_PASSWORD: root
+      ports:
+        - 3308
+      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    
   # This workflow contains a single job called "test"
   test:
     # The type of runner that the job will run on
@@ -22,7 +39,7 @@ jobs:
     strategy:
       matrix:
         php: [ 5.6, 7.2 ]
-        mysql: [ 5.6, 8.0 ]
+        mysql: [ 'mysql:5.6', 'mysql:8.0' ]
         wordpress: [ 4.9, latest ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -43,13 +60,6 @@ jobs:
             php-version: ${{ matrix.php }}
             extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
             coverage: none
-            
-      - name: Set Up MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: ${{ matrix.msql }}
-          mysql user: 'root'
-          mysql password: 'root'
 
       - name: Install dependencies
         run: |
@@ -58,10 +68,23 @@ jobs:
           composer update --prefer-dist --no-interaction --no-suggest
 
       - name: Setup tests
+        if: ${{ matix.mysql == 'mysql:5.6' }}
         run: |
-            bash tests/unit/bin/install.sh wordpress_test root root localhost ${{ matrix.wordpress }}
+            bash tests/unit/bin/install.sh wordpress_test root root mysql56:${{ job.services.mysql56.ports[3307] }} ${{ matrix.wordpress }}
+          
+      - name: Setup tests
+        if: ${{ matix.mysql == 'mysql:8.0' }}
+        run: |
+          bash tests/unit/bin/install.sh wordpress_test root root mysql80:${{ job.services.mysql80.ports[3308] }} ${{ matrix.wordpress }}
 
       -   name: Execute tests
+          if: ${{ matix.mysql == 'mysql:5.6' }}
           run: php -d memory_limit=-1 vendor/bin/phpunit
           env:
-            DB_PORT: 3306
+            DB_PORT: ${{ job.services.mysql56.ports[3307] }}
+            
+      -   name: Execute tests
+          if: ${{ matix.mysql == 'mysql:8.0' }}
+          run: php -d memory_limit=-1 vendor/bin/phpunit
+          env:
+            DB_PORT: ${{ job.services.mysql80.ports[3308] }}
