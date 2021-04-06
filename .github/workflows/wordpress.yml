@@ -68,23 +68,23 @@ jobs:
           composer update --prefer-dist --no-interaction --no-suggest
 
       - name: Setup tests
-        if: ${{ matix.mysql == 'mysql:5.6' }}
+        if: ${{ matrix.mysql == 'mysql:5.6' }}
         run: |
             bash tests/unit/bin/install.sh wordpress_test root root mysql56:${{ job.services.mysql56.ports[3307] }} ${{ matrix.wordpress }}
           
       - name: Setup tests
-        if: ${{ matix.mysql == 'mysql:8.0' }}
+        if: ${{ matrix.mysql == 'mysql:8.0' }}
         run: |
           bash tests/unit/bin/install.sh wordpress_test root root mysql80:${{ job.services.mysql80.ports[3308] }} ${{ matrix.wordpress }}
 
       -   name: Execute tests
-          if: ${{ matix.mysql == 'mysql:5.6' }}
+          if: ${{ matrix.mysql == 'mysql:5.6' }}
           run: php -d memory_limit=-1 vendor/bin/phpunit
           env:
             DB_PORT: ${{ job.services.mysql56.ports[3307] }}
             
       -   name: Execute tests
-          if: ${{ matix.mysql == 'mysql:8.0' }}
+          if: ${{ matrix.mysql == 'mysql:8.0' }}
           run: php -d memory_limit=-1 vendor/bin/phpunit
           env:
             DB_PORT: ${{ job.services.mysql80.ports[3308] }}
