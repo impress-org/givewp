@@ -93,7 +93,7 @@ class Money {
 		if ( ! array_key_exists( $currency, $currenciesData ) ) {
 			throw new InvalidArgumentException(
 				sprintf(
-					'GiveWP core does not support %1$s currency. Please use another currency code.',
+					'GiveWP core does not support %1$s currency. Please use another currency code or If you can register new currency with give_register_currency filter.',
 					$currency
 				)
 			);
