@@ -37,20 +37,20 @@ jobs:
               key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
       
       # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
-      - name: Setup PHP
+      - name: Set Up PHP
         uses: shivammathur/setup-php@v2
         with:
             php-version: ${{ matrix.php }}
             extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
             coverage: none
             
-      steps:
-        - uses: mirromutth/mysql-action@v1.1
-          with:
-            mysql version: ${{ matrix.msql }}
-            mysql root password: 'root'
-            mysql user: 'root'
-            mysql password: 'root'
+      - name: Set Up MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: ${{ matrix.msql }}
+          mysql root password: 'root'
+          mysql user: 'root'
+          mysql password: 'root'
 
       - name: Install dependencies
         run: |
