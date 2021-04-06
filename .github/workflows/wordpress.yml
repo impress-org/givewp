@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         php: [ 5.6, 7.2 ]
+        mysql: [ 5.6, 8.0 ]
         wordpress: [ 4.9, latest ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -42,9 +43,14 @@ jobs:
             php-version: ${{ matrix.php }}
             extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
             coverage: none
-
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+            
+      steps:
+        - uses: mirromutth/mysql-action@v1.1
+          with:
+            mysql version: ${{ matrix.msql }}
+            mysql root password: 'root'
+            mysql user: 'root'
+            mysql password: 'root'
 
       - name: Install dependencies
         run: |
@@ -59,4 +65,4 @@ jobs:
       -   name: Execute tests
           run: php -d memory_limit=-1 vendor/bin/phpunit
           env:
-            DB_PORT: ${{ job.services.mysql.ports[3306] }}
+            DB_PORT: 3306
