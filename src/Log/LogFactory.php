@@ -64,7 +64,7 @@ class LogFactory {
 			'source'   => esc_html__( 'Give Core', 'give' ),
 			'context'  => [],
 			'id'       => null,
-			'date'     => null,
+			'date'     => date( 'Y-m-d H:i:s' ),
 		];
 	}
 }

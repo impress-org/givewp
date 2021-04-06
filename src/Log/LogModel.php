@@ -233,6 +233,7 @@ class LogModel {
 		$repository = give( LogRepository::class );
 
 		if ( $this->getId() ) {
+			$this->date = date( 'Y-m-d H:i:s' );
 			$repository->updateLog( $this );
 		} else {
 			$this->id = $repository->insertLog( $this );
