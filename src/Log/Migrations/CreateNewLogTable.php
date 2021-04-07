@@ -27,7 +27,7 @@ class CreateNewLogTable extends Migration {
 	 * @return string
 	 */
 	public static function title() {
-		return  esc_html__( 'Create new give_log table' );
+		return  esc_html__( 'Create new give_log table', 'give' );
 	}
 
 	/**
@@ -50,7 +50,7 @@ class CreateNewLogTable extends Migration {
 			data text NOT NULL,
 			category VARCHAR(64) NOT NULL,
 			source VARCHAR(64) NOT NULL,
-			date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			date DATETIME NOT NULL,
 			PRIMARY KEY  (id),
 			KEY log_type (log_type),
 			KEY category (category),
