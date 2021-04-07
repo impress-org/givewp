@@ -56,7 +56,7 @@ class LogFactory extends Factory {
 	 */
 	public function getLogCategory() {
 		if ( 'random' === $this->category ) {
-			return $this->randomLogCategory()();
+			return $this->randomLogCategory();
 		}
 
 		return $this->category;
