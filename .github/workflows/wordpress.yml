@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         php: [ 5.6, 7.2 ]
-        mysql: [ 'mysql:5.6', 'mysql:8.0' ]
+        mysql: [ 'mysql:5.6' ]
         wordpress: [ 4.9, latest ]
         
     services:
@@ -77,14 +77,14 @@ jobs:
         run: |
           bash tests/unit/bin/install.sh wordpress_test root root 127.0.0.1:${{ job.services.mysql80.ports[3306] }} ${{ matrix.wordpress }}
 
-      -   name: Execute tests
-          if: ${{ matrix.mysql == 'mysql:5.6' }}
-          run: php -d memory_limit=-1 vendor/bin/phpunit
-          env:
-            DB_PORT: ${{ job.services.mysql56.ports[3306] }}
+      - name: Execute tests
+        if: ${{ matrix.mysql == 'mysql:5.6' }}
+        run: php -d memory_limit=-1 vendor/bin/phpunit
+        env:
+          DB_PORT: ${{ job.services.mysql56.ports[3306] }}
             
-      -   name: Execute tests
-          if: ${{ matrix.mysql == 'mysql:8.0' }}
-          run: php -d memory_limit=-1 vendor/bin/phpunit
-          env:
-            DB_PORT: ${{ job.services.mysql80.ports[3306] }}
+      - name: Execute tests
+        if: ${{ matrix.mysql == 'mysql:8.0' }}
+        run: php -d memory_limit=-1 vendor/bin/phpunit
+        env:
+          DB_PORT: ${{ job.services.mysql80.ports[3306] }}
