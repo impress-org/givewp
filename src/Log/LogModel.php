@@ -2,6 +2,7 @@
 
 namespace Give\Log;
 
+use DateTime;
 use Give\Log\ValueObjects\LogType;
 
 /**
@@ -49,7 +50,7 @@ class LogModel {
 	private $id;
 
 	/**
-	 * @var string|null
+	 * @var string
 	 */
 	private $date;
 
@@ -62,16 +63,16 @@ class LogModel {
 	 * @param  string  $source
 	 * @param  array  $context
 	 * @param  int|null  $logId
-	 * @param  string|null $date
+	 * @param  string $date
 	 */
 	public function __construct( $type, $message, $category, $source, $context, $logId, $date ) {
 		$this->setType( $type );
+		$this->setDate( $date );
 		$this->category = $category;
 		$this->source   = $source;
 		$this->context  = $context;
 		$this->message  = $message;
 		$this->id       = $logId;
-		$this->date     = $date;
 	}
 
 	/**
@@ -99,6 +100,17 @@ class LogModel {
 	}
 
 	/**
+	 * Set log date
+	 *
+	 * @param string $date
+	 */
+	private function setDate( $date ) {
+		$this->date = $this->isValidateDate( $date )
+			? $date
+			: date( 'Y-m-d H:i:s' );
+	}
+
+	/**
 	 * Set log source
 	 * If not defined, fallback to default value
 	 *
@@ -108,6 +120,19 @@ class LogModel {
 		$this->source = is_null( $source )
 			? esc_html__( 'Give Core', 'give' )
 			: $source;
+	}
+
+	/**
+	 * Helper method to check if given string is a valid date
+	 *
+	 * @param string $date
+	 * @param string $format
+	 *
+	 * @return bool
+	 */
+	public function isValidateDate( $date, $format = 'Y-m-d H:i:s' ) {
+		$dateTime = DateTime::createFromFormat( $format, $date );
+		return $dateTime && $dateTime->format( $format ) === $date;
 	}
 
 	 /**
