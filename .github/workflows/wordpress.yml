@@ -39,6 +39,7 @@ jobs:
       # command option in docker to apply it once the container is set up... but Github Actions does not support this.
       # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
       # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
+      # @see https://github.com/docker-library/mysql/issues/690
       mysql80:
         image: mysql:8.0
         ports:
