@@ -70,12 +70,12 @@ jobs:
       - name: Setup tests
         if: ${{ matrix.mysql == 'mysql:5.6' }}
         run: |
-            bash tests/unit/bin/install.sh wordpress_test root root mysql56:${{ job.services.mysql56.ports[3306] }} ${{ matrix.wordpress }}
+            bash tests/unit/bin/install.sh wordpress_test root root 127.0.0.1:${{ job.services.mysql56.ports[3306] }} ${{ matrix.wordpress }}
           
       - name: Setup tests
         if: ${{ matrix.mysql == 'mysql:8.0' }}
         run: |
-          bash tests/unit/bin/install.sh wordpress_test root root mysql80:${{ job.services.mysql80.ports[3306] }} ${{ matrix.wordpress }}
+          bash tests/unit/bin/install.sh wordpress_test root root 127.0.0.1:${{ job.services.mysql80.ports[3306] }} ${{ matrix.wordpress }}
 
       -   name: Execute tests
           if: ${{ matrix.mysql == 'mysql:5.6' }}
