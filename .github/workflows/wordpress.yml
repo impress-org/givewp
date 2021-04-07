@@ -34,6 +34,11 @@ jobs:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+      # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
+      # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
+      # command option in docker to apply it once the container is set up... but Github Actions does not support this.
+      # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
+      # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
       mysql80:
         image: mysql:8.0
         ports:
