@@ -85,11 +85,12 @@ function give_get_currencies_list() {
 	 *                            'admin_label' => __( 'Vietnamese đồng (₫)', 'give' ),
 	 *                            'symbol'      => '&#8363;',
 	 *                            'setting'     => array(
-	 *                            'currency_position'   => 'after',
-	 *                            'thousands_separator' => '.',
-	 *                            'decimal_separator'   => ',',
-	 *                            'number_decimals'     => 2,
-	 *                       ));
+	 *                                'currency_position'   => 'after',
+	 *                                'thousands_separator' => '.',
+	 *                                'decimal_separator'   => ',',
+	 *                                'number_decimals'     => 2,
+	 *                            )
+	 *                       );
 	 *
 	 *                       return $currencies;
 	 *                  }
