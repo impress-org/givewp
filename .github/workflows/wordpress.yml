@@ -37,7 +37,7 @@ jobs:
       mysql80:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: N0Tweak$_@123!
+          MYSQL_ROOT_PASSWORD: N0Tweak!@123!
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -75,7 +75,7 @@ jobs:
       - name: Setup tests
         if: ${{ matrix.mysql == 'mysql:8.0' }}
         run: |
-          bash tests/unit/bin/install.sh wordpress_test root N0Tweak$_@123! 127.0.0.1:${{ job.services.mysql80.ports[3306] }} ${{ matrix.wordpress }}
+          bash tests/unit/bin/install.sh wordpress_test root N0Tweak!@123! 127.0.0.1:${{ job.services.mysql80.ports[3306] }} ${{ matrix.wordpress }}
 
       - name: Execute tests
         if: ${{ matrix.mysql == 'mysql:5.6' }}
