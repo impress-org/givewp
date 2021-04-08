@@ -111,7 +111,7 @@ class Settings {
 
 		// Check if a Donor Dashboard page has already been created
 
-		if ( $this->donorDashboardPageIsPublished() === false ) {
+		if ( ! empty( give_get_option( 'donor_dashboard_page' ) ) ) {
 			return;
 		}
 
