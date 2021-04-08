@@ -109,6 +109,12 @@ class Settings {
 	 */
 	public function generateDonorDashboardPage() {
 
+		// Check if a Donor Dashboard page has already been created
+
+		if ( $this->donorDashboardPageIsPublished() === false ) {
+			return;
+		}
+
 		$content = $this->getDonorDashboardPageContent();
 
 		$pageId = wp_insert_post(
