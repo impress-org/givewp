@@ -15,7 +15,7 @@ class AccountDetailTest extends TestCase{
 	private $form;
 
 	public function setUp() {
-		$this->repository = new Repositories\AccountDetail();
+		$this->repository = new AccountDetailRepository();
 		$this->form = Give_Helper_Form::create_simple_form();
 	}
 

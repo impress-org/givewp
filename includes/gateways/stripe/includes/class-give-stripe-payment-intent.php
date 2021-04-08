@@ -11,7 +11,7 @@
  */
 
 // Exit, if accessed directly.
-use Give\PaymentGateways\Stripe\ProcessingDonation;
+use Give\PaymentGateways\Stripe\ApplicationFee;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,7 +43,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		public function create( $args ) {
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( ProcessingDonation::canAddfee() ) {
+			if ( ApplicationFee::canAddfee() ) {
 				$args['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['amount'] );
 			}
 
@@ -120,7 +120,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		public function update( $client_secret, $args ) {
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( ProcessingDonation::canAddfee() ) {
+			if ( ApplicationFee::canAddfee() ) {
 				$args['application_fee_amount'] = give_stripe_format_amount( give_stripe_get_application_fee_amount( $args['amount'] ) );
 			}
 

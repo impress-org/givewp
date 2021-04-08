@@ -11,7 +11,7 @@
  */
 
 // Exit, if accessed directly.
-use Give\PaymentGateways\Stripe\ProcessingDonation;
+use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\ValueObjects\Money;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -566,7 +566,7 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				$charge_args = apply_filters( "give_{$this->id}_create_charge_args", $charge_args );
 
 				// Charge application fee, only if the Stripe premium add-on is not active.
-				if ( ProcessingDonation::canAddfee() ) {
+				if ( ApplicationFee::canAddfee() ) {
 					// Set Application Fee Amount.
 					$charge_args['application_fee_amount'] = give_stripe_get_application_fee_amount( $charge_args['amount'] );
 				}
