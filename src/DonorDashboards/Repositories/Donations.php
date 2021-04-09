@@ -115,6 +115,10 @@ class Donations {
 	 */
 	public function getDonations( $donorId ) {
 
+		if ( Give()->donors->get_donor_by( 'id', $donorId ) !== false ) {
+			return null;
+		}
+
 		$ids = $this->getDonationIds( $donorId );
 
 		if ( $ids === null ) {
