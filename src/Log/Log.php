@@ -66,7 +66,10 @@ class Log {
 		$data['type'] = $type;
 
 		try {
-			LogFactory::makeFromArray( $data )->save();
+			$log = LogFactory::makeFromArray( $data );
+			$log->save();
+
+			return $log;
 		} catch ( Exception $exception ) {
 			error_log( $exception->getMessage() );
 		}
