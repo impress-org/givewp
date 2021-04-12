@@ -57,6 +57,26 @@ final class ApplicationFeeTest extends TestCase {
 		);
 	}
 
+	public function testCanAddFee() {
+		give()->singleton( ApplicationFee::class, function(){
+			return new ApplicationFee( $this->repository->getAccountDetail( 'account_2' ) );
+		});
+
+		$this->assertTrue(
+			ApplicationFee::canAddFee()
+		);
+	}
+
+	public function testCanNotAddFee() {
+		give()->singleton( ApplicationFee::class, function(){
+			return new ApplicationFee( $this->repository->getAccountDetail( 'account_1' ) );
+		});
+
+		$this->assertFalse(
+			$this->gate->canAddFee()
+		);
+	}
+
 	/**
 	 * @note Run this test first, before GIVE_STRIPE_VERSION is defined in the next test.
 	 */
