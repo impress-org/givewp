@@ -73,7 +73,7 @@ final class ApplicationFeeTest extends TestCase {
 		});
 
 		$this->assertFalse(
-			$this->gate->canAddFee()
+			ApplicationFee::canAddFee()
 		);
 	}
 
