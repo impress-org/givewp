@@ -5,6 +5,7 @@ namespace Give\DonorDashboards\Tabs\Contracts;
 use WP_REST_Request;
 use WP_REST_Response;
 use Give\API\RestRoute;
+use Give\Log\Log;
 
 /**
  * @since 2.10.0
@@ -55,7 +56,7 @@ abstract class Route implements RestRoute {
 			[
 				[
 					'methods'             => 'POST',
-					'callback'            => [ $this, 'handleRequest' ],
+					'callback'            => [ $this, 'handleRequestWithDonorIdCheck' ],
 					'permission_callback' => function() {
 						return Give()->session->get_session_expiration() !== false;
 					},
@@ -63,5 +64,33 @@ abstract class Route implements RestRoute {
 				'args' => $this->args(),
 			]
 		);
+	}
+
+	public function handleRequestWithDonorIdCheck( WP_REST_Request $request ) {
+
+		// Check that the provided donor ID is valid
+		if ( Give()->donors->get_donor_by( 'id', give()->donorDashboard->getId() ) !== false ) {
+			Log::error(
+				esc_html__( 'An error occurred while retrieving donation records', 'give' ),
+				[
+					'source'   => 'Donor Dashboard',
+					'Donor ID' => give()->donorDashboard->getId(),
+					'Error'    => __( 'An invalid Donor ID was provided.', 'give' ),
+				]
+			);
+
+			return new WP_REST_Response(
+				[
+					'status'        => 400,
+					'response'      => 'database_error',
+					'body_response' => [
+						'message' => esc_html__( 'An error occurred while retrieving your donation records. Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ),
+					],
+				]
+			);
+		}
+
+		return $this->handleRequest( $request );
+
 	}
 }

@@ -53,28 +53,6 @@ class DonationsRoute extends RouteAbstract {
 	 */
 	protected function getData( DonationsRepository $repository, $donorId ) {
 
-		// Check that the provided donor ID is valid
-		if ( Give()->donors->get_donor_by( 'id', $donorId ) !== false ) {
-			Log::error(
-				esc_html__( 'An error occurred while retrieving donation records', 'give' ),
-				[
-					'source'   => 'Donor Dashboard',
-					'Donor ID' => $donorId,
-					'Error'    => __( 'An invalid Donor ID was provided.', 'give' ),
-				]
-			);
-
-			return new WP_REST_Response(
-				[
-					'status'        => 400,
-					'response'      => 'database_error',
-					'body_response' => [
-						'message' => esc_html__( 'An error occurred while retrieving your donation records. Contact the site administrator for assistance.', 'give' ),
-					],
-				]
-			);
-		}
-
 		// If the provided donor ID is valid, attempt to query data
 		try {
 			$donations = $repository->getDonations( $donorId );

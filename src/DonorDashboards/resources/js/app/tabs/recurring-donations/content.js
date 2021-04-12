@@ -91,20 +91,26 @@ const Content = () => {
 		}
 	}
 
-	return querying && subscriptions === null ? (
-		<Fragment>
+	if ( querying && !subscriptions ) {
+		return <Fragment>
 			<Heading>
 				{ __( 'Loading...', 'give' ) }
 			</Heading>
 			<SubscriptionTable />
 		</Fragment>
-	) : (
-		<Fragment>
+	} else if ( subscriptions ) {
+		return <Fragment>
 			<Heading>
 				{ `${ Object.entries( subscriptions ).length } ${ __( 'Total Subscriptions', 'give' ) }` }
 			</Heading>
 			<SubscriptionTable subscriptions={ subscriptions } perPage={ 5 } />
 		</Fragment>
-	);
+	} else {
+		return <Fragment>
+			<Heading icon="exclamation-triangle">
+				{ __( 'Error', 'give' ) }
+			</Heading>
+		</Fragment>
+	}
 };
 export default Content;
