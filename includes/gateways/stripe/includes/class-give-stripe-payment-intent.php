@@ -10,8 +10,9 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-// Exit, if accessed directly.
 use Give\PaymentGateways\Stripe\ApplicationFee;
+
+// Exit, if accessed directly.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

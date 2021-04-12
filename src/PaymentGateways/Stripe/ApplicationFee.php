@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Stripe;
 
 use Give_License;
+use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 
 /**
  * Class ApplicationFee
@@ -24,16 +25,16 @@ class ApplicationFee {
 	const PluginName = 'Give - Stripe Gateway';
 
 	/**
-	 * @var Models\AccountDetail
+	 * @var AccountDetailModel
 	 */
 	private $accountDetail;
 
 	/**
 	 * ApplicationFee constructor.
 	 *
-	 * @param  Models\AccountDetail  $accountDetail
+	 * @param  AccountDetailModel  $accountDetail
 	 */
-	public function __construct( Models\AccountDetail $accountDetail ) {
+	public function __construct( AccountDetailModel $accountDetail ) {
 		$this->accountDetail = $accountDetail;
 	}
 

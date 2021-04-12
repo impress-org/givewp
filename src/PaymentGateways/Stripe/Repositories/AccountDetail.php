@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Stripe\Repositories;
 
+use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
+
 /**
  * Class AccountDetail
  *
@@ -15,7 +17,7 @@ class AccountDetail {
 	 * @unreleased
 	 * @param int $formId
 	 *
-	 * @return \Give\PaymentGateways\Stripe\Models\AccountDetail
+	 * @return AccountDetailModel
 	 */
 	public function getDonationFormStripeAccountId( $formId ) {
 		$formHasStripeAccount = give_is_setting_enabled( give_get_meta( $formId, 'give_stripe_per_form_accounts', true ) );
@@ -36,7 +38,7 @@ class AccountDetail {
 	 * @unreleased
 	 * @param string $accountId
 	 *
-	 * @return \Give\PaymentGateways\Stripe\Models\AccountDetail
+	 * @return AccountDetailModel
 	 */
 	public function getAccountDetail( $accountId ) {
 		$accountDetail = array_filter(
@@ -47,6 +49,6 @@ class AccountDetail {
 		);
 
 		$accountDetail = $accountDetail ? current( $accountDetail ) : $accountDetail;
-		return new \Give\PaymentGateways\Stripe\Models\AccountDetail( $accountDetail );
+		return new AccountDetailModel( $accountDetail );
 	}
 }
