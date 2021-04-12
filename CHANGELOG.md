@@ -13,6 +13,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
+-   Donor Dashboard page is now only generated if one does not already exist (#5785)
+
+## 2.10.1 - 2021-03-30
+
+### Fixed
+
+-   Prevent fatal error because of param declaration compatibility (#5769)
+-   Stop revenue migration on error (#5748)
+-   Fix broken link by correctly closing href tag (#5746)
+-   Prevent PHP notice on system info page (#5606)
+-   GiveWP Database management tools are now backward compatible with MySQL 5.6 (#5759)
+-   Composer dependencies now reference releases instead of branches (#5763)
+-   Donor search no longer shows undefined index notice (#5752)
+-   Retrieve migrations only when necessary (#5760)
+-   Donors are now able to log into Donor Dashboard on hosts with page caching (#5766)
+-   The Donor Dashboard are no only be generated in admin-side pages (#5768)
+
+## 2.10.0 - 2021-03-22
+
+### Changed
+
+-   Donor Dashboard UI is now consistent and polished (#5741)
+
+### Fixed
+
 -   The Donor Dashboard shortcode now works on 4.9.x (#5739)
 
 ## 2.10.0-rc.2 - 2021-03-18

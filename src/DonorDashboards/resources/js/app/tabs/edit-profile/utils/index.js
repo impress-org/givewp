@@ -44,11 +44,7 @@ export const updateProfileWithAPI = async( {
 			isAnonymous,
 		} ),
 		id,
-	}, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
+	}, {} )
 		.then( ( response ) => response.data )
 		.then( ( responseData ) => {
 			/**
@@ -78,11 +74,7 @@ export const uploadAvatarWithAPI = ( file ) => {
 export const fetchStatesWithAPI = ( country ) => {
 	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/location', {
 		countryCode: country,
-	}, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
+	}, {} )
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
 			return data.states.map( ( state ) => {

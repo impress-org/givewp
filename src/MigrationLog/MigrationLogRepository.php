@@ -39,8 +39,8 @@ class MigrationLogRepository {
 	 */
 	public function save( MigrationLogModel $model ) {
 		$query = "
-			INSERT INTO {$this->migration_table} (id, status, error ) 
-			VALUES (%s, %s, %s) 
+			INSERT INTO {$this->migration_table} (id, status, error, last_run )
+			VALUES (%s, %s, %s, NOW())
 			ON DUPLICATE KEY UPDATE
 			status = %s,
 			error = %s,

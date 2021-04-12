@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAPIRoot, getAPINonce } from '../../../utils';
+import { getAPIRoot } from '../../../utils';
 import { fetchSubscriptionsDataFromAPI } from '../../../tabs/recurring-donations/utils';
 
 export const updateSubscriptionWithAPI = ( { id, amount, paymentMethod } ) => {
@@ -8,11 +8,7 @@ export const updateSubscriptionWithAPI = ( { id, amount, paymentMethod } ) => {
 		amount: amount,
 		payment_method: paymentMethod,
 	},
-	{
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
+	{} )
 		.then( async( response ) => {
 			await fetchSubscriptionsDataFromAPI();
 			return response;

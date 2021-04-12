@@ -22,6 +22,15 @@
 		}
 	}
 
+	.give-donor-dashboard-donation-receipt__status-indicator {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		overflow: hidden;
+		color: #888;
+		margin-right: 6px;
+	}
+
 	.give-donor-dashboard-donation-receipt__detail {
 		text-transform: uppercase;
 		display: flex;
@@ -35,6 +44,8 @@
 
 	.give-donor-dashboard-donation-receipt__value {
 		text-align: right;
+		display: flex;
+		align-items: center;
 	}
 
 	.give-donor-dashboard-donation-receipt__row--footer {
