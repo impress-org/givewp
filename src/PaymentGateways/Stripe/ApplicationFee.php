@@ -44,7 +44,7 @@ class ApplicationFee {
 	 * @return bool
 	 */
 	public function canAddFee() {
-		return $this->isCountrySupportApplicationFee()
+		return $this->doesCountrySupportApplicationFee()
 			   && ! ( $this->isStripeProAddonActive() || $this->isStripeProAddonInstalled( get_plugins() ) || $this->hasLicense() );
 	}
 
@@ -93,7 +93,7 @@ class ApplicationFee {
 	 *
 	 * @return bool
 	 */
-	public function isCountrySupportApplicationFee() {
+	public function doesCountrySupportApplicationFee() {
 		return 'BR' !== $this->accountDetail->accountCountry;
 	}
 }

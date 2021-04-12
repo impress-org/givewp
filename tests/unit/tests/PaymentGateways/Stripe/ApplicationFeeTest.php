@@ -153,14 +153,14 @@ final class ApplicationFeeTest extends TestCase {
     public function testIsCountryNotSupportApplicationFee() {
 
         $this->assertFalse(
-            $this->gate->isCountrySupportApplicationFee()
+            $this->gate->doesCountrySupportApplicationFee()
         );
     }
 
     public function testIsCountrySupportApplicationFee() {
 		$applicationFee = new ApplicationFee($this->repository->getAccountDetail('account_2'));
         $this->assertTrue(
-	        $applicationFee->isCountrySupportApplicationFee()
+	        $applicationFee->doesCountrySupportApplicationFee()
         );
     }
 }
