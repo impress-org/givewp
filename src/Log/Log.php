@@ -12,6 +12,45 @@ use Exception;
  * @package Give\Log
  * @since 2.10.0
  *
+ * @note There are two special keywords used in the context that are representing category and source.
+ * The default value for the Category is "Core" and for the source is "Give Core"
+ * If you want to change the category and/or source, you should provide them as context attributes.
+ * Source and category attributes should be written lowercase.
+ *
+ * @example
+ *
+ * Log::error( 'Error message', [
+ *     'category' => 'Payment',
+ *     'source' => 'Stripe add-on'
+ * ] );
+ *
+ * @note Use as many contexts attributes as you need. The more the better.
+ *
+ * @example
+ *
+ *  Log::error( 'Error message', [
+ *     'category' => 'Payment',
+ *     'source' => 'Stripe add-on',
+ *     'donation_id' => $donationId,
+ *     'donor_id' => $donorId
+ * ] );
+ *
+ * @note You can use an array or object as a context attribute value.
+ *
+ * @example
+ *
+ * try {
+ *     something();
+ * } catch ( Exception $exception ) {
+ *   Log::error( 'Something went wrong', [
+ *      'exception' => $exception,
+ *      'additional_info' => [
+ *          'donation_id' => $donationId
+ *       ]
+ *   ] );
+ * }
+ *
+ *
  * @method static error( string $message, array $context = [] )
  * @method static warning( string $message, array $context = [] )
  * @method static notice( string $message, array $context = [] )
