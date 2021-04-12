@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
 -   Logs will no longer cause an exception (#5788)
+-   Donor Dashboard page is now only generated if one does not already exist (#5785)
 
 ## 2.10.1 - 2021-03-30
 
