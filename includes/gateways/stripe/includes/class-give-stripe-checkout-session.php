@@ -9,7 +9,7 @@
  */
 
 // Exit if accessed directly.
-use Give\PaymentGateways\Stripe\ProcessingDonation;
+use Give\PaymentGateways\Stripe\ApplicationFee;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,7 +43,7 @@ class Give_Stripe_Checkout_Session {
 			$args = apply_filters( 'give_stripe_create_checkout_session_args', $args );
 
 			// Add application fee, if the Stripe premium add-on is not active.
-			if ( ProcessingDonation::canAddfee() && isset( $args['payment_intent_data'] ) ) {
+			if ( ApplicationFee::canAddfee() && isset( $args['payment_intent_data'] ) ) {
 				$args['payment_intent_data']['application_fee_amount'] = give_stripe_get_application_fee_amount( $args['line_items'][0]['amount'] );
 			}
 
