@@ -57,19 +57,6 @@ final class ApplicationFeeTest extends TestCase {
 		);
 	}
 
-	public function testCanAddFee() {
-		$applicationFee = new ApplicationFee( $this->repository->getAccountDetail( 'account_2' ) );
-		$this->assertTrue(
-			$applicationFee->canAddFee()
-		);
-	}
-
-	public function testCanNotAddFee() {
-		$this->assertFalse(
-			$this->gate->canAddFee()
-		);
-	}
-
 	/**
 	 * @note Run this test first, before GIVE_STRIPE_VERSION is defined in the next test.
 	 */
