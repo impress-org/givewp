@@ -1,6 +1,7 @@
 <?php
 
 use Give\Log\Log;
+use Give\Log\LogFactory;
 use Give\Log\LogRepository;
 use Give\Log\ValueObjects\LogType;
 use Give\Log\Helpers\LogTypeHelper;
@@ -207,12 +208,14 @@ class Give_Logging {
 			$data['context']['class']    = $backtrace[1]['class'];
 		}
 
-		$data['source'] = 'n/a';
-		$type           = $data['type'];
-		$message        = $data['message'];
-		unset( $data['message'] );
+		try {
+			$log = LogFactory::makeFromArray( $data );
+			$log->save();
 
-		return Log::$type( $message, $data );
+			return $log->getId();
+		} catch ( Exception $exception ) {
+			error_log( $exception->getMessage() );
+		}
 	}
 
 	/**
