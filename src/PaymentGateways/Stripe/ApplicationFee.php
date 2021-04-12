@@ -44,9 +44,11 @@ class ApplicationFee {
 	 * @unreleased
 	 * @return bool
 	 */
-	public function canAddFee() {
-		return $this->doesCountrySupportApplicationFee()
-			   && ! ( $this->isStripeProAddonActive() || $this->isStripeProAddonInstalled( get_plugins() ) || $this->hasLicense() );
+	public static function canAddFee() {
+		/* @var self $gate */
+		$gate = give( static::class );
+		return $gate->doesCountrySupportApplicationFee()
+			   && ! ( $gate->isStripeProAddonActive() || $gate->isStripeProAddonInstalled( get_plugins() ) || $gate->hasLicense() );
 	}
 
 	/**
