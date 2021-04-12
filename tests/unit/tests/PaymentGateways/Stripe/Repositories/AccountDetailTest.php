@@ -1,11 +1,11 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Give\PaymentGateways\Stripe\Repositories;
+use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
 class AccountDetailTest extends TestCase{
 	/**
-	 * @var Repositories\AccountDetail
+	 * @var AccountDetailRepository
 	 */
 	private $repository;
 
@@ -15,7 +15,7 @@ class AccountDetailTest extends TestCase{
 	private $form;
 
 	public function setUp() {
-		$this->repository = new Repositories\AccountDetail();
+		$this->repository = new AccountDetailRepository();
 		$this->form = Give_Helper_Form::create_simple_form();
 	}
 
