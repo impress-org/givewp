@@ -1,5 +1,4 @@
 <?php
-
 namespace Give\Session\SessionDonation;
 
 use DateTime;
@@ -13,14 +12,6 @@ use Give\Session\SessionDonation\SessionObjects\FormEntry;
  * This class provide way to access donation session data.
  *
  * @package Give\Session\Access
- *
- * @property-read string $donorEmail
- * @property-read array $donorInfo
- * @property-read array $formEntry
- * @property-read string $id
- * @property-read string $totalAmount
- * @property-read string $paymentGateway
- * @property-read string $createdAt
  */
 class DonationAccessor extends Accessor {
 	/**
@@ -59,11 +50,10 @@ class DonationAccessor extends Accessor {
 	/**
 	 * Map array keys to class properties
 	 *
-	 * @since 2.7.0
-	 *
-	 * @param  array  $data
+	 * @param array $data
 	 *
 	 * @return DonationObject|null
+	 * @since 2.7.0
 	 */
 	protected function convertToObject( $data ) {
 		if ( ! $data ) {
@@ -90,9 +80,9 @@ class DonationAccessor extends Accessor {
 	/**
 	 * Get donation id.
 	 *
-	 * @since 2.7.0
 	 * @return int
 	 *
+	 * @since 2.7.0
 	 */
 	public function getDonationId() {
 		if ( $donationId = $this->getByKey( 'id' ) ) {
@@ -105,9 +95,9 @@ class DonationAccessor extends Accessor {
 	/**
 	 * Get donation id.
 	 *
-	 * @since 2.7.0
 	 * @return int
 	 *
+	 * @since 2.7.0
 	 */
 	public function getFormId() {
 		/* @var FormEntry $data */
