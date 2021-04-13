@@ -2,93 +2,178 @@
 
 use PHPUnit\Framework\TestCase;
 use Give\PaymentGateways\Stripe\ApplicationFee;
+use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
+/**
+ * Class ApplicationFeeTest
+ */
 final class ApplicationFeeTest extends TestCase {
 
-    public function setUp() {
-        $this->gate = new ApplicationFee;
-    }
+	/**
+	 * @var AccountDetailRepository
+	 */
+	private $repository;
 
-    /**
-     * @note Run this test first, before GIVE_STRIPE_VERSION is defined in the next test.
-     */
-    public function testNotIsStripeProAddonActive() {
+	/**
+	 * @var ApplicationFee
+	 */
+	private $gate;
 
-        $this->assertFalse(
-            $this->gate->isStripeProAddonActive()
-        );
-    }
+	public function setUp() {
+		$this->setUpStripeAccounts();
+		$this->repository = new AccountDetailRepository();
+		$this->gate       = new ApplicationFee( $this->repository->getAccountDetail( 'account_1' ) );
+	}
 
-    public function testIsStripeProAddonActive() {
+	private function setUpStripeAccounts() {
+		give_update_option(
+			'_give_stripe_get_all_accounts',
+			[
+				'account_1' => [
+					'type'                 => 'manual',
+					'account_name'         => 'Account 1',
+					'account_slug'         => 'account_1',
+					'account_email'        => '',
+					'account_country'      => 'BR',
+					'account_id'           => 'account_1',
+					'live_secret_key'      => 'dummy',
+					'test_secret_key'      => 'dummy',
+					'live_publishable_key' => 'dummy',
+					'test_publishable_key' => 'dummy',
+				],
+				'account_2' => [
+					'type'                 => 'manual',
+					'account_name'         => 'Account 2',
+					'account_slug'         => 'account_2',
+					'account_email'        => '',
+					'account_country'      => 'US',
+					'account_id'           => 'account_2',
+					'live_secret_key'      => 'dummy',
+					'test_secret_key'      => 'dummy',
+					'live_publishable_key' => 'dummy',
+					'test_publishable_key' => 'dummy',
+				],
+			]
+		);
+	}
 
-        // Mock the Give Stripe Add-on being active.
-        define( 'GIVE_STRIPE_VERSION', '1.2.3' );
+	public function testCanAddFee() {
+		give()->singleton( ApplicationFee::class, function(){
+			return new ApplicationFee( $this->repository->getAccountDetail( 'account_2' ) );
+		});
 
-        $this->assertTrue(
-            $this->gate->isStripeProAddonActive()
-        );
-    }
+		$this->assertTrue(
+			ApplicationFee::canAddFee()
+		);
+	}
 
-    public function testIsStripeProAddonInstalled() {
+	public function testCanNotAddFee() {
+		give()->singleton( ApplicationFee::class, function(){
+			return new ApplicationFee( $this->repository->getAccountDetail( 'account_1' ) );
+		});
 
-        // Mock Stripe Add-on installed.
-        $plugins = [
-            [ 'Name' => 'Give - Stripe Gateway' ]
-        ];
+		$this->assertFalse(
+			ApplicationFee::canAddFee()
+		);
+	}
 
-        $this->assertTrue(
-            $this->gate->isStripeProAddonInstalled( $plugins )
-        );
-    }
+	/**
+	 * @note Run this test first, before GIVE_STRIPE_VERSION is defined in the next test.
+	 */
+	public function testNotIsStripeProAddonActive() {
+		$this->assertFalse(
+			$this->gate->isStripeProAddonActive()
+		);
+	}
 
-    public function testNotIsStripeProAddonInstalled() {
+	public function testIsStripeProAddonActive() {
+		// Mock the Give Stripe Add-on being active.
+		define( 'GIVE_STRIPE_VERSION', '1.2.3' );
 
-        // Mock no add-ons installed.
-        $plugins = [];
+		$this->assertTrue(
+			$this->gate->isStripeProAddonActive()
+		);
+	}
 
-        $this->assertFalse(
-            $this->gate->isStripeProAddonInstalled( $plugins )
-        );
-    }
+	public function testIsStripeProAddonInstalled() {
+		// Mock Stripe Add-on installed.
+		$plugins = [
+			[ 'Name' => 'Give - Stripe Gateway' ],
+		];
 
-    public function testHasLicense() {
+		$this->assertTrue(
+			$this->gate->isStripeProAddonInstalled( $plugins )
+		);
+	}
 
-        // Mock licensing with Stripe Add-on.
-        update_option( 'give_licenses', [[
-            'is_all_access_pass' => false,
-            'plugin_slug' => 'give-stripe',
-        ]]);
+	public function testNotIsStripeProAddonInstalled() {
+		// Mock no add-ons installed.
+		$plugins = [];
 
-        $this->assertTrue(
-            $this->gate->hasLicense( 'give-stripe' )
-        );
-    }
+		$this->assertFalse(
+			$this->gate->isStripeProAddonInstalled( $plugins )
+		);
+	}
 
-    public function testNotHasLicense() {
+	public function testHasLicense() {
+		// Mock licensing with Stripe Add-on.
+		update_option( 'give_licenses',
+		               [
+			               [
+				               'is_all_access_pass' => false,
+				               'plugin_slug'        => 'give-stripe',
+			               ],
+		               ] );
 
-        // Mock licensing without Stripe Add-on.
-        update_option( 'give_licenses', [[
-            'is_all_access_pass' => false,
-            'plugin_slug' => 'not-stripe-addon',
-        ]]);
+		$this->assertTrue(
+			$this->gate->hasLicense()
+		);
+	}
 
-        $this->assertFalse(
-            $this->gate->hasLicense( 'give-stripe' )
-        );
-    }
+	public function testNotHasLicense() {
+		// Mock licensing without Stripe Add-on.
+		update_option( 'give_licenses',
+		               [
+			               [
+				               'is_all_access_pass' => false,
+				               'plugin_slug'        => 'not-stripe-addon',
+			               ],
+		               ] );
 
-    public function testHasLicenseAllAccessPass() {
+		$this->assertFalse(
+			$this->gate->hasLicense()
+		);
+	}
 
-        // Mock licensing with All Access pass.
-        update_option( 'give_licenses', [[
-            'is_all_access_pass' => true,
-            'download' => [[
-                'plugin_slug' => 'give-stripe',
-            ]],
-        ]]);
+	public function testHasLicenseAllAccessPass() {
+		// Mock licensing with All Access pass.
+		update_option( 'give_licenses',
+		               [
+			               [
+				               'is_all_access_pass' => true,
+				               'download'           => [
+					               [
+						               'plugin_slug' => 'give-stripe',
+					               ],
+				               ],
+			               ],
+		               ] );
 
-        $this->assertTrue(
-            $this->gate->hasLicense( 'give-stripe' )
-        );
-    }
+		$this->assertTrue(
+			$this->gate->hasLicense()
+		);
+	}
+
+	public function testIsCountryNotSupportApplicationFee() {
+		$this->assertFalse(
+			$this->gate->doesCountrySupportApplicationFee()
+		);
+	}
+
+	public function testIsCountrySupportApplicationFee() {
+		$applicationFee = new ApplicationFee( $this->repository->getAccountDetail( 'account_2' ) );
+		$this->assertTrue(
+			$applicationFee->doesCountrySupportApplicationFee()
+		);
+	}
 }

@@ -23,6 +23,8 @@ use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Stripe\DonationFormElements;
+use Give\PaymentGateways\Stripe\ApplicationFee;
+use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
 /**
  * Class PaymentGateways
@@ -65,6 +67,17 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
 		give()->singleton( DonationFormElements::class );
+		give()->singleton(
+			ApplicationFee::class,
+			function() {
+				return new ApplicationFee(
+					give( AccountDetailRepository::class )->getAccountDetail(
+						give_stripe_get_connected_account_options()['stripe_account']
+					)
+				);
+			}
+		);
+
 		$this->registerPayPalCommerceClasses();
 	}
 
