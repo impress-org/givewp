@@ -69,9 +69,9 @@ abstract class Route implements RestRoute {
 	public function handleRequestWithDonorIdCheck( WP_REST_Request $request ) {
 
 		// Check that the provided donor ID is valid
-		if ( Give()->donors->get_donor_by( 'id', give()->donorDashboard->getId() ) !== false ) {
+		if ( Give()->donors->get_donor_by( 'id', give()->donorDashboard->getId() ) === false ) {
 			Log::error(
-				esc_html__( 'An error occurred while retrieving donation records', 'give' ),
+				esc_html__( 'An error occurred while validating donor ID on request.', 'give' ),
 				[
 					'source'   => 'Donor Dashboard',
 					'Donor ID' => give()->donorDashboard->getId(),
@@ -82,7 +82,7 @@ abstract class Route implements RestRoute {
 			return new WP_REST_Response(
 				[
 					'status'        => 400,
-					'response'      => 'database_error',
+					'response'      => 'invalid_donor_id',
 					'body_response' => [
 						'message' => esc_html__( 'An error occurred while retrieving your donation records. Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ),
 					],
