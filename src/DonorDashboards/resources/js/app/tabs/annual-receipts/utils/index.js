@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { store } from '../store';
 import { getAPIRoot, isLoggedIn } from '../../../utils';
-import { setAnnualReceipts, setQuerying } from '../store/actions';
+import { setAnnualReceipts, setQuerying, setError } from '../store/actions';
 
 export const fetchAnnualReceiptsFromAPI = () => {
 
@@ -14,9 +14,15 @@ export const fetchAnnualReceiptsFromAPI = () => {
 			{} )
 			.then( ( response ) => response.data )
 			.then( ( data ) => {
+
 				const { receipts } = data;
 				dispatch( setAnnualReceipts( receipts ) );
 				dispatch( setQuerying( false ) );
+
+				if ( data.status === 400 ) {
+					dispatch( setError( data.body_response.message ) );
+				}
+
 			} )
 			.catch( () => {
 				dispatch( setQuerying( false ) );
