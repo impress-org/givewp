@@ -19,6 +19,7 @@ import './style.scss';
 const Content = () => {
 	const subscriptions = useSelector( ( state ) => state.subscriptions );
 	const querying = useSelector( ( state ) => state.querying );
+	const error = useSelector( ( state ) => state.error );
 
 	const location = useLocation();
 	const route = location ? location.pathname.split( '/' )[ 2 ] : null;
@@ -31,6 +32,19 @@ const Content = () => {
 		}
 		return null;
 	};
+
+	if ( error ) {
+		return (
+			<Fragment>
+				<Heading icon="exclamation-triangle">
+					{ __( 'Error', 'give' ) }
+				</Heading>
+				<p style={ { color: '#6b6b6b' } }>
+					{ error }
+				</p>
+			</Fragment>
+		);
+	}
 
 	if ( id ) {
 		switch ( route ) {
@@ -108,7 +122,7 @@ const Content = () => {
 	} else {
 		return <Fragment>
 			<Heading icon="exclamation-triangle">
-				{ __( 'Error', 'give' ) }
+				{ __( 'No Subscriptions', 'give' ) }
 			</Heading>
 		</Fragment>
 	}
