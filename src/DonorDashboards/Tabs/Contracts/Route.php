@@ -69,7 +69,7 @@ abstract class Route implements RestRoute {
 	public function handleRequestWithDonorIdCheck( WP_REST_Request $request ) {
 
 		// Check that the provided donor ID is valid
-		if ( Give()->donors->get_donor_by( 'id', give()->donorDashboard->getId() ) === false ) {
+		if ( ! Give()->donors->get_donor_by( 'id', give()->donorDashboard->getId() ) ) {
 			Log::error(
 				esc_html__( 'An error occurred while validating donor ID on request.', 'give' ),
 				[
