@@ -88,7 +88,7 @@ abstract class Route implements RestRoute {
 					'status'        => 400,
 					'response'      => 'invalid_donor_id',
 					'body_response' => [
-						'message' => esc_html__( 'An error occurred while retrieving your donation records. Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ),
+						'message' => html_entity_decode( esc_html__( 'An error occurred while retrieving your donation records. Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ) ),
 					],
 				]
 			);
