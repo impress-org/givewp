@@ -73,7 +73,7 @@ jobs:
 
       - name: Store MySQL details in environment
         run: |
-          case "$MYSQL_VERSION"
+          case "$MYSQL_VERSION" in
             'mysql:5.6')
               MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
               MYSQL_PASS=root
