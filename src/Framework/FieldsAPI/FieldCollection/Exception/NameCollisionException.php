@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\FieldCollection\Exception;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class NameCollisionException extends \Exception {
 	public function __construct( $name, $code = 0, Exception $previous = null ) {

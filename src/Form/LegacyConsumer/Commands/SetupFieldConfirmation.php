@@ -6,12 +6,12 @@ use Give\Framework\FieldsAPI\FormField;
 use Give\Framework\FieldsAPI\FieldCollection;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class SetupFieldConfirmation {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param Donation $payment
 	 * @param array $receiptArgs
@@ -22,7 +22,7 @@ class SetupFieldConfirmation {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 *
@@ -39,7 +39,7 @@ class SetupFieldConfirmation {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *

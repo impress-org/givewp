@@ -71,7 +71,7 @@ class TrackJob {
 	/**
 	 * Send tracked information immediately.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param array $trackedEvents
 	 */
 	public function sendNow( $trackedEvents ) {

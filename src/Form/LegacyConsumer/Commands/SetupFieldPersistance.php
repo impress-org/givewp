@@ -9,12 +9,12 @@ use Give\Form\LegacyConsumer\FieldView;
 /**
  * Persist custom field values as donation meta.
  *
- * @unreleased
+ * @since 2.10.2
  */
 class SetupFieldPersistance implements HookCommandInterface {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param int $donationID
 	 * @param array $donationID
@@ -25,7 +25,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 */
@@ -36,7 +36,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *
