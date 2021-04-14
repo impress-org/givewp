@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { store } from '../store';
 import { getAPIRoot, isLoggedIn } from '../../../utils';
-import { setSubscriptions, setQuerying } from '../store/actions';
+import { setSubscriptions, setQuerying, setError } from '../store/actions';
 
 export const fetchSubscriptionsDataFromAPI = () => {
 	const { dispatch } = store;
@@ -15,6 +15,11 @@ export const fetchSubscriptionsDataFromAPI = () => {
 			.then( ( data ) => {
 				dispatch( setSubscriptions( data.subscriptions ) );
 				dispatch( setQuerying( false ) );
+
+				if ( data.status === 400 ) {
+					dispatch( setError( data.body_response.message ) );
+				}
+
 				return data;
 			} )
 			.catch( () => {

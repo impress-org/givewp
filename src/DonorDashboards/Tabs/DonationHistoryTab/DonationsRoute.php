@@ -52,6 +52,8 @@ class DonationsRoute extends RouteAbstract {
 	 * @return WP_REST_Response
 	 */
 	protected function getData( DonationsRepository $repository, $donorId ) {
+
+		// If the provided donor ID is valid, attempt to query data
 		try {
 			$donations = $repository->getDonations( $donorId );
 			$count     = $repository->getDonationCount( $donorId );
@@ -92,7 +94,7 @@ class DonationsRoute extends RouteAbstract {
 					'status'        => 400,
 					'response'      => 'database_error',
 					'body_response' => [
-						'message' => esc_html__( 'An error occurred while retrieving your donation records.', 'give' ),
+						'message' => esc_html__( 'An error occurred while retrieving your donation records. Contact the site administrator for assistance.', 'give' ),
 					],
 				]
 			);

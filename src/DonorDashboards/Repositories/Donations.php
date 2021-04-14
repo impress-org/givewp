@@ -55,7 +55,7 @@ class Donations {
 	 * @param string $rawAggregate raw SELECT to determine what to aggregate over
 	 * @param int $donorId
 	 *
-	 * @return array
+	 * @return object
 	 */
 	private function getDonationAggregate( $rawAggregate, $donorId ) {
 		global $wpdb;
