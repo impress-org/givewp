@@ -102,3 +102,9 @@ jobs:
           asset_path: ${{github.workspace}}/give.zip
           asset_name: give.zip
           asset_content_type: application/zip
+          
+      - name: Slack Notification
+        uses: someimportantcompany/github-actions-slack-message@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
+          text: "*${{ github.event.repository.name }} ${{ github.event.release.name }} has just been released! 🎉* \n\n Here's what's new: \n\n ${{ github.event.release.body }} \n\n <${{ github.event.release.html_url }}|Link to Release>"
