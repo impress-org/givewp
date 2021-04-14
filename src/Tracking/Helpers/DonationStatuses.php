@@ -7,13 +7,13 @@ use Give\Helpers\ArrayDataSet;
  * Class DonationStatuses
  *
  * @package Give\Tracking\Helpers
- * @unreleased
+ * @since 2.10.2
  */
 class DonationStatuses {
 	/**
 	 * Get list of statuses of completed donations.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param  false  $asStringSeparatedBySingleQuotes
 	 *
 	 * @return string|string[]

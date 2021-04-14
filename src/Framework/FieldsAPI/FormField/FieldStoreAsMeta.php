@@ -3,18 +3,18 @@
 namespace Give\Framework\FieldsAPI\FormField;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 trait FieldStoreAsMeta {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @var bool
 	 */
 	protected $storeAsDonorMeta = false;
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return $this
 	 */
 	public function storeAsDonorMeta( $storeAsDonorMeta = true ) {
@@ -23,7 +23,7 @@ trait FieldStoreAsMeta {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return bool
 	 */
 	public function shouldStoreAsDonorMeta() {

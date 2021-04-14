@@ -8,7 +8,7 @@ use Give\Framework\Database\DB;
  * Class LogsLegacyTable
  * @package Give\Log\Helpers
  *
- * @unreleased
+ * @since 2.10.2
  */
 class LegacyLogsTable {
 	/**

@@ -5,12 +5,12 @@ namespace Give\DonorDashboards\Routes\Captcha;
 /**
  * Note: Functionality forked from `give_email_access_login()`.
  *
- * @unreleased
+ * @since 2.10.2
  */
 trait ProtectedRoute {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @return bool
 	 */
@@ -22,7 +22,7 @@ trait ProtectedRoute {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $value
 	 * @param WP_REST_Request $request

@@ -9,7 +9,7 @@ use InvalidArgumentException;
  * Class AccountDetail
  *
  * @package Give\PaymentGateways\Stripe\Models
- * @unreleased
+ * @since 2.10.2
  *
  * @property-read  string $type
  * @property-read  string $accountName
@@ -41,7 +41,7 @@ class AccountDetail {
 	/**
 	 * AccountDetail constructor.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param array $args
 	 */
 	public function __construct( array $args ) {
@@ -51,7 +51,7 @@ class AccountDetail {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param string $key
 	 *
 	 * @return mixed
@@ -63,7 +63,7 @@ class AccountDetail {
 	/**
 	 * Validate array format.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param array $array
 	 *
 	 * @throws InvalidArgumentException

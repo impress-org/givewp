@@ -5,12 +5,12 @@ namespace Give\Form\LegacyConsumer;
 use Give\Framework\FieldsAPI\FormField;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class FieldView {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *
@@ -26,7 +26,7 @@ class FieldView {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $html
 	 * @param FormField $field

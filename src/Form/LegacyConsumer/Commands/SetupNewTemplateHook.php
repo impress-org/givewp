@@ -6,12 +6,12 @@ use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class SetupNewTemplateHook implements HookCommandInterface {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 *

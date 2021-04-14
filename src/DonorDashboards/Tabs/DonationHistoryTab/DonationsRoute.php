@@ -9,7 +9,7 @@ use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
 use Give\DonorDashboards\Repositories\Donations as DonationsRepository;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class DonationsRoute extends RouteAbstract {
 
@@ -28,7 +28,7 @@ class DonationsRoute extends RouteAbstract {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param  WP_REST_Request  $request
 	 *
@@ -44,7 +44,7 @@ class DonationsRoute extends RouteAbstract {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param  DonationsRepository  $repository
 	 * @param $donorId

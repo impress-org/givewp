@@ -8,13 +8,13 @@ use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
  * Class AccountDetail
  *
  * @package Give\PaymentGateways\Stripe\Repository
- * @unreleased
+ * @since 2.10.2
  */
 class AccountDetail {
 	/**
 	 * Return Stripe account id for donation form.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param int $formId
 	 *
 	 * @return AccountDetailModel
@@ -35,7 +35,7 @@ class AccountDetail {
 	/**
 	 * Get account detail by Stripe account id.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param string $accountId
 	 *
 	 * @return AccountDetailModel

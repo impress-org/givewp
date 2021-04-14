@@ -3,11 +3,11 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 interface HookCommandInterface {
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 */

@@ -11,7 +11,7 @@ use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
  *
  * @see https://github.com/impress-org/givewp/issues/5555#issuecomment-759596226
  *
- * @unreleased
+ * @since 2.10.2
  */
 class ApplicationFee {
 	/**
@@ -41,7 +41,7 @@ class ApplicationFee {
 	/**
 	 * Returns true or false based on whether the Stripe fee should be applied or not
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return bool
 	 */
 	public static function canAddFee() {
@@ -54,7 +54,7 @@ class ApplicationFee {
 	/**
 	 * Returns true or false based on whether the Stripe Pro add-on is activated
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @return bool
 	 */
@@ -81,7 +81,7 @@ class ApplicationFee {
 	/**
 	 * Returns true or false based on whether a license has been provided for the Stripe add-on
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @return bool
 	 */
@@ -92,7 +92,7 @@ class ApplicationFee {
 	/**
 	 * Return whether or not country support application fee.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @return bool
 	 */
