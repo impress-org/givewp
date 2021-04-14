@@ -82,6 +82,7 @@ jobs:
               MYSQL_PORT=${{ job.services.mysql80.ports[3306] }}
               MYSQL_PASS=N0Tweak!@123!
               ;;
+          esac
           echo "mysql_port=$MYSQL_PORT" >> $GITHUB_ENV
           echo "mysql_pass=$MYSQL_PASS" >> $GITHUB_ENV
         env:
