@@ -13,6 +13,27 @@ jobs:
         mysql: [ 'mysql:5.6', 'mysql:8.0' ]
         wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
 
+    services:
+      mysql56:
+        image: mysql:5.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
+      # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
+      # command option in docker to apply it once the container is set up... but Github Actions does not support this.
+      # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
+      # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
+      # @see https://github.com/docker-library/mysql/issues/690
+      mysql80:
+        image: mysql:8.0
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+        
     steps:
       - uses: actions/checkout@v2
 
