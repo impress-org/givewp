@@ -70,7 +70,6 @@ jobs:
           composer require phpunit/phpunit:5.*
           composer update --prefer-dist --no-interaction --no-suggest
 
-
       - name: Store MySQL details in environment
         run: |
           case "$MYSQL_VERSION" in
