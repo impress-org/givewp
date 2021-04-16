@@ -457,7 +457,8 @@ class Give_Session {
 
 		// Setup session only if donor exist for specific WP user.
 		if ( $donor ) {
-			$this->maybe_start_session();
+			$this->destroy_session();
+			$this->set_session_cookies( true );
 		}
 	}
 
