@@ -453,12 +453,13 @@ class Give_Session {
 	 * @param string  $wpUserLogin
 	 */
 	public function startSessionWhenLoginAsWPUser( $wpUserLogin, $wpUser ) {
+
 		$donor = Give()->donors->get_donor_by( 'user_id', $wpUser->ID );
 
 		// Setup session only if donor exist for specific WP user.
 		if ( $donor ) {
-			$this->destroy_session();
-			$this->set_session_cookies( true );
+			$this->maybe_start_session();
+			$this->set( 'give_email', $donor->email );
 		}
 	}
 
@@ -513,6 +514,7 @@ class Give_Session {
 	 * @access public
 	 */
 	public function destroy_session() {
+
 		give_setcookie( $this->cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
 		give_setcookie( $this->nonce_cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
 
