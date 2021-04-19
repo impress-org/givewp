@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from '../store';
-import { getAPIRoot, isLoggedIn } from '../../../utils';
+import { donorDashboardApi, isLoggedIn } from '../../../utils';
 import { setDonations, setQuerying, setError, setCount, setRevenue, setAverage, setCurrency } from '../store/actions';
 
 export const fetchDonationsDataFromAPI = () => {
@@ -9,7 +9,7 @@ export const fetchDonationsDataFromAPI = () => {
 
 	if ( loggedIn ) {
 		dispatch( setQuerying( true ) );
-		axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/donations', {},
+		donorDashboardApi.post( 'donations', {},
 			{} )
 			.then( ( response ) => response.data )
 			// eslint-disable-next-line camelcase
