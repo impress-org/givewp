@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAPIRoot, getAPINonce } from '../../../utils';
+import { getAPIRoot, getAPINonce, donorDashboardApi } from '../../../utils';
 import { store } from '../../../store';
 import { setProfile } from '../../../store/actions';
 
@@ -30,7 +30,7 @@ export const updateProfileWithAPI = async( {
 	 * Pass new profile data to the Profile REST endpoint
 	 */
 	const { dispatch } = store;
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/profile', {
+	return donorDashboardApi.post( 'profile', {
 		data: JSON.stringify( {
 			titlePrefix,
 			firstName,
@@ -72,7 +72,7 @@ export const uploadAvatarWithAPI = ( file ) => {
 };
 
 export const fetchStatesWithAPI = ( country ) => {
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/location', {
+	return donorDashboardApi.post( 'location', {
 		countryCode: country,
 	}, {} )
 		.then( ( response ) => response.data )
