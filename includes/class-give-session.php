@@ -515,6 +515,7 @@ class Give_Session {
 	 */
 	public function destroy_session() {
 
+		give_setcookie( 'give_nl', '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
 		give_setcookie( $this->cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
 		give_setcookie( $this->nonce_cookie_name, '', time() - YEAR_IN_SECONDS, apply_filters( 'give_session_use_secure_cookie', false ) );
 
