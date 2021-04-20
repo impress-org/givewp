@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from '../store';
-import { getAPIRoot, isLoggedIn } from '../../../utils';
+import { donorDashboardApi, isLoggedIn } from '../../../utils';
 import { setAnnualReceipts, setQuerying, setError } from '../store/actions';
 
 export const fetchAnnualReceiptsFromAPI = () => {
@@ -10,7 +10,7 @@ export const fetchAnnualReceiptsFromAPI = () => {
 
 	if ( loggedIn ) {
 		dispatch( setQuerying( true ) );
-		axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/annual-receipts', {},
+		donorDashboardApi.post( 'annual-receipts', {},
 			{} )
 			.then( ( response ) => response.data )
 			.then( ( data ) => {
