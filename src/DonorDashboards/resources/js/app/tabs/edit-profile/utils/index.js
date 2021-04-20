@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { getAPIRoot, getAPINonce, donorDashboardApi } from '../../../utils';
+import { donorDashboardApi } from '../../../utils';
 import { store } from '../../../store';
 import { setProfile } from '../../../store/actions';
 
@@ -62,11 +61,7 @@ export const uploadAvatarWithAPI = ( file ) => {
 	formData.append( 'file', file );
 
 	// Upload the new file, and return the resolved Promise with new media ID
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/avatar', formData, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
+	return donorDashboardApi.post( 'avatar', formData )
 		.then( ( response ) => { 
 			return response.data 
 		} )
