@@ -36,6 +36,11 @@ class AvatarRoute extends RouteAbstract {
 			return [];
 		}
 
+		// Delete existing Donor profile avatar attachment
+		if ( give()->donorDashboard->getAvatarId() ) {
+			wp_delete_attachment( give()->donorDashboard->getAvatarId(), true );
+		}
+
 		if ( ! function_exists( 'wp_handle_upload' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 		}
