@@ -43,9 +43,6 @@ class LogoutRoute implements RestRoute {
 	 */
 	public function handleRequest( WP_REST_Request $request ) {
 
-		// Prevent occurring of any custom action on wp_logout.
-		remove_all_actions( 'wp_logout' );
-
 		/**
 		 * Fires before processing user logout.
 		 *

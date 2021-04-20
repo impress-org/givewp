@@ -20,6 +20,11 @@ export const reducer = ( state = initialState, action ) => {
 				...state,
 				profile: action.payload.profile,
 			};
+		case 'SET_APPLICATION_ERROR':
+			return {
+				...state,
+				applicationError: action.payload.error,
+			};
 		case 'SET_STATES':
 			return {
 				...state,

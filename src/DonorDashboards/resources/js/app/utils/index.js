@@ -1,4 +1,5 @@
 import { addTab } from '../store/actions';
+import axios from 'axios'
 
 export const registerTab = ( tab ) => {
 	const { dispatch } = window.giveDonorDashboard.store;
@@ -54,6 +55,11 @@ export const getAPIRoot = () => {
 export const getAPINonce = () => {
 	return getWindowData( 'apiNonce' );
 };
+
+export const donorDashboardApi = axios.create({
+	baseURL: getAPIRoot() + 'give-api/v2/donor-dashboard/',
+	headers: {'X-WP-Nonce': getAPINonce()},
+});
 
 /**
  * Returns string in Kebab Case (ex: kebab-case)
