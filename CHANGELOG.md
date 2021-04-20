@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Donor Dashboard now uses WP API nonces for enhanced security (#5798)
+
 ## 2.10.2 - 2021-04-14
 
 ### Changed
