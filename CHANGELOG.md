@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Donor Dashboard Logout now works while in the same session (#5800)
+-   SubscriptionsTable component no longer produces console error (#5793)
+
+### Changed
+
+-   Give Session now reliably reflects currently logged in WP user (#5796)
+-   Donor Dashboard now uses WP API nonces for enhanced security (#5798)
 
 ## 2.10.2 - 2021-04-14
 

@@ -8,4 +8,5 @@ export const initialState = {
 	states: getWindowData( 'states' ),
 	fetchingStates: false,
 	accentColor: getQueryParam( 'accent-color' ),
+	applicationError: null,
 };
