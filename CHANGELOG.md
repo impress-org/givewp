@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Fixed
+
+-   SubscriptionsTable component no longer produces console error (#5793)
+
 ### Changed
 
 -   Give Session now reliably reflects currently logged in WP user (#5796)

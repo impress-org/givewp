@@ -22,7 +22,7 @@ const SubscriptionTable = ( { subscriptions, perPage } ) => {
 	const getSubscriptionRows = () => {
 		return subscriptionsArray.reduce( ( rows, subscription, index ) => {
 			if ( index >= start && index < end ) {
-				rows.push( <SubscriptionRow subscription={ subscription } /> );
+				rows.push( <SubscriptionRow subscription={ subscription } key={index} /> );
 			}
 			return rows;
 		}, [] );
