@@ -63,6 +63,8 @@ class LogoutRoute implements RestRoute {
 		 */
 		do_action( 'give_after_user_logout' );
 
+		give()->session->destroy_session();
+
 		return new WP_REST_Response(
 			[
 				'status'        => 200,
