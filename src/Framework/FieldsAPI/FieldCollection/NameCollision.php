@@ -6,7 +6,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 use Give\Framework\FieldsAPI\FieldCollection\Exception\NameCollisionException;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 trait NameCollision {
 

@@ -45,7 +45,7 @@ class ProfileRoute extends RouteAbstract {
 	 *
 	 * @since 2.10.0
 	 */
-	public function handleRequest( $request ) {
+	public function handleRequest( WP_REST_Request $request ) {
 		return $this->updateProfile( $request->get_param( 'data' ), give()->donorDashboard->getId() );
 	}
 

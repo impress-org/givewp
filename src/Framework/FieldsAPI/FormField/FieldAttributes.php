@@ -3,18 +3,18 @@
 namespace Give\Framework\FieldsAPI\FormField;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 trait FieldAttributes {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @var array
 	 */
 	protected $attributes = [];
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param array $attributes
 	 * @return $this
 	 */
@@ -24,7 +24,7 @@ trait FieldAttributes {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return array
 	 */
 	public function getAttributes() {

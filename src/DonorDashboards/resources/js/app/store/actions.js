@@ -16,6 +16,25 @@ export const setProfile = ( profile ) => {
 	};
 };
 
+export const setApplicationError = ( error ) => {
+	return {
+		type: 'SET_APPLICATION_ERROR',
+		payload: {
+			error,
+		},
+	};
+};
+
+export const setError = ( error ) => {
+	console.log('set application error!!', error)
+	return {
+		type: 'SET_ERROR',
+		payload: {
+			error,
+		},
+	};
+};
+
 export const setStates = ( states ) => {
 	return {
 		type: 'SET_STATES',

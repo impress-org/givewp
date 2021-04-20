@@ -7,10 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Donor Dashboard now uses WP API nonces for enhanced security (#5798)
+
 ### Fixed
 
 -   Donors without WP accounts are now able to upload avatar images (#5745)
+
+## 2.10.2 - 2021-04-14
+
+### Changed
+
+-   Apply Stripe fee when applicable except Brazil (#5729)
+
+### Fixed
+
+-   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
+-   Donors can no longer see other donors donations (on certain hosts) (#5787)
+-   Logs will no longer cause an exception (#5788)
+-   Donor Dashboard page is now only generated if one does not already exist (#5785)
+
+## 2.10.1 - 2021-03-30
+
+### Fixed
+
+-   Prevent fatal error because of param declaration compatibility (#5769)
+-   Stop revenue migration on error (#5748)
 -   Fix broken link by correctly closing href tag (#5746)
+-   Prevent PHP notice on system info page (#5606)
+-   GiveWP Database management tools are now backward compatible with MySQL 5.6 (#5759)
+-   Composer dependencies now reference releases instead of branches (#5763)
+-   Donor search no longer shows undefined index notice (#5752)
+-   Retrieve migrations only when necessary (#5760)
+-   Donors are now able to log into Donor Dashboard on hosts with page caching (#5766)
+-   The Donor Dashboard are no only be generated in admin-side pages (#5768)
 
 ## 2.10.0 - 2021-03-22
 
@@ -31,13 +62,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Creation of the give_migrations table is not producing errors anymore (#5737)
 -   Logging can no longer cause a fatal error to occur (#5737)
 
+
 ## 2.10.0-rc.1 - 2021-03-16
 
 ### New 
 
 -   The new logging system UI is now e2e tested (#5723)
 
-### Changes
+### Changed
 
 -   Apply Stripe fee when applicable (#5555)
 -   Cleanup and update deprecated npm packages (#5712)

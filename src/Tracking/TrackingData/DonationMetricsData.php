@@ -10,7 +10,7 @@ use Give\Tracking\Helpers\DonationStatuses;
  * Class DonationMetricsData
  * @package Give\Tracking\TrackingData
  *
- * @unreleased
+ * @since 2.10.2
  */
 class DonationMetricsData implements TrackData {
 	/**
