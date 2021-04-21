@@ -31,7 +31,7 @@ const DonationRow = ( { donation } ) => {
 						{ payment.status.label }
 					</div>
 				</div>
-				{ payment.mode !== 'live' && (
+				{ payment.mode === 'test' && (
 					<div className="give-donor-dashboard-table__donation-test-tag">
 						{ __( 'Test Donation', 'give' ) }
 					</div>
