@@ -14,15 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donor Dashboard Logout now works while in the same session (#5800)
 -   SubscriptionsTable component no longer produces console error (#5793)
 -   Test Donation badge now only appears on test donations in Donor Dashboard (#5803)
+-   Donors without WP accounts are now able to upload avatar images (#5745)
 
 ### Changed
 
 -   Give Session now reliably reflects currently logged in WP user (#5796)
 -   Donor Dashboard now uses WP API nonces for enhanced security (#5798)
-
-### Fixed
-
--   Donors without WP accounts are now able to upload avatar images (#5745)
 
 ## 2.10.2 - 2021-04-14
 
