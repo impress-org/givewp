@@ -7,7 +7,7 @@ use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 2.10.3
  */
 class AvatarRoute extends RouteAbstract {
 
