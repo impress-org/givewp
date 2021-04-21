@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { getAPIRoot, getAPINonce, donorDashboardApi } from '../../../utils';
+import { donorDashboardApi } from '../../../utils';
 import { store } from '../../../store';
 import { setProfile } from '../../../store/actions';
 
@@ -57,17 +56,15 @@ export const updateProfileWithAPI = async( {
 };
 
 export const uploadAvatarWithAPI = ( file ) => {
-	// Prepare a FormData object with the file to be past to the 'media' REST endpoint
+	// Prepare a FormData object with the file to be past to the 'avatar' REST endpoint
 	const formData = new window.FormData();
 	formData.append( 'file', file );
 
 	// Upload the new file, and return the resolved Promise with new media ID
-	return axios.post( getAPIRoot() + 'wp/v2/media', formData, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
-		.then( ( response ) => response.data )
+	return donorDashboardApi.post( 'avatar', formData )
+		.then( ( response ) => { 
+			return response.data 
+		} )
 		.then( ( responseData ) => responseData.id );
 };
 
