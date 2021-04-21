@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Fixed
+## 2.10.3 - 2021-04-21
+
+## Fixed
 
 -   Donor Dashboard Logout now works while in the same session (#5800)
 -   SubscriptionsTable component no longer produces console error (#5793)
