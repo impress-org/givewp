@@ -48,9 +48,6 @@ class LogoutRoute implements RestRoute {
 
 			// Handle logout logic for WP users
 
-			// Prevent occurring of any custom action on wp_logout.
-			remove_all_actions( 'wp_logout' );
-
 			/**
 			 * Fires before processing user logout.
 			 *
