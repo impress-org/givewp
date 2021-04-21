@@ -1,7 +1,10 @@
-import axios from 'axios';
-import { getAPIRoot } from '../../../utils';
+import { donorDashboardApi, getQueryParam } from '../../../utils';
 
 export const logoutWithAPI = () => {
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/logout', {} )
+	return donorDashboardApi.post( 'logout', {} )
 		.then( ( response ) => response.data );
 };
+
+export const getCleanParentHref = () => {
+	return `${window.parent.location.origin}${window.parent.location.pathname}`;
+}
