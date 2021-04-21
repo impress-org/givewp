@@ -51,9 +51,6 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-
       - name: Install dependencies
         run: |
           composer self-update --1
