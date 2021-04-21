@@ -92,7 +92,6 @@ class AvatarRoute extends RouteAbstract {
 			}
 		}
 
-		return [];
 	}
 
 }
