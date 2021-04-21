@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Donor Dashboard Logout now works while in the same session (#5800)
 -   SubscriptionsTable component no longer produces console error (#5793)
+-   Test Donation badge now only appears on test donations in Donor Dashboard (#5803)
 
 ### Changed
 
