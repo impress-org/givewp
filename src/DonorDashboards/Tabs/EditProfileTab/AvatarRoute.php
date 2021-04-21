@@ -33,7 +33,15 @@ class AvatarRoute extends RouteAbstract {
 	public function handleRequest( WP_REST_Request $request ) {
 
 		if ( ! ( is_array( $_POST ) && is_array( $_FILES ) ) ) {
-			return [];
+			return new WP_REST_Response(
+				[
+					'status'        => 400,
+					'response'      => 'missing_files',
+					'body_response' => [
+						'message' => __( 'No files were included in request for upload.', 'give' ),
+					],
+				]
+			);
 		}
 
 		// Delete existing Donor profile avatar attachment
