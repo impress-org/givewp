@@ -101,7 +101,7 @@ jobs:
 
       - name: Install npm dependencies
         run: |
-          npm install -g npm@latest
+          npm install -g npm@7
           npm ci
           npm run build
           
