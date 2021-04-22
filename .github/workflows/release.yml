@@ -102,7 +102,7 @@ jobs:
         run: |
           npm install -g npm@7
           npm ci
-          npm run build
+          sudo npm run build
           
       - name: WordPress Plugin Deploy
         id: deploy
