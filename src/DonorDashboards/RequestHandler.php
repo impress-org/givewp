@@ -32,7 +32,7 @@ class RequestHandler {
 	 */
 	public function parseRequest( $query ) {
 
-		if ( is_admin() && array_key_exists( 'give-generate-donor-dashboard-page', $query->query_vars ) ) {
+		if ( is_admin() && current_user_can( 'manage_options' ) && ! wp_doing_ajax() && array_key_exists( 'give-generate-donor-dashboard-page', $query->query_vars ) ) {
 			( new Settings() )->generateDonorDashboardPage();
 			wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-settings&give-generated-donor-dashboard-page=1' ) );
 			exit;

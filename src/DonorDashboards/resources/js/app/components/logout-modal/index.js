@@ -1,5 +1,5 @@
 import Button from '../button';
-import { logoutWithAPI } from './utils';
+import { logoutWithAPI, getCleanParentHref } from './utils';
 
 import { __ } from '@wordpress/i18n';
 ;
@@ -7,9 +7,10 @@ import { __ } from '@wordpress/i18n';
 import './style.scss';
 
 const LogoutModal = ( { onRequestClose } ) => {
+	
 	const handleLogout = async() => {
 		await logoutWithAPI();
-		window.location.reload();
+		window.parent.location.href = getCleanParentHref();
 	};
 
 	return (

@@ -8,7 +8,7 @@ use Give\DonorDashboards\Helpers\LocationList;
  * Class App
  * @package Give\DonorDashboards
  *
- * @unreleased
+ * @since 2.10.2
  */
 class App {
 	/**
@@ -32,9 +32,25 @@ class App {
 
 		$url = get_site_url() . '/?give-embed=donor-dashboard';
 
+		$queryArgs = [];
+
 		if ( isset( $attributes['accent_color'] ) ) {
-			$url = $url . '&accent-color=' . urlencode( $attributes['accent_color'] );
+			$queryArgs['accent-color'] = urlencode( $attributes['accent_color'] );
 		}
+
+		if ( isset( $_GET['give_nl'] ) ) {
+			$queryArgs['give_nl'] = urlencode( give_clean( $_GET['give_nl'] ) );
+		}
+
+		if ( isset( $_GET['_give_hash'] ) ) {
+			$queryArgs['_give_hash'] = urlencode( give_clean( $_GET['_give_hash'] ) );
+		}
+
+		if ( isset( $_GET['action'] ) ) {
+			$queryArgs['action'] = urlencode( give_clean( $_GET['action'] ) );
+		}
+
+		$url = add_query_arg( $queryArgs, $url );
 
 		$loader = $this->getIframeLoader( $attributes['accent_color'] );
 

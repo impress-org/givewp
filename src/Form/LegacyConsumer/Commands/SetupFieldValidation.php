@@ -9,12 +9,12 @@ use Give\Framework\FieldsAPI\FieldCollection;
  *
  * @NOTE This is reducing on required fields, so it doesn't implement the shared interface. This is a special case.
  *
- * @unreleased
+ * @since 2.10.2
  */
 class SetupFieldValidation {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param int $formID
 	 */
@@ -23,7 +23,7 @@ class SetupFieldValidation {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param array $requiredFields
 	 * @param string $hook

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { getAPIRoot, getAPINonce } from '../../../utils';
+import { donorDashboardApi } from '../../../utils';
 import { store } from '../../../store';
 import { setProfile } from '../../../store/actions';
 
@@ -30,7 +29,7 @@ export const updateProfileWithAPI = async( {
 	 * Pass new profile data to the Profile REST endpoint
 	 */
 	const { dispatch } = store;
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/profile', {
+	return donorDashboardApi.post( 'profile', {
 		data: JSON.stringify( {
 			titlePrefix,
 			firstName,
@@ -44,11 +43,7 @@ export const updateProfileWithAPI = async( {
 			isAnonymous,
 		} ),
 		id,
-	}, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
+	}, {} )
 		.then( ( response ) => response.data )
 		.then( ( responseData ) => {
 			/**
@@ -61,28 +56,22 @@ export const updateProfileWithAPI = async( {
 };
 
 export const uploadAvatarWithAPI = ( file ) => {
-	// Prepare a FormData object with the file to be past to the 'media' REST endpoint
+	// Prepare a FormData object with the file to be past to the 'avatar' REST endpoint
 	const formData = new window.FormData();
 	formData.append( 'file', file );
 
 	// Upload the new file, and return the resolved Promise with new media ID
-	return axios.post( getAPIRoot() + 'wp/v2/media', formData, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
-		.then( ( response ) => response.data )
+	return donorDashboardApi.post( 'avatar', formData )
+		.then( ( response ) => { 
+			return response.data 
+		} )
 		.then( ( responseData ) => responseData.id );
 };
 
 export const fetchStatesWithAPI = ( country ) => {
-	return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/location', {
+	return donorDashboardApi.post( 'location', {
 		countryCode: country,
-	}, {
-		headers: {
-			'X-WP-Nonce': getAPINonce(),
-		},
-	} )
+	}, {} )
 		.then( ( response ) => response.data )
 		.then( ( data ) => {
 			return data.states.map( ( state ) => {

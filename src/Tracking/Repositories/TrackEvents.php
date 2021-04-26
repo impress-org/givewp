@@ -28,7 +28,7 @@ class TrackEvents {
 	/**
 	 * Remove list of recently edited donaiton forms.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 */
 	public function removeRecentlyEditedDonationFormList() {
 		delete_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY );
@@ -48,7 +48,7 @@ class TrackEvents {
 	/**
 	 * Save recently edited donation form.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 */
 	public function saveRecentlyEditedDonationForm( $formId ) {
 		$formIds   = $this->getRecentlyEditedDonationFormsList();
@@ -61,7 +61,7 @@ class TrackEvents {
 	/**
 	 * Get recently edited donation form list.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 */
 	public function getRecentlyEditedDonationFormsList() {
 		return get_option( self::RECENTLY_EDITED_DONATION_FORM_OPTION_KEY, [] );

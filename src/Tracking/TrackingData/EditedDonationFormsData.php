@@ -5,13 +5,13 @@ namespace Give\Tracking\TrackingData;
  * Class EditedDonationFormsData
  *
  * @package Give\Tracking\TrackingData
- * @unreleased
+ * @since 2.10.2
  */
 class EditedDonationFormsData extends DonationFormsData {
 	/**
 	 * set donation form ids.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return EditedDonationFormsData|void
 	 */
 	protected function setFormIds() {
