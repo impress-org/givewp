@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+### Changes
+
+-   Deprecate give_currencies filter hook (#5782)
+
 ## 2.10.3 - 2021-04-21
 
 ## Fixed
