@@ -76,7 +76,7 @@ function give_get_currencies_list() {
 	 * )
 	 *
 	 * @since 1.8.15
-	 * @deprecated 2.4.0 Use give_register_currency filter hook to register new currency.
+	 * @deprecated @unreleased Use give_register_currency filter hook to register new currency.
 	 *                   Example code to register new currency:
 	 *
 	 *                   add_filter( 'give_register_currency', 'give_add_costarican_currency', 10, 1 );
