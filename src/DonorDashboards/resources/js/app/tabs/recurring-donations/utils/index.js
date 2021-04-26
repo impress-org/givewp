@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { store } from '../store';
-import { getAPIRoot, isLoggedIn } from '../../../utils';
-import { setSubscriptions, setQuerying } from '../store/actions';
+import { donorDashboardApi, isLoggedIn } from '../../../utils';
+import { setSubscriptions, setQuerying, setError } from '../store/actions';
 
 export const fetchSubscriptionsDataFromAPI = () => {
 	const { dispatch } = store;
@@ -9,12 +9,17 @@ export const fetchSubscriptionsDataFromAPI = () => {
 
 	if ( loggedIn ) {
 		dispatch( setQuerying( true ) );
-		return axios.post( getAPIRoot() + 'give-api/v2/donor-dashboard/recurring-donations/subscriptions', {},
+		return donorDashboardApi.post( 'recurring-donations/subscriptions', {},
 			{} )
 			.then( ( response ) => response.data )
 			.then( ( data ) => {
 				dispatch( setSubscriptions( data.subscriptions ) );
 				dispatch( setQuerying( false ) );
+
+				if ( data.status === 400 ) {
+					dispatch( setError( data.body_response.message ) );
+				}
+
 				return data;
 			} )
 			.catch( () => {

@@ -8,7 +8,7 @@ use Give\DonorDashboards\Helpers\LocationList;
  * Class App
  * @package Give\DonorDashboards
  *
- * @unreleased
+ * @since 2.10.2
  */
 class App {
 	/**

@@ -3,18 +3,18 @@
 namespace Give\Framework\FieldsAPI\FormField;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 trait FieldReceipt {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @var bool
 	 */
 	protected $showInReceipt = false;
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return $this
 	 */
 	public function showInReceipt( $showInReceipt = true ) {
@@ -23,7 +23,7 @@ trait FieldReceipt {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return bool
 	 */
 	public function shouldShowInReceipt() {

@@ -6,7 +6,7 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
 use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class FieldCollection implements GroupNode {
 

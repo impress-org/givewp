@@ -377,6 +377,7 @@ function give_field_is_required( $field, $form_id ) {
  */
 function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
 	$log_data = [
+		'log_content'  => 'Payment log info',
 		'log_parent'   => $payment_id,
 		'log_type'     => 'sale',
 		'log_date'     => isset( $donation_date ) ? $donation_date : null,

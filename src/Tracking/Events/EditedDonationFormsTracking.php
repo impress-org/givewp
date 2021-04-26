@@ -11,7 +11,7 @@ use Give\Tracking\TrackRegisterer;
  * Class EditedDonationFormsTracking
  *
  * @package Give\Tracking\Events
- * @unreleased
+ * @since 2.10.2
  */
 class EditedDonationFormsTracking extends TrackEvent {
 	/**
@@ -42,7 +42,7 @@ class EditedDonationFormsTracking extends TrackEvent {
 	/**
 	 * sav_post hook handler.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @param int $formId
 	 */
 	public function savePostHookHandler( $formId ) {
