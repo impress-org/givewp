@@ -12,10 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Deprecate give_currencies filter hook (#5782)
 
-### Fixed
-
--   Logs table creation is now backward compatible with MySQL 5.6 (#5776)
-
 ## 2.10.3 - 2021-04-21
 
 ## Fixed
@@ -42,7 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Donors can no longer see other donors donations (on certain hosts) (#5787)
 -   Logs will no longer cause an exception (#5788)
 -   Donor Dashboard page is now only generated if one does not already exist (#5785)
->>>>>>> develop
 
 ## 2.10.1 - 2021-03-30
 
