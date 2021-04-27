@@ -203,11 +203,12 @@ $give_updates = Give_Updates::get_instance();
 
 			// Get the SSL status.
 			if ( ini_get( 'allow_url_fopen' ) ) {
-				$tls_check = file_get_contents( 'https://www.howsmyssl.com/a/check' );
+				$tls_check = wp_remote_get( 'https://www.howsmyssl.com/a/check' );
 			}
 
-			if ( false !== $tls_check ) {
-				$tls_check = json_decode( $tls_check );
+			if ( ! is_wp_error( $tls_check ) ) {
+				$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ), false );
+
 				/* translators: %s: SSL connection response */
 				printf( __( 'Connection uses %s', 'give' ), esc_html( $tls_check->tls_version ) );
 			}
@@ -219,7 +220,7 @@ $give_updates = Give_Updates::get_instance();
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?></td>
 		<td>
 			<?php
-			if ( false !== $tls_check ) {
+			if ( ! is_wp_error( $tls_check ) ) {
 				esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
 			}
 			?>
@@ -532,7 +533,7 @@ $give_updates = Give_Updates::get_instance();
 				esc_html__( 'Few Database Migrations still need to run.', 'give' ) :
 				esc_html__( 'All Database Migrations Completed.', 'give' );
 			?>
-			</td>
+		</td>
 	</tr>
 	<tr>
 		<td data-export-label="Database Tables"><?php _e( 'Database Tables', 'give' ); ?>:</td>
