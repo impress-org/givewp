@@ -487,7 +487,7 @@ if ( ! function_exists( 'is_give_form' ) ) {
 	 * @return bool
 	 */
 	function is_give_form() {
-		return is_singular( array( 'give_form' ) );
+		return is_singular( array( 'give_forms' ) );
 	}
 }
 
