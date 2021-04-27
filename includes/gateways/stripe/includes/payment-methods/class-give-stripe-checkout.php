@@ -460,7 +460,7 @@ if ( ! class_exists( 'Give_Stripe_Checkout' ) ) {
 
 			// Load Background Image, if exists.
 			if ( ! empty( $backgroundImageUrl ) ) {
-				$backgroundImageUrl = esc_url_raw( $backgroundImageUrl );
+				$backgroundImageUrl = esc_url( $backgroundImageUrl );
 				$backgroundItem     = "background-image: url('{$backgroundImageUrl}'); background-size: cover;";
 			}
 			?>
