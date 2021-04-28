@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Added
+
+-   Add billing address support to PayPal Donations (#5744)
+
 ## 2.10.3 - 2021-04-21
 
 ## Fixed
