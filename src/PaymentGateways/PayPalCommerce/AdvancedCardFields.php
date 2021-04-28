@@ -1,5 +1,8 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce;
+
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 
 /**
  * Class AdvancedCardFields
@@ -9,18 +12,31 @@ namespace Give\PaymentGateways\PayPalCommerce;
  */
 class AdvancedCardFields {
 	/**
+	 * @var Settings
+	 */
+	private $payPalDonationsSettings;
+
+	/**
+	 * AdvancedCardFields constructor.
+	 *
+	 * @param  Settings  $payPalDonationsSettings
+	 */
+	public function __construct( Settings $payPalDonationsSettings ) {
+		$this->payPalDonationsSettings = $payPalDonationsSettings;
+	}
+
+	/**
 	 * PayPal commerce uses smart buttons to accept payment.
 	 *
 	 * @since 2.9.0
+	 * @unreleased Show billing fields conditionally.
 	 *
-	 * @param int  $formId Donation Form ID.
-	 *
-	 * @access public
-	 * @return string $form
-	 *
+	 * @param  int  $formId  Donation Form ID.
 	 */
 	public function addCreditCardForm( $formId ) {
-		$this->removeBillingField();
+		if ( ! $this->payPalDonationsSettings->canCollectBillingInformation() ) {
+			$this->removeBillingField();
+		}
 		give_get_cc_form( $formId );
 	}
 
