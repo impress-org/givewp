@@ -487,7 +487,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	public function get_donor_query() {
 		$per_page   = $this->per_page;
 		$paged      = $this->get_paged();
-		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
+		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : null;
 		$start_date = ! empty( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : false;
 		$end_date   = ! empty( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : false;
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
