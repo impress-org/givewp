@@ -11,9 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add billing address field support to PayPal Donations (#5744)
 
+### Changes
+
+-   Deprecate give_currencies filter hook (#5782)
+
+### Fixed
+
+-   Conditional check for is_give_form() now uses correct post type slug (#5807)
+
 ## 2.10.3 - 2021-04-21
 
-## Fixed
+### Fixed
 
 -   Donor Dashboard Logout now works while in the same session (#5800)
 -   SubscriptionsTable component no longer produces console error (#5793)
