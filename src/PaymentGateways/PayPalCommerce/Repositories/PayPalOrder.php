@@ -9,13 +9,14 @@ use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Exception;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
+
 use function give_record_gateway_error as logError;
 
 /**
  * Class PayPalOrder
- * @since 2.9.0
  * @package Give\PaymentGateways\PayPalCommerce\Repositories
  *
+ * @since 2.9.0
  */
 class PayPalOrder {
 	/**
@@ -37,9 +38,9 @@ class PayPalOrder {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param MerchantDetail $merchantDetails
+	 * @param  MerchantDetail  $merchantDetails
 	 *
-	 * @param PayPalClient   $paypalClient
+	 * @param  PayPalClient  $paypalClient
 	 */
 	public function __construct( PayPalClient $paypalClient, MerchantDetail $merchantDetails ) {
 		$this->paypalClient    = $paypalClient;
@@ -51,7 +52,7 @@ class PayPalOrder {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param string $orderId
+	 * @param  string  $orderId
 	 *
 	 * @return string
 	 * @throws Exception
@@ -78,8 +79,9 @@ class PayPalOrder {
 	 * Create order.
 	 *
 	 * @since 2.9.0
+	 * @see https://developer.paypal.com/docs/api/orders/v2
 	 *
-	 * @param array $array
+	 * @param  array  $array
 	 *
 	 * @return string
 	 * @throws Exception
@@ -91,22 +93,26 @@ class PayPalOrder {
 		$request->payPalPartnerAttributionId( give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ) );
 		$request->body = [
 			'intent'              => 'CAPTURE',
+			'payer'               => [
+				'given_name'    => $array['payer']['firstName'],
+				'surname'       => $array['payer']['lastName'],
+				'email_address' => $array['payer']['email'],
+				'address'       => $array['payer']['address'],
+			],
 			'purchase_units'      => [
 				[
 					'reference_id'        => get_post_field( 'post_name', $array['formId'] ),
 					'description'         => $array['formTitle'],
 					'amount'              => [
-						'value'         => give_maybe_sanitize_amount( $array['donationAmount'], [ 'currency' => give_get_currency( $array['formId'] ) ] ),
+						'value'         => give_maybe_sanitize_amount(
+							$array['donationAmount'],
+							[ 'currency' => give_get_currency( $array['formId'] ) ]
+						),
 						'currency_code' => give_get_currency( $array['formId'] ),
 					],
 					'payee'               => [
 						'email_address' => $this->merchantDetails->merchantId,
 						'merchant_id'   => $this->merchantDetails->merchantIdInPayPal,
-					],
-					'payer'               => [
-						'given_name'    => $array['payer']['firstName'],
-						'surname'       => $array['payer']['lastName'],
-						'email_address' => $array['payer']['email'],
 					],
 					'payment_instruction' => [
 						'disbursement_mode' => 'INSTANT',
@@ -168,7 +174,7 @@ class PayPalOrder {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param array $array
+	 * @param  array  $array
 	 *
 	 * @throws InvalidArgumentException
 	 */
@@ -177,7 +183,12 @@ class PayPalOrder {
 		$array    = array_filter( $array ); // Remove empty values.
 
 		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException( __( 'To create a paypal order, please provide formId, donationAmount and payer', 'give' ) );
+			throw new InvalidArgumentException(
+				__(
+					'To create a paypal order, please provide formId, donationAmount and payer',
+					'give'
+				)
+			);
 		}
 	}
 }
