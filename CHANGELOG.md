@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Added missing escaping for improved security (#5811)
 
 ### Changes
 
 -   Deprecate give_currencies filter hook (#5782)
+-   PHAR files are stripped from builds (#5811)
+-   Correct usage of file_get_contents for remote request in favor of WP HTTP functions (#5811)
 
 ## 2.10.3 - 2021-04-21
 
