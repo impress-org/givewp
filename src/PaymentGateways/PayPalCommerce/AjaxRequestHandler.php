@@ -192,7 +192,7 @@ class AjaxRequestHandler {
 				'firstName' => $postData['give_first'],
 				'lastName'  => $postData['give_last'],
 				'email'     => $postData['give_email'],
-				'address'   => $this->getDonorAddressFromPostedData( $postData ),
+				'address'   => $this->getDonorAddressFromPostedDataForPaypalOrder( $postData ),
 			],
 			'application_context' => [
 				'shipping_preference' => 'NO_SHIPPING',
@@ -313,7 +313,7 @@ class AjaxRequestHandler {
 	 *
 	 * @return array
 	 */
-	private function getDonorAddressFromPostedData( $postedData ) {
+	private function getDonorAddressFromPostedDataForPaypalOrder( $postedData ) {
 		if ( ! $this->settings->canCollectBillingInformation() ) {
 			return [];
 		}
