@@ -97,7 +97,6 @@ class PayPalOrder {
 				'given_name'    => $array['payer']['firstName'],
 				'surname'       => $array['payer']['lastName'],
 				'email_address' => $array['payer']['email'],
-				'address'       => $array['payer']['address'],
 			],
 			'purchase_units'      => [
 				[
@@ -124,6 +123,10 @@ class PayPalOrder {
 				'user_action'         => 'PAY_NOW',
 			],
 		];
+
+		if ( ! empty( $array['payer']['address'] ) ) {
+			$request->body['payer']['address'] = $array['payer']['address'];
+		}
 
 		try {
 			return $this->paypalClient->getHttpClient()->execute( $request )->result->id;
