@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.10.3
+Stable tag: 2.10.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.10.4: April 29th, 2021 =
+* Security: Resolved Authorized XSS vulnerability - note, you had to be logged in as admin to exploit it
+* Changed: Removed PHAR files from vendor directory to meet wp.org standards
+* Changed: Switched to using WP HTTP remote functions to meet wp.org standards
+* Fixed: Improved escaping in a few places to improve security
+* Fixed: Corrected is_give_form() post type so it once again works
 
 = 2.10.3: April 21st, 2021 =
 * Fixed: Authentication now works more reliably for the Donor Dashboard on different hosts
