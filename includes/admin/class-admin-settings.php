@@ -812,7 +812,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// File input field.
 				case 'file':
 				case 'media':
-					$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+					$option_value = esc_url( self::get_option( $option_name, $value['id'], $value['default'] ) );
 					$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $value['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 					$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
 

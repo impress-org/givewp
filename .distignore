@@ -11,6 +11,7 @@
 /assets/src
 /vendor/bin
 /vendor/composer/installers
+/vendor/**/*.phar
 
 .travis.yml
 .editorconfig

@@ -935,14 +935,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function payments_data() {
 		$per_page   = $this->per_page;
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
-		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
-		$user       = isset( $_GET['user'] ) ? $_GET['user'] : null;
-		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
-		$status     = isset( $_GET['status'] ) ? $_GET['status'] : give_get_payment_status_keys();
-		$meta_key   = isset( $_GET['meta_key'] ) ? $_GET['meta_key'] : null;
-		$year       = isset( $_GET['year'] ) ? $_GET['year'] : null;
-		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
-		$day        = isset( $_GET['day'] ) ? $_GET['day'] : null;
+		$order      = isset( $_GET['order'] ) ? give_clean( $_GET['order'] ) : 'DESC';
+		$user       = isset( $_GET['user'] ) ? absint( $_GET['user'] ) : null;
+		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : null;
+		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : give_get_payment_status_keys();
+		$meta_key   = isset( $_GET['meta_key'] ) ? give_clean( $_GET['meta_key'] ) : null;
+		$year       = isset( $_GET['year'] ) ? give_clean( $_GET['year'] ) : null;
+		$month      = isset( $_GET['m'] ) ? give_clean( $_GET['m'] ) : null;
+		$day        = isset( $_GET['day'] ) ? give_clean( $_GET['day'] ) : null;
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
 		$start_date = ! empty( $_GET['start-date'] )
 			? give_clean( $_GET['start-date'] )
