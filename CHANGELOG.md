@@ -11,13 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add billing address field support to PayPal Donations (#5744)
 
+## 2.10.4 - 2021-04-29
+
 ### Changes
 
 -   Deprecate give_currencies filter hook (#5782)
+-   PHAR files are stripped from builds (#5811)
+-   Correct usage of file_get_contents for remote request in favor of WP HTTP functions (#5811)
 
 ### Fixed
 
 -   Conditional check for is_give_form() now uses correct post type slug (#5807)
+-   Added missing escaping for improved security (#5811)
 
 ## 2.10.3 - 2021-04-21
 

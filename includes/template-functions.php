@@ -483,7 +483,7 @@ if ( ! function_exists( 'is_give_form' ) ) {
 	 * Returns true when viewing a single form.
 	 *
 	 * @since 1.6
-	 * @unreleased Updated post type slug to match registration.
+	 * @since 2.10.4 Updated post type slug to match registration.
 	 *
 	 * @return bool
 	 */
