@@ -121,7 +121,9 @@ class App {
 	 * Enqueue assets for front-end donor dashboards
 	 *
 	 * @since 2.10.0
-	 **@return void
+	 * @unreleased Set script translations.
+	 *
+	 * @return void
 	 */
 	public function loadAssets() {
 		// Load assets only if rendering donor dashboard.
