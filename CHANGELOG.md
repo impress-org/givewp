@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Donor Dashboard is now fully translatable #5819
+
 ## 2.10.4 - 2021-04-29
 
 ### Changes
