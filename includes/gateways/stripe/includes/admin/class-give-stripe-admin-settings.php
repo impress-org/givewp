@@ -779,11 +779,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
 											<div class="give-stripe-account-name">
-												<span class="give-stripe-label"><?php _e('Account name:', 'give'); ?></span>
+												<span class="give-stripe-label"><?php _e( 'Account name:', 'give' ); ?></span>
 												<?php echo esc_html( $account_name ); ?>
 											</div>
 											<div class="give-stripe-account-email">
-												<span class="give-stripe-label"><?php _e('Account email:', 'give'); ?></span>
+												<span class="give-stripe-label"><?php _e( 'Account email:', 'give' ); ?></span>
 												<?php echo esc_html( $account_email ); ?>
 											</div>
 											<div class="give-stripe-connection-method">

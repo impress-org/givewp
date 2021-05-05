@@ -267,8 +267,8 @@ a.give-stripe-connect-temp-dismiss:active {
 
 .give-stripe-account-manager-add-section {
 	background: #fff;
-	background: #FFFFFF;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
 
 	h3 {
@@ -289,8 +289,8 @@ a.give-stripe-connect-temp-dismiss:active {
 	flex-direction: column;
 	overflow: hidden;
 
-	background: #FFFFFF;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
 }
 
@@ -298,7 +298,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	display: flex;
 	flex-direction: column;
 	font-size: 16px;
-	color: #4A5568;
+	color: #4a5568;
 	font-weight: 700;
 
 	span {
@@ -341,7 +341,7 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-account-connected {
-	background: #69B868;
+	background: #69b868;
 	border-radius: 4px;
 	text-transform: uppercase;
 	font-weight: 700;
@@ -351,8 +351,8 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-account-default {
-	background: #FFFFFF;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	font-size: 14px;
 	padding: 10px 16px;
 	border-radius: 24px;
