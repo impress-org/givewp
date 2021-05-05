@@ -778,12 +778,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 									?>
 									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
-											<span class="give-stripe-account-name">
+											<div class="give-stripe-account-name">
+												<span class="give-stripe-label"><?php _e('Account name:', 'give'); ?></span>
 												<?php echo esc_html( $account_name ); ?>
-											</span>
-											<span class="give-field-description give-stripe-account-email">
+											</div>
+											<div class="give-stripe-account-email">
+												<span class="give-stripe-label"><?php _e('Account email:', 'give'); ?></span>
 												<?php echo esc_html( $account_email ); ?>
-											</span>
+											</div>
+											<div class="give-stripe-connection-method">
+												<span class="give-stripe-label"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
+												<?php echo give_stripe_connection_type_name( $details['type'] ); ?>
+											</div>
 											<span class="give-stripe-account-edit">
 												<?php if ( 'connect' !== $details['type'] ) { ?>
 												<a class="give-stripe-account-edit-name" href="#"><?php esc_html_e( 'Edit', 'give' ); ?></a>
@@ -794,43 +800,44 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 												><?php esc_html_e( 'Update', 'give' ); ?></a>
 												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<?php } ?>
-											<?php if ( $slug === $default_account ) { ?>
-												<span class="give-stripe-account-default give-stripe-account-badge">
-													<?php esc_html_e( 'Default Account', 'give' ); ?>
-												</span>
-											<?php } else { ?>
-												<span class="give-stripe-account-default">
-													<a
-														data-account="<?php echo $slug; ?>"
-														data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
-														class="give-stripe-account-set-default" href="#"
-													><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
-												</span>
-											<?php } ?>
-
 											</span>
 										</div>
 										<div class="give-stripe-account-actions">
-											<span class="give-stripe-account-type-description give-field-description"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
-											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_name( $details['type'] ); ?></span>
+											<span class="give-stripe-label"><?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
 											<?php
 											if (
 												$slug !== $default_account ||
 												count( $stripe_accounts ) === 1
 											) {
 												?>
-												<span class="give-stripe-account-disconnect">
+												<div class="give-stripe-account-connected">
+													Connected
+												</div>
+												<div class="give-stripe-account-disconnect">
 													<a
 														class="give-stripe-disconnect-account-btn"
 														href="<?php echo $disconnect_url; ?>"
 														data-disconnect-message="<?php echo $disconnect_message; ?>"
 														data-account="<?php echo $slug; ?>"
 													>
-														<?php esc_html_e( 'Disconnect', 'give' ); ?>
+														<?php esc_html_e( 'Remove', 'give' ); ?>
 													</a>
-												</span>
+												</div>
 											<?php } ?>
 										</div>
+										<?php if ( $slug === $default_account ) { ?>
+											<div class="give-stripe-account-default give-stripe-account-badge">
+												<?php esc_html_e( 'Default Account', 'give' ); ?>
+											</div>
+										<?php } else { ?>
+											<div class="give-stripe-account-default">
+												<a
+													data-account="<?php echo $slug; ?>"
+													data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
+													class="give-stripe-account-set-default" href="#"
+												><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
+											</div>
+										<?php } ?>
 									</div>
 									<?php
 								}

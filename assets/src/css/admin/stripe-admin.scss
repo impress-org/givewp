@@ -261,13 +261,15 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-account-manager-container {
-	background-color: #f7f7f7;
-	border: 1px solid #e5e5e5;
+	display: flex;
+	flex-direction: column-reverse;
 }
 
 .give-stripe-account-manager-add-section {
 	background: #fff;
-	padding: 15px;
+	background: #FFFFFF;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 8px;
 
 	h3 {
 		margin-top: 0;
@@ -275,26 +277,51 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
+.give-stripe-account-manager-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 32px;
+}
+
 .give-stripe-account-manager-list-item {
-	padding: 15px;
-	border-bottom: 1px solid #e5e5e5;
-	display: block;
+	padding: 16px 24px;
+	display: flex;
+	flex-direction: column;
 	overflow: hidden;
+
+	background: #FFFFFF;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 8px;
 }
 
 .give-stripe-account-name-wrap {
-	width: 50%;
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
+	font-size: 16px;
+	color: #4A5568;
+	font-weight: 700;
 
 	span {
-		display: inline-block;
+		display: block;
+	}
+
+	.give-stripe-label {
+		font-size: 14px;
+		line-height: 1.4;
+		font-weight: 400;
+		margin-top: 20px;
 	}
 }
 
 .give-stripe-account-actions {
-	width: 40%;
-	float: right;
-	text-align: right;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+
+	.give-stripe-label {
+		width: 100%;
+	}
 
 	.give-stripe-disconnect-account-btn {
 		margin-left: 10px;
@@ -313,16 +340,24 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-.give-stripe-account-badge {
-	background-color: #69b868;
-	padding: 5px 10px;
-	border-radius: 3px;
+.give-stripe-account-connected {
+	background: #69B868;
+	border-radius: 4px;
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 12px;
 	color: #fff;
+	padding: 8px 16px;
+}
 
-	a {
-		text-decoration: none;
-		color: #fff;
-	}
+.give-stripe-account-default {
+	background: #FFFFFF;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	font-size: 14px;
+	padding: 10px 16px;
+	border-radius: 24px;
+	display: inline-block;
+	margin-top: 24px;
 }
 
 .give-stripe-account-name {
