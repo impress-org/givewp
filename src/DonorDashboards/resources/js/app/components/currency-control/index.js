@@ -9,7 +9,6 @@ import { toUniqueId, toKebabCase } from '../../utils';
 import './style.scss';
 
 import { __ } from '@wordpress/i18n';
-;
 
 const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, max, width } ) => {
 	const id = toUniqueId( label );

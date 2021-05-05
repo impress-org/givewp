@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect } from 'react';
+import { __ } from '@wordpress/i18n';
 import { useDropzone } from 'react-dropzone';
 
 import './style.scss';
@@ -28,7 +29,7 @@ const AvatarControl = ( { url, file, onChange } ) => {
 	return (
 		<div className="give-donor-dashboard-avatar-control">
 			<label className="give-donor-dashboard-avatar-control__label">
-				Avatar
+				{ __( 'Avatar', 'give' ) }
 			</label>
 			<div className="give-donor-dashboard-avatar-control__input" { ...getRootProps() }>
 				<input { ...getInputProps() } />
