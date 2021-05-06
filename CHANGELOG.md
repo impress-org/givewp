@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Changes
+
+-   Remove custom Stripe SDK loading logic (#5820)
+
 ## 2.10.4 - 2021-04-29
 
 ### Changes
