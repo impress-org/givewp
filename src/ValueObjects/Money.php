@@ -93,6 +93,7 @@ class Money {
 	 * Get amount in smallest unit of currency.
 	 *
 	 * @sicne 2.9.0
+	 * @unreleased Round minor amount to account for floating point precision.
 	 *
 	 * @return int
 	 */
@@ -105,7 +106,9 @@ class Money {
 
 		$tensMultiplier = 10 ** $decimals;
 
-		return $this->minorAmount = absint( $this->amount * $tensMultiplier );
+		return $this->minorAmount = absint(
+			round( $this->amount * $tensMultiplier )
+		);
 	}
 
 	/**
