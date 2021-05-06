@@ -11,7 +11,15 @@ final class MoneyTest extends TestCase {
 	}
 
 	public function testMinorAmountFloat() {
-		$money = Money::of( 257.78, 'USD' );
-		$this->assertEquals( 25778, $money->getMinorAmount() );
+
+		$this->assertEquals(
+			7446,
+			Money::of( 74.46, 'USD' )->getMinorAmount()
+		);
+
+		$this->assertEquals(
+			25778,
+			Money::of( 257.78, 'USD' )->getMinorAmount()
+		);
 	}
 }
