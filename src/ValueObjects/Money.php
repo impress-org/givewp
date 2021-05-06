@@ -106,6 +106,15 @@ class Money {
 
 		$tensMultiplier = 10 ** $decimals;
 
+		/**
+		 * When working with float values, be careful when casting to an integer.
+		 * Due to "floating point precision", the output may not match the expected value.
+		 *
+		 * @link https://www.php.net/manual/en/language.types.float.php
+		 *  This can lead to confusing results:
+		 *      for example, floor((0.1+0.7)*10) will usually return 7 instead of the expected 8,
+		 *      since the internal representation will be something like 7.9999999999999991118....
+		 */
 		return $this->minorAmount = absint(
 			round( $this->amount * $tensMultiplier )
 		);
