@@ -89,9 +89,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 						version_compare( '1.9.3', $recurring_plugin_data['Version'], '>=' )
 					) {
 
-						// Load Stripe SDK.
-						give_stripe_load_stripe_sdk();
-
 						// Include frontend files.
 						$this->include_frontend_files();
 
@@ -119,9 +116,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 				return;
 			}
-
-			// Load Stripe SDK.
-			give_stripe_load_stripe_sdk();
 
 			// Include frontend files.
 			$this->include_frontend_files();
