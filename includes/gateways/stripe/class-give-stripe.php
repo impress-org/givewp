@@ -54,6 +54,8 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 * This function is used to include the related Stripe core files.
 		 *
 		 * @since  2.5.0
+		 * @unreleased Stripe sdk loading logic has been removed because
+		 *             Composer autoloader will load it when required.
 		 * @access public
 		 *
 		 * @return void
