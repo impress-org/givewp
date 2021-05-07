@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Fixed
+
+-   Prevent javascript error when click on lock icon on email listing page (#5824)
+
 ## 2.10.4 - 2021-04-29
 
 ### Changes
