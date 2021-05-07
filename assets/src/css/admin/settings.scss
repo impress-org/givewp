@@ -476,7 +476,14 @@ div.give-field-description {
 	th.check-column {
 		.give-email-notification-status {
 			color: white;
-			cursor: pointer;
+
+			i.dashicons {
+				cursor: pointer;
+
+				&.dashicons-lock {
+					cursor: default;
+				}
+			}
 
 			&[data-edit='1'] i.dashicons {
 				border-radius: 1em;
