@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
--   Renamed Orissa to Odisha (#5826)
+-   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
 
 ## 2.10.4 - 2021-04-29
 

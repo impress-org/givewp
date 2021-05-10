@@ -2109,6 +2109,8 @@ function give_get_indonesian_states_list() {
  * Get Indian States
  *
  * @since 1.0
+ * @unreleased Renamed Indian state of Orissa to Odisha (#5826)
+ *
  * @return array $states A list of states
  */
 function give_get_indian_states_list() {
