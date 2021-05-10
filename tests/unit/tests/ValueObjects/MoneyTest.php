@@ -10,6 +10,11 @@ final class MoneyTest extends TestCase {
 		$this->assertEquals( 25000, $money->getMinorAmount() );
 	}
 
+	public function testMinorAmountZeroBasedCurrency() {
+		$money = Money::of( 25000, 'JPY' );
+		$this->assertEquals( 25000, $money->getMinorAmount() );
+	}
+
 	public function testMinorAmountFloat() {
 
 		$this->assertEquals(
