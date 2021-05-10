@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changes
+
+-   Renamed Orissa to Odisha (#5826)
+
 ## 2.10.4 - 2021-04-29
 
 ### Changes
