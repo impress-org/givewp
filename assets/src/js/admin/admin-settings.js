@@ -108,21 +108,11 @@ jQuery( document ).ready( function( $ ) {
 			$icon_container = $( 'i', $this ),
 			$loader = $( this ).next(),
 			set_notification_status = $( this ).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
-			notification_id = $( this ).data( 'id' );
+			notification_id = $( this ).data( 'id' ),
+			canEdit = parseInt( $this.data( 'edit' ) );
 
-		// Bailout if admin can not edit notification status setting.
-		if ( ! parseInt( $this.data( 'edit' ) ) ) {
-			$( 'div.give-email-notification-status-notice' ).remove();
-
-			// Add notice.
-			$( 'hr.wp-header-end' ).after( '<div class="updated error give-email-notification-status-notice"><p>' + $( this ).closest( '.give-email-notification-status' ).data( 'notice' ) + '</p></div>' );
-
-			// Scroll to notice.
-			var noticeContainer = $( 'div.give-email-notification-status-notice' );
-			if( noticeContainer.length ){
-				$( 'html, body' ).animate( { scrollTop: noticeContainer.position().top }, 'slow' );
-			}
-
+		if( ! canEdit ) {
+			showNoticeIfEmailNotificationStatusIsNotEditable($this);
 			return false;
 		}
 
@@ -299,6 +289,26 @@ jQuery( document ).ready( function( $ ) {
 
 		preview.val( Give.fn.formatCurrency( '123456.12345', formatterArgs, {} ) );
 	} );
+
+	/**
+	 * Show admin notice if email notification status is not editable.
+	 *
+	 * @unreleased
+	 * @param {object} noticeEditButton
+	 * @return {boolean}
+	 */
+	function showNoticeIfEmailNotificationStatusIsNotEditable( noticeEditButton ){
+		$( 'div.give-email-notification-status-notice' ).remove();
+
+		// Add notice.
+		$( '.wp-heading-inline' ).after( `<div class="updated error give-email-notification-status-notice"><p>${noticeEditButton.data( 'notice' )}</p></div>` );
+
+		// Scroll to notice.
+		let noticeContainer = $( 'div.give-email-notification-status-notice' );
+		if( noticeContainer.length ){
+			$( 'html, body' ).animate( { scrollTop: noticeContainer.position().top }, 'slow' );
+		}
+	}
 } );
 
 // Vertical tabs feature.
