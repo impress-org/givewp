@@ -112,7 +112,7 @@ jQuery( document ).ready( function( $ ) {
 			canEditEmailNotificationStatus = parseInt( $this.data( 'edit' ) );
 
 		if( ! canEditEmailNotificationStatus ) {
-			showNoticeIfEmailNotificationStatusIsNotEditable($this);
+			showEmailNotificationStatusIsNotEditableNotice($this);
 			return false;
 		}
 
@@ -297,7 +297,7 @@ jQuery( document ).ready( function( $ ) {
 	 * @param {object} noticeEditButton
 	 * @return {boolean}
 	 */
-	function showNoticeIfEmailNotificationStatusIsNotEditable( noticeEditButton ){
+	function showEmailNotificationStatusIsNotEditableNotice( noticeEditButton ){
 		$( 'div.give-email-notification-status-notice' ).remove();
 
 		// Add notice.
