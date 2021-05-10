@@ -2133,7 +2133,7 @@ function give_get_indian_states_list() {
 		'ML' => 'Meghalaya',
 		'MZ' => 'Mizoram',
 		'NL' => 'Nagaland',
-		'OR' => 'Orissa',
+		'OR' => 'Odisha',
 		'PB' => 'Punjab',
 		'RJ' => 'Rajasthan',
 		'SK' => 'Sikkim',
