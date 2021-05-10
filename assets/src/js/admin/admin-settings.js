@@ -109,9 +109,9 @@ jQuery( document ).ready( function( $ ) {
 			$loader = $( this ).next(),
 			set_notification_status = $( this ).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
 			notification_id = $( this ).data( 'id' ),
-			canEdit = parseInt( $this.data( 'edit' ) );
+			canEditEmailNotificationStatus = parseInt( $this.data( 'edit' ) );
 
-		if( ! canEdit ) {
+		if( ! canEditEmailNotificationStatus ) {
 			showNoticeIfEmailNotificationStatusIsNotEditable($this);
 			return false;
 		}
