@@ -455,6 +455,10 @@
 	setupFFMInputs();
 	setupInputIcons();
 
+	if ( 'enabled' === templateOptions.payment_amount.decimals_enabled ) {
+		updateFormDonationLevelsLabels();
+	}
+
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
 	 */
@@ -848,5 +852,46 @@
 		if ( 'parentIFrame' in window ) {
 			window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
 		}
+	}
+
+	/**
+	 * Update decimal donation levels amount
+	 *
+	 * @unreleased
+	 */
+	function updateFormDonationLevelsLabels() {
+		$( '.give-form' ).each( ( i, form ) => {
+			const donationForm = $( form );
+			const donationLevels = Give.form.fn.getVariablePrices( donationForm );
+
+			$.each( donationLevels, function( i, level ) {
+				if ( 'custom' === level.price_id ) {
+					return;
+				}
+
+				const symbol = Give.form.fn.getInfo( 'currency_symbol', donationForm );
+				const position = Give.form.fn.getInfo( 'currency_position', donationForm );
+				const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
+
+				const amount = isFloat( level.amount )
+					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
+					: level.amount;
+
+				const donationLevelLabel = '<div class="currency currency--' + position + '">' + symbol + '</div>' + amount;
+
+				donationForm
+					.find( '.give-btn-level-' + level.price_id + ', *[for="give-radio-level-' + level.price_id + '"], .give-donation-level-' + level.price_id )
+					.html( donationLevelLabel );
+			} );
+		} );
+	}
+
+	/**
+	 * Helper function used to determine if the given value is a float
+	 * @param value
+	 * @returns {boolean}
+	 */
+	function isFloat( value ) {
+		return Number( value ) === value && value % 1 !== 0;
 	}
 }( jQuery ) );
