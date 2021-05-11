@@ -11,9 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
 
-## Fixed
+### Fixed
 
 -   Prevent javascript error when click on lock icon on email listing page (#5824)
+-   Amount passed to Stripe matches the stored value (#5823)
 
 ## 2.10.4 - 2021-04-29
 
