@@ -5,26 +5,27 @@ use Give\ValueObjects\Money;
 
 final class MoneyTest extends TestCase {
 
-	public function testMinorAmount() {
+	public function testOfAmount() {
 		$money = Money::of( 250, 'USD' );
+		$this->assertEquals( 250, $money->getAmount() );
 		$this->assertEquals( 25000, $money->getMinorAmount() );
 	}
 
-	public function testMinorAmountZeroBasedCurrency() {
+	public function testOfMinorAmount() {
+		$money = Money::ofMinor( 25000, 'USD' );
+		$this->assertEquals( 250, $money->getAmount() );
+		$this->assertEquals( 25000, $money->getMinorAmount() );
+	}
+
+	public function testOfAmountFloat() {
+		$money = Money::of( 250.56, 'USD' );
+		$this->assertEquals( 250.56, $money->getAmount() );
+		$this->assertEquals( 25056, $money->getMinorAmount() );
+	}
+
+	public function testOfAmountZeroBasedCurrency() {
 		$money = Money::of( 25000, 'JPY' );
+		$this->assertEquals( 25000, $money->getAmount() );
 		$this->assertEquals( 25000, $money->getMinorAmount() );
-	}
-
-	public function testMinorAmountFloat() {
-
-		$this->assertEquals(
-			7446,
-			Money::of( 74.46, 'USD' )->getMinorAmount()
-		);
-
-		$this->assertEquals(
-			25778,
-			Money::of( 257.78, 'USD' )->getMinorAmount()
-		);
 	}
 }
