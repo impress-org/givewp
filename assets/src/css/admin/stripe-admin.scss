@@ -270,10 +270,27 @@ a.give-stripe-connect-temp-dismiss:active {
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	padding: 10px 24px;
 
 	h3 {
+		white-space: nowrap;
 		margin-top: 0;
-		font-size: 1.1em;
+		margin-bottom: 0;
+		line-height: 1;
+	}
+
+	tbody {
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: center;
+		flex-wrap: wrap;
+
+		th,
+		.give-field-description {
+			display: none;
+		}
 	}
 }
 
@@ -281,6 +298,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-gap: 32px;
+	margin-top: 20px;
 }
 
 .give-stripe-account-manager-list-item {
@@ -288,10 +306,27 @@ a.give-stripe-connect-temp-dismiss:active {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
+	position: relative;
 
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	border: 1px solid #69b86800;
 	border-radius: 8px;
+
+	&.give-stripe-account-manager-list-item--default-account {
+		border: 2px solid #69b868;
+	}
+}
+
+.give-stripe-account-default-checkmark {
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 24px;
+	right: 24px;
 }
 
 .give-stripe-account-name-wrap {
@@ -309,7 +344,8 @@ a.give-stripe-connect-temp-dismiss:active {
 		font-size: 14px;
 		line-height: 1.4;
 		font-weight: 400;
-		margin-top: 20px;
+		margin-top: 26px;
+		margin-bottom: 2px;
 	}
 }
 
@@ -321,6 +357,8 @@ a.give-stripe-connect-temp-dismiss:active {
 
 	.give-stripe-label {
 		width: 100%;
+		margin-top: 20px;
+		margin-bottom: 4px;
 	}
 
 	.give-stripe-disconnect-account-btn {
@@ -354,10 +392,11 @@ a.give-stripe-connect-temp-dismiss:active {
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	font-size: 14px;
-	padding: 10px 16px;
+	padding: 10px 20px;
 	border-radius: 24px;
 	display: inline-block;
 	margin-top: 24px;
+	align-self: flex-start;
 }
 
 .give-stripe-account-name {
@@ -365,6 +404,10 @@ a.give-stripe-connect-temp-dismiss:active {
 	font-weight: 600;
 	font-size: 15px;
 	margin-right: 5px;
+
+	.give-stripe-label {
+		margin-top: 8px;
+	}
 }
 
 .give-stripe-account-edit {
