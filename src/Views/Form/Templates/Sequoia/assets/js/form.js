@@ -864,7 +864,7 @@
 			const donationForm = $( form );
 			const donationLevels = Give.form.fn.getVariablePrices( donationForm );
 
-			$.each( donationLevels, function( i, level ) {
+			$.each( donationLevels, function( j, level ) {
 				if ( 'custom' === level.price_id ) {
 					return;
 				}
