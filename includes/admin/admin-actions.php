@@ -998,7 +998,7 @@ function __give_ajax_donor_manage_addresses() {
 		);
 	}
 
-	$post                  = give_clean( wp_parse_args( $_POST ) );
+	$post                  = give_clean( wp_parse_args( urldecode_deep( $_POST ) ) );
 	$donorID               = absint( $post['donorID'] );
 	$form_data             = give_clean( wp_parse_args( $post['form'] ) );
 	$is_multi_address_type = ( 'billing' === $form_data['address-id'] || false !== strpos( $form_data['address-id'], '_' ) );
