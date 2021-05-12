@@ -326,12 +326,12 @@ const Give = {
 		},
 
 		/**
-		 * Helper function used to determine if the given value is a float
+		 * Helper function used to determine if the given number has decimal
 		 * @param value
 		 * @returns {boolean}
 		 */
-		isFloat: function( value ) {
-			return Number( value ) === value && value % 1 !== 0;
+		numberHasDecimal: function( value ) {
+			return Math.floor( value ) !== Number( value );
 		}
 	},
 

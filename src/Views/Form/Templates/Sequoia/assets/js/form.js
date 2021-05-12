@@ -873,7 +873,7 @@
 				const position = Give.form.fn.getInfo( 'currency_position', donationForm );
 				const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
 
-				const amount = Give.fn.isFloat( level.amount )
+				const amount = Give.fn.numberHasDecimal( level.amount )
 					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
 					: level.amount;
 
