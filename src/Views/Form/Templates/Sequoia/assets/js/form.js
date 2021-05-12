@@ -880,7 +880,7 @@
 				const donationLevelLabel = '<div class="currency currency--' + position + '">' + symbol + '</div>' + amount;
 
 				donationForm
-					.find( '.give-btn-level-' + level.price_id + ', *[for="give-radio-level-' + level.price_id + '"], .give-donation-level-' + level.price_id )
+					.find( '.give-btn-level-' + level.price_id  )
 					.html( donationLevelLabel );
 			} );
 		} );
