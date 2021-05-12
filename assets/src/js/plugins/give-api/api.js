@@ -324,6 +324,15 @@ const Give = {
 			}
 			return url;
 		},
+
+		/**
+		 * Helper function used to determine if the given value is a float
+		 * @param value
+		 * @returns {boolean}
+		 */
+		isFloat: function( value ) {
+			return Number( value ) === value && value % 1 !== 0;
+		}
 	},
 
 	/**
