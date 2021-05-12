@@ -983,6 +983,7 @@ function give_get_user_roles() {
  * Ajax handle for donor address.
  *
  * @since 2.0
+ * @unreleased decode url before parsing and sanitizing url when set $post.
  * @return string
  */
 function __give_ajax_donor_manage_addresses() {
