@@ -39,7 +39,7 @@ export const fetchDonationsDataFromAPI = () => {
 			.catch( ( { response } ) => {
 				const { status, data } = response;
 				if ( status === 403 && data.code === 'rest_cookie_invalid_nonce' ) {
-					applicationDispatch( setApplicationError( __('Request was attempted with an invalid nonce. Try refreshing the page, and if the problem persists contact the site administrator and alert them of this error.', 'give') ) );
+					applicationDispatch( setApplicationError( __('The site is unable to verify your access to this data. Try refreshing the page, and if the problem persists reach out to the site administrator.', 'give') ) );
 				}
 				dispatch( setQuerying( false ) );
 			} );
