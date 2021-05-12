@@ -873,7 +873,7 @@
 				const position = Give.form.fn.getInfo( 'currency_position', donationForm );
 				const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
 
-				const amount = isFloat( level.amount )
+				const amount = Give.fn.isFloat( level.amount )
 					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
 					: level.amount;
 
@@ -884,14 +884,5 @@
 					.html( donationLevelLabel );
 			} );
 		} );
-	}
-
-	/**
-	 * Helper function used to determine if the given value is a float
-	 * @param value
-	 * @returns {boolean}
-	 */
-	function isFloat( value ) {
-		return Number( value ) === value && value % 1 !== 0;
 	}
 }( jQuery ) );
