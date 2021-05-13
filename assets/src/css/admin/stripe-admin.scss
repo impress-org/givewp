@@ -267,7 +267,6 @@ a.give-stripe-connect-temp-dismiss:active {
 
 .give-stripe-account-manager-add-section {
 	background: #fff;
-	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
 	display: flex;
@@ -286,12 +285,26 @@ a.give-stripe-connect-temp-dismiss:active {
 		flex-direction: row-reverse;
 		align-items: center;
 		flex-wrap: wrap;
-
-		th,
-		.give-field-description {
-			display: none;
-		}
 	}
+}
+
+.give-stripe-account-type-manual-modal__body {
+	background: #fff;
+	padding: 16px;
+}
+
+.give-stripe-account-type-manual-modal__frame {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .give-stripe-account-manager-list {
