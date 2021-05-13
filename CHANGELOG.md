@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 -   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
+    
+### New
+
+-   Support for the decimal amounts is now implemented (#5827)
 -   Remove custom Stripe SDK loading logic (#5820)
 
 ### Fixed

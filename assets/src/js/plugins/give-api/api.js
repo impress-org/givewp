@@ -324,6 +324,15 @@ const Give = {
 			}
 			return url;
 		},
+
+		/**
+		 * Helper function used to determine if the given number has decimal
+		 * @param value
+		 * @returns {boolean}
+		 */
+		numberHasDecimal: function( value ) {
+			return Math.floor( value ) !== Number( value );
+		}
 	},
 
 	/**
