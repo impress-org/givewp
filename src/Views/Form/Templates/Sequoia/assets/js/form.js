@@ -863,15 +863,14 @@
 		$( '.give-form' ).each( ( i, form ) => {
 			const donationForm = $( form );
 			const donationLevels = Give.form.fn.getVariablePrices( donationForm );
+			const symbol = Give.form.fn.getInfo( 'currency_symbol', donationForm );
+			const position = Give.form.fn.getInfo( 'currency_position', donationForm );
+			const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
 
 			$.each( donationLevels, function( j, level ) {
 				if ( 'custom' === level.price_id ) {
 					return;
 				}
-
-				const symbol = Give.form.fn.getInfo( 'currency_symbol', donationForm );
-				const position = Give.form.fn.getInfo( 'currency_position', donationForm );
-				const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
 
 				const amount = Give.fn.numberHasDecimal( level.amount )
 					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
