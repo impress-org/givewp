@@ -6,6 +6,7 @@ namespace Give\Onboarding;
  * Fork of woocommerce/18n/locale-info
  *
  * @since 2.8.0
+ * @unreleased Added KR locale info (#5831)
  */
 class LocaleCollection {
 
