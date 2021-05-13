@@ -172,6 +172,15 @@ class LocaleCollection {
 			'weight_unit'    => 'kg',
 			'dimension_unit' => 'cm',
 		],
+		'KR' => [
+			'currency_code'  => 'KRW',
+			'currency_pos'   => 'right',
+			'thousand_sep'   => ',',
+			'decimal_sep'    => '.',
+			'num_decimals'   => 0,
+			'weight_unit'    => 'kg',
+			'dimension_unit' => 'cm',
+		],
 		'LI' => [
 			'currency_code'  => 'CHF',
 			'currency_pos'   => 'left_space',
