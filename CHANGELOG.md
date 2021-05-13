@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Store donor address with formatting from donor profile (#5829)
 -   Prevent javascript error when click on lock icon on email listing page (#5824)
 -   Amount passed to Stripe matches the stored value (#5823)
 
