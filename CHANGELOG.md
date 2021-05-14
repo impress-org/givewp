@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 -   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
-    
+-   Onboarding LocaleCollection has parity with WooCommerce (#5831)    
+
 ### New
 
 -   Support for the decimal amounts is now implemented (#5827)
