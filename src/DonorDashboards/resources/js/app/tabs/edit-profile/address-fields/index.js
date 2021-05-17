@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setStates } from '../../../store/actions';
 import { __ } from '@wordpress/i18n';
-;
 
 import SelectControl from '../../../components/select-control';
 import TextControl from '../../../components/text-control';

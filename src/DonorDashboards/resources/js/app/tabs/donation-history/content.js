@@ -3,7 +3,6 @@ import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import Heading from '../../components/heading';
 import Button from '../../components/button';

@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from 'react';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import Heading from '../../components/heading';
 import AnnualReceiptTable from '../../components/annual-receipt-table';
