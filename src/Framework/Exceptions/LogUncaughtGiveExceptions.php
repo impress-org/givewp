@@ -4,6 +4,7 @@ namespace Give\Framework\Exceptions;
 
 use Exception;
 use Give\Framework\Exceptions\Contracts\LoggableException;
+use Give\Framework\Exceptions\Traits\Loggable;
 use Give\Log\Log;
 
 class LogUncaughtGiveExceptions {
@@ -25,8 +26,16 @@ class LogUncaughtGiveExceptions {
 		$this->previousHandler = @set_exception_handler( [ $this, 'handleException' ] );
 	}
 
+	/**
+	 * Handles an uncaught exception by checking if the Exception is native to GiveWP and then logging it if it is
+	 *
+	 * @unreleased
+	 *
+	 * @param Exception $exception
+	 */
 	public function handleException( Exception $exception ) {
-		if ( $exception instanceof LoggableException ) {
+		if ( $this->isGiveException( $exception ) ) {
+			/** @var LoggableException|Loggable $exception */
 			Log::error( $exception->getLogMessage(), $exception->getLogContext() );
 		}
 
@@ -34,5 +43,25 @@ class LogUncaughtGiveExceptions {
 			$previousHandler = $this->previousHandler;
 			$previousHandler( $exception );
 		}
+	}
+
+	/**
+	 * Checks to see if the given Exception is native to GiveWP
+	 *
+	 * @param Exception $exception
+	 *
+	 * @return bool
+	 */
+	private function isGiveException( Exception $exception ) {
+		if ( $exception instanceof LoggableException ) {
+			return true;
+		}
+
+		$traits = class_uses( $exception );
+		if ( isset( $traits[ Loggable::class ] ) ) {
+			return true;
+		}
+
+		return false;
 	}
 }
