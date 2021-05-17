@@ -223,8 +223,9 @@ final class Give {
 
 		$this->bindClasses();
 
-		$this->loadServiceProviders();
 		$this->setupExceptionHandler();
+
+		$this->loadServiceProviders();
 
 		// Load form template
 		$this->templates->load();
