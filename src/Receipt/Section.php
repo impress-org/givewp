@@ -3,7 +3,7 @@
 namespace Give\Receipt;
 
 use ArrayAccess;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Iterator;
 
 /**

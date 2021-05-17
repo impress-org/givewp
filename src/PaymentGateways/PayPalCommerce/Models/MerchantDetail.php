@@ -2,8 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Models;
 
-use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class MerchantDetail

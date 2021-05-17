@@ -2,7 +2,7 @@
 
 namespace Give\FormAPI;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class Options

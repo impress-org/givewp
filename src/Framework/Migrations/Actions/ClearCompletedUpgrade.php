@@ -2,7 +2,7 @@
 
 namespace Give\Framework\Migrations\Actions;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class ClearCompletedUpgrade
