@@ -492,7 +492,7 @@ final class Give {
  *
  * @return object|Give
  */
-function Give( $abstract = null ) {
+function give( $abstract = null ) {
 	static $instance = null;
 
 	if ( $instance === null ) {
@@ -508,4 +508,4 @@ function Give( $abstract = null ) {
 
 require __DIR__ . '/vendor/autoload.php';
 
-Give()->boot();
+give()->boot();
