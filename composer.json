@@ -30,7 +30,8 @@
     },
     "scripts": {
         "test": "./vendor/bin/phpunit",
-        "unreleased": "./vendor/bin/since-unreleased.sh"
+        "unreleased": "./vendor/bin/since-unreleased.sh",
+        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
     },
     "autoload": {
         "psr-4": {
