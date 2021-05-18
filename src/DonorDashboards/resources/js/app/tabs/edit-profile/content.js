@@ -15,7 +15,6 @@ import AddressControls from './address-controls';
 import { Fragment, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { __ } from '@wordpress/i18n';
-;
 
 import './style.scss';
 
@@ -34,14 +33,15 @@ const Content = () => {
 	const titlePrefixOptions = [
 		{
 			value: 'Mr.',
-			label: 'Mr.',
+			label: __( 'Mr.', 'give' ),
 		},
 		{
 			value: 'Ms.',
-			label: 'Ms.',
-		},		{
+			label: __( 'Ms.', 'give' ),
+		},
+		{
 			value: 'Mrs.',
-			label: 'Mrs.',
+			label: __( 'Mrs.', 'give' ),
 		},
 	];
 

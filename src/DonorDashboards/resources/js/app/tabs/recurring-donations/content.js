@@ -2,7 +2,6 @@ import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import Heading from '../../components/heading';
 import Divider from '../../components/divider';

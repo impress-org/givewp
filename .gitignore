@@ -50,6 +50,7 @@ cache
 node_modules
 assets/dist/
 .storybook-static
+release
 
 # Composer
 vendor

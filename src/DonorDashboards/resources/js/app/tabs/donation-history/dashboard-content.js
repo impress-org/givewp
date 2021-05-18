@@ -7,7 +7,6 @@ import Stats from './stats';
 import { useSelector } from './hooks';
 
 import { __ } from '@wordpress/i18n';
-;
 
 const DashboardContent = () => {
 	const donations = useSelector( ( state ) => state.donations );
