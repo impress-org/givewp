@@ -4,7 +4,6 @@ import { Fragment, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';

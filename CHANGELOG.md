@@ -7,14 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changes
+
+-   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
+-   Onboarding LocaleCollection has parity with WooCommerce (#5831)    
+
+### New
+
+-   Support for the decimal amounts is now implemented (#5827)
+-   Remove custom Stripe SDK loading logic (#5820)
+
+### Fixed
+
+-   Store donor address with formatting from donor profile (#5829)
+-   Prevent javascript error when click on lock icon on email listing page (#5824)
+-   Amount passed to Stripe matches the stored value (#5823)
+-   Remove extraneous main landmarks from setup guide page (#5835)
+-   Donor Dashboard is now fully translatable #5819
+
+## 2.10.4 - 2021-04-29
 
 ### Changes
 
 -   Deprecate give_currencies filter hook (#5782)
+-   PHAR files are stripped from builds (#5811)
+-   Correct usage of file_get_contents for remote request in favor of WP HTTP functions (#5811)
+
+### Fixed
+
+-   Conditional check for is_give_form() now uses correct post type slug (#5807)
+-   Added missing escaping for improved security (#5811)
 
 ## 2.10.3 - 2021-04-21
 
-## Fixed
+### Fixed
 
 -   Donor Dashboard Logout now works while in the same session (#5800)
 -   SubscriptionsTable component no longer produces console error (#5793)

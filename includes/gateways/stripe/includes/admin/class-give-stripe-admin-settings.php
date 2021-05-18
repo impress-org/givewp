@@ -577,24 +577,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_before_advanced_setting_fields', $settings );
 
 					$settings[] = [
-						'name'    => __( 'Stripe SDK Compatibility', 'give' ),
-						'desc'    => sprintf(
-							/* translators: 1. GiveWP Support URL */
-							__( 'If you are using another plugin that uses Stripe to accept payments there is a chance that it may include the <a href="%1$s" target="_blank">Stripe SDK</a> (Software Development Kit) either through <a href="%2$s" target="_blank">Composer</a> or manually initalized. This can cause conflicts with GiveWP because WordPress does not have a dependency management system to prevent conflicts. To help resolve conflicts we have included two options to use Stripe alongside these other plugins. The recommended way is Composer, but if that is not working then we recommend manual initialization. If both options do not work please <a href="%3$s" target="_blank">contact support</a>.', 'give' ),
-							esc_url_raw( 'https://github.com/stripe/stripe-php' ),
-							esc_url_raw( 'http://getcomposer.org/' ),
-							esc_url_raw( 'http://docs.givewp.com/settings-support' )
-						),
-						'id'      => 'stripe_sdk_incompatibility',
-						'type'    => 'radio_inline',
-						'options' => [
-							'composer' => __( 'Composer Autoloading', 'give' ),
-							'manual'   => __( 'Manual Initialization', 'give' ),
-						],
-						'default' => 'composer',
-					];
-
-					$settings[] = [
 						'name' => __( 'Stripe JS Incompatibility', 'give' ),
 						'desc' => __( 'If your site has problems with processing cards using Stripe JS, check this option to use a fallback method of processing.', 'give' ),
 						'id'   => 'stripe_js_fallback',
@@ -776,7 +758,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $slug )
 									);
 									?>
-									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item 
+									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item
 																	<?php
 																	if ( $slug === $default_account ) {
 																		echo 'give-stripe-account-manager-list-item--default-account'; }

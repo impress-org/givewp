@@ -75,7 +75,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 				<div>
 					{ selectValue === 'custom_amount' && (
 						<CurrencyControl
-							label="Custom Amount"
+							label={ __( 'Custom Amount', 'give' ) }
 							min={ form.custom_amount.minimum ? parseFloat( form.custom_amount.minimum ) : null }
 							max={ form.custom_amount.maximum ? parseFloat( form.custom_amount.maximum ) : null }
 							value={ customAmount }
