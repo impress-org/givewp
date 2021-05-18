@@ -53,15 +53,6 @@ class UncaughtExceptionLogger {
 	 * @return bool
 	 */
 	private function isGiveException( Exception $exception ) {
-		if ( $exception instanceof LoggableException ) {
-			return true;
-		}
-
-		$traits = class_uses( $exception );
-		if ( isset( $traits[ Loggable::class ] ) ) {
-			return true;
-		}
-
-		return false;
+		return $exception instanceof LoggableException;
 	}
 }

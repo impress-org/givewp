@@ -3,12 +3,13 @@
 namespace Give\DonorDashboards\Exceptions;
 
 use Exception;
+use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\Traits\Loggable;
 
 /**
  * @since 2.10.0
  */
-class MissingTabException extends Exception {
+class MissingTabException extends Exception implements LoggableException {
 	use Loggable;
 
 	/**
