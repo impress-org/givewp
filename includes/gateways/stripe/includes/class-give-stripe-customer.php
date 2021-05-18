@@ -410,7 +410,7 @@ class Give_Stripe_Customer {
 			// Fetch the new card or source object to match with customer attached card fingerprint.
 			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
 				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
-				$new_card      = $token_details->card;
+				$new_card      = $token_details->bank_account;
 			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
 				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
 				$new_card       = $source_details->card;
@@ -427,16 +427,7 @@ class Give_Stripe_Customer {
 			if ( count( $all_sources->data ) > 0 ) {
 				foreach ( $all_sources->data as $source_item ) {
 
-					if (
-						(
-							isset( $source_item->card->fingerprint ) &&
-							$source_item->card->fingerprint === $new_card->fingerprint
-						) ||
-						(
-							isset( $source_item->fingerprint ) &&
-							$source_item->fingerprint === $new_card->fingerprint
-						)
-					) {
+					if ( $this->doesSourceFingerPrintMatch( $source_item, $new_card ) ) {
 
 						// Set the existing card as default source.
 						$this->customer_data->default_source = $source_item->id;
@@ -631,5 +622,23 @@ class Give_Stripe_Customer {
 	 */
 	public function is_bank_account( $id ) {
 		return give_stripe_is_source_type( $id, 'ba' );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param  stdClass  $stripeSource
+	 * @param  stdClass  $newStripeSource
+	 */
+	private function doesSourceFingerPrintMatch( $stripeSource, $newStripeSource ) {
+		if ( isset( $stripeSource->card->fingerprint ) ) {
+			return $stripeSource->card->fingerprint === $newStripeSource->fingerprint;
+		}
+
+		if ( isset( $stripeSource->fingerprint ) ) {
+			return $stripeSource->fingerprint === $newStripeSource->fingerprint;
+		}
+
+		return false;
 	}
 }
