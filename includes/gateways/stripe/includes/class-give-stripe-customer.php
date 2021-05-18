@@ -631,12 +631,15 @@ class Give_Stripe_Customer {
 	 * @param  stdClass  $newStripeSource
 	 */
 	private function doesSourceFingerPrintMatch( $stripeSource, $newStripeSource ) {
-		if ( isset( $stripeSource->card->fingerprint ) ) {
-			return $stripeSource->card->fingerprint === $newStripeSource->fingerprint;
-		}
-
 		if ( isset( $stripeSource->fingerprint ) ) {
 			return $stripeSource->fingerprint === $newStripeSource->fingerprint;
+		}
+
+		if (
+			property_exists( $stripeSource, 'card' ) &&
+			isset( $stripeSource->card->fingerprint )
+		) {
+			return $stripeSource->card->fingerprint === $newStripeSource->fingerprint;
 		}
 
 		return false;
