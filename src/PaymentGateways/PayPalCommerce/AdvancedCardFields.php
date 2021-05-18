@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Helpers\Form\Template;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 
 /**
@@ -34,6 +35,7 @@ class AdvancedCardFields {
 	 * @param  int  $formId  Donation Form ID.
 	 */
 	public function addCreditCardForm( $formId ) {
+		$this->registerCustomBillingFieldsSectionTitle();
 		if ( ! $this->payPalDonationsSettings->canCollectBillingInformation() ) {
 			$this->removeBillingField();
 		}
@@ -46,6 +48,28 @@ class AdvancedCardFields {
 	 * @since 2.9.0
 	 */
 	private function removeBillingField() {
+		remove_action( 'give_after_cc_fields', [ $this, 'addBillingFieldsSectionLabel' ], 1 );
 		remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function registerCustomBillingFieldsSectionTitle() {
+		if ( 'sequoia' !== Template::getActiveID() ) {
+			return;
+		}
+
+		add_action( 'give_after_cc_fields', [ $this, 'addBillingFieldsSectionLabel' ], 1 );
+	}
+
+	/**
+	 * @unreleased
+	 */
+	public function addBillingFieldsSectionLabel() {
+		echo sprintf(
+			'<div class="paypal-commerce_billing_fields_section_label"><p>%1$s</p></div>',
+			esc_html__( 'Billing Details', 'give' )
+		);
 	}
 }
