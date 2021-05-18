@@ -34,7 +34,7 @@ class UncaughtExceptionLogger {
 	 * @param Exception $exception
 	 */
 	public function handleException( Exception $exception ) {
-		if ( $this->isGiveException( $exception ) ) {
+		if ( $exception instanceof LoggableException ) {
 			/** @var LoggableException|Loggable $exception */
 			Log::error( $exception->getLogMessage(), $exception->getLogContext() );
 		}
@@ -43,16 +43,5 @@ class UncaughtExceptionLogger {
 			$previousHandler = $this->previousHandler;
 			$previousHandler( $exception );
 		}
-	}
-
-	/**
-	 * Checks to see if the given Exception is native to GiveWP
-	 *
-	 * @param Exception $exception
-	 *
-	 * @return bool
-	 */
-	private function isGiveException( Exception $exception ) {
-		return $exception instanceof LoggableException;
 	}
 }
