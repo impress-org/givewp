@@ -394,6 +394,7 @@ class Give_Stripe_Customer {
 	 * This function is used to attach source to the customer, if not exists.
 	 *
 	 * @since  2.1
+	 * @unreleased Use Give_Stripe_Customer::doesSourceFingerPrintMatch function to verify source finger print
 	 * @access public
 	 *
 	 * @return void
