@@ -35,7 +35,7 @@ class AdvancedCardFields {
 	 * @param  int  $formId  Donation Form ID.
 	 */
 	public function addCreditCardForm( $formId ) {
-		$this->registerCustomBillingFieldsSectionTitle();
+		$this->registerCustomBillingFieldsSectionLabel();
 		if ( ! $this->payPalDonationsSettings->canCollectBillingInformation() ) {
 			$this->removeBillingField();
 		}
@@ -55,7 +55,7 @@ class AdvancedCardFields {
 	/**
 	 * @unreleased
 	 */
-	private function registerCustomBillingFieldsSectionTitle() {
+	private function registerCustomBillingFieldsSectionLabel() {
 		if ( 'sequoia' !== Template::getActiveID() ) {
 			return;
 		}
