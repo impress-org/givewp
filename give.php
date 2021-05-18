@@ -252,7 +252,6 @@ final class Give {
 	private function bindClasses() {
 		$this->container->singleton( 'templates', Templates::class );
 		$this->container->singleton( 'routeForm', FormRoute::class );
-		$this->container->singleton( UncaughtExceptionLogger::class );
 	}
 
 	/**
@@ -484,9 +483,7 @@ final class Give {
 	 * @unreleased
 	 */
 	private function setupExceptionHandler() {
-		/** @var UncaughtExceptionLogger $handler */
-		$handler = $this->container->make( UncaughtExceptionLogger::class );
-
+		$handler = new UncaughtExceptionLogger();
 		$handler->setupExceptionHandler();
 	}
 }
