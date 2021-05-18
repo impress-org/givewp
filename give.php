@@ -40,7 +40,7 @@
  */
 
 use Give\Container\Container;
-use Give\Framework\Exceptions\LogUncaughtGiveExceptions;
+use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
 use Give\Revenue\RevenueServiceProvider;
@@ -252,7 +252,7 @@ final class Give {
 	private function bindClasses() {
 		$this->container->singleton( 'templates', Templates::class );
 		$this->container->singleton( 'routeForm', FormRoute::class );
-		$this->container->singleton( LogUncaughtGiveExceptions::class );
+		$this->container->singleton( UncaughtExceptionLogger::class );
 	}
 
 	/**
@@ -484,8 +484,8 @@ final class Give {
 	 * @unreleased
 	 */
 	private function setupExceptionHandler() {
-		/** @var LogUncaughtGiveExceptions $handler */
-		$handler = $this->container->make( LogUncaughtGiveExceptions::class );
+		/** @var UncaughtExceptionLogger $handler */
+		$handler = $this->container->make( UncaughtExceptionLogger::class );
 
 		$handler->setupExceptionHandler();
 	}

@@ -7,7 +7,7 @@ use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\Traits\Loggable;
 use Give\Log\Log;
 
-class LogUncaughtGiveExceptions {
+class UncaughtExceptionLogger {
 	/**
 	 * @var callable|null
 	 */
