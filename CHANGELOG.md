@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Remove extraneous main landmarks from setup guide page (#5835)
 -   Donor Dashboard is now fully translatable (#5819)
 -   Admin is now can import donations (#5841)
+-   Prevent PHP notices when access non-exiting property from Stripe API response (#5838)
 
 ## 2.10.4 - 2021-04-29
 
