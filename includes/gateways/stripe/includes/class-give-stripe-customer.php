@@ -430,7 +430,7 @@ class Give_Stripe_Customer {
 			// Check to ensure that new card is already attached with customer or not.
 			if ( count( $all_sources->data ) > 0 ) {
 				foreach ( $all_sources->data as $source_item ) {
-					if ( $this->doesSourceFingerPrintMatch( $source_item, $newSourcePaymentMethodDetail ) ) {
+					if ( $this->isSourceFingerPrintMatch( $source_item, $newSourcePaymentMethodDetail ) ) {
 						// Set the existing card as default source.
 						$this->customer_data->default_source = $source_item->id;
 						$this->customer_data->save();
@@ -642,7 +642,7 @@ class Give_Stripe_Customer {
 	 * @param  stdClass  $stripeSource
 	 * @param  stdClass  $newStripeSource
 	 */
-	private function doesSourceFingerPrintMatch( $stripeSource, $newStripeSource ) {
+	private function isSourceFingerPrintMatch( $stripeSource, $newStripeSource ) {
 		if ( isset( $stripeSource->fingerprint ) ) {
 			return $stripeSource->fingerprint === $newStripeSource->fingerprint;
 		}
