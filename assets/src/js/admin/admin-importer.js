@@ -18,13 +18,9 @@ import { GiveWarningAlert, GiveErrorAlert, GiveConfirmModal } from '../plugins/m
 
 let give_setting_edit = true;
 
-( function( $ ) {
-	// On DOM Ready.
-	$( function() {
-		give_import_donation_onload();
-	} );
-}
-( jQuery ) );
+document.addEventListener('DOMContentLoaded', function(event) {
+	give_import_donation_onload();
+})
 
 /**
  * Run when user click on submit button.
@@ -122,6 +118,7 @@ function give_import_donation_csv_not_valid() {
  */
 function give_import_donation_valid_csv() {
 	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-donations-form table.step-1 .is_csv_valid';
+
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
