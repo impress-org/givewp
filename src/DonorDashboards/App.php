@@ -121,7 +121,7 @@ class App {
 	 * Enqueue assets for front-end donor dashboards
 	 *
 	 * @since 2.10.0
-	 * @unreleased Set script translations.
+	 * @since 2.11.0 Set script translations.
 	 *
 	 * @return void
 	 */

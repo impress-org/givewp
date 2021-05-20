@@ -7,15 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.11.0 - 2021-05-19
+
+### New
+
+-   Multi-Step form template now supports decimals amounts in currencies (#5827)
+-   Donor Dashboard is now fully translatable (#5819)
+
 ### Changes
 
 -   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
 -   Onboarding LocaleCollection has parity with WooCommerce (#5831)    
-
-### New
-
--   Support for the decimal amounts is now implemented (#5827)
--   Remove custom Stripe SDK loading logic (#5820)
+-   Remove custom Stripe SDK loading logic (#5821)
 
 ### Fixed
 
@@ -23,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Prevent javascript error when click on lock icon on email listing page (#5824)
 -   Amount passed to Stripe matches the stored value (#5823)
 -   Remove extraneous main landmarks from setup guide page (#5835)
--   Donor Dashboard is now fully translatable (#5819)
 -   Admin is now can import donations (#5841)
 -   Prevent PHP notices when access non-exiting property from Stripe API response (#5838)
 

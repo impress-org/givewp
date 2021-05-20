@@ -7,7 +7,7 @@ namespace Give\ValueObjects;
  * @package Give\ValueObjects
  *
  * @since 2.9.0
- * @unreleased Refactored to make the minor amount the base.
+ * @since 2.11.0 Refactored to make the minor amount the base.
  */
 class Money {
 	/**
@@ -35,7 +35,7 @@ class Money {
 	 * Get amount in smallest unit of currency.
 	 *
 	 * @sicne 2.9.0
-	 * @unreleased Round minor amount to account for floating point precision.
+	 * @since 2.11.0 Round minor amount to account for floating point precision.
 	 *
 	 * @return int
 	 */
@@ -61,7 +61,7 @@ class Money {
 
 	/**
 	 * @since 2.9.0
-	 * @unreleased Converts the amount to a minor amount when creating an instance.
+	 * @since 2.11.0 Converts the amount to a minor amount when creating an instance.
 	 *
 	 * @param int|string $amount Amount value without currency formatting
 	 * @param string     $currency
