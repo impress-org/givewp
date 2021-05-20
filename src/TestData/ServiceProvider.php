@@ -3,7 +3,7 @@
 namespace Give\TestData;
 
 use WP_CLI;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 use Give\TestData\Commands\DonorSeedCommand;

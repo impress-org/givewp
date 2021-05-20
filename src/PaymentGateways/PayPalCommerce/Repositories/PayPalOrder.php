@@ -4,10 +4,10 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\Exception;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
-use Exception;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use function give_record_gateway_error as logError;
 

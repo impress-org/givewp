@@ -27,6 +27,7 @@ class LogServiceProvider implements ServiceProvider {
 
 		$wpdb->give_log = "{$wpdb->prefix}give_log";
 
+		give()->singleton( Log::class );
 		give()->singleton( LogRepository::class );
 	}
 

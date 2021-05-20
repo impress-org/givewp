@@ -2,7 +2,7 @@
 
 namespace Give\DonorDashboards\Tabs\Contracts;
 
-use RuntimeException;
+use Give\Framework\Exceptions\Primitives\RuntimeException;
 use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
 
 /**

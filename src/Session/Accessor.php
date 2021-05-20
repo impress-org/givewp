@@ -2,7 +2,7 @@
 
 namespace Give\Session;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use stdClass;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Give\Log\ValueObjects;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 

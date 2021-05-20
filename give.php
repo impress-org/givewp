@@ -40,6 +40,7 @@
  */
 
 use Give\Container\Container;
+use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
 use Give\Revenue\RevenueServiceProvider;
@@ -221,6 +222,8 @@ final class Give {
 		$this->load_textdomain();
 
 		$this->bindClasses();
+
+		$this->setupExceptionHandler();
 
 		$this->loadServiceProviders();
 
@@ -472,6 +475,16 @@ final class Give {
 	 */
 	public function __call( $name, $arguments ) {
 		return call_user_func_array( [ $this->container, $name ], $arguments );
+	}
+
+	/**
+	 * Sets up the Exception Handler to catch and handle uncaught exceptions
+	 *
+	 * @unreleased
+	 */
+	private function setupExceptionHandler() {
+		$handler = new UncaughtExceptionLogger();
+		$handler->setupExceptionHandler();
 	}
 }
 

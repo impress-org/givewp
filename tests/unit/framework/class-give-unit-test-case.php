@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Give Unit Test Case
  *
@@ -64,6 +65,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 * Asserts thing is not WP_Error.
 	 *
 	 * @since 1.0
+	 *
 	 * @param mixed  $actual
 	 * @param string $message
 	 */
@@ -85,8 +87,10 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 * Backport assertNotFalse to PHPUnit 3.6.12 which only runs in PHP 5.2.
 	 *
 	 * @since  1.0
-	 * @param  $condition
-	 * @param  string    $message
+	 *
+	 * @param        $condition
+	 * @param string $message
+	 *
 	 * @return mixed
 	 */
 	public static function assertNotFalse( $condition, $message = '' ) {
@@ -99,5 +103,33 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 
 			parent::assertNotFalse( $condition, $message );
 		}
+	}
+
+	public function createMock( $abstract, $builderCallable = null ) {
+		$mockBuilder = $this->getMockBuilder( $abstract )
+							->disableOriginalConstructor()
+							->disableOriginalClone()
+							->disableArgumentCloning()
+							->disallowMockingUnknownTypes();
+
+		if ( $builderCallable !== null ) {
+			$mock = $builderCallable( $mockBuilder );
+
+			if ( is_object($mock) ) {
+				return $mock;
+			}
+		}
+
+		return $mockBuilder->getMock();
+	}
+
+	public function mock( $abstract, $builderCallable = null ) {
+		$mock = $this->createMock( $abstract, $builderCallable );
+
+		give()->singleton( $abstract, function () use ( $mock ) {
+			return $mock;
+		} );
+
+		return $mock;
 	}
 }

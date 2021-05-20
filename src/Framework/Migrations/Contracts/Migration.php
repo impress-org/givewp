@@ -2,7 +2,7 @@
 
 namespace Give\Framework\Migrations\Contracts;
 
-use RuntimeException;
+use Give\Framework\Exceptions\Primitives\RuntimeException;
 
 /**
  * Class Migration
