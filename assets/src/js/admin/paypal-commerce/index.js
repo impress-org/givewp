@@ -65,6 +65,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			},
 			closeOnBgClick: true,
 		} ).render();
+
+		// Update URL in browser address without reloading the page.
+		let newUrl = Give.fn.removeURLParameter( window.location.href, 'paypal-commerce-account-connected' );
+		history.pushState( {}, '', newUrl );
 	}
 
 	/**
