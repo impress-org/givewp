@@ -857,7 +857,7 @@
 	/**
 	 * Update decimal donation levels amount
 	 *
-	 * @unreleased
+	 * @since 2.11.0
 	 */
 	function updateFormDonationLevelsLabels() {
 		$( '.give-form' ).each( ( i, form ) => {
