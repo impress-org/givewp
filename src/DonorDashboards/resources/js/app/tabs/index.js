@@ -24,6 +24,6 @@ export const registerDefaultTabs = () => {
 		}
 	} );
 
-	// Make sure that Edit Profile tab is regitered last
+	// Make sure that Edit Profile tab is registered last
 	registerEditProfileTab();
 };

@@ -32,13 +32,16 @@ window.giveDonorDashboard = {
 	},
 };
 
-ReactDOM.render(
-	<Provider store={ store }>
-		<Router>
-			<App />
-		</Router>
-	</Provider>,
-	document.getElementById( 'give-donor-dashboard' )
-);
+window.addEventListener('DOMContentLoaded', (event) => {
+	registerDefaultTabs();
 
-registerDefaultTabs();
+	ReactDOM.render(
+		<Provider store={ store }>
+			<Router>
+				<App />
+			</Router>
+		</Provider>,
+		document.getElementById( 'give-donor-dashboard' )
+	);
+});
+
