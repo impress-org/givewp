@@ -115,7 +115,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		if ( $builderCallable !== null ) {
 			$mock = $builderCallable( $mockBuilder );
 
-			if ( $mock instanceof PHPUnit_Framework_MockObject_MockBuilder) {
+			if ( is_object($mock) ) {
 				return $mock;
 			}
 		}

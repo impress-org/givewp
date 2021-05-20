@@ -8,19 +8,32 @@ class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case {
 	public function testShouldLogException() {
 		$logger = new UncaughtExceptionLogger();
 
-		$mock = $this->mock( Log::class, function(PHPUnit_Framework_MockObject_MockBuilder $builder) {
-			return $builder->setMethods(['error'])->getMock();
-		} );
+		$this->mock( Log::class, function ( PHPUnit_Framework_MockObject_MockBuilder $builder ) {
+			$mock = $builder->setMethods( [ 'error' ] )->getMock();
 
-		$mock->expects( $this->once() )
-			->method( 'error' )
-			->with( '', [] );
+			$mock->expects( $this->once() )
+				 ->method( 'error' )
+				 ->with( '', [] );
+
+			return $mock;
+		} );
 
 		$logger->handleException( new ExceptionLogged() );
 	}
 
 	public function testShouldNotLogException() {
+		$logger = new UncaughtExceptionLogger();
 
+		$this->mock( Log::class, function ( PHPUnit_Framework_MockObject_MockBuilder $builder ) {
+			$mock = $builder->setMethods( [ 'error' ] )->getMock();
+
+			$mock->expects( $this->never() )
+				 ->method( 'error' );
+
+			return $mock;
+		} );
+
+		$logger->handleException( new ExceptionNotLogged() );
 	}
 }
 
