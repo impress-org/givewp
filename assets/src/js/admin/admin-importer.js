@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
  *
  * @since 1.8.17
  */
-function give_on_core_settings_import_start() {``
+function give_on_core_settings_import_start() {
 	const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-core-settings-form table.step-2';
 	if ( jQuery( import_step ).length > 0 ) {
 		const $form = jQuery( 'form.tools-setting-page-import' );
