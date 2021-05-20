@@ -455,6 +455,10 @@
 	setupFFMInputs();
 	setupInputIcons();
 
+	if ( 'enabled' === templateOptions.payment_amount.decimals_enabled ) {
+		updateFormDonationLevelsLabels();
+	}
+
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
 	 */
@@ -848,5 +852,36 @@
 		if ( 'parentIFrame' in window ) {
 			window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
 		}
+	}
+
+	/**
+	 * Update decimal donation levels amount
+	 *
+	 * @since 2.11.0
+	 */
+	function updateFormDonationLevelsLabels() {
+		$( '.give-form' ).each( ( i, form ) => {
+			const donationForm = $( form );
+			const donationLevels = Give.form.fn.getVariablePrices( donationForm );
+			const symbol = Give.form.fn.getInfo( 'currency_symbol', donationForm );
+			const position = Give.form.fn.getInfo( 'currency_position', donationForm );
+			const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
+
+			$.each( donationLevels, function( j, level ) {
+				if ( 'custom' === level.price_id ) {
+					return;
+				}
+
+				const amount = Give.fn.numberHasDecimal( level.amount )
+					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
+					: level.amount;
+
+				const donationLevelLabel = '<div class="currency currency--' + position + '">' + symbol + '</div>' + amount;
+
+				donationForm
+					.find( '.give-btn-level-' + level.price_id  )
+					.html( donationLevelLabel );
+			} );
+		} );
 	}
 }( jQuery ) );

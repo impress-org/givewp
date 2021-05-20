@@ -2,7 +2,6 @@ import { useSelector } from '../hooks';
 import { useAccentColor } from '../../../hooks';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import './style.scss';
 import { Fragment } from 'react';
