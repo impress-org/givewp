@@ -2,8 +2,8 @@
 
 namespace Give\PaymentGateways\Stripe\Models;
 
+use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
 use Give\Helpers\ArrayDataSet;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class AccountDetail
@@ -55,8 +55,19 @@ class AccountDetail {
 	 * @param string $key
 	 *
 	 * @return mixed
+	 * @throws InvalidPropertyName
 	 */
 	public function __get( $key ) {
+		if ( ! array_key_exists( $key, $this->propertiesArgs ) ) {
+			throw new InvalidPropertyName(
+				sprintf(
+					'$1%s property does not exist in %2$s class',
+					$key,
+					__CLASS__
+				)
+			);
+		}
+
 		return $this->propertiesArgs[ $key ];
 	}
 
@@ -66,11 +77,11 @@ class AccountDetail {
 	 * @since 2.10.2
 	 * @param array $array
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws InvalidPropertyName
 	 */
 	private function validate( $array ) {
 		if ( array_diff( $this->requiredArgs, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException(
+			throw new InvalidPropertyName(
 				sprintf(
 					esc_html__( 'To create a %1$s object, please provide valid: %2$s', 'give' ),
 					__CLASS__,
