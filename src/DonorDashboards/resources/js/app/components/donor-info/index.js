@@ -44,7 +44,7 @@ const DonorInfo = () => {
 				) }
 				{ sinceCreated && (
 					<div className="give-donor-dashboard-donor-info__detail">
-						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> { __( 'Donor for' ) } { sinceCreated }
+						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> { sprintf( __( 'Donor for %s', 'give' ), sinceCreated ) ) }
 					</div>
 				) }
 			</div>
