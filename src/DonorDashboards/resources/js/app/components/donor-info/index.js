@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
+import { __ } from '@wordpress/i18n'
 
 import './style.scss';
 
@@ -43,7 +44,7 @@ const DonorInfo = () => {
 				) }
 				{ sinceCreated && (
 					<div className="give-donor-dashboard-donor-info__detail">
-						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> Donor for { sinceCreated }
+						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> { __( 'Donor for' ) } { sinceCreated }
 					</div>
 				) }
 			</div>
