@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\DataTransferObjects;
 
-use HttpHeaderException;
+use Give\Framework\Exceptions\Primitives\HttpHeaderException;
 
 class PayPalWebhookHeaders {
 	/**

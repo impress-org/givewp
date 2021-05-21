@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.10.4
+Stable tag: 2.11.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,17 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.11.0: May 19th, 2021 =
+* New: Multi-Step form template has a new setting to enable showing decimals in amounts
+* New: Donor Dashboard is now fully translatable
+* Changed: Indian state of Odisha (formerly Orissa) is now updated to reflect legal name change
+* Changed: Onboarding includes KR (Repulic of Korea) currency option
+* Changed: Removed legacy option to custom load Stripe SDK as it no longer did anything
+* Fix: Editing a donor's address no longer removes spacing between words
+* Fix: All email templates can now be disabled
+* Fix: Applying Fee Recovery now correctly handles cent rounding in Stripe
+* Fix: Importing donations now works on all main browsers
 
 = 2.10.4: April 29th, 2021 =
 * Security: Resolved Authorized XSS vulnerability - note, you had to be logged in as admin to exploit it

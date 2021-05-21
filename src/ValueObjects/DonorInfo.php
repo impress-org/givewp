@@ -2,7 +2,7 @@
 
 namespace Give\ValueObjects;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 class DonorInfo implements ValueObjects {
 	/**

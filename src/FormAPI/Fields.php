@@ -2,7 +2,7 @@
 namespace Give\FormAPI;
 
 use Give\FormAPI\Form\File;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\FormAPI\Form\Colorpicker;
 use Give\FormAPI\Form\Media;
 use Give\FormAPI\Form\Radio;

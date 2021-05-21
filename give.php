@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.10.4
+ * Version: 2.11.0
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -40,6 +40,7 @@
  */
 
 use Give\Container\Container;
+use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
 use Give\Revenue\RevenueServiceProvider;
@@ -222,6 +223,8 @@ final class Give {
 
 		$this->bindClasses();
 
+		$this->setupExceptionHandler();
+
 		$this->loadServiceProviders();
 
 		// Load form template
@@ -262,7 +265,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.10.4' );
+			define( 'GIVE_VERSION', '2.11.0' );
 		}
 
 		// Plugin Root File.
@@ -472,6 +475,16 @@ final class Give {
 	 */
 	public function __call( $name, $arguments ) {
 		return call_user_func_array( [ $this->container, $name ], $arguments );
+	}
+
+	/**
+	 * Sets up the Exception Handler to catch and handle uncaught exceptions
+	 *
+	 * @unreleased
+	 */
+	private function setupExceptionHandler() {
+		$handler = new UncaughtExceptionLogger();
+		$handler->setupExceptionHandler();
 	}
 }
 

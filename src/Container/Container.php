@@ -6,8 +6,8 @@ use ArrayAccess;
 use Closure;
 use Exception;
 use Give\Container\Exceptions\BindingResolutionException;
-use InvalidArgumentException;
-use LogicException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\LogicException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
@@ -544,7 +544,7 @@ class Container implements ArrayAccess {
 	 * @param string $id Identifier of the entry to look for.
 	 *
 	 * @return mixed Entry.
-	 * @throws Exception
+	 * @throws InvalidArgumentException|BindingResolutionException
 	 */
 	public function get( $id ) {
 		try {

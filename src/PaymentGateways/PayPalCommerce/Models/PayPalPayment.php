@@ -2,7 +2,7 @@
 namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 use Give\Helpers\ArrayDataSet;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class PayPalPayment
