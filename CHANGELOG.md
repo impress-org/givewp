@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Donor Dashboard can now be translated using the `i18n.gettext` filter 
+    (#5842)
+
 ## 2.11.0 - 2021-05-19
 
 ### New
