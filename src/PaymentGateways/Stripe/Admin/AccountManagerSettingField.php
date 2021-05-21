@@ -9,9 +9,13 @@ namespace Give\PaymentGateways\Stripe\Admin;
  */
 class AccountManagerSettingField {
 	/**
+	 * Render Stripe account manager setting field.
+	 *
 	 * @unreleased
+	 *
+	 * @param array $field
 	 */
-	public function handle() {
+	public function handle( $field ) {
 		$stripe_accounts = give_stripe_get_all_accounts();
 		$default_account = give_stripe_get_default_account_slug();
 
