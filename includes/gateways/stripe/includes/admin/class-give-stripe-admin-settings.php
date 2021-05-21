@@ -761,80 +761,61 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 										wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $slug )
 									);
 									?>
-									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item
-																	<?php
-																	if ( $slug === $default_account ) {
-																		echo 'give-stripe-account-manager-list-item--default-account'; }
-																	?>
-									">
-										<?php if ( $slug === $default_account ) : ?>
-											<div class="give-stripe-account-default-checkmark">
-												<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M32.375 16.1875C32.375 25.1276 25.1276 32.375 16.1875 32.375C7.24737 32.375 0 25.1276 0 16.1875C0 7.24737 7.24737 0 16.1875 0C25.1276 0 32.375 7.24737 32.375 16.1875ZM14.3151 24.7586L26.3252 12.7486C26.733 12.3407 26.733 11.6795 26.3252 11.2717L24.8483 9.79474C24.4404 9.38686 23.7792 9.38686 23.3713 9.79474L13.5766 19.5894L9.00371 15.0165C8.59589 14.6086 7.93462 14.6086 7.52673 15.0165L6.04982 16.4934C5.642 16.9012 5.642 17.5625 6.04982 17.9703L12.8381 24.7586C13.246 25.1665 13.9072 25.1665 14.3151 24.7586Z" fill="#69B868"/>
-												</svg>
-											</div>
-										<?php endif; ?>
+									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
 										<div class="give-stripe-account-name-wrap">
-											<div class="give-stripe-account-name">
-												<span class="give-stripe-label"><?php _e( 'Account name:', 'give' ); ?></span>
+											<span class="give-stripe-account-name">
 												<?php echo esc_html( $account_name ); ?>
-											</div>
-											<div class="give-stripe-account-email">
-												<span class="give-stripe-label"><?php _e( 'Account email:', 'give' ); ?></span>
+											</span>
+											<span class="give-field-description give-stripe-account-email">
 												<?php echo esc_html( $account_email ); ?>
-											</div>
-											<div class="give-stripe-connection-method">
-												<span class="give-stripe-label"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
-												<?php echo give_stripe_connection_type_name( $details['type'] ); ?>
-											</div>
+											</span>
 											<span class="give-stripe-account-edit">
 												<?php if ( 'connect' !== $details['type'] ) { ?>
-												<a class="give-stripe-account-edit-name" href="#"><?php esc_html_e( 'Edit', 'give' ); ?></a>
-												<a
-													class="give-stripe-account-update-name give-hidden"
-													href="#"
-													data-account="<?php echo $slug; ?>"
-												><?php esc_html_e( 'Update', 'give' ); ?></a>
-												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
+													<a class="give-stripe-account-edit-name" href="#"><?php esc_html_e( 'Edit', 'give' ); ?></a>
+													<a
+														class="give-stripe-account-update-name give-hidden"
+														href="#"
+														data-account="<?php echo $slug; ?>"
+													><?php esc_html_e( 'Update', 'give' ); ?></a>
+													<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<?php } ?>
+												<?php if ( $slug === $default_account ) { ?>
+													<span class="give-stripe-account-default give-stripe-account-badge">
+													<?php esc_html_e( 'Default Account', 'give' ); ?>
+												</span>
+												<?php } else { ?>
+													<span class="give-stripe-account-default">
+													<a
+														data-account="<?php echo $slug; ?>"
+														data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
+														class="give-stripe-account-set-default" href="#"
+													><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
+												</span>
+												<?php } ?>
+
 											</span>
 										</div>
 										<div class="give-stripe-account-actions">
-											<span class="give-stripe-label"><?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
+											<span class="give-stripe-account-type-description give-field-description"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
+											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_name( $details['type'] ); ?></span>
 											<?php
 											if (
 												$slug !== $default_account ||
 												count( $stripe_accounts ) === 1
 											) {
 												?>
-												<div class="give-stripe-account-connected">
-													Connected
-												</div>
-												<div class="give-stripe-account-disconnect">
+												<span class="give-stripe-account-disconnect">
 													<a
 														class="give-stripe-disconnect-account-btn"
 														href="<?php echo $disconnect_url; ?>"
 														data-disconnect-message="<?php echo $disconnect_message; ?>"
 														data-account="<?php echo $slug; ?>"
 													>
-														<?php esc_html_e( 'Remove', 'give' ); ?>
+														<?php esc_html_e( 'Disconnect', 'give' ); ?>
 													</a>
-												</div>
+												</span>
 											<?php } ?>
 										</div>
-										<?php if ( $slug === $default_account ) { ?>
-											<div class="give-stripe-account-default give-stripe-account-badge">
-												<?php esc_html_e( 'Default Account', 'give' ); ?>
-											</div>
-										<?php } else { ?>
-											<div class="give-stripe-account-default">
-												<a
-													data-account="<?php echo $slug; ?>"
-													data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
-													class="give-stripe-account-set-default" href="#"
-												><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
-											</div>
-										<?php } ?>
 									</div>
 									<?php
 								}
@@ -850,27 +831,32 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							// Show option to add Stripe when the manual upgrade is completed.
 							if ( give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' ) ) {
 								?>
-								<h3><?php esc_html_e( 'Add a New Stripe Account', 'give' ); ?></h3>
+								<h3><?php esc_html_e( 'Connect a New Stripe Account', 'give' ); ?></h3>
 								<div class="give-stripe-add-account-errors"></div>
 								<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 									<tbody>
-									<?php
-									if ( give_stripe_is_premium_active() ) {
-										/**
-										 * This action hook will be used to load Manual API fields for premium addon.
-										 *
-										 * @param array $stripe_accounts All Stripe accounts.
-										 *
-										 * @since 2.7.0
-										 */
-										do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
-									}
-									?>
-									<div class="give-stripe-account-type-connect">
-										<td class="give-forminp">
-											<?php echo give_stripe_connect_button(); ?>
-										</td>
-									</tr>
+										<?php
+										if ( give_stripe_is_premium_active() ) {
+											/**
+											 * This action hook will be used to load Manual API fields for premium addon.
+											 *
+											 * @param array $stripe_accounts All Stripe accounts.
+											 *
+											 * @since 2.7.0
+											 */
+											do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
+										}
+										?>
+										<tr valign="top" class="give-stripe-account-type-connect">
+											<th scope="row" class="titledesc">
+												<label for="stripe_connect_button">
+													<?php esc_html_e( 'Stripe Connection', 'give' ); ?>
+												</label>
+											</th>
+											<td class="give-forminp">
+												<?php echo give_stripe_connect_button(); ?>
+											</td>
+										</tr>
 									</tbody>
 								</table>
 								<?php
@@ -890,6 +876,19 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							}
 							?>
 						</div>
+					</div>
+					<!-- DESTRUCTIVE: Disconnect all Stripe accounts. -->
+					<hr class="give-stripe-disconnect-all-divider" />
+					<div class="give-stripe-disconnect-all">
+						<h3><?php esc_html_e( 'Remove GiveWP as an Authorized Application for my Stripe account.', 'give' ); ?></h3>
+						<p class="give-stripe-disconnect-all--description">
+							<?php esc_html_e( 'Removing GiveWP as an Authorized Application for your Stripe account will remove the connection between the website you are disconnecting as well as any other sites that you have connected to GiveWP using the same Stripe account and connect method. Proceed with caution when disconnecting if you have multiple sites connected.', 'give' ); ?>
+						</p>
+						<p>
+							<a target="_blank" href="https://dashboard.stripe.com/account/applications">
+								<?php esc_html_e( 'View authorized applications in Stripe', 'give' ); ?>
+							</a>
+						</p>
 					</div>
 				</td>
 			</tr>
