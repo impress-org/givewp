@@ -11,6 +11,9 @@
  */
 
 // Exit, if accessed directly.
+use Give\Helpers\Hooks;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -76,7 +79,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_settings_gateways', [ $this, 'register_settings' ] );
 			add_filter( 'give_get_sections_advanced', [ $this, 'register_advanced_sections' ] );
 			add_filter( 'give_get_settings_advanced', [ $this, 'register_advanced_settings' ], 10, 1 );
-			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
+			Hooks::addAction( 'give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle' );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
 			add_action( 'give_disconnect_connected_stripe_account', [ $this, 'disconnect_connected_stripe_account' ] );
