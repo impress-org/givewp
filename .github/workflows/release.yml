@@ -89,7 +89,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install composer dependencies
+      - name: Install composer dependencies and generate pot file
+        uses: php-actions/composer@v2
+        with:
+          command: composer exec wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot
+          
+      - name: Remove dev dependencies
         uses: php-actions/composer@v2
         with:
           dev: no
