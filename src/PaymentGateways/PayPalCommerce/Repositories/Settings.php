@@ -25,6 +25,13 @@ class Settings {
 	const PARTNER_LINK_DETAIL_KEY = 'temp_give_paypal_commerce_partner_link';
 
 	/**
+	 * give_settings key for the collect bulling details
+	 *
+	 * @since 2.11.1
+	 */
+	const COLLECT_BILLING_DETAILS_KEY = 'paypal_commerce_collect_billing_details';
+
+	/**
 	 * Returns the country for the account
 	 *
 	 * @since 2.9.0
@@ -106,5 +113,15 @@ class Settings {
 	 */
 	public function deletePartnerLinkDetails() {
 		return delete_option( self::PARTNER_LINK_DETAIL_KEY );
+	}
+
+	/**
+	 * Deletes the partner link details
+	 *
+	 * @since 2.11.1
+	 * @return bool
+	 */
+	public function canCollectBillingInformation() {
+		return give_is_setting_enabled( give_get_option( self::COLLECT_BILLING_DETAILS_KEY ) );
 	}
 }

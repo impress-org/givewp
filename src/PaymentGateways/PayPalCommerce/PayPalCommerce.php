@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
@@ -82,6 +83,29 @@ class PayPalCommerce implements PaymentGateway {
 				'id'   => 'give_gateway_settings_2',
 			],
 		];
+
+		if ( give( MerchantDetail::class )->accountIsReady ) {
+			$settings = give_settings_array_insert(
+				$settings,
+				'paypal_commerce_gateway_settings_docs_link',
+				[
+					[
+						'name'    => esc_html__( 'Collect Billing Details', 'give' ),
+						'id'      => 'paypal_commerce_collect_billing_details',
+						'type'    => 'radio_inline',
+						'desc'    => esc_html__(
+							'If enabled, required billing address fields are added to PayPal Donations Donation forms. These fields are required to process the transaction when enabled. Billing address details are added to both the donation and donor record in GiveWP.',
+							'give'
+						),
+						'default' => 'disabled',
+						'options' => [
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
+						],
+					],
+				]
+			);
+		}
 
 		/**
 		 * filter the settings

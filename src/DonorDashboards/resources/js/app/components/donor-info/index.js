@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
+import { __ } from '@wordpress/i18n'
 
 import './style.scss';
 
@@ -12,7 +13,7 @@ const DonorInfo = () => {
 			<div className="give-donor-dashboard-donor-info__avatar">
 				<div className="give-donor-dashboard-donor-info__avatar-container">
 					{ avatarUrl ? (
-						<img src={ avatarUrl } />
+						<img alt="Donor Picture" src={ avatarUrl } />
 					) : (
 						<span className="give-donor-dashboard-donor-info__avatar-initials">
 							{ initials ? initials : <FontAwesomeIcon icon="user" /> }
@@ -43,7 +44,7 @@ const DonorInfo = () => {
 				) }
 				{ sinceCreated && (
 					<div className="give-donor-dashboard-donor-info__detail">
-						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> Donor for { sinceCreated }
+						<FontAwesomeIcon icon="heart" fixedWidth={ true } /> { sprintf( __( 'Donor for %s', 'give' ), sinceCreated ) }
 					</div>
 				) }
 			</div>

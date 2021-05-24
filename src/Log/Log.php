@@ -60,12 +60,8 @@ use Exception;
  * @method static spam( string $message, array $context = [] )
  */
 class Log {
-	/**
-	 * @param string $type
-	 * @param array  $args
-	 */
-	public static function __callStatic( $type, $args ) {
-		list ( $message, $context ) = array_pad( $args, 2, null );
+	public function __call( $name, $arguments ) {
+		list ( $message, $context ) = array_pad( $arguments, 2, null );
 
 		if ( is_array( $context ) ) {
 			// Convert context values to string
@@ -102,7 +98,7 @@ class Log {
 		}
 
 		// Set type
-		$data['type'] = $type;
+		$data['type'] = $name;
 
 		try {
 			$log = LogFactory::makeFromArray( $data );
@@ -112,5 +108,20 @@ class Log {
 		} catch ( Exception $exception ) {
 			error_log( $exception->getMessage() );
 		}
+	}
+
+	/**
+	 * Static helper for calling the logger methods
+	 *
+	 * @since 2.11.1
+	 *
+	 * @param string $name
+	 * @param array  $arguments
+	 */
+	public static function __callStatic( $name, $arguments ) {
+		/** @var Log $logger */
+		$logger = give( __CLASS__ );
+
+		call_user_func_array( [ $logger, $name ], $arguments );
 	}
 }

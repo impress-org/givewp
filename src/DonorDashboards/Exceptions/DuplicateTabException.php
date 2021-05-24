@@ -3,22 +3,39 @@
 namespace Give\DonorDashboards\Exceptions;
 
 use Exception;
+use Give\Framework\Exceptions\Contracts\LoggableException;
+use Give\Framework\Exceptions\Traits\Loggable;
 
 /**
  * @since 2.10.0
  */
-class DuplicateTabException extends Exception {
+class DuplicateTabException extends Exception implements LoggableException {
+	use Loggable;
 
-	// Redefine the exception so message is pre-defined
-	public function __construct( $message = 'A tab can only be added once. Make sure there are not id conflicts.', $code = 0, Exception $previous = null ) {
-		// some code
-
-		// make sure everything is assigned properly
-		parent::__construct( $message, $code, $previous );
+	/**
+	 * DuplicateTabException constructor.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param int            $code
+	 * @param Exception|null $previous
+	 */
+	public function __construct( $code = 0, Exception $previous = null ) {
+		parent::__construct(
+			__( 'A tab can only be added once. Make sure there are not id conflicts.', 'give' ),
+			$code,
+			$previous
+		);
 	}
 
-	// custom string representation of object
+	/**
+	 * Allows the exception to be cast to a string format
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
 	public function __toString() {
-		return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+		return __CLASS__ . ": [$this->code]: $this->message\n";
 	}
 }

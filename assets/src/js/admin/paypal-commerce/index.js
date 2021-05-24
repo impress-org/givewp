@@ -63,8 +63,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				`.trim(),
 				cancelBtnTitle: Give.fn.getGlobalVar( 'confirm' ),
 			},
-			closeOnBgClick: true,
+			closeOnBgClick: true
 		} ).render();
+
+		// Update URL in browser address without reloading the page.
+		let newUrl = Give.fn.removeURLParameter( window.location.href, 'paypal-commerce-account-connected' );
+		history.pushState( {}, '', newUrl );
 	}
 
 	/**
@@ -161,6 +165,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					connectionSettingContainer.classList.remove( 'give-hidden' );
 					disConnectionSettingContainer.classList.add( 'give-hidden' );
 					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
+
+					let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
+					billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
 
 					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
 				},

@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Exception;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;

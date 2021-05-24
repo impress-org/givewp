@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Models;
 
 use Give\Helpers\ArrayDataSet;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class AccountDetail

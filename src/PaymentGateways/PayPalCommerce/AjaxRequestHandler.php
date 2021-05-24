@@ -64,12 +64,12 @@ class AjaxRequestHandler {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param Webhooks        $webhooksRepository
-	 * @param MerchantDetail  $merchantDetails
-	 * @param MerchantDetails $merchantRepository
-	 * @param RefreshToken    $refreshToken
-	 * @param Settings        $settings
-	 * @param PayPalAuth      $payPalAuth
+	 * @param  Webhooks  $webhooksRepository
+	 * @param  MerchantDetail  $merchantDetails
+	 * @param  MerchantDetails  $merchantRepository
+	 * @param  RefreshToken  $refreshToken
+	 * @param  Settings  $settings
+	 * @param  PayPalAuth  $payPalAuth
 	 */
 	public function __construct(
 		Webhooks $webhooksRepository,
@@ -166,9 +166,9 @@ class AjaxRequestHandler {
 	/**
 	 * Create order.
 	 *
+	 * @since 2.9.0
 	 * @todo: handle payment create error on frontend.
 	 *
-	 * @since 2.9.0
 	 */
 	public function createOrder() {
 		$this->validateFrontendRequest();
@@ -179,11 +179,20 @@ class AjaxRequestHandler {
 		$data = [
 			'formId'              => $formId,
 			'formTitle'           => give_payment_gateway_item_title( [ 'post_data' => $postData ], 127 ),
-			'donationAmount'      => isset( $postData['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $postData['give-amount'], [ 'currency' => give_get_currency( $formId ) ] ) ) : '0.00',
+			'donationAmount'      => isset( $postData['give-amount'] ) ?
+				(float) apply_filters(
+					'give_donation_total',
+					give_maybe_sanitize_amount(
+						$postData['give-amount'],
+						[ 'currency' => give_get_currency( $formId ) ]
+					)
+				) :
+				'0.00',
 			'payer'               => [
 				'firstName' => $postData['give_first'],
 				'lastName'  => $postData['give_last'],
 				'email'     => $postData['give_email'],
+				'address'   => $this->getDonorAddressFromPostedDataForPaypalOrder( $postData ),
 			],
 			'application_context' => [
 				'shipping_preference' => 'NO_SHIPPING',
@@ -210,9 +219,9 @@ class AjaxRequestHandler {
 	/**
 	 * Approve order.
 	 *
+	 * @since 2.9.0
 	 * @todo: handle payment capture error on frontend.
 	 *
-	 * @since 2.9.0
 	 */
 	public function approveOrder() {
 		$this->validateFrontendRequest();
@@ -250,9 +259,18 @@ class AjaxRequestHandler {
 
 		$actionList = sprintf(
 			'<ol><li>%1$s</li><li>%2$s</li><li>%3$s</li></ol>',
-			esc_html__( 'Make sure to complete the entire PayPal process. Do not close the window until you have finished the process.', 'give' ),
-			esc_html__( 'The last screen of the PayPal connect process includes a button to be sent back to your site. It is important you click this and do not close the window yourself.', 'give' ),
-			esc_html__( 'If you’re still having problems connecting: ', 'give' ) . $adminSettingFields->getAdminGuidanceNotice( false )
+			esc_html__(
+				'Make sure to complete the entire PayPal process. Do not close the window until you have finished the process.',
+				'give'
+			),
+			esc_html__(
+				'The last screen of the PayPal connect process includes a button to be sent back to your site. It is important you click this and do not close the window yourself.',
+				'give'
+			),
+			esc_html__(
+				'If you’re still having problems connecting: ',
+				'give'
+			) . $adminSettingFields->getAdminGuidanceNotice( false )
 		);
 
 		$standardError = sprintf(
@@ -270,7 +288,6 @@ class AjaxRequestHandler {
 	 * @since 2.9.0
 	 */
 	private function validateAdminRequest() {
-
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die();
 		}
@@ -287,5 +304,27 @@ class AjaxRequestHandler {
 		if ( ! $formId || ! give_verify_donation_form_nonce( give_clean( $_POST['give-form-hash'] ), $formId ) ) {
 			wp_die();
 		}
+	}
+
+	/**
+	 * @since 2.11.1
+	 *
+	 * @param  array  $postedData
+	 *
+	 * @return array
+	 */
+	private function getDonorAddressFromPostedDataForPaypalOrder( $postedData ) {
+		if ( ! $this->settings->canCollectBillingInformation() ) {
+			return [];
+		}
+
+		$address['address_line1']  = ! empty( $postedData['card_address'] ) ? $postedData['card_address'] : '';
+		$address['address_line_2'] = ! empty( $postedData['card_address_2'] ) ? $postedData['card_address_2'] : '';
+		$address['admin_line_1']   = ! empty( $postedData['card_city'] ) ? $postedData['card_city'] : '';
+		$address['admin_line_2']   = ! empty( $postedData['card_state'] ) ? $postedData['card_state'] : '';
+		$address['postal_code']    = ! empty( $postedData['card_zip'] ) ? $postedData['card_zip'] : '';
+		$address['country_code']   = ! empty( $postedData['billing_country'] ) ? $postedData['billing_country'] : '';
+
+		return $address;
 	}
 }

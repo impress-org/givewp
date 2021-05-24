@@ -1,7 +1,7 @@
 <?php
 namespace Give\FormAPI\Form;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 abstract class Field {
 
