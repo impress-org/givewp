@@ -91,8 +91,9 @@ jobs:
         
       - name: Install composer dependencies and generate pot file
         uses: php-actions/composer@v5
-        with:
-          command: exec wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot
+          
+      - name: Generate pot file
+        run: composer exec wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot
           
       - name: Remove dev dependencies
         uses: php-actions/composer@v5
