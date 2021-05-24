@@ -10,7 +10,6 @@ const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
-const wpPot = require( 'wp-pot' );
 
 const inProduction = ( 'production' === process.env.NODE_ENV );
 const mode = inProduction ? 'production' : 'development';
@@ -224,17 +223,6 @@ if ( inProduction ) {
 	// Minify images.
 	// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
 	config.plugins.push( new ImageminPlugin( { test: /\.(jpe?g|png|gif|svg)$/i } ) );
-
-	// POT file.
-	wpPot( {
-		package: 'Give',
-		domain: 'give',
-		destFile: 'languages/give.pot',
-		relativeTo: './',
-		src: [ './**/*.php', '!./includes/libraries/**/*', '!./vendor/**/*' ],
-		bugReport: 'https://github.com/impress-org/give/issues/new',
-		team: 'GiveWP <info@givewp.com>',
-	} );
 }
 
 module.exports = config;
