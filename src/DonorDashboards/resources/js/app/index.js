@@ -33,7 +33,7 @@ window.giveDonorDashboard = {
 };
 
 /**
- * @unreleased Load after DOM Content is loaded so that wp.i18n available to parse translatable strings.
+ * @since 2.11.1 Load after DOM Content is loaded so that wp.i18n available to parse translatable strings.
  * @link https://github.com/impress-org/givewp/pull/5842
  */
 window.addEventListener('DOMContentLoaded', (event) => {

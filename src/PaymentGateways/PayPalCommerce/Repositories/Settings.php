@@ -27,7 +27,7 @@ class Settings {
 	/**
 	 * give_settings key for the collect bulling details
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 */
 	const COLLECT_BILLING_DETAILS_KEY = 'paypal_commerce_collect_billing_details';
 
@@ -118,7 +118,7 @@ class Settings {
 	/**
 	 * Deletes the partner link details
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 * @return bool
 	 */
 	public function canCollectBillingInformation() {

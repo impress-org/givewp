@@ -307,7 +307,7 @@ class AjaxRequestHandler {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @param  array  $postedData
 	 *

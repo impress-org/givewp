@@ -113,7 +113,7 @@ class Log {
 	/**
 	 * Static helper for calling the logger methods
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @param string $name
 	 * @param array  $arguments

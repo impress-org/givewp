@@ -16,7 +16,7 @@ class UncaughtExceptionLogger {
 	/**
 	 * Registers the class with the set_exception_handler to receive uncaught exceptions
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 */
 	public function setupExceptionHandler() {
 		if ( $this->previousHandler !== null ) {
@@ -29,7 +29,7 @@ class UncaughtExceptionLogger {
 	/**
 	 * Handles an uncaught exception by checking if the Exception is native to GiveWP and then logging it if it is
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @param Exception $exception
 	 */
