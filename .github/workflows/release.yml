@@ -89,11 +89,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install composer dependencies and generate pot file
+      - name: Install composer dev dependencies
         uses: php-actions/composer@v5
-          
+        
+        # In order to run this WordPress also needs to be installed
       - name: Generate pot file
-        run: composer exec wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot
+        run: |
+          composer exec wp core download --path=/tmp/wordpress --version=latest --skip-content
+          composer exec wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --path=/tmp/wordpress
           
       - name: Remove dev dependencies
         uses: php-actions/composer@v5
