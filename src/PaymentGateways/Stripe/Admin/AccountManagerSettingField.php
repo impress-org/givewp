@@ -85,22 +85,11 @@ class AccountManagerSettingField {
 				);
 				?>
 			</p>
-			<?php if ( ! give_stripe_is_premium_active() ) : ?>
-				<p class="give-field-description">
-					<br/>
-					<?php
-					echo sprintf(
-						__(
-							'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>',
-							'give'
-						),
-						esc_url( 'http://docs.givewp.com/settings-stripe-addon' ),
-						esc_url( 'http://docs.givewp.com/settings-stripe-recurring' ),
-						esc_url( 'http://docs.givewp.com/settings-stripe-free' )
-					);
-					?>
-				</p>
-			<?php endif ?>
+			<?php
+			if ( $this->canShowFreeStripeVersionNotice() ) {
+				$this->getFreeStripeVersionNoticeMarkup();
+			}
+			?>
 		</div>
 		<?php
 	}
@@ -109,40 +98,9 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 */
 	private function getStripeAccountListSectionMarkup() {
-		$site_url            = get_site_url();
-		$modal_title         = sprintf(
-			'<strong>%1$s</strong>',
-			esc_html__(
-				'You are connected! Now this is important: Please configure your Stripe webhook to finalize the setup.',
-				'give'
-			)
-		);
-		$modal_first_detail  = sprintf(
-			'%1$s %2$s',
-			esc_html__(
-				'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:',
-				'give'
-			),
-			"<strong>{$site_url}?give-listener=stripe</strong>"
-		);
-		$modal_second_detail = esc_html__(
-			'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
-			'give'
-		);
-		$can_display         = ! empty( $_GET['stripe_account'] ) ? '0' : '1';
-		?>
-		<div
-			id="give-stripe-connected"
-			class="stripe-btn-disabled give-hidden"
-			data-status="connected"
-			data-title="<?php echo $modal_title; ?>"
-			data-first-detail="<?php echo $modal_first_detail; ?>"
-			data-second-detail="<?php echo $modal_second_detail; ?>"
-			data-display="<?php echo $can_display; ?>"
-			data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
-		>
-		</div>
-		<?php if ( ! $this->stripeAccounts ) : ?>
+		$this->getStripeAccountOnBoardingModalMarkup();
+		if ( ! $this->stripeAccounts ) :
+			?>
 			<div class="give-stripe-account-manager-list-item">
 				<span><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></span>
 			</div>
@@ -165,30 +123,11 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 */
 	private function getAddNewStripeAccountSectionMarkup() {
-		if ( ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' ) ) :
-			?>
-			<div class="give-stripe-account-manager-add-section">
-				<?php
-				Give()->notices->print_admin_notices(
-					[
-						'description' => sprintf(
-							'%1$s <a href="%2$s">%3$s</a> %4$s',
-							esc_html__(
-								'Give 2.7.0 introduces the ability to connect a single site to multiple Stripe accounts. To use this feature, you need to complete database updates. ',
-								'give'
-							),
-							esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ),
-							esc_html__( 'Click here', 'give' ),
-							esc_html__( 'to complete your pending database updates.', 'give' )
-						),
-						'dismissible' => false,
-					]
-				);
-				?>
-			</div>
-			<?php
+		if ( $this->canShowCompatibilityNotice() ) {
+			$this->getCompatibilityNoticeMarkup();
+
 			return;
-		endif;
+		}
 		?>
 
 		<div class="give-stripe-account-manager-add-section">
@@ -203,7 +142,7 @@ class AccountManagerSettingField {
 						 *
 						 * @since 2.7.0
 						 *
-						 * @param  array  $$his->>stripeAccounts  All Stripe accounts.
+						 * @param  array  $this-  >stripeAccounts  All Stripe accounts.
 						 *
 						 */
 						do_action( 'give_stripe_premium_manual_api_fields', $this->stripeAccounts );
@@ -219,6 +158,9 @@ class AccountManagerSettingField {
 	}
 
 	/**
+	 * @unreleased
+	 *
+	 * @param  string  $stripeAccountId
 	 * @param  array  $stripeAccount
 	 */
 	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ) {
@@ -316,6 +258,110 @@ class AccountManagerSettingField {
 				</div>
 			<?php endif; ?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function getStripeAccountOnBoardingModalMarkup() {
+		$site_url            = get_site_url();
+		$modal_title         = sprintf(
+			'<strong>%1$s</strong>',
+			esc_html__(
+				'You are connected! Now this is important: Please configure your Stripe webhook to finalize the setup.',
+				'give'
+			)
+		);
+		$modal_first_detail  = sprintf(
+			'%1$s %2$s',
+			esc_html__(
+				'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:',
+				'give'
+			),
+			"<strong>{$site_url}?give-listener=stripe</strong>"
+		);
+		$modal_second_detail = esc_html__(
+			'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
+			'give'
+		);
+		$can_display         = ! empty( $_GET['stripe_account'] ) ? '0' : '1';
+		?>
+		<div
+			id="give-stripe-connected"
+			class="stripe-btn-disabled give-hidden"
+			data-status="connected"
+			data-title="<?php echo $modal_title; ?>"
+			data-first-detail="<?php echo $modal_first_detail; ?>"
+			data-second-detail="<?php echo $modal_second_detail; ?>"
+			data-display="<?php echo $can_display; ?>"
+			data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
+		>
+		</div>
+		<?php
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function canShowCompatibilityNotice() {
+		return give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function getCompatibilityNoticeMarkup() {
+		?>
+		<div class="give-stripe-account-manager-add-section">
+			<?php
+			Give()->notices->print_admin_notices(
+				[
+					'description' => sprintf(
+						'%1$s <a href="%2$s">%3$s</a> %4$s',
+						esc_html__(
+							'Give 2.7.0 introduces the ability to connect a single site to multiple Stripe accounts. To use this feature, you need to complete database updates. ',
+							'give'
+						),
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ),
+						esc_html__( 'Click here', 'give' ),
+						esc_html__( 'to complete your pending database updates.', 'give' )
+					),
+					'dismissible' => false,
+				]
+			);
+			?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * @unreleased
+	 * @return bool
+	 */
+	private function canShowFreeStripeVersionNotice() {
+		return ! give_stripe_is_premium_active();
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function getFreeStripeVersionNoticeMarkup() {
+		?>
+		<p class="give-field-description">
+			<br/>
+			<?php
+			echo sprintf(
+				__(
+					'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>',
+					'give'
+				),
+				esc_url( 'http://docs.givewp.com/settings-stripe-addon' ),
+				esc_url( 'http://docs.givewp.com/settings-stripe-recurring' ),
+				esc_url( 'http://docs.givewp.com/settings-stripe-free' )
+			);
+			?>
+		</p>
 		<?php
 	}
 }
