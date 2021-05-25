@@ -354,31 +354,33 @@ a.give-stripe-connect-temp-dismiss:active {
 	border: 1px solid #69b86800;
 	border-radius: 8px;
 
-	.no-stripe-account-connected {
-		display: flex;
-		padding: 85px;
-		flex-direction: column;
-		align-items: center;
-
-		> div {
-			padding-bottom: 20px;
-		}
-
-		.dashicons-info {
-			color: #b6c0cb;
-			font-size: 93px;
-			width: 93px;
-			height: 93px;
-			overflow: visible;
-		}
-
-		em {
-			color: #6a6a6a;
-		}
-	}
-
 	&.give-stripe-account-manager-list-item--default-account {
 		border: 2px solid #69b868;
+	}
+}
+
+.no-stripe-account-connected {
+	display: flex;
+	padding: 85px;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 8px;
+	background-color: #f4f4f4;
+
+	> div {
+		padding-bottom: 20px;
+	}
+
+	.dashicons-info {
+		color: #b6c0cb;
+		font-size: 93px;
+		width: 93px;
+		height: 93px;
+		overflow: visible;
+	}
+
+	em {
+		color: #6a6a6a;
 	}
 }
 

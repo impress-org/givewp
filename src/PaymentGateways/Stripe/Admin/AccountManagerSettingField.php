@@ -358,13 +358,11 @@ class AccountManagerSettingField {
 	 */
 	public function getNoStripeAccountMarkup() {
 		?>
-		<div class="give-stripe-account-manager-list-item">
-			<div class="no-stripe-account-connected">
-				<div><span class="dashicons dashicons-info"></span></div>
-				<div><strong><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></strong></div>
-				<div><em><?php esc_html_e( 'Connect an account to get started!', 'give' ); ?></em></div>
-				<div><?php echo $this->getStripeConnectButtonMarkup(); ?></div>
-			</div>
+		<div class="no-stripe-account-connected">
+			<div><span class="dashicons dashicons-info"></span></div>
+			<div><strong><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></strong></div>
+			<div><em><?php esc_html_e( 'Connect an account to get started!', 'give' ); ?></em></div>
+			<div><?php echo $this->getStripeConnectButtonMarkup(); ?></div>
 		</div>
 		<?php
 	}
