@@ -302,13 +302,6 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @return bool
-	 */
-	private function canShowCompatibilityNotice() {
-		return ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
-	}
-
-	/**
 	 * @unreleased
 	 */
 	private function getCompatibilityNoticeMarkup() {
@@ -337,14 +330,6 @@ class AccountManagerSettingField {
 
 	/**
 	 * @unreleased
-	 * @return bool
-	 */
-	private function canShowFreeStripeVersionNotice() {
-		return ! give_stripe_is_premium_active();
-	}
-
-	/**
-	 * @unreleased
 	 */
 	private function getFreeStripeVersionNoticeMarkup() {
 		?>
@@ -363,5 +348,20 @@ class AccountManagerSettingField {
 			?>
 		</p>
 		<?php
+	}
+
+	/**
+	 * @unreleased
+	 * @return bool
+	 */
+	private function canShowFreeStripeVersionNotice() {
+		return ! give_stripe_is_premium_active();
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function canShowCompatibilityNotice() {
+		return ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
 	}
 }
