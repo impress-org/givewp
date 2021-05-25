@@ -267,6 +267,21 @@ a.give-stripe-connect-temp-dismiss:active {
 	.main-heading {
 		order: 2;
 	}
+
+	.give-stripe-connect {
+		display: flex;
+		background: #6772e5;
+		color: white;
+		padding: 6px 21px;
+		border-radius: 5px;
+		font-weight: 500;
+		font-size: 1.1em;
+		text-decoration: none;
+
+		.stripe-logo {
+			padding-right: 8px;
+		}
+	}
 }
 
 .give-stripe-account-manager-add-section {
@@ -327,10 +342,33 @@ a.give-stripe-connect-temp-dismiss:active {
 	position: relative;
 	order: 1;
 
-	background: #fff;
+	background: #f4f4f4;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border: 1px solid #69b86800;
 	border-radius: 8px;
+
+	.no-stripe-account-connected {
+		display: flex;
+		padding: 108px;
+		flex-direction: column;
+		align-items: center;
+
+		> div {
+			padding-bottom: 20px;
+		}
+
+		.dashicons-info {
+			color: #b6c0cb;
+			font-size: 93px;
+			width: 93px;
+			height: 93px;
+			overflow: visible;
+		}
+
+		em {
+			color: #6a6a6a;
+		}
+	}
 
 	&.give-stripe-account-manager-list-item--default-account {
 		border: 2px solid #69b868;

@@ -102,6 +102,7 @@ class AccountManagerSettingField {
 		$this->getStripeAccountOnBoardingModalMarkup();
 		if ( ! $this->stripeAccounts ) :
 			$this->getNoStripeAccountMarkup();
+
 			return;
 		endif;
 		?>
@@ -146,7 +147,7 @@ class AccountManagerSettingField {
 					}
 					?>
 					<tr class="give-stripe-account-type-connect">
-						<td class="give-forminp"><?php echo give_stripe_connect_button(); ?></td>
+						<td class="give-forminp"><?php echo $this->getStripeConnectButtonMarkup(); ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -353,9 +354,44 @@ class AccountManagerSettingField {
 	public function getNoStripeAccountMarkup() {
 		?>
 		<div class="give-stripe-account-manager-list-item">
-			<span><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></span>
+			<div class="no-stripe-account-connected">
+				<div><span class="dashicons dashicons-info"></span></div>
+				<div><strong><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></strong></div>
+				<div><em><?php esc_html_e( 'Connect an account to get started!', 'give' ); ?></em></div>
+				<div><?php echo $this->getStripeConnectButtonMarkup(); ?></div>
+			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * @unreleased
+	 * @return string
+	 */
+	public function getStripeConnectButtonMarkup() {
+		// Prepare Stripe Connect URL.
+		$link = add_query_arg(
+			[
+				'stripe_action'         => 'connect',
+				'mode'                  => give_is_test_mode() ? 'test' : 'live',
+				'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+				'website_url'           => get_bloginfo( 'url' ),
+				'give_stripe_connected' => '0',
+			],
+			esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		);
+
+		$stripeSvgIcon = '<svg width="15" height="21" viewBox="0 0 15 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.05469 6.55469C6.05469 5.69531 6.75781 5.34375 7.92969 5.34375C9.64844 5.34375 11.7969 5.85156 13.4766 6.78906V1.55469C11.6406 0.8125 9.80469 0.5 7.92969 0.5C3.4375 0.5 0.429688 2.88281 0.429688 6.82812C0.429688 13 8.86719 11.9844 8.86719 14.6406C8.86719 15.6953 7.96875 16.0078 6.75781 16.0078C4.88281 16.0078 2.5 15.2656 0.664062 14.25V19.25C2.5 20.0703 4.57031 20.5 6.75781 20.5391C11.3672 20.5391 14.5703 18.5469 14.5703 14.5234C14.5703 7.88281 6.05469 9.05469 6.05469 6.55469Z" fill="white"/>
+</svg>
+';
+
+		return sprintf(
+			'<a href="%1$s" class="give-stripe-connect" title="%2$s"><span class="stripe-logo">%3$s</span><span>%2$s</span></a>',
+			esc_url( $link ),
+			esc_html__( 'Connect with Stripe', 'give' ),
+			$stripeSvgIcon
+		);
 	}
 
 	/**
