@@ -305,7 +305,7 @@ class AccountManagerSettingField {
 	 * @return bool
 	 */
 	private function canShowCompatibilityNotice() {
-		return give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
+		return ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
 	}
 
 	/**
