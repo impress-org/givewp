@@ -51,4 +51,19 @@ class AccountDetail {
 		$accountDetail = $accountDetail ? current( $accountDetail ) : $accountDetail;
 		return new AccountDetailModel( $accountDetail );
 	}
+
+	/**
+	 * @unreleased
+	 */
+	public function getAllStripeAccounts() {
+		return give_stripe_get_all_accounts();
+	}
+
+	/**
+	 * @unreleased
+	 * @return string
+	 */
+	public function getDefaultStripeAccountId() {
+		return give_stripe_get_default_account_slug();
+	}
 }
