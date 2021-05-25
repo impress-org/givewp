@@ -263,6 +263,10 @@ a.give-stripe-connect-temp-dismiss:active {
 .give-stripe-account-manager-container {
 	display: flex;
 	flex-direction: column-reverse;
+
+	.main-heading {
+		order: 2;
+	}
 }
 
 .give-stripe-account-manager-add-section {
@@ -272,6 +276,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	display: flex;
 	align-items: center;
 	padding: 10px 24px;
+	order: 3;
 
 	h3 {
 		white-space: nowrap;
@@ -320,6 +325,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	flex-direction: column;
 	overflow: hidden;
 	position: relative;
+	order: 1;
 
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);

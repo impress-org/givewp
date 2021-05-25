@@ -60,6 +60,7 @@ class AccountManagerSettingField {
 				<div id="give-stripe-account-manager-errors"></div>
 				<?php $this->getIntroductionSectionMarkup(); ?>
 				<div class="give-stripe-account-manager-container">
+					<div class="main-heading"><h2><?php esc_html_e( 'Connect Accounts', 'give' ); ?></h2></div>
 					<?php
 					$this->getStripeAccountListSectionMarkup();
 					$this->getAddNewStripeAccountSectionMarkup();
@@ -100,11 +101,7 @@ class AccountManagerSettingField {
 	private function getStripeAccountListSectionMarkup() {
 		$this->getStripeAccountOnBoardingModalMarkup();
 		if ( ! $this->stripeAccounts ) :
-			?>
-			<div class="give-stripe-account-manager-list-item">
-				<span><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></span>
-			</div>
-			<?php
+			$this->getNoStripeAccountMarkup();
 			return;
 		endif;
 		?>
@@ -347,6 +344,17 @@ class AccountManagerSettingField {
 			);
 			?>
 		</p>
+		<?php
+	}
+
+	/**
+	 * @unreleased
+	 */
+	public function getNoStripeAccountMarkup() {
+		?>
+		<div class="give-stripe-account-manager-list-item">
+			<span><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></span>
+		</div>
 		<?php
 	}
 
