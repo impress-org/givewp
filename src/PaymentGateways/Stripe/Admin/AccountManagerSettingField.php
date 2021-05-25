@@ -129,6 +129,11 @@ class AccountManagerSettingField {
 		?>
 
 		<div class="give-stripe-account-manager-add-section">
+			<div class="stripe-logo-with-circle">
+				<svg width="21" height="31" viewBox="0 0 21 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M8.41683 9.55871C8.41683 8.29941 9.4501 7.81507 11.1614 7.81507C13.6155 7.81507 16.7153 8.55773 19.1693 9.8816V2.29355C16.4892 1.22799 13.8415 0.808228 11.1614 0.808228C4.60666 0.808228 0.247559 4.23093 0.247559 9.94618C0.247559 18.8581 12.5176 17.4374 12.5176 21.2798C12.5176 22.7652 11.226 23.2495 9.4178 23.2495C6.73777 23.2495 3.31507 22.1517 0.602744 20.6663V28.3513C3.60568 29.6428 6.6409 30.1918 9.4178 30.1918C16.134 30.1918 20.7515 26.8659 20.7515 21.0861C20.7192 11.4638 8.41683 13.1751 8.41683 9.55871Z" fill="#6772E5"/>
+				</svg>
+			</div>
 			<h3><?php esc_html_e( 'Add a New Stripe Account', 'give' ); ?></h3>
 			<div class="give-stripe-add-account-errors"></div>
 			<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">

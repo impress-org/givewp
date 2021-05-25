@@ -306,6 +306,13 @@ a.give-stripe-connect-temp-dismiss:active {
 		align-items: center;
 		flex-wrap: wrap;
 	}
+
+	.stripe-logo-with-circle {
+		border-radius: 100px;
+		border: 1px solid #d6d6d6;
+		padding: 13px 21px;
+		margin-right: 25px;
+	}
 }
 
 .give-stripe-account-type-manual-modal__body {
