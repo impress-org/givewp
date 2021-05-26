@@ -6,7 +6,6 @@
 	<?php if ( $field->isRequired() ) : ?>
 	required
 	<?php endif; ?>
-	tabindex="1"
 	@attributes
 >
 	<?php foreach ( $field->getOptions() as $key => $value ) : ?>

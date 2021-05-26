@@ -6,6 +6,5 @@
 	<?php if ( $field->isRequired() ) : ?>
 	required
 	<?php endif; ?>
-	tabindex="1"
 	@attributes
 	></textarea>
