@@ -230,12 +230,11 @@ class AccountManagerSettingField {
 			</div>
 
 			<div class="give-stripe-account-actions">
-				<span class="give-stripe-label">
-					<?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
-				<?php if ( $stripeAccountId !== $this->defaultStripeAccountId || count( $this->stripeAccounts ) === 1 ) : ?>
-					<div class="give-stripe-account-connected">
-						<?php esc_html_e( 'Connected', 'give' ); ?>
-					</div>
+				<span class="give-stripe-label"><?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
+				<div class="give-stripe-account-connected">
+					<?php esc_html_e( 'Connected', 'give' ); ?>
+				</div>
+				<?php if ( $stripeAccountId !== $this->defaultStripeAccountId ) : ?>
 					<div class="give-stripe-account-disconnect">
 						<a
 							class="give-stripe-disconnect-account-btn"
@@ -246,6 +245,7 @@ class AccountManagerSettingField {
 					</div>
 				<?php endif; ?>
 			</div>
+
 			<?php if ( $stripeAccountId === $this->defaultStripeAccountId ) : ?>
 				<div class="give-stripe-account-default give-stripe-account-badge">
 					<?php esc_html_e( 'Default Account', 'give' ); ?>
