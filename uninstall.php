@@ -25,6 +25,9 @@ include_once( 'give.php' );
  */
 give()->init();
 
+// Prevent checking for plugin updates
+remove_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates', 999 );
+
 global $wpdb, $wp_roles;
 
 
