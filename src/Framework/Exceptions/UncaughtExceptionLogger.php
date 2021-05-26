@@ -30,6 +30,7 @@ class UncaughtExceptionLogger {
 	/**
 	 * Handles an uncaught exception by checking if the Exception is native to GiveWP and then logging it if it is
 	 *
+	 * @unreleased remove parameter typing as it may be an Error
 	 * @since 2.11.1
 	 *
 	 * @param Exception|Error $exception
