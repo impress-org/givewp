@@ -1,10 +1,10 @@
+<?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
 <textarea
-	class="give-input required"
-	name="give_<?php echo $field->getName(); ?>"
-	id="give-<?php echo $field->getName(); ?>"
-	placeholder="<?php echo $field->getLabel(); ?>"
+  class="give-input required"
+  name="give_<?php echo $field->getName(); ?>"
+  id="give-<?php echo $field->getName(); ?>"
 	<?php if ( $field->isRequired() ) : ?>
 	required
-	<?php endif; ?>
+  <?php endif; ?>
 	@attributes
-	></textarea>
+></textarea>

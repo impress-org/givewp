@@ -1,14 +1,14 @@
+<?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
 <select
-	name="give_<?php echo $field->getName(); ?>"
-	id="give-<?php echo $field->getName(); ?>"
-	class="give-input required"
-	placeholder="<?php echo $field->getLabel(); ?>"
+  name="give_<?php echo $field->getName(); ?>"
+  id="give-<?php echo $field->getName(); ?>"
+  class="give-input required"
 	<?php if ( $field->isRequired() ) : ?>
-	required
+	  required
 	<?php endif; ?>
-	@attributes
+  @attributes
 >
 	<?php foreach ( $field->getOptions() as $key => $value ) : ?>
-	<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+	  <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
 	<?php endforeach; ?>
 </select>
