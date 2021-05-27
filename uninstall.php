@@ -3,10 +3,10 @@
  * Uninstall Give
  *
  * @package     Give
- * @subpackage  Uninstall
+ * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @subpackage  Uninstall
  */
 
 // Exit if accessed directly.
@@ -38,8 +38,11 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	$give_post_types = [ 'give_forms', 'give_payment' ];
 	foreach ( $give_post_types as $post_type ) {
 
-		$give_taxonomies = array_merge( $give_taxonomies, get_object_taxonomies( $post_type ) );
-		$items           = get_posts(
+		foreach ( get_object_taxonomies( $post_type ) as $taxonomy ) {
+			$give_taxonomies[] = $taxonomy;
+		}
+
+		$items = get_posts(
 			[
 				'post_type'   => $post_type,
 				'post_status' => 'any',
@@ -90,20 +93,9 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 		remove_role( $role );
 	}
 
-	// Remove all database tables.
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donors" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donormeta" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_donationmeta" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_formmeta" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_comments" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_commentmeta" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sequential_ordering" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_sessions" );
-
-	// Remove tables which are supported with backward compatibility.
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_customers" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_customermeta" );
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}give_paymentmeta" );
+	// Remove all give database tables.
+	$give_tables = $wpdb->get_col( "SHOW TABLES LIKE '{$wpdb->prefix}give_%'" );
+	$wpdb->query( 'DROP TABLE ' . implode( ',', $give_tables ) );
 
 	// Cleanup Cron Events.
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
