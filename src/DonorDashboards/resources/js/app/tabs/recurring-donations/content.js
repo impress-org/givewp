@@ -2,7 +2,6 @@ import { useLocation, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import Heading from '../../components/heading';
 import Divider from '../../components/divider';
@@ -19,6 +18,7 @@ import './style.scss';
 const Content = () => {
 	const subscriptions = useSelector( ( state ) => state.subscriptions );
 	const querying = useSelector( ( state ) => state.querying );
+	const error = useSelector( ( state ) => state.error );
 
 	const location = useLocation();
 	const route = location ? location.pathname.split( '/' )[ 2 ] : null;
@@ -31,6 +31,19 @@ const Content = () => {
 		}
 		return null;
 	};
+
+	if ( error ) {
+		return (
+			<Fragment>
+				<Heading icon="exclamation-triangle">
+					{ __( 'Error', 'give' ) }
+				</Heading>
+				<p style={ { color: '#6b6b6b' } }>
+					{ error }
+				</p>
+			</Fragment>
+		);
+	}
 
 	if ( id ) {
 		switch ( route ) {
@@ -91,20 +104,26 @@ const Content = () => {
 		}
 	}
 
-	return querying && subscriptions === null ? (
-		<Fragment>
+	if ( querying && !subscriptions ) {
+		return <Fragment>
 			<Heading>
 				{ __( 'Loading...', 'give' ) }
 			</Heading>
 			<SubscriptionTable />
 		</Fragment>
-	) : (
-		<Fragment>
+	} else if ( subscriptions ) {
+		return <Fragment>
 			<Heading>
 				{ `${ Object.entries( subscriptions ).length } ${ __( 'Total Subscriptions', 'give' ) }` }
 			</Heading>
 			<SubscriptionTable subscriptions={ subscriptions } perPage={ 5 } />
 		</Fragment>
-	);
+	} else {
+		return <Fragment>
+			<Heading icon="exclamation-triangle">
+				{ __( 'No Subscriptions', 'give' ) }
+			</Heading>
+		</Fragment>
+	}
 };
 export default Content;

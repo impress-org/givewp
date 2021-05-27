@@ -8,7 +8,7 @@ use Give\DonorDashboards\Helpers\LocationList;
  * Class App
  * @package Give\DonorDashboards
  *
- * @unreleased
+ * @since 2.10.2
  */
 class App {
 	/**
@@ -121,7 +121,9 @@ class App {
 	 * Enqueue assets for front-end donor dashboards
 	 *
 	 * @since 2.10.0
-	 **@return void
+	 * @since 2.11.0 Set script translations.
+	 *
+	 * @return void
 	 */
 	public function loadAssets() {
 		// Load assets only if rendering donor dashboard.
@@ -132,10 +134,16 @@ class App {
 		wp_enqueue_script(
 			'give-donor-dashboards-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-app.js',
-			[],
+			[ 'wp-i18n' ],
 			GIVE_VERSION,
 			true
 		);
+
+		/**
+		 * @link https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
+		 * "...this is to allow WordPress to selectively load only the necessary translations to ensure everything is as fast as can be"
+		 */
+		wp_set_script_translations( 'give-donor-dashboards-app', 'give' );
 
 		$recaptcha_key     = give_get_option( 'recaptcha_key' );
 		$recaptcha_secret  = give_get_option( 'recaptcha_secret' );

@@ -44,7 +44,7 @@ function give_get_templates_url() {
  * @param string $template_path Template file path. Default is empty.
  * @param string $default_path  Default path. Default is empty.
  */
-function give_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+function give_get_template( $template_name, $args = [], $template_path = '', $default_path = '' ) {
 	if ( ! empty( $args ) && is_array( $args ) ) {
 		extract( $args );
 	}
@@ -122,7 +122,7 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
 	do_action( "get_template_part_{$slug}", $slug, $name );
 
 	// Setup possible parts
-	$templates = array();
+	$templates = [];
 	if ( isset( $name ) ) {
 		$templates[] = $slug . '-' . $name . '.php';
 	}
@@ -220,10 +220,10 @@ function give_get_locate_template( $template_name, $template_path = '', $default
 
 	// Look within passed path within the theme - this is priority.
 	$template = locate_template(
-		array(
+		[
 			trailingslashit( $template_path ) . $template_name,
 			$template_name,
-		)
+		]
 	);
 
 	// Get default template/
@@ -249,11 +249,11 @@ function give_get_theme_template_paths() {
 
 	$template_dir = give_get_theme_template_dir_name();
 
-	$file_paths = array(
+	$file_paths = [
 		1   => trailingslashit( get_stylesheet_directory() ) . $template_dir,
 		10  => trailingslashit( get_template_directory() ) . $template_dir,
 		100 => give_get_templates_dir(),
-	);
+	];
 
 	$file_paths = apply_filters( 'give_template_paths', $file_paths );
 
@@ -483,11 +483,12 @@ if ( ! function_exists( 'is_give_form' ) ) {
 	 * Returns true when viewing a single form.
 	 *
 	 * @since 1.6
+	 * @since 2.10.4 Updated post type slug to match registration.
 	 *
 	 * @return bool
 	 */
 	function is_give_form() {
-		return is_singular( array( 'give_form' ) );
+		return is_singular( [ 'give_forms' ] );
 	}
 }
 

@@ -6,6 +6,7 @@ namespace Give\Onboarding;
  * Fork of woocommerce/18n/locale-info
  *
  * @since 2.8.0
+ * @since 2.11.0 Added KR locale info (#5831)
  */
 class LocaleCollection {
 
@@ -166,6 +167,15 @@ class LocaleCollection {
 		'JP' => [
 			'currency_code'  => 'JPY',
 			'currency_pos'   => 'left',
+			'thousand_sep'   => ',',
+			'decimal_sep'    => '.',
+			'num_decimals'   => 0,
+			'weight_unit'    => 'kg',
+			'dimension_unit' => 'cm',
+		],
+		'KR' => [
+			'currency_code'  => 'KRW',
+			'currency_pos'   => 'right',
 			'thousand_sep'   => ',',
 			'decimal_sep'    => '.',
 			'num_decimals'   => 0,

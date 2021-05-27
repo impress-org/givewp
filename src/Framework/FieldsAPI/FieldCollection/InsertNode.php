@@ -7,12 +7,12 @@ use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
 use Give\Framework\FieldsAPI\FieldCollection\Exception\ReferenceNodeNotFoundException;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 trait InsertNode {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $siblingName
 	 * @param Node $node
@@ -26,7 +26,7 @@ trait InsertNode {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $siblingName
 	 * @param Node $node
@@ -55,7 +55,7 @@ trait InsertNode {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $siblingName
 	 * @param Node $node
@@ -69,7 +69,7 @@ trait InsertNode {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $siblingName
 	 * @param Node $node
@@ -98,7 +98,7 @@ trait InsertNode {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 */
 	protected function insertAtIndex( $index, $node ) {
 		array_splice( $this->nodes, $index, 0, [ $node ] );

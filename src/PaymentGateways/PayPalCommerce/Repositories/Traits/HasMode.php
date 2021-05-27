@@ -1,7 +1,7 @@
 <?php
 namespace Give\PaymentGateways\PayPalCommerce\Repositories\Traits;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 trait HasMode {
 	/**

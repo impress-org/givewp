@@ -7,12 +7,12 @@ use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class SetupPaymentDetailsDisplay {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param int $donationID
 	 */
@@ -22,7 +22,7 @@ class SetupPaymentDetailsDisplay {
 
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 *
@@ -37,7 +37,7 @@ class SetupPaymentDetailsDisplay {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *
@@ -52,8 +52,8 @@ class SetupPaymentDetailsDisplay {
 			<h3 class="hndle">
 				<?php echo $field->getLabel(); ?>
 			</h3>
-			<div class="inside">    
-				<p>   
+			<div class="inside">
+				<p>
 					<?php echo give_get_meta( $this->donationID, $field->getName(), true ); ?>
 				</p>
 			</div>

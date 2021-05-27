@@ -10,8 +10,30 @@ jobs:
     strategy:
       matrix:
         php: [ 5.6, 7.2 ]
+        mysql: [ 'mysql:5.6', 'mysql:8.0' ]
         wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
 
+    services:
+      mysql56:
+        image: mysql:5.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
+      # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
+      # command option in docker to apply it once the container is set up... but Github Actions does not support this.
+      # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
+      # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
+      # @see https://github.com/docker-library/mysql/issues/690
+      mysql80:
+        image: mysql:8.0
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+        
     steps:
       - uses: actions/checkout@v2
 
@@ -28,38 +50,70 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-
       - name: Install dependencies
         run: |
           composer self-update --1
           composer require phpunit/phpunit:5.*
           composer update --prefer-dist --no-interaction --no-suggest
 
-      - name: Setup tests
+      - name: Store MySQL details in environment
         run: |
-          bash tests/unit/bin/install.sh wordpress_test root root localhost ${{ matrix.wordpress }}
+          case "$MYSQL_VERSION" in
+            'mysql:5.6')
+              MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
+              MYSQL_PASS=root
+              ;;
+            'mysql:8.0')
+              MYSQL_PORT=${{ job.services.mysql80.ports[3306] }}
+              MYSQL_PASS=N0Tweak!@123!
+              ;;
+          esac
+          echo "mysql_port=$MYSQL_PORT" >> $GITHUB_ENV
+          echo "mysql_pass=$MYSQL_PASS" >> $GITHUB_ENV
+        env:
+          MYSQL_VERSION: ${{ matrix.mysql }}
 
-      -   name: Execute tests
-          run: vendor/bin/phpunit
-          env:
-            DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      - name: Set Up Tests
+        run: bash tests/unit/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+
+      - name: Run Tests
+        run: php -d memory_limit=-1 vendor/bin/phpunit
+        env:
+          DB_PORT: ${{ env.mysql_port }}
 
   release:
     name: New release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install composer dependencies
-        uses: php-actions/composer@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
+          php-version: 7.2
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+        
+      - name: Install composer dev dependencies
+        uses: php-actions/composer@v5
+        with:
+          php_version: 7.2
+        
+        # In order to run this WordPress also needs to be installed
+      - name: Generate pot file
+        run: |
+          composer exec "wp core download --path=/tmp/wordpress --version=latest --skip-content"
+          composer exec "wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --path=/tmp/wordpress"
+          
+      - name: Remove dev dependencies
+        uses: php-actions/composer@v5
+        with:
+          php_version: 7.2
           dev: no
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: '12'
 
@@ -88,3 +142,9 @@ jobs:
           asset_path: ${{github.workspace}}/give.zip
           asset_name: give.zip
           asset_content_type: application/zip
+          
+      - name: Slack Notification
+        uses: someimportantcompany/github-actions-slack-message@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
+          text: "*${{ github.event.repository.name }} ${{ github.event.release.name }} has just been released! 🎉* \n\n Here's what's new: \n\n ${{ github.event.release.body }} \n\n <${{ github.event.release.html_url }}|Link to Release>"

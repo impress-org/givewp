@@ -4,7 +4,6 @@ import SelectControl from '../../select-control';
 import { useState, useEffect } from 'react';
 
 import { __ } from '@wordpress/i18n';
-;
 
 const AmountControl = ( { form, payment, onChange, value } ) => {
 	const [ customAmount, setCustomAmount ] = useState( '' );
@@ -38,7 +37,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 			if ( value ) {
 				const float = parseFloat( value );
 				if ( amountFloats.includes( float ) ) {
-					const option = amountOptions.filter( ( curr ) => parseFloat( curr.value ) === float ? true : false )[ 0 ];
+					const option = amountOptions.filter( ( curr ) => parseFloat(curr.value) === float )[ 0 ];
 					setSelectValue( option.value );
 				} else {
 					setSelectValue( 'custom_amount' );
@@ -75,7 +74,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 				<div>
 					{ selectValue === 'custom_amount' && (
 						<CurrencyControl
-							label="Custom Amount"
+							label={ __( 'Custom Amount', 'give' ) }
 							min={ form.custom_amount.minimum ? parseFloat( form.custom_amount.minimum ).toString() : null }
 							max={ form.custom_amount.maximum ? parseFloat( form.custom_amount.maximum ).toString() : null }
 							value={ customAmount }

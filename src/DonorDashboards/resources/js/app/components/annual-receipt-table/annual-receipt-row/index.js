@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { __ } from '@wordpress/i18n';
-;
 
 const AnnualReceiptRow = ( { annualReceipt } ) => {
 	const { year, amount, count, statementUrl } = annualReceipt[ 1 ];

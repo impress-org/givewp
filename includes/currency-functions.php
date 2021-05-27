@@ -20,7 +20,7 @@
  *
  * @return string The currency code
  */
-function give_get_currency( $donation_or_form_id = null, $args = array() ) {
+function give_get_currency( $donation_or_form_id = null, $args = [] ) {
 
 	// Get currency from donation
 	if ( is_numeric( $donation_or_form_id ) && 'give_payment' === get_post_type( $donation_or_form_id ) ) {
@@ -76,8 +76,26 @@ function give_get_currencies_list() {
 	 * )
 	 *
 	 * @since 1.8.15
+	 * @deprecated 2.10.4 Use give_register_currency filter hook to register new currency.
+	 *                   Example code to register new currency:
 	 *
-	 * @param array $currencies
+	 *                   add_filter( 'give_register_currency', 'give_add_costarican_currency', 10, 1 );
+	 *                   function give_add_costarican_currency( $currencies ) {
+	 *                        $currencies['VND'] = array(
+	 *                            'admin_label' => __( 'Vietnamese đồng (₫)', 'give' ),
+	 *                            'symbol'      => '&#8363;',
+	 *                            'setting'     => array(
+	 *                                'currency_position'   => 'after',
+	 *                                'thousands_separator' => '.',
+	 *                                'decimal_separator'   => ',',
+	 *                                'number_decimals'     => 2,
+	 *                            )
+	 *                       );
+	 *
+	 *                       return $currencies;
+	 *                  }
+	 *
+	 * @param  array  $currencies
 	 */
 	return (array) apply_filters( 'give_currencies', $currencies );
 }
@@ -100,18 +118,18 @@ function give_get_currencies( $info = 'admin_label' ) {
 	if ( ! empty( $currencies ) ) {
 		foreach ( $currencies as $currency_code => $currency_setting ) {
 			if ( is_string( $currency_setting ) ) {
-				$currencies[ $currency_code ] = array(
+				$currencies[ $currency_code ] = [
 					'admin_label' => $currency_setting,
-				);
+				];
 			}
 
 			$currencies[ $currency_code ] = wp_parse_args(
 				$currencies[ $currency_code ],
-				array(
+				[
 					'admin_label' => '',
 					'symbol'      => $currency_code,
-					'setting'     => array(),
-				)
+					'setting'     => [],
+				]
 			);
 		}
 
@@ -229,18 +247,18 @@ function give_get_currency_name( $currency_code ) {
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $args = array() ) {
+function give_currency_filter( $price = '', $args = [] ) {
 
 	// Get functions arguments.
 	$func_args = func_get_args();
 
 	// Backward compatibility: modify second param to array
 	if ( isset( $func_args[1] ) && is_string( $func_args[1] ) ) {
-		$args = array(
+		$args = [
 			'currency_code'   => isset( $func_args[1] ) ? $func_args[1] : '',
 			'decode_currency' => isset( $func_args[2] ) ? $func_args[2] : false,
 			'form_id'         => isset( $func_args[3] ) ? $func_args[3] : '',
-		);
+		];
 
 		give_doing_it_wrong( __FUNCTION__, 'Pass second argument as Array.' );
 	}
@@ -248,11 +266,11 @@ function give_currency_filter( $price = '', $args = array() ) {
 	// Set default values.
 	$args = wp_parse_args(
 		$args,
-		array(
+		[
 			'currency_code'   => '',
 			'decode_currency' => false,
 			'form_id'         => '',
-		)
+		]
 	);
 
 	if ( empty( $args['currency_code'] ) || ! array_key_exists( (string) $args['currency_code'], give_get_currencies() ) ) {
@@ -353,7 +371,7 @@ function give_currency_filter( $price = '', $args = array() ) {
  */
 function give_get_zero_based_currencies() {
 
-	$zero_based_currencies = array(
+	$zero_based_currencies = [
 		'JPY', // Japanese Yen.
 		'KRW', // South Korean Won.
 		'CLP', // Chilean peso.
@@ -368,7 +386,7 @@ function give_get_zero_based_currencies() {
 		'MGA', // Malagasy ariary.
 		'MZN', // Mozambican metical.
 		'VUV', // Vanuatu vatu.
-	);
+	];
 
 	/**
 	 * This filter hook can be used to update the list of zero based currencies.
@@ -417,7 +435,7 @@ function give_is_zero_based_currency( $currency = '' ) {
 function give_is_right_to_left_supported_currency( $currency = '' ) {
 	$zero_based_currency = apply_filters(
 		'give_right_to_left_supported_currency',
-		array(
+		[
 			'IRR',
 			'RIAL',
 			'MAD',
@@ -434,7 +452,7 @@ function give_is_right_to_left_supported_currency( $currency = '' ) {
 			'IQD', // https://en.wikipedia.org/wiki/Iraqi_dinar
 			'DZD', // https://en.wikipedia.org/wiki/Algerian_dinar
 			'AFN', // https://en.wikipedia.org/wiki/Afghan_afghani
-		)
+		]
 	);
 
 	// Set default currency.

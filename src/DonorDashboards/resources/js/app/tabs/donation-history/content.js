@@ -3,7 +3,6 @@ import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { __ } from '@wordpress/i18n';
-;
 
 import Heading from '../../components/heading';
 import Button from '../../components/button';
@@ -38,9 +37,6 @@ const Content = () => {
 				</Heading>
 				<p style={ { color: '#6b6b6b' } }>
 					{ error }
-				</p>
-				<p style={ { color: '#6b6b6b' } }>
-					{ __( 'Contact a site administrator and have them search the logs at Donations > Tools > Logs for a more specific cause of the problem.', 'give' ) }
 				</p>
 			</Fragment>
 		);

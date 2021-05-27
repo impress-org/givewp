@@ -2,7 +2,7 @@
 
 namespace Give\FormAPI\Form;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 class Group extends Field {
 	/**

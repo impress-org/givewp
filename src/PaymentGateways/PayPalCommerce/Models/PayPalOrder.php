@@ -3,9 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce\Models;
 
 use Give\Helpers\ArrayDataSet;
-use Give\PaymentGateways\PayPalCommerce\Models\PayPalPayment;
-use Give_Payment;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use stdClass;
 
 /**

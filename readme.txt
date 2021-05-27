@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.10.1
+Stable tag: 2.11.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,42 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.11.1: May 24th, 2021 =
+* New: You can now enable billing details for PayPal Donations in Settings > Payment Gateways > PayPal
+* Fix: Donor Dashboard is *really* translatable this time. Honestly.
+
+= 2.11.0: May 19th, 2021 =
+* New: Multi-Step form template has a new setting to enable showing decimals in amounts
+* New: Donor Dashboard is now fully translatable
+* Changed: Indian state of Odisha (formerly Orissa) is now updated to reflect legal name change
+* Changed: Onboarding includes KR (Repulic of Korea) currency option
+* Changed: Removed legacy option to custom load Stripe SDK as it no longer did anything
+* Fix: Editing a donor's address no longer removes spacing between words
+* Fix: All email templates can now be disabled
+* Fix: Applying Fee Recovery now correctly handles cent rounding in Stripe
+* Fix: Importing donations now works on all main browsers
+
+= 2.10.4: April 29th, 2021 =
+* Security: Resolved Authorized XSS vulnerability - note, you had to be logged in as admin to exploit it
+* Changed: Removed PHAR files from vendor directory to meet wp.org standards
+* Changed: Switched to using WP HTTP remote functions to meet wp.org standards
+* Fixed: Improved escaping in a few places to improve security
+* Fixed: Corrected is_give_form() post type so it once again works
+
+= 2.10.3: April 21st, 2021 =
+* Fixed: Authentication now works more reliably for the Donor Dashboard on different hosts
+* Fixed: Nonces were added to the Donor Dashboard for additional authentication and security
+* Fixed: Donors without WP accounts are now able to upload avatar images
+* Fixed: Logging out from Donor Dashboard works reliably
+* Fixed: Renewals were falsely marked as test donations; it was superficial, but is now correct
+
+= 2.10.2: April 14th, 2021 =
+* Changed: Stripe fee does not apply to Brazil due to Stripe limitations
+* Fixed: Migration for creating the logs table is now compatible with MySQL 5.5 and up
+* Fixed: When an authentication error occurs on the Donor Dashboard the user can no longer see others' donations
+* Fixed: Made sure that under no circumstances can logging cause an exception... to avoid irony
+* Fixed: Activating GiveWP will now generate a Donor Dashboard page ONLY if one does not already exist
 
 = 2.10.1: March 30th, 2021 =
 * Fixed: Fatal error triggered by the Donor Dashboard on PHP 5.6

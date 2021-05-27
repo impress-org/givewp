@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { __ } from '@wordpress/i18n';
-;
+
 import AddressFields from '../address-fields';
 
 import Button from '../../../components/button';

@@ -54,6 +54,8 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		 * This function is used to include the related Stripe core files.
 		 *
 		 * @since  2.5.0
+		 * @since 2.11.0 Stripe sdk loading logic has been removed because
+		 *             Composer autoloader will load it when required.
 		 * @access public
 		 *
 		 * @return void
@@ -89,9 +91,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 						version_compare( '1.9.3', $recurring_plugin_data['Version'], '>=' )
 					) {
 
-						// Load Stripe SDK.
-						give_stripe_load_stripe_sdk();
-
 						// Include frontend files.
 						$this->include_frontend_files();
 
@@ -119,9 +118,6 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 
 				return;
 			}
-
-			// Load Stripe SDK.
-			give_stripe_load_stripe_sdk();
 
 			// Include frontend files.
 			$this->include_frontend_files();

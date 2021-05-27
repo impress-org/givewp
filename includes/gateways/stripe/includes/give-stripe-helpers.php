@@ -1080,25 +1080,6 @@ function give_stripe_get_checkout_type() {
 }
 
 /**
- * This function will help you load Stripe SDK based on the conditions.
- *
- * @since 2.5.5
- *
- * @return void
- */
-function give_stripe_load_stripe_sdk() {
-
-	$stripe_sdk_compatibility = give_get_option( 'stripe_sdk_incompatibility', 'composer' );
-
-	if ( 'composer' === $stripe_sdk_compatibility ) {
-		require_once GIVE_PLUGIN_DIR . 'vendor/autoload.php';
-	} elseif ( 'manual' === $stripe_sdk_compatibility ) {
-		require_once GIVE_PLUGIN_DIR . 'vendor/stripe/stripe-php/init.php';
-	}
-}
-
-
-/**
  * This function will prepare metadata to send to Stripe.
  *
  * @param int   $donation_id   Donation ID.

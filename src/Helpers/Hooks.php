@@ -2,7 +2,7 @@
 
 namespace Give\Helpers;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 class Hooks {
 	/**

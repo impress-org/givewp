@@ -24,9 +24,16 @@ class Actions {
 		// Get Template options
 		$this->templateOptions = FormTemplateUtils::getOptions();
 
+		// Get decimal numbers option
+		$decimalNumbersOption = isset( $this->templateOptions['payment_amount']['decimals_enabled'] )
+			? $this->templateOptions['payment_amount']['decimals_enabled']
+			: 'disabled';
+
 		// Set zero number of decimal.
-		add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );
-		add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
+		if ( 'disabled' === $decimalNumbersOption ) {
+			add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );
+			add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
+		}
 
 		// Handle personal section html template.
 		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );

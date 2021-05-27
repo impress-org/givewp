@@ -2,7 +2,7 @@
 
 namespace Give\Controller;
 
-use Exception;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;

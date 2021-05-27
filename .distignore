@@ -11,6 +11,7 @@
 /assets/src
 /vendor/bin
 /vendor/composer/installers
+/vendor/**/*.phar
 
 .travis.yml
 .editorconfig
@@ -28,6 +29,7 @@
 .distignore
 .stylelintignore
 
+cypress.json
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
 bower.json

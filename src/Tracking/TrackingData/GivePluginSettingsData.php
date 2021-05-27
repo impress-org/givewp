@@ -67,7 +67,7 @@ class GivePluginSettingsData implements TrackData {
 	/**
 	 * Return active gateways labels.
 	 *
-	 * @unreleased
+	 * @since 2.10.2
 	 * @return array
 	 */
 	private function getGatewaysLabels() {

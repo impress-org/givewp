@@ -5,11 +5,11 @@ namespace Give\Form\LegacyConsumer\Commands;
 use Give\Form\LegacyConsumer\FilterCallbackCollection;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class DeprecateOldTemplateHook implements HookCommandInterface {
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 *

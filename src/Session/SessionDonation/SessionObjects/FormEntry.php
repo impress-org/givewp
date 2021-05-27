@@ -4,7 +4,7 @@ namespace Give\Session\SessionDonation\SessionObjects;
 
 use Give\Helpers\ArrayDataSet;
 use Give\Session\Objects;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class FormEntry

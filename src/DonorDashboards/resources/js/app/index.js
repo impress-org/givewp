@@ -32,13 +32,20 @@ window.giveDonorDashboard = {
 	},
 };
 
-ReactDOM.render(
-	<Provider store={ store }>
-		<Router>
-			<App />
-		</Router>
-	</Provider>,
-	document.getElementById( 'give-donor-dashboard' )
-);
+/**
+ * @since 2.11.1 Load after DOM Content is loaded so that wp.i18n available to parse translatable strings.
+ * @link https://github.com/impress-org/givewp/pull/5842
+ */
+window.addEventListener('DOMContentLoaded', (event) => {
+	registerDefaultTabs();
 
-registerDefaultTabs();
+	ReactDOM.render(
+		<Provider store={ store }>
+			<Router>
+				<App />
+			</Router>
+		</Provider>,
+		document.getElementById( 'give-donor-dashboard' )
+	);
+});
+

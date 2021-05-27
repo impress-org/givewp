@@ -5,7 +5,6 @@ namespace Give\DonorDashboards\Tabs;
 use Give\DonorDashboards\Tabs\Contracts\Tab;
 use Give\DonorDashboards\Exceptions\MissingTabException;
 use Give\DonorDashboards\Exceptions\DuplicateTabException;
-use http\Exception\InvalidArgumentException;
 
 /**
  * @since 2.10.0

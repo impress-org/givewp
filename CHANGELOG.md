@@ -7,10 +7,78 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.11.1 - 2021-05-24
+
+### New
+
+-   Add billing address field support to PayPal Donations (#5744)
+
+### Fixed
+
+-   Donor Dashboard can now be translated using the `i18n.gettext` filter (#5842)
+
+## 2.11.0 - 2021-05-19
+
+### New
+
+-   Multi-Step form template now supports decimals amounts in currencies (#5827)
+-   Donor Dashboard is now fully translatable (#5819)
+
+### Changes
+
+-   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
+-   Onboarding LocaleCollection has parity with WooCommerce (#5831)    
+-   Remove custom Stripe SDK loading logic (#5821)
+
+### Fixed
+
+-   Store donor address with formatting from donor profile (#5829)
+-   Prevent javascript error when click on lock icon on email listing page (#5824)
+-   Amount passed to Stripe matches the stored value (#5823)
+-   Remove extraneous main landmarks from setup guide page (#5835)
+-   Admin is now can import donations (#5841)
+-   Prevent PHP notices when access non-exiting property from Stripe API response (#5838)
+
+
+## 2.10.4 - 2021-04-29
+
+### Changes
+
+-   Deprecate give_currencies filter hook (#5782)
+-   PHAR files are stripped from builds (#5811)
+-   Correct usage of file_get_contents for remote request in favor of WP HTTP functions (#5811)
+
+### Fixed
+
+-   Conditional check for is_give_form() now uses correct post type slug (#5807)
+-   Added missing escaping for improved security (#5811)
+
+## 2.10.3 - 2021-04-21
+
+### Fixed
+
+-   Donor Dashboard Logout now works while in the same session (#5800)
+-   SubscriptionsTable component no longer produces console error (#5793)
+-   Test Donation badge now only appears on test donations in Donor Dashboard (#5803)
+-   Donors without WP accounts are now able to upload avatar images (#5745)
+
+### Changed
+
+-   Give Session now reliably reflects currently logged in WP user (#5796)
+-   Donor Dashboard now uses WP API nonces for enhanced security (#5798)
+
+## 2.10.2 - 2021-04-14
+
+### Changed
+
+-   Apply Stripe fee when applicable except Brazil (#5729)
+
 ### Fixed
 
 -   Donor Dashboard no longer freezes up when attempting to manage Stripe ACH subscriptions (#5771)
 -   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
+-   Donors can no longer see other donors donations (on certain hosts) (#5787)
+-   Logs will no longer cause an exception (#5788)
 -   Donor Dashboard page is now only generated if one does not already exist (#5785)
 
 ## 2.10.1 - 2021-03-30
@@ -47,13 +115,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Creation of the give_migrations table is not producing errors anymore (#5737)
 -   Logging can no longer cause a fatal error to occur (#5737)
 
+
 ## 2.10.0-rc.1 - 2021-03-16
 
 ### New 
 
 -   The new logging system UI is now e2e tested (#5723)
 
-### Changes
+### Changed
 
 -   Apply Stripe fee when applicable (#5555)
 -   Cleanup and update deprecated npm packages (#5712)

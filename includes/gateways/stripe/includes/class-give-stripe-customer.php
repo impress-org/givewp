@@ -394,26 +394,25 @@ class Give_Stripe_Customer {
 	 * This function is used to attach source to the customer, if not exists.
 	 *
 	 * @since  2.1
+	 * @since 2.11.0 Use Give_Stripe_Customer::doesSourceFingerPrintMatch function to verify source finger print
 	 * @access public
 	 *
 	 * @return void
 	 */
 	public function attach_source() {
-
 		if ( ! empty( $this->payment_method_id ) && ! empty( $this->customer_data ) ) {
-
-			$card        = '';
-			$card_exists = false;
-			$new_card    = '';
-			$all_sources = $this->customer_data->sources->all();
+			$card                         = '';
+			$card_exists                  = false;
+			$newSourcePaymentMethodDetail = '';
+			$all_sources                  = $this->customer_data->sources->all();
 
 			// Fetch the new card or source object to match with customer attached card fingerprint.
 			if ( give_stripe_is_source_type( $this->payment_method_id, 'tok' ) ) {
-				$token_details = $this->stripe_gateway->get_token_details( $this->payment_method_id );
-				$new_card      = $token_details->card;
+				$token_details                = $this->stripe_gateway->get_token_details( $this->payment_method_id );
+				$newSourcePaymentMethodDetail = $token_details->bank_account;
 			} elseif ( give_stripe_is_source_type( $this->payment_method_id, 'src' ) ) {
-				$source_details = $this->stripe_gateway->get_source_details( $this->payment_method_id );
-				$new_card       = $source_details->card;
+				$source_details               = $this->stripe_gateway->get_source_details( $this->payment_method_id );
+				$newSourcePaymentMethodDetail = $source_details->card;
 			}
 
 			/**
@@ -421,23 +420,17 @@ class Give_Stripe_Customer {
 			 *
 			 * @since 2.5.0
 			 */
-			$new_card = apply_filters( 'give_stripe_get_new_card_details', $new_card, $this->payment_method_id, $this->stripe_gateway );
+			$newSourcePaymentMethodDetail = apply_filters(
+				'give_stripe_get_new_card_details',
+				$newSourcePaymentMethodDetail,
+				$this->payment_method_id,
+				$this->stripe_gateway
+			);
 
 			// Check to ensure that new card is already attached with customer or not.
 			if ( count( $all_sources->data ) > 0 ) {
 				foreach ( $all_sources->data as $source_item ) {
-
-					if (
-						(
-							isset( $source_item->card->fingerprint ) &&
-							$source_item->card->fingerprint === $new_card->fingerprint
-						) ||
-						(
-							isset( $source_item->fingerprint ) &&
-							$source_item->fingerprint === $new_card->fingerprint
-						)
-					) {
-
+					if ( $this->isSourceFingerPrintMatch( $source_item, $newSourcePaymentMethodDetail ) ) {
 						// Set the existing card as default source.
 						$this->customer_data->default_source = $source_item->id;
 						$this->customer_data->save();
@@ -452,30 +445,34 @@ class Give_Stripe_Customer {
 			// Create the card, if none found above.
 			if ( ! $card_exists ) {
 				try {
-
-					$card = $this->customer_data->sources->create(
-						[
-							'source' => $this->payment_method_id,
-						]
-					);
+					$card = $this->customer_data->sources->create( [ 'source' => $this->payment_method_id ] );
 
 					$this->customer_data->default_source = $card->id;
 					$this->customer_data->save();
-
 				} catch ( \Stripe\Error\Base $e ) {
 					Give_Stripe_Logger::log_error( $e, 'stripe' );
 				} catch ( Exception $e ) {
 					give_record_gateway_error(
 						__( 'Stripe Error', 'give' ),
 						sprintf(
-							/* translators: %s Exception Message Body */
-							__( 'The Stripe Gateway returned an error while creating the customer. Details: %s', 'give' ),
+						/* translators: %s Exception Message Body */
+							__(
+								'The Stripe Gateway returned an error while creating the customer. Details: %s',
+								'give'
+							),
 							$e->getMessage()
 						)
 					);
-					give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
+					give_set_error(
+						'stripe_error',
+						__(
+							'An occurred while processing the donation with the gateway. Please try your donation again.',
+							'give'
+						)
+					);
 					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
-					return false;
+
+					return;
 				}
 			}
 
@@ -483,8 +480,14 @@ class Give_Stripe_Customer {
 			if ( ! empty( $card->id ) ) {
 				$this->attached_payment_method = $card;
 			} else {
-				give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
-				give_record_gateway_error( __( 'Stripe Error', 'give' ), __( 'An error occurred retrieving or creating the ', 'give' ) );
+				give_set_error(
+					'stripe_error',
+					__( 'An error occurred while processing the donation. Please try again.', 'give' )
+				);
+				give_record_gateway_error(
+					__( 'Stripe Error', 'give' ),
+					__( 'An error occurred retrieving or creating the ', 'give' )
+				);
 				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
 				$this->attached_payment_method = false;
 			}
@@ -631,5 +634,26 @@ class Give_Stripe_Customer {
 	 */
 	public function is_bank_account( $id ) {
 		return give_stripe_is_source_type( $id, 'ba' );
+	}
+
+	/**
+	 * @since 2.11.0
+	 *
+	 * @param  stdClass  $stripeSource
+	 * @param  stdClass  $newStripeSource
+	 */
+	private function isSourceFingerPrintMatch( $stripeSource, $newStripeSource ) {
+		if ( isset( $stripeSource->fingerprint ) ) {
+			return $stripeSource->fingerprint === $newStripeSource->fingerprint;
+		}
+
+		if (
+			property_exists( $stripeSource, 'card' ) &&
+			isset( $stripeSource->card->fingerprint )
+		) {
+			return $stripeSource->card->fingerprint === $newStripeSource->fingerprint;
+		}
+
+		return false;
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Give Unit Test Case
  *
@@ -64,6 +65,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 * Asserts thing is not WP_Error.
 	 *
 	 * @since 1.0
+	 *
 	 * @param mixed  $actual
 	 * @param string $message
 	 */
@@ -85,8 +87,10 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 * Backport assertNotFalse to PHPUnit 3.6.12 which only runs in PHP 5.2.
 	 *
 	 * @since  1.0
-	 * @param  $condition
-	 * @param  string    $message
+	 *
+	 * @param        $condition
+	 * @param string $message
+	 *
 	 * @return mixed
 	 */
 	public static function assertNotFalse( $condition, $message = '' ) {
@@ -99,5 +103,59 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 
 			parent::assertNotFalse( $condition, $message );
 		}
+	}
+
+	/**
+	 * A helper for creating a Mock (AKA stub or test double) with best practices. A callable may be provided which
+	 * applies further setup for the Mock Builder. If the mock is returned in the callable, it will be returned,
+	 * otherwise the mock will be generated.
+	 *
+	 * @see https://phpunit.de/manual/5.5/en/test-doubles.html
+	 *
+	 * @since 2.11.0
+	 *
+	 * @param string        $abstract The class to create a mock for
+	 * @param null|callable $builderCallable A callable for applying additional changes to the builder
+	 *
+	 * @return object
+	 */
+	public function createMock( $abstract, $builderCallable = null ) {
+		$mockBuilder = $this->getMockBuilder( $abstract )
+							->disableOriginalConstructor()
+							->disableOriginalClone()
+							->disableArgumentCloning()
+							->disallowMockingUnknownTypes();
+
+		if ( $builderCallable !== null ) {
+			$mock = $builderCallable( $mockBuilder );
+
+			if ( is_object( $mock ) ) {
+				return $mock;
+			}
+		}
+
+		return $mockBuilder->getMock();
+	}
+
+	/**
+	 * A helper for creating a mock and binding it to the service container. This is especially useful for working with
+	 * Dependency Injection and other moments where the class being mocked is retrieved in some way from the Service
+	 * Container.
+	 *
+	 * @since 2.11.0
+	 *
+	 * @param string        $abstract
+	 * @param null|callable $builderCallable
+	 *
+	 * @return object
+	 */
+	public function mock( $abstract, $builderCallable = null ) {
+		$mock = $this->createMock( $abstract, $builderCallable );
+
+		give()->singleton( $abstract, function () use ( $mock ) {
+			return $mock;
+		} );
+
+		return $mock;
 	}
 }

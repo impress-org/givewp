@@ -8,12 +8,12 @@ use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class SetupFieldReceipt {
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param DonationReceipt $receipt
 	 */
@@ -23,7 +23,7 @@ class SetupFieldReceipt {
 
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 *
@@ -40,7 +40,7 @@ class SetupFieldReceipt {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *
@@ -60,7 +60,7 @@ class SetupFieldReceipt {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *
@@ -82,7 +82,7 @@ class SetupFieldReceipt {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *

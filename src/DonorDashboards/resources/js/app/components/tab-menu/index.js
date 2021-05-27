@@ -3,7 +3,6 @@ import { useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { __ } from '@wordpress/i18n';
-;
 
 // Internal dependencies
 import TabLink from '../tab-link';

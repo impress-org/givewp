@@ -1,7 +1,5 @@
 import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { __ } from '@wordpress/i18n';
-;
 
 const SubscriptionReceipt = ( { subscription } ) => {
 

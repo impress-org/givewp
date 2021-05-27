@@ -43,7 +43,7 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 
 			$this->stripe_gateway = new Give_Stripe_Gateway();
 
-			add_action( 'init', array( $this, 'listen' ) );
+			add_action( 'init', [ $this, 'listen' ] );
 		}
 
 		/**
@@ -74,9 +74,6 @@ if ( ! class_exists( 'Give_Stripe_Webhooks' ) ) {
 			$metadata    = (array) $event->data->object->metadata;
 			$donation_id = ! empty( $metadata['Donation Post ID'] ) ? $metadata['Donation Post ID'] : 0;
 			$form_id     = give_get_payment_form_id( $donation_id );
-
-			// Load Stripe SDK.
-			give_stripe_load_stripe_sdk();
 
 			// Set App Info, API Key, and API Version.
 			give_stripe_set_app_info( $form_id );

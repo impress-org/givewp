@@ -31,14 +31,14 @@ const DonationRow = ( { donation } ) => {
 						{ payment.status.label }
 					</div>
 				</div>
-				{ payment.mode !== 'live' && (
+				{ payment.mode === 'test' && (
 					<div className="give-donor-dashboard-table__donation-test-tag">
 						{ __( 'Test Donation', 'give' ) }
 					</div>
 				) }
 			</div>
 			<div className="give-donor-dashboard-table__pill">
-				<div className="give-donor-dashboard-table__donation-id">ID: { payment.serialCode }</div>
+				<div className="give-donor-dashboard-table__donation-id">{ __( 'ID', 'give' ) }: { payment.serialCode }</div>
 				<div className="give-donor-dashboard-table__donation-receipt">
 					<Link to={ `/donation-history/${ id }` }>
 						{ __( 'View Receipt', 'give' ) } <FontAwesomeIcon icon="arrow-right" />

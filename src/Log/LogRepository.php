@@ -2,7 +2,7 @@
 
 namespace Give\Log;
 
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Database\DB;
 use WP_REST_Request;
 use DateTime;

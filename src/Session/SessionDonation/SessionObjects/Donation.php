@@ -7,7 +7,7 @@ use Give\Session\Objects;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 
 /**

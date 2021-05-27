@@ -4,7 +4,7 @@ namespace Give\TestData\Factories;
 
 use Give\TestData\Framework\Factory;
 use DateTime;
-use InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class DonationFactory

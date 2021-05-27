@@ -7,13 +7,13 @@ use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
 /**
- * @unreleased
+ * @since 2.10.2
  */
 class SetupFieldEmailTag {
 
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param string $hook
 	 *
@@ -27,7 +27,7 @@ class SetupFieldEmailTag {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param FormField $field
 	 *
