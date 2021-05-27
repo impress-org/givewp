@@ -3,10 +3,9 @@
 	id="give-<?php echo $field->getName(); ?>"
 	class="give-input required"
 	placeholder="<?php echo $field->getLabel(); ?>"
-	<?php if ( $field->isRequired() ) : ?>    
-		required="" aria-required="true"
+	<?php if ( $field->isRequired() ) : ?>
+	required
 	<?php endif; ?>
-	tabindex="1"
 	@attributes
 >
 	<?php foreach ( $field->getOptions() as $key => $value ) : ?>

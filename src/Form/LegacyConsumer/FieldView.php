@@ -18,10 +18,17 @@ class FieldView {
 	 */
 	public static function render( FormField $field ) {
 		echo "<div class='form-row form-row-wide' data-field-type='{$field->getType()}' data-field-name='{$field->getName()}'>";
-			ob_start();
-			include plugin_dir_path( __FILE__ ) . '/templates/label.html.php';
-			include plugin_dir_path( __FILE__ ) . '/templates/' . $field->getType() . '.html.php';
-			echo self::mergeAttributes( ob_get_clean(), $field );
+		ob_start();
+		switch ( $field->getType() ) {
+			case 'radio':
+				include plugin_dir_path( __FILE__ ) . '/templates/radiogroup.html.php';
+				break;
+			default:
+				include plugin_dir_path( __FILE__ ) . '/templates/label.html.php';
+				include plugin_dir_path( __FILE__ ) . '/templates/' . $field->getType() . '.html.php';
+				break;
+		}
+		echo self::mergeAttributes( ob_get_clean(), $field );
 		echo '</div>';
 	}
 
