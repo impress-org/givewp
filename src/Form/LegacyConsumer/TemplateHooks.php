@@ -31,6 +31,8 @@ class TemplateHooks {
 		'after_cc_fields',
 		'donation_form_after_cc_form',
 		'purchase_form_bottom',
+		'donation_form_before_personal_info',
+		'donation_form_after_personal_info',
 	];
 
 	public function walk( callable $callback ) {
