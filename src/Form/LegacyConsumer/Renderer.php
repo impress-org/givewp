@@ -10,6 +10,7 @@ class Renderer {
 	public function __construct( FieldCollection $fieldCollection ) {
 		$this->dom             = new DOMDocument( '1.0', 'utf-8' );
 		$this->fieldCollection = $fieldCollection;
+		$this->currentRoot     = $this->dom;
 	}
 
 	/**
@@ -20,6 +21,27 @@ class Renderer {
 			function ( $field ) {
 				// Determine the needs of the field based on the type
 				$config = static::deriveConfigFromType( $field->getType() );
+
+				if ( $field->getType() === FieldTypes::TYPE_SECTION ) {
+					// If currently within a section, reset the current root to the document.
+					if ( ! $this->currentRoot instanceof DOMDocument ) {
+						$this->currentRoot = $this->dom;
+					}
+
+					$this->currentRoot->appendChild(
+						$section = $this->createElement(
+							'fieldset',
+							[],
+							$this->createElement( 'legend', [], $field->getLabel() )
+						)
+					);
+
+					// This sets the new root to the new section
+					$this->currentRoot = $section;
+
+					// Bail out and continue rendering the next fields, now within the section.
+					return;
+				}
 
 				// Radio (groups) are special. They render multiple inputs.
 				if ( $field->getType() === FieldTypes::TYPE_RADIO ) {
@@ -95,7 +117,7 @@ class Renderer {
 
 				// Most fields which visually display will need to use the wrapper
 				// @formatter:off
-				$this->dom->appendChild(
+				$this->currentRoot->appendChild(
 					$config->useWrapper
 					// Render the input inside the wrapper
 					? $this->createElement(
