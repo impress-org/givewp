@@ -38,28 +38,28 @@ class Renderer {
 							'aria-hidden' => true,
 						],
 						$labelContent
+					),
+					// Add the radio inputs
+					static::map(
+						$field->getOptions(),
+						function ( $option, $value ) use ( $config, $field ) {
+							// TODO: figure out the selected option
+							return $this->createElement(
+								'label',
+								[],
+								$this->createElement(
+									$config->elementType,
+									[
+										'type'  => $config->inputType,
+										'name'  => $field->getName(),
+										'value' => $value,
+									]
+								),
+								$option
+							);
+						}
 					)
 				);
-
-				// Add the radio inputs
-				// TODO: figure out the selected option
-				foreach ( $field->getOptions() as $option => $value ) {
-					$input->appendChild(
-						$this->createElement(
-							'label',
-							[],
-							$this->createElement(
-								$config->elementType,
-								[
-									'type'  => $config->inputType,
-									'name'  => $field->getName(),
-									'value' => $value,
-								]
-							),
-							$option
-						)
-					);
-				}
 			} else {
 				// The base input/textarea/select element
 				$input = $this->createElement(
@@ -80,23 +80,17 @@ class Renderer {
 							'readonly' => $field->isReadOnly(),
 							'value'    => $field->getDefaultValue(),
 						]
-					)
+					),
+					// @formatter:off
+					$field->getType() === FieldTypes::TYPE_SELECT
+						? static::map(
+							$field->getOptions(),
+							function ( $label, $value ) {
+								return $this->createElement( 'option', compact( 'value' ), $label );
+							}
+						) : []
+					// @formatter:on
 				);
-
-				if ( $field->getType() === FieldTypes::TYPE_SELECT ) {
-					// TODO: figure out selected
-					foreach ( $field->getOptions() as $label => $value ) {
-						$input->appendChild(
-							$this->createElement(
-								'option',
-								[
-									'value' => $value,
-								],
-								$label
-							)
-						);
-					}
-				}
 			}
 
 			// Most fields which visually display will need to use the wrapper
@@ -186,11 +180,14 @@ class Renderer {
 
 		// Set non-empty attributes on the element
 		// TODO: figure out a better way to handle boolean attributes
-		foreach ( $attributes as $key => $value ) {
-			if ( ! empty( $value ) ) {
-				$element->setAttribute( $key, $value );
+		static::map(
+			$attributes,
+			function ( $key, $value ) use ( $element ) {
+				if ( ! empty( $value ) ) {
+					$element->setAttribute( $key, $value );
+				}
 			}
-		}
+		);
 
 		// Append all children. Make strings text nodes.
 		array_walk_recursive(
@@ -223,6 +220,18 @@ class Renderer {
 		}
 
 		return $classString;
+	}
+
+	/**
+	 * Map with keys and values
+	 *
+	 * @param $array
+	 * @param $callback
+	 *
+	 * @return mixed
+	 */
+	private static function map( $array, $callback ) {
+		return array_map( $callback, array_keys( $array ), array_values( $array ) );
 	}
 
 	/**
