@@ -18,8 +18,6 @@ class Renderer {
 	public function render() {
 		/** @var Give\Framework\FieldsAPI\FormField $field */
 		foreach ( $this->fieldCollection->getFields() as $field ) {
-			$fieldAttributes = $field->getAttributes();
-
 			// Determine the needs of the field based on the type
 			$config = static::deriveConfigFromType( $field->getType() );
 
@@ -70,23 +68,23 @@ class Renderer {
 				// The base input/textarea/select element
 				$input = $this->createElement(
 					$config->elementType,
-					[
-						'type'        => $config->inputType,
-						'name'        => $field->getName(),
-						'id'          => "give-{$field->getName()}",
-						'class'       => static::setClassNames(
-							[
-								'give-input' => true,
-								'required'   => $field->isRequired(),
-							]
-						),
-						'required'    => $field->isRequired(),
-						'readonly'    => $field->isReadOnly(),
-						'value'       => $field->getDefaultValue(),
-						'placeholder' => $fieldAttributes['placeholder'],
-						'maxlength'   => $fieldAttributes['maxlength'],
-						// TODO: figure out other attributes
-					]
+					array_merge(
+						$field->getAttributes(),
+						[
+							'type'     => $config->inputType,
+							'name'     => $field->getName(),
+							'id'       => "give-{$field->getName()}",
+							'class'    => static::setClassNames(
+								[
+									'give-input' => true,
+									'required'   => $field->isRequired(),
+								]
+							),
+							'required' => $field->isRequired(),
+							'readonly' => $field->isReadOnly(),
+							'value'    => $field->getDefaultValue(),
+						]
+					)
 				);
 			}
 
