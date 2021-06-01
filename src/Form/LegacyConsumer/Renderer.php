@@ -29,7 +29,7 @@ class Renderer {
 					'fieldset',
 					[],
 					// The legend is for semantics, but not visuals
-					$this->createElement( 'legend', [ 'class' => 'screen-reader-text' ], ...$labelContent ),
+					$this->createElement( 'legend', [ 'class' => 'screen-reader-text' ], $labelContent ),
 					// This is for visuals, but excluded from screen readers.
 					$this->createElement(
 						'div',
@@ -37,7 +37,7 @@ class Renderer {
 							'class'       => 'give-label',
 							'aria-hidden' => true,
 						],
-						...$labelContent
+						$labelContent
 					)
 				);
 
@@ -178,9 +178,12 @@ class Renderer {
 		}
 
 		// Append all children. Make strings text nodes.
-		foreach ( $children as $child ) {
-			$element->appendChild( is_string( $child ) ? $this->dom->createTextNode( $child ) : $child );
-		}
+		array_walk_recursive(
+			$children,
+			function ( $child ) use ( $element ) {
+				$element->appendChild( is_string( $child ) ? $this->dom->createTextNode( $child ) : $child );
+			}
+		);
 
 		return $element;
 	}
