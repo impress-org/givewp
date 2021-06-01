@@ -22,7 +22,7 @@ class Renderer {
 			$config = static::deriveConfigFromType( $field->getType() );
 
 			// Radio (groups) are special. They render multiple inputs.
-			if ( $field->supportsOptions() && $field->getType() === FieldTypes::TYPE_RADIO ) {
+			if ( $field->getType() === FieldTypes::TYPE_RADIO ) {
 				$labelContent = $this->labelContent( $field );
 
 				$input = $this->createElement(
@@ -83,7 +83,7 @@ class Renderer {
 					)
 				);
 
-				if ( $field->supportsOptions() && $field->getType() === FieldTypes::TYPE_SELECT ) {
+				if ( $field->getType() === FieldTypes::TYPE_SELECT ) {
 					// TODO: figure out selected
 					foreach ( $field->getOptions() as $label => $value ) {
 						$input->appendChild(
