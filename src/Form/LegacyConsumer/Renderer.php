@@ -16,87 +16,87 @@ class Renderer {
 	 * Render the field collection
 	 */
 	public function render() {
-		/** @var Give\Framework\FieldsAPI\FormField $field */
-		foreach ( $this->fieldCollection->getFields() as $field ) {
-			// Determine the needs of the field based on the type
-			$config = static::deriveConfigFromType( $field->getType() );
+		$this->fieldCollection->walk(
+			function ( $field ) {
+				// Determine the needs of the field based on the type
+				$config = static::deriveConfigFromType( $field->getType() );
 
-			// Radio (groups) are special. They render multiple inputs.
-			if ( $field->getType() === FieldTypes::TYPE_RADIO ) {
-				$labelContent = $this->labelContent( $field );
+				// Radio (groups) are special. They render multiple inputs.
+				if ( $field->getType() === FieldTypes::TYPE_RADIO ) {
+					$labelContent = $this->labelContent( $field );
 
-				$input = $this->createElement(
-					'fieldset',
-					[],
-					// The legend is for semantics, but not visuals
-					$this->createElement( 'legend', [ 'class' => 'screen-reader-text' ], $labelContent ),
-					// This is for visuals, but excluded from screen readers.
-					$this->createElement(
-						'div',
-						[
-							'class'       => 'give-label',
-							'aria-hidden' => true,
-						],
-						$labelContent
-					),
-					// Add the radio inputs
-					static::map(
-						$field->getOptions(),
-						function ( $option, $value ) use ( $config, $field ) {
-							// TODO: figure out the selected option
-							return $this->createElement(
-								'label',
-								[],
-								$this->createElement(
-									$config->elementType,
+					$input = $this->createElement(
+						'fieldset',
+						[],
+						// The legend is for semantics, but not visuals
+						$this->createElement( 'legend', [ 'class' => 'screen-reader-text' ], $labelContent ),
+						// This is for visuals, but excluded from screen readers.
+						$this->createElement(
+							'div',
+							[
+								'class'       => 'give-label',
+								'aria-hidden' => true,
+							],
+							$labelContent
+						),
+						// Add the radio inputs
+						static::map(
+							$field->getOptions(),
+							function ( $option, $value ) use ( $config, $field ) {
+								// TODO: figure out the selected option
+								return $this->createElement(
+									'label',
+									[],
+									$this->createElement(
+										$config->elementType,
+										[
+											'type'  => $config->inputType,
+											'name'  => $field->getName(),
+											'value' => $value,
+										]
+									),
+									$option
+								);
+							}
+						)
+					);
+				} else {
+					// The base input/textarea/select element
+					$input = $this->createElement(
+						$config->elementType,
+						array_merge(
+							$field->getAttributes(),
+							[
+								'type'     => $config->inputType,
+								'name'     => $field->getName(),
+								'id'       => "give-{$field->getName()}",
+								'class'    => static::setClassNames(
 									[
-										'type'  => $config->inputType,
-										'name'  => $field->getName(),
-										'value' => $value,
+										'give-input' => true,
+										'required'   => $field->isRequired(),
 									]
 								),
-								$option
-							);
-						}
-					)
-				);
-			} else {
-				// The base input/textarea/select element
-				$input = $this->createElement(
-					$config->elementType,
-					array_merge(
-						$field->getAttributes(),
-						[
-							'type'     => $config->inputType,
-							'name'     => $field->getName(),
-							'id'       => "give-{$field->getName()}",
-							'class'    => static::setClassNames(
-								[
-									'give-input' => true,
-									'required'   => $field->isRequired(),
-								]
-							),
-							'required' => $field->isRequired(),
-							'readonly' => $field->isReadOnly(),
-							'value'    => $field->getDefaultValue(),
-						]
-					),
-					// @formatter:off
-					$field->getType() === FieldTypes::TYPE_SELECT
+								'required' => $field->isRequired(),
+								'readonly' => $field->isReadOnly(),
+								'value'    => $field->getDefaultValue(),
+							]
+						),
+						// @formatter:off
+						$field->getType() === FieldTypes::TYPE_SELECT
 						? static::map(
 							$field->getOptions(),
 							function ( $label, $value ) {
 								return $this->createElement( 'option', compact( 'value' ), $label );
 							}
 						) : []
-					// @formatter:on
-				);
-			}
+						// @formatter:on
+					);
+				}
 
-			// Most fields which visually display will need to use the wrapper
-			// @formatter:off
-			$this->dom->appendChild(
-				$config->useWrapper
+				// Most fields which visually display will need to use the wrapper
+				// @formatter:off
+				$this->dom->appendChild(
+					$config->useWrapper
 					// Render the input inside the wrapper
 					? $this->createElement(
 						'div',
@@ -107,29 +107,30 @@ class Renderer {
 							'data-field-type' => $field->getType(),
 						],
 						$config->useLabel
-							? $field->getType() === FieldTypes::TYPE_CHECKBOX
-								// Checkbox inputs should be wrapped inside their label (which shouldn’t have the regular label styles).
-								? $this->createElement( 'label', [], $input, $this->labelContent( $field ) )
-								// Otherwise, place the label before the input and reference it with `for`.
-								: [
-									$this->createElement(
-										'label',
-										[
-											'for'   => $input->getAttribute( 'id' ),
-											'class' => 'give-label',
-										],
-										$this->labelContent( $field )
-									),
-									$input,
-								]
-							// Render the input without the label
-							: $input
+						? $field->getType() === FieldTypes::TYPE_CHECKBOX
+							// Checkbox inputs should be wrapped inside their label (which shouldn’t have the regular label styles).
+							? $this->createElement( 'label', [], $input, $this->labelContent( $field ) )
+							// Otherwise, place the label before the input and reference it with `for`.
+							: [
+								$this->createElement(
+									'label',
+									[
+										'for'   => $input->getAttribute( 'id' ),
+										'class' => 'give-label',
+									],
+									$this->labelContent( $field )
+								),
+								$input,
+							]
+						// Render the input without the label
+						: $input
 					)
 					// Render the input without the wrapper
 					: $input
-			);
-			// @formatter:on
-		}
+				);
+				// @formatter:on
+			}
+		);
 
 		// Render the DOM as HTML
 		echo $this->dom->saveHTML();
