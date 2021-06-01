@@ -82,6 +82,21 @@ class Renderer {
 						]
 					)
 				);
+
+				if ( $field->supportsOptions() && $field->getType() === FieldTypes::TYPE_SELECT ) {
+					// TODO: figure out selected
+					foreach ( $field->getOptions() as $label => $value ) {
+						$input->appendChild(
+							$this->createElement(
+								'option',
+								[
+									'value' => $value,
+								],
+								$label
+							)
+						);
+					}
+				}
 			}
 
 			// Most fields which visually display will need to use the wrapper
