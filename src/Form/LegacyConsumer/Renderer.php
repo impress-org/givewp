@@ -126,7 +126,7 @@ class Renderer {
 										],
 										$this->labelContent( $field )
 									),
-									$input
+									$input,
 								]
 							// Render the input without the label
 							: $input
@@ -212,6 +212,7 @@ class Renderer {
 	 */
 	private static function setClassNames( $classNames ) {
 		// TODO: make declarative?
+		// TODO: make this handle more ways of specifying class names
 
 		$classString = '';
 
