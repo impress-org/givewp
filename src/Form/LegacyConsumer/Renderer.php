@@ -10,7 +10,7 @@ class Renderer {
 	public function __construct( FieldCollection $fieldCollection ) {
 		$this->document        = new DOMDocument( '1.0', 'utf-8' );
 		$this->fieldCollection = $fieldCollection;
-		$this->currentRoot     = $this->dom;
+		$this->currentRoot     = $this->document;
 	}
 
 	/**
