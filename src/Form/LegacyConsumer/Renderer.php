@@ -100,37 +100,41 @@ class Renderer {
 			}
 
 			// Most fields which visually display will need to use the wrapper
-			if ( $config->useWrapper ) {
-				$wrapper = $this->createElement(
-					'div',
-					[
-						// TODO: determine if the row width should be configurable. Previous FFM functionality says, yes.
-						'class'           => 'form-row form-row-wide',
-						'data-field-name' => $field->getName(),
-						'data-field-type' => $field->getType(),
-					]
-				);
-
-				// Most fields which visually display will need to have a label
-				if ( $config->useLabel ) {
-					$label = $this->createElement(
-						'label',
+			// @formatter:off
+			$this->dom->appendChild(
+				$config->useWrapper
+					// Render the input inside the wrapper
+					? $this->createElement(
+						'div',
 						[
-							'for'   => $input->getAttribute( 'id' ),
-							'class' => 'give-label',
+							// TODO: determine if the row width should be configurable. Previous FFM functionality says, yes.
+							'class'           => 'form-row form-row-wide',
+							'data-field-name' => $field->getName(),
+							'data-field-type' => $field->getType(),
 						],
-						...$this->labelContent( $field )
-					);
-
-					$wrapper->appendChild( $label );
-				}
-
-				$wrapper->appendChild( $input );
-
-				$this->dom->appendChild( $wrapper );
-			} else {
-				$this->dom->appendChild( $input );
-			}
+						$config->useLabel
+							? $field->getType() === FieldTypes::TYPE_CHECKBOX
+								// Checkbox inputs should be wrapped inside their label (which shouldn’t have the regular label styles).
+								? $this->createElement( 'label', [], $input, $this->labelContent( $field ) )
+								// Otherwise, place the label before the input and reference it with `for`.
+								: [
+									$this->createElement(
+										'label',
+										[
+											'for'   => $input->getAttribute( 'id' ),
+											'class' => 'give-label',
+										],
+										$this->labelContent( $field )
+									),
+									$input
+								]
+							// Render the input without the label
+							: $input
+					)
+					// Render the input without the wrapper
+					: $input
+			);
+			// @formatter:on
 		}
 
 		// Render the DOM as HTML
