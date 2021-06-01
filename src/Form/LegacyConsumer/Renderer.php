@@ -8,7 +8,7 @@ use Give\Framework\FieldsAPI\FormField\FieldTypes;
 
 class Renderer {
 	public function __construct( FieldCollection $fieldCollection ) {
-		$this->dom             = new DOMDocument( '1.0', 'utf-8' );
+		$this->document        = new DOMDocument( '1.0', 'utf-8' );
 		$this->fieldCollection = $fieldCollection;
 		$this->currentRoot     = $this->dom;
 	}
@@ -24,8 +24,8 @@ class Renderer {
 
 				if ( $field->getType() === FieldTypes::TYPE_SECTION ) {
 					// If currently within a section, reset the current root to the document.
-					if ( ! $this->currentRoot instanceof DOMDocument ) {
-						$this->currentRoot = $this->dom;
+					if ( $this->currentRoot !== $this->document ) {
+						$this->currentRoot = $this->document;
 					}
 
 					$this->currentRoot->appendChild(
@@ -155,7 +155,7 @@ class Renderer {
 		);
 
 		// Render the DOM as HTML
-		echo $this->dom->saveHTML();
+		echo $this->document->saveHTML();
 	}
 
 	/**
@@ -199,7 +199,7 @@ class Renderer {
 	 * @return \DOMElement|false
 	 */
 	private function createElement( $elementType, $attributes = [], ...$children ) {
-		$element = $this->dom->createElement( $elementType );
+		$element = $this->document->createElement( $elementType );
 
 		// Set non-empty attributes on the element
 		// TODO: figure out a better way to handle boolean attributes
@@ -216,7 +216,7 @@ class Renderer {
 		array_walk_recursive(
 			$children,
 			function ( $child ) use ( $element ) {
-				$element->appendChild( is_string( $child ) ? $this->dom->createTextNode( $child ) : $child );
+				$element->appendChild( is_string( $child ) ? $this->document->createTextNode( $child ) : $child );
 			}
 		);
 
