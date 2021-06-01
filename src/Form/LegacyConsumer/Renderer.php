@@ -41,28 +41,24 @@ class Renderer {
 					)
 				);
 
-				$options = $field->getOptions();
-
 				// Add the radio inputs
 				// TODO: figure out the selected option
-				if ( ! empty( $options ) ) {
-					foreach ( $options as $option => $value ) {
-						$input->appendChild(
+				foreach ( $field->getOptions() as $option => $value ) {
+					$input->appendChild(
+						$this->createElement(
+							'label',
+							[],
 							$this->createElement(
-								'label',
-								[],
-								$this->createElement(
-									$config->elementType,
-									[
-										'type'  => $config->inputType,
-										'name'  => $field->getName(),
-										'value' => $value,
-									]
-								),
-								$option
-							)
-						);
-					}
+								$config->elementType,
+								[
+									'type'  => $config->inputType,
+									'name'  => $field->getName(),
+									'value' => $value,
+								]
+							),
+							$option
+						)
+					);
 				}
 			} else {
 				// The base input/textarea/select element
