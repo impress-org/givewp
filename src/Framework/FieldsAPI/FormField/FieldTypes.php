@@ -3,7 +3,6 @@
 namespace Give\Framework\FieldsAPI\FormField;
 
 class FieldTypes {
-	const TYPE_ACTION_HOOK = 'action_hook';
 	const TYPE_CHECKBOX    = 'checkbox';
 	const TYPE_DATE        = 'date';
 	const TYPE_EMAIL       = 'email';
