@@ -543,7 +543,7 @@ function give_deactivation_popup() {
 					);
 				?>
 				</p>
-				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea>
 			</div>
 		</div>
 
@@ -555,7 +555,7 @@ function give_deactivation_popup() {
 
 			<div class="give-survey-extra-field">
 				<p><?php esc_html_e( "Please describe why you're deactivating Give", 'give' ); ?></p>
-				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea>
 			</div>
 		</div>
 
