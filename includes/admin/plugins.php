@@ -522,7 +522,7 @@ function give_deactivation_popup() {
 					);
 				?>
 				</p>
-				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea>
 			</div>
 		</div>
 
