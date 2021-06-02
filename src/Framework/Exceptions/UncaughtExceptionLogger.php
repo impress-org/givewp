@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Exceptions;
 
+use Error;
 use Exception;
 use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\Traits\Loggable;
@@ -29,11 +30,12 @@ class UncaughtExceptionLogger {
 	/**
 	 * Handles an uncaught exception by checking if the Exception is native to GiveWP and then logging it if it is
 	 *
+	 * @unreleased remove parameter typing as it may be an Error
 	 * @since 2.11.1
 	 *
-	 * @param Exception $exception
+	 * @param Exception|Error $exception
 	 */
-	public function handleException( Exception $exception ) {
+	public function handleException( $exception ) {
 		if ( $exception instanceof LoggableException ) {
 			/** @var LoggableException|Loggable $exception */
 			Log::error( $exception->getLogMessage(), $exception->getLogContext() );
