@@ -61,7 +61,19 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	// Delete All the Terms & Taxonomies.
 	foreach ( array_unique( array_filter( $give_taxonomies ) ) as $taxonomy ) {
 
-		$terms = $wpdb->get_results( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC", $taxonomy ) );
+		$terms = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT t.*, tt.*
+				FROM $wpdb->terms AS t
+				INNER JOIN $wpdb->term_taxonomy AS tt
+					ON t.term_id = tt.term_id
+				WHERE tt.taxonomy IN ('%s')
+				ORDER BY t.name ASC
+				",
+				$taxonomy
+			)
+		);
 
 		// Delete Terms.
 		if ( $terms ) {
@@ -106,7 +118,11 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	// Get all options.
 	$give_option_names = $wpdb->get_col(
 		$wpdb->prepare(
-			"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
+			"
+			SELECT option_name
+			FROM {$wpdb->options}
+			WHERE option_name LIKE '%%%s%%'
+			",
 			'give'
 		)
 	);
