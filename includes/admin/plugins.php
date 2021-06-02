@@ -641,21 +641,14 @@ function give_deactivation_form_submit() {
 
 	if ( 'true' === $response ) {
 		if ( '1' === $delete_data ) {
-			wp_send_json_success(
-				[
-					'delete_data' => true,
-				]
-			);
-		} else {
-			wp_send_json_success(
-				[
-					'delete_data' => false,
-				]
-			);
+			give_update_option( 'uninstall_on_delete', 'enabled' );
+			wp_send_json_success( [ 'delete_data' => true ] );
 		}
-	} else {
-		wp_send_json_error();
+
+		wp_send_json_success( [ 'delete_data' => false ] );
 	}
+
+	wp_send_json_error();
 }
 
 add_action( 'wp_ajax_deactivation_form_submit', 'give_deactivation_form_submit' );
