@@ -8,6 +8,7 @@ class FieldTypes {
 	const TYPE_EMAIL    = 'email';
 	const TYPE_FILE     = 'file';
 	const TYPE_HIDDEN   = 'hidden';
+	const TYPE_HTML     = 'html';
 	const TYPE_PHONE    = 'phone';
 	const TYPE_RADIO    = 'radio';
 	const TYPE_SELECT   = 'select';
