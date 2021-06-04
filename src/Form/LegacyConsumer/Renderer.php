@@ -34,27 +34,18 @@ function isAssoc( array $array ) {
 function cx( ...$classNames ) {
 	$classList = [];
 
-	array_walk(
+	array_walk_recursive(
 		$classNames,
-		static function ( $item ) use ( $classList ) {
-			if ( is_string( $item ) ) {
-				$classList[] = $item;
-			}
-
-			if ( is_array( $item ) && isAssoc( $item ) ) {
-				array_walk(
-					$item,
-					static function ( $enabled, $className ) use ( $classList ){
-						if ( $enabled ) {
-							$classList[] = $className;
-						}
-					}
-				);
+		static function ( $value, $key ) use ( &$classList ) {
+			if ( is_string( $key ) && $value ) {
+				$classList[] = $key;
+			} else if ( is_string( $value ) ) {
+				$classList[] = $value;
 			}
 		}
 	);
 
-	return implode( ' ', $classList );
+	return implode( ' ', array_unique( $classList ) );
 }
 
 /**
@@ -294,13 +285,6 @@ class Renderer {
 		return $content;
 	}
 
-	/**
-	 * A helper for concatenating class names
-	 *
-	 * @param $classNames
-	 *
-	 * @return string
-	 */
 	/**
 	 * Derive the render config from the field type
 	 *
