@@ -2,7 +2,6 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Form\LegacyConsumer\Renderer;
 use Give\Framework\FieldsAPI\FieldCollection;
 use Give\Form\LegacyConsumer\FieldView;
 
@@ -19,15 +18,13 @@ class SetupNewTemplateHook implements HookCommandInterface {
 	 * @return void
 	 */
 	public function __invoke( $hook ) {
-
 		// On the old hook, run the new hook and render the fields.
 		add_action(
 			"give_$hook",
-			function( $formID ) use ( $hook ) {
+			function ( $formID ) use ( $hook ) {
 				$fieldCollection = new FieldCollection( 'root' );
 				do_action( "give_fields_$hook", $fieldCollection, $formID );
-				$renderer = new Renderer( $fieldCollection );
-				$renderer->render();
+				$fieldCollection->walk( [ FieldView::class, 'render' ] );
 			}
 		);
 	}
