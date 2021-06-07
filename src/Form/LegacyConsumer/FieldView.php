@@ -10,8 +10,8 @@ use Give\Framework\FieldsAPI\FormField\FieldTypes;
  */
 class FieldView {
 	const INPUT_TYPE_ATTRIBUTES = [
-		FieldTypes::TYPE_PHONE => 'tel',
-		FieldTypes::TYPE_EMAIL => 'email',
+		FieldTypes::TYPE_PHONE    => 'tel',
+		FieldTypes::TYPE_EMAIL    => 'email',
 		FieldTypes::TYPE_CHECKBOX => 'checkbox',
 	];
 
@@ -23,15 +23,22 @@ class FieldView {
 	 * @return void
 	 */
 	public static function render( FormField $field ) {
-		echo "<div class='form-row form-row-wide' data-field-type='{$field->getType()}' data-field-name='{$field->getName()}'>";
+		$type = $field->getType();
+
+		if ( $type === FieldTypes::TYPE_HIDDEN ) {
+			include static::getTemplatePath( 'hidden' );
+
+			return;
+		}
+
+		echo "<div class=\"form-row form-row-wide\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
 		ob_start();
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
-		switch ( $type = $field->getType() ) {
+		switch ( $type ) {
 			case FieldTypes::TYPE_HTML: // This is a free form HTML field.
-				do_shortcode( $field->getDefaultValue() );
+				echo do_shortcode( $field->getDefaultValue() );
 				break;
 			// These field types do not need a label and have their own template.
-			case FieldTypes::TYPE_HIDDEN: // Hidden does not need a label for obvious reasons.
 			case FieldTypes::TYPE_RADIO: // Radio provides its own label
 				include static::getTemplatePath( $type );
 				break;
@@ -43,7 +50,6 @@ class FieldView {
 				break;
 			// By default, include a template and use the base input template.
 			default:
-				$typeAttribute = static::INPUT_TYPE_ATTRIBUTES[ $type ]; // Override the type attribute
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( 'base' );
 				break;
