@@ -74,17 +74,18 @@ class FieldView {
 			array_keys( $field->getAttributes() ),
 			array_values( $field->getAttributes() )
 		);
+
 		return str_replace( '@attributes', implode( ' ', $attributes ), $html );
 	}
 
 	/**
 	 * @unreleased
 	 *
-	 * @param string $templateName
+	 * @param  string  $templateName
 	 *
 	 * @return string
 	 */
-	protected static function getTemplatePath( string $templateName ) {
+	protected static function getTemplatePath( $templateName ) {
 		return plugin_dir_path( __FILE__ ) . "/templates/{$templateName}.html.php";
 	}
 }
