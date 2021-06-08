@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.11.2 - 2021-06-08
+
+### Fixed
+
+-   Uncaught exception handler no longer breaks on Errors (#5846)
+-   Uninstalling GiveWP no longer throws an exception (#5846)
+
 ## 2.11.1 - 2021-05-24
 
 ### New
