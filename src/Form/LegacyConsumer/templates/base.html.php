@@ -1,7 +1,7 @@
 <?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
-<?php /** @var string|null $typeAttribute */ ?>
+<?php /** @var string $typeAttribute */ ?>
 <input
-	type="<?php echo $typeAttribute ?: 'text'; ?>"
+	type="<?php echo $typeAttribute; ?>"
 	name="<?php echo $field->getName(); ?>"
 	id="give-<?php echo $field->getName(); ?>"
 	class="give-input<?php echo $field->isRequired() ? ' required' : ''; ?>"

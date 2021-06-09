@@ -50,6 +50,7 @@ class FieldView {
 				break;
 			// By default, include a template and use the base input template.
 			default:
+				$typeAttribute = array_key_exists( $type, static::INPUT_TYPE_ATTRIBUTES ) ? static::INPUT_TYPE_ATTRIBUTES[ $type ] : 'text';
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( 'base' );
 				break;
