@@ -105,6 +105,20 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * A helper for creating a Mock (AKA stub or test double) with best practices. A callable may be provided which
+	 * applies further setup for the Mock Builder. If the mock is returned in the callable, it will be returned,
+	 * otherwise the mock will be generated.
+	 *
+	 * @see https://phpunit.de/manual/5.5/en/test-doubles.html
+	 *
+	 * @since 2.11.0
+	 *
+	 * @param string        $abstract The class to create a mock for
+	 * @param null|callable $builderCallable A callable for applying additional changes to the builder
+	 *
+	 * @return object
+	 */
 	public function createMock( $abstract, $builderCallable = null ) {
 		$mockBuilder = $this->getMockBuilder( $abstract )
 							->disableOriginalConstructor()
@@ -115,7 +129,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		if ( $builderCallable !== null ) {
 			$mock = $builderCallable( $mockBuilder );
 
-			if ( is_object($mock) ) {
+			if ( is_object( $mock ) ) {
 				return $mock;
 			}
 		}
@@ -123,6 +137,18 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		return $mockBuilder->getMock();
 	}
 
+	/**
+	 * A helper for creating a mock and binding it to the service container. This is especially useful for working with
+	 * Dependency Injection and other moments where the class being mocked is retrieved in some way from the Service
+	 * Container.
+	 *
+	 * @since 2.11.0
+	 *
+	 * @param string        $abstract
+	 * @param null|callable $builderCallable
+	 *
+	 * @return object
+	 */
 	public function mock( $abstract, $builderCallable = null ) {
 		$mock = $this->createMock( $abstract, $builderCallable );
 

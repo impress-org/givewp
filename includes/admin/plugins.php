@@ -24,13 +24,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array An array of updated action links.
  */
 function give_plugin_action_links( $actions ) {
-	$new_actions = array(
+	$new_actions = [
 		'settings' => sprintf(
 			'<a href="%1$s">%2$s</a>',
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings' ),
 			__( 'Settings', 'give' )
 		),
-	);
+	];
 
 	return array_merge( $new_actions, $actions );
 }
@@ -53,16 +53,16 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 		return $plugin_meta;
 	}
 
-	$new_meta_links = array(
+	$new_meta_links = [
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
 			esc_url(
 				add_query_arg(
-					array(
+					[
 						'utm_source'   => 'plugins-page',
 						'utm_medium'   => 'plugin-row',
 						'utm_campaign' => 'admin',
-					),
+					],
 					'https://givewp.com/documentation/'
 				)
 			),
@@ -72,17 +72,17 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 			'<a href="%1$s" target="_blank">%2$s</a>',
 			esc_url(
 				add_query_arg(
-					array(
+					[
 						'utm_source'   => 'plugins-page',
 						'utm_medium'   => 'plugin-row',
 						'utm_campaign' => 'admin',
-					),
+					],
 					'https://givewp.com/addons/'
 				)
 			),
 			__( 'Add-ons', 'give' )
 		),
-	);
+	];
 
 	return array_merge( $plugin_meta, $new_meta_links );
 }
@@ -133,7 +133,7 @@ function give_recently_activated_addons() {
 	// Check if action is set.
 	if ( isset( $_REQUEST['action'] ) ) {
 		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
-		$plugins       = array();
+		$plugins       = [];
 
 		switch ( $plugin_action ) {
 			case 'activate': // Single add-on activation.
@@ -178,7 +178,7 @@ add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
 function give_filter_addons_do_filter_addons( $plugin_menu ) {
 	global $plugins;
 
-	$give_addons = wp_list_pluck( give_get_plugins( array( 'only_add_on' => true ) ), 'Name' );
+	$give_addons = wp_list_pluck( give_get_plugins( [ 'only_add_on' => true ] ), 'Name' );
 
 	if ( ! empty( $give_addons ) ) {
 		foreach ( $plugins['all'] as $file => $plugin_data ) {
@@ -360,11 +360,11 @@ function give_get_plugin_upgrade_notice( $new_version ) {
  */
 function give_parse_plugin_update_notice( $content, $new_version ) {
 	$version_parts     = explode( '.', $new_version );
-	$check_for_notices = array(
+	$check_for_notices = [
 		$version_parts[0] . '.0',
 		$version_parts[0] . '.0.0',
 		$version_parts[0] . '.' . $version_parts[1] . '.' . '0',
-	);
+	];
 
 	// Regex to extract Upgrade notice from the readme.txt file.
 	$notice_regexp = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( $new_version ) . '\s*=|$)~Uis';
@@ -444,7 +444,7 @@ add_action( 'admin_head', 'give_plugin_notice_css' );
  * @return mixed|array list of recently activated add-on
  */
 function give_get_recently_activated_addons() {
-	return get_option( 'give_recently_activated_addons', array() );
+	return get_option( 'give_recently_activated_addons', [] );
 }
 
 /**
@@ -459,7 +459,7 @@ function give_deactivation_popup() {
 		give_die();
 	}
 
-	$results = array();
+	$results = [];
 
 	// Start output buffering.
 	ob_start();
@@ -522,7 +522,7 @@ function give_deactivation_popup() {
 					);
 				?>
 				</p>
-				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea>
 			</div>
 		</div>
 
@@ -543,7 +543,7 @@ function give_deactivation_popup() {
 					);
 				?>
 				</p>
-				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea>
 			</div>
 		</div>
 
@@ -555,7 +555,7 @@ function give_deactivation_popup() {
 
 			<div class="give-survey-extra-field">
 				<p><?php esc_html_e( "Please describe why you're deactivating Give", 'give' ); ?></p>
-				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea disabled>
+				<textarea disabled name="user-reason" class="widefat" rows="6"></textarea>
 			</div>
 		</div>
 
@@ -626,14 +626,14 @@ function give_deactivation_form_submit() {
 	 */
 	$response = wp_remote_post(
 		'http://survey.givewp.com/wp-json/give/v2/survey/',
-		array(
-			'body' => array(
+		[
+			'body' => [
 				'radio_value'        => $radio_value,
 				'user_reason'        => $user_reason,
 				'current_user_email' => $user_email,
 				'site_url'           => $site_url,
-			),
-		)
+			],
+		]
 	);
 
 	// Check if the data is sent and stored correctly.
@@ -641,21 +641,14 @@ function give_deactivation_form_submit() {
 
 	if ( 'true' === $response ) {
 		if ( '1' === $delete_data ) {
-			wp_send_json_success(
-				array(
-					'delete_data' => true,
-				)
-			);
-		} else {
-			wp_send_json_success(
-				array(
-					'delete_data' => false,
-				)
-			);
+			give_update_option( 'uninstall_on_delete', 'enabled' );
+			wp_send_json_success( [ 'delete_data' => true ] );
 		}
-	} else {
-		wp_send_json_error();
+
+		wp_send_json_success( [ 'delete_data' => false ] );
 	}
+
+	wp_send_json_error();
 }
 
 add_action( 'wp_ajax_deactivation_form_submit', 'give_deactivation_form_submit' );
