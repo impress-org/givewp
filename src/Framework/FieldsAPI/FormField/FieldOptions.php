@@ -28,7 +28,11 @@ trait FieldOptions {
 	/**
 	 * Set the options
 	 *
-	 * @param array $options
+	 * Note that the keys of associative arrays are not supported for setting values or labels.
+	 * For setting labels either use `new FieldOption($value, $label)` or `[$value, $label]`.
+	 * In either case, the label is optional.
+	 *
+	 * @param FieldOption[]|array[]|array $options
 	 *
 	 * @return $this
 	 */
@@ -36,11 +40,8 @@ trait FieldOptions {
 		// Reset options, since they are meant to be set immutably
 		$this->options = [];
 
-		// Determine if the provided options are an associative array before the loop to avoid extra work.
-		$areOptionsAnAssocArray = Arr::isAssoc( $options );
-
 		// Loop through the options and transform them to the proper format.
-		foreach ( $options as $key => $value ) {
+		foreach ( $options as $value ) {
 			if ( $value instanceof FieldOption ) {
 				// In this case, what is provided matches the proper format, so we can just append it.
 				$this->options[] = $value;
@@ -48,10 +49,6 @@ trait FieldOptions {
 				// In this case, what has been provided in the value is an array with a value then a label.
 				// This matches the constructor of `FieldOption`, so we can unpack it as arguments for a new instance.
 				$this->options[] = new FieldOption( ...$value );
-			} elseif ( $areOptionsAnAssocArray ) {
-				// In this case, the array is associative, therefore, we expect the key to be the option’s value
-				// and the value to be the option’s label.
-				$this->options[] = new FieldOption( $key, $value );
 			} else {
 				// In this case, we just have a value which is the bare minimum required for a `FieldOption`.
 				$this->options[] = new FieldOption( $value );
