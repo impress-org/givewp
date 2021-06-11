@@ -8,7 +8,7 @@ trait FieldDefaultValue {
 	protected $defaultValue;
 
 	/**
-	 * @param string $defaultValue
+	 * @param string|array $defaultValue
 	 * @return $this
 	 */
 	public function defaultValue( $defaultValue ) {
@@ -17,9 +17,16 @@ trait FieldDefaultValue {
 	}
 
 	/**
-	 * @return string
+	 * @return string|array
 	 */
 	public function getDefaultValue() {
 		return $this->defaultValue;
+	}
+
+	/**
+	 * @return string|array
+	 */
+	public function getSelected() {
+		return $this->getDefaultValue();
 	}
 }

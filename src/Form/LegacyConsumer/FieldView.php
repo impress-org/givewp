@@ -54,9 +54,13 @@ class FieldView {
 				break;
 			// These fields need a label and have their own template.
 			case FieldTypes::TYPE_SELECT:
+				$selectedOptions = is_array( $selectedOptions = $field->getSelected() ) ? $selectedOptions : [ $selectedOptions ];
+				include static::getTemplatePath( 'label' );
+				include static::getTemplatePath( 'select' );
+				break;
 			case FieldTypes::TYPE_TEXTAREA:
 				include static::getTemplatePath( 'label' );
-				include static::getTemplatePath( $type );
+				include static::getTemplatePath( 'textarea' );
 				break;
 			// By default, include a template and use the base input template.
 			default:

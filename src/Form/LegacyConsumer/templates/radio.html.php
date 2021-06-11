@@ -14,13 +14,12 @@
 			type="radio"
 			name="give_<?php echo $field->getName(); ?>"
 			class="<?php echo $classAttribute; ?>"
-			<?php if ( $field->isRequired() ) : ?>
-			required
-			<?php endif; ?>
+			<?php echo $field->isRequired() ? 'required' : ''; ?>
+			<?php echo $option->getValue() === $field->getDefaultValue() ? 'checked' : ''; ?>
 			value="<?php echo $option->getValue(); ?>"
 			@attributes
 		>
-		<?php echo $option->getLabel(); ?>
+		<?php echo $option->getLabel() ?: $option->getValue(); ?>
 	</label>
 	<?php endforeach; ?>
 </fieldset>
