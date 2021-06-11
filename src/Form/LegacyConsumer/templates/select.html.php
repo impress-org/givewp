@@ -1,8 +1,9 @@
 <?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
+<?php /** @var string $classAttribute */ ?>
 <select
   name="give_<?php echo $field->getName(); ?>"
   id="give-<?php echo $field->getName(); ?>"
-  class="give-input required"
+  class="<?php echo $classAttribute; ?>"
 	<?php if ( $field->isRequired() ) : ?>
 	  required
 	<?php endif; ?>

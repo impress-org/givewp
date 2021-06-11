@@ -4,6 +4,7 @@ namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\FormField;
 use Give\Framework\FieldsAPI\FormField\FieldTypes;
+use Give\Helpers\Html;
 
 /**
  * @since 2.10.2
@@ -31,6 +32,15 @@ class FieldView {
 			return;
 		}
 
+		// Set the class for the input element (used in the templates)
+		$classAttribute = Html::classNames(
+			'give-input',
+			$field->getClassAttribute(),
+			[
+				'required' => $field->isRequired(),
+			]
+		);
+
 		echo "<div class=\"form-row form-row-wide\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
 		ob_start();
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
@@ -50,6 +60,7 @@ class FieldView {
 				break;
 			// By default, include a template and use the base input template.
 			default:
+				// Used in the template
 				$typeAttribute = array_key_exists( $type, static::INPUT_TYPE_ATTRIBUTES ) ? static::INPUT_TYPE_ATTRIBUTES[ $type ] : 'text';
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( 'base' );

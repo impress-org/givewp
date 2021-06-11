@@ -1,4 +1,5 @@
 <?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
+<?php /** @var string $classAttribute */ ?>
 <?php /* Fieldsets + legends are terrible to style, so we just use the semantic markup and style something else. */ ?>
 <fieldset>
 	<legend class="screen-reader-text">
@@ -12,6 +13,7 @@
 		<input
 			type="radio"
 			name="give_<?php echo $field->getName(); ?>"
+			class="<?php echo $classAttribute; ?>"
 			<?php if ( $field->isRequired() ) : ?>
 			required
 			<?php endif; ?>
