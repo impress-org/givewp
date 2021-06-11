@@ -7,7 +7,7 @@
 	class="give-input<?php echo $field->isRequired() ? ' required' : ''; ?>"
 	value="<?php echo $field->getDefaultValue(); ?>"
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
-	<?php $field->isRequired() ? 'required' : ''; ?>
+	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	data-required="<?php echo $field->isRequired(); ?>"
 	@attributes
 >
