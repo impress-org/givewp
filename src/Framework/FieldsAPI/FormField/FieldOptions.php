@@ -42,11 +42,8 @@ trait FieldOptions {
 		// Loop through the options and transform them to the proper format.
 		foreach ( $options as $maybeLabel => $fieldOptionOrArrayOrValue ) {
 			if ( $fieldOptionOrArrayOrValue instanceof FieldOption ) {
-				// Since the given format matches the proper format (i.e. an array of FieldOption),
-				// we can avoid additional cycles of the loop by just setting the value and breaking
-				// out of it early.
-				$this->options = $options;
-				break;
+				// This matches the proper format so we can just add it
+				$this->options[] = $fieldOptionOrArrayOrValue;
 			}
 
 			if ( is_array( $fieldOptionOrArrayOrValue ) ) {
