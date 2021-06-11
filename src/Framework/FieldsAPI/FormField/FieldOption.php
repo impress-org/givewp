@@ -40,4 +40,16 @@ class FieldOption {
 	public function getLabel() {
 		return $this->label;
 	}
+
+	/**
+	 * Serialize
+	 *
+	 * @return object
+	 */
+	public function jsonserialize() {
+		return (object) [
+			'value' => $this->value,
+			'label' => $this->label,
+		];
+	}
 }

@@ -42,7 +42,7 @@ class FormField implements Node {
 			'name'     => $this->getName(),
 			'required' => $this->isRequired(),
 			'readOnly' => $this->isReadOnly(),
-			'options'  => $this->getOptions(),
+			'options'  => $this->jsonserialize(),
 		];
 	}
 }
