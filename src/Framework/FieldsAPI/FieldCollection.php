@@ -57,10 +57,10 @@ class FieldCollection implements GroupNode {
 		return false;
 	}
 
-	public function jsonserialize() {
+	public function jsonSerialize() {
 		return array_map(
-			function( $node ) {
-				return $node->jsonserialize();
+			static function( $node ) {
+				return $node->jsonSerialize();
 			},
 			$this->nodes
 		);

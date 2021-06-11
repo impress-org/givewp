@@ -91,18 +91,4 @@ trait FieldOptions {
 			}
 		}
 	}
-
-	/**
-	 * Serialize all options
-	 *
-	 * @return object[]
-	 */
-	public function jsonserialize() {
-		return array_map(
-			static function ( $option ) {
-				return $option->jsonserialize();
-			},
-			$this->options
-		);
-	}
 }

@@ -2,12 +2,14 @@
 
 namespace Give\Framework\FieldsAPI\FormField;
 
+use JsonSerializable;
+
 /**
  * Class FieldOption
  *
  * @unreleased
  */
-class FieldOption {
+class FieldOption implements JsonSerializable {
 	/** @var string */
 	protected $value;
 
@@ -42,11 +44,9 @@ class FieldOption {
 	}
 
 	/**
-	 * Serialize
-	 *
-	 * @return object
+	 * {@inheritdoc}
 	 */
-	public function jsonserialize() {
+	public function jsonSerialize() {
 		return (object) [
 			'value' => $this->value,
 			'label' => $this->label,

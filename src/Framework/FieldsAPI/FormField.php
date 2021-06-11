@@ -36,13 +36,21 @@ class FormField implements Node {
 		return $this->name;
 	}
 
-	public function jsonserialize() {
+	/**
+	 * {@inheritdoc}
+	 */
+	public function jsonSerialize() {
 		return [
 			'type'     => $this->getType(),
 			'name'     => $this->getName(),
 			'required' => $this->isRequired(),
 			'readOnly' => $this->isReadOnly(),
-			'options'  => $this->jsonserialize(),
+			'options'  => array_map(
+				static function ( $option ) {
+					return $option->jsonSerialize();
+				},
+				$this->getOptions()
+			),
 		];
 	}
 }
