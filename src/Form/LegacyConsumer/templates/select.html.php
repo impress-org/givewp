@@ -8,7 +8,11 @@
 	<?php endif; ?>
   @attributes
 >
-	<?php foreach ( $field->getOptions() as $key => $value ) : ?>
-	  <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+	<?php foreach ( $field->getOptions() as $option ) : ?>
+		<?php if ( $label = $option->getLabel() ) : ?>
+	<option value="<?php echo $option->getValue(); ?>"><?php echo $label; ?></option>
+		<?php else : ?>
+	<option><?php echo $option->getValue(); ?></option>
+		<?php endif; ?>
 	<?php endforeach; ?>
 </select>

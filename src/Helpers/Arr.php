@@ -12,8 +12,6 @@ class Arr {
 	/**
 	 * Is the array associative?
 	 *
-	 * @unreleased
-	 *
 	 * @param array $array
 	 * @return bool
 	 */

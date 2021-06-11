@@ -7,17 +7,18 @@
 	<div class="give-label" aria-hidden="true">
 		<?php include plugin_dir_path( __FILE__ ) . '/label-content.html.php'; ?>
 	</div>
-	<?php foreach ( $field->getOptions() as $option => $label ) : ?>
+	<?php foreach ( $field->getOptions() as $option ) : ?>
 	<label>
 		<input
 			type="radio"
-			name="give_<?= $field->getName() ?>"
+			name="give_<?php echo $field->getName(); ?>"
 			<?php if ( $field->isRequired() ) : ?>
 			required
 			<?php endif; ?>
+			value="<?php echo $option->getValue(); ?>"
 			@attributes
 		>
-		<?= $label ?>
+		<?php echo $option->getLabel(); ?>
 	</label>
 	<?php endforeach; ?>
 </fieldset>
