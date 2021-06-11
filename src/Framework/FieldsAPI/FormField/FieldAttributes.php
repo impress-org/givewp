@@ -28,6 +28,32 @@ trait FieldAttributes {
 	 * @return array
 	 */
 	public function getAttributes() {
-		return $this->attributes;
+		$attributesWithoutClassOrId = $this->attributes;
+
+		foreach ( [ 'class', 'id' ] as $attribute ) {
+			if ( in_array( $attribute, $attributesWithoutClassOrId, true ) ) {
+				unset( $attributesWithoutClassOrId[ $attribute ] );
+			}
+		}
+
+		return $attributesWithoutClassOrId;
+	}
+
+	/**
+	 * Get the class attribute
+	 *
+	 * @return ?string
+	 */
+	public function getClassAttribute() {
+		return isset( $this->attributes['class'] ) ? $this->attributes['class'] : null;
+	}
+
+	/**
+	 * Get the ID attribute
+	 *
+	 * @return ?string
+	 */
+	public function getIdAttribute() {
+		return isset( $this->attributes['class'] ) ? $this->attributes['id'] : null;
 	}
 }
