@@ -40,21 +40,21 @@ trait FieldOptions {
 		$areOptionsAnAssocArray = Arr::isAssoc( $options );
 
 		// Loop through the options and transform them to the proper format.
-		foreach ( $options as $maybeLabel => $fieldOptionOrArrayOrValue ) {
-			if ( $fieldOptionOrArrayOrValue instanceof FieldOption ) {
-				// This matches the proper format so we can just add it
-				$this->options[] = $fieldOptionOrArrayOrValue;
-			}
-
-			if ( is_array( $fieldOptionOrArrayOrValue ) ) {
-				// In this case, what is provided is an array with the value, then the label.
-				$this->options[] = new FieldOption( ...$fieldOptionOrArrayOrValue );
+		foreach ( $options as $key => $value ) {
+			if ( $value instanceof FieldOption ) {
+				// In this case, what is provided matches the proper format, so we can just append it.
+				$this->options[] = $value;
+			} elseif ( is_array( $value ) ) {
+				// In this case, what has been provided in the value is an array with a value then a label.
+				// This matches the constructor of `FieldOption`, so we can unpack it as arguments for a new instance.
+				$this->options[] = new FieldOption( ...$value );
+			} elseif ( $areOptionsAnAssocArray ) {
+				// In this case, the array is associative, therefore, we expect the key to be the option’s value
+				// and the value to be the option’s label.
+				$this->options[] = new FieldOption( $key, $value );
 			} else {
-				// In this case, we have a value and maybe a label if the original array was associative.
-				$this->options[] = new FieldOption(
-					$fieldOptionOrArrayOrValue,
-					$areOptionsAnAssocArray ? $maybeLabel : null
-				);
+				// In this case, we just have a value which is the bare minimum required for a `FieldOption`.
+				$this->options[] = new FieldOption( $value );
 			}
 		}
 
