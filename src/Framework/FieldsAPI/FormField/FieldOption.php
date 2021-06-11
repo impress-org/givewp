@@ -47,7 +47,7 @@ class FieldOption implements JsonSerializable {
 	 * {@inheritdoc}
 	 */
 	public function jsonSerialize() {
-		return (object) [
+		return [
 			'value' => $this->value,
 			'label' => $this->label,
 		];
