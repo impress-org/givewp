@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Give\Framework\FieldsAPI\FormField;
+use Give\Framework\FieldsAPI\FormField\FieldOption;
 
 final class FieldOptionsTest extends TestCase {
 
@@ -25,5 +26,18 @@ final class FieldOptionsTest extends TestCase {
 			[ 'bee', 'bee' ],
 		]);
         $this->assertCount( 2, $field->getOptions() );
+    }
+
+    public function testSetOptionsNormalizesInput() {
+    	$field = new FormField( 'select', 'my-select-field' );
+
+	    $field->options([
+	    	'foo',
+	    	['bar', 'Bar'],
+	    	new FieldOption( 'aye', 'Aye' ),
+			new FieldOption( 'bee' ),
+	    ]);
+
+		$this->assertContainsOnlyInstancesOf( FieldOption::class, $field->getOptions() );
     }
 }
