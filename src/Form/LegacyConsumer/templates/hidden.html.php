@@ -1,7 +1,10 @@
 <?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
 <input
 	type="hidden"
-	id="give-<?= $field->getName() ?>"
-	name="<?= $field->getName() ?>"
-	value="<?= $field->getDefaultValue() ?>"
->
+	name="<?php echo $field->getName(); ?>"
+	id="give-<?php echo $field->getName(); ?>"
+	<?php if ( $value = $field->getDefaultValue() ) : ?>
+	value="<?php echo esc_attr( $value ); ?>"
+	<?php endif; ?>
+	@attributes
+/>
