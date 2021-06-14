@@ -17,13 +17,13 @@ final class FieldOptionsTest extends TestCase {
     public function testSetOptions() {
         $field = new FormField( 'select', 'my-select-field' );
 
-        $field->options([ 'aye' => 'Aye' ]);
-        $this->assertEquals( 1, count( $field->getOptions() ) );
+        $field->options( [ [ 'aye', 'Aye' ] ] );
+        $this->assertCount( 1, $field->getOptions() );
 
         $field->options([
-            'aye' => 'Aye',
-            'bee' => 'bee',
-        ]);
-        $this->assertEquals( 2, count( $field->getOptions() ) );
+			[ 'aye', 'Aye' ],
+			[ 'bee', 'bee' ],
+		]);
+        $this->assertCount( 2, $field->getOptions() );
     }
 }
