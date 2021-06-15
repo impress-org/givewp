@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-  Update wp-env package to resolve project setup issue (#5850)
+
 ## 2.11.2 - 2021-06-08
 
 ### Fixed
