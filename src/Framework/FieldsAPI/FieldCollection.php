@@ -46,7 +46,7 @@ class FieldCollection implements GroupNode {
 	}
 
 	public function getNodeByName( $name ) {
-		foreach ( $this->nodes as $index => $node ) {
+		foreach ( $this->nodes as $node ) {
 			if ( $node->getName() === $name ) {
 				return $node;
 			}
