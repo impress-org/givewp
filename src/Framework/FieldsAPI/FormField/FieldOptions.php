@@ -2,8 +2,6 @@
 
 namespace Give\Framework\FieldsAPI\FormField;
 
-use Give\Helpers\Arr;
-
 trait FieldOptions {
 
 	/** @var FieldOption[] */
