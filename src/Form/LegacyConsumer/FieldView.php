@@ -14,6 +14,7 @@ class FieldView {
 		FieldTypes::TYPE_PHONE    => 'tel',
 		FieldTypes::TYPE_EMAIL    => 'email',
 		FieldTypes::TYPE_CHECKBOX => 'checkbox',
+		FieldTypes::TYPE_URL      => 'url',
 	];
 
 	/**
