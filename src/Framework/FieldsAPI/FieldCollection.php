@@ -27,15 +27,24 @@ class FieldCollection implements GroupNode {
 		$this->nodes = $nodes;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getName() {
 		return $this->name;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function append( Node $node ) {
 		$this->insertAtIndex( $this->count(), $node );
 		return $this;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getNodeIndexByName( $name ) {
 		foreach ( $this->nodes as $index => $node ) {
 			if ( $node->getName() === $name ) {
@@ -45,6 +54,9 @@ class FieldCollection implements GroupNode {
 		return false;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getNodeByName( $name ) {
 		foreach ( $this->nodes as $node ) {
 			if ( $node->getName() === $name ) {
@@ -57,6 +69,9 @@ class FieldCollection implements GroupNode {
 		return false;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function jsonSerialize() {
 		return array_map(
 			static function( $node ) {
@@ -66,10 +81,16 @@ class FieldCollection implements GroupNode {
 		);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getFields() {
 		return $this->nodes;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function count() {
 		return count( $this->getFields() );
 	}
