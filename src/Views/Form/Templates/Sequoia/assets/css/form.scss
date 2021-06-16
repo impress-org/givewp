@@ -109,6 +109,11 @@ p {
 	}
 	&:hover {
 		filter: brightness(1.2);
+
+		> i {
+			position: relative;
+			left: 2px;
+		}
 	}
 }
 
