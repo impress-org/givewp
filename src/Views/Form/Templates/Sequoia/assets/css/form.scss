@@ -564,7 +564,7 @@ p {
 				}
 
 				&.currency--after {
-					margin: 0 0 11px 6px;
+					margin: 0 -10px 11px 6px;
 					@media screen and (max-width: $break-phone) {
 						font-size: 11px;
 						margin: 0 0 6px 3px;
