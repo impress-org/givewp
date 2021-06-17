@@ -2,11 +2,14 @@
 
 namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
-trait CreatesSelfWithName {
+/**
+ * Make a name for yourself
+ */
+trait MakeFieldWithName {
+
+	use HasName;
 
 	/**
-	 * Select constructor
-	 *
 	 * @param string $name
 	 */
 	protected function __construct( $name ) {
@@ -14,6 +17,8 @@ trait CreatesSelfWithName {
 	}
 
 	/**
+	 * Create a named field.
+	 *
 	 * @param string $name
 	 *
 	 * @return static
