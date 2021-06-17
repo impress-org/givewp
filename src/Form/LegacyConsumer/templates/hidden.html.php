@@ -6,5 +6,4 @@
 	<?php if ( $value = $field->getDefaultValue() ) : ?>
 	value="<?php echo esc_attr( $value ); ?>"
 	<?php endif; ?>
-	@attributes
 />

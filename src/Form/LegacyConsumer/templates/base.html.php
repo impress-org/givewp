@@ -10,5 +10,4 @@
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	data-required="<?php echo $field->isRequired(); ?>"
-	@attributes
 >

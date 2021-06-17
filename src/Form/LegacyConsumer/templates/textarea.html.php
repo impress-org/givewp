@@ -7,5 +7,4 @@
 	<?php if ( $field->isRequired() ) : ?>
 	required
   <?php endif; ?>
-	@attributes
 ></textarea>

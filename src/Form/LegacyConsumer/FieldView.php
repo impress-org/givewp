@@ -36,14 +36,12 @@ class FieldView {
 		// Set the class for the input element (used in the templates)
 		$classAttribute = Html::classNames(
 			'give-input',
-			$field->getClassAttribute(),
 			[
 				'required' => $field->isRequired(),
 			]
 		);
 
 		echo "<div class=\"form-row form-row-wide\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
-		ob_start();
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
 		switch ( $type ) {
 			case FieldTypes::TYPE_HTML: // This is a free form HTML field.
@@ -71,28 +69,7 @@ class FieldView {
 				include static::getTemplatePath( 'base' );
 				break;
 		}
-		echo self::mergeAttributes( ob_get_clean(), $field );
 		echo '</div>';
-	}
-
-	/**
-	 * @since 2.10.2
-	 *
-	 * @param string $html
-	 * @param FormField $field
-	 *
-	 * @return string
-	 */
-	protected static function mergeAttributes( $html, FormField $field ) {
-		$attributes = array_map(
-			function( $key, $value ) {
-				return sprintf( '%s="%s"', $key, esc_attr( $value ) );
-			},
-			array_keys( $field->getAttributes() ),
-			array_values( $field->getAttributes() )
-		);
-
-		return str_replace( '@attributes', implode( ' ', $attributes ), $html );
 	}
 
 	/**

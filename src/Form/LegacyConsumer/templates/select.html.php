@@ -6,7 +6,6 @@
 	id="give-<?php echo $field->getName(); ?>"
 	class="<?php echo $classAttribute; ?>"
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
-	@attributes
 >
 	<?php foreach ( $field->getOptions() as $option ) : ?>
 		<?php $label = $option->getLabel(); ?>
