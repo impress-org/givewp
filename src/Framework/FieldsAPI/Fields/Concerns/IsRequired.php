@@ -8,8 +8,7 @@ trait IsRequired {
 	protected $required = false;
 
 	/**
-	 * @param bool $requried
-	 * @return $this
+	 * {@inheritdoc}
 	 */
 	public function required( $required = true ) {
 		$this->required = $required;
@@ -17,12 +16,15 @@ trait IsRequired {
 	}
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function isRequired() {
 		return $this->required;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getRequiredError() {
 		return [
 			'error_id'      => $this->name,

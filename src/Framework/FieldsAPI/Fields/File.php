@@ -3,13 +3,14 @@
 namespace Give\Framework\FieldsAPI\Fields;
 
 use Give\Framework\FieldsAPI\Fields\Contracts\Field;
+use Give\Framework\FieldsAPI\Fields\Contracts\ValidatesRequired;
 
 /**
  * A file upload field.
  *
  * @unreleased
  */
-class File implements Field {
+class File implements Field, ValidatesRequired {
 
 	// TODO: how would default values work for this and how would we serialize that? Do we want default values?
 	//use Concerns\HasDefaultValue;

@@ -3,6 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\FieldCollection;
+use Give\Framework\FieldsAPI\Fields\Contracts\ValidatesRequired;
 
 /**
  * Setup field validation for custom fields on the required fields hook.
@@ -35,7 +36,7 @@ class SetupFieldValidation {
 		do_action( "give_fields_$hook", $fieldCollection, $this->formID );
 		$fieldCollection->walk(
 			function( $field ) use ( &$requiredFields ) {
-				if ( $field->isRequired() ) {
+				if ( $field instanceof ValidatesRequired && $field->isRequired() ) {
 					$requiredFields[ $field->getName() ] = $field->getRequiredError();
 				}
 			}

@@ -3,8 +3,9 @@
 namespace Give\Framework\FieldsAPI\Fields;
 
 use Give\Framework\FieldsAPI\Fields\Contracts\Field;
+use Give\Framework\FieldsAPI\Fields\Contracts\ValidatesRequired;
 
-class Text implements Field {
+class Text implements Field, ValidatesRequired {
 
 	use Concerns\HasDefaultValue;
 	use Concerns\HasEmailTag;
