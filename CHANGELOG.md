@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -  Update wp-env package to resolve project setup issue (#5850)
+-  Fix "Unsupported declare strict_types" PHP warning (#)
 
 ## 2.11.2 - 2021-06-08
 
