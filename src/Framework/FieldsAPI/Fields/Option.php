@@ -10,11 +10,11 @@ use JsonSerializable;
  * @unreleased
  */
 class Option implements JsonSerializable {
-	/** @var string */
-	protected $value;
+
+	use Concerns\HasLabel;
 
 	/** @var string */
-	protected $label;
+	protected $value;
 
 	/**
 	 * @param string $value
@@ -44,21 +44,12 @@ class Option implements JsonSerializable {
 	}
 
 	/**
-	 * Access the label
-	 *
-	 * @return string|null
-	 */
-	public function getLabel() {
-		return $this->label;
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function jsonSerialize() {
 		return [
-			'value' => $this->value,
-			'label' => $this->label,
+			'value' => $this->getValue(),
+			'label' => $this->getLabel(),
 		];
 	}
 }
