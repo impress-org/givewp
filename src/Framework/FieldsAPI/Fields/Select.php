@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Fields\Contracts\ValidatesRequired;
 
 class Select implements Field, ValidatesRequired {
 
+	use Concerns\AllowMultiple;
 	use Concerns\HasDefaultValue;
 	use Concerns\HasEmailTag;
 	use Concerns\HasHelpText;

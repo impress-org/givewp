@@ -15,6 +15,7 @@ class File implements Field, ValidatesRequired {
 	// TODO: how would default values work for this and how would we serialize that? Do we want default values?
 	//use Concerns\HasDefaultValue;
 
+	use Concerns\AllowMultiple;
 	use Concerns\HasEmailTag;
 	use Concerns\HasHelpText;
 	use Concerns\HasLabel;
