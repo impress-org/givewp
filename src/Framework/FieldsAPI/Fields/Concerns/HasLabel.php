@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormField;
+namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
-trait FieldLabel {
+trait HasLabel {
 
 	/** @var string */
 	protected $label;

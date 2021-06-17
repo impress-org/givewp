@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormField;
+namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
 /**
  * @since 2.10.2
  */
-trait FieldStoreAsMeta {
+trait StoreAsMeta {
 
 	/**
 	 * @since 2.10.2

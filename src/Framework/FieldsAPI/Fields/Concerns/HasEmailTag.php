@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormField;
+namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
-trait FieldEmailTag {
+trait HasEmailTag {
 
 	/** @var string */
 	protected $emailTag;

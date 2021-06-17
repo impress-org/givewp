@@ -1,10 +1,13 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormField;
+namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
-trait FieldOptions {
+use Give\Framework\FieldsAPI\Fields\Option;
+use Give\Framework\FieldsAPI\FormField\FieldTypes;
 
-	/** @var FieldOption[] */
+trait HasOptions {
+
+	/** @var Option[] */
 	protected $options = [];
 
 	/**
@@ -30,7 +33,7 @@ trait FieldOptions {
 	 * For setting labels either use `new FieldOption($value, $label)` or `[$value, $label]`.
 	 * In either case, the label is optional.
 	 *
-	 * @param FieldOption[]|array[]|array $options
+	 * @param Option[]|array[]|array $options
 	 *
 	 * @return $this
 	 */
@@ -40,16 +43,16 @@ trait FieldOptions {
 
 		// Loop through the options and transform them to the proper format.
 		foreach ( $options as $value ) {
-			if ( $value instanceof FieldOption ) {
+			if ( $value instanceof Option ) {
 				// In this case, what is provided matches the proper format, so we can just append it.
 				$this->options[] = $value;
 			} elseif ( is_array( $value ) ) {
 				// In this case, what has been provided in the value is an array with a value then a label.
 				// This matches the constructor of `FieldOption`, so we can unpack it as arguments for a new instance.
-				$this->options[] = new FieldOption( ...$value );
+				$this->options[] = new Option( ...$value );
 			} else {
 				// In this case, we just have a value which is the bare minimum required for a `FieldOption`.
-				$this->options[] = new FieldOption( $value );
+				$this->options[] = new Option( $value );
 			}
 		}
 
@@ -59,7 +62,7 @@ trait FieldOptions {
 	/**
 	 * Access the options
 	 *
-	 * @return FieldOption[]
+	 * @return Option[]
 	 */
 	public function getOptions() {
 		return $this->options;

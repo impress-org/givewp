@@ -1,15 +1,15 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormField;
+namespace Give\Framework\FieldsAPI\Fields;
 
 use JsonSerializable;
 
 /**
- * Class FieldOption
+ * Class Option
  *
  * @unreleased
  */
-class FieldOption implements JsonSerializable {
+class Option implements JsonSerializable {
 	/** @var string */
 	protected $value;
 
@@ -23,6 +23,15 @@ class FieldOption implements JsonSerializable {
 	public function __construct( $value, $label = null ) {
 		$this->value = $value;
 		$this->label = $label;
+	}
+
+	/**
+	 * Create a new option.
+	 *
+	 * @return static
+	 */
+	public static function make( ...$args ) {
+		return new static( ...$args );
 	}
 
 	/**

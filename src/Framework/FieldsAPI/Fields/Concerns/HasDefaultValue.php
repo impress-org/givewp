@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\FormField;
+namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
-trait FieldDefaultValue {
+trait HasDefaultValue {
 
 	/** @var string */
 	protected $defaultValue;
