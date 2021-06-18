@@ -20,6 +20,5 @@ class Checkbox implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'checkbox';
+	const TYPE = 'checkbox';
 }

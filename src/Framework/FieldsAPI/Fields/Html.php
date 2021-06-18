@@ -15,8 +15,7 @@ class Html implements Field {
 	use Concerns\MakeFieldWithName;
 	use Concerns\SerializeAsJson;
 
-	/** @var string  */
-	protected $type = 'html';
+	const TYPE = 'html';
 
 	/** @var string */
 	protected $html;

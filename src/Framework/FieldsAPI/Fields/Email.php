@@ -21,6 +21,5 @@ class Email implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'email';
+	const TYPE = 'email';
 }

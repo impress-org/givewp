@@ -20,6 +20,5 @@ class Textarea implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'textarea';
+	const TYPE = 'textarea';
 }

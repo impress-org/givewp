@@ -10,6 +10,6 @@ trait HasType {
 	 * @return string
 	 */
 	public function getType() {
-		return $this->type;
+		return self::TYPE;
 	}
 }

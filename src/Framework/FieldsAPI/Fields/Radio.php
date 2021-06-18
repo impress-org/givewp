@@ -21,6 +21,5 @@ class Radio implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'radio';
+	const TYPE = 'radio';
 }

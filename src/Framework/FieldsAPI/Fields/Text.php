@@ -20,6 +20,5 @@ class Text implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'text';
+	const TYPE = 'text';
 }

@@ -20,6 +20,5 @@ class Phone implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'phone';
+	const TYPE = 'phone';
 }

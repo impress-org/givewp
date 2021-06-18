@@ -22,6 +22,5 @@ class Select implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'select';
+	const TYPE = 'select';
 }

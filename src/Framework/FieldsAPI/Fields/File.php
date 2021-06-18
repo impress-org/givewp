@@ -29,8 +29,7 @@ class File implements Field, ValidatesRequired {
 	//use Concerns\ShowInReceipt;
 	//use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'file';
+	const TYPE = 'file';
 
 	/** @var int */
 	protected $maxSize = 1024;

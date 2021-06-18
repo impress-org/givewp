@@ -20,6 +20,5 @@ class Url implements Field, ValidatesRequired {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'url';
+	const TYPE = 'url';
 }

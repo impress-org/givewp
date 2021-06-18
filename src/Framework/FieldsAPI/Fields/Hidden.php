@@ -13,6 +13,5 @@ class Hidden implements Field {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	/** @var string */
-	protected $type = 'hidden';
+	const TYPE = 'hidden';
 }
