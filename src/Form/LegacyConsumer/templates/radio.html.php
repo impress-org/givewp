@@ -1,5 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
-<?php /** @var string $classAttribute */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Fields\Radio $field */ ?>
 <?php /* Fieldsets + legends are terrible to style, so we just use the semantic markup and style something else. */ ?>
 <fieldset>
 	<legend class="screen-reader-text">
@@ -13,7 +12,6 @@
 		<input
 			type="radio"
 			name="give_<?php echo $field->getName(); ?>"
-			class="<?php echo $classAttribute; ?>"
 			<?php echo $field->isRequired() ? 'required' : ''; ?>
 			<?php echo $option->getValue() === $field->getDefaultValue() ? 'checked' : ''; ?>
 			value="<?php echo $option->getValue(); ?>"

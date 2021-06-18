@@ -1,18 +1,16 @@
-<?php /** @var Give\Framework\FieldsAPI\FormField $field */ ?>
-<?php /** @var string $classAttribute */ ?>
-<?php /** @var array $selectedOptions */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Fields\Select $field */ ?>
 <select
 	name="give_<?php echo $field->getName(); ?>"
 	id="give-<?php echo $field->getName(); ?>"
-	class="<?php echo $classAttribute; ?>"
-	<?php echo $field->isRequired() ? 'required' : ''; ?>
 >
+	<?php if ( $placeholder = $field->getPlaceholder() ) : ?>
+	<option value=""><?php echo $placeholder; ?></option>
+	<?php endif; ?>
 	<?php foreach ( $field->getOptions() as $option ) : ?>
 		<?php $label = $option->getLabel(); ?>
 		<?php $value = $option->getValue(); ?>
 	<option
 		<?php echo $label ? "value={$value}" : ''; ?>
-		<?php echo in_array( $value, $selectedOptions, true ) ? 'selected' : ''; ?>
 	>
 		<?php echo $label ?: $value; ?>
 	</option>

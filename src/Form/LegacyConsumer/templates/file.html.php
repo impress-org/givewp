@@ -1,10 +1,8 @@
-<?php /** @var $field */ ?>
-<?php /** @var string $typeAttribute */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Fields\File $field */ ?>
 <input
-	type="<?php echo $typeAttribute; ?>"
+	type="file"
 	name="<?php echo $field->getName(); ?>"
 	id="give-<?php echo $field->getName(); ?>"
-	value="<?php echo $field->getDefaultValue(); ?>"
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 >
