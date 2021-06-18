@@ -3,28 +3,11 @@
 namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
 use Give\Framework\FieldsAPI\Fields\Option;
-use Give\Framework\FieldsAPI\FormField\FieldTypes;
 
 trait HasOptions {
 
 	/** @var Option[] */
 	protected $options = [];
-
-	/**
-	 * Does the field type support options?
-	 *
-	 * @return bool
-	 */
-	public function supportsOptions() {
-		return in_array(
-			$this->getType(),
-			[
-				FieldTypes::TYPE_SELECT,
-				FieldTypes::TYPE_RADIO,
-			],
-			true
-		);
-	}
 
 	/**
 	 * Set the options
