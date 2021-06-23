@@ -2,18 +2,12 @@
 
 namespace Give\Framework\FieldsAPI\Fields;
 
-use Give\Framework\FieldsAPI\Fields\Contracts\Field;
-
 /**
  * An HTML field.
  *
  * @unreleased
  */
-class Html implements Field {
-
-	use Concerns\HasType;
-	use Concerns\MakeFieldWithName;
-	use Concerns\SerializeAsJson;
+class Html extends Block {
 
 	const TYPE = 'html';
 
