@@ -37,8 +37,10 @@ class FieldCollection implements GroupNode {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function append( Node $node ) {
-		$this->insertAtIndex( $this->count(), $node );
+	public function append( Node ...$nodes ) {
+		foreach ( $nodes as $node ) {
+			$this->insertAtIndex( $this->count(), $node );
+		}
 		return $this;
 	}
 

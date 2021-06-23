@@ -12,13 +12,13 @@ interface GroupNode extends Node {
 	public function getFields();
 
 	/**
-	 * Append a node to the group.
+	 * Append nodes to the group.
 	 *
-	 * @param Node $node
+	 * @param Node[] ...$nodes
 	 *
 	 * @return $this
 	 */
-	public function append( Node $node );
+	public function append( Node ...$nodes );
 
 	/**
 	 * Get a node’s index by its name.
