@@ -4,14 +4,11 @@ namespace Give\Framework\FieldsAPI\Fields\Concerns;
 
 trait IsRequired {
 
-	/** @var bool */
-	protected $required = false;
-
 	/**
 	 * {@inheritdoc}
 	 */
-	public function required( $required = true ) {
-		$this->required = $required;
+	public function required( $value = true ) {
+		$this->validationRules->rule( 'required', $value );
 		return $this;
 	}
 
@@ -19,7 +16,7 @@ trait IsRequired {
 	 * {@inheritdoc}
 	 */
 	public function isRequired() {
-		return $this->required;
+		return $this->validationRules->getRule( 'required' );
 	}
 
 	/**
