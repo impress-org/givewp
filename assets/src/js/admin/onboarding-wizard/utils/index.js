@@ -79,6 +79,14 @@ export const getCauseTypes = () => {
 	return getWindowData( 'causeTypes' );
 };
 
+export const getAdminEmail = () => {
+	return getWindowData( 'adminEmail' );
+};
+
+export const getBlogName = () => {
+	return getWindowData( 'blogName' );
+};
+
 export const getFeaturesEnabledDefault = () => {
 	const features = getWindowData( 'features' );
 	return features.filter( ( feature ) => {

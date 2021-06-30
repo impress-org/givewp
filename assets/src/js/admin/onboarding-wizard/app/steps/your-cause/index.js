@@ -4,7 +4,7 @@ const { __ } = wp.i18n;
 // Import store dependencies
 import { useStoreValue } from '../../store';
 import { setUserType, setCauseType } from '../../store/actions';
-import { getCauseTypes } from '../../../utils';
+import { getBlogName, getAdminEmail, getCauseTypes } from '../../../utils';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -22,8 +22,8 @@ const YourCause = () => {
 	const [ { configuration }, dispatch ] = useStoreValue();
 
 	const userType = configuration.userType;
-	const siteName = configuration.causeType;
-	const adminEmail = configuration.causeType;
+	const blogName = configuration.blogName;
+	const adminEmail = configuration.adminEmail;
 	const causeType = configuration.causeType;
 
 	return (
@@ -51,7 +51,7 @@ const YourCause = () => {
 			<div className="give-obw-optin-field">
 				<h2>{ __( 'What\'s the name of your cause?', 'give' ) }</h2>
 				<span className="screen-reader-text">{ __( 'What\'s the name of your cause?', 'give' ) }</span>
-				<input className="give-obw-text-field" type="text" value={siteName} />
+				<input className="give-obw-text-field" type="text" value={ getBlogName() } />
 			</div>
 
 			<div className="give-obw-optin-field">
@@ -63,7 +63,7 @@ const YourCause = () => {
 			<div className="give-obw-optin-field">
 				<h2>{ __( 'What\'s your email address?', 'give' ) }</h2>
 				<span className="screen-reader-text">{ __( 'What\'s your email address?', 'give' ) }</span>
-				<input className="give-obw-text-field" type="text" value={adminEmail} />
+				<input className="give-obw-text-field" type="text" value={ getAdminEmail() } />
 				<p className="give-obw-email-notice">{__('I would like to receive articles and information how to get the most out of GiveWP.', 'give')}</p>
 			</div>
 
