@@ -22,11 +22,14 @@ const YourCause = () => {
 	const [ { configuration }, dispatch ] = useStoreValue();
 
 	const userType = configuration.userType;
+	const siteName = configuration.causeType;
+	const adminEmail = configuration.causeType;
 	const causeType = configuration.causeType;
 
 	return (
 		<div className="give-obw-your-cause">
-			<h1>{ __( 'What does fundraising look like for you?', 'give' ) }</h1>
+			<h1>{ __( '👋 Hi there! Tell us a little about your Organization.', 'give' ) }</h1>
+			<p>{ __('This information will be used to customize your experience to your fundraising needs.')}</p>
 			<CardInput values={ userType } onChange={ ( values ) => dispatch( setUserType( values ) ) } checkMultiple={ false } >
 				<Card value="individual">
 					<IndividualIcon />
@@ -44,9 +47,27 @@ const YourCause = () => {
 					<strong>{ __( 'Other', 'give' ) }</strong>
 				</Card>
 			</CardInput>
-			<h2>{ __( 'What is your cause?', 'give' ) }</h2>
-			<span className="screen-reader-text">{ __( 'What is your cause?', 'give' ) }</span>
-			<SelectInput testId="cause-select" value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
+
+			<div className="give-obw-optin-field">
+				<h2>{ __( 'What\'s the name of your cause?', 'give' ) }</h2>
+				<span className="screen-reader-text">{ __( 'What\'s the name of your cause?', 'give' ) }</span>
+				<input className="give-obw-text-field" type="text" value={siteName} />
+			</div>
+
+			<div className="give-obw-optin-field">
+				<h2>{ __( 'What is your cause?', 'give' ) }</h2>
+				<span className="screen-reader-text">{ __( 'What type of cause?', 'give' ) }</span>
+				<SelectInput testId="cause-select" value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
+			</div>
+
+			<div className="give-obw-optin-field">
+				<h2>{ __( 'What\'s your email address?', 'give' ) }</h2>
+				<span className="screen-reader-text">{ __( 'What\'s your email address?', 'give' ) }</span>
+				<input className="give-obw-text-field" type="text" value={adminEmail} />
+				<p className="give-obw-email-notice">{__('I would like to receive articles and information how to get the most out of GiveWP.', 'give')}</p>
+			</div>
+
+
 			<ContinueButton testId="cause-continue-button" />
 		</div>
 	);
