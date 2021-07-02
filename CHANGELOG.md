@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Uncaught exception handler no longer breaks on Errors (#5846)
 -   Uninstalling GiveWP no longer throws an exception (#5846)
+-   Caught GiveWP exceptions no longer display a white screen (#5861)
 
 ## 2.11.1 - 2021-05-24
 
