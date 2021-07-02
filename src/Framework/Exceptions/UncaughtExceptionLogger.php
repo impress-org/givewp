@@ -34,6 +34,8 @@ class UncaughtExceptionLogger {
 	 * @since 2.11.1
 	 *
 	 * @param Exception|Error $exception
+	 *
+	 * @throws LoggableException
 	 */
 	public function handleException( $exception ) {
 		if ( $exception instanceof LoggableException ) {
@@ -44,6 +46,8 @@ class UncaughtExceptionLogger {
 		if ( $this->previousHandler !== null ) {
 			$previousHandler = $this->previousHandler;
 			$previousHandler( $exception );
+		} elseif ( $exception instanceof Exception ) {
+			throw $exception;
 		}
 	}
 }
