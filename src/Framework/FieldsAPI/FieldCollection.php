@@ -2,19 +2,19 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\FieldsAPI\FieldCollection\Contract\Node;
-use Give\Framework\FieldsAPI\FieldCollection\Contract\GroupNode;
+use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Contracts\GroupNode;
 
 /**
  * @since 2.10.2
  */
 class FieldCollection implements GroupNode {
 
-	use FieldCollection\NameCollision;
-	use FieldCollection\InsertNode;
-	use FieldCollection\MoveNode;
-	use FieldCollection\RemoveNode;
-	use FieldCollection\WalkNodes;
+	use Concerns\NameCollision;
+	use Concerns\InsertNode;
+	use Concerns\MoveNode;
+	use Concerns\RemoveNode;
+	use Concerns\WalkNodes;
 
 	/** @var string */
 	protected $name;
