@@ -49,12 +49,17 @@ trait HasNodes {
 	 * {@inheritdoc}
 	 */
 	public function getFields() {
-		return array_filter(
-			$this->nodes,
-			static function ( Node $node ) {
-				return $node instanceof Field;
+		$fields = [];
+
+		foreach ( $this->nodes as $node ) {
+			if ( $node instanceof Field ) {
+				$fields[] = $node;
+			} elseif ( $node instanceof Collection ) {
+				$fields = array_merge( $fields, $node->getFields() );
 			}
-		);
+		}
+
+		return $fields;
 	}
 
 	/**
