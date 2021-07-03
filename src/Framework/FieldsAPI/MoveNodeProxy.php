@@ -2,7 +2,7 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\FieldsAPI\Contracts\CollectionNode;
+use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
@@ -11,16 +11,16 @@ use Give\Framework\FieldsAPI\Contracts\Node;
  */
 class MoveNodeProxy {
 
-	/** @var CollectionNode */
+	/** @var Collection */
 	protected $collection;
 
 	/** @var Node */
 	protected $targetNode;
 
 	/**
-	 * @param CollectionNode $collection
+	 * @param Collection $collection
 	 */
-	public function __construct( CollectionNode $collection ) {
+	public function __construct( Collection $collection ) {
 		$this->collection = $collection;
 	}
 

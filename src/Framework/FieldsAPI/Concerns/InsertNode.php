@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
-use Give\Framework\FieldsAPI\Contracts\GroupNode;
+use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Exceptions\ReferenceNodeNotFoundException;
 
 /**
@@ -45,7 +45,7 @@ trait InsertNode {
 			return;
 		} elseif ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
-				if ( $childNode instanceof GroupNode ) {
+				if ( $childNode instanceof Collection ) {
 					$childNode->insertAfterRecursive( $siblingName, $node );
 				}
 			}
@@ -88,7 +88,7 @@ trait InsertNode {
 			return;
 		} elseif ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
-				if ( $childNode instanceof GroupNode ) {
+				if ( $childNode instanceof Collection ) {
 					$childNode->insertBeforeRecursive( $siblingName, $node );
 				}
 			}

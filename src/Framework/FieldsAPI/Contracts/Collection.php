@@ -2,6 +2,7 @@
 
 namespace Give\Framework\FieldsAPI\Contracts;
 
+use Give\Framework\FieldsAPI\Exceptions\ReferenceNodeNotFoundException;
 use Give\Framework\FieldsAPI\Field;
 
 interface Collection {
@@ -62,4 +63,29 @@ interface Collection {
 	 * @return Field[]
 	 */
 	public function getFields();
+
+	/**
+	 * @param string $siblingName
+	 * @param Node $node
+	 *
+	 * @return $this
+	 */
+	public function insertAfter( $siblingName, Node $node );
+
+	/**
+	 * @param string $siblingName
+	 * @param Node $node
+	 *
+	 * @return $this
+	 */
+	public function insertBefore( $siblingName, Node $node );
+
+	/**
+	 * Walk through each node in the collection
+	 *
+	 * @param callable $callback
+	 *
+	 * @return void
+	 */
+	public function walk( callable $callback );
 }

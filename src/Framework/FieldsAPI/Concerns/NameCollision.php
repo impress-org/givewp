@@ -2,7 +2,7 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\FieldsAPI\Contracts\GroupNode;
+use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 
 /**
@@ -12,12 +12,13 @@ trait NameCollision {
 
 	/**
 	 * @param Node $node
+	 * @throws NameCollisionException
 	 */
 	public function checkNameCollisionDeep( $node ) {
-		if ( $node instanceof GroupNode ) {
+		if ( $node instanceof Collection ) {
 			$node->walk( [ $this, 'checkNameCollision' ] );
 		}
-		return $this->checkNameCollision( $node );
+		$this->checkNameCollision( $node );
 	}
 
 	/**
