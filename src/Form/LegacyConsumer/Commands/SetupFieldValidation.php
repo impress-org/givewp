@@ -33,7 +33,7 @@ class SetupFieldValidation {
 	public function __invoke( $requiredFields, $hook ) {
 		$form = new Form();
 		do_action( "give_fields_$hook", $form, $this->formID );
-		$form->walk(
+		$form->walkFields(
 			function( $field ) use ( &$requiredFields ) {
 				if ( $field->isRequired() ) {
 					$requiredFields[ $field->getName() ] = $field->getRequiredError();
