@@ -10,7 +10,7 @@ use Give\Framework\FieldsAPI\Contracts\Collection;
 trait WalkNodes {
 
 	/**
-	 * @param Callable $callback
+	 * @param callable $callback
 	 *
 	 * @return void
 	 */
@@ -20,7 +20,7 @@ trait WalkNodes {
 
 	/**
 	 * @param Collection $collection
-	 * @param Callable $callback
+	 * @param callable $callback
 	 *
 	 * @return void
 	 */
@@ -31,6 +31,17 @@ trait WalkNodes {
 				continue;
 			}
 			$callback( $node );
+		}
+	}
+
+	/**
+	 * @param callable $callback
+	 *
+	 * @return void
+	 */
+	public function walkFields( callable $callback ) {
+		foreach ( $this->getFields() as $field ) {
+			$callback( $field );
 		}
 	}
 }
