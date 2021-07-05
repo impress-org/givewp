@@ -3,7 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
+use Give\Framework\FieldsAPI\Form;
 use Give\Form\LegacyConsumer\FieldView;
 
 /**
@@ -30,7 +30,7 @@ class SetupPaymentDetailsDisplay {
 	 */
 	public function __invoke( $hook ) {
 
-		$fieldCollection = new FieldCollection( 'root' );
+		$fieldCollection = new Form( 'root' );
 		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
 
 		$fieldCollection->walk( [ $this, 'render' ] );

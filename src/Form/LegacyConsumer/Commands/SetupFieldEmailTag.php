@@ -2,9 +2,8 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
-use Give\Form\LegacyConsumer\FieldView;
+use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Form;
 
 /**
  * @since 2.10.2
@@ -20,20 +19,22 @@ class SetupFieldEmailTag {
 	 * @return void
 	 */
 	public function __invoke( $hook ) {
-		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
+		$form = new Form();
+		do_action( "give_fields_{$hook}", $form, get_the_ID() );
 
-		$fieldCollection->walk( [ $this, 'register' ] );
+		$form->walkFields( [ $this, 'register' ] );
 	}
 
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	public function register( FormField $field ) {
+	public function register( Field $field ) {
+
+		return;
 
 		give_add_email_tag(
 			[
