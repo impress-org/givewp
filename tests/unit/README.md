@@ -14,7 +14,7 @@ This folder contains instructions and test code for Give PHPUnit testing.
 
     `$ tests/unit/bin/install.sh <db-name> <db-user> <db-password> [db-host]`
 
-Sample usage: `$ tests/bin/install.sh give_tests root root`
+Sample usage: `$ tests/unit/bin/install.sh give_tests root root`
 
 If you need to use a socket for your database, then your host will be colon-delimited: `localhost:/path/to/socket`
 

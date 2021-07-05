@@ -41,7 +41,7 @@
         "@prettier/plugin-php": "^0.12.0",
         "@storybook/addon-a11y": "^5.3.19",
         "@storybook/html": "^5.3.19",
-        "@wordpress/env": "^2.1.0",
+        "@wordpress/env": "^4",
         "@wordpress/eslint-plugin": "^8.0.2",
         "@wordpress/stylelint-config": "^19.0.1",
         "autoprefixer": "^9.5.0",
