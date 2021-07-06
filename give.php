@@ -43,6 +43,7 @@ use Give\Container\Container;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Form\Templates;
+use Give\License\LicenseServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\PaymentGateways;
@@ -155,6 +156,7 @@ final class Give {
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
+		LicenseServiceProvider::class,
 	];
 
 	/**
