@@ -13,7 +13,7 @@ trait SerializeAsJson {
 		return array_merge(
 			// These values must be serialized for all types
 			[
-				'type' => self::TYPE,
+				'type' => $this->getType(),
 				'name' => $this->getName(),
 			],
 			// We (recursively) serialize all of the class’ properties and exclude the list provided.
