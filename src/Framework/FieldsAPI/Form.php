@@ -28,9 +28,22 @@ class Form implements Node, Collection {
 	}
 
 	/**
+	 * Form constructor.
+	 *
+	 * @param Node ...$nodes
+	 */
+	public function __construct( Node ...$nodes ) {
+		$this->nodes = $nodes;
+	}
+
+	/**
+	 * Make the form with nodes.
+	 *
+	 * @param Node ...$nodes
+	 *
 	 * @return static
 	 */
-	public static function make() {
-		return new static();
+	public static function make( Node ...$nodes ) {
+		return new static( ...$nodes );
 	}
 }
