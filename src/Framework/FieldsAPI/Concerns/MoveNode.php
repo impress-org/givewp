@@ -2,8 +2,6 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\FieldsAPI\MoveNodeProxy;
-
 trait MoveNode {
 
 	public function move( $name ) {
