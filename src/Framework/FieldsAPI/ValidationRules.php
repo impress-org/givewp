@@ -70,6 +70,6 @@ class ValidationRules implements JsonSerializable {
 	 * {@inheritdoc}}
 	 */
 	public function jsonSerialize() {
-		return $this->all();
+		return (object) $this->all();
 	}
 }
