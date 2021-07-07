@@ -2,7 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Form;
 
 /**
@@ -32,7 +32,7 @@ class SetupFieldConfirmation {
 
 		$formID = give_get_payment_meta( $this->payment->ID, '_give_payment_form_id' );
 
-		$form = new Form();
+		$form = Form::make( 'root' );
 		do_action( "give_fields_{$hook}", $form, $formID );
 
 		$form->walk( [ $this, 'render' ] );
@@ -41,11 +41,11 @@ class SetupFieldConfirmation {
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param Node $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	public function render( Node $field ) {
+	public function render( Field $field ) {
 
 		if ( ! $field->shouldShowInReceipt() ) {
 			return;

@@ -19,7 +19,7 @@ class SetupFieldEmailTag {
 	 * @return void
 	 */
 	public function __invoke( $hook ) {
-		$form = new Form();
+		$form = Form::make( 'root' );
 		do_action( "give_fields_{$hook}", $form, get_the_ID() );
 
 		$form->walkFields( [ $this, 'register' ] );

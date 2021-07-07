@@ -22,7 +22,7 @@ class SetupNewTemplateHook implements HookCommandInterface {
 		add_action(
 			"give_$hook",
 			function ( $formID ) use ( $hook ) {
-				$form = new Form();
+				$form = Form::make( 'root' );
 				do_action( "give_fields_$hook", $form, $formID );
 				$form->walk( [ FieldView::class, 'render' ] );
 			}

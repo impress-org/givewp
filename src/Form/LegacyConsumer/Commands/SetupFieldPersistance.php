@@ -16,7 +16,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 * @since 2.10.2
 	 *
 	 * @param int $donationID
-	 * @param array $donationID
+	 * @param array $donationData
 	 */
 	public function __construct( $donationID, $donationData ) {
 		$this->donationID   = $donationID;
@@ -29,7 +29,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 * @param string $hook
 	 */
 	public function __invoke( $hook ) {
-		$form = new Form();
+		$form = Form::make( 'root' );
 		do_action( "give_fields_$hook", $form, $this->donationData['give_form_id'] );
 		$form->walkFields( [ $this, 'process' ] );
 	}

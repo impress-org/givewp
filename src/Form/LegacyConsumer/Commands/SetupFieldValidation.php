@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Form;
 
 /**
@@ -25,13 +26,13 @@ class SetupFieldValidation {
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param array $requiredFields
+	 * @param Field[] $requiredFields
 	 * @param string $hook
 	 *
 	 * @return array
 	 */
 	public function __invoke( $requiredFields, $hook ) {
-		$form = new Form();
+		$form = Form::make( 'root' );
 		do_action( "give_fields_$hook", $form, $this->formID );
 		$form->walkFields(
 			function( $field ) use ( &$requiredFields ) {
