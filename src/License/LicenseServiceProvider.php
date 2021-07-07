@@ -8,14 +8,14 @@ use Give\ServiceProviders\ServiceProvider;
 
 class LicenseServiceProvider implements ServiceProvider {
 	/**
-	 * @unreleased
+	 * @since 2.11.3
 	 */
 	public function register() {
 		give()->singleton( PremiumAddonsListManager::class );
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.11.3
 	 */
 	public function boot() {
 	}
