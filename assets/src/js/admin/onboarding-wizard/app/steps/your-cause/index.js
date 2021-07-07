@@ -29,7 +29,7 @@ const YourCause = () => {
 	return (
 		<div className="give-obw-your-cause">
 			<h1>{ __( '👋 Hi there! Tell us a little about your Organization.', 'give' ) }</h1>
-			<p>{ __('This information will be used to customize your experience to your fundraising needs.')}</p>
+			<p>{ __('This information will be used to customize your experience to your fundraising needs.', 'give')}</p>
 			<CardInput values={ userType } onChange={ ( values ) => dispatch( setUserType( values ) ) } checkMultiple={ false } >
 				<Card value="individual">
 					<IndividualIcon />
@@ -55,8 +55,8 @@ const YourCause = () => {
 			</div>
 
 			<div className="give-obw-optin-field">
-				<h2>{ __( 'What is your cause?', 'give' ) }</h2>
-				<span className="screen-reader-text">{ __( 'What type of cause?', 'give' ) }</span>
+				<h2>{ __( 'What type of cause is yours?', 'give' ) }</h2>
+				<span className="screen-reader-text">{ __( 'What type of cause is yours?', 'give' ) }</span>
 				<SelectInput testId="cause-select" value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
 			</div>
 
