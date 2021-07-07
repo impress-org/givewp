@@ -2,6 +2,8 @@
 
 namespace Give\Framework\Support\Facades;
 
+use Give\Framework\Exceptions\Primitives\Exception;
+
 /**
  * Class Facade
  *
@@ -13,11 +15,11 @@ class Facade {
 	 *
 	 * @unreleased
 	 *
-	 * @param  string  $name
-	 * @param  array  $arguments
+	 * @param string $name
+	 * @param array  $arguments
 	 *
-	 * @return false|mixed
-	 *
+	 * @return mixed
+	 * @throws Exception
 	 */
 	public static function __callStatic( $name, $arguments ) {
 		$instance = give( static::getFacadeClass() );
@@ -31,8 +33,9 @@ class Facade {
 	 * @unreleased
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
 	protected static function getFacadeClass() {
-		return static::class;
+		throw new Exception( 'This method must be overridden and return the class to decorate' );
 	}
 }
