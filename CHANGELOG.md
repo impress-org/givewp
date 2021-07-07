@@ -2,19 +2,25 @@
 
 Since GiveWP 2.8.0, all notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
-to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-### Fixed
-
--  Update wp-env package to resolve project setup issue (#5850)
--  Fix "Unsupported declare strict_types" PHP warning (#5853)
-
 ### Added
 
-- Add Facade class to give framework #5855
+-   Add Facade class to give framework (#5855)
+
+### Fixed
+
+-   Update wp-env package to resolve project setup issue (#5850)
+-   Fix "Unsupported declare strict_types" PHP warning (#5853)
+
+## 2.11.3 - 2021-07-06
+
+### Fixed
+
+-   Prevent givewp.com downtime from affecting customer sites (#5863)
 
 ## 2.11.2 - 2021-06-08
 
@@ -22,6 +28,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 -   Uncaught exception handler no longer breaks on Errors (#5846)
 -   Uninstalling GiveWP no longer throws an exception (#5846)
+-   Caught GiveWP exceptions no longer display a white screen (#5861)
 
 ## 2.11.1 - 2021-05-24
 
@@ -43,7 +50,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changes
 
 -   The Indian state of Odisha (formerly Orissa) is now updated to reflect the legal name change (#5826)
--   Onboarding LocaleCollection has parity with WooCommerce (#5831)
+-   Onboarding LocaleCollection has parity with WooCommerce (#5831)    
 -   Remove custom Stripe SDK loading logic (#5821)
 
 ### Fixed
@@ -54,6 +61,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 -   Remove extraneous main landmarks from setup guide page (#5835)
 -   Admin is now can import donations (#5841)
 -   Prevent PHP notices when access non-exiting property from Stripe API response (#5838)
+
 
 ## 2.10.4 - 2021-04-29
 
@@ -90,7 +98,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
--   Logs table creation is now backward compatible with MySQL 5.6 (#5776)
+-   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
 -   Donors can no longer see other donors donations (on certain hosts) (#5787)
 -   Logs will no longer cause an exception (#5788)
 -   Donor Dashboard page is now only generated if one does not already exist (#5785)
@@ -129,9 +137,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 -   Creation of the give_migrations table is not producing errors anymore (#5737)
 -   Logging can no longer cause a fatal error to occur (#5737)
 
+
 ## 2.10.0-rc.1 - 2021-03-16
 
-### New
+### New 
 
 -   The new logging system UI is now e2e tested (#5723)
 
@@ -168,10 +177,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 -   Donor Dashboard feature domain no longer has typos (#5704)
 -   Email access now gives donor access to my donor dashboard (#5705)
 -   While in the same session, donors are now able to see their donor dashboard (#5707)
-
+    
 ### New
 
 -   Donor Dashboard errors are now logged (#5706)
+
 
 ## 2.10.0-beta.3 - 2021-03-09
 
@@ -242,7 +252,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## 2.10.0-alpha.1 - 2021-02-19
 
 ### New
-
 -   Front-end donor profiles are scaffolded (#5441)
 -   Donor Profiles UI is implemented (#5444)
 -   Donation History and Dashboard tabs are now dynamically populated (#5455)
@@ -257,7 +266,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 -   Add since-unreleased script for updating @unreleased docblocks. (#5602)
 
 ### Changed
-
 -   Donor Profile Donation History UI is now polished (#5566)
 -   Donor Profile edit UI now uses React Dropzone (#5563)
 -   Donor Profiles are now extensible (#5577)
@@ -275,7 +283,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### New
 
--   Update warning message for unsuccessful PayPal account onboarding (#5522)
+-   Update warning message for unsuccessful PayPal account onboarding (#5522) 
 -   Add filter hook to filter PayPal settings (#5502)
 -   Sample onboarding tests are now implemented (#5543)
 -   Onboarding wizard e2e tests are now implemented (#5550)
@@ -284,8 +292,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 -   Automated unit and integrations tests are now using GitHub actions, instead of Travis CI (#5489)
--   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall
-    block (#5443)
+-   Resolve Avatar size shortcode attribute issue in donor wall shortcode and adds support for avatar size in donor wall block (#5443)
 -   Onboarding Form Preview template now loads scripts inside of the closing body tag (#5510)
 -   Deprecated e2e tests have been removed, and replaced with Cypress tests (#5533)
 -   New `test:e2e` package script introduced (#5533)
@@ -490,12 +497,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
--   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (
-    # 5218)
+-   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (#5218)
 -   PHP Notices no longer break multi-step form receipt step. (#5219)
 -   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
--   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single
-    gateway enabled. (#5216)
+-   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway enabled. (#5216)
 
 ## 2.8.0-beta.3 - 2020-08-27
 
@@ -527,10 +532,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
--   Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display
-    style even after it is deprecated by Stripe. (#4964)
--   Format for country and state select fields is normalized so states have an empty option but countries do not. (
-    # 5163)
+-   Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style even after it is deprecated by Stripe. (#4964)
+-   Format for country and state select fields is normalized so states have an empty option but countries do not. (#5163)
 -   Scope of marked optional fields in the Multi-Step template is reduced to the User Info fieldset. (#5161)
 -   Wizard buttons now match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
@@ -566,8 +569,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 -   Setup Page assets now load from the correct directory in production. (#5108)
 -   Missing block links in Setup Page now added. (#5128)
 -   Location settings in the Wizard now default to current setting value. (#5150)
--   Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater
-    elements. (#5126)
+-   Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. (#5126)
 
 ## 2.8.0-alpha.1 - 2020-08-17
 
@@ -588,8 +590,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
--   The `[give_receipt]` shortcode is more compatible alongside other shortcodes, which is especially relevant for page
-    builders. (#5044)
+-   The `[give_receipt]` shortcode is more compatible alongside other shortcodes, which is especially relevant for page builders. (#5044)
 -   A `register_rest_route` notice no longer displays when creating a new page in the block editor. (#5115)
 -   A typo in the Terms & Conditions field description has been fixed. (#5110)
 -   Installed version of PHPUnit now supports PHP 5.6. (#5100)
