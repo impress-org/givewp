@@ -23,7 +23,7 @@ const CardControl = ( { label, onChange, value } ) => {
 				card_zip: cardZIP,
 			} );
 		}
-	}, [ onChange, cardNumber, cardExpiryDate, cardCVC, cardZIP ] );
+	}, [ cardNumber, cardExpiryDate, cardCVC, cardZIP ] );
 
 	const {
 		wrapperProps,
@@ -49,7 +49,7 @@ const CardControl = ( { label, onChange, value } ) => {
 					marginTop: '8px',
 					border: '1px solid #b8b8b8',
 					overflow: 'hidden',
-					padding: '14px 14px',
+					padding: '4px 14px',
 					boxShadow: `0 0 0 0 ${ accentColor }`,
 					transition: 'box-shadow 0.1s ease',
 					borderRadius: '4px',
