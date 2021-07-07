@@ -2,7 +2,7 @@
 
 namespace Give\Framework\FieldsAPI\Exceptions;
 
-use Exception;
+use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
  * @since 2.10.2
