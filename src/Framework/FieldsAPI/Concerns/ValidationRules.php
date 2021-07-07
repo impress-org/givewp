@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\FieldsAPI;
+namespace Give\Framework\FieldsAPI\Concerns;
 
 use JsonSerializable;
 

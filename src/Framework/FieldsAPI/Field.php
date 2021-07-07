@@ -2,6 +2,7 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
 abstract class Field implements Node {
