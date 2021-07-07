@@ -21,14 +21,14 @@ class PremiumAddonsListManager {
 	/**
 	 * Cached addon values for the same request, prevents subsequent transient queries
 	 *
-	 * @unreleased
+	 * @since 2.11.3
 	 */
 	private $addonIds;
 
 	/**
 	 * Get premium addons slugs as addons ids.
 	 *
-	 * @unreleased Always cache to avoid timeouts on givewp.com
+	 * @since 2.11.3 Always cache to avoid timeouts on givewp.com
 	 * @since 2.9.2
 	 *
 	 * @return array
