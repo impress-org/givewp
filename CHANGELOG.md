@@ -22,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Prevent givewp.com downtime from affecting customer sites (#5863)
 
+## 2.11.3 - 2021-07-06
+
+### Fixed
+
+-   Prevent givewp.com downtime from affecting customer sites (#5863)
+
 ## 2.11.2 - 2021-06-08
 
 ### Fixed
