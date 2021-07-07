@@ -14,6 +14,7 @@ abstract class Group implements Node, Collection {
 	use Concerns\HasType;
 	use Concerns\InsertNode;
 	use Concerns\RemoveNode;
+	use Concerns\SerializeAsJson;
 	use Concerns\WalkNodes;
 
 	protected function __construct( $name ) {

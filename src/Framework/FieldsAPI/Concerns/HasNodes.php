@@ -69,16 +69,4 @@ trait HasNodes {
 		return count( $this->nodes );
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function jsonSerialize() {
-		return array_map(
-			static function( $node ) {
-				return $node->jsonSerialize();
-			},
-			$this->nodes
-		);
-	}
-
 }
