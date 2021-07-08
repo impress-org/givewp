@@ -1669,7 +1669,11 @@ function give_get_form_variable_price_dropdown( $args = [], $echo = false ) {
 	$variable_price_options = [];
 
 	// Check if multi donation form support custom donation or not.
-	if ( $form->is_custom_price_mode() ) {
+	// Check if donation amount is a custom or not.
+	if (
+		$form->is_custom_price_mode() ||
+		'custom' === $args['selected']
+	) {
 		$variable_price_options['custom'] = _x( 'Custom', 'custom donation dropdown item', 'give' );
 	}
 
