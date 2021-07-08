@@ -1648,6 +1648,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
  * @since 1.6
+ * @unreleased Show "Custom" choice in select field if donation created with cusotm amount
  *
  * @return string|bool
  */
