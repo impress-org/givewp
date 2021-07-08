@@ -484,6 +484,7 @@
 	/**
 	 * Move error notices to error notice container at the top of the payment section
 	 * @since 2.7.0
+	 * @unreleased Prevents a race condition that caused an error message not to be visible.
 	 * @param {node} node The error notice node to be moved
 	 */
 	function moveErrorNotice( node ) {
