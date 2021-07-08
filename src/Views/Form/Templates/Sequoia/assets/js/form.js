@@ -497,13 +497,22 @@
 			$( '.payment' ).prepend( '<div class="donation-errors"></div>' );
 		}
 
-		// If a specific notice does not already exist, proceed with moving the error
-		if ( typeof $( '.donation-errors' ).html() !== undefined && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
-			$( node ).appendTo( '.donation-errors' );
-		} else {
-			// If the specific notice already exists, do not add it
-			$( node ).remove();
-		}
+		/**
+		 * @link https://github.com/impress-org/givewp/issues/5867
+		 *
+		 * This 1 millisecond timeout prevents a race condition between
+		 * the `.donation-errors` element being appended to the form
+		 * and relocation of the specific error message node.
+		 */
+		setTimeout(function(){
+			// If a specific notice does not already exist, proceed with moving the error
+			if ( typeof $( '.donation-errors' ).html() !== undefined && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
+				$( node ).appendTo( '.donation-errors' );
+			} else {
+				// If the specific notice already exists, do not add it
+				$( node ).remove();
+			}
+		}, 1);
 	}
 
 	/**
