@@ -26,11 +26,10 @@ trait WalkNodes {
 	 */
 	public function walkCollection( Collection $collection, callable $callback ) {
 		foreach ( $collection->all() as $node ) {
+			$callback( $node );
 			if ( $node instanceof Collection ) {
 				$this->walkCollection( $node, $callback );
-				continue;
 			}
-			$callback( $node );
 		}
 	}
 

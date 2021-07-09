@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
-abstract class Group implements Node, Collection {
+class Group implements Node, Collection {
 
 	use Concerns\AppendNodes;
 	use Concerns\HasLabel;
@@ -13,6 +13,7 @@ abstract class Group implements Node, Collection {
 	use Concerns\HasNodes;
 	use Concerns\HasType;
 	use Concerns\InsertNode;
+	use Concerns\NameCollision;
 	use Concerns\RemoveNode;
 	use Concerns\SerializeAsJson;
 	use Concerns\WalkNodes;

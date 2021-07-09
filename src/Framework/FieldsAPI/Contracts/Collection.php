@@ -53,7 +53,7 @@ interface Collection {
 	 *
 	 * @param string $name
 	 *
-	 * @return Node
+	 * @return Node|Collection
 	 */
 	public function getNodeByName( $name );
 
