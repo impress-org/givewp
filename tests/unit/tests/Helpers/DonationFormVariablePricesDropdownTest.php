@@ -31,8 +31,7 @@ class DonationFormVariablePricesDropdownTest extends Give_Unit_Test_Case {
 			'selected' => $this->donation->price_id
 		];
 
-
-		$this->assertTrue( false !== strpos( give_get_form_variable_price_dropdown( $args ), 'Custom' ) );
+		$this->assertContains( 'Custom', give_get_form_variable_price_dropdown( $args ) );
 	}
 
 	public function testShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationDonatedWithCustomLevel() {
@@ -45,8 +44,7 @@ class DonationFormVariablePricesDropdownTest extends Give_Unit_Test_Case {
 			'selected' => $this->donation->price_id
 		];
 
-
-		$this->assertTrue( false !== strpos( give_get_form_variable_price_dropdown( $args ), 'Custom' ) );
+		$this->assertContains( 'Custom', give_get_form_variable_price_dropdown( $args ) );
 	}
 
 	public function testDoNotShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationNotDonatedWithCustomLevel() {
@@ -59,7 +57,6 @@ class DonationFormVariablePricesDropdownTest extends Give_Unit_Test_Case {
 			'selected' => $this->donation->price_id
 		];
 
-
-		$this->assertTrue( false === strpos( give_get_form_variable_price_dropdown( $args ), 'Custom' ) );
+		$this->assertNotContains( 'Custom', give_get_form_variable_price_dropdown( $args ) );
 	}
 }
