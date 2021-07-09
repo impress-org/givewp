@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -  Update wp-env package to resolve project setup issue (#5850)
--  Fix "Unsupported declare strict_types" PHP warning (#5853)
+-  Fix "Unsupported declare strict_types" PHP warning (#5853, #5869)
 -  Add top margin to setting group page (#5864)
 
 ## 2.11.3 - 2021-07-06
