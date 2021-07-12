@@ -741,7 +741,12 @@ class Container implements ArrayAccess {
 			// If the class is null, it means the dependency is a string or some other
 			// primitive type which we can not resolve since it is not a class and
 			// we will just bomb out with an error since we have no-where to go.
-			$result = is_null( $dependency->getClass() )
+			// Note: ReflectionParameter::getClass() is deprecated since PHP 8
+			$name = version_compare( PHP_VERSION, '8.0', '<' )
+				? $dependency->getClass()
+				: $dependency->getType()->getName();
+
+			$result = is_null( $name )
 				? $this->resolvePrimitive( $dependency )
 				: $this->resolveClass( $dependency );
 
@@ -818,7 +823,10 @@ class Container implements ArrayAccess {
 	 */
 	protected function resolveClass( ReflectionParameter $parameter ) {
 		try {
-			return $this->make( $parameter->getClass()->name );
+			// Note: ReflectionParameter::getClass() is deprecated since PHP 8
+			return version_compare( PHP_VERSION, '8.0', '<' )
+				? $this->make( $parameter->getClass()->name )
+				: $this->make( $parameter->getType()->getName() );
 		}
 
 			// If we can not resolve the class instance, we will check to see if the value
