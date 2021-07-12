@@ -33,9 +33,6 @@ class SetupFieldEmailTag {
 	 * @return void
 	 */
 	public function register( Field $field ) {
-
-		return;
-
 		give_add_email_tag(
 			[
 				'tag'      => $field->getEmailTag() ?: $field->getName(), // The tag name.
