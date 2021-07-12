@@ -1,17 +1,14 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Form\LegacyConsumer\TemplateHooks;
-use Give\Form\LegacyConsumer\Commands\SetupFieldPersistance;
+use Give\Framework\FieldsAPI\Text;
 
 final class SetupFieldPersistanceTest extends Give_Unit_Test_Case {
 
     public function testFieldPersistance() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->emailTag( 'myTextField' )
             );
         });
