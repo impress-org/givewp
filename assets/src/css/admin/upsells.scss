@@ -10,14 +10,15 @@
 
 .give-upsell-notice {
 	border: 1px solid #e2e2e2;
-	padding: 10px;
-	margin: 10px;
+	padding: 13px;
+	margin: 20px 15px 0;
 	box-shadow: 1px 1px 5px #e2e2e2;
 	display: flex;
 	align-items: center;
 
 	a {
 		text-decoration: none;
+		font-weight: bold;
 	}
 
 	.icon,
@@ -39,5 +40,6 @@
 	a.view-addon-link {
 		background: none !important;
 		margin-left: auto;
+		font-weight: normal;
 	}
 }
