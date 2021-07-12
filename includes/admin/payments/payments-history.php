@@ -132,7 +132,7 @@ add_filter( 'admin_title', 'give_view_donation_details_title', 10, 2 );
  * @param $context
  * @return string
  */
-function give_override_edit_post_for_payment_link( $url, $post_id = 0, $context ) {
+function give_override_edit_post_for_payment_link( $url, $post_id, $context ) {
 
 	$post = get_post( $post_id );
 
