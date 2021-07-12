@@ -7,7 +7,8 @@ use PHPUnit\Framework\TestCase;
 final class HasOptionsTest extends TestCase {
 
     public function testSetOptions() {
-        $mock = $this->getObjectForTrait( HasOptions::class );
+    	/** @var HasOptions $mock */
+        $mock = $this->getMockForTrait( HasOptions::class );
 
         $mock->options( [ [ 'aye', 'Aye' ] ] );
         $this->assertCount( 1, $mock->getOptions() );
@@ -20,7 +21,8 @@ final class HasOptionsTest extends TestCase {
     }
 
     public function testSetOptionsNormalizesInput() {
-    	$mock = $this->getObjectForTrait( HasOptions::class );
+	    /** @var HasOptions $mock */
+    	$mock = $this->getMockForTrait( HasOptions::class );
 
 	    $mock->options([
 	    	'foo',

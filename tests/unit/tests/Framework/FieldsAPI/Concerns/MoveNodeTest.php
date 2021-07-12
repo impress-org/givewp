@@ -1,20 +1,21 @@
 <?php
 
+use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Text;
 use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
 
 final class MoveNodeTest extends TestCase {
 
     public function testMoveAfter() {
-        $collection = new FieldCollection( 'root', [
-            new FormField( 'text', 'my-text-field' ),
-            new FormField( 'text', 'my-second-text-field' ),
-        ]);
+	    $form = Form::make( 'form' )
+		    ->append(
+			    Text::make( 'firstTextField' ),
+			    Text::make( 'secondTextField' )
+		    );
 
-        $collection->move( 'my-text-field' )->after( 'my-second-text-field' );
+	    $form->move( 'firstTextField' )->after( 'secondTextField' );
 
-        $this->assertEquals( 1, $collection->getNodeIndexByName( 'my-text-field' ) );
-        $this->assertEquals( 0, $collection->getNodeIndexByName( 'my-second-text-field' ) );
+	    $this->assertEquals( 1, $form->getNodeIndexByName( 'firstTextField' ) );
+	    $this->assertEquals( 0, $form->getNodeIndexByName( 'secondTextField' ) );
     }
 }

@@ -13,6 +13,7 @@ class Group implements Node, Collection {
 	use Concerns\HasNodes;
 	use Concerns\HasType;
 	use Concerns\InsertNode;
+	use Concerns\MoveNode;
 	use Concerns\NameCollision;
 	use Concerns\RemoveNode;
 	use Concerns\SerializeAsJson;

@@ -1,31 +1,31 @@
 <?php
 
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
+use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\Text;
 use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
-use Give\Framework\FieldsAPI\FieldCollection\Exception\NameCollisionException;
 
 final class NameCollisionTest extends TestCase {
 
     public function testCheckNameCollision() {
-        $collection = new FieldCollection( 'root', [
-            new FormField( 'text', 'my-text-field' ),
-        ]);
+	    $this->expectException( NameCollisionException::class );
 
-        $this->expectException( NameCollisionException::class );
-        $collection->insertAfter( 'my-text-field', new FormField( 'text', 'my-text-field' ) );
+	    Form::make( 'form' )
+            ->append(
+            	Text::make( 'textField' ),
+	            Text::make( 'textField' )
+            );
     }
 
     public function testCheckNameCollisionDeep() {
-        $collection = new FieldCollection( 'root', [
-            new FormField( 'text', 'my-text-field' ),
-        ]);
+	    $this->expectException( NameCollisionException::class );
 
-        $collection2 = new FieldCollection( 'nested', [
-            new FormField( 'text', 'my-text-field' ),
-        ]);
-
-        $this->expectException( NameCollisionException::class );
-        $collection->insertAfter( 'my-text-field', $collection2 );
+	    Form::make( 'form' )
+		    ->append(
+		    	Text::make( 'textField' ),
+		    	Group::make( 'group' )
+			        ->append( Text::make( 'textField' ) )
+		    );
     }
 }

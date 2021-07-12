@@ -16,7 +16,9 @@ trait IsRequired {
 	 * {@inheritdoc}
 	 */
 	public function isRequired() {
-		return $this->validationRules->getRule( 'required' );
+		$required = $this->validationRules->getRule( 'required' );
+
+		return is_null( $required ) ? false : $required;
 	}
 
 	/**

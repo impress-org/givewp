@@ -18,6 +18,7 @@ trait InsertNode {
 	 * @param Node $node
 	 *
 	 * @return $this
+	 * @throws ReferenceNodeNotFoundException
 	 */
 	public function insertAfter( $siblingName, Node $node ) {
 		$this->checkNameCollisionDeep( $node );
@@ -43,14 +44,17 @@ trait InsertNode {
 				$node
 			);
 			return;
-		} elseif ( $this->nodes ) {
+		}
+
+		if ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
 				if ( $childNode instanceof Collection ) {
-					$childNode->insertAfterRecursive( $siblingName, $node );
+					$childNode->insertAfter( $siblingName, $node );
 				}
 			}
 			return;
 		}
+
 		throw new ReferenceNodeNotFoundException( $siblingName );
 	}
 
@@ -59,6 +63,8 @@ trait InsertNode {
 	 *
 	 * @param string $siblingName
 	 * @param Node $node
+	 *
+	 * @throws ReferenceNodeNotFoundException
 	 *
 	 * @return $this
 	 */
@@ -86,14 +92,17 @@ trait InsertNode {
 				$node
 			);
 			return;
-		} elseif ( $this->nodes ) {
+		}
+
+		if ( $this->nodes ) {
 			foreach ( $this->nodes as $childNode ) {
 				if ( $childNode instanceof Collection ) {
-					$childNode->insertBeforeRecursive( $siblingName, $node );
+					$childNode->insertBefore( $siblingName, $node );
 				}
 			}
 			return;
 		}
+
 		throw new ReferenceNodeNotFoundException( $siblingName );
 	}
 
@@ -101,6 +110,7 @@ trait InsertNode {
 	 * @since 2.10.2
 	 */
 	protected function insertAtIndex( $index, $node ) {
+		$this->checkNameCollisionDeep( $node );
 		array_splice( $this->nodes, $index, 0, [ $node ] );
 	}
 }

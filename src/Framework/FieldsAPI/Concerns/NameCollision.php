@@ -3,6 +3,7 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Contracts\Collection;
+use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 
 /**
@@ -15,10 +16,10 @@ trait NameCollision {
 	 * @throws NameCollisionException
 	 */
 	public function checkNameCollisionDeep( $node ) {
+		$this->checkNameCollision( $node );
 		if ( $node instanceof Collection ) {
 			$node->walk( [ $this, 'checkNameCollision' ] );
 		}
-		$this->checkNameCollision( $node );
 	}
 
 	/**

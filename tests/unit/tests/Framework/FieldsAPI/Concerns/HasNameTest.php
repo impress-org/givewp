@@ -6,12 +6,12 @@ use PHPUnit\Framework\TestCase;
 final class HasNameTest extends TestCase {
 
 	public function testHasName() {
-		$mock = new UsesHasName( 'Name' );
+		$mock = new HasNameMock( 'Name' );
 		$this->assertEquals( 'Name', $mock->getName() );
 	}
 }
 
-final class UsesHasName {
+final class HasNameMock {
 	use HasName;
 
 	public function __construct( $name ) {
