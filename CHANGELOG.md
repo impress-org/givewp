@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  Fix "Unsupported declare strict_types" PHP warning (#5853, #5869)
 -  Add top margin to setting group page (#5864)
 
+### Changes
+
+- Update field descriptions to be more legible for accessibility (#5875)
+
 ## 2.11.3 - 2021-07-06
 
 ### Fixed
