@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\License;
 
 /**
@@ -17,24 +18,43 @@ class PremiumAddonsListManager {
 	 */
 	const PRODUCTS_LIST_API_URL = 'https://givewp.com/edd-api/products';
 
+	/**
+	 * Cached addon values for the same request, prevents subsequent transient queries
+	 *
+	 * @since 2.11.3
+	 */
+	private $addonIds;
 
 	/**
 	 * Get premium addons slugs as addons ids.
 	 *
+	 * @since 2.11.3 Always cache to avoid timeouts on givewp.com
 	 * @since 2.9.2
+	 *
 	 * @return array
 	 */
 	private function getAddonsIds() {
-		$optionName   = 'give_premium_addons_ids';
-		$cachedResult = get_transient( $optionName );
-		if ( $cachedResult ) {
-			return  $cachedResult;
+		if ( isset( $this->addonIds ) ) {
+			return $this->addonIds;
 		}
 
-		$response            = wp_remote_get( self::PRODUCTS_LIST_API_URL . '?number=-1' );
+		$optionName   = 'give_premium_addons_ids';
+		$cachedResult = get_transient( $optionName );
+		if ( $cachedResult !== false ) {
+			return $this->addonIds = $cachedResult;
+		}
+
+		$response            = wp_remote_get(
+			self::PRODUCTS_LIST_API_URL . '?number=-1',
+			[
+				'timeout' => 3,
+			]
+		);
 		$productsInformation = wp_remote_retrieve_body( $response );
 		if ( ! $productsInformation ) {
-			return [];
+			set_transient( $optionName, [], HOUR_IN_SECONDS );
+
+			return $this->addonIds = [];
 		}
 
 		$productsInformation = json_decode( $productsInformation, true );
@@ -47,7 +67,7 @@ class PremiumAddonsListManager {
 			set_transient( $optionName, $productsIds, DAY_IN_SECONDS );
 		}
 
-		return $productsIds;
+		return $this->addonIds = $productsIds;
 	}
 
 	/**
