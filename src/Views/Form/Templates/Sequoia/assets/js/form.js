@@ -218,7 +218,11 @@
 					const compare = position === 'before' ? symbol + value : value + symbol;
 					// Setup tooltip unless for custom donation level, or if level label matches value
 					if ( value !== 'custom' && text !== compare ) {
-						const wrap = `<span class="give-tooltip hint--top hint--bounce ${ text.length < 50 ? 'narrow' : '' }" style="width: 100%" aria-label="${ text.length < 50 ? text : text.substr( 0, 50 ) + '...' }" rel="tooltip"></span>`;
+						const wrap = document.createElement('span');
+						wrap.classList.add('give-tooltip', 'hint--top', 'hint--bounce', text.length < 50 ? 'narrow' : '');
+						wrap.style.width = '100%';
+						wrap.setAttribute('aria-label', text.length < 50 ? text : text.substr( 0, 50 ) + '...');
+						wrap.setAttribute('rel', 'tooltip');
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
 					}
