@@ -724,6 +724,7 @@ class Container implements ArrayAccess {
 	 * @return array
 	 * @throws BindingResolutionException
 	 * @throws ReflectionException
+	 * @note ReflectionParameter::getType() is not supported before PHP7
 	 */
 	protected function resolveDependencies( array $dependencies ) {
 		$results = [];
@@ -820,6 +821,7 @@ class Container implements ArrayAccess {
 	 * @return mixed
 	 * @throws BindingResolutionException
 	 * @throws ReflectionException
+	 * @note ReflectionParameter::getType() is not supported before PHP7
 	 */
 	protected function resolveClass( ReflectionParameter $parameter ) {
 		try {

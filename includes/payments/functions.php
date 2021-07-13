@@ -577,6 +577,8 @@ function give_get_payment_status_keys() {
  *
  * @since 1.0
  *
+ * @unreleased default value for the $day parameter is removed to prevent PHP8 warnings.
+ *
  * @return int $earnings Earnings
  */
 function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null ) {
