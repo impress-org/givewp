@@ -724,7 +724,6 @@ class Container implements ArrayAccess {
 	 * @return array
 	 * @throws BindingResolutionException
 	 * @throws ReflectionException
-	 * @note ReflectionParameter::getType() is not supported before PHP7
 	 */
 	protected function resolveDependencies( array $dependencies ) {
 		$results = [];
@@ -739,14 +738,16 @@ class Container implements ArrayAccess {
 				continue;
 			}
 
-			// If the class is null, it means the dependency is a string or some other
-			// primitive type which we can not resolve since it is not a class and
-			// we will just bomb out with an error since we have no-where to go.
-			// Note: ReflectionParameter::getClass() is deprecated since PHP 8
+
+			// @note: ReflectionParameter::getClass() is deprecated since PHP 8
+			// @note: ReflectionParameter::getType() is not supported before PHP7
 			$name = version_compare( PHP_VERSION, '8.0', '<' )
 				? $dependency->getClass()
 				: $dependency->getType()->getName();
 
+			// If the class is null, it means the dependency is a string or some other
+			// primitive type which we can not resolve since it is not a class and
+			// we will just bomb out with an error since we have no-where to go.
 			$result = is_null( $name )
 				? $this->resolvePrimitive( $dependency )
 				: $this->resolveClass( $dependency );
@@ -821,11 +822,11 @@ class Container implements ArrayAccess {
 	 * @return mixed
 	 * @throws BindingResolutionException
 	 * @throws ReflectionException
-	 * @note ReflectionParameter::getType() is not supported before PHP7
 	 */
 	protected function resolveClass( ReflectionParameter $parameter ) {
 		try {
-			// Note: ReflectionParameter::getClass() is deprecated since PHP 8
+			// @note: ReflectionParameter::getClass() is deprecated since PHP 8
+			// @note: ReflectionParameter::getType() is not supported before PHP7
 			return version_compare( PHP_VERSION, '8.0', '<' )
 				? $this->make( $parameter->getClass()->name )
 				: $this->make( $parameter->getType()->getName() );
