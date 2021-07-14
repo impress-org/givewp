@@ -2,7 +2,7 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\FieldsAPI\Contracts\CollectionNode;
+use Give\Framework\FieldsAPI\Contracts\Collection;
 
 trait RemoveNode {
 
@@ -12,7 +12,7 @@ trait RemoveNode {
 				unset( $this->nodes[ $index ] );
 				return $this;
 			}
-			if ( $node instanceof CollectionNode ) {
+			if ( $node instanceof Collection ) {
 				return $node->remove( $name );
 			}
 		}
