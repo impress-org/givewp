@@ -21,6 +21,7 @@
 		-webkit-box-shadow: 0 0 5px 0 rgba(221, 221, 221, 1);
 		-moz-box-shadow: 0 0 5px 0 rgba(221, 221, 221, 1);
 		box-shadow: 0 0 5px 0 rgba(221, 221, 221, 1);
+		margin-top: 20px;
 
 		.give-settings-section-group-menu {
 			width: 250px;
@@ -257,8 +258,7 @@
 
 p.give-field-description,
 div.give-field-description {
-	color: #666;
-	font-style: italic;
+	color: #555;
 	font-size: 14px !important;
 	line-height: 22px;
 
@@ -469,7 +469,6 @@ div.give-field-description {
 	}
 
 	td.check-column input {
-		//width: 1em;
 		display: none;
 	}
 
