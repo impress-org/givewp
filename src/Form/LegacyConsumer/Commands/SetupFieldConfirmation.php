@@ -32,7 +32,7 @@ class SetupFieldConfirmation {
 
 		$formID = give_get_payment_meta( $this->payment->ID, '_give_payment_form_id' );
 
-		$collection = Group::make( 'root' );
+		$collection = Group::make( $hook );
 		do_action( "give_fields_{$hook}", $collection, $formID );
 
 		$collection->walk( [ $this, 'render' ] );

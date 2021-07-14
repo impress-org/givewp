@@ -29,7 +29,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 * @param string $hook
 	 */
 	public function __invoke( $hook ) {
-		$collection = Group::make( 'root' );
+		$collection = Group::make( $hook );
 		do_action( "give_fields_$hook", $collection, $this->donationData['give_form_id'] );
 		$collection->walkFields( [ $this, 'process' ] );
 	}

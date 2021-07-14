@@ -29,7 +29,7 @@ class SetupPaymentDetailsDisplay {
 	 */
 	public function __invoke( $hook ) {
 
-		$collection = Group::make( 'root' );
+		$collection = Group::make( $hook );
 		do_action( "give_fields_{$hook}", $collection, get_the_ID() );
 
 		$collection->walk( [ $this, 'render' ] );

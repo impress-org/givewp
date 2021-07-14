@@ -32,7 +32,7 @@ class SetupFieldReceipt {
 
 		$formID = give_get_payment_meta( $this->receipt->donationId, '_give_payment_form_id' );
 
-		$collection = Group::make( 'root' );
+		$collection = Group::make( $hook );
 		do_action( "give_fields_{$hook}", $collection, $formID );
 
 		$collection->walk( [ $this, 'apply' ] );
