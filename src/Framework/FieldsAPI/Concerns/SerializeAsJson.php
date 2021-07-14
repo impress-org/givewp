@@ -24,14 +24,7 @@ trait SerializeAsJson {
 					}
 					return $value;
 				},
-				// Only serialize properties which are not hidden.
-				array_diff_key(
-					get_object_vars( $this ),
-					// Respect hidden, if set.
-					array_flip( property_exists( $this, 'hidden' ) ? $this->hidden : [] ),
-					// Ignore hidden property.
-					[ 'hidden' => 'hidden' ]
-				)
+				get_object_vars( $this )
 			)
 		);
 	}
