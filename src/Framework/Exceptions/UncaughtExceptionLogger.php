@@ -47,7 +47,7 @@ class UncaughtExceptionLogger {
 		if ( $this->previousHandler !== null ) {
 			$previousHandler = $this->previousHandler;
 			$previousHandler( $exception );
-		} elseif ( $exception instanceof Exception ) {
+		} else {
 			throw $exception;
 		}
 	}
