@@ -7,7 +7,6 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 class Group implements Node, Collection {
 
-	use Concerns\AppendNodes;
 	use Concerns\HasLabel;
 	use Concerns\HasName;
 	use Concerns\HasNodes;

@@ -113,4 +113,14 @@ trait InsertNode {
 		$this->checkNameCollisionDeep( $node );
 		array_splice( $this->nodes, $index, 0, [ $node ] );
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function append( Node ...$nodes ) {
+		foreach ( $nodes as $node ) {
+			$this->insertAtIndex( $this->count(), $node );
+		}
+		return $this;
+	}
 }
