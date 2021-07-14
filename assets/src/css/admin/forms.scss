@@ -230,9 +230,9 @@ Shortcode Copy & Paste
 			}
 
 			.give-field-description {
-				color: #666;
-				font-size: 12px;
-				line-height: 18px;
+				color: #555;
+				font-size: 13px;
+				line-height: 20px;
 				display: block;
 				padding-top: 10px;
 			}
@@ -470,16 +470,16 @@ Shortcode Copy & Paste
 			padding-bottom: 16px;
 
 			p {
-				font-weight: 300;
-				font-size: 18px;
+				font-size: 15px;
 				margin: 0 0 14px 0;
 				padding: 0;
 			}
 
 			p.form-template-description {
-				color: #9c9c9c;
-				font-size: 16px;
-				padding-bottom: 26px;
+				color: #555;
+				font-size: 13px;
+				line-height: 20px;
+				display: block;
 			}
 
 			.form-template-notice {
@@ -520,11 +520,9 @@ Shortcode Copy & Paste
 		.inner-panel {
 			display: flex;
 			flex-direction: column;
-			padding-left: 34px;
-			padding-right: 34px;
 
 			.templates-list-heading {
-				font-size: 14px;
+				font-size: 15px;
 				font-weight: 400;
 				margin: 10px 0 15px 0;
 			}
@@ -741,6 +739,7 @@ Doc Links
 	margin-right: 15px;
 
 	a {
+		font-size: 14px;
 		color: #999;
 		text-decoration: none;
 		font-style: italic;
@@ -751,6 +750,8 @@ Doc Links
 
 		span {
 			font-style: normal;
+			position: relative;
+			top: 1px;
 		}
 	}
 }
