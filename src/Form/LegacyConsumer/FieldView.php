@@ -26,10 +26,6 @@ class FieldView {
 	public static function render( Node $field ) {
 		$type = $field->getType();
 
-		//echo "<pre>";
-		//echo esc_attr( json_encode($field, JSON_PRETTY_PRINT) );
-		//echo "</pre>";
-
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
 
