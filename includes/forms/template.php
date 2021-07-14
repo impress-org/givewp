@@ -550,7 +550,7 @@ function give_output_levels( $form_id ) {
 					$level_classes,
 					$formatted_amount,
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					$level_text
+					esc_attr( $level_text )
 				);
 			}
 
@@ -562,7 +562,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= sprintf(
 					'<li><button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">%1$s</button></li>',
-					$custom_amount_text
+					esc_html( $custom_amount_text )
 				);
 			}
 
@@ -592,7 +592,7 @@ function give_output_levels( $form_id ) {
 					$formatted_amount,
 					( give_is_default_level_id( $price ) ? 'checked="checked"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					$level_text
+					esc_html( $level_text )
 				);
 			}
 
@@ -603,7 +603,7 @@ function give_output_levels( $form_id ) {
 			) {
 				$output .= sprintf(
 					'<li><input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom"><label for="give-radio-level-custom">%1$s</label></li>',
-					$custom_amount_text
+					esc_html( $custom_amount_text )
 				);
 			}
 
@@ -640,7 +640,7 @@ function give_output_levels( $form_id ) {
 					$formatted_amount,
 					( give_is_default_level_id( $price ) ? 'selected="selected"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					$level_text
+					esc_html( $level_text )
 				);
 			}
 
@@ -648,7 +648,7 @@ function give_output_levels( $form_id ) {
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= sprintf(
 					'<option data-price-id="custom" class="give-donation-level-custom" value="custom">%1$s</option>',
-					$custom_amount_text
+					esc_html( $custom_amount_text )
 				);
 			}
 
