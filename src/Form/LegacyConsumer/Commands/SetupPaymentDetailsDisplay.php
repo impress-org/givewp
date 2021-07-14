@@ -3,7 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Field;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -29,10 +29,10 @@ class SetupPaymentDetailsDisplay {
 	 */
 	public function __invoke( $hook ) {
 
-		$fieldCollection = Form::make( 'root' );
-		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
+		$collection = Group::make( 'root' );
+		do_action( "give_fields_{$hook}", $collection, get_the_ID() );
 
-		$fieldCollection->walk( [ $this, 'render' ] );
+		$collection->walk( [ $this, 'render' ] );
 	}
 
 	/**

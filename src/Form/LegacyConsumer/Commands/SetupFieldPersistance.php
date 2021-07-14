@@ -3,7 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Field;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * Persist custom field values as donation meta.
@@ -29,9 +29,9 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 * @param string $hook
 	 */
 	public function __invoke( $hook ) {
-		$form = Form::make( 'root' );
-		do_action( "give_fields_$hook", $form, $this->donationData['give_form_id'] );
-		$form->walkFields( [ $this, 'process' ] );
+		$collection = Group::make( 'root' );
+		do_action( "give_fields_$hook", $collection, $this->donationData['give_form_id'] );
+		$collection->walkFields( [ $this, 'process' ] );
 	}
 
 	/**

@@ -2,8 +2,8 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\Form;
 use Give\Form\LegacyConsumer\FieldView;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -22,9 +22,9 @@ class SetupNewTemplateHook implements HookCommandInterface {
 		add_action(
 			"give_$hook",
 			function ( $formID ) use ( $hook ) {
-				$form = Form::make( 'root' );
-				do_action( "give_fields_$hook", $form, $formID );
-				$form->walk( [ FieldView::class, 'render' ] );
+				$collection = Group::make( 'root' );
+				do_action( "give_fields_$hook", $collection, $formID );
+				$collection->walk( [ FieldView::class, 'render' ] );
 			}
 		);
 	}

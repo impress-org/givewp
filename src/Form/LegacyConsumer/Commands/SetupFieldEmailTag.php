@@ -3,7 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Field;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -19,10 +19,10 @@ class SetupFieldEmailTag {
 	 * @return void
 	 */
 	public function __invoke( $hook ) {
-		$form = Form::make( 'root' );
-		do_action( "give_fields_{$hook}", $form, get_the_ID() );
+		$collection = Group::make( 'root' );
+		do_action( "give_fields_{$hook}", $collection, get_the_ID() );
 
-		$form->walkFields( [ $this, 'register' ] );
+		$collection->walkFields( [ $this, 'register' ] );
 	}
 
 	/**

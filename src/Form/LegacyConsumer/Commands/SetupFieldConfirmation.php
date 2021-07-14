@@ -3,7 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Field;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -32,10 +32,10 @@ class SetupFieldConfirmation {
 
 		$formID = give_get_payment_meta( $this->payment->ID, '_give_payment_form_id' );
 
-		$form = Form::make( 'root' );
-		do_action( "give_fields_{$hook}", $form, $formID );
+		$collection = Group::make( 'root' );
+		do_action( "give_fields_{$hook}", $collection, $formID );
 
-		$form->walk( [ $this, 'render' ] );
+		$collection->walk( [ $this, 'render' ] );
 	}
 
 	/**

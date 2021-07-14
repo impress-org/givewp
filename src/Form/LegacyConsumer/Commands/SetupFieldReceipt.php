@@ -4,7 +4,7 @@ namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Receipt\DonationReceipt;
 use Give\Framework\FieldsAPI\Field;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -32,10 +32,10 @@ class SetupFieldReceipt {
 
 		$formID = give_get_payment_meta( $this->receipt->donationId, '_give_payment_form_id' );
 
-		$form = Form::make( 'root' );
-		do_action( "give_fields_{$hook}", $form, $formID );
+		$collection = Group::make( 'root' );
+		do_action( "give_fields_{$hook}", $collection, $formID );
 
-		$form->walk( [ $this, 'apply' ] );
+		$collection->walk( [ $this, 'apply' ] );
 	}
 
 	/**
