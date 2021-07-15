@@ -51,7 +51,8 @@ class PremiumAddonsListManager {
 			]
 		);
 		$productsInformation = wp_remote_retrieve_body( $response );
-		if ( ! $productsInformation ) {
+		$responseCode        = wp_remote_retrieve_response_code( $response );
+		if ( ! $productsInformation || $responseCode < 200 || $responseCode > 299 ) {
 			set_transient( $optionName, [], HOUR_IN_SECONDS );
 
 			return $this->addonIds = [];

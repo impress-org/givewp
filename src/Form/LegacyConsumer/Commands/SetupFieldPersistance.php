@@ -2,9 +2,8 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
-use Give\Form\LegacyConsumer\FieldView;
+use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * Persist custom field values as donation meta.
@@ -17,7 +16,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 * @since 2.10.2
 	 *
 	 * @param int $donationID
-	 * @param array $donationID
+	 * @param array $donationData
 	 */
 	public function __construct( $donationID, $donationData ) {
 		$this->donationID   = $donationID;
@@ -30,19 +29,19 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 * @param string $hook
 	 */
 	public function __invoke( $hook ) {
-		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_$hook", $fieldCollection, $this->donationData['give_form_id'] );
-		$fieldCollection->walk( [ $this, 'process' ] );
+		$collection = Group::make( $hook );
+		do_action( "give_fields_$hook", $collection, $this->donationData['give_form_id'] );
+		$collection->walkFields( [ $this, 'process' ] );
 	}
 
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	public function process( FormField $field ) {
+	public function process( Field $field ) {
 		if ( isset( $_POST[ $field->getName() ] ) ) {
 			$value = wp_strip_all_tags( $_POST[ $field->getName() ], true );
 
