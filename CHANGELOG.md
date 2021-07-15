@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--  Add custom donation level choice to select field if donation donated with custom amount (#5866)
+-   Add custom donation level choice to select field if donation donated with custom amount (#5866)
 
 ### Fixed
 
@@ -21,8 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- Update field descriptions to be more legible for accessibility (#5875)
-
+-   Update field descriptions to be more legible for accessibility (#5875)
+-   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843)
 
 ## 2.11.3 - 2021-07-06
 

@@ -1,7 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
+use Give\Framework\FieldsAPI\Text;
 use Give\Form\LegacyConsumer\Commands\SetupFieldEmailTag;
 
 final class SetupFieldEmailTagTest extends Give_Unit_Test_Case {
@@ -12,8 +11,7 @@ final class SetupFieldEmailTagTest extends Give_Unit_Test_Case {
     }
 
     public function testEmailTagResolverDonationMeta() {
-        $field = new FormField( 'text', 'my-text-field' );
-        $field->emailTag( 'myTextField' );
+        $field = Text::make( 'my-text-field' )->emailTag( 'myTextField' );
 
         give_update_payment_meta( $this->paymentID, 'my-text-field', 'foobar' );
 
@@ -24,9 +22,9 @@ final class SetupFieldEmailTagTest extends Give_Unit_Test_Case {
     }
 
     public function testEmailTagResolverDonorMeta() {
-        $field = new FormField( 'text', 'my-text-field' );
-        $field->storeAsDonorMeta();
-        $field->emailTag( 'myTextField' );
+        $field = Text::make( 'my-text-field' )
+	        ->storeAsDonorMeta()
+			->emailTag( 'myTextField' );
 
         $donorID = give_get_payment_meta( $this->paymentID, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, $field->getName(), 'foobar' );
