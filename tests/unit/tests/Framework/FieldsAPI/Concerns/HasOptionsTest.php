@@ -10,13 +10,13 @@ final class HasOptionsTest extends TestCase {
     	/** @var HasOptions $mock */
         $mock = $this->getMockForTrait( HasOptions::class );
 
-        $mock->options( [ [ 'aye', 'Aye' ] ] );
+        $mock->options( [ 'aye', 'Aye' ] );
         $this->assertCount( 1, $mock->getOptions() );
 
-        $mock->options([
+        $mock->options(
 			[ 'aye', 'Aye' ],
-			[ 'bee', 'bee' ],
-		]);
+			[ 'bee', 'bee' ]
+		);
         $this->assertCount( 2, $mock->getOptions() );
     }
 
@@ -24,12 +24,12 @@ final class HasOptionsTest extends TestCase {
 	    /** @var HasOptions $mock */
     	$mock = $this->getMockForTrait( HasOptions::class );
 
-	    $mock->options([
+	    $mock->options(
 	    	'foo',
 	    	['bar', 'Bar'],
 	    	Option::make( 'aye', 'Aye' ),
-			Option::make( 'bee' ),
-	    ]);
+			Option::make( 'bee' )
+	    );
 
 		$this->assertContainsOnlyInstancesOf( Option::class, $mock->getOptions() );
     }

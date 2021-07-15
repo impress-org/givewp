@@ -16,11 +16,11 @@ trait HasOptions {
 	 * For setting labels either use `new FieldOption($value, $label)` or `[$value, $label]`.
 	 * In either case, the label is optional.
 	 *
-	 * @param Option[]|array[]|array $options
+	 * @param Option|array|mixed ...$options
 	 *
 	 * @return $this
 	 */
-	public function options( array $options ) {
+	public function options( ...$options ) {
 		// Reset options, since they are meant to be set immutably
 		$this->options = [];
 
