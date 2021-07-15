@@ -18,7 +18,7 @@ class Group implements Node, Collection {
 	use Concerns\SerializeAsJson;
 	use Concerns\WalkNodes;
 
-	protected function __construct( $name ) {
+	public function __construct( $name ) {
 		$this->name = $name;
 	}
 

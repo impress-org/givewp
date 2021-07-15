@@ -13,7 +13,7 @@ abstract class Element implements Node {
 	/**
 	 * @param string $name
 	 */
-	protected function __construct( $name ) {
+	public function __construct( $name ) {
 		$this->name = $name;
 	}
 
