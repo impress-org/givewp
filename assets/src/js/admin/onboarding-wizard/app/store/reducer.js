@@ -28,8 +28,6 @@ export const reducer = ( state, action ) => {
 				...state,
 				configuration: { ...state.configuration,
 					causeType: action.payload.type,
-					blogName: action.payload.name,
-					adminEmail: action.payload.email,
 				},
 			};
 		case 'SET_COUNTRY':

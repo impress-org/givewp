@@ -4,7 +4,7 @@ const { __ } = wp.i18n;
 // Import store dependencies
 import { useStoreValue } from '../../store';
 import { setUserType, setCauseType } from '../../store/actions';
-import { getBlogName, getAdminEmail, getCauseTypes } from '../../../utils';
+import { getCauseTypes, maybeSubscribeToNewsletter } from '../../../utils';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -22,8 +22,6 @@ const YourCause = () => {
 	const [ { configuration }, dispatch ] = useStoreValue();
 
 	const userType = configuration.userType;
-	const blogName = configuration.blogName;
-	const adminEmail = configuration.adminEmail;
 	const causeType = configuration.causeType;
 
 	return (
@@ -49,26 +47,12 @@ const YourCause = () => {
 			</CardInput>
 
 			<div className="give-obw-optin-field">
-				<h2>{ __( 'What\'s the name of your cause?', 'give' ) }</h2>
-				<span className="screen-reader-text">{ __( 'What\'s the name of your cause?', 'give' ) }</span>
-				<input className="give-obw-text-field" type="text" value={ getBlogName() } />
-			</div>
-
-			<div className="give-obw-optin-field">
-				<h2>{ __( 'What type of cause is yours?', 'give' ) }</h2>
+				<h2>{ __( 'What are you fundraising for?', 'give' ) }</h2>
 				<span className="screen-reader-text">{ __( 'What type of cause is yours?', 'give' ) }</span>
 				<SelectInput testId="cause-select" value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
 			</div>
 
-			<div className="give-obw-optin-field">
-				<h2>{ __( 'What\'s your email address?', 'give' ) }</h2>
-				<span className="screen-reader-text">{ __( 'What\'s your email address?', 'give' ) }</span>
-				<input className="give-obw-text-field" type="text" value={ getAdminEmail() } />
-				<p className="give-obw-email-notice">{__('I would like to receive articles and information how to get the most out of GiveWP.', 'give')}</p>
-			</div>
-
-
-			<ContinueButton testId="cause-continue-button" />
+			<ContinueButton testId="cause-continue-button" clickCallback={ () => { maybeSubscribeToNewsletter() } } />
 		</div>
 	);
 };

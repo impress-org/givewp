@@ -79,14 +79,6 @@ export const getCauseTypes = () => {
 	return getWindowData( 'causeTypes' );
 };
 
-export const getAdminEmail = () => {
-	return getWindowData( 'adminEmail' );
-};
-
-export const getBlogName = () => {
-	return getWindowData( 'blogName' );
-};
-
 export const getFeaturesEnabledDefault = () => {
 	const features = getWindowData( 'features' );
 	return features.filter( ( feature ) => {
@@ -143,6 +135,37 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 		setting,
 		value,
 	};
+};
+
+/**
+ *
+ * @param values
+ * @returns {{value, setting: (mixed|string|*)}}
+ */
+export const maybeSubscribeToNewsletter = ( ) => {
+
+	axios.post( 'https://givegatewayserver.local/activecampaign', {
+		action: 'subscribe',
+		email: getWindowData('adminEmail'),
+		first_name: getWindowData('adminFirstName'),
+		last_name: getWindowData('adminLastName'),
+		website_url: getWindowData('websiteUrl'),
+		website_name: getWindowData('websiteName'),
+	} )
+		.then( function( response ) {
+
+			// Subscribing did work
+			// Mark their user meta as subscribed to AC
+
+			console.log( response ); // eslint-disable-line no-console
+		} )
+		.catch( function() {
+
+			// Subscribing to AC did not work...
+
+			console.log( 'caught' ); // eslint-disable-line no-console
+		} );
+
 };
 
 /**

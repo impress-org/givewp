@@ -182,7 +182,10 @@ class Page {
 				),
 				'causeTypes'       => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
 				'adminEmail'       => $current_user->user_email,
-				'blogName'         => get_bloginfo('sitename'),
+				'adminFirstName'   => $current_user->first_name,
+				'adminLastName'    => $current_user->last_name,
+				'websiteUrl'       => get_bloginfo( 'url' ),
+				'websiteName'       => get_bloginfo( 'sitename' ),
 				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);
