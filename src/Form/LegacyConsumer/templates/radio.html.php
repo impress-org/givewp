@@ -1,4 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\Fields\Radio $field */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Radio $field */ ?>
 <?php /* Fieldsets + legends are terrible to style, so we just use the semantic markup and style something else. */ ?>
 <fieldset>
 	<legend class="screen-reader-text">

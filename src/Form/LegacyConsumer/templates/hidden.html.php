@@ -1,4 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\Fields\Hidden $field */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Hidden $field */ ?>
 <input
 	type="hidden"
 	name="<?php echo $field->getName(); ?>"

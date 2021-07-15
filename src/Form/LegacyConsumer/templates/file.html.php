@@ -1,4 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\Fields\File $field */ ?>
+<?php /** @var Give\Framework\FieldsAPI\File $field */ ?>
 <input
 	type="file"
 	name="<?php echo $field->getName(); ?>"

@@ -1,4 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\Fields\Textarea $field */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Textarea $field */ ?>
 <?php /** @var string $classAttribute */ ?>
 <textarea
   class="<?php echo $classAttribute; ?>"
