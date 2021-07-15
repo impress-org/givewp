@@ -72,6 +72,7 @@ class LegacyFormSettingCompatibility {
 
 				/**
 				 * Prevents an undefined index error of the field id is not set in the settings group.
+				 * @link https://github.com/impress-org/givewp/pull/5882
 				 * @unreleased
 				 */
 				if ( ! isset( $settings[ $groupId ] ) || ! isset( $settings[ $groupId ][ $field['id'] ] ) ) {
