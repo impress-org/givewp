@@ -70,6 +70,14 @@ class LegacyFormSettingCompatibility {
 					continue;
 				}
 
+				/**
+				 * Prevents an undefined index error of the field id is not set in the settings group.
+				 * @unreleased
+				 */
+				if ( ! isset( $settings[ $groupId ] ) || ! isset( $settings[ $groupId ][ $field['id'] ] ) ) {
+					continue;
+				}
+
 				Give()->form_meta->update_meta( $formId, $field[ self::$key ], $settings[ $groupId ][ $field['id'] ] );
 				$alreadySavedLegacySettings[] = $field[ self::$key ];
 			}
