@@ -138,11 +138,9 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 };
 
 /**
- *
- * @param values
- * @returns {{value, setting: (mixed|string|*)}}
+ * Subscribes admin to ActiveCampaign.
  */
-export const maybeSubscribeToNewsletter = ( ) => {
+export const subscribeToNewsletter = () => {
 
 	axios.post( 'https://givegatewayserver.local/activecampaign', {
 		action: 'subscribe',

@@ -4,7 +4,7 @@ const { __ } = wp.i18n;
 // Import store dependencies
 import { useStoreValue } from '../../store';
 import { setUserType, setCauseType } from '../../store/actions';
-import { getCauseTypes, maybeSubscribeToNewsletter } from '../../../utils';
+import { getCauseTypes, subscribeToNewsletter } from '../../../utils';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -14,6 +14,7 @@ import ContinueButton from '../../../components/continue-button';
 import IndividualIcon from '../../../components/icons/individual';
 import OrganizationIcon from '../../../components/icons/organization';
 import OtherIcon from '../../../components/icons/other';
+import SkipLink from '../../../components/skip-optin-link';
 
 // Import styles
 import './style.scss';
@@ -52,7 +53,16 @@ const YourCause = () => {
 				<SelectInput testId="cause-select" value={ causeType } onChange={ ( value ) => dispatch( setCauseType( value ) ) } options={ getCauseTypes() } />
 			</div>
 
-			<ContinueButton testId="cause-continue-button" clickCallback={ () => { maybeSubscribeToNewsletter() } } />
+			<div className="give-obw-community-field">
+				<h2>{ __( '🌱 Would you like to join the GiveWP Community?', 'give' ) }</h2>
+				<p>{ __('If you opt-in, some data will be shared with our teams (so they can work their butts off to improve). We will also share some helpful info on fundraising, WordPress and our products from time to time.  And if you skip this, that’s okay! GiveWP will still work just fine.', 'give')}</p>
+
+			</div>
+
+			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={ () => { subscribeToNewsletter() } } />
+
+			<SkipLink />
+
 		</div>
 	);
 };
