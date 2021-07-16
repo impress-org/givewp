@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add top margin to setting group page (#5864)
 -   Card declines on multi-step form now display an error message on first click (#5868)
 -   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
+-   Creating a donation form programmatically no longer throws an undefined index error (#5882)
 
 ### Changes
 
