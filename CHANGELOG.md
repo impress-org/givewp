@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 -   Update field descriptions to be more legible for accessibility (#5875)
--   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843)
+-   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843, #5885)
 
 ## 2.11.3 - 2021-07-06
 
