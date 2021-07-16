@@ -32,7 +32,7 @@ class SetupPaymentDetailsDisplay {
 		$collection = Group::make( $hook );
 		do_action( "give_fields_{$hook}", $collection, get_the_ID() );
 
-		$collection->walk( [ $this, 'render' ] );
+		$collection->walkFields( [ $this, 'render' ] );
 	}
 
 	/**
