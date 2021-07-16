@@ -138,6 +138,35 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 };
 
 /**
+ * Subscribes admin to ActiveCampaign.
+ */
+export const subscribeToNewsletter = () => {
+
+	axios.post( 'https://givegatewayserver.local/activecampaign', {
+		action: 'subscribe',
+		email: getWindowData('adminEmail'),
+		first_name: getWindowData('adminFirstName'),
+		last_name: getWindowData('adminLastName'),
+		website_url: getWindowData('websiteUrl'),
+		website_name: getWindowData('websiteName'),
+	} )
+		.then( function( response ) {
+
+			// Subscribing did work
+			// Mark their user meta as subscribed to AC
+
+			console.log( response ); // eslint-disable-line no-console
+		} )
+		.catch( function() {
+
+			// Subscribing to AC did not work...
+
+			console.log( 'caught' ); // eslint-disable-line no-console
+		} );
+
+};
+
+/**
  * Retrieves array of state/provinces from API based on country
  *
  * @param {string} country Country code of code to retrieve states/provinces of (ex: 'USD')
