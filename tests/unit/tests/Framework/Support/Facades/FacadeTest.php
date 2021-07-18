@@ -8,11 +8,6 @@ final class FacadeTest extends TestCase {
 	public function testFacadeInheritance() {
 		$this->assertEquals( 'hello', Hello::sayHello() );
 	}
-
-	public function testFacadeClassRequirement() {
-		$this->expectException( Exception::class );
-		FailsToSetClass::foo();
-	}
 }
 
 /**
@@ -29,10 +24,7 @@ class HelloGenerator {
  * @method static sayHello()
  */
 class Hello extends Facade {
-	protected static function getFacadeClass() {
+	protected function getFacadeClass() {
 		return HelloGenerator::class;
 	}
-}
-
-class FailsToSetClass extends Facade {
 }

@@ -11,7 +11,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
  * such a way, though, that the facade is still mockable. It does this by instantiating the decorated class through the
  * Give Service Container (SC). So by injecting a mock singleton of the decorated class in the SC, it can be mocked.
  *
- * To use this, simply make a new facade class which extends this once, then override the getFacadeClass and return the
+ * To use this, simply make a new facade class which extends this once, then implement the getFacadeClass and return the
  * class to be decorated, for example: return MyClass::class;
  *
  * To help the IDE, take the methods from the decorated class and add them your class docblock. So if Repository had an
@@ -19,7 +19,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
  *
  * @unreleased
  */
-class Facade {
+abstract class Facade {
 	/**
 	 * Static helper for calling the facade methods
 	 *
@@ -29,23 +29,24 @@ class Facade {
 	 * @param array  $arguments
 	 *
 	 * @return mixed
-	 * @throws Exception
 	 */
 	public static function __callStatic( $name, $arguments ) {
-		$instance = give( static::getFacadeClass() );
+		give()->singletonIf( static::class );
+		$staticInstance = give( static::class );
 
-		return call_user_func_array( [ $instance, $name ], $arguments );
+		$facadeClass = $staticInstance->getFacadeClass();
+		give()->singletonIf( $facadeClass );
+		$facadeInstance = give( $facadeClass );
+
+		return $facadeInstance->$name( ...$arguments );
 	}
 
 	/**
-	 * Each facade will call this method and return the intended class instance
+	 * Retrieves the fully qualified class name or alias for the class being decorated
 	 *
 	 * @unreleased
 	 *
 	 * @return string
-	 * @throws Exception
 	 */
-	protected static function getFacadeClass() {
-		throw new Exception( 'This method must be overridden and return the class to decorate' );
-	}
+	abstract protected function getFacadeClass();
 }
