@@ -24,7 +24,7 @@ class HelloGenerator {
  * @method static sayHello()
  */
 class Hello extends Facade {
-	protected function getFacadeClass() {
+	protected function getFacadeAccessor() {
 		return HelloGenerator::class;
 	}
 }

@@ -20,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add custom donation level choice to select field if donation donated with custom amount (#5866)
 -   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
 
-
 ### Changes
 
 -   Update field descriptions to be more legible for accessibility (#5875)

@@ -31,14 +31,16 @@ abstract class Facade {
 	 * @return mixed
 	 */
 	public static function __callStatic( $name, $arguments ) {
+		// Make sure the static class is a singleton and get instance
 		give()->singletonIf( static::class );
 		$staticInstance = give( static::class );
 
-		$facadeClass = $staticInstance->getFacadeClass();
-		give()->singletonIf( $facadeClass );
-		$facadeInstance = give( $facadeClass );
+		// Make sure the accessed class is a singleton and get instance
+		$accessorClass = $staticInstance->getFacadeAccessor();
+		give()->singletonIf( $accessorClass );
+		$accessorInstance = give( $accessorClass );
 
-		return $facadeInstance->$name( ...$arguments );
+		return $accessorInstance->$name( ...$arguments );
 	}
 
 	/**
@@ -48,5 +50,5 @@ abstract class Facade {
 	 *
 	 * @return string
 	 */
-	abstract protected function getFacadeClass();
+	abstract protected function getFacadeAccessor();
 }
