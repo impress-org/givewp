@@ -3,9 +3,8 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Receipt\DonationReceipt;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
-use Give\Form\LegacyConsumer\FieldView;
+use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -33,20 +32,20 @@ class SetupFieldReceipt {
 
 		$formID = give_get_payment_meta( $this->receipt->donationId, '_give_payment_form_id' );
 
-		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$hook}", $fieldCollection, $formID );
+		$collection = Group::make( $hook );
+		do_action( "give_fields_{$hook}", $collection, $formID );
 
-		$fieldCollection->walk( [ $this, 'apply' ] );
+		$collection->walkFields( [ $this, 'apply' ] );
 	}
 
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	public function apply( FormField $field ) {
+	public function apply( Field $field ) {
 
 		if ( ! $field->shouldShowInReceipt() ) {
 			return;
@@ -62,11 +61,11 @@ class SetupFieldReceipt {
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	protected function addDonorLineItem( FormField $field ) {
+	protected function addDonorLineItem( Field $field ) {
 		$donorID = give_get_payment_meta( $this->receipt->donationId, '_give_payment_donor_id' );
 		if ( $value = Give()->donor_meta->get_meta( $donorID, $field->getName(), true ) ) {
 			$this->receipt
@@ -84,11 +83,11 @@ class SetupFieldReceipt {
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	protected function addAdditionalLineItems( $field ) {
+	protected function addAdditionalLineItems( Field $field ) {
 		if ( $value = give_get_payment_meta( $this->receipt->donationId, $field->getName() ) ) {
 			$this->receipt
 				->getSections()[ DonationReceipt::ADDITIONALINFORMATIONSECTIONID ]

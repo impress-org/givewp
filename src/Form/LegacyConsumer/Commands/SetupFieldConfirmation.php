@@ -2,8 +2,8 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
+use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -32,20 +32,20 @@ class SetupFieldConfirmation {
 
 		$formID = give_get_payment_meta( $this->payment->ID, '_give_payment_form_id' );
 
-		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$hook}", $fieldCollection, $formID );
+		$collection = Group::make( $hook );
+		do_action( "give_fields_{$hook}", $collection, $formID );
 
-		$fieldCollection->walk( [ $this, 'render' ] );
+		$collection->walkFields( [ $this, 'render' ] );
 	}
 
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	public function render( FormField $field ) {
+	public function render( Field $field ) {
 
 		if ( ! $field->shouldShowInReceipt() ) {
 			return;

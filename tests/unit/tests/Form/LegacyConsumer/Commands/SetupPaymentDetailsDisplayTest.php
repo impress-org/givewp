@@ -1,18 +1,14 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Form\LegacyConsumer\TemplateHooks;
-use Give\Form\LegacyConsumer\Commands\SetupFieldPersistance;
+use Give\Framework\FieldsAPI\Text;
 
 final class SetupPaymentDetailsDisplayTest extends Give_Unit_Test_Case {
 
     public function testDisplaysDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
-                    ->label( 'My Text Field' )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )->label( 'My Text Field' )
             );
         });
 
@@ -29,9 +25,9 @@ final class SetupPaymentDetailsDisplayTest extends Give_Unit_Test_Case {
 
     public function testNotDisplaysDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->storeAsDonorMeta()
             );
