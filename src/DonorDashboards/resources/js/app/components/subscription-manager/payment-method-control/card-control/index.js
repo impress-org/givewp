@@ -12,13 +12,14 @@ const CardControl = ( { label, onChange, value } ) => {
 	const [ cardCVC, setCardCVC ] = useState( value ? value.card_cvc : '' );
 	const [ cardZIP, setCardZIP ] = useState( value ? value.card_zip : '' );
 	const accentColor = useAccentColor();
+	const cardFullExpiryYear = cardExpiryDate.substr( 5 ) ? (new Date()).getFullYear().toString().substr(0, 2) + cardExpiryDate.substr( 5 ) : '';
 
 	useEffect( () => {
 		if ( onChange ) {
 			onChange( {
 				card_number: cardNumber.replace( /\s+/g, '' ),
 				card_exp_month: cardExpiryDate.substr( 0, 2 ),
-				card_exp_year: cardExpiryDate.substr( 3, 5 ),
+				card_exp_year: cardFullExpiryYear,
 				card_cvc: cardCVC,
 				card_zip: cardZIP,
 			} );
