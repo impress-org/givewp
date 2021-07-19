@@ -1,6 +1,6 @@
 <?php
 
-use Give\Framework\FieldsAPI\Factory\Field;
+use Give\Framework\FieldsAPI\Factory;
 
 /**
  * @param string $type
@@ -9,5 +9,5 @@ use Give\Framework\FieldsAPI\Factory\Field;
  * @return FormField
  */
 function give_field( $type, $name ) {
-	return Field::$type( $name );
+	return Factory::$type( $name );
 }

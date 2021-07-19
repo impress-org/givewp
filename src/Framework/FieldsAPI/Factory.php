@@ -1,27 +1,28 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\Factory;
+namespace Give\Framework\FieldsAPI;
 
 use ReflectionClass;
+use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Types as FieldTypes;
 
 /**
  * @unreleased
  */
-class Field {
+class Factory {
 
 	/**
 	 * @unreleased
 	 * @param string $type
 	 * @param array $parameters
 	 * @return mixed
-	 * @throws Exception\TypeNotSupported
+	 * @throws TypeNotSupported
 	 */
 	public static function __callStatic( $type, $parameters ) {
 		$reflectionClass = new ReflectionClass( FieldTypes::class );
 		$types           = array_flip( $reflectionClass->getConstants() );
 		if ( ! isset( $types[ $type ] ) ) {
-			throw new Exception\TypeNotSupported( $type );
+			throw new TypeNotSupported( $type );
 		}
 		return self::make( $type, array_shift( $parameters ) );
 	}
@@ -31,12 +32,12 @@ class Field {
 	 * @param string $type
 	 * @param string $name
 	 * @return mixed
-	 * @throws Exception\TypeNotSupported
+	 * @throws TypeNotSupported
 	 */
 	protected static function make( $type, $name ) {
 		$class = 'Give\\Framework\\FieldsAPI\\' . ucfirst( $type );
 		if ( ! class_exists( $class ) ) {
-			throw new Exception\TypeNotSupported( $type );
+			throw new TypeNotSupported( $type );
 		}
 		return new $class( $name );
 	}
