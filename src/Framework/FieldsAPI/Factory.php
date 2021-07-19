@@ -11,17 +11,16 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 class Factory {
 
 	/**
-	 * @unreleased
 	 * @param string $type
-	 * @param string $name
+	 * @param ...$args
 	 * @return Node
 	 * @throws TypeNotSupported
 	 */
-	public function make( $type, $name ) {
+	public function make( $type, ...$args ) {
 		$class = 'Give\\Framework\\FieldsAPI\\' . ucfirst( $type );
 		if ( ! class_exists( $class ) ) {
 			throw new TypeNotSupported( $type );
 		}
-		return new $class( $name );
+		return new $class( ...$args );
 	}
 }
