@@ -2,9 +2,8 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\FormField;
-use Give\Framework\FieldsAPI\FieldCollection;
-use Give\Form\LegacyConsumer\FieldView;
+use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Group;
 
 /**
  * @since 2.10.2
@@ -30,26 +29,26 @@ class SetupPaymentDetailsDisplay {
 	 */
 	public function __invoke( $hook ) {
 
-		$fieldCollection = new FieldCollection( 'root' );
-		do_action( "give_fields_{$hook}", $fieldCollection, get_the_ID() );
+		$collection = Group::make( $hook );
+		do_action( "give_fields_{$hook}", $collection, get_the_ID() );
 
-		$fieldCollection->walk( [ $this, 'render' ] );
+		$collection->walkFields( [ $this, 'render' ] );
 	}
 
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param FormField $field
+	 * @param Field $field
 	 *
 	 * @return void
 	 */
-	public function render( FormField $field ) {
+	public function render( Field $field ) {
 		if ( $field->shouldStoreAsDonorMeta() ) {
 			return;
 		}
 		?>
 		<div class="referral-data postbox" style="padding-bottom: 15px;">
-			<h3 class="hndle">
+			<h3 class="handle">
 				<?php echo $field->getLabel(); ?>
 			</h3>
 			<div class="inside">

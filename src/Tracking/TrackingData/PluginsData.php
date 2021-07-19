@@ -54,7 +54,7 @@ class PluginsData implements TrackData {
 	 * @return array The formatted array.
 	 */
 	private function formatPlugin( $plugin ) {
-		$premiumAddonsListManger = new PremiumAddonsListManager();
+		$premiumAddonsListManger = give( PremiumAddonsListManager::class );
 
 		return [
 			'plugin'         => $plugin['Path'],

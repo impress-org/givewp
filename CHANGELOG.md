@@ -7,12 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   Add custom donation level choice to select field if donation donated with custom amount (#5866)
+
+### Fixed
+
+-   Update wp-env package to resolve project setup issue (#5850)
+-   Fix "Unsupported declare strict_types" PHP warning (#5853, #5869)
+-   Add top margin to setting group page (#5864)
+-   Card declines on multi-step form now display an error message on first click (#5868)
+-   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
+
+### Changes
+
+-   Update field descriptions to be more legible for accessibility (#5875)
+-   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843, #5885)
+
+## 2.11.3 - 2021-07-06
+
+### Fixed
+
+-   Prevent givewp.com downtime from affecting customer sites (#5863)
+
 ## 2.11.2 - 2021-06-08
 
 ### Fixed
 
 -   Uncaught exception handler no longer breaks on Errors (#5846)
 -   Uninstalling GiveWP no longer throws an exception (#5846)
+-   Caught GiveWP exceptions no longer display a white screen (#5861)
 
 ## 2.11.1 - 2021-05-24
 
