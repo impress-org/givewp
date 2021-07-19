@@ -5,8 +5,18 @@ namespace Give\Framework\FieldsAPI\Factory;
 use ReflectionClass;
 use Give\Framework\FieldsAPI\Types as FieldTypes;
 
+/**
+ * @unreleased
+ */
 class Field {
 
+	/**
+	 * @unreleased
+	 * @param string $type
+	 * @param array $parameters
+	 * @return mixed
+	 * @throws Exception\TypeNotSupported
+	 */
 	public static function __callStatic( $type, $parameters ) {
 		$reflectionClass = new ReflectionClass( FieldTypes::class );
 		$types           = array_flip( $reflectionClass->getConstants() );
@@ -16,6 +26,13 @@ class Field {
 		return self::make( $type, array_shift( $parameters ) );
 	}
 
+	/**
+	 * @unreleased
+	 * @param string $type
+	 * @param string $name
+	 * @return mixed
+	 * @throws Exception\TypeNotSupported
+	 */
 	protected static function make( $type, $name ) {
 		$class = 'Give\\Framework\\FieldsAPI\\' . ucfirst( $type );
 		if ( ! class_exists( $class ) ) {
