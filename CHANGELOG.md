@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Update field descriptions to be more legible for accessibility (#5875)
 -   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843, #5885)
 -   Legacy Consumer no longer adds custom field values to payment details automatically (#5886)
+-   Fields API factory now reflects individual type classes (#5887)
 
 ## 2.11.3 - 2021-07-06
 
