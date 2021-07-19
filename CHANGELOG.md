@@ -19,10 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Card declines on multi-step form now display an error message on first click (#5868)
 -   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
 
-### Changes
+### Changed
 
 -   Update field descriptions to be more legible for accessibility (#5875)
 -   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843, #5885)
+-   Legacy Consumer no longer adds custom field values to payment details automatically (#5886)
 
 ## 2.11.3 - 2021-07-06
 
