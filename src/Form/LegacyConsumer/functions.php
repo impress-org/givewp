@@ -1,7 +1,6 @@
 <?php
 
 use Give\Framework\FieldsAPI\Factory\Field;
-use Give\Framework\FieldsAPI\FormField;
 
 /**
  * @param string $type
