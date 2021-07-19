@@ -13,15 +13,18 @@ import { __ } from '@wordpress/i18n';
 const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, max, width } ) => {
 	const id = toUniqueId( label );
 	const name = toKebabCase( label );
+	const minorOfValue = value * Math.pow( 10, currency.numberDecimals );
+	const minorOfMinValue = min * Math.pow( 10, currency.numberDecimals );
+	const minorOfMaxValue = max * Math.pow( 10, currency.numberDecimals );
 
 	const handleBlur = () => {
 		switch ( true ) {
-			case ( max && value > max ): {
-				onChange( max.toFixed( currency.numberDecimals ) );
+			case ( minorOfMaxValue && minorOfValue > minorOfMaxValue ): {
+				onChange( Number.parseFloat(max).toFixed( currency.numberDecimals ) );
 				break;
 			}
-			case ( min && value < min ): {
-				onChange( min.toFixed( currency.numberDecimals ) );
+			case ( minorOfMinValue && minorOfValue < minorOfMinValue ): {
+				onChange( Number.parseFloat(min).toFixed( currency.numberDecimals ) );
 				break;
 			}
 		}
