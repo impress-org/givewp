@@ -2,9 +2,8 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use ReflectionClass;
+use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\FieldsAPI\Types as FieldTypes;
 
 /**
  * @unreleased
@@ -15,7 +14,7 @@ class Factory {
 	 * @unreleased
 	 * @param string $type
 	 * @param string $name
-	 * @return mixed
+	 * @return Node
 	 * @throws TypeNotSupported
 	 */
 	public function make( $type, $name ) {
