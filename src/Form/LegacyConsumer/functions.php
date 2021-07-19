@@ -1,6 +1,6 @@
 <?php
 
-use Give\Framework\FieldsAPI\Factory;
+use Give\Framework\FieldsAPI\Facades\Factory;
 
 /**
  * @param string $type
