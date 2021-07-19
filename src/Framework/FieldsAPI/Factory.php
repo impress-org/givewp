@@ -14,27 +14,11 @@ class Factory {
 	/**
 	 * @unreleased
 	 * @param string $type
-	 * @param array $parameters
-	 * @return mixed
-	 * @throws TypeNotSupported
-	 */
-	public static function __callStatic( $type, $parameters ) {
-		$reflectionClass = new ReflectionClass( FieldTypes::class );
-		$types           = array_flip( $reflectionClass->getConstants() );
-		if ( ! isset( $types[ $type ] ) ) {
-			throw new TypeNotSupported( $type );
-		}
-		return self::make( $type, array_shift( $parameters ) );
-	}
-
-	/**
-	 * @unreleased
-	 * @param string $type
 	 * @param string $name
 	 * @return mixed
 	 * @throws TypeNotSupported
 	 */
-	protected static function make( $type, $name ) {
+	public function make( $type, $name ) {
 		$class = 'Give\\Framework\\FieldsAPI\\' . ucfirst( $type );
 		if ( ! class_exists( $class ) ) {
 			throw new TypeNotSupported( $type );

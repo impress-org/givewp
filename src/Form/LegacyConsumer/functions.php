@@ -9,5 +9,5 @@ use Give\Framework\FieldsAPI\Factory;
  * @return FormField
  */
 function give_field( $type, $name ) {
-	return Factory::$type( $name );
+	return Factory::make( $type, $name );
 }
