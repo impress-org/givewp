@@ -27,10 +27,8 @@ trait MergeWithJsonSerializeFromTraits {
 				$traitSerializeMethod = [ $this, "jsonSerialize{$traitName}" ];
 				if ( method_exists( ...$traitSerializeMethod ) ) {
 					return array_merge(
-						[
-							$serializedDataAsArray,
-							$traitSerializeMethod(),
-						]
+						$serializedDataAsArray,
+						$traitSerializeMethod()
 					);
 				}
 
