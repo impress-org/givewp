@@ -222,7 +222,6 @@
 						wrap.classList.add('give-tooltip', 'hint--top', 'hint--bounce', text.length < 50 ? 'narrow' : '');
 						wrap.style.width = '100%';
 						wrap.setAttribute('aria-label', text.length < 50 ? text : text.substr( 0, 50 ) + '...');
-						wrap.setAttribute('rel', 'tooltip');
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
 					}
