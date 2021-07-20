@@ -26,10 +26,12 @@ trait MergeWithJsonSerializeFromTraits {
 				// Merge the trait’s serialized data with the other serialized data.
 				$traitSerializeMethod = [ $this, "jsonSerialize{$traitName}" ];
 				if ( method_exists( ...$traitSerializeMethod ) ) {
-					return [
-						$serializedDataAsArray,
-						$traitSerializeMethod(),
-					];
+					return array_merge(
+						[
+							$serializedDataAsArray,
+							$traitSerializeMethod(),
+						]
+					);
 				}
 
 				// Otherwise, do nothing for the trait.
