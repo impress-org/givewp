@@ -22,4 +22,13 @@ trait IsReadOnly {
 	public function isReadOnly() {
 		return $this->readOnly;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeIsReadOnly() {
+		return [ 'readOnly' => $this->isReadOnly() ];
+	}
 }

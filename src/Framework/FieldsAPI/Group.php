@@ -12,10 +12,10 @@ class Group implements Node, Collection {
 	use Concerns\HasNodes;
 	use Concerns\HasType;
 	use Concerns\InsertNode;
+	use Concerns\MergeWithJsonSerializeFromTraits;
 	use Concerns\MoveNode;
 	use Concerns\NameCollision;
 	use Concerns\RemoveNode;
-	use Concerns\SerializeAsJson;
 	use Concerns\WalkNodes;
 
 	public function __construct( $name ) {
@@ -24,5 +24,17 @@ class Group implements Node, Collection {
 
 	public static function make( $name ) {
 		return new static( $name );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function jsonSerialize() {
+		return $this->mergeWithJsonSerializeFromTraits(
+			[
+				'name' => $this->getName(),
+				'type' => $this->getType(),
+			]
+		);
 	}
 }

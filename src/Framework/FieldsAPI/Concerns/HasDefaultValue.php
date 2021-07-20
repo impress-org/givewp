@@ -29,4 +29,13 @@ trait HasDefaultValue {
 	public function getSelected() {
 		return $this->getDefaultValue();
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasDefaultValue() {
+		return [ 'defaultValue' => $this->getDefaultValue() ];
+	}
 }

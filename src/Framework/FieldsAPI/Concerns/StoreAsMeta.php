@@ -29,4 +29,13 @@ trait StoreAsMeta {
 	public function shouldStoreAsDonorMeta() {
 		return $this->storeAsDonorMeta;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeStoreAsMeta() {
+		return [ 'storeAsDonorMeta' => $this->shouldStoreAsDonorMeta() ];
+	}
 }

@@ -12,7 +12,7 @@ abstract class Field implements Node {
 	use Concerns\HasType;
 	use Concerns\IsReadOnly;
 	use Concerns\IsRequired;
-	use Concerns\SerializeAsJson;
+	use Concerns\MergeWithJsonSerializeFromTraits;
 
 	/** @var ValidationRules */
 	protected $validationRules;
@@ -34,5 +34,18 @@ abstract class Field implements Node {
 	 */
 	public static function make( $name ) {
 		return new static( $name );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function jsonSerialize() {
+		return $this->mergeWithJsonSerializeFromTraits(
+			[
+				'name'            => $this->getName(),
+				'type'            => $this->getType(),
+				'validationRules' => $this->validationRules->jsonSerialize(),
+			]
+		);
 	}
 }

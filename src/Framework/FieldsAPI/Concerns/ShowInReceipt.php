@@ -29,4 +29,13 @@ trait ShowInReceipt {
 	public function shouldShowInReceipt() {
 		return $this->showInReceipt;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeShowInReceipt() {
+		return [ 'showInReceipt' => $this->shouldShowInReceipt() ];
+	}
 }

@@ -8,7 +8,7 @@ abstract class Element implements Node {
 
 	use Concerns\HasType;
 	use Concerns\HasName;
-	use Concerns\SerializeAsJson;
+	use Concerns\MergeWithJsonSerializeFromTraits;
 
 	/**
 	 * @param string $name
@@ -26,5 +26,17 @@ abstract class Element implements Node {
 	 */
 	public static function make( $name ) {
 		return new static( $name );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function jsonSerialize() {
+		return $this->mergeWithJsonSerializeFromTraits(
+			[
+				'name' => $this->getName(),
+				'type' => $this->getType(),
+			]
+		);
 	}
 }

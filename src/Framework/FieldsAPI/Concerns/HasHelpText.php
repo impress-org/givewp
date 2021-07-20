@@ -19,4 +19,13 @@ trait HasHelpText {
 	public function getHelpText() {
 		return $this->helpText;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasHelpText() {
+		return [ 'helpText' => $this->getHelpText() ];
+	}
 }

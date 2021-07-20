@@ -22,4 +22,13 @@ trait HasLabel {
 	public function getLabel() {
 		return $this->label;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasLabel() {
+		return [ 'label' => $this->getLabel() ];
+	}
 }

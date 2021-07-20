@@ -69,4 +69,12 @@ trait HasNodes {
 		return count( $this->nodes );
 	}
 
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasNodes() {
+		return [ 'nodes' => $this->all() ];
+	}
 }

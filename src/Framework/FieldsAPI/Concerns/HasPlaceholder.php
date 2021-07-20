@@ -27,4 +27,13 @@ trait HasPlaceholder {
 	public function getPlaceholder() {
 		return $this->placeholder;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasPlaceholder() {
+		return [ 'placeholder' => $this->getPlaceholder() ];
+	}
 }

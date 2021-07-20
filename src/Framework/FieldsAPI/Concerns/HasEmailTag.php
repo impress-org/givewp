@@ -22,4 +22,13 @@ trait HasEmailTag {
 	public function getEmailTag() {
 		return $this->emailTag;
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasEmailTag() {
+		return [ 'emailTag' => $this->getEmailTag() ];
+	}
 }

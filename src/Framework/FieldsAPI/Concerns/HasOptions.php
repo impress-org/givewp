@@ -69,4 +69,13 @@ trait HasOptions {
 			}
 		}
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	protected function jsonSerializeHasOptions() {
+		return [ 'options' => $this->getOptions() ];
+	}
 }
