@@ -28,6 +28,8 @@ class Option implements JsonSerializable {
 	/**
 	 * Create a new option.
 	 *
+	 * @unreleased
+	 *
 	 * @return static
 	 */
 	public static function make( ...$args ) {
@@ -36,6 +38,8 @@ class Option implements JsonSerializable {
 
 	/**
 	 * Access the value
+	 *
+	 * @unreleased
 	 *
 	 * @return string
 	 */

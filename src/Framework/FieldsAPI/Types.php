@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @unreleased
+ */
 class Types {
 	const CHECKBOX = Checkbox::TYPE;
 	const DATE     = Date::TYPE;

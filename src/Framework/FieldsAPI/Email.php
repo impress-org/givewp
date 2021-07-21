@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @unreleased
+ */
 class Email extends Field {
 
 	use Concerns\AllowMultiple;
