@@ -52,13 +52,6 @@ class ServiceProvider implements ServiceProviderInterface {
 		);
 
 		add_action(
-			'give_view_donation_details_billing_after',
-			function( $donationID ) {
-				give( TemplateHooks::class )->walk( new Commands\SetupPaymentDetailsDisplay( $donationID ) );
-			}
-		);
-
-		add_action(
 			'give_new_receipt',
 			function( DonationReceipt $receipt ) {
 				give( TemplateHooks::class )->walk( new Commands\SetupFieldReceipt( $receipt ) );

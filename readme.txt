@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.11.3
+Stable tag: 2.12.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.12.0: July 21st, 2021 =
+* New: Compatible with the upcoming [GiveWP - Text-to-Give](https://go.givewp.com/t2g) release!
+* Change: Various style improvements for accessibility within the admin
+* Fix: Improved compatibility with PHP 8, resolving various warnings and deprecation notices
+* Fix: Rare issue of disabling custom donation amounts causing a missing field in donation deatils is resolved
+* Fix: Got rid of "Unsupported declare strict_types" warning
 
 = 2.11.3: July 6th, 2021 =
 * Fix: Important fix which makes sure that givewp.com downtime cannot affect the uptime of customer sites

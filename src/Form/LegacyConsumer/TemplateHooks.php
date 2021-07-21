@@ -20,6 +20,7 @@ class TemplateHooks {
 		'payment_mode_after_gateways_wrap',
 		'payment_mode_bottom',
 		'donation_form',
+		'donation_form_top',
 		'purchase_form_top',
 		'donation_form_register_login_fields',
 		'donation_form_before_cc_form',
@@ -30,6 +31,8 @@ class TemplateHooks {
 		'after_cc_fields',
 		'donation_form_after_cc_form',
 		'purchase_form_bottom',
+		'donation_form_before_personal_info',
+		'donation_form_after_personal_info',
 	];
 
 	public function walk( callable $callback ) {

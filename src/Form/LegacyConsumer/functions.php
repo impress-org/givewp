@@ -1,14 +1,14 @@
 <?php
 
-use Give\Framework\FieldsAPI\Factory\Field;
-use Give\Framework\FieldsAPI\FormField;
+use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Facades\Factory;
 
 /**
  * @param string $type
  * @param string $name
  *
- * @return FormField
+ * @return Node
  */
 function give_field( $type, $name ) {
-	return Field::$type( $name );
+	return Factory::make( $type, $name );
 }

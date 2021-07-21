@@ -12,18 +12,19 @@ const CardControl = ( { label, onChange, value } ) => {
 	const [ cardCVC, setCardCVC ] = useState( value ? value.card_cvc : '' );
 	const [ cardZIP, setCardZIP ] = useState( value ? value.card_zip : '' );
 	const accentColor = useAccentColor();
+	const cardFullExpiryYear = cardExpiryDate.substr( 5 ) ? (new Date()).getFullYear().toString().substr(0, 2) + cardExpiryDate.substr( 5 ) : '';
 
 	useEffect( () => {
 		if ( onChange ) {
 			onChange( {
 				card_number: cardNumber.replace( /\s+/g, '' ),
 				card_exp_month: cardExpiryDate.substr( 0, 2 ),
-				card_exp_year: cardExpiryDate.substr( 3, 5 ),
+				card_exp_year: cardFullExpiryYear,
 				card_cvc: cardCVC,
 				card_zip: cardZIP,
 			} );
 		}
-	}, [ onChange, cardNumber, cardExpiryDate, cardCVC, cardZIP ] );
+	}, [ cardNumber, cardExpiryDate, cardCVC, cardZIP ] );
 
 	const {
 		wrapperProps,
@@ -49,7 +50,7 @@ const CardControl = ( { label, onChange, value } ) => {
 					marginTop: '8px',
 					border: '1px solid #b8b8b8',
 					overflow: 'hidden',
-					padding: '14px 14px',
+					padding: '4px 14px',
 					boxShadow: `0 0 0 0 ${ accentColor }`,
 					transition: 'box-shadow 0.1s ease',
 					borderRadius: '4px',

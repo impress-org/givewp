@@ -18,6 +18,8 @@ class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case {
 			return $mock;
 		} );
 
+		$this->expectException(ExceptionLogged::class);
+
 		$logger->handleException( new ExceptionLogged() );
 	}
 
@@ -32,6 +34,8 @@ class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case {
 
 			return $mock;
 		} );
+
+		$this->expectException(ExceptionNotLogged::class);
 
 		$logger->handleException( new ExceptionNotLogged() );
 	}

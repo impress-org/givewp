@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 
 import StripeCardControl from './stripe-card-control';
 
-const StripeControl = ( { label, onChange, value } ) => {
+const StripeControl = ( { gateway, label, onChange, value } ) => {
 	const [ stripePromise, setStripePromise ] = useState( null );
 
 	useEffect( () => {
-		const stripeKey = window.give_stripe_vars.publishable_key;
-		if ( stripeKey ) {
-			setStripePromise( loadStripe( stripeKey ) );
-		}
+		setStripePromise( loadStripe(
+			gateway.publishableKey,
+			{stripeAccount: gateway.accountId}
+		) );
 	}, [] );
 
 	const fonts = [ {

@@ -373,9 +373,11 @@ function give_field_is_required( $field, $form_id ) {
  * @param bool|int    $price_id      Price ID, if any.
  * @param string|null $donation_date The date of the donation.
  *
+ * @since 2.12.0 default value for the $give_form_id parameter is removed to prevent PHP8 warnings.
+ *
  * @return void
  */
-function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
+function give_record_donation_in_log( $give_form_id, $payment_id, $price_id = false, $donation_date = null ) {
 	$log_data = [
 		'log_content'  => 'Payment log info',
 		'log_parent'   => $payment_id,
@@ -467,9 +469,11 @@ function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
  * @param int $amount       Earnings
  * @param int $payment_id   Donation ID.
  *
+ * @since 2.12.0 default value for the $give_form_id parameter is removed to prevent PHP8 warnings.
+ *
  * @return bool|int
  */
-function give_increase_earnings( $give_form_id = 0, $amount, $payment_id = 0 ) {
+function give_increase_earnings( $give_form_id, $amount, $payment_id = 0 ) {
 	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $give_form_id );
 
@@ -489,9 +493,11 @@ function give_increase_earnings( $give_form_id = 0, $amount, $payment_id = 0 ) {
  * @param int $amount     Earnings
  * @param int $payment_id Donation ID.
  *
+ * @since 2.12.0 default value for the $form_id parameter is removed to prevent PHP8 warnings.
+ *
  * @return bool|int
  */
-function give_decrease_form_earnings( $form_id = 0, $amount, $payment_id = 0 ) {
+function give_decrease_form_earnings( $form_id, $amount, $payment_id = 0 ) {
 	/** @var \Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $form_id );
 
