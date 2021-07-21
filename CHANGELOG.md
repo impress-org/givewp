@@ -109,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Donor Dashboard no longer freezes up when attempting to manage Stripe ACH subscriptions (#5771)
 -   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
 -   Donors can no longer see other donors donations (on certain hosts) (#5787)
 -   Logs will no longer cause an exception (#5788)

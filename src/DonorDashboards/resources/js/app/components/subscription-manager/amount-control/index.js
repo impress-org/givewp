@@ -4,12 +4,11 @@ import SelectControl from '../../select-control';
 import { useState, useEffect } from 'react';
 
 import { __ } from '@wordpress/i18n';
-;
 
 const AmountControl = ( { form, payment, onChange, value } ) => {
-	const [ customAmount, setCustomAmount ] = useState( null );
-	const [ selectValue, setSelectValue ] = useState( null );
-	const [ prevSelectValue, setPrevSelectValue ] = useState( null );
+	const [ customAmount, setCustomAmount ] = useState( '' );
+	const [ selectValue, setSelectValue ] = useState( '' );
+	const [ prevSelectValue, setPrevSelectValue ] = useState( '' );
 	const [ amountOptions, setAmountOptions ] = useState( [] );
 
 	useEffect( () => {
@@ -38,7 +37,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 			if ( value ) {
 				const float = parseFloat( value );
 				if ( amountFloats.includes( float ) ) {
-					const option = amountOptions.filter( ( curr ) => parseFloat( curr.value ) === float ? true : false )[ 0 ];
+					const option = amountOptions.filter( ( curr ) => parseFloat(curr.value) === float )[ 0 ];
 					setSelectValue( option.value );
 				} else {
 					setSelectValue( 'custom_amount' );
@@ -76,8 +75,8 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 					{ selectValue === 'custom_amount' && (
 						<CurrencyControl
 							label={ __( 'Custom Amount', 'give' ) }
-							min={ form.custom_amount.minimum ? parseFloat( form.custom_amount.minimum ) : null }
-							max={ form.custom_amount.maximum ? parseFloat( form.custom_amount.maximum ) : null }
+							min={ form.custom_amount.minimum ? parseFloat( form.custom_amount.minimum ).toString() : null }
+							max={ form.custom_amount.maximum ? parseFloat( form.custom_amount.maximum ).toString() : null }
 							value={ customAmount }
 							onChange={ ( val ) => setCustomAmount( val ) } currency={ payment.currency }
 						/>
