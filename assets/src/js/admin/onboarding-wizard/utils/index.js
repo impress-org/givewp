@@ -140,7 +140,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 /**
  * Subscribes admin to ActiveCampaign.
  */
-export const subscribeToNewsletter = () => {
+export const subscribeToNewsletter = (configuration) => {
 
 	axios.post( 'https://givegatewayserver.local/activecampaign', {
 		action: 'subscribe',
@@ -149,6 +149,7 @@ export const subscribeToNewsletter = () => {
 		last_name: getWindowData('adminLastName'),
 		website_url: getWindowData('websiteUrl'),
 		website_name: getWindowData('websiteName'),
+		fundraising_type: configuration.CauseType,
 	} )
 		.then( function( response ) {
 
@@ -160,8 +161,8 @@ export const subscribeToNewsletter = () => {
 		.catch( function() {
 
 			// Subscribing to AC did not work...
-
 			console.log( 'caught' ); // eslint-disable-line no-console
+			
 		} );
 
 };

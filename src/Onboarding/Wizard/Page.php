@@ -185,7 +185,7 @@ class Page {
 				'adminFirstName'   => $current_user->first_name,
 				'adminLastName'    => $current_user->last_name,
 				'websiteUrl'       => get_bloginfo( 'url' ),
-				'websiteName'       => get_bloginfo( 'sitename' ),
+				'websiteName'      => get_bloginfo( 'sitename' ),
 				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);

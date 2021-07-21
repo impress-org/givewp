@@ -56,10 +56,9 @@ const YourCause = () => {
 			<div className="give-obw-community-field">
 				<h2>{ __( '🌱 Would you like to join the GiveWP Community?', 'give' ) }</h2>
 				<p>{ __('If you opt-in, some data will be shared with our teams (so they can work their butts off to improve). We will also share some helpful info on fundraising, WordPress and our products from time to time.  And if you skip this, that’s okay! GiveWP will still work just fine.', 'give')}</p>
-
 			</div>
 
-			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={ () => { subscribeToNewsletter() } } />
+			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={ () => { subscribeToNewsletter(configuration); } } />
 
 			<SkipLink />
 
