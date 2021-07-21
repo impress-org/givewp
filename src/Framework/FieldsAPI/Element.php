@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
- * @unreleased
+ * @since 2.12.0
  */
 abstract class Element implements Node {
 
@@ -23,7 +23,7 @@ abstract class Element implements Node {
 	/**
 	 * Create a named block.
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param string $name
 	 *

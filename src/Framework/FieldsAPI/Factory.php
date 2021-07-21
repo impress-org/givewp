@@ -6,12 +6,12 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 
 /**
- * @unreleased
+ * @since 2.12.0
  */
 class Factory {
 
 	/**
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param string $type
 	 * @param ...$args

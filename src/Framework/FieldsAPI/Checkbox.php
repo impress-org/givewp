@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unreleased
+ * @since 2.12.0
  */
 class Checkbox extends Field {
 
@@ -19,7 +19,7 @@ class Checkbox extends Field {
 	/**
 	 * Helper for marking the checkbox as checked by default
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param bool|callable $isChecked
 	 *
@@ -35,7 +35,7 @@ class Checkbox extends Field {
 	/**
 	 * Returns whether the checkbox is checked by default
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @return bool
 	 */

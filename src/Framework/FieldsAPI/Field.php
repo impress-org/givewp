@@ -6,7 +6,7 @@ use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
- * @unreleased
+ * @since 2.12.0
  */
 abstract class Field implements Node {
 
@@ -31,7 +31,7 @@ abstract class Field implements Node {
 	/**
 	 * Create a named field.
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param string $name
 	 *

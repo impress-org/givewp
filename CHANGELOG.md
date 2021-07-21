@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.12.0 - 2021-07-21
+
 ### Added
 
--   Add custom donation level choice to select field if donation donated with custom amount (#5866)
 -   Add Facade class to give framework (#5855)
 
 ### Fixed

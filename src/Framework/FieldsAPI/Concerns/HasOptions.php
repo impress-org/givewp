@@ -54,7 +54,7 @@ trait HasOptions {
 	/**
 	 * Walk through the options
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param callable $callback
 	 *

@@ -7,7 +7,7 @@ use JsonSerializable;
 /**
  * Class Option
  *
- * @unreleased
+ * @since 2.12.0
  */
 class Option implements JsonSerializable {
 
@@ -28,7 +28,7 @@ class Option implements JsonSerializable {
 	/**
 	 * Create a new option.
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @return static
 	 */
@@ -39,7 +39,7 @@ class Option implements JsonSerializable {
 	/**
 	 * Access the value
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @return string
 	 */

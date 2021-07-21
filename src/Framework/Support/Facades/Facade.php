@@ -17,13 +17,13 @@ use Give\Framework\Exceptions\Primitives\Exception;
  * To help the IDE, take the methods from the decorated class and add them your class docblock. So if Repository had an
  * insert method, you would add "@method static Model insert()" to the top.
  *
- * @unreleased
+ * @since 2.12.0
  */
 abstract class Facade {
 	/**
 	 * Static helper for calling the facade methods
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param string $name
 	 * @param array  $arguments
@@ -46,7 +46,7 @@ abstract class Facade {
 	/**
 	 * Retrieves the fully qualified class name or alias for the class being decorated
 	 *
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @return string
 	 */

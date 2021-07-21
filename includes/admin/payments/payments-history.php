@@ -132,7 +132,7 @@ add_filter( 'admin_title', 'give_view_donation_details_title', 10, 2 );
  * @param $context
  * @return string
  *
- * @unreleased default value for the $post_id parameter is removed to prevent PHP8 warnings.
+ * @since 2.12.0 default value for the $post_id parameter is removed to prevent PHP8 warnings.
  */
 function give_override_edit_post_for_payment_link( $url, $post_id, $context ) {
 
