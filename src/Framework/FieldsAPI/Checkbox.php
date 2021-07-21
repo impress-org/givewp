@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @unreleased
+ */
 class Checkbox extends Field {
 
 	use Concerns\HasEmailTag;

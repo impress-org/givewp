@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @unreleased
+ */
 class Hidden extends Field {
 
 	use Concerns\HasLabel;

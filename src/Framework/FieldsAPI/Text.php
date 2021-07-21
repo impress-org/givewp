@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @unreleased
+ */
 class Text extends Field {
 
 	use Concerns\HasEmailTag;
