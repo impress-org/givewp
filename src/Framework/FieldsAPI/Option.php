@@ -7,7 +7,7 @@ use JsonSerializable;
 /**
  * Class Option
  *
- * @unreleased
+ * @since 2.12.0
  */
 class Option implements JsonSerializable {
 
@@ -28,6 +28,8 @@ class Option implements JsonSerializable {
 	/**
 	 * Create a new option.
 	 *
+	 * @since 2.12.0
+	 *
 	 * @return static
 	 */
 	public static function make( ...$args ) {
@@ -36,6 +38,8 @@ class Option implements JsonSerializable {
 
 	/**
 	 * Access the value
+	 *
+	 * @since 2.12.0
 	 *
 	 * @return string
 	 */

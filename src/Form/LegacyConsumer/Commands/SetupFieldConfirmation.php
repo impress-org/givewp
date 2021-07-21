@@ -35,7 +35,7 @@ class SetupFieldConfirmation {
 		$collection = Group::make( $hook );
 		do_action( "give_fields_{$hook}", $collection, $formID );
 
-		$collection->walk( [ $this, 'render' ] );
+		$collection->walkFields( [ $this, 'render' ] );
 	}
 
 	/**

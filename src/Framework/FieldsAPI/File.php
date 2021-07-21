@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 /**
  * A file upload field.
  *
- * @unreleased
+ * @since 2.12.0
  */
 class File extends Field {
 

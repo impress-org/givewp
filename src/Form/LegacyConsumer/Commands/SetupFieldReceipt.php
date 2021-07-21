@@ -35,7 +35,7 @@ class SetupFieldReceipt {
 		$collection = Group::make( $hook );
 		do_action( "give_fields_{$hook}", $collection, $formID );
 
-		$collection->walk( [ $this, 'apply' ] );
+		$collection->walkFields( [ $this, 'apply' ] );
 	}
 
 	/**

@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @since 2.12.0
+ */
 class Url extends Field {
 
 	use Concerns\HasEmailTag;

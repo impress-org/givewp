@@ -5,6 +5,9 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
+/**
+ * @since 2.12.0
+ */
 abstract class Field implements Node {
 
 	use Concerns\HasDefaultValue;
@@ -27,6 +30,8 @@ abstract class Field implements Node {
 
 	/**
 	 * Create a named field.
+	 *
+	 * @since 2.12.0
 	 *
 	 * @param string $name
 	 *

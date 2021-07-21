@@ -7,22 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.12.0 - 2021-07-21
+
 ### Added
 
--   Add custom donation level choice to select field if donation donated with custom amount (#5866)
+-   Add Facade class to give framework (#5855)
 
 ### Fixed
 
 -   Update wp-env package to resolve project setup issue (#5850)
 -   Fix "Unsupported declare strict_types" PHP warning (#5853, #5869)
 -   Add top margin to setting group page (#5864)
--   Card declines on multi-step form now display an error message on first click (#5868)
+-   Add custom donation level choice to select field if donation donated with custom amount (#5866)
 -   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
 
-### Changes
+### Changed
 
 -   Update field descriptions to be more legible for accessibility (#5875)
--   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843)
+-   Refactor `Give\Framework\FieldsAPI` to include classes for each node type (#5843, #5885, #5890)
+-   Legacy Consumer no longer adds custom field values to payment details automatically (#5886)
+-   Fields API factory now reflects individual type classes (#5887)
 
 ## 2.11.3 - 2021-07-06
 
@@ -106,6 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Donor Dashboard no longer freezes up when attempting to manage Stripe ACH subscriptions (#5771)
 -   Logs table creation is now backward compatible with MySQL 5.6 (#5776) 
 -   Donors can no longer see other donors donations (on certain hosts) (#5787)
 -   Logs will no longer cause an exception (#5788)

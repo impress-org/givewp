@@ -43,7 +43,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			/>
 			<PaymentMethodControl
 				label={ __( 'Payment Method', 'give' ) }
-				gateway={ subscription.gateway.id }
+				gateway={ subscription.gateway }
 				onChange={ ( val ) => setPaymentMethod( val ) }
 			/>
 			<FieldRow>

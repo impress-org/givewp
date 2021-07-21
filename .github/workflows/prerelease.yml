@@ -108,7 +108,7 @@ jobs:
       - name: Generate plugin artifact
         run: |
           rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" give/ --delete --delete-excluded
-          zip -r "${GITHUB_WORKSPACE}/give.zip" "${GITHUB_WORKSPACE}/give"
+          zip -r "${GITHUB_WORKSPACE}/give.zip" give
           
       - name: Upload release asset
         uses: actions/upload-release-asset@v1

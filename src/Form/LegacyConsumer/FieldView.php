@@ -60,7 +60,7 @@ class FieldView {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.12.0
 	 *
 	 * @param  string  $templateName
 	 *

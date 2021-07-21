@@ -4,6 +4,9 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
 
+/**
+ * @since 2.12.0
+ */
 abstract class Element implements Node {
 
 	use Concerns\HasType;
@@ -19,6 +22,8 @@ abstract class Element implements Node {
 
 	/**
 	 * Create a named block.
+	 *
+	 * @since 2.12.0
 	 *
 	 * @param string $name
 	 *

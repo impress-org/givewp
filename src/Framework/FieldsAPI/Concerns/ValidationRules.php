@@ -4,6 +4,9 @@ namespace Give\Framework\FieldsAPI\Concerns;
 
 use JsonSerializable;
 
+/**
+ * @since 2.12.0
+ */
 class ValidationRules implements JsonSerializable {
 
 	/** @var array */
@@ -21,6 +24,8 @@ class ValidationRules implements JsonSerializable {
 	/**
 	 * Set a rule.
 	 *
+	 * @since 2.12.0
+	 *
 	 * @param string $rule
 	 * @param mixed $value
 	 * @return $this
@@ -34,6 +39,8 @@ class ValidationRules implements JsonSerializable {
 	/**
 	 * Get a rule.
 	 *
+	 * @since 2.12.0
+	 *
 	 * @param string $rule
 	 * @return mixed
 	 */
@@ -45,6 +52,8 @@ class ValidationRules implements JsonSerializable {
 
 	/**
 	 * Forget a rule.
+	 *
+	 * @since 2.12.0
 	 *
 	 * @param string $rule
 	 * @return $this
@@ -59,6 +68,8 @@ class ValidationRules implements JsonSerializable {
 
 	/**
 	 * Get all the rules.
+	 *
+	 * @since 2.12.0
 	 *
 	 * @return array
 	 */

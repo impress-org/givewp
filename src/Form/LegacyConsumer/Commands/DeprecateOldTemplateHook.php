@@ -22,7 +22,8 @@ class DeprecateOldTemplateHook implements HookCommandInterface {
 				$wp_filter[ "give_$hook" ]->callbacks
 			)
 				->flatten()
-				->withoutPrefix( 'give_' );
+				->withoutPrefix( 'give_' )
+				->withoutPrefix( '__give_' );
 
 			if ( $callbacks->count() > 1 ) {
 				_give_deprecated_function( sprintf( __( 'The %s action', 'give' ), "give_$hook" ), '2.10', "give_fields_$hook" );

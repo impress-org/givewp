@@ -5,7 +5,7 @@ namespace Give\Helpers;
 /**
  * HTML related helper functions
  *
- * @unreleased
+ * @since 2.12.0
  */
 class Html {
 	/**

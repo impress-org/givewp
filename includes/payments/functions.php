@@ -577,7 +577,7 @@ function give_get_payment_status_keys() {
  *
  * @since 1.0
  *
- * @unreleased default value for the $day parameter is removed to prevent PHP8 warnings.
+ * @since 2.12.0 default value for the $day parameter is removed to prevent PHP8 warnings.
  *
  * @return int $earnings Earnings
  */
@@ -1650,7 +1650,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
  * @since 1.6
- * @unreleased Show "Custom" choice in select field if donation created with cusotm amount
+ * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *
  * @return string|bool
  */
