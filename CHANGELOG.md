@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Filtered donation level text no longer breaks form HTML (#5894)
+
 ## 2.12.0 - 2021-07-21
 
 ### Added
