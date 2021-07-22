@@ -57,21 +57,28 @@ class AccountManagerSettingField {
 		$this->setUpProperties();
 		$classes = ! empty( $field['wrapper_class'] ) ? esc_attr( $field['wrapper_class'] ) : ''
 		?>
-		<tr valign="top" class="<?php echo $classes; ?>">
-			<td class="give-forminp give-forminp-api_key">
-				<div id="give-stripe-account-manager-errors"></div>
-				<?php $this->getIntroductionSectionMarkup(); ?>
-				<div class="give-stripe-account-manager-container">
-					<div class="main-heading">
-						<h2 class="give-stripe-setting-heading"><?php esc_html_e( 'Connected Accounts', 'give' ); ?></h2>
-					</div>
-					<?php
-					$this->getStripeAccountListSectionMarkup();
-					$this->getAddNewStripeAccountSectionMarkup();
-					?>
+		<div class="<?php echo $classes; ?>">
+
+			<div id="give-stripe-account-manager-errors"></div>
+			<?php $this->getIntroductionSectionMarkup(); ?>
+			<div class="give-stripe-account-manager-container">
+				<div class="main-heading">
+					<h2 class="give-stripe-setting-heading"><?php esc_html_e( 'Connected Accounts', 'give' ); ?></h2>
 				</div>
-			</td>
-		</tr>
+				<?php
+				$this->getStripeAccountListSectionMarkup();
+				$this->getAddNewStripeAccountSectionMarkup();
+				?>
+
+			</div>
+			<div class="give-stripe-default-account-notice">
+				<span class="dashicons dashicons-info"></span>
+				<div class="give-stripe-default-account-notice__inner">
+					<p class="give-stripe-default-account-notice__bold"><strong><?php esc_html_e( 'All payments go to the default account.', 'give' ); ?></strong></p>
+					<p><?php esc_html_e( 'You can set this globally (for all donation forms) here or override the setting per donation form.', 'give' ); ?></p>
+				</div>
+			</div>
+		</div>
 		<?php
 	}
 
@@ -83,12 +90,8 @@ class AccountManagerSettingField {
 		<div id="give-stripe-account-manager-description">
 			<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
 			<p class="give-stripe-subheading-description">
-				<?php
-				esc_html_e(
-					'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
-					'give'
-				);
-				?>
+				<?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
+					'give' ); ?>
 			</p>
 			<?php
 			if ( $this->canShowFreeStripeVersionNotice() ) {
