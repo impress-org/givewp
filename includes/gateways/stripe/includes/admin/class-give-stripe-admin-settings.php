@@ -708,11 +708,11 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					<div id="give-stripe-account-manager-errors"></div>
 					<div id="give-stripe-account-manager-description">
 						<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
-						<p class="give-field-description"><?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.', 'give' ); ?></p>
+						<p class="give-stripe-subheading-description"><?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.', 'give' ); ?></p>
 						<?php
 						if ( ! give_stripe_is_premium_active() ) {
 							?>
-							<p class="give-field-description">
+							<p class="give-stripe-subheading-description">
 								<br />
 								<?php
 								echo sprintf(

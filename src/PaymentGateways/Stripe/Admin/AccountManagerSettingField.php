@@ -6,10 +6,12 @@ use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 
 /**
  * Class AccountManagerSettingField
+ *
  * @package Give\PaymentGateways\Stripe\Admin
  * @unreleased
  */
 class AccountManagerSettingField {
+
 	/**
 	 * @var AccountDetail
 	 */
@@ -30,7 +32,7 @@ class AccountManagerSettingField {
 	 *
 	 * @unreleased
 	 *
-	 * @param  AccountDetail  $accountDetailRepository
+	 * @param AccountDetail $accountDetailRepository
 	 */
 	public function __construct( AccountDetail $accountDetailRepository ) {
 		$this->accountDetailRepository = $accountDetailRepository;
@@ -49,7 +51,7 @@ class AccountManagerSettingField {
 	 *
 	 * @unreleased
 	 *
-	 * @param  array  $field
+	 * @param array $field
 	 */
 	public function handle( $field ) {
 		$this->setUpProperties();
@@ -60,7 +62,9 @@ class AccountManagerSettingField {
 				<div id="give-stripe-account-manager-errors"></div>
 				<?php $this->getIntroductionSectionMarkup(); ?>
 				<div class="give-stripe-account-manager-container">
-					<div class="main-heading"><h2><?php esc_html_e( 'Connect Accounts', 'give' ); ?></h2></div>
+					<div class="main-heading">
+						<h2 class="give-stripe-setting-heading"><?php esc_html_e( 'Connected Accounts', 'give' ); ?></h2>
+					</div>
 					<?php
 					$this->getStripeAccountListSectionMarkup();
 					$this->getAddNewStripeAccountSectionMarkup();
@@ -78,7 +82,7 @@ class AccountManagerSettingField {
 		?>
 		<div id="give-stripe-account-manager-description">
 			<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
-			<p class="give-field-description">
+			<p class="give-stripe-subheading-description">
 				<?php
 				esc_html_e(
 					'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
@@ -91,6 +95,7 @@ class AccountManagerSettingField {
 				$this->getFreeStripeVersionNoticeMarkup();
 			}
 			?>
+			<hr style="margin: 25px 0; display: block" />
 		</div>
 		<?php
 	}
@@ -131,29 +136,29 @@ class AccountManagerSettingField {
 		<div class="give-stripe-account-manager-add-section">
 			<div class="stripe-logo-with-circle">
 				<svg width="21" height="31" viewBox="0 0 21 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path fill-rule="evenodd" clip-rule="evenodd" d="M8.41683 9.55871C8.41683 8.29941 9.4501 7.81507 11.1614 7.81507C13.6155 7.81507 16.7153 8.55773 19.1693 9.8816V2.29355C16.4892 1.22799 13.8415 0.808228 11.1614 0.808228C4.60666 0.808228 0.247559 4.23093 0.247559 9.94618C0.247559 18.8581 12.5176 17.4374 12.5176 21.2798C12.5176 22.7652 11.226 23.2495 9.4178 23.2495C6.73777 23.2495 3.31507 22.1517 0.602744 20.6663V28.3513C3.60568 29.6428 6.6409 30.1918 9.4178 30.1918C16.134 30.1918 20.7515 26.8659 20.7515 21.0861C20.7192 11.4638 8.41683 13.1751 8.41683 9.55871Z" fill="#6772E5"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M8.41683 9.55871C8.41683 8.29941 9.4501 7.81507 11.1614 7.81507C13.6155 7.81507 16.7153 8.55773 19.1693 9.8816V2.29355C16.4892 1.22799 13.8415 0.808228 11.1614 0.808228C4.60666 0.808228 0.247559 4.23093 0.247559 9.94618C0.247559 18.8581 12.5176 17.4374 12.5176 21.2798C12.5176 22.7652 11.226 23.2495 9.4178 23.2495C6.73777 23.2495 3.31507 22.1517 0.602744 20.6663V28.3513C3.60568 29.6428 6.6409 30.1918 9.4178 30.1918C16.134 30.1918 20.7515 26.8659 20.7515 21.0861C20.7192 11.4638 8.41683 13.1751 8.41683 9.55871Z" fill="#6772E5" />
 				</svg>
 			</div>
-			<h3><?php esc_html_e( 'Add a New Stripe Account', 'give' ); ?></h3>
+			<h3 class="give-stripe-heading"><?php esc_html_e( 'Add a New Stripe Account', 'give' ); ?></h3>
 			<div class="give-stripe-add-account-errors"></div>
 			<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
 				<tbody>
-					<?php
-					if ( give_stripe_is_premium_active() ) {
-						/**
-						 * This action hook will be used to load Manual API fields for premium addon.
-						 *
-						 * @since 2.7.0
-						 *
-						 * @param  array  $this-  >stripeAccounts  All Stripe accounts.
-						 *
-						 */
-						do_action( 'give_stripe_premium_manual_api_fields', $this->stripeAccounts );
-					}
-					?>
-					<tr class="give-stripe-account-type-connect">
-						<td class="give-forminp"><?php echo $this->getStripeConnectButtonMarkup(); ?></td>
-					</tr>
+				<?php
+				if ( give_stripe_is_premium_active() ) {
+					/**
+					 * This action hook will be used to load Manual API fields for premium addon.
+					 *
+					 * @param array $this- >stripeAccounts  All Stripe accounts.
+					 *
+					 * @since 2.7.0
+					 *
+					 */
+					do_action( 'give_stripe_premium_manual_api_fields', $this->stripeAccounts );
+				}
+				?>
+				<tr class="give-stripe-account-type-connect">
+					<td class="give-forminp"><?php echo $this->getStripeConnectButtonMarkup(); ?></td>
+				</tr>
 				</tbody>
 			</table>
 		</div>
@@ -163,8 +168,8 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 *
-	 * @param  string  $stripeAccountId
-	 * @param  array  $stripeAccount
+	 * @param string $stripeAccountId
+	 * @param array  $stripeAccount
 	 */
 	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ) {
 		$account_name       = $stripeAccount['account_name'];
@@ -194,7 +199,7 @@ class AccountManagerSettingField {
 			<?php if ( $stripeAccountId === $this->defaultStripeAccountId ) : ?>
 				<div class="give-stripe-account-default-checkmark">
 					<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M32.375 16.1875C32.375 25.1276 25.1276 32.375 16.1875 32.375C7.24737 32.375 0 25.1276 0 16.1875C0 7.24737 7.24737 0 16.1875 0C25.1276 0 32.375 7.24737 32.375 16.1875ZM14.3151 24.7586L26.3252 12.7486C26.733 12.3407 26.733 11.6795 26.3252 11.2717L24.8483 9.79474C24.4404 9.38686 23.7792 9.38686 23.3713 9.79474L13.5766 19.5894L9.00371 15.0165C8.59589 14.6086 7.93462 14.6086 7.52673 15.0165L6.04982 16.4934C5.642 16.9012 5.642 17.5625 6.04982 17.9703L12.8381 24.7586C13.246 25.1665 13.9072 25.1665 14.3151 24.7586Z" fill="#69B868"/>
+						<path d="M32.375 16.1875C32.375 25.1276 25.1276 32.375 16.1875 32.375C7.24737 32.375 0 25.1276 0 16.1875C0 7.24737 7.24737 0 16.1875 0C25.1276 0 32.375 7.24737 32.375 16.1875ZM14.3151 24.7586L26.3252 12.7486C26.733 12.3407 26.733 11.6795 26.3252 11.2717L24.8483 9.79474C24.4404 9.38686 23.7792 9.38686 23.3713 9.79474L13.5766 19.5894L9.00371 15.0165C8.59589 14.6086 7.93462 14.6086 7.52673 15.0165L6.04982 16.4934C5.642 16.9012 5.642 17.5625 6.04982 17.9703L12.8381 24.7586C13.246 25.1665 13.9072 25.1665 14.3151 24.7586Z" fill="#69B868" />
 					</svg>
 				</div>
 			<?php endif; ?>
@@ -336,10 +341,8 @@ class AccountManagerSettingField {
 	 */
 	private function getFreeStripeVersionNoticeMarkup() {
 		?>
-		<p class="give-field-description">
-			<br/>
-			<?php
-			echo sprintf(
+		<p class="give-stripe-subheading-description">
+			<?php printf(
 				__(
 					'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>',
 					'give'
@@ -359,10 +362,12 @@ class AccountManagerSettingField {
 	public function getNoStripeAccountMarkup() {
 		?>
 		<div class="no-stripe-account-connected">
-			<div><span class="dashicons dashicons-info"></span></div>
-			<div><strong><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></strong></div>
-			<div><em><?php esc_html_e( 'Connect an account to get started!', 'give' ); ?></em></div>
-			<div><?php echo $this->getStripeConnectButtonMarkup(); ?></div>
+			<div class="no-stripe-account-connected-inner">
+				<span class="dashicons dashicons-info"></span>
+				<h3 class="give-stripe-settings-heading"><?php esc_html_e( 'No Stripe Accounts Connected', 'give' ); ?></h3>
+				<p id="give-stripe-connect-invite"><?php esc_html_e( 'Connect an account to get started!', 'give' ); ?></p>
+				<?php echo $this->getStripeConnectButtonMarkup(); ?>
+			</div>
 		</div>
 		<?php
 	}
