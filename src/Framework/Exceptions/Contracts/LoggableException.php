@@ -1,14 +1,12 @@
 <?php
 
-declare( strict_types=1 );
-
 namespace Give\Framework\Exceptions\Contracts;
 
 interface LoggableException {
 	/**
 	 * Returns the human-readable message for the log
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @return string
 	 */
@@ -17,7 +15,7 @@ interface LoggableException {
 	/**
 	 * Returns an associated array with additional context for the log
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @return array
 	 */

@@ -6,7 +6,7 @@ trait Loggable {
 	/**
 	 * Gets the Exception::getMessage() method
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @return string
 	 */
@@ -15,7 +15,7 @@ trait Loggable {
 	/**
 	 * Returns the human-readable log message
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @return string
 	 */
@@ -26,7 +26,7 @@ trait Loggable {
 	/**
 	 * Returns an array with the basic context details
 	 *
-	 * @unreleased
+	 * @since 2.11.1
 	 *
 	 * @return array
 	 */

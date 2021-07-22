@@ -1,23 +1,16 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Form\LegacyConsumer\TemplateHooks;
-use Give\Form\LegacyConsumer\Commands\SetupFieldPersistance;
+use Give\Framework\FieldsAPI\Text;
 
 final class SetupFieldValidationTest extends Give_Unit_Test_Case {
 
     public function testFieldValidation() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
+        add_action( 'give_fields_donation_form', function( $form ) {
 
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-optional-field' ) )
-            );
-
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-required-field' ) )
-                    ->required()
+            $form->append(
+            	Text::make( 'my-optional-field' ),
+	            Text::make( 'my-required-field' ) ->required()
             );
         });
 

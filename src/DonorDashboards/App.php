@@ -134,7 +134,7 @@ class App {
 		wp_enqueue_script(
 			'give-donor-dashboards-app',
 			GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-app.js',
-			[],
+			[ 'wp-i18n' ],
 			GIVE_VERSION,
 			true
 		);

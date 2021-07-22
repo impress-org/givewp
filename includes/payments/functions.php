@@ -577,9 +577,11 @@ function give_get_payment_status_keys() {
  *
  * @since 1.0
  *
+ * @since 2.12.0 default value for the $day parameter is removed to prevent PHP8 warnings.
+ *
  * @return int $earnings Earnings
  */
-function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
+function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null ) {
 	// This is getting deprecated soon. Use Give_Payment_Stats with the get_earnings() method instead.
 	global $wpdb;
 
@@ -1648,6 +1650,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
  * @since 1.6
+ * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *
  * @return string|bool
  */
@@ -1669,7 +1672,11 @@ function give_get_form_variable_price_dropdown( $args = [], $echo = false ) {
 	$variable_price_options = [];
 
 	// Check if multi donation form support custom donation or not.
-	if ( $form->is_custom_price_mode() ) {
+	// Check if donation amount is a custom or not.
+	if (
+		$form->is_custom_price_mode() ||
+		'custom' === $args['selected']
+	) {
 		$variable_price_options['custom'] = _x( 'Custom', 'custom donation dropdown item', 'give' );
 	}
 

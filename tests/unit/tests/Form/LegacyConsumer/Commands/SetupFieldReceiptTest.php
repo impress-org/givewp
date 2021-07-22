@@ -1,9 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use \Give\Receipt\DonationReceipt;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Form\LegacyConsumer\TemplateHooks;
+use Give\Framework\FieldsAPI\Text;
+use Give\Receipt\DonationReceipt;
 
 final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
@@ -16,31 +14,31 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
     public function testReceiptHasDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
-                    ->label( 'My Text Field' )
-                    ->showInReceipt()
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+				Text::make( 'textField' )
+					->label( 'Text Field' )
+					->showInReceipt()
             );
         });
 
         $paymentID = Give_Helper_Payment::create_simple_payment();
 
-        give_update_payment_meta( $paymentID, 'my-text-field', 'foobar' );
+        give_update_payment_meta( $paymentID, 'textField', 'foobar' );
 
         $receipt = new DonationReceipt( $paymentID );
         do_action( 'give_new_receipt', $receipt );
 
         $section = $receipt[ DonationReceipt::ADDITIONALINFORMATIONSECTIONID ];
 
-        $this->assertArrayHasKey( 'my-text-field', $section->getLineItems() );
+        $this->assertArrayHasKey( 'textField', $section->getLineItems() );
     }
 
     public function testNotReceiptHasEmptyDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+            	Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
             );
@@ -60,9 +58,9 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
     public function testNotReceiptHasDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+            	Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     // NOTE: Not shown in receipt.
             );
@@ -88,9 +86,9 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
     public function testReceiptHasDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+            	Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
                     ->storeAsDonorMeta()
@@ -112,9 +110,9 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
     public function testNotReceiptHasEmptyDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
                     ->storeAsDonorMeta()
@@ -136,9 +134,9 @@ final class SetupFieldReceiptTest extends Give_Unit_Test_Case {
 
     public function testNotReceiptHasDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->storeAsDonorMeta()
                     // NOTE: Not shown in receipt.

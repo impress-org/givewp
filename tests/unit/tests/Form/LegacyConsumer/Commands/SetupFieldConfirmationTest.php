@@ -1,8 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Give\Framework\FieldsAPI\FormField;
-use Give\Form\LegacyConsumer\TemplateHooks;
+use Give\Framework\FieldsAPI\Text;
 
 final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
@@ -15,9 +13,9 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
     public function testConfirmationHasDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
             );
@@ -37,9 +35,9 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
     public function testNotConfirmationHasEmptyDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
             );
@@ -59,9 +57,9 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
     public function testNotConfirmationHasDonationMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     // NOTE: Not shown in receipt.
             );
@@ -87,9 +85,9 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
     public function testConfirmationHasDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
                     ->storeAsDonorMeta()
@@ -111,9 +109,9 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
     public function testNotConfirmationHasEmptyDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->showInReceipt()
                     ->storeAsDonorMeta()
@@ -135,9 +133,9 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
 
     public function testNotConfirmationHasDonorMeta() {
 
-        add_action( 'give_fields_donation_form', function( $fieldCollection ) {
-            $fieldCollection->append(
-                ( new FormField( 'text', 'my-text-field' ) )
+        add_action( 'give_fields_donation_form', function( $form ) {
+            $form->append(
+                Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->storeAsDonorMeta()
                     // NOTE: Not shown in receipt.

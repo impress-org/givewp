@@ -30,7 +30,7 @@ class AdvancedCardFields {
 	 * PayPal commerce uses smart buttons to accept payment.
 	 *
 	 * @since 2.9.0
-	 * @unreleased Show billing fields conditionally.
+	 * @since 2.11.1 Show billing fields conditionally.
 	 *
 	 * @param  int  $formId  Donation Form ID.
 	 */
@@ -53,7 +53,7 @@ class AdvancedCardFields {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.11.1
 	 */
 	private function registerCustomBillingFieldsSectionLabel() {
 		if ( 'sequoia' !== Template::getActiveID() ) {
@@ -64,7 +64,7 @@ class AdvancedCardFields {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.11.1
 	 */
 	public function addBillingFieldsSectionLabel() {
 		echo sprintf(
