@@ -142,15 +142,18 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  */
 export const subscribeToNewsletter = (configuration) => {
 
-	axios.post( 'https://givegatewayserver.local/activecampaign', {
+	const data = {
 		action: 'subscribe',
 		email: getWindowData('adminEmail'),
 		first_name: getWindowData('adminFirstName'),
 		last_name: getWindowData('adminLastName'),
 		website_url: getWindowData('websiteUrl'),
 		website_name: getWindowData('websiteName'),
-		fundraising_type: configuration.CauseType,
-	} )
+		fundraising_type: configuration.causeType,
+	};
+
+	axios.post( 'https://givegatewayserver.local/activecampaign',  data)
+		
 		.then( function( response ) {
 
 			// Subscribing did work
@@ -162,7 +165,7 @@ export const subscribeToNewsletter = (configuration) => {
 
 			// Subscribing to AC did not work...
 			console.log( 'caught' ); // eslint-disable-line no-console
-			
+
 		} );
 
 };
