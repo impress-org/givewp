@@ -499,10 +499,11 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.
  *
- * @param int $form_id The form ID.
- *
- * @return string Donation levels.
  * @since  1.0
+ * @unreleased Stripe HTML tags from rendered level text https://github.com/impress-org/givewp/pull/5894
+ *
+ * @param int $form_id The form ID.
+ * @return string Donation levels.
  */
 function give_output_levels( $form_id ) {
 
