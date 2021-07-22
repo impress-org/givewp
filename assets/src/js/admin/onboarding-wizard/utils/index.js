@@ -140,26 +140,24 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 /**
  * Subscribes admin to ActiveCampaign.
  */
-export const subscribeToNewsletter = (configuration) => {
+export const subscribeToNewsletter = ( configuration ) => {
 
 	const data = {
 		action: 'subscribe',
-		email: getWindowData('adminEmail'),
-		first_name: getWindowData('adminFirstName'),
-		last_name: getWindowData('adminLastName'),
-		website_url: getWindowData('websiteUrl'),
-		website_name: getWindowData('websiteName'),
+		email: getWindowData( 'adminEmail' ),
+		first_name: getWindowData( 'adminFirstName' ),
+		last_name: getWindowData( 'adminLastName' ),
+		website_url: getWindowData( 'websiteUrl' ),
+		website_name: getWindowData( 'websiteName' ),
 		fundraising_type: configuration.causeType,
 	};
 
-	axios.post( 'https://givegatewayserver.local/activecampaign',  data)
-		
+	axios.post( 'https://givegatewayserver.local/activecampaign', data )
+
 		.then( function( response ) {
 
-			// Subscribing did work
-			// Mark their user meta as subscribed to AC
+			setUserMetaSubscribed();
 
-			console.log( response ); // eslint-disable-line no-console
 		} )
 		.catch( function() {
 
@@ -168,6 +166,35 @@ export const subscribeToNewsletter = (configuration) => {
 
 		} );
 
+};
+
+/**
+ *
+ */
+export const setUserMetaSubscribed = () => {
+
+	const currentUserId = getWindowData( 'adminUserID' );
+
+	axios.post( getAPIRoot() + 'wp/v2/users/' + currentUserId, {
+			'meta': {
+				'marketing_optin': 'subscribed',
+			}
+		}, {
+			headers: {
+				// 'Content-Type': 'application/json',
+				'X-WP-Nonce': getAPINonce(),
+			}
+		}
+	)
+		.then( function( response ) {
+
+			console.log( response );
+
+		} ).catch( function( response ) {
+		// Subscribing to AC did not work...
+		console.log( 'caught' ); // eslint-disable-line no-console
+
+	} );
 };
 
 /**
