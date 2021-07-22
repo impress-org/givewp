@@ -139,6 +139,8 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 
 /**
  * Subscribes admin to ActiveCampaign.
+ *
+ * @since 2.12.1
  */
 export const subscribeToNewsletter = ( configuration ) => {
 
@@ -152,10 +154,11 @@ export const subscribeToNewsletter = ( configuration ) => {
 		fundraising_type: configuration.causeType,
 	};
 
-	axios.post( 'https://givegatewayserver.local/activecampaign', data )
+	axios.post( 'https://connect.givewp.com/activecampaign', data )
 
 		.then( function( response ) {
 
+			// Set user meta key as subscribed.
 			setUserMetaSubscribed();
 
 		} )
@@ -169,7 +172,9 @@ export const subscribeToNewsletter = ( configuration ) => {
 };
 
 /**
+ * Sets the user's meta as enabling marketing opt-in. This metakey is useful for showing or hiding notices based on whether they have opted in or not.
  *
+ * @since 2.12.1
  */
 export const setUserMetaSubscribed = () => {
 

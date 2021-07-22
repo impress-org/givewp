@@ -3,8 +3,8 @@ const { __ } = wp.i18n;
 
 // Import store dependencies
 import { useStoreValue } from '../../store';
-import { setUserType, setCauseType } from '../../store/actions';
-import { getCauseTypes, setUserMetaSubscribed, subscribeToNewsletter } from '../../../utils';
+import { setUserType, setCauseType, setUsageTracking } from '../../store/actions';
+import { getCauseTypes, subscribeToNewsletter } from '../../../utils';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -58,7 +58,12 @@ const YourCause = () => {
 				<p>{__( 'If you opt-in, some data will be shared with our teams (so they can work their butts off to improve). We will also share some helpful info on fundraising, WordPress and our products from time to time.  And if you skip this, that’s okay! GiveWP will still work just fine.', 'give' )}</p>
 			</div>
 
-			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={() => { subscribeToNewsletter( configuration ); }} />
+			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={() => {
+				// Opt-in to usage tracking.
+				dispatch( setUsageTracking( 'enabled' ) );
+				// Subscribe to ActiveCampaign.
+				subscribeToNewsletter( configuration );
+			}} />
 
 			<SkipLink />
 

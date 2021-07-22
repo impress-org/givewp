@@ -28,6 +28,16 @@ export const setCauseType = ( type ) => {
 	};
 };
 
+// Dispatch SET_USAGE_TRACKING action
+export const setUsageTracking = ( tracking ) => {
+	return {
+		type: 'SET_USAGE_TRACKING',
+		payload: {
+			tracking,
+		},
+	};
+};
+
 // Dispatch SET_COUNTRY action
 export const setCountry = ( country ) => {
 	return {
