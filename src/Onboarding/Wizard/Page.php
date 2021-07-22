@@ -184,6 +184,7 @@ class Page {
 				'adminEmail'       => $current_user->user_email,
 				'adminFirstName'   => $current_user->first_name,
 				'adminLastName'    => $current_user->last_name,
+				'adminUserID'      => $current_user->ID,
 				'websiteUrl'       => get_bloginfo( 'url' ),
 				'websiteName'      => get_bloginfo( 'sitename' ),
 				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
@@ -218,3 +219,9 @@ class Page {
 		}
 	}
 }
+
+register_meta( 'user', 'marketing_optin', [
+	'type'         => 'string',
+	'show_in_rest' => true,
+	'single'       => true,
+] );
