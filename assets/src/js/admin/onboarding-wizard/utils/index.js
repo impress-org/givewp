@@ -186,7 +186,6 @@ export const setUserMetaSubscribed = () => {
 			}
 		}, {
 			headers: {
-				// 'Content-Type': 'application/json',
 				'X-WP-Nonce': getAPINonce(),
 			}
 		}
