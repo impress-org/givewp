@@ -551,7 +551,7 @@ function give_output_levels( $form_id ) {
 					$level_classes,
 					$formatted_amount,
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					esc_attr( strip_tags( $level_text ) )
+					$level_text
 				);
 			}
 
@@ -593,7 +593,7 @@ function give_output_levels( $form_id ) {
 					$formatted_amount,
 					( give_is_default_level_id( $price ) ? 'checked="checked"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					strip_tags( $level_text )
+					$level_text
 				);
 			}
 
@@ -641,7 +641,7 @@ function give_output_levels( $form_id ) {
 					$formatted_amount,
 					( give_is_default_level_id( $price ) ? 'selected="selected"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					strip_tags( $level_text )
+					$level_text
 				);
 			}
 
