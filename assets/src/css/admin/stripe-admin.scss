@@ -181,16 +181,22 @@ a.give-stripe-connect-temp-dismiss:active {
 		font-size: 16px;
 		text-decoration: none;
 		letter-spacing: 0.6px;
+		transition: 0.3s ease all;
 
 		.stripe-logo {
 			padding: 2px 10px 0 0;
 		}
+
+		&:hover {
+			background: #3f4ddf;
+		}
+
 	}
 }
 
 .give-stripe-account-manager-add-section {
 	display: grid;
-	grid-template-columns: 85px 3fr 1fr;
+	grid-template-columns: 75px 3fr 1fr;
 	grid-template-areas: "stripe-logo-with-circle give-stripe-heading give-setting-tab-body-gateways";
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
@@ -225,7 +231,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	height: 55px;
 	line-height: 76px;
 	box-shadow: 0 0.75px 3px rgba(0, 0, 0, 0.25);
-	margin-right: 25px;
 	text-align: center;
 	vertical-align: middle;
 	padding: 0;
@@ -252,30 +257,9 @@ a.give-stripe-connect-temp-dismiss:active {
 	flex-direction: column;
 }
 
-.give-stripe-account-manager-list {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 32px;
-	margin: 15px 0 0;
-}
-
-.give-stripe-account-manager-list-item {
-	padding: 16px 24px;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	position: relative;
-	order: 1;
-
-	background: #fff;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	border: 1px solid #69b86800;
-	border-radius: 8px;
-
-	&.give-stripe-account-manager-list-item--default-account {
-		border: 2px solid #69b868;
-	}
-}
+// --------------------------------
+// No Connected accounts screen
+// --------------------------------
 
 .no-stripe-account-connected {
 	display: flex;
@@ -309,6 +293,62 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
+// --------------------------------
+// Connect cards
+// --------------------------------
+
+.give-stripe-account-manager-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 32px;
+	margin: 15px 0 0;
+}
+
+
+.give-stripe-account-manager-list-item {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	position: relative;
+	order: 1;
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	border: 1px solid #69b86800;
+	border-radius: 8px;
+	transition: 0.3s ease all;
+
+	&.give-stripe-account-manager-list-item--default-account {
+		border: 2px solid #69b868;
+	}
+
+	&:hover {
+		transform: translate3d(0, -2px, 0);
+		box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
+	}
+
+}
+
+.give-stripe-label {
+	font-size: 14px;
+	line-height: 1.4;
+	font-weight: 400;
+	margin: 0 0 5px;
+	color: #4a5568;
+	letter-spacing: 0.5px;
+	display: block;
+}
+
+.give-stripe-account-fieldset {
+	margin: 0 0 20px;
+}
+
+.give-stripe-connect-data-field {
+	font-size: 15px;
+	color: #23282d;
+	font-weight: 600;
+}
+
 .give-stripe-account-default-checkmark {
 	width: 32px;
 	height: 32px;
@@ -320,53 +360,26 @@ a.give-stripe-connect-temp-dismiss:active {
 	right: 24px;
 }
 
-.give-stripe-account-name-wrap {
-	display: flex;
-	flex-direction: column;
-	font-size: 16px;
-	color: #4a5568;
-	font-weight: 700;
-
-	span {
-		display: block;
-	}
-
-	.give-stripe-label {
-		font-size: 14px;
-		line-height: 1.4;
-		font-weight: 400;
-		margin-top: 26px;
-		margin-bottom: 2px;
-	}
-}
-
 .give-stripe-account-actions {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	flex-wrap: wrap;
 
-	.give-stripe-label {
-		width: 100%;
-		margin-top: 20px;
-		margin-bottom: 4px;
-	}
-
 	.give-stripe-disconnect-account-btn {
-		margin-left: 10px;
+		margin-left: 15px;
+		font-size: 16px;
+		color: #9EA3A8;
+
+		.dashicons {
+			text-decoration: none;
+			margin-right: 5px;
+		}
+
+		&:hover {
+			color: #0073AA;
+		}
 	}
 
-	.give-field-description {
-		font-size: 13px;
-		position: relative;
-		top: -1px;
-		margin-right: 0;
-	}
-
-	span {
-		display: inline-block;
-		padding: 5px 0 0 0;
-	}
 }
 
 .give-stripe-account-connected {
@@ -377,29 +390,31 @@ a.give-stripe-connect-temp-dismiss:active {
 	font-size: 12px;
 	color: #fff;
 	padding: 8px 16px;
+	margin-top: 3px;
 }
 
-.give-stripe-account-default {
+// "Default Account" pill
+.give-stripe-account-badge {
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	font-size: 14px;
 	padding: 10px 20px;
 	border-radius: 24px;
 	display: inline-block;
-	margin-top: 24px;
+	margin-top: 8px;
 	align-self: flex-start;
+	color: #23282d;
 }
 
-.give-stripe-account-name {
-	color: #23282d;
-	font-weight: 600;
-	font-size: 15px;
-	margin-right: 5px;
+.give-stripe-account-default {
+	margin: 20px 0 0 3px;
 
-	.give-stripe-label {
-		margin-top: 8px;
+	.give-stripe-account-set-default {
+		font-size: 16px;
+		font-weight: 500;
 	}
 }
+
 
 .give-stripe-account-edit {
 	padding: 5px 0 0 10px;
@@ -417,7 +432,7 @@ a.give-stripe-connect-temp-dismiss:active {
 .give-stripe-default-account-notice {
 	border: 1px solid #F49420;
 	background: #FFF4E7;
-	margin: 20px 0 0;
+	margin: 30px 0 0;
 	padding: 20px;
 	border-radius: 3px;
 	color: #333;

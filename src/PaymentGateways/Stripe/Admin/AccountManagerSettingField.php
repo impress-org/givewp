@@ -88,7 +88,7 @@ class AccountManagerSettingField {
 	private function getIntroductionSectionMarkup() {
 		?>
 		<div id="give-stripe-account-manager-description">
-			<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
+			<h2><?php esc_html_e( 'Manage your Stripe Accounts', 'give' ); ?></h2>
 			<p class="give-stripe-subheading-description">
 				<?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
 					'give' ); ?>
@@ -171,10 +171,11 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $stripeAccountId
+	 * @param string $stripeAccountIdgive-stripe-account-name
 	 * @param array  $stripeAccount
 	 */
 	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ) {
+
 		$account_name       = $stripeAccount['account_name'];
 		$account_email      = $stripeAccount['account_email'];
 		$stripe_account_id  = $stripeAccount['account_id'];
@@ -207,55 +208,77 @@ class AccountManagerSettingField {
 				</div>
 			<?php endif; ?>
 
-			<div class="give-stripe-account-name-wrap">
-				<div class="give-stripe-account-name">
-					<span class="give-stripe-label"><?php _e( 'Account name:', 'give' ); ?></span>
-					<?php echo esc_html( $account_name ); ?>
-				</div>
-				<div class="give-stripe-account-email">
-					<span class="give-stripe-label"><?php _e( 'Account email:', 'give' ); ?></span>
-					<?php echo esc_html( $account_email ); ?>
-				</div>
-				<div class="give-stripe-connection-method">
-					<span class="give-stripe-label"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
-					<?php echo give_stripe_connection_type_name( $stripeAccount['type'] ); ?>
-				</div>
-				<span class="give-stripe-account-edit">
-					<?php if ( 'connect' !== $stripeAccount['type'] ) : ?>
-						<a class="give-stripe-account-edit-name" href="#">
-							<?php esc_html_e( 'Edit', 'give' ); ?>
-						</a>
-						<a
-							class="give-stripe-account-update-name give-hidden"
-							href="#"
-							data-account="<?php echo $stripeAccountId; ?>"
-						><?php esc_html_e( 'Update', 'give' ); ?></a>
-						<a class="give-stripe-account-cancel-name give-hidden" href="#">
-							<?php esc_html_e( 'Cancel', 'give' ); ?>
-						</a>
-					<?php endif; ?>
-				</span>
+			<div class="give-stripe-account-fieldset give-stripe-account-name">
+				<span class="give-stripe-label"><?php _e( 'Account name:', 'give' ); ?></span>
+				<span class="give-stripe-connect-data-field">
+						<?php echo esc_html( $account_name ); ?>
+					</span>
 			</div>
 
-			<div class="give-stripe-account-actions">
-				<span class="give-stripe-label"><?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
-				<div class="give-stripe-account-connected">
-					<?php esc_html_e( 'Connected', 'give' ); ?>
-				</div>
-				<?php if ( $stripeAccountId !== $this->defaultStripeAccountId ) : ?>
-					<div class="give-stripe-account-disconnect">
-						<a
-							class="give-stripe-disconnect-account-btn"
-							href="<?php echo $disconnect_url; ?>"
-							data-disconnect-message="<?php echo $disconnect_message; ?>"
-							data-account="<?php echo $stripeAccountId; ?>"
-						><?php esc_html_e( 'Remove', 'give' ); ?></a>
+			<?php if ( ! empty( $account_email ) ) : ?>
+				<div class="give-stripe-account-fieldset give-stripe-account-email">
+					<span class="give-stripe-label"><?php _e( 'Account email:', 'give' ); ?></span>
+					<div class="give-stripe-connect-data-field">
+						<?php echo esc_html( $account_email ); ?>
 					</div>
-				<?php endif; ?>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $stripe_account_id ) ) : ?>
+				<div class="give-stripe-account-fieldset give-stripe-account-id">
+					<span class="give-stripe-label"><?php _e( 'Account ID:', 'give' ); ?></span>
+					<div class="give-stripe-connect-data-field">
+						<?php echo esc_html( $stripe_account_id ); ?>
+					</div>
+				</div>
+			<?php endif; ?>
+
+			<div class="give-stripe-account-fieldset give-stripe-connection-method">
+					<span class="give-stripe-label">
+						<?php esc_html_e( 'Connection Method:', 'give' ); ?>
+					</span>
+				<div class="give-stripe-connect-data-field">
+					<?php echo give_stripe_connection_type_name( $stripeAccount['type'] ); ?>
+				</div>
+			</div>
+
+			<?php if ( 'connect' !== $stripeAccount['type'] ) : ?>
+				<div class="give-stripe-account-fieldset give-stripe-account-edit">
+					<a class="give-stripe-account-edit-name" href="#">
+						<?php esc_html_e( 'Edit', 'give' ); ?>
+					</a>
+					<a
+						class="give-stripe-account-update-name give-hidden"
+						href="#"
+						data-account="<?php echo $stripeAccountId; ?>"
+					><?php esc_html_e( 'Update', 'give' ); ?></a>
+					<a class="give-stripe-account-cancel-name give-hidden" href="#">
+						<?php esc_html_e( 'Cancel', 'give' ); ?>
+					</a>
+				</div>
+			<?php endif; ?>
+
+			<div class="give-stripe-account-fieldset">
+				<span class="give-stripe-label"><?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
+				<div class="give-stripe-account-actions">
+					<span class="give-stripe-account-connected give-stripe-connect-data-field">
+						<?php esc_html_e( 'Connected', 'give' ); ?>
+					</span>
+					<?php if ( $stripeAccountId !== $this->defaultStripeAccountId ) : ?>
+						<span class="give-stripe-account-disconnect">
+							<a
+								class="give-stripe-disconnect-account-btn"
+								href="<?php echo $disconnect_url; ?>"
+								data-disconnect-message="<?php echo $disconnect_message; ?>"
+								data-account="<?php echo $stripeAccountId; ?>"
+							><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Remove', 'give' ); ?></a>
+						</span>
+					<?php endif; ?>
+				</div>
 			</div>
 
 			<?php if ( $stripeAccountId === $this->defaultStripeAccountId ) : ?>
-				<div class="give-stripe-account-default give-stripe-account-badge">
+				<div class="give-stripe-account-badge">
 					<?php esc_html_e( 'Default Account', 'give' ); ?>
 				</div>
 			<?php else : ?>
