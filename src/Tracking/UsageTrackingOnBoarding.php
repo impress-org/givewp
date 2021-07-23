@@ -74,7 +74,7 @@ class UsageTrackingOnBoarding {
 				'icon_alt'    => esc_html__( 'Anonymous usage tracking icon', 'give' ),
 				'title'       => esc_html__( 'Help GiveWP improve your fundraising experience', 'give' ),
 				'description' => sprintf(
-					'%1$s<br><br><a href="https://givewp.com" class="learn-more-link" target="_blank">%2$s</a>',
+					'%1$s<br><br><a href="https://go.givewp.com/plugin-optin" class="learn-more-link" target="_blank">%2$s</a>',
 					esc_html__( 'Can you help improve GiveWP? With your permission, the GiveWP team uses non-sensitive data from plugin users to optimize donation form conversion rates, increase average donation amounts, and streamline the fundraising experience. This data is never shared with any third party.', 'give' ),
 					esc_html__( 'Learn more about how GiveWP respects user and donor privacy while improving the plugin >', 'give' )
 				),

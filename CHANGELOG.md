@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Add missing `TYPE` to Fields API `Group` node type (#5895)
+-   Set validation rules correcetly for Fields API `File` (#5892)
+-   Add missing Fields API node types to `Types` (#5891)
+
+## 2.12.1 - 2021-07-22
+
+### Fixed
+
+-   Filtered donation level text no longer breaks form HTML (#5894)
+
 ## 2.12.0 - 2021-07-21
 
 ### Added

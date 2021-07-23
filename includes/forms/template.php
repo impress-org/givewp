@@ -499,10 +499,10 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.
  *
- * @param int $form_id The form ID.
- *
- * @return string Donation levels.
  * @since  1.0
+ *
+ * @param int $form_id The form ID.
+ * @return string Donation levels.
  */
 function give_output_levels( $form_id ) {
 
@@ -550,7 +550,7 @@ function give_output_levels( $form_id ) {
 					$level_classes,
 					$formatted_amount,
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					esc_attr( $level_text )
+					$level_text
 				);
 			}
 
@@ -592,7 +592,7 @@ function give_output_levels( $form_id ) {
 					$formatted_amount,
 					( give_is_default_level_id( $price ) ? 'checked="checked"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					esc_html( $level_text )
+					$level_text
 				);
 			}
 
@@ -640,7 +640,7 @@ function give_output_levels( $form_id ) {
 					$formatted_amount,
 					( give_is_default_level_id( $price ) ? 'selected="selected"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					esc_html( $level_text )
+					$level_text
 				);
 			}
 
