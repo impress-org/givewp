@@ -18,6 +18,11 @@ class Group implements Node, Collection {
 	use Concerns\SerializeAsJson;
 	use Concerns\WalkNodes;
 
+	/**
+	 * @unreleased
+	 */
+	const TYPE = 'group';
+
 	public function __construct( $name ) {
 		$this->name = $name;
 	}

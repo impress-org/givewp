@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Add missing `TYPE` to Fields API `Group` node type (#5895)
+
 ## 2.12.1 - 2021-07-22
 
 ### Fixed
