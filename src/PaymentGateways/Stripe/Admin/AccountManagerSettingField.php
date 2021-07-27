@@ -41,7 +41,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function setUpProperties() {
+	private function setUpProperties(): void {
 		$this->stripeAccounts         = $this->accountDetailRepository->getAllStripeAccounts();
 		$this->defaultStripeAccountId = $this->accountDetailRepository->getDefaultStripeAccountId();
 	}
@@ -53,7 +53,7 @@ class AccountManagerSettingField {
 	 *
 	 * @param array $field
 	 */
-	public function handle( $field ) {
+	public function handle( $field ): void {
 		$this->setUpProperties();
 		$classes = ! empty( $field['wrapper_class'] ) ? esc_attr( $field['wrapper_class'] ) : ''
 		?>
@@ -85,7 +85,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getIntroductionSectionMarkup() {
+	private function getIntroductionSectionMarkup(): void {
 		?>
 		<div id="give-stripe-account-manager-description">
 			<h2><?php esc_html_e( 'Manage your Stripe Accounts', 'give' ); ?></h2>
@@ -106,7 +106,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getStripeAccountListSectionMarkup() {
+	private function getStripeAccountListSectionMarkup(): void {
 		$this->getStripeAccountOnBoardingModalMarkup();
 		if ( ! $this->stripeAccounts ) :
 			$this->getNoStripeAccountMarkup();
@@ -128,7 +128,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getAddNewStripeAccountSectionMarkup() {
+	private function getAddNewStripeAccountSectionMarkup(): void {
 		if ( $this->canShowCompatibilityNotice() ) {
 			$this->getCompatibilityNoticeMarkup();
 
@@ -171,10 +171,10 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $stripeAccountIdgive-stripe-account-name
+	 * @param string $stripeAccountId
 	 * @param array  $stripeAccount
 	 */
-	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ) {
+	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ): void {
 
 		$account_name       = $stripeAccount['account_name'];
 		$account_email      = $stripeAccount['account_email'];
@@ -298,7 +298,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getStripeAccountOnBoardingModalMarkup() {
+	private function getStripeAccountOnBoardingModalMarkup(): void {
 		$site_url            = get_site_url();
 		$modal_title         = sprintf(
 			'<strong>%1$s</strong>',
@@ -338,7 +338,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getCompatibilityNoticeMarkup() {
+	private function getCompatibilityNoticeMarkup(): void {
 		?>
 		<div class="give-stripe-account-manager-add-section">
 			<?php
@@ -365,7 +365,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getFreeStripeVersionNoticeMarkup() {
+	private function getFreeStripeVersionNoticeMarkup(): void {
 		?>
 		<p class="give-stripe-subheading-description">
 			<?php printf(
@@ -385,7 +385,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	public function getNoStripeAccountMarkup() {
+	public function getNoStripeAccountMarkup(): void {
 		?>
 		<div class="no-stripe-account-connected">
 			<div class="no-stripe-account-connected-inner">
@@ -402,7 +402,7 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 * @return string
 	 */
-	public function getStripeConnectButtonMarkup() {
+	public function getStripeConnectButtonMarkup(): string {
 		// Prepare Stripe Connect URL.
 		$link = add_query_arg(
 			[
@@ -432,14 +432,14 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 * @return bool
 	 */
-	private function canShowFreeStripeVersionNotice() {
+	private function canShowFreeStripeVersionNotice(): bool {
 		return ! give_stripe_is_premium_active();
 	}
 
 	/**
 	 * @return bool
 	 */
-	private function canShowCompatibilityNotice() {
+	private function canShowCompatibilityNotice(): bool {
 		return ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
 	}
 }
