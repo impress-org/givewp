@@ -430,7 +430,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
-	if( creditCardFieldFormatOptions ) {
+	if( creditCardFieldFormatOptions.length ) {
 		creditCardFieldFormatOptions.forEach(function( inputFieldContainer ){
 			inputFieldContainer.addEventListener('click', function (){
 				creditCardFieldFormatOptions.forEach(function(container){
