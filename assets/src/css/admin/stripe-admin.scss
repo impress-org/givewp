@@ -175,26 +175,33 @@ a.give-stripe-connect-temp-dismiss:active {
 		order: 2;
 	}
 
-	.give-stripe-connect {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: #6772e5;
-		color: white;
-		padding: 6px 24px;
-		border-radius: 5px;
-		font-size: 16px;
-		text-decoration: none;
-		letter-spacing: 0.6px;
-		transition: 0.3s ease all;
 
-		.stripe-logo {
-			padding: 2px 10px 0 0;
-		}
+}
 
-		&:hover {
-			background: #3f4ddf;
-		}
+// --------------------------------
+// Connect Button
+// --------------------------------
+.give-stripe-connect {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #6772e5;
+	color: #FFF;
+	padding: 6px 24px;
+	border-radius: 5px;
+	font-size: 16px;
+	text-decoration: none;
+	letter-spacing: 0.6px;
+	transition: 0.3s ease all;
+	width: 200px;
+
+	.stripe-logo {
+		padding: 2px 10px 0 0;
+	}
+
+	&:hover, &:focus, &:active {
+		background: #3f4ddf;
+		color: #FFF;
 	}
 }
 
