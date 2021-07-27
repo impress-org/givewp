@@ -81,7 +81,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_sections_advanced', [ $this, 'register_advanced_sections' ] );
 			add_filter( 'give_get_settings_advanced', [ $this, 'register_advanced_settings' ], 10, 1 );
 			Hooks::addAction( 'give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle' );
-			Hooks::addAction( 'give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle' );
+			Hooks::addAction( 'give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle', 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
 			add_action( 'give_disconnect_connected_stripe_account', [ $this, 'disconnect_connected_stripe_account' ] );

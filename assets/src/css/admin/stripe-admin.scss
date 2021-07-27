@@ -304,21 +304,16 @@ a.give-stripe-connect-temp-dismiss:active {
 	margin: 15px 0 0;
 }
 
-
-.give-stripe-account-manager-list-item {
-	padding: 24px;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	position: relative;
-	order: 1;
+.give-stripe-boxshadow-option-wrap {
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border: 1px solid #69b86800;
 	border-radius: 8px;
 	transition: 0.3s ease all;
+	overflow: hidden;
+	padding: 24px;
 
-	&.give-stripe-account-manager-list-item--default-account {
+	&__selected {
 		border: 2px solid #69b868;
 	}
 
@@ -326,6 +321,14 @@ a.give-stripe-connect-temp-dismiss:active {
 		transform: translate3d(0, -2px, 0);
 		box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
 	}
+
+}
+
+.give-stripe-account-manager-list-item {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	order: 1;
 
 }
 

@@ -14,14 +14,8 @@ class CreditCardSettingField {
 	/**
 	 * CreditCardSettingField constructor.
 	 */
-	public function __construct(  ) {
+	public function __construct() {
 
-	}
-
-	/**
-	 * @unreleased
-	 */
-	private function setUpProperties(): void {
 	}
 
 	/**
@@ -30,15 +24,16 @@ class CreditCardSettingField {
 	 * @unreleased
 	 *
 	 * @param array $field
+	 * @param string $value
 	 */
-	public function handle( $field ): void {
-		$this->setUpProperties();
+	public function handle( $field, $value ): void {
+
 		$classes = ! empty( $field['wrapper_class'] ) ? esc_attr( $field['wrapper_class'] ) : ''
 		?>
 		<div class="<?php echo $classes; ?>">
 
 			<?php $this->getIntroductionSectionMarkup(); ?>
-			<?php $this->getRadioButtons(); ?>
+			<?php $this->getRadioButtons( $field, $value ); ?>
 
 		</div>
 		<?php
@@ -67,11 +62,30 @@ class CreditCardSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getRadioButtons(): void {
+	private function getRadioButtons( $field, $value ): void {
+
+		$class = '';
+
 		?>
 
+		<div class="give-stripe-credit-card-options">
 
-			
+				<label
+					class="give-stripe-boxshadow-option-wrap<?php echo $class; ?>"
+				>
+					<input name="stripe_cc_fields_format" value="single" type="radio" style="">
+					<span class="stripe-cc-fields-radio-title">Single Field</span>
+					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
+				</label>
+
+				<label>
+					<input name="stripe_cc_fields_format" value="multi" type="radio" style=""> Multi Field
+				</label>
+
+		</div>
+
+		<p class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</p>
+
 
 		<?php
 	}

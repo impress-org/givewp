@@ -194,11 +194,11 @@ class AccountManagerSettingField {
 			wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $stripeAccountId )
 		);
 
-		$class = $stripeAccountId === $this->defaultStripeAccountId ? ' give-stripe-account-manager-list-item--default-account' : '';
+		$class = $stripeAccountId === $this->defaultStripeAccountId ? 'give-stripe-boxshadow-option-wrap__selected' : '';
 		?>
 		<div
 			id="give-stripe-<?php echo $stripeAccountId; ?>"
-			class="give-stripe-account-manager-list-item<?php echo $class; ?>"
+			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
 		>
 			<?php if ( $stripeAccountId === $this->defaultStripeAccountId ) : ?>
 				<div class="give-stripe-account-default-checkmark">
