@@ -228,6 +228,9 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 
 	.give-setting-tab-body-gateways {
+		display: flex;
+		width: 420px;
+		align-items: center;
 		align-self: center;
 		justify-content: center;
 		min-width: 235px;

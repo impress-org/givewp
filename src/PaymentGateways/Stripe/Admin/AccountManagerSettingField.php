@@ -152,7 +152,13 @@ class AccountManagerSettingField {
 			<h3 class="give-stripe-heading"><?php esc_html_e( 'Add a New Stripe Account', 'give' ); ?></h3>
 
 			<div class="give-setting-tab-body-gateways">
+
 				<?php
+
+				// Output Stripe Connect Button.
+				echo $this->getStripeConnectButtonMarkup();
+
+				// Check if premium is active.
 				if ( give_stripe_is_premium_active() ) {
 					/**
 					 * This action hook will be used to load Manual API fields for premium addon.
@@ -165,7 +171,7 @@ class AccountManagerSettingField {
 					do_action( 'give_stripe_premium_manual_api_fields', $this->stripeAccounts );
 				}
 				?>
-				<?php echo $this->getStripeConnectButtonMarkup(); ?>
+
 			</div>
 
 		</div>
