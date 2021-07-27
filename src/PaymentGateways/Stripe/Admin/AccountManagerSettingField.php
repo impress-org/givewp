@@ -41,7 +41,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function setUpProperties(): void {
+	private function setUpProperties() {
 		$this->stripeAccounts         = $this->accountDetailRepository->getAllStripeAccounts();
 		$this->defaultStripeAccountId = $this->accountDetailRepository->getDefaultStripeAccountId();
 	}
@@ -53,7 +53,7 @@ class AccountManagerSettingField {
 	 *
 	 * @param array $field
 	 */
-	public function handle( $field ): void {
+	public function handle( $field ) {
 		$this->setUpProperties();
 		$classes = ! empty( $field['wrapper_class'] ) ? esc_attr( $field['wrapper_class'] ) : ''
 		?>
@@ -85,13 +85,17 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getIntroductionSectionMarkup(): void {
+	private function getIntroductionSectionMarkup() {
 		?>
 		<div id="give-stripe-account-manager-description">
 			<h2><?php esc_html_e( 'Manage your Stripe Accounts', 'give' ); ?></h2>
 			<p class="give-stripe-subheading-description">
-				<?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
-					'give' ); ?>
+				<?php
+				esc_html_e(
+					'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
+					'give'
+				);
+				?>
 			</p>
 			<?php
 			if ( $this->canShowFreeStripeVersionNotice() ) {
@@ -106,7 +110,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getStripeAccountListSectionMarkup(): void {
+	private function getStripeAccountListSectionMarkup() {
 		$this->getStripeAccountOnBoardingModalMarkup();
 		if ( ! $this->stripeAccounts ) :
 			$this->getNoStripeAccountMarkup();
@@ -128,7 +132,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getAddNewStripeAccountSectionMarkup(): void {
+	private function getAddNewStripeAccountSectionMarkup() {
 		if ( $this->canShowCompatibilityNotice() ) {
 			$this->getCompatibilityNoticeMarkup();
 
@@ -174,7 +178,7 @@ class AccountManagerSettingField {
 	 * @param string $stripeAccountId
 	 * @param array  $stripeAccount
 	 */
-	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ): void {
+	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ) {
 
 		$account_name       = $stripeAccount['account_name'];
 		$account_email      = $stripeAccount['account_email'];
@@ -298,7 +302,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getStripeAccountOnBoardingModalMarkup(): void {
+	private function getStripeAccountOnBoardingModalMarkup() {
 		$site_url            = get_site_url();
 		$modal_title         = sprintf(
 			'<strong>%1$s</strong>',
@@ -338,7 +342,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getCompatibilityNoticeMarkup(): void {
+	private function getCompatibilityNoticeMarkup() {
 		?>
 		<div class="give-stripe-account-manager-add-section">
 			<?php
@@ -365,10 +369,11 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getFreeStripeVersionNoticeMarkup(): void {
+	private function getFreeStripeVersionNoticeMarkup() {
 		?>
 		<p class="give-stripe-subheading-description">
-			<?php printf(
+			<?php
+			printf(
 				__(
 					'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>',
 					'give'
@@ -385,7 +390,7 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 */
-	public function getNoStripeAccountMarkup(): void {
+	public function getNoStripeAccountMarkup() {
 		?>
 		<div class="no-stripe-account-connected">
 			<div class="no-stripe-account-connected-inner">
@@ -402,7 +407,7 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 * @return string
 	 */
-	public function getStripeConnectButtonMarkup(): string {
+	public function getStripeConnectButtonMarkup() {
 		// Prepare Stripe Connect URL.
 		$link = add_query_arg(
 			[
@@ -432,14 +437,14 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 * @return bool
 	 */
-	private function canShowFreeStripeVersionNotice(): bool {
+	private function canShowFreeStripeVersionNotice() {
 		return ! give_stripe_is_premium_active();
 	}
 
 	/**
 	 * @return bool
 	 */
-	private function canShowCompatibilityNotice(): bool {
+	private function canShowCompatibilityNotice() {
 		return ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
 	}
 }

@@ -26,7 +26,7 @@ class CreditCardSettingField {
 	 * @param array $field
 	 * @param string $value
 	 */
-	public function handle( $field, $value ): void {
+	public function handle( $field, $value ) {
 
 		$classes = ! empty( $field['wrapper_class'] ) ? esc_attr( $field['wrapper_class'] ) : ''
 		?>
@@ -43,26 +43,26 @@ class CreditCardSettingField {
 	/**
 	 * @unreleased
 	 */
-	private function getIntroductionSectionMarkup(): void {
+	private function getIntroductionSectionMarkup() {
 		?>
 		<div id="give-stripe-credit-card-format-description">
 			<h2><?php esc_html_e( 'Credit Card Fields Format', 'give' ); ?></h2>
 			<p class="give-stripe-subheading-description">
-				<?php esc_html_e( 'The credit card fieldset uses Stripe Elements for a secure method of accepting payment. Stripe offers two different types of credit card fields. A consolidated single field or a more traditional multi-fields format.',
-					'give' ); ?>
+				<?php
+				esc_html_e(
+					'The credit card fieldset uses Stripe Elements for a secure method of accepting payment. Stripe offers two different types of credit card fields. A consolidated single field or a more traditional multi-fields format.',
+					'give'
+				);
+				?>
 			</p>
-			<?php
-
-
-			?>
-		</div>
+					</div>
 		<?php
 	}
 
 	/**
 	 * @unreleased
 	 */
-	private function getRadioButtons( $field, $value ): void {
+	private function getRadioButtons( $field, $value ) {
 
 		$class = '';
 
@@ -75,9 +75,9 @@ class CreditCardSettingField {
 				>
 					<input
 						name="stripe_cc_fields_format"
-					       value="single"
-					       type="radio"
-					       style=""
+						   value="single"
+						   type="radio"
+						   style=""
 					>
 					<span class="stripe-cc-fields-radio-title">Single Field</span>
 					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
