@@ -143,7 +143,6 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
  * @since 2.12.1
  */
 export const subscribeToNewsletter = ( configuration ) => {
-
 	const data = {
 		action: 'subscribe',
 		email: getWindowData( 'adminEmail' ),
@@ -154,21 +153,11 @@ export const subscribeToNewsletter = ( configuration ) => {
 		fundraising_type: configuration.causeType,
 	};
 
-	axios.post( 'https://connect.givewp.com/activecampaign', data )
-
+	axios.post( 'https://connect.givewp.com/activecampaign/subscribe', data )
 		.then( function( response ) {
-
 			// Set user meta key as subscribed.
 			setUserMetaSubscribed();
-
-		} )
-		.catch( function() {
-
-			// Subscribing to AC did not work...
-			console.log( 'caught' ); // eslint-disable-line no-console
-
 		} );
-
 };
 
 /**
@@ -189,16 +178,7 @@ export const setUserMetaSubscribed = () => {
 				'X-WP-Nonce': getAPINonce(),
 			}
 		}
-	)
-		.then( function( response ) {
-
-			console.log( response );
-
-		} ).catch( function( response ) {
-		// Subscribing to AC did not work...
-		console.log( 'caught' ); // eslint-disable-line no-console
-
-	} );
+	);
 };
 
 /**

@@ -3,8 +3,8 @@ const { __ } = wp.i18n;
 
 // Import store dependencies
 import { useStoreValue } from '../../store';
-import { setUserType, setCauseType, setUsageTracking } from '../../store/actions';
-import { getCauseTypes, subscribeToNewsletter } from '../../../utils';
+import { setUserType, setCauseType } from '../../store/actions';
+import {getCauseTypes, saveSettingWithOnboardingAPI, subscribeToNewsletter} from '../../../utils';
 
 // Import components
 import CardInput from '../../../components/card-input';
@@ -60,7 +60,8 @@ const YourCause = () => {
 
 			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={() => {
 				// Opt-in to usage tracking.
-				dispatch( setUsageTracking( 'enabled' ) );
+				saveSettingWithOnboardingAPI('usage_tracking', 'enabled');
+
 				// Subscribe to ActiveCampaign.
 				subscribeToNewsletter( configuration );
 			}} />
