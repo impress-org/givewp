@@ -26,6 +26,12 @@ class FieldView {
 	public static function render( Node $field ) {
 		$type = $field->getType();
 
+		if ( $type === Types::HTML ) {
+			echo do_shortcode( $field->getHtml() );
+
+			return;
+		}
+
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
 
