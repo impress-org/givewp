@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.12.0
+ * @unreleased allow fields to be macroable
  */
 abstract class Field implements Node {
 
@@ -15,6 +16,7 @@ abstract class Field implements Node {
 	use Concerns\HasType;
 	use Concerns\IsReadOnly;
 	use Concerns\IsRequired;
+	use Concerns\Macroable;
 	use Concerns\SerializeAsJson;
 
 	/** @var ValidationRules */

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
+-   Allow Fields API fields to be macroable (#5900)
 
 ## 2.12.1 - 2021-07-22
 
