@@ -26,12 +26,6 @@ class FieldView {
 	public static function render( Node $field ) {
 		$type = $field->getType();
 
-		if ( $type === Types::HTML ) {
-			echo do_shortcode( $field->getHtml() );
-
-			return;
-		}
-
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
 
@@ -43,6 +37,7 @@ class FieldView {
 		echo "<div class=\"form-row form-row-wide\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
 		switch ( $type ) {
+			case Types::HTML:
 			case Types::CHECKBOX:
 			case Types::RADIO: // Radio provides its own label
 				include static::getTemplatePath( $type );
