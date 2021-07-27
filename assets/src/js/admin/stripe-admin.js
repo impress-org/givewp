@@ -39,6 +39,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
 	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
 	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
+	const creditCardFieldFormatOptions = document.querySelectorAll('#give-settings-section-group-credit-card .give-stripe-cc-option-field')
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
@@ -427,6 +428,21 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				}
 			} );
 		} );
+	}
+
+	if( creditCardFieldFormatOptions ) {
+		creditCardFieldFormatOptions.forEach(function( inputFieldContainer ){
+			inputFieldContainer.addEventListener('click', function (){
+				creditCardFieldFormatOptions.forEach(function(container){
+					container.classList.remove('give-stripe-boxshadow-option-wrap__selected');
+					container.querySelector('input[name="stripe_cc_fields_format"]').setAttribute( 'checked', '' );
+				})
+
+				inputFieldContainer.querySelector('input[name="stripe_cc_fields_format"]')
+					.setAttribute( 'checked', 'checked' );
+				inputFieldContainer.classList.add('give-stripe-boxshadow-option-wrap__selected');
+			})
+		})
 	}
 } );
 

@@ -154,8 +154,6 @@ a.give-stripe-connect-temp-dismiss:active {
 		line-height: 26px;
 		margin: 0 0 15px;
 	}
-
-
 }
 
 .give-stripe-setting-heading {
@@ -190,14 +188,13 @@ a.give-stripe-connect-temp-dismiss:active {
 		&:hover {
 			background: #3f4ddf;
 		}
-
 	}
 }
 
 .give-stripe-account-manager-add-section {
 	display: grid;
 	grid-template-columns: 75px 3fr 1fr;
-	grid-template-areas: "stripe-logo-with-circle give-stripe-heading give-setting-tab-body-gateways";
+	grid-template-areas: 'stripe-logo-with-circle give-stripe-heading give-setting-tab-body-gateways';
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
@@ -205,14 +202,13 @@ a.give-stripe-connect-temp-dismiss:active {
 	padding: 20px 24px;
 	order: 3;
 
-
 	.give-stripe-heading {
 		text-transform: uppercase;
 		line-height: 15px;
 		letter-spacing: 1px;
 		font-weight: normal;
 		font-size: 20px;
-		color: #4A5568;
+		color: #4a5568;
 		white-space: nowrap;
 		float: left;
 	}
@@ -222,7 +218,6 @@ a.give-stripe-connect-temp-dismiss:active {
 		justify-content: center;
 		min-width: 235px;
 	}
-
 }
 
 .stripe-logo-with-circle {
@@ -236,7 +231,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	padding: 0;
 	float: left;
 }
-
 
 .give-stripe-account-type-manual-modal__body {
 	background: #fff;
@@ -315,7 +309,6 @@ a.give-stripe-connect-temp-dismiss:active {
 		transform: translate3d(0, -2px, 0);
 		box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
 	}
-
 }
 
 // --------------------------------
@@ -328,7 +321,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	grid-gap: 32px;
 	margin: 15px 0 0;
 }
-
 
 .give-stripe-account-manager-list-item {
 	display: flex;
@@ -375,7 +367,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	.give-stripe-disconnect-account-btn {
 		margin-left: 15px;
 		font-size: 16px;
-		color: #9EA3A8;
+		color: #9ea3a8;
 
 		.dashicons {
 			text-decoration: none;
@@ -383,10 +375,9 @@ a.give-stripe-connect-temp-dismiss:active {
 		}
 
 		&:hover {
-			color: #0073AA;
+			color: #0073aa;
 		}
 	}
-
 }
 
 .give-stripe-account-connected {
@@ -422,7 +413,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-
 .give-stripe-account-edit {
 	padding: 5px 0 0 10px;
 	font-size: 12px;
@@ -437,8 +427,8 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-default-account-notice {
-	border: 1px solid #F49420;
-	background: #FFF4E7;
+	border: 1px solid #f49420;
+	background: #fff4e7;
 	margin: 30px 0 0;
 	padding: 20px;
 	border-radius: 3px;
@@ -447,7 +437,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	.dashicons {
 		font-size: 65px;
 		float: left;
-		color: #F49420;
+		color: #f49420;
 		position: relative;
 		top: -3px;
 		left: -5px;
@@ -464,19 +454,14 @@ a.give-stripe-connect-temp-dismiss:active {
 		&:last-of-type {
 			margin-bottom: 0;
 		}
-
 	}
-
 }
-
 
 // --------------------------------
 // Credit Card Tab
 // --------------------------------
 
 .give-settings-stripe-settings-section {
-
-
 	.give-stripe-credit-card-options {
 		display: block;
 		overflow: hidden;
@@ -491,13 +476,23 @@ a.give-stripe-connect-temp-dismiss:active {
 		&:first-of-type {
 			margin-right: 20px;
 		}
-
 	}
 
 	.stripe-cc-fields-radio-title {
-
 	}
-
 }
 
+#give-settings-section-group-credit-card {
+	.give-stripe-credit-card-options {
+		cursor: pointer;
+	}
 
+	input[name='stripe_cc_fields_format'],
+	.give-stripe-account-default-checkmark {
+		display: none;
+	}
+
+	.give-stripe-boxshadow-option-wrap__selected .give-stripe-account-default-checkmark {
+		display: block;
+	}
+}
