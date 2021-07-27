@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   Add `Html` node type to Fields API (#5898)
+
 ### Fixed
 
 -   Add missing `TYPE` to Fields API `Group` node type (#5895)
@@ -14,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add missing Fields API node types to `Types` (#5891)
 -   Remove placeholder from Legacy Consumer checkbox template (#5897)
 -   Use correct ID in Legacy Consumer checkbox label for attribute (#5897)
+
+### Changed
+
+-   Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
 
 ## 2.12.1 - 2021-07-22
 
