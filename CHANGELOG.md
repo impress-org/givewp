@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix "Unsupported declare strict_types" PHP warning (#5853, #5869)
 -   Add top margin to setting group page (#5864)
 -   Add custom donation level choice to select field if donation donated with custom amount (#5866)
+-   Card declines on multi-step form now display an error message on first click (#5868)
 -   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
 
 ### Changed
