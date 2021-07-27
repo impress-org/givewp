@@ -89,6 +89,17 @@ class AccountManagerSettingField {
 		?>
 		<div id="give-stripe-account-manager-description">
 			<h2><?php esc_html_e( 'Manage your Stripe Accounts', 'give' ); ?></h2>
+
+			<?php if ( give_stripe_is_premium_active() ) : ?>
+				<div class="give-stripe-pro-badge">
+					<div class="give-tooltip" data-tooltip="<?php esc_html_e( 'You are using the Pro version of the GiveWP add-on which includes additional payment methods and zero fees.',
+						'give' ); ?>">
+						<span class="dashicons dashicons-yes"></span>
+						<?php esc_html_e( 'Pro Version Active', 'give' ); ?>
+					</div>
+				</div>
+			<?php endif; ?>
+
 			<p class="give-stripe-subheading-description">
 				<?php
 				esc_html_e(
@@ -142,7 +153,7 @@ class AccountManagerSettingField {
 
 		<div class="give-stripe-add-account-errors"></div>
 
-		<div class="give-stripe-account-manager-add-section">
+		<div class="give-stripe-account-manager-add-section<?php echo give_stripe_is_premium_active() ? '  give-settings-premium-active' : ''; ?>">
 
 			<div class="stripe-logo-with-circle">
 				<svg width="21" height="31" viewBox="0 0 21 31" fill="none" xmlns="http://www.w3.org/2000/svg">
