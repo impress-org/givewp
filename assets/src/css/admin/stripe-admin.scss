@@ -488,14 +488,26 @@ a.give-stripe-connect-temp-dismiss:active {
 		width: 300px;
 		height: 300px;
 
+		> span {
+			display: block;
+		}
+
 		&:first-of-type {
 			margin-right: 20px;
 		}
 
 	}
 
-	.stripe-cc-fields-radio-title {
 
+	.stripe-cc-fields-radio-title {
+		font-weight: bold;
+		font-size: 17px;
+		margin: 0 0 5px;
+	}
+
+	.stripe-cc-fields-radio-description  {
+		font-size: 15px;
+		line-height: 22px;
 	}
 
 }
