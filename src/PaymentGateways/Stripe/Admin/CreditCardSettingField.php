@@ -38,7 +38,7 @@ class CreditCardSettingField {
 	 */
 	private function getIntroductionSectionMarkup() {
 		?>
-		<div id="give-stripe-credit-card-format-description">
+		<div class="give-stripe-credit-card-format-description">
 			<h2><?php esc_html_e( 'Credit Card Fields Format', 'give' ); ?></h2>
 			<p class="give-stripe-subheading-description">
 				<?php
