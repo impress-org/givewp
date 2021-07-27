@@ -9,14 +9,10 @@ namespace Give\PaymentGateways\Stripe\Admin;
  * @unreleased
  */
 class CreditCardSettingField {
-
-
 	/**
 	 * CreditCardSettingField constructor.
 	 */
-	public function __construct() {
-
-	}
+	public function __construct() {}
 
 	/**
 	 * Render Stripe account manager setting field.
@@ -27,14 +23,11 @@ class CreditCardSettingField {
 	 * @param string $value
 	 */
 	public function handle( $field, $value ) {
-
 		$classes = ! empty( $field['wrapper_class'] ) ? esc_attr( $field['wrapper_class'] ) : ''
 		?>
 		<div class="<?php echo $classes; ?>">
-
 			<?php $this->getIntroductionSectionMarkup(); ?>
 			<?php $this->getRadioButtons( $field, $value ); ?>
-
 		</div>
 		<?php
 	}
@@ -67,37 +60,31 @@ class CreditCardSettingField {
 		?>
 
 		<div class="give-stripe-credit-card-options">
-				<label class="give-stripe-cc-option-field give-stripe-boxshadow-option-wrap <?php echo $class; ?>">
-					<input
-						name="stripe_cc_fields_format"
-						   value="single"
-						   type="radio"
-						   style=""
-						<?php checked( 'single', $value ); ?>
-					>
-					<span class="stripe-cc-fields-radio-title">Single Field</span>
-					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
-				</label>
-
-				<label
-					class="give-stripe-cc-option-field give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
+			<label class="give-stripe-cc-option-field give-stripe-boxshadow-option-wrap <?php echo $class; ?>">
+				<input
+					name="stripe_cc_fields_format"
+					value="single"
+					type="radio"
+					style=""
+					<?php checked( 'single', $value ); ?>
 				>
-					<input
-						name="stripe_cc_fields_format"
-						value="multi"
-						type="radio"
-						style=""
-						<?php checked( 'multi', $value ); ?>
-					>
-					<span class="stripe-cc-fields-radio-title">Multi Field</span>
-					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
-				</label>
+				<span class="stripe-cc-fields-radio-title">Single Field</span>
+				<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
+			</label>
 
+			<label class="give-stripe-cc-option-field give-stripe-boxshadow-option-wrap <?php echo $class; ?>">
+				<input
+					name="stripe_cc_fields_format"
+					value="multi"
+					type="radio"
+					style=""
+					<?php checked( 'multi', $value ); ?>
+				>
+				<span class="stripe-cc-fields-radio-title">Multi Field</span>
+				<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
+			</label>
 		</div>
-
 		<p class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</p>
 		<?php
 	}
-
-
 }
