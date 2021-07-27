@@ -51,7 +51,7 @@
 	margin: 0 5px 0 0;
 }
 
-/* Temp dismiss button */
+// Temp dismiss button
 .give-stripe-connect-temp-dismiss {
 	color: #bfbfbf;
 	font-style: italic;
@@ -91,10 +91,9 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-/**
- * Single Donor Page CSS
- */
-
+// --------------------------------
+// Single Donor Page CSS
+// --------------------------------
 .stripe-customer-id-label {
 	font-weight: bold;
 	font-size: 16px;
@@ -112,7 +111,9 @@ a.give-stripe-connect-temp-dismiss:active {
 	display: none;
 }
 
-/* Connected Modal Support */
+// --------------------------------
+// Connected Modal Support
+// --------------------------------
 .give-stripe-connected-modal {
 	.give-modal__title {
 		font-weight: normal;
@@ -129,7 +130,13 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
+// --------------------------------
 // Stripe Manage Accounts section
+// --------------------------------
+#give-settings-section-group-accounts {
+	max-width: 1220px;
+}
+
 .give-stripe-account-manager-wrap .give-forminp-api_key {
 	padding: 0 5px 25px;
 }
@@ -148,12 +155,12 @@ a.give-stripe-connect-temp-dismiss:active {
 		@include give-stripe-setting-heading;
 	}
 
-	.give-stripe-subheading-description {
-		font-size: 16px;
-		color: #555;
-		line-height: 26px;
-		margin: 0 0 15px;
-	}
+}
+.give-stripe-subheading-description {
+	font-size: 16px;
+	color: #555;
+	line-height: 26px;
+	margin: 0 0 15px;
 }
 
 .give-stripe-setting-heading {
@@ -471,10 +478,11 @@ a.give-stripe-connect-temp-dismiss:active {
 
 	.give-stripe-cc-option-field {
 		float: left;
-		width: 300px;
-		height: 300px;
+		width: 340px;
+		height: 290px;
+		padding: 24px 26px;
 
-		> span {
+		.stripe-cc-fields-radio-title {
 			display: block;
 		}
 
@@ -486,13 +494,22 @@ a.give-stripe-connect-temp-dismiss:active {
 	.stripe-cc-fields-radio-title {
 		font-weight: bold;
 		font-size: 17px;
-		margin: 0 0 5px;
+		margin: 10px 0 16px;
 	}
 
 	.stripe-cc-fields-radio-description {
 		font-size: 15px;
-		line-height: 22px;
+		line-height: 24px;
+		color: #555;
 	}
+}
+
+.give-stripe-credit-card-format-description {
+	max-width: 800px;
+	margin-left: 5px;
+
+
+
 }
 
 #give-settings-section-group-credit-card {
@@ -508,4 +525,24 @@ a.give-stripe-connect-temp-dismiss:active {
 	.give-stripe-boxshadow-option-wrap__selected .give-stripe-account-default-checkmark {
 		display: block;
 	}
+}
+
+
+.stripe-cc-fields-example {
+	display: block;
+
+	&__single {
+		margin-top: 50px;
+	}
+
+	&__multi {
+		margin-top: 20px;
+	}
+
+	.stripe-cc-fields-example-text {
+		display: block;
+		font-size: 15px;
+		margin: 0 0 15px;
+	}
+
 }

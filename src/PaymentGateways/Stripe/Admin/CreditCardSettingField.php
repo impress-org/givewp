@@ -9,17 +9,19 @@ namespace Give\PaymentGateways\Stripe\Admin;
  * @unreleased
  */
 class CreditCardSettingField {
+
 	/**
 	 * CreditCardSettingField constructor.
 	 */
-	public function __construct() {}
+	public function __construct() {
+	}
 
 	/**
 	 * Render Stripe account manager setting field.
 	 *
 	 * @unreleased
 	 *
-	 * @param array $field
+	 * @param array  $field
 	 * @param string $value
 	 */
 	public function handle( $field, $value ) {
@@ -74,6 +76,12 @@ class CreditCardSettingField {
 					>
 					<span class="stripe-cc-fields-radio-title">Single Field</span>
 					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
+
+					<span class="stripe-cc-fields-example stripe-cc-fields-example__single">
+						<span class="stripe-cc-fields-example-text">Example:</span>
+								<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-single-cc-field.png'; ?>" width="340px" />
+					</span>
+
 				</label>
 			</div>
 
@@ -91,12 +99,18 @@ class CreditCardSettingField {
 						style=""
 						<?php checked( 'multi', $value ); ?>
 					>
-					<span class="stripe-cc-fields-radio-title">Multi Field</span>
-					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
+					<span class="stripe-cc-fields-radio-title">Multiple Fields</span>
+					<span class="stripe-cc-fields-radio-description">This is the more traditional credit card fieldset format that many are familiar with. All fields are
+						separate from one another.</span>
+
+					<span class="stripe-cc-fields-example stripe-cc-fields-example__multi ">
+						<span class="stripe-cc-fields-example-text">Example:</span>
+								<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-multiple-cc-fields.png'; ?>" width="340px" />
+					</span>
+
 				</label>
 			</div>
 		</div>
-		<p class="give-field-description">This option allows you to show single or multiple credit card fields on your donation forms.</p>
 		<?php
 	}
 }
