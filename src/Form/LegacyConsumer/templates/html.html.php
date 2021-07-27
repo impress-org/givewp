@@ -1,2 +1,4 @@
+<?php
+
 /** @var Give\Framework\FieldsAPI\Html $field */
-<?= do_shortcode( $field->getHtml() ) ?>
+echo do_shortcode( $field->getHtml() );
