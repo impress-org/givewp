@@ -275,10 +275,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'wrapper_class' => 'stripe-cc-field-format-settings',
 						'type'          => 'stripe_credit_card_format',
 						'default'       => 'multi',
-						'options'       => [
-							'single' => esc_html__( 'Single Field', 'give' ),
-							'multi'  => esc_html__( 'Multi Field', 'give' ),
-						],
 					];
 
 					/**
