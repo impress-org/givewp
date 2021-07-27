@@ -294,15 +294,8 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 // --------------------------------
-// Connect cards
+// Reusable Box-Shadow Cards (used for Connect and CC Fields)
 // --------------------------------
-
-.give-stripe-account-manager-list {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 32px;
-	margin: 15px 0 0;
-}
 
 .give-stripe-boxshadow-option-wrap {
 	background: #fff;
@@ -312,6 +305,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	transition: 0.3s ease all;
 	overflow: hidden;
 	padding: 24px;
+	position: relative;
 
 	&__selected {
 		border: 2px solid #69b868;
@@ -324,12 +318,22 @@ a.give-stripe-connect-temp-dismiss:active {
 
 }
 
+// --------------------------------
+// Connect cards
+// --------------------------------
+
+.give-stripe-account-manager-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 32px;
+	margin: 15px 0 0;
+}
+
+
 .give-stripe-account-manager-list-item {
 	display: flex;
 	flex-direction: column;
-	position: relative;
 	order: 1;
-
 }
 
 .give-stripe-label {
@@ -472,13 +476,7 @@ a.give-stripe-connect-temp-dismiss:active {
 
 .give-settings-stripe-settings-section {
 
-	.stripe-cc-field-format-settings th, .stripe-cc-field-format-settings td {
-		display: block;
-	}
 
-	.give-setting-tab-body-gateways {
-
-	}
 }
 
 

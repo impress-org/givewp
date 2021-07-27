@@ -73,7 +73,12 @@ class CreditCardSettingField {
 				<label
 					class="give-stripe-boxshadow-option-wrap<?php echo $class; ?>"
 				>
-					<input name="stripe_cc_fields_format" value="single" type="radio" style="">
+					<input
+						name="stripe_cc_fields_format"
+					       value="single"
+					       type="radio"
+					       style=""
+					>
 					<span class="stripe-cc-fields-radio-title">Single Field</span>
 					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
 				</label>
