@@ -71,7 +71,7 @@ class CreditCardSettingField {
 		<div class="give-stripe-credit-card-options">
 
 				<label
-					class="give-stripe-boxshadow-option-wrap<?php echo $class; ?>"
+					class="give-stripe-cc-option-field give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
 				>
 					<input
 						name="stripe_cc_fields_format"
@@ -83,8 +83,12 @@ class CreditCardSettingField {
 					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
 				</label>
 
-				<label>
-					<input name="stripe_cc_fields_format" value="multi" type="radio" style=""> Multi Field
+				<label
+					class="give-stripe-cc-option-field give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
+				>
+					<input name="stripe_cc_fields_format" value="multi" type="radio" style="">
+					<span class="stripe-cc-fields-radio-title">Multi Field</span>
+					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
 				</label>
 
 		</div>

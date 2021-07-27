@@ -477,6 +477,27 @@ a.give-stripe-connect-temp-dismiss:active {
 .give-settings-stripe-settings-section {
 
 
+	.give-stripe-credit-card-options {
+		display: block;
+		overflow: hidden;
+		padding: 20px 0 20px 5px;
+	}
+
+	.give-stripe-cc-option-field {
+		float: left;
+		width: 300px;
+		height: 300px;
+
+		&:first-of-type {
+			margin-right: 20px;
+		}
+
+	}
+
+	.stripe-cc-fields-radio-title {
+
+	}
+
 }
 
 
