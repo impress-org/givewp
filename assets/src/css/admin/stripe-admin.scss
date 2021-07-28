@@ -284,24 +284,10 @@ a.give-stripe-connect-temp-dismiss:active {
 	float: left;
 }
 
-.give-stripe-account-type-manual-modal__body {
-	background: #fff;
-	padding: 16px;
+.give-stripe-icon {
+	background: url('../../images/admin/stripe-s.svg') no-repeat center;
 }
 
-.give-stripe-account-type-manual-modal__frame {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	z-index: 9999;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-}
 
 // --------------------------------
 // No Connected accounts screen
