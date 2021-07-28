@@ -5,6 +5,7 @@
  */
 
 import { GiveConfirmModal } from '../plugins/modal';
+const { __ } = wp.i18n;
 
 window.addEventListener( 'DOMContentLoaded', function() {
 	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
@@ -339,7 +340,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 						modalWrapper: 'give-modal--warning',
 					},
 					modalContent: {
-						title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
+						title: __( 'Disconnect Stripe Account', 'give' ),
 						desc: currentElement.getAttribute( 'data-disconnect-message' ),
 					},
 					successConfirm: () => {
