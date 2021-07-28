@@ -92,7 +92,7 @@ class AccountManagerSettingField {
 
 			<?php if ( give_stripe_is_premium_active() ) : ?>
 				<div class="give-stripe-pro-badge">
-					<div class="give-tooltip" data-tooltip="<?php esc_html_e( 'You are using the Pro version of the GiveWP add-on which includes additional payment methods and zero fees.',
+					<div class="give-tooltip" data-tooltip="<?php esc_html_e( 'You are using the Pro version of the GiveWP add-on which includes additional payment methods, zero additional fees, and premium support.',
 						'give' ); ?>">
 						<span class="dashicons dashicons-yes"></span>
 						<?php esc_html_e( 'Pro Version Active', 'give' ); ?>
