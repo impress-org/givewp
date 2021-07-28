@@ -92,8 +92,14 @@ class AccountManagerSettingField {
 
 			<?php if ( give_stripe_is_premium_active() ) : ?>
 				<div class="give-stripe-pro-badge">
-					<div class="give-tooltip" data-tooltip="<?php esc_html_e( 'You are using the Pro version of the GiveWP add-on which includes additional payment methods, zero additional fees, and premium support.',
-						'give' ); ?>">
+					<div class="give-tooltip" data-tooltip="
+					<?php
+					esc_html_e(
+						'You are using the Pro version of the GiveWP add-on which includes additional payment methods, zero additional fees, and premium support.',
+						'give'
+					);
+					?>
+						">
 						<span class="dashicons dashicons-yes"></span>
 						<?php esc_html_e( 'Pro Version Active', 'give' ); ?>
 					</div>
@@ -150,9 +156,6 @@ class AccountManagerSettingField {
 			return;
 		}
 		?>
-
-		<div class="give-stripe-add-account-errors"></div>
-
 		<div class="give-stripe-account-manager-add-section<?php echo give_stripe_is_premium_active() ? '  give-settings-premium-active' : ''; ?>">
 
 			<div class="stripe-logo-with-circle">
@@ -182,9 +185,7 @@ class AccountManagerSettingField {
 					do_action( 'give_stripe_premium_manual_api_fields', $this->stripeAccounts );
 				}
 				?>
-
 			</div>
-
 		</div>
 		<?php
 	}

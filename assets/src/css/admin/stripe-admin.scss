@@ -155,7 +155,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	h2 {
 		@include give-stripe-setting-heading;
 	}
-
 }
 
 .give-stripe-subheading-description {
@@ -176,7 +175,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	.main-heading {
 		order: 2;
 	}
-
 }
 
 .give-stripe-pro-badge {
@@ -198,7 +196,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	.dashicons {
 		color: #66BB6A;
 	}
-
 }
 
 // --------------------------------
@@ -209,7 +206,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	align-items: center;
 	justify-content: center;
 	background: #6772e5;
-	color: #FFF;
+	color: #fff;
 	padding: 6px 24px;
 	border-radius: 5px;
 	font-size: 16px;
@@ -222,9 +219,11 @@ a.give-stripe-connect-temp-dismiss:active {
 		padding: 2px 10px 0 0;
 	}
 
-	&:hover, &:focus, &:active {
+	&:hover,
+	&:focus,
+	&:active {
 		background: #3f4ddf;
-		color: #FFF;
+		color: #fff;
 	}
 }
 
@@ -500,7 +499,6 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .give-settings-stripe-settings-section {
-
 	.give-stripe-credit-card-options {
 		display: block;
 		overflow: hidden;
@@ -555,7 +553,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-
 .stripe-cc-fields-example {
 	display: block;
 
@@ -572,5 +569,4 @@ a.give-stripe-connect-temp-dismiss:active {
 		font-size: 15px;
 		margin: 0 0 15px;
 	}
-
 }
