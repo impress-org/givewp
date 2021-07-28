@@ -27,10 +27,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const becsIconStyleElement = document.querySelector( '.stripe-becs-icon-style' );
 	const hideBecsMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_becs_mandate_acceptance_option"]' ) );
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
-	const manualFields = Array.from( document.querySelectorAll( '.give-stripe-account-type-manual' ) );
-	const connectField = document.querySelector( '.give-stripe-account-type-connect' );
-	const connectionTypes = Array.from( document.querySelectorAll( 'input[name="stripe_connection_type"]' ) );
-	const selectedConnectionType = document.querySelector( 'input[name="stripe_connection_type"]:checked' );
 	const disconnectBtns = Array.from( document.querySelectorAll( '.give-stripe-disconnect-account-btn' ) );
 	const setStripeDefaults = Array.from( document.querySelectorAll( '.give-stripe-account-set-default' ) );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
@@ -220,45 +216,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				xhr.send( formData );
 			} );
 		} );
-	}
-
-	/**
-	 * Connection Type Toggle for Stripe Account
-	 *
-	 * This will help toggle between connect and manual fields of Stripe
-	 * using the "Connection Type" radio fields.
-	 *
-	 * @since 2.7.0
-	 */
-	if ( null !== connectionTypes && null !== selectedConnectionType ) {
-		giveStripeConnectionTypeToggle( selectedConnectionType.value );
-
-		connectionTypes.forEach( ( connectionType ) => {
-			connectionType.addEventListener( 'change', ( e ) => {
-				giveStripeConnectionTypeToggle( e.target.value );
-			} );
-		} );
-	}
-
-	/**
-	 * Toggle for Stripe Connection Type.
-	 *
-	 * @param {string} $value
-	 *
-	 * @since 2.7.0
-	 */
-	function giveStripeConnectionTypeToggle( $value ) {
-		if ( 'connect' === $value ) {
-			manualFields.map( ( element ) => {
-				element.classList.add( 'give-hidden' );
-			} );
-			connectField.classList.remove( 'give-hidden' );
-		} else {
-			manualFields.map( ( element ) => {
-				element.classList.remove( 'give-hidden' );
-			} );
-			connectField.classList.add( 'give-hidden' );
-		}
 	}
 
 	/**
