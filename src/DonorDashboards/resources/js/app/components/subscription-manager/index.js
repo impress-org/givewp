@@ -17,6 +17,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
 	const [ isUpdating, setIsUpdating ] = useState( false );
 	const [ updated, setUpdated ] = useState( true );
+	const [ ready, setReady ] = useState( true );
 
 	useEffect( () => {
 		setUpdated( false );
@@ -44,11 +45,12 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			<PaymentMethodControl
 				label={ __( 'Payment Method', 'give' ) }
 				gateway={ subscription.gateway }
+				onReady={ setReady }
 				onChange={ ( val ) => setPaymentMethod( val ) }
 			/>
 			<FieldRow>
 				<div>
-					<Button onClick={ () => handleUpdate() }>
+					<Button onClick={ () => handleUpdate() } disabled={ !ready }>
 						{ updated ? (
 							<Fragment>
 								{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />
