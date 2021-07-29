@@ -1,0 +1,10 @@
+.give-obw-skip-link {
+	cursor:pointer;
+	margin: 20px 0;
+	color: #9EA3A8;
+	transition: all 200ms ease;
+
+	&:hover {
+		color: #333;
+	}
+}

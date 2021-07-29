@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Added optional opt-in to onboarding wizard. (#5852)
 -   Add `Html` node type to Fields API (#5898)
 
 ### Fixed
