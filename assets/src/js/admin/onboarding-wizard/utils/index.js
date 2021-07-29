@@ -123,13 +123,7 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
 		},
-	} )
-		.then( function( response ) {
-			console.log( response ); // eslint-disable-line no-console
-		} )
-		.catch( function() {
-			console.log( 'caught' ); // eslint-disable-line no-console
-		} );
+	} );
 
 	return {
 		setting,

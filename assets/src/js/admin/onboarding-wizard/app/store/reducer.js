@@ -30,14 +30,6 @@ export const reducer = ( state, action ) => {
 					causeType: action.payload.type,
 				},
 			};
-		case 'SET_USAGE_TRACKING':
-			saveSettingWithOnboardingAPI( 'usage_tracking', action.payload.tracking );
-			return {
-				...state,
-				configuration: { ...state.configuration,
-					usageTracking: action.payload.tracking,
-				},
-			};
 		case 'SET_COUNTRY':
 			saveSettingWithOnboardingAPI( 'base_country', action.payload.country );
 			return {
