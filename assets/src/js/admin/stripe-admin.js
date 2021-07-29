@@ -1,11 +1,11 @@
+import {GiveConfirmModal} from "../plugins/modal";
+
 /**
  * Give - Stripe Core Admin JS
  *
  * @since 2.5.0
  */
-
-import { GiveConfirmModal } from '../plugins/modal';
-const { __ } = wp.i18n;
+const { __, sprintf } = wp.i18n;
 
 window.addEventListener( 'DOMContentLoaded', function() {
 	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
@@ -202,19 +202,51 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			setStripeDefault.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
-				const xhr = new XMLHttpRequest();
-				const formData = new FormData();
+				const accountName = sprintf(
+					'<strong>%1$s</strong><br>%2$s',
+					__( 'Account Name', 'give' ),
+					e.target.parentElement.parentElement.querySelector('.give-stripe-account-name .give-stripe-connect-data-field').textContent
+				);
 
-				formData.append( 'action', 'give_stripe_set_account_default' );
-				formData.append( 'account_slug', e.target.getAttribute( 'data-account' ) );
-				xhr.open( 'POST', ajaxurl );
-				xhr.onload = function() {
-					const response = JSON.parse( xhr.response );
-					if ( xhr.status === 200 && response.success ) {
-						window.location.href = e.target.getAttribute( 'data-url' );
+				const docLink = sprintf(
+					'<a href="%1$s" target="_blank">%2$s</a>',
+					'https://givewp.com/documentation/core/payment-gateways/stripe-free/using-multiple-stripe-accounts-on-a-single-givewp-site/',
+					__( 'View Documentation >', 'give' )
+				)
+
+				new Give.modal.GiveConfirmModal(
+					{
+						classes:{
+							modalWrapper: 'give-modal--warning'
+						},
+						modalContent: {
+							title: sprintf(
+								'<span class="give-stripe-icon stripe-logo-with-circle"></span>%s',
+								__( 'Confirm New Default', 'give' )
+							),
+							desc: sprintf(
+								__( 'Please confirm you’d like to set the account below as the new Global Default account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br><br>%2$s', 'give' ),
+								docLink,
+								accountName
+							),
+						},
+						successConfirm: function( args ) {
+							const xhr = new XMLHttpRequest();
+							const formData = new FormData();
+
+							formData.append( 'action', 'give_stripe_set_account_default' );
+							formData.append( 'account_slug', e.target.getAttribute( 'data-account' ) );
+							xhr.open( 'POST', ajaxurl );
+							xhr.onload = function() {
+								const response = JSON.parse( xhr.response );
+								if ( xhr.status === 200 && response.success ) {
+									window.location.href = e.target.getAttribute( 'data-url' );
+								}
+							};
+							xhr.send( formData );
+						},
 					}
-				};
-				xhr.send( formData );
+				).render();
 			} );
 		} );
 	}
@@ -296,7 +328,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		const modalSecondDetail = stripeConnectedElement.getAttribute( 'data-second-detail' );
 
 		if ( 'connected' === stripeStatus && '0' === canDisplay ) {
-			new GiveConfirmModal(
+			new Give.modal.GiveConfirmModal(
 				{
 					modalWrapper: 'give-stripe-connected-modal give-modal--success',
 					type: 'confirm',
