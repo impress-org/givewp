@@ -202,11 +202,21 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			setStripeDefault.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 
+				const stripeEmailValueContainer = e.target.parentElement.parentElement.querySelector('.give-stripe-account-email .give-stripe-connect-data-field');
+				let accountEmail = '';
 				const accountName = sprintf(
-					'<strong>%1$s</strong><br>%2$s',
+					'<p><strong>%1$s</strong><br>%2$s</p>',
 					__( 'Account Name', 'give' ),
 					e.target.parentElement.parentElement.querySelector('.give-stripe-account-name .give-stripe-connect-data-field').textContent
 				);
+
+				if( stripeEmailValueContainer ) {
+					accountEmail = sprintf(
+						'<p><strong>%1$s</strong><br>%2$s</p>',
+						__( 'Account Email', 'give' ),
+						stripeEmailValueContainer.textContent
+					);
+				}
 
 				const docLink = sprintf(
 					'<a href="%1$s" target="_blank">%2$s</a>',
@@ -225,9 +235,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
 								__( 'Confirm New Default', 'give' )
 							),
 							desc: sprintf(
-								__( 'Please confirm you’d like to set the account below as the new Global Default account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br><br>%2$s', 'give' ),
+								__( 'Please confirm you’d like to set the account below as the new Global Default account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br>%2$s%3$s', 'give' ),
 								docLink,
-								accountName
+								accountName,
+								accountEmail
 							),
 						},
 						successConfirm: function( args ) {
