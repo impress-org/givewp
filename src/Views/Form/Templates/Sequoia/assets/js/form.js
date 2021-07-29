@@ -219,7 +219,10 @@
 					// Setup tooltip unless for custom donation level, or if level label matches value
 					if ( value !== 'custom' && text !== compare ) {
 						const wrap = document.createElement('span');
-						wrap.classList.add('give-tooltip', 'hint--top', 'hint--bounce', text.length < 50 ? 'narrow' : '');
+						wrap.classList.add('give-tooltip', 'hint--top', 'hint--bounce');
+						if( text.length < 50 ) {
+							wrap.classList.add( 'narrow' );
+						}
 						wrap.style.width = '100%';
 						wrap.setAttribute('aria-label', text.length < 50 ? text : text.substr( 0, 50 ) + '...');
 						$( this ).wrap( wrap );
