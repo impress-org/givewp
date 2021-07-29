@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add missing Fields API node types to `Types` (#5891)
 -   Remove placeholder from Legacy Consumer checkbox template (#5897)
 -   Use correct ID in Legacy Consumer checkbox label for attribute (#5897)
+-   Donors can now update their credit card using the Donor Dashboard (#5902)
 
 ### Changed
 
