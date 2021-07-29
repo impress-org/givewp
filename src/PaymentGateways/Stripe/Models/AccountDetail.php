@@ -51,6 +51,33 @@ class AccountDetail {
 	}
 
 	/**
+	 * @unreleased
+	 */
+	public static function fromArray( $array ) {
+		return new static( $array );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+		return [
+			'type'                 => $this->type,
+			'account_id'           => $this->accountId,
+			'account_slug'         => $this->accountSlug,
+			'account_name'         => $this->accountName,
+			'account_country'      => $this->accountCountry,
+			'account_email'        => $this->accountEmail,
+			'live_secret_key'      => $this->liveSecretKey,
+			'test_secret_key'      => $this->testSecretKey,
+			'live_publishable_key' => $this->livePublishableKey,
+			'test_publishable_key' => $this->testPublishableKey,
+		];
+	}
+
+	/**
 	 * @since 2.10.2
 	 * @param string $key
 	 *
