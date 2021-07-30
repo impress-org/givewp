@@ -1,56 +1,31 @@
 import { CardElement, useStripe } from '@stripe/react-stripe-js';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './style.scss';
 
-const CardControl = ( { label, onChange, onReady, value } ) => {
+const CardControl = ( { label, onFocus } ) => {
 	const stripe = useStripe();
-
 	const [ focused, setFocused ] = useState( false );
-	const [ paymentMethodId, setPaymentMethodId ] = useState( value );
 
-	useEffect( () => {
-		if ( paymentMethodId ) {
-			handleReady( true );
-			onChange( {
-				give_stripe_payment_method: paymentMethodId,
-			} );
-		}
-	}, [ paymentMethodId ] );
+	const handleCardInputEvents = ( cardInputElement ) => {
 
-	const handleReady = ( ready ) => {
-		if ( typeof onReady === 'function' ) {
-			onReady( ready );
-		}
-	}
-
-	const handleCard = ( cardElement ) => {
-
-		cardElement.on( 'focus', function(){
+		cardInputElement.on( 'focus', function(){
 			setFocused( true );
+
+			if ( typeof onFocus === 'function' ) {
+				onFocus( {
+					stripe,
+					cardElement: cardInputElement
+				} );
+			}
 		} );
 
-		cardElement.on( 'blur', async function() {
+		cardInputElement.on( 'blur', function() {
 			setFocused( false );
-
-			if ( cardElement._empty || cardElement._invalid ) {
-				return;
-			}
-
-			const { error, paymentMethod } = await stripe.createPaymentMethod( {
-				type: 'card',
-				card: cardElement,
-			} );
-
-			if ( ! error ) {
-				setPaymentMethodId( paymentMethod.id );
-			}
 		} );
 
-		cardElement.on( 'change', function( { empty } ) {
-			handleReady( empty );
-
+		cardInputElement.on( 'change', function( { empty } ) {
 			if ( empty ) {
-				cardElement.clear();
+				cardInputElement.clear();
 			}
 		} );
 	}
@@ -61,7 +36,7 @@ const CardControl = ( { label, onChange, onReady, value } ) => {
 			<div className={ focused ? 'give-donor-dashboard-stripe-card-control__input give-donor-dashboard-stripe-card-control__input--focused' : 'give-donor-dashboard-stripe-card-control__input' }>
 				<CardElement
 					style={ { base: { fontFamily: 'Montserrat' } } }
-					onReady={ handleCard }
+					onReady={ handleCardInputEvents }
 				/>
 			</div>
 		</div>
