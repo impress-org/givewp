@@ -48,7 +48,7 @@ class AccountManagerSettingField {
 	 *
 	 * @param AccountDetail $accountDetailRepository
 	 */
-	public function __construct( AccountDetail $accountDetailRepository ) {
+	public function __construct( AccountDetail $accountDetailRepository, 'give' ) {
 		$this->accountDetailRepository = $accountDetailRepository;
 	}
 
@@ -330,7 +330,7 @@ class AccountManagerSettingField {
 		$site_url    = get_site_url();
 		$redirectUrl = $this->isGlobalSettingPage() ?
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) :
-			admin_url( 'post.php?post=18&action=edit&give_tab=stripe_manage_accounts_option' );
+			admin_url( 'post.php?post=18&action=edit&give_tab=stripe_form_account_options' );
 
 		$modal_title         = sprintf(
 			'<strong>%1$s</strong>',
@@ -444,7 +444,7 @@ class AccountManagerSettingField {
 				'return_url'            => ! $this->isGlobalSettingPage() ?
 					rawurlencode(
 						sprintf(
-							admin_url( 'post.php?post=%d&action=edit&give_tab=stripe_manage_accounts_option' ),
+							admin_url( 'post.php?post=%d&action=edit&give_tab=stripe_form_account_options' ),
 							get_the_ID()
 						)
 					) :
