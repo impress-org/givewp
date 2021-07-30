@@ -109,7 +109,7 @@ class Donations {
 	/**
 	 * Get all donations by donor ID
 	 *
-	 * @unreleased return null if donation ids is empty
+	 * @since 2.12.2 return null if donation ids is empty
 	 * @since 2.10.0
 	 *
 	 * @param int $donorId

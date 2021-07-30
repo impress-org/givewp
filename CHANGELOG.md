@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.12.2 - 2020-07-30
+
 ### Added
 
 -   Added optional opt-in to onboarding wizard. (#5852)
