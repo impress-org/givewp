@@ -212,16 +212,17 @@ class AccountManagerSettingField {
 	 */
 	private function getStripeAccountMarkup( $stripeAccount ) {
 
-		$accountName     = $stripeAccount['account_name'];
-		$accountEmail    = $stripeAccount['account_email'];
-		$stripeAccountId = $stripeAccount['account_id'];
+		$accountName       = $stripeAccount['account_name'];
+		$accountEmail      = $stripeAccount['account_email'];
+		$stripeAccountId   = $stripeAccount['account_id'];
+		$stripeAccountSlug = $stripeAccount['account_slug'];
 		$disconnectUrl     = add_query_arg(
 			[
-				'account_type' =>  $stripeAccount['type'],
-				'give_action'  => 'disconnect_stripe_account',
-				'account_slug' => $stripeAccountId,
+				'account_type' => $stripeAccount['type'],
+				'action'       => 'disconnect_stripe_account',
+				'account_slug' => $stripeAccountSlug,
 			],
-			wp_nonce_url( admin_url( 'admin-ajax.php' ), 'give_disconnect_connected_stripe_account_' . $stripeAccountId )
+			wp_nonce_url( admin_url( 'admin-ajax.php' ), 'give_disconnect_connected_stripe_account_' . $stripeAccountSlug )
 		);
 
 		$class = $stripeAccountId === $this->defaultStripeAccountId ? 'give-stripe-boxshadow-option-wrap__selected' : '';

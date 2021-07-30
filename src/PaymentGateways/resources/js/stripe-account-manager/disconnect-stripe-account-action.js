@@ -17,6 +17,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	disconnectBtns.forEach( ( button ) => {
 		button.addEventListener( 'click', ( e ) => {
 			e.preventDefault();
+			const button = e.target;
 
 			new Give.modal.GiveConfirmModal( {
 				type: 'alert',
@@ -28,11 +29,13 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					desc: __( 'Are you sure you want to disconnect this Stripe account?', 'give' ),
 				},
 				successConfirm: () => {
-					fetch( e.target.attr('href') )
+					fetch( button.getAttribute('href') )
 						.then( response => response.json() )
 						.then( response => {
-							window.location.reload();
-					})
+							if( response.success ) {
+								window.location.reload()
+							}
+						} );
 				},
 			} ).render();
 		} );

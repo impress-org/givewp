@@ -84,7 +84,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			Hooks::addAction( 'give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle', 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
-			add_action( 'give_disconnect_connected_stripe_account', [ $this, 'disconnect_connected_stripe_account' ] );
 		}
 
 		/**
@@ -825,23 +824,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				</td>
 			</tr>
 			<?php
-		}
-
-		/**
-		 * @since 2.8.0
-		 */
-		public function disconnect_connected_stripe_account() {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return;
-			}
-			$data = give_clean( $_GET );
-			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
-				return;
-			}
-			check_admin_referer( 'give_disconnect_connected_stripe_account_' . $data['give_stripe_disconnect_slug'] );
-			give_stripe_disconnect_account(
-				$data['give_stripe_disconnect_slug']
-			);
 		}
 	}
 }
