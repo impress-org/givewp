@@ -11,7 +11,7 @@
  */
 
 // Exit, if accessed directly.
-use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+use Give\PaymentGateways\Stripe\Admin\AccountManager\AccountManagerSettingField;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
