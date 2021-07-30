@@ -11,6 +11,8 @@
  */
 
 // Exit, if accessed directly.
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -58,10 +60,23 @@ function give_stripe_add_metabox_settings( $settings, $form_id ) {
 	}
 
 	$settings['stripe_form_account_options'] = [
-		'id'        => 'stripe_form_account_options',
-		'title'     => esc_html__( 'Stripe Account', 'give' ),
-		'icon-html' => '<i class="fab fa-stripe-s"></i>',
-		'fields'    => [
+		'id'         => 'stripe_form_account_options',
+		'title'      => esc_html__( 'Stripe Account', 'give' ),
+		'icon-html'  => '<i class="fab fa-stripe-s"></i>',
+		'sub-fields' => [
+			[
+				'id'     => 'stripe_manage_accounts_option',
+				'title'  => esc_html__( 'Manage Accounts', 'give' ),
+				'fields' => [
+					[
+						'id'       => 'give_manage_accounts',
+						'type'     => 'give_manage_accounts',
+						'callback' => [ give( AccountManagerSettingField::class ), 'handle' ],
+					],
+				],
+			],
+		],
+		'fields'     => [
 			[
 				'name'        => esc_html__( 'Account Options', 'give' ),
 				'id'          => 'give_stripe_per_form_accounts',
