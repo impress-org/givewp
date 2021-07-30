@@ -4,7 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 /**
  * @since 2.12.0
- * @unreleased add Form, Group, and Html
+ * @since 2.12.2 add Form, Group, and Html
  */
 class Types {
 	const CHECKBOX = Checkbox::TYPE;

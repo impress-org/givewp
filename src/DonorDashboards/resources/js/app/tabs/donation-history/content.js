@@ -83,20 +83,12 @@ const Content = () => {
 		</Fragment>
 	) : (
 		<Fragment>
-			{ ( ! donations ) ? (
-				<Fragment>
-					<Heading icon="exclamation-triangle">
-						{ __( 'No Donations', 'give' ) }
-					</Heading>
-				</Fragment>
-			) : (
-				<Fragment>
-					<Heading>
-						{ `${ donations ? Object.entries( donations ).length : 0 } ${ __( 'Total Donations', 'give' ) }` }
-					</Heading>
-					<DonationTable donations={ donations } perPage={ 5 } />
-				</Fragment>
-			) }
+			 <Fragment>
+				 <Heading>
+					  { `${ donations ? Object.entries( donations ).length : 0 } ${ __( 'Total Donations', 'give' ) }` }
+				 </Heading>
+				 <DonationTable donations={ donations } perPage={ 5 } />
+			 </Fragment>
 		</Fragment>
 	);
 };

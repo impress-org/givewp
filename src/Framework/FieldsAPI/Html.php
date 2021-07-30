@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unreleased
+ * @since 2.12.2
  */
 class Html extends Element {
 
@@ -15,7 +15,7 @@ class Html extends Element {
 	/**
 	 * Set the HTML for the element.
 	 *
-	 * @unreleased
+	 * @since 2.12.2
 	 *
 	 * @param string $html
 	 * @return $this
@@ -29,7 +29,7 @@ class Html extends Element {
 	/**
 	 * Get the HTML for the element.
 	 *
-	 * @unreleased
+	 * @since 2.12.2
 	 *
 	 * @return string
 	 */
