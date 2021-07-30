@@ -80,7 +80,15 @@ class NewStripeAccountOnBoardingController {
 				)
 			);
 
-			give_stripe_get_back_to_settings_page( [ 'stripe_account' => 'connected' ] );
+			wp_safe_redirect(
+				add_query_arg(
+					[ 'stripe_account' => 'connected' ],
+					$requestedData->formId ?
+						admin_url( 'post.php?post=18&action=edit&give_tab=stripe_manage_accounts_option' ) :
+						admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' )
+				)
+			);
+			exit();
 		} catch ( \Exception $e ) {
 			Give_Admin_Settings::add_error(
 				'give-stripe-account-on-boarding-error',

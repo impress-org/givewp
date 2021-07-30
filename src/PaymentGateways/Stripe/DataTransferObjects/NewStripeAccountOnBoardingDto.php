@@ -34,6 +34,10 @@ class NewStripeAccountOnBoardingDto {
 	 * @var mixed|string
 	 */
 	public $stripePublishableKeyTest;
+	/**
+	 * @var int
+	 */
+	public $formId;
 
 	/**
 	 * @param array $array
@@ -43,6 +47,7 @@ class NewStripeAccountOnBoardingDto {
 	public static function fromArray( $array ) {
 		$self = new static();
 
+		$self->formId                   = ! empty( $array['post'] ) ? absint( $array['post'] ) : 0;
 		$self->stripePublishableKey     = ! empty( $array['stripe_publishable_key'] ) ? $array['stripe_publishable_key'] : '';
 		$self->stripePublishableKeyTest = ! empty( $array['stripe_publishable_key_test'] ) ? $array['stripe_publishable_key_test'] : '';
 		$self->stripeUserId             = ! empty( $array['stripe_user_id'] ) ? $array['stripe_user_id'] : '';
