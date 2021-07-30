@@ -1,5 +1,3 @@
-import {GiveConfirmModal} from "../plugins/modal";
-
 /**
  * Give - Stripe Core Admin JS
  *
