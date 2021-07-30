@@ -24,6 +24,7 @@ use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\ApplicationFee;
+use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
 /**
@@ -59,7 +60,7 @@ class PaymentGateways implements ServiceProvider {
 	public function register() {
 		give()->bind(
 			'PAYPAL_COMMERCE_ATTRIBUTION_ID',
-			static function() {
+			static function () {
 				return 'GiveWP_SP_PCP';
 			}
 		); // storage
@@ -69,7 +70,7 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( DonationFormElements::class );
 		give()->singleton(
 			ApplicationFee::class,
-			function() {
+			function () {
 				return new ApplicationFee(
 					give( AccountDetailRepository::class )->getAccountDetail(
 						give_stripe_get_connected_account_options()['stripe_account']
@@ -90,6 +91,7 @@ class PaymentGateways implements ServiceProvider {
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 		Hooks::addFilter( 'give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99 );
 
+		give( DonationFormSettingPage::class )->boot();
 		$this->registerMigrations();
 	}
 
@@ -116,11 +118,11 @@ class PaymentGateways implements ServiceProvider {
 	/**
 	 * Registers all of the payment gateways with GiveWP
 	 *
-	 * @since 2.8.0
-	 *
 	 * @param array $gateways
 	 *
 	 * @return array
+	 * @since 2.8.0
+	 *
 	 */
 	public function bootGateways( array $gateways ) {
 		foreach ( $this->gateways as $gateway ) {
