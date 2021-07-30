@@ -88,7 +88,7 @@ class AccountManagerSettingField {
 	 */
 	private function getIntroductionSectionMarkup() {
 		// Show introduction content only on global setting edit screen.
-		if ( ! Give_Admin_Settings::is_setting_page( 'gateways', 'stripe-settings' ) ) {
+		if ( $this->isDonationFormEditPage() ) {
 			return;
 		}
 		?>
@@ -436,7 +436,14 @@ class AccountManagerSettingField {
 			[
 				'stripe_action'         => 'connect',
 				'mode'                  => give_is_test_mode() ? 'test' : 'live',
-				'return_url'            => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+				'return_url'            => $this->isDonationFormEditPage() ?
+					rawurlencode(
+						sprintf(
+							admin_url( 'post.php?post=%d&action=edit&give_tab=stripe_manage_accounts_option' ),
+							get_the_ID()
+						)
+					) :
+					rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
 				'website_url'           => get_bloginfo( 'url' ),
 				'give_stripe_connected' => '0',
 			],
@@ -469,5 +476,13 @@ class AccountManagerSettingField {
 	 */
 	private function canShowCompatibilityNotice() {
 		return ! give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' );
+	}
+
+	/**
+	 * @unreleased
+	 * @return bool
+	 */
+	private function isDonationFormEditPage() {
+		return ! Give_Admin_Settings::is_setting_page( 'gateways', 'stripe-settings' );
 	}
 }
