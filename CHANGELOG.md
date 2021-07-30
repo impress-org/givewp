@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.12.2 - 2020-07-30
+
+### Added
+
+-   Added optional opt-in to onboarding wizard. (#5852)
+-   Add `Html` node type to Fields API (#5898)
+
+### Fixed
+
+-   Add missing `TYPE` to Fields API `Group` node type (#5895)
+-   Set validation rules correcetly for Fields API `File` (#5892)
+-   Add missing Fields API node types to `Types` (#5891)
+-   Remove placeholder from Legacy Consumer checkbox template (#5897)
+-   Use correct ID in Legacy Consumer checkbox label for attribute (#5897)
+-   Donors with no donations no longer see others (#5908)
+
+### Changed
+
+-   Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
+
 ## 2.12.1 - 2021-07-22
 
 ### Fixed
@@ -25,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix "Unsupported declare strict_types" PHP warning (#5853, #5869)
 -   Add top margin to setting group page (#5864)
 -   Add custom donation level choice to select field if donation donated with custom amount (#5866)
+-   Card declines on multi-step form now display an error message on first click (#5868)
 -   GiveWP is not causing deprecation warnings on PHP8 anymore (#5872)
 
 ### Changed

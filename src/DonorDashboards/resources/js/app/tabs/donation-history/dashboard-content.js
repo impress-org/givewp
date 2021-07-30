@@ -36,16 +36,6 @@ const DashboardContent = () => {
 		);
 	}
 
-	if ( ! donations ) {
-		return (
-			<Fragment>
-				<Heading icon="exclamation-triangle">
-					{ __( 'No Donations', 'give' ) }
-				</Heading>
-			</Fragment>
-		);
-	}
-
 	return (
 		<Fragment>
 			<Heading icon="chart-line">

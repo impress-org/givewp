@@ -63,6 +63,7 @@ class SettingsRoute implements RestRoute {
 			[
 				'user_type',
 				'cause_type',
+				'usage_tracking',
 				'base_country',
 				'base_state',
 				'addons',
