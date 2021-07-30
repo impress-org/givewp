@@ -59,8 +59,8 @@ class AccountManagerSettingField {
 		global $post;
 		$this->stripeAccounts         = $this->accountDetailRepository->getAllStripeAccounts();
 		$this->defaultStripeAccountId = $this->isGlobalSettingPage() ?
-			$this->accountDetailRepository->getDefaultStripeAccountId() :
-			$this->accountDetailRepository->getDefaultStripeAccountIdForDonationForm( $post->ID );
+			$this->accountDetailRepository->getDefaultStripeAccountSlug() :
+			$this->accountDetailRepository->getDefaultStripeAccountSlugForDonationForm( $post->ID );
 	}
 
 	/**
