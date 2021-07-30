@@ -66,4 +66,15 @@ class AccountDetail {
 	public function getDefaultStripeAccountId() {
 		return give_stripe_get_default_account_slug();
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param int $formId
+	 *
+	 * @return bool|mixed|string
+	 */
+	public function getDefaultStripeAccountIdForDonationForm( $formId ) {
+		return give()->form_meta->get_meta( $formId, '_give_stripe_default_account', true );
+	}
 }
