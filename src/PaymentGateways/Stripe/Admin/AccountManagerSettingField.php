@@ -48,7 +48,7 @@ class AccountManagerSettingField {
 	 *
 	 * @param AccountDetail $accountDetailRepository
 	 */
-	public function __construct( AccountDetail $accountDetailRepository ) {
+	public function __construct( AccountDetail $accountDetailRepository, 'give' ) {
 		$this->accountDetailRepository = $accountDetailRepository;
 	}
 
@@ -313,7 +313,7 @@ class AccountManagerSettingField {
 			<?php else : ?>
 				<div class="give-stripe-account-default">
 					<a
-						data-account="<?php echo $stripeAccountId; ?>"
+						data-account="<?php echo $stripeAccountSlug; ?>"
 						class="give-stripe-account-set-default"
 						href="#"
 					><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
