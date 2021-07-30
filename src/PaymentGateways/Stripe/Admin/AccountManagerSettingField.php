@@ -13,7 +13,7 @@ use function esc_html_e;
 use function esc_url_raw;
 use function get_site_url;
 use function give;
-use function Give\PaymentGateways\Stripe\Admin\AccountManager\esc_attr;
+use function esc_attr;
 use function give_has_upgrade_completed;
 use function give_stripe_connection_type_name;
 use function give_stripe_is_premium_active;
