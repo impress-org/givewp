@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe;
 
-use Give\PaymentGateways\Stripe\Admin\AccountManager\AccountManagerSettingField;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
 /**
  * Class DonationFormSettingPage

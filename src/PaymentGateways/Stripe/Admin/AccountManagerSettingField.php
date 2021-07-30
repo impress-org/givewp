@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Stripe\Admin\AccountManager;
+namespace Give\PaymentGateways\Stripe\Admin;
 
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give_Admin_Settings;
@@ -13,6 +13,7 @@ use function esc_html_e;
 use function esc_url_raw;
 use function get_site_url;
 use function give;
+use function Give\PaymentGateways\Stripe\Admin\AccountManager\esc_attr;
 use function give_has_upgrade_completed;
 use function give_stripe_connection_type_name;
 use function give_stripe_is_premium_active;

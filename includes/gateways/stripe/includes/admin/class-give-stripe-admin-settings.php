@@ -12,7 +12,7 @@
 
 // Exit, if accessed directly.
 use Give\Helpers\Hooks;
-use Give\PaymentGateways\Stripe\Admin\AccountManager\AccountManagerSettingField;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
 
 if ( ! defined( 'ABSPATH' ) ) {
