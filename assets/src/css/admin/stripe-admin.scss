@@ -188,13 +188,13 @@ a.give-stripe-connect-temp-dismiss:active {
 
 	.give-tooltip {
 		padding: 5px 10px 5px 5px;
-		color: #4A5568;
+		color: #4a5568;
 		font-size: 13px;
 		margin: 0;
 	}
 
 	.dashicons {
-		color: #66BB6A;
+		color: #66bb6a;
 	}
 }
 
@@ -286,7 +286,6 @@ a.give-stripe-connect-temp-dismiss:active {
 .give-stripe-icon {
 	background: url('../../images/admin/stripe-s.svg') no-repeat center;
 }
-
 
 // --------------------------------
 // No Connected accounts screen
@@ -568,5 +567,14 @@ a.give-stripe-connect-temp-dismiss:active {
 		display: block;
 		font-size: 15px;
 		margin: 0 0 15px;
+	}
+}
+
+/**
+ * Settings in donation form
+ */
+#stripe_manage_accounts_option {
+	> div {
+		padding: 14px;
 	}
 }
