@@ -109,8 +109,11 @@ class Donations {
 	/**
 	 * Get all donations by donor ID
 	 *
-	 * @param int $donorId
+	 * @unreleased return null if donation ids is empty
 	 * @since 2.10.0
+	 *
+	 * @param int $donorId
+	 *
 	 * @return array Donations
 	 */
 	public function getDonations( $donorId ) {
