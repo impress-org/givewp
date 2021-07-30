@@ -573,8 +573,8 @@ a.give-stripe-connect-temp-dismiss:active {
 /**
  * Settings in donation form
  */
-#stripe_manage_accounts_option {
-	> div {
+#stripe_form_account_options {
+	.give-stripe-account-manager-container {
 		padding: 14px;
 	}
 }
