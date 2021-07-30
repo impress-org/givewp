@@ -117,7 +117,7 @@ class Donations {
 
 		$ids = $this->getDonationIds( $donorId );
 
-		if ( $ids === null ) {
+		if ( empty( $ids ) ) {
 			return null;
 		}
 
