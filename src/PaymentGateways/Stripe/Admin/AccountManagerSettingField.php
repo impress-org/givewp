@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Admin;
 
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
+use Give_Admin_Settings;
 
 /**
  * Class AccountManagerSettingField
@@ -86,6 +87,10 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 */
 	private function getIntroductionSectionMarkup() {
+		// Show introduction content only on global setting edit screen.
+		if ( ! Give_Admin_Settings::is_setting_page( 'gateways', 'stripe-settings' ) ) {
+			return;
+		}
 		?>
 		<div id="give-stripe-account-manager-description">
 			<h2><?php esc_html_e( 'Manage your Stripe Accounts', 'give' ); ?></h2>
