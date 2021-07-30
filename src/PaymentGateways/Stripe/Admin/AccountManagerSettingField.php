@@ -72,13 +72,7 @@ class AccountManagerSettingField {
 				?>
 
 			</div>
-			<div class="give-stripe-default-account-notice">
-				<span class="dashicons dashicons-info"></span>
-				<div class="give-stripe-default-account-notice__inner">
-					<p class="give-stripe-default-account-notice__bold"><strong><?php esc_html_e( 'All payments go to the default account.', 'give' ); ?></strong></p>
-					<p><?php esc_html_e( 'You can set this globally (for all donation forms) here or override the setting per donation form.', 'give' ); ?></p>
-				</div>
-			</div>
+			<?php $this->getDefaultStripeAccountNotice(); ?>
 		</div>
 		<?php
 	}
@@ -88,7 +82,7 @@ class AccountManagerSettingField {
 	 */
 	private function getIntroductionSectionMarkup() {
 		// Show introduction content only on global setting edit screen.
-		if ( $this->isDonationFormEditPage() ) {
+		if ( ! $this->isGlobalSettingPage() ) {
 			return;
 		}
 		?>
@@ -436,7 +430,7 @@ class AccountManagerSettingField {
 			[
 				'stripe_action'         => 'connect',
 				'mode'                  => give_is_test_mode() ? 'test' : 'live',
-				'return_url'            => $this->isDonationFormEditPage() ?
+				'return_url'            => ! $this->isGlobalSettingPage() ?
 					rawurlencode(
 						sprintf(
 							admin_url( 'post.php?post=%d&action=edit&give_tab=stripe_manage_accounts_option' ),
@@ -465,6 +459,27 @@ class AccountManagerSettingField {
 
 	/**
 	 * @unreleased
+	 */
+	private function getDefaultStripeAccountNotice() {
+		?>
+		<div class="give-stripe-default-account-notice">
+			<span class="dashicons dashicons-info"></span>
+			<div class="give-stripe-default-account-notice__inner">
+				<p class="give-stripe-default-account-notice__bold"><strong><?php esc_html_e( 'All payments go to the default account.', 'give' ); ?></strong></p>
+				<p>
+					<?php
+						echo $this->isGlobalSettingPage() ?
+							esc_html__( 'You can set this globally (for all donation forms) here or override the setting per donation form.', 'give' ) :
+							esc_html__( 'All payments go to the default account. You can set this globally (for all donation forms) or per donation form.', 'give' );
+					?>
+				</p>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * @unreleased
 	 * @return bool
 	 */
 	private function canShowFreeStripeVersionNotice() {
@@ -482,7 +497,7 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 * @return bool
 	 */
-	private function isDonationFormEditPage() {
-		return ! Give_Admin_Settings::is_setting_page( 'gateways', 'stripe-settings' );
+	private function isGlobalSettingPage() {
+		return Give_Admin_Settings::is_setting_page( 'gateways', 'stripe-settings' );
 	}
 }
