@@ -251,7 +251,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 							xhr.onload = function() {
 								const response = JSON.parse( xhr.response );
 								if ( xhr.status === 200 && response.success ) {
-									window.location.href = e.target.getAttribute( 'data-url' );
+									window.location.reload();
 								}
 							};
 							xhr.send( formData );

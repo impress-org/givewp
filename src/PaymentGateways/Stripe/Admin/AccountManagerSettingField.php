@@ -306,7 +306,6 @@ class AccountManagerSettingField {
 				<div class="give-stripe-account-default">
 					<a
 						data-account="<?php echo $stripeAccountId; ?>"
-						data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
 						class="give-stripe-account-set-default"
 						href="#"
 					><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
