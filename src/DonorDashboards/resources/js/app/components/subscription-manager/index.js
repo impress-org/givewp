@@ -17,20 +17,53 @@ const SubscriptionManager = ( { id, subscription } ) => {
 	const [ paymentMethod, setPaymentMethod ] = useState( null );
 	const [ isUpdating, setIsUpdating ] = useState( false );
 	const [ updated, setUpdated ] = useState( true );
-	const [ ready, setReady ] = useState( true );
+	const [ cardControl, setCardControl ] = useState( null );
 
 	useEffect( () => {
 		setUpdated( false );
 	}, [ amount, paymentMethod ] );
 
 	const handleUpdate = async() => {
-		// Save with REST API
+		if ( isUpdating ) {
+			return;
+		}
+
 		setIsUpdating( true );
+
+		let paymentMethodStripe;
+
+		if ( cardControl ) {
+			const { stripe, cardElement } = cardControl;
+
+			if ( ! cardElement._empty && ! cardElement._invalid ) {
+				const { error, paymentMethod:method } = await stripe.createPaymentMethod( {
+					type: 'card',
+					card: cardElement,
+				} );
+
+				if ( ! error ) {
+					paymentMethodStripe = {
+						give_stripe_payment_method: method.id,
+					}
+				} else {
+					setIsUpdating( false );
+					return cardElement.focus();
+				}
+			} else {
+				// Prevent user from updating the subscription if he entered invalid card details
+				if ( cardElement._invalid ) {
+					setIsUpdating( false );
+					return cardElement.focus();
+				}
+			}
+		}
+
 		await updateSubscriptionWithAPI( {
 			id,
 			amount,
-			paymentMethod,
+			paymentMethod: paymentMethodStripe ?? paymentMethod
 		} );
+
 		setUpdated( true );
 		setIsUpdating( false );
 	};
@@ -45,12 +78,12 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			<PaymentMethodControl
 				label={ __( 'Payment Method', 'give' ) }
 				gateway={ subscription.gateway }
-				onReady={ setReady }
+				onFocus={ setCardControl }
 				onChange={ ( val ) => setPaymentMethod( val ) }
 			/>
 			<FieldRow>
 				<div>
-					<Button onClick={ () => handleUpdate() } disabled={ !ready }>
+					<Button onClick={ () => handleUpdate() }>
 						{ updated ? (
 							<Fragment>
 								{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />
