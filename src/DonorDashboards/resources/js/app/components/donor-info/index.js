@@ -39,7 +39,7 @@ const DonorInfo = () => {
 				) }
 				{ sinceLastDonation && (
 					<div className="give-donor-dashboard-donor-info__detail">
-						<FontAwesomeIcon icon="clock" fixedWidth={ true } /> Last donated { sinceLastDonation } ago
+						<FontAwesomeIcon icon="clock" fixedWidth={ true } /> { sprintf( __( 'Last donated %s ago', 'give' ), sinceLastDonation ) }
 					</div>
 				) }
 				{ sinceCreated && (
