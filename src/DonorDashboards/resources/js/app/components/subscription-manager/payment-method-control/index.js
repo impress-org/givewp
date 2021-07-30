@@ -3,7 +3,7 @@ import CardControl from './card-control';
 
 import './style.scss';
 
-const PaymentMethodControl = ( { gateway, label, onChange, onReady } ) => {
+const PaymentMethodControl = ( { gateway, label, onChange, onFocus } ) => {
 	switch ( gateway.id ) {
 		case 'stripe':
 		case 'stripe_apple_pay':
@@ -13,8 +13,7 @@ const PaymentMethodControl = ( { gateway, label, onChange, onReady } ) => {
 			return <StripeControl
 				label={ label }
 				gateway={gateway}
-				onChange={ ( val ) => onChange( val ) }
-				onReady={ onReady }
+				onFocus={ onFocus }
 			/>;
 		}
 		case 'authorize':
