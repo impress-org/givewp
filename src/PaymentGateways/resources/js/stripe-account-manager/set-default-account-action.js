@@ -6,7 +6,6 @@
  *
  * @since 2.7.0
  */
-
 const { __, sprintf } = wp.i18n;
 
 window.addEventListener( 'DOMContentLoaded', function() {
@@ -61,9 +60,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					successConfirm: function( args ) {
 						const xhr = new XMLHttpRequest();
 						const formData = new FormData();
+						const formId = Give.fn.getGlobalVar('post_id');
 
 						formData.append( 'action', 'give_stripe_set_account_default' );
 						formData.append( 'account_slug', e.target.getAttribute( 'data-account' ) );
+						formData.append( 'form_id', formId );
+
 						xhr.open( 'POST', ajaxurl );
 						xhr.onload = function() {
 							const response = JSON.parse( xhr.response );

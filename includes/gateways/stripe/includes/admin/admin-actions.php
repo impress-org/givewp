@@ -463,31 +463,6 @@ function give_stripe_disconnect_connect_stripe_account() {
 add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
 
 /**
- * Set default Stripe account.
- *
- * @since 2.7.0
- *
- * @return void
- */
-function give_stripe_set_account_default() {
-	if ( current_user_can( 'manage_options' ) ) {
-		$post_data    = give_clean( $_POST );
-		$account_slug = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
-
-		// Update default Stripe account.
-		$is_updated = give_update_option( '_give_stripe_default_account', $account_slug );
-
-		if ( $is_updated ) {
-			wp_send_json_success();
-		}
-	}
-
-	wp_send_json_error();
-}
-
-add_action( 'wp_ajax_give_stripe_set_account_default', 'give_stripe_set_account_default' );
-
-/**
  * This function is used to update account name.
  *
  * @since 2.7.0

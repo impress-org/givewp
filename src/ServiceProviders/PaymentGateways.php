@@ -22,6 +22,7 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
+use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
@@ -90,6 +91,7 @@ class PaymentGateways implements ServiceProvider {
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 		Hooks::addFilter( 'give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99 );
+		Hooks::addAction( 'wp_ajax_give_stripe_set_account_default', SetDefaultStripeAccountController::class );
 
 		give( DonationFormSettingPage::class )->boot();
 		$this->registerMigrations();
