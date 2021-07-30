@@ -153,8 +153,8 @@ class AccountManagerSettingField {
 
 		<div class="give-stripe-account-manager-list">
 			<?php
-			foreach ( $this->stripeAccounts as $slug => $details ) {
-				$this->getStripeAccountMarkup( $slug, $details );
+			foreach ( $this->stripeAccounts as $stripeAccountDetails ) {
+				$this->getStripeAccountMarkup( $stripeAccountDetails );
 			}
 			?>
 		</div>
@@ -208,27 +208,20 @@ class AccountManagerSettingField {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $stripeAccountId
 	 * @param array  $stripeAccount
 	 */
-	private function getStripeAccountMarkup( $stripeAccountId, $stripeAccount ) {
+	private function getStripeAccountMarkup( $stripeAccount ) {
 
-		$account_name       = $stripeAccount['account_name'];
-		$account_email      = $stripeAccount['account_email'];
-		$stripe_account_id  = $stripeAccount['account_id'];
-		$disconnect_message = esc_html__( 'Are you sure you want to disconnect this Stripe account?', 'give' );
-		$disconnect_url     = add_query_arg(
+		$accountName     = $stripeAccount['account_name'];
+		$accountEmail    = $stripeAccount['account_email'];
+		$stripeAccountId = $stripeAccount['account_id'];
+		$disconnectUrl     = add_query_arg(
 			[
-				'post_type'                   => 'give_forms',
-				'page'                        => 'give-settings',
-				'tab'                         => 'gateways',
-				'section'                     => 'stripe-settings',
-				'give_action'                 => ( 'connect' === $stripeAccount['type'] )
-					? 'disconnect_connected_stripe_account'
-					: 'disconnect_manual_stripe_account',
-				'give_stripe_disconnect_slug' => $stripeAccountId,
+				'account_type' =>  $stripeAccount['type'],
+				'give_action'  => 'disconnect_stripe_account',
+				'account_slug' => $stripeAccountId,
 			],
-			wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $stripeAccountId )
+			wp_nonce_url( admin_url( 'admin-ajax.php' ), 'give_disconnect_connected_stripe_account_' . $stripeAccountId )
 		);
 
 		$class = $stripeAccountId === $this->defaultStripeAccountId ? 'give-stripe-boxshadow-option-wrap__selected' : '';
@@ -248,24 +241,24 @@ class AccountManagerSettingField {
 			<div class="give-stripe-account-fieldset give-stripe-account-name">
 				<span class="give-stripe-label"><?php _e( 'Account name:', 'give' ); ?></span>
 				<span class="give-stripe-connect-data-field">
-						<?php echo esc_html( $account_name ); ?>
+						<?php echo esc_html( $accountName ); ?>
 					</span>
 			</div>
 
-			<?php if ( ! empty( $account_email ) ) : ?>
+			<?php if ( ! empty( $accountEmail ) ) : ?>
 				<div class="give-stripe-account-fieldset give-stripe-account-email">
 					<span class="give-stripe-label"><?php _e( 'Account email:', 'give' ); ?></span>
 					<div class="give-stripe-connect-data-field">
-						<?php echo esc_html( $account_email ); ?>
+						<?php echo esc_html( $accountEmail ); ?>
 					</div>
 				</div>
 			<?php endif; ?>
 
-			<?php if ( ! empty( $stripe_account_id ) ) : ?>
+			<?php if ( ! empty( $stripeAccountId ) ) : ?>
 				<div class="give-stripe-account-fieldset give-stripe-account-id">
 					<span class="give-stripe-label"><?php _e( 'Account ID:', 'give' ); ?></span>
 					<div class="give-stripe-connect-data-field">
-						<?php echo esc_html( $stripe_account_id ); ?>
+						<?php echo esc_html( $stripeAccountId ); ?>
 					</div>
 				</div>
 			<?php endif; ?>
@@ -305,9 +298,7 @@ class AccountManagerSettingField {
 						<span class="give-stripe-account-disconnect">
 							<a
 								class="give-stripe-disconnect-account-btn"
-								href="<?php echo $disconnect_url; ?>"
-								data-disconnect-message="<?php echo $disconnect_message; ?>"
-								data-account="<?php echo $stripeAccountId; ?>"
+								href="<?php echo $disconnectUrl; ?>"
 							><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Remove', 'give' ); ?></a>
 						</span>
 					<?php endif; ?>

@@ -6,6 +6,7 @@
 const { __, sprintf } = wp.i18n;
 
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-default-account-action'
+import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'
 
 window.addEventListener( 'DOMContentLoaded', function() {
 	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
@@ -28,7 +29,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const becsIconStyleElement = document.querySelector( '.stripe-becs-icon-style' );
 	const hideBecsMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_becs_mandate_acceptance_option"]' ) );
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
-	const disconnectBtns = Array.from( document.querySelectorAll( '.give-stripe-disconnect-account-btn' ) );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-per-form-default-account' );
 	const perAccountEdits = Array.from( document.querySelectorAll( '.give-stripe-account-edit-name' ) );
@@ -292,30 +292,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				} else {
 					legacyCheckoutFields.map( field => field.classList.add( 'give-hidden' ) );
 				}
-			} );
-		} );
-	}
-
-	if ( null !== disconnectBtns ) {
-		disconnectBtns.forEach( ( disconnectBtn ) => {
-			disconnectBtn.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const currentElement = e.target;
-
-				new Give.modal.GiveConfirmModal( {
-					type: 'alert',
-					classes: {
-						modalWrapper: 'give-modal--warning',
-					},
-					modalContent: {
-						title: __( 'Disconnect Stripe Account', 'give' ),
-						desc: currentElement.getAttribute( 'data-disconnect-message' ),
-					},
-					successConfirm: () => {
-						window.location.href = `${ currentElement.getAttribute( 'href' ) }&account=${ currentElement.getAttribute( 'data-account' ) }`;
-					},
-				} ).render();
 			} );
 		} );
 	}
