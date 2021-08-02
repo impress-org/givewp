@@ -273,21 +273,23 @@ class AccountManagerSettingField {
 				</div>
 			</div>
 
-			<?php if ( 'connect' !== $stripeAccount['type'] ) : ?>
-				<div class="give-stripe-account-fieldset give-stripe-account-edit">
-					<a class="give-stripe-account-edit-name" href="#">
-						<?php esc_html_e( 'Edit', 'give' ); ?>
-					</a>
-					<a
-						class="give-stripe-account-update-name give-hidden"
-						href="#"
-						data-account="<?php echo $stripeAccountId; ?>"
-					><?php esc_html_e( 'Update', 'give' ); ?></a>
-					<a class="give-stripe-account-cancel-name give-hidden" href="#">
-						<?php esc_html_e( 'Cancel', 'give' ); ?>
-					</a>
-				</div>
-			<?php endif; ?>
+			<?php
+			/**
+			 * Filter fire.
+			 *
+			 * Developer can utilize this hook to add custom action to stripe account
+			 *
+			 * @unlreased
+			 */
+			$stripeAccountActionsHtml = apply_filters( 'give_stripe_manage_account_actions_html', '' , $stripeAccount, $this->stripeAccounts, $this->defaultStripeAccountSlug );
+
+			if( $stripeAccountActionsHtml ) {
+				printf(
+					'<div class="give-stripe-account-fieldset give-stripe-account-edit">%s</div>',
+					$stripeAccountActionsHtml
+				);
+			}
+			?>
 
 			<div class="give-stripe-account-fieldset">
 				<span class="give-stripe-label"><?php esc_html_e( 'Connection Status:', 'give' ); ?></span>
