@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.12.2 - 2020-07-30
+
 ### Added
 
+-   Added optional opt-in to onboarding wizard. (#5852)
 -   Add `Html` node type to Fields API (#5898)
 
 ### Fixed
@@ -19,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Remove placeholder from Legacy Consumer checkbox template (#5897)
 -   Use correct ID in Legacy Consumer checkbox label for attribute (#5897)
 -   Donors can now update their credit card using the Donor Dashboard (#5902)
+-   Donors with no donations no longer see others (#5908)
 
 ### Changed
 
