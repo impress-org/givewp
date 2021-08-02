@@ -41,8 +41,10 @@ class AccountDetail {
 	/**
 	 * AccountDetail constructor.
 	 *
-	 * @since 2.10.2
 	 * @param array $args
+	 *
+	 * @throws InvalidPropertyName
+	 * @since 2.10.2
 	 */
 	public function __construct( array $args ) {
 		$this->args           = $args;
@@ -52,6 +54,7 @@ class AccountDetail {
 
 	/**
 	 * @unreleased
+	 * @throws InvalidPropertyName
 	 */
 	public static function fromArray( $array ) {
 		return new static( $array );
@@ -110,7 +113,7 @@ class AccountDetail {
 		if ( array_diff( $this->requiredArgs, array_keys( $array ) ) ) {
 			throw new InvalidPropertyName(
 				sprintf(
-					esc_html__( 'To create a %1$s object, please provide valid: %2$s', 'give' ),
+					'To create a %1$s object, please provide valid: %2$s',
 					__CLASS__,
 					implode( ' , ', $this->requiredArgs )
 				)
