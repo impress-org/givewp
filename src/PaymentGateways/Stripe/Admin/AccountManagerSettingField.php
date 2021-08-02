@@ -303,7 +303,7 @@ class AccountManagerSettingField {
 					<span class="give-stripe-account-connected give-stripe-connect-data-field">
 						<?php esc_html_e( 'Connected', 'give' ); ?>
 					</span>
-					<?php if ( $stripeAccountId !== $this->defaultStripeAccountSlug ) : ?>
+					<?php if ( $stripeAccountSlug !== $this->defaultStripeAccountSlug ) : ?>
 						<span class="give-stripe-account-disconnect">
 							<a
 								class="give-stripe-disconnect-account-btn"
