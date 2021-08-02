@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Repositories;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 
 /**
@@ -49,6 +50,34 @@ class AccountDetail {
 		);
 
 		$accountDetail = $accountDetail ? current( $accountDetail ) : $accountDetail;
+		return new AccountDetailModel( $accountDetail );
+	}
+
+	/**
+	 * Get account detail by Stripe account slug.
+	 *
+	 * @unlreased
+	 * @param string $accountSlug
+	 *
+	 * @return AccountDetailModel
+	 * @throws InvalidArgumentException
+	 */
+	public function getAccountDetailBySlug( $accountSlug ) {
+		$accountDetail = array_filter(
+			give_stripe_get_all_accounts(),
+			static function ( $data ) use ( $accountSlug ) {
+				return $data['account_slug'] === $accountSlug;
+			}
+		);
+
+		if( ! $accountDetail ) {
+			throw new InvalidArgumentException(sprintf(
+				'Stripe account with %s account slug does not exist',
+				$accountSlug
+			));
+		}
+
+		$accountDetail = current( $accountDetail );
 		return new AccountDetailModel( $accountDetail );
 	}
 
