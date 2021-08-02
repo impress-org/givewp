@@ -3,8 +3,8 @@
 namespace Give\PaymentGateways\Stripe\Repositories;
 
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
-use GiveStripe\Infrastructure\Exceptions\DuplicateStripeAccountName;
-use GiveStripe\Infrastructure\Exceptions\StripeAccountAlreadyConnected;
+use Give\Framework\Exceptions\Primitives\DuplicateStripeAccountName;
+use Give\Framework\Exceptions\Primitives\StripeAccountAlreadyConnected;
 use function esc_html__;
 use function give_get_option;
 use function give_stripe_get_all_accounts;
