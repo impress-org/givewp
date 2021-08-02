@@ -228,7 +228,7 @@ class AccountManagerSettingField {
 		$class = $stripeAccountSlug === $this->defaultStripeAccountSlug ? 'give-stripe-boxshadow-option-wrap__selected' : '';
 		?>
 		<div
-			id="give-stripe-<?php echo $stripeAccountId; ?>"
+			id="give-stripe-<?php echo $stripeAccountSlug; ?>"
 			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
 		>
 			<input type="hidden" name="stripe-account-slug" value="<?php echo $stripeAccountSlug ?>" readonly>
