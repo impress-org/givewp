@@ -33,8 +33,9 @@ class GetStripeAccountDetailsController {
 		$this->validateRequest();
 		$requestedData = GetStripeAccountDetailsDto::fromArray( give_clean( $_POST ) );
 
-		try{
-			wp_send_json_success( $this->accountDetailServiceProvider
+		try {
+			wp_send_json_success(
+				$this->accountDetailServiceProvider
 				->getAccountDetailBySlug( $requestedData->accountSlug )
 				->toArray()
 			);

@@ -70,11 +70,13 @@ class AccountDetail {
 			}
 		);
 
-		if( ! $accountDetail ) {
-			throw new InvalidArgumentException(sprintf(
-				'Stripe account with %s account slug does not exist',
-				$accountSlug
-			));
+		if ( ! $accountDetail ) {
+			throw new InvalidArgumentException(
+				sprintf(
+					'Stripe account with %s account slug does not exist',
+					$accountSlug
+				)
+			);
 		}
 
 		$accountDetail = current( $accountDetail );
