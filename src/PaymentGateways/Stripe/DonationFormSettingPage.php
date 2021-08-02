@@ -76,7 +76,7 @@ class DonationFormSettingPage {
 				'id'            => 'give_manage_accounts',
 				'type'          => 'give_manage_accounts',
 				'callback'      => [ give( AccountManagerSettingField::class ), 'handle' ],
-				'wrapper_class' => $formAccount ? 'give-stripe-per-form-default-account' : 'give-stripe-per-form-default-account give-hidden',
+				'wrapper_class' => $formAccount ? 'give-stripe-manage-account-options' : 'give-stripe-manage-account-options give-hidden',
 			],
 			[
 				'name'  => 'donation_stripe_per_form_docs',

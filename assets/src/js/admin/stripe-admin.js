@@ -30,7 +30,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const hideBecsMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_becs_mandate_acceptance_option"]' ) );
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
-	const perFormAccount = document.querySelector( '.give-stripe-per-form-default-account' );
+	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
 	const perAccountEdits = Array.from( document.querySelectorAll( '.give-stripe-account-edit-name' ) );
 	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
 	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
