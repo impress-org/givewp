@@ -37,7 +37,7 @@ class Page {
 	protected $localeCollection;
 
 	/**
-	 * @param FormRepository $formRepository
+	 * @param FormRepository            $formRepository
 	 * @param SettingsRepositoryFactory $settingsRepositoryFactory
 	 */
 	public function __construct(
@@ -152,6 +152,8 @@ class Page {
 		$baseCountry = $this->settingsRepository->get( 'base_country' ) ?: 'US';
 		$baseState   = $this->settingsRepository->get( 'base_state' ) ?: '';
 
+		global $current_user;
+
 		wp_localize_script(
 			'give-admin-onboarding-wizard-app',
 			'giveOnboardingWizardData',
@@ -174,10 +176,17 @@ class Page {
 						'terms-conditions'    => ( 'enabled' == $featureTerms ),
 						'offline-donations'   => ( 'enabled' == $offlineDonations ),
 						'anonymous-donations' => ( 'enabled' == $featureAnonymous ),
-						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ), // Note: The company field has two values for enabled, "required" and "optional".
+						'company-donations'   => in_array( $featureCompany, [ 'required', 'optional' ] ),
+						// Note: The company field has two values for enabled, "required" and "optional".
 					]
 				),
 				'causeTypes'       => FormatList::fromKeyValue( include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php' ),
+				'adminEmail'       => $current_user->user_email,
+				'adminFirstName'   => $current_user->first_name,
+				'adminLastName'    => $current_user->last_name,
+				'adminUserID'      => $current_user->ID,
+				'websiteUrl'       => get_bloginfo( 'url' ),
+				'websiteName'      => get_bloginfo( 'sitename' ),
 				'addons'           => $this->onboardingSettingsRepository->get( 'addons' ) ?: [],
 			]
 		);
@@ -210,3 +219,9 @@ class Page {
 		}
 	}
 }
+
+register_meta( 'user', 'marketing_optin', [
+	'type'         => 'string',
+	'show_in_rest' => true,
+	'single'       => true,
+] );

@@ -19,7 +19,7 @@ class Group implements Node, Collection {
 	use Concerns\WalkNodes;
 
 	/**
-	 * @unreleased
+	 * @since 2.12.2
 	 */
 	const TYPE = 'group';
 
