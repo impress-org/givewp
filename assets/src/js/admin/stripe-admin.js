@@ -29,7 +29,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
-	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
 	const creditCardFieldFormatOptions = document.querySelectorAll('#give-settings-section-group-credit-card .give-stripe-cc-option-field')
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
@@ -38,37 +37,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	giveStripeJsonFormattedTextarea( stripeStylesInvalid );
 	giveStripeJsonFormattedTextarea( stripeStylesComplete );
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
-
-	/**
-	 * Edit Stripe Account Cancel
-	 *
-	 * On clicking "Cancel" link on account name will revert to edit link and
-	 * won't do any changes to account name
-	 *
-	 *  @since 2.7.0
-	 */
-	if ( null !== perAccountCancels ) {
-		perAccountCancels.forEach( ( perAccountCancel ) => {
-			perAccountCancel.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const cancelElement = e.target;
-				const parentElement = cancelElement.parentNode.parentNode;
-				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
-				const editElement = parentElement.querySelector( '.give-stripe-account-edit-name' );
-				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
-				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
-				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
-
-				accountNameElement.textContent = accountInputElement.value;
-				cancelElement.classList.add( 'give-hidden' );
-				updateElement.classList.add( 'give-hidden' );
-				accountInputElement.classList.add( 'give-hidden' );
-				editElement.classList.remove( 'give-hidden' );
-				null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
-			} );
-		} );
-	}
 
 	/**
 	 * Show/Hide Per-Form fields
