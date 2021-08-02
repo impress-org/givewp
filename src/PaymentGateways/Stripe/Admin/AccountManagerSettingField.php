@@ -245,7 +245,7 @@ class AccountManagerSettingField {
 			<?php endif; ?>
 
 			<div class="give-stripe-account-fieldset give-stripe-account-name">
-				<span class="give-stripe-label"><?php _e( 'Account name:', 'give' ); ?></span>
+				<span class="give-stripe-label"><?php esc_html_e( 'Account name:', 'give' ); ?></span>
 				<span class="give-stripe-connect-data-field">
 						<?php echo esc_html( $accountName ); ?>
 					</span>
@@ -253,7 +253,7 @@ class AccountManagerSettingField {
 
 			<?php if ( ! empty( $accountEmail ) ) : ?>
 				<div class="give-stripe-account-fieldset give-stripe-account-email">
-					<span class="give-stripe-label"><?php _e( 'Account email:', 'give' ); ?></span>
+					<span class="give-stripe-label"><?php esc_html_e( 'Account email:', 'give' ); ?></span>
 					<div class="give-stripe-connect-data-field">
 						<?php echo esc_html( $accountEmail ); ?>
 					</div>
@@ -262,7 +262,7 @@ class AccountManagerSettingField {
 
 			<?php if ( ! empty( $stripeAccountId ) ) : ?>
 				<div class="give-stripe-account-fieldset give-stripe-account-id">
-					<span class="give-stripe-label"><?php _e( 'Account ID:', 'give' ); ?></span>
+					<span class="give-stripe-label"><?php esc_html_e( 'Account ID:', 'give' ); ?></span>
 					<div class="give-stripe-connect-data-field">
 						<?php echo esc_html( $stripeAccountId ); ?>
 					</div>
