@@ -225,11 +225,16 @@ class AccountManagerSettingField {
 			wp_nonce_url( admin_url( 'admin-ajax.php' ), 'give_disconnect_connected_stripe_account_' . $stripeAccountSlug )
 		);
 
-		$class = $stripeAccountSlug === $this->defaultStripeAccountSlug ? 'give-stripe-boxshadow-option-wrap__selected' : '';
+		$classes = $stripeAccountSlug === $this->defaultStripeAccountSlug ? ' give-stripe-boxshadow-option-wrap__selected' : '';
+
+		// In donation form setting add class to stripe account container if current account set as default global.
+		if( ! $this->isGlobalSettingPage() && $stripeAccountSlug === $this->accountDetailRepository->getDefaultStripeAccountSlug() ){
+			$classes .= ' give-global-default-account';
+		}
 		?>
 		<div
 			id="give-stripe-<?php echo $stripeAccountSlug; ?>"
-			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
+			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap<?php echo $classes; ?>"
 		>
 			<input type="hidden" name="stripe-account-slug" value="<?php echo $stripeAccountSlug ?>" readonly>
 			<?php if ( $stripeAccountSlug === $this->defaultStripeAccountSlug ) : ?>

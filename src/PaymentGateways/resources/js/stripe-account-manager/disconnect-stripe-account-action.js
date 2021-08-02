@@ -18,6 +18,15 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		button.addEventListener( 'click', ( e ) => {
 			e.preventDefault();
 			const button = e.target;
+			const parentElement = e.target.parentElement.parentElement.parentElement.parentElement;
+			const isGlobalDefaultAccount = parentElement.classList.contains('give-global-default-account');
+			let modalMessage = __( 'Are you sure you want to disconnect this Stripe account?', 'give' );
+
+			if( isGlobalDefaultAccount ) {
+				modalMessage = sprintf(
+					__( 'This Stripe account is selected as Global Default account, so you can disconnect this account.', 'give' ),
+				)
+			}
 
 			new Give.modal.GiveConfirmModal( {
 				type: 'alert',
@@ -26,7 +35,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				},
 				modalContent: {
 					title: __( 'Disconnect Stripe Account', 'give' ),
-					desc: __( 'Are you sure you want to disconnect this Stripe account?', 'give' ),
+					desc: modalMessage,
+				},
+				callbacks: {
+					open: () => {
+						jQuery.magnificPopup.instance.content[0].querySelector('.give-modal__controls .give-popup-confirm-button').disabled = true;
+					}
 				},
 				successConfirm: () => {
 					fetch( button.getAttribute('href') )
