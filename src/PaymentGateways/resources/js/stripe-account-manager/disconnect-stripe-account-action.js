@@ -24,14 +24,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 			if( isGlobalDefaultAccount ) {
 				modalMessage = sprintf(
-					__( 'This Stripe account is selected as Global Default account, so you can disconnect this account.', 'give' ),
+					__( 'This Stripe account is selected as Global Default account, so you can not disconnect this account.', 'give' ),
 				)
 			}
 
 			new Give.modal.GiveConfirmModal( {
 				type: 'alert',
 				classes: {
-					modalWrapper: 'give-modal--warning',
+					modalWrapper: `give-modal--${ isGlobalDefaultAccount ? 'error' : 'warning' }`,
 				},
 				modalContent: {
 					title: __( 'Disconnect Stripe Account', 'give' ),
