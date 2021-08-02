@@ -334,10 +334,12 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 */
 	private function getStripeAccountOnBoardingModalMarkup() {
+		global $post;
+
 		$site_url    = get_site_url();
 		$redirectUrl = $this->isGlobalSettingPage() ?
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) :
-			admin_url( 'post.php?post=18&action=edit&give_tab=stripe_form_account_options' );
+			admin_url( "post.php?post=$post->ID&action=edit&give_tab=stripe_form_account_options" );
 
 		$modal_title         = sprintf(
 			'<strong>%1$s</strong>',
