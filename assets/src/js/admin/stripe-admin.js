@@ -31,7 +31,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
-	const perAccountEdits = Array.from( document.querySelectorAll( '.give-stripe-account-edit-name' ) );
 	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
 	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
 	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
@@ -71,43 +70,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				accountInputElement.classList.add( 'give-hidden' );
 				editElement.classList.remove( 'give-hidden' );
 				null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
-			} );
-		} );
-	}
-
-	/**
-	 * Edit Stripe Account Name
-	 *
-	 * On clicking "Edit" link on account name will show text fields
-	 * to update account name.
-	 *
-	 *  @since 2.7.0
-	 */
-	if ( null !== perAccountEdits ) {
-		perAccountEdits.forEach( ( perAccountEdit ) => {
-			perAccountEdit.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const editElement = e.target;
-				const parentElement = editElement.parentNode.parentNode;
-				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
-				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
-				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
-				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
-				const accountName = accountNameElement.textContent.trim();
-				const inputElement = document.createElement( 'input' );
-
-				inputElement.type = 'text';
-				inputElement.name = 'account_name';
-				inputElement.value = accountName;
-
-				accountNameElement.textContent = '';
-				accountNameElement.append( inputElement );
-
-				editElement.classList.add( 'give-hidden' );
-				updateElement.classList.remove( 'give-hidden' );
-				cancelElement.classList.remove( 'give-hidden' );
-				null !== defaultElement ? defaultElement.classList.add( 'give-hidden' ) : '';
 			} );
 		} );
 	}
