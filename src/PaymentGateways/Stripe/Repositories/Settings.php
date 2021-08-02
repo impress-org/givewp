@@ -69,6 +69,12 @@ class Settings {
 		$accountSlug = $stripeAccount->accountSlug;
 
 		if ( array_key_exists( $accountSlug, $allAccounts ) ) {
+			$accountDetails = $stripeAccount->toArray();
+
+			// account_id, account_slug  are unique value which used to reference to connect stripe account.
+			// They can not be renamed.
+			unset( $accountDetails['account_id'], $accountDetails['account_slug'] );
+
 			$allAccounts[ $accountSlug ] = $stripeAccount->toArray();
 
 			return give_update_option( '_give_stripe_get_all_accounts', $allAccounts );
