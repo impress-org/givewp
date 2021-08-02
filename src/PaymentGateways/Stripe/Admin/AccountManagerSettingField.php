@@ -231,6 +231,7 @@ class AccountManagerSettingField {
 			id="give-stripe-<?php echo $stripeAccountId; ?>"
 			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap <?php echo $class; ?>"
 		>
+			<input type="hidden" name="stripe-account-slug" value="<?php echo $stripeAccountSlug ?>" readonly>
 			<?php if ( $stripeAccountSlug === $this->defaultStripeAccountSlug ) : ?>
 				<div class="give-stripe-account-default-checkmark">
 					<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
