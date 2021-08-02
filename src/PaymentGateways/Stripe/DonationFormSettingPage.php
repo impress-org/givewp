@@ -82,7 +82,7 @@ class DonationFormSettingPage {
 				'name'  => 'donation_stripe_per_form_docs',
 				'type'  => 'docs_link',
 				'url'   => 'http://docs.givewp.com/stripe-free',
-				'title' => __( 'Stripe Documentation', 'give' ),
+				'title' => esc_html__( 'Stripe Documentation', 'give' ),
 			],
 		];
 	}
