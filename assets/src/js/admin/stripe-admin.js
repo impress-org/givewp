@@ -203,6 +203,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * Click on hidden checkbox value when select on credit card format type.
+	 *
+	 * @unreleased
+	 */
 	if( creditCardFieldFormatOptions.length ) {
 		creditCardFieldFormatOptions.forEach(function( inputFieldContainer ){
 			inputFieldContainer.addEventListener('click', function (){
