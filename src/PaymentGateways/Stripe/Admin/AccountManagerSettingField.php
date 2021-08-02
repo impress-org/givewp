@@ -86,7 +86,6 @@ class AccountManagerSettingField {
 				$this->getStripeAccountListSectionMarkup();
 				$this->getAddNewStripeAccountSectionMarkup();
 				?>
-
 			</div>
 			<?php $this->getDefaultStripeAccountNotice(); ?>
 		</div>
