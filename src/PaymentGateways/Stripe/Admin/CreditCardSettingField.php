@@ -74,12 +74,11 @@ class CreditCardSettingField {
 						style=""
 						<?php checked( 'single', $value ); ?>
 					>
-					<span class="stripe-cc-fields-radio-title">Single Field</span>
-					<span class="stripe-cc-fields-radio-description">The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.</span>
-
+					<span class="stripe-cc-fields-radio-title"><?php esc_html_e( 'Single Field', 'give' ); ?></span>
+					<span class="stripe-cc-fields-radio-description"><?php esc_html_e( 'The single credit card format combines the Card number, expiration date, CVC, and zip / postal code (if enabled) fields  into one intuitive field.', 'give' ); ?></span>
 					<span class="stripe-cc-fields-example stripe-cc-fields-example__single">
-						<span class="stripe-cc-fields-example-text">Example:</span>
-								<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-single-cc-field.png'; ?>" width="340px" />
+						<span class="stripe-cc-fields-example-text"><?php esc_html_e( 'Example', 'give' ); ?>:</span>
+						<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-single-cc-field.png'; ?>" width="340px" />
 					</span>
 
 				</label>
@@ -99,13 +98,12 @@ class CreditCardSettingField {
 						style=""
 						<?php checked( 'multi', $value ); ?>
 					>
-					<span class="stripe-cc-fields-radio-title">Multiple Fields</span>
-					<span class="stripe-cc-fields-radio-description">This is the more traditional credit card fieldset format that many are familiar with. All fields are
-						separate from one another.</span>
+					<span class="stripe-cc-fields-radio-title"><?php esc_html_e( 'Multiple Fields', 'give' ); ?></span>
+					<span class="stripe-cc-fields-radio-description"><?php esc_html_e( 'This is the more traditional credit card fieldset format that many are familiar with. All fields areseparate from one another.', 'give' ); ?></span>
 
 					<span class="stripe-cc-fields-example stripe-cc-fields-example__multi ">
-						<span class="stripe-cc-fields-example-text">Example:</span>
-								<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-multiple-cc-fields.png'; ?>" width="340px" />
+						<span class="stripe-cc-fields-example-text"><?php esc_html_e( 'Example', 'give' ); ?>:</span>
+						<img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-multiple-cc-fields.png'; ?>" width="340px" />
 					</span>
 
 				</label>
