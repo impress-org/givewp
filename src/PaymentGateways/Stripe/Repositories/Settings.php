@@ -63,6 +63,22 @@ class Settings {
 
 	/**
 	 * @unreleased
+	 */
+	public function updateStripeAccount( AccountDetailModel $stripeAccount ) {
+		$allAccounts = give_stripe_get_all_accounts();
+		$accountSlug = $stripeAccount->accountSlug;
+
+		if ( array_key_exists( $accountSlug, $allAccounts ) ) {
+			$allAccounts[ $accountSlug ] = $stripeAccount->toArray();
+
+			return give_update_option( '_give_stripe_get_all_accounts', $allAccounts );
+		}
+
+		return false;
+	}
+
+	/**
+	 * @unreleased
 	 *
 	 * @param AccountDetailModel $stripeAccount
 	 * @param array $allAccounts
