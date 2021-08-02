@@ -371,66 +371,6 @@ function give_stripe_disconnect_connect_stripe_account() {
 add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
 
 /**
- * This function is used to update account name.
- *
- * @since 2.7.0
- *
- * @return void
- */
-function give_stripe_update_account_name() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_send_json_error( [ 'message' => esc_html__( 'Unauthorized access.', 'give' ) ] );
-	}
-
-	$post_data        = give_clean( $_POST );
-	$account_slug     = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
-	$new_account_name = ! empty( $post_data['new_account_name'] ) ? $post_data['new_account_name'] : false;
-
-	if ( ! empty( $account_slug ) && ! empty( $new_account_name ) ) {
-		$accounts             = give_stripe_get_all_accounts();
-		$account_keys         = array_keys( $accounts );
-		$account_values       = array_values( $accounts );
-		$new_account_slug     = give_stripe_convert_title_to_slug( $new_account_name );
-		$default_account_slug = give_stripe_get_default_account_slug();
-
-		// Bailout, if Account Name already exists.
-		if ( in_array( $new_account_slug, $account_keys, true ) ) {
-			wp_send_json_error( [ 'message' => esc_html__( 'This account name is already in use. Please enter a different account name.', 'give' ) ] );
-			return;
-		}
-
-		$key                  = array_search( $account_slug, $account_keys, true );
-		$account_keys[ $key ] = $new_account_slug;
-		$new_accounts         = array_combine( $account_keys, $account_values );
-
-		// Set Account related data. Some data will always be empty for manual API keys scenarios.
-		$new_accounts[ $new_account_slug ]['account_name']    = $new_account_name;
-		$new_accounts[ $new_account_slug ]['account_slug']    = $new_account_slug;
-		$new_accounts[ $new_account_slug ]['account_email']   = '';
-		$new_accounts[ $new_account_slug ]['account_country'] = '';
-		$new_accounts[ $new_account_slug ]['account_id']      = '';
-
-		// Update accounts.
-		give_update_option( '_give_stripe_get_all_accounts', $new_accounts );
-
-		if ( $account_slug === $default_account_slug ) {
-			give_update_option( '_give_stripe_default_account', $new_account_slug );
-		}
-
-		$success_args = [
-			'message' => esc_html__( 'Account Name updated successfully.', 'give' ),
-			'name'    => $new_account_name,
-			'slug'    => $new_account_slug,
-		];
-		wp_send_json_success( $success_args );
-	}
-
-	wp_send_json_error( [ 'message' => esc_html__( 'Unable to update account name. Please contact support.', 'give' ) ] );
-}
-
-add_action( 'wp_ajax_give_stripe_update_account_name', 'give_stripe_update_account_name' );
-
-/**
  * Show Stripe Account Used under donation details.
  *
  * @param  int  $donationId  Donation ID.

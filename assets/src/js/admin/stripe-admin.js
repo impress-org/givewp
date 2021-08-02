@@ -9,7 +9,6 @@ import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'
 
 window.addEventListener( 'DOMContentLoaded', function() {
-	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
 	const stripeFonts = document.querySelectorAll( 'input[name="stripe_fonts"]' );
 	const stripeStylesBase = document.getElementById( 'stripe_styles_base' );
 	const stripeStylesEmpty = document.getElementById( 'stripe_styles_empty' );
@@ -17,7 +16,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeStylesComplete = document.getElementById( 'stripe_styles_complete' );
 	const stripeCustomFonts = document.getElementById( 'stripe_custom_fonts' );
 	const donationStatus = document.getElementById( 'give-payment-status' );
-	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
 	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
 	const stripeConnectedElement = document.getElementById( 'give-stripe-connected' );
@@ -31,9 +29,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
-	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
 	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
-	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
 	const creditCardFieldFormatOptions = document.querySelectorAll('#give-settings-section-group-credit-card .give-stripe-cc-option-field')
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
@@ -70,62 +66,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				accountInputElement.classList.add( 'give-hidden' );
 				editElement.classList.remove( 'give-hidden' );
 				null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
-			} );
-		} );
-	}
-
-	/**
-	 * Update Stripe Account Name
-	 *
-	 * On changing the account name and clicking on the "Update" link will
-	 * update the account name of a particular Stripe account.
-	 *
-	 * @since 2.7.0
-	 */
-	if ( null !== perAccountUpdates ) {
-		perAccountUpdates.forEach( ( perAccountUpdate ) => {
-			perAccountUpdate.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const updateElement = e.target;
-				const parentElement = updateElement.parentNode.parentNode.parentNode;
-				const disconnectElement = parentElement.querySelector( '.give-stripe-disconnect-account-btn' );
-				const accountSlug = updateElement.getAttribute( 'data-account' );
-				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
-				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
-				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
-				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
-				const newAccountName = accountInputElement.value;
-
-				const xhr = new XMLHttpRequest();
-				const formData = new FormData();
-				const editElement = e.target.previousElementSibling;
-
-				formData.append( 'action', 'give_stripe_update_account_name' );
-				formData.append( 'account_slug', accountSlug );
-				formData.append( 'new_account_name', newAccountName );
-
-				xhr.open( 'POST', ajaxurl );
-				xhr.onload = function() {
-					const response = JSON.parse( xhr.response );
-					let notice = '';
-
-					if ( xhr.status === 200 && response.success ) {
-						const accountSlug = response.data.slug;
-						notice = `<div class="give-notice notice inline success notice-success"><p>${ response.data.message }</p></div>`;
-						accountNameElement.innerHTML = response.data.name;
-						updateElement.classList.add( 'give-hidden' );
-						cancelElement.classList.add( 'give-hidden' );
-						updateElement.setAttribute( 'data-account', accountSlug );
-						editElement.classList.remove( 'give-hidden' );
-						null !== disconnectElement ? disconnectElement.setAttribute( 'data-account', accountSlug ) : '';
-						null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
-					} else {
-						notice = `<div class="give-notice notice inline error notice-error"><p>${ response.data.message }</p></div>`;
-					}
-					accountManagerError.innerHTML = notice;
-				};
-				xhr.send( formData );
 			} );
 		} );
 	}
