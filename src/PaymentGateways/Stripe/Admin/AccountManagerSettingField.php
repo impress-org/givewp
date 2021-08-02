@@ -48,7 +48,7 @@ class AccountManagerSettingField {
 	 *
 	 * @param AccountDetail $accountDetailRepository
 	 */
-	public function __construct( AccountDetail $accountDetailRepository, 'give' ) {
+	public function __construct( AccountDetail $accountDetailRepository ) {
 		$this->accountDetailRepository = $accountDetailRepository;
 	}
 
