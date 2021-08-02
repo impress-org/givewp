@@ -450,15 +450,19 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-account-edit {
-	padding: 5px 0 0 10px;
+	padding: 5px 0 0 0;
 	font-size: 12px;
 
 	> a {
 		margin: 0 10px;
 	}
 
-	.give-stripe-account-cancel-name {
+	> a:first-child {
 		margin-left: 0;
+	}
+
+	> a:last-child{
+		margin-right: 0;
 	}
 }
 
