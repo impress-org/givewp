@@ -266,9 +266,9 @@ class AccountManagerSettingField {
 			<?php endif; ?>
 
 			<div class="give-stripe-account-fieldset give-stripe-connection-method">
-					<span class="give-stripe-label">
-						<?php esc_html_e( 'Connection Method:', 'give' ); ?>
-					</span>
+				<span class="give-stripe-label">
+					<?php esc_html_e( 'Connection Method:', 'give' ); ?>
+				</span>
 				<div class="give-stripe-connect-data-field">
 					<?php echo give_stripe_connection_type_name( $stripeAccount['type'] ); ?>
 				</div>
