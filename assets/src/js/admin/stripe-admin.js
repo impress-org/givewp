@@ -41,8 +41,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	/**
 	 * Show/Hide Per-Form fields
 	 *
-	 * When a user want to add per-form Stripe account, this code will help
-	 * toggle the Stripe account list on clicking 'Customize'.
+	 * When a user want to add per-form Stripe account, this code toggles the Stripe account list on clicking 'Customize'.
 	 *
 	 * @since 2.7.0
 	 */
@@ -51,8 +50,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			formOption.addEventListener( 'change', ( e ) => {
 				if ( 'enabled' === e.target.value ) {
 					perFormAccount.classList.remove( 'give-hidden' );
+					e.target.classList.remove( 'give-stripe-account-connected' );
 				} else {
 					perFormAccount.classList.add( 'give-hidden' );
+					e.target.classList.add( 'give-stripe-account-connected' );
 				}
 			} );
 		} );

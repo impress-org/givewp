@@ -43,7 +43,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			new Give.modal.GiveConfirmModal(
 				{
 					classes:{
-						modalWrapper: 'give-modal--warning'
+						modalWrapper: 'give-modal--warning give-stripe-modal-new-default'
 					},
 					modalContent: {
 						title: sprintf(

@@ -130,6 +130,23 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
+
+// --------------------------------
+// New Default Modal
+// --------------------------------
+.give-stripe-modal-new-default {
+
+	.give-modal__title {
+		line-height: 58px;
+
+		.give-stripe-icon {
+			margin-right: 15px;
+		}
+
+	}
+
+}
+
 // --------------------------------
 // Stripe Manage Accounts section
 // --------------------------------
@@ -575,7 +592,7 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 // --------------------------------
-// Settings in Donation Form
+// Per-Form Stripe Settings
 // --------------------------------
 
 .give-stripe-manage-account-wrapper {
@@ -583,8 +600,15 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 #stripe_form_account_options {
+
 	.give-stripe-manage-account-options {
-		padding: 14px;
+		padding: 20px 20px 0;
+	}
+
+	.give-stripe-per-form-option-label {
+		display: block;
+		height: 100%;
+		padding: 24px 26px;
 	}
 
 	.give-stripe-per-form-options {
@@ -604,17 +628,14 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 
 	.give-stripe-per-form-option-field {
-		float: left;
-		width: 340px;
-		height: 290px;
-		padding: 24px 26px;
+		padding: 0;
 
-		.stripe-per-form-radio-title {
+		.give-stripe-per-form-radio-title {
 			display: block;
 			color: #333;
 			font-weight: bold;
 			font-size: 17px;
-			margin: 10px 0 16px;
+			margin: 4px 0 12px;
 		}
 
 		&:first-of-type {
@@ -622,15 +643,22 @@ a.give-stripe-connect-temp-dismiss:active {
 		}
 	}
 
-	.stripe-per-form-description {
+	.give-stripe-per-form-main-heading h2 {
+		padding: 0;
+		font-size: 17px;
+		font-weight: 500;
+		margin: 5px 0 10px;
+	}
+
+	.give-stripe-per-form-description {
 		font-size: 15px;
 		line-height: 24px;
 		color: #555;
-		margin: 0 0 20px;
 		display: block;
+		margin: 0 0 15px;
 	}
 
-	.stripe-per-form-global-setting {
+	.give-stripe-per-form-global-setting {
 		font-size: 15px;
 		line-height: 24px;
 		color: #555;
@@ -646,4 +674,61 @@ a.give-stripe-connect-temp-dismiss:active {
 
 	}
 
+	.give-stripe-setting-heading {
+		margin: 15px 0 20px;
+		padding: 0;
+		font-size: 20px;
+		font-weight: 500;
+	}
+
+
+}
+
+
+// --------------------------------
+// Per-Form Stripe Responsive Styles
+// --------------------------------
+
+@media screen and (max-width: 1399px) {
+	#stripe_form_account_options  {
+		.give-stripe-account-manager-list {
+			grid-template-columns: repeat(2, 1fr);
+			grid-gap: 25px;
+		}
+
+		// Connect notice
+		.give-stripe-account-manager-add-section {
+			display: block;
+
+			.give-stripe-heading {
+				width: 100%;
+				text-align: center;
+				margin: 0 0 20px;
+			}
+
+			.stripe-logo-with-circle {
+				display:none;
+			}
+		}
+
+	}
+}
+
+@media screen and (max-width: 1149px) {
+	#stripe_form_account_options  {
+		.give-stripe-account-manager-list {
+			grid-template-columns: repeat(1, 1fr);
+		}
+
+		.give-stripe-per-form-options > div {
+			display: block;
+			flex: none;
+			width: 100%;
+
+			&:first-of-type {
+				margin: 0 0 25px;
+			}
+
+		}
+	}
 }
