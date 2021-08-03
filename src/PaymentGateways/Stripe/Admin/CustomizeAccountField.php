@@ -71,7 +71,7 @@ class CustomizeAccountField {
 					<span class="give-stripe-per-form-radio-title"><?php esc_html_e( 'Global Default Account', 'give' ); ?></span>
 					<span class="give-stripe-per-form-description"><?php
 						echo sprintf(
-							'%1$s <a href="%2$s" target="_blank">Global Settings</a>',
+							'%1$s <a href="%2$s" target="_blank">Global Settings</a>.',
 							esc_html__( 'All donations are processed through the default account set in the', 'give' ),
 							give_stripe_get_admin_settings_page_url()
 						);  ?></span>

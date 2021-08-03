@@ -617,6 +617,7 @@ a.give-stripe-connect-temp-dismiss:active {
 		flex-wrap: wrap;
 		width: 100%;
 		padding: 20px 0;
+		max-width: 800px;
 
 		> div {
 			display: flex;
@@ -675,7 +676,7 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 
 	.give-stripe-setting-heading {
-		margin: 15px 0 20px;
+		margin: 0 0 20px;
 		padding: 0;
 		font-size: 20px;
 		font-weight: 500;
