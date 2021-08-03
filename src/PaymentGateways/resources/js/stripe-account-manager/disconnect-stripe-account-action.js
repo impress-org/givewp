@@ -20,11 +20,13 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			const button = e.target;
 			const parentElement = e.target.parentElement.parentElement.parentElement.parentElement;
 			const isGlobalDefaultAccount = parentElement.classList.contains('give-global-default-account');
+			let modalTitle = __( 'Disconnect Stripe Account', 'give' );
 			let modalMessage = __( 'Are you sure you want to disconnect this Stripe account?', 'give' );
 
 			if( isGlobalDefaultAccount ) {
+				modalTitle = __( 'Cannot Disconnect Global Account', 'give' );
 				modalMessage = sprintf(
-					__( 'This Stripe account is selected as Global Default account, so you can not disconnect this account.', 'give' ),
+					__( 'This Stripe account is set as the Global Default account that other donation forms may be using. To disconnect this account please go to the Stripe settings screen.', 'give' ),
 				)
 			}
 
@@ -34,7 +36,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					modalWrapper: `give-modal--${ isGlobalDefaultAccount ? 'error' : 'warning' }`,
 				},
 				modalContent: {
-					title: __( 'Disconnect Stripe Account', 'give' ),
+					title: modalTitle,
 					desc: modalMessage,
 				},
 				callbacks: {
