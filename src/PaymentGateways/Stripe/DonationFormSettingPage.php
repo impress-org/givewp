@@ -3,14 +3,17 @@
 namespace Give\PaymentGateways\Stripe;
 
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+use Give\PaymentGateways\Stripe\Admin\CustomizeAccountField;
 
 /**
  * Class DonationFormSettingPage
+ *
  * @package Give\PaymentGateways\Stripe
  *
  * @unreleased
  */
 class DonationFormSettingPage {
+
 	/**
 	 * @unreleased
 	 */
@@ -22,7 +25,7 @@ class DonationFormSettingPage {
 	 * @unreleased
 	 *
 	 * @param array $settings Settings List.
-	 * @param $formId
+	 * @param       $formId
 	 *
 	 * @return array
 	 */
@@ -59,18 +62,10 @@ class DonationFormSettingPage {
 
 		return [
 			[
-				'name'        => esc_html__( 'Account Options', 'give' ),
-				'id'          => 'give_stripe_per_form_accounts',
-				'type'        => 'radio_inline',
-				'default'     => 'disabled',
-				'options'     => [
-					'disabled' => esc_html__( 'Use Global Default Stripe Account', 'give' ),
-					'enabled'  => esc_html__( 'Customize Stripe Account', 'give' ),
-				],
-				'description' => esc_html__(
-					'Do you want to customize the Stripe account for this donation form? The customize option allows you to modify the Stripe account this form processes payments through. By default, new donation forms will use the Global Default Stripe account.',
-					'give'
-				),
+				'id'       => 'give_stripe_per_form_accounts',
+				'type'     => 'give_stripe_per_form_accounts',
+				'callback' => [ give( CustomizeAccountField::class ), 'handle' ],
+				'wrapper_class' => 'give-stripe-manage-account-wrapper'
 			],
 			[
 				'id'            => 'give_manage_accounts',

@@ -574,11 +574,76 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-/**
- * Settings in donation form
- */
+// --------------------------------
+// Settings in Donation Form
+// --------------------------------
+
+.give-stripe-manage-account-wrapper {
+	padding: 20px;
+}
+
 #stripe_form_account_options {
 	.give-stripe-manage-account-options {
 		padding: 14px;
 	}
+
+	.give-stripe-per-form-options {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		padding: 20px 0;
+
+		> div {
+			display: flex;
+			flex-direction: column;
+			flex-basis: 100%;
+			flex: 1;
+		}
+
+	}
+
+	.give-stripe-per-form-option-field {
+		float: left;
+		width: 340px;
+		height: 290px;
+		padding: 24px 26px;
+
+		.stripe-per-form-radio-title {
+			display: block;
+			color: #333;
+			font-weight: bold;
+			font-size: 17px;
+			margin: 10px 0 16px;
+		}
+
+		&:first-of-type {
+			margin-right: 20px;
+		}
+	}
+
+	.stripe-per-form-description {
+		font-size: 15px;
+		line-height: 24px;
+		color: #555;
+		margin: 0 0 20px;
+		display: block;
+	}
+
+	.stripe-per-form-global-setting {
+		font-size: 15px;
+		line-height: 24px;
+		color: #555;
+
+		> span {
+			display: block;
+		}
+
+		&__name {
+			font-weight: bold;
+			color: #333;
+		}
+
+	}
+
 }
