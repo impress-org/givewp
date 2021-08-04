@@ -65,7 +65,7 @@ class DonationFormSettingPage {
 				'id'       => 'give_stripe_per_form_accounts',
 				'type'     => 'give_stripe_per_form_accounts',
 				'callback' => [ give( CustomizeAccountField::class ), 'handle' ],
-				'wrapper_class' => 'give-stripe-manage-account-wrapper'
+				'default'  => CustomizeAccountField::DEFAULT_VALUE,
 			],
 			[
 				'id'            => 'give_manage_accounts',
