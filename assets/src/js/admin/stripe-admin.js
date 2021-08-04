@@ -46,14 +46,22 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	 * @since 2.7.0
 	 */
 	if ( null !== perFormOptions ) {
+		let perFormOptionFieldContainers = document.querySelectorAll('#stripe_form_account_options .give-stripe-per-form-option-field');
+
 		perFormOptions.forEach( ( formOption ) => {
 			formOption.addEventListener( 'change', ( e ) => {
+				perFormOptionFieldContainers.forEach( el => {
+					el.classList.remove('give-stripe-boxshadow-option-wrap__selected')
+					el.querySelector('input[name="give_stripe_per_form_accounts"]').setAttribute( 'checked', '' );
+				} );
+
+				e.target.parentElement.parentElement.classList.add('give-stripe-boxshadow-option-wrap__selected');
+				e.target.setAttribute( 'checked', 'checked' );
+
 				if ( 'enabled' === e.target.value ) {
 					perFormAccount.classList.remove( 'give-hidden' );
-					e.target.classList.remove( 'give-stripe-account-connected' );
 				} else {
 					perFormAccount.classList.add( 'give-hidden' );
-					e.target.classList.add( 'give-stripe-account-connected' );
 				}
 			} );
 		} );

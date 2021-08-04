@@ -558,18 +558,21 @@ a.give-stripe-connect-temp-dismiss:active {
 	margin-left: 5px;
 }
 
+.give-stripe-account-default-checkmark {
+	display: none;
+}
+
+.give-stripe-boxshadow-option-wrap__selected .give-stripe-account-default-checkmark {
+	display: block;
+}
+
 #give-settings-section-group-credit-card {
 	.give-stripe-credit-card-options {
 		cursor: pointer;
 	}
 
-	input[name='stripe_cc_fields_format'],
-	.give-stripe-account-default-checkmark {
+	input[name='stripe_cc_fields_format']{
 		display: none;
-	}
-
-	.give-stripe-boxshadow-option-wrap__selected .give-stripe-account-default-checkmark {
-		display: block;
 	}
 }
 
