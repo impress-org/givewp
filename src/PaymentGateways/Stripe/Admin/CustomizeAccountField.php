@@ -83,8 +83,8 @@ class CustomizeAccountField {
 								// Output Globally set account
 								$globalAccount = give_stripe_get_default_account();
 
-								echo $globalAccount['account_name'] ?? esc_html__( 'None set', 'give' );
-								echo ' (' . $globalAccount['account_slug'] . ')' ?? ''; ?>
+								echo ! empty( $globalAccount['account_name'] ) ? $globalAccount['account_name'] : esc_html__( 'None set', 'give' );
+								echo ! empty($globalAccount['account_slug'] ) ? ' (' . $globalAccount['account_slug'] . ')' : ''; ?>
 						</span>
 
 					</span>
