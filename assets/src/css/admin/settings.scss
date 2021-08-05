@@ -666,6 +666,7 @@ a.give-delete {
 
 		.api-access-feature-list-wrap {
 			color: #aaa;
+
 			ul {
 				list-style: none;
 				margin: 0;
@@ -754,22 +755,28 @@ a.give-delete {
 	.hero-section {
 		display: grid;
 		grid-template-columns: repeat(2, auto);
+	}
 
-		img {
-			width: 100%;
-		}
+	img {
+		width: 100%;
+	}
 
-		h2 {
-			font-size: 1.6em !important;
-		}
+	h2 {
+		margin: 15px 0 20px;
+		font-size: 20px;
+		color: #333;
+		letter-spacing: 0.6px;
+	}
 
-		.give-field-description {
-			font-size: 1.2em !important;
-		}
+	div.paypal-logo {
+		margin: 20px 0 0 20px;
+	}
 
-		div:last-child {
-			margin-top: 1.6em;
-		}
+	.give-field-description {
+		font-size: 16px !important;
+		line-height: 26px;
+		margin: 0;
+		padding: 0;
 	}
 
 	.feature-list {
@@ -782,6 +789,10 @@ a.give-delete {
 		font-size: 1.2em !important;
 		line-height: 2em;
 
+		@media screen and (max-width: 1325px) {
+			grid-template-columns: 50% auto;
+		}
+
 		div {
 			font-style: italic;
 			color: #939393;
@@ -791,6 +802,9 @@ a.give-delete {
 			padding-right: 10px;
 		}
 	}
+
+
+
 }
 
 @keyframes bounce {
