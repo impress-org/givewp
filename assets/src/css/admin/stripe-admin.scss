@@ -693,12 +693,17 @@ a.give-stripe-connect-temp-dismiss:active {
 // Per-Form Stripe Responsive Styles
 // --------------------------------
 
-@media screen and (max-width: 1399px) {
-	#stripe_form_account_options  {
+@media screen and (max-width: 1550px) {
+	#stripe_form_account_options {
 		.give-stripe-account-manager-list {
 			grid-template-columns: repeat(2, 1fr);
 			grid-gap: 25px;
 		}
+
+	}
+}
+@media screen and (max-width: 1399px) {
+	#stripe_form_account_options  {
 
 		// Connect notice
 		.give-stripe-account-manager-add-section {

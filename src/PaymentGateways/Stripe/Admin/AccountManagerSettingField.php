@@ -484,12 +484,12 @@ class AccountManagerSettingField {
 		<div class="give-stripe-default-account-notice">
 			<span class="dashicons dashicons-info"></span>
 			<div class="give-stripe-default-account-notice__inner">
-				<p class="give-stripe-default-account-notice__bold"><strong><?php esc_html_e( 'All payments go to the default account.', 'give' ); ?></strong></p>
+				<p class="give-stripe-default-account-notice__bold"><strong><?php esc_html_e( 'All payments go to the default account', 'give' ); ?></strong></p>
 				<p>
 					<?php
 						echo $this->isGlobalSettingPage() ?
-							esc_html__( 'You can set this globally (for all donation forms) here or override the setting per donation form.', 'give' ) :
-							esc_html__( 'All payments go to the default account. You can set this globally (for all donation forms) or per donation form.', 'give' );
+							esc_html__( 'You can set this globally (for all donation forms) or override the Stripe account per donation form.', 'give' ) :
+							esc_html__( 'All donations will process through the default account set above. This overrides the Global setting.', 'give' );
 					?>
 				</p>
 			</div>

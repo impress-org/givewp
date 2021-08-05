@@ -63,7 +63,7 @@ class CustomizeAccountField {
 						style="display:none;"
 						<?php checked( 'disabled', $value ); ?>
 					>
-					<span class="give-stripe-per-form-radio-title"><?php esc_html_e( 'Global Default Account', 'give' ); ?></span>
+					<span class="give-stripe-per-form-radio-title"><?php esc_html_e( 'Default Account', 'give' ); ?></span>
 					<span class="give-stripe-per-form-description">
 						<?php
 							echo sprintf(
@@ -74,7 +74,7 @@ class CustomizeAccountField {
 						?>
 					</span>
 					<span class="give-stripe-per-form-global-setting">
-						<span class="give-stripe-per-form-global-setting__title"><?php esc_html_e( 'Global account name:', 'give' ); ?></span>
+						<span class="give-stripe-per-form-global-setting__title"><?php esc_html_e( 'Default account name:', 'give' ); ?></span>
 						<span class="give-stripe-per-form-global-setting__name">
 								<?php
 								// Output Globally set account
@@ -108,7 +108,7 @@ class CustomizeAccountField {
 					<span class="give-stripe-per-form-description">
 						<?php
 						esc_html_e(
-							'Donations are processed through the account selected below. Global Settings are overridden for this form.',
+							'Donations are processed through a different Stripe account. The default account is overridden for this form.',
 							'give'
 						);
 						?>

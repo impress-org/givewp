@@ -48,10 +48,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					modalContent: {
 						title: sprintf(
 							'<span class="give-stripe-icon stripe-logo-with-circle"></span>%s',
-							__( 'Confirm New Default', 'give' )
+							__( 'Confirm New Default Account', 'give' )
 						),
 						desc: sprintf(
-							__( 'Please confirm you’d like to set the account below as the new Global Default account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br>%2$s%3$s', 'give' ),
+							__( 'Please confirm you’d like to set the account below as the new default Stripe account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br>%2$s%3$s', 'give' ),
 							docLink,
 							accountName,
 							accountEmail
