@@ -9,6 +9,9 @@
  * @subpackage  Classes/Give_Settings_Gateways
  */
 
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -218,8 +221,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 			// Only display notice if no active gateways are installed. Filter provided for developers to configure display.
 			if (
-				apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 4 ) &&
-				! Give\Helpers\Gateways\Stripe::isAccountConfigured()
+				apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 8 ) &&
+				( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() &&
+				  ! give( MerchantDetails::class )->accountIsConnected()
+				)
+
 			) {
 				?>
 				<div class="give-gateways-notice">
@@ -250,9 +256,9 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 					<p class="give-gateways-notice-message">
 						<?php
 						printf(
-							__( 'Activate the free Stripe payment gateway %1$s or a premium gateway like <a href="%2$s" target="_blank">PayPal Pro</a>, <a href="%3$s" target="_blank">Authorize.net</a>, or <a href="%4$s" target="_blank">Stripe Premium</a> for no added fees and priority support.', 'give' ),
+							__( 'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">Authorize.net</a>, or <a href="%4$s" target="_blank">Stripe Premium</a> for no added fees and priority support.', 'give' ),
 							Give()->tooltips->render_help( __( 'The free version of Stripe includes an additional 2% processing fee in addition to Stripe\'s normal fees for one-time donations. This ensures we can fully support the plugin for the future. Upgrade to the premium Stripe add-on for no added fees.', 'give' ) ),
-							'https://givewp.com/addons/paypal-pro-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
+							admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal'),
 							'https://givewp.com/addons/authorize-net-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
 							'https://givewp.com/addons/stripe-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner'
 						);
@@ -260,7 +266,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 					</p>
 
 					<div class="give-gateways-notice-button">
-						<?php echo give_stripe_connect_button(); ?>
+						<?php echo give( AccountManagerSettingField::class )->getStripeConnectButtonMarkup(); ?>
 						<a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner"
 						   target="_blank" class="give-view-gateways-btn button">
 							<?php esc_html_e( 'View Premium Gateways', 'give' ); ?>

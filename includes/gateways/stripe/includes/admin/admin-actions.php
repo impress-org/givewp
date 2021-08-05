@@ -12,6 +12,7 @@
 
 // Exit, if accessed directly.
 use Give\Helpers\Gateways\Stripe;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -255,7 +256,7 @@ function give_stripe_show_connect_banner() {
 		return $status;
 	}
 
-	$connect_link = give_stripe_connect_button();
+	$connect_link = give( AccountManagerSettingField::class )->getStripeConnectButtonMarkup();
 
 	// Default message.
 	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website.', 'give' );

@@ -386,6 +386,11 @@ div.give-field-description {
 		line-height: 24px;
 		font-size: 14px;
 		margin: 5px 20px 20px;
+
+		.give-tooltip {
+			margin: 0 2px 0 -2px;
+		}
+
 	}
 
 	.give-gateways-notice-button {
@@ -396,13 +401,10 @@ div.give-field-description {
 		padding: 0 15px 0 0;
 		width: 200px;
 
-		#give-stripe-connect {
-			margin: 0 0 10px;
-		}
-
 		.give-view-gateways-btn {
 			text-align: center;
-			width: 190px;
+			margin: 10px 0 0;
+			width: 100%;
 		}
 	}
 }
