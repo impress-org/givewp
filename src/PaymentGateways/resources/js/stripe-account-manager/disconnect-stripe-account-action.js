@@ -42,7 +42,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				callbacks: {
 					open: () => {
 						if( isGlobalDefaultAccount ) {
-							jQuery.magnificPopup.instance.content[0].querySelector('.give-modal__controls .give-popup-confirm-button').disabled = true;
+							jQuery.magnificPopup.instance.content[0].querySelector('.give-modal__controls .give-popup-confirm-button').style.display = "none";
 						}
 					}
 				},
