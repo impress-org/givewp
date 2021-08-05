@@ -154,8 +154,7 @@ class AccountManagerSettingField {
 			<?php
 			foreach ( $this->stripeAccounts as $stripeAccountDetails ) {
 				$this->getStripeAccountMarkup( $stripeAccountDetails );
-			}
-			?>
+			} ?>
 		</div>
 		<?php
 	}
@@ -302,7 +301,7 @@ class AccountManagerSettingField {
 					<span class="give-stripe-account-connected give-stripe-connect-data-field">
 						<?php esc_html_e( 'Connected', 'give' ); ?>
 					</span>
-					<?php if ( $stripeAccountSlug !== $this->defaultStripeAccountSlug ) : ?>
+					<?php if ( $stripeAccountSlug !== $this->defaultStripeAccountSlug || 1 === count($this->stripeAccounts) ) : ?>
 						<span class="give-stripe-account-disconnect">
 							<a
 								class="give-stripe-disconnect-account-btn"
