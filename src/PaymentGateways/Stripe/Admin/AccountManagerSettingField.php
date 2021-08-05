@@ -102,7 +102,7 @@ class AccountManagerSettingField {
 		}
 		?>
 		<div id="give-stripe-account-manager-description">
-			<h2><?php esc_html_e( 'Manage your Stripe Accounts', 'give' ); ?></h2>
+			<h2><?php esc_html_e( 'Accept Donations with Stripe', 'give' ); ?></h2>
 
 			<?php if ( give_stripe_is_premium_active() ) : ?>
 				<div class="give-stripe-pro-badge">
