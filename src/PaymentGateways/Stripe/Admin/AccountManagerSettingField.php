@@ -143,7 +143,7 @@ class AccountManagerSettingField {
 	 */
 	private function getStripeAccountListSectionMarkup() {
 		$this->getStripeAccountOnBoardingModalMarkup();
-		if ( ! $this->stripeAccounts ) :
+		if ( ! $this->stripeAccounts || ( ! $this->isGlobalSettingPage() && 1 === count( $this->stripeAccounts ) ) ) :
 			$this->getNoStripeAccountMarkup();
 
 			return;
@@ -432,8 +432,24 @@ class AccountManagerSettingField {
 		<div class="no-stripe-account-connected">
 			<div class="no-stripe-account-connected-inner">
 				<span class="dashicons dashicons-info"></span>
-				<h3 class="give-stripe-settings-heading"><?php esc_html_e( 'No Stripe Accounts Connected', 'give' ); ?></h3>
-				<p id="give-stripe-connect-invite"><?php esc_html_e( 'Connect an account to get started!', 'give' ); ?></p>
+				<h3 class="give-stripe-settings-heading">
+					<?php
+						echo $this->isGlobalSettingPage() ?
+							esc_html__( 'No Stripe Accounts Connected', 'give' ) :
+							esc_html__( 'Only One Stripe Accounts Connected', 'give' );
+					?>
+				</h3>
+				<p id="give-stripe-connect-invite">
+					<?php
+					echo $this->isGlobalSettingPage() ?
+						esc_html__( 'Connect an account to get started!', 'give' ) :
+						sprintf(
+							'%1$s<br>%2$s',
+							esc_html__( 'Please connect a new Stripe account.', 'give' ),
+							esc_html__( 'To select donation form default Stripe account.', 'give' )
+						);
+					?>
+				</p>
 				<?php echo $this->getStripeConnectButtonMarkup(); ?>
 			</div>
 		</div>

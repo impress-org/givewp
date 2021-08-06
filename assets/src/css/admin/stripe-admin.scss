@@ -317,6 +317,12 @@ a.give-stripe-connect-temp-dismiss:active {
 	background-color: #f4f4f4;
 	text-align: center;
 
+	.no-stripe-account-connected-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
 	.dashicons-info {
 		color: #b6c0cb;
 		font-size: 93px;
@@ -332,7 +338,6 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 
 	p#give-stripe-connect-invite {
-		font-style: italic;
 		font-size: 16px;
 		color: #555;
 		padding: 0;
