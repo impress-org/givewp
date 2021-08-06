@@ -206,6 +206,26 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			return $sections;
 		}
 
+		/**
+		 * @unreleased
+		 * @return bool
+		 */
+		private function hasPremiumPaymentGateway(){
+			$gateways = give_get_payment_gateways();
+
+			return (bool) apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) > 8 );
+		}
+
+		/**
+		 * @unreleased
+		 *
+		 * @return bool
+		 */
+		private function canAcceptCreditCard(){
+			return Give\Helpers\Gateways\Stripe::isAccountConfigured() ||
+			  give( MerchantDetails::class )->accountIsConnected();
+		}
+
 
 		/**
 		 * Render Gateway Notice
@@ -217,16 +237,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @param $settings
 		 */
 		public function render_gateway_notice( $field, $settings ) {
-			$gateways = give_get_payment_gateways();
-
-			// Only display notice if no active gateways are installed. Filter provided for developers to configure display.
-			if (
-				apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) <= 8 ) &&
-				( ! Give\Helpers\Gateways\Stripe::isAccountConfigured() &&
-				  ! give( MerchantDetails::class )->accountIsConnected()
-				)
-
-			) {
+			if ( ! $this->$this->hasPremiumPaymentGateway() && ! $this->canAcceptCreditCard() ) {
 				?>
 				<div class="give-gateways-notice">
 					<div class="give-gateways-cc-icon">
