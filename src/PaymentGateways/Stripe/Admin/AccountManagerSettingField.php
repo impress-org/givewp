@@ -235,6 +235,7 @@ class AccountManagerSettingField {
 			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap<?php echo $classes; ?>"
 		>
 			<input type="hidden" name="stripe-account-slug" value="<?php echo $stripeAccountSlug ?>" readonly>
+			<input type="hidden" name="setting-page" value="<?php echo $this->isGlobalSettingPage() ? 'global' : 'form'; ?>" readonly>
 			<?php if ( $stripeAccountSlug === $this->defaultStripeAccountSlug ) : ?>
 				<div class="give-stripe-account-default-checkmark">
 					<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">

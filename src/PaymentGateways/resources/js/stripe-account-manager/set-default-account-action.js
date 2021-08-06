@@ -18,8 +18,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	setStripeDefaults.forEach( ( setStripeDefault ) => {
 		setStripeDefault.addEventListener( 'click', ( e ) => {
 			e.preventDefault();
-			const stripeEmailValueContainer = e.target.parentElement.parentElement.querySelector('.give-stripe-account-email .give-stripe-connect-data-field');
+			const stripeAccountInformationContainer = e.target.parentElement.parentElement.parentElement.parentElement;
+			const stripeEmailValueContainer = stripeAccountInformationContainer.querySelector('.give-stripe-account-email .give-stripe-connect-data-field');
+			const settingPageType = stripeAccountInformationContainer.querySelector('input[name="setting-page"]' ).value;
 			let accountEmail = '';
+			let modalMessage = '';
+
 			const accountName = sprintf(
 				'<p><strong>%1$s</strong><br>%2$s</p>',
 				__( 'Account Name', 'give' ),
@@ -40,6 +44,20 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				__( 'View Documentation >', 'give' )
 			)
 
+			modalMessage = 'global' === settingPageType ?
+				sprintf(
+					__( 'Please confirm you’d like to set the account below as the new default Stripe account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br>%2$s%3$s', 'give' ),
+					docLink,
+					accountName,
+					accountEmail
+				) :
+				sprintf(
+					__( 'Please confirm you’d like to set the account below as the new default Stripe account for this donation form. All donation will process threw this stripe account rather than global default stripe account. %1$s<br>%2$s%3$s', 'give' ),
+					docLink,
+					accountName,
+					accountEmail
+				);
+
 			new Give.modal.GiveConfirmModal(
 				{
 					classes:{
@@ -50,12 +68,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 							'<span class="give-stripe-icon stripe-logo-with-circle"></span>%s',
 							__( 'Confirm New Default Account', 'give' )
 						),
-						desc: sprintf(
-							__( 'Please confirm you’d like to set the account below as the new default Stripe account. All donation forms set to inherit the Global Settings will use this new default account. %1$s<br>%2$s%3$s', 'give' ),
-							docLink,
-							accountName,
-							accountEmail
-						),
+						desc: modalMessage,
 					},
 					successConfirm: function( args ) {
 						const xhr = new XMLHttpRequest();
