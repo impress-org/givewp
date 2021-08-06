@@ -1203,3 +1203,39 @@ function give_stripe_connect_button() {
 		esc_html__( 'Connect with Stripe', 'give' )
 	);
 }
+
+/**
+ * Stripe Disconnect URL.
+ *
+ * @param string $account_id   Stripe Account ID.
+ * @param string $account_name Stripe Account Name.
+ *
+ * @since 2.5.0
+ * @deprecated @unreleased
+ *
+ * @return string
+ */
+function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
+	_give_deprecated_function(
+		__FUNCTION__,
+		'@unreleased'
+	);
+
+	$args = [
+		'stripe_action'  => 'disconnect',
+		'mode'           => give_is_test_mode() ? 'test' : 'live',
+		'stripe_user_id' => $account_id,
+		'return_url'     => rawurlencode( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ),
+	];
+
+	// Send Account Name.
+	if ( ! empty( $account_name ) ) {
+		$args['account_name'] = $account_name;
+	}
+
+	// Prepare Stripe Disconnect URL.
+	return add_query_arg(
+		$args,
+		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+	);
+}
