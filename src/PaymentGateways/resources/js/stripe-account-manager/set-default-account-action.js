@@ -52,7 +52,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					accountEmail
 				) :
 				sprintf(
-					__( 'Please confirm you’d like to set the account below as the new default Stripe account for this donation form. All donation will process threw this stripe account rather than global default stripe account. %1$s<br>%2$s%3$s', 'give' ),
+					__( 'Please confirm you’d like to set the account below as the new default Stripe account for this donation form. All donations will process through this Stripe account rather than the Global default Stripe account. %1$s<br>%2$s%3$s', 'give' ),
 					docLink,
 					accountName,
 					accountEmail
