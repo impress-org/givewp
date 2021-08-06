@@ -237,7 +237,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @param $settings
 		 */
 		public function render_gateway_notice( $field, $settings ) {
-			if ( ! $this->$this->hasPremiumPaymentGateway() && ! $this->canAcceptCreditCard() ) {
+			if ( ! $this->hasPremiumPaymentGateway() && ! $this->canAcceptCreditCard() ) {
 				?>
 				<div class="give-gateways-notice">
 					<div class="give-gateways-cc-icon">
