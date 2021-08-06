@@ -210,7 +210,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @unreleased
 		 * @return bool
 		 */
-		private function hasPremiumPaymentGateway(){
+		private function hasPremiumPaymentGateway() {
 			$gateways = give_get_payment_gateways();
 
 			return (bool) apply_filters( 'give_gateway_upsell_notice_conditions', count( $gateways ) > 8 );
@@ -221,7 +221,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 *
 		 * @return bool
 		 */
-		private function canAcceptCreditCard(){
+		private function canAcceptCreditCard() {
 			return Give\Helpers\Gateways\Stripe::isAccountConfigured() ||
 			  give( MerchantDetails::class )->accountIsConnected();
 		}
@@ -269,7 +269,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						printf(
 							__( 'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">Authorize.net</a>, or <a href="%4$s" target="_blank">Stripe Premium</a> for no added fees and priority support.', 'give' ),
 							Give()->tooltips->render_help( __( 'The free version of Stripe includes an additional 2% processing fee in addition to Stripe\'s normal fees for one-time donations. This ensures we can fully support the plugin for the future. Upgrade to the premium Stripe add-on for no added fees.', 'give' ) ),
-							admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal'),
+							admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal' ),
 							'https://givewp.com/addons/authorize-net-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
 							'https://givewp.com/addons/stripe-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner'
 						);
