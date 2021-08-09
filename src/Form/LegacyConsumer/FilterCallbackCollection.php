@@ -45,7 +45,7 @@ class FilterCallbackCollection {
 			$this->callbacks,
 			function( $callback ) use ( $prefix ) {
 				if ( is_string( $callback['function'] ) ) {
-					return 'give_' !== substr( $callback['function'], 0, strlen( $prefix ) );
+					return $prefix !== substr( $callback['function'], 0, strlen( $prefix ) );
 				}
 				return true;
 			}

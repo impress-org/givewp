@@ -218,7 +218,13 @@
 					const compare = position === 'before' ? symbol + value : value + symbol;
 					// Setup tooltip unless for custom donation level, or if level label matches value
 					if ( value !== 'custom' && text !== compare ) {
-						const wrap = `<span class="give-tooltip hint--top hint--bounce ${ text.length < 50 ? 'narrow' : '' }" style="width: 100%" aria-label="${ text.length < 50 ? text : text.substr( 0, 50 ) + '...' }" rel="tooltip"></span>`;
+						const wrap = document.createElement('span');
+						wrap.classList.add('give-tooltip', 'hint--top', 'hint--bounce');
+						if( text.length < 50 ) {
+							wrap.classList.add( 'narrow' );
+						}
+						wrap.style.width = '100%';
+						wrap.setAttribute('aria-label', text.length < 50 ? text : text.substr( 0, 50 ) + '...');
 						$( this ).wrap( wrap );
 						$( this ).attr( 'has-tooltip', true );
 					}
@@ -484,6 +490,7 @@
 	/**
 	 * Move error notices to error notice container at the top of the payment section
 	 * @since 2.7.0
+	 * @since 2.12.0 Prevents a race condition that caused an error message not to be visible.
 	 * @param {node} node The error notice node to be moved
 	 */
 	function moveErrorNotice( node ) {
@@ -497,13 +504,22 @@
 			$( '.payment' ).prepend( '<div class="donation-errors"></div>' );
 		}
 
-		// If a specific notice does not already exist, proceed with moving the error
-		if ( typeof $( '.donation-errors' ).html() !== undefined && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
-			$( node ).appendTo( '.donation-errors' );
-		} else {
-			// If the specific notice already exists, do not add it
-			$( node ).remove();
-		}
+		/**
+		 * @link https://github.com/impress-org/givewp/issues/5867
+		 *
+		 * This 1 millisecond timeout prevents a race condition between
+		 * the `.donation-errors` element being appended to the form
+		 * and relocation of the specific error message node.
+		 */
+		setTimeout(function(){
+			// If a specific notice does not already exist, proceed with moving the error
+			if ( typeof $( '.donation-errors' ).html() !== undefined && ! $( '.donation-errors' ).html().includes( $( node ).html() ) ) {
+				$( node ).appendTo( '.donation-errors' );
+			} else {
+				// If the specific notice already exists, do not add it
+				$( node ).remove();
+			}
+		}, 1);
 	}
 
 	/**

@@ -1,12 +1,12 @@
+<?php /** @var Give\Framework\FieldsAPI\Checkbox $field */ ?>
+<?php /** @var string $typeAttribute */ ?>
+<label class="give-label" for="give-<?php echo $field->getName(); ?>">
+	<?php echo $field->getLabel(); ?></label>
 <input
 	type="checkbox"
-	class="give-input required"
-	name="give_<?php echo $field->getName(); ?>"
 	id="give-<?php echo $field->getName(); ?>"
-	<?php if ( $field->isRequired() ) : ?>    
-		required="" aria-required="true"
-	<?php endif; ?>
-	tabindex="1"
-	@attributes
-	/>
-
+	name="<?php echo $field->getName(); ?>"
+	<?php echo $field->isRequired() ? 'required' : ''; ?>
+	<?php echo $field->isChecked() ? 'checked' : ''; ?>
+	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+>

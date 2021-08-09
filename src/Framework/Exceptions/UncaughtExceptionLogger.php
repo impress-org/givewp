@@ -30,10 +30,13 @@ class UncaughtExceptionLogger {
 	/**
 	 * Handles an uncaught exception by checking if the Exception is native to GiveWP and then logging it if it is
 	 *
+	 * @since 2.12.0 re-throw the exception so it displays
 	 * @since 2.11.2 remove parameter typing as it may be an Error
 	 * @since 2.11.1
 	 *
 	 * @param Exception|Error $exception
+	 *
+	 * @throws LoggableException
 	 */
 	public function handleException( $exception ) {
 		if ( $exception instanceof LoggableException ) {
@@ -44,6 +47,8 @@ class UncaughtExceptionLogger {
 		if ( $this->previousHandler !== null ) {
 			$previousHandler = $this->previousHandler;
 			$previousHandler( $exception );
+		} else {
+			throw $exception;
 		}
 	}
 }

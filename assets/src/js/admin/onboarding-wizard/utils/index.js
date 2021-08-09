@@ -123,18 +123,56 @@ export const saveSettingWithOnboardingAPI = ( setting, value ) => {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
 		},
-	} )
-		.then( function( response ) {
-			console.log( response ); // eslint-disable-line no-console
-		} )
-		.catch( function() {
-			console.log( 'caught' ); // eslint-disable-line no-console
-		} );
+	} );
 
 	return {
 		setting,
 		value,
 	};
+};
+
+/**
+ * Subscribes admin to ActiveCampaign.
+ *
+ * @since 2.12.1
+ */
+export const subscribeToNewsletter = ( configuration ) => {
+	const data = {
+		action: 'subscribe',
+		email: getWindowData( 'adminEmail' ),
+		first_name: getWindowData( 'adminFirstName' ),
+		last_name: getWindowData( 'adminLastName' ),
+		website_url: getWindowData( 'websiteUrl' ),
+		website_name: getWindowData( 'websiteName' ),
+		fundraising_type: configuration.causeType,
+	};
+
+	axios.post( 'https://connect.givewp.com/activecampaign/subscribe', data )
+		.then( function( response ) {
+			// Set user meta key as subscribed.
+			setUserMetaSubscribed();
+		} );
+};
+
+/**
+ * Sets the user's meta as enabling marketing opt-in. This metakey is useful for showing or hiding notices based on whether they have opted in or not.
+ *
+ * @since 2.12.1
+ */
+export const setUserMetaSubscribed = () => {
+
+	const currentUserId = getWindowData( 'adminUserID' );
+
+	axios.post( getAPIRoot() + 'wp/v2/users/' + currentUserId, {
+			'meta': {
+				'marketing_optin': 'subscribed',
+			}
+		}, {
+			headers: {
+				'X-WP-Nonce': getAPINonce(),
+			}
+		}
+	);
 };
 
 /**

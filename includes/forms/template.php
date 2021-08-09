@@ -499,10 +499,10 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.
  *
- * @param int $form_id The form ID.
- *
- * @return string Donation levels.
  * @since  1.0
+ *
+ * @param int $form_id The form ID.
+ * @return string Donation levels.
  */
 function give_output_levels( $form_id ) {
 
@@ -562,7 +562,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= sprintf(
 					'<li><button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">%1$s</button></li>',
-					$custom_amount_text
+					esc_html( $custom_amount_text )
 				);
 			}
 
@@ -603,7 +603,7 @@ function give_output_levels( $form_id ) {
 			) {
 				$output .= sprintf(
 					'<li><input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom"><label for="give-radio-level-custom">%1$s</label></li>',
-					$custom_amount_text
+					esc_html( $custom_amount_text )
 				);
 			}
 
@@ -648,7 +648,7 @@ function give_output_levels( $form_id ) {
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= sprintf(
 					'<option data-price-id="custom" class="give-donation-level-custom" value="custom">%1$s</option>',
-					$custom_amount_text
+					esc_html( $custom_amount_text )
 				);
 			}
 
