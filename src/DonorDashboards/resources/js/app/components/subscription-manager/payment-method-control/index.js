@@ -3,7 +3,7 @@ import CardControl from './card-control';
 
 import './style.scss';
 
-const PaymentMethodControl = ( { gateway, label, onChange, onFocus } ) => {
+const PaymentMethodControl = ( { gateway, label, forwardedRef } ) => {
 	switch ( gateway.id ) {
 		case 'stripe':
 		case 'stripe_apple_pay':
@@ -11,17 +11,17 @@ const PaymentMethodControl = ( { gateway, label, onChange, onFocus } ) => {
 		case 'stripe_checkout':
 		case 'stripe_google_pay': {
 			return <StripeControl
+				forwardedRef={ forwardedRef }
 				label={ label }
 				gateway={gateway}
-				onFocus={ onFocus }
 			/>;
 		}
 		case 'authorize':
 		case 'paypalpro': {
 			return <CardControl
+				forwardedRef={ forwardedRef }
 				label={ label }
 				gateway={gateway}
-				onChange={ ( val ) => onChange( val ) }
 			/>;
 		}
 		default: {
