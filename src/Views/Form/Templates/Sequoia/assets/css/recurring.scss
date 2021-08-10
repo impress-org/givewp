@@ -121,9 +121,26 @@
 	}
 }
 
-/*---------------------------------
-RTL styles
------------------------------------*/
+//---------------------------------
+// Admin-Defined Donation
+// --------------------------------
+
+.give-form-type-set {
+
+	.give-recurring-admin-choice {
+		box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+		margin: 10px auto 0;
+		font-style: normal;
+		padding: 10px 20px;
+		border-radius: 6px;
+
+	}
+
+}
+
+//---------------------------------
+// RTL styles
+// --------------------------------
 
 html[dir='rtl'] {
 	.give-recurring-donors-choice {
