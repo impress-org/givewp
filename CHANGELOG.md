@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
 - Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form template. (#5910) 
 - Fix the placeholder image and set a max-width for the legacy form template. (#5910)
 - Add support for admin defined recurring donations to the multi-step form template. (#5910)
-
+- Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910) 
 
 ## 2.12.2 - 2020-07-30
 
