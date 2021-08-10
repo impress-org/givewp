@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import FieldRow from '../field-row';
 import Button from '../button';
 import { Fragment, useState, useEffect } from 'react';
@@ -13,15 +14,15 @@ import { updateSubscriptionWithAPI } from './utils';
 import './style.scss';
 
 const SubscriptionManager = ( { id, subscription } ) => {
+	const gatewayRef = useRef();
+
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
-	const [ paymentMethod, setPaymentMethod ] = useState( null );
 	const [ isUpdating, setIsUpdating ] = useState( false );
 	const [ updated, setUpdated ] = useState( true );
-	const [ cardControl, setCardControl ] = useState( null );
 
 	useEffect( () => {
 		setUpdated( false );
-	}, [ amount, paymentMethod ] );
+	}, [ amount ] );
 
 	const handleUpdate = async() => {
 		if ( isUpdating ) {
@@ -30,38 +31,17 @@ const SubscriptionManager = ( { id, subscription } ) => {
 
 		setIsUpdating( true );
 
-		let paymentMethodStripe;
+		const paymentMethod = await gatewayRef.current.getPaymentMethod();
 
-		if ( cardControl ) {
-			const { stripe, cardElement } = cardControl;
-
-			if ( ! cardElement._empty && ! cardElement._invalid ) {
-				const { error, paymentMethod:method } = await stripe.createPaymentMethod( {
-					type: 'card',
-					card: cardElement,
-				} );
-
-				if ( ! error ) {
-					paymentMethodStripe = {
-						give_stripe_payment_method: method.id,
-					}
-				} else {
-					setIsUpdating( false );
-					return cardElement.focus();
-				}
-			} else {
-				// Prevent user from updating the subscription if he entered invalid card details
-				if ( cardElement._invalid ) {
-					setIsUpdating( false );
-					return cardElement.focus();
-				}
-			}
+		if ( 'error' in paymentMethod ) {
+			setIsUpdating( false );
+			return;
 		}
 
 		await updateSubscriptionWithAPI( {
 			id,
 			amount,
-			paymentMethod: paymentMethodStripe ?? paymentMethod
+			paymentMethod
 		} );
 
 		setUpdated( true );
@@ -76,10 +56,9 @@ const SubscriptionManager = ( { id, subscription } ) => {
 				onChange={ ( val ) => setAmount( val ) } value={ amount }
 			/>
 			<PaymentMethodControl
+				forwardedRef={ gatewayRef }
 				label={ __( 'Payment Method', 'give' ) }
 				gateway={ subscription.gateway }
-				onFocus={ setCardControl }
-				onChange={ ( val ) => setPaymentMethod( val ) }
 			/>
 			<FieldRow>
 				<div>
