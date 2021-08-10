@@ -1,22 +1,51 @@
 import { CardElement, useStripe } from '@stripe/react-stripe-js';
-import { useState } from 'react';
+import { useState, useImperativeHandle } from 'react';
 import './style.scss';
 
-const CardControl = ( { label, onFocus } ) => {
+const CardControl = ( { label, forwardedRef } ) => {
 	const stripe = useStripe();
+	const [ cardInput, setCardInput ] = useState( null );
 	const [ focused, setFocused ] = useState( false );
 
-	const handleCardInputEvents = ( cardInputElement ) => {
-
-		cardInputElement.on( 'focus', function(){
-			setFocused( true );
-
-			if ( typeof onFocus === 'function' ) {
-				onFocus( {
-					stripe,
-					cardElement: cardInputElement
+	useImperativeHandle( forwardedRef, () => ( {
+		async getPaymentMethod() {
+			if ( ! cardInput._empty && ! cardInput._invalid ) {
+				const { error, paymentMethod } = await stripe.createPaymentMethod( {
+					type: 'card',
+					card: cardInput,
 				} );
+
+				if ( ! error ) {
+					return {
+						give_stripe_payment_method: paymentMethod.id,
+					}
+				} else {
+					cardInput.focus();
+					return {
+						error: true
+					}
+				}
+			} else {
+				// Prevent user from updating the subscription if he entered invalid card details
+				if ( cardInput._invalid ) {
+					cardInput.focus();
+					return {
+						error: true
+					}
+				}
 			}
+
+			return {
+				give_stripe_payment_method: null
+			}
+		},
+	} ), [ cardInput ] );
+
+	const handleCardInputEvents = ( cardInputElement ) => {
+		setCardInput( cardInputElement );
+
+		cardInputElement.on( 'focus', function() {
+			setFocused( true );
 		} );
 
 		cardInputElement.on( 'blur', function() {
@@ -28,7 +57,7 @@ const CardControl = ( { label, onFocus } ) => {
 				cardInputElement.clear();
 			}
 		} );
-	}
+	};
 
 	return (
 		<div className="give-donor-dashboard-stripe-card-control">
