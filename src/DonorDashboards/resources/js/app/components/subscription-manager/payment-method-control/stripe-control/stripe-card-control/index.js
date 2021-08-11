@@ -19,19 +19,19 @@ const CardControl = ( { label, forwardedRef } ) => {
 					return {
 						give_stripe_payment_method: paymentMethod.id,
 					}
-				} else {
-					cardInput.focus();
-					return {
-						error: true
-					}
 				}
-			} else {
-				// Prevent user from updating the subscription if he entered invalid card details
-				if ( cardInput._invalid ) {
-					cardInput.focus();
-					return {
-						error: true
-					}
+
+				cardInput.focus();
+				return {
+					error: true
+				}
+			}
+
+			// Prevent user from updating the subscription if he entered invalid card details
+			if ( cardInput._invalid ) {
+				cardInput.focus();
+				return {
+					error: true
 				}
 			}
 
