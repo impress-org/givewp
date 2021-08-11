@@ -6,10 +6,14 @@ export default {
 		this.fn.field.formatCreditCard( jQuery( 'form.give-form' ) );
 		this.fn.__initialize_cache();
 
-		// Run code on after window load.
-		window.addEventListener( 'load', function() {
+		if( window.Give.WINDOW_IS_LOADED ) {
 			Give.form.fn.__sendBackToForm();
-		} );
+		} else {
+			// Run code on after window load.
+			window.addEventListener('load', function () {
+				Give.form.fn.__sendBackToForm();
+			});
+		}
 	},
 
 	fn: {
