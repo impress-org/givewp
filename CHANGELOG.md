@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Payment errors no longer revert to the default donation amount (#5913)
+-   Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (#5918)
 
 ## 2.12.2 - 2020-07-30
 
