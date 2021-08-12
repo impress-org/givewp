@@ -31,7 +31,7 @@ class FieldView {
 			return;
 		}
 
-		$classList = apply_filters( "give_form_field_class_name_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
+		$classList = apply_filters( "give_form_field_classes_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
 		$className = implode( ' ', array_unique( $classList ) );
 
 		echo "<div class=\"{$className}\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
