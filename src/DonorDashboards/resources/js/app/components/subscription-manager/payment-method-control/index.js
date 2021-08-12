@@ -3,26 +3,18 @@ import CardControl from './card-control';
 
 import './style.scss';
 
-const PaymentMethodControl = ( { gateway, label, onChange } ) => {
-	switch ( gateway.id ) {
+const PaymentMethodControl = ( props ) => {
+	switch ( props.gateway.id ) {
 		case 'stripe':
 		case 'stripe_apple_pay':
 		case 'stripe_becs':
 		case 'stripe_checkout':
 		case 'stripe_google_pay': {
-			return <StripeControl
-				label={ label }
-				gateway={gateway}
-				onChange={ ( val ) => onChange( val ) }
-			/>;
+			return <StripeControl { ...props } />;
 		}
 		case 'authorize':
 		case 'paypalpro': {
-			return <CardControl
-				label={ label }
-				gateway={gateway}
-				onChange={ ( val ) => onChange( val ) }
-			/>;
+			return <CardControl { ...props }/>;
 		}
 		default: {
 			return null;
