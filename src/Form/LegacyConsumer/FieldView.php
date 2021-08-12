@@ -31,7 +31,8 @@ class FieldView {
 			return;
 		}
 
-		$className = apply_filters( "give_form_field_class_name_{$field->getName()}", "form-row form-row-wide" );
+		$classList = apply_filters( "give_form_field_class_name_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
+		$className = implode( ' ', array_unique( $classList ) );
 
 		echo "<div class=\"{$className}\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
