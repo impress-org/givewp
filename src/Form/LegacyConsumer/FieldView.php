@@ -12,7 +12,6 @@ class FieldView {
 	const INPUT_TYPE_ATTRIBUTES = [
 		Types::PHONE    => 'tel',
 		Types::EMAIL    => 'email',
-		Types::CHECKBOX => 'checkbox',
 		Types::URL      => 'url',
 	];
 
