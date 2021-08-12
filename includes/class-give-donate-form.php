@@ -594,7 +594,7 @@ class Give_Donate_Form {
 	 * @since  2.0.6
 	 * @access public
 	 *
-	 * @param $price_id
+	 * @param int $price_id
 	 *
 	 * @return array|null
 	 */
