@@ -118,7 +118,7 @@
 	 * @since 2.7.0
 	 */
 	const updateIntroductionFields = function() {
-		const introductionFields = $( '[class*="sequoia[introduction][headline]_field"], [class*="sequoia[introduction][description]_field"], [class*="sequoia[introduction][image]_field"], [class*="sequoia[introduction][primary_color]_field"], [class*="sequoia[introduction][donate_label]_field"]' );
+		const introductionFields = $( '[class*="sequoia[introduction][headline]_field"], [class*="sequoia[introduction][description]_field"], [class*="sequoia[introduction][image]_field"], [class*="sequoia[introduction][donate_label]_field"]' );
 
 		if ( $( 'input[name="sequoia[introduction][enabled]"]' ).length !== 0 && ! $( 'input[name="sequoia[introduction][enabled]"]' ).prop( 'checked' ) ) {
 			$( introductionFields ).hide();

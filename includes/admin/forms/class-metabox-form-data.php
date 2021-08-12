@@ -152,6 +152,7 @@ class Give_MetaBox_Form_Data {
 								'name'          => __( 'Set Donation', 'give' ),
 								'description'   => __( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
 								'id'            => $prefix . 'set_price',
+								'default'          => give_format_decimal( [ 'amount' => '25.00' ] ),
 								'type'          => 'text_small',
 								'data_type'     => 'price',
 								'attributes'    => [

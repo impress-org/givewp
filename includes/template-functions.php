@@ -400,7 +400,7 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = '//placehold.it/600x600&text=' . urlencode( esc_attr__( 'GiveWP Placeholder Image', 'give' ) );
+	$placeholder_url = esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/give-placeholder.jpg');
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }
