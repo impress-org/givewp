@@ -170,7 +170,6 @@ function give_insert_payment( $payment_data = [] ) {
 	$payment->price_id       = $price_id;
 	$payment->donor_id       = ( ! empty( $payment_data['donor_id'] ) ? $payment_data['donor_id'] : '' );
 	$payment->user_id        = $payment_data['user_info']['id'];
-	$payment->email          = $payment_data['user_email'];
 	$payment->first_name     = $payment_data['user_info']['first_name'];
 	$payment->last_name      = $payment_data['user_info']['last_name'];
 	$payment->title_prefix   = ! empty( $payment_data['user_info']['title'] ) ? $payment_data['user_info']['title'] : '';
