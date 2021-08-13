@@ -20,6 +20,7 @@
 
 // Payment gateways
 @import 'paypal-commerce';
+@import 'authorizenet';
 
 // Structure
 html {
@@ -556,7 +557,7 @@ p {
 				font-size: 14px;
 
 				&.currency--before {
-					margin: 0 6px 11px 0;
+					margin: 0 6px 11px -10px;
 					@media screen and (max-width: $break-phone) {
 						font-size: 11px;
 						margin: 0 3px 6px 0;
@@ -564,7 +565,7 @@ p {
 				}
 
 				&.currency--after {
-					margin: 0 0 11px 6px;
+					margin: 0 -10px 11px 6px;
 					@media screen and (max-width: $break-phone) {
 						font-size: 11px;
 						margin: 0 0 6px 3px;
@@ -596,6 +597,16 @@ p {
 		}
 	}
 }
+
+// Set donation form type style
+.give-form-type-set {
+
+	.give-custom-amount-text {
+		display: none;
+	}
+
+}
+
 
 // Payment Section
 
@@ -1232,18 +1243,7 @@ form.give-form .form-row input[type='email'],
 form.give-form .form-row input[type='password'],
 form.give-form .form-row input[type='url'],
 .give-input-field-wrapper {
-	font-family: 'Montserrat', sans-serif;
-	background: #fff;
-	border: 1px solid #b8b8b8 !important;
-	box-sizing: border-box;
-	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289);
-	border-radius: 4px !important;
-	font-weight: 400;
-	height: auto;
-	font-size: 14px;
-	line-height: 1;
-	color: #828382;
-	padding: 14px !important;
+	@include text-field;
 }
 
 .give-square-cc-fields {
@@ -1263,26 +1263,7 @@ form[id*='give-form'] .form-row select.required,
 #give-recurring-form .form-row select.required,
 form.give-form .form-row select.required,
 .give-select {
-	font-family: 'Montserrat', sans-serif;
-	font-size: 14px;
-	font-weight: 400;
-	color: #828382;
-	line-height: 1.2;
-	padding: 12px !important;
-	min-height: 48px;
-	margin: 0;
-	border: 1px solid #b8b8b8 !important;
-	border-radius: 4px !important;
-	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289), 0 1px 0 1px rgba(0, 0, 0, 0.04);
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
-	background-color: #fff;
-	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='13' height='8' viewBox='0 0 13 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.66016 7.19531C5.90625 7.44141 6.31641 7.44141 6.5625 7.19531L11.8945 1.89062C12.1406 1.61719 12.1406 1.20703 11.8945 0.960938L11.2656 0.332031C11.0195 0.0859375 10.6094 0.0859375 10.3359 0.332031L6.125 4.54297L1.88672 0.332031C1.61328 0.0859375 1.20312 0.0859375 0.957031 0.332031L0.328125 0.960938C0.0820312 1.20703 0.0820312 1.61719 0.328125 1.89062L5.66016 7.19531Z' fill='%23A2A3A2'/%3E%3C/svg%3E"),
-		linear-gradient(to bottom, #fff 0%, #fff 100%);
-	background-repeat: no-repeat, repeat;
-	background-position: right 0.7em top 50%, 0 0;
-	background-size: 0.65em auto, 100%;
+	@include select-field;
 }
 
 form[id*='give-form'] .form-row select.multiselect,

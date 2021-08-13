@@ -108,6 +108,9 @@ Single Forms
 
 	.give_forms {
 		@include clearfix;
+		// Prevent super full width.
+		max-width: 1230px;
+		margin: 50px auto;
 	}
 }
 
