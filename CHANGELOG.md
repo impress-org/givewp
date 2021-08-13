@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.12.3 - 2021-08-12
+
 ### Fixed
 
 -   Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form template. (#5910) 
@@ -15,8 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910) 
 -   Payment errors no longer revert to the default donation amount (#5913)
 -   Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (#5918)
+-   Donors can now update their credit card using the Donor Dashboard (#5902)
 
-## 2.12.2 - 2020-07-30
+## 2.12.2 - 2021-07-30
 
 ### Added
 
@@ -30,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add missing Fields API node types to `Types` (#5891)
 -   Remove placeholder from Legacy Consumer checkbox template (#5897)
 -   Use correct ID in Legacy Consumer checkbox label for attribute (#5897)
--   Donors can now update their credit card using the Donor Dashboard (#5902)
 -   Donors with no donations no longer see others (#5908)
 
 ### Changed
