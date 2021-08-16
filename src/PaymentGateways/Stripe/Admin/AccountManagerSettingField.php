@@ -209,11 +209,16 @@ class AccountManagerSettingField {
 	 * @param array  $stripeAccount
 	 */
 	private function getStripeAccountMarkup( $stripeAccount ) {
-
 		$accountName       = $stripeAccount['account_name'];
 		$accountEmail      = $stripeAccount['account_email'];
 		$stripeAccountId   = $stripeAccount['account_id'];
 		$stripeAccountSlug = $stripeAccount['account_slug'];
+
+		// Do not print global default Stripe account in donation form setting.
+		if( ! $this->isGlobalDefaultStripeAccount( $stripeAccountSlug ) ) {
+			return;
+		}
+
 		$disconnectUrl     = add_query_arg(
 			[
 				'account_type' => $stripeAccount['type'],
@@ -224,11 +229,6 @@ class AccountManagerSettingField {
 		);
 
 		$classes = $stripeAccountSlug === $this->defaultStripeAccountSlug ? ' give-stripe-boxshadow-option-wrap__selected' : '';
-
-		// In donation form setting add class to stripe account container if current account set as default global.
-		if( ! $this->isGlobalSettingPage() && $stripeAccountSlug === $this->accountDetailRepository->getDefaultStripeAccountSlug() ){
-			$classes .= ' give-global-default-account';
-		}
 		?>
 		<div
 			id="give-stripe-<?php echo $stripeAccountSlug; ?>"
@@ -535,5 +535,23 @@ class AccountManagerSettingField {
 	 */
 	private function isGlobalSettingPage() {
 		return Give_Admin_Settings::is_setting_page( 'gateways', 'stripe-settings' );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $accountSlug Stripe account slug
+	 *
+	 * @return bool
+	 */
+	private function isGlobalDefaultStripeAccount( $accountSlug ) {
+		$globalDefaultStripeAccountDetail = give_stripe_get_default_account();
+
+		if( empty( $globalDefaultStripeAccountDetail ) ) {
+			return false;
+		}
+
+
+		return ! $this->isGlobalSettingPage() && $globalDefaultStripeAccountDetail['account_slug'] === $accountSlug;
 	}
 }
