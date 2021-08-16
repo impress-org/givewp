@@ -112,4 +112,15 @@ class AccountDetail {
 	public function getDefaultStripeAccountSlugForDonationForm( $formId ) {
 		return give()->form_meta->get_meta( $formId, '_give_stripe_default_account', true );
 	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param int $formId
+	 *
+	 * @return bool
+	 */
+	public function setDefaultStripeAccountSlugForDonationForm( $formId, $stripeAccountSlug ) {
+		return give()->form_meta->update_meta( $formId, '_give_stripe_default_account', $stripeAccountSlug );
+	}
 }
