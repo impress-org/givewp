@@ -215,7 +215,7 @@ class AccountManagerSettingField {
 		$stripeAccountSlug = $stripeAccount['account_slug'];
 
 		// Do not print global default Stripe account in donation form setting.
-		if( ! $this->isGlobalDefaultStripeAccount( $stripeAccountSlug ) ) {
+		if( $this->isGlobalDefaultStripeAccount( $stripeAccountSlug ) ) {
 			return;
 		}
 

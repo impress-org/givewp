@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Repositories;
 
+use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 use Give\Framework\Exceptions\Primitives\DuplicateStripeAccountName;
 use Give\Framework\Exceptions\Primitives\StripeAccountAlreadyConnected;
@@ -39,7 +40,7 @@ class Settings {
 	/**
 	 * @unreleased
 	 * @throws StripeAccountAlreadyConnected
-	 * @throws DuplicateStripeAccountName
+	 * @throws DuplicateStripeAccountName|InvalidPropertyName
 	 */
 	public function addNewStripeAccount( AccountDetailModel $stripeAccount ) {
 		$allAccounts = give_stripe_get_all_accounts();
@@ -90,6 +91,7 @@ class Settings {
 	 * @param array $allAccounts
 	 *
 	 * @return bool
+	 * @throws InvalidPropertyName
 	 */
 	public function isAccountAlreadyConnected( AccountDetailModel $stripeAccount, $allAccounts ) {
 		foreach ( $allAccounts as $account ) {
@@ -115,6 +117,7 @@ class Settings {
 	 * @param array $allAccounts
 	 *
 	 * @return bool
+	 * @throws InvalidPropertyName
 	 */
 	public function isUniqueAccountName( $stripeAccountName, $allAccounts ) {
 		foreach ( $allAccounts as $account ) {

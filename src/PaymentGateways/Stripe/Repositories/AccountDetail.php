@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Repositories;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 
 /**
@@ -36,10 +37,11 @@ class AccountDetail {
 	/**
 	 * Get account detail by Stripe account id.
 	 *
-	 * @since 2.10.2
 	 * @param string $accountId
 	 *
 	 * @return AccountDetailModel
+	 * @throws InvalidPropertyName
+	 * @since 2.10.2
 	 */
 	public function getAccountDetail( $accountId ) {
 		$accountDetail = array_filter(
@@ -57,10 +59,11 @@ class AccountDetail {
 	 * Get account detail by Stripe account slug.
 	 *
 	 * @unlreased
+	 *
 	 * @param string $accountSlug
 	 *
 	 * @return AccountDetailModel
-	 * @throws InvalidArgumentException
+	 * @throws InvalidArgumentException|InvalidPropertyName
 	 */
 	public function getAccountDetailBySlug( $accountSlug ) {
 		$accountDetail = array_filter(
