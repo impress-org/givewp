@@ -7,12 +7,14 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.12.0
+ * @unreleased Support visibility conditions
  */
 abstract class Field implements Node {
 
 	use Concerns\HasDefaultValue;
 	use Concerns\HasName;
 	use Concerns\HasType;
+	use Concerns\HasVisibilityConditions;
 	use Concerns\IsReadOnly;
 	use Concerns\IsRequired;
 	use Concerns\SerializeAsJson;
