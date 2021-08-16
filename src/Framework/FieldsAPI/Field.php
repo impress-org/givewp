@@ -23,6 +23,8 @@ abstract class Field implements Node {
 	protected $validationRules;
 
 	/**
+	 * @since 2.12.0
+	 *
 	 * @param string $name
 	 */
 	public function __construct( $name ) {

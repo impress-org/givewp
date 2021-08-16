@@ -16,6 +16,8 @@ abstract class Element implements Node {
 	use Concerns\SerializeAsJson;
 
 	/**
+	 * @since 2.12.0
+	 *
 	 * @param string $name
 	 */
 	public function __construct( $name ) {

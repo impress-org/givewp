@@ -28,10 +28,22 @@ class Group implements Node, Collection {
 	 */
 	const TYPE = 'group';
 
+	/**
+	 * @since 2.12.0
+	 *
+	 * @param $name
+	 */
 	public function __construct( $name ) {
 		$this->name = $name;
 	}
 
+	/**
+	 * @since 2.12.0
+	 *
+	 * @param $name
+	 *
+	 * @return static
+	 */
 	public static function make( $name ) {
 		return new static( $name );
 	}
