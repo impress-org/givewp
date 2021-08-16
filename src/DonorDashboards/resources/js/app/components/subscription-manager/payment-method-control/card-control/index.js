@@ -1,30 +1,18 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useImperativeHandle } from 'react';
 import { PaymentInputsWrapper, usePaymentInputs } from 'react-payment-inputs';
 import images from 'react-payment-inputs/images';
 import { useAccentColor } from '../../../../hooks';
 
 import './style.scss';
 
-const CardControl = ( { label, onChange, value } ) => {
+const CardControl = ( { label, value, forwardedRef } ) => {
 	const [ cardNumber, setCardNumber ] = useState( value ? value.card_number : '' );
 	const [ cardExpiryDate, setCardExpiryDate ] = useState( value ? `${ value.card_exp_month } \ ${ value.card_exp_year }` : '' );
 	const [ cardCVC, setCardCVC ] = useState( value ? value.card_cvc : '' );
 	const [ cardZIP, setCardZIP ] = useState( value ? value.card_zip : '' );
 	const accentColor = useAccentColor();
 	const cardFullExpiryYear = cardExpiryDate.substr( 5 ) ? (new Date()).getFullYear().toString().substr(0, 2) + cardExpiryDate.substr( 5 ) : '';
-
-	useEffect( () => {
-		if ( onChange ) {
-			onChange( {
-				card_number: cardNumber.replace( /\s+/g, '' ),
-				card_exp_month: cardExpiryDate.substr( 0, 2 ),
-				card_exp_year: cardFullExpiryYear,
-				card_cvc: cardCVC,
-				card_zip: cardZIP,
-			} );
-		}
-	}, [ cardNumber, cardExpiryDate, cardCVC, cardZIP ] );
 
 	const {
 		wrapperProps,
@@ -33,7 +21,28 @@ const CardControl = ( { label, onChange, value } ) => {
 		getExpiryDateProps,
 		getCVCProps,
 		getZIPProps,
+		meta: cardInputMeta
 	} = usePaymentInputs();
+
+	useImperativeHandle( forwardedRef, () => ( {
+		async getPaymentMethod() {
+			const { error } = cardInputMeta;
+
+			if ( error ) {
+				return {
+					error: true
+				}
+			}
+
+			return {
+				card_number: cardNumber.replace( /\s+/g, '' ),
+				card_exp_month: cardExpiryDate.substr( 0, 2 ),
+				card_exp_year: cardFullExpiryYear,
+				card_cvc: cardCVC,
+				card_zip: cardZIP,
+			};
+		},
+	} ), [ cardNumber, cardExpiryDate, cardCVC, cardZIP ] );
 
 	const inputProps = {
 		...wrapperProps,

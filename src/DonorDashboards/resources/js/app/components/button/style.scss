@@ -11,7 +11,7 @@
 	display: inline-flex;
 	align-items: center;
 	box-shadow: 0 0 0 0 #7ec980, 0 0 0 0 #4fa651;
-	transition: box-shadow 0.1s ease;
+	transition: box-shadow 0.1s ease, background-color ease-in 0.3s;
 	cursor: pointer;
 
 	svg {
@@ -20,6 +20,11 @@
 
 	&:focus {
 		box-shadow: 0 0 0 1px #7ec980, 0 0 0 2px #4fa651;
+	}
+
+	&:disabled {
+		border: 1px solid #bbb;
+		background: #d0d0d0 !important;
 	}
 
 	&.give-donor-dashboard-button--primary {

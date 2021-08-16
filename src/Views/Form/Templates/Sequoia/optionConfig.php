@@ -201,9 +201,9 @@ return [
 				'desc'       => __( 'Sharing instructions display above the social sharing buttons. Best practice: be direct, bold, and confident here. Donors share when they are asked to.', 'give' ),
 				'type'       => 'text',
 				'attributes' => [
-					'placeholder' => __( 'Help us out by sharing with friends and followers that you supported the cause!', 'give' ),
+					'placeholder' => __( 'Help spread the word by sharing your support with your friends and followers!', 'give' ),
 				],
-				'default'    => __( 'Help us out by sharing with friends and followers that you supported the cause!', 'give' ),
+				'default'    => __( 'Help spread the word by sharing your support with your friends and followers!', 'give' ),
 			],
 			[
 				'id'         => 'twitter_message',
