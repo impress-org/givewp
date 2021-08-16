@@ -16,10 +16,11 @@ class AccountDetail {
 	/**
 	 * Return Stripe account id for donation form.
 	 *
-	 * @since 2.10.2
 	 * @param int $formId
 	 *
 	 * @return AccountDetailModel
+	 * @throws InvalidPropertyName
+	 * @since 2.10.2
 	 */
 	public function getDonationFormStripeAccountId( $formId ) {
 		$formHasStripeAccount = give_is_setting_enabled( give_get_meta( $formId, 'give_stripe_per_form_accounts', true ) );
