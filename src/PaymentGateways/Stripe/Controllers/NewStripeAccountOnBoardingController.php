@@ -24,7 +24,7 @@ class NewStripeAccountOnBoardingController {
 	/**
 	 * @param AccountDetailRepository $accountDetailRepository
 	 */
-	public function __construct( AccountDetailRepository $accountDetailRepository) {
+	public function __construct( AccountDetailRepository $accountDetailRepository ) {
 		$this->accountDetailRepository = $accountDetailRepository;
 	}
 
@@ -93,8 +93,8 @@ class NewStripeAccountOnBoardingController {
 
 			give( Settings::class )->addNewStripeAccount( $accountDetailModel );
 
-			if( $requestedData->formId ) {
-				if( ! $this->accountDetailRepository->getDefaultStripeAccountSlugForDonationForm( $requestedData->formId ) ) {
+			if ( $requestedData->formId ) {
+				if ( ! $this->accountDetailRepository->getDefaultStripeAccountSlugForDonationForm( $requestedData->formId ) ) {
 					$this->accountDetailRepository->setDefaultStripeAccountSlugForDonationForm(
 						$requestedData->formId,
 						$accountDetailModel->accountSlug
