@@ -28,7 +28,7 @@ class SetDefaultStripeAccountController {
 	 */
 	public function __construct( AccountDetail $accountDetailsRepository, Settings $settingsRepository ) {
 		$this->accountDetailsRepository = $accountDetailsRepository;
-		$this->settingsRepository = $settingsRepository;
+		$this->settingsRepository       = $settingsRepository;
 	}
 
 	/**
@@ -43,8 +43,14 @@ class SetDefaultStripeAccountController {
 			if ( $requestData->formId ) {
 				$this->accountDetailsRepository
 					->setDefaultStripeAccountSlugForDonationForm(
+						$requestData->formId,
+						$requestData->accountSlug
+					);
+
+				give()->form_meta->update_meta(
 					$requestData->formId,
-					$requestData->accountSlug
+					'give_stripe_per_form_accounts',
+					'enabled'
 				);
 
 				wp_send_json_success();
