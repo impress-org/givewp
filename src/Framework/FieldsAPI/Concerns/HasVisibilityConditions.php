@@ -38,12 +38,7 @@ trait HasVisibilityConditions {
 	 */
 	public function showIf( ...$conditions ) {
 		foreach ( $conditions as $condition ) {
-			// Cast to a BasicCondition if not already a Condition
-			if ( ! $condition instanceof Condition ) {
-				$condition = BasicCondition::fromArray( $condition );
-			}
-
-			$this->visibilityConditions[] = $condition;
+			$this->visibilityConditions[] = $this->normalizeCondition( $condition );
 		}
 
 		return $this;
@@ -60,15 +55,37 @@ trait HasVisibilityConditions {
 	 */
 	public function hideIf( ...$conditions ) {
 		foreach ( $conditions as $condition ) {
-			// Cast to a BasicCondition if not already a Condition
-			if ( ! $condition instanceof Condition ) {
-				$condition = BasicCondition::fromArray( $condition );
-			}
-
 			// Invert the condition since the node is visible by default
-			$this->visibilityConditions[] = $condition->invert();
+			$this->visibilityConditions[] = $this->normalizeCondition( $condition )->invert();
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Normalize the condition if in array format.
+	 *
+	 * @unreleased
+	 *
+	 * @param Condition|array $condition
+	 *
+	 * @return Condition
+	 */
+	protected function normalizeCondition( $condition ) {
+		if ( ! $condition instanceof Condition && is_array( $condition ) ) {
+			// If the first array item is also an array, then it is nested, otherwise it is basic.
+			$conditionClass = is_array( $condition[0] ) ? NestedCondition::class : BasicCondition::class;
+
+			// If we are working with a nested condition, then we need to ensure $conditions passed are already cast to a Condition
+			if ( $conditionClass === NestedCondition::class ) {
+				$condition[0] = array_map( [ $this, 'normalizeCondition' ], $condition[0] );
+			}
+
+			$condition = new $conditionClass( ...$condition );
+		}
+
+		// TODO: Probably should throw an error if not an array or Condition
+
+		return $condition;
 	}
 }
