@@ -12,7 +12,7 @@ trait HasVisibilityConditions {
 	 *
 	 * @unreleased
 	 *
-	 * @var Condition[]
+	 * @var BasicCondition[]
 	 */
 	protected $visibilityConditions = [];
 
@@ -21,7 +21,7 @@ trait HasVisibilityConditions {
 	 *
 	 * @unreleased
 	 *
-	 * @return Condition[]
+	 * @return BasicCondition[]
 	 */
 	public function getVisibilityConditions() {
 		return $this->visibilityConditions;
@@ -32,7 +32,7 @@ trait HasVisibilityConditions {
 	 *
 	 * @unreleased
 	 *
-	 * @param Condition|array ...$conditions
+	 * @param BasicCondition|array ...$conditions
 	 *
 	 * @return $this
 	 */
@@ -49,7 +49,7 @@ trait HasVisibilityConditions {
 	 *
 	 * @unreleased
 	 *
-	 * @param Condition|array ...$conditions
+	 * @param BasicCondition|array ...$conditions
 	 *
 	 * @return $this
 	 */
@@ -67,21 +67,13 @@ trait HasVisibilityConditions {
 	 *
 	 * @unreleased
 	 *
-	 * @param Condition|array $condition
+	 * @param BasicCondition|array $condition
 	 *
-	 * @return Condition
+	 * @return BasicCondition
 	 */
 	protected function normalizeCondition( $condition ) {
-		if ( ! $condition instanceof Condition && is_array( $condition ) ) {
-			// If the first array item is also an array, then it is nested, otherwise it is basic.
-			$conditionClass = is_array( $condition[0] ) ? NestedCondition::class : BasicCondition::class;
-
-			// If we are working with a nested condition, then we need to ensure $conditions passed are already cast to a Condition
-			if ( $conditionClass === NestedCondition::class ) {
-				$condition[0] = array_map( [ $this, 'normalizeCondition' ], $condition[0] );
-			}
-
-			$condition = new $conditionClass( ...$condition );
+		if ( ! $condition instanceof BasicCondition && is_array( $condition ) ) {
+			$condition = new BasicCondition( ...$condition );
 		}
 
 		// TODO: Probably should throw an error if not an array or Condition
