@@ -2,6 +2,8 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
+use Give\Framework\FieldsAPI\Conditions\BasicCondition;
+
 /**
  * @unreleased
  */

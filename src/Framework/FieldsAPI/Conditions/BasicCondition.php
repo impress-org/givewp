@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\Concerns;
+namespace Give\Framework\FieldsAPI\Conditions;
 
 /**
  * @unreleased

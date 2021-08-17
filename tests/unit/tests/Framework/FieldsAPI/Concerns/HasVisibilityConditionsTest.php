@@ -1,7 +1,7 @@
 <?php
 
-use Give\Framework\FieldsAPI\Concerns\BasicCondition;
 use Give\Framework\FieldsAPI\Concerns\HasVisibilityConditions;
+use Give\Framework\FieldsAPI\Conditions\BasicCondition;
 use PHPUnit\Framework\TestCase;
 
 final class HasVisibilityConditionsTest extends TestCase {
