@@ -1,45 +1,62 @@
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState, useEffect } from 'react';
+import { CardElement, useStripe } from '@stripe/react-stripe-js';
+import { useState, useImperativeHandle } from 'react';
 import './style.scss';
 
-const CardControl = ( { label, onChange, value } ) => {
+const CardControl = ( { label, forwardedRef } ) => {
 	const stripe = useStripe();
-	const elements = useElements();
-
+	const [ cardInput, setCardInput ] = useState( null );
 	const [ focused, setFocused ] = useState( false );
-	const [ paymentMethodId, setPaymentMethodId ] = useState( value );
 
-	useEffect( () => {
-		if ( paymentMethodId ) {
-			onChange( {
-				give_stripe_payment_method: paymentMethodId,
-			} );
-		}
-	}, [ paymentMethodId ] );
+	useImperativeHandle( forwardedRef, () => ( {
+		async getPaymentMethod() {
+			if ( ! cardInput._empty && ! cardInput._invalid ) {
+				const { error, paymentMethod } = await stripe.createPaymentMethod( {
+					type: 'card',
+					card: cardInput,
+				} );
 
-	const handleBlur = async() => {
-		setFocused( false );
+				if ( ! error ) {
+					return {
+						give_stripe_payment_method: paymentMethod.id,
+					}
+				}
 
-		if ( ! stripe || ! elements ) {
-			// Stripe.js has not loaded yet. Make sure to disable
-			// form submission until Stripe.js has loaded.
-			return;
-		}
+				cardInput.focus();
+				return {
+					error: true
+				}
+			}
 
-		// Get a reference to a mounted CardElement. Elements knows how
-		// to find your CardElement because there can only ever be one of
-		// each type of element.
-		const cardElement = elements.getElement( CardElement );
+			// Prevent user from updating the subscription if he entered invalid card details
+			if ( cardInput._invalid ) {
+				cardInput.focus();
+				return {
+					error: true
+				}
+			}
 
-		// Use your card Element with other Stripe.js APIs
-		const { error, paymentMethod } = await stripe.createPaymentMethod( {
-			type: 'card',
-			card: cardElement,
+			return {
+				give_stripe_payment_method: null
+			}
+		},
+	} ), [ cardInput ] );
+
+	const handleCardInputEvents = ( cardInputElement ) => {
+		setCardInput( cardInputElement );
+
+		cardInputElement.on( 'focus', function() {
+			setFocused( true );
 		} );
 
-		if ( ! error ) {
-			setPaymentMethodId( paymentMethod.id );
-		}
+		cardInputElement.on( 'blur', function() {
+			setFocused( false );
+		} );
+
+		cardInputElement.on( 'change', function( { empty } ) {
+			if ( empty ) {
+				cardInputElement.clear();
+			}
+		} );
 	};
 
 	return (
@@ -48,7 +65,7 @@ const CardControl = ( { label, onChange, value } ) => {
 			<div className={ focused ? 'give-donor-dashboard-stripe-card-control__input give-donor-dashboard-stripe-card-control__input--focused' : 'give-donor-dashboard-stripe-card-control__input' }>
 				<CardElement
 					style={ { base: { fontFamily: 'Montserrat' } } }
-					onFocus={ () => setFocused( true ) } onBlur={ () => handleBlur() }
+					onReady={ handleCardInputEvents }
 				/>
 			</div>
 		</div>

@@ -11,7 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Stripe Admin UI has been improved (#5832)
 
-## 2.12.2 - 2020-07-30
+## 2.12.3 - 2021-08-12
+
+### Fixed
+
+-   Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form template. (#5910) 
+-   Fix the placeholder image and set a max-width for the legacy form template. (#5910)
+-   Add support for admin defined recurring donations to the multi-step form template. (#5910)
+-   Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910) 
+-   Payment errors no longer revert to the default donation amount (#5913)
+-   Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (#5918)
+-   Donors can now update their credit card using the Donor Dashboard (#5902)
+
+## 2.12.2 - 2021-07-30
 
 ### Added
 
@@ -30,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
+-   Support multi-selects in Legacy Consumer select template (#5905)
 
 ## 2.12.1 - 2021-07-22
 

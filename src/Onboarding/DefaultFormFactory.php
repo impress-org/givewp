@@ -134,7 +134,7 @@ class DefaultFormFactory {
 				'headline'            => __( 'A great big thank you!', 'give' ),
 				'description'         => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				'sharing'             => 'enabled',
-				'sharing_instruction' => __( 'Help us out by sharing with friends and followers that you supported the cause!', 'give' ),
+				'sharing_instruction' => __( 'Help spread the word by sharing your support with your friends and followers!', 'give' ),
 				'twitter_message'     => __( "I just gave to this cause. Who's next?", 'give' ),
 			],
 		];

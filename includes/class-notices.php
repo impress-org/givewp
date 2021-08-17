@@ -124,9 +124,9 @@ class Give_Notices {
 
 				/*
 				 * Add custom notice html
-				 * Note: This param has more priority then description, so if you have  both param then this one will be use
-				 *       for generating notice html. Most of feature of notice attach to core generated html, so if you set
-				 *       custom html then please add required classes and data attribute which help to apply feature on notice.
+				 * Note: This param has more priority than description, so if you use both params then this one will be used
+				 *       for generating notice html. Most features of the notice attach to core generated html, so if you set
+				 *       custom html then please add required classes and data attribute which help to apply features on notice.
 				 *
 				 * @since 1.8.16
 				 */

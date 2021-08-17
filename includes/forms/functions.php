@@ -193,6 +193,11 @@ function give_send_back_to_checkout( $args = [] ) {
 	// Set the $level_id.
 	if ( isset( $_POST['give-price-id'] ) ) {
 		$defaults['level-id'] = sanitize_text_field( $_POST['give-price-id'] );
+
+		// If custom, set amount
+		if( 'custom' === $defaults[ 'level-id' ] ) {
+			$defaults['custom-amount'] = sanitize_text_field( $_POST['give-amount'] );
+		}
 	}
 
 	// Check for backward compatibility.
