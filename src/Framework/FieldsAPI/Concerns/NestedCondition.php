@@ -24,7 +24,7 @@ class NestedCondition extends Condition {
 	 */
 	public function __construct( $conditions, $boolean = 'and' ) {
 		$this->conditions = $conditions;
-		$this->boolean = $boolean;
+		$this->boolean    = $boolean;
 	}
 
 	/**
@@ -43,9 +43,9 @@ class NestedCondition extends Condition {
 	 */
 	public function jsonSerialize() {
 		return [
-			'type' => static::TYPE,
+			'type'       => static::TYPE,
 			'conditions' => $this->conditions,
-			'boolean' => $this->boolean,
+			'boolean'    => $this->boolean,
 		];
 	}
 }

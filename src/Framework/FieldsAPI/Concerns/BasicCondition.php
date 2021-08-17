@@ -12,10 +12,10 @@ class BasicCondition extends Condition {
 
 	/** @var array */
 	const OPERATORS_AND_INVERSIONS = [
-		'=' => '!=',
+		'='  => '!=',
 		'!=' => '=',
-		'>' => '<=',
-		'<' => '>=',
+		'>'  => '<=',
+		'<'  => '>=',
 		'>=' => '<',
 		'<=' => '>',
 	];
@@ -33,10 +33,10 @@ class BasicCondition extends Condition {
 	public $boolean;
 
 	public function __construct( $field, $operator, $value, $boolean = 'and' ) {
-		$this->field = $field;
+		$this->field    = $field;
 		$this->operator = $operator;
-		$this->value = $value;
-		$this->boolean = $boolean;
+		$this->value    = $value;
+		$this->boolean  = $boolean;
 	}
 
 	/**
@@ -53,11 +53,11 @@ class BasicCondition extends Condition {
 	 */
 	public function jsonSerialize() {
 		return [
-			'type' => static::TYPE,
-			'field' => $this->field,
-			'value' => $this->value,
+			'type'     => static::TYPE,
+			'field'    => $this->field,
+			'value'    => $this->value,
 			'operator' => $this->operator,
-			'boolean' => $this->boolean,
+			'boolean'  => $this->boolean,
 		];
 	}
 }
