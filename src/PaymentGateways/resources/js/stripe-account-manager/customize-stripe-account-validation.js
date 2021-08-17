@@ -8,7 +8,8 @@
 const {__, sprintf} = wp.i18n;
 
 window.addEventListener('DOMContentLoaded', function () {
-	const form = document.querySelector('.post-type-give_forms form[name="post"]');
+	const bodyClass = document.body.classList.contains('post.php') ? '.post.php' : '.post-new-php'
+	const form = document.querySelector(`${bodyClass}.post-type-give_forms form[name="post"]`);
 
 	if (!form) {
 		return;
