@@ -1,6 +1,6 @@
 <?php
 
-use Give\Framework\FieldsAPI\Concerns\Condition;
+use Give\Framework\FieldsAPI\Concerns\BasicCondition;
 use Give\Framework\FieldsAPI\Concerns\HasVisibilityConditions;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +16,7 @@ final class HasVisibilityConditionsTest extends TestCase {
 	public function testCanSetWhenShown() {
 		/** @var HasVisibilityConditions $mock */
 		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
-
-		/** @var Condition $mockCondition */
-		$mockCondition = $this->getMockForAbstractClass( Condition::class );
+		$mockCondition = new BasicCondition( 'foo', '=', 'bar' );
 
 		$mock->showIf( $mockCondition );
 
@@ -32,9 +30,7 @@ final class HasVisibilityConditionsTest extends TestCase {
 	public function testCanSetWhenHidden() {
 		/** @var HasVisibilityConditions $mock */
 		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
-
-		/** @var Condition $mockCondition */
-		$mockCondition = $this->getMockForAbstractClass( Condition::class );
+		$mockCondition = new BasicCondition( 'foo', '=', 'bar' );
 
 		$mock->hideIf( $mockCondition );
 
