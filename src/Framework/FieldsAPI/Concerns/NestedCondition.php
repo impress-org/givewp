@@ -22,7 +22,7 @@ class NestedCondition extends Condition {
 	 * @param Condition[] $conditions
 	 * @param string $boolean
 	 */
-	public function __construct( $conditions, $boolean = 'or' ) {
+	public function __construct( $conditions, $boolean = 'and' ) {
 		$this->conditions = $conditions;
 		$this->boolean = $boolean;
 	}

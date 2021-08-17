@@ -32,7 +32,7 @@ class BasicCondition extends Condition {
 	/** @var string */
 	public $boolean;
 
-	public function __construct( $field, $operator, $value, $boolean = 'or' ) {
+	public function __construct( $field, $operator, $value, $boolean = 'and' ) {
 		$this->field = $field;
 		$this->operator = $operator;
 		$this->value = $value;
