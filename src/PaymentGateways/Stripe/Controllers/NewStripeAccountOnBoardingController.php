@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Stripe\Controllers;
 
 use Give\PaymentGateways\Stripe\DataTransferObjects\NewStripeAccountOnBoardingDto;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
-use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give_Admin_Settings;
 use Stripe\Stripe;
@@ -17,15 +16,15 @@ use Stripe\Stripe;
  */
 class NewStripeAccountOnBoardingController {
 	/**
-	 * @var AccountDetailRepository
+	 * @var Settings
 	 */
-	private $accountDetailRepository;
+	private $settings;
 
 	/**
-	 * @param AccountDetailRepository $accountDetailRepository
+	 * @param Settings $settings
 	 */
-	public function __construct( AccountDetailRepository $accountDetailRepository ) {
-		$this->accountDetailRepository = $accountDetailRepository;
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
 	}
 
 	/**
@@ -57,9 +56,11 @@ class NewStripeAccountOnBoardingController {
 				sprintf(
 					'<strong>%1$s</strong> %2$s',
 					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
+					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance',
+						'give' )
 				)
 			);
+
 			return;
 		}
 
@@ -91,11 +92,11 @@ class NewStripeAccountOnBoardingController {
 				]
 			);
 
-			give( Settings::class )->addNewStripeAccount( $accountDetailModel );
+			$this->settings->addNewStripeAccount( $accountDetailModel );
 
 			if ( $requestedData->formId ) {
-				if ( ! $this->accountDetailRepository->getDefaultStripeAccountSlugForDonationForm( $requestedData->formId ) ) {
-					$this->accountDetailRepository->setDefaultStripeAccountSlugForDonationForm(
+				if ( ! $this->settings->getDefaultStripeAccountSlugForDonationForm( $requestedData->formId ) ) {
+					$this->settings->setDefaultStripeAccountSlugForDonationForm(
 						$requestedData->formId,
 						$accountDetailModel->accountSlug
 					);
@@ -123,7 +124,8 @@ class NewStripeAccountOnBoardingController {
 				sprintf(
 					'<strong>%1$s</strong> %2$s',
 					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
+					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance',
+						'give' )
 				)
 			);
 

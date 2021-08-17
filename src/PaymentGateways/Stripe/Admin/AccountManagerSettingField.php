@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Admin;
 
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
+use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give_Admin_Settings;
 use function _e;
 use function add_query_arg;
@@ -40,6 +41,10 @@ class AccountManagerSettingField {
 	 * @var string
 	 */
 	private $defaultStripeAccountSlug;
+	/**
+	 * @var Settings
+	 */
+	private $settings;
 
 	/**
 	 * AccountManagerSettingField constructor.
@@ -47,9 +52,11 @@ class AccountManagerSettingField {
 	 * @unreleased
 	 *
 	 * @param AccountDetail $accountDetailRepository
+	 * @param Settings $settings
 	 */
-	public function __construct( AccountDetail $accountDetailRepository ) {
+	public function __construct( AccountDetail $accountDetailRepository, Settings $settings ) {
 		$this->accountDetailRepository = $accountDetailRepository;
+		$this->settings = $settings;
 	}
 
 	/**
@@ -57,10 +64,10 @@ class AccountManagerSettingField {
 	 */
 	private function setUpProperties() {
 		global $post;
-		$this->stripeAccounts           = $this->accountDetailRepository->getAllStripeAccounts();
+		$this->stripeAccounts           = $this->settings->getAllStripeAccounts();
 		$this->defaultStripeAccountSlug = $this->isGlobalSettingPage() ?
-			$this->accountDetailRepository->getDefaultStripeAccountSlug() :
-			$this->accountDetailRepository->getDefaultStripeAccountSlugForDonationForm( $post->ID );
+			$this->settings->getDefaultStripeAccountSlug() :
+			$this->settings->getDefaultStripeAccountSlugForDonationForm( $post->ID );
 	}
 
 	/**

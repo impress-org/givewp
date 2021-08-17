@@ -20,10 +20,49 @@ use function give_update_option;
 class Settings {
 	/**
 	 * @unreleased
+	 * @return array
+	 */
+	public function getAllStripeAccounts() {
+		return give_stripe_get_all_accounts();
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param int $formId
+	 *
+	 * @return bool|mixed|string
+	 */
+	public static function getDefaultStripeAccountSlugForDonationForm( $formId ) {
+		return give()->form_meta->get_meta( $formId, '_give_stripe_default_account', true );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param int $formId
+	 * @param $stripeAccountSlug
+	 *
+	 * @return bool
+	 */
+	public static function setDefaultStripeAccountSlugForDonationForm( $formId, $stripeAccountSlug ) {
+		return give()->form_meta->update_meta( $formId, '_give_stripe_default_account', $stripeAccountSlug );
+	}
+
+	/**
+	 * @unreleased
+	 * @return string
+	 */
+	public function getDefaultStripeAccountSlug() {
+		return give_stripe_get_default_account_slug();
+	}
+
+	/**
+	 * @unreleased
 	 * @return bool
 	 */
 	public function hasDefaultGlobalStripeAccountSlug() {
-		return (bool) give_get_option( '_give_stripe_default_account', '' );
+		return (bool) $this->getDefaultStripeAccountSlug();
 	}
 
 	/**

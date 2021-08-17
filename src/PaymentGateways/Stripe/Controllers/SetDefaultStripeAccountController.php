@@ -14,21 +14,15 @@ use Give\PaymentGateways\Stripe\Repositories\Settings;
  */
 class SetDefaultStripeAccountController {
 	/**
-	 * @var AccountDetail
-	 */
-	private $accountDetailsRepository;
-	/**
 	 * @var Settings
 	 */
 	private $settingsRepository;
 
 	/**
-	 * @param AccountDetail $accountDetailsRepository
 	 * @param Settings $settingsRepository
 	 */
-	public function __construct( AccountDetail $accountDetailsRepository, Settings $settingsRepository ) {
-		$this->accountDetailsRepository = $accountDetailsRepository;
-		$this->settingsRepository       = $settingsRepository;
+	public function __construct( Settings $settingsRepository ) {
+		$this->settingsRepository = $settingsRepository;
 	}
 
 	/**
@@ -41,7 +35,7 @@ class SetDefaultStripeAccountController {
 
 		try {
 			if ( $requestData->formId ) {
-				$this->accountDetailsRepository
+				$this->settingsRepository
 					->setDefaultStripeAccountSlugForDonationForm(
 						$requestData->formId,
 						$requestData->accountSlug
