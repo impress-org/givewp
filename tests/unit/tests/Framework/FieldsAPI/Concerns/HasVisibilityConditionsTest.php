@@ -26,18 +26,4 @@ final class HasVisibilityConditionsTest extends TestCase {
 
 		$this->assertCount( 3, $mock->getVisibilityConditions() );
 	}
-
-	public function testCanSetWhenHidden() {
-		/** @var HasVisibilityConditions $mock */
-		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
-		$mockCondition = new BasicCondition( 'foo', '=', 'bar' );
-
-		$mock->hideIf( $mockCondition );
-
-		$this->assertCount( 1, $mock->getVisibilityConditions() );
-
-		$mock->hideIf( $mockCondition, $mockCondition, $mockCondition );
-
-		$this->assertCount( 4, $mock->getVisibilityConditions() );
-	}
 }

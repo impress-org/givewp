@@ -10,15 +10,6 @@ use JsonSerializable;
 abstract class Condition implements JsonSerializable {
 
 	/**
-	 * Invert the condition.
-	 *
-	 * @unreleased
-	 *
-	 * @return $this
-	 */
-	abstract public function invert();
-
-	/**
 	 * @unreleased
 	 *
 	 * {@inheritDoc}

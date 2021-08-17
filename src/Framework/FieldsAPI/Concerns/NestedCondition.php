@@ -30,17 +30,6 @@ class NestedCondition extends Condition {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function invert() {
-		foreach ( $this->conditions as $condition ) {
-			$condition->invert();
-		}
-
-		return $this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function jsonSerialize() {
 		return [
 			'type'       => static::TYPE,

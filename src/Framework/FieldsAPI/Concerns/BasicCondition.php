@@ -10,16 +10,6 @@ class BasicCondition extends Condition {
 	/** @var string */
 	const TYPE = 'basic';
 
-	/** @var array */
-	const OPERATORS_AND_INVERSIONS = [
-		'='  => '!=',
-		'!=' => '=',
-		'>'  => '<=',
-		'<'  => '>=',
-		'>=' => '<',
-		'<=' => '>',
-	];
-
 	/** @var string */
 	public $field;
 
@@ -37,15 +27,6 @@ class BasicCondition extends Condition {
 		$this->operator = $operator;
 		$this->value    = $value;
 		$this->boolean  = $boolean;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function invert() {
-		$this->operator = static::OPERATORS_AND_INVERSIONS[ $this->operator ];
-
-		return $this;
 	}
 
 	/**

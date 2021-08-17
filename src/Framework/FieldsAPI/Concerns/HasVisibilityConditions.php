@@ -45,24 +45,6 @@ trait HasVisibilityConditions {
 	}
 
 	/**
-	 * Set conditions for hiding the node.
-	 *
-	 * @unreleased
-	 *
-	 * @param BasicCondition|array ...$conditions
-	 *
-	 * @return $this
-	 */
-	public function hideIf( ...$conditions ) {
-		foreach ( $conditions as $condition ) {
-			// Invert the condition since the node is visible by default
-			$this->visibilityConditions[] = $this->normalizeCondition( $condition )->invert();
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Normalize the condition if in array format.
 	 *
 	 * @unreleased
