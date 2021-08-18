@@ -98,8 +98,8 @@ class PaymentGateways implements ServiceProvider {
 		Hooks::addAction( 'wp_ajax_disconnect_stripe_account', DisconnectStripeAccountController::class );
 		Hooks::addAction( 'wp_ajax_give_stripe_account_get_details', GetStripeAccountDetailsController::class );
 		Hooks::addAction( 'admin_init', NewStripeAccountOnBoardingController::class );
+		Hooks::addFilter( 'give_metabox_form_data_settings', DonationFormSettingPage::class, '__invoke', 10, 2 );
 
-		give( DonationFormSettingPage::class )->boot();
 		$this->registerMigrations();
 	}
 

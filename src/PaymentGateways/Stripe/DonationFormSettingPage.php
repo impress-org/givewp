@@ -29,7 +29,7 @@ class DonationFormSettingPage {
 	 *
 	 * @return array
 	 */
-	function registerTab( $settings, $formId ) {
+	function __invoke( $settings, $formId ) {
 		if ( ! $this->canRegisterTab() ) {
 			return $settings;
 		}
