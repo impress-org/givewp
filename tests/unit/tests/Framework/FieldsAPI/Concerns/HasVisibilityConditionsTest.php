@@ -13,17 +13,24 @@ final class HasVisibilityConditionsTest extends TestCase {
 		$this->assertEquals( [], $mock->getVisibilityConditions() );
 	}
 
-	public function testCanSetWhenShown() {
+	public function testCanSetVisibilityCondition() {
 		/** @var HasVisibilityConditions $mock */
 		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
-		$mockCondition = new BasicCondition( 'foo', '=', 'bar' );
 
-		$mock->showIf( $mockCondition );
+		$mock->showIf( 'foo', '=', 'bar' );
 
 		$this->assertCount( 1, $mock->getVisibilityConditions() );
+	}
 
-		$mock->showIf( $mockCondition, $mockCondition );
+	public function testCanSetMultipleVisibilityConditions() {
+		/** @var HasVisibilityConditions $mock */
+		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
 
-		$this->assertCount( 3, $mock->getVisibilityConditions() );
+		$mock->showWhen(
+			new BasicCondition( 'foo', '=', 'bar' ),
+			[ 'baz', '!=', 'foo' ]
+		);
+
+		$this->assertCount( 2, $mock->getVisibilityConditions() );
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Conditions\BasicCondition;
 
 /**
@@ -30,7 +31,25 @@ trait HasVisibilityConditions {
 	}
 
 	/**
-	 * Set conditions for showing the node.
+	 * Set a condition for showing the node.
+	 *
+	 * @unreleased
+	 *
+	 * @param string $field
+	 * @param string $operator
+	 * @param mixed $value
+	 * @param string $boolean
+	 *
+	 * @return $this
+	 */
+	public function showIf( $field, $operator, $value, $boolean = 'and' ) {
+		$this->visibilityConditions[] = new BasicCondition( $field, $operator, $value, $boolean );
+
+		return $this;
+	}
+
+	/**
+	 * Set multiple conditions for showing the node.
 	 *
 	 * @unreleased
 	 *
@@ -38,7 +57,7 @@ trait HasVisibilityConditions {
 	 *
 	 * @return $this
 	 */
-	public function showIf( ...$conditions ) {
+	public function showWhen( ...$conditions ) {
 		foreach ( $conditions as $condition ) {
 			$this->visibilityConditions[] = $this->normalizeCondition( $condition );
 		}
@@ -54,14 +73,18 @@ trait HasVisibilityConditions {
 	 * @param BasicCondition|array $condition
 	 *
 	 * @return BasicCondition
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	protected function normalizeCondition( $condition ) {
-		if ( ! $condition instanceof BasicCondition && is_array( $condition ) ) {
-			$condition = new BasicCondition( ...$condition );
+		if ( $condition instanceof BasicCondition ) {
+			return $condition;
 		}
 
-		// TODO: Probably should throw an error if not an array or Condition
+		if ( is_array( $condition ) ) {
+			return new BasicCondition( ...$condition );
+		}
 
-		return $condition;
+		throw new InvalidArgumentException( 'Parameter $condition must be a BasicCondition or an array.' );
 	}
 }
