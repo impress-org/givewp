@@ -10,7 +10,7 @@ use Give\PaymentGateways\Stripe\Repositories\Settings;
  * Class SetDefaultStripeAccountController
  * @package Give\PaymentGateways\Stripe\Controllers
  *
- * @unreleased
+ * @since 2.13.0
  */
 class SetDefaultStripeAccountController {
 	/**
@@ -26,7 +26,7 @@ class SetDefaultStripeAccountController {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public function __invoke() {
 		$this->validateRequest();
@@ -62,7 +62,7 @@ class SetDefaultStripeAccountController {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function validateRequest() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {

@@ -206,7 +206,7 @@ class PaymentGateways implements ServiceProvider {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function registerStripeCustomFields() {
 		Hooks::addAction( 'give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle' );

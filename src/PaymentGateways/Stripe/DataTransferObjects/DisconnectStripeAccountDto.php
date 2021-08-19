@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class DisconnectStripeAccountDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @unreleased
+ * @since 2.13.0
  */
 class DisconnectStripeAccountDto {
 	/**
@@ -19,7 +19,7 @@ class DisconnectStripeAccountDto {
 	public $accountSlug;
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param $array
 	 *

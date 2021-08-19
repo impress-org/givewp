@@ -15,11 +15,11 @@ use function give_update_option;
  * Class Settings
  * @package GiveStripe\Settings\Repositories
  *
- * @unreleased
+ * @since 2.13.0
  */
 class Settings {
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return array
 	 */
 	public function getAllStripeAccounts() {
@@ -27,7 +27,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param int $formId
 	 *
@@ -38,7 +38,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param int $formId
 	 * @param $stripeAccountSlug
@@ -50,7 +50,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return string
 	 */
 	public function getDefaultStripeAccountSlug() {
@@ -58,7 +58,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return bool
 	 */
 	public function hasDefaultGlobalStripeAccountSlug() {
@@ -66,7 +66,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param string $accountSlug
 	 *
@@ -77,7 +77,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @throws StripeAccountAlreadyConnected
 	 * @throws DuplicateStripeAccountName|InvalidPropertyName
 	 */
@@ -102,7 +102,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public function updateStripeAccount( AccountDetailModel $stripeAccount ) {
 		$allAccounts = give_stripe_get_all_accounts();
@@ -124,7 +124,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param AccountDetailModel $stripeAccount
 	 * @param array $allAccounts
@@ -150,7 +150,7 @@ class Settings {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param string $stripeAccountName
 	 * @param array $allAccounts

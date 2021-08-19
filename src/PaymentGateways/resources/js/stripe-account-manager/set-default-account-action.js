@@ -4,7 +4,7 @@
  * This will be used to set any non-default Stripe account from the list
  * to set that particular Stripe account as default.
  *
- * @unreleased
+ * @since 2.13.0
  */
 const { __, sprintf } = wp.i18n;
 

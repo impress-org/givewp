@@ -12,7 +12,7 @@ use Stripe\Stripe;
  * Class NewStripeAccountOnBoardingController
  * @package Give\PaymentGateways\Stripe\Controllers
  *
- * @unreleased
+ * @since 2.13.0
  */
 class NewStripeAccountOnBoardingController {
 	/**
@@ -28,7 +28,7 @@ class NewStripeAccountOnBoardingController {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public function __invoke() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
@@ -56,8 +56,10 @@ class NewStripeAccountOnBoardingController {
 				sprintf(
 					'<strong>%1$s</strong> %2$s',
 					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect your Stripe account. Please contact the support team for assistance.',
-						'give' )
+					esc_html__(
+						'We are unable to connect your Stripe account. Please contact the support team for assistance.',
+						'give'
+					)
 				)
 			);
 
@@ -124,8 +126,10 @@ class NewStripeAccountOnBoardingController {
 				sprintf(
 					'<strong>%1$s</strong> %2$s',
 					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect your Stripe account. Please contact the support team for assistance.',
-						'give' )
+					esc_html__(
+						'We are unable to connect your Stripe account. Please contact the support team for assistance.',
+						'give'
+					)
 				)
 			);
 

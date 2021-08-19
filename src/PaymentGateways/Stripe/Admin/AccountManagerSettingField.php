@@ -23,7 +23,7 @@ use function give_stripe_is_premium_active;
  * Class AccountManagerSettingField
  *
  * @package Give\PaymentGateways\Stripe\Admin
- * @unreleased
+ * @since 2.13.0
  */
 class AccountManagerSettingField {
 
@@ -49,18 +49,18 @@ class AccountManagerSettingField {
 	/**
 	 * AccountManagerSettingField constructor.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param AccountDetail $accountDetailRepository
 	 * @param Settings $settings
 	 */
 	public function __construct( AccountDetail $accountDetailRepository, Settings $settings ) {
 		$this->accountDetailRepository = $accountDetailRepository;
-		$this->settings = $settings;
+		$this->settings                = $settings;
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function setUpProperties() {
 		global $post;
@@ -73,7 +73,7 @@ class AccountManagerSettingField {
 	/**
 	 * Render Stripe account manager setting field.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param array $field
 	 */
@@ -100,7 +100,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getIntroductionSectionMarkup() {
 		// Show introduction content only on global setting edit screen.
@@ -146,7 +146,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getStripeAccountListSectionMarkup() {
 		$this->getStripeAccountOnBoardingModalMarkup();
@@ -161,13 +161,14 @@ class AccountManagerSettingField {
 			<?php
 			foreach ( $this->stripeAccounts as $stripeAccountDetails ) {
 				$this->getStripeAccountMarkup( $stripeAccountDetails );
-			} ?>
+			}
+			?>
 		</div>
 		<?php
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getAddNewStripeAccountSectionMarkup() {
 		if ( $this->canShowCompatibilityNotice() ) {
@@ -211,7 +212,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param array  $stripeAccount
 	 */
@@ -222,11 +223,11 @@ class AccountManagerSettingField {
 		$stripeAccountSlug = $stripeAccount['account_slug'];
 
 		// Do not print global default Stripe account in donation form setting.
-		if( $this->isGlobalDefaultStripeAccount( $stripeAccountSlug ) ) {
+		if ( $this->isGlobalDefaultStripeAccount( $stripeAccountSlug ) ) {
 			return;
 		}
 
-		$disconnectUrl     = add_query_arg(
+		$disconnectUrl = add_query_arg(
 			[
 				'account_type' => $stripeAccount['type'],
 				'action'       => 'disconnect_stripe_account',
@@ -241,7 +242,7 @@ class AccountManagerSettingField {
 			id="give-stripe-<?php echo $stripeAccountSlug; ?>"
 			class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap<?php echo $classes; ?>"
 		>
-			<input type="hidden" name="stripe-account-slug" value="<?php echo $stripeAccountSlug ?>" readonly>
+			<input type="hidden" name="stripe-account-slug" value="<?php echo $stripeAccountSlug; ?>" readonly>
 			<input type="hidden" name="setting-page" value="<?php echo $this->isGlobalSettingPage() ? 'global' : 'form'; ?>" readonly>
 			<?php if ( $stripeAccountSlug === $this->defaultStripeAccountSlug ) : ?>
 				<div class="give-stripe-account-default-checkmark">
@@ -293,9 +294,9 @@ class AccountManagerSettingField {
 			 *
 			 * @unlreased
 			 */
-			$stripeAccountActionsHtml = apply_filters( 'give_stripe_manage_account_actions_html', '' , $stripeAccount, $this->stripeAccounts, $this->defaultStripeAccountSlug );
+			$stripeAccountActionsHtml = apply_filters( 'give_stripe_manage_account_actions_html', '', $stripeAccount, $this->stripeAccounts, $this->defaultStripeAccountSlug );
 
-			if( $stripeAccountActionsHtml ) {
+			if ( $stripeAccountActionsHtml ) {
 				printf(
 					'<div class="give-stripe-account-fieldset give-stripe-account-edit">%s</div>',
 					$stripeAccountActionsHtml
@@ -309,7 +310,7 @@ class AccountManagerSettingField {
 					<span class="give-stripe-account-connected give-stripe-connect-data-field">
 						<?php esc_html_e( 'Connected', 'give' ); ?>
 					</span>
-					<?php if ( $stripeAccountSlug !== $this->defaultStripeAccountSlug || 1 === count($this->stripeAccounts) ) : ?>
+					<?php if ( $stripeAccountSlug !== $this->defaultStripeAccountSlug || 1 === count( $this->stripeAccounts ) ) : ?>
 						<span class="give-stripe-account-disconnect">
 							<a
 								class="give-stripe-disconnect-account-btn"
@@ -338,7 +339,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getStripeAccountOnBoardingModalMarkup() {
 		global $post;
@@ -384,7 +385,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getCompatibilityNoticeMarkup() {
 		?>
@@ -411,7 +412,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getFreeStripeVersionNoticeMarkup() {
 		?>
@@ -432,7 +433,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public function getNoStripeAccountMarkup() {
 		?>
@@ -460,7 +461,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return string
 	 */
 	public function getStripeConnectButtonMarkup() {
@@ -497,17 +498,20 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getDefaultStripeAccountNotice() {
 		?>
 		<div class="give-stripe-default-account-notice">
 			<span class="dashicons dashicons-info"></span>
 			<div class="give-stripe-default-account-notice__inner">
-				<p class="give-stripe-default-account-notice__bold"><strong><?php
+				<p class="give-stripe-default-account-notice__bold"><strong>
+				<?php
 						echo $this->isGlobalSettingPage() ?
 						esc_html__( 'All payments go to the default account', 'give' ) :
-						esc_html__( 'Stripe donations process through the account set above', 'give' ); ?></strong></p>
+						esc_html__( 'Stripe donations process through the account set above', 'give' );
+				?>
+						</strong></p>
 				<p>
 					<?php
 						echo $this->isGlobalSettingPage() ?
@@ -521,7 +525,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return bool
 	 */
 	private function canShowFreeStripeVersionNotice() {
@@ -536,7 +540,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return bool
 	 */
 	private function isGlobalSettingPage() {
@@ -544,7 +548,7 @@ class AccountManagerSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param string $accountSlug Stripe account slug
 	 *
@@ -553,10 +557,9 @@ class AccountManagerSettingField {
 	private function isGlobalDefaultStripeAccount( $accountSlug ) {
 		$globalDefaultStripeAccountDetail = give_stripe_get_default_account();
 
-		if( empty( $globalDefaultStripeAccountDetail ) ) {
+		if ( empty( $globalDefaultStripeAccountDetail ) ) {
 			return false;
 		}
-
 
 		return ! $this->isGlobalSettingPage() && $globalDefaultStripeAccountDetail['account_slug'] === $accountSlug;
 	}

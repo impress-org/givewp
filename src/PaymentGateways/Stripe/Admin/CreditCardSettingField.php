@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\Stripe\Admin;
  * Class CreditCardSettingField
  *
  * @package Give\PaymentGateways\Stripe\Admin
- * @unreleased
+ * @since 2.13.0
  */
 class CreditCardSettingField {
 
@@ -19,7 +19,7 @@ class CreditCardSettingField {
 	/**
 	 * Render Stripe account manager setting field.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param array  $field
 	 * @param string $value
@@ -36,7 +36,7 @@ class CreditCardSettingField {
 
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getIntroductionSectionMarkup() {
 		?>
@@ -55,7 +55,7 @@ class CreditCardSettingField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getRadioButtons( $field, $value ) {
 		?>

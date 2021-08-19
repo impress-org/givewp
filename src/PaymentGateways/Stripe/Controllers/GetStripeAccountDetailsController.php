@@ -10,7 +10,7 @@ use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
  * Class GetStripeAccountDetailsController
  * @package Give\PaymentGateways\Stripe\Controllers
  *
- * @unreleased
+ * @since 2.13.0
  */
 class GetStripeAccountDetailsController {
 	/**
@@ -45,7 +45,7 @@ class GetStripeAccountDetailsController {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function validateRequest() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {

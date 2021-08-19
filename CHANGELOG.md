@@ -7,10 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-### Added
+## 2.13.0 - 2021-08-19
 
--   Add conditional visibility functionality to `FieldsAPI` `Field`, `Element`, and `Group` types (#5919)
--   Introduce `BasicCondition` and `NestedCondition` classes for expressing conditional logic in the Fields API (#5919)
+### New
+
+- Completely new and fresh UI for managing Stripe accounts (#5832)
+- Add conditional visibility functionality to `FieldsAPI` `Field`, `Element`, and `Group` types (#5919)
+- Introduce `BasicCondition` and `NestedCondition` classes for expressing conditional logic in the Fields API (#5919)
 
 ###  Changed
 

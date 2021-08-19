@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class SetDefaultStripeAccountDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @unreleased
+ * @since 2.13.0
  */
 class SetDefaultStripeAccountDto {
 	/**
@@ -20,7 +20,7 @@ class SetDefaultStripeAccountDto {
 	public $formId;
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @param array $array
 	 */
 	public static function fromArray( $array ) {

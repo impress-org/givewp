@@ -7,7 +7,7 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class NewStripeAccountOnBoardingDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @unreleased
+ * @since 2.13.0
  */
 class NewStripeAccountOnBoardingDto {
 	/**
@@ -42,7 +42,7 @@ class NewStripeAccountOnBoardingDto {
 	/**
 	 * @param array $array
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public static function fromArray( $array ) {
 		$self = new static();
@@ -59,7 +59,7 @@ class NewStripeAccountOnBoardingDto {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return bool
 	 */
 	public function hasValidateData() {

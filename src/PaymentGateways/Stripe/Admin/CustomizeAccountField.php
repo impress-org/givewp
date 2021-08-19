@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\Stripe\Admin;
  * Class CustomizeAccountField
  *
  * @package Give\PaymentGateways\Stripe\Admin
- * @unreleased
+ * @since 2.13.0
  */
 class CustomizeAccountField {
 	const DEFAULT_VALUE = 'disabled';
@@ -20,7 +20,7 @@ class CustomizeAccountField {
 	/**
 	 * Render
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public function handle() {
 		?>
@@ -32,7 +32,7 @@ class CustomizeAccountField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getIntroductionSectionMarkup() {
 		?>
@@ -43,7 +43,7 @@ class CustomizeAccountField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function getRadioButtons() {
 		$value = $this->getValue();
@@ -120,7 +120,7 @@ class CustomizeAccountField {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return string
 	 */
 	private function getValue() {

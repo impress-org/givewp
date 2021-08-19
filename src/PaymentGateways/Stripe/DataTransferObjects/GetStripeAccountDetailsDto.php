@@ -6,7 +6,7 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class GetStripeAccountDetailsDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @unreleased
+ * @since 2.13.0
  */
 class GetStripeAccountDetailsDto {
 	/**
@@ -15,7 +15,7 @@ class GetStripeAccountDetailsDto {
 	public $accountSlug;
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param array $array
 	 *

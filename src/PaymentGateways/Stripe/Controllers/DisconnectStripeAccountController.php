@@ -8,12 +8,12 @@ use Give\PaymentGateways\Stripe\DataTransferObjects\DisconnectStripeAccountDto;
  * Class DisconnectStripeAccountController
  * @package Give\PaymentGateways\Stripe\Controllers
  *
- * @unreleased
+ * @since 2.13.0
  */
 class DisconnectStripeAccountController {
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	public function __invoke() {
 		$this->validateRequest();
@@ -28,7 +28,7 @@ class DisconnectStripeAccountController {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 */
 	private function validateRequest() {
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
@@ -37,7 +37,7 @@ class DisconnectStripeAccountController {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param $accountSlug
 	 */

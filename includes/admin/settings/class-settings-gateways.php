@@ -207,7 +207,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		}
 
 		/**
-		 * @unreleased
+		 * @since 2.13.0
 		 * @return bool
 		 */
 		private function hasPremiumPaymentGateway() {
@@ -217,7 +217,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		}
 
 		/**
-		 * @unreleased
+		 * @since 2.13.0
 		 *
 		 * @return bool
 		 */

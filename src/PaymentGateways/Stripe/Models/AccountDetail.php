@@ -53,7 +53,7 @@ class AccountDetail {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @throws InvalidPropertyName
 	 */
 	public static function fromArray( $array ) {
@@ -61,7 +61,7 @@ class AccountDetail {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @return array
 	 */

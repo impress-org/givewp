@@ -10,11 +10,11 @@ use Give\PaymentGateways\Stripe\Admin\CustomizeAccountField;
  *
  * @package Give\PaymentGateways\Stripe
  *
- * @unreleased
+ * @since 2.13.0
  */
 class DonationFormSettingPage {
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param array $settings Settings List.
 	 * @param       $formId
@@ -37,7 +37,7 @@ class DonationFormSettingPage {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param int $formId
 	 *
@@ -75,7 +75,7 @@ class DonationFormSettingPage {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 * @return bool
 	 */
 	private function canRegisterTab() {

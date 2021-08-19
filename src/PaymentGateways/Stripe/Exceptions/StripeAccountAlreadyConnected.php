@@ -8,7 +8,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
  * Class StripeAccountAlreadyConnected
  * @package GiveStripe\Infrastructure\Exception
  *
- * @unreleased
+ * @since 2.13.0
  */
 class StripeAccountAlreadyConnected extends Exception {
 

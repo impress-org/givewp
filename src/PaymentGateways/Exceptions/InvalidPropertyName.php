@@ -8,7 +8,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
  * Class InvalidPropertyName
  * @package Give\Framework\Exceptions\Primitives
  *
- * @unreleased
+ * @since 2.13.0
  */
 class InvalidPropertyName extends Exception {
 }

@@ -8,7 +8,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
  * Class DuplicateStripeAccountName
  * @package GiveStripe\Infrastructure\Exceptions
  *
- * @unreleased
+ * @since 2.13.0
  */
 class DuplicateStripeAccountName extends Exception {
 

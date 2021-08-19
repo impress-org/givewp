@@ -3,7 +3,7 @@
  *
  * This will be used to disconnect any Stripe account from the list
  *
- * @unreleased
+ * @since 2.13.0
  */
 const { __, sprintf } = wp.i18n;
 

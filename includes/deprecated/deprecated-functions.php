@@ -1182,7 +1182,7 @@ function give_get_premium_add_ons() {
 function give_stripe_connect_button() {
 	_give_deprecated_function(
 		__FUNCTION__,
-		'@unreleased'
+		'2.13.0'
 	);
 
 	// Prepare Stripe Connect URL.
@@ -1211,14 +1211,14 @@ function give_stripe_connect_button() {
  * @param string $account_name Stripe Account Name.
  *
  * @since 2.5.0
- * @deprecated @unreleased
+ * @deprecated 2.13.0
  *
  * @return string
  */
 function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
 	_give_deprecated_function(
 		__FUNCTION__,
-		'@unreleased'
+		'2.13.0'
 	);
 
 	$args = [
