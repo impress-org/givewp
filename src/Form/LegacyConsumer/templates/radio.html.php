@@ -6,11 +6,6 @@
 	</legend>
 	<div class="give-label" aria-hidden="true">
 		<?php include plugin_dir_path( __FILE__ ) . '/label-content.html.php'; ?>
-		<?php
-		echo ( $helpText = $field->getHelpText() ) ?
-			Give()->tooltips->render_help( $helpText ) :
-			'';
-		?>
 	</div>
 	<?php foreach ( $field->getOptions() as $option ) : ?>
 	<label>
