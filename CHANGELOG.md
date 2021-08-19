@@ -7,16 +7,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-### Changed
+###  Changed
 
-- Stripe Admin UI has been improved (#5832)
+- Add missing help text tooltip to Legacy Consumer’s label content templates. (#5921)
+- Wrap `<input>` element inside of `<label>` element for Legacy Consumer’s checkbox template. (#5920)
+- Add missing `required` and `readonly` attributes to Legacy Consumer’s select and textarea templates. (#5920)
+- Add screen reader text for required indicator to Legacy Consumer’s label content template. (#5920) 
 
 ## 2.12.3 - 2021-08-12
 
 ### Fixed
 
-- Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form
-  template. (#5910)
+- Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form template. (#5910)
 - Fix the placeholder image and set a max-width for the legacy form template. (#5910)
 - Add support for admin defined recurring donations to the multi-step form template. (#5910)
 - Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910)
