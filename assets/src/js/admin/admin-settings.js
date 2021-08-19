@@ -11,8 +11,6 @@
 
 /* globals Give, jQuery, givePayPalCommerce, ajaxurl */
 
-import { GiveConfirmModal } from './../plugins/modal';
-
 jQuery( document ).ready( function( $ ) {
 	/**
 	 *  Sortable payment gateways.
