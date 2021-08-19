@@ -10,6 +10,8 @@
 	<select
 		name="give_<?php echo $field->getName(); ?>"
 		<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
+		<?php echo $field->isRequired() ? 'required' : ''; ?>
+		<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	>
 		<?php if ( $placeholder = $field->getPlaceholder() ) : ?>
 			<option value=""><?php echo $placeholder; ?></option>

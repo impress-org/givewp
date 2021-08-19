@@ -7,5 +7,9 @@
 			<span class="screen-reader-text"><?php esc_html_e( 'Required', 'give' ); ?></span>
 		</span>
 	<?php endif; ?>
-	<textarea name="give_<?php echo $field->getName(); ?>"<?php echo $field->isRequired() ? ' required' : ''; ?>></textarea>
+	<textarea
+		name="give_<?php echo $field->getName(); ?>"
+		<?php echo $field->isRequired() ? 'required' : ''; ?>
+		<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+	></textarea>
 </label>
