@@ -9,7 +9,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ###  Changed
 
-- Remove id attribute, add missing attributes and attach label implicitly in custom fields. (#5920)
+- Wrap `<input>` element inside of `<label>` element for Legacy Consumer’s checkbox template. (#5920)
+- Add missing `required` and `readonly` attributes to Legacy Consumer’s select and textarea templates. (#5920)
+- Add screen reader text for required indicator to Legacy Consumer’s label content template. (#5920) 
 
 ## 2.12.3 - 2021-08-12
 
