@@ -7,6 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Added
+
+-   Add conditional visibility functionality to `FieldsAPI` `Field`, `Element`, and `Group` types (#5919)
+-   Introduce `BasicCondition` and `NestedCondition` classes for expressing conditional logic in the Fields API (#5919)
+
 ###  Changed
 
 - Add missing help text tooltip to Legacy Consumer’s label content templates. (#5921)

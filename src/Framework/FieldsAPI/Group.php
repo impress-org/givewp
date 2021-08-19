@@ -5,12 +5,17 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
+/**
+ * @since 2.12.0
+ * @unreleased Support visibility conditions
+ */
 class Group implements Node, Collection {
 
 	use Concerns\HasLabel;
 	use Concerns\HasName;
 	use Concerns\HasNodes;
 	use Concerns\HasType;
+	use Concerns\HasVisibilityConditions;
 	use Concerns\InsertNode;
 	use Concerns\MoveNode;
 	use Concerns\NameCollision;
@@ -23,10 +28,22 @@ class Group implements Node, Collection {
 	 */
 	const TYPE = 'group';
 
+	/**
+	 * @since 2.12.0
+	 *
+	 * @param $name
+	 */
 	public function __construct( $name ) {
 		$this->name = $name;
 	}
 
+	/**
+	 * @since 2.12.0
+	 *
+	 * @param $name
+	 *
+	 * @return static
+	 */
 	public static function make( $name ) {
 		return new static( $name );
 	}
