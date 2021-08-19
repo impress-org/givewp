@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Repositories;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 
 /**

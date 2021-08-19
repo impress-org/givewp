@@ -1,6 +1,6 @@
 <?php
 
-use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use PHPUnit\Framework\TestCase;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 

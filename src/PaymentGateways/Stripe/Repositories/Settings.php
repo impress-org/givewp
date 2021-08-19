@@ -2,10 +2,10 @@
 
 namespace Give\PaymentGateways\Stripe\Repositories;
 
-use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
-use Give\Framework\Exceptions\Primitives\DuplicateStripeAccountName;
-use Give\Framework\Exceptions\Primitives\StripeAccountAlreadyConnected;
+use Give\PaymentGateways\Stripe\Exceptions\DuplicateStripeAccountName;
+use Give\PaymentGateways\Stripe\Exceptions\StripeAccountAlreadyConnected;
 use function esc_html__;
 use function give_get_option;
 use function give_stripe_get_all_accounts;
