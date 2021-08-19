@@ -108,7 +108,7 @@ class CustomizeAccountField {
 					<span class="give-stripe-per-form-description">
 						<?php
 						esc_html_e(
-							'Donations are processed through a different Stripe account. The default account is overridden for this form.',
+							'Donations are processed through a Stripe account custom to this donation form. The default account is overridden for this form.',
 							'give'
 						);
 						?>

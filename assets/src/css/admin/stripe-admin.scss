@@ -321,6 +321,12 @@ a.give-stripe-connect-temp-dismiss:active {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		max-width: 360px;
+
+		.give-stripe-connect {
+			margin: 0 auto;
+		}
+
 	}
 
 	.dashicons-info {

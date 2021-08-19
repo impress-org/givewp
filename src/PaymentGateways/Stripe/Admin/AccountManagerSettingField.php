@@ -436,18 +436,14 @@ class AccountManagerSettingField {
 					<?php
 						echo $this->isGlobalSettingPage() ?
 							esc_html__( 'No Stripe Accounts Connected', 'give' ) :
-							esc_html__( 'Only One Stripe Accounts Connected', 'give' );
+							esc_html__( 'Connect a New Stripe Account', 'give' );
 					?>
 				</h3>
 				<p id="give-stripe-connect-invite">
 					<?php
 					echo $this->isGlobalSettingPage() ?
 						esc_html__( 'Connect an account to get started!', 'give' ) :
-						sprintf(
-							'%1$s<br>%2$s',
-							esc_html__( 'Please connect a new Stripe account.', 'give' ),
-							esc_html__( 'To select donation form default Stripe account.', 'give' )
-						);
+						esc_html__( 'Add a new account to customize the Stripe account used for this donation form.', 'give' )
 					?>
 				</p>
 				<?php echo $this->getStripeConnectButtonMarkup(); ?>
@@ -501,12 +497,15 @@ class AccountManagerSettingField {
 		<div class="give-stripe-default-account-notice">
 			<span class="dashicons dashicons-info"></span>
 			<div class="give-stripe-default-account-notice__inner">
-				<p class="give-stripe-default-account-notice__bold"><strong><?php esc_html_e( 'All payments go to the default account', 'give' ); ?></strong></p>
+				<p class="give-stripe-default-account-notice__bold"><strong><?php
+						echo $this->isGlobalSettingPage() ?
+						esc_html__( 'All payments go to the default account', 'give' ) :
+						esc_html__( 'Stripe donations process through the account set above', 'give' ); ?></strong></p>
 				<p>
 					<?php
 						echo $this->isGlobalSettingPage() ?
 							esc_html__( 'You can set this globally (for all donation forms) or override the Stripe account per donation form.', 'give' ) :
-							esc_html__( 'All donations will process through the default account set above. This overrides the Global setting.', 'give' );
+							esc_html__( 'This overrides the global default account setting for this donation form.', 'give' );
 					?>
 				</p>
 			</div>
