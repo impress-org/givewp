@@ -9,7 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ###  Changed
 
-- Remove id attribute and attach label implicitly in checkbox field (#5920)
+- Remove id attribute and attach label implicitly in custom fields (#5920)
 
 ## 2.12.3 - 2021-08-12
 
