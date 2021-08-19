@@ -46,7 +46,6 @@ class FieldView {
 			case Types::FILE:
 			case Types::SELECT:
 			case Types::TEXTAREA:
-				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( $type );
 				break;
 			// By default, include a template and use the base input template.

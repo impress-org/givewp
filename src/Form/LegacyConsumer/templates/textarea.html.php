@@ -1,2 +1,5 @@
 <?php /** @var Give\Framework\FieldsAPI\Textarea $field */ ?>
-<textarea name="give_<?php echo $field->getName(); ?>"<?php echo $field->isRequired() ? ' required' : ''; ?>></textarea>
+<label>
+	<?php echo $field->getLabel(); ?>
+	<textarea name="give_<?php echo $field->getName(); ?>"<?php echo $field->isRequired() ? ' required' : ''; ?>></textarea>
+</label>
