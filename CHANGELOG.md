@@ -9,14 +9,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ###  Changed
 
-- Remove id attribute and attach label implicitly in custom fields (#5920)
+- Remove id attribute, add missing attributes and attach label implicitly in custom fields. (#5920)
 
 ## 2.12.3 - 2021-08-12
 
 ### Fixed
 
-- Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form
-  template. (#5910)
+- Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form template. (#5910)
 - Fix the placeholder image and set a max-width for the legacy form template. (#5910)
 - Add support for admin defined recurring donations to the multi-step form template. (#5910)
 - Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910)
