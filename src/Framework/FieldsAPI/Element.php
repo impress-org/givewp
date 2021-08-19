@@ -6,14 +6,18 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.12.0
+ * @unreleased Support visibility conditions
  */
 abstract class Element implements Node {
 
-	use Concerns\HasType;
 	use Concerns\HasName;
+	use Concerns\HasType;
+	use Concerns\HasVisibilityConditions;
 	use Concerns\SerializeAsJson;
 
 	/**
+	 * @since 2.12.0
+	 *
 	 * @param string $name
 	 */
 	public function __construct( $name ) {

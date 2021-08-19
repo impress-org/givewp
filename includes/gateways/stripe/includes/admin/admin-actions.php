@@ -12,102 +12,11 @@
 
 // Exit, if accessed directly.
 use Give\Helpers\Gateways\Stripe;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-/**
- * This function is used to save the parameters returned after successfull connection of Stripe account.
- *
- * @since 2.5.0
- *
- * @return void
- */
-function give_stripe_connect_save_options() {
-	// Is user have permission to edit give setting.
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		return;
-	}
-
-	$get_vars = give_clean( $_GET );
-
-	if ( ! isset( $get_vars['page'] ) || 'give-settings' !== $get_vars['page'] ) {
-		return;
-	}
-
-	// If we don't have values here, bounce.
-	if (
-		! isset( $get_vars['stripe_publishable_key'] ) ||
-		! isset( $get_vars['stripe_user_id'] ) ||
-		! isset( $get_vars['stripe_access_token'] ) ||
-		! isset( $get_vars['stripe_access_token_test'] ) ||
-		! isset( $get_vars['connected'] )
-	) {
-		return;
-	}
-
-	// Unable to redirect, bail.
-	if ( headers_sent() ) {
-		return;
-	}
-
-	$stripe_account_id = $get_vars['stripe_user_id'];
-	$stripe_accounts   = give_stripe_get_all_accounts();
-	$secret_key        = ! give_is_test_mode() ? $get_vars['stripe_access_token'] : $get_vars['stripe_access_token_test'];
-
-	// Set API Key to fetch account details.
-	\Stripe\Stripe::setApiKey( $secret_key );
-
-	// Get Account Details.
-	$account_details = give_stripe_get_account_details( $stripe_account_id );
-
-	// Setup Account Details for Connected Stripe Accounts.
-	if ( empty( $account_details->id ) ) {
-		Give_Admin_Settings::add_error(
-			'give-stripe-account-id-fetching-error',
-			sprintf(
-				'<strong>%1$s</strong> %2$s',
-				esc_html__( 'Stripe Error:', 'give' ),
-				esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
-			)
-		);
-		return;
-	}
-
-	$account_name    = ! empty( $account_details->business_profile->name ) ?
-		$account_details->business_profile->name :
-		$account_details->settings->dashboard->display_name;
-	$account_slug    = $account_details->id;
-	$account_email   = $account_details->email;
-	$account_country = $account_details->country;
-
-	// Set first Stripe account as default.
-	if ( ! $stripe_accounts ) {
-		give_update_option( '_give_stripe_default_account', $account_slug );
-	}
-
-	$stripe_accounts[ $account_slug ] = [
-		'type'                 => 'connect',
-		'account_name'         => $account_name,
-		'account_slug'         => $account_slug,
-		'account_email'        => $account_email,
-		'account_country'      => $account_country,
-		'account_id'           => $stripe_account_id,
-		'live_secret_key'      => $get_vars['stripe_access_token'],
-		'test_secret_key'      => $get_vars['stripe_access_token_test'],
-		'live_publishable_key' => $get_vars['stripe_publishable_key'],
-		'test_publishable_key' => $get_vars['stripe_publishable_key_test'],
-	];
-
-	// Update Stripe accounts to global settings.
-	give_update_option( '_give_stripe_get_all_accounts', $stripe_accounts );
-
-	// Send back to settings page.
-	give_stripe_get_back_to_settings_page( [ 'stripe_account' => 'connected' ] );
-}
-
-add_action( 'admin_init', 'give_stripe_connect_save_options' );
 
 /**
  * Disconnects user from the Give Stripe Connected App.
@@ -347,7 +256,7 @@ function give_stripe_show_connect_banner() {
 		return $status;
 	}
 
-	$connect_link = give_stripe_connect_button();
+	$connect_link = give( AccountManagerSettingField::class )->getStripeConnectButtonMarkup();
 
 	// Default message.
 	$main_text = __( 'The Stripe gateway is enabled but you\'re not connected. Connect to Stripe to start accepting credit card donations directly on your website.', 'give' );
@@ -461,91 +370,6 @@ function give_stripe_disconnect_connect_stripe_account() {
 }
 
 add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
-
-/**
- * Set default Stripe account.
- *
- * @since 2.7.0
- *
- * @return void
- */
-function give_stripe_set_account_default() {
-	if ( current_user_can( 'manage_options' ) ) {
-		$post_data    = give_clean( $_POST );
-		$account_slug = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
-
-		// Update default Stripe account.
-		$is_updated = give_update_option( '_give_stripe_default_account', $account_slug );
-
-		if ( $is_updated ) {
-			wp_send_json_success();
-		}
-	}
-
-	wp_send_json_error();
-}
-
-add_action( 'wp_ajax_give_stripe_set_account_default', 'give_stripe_set_account_default' );
-
-/**
- * This function is used to update account name.
- *
- * @since 2.7.0
- *
- * @return void
- */
-function give_stripe_update_account_name() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_send_json_error( [ 'message' => esc_html__( 'Unauthorized access.', 'give' ) ] );
-	}
-
-	$post_data        = give_clean( $_POST );
-	$account_slug     = ! empty( $post_data['account_slug'] ) ? $post_data['account_slug'] : false;
-	$new_account_name = ! empty( $post_data['new_account_name'] ) ? $post_data['new_account_name'] : false;
-
-	if ( ! empty( $account_slug ) && ! empty( $new_account_name ) ) {
-		$accounts             = give_stripe_get_all_accounts();
-		$account_keys         = array_keys( $accounts );
-		$account_values       = array_values( $accounts );
-		$new_account_slug     = give_stripe_convert_title_to_slug( $new_account_name );
-		$default_account_slug = give_stripe_get_default_account_slug();
-
-		// Bailout, if Account Name already exists.
-		if ( in_array( $new_account_slug, $account_keys, true ) ) {
-			wp_send_json_error( [ 'message' => esc_html__( 'This account name is already in use. Please enter a different account name.', 'give' ) ] );
-			return;
-		}
-
-		$key                  = array_search( $account_slug, $account_keys, true );
-		$account_keys[ $key ] = $new_account_slug;
-		$new_accounts         = array_combine( $account_keys, $account_values );
-
-		// Set Account related data. Some data will always be empty for manual API keys scenarios.
-		$new_accounts[ $new_account_slug ]['account_name']    = $new_account_name;
-		$new_accounts[ $new_account_slug ]['account_slug']    = $new_account_slug;
-		$new_accounts[ $new_account_slug ]['account_email']   = '';
-		$new_accounts[ $new_account_slug ]['account_country'] = '';
-		$new_accounts[ $new_account_slug ]['account_id']      = '';
-
-		// Update accounts.
-		give_update_option( '_give_stripe_get_all_accounts', $new_accounts );
-
-		if ( $account_slug === $default_account_slug ) {
-			give_update_option( '_give_stripe_default_account', $new_account_slug );
-		}
-
-		$success_args = [
-			'message' => esc_html__( 'Account Name updated successfully.', 'give' ),
-			'name'    => $new_account_name,
-			'slug'    => $new_account_slug,
-		];
-		wp_send_json_success( $success_args );
-	}
-
-	wp_send_json_error( [ 'message' => esc_html__( 'Unable to update account name. Please contact support.', 'give' ) ] );
-}
-
-add_action( 'wp_ajax_give_stripe_update_account_name', 'give_stripe_update_account_name' );
 
 /**
  * Show Stripe Account Used under donation details.

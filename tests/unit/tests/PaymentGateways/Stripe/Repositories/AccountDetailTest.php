@@ -1,5 +1,6 @@
 <?php
 
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use PHPUnit\Framework\TestCase;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
@@ -117,7 +118,7 @@ class AccountDetailTest extends TestCase{
 			]
 		);
 
-		$this->expectException( InvalidArgumentException::class );
+		$this->expectException( InvalidPropertyName::class );
 		$this->repository->getAccountDetail( 'account_2' );
 	}
 }

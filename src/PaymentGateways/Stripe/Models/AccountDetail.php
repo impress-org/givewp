@@ -2,8 +2,8 @@
 
 namespace Give\PaymentGateways\Stripe\Models;
 
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\Helpers\ArrayDataSet;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
  * Class AccountDetail
@@ -41,8 +41,10 @@ class AccountDetail {
 	/**
 	 * AccountDetail constructor.
 	 *
-	 * @since 2.10.2
 	 * @param array $args
+	 *
+	 * @throws InvalidPropertyName
+	 * @since 2.10.2
 	 */
 	public function __construct( array $args ) {
 		$this->args           = $args;
@@ -51,12 +53,51 @@ class AccountDetail {
 	}
 
 	/**
+	 * @since 2.13.0
+	 * @throws InvalidPropertyName
+	 */
+	public static function fromArray( $array ) {
+		return new static( $array );
+	}
+
+	/**
+	 * @since 2.13.0
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+		return [
+			'type'                 => $this->type,
+			'account_id'           => $this->accountId,
+			'account_slug'         => $this->accountSlug,
+			'account_name'         => $this->accountName,
+			'account_country'      => $this->accountCountry,
+			'account_email'        => $this->accountEmail,
+			'live_secret_key'      => $this->liveSecretKey,
+			'test_secret_key'      => $this->testSecretKey,
+			'live_publishable_key' => $this->livePublishableKey,
+			'test_publishable_key' => $this->testPublishableKey,
+		];
+	}
+
+	/**
 	 * @since 2.10.2
 	 * @param string $key
 	 *
 	 * @return mixed
+	 * @throws InvalidPropertyName
 	 */
 	public function __get( $key ) {
+		if ( ! array_key_exists( $key, $this->propertiesArgs ) ) {
+			throw new InvalidPropertyName(
+				sprintf(
+					'$1%s property does not exist in %2$s class',
+					$key,
+					__CLASS__
+				)
+			);
+		}
+
 		return $this->propertiesArgs[ $key ];
 	}
 
@@ -66,13 +107,13 @@ class AccountDetail {
 	 * @since 2.10.2
 	 * @param array $array
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws InvalidPropertyName
 	 */
 	private function validate( $array ) {
 		if ( array_diff( $this->requiredArgs, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException(
+			throw new InvalidPropertyName(
 				sprintf(
-					esc_html__( 'To create a %1$s object, please provide valid: %2$s', 'give' ),
+					'To create a %1$s object, please provide valid: %2$s',
 					__CLASS__,
 					implode( ' , ', $this->requiredArgs )
 				)
