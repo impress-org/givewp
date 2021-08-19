@@ -1,7 +1,6 @@
 <?php /** @var Give\Framework\FieldsAPI\Select $field */ ?>
 <select
 	name="give_<?php echo $field->getName(); ?>"
-	id="give-<?php echo $field->getName(); ?>"
 	<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
 >
 	<?php if ( $placeholder = $field->getPlaceholder() ) : ?>
