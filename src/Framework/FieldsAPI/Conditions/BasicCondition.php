@@ -9,6 +9,10 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
  */
 class BasicCondition extends Condition {
 
+	const OPERATORS = [ '=', '!=', '>', '>=', '<', '<=' ];
+
+	const BOOLEANS = [ 'and', 'or' ];
+
 	/** @var string */
 	const TYPE = 'basic';
 
@@ -23,12 +27,6 @@ class BasicCondition extends Condition {
 
 	/** @var string */
 	public $boolean;
-
-	/** @var string[] */
-	const OPERATORS = [ '=', '!=', '>', '>=', '<', '<=' ];
-
-	/** @var string[] */
-	const BOOLEANS = [ 'and', 'or' ];
 
 	/**
 	 * Create a new BasicCondition.
