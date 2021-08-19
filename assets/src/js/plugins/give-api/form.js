@@ -562,7 +562,14 @@ export default {
 			// Is this a custom amount selection?
 			if ( 'custom' === level_price_id ) {
 				const custom_amount = Give.fn.getParameterByName( 'custom-amount' );
-				// When setting a custom value, focus and blur the input inorder to correctly set the custom level.
+				/*
+				 * When setting a custom value, focus and blur the input
+				 * inorder to correctly set the custom level.
+				 *
+				 * @unreleased
+				 * @link https://github.com/impress-org/givewp/issues/5912
+				 * @link https://github.com/impress-org/givewp/pull/5913#issuecomment-897352881
+				 */
 				$form.find( '.give-amount-top' ).val( custom_amount ).focus().blur();
 				return true;
 			}
