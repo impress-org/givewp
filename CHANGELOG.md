@@ -7,12 +7,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-###  Changed
+### Changed
 
 - Add missing help text tooltip to Legacy Consumer’s label content templates. (#5921)
 - Wrap `<input>` element inside of `<label>` element for Legacy Consumer’s checkbox template. (#5920)
 - Add missing `required` and `readonly` attributes to Legacy Consumer’s select and textarea templates. (#5920)
-- Add screen reader text for required indicator to Legacy Consumer’s label content template. (#5920) 
+- Add screen reader text for required indicator to Legacy Consumer’s label content template. (#5920)
+
+### Fixed
+
+-   Custom amount level is correctly set after a payment error (#5922) 
 
 ## 2.12.3 - 2021-08-12
 
