@@ -3,6 +3,8 @@
 namespace Give\PaymentGateways\Stripe\Controllers;
 
 use Give\PaymentGateways\Stripe\DataTransferObjects\SetDefaultStripeAccountDto;
+use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
+use Give\PaymentGateways\Stripe\Repositories\Settings;
 
 /**
  * Class SetDefaultStripeAccountController
@@ -11,6 +13,21 @@ use Give\PaymentGateways\Stripe\DataTransferObjects\SetDefaultStripeAccountDto;
  * @unreleased
  */
 class SetDefaultStripeAccountController {
+	/**
+	 * @var Settings
+	 */
+	private $settingsRepository;
+
+	/**
+	 * @param Settings $settingsRepository
+	 */
+	public function __construct( Settings $settingsRepository ) {
+		$this->settingsRepository = $settingsRepository;
+	}
+
+	/**
+	 * @unreleased
+	 */
 	public function __invoke() {
 		$this->validateRequest();
 
@@ -18,16 +35,22 @@ class SetDefaultStripeAccountController {
 
 		try {
 			if ( $requestData->formId ) {
+				$this->settingsRepository
+					->setDefaultStripeAccountSlugForDonationForm(
+						$requestData->formId,
+						$requestData->accountSlug
+					);
+
 				give()->form_meta->update_meta(
 					$requestData->formId,
-					'_give_stripe_default_account',
-					$requestData->accountSlug
+					'give_stripe_per_form_accounts',
+					'enabled'
 				);
 
 				wp_send_json_success();
 			}
 
-			give_update_option( '_give_stripe_default_account', $requestData->accountSlug );
+			$this->settingsRepository->setDefaultGlobalStripeAccountSlug( $requestData->accountSlug );
 			wp_send_json_success();
 		} catch ( \Exception $e ) {
 			wp_send_json_error(

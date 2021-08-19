@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Repositories;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 
 /**
@@ -87,40 +87,4 @@ class AccountDetail {
 		return new AccountDetailModel( $accountDetail );
 	}
 
-	/**
-	 * @unreleased
-	 */
-	public function getAllStripeAccounts() {
-		return give_stripe_get_all_accounts();
-	}
-
-	/**
-	 * @unreleased
-	 * @return string
-	 */
-	public function getDefaultStripeAccountSlug() {
-		return give_stripe_get_default_account_slug();
-	}
-
-	/**
-	 * @unreleased
-	 *
-	 * @param int $formId
-	 *
-	 * @return bool|mixed|string
-	 */
-	public function getDefaultStripeAccountSlugForDonationForm( $formId ) {
-		return give()->form_meta->get_meta( $formId, '_give_stripe_default_account', true );
-	}
-
-	/**
-	 * @unreleased
-	 *
-	 * @param int $formId
-	 *
-	 * @return bool
-	 */
-	public function setDefaultStripeAccountSlugForDonationForm( $formId, $stripeAccountSlug ) {
-		return give()->form_meta->update_meta( $formId, '_give_stripe_default_account', $stripeAccountSlug );
-	}
 }

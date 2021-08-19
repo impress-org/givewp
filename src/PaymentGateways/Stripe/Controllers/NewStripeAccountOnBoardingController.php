@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Stripe\Controllers;
 
 use Give\PaymentGateways\Stripe\DataTransferObjects\NewStripeAccountOnBoardingDto;
-use Give\PaymentGateways\Stripe\Models\AccountDetail;
+use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give_Admin_Settings;
 use Stripe\Stripe;
@@ -15,6 +15,18 @@ use Stripe\Stripe;
  * @unreleased
  */
 class NewStripeAccountOnBoardingController {
+	/**
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * @param Settings $settings
+	 */
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
+	}
+
 	/**
 	 * @unreleased
 	 */
@@ -44,9 +56,11 @@ class NewStripeAccountOnBoardingController {
 				sprintf(
 					'<strong>%1$s</strong> %2$s',
 					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
+					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance',
+						'give' )
 				)
 			);
+
 			return;
 		}
 
@@ -63,22 +77,37 @@ class NewStripeAccountOnBoardingController {
 		}
 
 		try {
-			give( Settings::class )->addNewStripeAccount(
-				AccountDetail::fromArray(
-					[
-						'type'                 => 'connect',
-						'account_name'         => $account_name,
-						'account_slug'         => $account_slug,
-						'account_email'        => $account_email,
-						'account_country'      => $account_country,
-						'account_id'           => $requestedData->stripeUserId,
-						'live_secret_key'      => $requestedData->stripeAccessToken,
-						'test_secret_key'      => $requestedData->stripeAccessTokenTest,
-						'live_publishable_key' => $requestedData->stripePublishableKey,
-						'test_publishable_key' => $requestedData->stripePublishableKeyTest,
-					]
-				)
+			$accountDetailModel = AccountDetailModel::fromArray(
+				[
+					'type'                 => 'connect',
+					'account_name'         => $account_name,
+					'account_slug'         => $account_slug,
+					'account_email'        => $account_email,
+					'account_country'      => $account_country,
+					'account_id'           => $requestedData->stripeUserId,
+					'live_secret_key'      => $requestedData->stripeAccessToken,
+					'test_secret_key'      => $requestedData->stripeAccessTokenTest,
+					'live_publishable_key' => $requestedData->stripePublishableKey,
+					'test_publishable_key' => $requestedData->stripePublishableKeyTest,
+				]
 			);
+
+			$this->settings->addNewStripeAccount( $accountDetailModel );
+
+			if ( $requestedData->formId ) {
+				if ( ! $this->settings->getDefaultStripeAccountSlugForDonationForm( $requestedData->formId ) ) {
+					$this->settings->setDefaultStripeAccountSlugForDonationForm(
+						$requestedData->formId,
+						$accountDetailModel->accountSlug
+					);
+				}
+
+				give()->form_meta->update_meta(
+					$requestedData->formId,
+					'give_stripe_per_form_accounts',
+					'enabled'
+				);
+			}
 
 			wp_redirect(
 				add_query_arg(
@@ -95,7 +124,8 @@ class NewStripeAccountOnBoardingController {
 				sprintf(
 					'<strong>%1$s</strong> %2$s',
 					esc_html__( 'Stripe Error:', 'give' ),
-					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance', 'give' )
+					esc_html__( 'We are unable to connect Stripe account. Please contact support team for assistance',
+						'give' )
 				)
 			);
 

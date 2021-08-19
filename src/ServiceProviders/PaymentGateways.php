@@ -22,6 +22,8 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PaypalSettingPage;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
 use Give\PaymentGateways\Stripe\Controllers\DisconnectStripeAccountController;
 use Give\PaymentGateways\Stripe\Controllers\GetStripeAccountDetailsController;
 use Give\PaymentGateways\Stripe\Controllers\NewStripeAccountOnBoardingController;
@@ -98,9 +100,10 @@ class PaymentGateways implements ServiceProvider {
 		Hooks::addAction( 'wp_ajax_disconnect_stripe_account', DisconnectStripeAccountController::class );
 		Hooks::addAction( 'wp_ajax_give_stripe_account_get_details', GetStripeAccountDetailsController::class );
 		Hooks::addAction( 'admin_init', NewStripeAccountOnBoardingController::class );
+		Hooks::addFilter( 'give_metabox_form_data_settings', DonationFormSettingPage::class, '__invoke', 10, 2 );
 
-		give( DonationFormSettingPage::class )->boot();
 		$this->registerMigrations();
+		$this->registerStripeCustomFields();
 	}
 
 	/**
@@ -200,5 +203,13 @@ class PaymentGateways implements ServiceProvider {
 		$migrationRegisterer = give( MigrationsRegister::class );
 
 		$migrationRegisterer->addMigration( SetPayPalStandardGatewayId::class );
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function registerStripeCustomFields() {
+		Hooks::addAction( 'give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle' );
+		Hooks::addAction( 'give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle', 10, 2 );
 	}
 }

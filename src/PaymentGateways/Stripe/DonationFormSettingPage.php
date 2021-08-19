@@ -13,14 +13,6 @@ use Give\PaymentGateways\Stripe\Admin\CustomizeAccountField;
  * @unreleased
  */
 class DonationFormSettingPage {
-
-	/**
-	 * @unreleased
-	 */
-	public function boot() {
-		add_filter( 'give_metabox_form_data_settings', [ $this, 'registerTab' ], 10, 2 );
-	}
-
 	/**
 	 * @unreleased
 	 *
@@ -29,7 +21,7 @@ class DonationFormSettingPage {
 	 *
 	 * @return array
 	 */
-	function registerTab( $settings, $formId ) {
+	function __invoke( $settings, $formId ) {
 		if ( ! $this->canRegisterTab() ) {
 			return $settings;
 		}

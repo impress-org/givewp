@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Models;
 
-use Give\Framework\Exceptions\Primitives\InvalidPropertyName;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\Helpers\ArrayDataSet;
 
 /**
