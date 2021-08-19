@@ -547,6 +547,9 @@ export default {
 		 * @returns {boolean}
 		 */
 		autoSetMultiLevel: function( $level ) {
+
+			console.log( $level )
+
 			let $form = $level.parents( 'form' ),
 				level_amount = $level.val(),
 				level_price_id = $level.data( 'price-id' );
@@ -559,7 +562,8 @@ export default {
 			// Is this a custom amount selection?
 			if ( 'custom' === level_price_id ) {
 				const custom_amount = Give.fn.getParameterByName( 'custom-amount' );
-				$form.find( '.give-amount-top' ).val( custom_amount ).focus();
+				// When setting a custom value, focus and blur the input inorder to correctly set the custom level.
+				$form.find( '.give-amount-top' ).val( custom_amount ).focus().blur();
 				return true;
 			}
 
