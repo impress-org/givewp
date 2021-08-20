@@ -1,6 +1,6 @@
 <?php /** @var Give\Framework\FieldsAPI\Select $field */ ?>
 <select
-	name="<?php echo $field->getName(); ?>"
+	name="<?php echo $field->getName(); ?><?php echo $field->getAllowMultiple() ? '[]' : ''; ?>"
 	id="give-<?php echo $field->getName(); ?>"
 	<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
