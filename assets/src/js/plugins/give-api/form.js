@@ -558,9 +558,7 @@ export default {
 
 			// Is this a custom amount selection?
 			if ( 'custom' === level_price_id ) {
-				const custom_amount = Give.fn.getParameterByName( 'custom-amount' );
-				$form.find( '.give-amount-top' ).val( custom_amount ).focus();
-				return true;
+				level_amount = Give.fn.getParameterByName( 'custom-amount' );
 			}
 
 			// Update custom amount field
