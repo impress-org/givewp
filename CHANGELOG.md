@@ -9,7 +9,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
--   Custom amount level is correctly set after a payment error (#5922) 
+- Custom amount level is correctly set after a payment error (#5922) 
+- Lodash is now an external dependency (#5925)
 
 ## 2.13.0 - 2021-08-19
 

@@ -130,21 +130,17 @@ a.give-stripe-connect-temp-dismiss:active {
 	}
 }
 
-
 // --------------------------------
 // New Default Modal
 // --------------------------------
 .give-stripe-modal-new-default {
-
 	.give-modal__title {
 		line-height: 58px;
 
 		.give-stripe-icon {
 			margin-right: 15px;
 		}
-
 	}
-
 }
 
 // --------------------------------
@@ -326,7 +322,6 @@ a.give-stripe-connect-temp-dismiss:active {
 		.give-stripe-connect {
 			margin: 0 auto;
 		}
-
 	}
 
 	.dashicons-info {
@@ -582,7 +577,7 @@ a.give-stripe-connect-temp-dismiss:active {
 		cursor: pointer;
 	}
 
-	input[name='stripe_cc_fields_format']{
+	input[name='stripe_cc_fields_format'] {
 		display: none;
 	}
 }
@@ -614,7 +609,6 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 #stripe_form_account_options {
-
 	.give-stripe-manage-account-options {
 		padding: 20px 20px 0;
 	}
@@ -639,7 +633,6 @@ a.give-stripe-connect-temp-dismiss:active {
 			flex-basis: 100%;
 			flex: 1;
 		}
-
 	}
 
 	.give-stripe-per-form-option-field {
@@ -686,7 +679,6 @@ a.give-stripe-connect-temp-dismiss:active {
 			font-weight: bold;
 			color: #333;
 		}
-
 	}
 
 	.give-stripe-setting-heading {
@@ -695,10 +687,7 @@ a.give-stripe-connect-temp-dismiss:active {
 		font-size: 20px;
 		font-weight: 500;
 	}
-
-
 }
-
 
 // --------------------------------
 // Per-Form Stripe Responsive Styles
@@ -710,12 +699,10 @@ a.give-stripe-connect-temp-dismiss:active {
 			grid-template-columns: repeat(2, 1fr);
 			grid-gap: 25px;
 		}
-
 	}
 }
 @media screen and (max-width: 1399px) {
-	#stripe_form_account_options  {
-
+	#stripe_form_account_options {
 		// Connect notice
 		.give-stripe-account-manager-add-section {
 			display: block;
@@ -727,15 +714,14 @@ a.give-stripe-connect-temp-dismiss:active {
 			}
 
 			.stripe-logo-with-circle {
-				display:none;
+				display: none;
 			}
 		}
-
 	}
 }
 
 @media screen and (max-width: 1149px) {
-	#stripe_form_account_options  {
+	#stripe_form_account_options {
 		.give-stripe-account-manager-list {
 			grid-template-columns: repeat(1, 1fr);
 		}
@@ -748,7 +734,6 @@ a.give-stripe-connect-temp-dismiss:active {
 			&:first-of-type {
 				margin: 0 0 25px;
 			}
-
 		}
 	}
 }
