@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## 2.13.1 - 2021-08-20
+
 ### Fixed
 
 - Custom amount level is correctly set after a payment error (#5922) 

@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI\Conditions;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.13.0
  */
 class BasicCondition extends Condition {
 
@@ -31,7 +31,7 @@ class BasicCondition extends Condition {
 	/**
 	 * Create a new BasicCondition.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param string $field
 	 * @param string $operator
@@ -56,7 +56,7 @@ class BasicCondition extends Condition {
 	/**
 	 * Check if the provided operator is invalid.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param string $operator
 	 *
@@ -69,7 +69,7 @@ class BasicCondition extends Condition {
 	/**
 	 * Check if the provided boolean is invalid.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param $boolean
 	 *
