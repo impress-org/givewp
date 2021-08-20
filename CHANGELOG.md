@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Show correct placeholder in legacy consumer in input field template (#5924)
 - Do not allow choosing placeholder in legacy consumer in select field template (#5924)
+- Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template (#5924)
 
 ## 2.13.0 - 2021-08-19
 
