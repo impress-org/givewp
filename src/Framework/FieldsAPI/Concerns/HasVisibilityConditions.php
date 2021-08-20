@@ -6,14 +6,14 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Conditions\BasicCondition;
 
 /**
- * @unreleased
+ * @since 2.13.0
  */
 trait HasVisibilityConditions {
 
 	/**
 	 * The node is visible by default. These are the conditions for it to remain visible.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @var BasicCondition[]
 	 */
@@ -22,7 +22,7 @@ trait HasVisibilityConditions {
 	/**
 	 * Get the visibility conditions.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @return BasicCondition[]
 	 */
@@ -33,7 +33,7 @@ trait HasVisibilityConditions {
 	/**
 	 * Set a condition for showing the node.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param string $field
 	 * @param string $operator
@@ -51,7 +51,7 @@ trait HasVisibilityConditions {
 	/**
 	 * Set multiple conditions for showing the node.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param BasicCondition|array ...$conditions
 	 *
@@ -68,7 +68,7 @@ trait HasVisibilityConditions {
 	/**
 	 * Normalize the condition if in array format.
 	 *
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param BasicCondition|array $condition
 	 *

@@ -5,12 +5,12 @@ namespace Give\Framework\FieldsAPI\Conditions;
 use JsonSerializable;
 
 /**
- * @unreleased
+ * @since 2.13.0
  */
 abstract class Condition implements JsonSerializable {
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * {@inheritDoc}
 	 */
