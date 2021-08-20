@@ -6,9 +6,15 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 >
-	<?php if ( $placeholder = $field->getPlaceholder() ) : ?>
-		<option value=""><?php echo $placeholder; ?></option>
-	<?php endif; ?>
+	<?php
+	if ( $placeholder = $field->getPlaceholder() ) {
+		printf(
+			'<option value="" disabled %2$s>%1$s</option>',
+			$placeholder,
+			$field->getDefaultValue() ? '' : 'selected'
+		);
+	}
+	?>
 	<?php foreach ( $field->getOptions() as $option ) : ?>
 		<?php $label = $option->getLabel(); ?>
 		<?php $value = $option->getValue(); ?>
