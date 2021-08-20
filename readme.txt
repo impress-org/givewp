@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.12.3
+Stable tag: 2.13.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.13.0: August 19th, 2021 =
+* New: Fresh new UI for managing Stripe accounts
+
 = 2.12.3: August 12th, 2021 =
 * Fix: Resolved issues some donors were having updating subscription cards or amount from Donor Dashboard
 * Fix: Primary color picker for multi-step form remains visible if Step 1 is disabled

@@ -76,10 +76,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			add_filter( 'give_get_settings_gateways', [ $this, 'register_settings' ] );
 			add_filter( 'give_get_sections_advanced', [ $this, 'register_advanced_sections' ] );
 			add_filter( 'give_get_settings_advanced', [ $this, 'register_advanced_settings' ], 10, 1 );
-			add_action( 'give_admin_field_stripe_account_manager', [ $this, 'stripe_account_manager_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_webhooks', [ $this, 'stripe_webhook_field' ], 10, 2 );
 			add_action( 'give_admin_field_stripe_styles_field', [ $this, 'stripe_styles_field' ], 10, 2 );
-			add_action( 'give_disconnect_connected_stripe_account', [ $this, 'disconnect_connected_stripe_account' ] );
 		}
 
 		/**
@@ -111,7 +109,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$groups = [
 				'accounts'    => __( 'Manage Accounts', 'give' ),
 				'general'     => __( 'General Settings', 'give' ),
-				'credit-card' => __( 'Credit Card On Site', 'give' ),
+				'credit-card' => __( 'Credit Card', 'give' ),
 				'checkout'    => __( 'Stripe Checkout', 'give' ),
 				'sepa'        => __( 'SEPA Direct Debit', 'give' ),
 				'becs'        => __( 'BECS Direct Debit', 'give' ),
@@ -268,12 +266,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'desc'          => esc_html__( 'This option allows you to show single or multiple credit card fields on your donation forms.', 'give' ),
 						'id'            => 'stripe_cc_fields_format',
 						'wrapper_class' => 'stripe-cc-field-format-settings',
-						'type'          => 'radio_inline',
+						'type'          => 'stripe_credit_card_format',
 						'default'       => 'multi',
-						'options'       => [
-							'single' => esc_html__( 'Single Field', 'give' ),
-							'multi'  => esc_html__( 'Multi Field', 'give' ),
-						],
 					];
 
 					/**
@@ -663,236 +657,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		}
 
 		/**
-		 * Stripe Account Manager Field.
-		 *
-		 * This function will add a custom admin settings field to display
-		 * Stripe Account Management field where all the connected Stripe
-		 * accounts will display irrespective of the Stripe account connected
-		 * via Connect method or Manual method.
-		 *
-		 * @param array  $field        Field Arguments.
-		 * @param string $option_value Field Value.
-		 *
-		 * @return mixed|void
-		 * @since 2.7.0
-		 * @since 2.9.0 Stripe accounts are now disconnected locally, meaning that GiveWP remains an Authorized Application in the Stripe account.
-		 */
-		public function stripe_account_manager_field( $field, $option_value ) {
-			$stripe_accounts = give_stripe_get_all_accounts();
-			$default_account = give_stripe_get_default_account_slug();
-
-			// Set account as default.
-			if ( 1 === count( $stripe_accounts ) ) {
-				$stripe_account_keys = array_keys( $stripe_accounts );
-				$default_account     = $stripe_account_keys[0];
-			}
-
-			$site_url            = get_site_url();
-			$modal_title         = sprintf(
-				'<strong>%1$s</strong>',
-				esc_html__( 'You are connected! Now this is important: Please configure your Stripe webhook to finalize the setup.', 'give' )
-			);
-			$modal_first_detail  = sprintf(
-				'%1$s %2$s',
-				esc_html__( 'In order for Stripe to function properly, you must add a new Stripe webhook endpoint. To do this please visit the <a href=\'https://dashboard.stripe.com/webhooks\' target=\'_blank\'>Webhooks Section of your Stripe Dashboard</a> and click the <strong>Add endpoint</strong> button and paste the following URL:', 'give' ),
-				"<strong>{$site_url}?give-listener=stripe</strong>"
-			);
-			$modal_second_detail = esc_html__( 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.', 'give' );
-			$can_display         = ! empty( $_GET['stripe_account'] ) ? '0' : '1';
-			?>
-			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
-				<td class="give-forminp give-forminp-api_key">
-					<div id="give-stripe-account-manager-errors"></div>
-					<div id="give-stripe-account-manager-description">
-						<h2><?php esc_html_e( 'Manage Your Stripe Accounts', 'give' ); ?></h2>
-						<p class="give-field-description"><?php esc_html_e( 'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.', 'give' ); ?></p>
-						<?php
-						if ( ! give_stripe_is_premium_active() ) {
-							?>
-							<p class="give-field-description">
-								<br />
-								<?php
-								echo sprintf(
-									__( 'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>', 'give' ),
-									esc_url( 'http://docs.givewp.com/settings-stripe-addon' ),
-									esc_url( 'http://docs.givewp.com/settings-stripe-recurring' ),
-									esc_url( 'http://docs.givewp.com/settings-stripe-free' )
-								);
-								?>
-							</p>
-							<?php
-						}
-						?>
-					</div>
-					<div class="give-stripe-account-manager-container">
-						<div
-							id="give-stripe-connected"
-							class="stripe-btn-disabled give-hidden"
-							data-status="connected"
-							data-title="<?php echo $modal_title; ?>"
-							data-first-detail="<?php echo $modal_first_detail; ?>"
-							data-second-detail="<?php echo $modal_second_detail; ?>"
-							data-display="<?php echo $can_display; ?>"
-							data-redirect-url="<?php echo esc_url_raw( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings' ) ); ?>"
-						>
-						</div>
-						<div class="give-stripe-account-manager-list">
-							<?php
-							if ( $stripe_accounts ) {
-								foreach ( $stripe_accounts as $slug => $details ) {
-									$account_name       = $details['account_name'];
-									$account_email      = $details['account_email'];
-									$stripe_account_id  = $details['account_id'];
-									$disconnect_message = esc_html__( 'Are you sure you want to disconnect this Stripe account?', 'give' );
-									$disconnect_url     = add_query_arg(
-										[
-											'post_type'   => 'give_forms',
-											'page'        => 'give-settings',
-											'tab'         => 'gateways',
-											'section'     => 'stripe-settings',
-											'give_action' => ( 'connect' === $details['type'] )
-												? 'disconnect_connected_stripe_account'
-												: 'disconnect_manual_stripe_account',
-											'give_stripe_disconnect_slug' => $slug,
-										],
-										wp_nonce_url( admin_url( 'edit.php' ), 'give_disconnect_connected_stripe_account_' . $slug )
-									);
-									?>
-									<div id="give-stripe-<?php echo $slug; ?>" class="give-stripe-account-manager-list-item">
-										<div class="give-stripe-account-name-wrap">
-											<span class="give-stripe-account-name">
-												<?php echo esc_html( $account_name ); ?>
-											</span>
-											<span class="give-field-description give-stripe-account-email">
-												<?php echo esc_html( $account_email ); ?>
-											</span>
-											<span class="give-stripe-account-edit">
-												<?php if ( 'connect' !== $details['type'] ) { ?>
-												<a class="give-stripe-account-edit-name" href="#"><?php esc_html_e( 'Edit', 'give' ); ?></a>
-												<a
-													class="give-stripe-account-update-name give-hidden"
-													href="#"
-													data-account="<?php echo $slug; ?>"
-												><?php esc_html_e( 'Update', 'give' ); ?></a>
-												<a class="give-stripe-account-cancel-name give-hidden" href="#"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
-												<?php } ?>
-											<?php if ( $slug === $default_account ) { ?>
-												<span class="give-stripe-account-default give-stripe-account-badge">
-													<?php esc_html_e( 'Default Account', 'give' ); ?>
-												</span>
-											<?php } else { ?>
-												<span class="give-stripe-account-default">
-													<a
-														data-account="<?php echo $slug; ?>"
-														data-url="<?php echo give_stripe_get_admin_settings_page_url(); ?>"
-														class="give-stripe-account-set-default" href="#"
-													><?php esc_html_e( 'Set as Default', 'give' ); ?></a>
-												</span>
-											<?php } ?>
-
-											</span>
-										</div>
-										<div class="give-stripe-account-actions">
-											<span class="give-stripe-account-type-description give-field-description"><?php esc_html_e( 'Connection Method:', 'give' ); ?></span>
-											<span class="give-stripe-account-type-method"><?php echo give_stripe_connection_type_name( $details['type'] ); ?></span>
-											<?php
-											if (
-												$slug !== $default_account ||
-												count( $stripe_accounts ) === 1
-											) {
-												?>
-												<span class="give-stripe-account-disconnect">
-													<a
-														class="give-stripe-disconnect-account-btn"
-														href="<?php echo $disconnect_url; ?>"
-														data-disconnect-message="<?php echo $disconnect_message; ?>"
-														data-account="<?php echo $slug; ?>"
-													>
-														<?php esc_html_e( 'Disconnect', 'give' ); ?>
-													</a>
-												</span>
-											<?php } ?>
-										</div>
-									</div>
-									<?php
-								}
-							} else {
-								?>
-								<div class="give-stripe-account-manager-list-item">
-									<span><?php esc_html_e( 'No Stripe Accounts Connected.', 'give' ); ?></span>
-								</div>
-							<?php } ?>
-						</div>
-						<div class="give-stripe-account-manager-add-section">
-							<?php
-							// Show option to add Stripe when the manual upgrade is completed.
-							if ( give_has_upgrade_completed( 'v270_store_stripe_account_for_donation' ) ) {
-								?>
-								<h3><?php esc_html_e( 'Connect a New Stripe Account', 'give' ); ?></h3>
-								<div class="give-stripe-add-account-errors"></div>
-								<table class="form-table give-setting-tab-body give-setting-tab-body-gateways">
-									<tbody>
-									<?php
-									if ( give_stripe_is_premium_active() ) {
-										/**
-										 * This action hook will be used to load Manual API fields for premium addon.
-										 *
-										 * @param array $stripe_accounts All Stripe accounts.
-										 *
-										 * @since 2.7.0
-										 */
-										do_action( 'give_stripe_premium_manual_api_fields', $stripe_accounts );
-									}
-									?>
-									<tr valign="top" class="give-stripe-account-type-connect">
-										<th scope="row" class="titledesc">
-											<label for="stripe_connect_button">
-												<?php esc_html_e( 'Stripe Connection', 'give' ); ?>
-											</label>
-										</th>
-										<td class="give-forminp">
-											<?php echo give_stripe_connect_button(); ?>
-										</td>
-									</tr>
-									</tbody>
-								</table>
-								<?php
-							} else {
-								Give()->notices->print_admin_notices(
-									[
-										'description' => sprintf(
-											'%1$s <a href="%2$s">%3$s</a> %4$s',
-											esc_html__( 'Give 2.7.0 introduces the ability to connect a single site to multiple Stripe accounts. To use this feature, you need to complete database updates. ', 'give' ),
-											esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ),
-											esc_html__( 'Click here', 'give' ),
-											esc_html__( 'to complete your pending database updates.', 'give' )
-										),
-										'dismissible' => false,
-									]
-								);
-							}
-							?>
-						</div>
-					</div>
-					<!-- DESTRUCTIVE: Disconnect all Stripe accounts. -->
-					<hr class="give-stripe-disconnect-all-divider" />
-					<div class="give-stripe-disconnect-all">
-						<h3><?php esc_html_e( 'Remove GiveWP as an Authorized Application for my Stripe account.', 'give' ); ?></h3>
-						<p class="give-stripe-disconnect-all--description">
-							<?php esc_html_e( 'Removing GiveWP as an Authorized Application for your Stripe account will remove the connection between the website you are disconnecting as well as any other sites that you have connected to GiveWP using the same Stripe account and connect method. Proceed with caution when disconnecting if you have multiple sites connected.', 'give' ); ?>
-						</p>
-						<p>
-							<a target="_blank" href="https://dashboard.stripe.com/account/applications">
-								<?php esc_html_e( 'View authorized applications in Stripe', 'give' ); ?>
-							</a>
-						</p>
-					</div>
-				</td>
-			</tr>
-			<?php
-		}
-
-		/**
 		 * Stripe Webhook field.
 		 *
 		 * @since 2.5.0
@@ -1054,23 +818,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 				</td>
 			</tr>
 			<?php
-		}
-
-		/**
-		 * @since 2.8.0
-		 */
-		public function disconnect_connected_stripe_account() {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return;
-			}
-			$data = give_clean( $_GET );
-			if ( ! isset( $data['give_stripe_disconnect_slug'] ) ) {
-				return;
-			}
-			check_admin_referer( 'give_disconnect_connected_stripe_account_' . $data['give_stripe_disconnect_slug'] );
-			give_stripe_disconnect_account(
-				$data['give_stripe_disconnect_slug']
-			);
 		}
 	}
 }
