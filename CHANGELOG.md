@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+
+-   Lodash is now an external dependency (#5925)
+
 ## 2.13.0 - 2021-08-19
 
 ### New
