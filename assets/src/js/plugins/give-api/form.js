@@ -548,8 +548,6 @@ export default {
 		 */
 		autoSetMultiLevel: function( $level ) {
 
-			console.log( $level )
-
 			let $form = $level.parents( 'form' ),
 				level_amount = $level.val(),
 				level_price_id = $level.data( 'price-id' );
