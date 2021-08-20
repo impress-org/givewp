@@ -11,7 +11,7 @@
 	<label>
 		<input
 			type="radio"
-			name="give_<?php echo $field->getName(); ?>"
+			name="<?php echo $field->getName(); ?>"
 			<?php echo $field->isRequired() ? 'required' : ''; ?>
 			<?php echo $option->getValue() === $field->getDefaultValue() ? 'checked' : ''; ?>
 			value="<?php echo $option->getValue(); ?>"
