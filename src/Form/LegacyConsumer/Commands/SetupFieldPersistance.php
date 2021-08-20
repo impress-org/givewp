@@ -43,7 +43,7 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 */
 	public function process( Field $field ) {
 		if ( isset( $_POST[ $field->getName() ] ) ) {
-			$value = wp_strip_all_tags( $_POST[ $field->getName() ], true );
+			$value = give_clean( $_POST[ $field->getName() ] );
 
 			if ( $field->shouldStoreAsDonorMeta() ) {
 				$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
