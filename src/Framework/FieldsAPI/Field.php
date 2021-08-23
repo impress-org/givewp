@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.12.0
- * @unreleased Support visibility conditions
+ * @since 2.13.0 Support visibility conditions
  */
 abstract class Field implements Node {
 
