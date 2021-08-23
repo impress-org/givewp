@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\Conditions;
 
 /**
- * @unreleased
+ * @since 2.13.0
  */
 class NestedCondition extends Condition {
 
@@ -17,7 +17,7 @@ class NestedCondition extends Condition {
 	public $boolean;
 
 	/**
-	 * @unreleased
+	 * @since 2.13.0
 	 *
 	 * @param Condition[] $conditions
 	 * @param string $boolean

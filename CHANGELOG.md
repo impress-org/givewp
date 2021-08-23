@@ -15,6 +15,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
 - Sanitize array type values correctly before make custom field value persistence. (#5924)
 
+## 2.13.1 - 2021-08-20
+
+### Fixed
+
+- Custom amount level is correctly set after a payment error (#5922) 
+- Lodash is now an external dependency (#5925)
+
 ## 2.13.0 - 2021-08-19
 
 ### New
@@ -28,7 +35,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add missing help text tooltip to Legacy Consumer’s label content templates. (#5921)
 - Wrap `<input>` element inside of `<label>` element for Legacy Consumer’s checkbox template. (#5920)
 - Add missing `required` and `readonly` attributes to Legacy Consumer’s select and textarea templates. (#5920)
-- Add screen reader text for required indicator to Legacy Consumer’s label content template. (#5920) 
+- Add screen reader text for required indicator to Legacy Consumer’s label content template. (#5920)
 
 ## 2.12.3 - 2021-08-12
 
@@ -39,8 +46,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add support for admin defined recurring donations to the multi-step form template. (#5910)
 - Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910)
 - Payment errors no longer revert to the default donation amount (#5913)
-- Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (
-  #5918)
+- Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (#5918)
 - Donors can now update their credit card using the Donor Dashboard (#5902)
 
 ## 2.12.2 - 2021-07-30

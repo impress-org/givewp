@@ -53,6 +53,7 @@ const config = {
 	externals: {
 		$: 'jQuery',
 		jquery: 'jQuery',
+		lodash: 'lodash',
 		'@wordpress/i18n' : 'wp.i18n',
 	},
 	devtool: ! inProduction ? 'source-map' : '',
