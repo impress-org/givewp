@@ -21,10 +21,14 @@ class SetupNewTemplateHook implements HookCommandInterface {
 		// On the old hook, run the new hook and render the fields.
 		add_action(
 			"give_$hook",
-			function ( $formID ) use ( $hook ) {
+			static function ( $formID ) use ( $hook ) {
 				$collection = Group::make( $hook );
 				do_action( "give_fields_$hook", $collection, $formID );
-				$collection->walk( [ FieldView::class, 'render' ] );
+				$collection->walk(
+					static function ( $node ) use ( $formID ) {
+						FieldView::render( $node, $formID );
+					}
+				);
 			}
 		);
 	}
