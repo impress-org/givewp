@@ -44,10 +44,10 @@ class SetupFieldPersistance implements HookCommandInterface {
 	 */
 	public function process( Field $field ) {
 		if ( isset( $_POST[ $field->getName() ] ) ) {
-			$data = $_POST[ $field->getName() ];
+			$data = give_clean( $_POST[ $field->getName() ] );
 			$value = is_array( $data ) ?
-				implode( '|', $data ):
-				give_clean( $data );
+				implode( '|', array_values( array_filter( $data ) ) ):
+				$data;
 
 			if ( $field->shouldStoreAsDonorMeta() ) {
 				$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
