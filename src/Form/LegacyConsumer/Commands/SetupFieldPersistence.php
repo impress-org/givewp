@@ -54,7 +54,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 				default:
 					$data = give_clean( $_POST[ $field->getName() ] );
 					$value = is_array( $data ) ?
-						implode( '|', array_values( array_filter( $data ) ) ):
+						implode( '| ', array_values( array_filter( $data ) ) ):
 						$data;
 			}
 
