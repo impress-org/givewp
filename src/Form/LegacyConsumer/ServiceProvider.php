@@ -43,6 +43,14 @@ class ServiceProvider implements ServiceProviderInterface {
 		);
 
 		add_action(
+			'give_checkout_error_checks',
+			function() {
+				$formId = absint( $_POST['give-form-id'] );
+				return give( TemplateHooks::class )->walk( new Commands\SetupFieldCustomValidation( $formId ) );
+			}
+		);
+
+		add_action(
 			'give_insert_payment',
 			function( $donationID, $donationData ) {
 				give( TemplateHooks::class )->walk( new Commands\SetupFieldPersistence( $donationID, $donationData ) );
