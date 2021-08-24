@@ -13,6 +13,10 @@ use Give\Framework\FieldsAPI\Group;
  * @since 2.10.2
  */
 class SetupFieldValidation {
+	/**
+	 * @var int
+	 */
+	private $formID;
 
 	/**
 	 * @since 2.10.2
@@ -26,7 +30,7 @@ class SetupFieldValidation {
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param Field[] $requiredFields
+	 * @param array $requiredFields
 	 * @param string $hook
 	 *
 	 * @return array
