@@ -45,7 +45,7 @@ class ServiceProvider implements ServiceProviderInterface {
 		add_action(
 			'give_insert_payment',
 			function( $donationID, $donationData ) {
-				give( TemplateHooks::class )->walk( new Commands\SetupFieldPersistance( $donationID, $donationData ) );
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldPersistence( $donationID, $donationData ) );
 			},
 			10,
 			2

@@ -12,7 +12,7 @@ use Give\Framework\FieldsAPI\Text;
  *
  * @since 2.10.2
  */
-class SetupFieldPersistance implements HookCommandInterface {
+class SetupFieldPersistence implements HookCommandInterface {
 
 	/**
 	 * @since 2.10.2
