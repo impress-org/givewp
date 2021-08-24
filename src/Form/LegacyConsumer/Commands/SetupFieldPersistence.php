@@ -48,7 +48,17 @@ class SetupFieldPersistence implements HookCommandInterface {
 			switch ( $field->getType() ) {
 				case 'file':
 					$fileUploader = new FileUploader();
-					$value = $fileUploader();
+					$fileIds = $fileUploader();
+
+					foreach ( $fileIds  as $fileId ) {
+						if ( $field->shouldStoreAsDonorMeta() ) {
+							$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
+							Give()->donor_meta->update_meta( $donorID, $field->getName(), $fileId );
+						} else {
+							// Store as Donation Meta - default behavior.
+							give_update_payment_meta( $this->donationID, $field->getName(), $fileId );
+						}
+					}
 					break;
 
 				default:
@@ -56,14 +66,14 @@ class SetupFieldPersistence implements HookCommandInterface {
 					$value = is_array( $data ) ?
 						implode( '| ', array_values( array_filter( $data ) ) ):
 						$data;
-			}
 
-			if ( $field->shouldStoreAsDonorMeta() ) {
-				$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
-				Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
-			} else {
-				// Store as Donation Meta - default behavior.
-				give_update_payment_meta( $this->donationID, $field->getName(), $value );
+					if ( $field->shouldStoreAsDonorMeta() ) {
+						$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
+						Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
+					} else {
+						// Store as Donation Meta - default behavior.
+						give_update_payment_meta( $this->donationID, $field->getName(), $value );
+					}
 			}
 		}
 	}
