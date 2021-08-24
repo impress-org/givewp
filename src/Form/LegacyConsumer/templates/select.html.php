@@ -17,11 +17,11 @@
 	}
 	?>
 	<?php foreach ( $field->getOptions() as $option ) : ?>
-		<?php $value = $option->getValue(); ?>
+		<?php $value = esc_attr( $option->getValue() ); ?>
 		<?php $label = $option->getLabel(); ?>
 		<?php $default = $field->getDefaultValue() === $option->getValue(); ?>
 		<option
-			<?php echo "value=\"{$value}\""; ?>
+			<?php echo $label ? "value=\"$value\"" : ''; ?>
 			<?php echo $default ? 'selected' : ''; ?>
 		>
 			<?php echo $label ?: $value; ?>
