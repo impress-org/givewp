@@ -15,10 +15,11 @@ use Give\Framework\FieldsAPI\Text;
 class SetupFieldPersistence implements HookCommandInterface {
 
 	/**
-	 * @since 2.10.2
-	 *
 	 * @param int $donationID
 	 * @param array $donationData
+	 *
+	 * @since 2.10.2
+	 *
 	 */
 	public function __construct( $donationID, $donationData ) {
 		$this->donationID   = $donationID;
@@ -26,9 +27,10 @@ class SetupFieldPersistence implements HookCommandInterface {
 	}
 
 	/**
+	 * @param string $hook
+	 *
 	 * @since 2.10.2
 	 *
-	 * @param string $hook
 	 */
 	public function __invoke( $hook ) {
 		$collection = Group::make( $hook );
@@ -37,20 +39,21 @@ class SetupFieldPersistence implements HookCommandInterface {
 	}
 
 	/**
-	 * @since 2.10.2
-	 *
 	 * @param Field|Text $field
 	 *
 	 * @return void
+	 * @since 2.10.2
+	 *
 	 */
 	public function process( Field $field ) {
-		if ( isset( $_POST[ $field->getName() ] ) ) {
-			switch ( $field->getType() ) {
-				case 'file':
-					$fileUploader = new FileUploader();
-					$fileIds = $fileUploader();
+		switch ( $field->getType() ) {
+			case 'file':
+				if ( isset( $_FILES[ $field->getName() ] ) ) {
 
-					foreach ( $fileIds  as $fileId ) {
+					$fileUploader = new FileUploader();
+					$fileIds      = $fileUploader();
+
+					foreach ( $fileIds as $fileId ) {
 						if ( $field->shouldStoreAsDonorMeta() ) {
 							$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
 							Give()->donor_meta->update_meta( $donorID, $field->getName(), $fileId );
@@ -59,12 +62,14 @@ class SetupFieldPersistence implements HookCommandInterface {
 							give_update_payment_meta( $this->donationID, $field->getName(), $fileId );
 						}
 					}
-					break;
+				}
+				break;
 
-				default:
-					$data = give_clean( $_POST[ $field->getName() ] );
+			default:
+				if ( isset( $_POST[ $field->getName() ] ) ) {
+					$data  = give_clean( $_POST[ $field->getName() ] );
 					$value = is_array( $data ) ?
-						implode( '| ', array_values( array_filter( $data ) ) ):
+						implode( '| ', array_values( array_filter( $data ) ) ) :
 						$data;
 
 					if ( $field->shouldStoreAsDonorMeta() ) {
@@ -74,7 +79,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 						// Store as Donation Meta - default behavior.
 						give_update_payment_meta( $this->donationID, $field->getName(), $value );
 					}
-			}
+				}
 		}
 	}
 }
