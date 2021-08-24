@@ -2,12 +2,17 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+use Give\Framework\FieldsAPI\File;
+
 /**
  * @package Give\Form\LegacyConsumer\Commands
  *
  * @unreleased
  */
 class FileUploader {
+	/**
+	 * @var array
+	 */
 	private $files;
 
 	/**
