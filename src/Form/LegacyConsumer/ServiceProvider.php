@@ -36,7 +36,7 @@ class ServiceProvider implements ServiceProviderInterface {
 		add_filter(
 			'give_donation_form_required_fields',
 			function( $requiredFields, $formID ) {
-				return give( TemplateHooks::class )->reduce( new Commands\SetupFieldValidation( $formID ), $requiredFields );
+				return give( TemplateHooks::class )->reduce( new Commands\SetupFieldValidation( (int) $formID ), $requiredFields );
 			},
 			10,
 			2
