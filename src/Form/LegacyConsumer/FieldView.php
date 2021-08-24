@@ -52,6 +52,12 @@ class FieldView {
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( $type );
 				break;
+			case Types::TEXT:
+				/** @var \Give\Framework\FieldsAPI\Text $field */
+				$typeAttribute = 'text';
+				include static::getTemplatePath( 'label' );
+				include static::getTemplatePath( $field->isRepeatable() ? 'repeatable-text' : 'base' );
+				break;
 			// By default, include a template and use the base input template.
 			default:
 				// Used in the template
