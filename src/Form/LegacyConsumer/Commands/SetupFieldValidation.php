@@ -40,6 +40,11 @@ class SetupFieldValidation {
 		do_action( "give_fields_$hook", $collection, $this->formID );
 		$collection->walkFields(
 			function( $field ) use ( &$requiredFields ) {
+				// As per current donation setup, we can not process file validation on ajax.
+				// For file custom fields, we have custom validation in SetupFieldCustomValidation class.
+				if( 'file' === $field->getType() ) {
+					return;
+				}
 				if ( $field->isRequired() ) {
 					$requiredFields[ $field->getName() ] = $field->getRequiredError();
 				}
