@@ -21,7 +21,7 @@
 					<i class="give-icon give-icon-plus"></i>
 				</span>
 				<span
-					class="ffm-clone-field give-tooltip hint--top"
+					class="ffm-remove-field give-tooltip hint--top"
 					data-tooltip="Click here to remove this field"
 					aria-label="Click here to remove this field"
 				>
