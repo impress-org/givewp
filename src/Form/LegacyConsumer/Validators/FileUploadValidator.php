@@ -43,6 +43,7 @@ class FileUploadValidator {
 
 		$uploadSize = $uploadSize/1024; // bytes to kb
 		$allowedFileTypes = $this->field->getAllowedTypes();
+		$allowedFileSize = $this->field->getMaxSize();
 
 		if ( ! in_array( '*', $allowedFileTypes ) || array_diff( $fileTypes, $allowedFileTypes ) ) {
 			give_set_error( 'field-api-file-upload-allowed-type-error', sprintf(
@@ -51,10 +52,10 @@ class FileUploadValidator {
 			) );
 		}
 
-		if ( $this->field->getMaxSize() < $uploadSize ) {
+		if ( $allowedFileSize < $uploadSize ) {
 			give_set_error( 'field-api-file-upload-size-error', sprintf(
 				esc_html__( 'File size exceed upload limit. Maximum file limit is %s kb', 'give' ),
-				$this->field->getMaxSize() / 1024
+				size_format( $allowedFileSize * 1024 )
 			) );
 		}
 	}
