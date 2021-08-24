@@ -15,6 +15,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
 - Sanitize array type values correctly before make custom field value persistence. (#5924)
 
+
+### New
+
+- Add `give_form_{ID}_field_classes_{fieldName}` hook to legacy consumer for setting classes on field wrapper (#5917)
+
 ## 2.13.1 - 2021-08-20
 
 ### Fixed
@@ -30,7 +35,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add conditional visibility functionality to `FieldsAPI` `Field`, `Element`, and `Group` types (#5919)
 - Introduce `BasicCondition` and `NestedCondition` classes for expressing conditional logic in the Fields API (#5919)
 
-###  Changed
+### Changed
 
 - Add missing help text tooltip to Legacy Consumer’s label content templates. (#5921)
 - Wrap `<input>` element inside of `<label>` element for Legacy Consumer’s checkbox template. (#5920)

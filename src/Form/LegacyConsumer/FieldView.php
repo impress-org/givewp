@@ -7,23 +7,25 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.10.2
+ * @unreleased Add field classes hook for setting custom class names on the wrapper.
  */
 class FieldView {
 	const INPUT_TYPE_ATTRIBUTES = [
 		Types::PHONE    => 'tel',
 		Types::EMAIL    => 'email',
-		Types::CHECKBOX => 'checkbox',
 		Types::URL      => 'url',
 	];
 
 	/**
 	 * @since 2.10.2
+	 * @unreleased add $formID as a param
 	 *
 	 * @param Node $field
+	 * @param int $formID
 	 *
 	 * @return void
 	 */
-	public static function render( Node $field ) {
+	public static function render( Node $field, $formID ) {
 		$type = $field->getType();
 
 		if ( $type === Types::HIDDEN ) {
@@ -32,9 +34,10 @@ class FieldView {
 			return;
 		}
 
-		// Set the class for the input element (used in the templates)
+		$classList = apply_filters( "give_form_{$formID}_field_classes_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
+		$className = implode( ' ', array_unique( $classList ) );
 
-		echo "<div class=\"form-row form-row-wide\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
+		echo "<div class=\"{$className}\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
 		switch ( $type ) {
 			case Types::HTML:
