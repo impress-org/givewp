@@ -64,6 +64,7 @@ function give_get_donation_form( $args = [] ) {
 			'give_form_action_args',
 			[
 				'payment-mode' => $payment_mode,
+				'form-id' => $form->ID,
 			]
 		),
 		give_get_current_page_url()
@@ -136,7 +137,7 @@ function give_get_donation_form( $args = [] ) {
 				'id'      => "give-form-{$args['id_prefix']}",
 				'class'   => $form_classes,
 				'action'  => esc_url_raw( $form_action ),
-				'data-id' => $args['id_prefix'],
+				'data-id' => $args['id_prefix']
 			];
 
 			/**
