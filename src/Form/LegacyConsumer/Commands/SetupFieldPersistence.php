@@ -17,21 +17,21 @@ class SetupFieldPersistence implements HookCommandInterface {
 	/**
 	 * @var int
 	 */
-	private $donationID;
+	private $donationId;
 	/**
 	 * @var array
 	 */
 	private $donationData;
 
 	/**
-	 * @param int $donationID
+	 * @param int $donationId
 	 * @param array $donationData
 	 *
 	 * @since 2.10.2
 	 *
 	 */
-	public function __construct( $donationID, $donationData ) {
-		$this->donationID   = $donationID;
+	public function __construct( $donationId, $donationData ) {
+		$this->donationId   = $donationId;
 		$this->donationData = $donationData;
 	}
 
@@ -64,11 +64,11 @@ class SetupFieldPersistence implements HookCommandInterface {
 
 					foreach ( $fileIds as $fileId ) {
 						if ( $field->shouldStoreAsDonorMeta() ) {
-							$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
+							$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
 							Give()->donor_meta->add_meta( $donorID, $field->getName(), $fileId );
 						} else {
 							// Store as Donation Meta - default behavior.
-							give()->payment_meta->add_meta( $this->donationID, $field->getName(), $fileId );
+							give()->payment_meta->add_meta( $this->donationId, $field->getName(), $fileId );
 						}
 					}
 				}
@@ -82,11 +82,11 @@ class SetupFieldPersistence implements HookCommandInterface {
 						$data;
 
 					if ( $field->shouldStoreAsDonorMeta() ) {
-						$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
+						$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
 						Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
 					} else {
 						// Store as Donation Meta - default behavior.
-						give_update_payment_meta( $this->donationID, $field->getName(), $value );
+						give_update_payment_meta( $this->donationId, $field->getName(), $value );
 					}
 				}
 		}

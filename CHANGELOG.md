@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
 - Convert array type values to pipe (|) separated string  before make custom field value persistence. (#5924)
 - Move custom field validation to `give_checkout_error_checks` hook. (#5933)
+- Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
 
 
 ### New
