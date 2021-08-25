@@ -2,15 +2,19 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
-use Give\Framework\FieldsAPI\Field;
+use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
+use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
 
+
 /**
- * Setup field validation for custom fields on the required fields hook.
+ * Setup field validation for custom fields on the checkout error check fields hook.
  *
- * @NOTE This is reducing on required fields, so it doesn't implement the shared interface. This is a special case.
+ * @NOTE For custom field like file, we can not process validation on ajax required.
+ * This class validate these fields on donation form submission.
  *
- * @since 2.10.2
+ * @package Give\Form\LegacyConsumer\Commands
+ * @unreleased
  */
 class SetupFieldValidation {
 	/**
@@ -19,7 +23,7 @@ class SetupFieldValidation {
 	private $formID;
 
 	/**
-	 * @since 2.10.2
+	 * @unreleased
 	 *
 	 * @param int $formID
 	 */
@@ -28,29 +32,35 @@ class SetupFieldValidation {
 	}
 
 	/**
-	 * @since 2.10.2
+	 * @unreleased
 	 *
-	 * @param array $requiredFields
 	 * @param string $hook
 	 *
 	 * @return array
 	 */
-	public function __invoke( $requiredFields, $hook ) {
+	public function __invoke( $hook ) {
 		$collection = Group::make( $hook );
 		do_action( "give_fields_$hook", $collection, $this->formID );
 		$collection->walkFields(
-			function( $field ) use ( &$requiredFields ) {
-				// As per current donation setup, we can not process file validation on ajax.
-				// For file custom fields, we have custom validation in SetupFieldCustomValidation class.
-				if( 'file' === $field->getType() ) {
-					return;
-				}
-				if ( $field->isRequired() ) {
-					$requiredFields[ $field->getName() ] = $field->getRequiredError();
+			/* @var File $field */
+			function( $field ) {
+				switch ( $field->getType() ) {
+					case 'file':
+						// Are we processing donation form validation on ajax?
+						if( isset( $_POST['give_ajax'] ) ) {
+							return;
+						}
+
+						$validator = new FileUploadValidator( $field );
+						$validator();
+						break;
+
+					default:
+						if ( $field->isRequired() && ! isset( $_POST[ $field->getName() ] ) ) {
+							give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError() );
+						}
 				}
 			}
 		);
-		return $requiredFields;
 	}
 }
-

@@ -33,20 +33,11 @@ class ServiceProvider implements ServiceProviderInterface {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
 		}
 
-		add_filter(
-			'give_donation_form_required_fields',
-			function( $requiredFields, $formID ) {
-				return give( TemplateHooks::class )->reduce( new Commands\SetupFieldValidation( (int) $formID ), $requiredFields );
-			},
-			10,
-			2
-		);
-
 		add_action(
 			'give_checkout_error_checks',
 			function() {
 				$formId = absint( $_POST['give-form-id'] );
-				return give( TemplateHooks::class )->walk( new Commands\SetupFieldCustomValidation( $formId ) );
+				return give( TemplateHooks::class )->walk( new Commands\SetupFieldValidation( $formId ) );
 			}
 		);
 

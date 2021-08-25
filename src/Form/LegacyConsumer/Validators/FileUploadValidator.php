@@ -41,14 +41,15 @@ class FileUploadValidator {
 			$fileTypes[] = $file['type'];
 		}
 
-		$uploadSize = $uploadSize/1024; // bytes to kb
+		$uploadSize = ceil( $uploadSize/1024 ); // bytes to kb
 		$allowedFileTypes = $this->field->getAllowedTypes();
 		$allowedFileSize = $this->field->getMaxSize();
 
 		if ( ! in_array( '*', $allowedFileTypes ) || array_diff( $fileTypes, $allowedFileTypes ) ) {
 			give_set_error( 'field-api-file-upload-allowed-type-error', sprintf(
-				esc_html__( 'Unable to upload file. Allowed file types %s', 'give' ),
-				implode( ', ', $this->field->getAllowedTypes() )
+				esc_html__( 'Unable to upload file. Allowed file %1$s: %2$s', 'give' ),
+				_n( 'type', 'types', count( $allowedFileTypes ), 'give' ),
+				implode( ', ', $allowedFileTypes)
 			) );
 		}
 
