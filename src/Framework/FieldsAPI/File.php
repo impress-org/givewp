@@ -25,7 +25,7 @@ class File extends Field {
 		parent::__construct( $name );
 
 		$this->validationRules->rule( 'maxSize', wp_max_upload_size() / 1024 ); // in kb
-		$this->validationRules->rule( 'allowedTypes', $this->getDefaultAllowedTypes() );
+		$this->validationRules->rule( 'allowedTypes', get_allowed_mime_types() );
 	}
 
 	/**
@@ -66,19 +66,5 @@ class File extends Field {
 	 */
 	public function getAllowedTypes() {
 		return $this->validationRules->getRule( 'allowedTypes' );
-	}
-
-	/**
-	 * @unreleased
-	 * @return string[]
-	 */
-	private function getDefaultAllowedTypes(){
-		$allowedExtensions = array_keys( get_allowed_mime_types() );
-		$extensions         = array();
-		foreach ( $allowedExtensions as $extension ) {
-			$extensions = array_merge( $extensions, explode( '|', $extension ) );
-		}
-
-		return $allowedExtensions;
 	}
 }
