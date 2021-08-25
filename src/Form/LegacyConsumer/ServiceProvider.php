@@ -6,6 +6,7 @@ use Give\Helpers\Hooks;
 use Give\Receipt\DonationReceipt;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
+use Give_Donate_Form;
 
 class ServiceProvider implements ServiceProviderInterface {
 
@@ -37,8 +38,24 @@ class ServiceProvider implements ServiceProviderInterface {
 			'give_checkout_error_checks',
 			function() {
 				$formId = absint( $_POST['give-form-id'] );
-				return give( TemplateHooks::class )->walk( new Commands\SetupFieldValidation( $formId ) );
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldValidation( $formId ) );
 			}
+		);
+
+		add_action(
+			'give_form_html_tags',
+			/**
+			 * @unreleased
+			 * @param array $formHtmlAttributes
+			 * @param Give_Donate_Form $form
+			 *
+			 * @return void
+			 */
+			function( $formHtmlAttributes, $form ) {
+				return give( TemplateHooks::class )->reduce( new Commands\AddEnctypeAttributeInDonationForm( $form->ID ), $formHtmlAttributes );
+			},
+			10,
+			 2
 		);
 
 		add_action(
