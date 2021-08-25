@@ -13,7 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Do not allow to choosing placeholder in legacy consumer in select field template if field is required. (#5924)
 - Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template. (#5924)
 - Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
-- Convert array type values to pipe (|) separated string  before make custom field value persistence. (#5924)
+- Convert array type values to pipe (|) separated string  before make custom field value persistence. (#5933)
 - Move custom field validation to `give_checkout_error_checks` hook. (#5933)
 - Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
 
