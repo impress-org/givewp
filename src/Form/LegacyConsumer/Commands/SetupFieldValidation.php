@@ -20,27 +20,25 @@ class SetupFieldValidation {
 	/**
 	 * @var int
 	 */
-	private $formID;
+	private $formId;
 
 	/**
 	 * @unreleased
 	 *
-	 * @param int $formID
+	 * @param int $formId
 	 */
-	public function __construct( $formID ) {
-		$this->formID = $formID;
+	public function __construct( $formId ) {
+		$this->formId = $formId;
 	}
 
 	/**
 	 * @unreleased
 	 *
 	 * @param string $hook
-	 *
-	 * @return array
 	 */
 	public function __invoke( $hook ) {
 		$collection = Group::make( $hook );
-		do_action( "give_fields_$hook", $collection, $this->formID );
+		do_action( "give_fields_$hook", $collection, $this->formId );
 		$collection->walkFields(
 			/* @var File $field */
 			function( $field ) {
