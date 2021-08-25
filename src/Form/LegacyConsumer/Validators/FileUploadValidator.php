@@ -33,6 +33,12 @@ class FileUploadValidator {
 		$fileTypes  = [];
 
 		if( ! $this->files ) {
+			if( $this->field->isRequired() ) {
+				give_set_error(
+					"give-{$this->field->getName()}-required-field-missing",
+					$this->field->getRequiredError()['error_message']
+				);
+			}
 			return;
 		}
 
