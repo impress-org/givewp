@@ -4,6 +4,7 @@ namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\Text;
 
 /**
  * Persist custom field values as donation meta.
@@ -37,13 +38,16 @@ class SetupFieldPersistance implements HookCommandInterface {
 	/**
 	 * @since 2.10.2
 	 *
-	 * @param Field $field
+	 * @param Field|Text $field
 	 *
 	 * @return void
 	 */
 	public function process( Field $field ) {
 		if ( isset( $_POST[ $field->getName() ] ) ) {
-			$value = wp_strip_all_tags( $_POST[ $field->getName() ], true );
+			$data = give_clean( $_POST[ $field->getName() ] );
+			$value = is_array( $data ) ?
+				implode( '| ', array_values( array_filter( $data ) ) ):
+				$data;
 
 			if ( $field->shouldStoreAsDonorMeta() ) {
 				$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );

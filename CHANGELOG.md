@@ -7,6 +7,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+
+- Show correct placeholder in legacy consumer in input field template. (#5924)
+- Do not allow to choosing placeholder in legacy consumer in select field template if field is required. (#5924)
+- Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template. (#5924)
+- Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
+- Convert array type values to pipe (|) seperated string  before make custom field value persistence. (#5924)
+
+
 ### New
 
 - Add `give_form_{ID}_field_classes_{fieldName}` hook to legacy consumer for setting classes on field wrapper (#5917)
