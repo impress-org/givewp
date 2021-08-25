@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+use Give\Form\LegacyConsumer\Actions\UploadFilesAction;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
@@ -13,6 +14,14 @@ use Give\Framework\FieldsAPI\Text;
  * @since 2.10.2
  */
 class SetupFieldPersistence implements HookCommandInterface {
+	/**
+	 * @var int
+	 */
+	private $donationID;
+	/**
+	 * @var array
+	 */
+	private $donationData;
 
 	/**
 	 * @param int $donationID
@@ -39,7 +48,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 	}
 
 	/**
-	 * @param Field|Text $field
+	 * @param Field|Text|File $field
 	 *
 	 * @return void
 	 * @since 2.10.2
@@ -50,7 +59,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 			case 'file':
 				if ( isset( $_FILES[ $field->getName() ] ) ) {
 
-					$fileUploader = new FileUploader( $field );
+					$fileUploader = new UploadFilesAction( $field );
 					$fileIds      = $fileUploader();
 
 					foreach ( $fileIds as $fileId ) {

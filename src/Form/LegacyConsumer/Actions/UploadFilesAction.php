@@ -1,17 +1,22 @@
 <?php
 
-namespace Give\Form\LegacyConsumer\Commands;
+namespace Give\Form\LegacyConsumer\Actions;
 
 
 use Give\Form\LegacyConsumer\Traits\HasFilesArray;
 use Give\Framework\FieldsAPI\File;
+use function wp_check_filetype;
+use function wp_generate_attachment_metadata;
+use function wp_handle_upload;
+use function wp_insert_attachment;
+use function wp_update_attachment_metadata;
 
 /**
  * @package Give\Form\LegacyConsumer\Commands
  *
  * @unreleased
  */
-class FileUploader {
+class UploadFilesAction {
 	use HasFilesArray;
 
 	/**
