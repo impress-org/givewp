@@ -2,7 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Validators;
 
-use Give\Form\LegacyConsumer\Traits\RemoveInvalidFiles;
+use Give\Form\LegacyConsumer\Traits\HasFilesArray;
 use Give\Framework\FieldsAPI\File;
 
 /**
@@ -10,7 +10,7 @@ use Give\Framework\FieldsAPI\File;
  * @unreleased
  */
 class FileUploadValidator {
-	use RemoveInvalidFiles;
+	use HasFilesArray;
 
 	/**
 	 * @var array
@@ -26,7 +26,7 @@ class FileUploadValidator {
 	 */
 	public function __construct( File $field ) {
 		$this->field = $field;
-		$this->files = $_FILES;
+		$this->files = $this->getFiles();
 	}
 	/**
 	 * @unreleased
@@ -34,8 +34,6 @@ class FileUploadValidator {
 	public function __invoke() {
 		$uploadSize = 0;
 		$fileTypes  = [];
-
-		$this->removeInvalidFiles();
 
 		if( ! $this->files ) {
 			if( $this->field->isRequired() ) {

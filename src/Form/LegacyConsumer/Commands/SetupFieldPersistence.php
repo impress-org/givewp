@@ -50,16 +50,16 @@ class SetupFieldPersistence implements HookCommandInterface {
 			case 'file':
 				if ( isset( $_FILES[ $field->getName() ] ) ) {
 
-					$fileUploader = new FileUploader();
+					$fileUploader = new FileUploader( $field );
 					$fileIds      = $fileUploader();
 
 					foreach ( $fileIds as $fileId ) {
 						if ( $field->shouldStoreAsDonorMeta() ) {
 							$donorID = give_get_payment_meta( $this->donationID, '_give_payment_donor_id' );
-							Give()->donor_meta->update_meta( $donorID, $field->getName(), $fileId );
+							Give()->donor_meta->add_meta( $donorID, $field->getName(), $fileId );
 						} else {
 							// Store as Donation Meta - default behavior.
-							give_update_payment_meta( $this->donationID, $field->getName(), $fileId );
+							give()->payment_meta->add_meta( $this->donationID, $field->getName(), $fileId );
 						}
 					}
 				}
