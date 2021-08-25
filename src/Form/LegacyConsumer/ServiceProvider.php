@@ -2,7 +2,6 @@
 
 namespace Give\Form\LegacyConsumer;
 
-use Give\Helpers\Hooks;
 use Give\Receipt\DonationReceipt;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
@@ -52,7 +51,7 @@ class ServiceProvider implements ServiceProviderInterface {
 			 * @return void
 			 */
 			function( $formHtmlAttributes, $form ) {
-				return give( TemplateHooks::class )->reduce( new Commands\AddEnctypeAttributeInDonationForm( $form->ID ), $formHtmlAttributes );
+				return give( TemplateHooks::class )->reduce( new AddEnctypeAttributeInDonationForm( $form->ID ), $formHtmlAttributes );
 			},
 			10,
 			 2

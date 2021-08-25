@@ -1,9 +1,10 @@
 <?php
 
-namespace Give\Form\LegacyConsumer\Commands;
+namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+use function do_action;
 
 /**
  * This class set "enctype" form tag  attribute to "multipart/form-data".
