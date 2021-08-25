@@ -14,11 +14,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template. (#5924)
 - Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
 - Convert array type values to pipe (|) seperated string  before make custom field value persistence. (#5924)
+- Move custom field validation to `give_checkout_error_checks` hook. (#5933)
 
 
 ### New
 
-- Add `give_form_{ID}_field_classes_{fieldName}` hook to legacy consumer for setting classes on field wrapper (#5917)
+- Add `give_form_{ID}_field_classes_{fieldName}` hook to legacy consumer for setting classes on field wrapper. (#5917)
+- File type custom field added by legacy consumer should persist when donation completes. (#5933)
+- Add support for multiple file upload in legacy consumer for file template. (#5933)
+- Add `enctype` attribute to form if file type custom field added to donation form. (#5933)
 
 ## 2.13.1 - 2021-08-20
 
