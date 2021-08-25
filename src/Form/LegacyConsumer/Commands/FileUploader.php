@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+use Give\Form\LegacyConsumer\Traits\RemoveInvalidFiles;
 use Give\Framework\FieldsAPI\File;
 
 /**
@@ -10,6 +11,8 @@ use Give\Framework\FieldsAPI\File;
  * @unreleased
  */
 class FileUploader {
+	use RemoveInvalidFiles;
+
 	/**
 	 * @var array
 	 */
@@ -31,6 +34,8 @@ class FileUploader {
 		}
 
 		$fileIds = [];
+		$this->removeInvalidFiles();
+
 		foreach ( $this->files as $file ) {
 			$upload = wp_handle_upload( $file, [ 'test_form' => false, ] );
 

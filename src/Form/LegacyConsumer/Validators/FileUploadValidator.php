@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Validators;
 
+use Give\Form\LegacyConsumer\Traits\RemoveInvalidFiles;
 use Give\Framework\FieldsAPI\File;
 
 /**
@@ -9,6 +10,8 @@ use Give\Framework\FieldsAPI\File;
  * @unreleased
  */
 class FileUploadValidator {
+	use RemoveInvalidFiles;
+
 	/**
 	 * @var array
 	 */
@@ -75,17 +78,6 @@ class FileUploadValidator {
 				esc_html__( 'File size exceed upload limit. Maximum file limit is %s', 'give' ),
 				size_format( $allowedFileSize * 1024 )
 			) );
-		}
-	}
-
-	/**
-	 * @unreleased
-	 */
-	private function removeInvalidFiles(){
-		foreach ( $this->files as $index => $file ){
-			if( ! empty( $file['error'] ) ) {
-				unset( $this->files[$index] );
-			}
 		}
 	}
 }
