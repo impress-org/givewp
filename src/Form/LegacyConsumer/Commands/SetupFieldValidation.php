@@ -23,7 +23,7 @@ class SetupFieldValidation {
 	private $formId;
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
 	 *
 	 * @param int $formId
 	 */
@@ -32,7 +32,8 @@ class SetupFieldValidation {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.10.2
+	 * @unreleased  Add support for file field validation
 	 *
 	 * @param string $hook
 	 */
