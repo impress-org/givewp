@@ -9,9 +9,10 @@
 	<?php
 	if ( $placeholder = $field->getPlaceholder() ) {
 		printf(
-			'<option value="" %2$s>%1$s</option>',
+			'<option value="" %2$s %3$s>%1$s</option>',
 			$placeholder,
-			$field->isRequired() ? 'disabled' : ''
+			$field->isRequired() ? 'disabled' : '',
+			$field->getDefaultValue() ? '' : 'selected'
 		);
 	}
 	?>
