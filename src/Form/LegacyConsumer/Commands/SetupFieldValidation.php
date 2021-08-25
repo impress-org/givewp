@@ -14,7 +14,7 @@ use Give\Framework\FieldsAPI\Group;
  * This class validate these fields on donation form submission.
  *
  * @package Give\Form\LegacyConsumer\Commands
- * @unreleased
+ * @since 2.10.2
  */
 class SetupFieldValidation {
 	/**
