@@ -24,6 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - File type custom field added by legacy consumer should persist when donation completes. (#5933)
 - Add support for multiple file upload in legacy consumer for file template. (#5933)
 - Add `enctype` attribute to form if file type custom field added to donation form. (#5933)
+- Pass form id to donation form action url which help to show notices from session. (#5933)
 
 ## 2.13.1 - 2021-08-20
 
