@@ -41,7 +41,7 @@ class FileUploadValidator {
 			$fileTypes[] = $file['type'];
 		}
 
-		$uploadSize = ceil( $uploadSize/1024 ); // bytes to kb
+		$uploadSize = (int) ceil( $uploadSize/1024 ); // bytes to kb
 		$allowedFileTypes = $this->field->getAllowedTypes();
 		$allowedFileSize = $this->field->getMaxSize();
 
