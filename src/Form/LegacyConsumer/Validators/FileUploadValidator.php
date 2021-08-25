@@ -22,8 +22,8 @@ class FileUploadValidator {
 	 * @unreleased
 	 */
 	public function __construct( File $field ) {
-		$this->files = $_FILES;
 		$this->field = $field;
+		$this->files = $_FILES;
 	}
 	/**
 	 * @unreleased
@@ -31,6 +31,8 @@ class FileUploadValidator {
 	public function __invoke() {
 		$uploadSize = 0;
 		$fileTypes  = [];
+
+		$this->removeInvalidFiles();
 
 		if( ! $this->files ) {
 			if( $this->field->isRequired() ) {
@@ -73,6 +75,17 @@ class FileUploadValidator {
 				esc_html__( 'File size exceed upload limit. Maximum file limit is %s', 'give' ),
 				size_format( $allowedFileSize * 1024 )
 			) );
+		}
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function removeInvalidFiles(){
+		foreach ( $this->files as $index => $file ){
+			if( ! empty( $file['error'] ) ) {
+				unset( $this->files[$index] );
+			}
 		}
 	}
 }
