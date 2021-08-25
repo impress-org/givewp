@@ -15,6 +15,7 @@ class File extends Field {
 	use Concerns\HasLabel;
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
+	use Concerns\AllowMultiple;
 
 	const TYPE = 'file';
 
