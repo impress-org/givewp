@@ -8,7 +8,7 @@
 const {__, sprintf} = wp.i18n;
 
 window.addEventListener('DOMContentLoaded', function () {
-	const bodyClass = document.body.classList.contains('post.php') ? '.post.php' : '.post-new-php'
+	const bodyClass = document.body.classList.contains('post-php') ? '.post-php' : '.post-new-php'
 	const form = document.querySelector(`${bodyClass}.post-type-give_forms form[name="post"]`);
 
 	if (!form) {
@@ -18,8 +18,12 @@ window.addEventListener('DOMContentLoaded', function () {
 	form.addEventListener('submit', event => {
 		event.preventDefault();
 
-		const isCustomizeStripeAccountOptionSelected = document.querySelector('#stripe_form_account_options [name="give_stripe_per_form_accounts"]:checked').value === 'enabled';
+		const stripeSetting = document.querySelector('#stripe_form_account_options [name="give_stripe_per_form_accounts"]:checked');
+		if( ! stripeSetting ) {
+			return;
+		}
 
+		const isCustomizeStripeAccountOptionSelected = stripeSetting.value === 'enabled';
 		if (!isCustomizeStripeAccountOptionSelected) {
 			form.submit()
 			return;
