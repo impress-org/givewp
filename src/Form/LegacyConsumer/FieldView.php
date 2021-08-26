@@ -49,6 +49,7 @@ class FieldView {
 			case Types::FILE:
 			case Types::SELECT:
 			case Types::TEXTAREA:
+			case  Types::WP_EDITOR:
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( $type );
 				break;
