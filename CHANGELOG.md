@@ -26,6 +26,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add `enctype` attribute to form if file type custom field added to donation form. (#5933)
 - Pass form id to donation form action url which help to show notices from session. (#5933)
 
+### Fixed
+- Add placeholder in textarea field template in legacy consumer. (#5936)
+
+
 ## 2.13.1 - 2021-08-20
 
 ### Fixed
