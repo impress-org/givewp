@@ -24,6 +24,14 @@ class FileUploadValidator {
 	 * @var File
 	 */
 	private $field;
+	/**
+	 * @var int
+	 */
+	private $uploadSize;
+	/**
+	 * @var array
+	 */
+	private $uploadedTypes;
 
 	/**
 	 * @unreleased
@@ -31,39 +39,49 @@ class FileUploadValidator {
 	public function __construct( File $field ) {
 		$this->field = $field;
 		$this->files = $this->getFiles();
+
+		foreach ( $this->files as $file ) {
+			$this->uploadSize  += $file['size'];
+			$this->uploadedTypes[] = $file['type'];
+		}
 	}
 	/**
 	 * @unreleased
 	 */
 	public function __invoke() {
-		$uploadSize = 0;
-		$fileTypes  = [];
-
 		if( ! $this->files ) {
-			if( $this->field->isRequired() ) {
-				give_set_error(
-					"give-{$this->field->getName()}-required-field-missing",
-					$this->field->getRequiredError()['error_message']
-				);
-			}
+			$this->validateRequired();
 			return;
 		}
 
-		foreach ( $this->files as $file ) {
-			$uploadSize  += $file['size'];
-			$fileTypes[] = $file['type'];
+		$this->validateUploadTypes();
+		$this->validateUploadSize();
+	}
+
+	/**
+	 * @unreleased
+	 */
+	private function validateRequired(){
+		if( $this->field->isRequired() ) {
+			give_set_error(
+				"give-{$this->field->getName()}-required-field-missing",
+				$this->field->getRequiredError()['error_message']
+			);
 		}
+	}
 
-		$uploadSize = (int) ceil( $uploadSize/1024 ); // bytes to kb
-		$allowedFileTypes = $this->field->getAllowedTypes();
-		$allowedFileSize = $this->field->getMaxSize();
+	/**
+	 * @unreleased
+	 */
+	private function validateUploadTypes(){
+		$allowedTypes = $this->field->getAllowedTypes();
 
-		if ( array_diff( $fileTypes, $allowedFileTypes ) ) {
+		if ( array_diff( $this->uploadedTypes, $allowedTypes ) ) {
 			give_set_error( 'field-api-file-upload-allowed-type-error', sprintf(
 				esc_html__( 'Unable to upload file. Allowed file %1$s: %2$s', 'give' ),
-				_n( 'type', 'types', count( $allowedFileTypes ), 'give' ),
+				_n( 'type', 'types', count( $allowedTypes ), 'give' ),
 				array_reduce(
-					array_keys( $allowedFileTypes ),
+					array_keys( $allowedTypes ),
 					function ( $initial, $fileType ){
 						$separator = $initial ? ', ' : '';
 						$initial .= $separator . str_replace( '|', ', ', $fileType );
@@ -74,8 +92,15 @@ class FileUploadValidator {
 				)
 			) );
 		}
+	}
 
-		if ( $allowedFileSize < $uploadSize ) {
+	/**
+	 * @unreleased
+	 */
+	private function validateUploadSize(){
+		$allowedFileSize = $this->field->getMaxSize();
+
+		if ( $allowedFileSize < $this->uploadSize ) {
 			give_set_error( 'field-api-file-upload-size-error', sprintf(
 				esc_html__( 'File size exceed upload limit. Maximum file limit is %s', 'give' ),
 				size_format( $allowedFileSize * 1024 )
