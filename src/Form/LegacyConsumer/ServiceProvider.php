@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer;
 
+use Give\Form\LegacyConsumer\Commands\SetupScripts;
 use Give\Receipt\DonationReceipt;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
@@ -55,6 +56,19 @@ class ServiceProvider implements ServiceProviderInterface {
 			},
 			10,
 			 2
+		);
+
+		add_action(
+			'give_donation_form_top',
+			/**
+			 * @unreleased
+			 * @param int $formId
+			 */
+			function( $formId ) {
+				return give( TemplateHooks::class )->reduce( new SetupScripts( $formId ) );
+			},
+			10,
+			2
 		);
 
 		add_action(
