@@ -28,6 +28,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 - Add placeholder in textarea field template in legacy consumer. (#5936)
+- Show error notice if required custom field is empty in legacy consumer. (#5936)
 
 
 ## 2.13.1 - 2021-08-20
