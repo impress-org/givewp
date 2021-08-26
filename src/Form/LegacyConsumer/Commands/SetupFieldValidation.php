@@ -57,7 +57,7 @@ class SetupFieldValidation {
 						break;
 
 					default:
-						if ( $field->isRequired() && ! isset( $_POST[ $field->getName() ] ) ) {
+						if ( $field->isRequired() && empty( $_POST[ $field->getName() ] ) ) {
 							give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError()['error_message'] );
 						}
 				}
