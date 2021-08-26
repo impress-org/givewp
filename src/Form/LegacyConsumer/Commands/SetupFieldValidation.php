@@ -56,6 +56,18 @@ class SetupFieldValidation {
 						$validator();
 						break;
 
+					case 'wp-editor':
+						// Are we processing donation form validation on ajax?
+						if( isset( $_POST['give_ajax'] ) ) {
+							return;
+						}
+
+						// wp editor content does not available on ajax donation form validation, so we need to validate it on donation form submission.
+						if ( $field->isRequired() && empty( $_POST[ $field->getName() ] ) ) {
+							give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError()['error_message'] );
+						}
+						break;
+
 					default:
 						if ( $field->isRequired() && empty( $_POST[ $field->getName() ] ) ) {
 							give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError()['error_message'] );
