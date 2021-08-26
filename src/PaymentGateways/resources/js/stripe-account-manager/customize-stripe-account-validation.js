@@ -16,13 +16,14 @@ window.addEventListener('DOMContentLoaded', function () {
 	}
 
 	form.addEventListener('submit', event => {
-		event.preventDefault();
-
 		const stripeSetting = document.querySelector('#stripe_form_account_options [name="give_stripe_per_form_accounts"]:checked');
+
+		// Do nothing if Stripe is not enabled
 		if( ! stripeSetting ) {
 			return;
 		}
 
+		event.preventDefault();
 		const isCustomizeStripeAccountOptionSelected = stripeSetting.value === 'enabled';
 		if (!isCustomizeStripeAccountOptionSelected) {
 			form.submit()
