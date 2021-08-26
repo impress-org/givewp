@@ -12,7 +12,7 @@ class WpEditor extends Field {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
-	const TYPE = 'wp_editor';
+	const TYPE = 'wp-editor';
 
 	/**
 	 * @unreleased
