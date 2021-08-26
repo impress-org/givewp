@@ -4,6 +4,10 @@ namespace Give\Form\LegacyConsumer\Validators;
 
 use Give\Form\LegacyConsumer\Traits\HasFilesArray;
 use Give\Framework\FieldsAPI\File;
+use function _n;
+use function esc_html__;
+use function give_set_error;
+use function size_format;
 
 /**
  * @package Give\Form\LegacyConsumer\Validators

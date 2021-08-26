@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use function get_allowed_mime_types;
+use function wp_max_upload_size;
+
 /**
  * A file upload field.
  *

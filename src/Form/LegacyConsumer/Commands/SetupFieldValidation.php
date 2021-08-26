@@ -5,6 +5,8 @@ namespace Give\Form\LegacyConsumer\Commands;
 use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+use function do_action;
+use function give_set_error;
 
 
 /**

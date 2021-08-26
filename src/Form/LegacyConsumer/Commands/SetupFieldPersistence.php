@@ -7,6 +7,10 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Text;
+use function do_action;
+use function give_clean;
+use function give_get_payment_meta;
+use function give_update_payment_meta;
 
 /**
  * Persist custom field values as donation meta.
