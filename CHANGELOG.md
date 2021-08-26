@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## Fixed
+
+- Admin able to create donation form and edit existing donation form if stripe disabled. (#5935)
+
 ## 2.13.1 - 2021-08-20
 
 ### Fixed
