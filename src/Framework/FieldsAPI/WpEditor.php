@@ -50,7 +50,7 @@ class WpEditor extends Field {
 	/**
 	 * @unreleased
 	 *
-	 * @param bool $editorConfig
+	 * @param array $editorConfig
 	 *
 	 * @return $this
 	 */
@@ -71,7 +71,7 @@ class WpEditor extends Field {
 
 			// @see wp_editor settings: https://developer.wordpress.org/reference/classes/_wp_editors/parse_settings/
 			[
-				'editor_height' => 5,
+				'textarea_rows' => 5,
 				'quicktags'     => false,
 				'media_buttons' => false,
 				'teeny'         => 'teeny' === $this->getRichTextEditorType(),
