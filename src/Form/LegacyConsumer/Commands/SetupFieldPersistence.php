@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Text;
+use Give\Framework\FieldsAPI\WpEditor;
 use function do_action;
 use function give_clean;
 use function give_get_payment_meta;
@@ -84,6 +85,10 @@ class SetupFieldPersistence implements HookCommandInterface {
 					$value = is_array( $data ) ?
 						implode( '| ', array_values( array_filter( $data ) ) ) :
 						$data;
+
+					if( $field instanceof WpEditor ) {
+						$value = wp_kses_post( $data );
+					}
 
 					if ( $field->shouldStoreAsDonorMeta() ) {
 						$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
