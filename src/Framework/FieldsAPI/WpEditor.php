@@ -16,6 +16,7 @@ class WpEditor extends Field {
 
 	/**
 	 * @unreleased
+	 *
 	 * @param string $name
 	 */
 	public function __construct( $name ) {
@@ -31,17 +32,51 @@ class WpEditor extends Field {
 	 *
 	 * @return $this
 	 */
-	public function richTextEditorType( $richTextEditorType ){
+	public function richTextEditorType( $richTextEditorType ) {
 		$this->validationRules->rule( 'richTextEditorType', $richTextEditorType );
+
 		return $this;
 	}
 
 	/**
 	 * @unreleased
 	 *
+	 * @return string
+	 */
+	public function getRichTextEditorType() {
+		return $this->validationRules->getRule( 'richTextEditorType' );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param bool $editorConfig
+	 *
 	 * @return $this
 	 */
-	public function getRichTextEditorType(){
-		return $this->validationRules->getRule( 'richTextEditorType' );
+	public function editorConfig( $editorConfig ) {
+		$this->validationRules->rule( 'editorConfig', $editorConfig );
+
+		return $this;
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	public function getEditorConfig() {
+		return wp_parse_args(
+			$this->validationRules->getRule( 'editorConfig' ),
+
+			// @see wp_editor settings: https://developer.wordpress.org/reference/classes/_wp_editors/parse_settings/
+			[
+				'editor_height' => 5,
+				'quicktags'     => false,
+				'media_buttons' => false,
+				'teeny'         => 'teeny' === $this->getRichTextEditorType(),
+				'editor_class'  => ' rich-editor',
+			]
+		);
 	}
 }
