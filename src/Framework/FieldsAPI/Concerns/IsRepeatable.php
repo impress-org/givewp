@@ -4,6 +4,8 @@ namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
  * @unreleased
+ *
+ * @property ValidationRules $validationRules
  */
 trait IsRepeatable {
 
@@ -33,5 +35,31 @@ trait IsRepeatable {
 	 */
 	public function isRepeatable() {
 		return $this->repeatable;
+	}
+
+	/**
+	 * Set how many times this field can repeat.
+	 *
+	 * @unreleased
+	 *
+	 * @param int|null $maxRepeatable
+	 *
+	 * @return $this
+	 */
+	public function maxRepeatable( $maxRepeatable ) {
+		$this->validationRules->rule( 'maxRepeatable', $maxRepeatable );
+
+		return $this;
+	}
+
+	/**
+	 * Get how many times this field can repeat.
+	 *
+	 * @unreleased
+	 *
+	 * @return int|null
+	 */
+	public function getMaxRepeatable() {
+		return $this->validationRules->getRule( 'maxRepeatable' );
 	}
 }

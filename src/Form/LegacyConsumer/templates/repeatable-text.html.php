@@ -1,5 +1,5 @@
 <?php /** @var Give\Framework\FieldsAPI\Text $field */ ?>
-<table id="<?= $field->getName() ?>" class="give-repeater-table" data-max-repeat="" data-field-type="repeat">
+<table id="<?= $field->getName() ?>" class="give-repeater-table" data-max-repeat="<?= (int) $field->getMaxRepeatable() ?>" data-field-type="repeat">
 	<tbody>
 		<tr>
 			<td>
