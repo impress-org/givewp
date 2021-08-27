@@ -1,4 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\Field $field */ ?>
+<?php /** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */ ?>
 <?php echo $field->getLabel(); ?>
 <?php if ( $field->isRequired() ) : ?>
 	<span class="give-required-indicator">
