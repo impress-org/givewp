@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function () {
 	form.addEventListener('submit', event => {
 		const stripeSetting = document.querySelector('#stripe_form_account_options [name="give_stripe_per_form_accounts"]:checked');
 
-		// Do nothing if Stripe gateawy is not active
+		// Do nothing if Stripe gateway is not active
 		if( ! stripeSetting ) {
 			return;
 		}
