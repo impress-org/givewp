@@ -50,9 +50,16 @@ class SetupScripts {
 			);
 
 			wp_enqueue_style(
-				'give-date-field-css',
-				GIVE_PLUGIN_URL . '/assets/dist/css/give-date-field.css',
+				'jquery-ui-css',
+				GIVE_PLUGIN_URL . '/assets/dist/css/jquery-ui.css',
 				[],
+				GIVE_VERSION
+			);
+
+			wp_enqueue_style(
+				'jquery-ui-timepicker-css',
+				GIVE_PLUGIN_URL . '/assets/dist/css/jquery-ui-timepicker.css',
+				[ 'jquery-ui-css' ],
 				GIVE_VERSION
 			);
 		}

@@ -1,5 +1,5 @@
 /* globals jQuery, give_ffm_frontend, give_ffm_formbuilder */
-import './plugins/jquery-ui-timepicker-addon';
+import './jquery-ui-timepicker-addon';
 const {__} = wp.i18n;
 
 window.addEventListener('load', (event) => {

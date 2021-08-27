@@ -43,7 +43,9 @@ const config = {
 		'donor-dashboards-block': [ './src/DonorDashboards/resources/js/block/index.js' ],
 		'give-log-list-table-app': [ './src/Log/Admin/index.js' ],
 		'give-migrations-list-table-app': [ './src/MigrationLog/Admin/index.js' ],
-		'give-date-field': [ './src/Form/LegacyConsumer/resources/css/give-date-field.scss', './src/Form/LegacyConsumer/resources/js/give-date-field.js' ],
+		'give-date-field': [ './assets/src/js/plugins/give-date-field.js' ],
+		'jquery-ui': [ './assets/src/css/plugins/jquery-ui-fresh.scss' ],
+		'jquery-ui-timepicker': [ './assets/src/css/plugins/jquery-ui-timepicker.scss' ],
 	},
 	output: {
 		path: path.join( __dirname, './assets/dist/' ),
@@ -116,7 +118,6 @@ const config = {
 						loader: 'css-loader',
 						options: {
 							sourceMap: true,
-							url: false
 						},
 					},
 					{
