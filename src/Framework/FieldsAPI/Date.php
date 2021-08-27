@@ -15,4 +15,50 @@ class Date extends Field {
 	use Concerns\StoreAsMeta;
 
 	const TYPE = 'date';
+
+	/**
+	 * @param $name
+	 */
+	public function __construct( $name ) {
+		parent::__construct( $name );
+
+		$this->validationRules->rule( 'dateformat', 'mm/dd/yy' );
+		$this->validationRules->rule( 'timeformat', 'h:mm tt' );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $dateFormat
+	 */
+	public function dateFormat( $dateFormat ){
+		$this->validationRules->rule( 'dateformat', $dateFormat );
+
+		return $this;
+	}
+
+	/**
+	 * @unreleased
+	 */
+	public function getDateFormat(){
+		return $this->validationRules->getRule( 'dateformat' );
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $timeFormat
+	 */
+	public function timeFormat( $timeFormat ){
+		$this->validationRules->rule( 'timeformat', $timeFormat );
+
+		return $this;
+	}
+
+	/**
+	 * @unreleased
+	 */
+	public function getTimeFormat(){
+		return $this->validationRules->getRule( 'timeformat' );
+	}
 }

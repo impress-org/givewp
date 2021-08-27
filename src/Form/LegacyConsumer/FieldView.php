@@ -50,6 +50,7 @@ class FieldView {
 			case Types::SELECT:
 			case Types::TEXTAREA:
 			case  Types::WP_EDITOR:
+			case  Types::DATE:
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( $type );
 				break;
