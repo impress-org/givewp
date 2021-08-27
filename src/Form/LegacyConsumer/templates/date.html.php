@@ -6,8 +6,8 @@
 	placeholder="<?php echo $field->getPlaceholder(); ?>"
 	id="give-<?php echo $field->getName(); ?>"
 	value="<?php echo $field->getDefaultValue(); ?>"
-	data-timeformat="<?php echo $field->getDateFormat(); ?>"
-	data-dateformat="<?php echo $field->getTimeFormat(); ?>"
+	data-timeformat="<?php echo $field->getTimeFormat(); ?>"
+	data-dateformat="<?php echo $field->getDateFormat(); ?>"
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 >
