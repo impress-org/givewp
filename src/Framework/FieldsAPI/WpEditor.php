@@ -12,7 +12,24 @@ class WpEditor extends Field {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
+	/**
+	 * @var string
+	 */
 	const TYPE = 'wp-editor';
+
+	/**
+	 * support: teeny, rich ( without media and quick tags )
+	 *
+	 * @var string
+	 */
+	protected $editorType = 'teeny';
+
+	/**
+	 * @see wp_editor settings: https://developer.wordpress.org/reference/classes/_wp_editors/parse_settings/
+	 *
+	 * @var array
+	 */
+	protected $editorConfig;
 
 	/**
 	 * @unreleased
@@ -21,19 +38,17 @@ class WpEditor extends Field {
 	 */
 	public function __construct( $name ) {
 		parent::__construct( $name );
-
-		$this->validationRules->rule( 'richTextEditorType', 'teeny' ); // support: teeny, rich ( without media and quick tags )
 	}
 
 	/**
 	 * @unreleased
 	 *
-	 * @param bool $richTextEditorType
+	 * @param bool $editorType
 	 *
 	 * @return $this
 	 */
-	public function richTextEditorType( $richTextEditorType ) {
-		$this->validationRules->rule( 'richTextEditorType', $richTextEditorType );
+	public function richTextEditorType( $editorType ) {
+		$this->editorType = $editorType;
 
 		return $this;
 	}
@@ -44,7 +59,7 @@ class WpEditor extends Field {
 	 * @return string
 	 */
 	public function getRichTextEditorType() {
-		return $this->validationRules->getRule( 'richTextEditorType' );
+		return $this->editorType;
 	}
 
 	/**
@@ -55,7 +70,7 @@ class WpEditor extends Field {
 	 * @return $this
 	 */
 	public function editorConfig( $editorConfig ) {
-		$this->validationRules->rule( 'editorConfig', $editorConfig );
+		$this->editorConfig = $editorConfig;
 
 		return $this;
 	}
@@ -67,9 +82,7 @@ class WpEditor extends Field {
 	 */
 	public function getEditorConfig() {
 		return wp_parse_args(
-			$this->validationRules->getRule( 'editorConfig' ),
-
-			// @see wp_editor settings: https://developer.wordpress.org/reference/classes/_wp_editors/parse_settings/
+			$this->editorConfig,
 			[
 				'quicktags'     => false,
 				'media_buttons' => false,
