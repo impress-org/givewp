@@ -11,18 +11,20 @@ window.addEventListener('load', (event) => {
 		}
 		allDateFields.forEach((dateField) => {
 			const $this = jQuery(dateField);
+			const dateFormat = $this.data('dateformat');
+			const timeFormat = $this.data('timeformat' );
 
 			// If field does not have [data-timeformat] attribute that mean it is a datepicker, otherwise datepicker + timepicker.
-			if ( ! dateField.getAttribute('timeformat' ) ) {
-				$this.datepicker();
+			if ( ! timeFormat ) {
+				$this.datepicker( { dateFormat: dateFormat });
 				return;
 			}
 
 			const date = new Date();
 
 			$this.datetimepicker({
-				dateFormat: $this.data('dateformat'),
-				timeFormat: $this.data('timeformat'),
+				dateFormat: dateFormat,
+				timeFormat: timeFormat,
 				hour: date.getHours(),
 				minute: date.getMinutes(),
 				currentText: __('Now', 'give'),
