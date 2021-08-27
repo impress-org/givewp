@@ -14,17 +14,20 @@ class Date extends Field {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 
+	/**
+	 * @var string
+	 */
 	const TYPE = 'date';
 
 	/**
-	 * @param $name
+	 * @var string
 	 */
-	public function __construct( $name ) {
-		parent::__construct( $name );
+	protected $dateFormat = 'mm/dd/yy';
 
-		$this->validationRules->rule( 'dateformat', 'mm/dd/yy' );
-		$this->validationRules->rule( 'timeformat', '' );
-	}
+	/**
+	 * @var string
+	 */
+	protected $timeFormat = '';
 
 	/**
 	 * @unreleased
@@ -33,7 +36,7 @@ class Date extends Field {
 	 * @param string $dateFormat
 	 */
 	public function dateFormat( $dateFormat ){
-		$this->validationRules->rule( 'dateformat', $dateFormat );
+		$this->dateFormat = $dateFormat;
 
 		return $this;
 	}
@@ -42,7 +45,7 @@ class Date extends Field {
 	 * @unreleased
 	 */
 	public function getDateFormat(){
-		return $this->validationRules->getRule( 'dateformat' );
+		return $this->dateFormat;
 	}
 
 	/**
@@ -52,7 +55,7 @@ class Date extends Field {
 	 * @param string $timeFormat
 	 */
 	public function timeFormat( $timeFormat ){
-		$this->validationRules->rule( 'timeformat', $timeFormat );
+		$this->timeFormat = $timeFormat;
 
 		return $this;
 	}
@@ -61,6 +64,6 @@ class Date extends Field {
 	 * @unreleased
 	 */
 	public function getTimeFormat(){
-		return $this->validationRules->getRule( 'timeformat' );
+		return $this->timeFormat;
 	}
 }
