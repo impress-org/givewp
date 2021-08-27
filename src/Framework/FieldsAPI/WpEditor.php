@@ -34,15 +34,6 @@ class WpEditor extends Field {
 	/**
 	 * @unreleased
 	 *
-	 * @param string $name
-	 */
-	public function __construct( $name ) {
-		parent::__construct( $name );
-	}
-
-	/**
-	 * @unreleased
-	 *
 	 * @param bool $editorType
 	 *
 	 * @return $this
