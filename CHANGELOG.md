@@ -81,6 +81,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
 - Support multi-selects in Legacy Consumer select template (#5905)
 
+### Changed
+
+-   Do not extend Fields API `Form` from `Group` (#5889)
+
 ## 2.12.1 - 2021-07-22
 
 ### Fixed
