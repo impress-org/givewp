@@ -53,8 +53,7 @@ class SetupScripts {
 				'give-date-field-css',
 				GIVE_PLUGIN_URL . '/assets/dist/css/give-date-field.css',
 				[],
-				GIVE_VERSION,
-				true
+				GIVE_VERSION
 			);
 		}
 	}
