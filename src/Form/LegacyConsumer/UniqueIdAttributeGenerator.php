@@ -9,7 +9,7 @@ class UniqueIdAttributeGenerator {
 	/**
 	 * @var array
 	 */
-	private $formCounter;
+	private $formCounter = [];
 
 	/**
 	 * @unreleased
