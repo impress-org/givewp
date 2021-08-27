@@ -21,6 +21,8 @@ class ServiceProvider implements ServiceProviderInterface {
 				return new DeprecateOldTemplateHook( $wp_filter );
 			}
 		);
+
+		give()->singleton( UniqueIdAttributeGenerator::class );
 	}
 
 	/**

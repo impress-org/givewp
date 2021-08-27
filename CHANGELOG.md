@@ -14,7 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template. (#5924)
 - Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
 - Convert array type values to pipe (|) seperated string  before make custom field value persistence. (#5924)
-
+- Custom fields have unique ID attribute in legacy consumer. (#5938)
 
 ### New
 
