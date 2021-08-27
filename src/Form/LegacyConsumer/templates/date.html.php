@@ -8,6 +8,7 @@
 	value="<?php echo $field->getDefaultValue(); ?>"
 	data-timeformat="<?php echo $field->getTimeFormat(); ?>"
 	data-dateformat="<?php echo $field->getDateFormat(); ?>"
+	autocomplete="off"
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 >
