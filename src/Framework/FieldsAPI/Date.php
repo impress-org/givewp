@@ -23,7 +23,7 @@ class Date extends Field {
 		parent::__construct( $name );
 
 		$this->validationRules->rule( 'dateformat', 'mm/dd/yy' );
-		$this->validationRules->rule( 'timeformat', 'h:mm tt' );
+		$this->validationRules->rule( 'timeformat', '' );
 	}
 
 	/**
