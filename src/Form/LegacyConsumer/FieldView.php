@@ -18,15 +18,16 @@ class FieldView {
 
 	/**
 	 * @since 2.10.2
-	 * @unreleased add $formID as a param
+	 * @unreleased add $formId as a param
 	 *
 	 * @param Node $field
-	 * @param int $formID
+	 * @param int $formId
 	 *
 	 * @return void
 	 */
-	public static function render( Node $field, $formID ) {
+	public static function render( Node $field, $formId ) {
 		$type = $field->getType();
+		$fieldIdAttribute = give( UniqueIdAttributeGenerator::class)->getId( $formId, $field->getName() );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -34,7 +35,7 @@ class FieldView {
 			return;
 		}
 
-		$classList = apply_filters( "give_form_{$formID}_field_classes_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
+		$classList = apply_filters( "give_form_{$formId}_field_classes_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
 		$className = implode( ' ', array_unique( $classList ) );
 
 		echo "<div class=\"{$className}\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
