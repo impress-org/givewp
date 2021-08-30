@@ -16,7 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Convert array type values to pipe (|) separated string  before make custom field value persistence. (#5933)
 - Move custom field validation to `give_checkout_error_checks` hook. (#5933)
 - Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
-
+- Custom fields have unique ID attribute in legacy consumer. (#5938
 
 ### New
 
@@ -25,6 +25,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add support for multiple file upload in legacy consumer for file template. (#5933)
 - Add `enctype` attribute to form if file type custom field added to donation form. (#5933)
 - Pass form id to donation form action url which help to show notices from session. (#5933)
+
+## 2.13.2 - 2021-08-26
+
+## Fixed
+
+- Admin able to create donation form and edit existing donation form if stripe disabled. (#5935)
 
 ## 2.13.1 - 2021-08-20
 
@@ -80,6 +86,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
 - Support multi-selects in Legacy Consumer select template (#5905)
+
+### Changed
+
+-   Do not extend Fields API `Form` from `Group` (#5889)
 
 ## 2.12.1 - 2021-07-22
 

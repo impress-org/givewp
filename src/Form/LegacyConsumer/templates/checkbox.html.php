@@ -1,5 +1,4 @@
 <?php /** @var Give\Framework\FieldsAPI\Checkbox $field */ ?>
-<?php /** @var string $typeAttribute */ ?>
 <label class="give-label">
 	<input
 		type="checkbox"
