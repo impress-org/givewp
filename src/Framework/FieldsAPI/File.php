@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use function get_allowed_mime_types;
+use function wp_max_upload_size;
+
 /**
  * A file upload field.
  *
@@ -15,6 +18,7 @@ class File extends Field {
 	use Concerns\HasLabel;
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
+	use Concerns\AllowMultiple;
 
 	const TYPE = 'file';
 
@@ -24,8 +28,8 @@ class File extends Field {
 	public function __construct( $name ) {
 		parent::__construct( $name );
 
-		$this->validationRules->rule( 'maxSize', 1024 );
-		$this->validationRules->rule( 'allowedTypes', [ '*' ] );
+		$this->validationRules->rule( 'maxSize', wp_max_upload_size() / 1024 ); // in kb
+		$this->validationRules->rule( 'allowedTypes', get_allowed_mime_types() );
 	}
 
 	/**
