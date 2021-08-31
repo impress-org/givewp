@@ -25,6 +25,17 @@ class WPEditor extends Field {
 	protected $editorType = 'teeny';
 
 	/**
+	 * WP Editor default config.
+	 * @var array
+	 */
+	private $defaultEditorConfig = [
+		'quicktags'     => false,
+		'media_buttons' => false,
+		'teeny'         => true,
+		'editor_class'  => ' give-wp-editor-field',
+	];
+
+	/**
 	 * @see wp_editor settings: https://developer.wordpress.org/reference/classes/_wp_editors/parse_settings/
 	 *
 	 * @var array
@@ -34,12 +45,10 @@ class WPEditor extends Field {
 	/**
 	 * @unreleased
 	 *
-	 * @param bool $editorType
-	 *
-	 * @return $this
+	 * @return self
 	 */
-	public function richTextEditorType( $editorType ) {
-		$this->editorType = $editorType;
+	public function useRichTextEditor(){
+		$this->defaultEditorConfig['teeny'] = false;
 
 		return $this;
 	}
@@ -47,10 +56,12 @@ class WPEditor extends Field {
 	/**
 	 * @unreleased
 	 *
-	 * @return string
+	 * @return self
 	 */
-	public function getRichTextEditorType() {
-		return $this->editorType;
+	public function useSmallRichTextEditor(){
+		$this->defaultEditorConfig['teeny'] = true;
+
+		return $this;
 	}
 
 	/**
@@ -74,12 +85,7 @@ class WPEditor extends Field {
 	public function getEditorConfig() {
 		return wp_parse_args(
 			$this->editorConfig,
-			[
-				'quicktags'     => false,
-				'media_buttons' => false,
-				'teeny'         => 'teeny' === $this->getRichTextEditorType(),
-				'editor_class'  => ' rich-editor',
-			]
+			$this->defaultEditorConfig
 		);
 	}
 }
