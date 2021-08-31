@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+ 
+- Donation level id and amount value store as string for donation form generate in on-boarding process. (#5940)
+
 ## 2.13.2 - 2021-08-26
 
 ## Fixed
