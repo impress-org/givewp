@@ -146,6 +146,7 @@ class DefaultFormFactory {
 	 * @return array
 	 *
 	 * @since 2.8.0
+	 * @unreleased Donation level id and amount value changed to string
 	 */
 	public function getDonationLevels() {
 		return [
