@@ -152,38 +152,38 @@ class DefaultFormFactory {
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 0,
+						'level_id' => '0',
 					],
-				'_give_amount' => 10,
+				'_give_amount' => give_sanitize_amount_for_db( 10 ),
 			],
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 1,
+						'level_id' => '1',
 					],
-				'_give_amount' => 25,
+				'_give_amount' => give_sanitize_amount_for_db( 25 ),
 			],
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 2,
+						'level_id' => '2',
 					],
-				'_give_amount' => 50,
+				'_give_amount' => give_sanitize_amount_for_db( 50 ),
 			],
 			[
 				'_give_id'      =>
 					[
-						'level_id' => 3,
+						'level_id' => '3',
 					],
-				'_give_amount'  => 100,
+				'_give_amount'  => give_sanitize_amount_for_db( 100 ),
 				'_give_default' => 'default',
 			],
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 5,
+						'level_id' => '5',
 					],
-				'_give_amount' => 250,
+				'_give_amount' => give_sanitize_amount_for_db( 250 ),
 			],
 		];
 	}
