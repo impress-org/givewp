@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 /**
  * @unreleased
  */
-class WpEditor extends Field {
+class WPEditor extends Field {
 	use Concerns\HasEmailTag;
 	use Concerns\HasHelpText;
 	use Concerns\HasLabel;

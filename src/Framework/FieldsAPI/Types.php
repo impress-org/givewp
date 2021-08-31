@@ -20,6 +20,6 @@ class Types {
 	const SELECT   = Select::TYPE;
 	const TEXT     = Text::TYPE;
 	const TEXTAREA = Textarea::TYPE;
-	const WP_EDITOR = WpEditor::TYPE;
+	const WP_EDITOR = WPEditor::TYPE;
 	const URL      = Url::TYPE;
 }

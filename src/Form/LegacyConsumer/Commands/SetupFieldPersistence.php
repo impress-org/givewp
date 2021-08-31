@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Text;
-use Give\Framework\FieldsAPI\WpEditor;
+use Give\Framework\FieldsAPI\WPEditor;
 use function do_action;
 use function give_clean;
 use function give_get_payment_meta;
@@ -86,7 +86,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 						implode( '| ', array_values( array_filter( $data ) ) ) :
 						$data;
 
-					if( $field instanceof WpEditor ) {
+					if( $field instanceof WPEditor ) {
 						$value = wp_kses_post( $data );
 					}
 
