@@ -62,7 +62,7 @@ class SetupFieldValidation {
 							return;
 						}
 
-						// wp editor content does not available on ajax donation form validation, so we need to validate it on donation form submission.
+						// WPEditor content is not available during AJAX, so it gets validated upon form submission
 						if ( $field->isRequired() && empty( $_POST[ $field->getName() ] ) ) {
 							give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError()['error_message'] );
 						}
