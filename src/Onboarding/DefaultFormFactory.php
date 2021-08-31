@@ -2,7 +2,7 @@
 
 namespace Give\Onboarding;
 
-use Give\Form\Template\Options as TempalteOptions;
+use Give\Form\Template\Options as TemplateOptions;
 
 /**
  * @since 2.8.0
@@ -127,7 +127,7 @@ class DefaultFormFactory {
 				'header_label' => __( 'Add Your Information', 'give' ),
 				'headline'     => __( "Who's giving today?", 'give' ),
 				'description'  => __( 'We’ll never share this information with anyone.', 'give' ),
-				TempalteOptions::getCheckoutLabelField(),
+				TemplateOptions::getCheckoutLabelField(),
 			],
 			'thank-you'           => [
 				'image'               => '',
