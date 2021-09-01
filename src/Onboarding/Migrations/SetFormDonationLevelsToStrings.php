@@ -14,6 +14,11 @@ use Give\Onboarding\FormRepository;
 class SetFormDonationLevelsToStrings extends Migration
 {
 	/**
+	 * @var FormRepository
+	 */
+	private $formRepository;
+
+	/**
 	 * @inheritDoc
 	 */
 	public static function id()
@@ -29,16 +34,14 @@ class SetFormDonationLevelsToStrings extends Migration
 		return strtotime('2020-09-01 11:47:00');
 	}
 
-	/**
-	 * @var FormRepository
-	 */
-	private $formRepository;
-
 	public function __construct(FormRepository $formRepository)
 	{
 		$this->formRepository = $formRepository;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function run()
 	{
 		$formId = $this->formRepository->getDefaultFormID();
