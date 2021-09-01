@@ -3,7 +3,6 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Form\LegacyConsumer\FieldView;
-use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Group;
 
 /**
@@ -27,21 +26,6 @@ class SetupNewTemplateHook implements HookCommandInterface {
 				do_action( "give_fields_$hook", $collection, $formId );
 				$collection->walk(
 					static function ( $node ) use ( $formId ) {
-
-						/**
-						 * Use this filter to render custom field which does not exist in field api.
-						 *
-						 * @unreleased
-						 *
-						 * @param Field $field
-						 * @param int $formId
-						 */
-						$html = apply_filters( 'give_fields_render_field', '', $node, $formId );
-						if( $html ){
-							echo $html;
-							return;
-						}
-
 						FieldView::render( $node, $formId );
 					}
 				);
