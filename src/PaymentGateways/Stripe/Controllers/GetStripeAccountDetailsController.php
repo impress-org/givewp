@@ -19,7 +19,7 @@ class GetStripeAccountDetailsController {
 	private $accountDetailServiceProvider;
 
 	/**
-	 * @unlreased
+	 * @since 2.13.3
 	 * @param AccountDetail $accountDetailServiceProvider
 	 */
 	public function __construct( AccountDetail $accountDetailServiceProvider ) {
@@ -27,7 +27,7 @@ class GetStripeAccountDetailsController {
 	}
 
 	/**
-	 * @unlreased
+	 * @since 2.13.3
 	 */
 	public function __invoke() {
 		$this->validateRequest();

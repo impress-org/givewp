@@ -292,7 +292,7 @@ class AccountManagerSettingField {
 			 *
 			 * Developer can utilize this hook to add custom action to stripe account
 			 *
-			 * @unlreased
+			 * @since 2.13.3
 			 */
 			$stripeAccountActionsHtml = apply_filters( 'give_stripe_manage_account_actions_html', '', $stripeAccount, $this->stripeAccounts, $this->defaultStripeAccountSlug );
 

@@ -577,12 +577,20 @@ export default {
 					)
 				);
 
-			// Manually trigger blur event with two params:
-			// (a) form jquery object
-			// (b) price id
-			// (c) donation amount
-			$form.find( '.give-donation-amount .give-text-input' )
-				.trigger( 'blur', [ $form, level_amount, level_price_id ] );
+			if( 'custom' === level_price_id && ! level_amount ) {
+				// If level amount is empty for custom field that means donor clicked on button.
+				// Set focus on amount field and allow donor to add custom donation amount.
+				$form.find( '.give-donation-amount .give-text-input' ).focus();
+			} else{
+				// Manually trigger blur event with two params:
+				// (a) form jquery object
+				// (b) price id
+				// (c) donation amount
+				// Note: "custom" donation level id has donation amount only if donor redirect back to donation form with error.
+				// Dummy url: http://give.test/donations/help-feed-america/?form-id=16&payment-mode=manual&level-id=custom&custom-amount=555,00
+				$form.find( '.give-donation-amount .give-text-input' )
+					.trigger( 'blur', [ $form, level_amount, level_price_id ] );
+			}
 		},
 
 		/**
