@@ -2,7 +2,9 @@
 
 namespace Give\ServiceProviders;
 
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
+use Give\Onboarding\Migrations\SetFormDonationLevelsToStrings;
 use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\DefaultFormFactory;
@@ -53,6 +55,7 @@ class Onboarding implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function boot() {
+		$this->registerMigrations();
 
 		// Onboarding Wizard and Setup page require WP v5.0.x or greater
 		if ( version_compare( get_bloginfo( 'version' ), '5.0', '<=' ) ) {
@@ -84,5 +87,17 @@ class Onboarding implements ServiceProvider {
 			Hooks::addAction( 'admin_enqueue_scripts', SetupPage::class, 'enqueue_scripts' );
 			Hooks::addAction( 'admin_post_dismiss_setup_page', SetupPage::class, 'dismissSetupPage' );
 		}
+	}
+
+	/**
+	 * Registers migrations
+	 *
+	 * @since 2.13.3
+	 */
+	private function registerMigrations()
+	{
+		give(MigrationsRegister::class)->addMigrations([
+			SetFormDonationLevelsToStrings::class
+		]);
 	}
 }
