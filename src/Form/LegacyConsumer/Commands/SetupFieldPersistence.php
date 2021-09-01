@@ -59,6 +59,19 @@ class SetupFieldPersistence implements HookCommandInterface {
 	 *
 	 */
 	public function process( Field $field ) {
+		/**
+		 * Use this filter to save custom field which does not exist in field api.
+		 *
+		 * @unreleased
+		 *
+		 * @param Field $field
+		 * @param int $donationId
+		 * @param array $donationData
+		 */
+		if( apply_filters( 'give_fields_save_field', false, $field, $this->donationId, $this->donationData ) ) {
+			return;
+		}
+
 		switch ( $field->getType() ) {
 			case 'file':
 				if ( isset( $_FILES[ $field->getName() ] ) ) {
