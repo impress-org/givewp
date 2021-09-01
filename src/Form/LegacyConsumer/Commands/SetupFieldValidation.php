@@ -3,6 +3,7 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
 use function do_action;
@@ -45,6 +46,18 @@ class SetupFieldValidation {
 		$collection->walkFields(
 			/* @var File $field */
 			function( $field ) {
+				/**
+				 * Use this filter to validate custom field which does not exist in field api.
+				 *
+				 * @unreleased
+				 *
+				 * @param Field $field
+				 * @param int $formId
+				 */
+				if( apply_filters( 'give_fields_validate_field', false, $field, $this->formId ) ) {
+					return;
+				}
+
 				switch ( $field->getType() ) {
 					case 'file':
 						// Are we processing donation form validation on ajax?
