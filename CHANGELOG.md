@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+
+- Set focus on donation amount field when click on "Custom" donation level id. (#5943)
+
 ## 2.13.2 - 2021-08-26
 
 ## Fixed
