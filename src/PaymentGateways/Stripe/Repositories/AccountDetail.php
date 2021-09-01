@@ -59,7 +59,7 @@ class AccountDetail {
 	/**
 	 * Get account detail by Stripe account slug.
 	 *
-	 * @unlreased
+	 * @since 2.13.3
 	 *
 	 * @param string $accountSlug
 	 *
