@@ -36,7 +36,7 @@ class SetupNewTemplateHook implements HookCommandInterface {
 						 * @param Field $field
 						 * @param int $formId
 						 */
-						$html = apply_filters( 'give_fields_field_view', '', $node, $formId );
+						$html = apply_filters( 'give_fields_render_field', '', $node, $formId );
 						if( $html ){
 							echo $html;
 							return;
