@@ -770,7 +770,7 @@
 	 * @since 2.7.0
 	 * @param {object} evt Reference to FFM input element click event
 	 */
-	function setupRadio( { container, label, input } ) {
+	function setupRadio( { label, input } ) {
 		// If checkbox is opted in by default, add border on load
 		if ( $( input ).prop( 'checked' ) === true ) {
 			$( label ).addClass( 'checked' );
