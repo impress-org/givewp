@@ -1,8 +1,11 @@
 /* stylelint-disable */
 .ffm-field-container {
+	fieldset{
+		padding: 0 !important;
+	}
+
 	.give-label {
 		display: block !important;
-		position: absolute;
 		font-size: 14px;
 	}
 
@@ -16,6 +19,7 @@
 			margin-left: 0;
 			color: #333;
 			display: inline-block;
+			position: relative;
 
 			&::before {
 				content: ' ';
@@ -53,54 +57,50 @@
 				}
 			}
 		}
+	}
 
-		&[data-field-type="radio"] {
-			input[type='radio'] {
-				opacity: 0 !important;
-				position: absolute !important;
+	&[data-field-type="radio"] {
+		label {
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 1.4;
+			padding: 0 0 0 32px;
+			width: 100%;
+			margin-left: 0;
+			color: #333;
+			display: inline-block;
+			position: relative;
+
+			&::before {
+				content: ' ';
+				position: absolute;
+				top: calc(50% - 12px);
+				left: 0;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				border: 1px solid #b4b9be;
+				background-color: #fff;
+				box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
 			}
 
-			label {
-				font-weight: 500;
-				font-size: 16px;
-				line-height: 1.4;
-				padding: 0 0 0 32px;
-				width: 100%;
-				margin-left: 0;
-				color: #333;
-				display: inline-block;
+			&::after {
+				transform: scale3d(0, 0, 0);
+				transition: transform 0.2s ease;
+				border-radius: 12px;
+				width: 10px;
+				height: 10px;
+				position: absolute;
+				top: calc(50% - 6px);
+				left: 6px;
+				content: ' ';
+				display: block;
+				background: #333;
+			}
 
-				&::before {
-					content: ' ';
-					position: absolute;
-					top: calc(50% - 12px);
-					left: 0;
-					width: 20px;
-					height: 20px;
-					border-radius: 50%;
-					border: 1px solid #b4b9be;
-					background-color: #fff;
-					box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
-				}
-
+			&.selected {
 				&::after {
-					transform: scale3d(0, 0, 0);
-					transition: transform 0.2s ease;
-					border-radius: 12px;
-					width: 10px;
-					height: 10px;
-					position: absolute;
-					top: calc(50% - 6px);
-					left: 6px;
-					content: ' ';
-					display: block;
-					background: #333;
-				}
-
-				&.selected {
-					&::after {
-						transform: scale3d(1, 1, 1);
-					}
+					transform: scale3d(1, 1, 1);
 				}
 			}
 		}
