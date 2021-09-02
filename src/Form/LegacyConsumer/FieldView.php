@@ -19,6 +19,7 @@ class FieldView {
 	/**
 	 * @since 2.10.2
 	 * @unreleased add $formId as a param
+	 * @unreleased Add filter to allow rendering logic for custom fields
 	 *
 	 * @param Node $field
 	 * @param int $formId

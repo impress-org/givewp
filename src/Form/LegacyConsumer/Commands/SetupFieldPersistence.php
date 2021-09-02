@@ -56,6 +56,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 	 *
 	 * @return void
 	 * @since 2.10.2
+	 * @unreleased  Add filter to allow saving logic for custom fields
 	 *
 	 */
 	public function process( Field $field ) {

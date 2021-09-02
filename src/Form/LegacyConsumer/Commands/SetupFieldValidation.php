@@ -37,6 +37,7 @@ class SetupFieldValidation {
 	/**
 	 * @since 2.10.2
 	 * @unreleased  Add support for file field validation
+	 * @unreleased Add filter to allow validation for custom field.
 	 *
 	 * @param string $hook
 	 */
