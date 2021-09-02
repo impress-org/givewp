@@ -98,7 +98,7 @@
 				background: #333;
 			}
 
-			&.selected {
+			&.checked {
 				&::after {
 					transform: scale3d(1, 1, 1);
 				}
