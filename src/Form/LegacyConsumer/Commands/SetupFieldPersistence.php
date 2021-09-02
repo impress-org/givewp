@@ -55,7 +55,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 	 *
 	 * @return void
 	 */
-	protected function process( Field $field ) {
+	public function process( Field $field ) {
 		if ( $field->getType() === Types::FILE ) {
 			/** @var File $field */
 			if ( isset( $_FILES[ $field->getName() ] ) ) {

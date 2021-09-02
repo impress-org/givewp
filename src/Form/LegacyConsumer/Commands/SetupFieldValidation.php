@@ -53,7 +53,7 @@ class SetupFieldValidation implements HookCommandInterface {
 	 *
 	 * @void
 	 */
-	protected function validate( Field $field ) {
+	public function validate( Field $field ) {
 		if ( $field->getType() === Types::FILE ) {
 			// Are we processing donation form validation on ajax?
 			if( isset( $_POST['give_ajax'] ) ) {
