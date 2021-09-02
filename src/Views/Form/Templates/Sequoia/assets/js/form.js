@@ -723,7 +723,7 @@
 		Array.from( customCheckboxes ).forEach( ( el ) => {
 			const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
 			setupCheckbox( {
-				container: containerSelector,
+				container: containerSelector + ' label',
 				label: containerSelector + ' label',
 				input: containerSelector + ' input[type="checkbox"]',
 			} );
@@ -753,8 +753,6 @@
 
 		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
-			console.log( container );
-
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
@@ -788,7 +786,6 @@
 
 			$( evt.target.parentElement ).find('label').removeClass( 'checked' );
 			$( evt.target ).toggleClass( 'checked' );
-			console.log($( evt.target ), $( evt.target.parentElement ).siblings());
 		} );
 	}
 
