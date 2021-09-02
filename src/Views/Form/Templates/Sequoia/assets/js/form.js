@@ -463,7 +463,7 @@
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
 	 */
-	setupOptionalInputLables(
+	setupOptionalInputLabels(
 		Array.from( document.querySelectorAll( '#give_checkout_user_info input[type="text"]' ) )
 	);
 
@@ -474,7 +474,7 @@
 	 *
 	 * @param {array} inputs An iteratable list of input elements.
 	 */
-	function setupOptionalInputLables( inputs ) {
+	function setupOptionalInputLabels( inputs ) {
 		inputs.filter( function( input ) {
 			return ! input.required;
 		} ).map( function( input ) {
