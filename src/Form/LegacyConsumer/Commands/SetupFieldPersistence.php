@@ -3,14 +3,11 @@
 namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Form\LegacyConsumer\Actions\UploadFilesAction;
+use Give\Framework\FieldsAPI\Concenrs\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
-use Give\Framework\FieldsAPI\Text;
-use function do_action;
-use function give_clean;
-use function give_get_payment_meta;
-use function give_update_payment_meta;
+use Give\Framework\FieldsAPI\Types;
 
 /**
  * Persist custom field values as donation meta.
@@ -49,61 +46,59 @@ class SetupFieldPersistence implements HookCommandInterface {
 	}
 
 	/**
-	 * @param Field|Text|File $field
+	 * Process the given field.
+	 *
+	 * @since 2.10.2
+	 * @unreleased Handle File field type and custom field type separately
+	 *
+	 * @param Field $field
 	 *
 	 * @return void
-	 * @since 2.10.2
-	 * @unreleased  Add filter to allow saving logic for custom fields
-	 *
 	 */
-	public function process( Field $field ) {
-		/**
-		 * Use this filter to save custom field which does not exist in field api.
-		 *
-		 * @unreleased
-		 *
-		 * @param Field $field
-		 * @param int $donationId
-		 * @param array $donationData
-		 */
-		if( apply_filters( "give_fields_api_save_{$field->getType()}", false, $field, $this->donationId, $this->donationData ) ) {
-			return;
-		}
+	protected function process( Field $field ) {
+		if ( $field->getType() === Types::FILE ) {
+			/** @var File $field */
+			if ( isset( $_FILES[ $field->getName() ] ) ) {
+				$fileUploader = new UploadFilesAction( $field );
+				$fileIds      = $fileUploader();
 
-		switch ( $field->getType() ) {
-			case 'file':
-				if ( isset( $_FILES[ $field->getName() ] ) ) {
-
-					$fileUploader = new UploadFilesAction( $field );
-					$fileIds      = $fileUploader();
-
-					foreach ( $fileIds as $fileId ) {
-						if ( $field->shouldStoreAsDonorMeta() ) {
-							$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
-							Give()->donor_meta->add_meta( $donorID, $field->getName(), $fileId );
-						} else {
-							// Store as Donation Meta - default behavior.
-							give()->payment_meta->add_meta( $this->donationId, $field->getName(), $fileId );
-						}
-					}
-				}
-				break;
-
-			default:
-				if ( isset( $_POST[ $field->getName() ] ) ) {
-					$data  = give_clean( $_POST[ $field->getName() ] );
-					$value = is_array( $data ) ?
-						implode( '| ', array_values( array_filter( $data ) ) ) :
-						$data;
-
+				foreach ( $fileIds as $fileId ) {
 					if ( $field->shouldStoreAsDonorMeta() ) {
 						$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
-						Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
+						Give()->donor_meta->add_meta( $donorID, $field->getName(), $fileId );
 					} else {
 						// Store as Donation Meta - default behavior.
-						give_update_payment_meta( $this->donationId, $field->getName(), $value );
+						give()->payment_meta->add_meta( $this->donationId, $field->getName(), $fileId );
 					}
 				}
+			}
+		} elseif ( in_array( $field->getType(), Types::all(), true ) ) {
+			if ( isset( $_POST[ $field->getName() ] ) ) {
+				$data  = give_clean( $_POST[ $field->getName() ] );
+				$value = is_array( $data ) ?
+					implode( '| ', array_values( array_filter( $data ) ) ) :
+					$data;
+
+				/** @var StoreAsMeta $field */
+				if ( $field->shouldStoreAsDonorMeta() ) {
+					$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
+					Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
+				} else {
+					// Store as Donation Meta - default behavior.
+					give_update_payment_meta( $this->donationId, $field->getName(), $value );
+				}
+			}
+		} else {
+			/**
+			 * Use this action to save custom field which does not exist in fields API.
+			 *
+			 * @unreleased
+			 *
+			 * @param Field $field
+			 * @param int $donationId
+			 * @param array $donationData
+			 */
+			do_action( 'give_fields_save_field', $field, $this->donationId, $this->donationData );
 		}
 	}
 }
