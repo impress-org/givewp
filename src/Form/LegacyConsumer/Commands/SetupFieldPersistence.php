@@ -98,7 +98,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 			 * @param int $donationId
 			 * @param array $donationData
 			 */
-			do_action( 'give_fields_save_field', $field, $this->donationId, $this->donationData );
+			do_action( 'give_fields_api_save_field', $field, $this->donationId, $this->donationData );
 		}
 	}
 }
