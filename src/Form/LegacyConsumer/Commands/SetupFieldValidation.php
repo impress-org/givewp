@@ -75,7 +75,7 @@ class SetupFieldValidation implements HookCommandInterface {
 			 * @param Field $field
 			 * @param int $formId
 			 */
-			do_action( 'give_fields_validate_field', false, $field, $this->formId ) ;
+			do_action( 'give_fields_validate_field', $field, $this->formId ) ;
 		}
 	}
 }
