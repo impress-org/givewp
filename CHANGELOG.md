@@ -27,6 +27,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Pass form id to donation form action url which help to show notices from session. (#5933)
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
 
+## 2.13.3 - 2021-09-01
+
+### Fixed
+ 
+- Donation level id and amount value store as string for donation form generate in on-boarding process. (#5940)
+- Set focus on donation amount field when click on "Custom" donation level id. (#5943)
+
 ## 2.13.2 - 2021-08-26
 
 ## Fixed
