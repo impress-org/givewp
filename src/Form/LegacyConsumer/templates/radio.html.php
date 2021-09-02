@@ -9,15 +9,16 @@
 		<?php include plugin_dir_path( __FILE__ ) . '/label-content.html.php'; ?>
 	</div>
 	<?php foreach ( $field->getOptions() as $index => $option ) : ?>
-		<input
-			type="radio"
-			name="<?php echo $field->getName(); ?>"
-			id="<?php echo $fieldIdAttribute . '-' . $index; ?>"
-			<?php echo $field->isRequired() ? 'required' : ''; ?>
-			<?php echo $option->getValue() === $field->getDefaultValue() ? 'checked' : ''; ?>
-			value="<?php echo $option->getValue(); ?>"
-		>
-		<label for="<?php echo $fieldIdAttribute . '-' . $index; ?>" class="give-label">
+		<?php $id = $fieldIdAttribute. '-' . $index; ?>
+		<label for="<?php echo $id; ?>">
+			<input
+				type="radio"
+				name="<?php echo $field->getName(); ?>"
+				id="<?php echo $id; ?>"
+				<?php echo $field->isRequired() ? 'required' : ''; ?>
+				<?php echo $option->getValue() === $field->getDefaultValue() ? 'checked' : ''; ?>
+				value="<?php echo $option->getValue(); ?>"
+			>
 			<?php echo $option->getLabel() ?: $option->getValue(); ?>
 		</label>
 	<?php endforeach; ?>
