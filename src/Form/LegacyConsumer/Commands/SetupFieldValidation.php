@@ -41,7 +41,7 @@ class SetupFieldValidation implements HookCommandInterface {
 	public function __invoke( $hook ) {
 		$collection = Group::make( $hook );
 		do_action( "give_fields_$hook", $collection, $this->formId );
-		$collection->walkFields( [ $this, 'validate ' ] );
+		$collection->walkFields( [ $this, 'validate' ] );
 	}
 
 	/**
