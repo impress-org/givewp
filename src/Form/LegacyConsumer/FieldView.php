@@ -19,6 +19,7 @@ class FieldView {
 	/**
 	 * @since 2.10.2
 	 * @unreleased add $formId as a param
+	 * @unreleased Add filter to allow rendering logic for custom fields
 	 *
 	 * @param Node $field
 	 * @param int $formId
@@ -27,7 +28,7 @@ class FieldView {
 	 */
 	public static function render( Node $field, $formId ) {
 		$type = $field->getType();
-		$fieldIdAttribute = give( UniqueIdAttributeGenerator::class)->getId( $formId, $field->getName() );
+		$fieldIdAttribute = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -54,12 +55,28 @@ class FieldView {
 				include static::getTemplatePath( $type );
 				break;
 			// By default, include a template and use the base input template.
-			default:
+			case Types::DATE:
+			case Types::EMAIL:
+			case Types::PHONE:
+			case Types::TEXT:
+			case Types::URL:
 				// Used in the template
 				$typeAttribute = array_key_exists( $type, static::INPUT_TYPE_ATTRIBUTES ) ? static::INPUT_TYPE_ATTRIBUTES[ $type ] : 'text';
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( 'base' );
 				break;
+			default:
+				/**
+				 * Provide a custom function to render for a custom node type.
+				 *
+				 * @unreleased
+				 *
+				 * @param Node $field The node to render.
+				 * @param int $formId The form ID that the node is a part of.
+				 *
+				 * @void
+				 */
+				do_action( "give_fields_api_render_{$field->getType()}", $field, $formId );
 		}
 		echo '</div>';
 	}
