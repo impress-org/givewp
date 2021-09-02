@@ -18,21 +18,17 @@ use function give_update_payment_meta;
  * @since 2.10.2
  */
 class SetupFieldPersistence implements HookCommandInterface {
-	/**
-	 * @var int
-	 */
+
+	/** @var int */
 	private $donationId;
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $donationData;
 
 	/**
-	 * @param int $donationId
-	 * @param array $donationData
-	 *
 	 * @since 2.10.2
 	 *
+	 * @param int $donationId
+	 * @param array $donationData
 	 */
 	public function __construct( $donationId, $donationData ) {
 		$this->donationId   = $donationId;
@@ -40,10 +36,11 @@ class SetupFieldPersistence implements HookCommandInterface {
 	}
 
 	/**
-	 * @param string $hook
-	 *
 	 * @since 2.10.2
 	 *
+	 * @param string $hook
+	 *
+	 * @void
 	 */
 	public function __invoke( $hook ) {
 		$collection = Group::make( $hook );

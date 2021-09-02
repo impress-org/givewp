@@ -2,6 +2,9 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+use Give\Framework\FieldsAPI\Concerns\HasLabel;
+use Give\Framework\FieldsAPI\Concerns\ShowInReceipt;
+use Give\Framework\FieldsAPI\Concerns\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Group;
 
@@ -46,6 +49,7 @@ class SetupFieldConfirmation {
 	 * @return void
 	 */
 	public function render( Field $field ) {
+		/** @var Field|HasLabel|StoreAsMeta|ShowInReceipt $field */
 
 		if ( ! $field->shouldShowInReceipt() ) {
 			return;
