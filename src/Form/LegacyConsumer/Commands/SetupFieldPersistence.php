@@ -69,7 +69,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 		 * @param int $donationId
 		 * @param array $donationData
 		 */
-		if( apply_filters( "give_fields_api_save_field_{$field->getType()}", false, $field, $this->donationId, $this->donationData ) ) {
+		if( apply_filters( "give_fields_api_save_{$field->getType()}", false, $field, $this->donationId, $this->donationData ) ) {
 			return;
 		}
 
