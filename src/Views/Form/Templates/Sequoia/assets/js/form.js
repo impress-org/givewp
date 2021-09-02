@@ -128,17 +128,6 @@
 				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
 			}
 			navigator.goToStep( getInitialStep() );
-
-			// Fields API: Run setup for custom checkbox fields.
-			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
-			Array.from( customCheckboxes ).forEach( ( el ) => {
-				const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
-				setupCheckbox( {
-					container: containerSelector,
-					label: containerSelector + ' label',
-					input: containerSelector + ' input[type="checkbox"]',
-				} );
-			} );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -452,6 +441,7 @@
 	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
 
 	// Setup fields.
+	setupFieldApiCheckboxAndRadio();
 	setupSelectInputs();
 	setupRegistrationFormInputFields();
 	setupInputIcons();
@@ -723,6 +713,33 @@
 	}
 
 	/**
+	 * Setup prominent checkboxes (field api) (that use persistent borders on select)
+	 *
+	 * @unrelease
+	 */
+	function setupFieldApiCheckboxAndRadio(){
+		const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
+		const customRadios = document.querySelectorAll( '[data-field-type="radio"] input' );
+		Array.from( customCheckboxes ).forEach( ( el ) => {
+			const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
+			setupCheckbox( {
+				container: containerSelector,
+				label: containerSelector + ' label',
+				input: containerSelector + ' input[type="checkbox"]',
+			} );
+		} );
+
+		Array.from( customRadios ).forEach( ( el ) => {
+			const uniqueInputSelector = `#${el.getAttribute( 'id' )}`;
+			const uniqueLabelSelector = `label[for=${el.getAttribute( 'id' )}]`;
+			setupRadio( {
+				label: uniqueLabelSelector,
+				input: uniqueInputSelector,
+			} );
+		} );
+	}
+
+	/**
 	 * Setup prominent checkboxes (that use persistent borders on select)
 	 *
 	 * @since 2.7.0
@@ -736,6 +753,8 @@
 
 		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
+			console.log( container );
+
 			if ( container === label ) {
 				evt.stopPropagation();
 				evt.preventDefault();
@@ -744,6 +763,32 @@
 			}
 
 			$( container ).toggleClass( 'active' );
+		} );
+	}
+
+	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function setupRadio( { container, label, input } ) {
+		// If checkbox is opted in by default, add border on load
+		if ( $( input ).prop( 'checked' ) === true ) {
+			$( label ).addClass( 'checked' );
+		}
+
+		// Persist checkbox input border when selected
+		$( document ).on( 'click', label, function( evt ) {
+			evt.stopPropagation();
+			evt.preventDefault();
+
+			$( `#${evt.target.getAttribute('for')}` )
+				.prop( 'checked', ! $( input ).prop( 'checked' ) );
+
+			$( evt.target.parentElement ).find('label').removeClass( 'checked' );
+			$( evt.target ).toggleClass( 'checked' );
+			console.log($( evt.target ), $( evt.target.parentElement ).siblings());
 		} );
 	}
 
@@ -769,28 +814,6 @@
 	 */
 	function getInitialStep() {
 		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
-	}
-
-	/**
-	 * Handle updating label classes for FFM radios and checkboxes
-	 *
-	 * @since 2.7.0
-	 * @param {object} evt Reference to FFM input element click event
-	 */
-	function handleFFMInput( evt ) {
-		if ( $( evt.target ).is( 'input' ) ) {
-			switch ( $( evt.target ).prop( 'type' ) ) {
-				case 'checkbox': {
-					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
-					break;
-				}
-				case 'radio': {
-					$( evt.target ).closest( 'label' ).addClass( 'selected' );
-					$( evt.target ).parent().siblings().removeClass( 'selected' );
-					break;
-				}
-			}
-		}
 	}
 
 	function clearLoginNotices() {
