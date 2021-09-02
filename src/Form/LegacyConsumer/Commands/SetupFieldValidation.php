@@ -54,7 +54,7 @@ class SetupFieldValidation {
 				 * @param Field $field
 				 * @param int $formId
 				 */
-				if( apply_filters( 'give_fields_validate_field', false, $field, $this->formId ) ) {
+				if( apply_filters( 'give_fields_api_validate_field', false, $field, $this->formId ) ) {
 					return;
 				}
 
