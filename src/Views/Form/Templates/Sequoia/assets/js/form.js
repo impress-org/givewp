@@ -842,7 +842,8 @@
 			$( `#${evt.target.getAttribute('for')}` )
 				.prop( 'checked', ! $( input ).prop( 'checked' ) );
 
-			$( evt.target.parentElement ).find('label').removeClass( 'active' );
+			$( evt.target.parentElement ).find('label')
+				.not( evt.target ).removeClass( 'active' );
 			$( evt.target ).toggleClass( 'active' );
 		} );
 	}
