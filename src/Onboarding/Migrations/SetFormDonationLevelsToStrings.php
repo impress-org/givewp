@@ -52,16 +52,12 @@ class SetFormDonationLevelsToStrings extends Migration
 
 		$donationLevels = give_get_meta($formId, '_give_donation_levels', true);
 
-		$updatedLevels = [];
-		foreach ($donationLevels as $level) {
-			$updatedLevels[] = [
-				'_give_id' => [
-					'level_id' => (string)$level['_give_id']['level_id'],
-				],
-				'_give_amount' => give_sanitize_amount_for_db($level['_give_amount']),
-			];
+		foreach ($donationLevels as &$level) {
+			$level['_give_id']['level_id'] = (string)$level['_give_id']['level_id'];
+			$level['_give_amount'] = give_sanitize_amount_for_db($level['_give_amount']);
 		}
+		unset($level);
 
-		update_post_meta($formId, '_give_donation_levels', $updatedLevels);
+		update_post_meta($formId, '_give_donation_levels', $donationLevels);
 	}
 }
