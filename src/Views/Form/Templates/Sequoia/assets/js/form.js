@@ -445,7 +445,7 @@
 	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
 
 	// Setup fields.
-	setupFieldApiCheckboxAndRadio();
+	setupLegacyConsumerCheckboxAndRadio();
 	setupSelectInputs();
 	setupRegistrationFormInputFields();
 	setupFFMInputs();
