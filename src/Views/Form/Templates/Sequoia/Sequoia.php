@@ -150,9 +150,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			#give-recurring-form .form-row select.required:focus,
 			form.give-form .form-row select.required:focus,
 			.give-select:focus,
-			.give-input-field-wrapper.has-focus,
-			[data-field-type="radio"] label.active::before,
-			[data-field-type="checkbox"] label.active::before + [data-field-type="checkbox"] label.active:focus{
+			.give-input-field-wrapper.has-focus{
 				border-color: %1$s !important;
 			}
 			',
