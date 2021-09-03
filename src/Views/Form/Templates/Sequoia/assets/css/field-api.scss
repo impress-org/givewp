@@ -29,8 +29,19 @@ div[data-field-type='checkbox'] label {
 	word-wrap: normal !important;
 }
 
+/* Align checkbox with its label */
+[data-field-type="html"] + [data-field-type="checkbox"]{
+	margin-top: -15px !important;
+}
+
+/* Align next element after checkboxes end */
+[data-field-type="checkbox"] + *:not([data-field-type="checkbox"]){
+	margin-top: 15px !important;
+}
+
 /* Fields API: Styles for custom checkbox fields. */
 [data-field-type='checkbox'] {
+	margin-bottom: 0 !important;
 	label {
 		display: block !important;
 		position: relative;
