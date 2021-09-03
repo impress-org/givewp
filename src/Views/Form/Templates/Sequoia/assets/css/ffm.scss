@@ -1,5 +1,7 @@
 /* stylelint-disable */
 .ffm-field-container {
+	position: relative;
+
 	fieldset{
 		padding: 0 !important;
 	}
@@ -60,6 +62,12 @@ FFM version > 1.6.0 uses field api to render custom field which does not require
 		display: block !important;
 		position: absolute;
 		font-size: 14px;
+	}
+}
+
+fieldset{
+	.give-ffm-form-row-responsive {
+		position: relative;
 	}
 }
 
