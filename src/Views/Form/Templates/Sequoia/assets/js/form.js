@@ -815,7 +815,7 @@
 				evt.stopPropagation();
 				evt.preventDefault();
 
-				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
+				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) ).focus();
 			}
 
 			$( container ).toggleClass( 'active' );
