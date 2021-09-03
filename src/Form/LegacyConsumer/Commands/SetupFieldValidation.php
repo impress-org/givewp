@@ -4,6 +4,7 @@ namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Types;
 
@@ -49,7 +50,7 @@ class SetupFieldValidation implements HookCommandInterface {
 	 *
 	 * @unreleased
 	 *
-	 * @param Field $field
+	 * @param Field|File $field
 	 *
 	 * @void
 	 */
