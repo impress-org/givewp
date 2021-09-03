@@ -18,9 +18,13 @@
 	}
 	?>
 	<?php foreach ( $field->getOptions() as $option ) : ?>
-		<?php $value = esc_attr( $option->getValue() ); ?>
-		<?php $label = $option->getLabel(); ?>
-		<?php $default = $field->getDefaultValue() === $option->getValue(); ?>
+		<?php
+		$value = esc_attr( $option->getValue() );
+		$label = $option->getLabel();
+		$default = $field->getAllowMultiple() ?
+			in_array( $option->getValue(),$field->getDefaultValue() ) :
+			$field->getDefaultValue() === $option->getValue();
+		?>
 		<option
 			<?php echo $label ? "value=\"$value\"" : ''; ?>
 			<?php echo $default ? 'selected' : ''; ?>
