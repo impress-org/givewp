@@ -773,9 +773,9 @@
 	/**
 	 * Setup prominent checkboxes (field api) (that use persistent borders on select)
 	 *
-	 * @unrelease
+	 * @unreleased
 	 */
-	function setupFieldApiCheckboxAndRadio(){
+	function setupLegacyConsumerCheckboxAndRadio(){
 		const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
 		const customRadios = document.querySelectorAll( '[data-field-type="radio"] input' );
 		Array.from( customCheckboxes ).forEach( ( el ) => {
