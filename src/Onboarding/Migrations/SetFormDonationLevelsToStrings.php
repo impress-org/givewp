@@ -9,6 +9,7 @@ use Give\Onboarding\FormRepository;
  * This resolves an issue where the donation level data for the form created during onboarding was serialized as
  * integers instead of strings, causing issues throughout
  *
+ * @since 2.13.4 preserve additional donation level data
  * @since 2.13.3
  */
 class SetFormDonationLevelsToStrings extends Migration
