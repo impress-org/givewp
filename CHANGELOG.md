@@ -28,6 +28,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
 - Add min/max-length validation to text Fields API node types. (#5948)
 
+## 2.13.4 - 2021-09-03
+
+### Fixed
+
+- Onboarding form donation level migration no longer clears extra donation level data (#5950)
+
 ## 2.13.3 - 2021-09-01
 
 ### Fixed
