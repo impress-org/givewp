@@ -773,7 +773,7 @@
 	function setupRadio( { label, input } ) {
 		// If checkbox is opted in by default, add border on load
 		if ( $( input ).prop( 'checked' ) === true ) {
-			$( label ).addClass( 'checked' );
+			$( label ).addClass( 'active' );
 		}
 
 		// Persist checkbox input border when selected
@@ -784,8 +784,8 @@
 			$( `#${evt.target.getAttribute('for')}` )
 				.prop( 'checked', ! $( input ).prop( 'checked' ) );
 
-			$( evt.target.parentElement ).find('label').removeClass( 'checked' );
-			$( evt.target ).toggleClass( 'checked' );
+			$( evt.target.parentElement ).find('label').removeClass( 'active' );
+			$( evt.target ).toggleClass( 'active' );
 		} );
 	}
 
