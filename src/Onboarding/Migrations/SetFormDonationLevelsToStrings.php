@@ -9,6 +9,7 @@ use Give\Onboarding\FormRepository;
  * This resolves an issue where the donation level data for the form created during onboarding was serialized as
  * integers instead of strings, causing issues throughout
  *
+ * @since 2.13.4 preserve additional donation level data
  * @since 2.13.3
  */
 class SetFormDonationLevelsToStrings extends Migration
@@ -52,16 +53,12 @@ class SetFormDonationLevelsToStrings extends Migration
 
 		$donationLevels = give_get_meta($formId, '_give_donation_levels', true);
 
-		$updatedLevels = [];
-		foreach ($donationLevels as $level) {
-			$updatedLevels[] = [
-				'_give_id' => [
-					'level_id' => (string)$level['_give_id']['level_id'],
-				],
-				'_give_amount' => give_sanitize_amount_for_db($level['_give_amount']),
-			];
+		foreach ($donationLevels as &$level) {
+			$level['_give_id']['level_id'] = (string)$level['_give_id']['level_id'];
+			$level['_give_amount'] = give_sanitize_amount_for_db($level['_give_amount']);
 		}
+		unset($level);
 
-		update_post_meta($formId, '_give_donation_levels', $updatedLevels);
+		update_post_meta($formId, '_give_donation_levels', $donationLevels);
 	}
 }
