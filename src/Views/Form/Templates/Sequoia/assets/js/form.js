@@ -567,6 +567,28 @@
 	}
 
 	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function handleFFMInput( evt ) {
+		if ( $( evt.target ).is( 'input' ) ) {
+			switch ( $( evt.target ).prop( 'type' ) ) {
+				case 'checkbox': {
+					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
+					break;
+				}
+				case 'radio': {
+					$( evt.target ).closest( 'label' ).addClass( 'selected' );
+					$( evt.target ).parent().siblings().removeClass( 'selected' );
+					break;
+				}
+			}
+		}
+	}
+
+	/**
 	 * Move form field under payment gateway
 	 * @since 2.7.0
 	 */
