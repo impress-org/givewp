@@ -8,6 +8,10 @@
 
 	.give-label {
 		display: block !important;
+
+		.give-tooltip:not(.give-required-indicator + .give-tooltip ){
+			padding-left: 5px;
+		}
 	}
 }
 
