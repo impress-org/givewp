@@ -327,6 +327,9 @@
 				// Setup gateway icons
 				setupGatewayIcons();
 
+				// Setup Form Field Manager input listeners
+				setupFFMInputs();
+
 				// Setup Icons for inputs
 				setupInputIcons();
 
@@ -407,6 +410,7 @@
 
 			moveFieldsUnderPaymentGateway();
 			setupRegistrationFormInputFields();
+			setupFFMInputs();
 			setupInputIcons();
 			setupSelectInputs();
 
@@ -444,6 +448,7 @@
 	setupFieldApiCheckboxAndRadio();
 	setupSelectInputs();
 	setupRegistrationFormInputFields();
+	setupFFMInputs();
 	setupInputIcons();
 
 	if ( 'enabled' === templateOptions.payment_amount.decimals_enabled ) {
@@ -528,6 +533,37 @@
 		$( '[id*="give-register-account-fields"]' )
 			.off( 'click', handleInput )
 			.on( 'click', handleInput );
+	}
+
+	/**
+	 * Add listeners and starting states to FFM inputs
+	 * @since 2.7.0
+	 */
+	function setupFFMInputs() {
+		$( '#give-ffm-section' )
+			.off( 'click', handleFFMInput )
+			.on( 'click', handleFFMInput );
+
+		$( '#give-ffm-section input' ).each( function() {
+			switch ( $( this ).prop( 'type' ) ) {
+				case 'checkbox': {
+					if ( $( this ).prop( 'checked' ) ) {
+						$( this ).parent().addClass( 'checked' );
+					} else {
+						$( this ).parent().removeClass( 'checked' );
+					}
+					break;
+				}
+				case 'radio': {
+					if ( $( this ).prop( 'checked' ) ) {
+						$( this ).parent().addClass( 'selected' );
+					} else {
+						$( this ).parent().removeClass( 'selected' );
+					}
+					break;
+				}
+			}
+		} );
 	}
 
 	/**
@@ -827,7 +863,7 @@
 			$( 'select option[selected="selected"][value=""]' ).each( function() {
 				if ( $( this ).parent().siblings( 'label' ).length ) {
 					$( this ).text( $( this ).parent().siblings( 'label' ).text().replace( '*', '' ).trim() );
-					$( this ).prop( 'disabled', true );
+					$( this ).attr( 'disabled', true );
 				}
 			} );
 		}
