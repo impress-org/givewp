@@ -837,10 +837,6 @@
 		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
 			evt.stopPropagation();
-			evt.preventDefault();
-
-			$( `#${evt.target.getAttribute('for')}` )
-				.prop( 'checked', ! $( input ).prop( 'checked' ) );
 
 			$( evt.target.parentElement ).find('label')
 				.not( evt.target ).removeClass( 'active' );
