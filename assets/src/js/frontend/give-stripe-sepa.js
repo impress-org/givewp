@@ -113,18 +113,21 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		} else {
 			giveStripeUnmountIbanElements( ibanElements );
 		}
+		
+		
+		// Process Donation using Stripe Elements on form submission.
+		formElement.addEventListener('submit', function(event) {
+			const $form = jQuery( this );
+			const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
+
+			if ( 'stripe_sepa' === $form.find( 'input.give-gateway:checked' ).val() ) {
+				give_stripe_process_iban( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
+				event.preventDefault();
+			}
+		});
 	} );
 
-	// Process Donation using Stripe Elements on form submission.
-	jQuery( 'body' ).on( 'submit', '.give-form', function( event ) {
-		const $form = jQuery( this );
-		const $idPrefix = $form.find( 'input[name="give-form-id-prefix"]' ).val();
 
-		if ( 'stripe_sepa' === $form.find( 'input.give-gateway:checked' ).val() ) {
-			give_stripe_process_iban( $form, globalIbanElements[ $idPrefix ][ 0 ].item );
-			event.preventDefault();
-		}
-	} );
 
 	/**
 	 * Mount Card Elements

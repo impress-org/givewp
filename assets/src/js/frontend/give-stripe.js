@@ -83,7 +83,7 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 		// Mount & unmount when the users selects a gateway
 		document.addEventListener( 'give_gateway_loaded', mountStripeElements );
 
-		formElement.onsubmit = ( e ) => {
+		formElement.addEventListener('submit', function(e) {
 			const { selectedGatewayId, isStripeModalCheckoutGateway } = getFormState();
 
 			// Bailout, if Stripe is not the selected gateway.
@@ -125,6 +125,6 @@ document.addEventListener( 'DOMContentLoaded', function( e ) {
 				}
 				e.preventDefault();
 			}
-		}
+		});
 	} );
 } );

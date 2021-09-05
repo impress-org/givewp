@@ -244,7 +244,11 @@ jQuery( document ).ready( function( $ ) {
 				//Remove any errors
 				this_form.find( '.give_errors' ).remove();
 				//Submit form for normal processing
-				$( give_purchase_form ).submit();
+				if ( this_form.find( 'input.give-gateway:checked' ).val() == 'paypal' ) {
+					give_purchase_form.submit();
+				} else {
+					give_purchase_form.dispatchEvent(new Event('submit'));
+				}
 
 				this_form.trigger( 'give_form_validation_passed' );
 			} else {
