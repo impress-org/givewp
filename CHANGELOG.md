@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
 - Custom fields have unique ID attribute in legacy consumer. (#5938)
 - Form field manager custom fields rendered with field api look good in multi-step form template. (#5946)
+- Use add meta function to persist field value in field api. (#5954)
 
 ### New
 
