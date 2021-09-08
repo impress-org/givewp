@@ -70,6 +70,7 @@ class SetupFieldValidation implements HookCommandInterface {
 			}
 
 			if(
+				in_array( $field->getType(), [ Types::TEXT, Types::TEXTAREA ] ) &&
 				$field->getMaxLength() &&
 				isset( $_POST[ $field->getName() ] ) &&
 				strlen( $_POST[ $field->getName() ] ) > $field->getMaxLength()
