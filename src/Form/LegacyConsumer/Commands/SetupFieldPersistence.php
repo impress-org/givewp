@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Concenrs\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Types;
 
 /**
@@ -79,13 +80,13 @@ class SetupFieldPersistence implements HookCommandInterface {
 					implode( '| ', array_values( array_filter( $data ) ) ) :
 					$data;
 
-				/** @var StoreAsMeta $field */
+				/** @var Text $field */
 				if ( $field->shouldStoreAsDonorMeta() ) {
 					$donorID = give_get_payment_meta( $this->donationId, '_give_payment_donor_id' );
-					Give()->donor_meta->update_meta( $donorID, $field->getName(), $value );
+					Give()->donor_meta->add_meta( $donorID, $field->getName(), $value );
 				} else {
 					// Store as Donation Meta - default behavior.
-					give_update_payment_meta( $this->donationId, $field->getName(), $value );
+					give()->payment_meta->add_meta( $this->donationId, $field->getName(), $value );
 				}
 			}
 		} else {
