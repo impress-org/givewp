@@ -69,7 +69,11 @@ class SetupFieldValidation implements HookCommandInterface {
 				give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError()['error_message'] );
 			}
 
-			if( $field->getMaxLength() && isset( $_POST[ $field->getName() ] ) && strlen( $_POST[ $field->getName() ] ) > $field->getMaxLength() ) {
+			if(
+				$field->getMaxLength() &&
+				isset( $_POST[ $field->getName() ] ) &&
+				strlen( $_POST[ $field->getName() ] ) > $field->getMaxLength()
+			) {
 				give_set_error(
 					"give-{$field->getName()}-required-field-missing",
 					sprintf(
