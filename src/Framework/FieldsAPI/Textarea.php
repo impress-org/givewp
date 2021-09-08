@@ -14,6 +14,7 @@ class Textarea extends Field {
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
 	use Concerns\HasMaxLength;
+	use Concerns\HasMinLength;
 
 	const TYPE = 'textarea';
 }
