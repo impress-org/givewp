@@ -49,7 +49,7 @@ class SetupFieldValidation implements HookCommandInterface {
 	/**
 	 * Validate the given field.
 	 *
-	 * @unreleased
+	 * @unreleased Add max length validation for input and textarea field
 	 *
 	 * @param Field|File|Text $field
 	 *
