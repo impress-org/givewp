@@ -6,6 +6,7 @@ use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Types;
 
 /**
@@ -50,7 +51,7 @@ class SetupFieldValidation implements HookCommandInterface {
 	 *
 	 * @unreleased
 	 *
-	 * @param Field|File $field
+	 * @param Field|File|Text $field
 	 *
 	 * @void
 	 */
@@ -66,6 +67,16 @@ class SetupFieldValidation implements HookCommandInterface {
 		} elseif ( in_array( $field->getType(), Types::all(), true ) ) {
 			if ( $field->isRequired() && ! isset( $_POST[ $field->getName() ] ) ) {
 				give_set_error( "give-{$field->getName()}-required-field-missing", $field->getRequiredError()['error_message'] );
+			}
+
+			if( $field->getMaxLength() && isset( $_POST[ $field->getName() ] ) && strlen( $_POST[ $field->getName() ] ) > $field->getMaxLength() ) {
+				give_set_error(
+					"give-{$field->getName()}-required-field-missing",
+					sprintf(
+						esc_html__( '%1$s field value exceed allowed character limit.', 'give' ),
+						$field->getName()
+					)
+				);
 			}
 		} else {
 			/**
