@@ -28,7 +28,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add `enctype` attribute to form if file type custom field added to donation form. (#5933)
 - Pass form id to donation form action url which help to show notices from session. (#5933)
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
-- Add min/max-length validation to text Fields API node types. (#5948)
+- Add min/max-length validation to text Fields API node types. (#5948, #5955)
+
+### Fixed
+- Add min/max-length validation to text and textarea Fields API node types. (#5955)
+- Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
+
 
 ## 2.13.4 - 2021-09-03
 

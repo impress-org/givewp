@@ -1,4 +1,4 @@
-<?php /** @var Give\Framework\FieldsAPI\Field|\Give\Framework\FieldsAPI\Text $field */ ?>
+<?php /** @var \Give\Framework\FieldsAPI\Text $field */ ?>
 <?php /** @var string $typeAttribute */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
 <input
@@ -9,4 +9,5 @@
 	value="<?php echo $field->getDefaultValue(); ?>"
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
 >
