@@ -13,6 +13,7 @@ class Textarea extends Field {
 	use Concerns\HasPlaceholder;
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
+	use Concerns\HasMaxLength;
 
 	const TYPE = 'textarea';
 }
