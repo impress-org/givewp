@@ -50,7 +50,7 @@ class SetupFieldPersistence implements HookCommandInterface {
 	 * Process the given field.
 	 *
 	 * @since 2.10.2
-	 * @unreleased Handle File field type and custom field type separately
+	 * @unreleased Handle File field type and custom field type separately. Use add meta function to persist field value.
 	 *
 	 * @param Field $field
 	 *
