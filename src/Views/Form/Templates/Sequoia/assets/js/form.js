@@ -920,18 +920,13 @@
 			const donationLevels = Give.form.fn.getVariablePrices( donationForm );
 			const symbol = Give.form.fn.getInfo( 'currency_symbol', donationForm );
 			const position = Give.form.fn.getInfo( 'currency_position', donationForm );
-			const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
 
 			$.each( donationLevels, function( j, level ) {
 				if ( 'custom' === level.price_id ) {
 					return;
 				}
 
-				const amount = Give.fn.numberHasDecimal( level.amount )
-					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
-					: level.amount;
-
-				const donationLevelLabel = '<div class="currency currency--' + position + '">' + symbol + '</div>' + amount;
+				const donationLevelLabel = '<div class="currency currency--' + position + '">' + symbol + '</div>' + level.amount;
 
 				donationForm
 					.find( '.give-btn-level-' + level.price_id  )
