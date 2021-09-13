@@ -86,7 +86,7 @@ add_action( 'give_before_offline_info_fields', 'give_offline_billing_fields', 10
 function give_offline_process_payment( $purchase_data ) {
 
 	// Setup the payment details.
-	$payment_data = array(
+	$payment_data = [
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => intval( $purchase_data['post_data']['give-form-id'] ),
@@ -98,7 +98,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
 		'gateway'         => 'offline',
-	);
+	];
 
 	// record the pending payment
 	$payment = give_insert_payment( $payment_data );
@@ -165,7 +165,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	$subject = apply_filters( 'give_offline_donation_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
-	$attachments = apply_filters( 'give_offline_donation_attachments', array(), $payment_id, $payment_data );
+	$attachments = apply_filters( 'give_offline_donation_attachments', [], $payment_id, $payment_data );
 	$message     = give_do_email_tags( $email_content, $payment_id );
 
 	$emails = Give()->emails;
@@ -228,8 +228,8 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
 	$admin_message = give_do_email_tags( $admin_message, $payment_id );
 
-	$attachments   = apply_filters( 'give_offline_admin_donation_notification_attachments', array(), $payment_id );
-	$admin_headers = apply_filters( 'give_offline_admin_donation_notification_headers', array(), $payment_id );
+	$attachments   = apply_filters( 'give_offline_admin_donation_notification_attachments', [], $payment_id );
+	$admin_headers = apply_filters( 'give_offline_admin_donation_notification_headers', [], $payment_id );
 
 	// Send Email
 	$emails = Give()->emails;
@@ -270,9 +270,9 @@ function give_offline_add_settings( $settings ) {
 	}
 
 	// Fields
-	$check_settings = array(
+	$check_settings = [
 
-		array(
+		[
 			'name'    => __( 'Offline Donations', 'give' ),
 			'desc'    => __( 'Do you want to customize the donation instructions for this form?', 'give' ),
 			'id'      => $prefix . 'customize_offline_donations',
@@ -280,43 +280,43 @@ function give_offline_add_settings( $settings ) {
 			'default' => 'global',
 			'options' => apply_filters(
 				'give_forms_content_options_select',
-				array(
+				[
 					'global'   => __( 'Global Option', 'give' ),
 					'enabled'  => __( 'Customize', 'give' ),
 					'disabled' => __( 'Disable', 'give' ),
-				)
+				]
 			),
-		),
-		array(
+		],
+		[
 			'name'        => __( 'Billing Fields', 'give' ),
 			'desc'        => __( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
 			'id'          => $prefix . 'offline_donation_enable_billing_fields_single',
 			'row_classes' => 'give-subfield give-hidden',
 			'type'        => 'radio_inline',
 			'default'     => 'disabled',
-			'options'     => array(
+			'options'     => [
 				'enabled'  => __( 'Enabled', 'give' ),
 				'disabled' => __( 'Disabled', 'give' ),
-			),
-		),
-		array(
+			],
+		],
+		[
 			'id'          => $prefix . 'offline_checkout_notes',
 			'name'        => __( 'Donation Instructions', 'give' ),
 			'desc'        => __( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_content(),
 			'type'        => 'wysiwyg',
 			'row_classes' => 'give-subfield give-hidden',
-			'options'     => array(
+			'options'     => [
 				'textarea_rows' => 6,
-			),
-		),
-		array(
+			],
+		],
+		[
 			'name'  => 'offline_docs',
 			'type'  => 'docs_link',
 			'url'   => 'http://docs.givewp.com/settings-gateway-offline-donations',
 			'title' => __( 'Offline Donations', 'give' ),
-		),
-	);
+		],
+	];
 
 	return array_merge( $settings, $check_settings );
 }
@@ -456,7 +456,7 @@ function give_filter_offline_gateway( $gateway_list, $form_id ) {
 		// Show offline payment gateway if enable for new donation form.
 		( false === strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) )
 		&& $form_id
-		&& ! give_is_setting_enabled( give_get_meta( $form_id, '_give_customize_offline_donations', true, 'global' ), array( 'enabled', 'global' ) )
+		&& ! give_is_setting_enabled( give_get_meta( $form_id, '_give_customize_offline_donations', true, 'global' ), [ 'enabled', 'global' ] )
 	) {
 		unset( $gateway_list['offline'] );
 	}
@@ -481,7 +481,7 @@ add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 
  */
 function _give_customize_offline_donations_on_save_callback( $meta_key, $meta_value, $postid ) {
 	if (
-		! give_is_setting_enabled( $meta_value, array( 'global', 'enabled' ) )
+		! give_is_setting_enabled( $meta_value, [ 'global', 'enabled' ] )
 		&& ( 'offline' === give_get_meta( $postid, '_give_default_gateway', true ) )
 	) {
 		give_update_meta( $postid, '_give_default_gateway', 'global' );
