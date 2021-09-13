@@ -35,6 +35,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
 
 
+### Fixed
+- Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
+
 ## 2.13.4 - 2021-09-03
 
 ### Fixed
