@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Onboarding form donation level migration no longer clears extra donation level data (#5950)
+- Prevent php notices which generate from offline -donations.php. (#5960)
 
 ## 2.13.3 - 2021-09-01
 
