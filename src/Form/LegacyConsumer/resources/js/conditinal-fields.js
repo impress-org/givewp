@@ -42,7 +42,6 @@ window.addEventListener('load', () => {
 		handleVisibility(event.target.closest('.give-form') );
 	}
 
-
 	document.querySelectorAll('form.give-form')
 		.forEach(function (donationForm) {
 			handleVisibility(donationForm);
