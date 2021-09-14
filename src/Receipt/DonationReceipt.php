@@ -134,9 +134,9 @@ class DonationReceipt extends Receipt {
 	private function getDonorBillingAddressLineItem() {
 		$address = getDonationDonorAddress( $this->donationId );
 		$address = sprintf(
-			'%1$s %2$s%3$s, %4$s%5$s %6$s',
+			'%1$s<br>%2$s%3$s, %4$s%5$s<br>%6$s',
 			$address['line1'],
-			! empty( $address['line2'] ) ? $address['line2'] . ' ' : '',
+			! empty( $address['line2'] ) ? $address['line2'] . '<br>' : '',
 			$address['city'],
 			$address['state'],
 			$address['zip'],
