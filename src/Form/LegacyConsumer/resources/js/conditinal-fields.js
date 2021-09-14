@@ -8,8 +8,10 @@ window.addEventListener('load', () => {
 			const fieldWrapper = field.closest('.form-row');
 			const visibilityConditions = JSON.parse(field.getAttribute('data-field-visibility-conditions'));
 			let visible = false;
+			let hasAtleastOneFieldController = false;
 			for (const {field, value} of visibilityConditions) {
 				const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
+				hasAtleastOneFieldController = hasAtleastOneFieldController ? hasAtleastOneFieldController : !! inputs.length;
 
 				if (inputs) {
 					inputs.forEach((input) => {
@@ -24,6 +26,10 @@ window.addEventListener('load', () => {
 						}
 					});
 				}
+			}
+
+			if( ! hasAtleastOneFieldController ) {
+				return;
 			}
 
 			visible ?
