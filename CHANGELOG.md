@@ -7,12 +7,34 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+
+- Show correct placeholder in legacy consumer in input field template. (#5924)
+- Do not allow to choosing placeholder in legacy consumer in select field template if field is required. (#5924)
+- Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template. (#5924)
+- Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
+- Convert array type values to pipe (|) separated string  before make custom field value persistence. (#5933)
+- Move custom field validation to `give_checkout_error_checks` hook. (#5933)
+- Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
+- Custom fields have unique ID attribute in legacy consumer. (#5938)
+- Form field manager custom fields rendered with field api look good in multi-step form template. (#5946)
+
+### New
+
+- Add `give_form_{ID}_field_classes_{fieldName}` hook to legacy consumer for setting classes on field wrapper. (#5917)
+- File type custom field added by legacy consumer should persist when donation completes. (#5933)
+- Add support for multiple file upload in legacy consumer for file template. (#5933)
+- Add `enctype` attribute to form if file type custom field added to donation form. (#5933)
+- Pass form id to donation form action url which help to show notices from session. (#5933)
+- Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
+- Add min/max-length validation to text Fields API node types. (#5948)
+- Prevent php notices which generate from offline -donations.php. (#5960
+
 ## 2.13.4 - 2021-09-03
 
 ### Fixed
 
 - Onboarding form donation level migration no longer clears extra donation level data (#5950)
-- Prevent php notices which generate from offline -donations.php. (#5960)
 
 ## 2.13.3 - 2021-09-01
 
@@ -42,7 +64,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add conditional visibility functionality to `FieldsAPI` `Field`, `Element`, and `Group` types (#5919)
 - Introduce `BasicCondition` and `NestedCondition` classes for expressing conditional logic in the Fields API (#5919)
 
-###  Changed
+### Changed
 
 - Add missing help text tooltip to Legacy Consumer’s label content templates. (#5921)
 - Wrap `<input>` element inside of `<label>` element for Legacy Consumer’s checkbox template. (#5920)
@@ -81,6 +103,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
 - Support multi-selects in Legacy Consumer select template (#5905)
+
+### Changed
+
+-   Do not extend Fields API `Form` from `Group` (#5889)
 
 ## 2.12.1 - 2021-07-22
 

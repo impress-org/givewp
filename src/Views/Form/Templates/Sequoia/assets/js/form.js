@@ -128,17 +128,6 @@
 				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
 			}
 			navigator.goToStep( getInitialStep() );
-
-			// Fields API: Run setup for custom checkbox fields.
-			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
-			Array.from( customCheckboxes ).forEach( ( el ) => {
-				const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
-				setupCheckbox( {
-					container: containerSelector,
-					label: containerSelector + ' label',
-					input: containerSelector + ' input[type="checkbox"]',
-				} );
-			} );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -456,6 +445,7 @@
 	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
 
 	// Setup fields.
+	setupLegacyConsumerCheckboxAndRadio();
 	setupSelectInputs();
 	setupRegistrationFormInputFields();
 	setupFFMInputs();
@@ -468,7 +458,7 @@
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
 	 */
-	setupOptionalInputLables(
+	setupOptionalInputLabels(
 		Array.from( document.querySelectorAll( '#give_checkout_user_info input[type="text"]' ) )
 	);
 
@@ -479,7 +469,7 @@
 	 *
 	 * @param {array} inputs An iteratable list of input elements.
 	 */
-	function setupOptionalInputLables( inputs ) {
+	function setupOptionalInputLabels( inputs ) {
 		inputs.filter( function( input ) {
 			return ! input.required;
 		} ).map( function( input ) {
@@ -574,6 +564,28 @@
 				}
 			}
 		} );
+	}
+
+	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function handleFFMInput( evt ) {
+		if ( $( evt.target ).is( 'input' ) ) {
+			switch ( $( evt.target ).prop( 'type' ) ) {
+				case 'checkbox': {
+					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
+					break;
+				}
+				case 'radio': {
+					$( evt.target ).closest( 'label' ).addClass( 'selected' );
+					$( evt.target ).parent().siblings().removeClass( 'selected' );
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -759,6 +771,33 @@
 	}
 
 	/**
+	 * Setup prominent checkboxes (field api) (that use persistent borders on select)
+	 *
+	 * @unreleased
+	 */
+	function setupLegacyConsumerCheckboxAndRadio(){
+		const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
+		const customRadios = document.querySelectorAll( '[data-field-type="radio"] input' );
+		Array.from( customCheckboxes ).forEach( ( el ) => {
+			const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
+			setupCheckbox( {
+				container: containerSelector + ' label',
+				label: containerSelector + ' label',
+				input: containerSelector + ' input[type="checkbox"]',
+			} );
+		} );
+
+		Array.from( customRadios ).forEach( ( el ) => {
+			const uniqueInputSelector = `#${el.getAttribute( 'id' )}`;
+			const uniqueLabelSelector = `label[for=${el.getAttribute( 'id' )}]`;
+			setupRadio( {
+				label: uniqueLabelSelector,
+				input: uniqueInputSelector,
+			} );
+		} );
+	}
+
+	/**
 	 * Setup prominent checkboxes (that use persistent borders on select)
 	 *
 	 * @since 2.7.0
@@ -776,10 +815,32 @@
 				evt.stopPropagation();
 				evt.preventDefault();
 
-				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
+				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) ).focus();
 			}
 
 			$( container ).toggleClass( 'active' );
+		} );
+	}
+
+	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function setupRadio( { label, input } ) {
+		// If checkbox is opted in by default, add border on load
+		if ( $( input ).prop( 'checked' ) === true ) {
+			$( label ).addClass( 'active' );
+		}
+
+		// Persist checkbox input border when selected
+		$( document ).on( 'click', label, function( evt ) {
+			evt.stopPropagation();
+
+			$( evt.target.parentElement ).find('label')
+				.not( evt.target ).removeClass( 'active' );
+			$( evt.target ).toggleClass( 'active' );
 		} );
 	}
 
@@ -805,28 +866,6 @@
 	 */
 	function getInitialStep() {
 		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
-	}
-
-	/**
-	 * Handle updating label classes for FFM radios and checkboxes
-	 *
-	 * @since 2.7.0
-	 * @param {object} evt Reference to FFM input element click event
-	 */
-	function handleFFMInput( evt ) {
-		if ( $( evt.target ).is( 'input' ) ) {
-			switch ( $( evt.target ).prop( 'type' ) ) {
-				case 'checkbox': {
-					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
-					break;
-				}
-				case 'radio': {
-					$( evt.target ).closest( 'label' ).addClass( 'selected' );
-					$( evt.target ).parent().siblings().removeClass( 'selected' );
-					break;
-				}
-			}
-		}
 	}
 
 	function clearLoginNotices() {

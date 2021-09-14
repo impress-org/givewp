@@ -1,4 +1,11 @@
-<?php /** @var Give\Framework\FieldsAPI\Field $field */ ?>
+<?php
+
+use Give\Helpers\Form\Template;
+use Give\Views\Form\Templates\Sequoia\Sequoia;
+
+/** @var int $formId */
+/** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */
+?>
 <?php echo $field->getLabel(); ?>
 <?php if ( $field->isRequired() ) : ?>
 	<span class="give-required-indicator">
@@ -8,6 +15,9 @@
 <?php endif; ?>
 <?php
 echo ( $helpText = $field->getHelpText() ) ?
-	Give()->tooltips->render_help( $helpText ) :
+	Give()->tooltips->render_help( [
+		'label' => $helpText,
+		'position' => give( Sequoia::class)->getID() === Template::getActiveID( $formId ) ? 'right' :  'top'
+		] ) :
 	'';
 ?>
