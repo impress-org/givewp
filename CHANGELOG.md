@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
 - Custom fields have unique ID attribute in legacy consumer. (#5938)
 - Form field manager custom fields rendered with field api look good in multi-step form template. (#5946)
+- Use add meta function to persist field value in field api. (#5954)
 
 ### New
 
@@ -28,7 +29,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Pass form id to donation form action url which help to show notices from session. (#5933)
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
 - Add min/max-length validation to text Fields API node types. (#5948)
-- Prevent php notices which generate from offline -donations.php. (#5960
+
+### Fixed
+- Add min/max-length validation to text and textarea Fields API node types. (#5955)
+- Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
+- Prevent php notices which generate from offline -donations.php. (#5960)
+- Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
 
 ## 2.13.4 - 2021-09-03
 

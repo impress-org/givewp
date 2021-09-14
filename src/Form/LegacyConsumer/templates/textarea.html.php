@@ -5,4 +5,5 @@
 	id="<?php echo $fieldIdAttribute; ?>"
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
 ></textarea>
