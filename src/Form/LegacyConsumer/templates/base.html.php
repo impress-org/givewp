@@ -10,5 +10,5 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
-	<?php include './conditional-visibility-attribute.html.php'; ?>
+	<?php echo include dirname( __FILE__ ) . '/conditional-visibility-attribute.html.php'; ?>
 >

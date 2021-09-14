@@ -6,7 +6,7 @@
 	<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
-	<?php include './conditional-visibility-attribute.html.php'; ?>
+	<?php echo include dirname( __FILE__ ) . '/conditional-visibility-attribute.html.php'; ?>
 >
 	<?php
 	if ( $placeholder = $field->getPlaceholder() ) {

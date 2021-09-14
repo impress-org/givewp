@@ -11,21 +11,19 @@ window.addEventListener('load', () => {
 			for (const {field, value} of visibilityConditions) {
 				const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
 
-				if (!inputs) {
-					return;
-				}
+				if (inputs) {
+					inputs.forEach((input) => {
+						const fieldType = input.getAttribute('type');
 
-				inputs.forEach((input) => {
-					const fieldType = input.getAttribute('type');
-
-					if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
-						if (input.checked && input.value === value) {
+						if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
+							if (input.checked && input.value === value) {
+								visible = true;
+							}
+						} else if (input.value === value) {
 							visible = true;
 						}
-					} else if (input.value === value) {
-						visible = true;
-					}
-				});
+					});
+				}
 			}
 
 			visible ?
