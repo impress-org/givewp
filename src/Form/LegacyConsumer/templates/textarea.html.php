@@ -6,4 +6,5 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
+	<?php include './conditional-visibility-attribute.html.php'; ?>
 ></textarea>

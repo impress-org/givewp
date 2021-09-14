@@ -10,5 +10,5 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
-	<?php echo ( $conditions = esc_attr( json_encode( $field->getVisibilityConditions() ) ) ) ? "data-field-visibility-conditions=\"$conditions\"" : ''; ?>
+	<?php include './conditional-visibility-attribute.html.php'; ?>
 >

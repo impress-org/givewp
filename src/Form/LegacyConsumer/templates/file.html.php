@@ -7,4 +7,5 @@
 	<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+	<?php include './conditional-visibility-attribute.html.php'; ?>
 >
