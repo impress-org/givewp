@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
 			const fieldWrapper = field.closest('.form-row');
 			const visibilityConditions = JSON.parse(field.getAttribute('data-field-visibility-conditions'));
 			let visible = false;
-			for (const {type, field, value} of visibilityConditions) {
+			for (const {field, value} of visibilityConditions) {
 				const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
 
 				if (!inputs) {
