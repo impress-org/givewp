@@ -33,9 +33,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - Add min/max-length validation to text and textarea Fields API node types. (#5955)
 - Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
-
-
-### Fixed
+- Prevent php notices which generate from offline -donations.php. (#5960)
 - Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
 
 ## 2.13.4 - 2021-09-03
