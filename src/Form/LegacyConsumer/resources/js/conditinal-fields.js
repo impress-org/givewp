@@ -49,3 +49,4 @@ window.addEventListener('load', () => {
 				.forEach(field => field.addEventListener('change', handleVisibilityOnChangeHandler));
 		});
 });
+// @todo: attach event when form reload on gateway switch.
