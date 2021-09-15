@@ -4,34 +4,34 @@ window.addEventListener('load', () => {
 	 * @unreleased
 	 */
 	function handleVisibility(donationForm) {
-		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (field) {
-			const fieldWrapper = field.closest('.form-row');
-			const visibilityConditions = JSON.parse(field.getAttribute('data-field-visibility-conditions'));
+		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
+			const fieldWrapper = inputField.closest('.form-row');
+			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
+			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
-			let hasAtleastOneFieldController = false;
-			for (const {field, value} of visibilityConditions) {
-				const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
-				hasAtleastOneFieldController = hasAtleastOneFieldController ? hasAtleastOneFieldController : !! inputs.length;
+			const {field, value} = visibilityCondition;
 
-				if (inputs) {
-					inputs.forEach((input) => {
-						const fieldType = input.getAttribute('type');
+			const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
+			let hasFieldController = !! inputs.length;
 
-						if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
-							if (input.checked && input.value === value) {
-								visible = true;
-							}
-						} else if (input.value === value) {
-							visible = true;
-						}
-					});
-				}
-			}
-
-			if( ! hasAtleastOneFieldController ) {
+			// Do not apply visibility conditions if field controller does not exit in DOM.
+			if ( ! hasFieldController ) {
 				return;
 			}
 
+			inputs.forEach((input) => {
+				const fieldType = input.getAttribute('type');
+
+				if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
+					if (input.checked && input.value === value) {
+						visible = true;
+					}
+				} else if (input.value === value) {
+					visible = true;
+				}
+			});
+
+			// Show or Hide field wrapper.
 			visible ?
 				fieldWrapper.classList.remove('give-hidden') :
 				fieldWrapper.classList.add('give-hidden');

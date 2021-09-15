@@ -2,7 +2,7 @@
 <?php /** @var string $fieldIdAttribute */ ?>
 <?php /* Fieldsets + legends are terrible to style, so we just use the semantic markup and style something else. */ ?>
 <fieldset
-	<?php echo include dirname( __FILE__ ) . '/conditional-visibility-attribute.html.php'; ?>
+	<?php include dirname( __FILE__ ) . '/conditional-visibility-attribute.html.php'; ?>
 >
 	<legend class="screen-reader-text">
 		<?php include plugin_dir_path( __FILE__ ) . '/label-content.html.php'; ?>
