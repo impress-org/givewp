@@ -29,6 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Pass form id to donation form action url which help to show notices from session. (#5933)
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
 - Add min/max-length validation to text Fields API node types. (#5948, #5955)
+- Implement conditional visibility support in Legacy Consumer. (#5966)
 
 ### Fixed
 - Add min/max-length validation to text and textarea Fields API node types. (#5955)
