@@ -212,7 +212,6 @@ class Donations {
 		$receiptArr = [];
 
 		$sectionIndex = 0;
-		$lineBreaks = [ '<br />','<br>','<br/>' ];
 		foreach ( $receipt as $section ) {
 			// Continue if section does not have line items.
 			if ( ! $section->getLineItems() ) {
@@ -247,8 +246,7 @@ class Donations {
 				}
 
 				$label = html_entity_decode( wp_strip_all_tags( $lineItem->label ) );
-				$value = str_ireplace( $lineBreaks, "\r\n", $lineItem->value );
-				$value = $lineItem->id === 'paymentStatus' ? $this->getFormattedStatus( $payment->status ) : html_entity_decode( wp_strip_all_tags( $value ) );
+				$value = $lineItem->id === 'paymentStatus' ? $this->getFormattedStatus( $payment->status ) : html_entity_decode( wp_strip_all_tags( $lineItem->value ) );
 
 				$receiptArr[ $sectionIndex ]['lineItems'][] = [
 					'class' => $detailRowClass,
