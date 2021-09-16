@@ -55,7 +55,7 @@ const YourCause = () => {
 
 			<div className="give-obw-community-field">
 				<h2>{__( '🌱 Would you like to join the GiveWP Community?', 'give' )}</h2>
-				<p>{__( 'By opting-in, you allow some basic data about how you use GiveWP to be used for us to improve the plugin for others. You also will receive emails from us with fundraising tips and more (which you can always unsubscribe from if you need to). If you skip this step, that\'s okay! GiveWP will still be setup for you no problem.', 'give' )}</p>
+				<p>{__( 'By opting-in, you allow some basic data about how you use GiveWP to be used for us to improve the plugin for others. You also will receive emails from us with fundraising tips and more (which you can always unsubscribe from if you need to). If you skip this step, that\'s okay! GiveWP will still be set up for you no problem.', 'give' )}</p>
 			</div>
 
 			<ContinueButton testId="cause-continue-button" label={__( 'Accept & Continue', 'give' )} clickCallback={() => {
