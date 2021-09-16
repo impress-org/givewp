@@ -840,6 +840,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
+		 * @unreleased display payment sequential number as id
 		 * @since 2.0
 		 *
 		 * @param string $message Email Template Message.
@@ -895,7 +896,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'amount'                  => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
 					'price'                   => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
 					'payment_method'          => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
-					'payment_id'              => $payment_id ? $payment_id : rand( 2000, 2050 ),
+					'payment_id'              => $payment_id ? $payment->number : rand( 2000, 2050 ),
 					'receipt_link_url'        => $receipt_link_url,
 					'receipt_link'            => $receipt_link,
 					'date'                    => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
