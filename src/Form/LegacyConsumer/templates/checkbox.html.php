@@ -16,7 +16,6 @@
 					type="checkbox"
 					name="<?php echo $field->getName(); ?>[]"
 					id="<?php echo $id; ?>"
-					<?php echo $field->isRequired() ? 'required' : ''; ?>
 					<?php echo in_array( $option->getValue(), $field->getDefaultValue() ) ? 'checked' : ''; ?>
 					value="<?php echo $option->getValue(); ?>"
 				>
