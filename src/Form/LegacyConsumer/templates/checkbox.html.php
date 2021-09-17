@@ -2,12 +2,12 @@
 <?php /** @var string $fieldIdAttribute */ ?>
 
 <?php if ( $options = $field->getOptions() ): ?>
-	<fieldset <?php include dirname( __FILE__ ) . '/conditional-visibility-attribute.html.php'; ?>>
+	<fieldset <?php include plugin_dir_path( __FILE__ ) . 'conditional-visibility-attribute.html.php'; ?>>
 		<legend class="screen-reader-text">
-			<?php include plugin_dir_path( __FILE__ ) . '/label-content.html.php'; ?>
+			<?php include plugin_dir_path( __FILE__ ) . 'label-content.html.php'; ?>
 		</legend>
 		<div class="give-label" aria-hidden="true">
-			<?php include plugin_dir_path( __FILE__ ) . '/label-content.html.php'; ?>
+			<?php include plugin_dir_path( __FILE__ ) . 'label-content.html.php'; ?>
 		</div>
 		<?php foreach ( $options as $index => $option ) : ?>
 			<?php $id = $fieldIdAttribute . '-' . $index; ?>
@@ -31,7 +31,7 @@
 			<?php echo $field->isRequired() ? 'required' : ''; ?>
 			<?php echo $field->isChecked() ? 'checked' : ''; ?>
 			<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
-			<?php include dirname( __FILE__ ) . '/conditional-visibility-attribute.html.php'; ?>
+			<?php include plugin_dir_path( __FILE__ ) . 'conditional-visibility-attribute.html.php'; ?>
 		>
 		<?php echo $field->getLabel(); ?>
 	</label>
