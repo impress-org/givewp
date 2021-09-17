@@ -14,7 +14,10 @@ window.addEventListener('load', () => {
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			const {field} = visibilityCondition;
 
-			fields.push(field);
+			fields[field] = {
+				...fields[field],
+				[ inputField.name ]: visibilityConditions
+			}
 		})
 
 		return fields;
@@ -86,6 +89,17 @@ window.addEventListener('load', () => {
 		if( ! donationForm ){
 			return false;
 		}
+
+		const donationFormId = donationForm.querySelector('input[name="give-form-id"]').value;
+		const formState = state.[donationFormId];
+		const fieldName = event.target.getAttribute('name');
+
+		// Exit if field is not in list of watched elements.
+		if( ! formState.watchedElementNames.includes( fieldName ) ) {
+			return false;
+		}
 	});
+
+	console.log(state);
 });
 // @todo: attach event when form reload on gateway switch.
