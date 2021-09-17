@@ -98,7 +98,7 @@ window.addEventListener('load', async () => {
 				const watchedFields = getWatchedElementNames(donationForm);
 
 				// Add donation form to state only if visibility conditions exiting for at least form field.
-				if( ! uniqueDonationFormId || ! Object.entries( watchedFields ).length ) {
+				if (!uniqueDonationFormId || !Object.entries(watchedFields).length) {
 					return false;
 				}
 
@@ -109,35 +109,22 @@ window.addEventListener('load', async () => {
 			});
 	}
 
-	await setupState();
-
-	 // Apply conditional visibility settings to donation form.
-	for (const [ uniqueDonationFormId, donationFormState ] of Object.entries(state) ) {
-		for (const [ watchedFieldName, visibilityConditions ] of Object.entries( donationFormState.watchedElements )) {
-			handleVisibility(
-				document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
-					.closest('.give-form'),
-				visibilityConditions
-			);
-		}
-	}
-
-	// Look for change in watched elements.
-	document.addEventListener('change', function (event) {
-		const donationForm = event.target.closest('form.give-form');
+	/**
+	 * @unreleased
+	 */
+	function applyVisibilityConditionsForWatchedField(donationForm, fieldName) {
 		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 
 		// Exit if field is not element of donation form.
 		if (
 			!donationForm ||
 			!uniqueDonationFormId ||
-			! state.hasOwnProperty( uniqueDonationFormId )
+			!state.hasOwnProperty(uniqueDonationFormId)
 		) {
 			return false;
 		}
 
 		const formState = state[uniqueDonationFormId];
-		const fieldName = event.target.getAttribute('name');
 		const watchedElementNames = Object.keys(formState.watchedElements);
 
 		// Exit if field is not in list of watched elements.
@@ -147,5 +134,67 @@ window.addEventListener('load', async () => {
 
 		const watchedFieldState = formState.watchedElements[fieldName];
 		handleVisibility(donationForm, watchedFieldState)
-	});
+	}
+
+	/**
+	 * @unreleased
+	 * @param donationForm
+	 */
+	function applyVisibilityConditionsForDonationForm(donationForm) {
+		const uniqueDonationFormId = donationForm.getAttribute('data-id');
+
+		// Exit if field is not element of donation form.
+		if (
+			!uniqueDonationFormId ||
+			!state.hasOwnProperty(uniqueDonationFormId)
+		) {
+			return false;
+		}
+
+		const formState = state[uniqueDonationFormId];
+
+		for (const [watchedFieldName, visibilityConditions] of Object.entries(formState.watchedElements)) {
+			handleVisibility(
+				document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
+					.closest('.give-form'),
+				visibilityConditions
+			);
+		}
+	}
+
+	/**
+	 * @unreleased
+	 */
+	function applyVisibilityConditionsAll() {
+		for (const [uniqueDonationFormId, donationFormState] of Object.entries(state)) {
+			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState.watchedElements)) {
+				handleVisibility(
+					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
+						.closest('.give-form'),
+					visibilityConditions
+				);
+			}
+		}
+	}
+
+	await setupState();
+	applyVisibilityConditionsAll();
+
+	// Apply visibility conditions to donation form when donor switch gateway.
+	document.addEventListener(
+		'give_gateway_loaded',
+		event => applyVisibilityConditionsForDonationForm(
+			document.getElementById(event.detail.formIdAttribute)
+		)
+	);
+
+
+	// Look for change in watched elements.
+	document.addEventListener(
+		'change',
+		event => applyVisibilityConditionsForWatchedField(
+			event.target.closest('form.give-form'),
+			event.target.getAttribute('name')
+		)
+	);
 });
