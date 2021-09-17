@@ -95,8 +95,15 @@ window.addEventListener('load', async () => {
 		document.querySelectorAll('form.give-form')
 			.forEach(function (donationForm) {
 				const uniqueDonationFormId = donationForm.getAttribute('data-id');
+				const watchedFields = getWatchedElementNames(donationForm);
+
+				// Add donation form to state only if visibility conditions exiting for at least form field.
+				if( ! uniqueDonationFormId || ! Object.entries( watchedFields ).length ) {
+					return false;
+				}
+
 				state[uniqueDonationFormId] = {
-					watchedElements: getWatchedElementNames(donationForm),
+					watchedElements: watchedFields,
 					...state[uniqueDonationFormId]
 				}
 			});
@@ -118,13 +125,17 @@ window.addEventListener('load', async () => {
 	// Look for change in watched elements.
 	document.addEventListener('change', function (event) {
 		const donationForm = event.target.closest('form.give-form');
+		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 
 		// Exit if field is not element of donation form.
-		if (!donationForm) {
+		if (
+			!donationForm ||
+			!uniqueDonationFormId ||
+			! state.hasOwnProperty( uniqueDonationFormId )
+		) {
 			return false;
 		}
 
-		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 		const formState = state[uniqueDonationFormId];
 		const fieldName = event.target.getAttribute('name');
 		const watchedElementNames = Object.keys(formState.watchedElements);
