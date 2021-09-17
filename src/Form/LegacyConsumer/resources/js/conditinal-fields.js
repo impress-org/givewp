@@ -112,7 +112,7 @@ window.addEventListener('load', async () => {
 	/**
 	 * @unreleased
 	 */
-	function applyVisibilityConditionsForWatchedField(donationForm, fieldName) {
+	function applyVisibilityConditionsAttachedToWatchedField(donationForm, fieldName) {
 		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 
 		// Exit if field is not element of donation form.
@@ -140,7 +140,7 @@ window.addEventListener('load', async () => {
 	 * @unreleased
 	 * @param donationForm
 	 */
-	function applyVisibilityConditionsForDonationForm(donationForm) {
+	function applyVisibilityConditionsToDonationForm(donationForm) {
 		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 
 		// Exit if field is not element of donation form.
@@ -165,7 +165,7 @@ window.addEventListener('load', async () => {
 	/**
 	 * @unreleased
 	 */
-	function applyVisibilityConditionsAll() {
+	function applyVisibilityConditionsToAllDonationForm() {
 		for (const [uniqueDonationFormId, donationFormState] of Object.entries(state)) {
 			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState.watchedElements)) {
 				handleVisibility(
@@ -178,12 +178,12 @@ window.addEventListener('load', async () => {
 	}
 
 	await setupState();
-	applyVisibilityConditionsAll();
+	applyVisibilityConditionsToAllDonationForm();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
 	document.addEventListener(
 		'give_gateway_loaded',
-		event => applyVisibilityConditionsForDonationForm(
+		event => applyVisibilityConditionsToDonationForm(
 			document.getElementById(event.detail.formIdAttribute)
 		)
 	);
@@ -192,7 +192,7 @@ window.addEventListener('load', async () => {
 	// Look for change in watched elements.
 	document.addEventListener(
 		'change',
-		event => applyVisibilityConditionsForWatchedField(
+		event => applyVisibilityConditionsAttachedToWatchedField(
 			event.target.closest('form.give-form'),
 			event.target.getAttribute('name')
 		)
