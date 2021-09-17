@@ -203,7 +203,6 @@ window.addEventListener('load', async () => {
 	}
 
 	await addVisibilityConditionsToStateForAllDonationForm();
-	console.log(state);
 	applyVisibilityConditionsToAllDonationForm();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
