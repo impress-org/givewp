@@ -48,8 +48,8 @@ window.addEventListener('load', async () => {
 	 * Handle fields visibility.
 	 * @unreleased
 	 */
-	function handleVisibility(donationForm, visibilityConditions) {
-		for (const [inputFieldName, visibilityConditions] of Object.entries(visibilityConditions)) {
+	function handleVisibility(donationForm, visibilityConditionsForWatchedField) {
+		for (const [inputFieldName, visibilityConditions] of Object.entries(visibilityConditionsForWatchedField)) {
 			const inputField = donationForm.querySelector(`[name="${inputFieldName}"]`);
 			const fieldWrapper = inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
