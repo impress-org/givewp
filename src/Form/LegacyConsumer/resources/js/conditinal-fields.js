@@ -2,6 +2,7 @@ window.addEventListener('load', () => {
 	const state = {};
 
 	/**
+	 * Get list of watched fields.
 	 * @unreleased
 	 *
 	 * @return array
@@ -24,13 +25,13 @@ window.addEventListener('load', () => {
 	}
 
 	/**
-	 * Handle fields visibility
+	 * Handle fields visibility.
 	 * @unreleased
 	 */
-	function handleVisibility(donationForm) {
-		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
+	function handleVisibility( donationForm, visibilityConditions ) {
+		for (const [ inputFieldName, visibilityConditions ] of Object.entries( visibilityConditions ) ) {
+			const inputField = donationForm.querySelector(`[name="${inputFieldName}"]`);
 			const fieldWrapper = inputField.closest('.form-row');
-			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
 			const {field, value} = visibilityCondition;
@@ -59,15 +60,7 @@ window.addEventListener('load', () => {
 			visible ?
 				fieldWrapper.classList.remove('give-hidden') :
 				fieldWrapper.classList.add('give-hidden');
-		});
-	}
-
-	/**
-	 * @unreleased
-	 * @param event
-	 */
-	function handleVisibilityOnChangeHandler(event) {
-		handleVisibility(event.target.closest('.give-form') );
+		}
 	}
 
 	// Setup state for condition visibility settings.
@@ -76,7 +69,7 @@ window.addEventListener('load', () => {
 		.forEach(function (donationForm) {
 			const donationFormId = donationForm.querySelector('input[name="give-form-id"]').value;
 			state[donationFormId] = {
-				watchedElementNames: getWatchedElementNames( donationForm ),
+				watchedElement: getWatchedElementNames( donationForm ),
 				...state[donationFormId]
 			}
 		});
@@ -91,15 +84,16 @@ window.addEventListener('load', () => {
 		}
 
 		const donationFormId = donationForm.querySelector('input[name="give-form-id"]').value;
-		const formState = state.[donationFormId];
+		const formState = state[donationFormId];
 		const fieldName = event.target.getAttribute('name');
+		const watchedElementNames = Object.keys( formState.watchedElement );
 
 		// Exit if field is not in list of watched elements.
-		if( ! formState.watchedElementNames.includes( fieldName ) ) {
+		if( ! watchedElementNames.includes( fieldName ) ) {
 			return false;
 		}
-	});
 
-	console.log(state);
+		const watchedFieldState = formState.watchedElement[fieldName];
+		handleVisibility( donationForm, watchedFieldState )
+	});
 });
-// @todo: attach event when form reload on gateway switch.
