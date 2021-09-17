@@ -1,14 +1,14 @@
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
 	const state = {};
 
 	/**
 	 * Get list of watched fields.
 	 * @unreleased
 	 *
-	 * @return array
+	 * @return object
 	 */
-	function getWatchedElementNames( donationForm ){
-		const fields = [];
+	function getWatchedElementNames(donationForm) {
+		const fields = {};
 
 		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
 			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
@@ -17,7 +17,7 @@ window.addEventListener('load', () => {
 
 			fields[field] = {
 				...fields[field],
-				[ inputField.name ]: visibilityConditions
+				[inputField.name]: visibilityConditions
 			}
 		})
 
@@ -28,8 +28,8 @@ window.addEventListener('load', () => {
 	 * Handle fields visibility.
 	 * @unreleased
 	 */
-	function handleVisibility( donationForm, visibilityConditions ) {
-		for (const [ inputFieldName, visibilityConditions ] of Object.entries( visibilityConditions ) ) {
+	function handleVisibility(donationForm, visibilityConditions) {
+		for (const [inputFieldName, visibilityConditions] of Object.entries(visibilityConditions)) {
 			const inputField = donationForm.querySelector(`[name="${inputFieldName}"]`);
 			const fieldWrapper = inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
@@ -37,10 +37,10 @@ window.addEventListener('load', () => {
 			const {field, value} = visibilityCondition;
 
 			const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
-			let hasFieldController = !! inputs.length;
+			let hasFieldController = !!inputs.length;
 
 			// Do not apply visibility conditions if field controller does not exit in DOM.
-			if ( ! hasFieldController ) {
+			if (!hasFieldController) {
 				return;
 			}
 
@@ -63,37 +63,57 @@ window.addEventListener('load', () => {
 		}
 	}
 
-	// Setup state for condition visibility settings.
-	// state contains list of watched elements per donation form.
-	document.querySelectorAll('form.give-form')
-		.forEach(function (donationForm) {
-			const donationFormId = donationForm.querySelector('input[name="give-form-id"]').value;
-			state[donationFormId] = {
-				watchedElement: getWatchedElementNames( donationForm ),
-				...state[donationFormId]
-			}
-		});
+	/**
+	 * Setup state for condition visibility settings.
+	 * state contains list of watched elements per donation form.
+	 *
+	 * @unreleased
+	 * @returns {Promise<void>}
+	 */
+	 function setupState() {
+		document.querySelectorAll('form.give-form')
+			.forEach(function (donationForm) {
+				const uniqueDonationFormId = donationForm.getAttribute('data-id');
+				state[uniqueDonationFormId] = {
+					watchedElements: getWatchedElementNames(donationForm),
+					...state[uniqueDonationFormId]
+				}
+			});
+	}
+
+	await setupState();
+
+	 // Apply conditional visibility settings to donation form.
+	for (const [ uniqueDonationFormId, donationFormState ] of Object.entries(state) ) {
+		for (const [ watchedFieldName, visibilityConditions ] of Object.entries( donationFormState.watchedElements )) {
+			handleVisibility(
+				document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
+					.closest('.give-form'),
+				visibilityConditions
+			);
+		}
+	}
 
 	// Look for change in watched elements.
-	document.addEventListener( 'change', function( event ){
-		const donationForm = event.target.closest( 'form.give-form' );
+	document.addEventListener('change', function (event) {
+		const donationForm = event.target.closest('form.give-form');
 
 		// Exit if field is not element of donation form.
-		if( ! donationForm ){
+		if (!donationForm) {
 			return false;
 		}
 
-		const donationFormId = donationForm.querySelector('input[name="give-form-id"]').value;
-		const formState = state[donationFormId];
+		const uniqueDonationFormId = donationForm.getAttribute('data-id');
+		const formState = state[uniqueDonationFormId];
 		const fieldName = event.target.getAttribute('name');
-		const watchedElementNames = Object.keys( formState.watchedElement );
+		const watchedElementNames = Object.keys(formState.watchedElements);
 
 		// Exit if field is not in list of watched elements.
-		if( ! watchedElementNames.includes( fieldName ) ) {
+		if (!watchedElementNames.includes(fieldName)) {
 			return false;
 		}
 
-		const watchedFieldState = formState.watchedElement[fieldName];
-		handleVisibility( donationForm, watchedFieldState )
+		const watchedFieldState = formState.watchedElements[fieldName];
+		handleVisibility(donationForm, watchedFieldState)
 	});
 });
