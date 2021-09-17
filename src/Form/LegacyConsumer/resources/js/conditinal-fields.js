@@ -56,7 +56,7 @@ window.addEventListener('load', async () => {
 			let visible = false;
 			const {field, operator, value} = visibilityCondition;
 
-			const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
+			const inputs = donationForm.querySelectorAll(`[name="${field}"], [name="${field}[]"]`);
 			let hasFieldController = !!inputs.length;
 
 			// Do not apply visibility conditions if field controller does not exit in DOM.
@@ -66,13 +66,13 @@ window.addEventListener('load', async () => {
 
 			inputs.forEach((input) => {
 				const fieldType = input.getAttribute('type');
-				const comparisonResult = compareWithOperator( operator, input.value, value );
+				const comparisonResult = compareWithOperator(operator, input.value, value);
 
 				if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
-					if (input.checked && comparisonResult ) {
+					if (input.checked && comparisonResult) {
 						visible = true;
 					}
-				} else if ( comparisonResult ) {
+				} else if (comparisonResult) {
 					visible = true;
 				}
 			});
@@ -131,13 +131,13 @@ window.addEventListener('load', async () => {
 		if (
 			!donationForm ||
 			!uniqueDonationFormId ||
-			! state.hasOwnProperty( uniqueDonationFormId )
+			!state.hasOwnProperty(uniqueDonationFormId)
 		) {
 			return false;
 		}
 
 		const formState = state[uniqueDonationFormId];
-		const fieldName = event.target.getAttribute('name');
+		const fieldName = event.target.getAttribute('name').replace('[]', '');
 		const watchedElementNames = Object.keys(formState.watchedElements);
 
 		// Exit if field is not in list of watched elements.
