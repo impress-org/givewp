@@ -1,4 +1,4 @@
-window.addEventListener('load', async () => {
+window.addEventListener('load', () => {
 	const state = {};
 
 	/**
@@ -110,24 +110,9 @@ window.addEventListener('load', async () => {
 	 * state contains list of watched elements per donation form.
 	 *
 	 * @unreleased
-	 * @returns {Promise<void>}
 	 */
 	function addVisibilityConditionsToStateForAllDonationForm() {
-		document.querySelectorAll('form.give-form')
-			.forEach(function (donationForm) {
-				const uniqueDonationFormId = donationForm.getAttribute('data-id');
-				const watchedFields = getWatchedElementNames(donationForm);
-
-				// Add donation form to state only if visibility conditions exiting for at least form field.
-				if (!uniqueDonationFormId || !Object.entries(watchedFields).length) {
-					return false;
-				}
-
-				state[uniqueDonationFormId] = {
-					watchedElements: watchedFields,
-					...state[uniqueDonationFormId]
-				}
-			});
+		document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
 	}
 
 	/**
@@ -197,7 +182,7 @@ window.addEventListener('load', async () => {
 		}
 	}
 
-	await addVisibilityConditionsToStateForAllDonationForm();
+	addVisibilityConditionsToStateForAllDonationForm();
 	applyVisibilityConditionsToAllDonationForm();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
