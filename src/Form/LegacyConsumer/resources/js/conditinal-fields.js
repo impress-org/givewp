@@ -132,8 +132,7 @@ window.addEventListener('load', async () => {
 			return false;
 		}
 
-		const watchedFieldState = formState.watchedElements[fieldName];
-		handleVisibility(donationForm, watchedFieldState)
+		handleVisibility(donationForm, formState.watchedElements[fieldName])
 	}
 
 	/**
