@@ -14,10 +14,13 @@ window.addEventListener('load', async () => {
 			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			const {field} = visibilityCondition;
+			const fieldSelector = inputField.name ?
+				inputField.name :
+				`[data-field-name="${inputField.closest('.form-row').getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`
 
 			fields[field] = {
 				...fields[field],
-				[inputField.name]: visibilityConditions
+				[fieldSelector]: visibilityConditions
 			}
 		})
 
@@ -50,7 +53,9 @@ window.addEventListener('load', async () => {
 	 */
 	function handleVisibility(donationForm, visibilityConditionsForWatchedField) {
 		for (const [inputFieldName, visibilityConditions] of Object.entries(visibilityConditionsForWatchedField)) {
-			const inputField = donationForm.querySelector(`[name="${inputFieldName}"]`);
+			const inputField = -1 === inputFieldName.indexOf('data-field-name') ?
+				donationForm.querySelector(`[name="${inputFieldName}"]`) :
+				donationForm.querySelector(inputFieldName);
 			const fieldWrapper = inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
@@ -198,6 +203,7 @@ window.addEventListener('load', async () => {
 	}
 
 	await addVisibilityConditionsToStateForAllDonationForm();
+	console.log(state);
 	applyVisibilityConditionsToAllDonationForm();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
