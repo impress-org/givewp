@@ -1,4 +1,25 @@
 window.addEventListener('load', () => {
+	const state = {};
+
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	function getWatchedElementNames( donationForm ){
+		const fields = [];
+
+		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
+			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
+			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
+			const {field} = visibilityCondition;
+
+			fields.push(field);
+		})
+
+		return fields;
+	}
+
 	/**
 	 * Handle fields visibility
 	 * @unreleased
@@ -46,11 +67,25 @@ window.addEventListener('load', () => {
 		handleVisibility(event.target.closest('.give-form') );
 	}
 
+	// Setup state for condition visibility settings.
+	// state contains list of watched elements per donation form.
 	document.querySelectorAll('form.give-form')
 		.forEach(function (donationForm) {
-			handleVisibility(donationForm);
-			donationForm.querySelectorAll('input, select, textarea')
-				.forEach(field => field.addEventListener('change', handleVisibilityOnChangeHandler));
+			const donationFormId = donationForm.querySelector('input[name="give-form-id"]').value;
+			state[donationFormId] = {
+				watchedElementNames: getWatchedElementNames( donationForm ),
+				...state[donationFormId]
+			}
 		});
+
+	// Look for change in watched elements.
+	document.addEventListener( 'change', function( event ){
+		const donationForm = event.target.closest( 'form.give-form' );
+
+		// Exit if field is not element of donation form.
+		if( ! donationForm ){
+			return false;
+		}
+	});
 });
 // @todo: attach event when form reload on gateway switch.
