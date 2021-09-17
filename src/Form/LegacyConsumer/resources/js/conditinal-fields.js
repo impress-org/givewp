@@ -25,6 +25,26 @@ window.addEventListener('load', async () => {
 	}
 
 	/**
+	 * @unreleased
+	 *
+	 * @param operator
+	 * @param firstData
+	 * @param secondData
+	 *
+	 * @return boolean
+	 */
+	function compareWithOperator( operator, firstData, secondData ){
+		return {
+			'=': firstData === secondData,
+			'!=': firstData != secondData,
+			'>': firstData > secondData,
+			'>=': firstData >= secondData,
+			'<': firstData < secondData,
+			'<=': firstData <=secondData
+		}[operator]
+	}
+
+	/**
 	 * Handle fields visibility.
 	 * @unreleased
 	 */
@@ -34,7 +54,7 @@ window.addEventListener('load', async () => {
 			const fieldWrapper = inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
-			const {field, value} = visibilityCondition;
+			const {field, operator, value} = visibilityCondition;
 
 			const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
 			let hasFieldController = !!inputs.length;
@@ -46,12 +66,13 @@ window.addEventListener('load', async () => {
 
 			inputs.forEach((input) => {
 				const fieldType = input.getAttribute('type');
+				const comparisonResult = compareWithOperator( operator, input.value, value );
 
 				if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
-					if (input.checked && input.value === value) {
+					if (input.checked && comparisonResult ) {
 						visible = true;
 					}
-				} else if (input.value === value) {
+				} else if ( comparisonResult ) {
 					visible = true;
 				}
 			});
