@@ -131,11 +131,10 @@ window.addEventListener('load', () => {
 		}
 
 		const formState = state[uniqueDonationFormId];
-		const watchedElementNames = Object.keys(formState.watchedElements);
 
 		// Exit if field is not in list of watched elements.
-		if (!watchedElementNames.includes(fieldName)) {
-			return false;
+		if (!(fieldName in formState.watchedElements)) {
+			return;
 		}
 
 		handleVisibility(donationForm, formState.watchedElements[fieldName])
