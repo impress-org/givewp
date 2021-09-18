@@ -1,4 +1,8 @@
-window.addEventListener('load', () => {
+document.addEventListener('readystatechange', event => {
+	if (event.target.readyState !== 'complete') {
+		return null;
+	}
+
 	const state = {};
 
 	/**
@@ -98,35 +102,36 @@ window.addEventListener('load', () => {
 				...state[uniqueDonationFormId]
 			}
 		}
+	}
 
-		/**
-		 * Setup state for condition visibility settings.
-		 * state contains list of watched elements per donation form.
-		 *
-		 * @unreleased
-		 */
-		function addVisibilityConditionsToStateForAllDonationForm() {
-			document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
-		}
+	/**
+	 * Setup state for condition visibility settings.
+	 * state contains list of watched elements per donation form.
+	 *
+	 * @unreleased
+	 */
+	function addVisibilityConditionsToStateForAllDonationForm() {
+		document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
+	}
 
-		/**
-		 * @unreleased
-		 */
-		function applyVisibilityConditionsAttachedToWatchedField(donationForm, fieldName) {
-			const uniqueDonationFormId = donationForm.getAttribute('data-id');
+	/**
+	 * @unreleased
+	 */
+	function applyVisibilityConditionsAttachedToWatchedField(donationForm, fieldName) {
+		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 
-			if (
-				donationForm &&
-				uniqueDonationFormId &&
-				(uniqueDonationFormId in state)
-			) {
-				const formState = state[uniqueDonationFormId];
+		if (
+			donationForm &&
+			uniqueDonationFormId &&
+			(uniqueDonationFormId in state)
+		) {
+			const formState = state[uniqueDonationFormId];
 
-				if (fieldName in formState.watchedElements) {
-					handleVisibility(donationForm, formState.watchedElements[fieldName])
-				}
+			if (fieldName in formState.watchedElements) {
+				handleVisibility(donationForm, formState.watchedElements[fieldName])
 			}
 		}
+	}
 
 	/**
 	 * @unreleased
