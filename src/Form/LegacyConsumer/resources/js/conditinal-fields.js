@@ -97,10 +97,7 @@ document.addEventListener('readystatechange', event => {
 
 		// Add donation form to state only if visibility conditions exiting for at least form field.
 		if (uniqueDonationFormId && Object.keys(watchedFields).length) {
-			state[uniqueDonationFormId] = {
-				watchedElements: watchedFields,
-				...state[uniqueDonationFormId]
-			}
+			state[uniqueDonationFormId] = watchedFields;
 		}
 	}
 
@@ -127,8 +124,8 @@ document.addEventListener('readystatechange', event => {
 		) {
 			const formState = state[uniqueDonationFormId];
 
-			if (fieldName in formState.watchedElements) {
-				handleVisibility(donationForm, formState.watchedElements[fieldName])
+			if (fieldName in formState) {
+				handleVisibility(donationForm, formState[fieldName])
 			}
 		}
 	}
@@ -143,7 +140,7 @@ document.addEventListener('readystatechange', event => {
 		if (uniqueDonationFormId && (uniqueDonationFormId in state)) {
 			const formState = state[uniqueDonationFormId];
 
-			for (const [watchedFieldName, visibilityConditions] of Object.entries(formState.watchedElements)) {
+			for (const [watchedFieldName, visibilityConditions] of Object.entries(formState)) {
 				handleVisibility(
 					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
 						.closest('.give-form'),
@@ -158,7 +155,7 @@ document.addEventListener('readystatechange', event => {
 	 */
 	function applyVisibilityConditionsToAllDonationForm() {
 		for (const [uniqueDonationFormId, donationFormState] of Object.entries(state)) {
-			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState.watchedElements)) {
+			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState)) {
 				handleVisibility(
 					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
 						.closest('.give-form'),
