@@ -107,8 +107,8 @@ document.addEventListener('readystatechange', event => {
 	 *
 	 * @unreleased
 	 */
-	async function addVisibilityConditionsToStateForAllDonationForm() {
-		await document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
+	function addVisibilityConditionsToStateForAllDonationForm() {
+		document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
 	}
 
 	/**
@@ -165,29 +165,26 @@ document.addEventListener('readystatechange', event => {
 		}
 	}
 
-	addVisibilityConditionsToStateForAllDonationForm()
-		.then(
-			r => {
-				applyVisibilityConditionsToAllDonationForm();
+	addVisibilityConditionsToStateForAllDonationForm();
+	applyVisibilityConditionsToAllDonationForm();
 
-				// Apply visibility conditions to donation form when donor switch gateway.
-				document.addEventListener(
-					'give_gateway_loaded',
-					event => {
-						const donationForm = document.getElementById(event.detail.formIdAttribute);
-						addVisibilityConditionsToStateForDonationForm(donationForm);
-						applyVisibilityConditionsToDonationForm(donationForm);
-					}
-				);
+	// Apply visibility conditions to donation form when donor switch gateway.
+	document.addEventListener(
+		'give_gateway_loaded',
+		event => {
+			const donationForm = document.getElementById(event.detail.formIdAttribute);
+			addVisibilityConditionsToStateForDonationForm(donationForm);
+			applyVisibilityConditionsToDonationForm(donationForm);
+		}
+	);
 
 
-				// Look for change in watched elements.
-				document.addEventListener(
-					'change',
-					event => applyVisibilityConditionsAttachedToWatchedField(
-						event.target.closest('form.give-form'),
-						event.target.getAttribute('name')
-					)
-				);
-			});
+	// Look for change in watched elements.
+	document.addEventListener(
+		'change',
+		event => applyVisibilityConditionsAttachedToWatchedField(
+			event.target.closest('form.give-form'),
+			event.target.getAttribute('name')
+		)
+	);
 });
