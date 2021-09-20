@@ -165,26 +165,54 @@ document.addEventListener('readystatechange', event => {
 		}
 	}
 
+	/**
+	 * @unreleased
+	 */
+	function addChangeEventToWatchedElementsForDonationForm(donationFormUniqueId) {
+		const donationForm = document
+			.querySelector(`form.give-form[data-id="${donationFormUniqueId}"`)
+			.closest('form.give-form');
+
+		if (!donationForm || !state.hasOwnProperty(donationFormUniqueId)) {
+			return;
+		}
+
+		for (const [watchedElementName, VisibilityConditions] of Object.entries(state[donationFormUniqueId])) {
+			document.querySelectorAll(`[name = "${watchedElementName}"]`)
+				.forEach(field => {
+					field.classList.add('js-condition-visibility-watcher');
+					field.addEventListener(
+						'change',
+						event => applyVisibilityConditionsAttachedToWatchedField(
+							event.target.closest('form.give-form'),
+							event.target.getAttribute('name')
+						));
+				});
+		}
+	}
+
+	/**
+	 * @unreleased
+	 */
+	function addChangeEventToWatchedElementsForAllDonationForms() {
+		Object.entries(state).forEach(
+			([donationFormUniqueId]) => addChangeEventToWatchedElementsForDonationForm(donationFormUniqueId)
+		)
+	}
+
 	addVisibilityConditionsToStateForAllDonationForm();
 	applyVisibilityConditionsToAllDonationForm();
+	addChangeEventToWatchedElementsForAllDonationForms();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
 	document.addEventListener(
 		'give_gateway_loaded',
 		event => {
 			const donationForm = document.getElementById(event.detail.formIdAttribute);
+			const uniqueDonationFormId = donationForm.getAttribute('data-id');
 			addVisibilityConditionsToStateForDonationForm(donationForm);
 			applyVisibilityConditionsToDonationForm(donationForm);
+			addChangeEventToWatchedElementsForDonationForm(uniqueDonationFormId)
 		}
-	);
-
-
-	// Look for change in watched elements.
-	document.addEventListener(
-		'change',
-		event => applyVisibilityConditionsAttachedToWatchedField(
-			event.target.closest('form.give-form'),
-			event.target.getAttribute('name')
-		)
 	);
 });
