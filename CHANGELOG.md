@@ -35,6 +35,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
 - Prevent php notices which generate from offline -donations.php. (#5960)
 - Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
+- Admin can switch donation status on PHP8.0. (#5971)
 
 ## 2.13.4 - 2021-09-03
 
