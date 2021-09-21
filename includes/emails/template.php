@@ -152,7 +152,7 @@ function give_email_preview_buttons_callback( $field ) {
  *
  * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
- * @unreleased reduce number of queries
+ * @since 2.14.0 reduce number of queries
  * @since 1.6
  */
 function give_get_preview_email_header() {

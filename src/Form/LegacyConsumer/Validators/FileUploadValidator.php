@@ -11,7 +11,7 @@ use function size_format;
 
 /**
  * @package Give\Form\LegacyConsumer\Validators
- * @unreleased
+ * @since 2.14.0
  */
 class FileUploadValidator {
 	use HasFilesArray;
@@ -34,7 +34,7 @@ class FileUploadValidator {
 	private $uploadedTypes;
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	public function __construct( File $field ) {
 		$this->field = $field;
@@ -46,7 +46,7 @@ class FileUploadValidator {
 		}
 	}
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	public function __invoke() {
 		if( ! $this->files ) {
@@ -59,7 +59,7 @@ class FileUploadValidator {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	private function validateRequired(){
 		if( $this->field->isRequired() ) {
@@ -71,7 +71,7 @@ class FileUploadValidator {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	private function validateUploadTypes(){
 		$allowedTypes = $this->field->getAllowedTypes();
@@ -95,7 +95,7 @@ class FileUploadValidator {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	private function validateUploadSize(){
 		$allowedFileSize = $this->field->getMaxSize();
