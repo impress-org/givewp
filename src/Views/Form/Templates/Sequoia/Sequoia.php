@@ -64,7 +64,6 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		// Localize Template options
 		$templateOptions = FormTemplateUtils::getOptions();
 
-
 		// Set defaults
 		$templateOptions['style']['google-fonts']                 = ! empty( $templateOptions['style']['google-fonts'] ) ? $templateOptions['style']['google-fonts'] : "enabled";
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
@@ -75,7 +74,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
 		$isGoogleFontEnabled = give_is_setting_enabled( $templateOptions['style']['google-fonts'] );
-		
+
 		if ( $isGoogleFontEnabled ) {
 			wp_enqueue_style(
 				'give-google-font-montserrat',
