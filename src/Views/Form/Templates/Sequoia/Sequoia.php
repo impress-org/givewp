@@ -4,10 +4,10 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use Give\Receipt\DonationReceipt;
-use Give\Helpers\Utils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use \Give_Donate_Form as DonationForm;
+use Give\Helpers\Utils;
+use Give\Receipt\DonationReceipt;
+use Give_Donate_Form as DonationForm;
 use Give_Scripts;
 use function give_do_email_tags as formatContent;
 use function give_is_setting_enabled;
@@ -64,6 +64,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
+		$templateOptions['style']['google-fonts']                 = ! empty( $templateOptions['style']['google-fonts'] ) ? $templateOptions['style']['google-fonts'] : "enabled";
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 		$templateOptions['introduction']['primary_color']         = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
 		$templateOptions['payment_amount']['next_label']          = ! empty( $templateOptions['payment_amount']['next_label'] ) ? $templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
@@ -71,7 +72,14 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions['payment_information']['header_label']   = ! empty( $templateOptions['payment_information']['header_label'] ) ? $templateOptions['payment_information']['header_label'] : __( 'Add Your Information', 'give' );
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
-		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', [], GIVE_VERSION );
+		if ( give_is_setting_enabled( $templateOptions['style']['google-fonts'] ) ) {
+			wp_enqueue_style(
+				'give-google-font-montserrat',
+				'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap',
+				[],
+				GIVE_VERSION
+			);
+		}
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
 		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
@@ -277,6 +285,10 @@ class Sequoia extends Template implements Hookable, Scriptable {
 					border-color: {$primaryColor};
 				}
 			";
+		}
+
+		if ( give_is_setting_enabled( $templateOptions['style']['google-fonts'] ) ) {
+			$dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif !important;}";
 		}
 
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamicCss );
