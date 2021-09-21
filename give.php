@@ -267,7 +267,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.13.4' );
+			define( 'GIVE_VERSION', '2.14.0' );
 		}
 
 		// Plugin Root File.
