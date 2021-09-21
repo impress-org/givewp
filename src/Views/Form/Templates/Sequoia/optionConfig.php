@@ -11,7 +11,23 @@ $introHeadline    = ( ! $formInfo->post_title || 'post-new.php' === $pagenow ) ?
 $introDescription = $formInfo->post_excerpt ?: esc_html__( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
-	'introduction'        => [
+	'style'        => [
+		'name'   => __( 'Style', 'give' ),
+		'fields' => [
+			[
+				'name'    => __( 'Google Fonts (Montserrat)', 'give' ),
+				'desc'    => __( 'If enabled, google fonts will load in multi step form template.', 'give' ),
+				'id'      => 'google-fonts',
+				'type'    => 'radio_inline',
+				'options' => [
+					'enabled'  => __( 'Enabled', 'give' ),
+					'disabled' => __( 'Disabled', 'give' ),
+				],
+				'default' => 'enabled',
+			]
+		]
+	],
+	'introduction' => [
 		'name'   => sprintf( __( '%1$s Step 1: %2$s Introduction', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description goes here.', 'give' ),
 		'fields' => [
