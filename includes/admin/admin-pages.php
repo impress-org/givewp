@@ -134,7 +134,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 
 	$found          = true;
 	$get_query_args = ! empty( $_GET ) ?
-		@array_map( function ( $data ) {
+		array_map( function ( $data ) {
 			return is_string( $data ) ? strtolower( $data ) : $data;
 		}, $_GET ) :
 		[];
