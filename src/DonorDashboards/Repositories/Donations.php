@@ -4,6 +4,7 @@ namespace Give\DonorDashboards\Repositories;
 use Give\Framework\Database\DB;
 use Give\Receipt\DonationReceipt;
 use Give\ValueObjects\Money;
+use Give_Payment;
 
 /**
  * @since 2.10.0
@@ -161,8 +162,11 @@ class Donations {
 	/**
 	 * Get payment info
 	 *
-	 * @param Give_Payment $payment
 	 * @since 2.10.0
+	 * @unreleased Use WP time format for donation time.
+	 *
+	 * @param Give_Payment $payment
+	 *
 	 * @return array Payment info
 	 */
 	protected function getPaymentInfo( $payment ) {
