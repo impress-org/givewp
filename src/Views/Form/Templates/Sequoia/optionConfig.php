@@ -12,16 +12,16 @@ $introDescription = $formInfo->post_excerpt ?: esc_html__( 'Help our organizatio
 
 return [
 	'style'        => [
-		'name'   => __( 'Style', 'give' ),
+		'name'   => esc_html__( 'Style', 'give' ),
 		'fields' => [
 			[
-				'name'    => __( 'Google Fonts (Montserrat)', 'give' ),
-				'desc'    => __( 'If enabled, google fonts will load in multi step form template.', 'give' ),
+				'name'    => esc_html__( 'Google Fonts (Montserrat)', 'give' ),
+				'desc'    => esc_html__( 'If enabled, google fonts will load in multi step form template.', 'give' ),
 				'id'      => 'google-fonts',
 				'type'    => 'radio_inline',
 				'options' => [
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
+					'enabled'  => esc_html__( 'Enabled', 'give' ),
+					'disabled' => esc_html__( 'Disabled', 'give' ),
 				],
 				'default' => 'enabled',
 			]
