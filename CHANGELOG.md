@@ -36,6 +36,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Prevent php notices which generate from offline -donations.php. (#5960)
 - Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
 - Admin can switch donation status on PHP8.0. (#5971)
+- Social sharing is now fixed (#5964)
+- Payment ID in donation email previews correctly reflects donation sequence ID. (#5967)
 
 ## 2.13.4 - 2021-09-03
 
