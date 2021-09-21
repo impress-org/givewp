@@ -184,7 +184,7 @@ class Donations {
 			'method'        => isset( $gateways[ $payment->gateway ]['checkout_label'] ) ? $gateways[ $payment->gateway ]['checkout_label'] : '',
 			'status'        => $this->getFormattedStatus( $payment->status ),
 			'date'          => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
-			'time'          => date_i18n( 'g:i a', strtotime( $payment->date ) ),
+			'time'          => date_i18n( get_option( 'time_format' ), strtotime( $payment->date ) ),
 			'mode'          => $payment->get_meta( '_give_payment_mode' ),
 			'pdfReceiptUrl' => $pdfReceiptUrl,
 			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
