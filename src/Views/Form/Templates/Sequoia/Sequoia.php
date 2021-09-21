@@ -57,11 +57,14 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
+	 * @unreleased Load google fonts if "enabled".
 	 */
 	public function loadScripts() {
 
 		// Localize Template options
 		$templateOptions = FormTemplateUtils::getOptions();
+
+		$isGoogleFontEnabled = give_is_setting_enabled( $templateOptions['style']['google-fonts'] );
 
 		// Set defaults
 		$templateOptions['style']['google-fonts']                 = ! empty( $templateOptions['style']['google-fonts'] ) ? $templateOptions['style']['google-fonts'] : "enabled";
@@ -72,7 +75,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions['payment_information']['header_label']   = ! empty( $templateOptions['payment_information']['header_label'] ) ? $templateOptions['payment_information']['header_label'] : __( 'Add Your Information', 'give' );
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
-		if ( give_is_setting_enabled( $templateOptions['style']['google-fonts'] ) ) {
+		if ( $isGoogleFontEnabled ) {
 			wp_enqueue_style(
 				'give-google-font-montserrat',
 				'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap',
@@ -287,7 +290,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			";
 		}
 
-		if ( give_is_setting_enabled( $templateOptions['style']['google-fonts'] ) ) {
+		if ( $isGoogleFontEnabled ) {
 			$dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif !important;}";
 		}
 
