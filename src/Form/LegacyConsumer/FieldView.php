@@ -7,24 +7,28 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.10.2
+ * @since 2.14.0 Add field classes hook for setting custom class names on the wrapper.
  */
 class FieldView {
 	const INPUT_TYPE_ATTRIBUTES = [
 		Types::PHONE    => 'tel',
 		Types::EMAIL    => 'email',
-		Types::CHECKBOX => 'checkbox',
 		Types::URL      => 'url',
 	];
 
 	/**
 	 * @since 2.10.2
+	 * @since 2.14.0 add $formId as a param
+	 * @since 2.14.0 Add filter to allow rendering logic for custom fields
 	 *
 	 * @param Node $field
+	 * @param int $formId
 	 *
 	 * @return void
 	 */
-	public static function render( Node $field ) {
+	public static function render( Node $field, $formId ) {
 		$type = $field->getType();
+		$fieldIdAttribute = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -32,9 +36,10 @@ class FieldView {
 			return;
 		}
 
-		// Set the class for the input element (used in the templates)
+		$classList = apply_filters( "give_form_{$formId}_field_classes_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
+		$className = implode( ' ', array_unique( $classList ) );
 
-		echo "<div class=\"form-row form-row-wide\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
+		echo "<div class=\"{$className}\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
 		switch ( $type ) {
 			case Types::HTML:
@@ -50,12 +55,28 @@ class FieldView {
 				include static::getTemplatePath( $type );
 				break;
 			// By default, include a template and use the base input template.
-			default:
+			case Types::DATE:
+			case Types::EMAIL:
+			case Types::PHONE:
+			case Types::TEXT:
+			case Types::URL:
 				// Used in the template
 				$typeAttribute = array_key_exists( $type, static::INPUT_TYPE_ATTRIBUTES ) ? static::INPUT_TYPE_ATTRIBUTES[ $type ] : 'text';
 				include static::getTemplatePath( 'label' );
 				include static::getTemplatePath( 'base' );
 				break;
+			default:
+				/**
+				 * Provide a custom function to render for a custom node type.
+				 *
+				 * @since 2.14.0
+				 *
+				 * @param Node $field The node to render.
+				 * @param int $formId The form ID that the node is a part of.
+				 *
+				 * @void
+				 */
+				do_action( "give_fields_api_render_{$field->getType()}", $field, $formId );
 		}
 		echo '</div>';
 	}

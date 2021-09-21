@@ -2,10 +2,10 @@
 
 namespace Give\Form\LegacyConsumer;
 
-use Give\Helpers\Hooks;
 use Give\Receipt\DonationReceipt;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
+use Give_Donate_Form;
 
 class ServiceProvider implements ServiceProviderInterface {
 
@@ -21,6 +21,8 @@ class ServiceProvider implements ServiceProviderInterface {
 				return new DeprecateOldTemplateHook( $wp_filter );
 			}
 		);
+
+		give()->singleton( UniqueIdAttributeGenerator::class );
 	}
 
 	/**
@@ -33,19 +35,34 @@ class ServiceProvider implements ServiceProviderInterface {
 			give( TemplateHooks::class )->walk( give( Commands\DeprecateOldTemplateHook::class ) );
 		}
 
-		add_filter(
-			'give_donation_form_required_fields',
-			function( $requiredFields, $formID ) {
-				return give( TemplateHooks::class )->reduce( new Commands\SetupFieldValidation( $formID ), $requiredFields );
+		add_action(
+			'give_checkout_error_checks',
+			function() {
+				$formId = absint( $_POST['give-form-id'] );
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldValidation( $formId ) );
+			}
+		);
+
+		add_action(
+			'give_form_html_tags',
+			/**
+			 * @since 2.14.0
+			 * @param array $formHtmlAttributes
+			 * @param Give_Donate_Form $form
+			 *
+			 * @return void
+			 */
+			function( $formHtmlAttributes, $form ) {
+				return give( TemplateHooks::class )->reduce( new AddEnctypeAttributeInDonationForm( $form->ID ), $formHtmlAttributes );
 			},
 			10,
-			2
+			 2
 		);
 
 		add_action(
 			'give_insert_payment',
 			function( $donationID, $donationData ) {
-				give( TemplateHooks::class )->walk( new Commands\SetupFieldPersistance( $donationID, $donationData ) );
+				give( TemplateHooks::class )->walk( new Commands\SetupFieldPersistence( $donationID, $donationData ) );
 			},
 			10,
 			2
