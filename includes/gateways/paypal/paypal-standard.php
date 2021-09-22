@@ -295,11 +295,14 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
 /**
  * Process web accept (one time) payment IPNs.
  *
- * @param array $data       The IPN Data.
- * @param int   $payment_id The payment ID from Give.
+ * @since 1.0
+ * @unreleased verify PayPal email with business and receiver email
+ *
+ * @param int $payment_id The payment ID from Give.
+ *
+ * @param array $data The IPN Data.
  *
  * @return void
- * @since 1.0
  */
 function give_process_paypal_web_accept( $data, $payment_id ) {
 
