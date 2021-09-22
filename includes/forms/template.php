@@ -1649,10 +1649,6 @@ function give_payment_mode_select( $form_id, $args ) {
 				 * Loop through the active payment gateways.
 				 */
 				$selected_gateway = give_get_chosen_gateway( $form_id );
-				$give_settings    = give_get_settings();
-				$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
-					$give_settings['gateways_label'] :
-					[];
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					// Determine the default gateway.
@@ -1666,16 +1662,9 @@ function give_payment_mode_select( $form_id, $args ) {
 							<input type="radio" name="payment-mode" class="give-gateway"
 								   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
 								   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
-
-							<?php
-							$label = $gateway['checkout_label'];
-							if ( ! empty( $gateways_label[ $gateway_id ] ) ) {
-								$label = $gateways_label[ $gateway_id ];
-							}
-							?>
 							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
 								   class="give-gateway-option"
-								   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
+								   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
 						</li>
 						<?php
 					}
