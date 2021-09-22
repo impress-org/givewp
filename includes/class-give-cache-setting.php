@@ -250,6 +250,14 @@ class Give_Cache_Setting {
 		 */
 		$gateways = apply_filters( 'give_register_gateway', $gateways );
 
+		if ( ! empty( $this->settings['give_settings']['gateways_label'] ) ) {
+			foreach ( $this->settings['give_settings']['gateways_label'] as $gatewayId => $checkoutLabel ) {
+				if ( $checkoutLabel ) {
+					$gateways[ $gatewayId ]['checkout_label'] = $checkoutLabel;
+				}
+			}
+		}
+
 		$this->settings['gateways'] = $gateways;
 	}
 
