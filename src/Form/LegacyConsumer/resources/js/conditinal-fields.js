@@ -102,16 +102,6 @@ document.addEventListener('readystatechange', event => {
 	}
 
 	/**
-	 * Setup state for condition visibility settings.
-	 * state contains list of watched elements per donation form.
-	 *
-	 * @unreleased
-	 */
-	function addVisibilityConditionsToStateForAllDonationForm() {
-		document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
-	}
-
-	/**
 	 * @unreleased
 	 */
 	function applyVisibilityConditionsAttachedToWatchedField(donationForm, fieldName) {
@@ -153,21 +143,6 @@ document.addEventListener('readystatechange', event => {
 	/**
 	 * @unreleased
 	 */
-	function applyVisibilityConditionsToAllDonationForm() {
-		for (const [uniqueDonationFormId, donationFormState] of Object.entries(state)) {
-			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState)) {
-				handleVisibility(
-					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
-						.closest('.give-form'),
-					visibilityConditions
-				);
-			}
-		}
-	}
-
-	/**
-	 * @unreleased
-	 */
 	function addChangeEventToWatchedElementsForDonationForm(donationFormUniqueId) {
 		const donationForm = document
 			.querySelector(`form.give-form[data-id="${donationFormUniqueId}"`)
@@ -193,15 +168,25 @@ document.addEventListener('readystatechange', event => {
 	/**
 	 * @unreleased
 	 */
-	function addChangeEventToWatchedElementsForAllDonationForms() {
-		Object.entries(state).forEach(
-			([donationFormUniqueId]) => addChangeEventToWatchedElementsForDonationForm(donationFormUniqueId)
-		)
+	function bootVisibilityConditionsFormAllDonationForm() {
+		document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);
+
+		// Apply visibility conditions.
+		// Add change event to watched field.
+		for (const [donationFormUniqueId, donationFormState] of Object.entries(state)) {
+			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState)) {
+				handleVisibility(
+					document.querySelector(`form[data-id="${donationFormUniqueId}"]`)
+						.closest('.give-form'),
+					visibilityConditions
+				);
+			}
+
+			addChangeEventToWatchedElementsForDonationForm(donationFormUniqueId);
+		}
 	}
 
-	addVisibilityConditionsToStateForAllDonationForm();
-	applyVisibilityConditionsToAllDonationForm();
-	addChangeEventToWatchedElementsForAllDonationForms();
+	bootVisibilityConditionsFormAllDonationForm();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
 	document.addEventListener(
