@@ -314,11 +314,16 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Collect donation payment details.
-	$paypal_amount  = $data['mc_gross'];
-	$payment_status = strtolower( $data['payment_status'] );
-	$currency_code  = strtolower( $data['mc_currency'] );
-	$business_email = isset( $data['business'] ) && is_email( $data['business'] ) ? trim( $data['business'] ) : trim( $data['receiver_email'] );
-	$payment_meta   = give_get_payment_meta( $payment_id );
+	$paypal_amount              = $data['mc_gross'];
+	$payment_status             = strtolower( $data['payment_status'] );
+	$currency_code              = strtolower( $data['mc_currency'] );
+	$paypal_merchant_emails[]   = strtolower( trim( $data['receiver_email'] ) );
+	$payment_meta               = give_get_payment_meta( $payment_id );
+	$give_paypal_merchant_email = strtolower( trim( give_get_option( 'paypal_email' ) ) ); // Only for comparison.
+
+	if ( isset( $data['business'] ) && is_email( $data['business'] ) ) {
+		$paypal_merchant_emails[] = strtolower( trim( $data['business'] ) );
+	}
 
 	// Must be a PayPal standard IPN.
 	if ( 'paypal' !== give_get_payment_gateway( $payment_id ) ) {
@@ -326,7 +331,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Verify payment recipient.
-	if ( strcasecmp( $business_email, trim( give_get_option( 'paypal_email' ) ) ) !== 0 ) {
+	if ( ! in_array( $give_paypal_merchant_email, $paypal_merchant_emails ) ) {
 
 		give_record_gateway_error(
 			__( 'IPN Error', 'give' ),
