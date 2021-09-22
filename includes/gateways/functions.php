@@ -137,10 +137,6 @@ function give_get_gateway_checkout_label( $gateway ) {
 	$gateways = give_get_payment_gateways();
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
 
-	if ( $gateway == 'manual' ) {
-		$label = __( 'Test Donation', 'give' );
-	}
-
 	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );
 }
 
