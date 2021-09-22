@@ -1603,27 +1603,23 @@ function give_payment_mode_select( $form_id, $args ) {
 	/**
 	 * Fires while selecting payment gateways, before the fields.
 	 *
+	 * @since 1.7
+	 *
 	 * @param int $form_id The form ID.
 	 *
-	 * @since 1.7
 	 */
 	do_action( 'give_payment_mode_top', $form_id );
 	?>
 
-	<fieldset id="give-payment-mode-select"
-		<?php
-		if ( count( $gateways ) <= 1 ) {
-			echo 'style="display: none;"';
-		}
-		?>
-	>
+	<fieldset id="give-payment-mode-select"<?php echo count( $gateways ) <= 1 ? ' style="display: none;"' : ''; ?>>
 		<?php
 		/**
 		 * Fires while selecting payment gateways, before the wrap div.
 		 *
+		 * @since 1.7
+		 *
 		 * @param int $form_id The form ID.
 		 *
-		 * @since 1.7
 		 */
 		do_action( 'give_payment_mode_before_gateways_wrap' );
 		?>
