@@ -39,6 +39,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
 - Social sharing is now fixed (#5964)
 - Payment ID in donation email previews correctly reflects donation sequence ID. (#5967)
+- Prevent PayPal IPN failure because of business email mismatch. (#5976)
 
 ## 2.13.4 - 2021-09-03
 
