@@ -45,6 +45,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Donor addressed is now spaced out on the Donor Dashboard receipt (#5961)
 - Social sharing is now fixed (#5964)
 - Payment ID in donation email previews correctly reflects donation sequence ID. (#5967)
+- Resolve PHP 5.6 compatibility issue when run any WP cli command. (#5981)
 
 ## 2.13.4 - 2021-09-03
 
