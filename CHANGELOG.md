@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## 2.14.0 - 2021-09-27
+
 ### Fixed
 
 - Errors when connecting to Stripe using PHP 8 are now resolved (#5978)
