@@ -7,7 +7,7 @@ use ReflectionClass;
 /**
  * @since 2.12.0
  * @since 2.12.2 add Form, Group, and Html
- * @unreleased add Types::all static method
+ * @since 2.14.0 add Types::all static method
  */
 class Types {
 
@@ -29,7 +29,7 @@ class Types {
 	/**
 	 * Get all the type strings in an array.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @return string[]
 	 */

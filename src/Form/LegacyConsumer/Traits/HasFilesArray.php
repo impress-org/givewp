@@ -5,13 +5,13 @@ namespace Give\Form\LegacyConsumer\Traits;
 use Give\Framework\FieldsAPI\File;
 
 /**
- * @unreleased
+ * @since 2.14.0
  *
  * @property File $field
  */
 trait HasFilesArray {
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 * @return array
 	 */
 	public function getFiles(){

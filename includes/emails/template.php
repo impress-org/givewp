@@ -152,6 +152,7 @@ function give_email_preview_buttons_callback( $field ) {
  *
  * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
+ * @since 2.14.0 reduce number of queries
  * @since 1.6
  */
 function give_get_preview_email_header() {
@@ -168,26 +169,25 @@ function give_get_preview_email_header() {
 	$donations = new Give_Payments_Query(
 		array(
 			'number' => 100,
-			'output' => '',
-			'fields' => 'ids',
 		)
 	);
 	$donations = $donations->get_payments();
-	$options   = array();
+	$options   = [];
 
 	// Default option.
 	$options[0] = esc_html__( 'No donations found.', 'give' );
 
 	// Provide nice human readable options.
+	/** @var Give_Payment[] $donations */
 	if ( $donations ) {
 		$options[0] = esc_html__( '- Select a donation -', 'give' );
-		foreach ( $donations as $donation_id ) {
+		foreach ( $donations as $donation ) {
 
-			$options[ $donation_id ] = sprintf(
+			$options[ $donation->ID ] = sprintf(
 				'#%1$s - %2$s - %3$s',
-				$donation_id,
-				give_get_donation_donor_email( $donation_id ),
-				get_the_title( $donation_id )
+				$donation->ID,
+				$donation->email,
+				$donation->number
 			);
 		}
 	}

@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
  * @since 2.10.2
- * @unreleased Add field classes hook for setting custom class names on the wrapper.
+ * @since 2.14.0 Add field classes hook for setting custom class names on the wrapper.
  */
 class FieldView {
 	const INPUT_TYPE_ATTRIBUTES = [
@@ -18,8 +18,8 @@ class FieldView {
 
 	/**
 	 * @since 2.10.2
-	 * @unreleased add $formId as a param
-	 * @unreleased Add filter to allow rendering logic for custom fields
+	 * @since 2.14.0 add $formId as a param
+	 * @since 2.14.0 Add filter to allow rendering logic for custom fields
 	 *
 	 * @param Node $field
 	 * @param int $formId
@@ -69,7 +69,7 @@ class FieldView {
 				/**
 				 * Provide a custom function to render for a custom node type.
 				 *
-				 * @unreleased
+				 * @since 2.14.0
 				 *
 				 * @param Node $field The node to render.
 				 * @param int $formId The form ID that the node is a part of.

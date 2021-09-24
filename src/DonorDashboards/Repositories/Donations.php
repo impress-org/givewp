@@ -1,10 +1,11 @@
 <?php
 namespace Give\DonorDashboards\Repositories;
 
+use Give\Receipt\LineItem;
 use Give\ValueObjects\Money;
 use Give\Framework\Database\DB;
 use Give\Receipt\DonationReceipt;
-use InvalidArgumentException;
+use Give_Payment;
 
 /**
  * @since 2.10.0

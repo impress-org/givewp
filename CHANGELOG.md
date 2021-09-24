@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+
+- Errors when connecting to Stripe using PHP 8 are now resolved (#5978)
+
+## 2.14.0-beta.1 - 2021-09-21
+
 ### Changed
 
 - Show correct placeholder in legacy consumer in input field template. (#5924)
@@ -36,6 +42,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
 - Prevent php notices which generate from offline -donations.php. (#5960)
 - Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
+- Donor addressed is now spaced out on the Donor Dashboard receipt (#5961)
+- Social sharing is now fixed (#5964)
+- Payment ID in donation email previews correctly reflects donation sequence ID. (#5967)
+- Resolve PHP 5.6 compatibility issue when run any WP cli command. (#5981)
+- Show admin defined checkout payment gateway label. (#5980)
 
 ## 2.13.4 - 2021-09-03
 

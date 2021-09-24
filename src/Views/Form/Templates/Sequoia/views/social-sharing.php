@@ -34,7 +34,7 @@
 					url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
 					url = window.Give.fn.removeURLParameter(url, 'payment-id');
 					}
-					const text = `<?php echo urlencode( $options['thank-you']['twitter_message'] ); ?>`;
+					const text = `<?php echo $options['thank-you']['twitter_message']; ?>`;
 					// Open new window with prompt for Twitter sharing
 					window.Give.share.fn.twitter(url, text);
 					return false;

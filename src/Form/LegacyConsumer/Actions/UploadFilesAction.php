@@ -14,7 +14,7 @@ use function wp_update_attachment_metadata;
 /**
  * @package Give\Form\LegacyConsumer\Commands
  *
- * @unreleased
+ * @since 2.14.0
  */
 class UploadFilesAction {
 	use HasFilesArray;
@@ -30,7 +30,7 @@ class UploadFilesAction {
 	private $field;
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	public function __construct( File $field ) {
 		$this->field = $field;
@@ -38,7 +38,7 @@ class UploadFilesAction {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	public function __invoke() {
 		if ( ! function_exists( 'wp_handle_upload' ) ) {

@@ -6,7 +6,12 @@
 	<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
-	<?php include plugin_dir_path( __FILE__ ) . 'conditional-visibility-attribute.html.php'; ?>
+	<?php
+	if ( $conditions = $field->getVisibilityConditions() ) {
+		$conditions = esc_attr( json_encode( $conditions ) );
+		echo "data-field-visibility-conditions=\"$conditions\"";
+	}
+	?>
 >
 	<?php
 	if ( $placeholder = $field->getPlaceholder() ) {

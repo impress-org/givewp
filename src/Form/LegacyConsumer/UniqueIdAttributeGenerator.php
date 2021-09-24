@@ -3,7 +3,7 @@
 namespace Give\Form\LegacyConsumer;
 
 /**
- * @unreleased
+ * @since 2.14.0
  */
 class UniqueIdAttributeGenerator {
 	/**
@@ -12,7 +12,7 @@ class UniqueIdAttributeGenerator {
 	private $formCounter = [];
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @param int $formId
 	 */
@@ -27,7 +27,7 @@ class UniqueIdAttributeGenerator {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @param int $formId
 	 * @param string $fieldName
@@ -42,7 +42,7 @@ class UniqueIdAttributeGenerator {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @param int $formId
 	 */
