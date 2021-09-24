@@ -52,6 +52,15 @@ trait HasOptions {
 	}
 
 	/**
+	 * Access the options
+	 *
+	 * @return bool
+	 */
+	public function hasOptions() {
+		return (bool) count( $this->options );
+	}
+
+	/**
 	 * Walk through the options
 	 *
 	 * @since 2.12.0
