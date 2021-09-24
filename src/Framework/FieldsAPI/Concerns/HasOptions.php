@@ -52,7 +52,7 @@ trait HasOptions {
 	}
 
 	/**
-	 * Access the options
+	 * Check whether options exist
 	 *
 	 * @return bool
 	 */
