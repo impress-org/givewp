@@ -68,7 +68,6 @@ jobs:
         uses: php-actions/composer@v5
         with:
           php_version: ${{ matrix.php }}
-          dev: no
 
       - name: Store MySQL details in environment
         run: |
