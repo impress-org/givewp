@@ -1,7 +1,7 @@
 <?php /** @var Give\Framework\FieldsAPI\Checkbox $field */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
 
-<?php if ( $options = $field->getOptions() ): ?>
+<?php if ( $field->hasOptions() ): ?>
 	<fieldset
 		<?php
 		if ( $conditions = $field->getVisibilityConditions() ) {
