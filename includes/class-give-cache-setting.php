@@ -229,6 +229,7 @@ class Give_Cache_Setting {
 	 * Setup gateway list
 	 *
 	 * @since 2.4.0
+	 * @unreleased Set payment gateway checkout label to  admin defined payment gateway checkout label.
 	 */
 	public function setup_gateways_list() {
 		// Default, built-in gateways
@@ -249,6 +250,15 @@ class Give_Cache_Setting {
 		 * @since 2.4.0
 		 */
 		$gateways = apply_filters( 'give_register_gateway', $gateways );
+
+		// Replace payment gateway checkout label with admin defined checkout label.
+		if ( ! empty( $this->settings['give_settings']['gateways_label'] ) ) {
+			foreach ( $this->settings['give_settings']['gateways_label'] as $gatewayId => $checkoutLabel ) {
+				if ( $checkoutLabel ) {
+					$gateways[ $gatewayId ]['checkout_label'] = $checkoutLabel;
+				}
+			}
+		}
 
 		$this->settings['gateways'] = $gateways;
 	}

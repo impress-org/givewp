@@ -237,6 +237,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Improved decimal formatting in the Multi-Step amount buttons
 * Fix: Social sharing works properly again after making a donation
 * Fix: Payment ID in donation email preview correctly reflects the sequenced ID
+* Fix: Connecting to Stripe on PHP 8 no longer throws an error... it just connects
 
 = 2.13.4: September 3rd, 2021 =
 * Fix: Corrected a migration introduced in the last release that had a chance of removing donation level data

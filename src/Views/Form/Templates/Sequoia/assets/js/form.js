@@ -409,6 +409,7 @@
 			setTimeout( setupTabOrder, 200 );
 
 			moveFieldsUnderPaymentGateway();
+			setupLegacyConsumerCheckboxAndRadio();
 			setupRegistrationFormInputFields();
 			setupFFMInputs();
 			setupInputIcons();

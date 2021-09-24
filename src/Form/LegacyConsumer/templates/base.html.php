@@ -10,4 +10,10 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
+	<?php
+	if ( $conditions = $field->getVisibilityConditions() ) {
+		$conditions = esc_attr( json_encode( $conditions ) );
+		echo "data-field-visibility-conditions=\"$conditions\"";
+	}
+	?>
 >

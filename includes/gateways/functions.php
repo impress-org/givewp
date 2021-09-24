@@ -128,6 +128,7 @@ function give_get_gateway_admin_label( $gateway ) {
  * Returns the checkout label for the specified gateway
  *
  * @since 1.0
+ * @unreleased Code removed. Here no need to forcefully change manual payment gateway checkout label to "Test Donation".
  *
  * @param string $gateway Name of the gateway to retrieve a label for
  *
@@ -136,10 +137,6 @@ function give_get_gateway_admin_label( $gateway ) {
 function give_get_gateway_checkout_label( $gateway ) {
 	$gateways = give_get_payment_gateways();
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
-
-	if ( $gateway == 'manual' ) {
-		$label = __( 'Test Donation', 'give' );
-	}
 
 	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );
 }
