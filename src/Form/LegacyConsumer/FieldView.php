@@ -31,12 +31,11 @@ class FieldView {
 		$fieldIdAttribute              = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
 		$visibilityConditionsAttribute = '';
 
-		if (
-			method_exists( $field, 'getVisibilityConditions' ) &&
-			( $conditions = $field->getVisibilityConditions() )
-		) {
-			$conditions                    = esc_attr( json_encode( $conditions ) );
-			$visibilityConditionsAttribute = "data-field-visibility-conditions=\"$conditions\"";
+		$visibilityConditions = method_exists( $field, 'getVisibilityConditions' ) ? $field->getVisibilityConditions() : null;
+
+		if ( $visibilityConditions ) {
+			$visibilityConditionsJson      = esc_attr( json_encode( $visibilityConditions ) );
+			$visibilityConditionsAttribute = "data-field-visibility-conditions=\"$visibilityConditions\"";
 		}
 
 		if ( $type === Types::HIDDEN ) {
