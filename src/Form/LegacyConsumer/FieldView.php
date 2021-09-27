@@ -29,14 +29,7 @@ class FieldView {
 	public static function render( Node $field, $formId ) {
 		$type                          = $field->getType();
 		$fieldIdAttribute              = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
-		$visibilityConditionsAttribute = '';
-
-		$visibilityConditions = method_exists( $field, 'getVisibilityConditions' ) ? $field->getVisibilityConditions() : null;
-
-		if ( $visibilityConditions ) {
-			$visibilityConditionsJson      = esc_attr( json_encode( $visibilityConditions ) );
-			$visibilityConditionsAttribute = "data-field-visibility-conditions=\"$visibilityConditions\"";
-		}
+		$visibilityConditionsAttribute = ( new static() )->getVisibilityConditionAttribute( $field );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -102,11 +95,28 @@ class FieldView {
 	/**
 	 * @since 2.12.0
 	 *
-	 * @param  string  $templateName
+	 * @param string $templateName
 	 *
 	 * @return string
 	 */
 	protected static function getTemplatePath( $templateName ) {
 		return plugin_dir_path( __FILE__ ) . "/templates/{$templateName}.html.php";
+	}
+
+	/**
+	 * @param Node $field
+	 *
+	 * @return string
+	 */
+	private function getVisibilityConditionAttribute( Node $field ) {
+		$visibilityConditions = method_exists( $field, 'getVisibilityConditions' ) ? $field->getVisibilityConditions() : null;
+
+		if ( $visibilityConditions ) {
+			$visibilityConditionsJson = esc_attr( json_encode( $visibilityConditions ) );
+
+			return "data-field-visibility-conditions=\"$visibilityConditionsJson\"";
+		}
+
+		return '';
 	}
 }
