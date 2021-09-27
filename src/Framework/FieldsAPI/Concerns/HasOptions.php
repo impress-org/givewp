@@ -54,6 +54,8 @@ trait HasOptions {
 	/**
 	 * Check whether options exist
 	 *
+	 * @unreleased
+	 *
 	 * @return bool
 	 */
 	public function hasOptions() {
