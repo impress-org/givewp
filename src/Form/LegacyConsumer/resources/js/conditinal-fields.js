@@ -15,12 +15,19 @@ document.addEventListener('readystatechange', event => {
 		const fields = {};
 
 		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
+			const container = inputField.closest('.form-row');
 			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			const {field} = visibilityCondition;
-			const fieldSelector = inputField.name ?
-				inputField.name :
-				`[data-field-name="${inputField.closest('.form-row').getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`
+			let fieldSelector = '';
+
+			if (inputField.name) {
+				fieldSelector = inputField.name;
+			} else if ('html' === container.getAttribute('data-field-type')) {
+				fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"]`;
+			} else {
+				fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`;
+			}
 
 			fields[field] = {
 				...fields[field],
@@ -60,7 +67,8 @@ document.addEventListener('readystatechange', event => {
 			const inputField = -1 === inputFieldName.indexOf('data-field-name') ?
 				donationForm.querySelector(`[name="${inputFieldName}"]`) :
 				donationForm.querySelector(inputFieldName);
-			const fieldWrapper = inputField.closest('.form-row');
+			const fieldWrapperWithoutInputField = inputField.classList.contains('.form-row');
+			const fieldWrapper = fieldWrapperWithoutInputField ? inputField : inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
 			const {field, operator, value} = visibilityCondition;
