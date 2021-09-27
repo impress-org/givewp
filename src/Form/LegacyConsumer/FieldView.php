@@ -29,7 +29,7 @@ class FieldView {
 	public static function render( Node $field, $formId ) {
 		$type                          = $field->getType();
 		$fieldIdAttribute              = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
-		$visibilityConditionsAttribute = ( new static() )->getVisibilityConditionAttribute( $field );
+		$visibilityConditionsAttribute = self::getVisibilityConditionAttribute( $field );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -108,7 +108,7 @@ class FieldView {
 	 *
 	 * @return string
 	 */
-	private function getVisibilityConditionAttribute( Node $field ) {
+	private static function getVisibilityConditionAttribute( Node $field ) {
 		$visibilityConditions = method_exists( $field, 'getVisibilityConditions' ) ? $field->getVisibilityConditions() : null;
 
 		if ( $visibilityConditions ) {
