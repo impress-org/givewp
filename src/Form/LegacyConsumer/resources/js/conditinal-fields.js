@@ -6,6 +6,27 @@ document.addEventListener('readystatechange', event => {
 	const state = {};
 
 	/**
+	 * @unreleased
+	 *
+	 * @param {HTMLElement} inputField
+	 * @return {string}
+	 */
+	function getFieldSelector(inputField) {
+		const container = inputField.closest('.form-row');
+		let fieldSelector = '';
+
+		if (inputField.name) {
+			fieldSelector = inputField.name;
+		} else if ('html' === container.getAttribute('data-field-type')) {
+			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"]`;
+		} else {
+			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`;
+		}
+
+		return fieldSelector;
+	}
+
+	/**
 	 * Get list of watched fields.
 	 * @unreleased
 	 *
@@ -18,12 +39,14 @@ document.addEventListener('readystatechange', event => {
 			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			const {field} = visibilityCondition;
+			let fieldSelector = getFieldSelector(inputField);
+
 
 			fields[field] = {
 				...fields[field],
-				[inputField.name]: visibilityConditions
+				[fieldSelector]: visibilityConditions
 			}
-		})
+		});
 
 		return fields;
 	}
@@ -54,13 +77,16 @@ document.addEventListener('readystatechange', event => {
 	 */
 	function handleVisibility(donationForm, visibilityConditionsForWatchedField) {
 		for (const [inputFieldName, visibilityConditions] of Object.entries(visibilityConditionsForWatchedField)) {
-			const inputField = donationForm.querySelector(`[name="${inputFieldName}"]`);
-			const fieldWrapper = inputField.closest('.form-row');
+			const inputField = -1 === inputFieldName.indexOf('data-field-name') ?
+				donationForm.querySelector(`[name="${inputFieldName}"]`) :
+				donationForm.querySelector(inputFieldName);
+			const fieldWrapperWithoutInputField = inputField.classList.contains('.form-row');
+			const fieldWrapper = fieldWrapperWithoutInputField ? inputField : inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
 			const {field, operator, value} = visibilityCondition;
 
-			const inputs = donationForm.querySelectorAll(`[name="${field}"]`);
+			const inputs = donationForm.querySelectorAll(`[name="${field}"], [name="${field}[]"]`);
 			let hasFieldController = !!inputs.length;
 
 			if (hasFieldController) {

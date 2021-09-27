@@ -38,6 +38,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
 - Add min/max-length validation to text Fields API node types. (#5948, #5955)
 - Implement conditional visibility support in Legacy Consumer. (#5966)
+- Add conditional visibility support to field type HTML in legacy consumer. (#5968)
+- Add options support to checkbox field. (#5968)
+- Update checkbox field template to render multiple checkbox in legacy consumer. (#5968)
+- Make checkbox discoverable in visibility condition javascript. (#5968)
 
 ### Fixed
 - Add min/max-length validation to text and textarea Fields API node types. (#5955)

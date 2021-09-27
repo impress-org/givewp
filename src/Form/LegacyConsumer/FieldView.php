@@ -2,8 +2,8 @@
 
 namespace Give\Form\LegacyConsumer;
 
-use Give\Framework\FieldsAPI\Types;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Types;
 
 /**
  * @since 2.10.2
@@ -27,8 +27,9 @@ class FieldView {
 	 * @return void
 	 */
 	public static function render( Node $field, $formId ) {
-		$type = $field->getType();
-		$fieldIdAttribute = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
+		$type                          = $field->getType();
+		$fieldIdAttribute              = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
+		$visibilityConditionsAttribute = self::getVisibilityConditionAttribute( $field );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -36,10 +37,20 @@ class FieldView {
 			return;
 		}
 
-		$classList = apply_filters( "give_form_{$formId}_field_classes_{$field->getName()}", [ 'form-row', 'form-row-wide' ] );
+		$classList = apply_filters( "give_form_{$formId}_field_classes_{$field->getName()}", [
+			'form-row',
+			'form-row-wide'
+		] );
 		$className = implode( ' ', array_unique( $classList ) );
 
-		echo "<div class=\"{$className}\" data-field-type=\"{$field->getType()}\" data-field-name=\"{$field->getName()}\">";
+		printf(
+			'<div class="%1$s" data-field-type="%2$s" data-field-name="%3$s" %4$s>',
+			$className,
+			$field->getType(),
+			$field->getName(),
+			$field->getType() === Types::HTML ? $visibilityConditionsAttribute : ''
+		);
+
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
 		switch ( $type ) {
 			case Types::HTML:
@@ -84,11 +95,28 @@ class FieldView {
 	/**
 	 * @since 2.12.0
 	 *
-	 * @param  string  $templateName
+	 * @param string $templateName
 	 *
 	 * @return string
 	 */
 	protected static function getTemplatePath( $templateName ) {
 		return plugin_dir_path( __FILE__ ) . "/templates/{$templateName}.html.php";
+	}
+
+	/**
+	 * @param Node $field
+	 *
+	 * @return string
+	 */
+	private static function getVisibilityConditionAttribute( Node $field ) {
+		$visibilityConditions = method_exists( $field, 'getVisibilityConditions' ) ? $field->getVisibilityConditions() : null;
+
+		if ( $visibilityConditions ) {
+			$visibilityConditionsJson = esc_attr( json_encode( $visibilityConditions ) );
+
+			return "data-field-visibility-conditions=\"$visibilityConditionsJson\"";
+		}
+
+		return '';
 	}
 }
