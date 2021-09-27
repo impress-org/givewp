@@ -6,6 +6,27 @@ document.addEventListener('readystatechange', event => {
 	const state = {};
 
 	/**
+	 * @unreleased
+	 *
+	 * @param inputField
+	 * @return {*}
+	 */
+	function getFieldSelector(inputField) {
+		const container = inputField.closest('.form-row');
+		let fieldSelector = '';
+
+		if (inputField.name) {
+			fieldSelector = inputField.name;
+		} else if ('html' === container.getAttribute('data-field-type')) {
+			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"]`;
+		} else {
+			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`;
+		}
+
+		return fieldSelector;
+	}
+
+	/**
 	 * Get list of watched fields.
 	 * @unreleased
 	 *
@@ -15,19 +36,11 @@ document.addEventListener('readystatechange', event => {
 		const fields = {};
 
 		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
-			const container = inputField.closest('.form-row');
 			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			const {field} = visibilityCondition;
-			let fieldSelector = '';
+			let fieldSelector = getFieldSelector(inputField);
 
-			if (inputField.name) {
-				fieldSelector = inputField.name;
-			} else if ('html' === container.getAttribute('data-field-type')) {
-				fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"]`;
-			} else {
-				fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`;
-			}
 
 			fields[field] = {
 				...fields[field],
