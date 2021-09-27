@@ -16,7 +16,7 @@
 		<div class="give-label" aria-hidden="true">
 			<?php include plugin_dir_path( __FILE__ ) . 'label-content.html.php'; ?>
 		</div>
-		<?php foreach ( $options as $index => $option ) : ?>
+		<?php foreach ( $field->getOptions() as $index => $option ) : ?>
 			<?php $id = $fieldIdAttribute . '-' . $index; ?>
 			<label class="give-label" for="<?php echo $id; ?>">
 				<input
