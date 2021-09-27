@@ -1,15 +1,9 @@
 <?php /** @var Give\Framework\FieldsAPI\Checkbox $field */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
+<?php /** @var string $visibilityConditionsAttribute */ ?>
 
 <?php if ( $field->hasOptions() ): ?>
-	<fieldset
-		<?php
-		if ( $conditions = $field->getVisibilityConditions() ) {
-			$conditions = esc_attr( json_encode( $conditions ) );
-			echo "data-field-visibility-conditions=\"$conditions\"";
-		}
-		?>
-	>
+	<fieldset <?php echo $visibilityConditionsAttribute ?>>
 		<legend class="screen-reader-text">
 			<?php include plugin_dir_path( __FILE__ ) . 'label-content.html.php'; ?>
 		</legend>
