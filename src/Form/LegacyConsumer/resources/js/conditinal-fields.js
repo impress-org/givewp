@@ -8,8 +8,8 @@ document.addEventListener('readystatechange', event => {
 	/**
 	 * @unreleased
 	 *
-	 * @param inputField
-	 * @return {*}
+	 * @param {HTMLElement} inputField
+	 * @return {string}
 	 */
 	function getFieldSelector(inputField) {
 		const container = inputField.closest('.form-row');
