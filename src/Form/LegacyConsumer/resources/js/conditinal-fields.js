@@ -26,7 +26,7 @@ document.addEventListener('readystatechange', event => {
 				...fields[field],
 				[fieldSelector]: visibilityConditions
 			}
-		})
+		});
 
 		return fields;
 	}
