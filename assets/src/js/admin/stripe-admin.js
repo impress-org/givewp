@@ -216,7 +216,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	/**
 	 * Click on hidden checkbox value when select on credit card format type.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	if( creditCardFieldFormatOptions.length ) {
 		creditCardFieldFormatOptions.forEach(function( inputFieldContainer ){

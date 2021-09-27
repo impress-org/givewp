@@ -360,7 +360,7 @@ function give_get_default_offline_donation_content() {
  *
  * Gets the default offline donation email content
  *
- * @unreleased Remove unnecessary sprintf
+ * @since 2.14.0 Remove unnecessary sprintf
  *
  * @return string
  */

@@ -46,7 +46,7 @@ class ServiceProvider implements ServiceProviderInterface {
 		add_action(
 			'give_form_html_tags',
 			/**
-			 * @unreleased
+			 * @since 2.14.0
 			 * @param array $formHtmlAttributes
 			 * @param Give_Donate_Form $form
 			 *

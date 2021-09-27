@@ -7,6 +7,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+
+- Admin can switch donation status on PHP8.0. (#5971)
+
+## 2.14.0 - 2021-09-27
+
+### Fixed
+
+- Errors when connecting to Stripe using PHP 8 are now resolved (#5978)
+
+## 2.14.0-beta.1 - 2021-09-21
+
 ### Changed
 
 - Show correct placeholder in legacy consumer in input field template. (#5924)
@@ -29,15 +41,22 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Pass form id to donation form action url which help to show notices from session. (#5933)
 - Add hooks to legacy consumer to handle rendering, validating and saving for custom fields. (#5944)
 - Add min/max-length validation to text Fields API node types. (#5948, #5955)
+- Implement conditional visibility support in Legacy Consumer. (#5966)
+- Add conditional visibility support to field type HTML in legacy consumer. (#5968)
+- Add options support to checkbox field. (#5968)
+- Update checkbox field template to render multiple checkbox in legacy consumer. (#5968)
+- Make checkbox discoverable in visibility condition javascript. (#5968)
 
 ### Fixed
 - Add min/max-length validation to text and textarea Fields API node types. (#5955)
 - Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
 - Prevent php notices which generate from offline -donations.php. (#5960)
 - Formatting button display correctly when decimals enabled in Multi-Step Form. (#5957)
-- Admin can switch donation status on PHP8.0. (#5971)
+- Donor addressed is now spaced out on the Donor Dashboard receipt (#5961)
 - Social sharing is now fixed (#5964)
 - Payment ID in donation email previews correctly reflects donation sequence ID. (#5967)
+- Resolve PHP 5.6 compatibility issue when run any WP cli command. (#5981)
+- Show admin defined checkout payment gateway label. (#5980)
 
 ## 2.13.4 - 2021-09-03
 

@@ -3,7 +3,7 @@ namespace Give\Receipt;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use function give_get_payment_meta as getDonationMetaData;
-use function give_get_gateway_admin_label as getGatewayLabel;
+use function give_get_gateway_checkout_label as getGatewayLabel;
 use function give_get_donation_donor_email as getDonationDonorEmail;
 use function give_get_donation_address as getDonationDonorAddress;
 use function give_format_amount as formatAmount;
@@ -62,7 +62,7 @@ class DonationReceipt extends Receipt {
 
 		// Add billing address line item only if donor has billing address.
 		if ( $hasAddress ) {
-			$section->addLineItem( $this->getDonorBillingAddressLineItem() );
+			$section->addLineItem( $billingAddressLineItem );
 		}
 	}
 
@@ -134,13 +134,14 @@ class DonationReceipt extends Receipt {
 	private function getDonorBillingAddressLineItem() {
 		$address = getDonationDonorAddress( $this->donationId );
 		$address = sprintf(
-			'%1$s<br>%2$s%3$s,%4$s%5$s<br>%6$s',
+			'%1$s%7$s%2$s%3$s, %4$s%5$s%7$s%6$s',
 			$address['line1'],
-			! empty( $address['line2'] ) ? $address['line2'] . '<br>' : '',
+			! empty( $address['line2'] ) ? $address['line2'] . "\r\n" : '',
 			$address['city'],
 			$address['state'],
 			$address['zip'],
-			$address['country']
+			$address['country'],
+			"\r\n"
 		);
 
 		return [

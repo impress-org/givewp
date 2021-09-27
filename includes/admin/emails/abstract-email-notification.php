@@ -840,7 +840,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
-		 * @unreleased display payment sequential number as id
+		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0
 		 *
 		 * @param string $message Email Template Message.

@@ -28,7 +28,7 @@ class Form implements Node, Collection {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	public static function make( $name ) {
 		return new static( $name );

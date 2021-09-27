@@ -12,7 +12,7 @@ use function do_action;
  * @NOTE Attribute value will only set if "file" tile custom field register to donation form.
  * This helps to access donor files on server.
  *
- * @unreleased
+ * @since 2.14.0
  */
 class AddEnctypeAttributeInDonationForm {
 	/**
@@ -21,7 +21,7 @@ class AddEnctypeAttributeInDonationForm {
 	private $formId;
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 * @param int $formId
 	 */
 	public function __construct( $formId ) {
@@ -29,7 +29,7 @@ class AddEnctypeAttributeInDonationForm {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @param array $formHtmlAttributes
 	 * @param string $hook
