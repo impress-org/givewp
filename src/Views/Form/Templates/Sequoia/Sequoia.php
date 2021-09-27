@@ -328,7 +328,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$options = FormTemplateUtils::getOptions();
 
 		$receipt->heading = esc_html( $options['thank-you']['headline'] );
-		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
+		$receipt->message = wp_kses_post( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
 
 		/**
 		 * Fire the action for receipt object.
