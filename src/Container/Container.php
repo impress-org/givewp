@@ -741,9 +741,15 @@ class Container implements ArrayAccess {
 
 			// @note: ReflectionParameter::getClass() is deprecated since PHP 8
 			// @note: ReflectionParameter::getType() is not supported before PHP7
-			$name = version_compare( PHP_VERSION, '8.0', '<' )
-				? $dependency->getClass()
-				: $dependency->getType()->getName();
+			$name = version_compare( PHP_VERSION, '7.1', '<' )
+				? ( is_null( $dependency->getClass() )
+					? null
+					: $dependency->getClass()->name
+				)
+				: ( $dependency->hasType()
+					? $dependency->getType()->getName()
+					: null
+				);
 
 			// If the class is null, it means the dependency is a string or some other
 			// primitive type which we can not resolve since it is not a class and
@@ -827,9 +833,18 @@ class Container implements ArrayAccess {
 		try {
 			// @note: ReflectionParameter::getClass() is deprecated since PHP 8
 			// @note: ReflectionParameter::getType() is not supported before PHP7
-			return version_compare( PHP_VERSION, '8.0', '<' )
+			$class =  version_compare( PHP_VERSION, '7.1', '<' )
 				? $this->make( $parameter->getClass()->name )
-				: $this->make( $parameter->getType()->getName() );
+				: ( $parameter->hasType()
+					? $this->make( $parameter->getType()->getName() )
+					: null
+				);
+
+			if ( is_null( $class ) ) {
+				throw new BindingResolutionException();
+			}
+
+			return $class;
 		}
 
 			// If we can not resolve the class instance, we will check to see if the value
