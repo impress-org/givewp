@@ -121,8 +121,9 @@ add_action( 'init', 'give_listen_for_paypal_ipn' );
 /**
  * Process PayPal IPN
  *
- * @return void
  * @since 1.0
+ * @unreleased Make PayPal IPN verification required.
+ * @return void
  */
 function give_process_paypal_ipn() {
 
@@ -289,11 +290,14 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
 /**
  * Process web accept (one time) payment IPNs.
  *
- * @param array $data       The IPN Data.
- * @param int   $payment_id The payment ID from Give.
+ * @since 1.0
+ * @unreleased Remove unnecessary payment validation to prevent frequent failure.
+ *
+ * @param int $payment_id The payment ID from Give.
+ *
+ * @param array $data The IPN Data.
  *
  * @return void
- * @since 1.0
  */
 function give_process_paypal_web_accept( $data, $payment_id ) {
 	// Only allow through these transaction types.
