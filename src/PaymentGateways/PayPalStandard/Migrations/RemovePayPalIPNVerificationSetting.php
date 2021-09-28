@@ -36,4 +36,12 @@ class RemovePayPalIPNVerificationSetting extends Migration {
 	public static function timestamp() {
 		return strtotime( '2021-09-28' );
 	}
+
+	/**
+	 * @unreleased
+	 * @return string
+	 */
+	public static function title() {
+		return 'Remove PayPal IPN Verification Setting';
+	}
 }
