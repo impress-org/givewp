@@ -47,6 +47,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add options support to checkbox field. (#5968)
 - Update checkbox field template to render multiple checkbox in legacy consumer. (#5968)
 - Make checkbox discoverable in visibility condition javascript. (#5968)
+- The "Thank You" section description now supports HTML content. (#5985)
+- The "Thank You" description setting field update from textarea to wysiwyg. (#5985)
 
 ### Fixed
 - Add min/max-length validation to text and textarea Fields API node types. (#5955)
