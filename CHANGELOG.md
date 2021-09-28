@@ -32,6 +32,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Form field manager custom fields rendered with field api look good in multi-step form template. (#5946)
 - Use add meta function to persist field value in field api. (#5954)
 - Use WP time format in donor dashboard. (#5975)
+- Remove unnecessary check from PayPal IPN handler and PayPal IPN verification is required which make process secure. (
+  #5986)
 
 ### New
 
