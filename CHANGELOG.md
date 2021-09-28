@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Admin can switch donation status on PHP8.0. (#5971)
+- DI Container auto wiring now works correctly when using PHP 8 (#5988)
 
 ## 2.14.0 - 2021-09-27
 
