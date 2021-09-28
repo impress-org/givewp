@@ -317,7 +317,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	// Validate donation id.
 	if (
 		! $donation->ID ||
-		'paypal' !== give_get_payment_gateway( $payment_id ) ) {
+		'paypal' !== $donation->gateway ) {
 		return;
 	}
 
