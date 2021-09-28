@@ -4,10 +4,10 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use Give\Receipt\DonationReceipt;
-use Give\Helpers\Utils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use \Give_Donate_Form as DonationForm;
+use Give\Helpers\Utils;
+use Give\Receipt\DonationReceipt;
+use Give_Donate_Form as DonationForm;
 use Give_Scripts;
 use function give_do_email_tags as formatContent;
 use function give_is_setting_enabled;
@@ -322,6 +322,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
+	 * @unreleased Allow HTML in thank you message.
 	 */
 	public function getReceiptDetails( $donationId ) {
 		$receipt = new DonationReceipt( $donationId );
