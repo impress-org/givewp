@@ -373,10 +373,10 @@ class Give_Email_Setting_Field {
 	public static function get_preview_setting_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
 			'name' => __( 'Preview Email', 'give' ),
-			'desc' => __(
-				'Click the "Preview Email" button to preview the email in your browser. Click the "Send Test Email" button to send a test email directly to your inbox.',
+			'desc' => sprintf(__(
+				'Click the "Preview Email" button to preview the email in your browser.<br />Click the "Send Test Email" button to send a test email to yourself at %s.',
 				'give'
-			),
+			), wp_get_current_user()->user_email ),
 			'id'   => self::get_prefix( $email, $form_id ) . 'preview_buttons',
 			'type' => 'email_preview_buttons',
 		);
