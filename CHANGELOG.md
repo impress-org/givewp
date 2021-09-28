@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+
+- Preview Emails are now sent to the authenticated user (#5990)
+
 ### Fixed
 
 - Admin can switch donation status on PHP8.0. (#5971)
