@@ -334,7 +334,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Process completed donations.
-	if ( 'completed' === $payment_status || give_is_test_mode() ) {
+	if ( 'completed' === $payment_status ) {
 
 		give_insert_payment_note(
 			$donation->ID,
