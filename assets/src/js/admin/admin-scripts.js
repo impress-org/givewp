@@ -1989,7 +1989,11 @@ const gravatar = require( 'gravatar' );
 				$( '#donor-' + donorId ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
 			} );
 
-			// Clicking Event to Delete Single Donor.
+			/**
+			 * Clicking Event to Delete Single Donor.
+			 *
+			 * @unreleased Added donor_id as a hidden input when deleting a single donor from the table.
+			 */
 			$body.on( 'click', '.give-single-donor-delete', function( e ) {
 				const donorId = $( this ).data( 'id' ),
 					donorSelector = $( 'tr#donor-' + donorId ).find( '.donor-selector' ),
@@ -1998,7 +2002,7 @@ const gravatar = require( 'gravatar' );
 					donorName = donorSelector.data( 'name' ),
 					donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
 						'<a class="give-skip-donor" title="' + Give.fn.getGlobalVar( 'remove_from_bulk_delete' ) + '">X</a>' +
-						donorName + '</div>';
+						donorName + '<input type="hidden" name="donor_id" value="' + donorId + '" /></div>';
 
 				// Reset Donors List.
 				bulkDeleteList.html( '' );
