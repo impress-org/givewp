@@ -26,7 +26,7 @@ class RemovePayPalIPNVerificationSetting extends Migration {
 	 * @return string
 	 */
 	public static function id() {
-		return 'remove-paypal=ipn-verification-setting';
+		return 'remove-paypal-ipn-verification-setting';
 	}
 
 	/**
