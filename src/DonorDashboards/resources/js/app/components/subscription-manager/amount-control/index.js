@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import CurrencyInput, {formatValue} from 'react-currency-input-field';
+import CurrencyInput, { formatValue } from 'react-currency-input-field';
 import { __, sprintf } from '@wordpress/i18n';
 
 import { toUniqueId } from '../../../utils';
@@ -55,7 +55,7 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 	const [validationError, setValidationError] = useState();
 	// Ideally, we’d just use the value from the event.target, however, that’s
 	// formatted all nicely and we want a float, so we can just use the
-	const validate = useCallback( () => {
+	const validateCustomAmount = useCallback( () => {
 		if ( value ) {
 			const minorOfValue = minorOfFloat( value, currency.numberDecimals );
 			const minorOfMin = minorOfFloat( min, currency.numberDecimals );
@@ -90,7 +90,7 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 		}
 	}, [ currency.numberDecimals, min, max, value ] );
 
-	const customAmountId = toUniqueId();
+	const customAmountInputId = toUniqueId();
 
 	return (
 		<div className="give-donor-dashboard-amount-inputs">
@@ -106,17 +106,17 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 				<div>
 					{ selectValue === CUSTOM_AMOUNT && (
 						<div className="give-donor-dashboard-currency-control">
-							<label className="give-donor-dashboard-currency-control__label" htmlFor={ customAmountId }>
+							<label className="give-donor-dashboard-currency-control__label" htmlFor={ customAmountInputId }>
 								{ __( 'Custom Amount', 'give' ) }
 							</label>
 							<div className="give-donor-dashboard-currency-control__input">
 								<CurrencyInput
-									id={ customAmountId }
+									id={ customAmountInputId }
 									name="custom-amount"
 									placeholder={ __( 'Enter amount...', 'give' ) }
 									value={ value ?? '' }
 									onValueChange={ onChange }
-									onBlur={ validate }
+									onBlur={ validateCustomAmount }
 									allowNegativeValue={ false }
 									{ ...formatConfig }
 								/>
