@@ -1203,6 +1203,7 @@ function give_email_preview_buttons( $field ) {
  *
  * @since  1.8
  * @since  2.1 Added support for donation_limit.
+ * @unreleased Checks for empty value before defaulting to the field attributes value.
  *
  * @param  array $field
  * @param  int   $postid
