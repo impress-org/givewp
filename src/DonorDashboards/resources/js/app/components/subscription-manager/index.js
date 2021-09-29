@@ -71,7 +71,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			return;
 		}
 
-		const response = await updateSubscriptionWithAPI( {
+		await updateSubscriptionWithAPI( {
 			id,
 			amount,
 			paymentMethod
