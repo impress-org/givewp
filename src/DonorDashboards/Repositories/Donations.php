@@ -1,10 +1,10 @@
 <?php
 namespace Give\DonorDashboards\Repositories;
 
-use Give\Receipt\LineItem;
-use Give\ValueObjects\Money;
 use Give\Framework\Database\DB;
 use Give\Receipt\DonationReceipt;
+use Give\Receipt\LineItem;
+use Give\ValueObjects\Money;
 use Give_Payment;
 
 /**
@@ -33,8 +33,12 @@ class Donations {
 	 * @return string
 	 */
 	public function getRevenue( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
-		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
+		$currencyCode = give_get_option( 'currency' );
+		$aggregate    = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
+
+		return $aggregate ?
+			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
+			null;
 	}
 
 	/**
@@ -46,8 +50,12 @@ class Donations {
 	 * @return string
 	 */
 	public function getAverageRevenue( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
+		$currencyCode = give_get_option( 'currency' );
+		$aggregate    = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
+
+		return $aggregate ?
+			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
+			null;
 	}
 
 	/**
@@ -340,11 +348,13 @@ class Donations {
 		];
 	}
 
-	protected function getAmountWithSeparators( $amount ) {
+	protected function getAmountWithSeparators( $amount, $currency ) {
 		$formatted = give_format_amount(
 			$amount,
 			[
-				'decimal' => false,
+				'decimal'  => false,
+				'sanitize' => false,
+				'currency' => $currency
 			]
 		);
 
