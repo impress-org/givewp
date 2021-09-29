@@ -18,11 +18,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 
 	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
 	const [ isUpdating, setIsUpdating ] = useState( false );
-	const [ updated, setUpdated ] = useState( true );
-
-	useEffect( () => {
-		setUpdated( false );
-	}, [ amount ] );
+	const [ updated, setUpdated ] = useState( false );
 
 	const handleUpdate = async() => {
 		if ( isUpdating ) {
