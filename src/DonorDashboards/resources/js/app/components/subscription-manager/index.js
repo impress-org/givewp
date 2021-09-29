@@ -19,7 +19,8 @@ const SubscriptionManager = ( { id, subscription } ) => {
 	const [ isUpdating, setIsUpdating ] = useState( false );
 	const [ updated, setUpdated ] = useState( false );
 
-	const amountOptions = useMemo(() => {
+	// Prepare data for amount control
+	const {max, min, options} = useMemo(() => {
 		const options = subscription.form.amounts.map(
 			amount => ({
 				value: amount.raw,
@@ -34,8 +35,11 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			});
 		}
 
-		return options;
-
+		return {
+			max: Number.parseFloat(subscription.form.custom_amount?.minimum),
+			min: Number.parseFloat(subscription.form.custom_amount?.minimum),
+			options,
+		};
 	}, [subscription]);
 
 	const handleUpdate = async () => {
@@ -67,7 +71,9 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			<AmountControl
 				form={ subscription.form }
 				payment={ subscription.payment }
-				options={ amountOptions }
+				options={ options }
+				max={ max }
+				min={ min }
 				onChange={ setAmount }
 				value={ amount }
 			/>
@@ -78,7 +84,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			/>
 			<FieldRow>
 				<div>
-					<Button onClick={ () => handleUpdate() }>
+					<Button onClick={ handleUpdate }>
 						{ updated ? (
 							<Fragment>
 								{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />

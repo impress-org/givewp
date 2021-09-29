@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
  * This control provides preset options however it allows the user to specify a
  * custom option.
  */
-const AmountControl = ( { form, payment, onChange, value, options } ) => {
+const AmountControl = ( { form, payment, onChange, value, options, min, max } ) => {
 	const [ customAmount, setCustomAmount ] = useState( '' );
 	const [ selectValue, setSelectValue ] = useState( '' );
 	const [ prevSelectValue, setPrevSelectValue ] = useState( '' );
@@ -60,8 +60,8 @@ const AmountControl = ( { form, payment, onChange, value, options } ) => {
 					{ selectValue === 'custom_amount' && (
 						<CurrencyControl
 							label={ __( 'Custom Amount', 'give' ) }
-							min={ form.custom_amount.minimum ? parseFloat( form.custom_amount.minimum ).toString() : null }
-							max={ form.custom_amount.maximum ? parseFloat( form.custom_amount.maximum ).toString() : null }
+							min={ min }
+							max={ max }
 							value={ customAmount }
 							onChange={ ( val ) => setCustomAmount( val ) } currency={ payment.currency }
 						/>
