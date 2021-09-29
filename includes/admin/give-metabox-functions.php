@@ -893,7 +893,6 @@ function give_radio( $field ) {
 	echo '<fieldset class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><span class="give-field-label">' . wp_kses_post( $field['name'] ) . '</span><legend class="screen-reader-text">' . wp_kses_post( $field['name'] ) . '</legend><ul class="give-radios">';
 
 	foreach ( $field['options'] as $key => $value ) {
-
 		echo '<li><label><input
 				name="' . give_get_field_name( $field ) . '"
 				value="' . esc_attr( $key ) . '"
@@ -1211,7 +1210,7 @@ function give_email_preview_buttons( $field ) {
  * @return mixed
  */
 function give_get_field_value( $field, $postid ) {
-	if ( isset( $field['attributes']['value'] ) ) {
+	if ( isset( $field['attributes']['value'] ) && '' !== $field['attributes']['value'] ) {
 		return $field['attributes']['value'];
 	}
 
