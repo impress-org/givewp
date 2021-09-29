@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Admin can switch donation status on PHP8.0. (#5971)
 - Single donors can now be deleted via the donors table (#5992)
+- Empty value attributes are no longer used as the default value (#5999)
 
 ## 2.14.0 - 2021-09-27
 
