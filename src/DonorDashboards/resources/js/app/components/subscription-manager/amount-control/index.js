@@ -47,6 +47,9 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 		groupSeparator: currency.thousandsSeparator,
 	};
 
+	const [validationError, setValidationError] = useState();
+	const clearValidationError = () => setValidationError( null );
+
 	// The select value acts as a proxy for the actual value.
 	const [ selectValue, setSelectValue ] = useState(
 		// Determine whether the value is one of the predefined values and set
@@ -58,10 +61,13 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 	useEffect( () => {
 		if ( selectValue !== CUSTOM_AMOUNT ) {
 			onChange( selectValue );
+			// I’ve omitted this from the deps array since this shouldn’t run
+			// when the validationError changes. This is just checking to see if
+			// we need to clear it.
+			if ( validationError ) clearValidationError();
 		}
 	}, [ selectValue, onChange ] );
 
-	const [validationError, setValidationError] = useState();
 	// Ideally, we’d just use the value from the event.target, however, that’s
 	// formatted all nicely and we want a float, so we can just use the
 	const validateCustomAmount = useCallback( () => {
@@ -85,8 +91,7 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 					),
 				);
 			} else {
-				// Clear the error
-				setValidationError( null );
+				clearValidationError();
 			}
 		} else {
 			setValidationError(
