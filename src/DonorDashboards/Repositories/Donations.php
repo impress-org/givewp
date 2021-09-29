@@ -348,17 +348,25 @@ class Donations {
 		];
 	}
 
-	protected function getAmountWithSeparators( $amount, $currency ) {
+	/**
+	 * @since 2.10.0
+	 *
+	 * @param string $amount
+	 * @param string $currencyCode
+	 *
+	 * @return string
+	 */
+	protected function getAmountWithSeparators( $amount, $currencyCode ) {
 		$formatted = give_format_amount(
 			$amount,
 			[
 				'decimal'  => false,
 				'sanitize' => false,
-				'currency' => $currency
+				'currency' => $currencyCode
 			]
 		);
 
-		return $formatted ? $formatted : (string) $amount;
+		return $formatted ?: (string) $amount;
 	}
 
 	/**
