@@ -20,6 +20,15 @@ const CUSTOM_AMOUNT = 'custom_amount';
 const minorOfFloat = ( float, precision ) => Number.parseFloat( float ) * Math.pow( 10, precision );
 
 /**
+ * Quick and cheap knock-off of the classnames package.
+ * Do not re-use. Just use the real package.
+ *
+ * @param {...any} className
+ * @return {string}
+ */
+const cx = ( ...classNames ) => classNames.filter( Boolean ).join( ' ' );
+
+/**
 * This control provides preset options however it allows the user to specify a
 * custom option.
 *
@@ -64,14 +73,14 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 			if ( minorOfValue > minorOfMax ) {
 				setValidationError(
 					sprintf(
-						__( 'Amount must be less than %s', 'give' ),
+						__( 'Amount must be less than %s.', 'give' ),
 						formatValue( { value: max, ...formatConfig } ),
 					),
 				);
 			} else if ( minorOfValue < minorOfMin ) {
 				setValidationError(
 					sprintf(
-						__( 'Amount must be more than %s', 'give' ),
+						__( 'Amount must be more than %s.', 'give' ),
 						formatValue( { value: min, ...formatConfig } ),
 					),
 				);
@@ -82,7 +91,7 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 		} else {
 			setValidationError(
 				sprintf(
-					__( 'Please enter an amount between %s and %s or choose a predefined amount', 'give' ),
+					__( 'Please enter an amount between %s and %s.', 'give' ),
 					formatValue( { value: min, ...formatConfig } ),
 					formatValue( { value: max, ...formatConfig } ),
 				),
@@ -109,7 +118,12 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 							<label className="give-donor-dashboard-currency-control__label" htmlFor={ customAmountInputId }>
 								{ __( 'Custom Amount', 'give' ) }
 							</label>
-							<div className="give-donor-dashboard-currency-control__input">
+							<div
+								className={ cx(
+									'give-donor-dashboard-currency-control__input',
+									validationError && 'has-error'
+								) }
+							>
 								<CurrencyInput
 									id={ customAmountInputId }
 									name="custom-amount"
@@ -127,7 +141,9 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 			</FieldRow>
 			{ validationError && (
 				<FieldRow>
-					<p>{ validationError }</p>
+					<div className="give-donor-dashboard-amount-inputs__validation-error-message">
+						{ validationError }
+					</div>
 				</FieldRow>
 			) }
 		</div>
