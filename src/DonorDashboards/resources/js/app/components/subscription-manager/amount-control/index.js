@@ -1,73 +1,66 @@
+import { useEffect, useState } from 'react';
+
 import CurrencyControl from '../../currency-control';
 import FieldRow from '../../field-row';
 import SelectControl from '../../select-control';
-import { useState, useEffect } from 'react';
 
 import { __ } from '@wordpress/i18n';
+
+const CUSTOM_AMOUNT = 'custom_amount';
 
 /**
  * This control provides preset options however it allows the user to specify a
  * custom option.
  */
-const AmountControl = ( { form, payment, onChange, value, options, min, max } ) => {
-	const [ customAmount, setCustomAmount ] = useState( '' );
-	const [ selectValue, setSelectValue ] = useState( '' );
-	const [ prevSelectValue, setPrevSelectValue ] = useState( '' );
-
-	useEffect( () => {
-		if ( options.length ) {
-			const amountFloats = options.map( ( option ) => {
-				return parseFloat( option.value );
-			} );
-			if ( value ) {
-				const float = parseFloat( value );
-				if ( amountFloats.includes( float ) ) {
-					const option = options.filter( ( curr ) => parseFloat(curr.value) === float )[ 0 ];
-					setSelectValue( option.value );
-				} else {
-					setSelectValue( 'custom_amount' );
-					setCustomAmount( float.toFixed( payment.currency.numberDecimals ) );
-				}
-			}
+const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
+	// The select value acts as a proxy for the actual value.
+	const [selectValue, setSelectValue] = useState(
+		// Determine whether the value is one of the predefined values and set
+		// the select input’s initial value accordingly.
+		() => options.map(option => option.value).includes(value) ? value : CUSTOM_AMOUNT,
+	);
+	// We only call the onChange if the value is one of the predefined values.
+	// Otherwise, we effectively delegate control to the currency input.
+	useEffect(() => {
+		if (selectValue !== CUSTOM_AMOUNT) {
+			onChange(selectValue);
 		}
-	}, [ options ] );
+	}, [selectValue, onChange]);
 
-	useEffect( () => {
-		if ( selectValue ) {
-			if ( selectValue !== 'custom_amount' ) {
-				onChange( selectValue );
-				setPrevSelectValue( selectValue );
-			} else if ( prevSelectValue ) {
-				setCustomAmount( parseFloat( prevSelectValue ).toFixed( payment.currency.numberDecimals ) );
-			}
-		}
-	}, [ selectValue ] );
-
-	useEffect( () => {
-		if ( customAmount ) {
-			const float = parseFloat( customAmount );
-			onChange( float );
-		}
-	}, [ customAmount ] );
+	const [validationError, setValidationError] = useState();
+	const clearValidationError = () => setValidationError(null);
 
 	return (
 		<div className="give-donor-dashboard-amount-inputs">
 			<FieldRow>
 				<div>
-					<SelectControl label="Subscription Amount" options={ options } value={ selectValue } onChange={ ( val ) => setSelectValue( val ) } />
+					<SelectControl
+						label="Subscription Amount"
+						options={ options }
+						value={ selectValue }
+						onChange={ setSelectValue }
+					/>
 				</div>
 				<div>
-					{ selectValue === 'custom_amount' && (
+					{ selectValue === CUSTOM_AMOUNT && (
 						<CurrencyControl
 							label={ __( 'Custom Amount', 'give' ) }
+							currency={ currency }
 							min={ min }
 							max={ max }
-							value={ customAmount }
-							onChange={ ( val ) => setCustomAmount( val ) } currency={ payment.currency }
+							value={ value }
+							onChange={ onChange }
+							setValidationError={ setValidationError }
+							clearValidationError={ clearValidationError }
 						/>
 					) }
 				</div>
 			</FieldRow>
+			{validationError && (
+				<FieldRow>
+					<p>{validationError}</p>
+				</FieldRow>
+			)}
 		</div>
 	);
 };

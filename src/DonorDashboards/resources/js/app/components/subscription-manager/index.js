@@ -12,23 +12,38 @@ import { updateSubscriptionWithAPI } from './utils';
 
 import './style.scss';
 
+/**
+ * Normalize an amount
+ *
+ * @param {string} float
+ * @param {number} decimals
+ * @return {string|NaN}
+ */
+const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(decimals);
+
+// There is no error handling whatsoever, that will be necessary.
 const SubscriptionManager = ( { id, subscription } ) => {
 	const gatewayRef = useRef();
 
-	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
+	const [ amount, setAmount ] = useState(
+		() => normalizeAmount(subscription.payment.amount.raw, subscription.payment.currency.numberDecimals)
+	);
 	const [ isUpdating, setIsUpdating ] = useState( false );
 	const [ updated, setUpdated ] = useState( false );
 
 	// Prepare data for amount control
 	const {max, min, options} = useMemo(() => {
+		const {numberDecimals} = subscription.payment.currency;
+		const {custom_amount} = subscription.form;
+
 		const options = subscription.form.amounts.map(
 			amount => ({
-				value: amount.raw,
+				value: normalizeAmount(amount.raw, numberDecimals),
 				label: amount.formatted,
 			}),
 		);
 
-		if (subscription.form.custom_amount) {
+		if (custom_amount) {
 			options.push({
 				value: 'custom_amount',
 				label: __('Custom Amount', 'give'),
@@ -36,8 +51,8 @@ const SubscriptionManager = ( { id, subscription } ) => {
 		}
 
 		return {
-			max: Number.parseFloat(subscription.form.custom_amount?.minimum),
-			min: Number.parseFloat(subscription.form.custom_amount?.minimum),
+			max: normalizeAmount(custom_amount?.maximum, numberDecimals),
+			min: normalizeAmount(custom_amount?.minimum, numberDecimals),
 			options,
 		};
 	}, [subscription]);
@@ -56,7 +71,7 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			return;
 		}
 
-		await updateSubscriptionWithAPI( {
+		const response = await updateSubscriptionWithAPI( {
 			id,
 			amount,
 			paymentMethod
@@ -69,13 +84,12 @@ const SubscriptionManager = ( { id, subscription } ) => {
 	return (
 		<Fragment>
 			<AmountControl
-				form={ subscription.form }
-				payment={ subscription.payment }
+				currency={ subscription.payment.currency }
 				options={ options }
 				max={ max }
 				min={ min }
-				onChange={ setAmount }
 				value={ amount }
+				onChange={ setAmount }
 			/>
 			<PaymentMethodControl
 				forwardedRef={ gatewayRef }

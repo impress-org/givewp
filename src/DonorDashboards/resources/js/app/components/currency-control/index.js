@@ -1,6 +1,7 @@
 // Import vendor dependencies
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import CurrencyInput from 'react-currency-input-field';
+import CurrencyInput, {formatValue} from 'react-currency-input-field';
 
 // Import utilities
 import { toUniqueId, toKebabCase } from '../../utils';
@@ -8,27 +9,69 @@ import { toUniqueId, toKebabCase } from '../../utils';
 // Import styles
 import './style.scss';
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
-const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, max, width } ) => {
+const minorOfFloat = (float, decimals) => Number.parseFloat(float) * Math.pow(10, decimals);
+
+const CurrencyControl = ( {
+	clearValidationError,
+	currency,
+	label,
+	max,
+	min,
+	onChange,
+	placeholder,
+	setValidationError,
+	value,
+	width,
+} ) => {
 	const id = toUniqueId( label );
 	const name = toKebabCase( label );
-	const minorOfValue = value * Math.pow( 10, currency.numberDecimals );
-	const minorOfMinValue = min * Math.pow( 10, currency.numberDecimals );
-	const minorOfMaxValue = max * Math.pow( 10, currency.numberDecimals );
 
-	const handleBlur = () => {
-		switch ( true ) {
-			case ( minorOfMaxValue && minorOfValue > minorOfMaxValue ): {
-				onChange( Number.parseFloat(max).toFixed( currency.numberDecimals ) );
-				break;
-			}
-			case ( minorOfMinValue && minorOfValue < minorOfMinValue ): {
-				onChange( Number.parseFloat(min).toFixed( currency.numberDecimals ) );
-				break;
-			}
-		}
+	const formatConfig = {
+		decimalScale: currency.numberDecimals,
+		decimalsLimit: currency.numberDecimals,
+		prefix: currency.currencyPosition === 'before' ? currency.symbol : null,
+		suffix: currency.currencyPosition === 'after' ? currency.symbol : null,
+		decimalSeparator: currency.decimalSeparator,
+		groupSeparator: currency.thousandsSeparator,
 	};
+
+	// Ideally, we’d just use the value from the event.target, however, that’s
+	// formatted all nicely and we want a float, so we can just use the
+	const validate = useCallback(() => {
+		if (value) {
+			const minorOfValue = minorOfFloat(value, currency.numberDecimals);
+			const minorOfMin = minorOfFloat(min, currency.numberDecimals);
+			const minorOfMax = minorOfFloat(max, currency.numberDecimals);
+
+			if (minorOfValue > minorOfMax) {
+				setValidationError(
+					sprintf(
+						__('Amount must be less than %s', 'give'),
+						formatValue({value: max, ...formatConfig}),
+					),
+				);
+			} else if (minorOfValue < minorOfMin) {
+				setValidationError(
+					sprintf(
+						__('Amount must be more than %s', 'give'),
+						formatValue({value: min, ...formatConfig}),
+					),
+				);
+			} else {
+				clearValidationError();
+			}
+		} else {
+			setValidationError(
+				sprintf(
+					__('Please enter an amount between %s and %s or choose a predefined amount', 'give'),
+					formatValue({value: min, ...formatConfig}),
+					formatValue({value: max, ...formatConfig}),
+				),
+			)
+		}
+	}, [currency.numberDecimals, min, max, value]);
 
 	return (
 		<div className="give-donor-dashboard-currency-control" style={ width ? { maxWidth: width } : null }>
@@ -38,16 +81,11 @@ const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, 
 					id={ id }
 					name={ name }
 					placeholder={ placeholder }
-					value={ value }
-					onValueChange={ ( val ) => isNaN( val ) ? onChange( min ) : onChange( val ) }
-					onBlur={ () => handleBlur() }
+					value={ value ?? '' }
+					onValueChange={ onChange }
+					onBlur={ validate }
 					allowNegativeValue={ false }
-					decimalsLimit={ currency.numberDecimals }
-					decimalScale={ currency.numberDecimals }
-					prefix={ currency.currencyPosition === 'before' ? currency.symbol : '' }
-					suffix={ currency.currencyPosition === 'after' ? currency.symbol : '' }
-					decimalSeparator={ currency.decimalSeparator }
-					groupSeparator={ currency.thousandsSeparator }
+					{...formatConfig}
 				/>
 			</div>
 		</div>
@@ -56,7 +94,7 @@ const CurrencyControl = ( { label, onChange, value, placeholder, currency, min, 
 
 CurrencyControl.propTypes = {
 	label: PropTypes.string,
-	value: PropTypes.string.isRequired,
+	value: PropTypes.string,
 	onChange: PropTypes.func,
 	placeholder: PropTypes.string,
 	width: PropTypes.string,
