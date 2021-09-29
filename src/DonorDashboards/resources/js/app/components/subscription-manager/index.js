@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { Fragment, useMemo, useRef, useState } from 'react';
 import FieldRow from '../field-row';
 import Button from '../button';
-import { Fragment, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { __ } from '@wordpress/i18n';
@@ -20,7 +19,26 @@ const SubscriptionManager = ( { id, subscription } ) => {
 	const [ isUpdating, setIsUpdating ] = useState( false );
 	const [ updated, setUpdated ] = useState( false );
 
-	const handleUpdate = async() => {
+	const amountOptions = useMemo(() => {
+		const options = subscription.form.amounts.map(
+			amount => ({
+				value: amount.raw,
+				label: amount.formatted,
+			}),
+		);
+
+		if (subscription.form.custom_amount) {
+			options.push({
+				value: 'custom_amount',
+				label: __('Custom Amount', 'give'),
+			});
+		}
+
+		return options;
+
+	}, [subscription]);
+
+	const handleUpdate = async () => {
 		if ( isUpdating ) {
 			return;
 		}
@@ -49,7 +67,9 @@ const SubscriptionManager = ( { id, subscription } ) => {
 			<AmountControl
 				form={ subscription.form }
 				payment={ subscription.payment }
-				onChange={ ( val ) => setAmount( val ) } value={ amount }
+				options={ amountOptions }
+				onChange={ setAmount }
+				value={ amount }
 			/>
 			<PaymentMethodControl
 				forwardedRef={ gatewayRef }

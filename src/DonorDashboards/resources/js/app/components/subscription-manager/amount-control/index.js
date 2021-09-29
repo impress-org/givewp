@@ -5,39 +5,24 @@ import { useState, useEffect } from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-const AmountControl = ( { form, payment, onChange, value } ) => {
+/**
+ * This control provides preset options however it allows the user to specify a
+ * custom option.
+ */
+const AmountControl = ( { form, payment, onChange, value, options } ) => {
 	const [ customAmount, setCustomAmount ] = useState( '' );
 	const [ selectValue, setSelectValue ] = useState( '' );
 	const [ prevSelectValue, setPrevSelectValue ] = useState( '' );
-	const [ amountOptions, setAmountOptions ] = useState( [] );
 
 	useEffect( () => {
-		const options = form.amounts.map( ( amount ) => {
-			return {
-				value: amount.raw,
-				label: amount.formatted,
-			};
-		} );
-
-		if ( form.custom_amount ) {
-			options.push( {
-				value: 'custom_amount',
-				label: __( 'Custom Amount', 'give' ),
-			} );
-		}
-
-		setAmountOptions( options );
-	}, [] );
-
-	useEffect( () => {
-		if ( amountOptions.length ) {
-			const amountFloats = amountOptions.map( ( option ) => {
+		if ( options.length ) {
+			const amountFloats = options.map( ( option ) => {
 				return parseFloat( option.value );
 			} );
 			if ( value ) {
 				const float = parseFloat( value );
 				if ( amountFloats.includes( float ) ) {
-					const option = amountOptions.filter( ( curr ) => parseFloat(curr.value) === float )[ 0 ];
+					const option = options.filter( ( curr ) => parseFloat(curr.value) === float )[ 0 ];
 					setSelectValue( option.value );
 				} else {
 					setSelectValue( 'custom_amount' );
@@ -45,7 +30,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 				}
 			}
 		}
-	}, [ amountOptions ] );
+	}, [ options ] );
 
 	useEffect( () => {
 		if ( selectValue ) {
@@ -69,7 +54,7 @@ const AmountControl = ( { form, payment, onChange, value } ) => {
 		<div className="give-donor-dashboard-amount-inputs">
 			<FieldRow>
 				<div>
-					<SelectControl label="Subscription Amount" options={ amountOptions } value={ selectValue } onChange={ ( val ) => setSelectValue( val ) } />
+					<SelectControl label="Subscription Amount" options={ options } value={ selectValue } onChange={ ( val ) => setSelectValue( val ) } />
 				</div>
 				<div>
 					{ selectValue === 'custom_amount' && (
