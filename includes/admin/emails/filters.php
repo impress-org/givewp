@@ -51,6 +51,24 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 			__( 'Send test email', 'give' )
 		);
 
+		$send_preview_email_link = give()->tooltips->render_link( [
+			'tag_content' => esc_html__( 'Send test email', 'give' ),
+			'label'       => sprintf(
+				esc_html__( 'Click this link to send a test email to yourself at %s', 'give' ),
+				wp_get_current_user()->user_email
+			),
+			'link'        => wp_nonce_url(
+				add_query_arg(
+					array(
+						'give_action'     => 'send_preview_email',
+						'email_type'      => $email->config['id'],
+						'give-messages[]' => 'sent-test-email',
+					)
+				),
+				'give-send-preview-email'
+			)
+		] );
+
 		$row_actions['email_preview']      = $preview_link;
 		$row_actions['send_preview_email'] = $send_preview_email_link;
 	}

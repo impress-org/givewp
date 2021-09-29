@@ -695,6 +695,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * Send preview email.
 		 *
 		 * @since  2.0
+		 * @unreleased Preview email recipient is now the current user.
 		 * @access public
 		 *
 		 * @param bool $send Flag to check if send email or not.
@@ -736,9 +737,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
 			}
 
-			return $send
-				? Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments )
-				: false;
+			if( $send ) {
+				Give()->emails->send( wp_get_current_user()->user_email, $subject, $message, $attachments );
+			}
+
+			return false;
 		}
 
 
