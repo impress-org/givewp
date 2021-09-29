@@ -366,7 +366,7 @@ class Donations {
 			]
 		);
 
-		return $formatted ?: (string) $amount;
+		return $formatted ?: $amount;
 	}
 
 	/**
