@@ -7,8 +7,8 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 /* globals Give, jQuery */
-import { GiveWarningAlert, GiveErrorAlert, GiveConfirmModal } from '../plugins/modal';
-import { GiveShortcodeButton } from './shortcode-button.js';
+import {GiveConfirmModal, GiveErrorAlert, GiveWarningAlert} from '../plugins/modal';
+import {GiveShortcodeButton} from './shortcode-button.js';
 import setupChosen from './utils/setupChosen';
 
 // Provided access to global level.
@@ -1995,14 +1995,14 @@ const gravatar = require( 'gravatar' );
 			 * @unreleased Added donor_id as a hidden input when deleting a single donor from the table.
 			 */
 			$body.on( 'click', '.give-single-donor-delete', function( e ) {
-				const donorId = $( this ).data( 'id' ),
-					donorSelector = $( 'tr#donor-' + donorId ).find( '.donor-selector' ),
-					selectAll = $( '[id^="cb-select-all-"]' ),
-					bulkDeleteList = $( '#give-bulk-donors' ),
-					donorName = donorSelector.data( 'name' ),
+				const donorId = $(this).data('id'),
+					donorSelector = $('tr#donor-' + donorId).find('.donor-selector'),
+					selectAll = $('[id^="cb-select-all-"]'),
+					bulkDeleteList = $('#give-bulk-donors'),
+					donorName = donorSelector.data('name'),
 					donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
-						'<a class="give-skip-donor" title="' + Give.fn.getGlobalVar( 'remove_from_bulk_delete' ) + '">X</a>' +
-						donorName + '<input type="hidden" name="donor_id" value="' + donorId + '" /></div>';
+						'<a class="give-skip-donor" title="' + Give.fn.getGlobalVar('remove_from_bulk_delete') + '">X</a>' +
+						donorName;
 
 				// Reset Donors List.
 				bulkDeleteList.html( '' );
@@ -2013,8 +2013,8 @@ const gravatar = require( 'gravatar' );
 				}
 
 				// Select the donor checkbox for which delete is clicked and others should be de-selected.
-				$( '.donor-selector' ).removeAttr( 'checked' );
-				donorSelector.attr( 'checked', 'checked' );
+				$('.donor-selector').removeAttr('checked');
+				donorSelector.prop('checked', true);
 
 				// Add Donor to the Bulk Delete List, if donor doesn't exists in the list.
 				if ( $( '#give-donor-' + donorId ).length === 0 ) {
