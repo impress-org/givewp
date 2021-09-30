@@ -2,10 +2,10 @@
 
 namespace Give\TestData\Commands;
 
-use WP_CLI;
-use Throwable;
+use Exception;
 use Give\TestData\Factories\DonationFactory as DonationFactory;
 use Give\TestData\Repositories\DonationRepository as DonationRepository;
+use WP_CLI;
 
 /**
  * Class DonationSeedCommand
@@ -108,7 +108,7 @@ class DonationSeedCommand {
 			// Generate donations
 			$donations = $this->donationFactory->consistent( $consistent )->make( $count );
 
-		} catch ( Throwable $e ) {
+		} catch ( Exception $e ) {
 			return WP_CLI::error( $e->getMessage() );
 		}
 
@@ -135,7 +135,7 @@ class DonationSeedCommand {
 
 				$progress->finish();
 
-			} catch ( Throwable $e ) {
+			} catch ( Exception $e ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				WP_CLI::error( $e->getMessage() );

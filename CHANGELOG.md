@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Admin can switch donation status on PHP8.0. (#5971)
 - Single donors can now be deleted via the donors table (#5992)
 - Format amount correctly in 'Lifetime Donations' and 'Average Donation' in donation dashboard. (#5998)
+- Resolve PHP 5.6 compatibility issue when run any WP cli command. (#6005)
 
 ## 2.14.0 - 2021-09-27
 

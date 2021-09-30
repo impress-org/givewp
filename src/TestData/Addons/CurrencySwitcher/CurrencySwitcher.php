@@ -2,7 +2,7 @@
 
 namespace Give\TestData\Addons\CurrencySwitcher;
 
-use Throwable;
+use Exception;
 use Give\TestData\Framework\MetaRepository;
 
 class CurrencySwitcher {
@@ -56,7 +56,7 @@ class CurrencySwitcher {
 
 			$wpdb->query( 'COMMIT' );
 
-		} catch ( Throwable $e ) {
+		} catch ( Exception $e ) {
 			$wpdb->query( 'ROLLBACK' );
 		}
 	}
