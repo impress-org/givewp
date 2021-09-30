@@ -11,7 +11,7 @@ use WP_CLI;
  * Class FormSeedCommand
  * @package Give\TestData\Commands
  *
- * A WP-CLI command to generate Donatoion Forms
+ * A WP-CLI command to generate Donation Forms
  */
 class FormSeedCommand {
 
