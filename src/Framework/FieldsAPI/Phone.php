@@ -4,7 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 /**
  * @since 2.12.0
- * @unreleased add min/max length validation
+ * @since 2.14.0 add min/max length validation
  */
 class Phone extends Field {
 

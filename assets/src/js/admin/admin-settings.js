@@ -291,7 +291,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Show admin notice if email notification status is not editable.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 * @param {object} noticeEditButton
 	 * @return {boolean}
 	 */

@@ -194,11 +194,11 @@ return [
 				'id'         => 'description',
 				'name'       => __( 'Description', 'give' ),
 				'desc'       => __( 'The description is displayed directly below the main headline and should be 1-2 sentences. You may use <a href="http://docs.givewp.com/email-tags" target="_blank">any of the available template tags</a> within this message.', 'give' ),
-				'type'       => 'textarea',
+				'type'       => 'wysiwyg',
 				'attributes' => [
-					'placeholder' => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+					'placeholder' => __( '{name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				],
-				'default'    => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+				'default'    => __( '{name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 			],
 			[
 				'name'    => __( 'Social Sharing', 'give' ),

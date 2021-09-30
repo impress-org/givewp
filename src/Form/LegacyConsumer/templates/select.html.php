@@ -1,11 +1,14 @@
 <?php /** @var Give\Framework\FieldsAPI\Select $field */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
+<?php /** @var string $visibilityConditionsAttribute */ ?>
+
 <select
 	name="<?php echo $field->getName(); ?><?php echo $field->getAllowMultiple() ? '[]' : ''; ?>"
 	id="<?php echo $fieldIdAttribute; ?>"
 	<?php echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+	<?php echo $visibilityConditionsAttribute ?>
 >
 	<?php
 	if ( $placeholder = $field->getPlaceholder() ) {

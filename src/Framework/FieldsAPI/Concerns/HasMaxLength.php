@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
- * @unreleased
+ * @since 2.14.0
  *
  * @property ValidationRules $validationRules
  */
@@ -12,7 +12,7 @@ trait HasMaxLength {
 	/**
 	 * Set the value’s maximum length.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @param int $maxLength
 	 *
@@ -27,7 +27,7 @@ trait HasMaxLength {
 	/**
 	 * Get the value’s maximum length.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @return int|null
 	 */

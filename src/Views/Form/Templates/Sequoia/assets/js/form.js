@@ -409,6 +409,7 @@
 			setTimeout( setupTabOrder, 200 );
 
 			moveFieldsUnderPaymentGateway();
+			setupLegacyConsumerCheckboxAndRadio();
 			setupRegistrationFormInputFields();
 			setupFFMInputs();
 			setupInputIcons();
@@ -769,7 +770,7 @@
 	/**
 	 * Setup prominent checkboxes (field api) (that use persistent borders on select)
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 */
 	function setupLegacyConsumerCheckboxAndRadio(){
 		const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );

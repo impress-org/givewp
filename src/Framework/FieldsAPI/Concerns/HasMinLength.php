@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
- * @unreleased
+ * @since 2.14.0
  *
  * @property ValidationRules $validationRules
  */
@@ -12,7 +12,7 @@ trait HasMinLength {
 	/**
 	 * Set the value’s minimum length.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @param int $minLength
 	 *
@@ -27,7 +27,7 @@ trait HasMinLength {
 	/**
 	 * Get the value’s minimum length.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 *
 	 * @return int|null
 	 */

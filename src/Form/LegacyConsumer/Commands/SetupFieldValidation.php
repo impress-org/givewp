@@ -34,7 +34,7 @@ class SetupFieldValidation implements HookCommandInterface {
 
 	/**
 	 * @since 2.10.2
-	 * @unreleased Handle File field type and custom field type separately
+	 * @since 2.14.0 Handle File field type and custom field type separately
 	 *
 	 * @param string $hook
 	 *
@@ -49,7 +49,7 @@ class SetupFieldValidation implements HookCommandInterface {
 	/**
 	 * Validate the given field.
 	 *
-	 * @unreleased Add max length validation for input and textarea field
+	 * @since 2.14.0 Add max length validation for input and textarea field
 	 *
 	 * @param Field|File|Text $field
 	 *
@@ -87,7 +87,7 @@ class SetupFieldValidation implements HookCommandInterface {
 			/**
 			 * Use this action to validate custom field which does not exist in field api.
 			 *
-			 * @unreleased
+			 * @since 2.14.0
 			 *
 			 * @param Field $field
 			 * @param int $formId

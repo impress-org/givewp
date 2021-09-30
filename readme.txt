@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.13.4
+Stable tag: 2.14.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.14.0: September 21st, 2021 =
+* New: A lot of improvements to the Fields API in preparation for Peer-to-Peer!
+* Fix: Corrected a notice when using offline donations
+* Fix: Improved decimal formatting in the Multi-Step amount buttons
+* Fix: Social sharing works properly again after making a donation
+* Fix: Payment ID in donation email preview correctly reflects the sequenced ID
+* Fix: Connecting to Stripe on PHP 8 no longer throws an error... it just connects
+
 = 2.13.4: September 3rd, 2021 =
 * Fix: Corrected a migration introduced in the last release that had a chance of removing donation level data
 

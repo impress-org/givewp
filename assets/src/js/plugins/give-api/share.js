@@ -13,7 +13,7 @@ export default {
 			const top = targetWindow.innerHeight / 2 - 126;
 			const left = targetWindow.innerWidth / 2 - 280;
 			// Open new window with prompt for Twitter sharing
-			targetWindow.open( `https://twitter.com/intent/tweet?url=${ url }&text=${ text }`, 'newwindow', `width=560,height=253,top=${ top },left=${ left }` );
+			targetWindow.open( `https://twitter.com/intent/tweet?url=${ encodeURIComponent( url ) }&text=${ encodeURIComponent( text ) }`, 'newwindow', `width=560,height=253,top=${ top },left=${ left }` );
 		},
 
 		/**
@@ -28,7 +28,7 @@ export default {
 			const top = targetWindow.innerHeight / 2 - 365;
 			const left = targetWindow.innerWidth / 2 - 280;
 			// Open new window with prompt for Facebook sharing
-			window.open( `https://www.facebook.com/sharer/sharer.php?u=${ url }`, 'newwindow', `width=560,height=730,top=${ top },left=${ left }` );
+			window.open( `https://www.facebook.com/sharer/sharer.php?u=${ encodeURIComponent( url ) }`, 'newwindow', `width=560,height=730,top=${ top },left=${ left }` );
 		},
 	},
 };

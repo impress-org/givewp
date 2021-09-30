@@ -337,13 +337,14 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
+	 * @unreleased Allow HTML in thank you message.
 	 */
 	public function getReceiptDetails( $donationId ) {
 		$receipt = new DonationReceipt( $donationId );
 		$options = FormTemplateUtils::getOptions();
 
 		$receipt->heading = esc_html( $options['thank-you']['headline'] );
-		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
+		$receipt->message = wp_kses_post( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
 
 		/**
 		 * Fire the action for receipt object.
