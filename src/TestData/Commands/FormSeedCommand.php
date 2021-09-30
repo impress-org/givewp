@@ -2,6 +2,7 @@
 
 namespace Give\TestData\Commands;
 
+use Exception;
 use Give\TestData\Factories\DonationFormFactory;
 use Give\TestData\Repositories\DonationFormRepository;
 use WP_CLI;
@@ -119,7 +120,7 @@ class FormSeedCommand {
 
 				$progress->finish();
 
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				WP_CLI::error( $e->getMessage() );
