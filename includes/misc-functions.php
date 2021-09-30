@@ -1758,6 +1758,29 @@ function give_is_company_field_enabled( $form_id ) {
 }
 
 /**
+ * Check if Last Name field is required
+ *
+ * @param $form_id
+ *
+ * @return bool
+ * @unreleased
+ */
+function give_is_last_name_required( $form_id ) {
+	$form_setting_val   = give_get_meta( $form_id, '_give_last_name_field_required', true );
+	$global_setting_val = give_get_option( 'last_name_field_required' );
+
+	if ( ! empty( $form_setting_val ) ) {
+		if ( 'required' === $form_setting_val ) {
+			return true;
+		}
+
+		return 'global' === $form_setting_val && 'required' === $global_setting_val;
+	}
+
+	return 'required' === $global_setting_val;
+}
+
+/**
  * Check if anonymous donation field enabled or not for form or globally.
  *
  * @param $form_id
