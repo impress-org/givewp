@@ -96,9 +96,8 @@ const AmountControl = ( { currency, onChange, value, options, min, max } ) => {
 		} else {
 			setValidationError(
 				sprintf(
-					__( 'Please enter an amount between %s and %s.', 'give' ),
+					__( 'Amount must be more than %s.', 'give' ),
 					formatValue( { value: min, ...formatConfig } ),
-					formatValue( { value: max, ...formatConfig } ),
 				),
 			)
 		}
