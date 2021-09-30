@@ -88,6 +88,17 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							],
 						],
 						[
+							'name'    => __( 'Last Name Required', 'give' ),
+							'desc'    => __( 'Do you want to force the Last Name field to be required?', 'give' ),
+							'id'      => 'last_name_field_required',
+							'type'    => 'radio_inline',
+							'default' => 'optional',
+							'options' => [
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+							],
+						],
+						[
 							'name'    => __( 'Anonymous Donations', 'give' ),
 							'desc'    => __( 'Do you want to provide donors the ability mark themselves anonymous while giving. This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
 							'id'      => 'anonymous_donation',
