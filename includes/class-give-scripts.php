@@ -514,6 +514,7 @@ class Give_Scripts {
 						// Field name               Validation message.
 						'payment-mode'           => __( 'Please select payment mode.', 'give' ),
 						'give_first'             => __( 'Please enter your first name.', 'give' ),
+						'give_last'              => __( 'Please enter your last name.', 'give' ),
 						'give_email'             => __( 'Please enter a valid email address.', 'give' ),
 						'give_user_login'        => __( 'Invalid email address or username.', 'give' ),
 						'give_user_pass'         => __( 'Enter a password.', 'give' ),
