@@ -355,7 +355,7 @@ class Give_MetaBox_Form_Data {
 								],
 							],
 							[
-								'name'    => __( 'Last Name Required', 'give' ),
+								'name'    => __( 'Last Name Field Required', 'give' ),
 								'desc'    => __( 'Do you want to force the Last Name field to be required?', 'give' ),
 								'id'      => $prefix . 'last_name_field_required',
 								'type'    => 'radio_inline',
