@@ -179,6 +179,8 @@ function give_process_paypal_ipn() {
 		}
 	}
 
+	$api_response = false;
+
 	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
 	if ( give_is_setting_enabled( give_get_option( 'paypal_verification', 'enabled' ) ) ) {
 		$remote_post_vars = [
