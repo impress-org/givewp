@@ -122,7 +122,6 @@ add_action( 'init', 'give_listen_for_paypal_ipn' );
  * Process PayPal IPN
  *
  * @since 1.0
- * @unreleased Make PayPal IPN verification required.
  * @return void
  */
 function give_process_paypal_ipn() {
