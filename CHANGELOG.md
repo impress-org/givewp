@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### New
+
+- Option to make Donor Last Name filed required is now implemented (#6004)
+
 ### Changed
 
 - Preview Emails are now sent to the authenticated user (#5990)
