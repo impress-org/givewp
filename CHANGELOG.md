@@ -7,6 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## Changed
+
+- PayPal IPN verification setting with backward compatibility. (#5986)
+- Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
+
 ### Fixed
 
 - Admin can switch donation status on PHP8.0. (#5971)
@@ -33,8 +38,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Form field manager custom fields rendered with field api look good in multi-step form template. (#5946)
 - Use add meta function to persist field value in field api. (#5954)
 - Use WP time format in donor dashboard. (#5975)
-- PayPal IPN verification is required which make process secure. (#5986)
-- Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
 
 ### New
 
