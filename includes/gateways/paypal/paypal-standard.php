@@ -181,47 +181,49 @@ function give_process_paypal_ipn() {
 	}
 
 	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
-	$remote_post_vars = [
-		'method'      => 'POST',
-		'timeout'     => 45,
-		'redirection' => 5,
-		'httpversion' => '1.1',
-		'blocking'    => true,
-		'headers'     => [
-			'host'         => 'www.paypal.com',
-			'connection'   => 'close',
-			'content-type' => 'application/x-www-form-urlencoded',
-			'post'         => '/cgi-bin/webscr HTTP/1.1',
-		],
-		'sslverify'   => false,
-		'body'        => $encoded_data_array,
-	];
+	if ( give_is_setting_enabled( give_get_option( 'paypal_verification', 'enabled' ) ) ) {
+		$remote_post_vars = [
+			'method'      => 'POST',
+			'timeout'     => 45,
+			'redirection' => 5,
+			'httpversion' => '1.1',
+			'blocking'    => true,
+			'headers'     => [
+				'host'         => 'www.paypal.com',
+				'connection'   => 'close',
+				'content-type' => 'application/x-www-form-urlencoded',
+				'post'         => '/cgi-bin/webscr HTTP/1.1',
+			],
+			'sslverify'   => false,
+			'body'        => $encoded_data_array,
+		];
 
-	// Validate the IPN.
-	// https://developer.paypal.com/docs/api-basics/notifications/ipn/IPNImplementation/
-	$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
-	if ( is_wp_error( $api_response ) ) {
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf( /* translators: %s: Paypal IPN response */
-				__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
-				json_encode( $api_response )
-			)
-		);
+		// Validate the IPN.
+		// https://developer.paypal.com/docs/api-basics/notifications/ipn/IPNImplementation/
+		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
+		if ( is_wp_error( $api_response ) ) {
+			give_record_gateway_error(
+				__( 'IPN Error', 'give' ),
+				sprintf( /* translators: %s: Paypal IPN response */
+					__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
+					json_encode( $api_response )
+				)
+			);
 
-		return; // Something went wrong.
-	}
+			return; // Something went wrong.
+		}
 
-	if ( 'VERIFIED' !== $api_response['body'] ) {
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf( /* translators: %s: Paypal IPN response */
-				__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
-				json_encode( $api_response )
-			)
-		);
+		if ( 'VERIFIED' !== $api_response['body'] ) {
+			give_record_gateway_error(
+				__( 'IPN Error', 'give' ),
+				sprintf( /* translators: %s: Paypal IPN response */
+					__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
+					json_encode( $api_response )
+				)
+			);
 
-		return; // Response not okay.
+			return; // Response not okay.
+		}
 	}
 
 	// Check if $post_data_array has been populated.
