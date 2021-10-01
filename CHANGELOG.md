@@ -9,7 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Changed
 
-- PayPal IPN verification setting with backward compatibility. (#5986)
+- PayPal IPN verification setting with backward compatibility. PayPal IPN verification is enabled by default. (#5986)
 - Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
 
 ### Fixed
