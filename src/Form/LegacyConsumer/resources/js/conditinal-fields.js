@@ -38,13 +38,15 @@ document.addEventListener('readystatechange', event => {
 		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (inputField) {
 			const visibilityConditions = JSON.parse(inputField.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
-			const {field} = visibilityCondition;
 			let fieldSelector = getFieldSelector(inputField);
+			let {field} = visibilityCondition;
+			field = document.querySelector(`[name="${field}"], [name="${field}[]"]`);
 
-
-			fields[field] = {
-				...fields[field],
-				[fieldSelector]: visibilityConditions
+			if (field) {
+				fields[field.name] = {
+					...fields[field],
+					[fieldSelector]: visibilityConditions
+				}
 			}
 		});
 
@@ -141,8 +143,6 @@ document.addEventListener('readystatechange', event => {
 
 
 			const formState = state[uniqueDonationFormId];
-			fieldName = fieldName.replace('[]', '');
-
 			if (fieldName in formState) {
 				handleVisibility(donationForm, formState[fieldName])
 			}
@@ -182,7 +182,7 @@ document.addEventListener('readystatechange', event => {
 		}
 
 		for (const [watchedElementName, VisibilityConditions] of Object.entries(state[donationFormUniqueId])) {
-			document.querySelectorAll(`[name = "${watchedElementName}"], [name="${watchedElementName}[]"]`)
+			document.querySelectorAll(`[name = "${watchedElementName}"]`)
 				.forEach(field => {
 					field.addEventListener(
 						'change',
