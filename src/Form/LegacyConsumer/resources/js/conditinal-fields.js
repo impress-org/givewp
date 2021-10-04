@@ -138,7 +138,10 @@ document.addEventListener('readystatechange', event => {
 			uniqueDonationFormId &&
 			(uniqueDonationFormId in state)
 		) {
+
+
 			const formState = state[uniqueDonationFormId];
+			fieldName = fieldName.replace('[]', '');
 
 			if (fieldName in formState) {
 				handleVisibility(donationForm, formState[fieldName])
@@ -179,7 +182,7 @@ document.addEventListener('readystatechange', event => {
 		}
 
 		for (const [watchedElementName, VisibilityConditions] of Object.entries(state[donationFormUniqueId])) {
-			document.querySelectorAll(`[name = "${watchedElementName}"]`)
+			document.querySelectorAll(`[name = "${watchedElementName}"], [name="${watchedElementName}[]"]`)
 				.forEach(field => {
 					field.addEventListener(
 						'change',
