@@ -145,6 +145,7 @@ document.addEventListener('readystatechange', event => {
 				handleVisibility(
 					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
 						.closest('.give-form'),
+					watchedFieldName,
 					visibilityConditions
 				);
 			}
