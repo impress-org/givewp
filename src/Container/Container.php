@@ -738,18 +738,7 @@ class Container implements ArrayAccess {
 				continue;
 			}
 
-
-			// @note: ReflectionParameter::getClass() is deprecated since PHP 8
-			// @note: ReflectionParameter::getType() is not supported before PHP7
-			$name = version_compare( PHP_VERSION, '7.1', '<' )
-				? ( is_null( $dependency->getClass() )
-					? null
-					: $dependency->getClass()->name
-				)
-				: ( $dependency->hasType()
-					? $dependency->getType()->getName()
-					: null
-				);
+			$name = $this->getParameterClassName($dependency);
 
 			// If the class is null, it means the dependency is a string or some other
 			// primitive type which we can not resolve since it is not a class and
@@ -831,20 +820,13 @@ class Container implements ArrayAccess {
 	 */
 	protected function resolveClass( ReflectionParameter $parameter ) {
 		try {
-			// @note: ReflectionParameter::getClass() is deprecated since PHP 8
-			// @note: ReflectionParameter::getType() is not supported before PHP7
-			$class =  version_compare( PHP_VERSION, '7.1', '<' )
-				? $this->make( $parameter->getClass()->name )
-				: ( $parameter->hasType()
-					? $this->make( $parameter->getType()->getName() )
-					: null
-				);
+			$class = $this->getParameterClassName($parameter);
 
 			if ( is_null( $class ) ) {
 				throw new BindingResolutionException();
 			}
 
-			return $class;
+			return $this->make($class);
 		}
 
 			// If we can not resolve the class instance, we will check to see if the value
@@ -1006,6 +988,23 @@ class Container implements ArrayAccess {
 		foreach ( $callbacks as $callback ) {
 			$callback( $object, $this );
 		}
+	}
+
+	/**
+	 * Retrieves the class name of a given parameter with respect to the PHP version
+	 *
+	 * @param ReflectionParameter $parameter
+	 *
+	 * @return string
+	 */
+	protected function getParameterClassName( ReflectionParameter $parameter ) {
+		// Use ReflectionParameter::getClass() prior to its replacement in PHP 7.1
+		if ( version_compare( PHP_VERSION, '7.1', '<' ) ) {
+			$class = $parameter->getClass();
+			return $class ? $class->name : null;
+		}
+
+		return $parameter->hasType() ? $parameter->getType()->getName() : null;
 	}
 
 	/**
