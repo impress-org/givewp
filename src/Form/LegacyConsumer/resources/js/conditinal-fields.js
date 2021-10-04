@@ -40,6 +40,8 @@ document.addEventListener('readystatechange', event => {
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let fieldSelector = getFieldSelector(inputField);
 			let {field} = visibilityCondition;
+
+			// Get field. It will tell use real name of field.
 			field = document.querySelector(`[name="${field}"], [name="${field}[]"]`);
 
 			if (field) {
