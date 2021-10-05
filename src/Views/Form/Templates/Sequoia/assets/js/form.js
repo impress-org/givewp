@@ -809,8 +809,11 @@
 
 		// Persist checkbox input border when selected
 		$(document).on('click', label, function (evt) {
-			if (evt.target.nodeName === 'INPUT') {
-				return;
+			if (container === label) {
+				evt.stopPropagation();
+				evt.preventDefault();
+
+				$(input).prop('checked', !$(input).prop('checked')).focus();
 			}
 
 			$(container).toggleClass('active');
@@ -824,34 +827,18 @@
 	 * @param {object} evt Reference to FFM input element click event
 	 */
 	function setupRadio( { label, input } ) {
-		// If radio is opted in by default, add border on load
+		// If checkbox is opted in by default, add border on load
 		if ( $( input ).prop( 'checked' ) === true ) {
 			$( label ).addClass( 'active' );
 		}
 
-		// Persist radio input border when selected
+		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
 			evt.stopPropagation();
-			evt.preventDefault();
-
-			const label = $(evt.target);
-			const inputField = label.find('input');
-
-			if (inputField.prop('checked') === true) {
-				return;
-			}
 
 			$(evt.target.parentElement).find('label')
 				.not(evt.target).removeClass('active');
-
-			$(evt.target.parentElement).find('input')
-				.prop('checked', false);
-
-			const changeEvent = new Event('input');
-
-			inputField.prop('checked', true);
 			$(evt.target).toggleClass('active');
-			document.querySelector(input).dispatchEvent(changeEvent);
 		} );
 	}
 
