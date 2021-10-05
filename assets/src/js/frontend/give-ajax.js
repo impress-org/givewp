@@ -203,22 +203,11 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
-	 * Used to determine if a donation is already in progress
-	 * @type {boolean}
-	 */
-	let inProgress = false;
-
-	/**
 	 * Donation Form AJAX Submission
 	 *
 	 * @description: Process the donation submit
 	 */
-	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
-		if ( inProgress ) {
-			return;
-		}
-
-		inProgress = true;
+	$( 'body' ).on( 'click', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
 		//this form object
 		const $this = $( this );
 		const this_form = $this.parents( 'form.give-form' );
@@ -234,7 +223,6 @@ jQuery( document ).ready( function( $ ) {
 		if ( typeof give_purchase_form.checkValidity === 'function' && give_purchase_form.checkValidity() === false ) {
 			//Don't leave any hanging loading animations
 			loading_animation.fadeOut();
-			inProgress = false;
 			return;
 		}
 
@@ -252,7 +240,6 @@ jQuery( document ).ready( function( $ ) {
 
 		//Submit form via AJAX
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), this_form.serialize() + '&action=give_process_donation&give_ajax=true', function( data ) {
-			inProgress = false;
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
 				this_form.find( '.give_errors' ).remove();
