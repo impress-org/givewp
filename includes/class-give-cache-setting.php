@@ -228,6 +228,8 @@ class Give_Cache_Setting {
 	/**
 	 * Setup gateway list
 	 *
+	 * Note: use give_get_enabled_payment_gateways function to get list of registered gateway.
+	 *
 	 * @since 2.4.0
 	 * @unreleased Set payment gateway checkout label to  admin defined payment gateway checkout label.
 	 */
@@ -250,7 +252,7 @@ class Give_Cache_Setting {
 		 * @since 2.4.0
 		 */
 		$gateways = apply_filters( 'give_register_gateway', $gateways );
-		
+
 		$this->settings['gateways'] = $gateways;
 	}
 
