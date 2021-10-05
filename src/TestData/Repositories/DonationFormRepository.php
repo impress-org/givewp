@@ -75,7 +75,7 @@ class DonationFormRepository {
 					'thank-you'           => [
 						'image'               => '',
 						'headline'            => 'A great big thank you!',
-						'description'         => '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}.',
+						'description'         => '{name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor_email}.',
 						'sharing'             => 'enabled',
 						'sharing_instruction' => 'Help spread the word by sharing your support with your friends and followers!',
 						'twitter_message'     => "I just gave to this cause . Who's next?",

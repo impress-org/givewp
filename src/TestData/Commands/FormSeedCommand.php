@@ -2,15 +2,16 @@
 
 namespace Give\TestData\Commands;
 
-use WP_CLI;
+use Exception;
 use Give\TestData\Factories\DonationFormFactory;
 use Give\TestData\Repositories\DonationFormRepository;
+use WP_CLI;
 
 /**
  * Class FormSeedCommand
  * @package Give\TestData\Commands
  *
- * A WP-CLI command to generate Donatoion Forms
+ * A WP-CLI command to generate Donation Forms
  */
 class FormSeedCommand {
 
@@ -119,7 +120,7 @@ class FormSeedCommand {
 
 				$progress->finish();
 
-			} catch ( Throwable $e ) {
+			} catch ( Exception $e ) {
 				$wpdb->query( 'ROLLBACK' );
 
 				WP_CLI::error( $e->getMessage() );
