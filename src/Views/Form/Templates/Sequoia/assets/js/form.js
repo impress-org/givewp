@@ -915,8 +915,39 @@
 	 * @since 2.9.0
 	 */
 	function scrollToIframeTop() {
-		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
+		if ('parentIFrame' in window) {
+			window.parentIFrame.sendMessage({action: 'giveScrollIframeInToView'});
 		}
 	}
-}( jQuery ) );
+}(jQuery));
+
+/**
+ * Support to FFM restore custom field value logic.
+ *
+ * FFM restore value of custom fields correctly but field state does not reflect correctly
+ * in donation form because we are using custom styling for Radio and Checkbox.
+ *
+ * Below code will add class to Checkbox and Radio label if checked.
+ *
+ * @unreleased
+ */
+document.addEventListener('readystatechange', function (evt) {
+	if (evt.target.readyState !== 'complete') {
+		return;
+	}
+
+
+	const customCheckboxes = document.querySelectorAll('[data-field-type="checkbox"] input');
+	const customRadios = document.querySelectorAll('[data-field-type="radio"] input');
+
+	const addActiveClass = el => {
+		if (el.checked) {
+			el.parentElement.classList.add('active');
+		} else {
+			el.parentElement.classList.remove('active');
+		}
+	}
+
+	customCheckboxes.forEach(addActiveClass)
+	customRadios.forEach(addActiveClass)
+})
