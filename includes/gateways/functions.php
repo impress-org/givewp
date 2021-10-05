@@ -31,7 +31,7 @@ function give_get_payment_gateways() {
 	// Replace payment gateway checkout label with admin defined checkout label.
 	if ( $gatewayLabels ) {
 		foreach ( $gatewayLabels as $gatewayId => $checkoutLabel ) {
-			if ( $checkoutLabel ) {
+			if ( $checkoutLabel && array_key_exists( $gatewayId, $gateways ) ) {
 				$gateways[ $gatewayId ]['checkout_label'] = $checkoutLabel;
 			}
 		}
