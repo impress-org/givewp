@@ -545,17 +545,17 @@
 			switch ( $( this ).prop( 'type' ) ) {
 				case 'checkbox': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$( this ).parent().addClass( 'checked' );
+						$(this).parent().addClass('active');
 					} else {
-						$( this ).parent().removeClass( 'checked' );
+						$(this).parent().removeClass('active');
 					}
 					break;
 				}
 				case 'radio': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$( this ).parent().addClass( 'selected' );
+						$(this).parent().addClass('active');
 					} else {
-						$( this ).parent().removeClass( 'selected' );
+						$(this).parent().removeClass('active');
 					}
 					break;
 				}
@@ -573,12 +573,12 @@
 		if ( $( evt.target ).is( 'input' ) ) {
 			switch ( $( evt.target ).prop( 'type' ) ) {
 				case 'checkbox': {
-					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
+					$(evt.target).closest('label').toggleClass('active');
 					break;
 				}
 				case 'radio': {
-					$( evt.target ).closest( 'label' ).addClass( 'selected' );
-					$( evt.target ).parent().siblings().removeClass( 'selected' );
+					$(evt.target).closest('label').addClass('active');
+					$(evt.target).parent().siblings().removeClass('active');
 					break;
 				}
 			}
@@ -809,10 +809,8 @@
 
 		// Persist checkbox input border when selected
 		$(document).on('click', label, function (evt) {
-			if (container === label) {
-				evt.stopPropagation();
-				evt.preventDefault();
-				$(input).prop('checked', !$(input).prop('checked')).focus();
+			if (evt.target.nodeName === 'INPUT') {
+				return;
 			}
 
 			$(container).toggleClass('active');
@@ -826,18 +824,34 @@
 	 * @param {object} evt Reference to FFM input element click event
 	 */
 	function setupRadio( { label, input } ) {
-		// If checkbox is opted in by default, add border on load
+		// If radio is opted in by default, add border on load
 		if ( $( input ).prop( 'checked' ) === true ) {
 			$( label ).addClass( 'active' );
 		}
 
-		// Persist checkbox input border when selected
+		// Persist radio input border when selected
 		$( document ).on( 'click', label, function( evt ) {
 			evt.stopPropagation();
+			evt.preventDefault();
 
-			$( evt.target.parentElement ).find('label')
-				.not( evt.target ).removeClass( 'active' );
-			$( evt.target ).toggleClass( 'active' );
+			const label = $(evt.target);
+			const inputField = label.find('input');
+
+			if (inputField.prop('checked') === true) {
+				return;
+			}
+
+			$(evt.target.parentElement).find('label')
+				.not(evt.target).removeClass('active');
+
+			$(evt.target.parentElement).find('input')
+				.prop('checked', false);
+
+			const changeEvent = new Event('input');
+
+			inputField.prop('checked', true);
+			$(evt.target).toggleClass('active');
+			document.querySelector(input).dispatchEvent(changeEvent);
 		} );
 	}
 
