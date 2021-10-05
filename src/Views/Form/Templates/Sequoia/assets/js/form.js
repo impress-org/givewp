@@ -809,11 +809,8 @@
 
 		// Persist checkbox input border when selected
 		$(document).on('click', label, function (evt) {
-			if (container === label) {
-				evt.stopPropagation();
-				evt.preventDefault();
-
-				$(input).prop('checked', !$(input).prop('checked')).focus();
+			if ('INPUT' === evt.target.nodeName) {
+				return;
 			}
 
 			$(container).toggleClass('active');
@@ -834,7 +831,9 @@
 
 		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
-			evt.stopPropagation();
+			if ('INPUT' === evt.target.nodeName) {
+				return;
+			}
 
 			$(evt.target.parentElement).find('label')
 				.not(evt.target).removeClass('active');
