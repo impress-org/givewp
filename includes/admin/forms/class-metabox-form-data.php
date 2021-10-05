@@ -355,6 +355,18 @@ class Give_MetaBox_Form_Data {
 								],
 							],
 							[
+								'name'    => __( 'Last Name Field Required', 'give' ),
+								'desc'    => __( 'Do you want to force the Last Name field to be required?', 'give' ),
+								'id'      => $prefix . 'last_name_field_required',
+								'type'    => 'radio_inline',
+								'default' => 'global',
+								'options' => [
+									'global'   => __( 'Global Option', 'give' ),
+									'required' => __( 'Required', 'give' ),
+									'optional' => __( 'Optional', 'give' ),
+								],
+							],
+							[
 								'name'    => __( 'Anonymous Donations', 'give' ),
 								'desc'    => __( 'Do you want to provide donors the ability mark themselves anonymous while giving? This will prevent their information from appearing publicly on your website but you will still receive their information for your records in the admin panel.', 'give' ),
 								'id'      => "{$prefix}anonymous_donation",

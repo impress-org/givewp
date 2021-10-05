@@ -318,7 +318,7 @@ function _give_register_admin_notices() {
 							[
 								'id'          => 'give-sent-test-email',
 								'type'        => 'updated',
-								'description' => __( 'The test email has been sent.', 'give' ),
+								'description' => sprintf( __( 'The test email has been sent to %s.', 'give' ), wp_get_current_user()->user_email ),
 								'show'        => true,
 							]
 						);

@@ -1,10 +1,10 @@
 <?php
 namespace Give\DonorDashboards\Repositories;
 
-use Give\Receipt\LineItem;
-use Give\ValueObjects\Money;
 use Give\Framework\Database\DB;
 use Give\Receipt\DonationReceipt;
+use Give\Receipt\LineItem;
+use Give\ValueObjects\Money;
 use Give_Payment;
 
 /**
@@ -33,8 +33,12 @@ class Donations {
 	 * @return string
 	 */
 	public function getRevenue( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
-		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
+		$currencyCode = give_get_option( 'currency' );
+		$aggregate    = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
+
+		return $aggregate ?
+			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
+			null;
 	}
 
 	/**
@@ -46,8 +50,12 @@ class Donations {
 	 * @return string
 	 */
 	public function getAverageRevenue( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
+		$currencyCode = give_get_option( 'currency' );
+		$aggregate    = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
+
+		return $aggregate ?
+			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
+			null;
 	}
 
 	/**
@@ -340,15 +348,25 @@ class Donations {
 		];
 	}
 
-	protected function getAmountWithSeparators( $amount ) {
+	/**
+	 * @since 2.10.0
+	 *
+	 * @param string $amount
+	 * @param string $currencyCode
+	 *
+	 * @return string
+	 */
+	protected function getAmountWithSeparators( $amount, $currencyCode ) {
 		$formatted = give_format_amount(
 			$amount,
 			[
-				'decimal' => false,
+				'decimal'  => false,
+				'sanitize' => false,
+				'currency' => $currencyCode
 			]
 		);
 
-		return $formatted ? $formatted : (string) $amount;
+		return $formatted ?: $amount;
 	}
 
 	/**
