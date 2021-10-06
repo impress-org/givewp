@@ -1145,12 +1145,12 @@ fieldset {
 	display: none !important;
 }
 
-//input[type='checkbox'],
-//input[type='radio']{
-//	opacity: 0 !important;
-//	position: absolute !important;
-//	left: -60px;
-//}
+input[type='checkbox'],
+input[type='radio'] {
+	opacity: 0 !important;
+	position: absolute !important;
+	left: -60px;
+}
 
 input[type='checkbox'] + label {
 	font-weight: 500;
