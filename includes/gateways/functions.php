@@ -22,10 +22,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_payment_gateways() {
 	// Default, built-in gateways
-	$gateways = Give_Cache_Setting::get_option( 'gateways', [] );
+	$gateways      = apply_filters(
+		'give_payment_gateways',
+		Give_Cache_Setting::get_option( 'gateways', [] )
+	);
+	$gatewayLabels = give_get_option( 'gateways_label', [] );
 
-	return apply_filters( 'give_payment_gateways', $gateways );
+	// Replace payment gateway checkout label with admin defined checkout label.
+	if ( $gatewayLabels ) {
+		foreach ( $gatewayLabels as $gatewayId => $checkoutLabel ) {
+			if ( $checkoutLabel && array_key_exists( $gatewayId, $gateways ) ) {
+				$gateways[ $gatewayId ]['checkout_label'] = $checkoutLabel;
+			}
+		}
+	}
 
+	return $gateways;
 }
 
 /**
