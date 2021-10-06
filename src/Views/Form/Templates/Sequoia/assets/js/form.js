@@ -545,17 +545,17 @@
 			switch ( $( this ).prop( 'type' ) ) {
 				case 'checkbox': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$(this).parent().addClass('active');
+						$(this).parent().addClass('checked');
 					} else {
-						$(this).parent().removeClass('active');
+						$(this).parent().removeClass('checked');
 					}
 					break;
 				}
 				case 'radio': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$(this).parent().addClass('active');
+						$(this).parent().addClass('selected');
 					} else {
-						$(this).parent().removeClass('active');
+						$(this).parent().removeClass('selected');
 					}
 					break;
 				}
@@ -573,12 +573,12 @@
 		if ( $( evt.target ).is( 'input' ) ) {
 			switch ( $( evt.target ).prop( 'type' ) ) {
 				case 'checkbox': {
-					$(evt.target).closest('label').toggleClass('active');
+					$(evt.target).closest('label').toggleClass('checked');
 					break;
 				}
 				case 'radio': {
-					$(evt.target).closest('label').addClass('active');
-					$(evt.target).parent().siblings().removeClass('active');
+					$(evt.target).closest('label').addClass('selected');
+					$(evt.target).parent().siblings().removeClass('selected');
 					break;
 				}
 			}
