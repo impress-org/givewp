@@ -25,6 +25,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Format amount correctly in 'Lifetime Donations' and 'Average Donation' in donation dashboard. (#5998)
 - Resolve PHP 5.6 compatibility issue when run any WP cli command. (#6005)
 - Add change event to multi checkbox options correctly to field api fields. (#6009)
+- Show custom payment gateway label in donation form. (#6012)
 
 
 ## 2.14.0 - 2021-09-27
