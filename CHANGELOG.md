@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Preview Emails are now sent to the authenticated user (#5990)
 - Donor dashboard response messages are now updated (#6003)
+- Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to register and/or login to an account (#6015)
 
 ### Fixed
 
