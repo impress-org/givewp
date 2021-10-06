@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Admin can switch donation status on PHP8.0. (#5971)
+- DI Container auto wiring now works correctly when using PHP 8 (#5988)
 - Single donors can now be deleted via the donors table (#5992)
 - Donors can now properly set custom amounts in the donor dashboard (#6001)
 - Format amount correctly in 'Lifetime Donations' and 'Average Donation' in donation dashboard. (#5998)
@@ -26,6 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add change event to multi checkbox options correctly to field api fields. (#6009)
 - Resolve checkbox and radio (generated with field api) state related issues in Multi Step Form template. (#6013)
 - Refactor setup logic of checkbox and radio in Multi Step Form template. (#6013)
+- Show custom payment gateway label in donation form. (#6012)
 
 ## 2.14.0 - 2021-09-27
 
