@@ -545,17 +545,17 @@
 			switch ( $( this ).prop( 'type' ) ) {
 				case 'checkbox': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$( this ).parent().addClass( 'checked' );
+						$(this).parent().addClass('checked');
 					} else {
-						$( this ).parent().removeClass( 'checked' );
+						$(this).parent().removeClass('checked');
 					}
 					break;
 				}
 				case 'radio': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$( this ).parent().addClass( 'selected' );
+						$(this).parent().addClass('selected');
 					} else {
-						$( this ).parent().removeClass( 'selected' );
+						$(this).parent().removeClass('selected');
 					}
 					break;
 				}
@@ -573,12 +573,12 @@
 		if ( $( evt.target ).is( 'input' ) ) {
 			switch ( $( evt.target ).prop( 'type' ) ) {
 				case 'checkbox': {
-					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
+					$(evt.target).closest('label').toggleClass('checked');
 					break;
 				}
 				case 'radio': {
-					$( evt.target ).closest( 'label' ).addClass( 'selected' );
-					$( evt.target ).parent().siblings().removeClass( 'selected' );
+					$(evt.target).closest('label').addClass('selected');
+					$(evt.target).parent().siblings().removeClass('selected');
 					break;
 				}
 			}
@@ -773,56 +773,56 @@
 	 * @since 2.14.0
 	 */
 	function setupLegacyConsumerCheckboxAndRadio(){
-		const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
-		const customRadios = document.querySelectorAll( '[data-field-type="radio"] input' );
-		Array.from( customCheckboxes ).forEach( ( el ) => {
-			const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
-			setupCheckbox( {
-				container: containerSelector + ' label',
-				label: containerSelector + ' label',
-				input: containerSelector + ' input[type="checkbox"]',
-			} );
-		} );
-
-		Array.from( customRadios ).forEach( ( el ) => {
-			const uniqueInputSelector = `#${el.getAttribute( 'id' )}`;
-			const uniqueLabelSelector = `label[for=${el.getAttribute( 'id' )}]`;
-			setupRadio( {
+		const customCheckboxes = document.querySelectorAll('[data-field-type="checkbox"] input');
+		const customRadios = document.querySelectorAll('[data-field-type="radio"] input');
+		Array.from(customCheckboxes).forEach((el) => {
+			const uniqueInputSelector = `#${el.getAttribute('id')}`;
+			const uniqueLabelSelector = `label[for=${el.getAttribute('id')}]`;
+			setupCheckbox({
+				container: uniqueLabelSelector,
 				label: uniqueLabelSelector,
 				input: uniqueInputSelector,
-			} );
-		} );
+			});
+		});
+
+		Array.from(customRadios).forEach((el) => {
+			const uniqueInputSelector = `#${el.getAttribute('id')}`;
+			const uniqueLabelSelector = `label[for=${el.getAttribute('id')}]`;
+			setupRadio({
+				label: uniqueLabelSelector,
+				input: uniqueInputSelector,
+			});
+		});
 	}
 
 	/**
 	 * Setup prominent checkboxes (that use persistent borders on select)
 	 *
 	 * @since 2.7.0
+	 * @unreleased update click handler callback
 	 * @param {object} args Argument object containing: container, label, input selectors
 	 */
 	function setupCheckbox( { container, label, input } ) {
 		// If checkbox is opted in by default, add border on load
-		if ( $( input ).prop( 'checked' ) === true ) {
-			$( container ).addClass( 'active' );
+		if ($(input).prop('checked') === true) {
+			$(container).addClass('active');
 		}
 
 		// Persist checkbox input border when selected
-		$( document ).on( 'click', label, function( evt ) {
-			if ( container === label ) {
-				evt.stopPropagation();
-				evt.preventDefault();
-
-				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) ).focus();
+		$(document).on('click', label, function (evt) {
+			if ('INPUT' === evt.target.nodeName) {
+				return;
 			}
 
-			$( container ).toggleClass( 'active' );
-		} );
+			$(container).toggleClass('active');
+		});
 	}
 
 	/**
 	 * Handle updating label classes for FFM radios and checkboxes
 	 *
 	 * @since 2.7.0
+	 * @unreleased update click handler callback
 	 * @param {object} evt Reference to FFM input element click event
 	 */
 	function setupRadio( { label, input } ) {
@@ -833,11 +833,13 @@
 
 		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
-			evt.stopPropagation();
+			if ('INPUT' === evt.target.nodeName) {
+				return;
+			}
 
-			$( evt.target.parentElement ).find('label')
-				.not( evt.target ).removeClass( 'active' );
-			$( evt.target ).toggleClass( 'active' );
+			$(evt.target.parentElement).find('label')
+				.not(evt.target).removeClass('active');
+			$(evt.target).toggleClass('active');
 		} );
 	}
 
@@ -901,8 +903,39 @@
 	 * @since 2.9.0
 	 */
 	function scrollToIframeTop() {
-		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
+		if ('parentIFrame' in window) {
+			window.parentIFrame.sendMessage({action: 'giveScrollIframeInToView'});
 		}
 	}
-}( jQuery ) );
+}(jQuery));
+
+/**
+ * Support to FFM restore custom field value logic.
+ *
+ * FFM restore value of custom fields correctly but field state does not reflect correctly
+ * in donation form because we are using custom styling for Radio and Checkbox.
+ *
+ * Below code will add class to Checkbox and Radio label if checked.
+ *
+ * @unreleased
+ */
+document.addEventListener('readystatechange', function (evt) {
+	if (evt.target.readyState !== 'complete') {
+		return;
+	}
+
+
+	const customCheckboxes = document.querySelectorAll('[data-field-type="checkbox"] input');
+	const customRadios = document.querySelectorAll('[data-field-type="radio"] input');
+
+	const addActiveClass = el => {
+		if (el.checked) {
+			el.parentElement.classList.add('active');
+		} else {
+			el.parentElement.classList.remove('active');
+		}
+	}
+
+	customCheckboxes.forEach(addActiveClass)
+	customRadios.forEach(addActiveClass)
+})
