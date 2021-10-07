@@ -121,8 +121,8 @@ add_action( 'init', 'give_listen_for_paypal_ipn' );
 /**
  * Process PayPal IPN
  *
- * @return void
  * @since 1.0
+ * @return void
  */
 function give_process_paypal_ipn() {
 
@@ -182,8 +182,7 @@ function give_process_paypal_ipn() {
 	$api_response = false;
 
 	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
-	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
-
+	if ( give_is_setting_enabled( give_get_option( 'paypal_verification', 'enabled' ) ) ) {
 		$remote_post_vars = [
 			'method'      => 'POST',
 			'timeout'     => 45,
@@ -195,15 +194,14 @@ function give_process_paypal_ipn() {
 				'connection'   => 'close',
 				'content-type' => 'application/x-www-form-urlencoded',
 				'post'         => '/cgi-bin/webscr HTTP/1.1',
-
 			],
 			'sslverify'   => false,
 			'body'        => $encoded_data_array,
 		];
 
 		// Validate the IPN.
+		// https://developer.paypal.com/docs/api-basics/notifications/ipn/IPNImplementation/
 		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
-
 		if ( is_wp_error( $api_response ) ) {
 			give_record_gateway_error(
 				__( 'IPN Error', 'give' ),
@@ -227,7 +225,7 @@ function give_process_paypal_ipn() {
 
 			return; // Response not okay.
 		}
-	}// End if().
+	}
 
 	// Check if $post_data_array has been populated.
 	if ( ! is_array( $encoded_data_array ) && ! empty( $encoded_data_array ) ) {
@@ -295,16 +293,21 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
 /**
  * Process web accept (one time) payment IPNs.
  *
- * @param array $data       The IPN Data.
- * @param int   $payment_id The payment ID from Give.
+ * @since 1.0
+ * @unreleased Remove unnecessary payment validation to prevent frequent failure.
+ *
+ * @param int $payment_id The payment ID from Give.
+ *
+ * @param array $data The IPN Data.
  *
  * @return void
- * @since 1.0
  */
 function give_process_paypal_web_accept( $data, $payment_id ) {
-
 	// Only allow through these transaction types.
-	if ( 'web_accept' !== $data['txn_type'] && 'cart' !== $data['txn_type'] && 'refunded' !== strtolower( $data['payment_status'] ) ) {
+	if (
+		'web_accept' !== $data['txn_type'] &&
+		'cart' !== $data['txn_type']
+	) {
 		return;
 	}
 
@@ -314,53 +317,19 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Collect donation payment details.
-	$paypal_amount  = $data['mc_gross'];
+	$donation       = new Give_Payment( $payment_id );
 	$payment_status = strtolower( $data['payment_status'] );
-	$currency_code  = strtolower( $data['mc_currency'] );
-	$business_email = isset( $data['business'] ) && is_email( $data['business'] ) ? trim( $data['business'] ) : trim( $data['receiver_email'] );
-	$payment_meta   = give_get_payment_meta( $payment_id );
 
 	// Must be a PayPal standard IPN.
-	if ( 'paypal' !== give_get_payment_gateway( $payment_id ) ) {
-		return;
-	}
-
-	// Verify payment recipient.
-	if ( strcasecmp( $business_email, trim( give_get_option( 'paypal_email' ) ) ) !== 0 ) {
-
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf( /* translators: %s: Paypal IPN response */
-				__( 'Invalid business email in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
-		give_update_payment_status( $payment_id, 'failed' );
-		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid PayPal business email.', 'give' ) );
-
-		return;
-	}
-
-	// Verify payment currency.
-	if ( $currency_code !== strtolower( $payment_meta['currency'] ) ) {
-
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf( /* translators: %s: Paypal IPN response */
-				__( 'Invalid currency in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
-		give_update_payment_status( $payment_id, 'failed' );
-		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid currency in PayPal IPN.', 'give' ) );
-
+	// Validate donation id.
+	if (
+		! $donation->ID ||
+		'paypal' !== $donation->gateway ) {
 		return;
 	}
 
 	// Process refunds & reversed.
-	if ( 'refunded' === $payment_status || 'reversed' === $payment_status ) {
+	if ( in_array( $payment_status, [ 'refunded', 'reversed' ] ) ) {
 		give_process_paypal_refund( $data, $payment_id );
 
 		return;
@@ -371,46 +340,25 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 		return;
 	}
 
-	// Retrieve the total donation amount (before PayPal).
-	$payment_amount = give_donation_amount( $payment_id );
-
-	// Check that the donation PP and local db amounts match.
-	if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
-		// The prices don't match
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf( /* translators: %s: Paypal IPN response */
-				__( 'Invalid payment amount in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
-		give_update_payment_status( $payment_id, 'failed' );
-		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid amount in PayPal IPN.', 'give' ) );
-
-		return;
-	}
-
 	// Process completed donations.
-	if ( 'completed' === $payment_status || give_is_test_mode() ) {
+	if ( 'completed' === $payment_status ) {
 
 		give_insert_payment_note(
-			$payment_id,
+			$donation->ID,
 			sprintf( /* translators: %s: Paypal transaction ID */
 				__( 'PayPal Transaction ID: %s', 'give' ),
 				$data['txn_id']
 			)
 		);
-		give_set_payment_transaction_id( $payment_id, $data['txn_id'] );
-		give_update_payment_status( $payment_id, 'publish' );
+		give_set_payment_transaction_id( $donation->ID, $data['txn_id'] );
+		give_update_payment_status( $donation->ID, 'publish' );
 
-	} elseif ( 'pending' === $payment_status && isset( $data['pending_reason'] ) ) {
+	} elseif ( 'pending' === $payment_status ) {
 
 		// Look for possible pending reasons, such as an eCheck.
-		$note = give_paypal_get_pending_donation_note( $data['pending_reason'] );
-
-		if ( ! empty( $note ) ) {
-			give_insert_payment_note( $payment_id, $note );
+		if ( isset( $data['pending_reason'] ) ) {
+			$note = give_paypal_get_pending_donation_note( $data['pending_reason'] );
+			give_insert_payment_note( $donation->ID, $note );
 		}
 	}
 
