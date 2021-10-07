@@ -38,6 +38,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Errors when connecting to Stripe using PHP 8 are now resolved (#5978)
+- Prevent multiple donations on mobile devices (#5983)
 
 ## 2.14.0-beta.1 - 2021-09-21
 
