@@ -1,41 +1,27 @@
+import PropTypes from 'prop-types';
+
+const colorMap = {
+	white: '#fff',
+	grey: '#555d66',
+	give: '#66bb6a',
+};
+
 /**
  * Give Logo
- * @param {*} props Logo properties
- * @returns {Element} SVG Icon
  */
-function GiveLogo( { size = '24px', color, className } ) {
-	let colorCode;
+const GiveLogo = ({color = 'give', size = '24px', ...rest}) => (
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 157.2 157.2" width={size} height={size} {...rest}>
+		<circle fill={colorMap[color]} cx="78.6" cy="78.6" r="78.6" />
+		<path fill="#fff" d="M89.8 84.2c.3.7 1 1.3 1 1.3 13.9 1.7 33.6-.2 48.6-2.2-8.6 18.5-24 30.8-38.1 30.8-26.5 0-46.9-32.1-46.9-32.1 8.2-7.2 21.7-30.8 41.2-30.8s28 10.7 28 10.7l2.2-3.5s-9.1-31.9-34.9-31.9-53.2 42.3-69.2 52c0 0 22 52.2 70.2 52.2 40.4 0 50.6-38.6 52.5-48.2 5.4-.8 9.9-1.6 12.8-2.1 1-2.2 2.1-6.1 1.3-11.3-16.1 6.2-40.5 13.2-69.1 13.2-.1 0 0 1 .4 1.9z" />
+	</svg>
+);
 
-	switch ( color ) {
-		case 'white':
-			colorCode = '#FFFFFF';
-			break;
-
-		case 'grey':
-			colorCode = '#555d66';
-			break;
-
-		default:
-			colorCode = '#66BB6A';
-			break;
-	}
-
-	return (
-		<svg id="Layer_1" width={ size } height={ size } className={ className } xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
-			viewBox="100 0 404 400" >
-			<g id="Layer_2">
-				<circle fill={ colorCode } cx="300" cy="200" r="200" />
-				<defs>
-					<circle id="SVGID_1_" cx="300" cy="200" r="200" />
-				</defs>
-				<clippath id="SVGID_2_">
-					<use xlinkHref="#SVGID_1_" overflow="visible" />
-				</clippath>
-				<path clipPath="url(#SVGID_2_)" fill="#FFF" d="M328.5,214.2c0.8,1.8,2.5,3.3,2.5,3.3c35.4,4.3,85.5-0.5,123.7-5.6 c-21.9,47.1-61.1,78.4-96.9,78.4c-67.4,0-119.3-81.7-119.3-81.7c20.9-18.3,55.2-78.4,104.8-78.4s71.2,27.2,71.2,27.2l5.6-8.9 c0,0-23.2-81.2-88.8-81.2S195.9,175.1,155.2,199.7c0,0,56,132.8,178.6,132.8c102.8,0,128.8-98.2,133.6-122.6 c13.7-2,25.2-4.1,32.6-5.3c2.5-5.6,5.3-15.5,3.3-28.8c-41,15.8-103.1,33.6-175.8,33.6C327.2,209.4,327.5,212,328.5,214.2z"
-				/>
-			</g>
-		</svg>
-	);
-}
+GiveLogo.propTypes = {
+	color: PropTypes.oneOf(Object.keys(colorMap)),
+	size: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+	]),
+};
 
 export default GiveLogo;
