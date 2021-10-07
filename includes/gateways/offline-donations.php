@@ -332,7 +332,7 @@ add_filter( 'give_forms_offline_donations_metabox_fields', 'give_offline_add_set
  * @return string
  */
 function give_get_default_offline_donation_content() {
-	$default_text  = '<p>' . __( 'To make an offline donation toward this cause, follow these steps:', 'give' ) . ': </p>';
+	$default_text = '<p>' . __( 'To make an offline donation toward this cause, follow these steps:', 'give' ) . ' </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
