@@ -132,7 +132,7 @@ if ( 'offline' === give_get_payment_gateway( $donation_id ) && 'pending' === $st
 	<div id="give_donation_receipt" class="<?php echo esc_attr( apply_filters( 'give_receipt_offline_payment_classes', 'give_receipt_offline_payment' ) ); ?>">
 		<?php
 		// Instruction for offline donation.
-		$offline_instruction = give_get_offline_payment_instruction( $form_id, true );
+		$offline_instruction = give_get_offline_payment_instructions( $form_id, true );
 
 		/**
 		 * Instruction for the offline donation.
