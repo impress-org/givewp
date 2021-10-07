@@ -160,6 +160,7 @@ class App {
 				'states'               => LocationList::getStates( give()->donorDashboard->getCountry() ),
 				'id'                   => give()->donorDashboard->getId(),
 				'emailAccessEnabled'   => give_is_setting_enabled( give_get_option( 'email_access' ) ),
+				'loginEnabled'         => $this->loginEnabled(),
 				'registeredTabs'       => give()->donorDashboardTabs->getRegisteredIds(),
 				'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId() === null ? true : false,
 				'recaptchaKey'         => $recaptcha_enabled ? $recaptcha_key : '',
@@ -179,5 +180,37 @@ class App {
 			[ 'give-google-font-montserrat' ],
 			GIVE_VERSION
 		);
+	}
+
+	/**
+	 * Determine if the login should be enabled.
+	 *
+	 * @unreleased
+	 *
+	 * @return bool
+	 */
+	protected function loginEnabled() {
+		// We need to get all the form IDs.
+		$formIds = get_posts(
+			[
+				'fields' => 'ids',
+				'numberposts' => -1,
+				'post_status' => 'publish',
+				'post_type' => 'give_forms',
+			]
+		);
+
+		// By default, the login is disabled.
+		$loginEnabled = false;
+		foreach ( $formIds as $formId ) {
+			if ( give_show_login_register_option( $formId ) !== 'none' ) {
+				// Once there is a single form that it is enabled, we can bail out
+				// early since the login needs to be enabled.
+				$loginEnabled = true;
+				break;
+			}
+		}
+
+		return $loginEnabled;
 	}
 }
