@@ -30,6 +30,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Resolve checkbox and radio (generated with field api) state related issues in Multi Step Form template. (#6013)
 - Refactor setup logic of checkbox and radio in Multi Step Form template. (#6013)
 - Show custom payment gateway label in donation form. (#6012)
+- Conditionally display offline donation instructions based on form settings (#6020)
 
 ## 2.14.0 - 2021-09-27
 
