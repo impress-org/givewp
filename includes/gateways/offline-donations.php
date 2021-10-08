@@ -332,7 +332,7 @@ add_filter( 'give_forms_offline_donations_metabox_fields', 'give_offline_add_set
  * @return string
  */
 function give_get_default_offline_donation_content() {
-	$default_text  = '<p>' . __( 'To make an offline donation toward this cause, follow these steps:', 'give' ) . ': </p>';
+	$default_text = '<p>' . __( 'To make an offline donation toward this cause, follow these steps:', 'give' ) . ' </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
@@ -365,7 +365,7 @@ function give_get_default_offline_donation_content() {
  * @return string
  */
 function give_get_default_offline_donation_email_content() {
-	$default_text  = '<p>' . __( 'Hi {name},', 'give' ) . '</p>';
+	$default_text = '<p>' . __( 'Hi {name},', 'give' ) . '</p>';
 	$default_text .= '<p>' . __( 'Thank you for letting us know that you\'re mailing a check! Your generosity is greatly appreciated. Here are those steps again:', 'give' ) . '</p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
@@ -382,16 +382,41 @@ function give_get_default_offline_donation_email_content() {
 	$default_text .= '<p>{sitename}</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
+}
 
+/**
+ * Get formatted offline instructions
+ *
+ * @unreleased
+ *
+ * @param  string  $instructions
+ * @param  int  $form_id
+ * @param  bool  $wpautop
+ *
+ * @return string
+ */
+function get_formatted_offline_instructions( $instructions, $form_id, $wpautop = false ) {
+	$settings_url = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
+
+	/* translators: %s: form settings url */
+	$offline_instructions = ! empty( $instructions ) ? $instructions : sprintf(
+		__( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ),
+		$settings_url
+	);
+
+	$offline_instructions = give_do_email_tags( $offline_instructions, null );
+
+	return $wpautop ? wpautop( do_shortcode( $offline_instructions ) ) : $offline_instructions;
 }
 
 /**
  * Get offline payment instructions.
  *
+ * @unreleased - conditionally display instructions based on form settings
  * @since 1.7
  *
- * @param int  $form_id
- * @param bool $wpautop
+ * @param  int  $form_id
+ * @param  bool  $wpautop
  *
  * @return string
  */
@@ -402,44 +427,34 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 	}
 
 	$post_offline_customization_option = give_get_meta( $form_id, '_give_customize_offline_donations', true );
-	$post_offline_instructions         = give_get_meta( $form_id, '_give_offline_checkout_notes', true );
-	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
-	$offline_instructions              = $global_offline_instruction;
+	$post_offline_customization_option_enabled = give_is_setting_enabled( $post_offline_customization_option );
 
-	if ( give_is_setting_enabled( $post_offline_customization_option ) ) {
-		$offline_instructions = $post_offline_instructions;
+	if ( $post_offline_customization_option === 'disabled' ) {
+		return '';
 	}
 
-	$settings_url = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
+	$post_offline_instructions = give_get_meta( $form_id, '_give_offline_checkout_notes', true );
+	$global_offline_instructions = give_get_option( 'global_offline_donation_content' );
+	$offline_instructions_content = $post_offline_customization_option_enabled ? $post_offline_instructions : $global_offline_instructions;
 
-	/* translators: %s: form settings url */
-	$offline_instructions = ! empty( $offline_instructions )
-		? $offline_instructions
-		: sprintf(
-			__( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ),
-			$settings_url
-		);
-
-	$offline_instructions = give_do_email_tags( $offline_instructions, null );
-
-	$formmated_offline_instructions = $wpautop
-		? wpautop( do_shortcode( $offline_instructions ) )
-		: $offline_instructions;
+	$formatted_offline_instructions = get_formatted_offline_instructions(
+		$offline_instructions_content,
+		$form_id,
+		$wpautop
+	);
 
 	/**
 	 * Filter the offline instruction content
 	 *
 	 * @since 2.2.0
 	 */
-	$formmated_offline_instructions = apply_filters(
+	return apply_filters(
 		'give_the_offline_instructions_content',
-		$formmated_offline_instructions,
-		$offline_instructions,
+		$formatted_offline_instructions,
+		$offline_instructions_content,
 		$form_id,
 		$wpautop
 	);
-
-	return $formmated_offline_instructions;
 }
 
 
