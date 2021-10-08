@@ -237,7 +237,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			foreach ( $all_setting as $setting ) {
 				if (
-					method_exists( $setting, 'get_id' ) &&
+					is_object($setting) && method_exists( $setting, 'get_id' ) &&
 					$current_tab === $setting->get_id()
 				) {
 					$current_setting_obj = $setting;
