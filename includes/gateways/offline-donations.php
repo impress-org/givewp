@@ -20,7 +20,7 @@
  */
 function give_offline_payment_cc_form( $form_id ) {
 	// Get offline payment instruction.
-	$offline_instructions = give_get_offline_payment_instructions( $form_id, true );
+	$offline_instructions = give_get_offline_payment_instruction( $form_id, true );
 
 	ob_start();
 
@@ -423,7 +423,7 @@ function get_formatted_offline_instructions( $instructions, $form_id, $wpautop =
  *
  * @return string
  */
-function give_get_offline_payment_instructions( $form_id, $wpautop = false ) {
+function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 	// Bailout.
 	if ( ! $form_id ) {
 		return '';
