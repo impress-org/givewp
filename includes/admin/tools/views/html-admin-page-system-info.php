@@ -684,11 +684,6 @@ $give_updates = Give_Updates::get_instance();
 		<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="PayPal IPN Verification"><?php _e( 'PayPal IPN Verification', 'give' ); ?>:</td>
-		<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether admins requires verification of IPN notifications with PayPal.', 'give' ) ); ?></td>
-		<td><?php echo 'enabled' === give_get_option( 'paypal_verification' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
-	</tr>
-	<tr>
 		<td data-export-label="PayPal IPN Notifications"><?php _e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?></td>
 		<td>

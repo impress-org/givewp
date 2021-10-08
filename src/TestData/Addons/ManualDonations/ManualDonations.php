@@ -9,7 +9,7 @@ use Give\TestData\Framework\MetaRepository;
  * Class ManualDonations
  * @package Give\TestData\ManualDonations
  *
- * @unreleased update class code to maintain PHP 5.6 compatibility
+ * @since 2.15.0 update class code to maintain PHP 5.6 compatibility
  */
 class ManualDonations {
 

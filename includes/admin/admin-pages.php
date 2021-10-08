@@ -123,6 +123,7 @@ add_action( 'admin_menu', 'give_add_add_ons_option_link', 999999 );
  *
  * @since 1.0
  * @since 2.1 Simplified function.
+ * @since 2.15.0 Use anonymous function in array_map to convert only strings to lowercase.
  *
  * @param string $passed_page Optional. Main page's slug
  * @param string $passed_view Optional. Page view ( ex: `edit` or `delete` )
@@ -133,10 +134,21 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	global $pagenow, $typenow;
 
 	$found          = true;
-	$get_query_args = ! empty( $_GET ) ? @array_map( 'strtolower', $_GET ) : [];
+	$get_query_args = ! empty( $_GET ) ?
+		array_map( function ( $data ) {
+			return is_string( $data ) ? strtolower( $data ) : $data;
+		}, $_GET ) :
+		[];
 
 	// Set default argument, if not passed.
-	$query_args = wp_parse_args( $get_query_args, array_fill_keys( [ 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ], false ) );
+	$query_args = wp_parse_args( $get_query_args, array_fill_keys( [
+		'post_type',
+		'action',
+		'taxonomy',
+		'page',
+		'view',
+		'tab'
+	], false ) );
 
 	switch ( $passed_page ) {
 		case 'categories':

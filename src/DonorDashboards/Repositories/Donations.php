@@ -1,10 +1,10 @@
 <?php
 namespace Give\DonorDashboards\Repositories;
 
-use Give\Receipt\LineItem;
-use Give\ValueObjects\Money;
 use Give\Framework\Database\DB;
 use Give\Receipt\DonationReceipt;
+use Give\Receipt\LineItem;
+use Give\ValueObjects\Money;
 use Give_Payment;
 
 /**
@@ -33,8 +33,12 @@ class Donations {
 	 * @return string
 	 */
 	public function getRevenue( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
-		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
+		$currencyCode = give_get_option( 'currency' );
+		$aggregate    = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
+
+		return $aggregate ?
+			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
+			null;
 	}
 
 	/**
@@ -46,8 +50,12 @@ class Donations {
 	 * @return string
 	 */
 	public function getAverageRevenue( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
-		return $aggregate ? $this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, give_get_option( 'currency' ) )->getAmount() ) : null;
+		$currencyCode = give_get_option( 'currency' );
+		$aggregate    = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
+
+		return $aggregate ?
+			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
+			null;
 	}
 
 	/**
@@ -163,8 +171,11 @@ class Donations {
 	/**
 	 * Get payment info
 	 *
-	 * @param Give_Payment $payment
 	 * @since 2.10.0
+	 * @since 2.15.0 Use WP time format for donation time.
+	 *
+	 * @param Give_Payment $payment
+	 *
 	 * @return array Payment info
 	 */
 	protected function getPaymentInfo( $payment ) {
@@ -184,7 +195,7 @@ class Donations {
 			'method'        => isset( $gateways[ $payment->gateway ]['checkout_label'] ) ? $gateways[ $payment->gateway ]['checkout_label'] : '',
 			'status'        => $this->getFormattedStatus( $payment->status ),
 			'date'          => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
-			'time'          => date_i18n( 'g:i a', strtotime( $payment->date ) ),
+			'time'          => date_i18n( get_option( 'time_format' ), strtotime( $payment->date ) ),
 			'mode'          => $payment->get_meta( '_give_payment_mode' ),
 			'pdfReceiptUrl' => $pdfReceiptUrl,
 			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
@@ -337,15 +348,25 @@ class Donations {
 		];
 	}
 
-	protected function getAmountWithSeparators( $amount ) {
+	/**
+	 * @since 2.10.0
+	 *
+	 * @param string $amount
+	 * @param string $currencyCode
+	 *
+	 * @return string
+	 */
+	protected function getAmountWithSeparators( $amount, $currencyCode ) {
 		$formatted = give_format_amount(
 			$amount,
 			[
-				'decimal' => false,
+				'decimal'  => false,
+				'sanitize' => false,
+				'currency' => $currencyCode
 			]
 		);
 
-		return $formatted ? $formatted : (string) $amount;
+		return $formatted ?: $amount;
 	}
 
 	/**

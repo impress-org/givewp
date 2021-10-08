@@ -26,6 +26,7 @@ const AuthModal = () => {
 	const emailAccessEnabled = getWindowData( 'emailAccessEnabled' );
 	const loggedInWithoutDonor = getWindowData( 'loggedInWithoutDonor' );
 	const recaptchaKey = getWindowData( 'recaptchaKey' );
+	const loginEnabled = getWindowData( 'loginEnabled' );
 
 	const handleLogin = async( e ) => {
 		e.preventDefault();
@@ -106,32 +107,36 @@ const AuthModal = () => {
 									) }
 								</div>
 							</form>
-							<div className="give-donor-dashboard__auth-modal-seperator" />
 						</Fragment>
 					) }
-					<div className="give-donor-dashboard__auth-modal-instruction">
-						{ emailAccessEnabled && (
-							<Fragment>
-								{ __( 'Already have an account?', 'give' ) } <br />
-							</Fragment>
-						) }
-						{ __( 'Log in below to access your dashboard', 'give' ) }
-					</div>
-					<form className="give-donor-dashboard__auth-modal-form" onSubmit={ ( e ) => handleLogin( e ) }>
-						<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
-						<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
-						<div className="give-donor-dashboard__auth-modal-row">
-							<Button type="submit">
-								{ __( 'Log in', 'give' ) }
-								<FontAwesomeIcon className={ loggingIn ? 'give-donor-dashboard__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
-							</Button>
-							{ loginError && (
-								<div className="give-donor-dashboard__auth-modal-error">
-									{ loginError }
+					{ emailAccessEnabled && loginEnabled && <div className="give-donor-dashboard__auth-modal-seperator" /> }
+					{ loginEnabled && (
+						<Fragment>
+							<div className="give-donor-dashboard__auth-modal-instruction">
+								{ emailAccessEnabled && (
+									<Fragment>
+										{ __( 'Already have an account?', 'give' ) } <br />
+									</Fragment>
+								) }
+								{ __( 'Log in below to access your dashboard', 'give' ) }
+							</div>
+							<form className="give-donor-dashboard__auth-modal-form" onSubmit={ ( e ) => handleLogin( e ) }>
+								<TextControl icon="user" value={ login } onChange={ ( value ) => setLogin( value ) } />
+								<TextControl icon="lock" type="password" value={ password } onChange={ ( value ) => setPassword( value ) } />
+								<div className="give-donor-dashboard__auth-modal-row">
+									<Button type="submit">
+										{ __( 'Log in', 'give' ) }
+										<FontAwesomeIcon className={ loggingIn ? 'give-donor-dashboard__auth-modal-spinner' : '' } icon={ loggingIn ? 'spinner' : 'chevron-right' } fixedWidth />
+									</Button>
+									{ loginError && (
+										<div className="give-donor-dashboard__auth-modal-error">
+											{ loginError }
+										</div>
+									) }
 								</div>
-							) }
-						</div>
-					</form>
+							</form>
+						</Fragment>
+					)}
 				</div>
 			</div>
 		</div>

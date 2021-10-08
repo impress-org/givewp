@@ -2,8 +2,8 @@
 
 namespace Give\Views\Form\Templates\Sequoia;
 
-use Give_Donate_Form;
 use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give_Donate_Form;
 
 /**
  * Class Actions
@@ -310,7 +310,7 @@ class Actions {
 		foreach ( $gateways as $key => $value ) {
 			$gateways[ $key ]['checkout_label'] = sprintf(
 				__( 'Donate with %1$s', 'give' ),
-				$gateways[ $key ]['checkout_label']
+				$value['checkout_label']
 			);
 		}
 		return $gateways;
