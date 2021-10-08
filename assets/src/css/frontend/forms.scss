@@ -147,7 +147,7 @@ form.give-form {
 	padding: 0;
 
 	.give-hidden {
-		display: none;
+		display: none !important;
 	}
 
 	@media (min-width: 481px) {

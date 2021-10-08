@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Preview Emails are now sent to the authenticated user (#5990)
 - Donor dashboard response messages are now updated (#6003)
+- Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to register and/or login to an account (#6015)
 - PayPal IPN verification setting with backward compatibility. PayPal IPN verification is enabled by default. (#5986)
 - Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
 
@@ -31,12 +32,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Refactor setup logic of checkbox and radio in Multi Step Form template. (#6013)
 - Show custom payment gateway label in donation form. (#6012)
 - Conditionally display offline donation instructions based on form settings (#6020)
+- Dom element do not display in donation form if it has give-hidden class. (#6017)
 
 ## 2.14.0 - 2021-09-27
 
 ### Fixed
 
 - Errors when connecting to Stripe using PHP 8 are now resolved (#5978)
+- Prevent multiple donations on mobile devices (#5983)
 
 ## 2.14.0-beta.1 - 2021-09-21
 

@@ -125,5 +125,9 @@
         "styled-components": "^5.2.1",
         "swr": "^0.4.1",
         "uiblocker": "latest"
+    },
+    "volta": {
+        "node": "12.22.6",
+        "npm": "7.24.2"
     }
 }
