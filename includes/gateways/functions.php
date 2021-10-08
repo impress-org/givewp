@@ -140,7 +140,7 @@ function give_get_gateway_admin_label( $gateway ) {
  * Returns the checkout label for the specified gateway
  *
  * @since 1.0
- * @unreleased Code removed. Here no need to forcefully change manual payment gateway checkout label to "Test Donation".
+ * @since 2.15.0 Code removed. Here no need to forcefully change manual payment gateway checkout label to "Test Donation".
  *
  * @param string $gateway Name of the gateway to retrieve a label for
  *

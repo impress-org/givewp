@@ -799,7 +799,7 @@
 	 * Setup prominent checkboxes (that use persistent borders on select)
 	 *
 	 * @since 2.7.0
-	 * @unreleased update click handler callback
+	 * @since 2.15.0 update click handler callback
 	 * @param {object} args Argument object containing: container, label, input selectors
 	 */
 	function setupCheckbox( { container, label, input } ) {
@@ -822,7 +822,7 @@
 	 * Handle updating label classes for FFM radios and checkboxes
 	 *
 	 * @since 2.7.0
-	 * @unreleased update click handler callback
+	 * @since 2.15.0 update click handler callback
 	 * @param {object} evt Reference to FFM input element click event
 	 */
 	function setupRadio( { label, input } ) {
@@ -917,7 +917,7 @@
  *
  * Below code will add class to Checkbox and Radio label if checked.
  *
- * @unreleased
+ * @since 2.15.0
  */
 document.addEventListener('readystatechange', function (evt) {
 	if (evt.target.readyState !== 'complete') {

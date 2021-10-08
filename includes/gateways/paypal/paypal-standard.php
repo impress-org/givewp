@@ -294,7 +294,7 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
  * Process web accept (one time) payment IPNs.
  *
  * @since 1.0
- * @unreleased Remove unnecessary payment validation to prevent frequent failure.
+ * @since 2.15.0 Remove unnecessary payment validation to prevent frequent failure.
  *
  * @param int $payment_id The payment ID from Give.
  *

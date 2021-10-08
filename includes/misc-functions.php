@@ -1763,7 +1763,7 @@ function give_is_company_field_enabled( $form_id ) {
  * @param $form_id
  *
  * @return bool
- * @unreleased
+ * @since 2.15.0
  */
 function give_is_last_name_required( $form_id ) {
 	$form_setting_val   = give_get_meta( $form_id, '_give_last_name_field_required', true );

@@ -185,7 +185,7 @@ class App {
 	/**
 	 * Determine if the login should be enabled.
 	 *
-	 * @unreleased
+	 * @since 2.15.0
 	 *
 	 * @return bool
 	 */

@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.14.0
+Stable tag: 2.15.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,21 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.15.0: October 11th, 2021 =
+* New: There is a new option for making the Donor Last Name field required
+* Changed: Sending a preview email now gets send to the email of the user triggering the preview
+* Changed: Improved Donor Dashboard messages with improved clarity for donors
+* Changed: Donor Dashboard only displays user/password fields if registration is enabled
+* Changed: PayPal IPN Verification is now enabled by default for better security
+* Fix: Simplified PayPal IPN Verification to avoid failure when there wasn't any
+* Fix: Further improvements for PHP 8 compatibility
+* Fix: Donors can now properly set custom amounts in their Donor Dashboard
+* Fix: Corrected Lifetime and Average donation amount formatting in Donor Dashboard
+* Fix: Restored PHP 5.6 compatibility when running GiveWP WP CLI commands
+* Fix: Offline gateway custom label now shows up properly in donation form
+* Fix: Offline donation instructions don't show up if specific form disables gateway
+* Fix: Various fixes to the internal Field API
+
 = 2.14.0: September 21st, 2021 =
 * New: A lot of improvements to the Fields API in preparation for Peer-to-Peer!
 * Fix: Corrected a notice when using offline donations

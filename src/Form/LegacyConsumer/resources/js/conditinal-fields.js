@@ -6,7 +6,7 @@ document.addEventListener('readystatechange', event => {
 	const state = {};
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 *
 	 * @param {HTMLElement} inputField
 	 * @return {string}
@@ -28,7 +28,7 @@ document.addEventListener('readystatechange', event => {
 
 	/**
 	 * Get list of watched fields.
-	 * @unreleased
+	 * @since 2.15.0
 	 *
 	 * @return object
 	 */
@@ -56,7 +56,7 @@ document.addEventListener('readystatechange', event => {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 *
 	 * @param operator
 	 * @param firstData
@@ -77,7 +77,7 @@ document.addEventListener('readystatechange', event => {
 
 	/**
 	 * Handle fields visibility.
-	 * @unreleased
+	 * @since 2.15.0
 	 */
 	function handleVisibility(donationForm, watchedFieldName, visibilityConditionsForWatchedField) {
 		for (const [inputFieldName, visibilityConditions] of Object.entries(visibilityConditionsForWatchedField)) {
@@ -119,7 +119,7 @@ document.addEventListener('readystatechange', event => {
 	 * Setup state for condition visibility settings.
 	 * state contains list of watched elements per donation form.
 	 *
-	 * @unreleased
+	 * @since 2.15.0
 	 */
 	function addVisibilityConditionsToStateForDonationForm(donationForm) {
 		const uniqueDonationFormId = donationForm.getAttribute('data-id');
@@ -132,7 +132,7 @@ document.addEventListener('readystatechange', event => {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 * @param donationForm
 	 */
 	function applyVisibilityConditionsToDonationForm(donationForm) {
@@ -153,7 +153,7 @@ document.addEventListener('readystatechange', event => {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 */
 	function addChangeEventToWatchedElementsForDonationForm(donationFormUniqueId) {
 		const donationForm = document
@@ -176,7 +176,7 @@ document.addEventListener('readystatechange', event => {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 */
 	function bootVisibilityConditionsFormAllDonationForm() {
 		document.querySelectorAll('form.give-form').forEach(addVisibilityConditionsToStateForDonationForm);

@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## 2.15.0 - 2021-10-11
+
 ### New
 
 - Option to make Donor Last Name filed required is now implemented (#6004)

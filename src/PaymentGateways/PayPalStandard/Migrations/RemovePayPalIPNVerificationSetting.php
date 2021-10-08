@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\PayPalStandard\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 2.15.0
  */
 class RemovePayPalIPNVerificationSetting extends Migration {
 
@@ -22,7 +22,7 @@ class RemovePayPalIPNVerificationSetting extends Migration {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 * @return string
 	 */
 	public static function id() {
@@ -30,7 +30,7 @@ class RemovePayPalIPNVerificationSetting extends Migration {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 * @return int
 	 */
 	public static function timestamp() {
@@ -38,7 +38,7 @@ class RemovePayPalIPNVerificationSetting extends Migration {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.15.0
 	 * @return string
 	 */
 	public static function title() {

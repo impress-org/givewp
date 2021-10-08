@@ -387,7 +387,7 @@ function give_get_default_offline_donation_email_content() {
 /**
  * Get formatted offline instructions
  *
- * @unreleased
+ * @since 2.15.0
  *
  * @param  string  $instructions
  * @param  int  $form_id
@@ -412,7 +412,7 @@ function get_formatted_offline_instructions( $instructions, $form_id, $wpautop =
 /**
  * Get offline payment instructions.
  *
- * @unreleased - conditionally display instructions based on form settings
+ * @since 2.15.0 - conditionally display instructions based on form settings
  * @since 1.7
  *
  * @param  int  $form_id

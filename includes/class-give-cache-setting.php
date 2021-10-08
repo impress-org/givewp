@@ -231,7 +231,7 @@ class Give_Cache_Setting {
 	 * Note: use give_get_enabled_payment_gateways function to get list of registered gateway.
 	 *
 	 * @since 2.4.0
-	 * @unreleased Set payment gateway checkout label to  admin defined payment gateway checkout label.
+	 * @since 2.15.0 Set payment gateway checkout label to  admin defined payment gateway checkout label.
 	 */
 	public function setup_gateways_list() {
 		// Default, built-in gateways
