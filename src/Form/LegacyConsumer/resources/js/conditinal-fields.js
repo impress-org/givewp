@@ -17,10 +17,8 @@ document.addEventListener('readystatechange', event => {
 
 		if (inputField.name) {
 			fieldSelector = inputField.name;
-		} else if ('html' === container.getAttribute('data-field-type')) {
-			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"]`;
 		} else {
-			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"] ${inputField.nodeName.toLowerCase()}`;
+			fieldSelector = `[data-field-name="${container.getAttribute('data-field-name')}"]`;
 		}
 
 		return fieldSelector;
@@ -84,6 +82,7 @@ document.addEventListener('readystatechange', event => {
 			const inputField = -1 === inputFieldName.indexOf('data-field-name') ?
 				donationForm.querySelector(`[name="${inputFieldName}"]`) :
 				donationForm.querySelector(inputFieldName);
+
 			const fieldWrapperWithoutInputField = inputField.classList.contains('.form-row');
 			const fieldWrapper = fieldWrapperWithoutInputField ? inputField : inputField.closest('.form-row');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.

@@ -48,7 +48,7 @@ class FieldView {
 			$className,
 			$field->getType(),
 			$field->getName(),
-			$field->getType() === Types::HTML ? $visibilityConditionsAttribute : ''
+			$field->getType() === Types::HTML || ! in_array( $field->getType(), Types::all() ) ? $visibilityConditionsAttribute : ''
 		);
 
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
