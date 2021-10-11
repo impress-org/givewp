@@ -7,6 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+
+- Add visibility conditions to field container to simplify field display logic in field api. (#6024)
+- Use field size in bytes in field api to get precise result when compare field size. (#6024)
+
 ## 2.15.0 - 2021-10-11
 
 ### New
