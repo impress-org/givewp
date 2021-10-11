@@ -1,6 +1,7 @@
 <?php /** @var \Give\Framework\FieldsAPI\Text $field */ ?>
 <?php /** @var string $typeAttribute */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
+<?php /** @var string $visibilityConditionsAttribute */ ?>
 <input
 	type="<?php echo $typeAttribute; ?>"
 	name="<?php echo $field->getName(); ?>"
@@ -10,10 +11,5 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
-	<?php
-	if ( $conditions = $field->getVisibilityConditions() ) {
-		$conditions = esc_attr( json_encode( $conditions ) );
-		echo "data-field-visibility-conditions=\"$conditions\"";
-	}
-	?>
+	<?php echo $visibilityConditionsAttribute; ?>
 >
