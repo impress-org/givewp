@@ -29,7 +29,6 @@ class FieldView {
 	public static function render( Node $field, $formId ) {
 		$type                          = $field->getType();
 		$fieldIdAttribute              = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
-		$visibilityConditionsAttribute = self::getVisibilityConditionAttribute( $field );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -48,7 +47,7 @@ class FieldView {
 			$className,
 			$field->getType(),
 			$field->getName(),
-			$field->getType() === Types::HTML || ! in_array( $field->getType(), Types::all() ) ? $visibilityConditionsAttribute : ''
+			self::getVisibilityConditionAttribute( $field )
 		);
 
 		// By default, new fields will use templates/label.html.php and templates/base.html.php
