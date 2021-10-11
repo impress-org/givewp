@@ -28,7 +28,7 @@ class File extends Field {
 	public function __construct( $name ) {
 		parent::__construct( $name );
 
-		$this->validationRules->rule( 'maxSize', wp_max_upload_size() / 1024 ); // in kb
+		$this->validationRules->rule( 'maxSize', wp_max_upload_size() ); // in bytes
 		$this->validationRules->rule( 'allowedTypes', get_allowed_mime_types() );
 	}
 

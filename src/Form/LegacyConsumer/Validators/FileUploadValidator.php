@@ -103,7 +103,7 @@ class FileUploadValidator {
 		if ( $allowedFileSize < $this->uploadSize ) {
 			give_set_error( 'field-api-file-upload-size-error', sprintf(
 				esc_html__( 'File size exceed upload limit. Maximum file limit is %s', 'give' ),
-				size_format( $allowedFileSize * 1024 )
+				size_format( $allowedFileSize )
 			) );
 		}
 	}
