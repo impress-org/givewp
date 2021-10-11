@@ -2,12 +2,12 @@
 namespace Give\Session\SessionDonation\SessionObjects;
 
 use DateTime;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Helpers\ArrayDataSet;
 use Give\Session\Objects;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
 use Give\ValueObjects\ValueObjects;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 
 /**
@@ -18,6 +18,10 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
  * This does not represent actual Donation model instead of that it has few donation related information which required for donation processing.
  *
  * @package Give\Session\SessionDonation\SessionObjects
+ *
+ * @property CardInfo $cardInfo
+ * @property FormEntry $formEntry
+ * @property DonorInfo $donorInfo
  */
 class Donation implements Objects {
 	/**
