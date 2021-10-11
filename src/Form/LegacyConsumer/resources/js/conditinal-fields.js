@@ -46,7 +46,7 @@ document.addEventListener('readystatechange', event => {
 
 			if (field) {
 				fields[field.name] = {
-					...fields[field],
+					...fields[field.name],
 					[fieldSelector]: visibilityConditions
 				}
 			}
