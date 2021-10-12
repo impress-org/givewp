@@ -5,6 +5,6 @@ namespace Give\Framework\PaymentGateways\PaymentGatewayTypes;
 /**
  * @unreleased
  */
-interface OffSitePaymentGateway {
+interface OnSitePaymentGateway {
 
 }
