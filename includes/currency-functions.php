@@ -279,7 +279,11 @@ function give_currency_filter( $price = '', $args = [] ) {
 
 	$args['position'] = give_get_option( 'currency_position', 'before' );
 
-	$negative = $price < 0;
+	/**
+	 * @unreleased Check for a numeric value before comparing to zero.
+	 * Note: PHP 8 changes how an empty string is evaluated when comparing to zero.
+	 */
+	$negative = is_numeric( $price ) && $price < 0;
 
 	if ( $negative ) {
 		// Remove proceeding "-".
