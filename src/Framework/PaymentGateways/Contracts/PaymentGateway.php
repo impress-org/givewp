@@ -40,12 +40,4 @@ abstract class PaymentGateway implements PaymentGatewayInterface {
 	public function getPaymentMethodLabel() {
 		throw new Exception( 'function must be overridden' );
 	}
-
-	/**
-	 * @inheritDoc
-	 * @throws Exception
-	 */
-	public function getOptions() {
-		throw new Exception( 'function must be overridden' );
-	}
 }

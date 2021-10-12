@@ -61,7 +61,7 @@ class PaymentGatewaysRegisterTest extends TestCase {
 	public function testNewPaymentGatewayClassHasAllRequiredMembers() {
 		$this->expectException( InvalidArgumentException::class );
 		$this->paymentGatewayRegister->registerGateway( Square::class );
-		give( $this->paymentGatewayRegister->getPaymentGateway( Square::id() ) )->getOptions();
+		give( $this->paymentGatewayRegister->getPaymentGateway( Square::id() ) )->getPaymentMethodLabel();
 	}
 
 	/**
@@ -118,13 +118,6 @@ class GoCardLess extends PaymentGateway {
 	public function getPaymentMethodLabel() {
 		return 'Credit Card';
 	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getOptions() {
-		return [];
-	}
 }
 
 class Square extends PaymentGateway {
@@ -147,13 +140,6 @@ class Square extends PaymentGateway {
 	 */
 	public function getName() {
 		return 'Stripe Payment Method';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getPaymentMethodLabel() {
-		return 'Credit Card';
 	}
 }
 
@@ -185,13 +171,6 @@ class Stripe extends PaymentGateway implements OnSitePaymentGateway {
 	public function getPaymentMethodLabel() {
 		return 'Credit Card';
 	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getOptions() {
-		return [];
-	}
 }
 
 class Paypal extends PaymentGateway implements OffSitePaymentGateway {
@@ -221,12 +200,5 @@ class Paypal extends PaymentGateway implements OffSitePaymentGateway {
 	 */
 	public function getPaymentMethodLabel() {
 		return 'Credit Card';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getOptions() {
-		return [];
 	}
 }
