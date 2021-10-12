@@ -19,6 +19,41 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	/**
 	 * @unreleased
 	 *
+	 * @return array
+	 */
+	public function getPaymentGateways() {
+		return $this->gateways;
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $id
+	 *
+	 * @return string
+	 */
+	public function getPaymentGateway( $id ) {
+		if ( ! isset( $this->gateways[ $id ] ) ) {
+			throw new InvalidArgumentException( "No migration exists with the ID {$id}" );
+		}
+
+		return $this->gateways[ $id ];
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param string $id
+	 *
+	 * @return bool
+	 */
+	public function hasMigration( $id ) {
+		return isset( $this->gateways[ $id ] );
+	}
+
+	/**
+	 * @unreleased
+	 *
 	 * @param string $gatewayClass
 	 *
 	 * @throws OverflowException|InvalidArgumentException|Exception
