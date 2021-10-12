@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Give\Controller\PayPalWebhooks;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
@@ -72,6 +73,7 @@ class PaymentGateways implements ServiceProvider {
 			}
 		); // storage
 
+		give()->singleton( PaymentGatewayRegister::class );
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
 		give()->singleton( DonationFormElements::class );
