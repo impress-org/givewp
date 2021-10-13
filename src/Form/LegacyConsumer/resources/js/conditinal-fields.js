@@ -61,6 +61,7 @@ document.addEventListener('readystatechange', event => {
 	function handleVisibility(donationForm, watchedFieldName, visibilityConditionsForWatchedField) {
 		for (const [fieldContainerSelector, visibilityConditions] of Object.entries(visibilityConditionsForWatchedField)) {
 			const fieldWrapper = donationForm.querySelector(fieldContainerSelector);
+			const fieldName = fieldWrapper.getAttribute('data-field-name');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let visible = false;
 			const {operator, value} = visibilityCondition;
@@ -83,9 +84,25 @@ document.addEventListener('readystatechange', event => {
 				});
 
 				// Show or Hide field wrapper.
-				visible ?
-					fieldWrapper.classList.remove('give-hidden') :
+				if (visible) {
+					const field = fieldWrapper.querySelector(`[name="${fieldName}"][data-required]`);
+					fieldWrapper.classList.remove('give-hidden');
+
+					// Make hidden flagged required field required.
+					if (field) {
+						field.setAttribute('required', '');
+						field.removeAttribute('data-required');
+					}
+				} else {
+					const field = fieldWrapper.querySelector(`[name="${fieldName}"][required]`);
 					fieldWrapper.classList.add('give-hidden');
+
+					// Make hidden required field non-required.
+					if (field) {
+						field.removeAttribute('required');
+						field.setAttribute('data-required', '1');
+					}
+				}
 			}
 		}
 	}
