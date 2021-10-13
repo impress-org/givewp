@@ -4,6 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 
 /**
  * @since 2.12.0
@@ -40,8 +41,13 @@ abstract class Field implements Node {
 	 * @param string $name
 	 *
 	 * @return static
+	 * @throws EmptyNameException
 	 */
 	public static function make( $name ) {
+		if ( $name ) {
+			throw new EmptyNameException();
+		}
+
 		return new static( $name );
 	}
 }
