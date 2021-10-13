@@ -44,7 +44,7 @@ abstract class Field implements Node {
 	 * @throws EmptyNameException
 	 */
 	public static function make( $name ) {
-		if ( $name ) {
+		if ( ! $name ) {
 			throw new EmptyNameException();
 		}
 
