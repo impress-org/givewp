@@ -18,6 +18,10 @@ trait HasFilesArray {
 		$_files = $_FILES[ $this->field->getName() ];
 		$files = [];
 
+		if ( empty( $_files ) ) {
+			return [];
+		}
+
 		if( ! $this->field->getAllowMultiple() ) {
 			return [ $_files ];
 		}
