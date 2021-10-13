@@ -27,8 +27,14 @@ abstract class Field implements Node {
 	 * @since 2.12.0
 	 *
 	 * @param string $name
+	 *
+	 * @throws EmptyNameException
 	 */
 	public function __construct( $name ) {
+		if ( ! $name ) {
+			throw new EmptyNameException();
+		}
+
 		$this->name            = $name;
 		$this->validationRules = new ValidationRules();
 	}
