@@ -87,6 +87,7 @@ document.addEventListener('readystatechange', event => {
 				if (visible) {
 					const field = fieldWrapper.querySelector(`[name="${fieldName}"][data-required]`);
 					fieldWrapper.classList.remove('give-hidden');
+					fieldWrapper.removeAttribute('hidden');
 
 					// Make hidden flagged required field required.
 					if (field) {
@@ -96,6 +97,7 @@ document.addEventListener('readystatechange', event => {
 				} else {
 					const field = fieldWrapper.querySelector(`[name="${fieldName}"][required]`);
 					fieldWrapper.classList.add('give-hidden');
+					fieldWrapper.setAttribute('hidden', '');
 
 					// Make hidden required field non-required.
 					if (field) {
