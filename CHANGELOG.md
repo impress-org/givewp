@@ -15,7 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### New
 
-- Make field name required in field api in field api. (#6032)
+- Make field name required in field api. (#6032)
 
 ## 2.15.0 - 2021-10-11
 
