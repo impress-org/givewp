@@ -32,7 +32,8 @@
     "scripts": {
         "test": "./vendor/bin/phpunit",
         "unreleased": "./vendor/bin/since-unreleased.sh",
-        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
+        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
+        "zip": "git archive --output=give.zip --format=zip HEAD"
     },
     "autoload": {
         "psr-4": {
