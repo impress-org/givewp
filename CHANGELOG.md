@@ -19,6 +19,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Make field name required in field api. (#6032)
 
+### Fixed
+
+- Give icons in Gutenberg block admin UI now display correctly in Firefox (#6023)
+
 ## 2.15.0 - 2021-10-11
 
 ### New
