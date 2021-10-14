@@ -7,4 +7,6 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
-></textarea>
+>
+<?php echo $field->getDefaultValue(); /* Whitespace is important. Do not indent. */ ?>
+</textarea>
