@@ -8,7 +8,7 @@ const { registerBlockType } = wp.blocks;
  * Internal dependencies
  */
 import blockAttributes from './data/attributes';
-import GiveLogo from './logo';
+import GiveIcon from '@givewp/components/GiveIcon';
 import edit from './edit';
 
 /**
@@ -19,7 +19,7 @@ export default registerBlockType( 'give/donor-dashboard', {
 	title: __( 'Donor Dashboard', 'give' ),
 	description: __( 'The Donor Dashboard block allows donors to modify and review their donor information from the front-end.', 'give' ),
 	category: 'give',
-	icon: <GiveLogo color="grey" />,
+	icon: <GiveIcon color="grey" />,
 	keywords: [
 		__( 'donor', 'give' ),
 		__( 'dashboard', 'give' ),
