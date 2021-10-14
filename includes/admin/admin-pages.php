@@ -123,7 +123,7 @@ add_action( 'admin_menu', 'give_add_add_ons_option_link', 999999 );
  *
  * @since 1.0
  * @since 2.1 Simplified function.
- * @unreleased Use anonymous function in array_map to convert only strings to lowercase.
+ * @since 2.15.0 Use anonymous function in array_map to convert only strings to lowercase.
  *
  * @param string $passed_page Optional. Main page's slug
  * @param string $passed_view Optional. Page view ( ex: `edit` or `delete` )

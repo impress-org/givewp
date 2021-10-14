@@ -370,9 +370,6 @@ function give_get_default_settings() {
 		'agreement_text'                              => give_get_default_agreement_text(),
 		'babel_polyfill_script'                       => 'enabled',
 
-		// Paypal IPN verification.
-		'paypal_verification'                         => 'enabled',
-
 		// Default is manual gateway.
 		'gateways'                                    => [
 			'manual'  => 1,

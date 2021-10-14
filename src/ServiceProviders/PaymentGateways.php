@@ -10,26 +10,27 @@ use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
 use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\RefreshToken;
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
-use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
-use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
+use Give\PaymentGateways\PaypalSettingPage;
+use Give\PaymentGateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
 use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
+use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\Controllers\DisconnectStripeAccountController;
 use Give\PaymentGateways\Stripe\Controllers\GetStripeAccountDetailsController;
 use Give\PaymentGateways\Stripe\Controllers\NewStripeAccountOnBoardingController;
 use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
-use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
@@ -203,6 +204,7 @@ class PaymentGateways implements ServiceProvider {
 		$migrationRegisterer = give( MigrationsRegister::class );
 
 		$migrationRegisterer->addMigration( SetPayPalStandardGatewayId::class );
+		$migrationRegisterer->addMigration( RemovePayPalIPNVerificationSetting::class );
 	}
 
 	/**

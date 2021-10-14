@@ -337,7 +337,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
-	 * @unreleased Allow HTML in thank you message.
+	 * @since 2.15.0 Allow HTML in thank you message.
 	 */
 	public function getReceiptDetails( $donationId ) {
 		$receipt = new DonationReceipt( $donationId );

@@ -31,6 +31,15 @@ trait HasVisibilityConditions {
 	}
 
 	/**
+	 * @unreleased
+	 *
+	 * @return boolean
+	 */
+	public function hasVisibilityConditions() {
+		return ! empty( $this->visibilityConditions );
+	}
+
+	/**
 	 * Set a condition for showing the node.
 	 *
 	 * @since 2.13.0

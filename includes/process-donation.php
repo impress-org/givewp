@@ -740,6 +740,13 @@ function give_get_required_fields( $form_id ) {
 		}
 	}
 
+	if ( give_is_last_name_required( $form_id ) ) {
+		$required_fields['give_last'] = [
+			'error_id'      => 'invalid_last_name',
+			'error_message' => __( 'Please enter your last name.', 'give' ),
+		];
+	}
+
 	/**
 	 * Filters the donation form required field.
 	 *

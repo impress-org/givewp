@@ -9,13 +9,43 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- Add visibility conditions to field container to simplify field display logic in field api. (#6024)
+- Use field size in bytes in field api to get precise result when compare field size. (#6024)
+- Return empty array if file does not exist in $_FILES in field api. (#6032)
+- Make field required only if visible in donation form in field api.
+
+### New
+
+- Make field name required in field api. (#6032)
+
+## 2.15.0 - 2021-10-11
+
+### New
+
+- Option to make Donor Last Name filed required is now implemented (#6004)
+
+### Changed
+
 - Preview Emails are now sent to the authenticated user (#5990)
+- Donor dashboard response messages are now updated (#6003)
+- Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to register and/or login to an account (#6015)
+- PayPal IPN verification setting with backward compatibility. PayPal IPN verification is enabled by default. (#5986)
+- Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
 
 ### Fixed
 
 - Admin can switch donation status on PHP8.0. (#5971)
+- DI Container auto wiring now works correctly when using PHP 8 (#5988)
 - Single donors can now be deleted via the donors table (#5992)
+- Donors can now properly set custom amounts in the donor dashboard (#6001)
 - Format amount correctly in 'Lifetime Donations' and 'Average Donation' in donation dashboard. (#5998)
+- Resolve PHP 5.6 compatibility issue when run any WP cli command. (#6005)
+- Add change event to multi checkbox options correctly to field api fields. (#6009)
+- Resolve checkbox and radio (generated with field api) state related issues in Multi Step Form template. (#6013)
+- Refactor setup logic of checkbox and radio in Multi Step Form template. (#6013)
+- Show custom payment gateway label in donation form. (#6012)
+- Conditionally display offline donation instructions based on form settings (#6020)
+- Dom element do not display in donation form if it has give-hidden class. (#6017)
 
 ### New
 
@@ -26,6 +56,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Errors when connecting to Stripe using PHP 8 are now resolved (#5978)
+- Prevent multiple donations on mobile devices (#5983)
 
 ## 2.14.0-beta.1 - 2021-09-21
 
@@ -34,8 +65,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Show correct placeholder in legacy consumer in input field template. (#5924)
 - Do not allow to choosing placeholder in legacy consumer in select field template if field is required. (#5924)
 - Remove `give_` prefix from field names in legacy consumer in select, radio and textarea field template. (#5924)
-- Set select field name to array type in legacy consumer for select field template if multiple value acceptable field template. (#5924)
-- Convert array type values to pipe (|) separated string  before make custom field value persistence. (#5933)
+- Set select field name to array type in legacy consumer for select field template if multiple value acceptable field
+  template. (#5924)
+- Convert array type values to pipe (|) separated string before make custom field value persistence. (#5933)
 - Move custom field validation to `give_checkout_error_checks` hook. (#5933)
 - Set WordPress default file max_size and allowed file type as default value of file custom field in FieldAPI. (#5933)
 - Custom fields have unique ID attribute in legacy consumer. (#5938)

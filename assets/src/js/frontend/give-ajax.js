@@ -207,7 +207,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @description: Process the donation submit
 	 */
-	$( 'body' ).on( 'click touchend', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
+	$( 'body' ).on( 'click', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
 		//this form object
 		const $this = $( this );
 		const this_form = $this.parents( 'form.give-form' );

@@ -172,7 +172,7 @@ class Donations {
 	 * Get payment info
 	 *
 	 * @since 2.10.0
-	 * @unreleased Use WP time format for donation time.
+	 * @since 2.15.0 Use WP time format for donation time.
 	 *
 	 * @param Give_Payment $payment
 	 *

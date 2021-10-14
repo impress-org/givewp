@@ -71,17 +71,6 @@ class PayPalStandard implements PaymentGateway {
 				],
 			],
 			[
-				'name'    => esc_html__( 'PayPal IPN Verification', 'give' ),
-				'desc'    => esc_html__( 'If enabled, IPN (Instant Payment Notification) messages sent to your site from PayPal are verified with an extra (background) step. The IPN is what marks PayPal donations as complete on GiveWP\'s side. If donations are not getting marked as complete, disabling this extra verification step can resolve it. Only disable this setting to resolve the pending donation issue, since it is technically less secure.', 'give' ),
-				'id'      => 'paypal_verification',
-				'type'    => 'radio_inline',
-				'default' => 'enabled',
-				'options' => [
-					'enabled'  => esc_html__( 'Enabled', 'give' ),
-					'disabled' => esc_html__( 'Disabled', 'give' ),
-				],
-			],
-			[
 				'id'      => 'paypal_invoice_prefix',
 				'name'    => esc_html__( 'Invoice ID Prefix', 'give' ),
 				'desc'    => esc_html__( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.', 'give' ),

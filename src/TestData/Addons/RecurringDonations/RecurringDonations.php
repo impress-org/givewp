@@ -2,7 +2,7 @@
 
 namespace Give\TestData\Addons\RecurringDonations;
 
-use Throwable;
+use Exception;
 use Give\TestData\Framework\MetaRepository;
 
 /**
@@ -74,7 +74,7 @@ class RecurringDonations {
 
 			$wpdb->query( 'COMMIT' );
 
-		} catch ( Throwable $e ) {
+		} catch ( Exception $e ) {
 			$wpdb->query( 'ROLLBACK' );
 		}
 	}

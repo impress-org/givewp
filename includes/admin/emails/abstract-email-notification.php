@@ -695,7 +695,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * Send preview email.
 		 *
 		 * @since  2.0
-		 * @unreleased Preview email recipient is now the current user.
+		 * @since 2.15.0 Preview email recipient is now the current user.
 		 * @access public
 		 *
 		 * @param bool $send Flag to check if send email or not.
