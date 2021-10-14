@@ -17,6 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### New
 
 - Make field name required in field api. (#6032)
+- Add option to disable google fonts in multi-step form template. (#5973)
 
 ## 2.15.0 - 2021-10-11
 
@@ -46,10 +47,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Show custom payment gateway label in donation form. (#6012)
 - Conditionally display offline donation instructions based on form settings (#6020)
 - Dom element do not display in donation form if it has give-hidden class. (#6017)
-
-### New
-
-- Add option to disable google fonts in multi-step form template. (#5973)
 
 ## 2.14.0 - 2021-09-27
 
