@@ -60,11 +60,11 @@
 				$( steps[ step ].selector ).css( 'padding-top', '' );
 			} else {
 				// Other steps besides intro and payment amounts:
+				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
+				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 				// Scroll to top after animation finished
 				// @see https://github.com/impress-org/givewp/issues/5969
 				scrollToIframeTop();
-				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
-				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			}
 
 			if ( steps[ step ].title ) {
