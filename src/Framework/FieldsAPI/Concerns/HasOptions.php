@@ -54,7 +54,7 @@ trait HasOptions {
 	/**
 	 * Check whether options exist
 	 *
-	 * @unreleased
+	 * @since 2.15.0
 	 *
 	 * @return bool
 	 */

@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $width: 98%;
 $gutter: 2%;
 $breakpoint-small: 33.75em; // 540px
@@ -22,17 +24,17 @@ $breakpoint-large: 60em; // 960px
 }
 
 
-.give-grid-col-1 { width:($width / 12) - ($gutter * 11 / 12); }
-.give-grid-col-2 { width: ($width / 6) - ($gutter * 10 / 12); }
-.give-grid-col-3 { width: ($width / 4) - ($gutter * 9 / 12); }
-.give-grid-col-4 { width: ($width / 3) - ($gutter * 8 / 12); }
-.give-grid-col-5 { width: ($width / (12 / 5)) - ($gutter * 7 / 12); }
-.give-grid-col-6 { width: ($width / 2) - ($gutter * 6 / 12); }
-.give-grid-col-7 { width: ($width / (12 / 7)) - ($gutter * 5 / 12); }
-.give-grid-col-8 { width: ($width / (12 / 8)) - ($gutter * 4 / 12); }
-.give-grid-col-9 { width: ($width / (12 / 9)) - ($gutter * 3 / 12); }
-.give-grid-col-10 { width: ($width / (12 / 10)) - ($gutter * 2 / 12); }
-.give-grid-col-11 { width: ($width / (12 / 11)) - ($gutter * 1 / 12); }
+.give-grid-col-1 { width:math.div($width, 12) - math.div($gutter * 11, 12); }
+.give-grid-col-2 { width: math.div($width, 6) - math.div($gutter * 10, 12); }
+.give-grid-col-3 { width: ($width * 0.25) - math.div($gutter * 9, 12); }
+.give-grid-col-4 { width: math.div($width, 3) - math.div($gutter * 8, 12); }
+.give-grid-col-5 { width: math.div($width, (12 * 0.2)) - math.div($gutter * 7, 12); }
+.give-grid-col-6 { width: ($width * 0.5) - math.div($gutter * 6, 12); }
+.give-grid-col-7 { width: math.div($width, math.div(12, 7)) - math.div($gutter * 5, 12); }
+.give-grid-col-8 { width: math.div($width, (12 * 0.125)) - math.div($gutter * 4, 12); }
+.give-grid-col-9 { width: math.div($width, math.div(12, 9)) - math.div($gutter * 3, 12); }
+.give-grid-col-10 { width: math.div($width, (12 * 0.1)) - math.div($gutter * 2, 12); }
+.give-grid-col-11 { width: math.div($width, math.div(12, 11)) - math.div($gutter * 1, 12); }
 .give-grid-col-12 { width: $width; }
 
 @media only screen and (max-width: $breakpoint-small) {

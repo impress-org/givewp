@@ -23,12 +23,14 @@ class File extends Field {
 	const TYPE = 'file';
 
 	/**
-	 * @param $name
+	 * @param string $name
+	 *
+	 * @unreleased File size unit is bytes, so no need to convert WordPress max file upload size to kilo bytes.
 	 */
 	public function __construct( $name ) {
 		parent::__construct( $name );
 
-		$this->validationRules->rule( 'maxSize', wp_max_upload_size() / 1024 ); // in kb
+		$this->validationRules->rule( 'maxSize', wp_max_upload_size() ); // in bytes
 		$this->validationRules->rule( 'allowedTypes', get_allowed_mime_types() );
 	}
 

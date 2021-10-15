@@ -80,7 +80,7 @@ class VerifyEmailRoute implements RestRoute {
 
 			if ( $sent === true ) {
 
-				$sentMessage = (string) apply_filters( 'give_email_access_mail_send_notice', esc_html__( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
+				$sentMessage = (string) apply_filters( 'give_email_access_mail_send_notice', esc_html__( 'Email sent. If not received, make sure it is a valid donor email.', 'give' ) );
 
 				return new WP_REST_Response(
 					[
@@ -113,7 +113,7 @@ class VerifyEmailRoute implements RestRoute {
 			$spamMessage = (string) apply_filters(
 				'give_email_access_requests_exceed_notice',
 				sprintf(
-					esc_html__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+					esc_html__( 'Email sent. If not received, make sure it is a valid donor email.', 'give' ),
 					sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 				),
 				$value

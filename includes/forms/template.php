@@ -43,7 +43,7 @@ function give_get_donation_form( $args = [] ) {
 
 	/**
 	 * Fire the filter
-	 * Note: we will deprecated this filter soon. Use give_get_default_form_shortcode_args instead
+	 * Note: we will deprecate this filter soon. Use give_get_default_form_shortcode_args instead
 	 *
 	 * @deprecated 2.4.1
 	 */
