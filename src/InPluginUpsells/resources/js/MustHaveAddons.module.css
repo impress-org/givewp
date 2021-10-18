@@ -1,0 +1,27 @@
+.hero {
+	display: grid;
+	gap: 1rem;
+	padding: 3.5rem 2rem;
+	text-align: center;
+}
+
+.title {
+	margin: 0;
+	color: #333;
+	font-size: 1.875rem;
+	font-weight: 600;
+}
+
+.description {
+	margin: 0;
+	font-size: 1.125rem;
+}
+
+.grid {
+	box-sizing: border-box;
+	display: grid;
+	gap: 2.75rem;
+	grid-template-columns: repeat(3, 1fr);
+	margin: 0;
+	/** This grid will need to figure out vertical stretch between items as well. */
+}

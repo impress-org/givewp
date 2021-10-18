@@ -1,0 +1,56 @@
+.root,
+.root *,
+.root ::before,
+.root ::after, {
+	box-sizing: border-box;
+}
+
+.root {
+	height: 100%;
+	padding-bottom: 6rem;
+	background-color: #fff;
+	background-image: url('/app/plugins/give/assets/src/images/addon-gallery-decor.png');
+	background-position: top right;
+	background-repeat: no-repeat;
+	color: #333;
+	font-family: 'Open Sans', system-ui, sans-serif;
+}
+
+.header {
+	display: grid;
+	gap: 1.5rem;
+	padding-top: 2.625rem;
+	border-bottom: 0.0625rem solid #eaeaea;
+}
+
+.container {
+	max-width: 64.875rem;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.tabs [data-reach-tab] {
+	position: relative;
+	appearance: none;
+	padding: 0.9em 1em;
+	border: 0;
+	background-color: transparent;
+	color: inherit;
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+.tabs [data-reach-tab]::after {
+	content: "";
+	display: block;
+	position: absolute;
+	top: calc(100% - 0.1875em);
+	width: calc(100% - 2em);
+	height: 0.1875em;
+	background-color: transparent;
+	transition: background-color 100ms ease-in-out;
+}
+
+.tabs [data-reach-tab][aria-selected=true]::after {
+	background-color: #66bb6a;
+}

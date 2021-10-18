@@ -1,0 +1,55 @@
+.card {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1.5rem;
+	border-radius: 1rem;
+	border: 0.0625rem solid #e2e2e2;
+	background-color: #fff;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	gap: 0.8125rem;
+}
+
+.header svg {
+	flex: none;
+}
+
+.title {
+	margin: 0;
+	font-size: 0.9375rem;
+	font-weight: 700;
+}
+
+.description {
+	margin: 0;
+	font-weight: 600;
+	font-size: 0.9375rem;
+}
+
+.image {
+	height: 5.5rem;
+}
+
+.button {
+	box-sizing: border-box;
+	appearance: none;
+	display: block;
+	padding: 0.888em;
+	border-radius: 9999px;
+	background-color: #66bb6a;
+	color: white;
+	font-weight: 700;
+	font-size: 1.125rem;
+	text-align: center;
+	text-decoration: none;
+	line-height: 1;
+}
+
+.button:hover {
+	color: #fff;
+}
