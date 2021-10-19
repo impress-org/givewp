@@ -39,8 +39,8 @@ window.addEventListener('DOMContentLoaded', function () {
 		new Give.modal.GiveNoticeAlert({
 			 type: 'warning',
 			 modalContent: {
-				 title: __('Select Default Stripe Account', 'give'),
-				 desc: __('We notice that you want to accept donation with other then global default Stripe Account but you did not selected Stripe account.', 'give'),
+				 title: __('Select a Stripe Account', 'give'),
+				 desc: __('You\'ve selected to customize the Stripe account for this form, but not selected a different account. Please set an account as default for this form on the Stripe settings tab.', 'give'),
 			 },
 		 }).render();
 
