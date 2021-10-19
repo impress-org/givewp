@@ -10,6 +10,7 @@ use Give\FormAPI\Form\Text;
 use Give\FormAPI\Form\Textarea;
 use Give\FormAPI\Form\Wysiwyg;
 use Give\FormAPI\Form\Group;
+use Give\FormAPI\Form\Select;
 
 class Fields {
 	/**
@@ -27,6 +28,7 @@ class Fields {
 		'wysiwyg'     => Wysiwyg::class,
 		'colorpicker' => Colorpicker::class,
 		'group'       => Group::class,
+		'select'      => Select::class,
 	];
 
 	/**
