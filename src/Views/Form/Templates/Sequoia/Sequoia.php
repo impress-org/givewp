@@ -291,7 +291,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		}
 
 		if ( $isGoogleFontEnabled ) {
-			$dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif !important;}";
+			$dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif;}";
 		}
 
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamicCss );
