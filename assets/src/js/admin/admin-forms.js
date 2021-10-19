@@ -305,11 +305,54 @@
 		} );
 	}
 
+	/**
+	 * Conditional fields
+	 */
+	function handle_fields_visibility() {
+		// Show hide conditional fields
+		function handle_visibility(){
+			$( '[data-field-visibility]' ).each( function() {
+				const conditions = $(this).data( 'field-visibility' );
+
+				let visible = false;
+
+				Object.entries( conditions ).forEach( ( [ field, value ] ) => {
+					const inputs = $( '[name="' + field + '"]' );
+
+					if ( inputs ) {
+						inputs.each( function() {
+							const input = $( this );
+							const fieldType = input.attr( 'type' );
+
+							if ( fieldType && ( fieldType === 'radio' || fieldType === 'checkbox' ) ) {
+								if ( input.is( ':checked' ) && input.val() == value ) {
+									visible = true;
+									return;
+								}
+							} else if ( input.val() == value ) {
+								visible = true;
+								return;
+							}
+						} );
+					}
+				} )
+
+				$(this).parents( '.give-field-wrap' ).toggle( visible );
+
+			} );
+		}
+
+		handle_visibility();
+
+		$( '.give-visibility-handler' ).on( 'change', handle_visibility );
+	}
+
 	//On DOM Ready
 	$( function() {
 		handle_default_radio();
 		toggle_conditional_form_fields();
 		handle_repeatable_row_ID();
 		misc_cleanup();
+		handle_fields_visibility();
 	} );
 }( jQuery ) );
