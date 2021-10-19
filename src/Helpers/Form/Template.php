@@ -45,10 +45,7 @@ class Template {
 	 */
 	public static function saveOptions( $formId, $settings ) {
 		$templateId = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
-
-		/* @var \Give\Form\Template $template */
 		$template = Give()->templates->getTemplate( $templateId );
-
 		$isUpdated = Give()->form_meta->update_meta( $formId, "_give_{$templateId}_form_template_settings", $settings );
 
 		/*
