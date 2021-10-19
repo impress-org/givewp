@@ -4,6 +4,9 @@ namespace Give\Helpers\Form;
 use Give\Form\Template\LegacyFormSettingCompatibility;
 use Give\Helpers\Form\Template\Utils\Frontend;
 
+/**
+ * @since 2.7.0
+ */
 class Template {
 	/**
 	 * This function will return selected form template for a specific form.
@@ -30,6 +33,11 @@ class Template {
 		$formId   = $formId ?: Frontend::getFormId();
 		$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 		$settings = Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
+
+		// Backward compatibility for migrated settings.
+		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
+		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
+		self::handleOptionsBackwardCompatibility( $settings );
 
 		return $settings ?: [];
 	}
@@ -58,5 +66,20 @@ class Template {
 		$legacySettingHandler->save( $formId, $settings );
 
 		return $isUpdated;
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param array $settings
+	 */
+	public static function handleOptionsBackwardCompatibility( &$settings ) {
+		if ( ! isset( $settings['visual_appearance'] ) ) {
+			$settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
+			$settings['visual_appearance']['primary_color']    = $settings['introduction']['primary_color'];
+		} else {
+			$settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
+			$settings['introduction']['primary_color']      = $settings['visual_appearance']['primary_color'];
+		}
 	}
 }
