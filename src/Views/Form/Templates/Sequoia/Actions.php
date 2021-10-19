@@ -25,13 +25,16 @@ class Actions {
 		$this->templateOptions = FormTemplateUtils::getOptions();
 
 		// Get decimal numbers option
-		$decimalNumbersOption = isset( $this->templateOptions['payment_amount']['decimals_enabled'] )
-			? $this->templateOptions['payment_amount']['decimals_enabled']
+		$decimalNumbersOption = isset( $this->templateOptions['visual_appearance']['decimals_enabled'] )
+			? $this->templateOptions['visual_appearance']['decimals_enabled']
 			: 'disabled';
 
 		// Set zero number of decimal.
 		if ( 'disabled' === $decimalNumbersOption ) {
-			add_filter( 'give_get_currency_formatting_settings', [ $this, 'setupZeroNumberOfDecimalInCurrencyFormattingSetting' ], 1 );
+			add_filter( 'give_get_currency_formatting_settings', [
+				$this,
+				'setupZeroNumberOfDecimalInCurrencyFormattingSetting'
+			], 1 );
 			add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
 		}
 

@@ -65,15 +65,15 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
-		$templateOptions['style']['google-fonts']                 = ! empty( $templateOptions['style']['google-fonts'] ) ? $templateOptions['style']['google-fonts'] : "enabled";
+		$templateOptions['visual_appearance']['google-fonts']     = ! empty( $templateOptions['visual_appearance']['google-fonts'] ) ? $templateOptions['visual_appearance']['google-fonts'] : "enabled";
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
-		$templateOptions['introduction']['primary_color']         = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
+		$templateOptions['visual_appearance']['primary_color']    = ! empty( $templateOptions['visual_appearance']['primary_color'] ) ? $templateOptions['visual_appearance']['primary_color'] : '#28C77B';
 		$templateOptions['payment_amount']['next_label']          = ! empty( $templateOptions['payment_amount']['next_label'] ) ? $templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
 		$templateOptions['payment_amount']['header_label']        = ! empty( $templateOptions['payment_amount']['header_label'] ) ? $templateOptions['payment_amount']['header_label'] : __( 'Choose Amount', 'give' );
 		$templateOptions['payment_information']['header_label']   = ! empty( $templateOptions['payment_information']['header_label'] ) ? $templateOptions['payment_information']['header_label'] : __( 'Add Your Information', 'give' );
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
-		$isGoogleFontEnabled = give_is_setting_enabled( $templateOptions['style']['google-fonts'] );
+		$isGoogleFontEnabled = give_is_setting_enabled( $templateOptions['visual_appearance']['google-fonts'] );
 
 		if ( $isGoogleFontEnabled ) {
 			wp_enqueue_style(
@@ -92,7 +92,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		// Enqueue Sequoia template styles
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', [ 'give-styles' ], GIVE_VERSION );
 
-		$primaryColor = $templateOptions['introduction']['primary_color'];
+		$primaryColor = $templateOptions['visual_appearance']['primary_color'];
 		$dynamicCss   = sprintf(
 			'
 			.seperator {
