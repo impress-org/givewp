@@ -15,15 +15,11 @@ return [
 		'name'   => esc_html__( 'Visual Appearance', 'give' ),
 		'fields' => [
 			[
-				'id'      => 'decimals_enabled',
-				'name'    => __( 'Decimal amounts', 'give' ),
-				'desc'    => __( 'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.', 'give' ),
-				'type'    => 'radio_inline',
-				'default' => 'disabled',
-				'options' => [
-					'disabled' => __( 'Disabled', 'give' ),
-					'enabled'  => __( 'Enabled', 'give' ),
-				],
+				'id'      => 'primary_color',
+				'name'    => __( 'Primary Color', 'give' ),
+				'desc'    => __( 'The primary color is used throughout the Form Template for various elements including buttons, line breaks, and focus/hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
+				'type'    => 'colorpicker',
+				'default' => '#28C77B',
 			],
 			[
 				'name'    => esc_html__( 'Primary Font', 'give' ),
@@ -37,12 +33,16 @@ return [
 				'default' => 'enabled',
 			],
 			[
-				'id'      => 'primary_color',
-				'name'    => __( 'Primary Color', 'give' ),
-				'desc'    => __( 'The primary color is used throughout the Form Template for various elements including buttons, line breaks, and focus/hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
-				'type'    => 'colorpicker',
-				'default' => '#28C77B',
-			]
+				'id'      => 'decimals_enabled',
+				'name'    => __( 'Decimal amounts', 'give' ),
+				'desc'    => __( 'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.', 'give' ),
+				'type'    => 'radio_inline',
+				'default' => 'disabled',
+				'options' => [
+					'disabled' => __( 'Disabled', 'give' ),
+					'enabled'  => __( 'Enabled', 'give' ),
+				],
+			],
 		]
 	],
 	'introduction' => [
