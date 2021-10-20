@@ -71,7 +71,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		}
 
 		if (
-			! is_subclass_of( $gatewayClass, OffSitePaymentGateway::class ) ||
+			! is_subclass_of( $gatewayClass, OffSitePaymentGateway::class ) &&
 			! is_subclass_of( $gatewayClass, OnSitePaymentGateway::class )
 		) {
 			throw new InvalidArgumentException( "$gatewayClass must extend either the Offsite or Onsite Payment Gateway interface" );
