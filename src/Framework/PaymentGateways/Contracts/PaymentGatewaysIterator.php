@@ -7,8 +7,6 @@ namespace Give\Framework\PaymentGateways\Contracts;
  * @property-read array $gateways
  */
 class PaymentGatewaysIterator implements \Iterator {
-	private $gatewayId;
-
 	/**
 	 * @unreleased
 	 * @return string
