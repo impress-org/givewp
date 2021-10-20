@@ -9,12 +9,15 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayTypes\OffSitePaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
+use Give\PaymentGateways\TestGateway\TestGateway;
 
 /**
  * @unreleased
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator {
-	private $gateways = [];
+	private $gateways = [
+		TestGateway::class
+	];
 
 	/**
 	 * @unreleased
@@ -68,7 +71,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		}
 
 		if (
-			! is_subclass_of( $gatewayClass, OffSitePaymentGateway::class ) &&
+			! is_subclass_of( $gatewayClass, OffSitePaymentGateway::class ) ||
 			! is_subclass_of( $gatewayClass, OnSitePaymentGateway::class )
 		) {
 			throw new InvalidArgumentException( "$gatewayClass must extend either the Offsite or Onsite Payment Gateway interface" );
