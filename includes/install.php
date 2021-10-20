@@ -160,8 +160,7 @@ function give_run_install() {
 			'v241_remove_sale_logs',
 			'v270_store_stripe_account_for_donation',
 			AddPastDonationsToRevenueTable::id(),
-			MigrateExistingLogs::id(),
-			MoveOptionsToVisualAppearanceSection::id()
+			MigrateExistingLogs::id()
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {

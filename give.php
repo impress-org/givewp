@@ -156,8 +156,7 @@ final class Give {
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
-		LicenseServiceProvider::class,
-		\Give\Form\ServiceProvider::class
+		LicenseServiceProvider::class
 	];
 
 	/**
