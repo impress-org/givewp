@@ -40,25 +40,25 @@
  */
 
 use Give\Container\Container;
+use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
+use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
-use Give\Form\Templates;
 use Give\License\LicenseServiceProvider;
+use Give\Log\LogServiceProvider;
+use Give\MigrationLog\MigrationLogServiceProvider;
+use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
-use Give\ServiceProviders\PaymentGateways;
-use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
-use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
-use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
-use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\ServiceProviders\PaymentGateways;
+use Give\ServiceProviders\RestAPI;
+use Give\ServiceProviders\Routes;
+use Give\ServiceProviders\ServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
-use Give\MigrationLog\MigrationLogServiceProvider;
-use Give\Log\LogServiceProvider;
-use Give\ServiceProviders\ServiceProvider;
-use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
 
 // Exit if accessed directly.
@@ -157,6 +157,7 @@ final class Give {
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
 		LicenseServiceProvider::class,
+		\Give\Form\ServiceProvider::class
 	];
 
 	/**
