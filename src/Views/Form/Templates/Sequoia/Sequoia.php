@@ -65,7 +65,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
-		$templateOptions['visual_appearance']['google-fonts']     = ! empty( $templateOptions['visual_appearance']['google-fonts'] ) ? $templateOptions['visual_appearance']['google-fonts'] : "enabled";
+		$templateOptions['visual_appearance']['google-fonts']     = ! empty( $templateOptions['visual_appearance']['google-fonts'] ) ? $templateOptions['visual_appearance']['google-fonts'] : 'enabled';
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
 		$templateOptions['visual_appearance']['primary_color']    = ! empty( $templateOptions['visual_appearance']['primary_color'] ) ? $templateOptions['visual_appearance']['primary_color'] : '#28C77B';
 		$templateOptions['payment_amount']['next_label']          = ! empty( $templateOptions['payment_amount']['next_label'] ) ? $templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
