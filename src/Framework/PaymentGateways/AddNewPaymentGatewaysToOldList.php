@@ -23,11 +23,11 @@ class AddNewPaymentGatewaysToOldList {
 			return $gatewaysData;
 		}
 
-		foreach ( $newPaymentGateways as $paymentGatewayId => $className ){
+		foreach ( $newPaymentGateways as $gatewayClassName ) {
 			/* @var PaymentGateway $paymentGatewayObj */
-			$paymentGatewayObj = give( $className );
+			$paymentGatewayObj = give( $gatewayClassName );
 
-			$gatewaysData[$paymentGatewayId] = [
+			$gatewaysData[ $paymentGatewayObj->getId() ] = [
 				'admin_label' => $paymentGatewayObj->getName(),
 				'checkout_label' => $paymentGatewayObj->getPaymentMethodLabel(),
 			];
