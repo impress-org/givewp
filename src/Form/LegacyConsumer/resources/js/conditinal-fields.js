@@ -80,7 +80,11 @@ document.addEventListener('readystatechange', event => {
 
 					const comparisonResult = compareWithOperator(operator, inputValue, value);
 
-					if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
+					if (fieldType === 'checkbox') {
+						if (input.checked && operator === '=' || !input.checked && operator === '!=') {
+							visible = true;
+						}
+					} else if (fieldType === 'radio') {
 						if (input.checked && comparisonResult) {
 							visible = true;
 						}
