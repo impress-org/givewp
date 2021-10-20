@@ -25,7 +25,7 @@ return [
 				'name'    => esc_html__( 'Primary Font', 'give' ),
 				'desc'    => esc_html__( 'The default font for this donation form uses the Montserrat Google Font. The System Font option uses the system font of a particular operating system and can boost performance but impact visual appearance.', 'give' ),
 				'id'      => 'google-fonts',
-				'type'    => 'radio_inline',
+				'type'    => 'radio',
 				'options' => [
 					'enabled'  => esc_html__( 'Montserrat Google Font', 'give' ),
 					'disabled' => esc_html__( 'User’s System Font', 'give' ),
