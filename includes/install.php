@@ -1,5 +1,6 @@
 <?php
 
+use Give\Form\Migrations\MoveOptionsToVisualAppearanceSection;
 use Give\Log\Migrations\MigrateExistingLogs;
 use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
 
@@ -160,6 +161,7 @@ function give_run_install() {
 			'v270_store_stripe_account_for_donation',
 			AddPastDonationsToRevenueTable::id(),
 			MigrateExistingLogs::id(),
+			MoveOptionsToVisualAppearanceSection::id()
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {
