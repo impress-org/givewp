@@ -46,7 +46,7 @@ document.addEventListener('readystatechange', event => {
 	function compareWithOperator( operator, firstData, secondData ){
 		return {
 			'=': firstData === secondData,
-			'!=': firstData != secondData,
+			'!=': firstData !== secondData,
 			'>': firstData > secondData,
 			'>=': firstData >= secondData,
 			'<': firstData < secondData,
@@ -72,7 +72,13 @@ document.addEventListener('readystatechange', event => {
 			if (hasFieldController) {
 				inputs.forEach((input) => {
 					const fieldType = input.getAttribute('type');
-					const comparisonResult = compareWithOperator(operator, input.value, value);
+
+					// Make an exception for the amount field and parse the value
+					const inputValue = input.name === 'give-amount'
+						? Give.fn.unFormatCurrency(input.value, Give.form.fn.getInfo('decimal_separator', donationForm))
+						: input.value;
+
+					const comparisonResult = compareWithOperator(operator, inputValue, value);
 
 					if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
 						if (input.checked && comparisonResult) {
@@ -159,10 +165,7 @@ document.addEventListener('readystatechange', event => {
 		for (const [watchedElementName, VisibilityConditions] of Object.entries(state[donationFormUniqueId])) {
 			document.querySelectorAll(`[name = "${watchedElementName}"]`)
 				.forEach(field => {
-					field.addEventListener(
-						'change',
-						() => handleVisibility(donationForm, watchedElementName, VisibilityConditions)
-					);
+					jQuery(field).on('input change blur', handleVisibility.bind(null, donationForm, watchedElementName, VisibilityConditions))
 				});
 		}
 	}
