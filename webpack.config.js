@@ -32,6 +32,7 @@ const config = {
 		'plugin-deactivation-survey': [ './assets/src/css/admin/plugin-deactivation-survey.scss', './assets/src/js/admin/plugin-deactivation-survey.js' ],
 		'admin-add-ons': [ './assets/src/js/admin/admin-add-ons.js' ],
 		'give-sequoia-template': [ './src/Views/Form/Templates/Sequoia/assets/css/form.scss', './src/Views/Form/Templates/Sequoia/assets/js/form.js' ],
+		'give-classic-template': [ './src/Views/Form/Templates/Classic/resources/css/form.scss', './src/Views/Form/Templates/Classic/resources/js/form.js' ],
 		'admin-reports': [ './assets/src/js/admin/reports/app.js' ],
 		'admin-reports-widget': [ './assets/src/js/admin/reports/widget.js' ],
 		'admin-widgets': [ './assets/src/js/admin/admin-widgets.js', './assets/src/css/admin/widgets.scss' ],
