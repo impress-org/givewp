@@ -88,19 +88,19 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * Load Google font
 	 */
 	public function loadGoogleFont() {
-		switch ( $this->options[ 'appearance' ][ 'primary_font' ] ) {
-			case 'custom':
-			case 'montserrat':
-				$font = ( 'montserrat' === $this->options[ 'appearance' ][ 'primary_font' ] )
-					? 'Montserrat'
-					: $this->options[ 'appearance' ][ 'custom_font' ];
+		$primaryFont = $this->options[ 'appearance' ][ 'primary_font' ];
 
-				wp_enqueue_style(
-					'give-google-font',
-					"https://fonts.googleapis.com/css?family={$font}:400,500,600,700&display=swap",
-					[],
-					GIVE_VERSION
-				);
+		if ( in_array( $primaryFont, [ 'custom', 'montserrat' ] ) ) {
+			$font = ( 'montserrat' === $primaryFont )
+				? 'Montserrat'
+				: $this->options[ 'appearance' ][ 'custom_font' ];
+
+			wp_enqueue_style(
+				'give-google-font',
+				"https://fonts.googleapis.com/css?family={$font}:400,500,600,700&display=swap",
+				[],
+				GIVE_VERSION
+			);
 		}
 	}
 
