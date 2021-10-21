@@ -1,10 +1,10 @@
 .give-form-header {
+	--tint-color: rgba(var(--give-primary-color--for-rgb), 0.75);
+	--tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
+
 	background-color: var(--give-primary-color);
-	background-image:
-		/* translucent tint colour */
-		linear-gradient(to right, var(--give-header-background-tint), var(--give-header-background-tint)),
-		/* image */
-		var(--give-header-background-image);
+	/* translucent tint gradient over image */
+	background-image: var(--tint), var(--give-header-background-image);
 	background-size: cover;
 	color: #fff;
 }
