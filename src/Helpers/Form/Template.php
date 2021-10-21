@@ -34,12 +34,20 @@ class Template {
 		$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 		$settings = Give()->form_meta->get_meta( $formId, "_give_{$template}_form_template_settings", true );
 
+		$settings = $settings ?: [];
+
+		// Exit if admin did not have any settings.
+		// New donation form does not have any setting saved.
+		if ( ! $settings ) {
+			return $settings;
+		}
+
 		// Backward compatibility for migrated settings.
 		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
 		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
 		self::handleOptionsBackwardCompatibility( $settings );
 
-		return $settings ?: [];
+		return $settings;
 	}
 
 	/**
