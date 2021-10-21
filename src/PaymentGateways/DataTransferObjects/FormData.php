@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\PaymentGateways\TestGateway\DataTransferObjects;
+namespace Give\PaymentGateways\DataTransferObjects;
 
 /**
- * Class TestGatewayFormData
+ * Class FormData
  * @unreleased
  */
-class TestGatewayFormData {
+class FormData {
 	/**
 	 * @var mixed
 	 */
@@ -50,11 +50,11 @@ class TestGatewayFormData {
 	/**
 	 * @var mixed
 	 */
-	public $gatewayNonce;
+	public $gateway;
 	/**
 	 * @var mixed
 	 */
-	public $gateway;
+	public $gatewayNonce;
 
 	/**
 	 * Convert data from request into DTO
@@ -66,7 +66,6 @@ class TestGatewayFormData {
 	public static function fromRequest( array $request ) {
 		$self = new static();
 
-		$self->gatewayNonce = $request['gateway_nonce'];
 		$self->price = $request['price'];
 		$self->giveFormTitle = $request['post_data']['give-form-title'];
 		$self->giveFormId = (int) $request['post_data']['give-form-id'];
@@ -78,6 +77,7 @@ class TestGatewayFormData {
 		$self->userInfo = $request['user_info'];
 		$self->status = 'pending';
 		$self->gateway = $request['post_data']['give-gateway'];
+		$self->gatewayNonce = $request['gateway_nonce'];
 
 		return $self;
 	}

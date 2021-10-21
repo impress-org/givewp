@@ -1,6 +1,8 @@
 <?php
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\PaymentGateways\DataTransferObjects\FormData;
+
 /**
  * @unreleased
  */
@@ -38,4 +40,16 @@ interface PaymentGatewayInterface {
 	 * @return string|bool
 	 */
 	public function getFormFields( $formId );
+
+	/**
+	 * After creating the initial payment, we can continue with the gateway processing
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param  int  $donationId
+	 * @param  FormData  $formData
+	 *
+	 * @return string|bool
+	 */
+	public function handleGatewayRequest( $donationId, $formData );
 }

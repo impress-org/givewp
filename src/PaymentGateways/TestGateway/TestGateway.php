@@ -6,13 +6,13 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\TestGateway\Actions\TestGatewayHandleFormRequestAction;
-use Give\PaymentGateways\TestGateway\DataTransferObjects\TestGatewayFormData;
 
 /**
  * Class TestGateway
  * @unreleased
  */
 class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
+
 	/**
 	 * @inheritDoc
 	 */
@@ -80,32 +80,9 @@ class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
 	}
 
 	/**
-	 * Processes the donation data and uses the gateway to record
-	 * the donation in the Donation History
-	 *
-	 * @unreleased
-	 *
-	 * @param  array  $request  Donation Data
-	 *
-	 * @return void
+	 * @inheritDoc
 	 */
-	public function handleFormRequest( $request ) {
-		$formData = TestGatewayFormData::fromRequest( $request );
-
-		$this->validateFormRequest( $formData->gatewayNonce );
-
-		return give( TestGatewayHandleFormRequestAction::class )( $formData );
-	}
-
-	/**
-	 * Validate request
-	 *
-	 * @param  string  $gatewayNonce
-	 */
-	private function validateFormRequest( $gatewayNonce ) {
-		if ( ! wp_verify_nonce( $gatewayNonce, 'give-gateway' ) ) {
-			wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.',
-				'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
-		}
+	public function handleGatewayRequest( $donationId, $formData ) {
+		return give( TestGatewayHandleFormRequestAction::class )( $donationId );
 	}
 }
