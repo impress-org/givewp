@@ -50,7 +50,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	 *
 	 * @return bool
 	 */
-	public function hasMigration( $id ) {
+	public function hasPaymentGateway( $id ) {
 		return isset( $this->gateways[ $id ] );
 	}
 
