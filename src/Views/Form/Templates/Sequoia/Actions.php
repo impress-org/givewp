@@ -111,7 +111,7 @@ class Actions {
 	 * As per design requirement we want to format donation amount with zero decimal whether or not number of decimal admin setting set to zero.
 	 *
 	 * @since 2.7.0
-	 * @return int|array
+	 * @return int
 	 */
 	public function setupZeroNumberOfDecimal() {
 		return 0;
