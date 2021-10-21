@@ -20,6 +20,11 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	private $options;
 
+	/**
+	 * @var bool
+	 */
+	private $scriptsLoaded = false;
+
 	public function __construct() {
 		$this->options = FormTemplateUtils::getOptions();
 	}
@@ -103,6 +108,12 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function loadScripts() {
+		if ( $this->scriptsLoaded ) {
+			return;
+		}
+
+		$this->scriptsLoaded = true;
+
 		// Font
 		$this->loadGoogleFont();
 
@@ -112,15 +123,20 @@ class Classic extends Template implements Hookable, Scriptable {
 		}
 
 		// Form styles
-		wp_enqueue_style( 'give-classic-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-classic-template.css', [ 'give-styles' ], GIVE_VERSION );
+		wp_enqueue_style( 'give-classic-template', GIVE_PLUGIN_URL . 'assets/dist/css/give-classic-template.css', [ 'give-styles' ], GIVE_VERSION );
+
+		// CSS Variables
+		wp_add_inline_style(
+			'give-classic-template',
+			$this->loadFile( 'css/variables.php', [
+				'primaryColor' => $this->options[ 'appearance' ][ 'primary_color' ]
+			] )
+		);
 
 		// Inline CSS
-		// TODO: discuss with Nathan
 		wp_add_inline_style(
-			'give-classic-template-css',
-			$this->loadFile( 'css/inline.css.php', [
-				'options' => $this->options
-			] )
+			'give-classic-template',
+			$this->loadFile( 'css/inline.css' )
 		);
 
 		// JS
