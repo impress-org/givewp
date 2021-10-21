@@ -10,6 +10,8 @@ use Give_Scripts;
 use InvalidArgumentException;
 
 /**
+ * Classic Donation Form Template
+ *
  * @unreleased
  */
 class Classic extends Template implements Hookable, Scriptable {
@@ -84,7 +86,9 @@ class Classic extends Template implements Hookable, Scriptable {
 		// TODO: discuss with Nathan
 		wp_add_inline_style(
 			'give-classic-template-css',
-			$this->loadFile( 'css/inline.css.php', $this->options )
+			$this->loadFile( 'css/inline.css.php', [
+				'options' => $this->options
+			] )
 		);
 
 		// JS
@@ -96,7 +100,9 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getLoadingView() {
-		return $this->loadFile( 'views/loading.php', $this->options );
+		return $this->loadFile( 'views/loading.php', [
+			'options' => $this->options
+		] );
 	}
 
 	/**
@@ -110,7 +116,7 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
-		return $this->getPath( 'views/receipt.php' );
+		return $this->getFilePath( 'views/receipt.php' );
 	}
 
 	/**
@@ -124,7 +130,7 @@ class Classic extends Template implements Hookable, Scriptable {
 	 *
 	 */
 	protected function loadFile( $file, $args = [] ) {
-		$filePath = $this->getPath( $file );
+		$filePath = $this->getFilePath( $file );
 
 		if ( ! file_exists( $filePath ) ) {
 			throw new InvalidArgumentException( "File {$filePath} does not exist" );
@@ -144,7 +150,7 @@ class Classic extends Template implements Hookable, Scriptable {
 	 *
 	 * @return string
 	 */
-	protected function getPath( $file = '' ) {
+	protected function getFilePath( $file = '' ) {
 		return GIVE_PLUGIN_DIR . "src/Views/Form/Templates/Classic/resources/{$file}";
 	}
 }
