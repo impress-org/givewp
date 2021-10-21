@@ -149,7 +149,7 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function getLoadingView() {
 		return $this->loadFile( 'views/loading.php', [
-			'options' => $this->options
+			'options' => $this->options[ 'appearance' ]
 		] );
 	}
 
