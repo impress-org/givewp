@@ -66,12 +66,12 @@ function transform() {
 	nodes.formWrap.classList.add(styles.form);
 
 	// TODO: replace with option data
-	nodes.title.outerHTML = (
-		<div className={styles.hero}>
-			<h1>{nodes.title.textContent}</h1>
-			<p>Hello, World!</p>
-		</div>
-	);
+	//nodes.title.outerHTML = (
+	//	<div className={styles.hero}>
+	//		<h1>{classicTemplateOptions.apperance.main_heading}</h1>
+	//		<p>{classicTemplateOptions.appearance.description}</p>
+	//	</div>
+	//);
 
 	// Move the personal info before the payment method.
 	nodes.paymentMethod.parentNode.insertBefore(nodes.personalInfo, nodes.paymentMethod);

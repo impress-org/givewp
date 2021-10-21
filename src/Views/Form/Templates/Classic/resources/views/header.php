@@ -3,11 +3,7 @@
  * @var array $options
  */
 ?>
-<div style="background-image: url(<?= $options[ 'header_background_image' ] ?>)">
-	<div>
-		<?= $options[ 'main_heading' ]; ?>
-	</div>
-	<div>
-		<?= $options[ 'description' ]; ?>
-	</div>
+<div class="give-form-header">
+	<h1><?= $options[ 'main_heading' ]; ?></h1>
+	<p><?= $options[ 'description' ]; ?></p>
 </div>

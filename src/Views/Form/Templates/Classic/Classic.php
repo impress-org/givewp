@@ -133,7 +133,8 @@ class Classic extends Template implements Hookable, Scriptable {
 		wp_add_inline_style(
 			'give-classic-template',
 			$this->loadFile( 'css/variables.php', [
-				'primaryColor' => $this->options[ 'appearance' ][ 'primary_color' ]
+				'primaryColor' => $this->options[ 'appearance' ][ 'primary_color' ],
+				'headerBackgroundImage' => $this->options[ 'appearance' ][ 'header_background_image' ],
 			] )
 		);
 

@@ -1,12 +1,10 @@
-.highlight {
-	outline: 2px solid red;
-}
-
-.give-form {
-	padding: 1rem;
-}
-
-#give_checkout_user_info {
-	padding: 1rem;
-	background-color: #f9f9f9;
+.give-form-header {
+	background-color: var(--give-primary-color);
+	background-image:
+		/* translucent tint colour */
+		linear-gradient(to right, var(--give-header-background-tint), var(--give-header-background-tint)),
+		/* image */
+		var(--give-header-background-image);
+	background-size: cover;
+	color: #fff;
 }
