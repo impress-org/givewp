@@ -61,18 +61,22 @@ class Actions {
 	 * @return object
 	 */
 	public function setupStripeBaseStyles( $styles ) {
-		$styles = '{
-			"fontFamily": "Montserrat",
-			"color": "#8d8e8e",
-			"fontWeight": 400,
-			"fontSize": "14px",
-			"::placeholder": {
-			  "color": "#8d8e8e"
-			},
-			":-webkit-autofill": {
-			  "color": "#e39f48"
-			}
-		}';
+		$styles = sprintf(
+			'{
+				"fontFamily": "%1$s",
+				"color": "#8d8e8e",
+				"fontWeight": 400,
+				"fontSize": "14px",
+				"::placeholder": {
+				  "color": "#8d8e8e"
+				},
+				":-webkit-autofill": {
+				  "color": "#e39f48"
+				}
+			}',
+			$this->isGoogleFontEnabled() ? 'Montserrat' : 'system-ui',
+		);
+
 		return json_decode( $styles );
 	}
 
@@ -86,7 +90,9 @@ class Actions {
 	 */
 	public function setupStripeFontStyles( $fontStyles ) {
 		return [
-			'cssSrc' => 'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
+			'cssSrc' => $this->isGoogleFontEnabled() ?
+				'https://fonts.googleapis.com/css2?family=Montserrat&display=swap' :
+				false,
 		];
 	}
 
@@ -301,7 +307,21 @@ class Actions {
 				$value['checkout_label']
 			);
 		}
+
 		return $gateways;
+	}
+
+	/**
+	 * @unreleased
+	 * @return bool
+	 */
+	private function isGoogleFontEnabled() {
+		$templateOptions = FormTemplateUtils::getOptions();
+
+		// Set defaults
+		$templateOptions['visual_appearance']['google-fonts'] = ! empty( $templateOptions['visual_appearance']['google-fonts'] ) ? $templateOptions['visual_appearance']['google-fonts'] : 'enabled';
+
+		return give_is_setting_enabled( $templateOptions['visual_appearance']['google-fonts'] );
 	}
 
 }
