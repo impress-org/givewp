@@ -38,11 +38,6 @@ class Actions {
 			add_filter( 'give_get_option_number_decimals', [ $this, 'setupZeroNumberOfDecimal' ], 1 );
 		}
 
-		// Handle personal section html template.
-		add_action( 'wp_ajax_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
-		add_action( 'wp_ajax_nopriv_give_cancel_login', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
-		add_action( 'wp_ajax_nopriv_give_checkout_register', [ $this, 'cancelLoginAjaxHanleder' ], 9 );
-
 		// Handle common hooks.
 		add_action( 'give_donation_form', [ $this, 'loadCommonHooks' ], 9, 2 );
 
@@ -120,16 +115,6 @@ class Actions {
 	 */
 	public function setupZeroNumberOfDecimal() {
 		return 0;
-	}
-
-	/**
-	 * Handle cancel login and checkout register ajax request.
-	 *
-	 * @since 2.7.0
-	 * @return void
-	 */
-	public function cancelLoginAjaxHanleder() {
-		// add_action( 'give_donation_form_before_personal_info', [ $this, 'getIntroductionSectionTextSubSection' ] );
 	}
 
 	/**
