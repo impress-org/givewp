@@ -63,7 +63,40 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function loadHooks() {
-		//TODO: check what hooks we have to add/remove
+		// Display header
+		if ( 'enabled' === $this->options[ 'appearance' ][ 'display_header' ] ) {
+			add_action( 'give_pre_form', [ $this, 'renderHeader' ] );
+		}
+
+		/**
+		 * Remove actions
+		 */
+		// Remove goal.
+		remove_action( 'give_pre_form', 'give_show_goal_progress' );
+		// Remove intermediate continue button which appear when display style set to other then onpage.
+		remove_action( 'give_after_donation_levels', 'give_display_checkout_button' );
+		// Hide title.
+		add_filter( 'give_form_title', '__return_empty_string' );
+	}
+
+	/**
+	 * Load Google font
+	 */
+	public function loadGoogleFont() {
+		switch ( $this->options[ 'appearance' ][ 'primary_font' ] ) {
+			case 'custom':
+			case 'montserrat':
+				$font = ( 'montserrat' === $this->options[ 'appearance' ][ 'primary_font' ] )
+					? 'Montserrat'
+					: $this->options[ 'appearance' ][ 'custom_font' ];
+
+				wp_enqueue_style(
+					'give-google-font',
+					"https://fonts.googleapis.com/css?family={$font}:400,500,600,700&display=swap",
+					[],
+					GIVE_VERSION
+				);
+		}
 	}
 
 	/**
@@ -71,8 +104,7 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function loadScripts() {
 		// Font
-		// TODO: check font option
-		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700i&display=swap', [], GIVE_VERSION );
+		$this->loadGoogleFont();
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
 		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
@@ -117,6 +149,15 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function getReceiptView() {
 		return $this->getFilePath( 'views/receipt.php' );
+	}
+
+	/**
+	 * Render donation form header
+	 */
+	public function renderHeader() {
+		echo $this->loadFile( 'views/header.php', [
+			'options' => $this->options[ 'appearance' ]
+		] );
 	}
 
 	/**
