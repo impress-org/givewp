@@ -84,10 +84,18 @@ class Classic extends Template implements Hookable, Scriptable {
 		add_filter( 'give_form_title', '__return_empty_string' );
 	}
 
+
 	/**
-	 * Load Google font
+	 * @inheritDoc
 	 */
-	public function loadGoogleFont() {
+	public function loadScripts() {
+		if ( $this->scriptsLoaded ) {
+			return;
+		}
+
+		$this->scriptsLoaded = true;
+
+		// Font
 		$primaryFont = $this->options[ 'appearance' ][ 'primary_font' ];
 
 		if ( in_array( $primaryFont, [ 'custom', 'montserrat' ] ) ) {
@@ -102,20 +110,6 @@ class Classic extends Template implements Hookable, Scriptable {
 				GIVE_VERSION
 			);
 		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function loadScripts() {
-		if ( $this->scriptsLoaded ) {
-			return;
-		}
-
-		$this->scriptsLoaded = true;
-
-		// Font
-		$this->loadGoogleFont();
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
 		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
