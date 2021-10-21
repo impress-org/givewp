@@ -7,4 +7,14 @@ namespace Give\Framework\PaymentGateways\PaymentGatewayTypes;
  */
 interface OnSitePaymentGateway {
 
+	/**
+	 * Handles form request
+	 *
+	 * @unreleased
+	 *
+	 * @param $request
+	 *
+	 * @return mixed
+	 */
+	public function handleFormRequest( $request );
 }

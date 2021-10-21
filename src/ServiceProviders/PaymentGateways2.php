@@ -5,6 +5,7 @@ namespace Give\ServiceProviders;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\AddNewPaymentGatewaysToOldList;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\TestGateway\TestGateway;
@@ -36,7 +37,7 @@ class PaymentGateways2 implements ServiceProvider {
 	 * @inheritDoc
 	 */
 	public function boot() {
-		add_filter( 'give_register_gateway', [ $this, 'bootGateways' ] );
+		add_filter( 'give_register_gateway', [ $this, 'registerGateways' ] );
 		Hooks::addFilter( 'give_payment_gateways', AddNewPaymentGatewaysToOldList::class );
 	}
 
@@ -52,12 +53,19 @@ class PaymentGateways2 implements ServiceProvider {
 	 * @throws InvalidArgumentException|Exception
 	 *
 	 */
-	public function bootGateways( array $gateways ) {
+	public function registerGateways( array $gateways ) {
 		/** @var PaymentGatewayRegister $paymentGatewayRegister */
-		$paymentGatewayRegister = give(PaymentGatewayRegister::class);
+		$paymentGatewayRegister = give( PaymentGatewayRegister::class );
 
 		foreach ( $this->gateways as $gateway ) {
-			$paymentGatewayRegister->registerGateway($gateway);
+			$paymentGatewayRegister->registerGateway( $gateway );
+
+			/** @var PaymentGatewayInterface $registeredGateway */
+			$registeredGateway = give( $gateway );
+			$registeredGatewayId = $registeredGateway->getId();
+
+			Hooks::addAction( "give_{$registeredGatewayId}_cc_form", $gateway, 'getFormFields' );
+			Hooks::addAction( "give_gateway_{$registeredGatewayId}", $gateway, 'handleFormRequest' );
 		}
 
 		return $gateways;

@@ -29,4 +29,13 @@ interface PaymentGatewayInterface {
 	 * @return string
 	 */
 	public function getPaymentMethodLabel();
+
+	/**
+	 * Returns form fields for donation form to render
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return string|bool
+	 */
+	public function getFormFields( $formId );
 }
