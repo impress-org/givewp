@@ -113,11 +113,21 @@ class Classic extends Template implements Hookable, Scriptable {
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
 		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
-			wp_enqueue_style( 'give-styles', ( new Give_Scripts )->get_frontend_stylesheet_uri(), [], GIVE_VERSION );
+			wp_enqueue_style(
+				'give-styles',
+				( new Give_Scripts )->get_frontend_stylesheet_uri(),
+				[],
+				GIVE_VERSION
+			);
 		}
 
 		// Form styles
-		wp_enqueue_style( 'give-classic-template', GIVE_PLUGIN_URL . 'assets/dist/css/give-classic-template.css', [ 'give-styles' ], GIVE_VERSION );
+		wp_enqueue_style(
+			'give-classic-template',
+			GIVE_PLUGIN_URL . 'assets/dist/css/give-classic-template.css',
+			[ 'give-styles' ],
+			GIVE_VERSION
+		);
 
 		// CSS Variables
 		wp_add_inline_style(
@@ -134,8 +144,19 @@ class Classic extends Template implements Hookable, Scriptable {
 		);
 
 		// JS
-		wp_enqueue_script( 'give-classic-template-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-classic-template.js', [ 'give' ], GIVE_VERSION, true );
-		wp_localize_script( 'give-classic-template-js', 'classicTemplateOptions', $this->options );
+		wp_enqueue_script(
+			'give-classic-template-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/give-classic-template.js',
+			[ 'give' ],
+			GIVE_VERSION,
+			true
+		);
+
+		wp_localize_script(
+			'give-classic-template-js',
+			'classicTemplateOptions',
+			$this->options
+		);
 	}
 
 	/**
