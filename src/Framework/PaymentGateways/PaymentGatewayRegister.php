@@ -9,15 +9,12 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayTypes\OffSitePaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
-use Give\PaymentGateways\TestGateway\TestGateway;
 
 /**
  * @unreleased
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator {
-	private $gateways = [
-		TestGateway::class
-	];
+	private $gateways = [];
 
 	/**
 	 * @unreleased
