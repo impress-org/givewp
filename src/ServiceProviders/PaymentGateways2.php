@@ -26,7 +26,7 @@ class PaymentGateways2 implements ServiceProvider {
 	public $gateways = [
 		TestGateway::class
 	];
-	
+
 	/**
 	 * @inheritDoc
 	 */
@@ -70,6 +70,9 @@ class PaymentGateways2 implements ServiceProvider {
 	}
 
 	/**
+	 * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
+	 * that prepares data to be sent to each gateway
+	 *
 	 * @param  string  $gateway
 	 */
 	private function connectToLegacyPaymentGatewayAdapter( $gateway ) {
