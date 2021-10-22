@@ -53,6 +53,7 @@ use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -150,6 +151,7 @@ final class Give {
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
 		DonorDashboardsServiceProvider::class,
+		InPluginUpsellsServiceProvider::class,
 		TrackingServiceProvider::class,
 		TestDataServiceProvider::class,
 		MigrationLogServiceProvider::class,
