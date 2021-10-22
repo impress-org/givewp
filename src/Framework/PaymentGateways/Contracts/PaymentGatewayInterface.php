@@ -39,7 +39,7 @@ interface PaymentGatewayInterface {
 	 *
 	 * @return string|bool
 	 */
-	public function getFormFields( $formId );
+	public function getLegacyFormFieldMarkup( $formId );
 
 	/**
 	 * After creating the initial payment, we can continue with the gateway processing

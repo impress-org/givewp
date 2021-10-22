@@ -44,12 +44,12 @@ class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
 	/**
 	 * @inheritDoc
 	 */
-	public function getFormFields( $formId ) {
+	public function getLegacyFormFieldMarkup( $formId ) {
 		if ( FormUtils::isLegacyForm( $formId ) ) {
 			return false;
 		}
 
-		printf(
+		return sprintf(
 			'
 		<fieldset class="no-fields">
 			<div style="display: flex; justify-content: center; margin-top: 20px;">
@@ -75,8 +75,6 @@ class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
 			esc_html__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.',
 				'give' )
 		);
-
-		return true;
 	}
 
 	/**

@@ -8,6 +8,7 @@ use Give\Framework\PaymentGateways\AddNewPaymentGatewaysToOldList;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
+use Give\PaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 use Give\PaymentGateways\TestGateway\TestGateway;
 
 /**
@@ -60,14 +61,31 @@ class PaymentGateways2 implements ServiceProvider {
 		foreach ( $this->gateways as $gateway ) {
 			$paymentGatewayRegister->registerGateway( $gateway );
 
-			/** @var PaymentGatewayInterface $registeredGateway */
-			$registeredGateway = give( $gateway );
-			$registeredGatewayId = $registeredGateway->getId();
-
-			Hooks::addAction( "give_{$registeredGatewayId}_cc_form", $gateway, 'getFormFields' );
-			Hooks::addAction( "give_gateway_{$registeredGatewayId}", $gateway, 'handleFormRequest' );
+			$this->connectToLegacyPaymentGatewayAdapter( $gateway );
 		}
 
 		return $gateways;
+	}
+
+	/**
+	 * @param  string  $gateway
+	 */
+	private function connectToLegacyPaymentGatewayAdapter( $gateway ) {
+		/** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
+		$legacyPaymentGatewayAdapter = give( LegacyPaymentGatewayAdapter::class );
+
+		/** @var PaymentGatewayInterface $registeredGateway */
+		$registeredGateway = give( $gateway );
+		$registeredGatewayId = $registeredGateway->getId();
+
+		add_action( "give_{$registeredGatewayId}_cc_form",
+			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
+				echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup( $formId, $registeredGateway );
+			} );
+
+		add_action( "give_gateway_{$registeredGatewayId}",
+			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
+				return $legacyPaymentGatewayAdapter->handleBeforeGateway( $formId, $registeredGateway );
+			} );
 	}
 }
