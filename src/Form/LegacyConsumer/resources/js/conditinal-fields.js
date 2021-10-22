@@ -14,7 +14,7 @@ document.addEventListener('readystatechange', event => {
 	function getWatchedElementNames(donationForm) {
 		const fields = {};
 
-		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function (fieldContainer) {
+		donationForm.querySelectorAll('[data-field-visibility-conditions]').forEach(function(fieldContainer) {
 			const visibilityConditions = JSON.parse(fieldContainer.getAttribute('data-field-visibility-conditions'));
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
 			let fieldContainerSelector = `[data-field-name="${fieldContainer.getAttribute('data-field-name')}"]`;
@@ -26,8 +26,8 @@ document.addEventListener('readystatechange', event => {
 			if (field) {
 				fields[field.name] = {
 					...fields[field.name],
-					[fieldContainerSelector]: visibilityConditions
-				}
+					[fieldContainerSelector]: visibilityConditions,
+				};
 			}
 		});
 
@@ -43,15 +43,15 @@ document.addEventListener('readystatechange', event => {
 	 *
 	 * @return boolean
 	 */
-	function compareWithOperator( operator, firstData, secondData ){
+	function compareWithOperator(operator, firstData, secondData) {
 		return {
 			'=': firstData === secondData,
-			'!=': firstData != secondData,
+			'!=': firstData !== secondData,
 			'>': firstData > secondData,
 			'>=': firstData >= secondData,
 			'<': firstData < secondData,
-			'<=': firstData <=secondData
-		}[operator]
+			'<=': firstData <= secondData,
+		}[operator];
 	}
 
 	/**
@@ -59,7 +59,9 @@ document.addEventListener('readystatechange', event => {
 	 * @since 2.15.0
 	 */
 	function handleVisibility(donationForm, watchedFieldName, visibilityConditionsForWatchedField) {
-		for (const [fieldContainerSelector, visibilityConditions] of Object.entries(visibilityConditionsForWatchedField)) {
+		for (const [fieldContainerSelector, visibilityConditions] of Object.entries(
+			visibilityConditionsForWatchedField
+		)) {
 			const fieldWrapper = donationForm.querySelector(fieldContainerSelector);
 			const fieldName = fieldWrapper.getAttribute('data-field-name');
 			const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
@@ -70,11 +72,25 @@ document.addEventListener('readystatechange', event => {
 			let hasFieldController = !!inputs.length;
 
 			if (hasFieldController) {
-				inputs.forEach((input) => {
+				inputs.forEach(input => {
 					const fieldType = input.getAttribute('type');
-					const comparisonResult = compareWithOperator(operator, input.value, value);
 
-					if (fieldType && (fieldType === 'radio' || fieldType === 'checkbox')) {
+					// Make an exception for the amount field and parse the value
+					const inputValue =
+						input.name === 'give-amount'
+							? Give.fn.unFormatCurrency(
+									input.value,
+									Give.form.fn.getInfo('decimal_separator', donationForm)
+							  )
+							: input.value;
+
+					const comparisonResult = compareWithOperator(operator, inputValue, value);
+
+					if (fieldType === 'checkbox') {
+						if (comparisonResult && (input.checked && operator === '=') || (!input.checked && operator === '!=')) {
+							visible = true;
+						}
+					} else if (fieldType === 'radio') {
 						if (input.checked && comparisonResult) {
 							visible = true;
 						}
@@ -130,13 +146,12 @@ document.addEventListener('readystatechange', event => {
 	function applyVisibilityConditionsToDonationForm(donationForm) {
 		const uniqueDonationFormId = donationForm.getAttribute('data-id');
 
-		if (uniqueDonationFormId && (uniqueDonationFormId in state)) {
+		if (uniqueDonationFormId && uniqueDonationFormId in state) {
 			const formState = state[uniqueDonationFormId];
 
 			for (const [watchedFieldName, visibilityConditions] of Object.entries(formState)) {
 				handleVisibility(
-					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`)
-						.closest('.give-form'),
+					document.querySelector(`form[data-id="${uniqueDonationFormId}"]`).closest('.give-form'),
 					watchedFieldName,
 					visibilityConditions
 				);
@@ -157,13 +172,12 @@ document.addEventListener('readystatechange', event => {
 		}
 
 		for (const [watchedElementName, VisibilityConditions] of Object.entries(state[donationFormUniqueId])) {
-			document.querySelectorAll(`[name = "${watchedElementName}"]`)
-				.forEach(field => {
-					field.addEventListener(
-						'change',
-						() => handleVisibility(donationForm, watchedElementName, VisibilityConditions)
-					);
-				});
+			document.querySelectorAll(`[name = "${watchedElementName}"]`).forEach(field => {
+				jQuery(field).on(
+					'input change blur',
+					handleVisibility.bind(null, donationForm, watchedElementName, VisibilityConditions)
+				);
+			});
 		}
 	}
 
@@ -178,8 +192,7 @@ document.addEventListener('readystatechange', event => {
 		for (const [donationFormUniqueId, donationFormState] of Object.entries(state)) {
 			for (const [watchedFieldName, visibilityConditions] of Object.entries(donationFormState)) {
 				handleVisibility(
-					document.querySelector(`form[data-id="${donationFormUniqueId}"]`)
-						.closest('.give-form'),
+					document.querySelector(`form[data-id="${donationFormUniqueId}"]`).closest('.give-form'),
 					watchedFieldName,
 					visibilityConditions
 				);
@@ -192,14 +205,11 @@ document.addEventListener('readystatechange', event => {
 	bootVisibilityConditionsFormAllDonationForm();
 
 	// Apply visibility conditions to donation form when donor switch gateway.
-	document.addEventListener(
-		'give_gateway_loaded',
-		event => {
-			const donationForm = document.getElementById(event.detail.formIdAttribute);
-			const uniqueDonationFormId = donationForm.getAttribute('data-id');
-			addVisibilityConditionsToStateForDonationForm(donationForm);
-			applyVisibilityConditionsToDonationForm(donationForm);
-			addChangeEventToWatchedElementsForDonationForm(uniqueDonationFormId)
-		}
-	);
+	document.addEventListener('give_gateway_loaded', event => {
+		const donationForm = document.getElementById(event.detail.formIdAttribute);
+		const uniqueDonationFormId = donationForm.getAttribute('data-id');
+		addVisibilityConditionsToStateForDonationForm(donationForm);
+		applyVisibilityConditionsToDonationForm(donationForm);
+		addChangeEventToWatchedElementsForDonationForm(uniqueDonationFormId);
+	});
 });
