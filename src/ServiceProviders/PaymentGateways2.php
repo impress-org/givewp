@@ -4,7 +4,6 @@ namespace Give\ServiceProviders;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\AddNewPaymentGatewaysToOldList;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
@@ -27,6 +26,7 @@ class PaymentGateways2 implements ServiceProvider {
 	public $gateways = [
 		TestGateway::class
 	];
+	
 	/**
 	 * @inheritDoc
 	 */
@@ -39,7 +39,9 @@ class PaymentGateways2 implements ServiceProvider {
 	 */
 	public function boot() {
 		add_filter( 'give_register_gateway', [ $this, 'registerGateways' ] );
-		Hooks::addFilter( 'give_payment_gateways', AddNewPaymentGatewaysToOldList::class );
+		Hooks::addFilter( 'give_payment_gateways',
+			LegacyPaymentGatewayAdapter::class,
+			'addNewPaymentGatewaysToLegacyList' );
 	}
 
 	/**
