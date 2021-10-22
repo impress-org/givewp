@@ -46,6 +46,13 @@ function insertAfter(newNode, referenceNode) {
 	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+/**
+ * @param {Node} node
+ */
+function removeNode(nodeToRemove) {
+	nodeToRemove.parentNode.removeChild(nodeToRemove);
+}
+
 
 // TODO:
 // - Get localized option data.
@@ -61,7 +68,11 @@ function transform() {
 		personalInfoLegend: '#give_checkout_user_info > legend',
 		paymentMethod: '#give-payment-mode-select',
 		donationAmounts: '#give-donation-level-button-wrap',
+		testModeMessage: '#give_error_test_mode',
 	});
+
+	// TODO: move this somewhere else
+	removeNode(nodes.testModeMessage); // Get out of my way!
 
 	nodes.formWrap.classList.add(styles.form);
 

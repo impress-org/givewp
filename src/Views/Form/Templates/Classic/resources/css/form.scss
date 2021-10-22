@@ -1,10 +1,95 @@
+body {
+	padding: 1rem;
+}
+
+.give-form *,
+.give-form ::before,
+.give-form ::after {
+	box-sizing: border-box;
+}
+
 .give-form-header {
+	display: flex;
+	flex-direction: column;
+	justify-items: center;
+	align-items: center;
+	gap: 2rem;
+	padding: 3rem;
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+
 	--tint-color: rgba(var(--give-primary-color--for-rgb), 0.75);
 	--tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
-
 	background-color: var(--give-primary-color);
 	/* translucent tint gradient over image */
 	background-image: var(--tint), var(--give-header-background-image);
 	background-size: cover;
+
 	color: #fff;
+	text-align: center;
+}
+
+.give-form-secure-badge {
+	display: inline-flex;
+	padding: 0.5rem 0.8rem;
+	border-radius: 9999px;
+	background-color: #fff;
+	box-shadow: 0px 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
+	color: #333;
+	font-size: 0.8125rem;
+}
+
+.give-form-stats-panel {
+	border-radius: 0.5rem;
+	background-color: #fbfbfb;
+	width: 100%;
+}
+
+.give-form-stats-panel-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-items: stretch;
+	justify-content: center;
+	border-radius: inherit;
+	color: #4c4c4c;
+	list-style: none;
+	padding-left: 0;
+	text-align: center;
+	width: 100%;
+}
+
+
+.give-form-goal-progress {
+	width: 100%;
+	padding: 1rem;
+	border-top: 1px solid #ddd;
+	border-bottom-left-radius: inherit;
+	border-bottom-right-radius: inherit;
+	background-color: #fff;
+}
+
+.give-form-goal-progress-meter {
+	background: none;
+	width: 100%;
+}
+
+/** TODO: Safari doesn’t seem to support this, so I think we need to go the `appearance: none` route **/
+
+.give-form-goal-progress-meter::-webkit-meter-bar,
+.give-form-goal-progress-meter::-moz-meter-bar {
+	height: 1.375rem;
+	border: 0;
+	border-radius: 9999px;
+	background-color: #f1f1f1;
+	box-shadow: inset 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.give-form-goal-progress-meter::-webkit-meter-optimum-value,
+.give-form-goal-progress-meter::-webkit-meter-suboptimum-value,
+.give-form-goal-progress-meter::-webkit-meter-even-less-good-value,
+.give-form-goal-progress-meter::-moz-meter-optimum,
+.give-form-goal-progress-meter::-moz-meter-sub-optimum,
+.give-form-goal-progress-meter::-moz-meter-sub-sub-optimum {
+	background-image: linear-gradient(to bottom, #ffdb00, #ffa200);
+	border-radius: 9999px;
 }
