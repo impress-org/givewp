@@ -11,6 +11,7 @@ namespace Give\Form;
 
 use Give\Views\Form\Templates\Legacy\Legacy;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
+use Give\Views\Form\Templates\Classic\Classic;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 
 defined( 'ABSPATH' ) || exit;
@@ -56,6 +57,7 @@ class Templates {
 			[
 				'sequoia' => Sequoia::class,
 				'legacy'  => Legacy::class,
+				'classic' => Classic::class,
 			]
 		);
 	}
