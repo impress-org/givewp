@@ -18,7 +18,11 @@ function give_blocks_category( $categories, $post ) {
 		)
 	);
 }
-add_filter( 'block_categories', 'give_blocks_category', 10, 2 );
+if ( version_compare( get_bloginfo( 'version' ), '5.8', '>=' ) ) {
+	add_filter( 'block_categories_all', 'give_blocks_category', 10, 2 );
+} else {
+    add_filter( 'block_categories', 'give_blocks_category', 10, 2 );
+}
 
 /**
 * Blocks
