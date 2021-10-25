@@ -8,11 +8,11 @@ namespace Give\PaymentGateways\DataTransferObjects;
  */
 class FormData {
 	/**
-	 * @var mixed
+	 * @var float
 	 */
 	public $price;
 	/**
-	 * @var mixed
+	 * @var string
 	 */
 	public $giveFormTitle;
 	/**
@@ -20,19 +20,19 @@ class FormData {
 	 */
 	public $giveFormId;
 	/**
-	 * @var mixed|string
+	 * @var string
 	 */
 	public $givePriceId;
 	/**
-	 * @var mixed
+	 * @var string
 	 */
 	public $date;
 	/**
-	 * @var mixed
+	 * @var string
 	 */
 	public $userEmail;
 	/**
-	 * @var mixed
+	 * @var string
 	 */
 	public $purchaseKey;
 	/**
@@ -40,7 +40,7 @@ class FormData {
 	 */
 	public $currency;
 	/**
-	 * @var mixed
+	 * @var array
 	 */
 	public $userInfo;
 	/**
@@ -48,13 +48,21 @@ class FormData {
 	 */
 	public $status;
 	/**
-	 * @var mixed
+	 * @var string
 	 */
 	public $gateway;
 	/**
-	 * @var mixed
+	 * @var string
 	 */
 	public $gatewayNonce;
+	/**
+	 * @var array
+	 */
+	public $postData;
+	/**
+	 * @var array
+	 */
+	public $cardInfo;
 
 	/**
 	 * Convert data from request into DTO
@@ -75,9 +83,11 @@ class FormData {
 		$self->purchaseKey = $request['purchase_key'];
 		$self->currency = give_get_currency( $request['post_data']['give-form-id'], $request );
 		$self->userInfo = $request['user_info'];
+		$self->postData = $request['post_data'];
 		$self->status = 'pending';
 		$self->gateway = $request['post_data']['give-gateway'];
 		$self->gatewayNonce = $request['gateway_nonce'];
+		$self->cardInfo = $request['card_info'];
 
 		return $self;
 	}
