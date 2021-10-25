@@ -1,10 +1,17 @@
-<?php /** @var array $options */ ?>
+<?php
+/**
+ * @var string $title
+ * @var string $description
+ * @var bool   $isSecureBadgeEnabled
+ * @var bool   $secureBadgeContent
+ */
+?>
 <div class="give-form-header">
-	<h1><?= $options[ 'main_heading' ]; ?></h1>
-	<p><?= $options[ 'description' ]; ?></p>
-	<?php if ( $options[ 'secure_badge' ] === 'enabled' ): ?>
+	<h1 class="give-form-title"><?= $title ?></h1>
+	<p class="give-form-description"><?= $description ?></p>
+	<?php if ( $isSecureBadgeEnabled ): ?>
 	<aside class="give-form-secure-badge">
-		100% Secure Donation
+		<?= $secureBadgeContent ?>
 	</aside>
 	<?php endif; ?>
 	<aside class="give-form-stats-panel">

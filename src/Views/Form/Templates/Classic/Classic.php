@@ -73,6 +73,32 @@ class Classic extends Template implements Hookable, Scriptable {
 			add_action( 'give_pre_form', [ $this, 'renderHeader' ] );
 		}
 
+		// Donation Levels
+		add_action('give_donation_form_top', function () {
+			echo "<section id=\"give-donation-level-fields\" class=\"give-form-section\">";
+		}, -10000);
+		add_action('give_donation_form_top', function () {
+			echo "</section>";
+		}, 10000);
+
+		add_action('give_before_donation_levels', [ $this, 'renderDonationAmountHeading' ], 20);
+
+		// Donation Personal Info
+		add_action('give_donation_form_register_login_fields', function () {
+			echo "<section id=\"give-personal-info-fields\" class=\"give-form-section\">";
+		}, -10000);
+		add_action('give_donation_form_register_login_fields', function () {
+			echo "</section>";
+		}, 10000);
+
+		// Donation Payment Method
+		add_action('give_payment_mode_top', function () {
+			echo "<section id=\"give-payment-method-fields\" class=\"give-form-section\">";
+		}, -10000);
+		add_action('give_payment_mode_bottom', function () {
+			echo "</section>";
+		}, 10000);
+
 		/**
 		 * Remove actions
 		 */
@@ -188,7 +214,19 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function renderHeader() {
 		echo $this->loadFile( 'views/header.php', [
-			'options' => $this->options[ 'appearance' ]
+			'title' => $this->options[ 'appearance' ][ 'main_heading' ],
+			'description' => $this->options[ 'appearance' ][ 'description' ],
+			'isSecureBadgeEnabled' => $this->options[ 'appearance' ][ 'secure_badge' ] === 'enabled',
+			'secureBadgeContent' => $this->options[ 'appearance' ][ 'secure_badge_text' ],
+		] );
+	}
+
+	/**
+	 * Render donation amount heading
+	 */
+	public function renderDonationAmountHeading() {
+		echo $this->loadFile( 'views/donation-amount-heading.php', [
+			'content' => $this->options[ 'donation_amount' ][ 'headline' ],
 		] );
 	}
 

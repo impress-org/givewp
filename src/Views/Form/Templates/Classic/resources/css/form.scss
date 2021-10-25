@@ -1,11 +1,41 @@
+/* Any rule with !important is a TODO for later when there's a better strategy for specificity and selectors. */
+
+$desktopMinWidth: 32rem;
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+body,
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
 body {
+	@media screen and (min-width: $desktopMinWidth) {
+		padding: 1rem;
+	}
+}
+
+.give-form-wrap {
+	background-color: #fff;
+	color: #444;
+	font-family: Montserrat, sans-serif;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		border-radius: 0.5rem;
+		box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+	}
+}
+
+.give-form-section {
 	padding: 1rem;
 }
 
-.give-form *,
-.give-form ::before,
-.give-form ::after {
-	box-sizing: border-box;
+.give-form-section:nth-child(odd) {
+	background-color: #f9f9f9;
 }
 
 .give-form-header {
@@ -14,7 +44,6 @@ body {
 	justify-items: center;
 	align-items: center;
 	gap: 2rem;
-	padding: 3rem;
 	border-top-left-radius: inherit;
 	border-top-right-radius: inherit;
 
@@ -27,6 +56,20 @@ body {
 
 	color: #fff;
 	text-align: center;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		padding: 3rem;
+	}
+}
+
+.give-form-title {
+	font-size: 1.75rem;
+	font-weight: 600;
+}
+
+.give-form-description {
+	font-size: 1.125rem;
+	line-height: 1.444;
 }
 
 .give-form-secure-badge {
@@ -37,12 +80,24 @@ body {
 	box-shadow: 0px 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
 	color: #333;
 	font-size: 0.8125rem;
+	font-weight: 500;
 }
 
 .give-form-stats-panel {
-	border-radius: 0.5rem;
-	background-color: #fbfbfb;
 	width: 100%;
+
+	border-color: #ddd;
+	border-style: solid;
+	border-top-width: 0.0625rem;
+	border-bottom-width: 0.0625rem;
+
+	background-color: #fff;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		border: 0;
+		border-radius: 0.5rem;
+		background-color: #fbfbfb;
+	}
 }
 
 .give-form-stats-panel-list {
@@ -57,7 +112,6 @@ body {
 	text-align: center;
 	width: 100%;
 }
-
 
 .give-form-goal-progress {
 	width: 100%;
@@ -75,8 +129,7 @@ body {
 
 /** TODO: Safari doesn’t seem to support this, so I think we need to go the `appearance: none` route **/
 
-.give-form-goal-progress-meter::-webkit-meter-bar,
-.give-form-goal-progress-meter::-moz-meter-bar {
+.give-form-goal-progress-meter::-webkit-meter-bar {
 	height: 1.375rem;
 	border: 0;
 	border-radius: 9999px;
@@ -86,10 +139,13 @@ body {
 
 .give-form-goal-progress-meter::-webkit-meter-optimum-value,
 .give-form-goal-progress-meter::-webkit-meter-suboptimum-value,
-.give-form-goal-progress-meter::-webkit-meter-even-less-good-value,
-.give-form-goal-progress-meter::-moz-meter-optimum,
-.give-form-goal-progress-meter::-moz-meter-sub-optimum,
-.give-form-goal-progress-meter::-moz-meter-sub-sub-optimum {
+.give-form-goal-progress-meter::-webkit-meter-even-less-good-value {
 	background-image: linear-gradient(to bottom, #ffdb00, #ffa200);
 	border-radius: 9999px;
+}
+
+.give-amount-heading {
+	font-size: 1.25rem;
+	font-weight: 500;
+	color: #333;
 }

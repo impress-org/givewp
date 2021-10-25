@@ -1,18 +1,3 @@
-.form,
-.form *,
-.form ::before,
-.form ::after {
-	box-sizing: border-box;
-}
-
-.form {
-	font-family: Montserrat, sans-serif;
-	color: #444;
-	background-color: #fff;
-	border-radius: 0.5rem;
-	box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
-}
-
 .form h2 {
 	color: #333;
 	font-size: 1.5rem;
