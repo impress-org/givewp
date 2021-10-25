@@ -312,7 +312,7 @@ class Actions {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.16.0
 	 * @return bool
 	 */
 	private function isGoogleFontEnabled() {

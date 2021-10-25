@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.15.0
+Stable tag: 2.16.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.16.0: October 24th, 2021 =
+* New: You can now disable google font for Multi-Step form within the form options
+* New: Conditional fields are now possible in the Field API (useful in new Form Field Manager update!)
+* Fix: Give icons in Gutenberg block admin UI now display correctly in Firefox
+
 = 2.15.0: October 11th, 2021 =
 * New: There is a new option for making the Donor Last Name field required
 * Changed: Sending a preview email now gets send to the email of the user triggering the preview

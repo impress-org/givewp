@@ -57,7 +57,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
-	 * @unreleased Load google fonts if "enabled".
+	 * @since 2.16.0 Load google fonts if "enabled".
 	 */
 	public function loadScripts() {
 
