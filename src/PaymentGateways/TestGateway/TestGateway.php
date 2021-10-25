@@ -12,7 +12,7 @@ use Give\PaymentGateways\TestGateway\Views\LegacyFormFieldMarkup;
  * Class TestGateway
  * @unreleased
  */
-class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
+class TestGateway extends PaymentGateway {
 
 	/**
 	 * @inheritDoc
