@@ -190,7 +190,7 @@ function give_process_paypal_ipn() {
 			'httpversion' => '1.1',
 			'blocking'    => true,
 			'headers'     => [
-				'host'         => 'www.paypal.com',
+				'host'         => give_get_paypal_domain(),
 				'connection'   => 'close',
 				'content-type' => 'application/x-www-form-urlencoded',
 				'post'         => '/cgi-bin/webscr HTTP/1.1',
