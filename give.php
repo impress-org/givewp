@@ -49,12 +49,12 @@ use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
+use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\PaymentGateways;
-use Give\ServiceProviders\PaymentGateways2;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
@@ -158,7 +158,7 @@ final class Give {
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
 		LicenseServiceProvider::class,
-		PaymentGateways2::class
+		PaymentGatewaysServiceProvider::class
 	];
 
 	/**

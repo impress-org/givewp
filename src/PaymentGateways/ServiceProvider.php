@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\ServiceProviders;
+namespace Give\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -9,15 +9,16 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 use Give\PaymentGateways\TestGateway\TestGateway;
+use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * Class PaymentGateways2
+ * Class ServiceProvider - PaymentGateways
  *
  * The Service Provider for loading the Payment Gateways for Payment Flow 2.0
  *
  * @unreleased
  */
-class PaymentGateways2 implements ServiceProvider {
+class ServiceProvider implements ServiceProviderInterface {
 	/**
 	 * Array of PaymentGateway classes to be bootstrapped
 	 *
