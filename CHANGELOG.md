@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### New
 
 - Make field name required in field api. (#6032)
+- Add option to disable google fonts in multi-step form template. (#5973)
 
 ### Fixed
 
