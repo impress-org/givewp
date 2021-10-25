@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Actions;
 
+use Give\Log\Log;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 
 /**
@@ -22,6 +23,7 @@ class CreatePaymentAction {
 
 		// If errors are present, send the user back to the donation page, so they can be corrected
 		if (! $payment ) {
+			Log::error( esc_html__( 'Payment Error', 'give' ), $formData->toPaymentArray() );
 			give_send_back_to_checkout( '?payment-mode=' . $formData->gateway );
 		}
 
