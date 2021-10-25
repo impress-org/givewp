@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\TestGateway;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\TestGateway\Actions\TestGatewayHandleFormRequestAction;
+use Give\PaymentGateways\TestGateway\Actions\PublishPaymentAndSendToSuccessPage;
 
 /**
  * Class TestGateway
@@ -81,6 +81,6 @@ class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
 	 * @inheritDoc
 	 */
 	public function handleGatewayRequest( $donationId, $formData ) {
-		return give( TestGatewayHandleFormRequestAction::class )( $donationId );
+		return give( PublishPaymentAndSendToSuccessPage::class )( $donationId );
 	}
 }

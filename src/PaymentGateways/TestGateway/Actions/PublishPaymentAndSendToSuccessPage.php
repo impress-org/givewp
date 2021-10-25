@@ -3,10 +3,10 @@
 namespace Give\PaymentGateways\TestGateway\Actions;
 
 /**
- * Class TestGatewayHandleFormRequestAction
+ * Class PublishPaymentAndSendToSuccessPage
  * @unreleased
  */
-class TestGatewayHandleFormRequestAction {
+class PublishPaymentAndSendToSuccessPage {
 	/**
 	 * @unreleased
 	 *
