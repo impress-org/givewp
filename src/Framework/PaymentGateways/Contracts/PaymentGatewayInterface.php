@@ -12,6 +12,13 @@ interface PaymentGatewayInterface {
 	 *
 	 * @return string
 	 */
+	public static function id();
+
+	/**
+	 * Return a unique identifier for the migration
+	 *
+	 * @return string
+	 */
 	public function getId();
 
 	/**
