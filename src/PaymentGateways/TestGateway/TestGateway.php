@@ -50,13 +50,19 @@ class TestGateway extends PaymentGateway implements OnSitePaymentGateway {
 			return false;
 		}
 
-		return give( LegacyFormFieldMarkup::class )();
+		/** @var LegacyFormFieldMarkup $legacyFormFieldMarkup */
+		$legacyFormFieldMarkup = give( LegacyFormFieldMarkup::class );
+
+		return $legacyFormFieldMarkup();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function handleGatewayRequest( $donationId, $formData ) {
-		return give( PublishPaymentAndSendToSuccessPage::class )( $donationId );
+		/** @var PublishPaymentAndSendToSuccessPage $action */
+		$action = give( PublishPaymentAndSendToSuccessPage::class );
+
+		return $action( $donationId );
 	}
 }
