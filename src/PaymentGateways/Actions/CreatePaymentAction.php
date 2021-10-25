@@ -5,10 +5,10 @@ namespace Give\PaymentGateways\Actions;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 
 /**
- * Class HandleBeforeGatewayAction
+ * Class CreatePaymentAction
  * @unreleased
  */
-class HandleBeforeGatewayAction {
+class CreatePaymentAction {
 	/**
 	 * @unreleased
 	 *
@@ -16,7 +16,7 @@ class HandleBeforeGatewayAction {
 	 *
 	 * @return bool|int
 	 */
-	public function __invoke(FormData $formData) {
+	public function __invoke( FormData $formData ) {
 		// Record the pending payment
 		$payment = give_insert_payment( $formData->toPaymentArray() );
 

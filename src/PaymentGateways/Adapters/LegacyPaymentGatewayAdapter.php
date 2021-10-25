@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\Actions\HandleBeforeGatewayAction;
+use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\Traits\ValidationHelpers;
 
@@ -94,9 +94,9 @@ class LegacyPaymentGatewayAdapter {
 	 * @return int
 	 */
 	private function createPayment( FormData $formData ) {
-		/** @var HandleBeforeGatewayAction $handleBeforeGatewayAction */
-		$handleBeforeGatewayAction = give( HandleBeforeGatewayAction::class );
+		/** @var CreatePaymentAction $createPaymentAction */
+		$createPaymentAction = give( CreatePaymentAction::class );
 
-		return $handleBeforeGatewayAction( $formData );
+		return $createPaymentAction( $formData );
 	}
 }
