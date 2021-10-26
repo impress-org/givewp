@@ -43,7 +43,7 @@ function give_get_donation_form( $args = [] ) {
 
 	/**
 	 * Fire the filter
-	 * Note: we will deprecated this filter soon. Use give_get_default_form_shortcode_args instead
+	 * Note: we will deprecate this filter soon. Use give_get_default_form_shortcode_args instead
 	 *
 	 * @deprecated 2.4.1
 	 */
@@ -450,7 +450,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 				}
 				?>
 				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
-				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel"
+				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="text" inputmode="decimal"
 					   placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php
 				if ( 'after' === $currency_position ) {

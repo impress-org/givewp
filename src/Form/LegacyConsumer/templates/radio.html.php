@@ -1,8 +1,7 @@
 <?php /** @var Give\Framework\FieldsAPI\Radio $field */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
-<?php /** @var string $visibilityConditionsAttribute */ ?>
 <?php /* Fieldsets + legends are terrible to style, so we just use the semantic markup and style something else. */ ?>
-<fieldset <?php echo $visibilityConditionsAttribute ?>>
+<fieldset>
 	<legend class="screen-reader-text">
 		<?php include plugin_dir_path( __FILE__ ) . 'label-content.html.php'; ?>
 	</legend>

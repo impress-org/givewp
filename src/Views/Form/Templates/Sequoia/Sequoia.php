@@ -57,6 +57,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
+	 * @since 2.16.0 Load google fonts if "enabled".
 	 */
 	public function loadScripts() {
 
@@ -64,14 +65,24 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
+		$templateOptions['visual_appearance']['google-fonts']     = ! empty( $templateOptions['visual_appearance']['google-fonts'] ) ? $templateOptions['visual_appearance']['google-fonts'] : 'enabled';
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
-		$templateOptions['introduction']['primary_color']         = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
+		$templateOptions['visual_appearance']['primary_color']    = ! empty( $templateOptions['visual_appearance']['primary_color'] ) ? $templateOptions['visual_appearance']['primary_color'] : '#28C77B';
 		$templateOptions['payment_amount']['next_label']          = ! empty( $templateOptions['payment_amount']['next_label'] ) ? $templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
 		$templateOptions['payment_amount']['header_label']        = ! empty( $templateOptions['payment_amount']['header_label'] ) ? $templateOptions['payment_amount']['header_label'] : __( 'Choose Amount', 'give' );
 		$templateOptions['payment_information']['header_label']   = ! empty( $templateOptions['payment_information']['header_label'] ) ? $templateOptions['payment_information']['header_label'] : __( 'Add Your Information', 'give' );
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
-		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', [], GIVE_VERSION );
+		$isGoogleFontEnabled = give_is_setting_enabled( $templateOptions['visual_appearance']['google-fonts'] );
+
+		if ( $isGoogleFontEnabled ) {
+			wp_enqueue_style(
+				'give-google-font-montserrat',
+				'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap',
+				[],
+				GIVE_VERSION
+			);
+		}
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
 		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
@@ -81,7 +92,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		// Enqueue Sequoia template styles
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', [ 'give-styles' ], GIVE_VERSION );
 
-		$primaryColor = $templateOptions['introduction']['primary_color'];
+		$primaryColor = $templateOptions['visual_appearance']['primary_color'];
 		$dynamicCss   = sprintf(
 			'
 			.seperator {
@@ -277,6 +288,10 @@ class Sequoia extends Template implements Hookable, Scriptable {
 					border-color: {$primaryColor};
 				}
 			";
+		}
+
+		if ( $isGoogleFontEnabled ) {
+			$dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif;}";
 		}
 
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamicCss );

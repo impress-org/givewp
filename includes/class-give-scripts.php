@@ -424,6 +424,7 @@ class Give_Scripts {
 				width: 18px;
 				height: 18px;
 				content: "\e800";
+				padding-top: 8px;
 			}
 		</style>
 		<?php

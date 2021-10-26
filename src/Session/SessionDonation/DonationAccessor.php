@@ -2,8 +2,8 @@
 namespace Give\Session\SessionDonation;
 
 use DateTime;
-use Give\Session\SessionDonation\SessionObjects\Donation as DonationObject;
 use Give\Session\Accessor;
+use Give\Session\SessionDonation\SessionObjects\Donation as DonationObject;
 use Give\Session\SessionDonation\SessionObjects\FormEntry;
 
 /**
@@ -12,6 +12,8 @@ use Give\Session\SessionDonation\SessionObjects\FormEntry;
  * This class provide way to access donation session data.
  *
  * @package Give\Session\Access
+ *
+ * @method DonationObject get
  */
 class DonationAccessor extends Accessor {
 	/**
@@ -50,10 +52,11 @@ class DonationAccessor extends Accessor {
 	/**
 	 * Map array keys to class properties
 	 *
+	 * @since 2.7.0
+	 *
 	 * @param array $data
 	 *
-	 * @return DonationObject|null
-	 * @since 2.7.0
+	 * @return DonationObject
 	 */
 	protected function convertToObject( $data ) {
 		if ( ! $data ) {

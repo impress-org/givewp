@@ -39,6 +39,7 @@
 			$( '.step-tracker' ).removeClass( 'current' );
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
+			// Handle introduction step (whether disabled or not).
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				if ( $( '.step-tracker' ).length === 3 ) {
 					$( '.step-tracker' ).remove();
@@ -54,11 +55,16 @@
 				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			} else if ( step === 0 ) {
+				// First  step is enabled.
 				$( '.give-form-navigator', $container ).removeClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '' );
 			} else {
+				// Other steps besides intro and payment amounts:
 				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '50px' );
+				// Scroll to top after animation finished
+				// @see https://github.com/impress-org/givewp/issues/5969
+				scrollToIframeTop();
 			}
 
 			if ( steps[ step ].title ) {
@@ -91,7 +97,7 @@
 					return navigator.firstFocus = true;
 				}
 				if ( steps[ navigator.currentStep ].firstFocus ) {
-					$( steps[ navigator.currentStep ].firstFocus ).focus();
+					$( steps[ navigator.currentStep ].firstFocus ).trigger('focus');
 				}
 			}, 200 );
 		},
