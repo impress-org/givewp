@@ -82,10 +82,14 @@ class Template {
 	 * @param array $settings
 	 */
 	public static function handleOptionsBackwardCompatibility( &$settings ) {
-		if ( ! isset( $settings['visual_appearance'] ) ) {
+		if (
+			! isset( $settings['visual_appearance'] ) &&
+			isset( $settings['payment_amount'] ) &&
+			isset( $settings['introduction'] )
+		) {
 			$settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
 			$settings['visual_appearance']['primary_color']    = $settings['introduction']['primary_color'];
-		} else {
+		} else if ( isset( $settings['visual_appearance'] ) ) {
 			$settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
 			$settings['introduction']['primary_color']      = $settings['visual_appearance']['primary_color'];
 		}
