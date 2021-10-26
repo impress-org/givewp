@@ -156,11 +156,8 @@ class FormData {
 		$self->formMinimum = $request['post_data']['give-form-minimum'];
 		$self->formMaximum = $request['post_data']['give-form-maximum'];
 		$self->formHash = $request['post_data']['give-form-hash'];
-		$self->recurringLoggedInOnly = $request['post_data']['give-recurring-logged-in-only'];
 		$self->loggedInOnly = $request['post_data']['give-logged-in-only'];
-		$self->recurringDonationDetails = $request['post_data']['give_recurring_donation_details'];
 		$self->amount = $request['post_data']['give-amount'];
-		$self->stripePaymentMethod = $request['post_data']['give_stripe_payment_method'];
 		$self->gateway = $request['post_data']['give-gateway'];
 		$self->firstName = $request['post_data']['give_first'];
 		$self->lastName = $request['post_data']['give_last'];
