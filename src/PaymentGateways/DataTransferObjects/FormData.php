@@ -142,7 +142,7 @@ class FormData {
 
 		$self->price = $request['price'];
 		$self->date = $request['date'];
-		$self->userEmail = $request['user_email'];
+		$self->donorEmail = $request['user_email'];
 		$self->purchaseKey = $request['purchase_key'];
 		$self->currency = give_get_currency( $request['post_data']['give-form-id'], $request );
 		$self->userInfo = $request['user_info'];
