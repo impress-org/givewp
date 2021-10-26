@@ -24,6 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Give icons in Gutenberg block admin UI now display correctly in Firefox (#6023)
 - An error message that was confusing has been clarified (#6045)
+- Auto set new settings if old settings exist ("Primary Color", "Decimal Enabled"). (#5973)
 
 ## 2.15.0 - 2021-10-11
 
