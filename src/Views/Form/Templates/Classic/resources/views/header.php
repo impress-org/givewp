@@ -7,13 +7,15 @@
  */
 ?>
 <div class="give-form-header">
-	<h1 class="give-form-title"><?= $title ?></h1>
-	<p class="give-form-description"><?= $description ?></p>
-	<?php if ( $isSecureBadgeEnabled ): ?>
-	<aside class="give-form-secure-badge">
-		<?= $secureBadgeContent ?>
-	</aside>
-	<?php endif; ?>
+	<div class="give-form-header-top-wrap">
+		<h1 class="give-form-title"><?= $title ?></h1>
+		<p class="give-form-description"><?= $description ?></p>
+		<?php if ( $isSecureBadgeEnabled ): ?>
+		<aside class="give-form-secure-badge">
+			<?= $secureBadgeContent ?>
+		</aside>
+		<?php endif; ?>
+	</div>
 	<aside class="give-form-stats-panel">
 		<ul class="give-form-stats-panel-list">
 			<li class="give-form-stats-panel-stat">

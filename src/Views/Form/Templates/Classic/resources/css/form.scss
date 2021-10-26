@@ -63,6 +63,14 @@ body {
 	}
 }
 
+.give-form-header-top-wrap {
+	padding: 3rem;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		padding: 0;
+	}
+}
+
 .give-form-title {
 	font-size: 1.75rem;
 	font-weight: 600;
