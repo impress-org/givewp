@@ -24,7 +24,7 @@ class FormData {
 	/**
 	 * @var string
 	 */
-	public $userEmail;
+	public $donorEmail;
 	/**
 	 * @var string
 	 */
@@ -92,15 +92,7 @@ class FormData {
 	/**
 	 * @var string
 	 */
-	public $recurringLoggedInOnly;
-	/**
-	 * @var string
-	 */
 	public $loggedInOnly;
-	/**
-	 * @var string
-	 */
-	public $recurringDonationDetails;
 	/**
 	 * @var string
 	 */
@@ -108,27 +100,7 @@ class FormData {
 	/**
 	 * @var string
 	 */
-	public $stripePaymentMethod;
-	/**
-	 * @var string
-	 */
-	public $firstName;
-	/**
-	 * @var string
-	 */
-	public $lastName;
-	/**
-	 * @var string
-	 */
 	public $userId;
-	/**
-	 * @var string
-	 */
-	public $email;
-	/**
-	 * @var string
-	 */
-	public $action;
 
 	/**
 	 * Convert data from request into DTO
@@ -159,11 +131,6 @@ class FormData {
 		$self->loggedInOnly = $request['post_data']['give-logged-in-only'];
 		$self->amount = $request['post_data']['give-amount'];
 		$self->gateway = $request['post_data']['give-gateway'];
-		$self->firstName = $request['post_data']['give_first'];
-		$self->lastName = $request['post_data']['give_last'];
-		$self->userId = $request['post_data']['give-user-id'];
-		$self->email = $request['post_data']['give_email'];
-		$self->action = $request['post_data']['give_action'];
 		$self->status = 'pending';
 		$self->gatewayNonce = $request['gateway_nonce'];
 		$self->cardInfo = CardInfo::fromArray( [
@@ -195,7 +162,7 @@ class FormData {
 			'give_form_id' => $this->formId,
 			'give_price_id' => $this->priceId,
 			'date' => $this->date,
-			'user_email' => $this->userEmail,
+			'user_email' => $this->$this->donorEmail,
 			'purchase_key' => $this->purchaseKey,
 			'currency' => $this->currency,
 			'user_info' => $this->userInfo,
