@@ -4,9 +4,8 @@ namespace Give\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Helpers\Hooks;
-use Give\PaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 use Give\PaymentGateways\TestGateway\TestGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -39,9 +38,7 @@ class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot() {
 		add_filter( 'give_register_gateway', [ $this, 'registerGateways' ] );
-		Hooks::addFilter( 'give_payment_gateways',
-			LegacyPaymentGatewayAdapter::class,
-			'addNewPaymentGatewaysToLegacyList' );
+		add_filter( 'give_payment_gateways', [ $this, 'registerGatewaySettingsList' ] );
 	}
 
 	/**
@@ -68,6 +65,30 @@ class ServiceProvider implements ServiceProviderInterface {
 		$this->unregister3rdPartyPaymentGateways( $paymentGatewayRegister );
 
 		return $gateways;
+	}
+
+	/**
+	 * Add gateways to settings list
+	 *
+	 * @param  array  $gatewayData
+	 */
+	public function registerGatewaySettingsList( $gatewayData ) {
+		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
+		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
+
+		/** @var PaymentGatewayRegister $paymentGatewayRegister */
+		$paymentGatewayRegister = give( PaymentGatewayRegister::class );
+
+		$newPaymentGateways = $paymentGatewayRegister->getPaymentGateways();
+
+		if ( ! $newPaymentGateways ) {
+			return $gatewayData;
+		}
+
+		return $legacyPaymentGatewayRegisterAdapter->addNewPaymentGatewaysToLegacyListSettings(
+			$gatewayData,
+			$paymentGatewayRegister->getPaymentGateways()
+		);
 	}
 
 	/**

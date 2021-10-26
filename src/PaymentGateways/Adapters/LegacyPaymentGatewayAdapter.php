@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\Traits\ValidationHelpers;
@@ -14,44 +13,6 @@ use Give\PaymentGateways\Traits\ValidationHelpers;
  */
 class LegacyPaymentGatewayAdapter {
 	use ValidationHelpers;
-
-	/**
-	 * @var PaymentGatewayRegister
-	 */
-	private $paymentGatewayRegister;
-
-	public function __construct( PaymentGatewayRegister $paymentGatewayRegister ) {
-		$this->paymentGatewayRegister = $paymentGatewayRegister;
-	}
-
-	/**
-	 * Adds new payment gateways to legacy list for settings
-	 *
-	 * @unreleased
-	 *
-	 * @param  array  $gatewaysData
-	 *
-	 * @return array
-	 */
-	public function addNewPaymentGatewaysToLegacyList( $gatewaysData ) {
-		$newPaymentGateways = $this->paymentGatewayRegister->getPaymentGateways();
-
-		if ( ! $newPaymentGateways ) {
-			return $gatewaysData;
-		}
-
-		foreach ( $newPaymentGateways as $gatewayClassName ) {
-			/* @var PaymentGatewayInterface $paymentGateway */
-			$paymentGateway = give( $gatewayClassName );
-
-			$gatewaysData[ $paymentGateway->getId() ] = [
-				'admin_label' => $paymentGateway->getName(),
-				'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
-			];
-		}
-
-		return $gatewaysData;
-	}
 
 	/**
 	 * Get legacy form field markup to display gateway specific payment fields
