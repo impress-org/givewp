@@ -10,12 +10,16 @@ interface PaymentGatewayInterface {
 	/**
 	 * Return a unique identifier for the migration
 	 *
+	 * @unreleased
+	 *
 	 * @return string
 	 */
 	public static function id();
 
 	/**
 	 * Return a unique identifier for the migration
+	 *
+	 * @unreleased
 	 *
 	 * @return string
 	 */
@@ -24,7 +28,7 @@ interface PaymentGatewayInterface {
 	/**
 	 * Returns a human-readable name for the gateway
 	 *
-	 * @since 2.9.0
+	 * @unreleased
 	 *
 	 * @return string - Translated text
 	 */
@@ -33,7 +37,7 @@ interface PaymentGatewayInterface {
 	/**
 	 * Returns a human-readable label for use when a donor selects a payment method to use
 	 *
-	 * @since 2.9.0
+	 * @unreleased
 	 *
 	 * @return string - Translated text
 	 */
@@ -42,7 +46,7 @@ interface PaymentGatewayInterface {
 	/**
 	 * Returns form fields for donation form to render
 	 *
-	 * @since 2.9.0
+	 * @unreleased
 	 *
 	 * @return string|bool
 	 */
@@ -51,7 +55,7 @@ interface PaymentGatewayInterface {
 	/**
 	 * After creating the initial payment, we can continue with the gateway processing
 	 *
-	 * @since 2.9.0
+	 * @unreleased
 	 *
 	 * @param  int  $donationId
 	 * @param  FormData  $formData
