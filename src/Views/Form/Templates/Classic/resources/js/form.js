@@ -1,7 +1,7 @@
 /** @jsx h */
 /** @jsxFragment h */
 import h from 'vhtml';
-import {domIsReady, insertAfter, removeNode} from './not-jquery.js';
+import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
 
 // Transforms document for classic template
 function transform() {
@@ -26,6 +26,26 @@ function transform() {
 			</span>
 		);
 	});
+
+	insertAfter(
+		nodeFromString(
+			<p class="give-personal-info-description">
+				{classicTemplateOptions.donor_information.description}
+			</p>
+		),
+		document.querySelector('.give-personal-info-section legend:first-of-type'),
+	);
+
+	document.querySelector('.give-payment-mode-label').textContent = classicTemplateOptions.payment_method.headline;
+
+	insertAfter(
+		nodeFromString(
+			<p class="give-payment-details-description">
+				{classicTemplateOptions.payment_method.description}
+			</p>
+		),
+		document.querySelector('.give-payment-mode-label'),
+	);
 }
 
 domIsReady(transform);
