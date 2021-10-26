@@ -88,6 +88,8 @@ body {
 
 	border-color: #ddd;
 	border-style: solid;
+	border-left-width: 0;
+	border-right-width: 0;
 	border-top-width: 0.0625rem;
 	border-bottom-width: 0.0625rem;
 
@@ -109,8 +111,38 @@ body {
 	color: #4c4c4c;
 	list-style: none;
 	padding-left: 0;
+	margin: 0;
 	text-align: center;
 	width: 100%;
+}
+
+.give-form-stats-panel-stat:first-child,
+.give-form-stats-panel-stat:nth-child(2) {
+	position: relative;
+}
+
+.give-form-stats-panel-stat:first-child::after,
+.give-form-stats-panel-stat:nth-child(2)::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: calc(100% + 0.03125rem);
+	display: block;
+	width: 0.0625rem;
+	height: 100%;
+	background-color: #ddd;
+}
+
+.give-form-stats-panel-stat {
+	padding: 1rem;
+	width: calc(100% / 3);
+	font-weight: 600;
+	color: #767676;
+}
+
+.give-form-stats-panel-stat-number {
+	display: block;
+	color: #424242;
 }
 
 .give-form-goal-progress {
