@@ -99,6 +99,19 @@
 		font-size: 1rem;
 		line-height: 1.25;
 	}
+
+	& .give-formatted-currency {
+		display: flex;
+		gap: 0.15rem;
+		align-items: start;
+		line-height: 1;
+
+		.give-currency-symbol {
+			font-size: 0.875rem;
+			font-weight: 500;
+			transform: translateY(0.05rem);
+		}
+	}
 }
 
 
