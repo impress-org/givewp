@@ -12,6 +12,8 @@ function transform() {
 	document.querySelector('.give-payment-details-section').append(
 		document.querySelector('#give_purchase_form_wrap')
 	)
+
+	document.querySelector('.give-personal-info-section legend:first-of-type').textContent = classicTemplateOptions.donor_information.headline;
 }
 
 domIsReady(transform);
