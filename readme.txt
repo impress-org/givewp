@@ -235,6 +235,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: You can now disable google font for Multi-Step form within the form options
 * New: Conditional fields are now possible in the Field API (useful in new Form Field Manager update!)
 * Fix: Give icons in Gutenberg block admin UI now display correctly in Firefox
+* Fix: Resolved issue where a minimum donation error was not showing up properly
 
 = 2.15.0: October 11th, 2021 =
 * New: There is a new option for making the Donor Last Name field required
