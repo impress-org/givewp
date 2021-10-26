@@ -5,8 +5,10 @@ namespace Give\Framework\PaymentGateways;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
+use Give\PaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
 /**
  * @unreleased
@@ -15,6 +17,8 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	private $gateways = [];
 
 	/**
+	 * * Get Gateways
+	 *
 	 * @unreleased
 	 *
 	 * @return array
@@ -24,9 +28,11 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	}
 
 	/**
+	 * Get Gateway
+	 *
 	 * @unreleased
 	 *
-	 * @param string $id
+	 * @param  string  $id
 	 *
 	 * @return string
 	 */
@@ -50,9 +56,11 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	}
 
 	/**
+	 * Register Gateway
+	 *
 	 * @unreleased
 	 *
-	 * @param string $gatewayClass
+	 * @param  string  $gatewayClass
 	 *
 	 * @throws OverflowException|InvalidArgumentException|Exception
 	 */
@@ -62,7 +70,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 				'%1$s must extend %2$s',
 				$gatewayClass,
 				PaymentGateway::class
-			));
+			) );
 		}
 
 		$gatewayId = $gatewayClass::id();
@@ -72,5 +80,55 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		}
 
 		$this->gateways[ $gatewayId ] = $gatewayClass;
+
+		$this->connectToLegacyPaymentGatewayAdapter( $gatewayClass );
+	}
+
+	/**
+	 * Unregister Gateway
+	 *
+	 * @unreleased
+	 *
+	 * @param  string  $gatewayClass
+	 *
+	 * @throws InvalidArgumentException
+	 */
+	public function unregisterGateway( $gatewayClass ) {
+		if ( ! is_subclass_of( $gatewayClass, PaymentGateway::class ) ) {
+			throw new InvalidArgumentException( sprintf(
+				'%1$s must extend %2$s',
+				$gatewayClass,
+				PaymentGateway::class
+			) );
+		}
+
+		$gatewayId = $gatewayClass::id();
+
+		unset( $this->gateways[ $gatewayId ] );
+	}
+
+	/**
+	 * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
+	 * that prepares data to be sent to each gateway
+	 *
+	 * @param  string  $gateway
+	 */
+	private function connectToLegacyPaymentGatewayAdapter( $gateway ) {
+		/** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
+		$legacyPaymentGatewayAdapter = give( LegacyPaymentGatewayAdapter::class );
+
+		/** @var PaymentGatewayInterface $registeredGateway */
+		$registeredGateway = give( $gateway );
+		$registeredGatewayId = $registeredGateway->getId();
+
+		add_action( "give_{$registeredGatewayId}_cc_form",
+			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
+				echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup( $formId, $registeredGateway );
+			} );
+
+		add_action( "give_gateway_{$registeredGatewayId}",
+			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
+				return $legacyPaymentGatewayAdapter->handleBeforeGateway( $formId, $registeredGateway );
+			} );
 	}
 }

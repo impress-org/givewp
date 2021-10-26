@@ -4,7 +4,6 @@ namespace Give\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
@@ -63,35 +62,29 @@ class ServiceProvider implements ServiceProviderInterface {
 
 		foreach ( $this->gateways as $gateway ) {
 			$paymentGatewayRegister->registerGateway( $gateway );
-
-			$this->connectToLegacyPaymentGatewayAdapter( $gateway );
 		}
+
+		$this->register3rdPartyPaymentGateways( $paymentGatewayRegister );
+		$this->unregister3rdPartyPaymentGateways( $paymentGatewayRegister );
 
 		return $gateways;
 	}
 
 	/**
-	 * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
-	 * that prepares data to be sent to each gateway
+	 * Register 3rd party payment gateways
 	 *
-	 * @param  string  $gateway
+	 * @param  PaymentGatewayRegister  $paymentGatewayRegister
 	 */
-	private function connectToLegacyPaymentGatewayAdapter( $gateway ) {
-		/** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
-		$legacyPaymentGatewayAdapter = give( LegacyPaymentGatewayAdapter::class );
+	private function register3rdPartyPaymentGateways( PaymentGatewayRegister $paymentGatewayRegister ) {
+		do_action( 'give_register_payment_gateway', $paymentGatewayRegister );
+	}
 
-		/** @var PaymentGatewayInterface $registeredGateway */
-		$registeredGateway = give( $gateway );
-		$registeredGatewayId = $registeredGateway->getId();
-
-		add_action( "give_{$registeredGatewayId}_cc_form",
-			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
-				echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup( $formId, $registeredGateway );
-			} );
-
-		add_action( "give_gateway_{$registeredGatewayId}",
-			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
-				return $legacyPaymentGatewayAdapter->handleBeforeGateway( $formId, $registeredGateway );
-			} );
+	/**
+	 * Unregister 3rd party payment gateways
+	 *
+	 * @param  PaymentGatewayRegister  $paymentGatewayRegister
+	 */
+	private function unregister3rdPartyPaymentGateways( PaymentGatewayRegister $paymentGatewayRegister ) {
+		do_action( 'give_unregister_payment_gateway', $paymentGatewayRegister );
 	}
 }
