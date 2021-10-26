@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
+use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 
 /**
@@ -97,6 +98,10 @@ class FormData {
 	 * @var string
 	 */
 	public $userId;
+	/**
+	 * @var Address
+	 */
+	public $billingAddress;
 
 	/**
 	 * Convert data from request into DTO
@@ -135,11 +140,15 @@ class FormData {
 			'expYear' => $request['card_info']['card_exp_year'],
 			'number' => $request['card_info']['card_number'],
 			'address' => $request['card_info']['card_address'],
-			'address2' => $request['card_info']['card_address_2'],
+		] );
+
+		$self->billingAddress = Address::fromArray( [
+			'line1' => $request['card_info']['card_address'],
+			'line2' => $request['card_info']['card_address_2'],
 			'city' => $request['card_info']['card_city'],
 			'state' => $request['card_info']['card_state'],
 			'country' => $request['card_info']['card_country'],
-			'zip' => $request['card_info']['card_zip'],
+			'postalCode' => $request['card_info']['card_zip'],
 		] );
 
 		return $self;
@@ -157,7 +166,7 @@ class FormData {
 			'give_form_id' => $this->formId,
 			'give_price_id' => $this->priceId,
 			'date' => $this->date,
-			'user_email' => $this->$this->donorEmail,
+			'user_email' => $this->donorEmail,
 			'purchase_key' => $this->purchaseKey,
 			'currency' => $this->currency,
 			'user_info' => $this->userInfo,
