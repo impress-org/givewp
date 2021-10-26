@@ -40,10 +40,6 @@ class FormData {
 	/**
 	 * @var string
 	 */
-	public $status;
-	/**
-	 * @var string
-	 */
 	public $gateway;
 	/**
 	 * @var string
@@ -131,7 +127,6 @@ class FormData {
 		$self->loggedInOnly = $request['post_data']['give-logged-in-only'];
 		$self->amount = $request['post_data']['give-amount'];
 		$self->gateway = $request['post_data']['give-gateway'];
-		$self->status = 'pending';
 		$self->gatewayNonce = $request['gateway_nonce'];
 		$self->cardInfo = CardInfo::fromArray( [
 			'name' => $request['card_info']['card_name'],
@@ -166,7 +161,7 @@ class FormData {
 			'purchase_key' => $this->purchaseKey,
 			'currency' => $this->currency,
 			'user_info' => $this->userInfo,
-			'status' => $this->status,
+			'status' => 'pending',
 		];
 	}
 }
