@@ -21,7 +21,7 @@ interface PaymentGateway {
 	public function getId();
 
 	/**
-	 * Returns a human readable name for the gateway
+	 * Returns a human-readable name for the gateway
 	 *
 	 * @since 2.9.0
 	 *
@@ -30,7 +30,7 @@ interface PaymentGateway {
 	public function getName();
 
 	/**
-	 * Returns a human readable label for use when a donor selects a payment method to use
+	 * Returns a human-readable label for use when a donor selects a payment method to use
 	 *
 	 * @since 2.9.0
 	 *

@@ -26,7 +26,7 @@ interface PaymentGatewayInterface {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @return string
+	 * @return string - Translated text
 	 */
 	public function getName();
 
@@ -35,7 +35,7 @@ interface PaymentGatewayInterface {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @return string
+	 * @return string - Translated text
 	 */
 	public function getPaymentMethodLabel();
 

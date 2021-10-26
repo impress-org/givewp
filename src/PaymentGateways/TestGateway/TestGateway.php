@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\TestGateway\Actions\PublishPaymentAndSendToSuccessPage;
 use Give\PaymentGateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -32,14 +31,14 @@ class TestGateway extends PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return 'Test Gateway';
+		return esc_html__( 'Test Gateway', 'give' );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getPaymentMethodLabel() {
-		return 'Test Gateway';
+		return esc_html__( 'Test Gateway', 'give' );
 	}
 
 	/**

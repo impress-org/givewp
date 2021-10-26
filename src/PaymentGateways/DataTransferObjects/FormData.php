@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
+use Give\ValueObjects\CardInfo;
+
 /**
  * Class FormData
  * @unreleased
@@ -14,15 +16,7 @@ class FormData {
 	/**
 	 * @var string
 	 */
-	public $giveFormTitle;
-	/**
-	 * @var int
-	 */
-	public $giveFormId;
-	/**
-	 * @var string
-	 */
-	public $givePriceId;
+	public $formTitle;
 	/**
 	 * @var string
 	 */
@@ -60,9 +54,81 @@ class FormData {
 	 */
 	public $postData;
 	/**
-	 * @var array
+	 * @var CardInfo
 	 */
 	public $cardInfo;
+	/**
+	 * @var string
+	 */
+	public $honeypot;
+	/**
+	 * @var int
+	 */
+	public $formId;
+	/**
+	 * @var string
+	 */
+	public $priceId;
+	/**
+	 * @var string
+	 */
+	public $formIdPrefix;
+	/**
+	 * @var string
+	 */
+	public $currentUrl;
+	/**
+	 * @var string
+	 */
+	public $formMinimum;
+	/**
+	 * @var string
+	 */
+	public $formMaximum;
+	/**
+	 * @var string
+	 */
+	public $formHash;
+	/**
+	 * @var string
+	 */
+	public $recurringLoggedInOnly;
+	/**
+	 * @var string
+	 */
+	public $loggedInOnly;
+	/**
+	 * @var string
+	 */
+	public $recurringDonationDetails;
+	/**
+	 * @var string
+	 */
+	public $amount;
+	/**
+	 * @var string
+	 */
+	public $stripePaymentMethod;
+	/**
+	 * @var string
+	 */
+	public $firstName;
+	/**
+	 * @var string
+	 */
+	public $lastName;
+	/**
+	 * @var string
+	 */
+	public $userId;
+	/**
+	 * @var string
+	 */
+	public $email;
+	/**
+	 * @var string
+	 */
+	public $action;
 
 	/**
 	 * Convert data from request into DTO
@@ -75,19 +141,47 @@ class FormData {
 		$self = new static();
 
 		$self->price = $request['price'];
-		$self->giveFormTitle = $request['post_data']['give-form-title'];
-		$self->giveFormId = (int) $request['post_data']['give-form-id'];
-		$self->givePriceId = isset( $request['post_data']['give-price-id'] ) ? $request['post_data']['give-price-id'] : '';
 		$self->date = $request['date'];
 		$self->userEmail = $request['user_email'];
 		$self->purchaseKey = $request['purchase_key'];
 		$self->currency = give_get_currency( $request['post_data']['give-form-id'], $request );
 		$self->userInfo = $request['user_info'];
 		$self->postData = $request['post_data'];
-		$self->status = 'pending';
+		$self->honeypot = $request['post_data']['give-honeypot'];
+		$self->formTitle = $request['post_data']['give-form-title'];
+		$self->formId = (int) $request['post_data']['give-form-id'];
+		$self->priceId = isset( $request['post_data']['give-price-id'] ) ? $request['post_data']['give-price-id'] : '';
+		$self->formIdPrefix = $request['post_data']['give-form-id-prefix'];
+		$self->currentUrl = $request['post_data']['give-current-url'];
+		$self->formMinimum = $request['post_data']['give-form-minimum'];
+		$self->formMaximum = $request['post_data']['give-form-maximum'];
+		$self->formHash = $request['post_data']['give-form-hash'];
+		$self->recurringLoggedInOnly = $request['post_data']['give-recurring-logged-in-only'];
+		$self->loggedInOnly = $request['post_data']['give-logged-in-only'];
+		$self->recurringDonationDetails = $request['post_data']['give_recurring_donation_details'];
+		$self->amount = $request['post_data']['give-amount'];
+		$self->stripePaymentMethod = $request['post_data']['give_stripe_payment_method'];
 		$self->gateway = $request['post_data']['give-gateway'];
+		$self->firstName = $request['post_data']['give_first'];
+		$self->lastName = $request['post_data']['give_last'];
+		$self->userId = $request['post_data']['give-user-id'];
+		$self->email = $request['post_data']['give_email'];
+		$self->action = $request['post_data']['give_action'];
+		$self->status = 'pending';
 		$self->gatewayNonce = $request['gateway_nonce'];
-		$self->cardInfo = $request['card_info'];
+		$self->cardInfo = CardInfo::fromArray( [
+			'name' => $request['card_info']['card_name'],
+			'cvc' => $request['card_info']['card_cvc'],
+			'expMonth' => $request['card_info']['card_exp_month'],
+			'expYear' => $request['card_info']['card_exp_year'],
+			'number' => $request['card_info']['card_number'],
+			'address' => $request['card_info']['card_address'],
+			'address2' => $request['card_info']['card_address_2'],
+			'city' => $request['card_info']['card_city'],
+			'state' => $request['card_info']['card_state'],
+			'country' => $request['card_info']['card_country'],
+			'zip' => $request['card_info']['card_zip'],
+		] );
 
 		return $self;
 	}
@@ -100,9 +194,9 @@ class FormData {
 	public function toPaymentArray() {
 		return [
 			'price' => $this->price,
-			'give_form_title' => $this->giveFormTitle,
-			'give_form_id' => $this->giveFormId,
-			'give_price_id' => $this->givePriceId,
+			'give_form_title' => $this->formTitle,
+			'give_form_id' => $this->formId,
+			'give_price_id' => $this->priceId,
 			'date' => $this->date,
 			'user_email' => $this->userEmail,
 			'purchase_key' => $this->purchaseKey,
