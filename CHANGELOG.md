@@ -14,17 +14,20 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Return empty array if file does not exist in $_FILES in field api. (#6032)
 - Make field required only if visible in donation form in field api.
 - Default value is now used in Legacy Consumer textarea template. (#6043)
+- Use legacy consumer common style to style form fields in multi-step form template. (#6059)
 
 ### New
 
 - Make field name required in field api. (#6032)
 - Add option to disable google fonts in multi-step form template. (#5973)
+- Add common style file for form field render with legacy consumer. (#6059)
 
 ### Fixed
 
 - Give icons in Gutenberg block admin UI now display correctly in Firefox (#6023)
 - An error message that was confusing has been clarified (#6045)
 - PayPal IPN validation error when using PayPal Standard Gateway and GiveWP test mode (#6057)
+- Show minimum donation amount notice in donation form. (#6059)
 
 ## 2.15.0 - 2021-10-11
 
