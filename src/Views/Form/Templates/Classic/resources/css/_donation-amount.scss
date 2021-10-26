@@ -62,11 +62,10 @@
 	}
 }
 
-
-
 .give-donation-levels-wrap {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	grid-auto-rows: 1fr;
 	gap: 0.3125rem;
 	list-style: none;
 }
