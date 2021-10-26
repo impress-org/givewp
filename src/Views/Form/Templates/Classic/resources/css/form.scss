@@ -53,6 +53,7 @@ body {
 	/* translucent tint gradient over image */
 	background-image: var(--tint), var(--give-header-background-image);
 	background-size: cover;
+	background-position: center;
 
 	color: #fff;
 	text-align: center;
