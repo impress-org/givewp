@@ -5,11 +5,11 @@ function transform() {
 	removeNode(document.querySelector('#give_error_test_mode')); // Get out of my way!
 
 	insertAfter(
-		document.querySelector('#give-personal-info-fields'),
-		document.querySelector('#give-donation-level-fields'),
+		document.querySelector('.give-personal-info-section'),
+		document.querySelector('.give-donation-amount-section'),
 	);
 
-	document.querySelector('#give-payment-method-fields').append(
+	document.querySelector('.give-payment-details-section').append(
 		document.querySelector('#give_purchase_form_wrap')
 	)
 }

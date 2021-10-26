@@ -75,7 +75,7 @@ class Classic extends Template implements Hookable, Scriptable {
 
 		// Donation Levels
 		add_action('give_donation_form_top', function () {
-			echo "<section id=\"give-donation-level-fields\" class=\"give-form-section\">";
+			echo "<section class=\"give-form-section give-donation-amount-section\">";
 		}, -10000);
 		add_action('give_donation_form_top', function () {
 			echo "</section>";
@@ -85,7 +85,7 @@ class Classic extends Template implements Hookable, Scriptable {
 
 		// Donation Personal Info
 		add_action('give_donation_form_register_login_fields', function () {
-			echo "<section id=\"give-personal-info-fields\" class=\"give-form-section\">";
+			echo "<section class=\"give-form-section give-personal-info-section\">";
 		}, -10000);
 		add_action('give_donation_form_register_login_fields', function () {
 			echo "</section>";
@@ -93,7 +93,7 @@ class Classic extends Template implements Hookable, Scriptable {
 
 		// Donation Payment Method
 		add_action('give_payment_mode_top', function () {
-			echo "<section id=\"give-payment-method-fields\" class=\"give-form-section\">";
+			echo "<section class=\"give-form-section give-payment-details-section\">";
 		}, -10000);
 		add_action('give_payment_mode_bottom', function () {
 			echo "</section>";
