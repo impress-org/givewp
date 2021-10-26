@@ -44,15 +44,6 @@ interface PaymentGatewayInterface {
 	public function getPaymentMethodLabel();
 
 	/**
-	 * Returns form fields for donation form to render
-	 *
-	 * @unreleased
-	 *
-	 * @return string|bool
-	 */
-	public function getLegacyFormFieldMarkup( $formId );
-
-	/**
 	 * After creating the initial payment, we can continue with the gateway processing
 	 *
 	 * @unreleased
