@@ -156,7 +156,6 @@ class FormData {
 			'expMonth' => $request['card_info']['card_exp_month'],
 			'expYear'  => $request['card_info']['card_exp_year'],
 			'number'   => $request['card_info']['card_number'],
-			'address'  => $billingAddress,
 		] );
 
 		$self->billingAddress = Address::fromArray( $billingAddress );
