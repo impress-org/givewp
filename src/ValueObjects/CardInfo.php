@@ -63,7 +63,7 @@ class CardInfo implements ValueObjects {
 	 * @return CardInfo
 	 */
 	public static function fromArray( $array ) {
-		$expectedKeys = [ 'name', 'cvc', 'expMonth', 'expYear', 'number', 'address' ];
+		$expectedKeys = [ 'name', 'cvc', 'expMonth', 'expYear', 'number' ];
 
 		$array = array_intersect_key( $array, array_flip( $expectedKeys ) );
 
