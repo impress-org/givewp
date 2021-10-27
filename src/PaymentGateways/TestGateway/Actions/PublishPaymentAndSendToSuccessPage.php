@@ -2,18 +2,24 @@
 
 namespace Give\PaymentGateways\TestGateway\Actions;
 
+use Give\Framework\Http\Response;
+
 /**
  * Class PublishPaymentAndSendToSuccessPage
+ *
  * @unreleased
  */
 class PublishPaymentAndSendToSuccessPage {
 	/**
 	 * @unreleased
 	 *
-	 * @return void
+	 * @return Response
 	 */
-	public function __invoke( $donationId ) {
+	public function __invoke( $donationId, $gateway ) {
 		give_update_payment_status( $donationId, 'publish' );
-		give_send_to_success_page();
+
+		$redirect = give_get_success_page_uri();
+
+		return Response::redirect(apply_filters( 'give_success_page_redirect', $redirect, $gateway));
 	}
 }

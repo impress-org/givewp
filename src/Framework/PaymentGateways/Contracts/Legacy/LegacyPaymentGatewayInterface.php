@@ -1,5 +1,5 @@
 <?php
-namespace Give\Framework\PaymentGateways\Contracts;
+namespace Give\Framework\PaymentGateways\Contracts\Legacy;
 
 /**
  * @unreleased

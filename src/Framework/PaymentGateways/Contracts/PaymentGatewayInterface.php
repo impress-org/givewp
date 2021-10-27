@@ -1,6 +1,7 @@
 <?php
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\Http\Response;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 
 /**
@@ -51,7 +52,7 @@ interface PaymentGatewayInterface {
 	 * @param  int  $donationId
 	 * @param  FormData  $formData
 	 *
-	 * @return string|bool
+	 * @return Response
 	 */
 	public function handleGatewayRequest( $donationId, $formData );
 }

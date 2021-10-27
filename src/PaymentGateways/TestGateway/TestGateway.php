@@ -62,6 +62,6 @@ class TestGateway extends PaymentGateway {
 		/** @var PublishPaymentAndSendToSuccessPage $action */
 		$action = give( PublishPaymentAndSendToSuccessPage::class );
 
-		return $action( $donationId );
+		return $action( $donationId, $formData->gateway );
 	}
 }
