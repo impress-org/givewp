@@ -1,0 +1,70 @@
+.give-donation-summary-section {
+
+    margin: 20px -20px 0;
+    padding: 0 20px;
+
+    color: #333333;
+    background-color: #F9F9F9;
+
+    font-family: Montserrat, serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+
+    .back-btn {
+        color: #3BA2E0;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 23px;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+        cursor: pointer;
+        text-decoration: underline;
+        background-color: transparent;
+    }
+
+    .give-donation-summary-help-text {
+        color: #8C8C8C;
+
+        margin: 10px 0;
+
+        gap: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    tbody {
+        color: #444444;
+    }
+
+    tr {
+        border-bottom: 1px solid #F2F2F2;
+    }
+
+    tr, th, td {
+        height: 42px;
+        padding: 10px 0;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    td {
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    th:last-child,
+    td:last-child {
+        text-align: right;
+    }
+}

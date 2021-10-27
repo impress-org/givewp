@@ -59,6 +59,7 @@ use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
+use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
@@ -158,7 +159,8 @@ final class Give {
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
-		LicenseServiceProvider::class
+		LicenseServiceProvider::class,
+        DonationSummaryServiceProvider::class,
 	];
 
 	/**
