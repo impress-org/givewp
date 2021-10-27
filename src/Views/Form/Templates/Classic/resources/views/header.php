@@ -12,6 +12,9 @@
 		<p class="give-form-description"><?= $description ?></p>
 		<?php if ( $isSecureBadgeEnabled ): ?>
 		<aside class="give-form-secure-badge">
+			<svg class="give-form-secure-icon">
+				<use href="#give-icon-lock" />
+			</svg>
 			<?= $secureBadgeContent ?>
 		</aside>
 		<?php endif; ?>

@@ -6,6 +6,10 @@
 	font-weight: 500;
 	line-height: 1.3;
 	color: #333;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		font-size: 1.5rem;
+	}
 }
 
 .give-total-wrap + .give-donation-levels-wrap {
@@ -40,6 +44,7 @@
 		border: 0;
 		border-top-right-radius: inherit;
 		border-bottom-right-radius: inherit;
+		background-color: #fff;
 		text-align: right;
 		font-family: inherit;
 		font-size: 2.625rem;
@@ -56,31 +61,35 @@
 
 .give-donation-levels-wrap {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(auto-fill, minmax(6.625rem, 1fr));
 	grid-auto-rows: 1fr;
-	gap: 0.3125rem;
+	gap: clamp(0.3125rem, 2vw, 1.875rem);
+	width: 100%;
 	list-style: none;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		grid-template-columns: repeat(auto-fill, minmax(10.375rem, 1fr));
+	}
 }
 
-.give-donation-level-btn {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
+.give-btn.give-donation-level-btn {
+	min-width: -moz-available;
+	min-width: -webkit-fill-available;
 	height: 100%;
-	padding: 1rem 0.5rem;
-	border: 0.125rem solid var(--give-primary-color);
-	border-radius: 0.5rem;
-	background-color: var(--give-primary-color);
-	text-align: center;
-	color: #fff;
 	font-size: 1.5rem;
-	font-family: inherit;
-	font-weight: 600;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
 
 	transition-property: background-color, color;
 	transition-duration: 200ms;
 	transition-timing-function: ease-in;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		width: auto;
+		padding-top: 1.6875rem;
+		padding-bottom: 1.6875rem;
+		font-size: 2.125rem;
+	}
 
 	&.give-default-level {
 		background-color: #fff;
@@ -88,8 +97,14 @@
 	}
 
 	&.give-btn-level-custom {
+		word-spacing: 9999px; // This forces a linebreak after each word.
 		font-size: 1rem;
 		line-height: 1.25;
+
+		@media screen and (min-width: $desktopMinWidth) {
+			font-size: 1.125rem;
+			font-weight: 400;
+		}
 	}
 
 	& .give-formatted-currency {
@@ -99,9 +114,9 @@
 		line-height: 1;
 
 		.give-currency-symbol {
-			font-size: 0.875rem;
-			font-weight: 500;
-			transform: translateY(0.05rem);
+			font-size: 0.583em;
+			font-weight: 400;
+			transform: translateY(0.08em);
 		}
 	}
 }

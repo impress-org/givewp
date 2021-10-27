@@ -23,7 +23,7 @@
 }
 
 .give-form-header-top-wrap {
-	padding: 3rem;
+	padding: 2.5rem 2rem 1.75rem;
 
 	@media screen and (min-width: $desktopMinWidth) {
 		padding: 0;
@@ -31,24 +31,64 @@
 }
 
 .give-form-title {
+	position: relative;
+	margin-bottom: 3rem;
 	font-size: 1.75rem;
 	font-weight: 600;
+	line-height: 1.2;
+	text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+
+	@media screen and (min-width: $desktopMinWidth) {
+		font-size: 2.1875rem;
+	}
+}
+
+.give-form-title::after {
+	position: absolute;
+	content: "";
+	display: block;
+	border-radius: 9999px;
+	width: 4.375rem;
+	height: 0.3125rem;
+	background-color: #fff;
+	left: 50%;
+	top: calc(100% + 1.25rem);
+	transform: translate(-50%);
 }
 
 .give-form-description {
 	font-size: 1.125rem;
-	line-height: 1.444;
+	line-height: 1.45;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		font-size: 1.25rem;
+		max-width: 34.375rem;
+	}
 }
 
 .give-form-secure-badge {
 	display: inline-flex;
-	padding: 0.5rem 0.8rem;
+	gap: 0.75em;
+	padding: 0.7rem 0.9rem;
 	border-radius: 9999px;
 	background-color: #fff;
 	box-shadow: 0px 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
 	color: #333;
 	font-size: 0.8125rem;
 	font-weight: 500;
+	line-height: 1;
+
+	.give-form-description + & {
+		margin-top: 2rem;
+	}
+}
+
+.give-form-secure-icon {
+	position: relative;
+	top: -0.04em;
+	color: #77d006;
+	height: 1em;
+	width: 1em;
 }
 
 .give-form-stats-panel {

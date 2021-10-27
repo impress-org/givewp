@@ -1,7 +1,12 @@
 .give-form-section {
 	padding: 1.75rem 1rem;
+
+	@media screen and (min-width: $desktopMinWidth) {
+		padding: 3.375rem 4.375rem;
+
+	}
 }
 
-.give-form-section:nth-child(odd) {
+.give-form-section:nth-child(even) {
 	background-color: #f9f9f9;
 }

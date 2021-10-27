@@ -68,6 +68,8 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function loadHooks() {
+		add_action( 'give_pre_form', [ $this, 'renderIconDefinitions' ] );
+
 		// Display header
 		if ( 'enabled' === $this->options[ 'appearance' ][ 'display_header' ] ) {
 			add_action( 'give_pre_form', [ $this, 'renderHeader' ] );
@@ -224,6 +226,15 @@ class Classic extends Template implements Hookable, Scriptable {
 		echo $this->loadFile( 'views/donation-amount-heading.php', [
 			'content' => $this->options[ 'donation_amount' ][ 'headline' ],
 		] );
+	}
+
+	/**
+	 * Render the SVG icon definitions.
+	 *
+	 * @void
+	 */
+	public function renderIconDefinitions() {
+		echo $this->loadFile( 'views/icon-defs.php' );
 	}
 
 	/**
