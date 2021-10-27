@@ -114,15 +114,6 @@ class FormData {
 	public static function fromRequest( array $request ) {
 		$self = new static();
 
-		$billingAddress = [
-			'line1'      => $request['card_info']['card_address'],
-			'line2'      => $request['card_info']['card_address_2'],
-			'city'       => $request['card_info']['card_city'],
-			'state'      => $request['card_info']['card_state'],
-			'country'    => $request['card_info']['card_country'],
-			'postalCode' => $request['card_info']['card_zip'],
-		];
-
 		$self->price          = $request['price'];
 		$self->date           = $request['date'];
 		$self->purchaseKey    = $request['purchase_key'];
@@ -147,8 +138,8 @@ class FormData {
 			'firstName' => $request['user_info']['first_name'],
 			'lastName'  => $request['user_info']['last_name'],
 			'email'     => $request['user_info']['email'],
-			'honorific' => ! empty( $payment_data['user_info']['title'] ) ? $payment_data['user_info']['title'] : '',
-			'address'   => $billingAddress
+			'honorific' => ! empty( $request['user_info']['title'] ) ? $request['user_info']['title'] : '',
+			'address'   => $request['user_info']['address']
 		] );
 		$self->cardInfo       = CardInfo::fromArray( [
 			'name'     => $request['card_info']['card_name'],
