@@ -5,14 +5,12 @@ namespace Give\PaymentGateways\Adapters;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
-use Give\PaymentGateways\Traits\ValidationHelpers;
 
 /**
  * Class LegacyPaymentGatewayAdapter
  * @unreleased
  */
 class LegacyPaymentGatewayAdapter {
-	use ValidationHelpers;
 
 	/**
 	 * Get legacy form field markup to display gateway specific payment fields
@@ -59,5 +57,19 @@ class LegacyPaymentGatewayAdapter {
 		$createPaymentAction = give( CreatePaymentAction::class );
 
 		return $createPaymentAction( $formData );
+	}
+
+	/**
+	 * Validate Gateway Nonce
+	 *
+	 * @unreleased 
+	 *
+	 * @param  string  $gatewayNonce
+	 */
+	private function validateGatewayNonce( $gatewayNonce ) {
+		if ( ! wp_verify_nonce( $gatewayNonce, 'give-gateway' ) ) {
+			wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.',
+				'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
+		}
 	}
 }
