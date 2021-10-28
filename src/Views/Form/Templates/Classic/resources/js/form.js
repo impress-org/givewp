@@ -86,9 +86,8 @@ function splitDonationLevelAmountsIntoParts() {
 
 		const CurrencySymbol = ({position}) => <span className={`give-currency-symbol-${position}`}>{currency.symbol}</span>;
 		const AmountWithoutDecimals = () => <span className="give-amount-without-decimals">{window.accounting.format(rawAmount, 0, currency.thousandsSeparator)}</span>;
-		const DecimalSeparator = () => <span className="give-amount-separator">{currency.decimalSeparator}</span>;
 		const DecimalOfAmount = () => <span className="give-amount-decimal">{rawAmount.toFixed(currency.precision).split('.')[1]}</span>;
-		const Amount = () => <span className="give-amount-formatted"><AmountWithoutDecimals /><DecimalSeparator /><DecimalOfAmount /></span>;
+		const Amount = () => <span className="give-amount-formatted"><AmountWithoutDecimals /><DecimalOfAmount /></span>;
 
 		node.setAttribute('aria-label', node.textContent);
 		node.innerHTML = (
