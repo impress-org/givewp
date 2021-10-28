@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways;
+namespace Give\PaymentGateways\Actions;
 
 use Give\Framework\PaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -9,7 +9,7 @@ class RegisterPaymentGatewaySettingsList {
 	/**
 	 * Add gateways to settings list
 	 *
-	 * @unreleased 
+	 * @unreleased
 	 *
 	 * @param  array  $gatewayData
 	 */

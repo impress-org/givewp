@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways;
+namespace Give\PaymentGateways\Actions;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -46,7 +46,7 @@ class RegisterPaymentGateways {
 	/**
 	 * Register 3rd party payment gateways
 	 *
-	 * @unreleased 
+	 * @unreleased
 	 *
 	 * @param  PaymentGatewayRegister  $paymentGatewayRegister
 	 */
