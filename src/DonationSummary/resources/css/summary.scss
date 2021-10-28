@@ -4,16 +4,17 @@
 
 .give-donation-summary-section {
 
-    margin: 20px -20px;
-    padding: 0 20px;
-
-    color: #333333;
-    background-color: #F9F9F9;
-
     font-family: Montserrat, serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
+
+    .give-donation-summary-table-wrapper {
+        color: #333333;
+        background-color: #F9F9F9;
+        margin: 20px -20px;
+        padding: 0 20px;
+    }
 
     .back-btn {
         color: #3BA2E0;

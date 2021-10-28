@@ -61,6 +61,18 @@ class SummaryView {
 
     /**
      * @unreleased
+     * @return string
+     */
+    public function getSummaryHeading() {
+        $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
+        if( isset( $templateSettings[ 'donation_summary' ] ) && isset( $templateSettings[ 'donation_summary' ][ 'heading' ] ) ) {
+            return $templateSettings[ 'donation_summary' ][ 'heading' ];
+        }
+        return '<!-- Donation summary heading is not set. -->';
+    }
+
+    /**
+     * @unreleased
      * @return bool
      */
     public function isDonationSummaryEnabled() {
