@@ -97,7 +97,7 @@ const GiveDonationSummary = {
         // Format with accounting.js, according to the configuration
         const formatted_amount = accounting.formatMoney( amount, {
             symbol: Give.form.fn.getInfo( 'currency_symbol', $form ),
-            format: '%s%v', // Give.form.fn.getInfo( 'currency_position', $form ),
+            format: ( 'before' === Give.form.fn.getInfo( 'currency_position', $form ) ) ? '%s%v' : '%v%s',
             decimal: Give.form.fn.getInfo( 'decimal_separator', $form ),
             thousand: Give.form.fn.getInfo( 'thousands_separator', $form ),
         } )
