@@ -45,6 +45,43 @@ return [
 			],
 		]
 	],
+    'donation_summary' => [
+		'name'   => esc_html__( 'Donation Summary', 'give' ),
+		'fields' => [
+            [
+                'id'      => 'enabled',
+                'name'    => __( 'Enabled', 'give' ),
+                'desc'    => __( '...', 'give' ),
+                'type'    => 'radio_inline',
+                'options' => [
+                    'enabled'  => __( 'Enabled', 'give' ),
+                    'disabled' => __( 'Disabled', 'give' ),
+                ],
+                'default' => 'disabled',
+            ],
+            [
+                'id'         => 'heading',
+                'name'       => __( 'Heading', 'give' ),
+                'desc'       => __( '...', 'give' ),
+                'type'       => 'text',
+                'attributes' => [
+                    'placeholder' => __( '...', 'give' ),
+                ],
+                'default'    => __( '...', 'give' ),
+            ],
+            [
+                'id'      => 'location',
+                'name'    => __( 'Location', 'give' ),
+                'desc'    => __( '...', 'give' ),
+                'type'    => 'radio_inline',
+                'options' => [
+                    'give_donation_form_user_info'  => __( 'Before Payment Fields', 'give' ),
+                    'give_donation_form_before_submit' => __( 'After Payment Fields', 'give' ),
+                ],
+                'default' => 'give_donation_form_before_submit',
+            ],
+		]
+	],
 	'introduction' => [
 		'name'   => sprintf( __( '%1$s Step 1: %2$s Introduction', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description goes here.', 'give' ),

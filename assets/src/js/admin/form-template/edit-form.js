@@ -98,12 +98,18 @@
 	 * Handle conditional form template fields
 	 *
 	 * @since 2.7.0
+     * @unreleased Add listener for donation summary fields
 	 */
 	const handleConditionalFormTemplateFields = function() {
 		updateIntroductionFields();
 		$( 'input[name="sequoia[introduction][enabled]"]' ).on( 'change', function() {
 			updateIntroductionFields();
 		} );
+
+        updateDonationSummaryFields();
+        $( 'input[name="sequoia[donation_summary][enabled]"]' ).on( 'change', function() {
+            updateDonationSummaryFields();
+        } );
 
 		updateSocialSharingFields();
 		$( 'input[name="sequoia[thank-you][sharing]"]' ).on( 'change', function() {
@@ -112,7 +118,7 @@
 	};
 
 	/**
-	 * Update introduciton fields
+	 * Update introduction fields
 	 * Hide or show introduction fields if enabled
 	 *
 	 * @since 2.7.0
@@ -126,6 +132,22 @@
 			$( introductionFields ).show();
 		}
 	};
+
+    /**
+     * Update donation summary fields
+     * Hide or show fields if enabled
+     *
+     * @unreleased
+     */
+    const updateDonationSummaryFields = function() {
+        const conditionalFields = $( '[class*="sequoia[donation_summary][heading]_field"], [class*="sequoia[donation_summary][location]_field"]' );
+
+        if ( $( 'input[name="sequoia[donation_summary][enabled]"]' ).length !== 0 && ! $( 'input[name="sequoia[donation_summary][enabled]"]' ).prop( 'checked' ) ) {
+            $( conditionalFields ).hide();
+        } else {
+            $( conditionalFields ).show();
+        }
+    };
 
 	/**
 	 * Update social sharing fields

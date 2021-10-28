@@ -118,6 +118,11 @@ class DefaultFormFactory {
 				'primary_color' => $this->primaryColor,
 				'donate_label'  => __( 'Donate Now', 'give' ),
 			],
+            'donation_summary' => [
+                'enabled' => 'enabled',
+                'heading' => '...',
+                'location' => 'give_donation_form_before_submit'
+            ],
 			'payment_amount'      => [
 				'header_label' => __( 'Choose Amount', 'give' ),
 				'content'      => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo( 'sitename' ) ),
