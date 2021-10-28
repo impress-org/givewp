@@ -51,7 +51,7 @@ return [
             [
                 'id'      => 'enabled',
                 'name'    => __( 'Enabled', 'give' ),
-                'desc'    => __( '...', 'give' ),
+                'desc'    => __( 'Display a summary of the donation on the Payment Information step', 'give' ),
                 'type'    => 'radio_inline',
                 'options' => [
                     'enabled'  => __( 'Enabled', 'give' ),
@@ -72,7 +72,7 @@ return [
             [
                 'id'      => 'location',
                 'name'    => __( 'Location', 'give' ),
-                'desc'    => __( '...', 'give' ),
+                'desc'    => __( 'Where should the donation summary be placed?', 'give' ),
                 'type'    => 'radio_inline',
                 'options' => [
                     'give_donation_form_user_info'  => __( 'Before Payment Fields', 'give' ),
