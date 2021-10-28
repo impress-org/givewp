@@ -1,6 +1,7 @@
 let mix = require('laravel-mix');
 const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 mix.setPublicPath('./assets/dist')
     .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
@@ -37,6 +38,7 @@ mix.setPublicPath('./assets/dist')
     .react()
     .sourceMaps(false)
 
+    .copyDirectory('assets/src/tcpdf-fonts', 'vendor/tecnickcom/tcpdf/fonts')
     .copyDirectory('assets/src/images', 'assets/dist/images');
 
 mix.webpackConfig({
@@ -64,7 +66,11 @@ if (mix.inProduction()) {
             new WebpackRTLPlugin({
                 suffix: '-rtl',
                 minify: true,
-            })
+            }),
+            new CleanWebpackPlugin({
+                // We clean up he tcpdf directory in the vendor to prevent it from bloating the release file size
+                cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), 'vendor/tecnickcom/tcpdf/fonts/*')],
+            }),
         ],
     });
 }
