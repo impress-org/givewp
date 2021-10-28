@@ -30,11 +30,11 @@ class SummaryView {
         include 'resources/views/summary.php';
     }
 
-    protected function getFormTemplate() {
+    public function getFormTemplate() {
         return Give()->form_meta->get_meta( $this->formID, '_give_form_template', $single = true );
     }
 
-    protected function getFormTemplateLocation() {
+    public function getFormTemplateLocation() {
         $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
         if( isset( $templateSettings[ 'donation_summary' ] ) && isset( $templateSettings[ 'donation_summary' ][ 'location' ] ) ) {
             return $templateSettings[ 'donation_summary' ][ 'location' ];
@@ -42,7 +42,7 @@ class SummaryView {
         throw new \Exception( 'Donation Summary location not set' );
     }
 
-    protected function isDonationSummaryEnabled() {
+    public function isDonationSummaryEnabled() {
         $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
         return isset( $templateSettings[ 'donation_summary' ] )
             && isset( $templateSettings[ 'donation_summary' ][ 'enabled' ] )
