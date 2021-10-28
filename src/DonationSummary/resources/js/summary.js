@@ -37,8 +37,10 @@ jQuery(document).on('give:postInit', function() {
      * @unreleased
      */
     GiveDonationSummary.observe( '.give-final-total-amount', function( targetNode, $form ) {
+        // Hack: (Currency Switcher) The total is always stored using a the decimal seperator as set by the primary currency.
+        const total = targetNode.dataset.total.replace('.', Give.form.fn.getInfo( 'decimal_separator', $form ))
         $form.find( '[data-tag="total"]' ).html(
-            GiveDonationSummary.format_amount( targetNode.dataset.total, $form )
+            GiveDonationSummary.format_amount( total, $form )
         )
     })
 
