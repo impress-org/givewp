@@ -43,6 +43,7 @@
 
 use Give\Container\Container;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
@@ -59,7 +60,6 @@ use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
-use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
