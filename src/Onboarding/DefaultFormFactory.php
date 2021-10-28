@@ -120,7 +120,7 @@ class DefaultFormFactory {
 			],
             'donation_summary' => [
                 'enabled' => 'enabled',
-                'heading' => '...',
+                'heading' => __( 'Here\'s what you\'re about to donate', 'give' ),
                 'location' => 'give_donation_form_before_submit'
             ],
 			'payment_amount'      => [
