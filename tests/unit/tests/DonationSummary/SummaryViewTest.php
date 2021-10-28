@@ -39,6 +39,18 @@ final class SummaryViewTest extends Give_Unit_Test_Case {
         $this->assertTrue( $view->isDonationSummaryEnabled() );
     }
 
+    public function test_get_summary_heading() {
+        $view = self::create_form_summary_view([
+            '_give_sequoia_form_template_settings' => [
+                'donation_summary' => [
+                    'heading' => 'Here\'s what you\'re about to donate',
+                ],
+            ],
+        ]);
+
+        $this->assertEquals( 'Here\'s what you\'re about to donate', $view->getSummaryHeading() );
+    }
+
     protected static function create_form_summary_view( $meta ) {
         $form = Give_Helper_Form::create_simple_form( compact( 'meta' ));
 

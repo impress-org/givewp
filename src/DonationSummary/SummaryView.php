@@ -68,7 +68,7 @@ class SummaryView {
         if( isset( $templateSettings[ 'donation_summary' ] ) && isset( $templateSettings[ 'donation_summary' ][ 'heading' ] ) ) {
             return $templateSettings[ 'donation_summary' ][ 'heading' ];
         }
-        return '<!-- Donation summary heading is not set. -->';
+        return '';
     }
 
     /**
