@@ -60,15 +60,17 @@
 }
 
 .give-donation-levels-wrap {
+	--min-level-width: 6.625rem;
+
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(6.625rem, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(var(--min-level-width), 1fr));
 	grid-auto-rows: 1fr;
 	gap: clamp(0.3125rem, 2vw, 1.875rem);
 	width: 100%;
 	list-style: none;
 
 	@media screen and (min-width: $desktopMinWidth) {
-		grid-template-columns: repeat(auto-fill, minmax(10.375rem, 1fr));
+		--min-level-width: 10.375rem;
 	}
 }
 
