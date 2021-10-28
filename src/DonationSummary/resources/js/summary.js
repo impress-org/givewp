@@ -2,6 +2,7 @@ jQuery(document).on('give:postInit', function() {
 
     /**
      * Amount
+     * @unreleased
      */
     GiveDonationSummary.observe( '[name="give-amount"]', function( targetNode, $form ) {
         $form.find( '[data-tag="amount"]' ).html(
@@ -11,6 +12,7 @@ jQuery(document).on('give:postInit', function() {
 
     /**
      * Frequency (and Recurring)
+     * @unreleased
      */
     GiveDonationSummary.observe( '[name="give-recurring-period"]', function( targetNode, $form ) {
         $form.find( '.js-give-donation-summary-frequency-help-text' ).toggle( ! targetNode.checked )
@@ -20,6 +22,7 @@ jQuery(document).on('give:postInit', function() {
 
     /**
      * Fees
+     * @unreleased
      */
     GiveDonationSummary.observe('.give_fee_mode_checkbox', function (targetNode, $form) {
         $form.find('.fee-break-down-message').hide()
@@ -31,6 +34,7 @@ jQuery(document).on('give:postInit', function() {
 
     /**
      * Total
+     * @unreleased
      */
     GiveDonationSummary.observe( '.give-final-total-amount', function( targetNode, $form ) {
         $form.find( '[data-tag="total"]' ).html(
@@ -43,10 +47,15 @@ jQuery(document).on('give:postInit', function() {
     totalAmount.dataset.total = totalAmount.dataset.total
 })
 
+/**
+ * @unreleased
+ */
 const GiveDonationSummary = {
 
     /**
      * Observe an element and respond to changes to that element.
+     *
+     * @unreleased
      *
      * @param {string} selectors
      * @param {callable} callback
@@ -71,6 +80,8 @@ const GiveDonationSummary = {
 
     /**
      * Helper function to get the formatted amount
+     *
+     * @unreleased
      *
      * @param {string/number} amount
      * @param {jQuery} $form

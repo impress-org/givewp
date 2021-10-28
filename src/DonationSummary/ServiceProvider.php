@@ -5,7 +5,7 @@ namespace Give\DonationSummary;
 use Give\Helpers\Hooks;
 
 /**
- * @since 2.10.0
+ * @unreleased
  */
 class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 

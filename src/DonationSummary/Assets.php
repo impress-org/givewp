@@ -2,7 +2,14 @@
 
 namespace Give\DonationSummary;
 
+/**
+ * @unreleased
+ */
 class Assets {
+
+    /**
+     * @unreleased
+     */
     public function loadFrontendAssets() {
 
         wp_enqueue_style(
