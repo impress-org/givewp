@@ -1,5 +1,5 @@
 /** @jsx h */
-/** @jsxFragment h */
+/** @jsxFrag h */
 import h from 'vhtml';
 import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
 
@@ -37,7 +37,7 @@ function setPersonalInfoTitle() {
 function addPersonalInfoDescription() {
 	insertAfter(
 		nodeFromString(
-			<p class="give-personal-info-description">
+			<p className="give-personal-info-description">
 				{classicTemplateOptions.donor_information.description}
 			</p>
 		),
@@ -52,7 +52,7 @@ function setPaymentDetailsTitle() {
 function addPaymentDetailsDescription() {
 	insertAfter(
 		nodeFromString(
-			<p class="give-payment-details-description">
+			<p className="give-payment-details-description">
 				{classicTemplateOptions.payment_method.description}
 			</p>
 		),
@@ -79,19 +79,21 @@ function splitDonationLevelAmountsIntoParts() {
 	};
 
 	document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach(node => {
-		const CurrencySymbol = () => <span class="give-currency-symbol">{currency.symbol}</span>;
+		const formattedAmount = node.getAttribute('value');
+		const rawAmount = unFormatCurrency(formattedAmount, currency.decimalSeparator);
 
-		const rawAmount = unFormatCurrency(node.getAttribute('value'), currency.decimalSeparator);
-		const decimalOfAmount = rawAmount.toFixed(currency.precision).split('.')[1];
-		const amountWithoutDecimals = window.accounting.format(rawAmount, 0, currency.thousandsSeparator);
+		const [symbolBefore, symbolAfter] = [currency.symbolPosition === 'before', currency.symbolPosition === 'after'];
 
+		const CurrencySymbol = ({position}) => <span className={`give-currency-symbol-${position}`}>{currency.symbol}</span>;
+		const AmountWithoutDecimals = () => <span className="give-amount-without-decimals">{window.accounting.format(rawAmount, 0, currency.thousandsSeparator)}</span>;
+		const DecimalSeparator = () => <span className="give-amount-separator">{currency.decimalSeparator}</span>;
+		const DecimalOfAmount = () => <span className="give-amount-decimal">{rawAmount.toFixed(currency.precision).split('.')[1]}</span>;
+		const Amount = () => <span className="give-amount-formatted"><AmountWithoutDecimals /><DecimalSeparator /><DecimalOfAmount /></span>;
+
+		node.setAttribute('aria-label', node.textContent);
 		node.innerHTML = (
-			<span class="give-formatted-currency">
-				{currency.symbolPosition === 'before' && <CurrencySymbol />}
-				<span class="amount">
-					<span>{amountWithoutDecimals}</span><span>{currency.decimalSeparator}{decimalOfAmount}</span>
-				</span>
-				{currency.symbolPosition === 'after' && <CurrencySymbol />}
+			<span className="give-formatted-currency" aria-hidden>
+				{symbolBefore && <CurrencySymbol position="before" />}<Amount /> {symbolAfter && <CurrencySymbol position="after" />}
 			</span>
 		);
 	});

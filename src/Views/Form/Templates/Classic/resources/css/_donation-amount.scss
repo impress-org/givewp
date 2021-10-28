@@ -112,34 +112,45 @@
 	& .give-formatted-currency {
 		display: flex;
 		gap: 0.15rem;
-		align-items: start;
 		line-height: 1;
 
-		.give-currency-symbol {
-			font-size: 0.583em;
+		.give-currency-symbol-before,
+		.give-currency-symbol-after {
 			font-weight: 400;
-			transform: translateY(0.08em);
 		}
 
-		.amount {
+		.give-currency-symbol-before {
+			align-self: flex-start;
+			transform: translateY(0.2em);
+			font-size: 0.583em;
+
+			@media screen and (min-width: $desktopMinWidth) {
+				transform: translateY(0.4em);
+				font-size: 0.41em;
+			}
+		}
+
+		.give-currency-symbol-after {
+			align-self: center;
+			margin-left: 0.2em;
+			font-size: 0.8em;
+		}
+
+		.give-amount-formatted {
 			display: inline-flex;
-			align-items: baseline;
+		}
 
-			span:first-child {
-				white-space: nowrap;
-			}
+		.give-amount-separator {
+			display: none;
+		}
 
-			span:last-child {
-				font-size: 0.5em;
-			}
+		.give-amount-without-decimals {
+			white-space: nowrap;
+		}
 
-			.give-currency-symbol + & {
-				align-items: flex-start;
-
-				span:last-child {
-					transform: translateY(0.15em);
-				}
-			}
+		.give-amount-decimal {
+			font-size: 0.5em;
+			transform: translateY(0.2em);
 		}
 
 	}
