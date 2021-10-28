@@ -21,11 +21,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
      */
     public function boot() {
 
-        /**
-         * @hook give_donation_form_user_info
-         * @hook give_donation_form_before_submit
-         */
-        Hooks::addAction( 'give_donation_form_before_submit', SummaryView::class );
+        Hooks::addAction( 'give_pre_form_output', SummaryView::class );
 
         Hooks::addAction( 'wp_enqueue_scripts', Assets::class, 'loadFrontendAssets' );
     }

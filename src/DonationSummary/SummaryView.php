@@ -17,7 +17,11 @@ class SummaryView {
 
         if( 'sequoia' === $this->getFormTemplate() ) {
             if( $this->isDonationSummaryEnabled() ) {
-                $this->render();
+                /**
+                 * @hook give_donation_form_user_info
+                 * @hook give_donation_form_before_submit
+                 */
+                add_action( $this->getFormTemplateLocation(), [ $this, 'render' ] );
             }
         }
     }
@@ -28,6 +32,14 @@ class SummaryView {
 
     protected function getFormTemplate() {
         return Give()->form_meta->get_meta( $this->formID, '_give_form_template', $single = true );
+    }
+
+    protected function getFormTemplateLocation() {
+        $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
+        if( isset( $templateSettings[ 'donation_summary' ] ) && isset( $templateSettings[ 'donation_summary' ][ 'location' ] ) ) {
+            return $templateSettings[ 'donation_summary' ][ 'location' ];
+        }
+        throw new \Exception( 'Donation Summary location not set' );
     }
 
     protected function isDonationSummaryEnabled() {
