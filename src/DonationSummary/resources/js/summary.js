@@ -44,6 +44,10 @@ jQuery(document).on('give:postInit', function() {
             GiveDonationSummary.format_amount( targetNode.dataset.total, $form )
         )
     })
+
+    // Hack: Force an initial mutation for the Total Amount observer
+    const totalAmount = document.querySelector('.give-final-total-amount')
+    totalAmount.dataset.total = totalAmount.dataset.total
 })
 
 const GiveDonationSummary = {
