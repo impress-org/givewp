@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix');
 const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
