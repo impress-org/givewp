@@ -94,20 +94,16 @@ const GiveDonationSummary = {
         amount = amount.replace( Give.form.fn.getInfo( 'thousands_separator', $form ), '' )
                        .replace( Give.form.fn.getInfo( 'decimal_separator', $form ), '.')
 
+        const currency = Give.form.fn.getInfo( 'currency_code', $form )
+        const precision = GiveDonationSummaryData.currencyPrecisionLookup[ currency ]
+
         // Format with accounting.js, according to the configuration
-        const formatted_amount = accounting.formatMoney( amount, {
+        return accounting.formatMoney( amount, {
             symbol: Give.form.fn.getInfo( 'currency_symbol', $form ),
             format: ( 'before' === Give.form.fn.getInfo( 'currency_position', $form ) ) ? '%s%v' : '%v%s',
             decimal: Give.form.fn.getInfo( 'decimal_separator', $form ),
             thousand: Give.form.fn.getInfo( 'thousands_separator', $form ),
+            precision: precision,
         } )
-
-        // Hack: Account for zero-decimal currencies
-        const currency = Give.form.fn.getInfo( 'currency_code', $form )
-        const precision = GiveDonationSummaryData.currencyPrecisionLookup[ currency ]
-        if( ! precision ) {
-            return formatted_amount.split( Give.form.fn.getInfo( 'decimal_separator', $form ) )[0]
-        }
-        return formatted_amount
     }
 }
