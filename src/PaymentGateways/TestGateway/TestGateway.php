@@ -31,14 +31,14 @@ class TestGateway extends PaymentGateway {
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return esc_html__( 'Test Gateway', 'give' );
+		return __( 'Test Gateway', 'give' );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getPaymentMethodLabel() {
-		return esc_html__( 'Test Gateway', 'give' );
+		return __( 'Test Gateway', 'give' );
 	}
 
 	/**
