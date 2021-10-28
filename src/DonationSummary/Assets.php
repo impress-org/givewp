@@ -22,9 +22,11 @@ class Assets {
 
         wp_localize_script(
             'give-donation-summary-script-frontend',
-            'GiveDonationSummary',
+            'GiveDonationSummaryData',
             [
-                'foo' => 'bar',
+                'currencyPrecisionLookup' => array_map(function( $currency ) {
+                    return $currency['setting']['number_decimals'];
+                }, give_get_currencies_list() ),
             ]
         );
     }

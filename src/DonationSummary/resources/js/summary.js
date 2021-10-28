@@ -55,7 +55,7 @@ const GiveDonationSummary = {
      * @param {callable} callback
      */
     observe: function( selectors, callback ) {
-        const targetNode = document.querySelector(selectors )
+        const targetNode = document.querySelector( selectors )
 
         if( ! targetNode ) return;
 
@@ -79,11 +79,25 @@ const GiveDonationSummary = {
      * @param {jQuery} $form
      */
     format_amount: function( amount, $form ) {
-        return accounting.formatMoney( amount, {
+
+        // Normalize amounts to JS number format
+        amount = amount.replace( Give.form.fn.getInfo( 'thousands_separator', $form ), '' )
+                       .replace( Give.form.fn.getInfo( 'decimal_separator', $form ), '.')
+
+        // Format with accounting.js, according to the configuration
+        const formatted_amount = accounting.formatMoney( amount, {
             symbol: Give.form.fn.getInfo( 'currency_symbol', $form ),
-            position: Give.form.fn.getInfo( 'currency_position', $form ),
+            format: '%s%v', // Give.form.fn.getInfo( 'currency_position', $form ),
             decimal: Give.form.fn.getInfo( 'decimal_separator', $form ),
             thousand: Give.form.fn.getInfo( 'thousands_separator', $form ),
         } )
+
+        // Hack: Account for zero-decimal currencies
+        const currency = Give.form.fn.getInfo( 'currency_code', $form )
+        const precision = GiveDonationSummaryData.currencyPrecisionLookup[ currency ]
+        if( ! precision ) {
+            return formatted_amount.split( Give.form.fn.getInfo( 'decimal_separator', $form ) )[0]
+        }
+        return formatted_amount
     }
 }
