@@ -3,10 +3,10 @@
     "main": "index.js",
     "scripts": {
         "start": "npm install && npm run watch",
-        "dev": "npx mix",
-        "production": "npx mix --production",
-        "build": "npx mix --production",
-        "watch": "npx mix --watch",
+        "dev": "mix",
+        "production": "mix --production",
+        "build": "mix --production",
+        "watch": "mix --watch",
         "test:e2e": "cypress open",
         "env": "wp-env"
     },
