@@ -13,7 +13,7 @@ use Give\Framework\PaymentGateways\Exceptions\OverflowException;
  * @unreleased
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator {
-	private $gateways = [];
+	protected $gateways = [];
 
 	/**
 	 * * Get Gateways
