@@ -42,6 +42,18 @@ class Template {
 			return $settings;
 		}
 
+        /**
+         * Backwards compatibility for forms saved before the Donation Summary was introduced.
+         * @unreleased
+         */
+		if( ! isset( $settings[ 'donation_summary' ] ) ) {
+            $settings[ 'donation_summary' ] = [
+                'enabled' => 'disabled', // Disable by default for existing forms.
+                'heading' => __( 'Here\'s what you\'re about to donate', 'give' ),
+                'location' => 'give_donation_form_before_submit',
+            ];
+        }
+
 		// Backward compatibility for migrated settings.
 		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
 		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"

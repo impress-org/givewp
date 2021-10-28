@@ -57,7 +57,7 @@ return [
                     'enabled'  => __( 'Enabled', 'give' ),
                     'disabled' => __( 'Disabled', 'give' ),
                 ],
-                'default' => 'disabled',
+                'default' => 'enabled',
             ],
             [
                 'id'         => 'heading',
