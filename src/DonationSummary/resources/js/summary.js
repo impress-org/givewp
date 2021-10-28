@@ -13,16 +13,9 @@ jQuery(document).on('give:postInit', function() {
      * Frequency (and Recurring)
      */
     GiveDonationSummary.observe( '[name="give-recurring-period"]', function( targetNode, $form ) {
-        const $helpText = $form.find( '.js-give-donation-summary-frequency-help-text' )
-        if( targetNode.checked ) {
-            $helpText.hide()
-            $form.find( '[data-tag="frequency"]' ).hide()
-            $form.find( '[data-tag="recurring"]' ).show().html( targetNode.dataset['periodLabel'] )
-        } else {
-            $helpText.show()
-            $form.find( '[data-tag="frequency"]' ).show()
-            $form.find( '[data-tag="recurring"]' ).hide()
-        }
+        $form.find( '.js-give-donation-summary-frequency-help-text' ).toggle( ! targetNode.checked )
+        $form.find( '[data-tag="frequency"]' ).toggle( ! targetNode.checked)
+        $form.find( '[data-tag="recurring"]' ).toggle( targetNode.checked ).html( targetNode.dataset['periodLabel'] )
     })
 
     /**
