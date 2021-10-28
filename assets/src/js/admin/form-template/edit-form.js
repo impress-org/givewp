@@ -106,6 +106,9 @@
 			updateIntroductionFields();
 		} );
 
+        /**
+         * @unreleased
+         */
         updateDonationSummaryFields();
         $( 'input[name="sequoia[donation_summary][enabled]"]' ).on( 'change', function() {
             updateDonationSummaryFields();
