@@ -18,7 +18,8 @@
 		} );
 	}
 
-	const navigator = {
+	// Attach the navigator to the window as an API for changing parts.
+	const navigator = window.formNavigator = {
 		currentStep: templateOptions.introduction.enabled === 'enabled' ? 0 : 1,
 		animating: false,
 		firstFocus: false,
