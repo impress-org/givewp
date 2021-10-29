@@ -67,9 +67,10 @@ const GiveDonationSummary = {
      */
     observe: function( selectors, callback ) {
         const targetNode = document.querySelector( selectors )
-        const $form = jQuery( targetNode.closest('.give-form') )
 
         if( ! targetNode ) return;
+
+        const $form = jQuery( targetNode.closest('.give-form') )
 
         new MutationObserver(function(mutationsList, observer) {
             for(const mutation of mutationsList) { // Use traditional 'for loops' for IE 11
