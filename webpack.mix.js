@@ -3,7 +3,7 @@ const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
-mix.setPublicPath('./assets/dist')
+mix.setPublicPath('assets/dist')
     .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
     .sass('assets/src/css/admin/give-admin.scss', 'css/admin.css')
     .sass('assets/src/css/admin/give-admin-global.scss', 'css/admin-global.css')
