@@ -2,10 +2,13 @@
 
 Since GiveWP 2.8.0, all notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
-to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+### New
+
+- Scaffold Test Gateway 2.0 to register through Payment Gateway 2.0 (#6051)
 
 ## 2.15.0 - 2021-10-11
 

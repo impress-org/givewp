@@ -5,8 +5,6 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\PaymentGateways\PaymentGatewayTypes\OffSitePaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,7 +28,7 @@ class PaymentGatewaysRegisterTest extends TestCase {
 	 * @unreleased
 	 */
 	public function testPaymentGatewayRegistererIsTraversable() {
-		$this->assertTrue( $this->paymentGatewayRegister instanceof \Traversable );
+		$this->assertInstanceOf( \Traversable::class, $this->paymentGatewayRegister );
 	}
 
 	/**
@@ -71,7 +69,7 @@ class PaymentGatewaysRegisterTest extends TestCase {
 		$this->paymentGatewayRegister->registerGateway( Stripe::class );
 		$this->paymentGatewayRegister->registerGateway( PayPal::class );
 
-		$this->assertTrue( 2 === count( $this->paymentGatewayRegister->getPaymentGateways() ) );
+		$this->assertCount( 2, $this->paymentGatewayRegister->getPaymentGateways() );
 	}
 
 	/**
@@ -126,6 +124,14 @@ class GoCardLess extends PaymentGateway {
 	public function getPaymentMethodLabel() {
 		return 'Credit Card';
 	}
+
+	public function getLegacyFormFieldMarkup( $formId ) {
+		// TODO: Implement getLegacyFormFieldMarkup() method.
+	}
+
+	public function handleGatewayRequest( $donationId, $formData ) {
+		// TODO: Implement handleGatewayRequest() method.
+	}
 }
 
 class Square extends PaymentGateway {
@@ -149,9 +155,21 @@ class Square extends PaymentGateway {
 	public function getName() {
 		return 'Square Payment Method';
 	}
+
+	public function getPaymentMethodLabel() {
+		// TODO: Implement getPaymentMethodLabel() method.
+	}
+
+	public function getLegacyFormFieldMarkup( $formId ) {
+		// TODO: Implement getLegacyFormFieldMarkup() method.
+	}
+
+	public function handleGatewayRequest( $donationId, $formData ) {
+		// TODO: Implement handleGatewayRequest() method.
+	}
 }
 
-class Stripe extends PaymentGateway implements OnSitePaymentGateway {
+class Stripe extends PaymentGateway {
 	/**
 	 * @return string
 	 */
@@ -179,9 +197,17 @@ class Stripe extends PaymentGateway implements OnSitePaymentGateway {
 	public function getPaymentMethodLabel() {
 		return 'Credit Card';
 	}
+
+	public function getLegacyFormFieldMarkup( $formId ) {
+		// TODO: Implement getLegacyFormFieldMarkup() method.
+	}
+
+	public function handleGatewayRequest( $donationId, $formData ) {
+		// TODO: Implement handleGatewayRequest() method.
+	}
 }
 
-class Paypal extends PaymentGateway implements OffSitePaymentGateway {
+class Paypal extends PaymentGateway {
 	/**
 	 * @return string
 	 */
@@ -208,5 +234,13 @@ class Paypal extends PaymentGateway implements OffSitePaymentGateway {
 	 */
 	public function getPaymentMethodLabel() {
 		return 'PayPal';
+	}
+
+	public function getLegacyFormFieldMarkup( $formId ) {
+		// TODO: Implement getLegacyFormFieldMarkup() method.
+	}
+
+	public function handleGatewayRequest( $donationId, $formData ) {
+		// TODO: Implement handleGatewayRequest() method.
 	}
 }

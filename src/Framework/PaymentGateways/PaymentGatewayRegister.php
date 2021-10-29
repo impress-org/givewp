@@ -4,22 +4,20 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
-use Give\Framework\PaymentGateways\PaymentGatewayTypes\OffSitePaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayTypes\OnSitePaymentGateway;
-use Give\PaymentGateways\TestGateway\TestGateway;
 
 /**
  * @unreleased
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator {
-	private $gateways = [
-		TestGateway::class
-	];
+	protected $gateways = [];
 
 	/**
+	 * * Get Gateways
+	 *
 	 * @unreleased
 	 *
 	 * @return array
@@ -29,9 +27,11 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	}
 
 	/**
+	 * Get Gateway
+	 *
 	 * @unreleased
 	 *
-	 * @param string $id
+	 * @param  string  $id
 	 *
 	 * @return string
 	 */
@@ -55,9 +55,11 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	}
 
 	/**
+	 * Register Gateway
+	 *
 	 * @unreleased
 	 *
-	 * @param string $gatewayClass
+	 * @param  string  $gatewayClass
 	 *
 	 * @throws OverflowException|InvalidArgumentException|Exception
 	 */
@@ -67,14 +69,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 				'%1$s must extend %2$s',
 				$gatewayClass,
 				PaymentGateway::class
-			));
-		}
-
-		if (
-			! is_subclass_of( $gatewayClass, OffSitePaymentGateway::class ) &&
-			! is_subclass_of( $gatewayClass, OnSitePaymentGateway::class )
-		) {
-			throw new InvalidArgumentException( "$gatewayClass must extend either the Offsite or Onsite Payment Gateway interface" );
+			) );
 		}
 
 		$gatewayId = $gatewayClass::id();
@@ -84,5 +79,23 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		}
 
 		$this->gateways[ $gatewayId ] = $gatewayClass;
+
+		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
+		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
+
+		$legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter( $gatewayClass );
+	}
+
+	/**
+	 * Unregister Gateway
+	 *
+	 * @unreleased
+	 *
+	 * @param $gatewayId
+	 */
+	public function unregisterGateway( $gatewayId ) {
+		if ( isset( $this->gateways[ $gatewayId ] ) ) {
+			unset( $this->gateways[ $gatewayId ] );
+		}
 	}
 }

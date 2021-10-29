@@ -4,8 +4,6 @@ namespace Give\ServiceProviders;
 
 use Give\Controller\PayPalWebhooks;
 use Give\Framework\Migrations\MigrationsRegister;
-use Give\Framework\PaymentGateways\AddNewPaymentGatewaysToOldList;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
@@ -74,7 +72,6 @@ class PaymentGateways implements ServiceProvider {
 			}
 		); // storage
 
-		give()->singleton( PaymentGatewayRegister::class );
 		give()->singleton( PayPalWebhooks::class );
 		give()->singleton( Webhooks::class );
 		give()->singleton( DonationFormElements::class );
@@ -97,7 +94,6 @@ class PaymentGateways implements ServiceProvider {
 	 */
 	public function boot() {
 		add_filter( 'give_register_gateway', [ $this, 'bootGateways' ] );
-		Hooks::addFilter( 'give_payment_gateways', AddNewPaymentGatewaysToOldList::class );
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 		Hooks::addFilter( 'give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99 );
@@ -146,7 +142,7 @@ class PaymentGateways implements ServiceProvider {
 			$gateway = give( $gateway );
 
 			$gateways[ $gateway->getId() ] = [
-				'admin_label'    => $gateway->getName(),
+				'admin_label' => $gateway->getName(),
 				'checkout_label' => $gateway->getPaymentMethodLabel(),
 			];
 

@@ -2,42 +2,11 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
-use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 
 /**
  * @unreleased
  */
-abstract class PaymentGateway implements PaymentGatewayInterface {
+abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface {
 
-	/**
-	 * @return string
-	 * @throws Exception
-	 */
-	public static function id() {
-		throw new Exception( 'function must be overridden' );
-	}
-
-	/**
-	 * @inheritDoc
-	 * @throws Exception
-	 */
-	public function getId() {
-		throw new Exception( 'function must be overridden' );
-	}
-
-	/**
-	 * @inheritDoc
-	 * @throws Exception
-	 */
-	public function getName() {
-		throw new Exception( 'function must be overridden' );
-	}
-
-	/**
-	 * @inheritDoc
-	 * @throws Exception
-	 */
-	public function getPaymentMethodLabel() {
-		throw new Exception( 'function must be overridden' );
-	}
 }
