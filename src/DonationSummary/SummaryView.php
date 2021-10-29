@@ -2,6 +2,8 @@
 
 namespace Give\DonationSummary;
 
+use Give\Helpers\Form\Template;
+
 /**
  * @unreleased
  */
@@ -20,7 +22,7 @@ class SummaryView {
     public function __invoke( $formID ) {
         $this->formID = $formID;
 
-        if( 'sequoia' === $this->getFormTemplate() ) {
+        if( 'sequoia' === Template::getActiveID( $formID ) ) {
             if( $this->isDonationSummaryEnabled() ) {
                 /**
                  * @hook give_donation_form_user_info
@@ -36,14 +38,6 @@ class SummaryView {
      */
     public function render() {
         include 'resources/views/summary.php';
-    }
-
-    /**
-     * @unreleased
-     * @return string
-     */
-    public function getFormTemplate() {
-        return Give()->form_meta->get_meta( $this->formID, '_give_form_template', $single = true );
     }
 
     /**
