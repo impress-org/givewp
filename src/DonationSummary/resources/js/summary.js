@@ -67,6 +67,7 @@ const GiveDonationSummary = {
      */
     observe: function( selectors, callback ) {
         const targetNode = document.querySelector( selectors )
+        const $form = jQuery( targetNode.closest('.give-form') )
 
         if( ! targetNode ) return;
 
@@ -77,7 +78,7 @@ const GiveDonationSummary = {
                      * @param targetNode The node matching the element as defined by the specific selectors
                      * @param $form The closest `.give-form` node to the targetNode, wrapped in jQuery
                      */
-                    callback( targetNode, jQuery( targetNode.closest('.give-form') ) )
+                    callback( targetNode, $form )
                 }
             }
         }).observe(targetNode, { attributes: true });
