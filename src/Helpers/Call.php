@@ -13,7 +13,7 @@ class Call {
 	 * @param  string  $class
 	 * @param  mixed  $args
 	 *
-	 * @return mixed
+	 * @return callable
 	 */
 	public static function invoke( $class, ...$args ) {
 		if ( ! method_exists( $class, '__invoke' ) ) {
