@@ -49,7 +49,9 @@ jQuery(document).on('give:postInit', function() {
 
     // Hack: Force an initial mutation for the Total Amount observer
     const totalAmount = document.querySelector('.give-final-total-amount')
-    totalAmount.dataset.total = totalAmount.dataset.total
+    if( totalAmount ){
+        totalAmount.dataset.total = totalAmount.dataset.total
+    }
 })
 
 /**
