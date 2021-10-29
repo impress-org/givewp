@@ -4,8 +4,8 @@ namespace Give\PaymentGateways;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
+use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
-use Give\PaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**

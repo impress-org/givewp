@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\Adapters;
+namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
-use Give\PaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
+use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
 class LegacyPaymentGatewayRegisterAdapter {
 	/**

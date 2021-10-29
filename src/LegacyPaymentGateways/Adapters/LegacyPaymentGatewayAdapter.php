@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Adapters;
+namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
@@ -62,7 +62,7 @@ class LegacyPaymentGatewayAdapter {
 	/**
 	 * Validate Gateway Nonce
 	 *
-	 * @unreleased 
+	 * @unreleased
 	 *
 	 * @param  string  $gatewayNonce
 	 */

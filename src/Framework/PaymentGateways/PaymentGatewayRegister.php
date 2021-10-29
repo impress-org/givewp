@@ -4,7 +4,7 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
+use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;

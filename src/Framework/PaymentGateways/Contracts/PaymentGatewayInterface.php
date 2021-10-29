@@ -8,7 +8,7 @@ use Give\PaymentGateways\DataTransferObjects\FormData;
  */
 interface PaymentGatewayInterface {
 	/**
-	 * Return a unique identifier for the migration
+	 * Return a unique identifier for the gateway
 	 *
 	 * @unreleased
 	 *
@@ -17,7 +17,7 @@ interface PaymentGatewayInterface {
 	public static function id();
 
 	/**
-	 * Return a unique identifier for the migration
+	 * Return a unique identifier for the gateway
 	 *
 	 * @unreleased
 	 *

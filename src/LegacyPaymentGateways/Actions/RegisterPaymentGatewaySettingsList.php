@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\PaymentGateways\Actions;
+namespace Give\LegacyPaymentGateways\Actions;
 
-use Give\Framework\PaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
+use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
 class RegisterPaymentGatewaySettingsList {

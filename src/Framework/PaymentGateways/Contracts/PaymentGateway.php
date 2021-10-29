@@ -2,7 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
-use Give\Framework\PaymentGateways\Contracts\Legacy\LegacyPaymentGatewayInterface;
+use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 
 /**
  * @unreleased
