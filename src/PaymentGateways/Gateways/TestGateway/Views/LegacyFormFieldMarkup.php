@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\TestGateway\Views;
+namespace Give\PaymentGateways\Gateways\TestGateway\Views;
 
 class LegacyFormFieldMarkup {
 	/**

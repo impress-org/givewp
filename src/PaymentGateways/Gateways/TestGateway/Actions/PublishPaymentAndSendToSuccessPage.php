@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\TestGateway\Actions;
+namespace Give\PaymentGateways\Gateways\TestGateway\Actions;
 
 /**
  * Class PublishPaymentAndSendToSuccessPage

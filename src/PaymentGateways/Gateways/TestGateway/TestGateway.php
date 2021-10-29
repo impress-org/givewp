@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\PaymentGateways\TestGateway;
+namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\TestGateway\Actions\PublishPaymentAndSendToSuccessPage;
-use Give\PaymentGateways\TestGateway\Views\LegacyFormFieldMarkup;
+use Give\PaymentGateways\Gateways\TestGateway\Actions\PublishPaymentAndSendToSuccessPage;
+use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * Class TestGateway
