@@ -56,7 +56,7 @@ class SummaryView {
         if( isset( $this->templateOptions[ 'donation_summary' ] ) && isset( $this->templateOptions[ 'donation_summary' ][ 'location' ] ) ) {
             return $this->templateOptions[ 'donation_summary' ][ 'location' ];
         }
-        throw new \Exception( 'Donation Summary location not set' );
+        return 'give_donation_form_before_submit'; // Default location.
     }
 
     /**
