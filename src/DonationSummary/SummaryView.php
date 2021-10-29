@@ -16,11 +16,18 @@ class SummaryView {
     protected $formID;
 
     /**
+     * @var array
+     * @unreleased
+     */
+    protected $templateOptions;
+
+    /**
      * @unreleased
      * @param int $formID
      */
     public function __invoke( $formID ) {
         $this->formID = $formID;
+        $this->templateOptions = Template::getOptions( $formID );
 
         if( 'sequoia' === Template::getActiveID( $formID ) ) {
             if( $this->isDonationSummaryEnabled() ) {
@@ -46,9 +53,8 @@ class SummaryView {
      * @return string
      */
     public function getFormTemplateLocation() {
-        $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
-        if( isset( $templateSettings[ 'donation_summary' ] ) && isset( $templateSettings[ 'donation_summary' ][ 'location' ] ) ) {
-            return $templateSettings[ 'donation_summary' ][ 'location' ];
+        if( isset( $this->templateOptions[ 'donation_summary' ] ) && isset( $this->templateOptions[ 'donation_summary' ][ 'location' ] ) ) {
+            return $this->templateOptions[ 'donation_summary' ][ 'location' ];
         }
         throw new \Exception( 'Donation Summary location not set' );
     }
@@ -58,9 +64,8 @@ class SummaryView {
      * @return string
      */
     public function getSummaryHeading() {
-        $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
-        if( isset( $templateSettings[ 'donation_summary' ] ) && isset( $templateSettings[ 'donation_summary' ][ 'heading' ] ) ) {
-            return $templateSettings[ 'donation_summary' ][ 'heading' ];
+        if( isset( $this->templateOptions[ 'donation_summary' ] ) && isset( $this->templateOptions[ 'donation_summary' ][ 'heading' ] ) ) {
+            return $this->templateOptions[ 'donation_summary' ][ 'heading' ];
         }
         return '';
     }
@@ -70,10 +75,9 @@ class SummaryView {
      * @return bool
      */
     public function isDonationSummaryEnabled() {
-        $templateSettings = Give()->form_meta->get_meta( $this->formID, '_give_sequoia_form_template_settings', $single = true );
-        return isset( $templateSettings[ 'donation_summary' ] )
-            && isset( $templateSettings[ 'donation_summary' ][ 'enabled' ] )
-            && give_is_setting_enabled( $templateSettings[ 'donation_summary' ][ 'enabled' ] );
+        return isset( $this->templateOptions[ 'donation_summary' ] )
+            && isset( $this->templateOptions[ 'donation_summary' ][ 'enabled' ] )
+            && give_is_setting_enabled( $this->templateOptions[ 'donation_summary' ][ 'enabled' ] );
     }
 
     /**
