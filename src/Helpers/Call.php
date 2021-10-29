@@ -4,9 +4,9 @@ namespace Give\Helpers;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
-class Invokable {
+class Call {
 	/**
-	 * A function that calls an invokable class.
+	 * Call an invokable class.
 	 *
 	 * @unreleased
 	 *
@@ -15,11 +15,12 @@ class Invokable {
 	 *
 	 * @return mixed
 	 */
-	public static function execute( $class, ...$args ) {
+	public static function invoke( $class, ...$args ) {
 		if ( ! method_exists( $class, '__invoke' ) ) {
 			throw new InvalidArgumentException( "This class is not invokable" );
 		}
 
+		/** @var callable $instance */
 		$instance = give( $class );
 
 		return $instance(...$args);
