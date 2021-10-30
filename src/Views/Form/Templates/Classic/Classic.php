@@ -151,6 +151,7 @@ class Classic extends Template implements Hookable, Scriptable {
 		// styles so that users can still override ours.
 		add_action( 'wp_enqueue_scripts', function () {
 			wp_dequeue_style( 'give-styles' );
+			wp_dequeue_style( 'give_recurring_css' );
 		}, 10 );
 
 		// CSS Variables
