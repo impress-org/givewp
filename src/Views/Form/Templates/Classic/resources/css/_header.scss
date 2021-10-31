@@ -163,23 +163,46 @@
 }
 
 .give-form-goal-progress-meter {
-	background: none;
+	-webkit-appearance: none; /* Safari */
+	appearance: meter; /* Chrome and Firefox */
 	width: 100%;
-}
+	background: none;
+	font-size: 1rem;
 
-/** TODO: Safari doesn’t seem to support this, so I think we need to go the `appearance: none` route **/
+	@mixin meter-bar {
+		height: 1.375em;
+		border: 0;
+		border-radius: 9999px;
+		background: none;
+		background-color: #f1f1f1;
+		box-shadow: inset 0 0.0625em 0.25em rgba(0, 0, 0, 0.1);
+	}
 
-.give-form-goal-progress-meter::-webkit-meter-bar {
-	height: 1.375rem;
-	border: 0;
-	border-radius: 9999px;
-	background-color: #f1f1f1;
-	box-shadow: inset 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.1);
-}
+	/** Firefox only */
+	@-moz-document url-prefix() {
+		& {
+			@include meter-bar;
+		}
+	}
+	&::-moz-meter-bar {
+		border-radius: inherit;
+	}
+	&::-webkit-meter-bar {
+		@include meter-bar;
+	}
 
-.give-form-goal-progress-meter::-webkit-meter-optimum-value,
-.give-form-goal-progress-meter::-webkit-meter-suboptimum-value,
-.give-form-goal-progress-meter::-webkit-meter-even-less-good-value {
-	background-image: linear-gradient(to bottom, #ffdb00, #ffa200);
-	border-radius: 9999px;
+	@mixin meter-value {
+		background-image: linear-gradient(to bottom, #ffdb00, #ffa200);
+		border-radius: inherit;
+	}
+	&::-webkit-meter-optimum-value,
+	&::-webkit-meter-suboptimum-value,
+	&::-webkit-meter-even-less-good-value {
+		@include meter-value;
+	}
+	&:-moz-meter-optimum::-moz-meter-bar,
+	&:-moz-meter-sub-optimum::-moz-meter-bar,
+	&:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+		@include meter-value;
+	}
 }
