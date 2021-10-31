@@ -163,64 +163,20 @@
 }
 
 /**
- * Progress bar styles for `<meter>` element
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meter
- *
- * For Firefox, some styles which are applied to Chrome/Safari’s
- * `::-webkit-meter-bar` pseudo-element need to be applied to the `<meter>`
- * element itself. To do this, we are using the `@-moz-document` at rule hack
- * for the Firefox styles. Further, note that Firefox uses pseudo-selectors for
- * the meter values then target the `::-moz-meter-bar` pseudo-element.
- *
- * For Safari, we need to set `-webkit-appearance: none` in order to style the
- * element. This creates a problem for Chrome, since that rule is valid and has
- * an effect of making the element just display its text. We overcome this by
- * setting `appearance: meter` which reverses the effect of the
- * `-webkit-appearance`, but isn’t supported by Safari.
+ * We are not using the `<meter>` element because in order to style it in
+ * Safari, we’d have to break the accessibility for VoiceOver.
  */
 .give-form-goal-progress-meter {
-	@mixin meter-bar {
-		height: 1.375em;
-		border: 0;
-		border-radius: 9999px;
-		background: none;
-		background-color: #f1f1f1;
-		box-shadow: inset 0 0.0625em 0.25rem rgba(0, 0, 0, 0.1);
-	}
-
-	@mixin meter-value {
-		background-image: linear-gradient(to bottom, #ffdb00, #ffa200);
-		border-radius: inherit;
-	}
-
-	-webkit-appearance: none; /* Safari */
-	appearance: meter; /* Chrome and Firefox */
 	width: 100%;
-	background: none;
+	height: 1.375em;
+	border-radius: 9999px;
+	background-color: #f1f1f1;
+	box-shadow: inset 0 0.0625em 0.25rem rgba(0, 0, 0, 0.1);
+}
 
-	&::-webkit-meter-bar {
-		@include meter-bar;
-	}
-
-	&::-webkit-meter-optimum-value,
-	&::-webkit-meter-suboptimum-value,
-	&::-webkit-meter-even-less-good-value {
-		@include meter-value;
-	}
-
-	/** Firefox only */
-	@-moz-document url-prefix() {
-		@include meter-bar;
-
-		&::-moz-meter-bar {
-			border-radius: inherit;
-		}
-
-		&:-moz-meter-optimum::-moz-meter-bar,
-		&:-moz-meter-sub-optimum::-moz-meter-bar,
-		&:-moz-meter-sub-sub-optimum::-moz-meter-bar {
-			@include meter-value;
-		}
-	}
+.give-form-goal-progress-meter-bar {
+	content: "";
+	height: 100%;
+	background-image: linear-gradient(to bottom, #ffdb00, #ffa200);
+	border-radius: inherit;
 }

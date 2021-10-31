@@ -31,7 +31,12 @@
 				<span class="give-form-stats-panel-stat-number">$10,000</span> goal
 			</li>
 			<li class="give-form-goal-progress">
-				<meter class="give-form-goal-progress-meter" min="0" max="1000000" value="200000">$20,000 of $1,000,000 goal</meter>
+				<div class="give-form-goal-progress-meter" role="meter" aria-labelledby="meter-label" aria-valuemin="0" aria-valuemax="1000000" aria-valuenow="200000" aria-valuetext="20%">
+					<div id="meter-label" hidden>
+						$20,000 of $1,000,000 goal
+					</div>
+					<div class="give-form-goal-progress-meter-bar" style="width: 20%"></div>
+				</div>
 			</li>
 		</ul>
 	</aside>
