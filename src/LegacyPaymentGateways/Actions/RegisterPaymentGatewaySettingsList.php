@@ -28,7 +28,7 @@ class RegisterPaymentGatewaySettingsList {
 
 		return $legacyPaymentGatewayRegisterAdapter->addNewPaymentGatewaysToLegacyListSettings(
 			$gatewayData,
-			$paymentGatewayRegister->getPaymentGateways()
+			$newPaymentGateways
 		);
 	}
 }

@@ -80,10 +80,9 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 
 		$this->gateways[ $gatewayId ] = $gatewayClass;
 
-		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
-		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
+		$this->registerGatewayWithServiceContainer( $gatewayClass );
 
-		$legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter( $gatewayClass );
+		$this->afterGatewayRegister( $gatewayClass );
 	}
 
 	/**
@@ -97,5 +96,30 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		if ( isset( $this->gateways[ $gatewayId ] ) ) {
 			unset( $this->gateways[ $gatewayId ] );
 		}
+	}
+
+	/**
+	 * @unreleased
+	 *
+	 * @param  string  $gatewayClass
+	 *
+	 * @return void
+	 */
+	private function registerGatewayWithServiceContainer( $gatewayClass ) {
+		give()->singleton( $gatewayClass, function () use ( $gatewayClass ) {
+			/** @var PaymentGateway $gateway */
+			$gateway = new $gatewayClass;
+
+			do_action( "give_gateway_{$gateway->getId()}_mount_subscription_module", $gateway );
+
+			return $gateway;
+		} );
+	}
+
+	private function afterGatewayRegister( $gatewayClass ) {
+		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
+		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
+
+		$legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter( $gatewayClass );
 	}
 }

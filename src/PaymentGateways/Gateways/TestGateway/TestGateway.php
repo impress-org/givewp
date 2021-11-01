@@ -58,10 +58,17 @@ class TestGateway extends PaymentGateway {
 	/**
 	 * @inheritDoc
 	 */
-	public function handleGatewayRequest( $donationId, $formData ) {
+	public function handleOneTimeRequest( $donationId, $formData ) {
 		/** @var PublishPaymentAndSendToSuccessPage $action */
 		$action = give( PublishPaymentAndSendToSuccessPage::class );
 
 		return $action( $donationId );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function handleSubscriptionRequest( $donationId, $formData ) {
+		return $this->getSubscriptionModule()->handleSubscriptionRequest( $donationId, $formData );
 	}
 }
