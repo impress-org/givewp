@@ -30,6 +30,17 @@
 		@include visually-hidden;
 	}
 
+	/** Set the border radii based on the currency symbol’s position */
+	& .give-text-input:last-child,
+	& .give-currency-position-after {
+		border-top-right-radius: inherit;
+		border-bottom-right-radius: inherit;
+	}
+	& .give-text-input:not(:last-child),
+	& .give-currency-position-before {
+		border-top-left-radius: inherit;
+		border-bottom-left-radius: inherit;
+	}
 
 	& .give-currency-symbol {
 		padding: 1.1875rem;
@@ -43,8 +54,6 @@
 		width: 100%;
 		padding: 1.1875rem;
 		border: 0;
-		border-top-right-radius: inherit;
-		border-bottom-right-radius: inherit;
 		background-color: #fff;
 		text-align: right;
 		font-family: inherit;
