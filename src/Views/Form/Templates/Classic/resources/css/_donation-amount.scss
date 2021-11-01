@@ -21,6 +21,7 @@
 	align-items: center;
 	border: 0.125rem solid #424242;
 	border-radius: 0.5rem;
+	background-color: #fff;
 
 	&:focus-within {
 		border-color: var(--give-primary-color);
@@ -43,18 +44,17 @@
 	}
 
 	& .give-currency-symbol {
+		display: block;
 		padding: 1.1875rem;
+		color: #555;
 		font-size: 1.375rem;
 		font-weight: 500;
-		color: #555;
-		background-color: #fff;
 	}
 
 	& .give-text-input {
 		width: 100%;
 		padding: 1.1875rem;
 		border: 0;
-		background-color: #fff;
 		text-align: right;
 		font-family: inherit;
 		font-size: 2.625rem;
