@@ -2,6 +2,7 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\PaymentGateways\DataTransferObjects\FormData;
+use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
  * @unreleased
@@ -89,8 +90,9 @@ interface PaymentGatewayInterface {
 	 *
 	 * @param  int  $donationId
 	 * @param  FormData  $formData
+	 * @param  SubscriptionData  $subscriptionData
 	 *
 	 * @return void
 	 */
-	public function handleSubscriptionRequest( $donationId, FormData $formData );
+	public function handleSubscriptionRequest( $donationId, FormData $formData, SubscriptionData $subscriptionData );
 }

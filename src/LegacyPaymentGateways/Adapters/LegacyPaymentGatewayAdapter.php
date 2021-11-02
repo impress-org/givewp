@@ -5,6 +5,7 @@ namespace Give\LegacyPaymentGateways\Adapters;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
+use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
  * Class LegacyPaymentGatewayAdapter
@@ -43,7 +44,9 @@ class LegacyPaymentGatewayAdapter {
 		$donationId = $this->createPayment( $formData );
 
 		if ( function_exists( 'Give_Recurring' ) && Give_Recurring()->is_recurring( $formData->formId ) ) {
-			$registeredGateway->handleSubscriptionRequest( $donationId, $formData );
+			$subscriptionData = SubscriptionData::fromRequest( $request );
+			
+			$registeredGateway->handleSubscriptionRequest( $donationId, $formData, $subscriptionData );
 		}
 
 		$registeredGateway->handleOneTimeRequest( $donationId, $formData );
