@@ -43,10 +43,10 @@ class LegacyPaymentGatewayAdapter {
 		$donationId = $this->createPayment( $formData );
 
 		if ( function_exists( 'Give_Recurring' ) && Give_Recurring()->is_recurring( $formData->formId ) ) {
-			return $registeredGateway->handleSubscriptionRequest( $donationId, $formData );
+			$registeredGateway->handleSubscriptionRequest( $donationId, $formData );
 		}
 
-		return $registeredGateway->handleOneTimeRequest( $donationId, $formData );
+		$registeredGateway->handleOneTimeRequest( $donationId, $formData );
 	}
 
 	/**

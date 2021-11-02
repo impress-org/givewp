@@ -29,7 +29,7 @@ class LegacyPaymentGatewayRegisterAdapter {
 
 		add_action( "give_gateway_{$registeredGatewayId}",
 			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
-				return $legacyPaymentGatewayAdapter->handleBeforeGateway( $formId, $registeredGateway );
+				$legacyPaymentGatewayAdapter->handleBeforeGateway( $formId, $registeredGateway );
 			} );
 	}
 

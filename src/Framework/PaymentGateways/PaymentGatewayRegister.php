@@ -116,6 +116,11 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		} );
 	}
 
+	/**
+	 * After gateway is registered, connect to legacy payment gateway adapter
+	 *
+	 * @param  string  $gatewayClass
+	 */
 	private function afterGatewayRegister( $gatewayClass ) {
 		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
 		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
