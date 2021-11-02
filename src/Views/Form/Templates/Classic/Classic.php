@@ -68,10 +68,38 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function loadHooks() {
+		add_action( 'give_pre_form', [ $this, 'renderIconDefinitions' ] );
+
 		// Display header
 		if ( 'enabled' === $this->options[ 'appearance' ][ 'display_header' ] ) {
 			add_action( 'give_pre_form', [ $this, 'renderHeader' ] );
 		}
+
+		// Donation Levels
+		add_action('give_donation_form_top', function () {
+			echo "<section class=\"give-form-section give-donation-amount-section\">";
+		}, -10000);
+		add_action('give_donation_form_top', function () {
+			echo "</section>";
+		}, 10000);
+
+		add_action('give_before_donation_levels', [ $this, 'renderDonationAmountHeading' ], 20);
+
+		// Donation Personal Info
+		add_action('give_donation_form_register_login_fields', function () {
+			echo "<section class=\"give-form-section give-personal-info-section\">";
+		}, -10000);
+		add_action('give_donation_form_register_login_fields', function () {
+			echo "</section>";
+		}, 10000);
+
+		// Donation Payment Method
+		add_action('give_payment_mode_top', function () {
+			echo "<section class=\"give-form-section give-payment-details-section\">";
+		}, -10000);
+		add_action('give_payment_mode_bottom', function () {
+			echo "</section>";
+		}, 10000);
 
 		/**
 		 * Remove actions
@@ -111,29 +139,27 @@ class Classic extends Template implements Hookable, Scriptable {
 			);
 		}
 
-		// If default Give styles are disabled globally, enqueue Give default styles here
-		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
-			wp_enqueue_style(
-				'give-styles',
-				( new Give_Scripts )->get_frontend_stylesheet_uri(),
-				[],
-				GIVE_VERSION
-			);
-		}
-
-		// Form styles
 		wp_enqueue_style(
 			'give-classic-template',
 			GIVE_PLUGIN_URL . 'assets/dist/css/give-classic-template.css',
-			[ 'give-styles' ],
+			[],
 			GIVE_VERSION
 		);
+
+		// We are replacing the Give styles with this template. Let’s not fight
+		// against ourselves. This will help us not need to write such specific
+		// styles so that users can still override ours.
+		add_action( 'wp_enqueue_scripts', function () {
+			wp_dequeue_style( 'give-styles' );
+			wp_dequeue_style( 'give_recurring_css' );
+		}, 10 );
 
 		// CSS Variables
 		wp_add_inline_style(
 			'give-classic-template',
 			$this->loadFile( 'css/variables.php', [
-				'primaryColor' => $this->options[ 'appearance' ][ 'primary_color' ]
+				'primaryColor' => $this->options[ 'appearance' ][ 'primary_color' ],
+				'headerBackgroundImage' => $this->options[ 'appearance' ][ 'header_background_image' ],
 			] )
 		);
 
@@ -187,8 +213,29 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function renderHeader() {
 		echo $this->loadFile( 'views/header.php', [
-			'options' => $this->options[ 'appearance' ]
+			'title' => $this->options[ 'appearance' ][ 'main_heading' ],
+			'description' => $this->options[ 'appearance' ][ 'description' ],
+			'isSecureBadgeEnabled' => $this->options[ 'appearance' ][ 'secure_badge' ] === 'enabled',
+			'secureBadgeContent' => $this->options[ 'appearance' ][ 'secure_badge_text' ],
 		] );
+	}
+
+	/**
+	 * Render donation amount heading
+	 */
+	public function renderDonationAmountHeading() {
+		echo $this->loadFile( 'views/donation-amount-heading.php', [
+			'content' => $this->options[ 'donation_amount' ][ 'headline' ],
+		] );
+	}
+
+	/**
+	 * Render the SVG icon definitions.
+	 *
+	 * @void
+	 */
+	public function renderIconDefinitions() {
+		echo $this->loadFile( 'views/icon-defs.php' );
 	}
 
 	/**

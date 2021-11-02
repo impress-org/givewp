@@ -1,0 +1,32 @@
+:root {
+	// I don’t imagine anything will try to change this.
+	font-size: inherit;
+}
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+ul, ol {
+	margin: 0;
+}
+
+ul {
+	padding-left: 0;
+}
+
+fieldset {
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+legend {
+	display: block;
+	padding: 0;
+}
