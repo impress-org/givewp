@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <th>Donation Summary</th>
-                    <th><button class="back-btn">edit donation</button></th>
+                    <th><button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">edit donation</button></th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@
                             <img src="<?php echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
                             <?php
                                 /* translators: 1: <button> open tag 2: close tag. */
-                                echo sprintf( __( 'Consider making this donation %srecurring%s', 'give' ), '<button class="back-btn">', '</button>' );
+                                echo sprintf( __( 'Consider making this donation %srecurring%s', 'give' ), '<button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">', '</button>' );
                             ?>
                         </span>
                         <?php endif; ?>
