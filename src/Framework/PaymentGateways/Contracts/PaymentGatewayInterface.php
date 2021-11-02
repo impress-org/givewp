@@ -53,6 +53,15 @@ interface PaymentGatewayInterface {
 	public function getSubscriptionModule();
 
 	/**
+	 * Mounts a subscription module
+	 *
+	 * @unreleased
+	 *
+	 * @return string - subscriptionModuleClass
+	 */
+	public function mountSubscriptionModule( $subscriptionModuleClass );
+
+	/**
 	 * After creating the initial payment, we can continue with the gateway processing for a one-time request
 	 *
 	 * @unreleased
@@ -62,7 +71,7 @@ interface PaymentGatewayInterface {
 	 *
 	 * @return void
 	 */
-	public function handleOneTimeRequest( $donationId, $formData );
+	public function handleOneTimeRequest( $donationId, FormData $formData );
 
 	/**
 	 * After creating the initial payment, we can continue with the gateway processing for a subscription request
@@ -74,5 +83,5 @@ interface PaymentGatewayInterface {
 	 *
 	 * @return void
 	 */
-	public function handleSubscriptionRequest( $donationId, $formData );
+	public function handleSubscriptionRequest( $donationId, FormData $formData );
 }
