@@ -59,10 +59,12 @@ window.GiveDonationSummary = {
                 GiveDonationSummary.format_amount(total, $form)
             )
         })
-
-        // Hack: Force an initial mutation for the Total Amount observer
-        const totalAmount = document.querySelector('.give-final-total-amount')
-        totalAmount.dataset.total = totalAmount.dataset.total
+      
+      // Hack: Force an initial mutation for the Total Amount observer
+      const totalAmount = document.querySelector('.give-final-total-amount')
+      if( totalAmount ){
+      totalAmount.dataset.total = totalAmount.dataset.total
+      }
     },
 
     /**
@@ -100,6 +102,8 @@ window.GiveDonationSummary = {
 
         if( ! targetNode ) return;
 
+        const $form = jQuery( targetNode.closest('.give-form') )
+
         new MutationObserver(function(mutationsList, observer) {
             for(const mutation of mutationsList) { // Use traditional 'for loops' for IE 11
                 if (mutation.type === 'attributes') {
@@ -107,7 +111,7 @@ window.GiveDonationSummary = {
                      * @param targetNode The node matching the element as defined by the specific selectors
                      * @param $form The closest `.give-form` node to the targetNode, wrapped in jQuery
                      */
-                    callback( targetNode, jQuery( targetNode.closest('.give-form') ) )
+                    callback( targetNode, $form )
                 }
             }
         }).observe(targetNode, { attributes: true });

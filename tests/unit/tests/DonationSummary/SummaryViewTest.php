@@ -4,15 +4,6 @@ use Give\DonationSummary\SummaryView;
 
 final class SummaryViewTest extends Give_Unit_Test_Case {
 
-    public function test_get_form_template() {
-
-        $view = self::create_form_summary_view([
-            '_give_form_template' => 'sequoia',
-        ]);
-
-        $this->assertEquals( 'sequoia', $view->getFormTemplate() );
-    }
-
     public function test_get_form_template_location() {
 
         $view = self::create_form_summary_view([
@@ -52,6 +43,18 @@ final class SummaryViewTest extends Give_Unit_Test_Case {
     }
 
     protected static function create_form_summary_view( $meta ) {
+        $meta[ '_give_form_template' ] = 'sequoia';
+
+        // A backwards compatibility process requies that these be set.
+        $meta[ '_give_sequoia_form_template_settings' ] = array_merge([
+            'introduction' => [],
+            'payment_amount' => [],
+            'visual_appearance' => [
+                'decimals_enabled' => 'disabled',
+                'primary_color' => '#000',
+            ]
+        ], $meta[ '_give_sequoia_form_template_settings' ] );
+
         $form = Give_Helper_Form::create_simple_form( compact( 'meta' ));
 
         $view = new SummaryView();
