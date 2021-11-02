@@ -4,7 +4,7 @@ use Give\Receipt\DonationReceipt;
 use Give\Receipt\LineItem;
 use Give\Receipt\Section;
 use Give\Session\SessionDonation\DonationAccessor;
-use Give\Views\Form\Templates\Sequoia\Sequoia;
+use Give\Views\Form\Templates\Classic\Classic;
 use Give\Views\IframeContentView;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give_Payment as Payment;
@@ -13,7 +13,7 @@ $donationSessionAccessor = new DonationAccessor();
 $donation                = new Payment( $donationSessionAccessor->getDonationId() );
 $options                 = FormTemplateUtils::getOptions();
 
-/* @var Sequoia $sequoiaTemplate */
+/* @var Classic $sequoiaTemplate */
 $sequoiaTemplate = Give()->templates->getTemplate();
 $receipt         = $sequoiaTemplate->getReceiptDetails( $donation->ID );
 
@@ -24,22 +24,31 @@ ob_start();
 ?>
 <div class="give-receipt-wrap give-embed-receipt">
 	<div class="give-section receipt">
-		<?php if ( ! empty( $options['thank-you']['image'] ) ) : ?>
-			<div class="image">
-				<img src="<?php echo $options['thank-you']['image']; ?>"/>
-			</div>
-		<?php else : ?>
-			<div class="checkmark">
-				<i class="fas fa-check"></i>
-			</div>
-		<?php endif; ?>
 		<h2 class="headline">
 			<?php echo $receipt->heading; ?>
 		</h2>
 		<p class="message">
 			<?php echo $receipt->message; ?>
 		</p>
-		<?php require 'social-sharing.php'; ?>
+
+		<?php if ( isset( $options[ 'donation_receipt' ][ 'social_sharing' ] ) && $options[ 'donation_receipt' ][ 'social_sharing' ] === 'enabled' ) : ?>
+			<div class="social-sharing">
+				<p class="instruction">
+					<?php echo esc_html( $options[ 'donation_receipt' ][ 'sharing_instructions' ] ); ?>
+				</p>
+				<div class="btn-row">
+					<!-- Use inline onclick listener to avoid popup blockers -->
+					<button class="give-btn social-btn facebook-btn" onclick="GiveClassicTemplate.share(this);">
+						<?php esc_html_e( 'Share on Facebook', 'give' ); ?><i class="fab fa-facebook"></i>
+					</button>
+					<!-- Use inline onclick listener to avoid popup blockers -->
+					<button class="give-btn social-btn twitter-btn" onclick="GiveClassicTemplate.share(this);">
+						<?php esc_html_e( 'Share on Twitter', 'give' ); ?><i class="fab fa-twitter"></i>
+					</button>
+				</div>
+			</div>
+		<?php endif; ?>
+
 		<?php
 		/* @var Section $section */
 		foreach ( $receipt as $section ) {
@@ -49,7 +58,7 @@ ob_start();
 			}
 
 			if ( 'PDFReceipt' === $section->id ) {
-				$pdfReceiptLinkDetailItem = $section['receiptLink'];
+				$pdfReceiptLinkDetailItem = $section[ 'receiptLink' ];
 				continue;
 			}
 
@@ -92,7 +101,7 @@ ob_start();
 		<?php endif; ?>
 
 	</div>
-	<div class="form-footer">
+	<div class="form-footer">1
 		<div class="secure-notice">
 			<i class="fas fa-lock"></i>
 			<?php _e( 'Secure Donation', 'give' ); ?>
@@ -105,6 +114,5 @@ ob_start();
 $iframeView = new IframeContentView();
 
 echo $iframeView->setTitle( esc_html__( 'Donation Receipt', 'give' ) )
-                ->setBody( ob_get_clean() )
-                ->renderBody();
-?>
+				->setBody( ob_get_clean() )
+				->renderBody();
