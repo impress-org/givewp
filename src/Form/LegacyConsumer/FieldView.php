@@ -20,7 +20,7 @@ class FieldView {
 	 * @since 2.10.2
 	 * @since 2.14.0 add $formId as a param
 	 * @since 2.14.0 Add filter to allow rendering logic for custom fields
-	 * @unreleased Add visibility conditions to field container
+	 * @since 2.16.0 Add visibility conditions to field container
 	 *
 	 * @param Node $field
 	 * @param int $formId

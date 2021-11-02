@@ -8,10 +8,44 @@ $formInfo = get_post( FrontendFormTemplateUtils::getFormId() );
 
 // Setup dynamic defaults
 $introHeadline    = ( ! $formInfo->post_title || 'post-new.php' === $pagenow ) ? __( 'Support Our Cause', 'give' ) : $formInfo->post_title;
-$introDescription = $formInfo->post_excerpt ? $formInfo->post_excerpt : __( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' );
+$introDescription = $formInfo->post_excerpt ?: esc_html__( 'Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give' );
 
 return [
-	'introduction'        => [
+	'visual_appearance' => [
+		'name'   => esc_html__( 'Visual Appearance', 'give' ),
+		'fields' => [
+			[
+				'id'      => 'primary_color',
+				'name'    => __( 'Primary Color', 'give' ),
+				'desc'    => __( 'The primary color is used throughout the Form Template for various elements including buttons, line breaks, and focus/hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
+				'type'    => 'colorpicker',
+				'default' => '#28C77B',
+			],
+			[
+				'name'    => esc_html__( 'Primary Font', 'give' ),
+				'desc'    => esc_html__( 'The default font for this donation form uses the Montserrat Google Font. The System Font option uses the system font of a particular operating system and can boost performance but impact visual appearance.', 'give' ),
+				'id'      => 'google-fonts',
+				'type'    => 'radio',
+				'options' => [
+					'enabled'  => esc_html__( 'Montserrat Google Font', 'give' ),
+					'disabled' => esc_html__( 'User’s System Font', 'give' ),
+				],
+				'default' => 'enabled',
+			],
+			[
+				'id'      => 'decimals_enabled',
+				'name'    => __( 'Decimal amounts', 'give' ),
+				'desc'    => __( 'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.', 'give' ),
+				'type'    => 'radio_inline',
+				'default' => 'disabled',
+				'options' => [
+					'disabled' => __( 'Disabled', 'give' ),
+					'enabled'  => __( 'Enabled', 'give' ),
+				],
+			],
+		]
+	],
+	'introduction' => [
 		'name'   => sprintf( __( '%1$s Step 1: %2$s Introduction', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description goes here.', 'give' ),
 		'fields' => [
@@ -51,13 +85,6 @@ return [
 				'name' => __( 'Image', 'give' ),
 				'desc' => __( 'Upload an eye-catching image that reflects your cause. For best results use an image in 16x9 aspect ratio at least 680x400px.', 'give' ),
 				'type' => 'file',
-			],
-			[
-				'id'      => 'primary_color',
-				'name'    => __( 'Primary Color', 'give' ),
-				'desc'    => __( 'The primary color is used throughout the Form Template for various elements including buttons, line breaks, and focus/hover elements. Set a color that reflects your brand or main featured image for best results.', 'give' ),
-				'type'    => 'colorpicker',
-				'default' => '#28C77B',
 			],
 			[
 				'id'         => 'donate_label',
@@ -103,17 +130,6 @@ return [
 					'placeholder' => __( 'Continue', 'give' ),
 				],
 				'default'    => __( 'Continue', 'give' ),
-			],
-			[
-				'id'      => 'decimals_enabled',
-				'name'    => __( 'Decimal amounts', 'give' ),
-				'desc'    => __( 'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.', 'give' ),
-				'type'    => 'radio_inline',
-				'default' => 'disabled',
-				'options' => [
-					'disabled' => __( 'Disabled', 'give' ),
-					'enabled'  => __( 'Enabled', 'give' ),
-				],
 			],
 		],
 	],

@@ -25,7 +25,7 @@ class File extends Field {
 	/**
 	 * @param string $name
 	 *
-	 * @unreleased File size unit is bytes, so no need to convert WordPress max file upload size to kilo bytes.
+	 * @since 2.16.0 File size unit is bytes, so no need to convert WordPress max file upload size to kilo bytes.
 	 */
 	public function __construct( $name ) {
 		parent::__construct( $name );
