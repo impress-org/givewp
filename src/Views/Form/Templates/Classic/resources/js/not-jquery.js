@@ -34,7 +34,7 @@ export function insertAfter(newNode, referenceNode) {
  * @param {Node} node
  */
 export function removeNode(nodeToRemove) {
-	nodeToRemove.parentNode.removeChild(nodeToRemove);
+	nodeToRemove?.parentNode.removeChild(nodeToRemove);
 }
 
 /**
