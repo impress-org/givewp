@@ -205,7 +205,9 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
-		return $this->getFilePath( 'views/receipt.php' );
+		return wp_doing_ajax()
+			? $this->getFilePath( 'views/receipt.php' )
+			: parent::getReceiptView();
 	}
 
 	/**
