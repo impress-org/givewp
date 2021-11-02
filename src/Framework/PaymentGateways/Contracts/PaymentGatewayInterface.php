@@ -53,6 +53,15 @@ interface PaymentGatewayInterface {
 	public function getSubscriptionModule();
 
 	/**
+	 * Determines if a subscription module is mounted
+	 *
+	 * @unreleased
+	 *
+	 * @return bool
+	 */
+	public function hasSubscriptionModule();
+
+	/**
 	 * Mounts a subscription module
 	 *
 	 * @unreleased

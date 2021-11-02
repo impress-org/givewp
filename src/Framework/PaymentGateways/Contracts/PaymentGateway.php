@@ -25,6 +25,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 		return give( $this->subscriptionModule );
 	}
 
+
+	/**
+	 * @inheritDoc
+	 */
+	public function hasSubscriptionModule() {
+		return isset( $this->subscriptionModule );
+	}
+
 	/**
 	 * @inheritDoc
 	 */
