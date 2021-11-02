@@ -97,3 +97,24 @@ function splitDonationLevelAmountsIntoParts() {
 		);
 	});
 }
+
+
+window.GiveClassicTemplate = {
+	share: ( element ) => {
+		let url = parent.window.location.toString();
+		if ( window.Give.fn.getParameterByName('giveDonationAction', url) ) {
+			url = window.Give.fn.removeURLParameter(url, 'giveDonationAction');
+			url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
+			url = window.Give.fn.removeURLParameter(url, 'payment-id');
+		}
+
+		if ( element.classList.contains( 'facebook-btn' ) ) {
+			window.Give.share.fn.facebook( url );
+		} else if ( element.classList.contains( 'twitter-btn' ) ) {
+			window.Give.share.fn.twitter( url, classicTemplateOptions.donation_receipt.twitter_message );
+		}
+
+		return false;
+	}
+}
+
