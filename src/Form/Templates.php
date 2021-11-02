@@ -107,8 +107,10 @@ class Templates {
 	 *
 	 * @return Template
 	 * @since 2.7.0
+     * @unreleased Add default value for $templateId
 	 */
 	private function getTemplateObject( $templateId ) {
-		return new $this->templates[ $templateId ]();
-	}
+        $templateId = $templateId ?: 'legacy';
+        return new $this->templates[$templateId]();
+    }
 }
