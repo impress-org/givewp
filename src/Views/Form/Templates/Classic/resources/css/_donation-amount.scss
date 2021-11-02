@@ -45,21 +45,25 @@
 
 	& .give-currency-symbol {
 		display: block;
-		padding: 1.1875rem;
+		padding: 1em;
 		color: #555;
 		font-size: 1.375rem;
 		font-weight: 500;
+
+		@media screen and (min-width: $desktopMinWidth) {
+			padding: 1.2em;
+		}
 	}
 
 	& .give-text-input {
 		width: 100%;
-		padding: 1.1875rem;
+		padding: 0.275em 0.45em;
 		border: 0;
 		text-align: right;
 		font-family: inherit;
 		font-size: 2.625rem;
 		font-weight: 600;
-		line-height: 1;
+		line-height: 1.2;
 		color: #333;
 		outline: 0;
 
