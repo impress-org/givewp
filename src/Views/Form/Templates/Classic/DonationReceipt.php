@@ -39,7 +39,7 @@ class DonationReceipt extends GiveDonationReceipt {
 	/**
 	 * Replace template tags in given string
 	 *
-	 * @param string $string
+	 * @param  string  $string
 	 *
 	 * @return string
 	 */
@@ -76,6 +76,14 @@ class DonationReceipt extends GiveDonationReceipt {
 			'label' => esc_html__( 'Email Address', 'give' ),
 			'value' => $this->donation->email,
 		] );
+
+		if ( $address = $this->getDonorBillingAddress() ) {
+			$donorSection->addLineItem( [
+				'id'    => 'billingAddress',
+				'label' => esc_html__( 'Billing Address', 'give' ),
+				'value' => $address,
+			] );
+		}
 	}
 
 	/**
@@ -134,6 +142,34 @@ class DonationReceipt extends GiveDonationReceipt {
 			'id'    => parent::ADDITIONALINFORMATIONSECTIONID,
 			'label' => esc_html__( 'Additional Information', 'give' ),
 		] );
+	}
+
+	/**
+	 * Get donor billing address
+	 * Copied from Give\Receipt\DonationReceipt
+	 *
+	 * @return string|null
+	 */
+	private function getDonorBillingAddress() {
+		$address   = give_get_donation_address( $this->donationId );
+		$formatted = sprintf(
+			'%1$s%7$s%2$s%3$s, %4$s%5$s%7$s%6$s',
+			$address[ 'line1' ],
+			! empty( $address[ 'line2' ] ) ? $address[ 'line2' ] . "\r\n" : '',
+			$address[ 'city' ],
+			$address[ 'state' ],
+			$address[ 'zip' ],
+			$address[ 'country' ],
+			"\r\n"
+		);
+
+		$hasAddress = (bool) trim( str_replace( ',', '', strip_tags( $formatted ) ) );
+
+		if ( $hasAddress ) {
+			return $formatted;
+		}
+
+		return null;
 	}
 
 	/**
