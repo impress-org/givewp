@@ -30,11 +30,6 @@
 		margin-right: 0;
 		margin-top: 28px;
 
-		@media screen and (max-width: $phoneMaxWidth) {
-			padding: 12px 20px 14px 20px;
-			margin-top: 6px;
-		}
-
 		.instruction {
 			margin: 0 0 14px 0;
 			line-height: 1.5;
@@ -42,12 +37,6 @@
 			font-size: 13px;
 			color: #767676;
 			text-align: center;
-
-			@media screen and (max-width: $phoneMaxWidth) {
-				margin: 0 24px 0 24px;
-				font-size: 15px;
-				line-height: 1.5;
-			}
 		}
 
 		.btn-row {
@@ -56,11 +45,6 @@
 			align-items: center;
 			margin-right: auto;
 			margin-left: auto;
-
-			@media screen and (max-width: $phoneMaxWidth) {
-				flex-direction: column;
-				align-items: stretch;
-			}
 		}
 
 		.social-btn {
@@ -70,10 +54,6 @@
 			padding: 14px 27px;
 			margin: 0 14px;
 			border: none !important;
-
-			@media screen and (max-width: $phoneMaxWidth) {
-				margin: 6px 0;
-			}
 
 			> i {
 				margin-left: 12px;
@@ -120,11 +100,6 @@
 				font-size: 20px;
 				padding: 15px 0;
 				border-bottom: 1px solid #F2F2F2;
-
-				@media screen and (max-width: $phoneMaxWidth) {
-					margin-top: 16px !important;
-					margin-bottom: 6px !important;
-				}
 			}
 			.details-table {
 				display: flex;
@@ -140,11 +115,6 @@
 					flex-wrap: wrap;
 					border-bottom: 1px solid #F2F2F2;
 
-					@media screen and (max-width: $phoneMaxWidth) {
-						justify-content: center;
-						align-items: center;
-					}
-
 					> i {
 						color: #989898;
 						padding-right: 10px;
@@ -158,7 +128,7 @@
 						color: #6B6B6B;
 
 						@media screen and (max-width: $phoneMaxWidth) {
-							padding: 5px 0;
+
 						}
 					}
 
@@ -172,8 +142,7 @@
 						white-space: pre-wrap;
 
 						@media screen and (max-width: $phoneMaxWidth) {
-							flex: 0;
-							padding: 5px 10px;
+
 						}
 					}
 
