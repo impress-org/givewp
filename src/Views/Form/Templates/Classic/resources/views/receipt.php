@@ -23,7 +23,7 @@ $option  = function ( $name ) {
 
 ob_start();
 ?>
-	<div class="give-receipt">
+	<div class="give-receipt-classic">
 		<div class="give-form-header">
 			<div class="give-form-header-top-wrap">
 				<aside class="give-form-secure-badge">
@@ -58,6 +58,8 @@ ob_start();
 				</div>
 			</div>
 		<?php endif; ?>
+
+		<div class="receipt-sections">
 
 		<?php
 			/* @var Section $section */
@@ -97,6 +99,7 @@ ob_start();
 			</div>
 
 		<?php endforeach; ?>
+		</div>
 
 		<?php if ( isset( $section[ 'receiptLink' ] ) ) : ?>
 			<div class="give-btn download-btn">
