@@ -3,13 +3,16 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\PaymentGateways\DataTransferObjects\FormData;
-use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 interface SubscriptionModuleInterface {
 	/**
 	 * Handle gateway subscription request
 	 *
+	 * @param  int  $donationId
+	 * @param  int  $subscriptionId
+	 * @param  FormData  $formData
+	 *
 	 * @unreleased
 	 */
-	public function handleSubscriptionRequest( $donationId, FormData $formData, SubscriptionData $subscriptionData );
+	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
 }

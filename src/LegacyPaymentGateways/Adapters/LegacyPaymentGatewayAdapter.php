@@ -4,6 +4,7 @@ namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
+use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
@@ -45,8 +46,9 @@ class LegacyPaymentGatewayAdapter {
 
 		if ( function_exists( 'Give_Recurring' ) && Give_Recurring()->is_recurring( $formData->formId ) ) {
 			$subscriptionData = SubscriptionData::fromRequest( $request );
-			
-			$registeredGateway->handleSubscriptionRequest( $donationId, $formData, $subscriptionData );
+			$subscriptionId = $this->createSubscription( $donationId, $formData, $subscriptionData );
+
+			$registeredGateway->handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
 		}
 
 		$registeredGateway->handleOneTimeRequest( $donationId, $formData );
@@ -64,6 +66,22 @@ class LegacyPaymentGatewayAdapter {
 		$createPaymentAction = give( CreatePaymentAction::class );
 
 		return $createPaymentAction( $formData );
+	}
+
+	/**
+	 * Create the payment
+	 *
+	 * @param  int  $donationId
+	 * @param  FormData  $formData
+	 * @param  SubscriptionData  $subscriptionData
+	 *
+	 * @return int
+	 */
+	private function createSubscription( $donationId, FormData $formData, SubscriptionData $subscriptionData ) {
+		/** @var CreateSubscriptionAction $createSubscriptionAction */
+		$createSubscriptionAction = give( CreateSubscriptionAction::class );
+
+		return $createSubscriptionAction( $donationId, $formData, $subscriptionData );
 	}
 
 	/**
