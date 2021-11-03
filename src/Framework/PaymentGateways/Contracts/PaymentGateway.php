@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 
 /**
@@ -14,6 +15,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 	 * @inheritDoc
 	 */
 	public function mountSubscriptionModule( $subscriptionModuleClass ) {
+		if ( ! class_implements( $subscriptionModuleClass, SubscriptionModuleInterface::class ) ) {
+			throw new InvalidArgumentException( sprintf(
+				'%1$s must implement %2$s',
+				$subscriptionModuleClass,
+				SubscriptionModuleInterface::class
+			) );
+		}
+
 		$this->subscriptionModule = $subscriptionModuleClass;
 	}
 
