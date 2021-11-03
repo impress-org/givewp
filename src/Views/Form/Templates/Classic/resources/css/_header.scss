@@ -59,10 +59,11 @@
 .give-form-description {
 	font-size: 1.125rem;
 	line-height: 1.45;
+	margin: 0 auto;
 
 	@media screen and (min-width: $desktopMinWidth) {
 		font-size: 1.25rem;
-		max-width: 34.375rem;
+		max-width: 50rem;
 	}
 }
 
