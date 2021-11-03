@@ -6,7 +6,7 @@
         "dev": "mix",
         "production": "mix --production",
         "build": "mix --production",
-        "watch": "mix --watch",
+        "watch": "mix watch",
         "test:e2e": "cypress open",
         "env": "wp-env"
     },
