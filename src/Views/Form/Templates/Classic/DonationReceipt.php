@@ -3,11 +3,11 @@
 namespace Give\Views\Form\Templates\Classic;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Receipt\DonationReceipt as GiveReceipt;
+use Give\Receipt\DonationReceipt as GiveDonationReceipt;
 use Give\Session\SessionDonation\DonationAccessor;
 use Give_Payment as Donation;
 
-class DonationReceipt extends GiveReceipt {
+class DonationReceipt extends GiveDonationReceipt {
 	/**
 	 * @var Donation
 	 */
@@ -61,7 +61,7 @@ class DonationReceipt extends GiveReceipt {
 	 */
 	private function registerDonorSection() {
 		$donorSection = $this->addSection( [
-			'id'    => static::DONORSECTIONID,
+			'id'    => parent::DONORSECTIONID,
 			'label' => esc_html__( 'Donor Details', 'give' ),
 		] );
 
@@ -83,7 +83,7 @@ class DonationReceipt extends GiveReceipt {
 	 */
 	private function registerDonationSection() {
 		$donationSection = $this->addSection( [
-			'id'    => static::DONATIONSECTIONID,
+			'id'    => parent::DONATIONSECTIONID,
 			'label' => esc_html__( 'Donation Details', 'give' ),
 		] );
 
@@ -111,6 +111,19 @@ class DonationReceipt extends GiveReceipt {
 				]
 			),
 		] );
+
+		$donationSection->addLineItem( [
+			'id'    => 'totalAmount',
+			'label' => esc_html__( 'Donation Total', 'give' ),
+			'value' => give_currency_filter(
+				give_format_amount( $this->donation->total, [ 'donation_id' => $this->donation->ID ] ),
+				[
+					'currency_code'   => $this->donation->currency,
+					'form_id'         => $this->donation->form_id,
+					'decode_currency' => true,
+				]
+			),
+		] );
 	}
 
 	/**
@@ -118,7 +131,7 @@ class DonationReceipt extends GiveReceipt {
 	 */
 	private function registerAdditionalInformationSection() {
 		$this->addSection( [
-			'id'    => static::ADDITIONALINFORMATIONSECTIONID,
+			'id'    => parent::ADDITIONALINFORMATIONSECTIONID,
 			'label' => esc_html__( 'Additional Information', 'give' ),
 		] );
 	}
