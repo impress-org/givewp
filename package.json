@@ -1,15 +1,6 @@
 {
     "name": "give",
-    "main": "index.js",
-    "scripts": {
-        "start": "npm install && npm run watch",
-        "dev": "mix",
-        "production": "mix --production",
-        "build": "mix --production",
-        "watch": "mix --watch",
-        "test:e2e": "cypress open",
-        "env": "wp-env"
-    },
+    "private": true,
     "repository": {
         "type": "git",
         "url": "git+https://github.com/impress-org/give.git"
@@ -20,15 +11,26 @@
         "url": "https://github.com/impress-org/give/issues"
     },
     "homepage": "https://github.com/impress-org/give#readme",
+    "browserslist": [
+        "last 2 version",
+        "> 0.05%",
+        "ie >= 10"
+    ],
+    "scripts": {
+        "start": "npm install && npm run watch",
+        "dev": "mix",
+        "production": "mix --production",
+        "build": "mix --production",
+        "watch": "mix watch",
+        "test:e2e": "cypress open",
+        "env": "wp-env"
+    },
     "devDependencies": {
         "@babel/core": "^7.13.10",
         "@babel/eslint-parser": "^7.13.10",
-        "@babel/plugin-syntax-jsx": "^7.12.13",
-        "@babel/plugin-transform-react-jsx": "^7.12.17",
-        "@babel/plugin-transform-runtime": "^7.13.10",
         "@babel/polyfill": "^7.4.0",
         "@babel/preset-env": "^7.13.10",
-        "@babel/preset-react": "^7.14.5",
+        "@babel/preset-react": "^7.16.0",
         "@babel/runtime": "^7.13.10",
         "@wordpress/env": "^4",
         "autoprefixer": "^9.5.0",

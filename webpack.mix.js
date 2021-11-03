@@ -35,7 +35,17 @@ mix.setPublicPath('assets/dist')
     .js('src/DonorDashboards/resources/js/block/index.js', 'js/donor-dashboards-block.js')
     .js('src/Log/Admin/index.js', 'js/give-log-list-table-app.js')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
-    .react()
+    .babelConfig({
+        "presets": [
+            "@babel/preset-env",
+            [
+                "@babel/preset-react",
+                {
+                    "runtime": "classic"
+                },
+            ],
+        ],
+    })
     .sourceMaps(false)
 
     .copyDirectory('assets/src/tcpdf-fonts', 'vendor/tecnickcom/tcpdf/fonts')
