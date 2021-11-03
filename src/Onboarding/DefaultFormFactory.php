@@ -106,6 +106,7 @@ class DefaultFormFactory {
 	 *
 	 * @return array
 	 *
+     * @unreleased add new visual appearance settings
 	 * @since 2.8.0
 	 */
 	public function getTemplateConfig() {
