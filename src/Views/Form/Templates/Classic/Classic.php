@@ -6,7 +6,6 @@ use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give_Scripts;
 use InvalidArgumentException;
 
 /**
