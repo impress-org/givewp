@@ -57,6 +57,8 @@ class LegacyPaymentGatewayAdapter {
 	/**
 	 * Create the payment
 	 *
+	 * @unreleased
+	 *
 	 * @param  FormData  $formData
 	 *
 	 * @return int
@@ -70,6 +72,8 @@ class LegacyPaymentGatewayAdapter {
 
 	/**
 	 * Create the payment
+	 *
+	 * @unreleased
 	 *
 	 * @param  int  $donationId
 	 * @param  FormData  $formData

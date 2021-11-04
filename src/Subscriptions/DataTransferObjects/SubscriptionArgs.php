@@ -102,8 +102,12 @@ class SubscriptionArgs {
 		return $self;
 	}
 
-	public function toArray()
-	{
+	/**
+	 * @unreleased
+	 *
+	 * @return array
+	 */
+	public function toArray() {
 		return [
 			'name' => $this->formTitle,
 			'id' => $this->formId,

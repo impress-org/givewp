@@ -8,11 +8,11 @@ interface SubscriptionModuleInterface {
 	/**
 	 * Handle gateway subscription request
 	 *
+	 * @unreleased
+	 *
 	 * @param  int  $donationId
 	 * @param  int  $subscriptionId
 	 * @param  FormData  $formData
-	 *
-	 * @unreleased
 	 */
 	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
 }

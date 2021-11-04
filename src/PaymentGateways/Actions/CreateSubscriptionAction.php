@@ -56,6 +56,10 @@ class CreateSubscriptionAction {
 	}
 
 	/**
+	 * Get or create donor
+	 *
+	 * @unreleased
+	 *
 	 * @param  FormData  $formData
 	 *
 	 * @return Give_Donor
