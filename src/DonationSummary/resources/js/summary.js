@@ -25,10 +25,36 @@ window.GiveDonationSummary = {
      * @unreleased
      */
     initFrequency: function() {
+
+        // Donor's Choice Recurring
         GiveDonationSummary.observe( '[name="give-recurring-period"]', function( targetNode, $form ) {
             $form.find( '.js-give-donation-summary-frequency-help-text' ).toggle( ! targetNode.checked )
-            $form.find( '[data-tag="frequency"]' ).toggle( ! targetNode.checked)
+            $form.find( '[data-tag="frequency"]' ).toggle( ! targetNode.checked )
             $form.find( '[data-tag="recurring"]' ).toggle( targetNode.checked ).html( targetNode.dataset['periodLabel'] )
+
+            // Donor's Choice Period
+            const donorsChoice = document.querySelector( '[name="give-recurring-period-donors-choice"]' )
+            if( donorsChoice) {
+                const donorsChoiceValue = donorsChoice.options[donorsChoice.selectedIndex].value || false
+                if (donorsChoiceValue) {
+                    $form.find('[data-tag="recurring"]').html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue])
+                }
+            }
+        })
+
+        // Admin Defined Recurring
+        GiveDonationSummary.observe( '[name="give-price-id"]', function( targetNode, $form ) {
+            const priceID = targetNode.value
+            const recurringDetails = JSON.parse( document.querySelector('.give_recurring_donation_details').value )
+
+            if( 'undefined' !== typeof recurringDetails[ 'multi' ] ) {
+                const isRecurring = ( 'yes' === recurringDetails[ 'multi' ][ priceID ][ '_give_recurring' ] );
+                const periodLabel = recurringDetails[ 'multi' ][ priceID ][ 'give_recurring_pretty_text' ]
+
+                $form.find( '.js-give-donation-summary-frequency-help-text' ).toggle( isRecurring )
+                $form.find( '[data-tag="frequency"]' ).toggle( ! isRecurring )
+                $form.find( '[data-tag="recurring"]' ).toggle( isRecurring ).html( periodLabel )
+            }
         })
     },
 
@@ -59,7 +85,7 @@ window.GiveDonationSummary = {
                 GiveDonationSummary.format_amount(total, $form)
             )
         })
-      
+
       // Hack: Force an initial mutation for the Total Amount observer
       const totalAmount = document.querySelector('.give-final-total-amount')
       if( totalAmount ){

@@ -34,6 +34,9 @@ class Assets {
                 'currencyPrecisionLookup' => array_map(function( $currency ) {
                     return $currency['setting']['number_decimals'];
                 }, give_get_currencies_list() ),
+                'recurringLabelLookup' => function_exists( 'give_recurring_get_default_pretty_periods' )
+                    ? give_recurring_get_default_pretty_periods()
+                    : [],
             ]
         );
     }
