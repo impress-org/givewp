@@ -80,4 +80,16 @@
     td:last-child {
         text-align: right;
     }
+
+    @media screen and (max-width: 500px) {
+        th, td {
+            pading: 0;
+            display:block;
+            height: initial;
+            vertical-align: top;
+        }
+        .give-donation-summary-help-text img {
+            display: none;
+        }
+    }
 }

@@ -39,10 +39,12 @@
                         <?php if( $this->isRecurringEnabled() ): ?>
                         <span class="give-donation-summary-help-text js-give-donation-summary-frequency-help-text">
                             <img src="<?php echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
+                            <span>
                             <?php
                                 /* translators: 1: <button> open tag 2: close tag. */
                                 echo sprintf( __( 'Consider making this donation %srecurring%s', 'give' ), '<button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">', '</button>' );
                             ?>
+                            </span>
                         </span>
                         <?php endif; ?>
                     </td>
