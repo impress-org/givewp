@@ -23,7 +23,6 @@
 }
 
 @mixin text-field {
-	font-family: 'Montserrat', sans-serif;
 	background: #fff;
 	border: 1px solid #b8b8b8 !important;
 	box-sizing: border-box;
@@ -38,7 +37,6 @@
 }
 
 @mixin select-field {
-	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
 	color: #828382;
