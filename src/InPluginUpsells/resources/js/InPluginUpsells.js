@@ -4,19 +4,16 @@ import {__} from '@wordpress/i18n';
 import {MustHaveAddons} from './MustHaveAddons';
 import {AdditionalAddons} from './AdditionalAddons';
 import {PricingPlans} from './PricingPlans';
-import giveLogo from '!!raw-loader!./givewp-logo.svg';
 import styles from './AddonGallery.module.css';
 
-const GiveWPLogo = () => <div dangerouslySetInnerHTML={{__html: giveLogo}} />;
-
-export const AddonGallery = () => (
+export const InPluginUpsells = () => (
 	<Tabs as="article" className={styles.root}>
 		<div className={styles.header}>
 			<div className={styles.container}>
 				<h1 className="screen-reader-text">
 					{__('Give Add-ons Gallery', 'give')}
 				</h1>
-				<GiveWPLogo />
+                <img src="" alt={__('GiveWP', 'give')} />
 				<TabList className={styles.tabs}>
 					<Tab>
 						{__('Must Have Add-ons', 'give')}

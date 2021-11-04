@@ -1,7 +1,7 @@
 import {render} from 'react-dom';
 
-import {AddonGallery} from './AddonGallery';
+import {InPluginUpsells} from './InPluginUpsells';
 
-import './client.css';
+import './index.css';
 
-render(<AddonGallery />, document.getElementById('give-in-plugin-upsells'));
+render(<InPluginUpsells />, document.getElementById('give-in-plugin-upsells'));
