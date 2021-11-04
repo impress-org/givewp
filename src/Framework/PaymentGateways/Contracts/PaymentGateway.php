@@ -9,6 +9,9 @@ use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface
  * @unreleased
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface {
+	/**
+	 * @var SubscriptionModuleInterface $subscriptionModule
+	 */
 	public $subscriptionModule;
 
 	/**
@@ -23,14 +26,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 			) );
 		}
 
-		$this->subscriptionModule = $subscriptionModuleClass;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getSubscriptionModule() {
-		return give( $this->subscriptionModule );
+		$this->subscriptionModule = give( $subscriptionModuleClass );
 	}
 
 
@@ -45,7 +41,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 	 * @inheritDoc
 	 */
 	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData ) {
-		return $this->getSubscriptionModule()->handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
+		return $this->subscriptionModule->handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
 	}
 
 }

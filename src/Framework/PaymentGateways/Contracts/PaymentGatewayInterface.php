@@ -44,15 +44,6 @@ interface PaymentGatewayInterface {
 	public function getPaymentMethodLabel();
 
 	/**
-	 * Returns a subscription module
-	 *
-	 * @unreleased
-	 *
-	 * @return string
-	 */
-	public function getSubscriptionModule();
-
-	/**
 	 * Determines if a subscription module is mounted
 	 *
 	 * @unreleased
