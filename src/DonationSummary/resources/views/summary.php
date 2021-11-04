@@ -15,7 +15,11 @@
             <thead>
                 <tr>
                     <th>Donation Summary</th>
-                    <th><button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">Edit Donation</button></th>
+                    <th>
+                        <button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
+                            Edit Donation<?php include plugin_dir_path( __DIR__ ) . 'images/pencil.svg'; ?>
+                        </button>
+                    </th>
                 </tr>
             </thead>
             <tbody>
