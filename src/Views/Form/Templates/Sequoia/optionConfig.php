@@ -62,7 +62,7 @@ return [
             [
                 'id'         => 'heading',
                 'name'       => __( 'Heading', 'give' ),
-                'desc'       => __( 'This text displays above the donation summary table and is designed to help introduce the donation breakdown to the visitor.', 'give' ),
+                'desc'       => __( 'This text displays above the donation summary table and is designed to help introduce the donation breakdown to the visitor. Leave blank to remove.', 'give' ),
                 'type'       => 'text',
                 'default'    => __( 'Here\'s what you\'re about to donate', 'give' ),
             ],
