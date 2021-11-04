@@ -10,6 +10,7 @@
 	color: #333;
 	font-size: 1.875rem;
 	font-weight: 600;
+    line-height: 1.2;
 }
 
 .description {
@@ -21,7 +22,11 @@
 	box-sizing: border-box;
 	display: grid;
 	gap: 2.75rem;
-	grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
 	margin: 0;
-	/** This grid will need to figure out vertical stretch between items as well. */
+}
+
+.grid > li,
+.grid > li > * {
+    height: 100%;
 }

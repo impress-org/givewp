@@ -2,20 +2,29 @@ import {__} from '@wordpress/i18n';
 
 import {AddonCard} from './AddonCard';
 import styles from './MustHaveAddons.module.css';
-import ADDONS from './mock-addons.json';
+
+const {addonButtonCaption, addons, description, heading} = GiveAddons.mustHaveAddons;
 
 export const MustHaveAddons = () => (
 	<article>
 		<div className={styles.hero}>
-			<h2 className={styles.title}>
-				{__('Ready to take your fundraising to the next level?', 'give')}
-			</h2>
-			<p className={styles.description}>
-				{__('Recurring donations, fee recovery, and more powerful add-ons to power your campaigns from A to Z.', 'give')}
-			</p>
+			<h2 className={styles.title}>{heading}</h2>
+			<p className={styles.description}>{description}</p>
 		</div>
 		<ul className={styles.grid}>
-			{ADDONS.map(addon => <li key={addon.name}><AddonCard {...addon} /></li>)}
+			{addons.map(({name, description, url, icon, image, features}) => (
+                <li key={name}>
+                    <AddonCard
+                        name={name}
+                        description={description}
+                        icon={icon}
+                        image={image}
+                        features={features}
+                        actionLink={url}
+                        actionText={addonButtonCaption}
+                    />
+                </li>
+            ))}
 		</ul>
 	</article>
 );

@@ -35,6 +35,33 @@
 	height: 5.5rem;
 }
 
+.features {
+    flex-grow: 1;
+}
+
+.feature {
+    display: flex;
+    gap: 0.5em;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.checkmark {
+    flex-shrink: 0;
+
+    display: inline;
+
+    /* Make it square */
+    width: 1em;
+    height: 1em;
+
+    /* Offset the top half-leading of line-height to (almost) align with the top of the text. */
+    position: relative;
+    top: 0.25em;
+
+    color: #66bb6a;
+}
+
 .button {
 	box-sizing: border-box;
 	appearance: none;
