@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <th>Donation Summary</th>
-                    <th><button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">edit donation</button></th>
+                    <th><button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">Edit Donation</button></th>
                 </tr>
             </thead>
             <tbody>
