@@ -110,7 +110,7 @@
          * @unreleased
          */
         updateDonationSummaryFields();
-        $( 'input[name="sequoia[donation_summary][enabled]"]' ).on( 'change', function() {
+        $( 'input[name="sequoia[payment_information][donation_summary_enabled]"]' ).on( 'change', function() {
             updateDonationSummaryFields();
         } );
 
@@ -143,9 +143,9 @@
      * @unreleased
      */
     const updateDonationSummaryFields = function() {
-        const conditionalFields = $( '[class*="sequoia[donation_summary][heading]_field"], [class*="sequoia[donation_summary][location]_field"]' );
+        const conditionalFields = $( '[class*="sequoia[payment_information][donation_summary_heading]_field"], [class*="sequoia[payment_information][donation_summary_location]_field"]' );
 
-        if ( $( 'input[name="sequoia[donation_summary][enabled]"]' ).length !== 0 && ! $( 'input[name="sequoia[donation_summary][enabled]"]' ).prop( 'checked' ) ) {
+        if ( $( 'input[name="sequoia[payment_information][donation_summary_enabled]"]' ).length !== 0 && ! $( 'input[name="sequoia[payment_information][donation_summary_enabled]"]' ).prop( 'checked' ) ) {
             $( conditionalFields ).hide();
         } else {
             $( conditionalFields ).show();

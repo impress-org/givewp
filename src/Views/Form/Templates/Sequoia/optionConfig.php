@@ -45,40 +45,6 @@ return [
 			],
 		]
 	],
-    'donation_summary' => [
-		'name'   => esc_html__( 'Donation Summary', 'give' ),
-		'fields' => [
-            [
-                'id'      => 'enabled',
-                'name'    => __( 'Enabled', 'give' ),
-                'desc'    => __( 'Display a summary of the donation on the Payment Information step', 'give' ),
-                'type'    => 'radio_inline',
-                'options' => [
-                    'enabled'  => __( 'Enabled', 'give' ),
-                    'disabled' => __( 'Disabled', 'give' ),
-                ],
-                'default' => 'enabled',
-            ],
-            [
-                'id'         => 'heading',
-                'name'       => __( 'Heading', 'give' ),
-                'desc'       => __( 'This text displays above the donation summary table and is designed to help introduce the donation breakdown to the visitor. Leave blank to remove.', 'give' ),
-                'type'       => 'text',
-                'default'    => __( 'Here\'s what you\'re about to donate:', 'give' ),
-            ],
-            [
-                'id'      => 'location',
-                'name'    => __( 'Location', 'give' ),
-                'desc'    => __( 'Where should the donation summary be placed?', 'give' ),
-                'type'    => 'radio_inline',
-                'options' => [
-                    'give_donation_form_user_info'  => __( 'Before Payment Fields', 'give' ),
-                    'give_donation_form_before_submit' => __( 'After Payment Fields', 'give' ),
-                ],
-                'default' => 'give_donation_form_before_submit',
-            ],
-		]
-	],
 	'introduction' => [
 		'name'   => sprintf( __( '%1$s Step 1: %2$s Introduction', 'give' ), '<strong>', '</strong>' ),
 		'desc'   => __( 'Step description goes here.', 'give' ),
@@ -201,6 +167,35 @@ return [
 				],
 				'default'    => __( 'We’ll never share this information with anyone.', 'give' ),
 			],
+            [
+                'id'      => 'donation_summary_enabled',
+                'name'    => __( 'Donation Summary', 'give' ),
+                'desc'    => __( 'Display a summary of the donation on the Payment Information step', 'give' ),
+                'type'    => 'radio_inline',
+                'options' => [
+                    'enabled'  => __( 'Enabled', 'give' ),
+                    'disabled' => __( 'Disabled', 'give' ),
+                ],
+                'default' => 'enabled',
+            ],
+            [
+                'id'         => 'donation_summary_heading',
+                'name'       => __( 'Summary Heading', 'give' ),
+                'desc'       => __( 'This text displays above the donation summary table and is designed to help introduce the donation breakdown to the visitor. Leave blank to remove.', 'give' ),
+                'type'       => 'text',
+                'default'    => __( 'Here\'s what you\'re about to donate:', 'give' ),
+            ],
+            [
+                'id'      => 'donation_summary_location',
+                'name'    => __( 'Summary Location', 'give' ),
+                'desc'    => __( 'Where should the donation summary be placed?', 'give' ),
+                'type'    => 'radio_inline',
+                'options' => [
+                    'give_donation_form_user_info'  => __( 'Before Payment Fields', 'give' ),
+                    'give_donation_form_before_submit' => __( 'After Payment Fields', 'give' ),
+                ],
+                'default' => 'give_donation_form_before_submit',
+            ],
 			Options::getCheckoutLabelField(),
 		],
 	],

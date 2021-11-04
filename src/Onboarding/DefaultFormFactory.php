@@ -118,11 +118,6 @@ class DefaultFormFactory {
 				'primary_color' => $this->primaryColor,
 				'donate_label'  => __( 'Donate Now', 'give' ),
 			],
-            'donation_summary' => [
-                'enabled' => 'enabled',
-                'heading' => __( 'Here\'s what you\'re about to donate', 'give' ),
-                'location' => 'give_donation_form_before_submit'
-            ],
 			'payment_amount'      => [
 				'header_label' => __( 'Choose Amount', 'give' ),
 				'content'      => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo( 'sitename' ) ),
@@ -132,6 +127,9 @@ class DefaultFormFactory {
 				'header_label' => __( 'Add Your Information', 'give' ),
 				'headline'     => __( "Who's giving today?", 'give' ),
 				'description'  => __( 'We’ll never share this information with anyone.', 'give' ),
+                'donation_summary_enabled' => 'enabled',
+                'donation_summary_heading' => __( 'Here\'s what you\'re about to donate:', 'give' ),
+                'donation_summary_location' => 'give_donation_form_before_submit',
 				TemplateOptions::getCheckoutLabelField(),
 			],
 			'thank-you'           => [

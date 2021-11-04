@@ -57,8 +57,8 @@ class SummaryView {
      * @return string
      */
     public function getFormTemplateLocation() {
-        if( isset( $this->templateOptions[ 'donation_summary' ] ) && isset( $this->templateOptions[ 'donation_summary' ][ 'location' ] ) ) {
-            return $this->templateOptions[ 'donation_summary' ][ 'location' ];
+        if( isset( $this->templateOptions['payment_information'] ) && isset( $this->templateOptions['payment_information']['donation_summary_location'] ) ) {
+            return $this->templateOptions['payment_information']['donation_summary_location'];
         }
         return 'give_donation_form_before_submit'; // Default location.
     }
@@ -68,8 +68,8 @@ class SummaryView {
      * @return string
      */
     public function getSummaryHeading() {
-        if( isset( $this->templateOptions[ 'donation_summary' ] ) && isset( $this->templateOptions[ 'donation_summary' ][ 'heading' ] ) ) {
-            return $this->templateOptions[ 'donation_summary' ][ 'heading' ];
+        if( isset( $this->templateOptions[ 'payment_information' ] ) && isset( $this->templateOptions[ 'payment_information' ][ 'donation_summary_heading' ] ) ) {
+            return $this->templateOptions[ 'payment_information' ][ 'donation_summary_heading' ];
         }
         return '';
     }
@@ -79,9 +79,9 @@ class SummaryView {
      * @return bool
      */
     public function isDonationSummaryEnabled() {
-        return isset( $this->templateOptions[ 'donation_summary' ] )
-            && isset( $this->templateOptions[ 'donation_summary' ][ 'enabled' ] )
-            && give_is_setting_enabled( $this->templateOptions[ 'donation_summary' ][ 'enabled' ] );
+        return isset( $this->templateOptions[ 'payment_information' ] )
+            && isset( $this->templateOptions[ 'payment_information' ][ 'donation_summary_enabled' ] )
+            && give_is_setting_enabled( $this->templateOptions[ 'payment_information' ][ 'donation_summary_enabled' ] );
     }
 
     /**
