@@ -1,3 +1,8 @@
+<style>
+    .give-donation-summary-table-wrapper {
+        --primary-color: <?php echo $this->getPrimaryColor(); ?>;
+    }
+</style>
 <div class="give-donation-summary-section">
 
     <?php if( $heading = $this->getSummaryHeading() ): ?>

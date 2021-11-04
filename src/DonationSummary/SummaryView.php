@@ -47,6 +47,10 @@ class SummaryView {
         include 'resources/views/summary.php';
     }
 
+    public function getPrimaryColor() {
+        return $this->templateOptions[ 'visual_appearance' ][ 'primary_color' ];
+    }
+
     /**
      * @unreleased
      * @throws \Exception
