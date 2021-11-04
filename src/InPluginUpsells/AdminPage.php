@@ -27,8 +27,16 @@ class AdminPage {
 		wp_enqueue_script(
 			'give-in-plugin-upsells',
 			GIVE_PLUGIN_URL . 'assets/dist/js/give-in-plugin-upsells.js',
+			['wp-element', 'wp-i18n', 'wp-hooks'],
+			GIVE_VERSION,
+			true
+		);
+
+		wp_enqueue_style(
+			'give-in-plugin-upsells-font',
+			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap',
 			[],
-			GIVE_VERSION, true
+			null
 		);
 
 		wp_localize_script(
