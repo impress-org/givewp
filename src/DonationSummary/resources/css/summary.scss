@@ -38,6 +38,10 @@
         gap: 5px;
         display: flex;
         align-items: center;
+
+        .back-btn {
+            font-size: inherit;
+        }
     }
 
     table {
