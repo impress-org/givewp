@@ -10,6 +10,7 @@
 import {GiveConfirmModal, GiveErrorAlert, GiveWarningAlert} from '../plugins/modal';
 import {GiveShortcodeButton} from './shortcode-button.js';
 import setupChosen from './utils/setupChosen';
+import accounting from 'accounting';
 
 // Provided access to global level.
 let give_setting_edit = false;
