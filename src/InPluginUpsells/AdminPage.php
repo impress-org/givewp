@@ -42,7 +42,7 @@ class AdminPage {
 	 * Render admin page
 	 */
 	public function render() {
-		echo '<div id="give-in-plugin-upsells">Aloha!</div>';
+		echo '<div id="give-in-plugin-upsells"></div>';
 	}
 
 	/**

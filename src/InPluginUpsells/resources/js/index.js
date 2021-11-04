@@ -4,4 +4,4 @@ import {AddonGallery} from './AddonGallery';
 
 import './client.css';
 
-render(<AddonGallery />, document.getElementById('root'));
+render(<AddonGallery />, document.getElementById('give-in-plugin-upsells'));
