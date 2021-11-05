@@ -2,6 +2,7 @@
 	box-sizing: border-box;
 	display: grid;
 	gap: 2.75rem;
+    grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 1fr;
 	margin: 0;
 }
