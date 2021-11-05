@@ -96,15 +96,15 @@ class DonationReceipt extends GiveDonationReceipt {
 		] );
 
 		$donationSection->addLineItem( [
-			'id'    => 'paymentMethod',
-			'label' => esc_html__( 'Payment Method', 'give' ),
-			'value' => give_get_gateway_checkout_label( $this->donation->gateway ),
-		] );
-
-		$donationSection->addLineItem( [
 			'id'    => 'paymentStatus',
 			'label' => esc_html__( 'Payment Status', 'give' ),
 			'value' => give_get_payment_statuses()[ $this->donation->post_status ],
+		] );
+
+		$donationSection->addLineItem( [
+			'id'    => 'paymentMethod',
+			'label' => esc_html__( 'Payment Method', 'give' ),
+			'value' => give_get_gateway_checkout_label( $this->donation->gateway ),
 		] );
 
 		$donationSection->addLineItem( [
