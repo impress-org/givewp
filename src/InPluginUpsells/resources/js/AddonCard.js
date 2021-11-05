@@ -1,7 +1,9 @@
+import {Button} from './Button';
+import {Card} from './Card';
 import styles from './AddonCard.module.css'
 
 export const AddonCard = ({name, description, icon, image, features, actionLink, actionText}) => (
-	<article className={styles.card}>
+	<Card as="article">
 		<div className={styles.header}>
             <img src={icon} alt="" />
 			<h3 className={styles.title}>{name}</h3>
@@ -18,8 +20,8 @@ export const AddonCard = ({name, description, icon, image, features, actionLink,
                 </li>
 			))}
 		</ul>
-		<a className={styles.button} href={actionLink}>
+		<Button as="a" href={actionLink}>
             {actionText}
-        </a>
-	</article>
+        </Button>
+	</Card>
 );
