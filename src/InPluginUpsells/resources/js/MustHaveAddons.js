@@ -1,16 +1,14 @@
 import {__} from '@wordpress/i18n';
 
 import {AddonCard} from './AddonCard';
+import {Hero} from './Hero';
 import styles from './MustHaveAddons.module.css';
 
-const {addonButtonCaption, addons, description, heading} = GiveAddons.mustHaveAddons;
+const {addonButtonCaption, addons, description, heading} = window.GiveAddons.mustHaveAddons;
 
 export const MustHaveAddons = () => (
 	<article>
-		<div className={styles.hero}>
-			<h2 className={styles.title}>{heading}</h2>
-			<p className={styles.description}>{description}</p>
-		</div>
+        <Hero heading={heading} description={description} />
 		<ul className={styles.grid}>
 			{addons.map(({name, description, url, icon, image, features}) => (
                 <li key={name}>
