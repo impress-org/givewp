@@ -21,6 +21,8 @@ $option  = function ( $name ) {
 	return null;
 };
 
+$donorDashboardUrl = get_permalink( give_get_option( 'donor_dashboard_page' ) );
+
 ob_start();
 ?>
 	<div class="give-receipt-classic">
@@ -101,11 +103,16 @@ ob_start();
 		<?php endforeach; ?>
 		</div>
 
-		<?php if ( isset( $section[ 'receiptLink' ] ) ) : ?>
-			<div class="give-btn download-btn">
-				<?= $section[ 'receiptLink' ]->value; ?>
-			</div>
-		<?php endif; ?>
+		<div class="dashboard-link-container">
+			<a class="dashboard-link" href="<?= esc_url( $donorDashboardUrl ); ?>">
+				<?= esc_html__( 'Go to my Donor Dashboard', 'give' ); ?>
+			</a>
+			<?php if ( isset( $section[ 'receiptLink' ] ) ) : ?>
+				<div class="give-btn download-btn">
+					<?= $section[ 'receiptLink' ]->value; ?>
+				</div>
+			<?php endif; ?>
+		</div>
 	</div>
 
 <?php
