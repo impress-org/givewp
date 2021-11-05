@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 import {MustHaveAddons} from './MustHaveAddons';
 import {AdditionalAddons} from './AdditionalAddons';
 import {PricingPlans} from './PricingPlans';
-import styles from './AddonGallery.module.css';
+import styles from './InPluginUpsells.module.css';
 
 export const InPluginUpsells = () => (
 	<Tabs as="article" className={styles.root}>
