@@ -88,7 +88,7 @@
 	}
 
 	.receipt-sections {
-		padding: 30px 0 30px 0;
+		padding: 30px 0 10px 0;
 
 		.details {
 			margin: 0 24px;
@@ -125,10 +125,6 @@
 						font-size: 18px;
 						white-space: nowrap;
 						color: #6B6B6B;
-
-						@media screen and (max-width: $phoneMaxWidth) {
-
-						}
 					}
 
 					.value {
@@ -139,10 +135,6 @@
 						font-size: 18px;
 						color: #555555;
 						white-space: pre-wrap;
-
-						@media screen and (max-width: $phoneMaxWidth) {
-
-						}
 					}
 
 					&.total {
@@ -164,6 +156,33 @@
 		}
 	}
 
+	.dashboard-link-container {
+		display: flex;
+		padding: 0 20px 20px 20px;
+		justify-content: space-between;
+		align-items: center;
+
+		.dashboard-link {
+			color: var(--give-primary-color);
+
+			&::after {
+				position: relative;
+				display: inline-block;
+				bottom: -4px;
+				left: 5px;
+				content: '\f178';
+				font-family: 'Font Awesome 5 Free', serif;
+				font-weight: 900;
+				font-size: 30px;
+				text-decoration: none !important;
+			}
+		}
+
+		.download-btn {
+			font-size: inherit;
+		}
+	}
+
 	#give-pdf-receipt-link,
 	#give-pdf-receipt-link:visited {
 		display: flex;
@@ -176,27 +195,9 @@
 			content: '\f1c1';
 			font-family: 'Font Awesome 5 Free', serif;
 			font-weight: 900;
-			font-size: 20px;
+			font-size: 26px;
 			margin-left: 15px;
-			-moz-osx-font-smoothing: grayscale;
-			-webkit-font-smoothing: antialiased;
-			font-style: normal;
-			font-variant: normal;
-			text-rendering: auto;
 			line-height: 1;
-		}
-	}
-}
-
-/*---------------------------------
-RTL styles
------------------------------------*/
-
-html[dir='rtl'] {
-	.details-row {
-		> i {
-			padding-right: 0 !important;
-			padding-left: 10px;
 		}
 	}
 }
