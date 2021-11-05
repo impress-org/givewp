@@ -1,0 +1,19 @@
+.button {
+	box-sizing: border-box;
+	appearance: none;
+	display: block;
+	padding: 0.888em;
+	border-radius: 9999px;
+	background-color: #66bb6a;
+	color: white;
+	font-weight: 700;
+	font-size: 1.125rem;
+	text-align: center;
+	text-decoration: none;
+	line-height: 1;
+}
+
+.button:hover,
+.button:active {
+	color: #fff;
+}
