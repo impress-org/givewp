@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways;
 
+use Give\Container\Container;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
@@ -80,7 +81,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 
 		$this->gateways[ $gatewayId ] = $gatewayClass;
 
-		$this->registerGatewayWithServiceContainer( $gatewayClass );
+		$this->registerGatewayWithServiceContainer( $gatewayClass, $gatewayId );
 
 		$this->afterGatewayRegister( $gatewayClass );
 	}
@@ -99,20 +100,21 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 	}
 
 	/**
+	 *
+	 * Register Gateway with Service Container as Singleton
+	 * with option of adding Subscription Module through filter "give_gateway_{$gatewayId}_subscription_module"
+	 *
 	 * @unreleased
 	 *
 	 * @param  string  $gatewayClass
 	 *
 	 * @return void
 	 */
-	private function registerGatewayWithServiceContainer( $gatewayClass ) {
-		give()->singleton( $gatewayClass, function () use ( $gatewayClass ) {
-			/** @var PaymentGateway $gateway */
-			$gateway = new $gatewayClass;
+	private function registerGatewayWithServiceContainer( $gatewayClass, $gatewayId ) {
+		give()->singleton( $gatewayClass, function ( Container $container ) use ( $gatewayClass, $gatewayId ) {
+			$subscriptionModule = apply_filters( "give_gateway_{$gatewayId}_subscription_module", null );
 
-			do_action( "give_gateway_{$gateway->getId()}_mount_subscription_module", $gateway );
-
-			return $gateway;
+			return new $gatewayClass( $subscriptionModule ? $container->make( $subscriptionModule ) : null );
 		} );
 	}
 

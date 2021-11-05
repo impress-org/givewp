@@ -53,15 +53,6 @@ interface PaymentGatewayInterface {
 	public function hasSubscriptionModule();
 
 	/**
-	 * Mounts a subscription module
-	 *
-	 * @unreleased
-	 *
-	 * @return string - subscriptionModuleClass
-	 */
-	public function mountSubscriptionModule( $subscriptionModuleClass );
-
-	/**
 	 * After creating the initial payment, we can continue with the gateway processing for a one-time request
 	 *
 	 * @unreleased
