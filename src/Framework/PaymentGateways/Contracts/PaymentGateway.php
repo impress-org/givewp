@@ -31,6 +31,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 	}
 
 	/**
+	 * If a subscription module isn't wanted this method can be overridden by a child class instead.
+	 * Just make sure to override the hasSubscriptionModule method as well.
+	 *
 	 * @inheritDoc
 	 */
 	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData ) {
