@@ -44,7 +44,7 @@ interface PaymentGatewayInterface {
 	public function getPaymentMethodLabel();
 
 	/**
-	 * Determines if a subscription module is mounted
+	 * Determines if subscriptions are supported
 	 *
 	 * @unreleased
 	 *
