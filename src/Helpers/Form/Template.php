@@ -77,7 +77,7 @@ class Template {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.16.0
 	 *
 	 * @param array $settings
 	 */

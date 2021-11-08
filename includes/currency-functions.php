@@ -280,7 +280,7 @@ function give_currency_filter( $price = '', $args = [] ) {
 	$args['position'] = give_get_option( 'currency_position', 'before' );
 
 	/**
-	 * @unreleased Check for a numeric value before comparing to zero.
+	 * @since 2.16.0 Check for a numeric value before comparing to zero.
 	 * @link https://www.php.net/manual/en/migration80.incompatible.php
 	 */
 	$negative = is_numeric( $price ) && $price < 0;

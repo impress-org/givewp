@@ -74,7 +74,7 @@ class Actions {
 				  "color": "#e39f48"
 				}
 			}',
-			$this->isGoogleFontEnabled() ? 'Montserrat' : 'system-ui',
+			$this->isGoogleFontEnabled() ? 'Montserrat' : 'system-ui'
 		);
 
 		return json_decode( $styles );
@@ -312,7 +312,7 @@ class Actions {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.16.0
 	 * @return bool
 	 */
 	private function isGoogleFontEnabled() {
