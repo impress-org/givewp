@@ -21,14 +21,14 @@ class Template {
 	}
 
 	/**
-	 * Return saved form template settings
-	 *
-	 * @param int    $formId
-	 * @param string $templateId
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
+     * Return saved form template settings
+     *
+     * @param int $formId
+     * @param string $templateId
+     *
+     * @return array
+     * @since 2.7.0
+     */
 	public static function getOptions( $formId = null, $templateId = '' ) {
 		$formId   = $formId ?: Frontend::getFormId();
 		$template = $templateId ?: Give()->form_meta->get_meta( $formId, '_give_form_template', true );
@@ -76,11 +76,11 @@ class Template {
     }
 
     /**
-     * @since 2.16.0
-     *
      * @param array $settings
      *
      * @return array $settings
+     * @since 2.16.0
+     * @unreleased Accepts parameter "call by value". Pass multiple to arguments to isset to validate whether deprecated settings exist.
      */
     public static function handleOptionsBackwardCompatibility($settings)
     {
