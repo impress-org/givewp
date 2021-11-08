@@ -1,13 +1,15 @@
 <?php
 
 use Give\Helpers\Form\Template;
+use Give\Receipt\DonationReceipt;
 use Give\Receipt\LineItem;
 use Give\Receipt\Section;
-use Give\Views\Form\Templates\Classic\DonationReceipt;
+use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\IframeContentView;
 
-$receipt = new DonationReceipt();
-$option  = function ( $name ) {
+$template = Give()->templates->getTemplate();
+$receipt  = $template->getReceiptDetails( ( new DonationAccessor() )->getDonationId() );
+$option   = function ( $name ) use ( $template ) {
 	static $options = [];
 
 	if ( empty( $options ) ) {
@@ -18,7 +20,7 @@ $option  = function ( $name ) {
 		return $options[ $name ];
 	}
 
-	return null;
+	return '';
 };
 
 $donorDashboardUrl = get_permalink( give_get_option( 'donor_dashboard_page' ) );
@@ -35,10 +37,10 @@ ob_start();
 					<?= esc_html__( 'Success', 'give' ); ?>!
 				</aside>
 				<h1 class="give-receipt-title">
-					<?= $receipt->replaceTags( $option( 'headline' ) ); ?>
+					<?= $receipt->heading; ?>
 				</h1>
 				<p class="give-form-description">
-					<?= $receipt->replaceTags( $option( 'description' ) ); ?>
+					<?= $receipt->message; ?>
 				</p>
 			</div>
 		</div>
