@@ -6,6 +6,7 @@ use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Receipt\DonationReceipt;
 use InvalidArgumentException;
 
 /**
@@ -54,13 +55,6 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function getOptionsConfig() {
 		return require 'optionConfig.php';
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getFormOptions() {
-		return $this->options;
 	}
 
 	/**
@@ -237,6 +231,25 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function renderIconDefinitions() {
 		echo $this->loadFile( 'views/icon-defs.php' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getReceiptDetails( $donationId ) {
+		$receipt = new DonationReceipt( $donationId );
+
+		$receipt->heading = esc_html( give_do_email_tags( $this->options['donation_receipt']['headline'], [ 'payment_id' => $donationId ] ) );
+		$receipt->message = wp_kses_post( give_do_email_tags( $this->options['donation_receipt']['description'], [ 'payment_id' => $donationId ] ) );
+
+		/**
+		 * Fire the action for receipt object.
+		 *
+		 * @since 2.7.0
+		 */
+		do_action( 'give_new_receipt', $receipt );
+
+		return $receipt;
 	}
 
 	/**
