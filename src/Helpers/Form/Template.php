@@ -45,20 +45,19 @@ class Template {
 		// Backward compatibility for migrated settings.
 		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
 		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
-		self::handleOptionsBackwardCompatibility( $settings );
-
-		return $settings;
+		return self::handleOptionsBackwardCompatibility($settings);
 	}
 
-	/**
-	 * Save settings
-	 *
-	 * @sinxe 2.7.0
-	 * @param $formId
-	 * @param $settings
-	 *
-	 * @return mixed
-	 */
+    /**
+     * Save settings
+     *
+     * @sinxe 2.7.0
+     *
+     * @param $formId
+     * @param $settings
+     *
+     * @return bool
+     */
 	public static function saveOptions( $formId, $settings ) {
 		$templateId = Give()->form_meta->get_meta( $formId, '_give_form_template', true );
 		$template = Give()->templates->getTemplate( $templateId );
@@ -74,24 +73,29 @@ class Template {
 		$legacySettingHandler->save( $formId, $settings );
 
 		return $isUpdated;
-	}
+    }
 
-	/**
-	 * @since 2.16.0
-	 *
-	 * @param array $settings
-	 */
-	public static function handleOptionsBackwardCompatibility( &$settings ) {
-		if (
-			! isset( $settings['visual_appearance'] ) &&
-			isset( $settings['payment_amount'] ) &&
-			isset( $settings['introduction'] )
-		) {
-			$settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
-			$settings['visual_appearance']['primary_color']    = $settings['introduction']['primary_color'];
-		} else if ( isset( $settings['visual_appearance'] ) ) {
-			$settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
-			$settings['introduction']['primary_color']      = $settings['visual_appearance']['primary_color'];
-		}
+    /**
+     * @since 2.16.0
+     *
+     * @param array $settings
+     *
+     * @return array $settings
+     */
+    public static function handleOptionsBackwardCompatibility($settings)
+    {
+        if (
+            ! isset($settings['visual_appearance']) &&
+            isset($settings['payment_amount']) &&
+            isset($settings['introduction'])
+        ) {
+            $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
+            $settings['visual_appearance']['primary_color']    = $settings['introduction']['primary_color'];
+        } elseif (isset($settings['visual_appearance'])) {
+            $settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
+            $settings['introduction']['primary_color']      = $settings['visual_appearance']['primary_color'];
+        }
+
+        return $settings;
 	}
 }
