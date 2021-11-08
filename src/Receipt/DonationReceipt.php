@@ -1,13 +1,9 @@
 <?php
+
 namespace Give\Receipt;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use function give_get_payment_meta as getDonationMetaData;
-use function give_get_gateway_checkout_label as getGatewayLabel;
-use function give_get_donation_donor_email as getDonationDonorEmail;
-use function give_get_donation_address as getDonationDonorAddress;
-use function give_format_amount as formatAmount;
-use function give_currency_filter as filterCurrency;
+use Give_Payment;
 
 class DonationReceipt extends Receipt {
 	/**
@@ -34,17 +30,25 @@ class DonationReceipt extends Receipt {
 	public $donationId;
 
 	/**
+	 * @var Give_Payment
+	 * @unreleased
+	 */
+	protected $donation;
+
+	/**
 	 * Receipt constructor.
 	 *
-	 * @since 2.7.0
 	 * @param $donationId
+	 *
+	 * @since 2.7.0
 	 */
 	public function __construct( $donationId ) {
 		$this->donationId = $donationId;
+		$this->donation   = new Give_Payment( $donationId );
 
 		$this->addDonorSection();
 		$this->addDonationSection();
-		$this->addSection( $this->getAdditionInformationSection() ); // Additional Information Section
+		$this->addAdditionalInformationSection();
 	}
 
 	/**
@@ -53,16 +57,29 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	private function addDonorSection() {
-		$billingAddressLineItem = $this->getDonorBillingAddressLineItem();
-		$hasAddress             = (bool) trim( str_replace( ',', '', strip_tags( $billingAddressLineItem['value'] ) ) ); // Remove formatting from address.
+		$donorSection = $this->addSection( [
+			'id'    => self::DONORSECTIONID,
+			'label' => esc_html__( 'Donor Details', 'give' ),
+		] );
 
-		$section = $this->addSection( $this->getDonorSection() );
-		$section->addLineItem( $this->getDonorNameLineItem() );
-		$section->addLineItem( $this->getDonorEmailLineItem() );
+		$donorSection->addLineItem( [
+			'id'    => 'fullName',
+			'label' => esc_html__( 'Donor Name', 'give' ),
+			'value' => trim( "{$this->donation->first_name} {$this->donation->last_name}" ),
+		] );
 
-		// Add billing address line item only if donor has billing address.
-		if ( $hasAddress ) {
-			$section->addLineItem( $billingAddressLineItem );
+		$donorSection->addLineItem( [
+			'id'    => 'emailAddress',
+			'label' => esc_html__( 'Email Address', 'give' ),
+			'value' => $this->donation->email,
+		] );
+
+		if ( $address = $this->getDonorBillingAddress() ) {
+			$donorSection->addLineItem( [
+				'id'    => 'billingAddress',
+				'label' => esc_html__( 'Billing Address', 'give' ),
+				'value' => $address,
+			] );
 		}
 	}
 
@@ -72,183 +89,85 @@ class DonationReceipt extends Receipt {
 	 * @since 2.7.0
 	 */
 	private function addDonationSection() {
-		$section = $this->addSection( $this->getDonationSection() );
-		$section->addLineItem( $this->getDonationPaymentGatewayLineItem() );
-		$section->addLineItem( $this->getDonationStatusLineItem() );
-		$section->addLineItem( $this->getDonationAmountLineItem() );
-		$section->addLineItem( $this->getDonationTotalAmountLineItem() );
-	}
-
-	/**
-	 * Get donor section.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonorSection() {
-		return [
-			'id'    => self::DONORSECTIONID,
+		$donationSection = $this->addSection( [
+			'id'    => self::DONATIONSECTIONID,
 			'label' => esc_html__( 'Donation Details', 'give' ),
-		];
+		] );
+
+		$donationSection->addLineItem( [
+			'id'    => 'paymentStatus',
+			'label' => esc_html__( 'Payment Status', 'give' ),
+			'value' => give_get_payment_statuses()[ $this->donation->post_status ],
+		] );
+
+		$donationSection->addLineItem( [
+			'id'    => 'paymentMethod',
+			'label' => esc_html__( 'Payment Method', 'give' ),
+			'value' => give_get_gateway_checkout_label( $this->donation->gateway ),
+		] );
+
+		$donationSection->addLineItem( [
+			'id'    => 'amount',
+			'label' => esc_html__( 'Donation Amount', 'give' ),
+			'value' => give_currency_filter(
+				give_format_amount( $this->donation->total, [ 'donation_id' => $this->donation->ID ] ),
+				[
+					'currency_code'   => $this->donation->currency,
+					'form_id'         => $this->donation->form_id,
+					'decode_currency' => true,
+				]
+			),
+		] );
+
+		$donationSection->addLineItem( [
+			'id'    => 'totalAmount',
+			'label' => esc_html__( 'Donation Total', 'give' ),
+			'value' => give_currency_filter(
+				give_format_amount( $this->donation->total, [ 'donation_id' => $this->donation->ID ] ),
+				[
+					'currency_code'   => $this->donation->currency,
+					'form_id'         => $this->donation->form_id,
+					'decode_currency' => true,
+				]
+			),
+		] );
 	}
 
 	/**
-	 * Get donor name line item.
-	 *
-	 * @return array
-	 * @since 2.7.0
+	 *  Add Additional Information Section
 	 */
-	private function getDonorNameLineItem() {
-		$firstName = getDonationMetaData( $this->donationId, '_give_donor_billing_first_name', true );
-		$lastName  = getDonationMetaData( $this->donationId, '_give_donor_billing_last_name', true );
-
-		return [
-			'id'    => 'fullName',
-			'label' => esc_html__( 'Donor Name', 'give' ),
-			'value' => trim( "{$firstName} {$lastName}" ),
-			'icon'  => '<i class="fas fa-user"></i>',
-		];
+	private function addAdditionalInformationSection() {
+		$this->addSection( [
+			'id'    => self::ADDITIONALINFORMATIONSECTIONID,
+			'label' => esc_html__( 'Additional Information', 'give' ),
+		] );
 	}
 
 	/**
-	 * Get donor email line item.
+	 * Get donor billing address
 	 *
-	 * @return array
-	 * @since 2.7.0
+	 * @return string|null
 	 */
-	private function getDonorEmailLineItem() {
-		return [
-			'id'    => 'emailAddress',
-			'label' => esc_html__( 'Email Address', 'give' ),
-			'value' => getDonationDonorEmail( $this->donationId ),
-			'icon'  => '<i class="fas fa-envelope"></i>',
-		];
-	}
-
-	/**
-	 * Get donor address line item.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonorBillingAddressLineItem() {
-		$address = getDonationDonorAddress( $this->donationId );
-		$address = sprintf(
+	private function getDonorBillingAddress() {
+		$address   = give_get_donation_address( $this->donationId );
+		$formatted = sprintf(
 			'%1$s%7$s%2$s%3$s, %4$s%5$s%7$s%6$s',
-			$address['line1'],
-			! empty( $address['line2'] ) ? $address['line2'] . "\r\n" : '',
-			$address['city'],
-			$address['state'],
-			$address['zip'],
-			$address['country'],
+			$address[ 'line1' ],
+			! empty( $address[ 'line2' ] ) ? $address[ 'line2' ] . "\r\n" : '',
+			$address[ 'city' ],
+			$address[ 'state' ],
+			$address[ 'zip' ],
+			$address[ 'country' ],
 			"\r\n"
 		);
 
-		return [
-			'id'    => 'billingAddress',
-			'label' => esc_html__( 'Billing Address', 'give' ),
-			'value' => $address,
-			'icon'  => '<i class="fas fa-globe-americas"></i>',
-		];
-	}
+		$hasAddress = (bool) trim( str_replace( ',', '', strip_tags( $formatted ) ) );
 
-	/**
-	 * Get donor section.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonationSection() {
-		return [
-			'id' => self::DONATIONSECTIONID,
-		];
-	}
+		if ( $hasAddress ) {
+			return $formatted;
+		}
 
-	/**
-	 * Get donation payment gateway line ite.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonationPaymentGatewayLineItem() {
-		return [
-			'id'    => 'paymentMethod',
-			'label' => esc_html__( 'Payment Method', 'give' ),
-			'value' => getGatewayLabel( getDonationMetaData( $this->donationId, '_give_payment_gateway', true ) ),
-		];
-	}
-
-	/**
-	 * Get donation status line item.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonationStatusLineItem() {
-		return [
-			'id'    => 'paymentStatus',
-			'label' => esc_html__( 'Payment Status', 'give' ),
-			'value' => give_get_payment_statuses()[ get_post_status( $this->donationId ) ],
-		];
-	}
-
-	/**
-	 * Get donation amount line item.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonationAmountLineItem() {
-		$value = filterCurrency(
-			formatAmount( getDonationMetaData( $this->donationId, '_give_payment_total', true ), [ 'donation_id' => $this->donationId ] ),
-			[
-				'currency_code'   => getDonationMetaData( $this->donationId, '_give_payment_currency', true ),
-				'decode_currency' => true,
-				'form_id'         => getDonationMetaData( $this->donationId, '_give_payment_form_id', true ),
-			]
-		);
-
-		return [
-			'id'    => 'amount',
-			'label' => esc_html__( 'Donation Amount', 'give' ),
-			'value' => $value,
-		];
-	}
-
-	/**
-	 * Get donation total amount line item.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getDonationTotalAmountLineItem() {
-		$value = filterCurrency(
-			formatAmount( getDonationMetaData( $this->donationId, '_give_payment_total', true ), [ 'donation_id' => $this->donationId ] ),
-			[
-				'currency_code'   => getDonationMetaData( $this->donationId, '_give_payment_currency', true ),
-				'decode_currency' => true,
-				'form_id'         => getDonationMetaData( $this->donationId, '_give_payment_form_id', true ),
-			]
-		);
-
-		return [
-			'id'    => 'totalAmount',
-			'label' => esc_html__( 'Donation Total', 'give' ),
-			'value' => $value,
-		];
-	}
-
-	/**
-	 * Get additional information section.
-	 *
-	 * @return array
-	 * @since 2.7.0
-	 */
-	private function getAdditionInformationSection() {
-		return [
-			'id'    => self::ADDITIONALINFORMATIONSECTIONID,
-			'label' => esc_html__( 'Additional Information', 'give' ),
-		];
+		return null;
 	}
 
 	/**
@@ -263,7 +182,8 @@ class DonationReceipt extends Receipt {
 	/**
 	 * Validate section.
 	 *
-	 * @param array $array
+	 * @param  array  $array
+	 *
 	 * @since 2.7.0
 	 */
 	protected function validateSection( $array ) {
