@@ -51,7 +51,7 @@ window.GiveDonationSummary = {
                 const isRecurring = ( 'yes' === recurringDetails[ 'multi' ][ priceID ][ '_give_recurring' ] );
                 const periodLabel = recurringDetails[ 'multi' ][ priceID ][ 'give_recurring_pretty_text' ]
 
-                $form.find( '.js-give-donation-summary-frequency-help-text' ).toggle( isRecurring )
+                $form.find( '.js-give-donation-summary-frequency-help-text' ).toggle( ! isRecurring )
                 $form.find( '[data-tag="frequency"]' ).toggle( ! isRecurring )
                 $form.find( '[data-tag="recurring"]' ).toggle( isRecurring ).html( periodLabel )
             }
