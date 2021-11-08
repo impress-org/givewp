@@ -52,10 +52,6 @@ class FormData {
 	 */
 	public $cardInfo;
 	/**
-	 * @var string
-	 */
-	public $honeypot;
-	/**
 	 * @var int
 	 */
 	public $formId;
@@ -114,36 +110,35 @@ class FormData {
 	public static function fromRequest( array $request ) {
 		$self = new static();
 
-		$self->price          = $request['price'];
-		$self->date           = $request['date'];
-		$self->purchaseKey    = $request['purchase_key'];
-		$self->currency       = give_get_currency( $request['post_data']['give-form-id'], $request );
-		$self->userInfo       = $request['user_info'];
-		$self->postData       = $request['post_data'];
-		$self->honeypot       = $request['post_data']['give-honeypot'];
-		$self->formTitle      = $request['post_data']['give-form-title'];
-		$self->formId         = (int) $request['post_data']['give-form-id'];
-		$self->priceId        = isset( $request['post_data']['give-price-id'] ) ? $request['post_data']['give-price-id'] : '';
-		$self->formIdPrefix   = $request['post_data']['give-form-id-prefix'];
-		$self->currentUrl     = $request['post_data']['give-current-url'];
-		$self->formMinimum    = $request['post_data']['give-form-minimum'];
-		$self->formMaximum    = $request['post_data']['give-form-maximum'];
-		$self->formHash       = $request['post_data']['give-form-hash'];
-		$self->loggedInOnly   = $request['post_data']['give-logged-in-only'];
-		$self->amount         = $request['post_data']['give-amount'];
+		$self->price = $request['price'];
+		$self->date = $request['date'];
+		$self->purchaseKey = $request['purchase_key'];
+		$self->currency = give_get_currency( $request['post_data']['give-form-id'], $request );
+		$self->userInfo = $request['user_info'];
+		$self->postData = $request['post_data'];
+		$self->formTitle = $request['post_data']['give-form-title'];
+		$self->formId = (int) $request['post_data']['give-form-id'];
+		$self->priceId = isset( $request['post_data']['give-price-id'] ) ? $request['post_data']['give-price-id'] : '';
+		$self->formIdPrefix = $request['post_data']['give-form-id-prefix'];
+		$self->currentUrl = $request['post_data']['give-current-url'];
+		$self->formMinimum = $request['post_data']['give-form-minimum'];
+		$self->formMaximum = $request['post_data']['give-form-maximum'];
+		$self->formHash = $request['post_data']['give-form-hash'];
+		$self->loggedInOnly = $request['post_data']['give-logged-in-only'];
+		$self->amount = $request['post_data']['give-amount'];
 		$self->paymentGateway = $request['post_data']['give-gateway'];
-		$self->gatewayNonce   = $request['gateway_nonce'];
-		$self->donorInfo      = DonorInfo::fromArray( [
-			'wpUserId'  => $request['user_info']['id'],
+		$self->gatewayNonce = $request['gateway_nonce'];
+		$self->donorInfo = DonorInfo::fromArray( [
+			'wpUserId' => $request['user_info']['id'],
 			'firstName' => $request['user_info']['first_name'],
-			'lastName'  => $request['user_info']['last_name'],
-			'email'     => $request['user_info']['email'],
+			'lastName' => $request['user_info']['last_name'],
+			'email' => $request['user_info']['email'],
 			'honorific' => ! empty( $request['user_info']['title'] ) ? $request['user_info']['title'] : '',
-			'address'   => $request['user_info']['address']
+			'address' => $request['user_info']['address']
 		] );
-		$self->cardInfo       = CardInfo::fromArray( [
-			'name'     => $request['card_info']['card_name'],
-			'cvc'      => $request['card_info']['card_cvc'],
+		$self->cardInfo = CardInfo::fromArray( [
+			'name' => $request['card_info']['card_name'],
+			'cvc' => $request['card_info']['card_cvc'],
 			'expMonth' => $request['card_info']['card_exp_month'],
 			'expYear'  => $request['card_info']['card_exp_year'],
 			'number'   => $request['card_info']['card_number'],

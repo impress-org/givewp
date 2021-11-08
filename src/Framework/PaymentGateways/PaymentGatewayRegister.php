@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways;
 
+use Give\Container\Container;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
@@ -80,10 +81,9 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 
 		$this->gateways[ $gatewayId ] = $gatewayClass;
 
-		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
-		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
+		$this->registerGatewayWithServiceContainer( $gatewayClass, $gatewayId );
 
-		$legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter( $gatewayClass );
+		$this->afterGatewayRegister( $gatewayClass );
 	}
 
 	/**
@@ -97,5 +97,36 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator {
 		if ( isset( $this->gateways[ $gatewayId ] ) ) {
 			unset( $this->gateways[ $gatewayId ] );
 		}
+	}
+
+	/**
+	 *
+	 * Register Gateway with Service Container as Singleton
+	 * with option of adding Subscription Module through filter "give_gateway_{$gatewayId}_subscription_module"
+	 *
+	 * @unreleased
+	 *
+	 * @param  string  $gatewayClass
+	 *
+	 * @return void
+	 */
+	private function registerGatewayWithServiceContainer( $gatewayClass, $gatewayId ) {
+		give()->singleton( $gatewayClass, function ( Container $container ) use ( $gatewayClass, $gatewayId ) {
+			$subscriptionModule = apply_filters( "give_gateway_{$gatewayId}_subscription_module", null );
+
+			return new $gatewayClass( $subscriptionModule ? $container->make( $subscriptionModule ) : null );
+		} );
+	}
+
+	/**
+	 * After gateway is registered, connect to legacy payment gateway adapter
+	 *
+	 * @param  string  $gatewayClass
+	 */
+	private function afterGatewayRegister( $gatewayClass ) {
+		/** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
+		$legacyPaymentGatewayRegisterAdapter = give( LegacyPaymentGatewayRegisterAdapter::class );
+
+		$legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter( $gatewayClass );
 	}
 }

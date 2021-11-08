@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\Gateways\TestGateway\Actions\PublishPaymentAndSendToSuccessPage;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
@@ -58,7 +59,7 @@ class TestGateway extends PaymentGateway {
 	/**
 	 * @inheritDoc
 	 */
-	public function handleGatewayRequest( $donationId, $formData ) {
+	public function handleOneTimeRequest( $donationId, FormData $formData ) {
 		/** @var PublishPaymentAndSendToSuccessPage $action */
 		$action = give( PublishPaymentAndSendToSuccessPage::class );
 

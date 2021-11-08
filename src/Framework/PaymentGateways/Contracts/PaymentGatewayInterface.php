@@ -44,7 +44,16 @@ interface PaymentGatewayInterface {
 	public function getPaymentMethodLabel();
 
 	/**
-	 * After creating the initial payment, we can continue with the gateway processing
+	 * Determines if subscriptions are supported
+	 *
+	 * @unreleased
+	 *
+	 * @return bool
+	 */
+	public function supportsSubscriptions();
+
+	/**
+	 * After creating the initial payment, we can continue with the gateway processing for a one-time request
 	 *
 	 * @unreleased
 	 *
@@ -53,5 +62,18 @@ interface PaymentGatewayInterface {
 	 *
 	 * @return void
 	 */
-	public function handleGatewayRequest( $donationId, $formData );
+	public function handleOneTimeRequest( $donationId, FormData $formData );
+
+	/**
+	 * After creating the initial payment, we can continue with the gateway processing for a subscription request
+	 *
+	 * @unreleased
+	 *
+	 * @param  int  $donationId
+	 * @param  int  $subscriptionId
+	 * @param  FormData  $formData
+	 *
+	 * @return void
+	 */
+	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
 }

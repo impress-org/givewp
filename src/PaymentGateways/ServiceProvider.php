@@ -27,7 +27,7 @@ class ServiceProvider implements ServiceProviderInterface {
 	 * @inheritDoc
 	 */
 	public function boot() {
-		Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
-		Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
+		Hooks::addFilter( 'give_register_gateway', RegisterPaymentGateways::class );
+		Hooks::addFilter( 'give_payment_gateways', RegisterPaymentGatewaySettingsList::class );
 	}
 }
