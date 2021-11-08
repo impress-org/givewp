@@ -50,7 +50,7 @@ interface PaymentGatewayInterface {
 	 *
 	 * @return bool
 	 */
-	public function hasSubscriptionModule();
+	public function supportsSubscriptions();
 
 	/**
 	 * After creating the initial payment, we can continue with the gateway processing for a one-time request
