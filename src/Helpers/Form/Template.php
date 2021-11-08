@@ -86,8 +86,7 @@ class Template {
     {
         if (
             ! isset($settings['visual_appearance']) &&
-            isset($settings['payment_amount']) &&
-            isset($settings['introduction'])
+            isset($settings['payment_amount'], $settings['introduction'])
         ) {
             $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
             $settings['visual_appearance']['primary_color']    = $settings['introduction']['primary_color'];
