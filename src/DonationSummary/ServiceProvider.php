@@ -28,7 +28,9 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
             add_action('give_donation_form', function ($formID) {
                 $summary = new SummaryView();
                 $summary->__invoke($formID);
-                $summary->render();
+                if( 'give_donation_form_before_submit' === $summary->getFormTemplateLocation() ) {
+                    $summary->maybeRender();
+                }
             });
         }
 

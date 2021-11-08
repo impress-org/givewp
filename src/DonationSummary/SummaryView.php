@@ -29,13 +29,17 @@ class SummaryView {
         $this->formID = $formID;
         $this->templateOptions = Template::getOptions( $formID );
 
-        if( 'sequoia' === Template::getActiveID( $formID ) ) {
-            if( $this->isDonationSummaryEnabled() ) {
-                /**
-                 * @hook give_donation_form_user_info
-                 * @hook give_donation_form_before_submit
-                 */
-                add_action( $this->getFormTemplateLocation(), [ $this, 'render' ] );
+        /**
+         * @hook give_donation_form_user_info
+         * @hook give_donation_form_before_submit
+         */
+        add_action( $this->getFormTemplateLocation(), [ $this, 'render' ] );
+    }
+
+    public function maybeRender() {
+        if( $this->isDonationSummaryEnabled() ) {
+            if ('sequoia' === Template::getActiveID($this->formID)) {
+                $this->render();
             }
         }
     }

@@ -103,15 +103,17 @@ window.GiveDonationSummary = {
      */
     onGatewayLoadSuccess: function() {
         const inserted = jQuery('#give_purchase_form_wrap .give-donation-summary-section').detach()
-        jQuery('.give-donation-summary-section').remove()
-        inserted.appendTo("#donate-fieldset")
-        GiveDonationSummary.initTotal()
+        if( inserted.length ) {
+            jQuery('.give-donation-summary-section').remove()
+            inserted.appendTo("#donate-fieldset")
+            GiveDonationSummary.initTotal()
 
-        // Overwrite the handler because updating the gateway breaks the original binding.
-        GiveDonationSummary.handleNavigateBack = function( e ) {
-            e.stopPropagation()
-            e.preventDefault()
-            window.formNavigator.back()
+            // Overwrite the handler because updating the gateway breaks the original binding.
+            GiveDonationSummary.handleNavigateBack = function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+                window.formNavigator.back()
+            }
         }
     },
 
