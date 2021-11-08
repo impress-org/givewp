@@ -66,12 +66,14 @@ class DonationReceipt extends Receipt {
 			'id'    => 'fullName',
 			'label' => esc_html__( 'Donor Name', 'give' ),
 			'value' => trim( "{$this->donation->first_name} {$this->donation->last_name}" ),
+			'icon'  => '<i class="fas fa-user"></i>',
 		] );
 
 		$donorSection->addLineItem( [
 			'id'    => 'emailAddress',
 			'label' => esc_html__( 'Email Address', 'give' ),
 			'value' => $this->donation->email,
+			'icon'  => '<i class="fas fa-envelope"></i>',
 		] );
 
 		if ( $address = $this->getDonorBillingAddress() ) {
@@ -79,6 +81,7 @@ class DonationReceipt extends Receipt {
 				'id'    => 'billingAddress',
 				'label' => esc_html__( 'Billing Address', 'give' ),
 				'value' => $address,
+				'icon'  => '<i class="fas fa-globe-americas"></i>',
 			] );
 		}
 	}
