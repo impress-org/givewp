@@ -1,7 +1,7 @@
 .root,
 .root *,
 .root ::before,
-.root ::after, {
+.root ::after {
 	box-sizing: border-box;
 }
 
