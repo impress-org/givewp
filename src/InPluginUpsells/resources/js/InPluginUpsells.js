@@ -14,6 +14,12 @@ export const InPluginUpsells = () => (
 					{__('Give Add-ons Gallery', 'give')}
 				</h1>
                 <img src="" alt={__('GiveWP', 'give')} />
+                <aside
+                    className={styles.sourceNotice}
+                    dangerouslySetInnerHTML={{
+                        __html: __('This page is loaded from <a href="https://givewp.com">GiveWP.com</a>')
+                    }}
+                />
 				<TabList className={styles.tabs}>
 					<Tab>
 						{__('Must Have Add-ons', 'give')}

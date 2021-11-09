@@ -1,8 +1,8 @@
 import {Button} from './Button';
 import {Card} from './Card';
-import styles from './AddonCard.module.css'
+import styles from './MustHaveAddonCard.module.css'
 
-export const AddonCard = ({name, description, icon, image, features, actionLink, actionText}) => (
+export const MustHaveAddonCard = ({name, description, icon, image, features, actionLink, actionText}) => (
 	<Card as="article">
 		<div className={styles.header}>
             <img src={icon} alt="" />

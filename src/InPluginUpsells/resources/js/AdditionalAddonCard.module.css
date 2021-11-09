@@ -1,0 +1,14 @@
+.title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.36;
+    text-align: center;
+}
+
+.description {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    text-align: center;
+}

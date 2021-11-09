@@ -8,14 +8,15 @@ export const PricingPlans = () => (
 	<article>
         <Hero heading={heading} description={description} />
         <ul className={styles.plans}>
-            {plans.map(({name, description, url, icon}) => (
-                <li name={name}>
+            {plans.map((plan) => (
+                <li name={plan.name}>
                     <PricingPlanCard
-                        name={name}
-                        description={description}
+                        name={plan.name}
+                        description={plan.description}
                         actionText={plansButtonCaption}
-                        actionLink={url}
-                        icon={icon}
+                        actionLink={plan.url}
+                        icon={plan.icon}
+                        savingsPercentage={plan.savingsPercentage}
                     />
                 </li>
             ))}

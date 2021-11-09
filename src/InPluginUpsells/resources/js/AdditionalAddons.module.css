@@ -1,0 +1,11 @@
+.addons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    gap: 2.5625rem;
+}
+
+.addons > li,
+.addons > li > * {
+    height: 100%;
+}
