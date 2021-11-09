@@ -1,9 +1,10 @@
-/* global accounting, give_global_vars, jQuery */
+/* global give_global_vars, jQuery */
 import GiveNotice from './notice';
 import GiveForm from './form';
 import GiveDonor from './donor';
 import GiveUtil from './util';
 import GiveShare from './share';
+import accounting from 'accounting';
 
 /**
  *  This API is under development.
