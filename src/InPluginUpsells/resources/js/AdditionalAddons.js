@@ -1,6 +1,8 @@
-import {AdditionalAddonCard} from './AdditionalAddonCard';
-import {Hero} from './Hero';
+import {__} from '@wordpress/i18n';
 
+import {AdditionalAddonCard} from './AdditionalAddonCard';
+import {Button} from './Button';
+import {Hero} from './Hero';
 import styles from './AdditionalAddons.module.css';
 
 const {heading, description, addons, addonButtonCaption} = window.GiveAddons.additionalAddons;
@@ -21,6 +23,17 @@ export const AdditionalAddons = () => (
                 </li>
             ))}
         </ul>
+        <div className={styles.viewAll}>
+            <p
+                className={styles.viewAllText}
+                dangerouslySetInnerHTML={{
+                    __html: __('Didn’t find what you were looking for?<br> View the entire catalog!', 'give'),
+                }}
+            />
+            <Button as="a" href="https://givewp.com/addons" className={styles.viewAllButton}>
+                {__('View All Add-ons', 'give')}
+            </Button>
+        </div>
 	</article>
 );
 

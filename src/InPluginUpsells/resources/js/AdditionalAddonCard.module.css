@@ -1,3 +1,15 @@
+.card {
+    display: grid;
+    padding-top: 2.25rem;
+    padding-bottom: 2.25rem;
+}
+
+.image {
+    justify-self: center;
+    width: 6.8125rem;
+    height: 6.8125rem;
+}
+
 .title {
     margin: 0;
     font-size: 1.125rem;
@@ -6,9 +18,22 @@
     text-align: center;
 }
 
+.image + .title {
+    margin-top: 0.7rem;
+}
+
 .description {
     margin: 0;
     font-size: 0.9375rem;
     line-height: 1.6;
     text-align: center;
+}
+
+.title + .description {
+    margin-top: 0.25rem;
+}
+
+.button {
+    margin-top: 3.3125rem;
+    align-self: end;
 }

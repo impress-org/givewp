@@ -4,13 +4,17 @@
 	display: block;
 	padding: 0.888em;
 	border-radius: 9999px;
-	background-color: #66bb6a;
+    border-width: 0.125rem;
+    border-style: solid;
+    border-color: #66bb6a;
+    background-color: #66bb6a;
 	color: white;
 	font-weight: 700;
 	font-size: 1.125rem;
 	text-align: center;
 	text-decoration: none;
 	line-height: 1;
+    letter-spacing: -0.0278em;
 }
 
 .button:hover,
