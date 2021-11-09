@@ -118,19 +118,22 @@ class Form {
 	 * Load donation form view.
 	 *
 	 * @since 2.7.0
+     * @unreleased Co-locate $formTemplate with related conditional and usage.
 	 * @global WP_Post $post
 	 */
 	public function loadDonationFormView() {
-		/* @var Template $formTemplate */
-		$formTemplate = Give()->templates->getTemplate();
 
 		// Handle failed donation error.
 		if ( FormUtils::canShowFailedDonationError() ) {
 			add_action( 'give_pre_form', [ $this, 'setFailedTransactionError' ] );
 		}
 
-			// Handle donation form.
+        // Handle donation form.
 		if ( FormUtils::isViewingForm() ) {
+
+            /* @var Template $formTemplate */
+            $formTemplate = Give()->templates->getTemplate();
+
 			// Set header.
 			nocache_headers();
 			header( 'HTTP/1.1 200 OK' );

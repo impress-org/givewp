@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## Fixed
+
+- Auto set new settings if old settings exist ("Primary Color", "Decimal Enabled"). (#5973)
+
 ## 2.16.0 - 2021-10-26
 
 ## 2.16.0-rc.1 - 2021-10-25
