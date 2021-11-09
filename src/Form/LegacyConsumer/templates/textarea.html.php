@@ -1,6 +1,5 @@
 <?php /** @var Give\Framework\FieldsAPI\Textarea $field */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
-<?php /** @var string $visibilityConditionsAttribute */ ?>
 
 <textarea
 	name="<?php echo $field->getName(); ?>"
@@ -8,5 +7,6 @@
 	<?php echo $field->isRequired() ? 'required' : ''; ?>
 	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
 	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
-	<?php echo $visibilityConditionsAttribute ?>
-></textarea>
+>
+<?php echo $field->getDefaultValue(); /* Whitespace is important. Do not indent. */ ?>
+</textarea>

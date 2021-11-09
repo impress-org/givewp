@@ -96,6 +96,7 @@ class FileUploadValidator {
 
 	/**
 	 * @since 2.14.0
+	 * @since 2.16.0 File size unit update to bytes from mega bytes in logic to get precise result.
 	 */
 	private function validateUploadSize(){
 		$allowedFileSize = $this->field->getMaxSize();
@@ -103,7 +104,7 @@ class FileUploadValidator {
 		if ( $allowedFileSize < $this->uploadSize ) {
 			give_set_error( 'field-api-file-upload-size-error', sprintf(
 				esc_html__( 'File size exceed upload limit. Maximum file limit is %s', 'give' ),
-				size_format( $allowedFileSize * 1024 )
+				size_format( $allowedFileSize )
 			) );
 		}
 	}

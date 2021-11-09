@@ -1,34 +1,46 @@
 /*
  * Fields API / Form Consumer Styles
  */
+@import "./src/Form/LegacyConsumer/resources/css/common";
+
 .give-section.choose-amount > .form-row {
 	padding: 20px 30px 0;
 }
+
 .give-section.payment > .form-row {
 	padding: 0 20px;
 	margin-top: 15px;
 	display: block;
 }
+
 #give-payment-mode-wrap > .form-row:not(:first-of-type) {
 	margin-top: 20px;
 }
+
 div[data-field-type='checkbox'] label {
 	padding: 0 0 0 40px;
 }
 
-.give-label{
+.give-label {
 	font-size: 14px;
 	cursor: pointer;
 	color: #828382 !important;
 }
 
+div[data-field-type='checkbox'] .give-label,
+div[data-field-type='radio'] .give-label {
+	margin: 0 0 5px;
+	position: relative;
+	line-height: 1.7;
+}
+
 /* Align checkbox with its label */
-[data-field-type="html"] + [data-field-type="checkbox"]{
+[data-field-type="html"] + [data-field-type="checkbox"] {
 	margin-top: -15px !important;
 }
 
 /* Align next element after checkboxes end */
-[data-field-type="checkbox"] + *:not([data-field-type="checkbox"]){
+[data-field-type="checkbox"] + *:not([data-field-type="checkbox"]) {
 	margin-top: 15px !important;
 }
 
@@ -75,9 +87,6 @@ div[data-field-type='checkbox'] label {
 
 /* Fields API: Styles for custom radio fields. */
 [data-field-type="radio"] {
-	.give-label{
-		padding: 5px 0 5px;
-	}
 	label {
 		padding: 0 0 0 32px;
 		margin-left: 0;

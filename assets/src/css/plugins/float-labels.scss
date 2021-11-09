@@ -57,7 +57,7 @@ $float-labels-defaults: (
 		top: fl(border-width);
 		left: fl(border-width) + fl(base-padding)*1.5;
 		background-color: transparent;
-		padding: fl(base-padding)*2 fl(base-padding)/2;
+		padding: fl(base-padding)*2 fl(base-padding)*0.5;
 	}
 	label.#{fl(prefix)}label:before {
 		content: '';
@@ -70,10 +70,10 @@ $float-labels-defaults: (
 		background-color: fl(color-background);
 		z-index: -1;
 	}
-	$label-top: round((fl(base-padding) + fl(font-size-small))/2);
+	$label-top: round((fl(base-padding) + fl(font-size-small))*0.5);
 	.#{fl(prefix)}is-active label.#{fl(prefix)}label {
 		top: - $label-top;
-		padding: fl(base-padding)/2;
+		padding: fl(base-padding)*0.5;
 	}
 	.#{fl(prefix)}is-active label.#{fl(prefix)}label:before {
 		top: $label-top;
@@ -97,7 +97,7 @@ $float-labels-defaults: (
 	label.#{fl(prefix)}label {
 		top: fl(border-width);
 		left: fl(border-width) + fl(base-padding)*1.5;
-		padding: fl(base-padding) fl(base-padding)/2 fl(base-padding)/2;
+		padding: fl(base-padding) fl(base-padding)*0.5 fl(base-padding)*0.5;
 	}
 	.#{fl(prefix)}is-required:before {
 		padding-top: fl(base-padding)*2;
@@ -193,7 +193,7 @@ $float-labels-defaults: (
 	display: block;
 	position: absolute;
 	top: fl(border-width);
-	right: fl(base-height)/2 + fl(base-padding)/2;
+	right: fl(base-height)*0.5 + fl(base-padding)*0.5;
 	font-size: fl(font-size);
 	line-height: 1.75;
 	color: fl(color-required);
@@ -221,7 +221,7 @@ $float-labels-defaults: (
 	top: fl(border-width);
 	right: 6px;
 	height: calc(100% - #{fl(border-width)*2});
-	width: fl(base-height)/2;
+	width: fl(base-height)*0.5;
 	background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 16'><path fill='#{fl(color-placeholder)}' d='M 4 0 L 0 6.5 L 8 6.5 L 4 0 z M 0 9.5 L 4 16 L 4 16 L 8 9.5 z'/></svg>") no-repeat;
 	background-position: 100% 50%;
 	background-size: 7px 14px;

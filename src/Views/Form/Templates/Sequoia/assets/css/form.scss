@@ -34,7 +34,7 @@ html {
 
 body {
 	margin: 10px;
-	font-family: 'Montserrat', sans-serif;
+	font-family: system-ui, sans-serif;
 	color: #555;
 }
 
@@ -99,7 +99,6 @@ p {
 
 .give-btn {
 	background-color: #28c77b;
-	font-family: 'Montserrat', sans-serif;
 	color: #fff;
 	font-weight: 500;
 	text-align: center;
@@ -485,7 +484,6 @@ p {
 		}
 
 		.give-amount-top {
-			font-family: 'Montserrat', sans-serif;
 			height: auto !important;
 			width: 164px !important;
 			text-align: center;
@@ -1277,7 +1275,6 @@ form.give-form .form-row select.multiselect {
 		background: #383838;
 		color: #fff;
 		font-size: 16px;
-		font-family: 'Montserrat', sans-serif;
 		border-radius: 4px;
 		line-height: 1.2;
 		text-align: center;

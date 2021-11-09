@@ -8,7 +8,7 @@ const { __ } = wp.i18n;
 */
 import GiveHelpLink from '../help-link';
 import PlaceholderAnimation from '../placeholder-animation';
-import GiveLogo from '../logo';
+import GiveIcon from '@givewp/components/GiveIcon';
 
 const GiveBlankSlate = ( props ) => {
 	const {
@@ -35,7 +35,7 @@ const GiveBlankSlate = ( props ) => {
 
 	return (
 		<div className="give-blank-slate">
-			{ ! noIcon && <GiveLogo size="80" className="give-blank-slate__image" /> }
+			{ ! noIcon && <GiveIcon size="80" className="give-blank-slate__image" /> }
 			{ !! isLoader ? blockLoading : blockLoaded }
 		</div>
 	);

@@ -8,7 +8,7 @@ const { registerBlockType } = wp.blocks;
  * Internal dependencies
  */
 import './style.scss';
-import GiveLogo from '../components/logo';
+import GiveIcon from '@givewp/components/GiveIcon';
 import blockAttributes from './data/attributes';
 import GiveForm from './edit/block';
 
@@ -21,7 +21,7 @@ export default registerBlockType( 'give/donation-form', {
 	title: __( 'Donation Form' ),
 	description: __( 'The GiveWP Donation Form block inserts an existing donation form into the page. Each donation form\'s presentation can be customized below.' ),
 	category: 'give',
-	icon: <GiveLogo color="grey" />,
+	icon: <GiveIcon color="grey" />,
 	keywords: [
 		__( 'donation' ),
 	],

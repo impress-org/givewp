@@ -20,6 +20,7 @@ class FieldView {
 	 * @since 2.10.2
 	 * @since 2.14.0 add $formId as a param
 	 * @since 2.14.0 Add filter to allow rendering logic for custom fields
+	 * @since 2.16.0 Add visibility conditions to field container
 	 *
 	 * @param Node $field
 	 * @param int $formId
@@ -29,7 +30,6 @@ class FieldView {
 	public static function render( Node $field, $formId ) {
 		$type                          = $field->getType();
 		$fieldIdAttribute              = give( UniqueIdAttributeGenerator::class )->getId( $formId, $field->getName() );
-		$visibilityConditionsAttribute = self::getVisibilityConditionAttribute( $field );
 
 		if ( $type === Types::HIDDEN ) {
 			include static::getTemplatePath( 'hidden' );
@@ -48,7 +48,7 @@ class FieldView {
 			$className,
 			$field->getType(),
 			$field->getName(),
-			$field->getType() === Types::HTML ? $visibilityConditionsAttribute : ''
+			self::getVisibilityConditionAttribute( $field )
 		);
 
 		// By default, new fields will use templates/label.html.php and templates/base.html.php

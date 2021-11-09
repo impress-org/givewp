@@ -1,9 +1,8 @@
 <?php /** @var Give\Framework\FieldsAPI\Checkbox $field */ ?>
 <?php /** @var string $fieldIdAttribute */ ?>
-<?php /** @var string $visibilityConditionsAttribute */ ?>
 
 <?php if ( $field->hasOptions() ): ?>
-	<fieldset <?php echo $visibilityConditionsAttribute ?>>
+	<fieldset>
 		<legend class="screen-reader-text">
 			<?php include plugin_dir_path( __FILE__ ) . 'label-content.html.php'; ?>
 		</legend>
