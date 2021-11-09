@@ -59,10 +59,11 @@ class TestGateway extends PaymentGateway {
 	/**
 	 * @inheritDoc
 	 */
-	public function createPayment( GatewayPaymentData $gatewayData ) {
-		/** @var PublishPaymentAndSendToSuccessPage $action */
-		$action = give( PublishPaymentAndSendToSuccessPage::class );
+	public function createPayment(GatewayPaymentData $paymentData)
+    {
+        /** @var PublishPaymentAndSendToSuccessPage $action */
+        $action = give(PublishPaymentAndSendToSuccessPage::class);
 
-		return $action( $gatewayData->paymentId );
-	}
+        return $action($paymentData->paymentId);
+    }
 }
