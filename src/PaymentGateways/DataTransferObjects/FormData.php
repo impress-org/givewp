@@ -164,7 +164,6 @@ class FormData
     public function toPaymentData()
     {
         return GiveInsertPaymentData::fromArray([
-            'userInfo' => '',
             'price' => $this->price,
             'formTitle' => $this->formTitle,
             'formId' => $this->formId,
@@ -173,7 +172,7 @@ class FormData
             'donorEmail' => $this->donorInfo->email,
             'purchase_key' => $this->purchaseKey,
             'currency' => $this->currency,
-            'user_info' => $this->userInfo,
+            'userInfo' => $this->userInfo,
         ]);
     }
 }
