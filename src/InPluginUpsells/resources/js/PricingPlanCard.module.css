@@ -1,3 +1,11 @@
+.card {
+    max-width: 51rem;
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    grid-auto-flow: column;
+    column-gap: 5.25rem;
+}
+
 .icon {
     width: 42px;
     height: 42px;
@@ -14,9 +22,63 @@
     line-height: 1.5;
 }
 
+.description strong {
+    color: #69b86b;
+    font-weight: 700;
+}
+
+.actionAndSavings {
+    display: flex;
+    column-gap: 1rem;
+}
+
+.button {
+    flex-basis: 16rem;
+}
+
 .savings {
     color: #fdb244;
     font-size: 0.875rem;
     font-weight: 700;
     line-height: 1.7;
+}
+
+.includes {
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.36;
+}
+
+.includesLabel {
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: inherit;
+}
+
+.includesList {
+    display: grid;
+    gap: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+.includesMoreText {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    text-decoration: underline;
+}
+
+.include {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.include em {
+    color: #69b86b;
+}
+
+.includeIcon {
+    width: 2.5rem;
+    height: 2.5rem;
 }

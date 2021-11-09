@@ -17,6 +17,8 @@ export const PricingPlans = () => (
                         actionLink={plan.url}
                         icon={plan.icon}
                         savingsPercentage={plan.savingsPercentage}
+                        includes={plan.includes}
+                        includesHasMore={plan.includesHasMore}
                     />
                 </li>
             ))}
