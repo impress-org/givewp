@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Actions;
 
 use Give\Log\Log;
-use Give\PaymentGateways\DataTransferObjects\FormData;
+use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 
 /**
  * Class CreatePaymentAction
@@ -13,18 +13,18 @@ class CreatePaymentAction {
 	/**
 	 * @unreleased
 	 *
-	 * @param  FormData  $formData
+	 * @param  GiveInsertPaymentData  $giveInsertPaymentData
 	 *
 	 * @return bool|int
 	 */
-	public function __invoke( FormData $formData ) {
+	public function __invoke( GiveInsertPaymentData $giveInsertPaymentData ) {
 		// Record the pending payment
-		$payment = give_insert_payment( $formData->toPaymentArray() );
+		$payment = give_insert_payment( $giveInsertPaymentData->toArray() );
 
 		// If errors are present, send the user back to the donation page, so they can be corrected
-		if (! $payment ) {
-			Log::error( esc_html__( 'Payment Error', 'give' ), $formData->toPaymentArray() );
-			give_send_back_to_checkout( '?payment-mode=' . $formData->paymentGateway );
+		if ( ! $payment ) {
+			Log::error( esc_html__( 'Payment Error', 'give' ), $giveInsertPaymentData->toArray() );
+			give_send_back_to_checkout( '?payment-mode=' . $giveInsertPaymentData->paymentGateway );
 		}
 
 		return $payment;

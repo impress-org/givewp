@@ -3,6 +3,8 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
 /**
  * @unreleased
@@ -36,8 +38,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 	 *
 	 * @inheritDoc
 	 */
-	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData ) {
-		return $this->subscriptionModule->handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
+	public function createSubscription( GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData ) {
+		$this->subscriptionModule->createSubscription( $paymentData, $subscriptionData );
 	}
 
 }

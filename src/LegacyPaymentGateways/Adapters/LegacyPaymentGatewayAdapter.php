@@ -6,6 +6,9 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
@@ -42,16 +45,37 @@ class LegacyPaymentGatewayAdapter {
 
 		$this->validateGatewayNonce( $formData->gatewayNonce );
 
-		$donationId = $this->createPayment( $formData );
+		$donationId = $this->createPayment( $formData->toPaymentData() );
+
+		$gatewayPaymentData = GatewayPaymentData::fromArray( [
+			'amount' => $formData->amount,
+			'currency' => $formData->currency,
+			'date' => $formData->date,
+			'price' => $formData->price,
+			'priceId' => $formData->priceId,
+			'gatewayId' => $formData->paymentGateway,
+			'paymentId' => $donationId,
+			'purchaseKey' => $formData->purchaseKey,
+			'donorInfo' => $formData->donorInfo,
+			'cardInfo' => $formData->cardInfo,
+			'billingAddress' => $formData->billingAddress,
+		] );
 
 		if ( function_exists( 'Give_Recurring' ) && Give_Recurring()->is_recurring( $formData->formId ) ) {
 			$subscriptionData = SubscriptionData::fromRequest( $request );
 			$subscriptionId = $this->createSubscription( $donationId, $formData, $subscriptionData );
 
-			$registeredGateway->handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
+			$gatewaySubscriptionData = GatewaySubscriptionData::fromArray( [
+				'period' => $subscriptionData->period,
+				'times' => $subscriptionData->times,
+				'frequency' => $subscriptionData->frequency,
+				'subscriptionId' => $subscriptionId,
+			] );
+
+			$registeredGateway->createSubscription( $gatewayPaymentData, $gatewaySubscriptionData );
 		}
 
-		$registeredGateway->handleOneTimeRequest( $donationId, $formData );
+		$registeredGateway->createPayment( $gatewayPaymentData );
 	}
 
 	/**
@@ -59,15 +83,15 @@ class LegacyPaymentGatewayAdapter {
 	 *
 	 * @unreleased
 	 *
-	 * @param  FormData  $formData
+	 * @param  GiveInsertPaymentData  $giveInsertPaymentData
 	 *
 	 * @return int
 	 */
-	private function createPayment( FormData $formData ) {
+	private function createPayment( GiveInsertPaymentData $giveInsertPaymentData ) {
 		/** @var CreatePaymentAction $createPaymentAction */
 		$createPaymentAction = give( CreatePaymentAction::class );
 
-		return $createPaymentAction( $formData );
+		return $createPaymentAction( $giveInsertPaymentData );
 	}
 
 	/**

@@ -1,7 +1,8 @@
 <?php
 namespace Give\Framework\PaymentGateways\Contracts;
 
-use Give\PaymentGateways\DataTransferObjects\FormData;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
 /**
  * @unreleased
@@ -53,27 +54,25 @@ interface PaymentGatewayInterface {
 	public function supportsSubscriptions();
 
 	/**
-	 * After creating the initial payment, we can continue with the gateway processing for a one-time request
+	 * Create a payment with gateway
 	 *
 	 * @unreleased
 	 *
-	 * @param  int  $donationId
-	 * @param  FormData  $formData
+	 * @param  GatewayPaymentData  $paymentData
 	 *
 	 * @return void
 	 */
-	public function handleOneTimeRequest( $donationId, FormData $formData );
+	public function createPayment( GatewayPaymentData $paymentData );
 
 	/**
-	 * After creating the initial payment, we can continue with the gateway processing for a subscription request
+	 * Create a subscription with gateway
 	 *
 	 * @unreleased
 	 *
-	 * @param  int  $donationId
-	 * @param  int  $subscriptionId
-	 * @param  FormData  $formData
+	 * @param  GatewayPaymentData  $paymentData
+	 * @param  GatewaySubscriptionData  $subscriptionData
 	 *
 	 * @return void
 	 */
-	public function handleSubscriptionRequest( $donationId, $subscriptionId, $formData );
+	public function createSubscription( GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData );
 }

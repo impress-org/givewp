@@ -144,11 +144,11 @@ class FormData {
 			'number'   => $request['card_info']['card_number'],
 		] );
 		$self->billingAddress = Address::fromArray( [
-			'line1'      => $request['card_info']['card_address'],
-			'line2'      => $request['card_info']['card_address_2'],
-			'city'       => $request['card_info']['card_city'],
-			'state'      => $request['card_info']['card_state'],
-			'country'    => $request['card_info']['card_country'],
+			'line1' => $request['card_info']['card_address'],
+			'line2' => $request['card_info']['card_address_2'],
+			'city' => $request['card_info']['card_city'],
+			'state' => $request['card_info']['card_state'],
+			'country' => $request['card_info']['card_country'],
 			'postalCode' => $request['card_info']['card_zip'],
 		] );
 
@@ -156,22 +156,21 @@ class FormData {
 	}
 
 	/**
-	 * This is used to expose data for use with give_insert_payment
 	 *
-	 * @return array
+	 * @return GiveInsertPaymentData
 	 */
-	public function toPaymentArray() {
-		return [
-			'price'           => $this->price,
-			'give_form_title' => $this->formTitle,
-			'give_form_id'    => $this->formId,
-			'give_price_id'   => $this->priceId,
-			'date'            => $this->date,
-			'user_email'      => $this->donorInfo->email,
-			'purchase_key'    => $this->purchaseKey,
-			'currency'        => $this->currency,
-			'user_info'       => $this->userInfo,
-			'status'          => 'pending',
-		];
+	public function toPaymentData() {
+		return GiveInsertPaymentData::fromArray( [
+			'userInfo' => '',
+			'price' => $this->price,
+			'formTitle' => $this->formTitle,
+			'formId' => $this->formId,
+			'priceId' => $this->priceId,
+			'date' => $this->date,
+			'donorEmail' => $this->donorInfo->email,
+			'purchase_key' => $this->purchaseKey,
+			'currency' => $this->currency,
+			'user_info' => $this->userInfo,
+		] );
 	}
 }

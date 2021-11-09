@@ -6,6 +6,7 @@ use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 use Give\Subscriptions\DataTransferObjects\SubscriptionArgs;
 use Give\Subscriptions\Models\Subscriber;
+use Give\ValueObjects\DonorInfo;
 use Give_Donor;
 
 /**
@@ -18,18 +19,18 @@ class CreateSubscriptionAction {
 	 *
 	 * @unreleased
 	 *
-	 * @param int $donationId
+	 * @param  int  $donationId
 	 * @param  FormData  $formData
 	 * @param  SubscriptionData  $subscriptionData
 	 *
 	 * @return int
 	 */
 	public function __invoke( $donationId, FormData $formData, SubscriptionData $subscriptionData ) {
-		$donor = $this->getOrCreateDonor( $formData );
+		$donor = $this->getOrCreateDonor( $formData->donorInfo );
 
 		$subscriptionArgs = $this->getSubscriptionData( $formData, $subscriptionData );
 
-		return $this->createSubscription($donationId, $donor->id, $subscriptionArgs);
+		return $this->createSubscription( $donationId, $donor->id, $subscriptionArgs );
 	}
 
 	/**
@@ -39,7 +40,7 @@ class CreateSubscriptionAction {
 	 * @return SubscriptionArgs
 	 */
 	private function getSubscriptionData( FormData $formData, SubscriptionData $subscriptionData ) {
-		$subscriptionArgs = SubscriptionArgs::fromRequest([
+		$subscriptionArgs = SubscriptionArgs::fromRequest( [
 			'period' => $subscriptionData->period,
 			'times' => ! empty( $subscriptionData->times ) ? (int) $subscriptionData->times : 0,
 			'frequency' => ! empty( $subscriptionData->frequency ) ? (int) $subscriptionData->frequency : 1,
@@ -48,7 +49,7 @@ class CreateSubscriptionAction {
 			'priceId' => $formData->priceId,
 			'price' => $formData->price,
 			'status' => 'pending'
-		]);
+		] );
 
 		apply_filters( 'give_recurring_subscription_pre_gateway_args', $subscriptionArgs->toArray() );
 
@@ -60,26 +61,26 @@ class CreateSubscriptionAction {
 	 *
 	 * @unreleased
 	 *
-	 * @param  FormData  $formData
+	 * @param  DonorInfo  $donorInfo
 	 *
 	 * @return Give_Donor
 	 */
-	private function getOrCreateDonor( FormData $formData ) {
-		$subscriber = empty( $formData->donorInfo->wpUserId ) ?
-			new Give_Donor( $formData->donorInfo->email ) :
-			new Give_Donor( $formData->donorInfo->wpUserId, true );
+	private function getOrCreateDonor( DonorInfo $donorInfo ) {
+		$subscriber = empty( $donorInfo->wpUserId ) ?
+			new Give_Donor( $donorInfo->email ) :
+			new Give_Donor( $donorInfo->wpUserId, true );
 
 		if ( empty( $subscriber->id ) ) {
 			$name = sprintf(
 				'%s %s',
-				( ! empty( $formData->donorInfo->firstName ) ? trim( $formData->donorInfo->firstName ) : '' ),
-				( ! empty( $formData->donorInfo->lastName ) ? trim( $formData->donorInfo->lastName ) : '' )
+				( ! empty( $donorInfo->firstName ) ? trim( $donorInfo->firstName ) : '' ),
+				( ! empty( $donorInfo->lastName ) ? trim( $donorInfo->lastName ) : '' )
 			);
 
 			$subscriber_data = [
 				'name' => trim( $name ),
-				'email' => $formData->donorInfo->email,
-				'user_id' => $formData->donorInfo->wpUserId,
+				'email' => $donorInfo->email,
+				'user_id' => $donorInfo->wpUserId,
 			];
 
 			$subscriber->create( $subscriber_data );
