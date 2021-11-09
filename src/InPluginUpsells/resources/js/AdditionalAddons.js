@@ -5,7 +5,7 @@ import {Button} from './Button';
 import {Hero} from './Hero';
 import styles from './AdditionalAddons.module.css';
 
-const {heading, description, addons, addonButtonCaption} = window.GiveAddons.additionalAddons;
+const {heading, description, addons, addonButtonCaption, allAddonsUrl} = window.GiveAddons.additionalAddons;
 
 export const AdditionalAddons = () => (
 	<article>
@@ -30,7 +30,7 @@ export const AdditionalAddons = () => (
                     __html: __('Didn’t find what you were looking for?<br> View the entire catalog!', 'give'),
                 }}
             />
-            <Button as="a" href="https://givewp.com/addons" className={styles.viewAllButton}>
+            <Button as="a" href={allAddonsUrl} className={styles.viewAllButton}>
                 {__('View All Add-ons', 'give')}
             </Button>
         </div>
