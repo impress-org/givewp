@@ -92,11 +92,29 @@
 
     @media screen and (max-width: 500px) {
         th, td {
-            pading: 0;
             display:block;
             height: initial;
             vertical-align: top;
+            text-align: center !important;
         }
+
+        td:first-child {
+            padding: 10px 0 0;
+        }
+        td:last-child {
+            padding: 0 0 10px;
+        }
+
+        .give-donation-summary-help-text {
+            margin-top: 5px;
+        }
+
+        .give-donation-summary-help-text,
+        .give-donation-summary-edit-donation {
+            margin: auto;
+            display: block;
+        }
+
         .give-donation-summary-help-text img {
             display: none;
         }
