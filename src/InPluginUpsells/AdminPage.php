@@ -42,7 +42,10 @@ class AdminPage {
 		wp_localize_script(
 			'give-in-plugin-upsells',
 			'GiveAddons',
-			( new AddonsRepository() )->getAddons()
+			array_merge(
+				( new AddonsRepository() )->getAddons(),
+				['logoUrl' => GIVE_PLUGIN_URL . 'assets/dist/images/givewp-logo.png']
+			)
 		);
 	}
 

@@ -10,10 +10,9 @@ export const InPluginUpsells = () => (
     <Tabs as="article" className={styles.root}>
         <div className={styles.header}>
             <div className={styles.container}>
-                <h1 className="screen-reader-text">
-                    {__('Give Add-ons Gallery', 'give')}
+                <h1>
+                    <img className={styles.logo} src={window.GiveAddons.logoUrl} alt={__('GiveWP', 'give')} />
                 </h1>
-                <img src="" alt={__('GiveWP', 'give')} />
                 <aside
                     className={styles.sourceNotice}
                     dangerouslySetInnerHTML={{
