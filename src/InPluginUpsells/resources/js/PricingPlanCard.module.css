@@ -34,6 +34,7 @@
 .actionAndSavings {
     display: flex;
     column-gap: 1rem;
+    margin-top: 1.75rem;
 }
 
 .button {
@@ -91,6 +92,7 @@
     display: flex;
     gap: 2rem;
     align-items: center;
+    margin-bottom: 1.75rem;
 }
 
 .mostPopularFlag {
