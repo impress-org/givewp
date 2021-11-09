@@ -1,9 +1,15 @@
 .card {
     max-width: 51rem;
     display: grid;
-    grid-template-columns: 5fr 4fr;
-    grid-auto-flow: column;
-    column-gap: 5.25rem;
+    row-gap: 1.25rem;
+}
+
+@media screen and (min-width: 48rem) {
+    .card {
+        column-gap: 5.25rem;
+        grid-auto-flow: column;
+        grid-template-columns: 5fr 4fr;
+    }
 }
 
 .icon {
