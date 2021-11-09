@@ -25,19 +25,30 @@
 }
 
 .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
 	max-width: 64.875rem;
 	width: 100%;
 	margin: 0 auto;
 }
 
+.logo {
+    height: 3.75rem;
+}
+
 .sourceNotice {
     position: absolute;
     top: 0.75rem;
-    right: 15.625rem;
     color: #556e79;
     font-weight: 600;
     font-size: 0.8125rem;
     line-height: 1.36;
+}
+
+@media screen and (min-width: 48rem) {
+    .sourceNotice {
+        right: 15.625rem;
+    }
 }
 
 .sourceNotice a {
@@ -65,7 +76,13 @@
 	background-color: transparent;
 	color: inherit;
 	font-weight: 600;
-	font-size: 1rem;
+	font-size: 0.8rem;
+}
+
+@media screen and (min-width: 48rem) {
+    .tabs [data-reach-tab] {
+        font-size: 1rem;
+    }
 }
 
 .tabs [data-reach-tab]::after {

@@ -1,8 +1,20 @@
 .addons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     gap: 2.5625rem;
+}
+
+@media screen and (min-width: 48rem) {
+    .addons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width: 64rem) {
+    .addons {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .addons > li,
