@@ -18,7 +18,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     protected $gateways = [];
 
     /**
-     * * Get Gateways
+     * Get Gateways
      *
      * @unreleased
      *
@@ -115,6 +115,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      * @unreleased
      *
      * @param  string  $gatewayClass
+     * @param  string  $gatewayId
      *
      * @return void
      */
