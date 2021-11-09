@@ -5,14 +5,19 @@ import {transformEmphasis, transformStrong} from './utils';
 
 import styles from './PricingPlanCard.module.css'
 
-export const PricingPlanCard = ({name, description, actionText, actionLink, icon, includes, includesHasMore, savingsPercentage}) => {
+export const PricingPlanCard = ({name, description, actionText, actionLink, icon, includes, includesHasMore, savingsPercentage, isMostPopular}) => {
     const includesLabelId = useMemo(() => `${window.lodash.kebabCase(name)}-includes-label`, [name]);
 
     return (
         <Card as="article" className={styles.card}>
             <div>
-                <img className={styles.icon} src={icon} alt="" />
-                <h3 className={styles.title}>{name}</h3>
+                <div className={styles.nameAndFlag}>
+                    <h3 className={styles.title}>
+                        <img className={styles.icon} src={icon} alt="" />
+                        {name}
+                    </h3>
+                    {isMostPopular && <div className={styles.mostPopularFlag}>Most Popular</div>}
+                </div>
                 <p className={styles.description} dangerouslySetInnerHTML={{__html: transformStrong(description)}} />
                 <div className={styles.actionAndSavings}>
                     <Button as="a" href={actionLink} className={styles.button}>{actionText}</Button>

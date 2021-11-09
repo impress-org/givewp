@@ -12,6 +12,10 @@
 }
 
 .title {
+    display: inline-flex;
+    gap: 0.6em;
+    align-items: center;
+    margin: 0;
     font-weight: 700;
     font-size: 1.4375rem;
     line-height: 1.36;
@@ -81,4 +85,29 @@
 .includeIcon {
     width: 2.5rem;
     height: 2.5rem;
+}
+
+.nameAndFlag {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.mostPopularFlag {
+    position: relative;
+    flex-grow: 0;
+    display: flex-inline;
+    padding: 0.5em 1em 0.5em 2em;
+    background-image: linear-gradient(225.34deg, #ff7f7f 0%, #ddcd13 101.17%);
+    mask-image: url("data:image/svg+xml;utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 16'><path d='m0 8 8 8h88V0H8Z' /></svg>");
+    mask-position: top left;
+    mask-repeat: no-repeat;
+    mask-size: auto 100%;
+    box-shadow: 0 0 0.333em rgba(0, 0, 0, 0.15);
+    color: white;
+    font-weight: 700;
+    font-size: 0.75rem;
+    line-height: 1.33;
+    text-transform: uppercase;
+    text-shadow: 0 0 0.333em rgba(0, 0, 0, 0.25);
 }
