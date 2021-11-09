@@ -21,7 +21,10 @@
 }
 
 .image {
-	height: 5.5rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    width: calc(100% + 3rem);
+    height: auto;
 }
 
 .features {
