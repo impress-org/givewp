@@ -40,8 +40,8 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      */
     public function getPaymentGateway($id)
     {
-        if (!isset($this->gateways[$id])) {
-            throw new InvalidArgumentException("No migration exists with the ID {$id}");
+        if (!$this->hasPaymentGateway($id)) {
+            throw new InvalidArgumentException("No gateway exists with the ID {$id}");
         }
 
         return $this->gateways[$id];
@@ -82,7 +82,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
 
         $gatewayId = $gatewayClass::id();
 
-        if (isset($this->gateways[$gatewayId])) {
+        if ($this->hasPaymentGateway($gatewayId)) {
             throw new OverflowException("Cannot register a gateway with an id that already exists: $gatewayId");
         }
 
