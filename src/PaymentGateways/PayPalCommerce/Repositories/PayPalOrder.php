@@ -35,18 +35,26 @@ class PayPalOrder
     private $merchantDetails;
 
     /**
+     * @unreleased
+     * @var Settings
+     */
+    private $settings;
+
+    /**
      * PayPalOrder constructor.
      *
      * @since 2.9.0
-     *
-     * @param MerchantDetail $merchantDetails
+     * @unreleased Add third param "Settings" to function
      *
      * @param PayPalClient $paypalClient
+     * @param MerchantDetail $merchantDetails
+     * @param Settings $settings
      */
-    public function __construct(PayPalClient $paypalClient, MerchantDetail $merchantDetails)
+    public function __construct(PayPalClient $paypalClient, MerchantDetail $merchantDetails, Settings $settings)
     {
         $this->paypalClient    = $paypalClient;
         $this->merchantDetails = $merchantDetails;
+        $this->settings        = $settings;
     }
 
     /**
@@ -94,15 +102,16 @@ class PayPalOrder
     {
         $this->validateCreateOrderArguments($array);
 
-        $request          = new OrdersCreateRequest();
+        $request = new OrdersCreateRequest();
+        $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
+
         $formId           = (int)$array['formId'];
         $donationCurrency = give_get_currency($formId);
         $donationAmount   = give_maybe_sanitize_amount(
             $array['donationAmount'],
             ['currency' => give_get_currency($formId)]
         );
-        $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
-        $request->body = [
+        $request->body    = [
             'intent'              => 'CAPTURE',
             'payer'               => [
                 'given_name'    => $array['payer']['firstName'],
@@ -114,28 +123,11 @@ class PayPalOrder
                     'description'         => $array['formTitle'],
                     'amount'              => [
                         'value'         => $donationAmount,
-                        'currency_code' => $donationCurrency,
-                        'breakdown'     => [
-                            'item_total' => [
-                                'currency_code' => $donationCurrency,
-                                'value'         => $donationAmount,
-                            ]
-                        ]
+                        'currency_code' => $donationCurrency
                     ],
                     'payee'               => [
                         'email_address' => $this->merchantDetails->merchantId,
                         'merchant_id'   => $this->merchantDetails->merchantIdInPayPal,
-                    ],
-                    'items'               => [
-                        [
-                            'name'        => get_post_field('post_name', $formId),
-                            'unit_amount' => [
-                                'value'         => $donationAmount,
-                                'currency_code' => $donationCurrency
-                            ],
-                            'quantity'    => 1,
-                            'category'    => 'DONATION'
-                        ]
                     ],
                     'payment_instruction' => [
                         'disbursement_mode' => 'INSTANT',
@@ -147,6 +139,28 @@ class PayPalOrder
                 'user_action'         => 'PAY_NOW',
             ],
         ];
+
+        // Set PayPal transaction as donation.
+        if ($this->settings->isTransactionTypeDonation()) {
+            $request->body['purchase_units']['items'] = [
+                [
+                    'name'        => get_post_field('post_name', $formId),
+                    'unit_amount' => [
+                        'value'         => $donationAmount,
+                        'currency_code' => $donationCurrency
+                    ],
+                    'quantity'    => 1,
+                    'category'    => 'DONATION'
+                ]
+            ];
+
+            $request->body['purchase_units']['amount']['breakdown'] = [
+                'item_total' => [
+                    'currency_code' => $donationCurrency,
+                    'value'         => $donationAmount,
+                ]
+            ];
+        }
 
         if ( ! empty($array['payer']['address'])) {
             $request->body['payer']['address'] = $array['payer']['address'];
