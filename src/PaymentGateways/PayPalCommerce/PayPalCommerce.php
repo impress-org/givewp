@@ -72,13 +72,6 @@ class PayPalCommerce implements PaymentGateway {
                 'type' => 'paypal_commerce_account_manger',
             ],
             [
-                'name'  => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
-                'id'    => 'paypal_commerce_gateway_settings_docs_link',
-                'url'   => esc_url('http://docs.givewp.com/paypal-donations'),
-                'title' => esc_html__('PayPal Donations Gateway Settings', 'give'),
-                'type'  => 'give_docs_link',
-            ],
-            [
                 'name'    => esc_html__('Transaction Type', 'give'),
                 'desc'    => esc_html__(
                     'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.',
@@ -91,6 +84,13 @@ class PayPalCommerce implements PaymentGateway {
                     'standard' => esc_html__('Standard Transaction', 'give'),
                 ],
                 'default' => 'donation',
+            ],
+            [
+                'name'  => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
+                'id'    => 'paypal_commerce_gateway_settings_docs_link',
+                'url'   => esc_url('http://docs.givewp.com/paypal-donations'),
+                'title' => esc_html__('PayPal Donations Gateway Settings', 'give'),
+                'type'  => 'give_docs_link',
             ],
             [
                 'type' => 'sectionend',
