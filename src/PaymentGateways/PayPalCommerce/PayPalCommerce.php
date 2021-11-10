@@ -39,8 +39,9 @@ class PayPalCommerce implements PaymentGateway {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
+     * @inheritDoc
+     * @unreleased Add setting "Transaction type".
+     */
 	public function getOptions() {
 		$settings = [
 			[

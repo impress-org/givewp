@@ -89,14 +89,15 @@ class PayPalOrder
     /**
      * Create order.
      *
+     * @see https://developer.paypal.com/docs/api/orders/v2
+     *
      * @since 2.9.0
+     * @unreleased Conditionally set transaction as donation or standard transaction in PayPal.
      *
      * @param array $array
      *
      * @return string
      * @throws Exception
-     * @see https://developer.paypal.com/docs/api/orders/v2
-     *
      */
     public function createOrder($array)
     {
