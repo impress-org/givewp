@@ -20,7 +20,7 @@ export const PricingPlanCard = ({name, description, actionText, actionLink, icon
                 </div>
                 <p className={styles.description} dangerouslySetInnerHTML={{__html: transformStrong(description)}} />
                 <div className={styles.actionAndSavings}>
-                    <Button as="a" href={actionLink} className={styles.button}>{actionText}</Button>
+                    <Button as="a" href={actionLink} rel="noopener" target="_blank" className={styles.button}>{actionText}</Button>
                     <p className={styles.savings}>Save over {savingsPercentage}%</p>
                 </div>
             </div>

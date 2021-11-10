@@ -8,7 +8,7 @@ export const AdditionalAddonCard = ({name, description, image, actionLink, actio
         <img className={styles.image} src={image} alt="" />
         <h3 className={styles.title}>{name}</h3>
         <p className={styles.description}>{description}</p>
-        <Button as="a" href={actionLink} className={styles.button}>
+        <Button as="a" href={actionLink} rel="noopener" target="_blank" className={styles.button}>
             {actionText}
         </Button>
     </Card>

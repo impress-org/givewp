@@ -11,14 +11,14 @@ export const InPluginUpsells = () => (
         <div className={styles.header}>
             <div className={styles.container}>
                 <h1>
-                    <a href="https://givewp.com" target="_blank">
+                    <a href="https://givewp.com" target="_blank" rel="noopener">
                         <img className={styles.logo} src={window.GiveAddons.logoUrl} alt={__('GiveWP', 'give')} />
                     </a>
                 </h1>
                 <aside
                     className={styles.sourceNotice}
                     dangerouslySetInnerHTML={{
-                        __html: __('This page is loaded from <a href="https://givewp.com">GiveWP.com</a>')
+                        __html: __('This page is loaded from <a href="https://givewp.com" rel="noopener" target="_blank">GiveWP.com</a>')
                     }}
                     />
                 <TabList className={styles.tabs}>
