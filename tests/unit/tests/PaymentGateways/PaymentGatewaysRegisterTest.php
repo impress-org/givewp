@@ -5,6 +5,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -109,29 +110,33 @@ class GoCardLess extends PaymentGateway {
 	 */
 	public function getId() {
 		return self::id();
-	}
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getName() {
-		return 'Stripe Payment Method';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return 'Stripe Payment Method';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getPaymentMethodLabel() {
-		return 'Credit Card';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getPaymentMethodLabel()
+    {
+        return 'Credit Card';
+    }
 
-	public function getLegacyFormFieldMarkup( $formId ) {
-		// TODO: Implement getLegacyFormFieldMarkup() method.
-	}
+    public function getLegacyFormFieldMarkup($formId)
+    {
+        // TODO: Implement getLegacyFormFieldMarkup() method.
+    }
 
-	public function handleGatewayRequest( $donationId, $formData ) {
-		// TODO: Implement handleGatewayRequest() method.
-	}
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        // TODO: Implement createPayment() method.
+    }
 }
 
 class Square extends PaymentGateway {
@@ -139,108 +144,127 @@ class Square extends PaymentGateway {
 	 * @return string
 	 */
 	public static function id() {
-		return 'square';
-	}
+        return 'square';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getId() {
-		return self::id();
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return self::id();
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getName() {
-		return 'Square Payment Method';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return 'Square Payment Method';
+    }
 
-	public function getPaymentMethodLabel() {
-		// TODO: Implement getPaymentMethodLabel() method.
-	}
+    public function getPaymentMethodLabel()
+    {
+        // TODO: Implement getPaymentMethodLabel() method.
+    }
 
-	public function getLegacyFormFieldMarkup( $formId ) {
-		// TODO: Implement getLegacyFormFieldMarkup() method.
-	}
+    public function getLegacyFormFieldMarkup($formId)
+    {
+        // TODO: Implement getLegacyFormFieldMarkup() method.
+    }
 
-	public function handleGatewayRequest( $donationId, $formData ) {
-		// TODO: Implement handleGatewayRequest() method.
-	}
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        // TODO: Implement createPayment() method.
+    }
 }
 
-class Stripe extends PaymentGateway {
-	/**
-	 * @return string
-	 */
-	public static function id() {
-		return 'stripe-credit-card-onsite';
-	}
+class Stripe extends PaymentGateway
+{
+    /**
+     * @return string
+     */
+    public static function id()
+    {
+        return 'stripe-credit-card-onsite';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getId() {
-		return self::id();
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return self::id();
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getName() {
-		return 'Stripe Payment Method';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return 'Stripe Payment Method';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getPaymentMethodLabel() {
-		return 'Credit Card';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getPaymentMethodLabel()
+    {
+        return 'Credit Card';
+    }
 
-	public function getLegacyFormFieldMarkup( $formId ) {
-		// TODO: Implement getLegacyFormFieldMarkup() method.
-	}
+    public function getLegacyFormFieldMarkup($formId)
+    {
+        // TODO: Implement getLegacyFormFieldMarkup() method.
+    }
 
-	public function handleGatewayRequest( $donationId, $formData ) {
-		// TODO: Implement handleGatewayRequest() method.
-	}
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        // TODO: Implement createPayment() method.
+    }
 }
 
-class Paypal extends PaymentGateway {
-	/**
-	 * @return string
-	 */
-	public static function id() {
-		return 'paypal-offsite';
-	}
+class Paypal extends PaymentGateway
+{
+    /**
+     * @return string
+     */
+    public static function id()
+    {
+        return 'paypal-offsite';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getId() {
-		return self::id();
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return self::id();
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getName() {
-		return 'PayPal Payment Method';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return 'PayPal Payment Method';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getPaymentMethodLabel() {
-		return 'PayPal';
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getPaymentMethodLabel()
+    {
+        return 'PayPal';
+    }
 
-	public function getLegacyFormFieldMarkup( $formId ) {
-		// TODO: Implement getLegacyFormFieldMarkup() method.
-	}
+    public function getLegacyFormFieldMarkup($formId)
+    {
+        // TODO: Implement getLegacyFormFieldMarkup() method.
+    }
 
-	public function handleGatewayRequest( $donationId, $formData ) {
-		// TODO: Implement handleGatewayRequest() method.
-	}
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        // TODO: Implement createPayment() method.
+    }
 }
