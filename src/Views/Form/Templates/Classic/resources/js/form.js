@@ -1,4 +1,5 @@
 import h from 'vhtml';
+import accounting from 'accounting';
 import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
 
 // Transforms document for classic template
@@ -77,7 +78,7 @@ function splitDonationLevelAmountsIntoParts() {
 
 	document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach(node => {
 		const rawAmount = window.Give.fn.unFormatCurrency(node.getAttribute('value'), currency.decimalSeparator);
-        const amountWithoutDecimal = window.accounting.format(rawAmount, 0, currency.thousandsSeparator);
+        const amountWithoutDecimal = accounting.format(rawAmount, 0, currency.thousandsSeparator);
         const decimalForAmount = rawAmount.toFixed(currency.precision).split('.')[1];
 
         // Use the formatted amount as the ARIA label.
