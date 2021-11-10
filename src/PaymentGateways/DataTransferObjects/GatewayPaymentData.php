@@ -45,7 +45,7 @@ class GatewayPaymentData
      */
     public $donorInfo;
     /**
-     * @var CardInfo
+     * @var CardInfo|null
      */
     public $cardInfo;
     /**
@@ -53,7 +53,7 @@ class GatewayPaymentData
      */
     public $amount;
     /**
-     * @var Address
+     * @var Address|null
      */
     public $billingAddress;
 
