@@ -120,6 +120,7 @@ class PayPalOrder
             ],
             'purchase_units'      => [
                 [
+                    'reference_id'        => get_post_field('post_name', $formId),
                     'description'         => $array['formTitle'],
                     'amount'              => [
                         'value'         => $donationAmount,
