@@ -31,8 +31,29 @@
 		background-color: #fafafa;
 		color: #333;
 		font-weight: 700;
-		line-height: 1.2;
+        padding: 0 0 0 1rem;
 	}
+
+
+    .give-gateway-option-selected,
+    .give-gateway-response {
+        background-color: #ffffff !important;
+        border: 0.0625rem solid #666666 !important;
+    }
+
+
+    .give-gateway-option {
+        display: flex;
+        flex-grow: 1;
+        padding: 1rem;
+    }
+
+    .give-gateway-response {
+        margin-top: -1.2rem;
+        padding: 1rem !important;
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
 }
 
 #give-purchase-button {
