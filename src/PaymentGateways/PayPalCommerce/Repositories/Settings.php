@@ -71,7 +71,7 @@ class Settings {
      */
     public function getTransactionType()
     {
-        return get_option(self::TRANSACTION_TYPE, 'donation');
+        return give_get_option(self::TRANSACTION_TYPE, 'donation');
     }
 
     /**

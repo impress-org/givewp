@@ -143,7 +143,7 @@ class PayPalOrder
 
         // Set PayPal transaction as donation.
         if ($this->settings->isTransactionTypeDonation()) {
-            $request->body['purchase_units']['items'] = [
+            $request->body['purchase_units'][0]['items'] = [
                 [
                     'name'        => get_post_field('post_name', $formId),
                     'unit_amount' => [
@@ -155,7 +155,7 @@ class PayPalOrder
                 ]
             ];
 
-            $request->body['purchase_units']['amount']['breakdown'] = [
+            $request->body['purchase_units'][0]['amount']['breakdown'] = [
                 'item_total' => [
                     'currency_code' => $donationCurrency,
                     'value'         => $donationAmount,
