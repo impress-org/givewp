@@ -40,4 +40,18 @@ class SubscriptionData
 
         return $self;
     }
+
+    /**
+     * @param  int  $subscriptionId
+     * @return GatewaySubscriptionData
+     */
+    public function toGatewaySubscriptionData($subscriptionId)
+    {
+        return GatewaySubscriptionData::fromArray([
+            'period' => $this->period,
+            'times' => $this->times,
+            'frequency' => $this->frequency,
+            'subscriptionId' => $subscriptionId,
+        ]);
+    }
 }

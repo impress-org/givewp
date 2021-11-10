@@ -6,8 +6,6 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
@@ -48,32 +46,15 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
-        $donationId = $this->createPayment($formData->toPaymentData());
+        $donationId = $this->createPayment($formData->toGiveInsertPaymentData());
 
-        $gatewayPaymentData = GatewayPaymentData::fromArray([
-            'amount' => $formData->amount,
-            'currency' => $formData->currency,
-            'date' => $formData->date,
-            'price' => $formData->price,
-            'priceId' => $formData->priceId,
-            'gatewayId' => $formData->paymentGateway,
-            'paymentId' => $donationId,
-            'purchaseKey' => $formData->purchaseKey,
-            'donorInfo' => $formData->donorInfo,
-            'cardInfo' => $formData->cardInfo,
-            'billingAddress' => $formData->billingAddress,
-        ]);
+        $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
 
         if (function_exists('Give_Recurring') && Give_Recurring()->is_recurring($formData->formId)) {
             $subscriptionData = SubscriptionData::fromRequest($request);
             $subscriptionId = $this->createSubscription($donationId, $formData, $subscriptionData);
 
-            $gatewaySubscriptionData = GatewaySubscriptionData::fromArray([
-                'period' => $subscriptionData->period,
-                'times' => $subscriptionData->times,
-                'frequency' => $subscriptionData->frequency,
-                'subscriptionId' => $subscriptionId,
-            ]);
+            $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);
 
             $registeredGateway->createSubscription($gatewayPaymentData, $gatewaySubscriptionData);
         }

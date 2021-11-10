@@ -161,7 +161,7 @@ class FormData
      *
      * @return GiveInsertPaymentData
      */
-    public function toPaymentData()
+    public function toGiveInsertPaymentData()
     {
         return GiveInsertPaymentData::fromArray([
             'price' => $this->price,
@@ -173,6 +173,27 @@ class FormData
             'purchase_key' => $this->purchaseKey,
             'currency' => $this->currency,
             'userInfo' => $this->userInfo,
+        ]);
+    }
+
+    /**
+     * @param  int  $donationId
+     * @return GatewayPaymentData
+     */
+    public function toGatewayPaymentData($donationId)
+    {
+        return GatewayPaymentData::fromArray([
+            'amount' => $this->amount,
+            'currency' => $this->currency,
+            'date' => $this->date,
+            'price' => $this->price,
+            'priceId' => $this->priceId,
+            'gatewayId' => $this->paymentGateway,
+            'paymentId' => $donationId,
+            'purchaseKey' => $this->purchaseKey,
+            'donorInfo' => $this->donorInfo,
+            'cardInfo' => $this->cardInfo,
+            'billingAddress' => $this->billingAddress,
         ]);
     }
 }
