@@ -11,7 +11,9 @@ export const InPluginUpsells = () => (
         <div className={styles.header}>
             <div className={styles.container}>
                 <h1>
-                    <img className={styles.logo} src={window.GiveAddons.logoUrl} alt={__('GiveWP', 'give')} />
+                    <a href="https://givewp.com" target="_blank">
+                        <img className={styles.logo} src={window.GiveAddons.logoUrl} alt={__('GiveWP', 'give')} />
+                    </a>
                 </h1>
                 <aside
                     className={styles.sourceNotice}
