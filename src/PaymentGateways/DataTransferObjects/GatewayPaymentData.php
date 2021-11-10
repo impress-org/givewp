@@ -10,19 +10,20 @@ use Give\ValueObjects\DonorInfo;
  * Class GatewayPaymentData
  * @unreleased
  */
-class GatewayPaymentData {
-	/**
-	 * @var string
-	 */
-	public $gatewayId;
-	/**
-	 * @var string
-	 */
-	public $paymentId;
-	/**
-	 * @var float
-	 */
-	public $price;
+class GatewayPaymentData
+{
+    /**
+     * @var string
+     */
+    public $gatewayId;
+    /**
+     * @var string
+     */
+    public $paymentId;
+    /**
+     * @var float
+     */
+    public $price;
     /**
      * @var string
      */
