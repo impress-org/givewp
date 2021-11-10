@@ -2,20 +2,24 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway\Views;
 
-class LegacyFormFieldMarkup {
-	/**
-	 * @unreleased
-	 *
-	 * @return string
-	 */
-	public function __invoke(){
-		$title = esc_html__( 'Test GiveWP with the Test Donation Gateway', 'give' );
-		$subtitle = esc_html__( 'How it works:', 'give' );
-		$description = 	esc_html__( 'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.',
-				'give' );
+class LegacyFormFieldMarkup
+{
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    public function __invoke()
+    {
+        $title = esc_html__('Test GiveWP with the Test Donation Gateway', 'give');
+        $subtitle = esc_html__('How it works:', 'give');
+        $description = esc_html__(
+            'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.',
+            'give'
+        );
 
-		return sprintf(
-			'
+        return sprintf(
+            '
 		<fieldset class="no-fields">
 			<div style="display: flex; justify-content: center; margin-top: 20px;">
 				<svg width="84" height="67" viewBox="0 0 84 67" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,9 +39,9 @@ class LegacyFormFieldMarkup {
 			</p>
 		</fieldset>
 		',
-			$title,
-			$subtitle,
-			$description
-		);
-	}
+            $title,
+            $subtitle,
+            $description
+        );
+    }
 }

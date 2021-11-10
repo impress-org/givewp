@@ -12,54 +12,60 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  * Class TestGateway
  * @unreleased
  */
-class TestGateway extends PaymentGateway {
+class TestGateway extends PaymentGateway
+{
 
-	/**
-	 * @inheritDoc
-	 */
-	public static function id() {
-		return 'test-gateway';
-	}
+    /**
+     * @inheritDoc
+     */
+    public static function id()
+    {
+        return 'test-gateway';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getId() {
-		return self::id();
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return self::id();
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getName() {
-		return __( 'Test Gateway', 'give' );
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return __('Test Gateway', 'give');
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getPaymentMethodLabel() {
-		return __( 'Test Gateway', 'give' );
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getPaymentMethodLabel()
+    {
+        return __('Test Gateway', 'give');
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getLegacyFormFieldMarkup( $formId ) {
-		if ( FormUtils::isLegacyForm( $formId ) ) {
-			return false;
-		}
+    /**
+     * @inheritDoc
+     */
+    public function getLegacyFormFieldMarkup($formId)
+    {
+        if (FormUtils::isLegacyForm($formId)) {
+            return false;
+        }
 
-		/** @var LegacyFormFieldMarkup $legacyFormFieldMarkup */
-		$legacyFormFieldMarkup = give( LegacyFormFieldMarkup::class );
+        /** @var LegacyFormFieldMarkup $legacyFormFieldMarkup */
+        $legacyFormFieldMarkup = give(LegacyFormFieldMarkup::class);
 
-		return $legacyFormFieldMarkup();
-	}
+        return $legacyFormFieldMarkup();
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function createPayment(GatewayPaymentData $paymentData)
+    /**
+     * @inheritDoc
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
     {
         /** @var PublishPaymentAndSendToSuccessPage $action */
         $action = give(PublishPaymentAndSendToSuccessPage::class);

@@ -15,19 +15,22 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
  *
  * @unreleased
  */
-class ServiceProvider implements ServiceProviderInterface {
-	/**
-	 * @inheritDoc
-	 */
-	public function register() {
-		give()->singleton( PaymentGatewayRegister::class );
-	}
+class ServiceProvider implements ServiceProviderInterface
+{
+    /**
+     * @inheritDoc
+     */
+    public function register()
+    {
+        give()->singleton(PaymentGatewayRegister::class);
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot() {
-		Hooks::addFilter( 'give_register_gateway', RegisterPaymentGateways::class );
-		Hooks::addFilter( 'give_payment_gateways', RegisterPaymentGatewaySettingsList::class );
-	}
+    /**
+     * @inheritDoc
+     */
+    public function boot()
+    {
+        Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
+        Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
+    }
 }
