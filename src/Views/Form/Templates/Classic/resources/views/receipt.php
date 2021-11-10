@@ -27,7 +27,7 @@ $donorDashboardUrl = get_permalink( give_get_option( 'donor_dashboard_page' ) );
 
 ob_start();
 ?>
-	<div class="give-receipt-classic">
+	<article class="give-receipt-classic">
 		<div class="give-form-header">
 			<div class="give-form-header-top-wrap">
 				<aside class="give-form-secure-badge">
@@ -115,7 +115,7 @@ ob_start();
 				</div>
 			<?php endif; ?>
 		</div>
-	</div>
+	</article>
 
 <?php
 
