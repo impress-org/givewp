@@ -18,7 +18,6 @@ export const PricingPlans = () => (
                         icon={plan.icon}
                         savingsPercentage={plan.savingsPercentage}
                         includes={plan.includes}
-                        includesHasMore={plan.includesHasMore}
                         isMostPopular={plan.mostPopular}
                     />
                 </li>

@@ -31,8 +31,8 @@ export const PricingPlanCard = ({name, description, actionText, actionLink, icon
                 <ul className={styles.includesList}>
                     {includes.map(include => (
                         <li key={include.feature} className={styles.include}>
-                            <img src={include.icon} alt="" className={styles.includeIcon} />
-                            <span dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}} />
+                            {include.icon && <img src={include.icon} alt="" className={styles.includeIcon} />}
+                            {include.link ? <a href={include.link} target="_blank" rel="noopener" dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}} /> : <span dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}} />}
                         </li>
                     ))}
                 </ul>

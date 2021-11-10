@@ -85,6 +85,15 @@
     align-items: center;
 }
 
+.include a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.include:hover {
+    text-decoration: none;
+}
+
 .include em {
     color: #69b86b;
 }
