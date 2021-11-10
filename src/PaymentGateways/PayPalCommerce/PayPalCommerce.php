@@ -39,50 +39,65 @@ class PayPalCommerce implements PaymentGateway {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
+     * @inheritDoc
+     * @unreleased Add setting "Transaction type".
+     */
 	public function getOptions() {
 		$settings = [
 			[
 				'type'       => 'title',
 				'id'         => 'give_gateway_settings_1',
 				'table_html' => false,
-			],
-			[
-				'id'   => 'paypal_commerce_introduction',
-				'type' => 'paypal_commerce_introduction',
-			],
-			[
-				'type'       => 'sectionend',
-				'id'         => 'give_gateway_settings_1',
-				'table_html' => false,
-			],
-			[
-				'type' => 'title',
-				'id'   => 'give_gateway_settings_2',
-			],
-			[
-				'name' => esc_html__( 'Account Country', 'give' ),
-				'id'   => 'paypal_commerce_account_country',
-				'type' => 'paypal_commerce_account_country',
-			],
-			[
-				'name' => esc_html__( 'Connect With Paypal', 'give' ),
-				'id'   => 'paypal_commerce_account_manger',
-				'type' => 'paypal_commerce_account_manger',
-			],
-			[
-				'name'  => esc_html__( 'PayPal Donations Gateway Settings Docs Link', 'give' ),
-				'id'    => 'paypal_commerce_gateway_settings_docs_link',
-				'url'   => esc_url( 'http://docs.givewp.com/paypal-donations' ),
-				'title' => esc_html__( 'PayPal Donations Gateway Settings', 'give' ),
-				'type'  => 'give_docs_link',
-			],
-			[
-				'type' => 'sectionend',
-				'id'   => 'give_gateway_settings_2',
-			],
-		];
+            ],
+            [
+                'id'   => 'paypal_commerce_introduction',
+                'type' => 'paypal_commerce_introduction',
+            ],
+            [
+                'type'       => 'sectionend',
+                'id'         => 'give_gateway_settings_1',
+                'table_html' => false,
+            ],
+            [
+                'type' => 'title',
+                'id'   => 'give_gateway_settings_2',
+            ],
+            [
+                'name' => esc_html__('Account Country', 'give'),
+                'id'   => 'paypal_commerce_account_country',
+                'type' => 'paypal_commerce_account_country',
+            ],
+            [
+                'name' => esc_html__('Connect With Paypal', 'give'),
+                'id'   => 'paypal_commerce_account_manger',
+                'type' => 'paypal_commerce_account_manger',
+            ],
+            [
+                'name'    => esc_html__('Transaction Type', 'give'),
+                'desc'    => esc_html__(
+                    'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.',
+                    'give'
+                ),
+                'id'      => 'paypal_commerce_transaction_type',
+                'type'    => 'radio_inline',
+                'options' => [
+                    'donation' => esc_html__('Donation', 'give'),
+                    'standard' => esc_html__('Standard Transaction', 'give'),
+                ],
+                'default' => 'donation',
+            ],
+            [
+                'name'  => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
+                'id'    => 'paypal_commerce_gateway_settings_docs_link',
+                'url'   => esc_url('http://docs.givewp.com/paypal-donations'),
+                'title' => esc_html__('PayPal Donations Gateway Settings', 'give'),
+                'type'  => 'give_docs_link',
+            ],
+            [
+                'type' => 'sectionend',
+                'id'   => 'give_gateway_settings_2',
+            ],
+        ];
 
 		if ( give( MerchantDetail::class )->accountIsReady ) {
 			$settings = give_settings_array_insert(
