@@ -104,7 +104,7 @@ function splitDonationLevelAmountsIntoParts() {
                 h('span', {className: "give-amount-decimal"}, decimalForAmount),
             ),
             // There’s an intentional leading space before the currency symbol.
-            currency.symbolPosition === 'after' && ` ${h(CurrencySymbol, {position: 'after'})}`,
+            //currency.symbolPosition === 'after' && ` ${h(CurrencySymbol, {position: 'after'})}`,
         );
 	});
 }
@@ -136,6 +136,9 @@ function splitGatewayResponse() {
                     },
                 } );
 
+                // Remove previous gateway data
+                removeNode( document.querySelector( '.give-gateway-response' ) );
+
                 if ( originalOptions.beforeSend instanceof Function ) {
                     originalOptions.beforeSend();
                 }
@@ -145,8 +148,6 @@ function splitGatewayResponse() {
                 // Trigger original success callback
                 originalOptions.success( response );
 
-                // Remove previous gateway data
-                removeNode( document.querySelector( '.give-gateway-response' ) );
                 removeNode( document.querySelector( '#give_purchase_form_wrap' ) );
 
                 const responseMarkup = document.createElement('markup' );
