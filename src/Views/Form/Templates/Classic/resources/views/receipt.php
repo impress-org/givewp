@@ -78,7 +78,7 @@ ob_start();
 						<?= $section->label; ?>
 					</h2>
 				<?php endif; ?>
-				<div class="details-table">
+				<dl class="details-table">
 
 					<?php
 						/* @var LineItem $lineItem */
@@ -94,12 +94,12 @@ ob_start();
 
 						<div class="details-row <?= $class; ?>">
 							<?= $lineItem->icon; ?>
-							<div class="detail"><?= $lineItem->label; ?></div>
-							<div class="value"><?= $lineItem->value; ?></div>
+							<dt class="detail"><?= $lineItem->label; ?></dt>
+							<dd class="value"><?= $lineItem->value; ?></dd>
 						</div>
 					<?php endforeach; ?>
 
-				</div>
+				</dl>
 			</div>
 
 		<?php endforeach; ?>
