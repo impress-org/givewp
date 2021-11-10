@@ -13,6 +13,8 @@ domIsReady(() => {
 	setPaymentDetailsTitle();
 	addPaymentDetailsDescription();
 	splitDonationLevelAmountsIntoParts();
+    moveDefaultGatewayDataIntoActiveGatewaySection();
+    splitGatewayResponse();
 });
 
 /**
@@ -105,4 +107,49 @@ function splitDonationLevelAmountsIntoParts() {
             currency.symbolPosition === 'after' && ` ${h(CurrencySymbol, {position: 'after'})}`,
         );
 	});
+}
+
+
+function moveDefaultGatewayDataIntoActiveGatewaySection() {
+    const gatewayDataMarkup = document.querySelector( '#give_purchase_form_wrap fieldset:not(.give-donation-submit)').outerHTML;
+    const newGatewayElement = document.createElement('li' );
+    newGatewayElement.className = 'give-gateway-response';
+    newGatewayElement.innerHTML = gatewayDataMarkup
+    document.querySelector('.give-gateway-option-selected' ).after(  newGatewayElement );
+}
+
+
+function splitGatewayResponse() {
+    jQuery.ajaxPrefilter(function( options, originalOptions ) {
+        if ( options.url.includes( '?payment-mode=' ) ) {
+            // Override the success callback
+            options.success = function( response ) {
+                // Trigger original success callback
+                originalOptions.success( response );
+
+                // Remove previous gateway data
+                removeNode( document.querySelector( '.give-gateway-response' ) );
+                removeNode( document.querySelector( '#give_purchase_form_wrap' ) );
+
+                const responseMarkup = document.createElement('markup' );
+                responseMarkup.innerHTML = response;
+
+                const personalInfoSection = responseMarkup.querySelector( '.give-personal-info-section' );
+                const submitButton = responseMarkup.querySelector( '#give_purchase_submit' );
+                const gatewayMarkup = responseMarkup.innerHTML.replace( personalInfoSection.outerHTML, '' ).replace( submitButton.outerHTML, '' );
+
+                // Update form markup
+                document.querySelector('.give-personal-info-section' ).innerHTML = personalInfoSection.innerHTML;
+
+                const gatewayElement = document.createElement('li' );
+
+                gatewayElement.className = 'give-gateway-response';
+                gatewayElement.innerHTML = gatewayMarkup;
+
+                document.querySelector('.give-gateway-option-selected' ).after(  gatewayElement );
+                document.querySelector('.give-donate-now-button-section' ).outerHTML = submitButton.innerHTML;
+            }
+        }
+
+    });
 }
