@@ -74,9 +74,9 @@ ob_start();
 
 			<div class="details">
 				<?php if ( $section->label ): ?>
-					<h3 class="headline">
+					<h2 class="headline">
 						<?= $section->label; ?>
-					</h3>
+					</h2>
 				<?php endif; ?>
 				<div class="details-table">
 
