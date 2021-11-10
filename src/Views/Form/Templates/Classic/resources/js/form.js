@@ -111,17 +111,35 @@ function splitDonationLevelAmountsIntoParts() {
 
 
 function moveDefaultGatewayDataIntoActiveGatewaySection() {
-    const gatewayDataMarkup = document.querySelector( '#give_purchase_form_wrap fieldset:not(.give-donation-submit)').outerHTML;
+    // Get gateway data markup
+    const gatewayDataElement = document.querySelector( '#give_purchase_form_wrap fieldset:not(.give-donation-submit)');
+    // Create new element for gateway markup
     const newGatewayElement = document.createElement('li' );
     newGatewayElement.className = 'give-gateway-response';
-    newGatewayElement.innerHTML = gatewayDataMarkup
+    newGatewayElement.innerHTML = gatewayDataElement.outerHTML
     document.querySelector('.give-gateway-option-selected' ).after(  newGatewayElement );
+    // Remove old markup
+    gatewayDataElement.remove();
 }
 
 
 function splitGatewayResponse() {
     jQuery.ajaxPrefilter(function( options, originalOptions ) {
         if ( options.url.includes( '?payment-mode=' ) ) {
+            // Override beforeSend callback
+            options.beforeSend = function() {
+                jQuery( '.give-donate-now-button-section' ).block( {
+                    message: null,
+                    overlayCSS: {
+                        background: '#fff',
+                        opacity: 0.6,
+                    },
+                } );
+
+                if ( originalOptions.beforeSend instanceof Function ) {
+                    originalOptions.beforeSend();
+                }
+            }
             // Override the success callback
             options.success = function( response ) {
                 // Trigger original success callback
@@ -148,6 +166,8 @@ function splitGatewayResponse() {
 
                 document.querySelector('.give-gateway-option-selected' ).after(  gatewayElement );
                 document.querySelector('.give-donate-now-button-section' ).outerHTML = submitButton.innerHTML;
+
+                jQuery( '.give-donate-now-button-section'  ).unblock();
             }
         }
 
