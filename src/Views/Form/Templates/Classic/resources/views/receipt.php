@@ -27,11 +27,12 @@ $donorDashboardUrl = get_permalink( give_get_option( 'donor_dashboard_page' ) );
 
 ob_start();
 ?>
+	<?php include __DIR__ . '/icon-defs.php'; ?>
 	<article class="give-receipt-classic">
 		<div class="give-form-header">
 			<div class="give-form-header-top-wrap">
 				<aside class="give-form-secure-badge">
-					<svg class="give-form-secure-icon">
+					<svg class="give-form-secure-icon" viewBox="0 0 20 20">
 						<use href="#give-icon-checkmark"/>
 					</svg>
 					<?= esc_html__( 'Success', 'give' ); ?>!
