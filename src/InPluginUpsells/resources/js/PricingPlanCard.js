@@ -5,7 +5,7 @@ import {transformEmphasis, transformStrong} from './utils';
 
 import styles from './PricingPlanCard.module.css'
 
-export const PricingPlanCard = ({name, description, actionText, actionLink, icon, includes, includesHasMore, savingsPercentage, isMostPopular}) => {
+export const PricingPlanCard = ({name, description, actionText, actionLink, icon, includes, savingsPercentage, isMostPopular}) => {
     const includesLabelId = useMemo(() => `${window.lodash.kebabCase(name)}-includes-label`, [name]);
 
     return (
@@ -36,7 +36,6 @@ export const PricingPlanCard = ({name, description, actionText, actionLink, icon
                         </li>
                     ))}
                 </ul>
-                {includesHasMore && <p className={styles.includesMoreText}>&hellip; and more!</p>}
             </aside>
         </Card>
     );
