@@ -5,6 +5,8 @@ namespace Give\Framework\Http\Response\Traits;
 use Give\Framework\Http\Response\Response;
 use Give\Framework\Http\Response\ResponseFactory;
 
+use function Give\Framework\Http\Response\response;
+
 trait Responseable {
      /**
      * Return a new response from the application.
@@ -16,13 +18,6 @@ trait Responseable {
      */
     public function response($content = '', $status = 200, array $headers = [])
     {
-        /** @var ResponseFactory $factory */
-        $factory = give(ResponseFactory::class);
-
-        if (func_num_args() === 0) {
-            return $factory;
-        }
-
-        return $factory->make($content, $status, $headers);
+        return response($content, $status, $headers);
     }
 }

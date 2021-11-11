@@ -67,7 +67,7 @@ class TestGateway extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
         give_update_payment_status($paymentData->paymentId);
-
+        
         return $this->response()->redirectTo(give_get_success_page_uri());
     }
 }
