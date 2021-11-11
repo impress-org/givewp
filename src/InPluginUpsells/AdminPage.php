@@ -44,7 +44,7 @@ class AdminPage {
 			'GiveAddons',
 			array_merge(
 				( new AddonsRepository() )->getAddons(),
-				['logoUrl' => GIVE_PLUGIN_URL . 'assets/dist/images/givewp-logo.png']
+				['assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/']
 			)
 		);
 	}

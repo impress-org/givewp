@@ -33,3 +33,11 @@ export function transformEmphasis(text) {
         return startingTag ? '<em>' : '</em>';
     });
 }
+
+/**
+ * Get an asset URL.
+ *
+ * @param {string} filename (without leading slash).
+ * @returns {strign} asset URL
+ */
+export const assetUrl = (filename) => `${window.GiveAddons.assetsUrl}${filename}`;
