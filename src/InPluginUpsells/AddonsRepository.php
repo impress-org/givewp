@@ -36,7 +36,16 @@ class AddonsRepository {
 			return [];
 		}
 
-		return json_decode( $body, true );
+		$json = json_decode( $body, true );
+
+        // Sanitize JSON
+        array_walk_recursive( $json, function( &$item  ){
+            $item = wp_kses( $item, [
+                'strong' => [],
+            ] );
+        } );
+
+        return $json;
 	}
 
 	/**
