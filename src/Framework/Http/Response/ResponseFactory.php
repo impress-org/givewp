@@ -6,6 +6,9 @@ use Give\Framework\Http\Response\Contracts\ResponseFactoryInterface;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 
+/**
+ * @unreleased
+ */
 class ResponseFactory implements ResponseFactoryInterface
 {
 

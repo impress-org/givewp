@@ -5,13 +5,15 @@ namespace Give\Framework\Http\Response;
 
 if (! function_exists('response')) {
   /**
-     * Return a new response from the application.
-     *
-     * @param  string  $content
-     * @param  int  $status
-     * @param  array  $headers
-     * @return Response|ResponseFactory
-     */
+   * Return a new response from the application.
+   *
+   * @unreleased
+   *
+   * @param  string  $content
+   * @param  int  $status
+   * @param  array  $headers
+   * @return Response|ResponseFactory
+   */
     function response($content = '', $status = 200, array $headers = [])
     {
         /** @var ResponseFactory $factory */

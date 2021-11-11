@@ -7,6 +7,9 @@ use Give\Framework\Http\Exceptions\Throwable;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
+/**
+ * @unreleased
+ */
 trait ResponseTrait
 {
     /**
@@ -26,6 +29,8 @@ trait ResponseTrait
     /**
      * Get the status code for the response.
      *
+     * @unreleased
+     *
      * @return int
      */
     public function status()
@@ -36,6 +41,8 @@ trait ResponseTrait
     /**
      * Get the content of the response.
      *
+     * @unreleased
+     *
      * @return string
      */
     public function content()
@@ -45,6 +52,8 @@ trait ResponseTrait
 
     /**
      * Get the original response content.
+     *
+     * @unreleased
      *
      * @return mixed
      */
@@ -57,6 +66,8 @@ trait ResponseTrait
 
     /**
      * Set a header on the Response.
+     *
+     * @unreleased
      *
      * @param  string  $key
      * @param  array|string  $values
@@ -72,6 +83,8 @@ trait ResponseTrait
 
     /**
      * Add an array of headers to the response.
+     *
+     * @unreleased
      *
      * @param  HeaderBag|array  $headers
      * @return $this
@@ -92,6 +105,8 @@ trait ResponseTrait
     /**
      * Add a cookie to the response.
      *
+     * @unreleased
+     *
      * @param  Cookie|mixed  $cookie
      * @return $this
      */
@@ -102,6 +117,8 @@ trait ResponseTrait
 
     /**
      * Add a cookie to the response.
+     *
+     * @unreleased
      *
      * @param  Cookie|mixed  $cookie
      * @return $this
@@ -119,6 +136,8 @@ trait ResponseTrait
 
     /**
      * Expire a cookie when sending the response.
+     *
+     * @unreleased
      *
      * @param  Cookie|mixed  $cookie
      * @param  string|null  $path
@@ -139,6 +158,8 @@ trait ResponseTrait
     /**
      * Get the callback of the response.
      *
+     * @unreleased
+     *
      * @return string|null
      */
     public function getCallback()
@@ -148,6 +169,8 @@ trait ResponseTrait
 
     /**
      * Set the exception to attach to the response.
+     *
+     * @unreleased
      *
      * @param  Throwable  $e
      * @return $this
@@ -161,6 +184,8 @@ trait ResponseTrait
 
     /**
      * Throws the response in a HttpResponseException instance.
+     *
+     * @unreleased
      *
      * @return void
      *

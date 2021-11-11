@@ -9,12 +9,17 @@ use InvalidArgumentException;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
+/**
+ * @unreleased
+ */
 class JsonResponse extends BaseJsonResponse
 {
     use ResponseTrait;
 
     /**
      * Constructor.
+     *
+     * @unreleased
      *
      * @param  mixed  $data
      * @param  int  $status
@@ -32,6 +37,8 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Sets the JSONP callback.
      *
+     * @unreleased
+     *
      * @param  string|null  $callback
      * @return $this
      */
@@ -43,6 +50,8 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Get the json_decoded data from the response.
      *
+     * @unreleased
+     *
      * @param  bool  $assoc
      * @param  int  $depth
      * @return mixed
@@ -53,7 +62,15 @@ class JsonResponse extends BaseJsonResponse
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the data to be sent as JSON.
+     *
+     * @unreleased
+     *
+     * @param  mixed  $data
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException
      */
     public function setData($data = [])
     {
@@ -79,6 +96,8 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Determine if an error occurred during JSON encoding.
      *
+     * @unreleased
+     *
      * @param  int  $jsonError
      * @return bool
      */
@@ -97,17 +116,25 @@ class JsonResponse extends BaseJsonResponse
     }
 
     /**
-     * {@inheritdoc}
+     * Sets options used while encoding data to JSON.
+     *
+     * @unreleased
+     *
+     * @param  int  $encodingOptions
+     *
+     * @return $this
      */
-    public function setEncodingOptions($options)
+    public function setEncodingOptions($encodingOptions)
     {
-        $this->encodingOptions = (int)$options;
+        $this->encodingOptions = (int)$encodingOptions;
 
         return $this->setData($this->getData());
     }
 
     /**
      * Determine if a JSON encoding option is set.
+     *
+     * @unreleased
      *
      * @param  int  $option
      * @return bool
