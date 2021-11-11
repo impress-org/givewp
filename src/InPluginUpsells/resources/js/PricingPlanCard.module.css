@@ -1,14 +1,15 @@
 .card {
+    padding: 2rem 5.75rem 2rem 2rem;
     max-width: 51rem;
     display: grid;
     row-gap: 1.25rem;
 }
 
-@media screen and (min-width: 48rem) {
+@media screen and (min-width: 64rem) {
     .card {
         column-gap: 5.25rem;
         grid-auto-flow: column;
-        grid-template-columns: 5fr 4fr;
+        grid-template-columns: 5fr 3fr;
     }
 }
 
@@ -41,6 +42,7 @@
     display: flex;
     column-gap: 1rem;
     margin-top: 1.75rem;
+    align-items: center;
 }
 
 .button {
@@ -61,6 +63,7 @@
 }
 
 .includesLabel {
+    margin-top: 0.9rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     font-weight: inherit;
