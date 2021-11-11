@@ -6,12 +6,9 @@ use ArrayObject;
 use Give\Framework\Http\Response\Contracts\Arrayable;
 use Give\Framework\Http\Response\Contracts\Jsonable;
 use Give\Framework\Http\Response\Contracts\Renderable;
-use Give\Framework\Http\Response\Traits\Macroable;
 use Give\Framework\Http\Response\Traits\ResponseTrait;
-use InvalidArgumentException;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * Class Response
@@ -20,28 +17,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 class Response extends SymfonyResponse
 {
-    use ResponseTrait, Macroable {
-        Macroable::__call as macroCall;
-    }
-
-    /**
-     * Create a new HTTP response.
-     *
-     * @param  mixed  $content
-     * @param  int  $status
-     * @param  array  $headers
-     * @return void
-     *
-     * @throws InvalidArgumentException
-     */
-    public function __construct($content = '', $status = 200, array $headers = [])
-    {
-        $this->headers = new ResponseHeaderBag($headers);
-
-        $this->setContent($content);
-        $this->setStatusCode($status);
-        $this->setProtocolVersion('1.0');
-    }
+    use ResponseTrait;
 
     /**
      * Set the content on the response.

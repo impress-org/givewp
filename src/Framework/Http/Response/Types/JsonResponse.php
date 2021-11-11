@@ -4,7 +4,6 @@ namespace Give\Framework\Http\Response\Types;
 
 use Give\Framework\Http\Response\Contracts\Arrayable;
 use Give\Framework\Http\Response\Contracts\Jsonable;
-use Give\Framework\Http\Response\Traits\Macroable;
 use Give\Framework\Http\Response\Traits\ResponseTrait;
 use InvalidArgumentException;
 use JsonSerializable;
@@ -12,9 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 class JsonResponse extends BaseJsonResponse
 {
-    use ResponseTrait, Macroable {
-        Macroable::__call as macroCall;
-    }
+    use ResponseTrait;
 
     /**
      * Constructor.

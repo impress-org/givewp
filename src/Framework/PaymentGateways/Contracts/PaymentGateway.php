@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\Http\Response\Traits\Responseable;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
@@ -13,6 +14,8 @@ use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
+    use Responseable;
+
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
      */

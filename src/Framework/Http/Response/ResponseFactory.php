@@ -3,13 +3,11 @@
 namespace Give\Framework\Http\Response;
 
 use Give\Framework\Http\Response\Contracts\ResponseFactoryInterface;
-use Give\Framework\Http\Response\Traits\Macroable;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 
 class ResponseFactory implements ResponseFactoryInterface
 {
-    use Macroable;
 
     /**
      * Create a new response instance.

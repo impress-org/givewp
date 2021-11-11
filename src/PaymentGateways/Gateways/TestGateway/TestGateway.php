@@ -69,9 +69,6 @@ class TestGateway extends PaymentGateway
     {
         give_update_payment_status($paymentData->paymentId, 'publish');
 
-        /** @var PublishPaymentAndSendToSuccessPage $action */
-        $action = give(PublishPaymentAndSendToSuccessPage::class);
-
-        return $action($paymentData->paymentId);
+        return $this->response()->redirectTo(give_get_success_page_uri());
     }
 }
