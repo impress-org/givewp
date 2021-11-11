@@ -30,7 +30,7 @@ export const AdditionalAddons = () => (
                     __html: __('Didn’t find what you were looking for?<br> View the entire catalog!', 'give'),
                 }}
             />
-            <Button as="a" href={allAddonsUrl} className={styles.viewAllButton}>
+            <Button as="a" href={allAddonsUrl} rel="noopener" target="_blank" className={styles.viewAllButton}>
                 {__('View All Add-ons', 'give')}
             </Button>
         </div>
