@@ -91,14 +91,23 @@
     }
 
     @media screen and (max-width: 500px) {
-        th, td {
-            pading: 0;
-            display:block;
-            height: initial;
-            vertical-align: top;
+        tr, th, td {
+            height: 26px;
         }
-        .give-donation-summary-help-text img {
-            display: none;
+        th, td {
+            padding-top: 15px;
+            vertical-align: top;
+
+            &:last-child {
+                width: 40%;
+            }
+        }
+        .give-donation-summary-help-text {
+            align-items: start;
+
+            img {
+                margin-top: 3px;
+            }
         }
     }
 }
