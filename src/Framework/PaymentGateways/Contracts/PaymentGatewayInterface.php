@@ -2,6 +2,8 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -62,9 +64,19 @@ interface PaymentGatewayInterface
      *
      * @param  GatewayPaymentData  $paymentData
      *
-     * @return void
+     * @return JsonResponse|RedirectResponse
      */
     public function createPayment(GatewayPaymentData $paymentData);
+
+    /**
+     * Handle creating a payment with gateway
+     *
+     * @unreleased
+     *
+     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @return void
+     */
+    public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData);
 
     /**
      * Create a subscription with gateway
@@ -74,7 +86,22 @@ interface PaymentGatewayInterface
      * @param  GatewayPaymentData  $paymentData
      * @param  GatewaySubscriptionData  $subscriptionData
      *
-     * @return void
+     * @return JsonResponse|RedirectResponse
      */
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData);
+
+    /**
+     * Handle creating a subscription with gateway
+     *
+     * @unreleased
+     *
+     * @param  GatewayPaymentData  $paymentData
+     * @param  GatewaySubscriptionData  $subscriptionData
+     *
+     * @return void
+     */
+    public function handleCreateSubscription(
+        GatewayPaymentData $paymentData,
+        GatewaySubscriptionData $subscriptionData
+    );
 }
