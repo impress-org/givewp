@@ -43,6 +43,9 @@
     color: #444;
 }
 
-.viewAllButton:hover {
+.viewAllButton:hover,
+.viewAllButton:active,
+.viewAllButton:focus {
+    filter: none;
     background-color: #444;
 }

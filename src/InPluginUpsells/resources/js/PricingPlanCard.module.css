@@ -90,8 +90,14 @@
     text-decoration: underline;
 }
 
-.include:hover {
+.include a:hover {
     text-decoration: none;
+}
+
+.include a:focus {
+    box-shadow: none;
+    outline: 0.25em solid rgba(102, 187, 106, 0.7);
+    outline-offset: 0.5em;
 }
 
 .include em {
