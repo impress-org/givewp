@@ -52,7 +52,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
-        $subscription = $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
+        $subscription = $this->createSubscription($paymentData, $subscriptionData);
 
         $this->handleReturnTypes($subscription);
     }
