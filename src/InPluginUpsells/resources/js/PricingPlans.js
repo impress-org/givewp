@@ -9,7 +9,7 @@ export const PricingPlans = () => (
         <Hero heading={heading} description={description} />
         <ul className={styles.plans}>
             {plans.map((plan) => (
-                <li name={plan.name}>
+                <li key={plan.name}>
                     <PricingPlanCard
                         name={plan.name}
                         description={plan.description}

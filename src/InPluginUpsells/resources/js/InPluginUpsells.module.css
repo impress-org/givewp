@@ -9,11 +9,17 @@
 	height: 100%;
 	padding-bottom: 6rem;
 	background-color: #fff;
-	background-image: url('/app/plugins/give/assets/src/images/addon-gallery-decor.png');
+	background-image: var(--decor);
 	background-position: top right;
 	background-repeat: no-repeat;
+    background-size: 22.875rem 10.3125rem;
 	color: #333;
 	font-family: 'Open Sans', system-ui, sans-serif;
+    transition-property: background-image;
+    /* This delay (ideally) reduces the flicker from the first time a new decor image loads */
+    transition-delay: 50ms;
+    transition-duration: 500ms;
+    transition-timing-function: ease-in-out;
 }
 
 .header {
