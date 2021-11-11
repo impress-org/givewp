@@ -1152,7 +1152,7 @@ return array(
 	),
 	'LKR' => array(
 		'admin_label' => sprintf( __( 'Sri Lankan rupee (%1$s)', 'give' ), '&#xdbb;&#xdd4;' ),
-		'symbol'      => '&#xdbb;&#xdd4;',
+		'symbol'      => 'Rs',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ',',
