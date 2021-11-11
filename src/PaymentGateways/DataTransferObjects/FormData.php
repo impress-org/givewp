@@ -170,9 +170,10 @@ class FormData
             'priceId' => $this->priceId,
             'date' => $this->date,
             'donorEmail' => $this->donorInfo->email,
-            'purchase_key' => $this->purchaseKey,
+            'purchaseKey' => $this->purchaseKey,
             'currency' => $this->currency,
             'userInfo' => $this->userInfo,
+            'paymentGateway' => $this->paymentGateway
         ]);
     }
 
