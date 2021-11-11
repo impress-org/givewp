@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Framework\Http\Response;
+namespace Give\Framework\Http\Response\Traits;
 
-use Give\PaymentGateways\Exceptions\HttpResponseException;
-use Give\PaymentGateways\Exceptions\Throwable;
+use Give\Framework\Http\Exceptions\HttpResponseException;
+use Give\Framework\Http\Exceptions\Throwable;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
