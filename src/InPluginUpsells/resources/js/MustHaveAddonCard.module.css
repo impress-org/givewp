@@ -53,3 +53,8 @@
 
     color: #66bb6a;
 }
+
+.button {
+    align-self: center;
+    width: 93.75%;
+}

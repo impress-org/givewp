@@ -20,7 +20,7 @@ export const MustHaveAddonCard = ({name, description, icon, image, features, act
                 </li>
 			))}
 		</ul>
-		<Button as="a" href={actionLink} rel="noopener" target="_blank">
+		<Button as="a" href={actionLink} rel="noopener" target="_blank" className={styles.button}>
             {actionText}
         </Button>
 	</Card>
