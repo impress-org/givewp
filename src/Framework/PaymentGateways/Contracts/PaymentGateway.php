@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Traits\Responseable;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
@@ -75,6 +76,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * Handle return types
      *
      * @param  RedirectResponse|JsonResponse  $type
+     * @throws TypeNotSupported
      */
     private function handleReturnTypes($type)
     {
@@ -86,5 +88,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         if ($type instanceof JsonResponse) {
             wp_send_json(['data' => $type->getData()]);
         }
+
+        throw new TypeNotSupported(
+            sprintf(
+                "Return type must be an instance of %s or %s",
+                RedirectResponse::class,
+                JsonResponse::class
+            )
+        );
     }
 }
