@@ -2,28 +2,26 @@
 
 namespace Give\Framework\PaymentGateways\Responses;
 
-use Give\Framework\Http\Response\Response;
-use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayResponse;
-
-use function Give\Framework\Http\Response\response;
 
 /**
  * @unreleased
  */
-class OnSitePaymentGatewayJsonResponse implements PaymentGatewayResponse {
+class OnSitePaymentGatewayJsonResponse extends PaymentGatewayResponse
+{
     /**
-     * @var Response
+     * @var array
      */
-    public $response;
+    public $data;
 
     /**
      * @unreleased
      *
-     * @param  JsonResponse  $response
+     * @param  array  $data
      */
-    public function __construct(JsonResponse $response) {
-        $this->response = $response;
+    public function __construct(array $data)
+    {
+        $this->data = $data;
     }
 
     /**
@@ -36,6 +34,6 @@ class OnSitePaymentGatewayJsonResponse implements PaymentGatewayResponse {
         // update payment status
         // set payment transaction ID
 
-        return response()->json($this->response->getData());
+        return $this->response()->json($this->data);
     }
 }

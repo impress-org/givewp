@@ -2,13 +2,13 @@
 
 namespace Give\Framework\PaymentGateways\Responses;
 
-use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayResponse;
 
 /**
  * @unreleased
  */
-class OnSitePaymentGatewayRedirectResponse implements PaymentGatewayResponse {
+class OnSitePaymentGatewayRedirectResponse extends PaymentGatewayResponse
+{
     /**
      * @var int
      */
@@ -18,33 +18,33 @@ class OnSitePaymentGatewayRedirectResponse implements PaymentGatewayResponse {
      */
     public $transactionId;
     /**
-     * @var RedirectResponse
+     * @var string
      */
-    public $response;
+    public $redirectUrl;
 
     /**
      * @unreleased
      *
-     * @param RedirectResponse  $response
-     * @param int  $paymentId
-     * @param string $transactionId
+     * @param  string  $redirectUrl
+     * @param  int  $paymentId
+     * @param  string  $transactionId
      */
-    public function __construct(RedirectResponse $response, $paymentId, $transactionId) {
-        $this->response = $response;
+    public function __construct($redirectUrl, $paymentId, $transactionId)
+    {
+        $this->redirectUrl = $redirectUrl;
         $this->paymentId = $paymentId;
         $this->transactionId = $transactionId;
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      *
      * @inheritDoc
      */
     public function complete()
     {
-         give_update_payment_status($this->paymentId);
-         give_set_payment_transaction_id($this->paymentId, $this->transactionId);
+        $this->updatePaymentMeta($this->paymentId, $this->transactionId);
 
-         return $this->response;
+        return $this->response()->redirectTo($this->redirectUrl);
     }
 }

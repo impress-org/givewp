@@ -67,12 +67,11 @@ class TestGateway extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
         $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
-        $response = $this->response()->redirectTo($paymentData->redirectUrl);
 
         return new OnSitePaymentGatewayRedirectResponse(
-            $response,
+            $paymentData->redirectUrl,
             $paymentData->paymentId,
-            $transactionId
+            $transactionId,
         );
     }
 }

@@ -2,17 +2,22 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
-use Give\Framework\Http\Response\Types\JsonResponse;
-use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\Http\Response\Traits\Responseable;
 
 /**
- * @unreleased 
+ * @unreleased
  */
-interface PaymentGatewayResponse {
+abstract class PaymentGatewayResponse implements PaymentGatewayResponseInterface
+{
+    use Responseable;
+
     /**
-     * @unreleased
-     *
-     * @return RedirectResponse|JsonResponse
+     * @param  int  $paymentId
+     * @param  string  $transactionId
      */
-    public function complete();
+    public function updatePaymentMeta($paymentId, $transactionId)
+    {
+        give_update_payment_status($paymentId);
+        give_set_payment_transaction_id($paymentId, $transactionId);
+    }
 }

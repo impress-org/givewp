@@ -7,7 +7,6 @@ use Give\Framework\Http\Response\Traits\Responseable;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Responses\OnSitePaymentGatewayRedirectResponse;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -77,7 +76,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle return types
      *
-     * @param  RedirectResponse|JsonResponse|PaymentGatewayResponse  $type
+     * @param  RedirectResponse|JsonResponse|PaymentGatewayResponseInterface  $type
      * @throws TypeNotSupported
      */
     private function handleReturnTypes($type)
@@ -91,7 +90,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             wp_send_json(['data' => $type->getData()]);
         }
 
-        if ($type instanceof PaymentGatewayResponse) {
+        if ($type instanceof PaymentGatewayResponseInterface) {
             $response = $type->complete();
 
             $this->handleReturnTypes($response);
@@ -102,7 +101,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 "Return type must be an instance of %s or %s or %s",
                 RedirectResponse::class,
                 JsonResponse::class,
-                OnSitePaymentGatewayRedirectResponse::class
+                PaymentGatewayResponseInterface::class
             )
         );
     }
