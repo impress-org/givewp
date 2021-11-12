@@ -23,6 +23,10 @@ trait Responseable {
      */
     public function response($content = '', $status = 200, array $headers = [])
     {
+        if (func_num_args() === 0) {
+            return response();
+        }
+
         return response($content, $status, $headers);
     }
 }
