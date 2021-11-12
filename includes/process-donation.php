@@ -1167,7 +1167,7 @@ function give_get_donation_form_user( $valid_data = [] ) {
 
             // Register and login new user.
             $user['user_id'] = give_register_and_login_new_user($user);
-        } elseif ( true === $valid_data['need_user_login'] && ! $is_validateing_donation_form ) {
+        } elseif ( true === $valid_data['need_user_login'] ) {
             /**
              * The login form is now processed in the give_process_donation_login() function.
              * This is still here for backwards compatibility.
