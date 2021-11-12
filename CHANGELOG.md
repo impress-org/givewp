@@ -174,8 +174,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add support for admin defined recurring donations to the multi-step form template. (#5910)
 - Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910)
 - Payment errors no longer revert to the default donation amount (#5913)
-- Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (
-  # 5918)
+- Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer
+  (#5918)
 - Donors can now update their credit card using the Donor Dashboard (#5902)
 
 ## 2.12.2 - 2021-07-30
@@ -787,8 +787,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Setup Page assets now load from the correct directory in production. (#5108)
 - Missing block links in Setup Page now added. (#5128)
 - Location settings in the Wizard now default to current setting value. (#5150)
-- Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. (
-  # 5126)
+- Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements.
+  (#5126)
 
 ## 2.8.0-alpha.1 - 2020-08-17
 
