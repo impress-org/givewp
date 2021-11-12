@@ -29,7 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Add visibility conditions to field container to simplify field display logic in field api. (#6024)
 - Use field size in bytes in field api to get precise result when compare field size. (#6024)
-- Return empty array if file does not exist in \$\_FILES in field api. (#6032)
+- Return empty array if file does not exist in $_FILES in field api. (#6032)
 - Make field required only if visible in donation form in field api.
 - Default value is now used in Legacy Consumer textarea template. (#6043)
 - Use legacy consumer common style to style form fields in multi-step form template. (#6059)
