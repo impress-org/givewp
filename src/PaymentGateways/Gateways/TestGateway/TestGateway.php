@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
+use Give\Framework\PaymentGateways\Responses\OnSitePaymentGatewayRedirectResponse;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -13,7 +14,6 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  */
 class TestGateway extends PaymentGateway
 {
-
     /**
      * @inheritDoc
      */
@@ -66,8 +66,13 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        give_update_payment_status($paymentData->paymentId);
-        
-        return $this->response()->redirectTo(give_get_success_page_uri());
+        $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
+        $response = $this->response()->redirectTo($paymentData->redirectUrl);
+
+        return new OnSitePaymentGatewayRedirectResponse(
+            $response,
+            $paymentData->paymentId,
+            $transactionId
+        );
     }
 }
