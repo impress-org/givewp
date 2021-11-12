@@ -2,13 +2,18 @@
 
 Since GiveWP 2.8.0, all notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
+to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
 ### New
 
--   Scaffold Test Gateway 2.0 to register through Payment Gateway 2.0 (#6051)
+- Scaffold Test Gateway 2.0 to register through Payment Gateway 2.0 (#6051)
+
+## Fixed
+
+- Auto set new settings if old settings exist ("Primary Color", "Decimal Enabled"). (#5973)
 
 ## 2.16.0 - 2021-10-26
 
@@ -16,9 +21,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### New
 
--   Make field name required in field api. (#6032)
--   Add option to disable google fonts in multi-step form template. (#5973)
--   Add common style file for form field render with legacy consumer. (#6059)
+- Make field name required in field api. (#6032)
+- Add option to disable google fonts in multi-step form template. (#5973)
+- Add common style file for form field render with legacy consumer. (#6059)
 
 ### Changed
 
