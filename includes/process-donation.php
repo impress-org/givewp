@@ -1139,11 +1139,12 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
+ * @since   1.0
+ * @unreleased Do not run validation check for ajax request expect donation validation ajax request.
+ *
  * @param array $valid_data Valid Data.
  *
  * @access  private
- * @since   1.0
- *
  * @return  array|bool
  */
 function give_get_donation_form_user( $valid_data = [] ) {
