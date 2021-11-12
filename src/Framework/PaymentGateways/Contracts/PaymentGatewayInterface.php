@@ -2,7 +2,9 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -64,6 +66,8 @@ interface PaymentGatewayInterface
      * @param  GatewayPaymentData  $paymentData
      *
      * @return GatewayCommand
+     * @throws PaymentGatewayException|Exception
+     *
      */
     public function createPayment(GatewayPaymentData $paymentData);
 
@@ -86,6 +90,8 @@ interface PaymentGatewayInterface
      * @param  GatewaySubscriptionData  $subscriptionData
      *
      * @return GatewayCommand
+     * @throws PaymentGatewayException|Exception
+     *
      */
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData);
 

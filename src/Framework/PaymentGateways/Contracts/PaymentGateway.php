@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
@@ -11,6 +12,7 @@ use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -46,24 +48,36 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
     /**
      * @inheritDoc
-     * @throws TypeNotSupported
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
     {
-        $command = $this->createPayment($gatewayPaymentData);
-
-        $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
+        try {
+            $command = $this->createPayment($gatewayPaymentData);
+            $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            exit;
+        } catch (Exception $exception) {
+            $this->handleResponse(response()->json($exception->getMessage()));
+            exit;
+        }
     }
 
     /**
      * @inheritDoc
-     * @throws TypeNotSupported
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
-        $command = $this->createSubscription($paymentData, $subscriptionData);
-
-        $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
+        try {
+            $command = $this->createSubscription($paymentData, $subscriptionData);
+            $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            exit;
+        } catch (Exception $exception) {
+            $this->handleResponse(response()->json($exception->getMessage()));
+            exit;
+        }
     }
 
     /**
