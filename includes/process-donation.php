@@ -1149,11 +1149,11 @@ function give_register_and_login_new_user( $user_data = [] ) {
  */
 function give_get_donation_form_user( $valid_data = [] ) {
     // Initialize user.
-    $user      = false;
-    $post_data = give_clean($_POST); // WPCS: input var ok, sanitization ok, CSRF ok.
-    $is_ajax   = ! empty($_POST['give_ajax']) ? $post_data['give_ajax'] : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+    $user                                = false;
+    $post_data                           = give_clean($_POST); // WPCS: input var ok, sanitization ok, CSRF ok.
+    $is_validating_donation_form_on_ajax = ! empty($_POST['give_ajax']) ? $post_data['give_ajax'] : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
-    if ( $is_ajax ) {
+    if ( $is_validating_donation_form_on_ajax ) {
         // Do not create or login the user during the ajax submission (check for errors only).
         return true;
     } elseif ( is_user_logged_in() ) {
@@ -1167,7 +1167,7 @@ function give_get_donation_form_user( $valid_data = [] ) {
 
             // Register and login new user.
             $user['user_id'] = give_register_and_login_new_user($user);
-        } elseif ( true === $valid_data['need_user_login'] && ! $is_ajax ) {
+        } elseif ( true === $valid_data['need_user_login'] && ! $is_validateing_donation_form ) {
             /**
              * The login form is now processed in the give_process_donation_login() function.
              * This is still here for backwards compatibility.
