@@ -38,7 +38,10 @@
     "autoload": {
         "psr-4": {
             "Give\\": "src/"
-        }
+        },
+        "files": [
+            "src/Framework/Http/Response/functions.php"
+        ]
     },
     "config": {
         "platform": {
