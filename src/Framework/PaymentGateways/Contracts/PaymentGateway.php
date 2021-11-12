@@ -77,7 +77,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle return types
      *
-     * @param  RedirectResponse|JsonResponse|OnSitePaymentGatewayRedirectResponse  $type
+     * @param  RedirectResponse|JsonResponse|PaymentGatewayResponse  $type
      * @throws TypeNotSupported
      */
     private function handleReturnTypes($type)
