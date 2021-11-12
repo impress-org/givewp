@@ -35,7 +35,7 @@ class PayPalOrder
     private $merchantDetails;
 
     /**
-     * @unreleased
+     * @since 2.16.2
      * @var Settings
      */
     private $settings;
@@ -44,7 +44,7 @@ class PayPalOrder
      * PayPalOrder constructor.
      *
      * @since 2.9.0
-     * @unreleased Add third param "Settings" to function
+     * @since 2.16.2 Add third param "Settings" to function
      *
      * @param PayPalClient $paypalClient
      * @param MerchantDetail $merchantDetails
@@ -92,7 +92,7 @@ class PayPalOrder
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
      * @since 2.9.0
-     * @unreleased Conditionally set transaction as donation or standard transaction in PayPal.
+     * @since 2.16.2 Conditionally set transaction as donation or standard transaction in PayPal.
      *
      * @param array $array
      *

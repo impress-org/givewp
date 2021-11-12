@@ -34,7 +34,7 @@ class Settings {
     /**
      * give_settings key for the collect bulling details
      *
-     * @unreleased
+     * @since 2.16.2
      */
     const TRANSACTION_TYPE = 'paypal_commerce_transaction_type';
 
@@ -151,7 +151,7 @@ class Settings {
     }
 
     /**
-     * @unreleased
+     * @since 2.16.2
      */
     public function isTransactionTypeDonation()
     {

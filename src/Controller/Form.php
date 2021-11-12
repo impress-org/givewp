@@ -118,7 +118,7 @@ class Form {
 	 * Load donation form view.
 	 *
 	 * @since 2.7.0
-     * @unreleased Co-locate $formTemplate with related conditional and usage.
+     * @since 2.16.2 Co-locate $formTemplate with related conditional and usage.
 	 * @global WP_Post $post
 	 */
 	public function loadDonationFormView() {

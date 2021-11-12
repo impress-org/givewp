@@ -86,7 +86,7 @@ class Template
     /**
      * @since 2.16.0
      *
-     * @unreleased Accepts parameter "call by value". Pass multiple to arguments to isset to validate whether deprecated settings exist.
+     * @since 2.16.2 Accepts parameter "call by value". Pass multiple to arguments to isset to validate whether deprecated settings exist.
      *
      * @param array $settings
      *
