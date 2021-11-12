@@ -6,7 +6,7 @@
         "dev": "mix",
         "production": "mix --production",
         "build": "mix --production",
-        "watch": "mix --watch",
+        "watch": "mix watch",
         "test:e2e": "cypress open",
         "env": "wp-env"
     },
@@ -56,6 +56,7 @@
         "@fortawesome/free-solid-svg-icons": "^5.15.1",
         "@fortawesome/react-fontawesome": "^0.1.12",
         "@paypal/paypal-js": "^1.0.2",
+        "@reach/tabs": "^0.16.1",
         "@stripe/react-stripe-js": "^1.2.2",
         "@stripe/stripe-js": "^1.12.1",
         "@wordpress/i18n": "^3.19.0",

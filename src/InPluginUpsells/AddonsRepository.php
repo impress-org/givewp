@@ -9,7 +9,7 @@ class AddonsRepository {
 	/**
 	 * @var string
 	 */
-	private $endpoint = 'https://givewp.com/addons'; // TODO: set correct endpoint
+	private $endpoint = 'https://givewp.com/downloads/upsells/addons.json';
 
 	/**
 	 * @var string
@@ -36,9 +36,16 @@ class AddonsRepository {
 			return [];
 		}
 
-		return []; // TODO: remove
+		$json = json_decode( $body, true );
 
-		//return json_decode( $body );
+        // Sanitize JSON
+        array_walk_recursive( $json, function( &$item  ){
+            $item = wp_kses( $item, [
+                'strong' => [],
+            ] );
+        } );
+
+        return $json;
 	}
 
 	/**

@@ -1525,9 +1525,7 @@ function give_admin_addon_menu_inline_scripts() {
 	?>
 	<script>
 		(function ($) {
-			const $addonLink = $('#menu-posts-give_forms a[href^="https://go.givewp.com"]');
-			$addonLink.attr('target', '_blank');
-
+			const $addonLink = $('#menu-posts-give_forms a[href^="edit.php?post_type=give_forms&page=give-add-ons"]');
 			<?php if ( empty( give_get_plugins( [ 'only_premium_add_ons' => true ] ) ) ) : ?>
 			$addonLink.addClass('give-highlight');
 			$addonLink.prepend('<span class="dashicons dashicons-star-filled"></span>');
@@ -1535,14 +1533,14 @@ function give_admin_addon_menu_inline_scripts() {
 		})(jQuery)
 	</script>
 	<style>
-		#menu-posts-give_forms a[href^="https://go.givewp.com"].give-highlight {
+		#menu-posts-give_forms a[href^="edit.php?post_type=give_forms&page=give-add-ons"].give-highlight {
 			color: rgb(43, 194, 83);
 			font-weight: 700;
 			vertical-align: top;
 			text-shadow: 0 1px 2px #00000080;
 		}
 
-		#menu-posts-give_forms a[href^="https://go.givewp.com"].give-highlight span.dashicons {
+		#menu-posts-give_forms a[href^="edit.php?post_type=give_forms&page=give-add-ons"].give-highlight span.dashicons {
 			font-size: 14px !important;
 			width: auto;
 			height: 18px;
