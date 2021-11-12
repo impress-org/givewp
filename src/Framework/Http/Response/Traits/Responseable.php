@@ -4,13 +4,16 @@ namespace Give\Framework\Http\Response\Traits;
 
 use Give\Framework\Http\Response\Response;
 use Give\Framework\Http\Response\ResponseFactory;
+use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 
 use function Give\Framework\Http\Response\response;
 
 /**
  * @unreleased
  */
-trait Responseable {
+trait Responseable
+{
     /**
      * Return a new response from the application.
      *
@@ -28,5 +31,24 @@ trait Responseable {
         }
 
         return response($content, $status, $headers);
+    }
+
+    /**
+     * Handle Response
+     *
+     * @unreleased
+     *
+     * @param  RedirectResponse|JsonResponse  $type
+     */
+    public function handleResponse($type)
+    {
+        if ($type instanceof RedirectResponse) {
+            wp_redirect($type->getTargetUrl());
+            exit;
+        }
+
+        if ($type instanceof JsonResponse) {
+            wp_send_json(['data' => $type->getData()]);
+        }
     }
 }

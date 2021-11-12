@@ -71,7 +71,7 @@ class TestGateway extends PaymentGateway
         return new OnSitePaymentGatewayRedirectResponse(
             $paymentData->redirectUrl,
             $paymentData->paymentId,
-            $transactionId,
+            $transactionId
         );
     }
 }
