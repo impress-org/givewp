@@ -1,6 +1,5 @@
 // Plugins
 import 'jquery.payment';
-import 'accounting';
 import 'uiblocker';
 import 'magnific-popup';
 import 'iframe-resizer';
