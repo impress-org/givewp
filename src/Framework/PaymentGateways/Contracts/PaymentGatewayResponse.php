@@ -2,14 +2,11 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
-use Give\Framework\Http\Response\Traits\Responseable;
-
 /**
  * @unreleased
  */
 abstract class PaymentGatewayResponse implements PaymentGatewayResponseInterface
 {
-    use Responseable;
 
     /**
      * @param  int  $paymentId

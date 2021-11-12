@@ -2,8 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
-use Give\Framework\PaymentGateways\Responses\OnSitePaymentGatewayRedirectResponse;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -68,10 +68,6 @@ class TestGateway extends PaymentGateway
     {
         $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
 
-        return new OnSitePaymentGatewayRedirectResponse(
-            $paymentData->redirectUrl,
-            $paymentData->paymentId,
-            $transactionId
-        );
+        return new PaymentComplete($transactionId);
     }
 }

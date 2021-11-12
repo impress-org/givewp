@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -62,7 +63,7 @@ interface PaymentGatewayInterface
      *
      * @param  GatewayPaymentData  $paymentData
      *
-     * @return PaymentGatewayResponse
+     * @return GatewayCommand
      */
     public function createPayment(GatewayPaymentData $paymentData);
 
@@ -84,7 +85,7 @@ interface PaymentGatewayInterface
      * @param  GatewayPaymentData  $paymentData
      * @param  GatewaySubscriptionData  $subscriptionData
      *
-     * @return PaymentGatewayResponse
+     * @return GatewayCommand
      */
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData);
 

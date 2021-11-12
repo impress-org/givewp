@@ -3,18 +3,24 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\Http\Response\Traits\Responseable;
+use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+
+use function Give\Framework\Http\Response\response;
 
 /**
  * @unreleased
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
-    use Responseable;
-
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
      */
@@ -30,7 +36,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         $this->subscriptionModule = $subscriptionModule;
     }
 
-
     /**
      * @inheritDoc
      */
@@ -45,9 +50,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
     {
-        $payment = $this->createPayment($gatewayPaymentData);
+        $command = $this->createPayment($gatewayPaymentData);
 
-        $this->handleReturnTypes($payment);
+        $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
     }
 
     /**
@@ -56,9 +61,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
-        $subscription = $this->createSubscription($paymentData, $subscriptionData);
+        $command = $this->createSubscription($paymentData, $subscriptionData);
 
-        $this->handleReturnTypes($subscription);
+        $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
     }
 
     /**
@@ -73,15 +78,23 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * Handle return types
+     * Handle gateway command
      *
-     * @param  PaymentGatewayResponse  $type
+     * @unreleased
+     *
+     * @param  GatewayCommand  $command
+     * @param  GatewayPaymentData  $gatewayPaymentData
      * @throws TypeNotSupported
      */
-    private function handleReturnTypes($type)
+    public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
-        if ($type instanceof PaymentGatewayResponse) {
-            $response = $type->complete();
+        if ($command instanceof PaymentComplete) {
+            give(PaymentCompleteHandler::class)->__invoke(
+                $command,
+                $gatewayPaymentData->paymentId
+            );
+
+            $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
 
             $this->handleResponse($response);
         }
@@ -89,8 +102,63 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         throw new TypeNotSupported(
             sprintf(
                 "Return type must be an instance of %s",
-                PaymentGatewayResponseInterface::class
+                GatewayCommand::class
             )
         );
+    }
+
+    /**
+     * Handle gateway subscription command
+     *
+     * @unreleased
+     *
+     * @param  GatewayCommand  $command
+     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @param  GatewaySubscriptionData  $gatewaySubscriptionData
+     * @throws TypeNotSupported
+     */
+    public function handleGatewaySubscriptionCommand(
+        GatewayCommand $command,
+        GatewayPaymentData $gatewayPaymentData,
+        GatewaySubscriptionData $gatewaySubscriptionData
+    ) {
+        if ($command instanceof SubscriptionComplete) {
+            give(SubscriptionCompleteHandler::class)->__invoke(
+                $command,
+                $gatewaySubscriptionData->subscriptionId,
+                $gatewayPaymentData->paymentId
+            );
+
+            $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
+
+            $this->handleResponse($response);
+        }
+
+        throw new TypeNotSupported(
+            sprintf(
+                "Return type must be an instance of %s",
+                GatewayCommand::class
+            )
+        );
+    }
+
+
+    /**
+     * Handle Response
+     *
+     * @unreleased
+     *
+     * @param  RedirectResponse|JsonResponse  $type
+     */
+    private function handleResponse($type)
+    {
+        if ($type instanceof RedirectResponse) {
+            wp_redirect($type->getTargetUrl());
+            exit;
+        }
+
+        if ($type instanceof JsonResponse) {
+            wp_send_json(['data' => $type->getData()]);
+        }
     }
 }
