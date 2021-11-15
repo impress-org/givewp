@@ -56,12 +56,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $command = $this->createPayment($gatewayPaymentData);
             $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
         } catch (PaymentGatewayException $paymentGatewayException) {
-            $message = $paymentGatewayException->getMessage() ?: __(
-                'An unexpected error occurred from the payment gateway.  Please try again or contact us to help resolve.',
-                'give'
-            );
-
-            $this->handleResponse(response()->json($message));
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
             exit;
         } catch (Exception $exception) {
             PaymentGatewayLog::error($exception->getMessage());
@@ -85,12 +80,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $command = $this->createSubscription($paymentData, $subscriptionData);
             $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
         } catch (PaymentGatewayException $paymentGatewayException) {
-            $message = $paymentGatewayException->getMessage() ?: __(
-                'An unexpected error occurred from the payment gateway.  Please try again or contact us to help resolve.',
-                'give'
-            );
-
-            $this->handleResponse(response()->json($message));
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
             exit;
         } catch (Exception $exception) {
             PaymentGatewayLog::error($exception->getMessage());
