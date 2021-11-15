@@ -14,10 +14,11 @@
         <table>
             <thead>
                 <tr>
-                    <th>Donation Summary</th>
+                    <th><?php _e('Donation Summary', 'givewp' ); ?></th>
                     <th>
                         <button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
-                            Edit Donation<?php include plugin_dir_path( __DIR__ ) . 'images/pencil.svg'; ?>
+                            <?php _e('Edit Donation', 'givewp' ); ?>
+                            <?php include plugin_dir_path( __DIR__ ) . 'images/pencil.svg'; ?>
                         </button>
                     </th>
                 </tr>
@@ -29,7 +30,7 @@
                 <!-- PAYMENT AMOUNT -->
                 <tr>
                     <td>
-                        <div>Payment Amount</div>
+                        <div><?php _e('Payment Amount', 'givewp' ); ?></div>
                     </td>
                     <td data-tag="amount"></td>
                 </tr>
@@ -39,7 +40,7 @@
                 <!-- GIVING FREQUENCY -->
                 <tr>
                     <td>
-                        <div>Giving Frequency</div>
+                        <div><?php _e('Giving Frequency', 'givewp' ); ?></div>
                         <?php if( $this->isRecurringEnabled() ): ?>
                         <span class="give-donation-summary-help-text js-give-donation-summary-frequency-help-text">
                             <img src="<?php echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
@@ -54,7 +55,7 @@
                     </td>
                     <td>
                         <span data-tag="recurring"></span>
-                        <span data-tag="frequency"><?php echo __( 'One time', 'give' ); ?></span>
+                        <span data-tag="frequency"><?php _e( 'One time', 'give' ); ?></span>
                     </td>
                 </tr>
 
@@ -67,7 +68,7 @@
                             <div><?php echo __( 'Cover Donation Fees', 'give' ); ?></div>
                             <span class="give-donation-summary-help-text">
                                 <img src="<?php echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
-                                <?php echo __( 'Ensures 100% of your donation reaches our cause', 'give' ); ?>
+                                <?php _e( 'Ensures 100% of your donation reaches our cause', 'give' ); ?>
                             </span>
                         </td>
                         <td data-tag="fees">{fees}</td>
@@ -82,7 +83,7 @@
 
                 <!-- TOTAL DONATION AMOUNT (INCLUDING FEES) -->
                 <tr>
-                    <th><?php echo __( 'Donation Total', 'give' ); ?></th>
+                    <th><?php _e( 'Donation Total', 'give' ); ?></th>
                     <th data-tag="total"></th>
                 </tr>
 
