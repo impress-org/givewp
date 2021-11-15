@@ -64,7 +64,7 @@ class Template
 		// Backward compatibility for migrated settings.
 		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
 		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
-		self::handleOptionsBackwardCompatibility( $settings );
+		return self::handleOptionsBackwardCompatibility( $settings );
     }
 
     /**
