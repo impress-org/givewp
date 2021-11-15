@@ -106,6 +106,7 @@ class DefaultFormFactory {
 	 *
 	 * @return array
 	 *
+     * @since 2.16.2 add new visual appearance settings
 	 * @since 2.8.0
 	 */
 	public function getTemplateConfig() {
@@ -123,6 +124,11 @@ class DefaultFormFactory {
 				'content'      => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo( 'sitename' ) ),
 				'next_label'   => __( 'Continue', 'give' ),
 			],
+            'visual_appearance' => [
+                'decimals_enabled'  => 'disabled',
+                'primary_color'     => '#28C77B',
+                'google-fonts'      => 'enabled'
+            ],
 			'payment_information' => [
 				'header_label' => __( 'Add Your Information', 'give' ),
 				'headline'     => __( "Who's giving today?", 'give' ),
