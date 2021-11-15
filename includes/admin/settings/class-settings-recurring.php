@@ -3,7 +3,7 @@
 /**
  * @unreleased
  */
-class Give_Settings_Recurring_Donations extends Give_Settings_Page
+class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
 {
     const CONTAINER_ID = 'give-in-plugin-upsells';
 
@@ -45,4 +45,4 @@ class Give_Settings_Recurring_Donations extends Give_Settings_Page
     }
 }
 
-return new Give_Settings_Recurring_Donations();
+return new Give_Settings_Recurring_Donations_Core();
