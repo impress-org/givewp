@@ -1,5 +1,3 @@
-/** @jsx h */
-/** @jsxFrag h */
 import h from 'vhtml';
 import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
 
@@ -36,11 +34,7 @@ function setPersonalInfoTitle() {
 
 function addPersonalInfoDescription() {
 	insertAfter(
-		nodeFromString(
-			<p className="give-personal-info-description">
-				{classicTemplateOptions.donor_information.description}
-			</p>
-		),
+		nodeFromString(h('p', {className: 'give-personal-info-description'}, classicTemplateOptions.donor_information.description)),
 		document.querySelector('.give-personal-info-section legend:first-of-type'),
 	);
 }
@@ -51,11 +45,7 @@ function setPaymentDetailsTitle() {
 
 function addPaymentDetailsDescription() {
 	insertAfter(
-		nodeFromString(
-			<p className="give-payment-details-description">
-				{classicTemplateOptions.payment_method.description}
-			</p>
-		),
+		nodeFromString(h('p', {className: 'give-payment-details-description'})),
 		document.querySelector('.give-payment-mode-label'),
 	);
 }
@@ -67,34 +57,43 @@ function movePaymentFormInsidePaymentDetailsSection() {
 }
 
 function splitDonationLevelAmountsIntoParts() {
-	const unFormatCurrency = (...args) => window.Give.fn.unFormatCurrency(...args);
-	const getGlobalVar = (...args) => window.Give.fn.getGlobalVar(...args);
 	const currency = {
-		code: getGlobalVar('currency'),
-		decimalSeparator: getGlobalVar('decimal_separator'),
-		precision: Number.parseInt(getGlobalVar('number_decimals')),
-		symbol: getGlobalVar('currency_sign'),
-		symbolPosition: getGlobalVar('currency_pos'),
-		thousandsSeparator: getGlobalVar('thousands_separator'),
+		code:               window.Give.fn.getGlobalVar('currency'),
+		decimalSeparator:   window.Give.fn.getGlobalVar('decimal_separator'),
+		precision:          Number.parseInt(window.Give.fn.getGlobalVar('number_decimals')),
+		symbol:             window.Give.fn.getGlobalVar('currency_sign'),
+		symbolPosition:     window.Give.fn.getGlobalVar('currency_pos'),
+		thousandsSeparator: window.Give.fn.getGlobalVar('thousands_separator'),
 	};
 
 	document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach(node => {
-		const formattedAmount = node.getAttribute('value');
-		const rawAmount = unFormatCurrency(formattedAmount, currency.decimalSeparator);
+		const rawAmount = window.Give.fn.unFormatCurrency(node.getAttribute('value'), currency.decimalSeparator);
+        const amountWithoutDecimal = window.accounting.format(rawAmount, 0, currency.thousandsSeparator);
+        const decimalForAmount = rawAmount.toFixed(currency.precision).split('.')[1];
 
-		const [symbolBefore, symbolAfter] = [currency.symbolPosition === 'before', currency.symbolPosition === 'after'];
-
-		const CurrencySymbol = ({position}) => <span className={`give-currency-symbol-${position}`}>{currency.symbol}</span>;
-		const AmountWithoutDecimals = () => <span className="give-amount-without-decimals">{window.accounting.format(rawAmount, 0, currency.thousandsSeparator)}</span>;
-		const DecimalOfAmount = () => <span className="give-amount-decimal">{rawAmount.toFixed(currency.precision).split('.')[1]}</span>;
-		const Amount = () => <span className="give-amount-formatted"><AmountWithoutDecimals /><DecimalOfAmount /></span>;
-
+        // Use the formatted amount as the ARIA label.
 		node.setAttribute('aria-label', node.textContent);
-		node.innerHTML = (
-			<span className="give-formatted-currency" aria-hidden>
-				{symbolBefore && <CurrencySymbol position="before" />}<Amount /> {symbolAfter && <CurrencySymbol position="after" />}
-			</span>
-		);
+
+        const CurrencySymbol = ({position}) => h('span', {className: `give-currency-symbol-${position}`}, currency.symbol);
+
+        // This is a visual representation of the amount. The decimal separator
+        // omitted since it is not displayed. The ARIA label includes the
+        // properly formatted amount, so we hide the contents for screen
+        // readers.
+        node.innerHTML = h(
+            'span',
+            {
+                className: 'give-formatted-currency',
+                'aria-hidden': true,
+            },
+            currency.symbolPosition === 'before' && h(CurrencySymbol, {position: 'before'}),
+            h('span', {className: "give-amount-formatted"},
+                h('span', {className: "give-amount-without-decimals"}, amountWithoutDecimal),
+                h('span', {className: "give-amount-decimal"}, decimalForAmount),
+            ),
+            // There’s an intentional leading space before the currency symbol.
+            currency.symbolPosition === 'after' && ` ${h(CurrencySymbol, {position: 'after'})}`,
+        );
 	});
 }
 

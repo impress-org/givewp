@@ -31,7 +31,7 @@ trait HasVisibilityConditions {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.16.0
 	 *
 	 * @return boolean
 	 */

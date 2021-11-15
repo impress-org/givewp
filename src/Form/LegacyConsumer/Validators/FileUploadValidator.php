@@ -96,7 +96,7 @@ class FileUploadValidator {
 
 	/**
 	 * @since 2.14.0
-	 * @unreleased File size unit update to bytes from mega bytes in logic to get precise result.
+	 * @since 2.16.0 File size unit update to bytes from mega bytes in logic to get precise result.
 	 */
 	private function validateUploadSize(){
 		$allowedFileSize = $this->field->getMaxSize();

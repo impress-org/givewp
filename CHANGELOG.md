@@ -7,6 +7,20 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## Fixed
+
+- Auto set new settings if old settings exist ("Primary Color", "Decimal Enabled"). (#5973)
+
+## 2.16.0 - 2021-10-26
+
+## 2.16.0-rc.1 - 2021-10-25
+
+### New
+
+- Make field name required in field api. (#6032)
+- Add option to disable google fonts in multi-step form template. (#5973)
+- Add common style file for form field render with legacy consumer. (#6059)
+
 ### Changed
 
 - Add visibility conditions to field container to simplify field display logic in field api. (#6024)
@@ -14,14 +28,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Return empty array if file does not exist in $_FILES in field api. (#6032)
 - Make field required only if visible in donation form in field api.
 - Default value is now used in Legacy Consumer textarea template. (#6043)
-
-### New
-
-- Make field name required in field api. (#6032)
+- Use legacy consumer common style to style form fields in multi-step form template. (#6059)
 
 ### Fixed
 
 - Give icons in Gutenberg block admin UI now display correctly in Firefox (#6023)
+- An error message that was confusing has been clarified (#6045)
+- Show minimum donation amount notice in donation form. (#6059)
 
 ## 2.15.0 - 2021-10-11
 
@@ -113,7 +126,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## 2.13.3 - 2021-09-01
 
 ### Fixed
- 
+
 - Donation level id and amount value store as string for donation form generate in on-boarding process. (#5940)
 - Set focus on donation amount field when click on "Custom" donation level id. (#5943)
 
@@ -127,7 +140,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- Custom amount level is correctly set after a payment error (#5922) 
+- Custom amount level is correctly set after a payment error (#5922)
 - Lodash is now an external dependency (#5925)
 
 ## 2.13.0 - 2021-08-19
