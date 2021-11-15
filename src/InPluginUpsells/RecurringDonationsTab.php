@@ -12,7 +12,7 @@ class RecurringDonationsTab {
     public function loadScripts() {
         wp_enqueue_script(
             'give-in-plugin-upsells-recurring-donations',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-recurring-donations-tab.js',
+            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-recurring-donations-settings-tab.js',
             ['wp-element', 'wp-i18n', 'wp-hooks'],
             GIVE_VERSION,
             true
@@ -26,7 +26,7 @@ class RecurringDonationsTab {
 		);
 
 		wp_localize_script(
-			'give-in-plugin-upsells-addons',
+			'give-in-plugin-upsells-recurring-donations',
 			'GiveRecurringDonations',
             ['assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/']
         );
@@ -37,7 +37,7 @@ class RecurringDonationsTab {
      */
     public static function isShowing() {
         $isSettingPage = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'];
-        $isRecurringDonationsTab = isset( $_GET['tab'] ) && 'recurring-donations' === $_GET['tab'];
+        $isRecurringDonationsTab = isset( $_GET['tab'] ) && 'recurring' === $_GET['tab'];
 
         return $isSettingPage && $isRecurringDonationsTab;
     }

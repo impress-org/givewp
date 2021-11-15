@@ -1,3 +1,10 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1.5rem;
+}
+
 .header {
 	display: flex;
 	align-items: center;

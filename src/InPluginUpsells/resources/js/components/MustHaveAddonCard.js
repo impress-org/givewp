@@ -3,7 +3,7 @@ import {Card} from './Card';
 import styles from './MustHaveAddonCard.module.css'
 
 export const MustHaveAddonCard = ({name, description, icon, image, features, actionLink, actionText}) => (
-	<Card as="article">
+	<Card as="article" className={styles.card}>
 		<div className={styles.header}>
             <img src={icon} alt="" />
 			<h3 className={styles.title}>{name}</h3>

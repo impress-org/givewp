@@ -1,8 +1,8 @@
 .card {
-    padding: 2rem 5.75rem 2rem 2rem;
-    max-width: 51rem;
     display: grid;
     row-gap: 1.25rem;
+    max-width: 51rem;
+    padding: 2rem 5.75rem 2rem 2rem;
 }
 
 @media screen and (min-width: 64rem) {

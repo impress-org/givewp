@@ -1,7 +1,7 @@
 .card {
     display: grid;
-    padding-top: 2.25rem;
-    padding-bottom: 2.25rem;
+	gap: 1rem;
+    padding: 2.25rem 1.5rem;
 }
 
 .image {
