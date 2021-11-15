@@ -13,6 +13,7 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -55,10 +56,22 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $command = $this->createPayment($gatewayPaymentData);
             $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
         } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            $message = $paymentGatewayException->getMessage() ?: __(
+                'An unexpected error occurred from the payment gateway.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
             exit;
         } catch (Exception $exception) {
-            $this->handleResponse(response()->json($exception->getMessage()));
+            PaymentGatewayLog::error($exception->getMessage());
+
+            $message = __(
+                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
             exit;
         }
     }
@@ -72,10 +85,22 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $command = $this->createSubscription($paymentData, $subscriptionData);
             $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
         } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            $message = $paymentGatewayException->getMessage() ?: __(
+                'An unexpected error occurred from the payment gateway.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
             exit;
         } catch (Exception $exception) {
-            $this->handleResponse(response()->json($exception->getMessage()));
+            PaymentGatewayLog::error($exception->getMessage());
+
+            $message = __(
+                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
             exit;
         }
     }
