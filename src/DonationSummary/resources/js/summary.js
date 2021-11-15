@@ -1,3 +1,5 @@
+import accounting from 'accounting'
+
 /**
  * @unreleased
  */
