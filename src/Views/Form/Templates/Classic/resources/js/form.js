@@ -109,17 +109,12 @@ function splitDonationLevelAmountsIntoParts() {
 }
 
 function moveDefaultGatewayDataIntoActiveGatewaySection() {
-    // Get gateway data markup
-    const gatewayDataElement = document.querySelector( '#give_purchase_form_wrap fieldset:not(.give-donation-submit)');
-    // Create new element for gateway markup
-    const newGatewayElement = document.createElement('li' );
-    newGatewayElement.className = 'give-gateway-response';
-    newGatewayElement.innerHTML = gatewayDataElement.outerHTML
-    document.querySelector('.give-gateway-option-selected' ).after(  newGatewayElement );
-    // Remove old markup
-    gatewayDataElement.remove();
+    addSelectedGatewayDetails(
+        createGatewayDetails(
+            document.querySelector('#give_purchase_form_wrap fieldset:not(.give-donation-submit)').innerHTML
+        )
+    );
 }
-
 
 function splitGatewayResponse() {
     jQuery.ajaxPrefilter(function( options, originalOptions ) {
@@ -135,43 +130,51 @@ function splitGatewayResponse() {
                 } );
 
                 // Remove previous gateway data
-                removeNode( document.querySelector( '.give-gateway-response' ) );
+                removeNode( document.querySelector( '.give-gateway-details' ) );
 
                 if ( originalOptions.beforeSend instanceof Function ) {
                     originalOptions.beforeSend();
                 }
             }
             // Override the success callback
-            options.success = function( response ) {
+            options.success = function( responseHTML ) {
                 // Trigger original success callback
-                originalOptions.success( response );
+                originalOptions.success( responseHTML );
 
                 removeNode( document.querySelector( '#give_purchase_form_wrap' ) );
 
-                const responseMarkup = document.createElement('markup' );
-                responseMarkup.innerHTML = response;
+                const gatewayDetails = createGatewayDetails(responseHTML);
 
-                const personalInfoSection = responseMarkup.querySelector( '.give-personal-info-section' );
-                const submitButton = responseMarkup.querySelector( '#give_purchase_submit' );
-                const gatewayMarkup = responseMarkup.innerHTML.replace( personalInfoSection.outerHTML, '' ).replace( submitButton.outerHTML, '' );
+                // The following both removes the sections from gatewayDetails,
+                // but transplants their content to sections in the form.
 
-                // Update form markup
-                document.querySelector('.give-personal-info-section' ).innerHTML = personalInfoSection.innerHTML;
+                // Transplant the existing personal info content with the markup from the gateway’s HTML
+                document.querySelector('.give-personal-info-section').replaceChildren(
+                    ...gatewayDetails.removeChild(gatewayDetails.querySelector('.give-personal-info-section')).children
+                );
+                setPersonalInfoTitle();
+                addPersonalInfoDescription();
 
-                const gatewayElement = document.createElement('li' );
+                // Replace the donation button section with the markup from the gateway’s HTML
+                document.querySelector('.give-donate-now-button-section').replaceWith(
+                    ...gatewayDetails.removeChild(gatewayDetails.querySelector('#give_purchase_submit')).children
+                );
 
-                gatewayElement.className = 'give-gateway-response';
-                gatewayElement.innerHTML = gatewayMarkup;
+                // Add the gateway details to the form
+                addSelectedGatewayDetails(gatewayDetails);
 
-                document.querySelector('.give-gateway-option-selected' ).after(  gatewayElement );
-                document.querySelector('.give-donate-now-button-section' ).outerHTML = submitButton.innerHTML;
-
-                jQuery( '.give-donate-now-button-section'  ).unblock();
+                jQuery( '.give-donate-now-button-section' ).unblock();
             }
         }
 
     });
 }
+
+const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
+
+const addSelectedGatewayDetails = (gatewayDetailsNode) => document
+    .querySelector('.give-gateway-option-selected > .give-gateway-option')
+    .after(gatewayDetailsNode);
 
 window.GiveClassicTemplate = {
 	share: ( element ) => {
