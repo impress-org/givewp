@@ -1,4 +1,5 @@
 import h from 'vhtml';
+import accounting from 'accounting';
 import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
 
 // Transforms document for classic template
@@ -12,6 +13,8 @@ domIsReady(() => {
 	setPaymentDetailsTitle();
 	addPaymentDetailsDescription();
 	splitDonationLevelAmountsIntoParts();
+    moveDefaultGatewayDataIntoActiveGatewaySection();
+    splitGatewayResponse();
 });
 
 /**
@@ -77,7 +80,7 @@ function splitDonationLevelAmountsIntoParts() {
 
 	document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach(node => {
 		const rawAmount = window.Give.fn.unFormatCurrency(node.getAttribute('value'), currency.decimalSeparator);
-        const amountWithoutDecimal = window.accounting.format(rawAmount, 0, currency.thousandsSeparator);
+        const amountWithoutDecimal = accounting.format(rawAmount, 0, currency.thousandsSeparator);
         const decimalForAmount = rawAmount.toFixed(currency.precision).split('.')[1];
 
         // Use the formatted amount as the ARIA label.
@@ -100,12 +103,78 @@ function splitDonationLevelAmountsIntoParts() {
                 h('span', {className: "give-amount-without-decimals"}, amountWithoutDecimal),
                 h('span', {className: "give-amount-decimal"}, decimalForAmount),
             ),
-            // There’s an intentional leading space before the currency symbol.
-            currency.symbolPosition === 'after' && ` ${h(CurrencySymbol, {position: 'after'})}`,
+            currency.symbolPosition === 'after' && h(CurrencySymbol, {position: 'after'}),
         );
 	});
 }
 
+function moveDefaultGatewayDataIntoActiveGatewaySection() {
+    addSelectedGatewayDetails(
+        createGatewayDetails(
+            document.querySelector('#give_purchase_form_wrap fieldset:not(.give-donation-submit)').innerHTML
+        )
+    );
+}
+
+function splitGatewayResponse() {
+    jQuery.ajaxPrefilter(function( options, originalOptions ) {
+        if ( options.url.includes( '?payment-mode=' ) ) {
+            // Override beforeSend callback
+            options.beforeSend = function() {
+                jQuery( '.give-donate-now-button-section' ).block( {
+                    message: null,
+                    overlayCSS: {
+                        background: '#fff',
+                        opacity: 0.6,
+                    },
+                } );
+
+                // Remove previous gateway data
+                removeNode( document.querySelector( '.give-gateway-details' ) );
+
+                if ( originalOptions.beforeSend instanceof Function ) {
+                    originalOptions.beforeSend();
+                }
+            }
+            // Override the success callback
+            options.success = function( responseHTML ) {
+                // Trigger original success callback
+                originalOptions.success( responseHTML );
+
+                removeNode( document.querySelector( '#give_purchase_form_wrap' ) );
+
+                const gatewayDetails = createGatewayDetails(responseHTML);
+
+                // The following both removes the sections from gatewayDetails,
+                // but transplants their content to sections in the form.
+
+                // Transplant the existing personal info content with the markup from the gateway’s HTML
+                document.querySelector('.give-personal-info-section').replaceChildren(
+                    ...gatewayDetails.removeChild(gatewayDetails.querySelector('.give-personal-info-section')).children
+                );
+                setPersonalInfoTitle();
+                addPersonalInfoDescription();
+
+                // Replace the donation button section with the markup from the gateway’s HTML
+                document.querySelector('.give-donate-now-button-section').replaceWith(
+                    ...gatewayDetails.removeChild(gatewayDetails.querySelector('#give_purchase_submit')).children
+                );
+
+                // Add the gateway details to the form
+                addSelectedGatewayDetails(gatewayDetails);
+
+                jQuery( '.give-donate-now-button-section' ).unblock();
+            }
+        }
+
+    });
+}
+
+const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
+
+const addSelectedGatewayDetails = (gatewayDetailsNode) => document
+    .querySelector('.give-gateway-option-selected > .give-gateway-option')
+    .after(gatewayDetailsNode);
 
 window.GiveClassicTemplate = {
 	share: ( element ) => {
@@ -125,4 +194,3 @@ window.GiveClassicTemplate = {
 		return false;
 	}
 }
-
