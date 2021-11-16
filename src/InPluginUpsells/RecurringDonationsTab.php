@@ -36,9 +36,10 @@ class RecurringDonationsTab {
      * Is the tab active?
      */
     public static function isShowing() {
+        $recurringIsNotActive = !defined('GIVE_RECURRING_VERSION');
         $isSettingPage = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'];
         $isRecurringDonationsTab = isset( $_GET['tab'] ) && 'recurring' === $_GET['tab'];
 
-        return $isSettingPage && $isRecurringDonationsTab;
+        return $recurringIsNotActive && $isSettingPage && $isRecurringDonationsTab;
     }
 }
