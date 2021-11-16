@@ -1,110 +1,126 @@
 <?php
 
+use Give\Helpers\Form\Template;
 use Give\Receipt\DonationReceipt;
 use Give\Receipt\LineItem;
 use Give\Receipt\Section;
 use Give\Session\SessionDonation\DonationAccessor;
-use Give\Views\Form\Templates\Sequoia\Sequoia;
 use Give\Views\IframeContentView;
-use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give_Payment as Payment;
 
-$donationSessionAccessor = new DonationAccessor();
-$donation                = new Payment( $donationSessionAccessor->getDonationId() );
-$options                 = FormTemplateUtils::getOptions();
+$template = Give()->templates->getTemplate();
+$receipt  = $template->getReceiptDetails( ( new DonationAccessor() )->getDonationId() );
+$option   = function ( $name ) use ( $template ) {
+	static $options = [];
 
-/* @var Sequoia $sequoiaTemplate */
-$sequoiaTemplate = Give()->templates->getTemplate();
-$receipt         = $sequoiaTemplate->getReceiptDetails( $donation->ID );
+	if ( empty( $options ) ) {
+		$options = Template::getOptions()[ 'donation_receipt' ];
+	}
 
-/* @var LineItem|null $pdfReceiptDownloadLinkDetailItem */
-$pdfReceiptLinkDetailItem = null;
+	if ( isset( $options[ $name ] ) ) {
+		return $options[ $name ];
+	}
+
+	return '';
+};
+
+$donorDashboardUrl = get_permalink( give_get_option( 'donor_dashboard_page' ) );
 
 ob_start();
 ?>
-<div class="give-receipt-wrap give-embed-receipt">
-	<div class="give-section receipt">
-		<?php if ( ! empty( $options['thank-you']['image'] ) ) : ?>
-			<div class="image">
-				<img src="<?php echo $options['thank-you']['image']; ?>"/>
+	<?php include __DIR__ . '/icon-defs.php'; ?>
+	<article class="give-receipt-classic">
+		<div class="give-form-header">
+			<div class="give-form-header-top-wrap">
+				<aside class="give-form-secure-badge">
+					<svg class="give-form-secure-icon" viewBox="0 0 20 20">
+						<use href="#give-icon-checkmark"/>
+					</svg>
+					<?= esc_html__( 'Success', 'give' ); ?>!
+				</aside>
+				<h1 class="give-receipt-title">
+					<?= $receipt->heading; ?>
+				</h1>
+				<p class="give-form-description">
+					<?= $receipt->message; ?>
+				</p>
 			</div>
-		<?php else : ?>
-			<div class="checkmark">
-				<i class="fas fa-check"></i>
-			</div>
-		<?php endif; ?>
-		<h2 class="headline">
-			<?php echo $receipt->heading; ?>
-		</h2>
-		<p class="message">
-			<?php echo $receipt->message; ?>
-		</p>
-		<?php require 'social-sharing.php'; ?>
-		<?php
-		/* @var Section $section */
-		foreach ( $receipt as $section ) {
-			// Continue if section does not have line items.
-			if ( ! $section->getLineItems() ) {
-				continue;
-			}
-
-			if ( 'PDFReceipt' === $section->id ) {
-				$pdfReceiptLinkDetailItem = $section['receiptLink'];
-				continue;
-			}
-
-			echo '<div class="details">';
-			if ( $section->label ) {
-				printf( '<h3 class="headline">%1$s</h3>', $section->label );
-			}
-			echo '<div class="details-table">';
-
-			/* @var LineItem $lineItem */
-			foreach ( $section as $lineItem ) {
-				// Continue if line item does not have value.
-				if ( ! $lineItem->value ) {
-					continue;
-				}
-
-				// This class is required to highlight total donation amount in receipt.
-				$detailRowClass = '';
-				if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
-					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
-				}
-
-				printf(
-					'<div class="details-row%1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
-					$detailRowClass,
-					$lineItem->icon,
-					$lineItem->label,
-					$lineItem->value
-				);
-			}
-			echo '</div>';
-			echo '</div>';
-		}
-		?>
-
-		<?php if ( $pdfReceiptLinkDetailItem ) : ?>
-			<div class="give-btn download-btn">
-				<?php echo $pdfReceiptLinkDetailItem->value; ?>
-			</div>
-		<?php endif; ?>
-
-	</div>
-	<div class="form-footer">
-		<div class="secure-notice">
-			<i class="fas fa-lock"></i>
-			<?php _e( 'Secure Donation', 'give' ); ?>
 		</div>
-	</div>
-</div>
 
+		<?php if ( 'enabled' === $option( 'social_sharing' ) ) : ?>
+			<div class="social-sharing">
+				<p class="instruction">
+					<?= esc_html__( $option( 'sharing_instructions' ) ); ?>
+				</p>
+				<div class="btn-row">
+					<button class="give-btn social-btn facebook-btn" onclick="GiveClassicTemplate.share(this);">
+						<?= esc_html__( 'Share on Facebook', 'give' ); ?>
+						<i class="fab fa-facebook"></i>
+					</button>
+					<button class="give-btn social-btn twitter-btn" onclick="GiveClassicTemplate.share(this);">
+						<?= esc_html__( 'Share on Twitter', 'give' ); ?>
+						<i class="fab fa-twitter"></i>
+					</button>
+				</div>
+			</div>
+		<?php endif; ?>
+
+		<div class="receipt-sections">
+
+		<?php
+			/* @var Section $section */
+			foreach ( $receipt as $section ) :
+				if ( ! $section->getLineItems() || 'PDFReceipt' === $section->id )
+					continue;
+			?>
+
+			<div class="details">
+				<?php if ( $section->label ): ?>
+					<h2 class="headline">
+						<?= $section->label; ?>
+					</h2>
+				<?php endif; ?>
+				<dl class="details-table">
+
+					<?php
+						/* @var LineItem $lineItem */
+						foreach ( $section as $lineItem ):
+							if ( ! $lineItem->value )
+								continue;
+
+							$class = '';
+							if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
+								$class = 'totalAmount' === $lineItem->id ? 'total' : '';
+							}
+						?>
+
+						<div class="details-row <?= $class; ?>">
+							<?= $lineItem->icon; ?>
+							<dt class="detail"><?= $lineItem->label; ?></dt>
+							<dd class="value"><?= $lineItem->value; ?></dd>
+						</div>
+					<?php endforeach; ?>
+
+				</dl>
+			</div>
+
+		<?php endforeach; ?>
+		</div>
+
+		<div class="dashboard-link-container">
+			<a class="dashboard-link" href="<?= esc_url( $donorDashboardUrl ); ?>">
+				<?= esc_html__( 'Go to my Donor Dashboard', 'give' ); ?>
+			</a>
+			<?php if ( isset( $section[ 'receiptLink' ] ) ) : ?>
+				<div class="give-btn download-btn">
+					<?= $section[ 'receiptLink' ]->value; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</article>
 
 <?php
-$iframeView = new IframeContentView();
 
-echo $iframeView->setTitle( esc_html__( 'Donation Receipt', 'give' ) )
-                ->setBody( ob_get_clean() )
-                ->renderBody();
-?>
+echo ( new IframeContentView() )
+	->setTitle( esc_html__( 'Donation Receipt', 'give' ) )
+	->setBody( ob_get_clean() )
+	->renderBody();

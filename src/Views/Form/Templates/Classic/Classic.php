@@ -6,7 +6,7 @@ use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give_Scripts;
+use Give\Receipt\DonationReceipt;
 use InvalidArgumentException;
 
 /**
@@ -58,13 +58,6 @@ class Classic extends Template implements Hookable, Scriptable {
 	}
 
 	/**
-	 * @return array
-	 */
-	public function getFormOptions() {
-		return $this->options;
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public function loadHooks() {
@@ -74,7 +67,7 @@ class Classic extends Template implements Hookable, Scriptable {
 		if ( 'enabled' === $this->options[ 'appearance' ][ 'display_header' ] ) {
 			add_action( 'give_pre_form', [ $this, 'renderHeader' ] );
 		}
-
+    
         add_action('give_before_donation_levels', [ $this, 'renderDonationAmountHeading' ], 20);
 
         $sections = [
@@ -165,7 +158,7 @@ class Classic extends Template implements Hookable, Scriptable {
 		wp_add_inline_style(
 			'give-classic-template',
 			$this->loadFile( 'css/variables.php', [
-				'primaryColor' => $this->options[ 'appearance' ][ 'primary_color' ],
+				'primaryColor'          => $this->options[ 'appearance' ][ 'primary_color' ],
 				'headerBackgroundImage' => $this->options[ 'appearance' ][ 'header_background_image' ],
 			] )
 		);
@@ -212,7 +205,9 @@ class Classic extends Template implements Hookable, Scriptable {
 	 * @inheritDoc
 	 */
 	public function getReceiptView() {
-		return $this->getFilePath( 'views/receipt.php' );
+		return wp_doing_ajax()
+			? $this->getFilePath( 'views/receipt.php' )
+			: parent::getReceiptView();
 	}
 
 	/**
@@ -220,10 +215,10 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function renderHeader() {
 		echo $this->loadFile( 'views/header.php', [
-			'title' => $this->options[ 'appearance' ][ 'main_heading' ],
-			'description' => $this->options[ 'appearance' ][ 'description' ],
+			'title'                => $this->options[ 'appearance' ][ 'main_heading' ],
+			'description'          => $this->options[ 'appearance' ][ 'description' ],
 			'isSecureBadgeEnabled' => $this->options[ 'appearance' ][ 'secure_badge' ] === 'enabled',
-			'secureBadgeContent' => $this->options[ 'appearance' ][ 'secure_badge_text' ],
+			'secureBadgeContent'   => $this->options[ 'appearance' ][ 'secure_badge_text' ],
 		] );
 	}
 
@@ -243,6 +238,25 @@ class Classic extends Template implements Hookable, Scriptable {
 	 */
 	public function renderIconDefinitions() {
 		echo $this->loadFile( 'views/icon-defs.php' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getReceiptDetails( $donationId ) {
+		$receipt = new DonationReceipt( $donationId );
+
+		$receipt->heading = esc_html( give_do_email_tags( $this->options['donation_receipt']['headline'], [ 'payment_id' => $donationId ] ) );
+		$receipt->message = wp_kses_post( give_do_email_tags( $this->options['donation_receipt']['description'], [ 'payment_id' => $donationId ] ) );
+
+		/**
+		 * Fire the action for receipt object.
+		 *
+		 * @since 2.7.0
+		 */
+		do_action( 'give_new_receipt', $receipt );
+
+		return $receipt;
 	}
 
 	/**
