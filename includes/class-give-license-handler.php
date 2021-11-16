@@ -353,7 +353,7 @@ if ( ! class_exists('Give_License') ) :
          * Get license information.
          *
          * @since  1.8.9
-         * @access public
+         * @unreleased log failed license api request information
          *
          * @param bool $response_in_array
          *
