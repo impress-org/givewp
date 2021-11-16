@@ -111,17 +111,20 @@ class Log {
 	}
 
 	/**
-	 * Static helper for calling the logger methods
-	 *
-	 * @since 2.11.1
-	 *
-	 * @param string $name
-	 * @param array  $arguments
-	 */
+     * Static helper for calling the logger methods
+     *
+     * @unreleased - only log if WP_DEBUG_LOG is enabled
+     * @param  string  $name
+     * @param  array  $arguments
+     * @since 2.11.1
+     *
+     */
 	public static function __callStatic( $name, $arguments ) {
-		/** @var Log $logger */
-		$logger = give( __CLASS__ );
+        /** @var Log $logger */
+        $logger = give(__CLASS__);
 
-		call_user_func_array( [ $logger, $name ], $arguments );
-	}
+        if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+            call_user_func_array([$logger, $name], $arguments);
+        }
+    }
 }
