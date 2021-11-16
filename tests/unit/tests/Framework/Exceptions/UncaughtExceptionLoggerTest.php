@@ -2,13 +2,24 @@
 
 use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Log\Helpers\Environment;
 use Give\Log\Log;
 
-class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case {
-	public function testShouldLogException() {
-        define(WP_DEBUG_LOG, true);
-        
+class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case
+{
+    public function testShouldLogException()
+    {
         $logger = new UncaughtExceptionLogger();
+
+        $this->mock(Environment::class, function (PHPUnit_Framework_MockObject_MockBuilder $builder) {
+            $mock = $builder->setMethods(['isLogEnabled'])->getMock();
+
+            $mock->expects($this->once())
+                ->method('isLogEnabled')
+                ->willReturn(true);
+
+            return $mock;
+        });
 
         $this->mock(Log::class, function (PHPUnit_Framework_MockObject_MockBuilder $builder) {
             $mock = $builder->setMethods(['error'])->getMock();
