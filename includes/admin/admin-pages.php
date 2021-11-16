@@ -251,10 +251,12 @@ function give_settings_page_pages( $settings ) {
 
 		// Advanced settings.
 		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php',
-
-		// Recurring Donations settings.
-		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-recurring.php',
 	];
+
+    // Recurring Donations settings.
+    if ( !defined('GIVE_RECURRING_VERSION') ) {
+        $settings[] = include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-recurring.php';
+    }
 
 	// Output.
 	return $settings;
