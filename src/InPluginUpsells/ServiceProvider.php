@@ -14,10 +14,14 @@ class ServiceProvider implements ServiceProviderInterface {
 	}
 
 	public function boot() {
-		Hooks::addAction( 'admin_menu', AdminPage::class, 'register' );
+		Hooks::addAction( 'admin_menu', AddonsAdminPage::class, 'register' );
 
-		if ( AdminPage::isShowing() ) {
-			Hooks::addAction( 'admin_enqueue_scripts', AdminPage::class, 'loadScripts' );
+		if ( AddonsAdminPage::isShowing() ) {
+			Hooks::addAction( 'admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts' );
 		}
+
+        if ( RecurringDonationsTab::isShowing() ) {
+            Hooks::addAction( 'admin_enqueue_scripts', RecurringDonationsTab::class, 'loadScripts' );
+        }
 	}
 }

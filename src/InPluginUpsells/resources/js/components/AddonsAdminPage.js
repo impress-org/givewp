@@ -5,10 +5,10 @@ import {__} from '@wordpress/i18n';
 import {MustHaveAddons} from './MustHaveAddons';
 import {AdditionalAddons} from './AdditionalAddons';
 import {PricingPlans} from './PricingPlans';
-import {assetUrl} from './utils';
-import styles from './InPluginUpsells.module.css';
+import {assetUrl} from '../utils';
+import styles from './AddonsAdminPage.module.css';
 
-export function InPluginUpsells() {
+export function AddonsAdminPage() {
     // We control the tabs only so we can use `tabIndex` to change the decor.
     const [tabIndex, setTabIndex] = useState(0);
     const addonDecorAssets = useMemo(() => [

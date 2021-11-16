@@ -1,3 +1,15 @@
+:global(.post-type-give_forms #wpbody) {
+    padding-left: 0;
+}
+
+:global(.post-type-give_forms #wpbody:after) {
+    all: unset !important;
+}
+
+:global(#wpbody-content) {
+    padding-bottom: 0;
+}
+
 .root,
 .root *,
 .root ::before,

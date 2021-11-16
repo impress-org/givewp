@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {Button} from './Button';
 import {Card} from './Card';
-import {transformEmphasis, transformStrong} from './utils';
+import {transformEmphasis, transformStrong} from '../utils';
 
 import styles from './PricingPlanCard.module.css'
 
