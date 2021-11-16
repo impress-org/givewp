@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 
 /**
+ * @unreleased allow fields to be macroable
  * @since 2.12.0
  * @since 2.13.0 Support visibility conditions
  */
@@ -18,6 +19,7 @@ abstract class Field implements Node {
 	use Concerns\HasVisibilityConditions;
 	use Concerns\IsReadOnly;
 	use Concerns\IsRequired;
+	use Concerns\Macroable;
 	use Concerns\SerializeAsJson;
 
 	/** @var ValidationRules */
