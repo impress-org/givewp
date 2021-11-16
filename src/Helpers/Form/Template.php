@@ -54,10 +54,10 @@ class Template
          * @unreleased
          */
 		if( ! isset( $settings[ 'donation_summary' ] ) ) {
-            $settings[ 'donation_summary' ] = [
-                'enabled' => 'disabled', // Disable by default for existing forms.
-                'heading' => __( 'Here\'s what you\'re about to donate', 'give' ),
-                'location' => 'give_donation_form_before_submit',
+            $settings[ 'payment_information' ] = [
+                'donation_summary_enabled' => 'disabled', // Disable by default for existing forms.
+                'donation_summary_heading' => __( 'Here\'s what you\'re about to donate:', 'give' ),
+                'donation_summary_location' => 'give_donation_form_before_submit',
             ];
         }
 
