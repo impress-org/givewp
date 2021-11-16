@@ -19,14 +19,17 @@ class SubscriptionCompleteHandler  {
     {
         give_update_payment_status($paymentId);
         give_set_payment_transaction_id($paymentId, $subscriptionComplete->transactionId);
-        give_recurring_update_subscription_status($subscriptionId, 'active');
 
-        $subscription = $this->getSubscription($subscriptionId);
+        if (function_exists('give_recurring_update_subscription_status') && class_exists('Give_Subscriptions_DB')) {
+            give_recurring_update_subscription_status($subscriptionId, 'active');
 
-        $subscription->update([
-            'profile_id' => $subscriptionComplete->profileId,
-            'transaction_id' => $subscriptionComplete->transactionId
-        ]);
+            $subscription = $this->getSubscription($subscriptionId);
+
+            $subscription->update([
+                'profile_id' => $subscriptionComplete->profileId,
+                'transaction_id' => $subscriptionComplete->transactionId
+            ]);
+        }
     }
 
      /**
