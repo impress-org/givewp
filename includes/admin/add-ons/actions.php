@@ -52,7 +52,7 @@ function give_upload_addon_handler() {
 	$file_type = wp_check_filetype( $_FILES['file']['name'], [ 'zip' => 'application/zip' ] );
 
 	if ( empty( $file_type['ext'] ) ) {
-		wp_send_json_error( [ 'errorMsg' => __( 'Uploaded add-ons must be (unzipped) ZIP files. Upload a valid add-on ZIP.', 'give' ) ] );
+		wp_send_json_error( [ 'errorMsg' => __( 'Uploaded add-ons must be (zipped) ZIP files. Upload a valid add-on ZIP.', 'give' ) ] );
 	}
 
 	$give_addons_list   = give_get_plugins();
