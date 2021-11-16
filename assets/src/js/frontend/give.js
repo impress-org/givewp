@@ -1,6 +1,5 @@
 // Plugins
 import 'jquery.payment';
-import 'accounting';
 import 'uiblocker';
 import 'magnific-popup';
 import 'iframe-resizer';
@@ -19,6 +18,11 @@ import './give-misc';
 import './give-donor-wall';
 import iFrameResizer from '../plugins/form-template/iframe-content';
 import '../plugins/form-template/parent-page';
+import '../../../../src/Form/LegacyConsumer/resources/js/conditinal-fields';
+
+window.addEventListener('load', function() {
+	window.Give.WINDOW_IS_LOADED = true;
+})
 
 const { init, fn, form, notice, cache, donor, util, share } = GiveAPI;
 window.Give = { init, fn, form, notice, cache, donor, util, share, initializeIframeResize };

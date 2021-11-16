@@ -1,6 +1,6 @@
+import { Fragment, useMemo, useRef, useState } from 'react';
 import FieldRow from '../field-row';
 import Button from '../button';
-import { Fragment, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { __ } from '@wordpress/i18n';
@@ -12,24 +12,71 @@ import { updateSubscriptionWithAPI } from './utils';
 
 import './style.scss';
 
+/**
+ * Normalize an amount
+ *
+ * @param {string} float
+ * @param {number} decimals
+ * @return {string|NaN}
+ */
+const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(decimals);
+
+// There is no error handling whatsoever, that will be necessary.
 const SubscriptionManager = ( { id, subscription } ) => {
-	const [ amount, setAmount ] = useState( subscription.payment.amount.raw );
-	const [ paymentMethod, setPaymentMethod ] = useState( null );
+	const gatewayRef = useRef();
+
+	const [ amount, setAmount ] = useState(
+		() => normalizeAmount(subscription.payment.amount.raw, subscription.payment.currency.numberDecimals)
+	);
 	const [ isUpdating, setIsUpdating ] = useState( false );
-	const [ updated, setUpdated ] = useState( true );
+	const [ updated, setUpdated ] = useState( false );
 
-	useEffect( () => {
-		setUpdated( false );
-	}, [ amount, paymentMethod ] );
+	// Prepare data for amount control
+	const {max, min, options} = useMemo(() => {
+		const {numberDecimals} = subscription.payment.currency;
+		const {custom_amount} = subscription.form;
 
-	const handleUpdate = async() => {
-		// Save with REST API
+		const options = subscription.form.amounts.map(
+			amount => ({
+				value: normalizeAmount(amount.raw, numberDecimals),
+				label: amount.formatted,
+			}),
+		);
+
+		if (custom_amount) {
+			options.push({
+				value: 'custom_amount',
+				label: __('Custom Amount', 'give'),
+			});
+		}
+
+		return {
+			max: normalizeAmount(custom_amount?.maximum, numberDecimals),
+			min: normalizeAmount(custom_amount?.minimum, numberDecimals),
+			options,
+		};
+	}, [subscription]);
+
+	const handleUpdate = async () => {
+		if ( isUpdating ) {
+			return;
+		}
+
 		setIsUpdating( true );
+
+		const paymentMethod = await gatewayRef.current.getPaymentMethod();
+
+		if ( 'error' in paymentMethod ) {
+			setIsUpdating( false );
+			return;
+		}
+
 		await updateSubscriptionWithAPI( {
 			id,
 			amount,
-			paymentMethod,
+			paymentMethod
 		} );
+
 		setUpdated( true );
 		setIsUpdating( false );
 	};
@@ -37,18 +84,21 @@ const SubscriptionManager = ( { id, subscription } ) => {
 	return (
 		<Fragment>
 			<AmountControl
-				form={ subscription.form }
-				payment={ subscription.payment }
-				onChange={ ( val ) => setAmount( val ) } value={ amount }
+				currency={ subscription.payment.currency }
+				options={ options }
+				max={ max }
+				min={ min }
+				value={ amount }
+				onChange={ setAmount }
 			/>
 			<PaymentMethodControl
+				forwardedRef={ gatewayRef }
 				label={ __( 'Payment Method', 'give' ) }
 				gateway={ subscription.gateway }
-				onChange={ ( val ) => setPaymentMethod( val ) }
 			/>
 			<FieldRow>
 				<div>
-					<Button onClick={ () => handleUpdate() }>
+					<Button onClick={ handleUpdate }>
 						{ updated ? (
 							<Fragment>
 								{ __( 'Updated', 'give' ) } <FontAwesomeIcon icon="check" fixedWidth />

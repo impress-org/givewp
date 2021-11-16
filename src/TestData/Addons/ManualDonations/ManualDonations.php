@@ -2,16 +2,18 @@
 
 namespace Give\TestData\Addons\ManualDonations;
 
-use Throwable;
+use Exception;
 use Give\TestData\Framework\MetaRepository;
 
 /**
  * Class ManualDonations
  * @package Give\TestData\ManualDonations
+ *
+ * @since 2.15.0 update class code to maintain PHP 5.6 compatibility
  */
 class ManualDonations {
 
-	private const GATEWAY = 'manual_donation';
+	const GATEWAY = 'manual_donation';
 
 	/**
 	 * @param  int  $donationID
@@ -36,7 +38,7 @@ class ManualDonations {
 
 			$wpdb->query( 'COMMIT' );
 
-		} catch ( Throwable $e ) {
+		} catch ( Exception $e ) {
 			$wpdb->query( 'ROLLBACK' );
 		}
 	}

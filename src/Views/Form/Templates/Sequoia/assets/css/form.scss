@@ -8,6 +8,9 @@
 @import './icons/solid';
 @import './icons/brands';
 
+// Donation Form
+@import "legacy-consumer";
+
 // Receipt Styles
 @import 'receipt';
 @import 'recurring';
@@ -20,6 +23,7 @@
 
 // Payment gateways
 @import 'paypal-commerce';
+@import 'authorizenet';
 
 // Structure
 html {
@@ -30,7 +34,7 @@ html {
 
 body {
 	margin: 10px;
-	font-family: 'Montserrat', sans-serif;
+	font-family: system-ui, sans-serif;
 	color: #555;
 }
 
@@ -95,7 +99,6 @@ p {
 
 .give-btn {
 	background-color: #28c77b;
-	font-family: 'Montserrat', sans-serif;
 	color: #fff;
 	font-weight: 500;
 	text-align: center;
@@ -481,7 +484,6 @@ p {
 		}
 
 		.give-amount-top {
-			font-family: 'Montserrat', sans-serif;
 			height: auto !important;
 			width: 164px !important;
 			text-align: center;
@@ -556,7 +558,7 @@ p {
 				font-size: 14px;
 
 				&.currency--before {
-					margin: 0 6px 11px 0;
+					margin: 0 6px 11px -10px;
 					@media screen and (max-width: $break-phone) {
 						font-size: 11px;
 						margin: 0 3px 6px 0;
@@ -564,7 +566,7 @@ p {
 				}
 
 				&.currency--after {
-					margin: 0 0 11px 6px;
+					margin: 0 -10px 11px 6px;
 					@media screen and (max-width: $break-phone) {
 						font-size: 11px;
 						margin: 0 0 6px 3px;
@@ -596,6 +598,16 @@ p {
 		}
 	}
 }
+
+// Set donation form type style
+.give-form-type-set {
+
+	.give-custom-amount-text {
+		display: none;
+	}
+
+}
+
 
 // Payment Section
 
@@ -977,11 +989,6 @@ p {
 				}
 			}
 
-			input[type='radio'] {
-				opacity: 0 !important;
-				position: absolute !important;
-			}
-
 			.give-gateway-option::before {
 				content: ' ';
 				position: absolute;
@@ -1125,17 +1132,6 @@ fieldset {
 		}
 	}
 
-	.give-ffm-form-row-responsive {
-		position: relative;
-
-		> i {
-			position: absolute;
-			bottom: 18px;
-			left: 22px;
-			font-size: 12px;
-			color: #989898;
-		}
-	}
 	.give_error,
 	.give_success,
 	.give_warning {
@@ -1147,9 +1143,11 @@ fieldset {
 	display: none !important;
 }
 
-input[type='checkbox'] {
+input[type='checkbox'],
+input[type='radio'] {
 	opacity: 0 !important;
 	position: absolute !important;
+	left: -60px;
 }
 
 input[type='checkbox'] + label {
@@ -1232,18 +1230,7 @@ form.give-form .form-row input[type='email'],
 form.give-form .form-row input[type='password'],
 form.give-form .form-row input[type='url'],
 .give-input-field-wrapper {
-	font-family: 'Montserrat', sans-serif;
-	background: #fff;
-	border: 1px solid #b8b8b8 !important;
-	box-sizing: border-box;
-	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289);
-	border-radius: 4px !important;
-	font-weight: 400;
-	height: auto;
-	font-size: 14px;
-	line-height: 1;
-	color: #828382;
-	padding: 14px !important;
+	@include text-field;
 }
 
 .give-square-cc-fields {
@@ -1263,26 +1250,7 @@ form[id*='give-form'] .form-row select.required,
 #give-recurring-form .form-row select.required,
 form.give-form .form-row select.required,
 .give-select {
-	font-family: 'Montserrat', sans-serif;
-	font-size: 14px;
-	font-weight: 400;
-	color: #828382;
-	line-height: 1.2;
-	padding: 12px !important;
-	min-height: 48px;
-	margin: 0;
-	border: 1px solid #b8b8b8 !important;
-	border-radius: 4px !important;
-	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.152289), 0 1px 0 1px rgba(0, 0, 0, 0.04);
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
-	background-color: #fff;
-	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='13' height='8' viewBox='0 0 13 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.66016 7.19531C5.90625 7.44141 6.31641 7.44141 6.5625 7.19531L11.8945 1.89062C12.1406 1.61719 12.1406 1.20703 11.8945 0.960938L11.2656 0.332031C11.0195 0.0859375 10.6094 0.0859375 10.3359 0.332031L6.125 4.54297L1.88672 0.332031C1.61328 0.0859375 1.20312 0.0859375 0.957031 0.332031L0.328125 0.960938C0.0820312 1.20703 0.0820312 1.61719 0.328125 1.89062L5.66016 7.19531Z' fill='%23A2A3A2'/%3E%3C/svg%3E"),
-		linear-gradient(to bottom, #fff 0%, #fff 100%);
-	background-repeat: no-repeat, repeat;
-	background-position: right 0.7em top 50%, 0 0;
-	background-size: 0.65em auto, 100%;
+	@include select-field;
 }
 
 form[id*='give-form'] .form-row select.multiselect,
@@ -1307,7 +1275,6 @@ form.give-form .form-row select.multiselect {
 		background: #383838;
 		color: #fff;
 		font-size: 16px;
-		font-family: 'Montserrat', sans-serif;
 		border-radius: 4px;
 		line-height: 1.2;
 		text-align: center;
@@ -1569,52 +1536,17 @@ html[dir='rtl'] {
 	}
 }
 
-/* Fields API: Styles for custom checkbox fields. */
-[data-field-type='checkbox'] {
-	label {
-		display: block !important;
-		position: relative;
-	}
-	label::before {
-		content: ' ';
-		position: absolute;
-		top: calc(50% - 12px);
-		left: 0;
-		width: 20px;
-		height: 20px;
-		border: 1px solid #b4b9be;
-		background-color: #fff;
-		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
-	}
-	label::after {
-		content: ' ';
-		position: absolute;
-		top: calc(50% - 12px);
-		left: 0;
-		width: 20px;
-		height: 20px;
-		background-repeat: no-repeat;
-		background-position: center;
-		// clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
-	}
-	&.active label::after {
-		content: ' ';
-		background-image: url("data:image/svg+xml,%3Csvg width='15' height='11' viewBox='0 0 15 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.73047 10.7812C6.00391 11.0547 6.46875 11.0547 6.74219 10.7812L14.7812 2.74219C15.0547 2.46875 15.0547 2.00391 14.7812 1.73047L13.7969 0.746094C13.5234 0.472656 13.0859 0.472656 12.8125 0.746094L6.25 7.30859L3.16016 4.24609C2.88672 3.97266 2.44922 3.97266 2.17578 4.24609L1.19141 5.23047C0.917969 5.50391 0.917969 5.96875 1.19141 6.24219L5.73047 10.7812Z' fill='%234fa651'/%3E%3C/svg%3E%0A") !important;
-	}
-}
-
-/*
- * Fields API / Form Consumer Styles
- */
-.give-section.choose-amount > .form-row {
-	padding: 20px 30px 0;
-}
-.give-section.payment > .form-row {
-	padding: 5px 20px 5px;
-}
-#give-payment-mode-wrap > .form-row:not(:first-of-type) {
-	margin-top: 20px;
-}
-div[data-field-type='checkbox'] label {
-	padding: 0 0 0 40px;
+// Taken from WordPress common css
+.screen-reader-text{
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
 }

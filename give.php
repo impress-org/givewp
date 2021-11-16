@@ -5,7 +5,9 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.12.1
+ * Version: 2.16.2
+ * Requires at least: 4.9
+ * Requires PHP: 5.6
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -40,25 +42,25 @@
  */
 
 use Give\Container\Container;
+use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
+use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
-use Give\Form\Templates;
 use Give\License\LicenseServiceProvider;
+use Give\Log\LogServiceProvider;
+use Give\MigrationLog\MigrationLogServiceProvider;
+use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
-use Give\ServiceProviders\PaymentGateways;
-use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\LegacyServiceProvider;
-use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Onboarding;
-use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
-use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\ServiceProviders\PaymentGateways;
+use Give\ServiceProviders\RestAPI;
+use Give\ServiceProviders\Routes;
+use Give\ServiceProviders\ServiceProvider;
 use Give\Shims\ShimsServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
-use Give\MigrationLog\MigrationLogServiceProvider;
-use Give\Log\LogServiceProvider;
-use Give\ServiceProviders\ServiceProvider;
-use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
 
 // Exit if accessed directly.
@@ -156,7 +158,7 @@ final class Give {
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
-		LicenseServiceProvider::class,
+		LicenseServiceProvider::class
 	];
 
 	/**
@@ -267,7 +269,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.12.1' );
+			define( 'GIVE_VERSION', '2.16.1' );
 		}
 
 		// Plugin Root File.

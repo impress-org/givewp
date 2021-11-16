@@ -1,6 +1,5 @@
 // Plugins
 import 'chosen-js';
-import 'accounting';
 import 'flot';
 import 'flot-orderbars/js/jquery.flot.orderBars';
 import 'flot/jquery.flot.time';

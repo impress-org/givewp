@@ -695,6 +695,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * Send preview email.
 		 *
 		 * @since  2.0
+		 * @since 2.15.0 Preview email recipient is now the current user.
 		 * @access public
 		 *
 		 * @param bool $send Flag to check if send email or not.
@@ -736,9 +737,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
 			}
 
-			return $send
-				? Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments )
-				: false;
+			if( $send ) {
+				Give()->emails->send( wp_get_current_user()->user_email, $subject, $message, $attachments );
+			}
+
+			return false;
 		}
 
 
@@ -840,6 +843,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
+		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0
 		 *
 		 * @param string $message Email Template Message.
@@ -895,7 +899,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'amount'                  => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
 					'price'                   => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
 					'payment_method'          => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
-					'payment_id'              => $payment_id ? $payment_id : rand( 2000, 2050 ),
+					'payment_id'              => $payment_id ? $payment->number : rand( 2000, 2050 ),
 					'receipt_link_url'        => $receipt_link_url,
 					'receipt_link'            => $receipt_link,
 					'date'                    => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),

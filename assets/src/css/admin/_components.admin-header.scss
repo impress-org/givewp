@@ -18,7 +18,7 @@
 
 		// Give icon.
 		&:before {
-			background: url('../../images/give-icon-full-circle.svg');
+			background: url('../images/give-icon-full-circle.svg');
 			width: 30px;
 			height: 30px;
 			content: ' ';
@@ -71,7 +71,6 @@
 	}
 
 	// Some list tables without the filter container need more margin.
-	&.give_forms_page_give-donors,
 	&.give_forms_page_give-subscriptions
 	{
 
@@ -80,6 +79,11 @@
 				margin-top: 25px;
 			}
 		}
+	}
+
+	// No margin for donor details
+	&.give_forms_page_give-donors #wpbody .wp-header-end {
+		margin-top: -1px;
 	}
 
 	// Hide the original Screen Options tab since we added our own.

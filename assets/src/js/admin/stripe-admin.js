@@ -3,11 +3,13 @@
  *
  * @since 2.5.0
  */
+const { __, sprintf } = wp.i18n;
 
-import { GiveConfirmModal } from '../plugins/modal';
+import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-default-account-action'
+import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'
+import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/customize-stripe-account-validation'
 
 window.addEventListener( 'DOMContentLoaded', function() {
-	const ccFormatSettings = document.querySelector( '.stripe-cc-field-format-settings' );
 	const stripeFonts = document.querySelectorAll( 'input[name="stripe_fonts"]' );
 	const stripeStylesBase = document.getElementById( 'stripe_styles_base' );
 	const stripeStylesEmpty = document.getElementById( 'stripe_styles_empty' );
@@ -15,7 +17,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const stripeStylesComplete = document.getElementById( 'stripe_styles_complete' );
 	const stripeCustomFonts = document.getElementById( 'stripe_custom_fonts' );
 	const donationStatus = document.getElementById( 'give-payment-status' );
-	const stripeDisconnect = document.querySelector( '.give-stripe-disconnect' );
 	const checkoutTypes = document.querySelectorAll( 'input[name="stripe_checkout_type"]' );
 	const legacyCheckoutFields = Array.from( document.querySelectorAll( '.stripe-checkout-field' ) );
 	const stripeConnectedElement = document.getElementById( 'give-stripe-connected' );
@@ -27,18 +28,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const becsIconStyleElement = document.querySelector( '.stripe-becs-icon-style' );
 	const hideBecsMandateElements = Array.from( document.querySelectorAll( ' input[name="stripe_becs_mandate_acceptance_option"]' ) );
 	const mandateBecsElement = document.querySelector( '.stripe-becs-mandate-acceptance-text' );
-	const manualFields = Array.from( document.querySelectorAll( '.give-stripe-account-type-manual' ) );
-	const connectField = document.querySelector( '.give-stripe-account-type-connect' );
-	const connectionTypes = Array.from( document.querySelectorAll( 'input[name="stripe_connection_type"]' ) );
-	const selectedConnectionType = document.querySelector( 'input[name="stripe_connection_type"]:checked' );
-	const disconnectBtns = Array.from( document.querySelectorAll( '.give-stripe-disconnect-account-btn' ) );
-	const setStripeDefaults = Array.from( document.querySelectorAll( '.give-stripe-account-set-default' ) );
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
-	const perFormAccount = document.querySelector( '.give-stripe-per-form-default-account' );
-	const perAccountEdits = Array.from( document.querySelectorAll( '.give-stripe-account-edit-name' ) );
-	const perAccountUpdates = Array.from( document.querySelectorAll( '.give-stripe-account-update-name' ) );
-	const perAccountCancels = Array.from( document.querySelectorAll( '.give-stripe-account-cancel-name' ) );
-	const accountManagerError = document.getElementById( 'give-stripe-account-manager-errors' );
+	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
+	const creditCardFieldFormatOptions = document.querySelectorAll('#give-settings-section-group-credit-card .give-stripe-cc-option-field')
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
@@ -48,140 +40,25 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	giveStripeJsonFormattedTextarea( stripeCustomFonts );
 
 	/**
-	 * Edit Stripe Account Cancel
-	 *
-	 * On clicking "Cancel" link on account name will revert to edit link and
-	 * won't do any changes to account name
-	 *
-	 *  @since 2.7.0
-	 */
-	if ( null !== perAccountCancels ) {
-		perAccountCancels.forEach( ( perAccountCancel ) => {
-			perAccountCancel.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const cancelElement = e.target;
-				const parentElement = cancelElement.parentNode.parentNode;
-				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
-				const editElement = parentElement.querySelector( '.give-stripe-account-edit-name' );
-				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
-				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
-				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
-
-				accountNameElement.textContent = accountInputElement.value;
-				cancelElement.classList.add( 'give-hidden' );
-				updateElement.classList.add( 'give-hidden' );
-				accountInputElement.classList.add( 'give-hidden' );
-				editElement.classList.remove( 'give-hidden' );
-				null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
-			} );
-		} );
-	}
-
-	/**
-	 * Edit Stripe Account Name
-	 *
-	 * On clicking "Edit" link on account name will show text fields
-	 * to update account name.
-	 *
-	 *  @since 2.7.0
-	 */
-	if ( null !== perAccountEdits ) {
-		perAccountEdits.forEach( ( perAccountEdit ) => {
-			perAccountEdit.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const editElement = e.target;
-				const parentElement = editElement.parentNode.parentNode;
-				const updateElement = parentElement.querySelector( '.give-stripe-account-update-name' );
-				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
-				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
-				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
-				const accountName = accountNameElement.textContent.trim();
-				const inputElement = document.createElement( 'input' );
-
-				inputElement.type = 'text';
-				inputElement.name = 'account_name';
-				inputElement.value = accountName;
-
-				accountNameElement.textContent = '';
-				accountNameElement.append( inputElement );
-
-				editElement.classList.add( 'give-hidden' );
-				updateElement.classList.remove( 'give-hidden' );
-				cancelElement.classList.remove( 'give-hidden' );
-				null !== defaultElement ? defaultElement.classList.add( 'give-hidden' ) : '';
-			} );
-		} );
-	}
-
-	/**
-	 * Update Stripe Account Name
-	 *
-	 * On changing the account name and clicking on the "Update" link will
-	 * update the account name of a particular Stripe account.
-	 *
-	 * @since 2.7.0
-	 */
-	if ( null !== perAccountUpdates ) {
-		perAccountUpdates.forEach( ( perAccountUpdate ) => {
-			perAccountUpdate.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const updateElement = e.target;
-				const parentElement = updateElement.parentNode.parentNode.parentNode;
-				const disconnectElement = parentElement.querySelector( '.give-stripe-disconnect-account-btn' );
-				const accountSlug = updateElement.getAttribute( 'data-account' );
-				const accountNameElement = parentElement.querySelector( '.give-stripe-account-name' );
-				const cancelElement = parentElement.querySelector( '.give-stripe-account-cancel-name' );
-				const defaultElement = parentElement.querySelector( '.give-stripe-account-default > a' );
-				const accountInputElement = parentElement.querySelector( 'input[name="account_name"]' );
-				const newAccountName = accountInputElement.value;
-
-				const xhr = new XMLHttpRequest();
-				const formData = new FormData();
-				const editElement = e.target.previousElementSibling;
-
-				formData.append( 'action', 'give_stripe_update_account_name' );
-				formData.append( 'account_slug', accountSlug );
-				formData.append( 'new_account_name', newAccountName );
-
-				xhr.open( 'POST', ajaxurl );
-				xhr.onload = function() {
-					const response = JSON.parse( xhr.response );
-					let notice = '';
-
-					if ( xhr.status === 200 && response.success ) {
-						const accountSlug = response.data.slug;
-						notice = `<div class="give-notice notice inline success notice-success"><p>${ response.data.message }</p></div>`;
-						accountNameElement.innerHTML = response.data.name;
-						updateElement.classList.add( 'give-hidden' );
-						cancelElement.classList.add( 'give-hidden' );
-						updateElement.setAttribute( 'data-account', accountSlug );
-						editElement.classList.remove( 'give-hidden' );
-						null !== disconnectElement ? disconnectElement.setAttribute( 'data-account', accountSlug ) : '';
-						null !== defaultElement ? defaultElement.classList.remove( 'give-hidden' ) : '';
-					} else {
-						notice = `<div class="give-notice notice inline error notice-error"><p>${ response.data.message }</p></div>`;
-					}
-					accountManagerError.innerHTML = notice;
-				};
-				xhr.send( formData );
-			} );
-		} );
-	}
-
-	/**
 	 * Show/Hide Per-Form fields
 	 *
-	 * When a user want to add per-form Stripe account, this code will help
-	 * toggle the Stripe account list on clicking 'Customize'.
+	 * When a user want to add per-form Stripe account, this code toggles the Stripe account list on clicking 'Customize'.
 	 *
 	 * @since 2.7.0
 	 */
 	if ( null !== perFormOptions ) {
+		let perFormOptionFieldContainers = document.querySelectorAll('#stripe_form_account_options .give-stripe-per-form-option-field');
+
 		perFormOptions.forEach( ( formOption ) => {
 			formOption.addEventListener( 'change', ( e ) => {
+				perFormOptionFieldContainers.forEach( el => {
+					el.classList.remove('give-stripe-boxshadow-option-wrap__selected')
+					el.querySelector('input[name="give_stripe_per_form_accounts"]').setAttribute( 'checked', '' );
+				} );
+
+				e.target.parentElement.parentElement.classList.add('give-stripe-boxshadow-option-wrap__selected');
+				e.target.setAttribute( 'checked', 'checked' );
+
 				if ( 'enabled' === e.target.value ) {
 					perFormAccount.classList.remove( 'give-hidden' );
 				} else {
@@ -189,75 +66,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				}
 			} );
 		} );
-	}
-
-	/**
-	 * Set Default Stripe Account
-	 *
-	 * This will be used to set any non-default Stripe account from the list
-	 * to set that particular Stripe account as default.
-	 *
-	 * @since 2.7.0
-	 */
-	if ( null !== setStripeDefaults ) {
-		setStripeDefaults.forEach( ( setStripeDefault ) => {
-			setStripeDefault.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const xhr = new XMLHttpRequest();
-				const formData = new FormData();
-
-				formData.append( 'action', 'give_stripe_set_account_default' );
-				formData.append( 'account_slug', e.target.getAttribute( 'data-account' ) );
-				xhr.open( 'POST', ajaxurl );
-				xhr.onload = function() {
-					const response = JSON.parse( xhr.response );
-					if ( xhr.status === 200 && response.success ) {
-						window.location.href = e.target.getAttribute( 'data-url' );
-					}
-				};
-				xhr.send( formData );
-			} );
-		} );
-	}
-
-	/**
-	 * Connection Type Toggle for Stripe Account
-	 *
-	 * This will help toggle between connect and manual fields of Stripe
-	 * using the "Connection Type" radio fields.
-	 *
-	 * @since 2.7.0
-	 */
-	if ( null !== connectionTypes && null !== selectedConnectionType ) {
-		giveStripeConnectionTypeToggle( selectedConnectionType.value );
-
-		connectionTypes.forEach( ( connectionType ) => {
-			connectionType.addEventListener( 'change', ( e ) => {
-				giveStripeConnectionTypeToggle( e.target.value );
-			} );
-		} );
-	}
-
-	/**
-	 * Toggle for Stripe Connection Type.
-	 *
-	 * @param {string} $value
-	 *
-	 * @since 2.7.0
-	 */
-	function giveStripeConnectionTypeToggle( $value ) {
-		if ( 'connect' === $value ) {
-			manualFields.map( ( element ) => {
-				element.classList.add( 'give-hidden' );
-			} );
-			connectField.classList.remove( 'give-hidden' );
-		} else {
-			manualFields.map( ( element ) => {
-				element.classList.remove( 'give-hidden' );
-			} );
-			connectField.classList.add( 'give-hidden' );
-		}
 	}
 
 	/**
@@ -337,7 +145,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		const modalSecondDetail = stripeConnectedElement.getAttribute( 'data-second-detail' );
 
 		if ( 'connected' === stripeStatus && '0' === canDisplay ) {
-			new GiveConfirmModal(
+			new Give.modal.GiveConfirmModal(
 				{
 					modalWrapper: 'give-stripe-connected-modal give-modal--success',
 					type: 'confirm',
@@ -364,30 +172,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				} else {
 					legacyCheckoutFields.map( field => field.classList.add( 'give-hidden' ) );
 				}
-			} );
-		} );
-	}
-
-	if ( null !== disconnectBtns ) {
-		disconnectBtns.forEach( ( disconnectBtn ) => {
-			disconnectBtn.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				const currentElement = e.target;
-
-				new Give.modal.GiveConfirmModal( {
-					type: 'alert',
-					classes: {
-						modalWrapper: 'give-modal--warning',
-					},
-					modalContent: {
-						title: Give.fn.getGlobalVar( 'disconnect_stripe_title' ),
-						desc: currentElement.getAttribute( 'data-disconnect-message' ),
-					},
-					successConfirm: () => {
-						window.location.href = `${ currentElement.getAttribute( 'href' ) }&account=${ currentElement.getAttribute( 'data-account' ) }`;
-					},
-				} ).render();
 			} );
 		} );
 	}
@@ -427,6 +211,26 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				}
 			} );
 		} );
+	}
+
+	/**
+	 * Click on hidden checkbox value when select on credit card format type.
+	 *
+	 * @since 2.14.0
+	 */
+	if( creditCardFieldFormatOptions.length ) {
+		creditCardFieldFormatOptions.forEach(function( inputFieldContainer ){
+			inputFieldContainer.addEventListener('click', function (){
+				creditCardFieldFormatOptions.forEach(function(container){
+					container.classList.remove('give-stripe-boxshadow-option-wrap__selected');
+					container.querySelector('input[name="stripe_cc_fields_format"]').setAttribute( 'checked', '' );
+				})
+
+				inputFieldContainer.querySelector('input[name="stripe_cc_fields_format"]')
+					.setAttribute( 'checked', 'checked' );
+				inputFieldContainer.classList.add('give-stripe-boxshadow-option-wrap__selected');
+			})
+		})
 	}
 } );
 

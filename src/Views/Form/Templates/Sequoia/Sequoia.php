@@ -4,10 +4,10 @@ namespace Give\Views\Form\Templates\Sequoia;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
-use Give\Receipt\DonationReceipt;
-use Give\Helpers\Utils;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use \Give_Donate_Form as DonationForm;
+use Give\Helpers\Utils;
+use Give\Receipt\DonationReceipt;
+use Give_Donate_Form as DonationForm;
 use Give_Scripts;
 use function give_do_email_tags as formatContent;
 use function give_is_setting_enabled;
@@ -57,6 +57,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
+	 * @since 2.16.0 Load google fonts if "enabled".
 	 */
 	public function loadScripts() {
 
@@ -64,14 +65,24 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		$templateOptions = FormTemplateUtils::getOptions();
 
 		// Set defaults
+		$templateOptions['visual_appearance']['google-fonts']     = ! empty( $templateOptions['visual_appearance']['google-fonts'] ) ? $templateOptions['visual_appearance']['google-fonts'] : 'enabled';
 		$templateOptions['introduction']['donate_label']          = ! empty( $templateOptions['introduction']['donate_label'] ) ? $templateOptions['introduction']['donate_label'] : __( 'Donate Now', 'give' );
-		$templateOptions['introduction']['primary_color']         = ! empty( $templateOptions['introduction']['primary_color'] ) ? $templateOptions['introduction']['primary_color'] : '#28C77B';
+		$templateOptions['visual_appearance']['primary_color']    = ! empty( $templateOptions['visual_appearance']['primary_color'] ) ? $templateOptions['visual_appearance']['primary_color'] : '#28C77B';
 		$templateOptions['payment_amount']['next_label']          = ! empty( $templateOptions['payment_amount']['next_label'] ) ? $templateOptions['payment_amount']['next_label'] : __( 'Continue', 'give' );
 		$templateOptions['payment_amount']['header_label']        = ! empty( $templateOptions['payment_amount']['header_label'] ) ? $templateOptions['payment_amount']['header_label'] : __( 'Choose Amount', 'give' );
 		$templateOptions['payment_information']['header_label']   = ! empty( $templateOptions['payment_information']['header_label'] ) ? $templateOptions['payment_information']['header_label'] : __( 'Add Your Information', 'give' );
 		$templateOptions['payment_information']['checkout_label'] = ! empty( $templateOptions['payment_information']['checkout_label'] ) ? $templateOptions['payment_information']['checkout_label'] : __( 'Process Donation', 'give' );
 
-		wp_enqueue_style( 'give-google-font-montserrat', 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap', [], GIVE_VERSION );
+		$isGoogleFontEnabled = give_is_setting_enabled( $templateOptions['visual_appearance']['google-fonts'] );
+
+		if ( $isGoogleFontEnabled ) {
+			wp_enqueue_style(
+				'give-google-font-montserrat',
+				'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap',
+				[],
+				GIVE_VERSION
+			);
+		}
 
 		// If default Give styles are disabled globally, enqueue Give default styles here
 		if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
@@ -81,7 +92,7 @@ class Sequoia extends Template implements Hookable, Scriptable {
 		// Enqueue Sequoia template styles
 		wp_enqueue_style( 'give-sequoia-template-css', GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css', [ 'give-styles' ], GIVE_VERSION );
 
-		$primaryColor = $templateOptions['introduction']['primary_color'];
+		$primaryColor = $templateOptions['visual_appearance']['primary_color'];
 		$dynamicCss   = sprintf(
 			'
 			.seperator {
@@ -119,10 +130,11 @@ class Sequoia extends Template implements Hookable, Scriptable {
 				border-color: %1$s !important;
 				color: %1$s !important;
 			}
-			input[type=\'radio\'] + label::after {
+			input[type=\'radio\'] + label::after,
+			[data-field-type=\'radio\'] label::after{
 				background: %1$s !important;
 			}
-			input[type=\'radio\']:focus + label::before {
+			input[type=\'radio\']:focus + label::before{
 				border-color: %1$s;
 			}
 			a {
@@ -147,8 +159,11 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			form.give-form .form-row select:focus,
 			.form-row select.required:focus,
 			#give-recurring-form .form-row select.required:focus,
-			form.give-form .form-row select.required:focus, .give-select:focus,
-			 .give-input-field-wrapper.has-focus{
+			form.give-form .form-row select.required:focus,
+			.give-select:focus,
+			.give-input-field-wrapper.has-focus,
+			[data-field-type="checkbox"] label:focus-within::before,
+			[data-field-type="radio"] label:focus-within::before {
 				border-color: %1$s !important;
 			}
 			',
@@ -168,10 +183,9 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			#give_terms_agreement input[type='checkbox']:focus + label::before {
 				border-color: {$primaryColor};
 			}
-			#give_terms_agreement input[type='checkbox'] + label::after {
-				background-image: url(\"data:image/svg+xml,%3Csvg width='15' height='11' viewBox='0 0 15 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.73047 10.7812C6.00391 11.0547 6.46875 11.0547 6.74219 10.7812L14.7812 2.74219C15.0547 2.46875 15.0547 2.00391 14.7812 1.73047L13.7969 0.746094C13.5234 0.472656 13.0859 0.472656 12.8125 0.746094L6.25 7.30859L3.16016 4.24609C2.88672 3.97266 2.44922 3.97266 2.17578 4.24609L1.19141 5.23047C0.917969 5.50391 0.917969 5.96875 1.19141 6.24219L5.73047 10.7812Z' fill='%23{$rawColor}'/%3E%3C/svg%3E%0A\") !important;
-			}
-			#give-anonymous-donation-wrap label::after {
+			#give_terms_agreement input[type='checkbox'] + label::after,
+			#give-anonymous-donation-wrap label::after,
+			[data-field-type='checkbox'] label.active:after {
 				background-image: url(\"data:image/svg+xml,%3Csvg width='15' height='11' viewBox='0 0 15 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.73047 10.7812C6.00391 11.0547 6.46875 11.0547 6.74219 10.7812L14.7812 2.74219C15.0547 2.46875 15.0547 2.00391 14.7812 1.73047L13.7969 0.746094C13.5234 0.472656 13.0859 0.472656 12.8125 0.746094L6.25 7.30859L3.16016 4.24609C2.88672 3.97266 2.44922 3.97266 2.17578 4.24609L1.19141 5.23047C0.917969 5.50391 0.917969 5.96875 1.19141 6.24219L5.73047 10.7812Z' fill='%23{$rawColor}'/%3E%3C/svg%3E%0A\") !important;
 			}
 			#give-anonymous-donation-wrap label:focus-within::before {
@@ -276,6 +290,10 @@ class Sequoia extends Template implements Hookable, Scriptable {
 			";
 		}
 
+		if ( $isGoogleFontEnabled ) {
+			$dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif;}";
+		}
+
 		wp_add_inline_style( 'give-sequoia-template-css', $dynamicCss );
 
 		wp_enqueue_script( 'give-sequoia-template-js', GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-template.js', [ 'give' ], GIVE_VERSION, true );
@@ -319,13 +337,14 @@ class Sequoia extends Template implements Hookable, Scriptable {
 
 	/**
 	 * @inheritDoc
+	 * @since 2.15.0 Allow HTML in thank you message.
 	 */
 	public function getReceiptDetails( $donationId ) {
 		$receipt = new DonationReceipt( $donationId );
 		$options = FormTemplateUtils::getOptions();
 
 		$receipt->heading = esc_html( $options['thank-you']['headline'] );
-		$receipt->message = esc_html( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
+		$receipt->message = wp_kses_post( formatContent( $options['thank-you']['description'], [ 'payment_id' => $donationId ] ) );
 
 		/**
 		 * Fire the action for receipt object.

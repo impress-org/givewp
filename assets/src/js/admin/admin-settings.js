@@ -11,8 +11,6 @@
 
 /* globals Give, jQuery, givePayPalCommerce, ajaxurl */
 
-import { GiveConfirmModal } from './../plugins/modal';
-
 jQuery( document ).ready( function( $ ) {
 	/**
 	 *  Sortable payment gateways.
@@ -293,7 +291,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Show admin notice if email notification status is not editable.
 	 *
-	 * @unreleased
+	 * @since 2.14.0
 	 * @param {object} noticeEditButton
 	 * @return {boolean}
 	 */

@@ -5,7 +5,7 @@ Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.12.1
+Stable tag: 2.16.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,72 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.16.2: November 11th, 2021 =
+* New: Donations made via PayPal Donations are now marked as donation in PayPal; also added a setting if you need to change it back
+* Fix: Take care of some notices when editing a form and in onboarding — friendly reminder NOT to display PHP warnings on production!
+* Fix: Got rid of another notice when using checkboxes in the Fields API
+
+= 2.16.1: November 2nd, 2021 =
+* Fix: Resolved Multi-Step Form PHP 7.2 and lower compatibility issue
+
+= 2.16.0: October 24th, 2021 =
+* New: You can now disable google font for Multi-Step form within the form options
+* New: Conditional fields are now possible in the Field API (useful in new Form Field Manager update!)
+* Fix: Give icons in Gutenberg block admin UI now display correctly in Firefox
+* Fix: Resolved issue where a minimum donation error was not showing up properly
+
+= 2.15.0: October 11th, 2021 =
+* New: There is a new option for making the Donor Last Name field required
+* Changed: Sending a preview email now gets send to the email of the user triggering the preview
+* Changed: Improved Donor Dashboard messages with improved clarity for donors
+* Changed: Donor Dashboard only displays user/password fields if registration is enabled
+* Changed: PayPal IPN Verification is now enabled by default for better security
+* Fix: Simplified PayPal IPN Verification to avoid failure when there wasn't any
+* Fix: Further improvements for PHP 8 compatibility
+* Fix: Donors can now properly set custom amounts in their Donor Dashboard
+* Fix: Corrected Lifetime and Average donation amount formatting in Donor Dashboard
+* Fix: Restored PHP 5.6 compatibility when running GiveWP WP CLI commands
+* Fix: Offline gateway custom label now shows up properly in donation form
+* Fix: Offline donation instructions don't show up if specific form disables gateway
+* Fix: Various fixes to the internal Field API
+
+= 2.14.0: September 21st, 2021 =
+* New: A lot of improvements to the Fields API in preparation for Peer-to-Peer!
+* Fix: Corrected a notice when using offline donations
+* Fix: Improved decimal formatting in the Multi-Step amount buttons
+* Fix: Social sharing works properly again after making a donation
+* Fix: Payment ID in donation email preview correctly reflects the sequenced ID
+* Fix: Connecting to Stripe on PHP 8 no longer throws an error... it just connects
+
+= 2.13.4: September 3rd, 2021 =
+* Fix: Corrected a migration introduced in the last release that had a chance of removing donation level data
+
+= 2.13.3: September 1st, 2021 =
+* Fix: Resolved rare issue with Revenue not storing properly on donation form created during onboarding
+* Fix: Donor selecting "Custom" donation amount now focuses on the amount field
+
+= 2.13.2: August 26th, 2021 =
+* Fix: Resolved issue where donation forms failed to submit when Stripe was disabled
+
+= 2.13.1: August 20th, 2021 =
+* Fix: Resolved issue where donations with a custom amount changed after a payment error
+* Fix: Customizer is no longer broken
+
+= 2.13.0: August 19th, 2021 =
+* New: Fresh new UI for managing Stripe accounts
+
+= 2.12.3: August 12th, 2021 =
+* Fix: Resolved issues some donors were having updating subscription cards or amount from Donor Dashboard
+* Fix: Primary color picker for multi-step form remains visible if Step 1 is disabled
+* Fix: Replace Legacy Form placeholder with nice, instructive image
+* Fix: Improve styling for admin-defined recurring donations on multi-step form
+* Fix: Improve styling for Authorize.net eCheck on multi-step form
+* Fix: Payment errors no longer revert custom donation amounts
+
+= 2.12.2: July 30th, 2021 =
+* New: Improvements to the Onboarding Wizard
+* New: Minor improvements to the Fields API
+* Fix: An admin deleting a donor's donation no longer reveal other donor's donations to them in the Donor Dashboard
 
 = 2.12.1: July 22st, 2021 =
 * Fix: Resolved an issue with admin-defined recurring options showing up as a bunch of HTML

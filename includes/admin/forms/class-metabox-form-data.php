@@ -152,6 +152,7 @@ class Give_MetaBox_Form_Data {
 								'name'          => __( 'Set Donation', 'give' ),
 								'description'   => __( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
 								'id'            => $prefix . 'set_price',
+								'default'          => give_format_decimal( [ 'amount' => '25.00' ] ),
 								'type'          => 'text_small',
 								'data_type'     => 'price',
 								'attributes'    => [
@@ -351,6 +352,18 @@ class Give_MetaBox_Form_Data {
 									'optional' => __( 'Optional', 'give' ),
 									'disabled' => __( 'Disabled', 'give' ),
 
+								],
+							],
+							[
+								'name'    => __( 'Last Name Field Required', 'give' ),
+								'desc'    => __( 'Do you want to force the Last Name field to be required?', 'give' ),
+								'id'      => $prefix . 'last_name_field_required',
+								'type'    => 'radio_inline',
+								'default' => 'global',
+								'options' => [
+									'global'   => __( 'Global Option', 'give' ),
+									'required' => __( 'Required', 'give' ),
+									'optional' => __( 'Optional', 'give' ),
 								],
 							],
 							[

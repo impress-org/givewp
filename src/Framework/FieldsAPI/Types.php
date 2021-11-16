@@ -2,11 +2,15 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use ReflectionClass;
+
 /**
  * @since 2.12.0
- * @unreleased add Form, Group, and Html
+ * @since 2.12.2 add Form, Group, and Html
+ * @since 2.14.0 add Types::all static method
  */
 class Types {
+
 	const CHECKBOX = Checkbox::TYPE;
 	const DATE     = Date::TYPE;
 	const EMAIL    = Email::TYPE;
@@ -21,4 +25,17 @@ class Types {
 	const TEXT     = Text::TYPE;
 	const TEXTAREA = Textarea::TYPE;
 	const URL      = Url::TYPE;
+
+	/**
+	 * Get all the type strings in an array.
+	 *
+	 * @since 2.14.0
+	 *
+	 * @return string[]
+	 */
+	public static function all() {
+		$reflection = new ReflectionClass( static::class );
+
+		return array_values( $reflection->getConstants() );
+	}
 }

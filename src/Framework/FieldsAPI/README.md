@@ -19,7 +19,7 @@ $collection->move( 'my-second-text-field' )->after( 'my-text-field' );
 $collection->move( 'my-second-text-field' )->before( 'my-text-field' );
 ```
 
-## Removeing Existing Fields
+## Removing Existing Fields
 
 Existing fields (or collections) can be removed by name.
 

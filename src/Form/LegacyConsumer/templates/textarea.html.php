@@ -1,10 +1,12 @@
 <?php /** @var Give\Framework\FieldsAPI\Textarea $field */ ?>
-<?php /** @var string $classAttribute */ ?>
+<?php /** @var string $fieldIdAttribute */ ?>
+
 <textarea
-  class="<?php echo $classAttribute; ?>"
-  name="give_<?php echo $field->getName(); ?>"
-  id="give-<?php echo $field->getName(); ?>"
-	<?php if ( $field->isRequired() ) : ?>
-	required
-  <?php endif; ?>
-></textarea>
+	name="<?php echo $field->getName(); ?>"
+	id="<?php echo $fieldIdAttribute; ?>"
+	<?php echo $field->isRequired() ? 'required' : ''; ?>
+	<?php echo $field->isReadOnly() ? 'readonly' : ''; ?>
+	<?php echo ( $maxLength = $field->getMaxLength() ) ? "maxlength=\"$maxLength\"" : ''; ?>
+>
+<?php echo $field->getDefaultValue(); /* Whitespace is important. Do not indent. */ ?>
+</textarea>

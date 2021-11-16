@@ -1,5 +1,6 @@
 <?php
 
+use Give\Form\Migrations\MoveOptionsToVisualAppearanceSection;
 use Give\Log\Migrations\MigrateExistingLogs;
 use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
 
@@ -159,7 +160,7 @@ function give_run_install() {
 			'v241_remove_sale_logs',
 			'v270_store_stripe_account_for_donation',
 			AddPastDonationsToRevenueTable::id(),
-			MigrateExistingLogs::id(),
+			MigrateExistingLogs::id()
 		];
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -369,9 +370,6 @@ function give_get_default_settings() {
 		'agree_to_terms_label'                        => __( 'Agree to Terms?', 'give' ),
 		'agreement_text'                              => give_get_default_agreement_text(),
 		'babel_polyfill_script'                       => 'enabled',
-
-		// Paypal IPN verification.
-		'paypal_verification'                         => 'enabled',
 
 		// Default is manual gateway.
 		'gateways'                                    => [

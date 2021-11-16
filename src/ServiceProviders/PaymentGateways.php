@@ -10,20 +10,28 @@ use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
 use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\RefreshToken;
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
-use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
-use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
+use Give\PaymentGateways\PaypalSettingPage;
+use Give\PaymentGateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
 use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PaypalSettingPage;
-use Give\PaymentGateways\Stripe\DonationFormElements;
+use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
+use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
 use Give\PaymentGateways\Stripe\ApplicationFee;
+use Give\PaymentGateways\Stripe\Controllers\DisconnectStripeAccountController;
+use Give\PaymentGateways\Stripe\Controllers\GetStripeAccountDetailsController;
+use Give\PaymentGateways\Stripe\Controllers\NewStripeAccountOnBoardingController;
+use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
+use Give\PaymentGateways\Stripe\DonationFormElements;
+use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 
 /**
@@ -59,7 +67,7 @@ class PaymentGateways implements ServiceProvider {
 	public function register() {
 		give()->bind(
 			'PAYPAL_COMMERCE_ATTRIBUTION_ID',
-			static function() {
+			static function () {
 				return 'GiveWP_SP_PCP';
 			}
 		); // storage
@@ -69,7 +77,7 @@ class PaymentGateways implements ServiceProvider {
 		give()->singleton( DonationFormElements::class );
 		give()->singleton(
 			ApplicationFee::class,
-			function() {
+			function () {
 				return new ApplicationFee(
 					give( AccountDetailRepository::class )->getAccountDetail(
 						give_stripe_get_connected_account_options()['stripe_account']
@@ -89,8 +97,14 @@ class PaymentGateways implements ServiceProvider {
 		add_action( 'admin_init', [ $this, 'handleSellerOnBoardingRedirect' ] );
 		add_action( 'give-settings_start', [ $this, 'registerPayPalSettingPage' ] );
 		Hooks::addFilter( 'give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99 );
+		Hooks::addAction( 'wp_ajax_give_stripe_set_account_default', SetDefaultStripeAccountController::class );
+		Hooks::addAction( 'wp_ajax_disconnect_stripe_account', DisconnectStripeAccountController::class );
+		Hooks::addAction( 'wp_ajax_give_stripe_account_get_details', GetStripeAccountDetailsController::class );
+		Hooks::addAction( 'admin_init', NewStripeAccountOnBoardingController::class );
+		Hooks::addFilter( 'give_metabox_form_data_settings', DonationFormSettingPage::class, '__invoke', 10, 2 );
 
 		$this->registerMigrations();
+		$this->registerStripeCustomFields();
 	}
 
 	/**
@@ -116,11 +130,11 @@ class PaymentGateways implements ServiceProvider {
 	/**
 	 * Registers all of the payment gateways with GiveWP
 	 *
-	 * @since 2.8.0
-	 *
 	 * @param array $gateways
 	 *
 	 * @return array
+	 * @since 2.8.0
+	 *
 	 */
 	public function bootGateways( array $gateways ) {
 		foreach ( $this->gateways as $gateway ) {
@@ -190,5 +204,14 @@ class PaymentGateways implements ServiceProvider {
 		$migrationRegisterer = give( MigrationsRegister::class );
 
 		$migrationRegisterer->addMigration( SetPayPalStandardGatewayId::class );
+		$migrationRegisterer->addMigration( RemovePayPalIPNVerificationSetting::class );
+	}
+
+	/**
+	 * @since 2.13.0
+	 */
+	private function registerStripeCustomFields() {
+		Hooks::addAction( 'give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle' );
+		Hooks::addAction( 'give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle', 10, 2 );
 	}
 }

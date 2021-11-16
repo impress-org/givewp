@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use function get_allowed_mime_types;
+use function wp_max_upload_size;
+
 /**
  * A file upload field.
  *
@@ -15,17 +18,20 @@ class File extends Field {
 	use Concerns\HasLabel;
 	use Concerns\ShowInReceipt;
 	use Concerns\StoreAsMeta;
+	use Concerns\AllowMultiple;
 
 	const TYPE = 'file';
 
 	/**
-	 * @param $name
+	 * @param string $name
+	 *
+	 * @since 2.16.0 File size unit is bytes, so no need to convert WordPress max file upload size to kilo bytes.
 	 */
 	public function __construct( $name ) {
 		parent::__construct( $name );
 
-		$this->validationRules->rule( 'maxSize', 1024 );
-		$this->validationRules->rule( 'allowedTypes', [ '*' ] );
+		$this->validationRules->rule( 'maxSize', wp_max_upload_size() ); // in bytes
+		$this->validationRules->rule( 'allowedTypes', get_allowed_mime_types() );
 	}
 
 	/**

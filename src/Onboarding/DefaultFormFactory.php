@@ -2,7 +2,7 @@
 
 namespace Give\Onboarding;
 
-use Give\Form\Template\Options as TempalteOptions;
+use Give\Form\Template\Options as TemplateOptions;
 
 /**
  * @since 2.8.0
@@ -106,6 +106,7 @@ class DefaultFormFactory {
 	 *
 	 * @return array
 	 *
+     * @since 2.16.2 add new visual appearance settings
 	 * @since 2.8.0
 	 */
 	public function getTemplateConfig() {
@@ -123,18 +124,23 @@ class DefaultFormFactory {
 				'content'      => sprintf( __( 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.', 'give' ), get_bloginfo( 'sitename' ) ),
 				'next_label'   => __( 'Continue', 'give' ),
 			],
+            'visual_appearance' => [
+                'decimals_enabled'  => 'disabled',
+                'primary_color'     => '#28C77B',
+                'google-fonts'      => 'enabled'
+            ],
 			'payment_information' => [
 				'header_label' => __( 'Add Your Information', 'give' ),
 				'headline'     => __( "Who's giving today?", 'give' ),
 				'description'  => __( 'We’ll never share this information with anyone.', 'give' ),
-				TempalteOptions::getCheckoutLabelField(),
+				TemplateOptions::getCheckoutLabelField(),
 			],
 			'thank-you'           => [
 				'image'               => '',
 				'headline'            => __( 'A great big thank you!', 'give' ),
-				'description'         => __( '{name}, your contribution means a lot and will be put to good use making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
+				'description'         => __( '{name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor_email}. ', 'give' ),
 				'sharing'             => 'enabled',
-				'sharing_instruction' => __( 'Help us out by sharing with friends and followers that you supported the cause!', 'give' ),
+				'sharing_instruction' => __( 'Help spread the word by sharing your support with your friends and followers!', 'give' ),
 				'twitter_message'     => __( "I just gave to this cause. Who's next?", 'give' ),
 			],
 		];
@@ -146,44 +152,45 @@ class DefaultFormFactory {
 	 * @return array
 	 *
 	 * @since 2.8.0
+	 * @since 2.13.3 Donation level id and amount value changed to string
 	 */
 	public function getDonationLevels() {
 		return [
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 0,
+						'level_id' => '0',
 					],
-				'_give_amount' => 10,
+				'_give_amount' => give_sanitize_amount_for_db( 10 ),
 			],
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 1,
+						'level_id' => '1',
 					],
-				'_give_amount' => 25,
+				'_give_amount' => give_sanitize_amount_for_db( 25 ),
 			],
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 2,
+						'level_id' => '2',
 					],
-				'_give_amount' => 50,
+				'_give_amount' => give_sanitize_amount_for_db( 50 ),
 			],
 			[
 				'_give_id'      =>
 					[
-						'level_id' => 3,
+						'level_id' => '3',
 					],
-				'_give_amount'  => 100,
+				'_give_amount'  => give_sanitize_amount_for_db( 100 ),
 				'_give_default' => 'default',
 			],
 			[
 				'_give_id'     =>
 					[
-						'level_id' => 5,
+						'level_id' => '5',
 					],
-				'_give_amount' => 250,
+				'_give_amount' => give_sanitize_amount_for_db( 250 ),
 			],
 		];
 	}

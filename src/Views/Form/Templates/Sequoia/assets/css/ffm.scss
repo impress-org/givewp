@@ -1,4 +1,60 @@
 /* stylelint-disable */
+.ffm-field-container {
+	position: relative;
+
+	fieldset{
+		padding: 0 !important;
+	}
+
+	.give-label {
+		display: block !important;
+
+		.give-tooltip:not(.give-required-indicator + .give-tooltip ){
+			padding-left: 5px;
+		}
+	}
+}
+
+/*---------------------------------
+RTL styles
+-----------------------------------*/
+
+html[dir='rtl'] {
+	.ffm-field-container[data-field-type="checkbox"] {
+		label {
+			top: 6px;
+
+			&::before {
+				right: 0;
+			}
+
+			&::after {
+				top: -3px;
+				right: 0;
+				margin-right: 1px;
+			}
+		}
+	}
+
+	.ffm-field-container[data-field-type="radio"] {
+		label {
+			padding-right: 32px !important;
+
+			&::before {
+				right: 0;
+			}
+
+			&::after {
+				right: 6px;
+			}
+		}
+	}
+}
+
+/*---------------------------------
+Backward compatibility ffm css. we can remove this code in future.
+FFM version > 1.6.0 uses field api to render custom field which does not require below style.
+-----------------------------------*/
 .choose-amount {
 	#give-ffm-section {
 		margin: 20px !important;
@@ -10,6 +66,12 @@
 		display: block !important;
 		position: absolute;
 		font-size: 14px;
+	}
+}
+
+fieldset{
+	.give-ffm-form-row-responsive {
+		position: relative;
 	}
 }
 
@@ -113,7 +175,6 @@
 }
 
 .ffm-attachment-upload-filelist {
-	font-family: 'Montserrat', sans-serif;
 	background: #fff;
 	border: 1px solid #b8b8b8;
 	box-sizing: border-box;
@@ -147,10 +208,6 @@
 	}
 }
 
-/*---------------------------------
-RTL styles
------------------------------------*/
-
 html[dir='rtl'] {
 	.ffm-checkbox-field {
 		label {
@@ -179,3 +236,4 @@ html[dir='rtl'] {
 		}
 	}
 }
+

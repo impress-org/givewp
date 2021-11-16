@@ -1,9 +1,10 @@
-/* global accounting, give_global_vars, jQuery */
+/* global give_global_vars, jQuery */
 import GiveNotice from './notice';
 import GiveForm from './form';
 import GiveDonor from './donor';
 import GiveUtil from './util';
 import GiveShare from './share';
+import accounting from 'accounting';
 
 /**
  *  This API is under development.
@@ -305,7 +306,7 @@ const Give = {
 		 * @param {string} parameter
 		 * @return {string|*}
 		 */
-		removeURLParameter: function removeURLParameter( url, parameter ) {
+		removeURLParameter: function ( url, parameter ) {
 			//prefer to use l.search if you have a location/link object
 			const urlparts = url.split( '?' );
 			if ( urlparts.length >= 2 ) {

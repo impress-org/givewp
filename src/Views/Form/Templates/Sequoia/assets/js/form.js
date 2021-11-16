@@ -39,6 +39,7 @@
 			$( '.step-tracker' ).removeClass( 'current' );
 			$( '.step-tracker[data-step="' + step + '"]' ).addClass( 'current' );
 
+			// Handle introduction step (whether disabled or not).
 			if ( templateOptions.introduction.enabled === 'disabled' ) {
 				if ( $( '.step-tracker' ).length === 3 ) {
 					$( '.step-tracker' ).remove();
@@ -54,11 +55,16 @@
 				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '50px' );
 			} else if ( step === 0 ) {
+				// First  step is enabled.
 				$( '.give-form-navigator', $container ).removeClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '' );
 			} else {
+				// Other steps besides intro and payment amounts:
 				$( '.give-form-navigator', $container ).addClass( 'nav-visible' );
 				$( steps[ step ].selector ).css( 'padding-top', '50px' );
+				// Scroll to top after animation finished
+				// @see https://github.com/impress-org/givewp/issues/5969
+				scrollToIframeTop();
 			}
 
 			if ( steps[ step ].title ) {
@@ -91,7 +97,7 @@
 					return navigator.firstFocus = true;
 				}
 				if ( steps[ navigator.currentStep ].firstFocus ) {
-					$( steps[ navigator.currentStep ].firstFocus ).focus();
+					$( steps[ navigator.currentStep ].firstFocus ).trigger('focus');
 				}
 			}, 200 );
 		},
@@ -128,17 +134,6 @@
 				$( '#give_checkout_user_info' ).after( $( '.give-fee-recovery-donors-choice' ) );
 			}
 			navigator.goToStep( getInitialStep() );
-
-			// Fields API: Run setup for custom checkbox fields.
-			const customCheckboxes = document.querySelectorAll( '[data-field-type="checkbox"]' );
-			Array.from( customCheckboxes ).forEach( ( el ) => {
-				const containerSelector = '[data-field-name="' + el.getAttribute( 'data-field-name' ) + '"]';
-				setupCheckbox( {
-					container: containerSelector,
-					label: containerSelector + ' label',
-					input: containerSelector + ' input[type="checkbox"]',
-				} );
-			} );
 		},
 		back: () => {
 			const prevStep = navigator.currentStep !== 0 ? navigator.currentStep - 1 : 0;
@@ -420,6 +415,7 @@
 			setTimeout( setupTabOrder, 200 );
 
 			moveFieldsUnderPaymentGateway();
+			setupLegacyConsumerCheckboxAndRadio();
 			setupRegistrationFormInputFields();
 			setupFFMInputs();
 			setupInputIcons();
@@ -456,19 +452,16 @@
 	$( document ).on( 'give_gateway_loaded', refreshPersonalInformationSection );
 
 	// Setup fields.
+	setupLegacyConsumerCheckboxAndRadio();
 	setupSelectInputs();
 	setupRegistrationFormInputFields();
 	setupFFMInputs();
 	setupInputIcons();
 
-	if ( 'enabled' === templateOptions.payment_amount.decimals_enabled ) {
-		updateFormDonationLevelsLabels();
-	}
-
 	/**
 	 * Limited scope of optional input labels, specifically to User Info, see issue #5160.
 	 */
-	setupOptionalInputLables(
+	setupOptionalInputLabels(
 		Array.from( document.querySelectorAll( '#give_checkout_user_info input[type="text"]' ) )
 	);
 
@@ -479,7 +472,7 @@
 	 *
 	 * @param {array} inputs An iteratable list of input elements.
 	 */
-	function setupOptionalInputLables( inputs ) {
+	function setupOptionalInputLabels( inputs ) {
 		inputs.filter( function( input ) {
 			return ! input.required;
 		} ).map( function( input ) {
@@ -558,22 +551,44 @@
 			switch ( $( this ).prop( 'type' ) ) {
 				case 'checkbox': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$( this ).parent().addClass( 'checked' );
+						$(this).parent().addClass('checked');
 					} else {
-						$( this ).parent().removeClass( 'checked' );
+						$(this).parent().removeClass('checked');
 					}
 					break;
 				}
 				case 'radio': {
 					if ( $( this ).prop( 'checked' ) ) {
-						$( this ).parent().addClass( 'selected' );
+						$(this).parent().addClass('selected');
 					} else {
-						$( this ).parent().removeClass( 'selected' );
+						$(this).parent().removeClass('selected');
 					}
 					break;
 				}
 			}
 		} );
+	}
+
+	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function handleFFMInput( evt ) {
+		if ( $( evt.target ).is( 'input' ) ) {
+			switch ( $( evt.target ).prop( 'type' ) ) {
+				case 'checkbox': {
+					$(evt.target).closest('label').toggleClass('checked');
+					break;
+				}
+				case 'radio': {
+					$(evt.target).closest('label').addClass('selected');
+					$(evt.target).parent().siblings().removeClass('selected');
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -759,27 +774,78 @@
 	}
 
 	/**
+	 * Setup prominent checkboxes (field api) (that use persistent borders on select)
+	 *
+	 * @since 2.14.0
+	 */
+	function setupLegacyConsumerCheckboxAndRadio(){
+		const customCheckboxes = document.querySelectorAll('[data-field-type="checkbox"] input');
+		const customRadios = document.querySelectorAll('[data-field-type="radio"] input');
+		Array.from(customCheckboxes).forEach((el) => {
+			const uniqueInputSelector = `#${el.getAttribute('id')}`;
+			const uniqueLabelSelector = `label[for=${el.getAttribute('id')}]`;
+			setupCheckbox({
+				container: uniqueLabelSelector,
+				label: uniqueLabelSelector,
+				input: uniqueInputSelector,
+			});
+		});
+
+		Array.from(customRadios).forEach((el) => {
+			const uniqueInputSelector = `#${el.getAttribute('id')}`;
+			const uniqueLabelSelector = `label[for=${el.getAttribute('id')}]`;
+			setupRadio({
+				label: uniqueLabelSelector,
+				input: uniqueInputSelector,
+			});
+		});
+	}
+
+	/**
 	 * Setup prominent checkboxes (that use persistent borders on select)
 	 *
 	 * @since 2.7.0
+	 * @since 2.15.0 update click handler callback
 	 * @param {object} args Argument object containing: container, label, input selectors
 	 */
 	function setupCheckbox( { container, label, input } ) {
 		// If checkbox is opted in by default, add border on load
+		if ($(input).prop('checked') === true) {
+			$(container).addClass('active');
+		}
+
+		// Persist checkbox input border when selected
+		$(document).on('click', label, function (evt) {
+			if ('INPUT' === evt.target.nodeName) {
+				return;
+			}
+
+			$(container).toggleClass('active');
+		});
+	}
+
+	/**
+	 * Handle updating label classes for FFM radios and checkboxes
+	 *
+	 * @since 2.7.0
+	 * @since 2.15.0 update click handler callback
+	 * @param {object} evt Reference to FFM input element click event
+	 */
+	function setupRadio( { label, input } ) {
+		// If checkbox is opted in by default, add border on load
 		if ( $( input ).prop( 'checked' ) === true ) {
-			$( container ).addClass( 'active' );
+			$( label ).addClass( 'active' );
 		}
 
 		// Persist checkbox input border when selected
 		$( document ).on( 'click', label, function( evt ) {
-			if ( container === label ) {
-				evt.stopPropagation();
-				evt.preventDefault();
-
-				$( input ).prop( 'checked', ! $( input ).prop( 'checked' ) );
+			if ('INPUT' === evt.target.nodeName) {
+				return;
 			}
 
-			$( container ).toggleClass( 'active' );
+			$(evt.target.parentElement).find('label')
+				.not(evt.target).removeClass('active');
+			$(evt.target).toggleClass('active');
 		} );
 	}
 
@@ -805,28 +871,6 @@
 	 */
 	function getInitialStep() {
 		return Give.fn.getParameterByName( 'showDonationProcessingError' ) || Give.fn.getParameterByName( 'showFailedDonationError' ) ? 2 : 0;
-	}
-
-	/**
-	 * Handle updating label classes for FFM radios and checkboxes
-	 *
-	 * @since 2.7.0
-	 * @param {object} evt Reference to FFM input element click event
-	 */
-	function handleFFMInput( evt ) {
-		if ( $( evt.target ).is( 'input' ) ) {
-			switch ( $( evt.target ).prop( 'type' ) ) {
-				case 'checkbox': {
-					$( evt.target ).closest( 'label' ).toggleClass( 'checked' );
-					break;
-				}
-				case 'radio': {
-					$( evt.target ).closest( 'label' ).addClass( 'selected' );
-					$( evt.target ).parent().siblings().removeClass( 'selected' );
-					break;
-				}
-			}
-		}
 	}
 
 	function clearLoginNotices() {
@@ -865,39 +909,39 @@
 	 * @since 2.9.0
 	 */
 	function scrollToIframeTop() {
-		if ( 'parentIFrame' in window ) {
-			window.parentIFrame.sendMessage( { action: 'giveScrollIframeInToView' } );
+		if ('parentIFrame' in window) {
+			window.parentIFrame.sendMessage({action: 'giveScrollIframeInToView'});
+		}
+	}
+}(jQuery));
+
+/**
+ * Support to FFM restore custom field value logic.
+ *
+ * FFM restore value of custom fields correctly but field state does not reflect correctly
+ * in donation form because we are using custom styling for Radio and Checkbox.
+ *
+ * Below code will add class to Checkbox and Radio label if checked.
+ *
+ * @since 2.15.0
+ */
+document.addEventListener('readystatechange', function (evt) {
+	if (evt.target.readyState !== 'complete') {
+		return;
+	}
+
+
+	const customCheckboxes = document.querySelectorAll('[data-field-type="checkbox"] input');
+	const customRadios = document.querySelectorAll('[data-field-type="radio"] input');
+
+	const addActiveClass = el => {
+		if (el.checked) {
+			el.parentElement.classList.add('active');
+		} else {
+			el.parentElement.classList.remove('active');
 		}
 	}
 
-	/**
-	 * Update decimal donation levels amount
-	 *
-	 * @since 2.11.0
-	 */
-	function updateFormDonationLevelsLabels() {
-		$( '.give-form' ).each( ( i, form ) => {
-			const donationForm = $( form );
-			const donationLevels = Give.form.fn.getVariablePrices( donationForm );
-			const symbol = Give.form.fn.getInfo( 'currency_symbol', donationForm );
-			const position = Give.form.fn.getInfo( 'currency_position', donationForm );
-			const precision = Give.form.fn.getInfo( 'number_decimals', donationForm );
-
-			$.each( donationLevels, function( j, level ) {
-				if ( 'custom' === level.price_id ) {
-					return;
-				}
-
-				const amount = Give.fn.numberHasDecimal( level.amount )
-					? Give.fn.formatCurrency( level.amount, { symbol, position, precision }, donationForm )
-					: level.amount;
-
-				const donationLevelLabel = '<div class="currency currency--' + position + '">' + symbol + '</div>' + amount;
-
-				donationForm
-					.find( '.give-btn-level-' + level.price_id  )
-					.html( donationLevelLabel );
-			} );
-		} );
-	}
-}( jQuery ) );
+	customCheckboxes.forEach(addActiveClass)
+	customRadios.forEach(addActiveClass)
+})

@@ -1,0 +1,73 @@
+/* stylelint-disable  function-url-quotes, selector-class-pattern */
+
+$errorColor: #c91f1f;
+
+.give-donor-dashboard-amount-inputs__validation-error-message {
+	margin-top: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	color: $errorColor;
+}
+
+.give-donor-dashboard-currency-control {
+	margin-top: 10px;
+
+	.give-donor-dashboard-currency-control__label {
+		font-family: Montserrat, Arial, Helvetica, sans-serif;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 1;
+		color: #555;
+	}
+
+	.give-donor-dashboard-currency-control__input {
+		align-items: center;
+		background-color: hsl(0, 0%, 100%);
+		border-radius: 4px;
+		cursor: default;
+		display: flex;
+		min-height: 38px;
+		outline: 0 !important;
+		min-width: 190px;
+		width: 100%;
+		margin-top: 8px;
+		border: 1px solid #b8b8b8;
+		overflow: hidden;
+		padding: 0;
+		box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color);
+		transition: box-shadow 0.1s ease;
+
+		&:focus-within {
+			box-shadow: 0 0 0 1px var(--give-donor-dashboard-accent-color);
+		}
+
+		svg {
+			margin-right: 12px;
+		}
+
+		input {
+			margin: 0 12px;
+			outline: none;
+			border: none;
+			padding: 0;
+			width: 100%;
+			font-size: 14px;
+			font-family: Montserrat, Arial, Helvetica, sans-serif;
+			font-weight: 500;
+			color: #545554;
+			line-height: 1.2;
+		}
+
+		&.has-error {
+			border-color: $errorColor;
+
+			&:focus-within {
+				box-shadow: 0 0 0 1px $errorColor;
+			}
+
+			input {
+				color: $errorColor;
+			}
+		}
+	}
+}

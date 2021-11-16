@@ -348,7 +348,7 @@ class Give_Donate_Form {
 	 * @param  int|bool $_id   Post id. Default is false.
 	 * @param  array    $_args Arguments passed.
 	 */
-	public function __construct( $_id = false, $_args = array() ) {
+	public function __construct( $_id = false, $_args = [] ) {
 		$donation_form = WP_Post::get_instance( $_id );
 
 		$this->setup_donation_form( $donation_form );
@@ -374,7 +374,7 @@ class Give_Donate_Form {
 			return false;
 		}
 
-		Give_Forms_Query::update_meta_cache( array( $donation_form->ID ) );
+		Give_Forms_Query::update_meta_cache( [ $donation_form->ID ] );
 
 		foreach ( $donation_form as $key => $value ) {
 			$this->$key = $value;
@@ -415,17 +415,17 @@ class Give_Donate_Form {
 	 *
 	 * @return bool|int    False if data isn't passed and class not instantiated for creation, or New Form ID.
 	 */
-	public function create( $data = array() ) {
+	public function create( $data = [] ) {
 
 		if ( $this->id != 0 ) {
 			return false;
 		}
 
-		$defaults = array(
+		$defaults = [
 			'post_type'   => 'give_forms',
 			'post_status' => 'draft',
 			'post_title'  => __( 'New Donation Form', 'give' ),
-		);
+		];
 
 		$args = wp_parse_args( $data, $defaults );
 
@@ -594,12 +594,12 @@ class Give_Donate_Form {
 	 * @since  2.0.6
 	 * @access public
 	 *
-	 * @param $price_id
+	 * @param string $price_id
 	 *
 	 * @return array|null
 	 */
 	public function get_level_info( $price_id ) {
-		$level_info = array();
+		$level_info = [];
 
 		// Bailout.
 		if ( 'multi' !== $this->get_type() ) {
@@ -642,7 +642,7 @@ class Give_Donate_Form {
 			} elseif ( 'donors' === $goal_format ) {
 				$this->goal = give_get_meta( $this->ID, '_give_number_of_donor_goal', true );
 
-			} elseif ( in_array( $goal_format, array( 'amount', 'percentage' ) ) ) {
+			} elseif ( in_array( $goal_format, [ 'amount', 'percentage' ] ) ) {
 				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 			}
 		}
@@ -819,12 +819,12 @@ class Give_Donate_Form {
 
 		$form_classes_array = apply_filters(
 			'give_form_classes',
-			array(
+			[
 				'give-form',
 				'give-form-' . $this->ID,
 				'give-form-type-' . $this->get_type(),
 				$float_labels_option,
-			),
+			],
 			$this->ID,
 			$args
 		);
@@ -848,9 +848,9 @@ class Give_Donate_Form {
 	 * @return string
 	 */
 	public function get_form_wrap_classes( $args ) {
-		$custom_class = array(
+		$custom_class = [
 			'give-form-wrap',
-		);
+		];
 
 		if ( $this->is_close_donation_form() ) {
 			$custom_class[] = 'give-form-closed';

@@ -31,7 +31,7 @@ const Location = () => {
 	return (
 		<div className="give-obw-location">
 			<BackgroundImage />
-			<h1>{ __( 'Where are you fundraising?', 'give' ) }</h1>
+			<h1>{ __( '🌎 Where are you fundraising?', 'give' ) }</h1>
 			<Card>
 				<SelectInput testId="country-select" label={ __( 'Country', 'give' ) } value={ country } onChange={ onChangeCountry } options={ countriesList } />
 				<SelectInput testId="state-select" label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } isLoading={ fetchingStatesList } />
