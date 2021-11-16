@@ -33,7 +33,7 @@ class SummaryView {
          * @hook give_donation_form_user_info
          * @hook give_donation_form_before_submit
          */
-        add_action( $this->getFormTemplateLocation(), [ $this, 'render' ] );
+        add_action( $this->getFormTemplateLocation(), [ $this, 'maybeRender' ] );
     }
 
     public function maybeRender() {
