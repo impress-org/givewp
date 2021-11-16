@@ -6,6 +6,7 @@ domIsReady(() => {
 	removeTestModeMessage();
 	movePersonalInfoSectionAfterDonationAmountSection();
 	movePaymentFormInsidePaymentDetailsSection();
+    moveDonateNowButtonSectionAfterDonationAmountSection();
 	setPersonalInfoTitle();
 	addPersonalInfoDescription();
 	setPaymentDetailsTitle();
@@ -27,6 +28,14 @@ function movePersonalInfoSectionAfterDonationAmountSection() {
 		document.querySelector('.give-donation-amount-section'),
 	);
 }
+
+function moveDonateNowButtonSectionAfterDonationAmountSection() {
+    insertAfter(
+        document.querySelector('.give-donate-now-button-section'),
+        document.querySelector('.give-payment-details-section'),
+    );
+}
+
 
 function setPersonalInfoTitle() {
 	document.querySelector('.give-personal-info-section legend:first-of-type').textContent = classicTemplateOptions.donor_information.headline;

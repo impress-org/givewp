@@ -67,32 +67,39 @@ class Classic extends Template implements Hookable, Scriptable {
 		if ( 'enabled' === $this->options[ 'appearance' ][ 'display_header' ] ) {
 			add_action( 'give_pre_form', [ $this, 'renderHeader' ] );
 		}
+    
+        add_action('give_before_donation_levels', [ $this, 'renderDonationAmountHeading' ], 20);
 
-		// Donation Levels
-		add_action( 'give_donation_form_top', function () {
-			echo "<section class=\"give-form-section give-donation-amount-section\">";
-		}, - 10000 );
-		add_action( 'give_donation_form_top', function () {
-			echo "</section>";
-		}, 10000 );
+        $sections = [
+            [
+                'hooks' => [ 'give_donation_form_top' ],
+                'class' => 'give-donation-amount-section',
+            ],
+            [
+                'hooks' => [ 'give_donation_form_register_login_fields' ],
+                'class' => 'give-personal-info-section',
+            ],
+            [
+                'hooks' => [ 'give_payment_mode_top', 'give_payment_mode_bottom' ],
+                'class' => 'give-payment-details-section',
+            ],
+            [
+                'hooks' => [ 'give_donation_form_before_submit', 'give_donation_form_after_submit' ],
+                'class' => 'give-donate-now-button-section',
+            ],
+        ];
 
-		add_action( 'give_before_donation_levels', [ $this, 'renderDonationAmountHeading' ], 20 );
+        foreach ( $sections as $section ) {
+            list ( $start, $end ) = array_pad( $section[ 'hooks' ], 2, null );
 
-		// Donation Personal Info
-		add_action( 'give_donation_form_register_login_fields', function () {
-			echo "<section class=\"give-form-section give-personal-info-section\">";
-		}, - 10000 );
-		add_action( 'give_donation_form_register_login_fields', function () {
-			echo "</section>";
-		}, 10000 );
+            add_action( $start, function() use ( $section ) {
+                printf( '<section class="give-form-section %s">', $section[ 'class' ] );
+            }, -10000 );
 
-		// Donation Payment Method
-		add_action( 'give_payment_mode_top', function () {
-			echo "<section class=\"give-form-section give-payment-details-section\">";
-		}, - 10000 );
-		add_action( 'give_payment_mode_bottom', function () {
-			echo "</section>";
-		}, 10000 );
+            add_action( $end ?: $start, function() {
+                echo '</section>';
+            }, 10000 );
+        }
 
 		/**
 		 * Remove actions
