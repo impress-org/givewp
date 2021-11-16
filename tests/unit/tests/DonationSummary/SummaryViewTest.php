@@ -8,8 +8,8 @@ final class SummaryViewTest extends Give_Unit_Test_Case {
 
         $view = self::create_form_summary_view([
             '_give_sequoia_form_template_settings' => [
-                'donation_summary' => [
-                    'location' => 'give_donation_form_before_submit',
+                'payment_information' => [
+                    'donation_summary_location' => 'give_donation_form_before_submit',
                 ],
             ],
         ]);
@@ -21,8 +21,8 @@ final class SummaryViewTest extends Give_Unit_Test_Case {
 
         $view = self::create_form_summary_view([
             '_give_sequoia_form_template_settings' => [
-                'donation_summary' => [
-                    'enabled' => 'enabled',
+                'payment_information' => [
+                    'donation_summary_enabled' => 'enabled',
                 ],
             ],
         ]);
@@ -33,8 +33,8 @@ final class SummaryViewTest extends Give_Unit_Test_Case {
     public function test_get_summary_heading() {
         $view = self::create_form_summary_view([
             '_give_sequoia_form_template_settings' => [
-                'donation_summary' => [
-                    'heading' => 'Here\'s what you\'re about to donate',
+                'payment_information' => [
+                    'donation_summary_heading' => 'Here\'s what you\'re about to donate',
                 ],
             ],
         ]);
