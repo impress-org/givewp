@@ -54,6 +54,7 @@ mix.webpackConfig({
     resolve: {
         alias: {
             '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
+            '@givewp/fontawesome': path.resolve(__dirname, 'assets/src/css/icons/fa/'),
         },
     },
 });
