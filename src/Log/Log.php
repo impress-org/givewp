@@ -3,6 +3,7 @@
 namespace Give\Log;
 
 use Exception;
+use Give\Log\Helpers\Environment;
 
 /**
  * Class Log
@@ -108,9 +109,9 @@ class Log {
 		} catch ( Exception $exception ) {
 			error_log( $exception->getMessage() );
 		}
-	}
+    }
 
-	/**
+    /**
      * Static helper for calling the logger methods
      *
      * @param  string  $name
@@ -118,12 +119,14 @@ class Log {
      *
      * @unreleased - only log if WP_DEBUG_LOG is enabled
      * @since 2.11.1
+     *
      */
-	public static function __callStatic( $name, $arguments ) {
-        /** @var Log $logger */
-        $logger = give(__CLASS__);
+    public static function __callStatic($name, $arguments)
+    {
+        if (Environment::isLogEnabled()) {
+            /** @var Log $logger */
+            $logger = give(__CLASS__);
 
-        if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
             call_user_func_array([$logger, $name], $arguments);
         }
     }
