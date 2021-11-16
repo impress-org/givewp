@@ -103,8 +103,7 @@ function splitDonationLevelAmountsIntoParts() {
                 h('span', {className: "give-amount-without-decimals"}, amountWithoutDecimal),
                 h('span', {className: "give-amount-decimal"}, decimalForAmount),
             ),
-            // There’s an intentional leading space before the currency symbol.
-            //currency.symbolPosition === 'after' && ` ${h(CurrencySymbol, {position: 'after'})}`,
+            currency.symbolPosition === 'after' && h(CurrencySymbol, {position: 'after'}),
         );
 	});
 }
