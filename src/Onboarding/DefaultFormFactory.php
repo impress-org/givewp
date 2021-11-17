@@ -133,6 +133,9 @@ class DefaultFormFactory {
 				'header_label' => __( 'Add Your Information', 'give' ),
 				'headline'     => __( "Who's giving today?", 'give' ),
 				'description'  => __( 'We’ll never share this information with anyone.', 'give' ),
+                'donation_summary_enabled' => 'enabled',
+                'donation_summary_heading' => __( 'Here\'s what you\'re about to donate:', 'give' ),
+                'donation_summary_location' => 'give_donation_form_before_submit',
 				TemplateOptions::getCheckoutLabelField(),
 			],
 			'thank-you'           => [

@@ -43,6 +43,7 @@
 
 use Give\Container\Container;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
@@ -158,7 +159,8 @@ final class Give {
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
-		LicenseServiceProvider::class
+		LicenseServiceProvider::class,
+        DonationSummaryServiceProvider::class,
 	];
 
 	/**
