@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\Http\Response\Contracts;
+namespace Give\Framework\Support\Contracts;
 
 /**
  * @unreleased

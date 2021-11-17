@@ -3,10 +3,10 @@
 namespace Give\Framework\Http\Response;
 
 use ArrayObject;
-use Give\Framework\Http\Response\Contracts\Arrayable;
-use Give\Framework\Http\Response\Contracts\Jsonable;
-use Give\Framework\Http\Response\Contracts\Renderable;
 use Give\Framework\Http\Response\Traits\ResponseTrait;
+use Give\Framework\Support\Contracts\Arrayable;
+use Give\Framework\Support\Contracts\Jsonable;
+use Give\Framework\Support\Contracts\Renderable;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
