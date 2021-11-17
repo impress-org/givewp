@@ -1,7 +1,7 @@
 document.addEventListener( 'DOMContentLoaded', function() {
     const header = document.querySelector( '.wp-heading-inline' );
     const titleAction = document.querySelector( '.page-title-action' );
-    const banners = document.querySelectorAll( '.give-sale-banner' );
+    const bannersContainer = document.querySelector( '.give-sale-banners-container' );
     const dismissActions = document.querySelectorAll( '.give-sale-banner-dismiss' );
     const previousSibling = titleAction ?? header;
 
@@ -20,15 +20,15 @@ document.addEventListener( 'DOMContentLoaded', function() {
         } );
     };
 
-    if ( previousSibling && banners ) {
-        banners.forEach( function( banner ) {
-            previousSibling.parentNode.insertBefore( banner, previousSibling.nextSibling );
-        } );
+    if ( previousSibling && bannersContainer ) {
+        previousSibling.parentNode.insertBefore( bannersContainer, previousSibling.nextSibling );
     }
 
     if ( dismissActions ) {
         dismissActions.forEach( function( action ) {
             action.addEventListener( 'click', hideBanner );
         } );
+    } else {
+        bannersContainer.remove();
     }
 } );
