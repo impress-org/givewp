@@ -31,6 +31,7 @@
 
 .give-sale-banner {
     --sale-icon-size: 2.5em;
+    --bg-gradient: linear-gradient(85.79deg, #1da3b0 44.27%, #9fd894 100%);
 
     display: grid;
     align-items: stretch;
@@ -42,7 +43,8 @@
     padding-bottom: var(--banner-y-pad);
     padding-left: 1.0625em;
     padding-right: 1.3125em;
-    background-image: linear-gradient(85.79deg, #1da3b0 44.27%, #9fd894 100%);
+    background-image: var(--bg-gradient);
+    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     color: #fff;
     font-size: clamp(max(0.875rem, 14px), 2vw, max(1rem, 16px));
 }
@@ -62,9 +64,43 @@
     }
 
     & a {
+        display: inline-block;
         color: inherit;
         font-weight: 700;
         text-decoration-thickness: 0.05em;
+        transform-style: preserve-3d;
+
+        &::after {
+            content: "";
+            position: absolute;
+            transform: translateZ(-1px);
+            display: block;
+            background-color: #fff;
+            height: calc(100% + 0.2em);
+            width: calc(100% + 0.6em);
+            top: -0.1em;
+            left: -0.3em;
+            opacity: 0;
+            box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.05);
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        &:hover,
+        &:focus {
+            background-image: var(--bg-gradient);
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+
+            &::after {
+                opacity: 1;
+            }
+        }
     }
 
     & p {
@@ -94,12 +130,24 @@
     color: inherit;
     cursor: pointer;
     font-size: inherit;
+    transition: color 0.2s, transform 0.2s;
 
     & svg {
         width: var(--size);
         height: var(--size);
+        transition: fill 200ms ease-in-out;
+
+        fill: none;
 
         /* This ensures that the event target is the button when clicked. */
         pointer-events: none;
+    }
+
+    &:hover {
+        transform: scale(1.15);
+    }
+
+    &:active {
+        transform: scale(0.95);
     }
 }
