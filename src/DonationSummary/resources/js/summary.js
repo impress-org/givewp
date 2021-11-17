@@ -47,7 +47,13 @@ window.GiveDonationSummary = {
         // Admin Defined Recurring
         GiveDonationSummary.observe( '[name="give-price-id"]', function( targetNode, $form ) {
             const priceID = targetNode.value
-            const recurringDetails = JSON.parse( document.querySelector('.give_recurring_donation_details').value )
+            const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');
+
+            if( ! recurringDetailsEl ) {
+                return;
+            }
+
+            const recurringDetails = JSON.parse( recurringDetailsEl.value )
 
             if( 'undefined' !== typeof recurringDetails[ 'multi' ] ) {
                 const isRecurring = ( 'yes' === recurringDetails[ 'multi' ][ priceID ][ '_give_recurring' ] );
@@ -68,7 +74,7 @@ window.GiveDonationSummary = {
             $form.find('.fee-break-down-message').hide()
             $form.find('.js-give-donation-summary-fees').toggle(targetNode.checked)
 
-            // Hack: (Currency Switcher) The total is always stored using a the decimal seperator as set by the primary currency.
+            // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
             const fee = document.querySelector('[name="give-fee-amount"]').value.replace('.', Give.form.fn.getInfo( 'decimal_separator', $form ))
             $form.find('[data-tag="fees"]').html(
                 GiveDonationSummary.format_amount(fee, $form)
