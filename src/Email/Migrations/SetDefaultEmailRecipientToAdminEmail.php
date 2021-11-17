@@ -18,7 +18,7 @@ class SetDefaultEmailRecipientToAdminEmail extends Migration
     {
         $emails = Give_Email_Notifications::get_instance()->get_email_notifications();
         $giveSettings = give_get_settings();
-        $settingChanged = false;
+        $isSettingChanged = false;
 
         foreach ($emails as $email) {
             if ( ! Give_Email_Notification_Util::has_recipient_field($email) ) {
@@ -39,10 +39,10 @@ class SetDefaultEmailRecipientToAdminEmail extends Migration
 
             $giveSettings[$optionName] = [get_bloginfo('admin_email')];
 
-            $settingChanged = true;
+            $isSettingChanged = true;
         }
 
-        if ( $settingChanged ) {
+        if ( $isSettingChanged ) {
             update_option('give_settings', $giveSettings);
         }
     }
