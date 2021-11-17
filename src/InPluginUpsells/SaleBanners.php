@@ -58,10 +58,9 @@ class SaleBanners
 		return array_filter(
 			$this->getBanners(),
 			function ($banner) use ($currentDateTime, $currentUserId) {
-				return true;
-				$isHidden = in_array($banner['id'] . $currentUserId, $this->hiddenBanners);
-				$isFuture = $currentDateTime >= $banner['startDate'];
-				$isPast = $currentDateTime <= $banner['endDate'];
+				$isHidden = in_array($banner['id'] . "_{$currentUserId}", $this->hiddenBanners);
+				$isFuture = $currentDateTime < $banner['startDate'];
+				$isPast = $currentDateTime > $banner['endDate'];
 
 				return !($isHidden || $isFuture || $isPast);
 			}
@@ -90,7 +89,7 @@ class SaleBanners
 		$banners = $this->getVisibleBanners();
 
 		if (!empty($banners)) {
-            $saleIconURL = GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png';
+			$saleIconURL = GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png';
 			include __DIR__ . '/resources/views/sale-banners.php';
 		}
 	}
