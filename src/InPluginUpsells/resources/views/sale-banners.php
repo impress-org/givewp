@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array[] $banners
+ * @var string  $saleIconURL
+ */
+?>
 <div class="give-sale-banners-container">
 
     <svg style="display: none" id="give-sale-banners-icons">
@@ -8,7 +14,7 @@
     <?php foreach($banners as $banner): extract($banner); ?>
 
     <aside aria-label="<?= $accessibleLabel ?>" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>" class="give-sale-banner">
-        <img class="give-sale-banner-icon" src="" alt="Sale">
+        <img class="give-sale-banner-icon" src="<?= $saleIconURL ?>" alt="Sale">
         <div class="give-sale-banner-content">
             <p>
                 <strong><?= $leadText ?></strong> <?= $contentText ?> <a href="<?= $actionURL ?>" rel="noopener" target="_blank"><?= $actionText ?></a>

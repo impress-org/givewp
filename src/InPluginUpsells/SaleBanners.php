@@ -100,6 +100,7 @@ class SaleBanners
 		$banners = $this->getVisibleBanners();
 
 		if (!empty($banners)) {
+            $saleIconURL = GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png';
 			include __DIR__ . '/resources/views/sale-banners.php';
 		}
 	}
