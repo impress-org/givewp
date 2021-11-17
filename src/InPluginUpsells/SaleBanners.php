@@ -90,9 +90,11 @@ class SaleBanners
      */
     public function render()
     {
+        echo '<div class="give-sale-banners-container">';
         foreach ($this->getBanners() as $i => $banner) {
             $this->renderBanner($banner);
         }
+        echo '</div>';
     }
 
     /**
@@ -113,8 +115,8 @@ class SaleBanners
             'give-in-plugin-upsells-sale-banners',
             'GiveSaleBanners',
             [
-                'apiRoot'  => esc_url_raw( rest_url( 'give-api/v2/sale-banner' ) ),
-                'apiNonce' => wp_create_nonce( 'wp_rest' ),
+                'apiRoot'  => esc_url_raw(rest_url('give-api/v2/sale-banner')),
+                'apiNonce' => wp_create_nonce('wp_rest'),
             ]
         );
     }
