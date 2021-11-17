@@ -33,25 +33,15 @@ class SaleBanners
 	{
 		return [
 			[
-				'id'              => 'giving_tuesday_2021',
-				'accessibleLabel' => __('Giving Tuesday', 'give'),
-				'leadText'        => __('Save 40% on all plans!', 'give'),
-				'contentText'     => __('Our biggest sale of the year is here for a limited time only.', 'give'),
+				'id'              => 'bfgt2021',
+				'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
+				'leadText'        => __('Save 40% on all plans for a limited time.', 'give'),
+				'contentText'     => __('Black Friday through Giving Tuesday.', 'give'),
 				'actionText'      => __('Shop Now', 'give'),
 				'actionURL'       => 'https://givewp.com/sale',
 				'startDate'       => strtotime('2021-11-14 00:00'),
 				'endDate'         => strtotime('2021-11-17 24:00'),
 			],
-			[
-				'id'              => 'banner2',
-				'accessibleLabel' => __('Example Banner', 'give'),
-				'leadText'        => __('Save 40% on all plans!', 'give'),
-				'contentText'     => __('Our biggest sale of the year is here for a limited time only.', 'give'),
-				'actionText'      => __('Shop Now', 'give'),
-				'actionURL'       => 'https://givewp.com/sale',
-				'startDate'       => strtotime('2021-11-17 00:00'),
-				'endDate'         => strtotime('2021-11-23 24:00'),
-			]
 		];
 	}
 
