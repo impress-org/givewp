@@ -7,6 +7,8 @@ namespace Give\Framework\PaymentGateways\Commands;
  */
 class PaymentComplete implements GatewayCommand {
     /**
+     * The Gateway Transaction / Charge Record ID
+     *
      * @var string
      */
     public $gatewayTransactionId;

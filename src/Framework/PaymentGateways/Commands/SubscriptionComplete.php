@@ -5,10 +5,14 @@ namespace Give\Framework\PaymentGateways\Commands;
  */
 class SubscriptionComplete implements GatewayCommand {
     /**
+     * The Gateway Transaction / Charge Record ID
+     *
      * @var string
      */
     public $gatewayTransactionId;
     /**
+     * The Gateway Subscription Record ID
+     *
      * @var string
      */
     public $gatewaySubscriptionId;
