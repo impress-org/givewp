@@ -143,23 +143,24 @@ final class Give {
 	 * @var array Array of Service Providers to load
 	 */
 	private $serviceProviders = [
-		LegacyServiceProvider::class,
-		RestAPI::class,
-		Routes::class,
-		PaymentGateways::class,
-		Onboarding::class,
-		MigrationsServiceProvider::class,
-		RevenueServiceProvider::class,
-		MultiFormGoalsServiceProvider::class,
-		DonorDashboardsServiceProvider::class,
-		TrackingServiceProvider::class,
-		TestDataServiceProvider::class,
-		MigrationLogServiceProvider::class,
-		LogServiceProvider::class,
-		FormLegacyConsumerServiceProvider::class,
-		ShimsServiceProvider::class,
-		LicenseServiceProvider::class
-	];
+        LegacyServiceProvider::class,
+        RestAPI::class,
+        Routes::class,
+        PaymentGateways::class,
+        Onboarding::class,
+        MigrationsServiceProvider::class,
+        RevenueServiceProvider::class,
+        MultiFormGoalsServiceProvider::class,
+        DonorDashboardsServiceProvider::class,
+        TrackingServiceProvider::class,
+        TestDataServiceProvider::class,
+        MigrationLogServiceProvider::class,
+        LogServiceProvider::class,
+        FormLegacyConsumerServiceProvider::class,
+        ShimsServiceProvider::class,
+        LicenseServiceProvider::class,
+        Give\Email\ServiceProvider::class
+    ];
 
 	/**
 	 * @since 2.8.0
