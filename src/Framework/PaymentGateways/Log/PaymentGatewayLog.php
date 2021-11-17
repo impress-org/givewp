@@ -17,8 +17,6 @@ class PaymentGatewayLog extends Log
         $arguments[1]['category'] = 'Payment Gateway';
         $arguments[1]['source'] = 'Payment Gateway';
 
-        if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-            parent::__callStatic($name, $arguments);
-        }
+        parent::__callStatic($name, $arguments);
     }
 }
