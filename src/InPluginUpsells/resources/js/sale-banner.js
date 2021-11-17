@@ -1,4 +1,6 @@
-document.addEventListener( 'DOMContentLoaded', () => {
+const bodyIsReady = onReady => window.requestAnimationFrame( document.body ? onReady : bodyIsReady );
+
+bodyIsReady( () => {
     const bannersContainer = document.querySelector( '.give-sale-banners-container' );
     const dismissActions = document.querySelectorAll( '.give-sale-banner-dismiss' );
     const pageTitle = document.querySelector( '.page-title-action, .wp-heading-inline' );
