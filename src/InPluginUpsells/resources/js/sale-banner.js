@@ -1,16 +1,13 @@
-document.addEventListener( 'DOMContentLoaded', function() {
-    const header = document.querySelector( '.wp-heading-inline' );
-    const titleAction = document.querySelector( '.page-title-action' );
+document.addEventListener( 'DOMContentLoaded', () => {
     const bannersContainer = document.querySelector( '.give-sale-banners-container' );
     const dismissActions = document.querySelectorAll( '.give-sale-banner-dismiss' );
-    const previousSibling = titleAction ?? header;
+    const pageTitle = document.querySelector( '.page-title-action, .wp-heading-inline' );
 
-    const hideBanner = ( event ) => {
-        const button = event.target;
+    const hideBanner = ( { target: dismissAction } ) => {
         const formData = new FormData();
-        formData.append( 'id', button.dataset.id );
+        formData.append( 'id', dismissAction.dataset.id );
 
-        document.getElementById(button.getAttribute( 'aria-controls' )).remove();
+        document.getElementById( dismissAction.getAttribute( 'aria-controls' ) ).remove();
 
         fetch( `${ window.GiveSaleBanners.apiRoot }/hide`, {
             method: 'POST',
@@ -20,16 +17,16 @@ document.addEventListener( 'DOMContentLoaded', function() {
             body: formData,
         } );
 
-        if ( bannersContainer.children.length <= 1 ) {
+        if ( bannersContainer.querySelectorAll( '.give-sale-banner' ).length <= 1 ) {
             bannersContainer.remove();
         }
     };
 
-    if ( previousSibling && bannersContainer ) {
-        previousSibling.parentNode.insertBefore( bannersContainer, previousSibling.nextSibling );
+    if ( pageTitle && bannersContainer ) {
+        pageTitle.parentNode.insertBefore( bannersContainer, pageTitle.nextSibling );
     }
 
-    dismissActions?.forEach( ( action ) => {
+    dismissActions.forEach( ( action ) => {
         action.addEventListener( 'click', hideBanner );
     } );
 } );
