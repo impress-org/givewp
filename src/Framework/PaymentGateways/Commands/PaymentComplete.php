@@ -9,14 +9,15 @@ class PaymentComplete implements GatewayCommand {
     /**
      * @var string
      */
-    public $transactionId;
+    public $gatewayTransactionId;
 
     /**
      * @unreleased
      *
-     * @param string $transactionId
+     * @param  string  $gatewayTransactionId
      */
-    public function __construct($transactionId) {
-        $this->transactionId = $transactionId;
+    public function __construct($gatewayTransactionId)
+    {
+        $this->gatewayTransactionId = $gatewayTransactionId;
     }
 }

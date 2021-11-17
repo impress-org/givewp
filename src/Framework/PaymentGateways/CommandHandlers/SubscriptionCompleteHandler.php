@@ -18,7 +18,7 @@ class SubscriptionCompleteHandler  {
     public function __invoke(SubscriptionComplete $subscriptionComplete, $subscriptionId, $paymentId)
     {
         give_update_payment_status($paymentId);
-        give_set_payment_transaction_id($paymentId, $subscriptionComplete->transactionId);
+        give_set_payment_transaction_id($paymentId, $subscriptionComplete->gatewayTransactionId);
 
         if (function_exists('give_recurring_update_subscription_status') && class_exists('Give_Subscriptions_DB')) {
             give_recurring_update_subscription_status($subscriptionId, 'active');
@@ -26,8 +26,8 @@ class SubscriptionCompleteHandler  {
             $subscription = $this->getSubscription($subscriptionId);
 
             $subscription->update([
-                'profile_id' => $subscriptionComplete->profileId,
-                'transaction_id' => $subscriptionComplete->transactionId
+                'profile_id' => $subscriptionComplete->gatewaySubscriptionId,
+                'transaction_id' => $subscriptionComplete->gatewayTransactionId
             ]);
         }
     }

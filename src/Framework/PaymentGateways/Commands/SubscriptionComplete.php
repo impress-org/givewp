@@ -7,20 +7,21 @@ class SubscriptionComplete implements GatewayCommand {
     /**
      * @var string
      */
-    public $transactionId;
+    public $gatewayTransactionId;
     /**
      * @var string
      */
-    public $profileId;
+    public $gatewaySubscriptionId;
 
     /**
      * @unreleased
      *
-     * @param string $transactionId
-     * @param string $profileId
+     * @param  string  $gatewayTransactionId
+     * @param  string  $gatewaySubscriptionId
      */
-    public function __construct($transactionId, $profileId) {
-        $this->transactionId = $transactionId;
-        $this->profileId = $profileId;
+    public function __construct($gatewayTransactionId, $gatewaySubscriptionId)
+    {
+        $this->gatewayTransactionId = $gatewayTransactionId;
+        $this->gatewaySubscriptionId = $gatewaySubscriptionId;
     }
 }

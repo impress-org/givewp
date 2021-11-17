@@ -15,6 +15,6 @@ class PaymentCompleteHandler  {
     public function __invoke(PaymentComplete $paymentComplete, $paymentId)
     {
         give_update_payment_status($paymentId);
-        give_set_payment_transaction_id($paymentId, $paymentComplete->transactionId);
+        give_set_payment_transaction_id($paymentId, $paymentComplete->gatewayTransactionId);
     }
 }
