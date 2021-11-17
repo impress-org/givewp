@@ -2,8 +2,8 @@
 
 namespace Give\Framework\Http\Response\Traits;
 
+use Exception;
 use Give\Framework\Http\Exceptions\HttpResponseException;
-use Give\Framework\Http\Exceptions\Throwable;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
@@ -22,7 +22,7 @@ trait ResponseTrait
     /**
      * The exception that triggered the error response (if applicable).
      *
-     * @var Throwable|null
+     * @var Exception|null
      */
     public $exception;
 
@@ -172,10 +172,10 @@ trait ResponseTrait
      *
      * @unreleased
      *
-     * @param  Throwable  $e
+     * @param  Exception  $e
      * @return $this
      */
-    public function withException(Throwable $e)
+    public function withException(Exception $e)
     {
         $this->exception = $e;
 
