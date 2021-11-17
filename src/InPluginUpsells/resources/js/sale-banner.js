@@ -3,7 +3,7 @@ const bodyIsReady = onReady => window.requestAnimationFrame( document.body ? onR
 bodyIsReady( () => {
     const bannersContainer = document.querySelector( '.give-sale-banners-container' );
     const dismissActions = document.querySelectorAll( '.give-sale-banner-dismiss' );
-    const pageTitle = document.querySelector( '.page-title-action, .wp-heading-inline' );
+    const pageTitle = document.querySelector( '.page-title-action, .wp-heading-inline, #give-in-plugin-upsells h1' );
 
     const hideBanner = ( { target: dismissAction } ) => {
         const formData = new FormData();
@@ -19,7 +19,7 @@ bodyIsReady( () => {
             body: formData,
         } );
 
-        if ( bannersContainer.querySelectorAll( '.give-sale-banner' ).length <= 1 ) {
+        if ( bannersContainer.querySelectorAll( '.give-sale-banner' ).length === 0 ) {
             bannersContainer.remove();
         }
     };
