@@ -39,8 +39,7 @@
     padding-right: 1.3125em;
     background-image: linear-gradient(85.79deg, #1da3b0 44.27%, #9fd894 100%);
     color: #fff;
-    font-size: max(1rem, 16px);
-
+    font-size: clamp(max(0.875rem, 14px), 2vw, max(1rem, 16px));
 }
 
 .give-sale-banner-icon {
@@ -74,7 +73,7 @@
 }
 
 .give-sale-banner-dismiss {
-    --size: 1.25em;
+    --size: 1.25rem;
     /* Artificially align this with the sale icon, since we shouldn’t use align-items: center on the banner */
     margin-top: calc((var(--sale-icon-size) - var(--size)) / 2);
     appearance: none;
@@ -86,7 +85,7 @@
     height: var(--size);
     border: 0;
     border-radius: 9999px;
-    outline-offset: 0.25em;
+    outline-offset: 0.25rem;
     color: inherit;
     cursor: pointer;
     font-size: inherit;
