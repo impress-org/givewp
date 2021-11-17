@@ -56,6 +56,10 @@ class GatewayPaymentData
      * @var Address|null
      */
     public $billingAddress;
+    /**
+     * @var string
+     */
+    public $redirectUrl;
 
     /**
      * Convert data from array into DTO
@@ -79,6 +83,7 @@ class GatewayPaymentData
         $self->donorInfo = $array['donorInfo'];
         $self->cardInfo = $array['cardInfo'];
         $self->billingAddress = $array['billingAddress'];
+        $self->redirectUrl = give_get_success_page_uri();
 
         return $self;
     }

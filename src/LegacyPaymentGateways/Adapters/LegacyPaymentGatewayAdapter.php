@@ -39,6 +39,7 @@ class LegacyPaymentGatewayAdapter
      * @param  array  $request  Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
      *
+     * @return void
      */
     public function handleBeforeGateway($request, $registeredGateway)
     {
@@ -56,10 +57,10 @@ class LegacyPaymentGatewayAdapter
 
             $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);
 
-            $registeredGateway->createSubscription($gatewayPaymentData, $gatewaySubscriptionData);
+            $registeredGateway->handleCreateSubscription($gatewayPaymentData, $gatewaySubscriptionData);
         }
 
-        $registeredGateway->createPayment($gatewayPaymentData);
+        $registeredGateway->handleCreatePayment($gatewayPaymentData);
     }
 
     /**

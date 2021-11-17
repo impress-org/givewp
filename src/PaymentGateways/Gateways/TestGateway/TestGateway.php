@@ -2,10 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\TestGateway\Actions\PublishPaymentAndSendToSuccessPage;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
@@ -14,7 +14,6 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  */
 class TestGateway extends PaymentGateway
 {
-
     /**
      * @inheritDoc
      */
@@ -67,9 +66,8 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        /** @var PublishPaymentAndSendToSuccessPage $action */
-        $action = give(PublishPaymentAndSendToSuccessPage::class);
-
-        return $action($paymentData->paymentId);
+        $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
+        
+        return new PaymentComplete($transactionId);
     }
 }
