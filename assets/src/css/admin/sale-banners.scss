@@ -22,11 +22,16 @@
         margin-bottom: 0.5rem;
     }
 
-    // TODO: Implement for other screens
-    //background-color: #fff;
-    //margin: -10px -20px -10px -20px;
-    //border-bottom: 1px solid #dbdbdb;
-    //padding: 10px 20px 30px 20px;
+    .give_forms_page_give-payment-history &,
+    .give_forms_page_give-donors &,
+    .post-type-give_forms.post-new-php &,
+    .post-type-give_forms.edit-php & {
+        background-color: #fff;
+        margin: -10px -20px 30px -20px;
+        border-bottom: 1px solid #dbdbdb;
+        padding: 30px 20px;
+    }
+
 }
 
 .give-sale-banner {
