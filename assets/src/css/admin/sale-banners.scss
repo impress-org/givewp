@@ -5,6 +5,10 @@
     padding: 10px 20px 30px 20px;
 }
 
+.give-sale-banners-container:empty {
+    display: none;
+}
+
 .give-sale-banner {
     position: relative;
     padding: 18px;
