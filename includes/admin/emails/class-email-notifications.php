@@ -13,6 +13,9 @@
 
 /**
  * Class Give_Email_Notifications
+ *
+ * @unreleased  Remove validate_settings function.
+ *              Email recipient option value validation logic move to src/EmailGlobalSettingValidator.
  */
 class Give_Email_Notifications {
 	/**
