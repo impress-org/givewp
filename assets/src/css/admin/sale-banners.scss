@@ -1,28 +1,93 @@
 .give-sale-banners-container {
-    background-color: #FFFFFF;
-    margin: -10px -20px -10px -20px;
-    border-bottom: 1px solid #DBDBDB;
-    padding: 10px 20px 30px 20px;
-}
+    /* Variables */
+    --give-primary-color: #69b86b;
 
-.give-sale-banners-container:empty {
-    display: none;
+    /* Box-sizing reset */
+    &,
+    & *,
+    & ::before,
+    & ::after {
+        box-sizing: border-box;
+    }
+
+    display: grid;
+    row-gap: 1.875rem;
+    font-family: 'Open Sans', system-ui, sans-serif;
+
+    /* Settings page specific styles */
+    .give-settings-page & {
+        margin-top: 2rem;
+        margin-bottom: 3.25rem;
+    }
+
+    // TODO: Implement for other screens
+    //background-color: #fff;
+    //margin: -10px -20px -10px -20px;
+    //border-bottom: 1px solid #dbdbdb;
+    //padding: 10px 20px 30px 20px;
 }
 
 .give-sale-banner {
-    position: relative;
-    padding: 18px;
-    margin-top: 20px;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+    display: grid;
+    align-content: center;
+    grid-template-columns: min-content auto min-content;
+    column-gap: 1em;
+    padding: 1em;
+    border-left: 0.3125em solid var(--give-primary-color);
+    color: #333;
+    font-size: max(1rem, 16px);
+    box-shadow: 0px 0.0625em 0.25em rgba(0, 0, 0, 0.25);
 }
 
+.give-sale-banner-icon {
+    line-height: 1;
+}
 
-.give-sale-banner-dismiss:before {
+.give-sale-banner-content {
+    display: grid;
+    row-gap: 0.5em;
+
+    & a, p {
+        font-size: inherit;
+    }
+
+    & a {
+        color: var(--give-primary-color);
+        font-weight: 700;
+        text-decoration-thickness: 0.05em;
+    }
+
+    & p {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 0.25rem;
+        column-gap: 0.9375em;
+        margin: 0;
+        line-height: 1.37;
+    }
+}
+
+.give-sale-banner-dismiss {
+    appearance: none;
+    background: none;
+    display: grid;
+    place-content: center;
+    padding: 0;
+    width: 1.25em;
+    height: 1.25em;
+    border: 0;
+    border-radius: 9999px;
+    outline-offset: 0.25em;
+    color: #9c9fa3;
     cursor: pointer;
-    position: absolute;
-    right: 15px;
-    color: #9C9FA3 !important;
-    font-size: 16px;
-    content:"\f057";
-    font-family: 'Font Awesome 5 Free', serif;
+    font-size: inherit;
+    line-height: 1;
+
+    & svg {
+        width: 1.25em;
+        height: 1.25em;
+
+        /* This ensures that the event target is the button when clicked. */
+        pointer-events: none;
+    }
 }

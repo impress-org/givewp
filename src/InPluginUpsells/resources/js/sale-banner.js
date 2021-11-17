@@ -5,11 +5,12 @@ document.addEventListener( 'DOMContentLoaded', function() {
     const dismissActions = document.querySelectorAll( '.give-sale-banner-dismiss' );
     const previousSibling = titleAction ?? header;
 
-    const hideBanner = ( e ) => {
+    const hideBanner = ( event ) => {
+        const button = event.target;
         const formData = new FormData();
-        formData.append( 'id', e.target.dataset.id );
+        formData.append( 'id', button.dataset.id );
 
-        e.target.parentNode.remove();
+        document.querySelector(`#${button.getAttribute( 'aria-controls' )}`).remove();
 
         fetch( `${ window.GiveSaleBanners.apiRoot }/hide`, {
             method: 'POST',
@@ -19,7 +20,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
             body: formData,
         } );
 
-        if ( ! bannersContainer.children.length ) {
+        if ( bannersContainer.children.length <= 1 ) {
             bannersContainer.remove();
         }
     };
@@ -28,9 +29,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
         previousSibling.parentNode.insertBefore( bannersContainer, previousSibling.nextSibling );
     }
 
-    if ( dismissActions ) {
-        dismissActions.forEach( function( action ) {
-            action.addEventListener( 'click', hideBanner );
-        } );
-    }
+    dismissActions?.forEach( ( action ) => {
+        action.addEventListener( 'click', hideBanner );
+    } );
 } );
