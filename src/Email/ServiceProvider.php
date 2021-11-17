@@ -2,6 +2,8 @@
 
 namespace Give\Email;
 
+use Give\Email\Migrations\SetDefaultEmailRecipientToAdminEmail;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 
 /**
@@ -22,6 +24,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
      */
     public function boot()
     {
-        Hooks::addAction( 'admin_init', GlobalSettingValidator::class );
+        Hooks::addAction('admin_init', GlobalSettingValidator::class);
+        give(MigrationsRegister::class)->addMigration(SetDefaultEmailRecipientToAdminEmail::class);
     }
 }

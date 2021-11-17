@@ -25,12 +25,12 @@ class Give_Email_Notifications {
 	private static $instance;
 
 	/**
-	 * Array of email notifications.
-	 *
-	 * @since  2.0
-	 * @access private
-	 * @var array
-	 */
+     * Array of email notifications.
+     *
+     * @since  2.0
+     * @access private
+     * @var Give_Email_Notification[]
+     */
 	private $emails = array();
 
 	/**
