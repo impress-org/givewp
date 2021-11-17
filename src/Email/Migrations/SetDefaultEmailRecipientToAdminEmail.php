@@ -9,7 +9,7 @@ use Give_Email_Notifications;
 /**
  * @unreleased
  */
-class SetDefaultEmailRecipientToAdminEmail extends Migration
+class SetAdminEmailAsDefaultEmailRecipient extends Migration
 {
     /**
      * @inheritDoc
