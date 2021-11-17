@@ -1,0 +1,20 @@
+.give-sale-banner {
+    position: relative;
+    padding: 18px;
+    margin-top: 20px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.give-sale-banner:last-child {
+    margin-bottom: 20px;
+}
+
+.give-sale-banner-dismiss:before {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    color: #9C9FA3 !important;
+    font-size: 16px;
+    content:"\f057";
+    font-family: 'Font Awesome 5 Free', serif;
+}
