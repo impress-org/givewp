@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\Contracts;
+namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
@@ -12,6 +12,8 @@ use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;

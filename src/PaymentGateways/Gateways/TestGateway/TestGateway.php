@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\PaymentGateways\Contracts\PaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
