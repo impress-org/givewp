@@ -10,7 +10,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append( 'id', button.dataset.id );
 
-        document.querySelector(`#${button.getAttribute( 'aria-controls' )}`).remove();
+        document.getElementById(button.getAttribute( 'aria-controls' )).remove();
 
         fetch( `${ window.GiveSaleBanners.apiRoot }/hide`, {
             method: 'POST',
