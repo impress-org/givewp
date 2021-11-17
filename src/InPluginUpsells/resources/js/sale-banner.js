@@ -18,6 +18,10 @@ document.addEventListener( 'DOMContentLoaded', function() {
             },
             body: formData,
         } );
+
+        if ( ! bannersContainer.children.length ) {
+            bannersContainer.remove();
+        }
     };
 
     if ( previousSibling && bannersContainer ) {
@@ -28,7 +32,5 @@ document.addEventListener( 'DOMContentLoaded', function() {
         dismissActions.forEach( function( action ) {
             action.addEventListener( 'click', hideBanner );
         } );
-    } else {
-        bannersContainer.remove();
     }
 } );
