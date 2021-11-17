@@ -26,6 +26,8 @@ bodyIsReady( () => {
 
     if ( pageTitle && bannersContainer ) {
         pageTitle.parentNode.insertBefore( bannersContainer, pageTitle.nextSibling );
+
+        bannersContainer.style.display = null;
     }
 
     dismissActions.forEach( ( action ) => {
