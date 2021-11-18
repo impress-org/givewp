@@ -36,7 +36,7 @@ class SaleBanners
 				'id'              => 'bfgt2021',
 				'iconURL'         => GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png',
 				'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-				'leadText'        => __('Save 40% on all plans for a limited time.', 'give'),
+				'leadText'        => __('Save 40% on all Plans for a limited time.', 'give'),
 				'contentText'     => __('Black Friday through Giving Tuesday.', 'give'),
 				'actionText'      => __('Shop Now', 'give'),
 				'actionURL'       => 'https://givewp.com/sale',
