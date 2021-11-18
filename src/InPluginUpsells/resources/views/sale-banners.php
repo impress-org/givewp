@@ -1,7 +1,6 @@
 <?php
 /**
  * @var array[] $banners
- * @var string  $saleIconURL
  */
 ?>
 <div class="give-sale-banners-container" style="display: none;">
