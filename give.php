@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.16.1
+ * Version: 2.16.2
  * Requires at least: 4.9
  * Requires PHP: 5.6
  * Text Domain: give
@@ -43,6 +43,7 @@
 
 use Give\Container\Container;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
@@ -160,7 +161,8 @@ final class Give {
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
-		LicenseServiceProvider::class
+		LicenseServiceProvider::class,
+        DonationSummaryServiceProvider::class,
 	];
 
 	/**

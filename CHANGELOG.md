@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## New
+-   Allow Fields API fields to be macroable (#5900)
+
+## Fixed
+
+- Auto set new settings if old settings exist ("Primary Color", "Decimal Enabled"). (#5973)
+
 ## 2.16.0 - 2021-10-26
 
 ## 2.16.0-rc.1 - 2021-10-25
@@ -189,6 +196,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+-   Add `HTML` constant to `Give\Framework\FieldsAPI\Types` for `Html` node type (#5898)
 -   Do not extend Fields API `Form` from `Group` (#5889)
 
 ## 2.12.1 - 2021-07-22
