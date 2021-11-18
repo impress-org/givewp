@@ -9,6 +9,7 @@
     <?php foreach($banners as $banner): extract($banner);
     /**
      * @var string $id
+     * @var string $iconURL
      * @var string $accessibleLabel
      * @var string $leadText
      * @var string $contentText
@@ -20,7 +21,7 @@
     ?>
 
     <aside aria-label="<?= $accessibleLabel ?>" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>" class="give-sale-banner">
-        <img class="give-sale-banner-icon" src="<?= $saleIconURL ?>" alt="Sale">
+        <img class="give-sale-banner-icon" src="<?= $iconURL ?>" alt="Sale">
         <div class="give-sale-banner-content">
             <p>
                 <strong><?= $leadText ?></strong> <?= $contentText ?> <a href="<?= $actionURL ?>" rel="noopener" target="_blank"><?= $actionText ?></a>
