@@ -59,7 +59,7 @@ class SaleBanners
 		return array_filter(
 			$this->getBanners(),
 			function ($banner) use ($currentDateTime, $currentUserId) {
-				$isHidden = in_array($banner['id'] . "_{$currentUserId}", $this->hiddenBanners);
+				$isHidden = in_array($banner['id'] . $currentUserId, $this->hiddenBanners);
 				$isFuture = $currentDateTime < $banner['startDate'];
 				$isPast = $currentDateTime > $banner['endDate'];
 
