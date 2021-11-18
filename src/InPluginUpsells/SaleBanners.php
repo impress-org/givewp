@@ -10,7 +10,7 @@ class SaleBanners
 	/**
 	 * @var string
 	 */
-	private $optionName = 'hidden-sale-banners';
+	private $optionName = 'give_hidden_sale_banners';
 
 	/**
 	 * @var array
@@ -19,7 +19,7 @@ class SaleBanners
 
 	public function __construct()
 	{
-		$this->hiddenBanners = give_get_option($this->optionName, []);
+		$this->hiddenBanners = get_option($this->optionName, []);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class SaleBanners
 	{
 		$this->hiddenBanners[] = $banner;
 
-		give_update_option(
+		update_option(
 			$this->optionName,
 			array_unique($this->hiddenBanners)
 		);
