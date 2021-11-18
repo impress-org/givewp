@@ -34,6 +34,7 @@ class SaleBanners
 		return [
 			[
 				'id'              => 'bfgt2021',
+				'iconURL'         => GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png',
 				'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
 				'leadText'        => __('Save 40% on all plans for a limited time.', 'give'),
 				'contentText'     => __('Black Friday through Giving Tuesday.', 'give'),
@@ -89,7 +90,6 @@ class SaleBanners
 		$banners = $this->getVisibleBanners();
 
 		if (!empty($banners)) {
-			$saleIconURL = GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png';
 			include __DIR__ . '/resources/views/sale-banners.php';
 		}
 	}
