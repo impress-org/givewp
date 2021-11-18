@@ -19,7 +19,7 @@ export const RecurringDonationsTab = () => (
         <p className={styles.description}>{__('The best fundraisers and organizations know that capturing recurring donors is the foundation of your organizations longevity.', 'give')}</p>
         <Button
             as="a"
-            href="https://givewp.com/addons/recurring-donations/"
+            href="https://docs.givewp.com/acrecurring"
             rel="noopener"
             target="_blank"
             className={styles.learnMoreButton}
