@@ -2,6 +2,9 @@
 
 namespace Give\InPluginUpsells;
 
+use DateTimeImmutable;
+use DateTimeZone;
+
 /**
  * @unreleased
  */
@@ -39,9 +42,9 @@ class SaleBanners
 				'leadText'        => __('Save 40% on all Plans for a limited time.', 'give'),
 				'contentText'     => __('Black Friday through Giving Tuesday.', 'give'),
 				'actionText'      => __('Shop Now', 'give'),
-				'actionURL'       => 'https://givewp.com/sale',
-				'startDate'       => strtotime('2021-11-14 00:00'),
-				'endDate'         => strtotime('2021-11-17 24:00'),
+				'actionURL'       => 'https://go.givewp.com/bfgt21',
+				'startDate'       => '2021-11-26 00:00',
+				'endDate'         => '2021-11-30 23:59',
 			],
 		];
 	}
@@ -53,15 +56,16 @@ class SaleBanners
 	 */
 	public function getVisibleBanners()
 	{
-		$currentDateTime = current_datetime()->getTimestamp();
+		$currentDateTime = current_datetime();
 		$currentUserId = get_current_user_id();
+		$giveWPWebsiteTimezone = new DateTimeZone('America/Los_Angeles');
 
 		return array_filter(
 			$this->getBanners(),
-			function ($banner) use ($currentDateTime, $currentUserId) {
+			function ($banner) use ($currentDateTime, $currentUserId, $giveWPWebsiteTimezone) {
 				$isHidden = in_array($banner['id'] . $currentUserId, $this->hiddenBanners);
-				$isFuture = $currentDateTime < $banner['startDate'];
-				$isPast = $currentDateTime > $banner['endDate'];
+				$isFuture = $currentDateTime < new DateTimeImmutable($banner['startDate'], $giveWPWebsiteTimezone);
+				$isPast = $currentDateTime > new DateTimeImmutable($banner['endDate'], $giveWPWebsiteTimezone);
 
 				return !($isHidden || $isFuture || $isPast);
 			}
