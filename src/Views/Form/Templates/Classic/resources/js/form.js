@@ -14,6 +14,7 @@ domIsReady(() => {
     addPaymentDetailsDescription();
     splitDonationLevelAmountsIntoParts();
     moveDefaultGatewayDataIntoActiveGatewaySection();
+    isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
     splitGatewayResponse();
 });
 
@@ -37,6 +38,15 @@ function moveDonateNowButtonSectionAfterDonationAmountSection() {
         document.querySelector('.give-donate-now-button-section'),
         document.querySelector('.give-payment-details-section')
     );
+}
+
+function moveDonationSummaryAfterDonationAmountSection() {
+    insertAfter(
+        document.querySelector('.give-donation-form-summary-section'),
+        document.querySelector('.give-payment-details-section')
+    );
+
+    updateDonationSummaryAmount();
 }
 
 function setPersonalInfoTitle() {
@@ -176,6 +186,9 @@ function splitGatewayResponse() {
         }
     });
 }
+
+
+const isDonationSummaryEnabled = () => window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
 
 const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
 
