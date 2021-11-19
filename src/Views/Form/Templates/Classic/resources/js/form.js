@@ -127,6 +127,8 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
             document.querySelector('#give_purchase_form_wrap fieldset:not(.give-donation-submit)').innerHTML
         )
     );
+
+    removeNode(document.querySelector('#give_purchase_form_wrap'));
 }
 
 function splitGatewayResponse() {
