@@ -319,6 +319,8 @@ class Classic extends Template implements Hookable, Scriptable
             )
         );
 
+        $color =  give_get_meta($form->get_ID(), '_give_goal_color', true);
+
         switch ($goalStats[ 'format' ]) {
             case 'donation':
                 return [
@@ -327,6 +329,7 @@ class Classic extends Template implements Hookable, Scriptable
                     'count'      => $goalStats[ 'actual' ],
                     'countLabel' => $countLabel,
                     'goal'       => $goalStats[ 'goal' ],
+                    'color'      => $color,
                 ];
 
             case 'donors':
@@ -336,6 +339,7 @@ class Classic extends Template implements Hookable, Scriptable
                     'count'      => $goalStats[ 'actual' ],
                     'countLabel' => _n('donor', 'donors', $count, 'give'),
                     'goal'       => $goalStats[ 'goal' ],
+                    'color'      => $color,
                 ];
 
             default:
@@ -345,6 +349,7 @@ class Classic extends Template implements Hookable, Scriptable
                     'count'      => $count,
                     'countLabel' => $countLabel,
                     'goal'       => $goal,
+                    'color'      => $color,
                 ];
         }
 
