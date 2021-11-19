@@ -131,6 +131,10 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
     removeNode(document.querySelector('#give_purchase_form_wrap'));
 }
 
+function updateDonationSummaryAmount() {
+    document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value
+}
+
 function splitGatewayResponse() {
     jQuery.ajaxPrefilter(function (options, originalOptions) {
         if (options.url.includes('?payment-mode=')) {
@@ -179,6 +183,19 @@ function splitGatewayResponse() {
                     .replaceWith(
                         ...gatewayDetails.removeChild(gatewayDetails.querySelector('#give_purchase_submit')).children
                     );
+
+                // Donation Summary
+                if ( isDonationSummaryEnabled() ) {
+                    document
+                        .querySelector('.give-donation-form-summary-section')
+                        .replaceChildren(
+                            ...gatewayDetails.removeChild(gatewayDetails.querySelector('.give-donation-form-summary-section'))
+                                .children
+                        );
+
+                    window.GiveDonationSummary.initTotal();
+                    updateDonationSummaryAmount();
+                }
 
                 // Add the gateway details to the form
                 addSelectedGatewayDetails(gatewayDetails);
