@@ -5,24 +5,24 @@ namespace Give\DonationSummary;
 use Give\Helpers\Form\Template;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 class SummaryView {
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @var int
      */
     protected $formID;
 
     /**
      * @var array
-     * @unreleased
+     * @since 2.17.0
      */
     protected $templateOptions;
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @param int $formID
      */
     public function __invoke( $formID ) {
@@ -45,7 +45,7 @@ class SummaryView {
     }
 
     /**
-     * @unreleased
+     * @since 2.17.0
      */
     public function render() {
         include 'resources/views/summary.php';
@@ -56,7 +56,7 @@ class SummaryView {
     }
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @throws \Exception
      * @return string
      */
@@ -68,7 +68,7 @@ class SummaryView {
     }
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @return string
      */
     public function getSummaryHeading() {
@@ -79,7 +79,7 @@ class SummaryView {
     }
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @return bool
      */
     public function isDonationSummaryEnabled() {
@@ -89,7 +89,7 @@ class SummaryView {
     }
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @return bool
      */
     protected function isFeeRecoveryEnabled() {
@@ -100,7 +100,7 @@ class SummaryView {
     }
 
     /**
-     * @unreleased
+     * @since 2.17.0
      * @return bool
      */
     protected function isRecurringEnabled() {

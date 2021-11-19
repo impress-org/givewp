@@ -1,7 +1,7 @@
 import accounting from 'accounting'
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 window.GiveDonationSummary = {
 
@@ -13,7 +13,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.17.0
      */
     initAmount: function() {
         GiveDonationSummary.observe( '[name="give-amount"]', function( targetNode, $form ) {
@@ -24,7 +24,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.17.0
      */
     initFrequency: function() {
 
@@ -67,7 +67,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.17.0
      */
     initFees: function() {
         GiveDonationSummary.observe('.give_fee_mode_checkbox', function (targetNode, $form) {
@@ -83,7 +83,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.17.0
      */
     initTotal: function() {
         GiveDonationSummary.observe('.give-final-total-amount', function (targetNode, $form) {
@@ -128,7 +128,7 @@ window.GiveDonationSummary = {
     /**
      * Observe an element and respond to changes to that element.
      *
-     * @unreleased
+     * @since 2.17.0
      *
      * @param {string} selectors
      * @param {callable} callback
@@ -156,7 +156,7 @@ window.GiveDonationSummary = {
     /**
      * Helper function to get the formatted amount
      *
-     * @unreleased
+     * @since 2.17.0
      *
      * @param {string/number} amount
      * @param {jQuery} $form

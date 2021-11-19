@@ -6,7 +6,7 @@ use BadMethodCallException;
 use Closure;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 trait Macroable {
 
@@ -16,7 +16,7 @@ trait Macroable {
 	/**
 	 * Add a macro to the class.
 	 *
-	 * @unreleased
+	 * @since 2.17.0
 	 *
 	 * @param string $name
 	 * @param callable $macro
@@ -30,7 +30,7 @@ trait Macroable {
 	/**
 	 * Check if the class has the named macro.
 	 *
-	 * @unreleased
+	 * @since 2.17.0
 	 *
 	 * @param string $name
 	 *
@@ -43,7 +43,7 @@ trait Macroable {
 	/**
 	 * Call the macro
 	 *
-	 * @unreleased
+	 * @since 2.17.0
 	 *
 	 * @param string $method
 	 * @param array $parameters

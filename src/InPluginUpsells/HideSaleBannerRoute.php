@@ -7,7 +7,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 class HideSaleBannerRoute implements RestRoute
 {

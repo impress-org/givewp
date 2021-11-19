@@ -6,7 +6,7 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

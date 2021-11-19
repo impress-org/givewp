@@ -3,12 +3,12 @@
 namespace Give\DonationSummary;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 class Assets {
 
     /**
-     * @unreleased
+     * @since 2.17.0
      */
     public function loadFrontendAssets() {
 

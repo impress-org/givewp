@@ -8,7 +8,7 @@ class Call {
 	/**
 	 * Call an invokable class.
 	 *
-	 * @unreleased
+	 * @since 2.17.0
 	 *
 	 * @param  string  $class
 	 * @param  mixed  $args

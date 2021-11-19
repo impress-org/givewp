@@ -51,7 +51,7 @@ class Template
 
         /**
          * Backwards compatibility for forms saved before the Donation Summary was introduced.
-         * @unreleased
+         * @since 2.17.0
          */
 		if( ! isset( $settings[ 'payment_information' ] ) ) {
             $settings[ 'payment_information' ] = [

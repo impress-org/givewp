@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 class SaleBanners
 {

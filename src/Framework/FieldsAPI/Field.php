@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 
 /**
- * @unreleased allow fields to be macroable
+ * @since 2.17.0 allow fields to be macroable
  * @since 2.12.0
  * @since 2.13.0 Support visibility conditions
  */

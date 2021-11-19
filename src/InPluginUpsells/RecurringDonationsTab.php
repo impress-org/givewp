@@ -3,7 +3,7 @@
 namespace Give\InPluginUpsells;
 
 /**
- * @unreleased
+ * @since 2.17.0
  */
 class RecurringDonationsTab {
     /**
