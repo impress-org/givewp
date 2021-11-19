@@ -7,17 +7,17 @@
  * @return {Node[]}
  */
 export function nextUntil(node, selector) {
-	const siblings = [];
-	const sibling = node.nextElementSibling;
+    const siblings = [];
+    const sibling = node.nextElementSibling;
 
-	while (sibling) {
-		if (sibling.matches(selector)) break;
+    while (sibling) {
+        if (sibling.matches(selector)) break;
 
-		siblings.push(sibling);
-		sibling = sibling.nextElementSibling;
-	}
+        siblings.push(sibling);
+        sibling = sibling.nextElementSibling;
+    }
 
-	return siblings;
+    return siblings;
 }
 
 /**
@@ -27,14 +27,14 @@ export function nextUntil(node, selector) {
  * @param {Node} referenceNode
  */
 export function insertAfter(newNode, referenceNode) {
-	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 /**
  * @param {Node} node
  */
 export function removeNode(nodeToRemove) {
-	nodeToRemove?.parentNode.removeChild(nodeToRemove);
+    nodeToRemove?.parentNode.removeChild(nodeToRemove);
 }
 
 /**
@@ -44,10 +44,10 @@ export function removeNode(nodeToRemove) {
  * @returns {Node}
  */
 export function nodeFromString(htmlString) {
-	const temp = document.createElement('template');
-	htmlString.trim();
-	temp.innerHTML = htmlString;
-	return temp.content.firstChild;
+    const temp = document.createElement('template');
+    htmlString.trim();
+    temp.innerHTML = htmlString;
+    return temp.content.firstChild;
 }
 
 /**
@@ -55,6 +55,5 @@ export function nodeFromString(htmlString) {
  *
  * @param {function} fn
  */
-export const domIsReady = fn => document.readyState !== 'loading'
-	? window.setTimeout(fn, 0)
-	: document.addEventListener('DOMContentLoaded', fn);
+export const domIsReady = (fn) =>
+    document.readyState !== 'loading' ? window.setTimeout(fn, 0) : document.addEventListener('DOMContentLoaded', fn);

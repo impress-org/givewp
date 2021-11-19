@@ -1,18 +1,17 @@
 body {
-	font-family: Montserrat, sans-serif;
+    font-family: Montserrat, sans-serif;
 
-	@media screen and (min-width: $desktopMinWidth) {
-		padding: 1rem;
-	}
+    @media screen and (min-width: $desktopMinWidth) {
+        padding: 1rem;
+    }
 }
 
 .give-form-wrap {
-	background-color: #fff;
-	color: #444;
+    background-color: #fff;
+    color: #444;
 
-	@media screen and (min-width: $desktopMinWidth) {
-		border-radius: 0.5rem;
-		box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
-	}
+    @media screen and (min-width: $desktopMinWidth) {
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+    }
 }
-

@@ -1,18 +1,18 @@
 .give-payment-details-section {
-	& legend:first-of-type {
-		width: 100%;
-		padding-bottom: 0.75rem;
-		margin-bottom: 1rem;
-		border-bottom: 0.0625rem solid #ddd;
-		font-size: 1.25rem;
-		font-weight: 500;
-		line-height: 1.3;
-		color: #333;
+    & legend:first-of-type {
+        width: 100%;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
+        border-bottom: 0.0625rem solid #ddd;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.3;
+        color: #333;
 
-		@media screen and (min-width: $desktopMinWidth) {
-			font-size: 1.5rem;
-		}
-	}
+        @media screen and (min-width: $desktopMinWidth) {
+            font-size: 1.5rem;
+        }
+    }
 }
 
 #give-gateway-radio-list {
@@ -52,7 +52,7 @@
     position: relative;
     appearance: none;
     margin: 0;
-    content: "";
+    content: '';
     flex-grow: 0;
     flex-shrink: 0;
     padding-top: var(--gateway-option-padding);
@@ -65,7 +65,7 @@
 
     &::before,
     &::after {
-        content: "";
+        content: '';
         display: block;
         border-radius: 9999px;
     }
@@ -122,6 +122,6 @@
 }
 
 #give-purchase-button {
-	width: 100%;
-	margin-top: 2rem;
+    width: 100%;
+    margin-top: 2rem;
 }

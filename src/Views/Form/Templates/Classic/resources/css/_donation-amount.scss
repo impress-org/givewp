@@ -1,182 +1,181 @@
 .give-amount-heading {
-	padding-bottom: 0.75rem;
-	margin-bottom: 1rem;
-	border-bottom: 0.0625rem solid #ddd;
-	font-size: 1.25rem;
-	font-weight: 500;
-	line-height: 1.3;
-	color: #333;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 0.0625rem solid #ddd;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #333;
 
-	@media screen and (min-width: $desktopMinWidth) {
-		font-size: 1.5rem;
-	}
+    @media screen and (min-width: $desktopMinWidth) {
+        font-size: 1.5rem;
+    }
 }
 
 .give-total-wrap + .give-donation-levels-wrap {
-	margin-top: 1.625rem;
+    margin-top: 1.625rem;
 }
 
 .give-donation-amount {
-	display: flex;
-	align-items: center;
-	border: 0.125rem solid #424242;
-	border-radius: 0.5rem;
-	background-color: #fff;
+    display: flex;
+    align-items: center;
+    border: 0.125rem solid #424242;
+    border-radius: 0.5rem;
+    background-color: #fff;
 
-	&:focus-within {
-		border-color: var(--give-primary-color);
-	}
+    &:focus-within {
+        border-color: var(--give-primary-color);
+    }
 
-	& label {
-		@include visually-hidden;
-	}
+    & label {
+        @include visually-hidden;
+    }
 
-	/** Set the border radii based on the currency symbol’s position */
-	& .give-text-input:last-child,
-	& .give-currency-position-after {
-		border-top-right-radius: inherit;
-		border-bottom-right-radius: inherit;
-	}
-	& .give-text-input:not(:last-child),
-	& .give-currency-position-before {
-		border-top-left-radius: inherit;
-		border-bottom-left-radius: inherit;
-	}
+    /** Set the border radii based on the currency symbol’s position */
+    & .give-text-input:last-child,
+    & .give-currency-position-after {
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+    & .give-text-input:not(:last-child),
+    & .give-currency-position-before {
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
 
-	& .give-currency-symbol {
-		display: block;
-		padding: 1em;
-		color: #555;
-		font-size: 1.375rem;
-		font-weight: 500;
+    & .give-currency-symbol {
+        display: block;
+        padding: 1em;
+        color: #555;
+        font-size: 1.375rem;
+        font-weight: 500;
 
-		@media screen and (min-width: $desktopMinWidth) {
-			padding: 1.2em;
-		}
-	}
+        @media screen and (min-width: $desktopMinWidth) {
+            padding: 1.2em;
+        }
+    }
 
-	& .give-text-input {
-		width: 100%;
-		padding: 0.275em 0.45em;
-		border: 0;
-		text-align: right;
-		font-family: inherit;
-		font-size: 2.625rem;
-		font-weight: 600;
-		line-height: 1.2;
-		color: #333;
-		outline: 0;
+    & .give-text-input {
+        width: 100%;
+        padding: 0.275em 0.45em;
+        border: 0;
+        text-align: right;
+        font-family: inherit;
+        font-size: 2.625rem;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #333;
+        outline: 0;
 
-		@media screen and (min-width: $desktopMinWidth) {
-			font-size: 3.125rem;
-		}
-	}
+        @media screen and (min-width: $desktopMinWidth) {
+            font-size: 3.125rem;
+        }
+    }
 }
 
 .give-donation-levels-wrap {
-	--min-level-width: 6.625rem;
+    --min-level-width: 6.625rem;
 
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(var(--min-level-width), 1fr));
-	grid-auto-rows: 1fr;
-	gap: clamp(0.3125rem, 2vw, 1.875rem);
-	width: 100%;
-	list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-level-width), 1fr));
+    grid-auto-rows: 1fr;
+    gap: clamp(0.3125rem, 2vw, 1.875rem);
+    width: 100%;
+    list-style: none;
 
-	@media screen and (min-width: $desktopMinWidth) {
-		--min-level-width: 10.375rem;
-	}
+    @media screen and (min-width: $desktopMinWidth) {
+        --min-level-width: 10.375rem;
+    }
 }
 
 .give-btn.give-donation-level-btn {
-	min-width: -moz-available;
-	min-width: -webkit-fill-available;
-	height: 100%;
-	font-size: 1.5rem;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
+    min-width: -moz-available;
+    min-width: -webkit-fill-available;
+    height: 100%;
+    font-size: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 
-	transition-property: background-color, color;
-	transition-duration: 200ms;
-	transition-timing-function: ease-in;
+    transition-property: background-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
 
-	@media screen and (min-width: $desktopMinWidth) {
-		width: auto;
-		padding-top: 1.6875rem;
-		padding-bottom: 1.6875rem;
-		font-size: 2.125rem;
-	}
+    @media screen and (min-width: $desktopMinWidth) {
+        width: auto;
+        padding-top: 1.6875rem;
+        padding-bottom: 1.6875rem;
+        font-size: 2.125rem;
+    }
 
-	&.give-default-level {
-		background-color: #fff;
-		color: var(--give-primary-color);
-	}
+    &.give-default-level {
+        background-color: #fff;
+        color: var(--give-primary-color);
+    }
 
-	&.give-btn-level-custom {
-		word-spacing: 9999px; // This forces a linebreak after each word.
-		font-size: 1rem;
-		line-height: 1.25;
+    &.give-btn-level-custom {
+        word-spacing: 9999px; // This forces a linebreak after each word.
+        font-size: 1rem;
+        line-height: 1.25;
 
-		@media screen and (min-width: $desktopMinWidth) {
-			font-size: 1.125rem;
-			font-weight: 400;
-		}
-	}
+        @media screen and (min-width: $desktopMinWidth) {
+            font-size: 1.125rem;
+            font-weight: 400;
+        }
+    }
 
-	& .give-formatted-currency {
-		display: flex;
-		gap: 0.15rem;
-		line-height: 1;
+    & .give-formatted-currency {
+        display: flex;
+        gap: 0.15rem;
+        line-height: 1;
 
-		.give-currency-symbol-before,
-		.give-currency-symbol-after {
-			font-weight: 400;
-		}
+        .give-currency-symbol-before,
+        .give-currency-symbol-after {
+            font-weight: 400;
+        }
 
-		.give-currency-symbol-before {
-			align-self: flex-start;
-			transform: translateY(0.2em);
-			font-size: 0.583em;
+        .give-currency-symbol-before {
+            align-self: flex-start;
+            transform: translateY(0.2em);
+            font-size: 0.583em;
 
-			@media screen and (min-width: $desktopMinWidth) {
-				transform: translateY(0.4em);
-				font-size: 0.41em;
-			}
-		}
+            @media screen and (min-width: $desktopMinWidth) {
+                transform: translateY(0.4em);
+                font-size: 0.41em;
+            }
+        }
 
-		.give-currency-symbol-after {
-			align-self: center;
-			margin-left: 0.2em;
-			font-size: 0.8em;
-		}
+        .give-currency-symbol-after {
+            align-self: center;
+            margin-left: 0.2em;
+            font-size: 0.8em;
+        }
 
-		.give-amount-formatted {
-			display: inline-flex;
-		}
+        .give-amount-formatted {
+            display: inline-flex;
+        }
 
-		.give-amount-without-decimals {
-			white-space: nowrap;
-		}
+        .give-amount-without-decimals {
+            white-space: nowrap;
+        }
 
-		.give-amount-decimal {
-			font-size: 0.5em;
-			transform: translateY(0.2em);
-		}
-
-	}
+        .give-amount-decimal {
+            font-size: 0.5em;
+            transform: translateY(0.2em);
+        }
+    }
 }
 
 .give-recurring-donors-choice,
 .give-fee-message-label {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	padding: 1rem;
-	border: 0.1875rem solid #fff;
-	border-radius: 0.5rem;
-	background-color: #fff;
-	color: #333;
-	font-size: 1.125rem !important;
-	line-height: 1.2;
-	box-shadow: 0 0 0.88em rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 0.1875rem solid #fff;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: #333;
+    font-size: 1.125rem !important;
+    line-height: 1.2;
+    box-shadow: 0 0 0.88em rgba(0, 0, 0, 0.1);
 }
