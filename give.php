@@ -163,7 +163,8 @@ final class Give
         FormLegacyConsumerServiceProvider::class,
         ShimsServiceProvider::class,
         LicenseServiceProvider::class,
-        DonationSummaryServiceProvider::class,
+        Give\Email\ServiceProvider::class,
+        DonationSummaryServiceProvider::class
     ];
 
     /**
