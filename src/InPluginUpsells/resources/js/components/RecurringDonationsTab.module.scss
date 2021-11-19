@@ -1,0 +1,112 @@
+@use 'sass:string';
+
+:global(#give-in-plugin-upsells) {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #333;
+    font-family: Open Sans, sans-serif;
+
+    @media screen and (min-width: 64rem) {
+        padding: 4.625rem 2rem;
+    }
+
+    *,
+    ::before,
+    ::after {
+        box-sizing: border-box;
+    }
+}
+
+.card {
+    display: grid;
+    justify-items: center;
+    padding: 2rem;
+    width: min(57rem, 100%);
+
+    @media screen and (min-width: 64rem) {
+        padding: 2.5rem 4.75rem;
+    }
+}
+
+.title {
+    margin: 0;
+    font-size: 1.875rem;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: center;
+}
+
+.description {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.image {
+    display: block;
+    width: min(37.5rem, 100%);
+}
+
+.features {
+    margin: 0;
+    padding: 0;
+    /* Sass doesn’t like that max-content isn’t a number */
+    width: string.unquote('max(max-content, 100%)');
+    display: grid;
+    row-gap: 0.5rem;
+    list-style: none;
+
+    @media screen and (min-width: 64rem) {
+        grid-auto-flow: column;
+        column-gap: 3.25rem;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+}
+
+.feature {
+    display: flex;
+    column-gap: 0.5em;
+    font-size: 1.25rem;
+    line-height: 1.65;
+}
+
+.featureIcon {
+    flex-shrink: 0;
+
+    display: inline;
+
+    /* Make it square */
+    width: 1.2em;
+    height: 1.2em;
+
+    /* Offset the top half-leading of line-height to (almost) align with the top of the text. */
+    position: relative;
+    top: 0.0625em;
+
+    color: #66bb6a;
+}
+
+/* Spacing between grid-items in the card */
+
+.learnMoreButton {
+    width: min(15rem, 100%);
+}
+
+.title + .description {
+    margin-top: 1rem;
+}
+
+.description + .learnMoreButton {
+    margin-top: 2.875rem;
+}
+
+.learnMoreButton + .image {
+    margin-top: 3rem;
+}
+
+.image + .features {
+    margin-top: 2.25rem;
+}
