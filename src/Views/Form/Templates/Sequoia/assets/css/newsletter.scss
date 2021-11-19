@@ -2,85 +2,85 @@
 .give-activecampaign-fieldset,
 .give-mailchimp-fieldset,
 .give-constant-contact-fieldset {
-	order: 3;
-	background: #fff;
-	border: 1px solid rgba(255, 255, 255, 0) !important;
-	box-sizing: border-box;
-	box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
-	border-radius: 5px;
-	margin: 20px 0 0 0 !important;
-	padding: 0 !important;
-	position: relative;
-	transition: border 0.2s ease;
-	width: auto !important;
+    order: 3;
+    background: #fff;
+    border: 1px solid rgba(255, 255, 255, 0) !important;
+    box-sizing: border-box;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+    border-radius: 5px;
+    margin: 20px 0 0 0 !important;
+    padding: 0 !important;
+    position: relative;
+    transition: border 0.2s ease;
+    width: auto !important;
 
-	label,
-	p {
-		margin: 0;
-		cursor: pointer;
-	}
+    label,
+    p {
+        margin: 0;
+        cursor: pointer;
+    }
 
-	span {
-		width: calc(100% - 82px);
-		margin-left: 40px !important;
-		display: inline-block;
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 1.4;
-		padding: 17px 20px 17px 22px !important;
-		color: #333;
+    span {
+        width: calc(100% - 82px);
+        margin-left: 40px !important;
+        display: inline-block;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.4;
+        padding: 17px 20px 17px 22px !important;
+        color: #333;
 
-		@media screen and (max-width: $break-phone) {
-			font-size: 14px;
-			padding: 14px 20px 14px 22px !important;
-		}
-	}
+        @media screen and (max-width: $break-phone) {
+            font-size: 14px;
+            padding: 14px 20px 14px 22px !important;
+        }
+    }
 
-	span::before {
-		content: ' ';
-		position: absolute;
-		top: calc(50% - 12px);
-		left: 22px;
-		width: 20px;
-		height: 20px;
-		border: 1px solid #b4b9be;
-		background-color: #fff;
-		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
-	}
+    span::before {
+        content: ' ';
+        position: absolute;
+        top: calc(50% - 12px);
+        left: 22px;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #b4b9be;
+        background-color: #fff;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
 
-	&:hover {
-		border: 1px solid #3398db !important;
+    &:hover {
+        border: 1px solid #3398db !important;
 
-		.give-mc-message-text::before {
-			background-color: rgba(245, 245, 245, 0.815);
-		}
-	}
+        .give-mc-message-text::before {
+            background-color: rgba(245, 245, 245, 0.815);
+        }
+    }
 
-	&.active {
-		border: 1px solid #3398db !important;
-	}
+    &.active {
+        border: 1px solid #3398db !important;
+    }
 
-	input[type='checkbox']:checked + span::after {
-		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-		-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-	}
+    input[type='checkbox']:checked + span::after {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
 
-	input[type='checkbox'] + span::after {
-		transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
-		border-radius: 11px;
-		width: 20px;
-		height: 20px;
-		position: absolute;
-		top: calc(50% - 12px);
-		left: 22px;
-		content: ' ';
-		display: block;
-		background-image: url("data:image/svg+xml,%3Csvg width='15' height='11' viewBox='0 0 15 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.73047 10.7812C6.00391 11.0547 6.46875 11.0547 6.74219 10.7812L14.7812 2.74219C15.0547 2.46875 15.0547 2.00391 14.7812 1.73047L13.7969 0.746094C13.5234 0.472656 13.0859 0.472656 12.8125 0.746094L6.25 7.30859L3.16016 4.24609C2.88672 3.97266 2.44922 3.97266 2.17578 4.24609L1.19141 5.23047C0.917969 5.50391 0.917969 5.96875 1.19141 6.24219L5.73047 10.7812Z' fill='%231E8CBE'/%3E%3C/svg%3E%0A");
-		background-repeat: no-repeat;
-		background-position: center;
-		clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
-		-webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
-	}
+    input[type='checkbox'] + span::after {
+        transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
+        border-radius: 11px;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: calc(50% - 12px);
+        left: 22px;
+        content: ' ';
+        display: block;
+        background-image: url("data:image/svg+xml,%3Csvg width='15' height='11' viewBox='0 0 15 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.73047 10.7812C6.00391 11.0547 6.46875 11.0547 6.74219 10.7812L14.7812 2.74219C15.0547 2.46875 15.0547 2.00391 14.7812 1.73047L13.7969 0.746094C13.5234 0.472656 13.0859 0.472656 12.8125 0.746094L6.25 7.30859L3.16016 4.24609C2.88672 3.97266 2.44922 3.97266 2.17578 4.24609L1.19141 5.23047C0.917969 5.50391 0.917969 5.96875 1.19141 6.24219L5.73047 10.7812Z' fill='%231E8CBE'/%3E%3C/svg%3E%0A");
+        background-repeat: no-repeat;
+        background-position: center;
+        clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+        -webkit-clip-path: polygon(0 0, 11% 0, 0 100%, 0 55%);
+    }
 }
 
 /*---------------------------------
@@ -88,23 +88,23 @@ RTL styles
 -----------------------------------*/
 
 html[dir='rtl'] {
-	.give-activecampaign-fieldset,
-	.give-mailchimp-fieldset,
-	.give-constant-contact-fieldset {
-		span {
-			margin-left: 0 !important;
-			margin-right: 40px !important;
-		}
+    .give-activecampaign-fieldset,
+    .give-mailchimp-fieldset,
+    .give-constant-contact-fieldset {
+        span {
+            margin-left: 0 !important;
+            margin-right: 40px !important;
+        }
 
-		span::before {
-			top: calc(50% - 11px);
-			right: 22px;
-		}
+        span::before {
+            top: calc(50% - 11px);
+            right: 22px;
+        }
 
-		input[type='checkbox'] + span::after {
-			top: calc(50% - 10px);
-			right: 22px;
-			margin-right: 1px;
-		}
-	}
+        input[type='checkbox'] + span::after {
+            top: calc(50% - 10px);
+            right: 22px;
+            margin-right: 1px;
+        }
+    }
 }

@@ -7,10 +7,10 @@ import styles from './MustHaveAddons.module.css';
 const {addonButtonCaption, addons, description, heading} = window.GiveAddons.mustHaveAddons;
 
 export const MustHaveAddons = () => (
-	<article>
+    <article>
         <Hero heading={heading} description={description} />
-		<ul className={styles.grid}>
-			{addons.map(({name, description, url, icon, image, features}) => (
+        <ul className={styles.grid}>
+            {addons.map(({name, description, url, icon, image, features}) => (
                 <li key={name}>
                     <MustHaveAddonCard
                         name={name}
@@ -23,7 +23,6 @@ export const MustHaveAddons = () => (
                     />
                 </li>
             ))}
-		</ul>
-	</article>
+        </ul>
+    </article>
 );
-

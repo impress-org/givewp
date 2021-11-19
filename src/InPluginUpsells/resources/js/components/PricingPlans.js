@@ -1,11 +1,11 @@
 import {PricingPlanCard} from './PricingPlanCard';
 import {Hero} from './Hero';
-import styles from './PricingPlans.module.css'
+import styles from './PricingPlans.module.css';
 
 const {heading, description, plansButtonCaption, plans} = window.GiveAddons.pricingPlans;
 
 export const PricingPlans = () => (
-	<article>
+    <article>
         <Hero heading={heading} description={description} />
         <ul className={styles.plans}>
             {plans.map((plan) => (
@@ -23,6 +23,5 @@ export const PricingPlans = () => (
                 </li>
             ))}
         </ul>
-	</article>
+    </article>
 );
-

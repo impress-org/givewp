@@ -1,19 +1,24 @@
 import styles from './src/styles';
 
-import { withA11y } from '@storybook/addon-a11y';
+import {withA11y} from '@storybook/addon-a11y';
 
 export default {
-	title: 'Setup Page/Badges',
-	decorators: [ withA11y ],
+    title: 'Setup Page/Badges',
+    decorators: [withA11y],
 };
 
-const Styles = `
+const Styles =
+    `
 <style>
-  ` + styles + `
+  ` +
+    styles +
+    `
 </style>
 `;
 
-export const Complete = () => Styles + `
+export const Complete = () =>
+    Styles +
+    `
 <section>
   <header>
     <h2>Complete</h2>
@@ -22,7 +27,9 @@ export const Complete = () => Styles + `
 </section>
 `;
 
-export const Review = () => Styles + `
+export const Review = () =>
+    Styles +
+    `
 <section>
   <header>
     <h2>Review</h2>
