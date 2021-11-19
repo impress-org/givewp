@@ -51,7 +51,7 @@
                         </div>
                         <div
                             class="give-form-goal-progress-meter-bar"
-                            style="width: <?= $goalStats[ 'progress' ]; ?>%; background: linear-gradient(180deg, <?= $goalStats[ 'color' ]; ?> 0%, <?= $goalStats[ 'color' ]; ?> 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;"></div>
+                            style="width: <?= $goalStats[ 'progress' ]; ?>%;"></div>
                     </div>
                 </li>
             </ul>

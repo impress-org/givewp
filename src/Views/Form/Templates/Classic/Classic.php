@@ -2,6 +2,7 @@
 
 namespace Give\Views\Form\Templates\Classic;
 
+use Give\Helpers\Form\Template\Utils\Frontend;
 use Give_Donate_Form;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
@@ -173,6 +174,7 @@ class Classic extends Template implements Hookable, Scriptable
             $this->loadFile('css/variables.php', [
                 'primaryColor'          => $this->options[ 'visual_appearance' ][ 'primary_color' ],
                 'headerBackgroundImage' => $this->options[ 'visual_appearance' ][ 'header_background_image' ],
+                'statsProgressBarColor' =>  give_get_meta(Frontend::getFormId(), '_give_goal_color', true)
             ])
         );
 
@@ -319,8 +321,6 @@ class Classic extends Template implements Hookable, Scriptable
             )
         );
 
-        $color =  give_get_meta($form->get_ID(), '_give_goal_color', true);
-
         switch ($goalStats[ 'format' ]) {
             case 'donation':
                 return [
@@ -329,7 +329,6 @@ class Classic extends Template implements Hookable, Scriptable
                     'count'      => $goalStats[ 'actual' ],
                     'countLabel' => $countLabel,
                     'goal'       => $goalStats[ 'goal' ],
-                    'color'      => $color,
                 ];
 
             case 'donors':
@@ -339,7 +338,6 @@ class Classic extends Template implements Hookable, Scriptable
                     'count'      => $goalStats[ 'actual' ],
                     'countLabel' => _n('donor', 'donors', $count, 'give'),
                     'goal'       => $goalStats[ 'goal' ],
-                    'color'      => $color,
                 ];
 
             default:
@@ -349,7 +347,6 @@ class Classic extends Template implements Hookable, Scriptable
                     'count'      => $count,
                     'countLabel' => $countLabel,
                     'goal'       => $goal,
-                    'color'      => $color,
                 ];
         }
 
