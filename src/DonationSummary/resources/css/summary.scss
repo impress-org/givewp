@@ -1,0 +1,117 @@
+.give-donation-submit > .give-donation-summary-section {
+    margin-bottom: 0;
+}
+
+.give-donation-summary-section {
+    font-family: Montserrat, serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+
+    svg {
+        margin: 0 5px;
+        vertical-align: text-top;
+
+        path {
+            fill: var(--primary-color, #3ba2e0);
+        }
+    }
+
+    .heading {
+        font-style: italic;
+    }
+
+    .give-donation-summary-table-wrapper {
+        color: #333333;
+        background-color: #f9f9f9;
+        margin: 20px -20px;
+        padding: 0 20px;
+    }
+
+    .back-btn {
+        color: var(--primary-color, #3ba2e0);
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 23px;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+        cursor: pointer;
+        text-decoration: underline;
+        background-color: transparent;
+    }
+
+    .give-donation-summary-help-text {
+        color: #8c8c8c;
+
+        margin: 10px 0;
+
+        gap: 5px;
+        display: flex;
+        align-items: center;
+
+        .back-btn {
+            font-size: inherit;
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    tbody {
+        color: #444444;
+    }
+
+    tr {
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    tr,
+    th,
+    td {
+        height: 42px;
+        padding: 10px 0;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    td {
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    th:last-child,
+    td:last-child {
+        text-align: right;
+    }
+
+    @media screen and (max-width: 500px) {
+        tr,
+        th,
+        td {
+            height: 26px;
+        }
+        th,
+        td {
+            padding-top: 15px;
+            vertical-align: top;
+
+            &:last-child {
+                width: 40%;
+            }
+        }
+        .give-donation-summary-help-text {
+            align-items: start;
+
+            img {
+                margin-top: 3px;
+            }
+        }
+    }
+}

@@ -350,6 +350,8 @@ function give_load_gateway( form_object, payment_mode ) {
 			jQuery( '.give-no-js' ).hide();
 			jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' ).fadeOut();
 
+            jQuery( document ).trigger( 'Give:onGatewayLoadSuccess' )
+
 			return res( response );
 		}
 		);

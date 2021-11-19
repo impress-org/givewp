@@ -1,95 +1,95 @@
 .give-tributes-dedicate-donation {
-	.give_tributes_mail_card_country > label,
-	.give_tributes_mail_card_state > label {
-		display: none !important;
-	}
+    .give_tributes_mail_card_country > label,
+    .give_tributes_mail_card_state > label {
+        display: none !important;
+    }
 
-	#give_tributes_address_state {
-		min-height: 48px !important;
-	}
+    #give_tributes_address_state {
+        min-height: 48px !important;
+    }
 
-	.give-tributes-grab-info {
-		@media screen and (max-width: $break-phone) {
-			display: flex;
-			flex-direction: column;
-		}
-	}
+    .give-tributes-grab-info {
+        @media screen and (max-width: $break-phone) {
+            display: flex;
+            flex-direction: column;
+        }
+    }
 
-	legend,
-	.give-tributes-legend,
-	.give-tributes-label {
-		display: block;
-		font-size: 14px !important;
-		font-weight: 400 !important;
-		border-bottom: none !important;
-		padding: 0 !important;
-		margin: 0 0 5px !important;
-		line-height: 1.7;
-	}
+    legend,
+    .give-tributes-legend,
+    .give-tributes-label {
+        display: block;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        border-bottom: none !important;
+        padding: 0 !important;
+        margin: 0 0 5px !important;
+        line-height: 1.7;
+    }
 
-	.give_tributes_send_ecard_fields > .give-tributes-legend {
-		width: auto !important;
-	}
+    .give_tributes_send_ecard_fields > .give-tributes-legend {
+        width: auto !important;
+    }
 
-	.give-tributes-add-recipient {
-		margin-left: 8px;
-		float: none;
-		display: inline-block;
-		margin-top: 0;
-	}
+    .give-tributes-add-recipient {
+        margin-left: 8px;
+        float: none;
+        display: inline-block;
+        margin-top: 0;
+    }
 
-	input[type='radio'] {
-		opacity: 0 !important;
-		position: absolute !important;
-	}
+    input[type='radio'] {
+        opacity: 0 !important;
+        position: absolute !important;
+    }
 
-	input[type='radio'] + label {
-		padding: 0 10px 0 28px;
-		width: 100%;
-		color: #696969;
-		font-size: 14px !important;
-		font-weight: 400 !important;
-		display: inline-block;
-		position: relative;
-		margin: 0 0 5px;
-		line-height: 1.7;
+    input[type='radio'] + label {
+        padding: 0 10px 0 28px;
+        width: 100%;
+        color: #696969;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        display: inline-block;
+        position: relative;
+        margin: 0 0 5px;
+        line-height: 1.7;
 
-		&::before {
-			content: ' ';
-			position: absolute;
-			top: calc(50% - 9px);
-			left: 0;
-			width: 16px;
-			height: 16px;
-			border-radius: 50%;
-			border: 1px solid #b4b9be;
-			background-color: #fff;
-			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
-		}
+        &::before {
+            content: ' ';
+            position: absolute;
+            top: calc(50% - 9px);
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid #b4b9be;
+            background-color: #fff;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
 
-		&::after {
-			transform: scale3d(0, 0, 0);
-			transition: transform 0.2s ease;
-			border-radius: 8px;
-			width: 8px;
-			height: 8px;
-			position: absolute;
-			top: calc(50% - 4px);
-			left: 5px;
-			content: ' ';
-			display: block;
-			background: #333;
-		}
-	}
+        &::after {
+            transform: scale3d(0, 0, 0);
+            transition: transform 0.2s ease;
+            border-radius: 8px;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: calc(50% - 4px);
+            left: 5px;
+            content: ' ';
+            display: block;
+            background: #333;
+        }
+    }
 
-	input[type='radio']:checked + label::after {
-		transform: scale3d(1, 1, 1);
-	}
+    input[type='radio']:checked + label::after {
+        transform: scale3d(1, 1, 1);
+    }
 
-	.give-tributes-ecard-personalized-message-left,
-	.give-tributes-mail-card-personalized-message-left {
-		padding-bottom: 8px;
-	}
+    .give-tributes-ecard-personalized-message-left,
+    .give-tributes-mail-card-personalized-message-left {
+        padding-bottom: 8px;
+    }
 }
 
 /*---------------------------------
@@ -97,21 +97,21 @@ RTL styles
 -----------------------------------*/
 
 html[dir='rtl'] {
-	.give-tributes-dedicate-donation {
-		.give-tributes-add-recipient {
-			margin-right: 8px;
-		}
+    .give-tributes-dedicate-donation {
+        .give-tributes-add-recipient {
+            margin-right: 8px;
+        }
 
-		input[type='radio'] + label {
-			padding-right: 32px;
+        input[type='radio'] + label {
+            padding-right: 32px;
 
-			&::before {
-				right: 0;
-			}
+            &::before {
+                right: 0;
+            }
 
-			&::after {
-				right: 5px;
-			}
-		}
-	}
+            &::after {
+                right: 5px;
+            }
+        }
+    }
 }

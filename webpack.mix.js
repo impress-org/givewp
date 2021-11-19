@@ -15,6 +15,7 @@ mix.setPublicPath('assets/dist')
     .sass('src/Views/Form/Templates/Sequoia/assets/css/form.scss', 'css/give-sequoia-template.css')
     .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
     .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
+    .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
 
     .js('assets/src/js/frontend/give.js', 'js/')
     .js('assets/src/js/frontend/give-stripe.js', 'js/')
@@ -37,6 +38,10 @@ mix.setPublicPath('assets/dist')
     .js('src/DonorDashboards/resources/js/block/index.js', 'js/donor-dashboards-block.js')
     .js('src/Log/Admin/index.js', 'js/give-log-list-table-app.js')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
+    .js('src/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
+    .js('src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js', 'js/admin-upsell-recurring-donations-settings-tab.js')
+    .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
+    .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
     .react()
     .sourceMaps(false)
 
@@ -62,6 +67,16 @@ mix.webpackConfig({
 mix.options({
     // Don't perform any css url rewriting by default
     processCssUrls: false,
+
+    // Prevent LICENSE files from showing up in JS builds
+    terser: {
+        extractComments: (astNode, comment) => false,
+        terserOptions: {
+            format: {
+                comments: false,
+            }
+        }
+    }
 });
 
 if (mix.inProduction()) {

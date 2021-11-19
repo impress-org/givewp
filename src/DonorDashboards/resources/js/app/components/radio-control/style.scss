@@ -1,98 +1,98 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard-radio-control {
-	margin: 20px 0 0;
-	outline: none;
-	border: none;
-	padding-left: 0;
+    margin: 20px 0 0;
+    outline: none;
+    border: none;
+    padding-left: 0;
 
-	.give-donor-dashboard-radio-control__legend {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 500;
-		font-size: 14px;
-		line-height: 1;
-		color: #555;
-		margin-bottom: 10px;
-	}
+    .give-donor-dashboard-radio-control__legend {
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 1;
+        color: #555;
+        margin-bottom: 10px;
+    }
 
-	.give-donor-dashboard-radio-control__description {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 500;
-		font-style: italic;
-		font-size: 13px;
-		line-height: 1.4;
-		color: #767676;
-		margin-bottom: 12px;
-	}
+    .give-donor-dashboard-radio-control__description {
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        font-style: italic;
+        font-size: 13px;
+        line-height: 1.4;
+        color: #767676;
+        margin-bottom: 12px;
+    }
 
-	.give-donor-dashboard-radio-control__option {
-		margin: 10px 0;
+    .give-donor-dashboard-radio-control__option {
+        margin: 10px 0;
 
-		&:first-of-type {
-			margin-top: 20px;
-		}
+        &:first-of-type {
+            margin-top: 20px;
+        }
 
-		&:last-of-type {
-			margin-bottom: 20px;
-		}
+        &:last-of-type {
+            margin-bottom: 20px;
+        }
 
-		label {
-			font-family: Montserrat, Arial, Helvetica, sans-serif;
-			font-weight: 500;
-			font-size: 14px;
-			line-height: 1.4;
-			color: #555;
-			position: relative;
+        label {
+            font-family: Montserrat, Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #555;
+            position: relative;
 
-			padding: 0 0 0 26px;
-			width: 100%;
-			margin-left: 0;
-			display: inline-block;
+            padding: 0 0 0 26px;
+            width: 100%;
+            margin-left: 0;
+            display: inline-block;
 
-			&::before {
-				content: ' ';
-				position: absolute;
-				top: calc(50% - 8px);
-				left: 0;
-				width: 16px;
-				height: 16px;
-				border-radius: 50%;
-				background: #fff;
-				border: 1px solid #b4b9be;
-				box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
-				transition: box-shadow 0.1s ease;
-			}
+            &::before {
+                content: ' ';
+                position: absolute;
+                top: calc(50% - 8px);
+                left: 0;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: #fff;
+                border: 1px solid #b4b9be;
+                box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
+                transition: box-shadow 0.1s ease;
+            }
 
-			&::after {
-				transform: scale3d(0, 0, 0);
-				transition: transform 0.2s ease;
-				border-radius: 50%;
-				width: 6px;
-				height: 6px;
-				position: absolute;
-				top: calc(50% - 2px);
-				left: 6px;
-				content: ' ';
-				display: block;
-				background: var(--give-donor-dashboard-accent-color);
-			}
-		}
+            &::after {
+                transform: scale3d(0, 0, 0);
+                transition: transform 0.2s ease;
+                border-radius: 50%;
+                width: 6px;
+                height: 6px;
+                position: absolute;
+                top: calc(50% - 2px);
+                left: 6px;
+                content: ' ';
+                display: block;
+                background: var(--give-donor-dashboard-accent-color);
+            }
+        }
 
-		input[type='radio'] {
-			opacity: 0 !important;
-			position: absolute !important;
+        input[type='radio'] {
+            opacity: 0 !important;
+            position: absolute !important;
 
-			&:focus {
-				+ label::before {
-					box-shadow: 0 0 0 1px var(--give-donor-dashboard-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
-				}
-			}
+            &:focus {
+                + label::before {
+                    box-shadow: 0 0 0 1px var(--give-donor-dashboard-accent-color), inset 0 1px 2px rgba(0, 0, 0, 0.25);
+                }
+            }
 
-			&:checked {
-				+ label::after {
-					transform: scale3d(1, 1, 1);
-				}
-			}
-		}
-	}
+            &:checked {
+                + label::after {
+                    transform: scale3d(1, 1, 1);
+                }
+            }
+        }
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Exceptions\Primitives\Exception;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
@@ -18,180 +18,222 @@ use function give_record_gateway_error as logError;
  *
  * @since 2.9.0
  */
-class PayPalOrder {
-	/**
-	 * @since 2.9.0
-	 *
-	 * @var PayPalClient
-	 */
-	private $paypalClient;
+class PayPalOrder
+{
+    /**
+     * @since 2.9.0
+     *
+     * @var PayPalClient
+     */
+    private $paypalClient;
 
-	/**
-	 * @since 2.9.0
-	 *
-	 * @var MerchantDetail
-	 */
-	private $merchantDetails;
+    /**
+     * @since 2.9.0
+     *
+     * @var MerchantDetail
+     */
+    private $merchantDetails;
 
-	/**
-	 * PayPalOrder constructor.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param  MerchantDetail  $merchantDetails
-	 *
-	 * @param  PayPalClient  $paypalClient
-	 */
-	public function __construct( PayPalClient $paypalClient, MerchantDetail $merchantDetails ) {
-		$this->paypalClient    = $paypalClient;
-		$this->merchantDetails = $merchantDetails;
-	}
+    /**
+     * @since 2.16.2
+     * @var Settings
+     */
+    private $settings;
 
-	/**
-	 * Approve order.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param  string  $orderId
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function approveOrder( $orderId ) {
-		$request = new OrdersCaptureRequest( $orderId );
+    /**
+     * PayPalOrder constructor.
+     *
+     * @since 2.9.0
+     * @since 2.16.2 Add third param "Settings" to function
+     *
+     * @param PayPalClient $paypalClient
+     * @param MerchantDetail $merchantDetails
+     * @param Settings $settings
+     */
+    public function __construct(PayPalClient $paypalClient, MerchantDetail $merchantDetails, Settings $settings)
+    {
+        $this->paypalClient = $paypalClient;
+        $this->merchantDetails = $merchantDetails;
+        $this->settings = $settings;
+    }
 
-		try {
-			return $this->paypalClient->getHttpClient()->execute( $request )->result;
-		} catch ( Exception $ex ) {
-			logError(
-				'Capture PayPal Commerce payment failure',
-				sprintf(
-					'<strong>Response</strong><pre>%1$s</pre>',
-					print_r( json_decode( $ex->getMessage(), true ), true )
-				)
-			);
+    /**
+     * Approve order.
+     *
+     * @since 2.9.0
+     *
+     * @param string $orderId
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function approveOrder($orderId)
+    {
+        $request = new OrdersCaptureRequest($orderId);
 
-			throw $ex;
-		}
-	}
+        try {
+            return $this->paypalClient->getHttpClient()->execute($request)->result;
+        } catch (Exception $ex) {
+            logError(
+                'Capture PayPal Commerce payment failure',
+                sprintf(
+                    '<strong>Response</strong><pre>%1$s</pre>',
+                    print_r(json_decode($ex->getMessage(), true), true)
+                )
+            );
 
-	/**
-	 * Create order.
-	 *
-	 * @since 2.9.0
-	 * @see https://developer.paypal.com/docs/api/orders/v2
-	 *
-	 * @param  array  $array
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function createOrder( $array ) {
-		$this->validateCreateOrderArguments( $array );
+            throw $ex;
+        }
+    }
 
-		$request = new OrdersCreateRequest();
-		$request->payPalPartnerAttributionId( give( 'PAYPAL_COMMERCE_ATTRIBUTION_ID' ) );
-		$request->body = [
-			'intent'              => 'CAPTURE',
-			'payer'               => [
-				'given_name'    => $array['payer']['firstName'],
-				'surname'       => $array['payer']['lastName'],
-				'email_address' => $array['payer']['email'],
-			],
-			'purchase_units'      => [
-				[
-					'reference_id'        => get_post_field( 'post_name', $array['formId'] ),
-					'description'         => $array['formTitle'],
-					'amount'              => [
-						'value'         => give_maybe_sanitize_amount(
-							$array['donationAmount'],
-							[ 'currency' => give_get_currency( $array['formId'] ) ]
-						),
-						'currency_code' => give_get_currency( $array['formId'] ),
-					],
-					'payee'               => [
-						'email_address' => $this->merchantDetails->merchantId,
-						'merchant_id'   => $this->merchantDetails->merchantIdInPayPal,
-					],
-					'payment_instruction' => [
-						'disbursement_mode' => 'INSTANT',
-					],
-				],
-			],
-			'application_context' => [
-				'shipping_preference' => 'NO_SHIPPING',
-				'user_action'         => 'PAY_NOW',
-			],
-		];
+    /**
+     * Create order.
+     *
+     * @see https://developer.paypal.com/docs/api/orders/v2
+     *
+     * @since 2.9.0
+     * @since 2.16.2 Conditionally set transaction as donation or standard transaction in PayPal.
+     *
+     * @param array $array
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function createOrder($array)
+    {
+        $this->validateCreateOrderArguments($array);
 
-		if ( ! empty( $array['payer']['address'] ) ) {
-			$request->body['payer']['address'] = $array['payer']['address'];
-		}
+        $request = new OrdersCreateRequest();
+        $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
-		try {
-			return $this->paypalClient->getHttpClient()->execute( $request )->result->id;
-		} catch ( Exception $ex ) {
-			logError(
-				'Create PayPal Commerce order failure',
-				sprintf(
-					'<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-					print_r( $request->body, true ),
-					print_r( json_decode( $ex->getMessage(), true ), true )
-				)
-			);
+        $formId = (int)$array['formId'];
+        $donationCurrency = give_get_currency($formId);
+        $donationAmount = give_maybe_sanitize_amount(
+            $array['donationAmount'],
+            ['currency' => give_get_currency($formId)]
+        );
+        $request->body = [
+            'intent' => 'CAPTURE',
+            'payer' => [
+                'given_name' => $array['payer']['firstName'],
+                'surname' => $array['payer']['lastName'],
+                'email_address' => $array['payer']['email'],
+            ],
+            'purchase_units' => [
+                [
+                    'reference_id' => get_post_field('post_name', $formId),
+                    'description' => $array['formTitle'],
+                    'amount' => [
+                        'value' => $donationAmount,
+                        'currency_code' => $donationCurrency,
+                    ],
+                    'payee' => [
+                        'email_address' => $this->merchantDetails->merchantId,
+                        'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
+                    ],
+                    'payment_instruction' => [
+                        'disbursement_mode' => 'INSTANT',
+                    ],
+                ],
+            ],
+            'application_context' => [
+                'shipping_preference' => 'NO_SHIPPING',
+                'user_action' => 'PAY_NOW',
+            ],
+        ];
 
-			throw $ex;
-		}
-	}
+        // Set PayPal transaction as donation.
+        if ($this->settings->isTransactionTypeDonation()) {
+            $request->body['purchase_units'][0]['items'] = [
+                [
+                    'name' => get_post_field('post_name', $formId),
+                    'unit_amount' => [
+                        'value' => $donationAmount,
+                        'currency_code' => $donationCurrency,
+                    ],
+                    'quantity' => 1,
+                    'category' => 'DONATION',
+                ],
+            ];
 
-	/**
-	 * Refunds a processed payment
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param $captureId
-	 *
-	 * @return string The id of the refund
-	 * @throws Exception
-	 */
-	public function refundPayment( $captureId ) {
-		$refund = new CapturesRefundRequest( $captureId );
+            $request->body['purchase_units'][0]['amount']['breakdown'] = [
+                'item_total' => [
+                    'currency_code' => $donationCurrency,
+                    'value' => $donationAmount,
+                ],
+            ];
+        }
 
-		try {
-			return $this->paypalClient->getHttpClient()->execute( $refund )->result->id;
-		} catch ( Exception $exception ) {
-			logError(
-				'Create PayPal Commerce payment refund failure',
-				sprintf(
-					'<strong>Response</strong><pre>%1$s</pre>',
-					print_r( json_decode( $exception->getMessage(), true ), true )
-				)
-			);
+        if ( ! empty($array['payer']['address'])) {
+            $request->body['payer']['address'] = $array['payer']['address'];
+        }
 
-			throw $exception;
-		}
-	}
+        try {
+            return $this->paypalClient->getHttpClient()->execute($request)->result->id;
+        } catch (Exception $ex) {
+            logError(
+                'Create PayPal Commerce order failure',
+                sprintf(
+                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
+                    print_r($request->body, true),
+                    print_r(json_decode($ex->getMessage(), true), true)
+                )
+            );
 
-	/**
-	 * Validate argument given to create PayPal order.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param  array  $array
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	private function validateCreateOrderArguments( $array ) {
-		$required = [ 'formId', 'donationAmount', 'payer' ];
-		$array    = array_filter( $array ); // Remove empty values.
+            throw $ex;
+        }
+    }
 
-		if ( array_diff( $required, array_keys( $array ) ) ) {
-			throw new InvalidArgumentException(
-				__(
-					'To create a paypal order, please provide formId, donationAmount and payer',
-					'give'
-				)
-			);
-		}
-	}
+    /**
+     * Refunds a processed payment
+     *
+     * @since 2.9.0
+     *
+     * @param $captureId
+     *
+     * @return string The id of the refund
+     * @throws Exception
+     */
+    public function refundPayment($captureId)
+    {
+        $refund = new CapturesRefundRequest($captureId);
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($refund)->result->id;
+        } catch (Exception $exception) {
+            logError(
+                'Create PayPal Commerce payment refund failure',
+                sprintf(
+                    '<strong>Response</strong><pre>%1$s</pre>',
+                    print_r(json_decode($exception->getMessage(), true), true)
+                )
+            );
+
+            throw $exception;
+        }
+    }
+
+    /**
+     * Validate argument given to create PayPal order.
+     *
+     * @since 2.9.0
+     *
+     * @param array $array
+     *
+     * @throws InvalidArgumentException
+     */
+    private function validateCreateOrderArguments($array)
+    {
+        $required = ['formId', 'donationAmount', 'payer'];
+        $array = array_filter($array); // Remove empty values.
+
+        if (array_diff($required, array_keys($array))) {
+            throw new InvalidArgumentException(
+                __(
+                    'To create a paypal order, please provide formId, donationAmount and payer',
+                    'give'
+                )
+            );
+        }
+    }
 }

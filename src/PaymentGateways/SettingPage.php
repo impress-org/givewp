@@ -1,5 +1,6 @@
 <?php
-namespace  Give\PaymentGateways;
+
+namespace Give\PaymentGateways;
 
 /**
  * Interface SettingSection
@@ -7,38 +8,39 @@ namespace  Give\PaymentGateways;
  *
  * @since 2.9.0
  */
-interface SettingPage {
-	/**
-	 * Provides the section id to be use to render setting page.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return string
-	 */
-	public function getId();
+interface SettingPage
+{
+    /**
+     * Provides the section id to be use to render setting page.
+     *
+     * @since 2.9.0
+     *
+     * @return string
+     */
+    public function getId();
 
-	/**
-	 * Provides the section title to be displayed to the user.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Provides the section title to be displayed to the user.
+     *
+     * @since 2.9.0
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Provides the section settings to be displayed to the user.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return array
-	 */
-	public function getSettings();
+    /**
+     * Provides the section settings to be displayed to the user.
+     *
+     * @since 2.9.0
+     *
+     * @return array
+     */
+    public function getSettings();
 
-	/**
-	 * Boot functionality
-	 *
-	 * @since 2.9.0
-	 */
-	public function boot();
+    /**
+     * Boot functionality
+     *
+     * @since 2.9.0
+     */
+    public function boot();
 }

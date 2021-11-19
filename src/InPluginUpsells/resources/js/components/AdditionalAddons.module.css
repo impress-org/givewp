@@ -1,0 +1,51 @@
+.addons {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 2.5625rem;
+}
+
+@media screen and (min-width: 48rem) {
+    .addons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width: 64rem) {
+    .addons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.addons > li,
+.addons > li > * {
+    height: 100%;
+}
+
+.viewAll {
+    margin-top: 4.625rem;
+    display: grid;
+    gap: 2rem;
+    justify-items: center;
+    text-align: center;
+}
+
+.viewAllText {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.444;
+}
+
+.viewAllButton {
+    width: min(17.75rem, 100%);
+    border-color: #444;
+    background-color: #fff;
+    color: #444;
+}
+
+.viewAllButton:hover,
+.viewAllButton:active,
+.viewAllButton:focus {
+    filter: none;
+    background-color: #444;
+}

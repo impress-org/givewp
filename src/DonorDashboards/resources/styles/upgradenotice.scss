@@ -1,98 +1,98 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard-upgrade-notice {
-	padding: 26px 36px;
-	padding-right: 36px !important;
-	display: flex;
-	align-items: center;
-	background: #fff;
-	width: calc(100% - 72px);
-	border: 1px solid #ccd0d4;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 26px 36px;
+    padding-right: 36px !important;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    width: calc(100% - 72px);
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-	&.hidden {
-		display: none;
-	}
+    &.hidden {
+        display: none;
+    }
 
-	.give-donor-dashboard-upgrade-notice__copy {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		flex: 1;
-		max-width: 840px;
+    .give-donor-dashboard-upgrade-notice__copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1;
+        max-width: 840px;
 
-		.give-donor-dashboard-upgrade-notice__row {
-			display: flex;
-			align-items: center;
-		}
+        .give-donor-dashboard-upgrade-notice__row {
+            display: flex;
+            align-items: center;
+        }
 
-		.give-donor-dashboard-upgrade-notice__title {
-			font-size: 26px;
-			color: #333;
-			margin-right: 36px;
-			line-height: 1.4;
-		}
+        .give-donor-dashboard-upgrade-notice__title {
+            font-size: 26px;
+            color: #333;
+            margin-right: 36px;
+            line-height: 1.4;
+        }
 
-		.give-donor-dashboard-upgrade-notice__badge {
-			font-size: 16px;
-			color: #555;
-			font-weight: 500;
-			padding: 8px 16px;
-			border-radius: 40px;
-			overflow: hidden;
-			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        .give-donor-dashboard-upgrade-notice__badge {
+            font-size: 16px;
+            color: #555;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-			i {
-				margin-right: 4px;
-				color: #ffc700;
-			}
-		}
+            i {
+                margin-right: 4px;
+                color: #ffc700;
+            }
+        }
 
-		.give-donor-dashboard-upgrade-notice__body {
-			font-size: 18px;
-			color: #333;
-			line-height: 1.4;
-			margin: 20px 0;
-		}
+        .give-donor-dashboard-upgrade-notice__body {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.4;
+            margin: 20px 0;
+        }
 
-		.give-donor-dashboard-upgrade-notice__pill {
-			padding: 12px 24px;
-			background: #f8f8f8;
-			font-size: 15px;
-			color: #424242;
-			margin-left: 36px;
-			border-radius: 40px;
-			overflow: hidden;
+        .give-donor-dashboard-upgrade-notice__pill {
+            padding: 12px 24px;
+            background: #f8f8f8;
+            font-size: 15px;
+            color: #424242;
+            margin-left: 36px;
+            border-radius: 40px;
+            overflow: hidden;
 
-			a {
-				text-decoration: underline;
-				color: #0073aa;
-			}
+            a {
+                text-decoration: underline;
+                color: #0073aa;
+            }
 
-			i {
-				margin-left: 4px;
-				color: #0073aa;
-			}
-		}
+            i {
+                margin-left: 4px;
+                color: #0073aa;
+            }
+        }
 
-		a.give-donor-dashboard-upgrade-notice__button {
-			font-size: 16px;
-			font-weight: 500;
-			font-style: normal;
-			text-decoration: none;
-			padding: 16px 28px;
-			margin: 16px 0;
-			border-radius: 4px;
-			background: #0878b0;
-			color: #fff;
-		}
+        a.give-donor-dashboard-upgrade-notice__button {
+            font-size: 16px;
+            font-weight: 500;
+            font-style: normal;
+            text-decoration: none;
+            padding: 16px 28px;
+            margin: 16px 0;
+            border-radius: 4px;
+            background: #0878b0;
+            color: #fff;
+        }
 
-		.give-donor-dashboard-upgrade-notice__dismiss-link {
-			padding: 12px 0;
-			font-size: 15px;
-			color: #878787;
-			text-decoration: underline;
-			font-style: italic;
-		}
-	}
+        .give-donor-dashboard-upgrade-notice__dismiss-link {
+            padding: 12px 0;
+            font-size: 15px;
+            color: #878787;
+            text-decoration: underline;
+            font-style: italic;
+        }
+    }
 }

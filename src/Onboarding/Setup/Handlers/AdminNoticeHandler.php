@@ -8,38 +8,41 @@
 
 namespace Give\Onboarding\Setup\Handlers;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class AdminNoticeHandler implements RequestHandler {
+class AdminNoticeHandler implements RequestHandler
+{
 
-	/**
-	 * @inheritDoc
-	 */
-	public function maybeHandle() {
-		if ( ! isset( $_GET['page'] ) || 'give-setup' !== $_GET['page'] ) {
-			return;
-		}
+    /**
+     * @inheritDoc
+     */
+    public function maybeHandle()
+    {
+        if ( ! isset($_GET['page']) || 'give-setup' !== $_GET['page']) {
+            return;
+        }
 
-		$this->handle();
-	}
+        $this->handle();
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function handle() {
-		add_action(
-			'admin_notices',
-			function() {
-				ob_start();
-			},
-			-999999
-		);
-		add_action(
-			'admin_notices',
-			function() {
-				ob_get_clean();
-			},
-			999999
-		);
-	}
+    /**
+     * @inheritDoc
+     */
+    public function handle()
+    {
+        add_action(
+            'admin_notices',
+            function () {
+                ob_start();
+            },
+            -999999
+        );
+        add_action(
+            'admin_notices',
+            function () {
+                ob_get_clean();
+            },
+            999999
+        );
+    }
 }

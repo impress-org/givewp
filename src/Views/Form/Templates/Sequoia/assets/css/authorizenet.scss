@@ -1,24 +1,22 @@
 .gateway-authorize-echeck {
+    .give-check-sample {
+        img {
+            max-width: 100%;
+        }
+    }
 
-	.give-check-sample {
-		img {
-			max-width: 100%;
-		}
-	}
+    input[type='text'] {
+        @include text-field;
+        width: 100%;
+    }
 
-	input[type='text'] {
-		@include text-field;
-		width: 100%;
-	}
+    select {
+        @include select-field;
+    }
 
-	select {
-		@include select-field;
-	}
-
-	.ga-column-wrap {
-		p {
-			margin-top:0;
-		}
-	}
-
+    .ga-column-wrap {
+        p {
+            margin-top: 0;
+        }
+    }
 }

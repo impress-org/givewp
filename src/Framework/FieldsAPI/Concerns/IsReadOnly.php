@@ -2,24 +2,29 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait IsReadOnly {
+trait IsReadOnly
+{
 
-	/** @var bool */
-	protected $readOnly = false;
+    /** @var bool */
+    protected $readOnly = false;
 
-	/**
-	 * @param bool $readOnly
-	 * @return $this
-	 */
-	public function readOnly( $readOnly = true ) {
-		$this->readOnly = $readOnly;
-		return $this;
-	}
+    /**
+     * @param bool $readOnly
+     *
+     * @return $this
+     */
+    public function readOnly($readOnly = true)
+    {
+        $this->readOnly = $readOnly;
 
-	/**
-	 * @return bool
-	 */
-	public function isReadOnly() {
-		return $this->readOnly;
-	}
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReadOnly()
+    {
+        return $this->readOnly;
+    }
 }
