@@ -120,6 +120,20 @@ return [
                     'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[appearance][secure_badge]' => 'enabled' ])),
                 ],
             ],
+            [
+                'id' => 'decimals_enabled',
+                'name' => __('Decimal amounts', 'give'),
+                'desc' => __(
+                    'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.',
+                    'give'
+                ),
+                'type' => 'radio_inline',
+                'default' => 'disabled',
+                'options' => [
+                    'disabled' => __('Disabled', 'give'),
+                    'enabled' => __('Enabled', 'give'),
+                ],
+            ],
         ],
     ],
 
@@ -189,6 +203,38 @@ return [
                 'desc'    => __('The description displays below the headline and is designed to remove obstacles from donating. Best practice: use this section to reassure donors that their information is secure. Leave blank to remove.', 'give'),
                 'type'    => 'textarea',
                 'default' => __('This donation is a secure and encrypted payment.', 'give'),
+            ],
+            [
+                'id' => 'donation_summary_enabled',
+                'name' => __('Donation Summary', 'give'),
+                'desc' => __('Display a summary of the donation on the Payment Information step', 'give'),
+                'type' => 'radio_inline',
+                'options' => [
+                    'enabled' => __('Enabled', 'give'),
+                    'disabled' => __('Disabled', 'give'),
+                ],
+                'default' => 'enabled',
+            ],
+            [
+                'id' => 'donation_summary_heading',
+                'name' => __('Summary Heading', 'give'),
+                'desc' => __(
+                    'This text displays above the donation summary table and is designed to help introduce the donation breakdown to the visitor. Leave blank to remove.',
+                    'give'
+                ),
+                'type' => 'text',
+                'default' => __('Here\'s what you\'re about to donate:', 'give'),
+            ],
+            [
+                'id' => 'donation_summary_location',
+                'name' => __('Summary Location', 'give'),
+                'desc' => __('Where should the donation summary be placed?', 'give'),
+                'type' => 'radio_inline',
+                'options' => [
+                    'give_donation_form_user_info' => __('Before Payment Fields', 'give'),
+                    'give_donation_form_before_submit' => __('After Payment Fields', 'give'),
+                ],
+                'default' => 'give_donation_form_before_submit',
             ],
         ],
     ],
