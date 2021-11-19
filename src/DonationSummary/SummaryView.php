@@ -42,7 +42,7 @@ class SummaryView
     public function maybeRender()
     {
         if ($this->isDonationSummaryEnabled()) {
-            if ('sequoia' === Template::getActiveID($this->formID)) {
+            if (in_array(Template::getActiveID($this->formID), [ 'sequoia', 'classic'])) {
                 $this->render();
             }
         }
@@ -64,7 +64,6 @@ class SummaryView
     /**
      * @since 2.17.0
      * @return string
-     * @throws \Exception
      */
     public function getFormTemplateLocation()
     {
