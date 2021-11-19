@@ -71,7 +71,7 @@ class Classic extends Template implements Hookable, Scriptable
         add_action('give_pre_form', [ $this, 'renderIconDefinitions' ]);
 
         // Display header
-        if ('enabled' === $this->options[ 'appearance' ][ 'display_header' ]) {
+        if ('enabled' === $this->options[ 'visual_appearance' ][ 'display_header' ]) {
             add_action('give_pre_form', [ $this, 'renderHeader' ]);
         }
 
@@ -132,12 +132,12 @@ class Classic extends Template implements Hookable, Scriptable
         $this->scriptsLoaded = true;
 
         // Font
-        $primaryFont = $this->options[ 'appearance' ][ 'primary_font' ];
+        $primaryFont = $this->options[ 'visual_appearance' ][ 'primary_font' ];
 
         if (in_array($primaryFont, [ 'custom', 'montserrat' ])) {
             $font = ( 'montserrat' === $primaryFont )
                 ? 'Montserrat'
-                : $this->options[ 'appearance' ][ 'custom_font' ];
+                : $this->options[ 'visual_appearance' ][ 'custom_font' ];
 
             wp_enqueue_style(
                 'give-google-font',
@@ -166,8 +166,8 @@ class Classic extends Template implements Hookable, Scriptable
         wp_add_inline_style(
             'give-classic-template',
             $this->loadFile('css/variables.php', [
-                'primaryColor'          => $this->options[ 'appearance' ][ 'primary_color' ],
-                'headerBackgroundImage' => $this->options[ 'appearance' ][ 'header_background_image' ],
+                'primaryColor'          => $this->options[ 'visual_appearance' ][ 'primary_color' ],
+                'headerBackgroundImage' => $this->options[ 'visual_appearance' ][ 'header_background_image' ],
             ])
         );
 
@@ -199,7 +199,7 @@ class Classic extends Template implements Hookable, Scriptable
     public function getLoadingView()
     {
         return $this->loadFile('views/loading.php', [
-            'options' => $this->options[ 'appearance' ]
+            'options' => $this->options[ 'visual_appearance' ]
         ]);
     }
 
@@ -227,10 +227,10 @@ class Classic extends Template implements Hookable, Scriptable
     public function renderHeader()
     {
         echo $this->loadFile('views/header.php', [
-            'title'                => $this->options[ 'appearance' ][ 'main_heading' ],
-            'description'          => $this->options[ 'appearance' ][ 'description' ],
-            'isSecureBadgeEnabled' => $this->options[ 'appearance' ][ 'secure_badge' ] === 'enabled',
-            'secureBadgeContent'   => $this->options[ 'appearance' ][ 'secure_badge_text' ],
+            'title'                => $this->options[ 'visual_appearance' ][ 'main_heading' ],
+            'description'          => $this->options[ 'visual_appearance' ][ 'description' ],
+            'isSecureBadgeEnabled' => $this->options[ 'visual_appearance' ][ 'secure_badge' ] === 'enabled',
+            'secureBadgeContent'   => $this->options[ 'visual_appearance' ][ 'secure_badge_text' ],
         ]);
     }
 
