@@ -53,7 +53,9 @@ class SummaryView
      */
     public function render()
     {
+        do_action( 'give_donation_summary_top' );
         include 'resources/views/summary.php';
+        do_action( 'give_donation_summary_bottom' );
     }
 
     public function getPrimaryColor()
