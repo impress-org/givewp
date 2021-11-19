@@ -31,13 +31,13 @@ class Template
      *
      * @param string $templateId
      *
-     * @param int $formId
+     * @param int    $formId
      *
      * @return array
      */
     public static function getOptions($formId = null, $templateId = '')
     {
-        $formId   = $formId ?: Frontend::getFormId();
+        $formId = $formId ?: Frontend::getFormId();
         $template = $templateId ?: Give()->form_meta->get_meta($formId, '_give_form_template', true);
         $settings = Give()->form_meta->get_meta($formId, "_give_{$template}_form_template_settings", true);
 
@@ -53,18 +53,18 @@ class Template
          * Backwards compatibility for forms saved before the Donation Summary was introduced.
          * @since 2.17.0
          */
-		if( ! isset( $settings[ 'payment_information' ] ) ) {
-            $settings[ 'payment_information' ] = [
+        if ( ! isset($settings['payment_information'])) {
+            $settings['payment_information'] = [
                 'donation_summary_enabled' => 'disabled', // Disable by default for existing forms.
-                'donation_summary_heading' => __( 'Here\'s what you\'re about to donate:', 'give' ),
+                'donation_summary_heading' => __('Here\'s what you\'re about to donate:', 'give'),
                 'donation_summary_location' => 'give_donation_form_before_submit',
             ];
         }
 
-		// Backward compatibility for migrated settings.
-		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
-		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
-		return self::handleOptionsBackwardCompatibility( $settings );
+        // Backward compatibility for migrated settings.
+        // 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
+        // 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
+        return self::handleOptionsBackwardCompatibility($settings);
     }
 
     /**
@@ -80,8 +80,8 @@ class Template
     public static function saveOptions($formId, $settings)
     {
         $templateId = Give()->form_meta->get_meta($formId, '_give_form_template', true);
-        $template   = Give()->templates->getTemplate($templateId);
-        $isUpdated  = Give()->form_meta->update_meta($formId, "_give_{$templateId}_form_template_settings", $settings);
+        $template = Give()->templates->getTemplate($templateId);
+        $isUpdated = Give()->form_meta->update_meta($formId, "_give_{$templateId}_form_template_settings", $settings);
 
         /*
          * Below code save legacy setting which connected/mapped to form template setting.
@@ -108,10 +108,10 @@ class Template
     {
         if (isset($settings['visual_appearance'])) {
             $settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
-            $settings['introduction']['primary_color']      = $settings['visual_appearance']['primary_color'];
+            $settings['introduction']['primary_color'] = $settings['visual_appearance']['primary_color'];
         } elseif (isset($settings['payment_amount'], $settings['introduction'])) {
             $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
-            $settings['visual_appearance']['primary_color']    = $settings['introduction']['primary_color'];
+            $settings['visual_appearance']['primary_color'] = $settings['introduction']['primary_color'];
         }
 
         return $settings;

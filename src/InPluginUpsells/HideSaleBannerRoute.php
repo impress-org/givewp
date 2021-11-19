@@ -26,23 +26,22 @@ class HideSaleBannerRoute implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods'             => 'POST',
-                    'callback'            => [$this, 'handleRequest'],
+                    'methods' => 'POST',
+                    'callback' => [$this, 'handleRequest'],
                     'permission_callback' => 'is_user_logged_in',
-                    'args'                => [
+                    'args' => [
                         'id' => [
-                            'type'     => 'string',
-                            'required' => true
+                            'type' => 'string',
+                            'required' => true,
                         ],
                     ],
-                ]
+                ],
             ]
         );
     }
 
-
     /**
-     * @param  WP_REST_Request  $request
+     * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
      */

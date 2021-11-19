@@ -12,26 +12,29 @@ use Give\Route\Route;
  * we will introduce a unified Router. In the meantime, all routes are organized
  * here.
  */
-class Routes implements ServiceProvider {
-	private $routes = [
-		PayPalWebhooks::class,
-	];
+class Routes implements ServiceProvider
+{
+    private $routes = [
+        PayPalWebhooks::class,
+    ];
 
-	/**
-	 * @inheritDoc
-	 */
-	public function register() {
-	}
+    /**
+     * @inheritDoc
+     */
+    public function register()
+    {
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot() {
-		foreach ( $this->routes as $route ) {
-			/** @var Route $route */
-			$route = new $route();
+    /**
+     * @inheritDoc
+     */
+    public function boot()
+    {
+        foreach ($this->routes as $route) {
+            /** @var Route $route */
+            $route = new $route();
 
-			$route->init();
-		}
-	}
+            $route->init();
+        }
+    }
 }

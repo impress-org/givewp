@@ -5,29 +5,35 @@ namespace Give\DonorDashboards\Pipeline;
 /**
  * @since 2.10.0
  */
-class DonorProfilePipeline {
+class DonorProfilePipeline
+{
 
-	protected $stages;
+    protected $stages;
 
-	public function __construct() {
-		$this->stages = [];
-	}
+    public function __construct()
+    {
+        $this->stages = [];
+    }
 
-	public function pipe( $stage ) {
-		$pipeline       = clone $this;
-		$this->stages[] = $stage;
-		return $this;
-	}
+    public function pipe($stage)
+    {
+        $pipeline = clone $this;
+        $this->stages[] = $stage;
 
-	public function process( $payload ) {
-		foreach ( $this->stages as $stage ) {
-			$payload = $stage( $payload );
-		}
+        return $this;
+    }
 
-		return $payload;
-	}
+    public function process($payload)
+    {
+        foreach ($this->stages as $stage) {
+            $payload = $stage($payload);
+        }
 
-	public function __invoke( $payload ) {
-		return $this->process( $payload );
-	}
+        return $payload;
+    }
+
+    public function __invoke($payload)
+    {
+        return $this->process($payload);
+    }
 }

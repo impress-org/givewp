@@ -1,19 +1,21 @@
 <?php
+
 namespace Give\Form\Template;
 
 /**
  * Interface Hookable
  *
- * @since 2.7.0
  * @package Give\Form\Template
+ * @since 2.7.0
  */
-interface Hookable {
+interface Hookable
+{
 
-	/**
-	 * Load WordPress hooks
-	 *
-	 * @since 2.7.0
-	 * @return mixed
-	 */
-	public function loadHooks();
+    /**
+     * Load WordPress hooks
+     *
+     * @since 2.7.0
+     * @return mixed
+     */
+    public function loadHooks();
 }

@@ -2,17 +2,19 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait HasName {
+trait HasName
+{
 
-	/** @var string */
-	protected $name;
+    /** @var string */
+    protected $name;
 
-	/**
-	 * Get the field’s name.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Get the field’s name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -10,5 +10,6 @@ use Give\Framework\Exceptions\Primitives\Exception;
  *
  * @since 2.13.0
  */
-class InvalidPropertyName extends Exception {
+class InvalidPropertyName extends Exception
+{
 }

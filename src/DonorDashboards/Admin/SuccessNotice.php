@@ -2,68 +2,74 @@
 
 namespace Give\DonorDashboards\Admin;
 
-class SuccessNotice {
+class SuccessNotice
+{
 
-	/**
-	 * Reigster success notice
-	 *
-	 * @return void
-	 *
-	 * @since 2.10.0
-	 */
-	public function register() {
-		if ( $this->shouldRenderOutput() ) {
-			$this->renderOutput();
-		}
-	}
+    /**
+     * Reigster success notice
+     *
+     * @since 2.10.0
+     * @return void
+     *
+     */
+    public function register()
+    {
+        if ($this->shouldRenderOutput()) {
+            $this->renderOutput();
+        }
+    }
 
-	/**
-	 * Return true if notice should be rendered, false if not
-	 *
-	 * @return boolean
-	 *
-	 * @since 2.10.0
-	 */
-	protected function shouldRenderOutput() {
-		return isset( $_GET['give-generated-donor-dashboard-page'] );
-	}
+    /**
+     * Return true if notice should be rendered, false if not
+     *
+     * @since 2.10.0
+     * @return boolean
+     *
+     */
+    protected function shouldRenderOutput()
+    {
+        return isset($_GET['give-generated-donor-dashboard-page']);
+    }
 
-	/**
-	 * Render notice output
-	 *
-	 * @return void
-	 *
-	 * @since 2.10.0
-	 */
-	protected function renderOutput() {
-		echo $this->getOutput();
-	}
+    /**
+     * Render notice output
+     *
+     * @since 2.10.0
+     * @return void
+     *
+     */
+    protected function renderOutput()
+    {
+        echo $this->getOutput();
+    }
 
-	/**
-	 * Get notice output
-	 *
-	 * @return string
-	 *
-	 * @since 2.10.0
-	 */
-	protected function getOutput() {
-		ob_start();
-		$output = '';
-		require $this->getTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
+    /**
+     * Get notice output
+     *
+     * @since 2.10.0
+     * @return string
+     *
+     */
+    protected function getOutput()
+    {
+        ob_start();
+        $output = '';
+        require $this->getTemplatePath();
+        $output = ob_get_contents();
+        ob_end_clean();
 
-		return $output;
-	}
+        return $output;
+    }
 
-	/**
-	 * Get template path for notice output
-	 *
-	 * @return string
-	 *
-	 * @since 2.10.0
-	 */
-	protected function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/DonorDashboards/resources/views/successnotice.php';
-	}
+    /**
+     * Get template path for notice output
+     *
+     * @since 2.10.0
+     * @return string
+     *
+     */
+    protected function getTemplatePath()
+    {
+        return GIVE_PLUGIN_DIR . '/src/DonorDashboards/resources/views/successnotice.php';
+    }
 }

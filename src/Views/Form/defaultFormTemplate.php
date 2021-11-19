@@ -4,16 +4,17 @@
  *
  * @since 2.7.0
  */
-use Give\Views\IframeContentView;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
-$formId     = FrontendFormTemplateUtils::getFormId();
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\Views\IframeContentView;
+
+$formId = FrontendFormTemplateUtils::getFormId();
 $iframeView = new IframeContentView();
 
 // Fetch the Give Form.
 ob_start();
-give_get_donation_form( [ 'id' => $formId ] );
+give_get_donation_form(['id' => $formId]);
 
-echo $iframeView->setTitle( get_post_field( 'post_title', $formId ) )
-   ->setBody( ob_get_clean() )
-   ->render();
+echo $iframeView->setTitle(get_post_field('post_title', $formId))
+    ->setBody(ob_get_clean())
+    ->render();
