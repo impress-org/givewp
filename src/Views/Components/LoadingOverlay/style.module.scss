@@ -1,13 +1,13 @@
 .overlay {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background: rgba(255, 255, 255, 0.8);
-	z-index: 899;
-	pointer-events: none;
-	border-radius: 5px;
-	overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 899;
+    pointer-events: none;
+    border-radius: 5px;
+    overflow: hidden;
 }

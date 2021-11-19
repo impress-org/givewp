@@ -1,23 +1,23 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard-tab-menu {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .give-donor-dashboard-logout {
-	margin-top: auto;
-	padding: 16px 0 !important;
-	border-top: 1px solid #e2e6ec;
+    margin-top: auto;
+    padding: 16px 0 !important;
+    border-top: 1px solid #e2e6ec;
 
-	@media screen and (max-width: 920px) {
-		padding: 6px 0 !important;
-	}
+    @media screen and (max-width: 920px) {
+        padding: 6px 0 !important;
+    }
 
-	.give-donor-dashboard-tab-link {
-		display: inline-flex;
-		color: var(--give-donor-dashboard-accent-color) !important;
-		cursor: pointer;
-	}
+    .give-donor-dashboard-tab-link {
+        display: inline-flex;
+        color: var(--give-donor-dashboard-accent-color) !important;
+        cursor: pointer;
+    }
 }

@@ -12,53 +12,56 @@ use Give\Tracking\Helpers\DonationStatuses;
  *
  * @since 2.10.2
  */
-class DonationMetricsData implements TrackData {
-	/**
-	 * @var array
-	 */
-	private $donationData = [];
+class DonationMetricsData implements TrackData
+{
+    /**
+     * @var array
+     */
+    private $donationData = [];
 
-	/**
-	 * @var int
-	 */
-	private $donorCount = 0;
+    /**
+     * @var int
+     */
+    private $donorCount = 0;
 
-	/**
-	 * @var int
-	 */
-	private $formCount = 0;
+    /**
+     * @var int
+     */
+    private $formCount = 0;
 
-	/**
-	 * @inheritdoc
-	 * @return array|void
-	 */
-	public function get() {
-		$this->donorCount   = $this->getDonorCount();
-		$this->formCount    = $this->getDonationFormCount();
-		$this->donationData = ( new DonationData() )->get();
+    /**
+     * @inheritdoc
+     * @return array|void
+     */
+    public function get()
+    {
+        $this->donorCount = $this->getDonorCount();
+        $this->formCount = $this->getDonationFormCount();
+        $this->donationData = (new DonationData())->get();
 
-		$data = [
-			'form_count'                   => $this->formCount,
-			'donor_count'                  => $this->donorCount,
-			'avg_donation_amount_by_donor' => $this->getAvgDonationAmountByDonor(),
-		];
+        $data = [
+            'form_count' => $this->formCount,
+            'donor_count' => $this->donorCount,
+            'avg_donation_amount_by_donor' => $this->getAvgDonationAmountByDonor(),
+        ];
 
-		return array_merge( $data, $this->donationData );
-	}
+        return array_merge($data, $this->donationData);
+    }
 
-	/**
-	 * Returns donor count which donated greater then zero
-	 *
-	 * @since 2.10.0
-	 * @return int
-	 */
-	private function getDonorCount() {
-		global $wpdb;
+    /**
+     * Returns donor count which donated greater then zero
+     *
+     * @since 2.10.0
+     * @return int
+     */
+    private function getDonorCount()
+    {
+        global $wpdb;
 
-		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+        $statues = DonationStatuses::getCompletedDonationsStatues(true);
 
-		$donorCount = DB::get_var(
-			"
+        $donorCount = DB::get_var(
+            "
 			SELECT COUNT(DISTINCT dm.meta_value)
 			FROM {$wpdb->donationmeta} as dm
 				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
@@ -71,40 +74,42 @@ class DonationMetricsData implements TrackData {
 				AND dm.meta_key='_give_payment_donor_id'
 				AND donor.purchase_value > 0
 			"
-		);
+        );
 
-		return (int) $donorCount;
-	}
+        return (int)$donorCount;
+    }
 
-	/**
-	 * Get average donation by donor.
-	 *
-	 * @since 2.10.0
-	 * @return int
-	 */
-	private function getAvgDonationAmountByDonor() {
-		$amount = 0;
+    /**
+     * Get average donation by donor.
+     *
+     * @since 2.10.0
+     * @return int
+     */
+    private function getAvgDonationAmountByDonor()
+    {
+        $amount = 0;
 
-		if ( $this->donationData['revenue'] ) {
-			$amount = (int) ( $this->donationData['revenue'] / $this->donorCount );
-		}
+        if ($this->donationData['revenue']) {
+            $amount = (int)($this->donationData['revenue'] / $this->donorCount);
+        }
 
-		return $amount;
-	}
+        return $amount;
+    }
 
-	/**
-	 * Returns donation form count
-	 *
-	 * @since 2.10.0
-	 * @return int
-	 */
-	private function getDonationFormCount() {
-		global $wpdb;
+    /**
+     * Returns donation form count
+     *
+     * @since 2.10.0
+     * @return int
+     */
+    private function getDonationFormCount()
+    {
+        global $wpdb;
 
-		$statues = DonationStatuses::getCompletedDonationsStatues( true );
+        $statues = DonationStatuses::getCompletedDonationsStatues(true);
 
-		$formCount = DB::get_var(
-			"
+        $formCount = DB::get_var(
+            "
 			SELECT COUNT(DISTINCT dm.meta_value)
 			FROM {$wpdb->donationmeta} as dm
 				INNER JOIN {$wpdb->posts} as p ON dm.donation_id = p.ID
@@ -115,8 +120,8 @@ class DonationMetricsData implements TrackData {
 				AND dm2.meta_value='live'
 				AND dm.meta_key='_give_payment_form_id'
 			"
-		);
+        );
 
-		return (int) $formCount;
-	}
+        return (int)$formCount;
+    }
 }

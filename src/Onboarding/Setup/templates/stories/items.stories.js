@@ -5,45 +5,68 @@ import configuration from './src/configuration.js';
 import givewp101 from './src/givewp101.js';
 import addons from './src/addons.js';
 
-import { withA11y } from '@storybook/addon-a11y';
+import {withA11y} from '@storybook/addon-a11y';
 
 export default {
-	title: 'Setup Page/Row Items',
-	decorators: [ withA11y ],
+    title: 'Setup Page/Row Items',
+    decorators: [withA11y],
 };
 
-const Styles = `
+const Styles =
+    `
 <style>
-  ` + styles + `
+  ` +
+    styles +
+    `
 </style>
 `;
 
-export const Paypal = () => Styles + `
+export const Paypal = () =>
+    Styles +
+    `
 <section>
-  ` + paypal() + `
+  ` +
+    paypal() +
+    `
 </section>
 `;
 
-export const Stripe = () => Styles + `
+export const Stripe = () =>
+    Styles +
+    `
 <section>
-  ` + stripe() + `
+  ` +
+    stripe() +
+    `
 </section>
 `;
 
-export const Configuration = () => Styles + `
+export const Configuration = () =>
+    Styles +
+    `
 <section>
-  ` + configuration() + `
+  ` +
+    configuration() +
+    `
 </section>
 `;
 
-export const GiveWP101 = () => Styles + `
+export const GiveWP101 = () =>
+    Styles +
+    `
 <section>
-  ` + givewp101() + `
+  ` +
+    givewp101() +
+    `
 </section>
 `;
 
-export const Addons = () => Styles + `
+export const Addons = () =>
+    Styles +
+    `
 <section>
-  ` + addons() + `
+  ` +
+    addons() +
+    `
 </section>
 `;

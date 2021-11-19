@@ -1,36 +1,36 @@
 @import '../colors';
 
 .label {
-	padding: 4px 12px 0 12px;
-	border-radius: 6px;
-	display: inline-block;
-	height: 26px;
-	background-color: #a7a7a7;
-	color: #fff;
-	font-size: 14px;
-	font-weight: 600;
+    padding: 4px 12px 0 12px;
+    border-radius: 6px;
+    display: inline-block;
+    height: 26px;
+    background-color: #a7a7a7;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .error {
-	background-color: $error;
+    background-color: $error;
 }
 
 .warning {
-	background-color: $warning;
+    background-color: $warning;
 }
 
 .success {
-	background-color: $success;
+    background-color: $success;
 }
 
 .info {
-	background-color: $info;
+    background-color: $info;
 }
 
 .notice {
-	background-color: $notice;
+    background-color: $notice;
 }
 
 .http {
-	background-color: $http;
+    background-color: $http;
 }

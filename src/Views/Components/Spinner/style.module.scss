@@ -1,57 +1,57 @@
 .spinner {
-	display: inline-block;
+    display: inline-block;
 }
 
 .tiny {
-	width: 16px;
-	height: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .small {
-	width: 30px;
-	height: 30px;
+    width: 30px;
+    height: 30px;
 }
 
 .medium {
-	width: 60px;
-	height: 60px;
+    width: 60px;
+    height: 60px;
 }
 
 .large {
-	width: 100px;
-	height: 100px;
+    width: 100px;
+    height: 100px;
 }
 
 .spinner::after {
-	content: ' ';
-	display: block;
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
-	border-color: #66bb6a transparent #66bb6a transparent !important;
-	animation: givewp-spinner 1.2s linear infinite !important;
+    content: ' ';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border-color: #66bb6a transparent #66bb6a transparent !important;
+    animation: givewp-spinner 1.2s linear infinite !important;
 }
 
 .spinner.tiny::after {
-	border: 2px solid #66bb6a;
+    border: 2px solid #66bb6a;
 }
 
 .spinner.small::after {
-	border: 3px solid #66bb6a;
+    border: 3px solid #66bb6a;
 }
 
 .spinner.medium::after {
-	border: 6px solid #66bb6a;
+    border: 6px solid #66bb6a;
 }
 .spinner.large::after {
-	border: 9px solid #66bb6a;
+    border: 9px solid #66bb6a;
 }
 
 @keyframes givewp-spinner {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

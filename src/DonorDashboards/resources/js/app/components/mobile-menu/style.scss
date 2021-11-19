@@ -1,54 +1,54 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard-mobile-menu {
-	position: relative;
+    position: relative;
 }
 
 .give-donor-dashboard-mobile-menu__header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 6px 8px 6px 20px;
-	background: var(--give-donor-dashboard-accent-color);
-	color: #fff;
-	border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px 6px 20px;
+    background: var(--give-donor-dashboard-accent-color);
+    color: #fff;
+    border-radius: 8px 8px 0 0;
 }
 
 .give-donor-dashboard-mobile-menu__toggle {
-	height: 36px;
-	width: 36px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 6px;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
 
-	&.give-donor-dashboard-mobile-menu__toggle--toggled {
-		background: rgba(0, 0, 0, 0.2);
-		box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
-	}
+    &.give-donor-dashboard-mobile-menu__toggle--toggled {
+        background: rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
 }
 
 .give-donor-dashboard-mobile-menu__content {
-	position: absolute;
-	background: #fff;
-	margin: 4px 8px;
-	right: 0;
+    position: absolute;
+    background: #fff;
+    margin: 4px 8px;
+    right: 0;
 
-	&::before {
-		content: '';
-		width: 0;
-		height: 0;
-		border-left: 7px solid transparent;
-		border-right: 7px solid transparent;
-		border-bottom: 7px solid #fff;
-		position: absolute;
-		top: -7px;
-		right: 11px;
-	}
+    &::before {
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        position: absolute;
+        top: -7px;
+        right: 11px;
+    }
 
-	.give-donor-dashboard-mobile-layout__tab-menu {
-		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-		border-radius: 6px;
-		overflow: hidden;
-	}
+    .give-donor-dashboard-mobile-layout__tab-menu {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 6px;
+        overflow: hidden;
+    }
 }

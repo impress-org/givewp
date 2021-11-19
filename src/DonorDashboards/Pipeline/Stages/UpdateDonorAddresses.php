@@ -2,71 +2,69 @@
 
 namespace Give\DonorDashboards\Pipeline\Stages;
 
-use Give\DonorDashboards\Pipeline\Stages\Stage;
-
 /**
  * @since 2.10.0
  */
-class UpdateDonorAddresses implements Stage {
+class UpdateDonorAddresses implements Stage
+{
 
-	protected $data;
-	protected $donor;
+    protected $data;
+    protected $donor;
 
-	public function __invoke( $payload ) {
+    public function __invoke($payload)
+    {
+        $this->data = $payload['data'];
+        $this->donor = $payload['donor'];
 
-		$this->data  = $payload['data'];
-		$this->donor = $payload['donor'];
+        $this->updateAddressesInMetaDB();
 
-		$this->updateAddressesInMetaDB();
+        return $payload;
+    }
 
-		return $payload;
+    /**
+     * Updates donor address fields found in meta database
+     *
+     * @since 2.10.0
+     * @return void
+     *
+     */
+    protected function updateAddressesInMetaDB()
+    {
+        $primaryAddress = isset($this->data['primaryAddress']) ? $this->data['primaryAddress'] : null;
+        $additionalAddresses = isset($this->data['additionalAddresses']) ? $this->data['additionalAddresses'] : [];
 
-	}
+        /**
+         * If a primary address is provided, update billing address with id '0'
+         */
 
-	/**
-	 * Updates donor address fields found in meta database
-	 *
-	 * @return void
-	 *
-	 * @since 2.10.0
-	 */
-	protected function updateAddressesInMetaDB() {
+        if ( ! empty($primaryAddress)) {
+            $this->donor->add_address('billing_0', (array)$primaryAddress);
+        }
 
-		$primaryAddress      = isset( $this->data['primaryAddress'] ) ? $this->data['primaryAddress'] : null;
-		$additionalAddresses = isset( $this->data['additionalAddresses'] ) ? $this->data['additionalAddresses'] : [];
+        /**
+         * If additional addresses are provided, add them to the donor meta table
+         */
 
-		/**
-		 * If a primary address is provided, update billing address with id '0'
-		 */
+        if ( ! empty($additionalAddresses)) {
+            foreach ($additionalAddresses as $key => $additionalAddress) {
+                $addressId = 'billing_' . ($key + 1);
+                $this->donor->add_address($addressId, (array)$additionalAddress);
+            }
+        }
 
-		if ( ! empty( $primaryAddress ) ) {
-			$this->donor->add_address( 'billing_0', (array) $primaryAddress );
-		}
+        /**
+         * Clear deleted address keys
+         */
 
-		/**
-		 * If additional addresses are provided, add them to the donor meta table
-		 */
+        $totalStoredAddresses = isset($this->donor->address['billing']) ? count($this->donor->address['billing']) : 0;
+        $totalNewAddresses = count($additionalAddresses) + 1;
 
-		if ( ! empty( $additionalAddresses ) ) {
-			foreach ( $additionalAddresses as $key => $additionalAddress ) {
-				$addressId = 'billing_' . ( $key + 1 );
-				$this->donor->add_address( $addressId, (array) $additionalAddress );
-			}
-		}
-
-		/**
-		 * Clear deleted address keys
-		 */
-
-		$totalStoredAddresses = isset( $this->donor->address['billing'] ) ? count( $this->donor->address['billing'] ) : 0;
-		$totalNewAddresses    = count( $additionalAddresses ) + 1;
-
-		if ( $totalStoredAddresses > $totalNewAddresses ) {
-			$key = $totalNewAddresses;
-			while ( $key < $totalStoredAddresses ) {
-				$this->donor->remove_address( "billing_{$key}" );
-				$key++;
-			}
-		}
-	}
+        if ($totalStoredAddresses > $totalNewAddresses) {
+            $key = $totalNewAddresses;
+            while ($key < $totalStoredAddresses) {
+                $this->donor->remove_address("billing_{$key}");
+                $key++;
+            }
+        }
+    }
 }

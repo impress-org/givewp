@@ -11,35 +11,38 @@ use WP_Error;
  *
  * @since 2.10.0
  */
-abstract class Endpoint implements RestRoute {
+abstract class Endpoint implements RestRoute
+{
 
-	/**
-	 * @var string
-	 */
-	protected $endpoint;
+    /**
+     * @var string
+     */
+    protected $endpoint;
 
-	/**
-	 * Check user permissions
-	 * @return bool|WP_Error
-	 */
-	public function permissionsCheck() {
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			return new WP_Error(
-				'rest_forbidden',
-				esc_html__( 'You dont have the right permissions to view Logs', 'give' ),
-				[ 'status' => $this->authorizationStatusCode() ]
-			);
-		}
+    /**
+     * Check user permissions
+     * @return bool|WP_Error
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_posts')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You dont have the right permissions to view Logs', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// Sets up the proper HTTP status code for authorization.
-	public function authorizationStatusCode() {
-		if ( is_user_logged_in() ) {
-			return 403;
-		}
+    // Sets up the proper HTTP status code for authorization.
+    public function authorizationStatusCode()
+    {
+        if (is_user_logged_in()) {
+            return 403;
+        }
 
-		return 401;
-	}
+        return 401;
+    }
 }

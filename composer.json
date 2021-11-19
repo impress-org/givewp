@@ -20,7 +20,8 @@
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "^5",
         "kjohnson/since-unreleased": "^1.0.0",
-        "wp-cli/wp-cli-bundle": "^2.5"
+        "wp-cli/wp-cli-bundle": "^2.5",
+        "yoast/phpunit-polyfills": "^1.0"
     },
     "keywords": [
         "wordpress",

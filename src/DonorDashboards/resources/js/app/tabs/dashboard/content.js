@@ -1,8 +1,6 @@
 import DashboardContent from '../../components/dashboard-content';
 
 const Content = () => {
-	return (
-		<DashboardContent />
-	);
+    return <DashboardContent />;
 };
 export default Content;

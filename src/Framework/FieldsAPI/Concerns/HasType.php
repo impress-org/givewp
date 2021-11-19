@@ -2,14 +2,16 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait HasType {
+trait HasType
+{
 
-	/**
-	 * Get the field’s type.
-	 *
-	 * @return string
-	 */
-	public function getType() {
-		return static::TYPE;
-	}
+    /**
+     * Get the field’s type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return static::TYPE;
+    }
 }

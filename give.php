@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.16.2
+ * Version: 2.17.0
  * Requires at least: 4.9
  * Requires PHP: 5.6
  * Text Domain: give
@@ -42,11 +42,13 @@
  */
 
 use Give\Container\Container;
+use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
+use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -65,8 +67,8 @@ use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 /**
@@ -100,399 +102,417 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @mixin Container
  */
-final class Give {
-	/**
-	 * Give Template Loader Object
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @var    Give_Template_Loader object
-	 */
-	public $template_loader;
+final class Give
+{
+    /**
+     * Give Template Loader Object
+     *
+     * @since  1.0
+     * @access public
+     *
+     * @var    Give_Template_Loader object
+     */
+    public $template_loader;
 
-	/**
-	 * Give No Login Object
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @var    Give_Email_Access object
-	 */
-	public $email_access;
+    /**
+     * Give No Login Object
+     *
+     * @since  1.0
+     * @access public
+     *
+     * @var    Give_Email_Access object
+     */
+    public $email_access;
 
-	/**
-	 * Give_Stripe Object.
-	 *
-	 * @since  2.5.0
-	 * @access public
-	 *
-	 * @var Give_Stripe
-	 */
-	public $stripe;
+    /**
+     * Give_Stripe Object.
+     *
+     * @since  2.5.0
+     * @access public
+     *
+     * @var Give_Stripe
+     */
+    public $stripe;
 
-	/**
-	 * @since 2.8.0
-	 *
-	 * @var Container
-	 */
-	private $container;
+    /**
+     * @since 2.8.0
+     *
+     * @var Container
+     */
+    private $container;
 
-	/**
-	 * @since 2.8.0
-	 *
-	 * @var array Array of Service Providers to load
-	 */
-	private $serviceProviders = [
-		LegacyServiceProvider::class,
-		RestAPI::class,
-		Routes::class,
-		PaymentGateways::class,
-		Onboarding::class,
-		MigrationsServiceProvider::class,
-		RevenueServiceProvider::class,
-		MultiFormGoalsServiceProvider::class,
-		DonorDashboardsServiceProvider::class,
-		TrackingServiceProvider::class,
-		TestDataServiceProvider::class,
-		MigrationLogServiceProvider::class,
-		LogServiceProvider::class,
-		FormLegacyConsumerServiceProvider::class,
-		ShimsServiceProvider::class,
-		LicenseServiceProvider::class,
-		PaymentGatewaysServiceProvider::class,
-		LicenseServiceProvider::class
-	];
+    /**
+     * @since 2.8.0
+     *
+     * @var array Array of Service Providers to load
+     */
+    private $serviceProviders = [
+        LegacyServiceProvider::class,
+        RestAPI::class,
+        Routes::class,
+        PaymentGateways::class,
+        Onboarding::class,
+        MigrationsServiceProvider::class,
+        RevenueServiceProvider::class,
+        MultiFormGoalsServiceProvider::class,
+        DonorDashboardsServiceProvider::class,
+        InPluginUpsellsServiceProvider::class,
+        TrackingServiceProvider::class,
+        TestDataServiceProvider::class,
+        MigrationLogServiceProvider::class,
+        LogServiceProvider::class,
+        FormLegacyConsumerServiceProvider::class,
+        ShimsServiceProvider::class,
+        LicenseServiceProvider::class,
+        Give\Email\ServiceProvider::class,
+        DonationSummaryServiceProvider::class,
+        PaymentGatewaysServiceProvider::class,
+    ];
 
-	/**
-	 * @since 2.8.0
-	 *
-	 * @var bool Make sure the providers are loaded only once
-	 */
-	private $providersLoaded = false;
+    /**
+     * @since 2.8.0
+     *
+     * @var bool Make sure the providers are loaded only once
+     */
+    private $providersLoaded = false;
 
-	/**
-	 * Give constructor.
-	 *
-	 * Sets up the Container to be used for managing all other instances and data
-	 *
-	 * @since 2.8.0
-	 */
-	public function __construct() {
-		$this->container = new Container();
-	}
+    /**
+     * Give constructor.
+     *
+     * Sets up the Container to be used for managing all other instances and data
+     *
+     * @since 2.8.0
+     */
+    public function __construct()
+    {
+        $this->container = new Container();
+    }
 
-	/**
-	 * Bootstraps the Give Plugin
-	 *
-	 * @since 2.8.0
-	 */
-	public function boot() {
-		// PHP version
-		if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
-			define( 'GIVE_REQUIRED_PHP_VERSION', '5.6.0' );
-		}
+    /**
+     * Bootstraps the Give Plugin
+     *
+     * @since 2.8.0
+     */
+    public function boot()
+    {
+        // PHP version
+        if (!defined('GIVE_REQUIRED_PHP_VERSION')) {
+            define('GIVE_REQUIRED_PHP_VERSION', '5.6.0');
+        }
 
-		// Bailout: Need minimum php version to load plugin.
-		if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-			add_action( 'admin_notices', [ $this, 'minimum_phpversion_notice' ] );
+        // Bailout: Need minimum php version to load plugin.
+        if (function_exists('phpversion') && version_compare(GIVE_REQUIRED_PHP_VERSION, phpversion(), '>')) {
+            add_action('admin_notices', [$this, 'minimum_phpversion_notice']);
 
-			return;
-		}
+            return;
+        }
 
-		$this->setup_constants();
+        $this->setup_constants();
 
-		// Add compatibility notice for recurring and stripe support with Give 2.5.0.
-		add_action( 'admin_notices', [ $this, 'display_old_recurring_compatibility_notice' ] );
+        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
+        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
 
-		add_action( 'plugins_loaded', [ $this, 'init' ], 0 );
+        add_action('plugins_loaded', [$this, 'init'], 0);
 
-		register_activation_hook( GIVE_PLUGIN_FILE, [ $this, 'install' ] );
+        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
 
-		do_action( 'give_loaded' );
-	}
+        do_action('give_loaded');
+    }
 
-	/**
-	 * Init Give when WordPress Initializes.
-	 *
-	 * @since 1.8.9
-	 */
-	public function init() {
-		/**
-		 * Fires before the Give core is initialized.
-		 *
-		 * @since 1.8.9
-		 */
-		do_action( 'before_give_init' );
+    /**
+     * Init Give when WordPress Initializes.
+     *
+     * @since 1.8.9
+     */
+    public function init()
+    {
+        /**
+         * Fires before the Give core is initialized.
+         *
+         * @since 1.8.9
+         */
+        do_action('before_give_init');
 
-		// Set up localization.
-		$this->load_textdomain();
+        // Set up localization.
+        $this->load_textdomain();
 
-		$this->bindClasses();
+        $this->bindClasses();
 
-		$this->setupExceptionHandler();
+        $this->setupExceptionHandler();
 
-		$this->loadServiceProviders();
+        $this->loadServiceProviders();
 
-		// Load form template
-		$this->templates->load();
+        // Load form template
+        $this->templates->load();
 
-		// Load routes.
-		$this->routeForm->init();
+        // Load routes.
+        $this->routeForm->init();
 
-		/**
-		 * Fire the action after Give core loads.
-		 *
-		 * @since 1.8.7
-		 *
-		 * @param Give class instance.
-		 *
-		 */
-		do_action( 'give_init', $this );
-	}
+        /**
+         * Fire the action after Give core loads.
+         *
+         * @param  Give class instance.
+         *
+         * @since 1.8.7
+         *
+         */
+        do_action('give_init', $this);
+    }
 
-	/**
-	 * Binds the initial classes to the service provider.
-	 *
-	 * @since 2.8.0
-	 */
-	private function bindClasses() {
-		$this->container->singleton( 'templates', Templates::class );
-		$this->container->singleton( 'routeForm', FormRoute::class );
-	}
+    /**
+     * Binds the initial classes to the service provider.
+     *
+     * @since 2.8.0
+     */
+    private function bindClasses()
+    {
+        $this->container->singleton('templates', Templates::class);
+        $this->container->singleton('routeForm', FormRoute::class);
+    }
 
-	/**
-	 * Setup plugin constants
-	 *
-	 * @since  1.0
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function setup_constants() {
-		// Plugin version.
-		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.16.1' );
-		}
+    /**
+     * Setup plugin constants
+     *
+     * @return void
+     * @since  1.0
+     * @access private
+     *
+     */
+    private function setup_constants()
+    {
+        // Plugin version.
+        if (!defined('GIVE_VERSION')) {
+            define('GIVE_VERSION', '2.17.0');
+        }
 
-		// Plugin Root File.
-		if ( ! defined( 'GIVE_PLUGIN_FILE' ) ) {
-			define( 'GIVE_PLUGIN_FILE', __FILE__ );
-		}
+        // Plugin Root File.
+        if (!defined('GIVE_PLUGIN_FILE')) {
+            define('GIVE_PLUGIN_FILE', __FILE__);
+        }
 
-		// Plugin Folder Path.
-		if ( ! defined( 'GIVE_PLUGIN_DIR' ) ) {
-			define( 'GIVE_PLUGIN_DIR', plugin_dir_path( GIVE_PLUGIN_FILE ) );
-		}
+        // Plugin Folder Path.
+        if (!defined('GIVE_PLUGIN_DIR')) {
+            define('GIVE_PLUGIN_DIR', plugin_dir_path(GIVE_PLUGIN_FILE));
+        }
 
-		// Plugin Folder URL.
-		if ( ! defined( 'GIVE_PLUGIN_URL' ) ) {
-			define( 'GIVE_PLUGIN_URL', plugin_dir_url( GIVE_PLUGIN_FILE ) );
-		}
+        // Plugin Folder URL.
+        if (!defined('GIVE_PLUGIN_URL')) {
+            define('GIVE_PLUGIN_URL', plugin_dir_url(GIVE_PLUGIN_FILE));
+        }
 
-		// Plugin Basename aka: "give/give.php".
-		if ( ! defined( 'GIVE_PLUGIN_BASENAME' ) ) {
-			define( 'GIVE_PLUGIN_BASENAME', plugin_basename( GIVE_PLUGIN_FILE ) );
-		}
+        // Plugin Basename aka: "give/give.php".
+        if (!defined('GIVE_PLUGIN_BASENAME')) {
+            define('GIVE_PLUGIN_BASENAME', plugin_basename(GIVE_PLUGIN_FILE));
+        }
 
-		// Make sure CAL_GREGORIAN is defined.
-		if ( ! defined( 'CAL_GREGORIAN' ) ) {
-			define( 'CAL_GREGORIAN', 1 );
-		}
-	}
+        // Make sure CAL_GREGORIAN is defined.
+        if (!defined('CAL_GREGORIAN')) {
+            define('CAL_GREGORIAN', 1);
+        }
+    }
 
-	/**
-	 * Loads the plugin language files.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-		// Set filter for Give's languages directory
-		$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
-		$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
+    /**
+     * Loads the plugin language files.
+     *
+     * @return void
+     * @since  1.0
+     * @access public
+     *
+     */
+    public function load_textdomain()
+    {
+        // Set filter for Give's languages directory
+        $give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)) . '/languages/';
+        $give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
 
-		// Traditional WordPress plugin locale filter.
-		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-		$locale = apply_filters( 'plugin_locale', $locale, 'give' );
+        // Traditional WordPress plugin locale filter.
+        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
+        $locale = apply_filters('plugin_locale', $locale, 'give');
 
-		unload_textdomain( 'give' );
-		load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
-		load_plugin_textdomain( 'give', false, $give_lang_dir );
-	}
+        unload_textdomain('give');
+        load_textdomain('give', WP_LANG_DIR . '/give/give-' . $locale . '.mo');
+        load_plugin_textdomain('give', false, $give_lang_dir);
+    }
 
+    /**
+     *  Show minimum PHP version notice.
+     *
+     * @since  1.8.12
+     * @access public
+     */
+    public function minimum_phpversion_notice()
+    {
+        // Bailout.
+        if (!is_admin()) {
+            return;
+        }
 
-	/**
-	 *  Show minimum PHP version notice.
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 */
-	public function minimum_phpversion_notice() {
-		// Bailout.
-		if ( ! is_admin() ) {
-			return;
-		}
+        $notice_desc = '<p><strong>' . __(
+                'Your site could be faster and more secure with a newer PHP version.',
+                'give'
+            ) . '</strong></p>';
+        $notice_desc .= '<p>' . __(
+                'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.',
+                'give'
+            ) . '</p>';
+        $notice_desc .= '<p>' . __(
+                'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.',
+                'give'
+            ) . '</p>';
+        $notice_desc .= '<p><strong>' . __('To which version should I update?', 'give') . '</strong></p>';
+        $notice_desc .= '<p>' . __(
+                'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.',
+                'give'
+            ) . '</p>';
+        $notice_desc .= '<p><strong>' . __('Can\'t update? Ask your host!', 'give') . '</strong></p>';
+        $notice_desc .= '<p>' . sprintf(
+                __(
+                    'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.',
+                    'give'
+                ),
+                sprintf(
+                    '<a href="%1$s" target="_blank">',
+                    esc_url('https://wordpress.org/hosting/')
+                ),
+                '</a>'
+            ) . '</p>';
 
-		$notice_desc  = '<p><strong>' . __(
-			'Your site could be faster and more secure with a newer PHP version.',
-			'give'
-		) . '</strong></p>';
-		$notice_desc .= '<p>' . __(
-			'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.',
-			'give'
-		) . '</p>';
-		$notice_desc .= '<p>' . __(
-			'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.',
-			'give'
-		) . '</p>';
-		$notice_desc .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
-		$notice_desc .= '<p>' . __(
-			'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.',
-			'give'
-		) . '</p>';
-		$notice_desc .= '<p><strong>' . __( 'Can\'t update? Ask your host!', 'give' ) . '</strong></p>';
-		$notice_desc .= '<p>' . sprintf(
-			__(
-				'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.',
-				'give'
-			),
-			sprintf(
-				'<a href="%1$s" target="_blank">',
-				esc_url( 'https://wordpress.org/hosting/' )
-			),
-			'</a>'
-		) . '</p>';
+        echo sprintf(
+            '<div class="notice notice-error">%1$s</div>',
+            wp_kses_post($notice_desc)
+        );
+    }
 
-		echo sprintf(
-			'<div class="notice notice-error">%1$s</div>',
-			wp_kses_post( $notice_desc )
-		);
-	}
+    /**
+     * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
+     *
+     * @return void
+     * @since 2.5.0
+     *
+     */
+    public function display_old_recurring_compatibility_notice()
+    {
+        // Show notice, if incompatibility found.
+        if (
+            defined('GIVE_RECURRING_VERSION')
+            && version_compare(GIVE_RECURRING_VERSION, '1.9.0', '<')
+            && defined('GIVE_STRIPE_VERSION')
+            && version_compare(GIVE_STRIPE_VERSION, '2.2.0', '<')
+        ) {
+            $message = sprintf(
+                __(
+                    '<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.',
+                    'give'
+                ),
+                esc_url('https://givewp.com/wp-login.php'),
+                esc_url('https://givewp.com/my-account/#tab_downloads')
+            );
 
-	/**
-	 * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @return void
-	 */
-	public function display_old_recurring_compatibility_notice() {
-		// Show notice, if incompatibility found.
-		if (
-			defined( 'GIVE_RECURRING_VERSION' )
-			&& version_compare( GIVE_RECURRING_VERSION, '1.9.0', '<' )
-			&& defined( 'GIVE_STRIPE_VERSION' )
-			&& version_compare( GIVE_STRIPE_VERSION, '2.2.0', '<' )
-		) {
-			$message = sprintf(
-				__(
-					'<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.',
-					'give'
-				),
-				esc_url( 'https://givewp.com/wp-login.php' ),
-				esc_url( 'https://givewp.com/my-account/#tab_downloads' )
-			);
+            Give()->notices->register_notice(
+                [
+                    'id' => 'give-compatibility-with-old-recurring',
+                    'description' => $message,
+                    'dismissible_type' => 'user',
+                    'dismiss_interval' => 'shortly',
+                ]
+            );
+        }
+    }
 
-			Give()->notices->register_notice(
-				[
-					'id'               => 'give-compatibility-with-old-recurring',
-					'description'      => $message,
-					'dismissible_type' => 'user',
-					'dismiss_interval' => 'shortly',
-				]
-			);
-		}
-	}
+    public function install()
+    {
+        $this->loadServiceProviders();
+        give_install();
+    }
 
-	public function install() {
-		$this->loadServiceProviders();
-		give_install();
-	}
+    /**
+     * Load all the service providers to bootstrap the various parts of the application.
+     *
+     * @since 2.8.0
+     */
+    private function loadServiceProviders()
+    {
+        if ($this->providersLoaded) {
+            return;
+        }
 
-	/**
-	 * Load all the service providers to bootstrap the various parts of the application.
-	 *
-	 * @since 2.8.0
-	 */
-	private function loadServiceProviders() {
-		if ( $this->providersLoaded ) {
-			return;
-		}
+        $providers = [];
 
-		$providers = [];
+        foreach ($this->serviceProviders as $serviceProvider) {
+            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
+                throw new InvalidArgumentException(
+                    "$serviceProvider class must implement the ServiceProvider interface"
+                );
+            }
 
-		foreach ( $this->serviceProviders as $serviceProvider ) {
-			if ( ! is_subclass_of( $serviceProvider, ServiceProvider::class ) ) {
-				throw new InvalidArgumentException( "$serviceProvider class must implement the ServiceProvider interface" );
-			}
+            /** @var ServiceProvider $serviceProvider */
+            $serviceProvider = new $serviceProvider();
 
-			/** @var ServiceProvider $serviceProvider */
-			$serviceProvider = new $serviceProvider();
+            $serviceProvider->register();
 
-			$serviceProvider->register();
+            $providers[] = $serviceProvider;
+        }
 
-			$providers[] = $serviceProvider;
-		}
+        foreach ($providers as $serviceProvider) {
+            $serviceProvider->boot();
+        }
 
-		foreach ( $providers as $serviceProvider ) {
-			$serviceProvider->boot();
-		}
+        $this->providersLoaded = true;
+    }
 
-		$this->providersLoaded = true;
-	}
+    /**
+     * Register a Service Provider for bootstrapping
+     *
+     * @param  string  $serviceProvider
+     * @since 2.8.0
+     *
+     */
+    public function registerServiceProvider($serviceProvider)
+    {
+        $this->serviceProviders[] = $serviceProvider;
+    }
 
-	/**
-	 * Register a Service Provider for bootstrapping
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param string $serviceProvider
-	 */
-	public function registerServiceProvider( $serviceProvider ) {
-		$this->serviceProviders[] = $serviceProvider;
-	}
+    /**
+     * Magic properties are passed to the service container to retrieve the data.
+     *
+     * @param  string  $propertyName
+     *
+     * @return mixed
+     * @throws Exception
+     * @since 2.7.0
+     *
+     * @since 2.8.0 retrieve from the service container
+     */
+    public function __get($propertyName)
+    {
+        return $this->container->get($propertyName);
+    }
 
-	/**
-	 * Magic properties are passed to the service container to retrieve the data.
-	 *
-	 * @since 2.8.0 retrieve from the service container
-	 * @since 2.7.0
-	 *
-	 * @param string $propertyName
-	 *
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function __get( $propertyName ) {
-		return $this->container->get( $propertyName );
-	}
+    /**
+     * Magic methods are passed to the service container.
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed
+     * @since 2.8.0
+     *
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->container, $name], $arguments);
+    }
 
-	/**
-	 * Magic methods are passed to the service container.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param $name
-	 * @param $arguments
-	 *
-	 * @return mixed
-	 */
-	public function __call( $name, $arguments ) {
-		return call_user_func_array( [ $this->container, $name ], $arguments );
-	}
-
-	/**
-	 * Sets up the Exception Handler to catch and handle uncaught exceptions
-	 *
-	 * @unreleased
-	 */
-	private function setupExceptionHandler() {
-		$handler = new UncaughtExceptionLogger();
-		$handler->setupExceptionHandler();
-	}
+    /**
+     * Sets up the Exception Handler to catch and handle uncaught exceptions
+     *
+     * @unreleased
+     */
+    private function setupExceptionHandler()
+    {
+        $handler = new UncaughtExceptionLogger();
+        $handler->setupExceptionHandler();
+    }
 }
 
 /**
@@ -512,18 +532,19 @@ final class Give {
  *
  * @return object|Give
  */
-function give( $abstract = null ) {
-	static $instance = null;
+function give($abstract = null)
+{
+    static $instance = null;
 
-	if ( $instance === null ) {
-		$instance = new Give();
-	}
+    if ($instance === null) {
+        $instance = new Give();
+    }
 
-	if ( $abstract !== null ) {
-		return $instance->make( $abstract );
-	}
+    if ($abstract !== null) {
+        return $instance->make($abstract);
+    }
 
-	return $instance;
+    return $instance;
 }
 
 require __DIR__ . '/vendor/autoload.php';

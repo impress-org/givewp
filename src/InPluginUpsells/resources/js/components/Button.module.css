@@ -1,0 +1,32 @@
+.button {
+    appearance: none;
+    display: block;
+    padding: 0.888em;
+    border-radius: 9999px;
+    border-width: 0.125rem;
+    border-style: solid;
+    border-color: #66bb6a;
+    background-color: #66bb6a;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1;
+    letter-spacing: -0.0278em;
+    transition-duration: 200ms;
+    transition-property: filter, color, background-color, text-shadow, box-shadow;
+    transition-timing-function: ease;
+}
+
+.button:hover,
+.button:active,
+.button:focus {
+    text-shadow: 0 0 0.125em rgba(0, 0, 0, 0.3);
+    filter: brightness(115%);
+    color: #fff;
+}
+
+.button:focus {
+    box-shadow: 0 0 0.0625em 0.25em rgba(102, 187, 106, 0.4);
+}

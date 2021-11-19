@@ -11,6 +11,7 @@ use Give\Framework\Exceptions\Traits\Loggable;
  *
  * Represents an exception that occurred when executing a migration within the database
  */
-class DatabaseMigrationException extends Exception implements LoggableException {
-	use Loggable;
+class DatabaseMigrationException extends Exception implements LoggableException
+{
+    use Loggable;
 }

@@ -82,39 +82,6 @@ function give_add_options_links() {
 add_action( 'admin_menu', 'give_add_options_links', 10 );
 
 
-
-/**
- * Creates the admin add-ons submenu page under the Give menu and assigns their
- * link to global variable
- *
- * @since 2.5.0
- *
- * @return void
- */
-function give_add_add_ons_option_link() {
-	global $submenu;
-
-	// Show menu only if user has permission.
-	if ( ! current_user_can( 'edit_give_payments' ) ) {
-		return;
-	}
-
-	// Add-ons
-	$submenu['edit.php?post_type=give_forms'][] = [
-		esc_html__( 'Add-ons', 'give' ),
-		'install_plugins',
-
-		/**
-		 * Filter the add-on page url.
-		 *
-		 * @since 2.6.0
-		 */
-		apply_filters( 'give_addon_menu_item_url', esc_url( 'http://docs.givewp.com/addons-menu-link' ) ),
-	];
-
-}
-add_action( 'admin_menu', 'give_add_add_ons_option_link', 999999 );
-
 /**
  *  Determines whether the current admin page is a Give admin page.
  *
@@ -285,6 +252,11 @@ function give_settings_page_pages( $settings ) {
 		// Advanced settings.
 		include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php',
 	];
+
+    // Recurring Donations settings.
+    if ( !defined('GIVE_RECURRING_VERSION') ) {
+        $settings[] = include GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-recurring.php';
+    }
 
 	// Output.
 	return $settings;

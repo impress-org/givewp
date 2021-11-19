@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\DonorDashboards\Repositories;
 
 use Give\Framework\Database\DB;
@@ -10,68 +11,83 @@ use Give_Payment;
 /**
  * @since 2.10.0
  */
-class Donations {
-	/**
-	 * Get donations count for donor
-	 *
-	 * @param int $donorId
-	 * @since 2.10.0
-	 *
-	 * @return int
-	 */
-	public function getDonationCount( $donorId ) {
-		$aggregate = $this->getDonationAggregate( 'count(revenue.id)', $donorId );
-		return $aggregate ? $aggregate->result : null;
-	}
+class Donations
+{
+    /**
+     * Get donations count for donor
+     *
+     * @since 2.10.0
+     *
+     * @param int $donorId
+     *
+     * @return int
+     */
+    public function getDonationCount($donorId)
+    {
+        $aggregate = $this->getDonationAggregate('count(revenue.id)', $donorId);
 
-	/**
-	 * Get donor revenue
-	 *
-	 * @param int $donorId
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	public function getRevenue( $donorId ) {
-		$currencyCode = give_get_option( 'currency' );
-		$aggregate    = $this->getDonationAggregate( 'sum(revenue.amount)', $donorId );
+        return $aggregate ? $aggregate->result : null;
+    }
 
-		return $aggregate ?
-			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
-			null;
-	}
+    /**
+     * Get donor revenue
+     *
+     * @since 2.10.0
+     *
+     * @param int $donorId
+     *
+     * @return string
+     */
+    public function getRevenue($donorId)
+    {
+        $currencyCode = give_get_option('currency');
+        $aggregate = $this->getDonationAggregate('sum(revenue.amount)', $donorId);
 
-	/**
-	 * Get average donor revenue
-	 *
-	 * @param int $donorId
-	 * @since 2.10.0
-	 *
-	 * @return string
-	 */
-	public function getAverageRevenue( $donorId ) {
-		$currencyCode = give_get_option( 'currency' );
-		$aggregate    = $this->getDonationAggregate( 'avg(revenue.amount)', $donorId );
+        return $aggregate ?
+            $this->getAmountWithSeparators(
+                Money::ofMinor($aggregate->result, $currencyCode)->getAmount(),
+                $currencyCode
+            ) :
+            null;
+    }
 
-		return $aggregate ?
-			$this->getAmountWithSeparators( Money::ofMinor( $aggregate->result, $currencyCode )->getAmount(), $currencyCode ) :
-			null;
-	}
+    /**
+     * Get average donor revenue
+     *
+     * @since 2.10.0
+     *
+     * @param int $donorId
+     *
+     * @return string
+     */
+    public function getAverageRevenue($donorId)
+    {
+        $currencyCode = give_get_option('currency');
+        $aggregate = $this->getDonationAggregate('avg(revenue.amount)', $donorId);
 
-	/**
-	 * Generates a donation aggregate for a given donor
-	 *
-	 * @param string $rawAggregate raw SELECT to determine what to aggregate over
-	 * @param int $donorId
-	 *
-	 * @return object
-	 */
-	private function getDonationAggregate( $rawAggregate, $donorId ) {
-		global $wpdb;
+        return $aggregate ?
+            $this->getAmountWithSeparators(
+                Money::ofMinor($aggregate->result, $currencyCode)->getAmount(),
+                $currencyCode
+            ) :
+            null;
+    }
 
-		return DB::get_row(
-			DB::prepare(
-				"
+    /**
+     * Generates a donation aggregate for a given donor
+     *
+     * @param string $rawAggregate raw SELECT to determine what to aggregate over
+     * @param int    $donorId
+     *
+     * @return object
+     */
+    private function getDonationAggregate($rawAggregate, $donorId)
+    {
+        global $wpdb;
+
+        return DB::get_row(
+            DB::prepare(
+                "
 				SELECT {$rawAggregate} as result
 				FROM {$wpdb->give_revenue} as revenue
 					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
@@ -80,27 +96,30 @@ class Donations {
 					AND donationmeta.meta_value = %d
 					AND posts.post_status IN ( 'publish', 'give_subscription', 'pending' )
 			",
-				$donorId
-			)
-		);
-	}
+                $donorId
+            )
+        );
+    }
 
-	/**
-	 * Get all donation ids by donor ID
-	 *
-	 * @param int $donorId
-	 * @since 2.10.0
-	 * @return int[] Donation IDs
-	 */
-	protected function getDonationIDs( $donorId ) {
+    /**
+     * Get all donation ids by donor ID
+     *
+     * @since 2.10.0
+     *
+     * @param int $donorId
+     *
+     * @return int[] Donation IDs
+     */
+    protected function getDonationIDs($donorId)
+    {
+        $statusKeys = give_get_payment_status_keys();
+        $statusQuery = "'" . implode("','", $statusKeys) . "'";
 
-		$statusKeys  = give_get_payment_status_keys();
-		$statusQuery = "'" . implode( "','", $statusKeys ) . "'";
+        global $wpdb;
 
-		global $wpdb;
-		return DB::get_col(
-			DB::prepare(
-				"
+        return DB::get_col(
+            DB::prepare(
+                "
 				SELECT revenue.donation_id as id
 				FROM {$wpdb->give_revenue} as revenue
 					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
@@ -109,298 +128,313 @@ class Donations {
 					AND donationmeta.meta_value = %d
 					AND posts.post_status IN ( {$statusQuery} )
 			",
-				$donorId
-			)
-		);
-	}
+                $donorId
+            )
+        );
+    }
 
+    /**
+     * Get all donations by donor ID
+     *
+     * @since 2.12.2 return null if donation ids is empty
+     * @since 2.10.0
+     *
+     * @param int $donorId
+     *
+     * @return array Donations
+     */
+    public function getDonations($donorId)
+    {
+        $ids = $this->getDonationIds($donorId);
 
-	/**
-	 * Get all donations by donor ID
-	 *
-	 * @since 2.12.2 return null if donation ids is empty
-	 * @since 2.10.0
-	 *
-	 * @param int $donorId
-	 *
-	 * @return array Donations
-	 */
-	public function getDonations( $donorId ) {
+        if (empty($ids)) {
+            return null;
+        }
 
-		$ids = $this->getDonationIds( $donorId );
+        $args = [
+            'number' => -1,
+            'post__in' => $ids,
+        ];
 
-		if ( empty( $ids ) ) {
-			return null;
-		}
+        $query = new \Give_Payments_Query($args);
+        $payments = $query->get_payments();
 
-		$args = [
-			'number'   => -1,
-			'post__in' => $ids,
-		];
+        $donations = [];
+        foreach ($payments as $payment) {
+            $donations[] = [
+                'id' => $payment->ID,
+                'form' => $this->getFormInfo($payment),
+                'payment' => $this->getPaymentInfo($payment),
+                'donor' => $this->getDonorInfo($payment),
+                'receipt' => $this->getReceiptInfo($payment),
+            ];
+        }
 
-		$query    = new \Give_Payments_Query( $args );
-		$payments = $query->get_payments();
+        return $donations;
+    }
 
-		$donations = [];
-		foreach ( $payments as $payment ) {
-			$donations[] = [
-				'id'      => $payment->ID,
-				'form'    => $this->getFormInfo( $payment ),
-				'payment' => $this->getPaymentInfo( $payment ),
-				'donor'   => $this->getDonorInfo( $payment ),
-				'receipt' => $this->getReceiptInfo( $payment ),
-			];
-		}
-		return $donations;
-	}
+    /**
+     * Get form info
+     *
+     * @since 2.10.0
+     *
+     * @param Give_Payment $payment
+     *
+     * @return array Payment form info
+     */
+    protected function getFormInfo($payment)
+    {
+        return [
+            'title' => wp_trim_words($payment->form_title, 6, ' [...]'),
+            'id' => $payment->form_id,
+        ];
+    }
 
-	/**
-	 * Get form info
-	 *
-	 * @param Give_Payment $payment
-	 * @since 2.10.0
-	 * @return array Payment form info
-	 */
-	protected function getFormInfo( $payment ) {
-		return [
-			'title' => wp_trim_words( $payment->form_title, 6, ' [...]' ),
-			'id'    => $payment->form_id,
-		];
-	}
+    /**
+     * Get payment info
+     *
+     * @since 2.10.0
+     * @since 2.15.0 Use WP time format for donation time.
+     *
+     * @param Give_Payment $payment
+     *
+     * @return array Payment info
+     */
+    protected function getPaymentInfo($payment)
+    {
+        $pdfReceiptUrl = '';
+        if (class_exists('Give_PDF_Receipts')) {
+            $pdfReceiptUrl = html_entity_decode(give_pdf_receipts()->engine->get_pdf_receipt_url($payment->ID));
+        }
 
-	/**
-	 * Get payment info
-	 *
-	 * @since 2.10.0
-	 * @since 2.15.0 Use WP time format for donation time.
-	 *
-	 * @param Give_Payment $payment
-	 *
-	 * @return array Payment info
-	 */
-	protected function getPaymentInfo( $payment ) {
+        $gateways = give_get_payment_gateways();
 
-		$pdfReceiptUrl = '';
-		if ( class_exists( 'Give_PDF_Receipts' ) ) {
-			$pdfReceiptUrl = html_entity_decode( give_pdf_receipts()->engine->get_pdf_receipt_url( $payment->ID ) );
-		}
+        return [
+            'amount' => $this->getFormattedAmount($payment->subtotal, $payment),
+            'currency' => $payment->currency,
+            'fee' => $this->getFormattedAmount(($payment->total - $payment->subtotal), $payment),
+            'total' => $this->getFormattedAmount($payment->total, $payment),
+            'method' => isset($gateways[$payment->gateway]['checkout_label']) ? $gateways[$payment->gateway]['checkout_label'] : '',
+            'status' => $this->getFormattedStatus($payment->status),
+            'date' => date_i18n(give_date_format('checkout'), strtotime($payment->date)),
+            'time' => date_i18n(get_option('time_format'), strtotime($payment->date)),
+            'mode' => $payment->get_meta('_give_payment_mode'),
+            'pdfReceiptUrl' => $pdfReceiptUrl,
+            'serialCode' => give_is_setting_enabled(give_get_option('sequential-ordering_status', 'disabled')) ? Give(
+            )->seq_donation_number->get_serial_code($payment) : $payment->ID,
+        ];
+    }
 
-		$gateways = give_get_payment_gateways();
+    /**
+     * Get array containing dynamic receipt information
+     *
+     * @since 2.10.0
+     *
+     * @param Give_Payment $payment
+     *
+     * @return array
+     */
+    protected function getReceiptInfo($payment)
+    {
+        $receipt = new DonationReceipt($payment->ID);
 
-		return [
-			'amount'        => $this->getFormattedAmount( $payment->subtotal, $payment ),
-			'currency'      => $payment->currency,
-			'fee'           => $this->getFormattedAmount( ( $payment->total - $payment->subtotal ), $payment ),
-			'total'         => $this->getFormattedAmount( $payment->total, $payment ),
-			'method'        => isset( $gateways[ $payment->gateway ]['checkout_label'] ) ? $gateways[ $payment->gateway ]['checkout_label'] : '',
-			'status'        => $this->getFormattedStatus( $payment->status ),
-			'date'          => date_i18n( give_date_format( 'checkout' ), strtotime( $payment->date ) ),
-			'time'          => date_i18n( get_option( 'time_format' ), strtotime( $payment->date ) ),
-			'mode'          => $payment->get_meta( '_give_payment_mode' ),
-			'pdfReceiptUrl' => $pdfReceiptUrl,
-			'serialCode'    => give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) ) ? Give()->seq_donation_number->get_serial_code( $payment ) : $payment->ID,
-		];
-	}
+        /**
+         * Fire the action for receipt object.
+         *
+         * @since 2.7.0
+         */
+        do_action('give_new_receipt', $receipt);
 
-	/**
-	 * Get array containing dynamic receipt information
-	 *
-	 * @param Give_Payment $payment
-	 * @return array
-	 * @since 2.10.0
-	 */
-	protected function getReceiptInfo( $payment ) {
+        $receiptArr = [];
 
-		$receipt = new DonationReceipt( $payment->ID );
+        $sectionIndex = 0;
+        foreach ($receipt as $section) {
+            // Continue if section does not have line items.
+            if ( ! $section->getLineItems()) {
+                continue;
+            }
 
-		/**
-		 * Fire the action for receipt object.
-		 *
-		 * @since 2.7.0
-		 */
-		do_action( 'give_new_receipt', $receipt );
+            if ('PDFReceipt' === $section->id) {
+                continue;
+            }
 
-		$receiptArr = [];
+            if ('Subscription' === $section->id) {
+                continue;
+            }
 
-		$sectionIndex = 0;
-		foreach ( $receipt as $section ) {
-			// Continue if section does not have line items.
-			if ( ! $section->getLineItems() ) {
-				continue;
-			}
+            $receiptArr[$sectionIndex]['id'] = $section->id;
 
-			if ( 'PDFReceipt' === $section->id ) {
-				continue;
-			}
+            if ($section->label) {
+                $receiptArr[$sectionIndex]['label'] = $section->label;
+            }
 
-			if ( 'Subscription' === $section->id ) {
-				continue;
-			}
+            /* @var LineItem $lineItem */
+            foreach ($section as $lineItem) {
+                // Continue if line item does not have value.
+                if ( ! $lineItem->value) {
+                    continue;
+                }
 
-			$receiptArr[ $sectionIndex ]['id'] = $section->id;
+                // This class is required to highlight total donation amount in receipt.
+                $detailRowClass = '';
+                if (DonationReceipt::DONATIONSECTIONID === $section->id) {
+                    $detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+                }
 
-			if ( $section->label ) {
-				$receiptArr[ $sectionIndex ]['label'] = $section->label;
-			}
+                $label = html_entity_decode(wp_strip_all_tags($lineItem->label));
+                $value = $lineItem->id === 'paymentStatus' ? $this->getFormattedStatus(
+                    $payment->status
+                ) : html_entity_decode(wp_strip_all_tags($lineItem->value));
 
-			/* @var LineItem $lineItem */
-			foreach ( $section as $lineItem ) {
-				// Continue if line item does not have value.
-				if ( ! $lineItem->value ) {
-					continue;
-				}
+                $receiptArr[$sectionIndex]['lineItems'][] = [
+                    'class' => $detailRowClass,
+                    'icon' => $this->getIcon($lineItem->icon),
+                    'label' => $label,
+                    'value' => $value,
+                ];
+            }
 
-				// This class is required to highlight total donation amount in receipt.
-				$detailRowClass = '';
-				if ( DonationReceipt::DONATIONSECTIONID === $section->id ) {
-					$detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
-				}
+            $sectionIndex++;
+        }
 
-				$label = html_entity_decode( wp_strip_all_tags( $lineItem->label ) );
-				$value = $lineItem->id === 'paymentStatus' ? $this->getFormattedStatus( $payment->status ) : html_entity_decode( wp_strip_all_tags( $lineItem->value ) );
+        return $receiptArr;
+    }
 
-				$receiptArr[ $sectionIndex ]['lineItems'][] = [
-					'class' => $detailRowClass,
-					'icon'  => $this->getIcon( $lineItem->icon ),
-					'label' => $label,
-					'value' => $value,
-				];
+    /**
+     * Get icon based on icon HTML string
+     *
+     * @since 2.10.0
+     *
+     * @param string $iconHtml
+     *
+     * @return string
+     */
+    protected function getIcon($iconHtml)
+    {
+        if (empty($iconHtml)) {
+            return '';
+        }
 
-			}
+        $iconMap = [
+            'user',
+            'envelope',
+            'globe',
+            'calendar',
+            'building',
+        ];
 
-			$sectionIndex++;
-		}
+        foreach ($iconMap as $icon) {
+            if (strpos($iconHtml, $icon) !== false) {
+                return $icon;
+            }
+        }
+    }
 
-		return $receiptArr;
-	}
+    /**
+     * Get formatted status object (used for rendering status correctly in Donor Profile)
+     *
+     * @since 2.10.0
+     *
+     * @param string $status
+     *
+     * @return array Formatted status object (with color and label)
+     */
+    protected function getFormattedStatus($status)
+    {
+        $statusMap = [];
 
-	/**
-	 * Get icon based on icon HTML string
-	 *
-	 * @param string $iconHtml
-	 * @return string
-	 * @since 2.10.0
-	 */
-	protected function getIcon( $iconHtml ) {
+        $colorMap = [
+            'publish' => '#7ad03a',
+            'give_subscription' => '#5bc0de',
+            'refunded' => '#777',
+            'failed' => '#a00',
+            'abandoned' => '#333',
+            'revoked' => '#d9534f',
+            'pending' => '#ffba00',
+        ];
 
-		if ( empty( $iconHtml ) ) {
-			return '';
-		}
+        foreach (give_get_payment_statuses() as $key => $value) {
+            if ($status !== $key) {
+                continue;
+            }
 
-		$iconMap = [
-			'user',
-			'envelope',
-			'globe',
-			'calendar',
-			'building',
-		];
+            $color = '#888';
+            if (in_array($key, array_keys($colorMap))) {
+                $color = $colorMap[$key];
+            }
 
-		foreach ( $iconMap as $icon ) {
-			if ( strpos( $iconHtml, $icon ) !== false ) {
-				return $icon;
-			}
-		}
+            $statusMap[$key] = [
+                'color' => $color,
+                'label' => $value,
+            ];
+        }
 
-	}
+        return isset($statusMap[$status]) ? $statusMap[$status] : [
+            'color' => '#FFBA00',
+            'label' => esc_html__('Unknown', 'give'),
+        ];
+    }
 
-	/**
-	 * Get formatted status object (used for rendering status correctly in Donor Profile)
-	 *
-	 * @param string $status
-	 * @since 2.10.0
-	 * @return array Formatted status object (with color and label)
-	 */
-	protected function getFormattedStatus( $status ) {
+    /**
+     * @since 2.10.0
+     *
+     * @param string $amount
+     * @param string $currencyCode
+     *
+     * @return string
+     */
+    protected function getAmountWithSeparators($amount, $currencyCode)
+    {
+        $formatted = give_format_amount(
+            $amount,
+            [
+                'decimal' => false,
+                'sanitize' => false,
+                'currency' => $currencyCode,
+            ]
+        );
 
-		$statusMap = [];
+        return $formatted ?: $amount;
+    }
 
-		$colorMap = [
-			'publish'           => '#7ad03a',
-			'give_subscription' => '#5bc0de',
-			'refunded'          => '#777',
-			'failed'            => '#a00',
-			'abandoned'         => '#333',
-			'revoked'           => '#d9534f',
-			'pending'           => '#ffba00',
-		];
+    /**
+     * Get formatted payment amount
+     *
+     * @since 2.10.0
+     *
+     * @param Give_Payment $payment
+     * @param float        $amount
+     *
+     * @return string Formatted payment amount (with correct decimals and currency symbol)
+     */
+    protected function getformattedAmount($amount, $payment)
+    {
+        return give_currency_filter(
+            give_format_amount(
+                $amount,
+                [
+                    'donation_id' => $payment->ID,
+                ]
+            ),
+            [
+                'currency_code' => $payment->currency,
+                'decode_currency' => true,
+                'sanitize' => false,
+            ]
+        );
+    }
 
-		foreach ( give_get_payment_statuses() as $key => $value ) {
-
-			if ( $status !== $key ) {
-				continue;
-			}
-
-			$color = '#888';
-			if ( in_array( $key, array_keys( $colorMap ) ) ) {
-				$color = $colorMap[ $key ];
-			}
-
-			$statusMap[ $key ] = [
-				'color' => $color,
-				'label' => $value,
-			];
-
-		}
-
-		return isset( $statusMap[ $status ] ) ? $statusMap[ $status ] : [
-			'color' => '#FFBA00',
-			'label' => esc_html__( 'Unknown', 'give' ),
-		];
-	}
-
-	/**
-	 * @since 2.10.0
-	 *
-	 * @param string $amount
-	 * @param string $currencyCode
-	 *
-	 * @return string
-	 */
-	protected function getAmountWithSeparators( $amount, $currencyCode ) {
-		$formatted = give_format_amount(
-			$amount,
-			[
-				'decimal'  => false,
-				'sanitize' => false,
-				'currency' => $currencyCode
-			]
-		);
-
-		return $formatted ?: $amount;
-	}
-
-	/**
-	 * Get formatted payment amount
-	 *
-	 * @param float $amount
-	 * @param Give_Payment $payment
-	 * @since 2.10.0
-	 * @return string Formatted payment amount (with correct decimals and currency symbol)
-	 */
-	protected function getformattedAmount( $amount, $payment ) {
-		return give_currency_filter(
-			give_format_amount(
-				$amount,
-				[
-					'donation_id' => $payment->ID,
-				]
-			),
-			[
-				'currency_code'   => $payment->currency,
-				'decode_currency' => true,
-				'sanitize'        => false,
-			]
-		);
-	}
-
-	/**
-	 * Get donor info
-	 *
-	 * @param Give_Payment $payment
-	 * @since 2.10.0
-	 * @return array Donor info
-	 */
-	protected function getDonorInfo( $payment ) {
-		return $payment->user_info;
-	}
+    /**
+     * Get donor info
+     *
+     * @since 2.10.0
+     *
+     * @param Give_Payment $payment
+     *
+     * @return array Donor info
+     */
+    protected function getDonorInfo($payment)
+    {
+        return $payment->user_info;
+    }
 }

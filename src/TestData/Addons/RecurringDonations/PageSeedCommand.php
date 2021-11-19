@@ -10,46 +10,49 @@ use WP_CLI;
  *
  * A WP-CLI command for seeding recuring donations demonstration page.
  */
-class PageSeedCommand {
+class PageSeedCommand
+{
 
-	/**
-	 * @var PageFactory
-	 */
-	private $pageFactory;
+    /**
+     * @var PageFactory
+     */
+    private $pageFactory;
 
-	public function __construct( PageFactory $pageFactory ) {
-		$this->pageFactory = $pageFactory;
-	}
+    public function __construct(PageFactory $pageFactory)
+    {
+        $this->pageFactory = $pageFactory;
+    }
 
-	/**
-	 * Generates Recurring Donations demonstartion page
-	 *
-	 * [--preview=<preview>]
-	 * : Preview generated data
-	 * default: false
-	 *
-	 * ## EXAMPLES
-	 *
-	 *     wp give recurring-demonstration-page --preview=true
-	 *
-	 * @when after_wp_load
-	 */
-	public function __invoke( $args, $assocArgs ) {
-		$preview = WP_CLI\Utils\get_flag_value( $assocArgs, 'preview', $default = false );
+    /**
+     * Generates Recurring Donations demonstartion page
+     *
+     * [--preview=<preview>]
+     * : Preview generated data
+     * default: false
+     *
+     * ## EXAMPLES
+     *
+     *     wp give recurring-demonstration-page --preview=true
+     *
+     * @when after_wp_load
+     */
+    public function __invoke($args, $assocArgs)
+    {
+        $preview = WP_CLI\Utils\get_flag_value($assocArgs, 'preview', $default = false);
 
-		$page = $this->pageFactory->definition();
+        $page = $this->pageFactory->definition();
 
-		if ( $preview ) {
-			WP_CLI\Utils\format_items(
-				'table',
-				[ $page ],
-				array_keys( $page )
-			);
-		} else {
-			$progress = WP_CLI\Utils\make_progress_bar( 'Generating Recurring Donations demonstration page', 1 );
+        if ($preview) {
+            WP_CLI\Utils\format_items(
+                'table',
+                [$page],
+                array_keys($page)
+            );
+        } else {
+            $progress = WP_CLI\Utils\make_progress_bar('Generating Recurring Donations demonstration page', 1);
 
-			wp_insert_post( $page );
-			$progress->finish();
-		}
-	}
+            wp_insert_post($page);
+            $progress->finish();
+        }
+    }
 }
