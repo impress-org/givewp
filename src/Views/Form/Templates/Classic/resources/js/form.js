@@ -64,7 +64,7 @@ function addPersonalInfoDescription() {
 }
 
 function setPaymentDetailsTitle() {
-    document.querySelector('.give-payment-mode-label').textContent = classicTemplateOptions.payment_method.headline;
+    document.querySelector('.give-payment-mode-label').textContent = classicTemplateOptions.payment_information.headline;
 }
 
 function addPaymentDetailsDescription() {
