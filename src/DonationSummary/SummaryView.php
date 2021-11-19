@@ -42,7 +42,7 @@ class SummaryView
     public function maybeRender()
     {
         if ($this->isDonationSummaryEnabled()) {
-            if ('sequoia' === Template::getActiveID($this->formID)) {
+            if (in_array(Template::getActiveID($this->formID), [ 'sequoia', 'classic'])) {
                 $this->render();
             }
         }
@@ -53,7 +53,9 @@ class SummaryView
      */
     public function render()
     {
+        do_action( 'give_donation_summary_top' );
         include 'resources/views/summary.php';
+        do_action( 'give_donation_summary_bottom' );
     }
 
     public function getPrimaryColor()
@@ -64,7 +66,6 @@ class SummaryView
     /**
      * @since 2.17.0
      * @return string
-     * @throws \Exception
      */
     public function getFormTemplateLocation()
     {
