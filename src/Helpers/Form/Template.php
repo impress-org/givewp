@@ -49,10 +49,22 @@ class Template
             return $settings;
         }
 
-        // Backward compatibility for migrated settings.
-        // 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
-        // 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
-        return self::handleOptionsBackwardCompatibility($settings);
+        /**
+         * Backwards compatibility for forms saved before the Donation Summary was introduced.
+         * @since 2.17.0
+         */
+		if( ! isset( $settings[ 'payment_information' ] ) ) {
+            $settings[ 'payment_information' ] = [
+                'donation_summary_enabled' => 'disabled', // Disable by default for existing forms.
+                'donation_summary_heading' => __( 'Here\'s what you\'re about to donate:', 'give' ),
+                'donation_summary_location' => 'give_donation_form_before_submit',
+            ];
+        }
+
+		// Backward compatibility for migrated settings.
+		// 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
+		// 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
+		return self::handleOptionsBackwardCompatibility( $settings );
     }
 
     /**

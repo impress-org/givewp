@@ -1,0 +1,5 @@
+.plans {
+    display: grid;
+    gap: 2rem;
+    justify-content: center;
+}

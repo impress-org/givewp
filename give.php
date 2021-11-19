@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.16.2
+ * Version: 2.17.0
  * Requires at least: 4.9
  * Requires PHP: 5.6
  * Text Domain: give
@@ -43,10 +43,12 @@
 
 use Give\Container\Container;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
+use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -152,13 +154,15 @@ final class Give {
 		RevenueServiceProvider::class,
 		MultiFormGoalsServiceProvider::class,
 		DonorDashboardsServiceProvider::class,
+		InPluginUpsellsServiceProvider::class,
 		TrackingServiceProvider::class,
 		TestDataServiceProvider::class,
 		MigrationLogServiceProvider::class,
 		LogServiceProvider::class,
 		FormLegacyConsumerServiceProvider::class,
 		ShimsServiceProvider::class,
-		LicenseServiceProvider::class
+		LicenseServiceProvider::class,
+        DonationSummaryServiceProvider::class,
 	];
 
 	/**
@@ -269,7 +273,7 @@ final class Give {
 	private function setup_constants() {
 		// Plugin version.
 		if ( ! defined( 'GIVE_VERSION' ) ) {
-			define( 'GIVE_VERSION', '2.16.2' );
+			define( 'GIVE_VERSION', '2.17.0' );
 		}
 
 		// Plugin Root File.
