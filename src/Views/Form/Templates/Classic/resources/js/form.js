@@ -132,7 +132,7 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
 }
 
 function updateDonationSummaryAmount() {
-    document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value
+    document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value;
 }
 
 function splitGatewayResponse() {
