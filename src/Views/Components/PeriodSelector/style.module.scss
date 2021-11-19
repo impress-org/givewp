@@ -1,88 +1,88 @@
 /* stylelint-disable */
 .periodSelector {
-	display: inline-flex;
-	align-items: center;
-	min-width: 330px;
+    display: inline-flex;
+    align-items: center;
+    min-width: 330px;
 }
 
 .datepicker {
-	border: 1px solid #ddd;
-	border-bottom-width: 3px;
-	background: #fff;
-	height: 32px;
-	border-radius: 3px;
-	padding-left: 22px;
+    border: 1px solid #ddd;
+    border-bottom-width: 3px;
+    background: #fff;
+    height: 32px;
+    border-radius: 3px;
+    padding-left: 22px;
 
-	:global .CalendarDay__selected_span {
-		background: rgb(145, 200, 150); //background
-		color: #fff; //text
-		border: 1px solid #66bb6a;
-	}
+    :global .CalendarDay__selected_span {
+        background: rgb(145, 200, 150); //background
+        color: #fff; //text
+        border: 1px solid #66bb6a;
+    }
 
-	:global .CalendarDay__selected {
-		background: #66bb6a;
-		color: #fff;
-		border: 1px double #47814a;
-	}
+    :global .CalendarDay__selected {
+        background: #66bb6a;
+        color: #fff;
+        border: 1px double #47814a;
+    }
 
-	:global .CalendarDay__hovered_span, /* stylelint-disable-line selector-class-pattern */
+    :global .CalendarDay__hovered_span, /* stylelint-disable-line selector-class-pattern */
 	:global .CalendarDay__hovered_span:hover {
-		background: rgb(145, 200, 150); //background
-		color: #fff; //text
-		border: 1px solid #66bb6a;
-	}
+        background: rgb(145, 200, 150); //background
+        color: #fff; //text
+        border: 1px solid #66bb6a;
+    }
 
-	:global .DayPickerNavigation_button__horizontalDefault {
-		top: 12px;
-	}
+    :global .DayPickerNavigation_button__horizontalDefault {
+        top: 12px;
+    }
 
-	:global .DateRangePickerInput {
-		border: none;
-		background: none;
-		height: 26px;
-	}
+    :global .DateRangePickerInput {
+        border: none;
+        background: none;
+        height: 26px;
+    }
 
-	:global .DateRangePicker_picker {
-		border-radius: 3px;
-		top: 48px !important;
-	}
+    :global .DateRangePicker_picker {
+        border-radius: 3px;
+        top: 48px !important;
+    }
 
-	:global .DateInput_fang {
-		top: 38px !important;
-	}
+    :global .DateInput_fang {
+        top: 38px !important;
+    }
 
-	:global .DateInput {
-		background: none;
-	}
+    :global .DateInput {
+        background: none;
+    }
 
-	:global .DayPicker_weekHeader {
-		top: 52px;
-	}
+    :global .DayPicker_weekHeader {
+        top: 52px;
+    }
 
-	/* stylelint-enable */
+    /* stylelint-enable */
 
-	input[type='text'] {
-		height: 34px;
-		min-height: 34px;
-		border: none;
-		background: none;
-		border-radius: 3px;
-		overflow: hidden;
-		font-size: 14px;
+    input[type='text'] {
+        height: 34px;
+        min-height: 34px;
+        border: none;
+        background: none;
+        border-radius: 3px;
+        overflow: hidden;
+        font-size: 14px;
 
-		&:focus {
-			box-shadow: none;
-			border: none;
-		}
-	}
+        &:focus {
+            box-shadow: none;
+            border: none;
+        }
+    }
 }
 
 .icon {
-	height: 32px;
-	width: 32px;
-	position: absolute;
-	pointer-events: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    height: 32px;
+    width: 32px;
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

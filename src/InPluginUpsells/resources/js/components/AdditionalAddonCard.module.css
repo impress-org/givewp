@@ -1,0 +1,41 @@
+.card {
+    display: grid;
+    gap: 1rem;
+    padding: 2.25rem 1.5rem;
+}
+
+.image {
+    justify-self: center;
+    width: 6.8125rem;
+    height: 6.8125rem;
+}
+
+.title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.36;
+    text-align: center;
+}
+
+.image + .title {
+    margin-top: 0.7rem;
+}
+
+.description {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.title + .description {
+    margin-top: 0.25rem;
+}
+
+.button {
+    margin-top: 3.3125rem;
+    align-self: end;
+    justify-self: center;
+    width: 93.75%;
+}

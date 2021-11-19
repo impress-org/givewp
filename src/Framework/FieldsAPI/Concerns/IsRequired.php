@@ -2,32 +2,37 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait IsRequired {
+trait IsRequired
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function required( $value = true ) {
-		$this->validationRules->rule( 'required', $value );
-		return $this;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function required($value = true)
+    {
+        $this->validationRules->rule('required', $value);
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isRequired() {
-		$required = $this->validationRules->getRule( 'required' );
+        return $this;
+    }
 
-		return is_null( $required ) ? false : $required;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function isRequired()
+    {
+        $required = $this->validationRules->getRule('required');
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getRequiredError() {
-		return [
-			'error_id'      => $this->name,
-			'error_message' => __( 'Please enter a value for ' . $this->name, 'give' ),
-		];
-	}
+        return is_null($required) ? false : $required;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequiredError()
+    {
+        return [
+            'error_id' => $this->name,
+            'error_message' => __('Please enter a value for ' . $this->name, 'give'),
+        ];
+    }
 }

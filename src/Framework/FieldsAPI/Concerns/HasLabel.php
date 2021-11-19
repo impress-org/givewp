@@ -2,24 +2,29 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait HasLabel {
+trait HasLabel
+{
 
-	/** @var string */
-	protected $label;
+    /** @var string */
+    protected $label;
 
-	/**
-	 * @param string $label
-	 * @return $this
-	 */
-	public function label( $label ) {
-		$this->label = $label;
-		return $this;
-	}
+    /**
+     * @param string $label
+     *
+     * @return $this
+     */
+    public function label($label)
+    {
+        $this->label = $label;
 
-	/**
-	 * @return string
-	 */
-	public function getLabel() {
-		return $this->label;
-	}
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

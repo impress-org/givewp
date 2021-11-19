@@ -1,5 +1,7 @@
 <?php
+
 namespace Give\FormAPI\Form;
 
-class Wysiwyg extends Field {
+class Wysiwyg extends Field
+{
 }

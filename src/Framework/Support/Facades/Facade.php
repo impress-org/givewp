@@ -2,8 +2,6 @@
 
 namespace Give\Framework\Support\Facades;
 
-use Give\Framework\Exceptions\Primitives\Exception;
-
 /**
  * Class Facade
  *
@@ -19,36 +17,38 @@ use Give\Framework\Exceptions\Primitives\Exception;
  *
  * @since 2.12.0
  */
-abstract class Facade {
-	/**
-	 * Static helper for calling the facade methods
-	 *
-	 * @since 2.12.0
-	 *
-	 * @param string $name
-	 * @param array  $arguments
-	 *
-	 * @return mixed
-	 */
-	public static function __callStatic( $name, $arguments ) {
-		// Make sure the static class is a singleton and get instance
-		give()->singletonIf( static::class );
-		$staticInstance = give( static::class );
+abstract class Facade
+{
+    /**
+     * Static helper for calling the facade methods
+     *
+     * @since 2.12.0
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        // Make sure the static class is a singleton and get instance
+        give()->singletonIf(static::class);
+        $staticInstance = give(static::class);
 
-		// Make sure the accessed class is a singleton and get instance
-		$accessorClass = $staticInstance->getFacadeAccessor();
-		give()->singletonIf( $accessorClass );
-		$accessorInstance = give( $accessorClass );
+        // Make sure the accessed class is a singleton and get instance
+        $accessorClass = $staticInstance->getFacadeAccessor();
+        give()->singletonIf($accessorClass);
+        $accessorInstance = give($accessorClass);
 
-		return $accessorInstance->$name( ...$arguments );
-	}
+        return $accessorInstance->$name(...$arguments);
+    }
 
-	/**
-	 * Retrieves the fully qualified class name or alias for the class being decorated
-	 *
-	 * @since 2.12.0
-	 *
-	 * @return string
-	 */
-	abstract protected function getFacadeAccessor();
+    /**
+     * Retrieves the fully qualified class name or alias for the class being decorated
+     *
+     * @since 2.12.0
+     *
+     * @return string
+     */
+    abstract protected function getFacadeAccessor();
 }

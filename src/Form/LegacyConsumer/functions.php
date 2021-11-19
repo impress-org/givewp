@@ -9,6 +9,7 @@ use Give\Framework\FieldsAPI\Facades\Factory;
  *
  * @return Node
  */
-function give_field( $type, $name ) {
-	return Factory::make( $type, $name );
+function give_field($type, $name)
+{
+    return Factory::make($type, $name);
 }

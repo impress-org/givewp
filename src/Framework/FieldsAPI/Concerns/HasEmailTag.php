@@ -2,24 +2,29 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait HasEmailTag {
+trait HasEmailTag
+{
 
-	/** @var string */
-	protected $emailTag;
+    /** @var string */
+    protected $emailTag;
 
-	/**
-	 * @param string $emailTag
-	 * @return $this
-	 */
-	public function emailTag( $emailTag ) {
-		$this->emailTag = $emailTag;
-		return $this;
-	}
+    /**
+     * @param string $emailTag
+     *
+     * @return $this
+     */
+    public function emailTag($emailTag)
+    {
+        $this->emailTag = $emailTag;
 
-	/**
-	 * @return string
-	 */
-	public function getEmailTag() {
-		return $this->emailTag;
-	}
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailTag()
+    {
+        return $this->emailTag;
+    }
 }

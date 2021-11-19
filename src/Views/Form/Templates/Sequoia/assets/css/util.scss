@@ -4,10 +4,10 @@
 $break-phone: 500px;
 
 .give-flex {
-	@include display-flex;
+    @include display-flex;
 }
 
 .give-grid {
-	@include display-grid;
+    @include display-grid;
 }
 /* stylelint-enable */

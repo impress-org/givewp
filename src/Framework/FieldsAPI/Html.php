@@ -5,35 +5,39 @@ namespace Give\Framework\FieldsAPI;
 /**
  * @since 2.12.2
  */
-class Html extends Element {
+class Html extends Element
+{
 
-	const TYPE = 'html';
+    const TYPE = 'html';
 
-	/** @var string */
-	protected $html = '';
+    /** @var string */
+    protected $html = '';
 
-	/**
-	 * Set the HTML for the element.
-	 *
-	 * @since 2.12.2
-	 *
-	 * @param string $html
-	 * @return $this
-	 */
-	public function html( $html ) {
-		$this->html = $html;
+    /**
+     * Set the HTML for the element.
+     *
+     * @since 2.12.2
+     *
+     * @param string $html
+     *
+     * @return $this
+     */
+    public function html($html)
+    {
+        $this->html = $html;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the HTML for the element.
-	 *
-	 * @since 2.12.2
-	 *
-	 * @return string
-	 */
-	public function getHtml() {
-		return $this->html;
-	}
+    /**
+     * Get the HTML for the element.
+     *
+     * @since 2.12.2
+     *
+     * @return string
+     */
+    public function getHtml()
+    {
+        return $this->html;
+    }
 }

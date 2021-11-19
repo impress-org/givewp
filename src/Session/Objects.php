@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Session;
 
 /**
@@ -6,12 +7,14 @@ namespace Give\Session;
  *
  * @package Give\Session
  */
-interface Objects {
-	/**
-	 * Take array return object
-	 *
-	 * @since 2.7.0
-	 * @param array $array
-	 */
-	public static function fromArray( $array );
+interface Objects
+{
+    /**
+     * Take array return object
+     *
+     * @since 2.7.0
+     *
+     * @param array $array
+     */
+    public static function fromArray($array);
 }

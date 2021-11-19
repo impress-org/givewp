@@ -10,6 +10,7 @@ use Give\Tracking\TrackingData\ActiveDonationFormsData;
  *
  * @since 2.10.0
  */
-class ActiveDonationFormsFirstTimeTracking extends DonationFormsTracking {
-	protected $dataClassName = ActiveDonationFormsData::class;
+class ActiveDonationFormsFirstTimeTracking extends DonationFormsTracking
+{
+    protected $dataClassName = ActiveDonationFormsData::class;
 }

@@ -2,6 +2,7 @@
 
 namespace Give\TestData\Framework\Provider;
 
-interface ProviderContract {
-	public function __invoke();
+interface ProviderContract
+{
+    public function __invoke();
 }
