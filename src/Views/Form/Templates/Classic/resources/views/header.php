@@ -44,7 +44,7 @@
                     </span> <?= __('goal', 'give'); ?>
                 </li>
                 <li class="give-form-goal-progress">
-                    <div class="give-form-goal-progress-meter" role="meter" aria-labelledby="meter-label" aria-valuemin="0" aria-valuemax="1000000"
+                    <div class="give-form-goal-progress-meter" role="meter" aria-labelledby="meter-label" aria-valuemin="0" aria-valuemax="<?= $goalStats[ 'goal' ]; ?>"
                          aria-valuenow="<?= $goalStats[ 'progress' ]; ?>%" aria-valuetext="<?= $goalStats[ 'progress' ]; ?>%">
                         <div id="meter-label" hidden>
                             <?= sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ]); ?>

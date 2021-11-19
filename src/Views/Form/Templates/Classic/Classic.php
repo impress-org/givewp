@@ -369,7 +369,7 @@ class Classic extends Template implements Hookable, Scriptable
     {
         $filePath = $this->getFilePath($file);
 
-        if ( ! file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             throw new InvalidArgumentException("File {$filePath} does not exist");
         }
 
