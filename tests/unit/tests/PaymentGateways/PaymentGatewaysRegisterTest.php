@@ -11,132 +11,78 @@ use PHPUnit\Framework\TestCase;
 /**
  * @unreleased
  */
-class PaymentGatewaysRegisterTest extends TestCase {
-	/**
-	 * @var PaymentGatewayRegister
-	 */
-	private $paymentGatewayRegister;
+class PaymentGatewaysRegisterTest extends TestCase
+{
+    /**
+     * @var PaymentGatewayRegister
+     */
+    private $paymentGatewayRegister;
 
-	/**
-	 * @unreleased
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->paymentGatewayRegister = give( PaymentGatewayRegister::class );
-	}
+    protected function setUp()
+    {
+        $this->paymentGatewayRegister = give(PaymentGatewayRegister::class);
+        $this->resetGateways();
+    }
 
-	/**
-	 * @unreleased
-	 */
-	public function testPaymentGatewayRegistererIsTraversable() {
-		$this->assertInstanceOf( \Traversable::class, $this->paymentGatewayRegister );
-	}
+    protected function tearDown()
+    {
+        $this->resetGateways();
+    }
 
-	/**
-	 * @unreleased
-	 * @throws Exception
-	 * @throws OverflowException
-	 */
-	public function testNewPaymentGatewayClassMustExtendPaymentGateway() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->paymentGatewayRegister->registerGateway( AuthorizeNet::class );
-	}
+    public function resetGateways()
+    {
+        $gateways = $this->paymentGatewayRegister->getPaymentGateways();
+        foreach ($gateways as $gatewayClass) {
+            /** @var PaymentGateway $gateway */
+            $gateway = give($gatewayClass);
+            $this->paymentGatewayRegister->unregisterGateway($gateway->getId());
+        }
+    }
 
-	/**
-	 * @unreleased
-	 * @throws Exception
-	 * @throws OverflowException
-	 */
-	public function testNewPaymentGatewayClassMustImplementPaymentGatewayTypeInterface() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->paymentGatewayRegister->registerGateway( GoCardLess::class );
-	}
+    /**
+     * @unreleased
+     */
+    public function testPaymentGatewayRegistererIsTraversable()
+    {
+        $this->assertInstanceOf(\Traversable::class, $this->paymentGatewayRegister);
+    }
 
-	/**
-	 * @unreleased
-	 * @throws Exception
-	 * @throws OverflowException
-	 */
-	public function testNewPaymentGatewayClassHasAllRequiredMembers() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->paymentGatewayRegister->registerGateway( Square::class );
-		give( $this->paymentGatewayRegister->getPaymentGateway( Square::id() ) )->getPaymentMethodLabel();
-	}
+    /**
+     * @unreleased
+     * @throws Exception
+     * @throws OverflowException
+     */
+    public function testNewPaymentGatewayClassMustExtendPaymentGateway()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->paymentGatewayRegister->registerGateway(AuthorizeNet::class);
+    }
 
-	/**
-	 * @unreleased
-	 */
-	public function testRegisterGateways() {
-		$this->paymentGatewayRegister->registerGateway( Stripe::class );
-		$this->paymentGatewayRegister->registerGateway( PayPal::class );
+    /**
+     * @unreleased
+     */
+    public function testRegisterGateways()
+    {
+        $this->paymentGatewayRegister->registerGateway(Stripe::class);
+        $this->paymentGatewayRegister->registerGateway(PayPal::class);
 
-		$this->assertCount( 2, $this->paymentGatewayRegister->getPaymentGateways() );
-	}
+        $this->assertCount(2, $this->paymentGatewayRegister->getPaymentGateways());
+    }
 
-	/**
-	 * @unreleased
-	 * @throws Exception
-	 * @throws OverflowException
-	 */
-	public function testRegisterAlreadyRegisteredPaymentGateway() {
-		$this->expectException( OverflowException::class );
-
-		$this->paymentGatewayRegister->registerGateway( Stripe::class );
-	}
-
-	/**
-	 * @unreleased
-	 */
-	public function testAddNewPaymentGatewaysToList() {
-		$gateways = give_get_payment_gateways();
-
-		$this->assertArrayHasKey( Stripe::id(), $gateways );
-	}
+    /**
+     * @unreleased
+     * @throws Exception
+     * @throws OverflowException
+     */
+    public function testRegisterAlreadyRegisteredPaymentGateway()
+    {
+        $this->paymentGatewayRegister->registerGateway(Stripe::class);
+        $this->paymentGatewayRegister->registerGateway(Stripe::class);
+        $this->expectException(OverflowException::class);
+    }
 }
 
 class AuthorizeNet {
-}
-
-class GoCardLess extends PaymentGateway {
-	/**
-	 * @return string
-	 */
-	public static function id() {
-		return 'go-cardless';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getId() {
-		return self::id();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName()
-    {
-        return 'Stripe Payment Method';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPaymentMethodLabel()
-    {
-        return 'Credit Card';
-    }
-
-    public function getLegacyFormFieldMarkup($formId)
-    {
-        // TODO: Implement getLegacyFormFieldMarkup() method.
-    }
-
-    public function createPayment(GatewayPaymentData $paymentData)
-    {
-        // TODO: Implement createPayment() method.
-    }
 }
 
 class Square extends PaymentGateway {
