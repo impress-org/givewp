@@ -4,7 +4,7 @@ return [
     /**
      * Visual Appearance
      */
-    'appearance' => [
+    'visual_appearance' => [
         'name'   => sprintf(__('%1$sVisual Appearance%2$s', 'give'), '<strong>', '</strong>'),
         'fields' => [
             [
@@ -173,7 +173,7 @@ return [
     /**
      * Section 3: Payment Method
      */
-    'payment_method' => [
+    'payment_information' => [
         'name'   => sprintf(__('%1$sSection 3:%2$s Payment Method', 'give'), '<strong>', '</strong>'),
         'fields' => [
             [
