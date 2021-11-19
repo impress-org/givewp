@@ -349,7 +349,6 @@ class Classic extends Template implements Hookable, Scriptable
                     'goal'       => $goal,
                 ];
         }
-
     }
 
     /**

@@ -179,6 +179,13 @@
 .give-form-goal-progress-meter-bar {
     content: '';
     height: 100%;
-    background: linear-gradient(180deg, var(--give-header-stats-progressbar-color) 0%, var(--give-header-stats-progressbar-color) 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;
+    width: var(--progress);
+    background: linear-gradient(
+            180deg,
+            var(--give-header-stats-progressbar-color) 0%,
+            var(--give-header-stats-progressbar-color) 100%
+        ),
+        linear-gradient(180deg, #fff 0%, #ccc 100%);
+    background-blend-mode: multiply;
     border-radius: inherit;
 }
