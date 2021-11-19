@@ -94,6 +94,10 @@ class Classic extends Template implements Hookable, Scriptable
                 'hooks' => [ 'give_donation_form_before_submit', 'give_donation_form_after_submit' ],
                 'class' => 'give-donate-now-button-section',
             ],
+            [
+                'hooks' => [ 'give_donation_summary_top', 'give_donation_summary_bottom' ],
+                'class' => 'give-donation-form-summary-section',
+            ],
         ];
 
         foreach ($sections as $section) {
