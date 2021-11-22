@@ -292,10 +292,6 @@ class Classic extends Template implements Hookable, Scriptable
     public function getFormGoalStats(Give_Donate_Form $form)
     {
         $goalStats = give_goal_progress_stats($form->get_ID());
-
-        // print_r( $goalStats ); exit;
-
-
         $raisedRaw = $form->get_earnings();
 
         // Setup default raised value
