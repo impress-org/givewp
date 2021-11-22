@@ -51,8 +51,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 -   Preview Emails are now sent to the authenticated user (#5990)
 -   Donor dashboard response messages are now updated (#6003)
--   Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to register
-    and/or login to an account (#6015)
+-   Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to
+    register and/or login to an account (#6015)
 -   PayPal IPN verification setting with backward compatibility. PayPal IPN verification is enabled by default. (#5986)
 -   Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
 
@@ -719,11 +719,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
--   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (#5218)
+-   Resolved a conflict with the User Avatar plugin due to improper HTML output of the user profile field markup. (
+    # 5218)
 -   PHP Notices no longer break multi-step form receipt step. (#5219)
 -   Fee Recovery checkbox placement in Multi-Step forms now respects the Fee Recovery input location setting. (#5205)
--   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single gateway
-    enabled. (#5216)
+-   Form Field Manager fields are now set up on init of the Multi-Step form to ensure they work with only a single
+    gateway enabled. (#5216)
 
 ## 2.8.0-beta.3 - 2020-08-27
 
@@ -755,9 +756,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
--   Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display style
-    even after it is deprecated by Stripe. (#4964)
--   Format for country and state select fields is normalized so states have an empty option but countries do not. (#5163)
+-   Stripe Checkout modal is now rendered using Stripe Elements so that users can continue to use the modal display
+    style even after it is deprecated by Stripe. (#4964)
+-   Format for country and state select fields is normalized so states have an empty option but countries do not. (
+    # 5163)
 -   Scope of marked optional fields in the Multi-Step template is reduced to the User Info fieldset. (#5161)
 -   Wizard buttons now match the form preview. (#5167)
 -   Setup Page now initiates the connection to Stripe, but defers webhook configuration to the gateway settings. (#5171)
