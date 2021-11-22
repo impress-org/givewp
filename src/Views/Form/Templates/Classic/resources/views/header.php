@@ -45,15 +45,12 @@
                         role="meter"
                         class="give-form-goal-progress-meter"
                         style="--progress: <?= $goalStats[ 'progress' ]; ?>%"
-                        aria-labelledby="meter-label"
+                        aria-label="<?= sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ]); ?>"
                         aria-valuemin="0"
                         aria-valuemax="<?= $goalStats[ 'goalRaw' ]; ?>"
                         aria-valuenow="<?= $goalStats[ 'raisedRaw' ]; ?>"
                         aria-valuetext="<?= $goalStats[ 'progress' ]; ?>%"
                     >
-                        <div id="meter-label" hidden>
-                            <?= sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ]); ?>
-                        </div>
                     </div>
                 </li>
             </ul>
