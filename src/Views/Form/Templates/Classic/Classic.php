@@ -174,7 +174,7 @@ class Classic extends Template implements Hookable, Scriptable
             $this->loadFile('css/variables.php', [
                 'primaryColor'          => $this->options[ 'visual_appearance' ][ 'primary_color' ],
                 'headerBackgroundImage' => $this->options[ 'visual_appearance' ][ 'header_background_image' ],
-                'statsProgressBarColor' =>  give_get_meta(Frontend::getFormId(), '_give_goal_color', true)
+                'statsProgressBarColor' => give_get_meta(Frontend::getFormId(), '_give_goal_color', true)
             ])
         );
 
@@ -293,10 +293,15 @@ class Classic extends Template implements Hookable, Scriptable
     {
         $goalStats = give_goal_progress_stats($form->get_ID());
 
+        // print_r( $goalStats ); exit;
+
+
+        $raisedRaw = $form->get_earnings();
+
         // Setup default raised value
         $raised = give_currency_filter(
             give_format_amount(
-                $form->get_earnings(),
+                $raisedRaw,
                 [
                     'sanitize' => false,
                     'decimal'  => false,
@@ -321,33 +326,32 @@ class Classic extends Template implements Hookable, Scriptable
             )
         );
 
+        $stats = [
+            'raised'     => $raised,
+            'raisedRaw'  => $raisedRaw,
+            'progress'   => $goalStats[ 'progress' ],
+            'count'      => $count,
+            'countLabel' => $countLabel,
+            'goal'       => $goal,
+            'goalRaw'    => $goalStats[ 'raw_goal' ],
+        ];
+
         switch ($goalStats[ 'format' ]) {
             case 'donation':
-                return [
-                    'raised'     => $raised,
-                    'progress'   => $goalStats[ 'progress' ],
-                    'count'      => $goalStats[ 'actual' ],
-                    'countLabel' => $countLabel,
-                    'goal'       => $goalStats[ 'goal' ],
-                ];
+                return array_merge($stats, [
+                    'count' => $goalStats[ 'actual' ],
+                    'goal'  => $goalStats[ 'goal' ],
+                ]);
 
             case 'donors':
-                return [
-                    'raised'     => $raised,
-                    'progress'   => $goalStats[ 'progress' ],
+                return array_merge($stats, [
                     'count'      => $goalStats[ 'actual' ],
                     'countLabel' => _n('donor', 'donors', $count, 'give'),
                     'goal'       => $goalStats[ 'goal' ],
-                ];
+                ]);
 
             default:
-                return [
-                    'raised'     => $raised,
-                    'progress'   => $goalStats[ 'progress' ],
-                    'count'      => $count,
-                    'countLabel' => $countLabel,
-                    'goal'       => $goal,
-                ];
+                return $stats;
         }
     }
 

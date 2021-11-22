@@ -47,8 +47,8 @@
                         style="--progress: <?= $goalStats[ 'progress' ]; ?>%"
                         aria-labelledby="meter-label"
                         aria-valuemin="0"
-                        aria-valuemax="<?= $goalStats[ 'goal' ]; ?>"
-                        aria-valuenow="<?= $goalStats[ 'raised' ]; ?>"
+                        aria-valuemax="<?= $goalStats[ 'goalRaw' ]; ?>"
+                        aria-valuenow="<?= $goalStats[ 'raisedRaw' ]; ?>"
                         aria-valuetext="<?= $goalStats[ 'progress' ]; ?>%"
                     >
                         <div id="meter-label" hidden>
