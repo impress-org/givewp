@@ -54,7 +54,6 @@
                         <div id="meter-label" hidden>
                             <?= sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ]); ?>
                         </div>
-                        <div class="give-form-goal-progress-meter-bar"></div>
                     </div>
                 </li>
             </ul>

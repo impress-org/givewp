@@ -176,8 +176,9 @@
     box-shadow: inset 0 0.0625em 0.25rem rgba(0, 0, 0, 0.1);
 }
 
-.give-form-goal-progress-meter-bar {
+.give-form-goal-progress-meter::after {
     content: '';
+    display: block;
     height: 100%;
     width: var(--progress);
     background: linear-gradient(
