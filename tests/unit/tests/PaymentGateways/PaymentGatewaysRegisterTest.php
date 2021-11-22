@@ -20,23 +20,7 @@ class PaymentGatewaysRegisterTest extends TestCase
 
     protected function setUp()
     {
-        $this->paymentGatewayRegister = give(PaymentGatewayRegister::class);
-        $this->resetGateways();
-    }
-
-    protected function tearDown()
-    {
-        $this->resetGateways();
-    }
-
-    public function resetGateways()
-    {
-        $gateways = $this->paymentGatewayRegister->getPaymentGateways();
-        foreach ($gateways as $gatewayClass) {
-            /** @var PaymentGateway $gateway */
-            $gateway = give($gatewayClass);
-            $this->paymentGatewayRegister->unregisterGateway($gateway->getId());
-        }
+        $this->paymentGatewayRegister = new PaymentGatewayRegister();
     }
 
     /**
@@ -55,7 +39,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     public function testNewPaymentGatewayClassMustExtendPaymentGateway()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->paymentGatewayRegister->registerGateway(AuthorizeNet::class);
+        $this->paymentGatewayRegister->registerGateway(MockAuthorizeNet::class);
     }
 
     /**
@@ -63,9 +47,8 @@ class PaymentGatewaysRegisterTest extends TestCase
      */
     public function testRegisterGateways()
     {
-        $this->paymentGatewayRegister->registerGateway(Stripe::class);
-        $this->paymentGatewayRegister->registerGateway(PayPal::class);
-
+        $this->paymentGatewayRegister->registerGateway(MockStripe::class);
+        $this->paymentGatewayRegister->registerGateway(MockPayPal::class);
         $this->assertCount(2, $this->paymentGatewayRegister->getPaymentGateways());
     }
 
@@ -76,56 +59,17 @@ class PaymentGatewaysRegisterTest extends TestCase
      */
     public function testRegisterAlreadyRegisteredPaymentGateway()
     {
-        $this->paymentGatewayRegister->registerGateway(Stripe::class);
-        $this->paymentGatewayRegister->registerGateway(Stripe::class);
         $this->expectException(OverflowException::class);
+        $this->paymentGatewayRegister->registerGateway(MockStripe::class);
+        $this->paymentGatewayRegister->registerGateway(MockStripe::class);
     }
 }
 
-class AuthorizeNet {
+class MockAuthorizeNet
+{
 }
 
-class Square extends PaymentGateway {
-	/**
-	 * @return string
-	 */
-	public static function id() {
-        return 'square';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId()
-    {
-        return self::id();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName()
-    {
-        return 'Square Payment Method';
-    }
-
-    public function getPaymentMethodLabel()
-    {
-        // TODO: Implement getPaymentMethodLabel() method.
-    }
-
-    public function getLegacyFormFieldMarkup($formId)
-    {
-        // TODO: Implement getLegacyFormFieldMarkup() method.
-    }
-
-    public function createPayment(GatewayPaymentData $paymentData)
-    {
-        // TODO: Implement createPayment() method.
-    }
-}
-
-class Stripe extends PaymentGateway
+class MockStripe extends PaymentGateway
 {
     /**
      * @return string
@@ -170,7 +114,7 @@ class Stripe extends PaymentGateway
     }
 }
 
-class Paypal extends PaymentGateway
+class MockPaypal extends PaymentGateway
 {
     /**
      * @return string
