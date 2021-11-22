@@ -111,7 +111,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The "Thank You" description setting field update from textarea to wysiwyg. (#5985)
 
 ### Fixed
-
 - Add min/max-length validation to text and textarea Fields API node types. (#5955)
 - Add maxlength attribute in input and textarea field template in legacy consumer. (#5955)
 - Prevent php notices which generate from offline -donations.php. (#5960)
