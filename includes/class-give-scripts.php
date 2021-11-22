@@ -447,20 +447,6 @@ class Give_Scripts {
 	 * @since 2.1.0
 	 */
 	public function public_enqueue_scripts() {
-
-		// Call Babel Polyfill with common handle so that it is compatible with plugins and themes.
-		if ( ! wp_script_is( 'babel-polyfill', 'enqueued' )
-			 && give_is_setting_enabled( give_get_option( 'babel_polyfill_script', 'enabled' ) )
-		) {
-			wp_enqueue_script(
-				'babel-polyfill',
-				GIVE_PLUGIN_URL . 'assets/dist/js/babel-polyfill.js',
-				[ 'jquery' ],
-				GIVE_VERSION,
-				false
-			);
-		}
-
 		wp_enqueue_script( 'give' );
 
 		$this->public_localize_scripts();
