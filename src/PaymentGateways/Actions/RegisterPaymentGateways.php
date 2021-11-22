@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\Actions;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
 class RegisterPaymentGateways
 {
@@ -15,7 +14,7 @@ class RegisterPaymentGateways
      * @var string[]
      */
     public $gateways = [
-        TestGateway::class
+        // TestGateway::class - When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
     ];
 
     /**
