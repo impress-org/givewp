@@ -2,6 +2,8 @@
 
 namespace Give\Views\Form\Templates\Classic;
 
+use Give\Helpers\Form\Template\Utils\Frontend;
+use Give_Donate_Form;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
@@ -68,46 +70,46 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function loadHooks()
     {
-        add_action('give_pre_form', [ $this, 'renderIconDefinitions' ]);
+        add_action('give_pre_form', [$this, 'renderIconDefinitions']);
 
         // Display header
         if ('enabled' === $this->options[ 'visual_appearance' ][ 'display_header' ]) {
-            add_action('give_pre_form', [ $this, 'renderHeader' ]);
+            add_action('give_pre_form', [$this, 'renderHeader'], 10, 3);
         }
 
-        add_action('give_before_donation_levels', [ $this, 'renderDonationAmountHeading' ], 20);
+        add_action('give_before_donation_levels', [$this, 'renderDonationAmountHeading'], 20);
 
         $sections = [
             [
-                'hooks' => [ 'give_donation_form_top' ],
+                'hooks' => ['give_donation_form_top'],
                 'class' => 'give-donation-amount-section',
             ],
             [
-                'hooks' => [ 'give_donation_form_register_login_fields' ],
+                'hooks' => ['give_donation_form_register_login_fields'],
                 'class' => 'give-personal-info-section',
             ],
             [
-                'hooks' => [ 'give_payment_mode_top', 'give_payment_mode_bottom' ],
+                'hooks' => ['give_payment_mode_top', 'give_payment_mode_bottom'],
                 'class' => 'give-payment-details-section',
             ],
             [
-                'hooks' => [ 'give_donation_form_before_submit', 'give_donation_form_after_submit' ],
+                'hooks' => ['give_donation_form_before_submit', 'give_donation_form_after_submit'],
                 'class' => 'give-donate-now-button-section',
             ],
             [
-                'hooks' => [ 'give_donation_summary_top', 'give_donation_summary_bottom' ],
+                'hooks' => ['give_donation_summary_top', 'give_donation_summary_bottom'],
                 'class' => 'give-donation-form-summary-section',
             ],
         ];
 
         foreach ($sections as $section) {
-            list ( $start, $end ) = array_pad($section[ 'hooks' ], 2, null);
+            list ($start, $end) = array_pad($section[ 'hooks' ], 2, null);
 
             add_action($start, function () use ($section) {
                 printf('<section class="give-form-section %s">', $section[ 'class' ]);
             }, -10000);
 
-            add_action($end ?: $start, function () {
+            add_action($end ? : $start, function () {
                 echo '</section>';
             }, 10000);
         }
@@ -138,8 +140,8 @@ class Classic extends Template implements Hookable, Scriptable
         // Font
         $primaryFont = $this->options[ 'visual_appearance' ][ 'primary_font' ];
 
-        if (in_array($primaryFont, [ 'custom', 'montserrat' ])) {
-            $font = ( 'montserrat' === $primaryFont )
+        if (in_array($primaryFont, ['custom', 'montserrat'])) {
+            $font = ('montserrat' === $primaryFont)
                 ? 'Montserrat'
                 : $this->options[ 'visual_appearance' ][ 'custom_font' ];
 
@@ -172,6 +174,7 @@ class Classic extends Template implements Hookable, Scriptable
             $this->loadFile('css/variables.php', [
                 'primaryColor'          => $this->options[ 'visual_appearance' ][ 'primary_color' ],
                 'headerBackgroundImage' => $this->options[ 'visual_appearance' ][ 'header_background_image' ],
+                'statsProgressBarColor' => give_get_meta(Frontend::getFormId(), '_give_goal_color', true)
             ])
         );
 
@@ -185,7 +188,7 @@ class Classic extends Template implements Hookable, Scriptable
         wp_enqueue_script(
             'give-classic-template-js',
             GIVE_PLUGIN_URL . 'assets/dist/js/give-classic-template.js',
-            [ 'give' ],
+            ['give'],
             GIVE_VERSION,
             true
         );
@@ -227,14 +230,22 @@ class Classic extends Template implements Hookable, Scriptable
 
     /**
      * Render donation form header
+     *
+     * @param  int  $formId
+     * @param  array  $args
+     * @param  Give_Donate_Form  $form
      */
-    public function renderHeader()
+    public function renderHeader($formId, $args, $form)
     {
+        $hasGoal = $form->has_goal();
+
         echo $this->loadFile('views/header.php', [
             'title'                => $this->options[ 'visual_appearance' ][ 'main_heading' ],
             'description'          => $this->options[ 'visual_appearance' ][ 'description' ],
             'isSecureBadgeEnabled' => $this->options[ 'visual_appearance' ][ 'secure_badge' ] === 'enabled',
             'secureBadgeContent'   => $this->options[ 'visual_appearance' ][ 'secure_badge_text' ],
+            'hasGoal'              => $hasGoal,
+            'goalStats'            => $hasGoal ? $this->getFormGoalStats($form) : []
         ]);
     }
 
@@ -265,8 +276,8 @@ class Classic extends Template implements Hookable, Scriptable
     {
         $receipt = new DonationReceipt($donationId);
 
-        $receipt->heading = esc_html(give_do_email_tags($this->options['donation_receipt']['headline'], [ 'payment_id' => $donationId ]));
-        $receipt->message = wp_kses_post(give_do_email_tags($this->options['donation_receipt']['description'], [ 'payment_id' => $donationId ]));
+        $receipt->heading = esc_html(give_do_email_tags($this->options[ 'donation_receipt' ][ 'headline' ], ['payment_id' => $donationId]));
+        $receipt->message = wp_kses_post(give_do_email_tags($this->options[ 'donation_receipt' ][ 'description' ], ['payment_id' => $donationId]));
 
         /**
          * Fire the action for receipt object.
@@ -276,6 +287,68 @@ class Classic extends Template implements Hookable, Scriptable
         do_action('give_new_receipt', $receipt);
 
         return $receipt;
+    }
+
+    public function getFormGoalStats(Give_Donate_Form $form)
+    {
+        $goalStats = give_goal_progress_stats($form->get_ID());
+        $raisedRaw = $form->get_earnings();
+
+        // Setup default raised value
+        $raised = give_currency_filter(
+            give_format_amount(
+                $raisedRaw,
+                [
+                    'sanitize' => false,
+                    'decimal'  => false,
+                ]
+            )
+        );
+
+        // Setup default count value
+        $count = $form->get_sales();
+
+        // Setup default count label
+        $countLabel = _n('donation', 'donations', $count, 'give');
+
+        // Setup default goal value
+        $goal = give_currency_filter(
+            give_format_amount(
+                $form->get_goal(),
+                [
+                    'sanitize' => false,
+                    'decimal'  => false,
+                ]
+            )
+        );
+
+        $stats = [
+            'raised'     => $raised,
+            'raisedRaw'  => $raisedRaw,
+            'progress'   => $goalStats[ 'progress' ],
+            'count'      => $count,
+            'countLabel' => $countLabel,
+            'goal'       => $goal,
+            'goalRaw'    => $goalStats[ 'raw_goal' ],
+        ];
+
+        switch ($goalStats[ 'format' ]) {
+            case 'donation':
+                return array_merge($stats, [
+                    'count' => $goalStats[ 'actual' ],
+                    'goal'  => $goalStats[ 'goal' ],
+                ]);
+
+            case 'donors':
+                return array_merge($stats, [
+                    'count'      => $goalStats[ 'actual' ],
+                    'countLabel' => _n('donor', 'donors', $count, 'give'),
+                    'goal'       => $goalStats[ 'goal' ],
+                ]);
+
+            default:
+                return $stats;
+        }
     }
 
     /**
