@@ -12,10 +12,10 @@ class GenerateReturnUrlFromRedirectOffsite {
     {
         return add_query_arg(
 			[
-				'give-listener' => 'payment-gateway',
-				'give-gateway-id' => $gatewayId,
+                'give-listener' => 'give-gateway',
+                'give-gateway-id' => $gatewayId,
                 'give-gateway-method' => $gatewayMethod
-			],
+            ],
 			home_url()
 		);
     }
