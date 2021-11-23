@@ -16,6 +16,7 @@ domIsReady(() => {
     isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
     splitGatewayResponse();
     setupCurrencySwitcherSelector();
+    setRecurringPeriodSelectWidth();
 });
 
 /**
@@ -279,4 +280,26 @@ function setupCurrencySwitcherSelector() {
 
         window.Give_Currency_Switcher.adjust_dropdown_width();
     }
+}
+
+function setRecurringPeriodSelectWidth() {
+    const select = document.querySelector('.give-recurring-donors-choice-period');
+
+    // Create a 2D context so we can measure the text.
+    const canvasContext = document.createElement('canvas').getContext('2d');
+    // Set the context’s font to the select element’s font.
+    canvasContext.font = window.getComputedStyle(select).getPropertyValue('font');
+
+    // Update the width of the select element.
+    function updateWidth() {
+        // Measure the selected option’s text.
+        const selectedTextMetrics = canvasContext.measureText(select.value);
+        // Use the width as the pixel value of the select element.
+        select.style.width = `${selectedTextMetrics.width}px`;
+    }
+
+    // Run when the page loads.
+    updateWidth();
+    // Run when the value changes.
+    select.addEventListener('change', updateWidth);
 }

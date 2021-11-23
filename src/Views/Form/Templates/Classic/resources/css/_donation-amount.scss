@@ -201,3 +201,13 @@
         opacity: 1;
     }
 }
+
+.give-recurring-donors-choice-period {
+    appearance: none;
+    display: inline;
+    border: 0;
+    border-bottom: 0.125em solid var(--give-primary-color);
+    font-size: inherit;
+    font-family: inherit;
+    text-align: center;
+}
