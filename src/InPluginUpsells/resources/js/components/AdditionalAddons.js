@@ -8,7 +8,7 @@ import styles from './AdditionalAddons.module.css';
 const {heading, description, addons, addonButtonCaption, allAddonsUrl} = window.GiveAddons.additionalAddons;
 
 export const AdditionalAddons = () => (
-	<article>
+    <article>
         <Hero heading={heading} description={description} />
         <ul className={styles.addons}>
             {addons.map(({name, image, description, url}) => (
@@ -34,6 +34,5 @@ export const AdditionalAddons = () => (
                 {__('View All Add-ons', 'give')}
             </Button>
         </div>
-	</article>
+    </article>
 );
-

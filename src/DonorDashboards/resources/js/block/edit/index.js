@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
+const {Fragment} = wp.element;
 const ServerSideRender = wp.serverSideRender;
 
 /**
@@ -9,12 +9,12 @@ const ServerSideRender = wp.serverSideRender;
  */
 import Inspector from './inspector';
 
-const edit = ( { attributes, setAttributes } ) => {
-	return (
-		<Fragment>
-			<Inspector { ... { attributes, setAttributes } } />
-			<ServerSideRender block="give/donor-dashboard" attributes={ attributes } />
-		</Fragment>
-	);
+const edit = ({attributes, setAttributes}) => {
+    return (
+        <Fragment>
+            <Inspector {...{attributes, setAttributes}} />
+            <ServerSideRender block="give/donor-dashboard" attributes={attributes} />
+        </Fragment>
+    );
 };
 export default edit;

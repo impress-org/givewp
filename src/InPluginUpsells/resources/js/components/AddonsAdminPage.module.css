@@ -14,19 +14,19 @@
 .root *,
 .root ::before,
 .root ::after {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .root {
-	height: 100%;
-	padding-bottom: 6rem;
-	background-color: #fff;
-	background-image: var(--decor);
-	background-position: top right;
-	background-repeat: no-repeat;
+    height: 100%;
+    padding-bottom: 6rem;
+    background-color: #fff;
+    background-image: var(--decor);
+    background-position: top right;
+    background-repeat: no-repeat;
     background-size: 22.875rem 10.3125rem;
-	color: #333;
-	font-family: 'Open Sans', system-ui, sans-serif;
+    color: #333;
+    font-family: 'Open Sans', system-ui, sans-serif;
     transition-property: background-image;
     /* This delay (ideally) reduces the flicker from the first time a new decor image loads */
     transition-delay: 50ms;
@@ -35,19 +35,19 @@
 }
 
 .header {
-	display: grid;
-	gap: 1.5rem;
-	padding-top: 1.5rem;
-	border-bottom: 0.0625rem solid #eaeaea;
+    display: grid;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    border-bottom: 0.0625rem solid #eaeaea;
     position: relative;
 }
 
 .container {
     padding-left: 2rem;
     padding-right: 2rem;
-	max-width: 64.875rem;
-	width: 100%;
-	margin: 0 auto;
+    max-width: 64.875rem;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .logo {
@@ -78,7 +78,7 @@
     position: relative;
     top: 0.2em;
     display: inline-block;
-    content: "";
+    content: '';
     height: 1em;
     width: 1em;
     margin-left: 0.3125rem;
@@ -92,14 +92,14 @@
 }
 
 .tabs [data-reach-tab] {
-	position: relative;
-	appearance: none;
-	padding: 1em;
-	border: 0;
-	background-color: transparent;
-	color: inherit;
-	font-weight: 600;
-	font-size: 0.8rem;
+    position: relative;
+    appearance: none;
+    padding: 1em;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    font-weight: 600;
+    font-size: 0.8rem;
     cursor: pointer;
 }
 
@@ -110,16 +110,16 @@
 }
 
 .tabs [data-reach-tab]::after {
-	content: "";
-	display: block;
-	position: absolute;
-	top: calc(100% - 0.1875em);
-	width: calc(100% - 2em);
-	height: 0.1875em;
-	background-color: transparent;
-	transition: background-color 100ms ease-in-out;
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(100% - 0.1875em);
+    width: calc(100% - 2em);
+    height: 0.1875em;
+    background-color: transparent;
+    transition: background-color 100ms ease-in-out;
 }
 
-.tabs [data-reach-tab][aria-selected=true]::after {
-	background-color: #66bb6a;
+.tabs [data-reach-tab][aria-selected='true']::after {
+    background-color: #66bb6a;
 }

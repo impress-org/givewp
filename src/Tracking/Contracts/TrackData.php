@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Tracking\Contracts;
 
 /**
@@ -6,16 +7,17 @@ namespace Give\Tracking\Contracts;
  *
  * This interface represents a Track Data collection
  *
- * @since 2.10.0
  * @package Give\Tracking
+ * @since 2.10.0
  */
-interface TrackData {
+interface TrackData
+{
 
-	/**
-	 * Returns the collection data.
-	 *
-	 * @since 2.10.0
-	 * @return array The collection data.
-	 */
-	public function get();
+    /**
+     * Returns the collection data.
+     *
+     * @since 2.10.0
+     * @return array The collection data.
+     */
+    public function get();
 }

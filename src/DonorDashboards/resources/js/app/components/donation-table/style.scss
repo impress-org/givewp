@@ -1,65 +1,65 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard-table__footer-nav {
-	a {
-		border: none;
-		color: #9fa2b4;
-		cursor: pointer;
-	}
-	svg {
-		margin: 8px;
-	}
+    a {
+        border: none;
+        color: #9fa2b4;
+        cursor: pointer;
+    }
+    svg {
+        margin: 8px;
+    }
 }
 
 .give-donor-dashboard-table__donation-date,
 .give-donor-dashboard-table__donation-time {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .give-donor-dashboard-table__row {
-	.give-donor-dashboard-table__donation-amount {
-		font-size: 18px;
-		color: #424242;
-		font-weight: 500;
+    .give-donor-dashboard-table__donation-amount {
+        font-size: 18px;
+        color: #424242;
+        font-weight: 500;
 
-		@media screen and (max-width: 920px) {
-			font-size: 24px;
-		}
-	}
+        @media screen and (max-width: 920px) {
+            font-size: 24px;
+        }
+    }
 
-	.give-donor-dashboard-table__donation-status {
-		display: flex;
-		align-items: center;
+    .give-donor-dashboard-table__donation-status {
+        display: flex;
+        align-items: center;
 
-		.give-donor-dashboard-table__donation-status-indicator {
-			width: 12px;
-			height: 12px;
-			border-radius: 50%;
-			overflow: hidden;
-			margin-right: 6px;
-		}
-	}
+        .give-donor-dashboard-table__donation-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 6px;
+        }
+    }
 
-	.give-donor-dashboard-table__donation-test-tag {
-		color: #fff;
-		background: #ffba00;
-		padding: 4px 8px;
-		border-radius: 5px;
-		font-weight: 500;
-		font-size: 12px;
-		line-height: 1;
-		margin-top: 4px;
-		display: inline-block;
-	}
+    .give-donor-dashboard-table__donation-test-tag {
+        color: #fff;
+        background: #ffba00;
+        padding: 4px 8px;
+        border-radius: 5px;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 1;
+        margin-top: 4px;
+        display: inline-block;
+    }
 
-	.give-donor-dashboard-table__donation-id {
-		color: #6b6b6b;
-	}
+    .give-donor-dashboard-table__donation-id {
+        color: #6b6b6b;
+    }
 
-	.give-donor-dashboard-table__donation-receipt a {
-		color: var(--give-donor-dashboard-accent-color);
-		text-decoration: none;
-		border: none;
-		cursor: pointer;
-	}
+    .give-donor-dashboard-table__donation-receipt a {
+        color: var(--give-donor-dashboard-accent-color);
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
 }

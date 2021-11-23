@@ -3,9 +3,18 @@ import {Button} from './Button';
 import {Card} from './Card';
 import {transformEmphasis, transformStrong} from '../utils';
 
-import styles from './PricingPlanCard.module.css'
+import styles from './PricingPlanCard.module.css';
 
-export const PricingPlanCard = ({name, description, actionText, actionLink, icon, includes, savingsPercentage, isMostPopular}) => {
+export const PricingPlanCard = ({
+    name,
+    description,
+    actionText,
+    actionLink,
+    icon,
+    includes,
+    savingsPercentage,
+    isMostPopular,
+}) => {
     const includesLabelId = useMemo(() => `${window.lodash.kebabCase(name)}-includes-label`, [name]);
 
     return (
@@ -20,7 +29,9 @@ export const PricingPlanCard = ({name, description, actionText, actionLink, icon
                 </div>
                 <p className={styles.description} dangerouslySetInnerHTML={{__html: transformStrong(description)}} />
                 <div className={styles.actionAndSavings}>
-                    <Button as="a" href={actionLink} rel="noopener" target="_blank" className={styles.button}>{actionText}</Button>
+                    <Button as="a" href={actionLink} rel="noopener" target="_blank" className={styles.button}>
+                        {actionText}
+                    </Button>
                     <p className={styles.savings}>Save over {savingsPercentage}%</p>
                 </div>
             </div>
@@ -29,10 +40,19 @@ export const PricingPlanCard = ({name, description, actionText, actionLink, icon
                     <span className="screen-reader-text">{name} </span>Includes
                 </h4>
                 <ul className={styles.includesList}>
-                    {includes.map(include => (
+                    {includes.map((include) => (
                         <li key={include.feature} className={styles.include}>
                             {include.icon && <img src={include.icon} alt="" className={styles.includeIcon} />}
-                            {include.link ? <a href={include.link} target="_blank" rel="noopener" dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}} /> : <span dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}} />}
+                            {include.link ? (
+                                <a
+                                    href={include.link}
+                                    target="_blank"
+                                    rel="noopener"
+                                    dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}}
+                                />
+                            ) : (
+                                <span dangerouslySetInnerHTML={{__html: transformEmphasis(include.feature)}} />
+                            )}
                         </li>
                     ))}
                 </ul>

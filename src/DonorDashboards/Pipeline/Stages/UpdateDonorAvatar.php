@@ -2,36 +2,35 @@
 
 namespace Give\DonorDashboards\Pipeline\Stages;
 
-use Give\DonorDashboards\Pipeline\Stages\Stage;
-
 /**
  * @since 2.10.0
  */
-class UpdateDonorAvatar implements Stage {
+class UpdateDonorAvatar implements Stage
+{
 
-	protected $data;
-	protected $donor;
+    protected $data;
+    protected $donor;
 
-	public function __invoke( $payload ) {
+    public function __invoke($payload)
+    {
+        $this->data = $payload['data'];
+        $this->donor = $payload['donor'];
 
-		$this->data  = $payload['data'];
-		$this->donor = $payload['donor'];
+        $this->updateAvatarInMetaDB();
 
-		$this->updateAvatarInMetaDB();
+        return $payload;
+    }
 
-		return $payload;
+    protected function updateAvatarInMetaDB()
+    {
+        $attributeMetaMap = [
+            'avatarId' => '_give_donor_avatar_id',
+        ];
 
-	}
-
-	protected function updateAvatarInMetaDB() {
-		$attributeMetaMap = [
-			'avatarId' => '_give_donor_avatar_id',
-		];
-
-		foreach ( $attributeMetaMap as $attribute => $metaKey ) {
-			if ( key_exists( $attribute, $this->data ) ) {
-				$this->donor->update_meta( $metaKey, $this->data[ $attribute ] );
-			}
-		}
-	}
+        foreach ($attributeMetaMap as $attribute => $metaKey) {
+            if (key_exists($attribute, $this->data)) {
+                $this->donor->update_meta($metaKey, $this->data[$attribute]);
+            }
+        }
+    }
 }

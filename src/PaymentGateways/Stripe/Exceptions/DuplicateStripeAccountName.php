@@ -10,6 +10,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
  *
  * @since 2.13.0
  */
-class DuplicateStripeAccountName extends Exception {
+class DuplicateStripeAccountName extends Exception
+{
 
 }

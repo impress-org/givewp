@@ -5,11 +5,13 @@ namespace Give\InPluginUpsells;
 /**
  * @since 2.17.0
  */
-class RecurringDonationsTab {
+class RecurringDonationsTab
+{
     /**
      * Load scripts
      */
-    public function loadScripts() {
+    public function loadScripts()
+    {
         wp_enqueue_script(
             'give-in-plugin-upsells-recurring-donations',
             GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-recurring-donations-settings-tab.js',
@@ -18,16 +20,16 @@ class RecurringDonationsTab {
             true
         );
 
-		wp_enqueue_style(
-			'give-in-plugin-upsells-addons-font',
-			'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap',
-			[],
-			null
-		);
+        wp_enqueue_style(
+            'give-in-plugin-upsells-addons-font',
+            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap',
+            [],
+            null
+        );
 
-		wp_localize_script(
-			'give-in-plugin-upsells-recurring-donations',
-			'GiveRecurringDonations',
+        wp_localize_script(
+            'give-in-plugin-upsells-recurring-donations',
+            'GiveRecurringDonations',
             ['assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/']
         );
     }
@@ -35,10 +37,11 @@ class RecurringDonationsTab {
     /**
      * Is the tab active?
      */
-    public static function isShowing() {
-        $recurringIsNotActive = !defined('GIVE_RECURRING_VERSION');
-        $isSettingPage = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'];
-        $isRecurringDonationsTab = isset( $_GET['tab'] ) && 'recurring' === $_GET['tab'];
+    public static function isShowing()
+    {
+        $recurringIsNotActive = ! defined('GIVE_RECURRING_VERSION');
+        $isSettingPage = isset($_GET['page']) && 'give-settings' === $_GET['page'];
+        $isRecurringDonationsTab = isset($_GET['tab']) && 'recurring' === $_GET['tab'];
 
         return $recurringIsNotActive && $isSettingPage && $isRecurringDonationsTab;
     }

@@ -3,7 +3,6 @@
 }
 
 .give-donation-summary-section {
-
     font-family: Montserrat, serif;
     font-style: normal;
     font-weight: 600;
@@ -14,7 +13,7 @@
         vertical-align: text-top;
 
         path {
-            fill: var(--primary-color, #3BA2E0 );
+            fill: var(--primary-color, #3ba2e0);
         }
     }
 
@@ -24,13 +23,13 @@
 
     .give-donation-summary-table-wrapper {
         color: #333333;
-        background-color: #F9F9F9;
+        background-color: #f9f9f9;
         margin: 20px -20px;
         padding: 0 20px;
     }
 
     .back-btn {
-        color: var(--primary-color, #3BA2E0 );
+        color: var(--primary-color, #3ba2e0);
         font-weight: 500;
         font-size: 12px;
         line-height: 23px;
@@ -44,7 +43,7 @@
     }
 
     .give-donation-summary-help-text {
-        color: #8C8C8C;
+        color: #8c8c8c;
 
         margin: 10px 0;
 
@@ -67,10 +66,12 @@
     }
 
     tr {
-        border-bottom: 1px solid #F2F2F2;
+        border-bottom: 1px solid #f2f2f2;
     }
 
-    tr, th, td {
+    tr,
+    th,
+    td {
         height: 42px;
         padding: 10px 0;
     }
@@ -91,10 +92,13 @@
     }
 
     @media screen and (max-width: 500px) {
-        tr, th, td {
+        tr,
+        th,
+        td {
             height: 26px;
         }
-        th, td {
+        th,
+        td {
             padding-top: 15px;
             vertical-align: top;
 

@@ -1,86 +1,86 @@
 .title {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	font-weight: 600;
-	padding: 16px;
-	font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    padding: 16px;
+    font-size: 15px;
 }
 
 .table {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-	overflow-y: auto;
-	overflow-x: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-	> * {
-		display: flex;
-		height: auto;
-		font-size: 14px;
-		padding: 10px 16px;
+    > * {
+        display: flex;
+        height: auto;
+        font-size: 14px;
+        padding: 10px 16px;
 
-		> * {
-			flex: 1;
-		}
-	}
+        > * {
+            flex: 1;
+        }
+    }
 }
 
 .header {
-	font-weight: 500;
-	position: sticky;
-	top: 0;
-	display: flex;
-	align-items: center;
-	border-bottom: 2px solid #eee;
-	padding: 20px;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding: 20px;
 }
 
 .headerStripped {
-	background: #f4f4f4;
-	box-shadow: 0 0 8px #b8b8b8;
+    background: #f4f4f4;
+    box-shadow: 0 0 8px #b8b8b8;
 }
 
 .row {
-	background: #fff;
-	padding: 20px;
-	border-bottom: 2px solid #eee;
+    background: #fff;
+    padding: 20px;
+    border-bottom: 2px solid #eee;
 }
 
 .row:last-child {
-	border-bottom: 0;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
+    border-bottom: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .rowStripped {
-	&:nth-of-type(odd) {
-		background: #f4f4f4;
-	}
+    &:nth-of-type(odd) {
+        background: #f4f4f4;
+    }
 }
 
 .label {
-	font-weight: 600;
+    font-weight: 600;
 }
 
 .item {
-	display: flex;
-	color: #555;
+    display: flex;
+    color: #555;
 
-	a {
-		text-decoration: none;
-	}
+    a {
+        text-decoration: none;
+    }
 }
 
 .sortIconUndefined {
-	color: #b8b8b8;
+    color: #b8b8b8;
 }
 
 .sortIcons {
-	cursor: pointer;
-	padding-left: 6px;
+    cursor: pointer;
+    padding-left: 6px;
 }
 
 .noData {
-	padding: 20px;
+    padding: 20px;
 }

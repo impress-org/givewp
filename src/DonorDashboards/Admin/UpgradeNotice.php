@@ -2,74 +2,83 @@
 
 namespace Give\DonorDashboards\Admin;
 
-class UpgradeNotice {
+class UpgradeNotice
+{
 
-	/**
-	 * Reigster upgrade notice
-	 *
-	 * @return void
-	 *
-	 * @since 2.10.0
-	 */
-	public function register() {
-		if ( $this->shouldRenderOutput() ) {
-			$this->renderOutput();
-		}
-	}
+    /**
+     * Reigster upgrade notice
+     *
+     * @since 2.10.0
+     * @return void
+     *
+     */
+    public function register()
+    {
+        if ($this->shouldRenderOutput()) {
+            $this->renderOutput();
+        }
+    }
 
-	/**
-	 * Return true if notice should be rendered, false if not
-	 *
-	 * @return boolean
-	 *
-	 * @since 2.10.0
-	 */
-	protected function shouldRenderOutput() {
-		if ( ! give_is_admin_page() ) {
-			return false;
-		}
+    /**
+     * Return true if notice should be rendered, false if not
+     *
+     * @since 2.10.0
+     * @return boolean
+     *
+     */
+    protected function shouldRenderOutput()
+    {
+        if ( ! give_is_admin_page()) {
+            return false;
+        }
 
-		$donorDashboardPageIsSet = ! empty( give_get_option( 'donor_dashboard_page' ) ) && get_post_status( give_get_option( 'donor_dashboard_page' ) );
-		$historyPageIsSet        = ! empty( give_get_option( 'history_page' ) );
-		return ! $donorDashboardPageIsSet && $historyPageIsSet;
-	}
+        $donorDashboardPageIsSet = ! empty(give_get_option('donor_dashboard_page')) && get_post_status(
+                give_get_option('donor_dashboard_page')
+            );
+        $historyPageIsSet = ! empty(give_get_option('history_page'));
 
-	/**
-	 * Render notice output
-	 *
-	 * @return void
-	 *
-	 * @since 2.10.0
-	 */
-	protected function renderOutput() {
-		echo $this->getOutput();
-	}
+        return ! $donorDashboardPageIsSet && $historyPageIsSet;
+    }
 
-	/**
-	 * Get notice output
-	 *
-	 * @return string
-	 *
-	 * @since 2.10.0
-	 */
-	protected function getOutput() {
-		ob_start();
-		$output = '';
-		require $this->getTemplatePath();
-		$output = ob_get_contents();
-		ob_end_clean();
+    /**
+     * Render notice output
+     *
+     * @since 2.10.0
+     * @return void
+     *
+     */
+    protected function renderOutput()
+    {
+        echo $this->getOutput();
+    }
 
-		return $output;
-	}
+    /**
+     * Get notice output
+     *
+     * @since 2.10.0
+     * @return string
+     *
+     */
+    protected function getOutput()
+    {
+        ob_start();
+        $output = '';
+        require $this->getTemplatePath();
+        $output = ob_get_contents();
+        ob_end_clean();
 
-	/**
-	 * Get template path for notice output
-	 *
-	 * @return string
-	 *
-	 * @since 2.10.0
-	 */
-	protected function getTemplatePath() {
-		return GIVE_PLUGIN_DIR . '/src/DonorDashboards/resources/views/upgradenotice.php';
-	}
+        return $output;
+    }
+
+    /**
+     * Get template path for notice output
+     *
+     * @since 2.10.0
+     * @return string
+     *
+     */
+    protected function getTemplatePath()
+    {
+        return GIVE_PLUGIN_DIR . '/src/DonorDashboards/resources/views/upgradenotice.php';
+    }
 }

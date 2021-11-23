@@ -52,9 +52,9 @@ class PayPalOrder
      */
     public function __construct(PayPalClient $paypalClient, MerchantDetail $merchantDetails, Settings $settings)
     {
-        $this->paypalClient    = $paypalClient;
+        $this->paypalClient = $paypalClient;
         $this->merchantDetails = $merchantDetails;
-        $this->settings        = $settings;
+        $this->settings = $settings;
     }
 
     /**
@@ -106,30 +106,30 @@ class PayPalOrder
         $request = new OrdersCreateRequest();
         $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
-        $formId           = (int)$array['formId'];
+        $formId = (int)$array['formId'];
         $donationCurrency = give_get_currency($formId);
-        $donationAmount   = give_maybe_sanitize_amount(
+        $donationAmount = give_maybe_sanitize_amount(
             $array['donationAmount'],
             ['currency' => give_get_currency($formId)]
         );
-        $request->body    = [
-            'intent'              => 'CAPTURE',
-            'payer'               => [
-                'given_name'    => $array['payer']['firstName'],
-                'surname'       => $array['payer']['lastName'],
+        $request->body = [
+            'intent' => 'CAPTURE',
+            'payer' => [
+                'given_name' => $array['payer']['firstName'],
+                'surname' => $array['payer']['lastName'],
                 'email_address' => $array['payer']['email'],
             ],
-            'purchase_units'      => [
+            'purchase_units' => [
                 [
-                    'reference_id'        => get_post_field('post_name', $formId),
-                    'description'         => $array['formTitle'],
-                    'amount'              => [
-                        'value'         => $donationAmount,
-                        'currency_code' => $donationCurrency
+                    'reference_id' => get_post_field('post_name', $formId),
+                    'description' => $array['formTitle'],
+                    'amount' => [
+                        'value' => $donationAmount,
+                        'currency_code' => $donationCurrency,
                     ],
-                    'payee'               => [
+                    'payee' => [
                         'email_address' => $this->merchantDetails->merchantId,
-                        'merchant_id'   => $this->merchantDetails->merchantIdInPayPal,
+                        'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
                     ],
                     'payment_instruction' => [
                         'disbursement_mode' => 'INSTANT',
@@ -138,7 +138,7 @@ class PayPalOrder
             ],
             'application_context' => [
                 'shipping_preference' => 'NO_SHIPPING',
-                'user_action'         => 'PAY_NOW',
+                'user_action' => 'PAY_NOW',
             ],
         ];
 
@@ -146,21 +146,21 @@ class PayPalOrder
         if ($this->settings->isTransactionTypeDonation()) {
             $request->body['purchase_units'][0]['items'] = [
                 [
-                    'name'        => get_post_field('post_name', $formId),
+                    'name' => get_post_field('post_name', $formId),
                     'unit_amount' => [
-                        'value'         => $donationAmount,
-                        'currency_code' => $donationCurrency
+                        'value' => $donationAmount,
+                        'currency_code' => $donationCurrency,
                     ],
-                    'quantity'    => 1,
-                    'category'    => 'DONATION'
-                ]
+                    'quantity' => 1,
+                    'category' => 'DONATION',
+                ],
             ];
 
             $request->body['purchase_units'][0]['amount']['breakdown'] = [
                 'item_total' => [
                     'currency_code' => $donationCurrency,
-                    'value'         => $donationAmount,
-                ]
+                    'value' => $donationAmount,
+                ],
             ];
         }
 
@@ -225,7 +225,7 @@ class PayPalOrder
     private function validateCreateOrderArguments($array)
     {
         $required = ['formId', 'donationAmount', 'payer'];
-        $array    = array_filter($array); // Remove empty values.
+        $array = array_filter($array); // Remove empty values.
 
         if (array_diff($required, array_keys($array))) {
             throw new InvalidArgumentException(

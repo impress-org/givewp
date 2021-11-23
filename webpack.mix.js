@@ -64,6 +64,16 @@ mix.webpackConfig({
 mix.options({
     // Don't perform any css url rewriting by default
     processCssUrls: false,
+
+    // Prevent LICENSE files from showing up in JS builds
+    terser: {
+        extractComments: (astNode, comment) => false,
+        terserOptions: {
+            format: {
+                comments: false,
+            }
+        }
+    }
 });
 
 if (mix.inProduction()) {

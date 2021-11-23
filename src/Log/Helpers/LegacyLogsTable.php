@@ -10,17 +10,19 @@ use Give\Framework\Database\DB;
  *
  * @since 2.10.2
  */
-class LegacyLogsTable {
-	/**
-	 * Check if legacy logs table exists
-	 *
-	 * @return bool
-	 */
-	public function exist() {
-		global $wpdb;
+class LegacyLogsTable
+{
+    /**
+     * Check if legacy logs table exists
+     *
+     * @return bool
+     */
+    public function exist()
+    {
+        global $wpdb;
 
-		return (bool) DB::get_var(
-			DB::prepare( "SHOW TABLES LIKE '%s'", "{$wpdb->prefix}give_logs" )
-		);
-	}
+        return (bool)DB::get_var(
+            DB::prepare("SHOW TABLES LIKE '%s'", "{$wpdb->prefix}give_logs")
+        );
+    }
 }

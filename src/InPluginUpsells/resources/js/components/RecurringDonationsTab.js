@@ -16,7 +16,12 @@ const features = [
 export const RecurringDonationsTab = () => (
     <Card as="article" className={styles.card}>
         <h2 className={styles.title}>{__('Increase your fundraising with Recurring Donations', 'give')}</h2>
-        <p className={styles.description}>{__('The best fundraisers and organizations know that capturing recurring donors is the foundation of your organizations longevity.', 'give')}</p>
+        <p className={styles.description}>
+            {__(
+                'The best fundraisers and organizations know that capturing recurring donors is the foundation of your organizations longevity.',
+                'give'
+            )}
+        </p>
         <Button
             as="a"
             href="https://docs.givewp.com/acrecurring"
@@ -32,7 +37,7 @@ export const RecurringDonationsTab = () => (
             alt=""
         />
         <ul className={styles.features}>
-            {features.map(feature => (
+            {features.map((feature) => (
                 <li key={feature} className={styles.feature}>
                     <svg className={styles.featureIcon} viewBox="0 0 16 12" preserveAspectRatio="xMinYMax meet">
                         <use href="#give-in-plugin-upsells-checkmark" />

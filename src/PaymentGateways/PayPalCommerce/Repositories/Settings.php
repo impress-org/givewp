@@ -2,13 +2,14 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-class Settings {
-	/**
-	 * wp_options key for the account country
-	 *
-	 * @since 2.9.0
-	 */
-	const COUNTRY_KEY = 'paypal_commerce_account_country';
+class Settings
+{
+    /**
+     * wp_options key for the account country
+     *
+     * @since 2.9.0
+     */
+    const COUNTRY_KEY = 'paypal_commerce_account_country';
 
     /**
      * wp_options key for the access token
@@ -95,39 +96,42 @@ class Settings {
      */
     public function updateAccessToken($token)
     {
-		return update_option( self::ACCESS_TOKEN_KEY, $token );
-	}
+        return update_option(self::ACCESS_TOKEN_KEY, $token);
+    }
 
-	/**
-	 * Deletes the account access token
-	 *
-	 * @return bool
-	 */
-	public function deleteAccessToken() {
-		return delete_option( self::ACCESS_TOKEN_KEY );
-	}
+    /**
+     * Deletes the account access token
+     *
+     * @return bool
+     */
+    public function deleteAccessToken()
+    {
+        return delete_option(self::ACCESS_TOKEN_KEY);
+    }
 
-	/**
-	 * Returns the partner link details
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return string|null
-	 */
-	public function getPartnerLinkDetails() {
-		return get_option( self::PARTNER_LINK_DETAIL_KEY, null );
-	}
+    /**
+     * Returns the partner link details
+     *
+     * @since 2.9.0
+     *
+     * @return string|null
+     */
+    public function getPartnerLinkDetails()
+    {
+        return get_option(self::PARTNER_LINK_DETAIL_KEY, null);
+    }
 
-	/**
-	 * Updates the partner link details
-	 *
-	 * @param $linkDetails
-	 *
-	 * @return bool
-	 */
-	public function updatePartnerLinkDetails( $linkDetails ) {
-		return update_option( self::PARTNER_LINK_DETAIL_KEY, $linkDetails );
-	}
+    /**
+     * Updates the partner link details
+     *
+     * @param $linkDetails
+     *
+     * @return bool
+     */
+    public function updatePartnerLinkDetails($linkDetails)
+    {
+        return update_option(self::PARTNER_LINK_DETAIL_KEY, $linkDetails);
+    }
 
     /**
      * Deletes the partner link details
