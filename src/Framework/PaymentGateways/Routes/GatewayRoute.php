@@ -30,7 +30,7 @@ class GatewayRoute implements Route {
         $gateways = give(PaymentGatewayRegister::class)->getPaymentGateways();
         $gatewayIds = array_keys($gateways);
 
-		if ( $this->isValid($gatewayIds) ) {
+        if ($this->isValid($gatewayIds)) {
             $gatewayId = $_GET['give-gateway-id'];
             $gatewayMethod = $_GET['give-gateway-method'];
 
@@ -38,7 +38,7 @@ class GatewayRoute implements Route {
             $gateway = give($gateways[$gatewayId]);
 
             $gateway->$gatewayMethod();
-		}
+        }
 	}
 
     /**
