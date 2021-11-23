@@ -2,22 +2,22 @@
 
 namespace Give\PaymentGateways\Actions;
 
-use Give\Framework\PaymentGateways\Routes\RedirectOffsiteRoute;
-use Give\Route\Route;
+use Give\Framework\PaymentGateways\Routes\GatewayRoute;
+use Give\Framework\PaymentGateways\Routes\ReturnFromOffsiteRedirectRoute;
 
 class RegisterPaymentGatewayRoutes
 {
     private $routes = [
-        RedirectOffsiteRoute::class
+        ReturnFromOffsiteRedirectRoute::class
     ];
 
     /**
-     * @unreleased 
+     * @unreleased
      */
     public function __invoke()
     {
         foreach ($this->routes as $route){
-            /** @var Route $gatewayRoute */
+            /** @var GatewayRoute $gatewayRoute */
             $gatewayRoute = give($route);
 
             $gatewayRoute->init();

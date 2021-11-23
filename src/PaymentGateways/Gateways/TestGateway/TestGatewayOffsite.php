@@ -3,23 +3,24 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
- * Class TestGateway
+ * Class TestGatewayOffsite
  * @unreleased
  */
-class TestGateway extends PaymentGateway
+class TestGatewayOffsite extends PaymentGateway
 {
     /**
      * @inheritDoc
      */
     public static function id()
     {
-        return 'test-gateway';
+        return 'test-gateway-offsite';
     }
 
     /**
@@ -35,7 +36,7 @@ class TestGateway extends PaymentGateway
      */
     public function getName()
     {
-        return __('Test Gateway', 'give');
+        return __('Test Gateway Offsite', 'give');
     }
 
     /**
@@ -43,7 +44,7 @@ class TestGateway extends PaymentGateway
      */
     public function getPaymentMethodLabel()
     {
-        return __('Test Gateway', 'give');
+        return __('Test Gateway Offsite', 'give');
     }
 
     /**
@@ -66,8 +67,18 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
+        //$transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
 
-        return new PaymentComplete($transactionId);
+        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite();
+
+        return new RedirectOffsite($redirectUrl);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function returnFromOffsiteRedirect()
+    {
+        return new PaymentComplete('gateway-transaction-id');
     }
 }
