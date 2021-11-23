@@ -189,7 +189,6 @@
     background-color: #fff;
 
     &::after {
-        content: "\f00c";
         font-family: "Font Awesome 5 Free";
         font-weight: 900;
         opacity: 0;
@@ -204,13 +203,34 @@
 
 .give-recurring-donors-choice-period {
     --padEnd: 1.25em;
+    position: relative;
     appearance: none;
     display: inline;
     overflow: visible; // for firefox’ sake!
     padding: 0 0 0.0625em;
     border: 0;
-    border-bottom: 0.125em solid var(--give-primary-color);
+    border-bottom: 0.0625em solid #333;
+    border-radius: 0;
+    //background-image: url("data:image/svg+xml;utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 8'><path d='M5.6602 7.1953c.246.2461.6562.2461.9023 0l5.332-5.3047c.2461-.2734.2461-.6836 0-.9297L11.2656.332c-.2461-.246-.6562-.246-.9297 0L6.125 4.543 1.8867.332C1.6133.086 1.2031.086.957.332L.3281.961c-.246.246-.246.6562 0 .9296l5.332 5.3047Z' fill='#a2a3a2'/></svg>");
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='13' height='8' viewBox='0 0 13 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.66016 7.19531C5.90625 7.44141 6.31641 7.44141 6.5625 7.19531L11.8945 1.89062C12.1406 1.61719 12.1406 1.20703 11.8945 0.960938L11.2656 0.332031C11.0195 0.0859375 10.6094 0.0859375 10.3359 0.332031L6.125 4.54297L1.88672 0.332031C1.61328 0.0859375 1.20312 0.0859375 0.957031 0.332031L0.328125 0.960938C0.0820312 1.20703 0.0820312 1.61719 0.328125 1.89062L5.66016 7.19531Z' fill='%23A2A3A2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right top 50%, 0 0;
+    background-size: 0.65em auto, 100%;
     font-size: inherit;
     font-family: inherit;
-    text-align: center;
+    color: inherit;
+
+    &:hover,
+    &:focus {
+        border-color: var(--give-primary-color);
+    }
+
+    &::after {
+        position: absolute;
+        content: "\f078";
+        display: block;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
 }
