@@ -5,12 +5,12 @@ namespace Give\Email;
 use Give_Admin_Settings;
 
 /**
- * @unreleased
+ * @since 2.17.1
  */
 class GlobalSettingValidator
 {
     /**
-     * @unreleased
+     * @since 2.17.1
      */
     public function __invoke()
     {
@@ -27,7 +27,7 @@ class GlobalSettingValidator
     }
 
     /**
-     * @unreleased
+     * @since 2.17.1
      */
     public function validateSetting($value)
     {
@@ -39,7 +39,7 @@ class GlobalSettingValidator
     }
 
     /**
-     * @unreleased
+     * @since 2.17.1
      * Note: Filter hook defined in Give_Admin_Settings::save_fields function::1163
      *
      * @return string
