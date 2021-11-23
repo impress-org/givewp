@@ -67,7 +67,15 @@ class TestGateway extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
         $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
-        
+
         return new PaymentComplete($transactionId);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function returnFromOffsiteRedirect()
+    {
+        return new PaymentComplete('gateway-transaction-id');
     }
 }

@@ -14,7 +14,8 @@ class RegisterPaymentGateways
      * @var string[]
      */
     public $gateways = [
-        // TestGateway::class - When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
+        // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
+        // TestGateway::class
     ];
 
     /**

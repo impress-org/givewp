@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Actions\GenerateReturnUrlFromRedirectOffsite;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
@@ -200,6 +201,58 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
         if ($type instanceof JsonResponse) {
             wp_send_json(['data' => $type->getData()]);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function generateReturnUrlFromRedirectOffsite()
+    {
+        /** @var GenerateReturnUrlFromRedirectOffsite $action */
+        $action = give(GenerateReturnUrlFromRedirectOffsite::class);
+
+        return $action($this->getId(), 'handleReturnFromOffsiteRedirect');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function returnFromOffsiteRedirect()
+    {
+        // return new GatewayCommand
+    }
+
+    /**
+     * @unreleased
+     */
+    public function handleReturnFromOffsiteRedirect()
+    {
+        try {
+            $command = $this->returnFromOffsiteRedirect();
+            if ($command instanceof PaymentComplete) {
+                give(PaymentCompleteHandler::class)->__invoke(
+                    $command,
+                    'payment-id'
+                );
+
+                $response = response()->redirectTo(give_get_success_page_uri());
+
+                $this->handleResponse($response);
+            }
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            exit;
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error($exception->getMessage());
+
+            $message = __(
+                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
+            exit;
         }
     }
 }
