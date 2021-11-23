@@ -5,7 +5,7 @@ namespace Give\Email;
 use Give\Helpers\Hooks;
 
 /**
- * @unreleased
+ * @since 2.17.1
  */
 class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
 {
