@@ -8,9 +8,11 @@ use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
@@ -126,6 +128,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             );
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof RedirectOffsite) {
+            $response = give(RedirectOffsiteHandler::class)->__invoke(
+                $command
+            );
 
             $this->handleResponse($response);
         }
