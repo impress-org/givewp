@@ -3,7 +3,7 @@ name: Deploy to WordPress.org
 on:
   release:
     types: [ released ]
-    
+
 jobs:
   tests:
     runs-on: ubuntu-18.04
@@ -33,7 +33,7 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
-        
+
     steps:
       - uses: actions/checkout@v2
 
@@ -83,29 +83,30 @@ jobs:
   release:
     name: New release
     runs-on: ubuntu-18.04
+    environment: live
     needs: tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
-        
+
       - name: Install composer dev dependencies
         uses: php-actions/composer@v5
         with:
           php_version: 7.2
-        
+
         # In order to run this WordPress also needs to be installed
       - name: Generate pot file
         run: |
           composer exec "wp core download --path=/tmp/wordpress --version=latest --skip-content"
           composer exec "wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --path=/tmp/wordpress"
-          
+
       - name: Remove dev dependencies
         uses: php-actions/composer@v5
         with:
@@ -121,7 +122,7 @@ jobs:
           npm install -g npm@7
           npm ci
           sudo npm run build
-          
+
       - name: WordPress Plugin Deploy
         id: deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
@@ -131,7 +132,7 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: give
-          
+
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
         env:
@@ -141,7 +142,7 @@ jobs:
           asset_path: ${{github.workspace}}/give.zip
           asset_name: give.zip
           asset_content_type: application/zip
-          
+
       - name: Slack Notification
         uses: someimportantcompany/github-actions-slack-message@v1
         with:
