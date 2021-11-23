@@ -287,19 +287,24 @@ function setRecurringPeriodSelectWidth() {
 
     // Create a 2D context so we can measure the text.
     const canvasContext = document.createElement('canvas').getContext('2d');
+    // Get the computed font styles for the select element.
+    const {fontWeight, fontSize, fontFamily} = window.getComputedStyle(select);
     // Set the context’s font to the select element’s font.
-    canvasContext.font = window.getComputedStyle(select).getPropertyValue('font');
+    canvasContext.font = `${fontWeight} ${fontSize} ${fontFamily}`;
 
     // Update the width of the select element.
     function updateWidth() {
         // Measure the selected option’s text.
         const selectedTextMetrics = canvasContext.measureText(select.value);
-        // Use the width as the pixel value of the select element.
-        select.style.width = `${selectedTextMetrics.width}px`;
+        // Use the width as the pixel value of the select element and pad the
+        // right side for Firefox.
+        select.style.width = `calc(${selectedTextMetrics.width}px + var(--padEnd))`;
     }
 
-    // Run when the page loads.
-    updateWidth();
-    // Run when the value changes.
+    // Update after the fonts load.
+    // Note: FontFaceSet’s loadingdone doesn’t seem to work in Safari.
+    document.fonts.ready.then(updateWidth);
+
+    // Update when the value changes.
     select.addEventListener('change', updateWidth);
 }
