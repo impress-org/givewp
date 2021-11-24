@@ -1,12 +1,8 @@
 .give-donation-summary-section {
-    .heading {
-        display: none;
-    }
+    // Hide the heading
+    .heading { display: none; }
 
     table {
-        // Shared border properties
-        --border: 0.0625rem solid #ddd;
-
         inline-size: 100%;
         border-collapse: collapse;
         line-height: 1.2;
@@ -24,6 +20,7 @@
         line-height: inherit;
         text-align: start;
         font-size: inherit;
+        font-family: inherit;
         color: var(--give-primary-color);
         cursor: pointer;
         white-space: nowrap;
@@ -45,7 +42,9 @@
     thead, tfoot { color: #333; }
 
     // Borders
-    tbody tr, tfoot { border-block-start: var(--border); }
+    tbody tr, tfoot {
+        border-block-start: 0.0625rem solid #ddd;
+    }
 
     // Header specific
     thead th {
@@ -61,7 +60,7 @@
             }
         }
 
-        &:last-of-type button {
+        .back-btn {
             font-size: 0.875rem;
         }
     }
