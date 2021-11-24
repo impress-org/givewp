@@ -21,7 +21,7 @@ class GatewayRoute implements Route {
 	 * @inheritDoc
 	 */
 	public function init() {
-		add_action( 'wp', [ $this, 'handleRoute' ] );
+		add_action('template_redirect', [$this, 'handleRoute']);
 	}
 
 	/**
@@ -45,10 +45,10 @@ class GatewayRoute implements Route {
     /**
      * @unreleased
      *
-     * @param array $gatewayIds
+     * @param  array  $gatewayIds
      *
      * @return bool
-     * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-gateway-action=handleReturnFromRedirect
+     * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-gateway-method=handleReturnFromRedirect
      *
      */
 	private function isValid($gatewayIds) {

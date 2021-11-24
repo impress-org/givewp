@@ -109,23 +109,4 @@ interface PaymentGatewayInterface
         GatewayPaymentData $paymentData,
         GatewaySubscriptionData $subscriptionData
     );
-
-    /**
-     * Handle returning from offsite redirect
-     *
-     * @unreleased
-     *
-     * @return void
-     */
-    public function handleReturnFromOffsiteRedirect();
-
-    /**
-     * Return from offsite redirect
-     *
-     * @unreleased
-     *
-     * @return GatewayCommand
-     * @throws PaymentGatewayException|Exception
-     */
-    public function returnFromOffsiteRedirect();
 }

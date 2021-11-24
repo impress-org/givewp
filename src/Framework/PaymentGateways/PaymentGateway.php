@@ -192,7 +192,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @param  RedirectResponse|JsonResponse  $type
      */
-    private function handleResponse($type)
+    public function handleResponse($type)
     {
         if ($type instanceof RedirectResponse) {
             wp_redirect($type->getTargetUrl());
@@ -213,46 +213,5 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         $action = give(GenerateReturnUrlFromRedirectOffsite::class);
 
         return $action($this->getId(), 'handleReturnFromOffsiteRedirect');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function returnFromOffsiteRedirect()
-    {
-        // return new GatewayCommand
-    }
-
-    /**
-     * @unreleased
-     */
-    public function handleReturnFromOffsiteRedirect()
-    {
-        try {
-            $command = $this->returnFromOffsiteRedirect();
-            if ($command instanceof PaymentComplete) {
-                give(PaymentCompleteHandler::class)->__invoke(
-                    $command,
-                    'payment-id'
-                );
-
-                $response = response()->redirectTo(give_get_success_page_uri());
-
-                $this->handleResponse($response);
-            }
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
-        } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
-
-            $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
-                'give'
-            );
-
-            $this->handleResponse(response()->json($message));
-            exit;
-        }
     }
 }

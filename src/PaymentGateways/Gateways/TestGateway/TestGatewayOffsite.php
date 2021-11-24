@@ -4,7 +4,9 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -13,8 +15,10 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  * Class TestGatewayOffsite
  * @unreleased
  */
-class TestGatewayOffsite extends PaymentGateway
+class TestGatewayOffsite extends PaymentGateway implements OffsiteGatewayInterface
 {
+    use OffsiteGateway;
+
     /**
      * @inheritDoc
      */
@@ -79,6 +83,7 @@ class TestGatewayOffsite extends PaymentGateway
      */
     public function returnFromOffsiteRedirect()
     {
+        // $_REQUEST
         return new PaymentComplete('gateway-transaction-id');
     }
 }
