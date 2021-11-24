@@ -22,7 +22,7 @@ class GatewayRoute
      */
     public function __invoke()
     {
-        $gateways = give(PaymentGatewayRegister::class)->getPaymentGateways();
+        $gateways = give(PaymentGatewayRegister::class)->getOffsitePaymentGateways();
         $gatewayIds = array_keys($gateways);
 
         if ($this->isValid($gatewayIds)) {
