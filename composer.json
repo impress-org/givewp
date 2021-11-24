@@ -20,7 +20,8 @@
         "phpunit/phpunit": "^5",
         "kjohnson/since-unreleased": "^1.0.0",
         "wp-cli/wp-cli-bundle": "^2.5",
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^1.0",
+        "wordpress/wordpress": "dev-trunk"
     },
     "keywords": [
         "wordpress",
@@ -44,5 +45,11 @@
         "platform": {
             "php": "5.6.40"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:wordpress/wordpress-develop.git"
+        }
+    ]
 }
