@@ -41,6 +41,7 @@ use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepos
  *
  * @since 2.8.0
  */
+
 class PaymentGateways implements ServiceProvider
 {
     /**

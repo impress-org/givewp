@@ -53,6 +53,7 @@ use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
+use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -66,7 +67,7 @@ use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
 
 // Exit if accessed directly.
-if ( ! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -164,7 +165,8 @@ final class Give
         ShimsServiceProvider::class,
         LicenseServiceProvider::class,
         Give\Email\ServiceProvider::class,
-        DonationSummaryServiceProvider::class
+        DonationSummaryServiceProvider::class,
+        PaymentGatewaysServiceProvider::class,
     ];
 
     /**
@@ -194,7 +196,7 @@ final class Give
     public function boot()
     {
         // PHP version
-        if ( ! defined('GIVE_REQUIRED_PHP_VERSION')) {
+        if (!defined('GIVE_REQUIRED_PHP_VERSION')) {
             define('GIVE_REQUIRED_PHP_VERSION', '5.6.0');
         }
 
@@ -249,9 +251,9 @@ final class Give
         /**
          * Fire the action after Give core loads.
          *
-         * @since 1.8.7
+         * @param  Give class instance.
          *
-         * @param Give class instance.
+         * @since 1.8.7
          *
          */
         do_action('give_init', $this);
@@ -271,10 +273,10 @@ final class Give
     /**
      * Setup plugin constants
      *
+     * @return void
      * @since  1.0
      * @access private
      *
-     * @return void
      */
     private function setup_constants()
     {
@@ -284,27 +286,27 @@ final class Give
         }
 
         // Plugin Root File.
-        if ( ! defined('GIVE_PLUGIN_FILE')) {
+        if (!defined('GIVE_PLUGIN_FILE')) {
             define('GIVE_PLUGIN_FILE', __FILE__);
         }
 
         // Plugin Folder Path.
-        if ( ! defined('GIVE_PLUGIN_DIR')) {
+        if (!defined('GIVE_PLUGIN_DIR')) {
             define('GIVE_PLUGIN_DIR', plugin_dir_path(GIVE_PLUGIN_FILE));
         }
 
         // Plugin Folder URL.
-        if ( ! defined('GIVE_PLUGIN_URL')) {
+        if (!defined('GIVE_PLUGIN_URL')) {
             define('GIVE_PLUGIN_URL', plugin_dir_url(GIVE_PLUGIN_FILE));
         }
 
         // Plugin Basename aka: "give/give.php".
-        if ( ! defined('GIVE_PLUGIN_BASENAME')) {
+        if (!defined('GIVE_PLUGIN_BASENAME')) {
             define('GIVE_PLUGIN_BASENAME', plugin_basename(GIVE_PLUGIN_FILE));
         }
 
         // Make sure CAL_GREGORIAN is defined.
-        if ( ! defined('CAL_GREGORIAN')) {
+        if (!defined('CAL_GREGORIAN')) {
             define('CAL_GREGORIAN', 1);
         }
     }
@@ -312,10 +314,10 @@ final class Give
     /**
      * Loads the plugin language files.
      *
+     * @return void
      * @since  1.0
      * @access public
      *
-     * @return void
      */
     public function load_textdomain()
     {
@@ -341,7 +343,7 @@ final class Give
     public function minimum_phpversion_notice()
     {
         // Bailout.
-        if ( ! is_admin()) {
+        if (!is_admin()) {
             return;
         }
 
@@ -384,9 +386,9 @@ final class Give
     /**
      * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
      *
+     * @return void
      * @since 2.5.0
      *
-     * @return void
      */
     public function display_old_recurring_compatibility_notice()
     {
@@ -437,7 +439,7 @@ final class Give
         $providers = [];
 
         foreach ($this->serviceProviders as $serviceProvider) {
-            if ( ! is_subclass_of($serviceProvider, ServiceProvider::class)) {
+            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
                 throw new InvalidArgumentException(
                     "$serviceProvider class must implement the ServiceProvider interface"
                 );
@@ -461,9 +463,9 @@ final class Give
     /**
      * Register a Service Provider for bootstrapping
      *
+     * @param  string  $serviceProvider
      * @since 2.8.0
      *
-     * @param string $serviceProvider
      */
     public function registerServiceProvider($serviceProvider)
     {
@@ -473,13 +475,13 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @since 2.8.0 retrieve from the service container
-     * @since 2.7.0
-     *
-     * @param string $propertyName
+     * @param  string  $propertyName
      *
      * @return mixed
      * @throws Exception
+     * @since 2.7.0
+     *
+     * @since 2.8.0 retrieve from the service container
      */
     public function __get($propertyName)
     {
@@ -489,12 +491,12 @@ final class Give
     /**
      * Magic methods are passed to the service container.
      *
-     * @since 2.8.0
-     *
      * @param $name
      * @param $arguments
      *
      * @return mixed
+     * @since 2.8.0
+     *
      */
     public function __call($name, $arguments)
     {
