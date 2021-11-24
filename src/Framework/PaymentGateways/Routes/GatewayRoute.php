@@ -6,28 +6,22 @@ use Exception;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayOffsiteReturnData;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Route\Route;
 
 /**
  * @unreleased
  */
-class GatewayRoute implements Route {
+class GatewayRoute
+{
     /**
      * @var string
      */
     protected $gatewayMethod;
 
-	/**
-	 * @inheritDoc
-	 */
-	public function init() {
-		add_action('template_redirect', [$this, 'handleRoute']);
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	public function handleRoute() {
+    /**
+     * @throws Exception
+     */
+    public function __invoke()
+    {
         $gateways = give(PaymentGatewayRegister::class)->getPaymentGateways();
         $gatewayIds = array_keys($gateways);
 
