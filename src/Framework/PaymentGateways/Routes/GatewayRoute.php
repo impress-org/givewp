@@ -32,7 +32,7 @@ class GatewayRoute
             $gateway = give($gateways[$data->gatewayId]);
 
             $gatewayMethod = $data->gatewayMethod;
-            $gateway->$gatewayMethod();
+            $gateway->$gatewayMethod($data->paymentId);
         }
 	}
 

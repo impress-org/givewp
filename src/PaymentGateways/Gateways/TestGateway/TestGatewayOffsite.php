@@ -73,7 +73,10 @@ class TestGatewayOffsite extends PaymentGateway implements OffsiteGatewayInterfa
     {
         $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
 
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite(['transaction_id' => $transactionId]);
+        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite(
+            $paymentData->paymentId,
+            ['transaction_id' => $transactionId]
+        );
 
         return new RedirectOffsite($redirectUrl);
     }

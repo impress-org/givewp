@@ -8,13 +8,15 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 
 interface OffsiteGatewayInterface {
      /**
-     * Handle returning from offsite redirect
-     *
-     * @unreleased
-     *
-     * @return void
-     */
-    public function handleReturnFromOffsiteRedirect();
+      * Handle returning from offsite redirect
+      *
+      * @param  int  $paymentId
+      *
+      * @unreleased
+      *
+      * @return void
+      */
+    public function handleReturnFromOffsiteRedirect($paymentId);
 
     /**
      * Return from offsite redirect

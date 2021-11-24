@@ -30,29 +30,31 @@ trait OffsiteGateway
      * @param  array|null  $args  - associative array of query args
      * @return string
      */
-    public function generateReturnUrlFromRedirectOffsite($args = null)
+    public function generateReturnUrlFromRedirectOffsite($paymentId, $args = null)
     {
         /** @var GenerateReturnUrlFromRedirectOffsite $action */
         $action = give(GenerateReturnUrlFromRedirectOffsite::class);
 
-        return $action($this->getId(), 'handleReturnFromOffsiteRedirect', $args);
+        return $action($this->getId(), 'handleReturnFromOffsiteRedirect', $paymentId, $args);
     }
 
     /**
      * Handle returning from offsite redirect
      *
+     * @param  int  $paymentId
+     *
      * @unreleased
      *
      * @return void
      */
-    public function handleReturnFromOffsiteRedirect()
+    public function handleReturnFromOffsiteRedirect($paymentId)
     {
         try {
             $command = $this->returnFromOffsiteRedirect();
             if ($command instanceof PaymentComplete) {
                 give(PaymentCompleteHandler::class)->__invoke(
                     $command,
-                    'payment-id'
+                    $paymentId
                 );
 
                 $response = response()->redirectTo(give_get_success_page_uri());
