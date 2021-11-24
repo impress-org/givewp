@@ -1,0 +1,20 @@
+.give-donation-form-summary-section {
+    .give-donation-summary-table-wrapper {
+        background: none;
+
+        thead th:first-of-type {
+            font-size: 1.25rem;
+            font-weight: 400;
+
+            @media screen and (min-width: $desktopMinWidth) {
+                font-size: 1.5rem;
+            }
+        }
+    }
+
+    .give-donation-summary-section {
+        & > .heading {
+            display: none;
+        }
+    }
+}
