@@ -1,0 +1,30 @@
+.give-donation-amount {
+    position: relative;
+}
+
+.give-cs-mini-dropdown {
+    position: absolute !important;
+    left: 10px;
+    background: none;
+    color: rgba(255, 255, 255, 0);
+    margin-left: 10px;
+    border-right: 2px dotted #C1C1C1 !important;
+
+    &:focus {
+        outline: none;
+        padding: 20px !important;
+        border-radius: 5px;
+        border: 1px solid var(--give-primary-color) !important;
+    }
+
+
+    ~ span.give-currency-symbol {
+        position: absolute;
+        padding-right: 30px !important;
+        font-size: 2rem;
+
+        &::after {
+            border-color: #6f6f6f transparent transparent;
+        }
+    }
+}
