@@ -7,7 +7,6 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Actions\GenerateReturnUrlFromRedirectOffsite;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
@@ -202,16 +201,5 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         if ($type instanceof JsonResponse) {
             wp_send_json(['data' => $type->getData()]);
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function generateReturnUrlFromRedirectOffsite()
-    {
-        /** @var GenerateReturnUrlFromRedirectOffsite $action */
-        $action = give(GenerateReturnUrlFromRedirectOffsite::class);
-
-        return $action($this->getId(), 'handleReturnFromOffsiteRedirect');
     }
 }

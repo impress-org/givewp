@@ -71,9 +71,9 @@ class TestGatewayOffsite extends PaymentGateway implements OffsiteGatewayInterfa
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        //$transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
+        $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
 
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite();
+        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite(['transaction_id' => $transactionId]);
 
         return new RedirectOffsite($redirectUrl);
     }
@@ -83,7 +83,8 @@ class TestGatewayOffsite extends PaymentGateway implements OffsiteGatewayInterfa
      */
     public function returnFromOffsiteRedirect()
     {
-        // $_REQUEST
-        return new PaymentComplete('gateway-transaction-id');
+        $transactionId = $_GET['transaction_id'];
+
+        return new PaymentComplete($transactionId);
     }
 }
