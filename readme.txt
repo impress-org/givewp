@@ -231,6 +231,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.17.1: November 23rd, 2021 =
+* Fix: Took care of an annoying babel-polyfill 404 in the JavaScript console
+
 = 2.17.0: November 18th, 2021 =
 * New: Shiny new add-ons page in the admin for exploring our latest add-ons and plans!
 * New: Donation Summary section for Multi-Step form! Enable it for existing forms in the Form Template Options for each form!

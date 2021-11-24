@@ -1140,7 +1140,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
  * Get Donation Form User
  *
  * @since   1.0
- * @unreleased Do not run validation check for ajax request expect donation validation ajax request.
+ * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.
  *
  * @param array $valid_data Valid Data.
  *
