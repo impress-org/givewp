@@ -109,7 +109,7 @@ class MockStripe extends PaymentGateway
      */
     public static function id()
     {
-        return 'stripe-credit-card-onsite';
+        return 'mock-stripe';
     }
 
     /**
@@ -154,7 +154,7 @@ class MockPaypal extends PaymentGateway
      */
     public static function id()
     {
-        return 'paypal-offsite';
+        return 'mock-paypal';
     }
 
     /**
@@ -199,7 +199,7 @@ class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterfac
      */
     public static function id()
     {
-        return 'paypal-offsite';
+        return 'mock-paypal-offsite';
     }
 
     /**
