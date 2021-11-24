@@ -18,6 +18,7 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -122,7 +123,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
         if ($command instanceof PaymentComplete) {
-            give(PaymentCompleteHandler::class)->__invoke(
+            Call::invoke(
+                PaymentCompleteHandler::class,
                 $command,
                 $gatewayPaymentData->paymentId
             );
@@ -133,9 +135,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         }
 
         if ($command instanceof RedirectOffsite) {
-            $response = give(RedirectOffsiteHandler::class)->__invoke(
-                $command
-            );
+            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
 
             $this->handleResponse($response);
         }

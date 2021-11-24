@@ -10,9 +10,9 @@ interface OffsiteGatewayInterface {
      /**
       * Handle returning from offsite redirect
       *
-      * @param  int  $paymentId
-      *
       * @unreleased
+      *
+      * @param  int  $paymentId
       *
       * @return void
       */

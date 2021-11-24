@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Helpers\Call;
 
 use function Give\Framework\Http\Response\response;
 
@@ -52,7 +53,8 @@ trait OffsiteGateway
         try {
             $command = $this->returnFromOffsiteRedirect();
             if ($command instanceof PaymentComplete) {
-                give(PaymentCompleteHandler::class)->__invoke(
+                Call::invoke(
+                    PaymentCompleteHandler::class,
                     $command,
                     $paymentId
                 );
