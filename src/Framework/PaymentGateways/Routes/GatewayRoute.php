@@ -3,6 +3,7 @@
 namespace Give\Framework\PaymentGateways\Routes;
 
 use Exception;
+use Give\Framework\PaymentGateways\DataTransferObjects\GatewayOffsiteReturnData;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Route\Route;
@@ -31,12 +32,12 @@ class GatewayRoute implements Route {
         $gatewayIds = array_keys($gateways);
 
         if ($this->isValid($gatewayIds)) {
-            $gatewayId = $_GET['give-gateway-id'];
-            $gatewayMethod = $_GET['give-gateway-method'];
+            $data = GatewayOffsiteReturnData::fromRequest($_GET);
 
             /** @var PaymentGateway $gateway */
-            $gateway = give($gateways[$gatewayId]);
+            $gateway = give($gateways[$data->gatewayId]);
 
+            $gatewayMethod = $data->gatewayMethod;
             $gateway->$gatewayMethod();
         }
 	}
