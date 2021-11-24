@@ -3,8 +3,13 @@
         display: none;
     }
 
-    .give-donation-summary-table-wrapper {
-        background: none;
+    table {
+        // Shared border properties
+        --border: 0.0625rem solid #ddd;
+
+        inline-size: 100%;
+        border-collapse: collapse;
+        line-height: 1.2;
     }
 
     button {
@@ -28,83 +33,65 @@
         }
     }
 
-    table {
-        // Shared border properties
-        --border: 0.0625rem solid #ddd;
+    tr {
+        vertical-align: baseline;
 
-        width: 100%;
-        border-collapse: collapse;
-        line-height: 1.2;
+        // Selects th in thead and tfoot. Selects td in tbody.
+        > :first-of-type { text-align: start; }
+        > :last-of-type { text-align: end; }
     }
 
-    // Selects th in thead and tfoot. Selects td in tbody.
-    tr > :first-of-type { text-align: start; }
-    tr > :last-of-type { text-align: end; }
+    // Colors (tobdy inherits)
+    thead, tfoot { color: #333; }
 
-    thead, tfoot {
-        color: #333;
-    }
+    // Borders
+    tbody tr, tfoot { border-block-start: var(--border); }
 
-    thead {
-        border-bottom: var(--border);
+    // Header specific
+    thead th {
+        padding-block-end: 1.25rem;
 
-        th {
-            padding-bottom: 1.25rem;
-            vertical-align: baseline;
+        // Donation Summary title
+        &:first-of-type {
+            font-size: 1.25rem;
+            font-weight: 400;
 
-            // Donation Summary title
-            &:first-of-type {
-                font-size: 1.25rem;
-                font-weight: 400;
-
-                @media screen and (min-width: $desktopMinWidth) {
-                    font-size: 1.5rem;
-                }
-            }
-
-            &:last-of-type button {
-                font-size: 0.875rem;
+            @media screen and (min-width: $desktopMinWidth) {
+                font-size: 1.5rem;
             }
         }
+
+        &:last-of-type button {
+            font-size: 0.875rem;
+        }
     }
 
-    tbody {
-        tr + tr {
-            border-top: var(--border);
-        }
-
-        td {
-            vertical-align: baseline;
-            padding: 1.25rem 0;
-        }
+    // Body specific
+    tbody td {
+        padding-block: 1.25rem;
 
         @media screen and (min-width: $desktopMinWidth) {
             font-size: 1.125rem;
         }
     }
 
-    tfoot {
-        border-top: var(--border);
+    // Footer specific
+    tfoot th {
+        padding-block-start: 1.75rem;
         font-size: 1.125rem;
         font-weight: 700;
-        color: #333;
-
-        th {
-            padding-top: 1.75rem;
-        }
     }
 
     .give-donation-summary-help-text {
         display: inline-flex;
         column-gap: 0.25rem;
         align-items: start;
-        margin-top: 0.5rem;
+        margin-block-start: 0.5rem;
         font-size: 0.875rem;
         color: #8c8c8c;
 
         > img {
-            position: relative;
-            top: 0.1em;
+            transform: translateY(0.1em);
         }
     }
 }
