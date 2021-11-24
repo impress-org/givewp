@@ -6,10 +6,10 @@ class GenerateReturnUrlFromRedirectOffsite {
     /**
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod
-     * @param  array  $args
+     * @param  array|null  $args
      * @return string
      */
-    public function __invoke($gatewayId, $gatewayMethod, $args)
+    public function __invoke($gatewayId, $gatewayMethod, $args = null)
     {
         $queryArgs = [
             'give-listener' => 'give-gateway',
