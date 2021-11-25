@@ -24,8 +24,8 @@
         padding-right: 1.875rem !important;
         font-size: 2rem;
 
-        &::after {
-            border-color: #6f6f6f transparent transparent;
+        &::before {
+            border-top-color: #6f6f6f;
         }
     }
 }
