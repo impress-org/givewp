@@ -4,24 +4,24 @@
 
 .give-cs-mini-dropdown {
     position: absolute !important;
-    left: 10px;
+    left: 0.625rem;
     background: none;
     color: rgba(255, 255, 255, 0);
-    margin-left: 10px;
+    margin-left: 0.625rem;
     border: 0;
-    border-right: 2px dotted #C1C1C1 !important;
+    border-right: 0.125rem dotted #C1C1C1 !important;
 
     &:focus {
         outline: none;
-        padding: 20px !important;
-        border-radius: 5px;
-        border: 1px solid var(--give-primary-color) !important;
+        padding: 1.25rem !important;
+        border-radius: 0.3125rem;
+        border: 0.0625rem solid var(--give-primary-color) !important;
     }
 
 
     ~ span.give-currency-symbol {
         position: absolute;
-        padding-right: 30px !important;
+        padding-right: 1.875rem !important;
         font-size: 2rem;
 
         &::after {
@@ -31,19 +31,19 @@
 }
 
 .give-currency-switcher-msg {
-    margin-bottom: 22px;
+    margin-bottom: 1.375rem;
     display: flex;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.4;
-    padding: 20px;
+    padding: 1.25em;
     color: #333;
     text-align: center;
     background: #fff;
-    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 0.3125em;
+    border: 0.0625em solid rgba(255, 255, 255, 0);
     box-sizing: border-box;
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
-    border-radius: 5px;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.12);
 }
 
 .give-currency-switcher-msg-wrap.give-hidden{
