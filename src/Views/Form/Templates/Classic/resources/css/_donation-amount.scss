@@ -31,9 +31,8 @@
         @include visually-hidden;
     }
 
-    // Make direct descents inherit the border-radius in case they have a
-    // background set.
-    & > * {
+    & .give-currency-symbol,
+    & .give-text-input {
         border-radius: inherit;
     }
 
