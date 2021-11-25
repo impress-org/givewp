@@ -5,17 +5,17 @@
 .give-cs-mini-dropdown {
     position: absolute !important;
     left: 0.625rem;
-    background: none;
-    color: rgba(255, 255, 255, 0);
     margin-left: 0.625rem;
     border: 0;
     border-right: 0.125rem dotted #C1C1C1 !important;
+    background: none;
+    color: rgba(255, 255, 255, 0);
 
     &:focus {
-        outline: none;
         padding: 1.25rem !important;
         border-radius: 0.3125rem;
         border: 0.0625rem solid var(--give-primary-color) !important;
+        outline: none;
     }
 
 
@@ -31,16 +31,16 @@
 }
 
 .give-currency-switcher-msg {
-    margin-bottom: 1.375rem;
     display: flex;
-    font-weight: 500;
-    line-height: 1.4;
+    margin-bottom: 1.375rem;
     padding: 1.25em;
-    color: #333;
-    text-align: center;
-    background: #fff;
     border-radius: 0.3125em;
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.12);
+    background: #fff;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
 }
 
 .give-currency-switcher-msg-wrap.give-hidden{
