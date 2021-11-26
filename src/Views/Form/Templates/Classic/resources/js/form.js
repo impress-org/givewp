@@ -1,5 +1,5 @@
 import h from 'vhtml';
-import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
+import {domIsReady, insertAfter, measureText, nodeFromString, pixelsToRem, removeNode} from './not-jquery.js';
 
 // Transforms document for classic template
 domIsReady(() => {
@@ -15,6 +15,7 @@ domIsReady(() => {
     moveDefaultGatewayDataIntoActiveGatewaySection();
     isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
     splitGatewayResponse();
+    setupCurrencySwitcherSelector();
 });
 
 /**
@@ -266,3 +267,16 @@ window.GiveClassicTemplate = {
         return false;
     },
 };
+
+function setupCurrencySwitcherSelector() {
+    if ('Give_Currency_Switcher' in window) {
+        window.Give_Currency_Switcher.adjust_dropdown_width = () => {
+            const currencySelect = document.querySelector('.give-cs-select-currency');
+            const currencyText = document.querySelector('.give-currency-symbol');
+            currencySelect.style.setProperty('--currency-text-width', pixelsToRem(measureText(currencyText)));
+            currencySelect.style.width = null;
+        };
+
+        window.Give_Currency_Switcher.adjust_dropdown_width();
+    }
+}
