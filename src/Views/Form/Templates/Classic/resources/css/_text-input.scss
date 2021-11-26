@@ -1,0 +1,29 @@
+@mixin give-input {
+    width: 100%;
+    padding: 1.1875rem;
+    border: 0.078rem solid #666;
+    border-radius: 0.25rem;
+    box-shadow: inset 0 0.08em 0.4em rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    color: #828382;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+
+.give-label {
+    display: flex;
+    padding: 10px 0;
+    font-weight: bold;
+
+    .give-required-indicator {
+        margin-left: 5px;
+        color: #a00;
+    }
+}
+
+.give-input {
+    @include give-input;
+}
