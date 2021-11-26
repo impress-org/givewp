@@ -64,7 +64,8 @@ function addPersonalInfoDescription() {
 }
 
 function setPaymentDetailsTitle() {
-    document.querySelector('.give-payment-mode-label').textContent = classicTemplateOptions.payment_information.headline;
+    document.querySelector('.give-payment-mode-label').textContent =
+        classicTemplateOptions.payment_information.headline;
 }
 
 function addPaymentDetailsDescription() {
@@ -121,7 +122,7 @@ function splitDonationLevelAmountsIntoParts({
     symbolPosition = window.Give.fn.getGlobalVar('currency_pos'),
     thousandsSeparator = window.Give.fn.getGlobalVar('thousands_separator'),
     decimalSeparator = window.Give.fn.getGlobalVar('decimal_separator'),
-    precision = Number.parseInt(window.Give.fn.getGlobalVar('number_decimals'))
+    precision = Number.parseInt(window.Give.fn.getGlobalVar('number_decimals')),
 }) {
     document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach((node) => {
         const amount = node.getAttribute('value');
@@ -130,16 +131,9 @@ function splitDonationLevelAmountsIntoParts({
         const decimalForAmount = rawAmount.toFixed(precision).split('.')[1];
 
         // Use the formatted amount as the ARIA label.
-        node.setAttribute(
-            'aria-label',
-            symbolPosition === 'before' ? `${symbol}${amount}` : `${amount}${symbol}`
-        );
+        node.setAttribute('aria-label', symbolPosition === 'before' ? `${symbol}${amount}` : `${amount}${symbol}`);
 
-        const CurrencySymbol = ({position}) => h(
-            'span',
-            {className: `give-currency-symbol-${position}`},
-            symbol
-        );
+        const CurrencySymbol = ({position}) => h('span', {className: `give-currency-symbol-${position}`}, symbol);
 
         // This is a visual representation of the amount. The decimal separator
         // omitted since it is not displayed. The ARIA label includes the
@@ -227,12 +221,13 @@ function splitGatewayResponse() {
                     );
 
                 // Donation Summary
-                if ( isDonationSummaryEnabled() ) {
+                if (isDonationSummaryEnabled()) {
                     document
                         .querySelector('.give-donation-form-summary-section')
                         .replaceChildren(
-                            ...gatewayDetails.removeChild(gatewayDetails.querySelector('.give-donation-form-summary-section'))
-                                .children
+                            ...gatewayDetails.removeChild(
+                                gatewayDetails.querySelector('.give-donation-form-summary-section')
+                            ).children
                         );
 
                     window.GiveDonationSummary.initTotal();
@@ -248,8 +243,8 @@ function splitGatewayResponse() {
     });
 }
 
-
-const isDonationSummaryEnabled = () => window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
+const isDonationSummaryEnabled = () =>
+    window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
 
 const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
 
