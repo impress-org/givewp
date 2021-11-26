@@ -12,7 +12,7 @@ domIsReady(() => {
     addPersonalInfoDescription();
     setPaymentDetailsTitle();
     addPaymentDetailsDescription();
-    splitDonationLevelAmountsIntoParts();
+    setupDonationLevels();
     moveDefaultGatewayDataIntoActiveGatewaySection();
     isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
     splitGatewayResponse();
@@ -78,26 +78,62 @@ function movePaymentFormInsidePaymentDetailsSection() {
     document.querySelector('.give-payment-details-section').append(document.querySelector('#give_purchase_form_wrap'));
 }
 
-function splitDonationLevelAmountsIntoParts() {
-    const currency = {
-        code: window.Give.fn.getGlobalVar('currency'),
-        decimalSeparator: window.Give.fn.getGlobalVar('decimal_separator'),
-        precision: Number.parseInt(window.Give.fn.getGlobalVar('number_decimals')),
-        symbol: window.Give.fn.getGlobalVar('currency_sign'),
-        symbolPosition: window.Give.fn.getGlobalVar('currency_pos'),
-        thousandsSeparator: window.Give.fn.getGlobalVar('thousands_separator'),
-    };
+function setupDonationLevels() {
+    const isCurrencySwitchingEnabled = 'give_cs_json_obj' in window;
 
+    // If currency switching is available, we need to watch and re-run the setup
+    // for the donation levels. Otherwise, we can just run the setup once with
+    // the global currency settings.
+    if (isCurrencySwitchingEnabled) {
+        // This window object has the supported currencies and their symbols.
+        const supportedCurrencies = JSON.parse(window.give_cs_json_obj).supported_currency;
+
+        const selectedCurrencyInput = document.querySelector('input[name=give-cs-form-currency]');
+
+        // For selected currency value changes, re-run the donation level setup
+        // with the new currency symbol.
+        const selectedCurrencyObserver = new MutationObserver(([selectedCurrencyMutation]) => {
+            const currencyCode = selectedCurrencyMutation.target.value;
+
+            splitDonationLevelAmountsIntoParts({
+                symbol: supportedCurrencies[currencyCode].symbol
+            });
+        });
+
+        // Run the donation level setup with the selected currency.
+        splitDonationLevelAmountsIntoParts({
+            symbol: supportedCurrencies[selectedCurrencyInput.value].symbol,
+        });
+
+        // Start observing the selected currency input.
+        selectedCurrencyObserver.observe(selectedCurrencyInput, {attributeFilter: ['value']});
+    } else splitDonationLevelAmountsIntoParts();
+}
+
+function splitDonationLevelAmountsIntoParts({
+    symbol = window.Give.fn.getGlobalVar('currency_sign'),
+    symbolPosition = window.Give.fn.getGlobalVar('currency_pos'),
+    thousandsSeparator = window.Give.fn.getGlobalVar('thousands_separator'),
+    decimalSeparator = window.Give.fn.getGlobalVar('decimal_separator'),
+    precision = Number.parseInt(window.Give.fn.getGlobalVar('number_decimals'))
+}) {
     document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach((node) => {
-        const rawAmount = window.Give.fn.unFormatCurrency(node.getAttribute('value'), currency.decimalSeparator);
-        const amountWithoutDecimal = accounting.format(rawAmount, 0, currency.thousandsSeparator);
-        const decimalForAmount = rawAmount.toFixed(currency.precision).split('.')[1];
+        const amount = node.getAttribute('value');
+        const rawAmount = window.Give.fn.unFormatCurrency(amount, decimalSeparator);
+        const amountWithoutDecimal = accounting.format(rawAmount, 0, thousandsSeparator);
+        const decimalForAmount = rawAmount.toFixed(precision).split('.')[1];
 
         // Use the formatted amount as the ARIA label.
-        node.setAttribute('aria-label', node.textContent);
+        node.setAttribute(
+            'aria-label',
+            symbolPosition === 'before' ? `${symbol}${amount}` : `${amount}${symbol}`
+        );
 
-        const CurrencySymbol = ({position}) =>
-            h('span', {className: `give-currency-symbol-${position}`}, currency.symbol);
+        const CurrencySymbol = ({position}) => h(
+            'span',
+            {className: `give-currency-symbol-${position}`},
+            symbol
+        );
 
         // This is a visual representation of the amount. The decimal separator
         // omitted since it is not displayed. The ARIA label includes the
@@ -109,14 +145,14 @@ function splitDonationLevelAmountsIntoParts() {
                 className: 'give-formatted-currency',
                 'aria-hidden': true,
             },
-            currency.symbolPosition === 'before' && h(CurrencySymbol, {position: 'before'}),
+            symbolPosition === 'before' && h(CurrencySymbol, {position: 'before'}),
             h(
                 'span',
                 {className: 'give-amount-formatted'},
                 h('span', {className: 'give-amount-without-decimals'}, amountWithoutDecimal),
                 h('span', {className: 'give-amount-decimal'}, decimalForAmount)
             ),
-            currency.symbolPosition === 'after' && h(CurrencySymbol, {position: 'after'})
+            symbolPosition === 'after' && h(CurrencySymbol, {position: 'after'})
         );
     });
 }
