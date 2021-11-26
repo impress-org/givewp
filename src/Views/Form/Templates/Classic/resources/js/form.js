@@ -96,13 +96,15 @@ function setupDonationLevels() {
             const currencyCode = selectedCurrencyMutation.target.value;
 
             splitDonationLevelAmountsIntoParts({
-                symbol: supportedCurrencies[currencyCode].symbol
+                symbol: supportedCurrencies[currencyCode].symbol,
+                decimalSeparator: supportedCurrencies[currencyCode].setting.decimal_separator
             });
         });
 
         // Run the donation level setup with the selected currency.
         splitDonationLevelAmountsIntoParts({
             symbol: supportedCurrencies[selectedCurrencyInput.value].symbol,
+            decimalSeparator: supportedCurrencies[selectedCurrencyInput.value].setting.decimal_separator
         });
 
         // Start observing the selected currency input.
