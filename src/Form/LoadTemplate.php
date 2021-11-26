@@ -66,7 +66,7 @@ class LoadTemplate
         $this->setUpTemplate();
 
         // Exit is template is not valid.
-        if ( ! ($this->template instanceof Template)) {
+        if (! ($this->template instanceof Template)) {
             return;
         }
 
@@ -246,7 +246,7 @@ class LoadTemplate
     private function getListOfScriptsToDequeue($scripts)
     {
         $list = [];
-        $skip = ['babel-polyfill'];
+        $skip = [];
         $themeDir = get_template_directory_uri();
 
         /* @var _WP_Dependency $data */

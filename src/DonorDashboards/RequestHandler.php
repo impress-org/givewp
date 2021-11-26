@@ -113,7 +113,7 @@ class RequestHandler
     private function getListOfScriptsToDequeue($scripts)
     {
         $list = [];
-        $skip = ['babel-polyfill'];
+        $skip = [];
         $themeDir = get_template_directory_uri();
 
         /* @var _WP_Dependency $data */

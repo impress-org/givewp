@@ -13,6 +13,9 @@
 
 /**
  * Class Give_Email_Notifications
+ *
+ * @since 2.17.1  Remove validate_settings function.
+ *              Email recipient option value validation logic move to src/EmailGlobalSettingValidator.
  */
 class Give_Email_Notifications {
 	/**
@@ -25,12 +28,12 @@ class Give_Email_Notifications {
 	private static $instance;
 
 	/**
-	 * Array of email notifications.
-	 *
-	 * @since  2.0
-	 * @access private
-	 * @var array
-	 */
+     * Array of email notifications.
+     *
+     * @since  2.0
+     * @access private
+     * @var Give_Email_Notification[]
+     */
 	private $emails = array();
 
 	/**
@@ -76,7 +79,6 @@ class Give_Email_Notifications {
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox_setting_fields' ), 10, 2 );
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
-		add_action( 'admin_init', array( $this, 'validate_settings' ) );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
@@ -407,31 +409,6 @@ class Give_Email_Notifications {
 	 */
 	public function load() {
 		add_action( 'init', array( $this, 'init' ), -1 );
-	}
-
-
-	/**
-	 * Verify email setting before saving
-	 *
-	 * @since  2.0
-	 * @access public
-	 */
-	public function validate_settings() {
-		// Bailout.
-		if (
-			! Give_Admin_Settings::is_saving_settings() ||
-			'emails' !== give_get_current_setting_tab() ||
-			! isset( $_GET['section'] )
-		) {
-			return;
-		}
-
-		// Get email type.
-		$email_type = give_get_current_setting_section();
-
-		if ( ! empty( $_POST[ "{$email_type}_recipient" ] ) ) {
-			$_POST[ "{$email_type}_recipient" ] = array_unique( array_filter( $_POST[ "{$email_type}_recipient" ] ) );
-		}
 	}
 }
 

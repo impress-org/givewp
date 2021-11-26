@@ -122,17 +122,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							],
 						],
 						[
-							'name'    => __( 'Babel Polyfill Script', 'give' ),
-							'desc'    => __( 'This controls loading the Babel polyfill, which provides backwards compatibility for older browsers such as IE 11. The polyfill may be disabled to avoid conflicts with other themes or plugins that load the same script.', 'give' ),
-							'id'      => 'babel_polyfill_script',
-							'type'    => 'radio_inline',
-							'default' => 'enabled',
-							'options' => [
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							],
-						],
-						[
 							'name'          => __( 'Setup Page', 'give' ),
 							/* translators: %s: about page URL */
 							'desc'          => sprintf(

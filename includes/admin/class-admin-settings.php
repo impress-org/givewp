@@ -584,7 +584,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					</th>
 					<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ); ?>">
 						<?php if ( $value['repeat'] ) : ?>
-							<?php foreach ( $option_value as $index => $field_value ) : ?>
+							<?php foreach ( $option_value ?: [''] as $index => $field_value ) : ?>
 								<p>
 									<input
 											name="<?php echo esc_attr( $value['id'] ); ?>[]"
