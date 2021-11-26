@@ -29,6 +29,7 @@
 // Common (e.g. reusable components)
 @import 'button';
 @import 'text-input';
+@import 'select-dropdown';
 
 // Specifics
 @import 'header';
@@ -41,3 +42,4 @@
 
 // Addons
 @import "currencyswitcher";
+@import "funds";
