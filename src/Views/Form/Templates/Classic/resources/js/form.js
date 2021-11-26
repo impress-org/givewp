@@ -120,15 +120,13 @@ function setupDonationLevels() {
 function splitDonationLevelAmountsIntoParts({
     symbol = window.Give.fn.getGlobalVar('currency_sign'),
     symbolPosition = window.Give.fn.getGlobalVar('currency_pos'),
-    thousandsSeparator = window.Give.fn.getGlobalVar('thousands_separator'),
+    //thousandsSeparator = window.Give.fn.getGlobalVar('thousands_separator'),
     decimalSeparator = window.Give.fn.getGlobalVar('decimal_separator'),
-    precision = Number.parseInt(window.Give.fn.getGlobalVar('number_decimals')),
+    //precision = Number.parseInt(window.Give.fn.getGlobalVar('number_decimals')),
 }) {
     document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach((node) => {
         const amount = node.getAttribute('value');
-        const rawAmount = window.Give.fn.unFormatCurrency(amount, decimalSeparator);
-        const amountWithoutDecimal = accounting.format(rawAmount, 0, thousandsSeparator);
-        const decimalForAmount = rawAmount.toFixed(precision).split('.')[1];
+        const [amountWithoutDecimal, decimalForAmount] = amount.split(decimalSeparator);
 
         // Use the formatted amount as the ARIA label.
         node.setAttribute('aria-label', symbolPosition === 'before' ? `${symbol}${amount}` : `${amount}${symbol}`);
