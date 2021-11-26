@@ -1,5 +1,4 @@
 import h from 'vhtml';
-import accounting from 'accounting';
 import {domIsReady, insertAfter, nodeFromString, removeNode} from './not-jquery.js';
 
 // Transforms document for classic template
