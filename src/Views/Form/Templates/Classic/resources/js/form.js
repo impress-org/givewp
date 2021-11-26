@@ -95,16 +95,20 @@ function setupDonationLevels() {
         const selectedCurrencyObserver = new MutationObserver(([selectedCurrencyMutation]) => {
             const currencyCode = selectedCurrencyMutation.target.value;
 
+            const selectedCurrencyConfig = supportedCurrencies[currencyCode];
             splitDonationLevelAmountsIntoParts({
-                symbol: supportedCurrencies[currencyCode].symbol,
-                decimalSeparator: supportedCurrencies[currencyCode].setting.decimal_separator
+                symbol: selectedCurrencyConfig.symbol,
+                decimalSeparator: selectedCurrencyConfig.setting.decimal_separator,
+                precision: selectedCurrencyConfig.setting.number_decimals,
             });
         });
 
         // Run the donation level setup with the selected currency.
+        const selectedCurrencyConfig = supportedCurrencies[selectedCurrencyInput.value];
         splitDonationLevelAmountsIntoParts({
-            symbol: supportedCurrencies[selectedCurrencyInput.value].symbol,
-            decimalSeparator: supportedCurrencies[selectedCurrencyInput.value].setting.decimal_separator
+            symbol: selectedCurrencyConfig.symbol,
+            decimalSeparator: selectedCurrencyConfig.setting.decimal_separator,
+            precision: selectedCurrencyConfig.setting.number_decimals,
         });
 
         // Start observing the selected currency input.
