@@ -4,9 +4,7 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
-use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
+use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -15,10 +13,8 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  * Class TestGatewayOffsite
  * @unreleased
  */
-class TestGatewayOffsite extends PaymentGateway implements OffsiteGatewayInterface
+class TestGatewayOffsite extends OffSitePaymentGateway
 {
-    use OffsiteGateway;
-
     /**
      * @inheritDoc
      */
