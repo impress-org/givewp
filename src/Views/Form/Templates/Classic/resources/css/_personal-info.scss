@@ -20,7 +20,9 @@
         }
     }
 
-    & label {
+    #give-first-name-wrap label,
+    #give-last-name-wrap label,
+    #give-email-wrap label {
         @include visually-hidden;
     }
 
