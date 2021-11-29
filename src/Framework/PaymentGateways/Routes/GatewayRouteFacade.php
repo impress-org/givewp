@@ -91,7 +91,7 @@ class GatewayRouteFacade
      */
     private function isValidRequest($gatewayIds, $gatewayMethod)
     {
-        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method']);
+        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method'], $_GET['give-payment-id']);
         $idValid = in_array($_GET['give-gateway-id'], $gatewayIds, true);
         $methodValid = $_GET['give-gateway-method'] === $gatewayMethod;
 
