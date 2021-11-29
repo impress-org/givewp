@@ -34,7 +34,7 @@ class GatewayOffsiteReturnData
 
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
-        $self->paymentId = $request['give-payment-id'];
+        $self->paymentId = (int)$request['give-payment-id'];
 
         return $self;
     }
