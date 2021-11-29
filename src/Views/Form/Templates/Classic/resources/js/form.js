@@ -114,7 +114,7 @@ function setupDonationLevels() {
 
         // Start observing the selected currency input.
         selectedCurrencyObserver.observe(selectedCurrencyInput, {attributeFilter: ['value']});
-    } else splitDonationLevelAmountsIntoParts();
+    } else splitDonationLevelAmountsIntoParts({});
 }
 
 function splitDonationLevelAmountsIntoParts({
