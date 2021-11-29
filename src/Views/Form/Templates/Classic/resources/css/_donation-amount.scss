@@ -206,10 +206,10 @@
 }
 
 .give-recurring-donors-choice-period {
-    --padEnd: 1.25em;
     appearance: none;
     display: inline;
     overflow: visible; // for firefox’ sake!
+    width: calc(var(--selected-text-width) + 1.25em);
     padding: 0 0 0.0625em;
     border-width: 0 0 0.0625em;
     border-style: solid;

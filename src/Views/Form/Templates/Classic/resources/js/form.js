@@ -1,5 +1,13 @@
 import h from 'vhtml';
-import {domIsReady, insertAfter, measureText, nodeFromString, pixelsToRem, removeNode} from './not-jquery.js';
+import {
+    domIsReady,
+    insertAfter,
+    measureText,
+    nodeFromString,
+    pixelsToEm,
+    pixelsToRem,
+    removeNode,
+} from './not-jquery.js';
 
 // Transforms document for classic template
 domIsReady(() => {
@@ -285,20 +293,8 @@ function setupCurrencySwitcherSelector() {
 function setRecurringPeriodSelectWidth() {
     const select = document.querySelector('.give-recurring-donors-choice-period');
 
-    // Create a 2D context so we can measure the text.
-    const canvasContext = document.createElement('canvas').getContext('2d');
-    // Get the computed font styles for the select element.
-    const {fontWeight, fontSize, fontFamily} = window.getComputedStyle(select);
-    // Set the context’s font to the select element’s font.
-    canvasContext.font = `${fontWeight} ${fontSize} ${fontFamily}`;
-
-    // Update the width of the select element.
     function updateWidth() {
-        // Measure the selected option’s text.
-        const selectedTextMetrics = canvasContext.measureText(select.value);
-        // Use the width as the pixel value of the select element and pad the
-        // right side for Firefox.
-        select.style.width = `calc(${selectedTextMetrics.width}px + var(--padEnd))`;
+        select.style.setProperty('--selected-text-width', pixelsToEm(measureText(select, 'value'), select));
     }
 
     // Update after the fonts load.
