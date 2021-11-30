@@ -171,7 +171,8 @@ class Classic extends Template implements Hookable, Scriptable
             $this->loadFile('css/variables.php', [
                 'primaryColor'          => $this->options[ 'visual_appearance' ][ 'primary_color' ],
                 'headerBackgroundImage' => $this->options[ 'visual_appearance' ][ 'header_background_image' ],
-                'statsProgressBarColor' => give_get_meta(Frontend::getFormId(), '_give_goal_color', true)
+                'statsProgressBarColor' => give_get_meta(Frontend::getFormId(), '_give_goal_color', true),
+                'customFont'            => $customFont ? : 'inherit'
             ])
         );
 
