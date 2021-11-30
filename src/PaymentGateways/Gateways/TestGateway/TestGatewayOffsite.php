@@ -15,6 +15,10 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  */
 class TestGatewayOffsite extends OffSitePaymentGateway
 {
+    const routeMethods = [
+        'testGatewayMethod'
+    ];
+
     /**
      * @inheritDoc
      */
@@ -67,12 +71,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
-
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite(
-            $paymentData->paymentId,
-            ['transaction_id' => $transactionId]
-        );
+        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->paymentId);
 
         return new RedirectOffsite($redirectUrl);
     }
@@ -82,7 +81,17 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function returnFromOffsiteRedirect()
     {
-        $transactionId = $_GET['transaction_id'];
+        $transactionId = "test-gateway-transaction-id";
+
+        return new PaymentComplete($transactionId);
+    }
+
+    /**
+     * @return PaymentComplete
+     */
+    public function testGatewayMethod()
+    {
+        $transactionId = "test-gateway-transaction-id";
 
         return new PaymentComplete($transactionId);
     }

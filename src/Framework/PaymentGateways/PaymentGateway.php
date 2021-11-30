@@ -30,6 +30,11 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     /**
+     * @var string[]
+     */
+    const routeMethods = [];
+
+    /**
      * @var SubscriptionModuleInterface $subscriptionModule
      */
     public $subscriptionModule;
@@ -111,6 +116,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         return $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
     }
 
+
     /**
      * Handle gateway command
      *
@@ -181,6 +187,47 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 GatewayCommand::class
             )
         );
+    }
+
+    /**
+     * Handle gateway route method
+     *
+     * @param  int  $paymentId
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public function handleGatewayRouteMethod($paymentId, $method)
+    {
+        try {
+            $command = $this->$method();
+            
+            if ($command instanceof PaymentComplete) {
+                Call::invoke(
+                    PaymentCompleteHandler::class,
+                    $command,
+                    $paymentId
+                );
+
+                $response = response()->redirectTo(give_get_success_page_uri());
+
+                $this->handleResponse($response);
+            }
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            exit;
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error($exception->getMessage());
+
+            $message = __(
+                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
+            exit;
+        }
     }
 
 

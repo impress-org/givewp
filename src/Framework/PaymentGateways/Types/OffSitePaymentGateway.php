@@ -12,4 +12,11 @@ use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
 abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGatewayInterface
 {
     use OffsiteGateway;
+
+    /**
+     * @var string[]
+     */
+    const routeMethods = [
+        'returnFromOffsiteRedirect'
+    ];
 }
