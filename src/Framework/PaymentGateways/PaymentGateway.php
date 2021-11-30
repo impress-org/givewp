@@ -38,7 +38,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @var string[]
      */
-    const routeMethods = [];
+    public $routeMethods = [];
 
     /**
      * @var SubscriptionModuleInterface $subscriptionModule

@@ -22,7 +22,9 @@ class GatewayRoute
     public function __invoke()
     {
         if ($this->isValidListener()) {
-            $paymentGateways = give(PaymentGatewayRegister::class)->getPaymentGateways();
+            /** @var PaymentGatewayRegister $paymentGatewaysRegister */
+            $paymentGatewaysRegister = give(PaymentGatewayRegister::class);
+            $paymentGateways = $paymentGatewaysRegister->getPaymentGateways();
             $gatewayIds = array_keys($paymentGateways);
 
             if (!$this->isValidRequest($gatewayIds)) {
@@ -34,8 +36,7 @@ class GatewayRoute
             /** @var PaymentGateway $gateway */
             $gateway = give($paymentGateways[$data->gatewayId]);
 
-            /** @var string[] $allowedGatewayMethods */
-            $allowedGatewayMethods = $gateway::routeMethods;
+            $allowedGatewayMethods = $gateway->routeMethods;
 
             if (is_a($gateway, OffsiteGatewayInterface::class)) {
                 $allowedGatewayMethods = array_merge(

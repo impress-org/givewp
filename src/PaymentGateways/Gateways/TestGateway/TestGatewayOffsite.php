@@ -18,7 +18,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     /**
      * @inheritDoc
      */
-    const routeMethods = [
+    public $routeMethods = [
         'testGatewayMethod'
     ];
 
