@@ -52,7 +52,7 @@
     "repositories": [
         {
             "type": "svn",
-            "url": "http://develop.svn.wordpress.org/trunk/"
+            "url": "https://develop.svn.wordpress.org/trunk/"
         }
     ]
 }
