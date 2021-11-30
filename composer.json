@@ -34,7 +34,10 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
-        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
+        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
+        "post-install-cmd": [
+            "@php -r \"file_exists('tests/unit/wp-tests-config.dist.php') || copy('tests/unit/wp-tests-config.php', 'tests/unit/wp-tests-config.dist.php');\""
+        ]
     },
     "autoload": {
         "psr-4": {

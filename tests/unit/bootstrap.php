@@ -1,7 +1,12 @@
 <?php
 
 const WP_CONTENT_DIR = __DIR__;
-const WP_TESTS_CONFIG_FILE_PATH = __DIR__ . '/wp-tests-config.php';
+
+if( file_exists( __DIR__ . '/wp-tests-config.dist.php' ) ) {
+    define('WP_TESTS_CONFIG_FILE_PATH', __DIR__ . '/wp-tests-config.dist.php' );
+} else {
+    define('WP_TESTS_CONFIG_FILE_PATH', __DIR__ . '/wp-tests-config.php' );
+}
 
 require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
 
