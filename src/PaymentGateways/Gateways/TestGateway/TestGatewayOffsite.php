@@ -15,6 +15,9 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  */
 class TestGatewayOffsite extends OffSitePaymentGateway
 {
+    /**
+     * @inheritDoc
+     */
     const routeMethods = [
         'testGatewayMethod'
     ];

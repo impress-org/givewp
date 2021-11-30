@@ -19,7 +19,7 @@ class GenerateGatewayRouteUrl
             'give-listener' => 'give-gateway',
             'give-gateway-id' => $gatewayId,
             'give-gateway-method' => $gatewayMethod,
-            'give-payment-id' => $donationId,
+            'give-donation-id' => $donationId,
         ];
 
         if ($args) {

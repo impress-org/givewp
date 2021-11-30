@@ -14,7 +14,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 class GatewayRoute
 {
     /**
-     * Register route with a matching gateway method
+     * @unreleased
      *
      * @return void
      * @throws PaymentGatewayException
@@ -63,12 +63,12 @@ class GatewayRoute
      * @param  array  $gatewayIds
      *
      * @return bool
-     * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-gateway-method=returnFromOffsiteRedirect
+     * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
      *
      */
     private function isValidRequest($gatewayIds)
     {
-        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method'], $_GET['give-payment-id']);
+        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method'], $_GET['give-donation-id']);
         $idValid = in_array($_GET['give-gateway-id'], $gatewayIds, true);
 
         return $isset && $idValid;
