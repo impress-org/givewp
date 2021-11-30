@@ -2,7 +2,7 @@
 
 name: WordPress Tests
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -24,7 +24,7 @@ jobs:
         php: [ 5.6, 7.2 ]
         mysql: [ 'mysql:5.6', 'mysql:8.0' ]
         wordpress: [ 4.9, latest ]
-        
+
     services:
       mysql56:
         image: mysql:5.6
@@ -54,8 +54,8 @@ jobs:
           uses: actions/cache@v1
           with:
               path: ~/.composer/cache/files
-              key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-      
+              key: dependencies-v2-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
       # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
       - name: Set Up PHP
         uses: shivammathur/setup-php@v2
@@ -93,4 +93,4 @@ jobs:
         run: php -d memory_limit=-1 vendor/bin/phpunit
         env:
           DB_PORT: ${{ env.mysql_port }}
-          
+
