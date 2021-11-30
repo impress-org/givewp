@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5eaaa0eb51b673bd00d73a2d104fe5a3",
+    "content-hash": "bc054d9de0064c6c0e198363802f9c4a",
     "packages": [
         {
             "name": "composer/installers",
@@ -4098,9 +4098,9 @@
             "name": "wordpress/wordpress",
             "version": "dev-trunk",
             "source": {
-                "type": "svn",
-                "url": "https://develop.svn.wordpress.org",
-                "reference": "/trunk/@52292"
+                "type": "git",
+                "url": "git@github.com:WordPress/wordpress-develop.git",
+                "reference": "48a3e5f131122da9a98bb193b2732eb367f39855"
             },
             "require": {
                 "php": ">=5.6"
@@ -4112,6 +4112,7 @@
                 "wp-coding-standards/wpcs": "~2.3.0",
                 "yoast/phpunit-polyfills": "^1.0.1"
             },
+            "default-branch": true,
             "type": "library",
             "scripts": {
                 "compat": [
@@ -4144,7 +4145,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2021-11-30T15:09:56-05:00"
+            "time": "2021-11-30T21:35:01+00:00"
         },
         {
             "name": "wp-cli/cache-command",

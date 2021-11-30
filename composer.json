@@ -55,8 +55,8 @@
     },
     "repositories": [
         {
-            "type": "svn",
-            "url": "https://develop.svn.wordpress.org/trunk/"
+            "type": "git",
+            "url": "git@github.com:WordPress/wordpress-develop.git"
         }
     ]
 }
