@@ -32,7 +32,7 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit",
+        "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
     },
