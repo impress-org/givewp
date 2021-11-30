@@ -68,19 +68,33 @@ export function pixelsToRem(pixelValue) {
     const {fontSize: rootFontSize} = window.getComputedStyle(document.documentElement);
 
     // Using parseInt here is an assumption that no one is overriding our root font-size.
-    return `${Number.parseInt(pixelValue) / Number.parseInt(rootFontSize)}rem`;
+    return `${Number.parseFloat(pixelValue) / Number.parseFloat(rootFontSize)}rem`;
 }
 
 /**
- * Measure the text content of a node.
+ * Convert pixels to em.
  *
- * @param {Node} node
+ * @param {string|number} pixelValue
+ * @param {Element} element
+ * @returns {string} The pixel value in rem as a DOM string.
+ */
+export function pixelsToEm(pixelValue, element) {
+    const {fontSize} = window.getComputedStyle(element);
+
+    return `${Number.parseFloat(pixelValue) / Number.parseFloat(fontSize)}em`;
+}
+
+/**
+ * Measure some text.
+ *
+ * @param {string} text
+ * @param {string} textProp - defaults to the node’s textContent
  * @returns {string}
  */
-export function measureText(node) {
+export function measureText(node, textProp = 'textContent') {
     const context = document.createElement('canvas').getContext('2d');
     const {fontWeight, fontSize, fontFamily} = window.getComputedStyle(node);
     context.font = `${fontWeight} ${fontSize} ${fontFamily}`;
 
-    return context.measureText(node.textContent).width;
+    return context.measureText(node[textProp]).width;
 }

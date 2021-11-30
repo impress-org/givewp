@@ -17,6 +17,10 @@
     margin-right: 0.625rem;
     border-left-width: 0.125rem;
 
+    option {
+        color: #333;
+    }
+
     &:first-child {
         right: 0;
         left: 0.625rem;
