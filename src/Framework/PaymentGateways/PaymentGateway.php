@@ -31,6 +31,11 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     /**
+     * Route methods are used to extend the gateway api.
+     * By adding a custom route method, you are effectively
+     * registering a new route url that will resolve itself and
+     * call your method.
+     *
      * @var string[]
      */
     const routeMethods = [];
@@ -235,10 +240,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate gateway route url
      *
+     * @unreleased
+     *
      * @param  string  $gatewayMethod
      * @param  int  $donationId
      * @param  array|null  $args
-     * @return GenerateGatewayRouteUrl|mixed
+     *
+     * @return string
      */
     public function generateGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
     {

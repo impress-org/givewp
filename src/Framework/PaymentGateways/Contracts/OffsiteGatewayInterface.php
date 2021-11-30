@@ -9,6 +9,13 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 interface OffsiteGatewayInterface
 {
     /**
+     * @var string[]
+     */
+    const defaultRouteMethods = [
+        'returnFromOffsiteRedirect'
+    ];
+
+    /**
      * Return from offsite redirect
      *
      * @unreleased

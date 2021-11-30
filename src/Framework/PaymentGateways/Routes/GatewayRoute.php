@@ -7,7 +7,6 @@ use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 
 /**
  * @unreleased
@@ -35,15 +34,18 @@ class GatewayRoute
             /** @var PaymentGateway $gateway */
             $gateway = give($paymentGateways[$data->gatewayId]);
 
-            $gatewayMethods = array_filter($gateway::routeMethods, static function ($method) use ($data) {
+            $allowedGatewayMethods = array_filter($gateway::routeMethods, static function ($method) use ($data) {
                 return $method === $data->gatewayMethod;
             });
 
             if (is_a($gateway, OffsiteGatewayInterface::class)) {
-                $gatewayMethods = array_merge($gatewayMethods, OffSitePaymentGateway::routeMethods);
+                $allowedGatewayMethods = array_merge(
+                    $allowedGatewayMethods,
+                    OffsiteGatewayInterface::defaultRouteMethods
+                );
             }
 
-            foreach ($gatewayMethods as $gatewayMethod) {
+            foreach ($allowedGatewayMethods as $gatewayMethod) {
                 if (!method_exists($gateway, $gatewayMethod)) {
                     throw new PaymentGatewayException('The gateway method does not exist.');
                 }
