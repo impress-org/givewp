@@ -138,13 +138,7 @@ class Classic extends Template implements Hookable, Scriptable
         $this->scriptsLoaded = true;
 
         // Font
-        $primaryFont = $this->options[ 'visual_appearance' ][ 'primary_font' ];
-
-        if (in_array($primaryFont, ['custom', 'montserrat'])) {
-            $font = ('montserrat' === $primaryFont)
-                ? 'Montserrat'
-                : $this->options[ 'visual_appearance' ][ 'custom_font' ];
-
+        if ($customFont = $this->getCustomFont()) {
             wp_enqueue_style(
                 'give-google-font',
                 "https://fonts.googleapis.com/css?family={$font}:400,500,600,700&display=swap",
