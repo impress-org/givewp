@@ -3,10 +3,10 @@
 namespace Give\Framework\PaymentGateways\DataTransferObjects;
 
 /**
- * Class GatewayOffsiteReturnData
+ * Class GatewayRouteData
  * @unreleased
  */
-class GatewayOffsiteReturnData
+class GatewayRouteData
 {
     /**
      * @var string
@@ -19,7 +19,7 @@ class GatewayOffsiteReturnData
     /**
      * @var int
      */
-    public $paymentId;
+    public $donationId;
 
     /**
      * Convert data from request into DTO
@@ -34,7 +34,7 @@ class GatewayOffsiteReturnData
 
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
-        $self->paymentId = (int)$request['give-payment-id'];
+        $self->donationId = (int)$request['give-payment-id'];
 
         return $self;
     }

@@ -132,7 +132,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             Call::invoke(
                 PaymentCompleteHandler::class,
                 $command,
-                $gatewayPaymentData->paymentId
+                $gatewayPaymentData->donationId
             );
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
@@ -173,7 +173,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             give(SubscriptionCompleteHandler::class)->__invoke(
                 $command,
                 $gatewaySubscriptionData->subscriptionId,
-                $gatewayPaymentData->paymentId
+                $gatewayPaymentData->donationId
             );
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
@@ -192,22 +192,23 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway route method
      *
-     * @param  int  $paymentId
+     * @param  int  $donationId
+     * @param  string  $method
      *
      * @unreleased
      *
      * @return void
      */
-    public function handleGatewayRouteMethod($paymentId, $method)
+    public function handleGatewayRouteMethod($donationId, $method)
     {
         try {
             $command = $this->$method();
-            
+
             if ($command instanceof PaymentComplete) {
                 Call::invoke(
                     PaymentCompleteHandler::class,
                     $command,
-                    $paymentId
+                    $donationId
                 );
 
                 $response = response()->redirectTo(give_get_success_page_uri());

@@ -22,14 +22,15 @@ trait OffsiteGateway
     /**
      * Generate return url from redirect offsite
      *
+     * @param  int  $donationId
      * @param  array|null  $args  - associative array of query args
      * @return string
      */
-    public function generateReturnUrlFromRedirectOffsite($paymentId, $args = null)
+    public function generateReturnUrlFromRedirectOffsite($donationId, $args = null)
     {
         /** @var GenerateReturnUrlFromRedirectOffsite $action */
         $action = give(GenerateReturnUrlFromRedirectOffsite::class);
 
-        return $action($this->getId(), 'returnFromOffsiteRedirect', $paymentId, $args);
+        return $action($this->getId(), 'returnFromOffsiteRedirect', $donationId, $args);
     }
 }

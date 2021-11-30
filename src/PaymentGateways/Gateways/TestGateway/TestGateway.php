@@ -66,7 +66,7 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $transactionId = "test-gateway-transaction-id-{$paymentData->paymentId}";
+        $transactionId = "test-gateway-transaction-id-{$paymentData->donationId}";
 
         return new PaymentComplete($transactionId);
     }

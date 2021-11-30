@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Routes;
 
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
-use Give\Framework\PaymentGateways\DataTransferObjects\GatewayOffsiteReturnData;
+use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -30,7 +30,7 @@ class GatewayRoute
                 throw new PaymentGatewayException('This route is not valid.');
             }
 
-            $data = GatewayOffsiteReturnData::fromRequest($_GET);
+            $data = GatewayRouteData::fromRequest($_GET);
 
             /** @var PaymentGateway $gateway */
             $gateway = give($paymentGateways[$data->gatewayId]);
@@ -49,7 +49,7 @@ class GatewayRoute
                 }
             }
 
-            $gateway->handleGatewayRouteMethod($data->paymentId, $data->gatewayMethod);
+            $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
         }
     }
 

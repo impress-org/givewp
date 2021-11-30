@@ -71,7 +71,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->paymentId);
+        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
 
         return new RedirectOffsite($redirectUrl);
     }

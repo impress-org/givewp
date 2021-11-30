@@ -115,10 +115,10 @@ interface PaymentGatewayInterface
      *
      * @unreleased
      *
-     * @param  int  $paymentId
+     * @param  int  $donationId
      * @param  string  $method
      *
      * @return void
      */
-    public function handleGatewayRouteMethod($paymentId, $method);
+    public function handleGatewayRouteMethod($donationId, $method);
 }

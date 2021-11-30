@@ -8,17 +8,17 @@ class GenerateReturnUrlFromRedirectOffsite {
      *
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod
-     * @param  int  $paymentId
+     * @param  int  $donationId
      * @param  array|null  $args
      * @return string
      */
-    public function __invoke($gatewayId, $gatewayMethod, $paymentId, $args = null)
+    public function __invoke($gatewayId, $gatewayMethod, $donationId, $args = null)
     {
         $queryArgs = [
             'give-listener' => 'give-gateway',
             'give-gateway-id' => $gatewayId,
             'give-gateway-method' => $gatewayMethod,
-            'give-payment-id' => $paymentId,
+            'give-payment-id' => $donationId,
         ];
 
         if ($args) {
