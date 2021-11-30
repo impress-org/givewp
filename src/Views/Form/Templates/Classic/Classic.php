@@ -390,4 +390,20 @@ class Classic extends Template implements Hookable, Scriptable
     {
         return GIVE_PLUGIN_DIR . "src/Views/Form/Templates/Classic/resources/{$file}";
     }
+
+    /**
+     * @return string|null
+     */
+    protected function getCustomFont()
+    {
+        $primaryFont = $this->options[ 'visual_appearance' ][ 'primary_font' ];
+
+        if (in_array($primaryFont, ['custom', 'montserrat'])) {
+            return ('montserrat' === $primaryFont)
+                ? 'Montserrat'
+                : $this->options[ 'visual_appearance' ][ 'custom_font' ];
+        }
+
+        return null;
+    }
 }
