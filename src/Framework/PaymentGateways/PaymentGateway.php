@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
@@ -229,6 +230,19 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $this->handleResponse(response()->json($message));
             exit;
         }
+    }
+
+    /**
+     * Generate gateway route url
+     *
+     * @param  string  $gatewayMethod
+     * @param  int  $donationId
+     * @param  array|null  $args
+     * @return GenerateGatewayRouteUrl|mixed
+     */
+    public function generateGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
+    {
+        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $donationId, $args);
     }
 
 

@@ -3,7 +3,6 @@
 namespace Give\Framework\PaymentGateways\Traits;
 
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Actions\GenerateReturnUrlFromRedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 
@@ -28,9 +27,6 @@ trait OffsiteGateway
      */
     public function generateReturnUrlFromRedirectOffsite($donationId, $args = null)
     {
-        /** @var GenerateReturnUrlFromRedirectOffsite $action */
-        $action = give(GenerateReturnUrlFromRedirectOffsite::class);
-
-        return $action($this->getId(), 'returnFromOffsiteRedirect', $donationId, $args);
+        return $this->generateGatewayRouteUrl('returnFromOffsiteRedirect', $donationId, $args);
     }
 }

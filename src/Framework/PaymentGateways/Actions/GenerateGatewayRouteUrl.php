@@ -2,7 +2,8 @@
 
 namespace Give\Framework\PaymentGateways\Actions;
 
-class GenerateReturnUrlFromRedirectOffsite {
+class GenerateGatewayRouteUrl
+{
     /**
      * @unreleased
      *
