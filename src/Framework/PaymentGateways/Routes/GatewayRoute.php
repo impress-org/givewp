@@ -34,9 +34,8 @@ class GatewayRoute
             /** @var PaymentGateway $gateway */
             $gateway = give($paymentGateways[$data->gatewayId]);
 
-            $allowedGatewayMethods = array_filter($gateway::routeMethods, static function ($method) use ($data) {
-                return $method === $data->gatewayMethod;
-            });
+            /** @var string[] $allowedGatewayMethods */
+            $allowedGatewayMethods = $gateway::routeMethods;
 
             if (is_a($gateway, OffsiteGatewayInterface::class)) {
                 $allowedGatewayMethods = array_merge(
@@ -45,10 +44,11 @@ class GatewayRoute
                 );
             }
 
-            foreach ($allowedGatewayMethods as $gatewayMethod) {
-                if (!method_exists($gateway, $gatewayMethod)) {
-                    throw new PaymentGatewayException('The gateway method does not exist.');
-                }
+            if (
+                !in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
+                !method_exists($gateway, $data->gatewayMethod)
+            ) {
+                throw new PaymentGatewayException('The gateway method does not exist.');
             }
 
             $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
