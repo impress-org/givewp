@@ -46,7 +46,7 @@ return [
                 'desc'       => '',
                 'type'       => 'select',
                 'attributes' => [
-                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[appearance][primary_font]' => 'custom' ])),
+                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][primary_font]' => 'custom' ])),
                 ],
                 'options'    => [
                     'list' => 'List of fonts',
@@ -74,7 +74,7 @@ return [
                 'type'    => 'text',
                 'default' => __('Support Our Cause', 'give'),
                 'attributes' => [
-                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[appearance][display_header]' => 'enabled' ])),
+                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][display_header]' => 'enabled' ])),
                 ],
             ],
             [
@@ -84,7 +84,7 @@ return [
                 'type'    => 'textarea',
                 'default' => __('Help our organization by donating today! All donations go directly to making a difference for our cause.', 'give'),
                 'attributes' => [
-                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[appearance][display_header]' => 'enabled' ])),
+                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][display_header]' => 'enabled' ])),
                 ],
             ],
             [
@@ -93,7 +93,7 @@ return [
                 'desc' => __('Upload an eye-catching image that reflects your cause. For best results use an image in 16x9 aspect ratio at least 855x480px.', 'give'),
                 'type' => 'file',
                 'attributes' => [
-                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[appearance][display_header]' => 'enabled' ])),
+                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][display_header]' => 'enabled' ])),
                 ],
             ],
             [
@@ -117,7 +117,7 @@ return [
                 'type'    => 'text',
                 'default' => __('100% Secure Donation', 'give'),
                 'attributes' => [
-                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[appearance][secure_badge]' => 'enabled' ])),
+                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][secure_badge]' => 'enabled' ])),
                 ],
             ],
             [
