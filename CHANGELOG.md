@@ -49,7 +49,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Preview Emails are now sent to the authenticated user (#5990)
 - Donor dashboard response messages are now updated (#6003)
-- Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to register and/or login to an account (#6015)
+- Donor dashboard authentication modal only displays the login option if there are forms that allow a donor to register
+  and/or login to an account (#6015)
 - PayPal IPN verification setting with backward compatibility. PayPal IPN verification is enabled by default. (#5986)
 - Remove unnecessary checks from PayPal web payment ipn verification. (#5986)
 
@@ -165,12 +166,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form template. (#5910)
+- Ensure the Primary Color picker is still available when Step 1 is disabled for the multi-step donation form
+  template. (#5910)
 - Fix the placeholder image and set a max-width for the legacy form template. (#5910)
 - Add support for admin defined recurring donations to the multi-step form template. (#5910)
 - Fix style issue with Authorize.net eCheck on the multi-level donation form. (#5910)
 - Payment errors no longer revert to the default donation amount (#5913)
-- Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (#5918)
+- Removed an undefined variable error from being set as the class name for textareas rendered by the Legacy Consumer (
+  #5918)
 - Donors can now update their credit card using the Donor Dashboard (#5902)
 
 ## 2.12.2 - 2021-07-30
@@ -784,7 +787,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Missing block links in Setup Page now added. (#5128)
 - Location settings in the Wizard now default to current setting value. (#5150)
 - Resolved style and JS issues in WordPress 5.5+ with GiveWP's WP-admin metabox expand/collapse and repeater elements. (
-  #5126)
+  # 5126)
 
 ## 2.8.0-alpha.1 - 2020-08-17
 
