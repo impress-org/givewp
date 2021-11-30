@@ -141,7 +141,7 @@ class Classic extends Template implements Hookable, Scriptable
         if ($customFont = $this->getCustomFont()) {
             wp_enqueue_style(
                 'give-google-font',
-                "https://fonts.googleapis.com/css?family={$font}:400,500,600,700&display=swap",
+                'https://fonts.googleapis.com/css?family=' . urlencode($customFont) . ':400,500,600,700&display=swap',
                 [],
                 GIVE_VERSION
             );
