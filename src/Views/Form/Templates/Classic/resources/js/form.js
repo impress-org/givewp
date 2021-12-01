@@ -167,7 +167,7 @@ function splitDonationLevelAmountsIntoParts({
 function moveDefaultGatewayDataIntoActiveGatewaySection() {
     addSelectedGatewayDetails(
         createGatewayDetails(
-            document.querySelector('#give_purchase_form_wrap fieldset:not(.give-donation-submit)').innerHTML
+            Array.from(document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)')).map(e => e.outerHTML).join('')
         )
     );
 
