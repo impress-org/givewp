@@ -29,26 +29,10 @@ return [
                 'id'         => 'primary_font',
                 'name'       => __('Primary Font', 'give'),
                 'desc'       => __('A custom Google Font can make the donation form look great but can extra page load. The Theme Font option will use your theme’s font. The System Font option uses the system font of a particular operating system and can boost performance.', 'give'),
-                'type'       => 'radio',
-                'options'    => [
-                    'montserrat' => __('Montserrat Google Font', 'give'),
-                    'custom'     => __('Custom Google Font', 'give'),
-                    'system'     => __('User\'s System Font', 'give'),
-                ],
-                'attributes' => [
-                    'class' => 'give-visibility-handler',
-                ],
-                'default'    => 'montserrat',
-            ],
-            [
-                'id'         => 'custom_font',
-                'name'       => __('Google Font', 'give'),
-                'desc'       => '',
                 'type'       => 'select',
-                'attributes' => [
-                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][primary_font]' => 'custom' ])),
-                ],
                 'options'    => [
+                    'system'          => __('User\'s System Font', 'give'),
+                    'Montserrat'      => 'Montserrat',
                     'Roboto'          => 'Roboto',
                     'Open Sans'       => 'Open Sans',
                     'Lato'            => 'Lato',
@@ -62,7 +46,7 @@ return [
                     'Prompt'          => 'Prompt',
                     'Work Sans'       => 'Work Sans',
                 ],
-                'default'    => '',
+                'default'    => 'Montserrat',
             ],
             [
                 'id'      => 'display_header',
