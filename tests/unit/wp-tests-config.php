@@ -38,8 +38,8 @@ define( 'WP_DEBUG', true );
  */
 
 define( 'DB_NAME', 'wordpress_test' );
-define( 'DB_USER', 'wordpress' );
-define( 'DB_PASSWORD', 'wordpress' );
+define( 'DB_USER', 'root' );
+define( 'DB_PASSWORD', 'N0Tweak!@123!' );
 define( 'DB_HOST', 'localhost' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
