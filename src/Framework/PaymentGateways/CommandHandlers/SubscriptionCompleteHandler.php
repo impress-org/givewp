@@ -11,14 +11,14 @@ class SubscriptionCompleteHandler  {
      * @unreleased
      *
      * @param  SubscriptionComplete  $subscriptionComplete
-     * @param int $subscriptionId
-     * @param  int  $paymentId
+     * @param  int  $subscriptionId
+     * @param  int  $donationId
      * @return void
      */
-    public function __invoke(SubscriptionComplete $subscriptionComplete, $subscriptionId, $paymentId)
+    public function __invoke(SubscriptionComplete $subscriptionComplete, $subscriptionId, $donationId)
     {
-        give_update_payment_status($paymentId);
-        give_set_payment_transaction_id($paymentId, $subscriptionComplete->gatewayTransactionId);
+        give_update_payment_status($donationId);
+        give_set_payment_transaction_id($donationId, $subscriptionComplete->gatewayTransactionId);
 
         if (function_exists('give_recurring_update_subscription_status') && class_exists('Give_Subscriptions_DB')) {
             give_recurring_update_subscription_status($subscriptionId, 'active');
