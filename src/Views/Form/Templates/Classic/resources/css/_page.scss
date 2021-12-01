@@ -1,5 +1,5 @@
 body {
-    font-family: var(--give-custom-font, inherit), sans-serif;
+    font-family: var(--give-primary-font, inherit), sans-serif;
 
     @media screen and (min-width: $desktopMinWidth) {
         padding: 1rem;

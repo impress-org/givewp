@@ -138,10 +138,10 @@ class Classic extends Template implements Hookable, Scriptable
         $this->scriptsLoaded = true;
 
         // Font
-        if ($customFont = $this->getCustomFont()) {
+        if ($primaryFont = $this->getPrimaryFont()) {
             wp_enqueue_style(
                 'give-google-font',
-                'https://fonts.googleapis.com/css?family=' . urlencode($customFont) . ':400,500,600,700&display=swap',
+                'https://fonts.googleapis.com/css?family=' . urlencode($primaryFont) . ':400,500,600,700&display=swap',
                 [],
                 GIVE_VERSION
             );
@@ -172,7 +172,7 @@ class Classic extends Template implements Hookable, Scriptable
                 'primaryColor'          => $this->options[ 'visual_appearance' ][ 'primary_color' ],
                 'headerBackgroundImage' => $this->options[ 'visual_appearance' ][ 'header_background_image' ],
                 'statsProgressBarColor' => give_get_meta(Frontend::getFormId(), '_give_goal_color', true),
-                'customFont'            => $customFont ? : 'inherit'
+                'primaryFont'           => $primaryFont ? : 'inherit'
             ])
         );
 
@@ -363,7 +363,7 @@ class Classic extends Template implements Hookable, Scriptable
     {
         $filePath = $this->getFilePath($file);
 
-        if (! file_exists($filePath)) {
+        if ( ! file_exists($filePath)) {
             throw new InvalidArgumentException("File {$filePath} does not exist");
         }
 
@@ -389,14 +389,12 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * @return string|null
      */
-    protected function getCustomFont()
+    protected function getPrimaryFont()
     {
         $primaryFont = $this->options[ 'visual_appearance' ][ 'primary_font' ];
 
-        if (in_array($primaryFont, ['custom', 'montserrat'])) {
-            return ('montserrat' === $primaryFont)
-                ? 'Montserrat'
-                : $this->options[ 'visual_appearance' ][ 'custom_font' ];
+        if ($primaryFont !== 'system') {
+            return $primaryFont;
         }
 
         return null;
