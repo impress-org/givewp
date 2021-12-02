@@ -22,6 +22,7 @@ domIsReady(() => {
     setupDonationLevels();
     moveDefaultGatewayDataIntoActiveGatewaySection();
     isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
+    isFeeRecoveryInstalled() && attachFeeEvents() && updateFeesAmount();
     splitGatewayResponse();
     setupCurrencySwitcherSelector();
     setRecurringPeriodSelectWidth();
@@ -254,6 +255,7 @@ function splitGatewayResponse() {
 
                     window.GiveDonationSummary.initTotal();
                     updateDonationSummaryAmount();
+                    isFeeRecoveryInstalled() && updateFeesAmount();
                 }
 
                 // Add the gateway details to the form
