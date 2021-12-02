@@ -334,7 +334,16 @@ function setupCurrencySwitcherSelector() {
 function setRecurringPeriodSelectWidth() {
     const select = document.querySelector('.give-recurring-donors-choice-period');
 
-    function updateWidth() {
-        select.style.setProperty('--selected-text-width', pixelsToEm(measureText(select, 'value'), select));
+    if(select) {
+        function updateWidth() {
+            select.style.setProperty('--selected-text-width', pixelsToEm(measureText(select, 'value'), select));
+        }
+
+        // Update after the fonts load.
+        // Note: FontFaceSet’s loadingdone doesn’t seem to work in Safari.
+        document.fonts.ready.then(updateWidth);
+
+        // Update when the value changes.
+        select.addEventListener('change', updateWidth);
     }
 }
