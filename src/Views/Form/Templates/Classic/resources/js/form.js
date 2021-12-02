@@ -22,6 +22,7 @@ domIsReady(() => {
     setupDonationLevels();
     moveDefaultGatewayDataIntoActiveGatewaySection();
     isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
+    isRecurringAddonInstalled() && attachRecurringDonationEvents();
     splitGatewayResponse();
     setupCurrencySwitcherSelector();
     setRecurringPeriodSelectWidth();
@@ -174,6 +175,39 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
     removeNode(document.querySelector('#give_purchase_form_wrap'));
 }
 
+function attachRecurringDonationEvents() {
+    const recurringPeriod = document.querySelector('[name="give-recurring-period"]');
+
+    if (recurringPeriod) {
+        recurringPeriod.addEventListener('change', function(e){
+            window.GiveDonationSummary.handleDonorsChoiceRecurringFrequency(e.target, jQuery('.give-form'));
+        });
+
+        document.querySelector('.give-recurring-donors-choice-period')?.addEventListener('change', function(){
+            window.GiveDonationSummary.handleDonorsChoiceRecurringFrequency(recurringPeriod, jQuery('.give-form'));
+        });
+
+        // Admin choice
+        document.querySelector('[name="give-price-id"]')?.addEventListener('change', function(e){
+            window.GiveDonationSummary.handleAdminDefinedRecurringFrequency(e.target, jQuery('.give-form'));
+        });
+    }
+}
+
+function updateRecurringDonationFrequency() {
+    const form = jQuery('.give-form');
+    const donorChoice = document.querySelector('[name="give-recurring-period"]');
+    const adminChoice = document.querySelector('[name="give-price-id"]');
+
+    if (donorChoice) {
+        window.GiveDonationSummary.handleDonorsChoiceRecurringFrequency(donorChoice, form);
+    }
+
+    if(adminChoice){
+        window.GiveDonationSummary.handleAdminDefinedRecurringFrequency(adminChoice, form);
+    }
+}
+
 function updateDonationSummaryAmount() {
     document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value;
 }
@@ -244,11 +278,18 @@ function splitGatewayResponse() {
                 // Add the gateway details to the form
                 addSelectedGatewayDetails(gatewayDetails);
 
+                // Recurring Donations
+                if (isRecurringAddonInstalled()) {
+                    updateRecurringDonationFrequency();
+                }
+
                 jQuery('.give-donate-now-button-section').unblock();
             };
         }
     });
 }
+
+const isRecurringAddonInstalled = () => 'Give_Recurring_Vars' in window;
 
 const isDonationSummaryEnabled = () =>
     window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
@@ -296,11 +337,4 @@ function setRecurringPeriodSelectWidth() {
     function updateWidth() {
         select.style.setProperty('--selected-text-width', pixelsToEm(measureText(select, 'value'), select));
     }
-
-    // Update after the fonts load.
-    // Note: FontFaceSet’s loadingdone doesn’t seem to work in Safari.
-    document.fonts.ready.then(updateWidth);
-
-    // Update when the value changes.
-    select.addEventListener('change', updateWidth);
 }
