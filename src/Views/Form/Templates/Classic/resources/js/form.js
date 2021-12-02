@@ -22,6 +22,7 @@ domIsReady(() => {
     setupDonationLevels();
     moveDefaultGatewayDataIntoActiveGatewaySection();
     isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
+    isFeeRecoveryInstalled() && attachFeeEvents() && updateFeesAmount();
     isRecurringAddonInstalled() && attachRecurringDonationEvents();
     splitGatewayResponse();
     setupCurrencySwitcherSelector();
@@ -212,6 +213,21 @@ function updateDonationSummaryAmount() {
     document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value;
 }
 
+function attachFeeEvents() {
+    const coverFeesCheckbox = document.querySelector('.give_fee_mode_checkbox');
+
+    if ( coverFeesCheckbox ) {
+        coverFeesCheckbox.addEventListener('change', updateFeesAmount);
+        (new MutationObserver(updateFeesAmount)).observe( document.querySelector('.give-fee-message-label-text'), { childList: true });
+    } else {
+        jQuery('.js-give-donation-summary-fees').hide();
+    }
+}
+
+function updateFeesAmount(){
+    window.GiveDonationSummary.handleFees(document.querySelector('.give_fee_mode_checkbox'), jQuery('.give-form'))
+}
+
 function splitGatewayResponse() {
     jQuery.ajaxPrefilter(function (options, originalOptions) {
         if (options.url.includes('?payment-mode=')) {
@@ -273,6 +289,7 @@ function splitGatewayResponse() {
 
                     window.GiveDonationSummary.initTotal();
                     updateDonationSummaryAmount();
+                    isFeeRecoveryInstalled() && updateFeesAmount();
                 }
 
                 // Add the gateway details to the form
@@ -293,6 +310,8 @@ const isRecurringAddonInstalled = () => 'Give_Recurring_Vars' in window;
 
 const isDonationSummaryEnabled = () =>
     window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
+
+const isFeeRecoveryInstalled = () => 'give_fee_recovery_object' in window;
 
 const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
 
