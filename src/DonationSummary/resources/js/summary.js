@@ -25,43 +25,53 @@ window.GiveDonationSummary = {
      */
     initFrequency: function () {
         // Donor's Choice Recurring
-        GiveDonationSummary.observe('[name="give-recurring-period"]', function (targetNode, $form) {
-            $form.find('.js-give-donation-summary-frequency-help-text').toggle(!targetNode.checked);
-            $form.find('[data-tag="frequency"]').toggle(!targetNode.checked);
-            $form.find('[data-tag="recurring"]').toggle(targetNode.checked).html(targetNode.dataset['periodLabel']);
-
-            // Donor's Choice Period
-            const donorsChoice = document.querySelector('[name="give-recurring-period-donors-choice"]');
-            if (donorsChoice) {
-                const donorsChoiceValue = donorsChoice.options[donorsChoice.selectedIndex].value || false;
-                if (donorsChoiceValue) {
-                    $form
-                        .find('[data-tag="recurring"]')
-                        .html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue]);
-                }
-            }
-        });
+        GiveDonationSummary.observe('[name="give-recurring-period"]', GiveDonationSummary.handleDonorsChoiceRecurringFrequency);
 
         // Admin Defined Recurring
-        GiveDonationSummary.observe('[name="give-price-id"]', function (targetNode, $form) {
-            const priceID = targetNode.value;
-            const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');
+        GiveDonationSummary.observe('[name="give-price-id"]', GiveDonationSummary.handleAdminDefinedRecurringFrequency);
+    },
 
-            if (!recurringDetailsEl) {
-                return;
+    /**
+     * @unreleased
+     */
+    handleDonorsChoiceRecurringFrequency: function(targetNode, $form) {
+        $form.find('.js-give-donation-summary-frequency-help-text').toggle(!targetNode.checked);
+        $form.find('[data-tag="frequency"]').toggle(!targetNode.checked);
+        $form.find('[data-tag="recurring"]').toggle(targetNode.checked).html(targetNode.dataset['periodLabel']);
+
+        // Donor's Choice Period
+        const donorsChoice = document.querySelector('[name="give-recurring-period-donors-choice"]');
+        if (donorsChoice) {
+            const donorsChoiceValue = donorsChoice.options[donorsChoice.selectedIndex].value || false;
+            if (donorsChoiceValue) {
+                $form
+                .find('[data-tag="recurring"]')
+                .html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue]);
             }
+        }
+    },
 
-            const recurringDetails = JSON.parse(recurringDetailsEl.value);
+    /**
+     * @unreleased
+     */
+    handleAdminDefinedRecurringFrequency: function(targetNode, $form) {
+        const priceID = targetNode.value;
+        const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');
 
-            if ('undefined' !== typeof recurringDetails['multi']) {
-                const isRecurring = 'yes' === recurringDetails['multi'][priceID]['_give_recurring'];
-                const periodLabel = recurringDetails['multi'][priceID]['give_recurring_pretty_text'];
+        if (!recurringDetailsEl) {
+            return;
+        }
 
-                $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
-                $form.find('[data-tag="frequency"]').toggle(!isRecurring);
-                $form.find('[data-tag="recurring"]').toggle(isRecurring).html(periodLabel);
-            }
-        });
+        const recurringDetails = JSON.parse(recurringDetailsEl.value);
+
+        if ('undefined' !== typeof recurringDetails['multi']) {
+            const isRecurring = 'yes' === recurringDetails['multi'][priceID]['_give_recurring'];
+            const periodLabel = recurringDetails['multi'][priceID]['give_recurring_pretty_text'];
+
+            $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
+            $form.find('[data-tag="frequency"]').toggle(!isRecurring);
+            $form.find('[data-tag="recurring"]').toggle(isRecurring).html(periodLabel);
+        }
     },
 
     /**
