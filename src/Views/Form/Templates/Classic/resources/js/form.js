@@ -268,6 +268,8 @@ function splitGatewayResponse() {
 const isDonationSummaryEnabled = () =>
     window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
 
+const isFeeRecoveryInstalled = () => 'give_fee_recovery_object' in window;
+
 const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
 
 const addSelectedGatewayDetails = (gatewayDetailsNode) =>
