@@ -80,8 +80,8 @@ window.GiveDonationSummary = {
 
         // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
         const fee = document
-        .querySelector('[name="give-fee-amount"]')
-        .value.replace('.', Give.form.fn.getInfo('decimal_separator', $form));
+            .querySelector('[name="give-fee-amount"]')
+            .value.replace('.', Give.form.fn.getInfo('decimal_separator', $form));
         $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form));
     },
 
