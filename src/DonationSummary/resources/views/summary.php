@@ -20,7 +20,7 @@
                 <th><?php
                     _e('Donation Summary', 'givewp'); ?></th>
                 <th>
-                    <button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
+                    <button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
                         <?php
                         _e('Edit Donation', 'givewp'); ?>
                         <?php
@@ -57,7 +57,7 @@
                             /* translators: 1: <button> open tag 2: close tag. */
                             echo sprintf(
                                 __('Consider making this donation %srecurring%s', 'give'),
-                                '<button class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">',
+                                '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">',
                                 '</button>'
                             );
                             ?>
