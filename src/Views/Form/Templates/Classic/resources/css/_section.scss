@@ -47,4 +47,9 @@
     &:nth-of-type(even) {
         background-color: #f9f9f9;
     }
+
+    &:last-child {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+    }
 }

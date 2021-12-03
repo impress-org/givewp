@@ -27,6 +27,7 @@ domIsReady(() => {
     splitGatewayResponse();
     setupCurrencySwitcherSelector();
     setRecurringPeriodSelectWidth();
+    addSecurePaymentBadgeToDonateNowSection();
 });
 
 /**
@@ -169,7 +170,9 @@ function splitDonationLevelAmountsIntoParts({
 function moveDefaultGatewayDataIntoActiveGatewaySection() {
     addSelectedGatewayDetails(
         createGatewayDetails(
-            Array.from(document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)')).map(e => e.outerHTML).join('')
+            Array.from(document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)'))
+                .map((e) => e.outerHTML)
+                .join('')
         )
     );
 
@@ -180,16 +183,16 @@ function attachRecurringDonationEvents() {
     const recurringPeriod = document.querySelector('[name="give-recurring-period"]');
 
     if (recurringPeriod) {
-        recurringPeriod.addEventListener('change', function(e){
+        recurringPeriod.addEventListener('change', function (e) {
             window.GiveDonationSummary.handleDonorsChoiceRecurringFrequency(e.target, jQuery('.give-form'));
         });
 
-        document.querySelector('.give-recurring-donors-choice-period')?.addEventListener('change', function(){
+        document.querySelector('.give-recurring-donors-choice-period')?.addEventListener('change', function () {
             window.GiveDonationSummary.handleDonorsChoiceRecurringFrequency(recurringPeriod, jQuery('.give-form'));
         });
 
         // Admin choice
-        document.querySelector('[name="give-price-id"]')?.addEventListener('change', function(e){
+        document.querySelector('[name="give-price-id"]')?.addEventListener('change', function (e) {
             window.GiveDonationSummary.handleAdminDefinedRecurringFrequency(e.target, jQuery('.give-form'));
         });
     }
@@ -204,7 +207,7 @@ function updateRecurringDonationFrequency() {
         window.GiveDonationSummary.handleDonorsChoiceRecurringFrequency(donorChoice, form);
     }
 
-    if(adminChoice){
+    if (adminChoice) {
         window.GiveDonationSummary.handleAdminDefinedRecurringFrequency(adminChoice, form);
     }
 }
@@ -216,16 +219,18 @@ function updateDonationSummaryAmount() {
 function attachFeeEvents() {
     const coverFeesCheckbox = document.querySelector('.give_fee_mode_checkbox');
 
-    if ( coverFeesCheckbox ) {
+    if (coverFeesCheckbox) {
         coverFeesCheckbox.addEventListener('change', updateFeesAmount);
-        (new MutationObserver(updateFeesAmount)).observe( document.querySelector('.give-fee-message-label-text'), { childList: true });
+        new MutationObserver(updateFeesAmount).observe(document.querySelector('.give-fee-message-label-text'), {
+            childList: true,
+        });
     } else {
         jQuery('.js-give-donation-summary-fees').hide();
     }
 }
 
-function updateFeesAmount(){
-    window.GiveDonationSummary.handleFees(document.querySelector('.give_fee_mode_checkbox'), jQuery('.give-form'))
+function updateFeesAmount() {
+    window.GiveDonationSummary.handleFees(document.querySelector('.give_fee_mode_checkbox'), jQuery('.give-form'));
 }
 
 function splitGatewayResponse() {
@@ -353,7 +358,7 @@ function setupCurrencySwitcherSelector() {
 function setRecurringPeriodSelectWidth() {
     const select = document.querySelector('.give-recurring-donors-choice-period');
 
-    if(select) {
+    if (select) {
         function updateWidth() {
             select.style.setProperty('--selected-text-width', pixelsToEm(measureText(select, 'value'), select));
         }
@@ -364,5 +369,22 @@ function setRecurringPeriodSelectWidth() {
 
         // Update when the value changes.
         select.addEventListener('change', updateWidth);
+    }
+}
+
+function addSecurePaymentBadgeToDonateNowSection() {
+    if (window.classicTemplateOptions.visual_appearance.secure_badge === 'enabled') {
+        document
+            .querySelector('.give-donate-now-button-section')
+            .lastChild.after(
+                nodeFromString(
+                    h(
+                        'aside',
+                        {className: 'give-secure-donation-badge-bottom'},
+                        h('svg', {className: 'give-form-secure-icon'}, h('use', {href: '#give-icon-lock'})),
+                        window.classicTemplateOptions.visual_appearance.secure_badge_text
+                    )
+                )
+            );
     }
 }
