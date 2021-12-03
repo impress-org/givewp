@@ -29,7 +29,7 @@ jobs:
             mysql56:
                 image: mysql:5.6
                 env:
-                    MYSQL_ROOT_PASSWORD: N0Tweak!@123!
+                    MYSQL_ROOT_PASSWORD: root
                 ports:
                     - 3306
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -74,7 +74,7 @@ jobs:
                     case "$MYSQL_VERSION" in
                       'mysql:5.6')
                         MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
-                        MYSQL_PASS=N0Tweak!@123!
+                        MYSQL_PASS=root
                         ;;
                       'mysql:8.0')
                         MYSQL_PORT=${{ job.services.mysql80.ports[3306] }}
@@ -85,6 +85,9 @@ jobs:
                     echo "mysql_pass=$MYSQL_PASS" >> $GITHUB_ENV
                 env:
                     MYSQL_VERSION: ${{ matrix.mysql }}
+
+            -   name: Set Up Tests
+                run: bash tests/unit/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Tests
                 run: php -d memory_limit=-1 vendor/bin/phpunit
