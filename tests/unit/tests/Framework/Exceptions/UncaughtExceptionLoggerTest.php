@@ -4,41 +4,26 @@ use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Log\Log;
 
-class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case {
-	public function testShouldLogException() {
-		$logger = new UncaughtExceptionLogger();
+class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case
+{
+    public function testShouldLogException()
+    {
+        $logger = new UncaughtExceptionLogger();
 
-		$this->mock( Log::class, function ( PHPUnit_Framework_MockObject_MockBuilder $builder ) {
-			$mock = $builder->setMethods( [ 'error' ] )->getMock();
+        $this->mock(Log::class, function (PHPUnit_Framework_MockObject_MockBuilder $builder) {
+            $mock = $builder->setMethods(['error'])->getMock();
 
-			$mock->expects( $this->once() )
-				 ->method( 'error' )
-				 ->with( '', [] );
+            $mock->expects($this->once())
+                ->method('error')
+                ->with('', []);
 
-			return $mock;
-		} );
+            return $mock;
+        });
 
-		$this->expectException(ExceptionLogged::class);
+        $this->expectException(ExceptionLogged::class);
 
-		$logger->handleException( new ExceptionLogged() );
-	}
-
-	public function testShouldNotLogException() {
-		$logger = new UncaughtExceptionLogger();
-
-		$this->mock( Log::class, function ( PHPUnit_Framework_MockObject_MockBuilder $builder ) {
-			$mock = $builder->setMethods( [ 'error' ] )->getMock();
-
-			$mock->expects( $this->never() )
-				 ->method( 'error' );
-
-			return $mock;
-		} );
-
-		$this->expectException(ExceptionNotLogged::class);
-
-		$logger->handleException( new ExceptionNotLogged() );
-	}
+        $logger->handleException(new ExceptionLogged());
+    }
 }
 
 class ExceptionLogged extends Exception implements LoggableException {
@@ -49,7 +34,4 @@ class ExceptionLogged extends Exception implements LoggableException {
 	public function getLogContext() {
 		return [];
 	}
-}
-
-class ExceptionNotLogged extends Exception {
 }
