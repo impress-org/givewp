@@ -19,6 +19,8 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
     define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'default' ] );
 }
 
+require_once WP_TESTS_CONFIG_FILE_PATH;
+
 require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
 
 tests_add_filter('muplugins_loaded', function() {
@@ -29,10 +31,10 @@ tests_add_filter('setup_theme', function() {
     give()->install();
 });
 
-require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
 var_dump( ABSPATH . 'wp-includes/PHPMailer/PHPMailer.php' );
 var_dump( file_exists( ABSPATH . 'wp-includes/PHPMailer/PHPMailer.php' ) );
 
+require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
 
 // test cases
 require_once __DIR__ . '/framework/class-give-unit-test-case.php';
