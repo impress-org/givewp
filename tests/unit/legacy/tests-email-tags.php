@@ -105,7 +105,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$fullname = give_email_tag_fullname( array( 'user_id' => 1 ) );
         var_dump( 'SECOND' );
         var_dump( $fullname );
-        var_dump( get_userdata(1) );
+        var_dump( Give()->donors->get_column_by( 'name', 'user_id', 1 ) );
 		$this->assertEquals( 'Admin User', $fullname );
 
 		/*
