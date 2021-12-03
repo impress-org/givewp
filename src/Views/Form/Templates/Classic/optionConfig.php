@@ -246,7 +246,7 @@ return [
                 'name'    => __('Headline', 'give'),
                 'desc'    => __('This message displays in large font on the thank you screen. Best practice: short, sweet, and sincere works best.', 'give'),
                 'type'    => 'text',
-                'default' => __('Hey Ben, thanks for your donation! 🙏', 'give'),
+                'default' => __('Hey {name}, thanks for your donation! 🙏', 'give'),
             ],
             [
                 'id'      => 'description',
