@@ -11,36 +11,36 @@ use Give\TestData\Framework\MetaRepository;
  *
  * @since 2.15.0 update class code to maintain PHP 5.6 compatibility
  */
-class ManualDonations {
+class ManualDonations
+{
 
-	const GATEWAY = 'manual_donation';
+    const GATEWAY = 'manual_donation';
 
-	/**
-	 * @param  int  $donationID
-	 * @param  array  $donation
-	 */
-	public function updateDonationMeta( $donationID, $donation ) {
+    /**
+     * @param int   $donationID
+     * @param array $donation
+     */
+    public function updateDonationMeta($donationID, $donation)
+    {
+        global $wpdb;
 
-		global $wpdb;
+        // Check gateway
+        if ($donation['payment_gateway'] !== self::GATEWAY) {
+            return;
+        }
 
-		// Check gateway
-		if ( $donation['payment_gateway'] !== self::GATEWAY ) {
-			return;
-		}
+        // Start DB transaction
+        $wpdb->query('START TRANSACTION');
 
-		// Start DB transaction
-		$wpdb->query( 'START TRANSACTION' );
+        try {
+            // Update donation meta
+            $metaRepository = new MetaRepository('give_donationmeta', 'donation_id');
+            $metaRepository->persist($donationID, ['_give_manually_added_donation' => 1]);
 
-		try {
-			// Update donation meta
-			$metaRepository = new MetaRepository( 'give_donationmeta', 'donation_id' );
-			$metaRepository->persist( $donationID, [ '_give_manually_added_donation' => 1 ] );
-
-			$wpdb->query( 'COMMIT' );
-
-		} catch ( Exception $e ) {
-			$wpdb->query( 'ROLLBACK' );
-		}
-	}
+            $wpdb->query('COMMIT');
+        } catch (Exception $e) {
+            $wpdb->query('ROLLBACK');
+        }
+    }
 
 }

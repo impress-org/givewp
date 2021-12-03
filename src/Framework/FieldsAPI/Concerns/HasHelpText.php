@@ -2,21 +2,26 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait HasHelpText {
+trait HasHelpText
+{
 
-	/** @var string */
-	protected $helpText;
+    /** @var string */
+    protected $helpText;
 
-	/**
-	 * @param string $helpText
-	 * @return $this
-	 */
-	public function helpText( $helpText ) {
-		$this->helpText = $helpText;
-		return $this;
-	}
+    /**
+     * @param string $helpText
+     *
+     * @return $this
+     */
+    public function helpText($helpText)
+    {
+        $this->helpText = $helpText;
 
-	public function getHelpText() {
-		return $this->helpText;
-	}
+        return $this;
+    }
+
+    public function getHelpText()
+    {
+        return $this->helpText;
+    }
 }

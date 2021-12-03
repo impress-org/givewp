@@ -52,63 +52,65 @@ use Give\Log\Helpers\Environment;
  * }
  *
  *
- * @method static error( string $message, array $context = [] )
- * @method static warning( string $message, array $context = [] )
- * @method static notice( string $message, array $context = [] )
- * @method static success( string $message, array $context = [] )
- * @method static info( string $message, array $context = [] )
- * @method static http( string $message, array $context = [] )
- * @method static spam( string $message, array $context = [] )
+ * @method static error(string $message, array $context = [])
+ * @method static warning(string $message, array $context = [])
+ * @method static notice(string $message, array $context = [])
+ * @method static success(string $message, array $context = [])
+ * @method static info(string $message, array $context = [])
+ * @method static http(string $message, array $context = [])
+ * @method static spam(string $message, array $context = [])
  */
-class Log {
-	public function __call( $name, $arguments ) {
-		list ( $message, $context ) = array_pad( $arguments, 2, null );
+class Log
+{
+    public function __call($name, $arguments)
+    {
+        list ($message, $context) = array_pad($arguments, 2, null);
 
-		if ( is_array( $context ) ) {
-			// Convert context values to string
-			$context = array_map(
-				function ( $item ) {
-					if ( is_array( $item ) || is_object( $item ) ) {
-						$item = print_r( $item, true );
-					}
+        if (is_array($context)) {
+            // Convert context values to string
+            $context = array_map(
+                function ($item) {
+                    if (is_array($item) || is_object($item)) {
+                        $item = print_r($item, true);
+                    }
 
-					return $item;
-				},
-				$context
-			);
+                    return $item;
+                },
+                $context
+            );
 
-			// Default fields
-			$data = array_filter(
-				$context,
-				function ( $key ) {
-					return array_key_exists( $key, LogFactory::getDefaults() );
-				},
-				ARRAY_FILTER_USE_KEY
-			);
+            // Default fields
+            $data = array_filter(
+                $context,
+                function ($key) {
+                    return array_key_exists($key, LogFactory::getDefaults());
+                },
+                ARRAY_FILTER_USE_KEY
+            );
 
-			// Additional context
-			$data['context'] = array_diff(
-				$context,
-				$data
-			);
-		}
+            // Additional context
+            $data['context'] = array_diff(
+                $context,
+                $data
+            );
+        }
 
-		// Set message
-		if ( ! is_null( $message ) ) {
-			$data['message'] = $message;
-		}
+        // Set message
+        if (!is_null($message)) {
+            $data['message'] = $message;
+        }
 
-		// Set type
-		$data['type'] = $name;
+        // Set type
+        $data['type'] = $name;
 
-		try {
-			$log = LogFactory::makeFromArray( $data );
-			$log->save();
+        try {
+            $log = LogFactory::makeFromArray($data);
+            $log->save();
 
-			return $log;
-		} catch ( Exception $exception ) {
-			error_log( $exception->getMessage() );
-		}
+            return $log;
+        } catch (Exception $exception) {
+            error_log($exception->getMessage());
+        }
     }
 
     /**

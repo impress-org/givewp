@@ -1,80 +1,80 @@
 /* stylelint-disable no-descending-specificity */
 form[data-currency_position='after'] .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown {
-	position: absolute;
-	padding: 0;
-	width: calc(100% - 24px) !important;
-	right: 0;
-	border: none;
-	background: none;
-	color: rgba(255, 255, 255, 0);
-	margin-right: 0 !important;
+    position: absolute;
+    padding: 0;
+    width: calc(100% - 24px) !important;
+    right: 0;
+    border: none;
+    background: none;
+    color: rgba(255, 255, 255, 0);
+    margin-right: 0 !important;
 
-	&:focus {
-		outline: none;
-		& + .give-currency-symbol {
-			border: 1px solid #28c77b !important;
-			border-radius: 3px;
-		}
-	}
+    &:focus {
+        outline: none;
+        & + .give-currency-symbol {
+            border: 1px solid #28c77b !important;
+            border-radius: 3px;
+        }
+    }
 
-	~ span.give-currency-symbol.give-currency-position-after {
-		padding: 0 10px 0 30px !important;
-		margin-right: -10px !important;
+    ~ span.give-currency-symbol.give-currency-position-after {
+        padding: 0 10px 0 30px !important;
+        margin-right: -10px !important;
 
-		&::before {
-			left: 10px;
-			right: unset;
-			border-color: #6f6f6f transparent transparent;
-		}
-	}
+        &::before {
+            left: 10px;
+            right: unset;
+            border-color: #6f6f6f transparent transparent;
+        }
+    }
 }
 
 form[data-currency_position='before'] .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown {
-	position: absolute;
-	padding: 0;
-	width: calc(100% - 24px) !important;
-	left: 0;
-	border: none;
-	background: none;
-	color: rgba(255, 255, 255, 0);
+    position: absolute;
+    padding: 0;
+    width: calc(100% - 24px) !important;
+    left: 0;
+    border: none;
+    background: none;
+    color: rgba(255, 255, 255, 0);
 
-	&:focus {
-		outline: none;
-		& + .give-currency-symbol {
-			border: 1px solid #28c77b !important;
-			border-radius: 3px;
-		}
-	}
+    &:focus {
+        outline: none;
+        & + .give-currency-symbol {
+            border: 1px solid #28c77b !important;
+            border-radius: 3px;
+        }
+    }
 
-	~ span.give-currency-symbol.give-currency-position-before {
-		padding: 0 30px 0 10px !important;
-		margin-left: -10px !important;
+    ~ span.give-currency-symbol.give-currency-position-before {
+        padding: 0 30px 0 10px !important;
+        margin-left: -10px !important;
 
-		&::before {
-			right: 10px;
-			border-color: #6f6f6f transparent transparent;
-		}
-	}
+        &::before {
+            right: 10px;
+            border-color: #6f6f6f transparent transparent;
+        }
+    }
 }
 
 /* @link https://github.com/impress-org/givewp/issues/5452 */
 form .give-donation-amount .give-cs-select-currency.give-cs-mini-dropdown option {
-	color: initial;
+    color: initial;
 }
 
 .give-currency-switcher-msg {
-	margin: 5px 30px -15px 30px !important;
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 1.4;
-	padding: 20px 20px 20px 22px !important;
-	color: #333;
-	display: inline-block;
-	text-align: center;
-	background: #fff;
-	border: 1px solid rgba(255, 255, 255, 0);
-	box-sizing: border-box;
-	box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
-	border-radius: 5px;
-	position: relative;
+    margin: 5px 30px -15px 30px !important;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.4;
+    padding: 20px 20px 20px 22px !important;
+    color: #333;
+    display: inline-block;
+    text-align: center;
+    background: #fff;
+    border: 1px solid rgba(255, 255, 255, 0);
+    box-sizing: border-box;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.121203);
+    border-radius: 5px;
+    position: relative;
 }

@@ -12,97 +12,103 @@ use ReflectionException;
  *
  * @since 2.10.0
  */
-abstract class Enum implements EnumInterface {
-	/**
-	 * @var mixed
-	 */
-	protected $value;
+abstract class Enum implements EnumInterface
+{
+    /**
+     * @var mixed
+     */
+    protected $value;
 
-	/**
-	 * ValueObject constructor.
-	 *
-	 * @param mixed $value
-	 */
-	public function __construct( $value ) {
-		if ( $value instanceof static ) {
-			$value = $value->getValue();
-		}
+    /**
+     * ValueObject constructor.
+     *
+     * @param mixed $value
+     */
+    public function __construct($value)
+    {
+        if ($value instanceof static) {
+            $value = $value->getValue();
+        }
 
-		if ( ! self::isValid( $value ) ) {
-			throw new InvalidArgumentException(
-				sprintf( 'Invalid %s enumeration value provided %s', static::class, $value )
-			);
-		}
+        if ( ! self::isValid($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid %s enumeration value provided %s', static::class, $value)
+            );
+        }
 
-		$this->value = strtoupper( $value );
-	}
+        $this->value = strtoupper($value);
+    }
 
+    /**
+     * Get an array of defined constants
+     *
+     * @return array
+     */
+    public static function getAll()
+    {
+        static $constants = [];
 
-	/**
-	 * Get an array of defined constants
-	 *
-	 * @return array
-	 */
-	public static function getAll() {
+        if ( ! isset($constants[static::class])) {
+            try {
+                $reflection = new ReflectionClass(static::class);
+                $constants[static::class] = $reflection->getConstants();
+            } catch (ReflectionException $exception) {
+                return [];
+            }
+        }
 
-		static $constants = [];
+        return $constants[static::class];
+    }
 
-		if ( ! isset( $constants[ static::class ] ) ) {
-			try {
-				$reflection                 = new ReflectionClass( static::class );
-				$constants[ static::class ] = $reflection->getConstants();
-			} catch ( ReflectionException $exception ) {
-				return [];
-			}
-		}
+    /**
+     * @inheritDoc
+     */
+    public function getValue()
+    {
+        $constants = self::getAll();
 
-		return $constants[ static::class ];
-	}
+        if (isset($constants[$this->value])) {
+            return $constants[$this->value];
+        }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getValue() {
-		$constants = self::getAll();
+        return null;
+    }
 
-		if ( isset( $constants[ $this->value ] ) ) {
-			return $constants[ $this->value ];
-		}
+    /**
+     * Check if value is valid
+     *
+     * @param string $value
+     *
+     * @return bool
+     */
+    public static function isValid($value)
+    {
+        return array_key_exists(
+            strtoupper($value),
+            self::getAll()
+        );
+    }
 
-		return null;
-	}
+    /**
+     * @inheritDoc
+     */
+    public function equalsTo($value)
+    {
+        return $value instanceof self && $this->getValue() === $value->getValue();
+    }
 
-	/**
-	 * Check if value is valid
-	 *
-	 * @param string $value
-	 * @return bool
-	 */
-	public static function isValid( $value ) {
-		return array_key_exists(
-			strtoupper( $value ),
-			self::getAll()
-		);
-	}
+    /**
+     * @param string $name
+     * @param array  $args
+     *
+     * @return static
+     */
+    public static function __callStatic($name, $args)
+    {
+        if (self::isValid($name)) {
+            return new static($name);
+        }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function equalsTo( $value ) {
-		return $value instanceof self && $this->getValue() === $value->getValue();
-	}
-
-	/**
-	 * @param  string  $name
-	 * @param  array  $args
-	 *
-	 * @return static
-	 */
-	public static function __callStatic( $name, $args ) {
-		if ( self::isValid( $name ) ) {
-			return new static( $name );
-		}
-
-		throw new InvalidArgumentException( "Invalid argument, does not match constant {$name}" );
-	}
+        throw new InvalidArgumentException("Invalid argument, does not match constant {$name}");
+    }
 }

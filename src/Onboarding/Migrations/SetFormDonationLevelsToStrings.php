@@ -14,51 +14,51 @@ use Give\Onboarding\FormRepository;
  */
 class SetFormDonationLevelsToStrings extends Migration
 {
-	/**
-	 * @var FormRepository
-	 */
-	private $formRepository;
+    /**
+     * @var FormRepository
+     */
+    private $formRepository;
 
-	/**
-	 * @inheritDoc
-	 */
-	public static function id()
-	{
-		return 'set-form-donation-levels-to-strings';
-	}
+    /**
+     * @inheritDoc
+     */
+    public static function id()
+    {
+        return 'set-form-donation-levels-to-strings';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public static function timestamp()
-	{
-		return strtotime('2020-09-01 11:47:00');
-	}
+    /**
+     * @inheritDoc
+     */
+    public static function timestamp()
+    {
+        return strtotime('2020-09-01 11:47:00');
+    }
 
-	public function __construct(FormRepository $formRepository)
-	{
-		$this->formRepository = $formRepository;
-	}
+    public function __construct(FormRepository $formRepository)
+    {
+        $this->formRepository = $formRepository;
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function run()
-	{
-		$formId = $this->formRepository->getDefaultFormID();
+    /**
+     * @inheritDoc
+     */
+    public function run()
+    {
+        $formId = $this->formRepository->getDefaultFormID();
 
-		if (empty($formId)) {
-			return;
-		}
+        if (empty($formId)) {
+            return;
+        }
 
-		$donationLevels = give_get_meta($formId, '_give_donation_levels', true);
+        $donationLevels = give_get_meta($formId, '_give_donation_levels', true);
 
-		foreach ($donationLevels as &$level) {
-			$level['_give_id']['level_id'] = (string)$level['_give_id']['level_id'];
-			$level['_give_amount'] = give_sanitize_amount_for_db($level['_give_amount']);
-		}
-		unset($level);
+        foreach ($donationLevels as &$level) {
+            $level['_give_id']['level_id'] = (string)$level['_give_id']['level_id'];
+            $level['_give_amount'] = give_sanitize_amount_for_db($level['_give_amount']);
+        }
+        unset($level);
 
-		update_post_meta($formId, '_give_donation_levels', $donationLevels);
-	}
+        update_post_meta($formId, '_give_donation_levels', $donationLevels);
+    }
 }

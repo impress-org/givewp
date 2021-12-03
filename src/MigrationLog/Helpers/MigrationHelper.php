@@ -15,106 +15,112 @@ use Give\MigrationLog\MigrationLogRepository;
  *
  * @since 2.10.0
  */
-class MigrationHelper {
+class MigrationHelper
+{
 
-	/**
-	 * @var MigrationsRegister
-	 */
-	private $migrationRegister;
+    /**
+     * @var MigrationsRegister
+     */
+    private $migrationRegister;
 
-	/**
-	 * @var MigrationLogRepository
-	 */
-	private $migrationRepository;
+    /**
+     * @var MigrationLogRepository
+     */
+    private $migrationRepository;
 
-	/**
-	 * @var MigrationLogModel[]
-	 */
-	private $migrationsInDatabase;
+    /**
+     * @var MigrationLogModel[]
+     */
+    private $migrationsInDatabase;
 
-	/**
-	 * MigrationOrder constructor.
-	 *
-	 * @param  MigrationsRegister  $migrationRegister
-	 * @param  MigrationLogRepository  $migrationRepository
-	 */
-	public function __construct(
-		MigrationsRegister $migrationRegister,
-		MigrationLogRepository $migrationRepository
-	) {
-		$this->migrationRegister   = $migrationRegister;
-		$this->migrationRepository = $migrationRepository;
-	}
+    /**
+     * MigrationOrder constructor.
+     *
+     * @param MigrationsRegister $migrationRegister
+     * @param MigrationLogRepository $migrationRepository
+     */
+    public function __construct(
+        MigrationsRegister $migrationRegister,
+        MigrationLogRepository $migrationRepository
+    ) {
+        $this->migrationRegister = $migrationRegister;
+        $this->migrationRepository = $migrationRepository;
+    }
 
-	/**
-	 * Get migrations sorted by run order
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return array
-	 */
-	private function getMigrationsSorted() {
-		static $migrations = [];
+    /**
+     * Get migrations sorted by run order
+     *
+     * @since 2.10.0
+     *
+     * @return array
+     */
+    private function getMigrationsSorted()
+    {
+        static $migrations = [];
 
-		if ( empty( $migrations ) ) {
-			/* @var Migration $migrationClass */
-			foreach ( $this->migrationRegister->getMigrations() as $migrationClass ) {
-				$migrations[ $migrationClass::timestamp() . '_' . $migrationClass::id() ] = $migrationClass::id();
-			}
+        if (empty($migrations)) {
+            /* @var Migration $migrationClass */
+            foreach ($this->migrationRegister->getMigrations() as $migrationClass) {
+                $migrations[$migrationClass::timestamp() . '_' . $migrationClass::id()] = $migrationClass::id();
+            }
 
-			ksort( $migrations );
-		}
+            ksort($migrations);
+        }
 
-		return $migrations;
-	}
+        return $migrations;
+    }
 
-	/**
-	 * Get pending migrations
-	 *
-	 * @since 2.10.0
-	 *
-	 * @return string[]
-	 */
-	public function getPendingMigrations() {
-		return array_filter(
-			$this->migrationRegister->getMigrations(),
-			function( $migrationClass ) {
-				/* @var Migration $migrationClass */
-				foreach ( $this->getMigrationsInDatabase() as $migration ) {
-					if ( $migration->getId() === $migrationClass::id() ) {
-						return false;
-					}
-				}
-				return true;
-			}
-		);
-	}
+    /**
+     * Get pending migrations
+     *
+     * @since 2.10.0
+     *
+     * @return string[]
+     */
+    public function getPendingMigrations()
+    {
+        return array_filter(
+            $this->migrationRegister->getMigrations(),
+            function ($migrationClass) {
+                /* @var Migration $migrationClass */
+                foreach ($this->getMigrationsInDatabase() as $migration) {
+                    if ($migration->getId() === $migrationClass::id()) {
+                        return false;
+                    }
+                }
 
-	/**
-	 * Get migration run order
-	 *
-	 * @since 2.10.0
-	 *
-	 * @param string $migrationId
-	 *
-	 * @return int
-	 */
-	public function getRunOrderForMigration( $migrationId ) {
-		return array_search( $migrationId, array_values( $this->getMigrationsSorted() ) ) + 1;
-	}
+                return true;
+            }
+        );
+    }
 
-	/**
-	 * Retrieves the migrations from the database, caching the results for future retrieval
-	 *
-	 * @since 2.10.1
-	 *
-	 * @return MigrationLogModel[]
-	 */
-	private function getMigrationsInDatabase() {
-		if ( $this->migrationsInDatabase === null ) {
-			$this->migrationsInDatabase = $this->migrationRepository->getMigrations();
-		}
+    /**
+     * Get migration run order
+     *
+     * @since 2.10.0
+     *
+     * @param string $migrationId
+     *
+     * @return int
+     */
+    public function getRunOrderForMigration($migrationId)
+    {
+        return array_search($migrationId, array_values($this->getMigrationsSorted())) + 1;
+    }
 
-		return $this->migrationsInDatabase;
-	}
+    /**
+     * Retrieves the migrations from the database, caching the results for future retrieval
+     *
+     * @since 2.10.1
+     *
+     * @return MigrationLogModel[]
+     */
+    private function getMigrationsInDatabase()
+    {
+        if ($this->migrationsInDatabase === null) {
+            $this->migrationsInDatabase = $this->migrationRepository->getMigrations();
+        }
+
+        return $this->migrationsInDatabase;
+    }
 }

@@ -2,9 +2,11 @@
 
 namespace Give\TestData\Framework\Provider;
 
-class RandomPaymentMode extends RandomProvider {
+class RandomPaymentMode extends RandomProvider
+{
 
-	public function __invoke() {
-		return $this->faker->boolean( 80 ) ? 'live' : 'test';
-	}
+    public function __invoke()
+    {
+        return $this->faker->boolean(80) ? 'live' : 'test';
+    }
 }

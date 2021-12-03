@@ -10,33 +10,35 @@ use WP_CLI;
  *
  * A WP-CLI command to get all donation statuses available
  */
-class DonationStatusCommand {
-	/**
-	 * Get available donation statuses
-	 *
-	 * ## EXAMPLES
-	 *
-	 *     wp give test-donation-statuses
-	 *
-	 * @when after_wp_load
-	 */
-	public function __invoke( $args, $assocArgs ) {
-		// Get donation statuses
-		$statuses = give_get_payment_statuses();
+class DonationStatusCommand
+{
+    /**
+     * Get available donation statuses
+     *
+     * ## EXAMPLES
+     *
+     *     wp give test-donation-statuses
+     *
+     * @when after_wp_load
+     */
+    public function __invoke($args, $assocArgs)
+    {
+        // Get donation statuses
+        $statuses = give_get_payment_statuses();
 
-		$formatted = [];
+        $formatted = [];
 
-		foreach ( $statuses as $status => $name ) {
-			$formatted[] = [
-				'Name'   => $name,
-				'Status' => $status,
-			];
-		}
+        foreach ($statuses as $status => $name) {
+            $formatted[] = [
+                'Name' => $name,
+                'Status' => $status,
+            ];
+        }
 
-		WP_CLI\Utils\format_items(
-			'table',
-			$formatted,
-			[ 'Name', 'Status' ]
-		);
-	}
+        WP_CLI\Utils\format_items(
+            'table',
+            $formatted,
+            ['Name', 'Status']
+        );
+    }
 }

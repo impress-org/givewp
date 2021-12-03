@@ -1,87 +1,87 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard__email-controls {
-	display: flex;
-	align-self: stretch;
-	align-items: center;
-	justify-content: center;
-	padding-top: 48px;
-	max-width: fit-content;
-	font-size: 14px;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    padding-top: 48px;
+    max-width: fit-content;
+    font-size: 14px;
 
-	.give-donor-dashboard__make-primary-email {
-		margin-right: 10px;
-		color: #3398db;
-		cursor: pointer;
+    .give-donor-dashboard__make-primary-email {
+        margin-right: 10px;
+        color: #3398db;
+        cursor: pointer;
 
-		&:hover {
-			text-decoration: underline;
-		}
-	}
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 
-	.give-donor-dashboard__delete-email {
-		margin-left: 10px;
-		color: rgb(199, 81, 81);
-		cursor: pointer;
+    .give-donor-dashboard__delete-email {
+        margin-left: 10px;
+        color: rgb(199, 81, 81);
+        cursor: pointer;
 
-		&:hover {
-			text-decoration: underline;
-		}
-	}
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .give-donor-dashboard__address-controls {
-	display: flex;
-	align-self: stretch;
-	align-items: center;
-	justify-content: center;
-	padding: 28px 0 20px 0;
-	max-width: fit-content;
-	font-size: 14px;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 0 20px 0;
+    max-width: fit-content;
+    font-size: 14px;
 
-	.give-donor-dashboard__make-primary-address {
-		margin-right: 10px;
-		color: #3398db;
-		cursor: pointer;
+    .give-donor-dashboard__make-primary-address {
+        margin-right: 10px;
+        color: #3398db;
+        cursor: pointer;
 
-		&:hover {
-			text-decoration: underline;
-		}
-	}
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 
-	.give-donor-dashboard__delete-address {
-		margin-left: 10px;
-		color: rgb(199, 81, 81);
-		cursor: pointer;
+    .give-donor-dashboard__delete-address {
+        margin-left: 10px;
+        color: rgb(199, 81, 81);
+        cursor: pointer;
 
-		&:hover {
-			text-decoration: underline;
-		}
-	}
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .give-donor-dashboard__add-primary-address {
-	display: flex;
-	justify-content: space-between;
-	padding: 0 16px;
-	border: 1px solid #e2e6ec;
-	background: #fbfbfb;
-	margin: 0 0 40px;
-	
-	> .give-donor-dashboard-heading {
-		margin: 10px 0;
-	}
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+    border: 1px solid #e2e6ec;
+    background: #fbfbfb;
+    margin: 0 0 40px;
+
+    > .give-donor-dashboard-heading {
+        margin: 10px 0;
+    }
 }
 
 .give-donor-dashboard__edit-profile-spinner {
-	animation: spin infinite 1s linear;
+    animation: spin infinite 1s linear;
 }
 
 @keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

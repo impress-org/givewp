@@ -4,6 +4,7 @@ namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+
 use function do_action;
 
 /**
@@ -14,39 +15,44 @@ use function do_action;
  *
  * @since 2.14.0
  */
-class AddEnctypeAttributeInDonationForm {
-	/**
-	 * @var int
-	 */
-	private $formId;
+class AddEnctypeAttributeInDonationForm
+{
+    /**
+     * @var int
+     */
+    private $formId;
 
-	/**
-	 * @since 2.14.0
-	 * @param int $formId
-	 */
-	public function __construct( $formId ) {
-		$this->formId = $formId;
-	}
+    /**
+     * @since 2.14.0
+     *
+     * @param int $formId
+     */
+    public function __construct($formId)
+    {
+        $this->formId = $formId;
+    }
 
-	/**
-	 * @since 2.14.0
-	 *
-	 * @param array $formHtmlAttributes
-	 * @param string $hook
-	 */
-	public function __invoke( $formHtmlAttributes, $hook ){
-		$collection = Group::make( $hook );
-		do_action( "give_fields_$hook", $collection, $this->formId );
-		$collection->walkFields(
-			/* @var File $field */
-			function( $field ) use ( &$formHtmlAttributes ) {
-				if( 'file' === $field->getType() ) {
-					$formHtmlAttributes['enctype'] = 'multipart/form-data';
-					return $formHtmlAttributes;
-				}
-			}
-		);
+    /**
+     * @since 2.14.0
+     *
+     * @param array $formHtmlAttributes
+     * @param string $hook
+     */
+    public function __invoke($formHtmlAttributes, $hook)
+    {
+        $collection = Group::make($hook);
+        do_action("give_fields_$hook", $collection, $this->formId);
+        $collection->walkFields(
+        /* @var File $field */
+            function ($field) use (&$formHtmlAttributes) {
+                if ('file' === $field->getType()) {
+                    $formHtmlAttributes['enctype'] = 'multipart/form-data';
 
-		return $formHtmlAttributes;
-	}
+                    return $formHtmlAttributes;
+                }
+            }
+        );
+
+        return $formHtmlAttributes;
+    }
 }

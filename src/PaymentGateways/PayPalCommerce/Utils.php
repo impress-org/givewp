@@ -9,28 +9,31 @@ use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
  *
  * @since 2.9.0
  */
-class Utils {
-	/**
-	 * Returns whether or not the PayPal Commerce gateway is active
-	 *
-	 * @since 2.9.0
-	 *
-	 * @return bool
-	 */
-	public static function gatewayIsActive() {
-		return give_is_gateway_active( PayPalCommerce::GATEWAY_ID );
-	}
+class Utils
+{
+    /**
+     * Returns whether or not the PayPal Commerce gateway is active
+     *
+     * @since 2.9.0
+     *
+     * @return bool
+     */
+    public static function gatewayIsActive()
+    {
+        return give_is_gateway_active(PayPalCommerce::GATEWAY_ID);
+    }
 
-	/**
-	 * Return whether or not payment gateway accept payment.
-	 *
-	 * @since 2.9.6
-	 * @return bool
-	 */
-	public static function isAccountReadyToAcceptPayment() {
-		/* @var MerchantDetail $merchantDetail */
-		$merchantDetail = give( MerchantDetail::class );
+    /**
+     * Return whether or not payment gateway accept payment.
+     *
+     * @since 2.9.6
+     * @return bool
+     */
+    public static function isAccountReadyToAcceptPayment()
+    {
+        /* @var MerchantDetail $merchantDetail */
+        $merchantDetail = give(MerchantDetail::class);
 
-		return (bool) $merchantDetail->accountIsReady;
-	}
+        return (bool)$merchantDetail->accountIsReady;
+    }
 }

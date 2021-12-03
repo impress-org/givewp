@@ -1,0 +1,19 @@
+.hero {
+    display: grid;
+    gap: 0.95rem;
+    padding: 4.125rem 2rem 3.5rem;
+    text-align: center;
+}
+
+.title {
+    margin: 0;
+    color: #333;
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.description {
+    margin: 0;
+    font-size: 1.125rem;
+}

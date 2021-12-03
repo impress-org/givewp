@@ -1,115 +1,115 @@
 // This file used for Total styles common to the frontend and editor
 
 .give-multi-form-goal-block {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-	background: #fff;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.305862);
-	border-radius: 8px;
-	margin-bottom: 20px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.305862);
+    border-radius: 8px;
+    margin-bottom: 20px;
 
-	.wp-block-media-text {
-		margin: 24px !important;
-	}
+    .wp-block-media-text {
+        margin: 24px !important;
+    }
 
-	.wp-block-media-text__media,
-	.wp-block-media-text__media img,
-	.give-multi-form-goal-block__image {
-		border-radius: 6px !important;
-	}
+    .wp-block-media-text__media,
+    .wp-block-media-text__media img,
+    .give-multi-form-goal-block__image {
+        border-radius: 6px !important;
+    }
 
-	.wp-block-media-text .wp-block-media-text__content {
-		padding: 16px !important;
-	}
+    .wp-block-media-text .wp-block-media-text__content {
+        padding: 16px !important;
+    }
 }
 
 .give-multi-form-goal-block__content {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	grid-gap: 16px;
-	margin: 24px !important;
-	min-height: 250px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 16px;
+    margin: 24px !important;
+    min-height: 250px;
 
-	.give-multi-form-goal-block__text {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+    .give-multi-form-goal-block__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
-		h2 {
-			margin-bottom: var(--global--spacing-vertical);
-		}
-	}
+        h2 {
+            margin-bottom: var(--global--spacing-vertical);
+        }
+    }
 
-	.give-multi-form-goal-block__image {
-		img {
-			height: 100%;
-			width: 100%;
-			object-fit: cover;
-		}
-	}
+    .give-multi-form-goal-block__image {
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
 }
 
 .give-progress-bar-block__goal {
-	height: auto;
-	padding: 20px 16px;
-	border-top: 1px solid #ebebeb;
+    height: auto;
+    padding: 20px 16px;
+    border-top: 1px solid #ebebeb;
 }
 
 .give-progress-bar-block__progress {
-	height: 20px;
-	display: flex;
-	align-items: center;
-	position: relative;
-	border-radius: 20px;
-	overflow: hidden;
-	background: #f1f1f1;
-	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
+    height: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f1f1f1;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
 
-	.give-progress-bar-block__progress-bar {
-		position: absolute;
-		height: 100%;
-		left: 0;
-		top: 0;
-		border-radius: 20px;
-		background: linear-gradient(180deg, #28c77b 0%, #28c77b 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
-		background-blend-mode: multiply;
-		overflow: hidden;
-	}
+    .give-progress-bar-block__progress-bar {
+        position: absolute;
+        height: 100%;
+        left: 0;
+        top: 0;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #28c77b 0%, #28c77b 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
+        background-blend-mode: multiply;
+        overflow: hidden;
+    }
 }
 
 .give-progress-bar-block__stats {
-	display: flex;
-	flex-wrap: wrap;
-	background: #f5f5f5;
-	height: auto;
-	border-top: 1px solid #ebebeb;
-	border-radius: 0 0 8px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #f5f5f5;
+    height: auto;
+    border-top: 1px solid #ebebeb;
+    border-radius: 0 0 8px 8px;
 }
 
 .give-progress-bar-block__stat {
-	display: flex;
-	flex: 1 1 110px;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	border-right: 1px solid #ebebeb;
-	font-weight: 500;
-	height: 96px;
+    display: flex;
+    flex: 1 1 110px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-right: 1px solid #ebebeb;
+    font-weight: 500;
+    height: 96px;
 
-	&:last-of-type {
-		border-right: none;
-	}
+    &:last-of-type {
+        border-right: none;
+    }
 
-	> *:first-child {
-		font-size: 24px;
-		line-height: 28px;
-		color: #4c4c4c;
-	}
+    > *:first-child {
+        font-size: 24px;
+        line-height: 28px;
+        color: #4c4c4c;
+    }
 
-	> *:last-child {
-		font-size: 18px;
-		line-height: 1;
-		color: #6f6f6f;
-	}
+    > *:last-child {
+        font-size: 18px;
+        line-height: 1;
+        color: #6f6f6f;
+    }
 }

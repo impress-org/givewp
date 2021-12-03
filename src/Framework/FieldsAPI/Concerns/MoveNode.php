@@ -2,14 +2,17 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-trait MoveNode {
+trait MoveNode
+{
 
-	public function move( $name ) {
-		$collection = $this;
-		$proxy      = new MoveNodeProxy( $collection );
-		$proxy->move(
-			$collection->getNodeByName( $name )
-		);
-		return $proxy;
-	}
+    public function move($name)
+    {
+        $collection = $this;
+        $proxy = new MoveNodeProxy($collection);
+        $proxy->move(
+            $collection->getNodeByName($name)
+        );
+
+        return $proxy;
+    }
 }

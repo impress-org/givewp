@@ -1,122 +1,122 @@
 @import '../colors';
 
 .overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 99999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
 }
 
 .container {
-	display: block;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.7);
-	pointer-events: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    pointer-events: none;
 }
 
 .modal {
-	display: block;
-	max-width: 600px;
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: #fff;
-	border-top: 10px solid $info;
-	pointer-events: auto;
-	box-shadow: 0 3px 6px rgba(68, 68, 68, 0.8), 0 3px 6px rgba(68, 68, 68, 0.8);
+    display: block;
+    max-width: 600px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-top: 10px solid $info;
+    pointer-events: auto;
+    box-shadow: 0 3px 6px rgba(68, 68, 68, 0.8), 0 3px 6px rgba(68, 68, 68, 0.8);
 }
 
 .content {
-	font-size: 16px;
-	padding: 20px;
-	position: relative;
+    font-size: 16px;
+    padding: 20px;
+    position: relative;
 }
 
 .innerContent {
-	padding: 20px 0;
+    padding: 20px 0;
 }
 
 .textLeft {
-	text-align: left;
+    text-align: left;
 }
 
 .textRight {
-	text-align: right;
+    text-align: right;
 }
 
 .textCenter {
-	text-align: center;
+    text-align: center;
 }
 
 .title {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	font-size: 18px;
-	font-weight: 600;
-	padding-bottom: 20px;
-	border-bottom: 1px solid #ddd;
-	margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
 .closeIconContainer {
-	position: absolute;
-	right: 20px;
-	top: 15px;
+    position: absolute;
+    right: 20px;
+    top: 15px;
 }
 
 .close {
-	cursor: pointer;
-	span {
-		font-size: 30px;
-		color: #d3d3d3;
-	}
+    cursor: pointer;
+    span {
+        font-size: 30px;
+        color: #d3d3d3;
+    }
 }
 
 .section {
-	margin-bottom: 25px;
+    margin-bottom: 25px;
 
-	strong {
-		font-weight: 600;
-		display: block;
-		margin-bottom: 10px;
-	}
+    strong {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 10px;
+    }
 }
 
 .errorDetailsContainer {
-	background-color: #f1f1f1;
-	border-radius: 10px;
-	padding: 10px 20px;
-	height: auto;
-	min-height: 40px;
-	max-height: 240px;
-	overflow-x: auto;
-	font-size: 15px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 10px 20px;
+    height: auto;
+    min-height: 40px;
+    max-height: 240px;
+    overflow-x: auto;
+    font-size: 15px;
 
-	span {
-		font-weight: 600;
-		margin-right: 10px;
-		margin-bottom: 10px;
-	}
+    span {
+        font-weight: 600;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
 }
 
 .error {
-	border-top-color: $error;
+    border-top-color: $error;
 }
 
 .warning {
-	border-top-color: $warning;
+    border-top-color: $warning;
 }
 
 .success {
-	border-top-color: $success;
+    border-top-color: $success;
 }
 
 .http {
-	border-top-color: $http;
+    border-top-color: $http;
 }

@@ -9,31 +9,33 @@ use Give\Framework\FieldsAPI\File;
  *
  * @property File $field
  */
-trait HasFilesArray {
-	/**
-	 * @since 2.14.0
-	 * @return array
-	 */
-	public function getFiles(){
-		$_files = $_FILES[ $this->field->getName() ];
-		$files = [];
+trait HasFilesArray
+{
+    /**
+     * @since 2.14.0
+     * @return array
+     */
+    public function getFiles()
+    {
+        $_files = $_FILES[$this->field->getName()];
+        $files = [];
 
-		if ( empty( $_files ) ) {
-			return [];
-		}
+        if (empty($_files)) {
+            return [];
+        }
 
-		if( ! $this->field->getAllowMultiple() ) {
-			return [ $_files ];
-		}
+        if ( ! $this->field->getAllowMultiple()) {
+            return [$_files];
+        }
 
-		foreach ( $_files as $key => $data ) {
-			foreach ( $data as $index => $item ) {
-				$files[$index][$key] = $item;
-			}
-		}
+        foreach ($_files as $key => $data) {
+            foreach ($data as $index => $item) {
+                $files[$index][$key] = $item;
+            }
+        }
 
-		return array_filter( $files, function( $file ){
-			return empty( $file['error' ] );
-		});
-	}
+        return array_filter($files, function ($file) {
+            return empty($file['error']);
+        });
+    }
 }
