@@ -48,7 +48,12 @@
         background-color: #f9f9f9;
     }
 
-    &:last-child {
+    &:first-of-type {
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+    }
+
+    &:last-of-type {
         border-end-start-radius: inherit;
         border-end-end-radius: inherit;
     }
