@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .give-form-header {
     display: flex;
     flex-direction: column;
@@ -20,6 +22,11 @@
 
     @media screen and (min-width: $desktopMinWidth) {
         padding: 3rem;
+    }
+
+    .give-container-unboxed & {
+        border-radius: 0.5rem;
+        margin-inline: 1rem;
     }
 }
 
