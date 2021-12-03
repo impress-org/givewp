@@ -1,6 +1,6 @@
 .give_errors {
     --error-color: #ff3c3c;
-    --error-color-background: #ffe0e0;
+    --error-color-background: #ffeded;
 
     display: flex;
     flex-direction: column;
@@ -9,10 +9,19 @@
     row-gap: 1rem;
 
     .give_error {
+        position: relative;
         background-color: var(--error-color-background);
         border: solid 2px var(--error-color);
         border-radius: 0.2rem;
         padding: 0.3rem;
+
+        .give-notice-close {
+            position: absolute;
+            top: 0.1rem;
+            right: 0.1rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
     }
 }
 
