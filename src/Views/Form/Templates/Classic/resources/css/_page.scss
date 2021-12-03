@@ -1,6 +1,12 @@
 body {
+    display: flex;
+    justify-content: center;
     font-family: var(--give-primary-font, inherit), sans-serif;
     color: #444;
+}
+
+.give-form-wrap {
+    width: min(100%, 51.5rem);
 }
 
 .give-container-boxed {
