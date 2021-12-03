@@ -128,7 +128,7 @@ class Log
         /** @var Log $logger */
         $logger = give(__CLASS__);
 
-        if (in_array($name, ['error', 'warning']) || Environment::isLogEnabled()) {
+        if (in_array($name, ['error', 'warning']) || Environment::isDebugLoggingEnabled()) {
             call_user_func_array([$logger, $name], $arguments);
         }
     }

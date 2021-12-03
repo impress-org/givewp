@@ -34,7 +34,7 @@ class Environment
      *
      * @return bool
      */
-    public static function isLogEnabled()
+    public static function isDebugLoggingEnabled()
     {
         return defined('WP_DEBUG_LOG') && WP_DEBUG_LOG;
     }
