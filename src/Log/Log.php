@@ -123,10 +123,10 @@ class Log {
      */
     public static function __callStatic($name, $arguments)
     {
-        if (Environment::isLogEnabled()) {
-            /** @var Log $logger */
-            $logger = give(__CLASS__);
+        /** @var Log $logger */
+        $logger = give(__CLASS__);
 
+        if (in_array($name, ['error', 'warning']) || Environment::isLogEnabled()) {
             call_user_func_array([$logger, $name], $arguments);
         }
     }
