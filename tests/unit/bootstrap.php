@@ -30,6 +30,9 @@ tests_add_filter('setup_theme', function() {
 });
 
 require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
+var_dump( ABSPATH . 'wp-includes/PHPMailer/PHPMailer.php' );
+var_dump( file_exists( ABSPATH . 'wp-includes/PHPMailer/PHPMailer.php' ) );
+
 
 // test cases
 require_once __DIR__ . '/framework/class-give-unit-test-case.php';
