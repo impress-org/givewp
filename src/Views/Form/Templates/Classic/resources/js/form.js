@@ -12,7 +12,6 @@ import {
 // Transforms document for classic template
 domIsReady(() => {
     setContainerMode();
-    removeTestModeMessage();
     movePersonalInfoSectionAfterDonationAmountSection();
     movePaymentFormInsidePaymentDetailsSection();
     moveDonateNowButtonSectionAfterDonationAmountSection();
@@ -29,6 +28,7 @@ domIsReady(() => {
     setupCurrencySwitcherSelector();
     setRecurringPeriodSelectWidth();
     addSecurePaymentBadgeToDonateNowSection();
+    moveTestModeMessage();
 });
 
 /**
@@ -39,8 +39,8 @@ function setContainerMode() {
     document.body.classList.add(`give-container-${window.classicTemplateOptions.visual_appearance.container_style}`);
 }
 
-function removeTestModeMessage() {
-    removeNode(document.querySelector('#give_error_test_mode')); // Get out of my way!
+function moveTestModeMessage() {
+    document.querySelector('.give-payment-mode-label').after(document.querySelector('#give_error_test_mode'));
 }
 
 function movePersonalInfoSectionAfterDonationAmountSection() {
