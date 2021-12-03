@@ -9,6 +9,8 @@
     white-space: nowrap;
     border-width: 0;
 }
+
+.screen-reader-text,
 .visually-hidden {
     @include visually-hidden;
 }
