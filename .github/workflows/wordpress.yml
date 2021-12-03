@@ -90,6 +90,6 @@ jobs:
                 run: bash tests/unit/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Tests
-                run: php -d memory_limit=-1 vendor/bin/phpunit
+                run: php -d memory_limit=-1 vendor/bin/phpunit --bootstrap=tests/unit/bootstrap.workflow.php
                 env:
                     DB_PORT: ${{ env.mysql_port }}
