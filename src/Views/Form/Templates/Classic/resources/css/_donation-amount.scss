@@ -27,7 +27,8 @@
         border-color: var(--give-primary-color);
     }
 
-    & label {
+    & label.give-hidden {
+        display: revert;
         @include visually-hidden;
     }
 
