@@ -163,6 +163,7 @@ class Classic extends Template implements Hookable, Scriptable
             wp_dequeue_style('give-currency-switcher-style');
             wp_dequeue_style('give-fee-recovery');
             wp_dequeue_style('give-donation-summary-style-frontend');
+            wp_dequeue_style('give-authorize-css');
         }, 10);
 
         // CSS Variables
