@@ -176,12 +176,6 @@ class Classic extends Template implements Hookable, Scriptable
             ])
         );
 
-        // Inline CSS
-        wp_add_inline_style(
-            'give-classic-template',
-            $this->loadFile('css/inline.css')
-        );
-
         // JS
         wp_enqueue_script(
             'give-classic-template-js',
