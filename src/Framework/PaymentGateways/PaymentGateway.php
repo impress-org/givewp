@@ -11,11 +11,13 @@ use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
@@ -150,6 +152,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
         if ($command instanceof RedirectOffsite) {
             $response = Call::invoke(RedirectOffsiteHandler::class, $command);
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof RespondToBrowser) {
+            $response = Call::invoke(RespondToBrowserHandler::class, $command);
 
             $this->handleResponse($response);
         }
