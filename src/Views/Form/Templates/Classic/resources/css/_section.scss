@@ -39,13 +39,15 @@
         padding: 3.375rem 4.375rem;
     }
 
-    // :nth-of-type requires these be the an element. This works since we are
-    // using `<section>` with this class.
-    &:nth-of-type(odd) {
-        background-color: #fff;
-    }
-    &:nth-of-type(even) {
-        background-color: #f9f9f9;
+    .give-container-boxed & {
+        // :nth-of-type requires these be the an element. This works since we are
+        // using `<section>` with this class.
+        &:nth-of-type(odd) {
+            background-color: #fff;
+        }
+        &:nth-of-type(even) {
+            background-color: #f9f9f9;
+        }
     }
 
     &:first-of-type {

@@ -11,6 +11,7 @@ import {
 
 // Transforms document for classic template
 domIsReady(() => {
+    setContainerMode();
     removeTestModeMessage();
     movePersonalInfoSectionAfterDonationAmountSection();
     movePaymentFormInsidePaymentDetailsSection();
@@ -33,6 +34,10 @@ domIsReady(() => {
 /**
  * Individual transformations
  */
+
+function setContainerMode() {
+    document.body.classList.add(`give-container-${window.classicTemplateOptions.visual_appearance.container_style}`);
+}
 
 function removeTestModeMessage() {
     removeNode(document.querySelector('#give_error_test_mode')); // Get out of my way!
