@@ -9,6 +9,8 @@
     white-space: nowrap;
     border-width: 0;
 }
+
+.screen-reader-text,
 .visually-hidden {
     @include visually-hidden;
 }
@@ -21,6 +23,8 @@
 @import '~@givewp/fontawesome/regular';
 @import '~@givewp/fontawesome/solid';
 @import '~@givewp/fontawesome/brands';
+@import '~@givewp/hint.css';
+@import 'icons';
 
 // Context
 @import 'page';
@@ -28,7 +32,12 @@
 
 // Common (e.g. reusable components)
 @import 'button';
+@import 'tooltip';
+@import 'label';
 @import 'text-input';
+@import 'checkbox';
+@import 'radio';
+@import 'legacy-consumer';
 
 // Specifics
 @import 'header';
@@ -42,6 +51,7 @@
 @import 'receipt';
 
 // Addons
-@import "currencyswitcher";
-@import "funds";
-@import "tributes";
+@import 'currencyswitcher';
+@import 'funds';
+@import 'tributes';
+@import 'ffm';

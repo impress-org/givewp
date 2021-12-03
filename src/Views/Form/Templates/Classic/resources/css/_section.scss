@@ -1,5 +1,39 @@
 .give-form-section {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+
     padding: 1.75rem 1rem;
+
+    & > * {
+        grid-column: span 6;
+    }
+
+    > .give-ffm-form-row-half,
+    > .give-ffm-form-row-third,
+    > .give-ffm-form-row-thirds,
+    > .form-row-wide {
+        width: revert;
+        padding: revert;
+        float: revert;
+    }
+
+    > .give-ffm-form-row-third {
+        grid-column: span 2;
+    }
+
+    > .give-ffm-form-row-half {
+        grid-column: span 3;
+    }
+
+    > .give-ffm-form-row-thirds {
+        grid-column: span 4;
+    }
+
+    > .form-row-wide {
+        grid-column: span 6;
+    }
 
     @media screen and (min-width: $desktopMinWidth) {
         padding: 3.375rem 4.375rem;
@@ -7,6 +41,10 @@
 
     // :nth-of-type requires these be the an element. This works since we are
     // using `<section>` with this class.
-    &:nth-of-type(odd) { background-color: #fff; }
-    &:nth-of-type(even) { background-color: #f9f9f9; }
+    &:nth-of-type(odd) {
+        background-color: #fff;
+    }
+    &:nth-of-type(even) {
+        background-color: #f9f9f9;
+    }
 }
