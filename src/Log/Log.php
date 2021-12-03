@@ -119,7 +119,7 @@ class Log
      * @param  string  $name
      * @param  array  $arguments
      *
-     * @unreleased - only log if WP_DEBUG_LOG is enabled
+     * @unreleased - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
      * @since 2.11.1
      *
      */
