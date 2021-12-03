@@ -27,11 +27,6 @@
         border-color: var(--give-primary-color);
     }
 
-    & label.give-hidden {
-        display: revert;
-        @include visually-hidden;
-    }
-
     & .give-currency-symbol,
     & .give-text-input {
         border-radius: inherit;

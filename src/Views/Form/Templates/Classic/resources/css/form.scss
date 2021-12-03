@@ -10,12 +10,13 @@
     border-width: 0;
 }
 
-.give-hidden {
+.give-hidden:not(label) {
     display: none;
 }
 
 .screen-reader-text,
-.visually-hidden {
+.visually-hidden,
+label.give-hidden {
     @include visually-hidden;
 }
 
