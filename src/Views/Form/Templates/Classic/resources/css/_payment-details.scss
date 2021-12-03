@@ -76,6 +76,8 @@
 
         box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.25);
         border: 0.0625em solid #b4b9be;
+    font-size: 1em;
+    transition: box-shadow 200ms ease-in-out;
     }
 
     &::after {
@@ -114,11 +116,44 @@
 }
 
 .give-gateway-details {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
     width: 100%;
     border-top: 0.0625rem solid #ddd;
     padding: 2rem 1.375rem;
     font-size: 0.9375rem;
     line-height: 1.5;
+
+    > * {
+        grid-column: span 6;
+    }
+
+    > .give-ffm-form-row-half,
+    > .give-ffm-form-row-third,
+    > .give-ffm-form-row-thirds,
+    > .form-row-wide {
+        width: revert;
+        padding: revert;
+        float: revert;
+    }
+
+    > .give-ffm-form-row-third {
+        grid-column: span 2;
+    }
+
+    > .give-ffm-form-row-half {
+        grid-column: span 3;
+    }
+
+    > .give-ffm-form-row-thirds {
+        grid-column: span 4;
+    }
+
+    > .form-row-wide {
+        grid-column: span 6;
+    }
 }
 
 #give-purchase-button {

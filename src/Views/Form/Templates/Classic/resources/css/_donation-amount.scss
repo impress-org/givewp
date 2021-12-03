@@ -1,4 +1,4 @@
-.give-donation-amount-section  {
+.give-donation-amount-section {
     display: grid;
     row-gap: 1.5rem;
 }
@@ -177,9 +177,10 @@
 }
 
 .give_fee_mode_checkbox,
-.give-recurring-period {
+.give-recurring-period,
+.form-row input[type='checkbox'] {
     appearance: none;
-    content: "";
+    content: '';
     flex-grow: 0;
     flex-shrink: 0;
     display: flex;
@@ -192,8 +193,8 @@
     background-color: #fff;
 
     &::after {
-        content: "\f00c";
-        font-family: "Font Awesome 5 Free";
+        content: '\f00c';
+        font-family: 'Font Awesome 5 Free';
         font-weight: 900;
         opacity: 0;
         transition: opacity 200ms ease-in-out;

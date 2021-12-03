@@ -21,6 +21,8 @@
 @import '~@givewp/fontawesome/regular';
 @import '~@givewp/fontawesome/solid';
 @import '~@givewp/fontawesome/brands';
+@import '../../../../../../../assets/src/css/plugins/hint.min.scss';
+@import 'icons';
 
 // Context
 @import 'page';
@@ -42,6 +44,6 @@
 @import 'receipt';
 
 // Addons
-@import "currencyswitcher";
-@import "funds";
-@import "tributes";
+@import 'currencyswitcher';
+@import 'funds';
+@import 'tributes';

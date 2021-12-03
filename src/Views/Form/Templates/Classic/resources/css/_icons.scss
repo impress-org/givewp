@@ -1,0 +1,37 @@
+.screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.give-label {
+    display: flex;
+    align-items: baseline;
+}
+
+.give-tooltip {
+    margin-left: 0.5em;
+    font-size: 0.9em;
+    color: #c1c1c1;
+}
+
+.give-icon-question {
+    @extend .far;
+    @extend .fa-question-circle;
+}
+
+.give-icon-plus {
+    @extend .fas;
+    @extend .fa-plus-circle;
+}
+
+.give-icon-minus {
+    @extend .fas;
+    @extend .fa-minus-circle;
+}
