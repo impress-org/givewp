@@ -93,3 +93,7 @@ jobs:
                 run: php -d memory_limit=-1 vendor/bin/phpunit --bootstrap=tests/unit/bootstrap.workflow.php
                 env:
                     DB_PORT: ${{ env.mysql_port }}
+
+            -   name: Setup tmate session
+                if: ${{ failure() }}
+                uses: mxschmitt/action-tmate@v3
