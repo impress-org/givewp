@@ -9,9 +9,8 @@ $loader = "&quot;data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding=
 ?>
 
 <div style="
-        height: calc(100% - 28px);
-        width: calc(100% - 20px);
-        max-width: 552px;
+        height: 100%;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
