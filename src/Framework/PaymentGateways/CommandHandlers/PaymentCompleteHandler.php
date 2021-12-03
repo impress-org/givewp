@@ -6,15 +6,15 @@ use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 
 class PaymentCompleteHandler  {
     /**
-     * @unreleased 
+     * @unreleased
      *
      * @param  PaymentComplete  $paymentComplete
-     * @param int $paymentId
+     * @param  int  $donationId
      * @return void
      */
-    public function __invoke(PaymentComplete $paymentComplete, $paymentId)
+    public function __invoke(PaymentComplete $paymentComplete, $donationId)
     {
-        give_update_payment_status($paymentId);
-        give_set_payment_transaction_id($paymentId, $paymentComplete->gatewayTransactionId);
+        give_update_payment_status($donationId);
+        give_set_payment_transaction_id($donationId, $paymentComplete->gatewayTransactionId);
     }
 }

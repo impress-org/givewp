@@ -19,7 +19,7 @@ class GatewayPaymentData
     /**
      * @var string
      */
-    public $paymentId;
+    public $donationId;
     /**
      * @var float
      */
@@ -78,7 +78,7 @@ class GatewayPaymentData
         $self->amount = $array['amount'];
         $self->date = $array['date'];
         $self->gatewayId = $array['gatewayId'];
-        $self->paymentId = $array['paymentId'];
+        $self->donationId = $array['donationId'];
         $self->purchaseKey = $array['purchaseKey'];
         $self->donorInfo = $array['donorInfo'];
         $self->cardInfo = $array['cardInfo'];
