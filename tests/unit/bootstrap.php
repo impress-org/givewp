@@ -3,16 +3,19 @@
 const WP_CONTENT_DIR = __DIR__;
 
 $testConfig = [
-    'workflow' => '/tmp/wordpress-test-lib/wp-tests-config.php',
+    'workflow' => '/tmp/wordpress-tests-lib/wp-tests-config.php',
     'local' => __DIR__ . '/wp-tests-config.dist.php',
     'default' => __DIR__ . '/wp-tests-config.php',
 ];
 
 if( file_exists( $testConfig[ 'workflow' ] ) ) {
+    var_dump('Test with workflow config.');
     define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'workflow' ] );
 } elseif( file_exists( $testConfig[ 'local' ] ) ) {
+    var_dump('Test with local config.');
     define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'local' ] );
 } else {
+    var_dump('Test with default config.');
     define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'default' ] );
 }
 
