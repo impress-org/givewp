@@ -2,7 +2,7 @@
     & > fieldset {
         display: grid;
         gap: 1.5rem;
-        grid-auto-columns: 1fr;
+        grid-template-columns: repeat(6, 1fr);
 
         & legend:first-of-type {
             width: 100%;
@@ -16,6 +16,18 @@
 
             @media screen and (min-width: $desktopMinWidth) {
                 font-size: 1.5rem;
+            }
+        }
+
+        > .form-row-wide {
+            grid-column: span 6;
+        }
+
+        > .form-row-responsive {
+            grid-column: span 6;
+
+            @media screen and (min-width: $desktopMinWidth) {
+                grid-column: span 3;
             }
         }
     }
@@ -40,4 +52,8 @@
         font-weight: 500;
         line-height: 1.2;
     }
+}
+
+.give-personal-info-description {
+    grid-column: span 6;
 }
