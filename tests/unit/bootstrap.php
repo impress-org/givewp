@@ -2,10 +2,18 @@
 
 const WP_CONTENT_DIR = __DIR__;
 
-if( file_exists( __DIR__ . '/wp-tests-config.dist.php' ) ) {
-    define('WP_TESTS_CONFIG_FILE_PATH', __DIR__ . '/wp-tests-config.dist.php' );
+$testConfig = [
+    'workflow' => '/tmp/wordpress-test-lib/wp-tests-config.php',
+    'local' => __DIR__ . '/wp-tests-config.dist.php',
+    'default' => __DIR__ . '/wp-tests-config.php',
+];
+
+if( file_exists( $testConfig[ 'workflow' ] ) ) {
+    define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'workflow' ] );
+} elseif( file_exists( $testConfig[ 'local' ] ) ) {
+    define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'local' ] );
 } else {
-    define('WP_TESTS_CONFIG_FILE_PATH', __DIR__ . '/wp-tests-config.php' );
+    define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'default' ] );
 }
 
 require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
