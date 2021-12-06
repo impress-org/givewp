@@ -55,10 +55,15 @@
     padding-right: calc(var(--gateway-option-gap) / 2);
     border-radius: unset;
     border-top-left-radius: inherit;
+    background-color: transparent;
 
     &::before,
     &::after {
         border-radius: 9999px;
+    }
+
+    &::before {
+        background-color: #fff;
     }
 
     &::after {
