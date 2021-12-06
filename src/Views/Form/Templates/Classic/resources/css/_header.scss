@@ -13,7 +13,7 @@
     --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
     background-color: rgb(var(--give-header-background-color--for-rgb));
     /* translucent tint gradient over image */
-    background-image: var(--tint), var(--give-header-background-image);
+    background-image: var(--tint, linear-gradient(transparent, transparent)), var(--give-header-background-image);
     background-size: cover;
     background-position: center;
 
