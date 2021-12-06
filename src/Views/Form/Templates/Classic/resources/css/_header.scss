@@ -9,9 +9,9 @@
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
 
-    --tint-color: rgba(var(--give-primary-color--for-rgb), 0.75);
+    --tint-color: rgba(var(--give-header-background-color--for-rgb), 0.75);
     --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
-    background-color: var(--give-primary-color);
+    background-color: rgb(var(--give-header-background-color--for-rgb));
     /* translucent tint gradient over image */
     background-image: var(--tint), var(--give-header-background-image);
     background-size: cover;

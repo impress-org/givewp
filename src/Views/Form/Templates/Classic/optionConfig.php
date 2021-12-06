@@ -92,6 +92,13 @@ return [
                 ],
             ],
             [
+                'id'      => 'header_background_color',
+                'name'    => __('Header Background Color', 'give'),
+                'desc'    => __('This color is used to tint the background image or as the background color if no image is set.', 'give'),
+                'type'    => 'colorpicker',
+                'default' => '#1E8CBE',
+            ],
+            [
                 'id'      => 'secure_badge',
                 'name'    => __('Secure Donation Badge', 'give'),
                 'desc'    => __('If enabled, a badge will display show in the header providing a security reassurement for donors.', 'give'),
