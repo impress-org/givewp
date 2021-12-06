@@ -29,7 +29,6 @@ domIsReady(() => {
     setRecurringPeriodSelectWidth();
     addSecurePaymentBadgeToDonateNowSection();
     moveTestModeMessage();
-    transformDonationSummaryButtons();
 });
 
 /**
@@ -393,14 +392,4 @@ function addSecurePaymentBadgeToDonateNowSection() {
                 )
             );
     }
-}
-
-function transformDonationSummaryButtons() {
-    // Remove the edit donation button
-    document.querySelector('.give-donation-summary-table-wrapper thead .back-btn').remove();
-
-    // Just use the button’s text in the summary body instead of the button
-    document.querySelectorAll('.give-donation-summary-table-wrapper tbody .back-btn').forEach((node) => {
-        node.replaceWith(new Text(node.textContent));
-    });
 }

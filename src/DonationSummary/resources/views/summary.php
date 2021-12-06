@@ -20,12 +20,16 @@
                 <th><?php
                     _e('Donation Summary', 'givewp'); ?></th>
                 <th>
-                    <button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
-                        <?php
-                        _e('Edit Donation', 'givewp'); ?>
-                        <?php
-                        include plugin_dir_path(__DIR__) . 'images/pencil.svg'; ?>
-                    </button>
+                    <?php
+                    if ($this->isMultiStep()): ?>
+                        <button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
+                            <?php
+                            _e('Edit Donation', 'givewp'); ?>
+                            <?php
+                            include plugin_dir_path(__DIR__) . 'images/pencil.svg'; ?>
+                        </button>
+                    <?php
+                    endif ?>
                 </th>
             </tr>
             </thead>
@@ -54,11 +58,12 @@
                             echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
                             <span>
                             <?php
-                            /* translators: 1: <button> open tag 2: close tag. */
+                            $isMultiStep = $this->isMultiStep();
+                            /* translators: 1: <button> open tag when multi-step 2: close tag when multi-step. */
                             echo sprintf(
                                 __('Consider making this donation %srecurring%s', 'give'),
-                                '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">',
-                                '</button>'
+                                $isMultiStep ? '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">' : '',
+                                $isMultiStep ? '</button>' : ''
                             );
                             ?>
                             </span>
