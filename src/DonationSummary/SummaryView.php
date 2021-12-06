@@ -17,6 +17,12 @@ class SummaryView
     protected $formID;
 
     /**
+     * @unreleased
+     * @var string
+     */
+    protected $template;
+
+    /**
      * @since 2.17.0
      * @var array
      */
@@ -30,6 +36,7 @@ class SummaryView
     public function __invoke($formID)
     {
         $this->formID = $formID;
+        $this->template = Template::getActiveID($formID);
         $this->templateOptions = Template::getOptions($formID);
 
         /**
@@ -124,5 +131,14 @@ class SummaryView
         }
 
         return false;
+    }
+
+    /**
+     * @unreleased
+     * @return bool
+     */
+    protected function isMultiStep()
+    {
+        return $this->template === 'sequoia';
     }
 }
