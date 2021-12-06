@@ -36,3 +36,13 @@ legend {
     display: block;
     padding: 0;
 }
+
+button,
+select,
+label,
+input[type='checkbox'],
+input[type='radio'],
+input[type='file'],
+input[type='submit'] {
+    cursor: pointer;
+}
