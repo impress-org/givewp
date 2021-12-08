@@ -41,6 +41,13 @@ class BasicCondition extends Condition
      */
     public function __construct($field, $operator, $value, $boolean = 'and')
     {
+        /**
+         * Decode (maybe) the operator in case the operator is stored as an encoded setting value.
+         * @link https://github.com/impress-org/give-form-field-manager/issues/376
+         * @unreleased
+         */
+        $operator = html_entity_decode( $operator );
+
         if ($this->invalidOperator($operator)) {
             throw new InvalidArgumentException(
                 "Invalid operator: $operator. Must be one of: " . implode(', ', static::OPERATORS)
