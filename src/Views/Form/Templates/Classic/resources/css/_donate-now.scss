@@ -2,6 +2,18 @@
     display: none;
 }
 
+.give-submit {
+    transition-property: filter, box-shadow, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+
+    &:hover {
+        filter: brightness(1.2);
+        transform: scale(1.01);
+        box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25)
+    }
+}
+
 .give-secure-donation-badge-bottom {
     margin-top: 2rem;
     display: inline-flex;
