@@ -1,3 +1,5 @@
+@use 'fn';
+
 .give-receipt-classic {
     background: #ffffff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.305862);
@@ -7,14 +9,10 @@
         position: relative;
         margin-top: 2rem;
         margin-bottom: 2rem;
-        font-size: 1.75rem;
+        font-size: fn.scaleBetween(1.75rem, 2.1875rem);
         font-weight: 600;
         line-height: 1.2;
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
-
-        @media screen and (min-width: $desktopMinWidth) {
-            font-size: 2.1875rem;
-        }
     }
 
     .social-sharing {

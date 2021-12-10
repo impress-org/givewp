@@ -1,3 +1,5 @@
+@use 'fn';
+
 .give-donation-summary-section {
     // Hide the heading
     .heading { display: none; }
@@ -52,12 +54,8 @@
 
         // Donation Summary title
         &:first-of-type {
-            font-size: 1.25rem;
+            font-size: fn.scaleBetween(1.25rem, 1.5rem);
             font-weight: 400;
-
-            @media screen and (min-width: $desktopMinWidth) {
-                font-size: 1.5rem;
-            }
         }
 
         .back-btn {
@@ -68,10 +66,7 @@
     // Body specific
     tbody td {
         padding-block: 1.25rem;
-
-        @media screen and (min-width: $desktopMinWidth) {
-            font-size: 1.125rem;
-        }
+        font-size: fn.scaleBetween(1rem, 1.125rem);
     }
 
     // Footer specific

@@ -1,3 +1,5 @@
+@use 'fn';
+
 .give-donation-amount-section {
     display: grid;
     row-gap: 1.5rem;
@@ -6,14 +8,10 @@
 .give-amount-heading {
     padding-bottom: 0.75rem;
     border-bottom: 0.0625rem solid #ddd;
-    font-size: 1.25rem;
+    font-size: fn.scaleBetween(1.25rem, 1.5rem);
     font-weight: 500;
     line-height: 1.3;
     color: #333;
-
-    @media screen and (min-width: $desktopMinWidth) {
-        font-size: 1.5rem;
-    }
 }
 
 .give-donation-amount {
@@ -34,14 +32,10 @@
 
     & .give-currency-symbol {
         display: block;
-        padding: 1em;
+        padding: fn.scaleBetween(1.375rem, 1.644rem);
         color: #555;
         font-size: 1.375rem;
         font-weight: 500;
-
-        @media screen and (min-width: $desktopMinWidth) {
-            padding: 1.2em;
-        }
     }
 
     & .give-text-input {
@@ -50,51 +44,33 @@
         border: 0;
         text-align: right;
         font-family: inherit;
-        font-size: 2.625rem;
+        font-size: fn.scaleBetween(2.625rem, 3.125rem);
         font-weight: 600;
         line-height: 1.2;
         color: #333;
         outline: 0;
-
-        @media screen and (min-width: $desktopMinWidth) {
-            font-size: 3.125rem;
-        }
     }
 }
 
 .give-donation-levels-wrap {
-    --min-level-width: 6.625rem;
-
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--min-level-width), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(fn.scaleBetween(6.625rem, 10.375rem), 1fr));
     grid-auto-rows: 1fr;
-    gap: clamp(0.3125rem, 2vw, 1.875rem);
+    gap: fn.scaleBetween(0.3125rem, 1.875rem);
     width: 100%;
     list-style: none;
-
-    @media screen and (min-width: $desktopMinWidth) {
-        --min-level-width: 10.375rem;
-    }
 }
 
 .give-btn.give-donation-level-btn {
     min-width: -moz-available;
     min-width: -webkit-fill-available;
     height: 100%;
-    font-size: 1.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    font-size: fn.scaleBetween(1.5rem, 2.125rem);
+    padding: fn.scaleBetween(1rem, 1.6875rem) 0.5rem;
 
     transition-property: background-color, color;
     transition-duration: 200ms;
     transition-timing-function: ease-in;
-
-    @media screen and (min-width: $desktopMinWidth) {
-        width: auto;
-        padding-top: 1.6875rem;
-        padding-bottom: 1.6875rem;
-        font-size: 2.125rem;
-    }
 
     &.give-default-level {
         background-color: #fff;
@@ -103,11 +79,10 @@
 
     &.give-btn-level-custom {
         word-spacing: 9999px; // This forces a linebreak after each word.
-        font-size: 1rem;
+        font-size: fn.scaleBetween(1rem, 1.125rem);
         line-height: 1.25;
 
         @media screen and (min-width: $desktopMinWidth) {
-            font-size: 1.125rem;
             font-weight: 400;
         }
     }

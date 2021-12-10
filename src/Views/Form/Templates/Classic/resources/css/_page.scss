@@ -6,7 +6,7 @@ body {
 }
 
 .give-form-wrap {
-    width: min(100%, 51.5rem);
+    width: min(100%, $containerMaxWidth);
 }
 
 .give-container-boxed {
