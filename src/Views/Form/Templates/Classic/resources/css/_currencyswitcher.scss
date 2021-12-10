@@ -1,3 +1,5 @@
+@use 'fn';
+
 .give-donation-amount {
     position: relative;
 }
@@ -7,7 +9,7 @@
     cursor: pointer;
     position: absolute;
     width: calc(var(--currency-text-width, auto) + 2.75rem);
-    height: 2.625rem;
+    height: fn.scaleBetween(2.625rem, 3.125rem);
     border-width: 0;
     border-style: dotted;
     border-color: #c1c1c1;
@@ -28,10 +30,6 @@
         margin-left: 0.625rem;
         border-left-width: 0;
         border-right-width: 0.125rem;
-    }
-
-    @media screen and (min-width: $desktopMinWidth) {
-        height: 3.125rem;
     }
 
     &:focus {

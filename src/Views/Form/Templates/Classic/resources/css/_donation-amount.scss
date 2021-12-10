@@ -139,12 +139,9 @@
     border-radius: 0.5rem;
     background-color: #fff;
     color: #333;
+    font-size: fn.scaleBetween(1rem, 1.125rem);
     line-height: 1.2;
     box-shadow: 0 0 0.88em rgba(0, 0, 0, 0.1);
-
-    @media screen and (min-width: $desktopMinWidth) {
-        font-size: 1.125rem;
-    }
 }
 
 .give_fee_mode_checkbox,

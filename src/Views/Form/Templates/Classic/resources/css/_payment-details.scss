@@ -1,17 +1,15 @@
+@use 'fn';
+
 .give-payment-details-section {
     & legend:first-of-type {
         width: 100%;
         padding-bottom: 0.75rem;
         margin-bottom: 1rem;
         border-bottom: 0.0625rem solid #ddd;
-        font-size: 1.25rem;
+        font-size: fn.scaleBetween(1.25rem, 1.5rem);;
         font-weight: 500;
         line-height: 1.3;
         color: #333;
-
-        @media screen and (min-width: $desktopMinWidth) {
-            font-size: 1.5rem;
-        }
     }
 }
 
