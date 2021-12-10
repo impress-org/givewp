@@ -46,7 +46,7 @@ mix.setPublicPath('assets/dist')
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
     .react()
-    .sourceMaps(false)
+    .sourceMaps(false, 'source-map')
 
     .copyDirectory('assets/src/tcpdf-fonts', 'vendor/tecnickcom/tcpdf/fonts')
     .copyDirectory('assets/src/images', 'assets/dist/images')
