@@ -133,16 +133,14 @@
         align-items: center;
 
         .dashboard-link {
-            // This gets rid of the whitespace between the link and the arrow
-            display: inline-flex;
-            column-gap: 0.25rem;
             color: var(--give-primary-color);
 
-            &::after {
-                content: '\f30b';
-                font-family: 'Font Awesome 5 Free';
-                font-weight: 900;
+            > i {
+                margin-inline-start: 0.25rem;
+                transform: translateY(0.18em);
+                font-size: 1.5rem;
                 text-decoration: none;
+                line-height: 0.5;
             }
         }
 
