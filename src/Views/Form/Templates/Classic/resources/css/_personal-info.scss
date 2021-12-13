@@ -60,23 +60,27 @@
 #give-first-name-wrap,
 #give-last-name-wrap,
 #give-email-wrap {
-    @include give-input;
-
-    display: flex;
-    column-gap: 0.6875em;
-    align-items: center;
-
-    input {
-        all: unset;
-        width: 100%;
-    }
+    position: relative;
 
     &::before {
+        position: absolute;
+        inset-inline-start: 1.1875rem;
+        // The specific inset block coordinates and the fixed block-size allow
+        // us to use margin to center the icon on the block-axis.
+        inset-block-start: 0;
+        inset-block-end: 0.1875em;
+        block-size: 1em;
+        margin-block: auto;
         color: #8d8e8e;
         font-family: 'Font Awesome 5 Free';
         font-weight: 900;
-        align-self: baseline;
+        pointer-events: none;
     }
+}
+
+#give-first-name-wrap input,
+#give-email-wrap input {
+    padding-inline-start: 2.6875rem;
 }
 
 #give-first-name-wrap::before {
