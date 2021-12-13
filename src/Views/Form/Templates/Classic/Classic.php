@@ -234,7 +234,7 @@ class Classic extends Template implements Hookable, Scriptable
         $hasGoal = $form->has_goal();
 
         echo $this->loadFile('views/header.php', [
-            'title'                => $this->options[ 'visual_appearance' ][ 'main_heading' ],
+            'title'                => $this->options[ 'visual_appearance' ][ 'main_heading' ] ?? $form->post_title,
             'description'          => $this->options[ 'visual_appearance' ][ 'description' ],
             'isSecureBadgeEnabled' => $this->options[ 'visual_appearance' ][ 'secure_badge' ] === 'enabled',
             'secureBadgeContent'   => $this->options[ 'visual_appearance' ][ 'secure_badge_text' ],
