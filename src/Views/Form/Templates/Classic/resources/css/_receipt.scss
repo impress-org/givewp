@@ -126,10 +126,11 @@
 
     .dashboard-link-container {
         display: flex;
-        padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
-        padding-inline: fn.scaleBetween(1.5rem, 4.25rem);
         justify-content: space-between;
         align-items: center;
+        margin-block-start: 2rem;
+        padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
+        padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
 
         .dashboard-link {
             color: var(--give-primary-color);
@@ -172,7 +173,6 @@
 .give-receipt-classic {
     .receipt-sections {
         padding-block-start: fn.scaleBetween(2.375rem, 3rem);
-        padding-block-end: 0.625rem;
         padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
     }
 
