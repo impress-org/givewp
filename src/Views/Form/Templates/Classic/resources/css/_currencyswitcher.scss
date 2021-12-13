@@ -62,7 +62,8 @@
 }
 
 // We move the message outside of the wrap and then the only contents are hidden
-// fields.
+// fields. This is important since gateway changes add display: block as an
+// inline style.
 .give-currency-switcher-wrap {
-    display: none;
+    display: none !important;
 }
