@@ -55,3 +55,32 @@
 .give-personal-info-description {
     grid-column: span 6;
 }
+
+#give-first-name-wrap,
+#give-last-name-wrap,
+#give-email-wrap {
+    @include give-input;
+
+    display: flex;
+    column-gap: 0.6875em;
+    align-items: center;
+
+    input {
+        all: unset;
+    }
+
+    &::before {
+        color: #8d8e8e;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        align-self: baseline;
+    }
+}
+
+#give-first-name-wrap::before {
+    content: '\f007';
+}
+
+#give-email-wrap::before {
+    content: '\f0e0';
+}
