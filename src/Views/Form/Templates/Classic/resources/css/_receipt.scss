@@ -1,9 +1,12 @@
 @use 'fn';
 
 .give-receipt-classic {
-    background: #ffffff;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.305862);
-    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+
+    @media screen and (min-width: $desktopMinWidth) {
+        border-radius: 0.5rem;
+    }
 
     .give-receipt-title {
         position: relative;
