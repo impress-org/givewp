@@ -2,7 +2,7 @@
 
 .give-donation-amount-section {
     display: grid;
-    row-gap: 1.5rem;
+    row-gap: fn.scaleBetween(1.5rem, 2rem);
 }
 
 .give-amount-heading {
