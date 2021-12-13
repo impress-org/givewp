@@ -124,16 +124,16 @@ return [
             ],
             [
                 'id' => 'decimals_enabled',
-                'name' => __('Decimal amounts', 'give'),
+                'name' => __('Decimal Amounts', 'give'),
                 'desc' => __(
                     'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.',
                     'give'
                 ),
-                'type' => 'radio_inline',
-                'default' => 'disabled',
+                'type' => 'radio',
+                'default' => 'enabled',
                 'options' => [
-                    'disabled' => __('Disabled', 'give'),
                     'enabled' => __('Enabled', 'give'),
+                    'disabled' => __('Disabled', 'give'),
                 ],
             ],
         ],
