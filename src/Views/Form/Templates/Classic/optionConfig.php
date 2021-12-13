@@ -65,7 +65,7 @@ return [
             [
                 'id'      => 'main_heading',
                 'name'    => __('Main Heading', 'give'),
-                'desc'    => __('This is the text that displays for the security badge.', 'give'),
+                'desc'    => __('This is the text that displays as a headline in the form header.', 'give'),
                 'type'    => 'text',
                 'default' => __('Support Our Cause', 'give'),
                 'attributes' => [
