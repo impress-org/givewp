@@ -61,9 +61,14 @@
     }
 }
 
+// We move the message outside of the wrap and then the only contents are hidden
+// fields.
+.give-currency-switcher-wrap {
+    display: none;
+}
+
 .give-currency-switcher-msg {
     display: flex;
-    margin-bottom: 1.375rem;
     padding: 1.25em;
     border-radius: 0.3125em;
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.12);
@@ -72,8 +77,4 @@
     font-weight: 500;
     line-height: 1.4;
     text-align: center;
-}
-
-.give-currency-switcher-msg-wrap.give-hidden {
-    display: none;
 }

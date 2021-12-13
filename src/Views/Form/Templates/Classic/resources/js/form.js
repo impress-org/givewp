@@ -30,6 +30,7 @@ domIsReady(() => {
     setRecurringPeriodSelectWidth();
     addSecurePaymentBadgeToDonateNowSection();
     moveTestModeMessage();
+    moveCurrencySwitcherMessageOutsideOfWrapper();
 });
 
 /**
@@ -403,4 +404,9 @@ function setDonationAmountSectionDescription() {
                 h('p', {className: 'give-amount-description'}, classicTemplateOptions.donation_amount.description)
             )
         );
+}
+
+function moveCurrencySwitcherMessageOutsideOfWrapper() {
+    const currencySwitcherMessage = document.querySelector('.give-currency-switcher-msg-wrap');
+    currencySwitcherMessage.parentNode.after(currencySwitcherMessage);
 }
