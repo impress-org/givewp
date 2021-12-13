@@ -15,6 +15,7 @@ domIsReady(() => {
     movePersonalInfoSectionAfterDonationAmountSection();
     movePaymentFormInsidePaymentDetailsSection();
     moveDonateNowButtonSectionAfterDonationAmountSection();
+    setDonationAmountSectionDescription();
     setPersonalInfoTitle();
     addPersonalInfoDescription();
     setPaymentDetailsTitle();
@@ -392,4 +393,14 @@ function addSecurePaymentBadgeToDonateNowSection() {
                 )
             );
     }
+}
+
+function setDonationAmountSectionDescription() {
+    document
+        .querySelector('.give-amount-heading')
+        .after(
+            nodeFromString(
+                h('p', {className: 'give-amount-description'}, classicTemplateOptions.donation_amount.description)
+            )
+        );
 }
