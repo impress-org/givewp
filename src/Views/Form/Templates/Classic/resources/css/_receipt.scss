@@ -18,15 +18,13 @@
     .social-sharing {
         display: flex;
         flex-direction: column;
+        row-gap: 1.5rem;
         background: #fbfbfb;
         border-top: 1px solid #f2f2f2;
         border-bottom: 1px solid #f2f2f2;
         padding: 24px 20px 26px 20px;
-        margin-left: 0;
-        margin-right: 0;
 
         .instruction {
-            margin: 0 0 14px 0;
             line-height: 1.5;
             grid-column: span 2;
             font-size: 15px;
@@ -35,50 +33,42 @@
         }
 
         .btn-row {
-            margin-top: 9px;
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
-            margin-right: auto;
-            margin-left: auto;
+            column-gap: 1.75rem;
+            row-gap: 1rem;
         }
 
         .social-btn {
             display: flex;
             align-items: center;
-            font-size: 16px;
-            padding: 14px 27px;
-            margin: 0 14px;
-            border: none !important;
+            column-gap: 0.75em;
+            font-size: 1rem;
+            padding: 0.875em 1.6875em;
+            border: none;
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
 
             > i {
-                margin-left: 12px;
-                font-size: 22px;
+                font-size: 1.375em;
             }
 
             &.facebook-btn {
-                background-color: #3b5998 !important;
-                transition: background-color 0.2s ease;
+                background-color: #3b5998;
 
                 &:hover {
-                    background-color: #4668b1 !important;
+                    background-color: #4668b1;
                 }
             }
 
             &.twitter-btn {
-                background-color: #00acee !important;
-                transition: background-color 0.2s ease;
+                background-color: #00acee;
 
                 &:hover {
-                    background-color: #00b7ff !important;
+                    background-color: #00b7ff;
                 }
-            }
-
-            &:first-of-type {
-                margin-left: 0;
-            }
-
-            &:last-of-type {
-                margin-right: 0;
             }
         }
     }
@@ -89,39 +79,34 @@
                 color: #333333;
                 font-weight: 600;
                 font-size: 1.25rem;
-                padding: 0.9375rem 0;
-                border-bottom: 0.0625rem solid #f2f2f2;
             }
             .details-table {
                 display: flex;
                 flex-direction: column;
-                margin-bottom: 1.25rem;
 
                 .details-row {
                     display: flex;
                     flex-wrap: wrap;
                     align-items: flex-start;
-                    padding: 0.9375rem 0;
-                    border-bottom: 0.065rem solid #f2f2f2;
+                    column-gap: 0.625rem;
+                    row-gap: 0.5rem;
                     font-size: 1.125rem;
                     font-weight: 500;
 
                     > i {
                         align-self: center;
-                        padding-right: 0.625rem;
                         color: #989898;
                     }
 
                     .detail {
                         white-space: nowrap;
                         color: #6b6b6b;
-                        text-align: start;
+                        margin-inline-end: auto;
                     }
 
                     .value {
-                        flex: 1;
+                        margin-inline-start: 0;
                         white-space: pre-wrap;
-                        text-align: end;
                     }
 
                     &.total {
@@ -188,21 +173,37 @@
 
 .give-receipt-classic {
     .receipt-sections {
-        padding-block-start: 1.875rem;
+        padding-block-start: fn.scaleBetween(2.375rem, 3rem);
         padding-block-end: 0.625rem;
         padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
     }
 
+    .details + .details {
+        margin-block-start: 2.375rem;
+    }
+
     .headline {
-        display: inline-flex;
+        display: flex;
         align-items: center;
         column-gap: 0.5rem;
+        padding-block-end: 1.25rem;
 
         &::before {
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
             font-size: 0.875rem;
         }
+    }
+
+    // Margins between rows
+
+    .headline,
+    .details-row {
+        border-block-end: 0.0625rem solid #f2f2f2;
+    }
+
+    .details-row {
+        padding-block: 0.9375rem;
     }
 
     // Donor Details
