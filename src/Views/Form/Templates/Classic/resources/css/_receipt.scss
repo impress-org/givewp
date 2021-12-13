@@ -84,66 +84,53 @@
     }
 
     .receipt-sections {
-        padding: 30px 0 10px 0;
-
         .details {
-            margin: 0 24px;
-
             .headline {
                 color: #333333;
                 font-weight: 600;
-                font-size: 20px;
-                padding: 15px 0;
-                border-bottom: 1px solid #f2f2f2;
+                font-size: 1.25rem;
+                padding: 0.9375rem 0;
+                border-bottom: 0.0625rem solid #f2f2f2;
             }
             .details-table {
                 display: flex;
                 flex-direction: column;
-                margin-bottom: 20px;
+                margin-bottom: 1.25rem;
 
                 .details-row {
                     display: flex;
-                    align-items: flex-start;
-                    font-size: 14px;
-                    padding: 15px 0;
-                    font-weight: 300;
                     flex-wrap: wrap;
-                    border-bottom: 1px solid #f2f2f2;
+                    align-items: flex-start;
+                    padding: 0.9375rem 0;
+                    border-bottom: 0.065rem solid #f2f2f2;
+                    font-size: 1.125rem;
+                    font-weight: 500;
 
                     > i {
-                        color: #989898;
-                        padding-right: 10px;
                         align-self: center;
+                        padding-right: 0.625rem;
+                        color: #989898;
                     }
 
                     .detail {
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 18px;
                         white-space: nowrap;
                         color: #6b6b6b;
+                        text-align: start;
                     }
 
                     .value {
                         flex: 1;
-                        text-align: right;
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 18px;
-                        color: #555555;
                         white-space: pre-wrap;
+                        text-align: end;
                     }
 
                     &.total {
-                        .value,
-                        .detail {
-                            font-weight: bold;
-                        }
+                        font-weight: 700;
                     }
                 }
 
                 &.payment-details {
-                    border-bottom: 2px solid #f2f2f2;
+                    border-bottom: 0.125rem solid #f2f2f2;
                 }
             }
 
@@ -155,23 +142,22 @@
 
     .dashboard-link-container {
         display: flex;
-        padding: 0 20px 20px 20px;
+        padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
+        padding-inline: fn.scaleBetween(1.5rem, 4.25rem);
         justify-content: space-between;
         align-items: center;
 
         .dashboard-link {
+            // This gets rid of the whitespace between the link and the arrow
+            display: inline-flex;
+            column-gap: 0.25rem;
             color: var(--give-primary-color);
 
             &::after {
-                position: relative;
-                display: inline-block;
-                bottom: -4px;
-                left: 5px;
                 content: '\f30b';
-                font-family: 'Font Awesome 5 Free', serif;
+                font-family: 'Font Awesome 5 Free';
                 font-weight: 900;
-                font-size: 30px;
-                text-decoration: none !important;
+                text-decoration: none;
             }
         }
 
@@ -197,5 +183,35 @@
             margin-left: 15px;
             line-height: 1;
         }
+    }
+}
+
+.give-receipt-classic {
+    .receipt-sections {
+        padding-block-start: 1.875rem;
+        padding-block-end: 0.625rem;
+        padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
+    }
+
+    .headline {
+        display: inline-flex;
+        align-items: center;
+        column-gap: 0.5rem;
+
+        &::before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 0.875rem;
+        }
+    }
+
+    // Donor Details
+    .details:nth-child(1) .headline::before {
+        content: '\f007';
+    }
+
+    // Donation Details
+    .details:nth-child(2) .headline::before {
+        content: '\f004';
     }
 }
