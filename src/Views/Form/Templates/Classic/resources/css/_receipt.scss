@@ -20,15 +20,15 @@
         flex-direction: column;
         row-gap: 1.5rem;
         background: #fbfbfb;
-        border-top: 1px solid #f2f2f2;
-        border-bottom: 1px solid #f2f2f2;
-        padding: 24px 20px 26px 20px;
+        border-block: 0.0625rem solid #f2f2f2;
+        padding-block: 1.5rem;
+        padding-inline: 1.25rem;
 
         .instruction {
             line-height: 1.5;
             grid-column: span 2;
-            font-size: 15px;
-            color: #555555;
+            font-size: 0.9375rem;
+            color: #555;
             text-align: center;
         }
 
@@ -48,7 +48,6 @@
             font-size: 1rem;
             padding: 0.875em 1.6875em;
             border: none;
-            white-space: nowrap;
             transition: background-color 0.2s ease;
 
             > i {
@@ -146,13 +145,15 @@
 
         .download-btn {
             font-size: inherit;
-            padding: 12px 27px;
+            padding-block: 0.75rem;
+            padding-inline: 1.6875rem;
         }
     }
 
     #give-pdf-receipt-link,
     #give-pdf-receipt-link:visited {
         display: flex;
+        column-gap: 0.9375rem;
         align-items: center;
         text-decoration: none;
         color: #fff;
@@ -160,10 +161,9 @@
         &::after {
             display: inline-block;
             content: '\f1c1';
-            font-family: 'Font Awesome 5 Free', serif;
+            font-family: 'Font Awesome 5 Free';
             font-weight: 900;
-            font-size: 26px;
-            margin-left: 15px;
+            font-size: 1.625rem;
             line-height: 1;
         }
     }
