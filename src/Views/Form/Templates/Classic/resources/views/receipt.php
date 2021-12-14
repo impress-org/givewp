@@ -95,10 +95,10 @@ ob_start();
                     }
                     ?>
 
-                        <div class="details-row <?= $class; ?>">
+                        <div class="details-row details-row--<?= _wp_to_kebab_case($lineItem->id) ?>">
                         <?= $lineItem->icon; ?>
                             <dt class="detail"><?= $lineItem->label; ?></dt>
-                            <dd class="value"><?= $lineItem->value; ?></dd>
+                            <dd class="value" data-value="<?= $lineItem->value ?>"><?= $lineItem->value; ?></dd>
                         </div>
                 <?php endforeach; ?>
 

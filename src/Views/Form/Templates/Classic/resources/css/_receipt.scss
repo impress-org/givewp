@@ -112,10 +112,44 @@
                         margin-inline-start: 0;
                         white-space: pre-wrap;
                     }
+                }
 
-                    &.total {
-                        font-weight: 700;
+                .details-row--payment-status .value {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 0.5rem;
+
+                    &::before {
+                        display: inline-block;
+                        content: '';
+                        --diameter: 0.72em;
+                        inline-size: var(--diameter);
+                        block-size: var(--diameter);
+                        border-radius: 9999px;
+                        background-color: var(--status-color, #ccc);
                     }
+
+                    &[data-value='Complete']::before {
+                        --status-color: #1fe433;
+                    }
+
+                    &[data-value='Pending']::before,
+                    &[data-value='Processing']::before,
+                    &[data-value='Pre-Approved']::before {
+                        --status-color: #ffba00;
+                    }
+
+                    &[data-value='Failed']::before,
+                    &[data-value='Cancelled']::before,
+                    &[data-value='Refunded']::before,
+                    &[data-value='Revoked']::before,
+                    &[data-value='Abandoned']::before {
+                        --status-color: #f73f2e;
+                    }
+                }
+
+                .details-row--total-amount {
+                    font-weight: 700;
                 }
 
                 &.payment-details {
