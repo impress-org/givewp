@@ -133,18 +133,8 @@
                         --status-color: #1fe433;
                     }
 
-                    &[data-value='Pending'],
-                    &[data-value='Processing'],
-                    &[data-value='Pre-Approved'] {
+                    &[data-value='Pending'] {
                         --status-color: #ffba00;
-                    }
-
-                    &[data-value='Failed'],
-                    &[data-value='Cancelled'],
-                    &[data-value='Refunded'],
-                    &[data-value='Revoked'],
-                    &[data-value='Abandoned'] {
-                        --status-color: #f73f2e;
                     }
                 }
 
