@@ -21,10 +21,11 @@
     .social-sharing {
         display: flex;
         flex-direction: column;
-        row-gap: 1.5rem;
+        align-items: center;
+        row-gap: 1.25rem;
         background: #fbfbfb;
         border-block: 0.0625rem solid #f2f2f2;
-        padding-block: 1.5rem;
+        padding-block: fn.scaleBetween(1.5rem, 2.5rem);
         padding-inline: 1.25rem;
 
         .instruction {
