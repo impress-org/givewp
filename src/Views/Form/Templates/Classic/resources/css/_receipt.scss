@@ -129,21 +129,21 @@
                         background-color: var(--status-color, #ccc);
                     }
 
-                    &[data-value='Complete']::before {
+                    &[data-value='Complete'] {
                         --status-color: #1fe433;
                     }
 
-                    &[data-value='Pending']::before,
-                    &[data-value='Processing']::before,
-                    &[data-value='Pre-Approved']::before {
+                    &[data-value='Pending'],
+                    &[data-value='Processing'],
+                    &[data-value='Pre-Approved'] {
                         --status-color: #ffba00;
                     }
 
-                    &[data-value='Failed']::before,
-                    &[data-value='Cancelled']::before,
-                    &[data-value='Refunded']::before,
-                    &[data-value='Revoked']::before,
-                    &[data-value='Abandoned']::before {
+                    &[data-value='Failed'],
+                    &[data-value='Cancelled'],
+                    &[data-value='Refunded'],
+                    &[data-value='Revoked'],
+                    &[data-value='Abandoned'] {
                         --status-color: #f73f2e;
                     }
                 }
