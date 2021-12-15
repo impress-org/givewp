@@ -1,12 +1,11 @@
-:root {
-    // I don’t imagine anything will try to change this.
-    font-size: inherit;
+html {
+    box-sizing: border-box;
 }
 
 *,
 ::before,
 ::after {
-    box-sizing: border-box;
+    box-sizing: inherit;
 }
 
 body,
@@ -24,7 +23,7 @@ dl {
 }
 
 ul {
-    padding-left: 0;
+    padding-inline-start: 0;
 }
 
 fieldset {
