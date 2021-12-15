@@ -6,7 +6,7 @@
         padding-bottom: 0.75rem;
         margin-bottom: 1rem;
         border-bottom: 0.0625rem solid #ddd;
-        font-size: fn.scaleBetween(1.25rem, 1.5rem);;
+        font-size: fn.scaleBetween(1.25rem, 1.5rem);
         font-weight: 500;
         line-height: 1.3;
         color: #333;
@@ -36,10 +36,10 @@
 
     &.give-gateway-option-selected {
         background-color: #fff;
-        border-color: #ddd;
+        border-color: #000;
 
         & .give-gateway-details {
-            border-color: #ddd;
+            border-color: #000;
         }
     }
 }
@@ -68,8 +68,9 @@
         left: calc(var(--size) / 2 + var(--gateway-option-padding));
     }
 
+    // TODO: fix this!
     &:focus {
-        outline: 0.0625rem solid var(--give-primary-color);
+        outline: 0;
     }
 }
 
