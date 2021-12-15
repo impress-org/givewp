@@ -70,7 +70,7 @@
     min-width: -webkit-fill-available;
     height: 100%;
     font-size: fn.scaleBetween(1.5rem, 2.125rem);
-    padding: fn.scaleBetween(1rem, 1.6875rem) 0.5rem;
+    padding: fn.scaleBetween(0.5rem, 1.6875rem) 0.5rem;
 
     transition-property: background-color, color, filter, box-shadow, transform;
     transition-duration: 200ms;
