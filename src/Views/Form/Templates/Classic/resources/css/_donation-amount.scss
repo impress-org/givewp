@@ -137,10 +137,8 @@
 
 .give-recurring-donors-choice,
 .give-fee-message-label,
-.give-currency-switcher-msg-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.give-currency-switcher-msg-wrap,
+.give-recurring-multi-level-message {
     padding: 0.8125rem;
     border: 0.1875rem solid #fff;
     border-radius: 0.5rem;
@@ -149,6 +147,14 @@
     font-size: fn.scaleBetween(1rem, 1.125rem);
     line-height: 1.2;
     box-shadow: 0 0 0.88em rgba(0, 0, 0, 0.1);
+}
+
+.give-recurring-donors-choice,
+.give-fee-message-label,
+.give-currency-switcher-msg-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .give_fee_mode_checkbox,
