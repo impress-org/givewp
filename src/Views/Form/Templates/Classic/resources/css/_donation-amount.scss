@@ -151,6 +151,12 @@
     font-size: fn.scaleBetween(1rem, 1.125rem);
     line-height: 1.2;
     box-shadow: 0 0 0.88em rgba(0, 0, 0, 0.1);
+    border: 0.1875rem solid transparent;
+    transition: border-color 200ms ease-in-out;
+}
+
+.checked-within {
+    border-color: var(--give-primary-color);
 }
 
 .give-recurring-donors-choice,

@@ -31,6 +31,7 @@ domIsReady(() => {
     addSecurePaymentBadgeToDonateNowSection();
     moveTestModeMessage();
     moveCurrencySwitcherMessageOutsideOfWrapper();
+    addFancyBorderWhenChecked();
 });
 
 /**
@@ -409,4 +410,14 @@ function setDonationAmountSectionDescription() {
 function moveCurrencySwitcherMessageOutsideOfWrapper() {
     const currencySwitcherMessage = document.querySelector('.give-currency-switcher-msg-wrap');
     currencySwitcherMessage.parentNode.after(currencySwitcherMessage);
+}
+
+function addFancyBorderWhenChecked() {
+    const nodes = document.querySelectorAll(`.give-donation-amount-section input[type="checkbox"]`);
+
+    nodes.forEach((node) =>
+        node.addEventListener('change', (event) => {
+            event.target.parentNode.classList.toggle('checked-within');
+        })
+    );
 }
