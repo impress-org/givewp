@@ -122,8 +122,9 @@
                     &::before {
                         display: inline-block;
                         content: '';
-                        block-size: 0.72em;
-                        aspect-ratio: 1;
+                        --diameter: 0.72em;
+                        inline-size: var(--diameter);
+                        block-size: var(--diameter);
                         border-radius: 9999px;
                         background-color: var(--status-color, #ccc);
                     }
