@@ -52,6 +52,10 @@
     }
 }
 
+.give-amount-description {
+    line-height: 1.375;
+}
+
 .give-donation-levels-wrap {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(fn.scaleBetween(6.625rem, 10.375rem), 1fr));
