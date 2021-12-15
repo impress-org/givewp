@@ -120,13 +120,21 @@
                     column-gap: 0.5rem;
 
                     &::before {
-                        display: inline-block;
                         content: '';
-                        --diameter: 0.72em;
-                        inline-size: var(--diameter);
-                        block-size: var(--diameter);
-                        border-radius: 9999px;
+                        block-size: 1em;
+                        aspect-ratio: 1;
+                        // Until Safari 14 usage drops off
+                        @supports not (aspect-ratio: 1) {
+                            inline-size: 1em;
+                        }
+                        flex-shrink: 0;
                         background-color: var(--status-color, #ccc);
+                        clip-path: circle();
+                        transform: scale(0.72);
+                        // We use transform to scale the circle since there
+                        // seems to be sub-pixel rendering issues with circle()
+                        // when the element’s dimensions (width, height) are
+                        // less than 16px.
                     }
 
                     &[data-value='Complete'] {
