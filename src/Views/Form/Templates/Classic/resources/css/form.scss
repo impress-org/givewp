@@ -62,3 +62,6 @@ label.give-hidden {
 @import 'funds';
 @import 'tributes';
 @import 'ffm';
+
+// For the Stripe Checkout modal
+@import '../../../../../../../assets/src/css/frontend/give-stripe.scss';
