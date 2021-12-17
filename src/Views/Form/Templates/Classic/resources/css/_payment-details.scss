@@ -124,6 +124,16 @@
         grid-column: span 6;
     }
 
+    img {
+        max-inline-size: 100%;
+        block-size: auto;
+    }
+
+    input,
+    select {
+        @include give-input;
+    }
+
     > .no-fields {
         p {
             margin-inline: auto;
@@ -141,5 +151,63 @@
         input {
             font-family: inherit;
         }
+    }
+}
+
+[name='payment-mode'] {
+    & + label {
+        position: relative;
+
+        &::after {
+            content: '\f4be';
+            position: absolute;
+            inset-inline-end: 1.25rem;
+            block-size: 100%;
+            color: #c1c1c1;
+            font-size: 1.5em;
+            block-size: 1em;
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            transform: translateY(-0.15em);
+        }
+    }
+
+    // Tools icon
+    &[value='manual'] + label::after {
+        content: '\f7d9';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+
+    // Wallet icon
+    &[value='offline'] + label::after {
+        content: '\f555';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+
+    // Credit card icon
+    &[value='stripe'] + label::after,
+    &[value='stripe_checkout'] + label::after,
+    &[value='authorize'] + label::after {
+        content: '\f09d';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+
+    // Univerisity icon
+    &[value='stripe_sepa'] + label::after,
+    &[value='stripe_becs'] + label::after {
+        content: '\f19c';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+
+    // PayPal icon
+    &[value='paypal'] + label::after {
+        content: '\f1ed';
+        font-family: 'Font Awesome 5 Brands';
+        font-weight: 100;
+        font-size: 1.75em;
     }
 }

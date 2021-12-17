@@ -50,12 +50,19 @@ form.give-form .form-row input[type='tel'],
 form.give-form .form-row input[type='email'],
 form.give-form .form-row input[type='password'],
 form.give-form .form-row input[type='url'],
+.give-gateway-details textarea,
+.give-gateway-details input[type='text'],
+.give-gateway-details input[type='tel'],
+.give-gateway-details input[type='email'],
+.give-gateway-details input[type='password'],
+.give-gateway-details input[type='url'],
 .give-input-field-wrapper {
     @include give-input;
 }
 
 .form-row select,
-.give-select {
+.give-select,
+.give-gateway-details select {
     @include give-input;
     -moz-appearance: none;
     -webkit-appearance: none;
