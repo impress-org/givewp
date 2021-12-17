@@ -134,6 +134,10 @@
         @include give-input;
     }
 
+    a {
+        color: var(--give-primary-color);
+    }
+
     > .no-fields {
         p {
             margin-inline: auto;
@@ -152,6 +156,31 @@
             font-family: inherit;
         }
     }
+
+    fieldset {
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1rem;
+
+        & > * {
+            grid-column: span 6;
+        }
+
+        @media screen and (min-width: $desktopMinWidth) {
+            > .form-row-responsive {
+                &.form-row-one-third {
+                    grid-column: span 2;
+                }
+                &.form-row-half {
+                    grid-column: span 3;
+                }
+                &.form-row-two-thirds {
+                    grid-column: span 4;
+                }
+            }
+        }
+    }
 }
 
 [name='payment-mode'] {
@@ -162,7 +191,6 @@
             content: '\f4be';
             position: absolute;
             inset-inline-end: 1.25rem;
-            block-size: 100%;
             color: #c1c1c1;
             font-size: 1.5em;
             block-size: 1em;
@@ -175,39 +203,56 @@
     // Tools icon
     &[value='manual'] + label::after {
         content: '\f7d9';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
     }
 
     // Wallet icon
     &[value='offline'] + label::after {
         content: '\f555';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
     }
 
     // Credit card icon
-    &[value='stripe'] + label::after,
-    &[value='stripe_checkout'] + label::after,
-    &[value='authorize'] + label::after {
+    // prettier-ignore
+    &:where(
+        [value='stripe'],
+        [value='stripe_checkout'],
+        [value='authorize']
+    ) + label::after {
         content: '\f09d';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
     }
 
-    // Univerisity icon
-    &[value='stripe_sepa'] + label::after,
-    &[value='stripe_becs'] + label::after {
+    // University icon
+    // prettier-ignore
+    &:where(
+        [value='stripe_sepa'],
+        [value='stripe_bces']
+    ) + label::after {
         content: '\f19c';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
+    }
+
+    // Brands
+    // prettier-ignore
+    &:where(
+        [value='paypal'],
+        [value='stripe_apple_pay'],
+        [value='stripe_google_pay']
+    ) + label::after {
+        font-family: 'Font Awesome 5 Brands';
+        font-weight: 100;
     }
 
     // PayPal icon
     &[value='paypal'] + label::after {
         content: '\f1ed';
-        font-family: 'Font Awesome 5 Brands';
-        font-weight: 100;
         font-size: 1.75em;
+    }
+
+    // Apply Pay icon
+    &[value='stripe_apple_pay'] + label::after {
+        content: '\f415';
+    }
+
+    // Google Pay icon
+    &[value='stripe_google_pay'] + label::after {
+        content: '\e079';
     }
 }

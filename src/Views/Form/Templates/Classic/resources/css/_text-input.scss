@@ -10,6 +10,11 @@
     font-family: inherit;
     font-weight: 500;
     line-height: 1.2;
+
+    &:focus,
+    &.focus {
+        outline: 0.125rem solid var(--give-primary-color);
+    }
 }
 
 .give-label {
@@ -23,47 +28,34 @@
     }
 }
 
+// prettier-ignore
 .give-square-cc-fields,
-.give-stripe-cc-field,
 .give-stripe-single-cc-field-wrap,
-form[id*='give-form'] .form-row textarea,
-form[id*='give-form'] .form-row input[type='text'],
-form[id*='give-form'] .form-row input[type='tel'],
-form[id*='give-form'] .form-row input[type='email'],
-form[id*='give-form'] .form-row input[type='password'],
-form[id*='give-form'] .form-row input[type='url'],
-form[id*='give-form'] .form-row textarea.required,
-form[id*='give-form'] .form-row input[type='text'].required,
-form[id*='give-form'] .form-row input[type='tel'].required,
-form[id*='give-form'] .form-row input[type='email'].required,
-form[id*='give-form'] .form-row input[type='password'].required,
-form[id*='give-form'] .form-row input[type='url'].required,
-#give-recurring-form .form-row textarea,
-#give-recurring-form .form-row input[type='text'],
-#give-recurring-form .form-row input[type='tel'],
-#give-recurring-form .form-row input[type='email'],
-#give-recurring-form .form-row input[type='password'],
-#give-recurring-form .form-row input[type='url'],
-form.give-form .form-row textarea,
-form.give-form .form-row input[type='text'],
-form.give-form .form-row input[type='tel'],
-form.give-form .form-row input[type='email'],
-form.give-form .form-row input[type='password'],
-form.give-form .form-row input[type='url'],
-.give-gateway-details textarea,
-.give-gateway-details input[type='text'],
-.give-gateway-details input[type='tel'],
-.give-gateway-details input[type='email'],
-.give-gateway-details input[type='password'],
-.give-gateway-details input[type='url'],
-.give-input-field-wrapper {
+.give-input-field-wrapper,
+.give-select,
+:where(
+    form[id*='give-form'] .form-row,
+    #give-recurring-form,
+    .give-gateway-details
+)
+    :where(
+        input[type='text'],
+        input[type='tel'],
+        input[type='email'],
+        input[type='url'],
+        input[type='password'],
+        textarea,
+        select,
+        .give-select,
+        .give-stripe-cc-field
+    ):not(#give-amount)
+{
     @include give-input;
 }
 
 .form-row select,
 .give-select,
 .give-gateway-details select {
-    @include give-input;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;

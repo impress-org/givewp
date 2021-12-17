@@ -1,0 +1,27 @@
+.give-ffm-form-row-half,
+.give-ffm-form-row-third,
+.give-ffm-form-row-thirds,
+.form-row-wide {
+    width: revert;
+    padding: revert;
+    float: revert;
+}
+
+.form-row-one-third,
+.give-ffm-form-row-third {
+    grid-column: span 2;
+}
+
+.form-row-half,
+.give-ffm-form-row-half {
+    grid-column: span 3;
+}
+
+.form-row-two-thirds,
+.give-ffm-form-row-thirds {
+    grid-column: span 4;
+}
+
+.form-row-wide {
+    grid-column: span 6;
+}

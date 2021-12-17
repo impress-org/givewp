@@ -16,6 +16,10 @@ import {
     IS_RECURRING_ACTIVE,
 } from './is-feature-active.js';
 
+// This must be called ASAP (since this is used when DOMContentLoaded happens)
+// It doesn’t use anything inside the body.
+setStripeElementStyles();
+
 // Transforms document for classic template
 domIsReady(() => {
     setContainerMode();
@@ -421,4 +425,16 @@ function addFancyBorderWhenChecked() {
             event.target.parentNode.classList.toggle('checked-within');
         })
     );
+}
+
+function setStripeElementStyles() {
+    window.give_stripe_vars.element_font_styles = {
+        cssSrc: document.querySelector('#give-google-font-css')?.href,
+    };
+
+    Object.assign(window.give_stripe_vars.element_base_styles, {
+        color: '#828382',
+        fontFamily: window.getComputedStyle(document.body).fontFamily,
+        fontWeight: 400,
+    });
 }
