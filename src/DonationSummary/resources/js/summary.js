@@ -25,7 +25,10 @@ window.GiveDonationSummary = {
      */
     initFrequency: function () {
         // Donor's Choice Recurring
-        GiveDonationSummary.observe('[name="give-recurring-period"]', GiveDonationSummary.handleDonorsChoiceRecurringFrequency);
+        GiveDonationSummary.observe(
+            '[name="give-recurring-period"]',
+            GiveDonationSummary.handleDonorsChoiceRecurringFrequency
+        );
 
         // Admin Defined Recurring
         GiveDonationSummary.observe('[name="give-price-id"]', GiveDonationSummary.handleAdminDefinedRecurringFrequency);
@@ -34,7 +37,7 @@ window.GiveDonationSummary = {
     /**
      * @unreleased
      */
-    handleDonorsChoiceRecurringFrequency: function(targetNode, $form) {
+    handleDonorsChoiceRecurringFrequency: function (targetNode, $form) {
         $form.find('.js-give-donation-summary-frequency-help-text').toggle(!targetNode.checked);
         $form.find('[data-tag="frequency"]').toggle(!targetNode.checked);
         $form.find('[data-tag="recurring"]').toggle(targetNode.checked).html(targetNode.dataset['periodLabel']);
@@ -45,8 +48,8 @@ window.GiveDonationSummary = {
             const donorsChoiceValue = donorsChoice.options[donorsChoice.selectedIndex].value || false;
             if (donorsChoiceValue) {
                 $form
-                .find('[data-tag="recurring"]')
-                .html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue]);
+                    .find('[data-tag="recurring"]')
+                    .html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue]);
             }
         }
     },
@@ -54,7 +57,7 @@ window.GiveDonationSummary = {
     /**
      * @unreleased
      */
-    handleAdminDefinedRecurringFrequency: function(targetNode, $form) {
+    handleAdminDefinedRecurringFrequency: function (targetNode, $form) {
         const priceID = targetNode.value;
         const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');
 
@@ -84,7 +87,7 @@ window.GiveDonationSummary = {
     /**
      * @unreleased
      */
-    handleFees: function(targetNode, $form) {
+    handleFees: function (targetNode, $form) {
         $form.find('.fee-break-down-message').hide();
         $form.find('.js-give-donation-summary-fees').toggle(targetNode.checked);
 
@@ -151,7 +154,7 @@ window.GiveDonationSummary = {
 
         const $form = jQuery(targetNode.closest('.give-form'));
 
-        new MutationObserver(function (mutationsList, observer) {
+        new MutationObserver(function (mutationsList) {
             for (const mutation of mutationsList) {
                 // Use traditional 'for loops' for IE 11
                 if (mutation.type === 'attributes') {
@@ -159,7 +162,7 @@ window.GiveDonationSummary = {
                      * @param targetNode The node matching the element as defined by the specific selectors
                      * @param $form The closest `.give-form` node to the targetNode, wrapped in jQuery
                      */
-                    callback(targetNode, $form);
+                    callback(mutation.target, $form);
                 }
             }
         }).observe(targetNode, {attributes: true});

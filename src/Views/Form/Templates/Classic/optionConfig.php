@@ -122,20 +122,6 @@ return [
                     'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][secure_badge]' => 'enabled' ])),
                 ],
             ],
-            [
-                'id' => 'decimals_enabled',
-                'name' => __('Decimal Amounts', 'give'),
-                'desc' => __(
-                    'Do you want to enable decimal amounts? When the setting is disabled, decimal values are rounded.',
-                    'give'
-                ),
-                'type' => 'radio',
-                'default' => 'enabled',
-                'options' => [
-                    'enabled' => __('Enabled', 'give'),
-                    'disabled' => __('Disabled', 'give'),
-                ],
-            ],
         ],
     ],
 
