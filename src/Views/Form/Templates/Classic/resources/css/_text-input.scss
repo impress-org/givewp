@@ -1,5 +1,5 @@
 @mixin give-input {
-    width: 100%;
+    inline-size: 100%;
     padding: 1.1875rem;
     border: 0.078rem solid #666;
     border-radius: 0.25rem;
@@ -14,10 +14,11 @@
 
 .give-label {
     display: flex;
-    padding: 10px 0;
+    padding-block: 10px;
+    padding-inline: 0;
 
     .give-required-indicator {
-        margin-left: 5px;
+        margin-inline-start: 5px;
         color: #a00;
     }
 }

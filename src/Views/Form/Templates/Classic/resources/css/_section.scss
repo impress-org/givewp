@@ -4,9 +4,10 @@
     display: grid;
     grid-auto-flow: row;
     grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
+    row-gap: 1rem;
 
-    padding: fn.scaleBetween(1.75rem, 3.375rem) fn.scaleBetween(1rem, 4.375rem);
+    padding-block: fn.scaleBetween(1.75rem, 3.375rem);
+    padding-inline: fn.scaleBetween(1rem, 4.375rem);
 
     & > * {
         grid-column: span 6;

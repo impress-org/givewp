@@ -8,28 +8,28 @@
     appearance: none;
     cursor: pointer;
     position: absolute;
-    width: calc(var(--currency-text-width, auto) + 2.75rem);
-    height: fn.scaleBetween(2.625rem, 3.125rem);
+    inline-size: calc(var(--currency-text-width, auto) + 2.75rem);
+    block-size: fn.scaleBetween(2.625rem, 3.125rem);
     border-width: 0;
     border-style: dotted;
     border-color: #c1c1c1;
     background: none;
     color: transparent;
-    right: 0.625rem;
-    margin-right: 0.625rem;
-    border-left-width: 0.125rem;
+    inset-inline-end: 0.625rem;
+    margin-inline-end: 0.625rem;
+    border-inline-start-width: 0.125rem;
 
     option {
         color: #333;
     }
 
     &:first-child {
-        right: 0;
-        left: 0.625rem;
-        margin-right: 0;
-        margin-left: 0.625rem;
-        border-left-width: 0;
-        border-right-width: 0.125rem;
+        inset-inline-end: 0;
+        inset-inline-start: 0.625rem;
+        margin-inline-start: 0.625rem;
+        margin-inline-end: 0;
+        border-inline-start-width: 0;
+        border-inline-end-width: 0.125rem;
     }
 
     &:focus {
@@ -44,7 +44,7 @@
     }
 
     ~ span.give-currency-symbol {
-        padding-right: 1.875rem;
+        padding-inline-end: 1.875rem;
         display: inline-flex;
         column-gap: 0.5em;
         align-items: center;

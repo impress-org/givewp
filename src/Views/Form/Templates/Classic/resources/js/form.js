@@ -9,6 +9,13 @@ import {
     removeNode,
 } from './not-jquery.js';
 
+import {
+    IS_CURRENCY_SWITCHING_ACTIVE,
+    IS_DONATION_SUMMARY_ACTIVE,
+    IS_FEE_RECOVERY_ACTIVE,
+    IS_RECURRING_ACTIVE,
+} from './is-feature-active.js';
+
 // Transforms document for classic template
 domIsReady(() => {
     setContainerMode();
@@ -22,15 +29,15 @@ domIsReady(() => {
     addPaymentDetailsDescription();
     setupDonationLevels();
     moveDefaultGatewayDataIntoActiveGatewaySection();
-    isDonationSummaryEnabled() && moveDonationSummaryAfterDonationAmountSection();
-    isFeeRecoveryInstalled() && attachFeeEvents() && updateFeesAmount();
-    isRecurringAddonInstalled() && attachRecurringDonationEvents();
+    IS_DONATION_SUMMARY_ACTIVE && moveDonationSummaryAfterDonationAmountSection();
+    IS_FEE_RECOVERY_ACTIVE && attachFeeEvents() && updateFeesAmount();
+    IS_RECURRING_ACTIVE && attachRecurringDonationEvents();
     splitGatewayResponse();
-    setupCurrencySwitcherSelector();
-    setRecurringPeriodSelectWidth();
+    IS_CURRENCY_SWITCHING_ACTIVE && setupCurrencySwitcherSelector();
+    IS_RECURRING_ACTIVE && setRecurringPeriodSelectWidth();
     addSecurePaymentBadgeToDonateNowSection();
     moveTestModeMessage();
-    moveCurrencySwitcherMessageOutsideOfWrapper();
+    IS_CURRENCY_SWITCHING_ACTIVE && moveCurrencySwitcherMessageOutsideOfWrapper();
     addFancyBorderWhenChecked();
 });
 
@@ -100,12 +107,10 @@ function movePaymentFormInsidePaymentDetailsSection() {
 }
 
 function setupDonationLevels() {
-    const isCurrencySwitchingEnabled = 'give_cs_json_obj' in window;
-
     // If currency switching is available, we need to watch and re-run the setup
     // for the donation levels. Otherwise, we can just run the setup once with
     // the global currency settings.
-    if (isCurrencySwitchingEnabled) {
+    if (IS_CURRENCY_SWITCHING_ACTIVE) {
         // This window object has the supported currencies and their symbols.
         const supportedCurrencies = JSON.parse(window.give_cs_json_obj).supported_currency;
 
@@ -179,7 +184,7 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
     addSelectedGatewayDetails(
         createGatewayDetails(
             Array.from(document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)'))
-                .map((e) => e.outerHTML)
+                .map((node) => node.outerHTML)
                 .join('')
         )
     );
@@ -290,8 +295,10 @@ function splitGatewayResponse() {
                         ...gatewayDetails.removeChild(gatewayDetails.querySelector('#give_purchase_submit')).children
                     );
 
+                addSecurePaymentBadgeToDonateNowSection();
+
                 // Donation Summary
-                if (isDonationSummaryEnabled()) {
+                if (IS_DONATION_SUMMARY_ACTIVE) {
                     document
                         .querySelector('.give-donation-form-summary-section')
                         .replaceChildren(
@@ -302,14 +309,17 @@ function splitGatewayResponse() {
 
                     window.GiveDonationSummary.initTotal();
                     updateDonationSummaryAmount();
-                    isFeeRecoveryInstalled() && updateFeesAmount();
+                    IS_FEE_RECOVERY_ACTIVE && updateFeesAmount();
                 }
+
+                // Remove previous gateway data (just in case it was added again by multiple clicks)
+                removeNode(document.querySelector('.give-gateway-details'));
 
                 // Add the gateway details to the form
                 addSelectedGatewayDetails(gatewayDetails);
 
                 // Recurring Donations
-                if (isRecurringAddonInstalled()) {
+                if (IS_RECURRING_ACTIVE) {
                     updateRecurringDonationFrequency();
                 }
 
@@ -318,13 +328,6 @@ function splitGatewayResponse() {
         }
     });
 }
-
-const isRecurringAddonInstalled = () => 'Give_Recurring_Vars' in window;
-
-const isDonationSummaryEnabled = () =>
-    window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
-
-const isFeeRecoveryInstalled = () => 'give_fee_recovery_object' in window;
 
 const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
 
@@ -351,16 +354,14 @@ window.GiveClassicTemplate = {
 };
 
 function setupCurrencySwitcherSelector() {
-    if ('Give_Currency_Switcher' in window) {
-        window.Give_Currency_Switcher.adjust_dropdown_width = () => {
-            const currencySelect = document.querySelector('.give-cs-select-currency');
-            const currencyText = document.querySelector('.give-currency-symbol');
-            currencySelect.style.setProperty('--currency-text-width', pixelsToRem(measureText(currencyText)));
-            currencySelect.style.width = null;
-        };
+    window.Give_Currency_Switcher.adjust_dropdown_width = () => {
+        const currencySelect = document.querySelector('.give-cs-select-currency');
+        const currencyText = document.querySelector('.give-currency-symbol');
+        currencySelect.style.setProperty('--currency-text-width', pixelsToRem(measureText(currencyText)));
+        currencySelect.style.width = null;
+    };
 
-        window.Give_Currency_Switcher.adjust_dropdown_width();
-    }
+    window.Give_Currency_Switcher.adjust_dropdown_width();
 }
 
 function setRecurringPeriodSelectWidth() {

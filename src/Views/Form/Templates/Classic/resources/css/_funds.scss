@@ -1,10 +1,10 @@
 .give-embed-form .give-select-fund-row {
-    padding: 30px 0 0 0 !important;
+    padding-block-start: 1.875rem !important;
+    padding-block-end: 0 !important;
+    padding-inline: 0 !important;
 }
 
 .give-funds-select {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-block: 0.9375rem;
     @include give-input;
 }
-

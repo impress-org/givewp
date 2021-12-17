@@ -1,15 +1,16 @@
 .give-tributes-dedicate-donation {
-    margin-top: 10px;
-    padding-bottom: 10px;
+    margin-block-start: 0.625rem;
+    padding-block-end: 0.625rem;
 
     .give-tributes-show-wrap {
-        margin-top: 20px;
+        margin-block-start: 1.25rem;
     }
 
     legend,
     .give-tributes-legend {
         margin: 0 !important;
-        padding: 10px 0 !important;
+        padding-block: 0.625rem !important;
+        padding-inline: 0 !important;
         font-size: 1.1875rem;
         font-family: inherit;
         font-weight: 500;
@@ -18,10 +19,11 @@
 
     .give-tributes-label {
         display: block;
-        padding: 10px 0;
+        padding-block: 0.625rem;
+        padding-inline: 0;
     }
 
     .give_tributes_info_wrap {
-        margin-top: 20px;
+        margin-block-start: 1.25rem;
     }
 }

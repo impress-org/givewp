@@ -7,7 +7,7 @@ body {
 
 #give-receipt,
 .give-form-wrap {
-    width: min(100%, $containerMaxWidth);
+    inline-size: min(100%, $containerMaxWidth);
 }
 
 .give-container-boxed {

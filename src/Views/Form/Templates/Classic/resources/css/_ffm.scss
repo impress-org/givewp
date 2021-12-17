@@ -1,12 +1,12 @@
 @use 'fn';
 
 .give-repeater-table {
-    width: 100%;
+    inline-size: 100%;
 }
 
 .give-section-break {
-    padding-bottom: 0.75rem;
-    border-bottom: 0.0625rem solid #ddd;
+    padding-block-end: 0.75rem;
+    border-block-end: 0.0625rem solid #ddd;
     font-size: fn.scaleBetween(1.25rem, 1.5rem);
     font-weight: 500;
     line-height: 1.3;
