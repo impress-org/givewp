@@ -28,3 +28,42 @@ body {
 .give-form {
     border-radius: inherit;
 }
+
+.give-form-closed {
+    inline-size: min(100%, 60ch);
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5em rgb(0 0 0 / 0.1);
+    background-color: #fff;
+    --border: 0.0625rem solid rgb(0 0 0 / 0.1);
+
+    &::before {
+        content: '\f00c';
+        display: flex;
+        align-items: center;
+        block-size: 100%;
+        padding: 0.75rem;
+        border-start-start-radius: inherit;
+        border-end-start-radius: inherit;
+        border-block: var(--border);
+        border-inline-start: var(--border);
+        background-color: var(--give-primary-color);
+        color: rgb(0 0 0 / 0.6);
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        font-size: 0.9rem;
+    }
+
+    & > p {
+        flex-grow: 1;
+        padding-block: 0.75rem 0.625rem;
+        padding-inline: 0.75rem;
+        line-height: 1.4;
+        border-start-end-radius: inherit;
+        border-end-end-radius: inherit;
+        border-block: var(--border);
+        border-inline-end: var(--border);
+    }
+}
