@@ -2,7 +2,9 @@
 
 .give-donation-summary-section {
     // Hide the heading
-    .heading { display: none; }
+    .heading {
+        display: none;
+    }
 
     table {
         inline-size: 100%;
@@ -36,15 +38,23 @@
         vertical-align: baseline;
 
         // Selects th in thead and tfoot. Selects td in tbody.
-        > :first-of-type { text-align: start; }
-        > :last-of-type { text-align: end; }
+        > :first-of-type {
+            text-align: start;
+        }
+        > :last-of-type {
+            text-align: end;
+        }
     }
 
     // Colors (tobdy inherits)
-    thead, tfoot { color: #333; }
+    thead,
+    tfoot {
+        color: #333;
+    }
 
     // Borders
-    tbody tr, tfoot {
+    tbody tr,
+    tfoot {
         border-block-start: 0.0625rem solid #ddd;
     }
 
@@ -67,6 +77,10 @@
     tbody td {
         padding-block: 1.25rem;
         font-size: fn.scaleBetween(1rem, 1.125rem);
+
+        &:last-of-type {
+            min-inline-size: 6rem;
+        }
     }
 
     // Footer specific
