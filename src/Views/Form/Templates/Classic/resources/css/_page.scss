@@ -1,3 +1,5 @@
+@use 'fn';
+
 body {
     display: flex;
     justify-content: center;
@@ -30,40 +32,29 @@ body {
 }
 
 .give-form-closed {
-    inline-size: min(100%, 60ch);
     margin: 1rem;
+    padding-block: fn.scaleBetween(4rem, 8rem);
+    padding-inline: fn.scaleBetween(2rem, 4rem);
     display: flex;
-    align-items: center;
-    border-radius: 0.5rem;
+    justify-content: center;
     box-shadow: 0 0 0.5em rgb(0 0 0 / 0.1);
-    background-color: #fff;
-    --border: 0.0625rem solid rgb(0 0 0 / 0.1);
+    --tint-color: rgba(var(--give-header-background-color--for-rgb), 0.75);
+    --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
+    background-color: rgb(var(--give-header-background-color--for-rgb));
+    /* translucent tint gradient over image */
+    background-image: var(--tint, linear-gradient(transparent, transparent)), var(--give-header-background-image);
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.5rem;
 
-    &::before {
-        content: '\f00c';
-        display: flex;
-        align-items: center;
-        block-size: 100%;
-        padding: 0.75rem;
-        border-start-start-radius: inherit;
-        border-end-start-radius: inherit;
-        border-block: var(--border);
-        border-inline-start: var(--border);
-        background-color: var(--give-primary-color);
-        color: rgb(0 0 0 / 0.6);
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        font-size: 0.9rem;
-    }
+    font-size: fn.scaleBetween(1.125rem, 1.5rem);
 
     & > p {
-        flex-grow: 1;
-        padding-block: 0.75rem 0.625rem;
-        padding-inline: 0.75rem;
+        color: #fff;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
         line-height: 1.4;
-        border-start-end-radius: inherit;
-        border-end-end-radius: inherit;
-        border-block: var(--border);
-        border-inline-end: var(--border);
+        font-weight: 500;
+        max-inline-size: 40ch;
+        text-align: center;
     }
 }
