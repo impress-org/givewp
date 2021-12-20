@@ -32,7 +32,7 @@ label.give-hidden {
 @import 'icons';
 
 // For the Stripe Checkout modal
-@import '../../../../../../../assets/src/css/frontend/give-stripe.scss';
+//@import '../../../../../../../assets/src/css/frontend/give-stripe.scss';
 
 // Context
 @import 'page';
@@ -66,3 +66,4 @@ label.give-hidden {
 @import 'funds';
 @import 'tributes';
 @import 'ffm';
+@import 'stripe-checkout-modal';

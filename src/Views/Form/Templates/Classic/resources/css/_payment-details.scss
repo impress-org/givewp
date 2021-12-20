@@ -129,11 +129,6 @@
         block-size: auto;
     }
 
-    input,
-    select {
-        @include give-input;
-    }
-
     a {
         color: var(--give-primary-color);
     }

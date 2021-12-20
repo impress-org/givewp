@@ -34,8 +34,7 @@
 .give-input-field-wrapper,
 .give-select,
 :where(
-    form[id*='give-form'] .form-row,
-    #give-recurring-form,
+    .form-row,
     .give-gateway-details
 )
     :where(
