@@ -126,6 +126,7 @@ add_action('init', 'give_listen_for_paypal_ipn');
  * Process PayPal IPN
  *
  * @since 1.0
+ * @unlreased Set correct PayPal host url in header information for ipn verification.
  * @return void
  */
 function give_process_paypal_ipn()
