@@ -190,7 +190,7 @@ function give_process_paypal_ipn() {
 			'httpversion' => '1.1',
 			'blocking'    => true,
 			'headers'     => [
-				'host'         => give_get_paypal_domain(),
+				'host'         => give_is_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com',
 				'connection'   => 'close',
 				'content-type' => 'application/x-www-form-urlencoded',
 				'post'         => '/cgi-bin/webscr HTTP/1.1',
@@ -431,43 +431,23 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
  * @since 1.0
  */
 function give_get_paypal_redirect( $ssl_check = false ) {
-	return apply_filters( 'give_paypal_uri', give_get_paypal_base_url() . '/cgi-bin/webscr' );
-}
 
-/**
- * Get PayPal base URL
- *
- * @return string Base URL of PayPal.
- * @unreleased
- */
-function give_get_paypal_base_url() {
+    if ( is_ssl() || ! $ssl_check ) {
+        $protocol = 'https://';
+    } else {
+        $protocol = 'http://';
+    }
 
-	if ( is_ssl() || ! $ssl_check ) {
-		$protocol = 'https://';
-	} else {
-		$protocol = 'http://';
-	}
+    // Check the current payment mode
+    if ( give_is_test_mode() ) {
+        // Test mode
+        $paypal_uri = $protocol . 'www.sandbox.paypal.com/cgi-bin/webscr';
+    } else {
+        // Live mode
+        $paypal_uri = $protocol . 'www.paypal.com/cgi-bin/webscr';
+    }
 
-	return apply_filters( 'give_paypal_base_url', $protocol . give_get_paypal_domain() );
-}
-
-/**
- * Get PayPal domain
- *
- * @return string Domain of PayPal.
- * @unreleased
- */
-function give_get_paypal_domain() {
-
-	// Live mode.
-	$paypal_domain = 'www.paypal.com';
-
-	if ( give_is_test_mode() ) {
-		// Test mode.
-		$paypal_domain = 'www.sandbox.paypal.com';
-	}
-
-	return apply_filters( 'give_paypal_domain', $paypal_domain );
+    return apply_filters( 'give_paypal_uri', $paypal_uri );
 }
 
 /**
