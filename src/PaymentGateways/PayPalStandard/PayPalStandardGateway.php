@@ -78,11 +78,6 @@ class PayPalStandardGateway extends OffSitePaymentGateway
 
     /**
      * @inerhitDoc
-     *
-     * @param $donationId
-     * @param $method
-     *
-     * @return void
      */
     public function handleGatewayRouteMethod($donationId, $method)
     {
