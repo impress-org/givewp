@@ -1,24 +1,43 @@
+@use 'sass:string';
+
 .give-stripe-checkout-modal {
     display: none;
 
     &.give-stripe-checkout-show-modal {
         position: fixed;
-        inset: 0;
+        inset-block-start: 0;
+        inset-inline-start: 0;
         // High enough to be shown above everything. Feel free to increase if necessary.
         z-index: 10;
+        block-size: 100%;
+        min-block-size: max-content;
+        inline-size: 100%;
+        overflow: auto;
+        overscroll-behavior: contain;
         display: flex;
-        align-items: center;
+        align-items: safe center; // Safe alignment in Firefox
         justify-content: center;
         background-color: rgb(0 0 0 / 0.5);
+
+        // For the future...
+        body:has(&) {
+            overflow: hidden;
+        }
     }
 
     &-content {
+        block-size: max-content;
+        inline-size: min(100%, 32rem);
+        margin: auto; // Fallback for `align-items: safe center` on parent
     }
 
     &-container {
         background-color: #fff;
-        border-radius: 0.5rem;
         font-size: 1rem;
+
+        @media screen and (min-width: $desktopMinWidth) {
+            border-radius: 0.5rem;
+        }
 
         & > :first-child {
             border-start-start-radius: inherit;
