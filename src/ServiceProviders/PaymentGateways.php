@@ -50,7 +50,6 @@ class PaymentGateways implements ServiceProvider
      * @var string[]
      */
     public $gateways = [
-        PayPalStandard::class,
         PayPalCommerce::class,
     ];
 

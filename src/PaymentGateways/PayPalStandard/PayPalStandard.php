@@ -7,11 +7,26 @@ use Give\PaymentGateways\PaymentGateway;
 class PayPalStandard implements PaymentGateway
 {
     /**
+     * @var PayPalStandardGateway
+     */
+    private $payPalStandardGateway;
+
+    /**
+     * @unlreased
+     *
+     * @param PayPalStandardGateway $payPalStandardGateway
+     */
+    public function __construct(PayPalStandardGateway $payPalStandardGateway)
+    {
+        $this->payPalStandardGateway = $payPalStandardGateway;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getId()
     {
-        return 'paypal';
+        return $this->payPalStandardGateway->getId();
     }
 
     /**
@@ -19,7 +34,7 @@ class PayPalStandard implements PaymentGateway
      */
     public function getName()
     {
-        return esc_html__('PayPal Standard', 'give');
+        return $this->payPalStandardGateway->getName();
     }
 
     /**
@@ -27,7 +42,7 @@ class PayPalStandard implements PaymentGateway
      */
     public function getPaymentMethodLabel()
     {
-        return esc_html__('PayPal', 'give');
+        return $this->payPalStandardGateway->getPaymentMethodLabel();
     }
 
     /**
