@@ -7,6 +7,10 @@
     float: revert;
 }
 
+.form-row-wide {
+    grid-column: span 6;
+}
+
 .form-row-one-third,
 .give-ffm-form-row-third {
     grid-column: span 2;
@@ -22,6 +26,10 @@
     grid-column: span 4;
 }
 
-.form-row-wide {
-    grid-column: span 6;
+// Ideally, it’d be better to use min-width, but we’re not creating a framework
+// here.
+@media screen and (max-width: $desktopMinWidth) {
+    .form-row-responsive {
+        grid-column: span 6;
+    }
 }
