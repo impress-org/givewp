@@ -2,13 +2,12 @@
 
 namespace Give\PaymentGateways\PayPalStandard;
 
-use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\BuildPayPalStandardPaymentURL;
-
+use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -23,8 +22,7 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId)
     {
-        // TODO: use give_paypal_standard_billing_fields function
-        // TODO: Implement getLegacyFormFieldMarkup() method.
+        Call::invoke(PayPalStandardBillingFields::class);
     }
 
     /**
@@ -64,7 +62,7 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        return new RedirectOffsite( Call::invoke( BuildPayPalStandardPaymentURL::class, $paymentData ) );
+        return new RedirectOffsite(Call::invoke(BuildPayPalStandardPaymentURL::class, $paymentData));
     }
 
     /**
