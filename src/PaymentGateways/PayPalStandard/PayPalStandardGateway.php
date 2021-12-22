@@ -6,7 +6,7 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\PayPalStandard\Actions\BuildPayPalStandardPaymentURL;
+use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
 use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
 
 use function Give\Framework\Http\Response\response;
@@ -65,7 +65,7 @@ class PayPalStandardGateway extends OffSitePaymentGateway
     {
         $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
 
-        return new RedirectOffsite(Call::invoke(BuildPayPalStandardPaymentURL::class, $paymentData, $redirectUrl));
+        return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData, $redirectUrl));
     }
 
     /**

@@ -9,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
  *
  * @unlreased
  */
-class BuildPayPalStandardPaymentURL
+class CreatePayPalStandardPaymentURL
 {
     public function __invoke(GatewayPaymentData $paymentData, $redirectUrl)
     {
