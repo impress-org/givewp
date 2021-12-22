@@ -21,66 +21,106 @@
     list-style: none;
 }
 
+$gatewayColor: #333;
+$gatewayBg: #fafafa;
+$gatewayBgSelected: #fff;
+$gatewayBorder: #ddd;
+$gatewayBorderSelected: #000;
+$gatewayFontSize: 1rem;
+
 #give-gateway-radio-list > li {
-    --gateway-option-padding: 1.375em;
-    --gateway-option-gap: 0.55em;
+    --tab-radio-diameter: 1.25rem;
+    --tab-block-padding: 1rem;
+    --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
+    --tab-inline-padding: 1.5rem;
 
-    display: flex;
-    flex-wrap: wrap;
-    border: 0.0625em solid #ddd;
-    border-radius: 0.25em;
-    background-color: #fafafa;
-    color: #333;
-    // This controls the scale of the radio + label
-    font-size: 1rem;
+    position: relative;
+    padding-block-start: var(--tab-block-size);
+    border-radius: 0.25rem;
 
+    // The input
+    & > .give-gateway {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
+        block-size: var(--tab-block-size);
+        inline-size: 100%;
+        border-radius: inherit;
+        border: 0.0625rem solid #ddd;
+
+        appearance: none;
+        margin: 0;
+
+        font-size: 1rem;
+
+        // Radio outer circle
+        &::before {
+            content: '';
+            position: absolute;
+            inset-block: 0;
+            inset-inline-start: 0;
+            margin-inline-start: var(--tab-block-padding);
+            margin-block: auto;
+            block-size: var(--tab-radio-diameter);
+            inline-size: var(--tab-radio-diameter);
+            border: 0.0625rem solid #b4b9be;
+            border-radius: 9999px;
+            box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.25);
+        }
+
+        // Radio inner circle
+        &::after {
+            content: '';
+            position: absolute;
+            inset-block: 0;
+            inset-inline-start: 0;
+            margin-inline-start: calc(var(--tab-block-padding) + 0.375rem);
+            margin-block: auto;
+            block-size: 0.5rem;
+            inline-size: 0.5rem;
+            background-color: var(--give-primary-color);
+            clip-path: circle();
+            opacity: 0;
+        }
+
+        // Label
+        & + .give-gateway-option {
+            position: absolute;
+            inset-block-start: 0;
+            inset-inline: 0;
+            margin-inline-start: calc(var(--tab-inline-padding) + var(--tab-radio-diameter) + 0.2rem);
+            margin-block-start: calc(var(--tab-block-padding) + 0.0625rem);
+
+            font-weight: 700;
+            font-size: 1em;
+            line-height: 1.2;
+        }
+
+        &:checked::after {
+            opacity: 1;
+        }
+
+        &:focus {
+            outline: 0;
+            border-color: var(--give-primary-color) !important;
+        }
+    }
+
+    // When selected
     &.give-gateway-option-selected {
         background-color: #fff;
         border-color: #000;
+
+        & > .give-gateway {
+            border-end-start-radius: 0;
+            border-end-end-radius: 0;
+            border-color: #000;
+        }
 
         & .give-gateway-details {
             border-color: #000;
         }
     }
-}
-
-.give-gateway {
-    @include give-radio;
-
-    padding-block: var(--gateway-option-padding);
-    padding-inline-start: var(--gateway-option-padding);
-    padding-inline-end: calc(var(--gateway-option-gap) / 2);
-    border-radius: unset;
-    border-start-start-radius: inherit;
-    background-color: transparent;
-
-    &::before,
-    &::after {
-        border-radius: 9999px;
-    }
-
-    &::before {
-        background-color: #fff;
-    }
-
-    &::after {
-        inset-inline-start: calc(var(--size) / 2 + var(--gateway-option-padding));
-    }
-
-    // TODO: fix this!
-    &:focus {
-        outline: 0;
-    }
-}
-
-.give-gateway-option {
-    flex-grow: 1;
-    padding-block-start: var(--gateway-option-padding);
-    padding-inline-end: var(--gateway-option-padding);
-    padding-inline-start: calc(var(--gateway-option-gap) / 2);
-    font-weight: 700;
-    font-size: 1em;
-    line-height: 1.2;
 }
 
 .give-gateway-details {
@@ -89,7 +129,9 @@
     grid-template-columns: repeat(6, 1fr);
     row-gap: 1rem;
     inline-size: 100%;
-    border-top: 0.0625rem solid #ddd;
+    border-block-start-width: 0;
+    border-inline: 0.0625rem solid #ddd;
+    border-block-end: 0.0625rem solid #ddd;
     padding-block: 2rem;
     padding-inline: 1.375rem;
     font-size: 0.9375rem;
@@ -179,20 +221,16 @@
 }
 
 [name='payment-mode'] {
-    & + label {
-        position: relative;
-
-        &::after {
-            content: '\f4be';
-            position: absolute;
-            inset-inline-end: 1.25rem;
-            color: #c1c1c1;
-            font-size: 1.5em;
-            block-size: 1em;
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            transform: translateY(-0.15em);
-        }
+    & + label::after {
+        content: '\f4be';
+        position: absolute;
+        inset-inline-end: 1.25rem;
+        color: #c1c1c1;
+        font-size: 1.5em;
+        block-size: 1em;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        transform: translateY(-0.15em);
     }
 
     // Tools icon
