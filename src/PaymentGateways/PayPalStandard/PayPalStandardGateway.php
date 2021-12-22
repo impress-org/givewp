@@ -23,7 +23,7 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId)
     {
-        Call::invoke(PayPalStandardBillingFields::class);
+        Call::invoke(PayPalStandardBillingFields::class, $formId);
     }
 
     /**
