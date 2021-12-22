@@ -29,14 +29,49 @@ $gatewayBorderSelected: #000;
 $gatewayFontSize: 1rem;
 
 #give-gateway-radio-list > li {
+    // Ideally, the input would be wrapped with the label, but even then we
+    // wouldn’t be able to add nice hover and focus styles for this. So, we are
+    // using absolute positioning to increase the hit area of the checkbox and
+    // then placing the pseudo-element checkbox styles, label, and gateway icon
+    // manually. Below are a few variables for tweaking the layout.
+
     --tab-radio-diameter: 1.25rem;
-    --tab-block-padding: 1rem;
+    --tab-radio-border-size: 0.0625rem;
+    --tab-block-padding: 1.375rem;
     --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
-    --tab-inline-padding: 1.5rem;
+    --tab-inline-padding: 1.375rem;
+    --tab-transition: 0.2s ease-in-out;
 
     position: relative;
     padding-block-start: var(--tab-block-size);
+    background-color: #fafafa;
+
+    transition: background-color var(--tab-transition);
+
+    // Round corners on the container and...
     border-radius: 0.25rem;
+
+    // ...for the input...
+    & > .give-gateway {
+        // Round all the corners...
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+
+        // Except when the give-gateway-details is present (it’s the third
+        // element), then reset the block-end corners.
+        &:nth-last-child(3) {
+            border-end-start-radius: 0;
+            border-end-end-radius: 0;
+        }
+    }
+
+    // Round the block-end corners of the input
+    & > .give-gateway-details {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+    }
 
     // The input
     & > .give-gateway {
@@ -45,75 +80,79 @@ $gatewayFontSize: 1rem;
         inset-inline: 0;
         block-size: var(--tab-block-size);
         inline-size: 100%;
-        border-radius: inherit;
+        margin: 0;
         border: 0.0625rem solid #ddd;
 
         appearance: none;
-        margin: 0;
 
         font-size: 1rem;
+        transition: border-color var(--tab-transition);
 
-        // Radio outer circle
-        &::before {
-            content: '';
-            position: absolute;
-            inset-block: 0;
-            inset-inline-start: 0;
-            margin-inline-start: var(--tab-block-padding);
-            margin-block: auto;
-            block-size: var(--tab-radio-diameter);
-            inline-size: var(--tab-radio-diameter);
-            border: 0.0625rem solid #b4b9be;
-            border-radius: 9999px;
-            box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.25);
-        }
-
-        // Radio inner circle
+        // Radio
+        &::before,
         &::after {
             content: '';
             position: absolute;
             inset-block: 0;
             inset-inline-start: 0;
-            margin-inline-start: calc(var(--tab-block-padding) + 0.375rem);
             margin-block: auto;
-            block-size: 0.5rem;
-            inline-size: 0.5rem;
+            block-size: var(--diameter);
+            inline-size: var(--diameter);
+            border-radius: 9999px;
+        }
+
+        // Radio outer circle
+        &::before {
+            --diameter: var(--tab-radio-diameter);
+            margin-inline-start: var(--tab-block-padding);
+            border: var(--tab-radio-border-size) solid #b4b9be;
+            box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.25);
+        }
+
+        // Radio inner circle
+        &::after {
+            --diameter: calc(var(--tab-radio-diameter) * 0.4);
+            // prettier-ignore
+            margin-inline-start: calc(
+                (var(--tab-radio-diameter) - var(--diameter)) / 2 + var(--tab-block-padding)
+            );
             background-color: var(--give-primary-color);
-            clip-path: circle();
             opacity: 0;
+            transition: opacity var(--tab-transition);
         }
 
         // Label
         & + .give-gateway-option {
+            --font-size: 1em;
+            --line-height: 1.25;
+            --block-size: calc(var(--font-size) * var(--line-height));
             position: absolute;
-            inset-block-start: 0;
-            inset-inline: 0;
-            margin-inline-start: calc(var(--tab-inline-padding) + var(--tab-radio-diameter) + 0.2rem);
-            margin-block-start: calc(var(--tab-block-padding) + 0.0625rem);
-
-            font-weight: 700;
-            font-size: 1em;
-            line-height: 1.2;
+            inset-inline-start: calc(var(--tab-inline-padding) + var(--tab-radio-diameter) + 0.5rem);
+            inset-inline-end: var(--tab-inline-padding);
+            // Radio size minus this text block size; divided by two; plus the block padding
+            inset-block-start: calc((var(--tab-radio-diameter) - var(--block-size)) / 2 + var(--tab-block-padding));
+            font: bold var(--font-size) / var(--line-height) var(--give-primary-font);
         }
 
         &:checked::after {
             opacity: 1;
         }
 
+        &:focus,
+        &:hover {
+            border-color: var(--give-primary-color);
+        }
+
         &:focus {
             outline: 0;
-            border-color: var(--give-primary-color) !important;
         }
     }
 
     // When selected
     &.give-gateway-option-selected {
         background-color: #fff;
-        border-color: #000;
 
-        & > .give-gateway {
-            border-end-start-radius: 0;
-            border-end-end-radius: 0;
+        & > .give-gateway:not(:focus, :hover) {
             border-color: #000;
         }
 
@@ -222,9 +261,9 @@ $gatewayFontSize: 1rem;
 
 [name='payment-mode'] {
     & + label::after {
-        content: '\f4be';
         position: absolute;
-        inset-inline-end: 1.25rem;
+        inset-inline-end: 0;
+        content: '\f4be';
         color: #c1c1c1;
         font-size: 1.5em;
         block-size: 1em;
