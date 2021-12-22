@@ -14,42 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Process PayPal Payment.
- *
- * @param array $payment_data Payment data.
- *
- * @return void
- * @since 1.0
- */
-function give_process_paypal_payment( $payment_data ) {
-
-	// Validate nonce.
-	give_validate_nonce( $payment_data['gateway_nonce'], 'give-gateway' );
-
-	$payment_id = give_create_payment( $payment_data );
-
-	// Check payment.
-	if ( empty( $payment_id ) ) {
-		// Record the error.
-		give_record_gateway_error(
-			__( 'Payment Error', 'give' ),
-			sprintf( /* translators: %s: payment data */
-				__( 'Payment creation failed before sending donor to PayPal. Payment data: %s', 'give' ),
-				json_encode( $payment_data )
-			),
-			$payment_id
-		);
-		// Problems? Send back.
-		give_send_back_to_checkout( '?payment-mode=' . $payment_data['post_data']['give-gateway'] );
-	}
-
-	// Redirect to PayPal.
-	wp_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
-}
-
-add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
-
-/**
  * Listens for a PayPal IPN requests and then sends to the processing function.
  *
  * @return void

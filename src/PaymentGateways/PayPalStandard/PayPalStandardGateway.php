@@ -8,6 +8,7 @@ use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\BuildPayPalStandardPaymentURL;
 use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
+
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -62,7 +63,9 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        return new RedirectOffsite(Call::invoke(BuildPayPalStandardPaymentURL::class, $paymentData));
+        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
+
+        return new RedirectOffsite(Call::invoke(BuildPayPalStandardPaymentURL::class, $paymentData, $redirectUrl));
     }
 
     /**
@@ -83,8 +86,17 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function handleGatewayRouteMethod($donationId, $method)
     {
+        // Before registering PayPal Standard with new payment gateway API, We were using this url
+        // as offsite redirect url. Query param `payment-confirmation` is important because it triggers filter hook.
+        // We are using this url for backward compatibility.
+        // To review usage, search for `give_payment_confirm_paypal` filter hook.
+        $receiptPageUrl = add_query_arg(
+            ['payment-confirmation' => 'paypal', 'payment-id' => $donationId,],
+            give_get_success_page_uri()
+        );
+
         // Redirect to receipt.
-        $response = response()->redirectTo(give_get_success_page_uri());
+        $response = response()->redirectTo($receiptPageUrl);
         $this->handleResponse($response);
     }
 }
