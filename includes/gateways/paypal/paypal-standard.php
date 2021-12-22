@@ -500,6 +500,8 @@ function give_paypal_get_pending_donation_note( $pending_reason ) {
 /**
  * Build paypal url
  *
+ * @deprecated
+ *
  * @param int   $payment_id   Payment ID
  * @param array $payment_data Array of payment data.
  *
