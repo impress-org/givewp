@@ -20,9 +20,9 @@ class GatewayPaymentRepository
      *
      * @unlreased
      */
-    public function getDonationTitle( $donationId, $titleLength = null )
+    public function getDonationTitle($donationId, $titleLength = null)
     {
-        $donation = new Give_Payment( $donationId );
+        $donation = new Give_Payment($donationId);
         $formId = $donation->form_id;
         $price_id = $donation->price_id;
 
@@ -45,10 +45,10 @@ class GatewayPaymentRepository
         }
 
         // Cut the length
-        if ( ! $titleLength) {
-            return $donationTitle;
+        if ($titleLength) {
+            return substr($donationTitle, 0, $titleLength);
         }
 
-        return substr($donationTitle, 0, $titleLength);
+        return $donationTitle;
     }
 }
