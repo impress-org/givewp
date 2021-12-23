@@ -101,6 +101,10 @@ class FormData
      */
     public $donorInfo;
     /**
+     * This property only use to pass legacy payment request data to
+     * GatewayPaymentData dto to gracefully deprecate filter and action hook.
+     * Do not change property access from private to other.
+     *
      * @var array
      */
     private $legacyPaymentData;
