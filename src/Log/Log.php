@@ -3,6 +3,7 @@
 namespace Give\Log;
 
 use Exception;
+use Give\Log\Helpers\Environment;
 
 /**
  * Class Log
@@ -95,7 +96,7 @@ class Log
         }
 
         // Set message
-        if ( ! is_null($message)) {
+        if (!is_null($message)) {
             $data['message'] = $message;
         }
 
@@ -115,16 +116,20 @@ class Log
     /**
      * Static helper for calling the logger methods
      *
+     * @param  string  $name
+     * @param  array  $arguments
+     *
+     * @unreleased - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
      * @since 2.11.1
      *
-     * @param string $name
-     * @param array  $arguments
      */
     public static function __callStatic($name, $arguments)
     {
         /** @var Log $logger */
         $logger = give(__CLASS__);
 
-        call_user_func_array([$logger, $name], $arguments);
+        if (in_array($name, ['error', 'warning']) || Environment::isDebugLoggingEnabled()) {
+            call_user_func_array([$logger, $name], $arguments);
+        }
     }
 }
