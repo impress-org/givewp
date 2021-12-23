@@ -95,7 +95,7 @@ class GatewayPaymentData
     }
 
     /**
-     * @unlreased
+     * @unreleased
      *
      * @param int|null $titleLength
      *
