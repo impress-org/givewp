@@ -65,6 +65,15 @@ class GatewayPaymentData
      * @var string
      */
     public $donationTitle;
+    /**
+     * We are using this property internally to gracefully deprecate filter and action hooks.
+     * We do not recommend to use this property in logic and it will be removed in future.
+     *
+     * @deprecated
+     *
+     * @var array
+     */
+    public $legacyPaymentData;
 
     /**
      * Convert data from array into DTO
@@ -77,6 +86,7 @@ class GatewayPaymentData
     {
         $self = new static();
 
+        $self->legacyPaymentData = $self['legacyPaymentData'];
         $self->price = $array['price'];
         $self->priceId = $array['priceId'];
         $self->currency = $array['currency'];

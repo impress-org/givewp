@@ -63,6 +63,38 @@ class CreatePayPalStandardPaymentURL
         // Donations or regular transactions?
         $paypalPaymentArguments['cmd'] = give_get_paypal_button_type();
 
+        $paypalPaymentArguments = $this->supportLegacyFilter($paypalPaymentArguments, $paymentData);
+
+        /**
+         * Filter the PayPal Standard redirect args.
+         *
+         * @unreleased
+         *
+         * @param array $paypalPaymentArguments PayPal Standard payment Data.
+         * @param GatewayPaymentData $paymentData Gateway payment data.
+         */
+        $paypalPaymentArguments = apply_filters(
+            'give_gateway_paypal_redirect_args',
+            $paypalPaymentArguments,
+            $paymentData
+        );
+
+        $paypalPaymentRedirectUrl .= http_build_query($paypalPaymentArguments);
+
+        // Fix for some sites that encode the entities.
+        return str_replace('&amp;', '&', $paypalPaymentRedirectUrl);
+    }
+
+    /**
+     * @unlreased
+     *
+     * @param array $paypalPaymentArguments
+     * @param GatewayPaymentData $paymentData
+     *
+     * @return array
+     */
+    private function supportLegacyFilter($paypalPaymentArguments, GatewayPaymentData $paymentData)
+    {
         /**
          * Filter the PayPal Standard redirect args.
          *
@@ -71,15 +103,14 @@ class CreatePayPalStandardPaymentURL
          * @param array $payment_data Payment Data.
          * @param int $donationId Donation ID.
          */
-        $paypalPaymentArguments = apply_filters(
+        return apply_filters_deprecated(
             'give_paypal_redirect_args',
-            $paypalPaymentArguments,
-            $paymentData->donationId // TODO: discuss backward compatibility about change in filter argument
+            [
+                $paypalPaymentArguments,
+                $paymentData->donationId,
+                $paymentData->legacyPaymentData
+            ],
+            '' // TODO: add plugin version
         );
-
-        $paypalPaymentRedirectUrl .= http_build_query($paypalPaymentArguments);
-
-        // Fix for some sites that encode the entities.
-        return str_replace('&amp;', '&', $paypalPaymentRedirectUrl);
     }
 }

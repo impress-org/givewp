@@ -100,6 +100,10 @@ class FormData
      * @var DonorInfo
      */
     public $donorInfo;
+    /**
+     * @var array
+     */
+    private $legacyPaymentData;
 
     /**
      * Convert data from request into DTO
@@ -112,6 +116,7 @@ class FormData
     {
         $self = new static();
 
+        $self->legacyPaymentData = $request;
         $self->price = $request['price'];
         $self->date = $request['date'];
         $self->purchaseKey = $request['purchase_key'];
@@ -185,6 +190,7 @@ class FormData
     public function toGatewayPaymentData($donationId)
     {
         return GatewayPaymentData::fromArray([
+            'legacyPaymentData' => $this->legacyPaymentData,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'date' => $this->date,
