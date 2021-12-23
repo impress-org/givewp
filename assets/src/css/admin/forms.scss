@@ -10,27 +10,27 @@
 /* stylelint-disable no-duplicate-selectors, no-descending-specificity  */
 
 .give_options_panel {
-	input[type='text'],
-	input[type='email'] {
-		padding: 3px 5px;
-		width: 100%;
-		line-height: 2;
-		box-shadow: 0 0 0 transparent;
-		border-radius: 4px;
-		border: 1px solid #7e8993;
-		background-color: #fff;
-		color: #32373c;
-	}
+    input[type='text'],
+    input[type='email'] {
+        padding: 3px 5px;
+        width: 100%;
+        line-height: 2;
+        box-shadow: 0 0 0 transparent;
+        border-radius: 4px;
+        border: 1px solid #7e8993;
+        background-color: #fff;
+        color: #32373c;
+    }
 }
 
 input.give-text_small,
 input.give-text-small {
-	width: 100px !important;
+    width: 100px !important;
 }
 
 input.give-text-medium,
 input.give-text_medium {
-	width: 200px !important;
+    width: 200px !important;
 }
 
 /*------------------------------------
@@ -40,66 +40,66 @@ Forms CPT
 /* Hide conditional fields */
 .post-type-give_forms .tablenav #post-query-submit,
 .give-hidden {
-	display: none;
+    display: none;
 }
 
 //---------------------------------------------------
 //  Time, Money, Percentage Fields
 //---------------------------------------------------
 .give_options_panel {
-	.inner-panel {
-		padding: 9px 15px;
-	}
+    .inner-panel {
+        padding: 9px 15px;
+    }
 
-	.give-time-field {
-		width: 65px;
-	}
+    .give-time-field {
+        width: 65px;
+    }
 
-	.give-money-field {
-		width: 75px;
-		margin-right: 0;
-		margin-left: 0;
-		vertical-align: baseline;
-	}
+    .give-money-field {
+        width: 75px;
+        margin-right: 0;
+        margin-left: 0;
+        vertical-align: baseline;
+    }
 
-	.give-money-symbol {
-		border: 1px solid #7e8993;
-		background: #fcfcfc;
-		margin: 0;
-		font-size: 14px;
-		padding: 8px 10px 9px;
-	}
+    .give-money-symbol {
+        border: 1px solid #7e8993;
+        background: #fcfcfc;
+        margin: 0;
+        font-size: 14px;
+        padding: 8px 10px 9px;
+    }
 
-	.give-money-symbol-before {
-		border-right: 0;
-		margin-right: -5px;
-		border-radius: 4px 0 0 4px;
+    .give-money-symbol-before {
+        border-right: 0;
+        margin-right: -5px;
+        border-radius: 4px 0 0 4px;
 
-		+ .give-money-field {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-	}
+        + .give-money-field {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
 
-	.give-money-symbol-after {
-		margin-left: -5px;
-		border-radius: 0 4px 4px 0;
+    .give-money-symbol-after {
+        margin-left: -5px;
+        border-radius: 0 4px 4px 0;
 
-		+ .give-money-field {
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
-		}
-	}
+        + .give-money-field {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
 }
 
 .give-underline {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 // Show unnamed donors one per line.
 #give-bulk-donors div[id^='give-donor-'] {
-	display: block;
-	overflow: hidden;
+    display: block;
+    overflow: hidden;
 }
 
 //-------------------------------------
@@ -107,18 +107,18 @@ Forms CPT
 //-------------------------------------
 
 .shortcode-wrap {
-	margin: 1px 14px 12px 11px;
+    margin: 1px 14px 12px 11px;
 
-	label {
-		margin: 0 0 3px;
-		display: block;
-		cursor: default;
-	}
+    label {
+        margin: 0 0 3px;
+        display: block;
+        cursor: default;
+    }
 
-	.shortcode-input {
-		margin: 0;
-		width: 100%;
-	}
+    .shortcode-input {
+        margin: 0;
+        width: 100%;
+    }
 }
 
 /*-------------------------------------
@@ -126,13 +126,13 @@ Dashboard Columns
 -------------------------------------*/
 
 input.shortcode-input {
-	width: 100%;
+    width: 100%;
 }
 
 .price .give_price_range_low,
 .price .give_price_range_high,
 .price .give_price_range_sep {
-	display: inline-block;
+    display: inline-block;
 }
 
 /*-------------------------------------
@@ -140,450 +140,450 @@ Shortcode Copy & Paste
 -------------------------------------*/
 
 .js-give-shortcode-button {
-	font-weight: 500;
-	cursor: help;
+    font-weight: 500;
+    cursor: help;
 
-	&::after {
-		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-		text-shadow: none;
-	}
+    &::after {
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
 
-	& .dashicons {
-		font-size: 16px;
-		width: 16px;
-		vertical-align: middle;
-		color: inherit;
-		margin-right: 2px;
-	}
+    & .dashicons {
+        font-size: 16px;
+        width: 16px;
+        vertical-align: middle;
+        color: inherit;
+        margin-right: 2px;
+    }
 }
 
 // Hide 'copy shortcode' text at certain resolutions
 @media only screen and (min-width: 782px) and (max-width: 1260px) {
-	.js-give-shortcode-button {
-		.give-button-text {
-			display: none;
-		}
-	}
+    .js-give-shortcode-button {
+        .give-button-text {
+            display: none;
+        }
+    }
 }
 
 //-------------------------------------
 // Tooltips
 //-------------------------------------
 .give-tooltip {
-	margin: 0 3px;
-	padding: 0;
-	font-size: 14px;
-	color: transparentize($dark, 0.5);
-	position: relative;
-	top: 1px;
+    margin: 0 3px;
+    padding: 0;
+    font-size: 14px;
+    color: transparentize($dark, 0.5);
+    position: relative;
+    top: 1px;
 
-	&:hover {
-		color: $dark;
-	}
+    &:hover {
+        color: $dark;
+    }
 }
 
 //-------------------------------------
 // Metabox Form
 // -------------------------------------
 #give-metabox-form-data {
-	.inside {
-		margin: 0;
-		padding: 0;
-	}
-
-	.give-upload-button {
-		height: 36px;
-	}
-
-	.give-colorpicker {
-		margin-right: 6px !important;
-	}
-
-	.give-metabox-panel-wrap {
-		background: #fff;
-		overflow: hidden;
-	}
-
-	.give_options_panel {
-		display: none;
-		padding-left: 170px;
-
-		&.active,
-		.no-js & {
-			display: block;
-		}
-
-		.give-field-wrap {
-			padding: 1em 20px 1em 162px;
-			margin: 0;
-			border-bottom: 1px solid #eee;
-
-			> label,
-			> span.give-field-label {
-				float: left;
-				width: 135px;
-				padding: 0;
-				margin: 2px 0 0 -150px;
-				line-height: 18px;
-				font-size: 12px;
-				font-weight: 400;
-			}
-
-			.give-field-description {
-				color: #555;
-				font-size: 13px;
-				line-height: 20px;
-				display: block;
-				padding-top: 10px;
-			}
-			.give-radios .give-field-description {
-				margin-left: 25px;
-			}
-
-			ul {
-				margin: 0;
-			}
-
-			.mce-container iframe {
-				min-height: 250px !important;
-			}
-
-			.wp-editor-wrap {
-				display: inline-block;
-				width: 100%;
-			}
-		}
-
-		.give-field-wrap:last-child {
-			border-bottom: 0;
-		}
-
-		textarea.give-field {
-			width: 100%;
-		}
-
-		.give-field-wrap:hover .give-field-row-actions {
-			display: block;
-		}
-
-		.give-field-wrap:last-child {
-			border-bottom: 0;
-		}
-
-		.give-inline-radio-fields {
-			li {
-				display: inline-block;
-				margin-right: 15px;
-			}
-		}
-
-		.give-repeatable-field-section {
-			padding: 10px;
-			background: #f5f5f5;
-
-			.give-repeatable-fields-section-wrapper {
-				width: 100%;
-				background-color: #fff;
-				border-collapse: collapse;
-			}
-
-			.give-row {
-				border-bottom: 15px solid #f5f5f5;
-				background-color: #fff;
-			}
-
-			.give-template {
-				display: none;
-			}
-
-			.give-row:last-child {
-				border-bottom: 10px solid #f5f5f5;
-			}
-
-			.give-column {
-				padding: 0;
-			}
-
-			.give-row-head {
-				border-bottom: 1px solid #eee;
-				cursor: move;
-
-				h2 {
-					text-align: left !important;
-				}
-			}
-
-			.give-remove {
-				float: right;
-				width: 22px;
-				height: 36px;
-				padding: 0;
-				display: block;
-				text-align: center;
-				line-height: 34px;
-				font-size: 21px;
-				font-weight: 300;
-				cursor: pointer;
-			}
-
-			.give-remove:hover {
-				background-color: #f00;
-				color: #fff;
-				width: 22px;
-				height: 22px;
-				border-radius: 30px;
-				margin-top: 8px;
-				line-height: 19px;
-			}
-
-			.give-row .give-move .toggle-indicator::before {
-				margin-left: 7px;
-			}
-
-			.give-add-repeater-field-section-row-wrap {
-				background-color: #f5f5f5;
-			}
-
-			.give-add-repeater-field-section-row {
-				margin: 5px 5px;
-			}
-
-			.give-field-wrap:last-child {
-				border-bottom: 1px solid #eee;
-			}
-
-			.give-ui-placeholder-state-highlight {
-				background-color: #68bb6c;
-			}
-
-			.give-repeater-field-name {
-				border: 0 !important;
-				padding: 0 !important;
-			}
-
-			.give-repeater-field-description {
-				color: #666;
-				font-size: 12px;
-				line-height: 18px;
-				display: block;
-				padding-bottom: 10px;
-				font-style: italic;
-			}
-
-			// Sortable jquery css fix.
-			.ui-sortable-helper {
-				display: table !important;
-			}
-
-			.give-row.ui-sortable-helper {
-				border-bottom: 0;
-			}
-		}
-
-		.give-row.closed .toggle-indicator::before {
-			content: '\f140';
-		}
-
-		.give-handlediv {
-			float: right;
-			width: 36px;
-			height: 36px;
-			margin: 0;
-			padding: 0;
-			border: 0;
-			background: none;
-			cursor: pointer;
-		}
-	}
-
-	.give-minmax-wrap {
-		display: block;
-		margin-bottom: 0.5rem;
-
-		label {
-			display: inline-block;
-			width: 120px;
-			font-size: 12px;
-		}
-
-		input {
-			margin-left: 1px;
-			position: relative;
-			z-index: 1;
-			border-radius: 0 4px 4px 0;
-		}
-	}
-
-	#form_template_options {
-		.templates-list {
-			display: grid;
-			grid-gap: 36px;
-			grid-template-columns: 1fr 1fr;
-			padding: 8px 0 24px 0;
-
-			.template-image-container {
-				width: 100%;
-				height: auto;
-				position: relative;
-				padding-top: 70%;
-
-				.template-image {
-					height: 100%;
-					width: 100%;
-					object-fit: cover;
-					position: absolute;
-					top: 0;
-					left: 0;
-					background-color: #fff;
-				}
-			}
-
-			.action {
-				display: flex;
-				align-items: center;
-				background-color: #fafafa;
-				border-top: 1px solid #eee;
-				padding: 10px;
-
-				.template-name {
-					font-weight: 500;
-					flex-grow: 1;
-					line-height: 1.4;
-					padding-left: 6px;
-				}
-
-				.badge {
-					display: none;
-					padding: 2px 9px;
-					line-height: 1.4;
-					background-color: #7ad03a;
-					color: #fff;
-					font-style: normal;
-					border-radius: 5px;
-					margin-left: 10px;
-					text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-				}
-			}
-		}
-
-		.form-template-introduction {
-			padding-bottom: 16px;
-
-			p {
-				font-size: 15px;
-				margin: 0 0 14px 0;
-				padding: 0;
-			}
-
-			p.form-template-description {
-				color: #555;
-				font-size: 13px;
-				line-height: 20px;
-				display: block;
-			}
-
-			.form-template-notice {
-				padding: 14px;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-top: 24px;
-
-				p {
-					flex: 1;
-					margin: 0 14px;
-					font-size: 16px;
-					color: #555;
-				}
-
-				.dashicons {
-					font-size: 17px;
-					margin-top: 4px;
-				}
-			}
-		}
-
-		.template-options {
-			display: none;
-
-			> .give-row {
-				margin-bottom: 20px;
-				border: 1px solid #ccd0d4;
-
-				> .give-row-head {
-					background-color: #f1f1f1;
-					border-bottom: 1px solid #ccd0d4;
-				}
-			}
-		}
-
-		.inner-panel {
-			display: flex;
-			flex-direction: column;
-
-			.templates-list-heading {
-				font-size: 15px;
-				font-weight: 400;
-				margin: 10px 0 15px 0;
-			}
-
-			.form-template-options-introduction {
-				display: none;
-				padding-bottom: 25px;
-			}
-
-			.template-info {
-				background: #fafafa;
-				border: 1px solid #ccd0d4;
-				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
-				line-height: 0;
-			}
-
-			&.has-activated-template {
-				padding-left: 20px;
-				padding-right: 20px;
-
-				.templates-list {
-					grid-template-columns: 1fr !important;
-
-					.template-image-container {
-						display: none;
-					}
-
-					.template-info:not(.active) {
-						display: none;
-					}
-
-					.template-info.active {
-						.badge {
-							display: inline-block;
-						}
-					}
-				}
-
-				.form-template-introduction,
-				.templates-list-heading {
-					display: none;
-				}
-
-				.form-template-options-introduction,
-				.template-options.active {
-					display: block;
-				}
-
-				.give-file {
-					width: calc(100% - 150px) !important;
-				}
-			}
-		}
-	}
+    .inside {
+        margin: 0;
+        padding: 0;
+    }
+
+    .give-upload-button {
+        height: 36px;
+    }
+
+    .give-colorpicker {
+        margin-right: 6px !important;
+    }
+
+    .give-metabox-panel-wrap {
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .give_options_panel {
+        display: none;
+        padding-left: 170px;
+
+        &.active,
+        .no-js & {
+            display: block;
+        }
+
+        .give-field-wrap {
+            padding: 1em 20px 1em 162px;
+            margin: 0;
+            border-bottom: 1px solid #eee;
+
+            > label,
+            > span.give-field-label {
+                float: left;
+                width: 135px;
+                padding: 0;
+                margin: 2px 0 0 -150px;
+                line-height: 18px;
+                font-size: 12px;
+                font-weight: 400;
+            }
+
+            .give-field-description {
+                color: #555;
+                font-size: 13px;
+                line-height: 20px;
+                display: block;
+                padding-top: 10px;
+            }
+            .give-radios .give-field-description {
+                margin-left: 25px;
+            }
+
+            ul {
+                margin: 0;
+            }
+
+            .mce-container iframe {
+                min-height: 250px !important;
+            }
+
+            .wp-editor-wrap {
+                display: inline-block;
+                width: 100%;
+            }
+        }
+
+        .give-field-wrap:last-child {
+            border-bottom: 0;
+        }
+
+        textarea.give-field {
+            width: 100%;
+        }
+
+        .give-field-wrap:hover .give-field-row-actions {
+            display: block;
+        }
+
+        .give-field-wrap:last-child {
+            border-bottom: 0;
+        }
+
+        .give-inline-radio-fields {
+            li {
+                display: inline-block;
+                margin-right: 15px;
+            }
+        }
+
+        .give-repeatable-field-section {
+            padding: 10px;
+            background: #f5f5f5;
+
+            .give-repeatable-fields-section-wrapper {
+                width: 100%;
+                background-color: #fff;
+                border-collapse: collapse;
+            }
+
+            .give-row {
+                border-bottom: 15px solid #f5f5f5;
+                background-color: #fff;
+            }
+
+            .give-template {
+                display: none;
+            }
+
+            .give-row:last-child {
+                border-bottom: 10px solid #f5f5f5;
+            }
+
+            .give-column {
+                padding: 0;
+            }
+
+            .give-row-head {
+                border-bottom: 1px solid #eee;
+                cursor: move;
+
+                h2 {
+                    text-align: left !important;
+                }
+            }
+
+            .give-remove {
+                float: right;
+                width: 22px;
+                height: 36px;
+                padding: 0;
+                display: block;
+                text-align: center;
+                line-height: 34px;
+                font-size: 21px;
+                font-weight: 300;
+                cursor: pointer;
+            }
+
+            .give-remove:hover {
+                background-color: #f00;
+                color: #fff;
+                width: 22px;
+                height: 22px;
+                border-radius: 30px;
+                margin-top: 8px;
+                line-height: 19px;
+            }
+
+            .give-row .give-move .toggle-indicator::before {
+                margin-left: 7px;
+            }
+
+            .give-add-repeater-field-section-row-wrap {
+                background-color: #f5f5f5;
+            }
+
+            .give-add-repeater-field-section-row {
+                margin: 5px 5px;
+            }
+
+            .give-field-wrap:last-child {
+                border-bottom: 1px solid #eee;
+            }
+
+            .give-ui-placeholder-state-highlight {
+                background-color: #68bb6c;
+            }
+
+            .give-repeater-field-name {
+                border: 0 !important;
+                padding: 0 !important;
+            }
+
+            .give-repeater-field-description {
+                color: #666;
+                font-size: 12px;
+                line-height: 18px;
+                display: block;
+                padding-bottom: 10px;
+                font-style: italic;
+            }
+
+            // Sortable jquery css fix.
+            .ui-sortable-helper {
+                display: table !important;
+            }
+
+            .give-row.ui-sortable-helper {
+                border-bottom: 0;
+            }
+        }
+
+        .give-row.closed .toggle-indicator::before {
+            content: '\f140';
+        }
+
+        .give-handlediv {
+            float: right;
+            width: 36px;
+            height: 36px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+        }
+    }
+
+    .give-minmax-wrap {
+        display: block;
+        margin-bottom: 0.5rem;
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-size: 12px;
+        }
+
+        input {
+            margin-left: 1px;
+            position: relative;
+            z-index: 1;
+            border-radius: 0 4px 4px 0;
+        }
+    }
+
+    #form_template_options {
+        .templates-list {
+            display: grid;
+            grid-gap: 36px;
+            grid-template-columns: 1fr 1fr;
+            padding: 8px 0 24px 0;
+
+            .template-image-container {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding-top: 70%;
+
+                .template-image {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background-color: #fff;
+                }
+            }
+
+            .action {
+                display: flex;
+                align-items: center;
+                background-color: #fafafa;
+                border-top: 1px solid #eee;
+                padding: 10px;
+
+                .template-name {
+                    font-weight: 500;
+                    flex-grow: 1;
+                    line-height: 1.4;
+                    padding-left: 6px;
+                }
+
+                .badge {
+                    display: none;
+                    padding: 2px 9px;
+                    line-height: 1.4;
+                    background-color: #7ad03a;
+                    color: #fff;
+                    font-style: normal;
+                    border-radius: 5px;
+                    margin-left: 10px;
+                    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+                }
+            }
+        }
+
+        .form-template-introduction {
+            padding-bottom: 16px;
+
+            p {
+                font-size: 15px;
+                margin: 0 0 14px 0;
+                padding: 0;
+            }
+
+            p.form-template-description {
+                color: #555;
+                font-size: 13px;
+                line-height: 20px;
+                display: block;
+            }
+
+            .form-template-notice {
+                padding: 14px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 24px;
+
+                p {
+                    flex: 1;
+                    margin: 0 14px;
+                    font-size: 16px;
+                    color: #555;
+                }
+
+                .dashicons {
+                    font-size: 17px;
+                    margin-top: 4px;
+                }
+            }
+        }
+
+        .template-options {
+            display: none;
+
+            > .give-row {
+                margin-bottom: 20px;
+                border: 1px solid #ccd0d4;
+
+                > .give-row-head {
+                    background-color: #f1f1f1;
+                    border-bottom: 1px solid #ccd0d4;
+                }
+            }
+        }
+
+        .inner-panel {
+            display: flex;
+            flex-direction: column;
+
+            .templates-list-heading {
+                font-size: 15px;
+                font-weight: 400;
+                margin: 10px 0 15px 0;
+            }
+
+            .form-template-options-introduction {
+                display: none;
+                padding-bottom: 25px;
+            }
+
+            .template-info {
+                background: #fafafa;
+                border: 1px solid #ccd0d4;
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+                line-height: 0;
+            }
+
+            &.has-activated-template {
+                padding-left: 20px;
+                padding-right: 20px;
+
+                .templates-list {
+                    grid-template-columns: 1fr !important;
+
+                    .template-image-container {
+                        display: none;
+                    }
+
+                    .template-info:not(.active) {
+                        display: none;
+                    }
+
+                    .template-info.active {
+                        .badge {
+                            display: inline-block;
+                        }
+                    }
+                }
+
+                .form-template-introduction,
+                .templates-list-heading {
+                    display: none;
+                }
+
+                .form-template-options-introduction,
+                .template-options.active {
+                    display: block;
+                }
+
+                .give-file {
+                    width: calc(100% - 150px) !important;
+                }
+            }
+        }
+    }
 }
 
 /* stylelint-disable selector-id-pattern  */
 
 // Hide first row remove button for multi-level.
 #_give_donation_levels_field .give-row:nth-of-type(2) .give-remove {
-	display: none !important;
+    display: none !important;
 }
 
 /* stylelint-enable selector-id-pattern  */
@@ -592,134 +592,134 @@ Shortcode Copy & Paste
 // Metabox Tabs
 //-------------------------------------
 #give-metabox-form-data {
-	.give-metabox-tabs {
-		margin: 0;
-		max-width: 170px;
-		float: left;
-		line-height: 1;
-		padding: 0 0 10px;
-		position: relative;
-		background-color: #fafafa;
-		border-right: 1px solid #eee;
-		box-sizing: border-box;
+    .give-metabox-tabs {
+        margin: 0;
+        max-width: 170px;
+        float: left;
+        line-height: 1;
+        padding: 0 0 10px;
+        position: relative;
+        background-color: #fafafa;
+        border-right: 1px solid #eee;
+        box-sizing: border-box;
 
-		&::after {
-			content: '';
-			display: block;
-			width: 100%;
-			height: 9999em;
-			position: absolute;
-			bottom: -9999em;
-			left: 0;
-			background-color: #fafafa;
-			border-right: 1px solid #eee;
-		}
+        &::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 9999em;
+            position: absolute;
+            bottom: -9999em;
+            left: 0;
+            background-color: #fafafa;
+            border-right: 1px solid #eee;
+        }
 
-		li {
-			margin: 0;
-			padding: 0;
-			display: block;
-			position: relative;
+        li {
+            margin: 0;
+            padding: 0;
+            display: block;
+            position: relative;
 
-			a {
-				margin: 0;
-				padding: 10px;
-				display: block;
-				box-shadow: none;
-				text-decoration: none;
-				line-height: 20px !important;
-				border-bottom: 1px solid #eee;
-				overflow: hidden;
+            a {
+                margin: 0;
+                padding: 10px;
+                display: block;
+                box-shadow: none;
+                text-decoration: none;
+                line-height: 20px !important;
+                border-bottom: 1px solid #eee;
+                overflow: hidden;
 
-				span.give-label {
-					width: 122px;
-					padding-left: 2px;
-					display: inline-block;
-				}
-			}
-		}
+                span.give-label {
+                    width: 122px;
+                    padding-left: 2px;
+                    display: inline-block;
+                }
+            }
+        }
 
-		.give-metabox-sub-tabs {
-			z-index: 999;
+        .give-metabox-sub-tabs {
+            z-index: 999;
 
-			li {
-				background-color: #f1f1f1;
+            li {
+                background-color: #f1f1f1;
 
-				a {
-					border-bottom-color: #e5e5e5;
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-				}
-			}
-		}
+                a {
+                    border-bottom-color: #e5e5e5;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
+        }
 
-		li.active {
-			> a {
-				color: #555;
-				position: relative;
-				background-color: #eee;
-			}
-		}
+        li.active {
+            > a {
+                color: #555;
+                position: relative;
+                background-color: #eee;
+            }
+        }
 
-		li.has-sub-fields.active > a {
-			background-color: #ddd;
-		}
+        li.has-sub-fields.active > a {
+            background-color: #ddd;
+        }
 
-		li.has-sub-fields:not(.active):hover {
-			ul.give-metabox-sub-tabs {
-				display: block;
-				position: absolute;
-				bottom: 0;
-				left: 166px;
-				width: 170px;
-				max-height: 250px;
-			}
-		}
-	}
+        li.has-sub-fields:not(.active):hover {
+            ul.give-metabox-sub-tabs {
+                display: block;
+                position: absolute;
+                bottom: 0;
+                left: 166px;
+                width: 170px;
+                max-height: 250px;
+            }
+        }
+    }
 }
 
 // Icons only display for tight resolutions.
 @media only screen and (min-width: 851px) and (max-width: 1025px), (max-width: 550px) {
-	#give-metabox-form-data {
-		ul.give-metabox-tabs {
-			min-width: 40px;
+    #give-metabox-form-data {
+        ul.give-metabox-tabs {
+            min-width: 40px;
 
-			li > a {
-				text-align: center;
+            li > a {
+                text-align: center;
 
-				&::before {
-					margin-right: 0;
-					font-size: 15px;
-				}
+                &::before {
+                    margin-right: 0;
+                    font-size: 15px;
+                }
 
-				span.give-label {
-					display: none;
-				}
+                span.give-label {
+                    display: none;
+                }
 
-				span.give-icon::before {
-					margin: 0;
-				}
-			}
-		}
+                span.give-icon::before {
+                    margin: 0;
+                }
+            }
+        }
 
-		.give_options_panel {
-			padding-left: 40px;
+        .give_options_panel {
+            padding-left: 40px;
 
-			.give-field-wrap {
-				padding: 10px;
+            .give-field-wrap {
+                padding: 10px;
 
-				span.give-field-label,
-				label {
-					display: block;
-					float: none;
-					margin: 0 0 10px 0;
-					font-size: 14px;
-					width: 100%;
-				}
-			}
-		}
-	}
+                span.give-field-label,
+                label {
+                    display: block;
+                    float: none;
+                    margin: 0 0 10px 0;
+                    font-size: 14px;
+                    width: 100%;
+                }
+            }
+        }
+    }
 }
 
 /*-------------------------------------
@@ -727,7 +727,7 @@ Chosen Overrides
 -------------------------------------*/
 
 .chosen-container-single a.chosen-single {
-	background: #fff !important;
+    background: #fff !important;
 }
 
 /*-------------------------------------
@@ -735,67 +735,67 @@ Doc Links
 -------------------------------------*/
 
 .give-docs-link {
-	text-align: right;
-	margin-right: 15px;
+    text-align: right;
+    margin-right: 15px;
 
-	a {
-		font-size: 14px;
-		color: #999;
-		text-decoration: none;
-		font-style: italic;
+    a {
+        font-size: 14px;
+        color: #999;
+        text-decoration: none;
+        font-style: italic;
 
-		&:hover {
-			color: rgb(0, 115, 170);
-		}
+        &:hover {
+            color: rgb(0, 115, 170);
+        }
 
-		span {
-			font-style: normal;
-			position: relative;
-			top: 1px;
-		}
-	}
+        span {
+            font-style: normal;
+            position: relative;
+            top: 1px;
+        }
+    }
 }
 
 /*-------------------------------------
 Donations forms filter
 -------------------------------------*/
 .post-type-give_forms #posts-filter {
-	.search-box {
-		display: none;
-	}
+    .search-box {
+        display: none;
+    }
 }
 
 .post-type-give_forms #posts-filter .tablenav.top {
-	position: relative;
-	margin: 42px 0 0;
-	height: auto;
+    position: relative;
+    margin: 42px 0 0;
+    height: auto;
 
-	#give-forms-advanced-filter {
-		margin: 0 0 10px;
+    #give-forms-advanced-filter {
+        margin: 0 0 10px;
 
-		#give-forms-goal-filter {
-			width: 255px;
-		}
+        #give-forms-goal-filter {
+            width: 255px;
+        }
 
-		a {
-			display: inline-block;
-			margin: 0;
-		}
+        a {
+            display: inline-block;
+            margin: 0;
+        }
 
-		#give-forms-search-input {
-			margin-right: 6px;
-		}
-	}
+        #give-forms-search-input {
+            margin-right: 6px;
+        }
+    }
 
-	.actions {
-		position: absolute;
-		left: 230px;
-		bottom: 10px;
+    .actions {
+        position: absolute;
+        left: 230px;
+        bottom: 10px;
 
-		&.bulkactions {
-			left: 0;
-		}
-	}
+        &.bulkactions {
+            left: 0;
+        }
+    }
 }
 
 /*
@@ -803,9 +803,9 @@ Prevent currency icon height issue with input field
 ref: https://github.com/impress-org/givewp/pull/4315
 */
 @-moz-document url-prefix() {
-	.give_options_panel .give-money-symbol {
-		padding: 8.5px 10px 8.5px;
-	}
+    .give_options_panel .give-money-symbol {
+        padding: 8.5px 10px 8.5px;
+    }
 }
 
 /* stylelint-enable no-duplicate-selectors, no-descending-specificity */
