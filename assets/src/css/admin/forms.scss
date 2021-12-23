@@ -483,22 +483,69 @@ Shortcode Copy & Paste
             }
 
             .form-template-notice {
-                padding: 14px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 24px;
+                --accent: #69b86b;
 
-                p {
-                    flex: 1;
-                    margin: 0 14px;
-                    font-size: 16px;
-                    color: #555;
+                margin-top: 1.5rem;
+                padding-block: 1.45em;
+                padding-inline: 1.3125em;
+                border: 0;
+                border-inline-start: 0.55em solid var(--accent);
+
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                column-gap: 2.125em;
+                row-gap: 1rem;
+
+                border-radius: 0.2em;
+                box-shadow: 0 0.07em 0.27em rgba(0, 0, 0, 0.2);
+                background-color: #fff;
+                color: #555;
+
+                font-family: Montserrat, system-ui, sans-serif;
+                font-size: 1rem;
+
+                & > img {
+                    flex: 0;
+                    inline-size: 2.5em;
                 }
 
-                .dashicons {
-                    font-size: 17px;
-                    margin-top: 4px;
+                & > p {
+                    flex: 1 1 24ch;
+                    max-inline-size: 60ch;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    margin-inline-end: auto;
+                    font-size: 1em;
+                }
+
+                & > a {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    column-gap: 0.85em;
+                    padding-inline: 1.667em;
+                    padding-block: 0.55em;
+                    border: 0;
+                    border-radius: 9999px;
+                    box-shadow: 0 0.07em 0.375em rgba(105, 184, 107, 0.6);
+                    background-color: var(--accent);
+                    color: #fff;
+                    font-family: inherit;
+                    font-size: 0.9375em;
+                    font-weight: 700;
+                    line-height: 1.2;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    transition: transform 0.2s ease-in-out;
+
+                    & > svg {
+                        height: 1em;
+                    }
+
+                    &:hover {
+                        transform: scale(1.03);
+                    }
                 }
             }
         }
