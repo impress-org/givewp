@@ -192,8 +192,6 @@ class FormData
             'priceId' => $this->priceId,
             'gatewayId' => $this->paymentGateway,
             'donationId' => $donationId,
-            'formId' => $this->formId,
-            'formTitle' => $this->formTitle,
             'purchaseKey' => $this->purchaseKey,
             'donorInfo' => $this->donorInfo,
             'cardInfo' => $this->cardInfo,
