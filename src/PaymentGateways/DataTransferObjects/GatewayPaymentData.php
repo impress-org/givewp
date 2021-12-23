@@ -89,8 +89,7 @@ class GatewayPaymentData
         $self->cardInfo = $array['cardInfo'];
         $self->billingAddress = $array['billingAddress'];
         $self->redirectUrl = give_get_success_page_uri();
-
-        $self->setDonationTitle();
+        $self->donationTitle = give( GatewayPaymentRepository::class)->getDonationTitle( $self->donationId );
 
         return $self;
     }
@@ -110,15 +109,5 @@ class GatewayPaymentData
         }
 
         return substr($this->donationTitle, 0, $titleLength);
-    }
-
-    /**
-     * Set donationTitle property.
-     *
-     * @unlreased
-     */
-    private function setDonationTitle()
-    {
-        $this->donationTitle = give( GatewayPaymentRepository::class)->getDonationTitle( $this->donationId );
     }
 }
