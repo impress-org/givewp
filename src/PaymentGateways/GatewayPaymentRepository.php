@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways;
 
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give_Payment;
 
 /**
@@ -15,14 +16,15 @@ class GatewayPaymentRepository
      * Get donation title.
      * This can be use as product item name form gateway payment.
      *
-     * @param int $donationId
+     * @param GatewayPaymentData $paymentData
      * @param string $titleLength
      *
+     * @return false|int|string
      * @unlreased
      */
-    public function getDonationTitle($donationId, $titleLength = null)
+    public function getDonationTitle(GatewayPaymentData $paymentData, $titleLength = null)
     {
-        $donation = new Give_Payment($donationId);
+        $donation = new Give_Payment($paymentData->donationId);
         $formId = $donation->form_id;
         $price_id = $donation->price_id;
 
@@ -44,11 +46,55 @@ class GatewayPaymentRepository
             }
         }
 
+        $donationTitle = $this->supportLegacyFilter($donationTitle, $formId, $paymentData);
+
+        /**
+         * Filter the donation title of Payment Gateway.
+         *
+         * @unreleased
+         *
+         * @param string $donationTitle Donation title.
+         * @param GatewayPaymentData $paymentData Gateway payment data.
+         */
+        $donationTitle = apply_filters(
+            'give_gateway_donation_title',
+            $donationTitle,
+            $paymentData
+        );
+
+
         // Cut the length
         if ($titleLength) {
             return substr($donationTitle, 0, $titleLength);
         }
 
         return $donationTitle;
+    }
+
+    /**
+     * @unlreased
+     *
+     * @param string $donationTitle
+     * @param int $formId
+     * @param GatewayPaymentData $paymentData
+     *
+     * @return string
+     */
+    private function supportLegacyFilter($donationTitle, $formId, GatewayPaymentData $paymentData)
+    {
+        /**
+         * Filter the Item Title of Payment Gateway.
+         *
+         * @since 1.8.14
+         */
+        return apply_filters_deprecated(
+            'give_payment_gateway_item_title',
+            [
+                $donationTitle,
+                $formId,
+                $paymentData
+            ],
+            '' // TODO: add plugin version
+        );
     }
 }

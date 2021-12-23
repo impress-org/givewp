@@ -86,7 +86,7 @@ class CreatePayPalStandardPaymentURL
     }
 
     /**
-     * @unlreased
+     * @unreleased
      *
      * @param array $paypalPaymentArguments
      * @param GatewayPaymentData $paymentData
@@ -99,9 +99,6 @@ class CreatePayPalStandardPaymentURL
          * Filter the PayPal Standard redirect args.
          *
          * @since 1.8
-         *
-         * @param array $payment_data Payment Data.
-         * @param int $donationId Donation ID.
          */
         return apply_filters_deprecated(
             'give_paypal_redirect_args',

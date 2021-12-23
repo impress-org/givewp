@@ -99,7 +99,8 @@ class GatewayPaymentData
         $self->cardInfo = $array['cardInfo'];
         $self->billingAddress = $array['billingAddress'];
         $self->redirectUrl = give_get_success_page_uri();
-        $self->donationTitle = give(GatewayPaymentRepository::class)->getDonationTitle($self->donationId);
+
+        $self->donationTitle = give(GatewayPaymentRepository::class)->getDonationTitle($self);
 
         return $self;
     }
