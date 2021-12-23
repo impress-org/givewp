@@ -115,6 +115,7 @@ class Form
             }
 
             // Render receipt on success page in iframe.
+            remove_all_filters('the_content' );
             add_filter('the_content', [$this, 'showReceiptInIframeOnSuccessPage'], 1);
         }
     }
