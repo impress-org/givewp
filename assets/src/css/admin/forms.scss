@@ -417,40 +417,38 @@ Shortcode Copy & Paste
     #form_template_options {
         .templates-list {
             display: grid;
-            grid-gap: 36px;
+            grid-gap: 1.5rem;
             grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
             grid-template-rows: 1fr;
-            padding: 8px 0 24px 0;
+            margin-block-start: 0.5rem;
+            margin-block-end: 1.5rem;
 
-            .template-image-container {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding-top: 70%;
+            .template-image {
+                display: block;
+                inline-size: 100%;
+                block-size: auto;
+                background-color: #f6f8fb;
+            }
 
-                .template-image {
-                    height: 100%;
-                    width: 100%;
-                    object-fit: cover;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    background-color: #fff;
-                }
+            .active .template-image {
+                display: none;
             }
 
             .action {
                 display: flex;
                 align-items: center;
+                column-gap: 1rem;
                 background-color: #fafafa;
                 border-top: 1px solid #eee;
-                padding: 10px;
+                padding-block: 0.8125rem;
+                padding-inline: 1rem;
 
                 .template-name {
-                    font-weight: 500;
                     flex-grow: 1;
+                    font-size: 1.125rem;
+                    font-weight: 500;
+                    font-family: 'Open Sans', system-ui, sans-serif;
                     line-height: 1.4;
-                    padding-left: 6px;
                 }
 
                 .badge {
@@ -582,9 +580,7 @@ Shortcode Copy & Paste
 
             .template-info {
                 background: #fafafa;
-                border: 1px solid #ccd0d4;
-                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
-                line-height: 0;
+                border: 0.125rem solid #ccd0d4;
             }
 
             &.has-activated-template {

@@ -21,9 +21,7 @@ echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
 
             printf(
                 '<div class="template-info %1$s" data-id="%2$s">
-							<div class="template-image-container">
-								<img class="template-image" src="%3$s"/>
-							</div>
+                            <img class="template-image" src="%3$s"/>
 							<div class="action">
 								<div class="template-name">%4$s <span class="badge">%5$s</span></div>
 								<button class="button %7$s">%6$s</button>

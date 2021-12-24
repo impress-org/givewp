@@ -46,7 +46,7 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function getName()
     {
-        return __('Classic Donation Form', 'give');
+        return __('Classic Form', 'give');
     }
 
     /**
@@ -54,7 +54,7 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/ClassicForm.jpg';
+        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-classic.png';
     }
 
     /**

@@ -57,8 +57,8 @@ class Templates
             'give_register_form_template',
             [
                 'sequoia' => Sequoia::class,
-                'legacy' => Legacy::class,
                 'classic' => Classic::class,
+                'legacy' => Legacy::class,
             ]
         );
     }
