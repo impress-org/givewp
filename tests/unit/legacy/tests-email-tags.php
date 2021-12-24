@@ -16,7 +16,10 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
             )
         );
 
-		parent::setUp();
+        global $wpdb;
+        $wpdb->update("{$wpdb->prefix}give_donors", [ 'name' => 'Admin User' ], [ 'user_id' => 1 ] );
+
+        parent::setUp();
 	}
 
 	public function tearDown() {
@@ -92,21 +95,14 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 		$fullname   = give_email_tag_fullname( array( 'payment_id' => $payment_id ) );
 
-        var_dump( 'FIRST NAME' );
-        var_dump( give_email_tag_first_name( array( 'payment_id' => $payment_id ) ) );
-        var_dump( 'FULL NAME' );
-        var_dump( give_email_tag_fullname( array( 'payment_id' => $payment_id ) ) );
-
 		$this->assertEquals( 'Admin User', $fullname );
 
 		/*
 		 * Case 2: Full name from user_id.
 		 */
 		$fullname = give_email_tag_fullname( array( 'user_id' => 1 ) );
-        var_dump( 'SECOND' );
-        var_dump( $fullname );
-        var_dump( Give()->donors->get_column_by( 'name', 'user_id', 1 ) );
-		$this->assertEquals( 'Admin User', $fullname );
+
+        $this->assertEquals( 'Admin User', $fullname );
 
 		/*
 		 * Case 3: Full name with filter
