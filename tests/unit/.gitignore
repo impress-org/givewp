@@ -1,2 +1,2 @@
 uploads/*
-*.dist*
+wp-tests-config.php
