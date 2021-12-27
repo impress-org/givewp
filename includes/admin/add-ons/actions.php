@@ -33,7 +33,7 @@ function give_upload_addon_handler() {
 
 	// Bailout if user does not has permission.
 	if ( ! current_user_can( 'upload_plugins' ) ) {
-		wp_send_json_error( [ 'errorMsg' => __( 'Sorry, you are not allowed to upload add-ons on this site.', 'give' ) ] );
+		wp_send_json_error( [ 'errorMsg' => __( 'The current user does not have permission to upload plugins on this site.', 'give' ) ] );
 	}
 
 	$access_type = get_filesystem_method();
@@ -42,7 +42,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => sprintf(
-					__( 'Sorry, you can not upload plugins because GiveWP does not have direct access to the file system. Please <a href="%1$s" target="_blank">click here</a> to upload the add-on.', 'give' ),
+					__( 'In order to upload add-ons here, GiveWP needs direct access to the file system. Please <a href="%1$s" target="_blank">visit the main plugin page</a> to manually upload the add-on.', 'give' ),
 					admin_url( 'plugin-install.php?tab=upload' )
 				),
 			]
@@ -52,7 +52,7 @@ function give_upload_addon_handler() {
 	$file_type = wp_check_filetype( $_FILES['file']['name'], [ 'zip' => 'application/zip' ] );
 
 	if ( empty( $file_type['ext'] ) ) {
-		wp_send_json_error( [ 'errorMsg' => __( 'Only zip file type allowed to upload. Please upload a valid add-on file.', 'give' ) ] );
+		wp_send_json_error( [ 'errorMsg' => __( 'Uploaded add-ons must be (zipped) ZIP files. Upload a valid add-on ZIP.', 'give' ) ] );
 	}
 
 	$give_addons_list   = give_get_plugins();
@@ -93,7 +93,7 @@ function give_upload_addon_handler() {
 		/* any problems and we exit */
 		wp_send_json_error(
 			[
-				'errorMsg' => __( 'File system does not load correctly.', 'give' ),
+				'errorMsg' => __( 'The file system did not load correctly. This is usually a permissions issue on your server, and not something that GiveWP has control over. Try uploading the ZIP like a regular plugin.', 'give' ),
 			]
 		);
 	}
@@ -163,7 +163,7 @@ function give_get_license_info_handler() {
 	if ( ! $license_key ) {
 		wp_send_json_error(
 			[
-				'errorMsg' => __( 'Sorry, you entered an invalid key.', 'give' ),
+				'errorMsg' => __( 'You entered an invalid key. Confirm your license key on your GiveWP dashboard and try again.', 'give' ),
 			]
 		);
 
@@ -212,7 +212,7 @@ function give_get_license_info_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => sprintf(
-					__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
+					__( 'The license failed to activate, due to a status of <code>%2$s</code>. Check the logs at Donations > Tools > Logs for more detail, and <a href="%1$s" target="_blank">reach out to the Customer Success team.</a>', 'give' ),
 					Give_License::get_account_url(),
 					$check_license_res['license']
 				),
@@ -228,7 +228,7 @@ function give_get_license_info_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => sprintf(
-					__( 'Sorry, we are unable to activate this license because this key does not belong to this add-on. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
+					__( 'This license key does not belong to this add-on. <a href="%1$s" target="_blank">Reach out to the Customer Success team</a> if you continue to have issues.', 'give' ),
 					Give_License::get_account_url()
 				),
 			]
@@ -257,7 +257,7 @@ function give_get_license_info_handler() {
 	if ( ! $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
-			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
+			__( 'The license failed to activate, due to a status of <code>%2$s</code>. Check the logs at Donations > Tools > Logs for more detail, and <a href="%1$s" target="_blank">reach out to the Customer Success team.</a>', 'give' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
 		);
@@ -293,7 +293,7 @@ function give_get_license_info_handler() {
 	if ( $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
-			__( 'Sorry, this license was unable to activate because the license status returned as <code>%2$s</code>. Please visit your <a href="%1$s" target="_blank">license dashboard</a> to check the details and access priority support.', 'give' ),
+			__( 'The license failed to activate, due to a status of <code>%2$s</code>. Check the logs at Donations > Tools > Logs for more detail, and <a href="%1$s" target="_blank">reach out to the Customer Success team.</a>', 'give' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
 		);
@@ -374,7 +374,7 @@ function give_deactivate_license_handler() {
 	if ( empty( $give_licenses[ $license ] ) ) {
 		wp_send_json_error(
 			[
-				'errorMsg' => __( 'We are unable to deactivate invalid license', 'give' ),
+				'errorMsg' => __( 'License is invalid, so it can\'t be deactivated.', 'give' ),
 			]
 		);
 	}
