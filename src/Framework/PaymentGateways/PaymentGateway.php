@@ -143,11 +143,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
         if ($command instanceof PaymentComplete) {
-            Call::invoke(
-                PaymentCompleteHandler::class,
-                $command,
-                $gatewayPaymentData->donationId
-            );
+            $handler = new PaymentCompleteHandler($command);
+
+            $handler->handle($gatewayPaymentData->donationId);
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
 
@@ -190,7 +188,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         GatewaySubscriptionData $gatewaySubscriptionData
     ) {
         if ($command instanceof SubscriptionComplete) {
-            give(SubscriptionCompleteHandler::class)->__invoke(
+            Call::invoke(
+                SubscriptionCompleteHandler::class,
                 $command,
                 $gatewaySubscriptionData->subscriptionId,
                 $gatewayPaymentData->donationId
@@ -225,27 +224,26 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $command = $this->$method();
 
             if ($command instanceof PaymentComplete) {
-                PaymentCompleteHandler::make( $command )->handle( $donationId );
+                PaymentCompleteHandler::make($command)->handle($donationId);
                 $this->handleResponse(
                     response()->redirectTo(give_get_success_page_uri())
                 );
             }
 
             if ($command instanceof PaymentProcessing) {
-                PaymentProcessingHandler::make( $command )->handle( $donationId );
+                PaymentProcessingHandler::make($command)->handle($donationId);
                 $this->handleResponse(
                     response()->redirectTo(give_get_success_page_uri())
                 );
             }
 
-            if($command instanceof PaymentAbandoned) {
-                PaymentAbandonedHandler::make( $command )->handle( $donationId );
+            if ($command instanceof PaymentAbandoned) {
+                PaymentAbandonedHandler::make($command)->handle($donationId);
             }
 
-            if($command instanceof PaymentRefunded) {
-                PaymentRefundedHandler::make( $command )->handle( $donationId );
+            if ($command instanceof PaymentRefunded) {
+                PaymentRefundedHandler::make($command)->handle($donationId);
             }
-
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
             exit;
