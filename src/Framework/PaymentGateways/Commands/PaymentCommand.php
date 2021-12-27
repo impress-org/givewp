@@ -21,6 +21,10 @@ abstract class PaymentCommand implements GatewayCommand
      */
     public $paymentNotes = [];
 
+    /**
+     * @param  string|null  $gatewayTransactionId
+     * @return static
+     */
     public static function make($gatewayTransactionId = null)
     {
         return new static($gatewayTransactionId);
@@ -37,20 +41,20 @@ abstract class PaymentCommand implements GatewayCommand
     }
 
     /**
-     * @param string|string[] ...$paymentNotes
+     * @param  string|string[]  ...$paymentNotes
      * @return $this
      */
-    public function withNote( ...$paymentNotes )
+    public function withNote(...$paymentNotes)
     {
         $this->paymentNotes = $paymentNotes;
         return $this;
     }
 
     /**
-     * @param string $gatewayTransactionId
+     * @param  string  $gatewayTransactionId
      * @return $this
      */
-    public function withTransactionId( $gatewayTransactionId )
+    public function withTransactionId($gatewayTransactionId)
     {
         $this->gatewayTransactionId = $gatewayTransactionId;
         return $this;
