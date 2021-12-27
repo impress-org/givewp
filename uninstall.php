@@ -10,20 +10,18 @@
  */
 
 // Exit if accessed directly.
+use Give\ServiceProviders\LegacyServiceProvider;
+
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-// Load Give file.
-include_once( 'give.php' );
-
 /**
- * Initialize the main Give class, which includes loading the code necessary to process the uninstall.
- * This is included manually because the plugins_loaded hook does not run on uninstall.
- *
- * @since 2.7.4
+ * Initiate LegacyServiceProvider which includes loading logic of the code necessary to process the uninstall.
+ * @unreleased
  */
-give()->init();
+$legacyServiceProvider = new LegacyServiceProvider();
+$legacyServiceProvider->register();
 
 // Prevent checking for plugin updates
 remove_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates', 999 );
