@@ -28,14 +28,18 @@ class GlobalSettingValidator
 
     /**
      * @since 2.17.1
+     * @unreleased Only filter value as unique array if set. Some settings do not need to be set, ie donation-receipt_recipient.
      */
     public function validateSetting($value)
     {
-        // Same unique email address for email recipients.
-        $recipientEmails = array_unique(array_filter($value));
+        if( ! empty( $value ) ) {
+            // Same unique email address for email recipients.
+            $recipientEmails = array_unique(array_filter($value));
 
-        // Set default email recipient to admin email.
-        return $recipientEmails ?: [get_bloginfo('admin_email')];
+            // Set default email recipient to admin email.
+            $value = $recipientEmails ?: [get_bloginfo('admin_email')];
+        }
+        return $value;
     }
 
     /**
