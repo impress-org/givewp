@@ -31,6 +31,7 @@ use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
+use Give_Payment;
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -221,42 +222,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayRouteMethod($donationId, $method)
     {
         try {
-            $command = $this->$method();
-
-            if ($command instanceof PaymentComplete) {
-                PaymentCompleteHandler::make($command)->handle($donationId);
-                $this->handleResponse(
-                    response()->redirectTo(give_get_success_page_uri())
-                );
-            }
-
-            if ($command instanceof PaymentProcessing) {
-                PaymentProcessingHandler::make($command)->handle($donationId);
-                $this->handleResponse(
-                    response()->redirectTo(give_get_success_page_uri())
-                );
-            }
-
-            if ($command instanceof PaymentAbandoned) {
-                PaymentAbandonedHandler::make($command)->handle($donationId);
-            }
-
-            if ($command instanceof PaymentRefunded) {
-                PaymentRefundedHandler::make($command)->handle($donationId);
-            }
+            $this->handleResponse( $this->$method( new Give_Payment( $donationId ) ) );
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
             PaymentGatewayLog::error($exception->getMessage());
-
-            $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
-                'give'
-            );
-
-            $this->handleResponse(response()->json($message));
-            exit;
+            $this->handleResponse(response()->json(
+                __( 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.', 'give' )
+            ));
         }
     }
 
