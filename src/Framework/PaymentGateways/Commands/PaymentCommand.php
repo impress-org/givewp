@@ -44,7 +44,7 @@ abstract class PaymentCommand implements GatewayCommand
      * @param  string|string[]  ...$paymentNotes
      * @return $this
      */
-    public function withNote(...$paymentNotes)
+    public function setPaymentNotes(...$paymentNotes)
     {
         $this->paymentNotes = $paymentNotes;
         return $this;
@@ -54,7 +54,7 @@ abstract class PaymentCommand implements GatewayCommand
      * @param  string  $gatewayTransactionId
      * @return $this
      */
-    public function withTransactionId($gatewayTransactionId)
+    public function setTransactionId($gatewayTransactionId)
     {
         $this->gatewayTransactionId = $gatewayTransactionId;
         return $this;
