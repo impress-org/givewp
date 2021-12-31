@@ -471,8 +471,9 @@ class Give_MetaBox_Form_Data {
 								'id'            => $prefix . 'set_goal',
 								'type'          => 'text_small',
 								'data_type'     => 'price',
-								'attributes'    => [
-									'placeholder' => $price_placeholder,
+                                'default'       => give_format_decimal( [ 'amount' => '10000.00' ] ),
+                                'attributes'    => [
+									'placeholder' => give_format_decimal( [ 'amount' => '10000.00' ] ),
 									'class'       => 'give-money-field',
 								],
 								'wrapper_class' => 'give-hidden',
