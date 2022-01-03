@@ -86,7 +86,7 @@ class GatewayPaymentData
     {
         $self = new static();
 
-        $self->legacyPaymentData = $self['legacyPaymentData'];
+        $self->legacyPaymentData = $array['legacyPaymentData'];
         $self->price = $array['price'];
         $self->priceId = $array['priceId'];
         $self->currency = $array['currency'];
