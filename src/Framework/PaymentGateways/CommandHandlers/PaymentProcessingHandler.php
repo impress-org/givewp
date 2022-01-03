@@ -4,20 +4,21 @@ namespace Give\Framework\PaymentGateways\CommandHandlers;
 
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 
-class PaymentProcessingHandler  {
+class PaymentProcessingHandler extends PaymentHandler
+{
     /**
-     * @unreleased
-     *
-     * @param  PaymentProcessing  $paymentProcessing
-     * @param  int  $donationId
-     * @return void
+     * @param PaymentProcessing $paymentCommand
      */
-    public function __invoke(PaymentProcessing $paymentProcessing, $donationId)
+    public function __construct(PaymentProcessing $paymentCommand)
     {
-        give_update_payment_status($donationId, 'processing' );
-        
-        if ($paymentProcessing->gatewayTransactionId){
-            give_set_payment_transaction_id($donationId, $paymentProcessing->gatewayTransactionId);
-        }
+        parent::__construct($paymentCommand);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPaymentStatus()
+    {
+        return 'processing';
     }
 }

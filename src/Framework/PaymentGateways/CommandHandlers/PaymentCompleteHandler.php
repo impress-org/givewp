@@ -4,17 +4,21 @@ namespace Give\Framework\PaymentGateways\CommandHandlers;
 
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 
-class PaymentCompleteHandler  {
+class PaymentCompleteHandler extends PaymentHandler
+{
     /**
-     * @unreleased
-     *
-     * @param  PaymentComplete  $paymentComplete
-     * @param  int  $donationId
-     * @return void
+     * @param PaymentComplete $paymentCommand
      */
-    public function __invoke(PaymentComplete $paymentComplete, $donationId)
+    public function __construct(PaymentComplete $paymentCommand)
     {
-        give_update_payment_status($donationId);
-        give_set_payment_transaction_id($donationId, $paymentComplete->gatewayTransactionId);
+        parent::__construct($paymentCommand);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPaymentStatus()
+    {
+        return 'complete';
     }
 }
