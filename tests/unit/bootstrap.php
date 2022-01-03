@@ -1,5 +1,4 @@
 <?php
-
 const WP_CONTENT_DIR = __DIR__;
 
 $testConfig = [

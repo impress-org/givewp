@@ -3,8 +3,10 @@
 namespace Give\PaymentGateways;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
+use Give\PaymentGateways\Actions\RegisterPaymentGatewayRoutes;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -32,5 +34,6 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
+        Hooks::addAction('template_redirect', GatewayRoute::class);
     }
 }

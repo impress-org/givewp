@@ -7,15 +7,27 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentAbandonedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
@@ -26,6 +38,16 @@ use function Give\Framework\Http\Response\response;
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
+    /**
+     * Route methods are used to extend the gateway api.
+     * By adding a custom route method, you are effectively
+     * registering a new route url that will resolve itself and
+     * call your method.
+     *
+     * @var string[]
+     */
+    public $routeMethods = [];
+
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
      */
@@ -108,6 +130,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         return $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
     }
 
+
     /**
      * Handle gateway command
      *
@@ -120,12 +143,23 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
         if ($command instanceof PaymentComplete) {
-            give(PaymentCompleteHandler::class)->__invoke(
-                $command,
-                $gatewayPaymentData->paymentId
-            );
+            $handler = new PaymentCompleteHandler($command);
+
+            $handler->handle($gatewayPaymentData->donationId);
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof RedirectOffsite) {
+            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof RespondToBrowser) {
+            $response = Call::invoke(RespondToBrowserHandler::class, $command);
 
             $this->handleResponse($response);
         }
@@ -154,10 +188,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         GatewaySubscriptionData $gatewaySubscriptionData
     ) {
         if ($command instanceof SubscriptionComplete) {
-            give(SubscriptionCompleteHandler::class)->__invoke(
+            Call::invoke(
+                SubscriptionCompleteHandler::class,
                 $command,
                 $gatewaySubscriptionData->subscriptionId,
-                $gatewayPaymentData->paymentId
+                $gatewayPaymentData->donationId
             );
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
@@ -173,6 +208,74 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         );
     }
 
+    /**
+     * Handle gateway route method
+     *
+     * @param  int  $donationId
+     * @param  string  $method
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public function handleGatewayRouteMethod($donationId, $method)
+    {
+        try {
+            $command = $this->$method();
+
+            if ($command instanceof PaymentComplete) {
+                PaymentCompleteHandler::make($command)->handle($donationId);
+                $this->handleResponse(
+                    response()->redirectTo(give_get_success_page_uri())
+                );
+            }
+
+            if ($command instanceof PaymentProcessing) {
+                PaymentProcessingHandler::make($command)->handle($donationId);
+                $this->handleResponse(
+                    response()->redirectTo(give_get_success_page_uri())
+                );
+            }
+
+            if ($command instanceof PaymentAbandoned) {
+                PaymentAbandonedHandler::make($command)->handle($donationId);
+            }
+
+            if ($command instanceof PaymentRefunded) {
+                PaymentRefundedHandler::make($command)->handle($donationId);
+            }
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+            exit;
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error($exception->getMessage());
+
+            $message = __(
+                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'give'
+            );
+
+            $this->handleResponse(response()->json($message));
+            exit;
+        }
+    }
+
+    /**
+     * Generate gateway route url
+     *
+     * @unreleased
+     *
+     * @param  string  $gatewayMethod
+     * @param  int  $donationId
+     * @param  array|null  $args
+     *
+     * @return string
+     */
+    public function generateGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
+    {
+        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $donationId, $args);
+    }
+
 
     /**
      * Handle Response
@@ -181,7 +284,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @param  RedirectResponse|JsonResponse  $type
      */
-    private function handleResponse($type)
+    public function handleResponse($type)
     {
         if ($type instanceof RedirectResponse) {
             wp_redirect($type->getTargetUrl());
