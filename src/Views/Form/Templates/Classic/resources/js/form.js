@@ -14,11 +14,12 @@ import {
     IS_DONATION_SUMMARY_ACTIVE,
     IS_FEE_RECOVERY_ACTIVE,
     IS_RECURRING_ACTIVE,
+    IS_STRIPE_ACTIVE,
 } from './is-feature-active.js';
 
 // This must be called ASAP (since this is used when DOMContentLoaded happens)
 // It doesn’t use anything inside the body.
-setStripeElementStyles();
+IS_STRIPE_ACTIVE && setStripeElementStyles();
 
 // Transforms document for classic template
 domIsReady(() => {

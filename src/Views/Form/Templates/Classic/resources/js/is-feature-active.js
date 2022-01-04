@@ -8,3 +8,5 @@ export const IS_DONATION_SUMMARY_ACTIVE =
     window.classicTemplateOptions.payment_information.donation_summary_enabled === 'enabled';
 
 export const IS_CURRENCY_SWITCHING_ACTIVE = window?.give_cs_json_obj?.length > 20;
+
+export const IS_STRIPE_ACTIVE = 'give_stripe_vars' in window;
