@@ -81,22 +81,32 @@ function moveDonationSummaryAfterDonationAmountSection() {
 }
 
 function setPersonalInfoTitle() {
-    document.querySelector('.give-personal-info-section legend:first-of-type').textContent =
-        classicTemplateOptions.donor_information.headline;
+    if (classicTemplateOptions.donor_information.headline) {
+        document.querySelector('.give-personal-info-section legend:first-of-type').textContent =
+            classicTemplateOptions.donor_information.headline;
+    }
 }
 
 function addPersonalInfoDescription() {
-    insertAfter(
-        nodeFromString(
-            h('p', {className: 'give-personal-info-description'}, classicTemplateOptions.donor_information.description)
-        ),
-        document.querySelector('.give-personal-info-section legend:first-of-type')
-    );
+    if (classicTemplateOptions.donor_information.description) {
+        insertAfter(
+            nodeFromString(
+                h(
+                    'p',
+                    {className: 'give-personal-info-description'},
+                    classicTemplateOptions.donor_information.description
+                )
+            ),
+            document.querySelector('.give-personal-info-section legend:first-of-type')
+        );
+    }
 }
 
 function setPaymentDetailsTitle() {
-    document.querySelector('.give-payment-mode-label').textContent =
-        classicTemplateOptions.payment_information.headline;
+    if (classicTemplateOptions.payment_information.headline) {
+        document.querySelector('.give-payment-mode-label').textContent =
+            classicTemplateOptions.payment_information.headline;
+    }
 }
 
 function addPaymentDetailsDescription() {
@@ -403,13 +413,15 @@ function addSecurePaymentBadgeToDonateNowSection() {
 }
 
 function setDonationAmountSectionDescription() {
-    document
-        .querySelector('.give-amount-heading')
-        .after(
-            nodeFromString(
-                h('p', {className: 'give-amount-description'}, classicTemplateOptions.donation_amount.description)
-            )
-        );
+    if (classicTemplateOptions.donation_amount.description) {
+        document
+            .querySelector('.give-amount-heading')
+            .after(
+                nodeFromString(
+                    h('p', {className: 'give-amount-description'}, classicTemplateOptions.donation_amount.description)
+                )
+            );
+    }
 }
 
 function moveCurrencySwitcherMessageOutsideOfWrapper() {
