@@ -46,7 +46,7 @@ class GatewayPaymentRepository
             }
         }
 
-        $donationTitle = $this->supportLegacyFilter($donationTitle, $formId, $paymentData);
+        $donationTitle = $this->supportLegacyFilter($donationTitle, $formId, $paymentData->legacyPaymentData);
 
         /**
          * Filter the donation title of Payment Gateway.
@@ -76,11 +76,11 @@ class GatewayPaymentRepository
      *
      * @param string $donationTitle
      * @param int $formId
-     * @param GatewayPaymentData $paymentData
+     * @param array $paymentData
      *
      * @return string
      */
-    private function supportLegacyFilter($donationTitle, $formId, GatewayPaymentData $paymentData)
+    private function supportLegacyFilter($donationTitle, $formId, $paymentData)
     {
         /**
          * Filter the Item Title of Payment Gateway.
