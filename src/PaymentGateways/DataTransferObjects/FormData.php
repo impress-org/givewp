@@ -101,13 +101,13 @@ class FormData
      */
     public $donorInfo;
     /**
-     * This property only use to pass legacy payment request data to
-     * GatewayPaymentData dto to gracefully deprecate filter and action hook.
-     * Do not change property access from private to other.
+     * This property is only for internal use. It will be removed in the future.
+     * We will use this property to gracefully deprecate action and filter which exist in existing donation flow.
      *
+     * @deprecated
      * @var array
      */
-    private $legacyPaymentData;
+    public $legacyDonationData;
 
     /**
      * Convert data from request into DTO
@@ -120,7 +120,7 @@ class FormData
     {
         $self = new static();
 
-        $self->legacyPaymentData = $request;
+        $self->legacyDonationData = $request;
         $self->price = $request['price'];
         $self->date = $request['date'];
         $self->purchaseKey = $request['purchase_key'];
