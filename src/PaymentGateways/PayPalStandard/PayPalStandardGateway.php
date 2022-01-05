@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\PayPalStandard;
 
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
@@ -16,7 +16,7 @@ use function Give\Framework\Http\Response\response;
  *
  * @unlreased
  */
-class PayPalStandardGateway extends OffSitePaymentGateway
+class PayPalStandardGateway extends PaymentGateway
 {
     /**
      * @inheritDoc
@@ -63,35 +63,15 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
-
-        return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData, $redirectUrl));
-    }
-
-    /**
-     * @inerhitDoc
-     */
-    public function returnFromOffsiteRedirect()
-    {
-        // Leave it empty.
-    }
-
-    /**
-     * @inerhitDoc
-     */
-    public function handleGatewayRouteMethod($donationId, $method)
-    {
         // Before registering PayPal Standard with new payment gateway API, We were using this url
         // as offsite redirect url. Query param `payment-confirmation` is important because it triggers filter hook.
         // We are using this url for backward compatibility.
         // To review usage, search for `give_payment_confirm_paypal` filter hook.
-        $receiptPageUrl = add_query_arg(
-            ['payment-confirmation' => 'paypal', 'payment-id' => $donationId,],
+        $redirectUrl = add_query_arg(
+            ['payment-confirmation' => 'paypal', 'payment-id' => $paymentData->donationId,],
             give_get_success_page_uri()
         );
 
-        // Redirect to receipt.
-        $response = response()->redirectTo($receiptPageUrl);
-        $this->handleResponse($response);
+        return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData, $redirectUrl));
     }
 }
