@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways;
+namespace Give\PaymentGateways\Repositories;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give_Payment;

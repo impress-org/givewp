@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
-use Give\PaymentGateways\GatewayPaymentRepository;
+use Give\PaymentGateways\Repositories\GatewayPaymentRepository;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
