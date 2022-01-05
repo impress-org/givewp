@@ -67,7 +67,7 @@ class GatewayPaymentData
     public $donationTitle;
     /**
      * We are using this property internally to gracefully deprecate filter and action hooks.
-     * We do not recommend to use this property in logic and it will be removed in future.
+     * We do not recommend using this property in logic. This will be removed in the future.
      *
      * @deprecated
      *
