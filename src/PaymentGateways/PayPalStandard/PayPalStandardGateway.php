@@ -9,8 +9,6 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
 use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
 
-use function Give\Framework\Http\Response\response;
-
 /**
  * This class handles one-time donation payment processing with PayPal Standard payment gateway
  *
