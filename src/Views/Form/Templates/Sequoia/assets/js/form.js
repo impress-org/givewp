@@ -205,8 +205,9 @@
 
                     const value = $(this).attr('value');
                     const text = $(this).text();
-                    const symbol = window.give_global_vars.currency_sign;
-                    const position = window.give_global_vars.currency_pos;
+                    const $form = $('form');
+                    const symbol = Give.form.fn.getInfo( 'currency_symbol', $form );
+                    const position = Give.form.fn.getInfo( 'currency_position', $form );
 
                     if (value !== 'custom') {
                         const html =
