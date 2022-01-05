@@ -24,24 +24,20 @@ class LegacyPaymentGatewayRegisterAdapter
         $registeredGateway = give($gatewayClass);
         $registeredGatewayId = $registeredGateway->getId();
 
-        add_action("give_{$registeredGatewayId}_cc_form",
+        add_action(
+            "give_{$registeredGatewayId}_cc_form",
             static function ($formId) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
                 echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup($formId, $registeredGateway);
-            });
+            }
+        );
 
-<<<<<<< HEAD
-        add_action("give_gateway_{$registeredGatewayId}",
+        add_action(
+            "give_gateway_{$registeredGatewayId}",
             static function ($legacyPaymentData) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
                 $legacyPaymentGatewayAdapter->handleBeforeGateway($legacyPaymentData, $registeredGateway);
-            });
+            }
+        );
     }
-=======
-		add_action( "give_gateway_{$registeredGatewayId}",
-			static function ( $legacyDonationData ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
-				$legacyPaymentGatewayAdapter->handleBeforeGateway($legacyDonationData, $registeredGateway);
-			} );
-	}
->>>>>>> fix/new-payment-flow-recurring-donations
 
     /**
      * Adds new payment gateways to legacy list for settings
@@ -65,11 +61,6 @@ class LegacyPaymentGatewayRegisterAdapter
             ];
         }
 
-<<<<<<< HEAD
         return $gatewaysData;
     }
-=======
-		return $gatewaysData;
-	}
->>>>>>> fix/new-payment-flow-recurring-donations
 }
