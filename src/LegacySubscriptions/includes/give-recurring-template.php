@@ -131,17 +131,17 @@ function give_recurring_donors_choice_period_element( $form_id ) {
 
 	echo '<select class="give-recurring-donors-choice-period" name="give-recurring-period-donors-choice">';
 	// Loop through periods.
-	foreach ( Give_Recurring()->periods() as $key => $item ) {
-		if ( 'donors_choice' === $key ) {
-			continue;
-		}
+	foreach (give_recurring_periods() as $key => $item) {
+        if ('donors_choice' === $key) {
+            continue;
+        }
 
-		// Make text plural if interval is greater than 1.
-		if ( $interval > '1' ) {
-			$item = sprintf( __( '%ss', 'give-recurring' ), $item );
-		}
+        // Make text plural if interval is greater than 1.
+        if ($interval > '1') {
+            $item = sprintf(__('%ss', 'give-recurring'), $item);
+        }
 
-		echo '<option value="' . $key . '" ' . ( $default === $key ? ' selected ' : '' ) . '>' . $item . '</option>';
+        echo '<option value="' . $key . '" ' . ($default === $key ? ' selected ' : '') . '>' . $item . '</option>';
 	}
 	echo '</select>';
 
