@@ -13,12 +13,8 @@ use Give_Recurring_Subscriber;
  *
  * @unreleased
  */
-if (class_exists('Give_Recurring_Subscriber')){
-	class LegacySubscriber extends Give_Recurring_Subscriber {
-
-	}
-} else {
-	class LegacySubscriber {
-
-	}
+class LegacySubscriber extends Give_Recurring_Subscriber
+{
+    //
 }
+
