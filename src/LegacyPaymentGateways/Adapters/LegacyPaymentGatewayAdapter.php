@@ -37,14 +37,14 @@ class LegacyPaymentGatewayAdapter
      * @unreleased
      * @unreleased Replace is_recurring with is_donation_recurring to detect recurring donations.
      *
-     * @param  array  $request  Legacy Donation Data
+     * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
      *
      * @return void
      */
-    public function handleBeforeGateway($request, $registeredGateway)
+    public function handleBeforeGateway($legacyDonationData, $registeredGateway)
     {
-        $formData = FormData::fromRequest($request);
+        $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
@@ -56,7 +56,7 @@ class LegacyPaymentGatewayAdapter
             function_exists('Give_Recurring') &&
             Give_Recurring()->is_donation_recurring($formData->legacyDonationData)
         ) {
-            $subscriptionData = SubscriptionData::fromRequest($request);
+            $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
             $subscriptionId = $this->createSubscription($donationId, $formData, $subscriptionData);
 
             $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);

@@ -1,5 +1,7 @@
 <?php
 
+use Give\Log\Log;
+
 /**
  * Translations
  *
@@ -130,7 +132,6 @@ class Give_Translations {
 				/* @var WP_Error $error */
 				$error = new WP_Error( 'EMPTY_TEXT', __( 'Empty string is not allowed.', 'give' ), $args );
 				throw new Exception( $error->get_error_message( 'EMPTY_TEXT' ) );
-
 			} elseif ( empty( $args['id'] ) ) {
 				/* @var WP_Error $error */
 				$error = new WP_Error( 'EMPTY_ID', __( 'Empty ID is not allowed.', 'give' ), $args );
@@ -162,8 +163,8 @@ class Give_Translations {
 				self::$text_configs[ $args['id'] ] = $args;
 			}
 		} catch ( Exception $e ) {
-			error_log( $e->getMessage() );
-		}// End try().
+            Log::error( $e->getMessage() );
+        }// End try().
 
 		/**
 		 * Filter the texts
@@ -427,3 +428,4 @@ class Give_Translations {
 
 // Setup translations.
 Give_Translations::get_instance()->setup();
+

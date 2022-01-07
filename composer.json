@@ -21,7 +21,8 @@
         "phpunit/phpunit": "^5",
         "kjohnson/since-unreleased": "^1.0.0",
         "wp-cli/wp-cli-bundle": "^2.5",
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^1.0",
+        "wordpress/wordpress": "dev-trunk"
     },
     "keywords": [
         "wordpress",
@@ -32,9 +33,12 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit",
+        "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
-        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
+        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
+        "post-install-cmd": [
+            "@php -r \"file_exists('tests/unit/wp-tests-config.php') || copy('tests/unit/wp-tests-config.dist.php', 'tests/unit/wp-tests-config.php');\""
+        ]
     },
     "autoload": {
         "psr-4": {
@@ -48,5 +52,11 @@
         "platform": {
             "php": "5.6.40"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/wordpress/wordpress-develop.git"
+        }
+    ]
 }
