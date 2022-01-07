@@ -119,7 +119,7 @@ class SummaryView
     protected function isRecurringEnabled()
     {
         if (class_exists('\Give_Recurring')) {
-            return Give_Recurring()->is_recurring($this->formID);
+            return give_recurring_is_recurring($this->formID);
         }
 
         return false;
