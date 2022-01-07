@@ -40,6 +40,7 @@ mix.setPublicPath('assets/dist')
     .js('src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js', 'js/admin-upsell-recurring-donations-settings-tab.js')
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
+    .js('src/Donations/resources/admin-donations.js', 'js/give-admin-donations.js')
     .react()
     .sourceMaps(false)
 

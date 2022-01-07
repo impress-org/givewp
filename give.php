@@ -42,6 +42,7 @@
  */
 
 use Give\Container\Container;
+use Give\Donations\ServiceProvider as DonationsServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
@@ -167,6 +168,7 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        DonationsServiceProvider::class,
     ];
 
     /**
