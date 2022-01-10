@@ -56,15 +56,17 @@ class ListDonations extends Endpoint
         $payments = $payment_query->get_payments();
 
         foreach ($payments as $payment) {
+            $payment->id = $payment->ID;
             $payment_meta = give_get_payment_meta( $payment->ID );
             $donor_id           = give_get_payment_donor_id( $payment->ID );
             $donor_name         = give_get_donor_name_by( $donor_id, 'donor' );
-            $payment->donor_name = $donor_name;
-            $payment->donation_form = $payment_meta['_give_payment_form_title'];
-            $payment->donation_status = give_get_payment_status( $payment->ID, true );
-            $payment->donation_date = $payment_meta['date'];
-            $payment->amount = give_donation_amount( $payment, true );
-            $payment->details_link = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) );
+            $payment->donorName = $donor_name;
+            $payment->donationForm = $payment_meta['_give_payment_form_title'];
+            $payment->donationStatus = give_get_payment_status( $payment->ID, true );
+            $payment->datetime = $payment_meta['date'];
+            $payment->amount = html_entity_decode( give_donation_amount( $payment, true ) );
+            $payment->details = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) );
+            $payment->paymentType = '';
         }
         return $payments;
     }
