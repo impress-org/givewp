@@ -44,9 +44,6 @@ class ServiceProvider implements ServiceProviderInterface
         require_once __DIR__ . '/includes/give-subscriptions-api.php';
         require_once __DIR__ . '/includes/give-recurring-subscriber.php';
         require_once __DIR__ . '/includes/give-recurring-helpers.php';
-        require_once __DIR__ . '/includes/give-recurring-emails.php';
-        require_once __DIR__ . '/includes/give-recurring-renewals.php';
-        require_once __DIR__ . '/includes/give-recurring-expirations.php';
         require_once __DIR__ . '/includes/give-recurring-cron.php';
     }
 
