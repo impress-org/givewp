@@ -1,27 +1,24 @@
 .give_errors {
-    --error-color: #ff3c3c;
-    --error-color-background: #ffeded;
-
     display: flex;
     flex-direction: column;
     padding-block-start: 2rem;
     padding-inline: 4.375rem;
     margin-block-end: -1.7rem;
     row-gap: 1rem;
+}
 
-    .give_error {
-        position: relative;
-        background-color: var(--error-color-background);
-        border: solid 2px var(--error-color);
-        border-radius: 0.2rem;
-        padding: 0.3rem;
+.give_error {
+    position: relative;
+    background-color: #ffeded;
+    border: solid 2px #ff3c3c;
+    border-radius: 0.2rem;
+    padding: 0.3rem;
 
-        .give-notice-close {
-            position: absolute;
-            inset-block-start: 0.1rem;
-            inset-inline-end: 0.1rem;
-            block-size: 1.5rem;
-            cursor: pointer;
-        }
+    .give-notice-close {
+        position: absolute;
+        inset-block-start: 0.1rem;
+        inset-inline-end: 0.1rem;
+        block-size: 1.5rem;
+        cursor: pointer;
     }
 }
