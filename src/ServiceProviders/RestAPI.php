@@ -2,6 +2,7 @@
 
 namespace Give\ServiceProviders;
 
+use Give\API\Endpoints\Donations\ListDonations;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
 use Give\API\Endpoints\Migrations\GetMigrations;
@@ -38,6 +39,7 @@ class RestAPI implements ServiceProvider
         TotalRefunds::class,
         GetLogs::class,
         FlushLogs::class,
+        ListDonations::class,
         GetMigrations::class,
         RunMigration::class,
     ];

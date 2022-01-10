@@ -34,6 +34,14 @@ class DonationsAdminPage
             GIVE_VERSION,
             true
         );
+        wp_localize_script(
+            'give-admin-donations',
+            'GiveDonations',
+            [
+                'apiRoot' => esc_url_raw(rest_url('give-api/v2/donations')),
+                'apiNonce' => wp_create_nonce('wp_rest'),
+            ]
+        );
     }
 
     /**
