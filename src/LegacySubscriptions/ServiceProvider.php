@@ -21,8 +21,15 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        $this->includeLegacyFiles();
-        $this->bindClasses();
+        $recurringIsInstalled = defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION;
+        $recurringMeetsRequirements = $recurringIsInstalled && GIVE_RECURRING_VERSION > '1.14.1';
+
+        if ($recurringMeetsRequirements || !$recurringIsInstalled) {
+            $this->includeLegacyFiles();
+            $this->bindClasses();
+        }
+
+        $this->includeLegacyHelpers();
     }
 
     /**
@@ -45,8 +52,17 @@ class ServiceProvider implements ServiceProviderInterface
         require_once __DIR__ . '/includes/give-subscription.php';
         require_once __DIR__ . '/includes/give-subscriptions-api.php';
         require_once __DIR__ . '/includes/give-recurring-subscriber.php';
-        require_once __DIR__ . '/includes/give-recurring-helpers.php';
         require_once __DIR__ . '/includes/give-recurring-cron.php';
+    }
+
+    /**
+     * Load all the legacy helpers
+     *
+     * @unreleased
+     */
+    private function includeLegacyHelpers()
+    {
+        require_once __DIR__ . '/includes/give-recurring-helpers.php';
     }
 
     /**
@@ -56,7 +72,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function bindClasses()
     {
-        $this->bindInstance('subscription_meta', 'Give_Recurring_DB_Subscription_Meta', 'give-recurring-db-subscription-meta.php');
+        $this->bindInstance(
+            'subscription_meta',
+            'Give_Recurring_DB_Subscription_Meta',
+            'give-recurring-db-subscription-meta.php'
+        );
     }
 
     /**
