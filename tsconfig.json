@@ -9,7 +9,13 @@
     "strict": false,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "plugins": [
+      {"name": "typescript-plugin-css-modules"}
+    ]
   },
-  "include": ["./src"]
+  "include": [
+    "./src",
+    "./globals.d.ts"
+  ]
 }
