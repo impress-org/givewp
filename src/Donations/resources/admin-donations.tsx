@@ -1,3 +1,4 @@
+import {StrictMode, SyntheticEvent} from 'react';
 import ReactDOM from 'react-dom';
 import {sprintf, __} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
@@ -6,7 +7,17 @@ import {Button, Checkbox} from './components';
 import mockDonations from './mock-donations.json';
 import styles from './admin-donations.module.scss';
 
-function handleSubmit(event) {
+type Donation = {
+    id: number;
+    amount: number;
+    paymentType: string;
+    datetime: string;
+    donorName: string;
+    donationForm: string;
+    status: string;
+};
+
+function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent> & {target: HTMLFormElement}) {
     event.preventDefault();
 
     console.log(new FormData(event.target).getAll('donation'));
@@ -60,7 +71,7 @@ function AdminDonations() {
                                         <Checkbox id="all" name="all" />
                                     </th>
                                     <th>{__('ID', 'give')}</th>
-                                    <th styles={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
+                                    <th style={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
                                     <th>{__('Payment Type', 'give')}</th>
                                     <th>{__('Date / Time', 'give')}</th>
                                     <th>{__('Donor Name', 'give')}</th>
@@ -69,7 +80,7 @@ function AdminDonations() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {donations.map((donation) => (
+                                {donations.map((donation: Donation) => (
                                     <tr key={donation.id}>
                                         <td>
                                             <label
@@ -89,7 +100,7 @@ function AdminDonations() {
                                             </div>
                                         </td>
                                         <td>{donation.id}</td>
-                                        <td>{donation.amount}</td>
+                                        <td style={{textAlign: 'end'}}>{donation.amount}</td>
                                         <td>{donation.paymentType}</td>
                                         <td>{donation.datetime}</td>
                                         <td>{donation.donorName}</td>
@@ -106,4 +117,9 @@ function AdminDonations() {
     );
 }
 
-ReactDOM.render(<AdminDonations />, document.getElementById('give-admin-donations-root'));
+ReactDOM.render(
+    <StrictMode>
+        <AdminDonations />
+    </StrictMode>,
+    document.getElementById('give-admin-donations-root')
+);

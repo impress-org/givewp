@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom"],
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "strict": false,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "plugins": [
+      {"name": "typescript-plugin-css-modules"}
+    ]
+  },
+  "include": [
+    "./src",
+    "./globals.d.ts"
+  ]
+}
