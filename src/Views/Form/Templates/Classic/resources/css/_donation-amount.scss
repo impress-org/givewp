@@ -3,6 +3,10 @@
 .give-donation-amount-section {
     display: grid;
     row-gap: fn.scaleBetween(1.5rem, 2rem);
+
+    & p.give-custom-amount-text {
+        display: none;
+    }
 }
 
 .give-amount-heading {
