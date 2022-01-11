@@ -43,7 +43,7 @@ mix.setPublicPath('assets/dist')
     )
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
-    .ts('src/Donations/resources/admin-donations.js', 'js/give-admin-donations.js')
+    .ts('src/Donations/resources/admin-donations.tsx', 'js/give-admin-donations.js')
     .react()
     .sourceMaps(false)
 
