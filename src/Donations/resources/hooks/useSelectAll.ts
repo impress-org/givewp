@@ -25,15 +25,11 @@ export function useSelectAll(itemName: string): Ref<HTMLInputElement> {
         (event: InputEvent) => {
             const input = event.target as HTMLInputElement;
 
-            if (!input.checked) {
-                inputRef.current.checked = false;
-            } else if (
+            inputRef.current.checked =
+                input.checked &&
                 Array.from(input.form.elements.namedItem(itemName) as RadioNodeList).every(
                     (item: HTMLInputElement) => item.checked
-                )
-            ) {
-                inputRef.current.checked = true;
-            }
+                );
         },
         [inputRef, itemName]
     );
