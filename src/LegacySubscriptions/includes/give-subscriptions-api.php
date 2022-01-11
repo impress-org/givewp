@@ -2,7 +2,7 @@
 /**
  * Subscribers REST API
  *
- * @package     Give Recurring
+ * @package     Give
  * @subpackage  Subscriber API Class
  * @copyright   Copyright (c) 2017
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Extends the Give_API to make the /subscriptions endpoint
  *
  * @class Give_Subscriptions_API
+ * @unreleased - migrated from give-recurring
  * @since 1.4
  */
 class Give_Subscriptions_API extends Give_API {

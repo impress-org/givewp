@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * The Recurring Reminders Class
+ *
+ * @unreleased - migrated from give-recurring
  */
 class Give_Recurring_Cron {
 

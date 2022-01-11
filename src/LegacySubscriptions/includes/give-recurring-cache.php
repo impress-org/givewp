@@ -4,6 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @unreleased - migrated from give-recurring
+ */
 class Give_Recurring_Cache {
 	/**
 	 * Instance.

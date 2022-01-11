@@ -2,7 +2,7 @@
 /**
  * Subscription Meta DB class
  *
- * @package     Give-Recurring
+ * @package     Give
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.8
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Give_Recurring_DB_Subscription_Meta
  *
  * This class is for interacting with the subscription meta database table.
- *
+ * @unreleased - migrated from give-recurring
  * @since 1.8
  */
 class Give_Recurring_DB_Subscription_Meta extends Give_DB_Meta {

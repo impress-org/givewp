@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Give_Subscription
  *
+ * @unreleased - migrated from give-recurring
  * @since 1.0
  */
 class Give_Subscription {

@@ -6,11 +6,13 @@ use Closure;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * Class LegacyServiceProvider
+ * Class ServiceProvider - LegacySubscriptions
  *
- * This handles the loading of all the legacy codebase included in the /includes directory.
+ * This handles the loading of all the legacy codebase included in the LegacySubscriptions /includes directory.
  * DO NOT EXTEND THIS WITH NEW CODE as it is intended to shrink over time as we migrate over
  * to the new ways of doing things.
+ *
+ * @unreleased
  */
 class ServiceProvider implements ServiceProviderInterface
 {

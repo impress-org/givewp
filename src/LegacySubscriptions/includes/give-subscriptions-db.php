@@ -18,6 +18,7 @@ if (!defined('ABSPATH')) {
  *
  * The Subscriptions DB Class.
  *
+ * @unreleased - migrated from give-recurring
  * @since  1.0
  */
 class Give_Subscriptions_DB extends Give_DB

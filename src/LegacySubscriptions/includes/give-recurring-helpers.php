@@ -18,7 +18,7 @@
  * @param  array  $payment_meta
  *
  * @return bool
- * @since  1.0
+ * @unreleased
  * @access public
  *
  */
@@ -149,7 +149,7 @@ function give_recurring_is_recurring($form_id, $level_id = 0)
  * @param  $price_id
  *
  * @return bool|string
- * @since  1.0
+ * @unreleased
  * @access public
  * @static
  *
