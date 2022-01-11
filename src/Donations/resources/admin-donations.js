@@ -3,8 +3,7 @@ import {sprintf, __} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 
 import {Button, Checkbox} from './components';
-import {useSelectAll} from './hooks';
-//import donations from './mock-donations.json';
+import mockDonations from './mock-donations.json';
 import styles from './admin-donations.module.scss';
 
 function handleSubmit(event) {
@@ -14,30 +13,33 @@ function handleSubmit(event) {
 }
 
 async function fetchDonations( args = {} ) {
-    let uri = '/wp-json/give-api/v2/donations/?';
-    uri += new URLSearchParams( args ).toString();
-    let response = await fetch( uri, {
+    let url = '/wp-json/give-api/v2/donations/?';
+    url += new URLSearchParams( args ).toString();
+    let response = await fetch( url, {
         headers: {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.GiveDonations.apiNonce,
         }
     })
-    const result = await response.json();
-    console.log( result );
-    return result;
-    //.catch(err => console.log(err.message));
+    if( response.ok ) {
+        const result = await response.json();
+        console.log(result);
+        return result;
+    }
+    else {
+        return false;
+    }
 }
 
 function AdminDonations() {
-    //const selectAllRef = useSelectAll('donation');
-    const [donations, setDonations] = useState([]);
+    const [donations, setDonations] = useState(mockDonations);
 
     useEffect( () => {
         ( async () => {
-            const donationsResult = await fetchDonations();
-            setDonations(donationsResult);
+            const donationsResponse = await fetchDonations();
+            donationsResponse ? setDonations(donationsResponse) : setDonations(mockDonations);
         })()
-    }, [])
+    }, []);
 
     return (
         <>
@@ -87,12 +89,12 @@ function AdminDonations() {
                                             </div>
                                         </td>
                                         <td>{donation.id}</td>
-                                        <td>{decodeURIComponent(donation.amount)}</td>
+                                        <td>{donation.amount}</td>
                                         <td>{donation.paymentType}</td>
                                         <td>{donation.datetime}</td>
                                         <td>{donation.donorName}</td>
                                         <td>{donation.donationForm}</td>
-                                        <td>{donation.donationStatus}</td>
+                                        <td>{donation.status}</td>
                                     </tr>
                                 ))}
                             </tbody>

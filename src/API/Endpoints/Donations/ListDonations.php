@@ -2,6 +2,7 @@
 
 namespace Give\API\Endpoints\Donations;
 
+use Give_Payments_Query;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -52,23 +53,24 @@ class ListDonations extends Endpoint
             'number'     => 20,
             'page'       => isset( $parameters['page'] ) ? $parameters['page'] : null,
         ];
-        $payment_query = new \Give_Payments_Query( $args );
+        $payment_query = new Give_Payments_Query( $args );
         $payments = $payment_query->get_payments();
-
-        foreach ($payments as $payment) {
-            $payment->id = $payment->ID;
+        $result = array();
+        foreach ($payments as $key=>$payment) {
             $payment_meta = give_get_payment_meta( $payment->ID );
             $donor_id           = give_get_payment_donor_id( $payment->ID );
             $donor_name         = give_get_donor_name_by( $donor_id, 'donor' );
-            $payment->donorName = $donor_name;
-            $payment->donationForm = $payment_meta['_give_payment_form_title'];
-            $payment->donationStatus = give_get_payment_status( $payment->ID, true );
-            $payment->datetime = $payment_meta['date'];
-            $payment->amount = html_entity_decode( give_donation_amount( $payment, true ) );
-            $payment->details = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) );
-            $payment->paymentType = '';
+            array_push($result, (object) [
+                'status' => give_get_payment_status( $payment->ID, true ),
+                'id' => $payment->ID,
+                'donorName' => $donor_name,
+                'donationForm' => $payment_meta['_give_payment_form_title'],
+                'datetime' => $payment_meta['date'],
+                'amount' => html_entity_decode( give_donation_amount( $payment, true ) ),
+                'details' => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
+            ]);
         }
-        return $payments;
+        return $result;
     }
 }
 
