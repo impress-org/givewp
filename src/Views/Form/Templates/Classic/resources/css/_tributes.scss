@@ -26,4 +26,8 @@
     .give_tributes_info_wrap {
         margin-block-start: 1.25rem;
     }
+
+    [type="radio"] {
+        margin-inline-end: 0.5rem !important;
+    }
 }

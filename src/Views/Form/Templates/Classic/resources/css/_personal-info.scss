@@ -3,7 +3,7 @@
 .give-personal-info-section {
     & > fieldset {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(12, 1fr);
         column-gap: fn.scaleBetween(1.5rem, 1.6875rem);
         row-gap: fn.scaleBetween(1.5rem, 1.9375rem);
 
@@ -19,18 +19,19 @@
         }
 
         > .form-row-wide, div {
-            grid-column: span 6;
+            grid-column: span 12;
         }
 
         > .form-row-responsive {
-            grid-column: span 6;
+            grid-column: span 12;
 
             @media screen and (min-width: $desktopMinWidth) {
-                grid-column: span 3;
+                grid-column: span 6;
             }
         }
     }
 
+    #give-title-wrap label,
     #give-first-name-wrap label,
     #give-last-name-wrap label,
     #give-email-wrap label {
@@ -54,7 +55,28 @@
 }
 
 .give-personal-info-description {
-    grid-column: span 6;
+    grid-column: span 12;
+}
+
+#give-title-wrap {
+    grid-column: span 2;
+
+
+    ~ :is(#give-first-name-wrap, #give-last-name-wrap)  {
+        grid-column: span 5;
+    }
+
+    @media screen and (max-width: $containerMaxWidth) {
+        grid-column: span 4;
+
+        & + #give-first-name-wrap {
+            grid-column: span 8;
+        }
+
+        & ~ #give-last-name-wrap {
+            grid-column: span 12;
+        }
+    }
 }
 
 #give-first-name-wrap,

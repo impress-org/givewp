@@ -115,7 +115,7 @@
     &-body {
         display: grid;
         grid-auto-flow: row;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(12, 1fr);
         gap: 1rem;
     }
 

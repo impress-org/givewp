@@ -47,6 +47,6 @@
     }
 }
 
-.form-row input[type='radio'] {
+:is(.form-row, .give-tributes-dedicate-donation) input[type='radio'] {
     @include give-radio;
 }

@@ -165,7 +165,7 @@ $gatewayFontSize: 1rem;
 .give-gateway-details {
     display: grid;
     grid-auto-flow: row;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     row-gap: 1rem;
     inline-size: 100%;
     border-block-start-width: 0;
@@ -177,7 +177,7 @@ $gatewayFontSize: 1rem;
     line-height: 1.5;
 
     > * {
-        grid-column: span 6;
+        grid-column: span 12;
     }
 
     > .give-ffm-form-row-half,
@@ -190,19 +190,19 @@ $gatewayFontSize: 1rem;
     }
 
     > .give-ffm-form-row-one-third {
-        grid-column: span 2;
-    }
-
-    > .give-ffm-form-row-half {
-        grid-column: span 3;
-    }
-
-    > .give-ffm-form-row-two-third {
         grid-column: span 4;
     }
 
-    > .form-row-wide {
+    > .give-ffm-form-row-half {
         grid-column: span 6;
+    }
+
+    > .give-ffm-form-row-two-third {
+        grid-column: span 8;
+    }
+
+    > .form-row-wide {
+        grid-column: span 12;
     }
 
     img {
@@ -236,7 +236,7 @@ $gatewayFontSize: 1rem;
     fieldset {
         display: grid;
         grid-auto-flow: row;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(12, 1fr);
         gap: 1rem;
 
         & > * {
@@ -246,13 +246,13 @@ $gatewayFontSize: 1rem;
         @media screen and (min-width: $desktopMinWidth) {
             > .form-row-responsive {
                 &.form-row-one-third {
-                    grid-column: span 2;
+                    grid-column: span 4;
                 }
                 &.form-row-half {
-                    grid-column: span 3;
+                    grid-column: span 6;
                 }
                 &.form-row-two-thirds {
-                    grid-column: span 4;
+                    grid-column: span 8;
                 }
             }
         }

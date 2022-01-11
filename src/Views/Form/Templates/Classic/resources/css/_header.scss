@@ -177,13 +177,15 @@
     border-radius: 9999px;
     background-color: #f1f1f1;
     box-shadow: inset 0 0.0625em 0.25rem rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Fallback for Safari */
+    overflow: clip;
 }
 
 .give-form-goal-progress-meter::after {
     content: '';
     display: block;
     block-size: 100%;
-    inline-size: var(--progress);
+    inline-size: clamp(0%, var(--progress), 100%);
     background: linear-gradient(
             180deg,
             var(--give-header-stats-progressbar-color) 0%,
@@ -191,5 +193,6 @@
         ),
         linear-gradient(180deg, #fff 0%, #ccc 100%);
     background-blend-mode: multiply;
-    border-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
 }

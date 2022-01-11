@@ -109,7 +109,7 @@ ob_start();
         </div>
 
         <div class="dashboard-link-container">
-            <a class="dashboard-link" href="<?= esc_url($donorDashboardUrl); ?>">
+            <a class="dashboard-link" href="<?= esc_url($donorDashboardUrl); ?>" target="_parent">
                 <?= esc_html__('Go to my Donor Dashboard', 'give'); ?><i class="fas fa-long-arrow-alt-right"></i>
             </a>
             <?php if (isset($section[ 'receiptLink' ])) : ?>
