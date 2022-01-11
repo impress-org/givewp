@@ -8,28 +8,28 @@
 }
 
 .form-row-wide {
-    grid-column: span 6;
+    grid-column: span 12;
 }
 
 .form-row-one-third,
 .give-ffm-form-row-one-third {
-    grid-column: span 2;
+    grid-column: span 4;
 }
 
 .form-row-half,
 .give-ffm-form-row-half {
-    grid-column: span 3;
+    grid-column: span 6;
 }
 
 .form-row-two-thirds,
 .give-ffm-form-row-two-third {
-    grid-column: span 4;
+    grid-column: span 8;
 }
 
 // Ideally, it’d be better to use min-width, but we’re not creating a framework
 // here.
 @media screen and (max-width: $desktopMinWidth) {
     .form-row-responsive {
-        grid-column: span 6;
+        grid-column: span 12;
     }
 }
