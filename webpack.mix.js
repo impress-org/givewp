@@ -37,10 +37,13 @@ mix.setPublicPath('assets/dist')
     .js('src/Log/Admin/index.js', 'js/give-log-list-table-app.js')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
     .js('src/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
-    .js('src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js', 'js/admin-upsell-recurring-donations-settings-tab.js')
+    .js(
+        'src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js',
+        'js/admin-upsell-recurring-donations-settings-tab.js'
+    )
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
-    .js('src/Donations/resources/admin-donations.js', 'js/give-admin-donations.js')
+    .ts('src/Donations/resources/admin-donations.js', 'js/give-admin-donations.js')
     .react()
     .sourceMaps(false)
 
@@ -72,9 +75,9 @@ mix.options({
         terserOptions: {
             format: {
                 comments: false,
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 if (mix.inProduction()) {
