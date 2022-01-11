@@ -6,7 +6,7 @@ import {Ref, useCallback, useEffect, useRef} from 'react';
  * This only works uncontrolled and the select all checkbox must support refs.
  */
 export function useSelectAll(itemName: string): Ref<HTMLInputElement> {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const selectAllInputRef = useRef<HTMLInputElement>(null);
 
     // For when the select all checkbox is pressed, update item checkboxes.
     const handleSelectAll = useCallback(
@@ -25,18 +25,18 @@ export function useSelectAll(itemName: string): Ref<HTMLInputElement> {
         (event: InputEvent) => {
             const input = event.target as HTMLInputElement;
 
-            inputRef.current.checked =
+            selectAllInputRef.current.checked =
                 input.checked &&
                 Array.from(input.form.elements.namedItem(itemName) as RadioNodeList).every(
                     (item: HTMLInputElement) => item.checked
                 );
         },
-        [inputRef, itemName]
+        [selectAllInputRef, itemName]
     );
 
     // Setup and tear down event listeners.
     useEffect(() => {
-        const selectAllInput = inputRef.current;
+        const selectAllInput = selectAllInputRef.current;
 
         // Set upevent listeners from select all and select item checkboxes.
         selectAllInput.addEventListener('input', handleSelectAll);
@@ -48,7 +48,7 @@ export function useSelectAll(itemName: string): Ref<HTMLInputElement> {
             selectAllInput.removeEventListener('input', handleSelectAll);
             items.forEach((item: HTMLInputElement) => item.removeEventListener('input', handleSelectItem));
         };
-    }, [inputRef, itemName, handleSelectAll, handleSelectItem]);
+    }, [selectAllInputRef, itemName, handleSelectAll, handleSelectItem]);
 
-    return inputRef;
+    return selectAllInputRef;
 }
