@@ -1,3 +1,4 @@
+import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
 import {sprintf, __} from '@wordpress/i18n';
 
@@ -80,4 +81,9 @@ function AdminDonations() {
     );
 }
 
-ReactDOM.render(<AdminDonations />, document.getElementById('give-admin-donations-root'));
+ReactDOM.render(
+    <StrictMode>
+        <AdminDonations />
+    </StrictMode>,
+    document.getElementById('give-admin-donations-root')
+);
