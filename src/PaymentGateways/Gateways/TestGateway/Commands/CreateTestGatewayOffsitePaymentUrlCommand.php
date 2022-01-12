@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\Gateways\TestGateway\Commands;
 
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 
 /**
  * This class uses to build payment url of offsite test gateway.
@@ -17,12 +18,12 @@ class CreateTestGatewayOffsitePaymentUrlCommand implements GatewayCommand
      *
      * @unreleased
      *
-     * @param GatewayPaymentData $gatewayPaymentData
+     * @param OffsiteGatewayPaymentData $offsiteGatewayPaymentData
      *
      * @return string
      */
-    public function __invoke( GatewayPaymentData $gatewayPaymentData )
+    public function __invoke( OffsiteGatewayPaymentData $offsiteGatewayPaymentData )
     {
-        return '';
+        return $offsiteGatewayPaymentData->redirectUrl;
     }
 }
