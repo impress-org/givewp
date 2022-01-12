@@ -28,7 +28,7 @@ function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent> & {tar
     console.log(new FormData(event.target).getAll('donation'));
 }
 
-async function fetchDonations( apiRoot, args :{} = {} ) {
+async function fetchDonations( apiRoot: string, args: {} = {} ) {
     let url = apiRoot + '?' + new URLSearchParams( args ).toString();
     let response = await fetch( url, {
         headers: {

@@ -16,7 +16,7 @@ class DonationFormsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('All Forms', 'give'),
             esc_html__('All Forms', 'give'),
-            'edit_give_payments',
+            'edit_give_forms',
             'give-forms',
             [$this, 'render']
         );
@@ -29,7 +29,7 @@ class DonationFormsAdminPage
     {
         wp_enqueue_script(
             'give-admin-donation-forms',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-donations.js',
+            GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-donation-forms.js',
             ['wp-element', 'wp-i18n', 'wp-hooks'],
             GIVE_VERSION,
             true

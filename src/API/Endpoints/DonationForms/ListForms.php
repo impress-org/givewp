@@ -2,7 +2,8 @@
 
 namespace Give\API\Endpoints\DonationForms;
 
-use Give_Payments_Query;
+use Give_Donate_Form;
+use Give_Forms_Query;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -11,7 +12,7 @@ use WP_REST_Response;
  */
 
 
-class ListDonations extends Endpoint
+class ListForms extends Endpoint
 {
     protected $endpoint = '/admin/forms';
 
@@ -24,13 +25,12 @@ class ListDonations extends Endpoint
                 [
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
                     'page' => [
-                        'type' => 'string',
+                        'type' => 'int',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
                     ]
                 ],
             ],
@@ -48,13 +48,32 @@ class ListDonations extends Endpoint
     }
 
     private function constructFormList( $parameters ) {
-        $args = [
-            // args here!
-        ];
+        $args = array(
+                'number'      => 30,
+        );
         $form_query = new Give_Forms_Query( $args );
         $forms = $form_query->get_forms();
-        $result = array();
-        // transform data
-        return $result;
+        $results = array();
+        foreach( $forms as $form ) {
+            $result = new Give_Donate_Form($form->ID);
+            //if there are multiple prices, get the highest and lowest
+            if( is_array( $result->prices ) ) {
+                $all_prices = array_column($result->prices, '_give_amount');
+                $prices = array(
+                    min($all_prices),
+                    max($all_prices)
+                );
+            }
+            $results[] = (object)[
+                'id' => $form->ID,
+                'name' => $result->post_title,
+                'amount' => $prices ?: $result->price,
+                'goal' => $result->goal,
+                'donations' => count( give_get_payments( ['give_forms' => $form->ID ] ) ),
+                'datetime' => $result->post_date,
+                'shortcode' => "[give_form id=\"$form->ID\"]"
+            ];
+        }
+        return $results;
     }
 }
