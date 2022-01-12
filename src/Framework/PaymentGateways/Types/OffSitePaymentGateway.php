@@ -26,6 +26,20 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
     abstract protected function getOffsitePaymentUrlCommand();
 
     /**
+     * Handle successful payment return.
+     *
+     * @unreleased
+     */
+    abstract protected function returnSuccessFromOffsiteRedirect();
+
+    /**
+     * Handle failure payment return.
+     *
+     * @unreleased
+     */
+    abstract protected function returnFailureFromOffsiteRedirect();
+
+    /**
      * Return redirect command (payment url) for offsite payment.
      *
      * @unreleased
