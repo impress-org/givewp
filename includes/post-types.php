@@ -59,7 +59,7 @@ function give_setup_post_types() {
 			'add_new_item'       => __( 'Add New Donation Form', 'give' ),
 			'edit_item'          => __( 'Edit Donation Form', 'give' ),
 			'new_item'           => __( 'New Form', 'give' ),
-			'all_items'          => __( 'All Forms', 'give' ),
+			//'all_items'          => __( 'All Forms', 'give' ),
 			'view_item'          => __( 'View Form', 'give' ),
 			'search_items'       => __( 'Search Forms', 'give' ),
 			'not_found'          => __( 'No forms found.', 'give' ),
