@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\Gateways\TestGateway\Commands;
 
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 
 /**
