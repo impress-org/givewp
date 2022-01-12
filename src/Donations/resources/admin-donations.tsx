@@ -4,11 +4,12 @@ import {sprintf, __} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 
 import {Button, Checkbox} from './components';
+import {useSelectAll} from './hooks';
 import mockDonations from './mock-donations.json';
 import styles from './admin-donations.module.scss';
 
 declare global {
-    interface Window { GiveDonations: {apiNonce: string}; }
+    interface Window { GiveDonations: {apiNonce: string, apiRoot: string}; }
 }
 
 type Donation = {
@@ -27,9 +28,8 @@ function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent> & {tar
     console.log(new FormData(event.target).getAll('donation'));
 }
 
-async function fetchDonations( args = {} ) {
-    let url = '/wp-json/give-api/v2/donations/?';
-    url += new URLSearchParams( args ).toString();
+async function fetchDonations( apiRoot, args :{} = {} ) {
+    let url = apiRoot + '?' + new URLSearchParams( args ).toString();
     let response = await fetch( url, {
         headers: {
             'Content-Type': 'application/json',
@@ -38,7 +38,6 @@ async function fetchDonations( args = {} ) {
     })
     if( response.ok ) {
         const result = await response.json();
-        console.log(result);
         return result;
     }
     else {
@@ -48,11 +47,12 @@ async function fetchDonations( args = {} ) {
 
 function AdminDonations() {
     const [donations, setDonations] = useState(mockDonations);
+    const selectAllRef = useSelectAll('donation');
 
     useEffect( () => {
         ( async () => {
-            const donationsResponse = await fetchDonations();
-            donationsResponse ? setDonations(donationsResponse) : setDonations(mockDonations);
+            const donationsResponse = await fetchDonations(window.GiveDonations.apiRoot);
+            donationsResponse ? setDonations([...donationsResponse]) : setDonations([...mockDonations]);
         })()
     }, []);
 
@@ -72,7 +72,7 @@ function AdminDonations() {
                                         <label htmlFor="all" className={styles.visuallyHidden}>
                                             {__('Select All Donations', 'give')}
                                         </label>
-                                        <Checkbox id="all" name="all" />
+                                        <Checkbox ref={selectAllRef} id="all" name="all" />
                                     </th>
                                     <th>{__('ID', 'give')}</th>
                                     <th style={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
