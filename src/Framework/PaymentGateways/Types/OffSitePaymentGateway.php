@@ -2,9 +2,12 @@
 
 namespace Give\Framework\PaymentGateways\Types;
 
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
+use Give\Helpers\Call;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
 /**
  * @unreleased
@@ -12,4 +15,33 @@ use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
 abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGatewayInterface
 {
     use OffsiteGateway;
+
+    /**
+     * Return command class name which returns offsite payment url.
+     *
+     * @unreleased
+     *
+     * @return string
+     */
+    abstract protected function getOffsitePaymentUrlCommand();
+
+    /**
+     * Return redirect command (payment url) for offsite payment.
+     *
+     * @unreleased
+     *
+     * @return RedirectOffsite
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        return new RedirectOffsite(
+            Call::invoke(
+                $this->getOffsitePaymentUrlCommand(),
+                $paymentData,
+                $this->generateReturnUrlFromRedirectOffsite(
+                    $paymentData->donationId
+                )
+            )
+        );
+    }
 }
