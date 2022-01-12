@@ -7,6 +7,7 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\Gateways\TestGateway\Commands\CreateTestGatewayOffsitePaymentUrlCommand;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
@@ -97,5 +98,17 @@ class TestGatewayOffsite extends OffSitePaymentGateway
         $transactionId = "test-gateway-transaction-id";
 
         return new PaymentComplete($transactionId);
+    }
+
+    /**
+     * @inerhitDoc
+     *
+     * @unreleased
+     *
+     * @return string
+     */
+    protected function getOffsitePaymentUrlCommand()
+    {
+        return CreateTestGatewayOffsitePaymentUrlCommand::class;
     }
 }
