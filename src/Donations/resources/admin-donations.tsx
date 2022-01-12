@@ -7,6 +7,10 @@ import {Button, Checkbox} from './components';
 import mockDonations from './mock-donations.json';
 import styles from './admin-donations.module.scss';
 
+declare global {
+    interface Window { GiveDonations: {apiNonce: string}; }
+}
+
 type Donation = {
     id: number;
     amount: number;
