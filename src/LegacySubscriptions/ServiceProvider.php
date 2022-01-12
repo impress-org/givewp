@@ -22,7 +22,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         $recurringIsInstalled = defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION;
-        $recurringMeetsRequirements = $recurringIsInstalled && GIVE_RECURRING_VERSION > '1.14.1';
+        $recurringMeetsRequirements = $recurringIsInstalled && version_compare(GIVE_RECURRING_VERSION, '1.14.1', '>');
 
         if ($recurringMeetsRequirements || !$recurringIsInstalled) {
             $this->includeLegacyFiles();
