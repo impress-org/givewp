@@ -49,13 +49,7 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
     public function createPayment(GatewayPaymentData $paymentData)
     {
         return new RedirectOffsite(
-            Call::invoke(
-                $this->getOffsitePaymentUrlCommand(),
-                $paymentData,
-                $this->generateReturnUrlFromRedirectOffsite(
-                    $paymentData->donationId
-                )
-            )
+            Call::invoke($this->getOffsitePaymentUrlCommand(), $paymentData)
         );
     }
 }
