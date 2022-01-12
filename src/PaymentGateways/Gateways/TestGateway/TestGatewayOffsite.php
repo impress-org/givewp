@@ -2,8 +2,11 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsiteFailedPayment;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsiteSuccessPayment;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;

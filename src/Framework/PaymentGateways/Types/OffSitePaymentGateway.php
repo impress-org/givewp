@@ -2,12 +2,16 @@
 
 namespace Give\Framework\PaymentGateways\Types;
 
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsiteFailedPayment;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsiteSuccessPayment;
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\Session\SessionDonation\DonationAccessor;
 
 /**
  * @unreleased
@@ -32,7 +36,11 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @param int $donationId
      */
-    abstract protected function returnSuccessFromOffsiteRedirect( $donationId );
+    protected function returnSuccessFromOffsiteRedirect($donationId)
+    {
+        $this->handleResponse(new RedirectResponse((new RedirectOffsiteFailedPayment($donationId))
+            ->getUrl((new DonationAccessor())->get()->currentUrl)));
+    }
 
     /**
      * Handle failure payment return.
@@ -41,7 +49,11 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @param int $donationId Donation
      */
-    abstract protected function returnFailureFromOffsiteRedirect( $donationId );
+    protected function returnFailureFromOffsiteRedirect($donationId)
+    {
+        $this->handleResponse(new RedirectResponse((new RedirectOffsiteSuccessPayment($donationId))
+            ->getUrl((new DonationAccessor())->get()->currentUrl)));
+    }
 
     /**
      * Return redirect command (payment url) for offsite payment.
