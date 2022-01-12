@@ -240,7 +240,7 @@ $gatewayFontSize: 1rem;
         gap: 1rem;
 
         & > * {
-            grid-column: span 6;
+            grid-column: span 12;
         }
 
         @media screen and (min-width: $desktopMinWidth) {
