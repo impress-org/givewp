@@ -29,15 +29,19 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      * Handle successful payment return.
      *
      * @unreleased
+     *
+     * @param int $donationId
      */
-    abstract protected function returnSuccessFromOffsiteRedirect();
+    abstract protected function returnSuccessFromOffsiteRedirect( $donationId );
 
     /**
      * Handle failure payment return.
      *
      * @unreleased
+     *
+     * @param int $donationId Donation
      */
-    abstract protected function returnFailureFromOffsiteRedirect();
+    abstract protected function returnFailureFromOffsiteRedirect( $donationId );
 
     /**
      * Return redirect command (payment url) for offsite payment.
