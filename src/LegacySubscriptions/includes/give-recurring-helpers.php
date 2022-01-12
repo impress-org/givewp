@@ -150,7 +150,7 @@ function give_recurring_is_recurring($form_id, $level_id = 0)
  * @param  $price_id
  *
  * @return bool|string
- * @unreleased
+ * @unreleased - this is copied over from give_recurring()->get_period
  * @access public
  * @static
  *
