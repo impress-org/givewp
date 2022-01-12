@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://givewp.com/
 Tags: donation, fundraising, crowdfunding, givewp, give
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.16.2
+Stable tag: 2.17.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.17.2: December 28th, 2021 =
+* Fix: Only validate email settings that are not empty
+
 = 2.17.1: November 23rd, 2021 =
 * Fix: Took care of an annoying babel-polyfill 404 in the JavaScript console
 

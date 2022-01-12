@@ -1,153 +1,59 @@
 <?php
+const WP_CONTENT_DIR = __DIR__;
 
-ini_set( 'display_errors', 1 );
-ini_set( 'display_startup_errors', 1 );
-error_reporting( E_ALL );
+$testConfig = [
+    'workflow' => '/tmp/wordpress-tests-lib/wp-tests-config.php',
+    'local' => __DIR__ . '/wp-tests-config.php',
+];
 
-/**
- * Give Unit Tests Bootstrap
- *
- * @since 1.3.2
- */
-class Give_Unit_Tests_Bootstrap {
+if( file_exists( $testConfig[ 'workflow' ] ) ) {
 
-	/** @var \Give_Unit_Tests_Bootstrap instance */
-	protected static $instance = null;
+    /**
+     * Runs the test suite for GitHub actions, which tests multiple
+     * WordPress versions by leveraging wordpress-tests-lib.
+     */
 
-	/** @var string directory where wordpress-tests-lib    is installed */
-	public $wp_tests_dir;
+    define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'workflow' ] );
+    require_once WP_TESTS_CONFIG_FILE_PATH;
+    require_once '/tmp/wordpress-tests-lib/includes/functions.php';
 
-	/** @var string testing directory */
-	public $tests_dir;
+    tests_add_filter('muplugins_loaded', function() {
+        require_once __DIR__ . '/../../give.php';
+    });
+    tests_add_filter('setup_theme', function() {
+        give()->install();
+    });
+    require_once '/tmp/wordpress-tests-lib/includes/bootstrap.php';
 
-	/** @var string plugin directory */
-	public $plugin_dir;
+} elseif( file_exists( $testConfig[ 'local' ] ) ) {
 
-	/**
-	 * Setup the unit testing environment
-	 *
-	 * @since 1.3.2
-	 */
-	public function __construct() {
+    /**
+     * Runs the test suite for local development, which
+     * is configurable for the development environment.
+     */
 
-		ini_set( 'display_errors', 'on' );
-		error_reporting( E_ALL );
+    define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'local' ] );
 
-		// Ensure server variable is set for WP email functions.
-		if ( ! isset( $_SERVER['SERVER_NAME'] ) ) {
-			$_SERVER['SERVER_NAME'] = 'localhost';
-		}
+    require_once WP_TESTS_CONFIG_FILE_PATH;
+    require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
 
-		$this->tests_dir    = dirname( __FILE__ );
-		$this->plugin_dir   = dirname( dirname( $this->tests_dir ) );
-		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
-		$manual_bootstrap   = isset( $GLOBALS['manual_bootstrap'] ) ? (bool) $GLOBALS['manual_bootstrap'] : true;
+    tests_add_filter('muplugins_loaded', function() {
+        require_once __DIR__ . '/../../give.php';
+    });
+    tests_add_filter('setup_theme', function() {
+        give()->install();
+    });
+    require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
 
-		// Load test function so tests_add_filter() is available
-		require_once $this->wp_tests_dir . '/includes/functions.php';
-
-		// Load Give
-		tests_add_filter( 'muplugins_loaded', array( $this, 'load_give' ) );
-
-		// Uninstall Give.
-		tests_add_filter( 'plugins_loaded', array( $this, 'uninstall_give' ), 0 );
-
-		// Install Give
-		tests_add_filter( 'setup_theme', array( $this, 'install_give' ) );
-
-		// Load the WP testing environment
-		if ( $manual_bootstrap ) {
-			require_once $this->wp_tests_dir . '/includes/bootstrap.php';
-
-			// Load Give testing framework
-			// Note: you must copy code of this function to your include function of bootstrap class
-			// Or use Give_Unit_Tests_Bootstrap::includes();
-			$this->includes();
-		}
-	}
-
-
-	/**
-	 * Uninstall Give
-	 *
-	 * @since  1.8.9
-	 * @access public
-	 */
-	public function uninstall_give() {
-		$giveSettings = get_option('give_settings');
-		$giveSettings['uninstall_on_delete'] = 'enabled';
-
-		update_option( 'give_settings', $giveSettings );
-
-		// clean existing install first
-		define( 'WP_UNINSTALL_PLUGIN', true );
-		include $this->plugin_dir . '/uninstall.php'; 
-	}
-
-	/**
-	 * Load Give
-	 *
-	 * @since 1.3.2
-	 */
-	public function load_give() {
-		require_once $this->plugin_dir . '/give.php';
-	}
-
-	/**
-	 * Install Give after the test environment and Give have been loaded.
-	 *
-	 * @since 1.3.2
-	 *
-	 * @global WP_Roles $wp_roles
-	 */
-	public function install_give() {
-		echo 'Installing Give...' . PHP_EOL;
-
-		give_install();
-
-		// reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
-		$current_user = new WP_User( 1 );
-		$current_user->set_role( 'administrator' );
-		wp_update_user(
-			array(
-				'ID'         => 1,
-				'first_name' => 'Admin',
-				'last_name'  => 'User',
-			)
-		);
-		add_filter( 'give_log_email_errors', '__return_false' );
-
-	}
-
-	/**
-	 * Load Give-specific test cases
-	 *
-	 * @since 1.3.2
-	 */
-	public function includes() {
-
-		// test cases
-		require_once $this->tests_dir . '/framework/class-give-unit-test-case.php';
-
-		// Helpers
-		require_once $this->tests_dir . '/framework/helpers/shims.php';
-		require_once $this->tests_dir . '/framework/helpers/class-helper-form.php';
-		require_once $this->tests_dir . '/framework/helpers/class-helper-payment.php';
-	}
-
-	/**
-	 * Get the single class instance.
-	 *
-	 * @since 1.3.2
-	 * @return Give_Unit_Tests_Bootstrap
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
+} else {
+    die('wp-tests-config.php not found');
 }
 
-Give_Unit_Tests_Bootstrap::instance();
+// test cases
+require_once __DIR__ . '/framework/class-give-unit-test-case.php';
+
+// Helpers
+require_once __DIR__ . '/framework/helpers/shims.php';
+require_once __DIR__ . '/framework/helpers/class-helper-form.php';
+require_once __DIR__ . '/framework/helpers/class-helper-payment.php';
+

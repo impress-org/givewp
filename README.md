@@ -8,21 +8,21 @@
 
 ![WordPress version](https://img.shields.io/wordpress/plugin/v/give.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/give.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/give.svg) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/impress-org/give/blob/master/license.txt) ![Wordpress Tests](https://github.com/impress-org/givewp/workflows/WordPress%20Tests/badge.svg?branch=develop)
 
-Welcome to the GiveWP GitHub repository. This is the core repository and heart of an ecosystem of active development. Here you can browse the source, look at open issues, and contribute to the project. 
+Welcome to the GiveWP GitHub repository. This is the core repository and heart of an ecosystem of active development. Here you can browse the source, look at open issues, and contribute to the project.
 
-Many of our add-ons are in public repositories, however, the majority are private. If you have a legitimate need for access, please [reach out to us](https://givewp.com/contact-us/) and we'll be happy to grant you access. As well, we recommend all developers follow the [GiveWP development blog](https://developers.givewp.com) to stay up to date on the latest features and changes. Happy coding!
- 
+Many of our add-ons are in public repositories, however, the majority are private. If you have a legitimate need for access, please [reach out to us](https://givewp.com/contact-us/) and we'll be happy to grant you access.
+
  ## 🙋 Support
- 
+
  This repository is not suitable for WordPress admin or donor support. Please don't use GitHub issues for non-development related support requests. Don't get us wrong, we're more than happy to help you! However, to get the support you need please use the following channels:
 
 * [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all **free** users.
-* [Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**. 
-* [GiveWP Documentation](https://givewp.com/documentation/) - for all **admins**. 
- 
-## 🌱 Getting Started 
+* [Priority Support](https://givewp.com/priority-support/) - exclusively for our **customers**.
+* [GiveWP Documentation](https://givewp.com/documentation/) - for all **admins**.
 
-If you're looking to contribute or actively develop on GiveWP, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development. 
+## 🌱 Getting Started
+
+If you're looking to contribute or actively develop on GiveWP, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development.
 
 Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develop on WordPress, which makes set up quick and easy. If you prefer [Docker](https://www.docker.com/), [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV), or another flavor of local development that's cool too!
 
@@ -31,7 +31,7 @@ Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develo
 * [NPM](https://docs.npmjs.com/) npm command globally available in CLI
 * [Composer](https://getcomposer.org/) composer command globally available in CLI
 
-## 💻 Local Development 
+## 💻 Local Development
 
 To get started developing on the GiveWP platform you will need to perform the following steps:
 
@@ -41,7 +41,7 @@ To get started developing on the GiveWP platform you will need to perform the fo
 4. Run `composer install` to set up dependencies
 5. Run `npm install` to get the necessary npm packages
 6. Activate the plugin in WordPress
-7. Run `npm run watch` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)  
+7. Run `npm run watch` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)
 
 That's it. You're now ready to start development.
 
@@ -60,13 +60,13 @@ That's it. You're now ready to start development.
     ```
      // Enable WP_DEBUG mode
     define( 'WP_DEBUG', true );
-    
+
     // Enable Debug logging to the /wp-content/debug.log file
     define( 'WP_DEBUG_LOG', true );
-   
+
     // Loads unminified core files
     define( 'SCRIPT_DEBUG', true );
     ```
-* Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json). 
-* Your editor should recognize the `.eslintrc` and `.editorconfig` files within the Repo's root directory. Please only submit PRs following those coding style rulesets. 
+* Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json).
+* Your editor should recognize the `.eslintrc` and `.editorconfig` files within the Repo's root directory. Please only submit PRs following those coding style rulesets.
 * Read [CONTRIBUTING.md](https://github.com/impress-org/give/blob/master/CONTRIBUTING.md) - it contains more about contributing to GiveWP.

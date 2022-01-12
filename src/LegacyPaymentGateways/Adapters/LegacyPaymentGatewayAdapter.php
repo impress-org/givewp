@@ -36,14 +36,14 @@ class LegacyPaymentGatewayAdapter
      *
      * @unreleased
      *
-     * @param  array  $request  Donation Data
+     * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
      *
      * @return void
      */
-    public function handleBeforeGateway($request, $registeredGateway)
+    public function handleBeforeGateway($legacyDonationData, $registeredGateway)
     {
-        $formData = FormData::fromRequest($request);
+        $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
@@ -51,8 +51,11 @@ class LegacyPaymentGatewayAdapter
 
         $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
 
-        if (function_exists('Give_Recurring') && Give_Recurring()->is_recurring($formData->formId)) {
-            $subscriptionData = SubscriptionData::fromRequest($request);
+        if (
+            function_exists('Give_Recurring') &&
+            Give_Recurring()->is_donation_recurring($formData->legacyDonationData)
+        ) {
+            $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
             $subscriptionId = $this->createSubscription($donationId, $formData, $subscriptionData);
 
             $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);

@@ -1,6 +1,6 @@
 # Give Unit Tests [![Build Status](https://api.travis-ci.org/impress-org/give.png?branch=master)](https://api.travis-ci.org/impress-org/give)
 
-This folder contains instructions and test code for Give PHPUnit testing.
+This folder contains instructions and test code for Give WordPress unit testing with PHPUnit.
 
 ## Initial Setup
 
@@ -10,48 +10,42 @@ This folder contains instructions and test code for Give PHPUnit testing.
 
     Note: WordPress requires specific version constraints for PHPUnit ( 5.4 >= PHPUNIT <= 7.x ). If you have a different version of PHPUnit installed globally then you can run a per-project version of PHPUnit with `/vendor/bin/phpunit`.
 
-2) Install WordPress and the WP Unit Test library using the `install.sh` script located in `give/tests/bin/` directory. Change to the plugin root directory and type:
+## Testing Environment
 
-    `$ tests/unit/bin/install.sh <db-name> <db-user> <db-password> [db-host]`
+Your WordPress testing environment can be configured in `tests/unit/wp-tests-config.dist.php`.
 
-Sample usage: `$ tests/unit/bin/install.sh give_tests root root`
+If `tests/unit/wp-tests-config.php` does not exist, copy `tests/unit/wp-tests-config.dist.php` as a new file.
 
 If you need to use a socket for your database, then your host will be colon-delimited: `localhost:/path/to/socket`
 
-Note: Running the installer a second time will not update the WordPress configuration. Instead, when making changes to the database and/or database user these values will need to be updated directly in `tmp/wordpress-tests-lib/wp-tests-config.php` (or the relative file on your operating system).
-
 **Important**: The `<db-name>` database will be created if it doesn't exist and all data will be removed during testing.
-
-For more information on how to write PHPUnit Tests, see [PHPUnit's Website](http://www.phpunit.de/manual/3.6/en/writing-tests-for-phpunit.html).
-
-Are you using Pressmatic? Check out this [helpful article](https://tommcfarlin.com/unit-testing-with-pressmatic/) by Tom McFarlin on setting up PHPUnit on Pressmatic. 
 
 ## Running Tests
 
 Change directory to the plugin root directory and run:
 
-    $ phpunit
+    $ composer run test
 
-The tests will execute and you'll be presented with a summary. Code coverage documentation is automatically generated as HTML in the `tmp/coverage` directory.
+The tests will execute and you'll be presented with a summary.
 
-You can run specific tests using `--filter` followed by the class name and method to test:
+You can run specific tests using `--filter` followed by the class name and/or method to test:
 
-    $ phpunit --filter Tests_Templates::test_get_donation_form
+    $ composer run test -- --filter Tests_Templates
 
-A text code coverage summary can be displayed using the `--coverage-text` option:
+    $ composer run test -- --filter test_get_donation_form
 
-    $ phpunit --coverage-text
-
+    $ composer run test -- --filter Tests_Templates::test_get_donation_form
 
 ## Writing Tests
 
 * Each test method should cover a single method or function with one or more assertions
 * A single method or function can have multiple associated test methods if it's a large or complex method
-* Use the test coverage HTML report (under `tmp/coverage/index.html`) to examine which lines your tests are covering and aim for 100%® coverage
 * Prefer `assertsEquals()` where possible as it tests both type & equality
 * Only methods prefixed with `test` will be run so use helper methods liberally to keep test methods small and reduce code duplication.
-* Use data providers where possible. Read more about data providers [here](https://phpunit.de/manual/current/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.data-providers).
+* Use data providers where possible. Read more about [data providers](https://phpunit.de/manual/current/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.data-providers).
 * Filters persist between test cases so be sure to remove them in your test method or in the `tearDown()` method.
+
+For more information on how to write PHPUnit Tests, see [PHPUnit's Website](http://www.phpunit.de/manual/3.6/en/writing-tests-for-phpunit.html).
 
 ## Automated Tests
 

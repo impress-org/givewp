@@ -5,7 +5,21 @@
  */
 class Tests_Email_Tags extends Give_Unit_Test_Case {
 	public function setUp() {
-		parent::setUp();
+
+        $current_user = new WP_User( 1 );
+        $current_user->set_role( 'administrator' );
+        wp_update_user(
+            array(
+                'ID'         => 1,
+                'first_name' => 'Admin',
+                'last_name'  => 'User',
+            )
+        );
+
+        global $wpdb;
+        $wpdb->update("{$wpdb->prefix}give_donors", [ 'name' => 'Admin User' ], [ 'user_id' => 1 ] );
+
+        parent::setUp();
 	}
 
 	public function tearDown() {
@@ -87,7 +101,8 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 2: Full name from user_id.
 		 */
 		$fullname = give_email_tag_fullname( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'Admin User', $fullname );
+
+        $this->assertEquals( 'Admin User', $fullname );
 
 		/*
 		 * Case 3: Full name with filter
