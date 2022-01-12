@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
@@ -49,7 +50,9 @@ class LegacyPaymentGatewayAdapter
 
         $donationId = $this->createPayment($formData->toGiveInsertPaymentData());
 
-        $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
+        $gatewayPaymentData = $registeredGateway instanceof OffSitePaymentGateway ?
+            $formData->toOffsiteGatewayPaymentData($donationId):
+            $formData->toGatewayPaymentData($donationId);
 
         if (
             function_exists('Give_Recurring') &&
