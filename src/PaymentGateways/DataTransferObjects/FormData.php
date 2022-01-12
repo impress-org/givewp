@@ -206,4 +206,26 @@ class FormData
             'billingAddress' => $this->billingAddress,
         ]);
     }
+
+    /**
+     * @param  int  $donationId
+     * @return OffsiteGatewayPaymentData
+     */
+    public function toOffsiteGatewayPaymentData($donationId)
+    {
+        return OffsiteGatewayPaymentData::fromArray([
+            'amount' => $this->amount,
+            'currency' => $this->currency,
+            'date' => $this->date,
+            'price' => $this->price,
+            'priceId' => $this->priceId,
+            'gatewayId' => $this->paymentGateway,
+            'donationId' => $donationId,
+            'purchaseKey' => $this->purchaseKey,
+            'donorInfo' => $this->donorInfo,
+            'cardInfo' => $this->cardInfo,
+            'billingAddress' => $this->billingAddress,
+            'currentUrl' => $this->currentUrl,
+        ]);
+    }
 }
