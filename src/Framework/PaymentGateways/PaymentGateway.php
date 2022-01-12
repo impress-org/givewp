@@ -56,7 +56,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @unreleased
      *
-     * @param  SubscriptionModuleInterface|null  $subscriptionModule
+     * @param SubscriptionModuleInterface|null $subscriptionModule
      */
     public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
     {
@@ -136,8 +136,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @unreleased
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
@@ -177,9 +178,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @unreleased
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
-     * @param  GatewaySubscriptionData  $gatewaySubscriptionData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     * @param GatewaySubscriptionData $gatewaySubscriptionData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewaySubscriptionCommand(
@@ -211,8 +213,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway route method
      *
-     * @param  int  $donationId
-     * @param  string  $method
+     * @param int $donationId
+     * @param string $method
      *
      * @unreleased
      *
@@ -221,7 +223,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayRouteMethod($donationId, $method)
     {
         try {
-            $command = $this->$method();
+            $command = $this->$method($donationId);
 
             if ($command instanceof PaymentComplete) {
                 PaymentCompleteHandler::make($command)->handle($donationId);
@@ -265,9 +267,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @unreleased
      *
-     * @param  string  $gatewayMethod
-     * @param  int  $donationId
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param int $donationId
+     * @param array|null $args
      *
      * @return string
      */
@@ -282,7 +284,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @unreleased
      *
-     * @param  RedirectResponse|JsonResponse  $type
+     * @param RedirectResponse|JsonResponse $type
      */
     public function handleResponse($type)
     {
