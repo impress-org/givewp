@@ -33,6 +33,54 @@
         outline-style: solid;
     }
 
+    button {
+        background-color: #f7f7f7;
+        border-radius: 0.25rem;
+        border: 0.0625rem solid #ccc;
+        border-block-end-width: 0.125rem;
+        color: #555;
+        font-family: inherit;
+        font-size: 0.8125rem;
+        line-height: 1.36;
+        padding-block: 0.5rem;
+        padding-inline: 1.5rem;
+    }
+
+    input[type="checkbox"] {
+        --size: 0.9375em;
+        align-items: center;
+        appearance: none;
+        background-color: #fff;
+        block-size: var(--size);
+        border-radius: 0.3125em;
+        border: 0.09375em solid #ddd;
+        cursor: pointer;
+        display: flex;
+        font-size: 1em;
+        inline-size: var(--size);
+        outline-offset: 0.1em;
+
+        @supports (aspect-ratio: 1) {
+            aspect-ratio: 1;
+        }
+
+        &::before {
+            block-size: 100%;
+            color: #1e8cbe;
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-size: 0.6875rem;
+            font-weight: 900;
+            inline-size: 100%;
+            opacity: 0;
+            transition: opacity 120ms ease-in;
+        }
+
+        &:checked::before {
+            opacity: 1;
+        }
+    }
+
     .visuallyHidden {
         position: absolute;
         width: 1px;

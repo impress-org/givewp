@@ -1,15 +1,15 @@
-import {StrictMode, SyntheticEvent} from 'react';
+import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import {sprintf, __} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 
-import {Button, Checkbox} from './components';
-import {useSelectAll} from './hooks';
 import mockDonations from './mock-donations.json';
 import styles from './admin-donations.module.scss';
 
 declare global {
-    interface Window { GiveDonations: {apiNonce: string, apiRoot: string}; }
+    interface Window {
+        GiveDonations: {apiNonce: string; apiRoot: string};
+    }
 }
 
 type Donation = {
@@ -22,38 +22,30 @@ type Donation = {
     status: string;
 };
 
-function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent> & {target: HTMLFormElement}) {
-    event.preventDefault();
-
-    console.log(new FormData(event.target).getAll('donation'));
-}
-
-async function fetchDonations( apiRoot: string, args: {} = {} ) {
-    let url = apiRoot + '?' + new URLSearchParams( args ).toString();
-    let response = await fetch( url, {
+async function fetchDonations(apiRoot: string, args: {} = {}) {
+    let url = apiRoot + '?' + new URLSearchParams(args).toString();
+    let response = await fetch(url, {
         headers: {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.GiveDonations.apiNonce,
-        }
-    })
-    if( response.ok ) {
+        },
+    });
+    if (response.ok) {
         const result = await response.json();
         return result;
-    }
-    else {
+    } else {
         return false;
     }
 }
 
 function AdminDonations() {
     const [donations, setDonations] = useState(mockDonations);
-    const selectAllRef = useSelectAll('donation');
 
-    useEffect( () => {
-        ( async () => {
+    useEffect(() => {
+        (async () => {
             const donationsResponse = await fetchDonations(window.GiveDonations.apiRoot);
             donationsResponse ? setDonations([...donationsResponse]) : setDonations([...mockDonations]);
-        })()
+        })();
     }, []);
 
     return (
@@ -62,60 +54,34 @@ function AdminDonations() {
                 <h1 className={styles.pageTitle}>{__('Donations', 'give')}</h1>
             </div>
             <div className={styles.pageContent}>
-                <form onSubmit={handleSubmit}>
-                    <Button type="submit">Submit</Button>
-                    <div className={styles.tableContainer}>
-                        <table className={styles.table}>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <label htmlFor="all" className={styles.visuallyHidden}>
-                                            {__('Select All Donations', 'give')}
-                                        </label>
-                                        <Checkbox ref={selectAllRef} id="all" name="all" />
-                                    </th>
-                                    <th>{__('ID', 'give')}</th>
-                                    <th style={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
-                                    <th>{__('Payment Type', 'give')}</th>
-                                    <th>{__('Date / Time', 'give')}</th>
-                                    <th>{__('Donor Name', 'give')}</th>
-                                    <th>{__('Donation Form', 'give')}</th>
-                                    <th>{__('Status', 'give')}</th>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>{__('ID', 'give')}</th>
+                                <th style={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
+                                <th>{__('Payment Type', 'give')}</th>
+                                <th>{__('Date / Time', 'give')}</th>
+                                <th>{__('Donor Name', 'give')}</th>
+                                <th>{__('Donation Form', 'give')}</th>
+                                <th>{__('Status', 'give')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {donations.map((donation: Donation) => (
+                                <tr key={donation.id}>
+                                    <td>{donation.id}</td>
+                                    <td style={{textAlign: 'end'}}>{donation.amount}</td>
+                                    <td>{donation.paymentType}</td>
+                                    <td>{donation.datetime}</td>
+                                    <td>{donation.donorName}</td>
+                                    <td>{donation.donationForm}</td>
+                                    <td>{donation.status}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {donations.map((donation: Donation) => (
-                                    <tr key={donation.id}>
-                                        <td>
-                                            <label
-                                                htmlFor={`donation-${donation.id}`}
-                                                className={styles.visuallyHidden}
-                                            >
-                                                {__(sprintf('Donation %d', donation.id), 'give')}
-                                            </label>
-                                            <Checkbox
-                                                id={`donation${donation.id}`}
-                                                name="donation"
-                                                value={donation.id}
-                                            />
-                                            <div className={styles.rowActions}>
-                                                <a href={"#edit"}>{__('Edit', 'give')}</a>
-                                                <a href="#delete">{__('Delete', 'give')}</a>
-                                            </div>
-                                        </td>
-                                        <td>{donation.id}</td>
-                                        <td style={{textAlign: 'end'}}>{donation.amount}</td>
-                                        <td>{donation.paymentType}</td>
-                                        <td>{donation.datetime}</td>
-                                        <td>{donation.donorName}</td>
-                                        <td>{donation.donationForm}</td>
-                                        <td>{donation.status}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </>
     );
