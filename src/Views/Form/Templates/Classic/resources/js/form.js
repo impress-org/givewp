@@ -165,15 +165,17 @@ function splitDonationLevelAmountsIntoParts({
     //precision = Number.parseInt(window.Give.fn.getGlobalVar('number_decimals')),
 }) {
     document.querySelectorAll('.give-donation-level-btn:not(.give-btn-level-custom)').forEach((node) => {
-        // if the button doesn't have a tooltip, wrap it in one
-        addTooltipToLevel(node);
+        // if the button has custom text display it as a tooltip
+        if (node.innerHTML !== (symbolPosition === 'before' ? symbol + node.value : node.value + symbol)) {
+            addTooltipToLevel(node);
+        }
 
         const amount = node.getAttribute('value');
         const [amountWithoutDecimal, decimalForAmount] = amount.split(decimalSeparator);
 
         // Use the formatted amount as the ARIA label for node and tooltip.
-        const amountWithSymbol = (symbolPosition === 'before') ? `${symbol}${amount}` : `${amount}${symbol}`;
-        if(node.parentNode && node.parentNode.getAttribute('aria-label') == node.getAttribute('aria-label')) {
+        const amountWithSymbol = symbolPosition === 'before' ? `${symbol}${amount}` : `${amount}${symbol}`;
+        if (node.parentNode && node.parentNode.getAttribute('aria-label') == node.getAttribute('aria-label')) {
             node.parentNode.setAttribute('aria-label', amountWithSymbol);
         }
         node.setAttribute('aria-label', amountWithSymbol);
@@ -204,19 +206,16 @@ function splitDonationLevelAmountsIntoParts({
 
 function addTooltipToLevel(node) {
     const parent = node.parentNode;
-    if(!node.getAttribute('has-tooltip')) {
+    if (!node.getAttribute('has-tooltip')) {
         const tooltip = nodeFromString(
-            h(
-                'span',
-                {className: 'give-tooltip hint--top hint--bounce', 'aria-label': node.innerHTML}
-            )
+            h('span', {className: 'give-tooltip hint--top hint--bounce', 'aria-label': node.innerHTML})
         );
-        if(node.innerHTML.length < 50) {
+        if (node.innerHTML.length < 50) {
             tooltip.classList.add('narrow');
         }
         parent.replaceChild(tooltip, node);
         tooltip.appendChild(node);
-        node.setAttribute('has-tooltip', "true");
+        node.setAttribute('has-tooltip', 'true');
     }
 }
 
