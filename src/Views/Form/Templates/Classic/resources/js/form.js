@@ -98,7 +98,7 @@ function addPersonalInfoDescription() {
                     classicTemplateOptions.donor_information.description
                 )
             ),
-            document.querySelector('.give-personal-info-section legend:first-of-type')
+            document.querySelector('#give_checkout_user_info legend:first-of-type')
         );
     }
 }
