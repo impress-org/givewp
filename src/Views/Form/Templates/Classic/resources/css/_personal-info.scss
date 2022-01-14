@@ -1,7 +1,7 @@
 @use 'fn';
 
 .give-personal-info-section {
-    & fieldset {
+    & fieldset:not(.ffm-field-container > fieldset) {
         display: grid;
         grid-template-columns: repeat(12, 1fr);
         column-gap: fn.scaleBetween(1.5rem, 1.6875rem);
