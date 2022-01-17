@@ -11,6 +11,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 use Give\Session\SessionDonation\DonationAccessor;
 
 /**
@@ -62,7 +63,7 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @return RedirectOffsite
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(OffsiteGatewayPaymentData $paymentData)
     {
         return new RedirectOffsite(
             Call::invoke($this->getOffsitePaymentUrlCommand(), $paymentData)
