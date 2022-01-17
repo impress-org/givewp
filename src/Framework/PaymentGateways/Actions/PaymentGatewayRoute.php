@@ -117,10 +117,8 @@ class PaymentGatewayRoute
     private function getSuccessPageUrl($donationId)
     {
         return $this->isOffsitePaymentGateway() ?
-            (new RedirectResponse(
-                (new RedirectOffsiteSuccessPayment($donationId))
-                    ->getUrl((new DonationAccessor())->get()->currentUrl)
-            )) :
+            (new RedirectOffsiteSuccessPayment($donationId))
+                ->getUrl((new DonationAccessor())->get()->currentUrl) :
             give_get_success_page_uri();
     }
 
@@ -134,10 +132,8 @@ class PaymentGatewayRoute
     private function getFailedPageUrl($donationId)
     {
         return $this->isOffsitePaymentGateway() ?
-            (new RedirectResponse(
-                (new RedirectOffsiteFailedPayment($donationId))
-                    ->getUrl((new DonationAccessor())->get()->currentUrl)
-            )) :
+            (new RedirectOffsiteFailedPayment($donationId))
+                ->getUrl((new DonationAccessor())->get()->currentUrl) :
             give_get_failed_transaction_uri();
     }
 
