@@ -61,9 +61,11 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @unreleased
      *
+     * @param GatewayPaymentData|OffsiteGatewayPaymentData $paymentData Payment data
+     *
      * @return RedirectOffsite
      */
-    public function createPayment(OffsiteGatewayPaymentData $paymentData)
+    public function createPayment(GatewayPaymentData $paymentData)
     {
         return new RedirectOffsite(
             Call::invoke($this->getOffsitePaymentUrlCommand(), $paymentData)
