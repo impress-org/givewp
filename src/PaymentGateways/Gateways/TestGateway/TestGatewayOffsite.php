@@ -3,10 +3,10 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\Helpers\Call;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Commands\CreateTestGatewayOffsitePaymentUrlCommand;
@@ -18,13 +18,6 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  */
 class TestGatewayOffsite extends OffSitePaymentGateway
 {
-    /**
-     * @inheritDoc
-     */
-    public $routeMethods = [
-        'testGatewayMethod'
-    ];
-
     /**
      * @inheritDoc
      */
@@ -73,45 +66,20 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @param GatewayPaymentData $paymentData
+     *
+     * @return CreateTestGatewayOffsitePaymentUrlCommand|mixed
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
-
-        return new RedirectOffsite($redirectUrl);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function returnFromOffsiteRedirect()
-    {
-        $transactionId = "test-gateway-transaction-id";
-
-        return new PaymentComplete($transactionId);
-    }
-
-    /**
-     * @return PaymentComplete
-     */
-    public function testGatewayMethod()
-    {
-        $transactionId = "test-gateway-transaction-id";
-
-        return new PaymentComplete($transactionId);
-    }
-
-    /**
-     * @inerhitDoc
-     *
-     * @unreleased
-     *
-     * @return string
-     */
-    protected function getOffsitePaymentUrlCommand()
-    {
-        return CreateTestGatewayOffsitePaymentUrlCommand::class;
+        return new RedirectOffsite(
+            Call::invoke(
+                CreateTestGatewayOffsitePaymentUrlCommand::class,
+                $paymentData
+            )
+        );
     }
 
     /**
@@ -121,7 +89,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      *
      * @return PaymentCommand
      */
-    protected function returnSuccessFromOffsiteRedirect($donationId)
+    public function returnSuccessFromOffsiteRedirect($donationId)
     {
         return new PaymentProcessing();
     }
@@ -133,7 +101,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      *
      * @return void
      */
-    protected function returnFailureFromOffsiteRedirect($donationId)
+    public function returnFailureFromOffsiteRedirect($donationId)
     {
         // TODO: return failed payment command
     }
