@@ -1,0 +1,9 @@
+#currentPageSelector::-webkit-outer-spin-button,
+#currentPageSelector::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#currentPageSelector[type=number] {
+    -moz-appearance: textfield;
+}

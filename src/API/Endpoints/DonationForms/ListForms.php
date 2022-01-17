@@ -49,12 +49,15 @@ class ListForms extends Endpoint
 
     private function constructFormList( $parameters ) {
         $args = array(
-                'number'      => 30,
+                'posts_per_page'      => $parameters['perPage'],
+                'paged' => $parameters['page'],
+                'output'    => 'forms',
+                'post_type' => array( 'give_forms' ),
+                'update_post_meta_cache' => 'false',
         );
-        $form_query = new Give_Forms_Query( $args );
-        $forms = $form_query->get_forms();
+        $form_query = new \WP_Query( $args );
         $results = array();
-        foreach( $forms as $form ) {
+        foreach( $form_query->posts as $form ) {
             $result = new Give_Donate_Form($form->ID);
             //if there are multiple prices, get the highest and lowest
             if( is_array( $result->prices ) ) {
@@ -64,7 +67,7 @@ class ListForms extends Endpoint
                     max($all_prices)
                 );
             }
-            $results[] = (object)[
+            $results[] = (object) array(
                 'id' => $form->ID,
                 'name' => $result->post_title,
                 'amount' => $prices ?: $result->price,
@@ -72,8 +75,11 @@ class ListForms extends Endpoint
                 'donations' => count( give_get_payments( ['give_forms' => $form->ID ] ) ),
                 'datetime' => $result->post_date,
                 'shortcode' => "[give_form id=\"$form->ID\"]"
-            ];
+            );
         }
-        return $results;
+        return (object) array(
+            'forms' => $results,
+            'total' => $form_query->found_posts
+        );
     }
 }

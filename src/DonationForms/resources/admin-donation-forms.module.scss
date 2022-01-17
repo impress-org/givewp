@@ -141,4 +141,16 @@
         padding: 1.5em;
     }
 
+    .paginationContainer {
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-end;
+        align-content: center;
+        margin-block-end: 0.25rem;
+    }
+
+    .totalItems {
+        margin-inline-end: 1rem;
+    }
 }
