@@ -2,12 +2,9 @@
 
 namespace Give\Framework\PaymentGateways\Types;
 
-use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\OffsiteGateway;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 
 /**
  * @unreleased
@@ -36,7 +33,7 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @param int $donationId
      */
-    abstract protected function returnSuccessFromOffsiteRedirect($donationId);
+    abstract public function returnSuccessFromOffsiteRedirect($donationId);
 
     /**
      * Handle failure payment return.
@@ -45,16 +42,5 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @param int $donationId Donation
      */
-    abstract protected function returnFailureFromOffsiteRedirect($donationId);
-
-    /**
-     * Return redirect command (response with payment url) for offsite payment.
-     *
-     * @unreleased
-     *
-     * @param GatewayPaymentData|OffsiteGatewayPaymentData $paymentData Payment data
-     *
-     * @return RedirectOffsite
-     */
-    abstract public function createPayment(GatewayPaymentData $paymentData);
+    abstract public function returnFailureFromOffsiteRedirect($donationId);
 }
