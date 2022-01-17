@@ -23,6 +23,10 @@ class CreateTestGatewayOffsitePaymentUrlCommand implements GatewayCommand
      */
     public function __invoke( OffsiteGatewayPaymentData $offsiteGatewayPaymentData )
     {
-        return $offsiteGatewayPaymentData->redirectUrl;
+        return sprintf(
+            '%1$s?test-offsite-redirect=1&redirect=%2$s',
+            'http://freshdb.test',
+            urlencode( $offsiteGatewayPaymentData->redirectUrl )
+        );
     }
 }
