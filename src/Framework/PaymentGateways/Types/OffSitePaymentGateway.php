@@ -22,6 +22,19 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
     use OffsiteGateway;
 
     /**
+     * This route methods used on gateway route.
+     * Check OffsiteGatewayPaymentData class for more details.
+     *
+     * @unreleased
+     *
+     * @var string[]
+     */
+    public $routeMethods = [
+        'returnSuccessFromOffsiteRedirect',
+        'returnFailureFromOffsiteRedirect'
+    ];
+
+    /**
      * Return command class name which returns offsite payment url.
      *
      * @unreleased
