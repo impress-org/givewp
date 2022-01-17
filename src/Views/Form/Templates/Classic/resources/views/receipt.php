@@ -32,7 +32,7 @@ ob_start();
         <div class="give-form-header">
             <div class="give-form-header-top-wrap">
                 <aside class="give-form-secure-badge">
-                    <svg class="give-form-secure-icon" viewBox="0 0 20 20">
+                    <svg class="give-form-secure-icon">
                         <use href="#give-icon-checkmark"/>
                     </svg>
                     <?= esc_html__('Success', 'give'); ?>!
