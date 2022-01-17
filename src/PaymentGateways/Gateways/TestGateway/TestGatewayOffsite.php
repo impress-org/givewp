@@ -2,11 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Commands\RedirectOffsiteFailedPayment;
-use Give\Framework\PaymentGateways\Commands\RedirectOffsiteSuccessPayment;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -113,5 +112,29 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     protected function getOffsitePaymentUrlCommand()
     {
         return CreateTestGatewayOffsitePaymentUrlCommand::class;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param int $donationId
+     *
+     * @return PaymentCommand
+     */
+    protected function returnSuccessFromOffsiteRedirect($donationId)
+    {
+        return new PaymentProcessing();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param int $donationId
+     *
+     * @return void
+     */
+    protected function returnFailureFromOffsiteRedirect($donationId)
+    {
+        // TODO: return failed payment command
     }
 }

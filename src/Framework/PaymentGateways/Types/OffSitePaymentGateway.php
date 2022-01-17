@@ -31,15 +31,6 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
     ];
 
     /**
-     * Return command class name which returns offsite payment url.
-     *
-     * @unreleased
-     *
-     * @return string
-     */
-    abstract protected function getOffsitePaymentUrlCommand();
-
-    /**
      * Handle successful payment return.
      *
      * @unreleased
@@ -58,7 +49,7 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
     abstract protected function returnFailureFromOffsiteRedirect($donationId);
 
     /**
-     * Return redirect command (payment url) for offsite payment.
+     * Return redirect command (response with payment url) for offsite payment.
      *
      * @unreleased
      *
@@ -66,10 +57,5 @@ abstract class OffSitePaymentGateway extends PaymentGateway implements OffsiteGa
      *
      * @return RedirectOffsite
      */
-    public function createPayment(GatewayPaymentData $paymentData)
-    {
-        return new RedirectOffsite(
-            Call::invoke($this->getOffsitePaymentUrlCommand(), $paymentData)
-        );
-    }
+    abstract public function createPayment(GatewayPaymentData $paymentData);
 }
