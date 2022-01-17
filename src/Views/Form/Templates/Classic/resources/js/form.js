@@ -23,6 +23,9 @@ IS_STRIPE_ACTIVE && setStripeElementStyles();
 
 // Transforms document for classic template
 domIsReady(() => {
+    /* TODO: don’t load this script for the receipt in the first place */
+    if (document.getElementById('give-receipt')) return;
+
     setContainerMode();
     movePersonalInfoSectionAfterDonationAmountSection();
     movePaymentFormInsidePaymentDetailsSection();
