@@ -31,7 +31,6 @@ use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
-use Give_Payment;
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -222,7 +221,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayRouteMethod($donationId, $method)
     {
         try {
-            $this->handleResponse( $this->$method( new Give_Payment( $donationId ) ) );
+            $this->handleResponse( $this->$method( $donationId ) );
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
         } catch (Exception $exception) {

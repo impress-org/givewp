@@ -2,12 +2,16 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
+
+use function Give\Framework\Http\Response\response;
 
 /**
  * Class TestGatewayOffsite
@@ -90,12 +94,17 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     }
 
     /**
-     * @return PaymentComplete
+     * An example gateway method for extending the Gateway API for a given gateway.
+     *
+     * @param int $donationId
+     * @return RedirectResponse|JsonResponse
      */
-    public function testGatewayMethod()
+    public function testGatewayMethod( $donationId )
     {
-        $transactionId = "test-gateway-transaction-id";
+        give_insert_payment_note( $donationId, 'NOTE GOES HERE' );
+        give_update_payment_status( $donationId, 'complete' );
+        give_set_payment_transaction_id( $donationId, "test-gateway-transaction-id" );
 
-        return new PaymentComplete($transactionId);
+        return response()->json();
     }
 }
