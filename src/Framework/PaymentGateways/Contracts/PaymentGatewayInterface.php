@@ -109,16 +109,4 @@ interface PaymentGatewayInterface
         GatewayPaymentData $paymentData,
         GatewaySubscriptionData $subscriptionData
     );
-
-    /**
-     * Handle gateway route method
-     *
-     * @unreleased
-     *
-     * @param  int  $donationId
-     * @param  string  $method
-     *
-     * @return void
-     */
-    public function handleGatewayRouteMethod($donationId, $method);
 }
