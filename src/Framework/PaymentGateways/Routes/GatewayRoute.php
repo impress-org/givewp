@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
+use Give\Framework\PaymentGateways\Actions\PaymentGatewayRoute;
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -52,7 +53,8 @@ class GatewayRoute
                 throw new PaymentGatewayException('The gateway method does not exist.');
             }
 
-            $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
+            ( new PaymentGatewayRoute( $gateway ))
+                ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
         }
     }
 
