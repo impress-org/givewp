@@ -45,8 +45,8 @@ mix.setPublicPath('assets/dist')
     .react()
     .sourceMaps(false)
 
-    .copyDirectory('assets/src/tcpdf-fonts', 'vendor/tecnickcom/tcpdf/fonts')
-    .copyDirectory('assets/src/images', 'assets/dist/images');
+    .copyDirectory('assets/src/images', 'assets/dist/images')
+    .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
 
 mix.webpackConfig({
     externals: {

@@ -34,7 +34,7 @@
         "test": "./vendor/bin/phpunit",
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
-        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/fonts/* vendor/tecnickcom/tcpdf/fonts/"
+        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/"
     },
     "autoload": {
         "psr-4": {
