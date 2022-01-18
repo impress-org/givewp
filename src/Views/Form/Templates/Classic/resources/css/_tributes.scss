@@ -8,17 +8,18 @@
 
     legend,
     .give-tributes-legend {
+        @extend .give-amount-heading;
+        grid-column: span 12;
         margin: 0 !important;
         padding-block: 0.625rem !important;
         padding-inline: 0 !important;
-        font-size: 1.1875rem;
-        font-family: inherit;
-        font-weight: 500;
         line-height: 1.2;
+        inline-size: 100%;
     }
 
     .give-tributes-label {
         display: block;
+        font-weight: 500;
         padding-block: 0.625rem;
         padding-inline: 0;
     }

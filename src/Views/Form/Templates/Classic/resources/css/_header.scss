@@ -92,7 +92,7 @@
     position: relative;
     inset-block-start: -0.04em;
     color: #77d006;
-    block-size: 1.6em;
+    block-size: 1em;
     aspect-ratio: 1;
     @supports not (aspect-ratio: 1) {
         inline-size: 1em;
@@ -186,7 +186,8 @@
     content: '';
     display: block;
     block-size: 100%;
-    inline-size: clamp(0%, var(--progress), 100%);
+    --zero-percent: 0%; /* cssnano will strip this out otherwise */
+    inline-size: clamp(var(--zero-percent), var(--progress), 100%);
     background: linear-gradient(
             180deg,
             var(--give-header-stats-progressbar-color) 0%,
