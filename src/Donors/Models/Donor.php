@@ -5,14 +5,9 @@ namespace Give\Donors\Models;
 use Give\Donors\Repositories\DonorRepository;
 
 /**
- * Class Conor
+ * Class Donor
  *
  * @unreleased
- *
- * @property int $id
- * @property string $created_at
- * @property string $name
- * @property string $email
  */
 class Donor
 {

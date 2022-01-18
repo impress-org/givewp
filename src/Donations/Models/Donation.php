@@ -5,22 +5,13 @@ namespace Give\Donations\Models;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 /**
  * Class Donation
  *
  * @unreleased
- *
- * @property int $id
- * @property string $created_at
- * @property string $updated_at
- * @property string $status
- * @property int $amount
- * @property string $currency
- * @property string $gateway
- * @property string $first_name
- * @property string $last_name
- * @property string $email
  */
 class Donation
 {
@@ -28,6 +19,10 @@ class Donation
      * @var int
      */
     public $id;
+    /**
+     * @var int
+     */
+    public $sequentialId;
     /**
      * @var string
      */
@@ -68,18 +63,26 @@ class Donation
      * @var string
      */
     public $email;
+    /**
+     * @var int
+     */
+    public $parentId;
+    /**
+     * @var int
+     */
+    public $subscriptionId;
 
     /**
      * Find donation by ID
      *
      * @unreleased
      *
-     * @param int $id
+     * @param  int  $id
      * @return Donation
      */
     public function find($id)
     {
-        return  give(DonationRepository::class)->getById($id);
+        return give(DonationRepository::class)->getById($id);
     }
 
     /**
@@ -88,6 +91,18 @@ class Donation
     public function donor()
     {
         return give(DonorRepository::class)->getById($this->donorId);
+    }
+
+    /**
+     * @return Subscription
+     */
+    public function subscription()
+    {
+        if ($this->subscriptionId) {
+            return give(SubscriptionRepository::class)->getById($this->subscriptionId);
+        }
+
+        return give(SubscriptionRepository::class)->getByDonationId($this->id);
     }
 
 }

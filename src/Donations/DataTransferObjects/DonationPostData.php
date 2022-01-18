@@ -27,6 +27,14 @@ class DonationPostData
      * @var string
      */
     private $status;
+    /**
+     * @var int
+     */
+    private $parentId;
+    /**
+     * @var int
+     */
+    private $subscriptionId;
 
     /**
      * Convert data from WP Post to Donation
@@ -43,6 +51,7 @@ class DonationPostData
         $self->createdAt = $post->post_date;
         $self->updatedAt = $post->post_modified;
         $self->status = $post->post_status;
+        $self->parentId = $post->post_parent;
 
         return $self;
     }
@@ -67,6 +76,9 @@ class DonationPostData
         $donation->firstName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_first_name', true);
         $donation->lastName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_last_name', true);
         $donation->email = give()->payment_meta->get_meta($this->id, '_give_payment_donor_email', true);
+        $donation->sequentialId = (int)give()->seq_donation_number->get_serial_number($this->id);
+        $donation->parentId = $this->parentId;
+        $donation->subscriptionId = (int)give()->payment_meta->get_meta($this->id, 'subscription_id', true);
 
         return $donation;
     }
