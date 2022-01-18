@@ -39,7 +39,7 @@
             "@php -r \"file_exists('tests/unit/wp-tests-config.php') || copy('tests/unit/wp-tests-config.dist.php', 'tests/unit/wp-tests-config.php');\""
         ],
         "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
-        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/fonts/* vendor/tecnickcom/tcpdf/fonts/"
+        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/"
     },
     "autoload": {
         "psr-4": {
