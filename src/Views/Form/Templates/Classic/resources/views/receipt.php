@@ -95,7 +95,7 @@ ob_start();
                     }
                     ?>
 
-                        <div class="details-row details-row--<?= _wp_to_kebab_case($lineItem->id) ?>">
+                        <div class="details-row details-row--<?= $lineItem->id ?>">
                         <?= $lineItem->icon; ?>
                             <dt class="detail"><?= $lineItem->label; ?></dt>
                             <dd class="value" data-value="<?= $lineItem->value ?>"><?= $lineItem->value; ?></dd>
