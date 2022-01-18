@@ -91,10 +91,13 @@ window.GiveDonationSummary = {
         $form.find('.fee-break-down-message').hide();
         $form.find('.js-give-donation-summary-fees').toggle(targetNode.checked);
 
+        if (!targetNode.checked) {
+            return;
+        }
+
         // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
-        const fee = document
-            .querySelector('[name="give-fee-amount"]')
-            .value.replace('.', Give.form.fn.getInfo('decimal_separator', $form));
+        const formData = new FormData($form[0]);
+        const fee = formData.get('give-fee-amount');
         $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form));
     },
 
@@ -146,8 +149,9 @@ window.GiveDonationSummary = {
      *
      * @param {string} selectors
      * @param {callable} callback
+     * @param {boolean} callImmediately
      */
-    observe: function (selectors, callback) {
+    observe: function (selectors, callback, callImmediately = true) {
         const targetNode = document.querySelector(selectors);
 
         if (!targetNode) return;
@@ -166,6 +170,10 @@ window.GiveDonationSummary = {
                 }
             }
         }).observe(targetNode, {attributes: true});
+
+        if (callImmediately) {
+            callback(targetNode, $form);
+        }
     },
 
     /**
