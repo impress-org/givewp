@@ -35,10 +35,11 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
-        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
         "post-install-cmd": [
             "@php -r \"file_exists('tests/unit/wp-tests-config.php') || copy('tests/unit/wp-tests-config.dist.php', 'tests/unit/wp-tests-config.php');\""
-        ]
+        ],
+        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
+        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/fonts/* vendor/tecnickcom/tcpdf/fonts/"
     },
     "autoload": {
         "psr-4": {

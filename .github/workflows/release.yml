@@ -101,6 +101,9 @@ jobs:
                 with:
                     php_version: 7.2
 
+            -   name: Copy tcpdf fonts to vendor
+                run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
+
                 # In order to run this WordPress also needs to be installed
             -   name: Generate pot file
                 run: |
@@ -121,7 +124,7 @@ jobs:
                 run: |
                     npm install -g npm@7
                     npm ci
-                    sudo npm run build
+                    npm run build
 
             -   name: WordPress Plugin Deploy
                 id: deploy
