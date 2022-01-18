@@ -8,18 +8,12 @@ use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentAbandonedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
-use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
@@ -221,42 +215,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function handleGatewayRouteMethod($donationId, $method)
     {
         try {
-            $command = $this->$method();
-
-            if ($command instanceof PaymentComplete) {
-                PaymentCompleteHandler::make($command)->handle($donationId);
-                $this->handleResponse(
-                    response()->redirectTo(give_get_success_page_uri())
-                );
-            }
-
-            if ($command instanceof PaymentProcessing) {
-                PaymentProcessingHandler::make($command)->handle($donationId);
-                $this->handleResponse(
-                    response()->redirectTo(give_get_success_page_uri())
-                );
-            }
-
-            if ($command instanceof PaymentAbandoned) {
-                PaymentAbandonedHandler::make($command)->handle($donationId);
-            }
-
-            if ($command instanceof PaymentRefunded) {
-                PaymentRefundedHandler::make($command)->handle($donationId);
-            }
+            $this->handleResponse( $this->$method( $donationId ) );
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
             PaymentGatewayLog::error($exception->getMessage());
-
-            $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
-                'give'
-            );
-
-            $this->handleResponse(response()->json($message));
-            exit;
+            $this->handleResponse(response()->json(
+                __( 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.', 'give' )
+            ));
         }
     }
 
