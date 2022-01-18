@@ -1,6 +1,6 @@
+const feeRecoverySettings = document.querySelector('[name="give-fee-recovery-settings"]')?.value;
 export const IS_FEE_RECOVERY_ACTIVE =
-    'give_fee_recovery_object' in window &&
-    JSON.parse(document.querySelector('[name="give-fee-recovery-settings"]')?.value)?.fee_recovery;
+    'give_fee_recovery_object' in window && feeRecoverySettings && JSON.parse(feeRecoverySettings)?.fee_recovery;
 
 export const IS_RECURRING_ACTIVE = 'Give_Recurring_Vars' in window;
 
