@@ -18,11 +18,11 @@ class DonationPostData
     /**
      * @var string
      */
-    private $created_at;
+    private $createdAt;
     /**
      * @var string
      */
-    private $updated_at;
+    private $updatedAt;
     /**
      * @var string
      */
@@ -40,8 +40,8 @@ class DonationPostData
         $self = new static();
 
         $self->id = $post->ID;
-        $self->created_at = $post->post_date;
-        $self->updated_at = $post->post_modified;
+        $self->createdAt = $post->post_date;
+        $self->updatedAt = $post->post_modified;
         $self->status = $post->post_status;
 
         return $self;
@@ -54,18 +54,18 @@ class DonationPostData
      */
     public function toDonation()
     {
-        $donation =  new Donation();
+        $donation = new Donation();
 
         $donation->id = $this->id;
-        $donation->created_at = $this->created_at;
-        $donation->updated_at = $this->updated_at;
+        $donation->createdAt = $this->createdAt;
+        $donation->updatedAt = $this->updatedAt;
         $donation->status = $this->status;
         $donation->amount = (int)give()->payment_meta->get_meta($this->id, '_give_payment_total', true);
         $donation->currency = give()->payment_meta->get_meta($this->id, '_give_payment_currency', true);
         $donation->gateway = give()->payment_meta->get_meta($this->id, '_give_payment_gateway', true);
-        $donation->donor_id = (int)give()->payment_meta->get_meta($this->id, '_give_payment_donor_id', true);
-        $donation->first_name = give()->payment_meta->get_meta($this->id, '_give_donor_billing_first_name', true);
-        $donation->last_name = give()->payment_meta->get_meta($this->id, '_give_donor_billing_last_name', true);
+        $donation->donorId = (int)give()->payment_meta->get_meta($this->id, '_give_payment_donor_id', true);
+        $donation->firstName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_first_name', true);
+        $donation->lastName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_last_name', true);
         $donation->email = give()->payment_meta->get_meta($this->id, '_give_payment_donor_email', true);
 
         return $donation;

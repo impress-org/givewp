@@ -18,11 +18,11 @@ class DonorObjectData
     /**
      * @var string
      */
-    private $created_at;
+    private $createdAt;
     /**
      * @var int
      */
-    private $user_id;
+    private $userId;
     /**
      * @var string
      */
@@ -44,10 +44,10 @@ class DonorObjectData
         $self = new static();
 
         $self->id = $object->id;
-        $self->user_id = $object->user_id;
+        $self->userId = $object->user_id;
         $self->email = $object->email;
         $self->name = $object->name;
-        $self->created_at = $object->date_created;
+        $self->createdAt = $object->date_created;
 
         return $self;
     }
@@ -59,11 +59,11 @@ class DonorObjectData
      */
     public function toDonor()
     {
-        $donor =  new Donor();
+        $donor = new Donor();
 
         $donor->id = $this->id;
-        $donor->user_id = $this->user_id;
-        $donor->created_at = $this->created_at;
+        $donor->userId = $this->userId;
+        $donor->createdAt = $this->createdAt;
         $donor->name = $this->name;
         $donor->email = $this->email;
 

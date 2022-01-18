@@ -31,11 +31,11 @@ class Donation
     /**
      * @var string
      */
-    public $created_at;
+    public $createdAt;
     /**
      * @var string
      */
-    public $updated_at;
+    public $updatedAt;
     /**
      * @var string
      */
@@ -55,15 +55,15 @@ class Donation
     /**
      * @var int
      */
-    public $donor_id;
+    public $donorId;
     /**
      * @var string
      */
-    public $first_name;
+    public $firstName;
     /**
      * @var string
      */
-    public $last_name;
+    public $lastName;
     /**
      * @var string
      */
@@ -87,7 +87,7 @@ class Donation
      */
     public function donor()
     {
-        return give(DonorRepository::class)->getById($this->donor_id);
+        return give(DonorRepository::class)->getById($this->donorId);
     }
 
 }

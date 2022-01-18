@@ -23,11 +23,11 @@ class Donor
      /**
      * @var int
      */
-    public $user_id;
+    public $userId;
     /**
      * @var string
      */
-    public $created_at;
+    public $createdAt;
      /**
      * @var string
      */
