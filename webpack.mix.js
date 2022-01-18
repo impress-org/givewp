@@ -1,7 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 mix.setPublicPath('assets/dist')
     .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
@@ -37,15 +36,17 @@ mix.setPublicPath('assets/dist')
     .js('src/Log/Admin/index.js', 'js/give-log-list-table-app.js')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
     .js('src/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
-    .js('src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js', 'js/admin-upsell-recurring-donations-settings-tab.js')
+    .js(
+        'src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js',
+        'js/admin-upsell-recurring-donations-settings-tab.js'
+    )
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
     .react()
     .sourceMaps(false)
 
     .copyDirectory('assets/src/tcpdf-fonts', 'vendor/tecnickcom/tcpdf/fonts')
-    .copyDirectory('assets/src/images', 'assets/dist/images')
-    .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
+    .copyDirectory('assets/src/images', 'assets/dist/images');
 
 mix.webpackConfig({
     externals: {
@@ -71,9 +72,9 @@ mix.options({
         terserOptions: {
             format: {
                 comments: false,
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 if (mix.inProduction()) {
@@ -82,10 +83,6 @@ if (mix.inProduction()) {
             new WebpackRTLPlugin({
                 suffix: '-rtl',
                 minify: true,
-            }),
-            new CleanWebpackPlugin({
-                // We clean up he tcpdf directory in the vendor to prevent it from bloating the release file size
-                cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), 'vendor/tecnickcom/tcpdf/fonts/*')],
             }),
         ],
     });
