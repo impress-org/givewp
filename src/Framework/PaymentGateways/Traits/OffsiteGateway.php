@@ -2,11 +2,6 @@
 
 namespace Give\Framework\PaymentGateways\Traits;
 
-use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
-
 trait OffsiteGateway
 {
     /**
@@ -14,12 +9,9 @@ trait OffsiteGateway
      *
      * @unreleased
      *
-     * @return GatewayCommand
-     * @throws PaymentGatewayException|Exception
+     * @inheritDoc
      */
-    public function returnFromOffsiteRedirect() {
-        return new PaymentProcessing();
-    }
+    abstract public function returnFromOffsiteRedirect($donationId);
 
     /**
      * Generate return url from redirect offsite
