@@ -223,13 +223,11 @@ function addTooltipToLevel(node) {
 }
 
 function moveDefaultGatewayDataIntoActiveGatewaySection() {
-    addSelectedGatewayDetails(
-        createGatewayDetails(
-            Array.from(document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)'))
-                .map((node) => node.outerHTML)
-                .join('')
-        )
-    );
+    addSelectedGatewayDetails(createGatewayDetails());
+
+    document
+        .querySelector('.give-gateway-details')
+        .append(...document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)'));
 
     removeNode(document.querySelector('#give_purchase_form_wrap'));
 }
@@ -315,7 +313,8 @@ function splitGatewayResponse() {
 
                 removeNode(document.querySelector('#give_purchase_form_wrap'));
 
-                const gatewayDetails = createGatewayDetails(responseHTML);
+                const gatewayDetails = createGatewayDetails();
+                gatewayDetails.innerHTML = responseHTML;
 
                 // The following both removes the sections from gatewayDetails,
                 // but transplants their content to sections in the form.
@@ -371,7 +370,7 @@ function splitGatewayResponse() {
     });
 }
 
-const createGatewayDetails = (html) => nodeFromString(`<div class="give-gateway-details">${html}</div>`);
+const createGatewayDetails = () => nodeFromString(`<div class="give-gateway-details"></div>`);
 
 const addSelectedGatewayDetails = (gatewayDetailsNode) =>
     document.querySelector('.give-gateway-option-selected > .give-gateway-option').after(gatewayDetailsNode);
