@@ -28,7 +28,7 @@ return [
             [
                 'id'         => 'primary_font',
                 'name'       => __('Primary Font', 'give'),
-                'desc'       => __('A custom Google Font can make the donation form look great but can extra page load. The Theme Font option will use your theme’s font. The System Font option uses the system font of a particular operating system and can boost performance.', 'give'),
+                'desc'       => __('A custom Google Font can make the donation form look great but can increase page load times as well as create a third party dependency. The Theme Font option will use your theme’s font. The System Font option uses the system font of a particular operating system and can boost performance.', 'give'),
                 'type'       => 'select',
                 'options'    => [
                     'system'          => __('User\'s System Font', 'give'),
@@ -101,7 +101,7 @@ return [
             [
                 'id'      => 'secure_badge',
                 'name'    => __('Secure Donation Badge', 'give'),
-                'desc'    => __('If enabled, a badge will display show in the header providing a security reassurement for donors.', 'give'),
+                'desc'    => __('If enabled, a badge will display show in the header providing a security reassurance for donors.', 'give'),
                 'type'    => 'radio',
                 'attributes' => [
                     'class' => 'give-visibility-handler',
@@ -141,7 +141,7 @@ return [
             [
                 'id'      => 'description',
                 'name'    => __('Description', 'give'),
-                'desc'    => __('The description displays below the headline and is designed to remove obstacles from donating. Best practice: use this section to reassure donors that they are making a wise decision. Leave blank to remove. Leave blank to remove.', 'give'),
+                'desc'    => __('The description displays below the headline and is designed to remove obstacles from donating. Best practice: use this section to reassure donors that they are making a wise decision. Leave blank to remove.', 'give'),
                 'type'    => 'textarea',
                 'default' => __('All donations directly impact our organization and help us further our mission.', 'give'),
             ],
@@ -157,7 +157,7 @@ return [
             [
                 'id'      => 'headline',
                 'name'    => __('Headline', 'give'),
-                'desc'    => __('The Headline introduces the section where donors provide information about themselves. Best practice: limit the headline to fewer than one short sentence. Leave blank to remove.', 'give'),
+                'desc'    => __('The Headline introduces the section where donors provide information about themselves. Best practice: limit the headline to one short sentence. Leave blank to remove.', 'give'),
                 'type'    => 'text',
                 'default' => __('Who\'s giving today?', 'give'),
             ],
@@ -239,7 +239,7 @@ return [
                 'name'    => __('Headline', 'give'),
                 'desc'    => __('This message displays in large font on the thank you screen. Best practice: short, sweet, and sincere works best.', 'give'),
                 'type'    => 'text',
-                'default' => __('Hey {name}, thanks for your donation! 🙏', 'give'),
+                'default' => __('Hey {name}, thanks for your donation!', 'give'),
             ],
             [
                 'id'      => 'description',
