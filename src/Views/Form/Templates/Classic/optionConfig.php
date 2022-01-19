@@ -94,7 +94,7 @@ return [
             [
                 'id'      => 'header_background_color',
                 'name'    => __('Header Background Color', 'give'),
-                'desc'    => __('This color is used to tint the background image or as the background color if no image is set.', 'give'),
+                'desc'    => __('This color is used to tint the header image (if set), or be the header color if no image is present, as well as the receipt page header color.', 'give'),
                 'type'    => 'colorpicker',
                 'default' => '#1E8CBE',
             ],
