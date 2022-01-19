@@ -104,7 +104,7 @@ class SubscriptionObjectData
     public function toSubscription()
     {
         global $wpdb;
-        
+
         $subscription = new Subscription();
 
         $subscription->id = $this->id;
@@ -120,7 +120,7 @@ class SubscriptionObjectData
         $subscription->status = $this->status;
         $subscription->gatewaySubscriptionId = $this->gatewaySubscriptionId;
         $subscription->notes = $wpdb->get_results(
-            "SELECT comment_date, comment_content FROM $wpdb->comments WHERE comment_post_ID = '13' AND comment_type = 'give_sub_note' ORDER BY comment_date DESC"
+            "SELECT comment_date, comment_content FROM $wpdb->comments WHERE comment_post_ID = {$this->id} AND comment_type = 'give_sub_note' ORDER BY comment_date DESC"
         );
 
         return $subscription;
