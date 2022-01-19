@@ -40,26 +40,44 @@ async function fetchForms(args: {} = {}) {
 }
 
 function AdminDonationForms() {
-    const [donationForms, setDonationForms] = useState(mockDonationForms);
-    const [count, setCount] = useState(2);
-    const [page, setPage] = useState(1);
+    const [state, setState] = useState({
+        donationForms: [...mockDonationForms],
+        count: 0,
+        page: 1
+    });
     const perPage = 10;
 
     useEffect(() => {
         (async () => {
-            const donationsResponse = await fetchForms({page: page, perPage: perPage});
+            const donationsResponse = await fetchForms({page: state.page, perPage: perPage});
             if (donationsResponse) {
-                setDonationForms([...donationsResponse.forms]);
-                setCount(donationsResponse.total);
+                setState((prevState) => {
+                    return {
+                        ...prevState,
+                        donationForms: [...donationsResponse.forms],
+                        count: donationsResponse.total
+                    }
+                });
             } else {
-                setDonationForms([...mockDonationForms]);
+                setState((prevState) => {
+                    return {
+                        ...prevState,
+                        donationForms: [...mockDonationForms],
+                        count: 2
+                    }
+                });
             }
         })()
-    }, [page]);
+    }, [state.page]);
 
     function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent> & { target: HTMLFormElement }) {
         event.preventDefault();
-        setPage(parseInt(event.target.currentPageSelector.value));
+        setState((prevState) => {
+            return {
+                ...prevState,
+                page: parseInt(event.target.currentPageSelector.value)
+            }
+        });
     }
 
     return (
@@ -71,12 +89,19 @@ function AdminDonationForms() {
                 <form onSubmit={handleSubmit}>
                     <button type="submit">Submit</button>
                     <nav className={styles.paginationContainer}>
-                        <span className={styles.totalItems}>{count.toString() + " forms"}</span>
+                        <span className={styles.totalItems}>{state.count.toString() + " forms"}</span>
                         <Pagination
-                            currentPage={page}
-                            totalPages={Math.ceil(count / perPage)}
+                            currentPage={state.page}
+                            totalPages={Math.ceil(state.count / perPage)}
                             disabled={false}
-                            setPage={setPage}
+                            setPage={(page) => {
+                                setState((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        page: page
+                                    }
+                                });
+                            }}
                         />
                     </nav>
                 </form>
@@ -93,7 +118,7 @@ function AdminDonationForms() {
                         </tr>
                         </thead>
                         <tbody>
-                        {donationForms.map((form) => (
+                        {state.donationForms.map((form) => (
                             <tr key={form.id}>
                                 <td>{form.name}</td>
                                 <td style={{textAlign: 'end'}}>{form.amount}</td>
