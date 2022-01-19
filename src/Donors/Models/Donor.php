@@ -2,8 +2,6 @@
 
 namespace Give\Donors\Models;
 
-use Give\Donors\Repositories\DonorRepository;
-
 /**
  * Class Donor
  *
@@ -40,9 +38,9 @@ class Donor
      * @param $id
      * @return Donor
      */
-    public function find($id)
+    public static function find($id)
     {
-        return give(DonorRepository::class)->getById($id);
+        return give()->donorRepository->getById($id);
     }
 
 }

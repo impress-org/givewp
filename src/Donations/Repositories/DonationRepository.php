@@ -22,3 +22,4 @@ class DonationRepository
         return DonationPostData::fromPost($donationPost)->toDonation();
     }
 }
+

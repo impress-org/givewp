@@ -31,10 +31,6 @@ class DonationPostData
      * @var int
      */
     private $parentId;
-    /**
-     * @var int
-     */
-    private $subscriptionId;
 
     /**
      * Convert data from WP Post to Donation

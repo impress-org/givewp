@@ -2,11 +2,8 @@
 
 namespace Give\Donations\Models;
 
-use Give\Donations\Repositories\DonationRepository;
 use Give\Donors\Models\Donor;
-use Give\Donors\Repositories\DonorRepository;
 use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 /**
  * Class Donation
@@ -80,9 +77,9 @@ class Donation
      * @param  int  $id
      * @return Donation
      */
-    public function find($id)
+    public static function find($id)
     {
-        return give(DonationRepository::class)->getById($id);
+        return give()->donationRepository->getById($id);
     }
 
     /**
@@ -90,7 +87,7 @@ class Donation
      */
     public function donor()
     {
-        return give(DonorRepository::class)->getById($this->donorId);
+        return give()->donorRepository->getById($this->donorId);
     }
 
     /**
@@ -99,10 +96,10 @@ class Donation
     public function subscription()
     {
         if ($this->subscriptionId) {
-            return give(SubscriptionRepository::class)->getById($this->subscriptionId);
+            return give()->subscriptionRepository->getById($this->subscriptionId);
         }
 
-        return give(SubscriptionRepository::class)->getByDonationId($this->id);
+        return give()->subscriptionRepository->getByDonationId($this->id);
     }
 
 }
