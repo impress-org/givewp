@@ -58,7 +58,11 @@ function setContainerMode() {
 }
 
 function moveTestModeMessage() {
-    document.querySelector('.give-payment-mode-label').after(document.querySelector('#give_error_test_mode'));
+    const testModeMessage = document.querySelector('#give_error_test_mode');
+
+    if (testModeMessage) {
+        document.querySelector('.give-payment-mode-label').after(testModeMessage);
+    }
 }
 
 function movePersonalInfoSectionAfterDonationAmountSection() {
@@ -114,10 +118,14 @@ function setPaymentDetailsTitle() {
 }
 
 function addPaymentDetailsDescription() {
-    insertAfter(
-        nodeFromString(h('p', {className: 'give-payment-details-description'})),
-        document.querySelector('.give-payment-mode-label')
-    );
+    if (classicTemplateOptions.payment_information.description) {
+        insertAfter(
+            nodeFromString(
+                `<p class="give-payment-mode-description">${classicTemplateOptions.payment_information.description}</p>`
+            ),
+            document.querySelector('.give-payment-mode-label')
+        );
+    }
 }
 
 function movePaymentFormInsidePaymentDetailsSection() {
