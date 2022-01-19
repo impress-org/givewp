@@ -80,10 +80,16 @@ function moveDonateNowButtonSectionAfterDonationAmountSection() {
 }
 
 function moveDonationSummaryAfterDonationAmountSection() {
-    insertAfter(
-        document.querySelector('.give-donation-form-summary-section'),
-        document.querySelector('.give-payment-details-section')
-    );
+    const donationSummary = document.querySelector('.give-donation-form-summary-section');
+    const paymentDetails = document.querySelector('.give-payment-details-section');
+
+    if (donationSummary.closest('.give-donate-now-button-section')) {
+        // Move when inside give-donate-now-button-section
+        insertAfter(donationSummary, paymentDetails);
+    } else if (donationSummary.closest('.give-personal-info-section')) {
+        // Move to before gateway section inside give-personal-info-section
+        paymentDetails.parentNode.insertBefore(donationSummary, paymentDetails);
+    }
 
     updateDonationSummaryAmount();
 }
