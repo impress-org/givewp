@@ -18,6 +18,7 @@ type DonationForm = {
     amount: number | [number, number];
     goal: string | number;
     donations: number;
+    revenue: number;
     datetime: string;
     shortcode: string;
 };
@@ -89,7 +90,7 @@ function AdminDonationForms() {
                 <form onSubmit={handleSubmit}>
                     <button type="submit">Submit</button>
                     <nav className={styles.paginationContainer}>
-                        <span className={styles.totalItems}>{state.count.toString() + " forms"}</span>
+                        <span className={styles.totalItems}>{state.count.toString() + __(' forms', 'give')}</span>
                         <Pagination
                             currentPage={state.page}
                             totalPages={Math.ceil(state.count / perPage)}
@@ -113,6 +114,7 @@ function AdminDonationForms() {
                             <th style={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
                             <th>{__('Goal', 'give')}</th>
                             <th>{__('Donations', 'give')}</th>
+                            <th>{__('Revenue', 'give')}</th>
                             <th>{__('Shortcode', 'give')}</th>
                             <th>{__('Date', 'give')}</th>
                         </tr>
@@ -124,6 +126,7 @@ function AdminDonationForms() {
                                 <td style={{textAlign: 'end'}}>{form.amount}</td>
                                 <td>{form.goal ? form.goal : 'No Goal Set'}</td>
                                 <td>{form.donations}</td>
+                                <td>{form.revenue}</td>
                                 <td>{form.shortcode}</td>
                                 <td>{form.datetime}</td>
                             </tr>

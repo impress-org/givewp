@@ -47,7 +47,7 @@ class ListForms extends Endpoint
         );
     }
 
-    private function constructFormList( $parameters ) {
+    protected function constructFormList( $parameters ) {
         $args = array(
                 'posts_per_page'      => $parameters['perPage'],
                 'paged' => $parameters['page'],
@@ -73,6 +73,7 @@ class ListForms extends Endpoint
                 'amount' => $prices ?: $result->price,
                 'goal' => $result->goal,
                 'donations' => count( give_get_payments( ['give_forms' => $form->ID ] ) ),
+                'revenue' => give_get_form_earnings_stats( $form->ID ),
                 'datetime' => $result->post_date,
                 'shortcode' => "[give_form id=\"$form->ID\"]"
             );
