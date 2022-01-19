@@ -5,5 +5,5 @@
     --give-header-background-color--for-rgb: <?= hexdec(substr($headerBackgroundColor, 1, 2)) ?>, <?= hexdec(substr($headerBackgroundColor, 3, 2)) ?>, <?= hexdec(substr($headerBackgroundColor, 5, 2)) ?>;
     <?php endif; ?>
     --give-header-stats-progressbar-color: <?= $statsProgressBarColor ?>;
-    --give-primary-font: <?= $primaryFont; ?>;
+    --give-primary-font: '<?= $primaryFont; ?>';
 }
