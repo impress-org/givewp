@@ -33,14 +33,14 @@ function give_add_options_links() {
     // Payments
     /* @var WP_Post_Type $give_payment */
     $give_payment = get_post_type_object('give_payment');
-    //$give_payments_page = add_submenu_page(
-    //	'edit.php?post_type=give_forms',
-    //	$give_payment->labels->name,
-    //	$give_payment->labels->menu_name,
-    //	'edit_give_payments',
-    //	'give-payment-history',
-    //	'give_payment_history_page'
-    //);
+    $give_payments_page = add_submenu_page(
+    	'edit.php?post_type=give_forms',
+    	$give_payment->labels->name,
+    	$give_payment->labels->menu_name,
+    	'edit_give_payments',
+    	'give-payment-history',
+    	'give_payment_history_page'
+    );
 
     // Donors
     $give_donors_page = add_submenu_page(
