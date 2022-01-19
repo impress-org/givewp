@@ -3,7 +3,7 @@
 namespace Give\Subscriptions\Models;
 
 /**
- * Class Donor
+ * Class Subscription
  *
  * @unreleased
  */

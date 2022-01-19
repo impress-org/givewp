@@ -31,7 +31,7 @@ class Donor
     public $email;
 
     /**
-     * Find donation by ID
+     * Find donor by ID
      *
      * @unreleased
      *
