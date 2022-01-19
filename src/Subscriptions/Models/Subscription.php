@@ -58,7 +58,7 @@ class Subscription
      */
     public $gatewaySubscriptionId;
     /**
-     * @var string
+     * @var array
      */
     public $notes;
 
