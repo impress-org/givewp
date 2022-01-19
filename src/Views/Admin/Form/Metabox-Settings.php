@@ -46,7 +46,7 @@ echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
         </p>
         <p class="give-field-description form-template-description"><?php
             _e(
-                'Form Templates are built-in ways of changing the appearance of a GiveWP form on your site. Each template has a different design, layout, and features. Choose the one that suits your taste and the requirements for your cause. Note: compatibility with add-ons and third-party plugins or themes is not guaranteed. Always thoroughly test your donation forms before going live!',
+                'Form Templates allow you to change the appearance of a GiveWP donation form on your site. Each template has a different design, layout, and features. Choose the one that suits your taste and the requirements for your cause. Note: compatibility with add-ons and third-party plugins or themes is not guaranteed. Always thoroughly test your donation forms before going live!',
                 'give'
             ); ?></p>
 
