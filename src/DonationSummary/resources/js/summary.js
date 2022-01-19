@@ -21,6 +21,8 @@ window.GiveDonationSummary = {
     },
 
     /**
+     * Recurring frequency
+     *
      * @since 2.17.0
      */
     initFrequency: function () {
@@ -42,7 +44,19 @@ window.GiveDonationSummary = {
             }
         });
 
-        // Admin Defined Recurring
+        // Admin Defined Recurring - "Set Donation"
+        GiveDonationSummary.observe('[name="_give_is_donation_recurring"]', function (targetNode, $form) {
+            const isRecurring = targetNode.value;
+            const adminChoice = document.querySelector('.give-recurring-admin-choice');
+
+            if (isRecurring && adminChoice) {
+                $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
+                $form.find('[data-tag="frequency"]').toggle(!isRecurring);
+                $form.find('[data-tag="recurring"]').html(adminChoice.textContent);
+            }
+        });
+
+        // Admin Defined Recurring - "Multi-level"
         GiveDonationSummary.observe('[name="give-price-id"]', function (targetNode, $form) {
             const priceID = targetNode.value;
             const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');

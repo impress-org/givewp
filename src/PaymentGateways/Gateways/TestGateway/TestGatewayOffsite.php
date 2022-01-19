@@ -2,12 +2,14 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
+
+use function Give\Framework\Http\Response\response;
 
 /**
  * Class TestGatewayOffsite
@@ -74,28 +76,47 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
+        // This will allow you to overload returnFromOffsiteRedirect($donationId)
         $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
 
         return new RedirectOffsite($redirectUrl);
     }
 
     /**
+     * An example of using the provided offsite method of returning from a redirect.
+     *
      * @inheritDoc
      */
-    public function returnFromOffsiteRedirect()
+    public function returnFromOffsiteRedirect($donationId)
     {
-        $transactionId = "test-gateway-transaction-id";
+        $this->updateDonation($donationId);
 
-        return new PaymentComplete($transactionId);
+        return response()->redirectTo(give_get_success_page_uri());
     }
 
     /**
-     * @return PaymentComplete
+     * An example gateway method for extending the Gateway API for a given gateway.
+     *
+     * @param  int  $donationId
+     * @return JsonResponse
      */
-    public function testGatewayMethod()
+    public function testGatewayMethod($donationId)
     {
-        $transactionId = "test-gateway-transaction-id";
+        $this->updateDonation($donationId);
 
-        return new PaymentComplete($transactionId);
+        return response()->json();
+    }
+
+    /**
+     * Helper for updating donation
+     *
+     * @param $donationId
+     * @return void
+     */
+    private function updateDonation($donationId)
+    {
+        give_insert_payment_note($donationId, 'NOTE GOES HERE');
+        give_update_payment_status($donationId);
+        give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
     }
 }
