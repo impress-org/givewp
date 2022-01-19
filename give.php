@@ -43,7 +43,7 @@
 
 use Give\Container\Container;
 use Give\Donations\Repositories\DonationRepository;
-use Give\Donations\ServiceProvider as DonationsServiceProvider;
+use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Donors\Repositories\DonorRepository;
@@ -176,7 +176,7 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
-        DonationsServiceProvider::class,
+        DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class
     ];
