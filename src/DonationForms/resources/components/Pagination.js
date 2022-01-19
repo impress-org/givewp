@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import styles from './Pagination.module.css';
+import {useState, useEffect} from 'react';
+import styles from './Pagination.module.scss';
+import cx from 'classnames';
 
 const {__} = wp.i18n;
 
@@ -9,7 +10,7 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
 
     useEffect(() => {
         setPageInput(currentPage);
-    },[currentPage]);
+    }, [currentPage]);
 
     if (1 >= totalPages) {
         return null;
@@ -19,86 +20,89 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
     const previousPage = parseInt(currentPage) - 1;
 
     return (
-        <div className="tablenav bottom">
-            <div className="tablenav-pages">
-                <div className="pagination-links">
-                    {previousPage > 0 ? (
-                        <>
-                            <a
-                                href="#"
-                                className="tablenav-pages-navspan button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (!disabled) {
-                                        setPage(1);
-                                    }
-                                }}
-                            >
-                                «
-                            </a>{' '}
-                            <a
-                                href="#"
-                                className="tablenav-pages-navspan button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (!disabled) {
-                                        setPage(parseInt(currentPage) - 1);
-                                    }
-                                }}
-                            >
-                                ‹
-                            </a>
-                        </>
-                    ) : (
-                        <span className="tablenav-pages-navspan button disabled">‹</span>
-                    )}
+        <nav className={styles.container}>
+            {previousPage > 0 ? (
+                <>
+                    <a
+                        href="#"
+                        className={cx(styles.navDirection, styles.navElement)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (!disabled) {
+                                setPage(1);
+                            }
+                        }}
+                    >
+                        «
+                    </a>{' '}
+                    <a
+                        href="#"
+                        className={cx(styles.navDirection, styles.navElement)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (!disabled) {
+                                setPage(parseInt(currentPage) - 1);
+                            }
+                        }}
+                    >
+                        ‹
+                    </a>
+                </>
+            ) : (
+                <>
+                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>«</span>
+                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>‹</span>
+                </>
+            )}
 
-                    <span id="table-paging" className="paging-input">
-                        <label htmlFor="current-page-selector" className="screen-reader-text">Current Page</label>
-                        <input className="current-page" id={styles.currentPageSelector} name={'currentPageSelector'} type="number" min={0} max={totalPages} value={pageInput}
-                               onChange={(e) => {
-                                   setPageInput(e.target.value);
-                               }}
-                        />
-                        <span className="tablenav-paging-text">
-                            {' '}
-                            {__('of', 'give')} <span className="total-pages">{totalPages}</span>{' '}
-                        </span>
-                    </span>
+            <span id="table-paging" className="paging-input">
+                <label htmlFor="current-page-selector" className={styles.visuallyHidden}>Current Page</label>
+                <input className={styles.navElement} id={styles.currentPage} name={'currentPageSelector'}
+                       type="number" min={0} max={totalPages} value={pageInput}
+                       onChange={(e) => {
+                           setPageInput(e.target.value);
+                       }}
+                />
+                <span className="tablenav-paging-text">
+                    {' '}
+                    {__('of', 'give')} <span className="total-pages">{totalPages}</span>{' '}
+                </span>
+            </span>
 
-                    {nextPage <= totalPages ? (
-                        <>
-                            <a
-                                href="#"
-                                className="tablenav-pages-navspan button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (!disabled) {
-                                        setPage(parseInt(currentPage) + 1);
-                                    }
-                                }}
-                            >
-                                ›
-                            </a>{' '}
-                            <a
-                                href="#"
-                                className="tablenav-pages-navspan button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (!disabled) {
-                                        setPage(totalPages);
-                                    }
-                                }}
-                            >
-                                »
-                            </a>
-                        </>
-                    ) : (
-                        <span className="tablenav-pages-navspan button disabled">›</span>
-                    )}
-                </div>
-            </div>
-        </div>
+            {nextPage <= totalPages ? (
+                <>
+                    <a
+                        href="#"
+                        className={cx(styles.navDirection, styles.navElement)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (!disabled) {
+                                setPage(parseInt(currentPage) + 1);
+                            }
+                        }}
+                    >
+                        ›
+                    </a>{' '}
+                    <a
+                        href="#"
+                        className={cx(styles.navDirection, styles.navElement)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (!disabled) {
+                                setPage(totalPages);
+                            }
+                        }}
+                    >
+                        »
+                    </a>
+                </>
+            ) : (
+                <>
+                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>›</span>
+                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>»</span>
+                </>
+            )}
+        </nav>
     );
 };
 

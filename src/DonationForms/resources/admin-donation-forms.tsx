@@ -30,7 +30,7 @@ async function fetchForms(args: {} = {}) {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.GiveDonationForms.apiNonce,
         }
-    })
+    });
     if (response.ok) {
         const result = await response.json();
         console.log(result);
