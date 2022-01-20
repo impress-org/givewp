@@ -21,6 +21,8 @@ window.GiveDonationSummary = {
     },
 
     /**
+     * Recurring frequency
+     *
      * @since 2.17.0
      */
     initFrequency: function () {
@@ -31,6 +33,15 @@ window.GiveDonationSummary = {
         );
 
         // Admin Defined Recurring
+        GiveDonationSummary.observe('[name="give-price-id"]', GiveDonationSummary.handleAdminDefinedRecurringFrequency);
+
+        // Admin Defined Recurring - "Set Donation"
+        GiveDonationSummary.observe(
+            '[name="_give_is_donation_recurring"]',
+            GiveDonationSummary.handleAdminDefinedSetDonationFrequency
+        );
+
+        // Admin Defined Recurring - "Multi-level"
         GiveDonationSummary.observe('[name="give-price-id"]', GiveDonationSummary.handleAdminDefinedRecurringFrequency);
     },
 
@@ -74,6 +85,17 @@ window.GiveDonationSummary = {
             $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
             $form.find('[data-tag="frequency"]').toggle(!isRecurring);
             $form.find('[data-tag="recurring"]').toggle(isRecurring).html(periodLabel);
+        }
+    },
+
+    handleAdminDefinedSetDonationFrequency: function (targetNode, $form) {
+        const isRecurring = targetNode.value;
+        const adminChoice = document.querySelector('.give-recurring-admin-choice');
+
+        if (isRecurring && adminChoice) {
+            $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
+            $form.find('[data-tag="frequency"]').toggle(!isRecurring);
+            $form.find('[data-tag="recurring"]').html(adminChoice.textContent);
         }
     },
 

@@ -34,7 +34,6 @@
         "autoprefixer": "^9.5.0",
         "axios-mock-adapter": "^1.18.2",
         "babel-loader": "^8.2.2",
-        "clean-webpack-plugin": "^4.0.0",
         "cypress": "^8.7.0",
         "jest": "^24.9.0",
         "jest-puppeteer": "^4.4.0",
