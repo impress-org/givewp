@@ -25,7 +25,6 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
                 className={cx(styles.navDirection, styles.navElement)}
                 disabled={previousPage <= 1}
                 onClick={(e) => {
-                    e.preventDefault();
                     if (!disabled) {
                         setPage(1);
                     }
@@ -37,7 +36,6 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
                 className={cx(styles.navDirection, styles.navElement)}
                 disabled={previousPage <= 0}
                 onClick={(e) => {
-                    e.preventDefault();
                     if (!disabled) {
                         setPage(parseInt(currentPage) - 1);
                     }
@@ -63,7 +61,6 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
                 className={cx(styles.navDirection, styles.navElement)}
                 disabled={nextPage > totalPages}
                 onClick={(e) => {
-                    e.preventDefault();
                     if (!disabled) {
                         setPage(parseInt(currentPage) + 1);
                     }
@@ -75,7 +72,6 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
                 className={cx(styles.navDirection, styles.navElement)}
                 disabled={nextPage > totalPages - 1}
                 onClick={(e) => {
-                    e.preventDefault();
                     if (!disabled) {
                         setPage(totalPages);
                     }
