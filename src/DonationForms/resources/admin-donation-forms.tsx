@@ -1,6 +1,7 @@
-import {StrictMode, SyntheticEvent, useEffect, useState} from 'react';
+import {StrictMode, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {__} from '@wordpress/i18n';
+import cx from 'classnames';
 
 import styles from './admin-donation-forms.module.scss';
 import mockDonationForms from './mock-donation-forms.json';
@@ -29,11 +30,10 @@ async function fetchForms(args: {} = {}) {
         headers: {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.GiveDonationForms.apiNonce,
-        }
+        },
     });
     if (response.ok) {
         const result = await response.json();
-        console.log(result);
         return result;
     } else {
         return false;
@@ -44,7 +44,7 @@ function AdminDonationForms() {
     const [state, setState] = useState({
         donationForms: [...mockDonationForms],
         count: 0,
-        page: 1
+        page: 1,
     });
     const perPage = 10;
 
@@ -56,86 +56,114 @@ function AdminDonationForms() {
                     return {
                         ...prevState,
                         donationForms: [...donationsResponse.forms],
-                        count: donationsResponse.total
-                    }
+                        count: donationsResponse.total,
+                    };
                 });
             } else {
                 setState((prevState) => {
                     return {
                         ...prevState,
                         donationForms: [...mockDonationForms],
-                        count: 2
-                    }
+                        count: 2,
+                    };
                 });
             }
-        })()
+        })();
     }, [state.page]);
 
-    function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent> & { target: HTMLFormElement }) {
-        event.preventDefault();
-        setState((prevState) => {
-            return {
-                ...prevState,
-                page: parseInt(event.target.currentPageSelector.value)
-            }
-        });
+    function deleteForm() {
+        // TODO
     }
 
     return (
-        <>
+        <article>
             <div className={styles.pageHeader}>
                 <h1 className={styles.pageTitle}>{__('Donation Forms', 'give')}</h1>
+                <a href="post-new.php?post_type=give_forms" className={styles.button}>
+                    Add Form
+                </a>
             </div>
             <div className={styles.pageContent}>
-                <form onSubmit={handleSubmit}>
-                    <button type="submit">Submit</button>
-                    <nav className={styles.paginationContainer}>
-                        <span className={styles.totalItems}>{state.count.toString() + __(' forms', 'give')}</span>
-                        <Pagination
-                            currentPage={state.page}
-                            totalPages={Math.ceil(state.count / perPage)}
-                            disabled={false}
-                            setPage={(page) => {
-                                setState((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        page: page
-                                    }
-                                });
-                            }}
-                        />
-                    </nav>
-                </form>
-                <div className={styles.tableContainer}>
+                <nav className={styles.paginationContainer}>
+                    <span className={styles.totalItems}>{state.count.toString() + __(' forms', 'give')}</span>
+                    <Pagination
+                        currentPage={state.page}
+                        totalPages={Math.ceil(state.count / perPage)}
+                        disabled={false}
+                        setPage={(page) => {
+                            setState((prevState) => {
+                                return {
+                                    ...prevState,
+                                    page: page,
+                                };
+                            });
+                        }}
+                    />
+                </nav>
+                <div role="group" aria-labelledby="giveDonationFormsTableCaption" className={styles.tableGroup}>
                     <table className={styles.table}>
+                        <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
+                            {__('Donation Forms', 'give')}
+                        </caption>
                         <thead>
-                        <tr>
-                            <th>{__('Name', 'give')}</th>
-                            <th style={{textAlign: 'end'}}>{__('Amount', 'give')}</th>
-                            <th>{__('Goal', 'give')}</th>
-                            <th>{__('Donations', 'give')}</th>
-                            <th>{__('Revenue', 'give')}</th>
-                            <th>{__('Shortcode', 'give')}</th>
-                            <th>{__('Date', 'give')}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {state.donationForms.map((form) => (
-                            <tr key={form.id}>
-                                <td>{form.name}</td>
-                                <td style={{textAlign: 'end'}}>{form.amount}</td>
-                                <td>{form.goal ? form.goal : 'No Goal Set'}</td>
-                                <td>{form.donations}</td>
-                                <td>{form.revenue}</td>
-                                <td>{form.shortcode}</td>
-                                <td>{form.datetime}</td>
+                            <tr>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Name', 'give')}
+                                </th>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    style={{textAlign: 'end'}}
+                                >
+                                    {__('Amount', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Goal', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Donations', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Revenue', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Shortcode', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="ascending" className={styles.tableColumnHeader}>
+                                    {__('Date', 'give')}
+                                </th>
                             </tr>
-                        ))}
+                        </thead>
+                        <tbody className={styles.tableContent}>
+                            {state.donationForms.map((form) => (
+                                <tr key={form.id} className={styles.tableRow}>
+                                    <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
+                                        <a href={`post.php?post=${form.id}&action=edit`}>{form.name}</a>
+                                        <div role="group" aria-label={__('Actions', 'give')}>
+                                            <a href={`post.php?post=${form.id}&action=edit`} className={styles.action}>
+                                                Edit <span className="give-visually-hidden">{form.name}</span>
+                                            </a>
+                                            <button type="button" onClick={deleteForm} className={styles.action}>
+                                                Delete <span className="give-visually-hidden">{form.name}</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <td className={styles.tableCell} style={{textAlign: 'end'}}>
+                                        {form.amount}
+                                    </td>
+                                    <td className={styles.tableCell}>{form.goal ? form.goal : 'No Goal Set'}</td>
+                                    <td className={styles.tableCell}>{form.donations}</td>
+                                    <td className={styles.tableCell}>{form.revenue}</td>
+                                    <td className={styles.tableCell}>{form.shortcode}</td>
+                                    <td className={styles.tableCell}>{form.datetime}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </div>
-        </>
+        </article>
     );
 }
 

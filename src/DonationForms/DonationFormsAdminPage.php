@@ -42,6 +42,13 @@ class DonationFormsAdminPage
                 'apiNonce' => wp_create_nonce('wp_rest'),
             ]
         );
+
+        wp_enqueue_style(
+            'give-admin-ui-font',
+            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
+            [],
+            null
+        );
     }
 
     /**
