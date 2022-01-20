@@ -12,7 +12,7 @@ class DonorRepository
      *
      * @unreleased
      *
-     * @param int $donorId
+     * @param  int  $donorId
      * @return Donor
      */
     public function getById($donorId)

@@ -83,6 +83,8 @@ class Donation
     }
 
     /**
+     * @unreleased
+     *
      * @return Donor
      */
     public function donor()
@@ -91,6 +93,8 @@ class Donation
     }
 
     /**
+     * @unreleased
+     *
      * @return Subscription
      */
     public function subscription()

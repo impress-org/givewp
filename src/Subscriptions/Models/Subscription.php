@@ -2,6 +2,9 @@
 
 namespace Give\Subscriptions\Models;
 
+use Give\Donations\Models\Donation;
+use Give\Donors\Models\Donor;
+
 /**
  * Class Subscription
  *
@@ -73,6 +76,22 @@ class Subscription
     public static function find($id)
     {
         return give()->subscriptionRepository->getById($id);
+    }
+
+    /**
+     * @return Donor
+     */
+    public function donor()
+    {
+        return give()->donorRepository->getById($this->donorId);
+    }
+
+    /**
+     * @return Donation[]
+     */
+    public function donations()
+    {
+        return give()->donationRepository->getBySubscriptionId($this->id);
     }
 
 }
