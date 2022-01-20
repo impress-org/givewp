@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\DataTransferObjects;
 
 /**
  * Class GatewaySubscriptionData
- * @unreleased
+ * @since 2.18.0
  */
 class GatewaySubscriptionData
 {
@@ -30,7 +30,7 @@ class GatewaySubscriptionData
     /**
      * Convert data from array into DTO
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return self
      */

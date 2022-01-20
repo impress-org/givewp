@@ -10,6 +10,7 @@
 namespace Give\Form;
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Views\Form\Templates\Classic\Classic;
 use Give\Views\Form\Templates\Legacy\Legacy;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
 
@@ -51,12 +52,12 @@ class Templates
          * @since 2.7.0
          *
          * @param Template[]
-         *
          */
         $this->templates = apply_filters(
             'give_register_form_template',
             [
                 'sequoia' => Sequoia::class,
+                'classic' => Classic::class,
                 'legacy' => Legacy::class,
             ]
         );

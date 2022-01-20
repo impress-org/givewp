@@ -25,6 +25,12 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
+
+        // Ensure server variable is set for WP email functions.
+        if (!isset($_SERVER['SERVER_NAME'])) {
+            $_SERVER['SERVER_NAME'] = 'localhost';
+        }
+
 		self::$saved_settings = Give_Cache_Setting::get_settings();
 
 		parent::setUp();

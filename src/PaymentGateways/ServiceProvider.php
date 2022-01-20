@@ -6,7 +6,6 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
-use Give\PaymentGateways\Actions\RegisterPaymentGatewayRoutes;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -15,7 +14,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
  *
  * The Service Provider for loading the Payment Gateways for Payment Flow 2.0
  *
- * @unreleased
+ * @since 2.18.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

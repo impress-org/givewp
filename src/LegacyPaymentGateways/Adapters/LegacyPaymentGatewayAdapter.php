@@ -11,7 +11,7 @@ use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
  * Class LegacyPaymentGatewayAdapter
- * @unreleased
+ * @since 2.18.0
  */
 class LegacyPaymentGatewayAdapter
 {
@@ -19,7 +19,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Get legacy form field markup to display gateway specific payment fields
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $formId
      * @param  PaymentGatewayInterface  $registeredGateway
@@ -34,16 +34,16 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased
+     * @since 2.18.0
      *
-     * @param  array  $request  Donation Data
+     * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
      *
      * @return void
      */
-    public function handleBeforeGateway($request, $registeredGateway)
+    public function handleBeforeGateway($legacyDonationData, $registeredGateway)
     {
-        $formData = FormData::fromRequest($request);
+        $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
@@ -51,8 +51,11 @@ class LegacyPaymentGatewayAdapter
 
         $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
 
-        if (function_exists('Give_Recurring') && Give_Recurring()->is_recurring($formData->formId)) {
-            $subscriptionData = SubscriptionData::fromRequest($request);
+        if (
+            function_exists('Give_Recurring') &&
+            Give_Recurring()->is_donation_recurring($formData->legacyDonationData)
+        ) {
+            $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
             $subscriptionId = $this->createSubscription($donationId, $formData, $subscriptionData);
 
             $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);
@@ -66,7 +69,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Create the payment
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GiveInsertPaymentData  $giveInsertPaymentData
      *
@@ -83,7 +86,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Create the payment
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @param  FormData  $formData
@@ -102,7 +105,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Validate Gateway Nonce
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayNonce
      */

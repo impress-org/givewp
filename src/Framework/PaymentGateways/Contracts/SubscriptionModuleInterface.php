@@ -11,7 +11,7 @@ interface SubscriptionModuleInterface
     /**
      * Create a subscription with gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayPaymentData  $paymentData
      * @param  GatewaySubscriptionData  $subscriptionData

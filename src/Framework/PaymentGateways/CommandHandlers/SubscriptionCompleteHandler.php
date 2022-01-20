@@ -8,7 +8,7 @@ use Give_Subscriptions_DB;
 
 class SubscriptionCompleteHandler  {
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  SubscriptionComplete  $subscriptionComplete
      * @param  int  $subscriptionId
@@ -33,7 +33,7 @@ class SubscriptionCompleteHandler  {
     }
 
      /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @return Give_Subscriptions_DB
      */
@@ -46,7 +46,7 @@ class SubscriptionCompleteHandler  {
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $subscriptionId
      *

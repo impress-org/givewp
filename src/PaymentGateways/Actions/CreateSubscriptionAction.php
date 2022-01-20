@@ -11,14 +11,14 @@ use Give_Donor;
 
 /**
  * Class CreateSubscriptionAction
- * @unreleased
+ * @since 2.18.0
  */
 class CreateSubscriptionAction
 {
     /**
      * Processes the recurring donation form and sends sets up the subscription data for hand-off to the gateway.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @param  FormData  $formData
@@ -62,7 +62,7 @@ class CreateSubscriptionAction
     /**
      * Get or create donor
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  DonorInfo  $donorInfo
      *
@@ -96,7 +96,7 @@ class CreateSubscriptionAction
     /**
      * Records subscription donations in the database and creates a give_payment record.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @param  int  $donorId

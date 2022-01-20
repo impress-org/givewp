@@ -1,0 +1,66 @@
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.give-hidden:not(label) {
+    display: none;
+}
+
+.screen-reader-text,
+.visually-hidden,
+label.give-hidden {
+    @include visually-hidden;
+}
+
+@import 'variables';
+@import 'reset';
+
+// Icons
+@import '~@givewp/fontawesome/fontawesome';
+@import '~@givewp/fontawesome/regular';
+@import '~@givewp/fontawesome/solid';
+@import '~@givewp/fontawesome/brands';
+@import '~@givewp/hint.css';
+@import 'icons';
+
+// Context
+@import 'page';
+@import 'section';
+
+// Common (e.g. reusable components)
+@import 'button';
+@import 'tooltip';
+@import 'label';
+@import 'text-input';
+@import 'checkbox';
+@import 'radio';
+@import 'legacy-consumer';
+@import 'grid';
+
+// Specifics
+@import 'header';
+@import 'donation-amount';
+@import 'personal-info';
+@import 'payment-details';
+@import 'donation-summary';
+@import 'donate-now';
+@import 'errors-notices';
+@import 'terms';
+
+// Receipt
+@import 'receipt';
+
+// Addons
+@import 'currencyswitcher';
+@import 'funds';
+@import 'tributes';
+@import 'ffm';
+@import 'stripe-checkout-modal';

@@ -29,7 +29,7 @@ jobs:
             mysql56:
                 image: mysql:5.6
                 env:
-                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_ROOT_PASSWORD: N0Tweak!@123!
                 ports:
                     - 3306
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -74,7 +74,7 @@ jobs:
                     case "$MYSQL_VERSION" in
                       'mysql:5.6')
                         MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
-                        MYSQL_PASS=root
+                        MYSQL_PASS=N0Tweak!@123!
                         ;;
                       'mysql:8.0')
                         MYSQL_PORT=${{ job.services.mysql80.ports[3306] }}
@@ -93,4 +93,3 @@ jobs:
                 run: php -d memory_limit=-1 vendor/bin/phpunit
                 env:
                     DB_PORT: ${{ env.mysql_port }}
-

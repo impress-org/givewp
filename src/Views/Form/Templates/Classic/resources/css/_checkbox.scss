@@ -1,0 +1,34 @@
+@mixin give-checkbox {
+    appearance: none;
+    content: '';
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    block-size: 1.25rem;
+    aspect-ratio: 1;
+    @supports not (aspect-ratio: 1) {
+        inline-size: 1.25rem;
+    }
+    border: 0.0625rem solid #b4b9be;
+    box-shadow: inset 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+
+    &::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        opacity: 0;
+        transition: opacity 200ms ease-in-out;
+        color: var(--give-primary-color);
+    }
+
+    &:checked::after {
+        opacity: 1;
+    }
+}
+
+.form-row input[type='checkbox'] {
+    @include give-checkbox;
+}

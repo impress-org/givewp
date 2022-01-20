@@ -1,0 +1,14 @@
+.give-icon-question {
+    @extend .far;
+    @extend .fa-question-circle;
+}
+
+.give-icon-plus {
+    @extend .fas;
+    @extend .fa-plus-circle;
+}
+
+.give-icon-minus {
+    @extend .fas;
+    @extend .fa-minus-circle;
+}
