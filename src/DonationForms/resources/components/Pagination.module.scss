@@ -33,7 +33,7 @@
         transition-duration: .05s;
         transition-timing-function: ease-in-out;
 
-        &:not(.disabled):hover {
+        &:not(:disabled):hover {
             background: rgba(240, 240, 241);
             border-color: rgba(10, 75, 120);
             color: rgba(10, 75, 120);
@@ -54,7 +54,7 @@
         text-align: center;
     }
 
-    .disabled {
+    .navElement:disabled {
         color: rgba(167, 170, 173);
         border-color: rgba(220, 220, 222);
         background: rgba(246, 247, 247);

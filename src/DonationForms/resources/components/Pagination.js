@@ -20,88 +20,69 @@ const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
     const previousPage = parseInt(currentPage) - 1;
 
     return (
-        <nav className={styles.container}>
-            {previousPage > 0 ? (
-                <>
-                    <a
-                        href="#"
-                        className={cx(styles.navDirection, styles.navElement)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (!disabled) {
-                                setPage(1);
-                            }
-                        }}
-                    >
-                        «
-                    </a>{' '}
-                    <a
-                        href="#"
-                        className={cx(styles.navDirection, styles.navElement)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (!disabled) {
-                                setPage(parseInt(currentPage) - 1);
-                            }
-                        }}
-                    >
-                        ‹
-                    </a>
-                </>
-            ) : (
-                <>
-                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>«</span>
-                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>‹</span>
-                </>
-            )}
-
-            <span id="table-paging" className="paging-input">
-                <label htmlFor="current-page-selector" className={styles.visuallyHidden}>Current Page</label>
+        <nav aria-label={__('donation forms table', 'give')} className={styles.container}>
+            <button
+                className={cx(styles.navDirection, styles.navElement)}
+                disabled={previousPage <= 1}
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (!disabled) {
+                        setPage(1);
+                    }
+                }}
+            >
+                «
+            </button>
+            <button
+                className={cx(styles.navDirection, styles.navElement)}
+                disabled={previousPage <= 0}
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (!disabled) {
+                        setPage(parseInt(currentPage) - 1);
+                    }
+                }}
+            >
+                ‹
+            </button>
+            <span>
+                <label htmlFor={styles.currentPage}
+                       className={styles.visuallyHidden}>{__('Current Page', 'give')}</label>
                 <input className={styles.navElement} id={styles.currentPage} name={'currentPageSelector'}
                        type="number" min={0} max={totalPages} value={pageInput}
                        onChange={(e) => {
                            setPageInput(e.target.value);
                        }}
                 />
-                <span className="tablenav-paging-text">
+                <span>
                     {' '}
-                    {__('of', 'give')} <span className="total-pages">{totalPages}</span>{' '}
+                    {__('of', 'give')} <span>{totalPages}</span>{' '}
                 </span>
             </span>
-
-            {nextPage <= totalPages ? (
-                <>
-                    <a
-                        href="#"
-                        className={cx(styles.navDirection, styles.navElement)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (!disabled) {
-                                setPage(parseInt(currentPage) + 1);
-                            }
-                        }}
-                    >
-                        ›
-                    </a>{' '}
-                    <a
-                        href="#"
-                        className={cx(styles.navDirection, styles.navElement)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (!disabled) {
-                                setPage(totalPages);
-                            }
-                        }}
-                    >
-                        »
-                    </a>
-                </>
-            ) : (
-                <>
-                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>›</span>
-                    <span className={cx(styles.navDirection, styles.navElement, styles.disabled)}>»</span>
-                </>
-            )}
+            <button
+                className={cx(styles.navDirection, styles.navElement)}
+                disabled={nextPage > totalPages}
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (!disabled) {
+                        setPage(parseInt(currentPage) + 1);
+                    }
+                }}
+            >
+                ›
+            </button>
+            <button
+                className={cx(styles.navDirection, styles.navElement)}
+                disabled={nextPage > totalPages - 1}
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (!disabled) {
+                        setPage(totalPages);
+                    }
+                }}
+            >
+                »
+            </button>
         </nav>
     );
 };
