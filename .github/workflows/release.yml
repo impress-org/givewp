@@ -83,6 +83,7 @@ jobs:
     release:
         name: New release
         runs-on: ubuntu-18.04
+        environment: live
         needs: tests
         steps:
             -   name: Checkout code
@@ -100,9 +101,6 @@ jobs:
                 with:
                     php_version: 7.2
 
-            -   name: Copy tcpdf fonts to vendor
-                run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
-
                 # In order to run this WordPress also needs to be installed
             -   name: Generate pot file
                 run: |
@@ -114,6 +112,9 @@ jobs:
                 with:
                     php_version: 7.2
                     dev: no
+
+            -   name: Copy tcpdf fonts to vendor
+                run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
 
             -   uses: actions/setup-node@v2
                 with:

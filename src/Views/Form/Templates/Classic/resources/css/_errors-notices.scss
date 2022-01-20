@@ -1,0 +1,78 @@
+@use 'fn';
+
+// This is specifically where the errors display after the header
+.give-form-header + .give_errors.give_notices {
+    display: grid;
+    row-gap: 1rem;
+    padding-block-start: fn.scaleBetween(1.75rem, 3.375rem);
+    padding-inline: fn.scaleBetween(1rem, 4.375rem);
+}
+
+// Base error/notice class
+.give_error,
+.give_notice {
+    align-items: stretch;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    border: 0.0625rem solid rgb(0 0 0 / 0.05);
+    box-shadow: 0 0 0.5em rgb(0 0 0 / 0.1);
+    color: #444;
+    column-gap: 0.5rem;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.3;
+    padding-block: 0.625rem;
+    padding-inline: 0.75rem;
+    position: relative;
+
+    &::before {
+        --border: 0.0625rem solid rgb(0 0 0 / 0.05);
+        align-items: center;
+        background-color: var(--color);
+        border-block: var(--border);
+        border-end-start-radius: inherit;
+        border-inline-start: var(--border);
+        border-start-start-radius: inherit;
+        color: rgb(0 0 0 / 0.5);
+        content: var(--icon);
+        display: flex;
+        flex-shrink: 0;
+        font-family: 'Font Awesome 5 Free';
+        font-size: 0.9em;
+        font-weight: 900;
+        justify-content: center;
+        line-height: 1;
+        margin-block: calc(-0.625em - 0.0625rem);
+        margin-inline-start: calc(-0.75rem - 0.0625rem);
+        padding-inline: 0.75em;
+    }
+}
+
+.give-notice-close {
+    block-size: 1.5rem;
+    cursor: pointer;
+    inset-block-start: 0.1rem;
+    inset-inline-end: 0.1rem;
+    position: absolute;
+}
+
+// Styes for error and notice types
+#give_error_test_mode {
+    margin-bottom: 0.9rem;
+}
+
+.give_error {
+    --color: #ff3c00;
+    --icon: '\f12a';
+}
+
+.give_success {
+    --color: #0eca46;
+    --icon: '\f129';
+}
+
+.give_warning {
+    --color: #ffba00;
+    --icon: '\f129';
+}

@@ -268,6 +268,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @since 2.9.6 Added an explicit ORDER BY on which to apply a DESC order.
+     * @since 2.18.0 Updated sales calculation so that the results are ordered as integers.
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
@@ -282,7 +283,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$give_forms = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
+				"SELECT {$meta_table['column']['id']} as form_id, max(ABS(meta_value)) as sales
 				FROM {$meta_table['name']} WHERE meta_key='_give_form_sales' AND meta_value > 0
 				GROUP BY meta_value+0
 				ORDER BY sales DESC

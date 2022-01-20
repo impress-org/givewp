@@ -10,185 +10,188 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+use Give\Log\Log;
+
+if ( ! defined('ABSPATH') ) {
+    exit;
 }
 
-if ( ! class_exists( 'Give_License' ) ) :
+if ( ! class_exists('Give_License') ) :
 
-	/**
-	 * Give_License Class
-	 *
-	 * This class simplifies the process of adding license information
-	 * to new Give add-ons.
-	 *
-	 * @since 1.0
-	 */
-	class Give_License {
+    /**
+     * Give_License Class
+     *
+     * This class simplifies the process of adding license information
+     * to new Give add-ons.
+     *
+     * @since 1.0
+     */
+    class Give_License
+    {
 
-		/**
-		 * File
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private $file;
+        /**
+         * File
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private $file;
 
-		/**
-		 * License
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private $license;
+        /**
+         * License
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private $license;
 
-		/**
-		 * Item name
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private $item_name;
+        /**
+         * Item name
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private $item_name;
 
-		/**
-		 * Item ID
-		 *
-		 * @access private
-		 * @since  2.2.4
-		 *
-		 * @var    int
-		 */
-		private $item_id;
+        /**
+         * Item ID
+         *
+         * @access private
+         * @since  2.2.4
+         *
+         * @var    int
+         */
+        private $item_id;
 
-		/**
-		 * License Information object.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @var    object
-		 */
-		private $license_data;
+        /**
+         * License Information object.
+         *
+         * @access private
+         * @since  1.7
+         *
+         * @var    object
+         */
+        private $license_data;
 
-		/**
-		 * Item shortname
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private $item_shortname;
+        /**
+         * Item shortname
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private $item_shortname;
 
-		/**
-		 * Version
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private $version;
+        /**
+         * Version
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private $version;
 
-		/**
-		 * Author
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private $author;
+        /**
+         * Author
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private $author;
 
-		/**
-		 * Plugin directory name
-		 *
-		 * @access private
-		 * @since  2.5.0
-		 *
-		 * @var    string
-		 */
-		private $plugin_dirname;
+        /**
+         * Plugin directory name
+         *
+         * @access private
+         * @since  2.5.0
+         *
+         * @var    string
+         */
+        private $plugin_dirname;
 
-		/**
-		 * Website URL
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private static $site_url = 'https://givewp.com/';
+        /**
+         * Website URL
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private static $site_url = 'https://givewp.com/';
 
-		/**
-		 * API URL
-		 *
-		 * @access private
-		 * @since  1.0
-		 *
-		 * @var    string
-		 */
-		private static $api_url = 'https://givewp.com/edd-sl-api/';
+        /**
+         * API URL
+         *
+         * @access private
+         * @since  1.0
+         *
+         * @var    string
+         */
+        private static $api_url = 'https://givewp.com/edd-sl-api/';
 
-		/**
-		 * array of licensed addons
-		 *
-		 * @since  2.1.4
-		 * @access private
-		 *
-		 * @var    array
-		 */
-		private static $licensed_addons = [];
+        /**
+         * array of licensed addons
+         *
+         * @since  2.1.4
+         * @access private
+         *
+         * @var    array
+         */
+        private static $licensed_addons = [];
 
-		/**
-		 * Account URL
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @var null|string
-		 */
-		private static $account_url = 'http://docs.givewp.com/settings-account';
+        /**
+         * Account URL
+         *
+         * @access private
+         * @since  1.7
+         *
+         * @var null|string
+         */
+        private static $account_url = 'http://docs.givewp.com/settings-account';
 
-		/**
-		 * Downloads URL
-		 *
-		 * @access private
-		 * @since  2.5.0
-		 *
-		 * @var null|string
-		 */
-		private static $downloads_url = 'http://docs.givewp.com/settings-downloads';
+        /**
+         * Downloads URL
+         *
+         * @access private
+         * @since  2.5.0
+         *
+         * @var null|string
+         */
+        private static $downloads_url = 'http://docs.givewp.com/settings-downloads';
 
-		/**
-		 * Checkout URL
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @var null|string
-		 */
-		private static $checkout_url = 'https://givewp.com/checkout/';
+        /**
+         * Checkout URL
+         *
+         * @access private
+         * @since  1.7
+         *
+         * @var null|string
+         */
+        private static $checkout_url = 'https://givewp.com/checkout/';
 
-		/**
-		 * Class Constructor
-		 *
-		 * Set up the Give License Class.
-		 *
-		 * @access public
-		 *
-		 * @param string $_file
-		 * @param string $_item_name
-		 * @param string $_version
-		 * @param string $_author
-		 * @param string $_optname
-		 * @param string $_api_url
+        /**
+         * Class Constructor
+         *
+         * Set up the Give License Class.
+         *
+         * @access public
+         *
+         * @param string $_file
+         * @param string $_item_name
+         * @param string $_version
+         * @param string $_author
+         * @param string $_optname
+         * @param string $_api_url
 		 * @param string $_checkout_url
 		 * @param string $_account_url
 		 * @param int    $_item_id
@@ -277,118 +280,140 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Get license information.
-		 *
-		 * @param string $edd_action
-		 * @param bool   $response_in_array
-		 *
-		 * @return mixed
-		 * @deprecated 2.5.0 Use self::request_license_api instead.
-		 *
-		 * @since      1.8.9
-		 * @access     public
-		 */
-		public function get_license_info( $edd_action = '', $response_in_array = false ) {
+         *
+         * @param string $edd_action
+         * @param bool $response_in_array
+         *
+         * @return mixed
+         * @deprecated 2.5.0 Use self::request_license_api instead.
+         *
+         * @since      1.8.9
+         * @access     public
+         */
+        public function get_license_info($edd_action = '', $response_in_array = false)
+        {
+            if ( empty($edd_action) ) {
+                return false;
+            }
 
-			if ( empty( $edd_action ) ) {
-				return false;
-			}
+            give_doing_it_wrong(__FUNCTION__, 'Use self::request_license_api instead from GiveWP 2.5.0');
 
-			give_doing_it_wrong( __FUNCTION__, 'Use self::request_license_api instead from GiveWP 2.5.0' );
+            // Data to send to the API.
+            $api_params = [
+                'edd_action' => $edd_action, // never change from "edd_" to "give_"!
+                'license'    => $this->license,
+                'item_name'  => urlencode($this->item_name),
+            ];
 
-			// Data to send to the API.
-			$api_params = [
-				'edd_action' => $edd_action, // never change from "edd_" to "give_"!
-				'license'    => $this->license,
-				'item_name'  => urlencode( $this->item_name ),
-			];
+            return self::request_license_api($api_params, $response_in_array);
+        }
 
-			return self::request_license_api( $api_params, $response_in_array );
-		}
-
-		/**
-		 * Return licensed addons info
-		 *
-		 * Note: note only for internal logic
-		 *
-		 * @return array
-		 * @since 2.1.4
-		 */
-		static function get_licensed_addons() {
-			return self::$licensed_addons;
-		}
+        /**
+         * Return licensed addons info
+         *
+         * Note: note only for internal logic
+         *
+         * @since 2.1.4
+         * @return array
+         */
+        static function get_licensed_addons()
+        {
+            return self::$licensed_addons;
+        }
 
 
-		/**
-		 * Check if license key attached to subscription
-		 *
-		 * @param string $license_key
-		 *
-		 * @return array
-		 * @since 2.5.0
-		 */
-		static function is_subscription( $license_key = '' ) {
-			// Check if current license is part of subscription or not.
-			$subscriptions = get_option( 'give_subscriptions' );
-			$subscription  = [];
+        /**
+         * Check if license key attached to subscription
+         *
+         * @since 2.5.0
+         *
+         * @param string $license_key
+         *
+         * @return array
+         */
+        static function is_subscription($license_key = '')
+        {
+            // Check if current license is part of subscription or not.
+            $subscriptions = get_option('give_subscriptions');
+            $subscription  = [];
 
-			if ( $subscriptions ) {
-				foreach ( $subscriptions as $subs ) {
-					if ( in_array( $license_key, $subs['licenses'] ) ) {
-						$subscription = $subs;
-						break;
-					}
-				}
-			}
+            if ( $subscriptions ) {
+                foreach ($subscriptions as $subs) {
+                    if ( in_array($license_key, $subs['licenses']) ) {
+                        $subscription = $subs;
+                        break;
+                    }
+                }
+            }
 
-			return $subscription;
-		}
+            return $subscription;
+        }
 
-		/**
-		 * Get license information.
-		 *
-		 * @param array $api_params
-		 * @param bool  $response_in_array
-		 *
-		 * @return array|WP_Error
-		 * @since  1.8.9
-		 * @access public
-		 */
-		public static function request_license_api( $api_params = [], $response_in_array = false ) {
-			// Bailout.
-			if ( empty( $api_params['edd_action'] ) ) {
-				return new WP_Error( 'give-invalid-edd-action', __( 'Valid edd_action not defined', 'give' ) );
-			}
+        /**
+         * Get license information.
+         *
+         * @since  1.8.9
+         * @since 2.18.0 log failed license api request information
+         *
+         * @param bool $response_in_array
+         *
+         * @param array $api_params
+         *
+         * @return array|WP_Error
+         */
+        public static function request_license_api($api_params = [], $response_in_array = false)
+        {
+            // Bailout.
+            if ( empty($api_params['edd_action']) ) {
+                return new WP_Error('give-invalid-edd-action', __('Valid edd_action not defined', 'give'));
+            }
 
-			// Data to send to the API.
-			$default_api_params = [
-				// 'edd_action' => $edd_action, never change from "edd_" to "give_"!
-				// 'license'    => $this->license,
-				// 'item_name'  => urlencode( $this->item_name ),
-				'url' => home_url(),
-			];
+            // Data to send to the API.
+            $default_api_params = [
+                // 'edd_action' => $edd_action, never change from "edd_" to "give_"!
+                // 'license'    => $this->license,
+                // 'item_name'  => urlencode( $this->item_name ),
+                'url' => home_url(),
+            ];
 
-			$api_params = wp_parse_args( $api_params, $default_api_params );
+            $api_params = wp_parse_args($api_params, $default_api_params);
 
-			// Call the API.
-			$response = wp_remote_post(
-				self::$api_url,
-				apply_filters(
-					'give_request_license_api_args',
-					[
-						'timeout'   => 15,
-						'sslverify' => false,
-						'body'      => $api_params,
-					]
-				)
-			);
+            // Call the API.
+            $response = wp_remote_post(
+                self::$api_url,
+                apply_filters(
+                    'give_request_license_api_args',
+                    [
+                        'timeout'   => 15,
+                        'sslverify' => false,
+                        'body'      => $api_params,
+                    ]
+                )
+            );
 
-			// Make sure there are no errors.
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
+            $statusCode = wp_remote_retrieve_response_code($response);
+            $body       = json_decode(wp_remote_retrieve_body($response), $response_in_array);
 
-			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
-		}
+            if ( 200 !== $statusCode ) {
+                Log::http(
+                    'License Api request failed',
+                    [
+                        'category'    => 'License',
+                        'api url'     => self::$api_url,
+                        'request'     => $api_params,
+                        'status code' => $statusCode,
+                        'response'    => $response
+                    ]
+                );
+            }
+
+            // Make sure there are no errors.
+            if ( is_wp_error($response) ) {
+                return $response;
+            }
+
+            return $body;
+        }
 
 		/**
 		 * Get license by plugin dirname

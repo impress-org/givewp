@@ -92,7 +92,8 @@
         "react-select": "^3.1.0",
         "styled-components": "^5.2.1",
         "swr": "^0.4.1",
-        "uiblocker": "latest"
+        "uiblocker": "latest",
+        "vhtml": "^2.2.0"
     },
     "volta": {
         "node": "12.22.6",

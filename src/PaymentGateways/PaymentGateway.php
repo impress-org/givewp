@@ -15,27 +15,27 @@ interface PaymentGateway
     /**
      * Returns a unique ID for the gateway
      *
+     * @return string
      * @since 2.9.0
      *
-     * @return string
      */
     public function getId();
 
     /**
-     * Returns a human readable name for the gateway
-     *
-     * @since 2.9.0
+     * Returns a human-readable name for the gateway
      *
      * @return string
+     * @since 2.9.0
+     *
      */
     public function getName();
 
     /**
-     * Returns a human readable label for use when a donor selects a payment method to use
-     *
-     * @since 2.9.0
+     * Returns a human-readable label for use when a donor selects a payment method to use
      *
      * @return string
+     * @since 2.9.0
+     *
      */
     public function getPaymentMethodLabel();
 

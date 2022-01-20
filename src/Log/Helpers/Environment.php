@@ -13,12 +13,12 @@ class Environment
     /**
      * Check if current page is logs page.
      *
-     * @since 1.0.0
      * @return bool
+     * @since 1.0.0
      */
     public static function isLogsPage()
     {
-        if ( ! isset($_GET['page'], $_GET['tab'])) {
+        if (!isset($_GET['page'], $_GET['tab'])) {
             return false;
         }
 
@@ -27,5 +27,15 @@ class Environment
         }
 
         return false;
+    }
+
+    /**
+     * @since 2.18.0
+     *
+     * @return bool
+     */
+    public static function isDebugLoggingEnabled()
+    {
+        return defined('WP_DEBUG_LOG') && WP_DEBUG_LOG;
     }
 }
