@@ -1,0 +1,52 @@
+@mixin give-radio {
+    --size: 1.25em;
+
+    position: relative;
+    appearance: none;
+    margin: 0;
+    content: '';
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 1em;
+    transition: box-shadow 200ms ease-in-out;
+    border-radius: 9999px;
+    background-color: #fff;
+
+    &::before,
+    &::after {
+        content: '';
+        display: block;
+        border-radius: inherit;
+    }
+
+    &::before {
+        width: var(--size);
+        height: var(--size);
+
+        box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.25);
+        border: 0.0625em solid #b4b9be;
+    }
+
+    &::after {
+        width: calc(var(--size) * 0.375);
+        height: calc(var(--size) * 0.375);
+
+        position: absolute;
+        top: 50%;
+        left: calc(var(--size) / 2);
+        transform: translate(-50%, -50%);
+
+        background-color: var(--give-primary-color);
+
+        opacity: 0;
+        transition: opacity 200ms ease-in-out;
+    }
+
+    &:checked::after {
+        opacity: 1;
+    }
+}
+
+:is(.form-row, .give-tributes-dedicate-donation) input[type='radio'] {
+    @include give-radio;
+}

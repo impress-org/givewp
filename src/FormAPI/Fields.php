@@ -7,6 +7,7 @@ use Give\FormAPI\Form\File;
 use Give\FormAPI\Form\Group;
 use Give\FormAPI\Form\Media;
 use Give\FormAPI\Form\Radio;
+use Give\FormAPI\Form\Select;
 use Give\FormAPI\Form\Text;
 use Give\FormAPI\Form\Textarea;
 use Give\FormAPI\Form\Wysiwyg;
@@ -29,6 +30,7 @@ class Fields
         'wysiwyg' => Wysiwyg::class,
         'colorpicker' => Colorpicker::class,
         'group' => Group::class,
+        'select' => Select::class,
     ];
 
     /**

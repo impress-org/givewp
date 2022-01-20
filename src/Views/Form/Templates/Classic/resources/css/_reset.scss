@@ -1,0 +1,48 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+    box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl {
+    margin: 0;
+}
+
+ul {
+    padding-inline-start: 0;
+}
+
+fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+legend {
+    display: block;
+    padding: 0;
+}
+
+button,
+select,
+label,
+input[type='checkbox'],
+input[type='radio'],
+input[type='file'],
+input[type='submit'] {
+    cursor: pointer;
+}

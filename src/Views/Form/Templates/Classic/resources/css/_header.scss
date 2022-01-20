@@ -1,0 +1,200 @@
+@use 'fn';
+
+.give-form-header {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    row-gap: 2rem;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+
+    --tint-color: rgba(var(--give-header-background-color--for-rgb), 0.75);
+    --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
+    background-color: rgb(var(--give-header-background-color--for-rgb));
+    /* translucent tint gradient over image */
+    background-image: var(--tint, linear-gradient(transparent, transparent)), var(--give-header-background-image);
+    background-size: cover;
+    background-position: center;
+
+    color: #fff;
+    text-align: center;
+
+    @media screen and (min-width: $desktopMinWidth) {
+        padding: 3rem;
+    }
+
+    .give-container-unboxed & {
+        border-radius: 0.5rem;
+        margin-inline: 1rem;
+    }
+}
+
+.give-form-header-top-wrap {
+    padding-block-start: 2.75rem;
+    padding-block-end: 0.75rem;
+    padding-inline: 2rem;
+
+    @media screen and (min-width: $desktopMinWidth) {
+        padding: 0;
+    }
+}
+
+.give-form-title {
+    position: relative;
+    margin-block-end: 2.75rem;
+    font-size: fn.scaleBetween(1.75rem, 2.1875rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+}
+
+.give-form-title::after {
+    position: absolute;
+    content: '';
+    display: block;
+    border-radius: 9999px;
+    inline-size: 4.375rem;
+    block-size: 0.3125rem;
+    background-color: #fff;
+    inset-inline-start: 50%;
+    inset-block-start: calc(100% + 1.25rem);
+    transform: translate(-50%);
+}
+
+.give-form-description {
+    font-size: fn.scaleBetween(1.125rem, 1.25rem);
+    line-height: 1.45;
+    margin: 0 auto;
+    max-inline-size: 42ch;
+}
+
+.give-form-secure-badge {
+    display: inline-flex;
+    column-gap: 0.75em;
+    align-items: center;
+    padding-block: 0.5rem;
+    padding-inline: 0.9rem;
+    border-radius: 9999px;
+    background-color: #fff;
+    box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+
+    .give-form-description + & {
+        margin-block-start: 2rem;
+    }
+}
+
+.give-form-secure-icon {
+    position: relative;
+    inset-block-start: -0.04em;
+    color: #77d006;
+    block-size: 1em;
+    aspect-ratio: 1;
+    @supports not (aspect-ratio: 1) {
+        inline-size: 1em;
+    }
+}
+
+.give-form-stats-panel {
+    inline-size: 100%;
+
+    border-color: #ddd;
+    border-style: solid;
+    border-inline-width: 0;
+    border-block-width: 0.0625rem;
+
+    background-color: #fff;
+
+    @media screen and (min-width: $desktopMinWidth) {
+        border: 0;
+        border-radius: 0.5rem;
+        background-color: #fbfbfb;
+    }
+}
+
+.give-form-stats-panel-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: stretch;
+    justify-content: center;
+    border-radius: inherit;
+    color: #4c4c4c;
+    list-style: none;
+    padding-inline-start: 0;
+    margin: 0;
+    text-align: center;
+    inline-size: 100%;
+}
+
+.give-form-stats-panel-stat:first-child,
+.give-form-stats-panel-stat:nth-child(2) {
+    position: relative;
+}
+
+.give-form-stats-panel-stat:first-child::after,
+.give-form-stats-panel-stat:nth-child(2)::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: calc(100% + 0.03125rem);
+    display: block;
+    inline-size: 0.0625rem;
+    block-size: 100%;
+    background-color: #ddd;
+}
+
+.give-form-stats-panel-stat {
+    padding: 1rem;
+    inline-size: calc(100% / 3);
+    font-weight: 600;
+    color: #767676;
+}
+
+.give-form-stats-panel-stat-number {
+    display: block;
+    color: #424242;
+}
+
+.give-form-goal-progress {
+    inline-size: 100%;
+    padding: 1.25rem;
+    border-block-start: 1px solid #ddd;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+    background-color: #fff;
+}
+
+/**
+ * We are not using the `<meter>` element because in order to style it in
+ * Safari, we’d have to break the accessibility for VoiceOver.
+ */
+.give-form-goal-progress-meter {
+    inline-size: 100%;
+    block-size: 1.375em;
+    border-radius: 9999px;
+    background-color: #f1f1f1;
+    box-shadow: inset 0 0.0625em 0.25rem rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Fallback for Safari */
+    overflow: clip;
+}
+
+.give-form-goal-progress-meter::after {
+    content: '';
+    display: block;
+    block-size: 100%;
+    --zero-percent: 0%; /* cssnano will strip this out otherwise */
+    inline-size: clamp(var(--zero-percent), var(--progress), 100%);
+    background: linear-gradient(
+            180deg,
+            var(--give-header-stats-progressbar-color) 0%,
+            var(--give-header-stats-progressbar-color) 100%
+        ),
+        linear-gradient(180deg, #fff 0%, #ccc 100%);
+    background-blend-mode: multiply;
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
+}
