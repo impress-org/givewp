@@ -8,7 +8,7 @@ use Give\ValueObjects\DonorInfo;
 
 /**
  * Class GatewayPaymentData
- * @unreleased
+ * @since 2.18.0
  */
 class GatewayPaymentData
 {
@@ -64,7 +64,7 @@ class GatewayPaymentData
     /**
      * Convert data from array into DTO
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return self
      */

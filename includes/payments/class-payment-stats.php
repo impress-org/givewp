@@ -268,7 +268,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @since 2.9.6 Added an explicit ORDER BY on which to apply a DESC order.
-     * @unreleased Updated sales calculation so that the results are ordered as integers.
+     * @since 2.18.0 Updated sales calculation so that the results are ordered as integers.
 	 * @access public
 	 * @global wpdb $wpdb
 	 *

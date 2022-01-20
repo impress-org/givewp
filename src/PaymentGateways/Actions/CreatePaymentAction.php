@@ -7,12 +7,12 @@ use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 
 /**
  * Class CreatePaymentAction
- * @unreleased
+ * @since 2.18.0
  */
 class CreatePaymentAction
 {
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GiveInsertPaymentData  $giveInsertPaymentData
      *

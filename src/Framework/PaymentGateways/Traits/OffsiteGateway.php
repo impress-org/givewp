@@ -7,7 +7,7 @@ trait OffsiteGateway
     /**
      * Return from offsite redirect
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @inheritDoc
      */
@@ -16,7 +16,7 @@ trait OffsiteGateway
     /**
      * Generate return url from redirect offsite
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @param  array|null  $args  - associative array of query args

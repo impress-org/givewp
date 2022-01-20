@@ -6,7 +6,7 @@ namespace Give\Framework\Http\Response;
 /**
  * Return a new response from the application.
  *
- * @unreleased
+ * @since 2.18.0
  *
  * @param  string  $content
  * @param  int  $status

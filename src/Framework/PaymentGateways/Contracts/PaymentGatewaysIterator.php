@@ -3,13 +3,13 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 /**
- * @unreleased
+ * @since 2.18.0
  * @property-read array $gateways
  */
 class PaymentGatewaysIterator implements \Iterator
 {
     /**
-     * @unreleased
+     * @since 2.18.0
      * @return string
      */
     public function current()
@@ -18,7 +18,7 @@ class PaymentGatewaysIterator implements \Iterator
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      */
     public function next()
     {
@@ -26,7 +26,7 @@ class PaymentGatewaysIterator implements \Iterator
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      * @return string
      */
     public function key()
@@ -35,7 +35,7 @@ class PaymentGatewaysIterator implements \Iterator
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      * @return bool
      */
     public function valid()
@@ -44,7 +44,7 @@ class PaymentGatewaysIterator implements \Iterator
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      */
     public function rewind()
     {

@@ -28,7 +28,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 use function Give\Framework\Http\Response\response;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
@@ -48,7 +48,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public $subscriptionModule;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  SubscriptionModuleInterface|null  $subscriptionModule
      */
@@ -128,7 +128,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway command
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayCommand  $command
      * @param  GatewayPaymentData  $gatewayPaymentData
@@ -169,7 +169,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway subscription command
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayCommand  $command
      * @param  GatewayPaymentData  $gatewayPaymentData
@@ -208,7 +208,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @param  int  $donationId
      * @param  string  $method
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return void
      */
@@ -229,7 +229,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate gateway route url
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayMethod
      * @param  int  $donationId
@@ -246,7 +246,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle Response
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  RedirectResponse|JsonResponse  $type
      */

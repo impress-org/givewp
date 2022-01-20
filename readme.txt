@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.17.3
+Stable tag: 2.18.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,15 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.18.0: January 19th, 2022 =
+* New: Shiny new Classic Form Template! Check it out!
+* New: New Gateway API under the hood for integrating with payment gateways. Developer docs to come!
+* Change: Only warnings and errors are logged unless WP_DEBUG_LOG is enabled
+* Change: Increased the default donation goal to $10,000, because who couldn't use $10k?
+* Fix: Currency symbol now displays correctly when using Currency Switcher
+* Fix: Donation Summary now works properly with admin-defined recurrence
+* Fix: Avoid PayPal IPN errors when using test mode
+
 = 2.17.3: January 17th, 2022 =
 * Security: Minor XSS vulnerabilities, which require admin access to exploit, have been resolved
 

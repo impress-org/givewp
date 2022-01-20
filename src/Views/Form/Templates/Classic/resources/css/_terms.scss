@@ -1,0 +1,10 @@
+#give_terms_agreement {
+    display: block;
+
+    & > input[type="checkbox"] {
+        @include give-checkbox;
+        display: inline-flex;
+        margin-block-start: 1rem;
+        margin-inline-end: 0.5rem;
+    }
+}

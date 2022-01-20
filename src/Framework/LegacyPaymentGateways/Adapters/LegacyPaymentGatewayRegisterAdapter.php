@@ -10,7 +10,7 @@ class LegacyPaymentGatewayRegisterAdapter {
 	 * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
 	 * that prepares data to be sent to each gateway
 	 *
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @param  string  $gatewayClass
 	 */
@@ -36,7 +36,7 @@ class LegacyPaymentGatewayRegisterAdapter {
 	/**
 	 * Adds new payment gateways to legacy list for settings
 	 *
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @param  array  $gatewaysData
 	 * @param  array  $newPaymentGateways

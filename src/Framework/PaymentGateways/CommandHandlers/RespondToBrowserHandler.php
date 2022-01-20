@@ -9,7 +9,7 @@ use function Give\Framework\Http\Response\response;
 
 class RespondToBrowserHandler  {
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  RespondToBrowser $command
      * @return JsonResponse

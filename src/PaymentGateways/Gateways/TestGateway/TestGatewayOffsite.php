@@ -13,7 +13,7 @@ use function Give\Framework\Http\Response\response;
 
 /**
  * Class TestGatewayOffsite
- * @unreleased
+ * @since 2.18.0
  */
 class TestGatewayOffsite extends OffSitePaymentGateway
 {

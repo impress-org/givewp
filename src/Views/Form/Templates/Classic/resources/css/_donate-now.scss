@@ -1,0 +1,37 @@
+@use 'fn';
+
+.give-donate-now-button-section {
+    display: grid;
+    row-gap: fn.scaleBetween(2rem, 2.75rem);
+    padding-block-start: fn.scaleBetween(2rem, 4rem);
+    padding-block-end: fn.scaleBetween(2.5rem, 3.75rem);
+}
+
+#give-final-total-wrap {
+    display: none;
+}
+
+.give-submit {
+    transition-property: filter, box-shadow, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+
+    &:hover {
+        filter: brightness(1.2);
+        transform: scale(1.01);
+        box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
+    }
+}
+
+#give-purchase-button {
+    inline-size: 100%;
+}
+
+.give-secure-donation-badge-bottom {
+    display: inline-flex;
+    justify-self: center;
+    align-items: center;
+    column-gap: 0.5em;
+    font-size: 0.8125rem;
+    line-height: 1;
+}
