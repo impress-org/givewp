@@ -3,14 +3,14 @@
 namespace Give\Framework\Support\Contracts;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 interface Jsonable
 {
     /**
      * Convert the object to its JSON representation.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $options
      * @return string

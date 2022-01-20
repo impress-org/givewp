@@ -30,7 +30,7 @@ class Environment
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @return bool
      */

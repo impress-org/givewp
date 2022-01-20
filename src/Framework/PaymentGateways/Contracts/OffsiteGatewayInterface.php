@@ -19,7 +19,7 @@ interface OffsiteGatewayInterface
     /**
      * Return from offsite redirect
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return RedirectResponse|JsonResponse
      * @throws PaymentGatewayException|Exception

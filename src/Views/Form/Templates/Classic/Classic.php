@@ -14,7 +14,7 @@ use InvalidArgumentException;
 /**
  * Classic Donation Form Template
  *
- * @unreleased
+ * @since 2.18.0
  */
 class Classic extends Template implements Hookable, Scriptable
 {

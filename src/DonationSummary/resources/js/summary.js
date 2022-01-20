@@ -46,7 +46,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.18.0
      */
     handleDonorsChoiceRecurringFrequency: function (targetNode, $form) {
         $form.find('.js-give-donation-summary-frequency-help-text').toggle(!targetNode.checked);
@@ -66,7 +66,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.18.0
      */
     handleAdminDefinedRecurringFrequency: function (targetNode, $form) {
         const priceID = targetNode.value;
@@ -107,7 +107,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased
+     * @since 2.18.0
      */
     handleFees: function (targetNode, $form) {
         $form.find('.fee-break-down-message').hide();

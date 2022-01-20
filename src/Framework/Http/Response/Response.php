@@ -11,7 +11,7 @@ use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class Response extends SymfonyResponse
 {

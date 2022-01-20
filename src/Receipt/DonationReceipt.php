@@ -32,7 +32,7 @@ class DonationReceipt extends Receipt
 
     /**
      * @var Give_Payment
-     * @unreleased
+     * @since 2.18.0
      */
     protected $donation;
 

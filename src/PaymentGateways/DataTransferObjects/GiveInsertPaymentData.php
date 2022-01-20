@@ -7,7 +7,7 @@ namespace Give\PaymentGateways\DataTransferObjects;
  *
  * This is used to expose data for use with give_insert_payment
  *
- * @unreleased
+ * @since 2.18.0
  */
 class GiveInsertPaymentData
 {
@@ -59,7 +59,7 @@ class GiveInsertPaymentData
     /**
      * Convert data from array into DTO
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return self
      */

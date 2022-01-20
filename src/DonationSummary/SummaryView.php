@@ -17,7 +17,7 @@ class SummaryView
     protected $formID;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      * @var string
      */
     protected $template;
@@ -134,7 +134,7 @@ class SummaryView
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      * @return bool
      */
     protected function isMultiStep()
