@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import styles from './pagination.module.css';
+import styles from './Pagination.module.css';
 
 const {__} = wp.i18n;
 
