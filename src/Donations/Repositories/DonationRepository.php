@@ -30,14 +30,12 @@ class DonationRepository
     {
         global $wpdb;
 
-        $query = $wpdb->get_results(
+        $donationIds = $wpdb->get_col(
             "SELECT donation_id
                     FROM {$wpdb->prefix}give_donationmeta
                     WHERE meta_key = 'subscription_id'
                     AND meta_value = '$subscriptionId'"
         );
-
-        $donationIds = array_column($query, 'donation_id');
 
         $posts = get_posts([
             'include' => $donationIds,
@@ -59,14 +57,12 @@ class DonationRepository
     {
         global $wpdb;
 
-        $query = $wpdb->get_results(
+        $donationIds = $wpdb->get_col(
             "SELECT donation_id
                     FROM {$wpdb->prefix}give_donationmeta
                     WHERE meta_key = '_give_payment_donor_id'
                     AND meta_value = '$donorId'"
         );
-
-        $donationIds = array_column($query, 'donation_id');
 
         $posts = get_posts([
             'include' => $donationIds,
