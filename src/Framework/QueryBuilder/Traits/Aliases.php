@@ -9,8 +9,11 @@ trait Aliases {
 	 */
 	protected $aliases = [];
 
-	public function tables( $aliases = [] ) {
+	public function tableAliases( $aliases = [] ) {
+        //TODO add some checks
 		$this->aliases = $aliases;
+
+        return $this;
 	}
 
 	public function alias( $table ) {
