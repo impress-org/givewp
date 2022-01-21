@@ -4,15 +4,37 @@ namespace Give\Donations\Repositories;
 
 use Give\Donations\DataTransferObjects\DonationPostData;
 use Give\Donations\Models\Donation;
+use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 class DonationRepository
 {
+
+    /**
+     * @var string
+     */
+    private $postsTable;
+
+    /**
+     * @var string
+     */
+    private $donationMetaTable;
+
+    public function __construct()
+    {
+        global $wpdb;
+
+        $this->postsTable        = "{$wpdb->prefix}posts";
+        $this->donationMetaTable = "{$wpdb->prefix}give_donationmeta";
+    }
+
     /**
      * Get Donation By ID
      *
      * @unreleased
      *
      * @param  int  $donationId
+     *
      * @return Donation
      */
     public function getById($donationId)
@@ -24,33 +46,62 @@ class DonationRepository
 
     /**
      * @param  int  $subscriptionId
+     *
      * @return array|Donation[]
      */
     public function getBySubscriptionId($subscriptionId)
     {
-        global $wpdb;
+        $builder = new QueryBuilder();
 
-        $donationIds = $wpdb->get_col(
-            "SELECT donation_id
-                    FROM {$wpdb->prefix}give_donationmeta
-                    WHERE meta_key = 'subscription_id'
-                    AND meta_value = '$subscriptionId'"
-        );
-
-        $posts = get_posts([
-            'include' => $donationIds,
-            'post_type' => 'give_payment',
-            'post_status' => 'give_subscription',
-            'orderby' => 'post_date',
+        $builder->tables([
+            'posts'        => $this->postsTable,
+            'donationMeta' => $this->donationMetaTable
         ]);
 
-        return array_map(static function ($post) {
-            return DonationPostData::fromPost($post)->toDonation();
-        }, $posts);
+        $builder->select([
+            ['posts.ID', 'id'],
+            ['posts.post_date', 'createdAt'],
+            ['posts.post_modified', 'createdAt'],
+            ['posts.post_status', 'status'],
+            ['posts.post_parent', 'parentId'],
+        ]);
+
+        $builder
+            ->from('posts')
+            ->join('donationMeta', 'ID', 'donation_id')
+            ->where('posts.post_type', 'give_payment')
+            ->where('posts.post_status', 'give_subscription')
+            ->where('donationMeta.meta_key', 'subscription_id')
+            ->where('donationMeta.meta_value', $subscriptionId)
+            ->orderBy('posts.post_date', 'DESC');
+
+
+        return DB::get_results($builder->getSQL());
+
+
+
+//        $donationIds = $wpdb->get_col(
+//            "SELECT donation_id
+//                    FROM {$wpdb->prefix}give_donationmeta
+//                    WHERE meta_key = 'subscription_id'
+//                    AND meta_value = '$subscriptionId'"
+//        );
+//
+//        $posts = get_posts([
+//            'include'     => $donationIds,
+//            'post_type'   => 'give_payment',
+//            'post_status' => 'give_subscription',
+//            'orderby'     => 'post_date',
+//        ]);
+//
+//        return array_map(static function ($post) {
+//            return DonationPostData::fromPost($post)->toDonation();
+//        }, $posts);
     }
 
     /**
      * @param  int donorId
+     *
      * @return array|Donation[]
      */
     public function getByDonorId($donorId)
@@ -65,9 +116,9 @@ class DonationRepository
         );
 
         $posts = get_posts([
-            'include' => $donationIds,
+            'include'   => $donationIds,
             'post_type' => 'give_payment',
-            'orderby' => 'post_date',
+            'orderby'   => 'post_date',
         ]);
 
         return array_map(static function ($post) {
