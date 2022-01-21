@@ -2,9 +2,8 @@
 
 namespace Give\ServiceProviders;
 
-use Give\API\Endpoints\Donations\ListDonations;
-use Give\API\Endpoints\DonationForms\ListForms;
-use Give\API\Endpoints\DonationForms\TrashForms;
+use Give\DonationForms\Endpoints\ListForms;
+use Give\DonationForms\Endpoints\TrashForms;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
 use Give\API\Endpoints\Migrations\GetMigrations;
@@ -41,7 +40,6 @@ class RestAPI implements ServiceProvider
         TotalRefunds::class,
         GetLogs::class,
         FlushLogs::class,
-        ListDonations::class,
         ListForms::class,
         TrashForms::class,
         GetMigrations::class,

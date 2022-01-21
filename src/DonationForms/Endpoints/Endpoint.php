@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\API\Endpoints\DonationForms;
+namespace Give\DonationForms\Endpoints;
 
 use Give\API\RestRoute;
 use WP_Error;

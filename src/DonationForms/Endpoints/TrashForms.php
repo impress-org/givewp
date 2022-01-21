@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\API\Endpoints\DonationForms;
+namespace Give\DonationForms\Endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;

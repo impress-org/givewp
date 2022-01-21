@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\API\Endpoints\DonationForms;
+namespace Give\DonationForms\Endpoints;
 
 use Give_Donate_Form;
 use Give_Forms_Query;
