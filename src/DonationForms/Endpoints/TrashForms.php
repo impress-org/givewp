@@ -12,7 +12,7 @@ use WP_REST_Response;
 
 class TrashForms extends ListForms
 {
-    protected $endpoint = '/admin/forms';
+    protected $endpoint = 'admin/forms/trash';
 
     public function registerRoute()
     {
@@ -46,9 +46,10 @@ class TrashForms extends ListForms
     public function handleRequest(WP_REST_Request $request)
     {
         $parameters = $request->get_params();
-        $errors = $this->updateForms($parameters);
+        $result = $this->updateForms($parameters);
         $forms = $this->constructFormList($parameters);
-        $forms->errors = $errors;
+        $forms->errors = $result['errors'];
+        $forms->successes = $result['successes'];
 
         return new WP_REST_Response(
             $forms
@@ -58,12 +59,17 @@ class TrashForms extends ListForms
     protected function updateForms($parameters)
     {
         $errors = 0;
+        $successes = 0;
         $id_array = explode(',', $parameters['ids']);
         foreach($id_array as $id){
             if( !is_numeric($id) || !wp_trash_post( $id, true ) ) {
                 $errors++;
             }
+            else
+            {
+                $successes++;
+            }
         }
-        return $errors;
+        return array( 'errors' => $errors, 'successes' => $successes );
     }
 }
