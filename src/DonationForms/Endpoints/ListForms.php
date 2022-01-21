@@ -85,7 +85,7 @@ class ListForms extends Endpoint
                 'goal' => $result->goal,
                 'donations' => count( give_get_payments( ['give_forms' => $form->ID ] ) ),
                 'revenue' => $this->formatAmount( give_get_form_earnings_stats( $form->ID ) ),
-                'datetime' => $result->post_date,
+                'datetime' => date_i18n('Y/m/d \a\t h:i a', date_create( $result->post_date )),
                 'shortcode' => "[give_form id=\"$form->ID\"]",
                 'status' => $form->post_status,
             );
