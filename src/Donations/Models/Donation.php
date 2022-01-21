@@ -4,6 +4,7 @@ namespace Give\Donations\Models;
 
 use DateTime;
 use Give\Donors\Models\Donor;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -110,6 +111,7 @@ class Donation
     /**
      * @param  Donation  $donation
      * @return Donation
+     * @throws DatabaseQueryException
      */
     public static function create(Donation $donation)
     {

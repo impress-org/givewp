@@ -2,10 +2,12 @@
 
 namespace Give\Donations\Repositories;
 
-use Give\Donations\DataTransferObjects\DonationMetaData;
+use Exception;
 use Give\Donations\DataTransferObjects\DonationPostData;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Log\Log;
 
 class DonationRepository
 {
@@ -32,7 +34,7 @@ class DonationRepository
     {
         global $wpdb;
 
-        $donationIds = $wpdb->get_col(
+        $donationIds = DB::get_col(
             "SELECT donation_id
                     FROM {$wpdb->prefix}give_donationmeta
                     WHERE meta_key = 'subscription_id'
@@ -59,7 +61,7 @@ class DonationRepository
     {
         global $wpdb;
 
-        $donationIds = $wpdb->get_col(
+        $donationIds = DB::get_col(
             "SELECT donation_id
                     FROM {$wpdb->prefix}give_donationmeta
                     WHERE meta_key = '_give_payment_donor_id'
@@ -80,6 +82,7 @@ class DonationRepository
     /**
      * @param  Donation  $donation
      * @return Donation
+     * @throws Exception|DatabaseQueryException
      */
     public function insert(Donation $donation)
     {
@@ -87,22 +90,34 @@ class DonationRepository
 
         $date = current_datetime()->format('Y-m-d H:i:s');
 
-        DB::insert($wpdb->posts, [
-            'post_date' => $date,
-            'post_date_gmt' => get_gmt_from_date($date),
-            'post_status' => $donation->status,
-            'post_type' => 'give_payment'
-        ], null);
+        DB::query('START TRANSACTION');
 
-        $donationId = DB::last_insert_id();
-
-        foreach ($donation->getMeta() as $metaKey => $metaValue) {
-            DB::insert($wpdb->donationmeta, [
-                'donation_id' => $donationId,
-                'meta_key' => $metaKey,
-                'meta_value' => $metaValue,
+        try {
+            DB::insert($wpdb->posts, [
+                'post_date' => $date,
+                'post_date_gmt' => get_gmt_from_date($date),
+                'post_status' => $donation->status,
+                'post_type' => 'give_payment'
             ], null);
+
+            $donationId = DB::last_insert_id();
+
+            foreach ($donation->getMeta() as $metaKey => $metaValue) {
+                DB::insert($wpdb->donationmeta, [
+                    'donation_id' => $donationId,
+                    'meta_key' => $metaKey,
+                    'meta_value' => $metaValue,
+                ], null);
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed creating a donation');
+
+            throw new $exception('Failed creating a donation');
         }
+
+        DB::query('COMMIT');
 
         return Donation::find($donationId);
     }
@@ -110,6 +125,7 @@ class DonationRepository
     /**
      * @param  Donation  $donation
      * @return Donation
+     * @throws Exception|DatabaseQueryException
      */
     public function update(Donation $donation)
     {
@@ -117,21 +133,33 @@ class DonationRepository
 
         $date = current_datetime()->format('Y-m-d H:i:s');
 
-        DB::update($wpdb->posts, [
-            'post_modified' => $date,
-            'post_modified_gmt' => get_gmt_from_date($date),
-            'post_status' => $donation->status,
-            'post_type' => $donation->status
-        ], ['id' => $donation->id]);
+        DB::query('START TRANSACTION');
 
-        foreach ($donation->getMeta() as $metaKey => $metaValue) {
-            DB::update($wpdb->donationmeta, [
-                'meta_value' => $metaValue,
-            ], [
-                'donation_id' => $donation->id,
-                'meta_key' => $metaKey
-            ]);
+        try {
+            DB::update($wpdb->posts, [
+                'post_modified' => $date,
+                'post_modified_gmt' => get_gmt_from_date($date),
+                'post_status' => $donation->status,
+                'post_type' => $donation->status
+            ], ['id' => $donation->id]);
+
+            foreach ($donation->getMeta() as $metaKey => $metaValue) {
+                DB::update($wpdb->donationmeta, [
+                    'meta_value' => $metaValue,
+                ], [
+                    'donation_id' => $donation->id,
+                    'meta_key' => $metaKey
+                ]);
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed creating a donation');
+
+            throw new $exception('Failed creating a donation');
         }
+
+        DB::query('COMMIT');
 
         return $donation;
     }
