@@ -26,7 +26,9 @@ type DonationForm = {
 };
 
 async function fetchForms(args: {} = {}) {
-    let url = window.GiveDonationForms.apiRoot + '?' + new URLSearchParams(args).toString();
+    let url = window.GiveDonationForms.apiRoot;
+    url += url.indexOf('wp-json') > -1 ? '?' : '&';
+    url += new URLSearchParams(args).toString();
     let response = await fetch(url, {
         headers: {
             'Content-Type': 'application/json',
