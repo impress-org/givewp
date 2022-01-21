@@ -14,7 +14,7 @@ use WP_REST_Response;
 
 class ListForms extends Endpoint
 {
-    protected $endpoint = '/admin/forms';
+    protected $endpoint = 'admin/forms';
 
     public function registerRoute()
     {
@@ -37,7 +37,7 @@ class ListForms extends Endpoint
                         'required' => false,
                     ]
                 ],
-            ],
+            ]
         );
     }
 
@@ -62,7 +62,6 @@ class ListForms extends Endpoint
                 'posts_per_page' => $per_page,
         );
         $form_query = new \WP_Query( $args );
-        $all_forms_total = $form_query->found_posts;
         //make sure we're not asking for a non-existent page
         if( $form_query->max_num_pages < $page )
         {
@@ -71,24 +70,35 @@ class ListForms extends Endpoint
         $args['paged'] = $page;
         $form_query = new \WP_Query( $args );
         $results = array();
-        foreach( $form_query->posts as $form ) {
+        foreach( $form_query->posts as $index=>$form ) {
             $result = new Give_Donate_Form($form->ID);
             //if there are multiple prices, get the highest and lowest
             if( is_array( $result->prices ) ) {
                 $all_prices = array_column($result->prices, '_give_amount');
                 $prices = $this->formatAmount(min($all_prices)) . ' - ' . $this->formatAmount(max($all_prices));
             }
-            $results[] = (object) array(
-                'id' => $form->ID,
-                'name' => $result->post_title,
-                'amount' => isset( $prices ) ?: $this->formatAmount( $result->price ),
-                'goal' => $result->goal,
-                'donations' => count( give_get_payments( ['give_forms' => $form->ID ] ) ),
-                'revenue' => $this->formatAmount( give_get_form_earnings_stats( $form->ID ) ),
-                'datetime' => date_i18n('Y/m/d \a\t h:i a', date_create( $result->post_date )),
-                'shortcode' => "[give_form id=\"$form->ID\"]",
-                'status' => $form->post_status,
-            );
+            $results[] = (object) array();
+            $results[$index]->id = $form->ID;
+            $results[$index]->name = $result->post_title;
+            $results[$index]->amount = isset( $prices ) ? $prices : $this->formatAmount( $result->price );
+            if( give_is_setting_enabled( give_get_meta( $form->ID, '_give_goal_option', true ) ) )
+            {
+                $goal = give_goal_progress_stats( $form->ID );
+                $goal['actual'] = html_entity_decode($goal['actual']);
+                $goal['goal'] = html_entity_decode($goal['goal']);
+                $goal['format'] == 'donation' ? $goal['format'] = ngettext('donation', 'donations', $goal['raw_goal']) : null;
+                $goal['format'] == 'donors' ? $goal['format'] = ngettext('donor', 'donors', $goal['raw_goal']) : null;
+                $results[$index]->goal = $goal;
+            }
+            else
+            {
+                $results[$index]->goal = '';
+            }
+            $results[$index]->donations = count( give_get_payments( ['give_forms' => $form->ID ] ) );
+            $results[$index]->revenue = $this->formatAmount( give_get_form_earnings_stats( $form->ID ) );
+            $results[$index]->datetime = date_i18n('Y/m/d \a\t h:i a', date_create( $result->post_date ));
+            $results[$index]->shortcode = "[give_form id=\"$form->ID\"]";
+            $results[$index]->status = $form->post_status;
         }
         return (object) array(
             'forms' => $results,

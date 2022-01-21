@@ -17,10 +17,10 @@ declare global {
 type DonationForm = {
     id: number;
     name: string;
-    amount: number | [number, number];
-    goal: string | number;
+    amount: string;
+    goal: string | {progress: number, format: string, actual: string, goal: string};
     donations: number;
-    revenue: number;
+    revenue: string;
     datetime: string;
     shortcode: string;
 };
@@ -172,11 +172,19 @@ function AdminDonationForms() {
                                     </td>
                                     <td className={styles.tableCell}>
                                         {form.goal ? (
-                                            <a
-                                                href={`post.php?post=${form.id}&action=edit&give_tab=donation_goal_options`}
-                                            >
-                                                {form.goal}
-                                            </a>
+                                            <>
+                                                <div className={styles.goalProgress}>
+                                                    <span style={{width: Math.max(Math.min(form.goal.progress, 100), 0) + '%'}}/>
+                                                </div>
+                                                <a
+                                                    href={`post.php?post=${form.id}&action=edit&give_tab=donation_goal_options`}
+                                                >
+                                                    {form.goal.actual}
+                                                </a>
+                                                {form.goal.goal ? (
+                                                    <span> {__('of', 'give')} {form.goal.goal} {form.goal.format != 'amount' ? form.goal.format : null}</span>
+                                                ): null}
+                                            </>
                                         ) : (
                                             'No Goal Set'
                                         )}
