@@ -2,23 +2,34 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait From {
+use Give\Framework\QueryBuilder\From as FromTable;
 
-	/**
-	 * @var string
-	 */
-	public $from;
+trait From
+{
 
-	/**
-	 * @param string $table
-	 * @return $this
-	 */
-	public function from( $table, $alias = null ) {
-		$this->from = $this->alias( $table );
-		return $this;
-	}
+    /**
+     * @var FromTable
+     */
+    public $from;
 
-	public function getFromSQL() {
-		return [ "FROM {$this->from}" ];
-	}
+    /**
+     * @param  string  $table
+     *
+     * @return $this
+     */
+    public function from($table, $alias = null)
+    {
+        $this->from = new FromTable($table, $alias);
+
+        return $this;
+    }
+
+    public function getFromSQL()
+    {
+        if ($this->from->alias) {
+            return ["FROM {$this->from->table} AS {$this->from->alias}"];
+        }
+
+        return ["FROM {$this->from}"];
+    }
 }
