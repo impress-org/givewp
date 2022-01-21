@@ -10,6 +10,7 @@ use Give\Framework\QueryBuilder\Traits\Limit;
 use Give\Framework\QueryBuilder\Traits\OrderBy;
 use Give\Framework\QueryBuilder\Traits\Select;
 use Give\Framework\QueryBuilder\Traits\Where;
+use Give\Framework\QueryBuilder\Traits\Meta;
 
 class QueryBuilder {
 
@@ -21,6 +22,7 @@ class QueryBuilder {
 	use OrderBy;
 	use GroupBy;
 	use Limit;
+    use Meta;
 
 	/**
 	 * @return string
