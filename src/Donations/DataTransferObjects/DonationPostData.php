@@ -44,8 +44,8 @@ class DonationPostData
         $self = new static();
 
         $self->id = $post->ID;
-        $self->createdAt = $post->post_date;
-        $self->updatedAt = $post->post_modified;
+        $self->createdAt = get_post_datetime($post, 'date');
+        $self->updatedAt = get_post_datetime($post, 'modified');
         $self->status = $post->post_status;
         $self->parentId = $post->post_parent;
 
