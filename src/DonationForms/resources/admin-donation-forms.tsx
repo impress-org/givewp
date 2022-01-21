@@ -149,7 +149,11 @@ function AdminDonationForms() {
                                     </td>
                                     <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                                         <a href={`post.php?post=${form.id}&action=edit`}>{form.name}</a>
-                                        <div role="group" aria-label={__('Actions', 'give')}>
+                                        <div
+                                            role="group"
+                                            aria-label={__('Actions', 'give')}
+                                            className={styles.tableRowActions}
+                                        >
                                             <a href={`post.php?post=${form.id}&action=edit`} className={styles.action}>
                                                 Edit <span className="give-visually-hidden">{form.name}</span>
                                             </a>

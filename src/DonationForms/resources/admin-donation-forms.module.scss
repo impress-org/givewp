@@ -136,6 +136,11 @@
     overflow: auto;
 }
 
+.tableRowActions {
+    opacity: 0;
+    transition: opacity 180ms ease-in;
+}
+
 .tableRow {
     &:nth-child(odd) {
         background-color: #f6f7f7;
@@ -143,6 +148,10 @@
 
     &:nth-child(even) {
         background-color: #fff;
+    }
+
+    &:is(:hover, :focus) .tableRowActions {
+        opacity: 1;
     }
 }
 
