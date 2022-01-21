@@ -103,7 +103,8 @@ class ListForms extends Endpoint
         return (object) array(
             'forms' => $results,
             'total' => $form_query->found_posts,
-            'page' => $page
+            'page' => $page,
+            'trash' => ! defined('EMPTY_TRASH_DAYS') || constant('EMPTY_TRASH_DAYS'),
         );
     }
 

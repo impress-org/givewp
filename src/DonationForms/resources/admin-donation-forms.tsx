@@ -48,6 +48,7 @@ function AdminDonationForms() {
         donationForms: [...mockDonationForms],
         count: 0,
         page: 1,
+        trash: true,
     });
     const perPage = 10;
 
@@ -60,6 +61,7 @@ function AdminDonationForms() {
                         ...prevState,
                         donationForms: [...donationsResponse.forms],
                         count: donationsResponse.total,
+                        trash: donationsResponse.trash,
                     };
                 });
             } else {
@@ -161,7 +163,7 @@ function AdminDonationForms() {
                                                 Edit <span className="give-visually-hidden">{form.name}</span>
                                             </a>
                                             <button type="button" onClick={deleteForm} className={styles.action}>
-                                                Delete <span className="give-visually-hidden">{form.name}</span>
+                                                {state.trash ? __('Trash', 'give') : __('Delete', 'give')} <span className="give-visually-hidden">{form.name}</span>
                                             </button>
                                             <a href={`/?p=${form.id}`}>{__('View', 'give')}</a>
                                             <a href="#todo-replace-with-duplicate-link">{__('Duplicate', 'give')}</a>
