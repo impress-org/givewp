@@ -108,6 +108,9 @@ function AdminDonationForms() {
                         <thead>
                             <tr>
                                 <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('ID', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
                                     {__('Name', 'give')}
                                 </th>
                                 <th
@@ -138,6 +141,7 @@ function AdminDonationForms() {
                         <tbody className={styles.tableContent}>
                             {state.donationForms.map((form) => (
                                 <tr key={form.id} className={styles.tableRow}>
+                                    <td className={styles.tableCell}>{form.id}</td>
                                     <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                                         <a href={`post.php?post=${form.id}&action=edit`}>{form.name}</a>
                                         <div role="group" aria-label={__('Actions', 'give')}>
