@@ -2,7 +2,6 @@
 
 namespace Give\Framework\QueryBuilder;
 
-use Give\Framework\QueryBuilder\Traits\Aliases;
 use Give\Framework\QueryBuilder\Traits\From;
 use Give\Framework\QueryBuilder\Traits\GroupBy;
 use Give\Framework\QueryBuilder\Traits\Join;
@@ -14,7 +13,6 @@ use Give\Framework\QueryBuilder\Traits\Meta;
 
 class QueryBuilder {
 
-	use Aliases;
 	use Select;
 	use From;
 	use Join;
