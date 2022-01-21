@@ -156,7 +156,17 @@ function AdminDonationForms() {
                                     <td className={styles.tableCell} style={{textAlign: 'end'}}>
                                         {form.amount}
                                     </td>
-                                    <td className={styles.tableCell}>{form.goal ? form.goal : 'No Goal Set'}</td>
+                                    <td className={styles.tableCell}>
+                                        {form.goal ? (
+                                            <a
+                                                href={`post.php?post=${form.id}&action=edit&give_tab=donation_goal_options`}
+                                            >
+                                                {form.goal}
+                                            </a>
+                                        ) : (
+                                            'No Goal Set'
+                                        )}
+                                    </td>
                                     <td className={styles.tableCell}>
                                         <a
                                             href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}
