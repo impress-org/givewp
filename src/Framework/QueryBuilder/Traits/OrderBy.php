@@ -21,8 +21,13 @@ trait OrderBy {
 	 * @return $this
 	 */
 	public function orderBy( $tableColumn, $direction ) {
-		list( $table, $column ) = explode('.', $tableColumn );
-		$this->column = "{$this->alias( $table )}.$column";
+        if ( strpos($tableColumn, '.')) {
+            list( $table, $column ) = explode('.', $tableColumn );
+            $this->column = "{$table}.{$column}";
+        } else {
+            $this->column = $tableColumn;
+        }
+
 		$this->direction = $direction;
 		return $this;
 	}
