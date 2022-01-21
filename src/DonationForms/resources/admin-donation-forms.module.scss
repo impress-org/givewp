@@ -194,3 +194,15 @@
 .totalItems {
     margin-inline-end: 1rem;
 }
+
+.statusBadge {
+    background-color: var(--give-primary-color);
+    border-radius: 0.1875rem;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding-block: 0.5em;
+    padding-inline: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+}

@@ -136,6 +136,9 @@ function AdminDonationForms() {
                                 <th scope="col" aria-sort="ascending" className={styles.tableColumnHeader}>
                                     {__('Date', 'give')}
                                 </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Status', 'give')}
+                                </th>
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
@@ -183,6 +186,9 @@ function AdminDonationForms() {
                                     </td>
                                     <td className={styles.tableCell}>{form.shortcode}</td>
                                     <td className={styles.tableCell}>{form.datetime}</td>
+                                    <td className={styles.tableCell}>
+                                        <div className={styles.statusBadge}>Published</div>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
