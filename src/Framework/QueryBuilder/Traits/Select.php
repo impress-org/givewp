@@ -14,7 +14,7 @@ trait Select {
      *
      * @return $this
      */
-	public function select( $selects ) {
+	public function select( ...$selects ) {
 		$this->selects = array_map(function($select) {
 			if( is_array( $select ) ) {
 				list( $column, $alias ) = $select;
