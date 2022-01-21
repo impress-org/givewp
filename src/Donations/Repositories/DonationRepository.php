@@ -75,28 +75,9 @@ class DonationRepository
             ->where('donationMeta.meta_value', $subscriptionId)
             ->orderBy('posts.post_date', 'DESC');
 
+        // TODO: return DTO
 
         return DB::get_results($builder->getSQL());
-
-
-
-//        $donationIds = $wpdb->get_col(
-//            "SELECT donation_id
-//                    FROM {$wpdb->prefix}give_donationmeta
-//                    WHERE meta_key = 'subscription_id'
-//                    AND meta_value = '$subscriptionId'"
-//        );
-//
-//        $posts = get_posts([
-//            'include'     => $donationIds,
-//            'post_type'   => 'give_payment',
-//            'post_status' => 'give_subscription',
-//            'orderby'     => 'post_date',
-//        ]);
-//
-//        return array_map(static function ($post) {
-//            return DonationPostData::fromPost($post)->toDonation();
-//        }, $posts);
     }
 
     /**
