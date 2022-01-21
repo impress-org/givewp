@@ -108,6 +108,7 @@
     border-radius: inherit;
     border-spacing: 0;
     inline-size: 100%;
+    font-size: 1em;
 }
 
 /* Visually hidden class omitting position: absolute since that breaks the table
@@ -157,6 +158,7 @@
     padding-block-end: 2.5em;
     padding-inline: 1em;
     text-align: start;
+    font-size: 0.875em;
 }
 
 .pageHeader {
