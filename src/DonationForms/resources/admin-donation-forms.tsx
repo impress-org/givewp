@@ -153,8 +153,20 @@ function AdminDonationForms() {
                                         {form.amount}
                                     </td>
                                     <td className={styles.tableCell}>{form.goal ? form.goal : 'No Goal Set'}</td>
-                                    <td className={styles.tableCell}>{form.donations}</td>
-                                    <td className={styles.tableCell}>{form.revenue}</td>
+                                    <td className={styles.tableCell}>
+                                        <a
+                                            href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}
+                                        >
+                                            {form.donations}
+                                        </a>
+                                    </td>
+                                    <td className={styles.tableCell}>
+                                        <a
+                                            href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=${form.id}`}
+                                        >
+                                            {form.revenue}
+                                        </a>
+                                    </td>
                                     <td className={styles.tableCell}>{form.shortcode}</td>
                                     <td className={styles.tableCell}>{form.datetime}</td>
                                 </tr>
