@@ -139,6 +139,30 @@
 .tableRowActions {
     opacity: 0;
     transition: opacity 180ms ease-in;
+
+    display: flex;
+    column-gap: 2rem;
+
+    > * {
+        position: relative;
+        color: #0878b0;
+        font-weight: 400;
+        line-height: 1;
+    }
+
+    > * + *::before {
+        position: absolute;
+        content: "";
+        inset-block: auto;
+        inset-inline-start: calc(-1.0625rem);
+        block-size: 110%;
+        inline-size: 0.125rem;
+        background-color: #dedede;
+    }
+
+    > a {
+        text-decoration: none;
+    }
 }
 
 .tableRow {
