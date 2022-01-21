@@ -120,6 +120,7 @@ class Donation
 
     /**
      * @return Donation
+     * @throws DatabaseQueryException
      */
     public function save()
     {
