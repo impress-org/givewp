@@ -160,6 +160,7 @@ function AdminDonationForms() {
                                             <button type="button" onClick={deleteForm} className={styles.action}>
                                                 Delete <span className="give-visually-hidden">{form.name}</span>
                                             </button>
+                                            <a href={`/?p=${form.id}`}>{__('View', 'give')}</a>
                                         </div>
                                     </th>
                                     <td className={styles.tableCell} style={{textAlign: 'end'}}>
