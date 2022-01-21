@@ -13,7 +13,7 @@ trait From {
 	 * @param string $table
 	 * @return $this
 	 */
-	public function from( $table ) {
+	public function from( $table, $alias = null ) {
 		$this->from = $this->alias( $table );
 		return $this;
 	}
