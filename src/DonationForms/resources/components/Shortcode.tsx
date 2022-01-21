@@ -23,7 +23,7 @@ export default function Shortcode({code}: ShortcodeProps) {
         return (
             <button
                 type="button"
-                disabled={copyShortcode.status === CopyTextStatus.Copied}
+                disabled={copyShortcode.status !== CopyTextStatus.Idle}
                 onClick={copyShortcode.handleCopyText}
             >
                 {buttonTextFromStatus(copyShortcode.status)}
