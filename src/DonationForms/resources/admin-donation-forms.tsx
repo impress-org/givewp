@@ -6,6 +6,7 @@ import cx from 'classnames';
 import styles from './admin-donation-forms.module.scss';
 import mockDonationForms from './mock-donation-forms.json';
 import Pagination from './components/Pagination.js';
+import Shortcode from './components/Shortcode';
 
 declare global {
     interface Window {
@@ -192,7 +193,9 @@ function AdminDonationForms() {
                                             {form.revenue}
                                         </a>
                                     </td>
-                                    <td className={styles.tableCell}>{form.shortcode}</td>
+                                    <td className={styles.tableCell}>
+                                        <Shortcode code={form.shortcode} />
+                                    </td>
                                     <td className={styles.tableCell}>{form.datetime}</td>
                                     <td className={styles.tableCell}>
                                         <div className={styles.statusBadge}>Published</div>
