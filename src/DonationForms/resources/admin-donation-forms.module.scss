@@ -206,3 +206,22 @@
     text-align: center;
     text-transform: uppercase;
 }
+
+.idBadge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f3f2ec;
+    border: 0.0625rem solid #e0dfd9;
+    border-radius: 9999px;
+    color: #5f5f5f;
+    font-weight: 600;
+    padding-block: 0.1em;
+    padding-inline: 0.5em;
+    text-align: center;
+}
+
+.idBadge::before {
+    content: '#';
+    font-size: 0.615em;
+    padding-inline-end: 0.25em;
+}

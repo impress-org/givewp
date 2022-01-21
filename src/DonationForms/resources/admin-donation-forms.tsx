@@ -144,7 +144,9 @@ function AdminDonationForms() {
                         <tbody className={styles.tableContent}>
                             {state.donationForms.map((form) => (
                                 <tr key={form.id} className={styles.tableRow}>
-                                    <td className={styles.tableCell}>{form.id}</td>
+                                    <td className={styles.tableCell}>
+                                        <div className={styles.idBadge}>{form.id}</div>
+                                    </td>
                                     <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                                         <a href={`post.php?post=${form.id}&action=edit`}>{form.name}</a>
                                         <div role="group" aria-label={__('Actions', 'give')}>
