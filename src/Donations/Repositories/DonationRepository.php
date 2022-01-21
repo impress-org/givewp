@@ -66,7 +66,7 @@ class DonationRepository
             ['posts.post_parent', 'parentId']
         ]);
 
-        $builder->joinMeta( 'donationMeta', 'ID', 'donation_id', 'LEFT', [
+        $builder->joinMeta( 'donationMeta', 'ID', 'donation_id', [
             ['_give_payment_total', 'amount'],
             ['_give_payment_currency', 'paymentCurrency'],
             ['_give_payment_gateway', 'paymentGateway'],
