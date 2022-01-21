@@ -21,7 +21,11 @@ export default function Shortcode({code}: ShortcodeProps) {
 
     if (copyShortcode.isSupported) {
         return (
-            <button type="button" onClick={copyShortcode.handleCopyText}>
+            <button
+                type="button"
+                disabled={copyShortcode.status === CopyTextStatus.Copied}
+                onClick={copyShortcode.handleCopyText}
+            >
                 {buttonTextFromStatus(copyShortcode.status)}
             </button>
         );
