@@ -2,53 +2,61 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait Where {
+use Give\Framework\QueryBuilder\Where as WhereClause;
 
-	/**
-	 * @var string
-	 */
-	public $wheres = [];
+trait Where
+{
 
-	/**
-	 * @param string $column
-	 * @param string $comparator
-	 * @param string $value
-	 * @param string $logicalOperator
-	 *
-	 * @return $this
-	 */
-	private function setWhere( $column, $comparator, $value, $logicalOperator ) {
-		$this->wheres[] = [ $column, $comparator, $value, $logicalOperator ];
-		return $this;
-	}
+    /**
+     * @var string
+     */
+    public $wheres = [];
 
-	/**
-	 * @param string $column
-	 * @param string $comparator
-	 * @param string $value
-	 * @return $this
-	 */
-	public function where( $column, $value, $comparator = '=' ) {
-		return $this->setWhere( $column, $comparator, $value, 'AND' );
-	}
+    /**
+     * @param  string  $column
+     * @param  string  $value
+     * @param  string  $comparisonOperator
+     * @param  string  $logicalOperator
+     *
+     * @return $this
+     */
+    private function setWhere($column, $value, $comparisonOperator, $logicalOperator)
+    {
+        $this->wheres[] = new WhereClause($column, $value, $comparisonOperator, $logicalOperator);
 
-	/**
-	 * @param string $column
-	 * @param string $comparator
-	 * @param string $value
-	 *
-	 * @return $this
-	 */
-	public function orWhere( $column, $value,  $comparator = '=' ) {
-		return $this->setWhere( $column, $comparator, $value, 'OR' );
-	}
+        return $this;
+    }
 
-	public function getWhereSQL() {
-		$sql = array_map(function( $where ) {
-			list( $tableColumn, $comparator, $value, $operator ) = $where;
-			list( $table, $column ) = explode('.', $tableColumn );
-			return "{$operator} {$this->alias($table)}.$column $comparator '$value'";
-		}, $this->wheres);
-		return array_merge([ 'WHERE 1' ], $sql );
-	}
+    /**
+     * @param  string  $column
+     * @param  string  $comparisonOperator
+     * @param  string  $value
+     *
+     * @return $this
+     */
+    public function where($column, $value, $comparisonOperator = '=')
+    {
+        return $this->setWhere($column, $value, $comparisonOperator, 'AND');
+    }
+
+    /**
+     * @param  string  $column
+     * @param  string  $comparisonOperator
+     * @param  string  $value
+     *
+     * @return $this
+     */
+    public function orWhere($column, $value, $comparisonOperator = '=')
+    {
+        return $this->setWhere($column, $value, $comparisonOperator, 'OR');
+    }
+
+    public function getWhereSQL()
+    {
+        $wheres = array_map(function (WhereClause $whereClause) {
+            return "{$whereClause->logicalOperator} {$whereClause->column} {$whereClause->comparisonOperator} '{$whereClause->value}'";
+        }, $this->wheres);
+
+        return array_merge(['WHERE 1'], $wheres);
+    }
 }

@@ -2,39 +2,42 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait Join {
+use Give\Framework\QueryBuilder\Join as JoinTable;
 
-	/**
-	 * @var array [[ table, foreignKey, primaryKey ]]
-	 */
-	protected $joins = [];
+trait Join
+{
 
-	/**
-	 * @param string $table
-	 * @param string $foreignKey
-	 * @param string $primaryKey
-	 * @return $this
-	 */
-	public function join( $table, $foreignKey, $primaryKey, $joinType = '' ) {
-		$this->joins[] = [ $this->alias( $table ), $foreignKey, $primaryKey, $joinType ];
-		return $this;
-	}
+    /**
+     * @var JoinTable[]
+     */
+    protected $joins = [];
+
+    /**
+     * @param  string  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  string|null  $alias
+     *
+     * @return $this
+     */
+    public function join($table, $foreignKey, $primaryKey, $joinType = 'LEFT', $alias = null)
+    {
+        $this->joins[] = new JoinTable($table, $foreignKey, $primaryKey, $joinType, $alias);
+
+        return $this;
+    }
 
     /**
      * @return string[]
      */
     public function getJoinSQL()
     {
-        return array_map(function ($join) {
-            list($table, $foreignKey, $primaryKey, $joinType) = $join;
-
-            if (strpos($table, ' ')) {
-                list($table, $alias) = explode(' ', $table);
-
-                return "{$joinType} JOIN {$table} {$alias} ON {$this->from}.$foreignKey = $alias.$primaryKey";
+        return array_map(function (JoinTable $joinTable) {
+            if ($joinTable->alias) {
+                return "{$joinTable->joinType} JOIN {$joinTable->table} {$joinTable->alias} ON {$this->from->alias}.{$joinTable->foreignKey} = {$joinTable->alias}.{$joinTable->primaryKey}";
             }
 
-            return "{$joinType} JOIN {$table} ON {$this->from}.$foreignKey = $table.$primaryKey";
+            return "{$joinTable->joinType} JOIN {$joinTable->table} ON {$this->from->table}.{$joinTable->foreignKey} = {$joinTable->table}.{$joinTable->primaryKey}";
         }, $this->joins);
     }
 }

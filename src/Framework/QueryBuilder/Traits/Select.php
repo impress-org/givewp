@@ -2,45 +2,54 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait Select {
+use Give\Framework\QueryBuilder\Select as SelectClause;
 
-	/**
-	 * @var array
-	 */
-	public $selects = [];
+trait Select
+{
 
     /**
-     * @param array $selects
+     * @var SelectClause[]
+     */
+    public $selects = [];
+
+    /**
+     * @param  array  $columns
      *
      * @return $this
      */
-	public function select( ...$selects ) {
-		$this->selects = array_map(function($select) {
-			if( is_array( $select ) ) {
-				list( $column, $alias ) = $select;
-			} else {
-				$column = $alias = $select;
-			}
-			return [ $column, $alias ];
-		}, $selects);
-		return $this;
-	}
+    public function select(...$columns)
+    {
+        $selects = array_map(function ($select) {
+            if (is_array($select)) {
+                list($column, $alias) = $select;
 
-	/**
-	 * @return string[]
-	 */
-	public function getSelectSQL() {
-		return [
-			'SELECT ' . implode(', ', array_map( function( $select ) {
-				list( $tableColumn, $alias ) = $select;
-                if ( strpos($tableColumn, '.')) {
-                    list( $table, $column ) = explode('.', $tableColumn );
-                    return "{$this->alias( $table )}.$column AS $alias";
-                }
+                return new SelectClause($column, $alias);
+            }
 
-                return "$tableColumn AS $alias";
+            return new SelectClause($select);
+        }, $columns);
 
-			}, $this->selects) )
-		];
-	}
+        $this->selects = array_merge($this->selects, $selects);
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSelectSQL()
+    {
+        return [
+            'SELECT ' . implode(
+                ', ',
+                array_map(function ( SelectClause $select) {
+
+                    if ( $select->alias ) {
+                        return "{$select->column} AS {$select->alias}";
+                    }
+                    return $select->column;
+                }, $this->selects)
+            )
+        ];
+    }
 }
