@@ -94,11 +94,14 @@ trait Join
     public function getJoinSQL()
     {
         return array_map(function (JoinTable $joinTable) {
+
+            $from = $this->from->alias ? : $this->from->table;
+
             if ($joinTable->alias) {
-                return "{$joinTable->joinType} JOIN {$joinTable->table} {$joinTable->alias} ON {$this->from->alias}.{$joinTable->foreignKey} = {$joinTable->alias}.{$joinTable->primaryKey}";
+                return "{$joinTable->joinType} JOIN {$joinTable->table} {$joinTable->alias} ON {$from}.{$joinTable->foreignKey} = {$joinTable->alias}.{$joinTable->primaryKey}";
             }
 
-            return "{$joinTable->joinType} JOIN {$joinTable->table} ON {$this->from->table}.{$joinTable->foreignKey} = {$joinTable->table}.{$joinTable->primaryKey}";
+            return "{$joinTable->joinType} JOIN {$joinTable->table} ON {$from}.{$joinTable->foreignKey} = {$joinTable->table}.{$joinTable->primaryKey}";
         }, $this->joins);
     }
 }
