@@ -33,8 +33,13 @@ trait Select {
 		return [
 			'SELECT ' . implode(', ', array_map( function( $select ) {
 				list( $tableColumn, $alias ) = $select;
-				list( $table, $column ) = explode('.', $tableColumn );
-				return "{$this->alias( $table )}.$column AS $alias";
+                if ( strpos($tableColumn, '.')) {
+                    list( $table, $column ) = explode('.', $tableColumn );
+                    return "{$this->alias( $table )}.$column AS $alias";
+                }
+
+                return "$tableColumn AS $alias";
+
 			}, $this->selects) )
 		];
 	}
