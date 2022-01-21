@@ -113,6 +113,9 @@ jobs:
                     php_version: 7.2
                     dev: no
 
+            -   name: Copy tcpdf fonts to vendor
+                run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
+
             -   uses: actions/setup-node@v2
                 with:
                     node-version: '12'
@@ -121,7 +124,7 @@ jobs:
                 run: |
                     npm install -g npm@7
                     npm ci
-                    sudo npm run build
+                    npm run build
 
             -   name: WordPress Plugin Deploy
                 id: deploy

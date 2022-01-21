@@ -362,7 +362,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				<td class="give-forminp">
 					<div class="give-field-wrap">
 						<label for="json">
-							<input type="file" name="json" class="give-upload-json-file" value="<?php echo $json; ?>"
+							<input type="file" name="json" class="give-upload-json-file" value="<?php echo esc_attr($json); ?>"
 								   accept=".json">
 							<p class="give-field-description"><?php esc_html_e( 'The file type must be JSON.', 'give' ); ?></p>
 						</label>

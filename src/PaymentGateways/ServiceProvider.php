@@ -14,7 +14,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
  *
  * The Service Provider for loading the Payment Gateways for Payment Flow 2.0
  *
- * @unreleased
+ * @since 2.18.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

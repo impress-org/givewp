@@ -9,7 +9,7 @@ use function Give\Framework\Http\Response\response;
 
 class RedirectOffsiteHandler  {
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  RedirectOffsite  $command
      * @return RedirectResponse

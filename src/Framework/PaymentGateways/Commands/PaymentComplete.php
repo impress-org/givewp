@@ -3,6 +3,6 @@
 namespace Give\Framework\PaymentGateways\Commands;
 
 /***
- * @unreleased
+ * @since 2.18.0
  */
 class PaymentComplete extends PaymentCommand {}

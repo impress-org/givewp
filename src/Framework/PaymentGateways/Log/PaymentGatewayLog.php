@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways\Log;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class PaymentGatewayLog extends Log
 {

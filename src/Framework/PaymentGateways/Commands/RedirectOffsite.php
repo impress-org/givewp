@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Commands;
 
 /***
- * @unreleased
+ * @since 2.18.0
  */
 class RedirectOffsite implements GatewayCommand {
     /**
@@ -12,7 +12,7 @@ class RedirectOffsite implements GatewayCommand {
     public $redirectUrl;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $redirectUrl
      */

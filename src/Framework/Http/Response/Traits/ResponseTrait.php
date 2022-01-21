@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 trait ResponseTrait
 {
@@ -29,7 +29,7 @@ trait ResponseTrait
     /**
      * Get the status code for the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return int
      */
@@ -41,7 +41,7 @@ trait ResponseTrait
     /**
      * Get the content of the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string
      */
@@ -53,7 +53,7 @@ trait ResponseTrait
     /**
      * Get the original response content.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return mixed
      */
@@ -67,7 +67,7 @@ trait ResponseTrait
     /**
      * Set a header on the Response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $key
      * @param  array|string  $values
@@ -84,7 +84,7 @@ trait ResponseTrait
     /**
      * Add an array of headers to the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  HeaderBag|array  $headers
      * @return $this
@@ -105,7 +105,7 @@ trait ResponseTrait
     /**
      * Add a cookie to the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  Cookie|mixed  $cookie
      * @return $this
@@ -118,7 +118,7 @@ trait ResponseTrait
     /**
      * Add a cookie to the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  Cookie|mixed  $cookie
      * @return $this
@@ -137,7 +137,7 @@ trait ResponseTrait
     /**
      * Expire a cookie when sending the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  Cookie|mixed  $cookie
      * @param  string|null  $path
@@ -158,7 +158,7 @@ trait ResponseTrait
     /**
      * Get the callback of the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string|null
      */
@@ -170,7 +170,7 @@ trait ResponseTrait
     /**
      * Set the exception to attach to the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  Exception  $e
      * @return $this
@@ -185,7 +185,7 @@ trait ResponseTrait
     /**
      * Throws the response in a HttpResponseException instance.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return void
      *

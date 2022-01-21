@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Commands;
 
 /***
- * @unreleased
+ * @since 2.18.0
  */
 abstract class PaymentCommand implements GatewayCommand
 {
@@ -31,7 +31,7 @@ abstract class PaymentCommand implements GatewayCommand
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string|null  $gatewayTransactionId
      */

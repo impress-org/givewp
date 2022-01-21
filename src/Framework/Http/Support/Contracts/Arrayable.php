@@ -3,14 +3,14 @@
 namespace Give\Framework\Support\Contracts;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 interface Arrayable
 {
     /**
      * Get the instance as an array.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return array
      */

@@ -5,7 +5,7 @@ namespace Give\Framework\Http\Exceptions;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class HttpResponseException extends Exception
 {
