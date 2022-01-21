@@ -76,18 +76,15 @@ class ListForms extends Endpoint
             //if there are multiple prices, get the highest and lowest
             if( is_array( $result->prices ) ) {
                 $all_prices = array_column($result->prices, '_give_amount');
-                $prices = array(
-                    min($all_prices),
-                    max($all_prices)
-                );
+                $prices = $this->formatAmount(min($all_prices)) . ' - ' . $this->formatAmount(max($all_prices));
             }
             $results[] = (object) array(
                 'id' => $form->ID,
                 'name' => $result->post_title,
-                'amount' => $prices ?: $result->price,
+                'amount' => isset( $prices ) ?: $this->formatAmount( $result->price ),
                 'goal' => $result->goal,
                 'donations' => count( give_get_payments( ['give_forms' => $form->ID ] ) ),
-                'revenue' => give_get_form_earnings_stats( $form->ID ),
+                'revenue' => $this->formatAmount( give_get_form_earnings_stats( $form->ID ) ),
                 'datetime' => $result->post_date,
                 'shortcode' => "[give_form id=\"$form->ID\"]",
                 'status' => $form->post_status,
@@ -98,5 +95,9 @@ class ListForms extends Endpoint
             'total' => $form_query->found_posts,
             'page' => $page
         );
+    }
+
+    protected function formatAmount ($amount) {
+        return html_entity_decode( give_currency_filter( give_format_amount( $amount ) ) );
     }
 }
