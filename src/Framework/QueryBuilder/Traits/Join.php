@@ -27,6 +27,67 @@ trait Join
         return $this;
     }
 
+
+    /**
+     * @param  string  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  string|null  $alias
+     *
+     * @return $this
+     */
+    public function leftJoin($table, $foreignKey, $primaryKey, $alias = null)
+    {
+        $this->join($table, $foreignKey, $primaryKey, 'LEFT', $alias);
+
+        return $this;
+    }
+
+    /**
+     * @param  string  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  string|null  $alias
+     *
+     * @return $this
+     */
+    public function innerJoin($table, $foreignKey, $primaryKey, $alias = null)
+    {
+        $this->join($table, $foreignKey, $primaryKey, 'INNER', $alias);
+
+        return $this;
+    }
+
+    /**
+     * @param  string  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  string|null  $alias
+     *
+     * @return $this
+     */
+    public function outerJoin($table, $foreignKey, $primaryKey, $alias = null)
+    {
+        $this->join($table, $foreignKey, $primaryKey, 'OUTER', $alias);
+
+        return $this;
+    }
+
+    /**
+     * @param  string  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  string|null  $alias
+     *
+     * @return $this
+     */
+    public function rightJoin($table, $foreignKey, $primaryKey, $alias = null)
+    {
+        $this->join($table, $foreignKey, $primaryKey, 'RIGHT', $alias);
+
+        return $this;
+    }
+
     /**
      * @return string[]
      */
