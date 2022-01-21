@@ -61,7 +61,7 @@ class DonationRepository
         $builder->select([
             ['posts.ID', 'id'],
             ['posts.post_date', 'createdAt'],
-            ['posts.post_modified', 'createdAt'],
+            ['posts.post_modified', 'updatedAt'],
             ['posts.post_status', 'status'],
             ['posts.post_parent', 'parentId'],
         ]);
