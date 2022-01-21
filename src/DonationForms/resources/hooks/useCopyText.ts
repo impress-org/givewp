@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
+import type {MouseEventHandler} from 'react';
 
 export enum CopyTextStatus {
     Idle,
@@ -8,7 +9,7 @@ export enum CopyTextStatus {
 
 export type CopyText = {
     // The copy text event handler function.
-    handleCopyText: Function;
+    handleCopyText: MouseEventHandler;
     // Is the functionality supported by the browser?
     isSupported: boolean;
     // The status of the result of event handler

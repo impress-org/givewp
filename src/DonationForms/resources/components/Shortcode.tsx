@@ -27,5 +27,5 @@ export default function Shortcode({code}: ShortcodeProps) {
         );
     }
 
-    return code;
+    return <>{code}</>;
 }
