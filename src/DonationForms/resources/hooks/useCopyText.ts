@@ -7,15 +7,18 @@ export enum CopyTextStatus {
 }
 
 export type CopyText = {
+    // The copy text event handler function.
     handleCopyText: Function;
+    // Is the functionality supported by the browser?
     isSupported: boolean;
+    // The status of the result of event handler
     status: CopyTextStatus;
 };
 
 /**
  * A progressively enhanced hook for copying text
  */
-export default function useCopyText(text: string, resetStatusDelay: number = 2000) {
+export default function useCopyText(text: string, resetStatusDelay: number = 2000): CopyText {
     const copiedTimeoutId = useRef<number>(null);
     const [status, setStatus] = useState<CopyTextStatus>(CopyTextStatus.Idle);
     const handleCopyText = useCallback(async () => {
@@ -46,13 +49,8 @@ export default function useCopyText(text: string, resetStatusDelay: number = 200
     }, [copiedTimeoutId, status, resetStatusDelay]);
 
     return {
-        // The copy text event handler function.
         handleCopyText,
-
-        // Is the functionality supported by the browser?
         isSupported: 'clipboard' in navigator,
-
-        // The status of the result of event handler
         status,
     };
 }
