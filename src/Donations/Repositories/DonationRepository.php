@@ -54,10 +54,6 @@ class DonationRepository
         $builder = new QueryBuilder();
 
         $builder
-            ->tableAliases([
-                'posts'        => $this->postsTable,
-                'donationMeta' => $this->donationMetaTable
-            ])
             ->select(
                 ['posts.ID', 'id'],
                 ['posts.post_date', 'createdAt'],
@@ -65,17 +61,17 @@ class DonationRepository
                 ['posts.post_status', 'status'],
                 ['posts.post_parent', 'parentId']
             )
-            ->attachMeta('donationMeta', 'ID', 'donation_id',
+            ->attachMeta($this->donationMetaTable, 'ID', 'donation_id',
                 ['_give_payment_total', 'amount'],
-                ['_give_payment_currency', 'paymentCurrency'],
-                ['_give_payment_gateway', 'paymentGateway'],
+                '_give_payment_currency',
+                '_give_payment_gateway',
                 ['_give_payment_donor_id', 'donorId'],
                 ['_give_donor_billing_first_name', 'firstName'],
                 ['_give_donor_billing_last_name', 'lastName'],
                 ['_give_payment_donor_email', 'donorEmail']
             )
-            ->from('posts')
-            ->join('donationMeta', 'ID', 'donation_id' )
+            ->from($this->postsTable, 'posts')
+            ->join($this->donationMetaTable, 'ID', 'donation_id', 'LEFT', 'donationMeta')
             ->where('posts.post_type', 'give_payment')
             ->where('posts.post_status', 'give_subscription')
             ->where('donationMeta.meta_key', 'subscription_id')
