@@ -2,41 +2,44 @@
 
 namespace Give\Framework\QueryBuilder;
 
-use Give\Framework\QueryBuilder\Traits\From;
-use Give\Framework\QueryBuilder\Traits\GroupBy;
-use Give\Framework\QueryBuilder\Traits\Join;
-use Give\Framework\QueryBuilder\Traits\Limit;
-use Give\Framework\QueryBuilder\Traits\OrderBy;
-use Give\Framework\QueryBuilder\Traits\Select;
-use Give\Framework\QueryBuilder\Traits\Where;
-use Give\Framework\QueryBuilder\Traits\Meta;
+use Give\Framework\QueryBuilder\Traits\FromTrait;
+use Give\Framework\QueryBuilder\Traits\GroupByTrait;
+use Give\Framework\QueryBuilder\Traits\JoinTrait;
+use Give\Framework\QueryBuilder\Traits\LimitTrait;
+use Give\Framework\QueryBuilder\Traits\MetaTrait;
+use Give\Framework\QueryBuilder\Traits\OrderByTrait;
+use Give\Framework\QueryBuilder\Traits\SelectTrait;
+use Give\Framework\QueryBuilder\Traits\WhereTrait;
 
-class QueryBuilder {
+/**
+ * @unreleased
+ */
+class QueryBuilder
+{
+    use SelectTrait;
+    use FromTrait;
+    use JoinTrait;
+    use WhereTrait;
+    use OrderByTrait;
+    use GroupByTrait;
+    use LimitTrait;
+    use MetaTrait;
 
-	use Select;
-	use From;
-	use Join;
-	use Where;
-	use OrderBy;
-	use GroupBy;
-	use Limit;
-    use Meta;
+    /**
+     * @return string
+     */
+    public function getSQL()
+    {
+        $sql = array_merge(
+            $this->getSelectSQL(),
+            $this->getFromSQL(),
+            $this->getJoinSQL(),
+            $this->getWhereSQL(),
+            $this->getGroupBySQL(),
+            $this->getOrderBySQL(),
+            $this->getLimitSQL()
+        );
 
-	/**
-	 * @return string
-	 */
-	public function getSQL() {
-
-		$sql = array_merge(
-			$this->getSelectSQL(),
-			$this->getFromSQL(),
-			$this->getJoinSQL(),
-			$this->getWhereSQL(),
-			$this->getGroupBySQL(),
-			$this->getOrderBySQL(),
-			$this->getLimitSQL()
-		);
-
-		return implode(' ', $sql);
-	}
+        return implode(' ', $sql);
+    }
 }
