@@ -2,15 +2,19 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-use Give\Framework\QueryBuilder\Where as WhereClause;
+use Give\Framework\QueryBuilder\Where;
+use Give\Framework\QueryBuilder\Types\LogicalOperator;
 
-trait Where
+/**
+ * @unreleased
+ */
+trait WhereTrait
 {
 
     /**
      * @var string
      */
-    public $wheres = [];
+    protected $wheres = [];
 
     /**
      * @param  string  $column
@@ -22,7 +26,7 @@ trait Where
      */
     private function setWhere($column, $value, $comparisonOperator, $logicalOperator)
     {
-        $this->wheres[] = new WhereClause($column, $value, $comparisonOperator, $logicalOperator);
+        $this->wheres[] = new Where($column, $value, $comparisonOperator, $logicalOperator);
 
         return $this;
     }
@@ -36,7 +40,7 @@ trait Where
      */
     public function where($column, $value, $comparisonOperator = '=')
     {
-        return $this->setWhere($column, $value, $comparisonOperator, 'AND');
+        return $this->setWhere($column, $value, $comparisonOperator, LogicalOperator::AND);
     }
 
     /**
@@ -48,13 +52,13 @@ trait Where
      */
     public function orWhere($column, $value, $comparisonOperator = '=')
     {
-        return $this->setWhere($column, $value, $comparisonOperator, 'OR');
+        return $this->setWhere($column, $value, $comparisonOperator, LogicalOperator::OR);
     }
 
     public function getWhereSQL()
     {
-        $wheres = array_map(function (WhereClause $whereClause) {
-            return "{$whereClause->logicalOperator} {$whereClause->column} {$whereClause->comparisonOperator} '{$whereClause->value}'";
+        $wheres = array_map(function (Where $where) {
+            return "{$where->logicalOperator} {$where->column} {$where->comparisonOperator} '{$where->value}'";
         }, $this->wheres);
 
         return array_merge(['WHERE 1'], $wheres);

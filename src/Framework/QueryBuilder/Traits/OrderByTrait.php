@@ -2,7 +2,10 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait OrderBy {
+/**
+ * @unreleased
+ */
+trait OrderByTrait {
 
 	/**
 	 * @var string
@@ -34,7 +37,7 @@ trait OrderBy {
 
 	public function getOrderBySQL() {
 		return $this->column && $this->direction
-			? [ "ORDER BY $this->column $this->direction" ]
+			? [ "ORDER BY {$this->column} {$this->direction}" ]
 			: [];
 	}
 }

@@ -2,12 +2,15 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait GroupBy {
+/**
+ * @unreleased
+ */
+trait GroupByTrait {
 
 	/**
 	 * @var string
 	 */
-	public $groupByColumns = [];
+	protected $groupByColumns = [];
 
 	/**
 	 * @return $this

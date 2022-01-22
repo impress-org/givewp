@@ -2,7 +2,10 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-trait Limit {
+/**
+ * @unreleased
+ */
+trait LimitTrait {
 
 	/**
 	 * @var int

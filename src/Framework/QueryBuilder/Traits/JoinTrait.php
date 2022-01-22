@@ -2,13 +2,17 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-use Give\Framework\QueryBuilder\Join as JoinTable;
+use Give\Framework\QueryBuilder\Join;
+use Give\Framework\QueryBuilder\Types\JoinType;
 
-trait Join
+/**
+ * @unreleased
+ */
+trait JoinTrait
 {
 
     /**
-     * @var JoinTable[]
+     * @var Join[]
      */
     protected $joins = [];
 
@@ -16,13 +20,14 @@ trait Join
      * @param  string  $table
      * @param  string  $foreignKey
      * @param  string  $primaryKey
+     * @param  string  $joinType
      * @param  string|null  $alias
      *
      * @return $this
      */
-    public function join($table, $foreignKey, $primaryKey, $joinType = 'LEFT', $alias = null)
+    public function join($table, $foreignKey, $primaryKey, $joinType, $alias = null)
     {
-        $this->joins[] = new JoinTable($table, $foreignKey, $primaryKey, $joinType, $alias);
+        $this->joins[] = new Join($table, $foreignKey, $primaryKey, $joinType, $alias);
 
         return $this;
     }
@@ -38,7 +43,7 @@ trait Join
      */
     public function leftJoin($table, $foreignKey, $primaryKey, $alias = null)
     {
-        $this->join($table, $foreignKey, $primaryKey, 'LEFT', $alias);
+        $this->join($table, $foreignKey, $primaryKey, JoinType::LEFT, $alias);
 
         return $this;
     }
@@ -53,22 +58,7 @@ trait Join
      */
     public function innerJoin($table, $foreignKey, $primaryKey, $alias = null)
     {
-        $this->join($table, $foreignKey, $primaryKey, 'INNER', $alias);
-
-        return $this;
-    }
-
-    /**
-     * @param  string  $table
-     * @param  string  $foreignKey
-     * @param  string  $primaryKey
-     * @param  string|null  $alias
-     *
-     * @return $this
-     */
-    public function outerJoin($table, $foreignKey, $primaryKey, $alias = null)
-    {
-        $this->join($table, $foreignKey, $primaryKey, 'OUTER', $alias);
+        $this->join($table, $foreignKey, $primaryKey, JoinType::INNER, $alias);
 
         return $this;
     }
@@ -83,7 +73,7 @@ trait Join
      */
     public function rightJoin($table, $foreignKey, $primaryKey, $alias = null)
     {
-        $this->join($table, $foreignKey, $primaryKey, 'RIGHT', $alias);
+        $this->join($table, $foreignKey, $primaryKey, JoinType::RIGHT, $alias);
 
         return $this;
     }
@@ -93,15 +83,12 @@ trait Join
      */
     public function getJoinSQL()
     {
-        return array_map(function (JoinTable $joinTable) {
-
-            $from = $this->from->alias ? : $this->from->table;
-
+        return array_map(function (Join $joinTable) {
             if ($joinTable->alias) {
-                return "{$joinTable->joinType} JOIN {$joinTable->table} {$joinTable->alias} ON {$from}.{$joinTable->foreignKey} = {$joinTable->alias}.{$joinTable->primaryKey}";
+                return "{$joinTable->joinType} JOIN {$joinTable->table} {$joinTable->alias} ON {$joinTable->foreignKey} = {$joinTable->alias}.{$joinTable->primaryKey}";
             }
 
-            return "{$joinTable->joinType} JOIN {$joinTable->table} ON {$from}.{$joinTable->foreignKey} = {$joinTable->table}.{$joinTable->primaryKey}";
+            return "{$joinTable->joinType} JOIN {$joinTable->table} ON {$joinTable->foreignKey} = {$joinTable->table}.{$joinTable->primaryKey}";
         }, $this->joins);
     }
 }

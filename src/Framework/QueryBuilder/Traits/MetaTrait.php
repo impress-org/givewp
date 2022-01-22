@@ -2,9 +2,12 @@
 
 namespace Give\Framework\QueryBuilder\Traits;
 
-use Give\Framework\QueryBuilder\Join as JoinTable;
+use Give\Framework\QueryBuilder\Types\JoinType;
 
-trait Meta
+/**
+ * @unreleased
+ */
+trait MetaTrait
 {
     /**
      * Select meta columns
@@ -29,7 +32,7 @@ trait Meta
             // Set dynamic alias
             $tableAlias = sprintf('%s_%s_%d', $table, 'attach_meta', $i);
 
-            $this->join($table, $foreignKey, $primaryKey, 'LEFT', $tableAlias);
+            $this->join($table, $foreignKey, $primaryKey, JoinType::LEFT, $tableAlias);
             $this->select([$tableAlias . '.meta_value', $columnAlias ? : $column]);
             $this->where($tableAlias . '.meta_key', $column);
         }
