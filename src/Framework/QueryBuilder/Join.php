@@ -2,6 +2,8 @@
 
 namespace Give\Framework\QueryBuilder;
 
+use Give\Framework\QueryBuilder\Types\JoinType;
+
 /**
  * @unreleased
  */
@@ -39,7 +41,7 @@ class Join
      * @param  string  $joinType
      * @param  string|null  $alias
      */
-    public function __construct($table, $foreignKey, $primaryKey, $joinType = 'LEFT', $alias = null)
+    public function __construct($table, $foreignKey, $primaryKey, $joinType = JoinType::LEFT, $alias = null)
     {
         $this->table      = $table;
         $this->foreignKey = $foreignKey;
@@ -56,11 +58,11 @@ class Join
     private function getJoinType($type)
     {
         $type = strtoupper($type);
-
-        if (in_array($type, ['INNER', 'LEFT', 'RIGHT', 'OUTER'])) {
+        
+        if (array_key_exists($type, JoinType::getTypes())) {
             return $type;
         }
 
-        return 'LEFT';
+        return JoinType::LEFT;
     }
 }
