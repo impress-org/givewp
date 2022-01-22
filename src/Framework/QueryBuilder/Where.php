@@ -2,6 +2,8 @@
 
 namespace Give\Framework\QueryBuilder;
 
+use Give\Framework\QueryBuilder\Types\LogicalOperator;
+
 /**
  * @unreleased
  */
@@ -48,7 +50,7 @@ class Where
      */
     private function getComparisonOperator($comparisonOperator)
     {
-        if (in_array($comparisonOperator, ['<', '<=', '=', '>', '>=', '<>'])) {
+        if (in_array($comparisonOperator, ['<', '<=', '>', '>=', '<>'])) {
             return $comparisonOperator;
         }
 
@@ -64,10 +66,10 @@ class Where
     {
         $logicalOperator = strtoupper($logicalOperator);
 
-        if (in_array($logicalOperator, ['AND', 'OR', 'BETWEEN', 'EXISTS', 'IN', 'LIKE', 'NOT'])) {
+        if (array_key_exists($logicalOperator, LogicalOperator::getTypes())) {
             return $logicalOperator;
         }
 
-        return 'AND';
+        return LogicalOperator::AND;
     }
 }
