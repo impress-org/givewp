@@ -1,34 +1,35 @@
 # Query Builder
 
-A purpose built Query Builder class for selecting peer-to-peer donation data.
+Query Builder helper class is used to help write SQL queries
 
-_Note: This is not a generalized query builder._
-
-```php
-$builder = new \GiveP2P\P2P\QueryBuilder\QueryBuilder();
-
-$builder
-    ->from( 'local_give_p2p_donation_source' )
-    ->join( 'local_posts', 'donation_id', 'ID' )
-    ->where( 'local_posts.ID', '=', '171' )
-;
-```
-
-## Table Aliases
-
-Table names can be aliased using the `tables()` method, passing key value 
-pairs of the alias followed by the fully qualified table name.
 
 ```php
-$builder = new \GiveP2P\P2P\QueryBuilder\QueryBuilder();
-
-$builder->tables([
-    'donations' => 'local_posts',
-    'donation_source' => 'local_give_p2p_donation_source'
-]);
+$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
 
 $builder
-    ->from( 'donation_source' )
-    ->join( 'donations', 'donation_id', 'ID' )
-;
+    ->select(
+        ['posts.ID', 'id'],
+        ['posts.post_date', 'createdAt'],
+        ['posts.post_modified', 'updatedAt'],
+        ['posts.post_status', 'status'],
+        ['posts.post_parent', 'parentId']
+    )
+    ->attachMeta($this->donationMetaTable, 'posts.ID', 'donation_id',
+        ['_give_payment_total', 'amount'],
+        ['_give_payment_currency', 'paymentCurrency'],
+        ['_give_payment_gateway', 'paymentGateway'],
+        ['_give_payment_donor_id', 'donorId'],
+        ['_give_donor_billing_first_name', 'firstName'],
+        ['_give_donor_billing_last_name', 'lastName'],
+        ['_give_payment_donor_email', 'donorEmail']
+    )
+    ->from($this->postsTable, 'posts')
+    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donation_id', 'donationMeta')
+    ->where('posts.post_type', 'give_payment')
+    ->where('posts.post_status', 'give_subscription')
+    ->where('donationMeta.meta_key', 'subscription_id')
+    ->where('donationMeta.meta_value', $subscriptionId)
+    ->orderBy('posts.post_date', 'DESC');
+
+return DB::get_row($builder->getSQL());
 ```
