@@ -61,17 +61,17 @@ class DonationRepository
                 ['posts.post_status', 'status'],
                 ['posts.post_parent', 'parentId']
             )
-            ->attachMeta($this->donationMetaTable, 'ID', 'donation_id',
+            ->attachMeta($this->donationMetaTable, 'posts.ID', 'donation_id',
                 ['_give_payment_total', 'amount'],
-                '_give_payment_currency',
-                '_give_payment_gateway',
+                ['_give_payment_currency', 'paymentCurrency'],
+                ['_give_payment_gateway', 'paymentGateway'],
                 ['_give_payment_donor_id', 'donorId'],
                 ['_give_donor_billing_first_name', 'firstName'],
                 ['_give_donor_billing_last_name', 'lastName'],
                 ['_give_payment_donor_email', 'donorEmail']
             )
             ->from($this->postsTable, 'posts')
-            ->leftJoin($this->donationMetaTable, 'ID', 'donation_id', 'donationMeta')
+            ->leftJoin($this->donationMetaTable, 'posts.ID', 'donation_id', 'donationMeta')
             ->where('posts.post_type', 'give_payment')
             ->where('posts.post_status', 'give_subscription')
             ->where('donationMeta.meta_key', 'subscription_id')
@@ -80,7 +80,7 @@ class DonationRepository
 
         // TODO: return DTO
 
-        return DB::get_results($builder->getSQL());
+        return DB::get_row($builder->getSQL());
     }
 
     /**
