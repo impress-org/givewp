@@ -34,7 +34,11 @@ trait FromClause
                 ', ',
                 array_map(function (From $from) {
                     if ($from->alias) {
-                        return "{$from->table} AS {$from->alias}";
+                        return sprintf(
+                            '%s AS %s',
+                            $from->table,
+                            $from->alias
+                        );
                     }
 
                     return $from->table;
