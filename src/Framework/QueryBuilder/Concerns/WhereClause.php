@@ -166,64 +166,64 @@ trait WhereClause
 
     /**
      * @param  string  $column
-     * @param  string|int  $value1
-     * @param  string|int  $value2
+     * @param  string|int  $min
+     * @param  string|int  $max
      *
      * @return $this
      */
-    public function whereBetween($column, $value1, $value2)
+    public function whereBetween($column, $min, $max)
     {
         return $this->where(
             $column,
-            [$value1, $value2],
+            [$min, $max],
             Operator::BETWEEN
         );
     }
 
     /**
      * @param  string  $column
-     * @param  string|int  $value1
-     * @param  string|int  $value2
+     * @param  string|int  $min
+     * @param  string|int  $max
      *
      * @return $this
      */
-    public function whereNotBetween($column, $value1, $value2)
+    public function whereNotBetween($column, $min, $max)
     {
         return $this->where(
             $column,
-            [$value1, $value2],
+            [$min, $max],
             Operator::NOTBETWEEN
         );
     }
 
     /**
      * @param  string  $column
-     * @param  string|int  $value1
-     * @param  string|int  $value2
+     * @param  string|int  $min
+     * @param  string|int  $max
      *
      * @return $this
      */
-    public function orWhereBetween($column, $value1, $value2)
+    public function orWhereBetween($column, $min, $max)
     {
         return $this->orWhere(
             $column,
-            [$value1, $value2],
+            [$min, $max],
             Operator::BETWEEN
         );
     }
 
     /**
      * @param  string  $column
-     * @param  string|int  $value1
-     * @param  string|int  $value2
+     * @param  string|int  $min
+     * @param  string|int  $max
      *
      * @return $this
      */
-    public function orWhereNotBetween($column, $value1, $value2)
+    public function orWhereNotBetween($column, $min, $max)
     {
         return $this->orWhere(
             $column,
-            [$value1, $value2],
+            [$min, $max],
             Operator::NOTBETWEEN
         );
     }
