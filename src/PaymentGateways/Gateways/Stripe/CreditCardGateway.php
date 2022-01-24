@@ -95,7 +95,7 @@ class CreditCardGateway extends PaymentGateway
      */
     public static function id()
     {
-        return 'stripe-credit-card-gateway';
+        return 'stripe';
     }
 
     /**
