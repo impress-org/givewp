@@ -53,8 +53,22 @@ function AdminDonationForms() {
         },
     });
 
-    function deleteForm() {
-        // TODO
+    function deleteForm(event) {
+        const endpoint = state.trash ? '/trash' : '/delete';
+        API.delete(endpoint, {params: {...parameters, ids: event.target.dataset.formid}})
+            .then((response) => {
+                setState((previousState) => {
+                    return {
+                        ...previousState,
+                        page: response.data.page,
+                        count: response.data.total,
+                        trash: response.data.trash,
+                        donationForms: response.data.forms,
+                    };
+                });
+            })
+            .catch((error) => {
+            });
     }
 
     return (
@@ -139,7 +153,7 @@ function AdminDonationForms() {
                                             <a href={`post.php?post=${form.id}&action=edit`} className={styles.action}>
                                                 Edit <span className="give-visually-hidden">{form.name}</span>
                                             </a>
-                                            <button type="button" onClick={deleteForm} className={styles.action}>
+                                            <button type="button" onClick={deleteForm} data-formid={form.id} className={styles.action}>
                                                 {state.trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
                                                 <span className="give-visually-hidden">{form.name}</span>
                                             </button>
