@@ -2,7 +2,6 @@
 
 Query Builder helper class is used to help write SQL queries
 
-
 ```php
 $builder = new \Give\Framework\QueryBuilder\QueryBuilder();
 
@@ -32,4 +31,59 @@ $builder
     ->orderBy('posts.post_date', 'DESC');
 
 return DB::get_row($builder->getSQL());
+```
+
+### Nested WHERE statements
+
+```php
+$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
+
+$builder
+    ->select( '*' )
+    ->from( $this->postsTable )
+    ->where( 'post_status', 'subscription')
+    ->where( function(QueryBuilder $builder){
+        $builder
+            ->where( 'post_status', 'give_subscription')
+            ->orWhere( 'post_status', 'give_donation');
+    });
+
+return DB::get_results($builder->getSQL());
+```
+
+Generated SQL:
+
+```sql
+SELECT *
+FROM wp_posts
+WHERE post_status = 'subscription'
+AND (post_status = 'give_subscription' OR post_status = 'give_donation')
+```
+
+### Sub-select within the query
+
+```php
+$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
+
+$builder
+    ->select('*')
+    ->from($this->postsTable)
+    ->where('post_status', 'subscription')
+    ->whereIn('ID', function (QueryBuilder $builder) {
+        $builder
+            ->select(['meta_value', 'donation_id'])
+            ->from($this->donationMetaTable)
+            ->where('meta_key', 'donation_id');
+    });
+
+return DB::get_results($builder->getSQL());
+```
+
+Generated SQL:
+
+```sql
+SELECT *
+FROM wp_posts
+WHERE post_status = 'subscription'
+AND ID IN (SELECT meta_value AS donation_id FROM wp_give_donationmeta WHERE meta_key = 'donation_id')
 ```
