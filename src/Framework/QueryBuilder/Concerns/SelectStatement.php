@@ -41,6 +41,11 @@ trait SelectStatement
      */
     public function getSelectSQL()
     {
+        // Select all by default
+        if (empty($this->selects)) {
+            $this->select('*');
+        }
+
         return [
             'SELECT ' . implode(
                 ', ',
