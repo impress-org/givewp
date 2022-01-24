@@ -18,7 +18,7 @@ trait GroupByStatement
      */
     public function groupBy($tableColumn)
     {
-        $this->groupByColumns[] = $tableColumn;
+        $this->groupByColumns[] = trim($tableColumn);
 
         return $this;
     }
@@ -26,14 +26,7 @@ trait GroupByStatement
     public function getGroupBySQL()
     {
         return ! empty($this->groupByColumns)
-            ? [
-                'GROUP BY ' . implode(
-                    ',',
-                    array_map(function ($column) {
-                        return $column;
-                    }, $this->groupByColumns)
-                )
-            ]
+            ? ['GROUP BY ' . implode(',', $this->groupByColumns)]
             : [];
     }
 }
