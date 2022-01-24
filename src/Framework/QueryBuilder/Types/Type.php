@@ -16,6 +16,6 @@ abstract class Type
      */
     public static function getTypes()
     {
-        return (new ReflectionClass(__CLASS__))->getConstants();
+        return (new ReflectionClass(static::class))->getConstants();
     }
 }
