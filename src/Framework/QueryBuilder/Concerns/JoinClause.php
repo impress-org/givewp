@@ -20,7 +20,7 @@ trait JoinClause
      * @param  string  $table
      * @param  string  $foreignKey
      * @param  string  $primaryKey
-     * @param  string  $joinType
+     * @param  string  $joinType \Give\Framework\QueryBuilder\Types\JoinType
      * @param  string|null  $alias
      *
      * @return $this
