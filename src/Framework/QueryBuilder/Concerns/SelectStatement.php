@@ -46,7 +46,11 @@ trait SelectStatement
                 ', ',
                 array_map(function (Select $select) {
                     if ($select->alias) {
-                        return "{$select->column} AS {$select->alias}";
+                        return sprintf(
+                            '%s AS %s',
+                            $select->column,
+                            $select->alias
+                        );
                     }
 
                     return $select->column;
