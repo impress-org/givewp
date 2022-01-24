@@ -11,12 +11,12 @@ trait OrderByStatement
     /**
      * @var string
      */
-    public $column;
+    protected $orderByColumn;
 
     /**
      * @var string
      */
-    public $direction;
+    protected $orderByDirection;
 
     /**
      * @param  string  $tableColumn
@@ -26,8 +26,8 @@ trait OrderByStatement
      */
     public function orderBy($tableColumn, $direction)
     {
-        $this->column    = $tableColumn;
-        $this->direction = $this->getSortDirection($direction);
+        $this->orderByColumn    = $tableColumn;
+        $this->orderByDirection = $this->getSortDirection($direction);
 
         return $this;
     }
@@ -50,8 +50,8 @@ trait OrderByStatement
 
     public function getOrderBySQL()
     {
-        return $this->column && $this->direction
-            ? ["ORDER BY {$this->column} {$this->direction}"]
+        return $this->orderByColumn && $this->orderByDirection
+            ? ["ORDER BY {$this->orderByColumn} {$this->orderByDirection}"]
             : [];
     }
 }

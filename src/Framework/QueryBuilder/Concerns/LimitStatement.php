@@ -10,7 +10,7 @@ trait LimitStatement
     /**
      * @var int
      */
-    public $limit;
+    protected $limit;
 
     /**
      * @param  int  $limit

@@ -12,7 +12,7 @@ trait SelectStatement
     /**
      * @var Select[]
      */
-    public $selects = [];
+    protected $selects = [];
 
     /**
      * @param  array  $columns

@@ -14,7 +14,7 @@ trait JoinClause
     /**
      * @var Join[]
      */
-    public $joins = [];
+    protected $joins = [];
 
     /**
      * @param  string  $table

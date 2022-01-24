@@ -12,7 +12,7 @@ trait FromClause
     /**
      * @var From[]
      */
-    public $froms = [];
+    protected $froms = [];
 
     /**
      * @param  string  $table

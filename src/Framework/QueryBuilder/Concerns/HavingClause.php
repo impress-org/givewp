@@ -15,7 +15,7 @@ trait HavingClause
     /**
      * @var Having[]
      */
-    public $havings = [];
+    protected $havings = [];
 
     /**
      * @param  string  $column
