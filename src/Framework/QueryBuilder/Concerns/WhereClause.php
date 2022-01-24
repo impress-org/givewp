@@ -71,7 +71,7 @@ trait WhereClause
 
     /**
      * @param  string|Closure  $column
-     * @param  string|Closure|null  $value
+     * @param  string|Closure|array|null  $value
      * @param  string  $comparisonOperator
      *
      * @return $this
@@ -88,12 +88,12 @@ trait WhereClause
 
     /**
      * @param  string|Closure  $column
-     * @param  string|Closure|null  $value
+     * @param  string|Closure|array|null  $value
      * @param  string  $comparisonOperator
      *
      * @return $this
      */
-    public function orWhere($column, $value = null, $comparisonOperator = null)
+    public function orWhere($column, $value = null, $comparisonOperator = '=')
     {
         return $this->setWhere(
             $column,
@@ -203,7 +203,7 @@ trait WhereClause
      *
      * @return $this
      */
-    public function orWhereBetween($column,  $value1, $value2)
+    public function orWhereBetween($column, $value1, $value2)
     {
         return $this->orWhere(
             $column,
