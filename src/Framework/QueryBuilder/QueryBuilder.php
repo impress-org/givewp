@@ -2,28 +2,30 @@
 
 namespace Give\Framework\QueryBuilder;
 
-use Give\Framework\QueryBuilder\Traits\FromTrait;
-use Give\Framework\QueryBuilder\Traits\GroupByTrait;
-use Give\Framework\QueryBuilder\Traits\JoinTrait;
-use Give\Framework\QueryBuilder\Traits\LimitTrait;
-use Give\Framework\QueryBuilder\Traits\MetaTrait;
-use Give\Framework\QueryBuilder\Traits\OrderByTrait;
-use Give\Framework\QueryBuilder\Traits\SelectTrait;
-use Give\Framework\QueryBuilder\Traits\WhereTrait;
+use Give\Framework\QueryBuilder\Concerns\FromClause;
+use Give\Framework\QueryBuilder\Concerns\GroupByStatement;
+use Give\Framework\QueryBuilder\Concerns\HavingClause;
+use Give\Framework\QueryBuilder\Concerns\JoinClause;
+use Give\Framework\QueryBuilder\Concerns\LimitStatement;
+use Give\Framework\QueryBuilder\Concerns\MetaQuery;
+use Give\Framework\QueryBuilder\Concerns\OrderByStatement;
+use Give\Framework\QueryBuilder\Concerns\SelectStatement;
+use Give\Framework\QueryBuilder\Concerns\WhereClause;
 
 /**
  * @unreleased
  */
 class QueryBuilder
 {
-    use SelectTrait;
-    use FromTrait;
-    use JoinTrait;
-    use WhereTrait;
-    use OrderByTrait;
-    use GroupByTrait;
-    use LimitTrait;
-    use MetaTrait;
+    use FromClause;
+    use GroupByStatement;
+    use HavingClause;
+    use JoinClause;
+    use LimitStatement;
+    use MetaQuery;
+    use OrderByStatement;
+    use SelectStatement;
+    use WhereClause;
 
     /**
      * @return string
@@ -36,6 +38,7 @@ class QueryBuilder
             $this->getJoinSQL(),
             $this->getWhereSQL(),
             $this->getGroupBySQL(),
+            $this->getHavingSQL(),
             $this->getOrderBySQL(),
             $this->getLimitSQL()
         );
