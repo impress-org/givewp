@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder;
 
+use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Concerns\FromClause;
 use Give\Framework\QueryBuilder\Concerns\GroupByStatement;
 use Give\Framework\QueryBuilder\Concerns\HavingClause;
@@ -44,5 +45,25 @@ class QueryBuilder
         );
 
         return implode(' ', $sql);
+    }
+
+    /**
+     * Get results
+     *
+     * @return array|null
+     */
+    public function getAll()
+    {
+        return DB::get_results($this->getSQL());
+    }
+
+    /**
+     * Get row
+     *
+     * @return object|null
+     */
+    public function get()
+    {
+        return DB::get_row($this->getSQL());
     }
 }
