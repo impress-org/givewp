@@ -3,6 +3,7 @@
 namespace Give\Framework\Database;
 
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 
 /**
@@ -97,6 +98,44 @@ class DB
         global $wpdb;
 
         return $wpdb->insert_id;
+    }
+
+    /**
+     * Prefix given table name with $wpdb->prefix
+     *
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public static function prefix($tableName)
+    {
+        global $wpdb;
+
+        return $wpdb->prefix . $tableName;
+    }
+
+    /**
+     * Create QueryBuilder instance
+     *
+     * @param mixed ...$tables
+     *
+     * @return QueryBuilder
+     */
+    public static function table(...$tables)
+    {
+        $builder = new QueryBuilder();
+
+        array_walk($tables, function ($table) use ($builder) {
+            if (is_array($table)) {
+                list($tableName, $alias) = $table;
+
+                $builder->from($tableName, $alias);
+            } else {
+                $builder->from($table);
+            }
+        });
+
+        return $builder;
     }
 
     /**
