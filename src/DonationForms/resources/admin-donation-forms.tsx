@@ -4,7 +4,6 @@ import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 
 import styles from './admin-donation-forms.module.scss';
-import mockDonationForms from './mock-donation-forms.json';
 import Pagination from './components/Pagination.js';
 import Shortcode from './components/Shortcode';
 
@@ -18,7 +17,7 @@ type DonationForm = {
     id: number;
     name: string;
     amount: string;
-    goal: string | {progress: number, format: string, actual: string, goal: string};
+    goal: string | {progress: number; format: string; actual: string; goal: string};
     donations: number;
     revenue: string;
     datetime: string;
@@ -45,7 +44,7 @@ async function fetchForms(args: {} = {}) {
 
 function AdminDonationForms() {
     const [state, setState] = useState({
-        donationForms: [...mockDonationForms],
+        donationForms: [],
         count: 0,
         page: 1,
         trash: true,
@@ -62,14 +61,6 @@ function AdminDonationForms() {
                         donationForms: [...donationsResponse.forms],
                         count: donationsResponse.total,
                         trash: donationsResponse.trash,
-                    };
-                });
-            } else {
-                setState((prevState) => {
-                    return {
-                        ...prevState,
-                        donationForms: [...mockDonationForms],
-                        count: 2,
                     };
                 });
             }
@@ -163,7 +154,8 @@ function AdminDonationForms() {
                                                 Edit <span className="give-visually-hidden">{form.name}</span>
                                             </a>
                                             <button type="button" onClick={deleteForm} className={styles.action}>
-                                                {state.trash ? __('Trash', 'give') : __('Delete', 'give')} <span className="give-visually-hidden">{form.name}</span>
+                                                {state.trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
+                                                <span className="give-visually-hidden">{form.name}</span>
                                             </button>
                                             <a href={`/?p=${form.id}`}>{__('View', 'give')}</a>
                                             <a href="#todo-replace-with-duplicate-link">{__('Duplicate', 'give')}</a>
@@ -176,7 +168,11 @@ function AdminDonationForms() {
                                         {form.goal ? (
                                             <>
                                                 <div className={styles.goalProgress}>
-                                                    <span style={{width: Math.max(Math.min(form.goal.progress, 100), 0) + '%'}}/>
+                                                    <span
+                                                        style={{
+                                                            width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
+                                                        }}
+                                                    />
                                                 </div>
                                                 <a
                                                     href={`post.php?post=${form.id}&action=edit&give_tab=donation_goal_options`}
@@ -184,8 +180,12 @@ function AdminDonationForms() {
                                                     {form.goal.actual}
                                                 </a>
                                                 {form.goal.goal ? (
-                                                    <span> {__('of', 'give')} {form.goal.goal} {form.goal.format != 'amount' ? form.goal.format : null}</span>
-                                                ): null}
+                                                    <span>
+                                                        {' '}
+                                                        {__('of', 'give')} {form.goal.goal}{' '}
+                                                        {form.goal.format != 'amount' ? form.goal.format : null}
+                                                    </span>
+                                                ) : null}
                                             </>
                                         ) : (
                                             'No Goal Set'
