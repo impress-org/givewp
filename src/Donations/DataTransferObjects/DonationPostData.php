@@ -72,7 +72,7 @@ class DonationPostData
         $donation->id = $this->id;
         $donation->createdAt = $this->createdAt;
         $donation->updatedAt = $this->updatedAt;
-        $donation->setStatus($this->status);
+        $donation->status = $this->status;
         $donation->gateway = give()->payment_meta->get_meta($this->id, '_give_payment_gateway', true);
         $donation->sequentialId = (int)give()->seq_donation_number->get_serial_number($this->id);
         $donation->parentId = $this->parentId;

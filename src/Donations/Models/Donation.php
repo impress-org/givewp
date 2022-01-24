@@ -54,7 +54,7 @@ class Donation
     /**
      * @var DonationStatus
      */
-    protected $status;
+    public $status;
     /**
      * @var int
      */
@@ -88,7 +88,7 @@ class Donation
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
-        $this->setStatus(DonationStatus::PENDING());
+        $this->status = DonationStatus::PENDING();
     }
 
     /**
@@ -156,22 +156,5 @@ class Donation
     public function getMeta()
     {
         return give()->donationRepository->getMeta($this);
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status->getValue();
-    }
-
-    /**
-     * @param  DonationStatus  $donationStatus
-     * @return void
-     */
-    public function setStatus(DonationStatus $donationStatus)
-    {
-        $this->status = $donationStatus;
     }
 }
