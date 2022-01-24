@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Traits;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\Types\JoinType;
 
 /**
  * @unreleased
  */
-trait MetaTrait
+trait MetaQuery
 {
     /**
      * Select meta columns

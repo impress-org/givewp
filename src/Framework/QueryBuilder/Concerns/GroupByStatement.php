@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Traits;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 /**
  * @unreleased
  */
-trait GroupByTrait {
+trait GroupByStatement {
 
 	/**
 	 * @var string

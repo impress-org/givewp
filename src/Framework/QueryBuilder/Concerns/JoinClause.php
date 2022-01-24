@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Traits;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\Join;
 use Give\Framework\QueryBuilder\Types\JoinType;
@@ -8,13 +8,13 @@ use Give\Framework\QueryBuilder\Types\JoinType;
 /**
  * @unreleased
  */
-trait JoinTrait
+trait JoinClause
 {
 
     /**
      * @var Join[]
      */
-    protected $joins = [];
+    public $joins = [];
 
     /**
      * @param  string  $table

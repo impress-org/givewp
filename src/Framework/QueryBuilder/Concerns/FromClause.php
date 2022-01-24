@@ -1,18 +1,18 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Traits;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\From;
 
 /**
  * @unreleased
  */
-trait FromTrait
+trait FromClause
 {
     /**
      * @var From[]
      */
-    protected $froms = [];
+    public $froms = [];
 
     /**
      * @param  string  $table

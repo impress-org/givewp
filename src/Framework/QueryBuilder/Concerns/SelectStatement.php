@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Traits;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\Select;
 
 /**
  * @unreleased
  */
-trait SelectTrait
+trait SelectStatement
 {
     /**
      * @var Select[]

@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Traits;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 /**
  * @unreleased
  */
-trait LimitTrait {
+trait LimitStatement {
 
 	/**
 	 * @var int
