@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import {useState, useEffect} from 'react';
 import styles from './Pagination.module.scss';
 import cx from 'classnames';
-
-const {__} = wp.i18n;
+import {__} from '@wordpress/i18n';
 
 const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
     const [pageInput, setPageInput] = useState(1);
