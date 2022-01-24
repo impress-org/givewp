@@ -75,18 +75,17 @@ class CreditCardGateway extends PaymentGateway
             $intent_args['receipt_email'] = $paymentData->donorInfo->email;
         }
 
-        $intent = give( Give_Stripe_Payment_Intent::class )->create( $intent_args );
+        $intent = give( LegacyStripePaymentIntent::class )->create( $intent_args );
 
-        switch( $intent->status )  {
+        switch( $intent->status() )  {
             case 'requires_action':
-                $action_url = $intent->next_action->redirect_to_url->url;
                 give_insert_payment_note( $paymentData->donationId, 'Stripe requires additional action to be fulfilled.' );
-                give_update_meta( $paymentData->donationId, '_give_stripe_payment_intent_require_action_url', $action_url );
-                return new RedirectOffsite( $action_url );
+                give_update_meta( $paymentData->donationId, '_give_stripe_payment_intent_require_action_url', $intent->nextActionRedirectUrl() );
+                return new RedirectOffsite( $intent->nextActionRedirectUrl() );
             case 'succeeded':
-                return new PaymentProcessing( $intent->id );
+                return new PaymentProcessing( $intent->id() );
             default:
-                throw new PaymentIntentException( sprintf( __( 'Unhandled payment intent status: %s', 'give' ), $intent->status ) );
+                throw new PaymentIntentException( sprintf( __( 'Unhandled payment intent status: %s', 'give' ), $intent->status() ) );
         }
     }
 
