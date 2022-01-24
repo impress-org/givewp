@@ -2,7 +2,7 @@
 
 namespace Give\Framework\QueryBuilder;
 
-use Give\Framework\QueryBuilder\Types\LogicalOperator;
+use Give\Framework\QueryBuilder\Types\Operator;
 
 /**
  * @unreleased
@@ -30,17 +30,22 @@ class Where
     public $logicalOperator;
 
     /**
+     * @var string|null
+     */
+    public $type;
+
+    /**
      * @param  string  $column
      * @param  string  $value
      * @param  string  $comparisonOperator
-     * @param  string  $logicalOperator
+     * @param  string|null  $logicalOperator
      */
     public function __construct($column, $value, $comparisonOperator, $logicalOperator)
     {
         $this->column             = $column;
         $this->value              = $value;
         $this->comparisonOperator = $this->getComparisonOperator($comparisonOperator);
-        $this->logicalOperator    = $this->getLogicalOperator($logicalOperator);
+        $this->logicalOperator    = $logicalOperator ? $this->getLogicalOperator($logicalOperator) : '';
     }
 
     /**
@@ -50,7 +55,20 @@ class Where
      */
     private function getComparisonOperator($comparisonOperator)
     {
-        if (in_array($comparisonOperator, ['<', '<=', '>', '>=', '<>'])) {
+        $operators = [
+            '<',
+            '<=',
+            '>',
+            '>=',
+            '<>',
+            Operator::LIKE,
+            Operator::IN,
+            Operator::NOTIN,
+            Operator::BETWEEN,
+            Operator::NOTBETWEEN,
+        ];
+
+        if (in_array($comparisonOperator, $operators)) {
             return $comparisonOperator;
         }
 
@@ -66,10 +84,10 @@ class Where
     {
         $logicalOperator = strtoupper($logicalOperator);
 
-        if (array_key_exists($logicalOperator, LogicalOperator::getTypes())) {
+        if (array_key_exists($logicalOperator, Operator::getTypes())) {
             return $logicalOperator;
         }
 
-        return LogicalOperator::AND;
+        return Operator::AND;
     }
 }
