@@ -21,9 +21,9 @@ class From
      * @param  string  $table
      * @param  string|null  $alias
      */
-    public function __construct($table, $alias = null )
+    public function __construct($table, $alias = null)
     {
         $this->table = $table;
-        $this->alias  = $alias;
+        $this->alias = $alias;
     }
 }

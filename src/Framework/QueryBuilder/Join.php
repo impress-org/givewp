@@ -38,7 +38,7 @@ class Join
      * @param  string  $table
      * @param  string  $foreignKey
      * @param  string  $primaryKey
-     * @param  string  $joinType
+     * @param  string  $joinType  \Give\Framework\QueryBuilder\Types\JoinType
      * @param  string|null  $alias
      */
     public function __construct($table, $foreignKey, $primaryKey, $joinType = JoinType::LEFT, $alias = null)
@@ -58,7 +58,7 @@ class Join
     private function getJoinType($type)
     {
         $type = strtoupper($type);
-        
+
         if (array_key_exists($type, JoinType::getTypes())) {
             return $type;
         }

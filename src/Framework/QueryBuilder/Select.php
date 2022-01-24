@@ -21,7 +21,7 @@ class Select
      * @param  string  $column
      * @param  string|null  $alias
      */
-    public function __construct($column, $alias = null )
+    public function __construct($column, $alias = null)
     {
         $this->column = $column;
         $this->alias  = $alias;
