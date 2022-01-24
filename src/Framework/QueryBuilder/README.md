@@ -85,7 +85,7 @@ ORDER BY posts.post_date DESC
 ### Special method for working with meta tables (attachMeta)
 
 Under the hood ```attachMeta``` will add join clause for each defined ```meta_key``` column. And each column will be
-added in select statement as well, which means that meta columns will be returned in query result. Aliasing meta columns
+added in select statement as well, which means the meta columns will be returned in query result. Aliasing meta columns
 is recommended when using ```attachMeta``` method.
 
 ```php
