@@ -166,60 +166,64 @@ trait WhereClause
 
     /**
      * @param  string  $column
-     * @param  int[]|string[]  $values
+     * @param  string|int  $value1
+     * @param  string|int  $value2
      *
      * @return $this
      */
-    public function whereBetween($column, $values)
+    public function whereBetween($column, $value1, $value2)
     {
         return $this->where(
             $column,
-            $values,
+            [$value1, $value2],
             Operator::BETWEEN
         );
     }
 
     /**
      * @param  string  $column
-     * @param  int[]|string[]  $values
+     * @param  string|int  $value1
+     * @param  string|int  $value2
      *
      * @return $this
      */
-    public function whereNotBetween($column, $values)
+    public function whereNotBetween($column, $value1, $value2)
     {
         return $this->where(
             $column,
-            $values,
+            [$value1, $value2],
             Operator::NOTBETWEEN
         );
     }
 
     /**
      * @param  string  $column
-     * @param  int[]|string[]  $values
+     * @param  string|int  $value1
+     * @param  string|int  $value2
      *
      * @return $this
      */
-    public function orWhereBetween($column, $values)
+    public function orWhereBetween($column,  $value1, $value2)
     {
         return $this->orWhere(
             $column,
-            $values,
+            [$value1, $value2],
             Operator::BETWEEN
         );
     }
 
     /**
      * @param  string  $column
-     * @param  int[]|string[]  $values
+     * @param  string|int  $value1
+     * @param  string|int  $value2
      *
      * @return $this
      */
-    public function orWhereNotBetween($column, $values)
+    public function orWhereNotBetween($column, $value1, $value2)
     {
         return $this->orWhere(
             $column,
-            $values,
+            [$value1, $value2],
             Operator::NOTBETWEEN
         );
     }
