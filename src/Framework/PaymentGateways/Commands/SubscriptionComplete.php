@@ -1,7 +1,7 @@
 <?php
 namespace Give\Framework\PaymentGateways\Commands;
 /***
- * @unreleased
+ * @since 2.18.0
  */
 class SubscriptionComplete implements GatewayCommand {
     /**
@@ -18,7 +18,7 @@ class SubscriptionComplete implements GatewayCommand {
     public $gatewaySubscriptionId;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayTransactionId
      * @param  string  $gatewaySubscriptionId

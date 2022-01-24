@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\DataTransferObjects;
 
 /**
  * Class SubscriptionData
- * @unreleased
+ * @since 2.18.0
  */
 class SubscriptionData
 {
@@ -26,7 +26,7 @@ class SubscriptionData
     /**
      * Convert data from request into DTO
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return self
      */

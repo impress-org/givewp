@@ -1,0 +1,61 @@
+@use 'fn';
+
+.give-form-section {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(12, 1fr);
+    row-gap: 1rem;
+
+    padding-block: fn.scaleBetween(1.75rem, 3.375rem);
+    padding-inline: fn.scaleBetween(1rem, 4.375rem);
+
+    & > * {
+        grid-column: span 12;
+    }
+
+    > .give-ffm-form-row-half,
+    > .give-ffm-form-row-one-third,
+    > .give-ffm-form-row-two-third,
+    > .form-row-wide {
+        width: revert;
+        padding: revert;
+        float: revert;
+    }
+
+    > .give-ffm-form-row-one-third {
+        grid-column: span 4;
+    }
+
+    > .give-ffm-form-row-half {
+        grid-column: span 6;
+    }
+
+    > .give-ffm-form-row-two-third {
+        grid-column: span 8;
+    }
+
+    > .form-row-wide {
+        grid-column: span 12;
+    }
+
+    .give-container-boxed & {
+        // :nth-of-type requires these be the an element. This works since we are
+        // using `<section>` with this class.
+        &:nth-of-type(odd) {
+            background-color: #fff;
+        }
+        &:nth-of-type(even) {
+            background-color: #f9f9f9;
+        }
+    }
+
+    &:first-of-type {
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+    }
+
+    &:last-of-type {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+    }
+}

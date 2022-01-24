@@ -12,7 +12,7 @@ abstract class PaymentHandler
     protected $paymentCommand;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      * @return string
      */
     abstract protected function getPaymentStatus();
@@ -35,7 +35,7 @@ abstract class PaymentHandler
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @return void

@@ -20,5 +20,14 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $subscription = give(DonationRepository::class)->getBySubscriptionId(1);
+
+        print_r($subscription);
+
+        exit;
+
+        $donations = give(DonationRepository::class)->getByDonorId(1);
+
+        print_r($donations);
     }
 }

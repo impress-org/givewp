@@ -10,7 +10,7 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * Class TestGateway
- * @unreleased
+ * @since 2.18.0
  */
 class TestGateway extends PaymentGateway
 {

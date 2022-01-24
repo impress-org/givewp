@@ -11,7 +11,7 @@ use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
  * Class LegacyPaymentGatewayAdapter
- * @unreleased
+ * @since 2.18.0
  */
 class LegacyPaymentGatewayAdapter
 {
@@ -19,7 +19,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Get legacy form field markup to display gateway specific payment fields
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $formId
      * @param  PaymentGatewayInterface  $registeredGateway
@@ -34,7 +34,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
@@ -69,7 +69,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Create the payment
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GiveInsertPaymentData  $giveInsertPaymentData
      *
@@ -86,7 +86,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Create the payment
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @param  FormData  $formData
@@ -105,7 +105,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Validate Gateway Nonce
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayNonce
      */

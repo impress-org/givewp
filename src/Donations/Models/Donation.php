@@ -2,7 +2,9 @@
 
 namespace Give\Donations\Models;
 
+use DateTime;
 use Give\Donors\Models\Donor;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -21,11 +23,11 @@ class Donation
      */
     public $sequentialId;
     /**
-     * @var string
+     * @var DateTime
      */
     public $createdAt;
     /**
-     * @var string
+     * @var DateTime
      */
     public $updatedAt;
     /**
@@ -104,6 +106,33 @@ class Donation
         }
 
         return give()->subscriptionRepository->getByDonationId($this->id);
+    }
+
+    /**
+     * @param  Donation  $donation
+     * @return Donation
+     * @throws DatabaseQueryException
+     */
+    public static function create(Donation $donation)
+    {
+        return give()->donationRepository->insert($donation);
+    }
+
+    /**
+     * @return Donation
+     * @throws DatabaseQueryException
+     */
+    public function save()
+    {
+        return give()->donationRepository->update($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getMeta()
+    {
+        return give()->donationRepository->getMeta($this);
     }
 
 }

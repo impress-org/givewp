@@ -21,63 +21,106 @@ window.GiveDonationSummary = {
     },
 
     /**
+     * Recurring frequency
+     *
      * @since 2.17.0
      */
     initFrequency: function () {
         // Donor's Choice Recurring
-        GiveDonationSummary.observe('[name="give-recurring-period"]', function (targetNode, $form) {
-            $form.find('.js-give-donation-summary-frequency-help-text').toggle(!targetNode.checked);
-            $form.find('[data-tag="frequency"]').toggle(!targetNode.checked);
-            $form.find('[data-tag="recurring"]').toggle(targetNode.checked).html(targetNode.dataset['periodLabel']);
-
-            // Donor's Choice Period
-            const donorsChoice = document.querySelector('[name="give-recurring-period-donors-choice"]');
-            if (donorsChoice) {
-                const donorsChoiceValue = donorsChoice.options[donorsChoice.selectedIndex].value || false;
-                if (donorsChoiceValue) {
-                    $form
-                        .find('[data-tag="recurring"]')
-                        .html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue]);
-                }
-            }
-        });
+        GiveDonationSummary.observe(
+            '[name="give-recurring-period"]',
+            GiveDonationSummary.handleDonorsChoiceRecurringFrequency
+        );
 
         // Admin Defined Recurring
-        GiveDonationSummary.observe('[name="give-price-id"]', function (targetNode, $form) {
-            const priceID = targetNode.value;
-            const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');
+        GiveDonationSummary.observe('[name="give-price-id"]', GiveDonationSummary.handleAdminDefinedRecurringFrequency);
 
-            if (!recurringDetailsEl) {
-                return;
+        // Admin Defined Recurring - "Set Donation"
+        GiveDonationSummary.observe(
+            '[name="_give_is_donation_recurring"]',
+            GiveDonationSummary.handleAdminDefinedSetDonationFrequency
+        );
+
+        // Admin Defined Recurring - "Multi-level"
+        GiveDonationSummary.observe('[name="give-price-id"]', GiveDonationSummary.handleAdminDefinedRecurringFrequency);
+    },
+
+    /**
+     * @since 2.18.0
+     */
+    handleDonorsChoiceRecurringFrequency: function (targetNode, $form) {
+        $form.find('.js-give-donation-summary-frequency-help-text').toggle(!targetNode.checked);
+        $form.find('[data-tag="frequency"]').toggle(!targetNode.checked);
+        $form.find('[data-tag="recurring"]').toggle(targetNode.checked).html(targetNode.dataset['periodLabel']);
+
+        // Donor's Choice Period
+        const donorsChoice = document.querySelector('[name="give-recurring-period-donors-choice"]');
+        if (donorsChoice) {
+            const donorsChoiceValue = donorsChoice.options[donorsChoice.selectedIndex].value || false;
+            if (donorsChoiceValue) {
+                $form
+                    .find('[data-tag="recurring"]')
+                    .html(GiveDonationSummaryData.recurringLabelLookup[donorsChoiceValue]);
             }
+        }
+    },
 
-            const recurringDetails = JSON.parse(recurringDetailsEl.value);
+    /**
+     * @since 2.18.0
+     */
+    handleAdminDefinedRecurringFrequency: function (targetNode, $form) {
+        const priceID = targetNode.value;
+        const recurringDetailsEl = document.querySelector('.give_recurring_donation_details');
 
-            if ('undefined' !== typeof recurringDetails['multi']) {
-                const isRecurring = 'yes' === recurringDetails['multi'][priceID]['_give_recurring'];
-                const periodLabel = recurringDetails['multi'][priceID]['give_recurring_pretty_text'];
+        if (!recurringDetailsEl) {
+            return;
+        }
 
-                $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
-                $form.find('[data-tag="frequency"]').toggle(!isRecurring);
-                $form.find('[data-tag="recurring"]').toggle(isRecurring).html(periodLabel);
-            }
-        });
+        const recurringDetails = JSON.parse(recurringDetailsEl.value);
+
+        if ('undefined' !== typeof recurringDetails['multi']) {
+            const isRecurring = 'yes' === recurringDetails['multi'][priceID]['_give_recurring'];
+            const periodLabel = recurringDetails['multi'][priceID]['give_recurring_pretty_text'];
+
+            $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
+            $form.find('[data-tag="frequency"]').toggle(!isRecurring);
+            $form.find('[data-tag="recurring"]').toggle(isRecurring).html(periodLabel);
+        }
+    },
+
+    handleAdminDefinedSetDonationFrequency: function (targetNode, $form) {
+        const isRecurring = targetNode.value;
+        const adminChoice = document.querySelector('.give-recurring-admin-choice');
+
+        if (isRecurring && adminChoice) {
+            $form.find('.js-give-donation-summary-frequency-help-text').toggle(!isRecurring);
+            $form.find('[data-tag="frequency"]').toggle(!isRecurring);
+            $form.find('[data-tag="recurring"]').html(adminChoice.textContent);
+        }
     },
 
     /**
      * @since 2.17.0
      */
     initFees: function () {
-        GiveDonationSummary.observe('.give_fee_mode_checkbox', function (targetNode, $form) {
-            $form.find('.fee-break-down-message').hide();
-            $form.find('.js-give-donation-summary-fees').toggle(targetNode.checked);
+        GiveDonationSummary.observe('.give_fee_mode_checkbox', GiveDonationSummary.handleFees);
+    },
 
-            // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
-            const fee = document
-                .querySelector('[name="give-fee-amount"]')
-                .value.replace('.', Give.form.fn.getInfo('decimal_separator', $form));
-            $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form));
-        });
+    /**
+     * @since 2.18.0
+     */
+    handleFees: function (targetNode, $form) {
+        $form.find('.fee-break-down-message').hide();
+        $form.find('.js-give-donation-summary-fees').toggle(targetNode.checked);
+
+        if (!targetNode.checked) {
+            return;
+        }
+
+        // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
+        const formData = new FormData($form[0]);
+        const fee = formData.get('give-fee-amount');
+        $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form));
     },
 
     /**
@@ -128,15 +171,16 @@ window.GiveDonationSummary = {
      *
      * @param {string} selectors
      * @param {callable} callback
+     * @param {boolean} callImmediately
      */
-    observe: function (selectors, callback) {
+    observe: function (selectors, callback, callImmediately = true) {
         const targetNode = document.querySelector(selectors);
 
         if (!targetNode) return;
 
         const $form = jQuery(targetNode.closest('.give-form'));
 
-        new MutationObserver(function (mutationsList, observer) {
+        new MutationObserver(function (mutationsList) {
             for (const mutation of mutationsList) {
                 // Use traditional 'for loops' for IE 11
                 if (mutation.type === 'attributes') {
@@ -144,10 +188,14 @@ window.GiveDonationSummary = {
                      * @param targetNode The node matching the element as defined by the specific selectors
                      * @param $form The closest `.give-form` node to the targetNode, wrapped in jQuery
                      */
-                    callback(targetNode, $form);
+                    callback(mutation.target, $form);
                 }
             }
         }).observe(targetNode, {attributes: true});
+
+        if (callImmediately) {
+            callback(targetNode, $form);
+        }
     },
 
     /**
