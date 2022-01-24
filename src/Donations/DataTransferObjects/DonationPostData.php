@@ -3,6 +3,7 @@
 namespace Give\Donations\DataTransferObjects;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 
 /**
  * Class DonationPostData
@@ -24,7 +25,7 @@ class DonationPostData
      */
     private $updatedAt;
     /**
-     * @var string
+     * @var DonationStatus
      */
     private $status;
     /**
@@ -46,7 +47,7 @@ class DonationPostData
         $self->id = $post->ID;
         $self->createdAt = get_post_datetime($post, 'date');
         $self->updatedAt = get_post_datetime($post, 'modified');
-        $self->status = $post->post_status;
+        $self->status = new DonationStatus($post->post_status);
         $self->parentId = $post->post_parent;
 
         return $self;
@@ -59,19 +60,20 @@ class DonationPostData
      */
     public function toDonation()
     {
-        $donation = new Donation();
+        $amount = (int)give()->payment_meta->get_meta($this->id, '_give_payment_total', true);
+        $currency = give()->payment_meta->get_meta($this->id, '_give_payment_currency', true);
+        $donorId = (int)give()->payment_meta->get_meta($this->id, '_give_payment_donor_id', true);
+        $firstName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_first_name', true);
+        $lastName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_last_name', true);
+        $email = give()->payment_meta->get_meta($this->id, '_give_payment_donor_email', true);
+
+        $donation = new Donation($amount, $currency, $donorId, $firstName, $lastName, $email);
 
         $donation->id = $this->id;
         $donation->createdAt = $this->createdAt;
         $donation->updatedAt = $this->updatedAt;
-        $donation->status = $this->status;
-        $donation->amount = (int)give()->payment_meta->get_meta($this->id, '_give_payment_total', true);
-        $donation->currency = give()->payment_meta->get_meta($this->id, '_give_payment_currency', true);
+        $donation->setStatus($this->status);
         $donation->gateway = give()->payment_meta->get_meta($this->id, '_give_payment_gateway', true);
-        $donation->donorId = (int)give()->payment_meta->get_meta($this->id, '_give_payment_donor_id', true);
-        $donation->firstName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_first_name', true);
-        $donation->lastName = give()->payment_meta->get_meta($this->id, '_give_donor_billing_last_name', true);
-        $donation->email = give()->payment_meta->get_meta($this->id, '_give_payment_donor_email', true);
         $donation->sequentialId = (int)give()->seq_donation_number->get_serial_number($this->id);
         $donation->parentId = $this->parentId;
         $donation->subscriptionId = (int)give()->payment_meta->get_meta($this->id, 'subscription_id', true);

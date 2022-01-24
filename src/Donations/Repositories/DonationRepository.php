@@ -96,7 +96,7 @@ class DonationRepository
             DB::insert($wpdb->posts, [
                 'post_date' => $date,
                 'post_date_gmt' => get_gmt_from_date($date),
-                'post_status' => $donation->status,
+                'post_status' => $donation->getStatus(),
                 'post_type' => 'give_payment'
             ], null);
 
@@ -139,8 +139,8 @@ class DonationRepository
             DB::update($wpdb->posts, [
                 'post_modified' => $date,
                 'post_modified_gmt' => get_gmt_from_date($date),
-                'post_status' => $donation->status,
-                'post_type' => $donation->status
+                'post_status' => $donation->getStatus(),
+                'post_type' => $donation->getStatus()
             ], ['id' => $donation->id]);
 
             foreach ($donation->getMeta() as $metaKey => $metaValue) {

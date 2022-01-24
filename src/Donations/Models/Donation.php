@@ -3,6 +3,7 @@
 namespace Give\Donations\Models;
 
 use DateTime;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Subscriptions\Models\Subscription;
@@ -23,6 +24,14 @@ class Donation
      */
     public $sequentialId;
     /**
+     * @var int
+     */
+    public $parentId;
+    /**
+     * @var int
+     */
+    public $subscriptionId;
+    /**
      * @var DateTime
      */
     public $createdAt;
@@ -30,10 +39,6 @@ class Donation
      * @var DateTime
      */
     public $updatedAt;
-    /**
-     * @var string
-     */
-    public $status;
     /**
      * @var int
      */
@@ -46,6 +51,10 @@ class Donation
      * @var string
      */
     public $gateway;
+    /**
+     * @var DonationStatus
+     */
+    protected $status;
     /**
      * @var int
      */
@@ -62,14 +71,25 @@ class Donation
      * @var string
      */
     public $email;
+
     /**
-     * @var int
+     * @param  int  $amount
+     * @param  string  $currency
+     * @param  int  $donorId
+     * @param  string  $firstName
+     * @param  string  $lastName
+     * @param  string  $email
      */
-    public $parentId;
-    /**
-     * @var int
-     */
-    public $subscriptionId;
+    public function __construct($amount, $currency, $donorId, $firstName, $lastName, $email)
+    {
+        $this->amount = $amount;
+        $this->currency = $currency;
+        $this->donorId = $donorId;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->setStatus(DonationStatus::PENDING());
+    }
 
     /**
      * Find donation by ID
@@ -124,6 +144,9 @@ class Donation
      */
     public function save()
     {
+        if (!$this->id) {
+            return give()->donationRepository->insert($this);
+        }
         return give()->donationRepository->update($this);
     }
 
@@ -135,4 +158,20 @@ class Donation
         return give()->donationRepository->getMeta($this);
     }
 
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status->getValue();
+    }
+
+    /**
+     * @param  DonationStatus  $donationStatus
+     * @return void
+     */
+    public function setStatus(DonationStatus $donationStatus)
+    {
+        $this->status = $donationStatus;
+    }
 }
