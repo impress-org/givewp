@@ -90,24 +90,39 @@ class DonationRepository
      */
     public function getByDonorId($donorId)
     {
-        global $wpdb;
+        $builder = new QueryBuilder();
 
-        $donationIds = $wpdb->get_col(
-            "SELECT donation_id
-                    FROM {$wpdb->prefix}give_donationmeta
-                    WHERE meta_key = '_give_payment_donor_id'
-                    AND meta_value = '$donorId'"
-        );
+        $builder
+            ->select(
+                ['ID', 'id'],
+                ['post_date', 'createdAt'],
+                ['post_modified', 'updatedAt'],
+                ['post_status', 'status'],
+                ['post_parent', 'parentId']
+            )
+            ->attachMeta($this->donationMetaTable, 'ID', 'donation_id',
+                ['_give_payment_total', 'amount'],
+                ['_give_payment_currency', 'paymentCurrency'],
+                ['_give_payment_gateway', 'paymentGateway'],
+                ['_give_payment_donor_id', 'donorId'],
+                ['_give_donor_billing_first_name', 'firstName'],
+                ['_give_donor_billing_last_name', 'lastName'],
+                ['_give_payment_donor_email', 'donorEmail']
+            )
+            ->from($this->postsTable)
+            ->where('post_type', 'give_payment')
+            ->whereIn( 'ID', function(QueryBuilder $builder) use ($donorId){
+                $builder
+                    ->select( 'donation_id')
+                    ->from( $this->donationMetaTable)
+                    ->where('meta_key', '_give_payment_donor_id')
+                    ->where('meta_value', $donorId);
+            })
+            ->orderBy('post_date', 'DESC');
 
-        $posts = get_posts([
-            'include'   => $donationIds,
-            'post_type' => 'give_payment',
-            'orderby'   => 'post_date',
-        ]);
+        // TODO: return DTO
 
-        return array_map(static function ($post) {
-            return DonationPostData::fromPost($post)->toDonation();
-        }, $posts);
+        return DB::get_results($builder->getSQL());
     }
 }
 
