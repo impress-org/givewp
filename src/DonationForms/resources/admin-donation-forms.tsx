@@ -6,6 +6,7 @@ import cx from 'classnames';
 import styles from './admin-donation-forms.module.scss';
 import Pagination from './components/Pagination.js';
 import Shortcode from './components/Shortcode';
+import API, {useFetcher, getEndpoint} from './api';
 
 declare global {
     interface Window {
@@ -24,24 +25,6 @@ type DonationForm = {
     shortcode: string;
 };
 
-async function fetchForms(args: {} = {}) {
-    let url = window.GiveDonationForms.apiRoot;
-    url += url.indexOf('wp-json') > -1 ? '?' : '&';
-    url += new URLSearchParams(args).toString();
-    let response = await fetch(url, {
-        headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': window.GiveDonationForms.apiNonce,
-        },
-    });
-    if (response.ok) {
-        const result = await response.json();
-        return result;
-    } else {
-        return false;
-    }
-}
-
 function AdminDonationForms() {
     const [state, setState] = useState({
         donationForms: [],
@@ -51,21 +34,24 @@ function AdminDonationForms() {
     });
     const perPage = 10;
 
-    useEffect(() => {
-        (async () => {
-            const donationsResponse = await fetchForms({page: state.page, perPage: perPage});
-            if (donationsResponse) {
-                setState((prevState) => {
-                    return {
-                        ...prevState,
-                        donationForms: [...donationsResponse.forms],
-                        count: donationsResponse.total,
-                        trash: donationsResponse.trash,
-                    };
-                });
-            }
-        })();
-    }, [state.page]);
+    const parameters = {
+        page: state.page,
+        perPage: perPage,
+    };
+
+    const {data, isLoading, isError} = useFetcher(getEndpoint('', parameters), {
+        onSuccess: ({response}) => {
+            setState((previousState) => {
+                return {
+                    ...previousState,
+                    page: response.page,
+                    count: response.total,
+                    trash: response.trash,
+                    donationForms: response.forms,
+                };
+            });
+        },
+    });
 
     function deleteForm() {
         // TODO
