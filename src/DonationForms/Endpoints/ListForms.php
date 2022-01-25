@@ -51,6 +51,24 @@ class ListForms extends Endpoint
         );
     }
 
+    /**
+     * Check user permissions
+     * @return bool|WP_Error
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_posts')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You dont have the right permissions to view Donation Forms', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+
     protected function constructFormList( $parameters ) {
         $per_page = (int)$parameters['perPage'] ?: 30;
         $page = (int)$parameters['page'] ?: 1;

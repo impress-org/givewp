@@ -45,6 +45,23 @@ class DuplicateForms extends MutateForms
         );
     }
 
+    /**
+     * Check user permissions
+     * @return bool|WP_Error
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('create_posts')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You dont have the right permissions to duplicate forms.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
     protected function mutate($id)
     {
         return \Give_Form_Duplicator::handler($id);
