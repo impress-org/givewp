@@ -2,6 +2,8 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\Database\DB;
+
 /**
  * @unreleased
  */
@@ -51,7 +53,9 @@ trait OrderByStatement
     public function getOrderBySQL()
     {
         return $this->orderByColumn && $this->orderByDirection
-            ? ["ORDER BY {$this->orderByColumn} {$this->orderByDirection}"]
+            ? [
+                DB::prepare('ORDER BY %1s %2s', $this->orderByColumn, $this->orderByDirection)
+            ]
             : [];
     }
 }

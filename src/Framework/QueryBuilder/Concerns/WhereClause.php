@@ -3,6 +3,7 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Closure;
+use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\Types\Operator;
 use Give\Framework\QueryBuilder\Where;
@@ -293,6 +294,11 @@ trait WhereClause
      */
     public function getWhereSQL()
     {
+        // Bailout
+        if (empty($this->wheres)) {
+            return [];
+        }
+
         $wheres = array_map(function ($where) {
             if ($where instanceof Where) {
                 return $this->buildWhereSQL($where);
@@ -317,21 +323,26 @@ trait WhereClause
             // Handle membership conditions
             case Operator::IN:
             case Operator::NOTIN:
-                return sprintf(
-                    "%s %s %s ('%s')",
-                    $where->logicalOperator,
-                    $where->column,
-                    $where->comparisonOperator,
-                    implode("','", esc_sql($where->value))
-                );
+
+                return DB::prepare(
+                        "%1s %2s %3s",
+                        $where->logicalOperator,
+                        $where->column,
+                        $where->comparisonOperator
+                    ) . ' (' . implode(
+                           ',',
+                           array_map(function ($where) {
+                               return DB::prepare('%s', $where);
+                           }, $where->value)
+                       ) . ')';
 
             // Handle BETWEEN conditions
             case Operator::BETWEEN:
             case Operator::NOTBETWEEN:
-                list($min, $max) = esc_sql($where->value);
+                list($min, $max) = $where->value;
 
-                return sprintf(
-                    "%s %s %s '%s' AND '%s'",
+                return DB::prepare(
+                    "%1s %2s %3s %s AND %s",
                     $where->logicalOperator,
                     $where->column,
                     $where->comparisonOperator,
@@ -342,23 +353,33 @@ trait WhereClause
             // Handle LIKE conditions
             case Operator::LIKE:
             case Operator::NOTLIKE:
-                return sprintf(
-                    "%s %s %s '%%%s%%'",
+                return DB::prepare(
+                    "%1s %2s %3s '%%%s%%'",
                     $where->logicalOperator,
                     $where->column,
                     $where->comparisonOperator,
-                    esc_sql($where->value)
+                    $where->value
+                );
+
+            // Handle NULL conditions
+            case Operator::ISNULL:
+            case Operator::NOTNULL:
+                return DB::prepare(
+                    "%1s %2s %3s",
+                    $where->logicalOperator,
+                    $where->column,
+                    $where->comparisonOperator
                 );
 
 
             // Standard WHERE clause
             default:
-                return sprintf(
-                    "%s %s %s '%s'",
+                return DB::prepare(
+                    "%1s %2s %3s %s",
                     $where->logicalOperator,
                     $where->column,
                     $where->comparisonOperator,
-                    esc_sql($where->value)
+                    $where->value
                 );
         }
     }

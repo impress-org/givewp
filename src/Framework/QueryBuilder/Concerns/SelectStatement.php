@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Select;
 
 /**
@@ -51,14 +52,14 @@ trait SelectStatement
                 ', ',
                 array_map(function (Select $select) {
                     if ($select->alias) {
-                        return sprintf(
-                            '%s AS %s',
+                        return DB::prepare(
+                            '%1s AS %2s',
                             $select->column,
                             $select->alias
                         );
                     }
 
-                    return $select->column;
+                    return DB::prepare('%1s', $select->column);
                 }, $this->selects)
             )
         ];

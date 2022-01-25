@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Having;
 
 use Give\Framework\QueryBuilder\Types\Math;
@@ -254,22 +255,22 @@ trait HavingClause
     private function buildHavingSQL(Having $having)
     {
         if ($having->mathFunction) {
-            return sprintf(
-                "%s %s(%s) %s '%s'",
+            return DB::prepare(
+                "%1s %2s(%3s) %4s %s",
                 $having->logicalOperator,
                 $having->mathFunction,
                 $having->column,
                 $having->comparisonOperator,
-                esc_sql($having->value)
+                $having->value
             );
         }
 
-        return sprintf(
-            "%s %s %s '%s'",
+        return DB::prepare(
+            "%1s %2s %3s %s",
             $having->logicalOperator,
             $having->column,
             $having->comparisonOperator,
-            esc_sql($having->value)
+            $having->value
         );
     }
 }

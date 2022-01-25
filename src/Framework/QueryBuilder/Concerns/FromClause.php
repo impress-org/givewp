@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\From;
 
 /**
@@ -34,14 +35,14 @@ trait FromClause
                 ', ',
                 array_map(function (From $from) {
                     if ($from->alias) {
-                        return sprintf(
-                            '%s AS %s',
+                        return DB::prepare(
+                            '%1s AS %2s',
                             $from->table,
                             $from->alias
                         );
                     }
 
-                    return $from->table;
+                    return DB::prepare('%1s', $from->table);
                 }, $this->froms)
             )
         ];
