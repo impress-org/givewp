@@ -9,7 +9,7 @@ use Give\Subscriptions\Models\Subscription;
  *
  * @unreleased
  */
-class SubscriptionObjectData
+class SubscriptionQueryData
 {
     /**
      * @var int

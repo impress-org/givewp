@@ -9,7 +9,7 @@ use Give\Donations\Models\Donation;
  *
  * @unreleased
  */
-class DonationData
+class DonationQueryData
 {
     /**
      * @var object

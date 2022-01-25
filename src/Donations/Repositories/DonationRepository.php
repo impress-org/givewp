@@ -3,7 +3,7 @@
 namespace Give\Donations\Repositories;
 
 use Exception;
-use Give\Donations\DataTransferObjects\DonationData;
+use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
@@ -62,7 +62,7 @@ class DonationRepository
             ->where('ID', $donationId)
             ->get();
 
-        return DonationData::fromObject($donation)->toDonation();
+        return DonationQueryData::fromObject($donation)->toDonation();
     }
 
     /**
@@ -103,7 +103,7 @@ class DonationRepository
 
 
         return array_map(static function ($donation) {
-            return DonationData::fromObject($donation)->toDonation();
+            return DonationQueryData::fromObject($donation)->toDonation();
         }, $donations);
     }
 
@@ -147,7 +147,7 @@ class DonationRepository
             ->getAll();
 
         return array_map(static function ($donation) {
-            return DonationData::fromObject($donation)->toDonation();
+            return DonationQueryData::fromObject($donation)->toDonation();
         }, $donations);
     }
 
