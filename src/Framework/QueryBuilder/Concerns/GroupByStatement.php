@@ -2,6 +2,8 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\Database\DB;
+
 /**
  * @unreleased
  */
@@ -18,7 +20,7 @@ trait GroupByStatement
      */
     public function groupBy($tableColumn)
     {
-        $this->groupByColumns[] = trim($tableColumn);
+        $this->groupByColumns[] = DB::prepare( '%1s', $tableColumn);
 
         return $this;
     }
