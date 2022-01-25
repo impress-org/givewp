@@ -131,6 +131,6 @@ class CreditCardGateway extends PaymentGateway
             return false;
         }
 
-        return 'STRIPE CREDIT CARD FIELDS HERE';
+        // @TODO Migrate field markup from legacy gateway implementation.
     }
 }
