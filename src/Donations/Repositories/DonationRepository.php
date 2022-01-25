@@ -89,7 +89,7 @@ class DonationRepository
                            ['_give_payment_donor_email', 'donorEmail'],
                            ['subscription_id', 'subscriptionId']
                        )
-                       ->leftJoin($this->donationMetaTable, 'posts.ID', 'donation_id', 'donationMeta')
+                       ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
                        ->where('posts.post_type', 'give_payment')
                        ->where('posts.post_status', 'give_subscription')
                        ->where('donationMeta.meta_key', 'subscription_id')
