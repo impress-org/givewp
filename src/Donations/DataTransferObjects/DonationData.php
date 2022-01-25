@@ -41,19 +41,19 @@ class DonationData
     {
         $donation = new Donation();
 
-        $donation->id             = $this->donation->id;
-        $donation->createdAt      = $this->donation->createdAt;
-        $donation->updatedAt      = $this->donation->updatedAt;
-        $donation->status         = $this->donation->status;
-        $donation->amount         = $this->donation->amount;
-        $donation->currency       = $this->donation->paymentCurrency;
-        $donation->gateway        = $this->donation->paymentGateway;
-        $donation->donorId        = (int)$this->donation->donorId;
-        $donation->firstName      = $this->donation->firstName;
-        $donation->lastName       = $this->donation->lastName;
-        $donation->email          = $this->donation->donorEmail;
-        $donation->sequentialId   = (int)give()->seq_donation_number->get_serial_number($this->donation->id);
-        $donation->parentId       = (int)$this->donation->parentId;
+        $donation->id = $this->donation->id;
+        $donation->createdAt = $this->donation->createdAt;
+        $donation->updatedAt = $this->donation->updatedAt;
+        $donation->status = $this->donation->status;
+        $donation->amount = $this->donation->amount;
+        $donation->currency = $this->donation->currency;
+        $donation->gateway = $this->donation->gateway;
+        $donation->donorId = (int)$this->donation->donorId;
+        $donation->firstName = $this->donation->firstName;
+        $donation->lastName = $this->donation->lastName;
+        $donation->email = $this->donation->email;
+        $donation->sequentialId = (int)give()->seq_donation_number->get_serial_number($this->donation->id);
+        $donation->parentId = (int)$this->donation->parentId;
         $donation->subscriptionId = (int)$this->donation->subscriptionId;
 
         return $donation;

@@ -12,7 +12,6 @@ use Give\Log\Log;
 
 class DonationRepository
 {
-
     /**
      * @var string
      */
@@ -25,7 +24,7 @@ class DonationRepository
 
     public function __construct()
     {
-        $this->postsTable        = DB::prefix('posts');
+        $this->postsTable = DB::prefix('posts');
         $this->donationMetaTable = DB::prefix('give_donationmeta');
     }
 
@@ -41,25 +40,27 @@ class DonationRepository
     public function getById($donationId)
     {
         $donation = DB::table($this->postsTable)
-                      ->select(
-                          ['ID', 'id'],
-                          ['post_date', 'createdAt'],
-                          ['post_modified', 'updatedAt'],
-                          ['post_status', 'status'],
-                          ['post_parent', 'parentId']
-                      )
-                      ->attachMeta($this->donationMetaTable, 'ID', 'donation_id',
-                          ['_give_payment_total', 'amount'],
-                          ['_give_payment_currency', 'paymentCurrency'],
-                          ['_give_payment_gateway', 'paymentGateway'],
-                          ['_give_payment_donor_id', 'donorId'],
-                          ['_give_donor_billing_first_name', 'firstName'],
-                          ['_give_donor_billing_last_name', 'lastName'],
-                          ['_give_payment_donor_email', 'donorEmail'],
-                          ['subscription_id', 'subscriptionId']
-                      )
-                      ->where('ID', $donationId)
-                      ->get();
+            ->select(
+                ['ID', 'id'],
+                ['post_date', 'createdAt'],
+                ['post_modified', 'updatedAt'],
+                ['post_status', 'status'],
+                ['post_parent', 'parentId']
+            )
+            ->attachMeta($this->donationMetaTable,
+                'ID',
+                'donation_id',
+                ['_give_payment_total', 'amount'],
+                ['_give_payment_currency', 'currency'],
+                ['_give_payment_gateway', 'gateway'],
+                ['_give_payment_donor_id', 'donorId'],
+                ['_give_donor_billing_first_name', 'firstName'],
+                ['_give_donor_billing_last_name', 'lastName'],
+                ['_give_payment_donor_email', 'email'],
+                ['subscription_id', 'subscriptionId']
+            )
+            ->where('ID', $donationId)
+            ->get();
 
         return DonationData::fromObject($donation)->toDonation();
     }
@@ -72,30 +73,33 @@ class DonationRepository
     public function getBySubscriptionId($subscriptionId)
     {
         $donations = DB::table([$this->postsTable, 'posts'])
-                       ->select(
-                           ['posts.ID', 'id'],
-                           ['posts.post_date', 'createdAt'],
-                           ['posts.post_modified', 'updatedAt'],
-                           ['posts.post_status', 'status'],
-                           ['posts.post_parent', 'parentId']
-                       )
-                       ->attachMeta($this->donationMetaTable, 'posts.ID', 'donation_id',
-                           ['_give_payment_total', 'amount'],
-                           ['_give_payment_currency', 'paymentCurrency'],
-                           ['_give_payment_gateway', 'paymentGateway'],
-                           ['_give_payment_donor_id', 'donorId'],
-                           ['_give_donor_billing_first_name', 'firstName'],
-                           ['_give_donor_billing_last_name', 'lastName'],
-                           ['_give_payment_donor_email', 'donorEmail'],
-                           ['subscription_id', 'subscriptionId']
-                       )
-                       ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
-                       ->where('posts.post_type', 'give_payment')
-                       ->where('posts.post_status', 'give_subscription')
-                       ->where('donationMeta.meta_key', 'subscription_id')
-                       ->where('donationMeta.meta_value', $subscriptionId)
-                       ->orderBy('posts.post_date', 'DESC')
-                       ->getAll();
+            ->select(
+                ['posts.ID', 'id'],
+                ['posts.post_date', 'createdAt'],
+                ['posts.post_modified', 'updatedAt'],
+                ['posts.post_status', 'status'],
+                ['posts.post_parent', 'parentId']
+            )
+            ->attachMeta(
+                $this->donationMetaTable,
+                'posts.ID',
+                'donation_id',
+                ['_give_payment_total', 'amount'],
+                ['_give_payment_currency', 'currency'],
+                ['_give_payment_gateway', 'gateway'],
+                ['_give_payment_donor_id', 'donorId'],
+                ['_give_donor_billing_first_name', 'firstName'],
+                ['_give_donor_billing_last_name', 'lastName'],
+                ['_give_payment_donor_email', 'email'],
+                ['subscription_id', 'subscriptionId']
+            )
+            ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
+            ->where('posts.post_type', 'give_payment')
+            ->where('posts.post_status', 'give_subscription')
+            ->where('donationMeta.meta_key', 'subscription_id')
+            ->where('donationMeta.meta_value', $subscriptionId)
+            ->orderBy('posts.post_date', 'DESC')
+            ->getAll();
 
 
         return array_map(static function ($donation) {
@@ -111,35 +115,38 @@ class DonationRepository
     public function getByDonorId($donorId)
     {
         $donations = DB::table($this->postsTable)
-                       ->select(
-                           ['ID', 'id'],
-                           ['post_date', 'createdAt'],
-                           ['post_modified', 'updatedAt'],
-                           ['post_status', 'status'],
-                           ['post_parent', 'parentId']
-                       )
-                       ->attachMeta($this->donationMetaTable, 'ID', 'donation_id',
-                           ['_give_payment_total', 'amount'],
-                           ['_give_payment_currency', 'paymentCurrency'],
-                           ['_give_payment_gateway', 'paymentGateway'],
-                           ['_give_payment_donor_id', 'donorId'],
-                           ['_give_donor_billing_first_name', 'firstName'],
-                           ['_give_donor_billing_last_name', 'lastName'],
-                           ['_give_payment_donor_email', 'donorEmail'],
-                           ['subscription_id', 'subscriptionId']
-                       )
-                       ->where('post_type', 'give_payment')
-                       ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
-                           $builder
-                               ->select('donation_id')
-                               ->from($this->donationMetaTable)
-                               ->where('meta_key', '_give_payment_donor_id')
-                               ->where('meta_value', $donorId);
-                       })
-                       ->orderBy('post_date', 'DESC')
-                       ->getAll();
+            ->select(
+                ['ID', 'id'],
+                ['post_date', 'createdAt'],
+                ['post_modified', 'updatedAt'],
+                ['post_status', 'status'],
+                ['post_parent', 'parentId']
+            )
+            ->attachMeta(
+                $this->donationMetaTable,
+                'ID',
+                'donation_id',
+                ['_give_payment_total', 'amount'],
+                ['_give_payment_currency', 'currency'],
+                ['_give_payment_gateway', 'gateway'],
+                ['_give_payment_donor_id', 'donorId'],
+                ['_give_donor_billing_first_name', 'firstName'],
+                ['_give_donor_billing_last_name', 'lastName'],
+                ['_give_payment_donor_email', 'email'],
+                ['subscription_id', 'subscriptionId']
+            )
+            ->where('post_type', 'give_payment')
+            ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
+                $builder
+                    ->select('donation_id')
+                    ->from($this->donationMetaTable)
+                    ->where('meta_key', '_give_payment_donor_id')
+                    ->where('meta_value', $donorId);
+            })
+            ->orderBy('post_date', 'DESC')
+            ->getAll();
 
-        return array_map(function ($donation) {
+        return array_map(static function ($donation) {
             return DonationData::fromObject($donation)->toDonation();
         }, $donations);
     }
@@ -158,10 +165,10 @@ class DonationRepository
 
         try {
             DB::insert($this->postsTable, [
-                'post_date'     => $date,
+                'post_date' => $date,
                 'post_date_gmt' => get_gmt_from_date($date),
-                'post_status'   => $donation->status,
-                'post_type'     => 'give_payment'
+                'post_status' => $donation->status,
+                'post_type' => 'give_payment'
             ], null);
 
             $donationId = DB::last_insert_id();
@@ -169,8 +176,8 @@ class DonationRepository
             foreach ($donation->getMeta() as $metaKey => $metaValue) {
                 DB::insert($this->donationMetaTable, [
                     'donation_id' => $donationId,
-                    'meta_key'    => $metaKey,
-                    'meta_value'  => $metaValue,
+                    'meta_key' => $metaKey,
+                    'meta_value' => $metaValue,
                 ], null);
             }
         } catch (Exception $exception) {
@@ -200,10 +207,10 @@ class DonationRepository
 
         try {
             DB::update($this->postsTable, [
-                'post_modified'     => $date,
+                'post_modified' => $date,
                 'post_modified_gmt' => get_gmt_from_date($date),
-                'post_status'       => $donation->status,
-                'post_type'         => $donation->status
+                'post_status' => $donation->status,
+                'post_type' => $donation->status
             ], ['id' => $donation->id]);
 
             foreach ($donation->getMeta() as $metaKey => $metaValue) {
@@ -211,7 +218,7 @@ class DonationRepository
                     'meta_value' => $metaValue,
                 ], [
                     'donation_id' => $donation->id,
-                    'meta_key'    => $metaKey
+                    'meta_key' => $metaKey
                 ]);
             }
         } catch (Exception $exception) {
@@ -235,14 +242,14 @@ class DonationRepository
     public function getMeta(Donation $donation)
     {
         return [
-            '_give_payment_total'            => $donation->amount,
-            '_give_payment_currency'         => $donation->currency,
-            '_give_payment_gateway'          => $donation->gateway,
-            '_give_payment_donor_id'         => $donation->donorId,
+            '_give_payment_total' => $donation->amount,
+            '_give_payment_currency' => $donation->currency,
+            '_give_payment_gateway' => $donation->gateway,
+            '_give_payment_donor_id' => $donation->donorId,
             '_give_donor_billing_first_name' => $donation->firstName,
-            '_give_donor_billing_last_name'  => $donation->lastName,
-            '_give_payment_donor_email'      => $donation->email,
-            'subscription_id'                => $donation->subscriptionId
+            '_give_donor_billing_last_name' => $donation->lastName,
+            '_give_payment_donor_email' => $donation->email,
+            'subscription_id' => $donation->subscriptionId
         ];
     }
 }
