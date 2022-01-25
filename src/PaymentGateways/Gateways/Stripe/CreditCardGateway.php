@@ -78,6 +78,10 @@ class CreditCardGateway extends PaymentGateway
 
         $intent = give( LegacyStripePaymentIntent::class )->create( $intent_args );
 
+        give_insert_payment_note( $paymentData->donationId, 'Stripe Charge/Payment Intent ID: ' . $intent->id );
+        give_insert_payment_note( $paymentData->donationId, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+        give_update_meta( $paymentData->donationId, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
         switch( $intent->status() )  {
             case 'requires_action':
                 give_insert_payment_note( $paymentData->donationId, 'Stripe requires additional action to be fulfilled.' );
