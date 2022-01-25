@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder;
 
+use Give\Framework\QueryBuilder\Types\Math;
 use Give\Framework\QueryBuilder\Types\Operator;
 
 /**
@@ -44,10 +45,10 @@ class Having
     public function __construct($column, $comparisonOperator, $value, $logicalOperator, $mathFunction = null)
     {
         $this->column             = $column;
-        $this->comparisonOperator = $comparisonOperator;
+        $this->comparisonOperator = $this->getComparisonOperator($comparisonOperator);
         $this->value              = $value;
         $this->logicalOperator    = $logicalOperator ? $this->getLogicalOperator($logicalOperator) : '';
-        $this->mathFunction       = $mathFunction;
+        $this->mathFunction       = $this->getMathFunction($mathFunction);
     }
 
     /**
@@ -64,5 +65,42 @@ class Having
         }
 
         return Operator::AND;
+    }
+
+    /**
+     * @param  string  $comparisonOperator
+     *
+     * @return string
+     */
+    private function getComparisonOperator($comparisonOperator)
+    {
+        $operators = [
+            '<',
+            '<=',
+            '>',
+            '>=',
+            '<>',
+        ];
+
+        if (in_array($comparisonOperator, $operators)) {
+            return $comparisonOperator;
+        }
+
+        return '=';
+    }
+
+
+    /**
+     * @param  string  $mathFunction
+     *
+     * @return string
+     */
+    private function getMathFunction($mathFunction)
+    {
+        if (array_key_exists($mathFunction, Math::getTypes())) {
+            return $mathFunction;
+        }
+
+        return null;
     }
 }
