@@ -55,13 +55,15 @@ WHERE post_status = 'subscription'
 
 ### Joins
 
+For simple JOIN clauses, you can use ```leftJoin```, ```rightJoin```, and ```innerJoin``` methods.
+
 ```php
 $builder = new \Give\Framework\QueryBuilder\QueryBuilder();
 
 $builder
     ->select('*')
     ->from($this->postsTable, 'posts')
-    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donation_id', 'donationMeta')
+    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
     ->where('posts.post_type', 'give_payment')
     ->where('posts.post_status', 'give_subscription')
     ->where('donationMeta.meta_key', 'subscription_id')
@@ -80,6 +82,33 @@ WHERE posts.post_type = 'give_payment'
   AND donationMeta.meta_key = 'subscription_id'
   AND donationMeta.meta_value = '1'
 ORDER BY posts.post_date DESC
+```
+
+For complex JOIN clauses, you can use ```join``` method and pass a Closure for ```$condition``` parameter which will then pass back a new QueryBuilder instance to the Closure.
+Note: methods ```joinOn```, ```joinAnd```, and ```joinOr``` should be used only inside the Closure.
+
+```php
+$builder
+    ->from('tableOne')
+    ->join(
+        'tableTwo',
+        JoinType::LEFT,
+        function (QueryBuilder $builder) {
+            $builder
+                ->joinOn('tableOne.foreignKey', '=', 'tableTwoAlias.primaryKey')
+                ->joinAnd('tableTwoAlias.meta_key', '=', 'subscription_id', $escape = true);
+        },
+        'tableTwoAlias'
+    );
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM tableOne
+    LEFT JOIN tableTwo tableTwoAlias
+        ON tableOne.foreignKey = tableTwoAlias.primaryKey
+       AND tableTwoAlias.meta_key = 'subscription_id'
 ```
 
 ### Special method for working with meta tables (attachMeta)
@@ -106,14 +135,15 @@ $builder
         ['_give_payment_donor_id', 'donorId'],
         ['_give_donor_billing_first_name', 'firstName'],
         ['_give_donor_billing_last_name', 'lastName'],
-        ['_give_payment_donor_email', 'donorEmail']
+        ['_give_payment_donor_email', 'donorEmail'],
+        ['subscription_id', 'subscriptionId']
     )
     ->from($this->postsTable, 'posts')
-    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donation_id', 'donationMeta')
+    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
     ->where('posts.post_type', 'give_payment')
     ->where('posts.post_status', 'give_subscription')
     ->where('donationMeta.meta_key', 'subscription_id')
-    ->where('donationMeta.meta_value', $subscriptionId)
+    ->where('donationMeta.meta_value', 1)
     ->orderBy('posts.post_date', 'DESC');
 ```
 
@@ -131,31 +161,35 @@ SELECT posts.ID                                      AS id,
        wp_give_donationmeta_attach_meta_3.meta_value AS donorId,
        wp_give_donationmeta_attach_meta_4.meta_value AS firstName,
        wp_give_donationmeta_attach_meta_5.meta_value AS lastName,
-       wp_give_donationmeta_attach_meta_6.meta_value AS donorEmail
+       wp_give_donationmeta_attach_meta_6.meta_value AS donorEmail,
+       wp_give_donationmeta_attach_meta_7.meta_value AS subscriptionId
 FROM wp_posts AS posts
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_0
-                   ON posts.ID = wp_give_donationmeta_attach_meta_0.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_0.donation_id AND
+                      wp_give_donationmeta_attach_meta_0.meta_key = '_give_payment_total'
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_1
-                   ON posts.ID = wp_give_donationmeta_attach_meta_1.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_1.donation_id AND
+                      wp_give_donationmeta_attach_meta_1.meta_key = '_give_payment_currency'
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_2
-                   ON posts.ID = wp_give_donationmeta_attach_meta_2.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_2.donation_id AND
+                      wp_give_donationmeta_attach_meta_2.meta_key = '_give_payment_gateway'
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_3
-                   ON posts.ID = wp_give_donationmeta_attach_meta_3.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_3.donation_id AND
+                      wp_give_donationmeta_attach_meta_3.meta_key = '_give_payment_donor_id'
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_4
-                   ON posts.ID = wp_give_donationmeta_attach_meta_4.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_4.donation_id AND
+                      wp_give_donationmeta_attach_meta_4.meta_key = '_give_donor_billing_first_name'
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_5
-                   ON posts.ID = wp_give_donationmeta_attach_meta_5.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_5.donation_id AND
+                      wp_give_donationmeta_attach_meta_5.meta_key = '_give_donor_billing_last_name'
          LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_6
-                   ON posts.ID = wp_give_donationmeta_attach_meta_6.donation_id
+                   ON posts.ID = wp_give_donationmeta_attach_meta_6.donation_id AND
+                      wp_give_donationmeta_attach_meta_6.meta_key = '_give_payment_donor_email'
+         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_7
+                   ON posts.ID = wp_give_donationmeta_attach_meta_7.donation_id AND
+                      wp_give_donationmeta_attach_meta_7.meta_key = 'subscription_id'
          LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id
-WHERE wp_give_donationmeta_attach_meta_0.meta_key = '_give_payment_total'
-  AND wp_give_donationmeta_attach_meta_1.meta_key = '_give_payment_currency'
-  AND wp_give_donationmeta_attach_meta_2.meta_key = '_give_payment_gateway'
-  AND wp_give_donationmeta_attach_meta_3.meta_key = '_give_payment_donor_id'
-  AND wp_give_donationmeta_attach_meta_4.meta_key = '_give_donor_billing_first_name'
-  AND wp_give_donationmeta_attach_meta_5.meta_key = '_give_donor_billing_last_name'
-  AND wp_give_donationmeta_attach_meta_6.meta_key = '_give_payment_donor_email'
-  AND posts.post_type = 'give_payment'
+WHERE posts.post_type = 'give_payment'
   AND posts.post_status = 'give_subscription'
   AND donationMeta.meta_key = 'subscription_id'
   AND donationMeta.meta_value = '1'
@@ -163,6 +197,7 @@ ORDER BY posts.post_date DESC
 ```
 
 Returned result when using
+
 ```php
 DB::get_row($builder->getSQL());
 ```
