@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
-class DonationData
+class LegacyDonationData
 {
     /** @var GatewayPaymentData */
     protected $paymentData;

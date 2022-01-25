@@ -34,7 +34,7 @@ class CreditCardGateway extends PaymentGateway
         if( empty( $_POST['give_stripe_payment_method'] ) ) throw new PaymentMethodException('Payment Method Not Found');
 
         $paymentMethodId = $_POST['give_stripe_payment_method'];
-        $donationData = new DonationData( $paymentData, $paymentMethodId );
+        $donationData = new LegacyDonationData( $paymentData, $paymentMethodId );
 
         $give_stripe_customer = new Give_Stripe_Customer( $paymentData->donorInfo->email, $paymentMethodId );
         if( $give_stripe_customer->get_id() ) {
