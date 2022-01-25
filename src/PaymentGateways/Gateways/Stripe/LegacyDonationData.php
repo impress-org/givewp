@@ -4,6 +4,9 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
+/**
+ * @unreleased
+ */
 class LegacyDonationData
 {
     /** @var GatewayPaymentData */
@@ -12,12 +15,21 @@ class LegacyDonationData
     /** @var string */
     protected $paymentMethodId;
 
+    /**
+     * @unreleased
+     * @param GatewayPaymentData $paymentData
+     * @param $paymentMethodId
+     */
     public function __construct(GatewayPaymentData $paymentData, $paymentMethodId )
     {
         $this->paymentData = $paymentData;
         $this->paymentMethodId = $paymentMethodId;
     }
 
+    /**
+     * @unreleased
+     * @return array
+     */
     public function toArray()
     {
         return [
@@ -36,6 +48,10 @@ class LegacyDonationData
         ];
     }
 
+    /**
+     * @unreleased
+     * @return array
+     */
     public function toArrayWithDescription()
     {
         return $this->toArray() + [

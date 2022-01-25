@@ -2,6 +2,9 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+/**
+ * @unreleased
+ */
 class Helpers
 {
     /**

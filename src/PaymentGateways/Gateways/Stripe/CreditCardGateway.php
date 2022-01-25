@@ -26,6 +26,7 @@ class CreditCardGateway extends PaymentGateway
 {
     /**
      * @inheritDoc
+     * @unreleased
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
