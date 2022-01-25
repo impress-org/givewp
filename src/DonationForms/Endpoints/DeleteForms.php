@@ -10,25 +10,13 @@ use WP_REST_Response;
  */
 
 
-class DeleteForms extends TrashForms
+class DeleteForms extends MutateForms
 {
     protected $endpoint = 'admin/forms/delete';
 
 
-    protected function updateForms($parameters)
+    protected function mutate($id)
     {
-        $errors = 0;
-        $successes = 0;
-        $id_array = explode(',', $parameters['ids']);
-        foreach($id_array as $id){
-            if( !is_numeric($id) || !wp_delete_post( $id, true ) ) {
-                $errors++;
-            }
-            else
-            {
-                $successes++;
-            }
-        }
-        return array( 'errors' => $errors, 'successes' => $successes );
+        return wp_delete_post($id, true);
     }
 }
