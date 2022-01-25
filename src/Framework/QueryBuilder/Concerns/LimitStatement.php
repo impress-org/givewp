@@ -19,7 +19,7 @@ trait LimitStatement
      */
     public function limit($limit)
     {
-        $this->limit = $limit;
+        $this->limit = (int)$limit;
 
         return $this;
     }
