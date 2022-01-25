@@ -3,6 +3,7 @@
 namespace Give\Framework\QueryBuilder;
 
 use Give\Framework\QueryBuilder\Types\Operator;
+use InvalidArgumentException;
 
 /**
  * @unreleased
@@ -72,7 +73,13 @@ class Where
             return $comparisonOperator;
         }
 
-        return '=';
+        throw new InvalidArgumentException(
+            sprintf(
+                'Unsupported comparison operator %s. Please use one of the supported operators (%s)',
+                $comparisonOperator,
+                implode(',', $operators)
+            )
+        );
     }
 
     /**
@@ -82,12 +89,23 @@ class Where
      */
     private function getLogicalOperator($logicalOperator)
     {
+        $operators = [
+            Operator::AND,
+            Operator::OR
+        ];
+
         $logicalOperator = strtoupper($logicalOperator);
 
-        if (array_key_exists($logicalOperator, Operator::getTypes())) {
+        if (array_key_exists($logicalOperator, $operators)) {
             return $logicalOperator;
         }
 
-        return Operator::AND;
+        throw new InvalidArgumentException(
+            sprintf(
+                'Unsupported logical operator %s. Please use one of the supported operators (%s)',
+                $logicalOperator,
+                implode(',', $operators)
+            )
+        );
     }
 }
