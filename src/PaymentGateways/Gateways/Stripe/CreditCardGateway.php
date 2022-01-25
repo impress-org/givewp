@@ -13,6 +13,7 @@ use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Actions\CreatePayment;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentIntentException;
+use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentMethodException;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
 use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
@@ -30,7 +31,7 @@ class CreditCardGateway extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        if( empty( $_POST['give_stripe_payment_method'] ) ) throw new \Exception( 'Payment Method Not Found');
+        if( empty( $_POST['give_stripe_payment_method'] ) ) throw new PaymentMethodException('Payment Method Not Found');
 
         $paymentMethodId = $_POST['give_stripe_payment_method'];
         $donationData = new DonationData( $paymentData, $paymentMethodId );
