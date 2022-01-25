@@ -24,6 +24,8 @@ type DonationForm = {
     datetime: string;
     shortcode: string;
     status: string;
+    permalink: string;
+    edit: string;
 };
 
 function AdminDonationForms() {
@@ -145,20 +147,20 @@ function AdminDonationForms() {
                                         <div className={styles.idBadge}>{form.id}</div>
                                     </td>
                                     <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
-                                        <a href={`post.php?post=${form.id}&action=edit`}>{form.name}</a>
+                                        <a href={form.edit}>{form.name}</a>
                                         <div
                                             role="group"
                                             aria-label={__('Actions', 'give')}
                                             className={styles.tableRowActions}
                                         >
-                                            <a href={`post.php?post=${form.id}&action=edit`} className={styles.action}>
+                                            <a href={form.edit} className={styles.action}>
                                                 Edit <span className="give-visually-hidden">{form.name}</span>
                                             </a>
                                             <button type="button" onClick={deleteForm} data-formid={form.id} className={styles.action}>
                                                 {state.trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
                                                 <span className="give-visually-hidden">{form.name}</span>
                                             </button>
-                                            <a href={`/?p=${form.id}`}>{__('View', 'give')}</a>
+                                            <a href={form.permalink}>{__('View', 'give')}</a>
                                             <a href="#todo-replace-with-duplicate-link">{__('Duplicate', 'give')}</a>
                                         </div>
                                     </th>

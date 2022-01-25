@@ -117,6 +117,8 @@ class ListForms extends Endpoint
             $results[$index]->datetime = date_i18n('Y/m/d \a\t h:i a', date_create( $result->post_date ));
             $results[$index]->shortcode = "[give_form id=\"$form->ID\"]";
             $results[$index]->status = $form->post_status;
+            $results[$index]->permalink = html_entity_decode(get_permalink($form->ID));
+            $results[$index]->edit = html_entity_decode(get_edit_post_link($form->ID));
         }
         return (object) array(
             'forms' => $results,
