@@ -97,16 +97,16 @@ class Where
 
         $logicalOperator = strtoupper($logicalOperator);
 
-        if (array_key_exists($logicalOperator, $operators)) {
-            return $logicalOperator;
+        if (!in_array($logicalOperator, $operators, true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Unsupported logical operator %s. Please use one of the supported operators (%s)',
+                    $logicalOperator,
+                    implode(',', $operators)
+                )
+            );
         }
 
-        throw new InvalidArgumentException(
-            sprintf(
-                'Unsupported logical operator %s. Please use one of the supported operators (%s)',
-                $logicalOperator,
-                implode(',', $operators)
-            )
-        );
+        return $logicalOperator;
     }
 }
