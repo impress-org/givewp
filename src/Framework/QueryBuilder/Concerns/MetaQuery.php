@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\QueryBuilder\MetaTable;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\Types\JoinType;
 
@@ -10,6 +11,60 @@ use Give\Framework\QueryBuilder\Types\JoinType;
  */
 trait MetaQuery
 {
+
+    /**
+     * @var MetaTable[]
+     */
+    protected $metaTablesConfigs = [];
+
+    /**
+     * @var string
+     */
+    protected $defaultMetaKeyColumn = 'meta_key';
+
+    /**
+     * @var string
+     */
+    protected $defaultMetaValueColumn = 'meta_value';
+
+    /**
+     * @param  string  $table
+     * @param  string  $metaKeyColumn
+     * @param  string  $metaValueColumn
+     *
+     * @return $this
+     */
+    public function configureMetaTable($table, $metaKeyColumn, $metaValueColumn)
+    {
+        $this->metaTablesConfigs[] = new MetaTable(
+            $table,
+            $metaKeyColumn,
+            $metaValueColumn
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param $table
+     *
+     * @return MetaTable
+     */
+    public function getMetaTable($table)
+    {
+        foreach ($this->metaTablesConfigs as $metaTable) {
+            if ($metaTable->tableName === $table) {
+                return $metaTable;
+            }
+        }
+
+        return new MetaTable(
+            $table,
+            $this->defaultMetaKeyColumn,
+            $this->defaultMetaValueColumn
+        );
+    }
+
     /**
      * Select meta columns
      *
@@ -22,6 +77,8 @@ trait MetaQuery
      */
     public function attachMeta($table, $foreignKey, $primaryKey, ...$columns)
     {
+        $metaTable = $this->getMetaTable($table);
+
         foreach ($columns as $i => $entry) {
             if (is_array($entry)) {
                 list ($column, $columnAlias) = $entry;
@@ -36,15 +93,15 @@ trait MetaQuery
             $this->join(
                 $table,
                 JoinType::LEFT,
-                function (QueryBuilder $builder) use ($foreignKey, $primaryKey, $tableAlias, $column) {
+                function (QueryBuilder $builder) use ($foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {
                     $builder
                         ->joinOn($foreignKey, '=', "{$tableAlias}.{$primaryKey}")
-                        ->joinAnd("{$tableAlias}.meta_key", '=', $column, true);
+                        ->joinAnd("{$tableAlias}.{$metaTable->keyColumnName}", '=', $column, true);
                 },
                 $tableAlias
             );
 
-            $this->select([$tableAlias . '.meta_value', $columnAlias ? : $column]);
+            $this->select(["{$tableAlias}.{$metaTable->valueColumnName}", $columnAlias ? : $column]);
         }
 
         return $this;
