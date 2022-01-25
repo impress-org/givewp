@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\Types\JoinType;
 
 /**
@@ -32,9 +33,18 @@ trait MetaQuery
             // Set dynamic alias
             $tableAlias = sprintf('%s_%s_%d', $table, 'attach_meta', $i);
 
-            $this->join($table, $foreignKey, $primaryKey, JoinType::LEFT, $tableAlias);
+            $this->join(
+                $table,
+                JoinType::LEFT,
+                function (QueryBuilder $builder) use ($foreignKey, $primaryKey, $tableAlias, $column) {
+                    $builder
+                        ->joinOn($foreignKey, '=', "{$tableAlias}.{$primaryKey}")
+                        ->joinAnd("{$tableAlias}.meta_key", '=', $column, true);
+                },
+                $tableAlias
+            );
+
             $this->select([$tableAlias . '.meta_value', $columnAlias ? : $column]);
-            $this->where($tableAlias . '.meta_key', $column);
         }
 
         return $this;
