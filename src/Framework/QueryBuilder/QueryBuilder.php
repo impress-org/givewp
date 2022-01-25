@@ -50,20 +50,24 @@ class QueryBuilder
     /**
      * Get results
      *
-     * @return array|null
+     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
+     *
+     * @return array|object|null
      */
-    public function getAll()
+    public function getAll($output = OBJECT)
     {
-        return DB::get_results($this->getSQL());
+        return DB::get_results($this->getSQL(), $output);
     }
 
     /**
      * Get row
      *
-     * @return object|null
+     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
+     *
+     * @return array|object|null
      */
-    public function get()
+    public function get($output = OBJECT)
     {
-        return DB::get_row($this->getSQL());
+        return DB::get_row($this->getSQL(), $output);
     }
 }
