@@ -23,6 +23,7 @@ type DonationForm = {
     revenue: string;
     datetime: string;
     shortcode: string;
+    status: string;
 };
 
 function AdminDonationForms() {
@@ -210,7 +211,7 @@ function AdminDonationForms() {
                                     </td>
                                     <td className={styles.tableCell}>{form.datetime}</td>
                                     <td className={styles.tableCell}>
-                                        <div className={styles.statusBadge}>Published</div>
+                                        <div className={styles.statusBadge}>{form.status}</div>
                                     </td>
                                 </tr>
                             ))}
