@@ -2,7 +2,10 @@
 
 namespace Give\Framework\QueryBuilder;
 
+use Closure;
 use Give\Framework\QueryBuilder\Types\JoinType;
+use Give\Framework\QueryBuilder\Types\Operator;
+use InvalidArgumentException;
 
 /**
  * @unreleased
@@ -15,14 +18,9 @@ class Join
     public $table;
 
     /**
-     * @var string
+     * @var JoinCondition[]
      */
-    public $foreignKey;
-
-    /**
-     * @var string
-     */
-    public $primaryKey;
+    public $conditions = [];
 
     /**
      * @var string
@@ -36,17 +34,15 @@ class Join
 
     /**
      * @param  string  $table
-     * @param  string  $foreignKey
-     * @param  string  $primaryKey
      * @param  string  $joinType  \Give\Framework\QueryBuilder\Types\JoinType
+     * @param  array|Closure  $condition
      * @param  string|null  $alias
      */
-    public function __construct($table, $foreignKey, $primaryKey, $joinType = JoinType::LEFT, $alias = null)
+    public function __construct($table, $joinType, $condition, $alias = null)
     {
         $this->table      = $table;
-        $this->foreignKey = $foreignKey;
-        $this->primaryKey = $primaryKey;
         $this->joinType   = $this->getJoinType($joinType);
+        $this->conditions = $this->getJoinConditions($condition);
         $this->alias      = $alias;
     }
 
@@ -63,6 +59,53 @@ class Join
             return $type;
         }
 
-        return JoinType::LEFT;
+        throw new InvalidArgumentException(
+            sprintf(
+                'Join type %s is not supported. Please provide one of the supported join types (%s)',
+                $type,
+                implode(',', JoinType::getTypes())
+            )
+        );
+    }
+
+    /**
+     * @param  array|Closure  $condition
+     *
+     * @return JoinCondition[]
+     */
+    private function getJoinConditions($condition)
+    {
+        if ($condition instanceof Closure) {
+            $builder = new QueryBuilder();
+
+            call_user_func($condition, $builder);
+
+            return array_map(function (JoinCondition $join) {
+                return new JoinCondition(
+                    $join->logicalOperator,
+                    $join->column1,
+                    $join->comparisonOperator,
+                    $join->column2,
+                    $join->quote
+                );
+            }, $builder->getDefinedJoins());
+        }
+
+        if (is_array($condition)) {
+            list($foreignKey, $primaryKey) = $condition;
+
+            return [
+                new JoinCondition(
+                    Operator::ON,
+                    $foreignKey,
+                    '=',
+                    $primaryKey
+                )
+            ];
+        }
+
+        throw new InvalidArgumentException(
+            'Invalid argument type provided for condition parameter. Condition parameter must be a Closure instance or an Array ([foreignKey, primaryKey])'
+        );
     }
 }
