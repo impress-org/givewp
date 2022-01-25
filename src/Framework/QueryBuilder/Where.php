@@ -15,7 +15,7 @@ class Where
     public $column;
 
     /**
-     * @var string
+     * @var mixed
      */
     public $value;
 
