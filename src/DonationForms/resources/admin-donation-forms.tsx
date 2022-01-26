@@ -28,18 +28,21 @@ type DonationForm = {
     edit: string;
 };
 
+let windowParams = new URLSearchParams(window.location.search);
+const page = parseInt(windowParams.get('paged'));
+
 function AdminDonationForms() {
     const [state, setState] = useState({
         donationForms: [],
         count: 0,
-        page: 1,
+        page: page > 0 ? page : 1,
         trash: true,
+        perPage: 10
     });
-    const perPage = 10;
 
     const parameters = {
         page: state.page,
-        perPage: perPage,
+        perPage: state.perPage,
     };
 
     const {data, isLoading, isError} = useFetcher(getEndpoint('', parameters), {
@@ -87,7 +90,7 @@ function AdminDonationForms() {
                     <span className={styles.totalItems}>{state.count.toString() + __(' forms', 'give')}</span>
                     <Pagination
                         currentPage={state.page}
-                        totalPages={Math.ceil(state.count / perPage)}
+                        totalPages={Math.ceil(state.count / state.perPage)}
                         disabled={false}
                         setPage={(page) => {
                             setState((prevState) => {
