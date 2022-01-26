@@ -20,6 +20,11 @@ class GatewayRouteData
      * @var int
      */
     public $donationId;
+    /**
+     * WordPress's nonce.
+     * @var int
+     */
+    public $nonce;
 
     /**
      * Convert data from request into DTO
@@ -35,6 +40,7 @@ class GatewayRouteData
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
         $self->donationId = (int)$request['give-donation-id'];
+        $self->nonce = $request['nonce'];
 
         return $self;
     }
