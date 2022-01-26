@@ -24,7 +24,7 @@ trait LimitStatement
         return $this;
     }
 
-    public function getLimitSQL()
+    protected function getLimitSQL()
     {
         return $this->limit
             ? ["LIMIT {$this->limit}"]

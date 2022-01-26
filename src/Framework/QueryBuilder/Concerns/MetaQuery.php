@@ -15,17 +15,17 @@ trait MetaQuery
     /**
      * @var MetaTable[]
      */
-    protected $metaTablesConfigs = [];
+    private $metaTablesConfigs = [];
 
     /**
      * @var string
      */
-    protected $defaultMetaKeyColumn = 'meta_key';
+    private $defaultMetaKeyColumn = 'meta_key';
 
     /**
      * @var string
      */
-    protected $defaultMetaValueColumn = 'meta_value';
+    private $defaultMetaValueColumn = 'meta_value';
 
     /**
      * @param  string  $table
@@ -50,7 +50,7 @@ trait MetaQuery
      *
      * @return MetaTable
      */
-    public function getMetaTable($table)
+    protected function getMetaTable($table)
     {
         foreach ($this->metaTablesConfigs as $metaTable) {
             if ($metaTable->tableName === $table) {

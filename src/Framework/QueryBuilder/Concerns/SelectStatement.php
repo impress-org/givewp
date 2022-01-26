@@ -40,7 +40,7 @@ trait SelectStatement
     /**
      * @return string[]
      */
-    public function getSelectSQL()
+    protected function getSelectSQL()
     {
         // Select all by default
         if (empty($this->selects)) {

@@ -28,7 +28,7 @@ trait FromClause
         return $this;
     }
 
-    public function getFromSQL()
+    protected function getFromSQL()
     {
         return [
             'FROM ' . implode(

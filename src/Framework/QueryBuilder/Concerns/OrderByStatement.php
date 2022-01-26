@@ -39,7 +39,7 @@ trait OrderByStatement
      *
      * @return string
      */
-    public function getSortDirection($direction)
+    protected function getSortDirection($direction)
     {
         $direction = strtoupper($direction);
 
@@ -50,7 +50,7 @@ trait OrderByStatement
         return 'ASC';
     }
 
-    public function getOrderBySQL()
+    protected function getOrderBySQL()
     {
         return $this->orderByColumn && $this->orderByDirection
             ? [

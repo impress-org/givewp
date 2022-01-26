@@ -234,7 +234,7 @@ trait HavingClause
     /**
      * @return string[]
      */
-    public function getHavingSQL()
+    protected function getHavingSQL()
     {
         if (empty($this->havings)) {
             return [];

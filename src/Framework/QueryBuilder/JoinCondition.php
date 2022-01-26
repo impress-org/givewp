@@ -57,7 +57,7 @@ class JoinCondition
      *
      * @return string
      */
-    public static function getLogicalOperator($operator)
+    private function getLogicalOperator($operator)
     {
         $operator = strtoupper($operator);
 

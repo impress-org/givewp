@@ -348,7 +348,7 @@ trait WhereClause
     /**
      * @return string[]
      */
-    public function getWhereSQL()
+    protected function getWhereSQL()
     {
         // Bailout
         if (empty($this->wheres)) {

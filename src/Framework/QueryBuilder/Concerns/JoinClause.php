@@ -182,7 +182,7 @@ trait JoinClause
     /**
      * @return string[]
      */
-    public function getJoinSQL()
+    protected function getJoinSQL()
     {
         return array_map(function (Join $joinTable) {
             $conditions = array_map(function (JoinCondition $condition) {

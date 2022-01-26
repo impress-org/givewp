@@ -25,7 +25,7 @@ trait GroupByStatement
         return $this;
     }
 
-    public function getGroupBySQL()
+    protected function getGroupBySQL()
     {
         return ! empty($this->groupByColumns)
             ? ['GROUP BY ' . implode(',', $this->groupByColumns)]
