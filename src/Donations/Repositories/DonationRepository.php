@@ -72,7 +72,7 @@ class DonationRepository
      */
     public function getBySubscriptionId($subscriptionId)
     {
-        $donations = DB::table([$this->postsTable, 'posts'])
+        $donations = DB::table($this->postsTable, 'posts')
             ->select(
                 ['posts.ID', 'id'],
                 ['posts.post_date', 'createdAt'],
