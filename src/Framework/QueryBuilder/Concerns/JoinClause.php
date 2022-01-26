@@ -185,7 +185,7 @@ trait JoinClause
     public function getJoinSQL()
     {
         return array_map(function (Join $joinTable) {
-            $conditions = array_map(function (JoinCondition $condition) use ($joinTable) {
+            $conditions = array_map(function (JoinCondition $condition) {
                 return DB::prepare(
                     $condition->quote
                         ? '%1s %2s %3s %s'
