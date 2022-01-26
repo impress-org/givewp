@@ -2,9 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
@@ -95,7 +96,10 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function returnSuccessFromOffsiteRedirect($donationId)
     {
-        return new PaymentProcessing();
+        $command = new PaymentComplete( 'test-gateway-transaction-id' );
+        $command->paymentNotes = ['NOTE GOES HERE'];
+
+        return $command;
     }
 
     /**
@@ -113,18 +117,6 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     }
 
     /**
-     * An example of using the provided offsite method of returning from a redirect.
-     *
-     * @inheritDoc
-     */
-    public function returnFromOffsiteRedirect($donationId)
-    {
-        $this->updateDonation($donationId);
-
-        return response()->redirectTo(give_get_success_page_uri());
-    }
-
-    /**
      * An example gateway method for extending the Gateway API for a given gateway.
      *
      * @param int $donationId
@@ -133,23 +125,12 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function testGatewayMethod($donationId)
     {
-        $this->updateDonation($donationId);
+        $command = new PaymentComplete();
+        $command->gatewayTransactionId = 'test-gateway-transaction-id';
+        $command->paymentNotes = ['NOTE GOES HERE'];
+        PaymentCompleteHandler::make($command)->handle($donationId);
 
         return response()->json();
-    }
-
-    /**
-     * Helper for updating donation
-     *
-     * @param $donationId
-     *
-     * @return void
-     */
-    private function updateDonation($donationId)
-    {
-        give_insert_payment_note($donationId, 'NOTE GOES HERE');
-        give_update_payment_status($donationId);
-        give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
     }
 
     /**
