@@ -236,15 +236,15 @@ trait HavingClause
      */
     public function getHavingSQL()
     {
-        if ( ! empty($this->havings)) {
-            $havings = array_map(function (Having $having) {
-                return $this->buildHavingSQL($having);
-            }, $this->havings);
-
-            return array_merge(['HAVING'], $havings);
+        if (empty($this->havings)) {
+            return [];
         }
 
-        return [];
+        $havings = array_map(function (Having $having) {
+            return $this->buildHavingSQL($having);
+        }, $this->havings);
+
+        return array_merge(['HAVING'], $havings);
     }
 
     /**
