@@ -117,23 +117,15 @@ class DB
     /**
      * Create QueryBuilder instance
      *
-     * @param mixed ...$tables
+     * @param string $table
+     * @param  null|string  $alias
      *
      * @return QueryBuilder
      */
-    public static function table(...$tables)
+    public static function table($table, $alias = null)
     {
         $builder = new QueryBuilder();
-
-        array_walk($tables, function ($table) use ($builder) {
-            if (is_array($table)) {
-                list($tableName, $alias) = $table;
-
-                $builder->from($tableName, $alias);
-            } else {
-                $builder->from($table);
-            }
-        });
+        $builder->from($table, $alias);
 
         return $builder;
     }
