@@ -67,7 +67,7 @@ class JoinCondition
             Operator::OR
         ];
 
-        if ( ! in_array($operator, $supportedOperators)) {
+        if ( ! in_array($operator, $supportedOperators, true)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported logical operator %s. Please provide one of the supported operators (%s)',
@@ -96,7 +96,7 @@ class JoinCondition
             '='
         ];
 
-        if (!in_array($operator, $supportedOperators)) {
+        if ( ! in_array($operator, $supportedOperators, true)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported comparison operator %s. Please provide one of the supported operators (%s)',
