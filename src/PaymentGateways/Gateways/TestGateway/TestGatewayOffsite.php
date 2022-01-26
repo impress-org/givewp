@@ -2,14 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-
-use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Call;
 use Give\Helpers\Form\Utils as FormUtils;
