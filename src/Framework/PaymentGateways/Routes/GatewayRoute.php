@@ -11,6 +11,9 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
 /**
  * @since 2.18.0
+ *
+ * // Todo validate donation id before processing gateway method
+ * // Todo match gateway id with donation payment gateway id processing gateway method
  */
 class GatewayRoute
 {
