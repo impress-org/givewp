@@ -111,8 +111,14 @@ class ListForms extends Endpoint
                 $goal = give_goal_progress_stats( $form->ID );
                 $goal['actual'] = html_entity_decode($goal['actual']);
                 $goal['goal'] = html_entity_decode($goal['goal']);
-                $goal['format'] == 'donation' ? $goal['format'] = ngettext('donation', 'donations', $goal['raw_goal']) : null;
-                $goal['format'] == 'donors' ? $goal['format'] = ngettext('donor', 'donors', $goal['raw_goal']) : null;
+                if($goal['format'] == 'donation')
+                {
+                    $goal['format'] = ngettext(__('donation', 'give'), __('donations', 'give'), $goal['raw_goal']);
+                }
+                elseif ($goal['format'] == 'donors')
+                {
+                    $goal['format'] = ngettext(__('donor', 'give'), __('donors', 'give'), $goal['raw_goal']);
+                }
                 $results[$index]->goal = $goal;
             }
             else
