@@ -5,6 +5,6 @@ namespace Give\Framework\PaymentGateways\Commands;
 /**
  * @unreleased
  */
-class PaymentFailed extends PaymentCommand
+class PaymentCancelled extends PaymentCommand
 {
 }
