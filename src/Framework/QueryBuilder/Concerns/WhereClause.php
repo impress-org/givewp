@@ -414,7 +414,7 @@ trait WhereClause
                     $where->logicalOperator,
                     $where->column,
                     $where->comparisonOperator,
-                    $where->value
+                    DB::esc_like($where->value)
                 );
 
             // Handle NULL conditions
