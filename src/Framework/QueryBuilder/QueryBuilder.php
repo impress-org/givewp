@@ -44,7 +44,12 @@ class QueryBuilder
             $this->getLimitSQL()
         );
 
-        return implode(' ', $sql);
+        // Trim triple doubles spaces added by DB::prepare
+        return str_replace(
+            ['   ', '  '],
+            ' ',
+            implode(' ', $sql)
+        );
     }
 
     /**
