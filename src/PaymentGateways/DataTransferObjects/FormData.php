@@ -8,7 +8,7 @@ use Give\ValueObjects\DonorInfo;
 
 /**
  * Class FormData
- * @unreleased
+ * @since 2.18.0
  */
 class FormData
 {
@@ -112,7 +112,7 @@ class FormData
     /**
      * Convert data from request into DTO
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return self
      */

@@ -1,0 +1,249 @@
+@use 'fn';
+
+.give-receipt-classic {
+    background: #fff;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+
+    @media screen and (min-width: $desktopMinWidth) {
+        border-radius: 0.5rem;
+    }
+
+    .give-receipt-title {
+        position: relative;
+        margin-block: 2rem;
+        font-size: 1.625rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+    }
+
+    .social-sharing {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 1.25rem;
+        background: #fbfbfb;
+        border-block: 0.0625rem solid #f2f2f2;
+        padding-block: fn.scaleBetween(1.5rem, 2.5rem);
+        padding-inline: 1.25rem;
+
+        .instruction {
+            line-height: 1.5;
+            grid-column: span 2;
+            font-size: 0.9375rem;
+            color: #555;
+            text-align: center;
+            max-inline-size: 60ch;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            column-gap: 1.75rem;
+            row-gap: 1rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            column-gap: 0.75em;
+            font-size: 1rem;
+            padding: 0.875em 1.6875em;
+            border: none;
+            transition: background-color 0.2s ease;
+
+            > i {
+                font-size: 1.375em;
+            }
+
+            &.facebook-btn {
+                background-color: #3b5998;
+
+                &:hover {
+                    background-color: #4668b1;
+                }
+            }
+
+            &.twitter-btn {
+                background-color: #00acee;
+
+                &:hover {
+                    background-color: #00b7ff;
+                }
+            }
+        }
+    }
+
+    .receipt-sections {
+        .details {
+            .headline {
+                color: #333333;
+                font-weight: 600;
+                font-size: 1.25rem;
+            }
+            .details-table {
+                display: flex;
+                flex-direction: column;
+
+                .details-row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: flex-start;
+                    column-gap: 0.625rem;
+                    row-gap: 0.5rem;
+                    font-size: 1.125rem;
+                    font-weight: 500;
+
+                    > i {
+                        align-self: center;
+                        color: #989898;
+                    }
+
+                    .detail {
+                        align-self: center;
+                        white-space: nowrap;
+                        color: #6b6b6b;
+                        margin-inline-end: auto;
+                    }
+
+                    .value {
+                        margin-inline-start: 0;
+                        white-space: pre-wrap;
+                    }
+                }
+
+                .details-row--paymentStatus .value {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 0.5rem;
+
+                    &::before {
+                        content: '';
+                        --diameter: 0.8125rem;
+                        block-size: var(--diameter);
+                        aspect-ratio: 1;
+                        // Until Safari 14 usage drops off
+                        @supports not (aspect-ratio: 1) {
+                            inline-size: var(--diameter);
+                        }
+                        flex-shrink: 0;
+                        background-color: var(--status-color, #ccc);
+                        clip-path: circle();
+                    }
+
+                    &[data-value='Complete'] {
+                        --status-color: #1fe433;
+                    }
+
+                    &[data-value='Pending'] {
+                        --status-color: #ffba00;
+                    }
+                }
+
+                .details-row--totalAmount {
+                    font-weight: 700;
+                }
+
+                &.payment-details {
+                    border-bottom: 0.125rem solid #f2f2f2;
+                }
+            }
+
+            .details-table:empty {
+                display: none !important;
+            }
+        }
+    }
+
+    .dashboard-link-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-block-start: 2rem;
+        padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
+        padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
+
+        .dashboard-link {
+            color: var(--give-primary-color);
+
+            > i {
+                margin-inline-start: 0.25rem;
+                transform: translateY(0.18em);
+                font-size: 1.5rem;
+                text-decoration: none;
+                line-height: 0.5;
+            }
+        }
+
+        .download-btn {
+            font-size: inherit;
+            padding-block: 0.75rem;
+            padding-inline: 1.6875rem;
+        }
+    }
+
+    #give-pdf-receipt-link,
+    #give-pdf-receipt-link:visited {
+        display: flex;
+        column-gap: 0.9375rem;
+        align-items: center;
+        text-decoration: none;
+        color: #fff;
+
+        &::after {
+            display: inline-block;
+            content: '\f1c1';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 1.625rem;
+            line-height: 1;
+        }
+    }
+}
+
+.give-receipt-classic {
+    .receipt-sections {
+        padding-block-start: fn.scaleBetween(2.375rem, 3rem);
+        padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
+    }
+
+    .details + .details {
+        margin-block-start: 2.375rem;
+    }
+
+    .headline {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+        padding-block-end: 1.25rem;
+
+        &::before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 0.875rem;
+        }
+    }
+
+    // Margins between rows
+
+    .headline,
+    .details-row {
+        border-block-end: 0.0625rem solid #f2f2f2;
+    }
+
+    .details-row {
+        padding-block: 0.9375rem;
+    }
+
+    // Donor Details
+    .details:nth-child(1) .headline::before {
+        content: '\f007';
+    }
+
+    // Donation Details
+    .details:nth-child(2) .headline::before {
+        content: '\f004';
+    }
+}

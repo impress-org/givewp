@@ -5,7 +5,7 @@ namespace Give\Subscriptions\Models;
 /**
  * Class Subscriber
  *
- * @unreleased
+ * @since 2.18.0
  */
 class Subscriber extends LegacySubscriber {
 

@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways\Actions;
 class GenerateGatewayRouteUrl
 {
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod

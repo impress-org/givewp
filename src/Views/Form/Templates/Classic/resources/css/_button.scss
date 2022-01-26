@@ -1,0 +1,19 @@
+.give-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border: 0.125rem solid var(--give-primary-color);
+    border-radius: 0.5rem;
+    background-color: var(--give-primary-color);
+    color: #fff;
+    text-align: center;
+    font-family: inherit;
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.2;
+
+    transition-property: background-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
+}

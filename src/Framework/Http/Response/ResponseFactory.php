@@ -6,7 +6,7 @@ use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class ResponseFactory
 {

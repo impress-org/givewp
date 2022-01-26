@@ -1,0 +1,213 @@
+@use 'fn';
+
+.give-donation-amount-section {
+    display: grid;
+    row-gap: fn.scaleBetween(1.5rem, 2rem);
+
+    & p.give-custom-amount-text {
+        display: none;
+    }
+}
+
+.give-amount-heading {
+    padding-block-end: 0.75rem;
+    border-block-end: 0.0625rem solid #ddd;
+    font-size: fn.scaleBetween(1.25rem, 1.5rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: #333;
+}
+
+.give-donation-amount {
+    display: flex;
+    align-items: center;
+    border: 0.125rem solid #424242;
+    border-radius: 0.5rem;
+    background-color: #fff;
+
+    &:focus-within {
+        border-color: var(--give-primary-color);
+    }
+
+    & .give-currency-symbol,
+    & .give-text-input {
+        border-radius: inherit;
+    }
+
+    & .give-currency-symbol {
+        display: block;
+        padding: fn.scaleBetween(1.375rem, 1.644rem);
+        color: #555;
+        font-size: 1.375rem;
+        font-weight: 500;
+    }
+
+    & .give-text-input {
+        inline-size: 100%;
+        padding-block: 0.275em;
+        padding-inline: 0.45em;
+        border: 0;
+        text-align: right;
+        font-family: inherit;
+        font-size: fn.scaleBetween(2.625rem, 3.125rem);
+        font-weight: 600;
+        line-height: 1.2;
+        color: #333;
+        outline: 0;
+    }
+}
+
+.give-amount-description {
+    line-height: 1.375;
+}
+
+.give-donation-levels-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(fn.scaleBetween(6.625rem, 10.375rem), 1fr));
+    grid-auto-rows: 1fr;
+    gap: fn.scaleBetween(0.3125rem, 1.875rem);
+    inline-size: 100%;
+    list-style: none;
+}
+
+.give-btn.give-donation-level-btn {
+    min-inline-size: -moz-available;
+    min-inline-size: -webkit-fill-available;
+    block-size: 100%;
+    font-size: fn.scaleBetween(1.5rem, 2.125rem);
+    padding-block: fn.scaleBetween(0.5rem, 1.6875rem);
+    padding-inline: 0.5rem;
+
+    transition-property: background-color, color, filter, box-shadow, transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
+
+    &:hover {
+        transform: scale(1.02);
+        filter: brightness(1.2);
+        box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
+    }
+
+    &.give-default-level {
+        background-color: #fff;
+        color: var(--give-primary-color);
+    }
+
+    &.give-btn-level-custom {
+        word-spacing: 9999px; // This forces a linebreak after each word.
+        font-size: fn.scaleBetween(1rem, 1.125rem);
+        line-height: 1.25;
+
+        @media screen and (min-width: $desktopMinWidth) {
+            font-weight: 400;
+        }
+    }
+
+    & .give-formatted-currency {
+        // This is already formatted for the currency and flexbox breaks it so
+        // we agressively set the direction.
+        direction: ltr;
+        display: flex;
+        column-gap: 0.15rem;
+        line-height: 1;
+
+        .give-currency-symbol-before,
+        .give-currency-symbol-after {
+            font-weight: 400;
+        }
+
+        .give-currency-symbol-before {
+            align-self: flex-start;
+            transform: translateY(0.2em);
+            font-size: 0.583em;
+
+            @media screen and (min-width: $desktopMinWidth) {
+                transform: translateY(0.4em);
+                font-size: 0.41em;
+            }
+        }
+
+        .give-currency-symbol-after {
+            align-self: center;
+            margin-block-start: 0.2em;
+            font-size: 0.8em;
+        }
+
+        .give-amount-formatted {
+            display: inline-flex;
+        }
+
+        .give-amount-without-decimals {
+            white-space: nowrap;
+        }
+
+        .give-amount-decimal {
+            font-size: 0.5em;
+            transform: translateY(0.2em);
+        }
+    }
+}
+
+.give-recurring-donors-choice,
+.give-fee-message-label,
+.give-currency-switcher-msg-wrap,
+.give-recurring-multi-level-message {
+    padding: 0.8125rem;
+    border: 0.1875rem solid #fff;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: #333;
+    font-size: fn.scaleBetween(1rem, 1.125rem);
+    line-height: 1.2;
+    box-shadow: 0 0 0.88em rgba(0, 0, 0, 0.1);
+    border: 0.1875rem solid transparent;
+    transition: border-color 200ms ease-in-out;
+}
+
+.checked-within {
+    border-color: var(--give-primary-color);
+}
+
+.give-recurring-donors-choice,
+.give-fee-message-label,
+.give-currency-switcher-msg-wrap {
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+}
+
+.give_fee_mode_checkbox,
+.give-recurring-period {
+    @include give-checkbox;
+}
+
+.give-recurring-donors-choice-period {
+    appearance: none;
+    display: inline;
+    overflow: visible; // for firefox’ sake!
+    inline-size: calc(var(--selected-text-width) + 1.25em);
+    padding-block-start: 0;
+    padding-block-end: 0.0625em;
+    padding-inline: 0;
+    border-block-start-width: 0;
+    border-block-end-width: 0.0625em;
+    border-inline-width: 0;
+    border-style: solid;
+    border-color: #333;
+    border-radius: 0;
+    box-shadow: none;
+    background-image: url("data:image/svg+xml;utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 8'><path d='M5.6602 7.1953c.246.2461.6562.2461.9023 0l5.332-5.3047c.2461-.2734.2461-.6836 0-.9297L11.2656.332c-.2461-.246-.6562-.246-.9297 0L6.125 4.543 1.8867.332C1.6133.086 1.2031.086.957.332L.3281.961c-.246.246-.246.6562 0 .9296l5.332 5.3047Z' fill='%23a2a3a2'/></svg>");
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right top 50%;
+    background-size: 0.65em auto;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    transition: border-color 200ms ease-in-out;
+
+    &:hover,
+    &:focus {
+        border-color: var(--give-primary-color);
+    }
+}

@@ -1,0 +1,330 @@
+@use 'fn';
+
+.give-payment-details-section {
+    & legend:first-of-type {
+        inline-size: 100%;
+        padding-block-end: 0.75rem;
+        margin-block-end: 1rem;
+        border-block-end: 0.0625rem solid #ddd;
+        font-size: fn.scaleBetween(1.25rem, 1.5rem);
+        font-weight: 500;
+        line-height: 1.3;
+        color: #333;
+    }
+}
+
+#give-gateway-radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+    margin-block-start: 2rem;
+    list-style: none;
+}
+
+$gatewayColor: #333;
+$gatewayBg: #fafafa;
+$gatewayBgSelected: #fff;
+$gatewayBorder: #ddd;
+$gatewayBorderSelected: #000;
+$gatewayFontSize: 1rem;
+
+#give-gateway-radio-list > li {
+    // Ideally, the input would be wrapped with the label, but even then we
+    // wouldn’t be able to add nice hover and focus styles for this. So, we are
+    // using absolute positioning to increase the hit area of the checkbox and
+    // then placing the pseudo-element checkbox styles, label, and gateway icon
+    // manually. Below are a few variables for tweaking the layout.
+
+    --tab-radio-diameter: 1.25rem;
+    --tab-radio-border-size: 0.0625rem;
+    --tab-block-padding: 1.375rem;
+    --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
+    --tab-inline-padding: 1.375rem;
+    --tab-transition: 0.2s ease-in-out;
+
+    position: relative;
+    padding-block-start: var(--tab-block-size);
+    background-color: #fafafa;
+
+    transition: background-color var(--tab-transition);
+
+    // Round corners on the container and...
+    border-radius: 0.25rem;
+
+    // ...for the input...
+    & > .give-gateway {
+        // Round all the corners...
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+
+        // Except when the give-gateway-details is present (it’s the third
+        // element), then reset the block-end corners.
+        &:nth-last-child(3) {
+            border-end-start-radius: 0;
+            border-end-end-radius: 0;
+        }
+    }
+
+    // Round the block-end corners of the input
+    & > .give-gateway-details {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+    }
+
+    // The input
+    & > .give-gateway {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
+        block-size: var(--tab-block-size);
+        inline-size: 100%;
+        margin: 0;
+        border: 0.0625rem solid #ddd;
+
+        appearance: none;
+
+        font-size: 1rem;
+        transition: border-color var(--tab-transition);
+
+        // Radio
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            inset-block: 0;
+            inset-inline-start: 0;
+            margin-block: auto;
+            block-size: var(--diameter);
+            inline-size: var(--diameter);
+            border-radius: 9999px;
+        }
+
+        // Radio outer circle
+        &::before {
+            --diameter: var(--tab-radio-diameter);
+            margin-inline-start: var(--tab-block-padding);
+            border: var(--tab-radio-border-size) solid #b4b9be;
+            box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.25);
+        }
+
+        // Radio inner circle
+        &::after {
+            --diameter: calc(var(--tab-radio-diameter) * 0.4);
+            // prettier-ignore
+            margin-inline-start: calc(
+                (var(--tab-radio-diameter) - var(--diameter)) / 2 + var(--tab-block-padding)
+            );
+            background-color: var(--give-primary-color);
+            opacity: 0;
+            transition: opacity var(--tab-transition);
+        }
+
+        // Label
+        & + .give-gateway-option {
+            --font-size: 1em;
+            --line-height: 1.25;
+            --block-size: calc(var(--font-size) * var(--line-height));
+            position: absolute;
+            inset-inline-start: calc(var(--tab-inline-padding) + var(--tab-radio-diameter) + 0.5rem);
+            inset-inline-end: var(--tab-inline-padding);
+            // Radio size minus this text block size; divided by two; plus the block padding
+            inset-block-start: calc((var(--tab-radio-diameter) - var(--block-size)) / 2 + var(--tab-block-padding));
+            font: bold var(--font-size) / var(--line-height) var(--give-primary-font);
+        }
+
+        &:checked::after {
+            opacity: 1;
+        }
+
+        &:focus,
+        &:hover {
+            border-color: var(--give-primary-color);
+        }
+
+        &:focus {
+            outline: 0;
+        }
+    }
+
+    // When selected
+    &.give-gateway-option-selected {
+        background-color: #fff;
+
+        & > .give-gateway:not(:focus, :hover) {
+            border-color: #000;
+        }
+
+        & .give-gateway-details {
+            border-color: #000;
+        }
+    }
+}
+
+.give-gateway-details {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(12, 1fr);
+    row-gap: 1rem;
+    inline-size: 100%;
+    border-block-start-width: 0;
+    border-inline: 0.0625rem solid #ddd;
+    border-block-end: 0.0625rem solid #ddd;
+    padding-block: 2rem;
+    padding-inline: 1.375rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+
+    > * {
+        grid-column: span 12;
+    }
+
+    > .give-ffm-form-row-half,
+    > .give-ffm-form-row-one-third,
+    > .give-ffm-form-row-two-third,
+    > .form-row-wide {
+        width: revert;
+        padding: revert;
+        float: revert;
+    }
+
+    > .give-ffm-form-row-one-third {
+        grid-column: span 4;
+    }
+
+    > .give-ffm-form-row-half {
+        grid-column: span 6;
+    }
+
+    > .give-ffm-form-row-two-third {
+        grid-column: span 8;
+    }
+
+    > .form-row-wide {
+        grid-column: span 12;
+    }
+
+    img {
+        max-inline-size: 100%;
+        block-size: auto;
+    }
+
+    a {
+        color: var(--give-primary-color);
+    }
+
+    > .no-fields {
+        p {
+            margin-inline: auto;
+            inline-size: min(28.75rem, 100%);
+
+            &:first-of-type {
+                margin-block-start: 1rem;
+            }
+
+            & + p {
+                margin-block-start: 0.5rem;
+            }
+        }
+
+        input {
+            font-family: inherit;
+        }
+    }
+
+    fieldset {
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1rem;
+
+        & > * {
+            grid-column: span 12;
+        }
+
+        @media screen and (min-width: $desktopMinWidth) {
+            > .form-row-responsive {
+                &.form-row-one-third {
+                    grid-column: span 4;
+                }
+                &.form-row-half {
+                    grid-column: span 6;
+                }
+                &.form-row-two-thirds {
+                    grid-column: span 8;
+                }
+            }
+        }
+    }
+}
+
+[name='payment-mode'] {
+    & + label::after {
+        position: absolute;
+        inset-inline-end: 0;
+        content: '\f4be';
+        color: #c1c1c1;
+        font-size: 1.5em;
+        block-size: 1em;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        transform: translateY(-0.15em);
+    }
+
+    // Tools icon
+    &[value='manual'] + label::after {
+        content: '\f7d9';
+    }
+
+    // Wallet icon
+    &[value='offline'] + label::after {
+        content: '\f555';
+    }
+
+    // Credit card icon
+    // prettier-ignore
+    &:where(
+        [value='stripe'],
+        [value='stripe_checkout'],
+        [value='authorize']
+    ) + label::after {
+        content: '\f09d';
+    }
+
+    // University icon
+    // prettier-ignore
+    &:where(
+        [value='stripe_sepa'],
+        [value='stripe_bces']
+    ) + label::after {
+        content: '\f19c';
+    }
+
+    // Brands
+    // prettier-ignore
+    &:where(
+        [value='paypal'],
+        [value='stripe_apple_pay'],
+        [value='stripe_google_pay']
+    ) + label::after {
+        font-family: 'Font Awesome 5 Brands';
+        font-weight: 100;
+    }
+
+    // PayPal icon
+    &[value='paypal'] + label::after {
+        content: '\f1ed';
+        font-size: 1.75em;
+    }
+
+    // Apply Pay icon
+    &[value='stripe_apple_pay'] + label::after {
+        content: '\f415';
+    }
+
+    // Google Pay icon
+    &[value='stripe_google_pay'] + label::after {
+        content: '\e079';
+    }
+}

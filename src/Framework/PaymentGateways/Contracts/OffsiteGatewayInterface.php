@@ -3,7 +3,8 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 
 interface OffsiteGatewayInterface
@@ -18,10 +19,10 @@ interface OffsiteGatewayInterface
     /**
      * Return from offsite redirect
      *
-     * @unreleased
+     * @since 2.18.0
      *
-     * @return GatewayCommand
+     * @return RedirectResponse|JsonResponse
      * @throws PaymentGatewayException|Exception
      */
-    public function returnFromOffsiteRedirect();
+    public function returnFromOffsiteRedirect($donationId);
 }

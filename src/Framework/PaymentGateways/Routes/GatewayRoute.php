@@ -10,12 +10,12 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class GatewayRoute
 {
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @return void
      * @throws PaymentGatewayException
@@ -61,7 +61,7 @@ class GatewayRoute
     /**
      * Check if the request is valid
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  array  $gatewayIds
      *
@@ -80,7 +80,7 @@ class GatewayRoute
     /**
      * Check if the listener is valid
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return bool
      */

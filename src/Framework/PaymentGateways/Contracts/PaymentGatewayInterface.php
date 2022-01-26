@@ -9,14 +9,14 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 interface PaymentGatewayInterface
 {
     /**
      * Return a unique identifier for the gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string
      */
@@ -25,7 +25,7 @@ interface PaymentGatewayInterface
     /**
      * Return a unique identifier for the gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string
      */
@@ -34,7 +34,7 @@ interface PaymentGatewayInterface
     /**
      * Returns a human-readable name for the gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string - Translated text
      */
@@ -43,7 +43,7 @@ interface PaymentGatewayInterface
     /**
      * Returns a human-readable label for use when a donor selects a payment method to use
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string - Translated text
      */
@@ -52,7 +52,7 @@ interface PaymentGatewayInterface
     /**
      * Determines if subscriptions are supported
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return bool
      */
@@ -61,7 +61,7 @@ interface PaymentGatewayInterface
     /**
      * Create a payment with gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayPaymentData  $paymentData
      *
@@ -74,7 +74,7 @@ interface PaymentGatewayInterface
     /**
      * Handle creating a payment with gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayPaymentData  $gatewayPaymentData
      * @return void
@@ -84,7 +84,7 @@ interface PaymentGatewayInterface
     /**
      * Create a subscription with gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayPaymentData  $paymentData
      * @param  GatewaySubscriptionData  $subscriptionData
@@ -98,7 +98,7 @@ interface PaymentGatewayInterface
     /**
      * Handle creating a subscription with gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GatewayPaymentData  $paymentData
      * @param  GatewaySubscriptionData  $subscriptionData
@@ -109,4 +109,16 @@ interface PaymentGatewayInterface
         GatewayPaymentData $paymentData,
         GatewaySubscriptionData $subscriptionData
     );
+
+    /**
+     * Handle gateway route method
+     *
+     * @since 2.18.0
+     *
+     * @param  int  $donationId
+     * @param  string  $method
+     *
+     * @return void
+     */
+    public function handleGatewayRouteMethod($donationId, $method);
 }

@@ -1,0 +1,105 @@
+@use 'fn';
+
+.give-donation-summary-section {
+    // Hide the heading
+    .heading {
+        display: none;
+    }
+
+    table {
+        inline-size: 100%;
+        border-collapse: collapse;
+        line-height: 1.2;
+    }
+
+    button {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: baseline;
+        column-gap: 0.25em;
+        appearance: none;
+        background: none;
+        border: 0;
+        padding: 0;
+        line-height: inherit;
+        text-align: start;
+        font-size: inherit;
+        font-family: inherit;
+        color: var(--give-primary-color);
+        cursor: pointer;
+        white-space: nowrap;
+
+        & svg path {
+            fill: var(--give-primary-color);
+        }
+    }
+
+    tr {
+        vertical-align: baseline;
+
+        // Selects th in thead and tfoot. Selects td in tbody.
+        > :first-of-type {
+            text-align: start;
+        }
+        > :last-of-type {
+            text-align: end;
+        }
+    }
+
+    // Colors (tobdy inherits)
+    thead,
+    tfoot {
+        color: #333;
+    }
+
+    // Borders
+    tbody tr,
+    tfoot {
+        border-block-start: 0.0625rem solid #ddd;
+    }
+
+    // Header specific
+    thead th {
+        padding-block-end: 1.25rem;
+
+        // Donation Summary title
+        &:first-of-type {
+            font-size: fn.scaleBetween(1.25rem, 1.5rem);
+            font-weight: 400;
+        }
+
+        .back-btn {
+            font-size: 0.875rem;
+        }
+    }
+
+    // Body specific
+    tbody td {
+        padding-block: 1.25rem;
+        font-size: fn.scaleBetween(1rem, 1.125rem);
+
+        &:last-of-type {
+            min-inline-size: 6rem;
+        }
+    }
+
+    // Footer specific
+    tfoot th {
+        padding-block-start: 1.75rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+    }
+
+    .give-donation-summary-help-text {
+        display: inline-flex;
+        column-gap: 0.25rem;
+        align-items: start;
+        margin-block-start: 0.5rem;
+        font-size: 0.875rem;
+        color: #8c8c8c;
+
+        > img {
+            transform: translateY(0.1em);
+        }
+    }
+}
