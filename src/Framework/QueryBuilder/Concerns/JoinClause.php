@@ -188,8 +188,8 @@ trait JoinClause
             $conditions = array_map(function (JoinCondition $condition) {
                 return DB::prepare(
                     $condition->quote
-                        ? '%1s %2s %3s %s'
-                        : '%1s %2s %3s %4s',
+                        ? ' %1s %2s %3s %s'
+                        : ' %1s %2s %3s %4s',
                     $condition->logicalOperator,
                     $condition->column1,
                     $condition->comparisonOperator,
@@ -200,7 +200,7 @@ trait JoinClause
             // Join table is using an alias
             if ($joinTable->alias) {
                 return DB::prepare(
-                        ' %1s JOIN %2s %3s ',
+                        '%1s JOIN %2s %3s',
                         $joinTable->joinType,
                         $joinTable->table,
                         $joinTable->alias
@@ -208,7 +208,7 @@ trait JoinClause
             }
 
             return DB::prepare(
-                    ' %1s JOIN %2s ',
+                    '%1s JOIN %2s',
                     $joinTable->joinType,
                     $joinTable->table
                 ) . implode(' ', $conditions);
