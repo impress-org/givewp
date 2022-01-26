@@ -290,6 +290,62 @@ trait WhereClause
     }
 
     /**
+     * @param  string  $column
+     *
+     * @return $this
+     */
+    public function whereIsNull($column)
+    {
+        return $this->where(
+            $column,
+            null,
+            Operator::ISNULL
+        );
+    }
+
+    /**
+     * @param  string  $column
+     *
+     * @return $this
+     */
+    public function orWhereIsNull($column)
+    {
+        return $this->orWhere(
+            $column,
+            null,
+            Operator::ISNULL
+        );
+    }
+
+    /**
+     * @param  string  $column
+     *
+     * @return $this
+     */
+    public function whereIsNotNull($column)
+    {
+        return $this->where(
+            $column,
+            null,
+            Operator::NOTNULL
+        );
+    }
+
+    /**
+     * @param  string  $column
+     *
+     * @return $this
+     */
+    public function orWhereIsNotNull($column)
+    {
+        return $this->orWhere(
+            $column,
+            null,
+            Operator::NOTNULL
+        );
+    }
+
+    /**
      * @return string[]
      */
     public function getWhereSQL()
@@ -370,7 +426,6 @@ trait WhereClause
                     $where->column,
                     $where->comparisonOperator
                 );
-
 
             // Standard WHERE clause
             default:
