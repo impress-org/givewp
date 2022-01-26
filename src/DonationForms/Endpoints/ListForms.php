@@ -31,14 +31,21 @@ class ListForms extends Endpoint
                     'page' => [
                         'type' => 'int',
                         'required' => false,
+                        'validate_callback' => [$this, 'validateInt'],
                     ],
                     'perPage' => [
                        'type' => 'int',
                         'required' => false,
+                       'validate_callback' => [$this, 'validateInt'],
                     ]
                 ],
             ]
         );
+    }
+
+    public function validateInt($param, $request, $key)
+    {
+        return is_numeric($param) && $param > 0;
     }
 
     public function handleRequest( WP_REST_Request $request )
@@ -70,8 +77,8 @@ class ListForms extends Endpoint
 
 
     protected function constructFormList( $parameters ) {
-        $per_page = (int)$parameters['perPage'] ?: 30;
-        $page = (int)$parameters['page'] ?: 1;
+        $per_page = $parameters['perPage'] ?: 30;
+        $page = $parameters['page'] ?: 1;
         $args = array(
                 'output'    => 'forms',
                 'post_type' => array( 'give_forms' ),
@@ -123,7 +130,7 @@ class ListForms extends Endpoint
         return (object) array(
             'forms' => $results,
             'total' => $form_query->found_posts,
-            'page' => $page,
+            'page' => (int)$page,
             'trash' => ! defined('EMPTY_TRASH_DAYS') || constant('EMPTY_TRASH_DAYS'),
         );
     }

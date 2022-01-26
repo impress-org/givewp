@@ -31,14 +31,17 @@ class DuplicateForms extends MutateForms
                     'page' => [
                         'type' => 'int',
                         'required' => false,
+                        'validate_callback' => [$this, 'validateInt'],
                     ],
                     'perPage' => [
                         'type' => 'int',
                         'required' => false,
+                        'validate_callback' => [$this, 'validateInt'],
                     ],
                     'ids' => [
                         'type' => 'string',
-                        'required' => true
+                        'required' => true,
+                        'validate_callback' => [$this, 'validateIDString'],
                     ]
                 ],
             ],

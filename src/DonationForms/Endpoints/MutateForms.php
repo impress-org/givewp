@@ -28,18 +28,33 @@ abstract class MutateForms extends ListForms
                     'page' => [
                         'type' => 'int',
                         'required' => false,
+                        'validate_callback' => [$this, 'validateInt'],
                     ],
                     'perPage' => [
                         'type' => 'int',
                         'required' => false,
+                        'validate_callback' => [$this, 'validateInt'],
                     ],
                     'ids' => [
                         'type' => 'string',
-                        'required' => true
+                        'required' => true,
+                        'validate_callback' => [$this, 'validateIDString'],
                     ]
                 ],
             ],
         );
+    }
+
+    public function validateIDString($param, $request, $key)
+    {
+        $param_array = explode(',', $param);
+        foreach($param_array as $id){
+            if(!$this->validateInt($id, $request, $key))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function handleRequest(WP_REST_Request $request)
@@ -60,13 +75,7 @@ abstract class MutateForms extends ListForms
         $successes = 0;
         $id_array = explode(',', $parameters['ids']);
         foreach($id_array as $id){
-            if( is_numeric($id) && $this->mutate( $id ) ) {
-                $successes++;
-            }
-            else
-            {
-                $errors++;
-            }
+            $this->mutate( $id ) ? $successes++ : $errors++;
         }
         return array( 'errors' => $errors, 'successes' => $successes );
     }
