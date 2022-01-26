@@ -1,9 +1,9 @@
 <?php
 
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\Types\JoinType;
 use PHPUnit\Framework\TestCase;
-use Give\Framework\QueryBuilder\QueryBuilder;
 
 final class QueryBuilderTest extends TestCase
 {
@@ -526,7 +526,7 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingCount('ID', '>', 10 );
+            ->havingCount('ID', '>', 10);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING COUNT( ID) > '10'",
@@ -544,7 +544,7 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingSum('post_count', '>', 1000 );
+            ->havingSum('post_count', '>', 1000);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING SUM(post_count) > '1000'",
@@ -562,8 +562,8 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingSum('post_count', '>', 1000 )
-            ->havingSum('post_count', '<', 5000 );
+            ->havingSum('post_count', '>', 1000)
+            ->havingSum('post_count', '<', 5000);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING SUM(post_count) > '1000' AND SUM(post_count) < '5000'",
@@ -581,8 +581,8 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingSum('post_count', '>', 1000 )
-            ->orHavingSum('post_count', '<', 100 );
+            ->havingSum('post_count', '>', 1000)
+            ->orHavingSum('post_count', '<', 100);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING SUM(post_count) > '1000' OR SUM(post_count) < '100'",
@@ -600,7 +600,7 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingMin('post_count', '>', 1000 );
+            ->havingMin('post_count', '>', 1000);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MIN(post_count) > '1000'",
@@ -618,8 +618,8 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingMin('post_count', '>', 1000 )
-            ->orHavingMin('post_count', '<', 100 ); // Doesn't make sense, but hey...
+            ->havingMin('post_count', '>', 1000)
+            ->orHavingMin('post_count', '<', 100); // Doesn't make sense, but hey...
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MIN(post_count) > '1000' OR MIN(post_count) < '100'",
@@ -637,7 +637,7 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingMax('post_count', '>', 1000 );
+            ->havingMax('post_count', '>', 1000);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MAX(post_count) > '1000'",
@@ -655,8 +655,8 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingMax('post_count', '>', 1000 )
-            ->orHavingMax('post_count', '<', 100 );
+            ->havingMax('post_count', '>', 1000)
+            ->orHavingMax('post_count', '<', 100);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MAX(post_count) > '1000' OR MAX(post_count) < '100'",
@@ -674,7 +674,7 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingAvg('post_count', '>', 1000 );
+            ->havingAvg('post_count', '>', 1000);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING AVG(post_count) > '1000'",
@@ -692,8 +692,8 @@ final class QueryBuilderTest extends TestCase
             ->from('posts')
             ->where('post_parent', 5)
             ->groupBy('ID')
-            ->havingAvg('post_count', '<', 1000 )
-            ->orHavingAvg('post_count', '>', 10000 );
+            ->havingAvg('post_count', '<', 1000)
+            ->orHavingAvg('post_count', '>', 10000);
 
         $this->assertContains(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING AVG(post_count) < '1000' OR AVG(post_count) > '10000'",
@@ -775,7 +775,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
 
         $builder
-            ->from( 'wp_posts', 'posts')
+            ->from('wp_posts', 'posts')
             ->select(
                 ['posts.ID', 'id'],
                 ['posts.post_date', 'createdAt']
