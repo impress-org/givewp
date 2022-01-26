@@ -96,16 +96,16 @@ class JoinCondition
             '='
         ];
 
-        if (in_array($operator, $supportedOperators)) {
-            return $operator;
+        if (!in_array($operator, $supportedOperators)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Unsupported comparison operator %s. Please provide one of the supported operators (%s)',
+                    $operator,
+                    implode(',', $supportedOperators)
+                )
+            );
         }
 
-        throw new InvalidArgumentException(
-            sprintf(
-                'Unsupported comparison operator %s. Please provide one of the supported operators (%s)',
-                $operator,
-                implode(',', $supportedOperators)
-            )
-        );
+        return $operator;
     }
 }
