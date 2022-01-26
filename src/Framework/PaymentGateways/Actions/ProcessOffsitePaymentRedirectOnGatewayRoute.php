@@ -5,11 +5,15 @@ namespace Give\Framework\PaymentGateways\Actions;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentAbandonedHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentCancelledHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentFailedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
+use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentFailed;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsiteFailedPayment;
@@ -72,6 +76,20 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
                 );
             }
 
+            if ($command instanceof PaymentFailed) {
+                PaymentFailedHandler::make($command)->handle($donationId);
+                $this->paymentGateway->handleResponse(
+                    response()->redirectTo($this->getFailedPageUrl($donationId))
+                );
+            }
+
+            if ($command instanceof PaymentCancelled) {
+                PaymentCancelledHandler::make($command)->handle($donationId);
+                $this->paymentGateway->handleResponse(
+                    response()->redirectTo($this->getFailedPageUrl($donationId))
+                );
+            }
+
             if ($command instanceof PaymentAbandoned) {
                 PaymentAbandonedHandler::make($command)->handle($donationId);
             }
@@ -104,7 +122,7 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
      */
     private function getSuccessPageUrl($donationId)
     {
-        return Gateway::isOffsitePaymentGateway( $this->paymentGateway ) ?
+        return Gateway::isOffsitePaymentGateway($this->paymentGateway) ?
             (new RedirectOffsiteSuccessPayment($donationId))
                 ->getUrl((new DonationAccessor())->get()->currentUrl) :
             give_get_success_page_uri();
@@ -119,7 +137,7 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
      */
     private function getFailedPageUrl($donationId)
     {
-        return Gateway::isOffsitePaymentGateway( $this->paymentGateway ) ?
+        return Gateway::isOffsitePaymentGateway($this->paymentGateway) ?
             (new RedirectOffsiteFailedPayment($donationId))
                 ->getUrl((new DonationAccessor())->get()->currentUrl) :
             give_get_failed_transaction_uri();
