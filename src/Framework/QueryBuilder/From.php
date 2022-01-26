@@ -23,7 +23,7 @@ class From
      */
     public function __construct($table, $alias = null)
     {
-        $this->table = $table;
-        $this->alias = $alias;
+        $this->table = trim($table);
+        $this->alias = trim($alias);
     }
 }

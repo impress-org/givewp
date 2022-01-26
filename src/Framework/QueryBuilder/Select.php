@@ -23,7 +23,7 @@ class Select
      */
     public function __construct($column, $alias = null)
     {
-        $this->column = $column;
-        $this->alias  = $alias;
+        $this->column = trim($column);
+        $this->alias  = trim($alias);
     }
 }

@@ -40,10 +40,10 @@ class Join
      */
     public function __construct($table, $joinType, $condition, $alias = null)
     {
-        $this->table      = $table;
+        $this->table      = trim($table);
         $this->joinType   = $this->getJoinType($joinType);
         $this->conditions = $this->getJoinConditions($condition);
-        $this->alias      = $alias;
+        $this->alias      = trim($alias);
     }
 
     /**

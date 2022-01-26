@@ -46,9 +46,9 @@ class JoinCondition
     public function __construct($logicalOperator, $column1, $comparisonOperator, $column2, $quote = false)
     {
         $this->logicalOperator    = $this->getLogicalOperator($logicalOperator);
-        $this->column1            = $column1;
+        $this->column1            = trim($column1);
         $this->comparisonOperator = $this->getComparisonOperator($comparisonOperator);
-        $this->column2            = $column2;
+        $this->column2            = trim($column2);
         $this->quote              = $quote;
     }
 

@@ -43,7 +43,7 @@ class Where
      */
     public function __construct($column, $value, $comparisonOperator, $logicalOperator)
     {
-        $this->column             = $column;
+        $this->column             = trim($column);
         $this->value              = $value;
         $this->comparisonOperator = $this->getComparisonOperator($comparisonOperator);
         $this->logicalOperator    = $logicalOperator ? $this->getLogicalOperator($logicalOperator) : '';
@@ -64,6 +64,7 @@ class Where
             '<>',
             '=',
             Operator::LIKE,
+            Operator::NOTLIKE,
             Operator::IN,
             Operator::NOTIN,
             Operator::BETWEEN,

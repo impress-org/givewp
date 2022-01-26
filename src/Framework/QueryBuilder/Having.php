@@ -45,7 +45,7 @@ class Having
      */
     public function __construct($column, $comparisonOperator, $value, $logicalOperator, $mathFunction = null)
     {
-        $this->column             = $column;
+        $this->column             = trim($column);
         $this->comparisonOperator = $this->getComparisonOperator($comparisonOperator);
         $this->value              = $value;
         $this->logicalOperator    = $logicalOperator ? $this->getLogicalOperator($logicalOperator) : '';

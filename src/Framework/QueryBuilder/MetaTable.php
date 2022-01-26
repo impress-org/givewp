@@ -29,8 +29,8 @@ class MetaTable
      */
     public function __construct($table, $metaKeyColumnName, $metaValueColumnName)
     {
-        $this->tableName       = $table;
-        $this->keyColumnName   = $metaKeyColumnName;
-        $this->valueColumnName = $metaValueColumnName;
+        $this->tableName       = trim($table);
+        $this->keyColumnName   = trim($metaKeyColumnName);
+        $this->valueColumnName = trim($metaValueColumnName);
     }
 }
