@@ -68,6 +68,8 @@ class Where
             Operator::NOTIN,
             Operator::BETWEEN,
             Operator::NOTBETWEEN,
+            Operator::ISNULL,
+            Operator::NOTNULL
         ];
 
         if (!in_array($comparisonOperator, $operators, true)) {
@@ -79,7 +81,7 @@ class Where
                 )
             );
         }
-        
+
         return $comparisonOperator;
     }
 
