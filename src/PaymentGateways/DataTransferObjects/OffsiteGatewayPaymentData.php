@@ -39,27 +39,36 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
         $self = parent::fromArray($array);
 
         // Gateway route for successful payment.
-        $self->redirectUrl = Call::invoke(
-            GenerateGatewayRouteUrl::class,
-            $self->gatewayId,
-            'returnSuccessFromOffsiteRedirect',
-            $self->donationId
+        $self->redirectUrl = wp_nonce_url(
+            Call::invoke(
+                GenerateGatewayRouteUrl::class,
+                $self->gatewayId,
+                'returnSuccessFromOffsiteRedirect',
+                $self->donationId
+            ),
+            "returnSuccessFromOffsiteRedirect-$self->donationId"
         );
 
         // Gateway route for failed payment.
-        $self->failedRedirectUrl = Call::invoke(
-            GenerateGatewayRouteUrl::class,
-            $self->gatewayId,
-            'returnFailureFromOffsiteRedirect',
-            $self->donationId
+        $self->failedRedirectUrl = wp_nonce_url(
+            Call::invoke(
+                GenerateGatewayRouteUrl::class,
+                $self->gatewayId,
+                'returnFailureFromOffsiteRedirect',
+                $self->donationId
+            ),
+            "returnFailureFromOffsiteRedirect-$self->donationId"
         );
 
         // Gateway route for cancelled payment.
-        $self->cancelledRedirectUrl = Call::invoke(
-            GenerateGatewayRouteUrl::class,
-            $self->gatewayId,
-            'returnCancelFromOffsiteRedirect',
-            $self->donationId
+        $self->cancelledRedirectUrl = wp_nonce_url(
+            Call::invoke(
+                GenerateGatewayRouteUrl::class,
+                $self->gatewayId,
+                'returnCancelFromOffsiteRedirect',
+                $self->donationId
+            ),
+            "returnFailureFromOffsiteRedirect-$self->donationId"
         );
 
         return $self;
