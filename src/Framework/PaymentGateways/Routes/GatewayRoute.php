@@ -53,8 +53,23 @@ class GatewayRoute
                 throw new PaymentGatewayException('The gateway method does not exist.');
             }
 
-            ( new PaymentGatewayRoute( $gateway ))
-                ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
+            /**
+             * Gateway route can be used for:
+             * 1. Webhooks
+             * 2. Offsite payment gateway redirect
+             *
+             * Webhooks controller mostly need to return http status 200 or other, so no need to involve core logic.
+             * Payment gateway can handle it.
+             *
+             * Offsite payment gateway redirect further need redirect to success or failed or cancelled donation page.
+             * For this reason we need core to involve to handle redirect.
+             */
+            if( in_array( $data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods ) ) {
+                ( new PaymentGatewayRoute( $gateway ))
+                    ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
+            } else{
+                $gateway->handleGatewayRouteMethod( $data->donationId, $data->gatewayMethod );
+            }
         }
     }
 
