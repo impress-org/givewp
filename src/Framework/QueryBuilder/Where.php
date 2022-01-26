@@ -70,17 +70,17 @@ class Where
             Operator::NOTBETWEEN,
         ];
 
-        if (in_array($comparisonOperator, $operators)) {
-            return $comparisonOperator;
+        if (!in_array($comparisonOperator, $operators, true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Unsupported comparison operator %s. Please use one of the supported operators (%s)',
+                    $comparisonOperator,
+                    implode(',', $operators)
+                )
+            );
         }
-
-        throw new InvalidArgumentException(
-            sprintf(
-                'Unsupported comparison operator %s. Please use one of the supported operators (%s)',
-                $comparisonOperator,
-                implode(',', $operators)
-            )
-        );
+        
+        return $comparisonOperator;
     }
 
     /**
