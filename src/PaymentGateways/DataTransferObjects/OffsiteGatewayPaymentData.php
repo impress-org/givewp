@@ -11,9 +11,20 @@ use Give\Helpers\Call;
 class OffsiteGatewayPaymentData extends GatewayPaymentData
 {
     /**
-     * @var mixed|string|void
+     * Redirect url for failed payment.
+     *
+     * @unreleased
+     * @var string
      */
     public $failedRedirectUrl;
+
+    /**
+     * Redirect url for cancelled payment.
+     *
+     * @unreleased
+     * @var string
+     */
+    public $cancelledRedirectUrl;
 
     /**
      * @inerhitDoc
@@ -35,11 +46,19 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
             $self->donationId
         );
 
-        // Gateway route for failure payment.
+        // Gateway route for failed payment.
         $self->failedRedirectUrl = Call::invoke(
             GenerateGatewayRouteUrl::class,
             $self->gatewayId,
             'returnFailureFromOffsiteRedirect',
+            $self->donationId
+        );
+
+        // Gateway route for cancelled payment.
+        $self->cancelledRedirectUrl = Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $self->gatewayId,
+            'returnCancelFromOffsiteRedirect',
             $self->donationId
         );
 
