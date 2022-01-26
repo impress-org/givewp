@@ -28,11 +28,14 @@ class GatewayRoute
             $paymentGateways = $paymentGatewaysRegister->getPaymentGateways();
             $gatewayIds = array_keys($paymentGateways);
 
-            if (!$this->isValidRequest($gatewayIds)) {
+            if ( ! $this->isValidRequest($gatewayIds)) {
                 throw new PaymentGatewayException('This route is not valid.');
             }
 
             $data = GatewayRouteData::fromRequest($_GET);
+            if ($this->hasNonce($data) && ! $this->hasValidNonce($data)) {
+                throw new PaymentGatewayException('This route does not have valid nonce.');
+            }
 
             /** @var PaymentGateway $gateway */
             $gateway = give($paymentGateways[$data->gatewayId]);
@@ -47,8 +50,8 @@ class GatewayRoute
             }
 
             if (
-                !in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
-                !method_exists($gateway, $data->gatewayMethod)
+                ! in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
+                ! method_exists($gateway, $data->gatewayMethod)
             ) {
                 throw new PaymentGatewayException('The gateway method does not exist.');
             }
@@ -64,11 +67,11 @@ class GatewayRoute
              * Offsite payment gateway redirect further need redirect to success or failed or cancelled donation page.
              * For this reason we need core to involve to handle redirect.
              */
-            if( in_array( $data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods ) ) {
-                ( new ProcessOffsitePaymentRedirectOnGatewayRoute( $gateway ))
+            if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods)) {
+                (new ProcessOffsitePaymentRedirectOnGatewayRoute($gateway))
                     ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
-            } else{
-                $gateway->handleGatewayRouteMethod( $data->donationId, $data->gatewayMethod );
+            } else {
+                $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
             }
         }
     }
@@ -78,7 +81,7 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @param  array  $gatewayIds
+     * @param array $gatewayIds
      *
      * @return bool
      * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
@@ -102,5 +105,33 @@ class GatewayRoute
     private function isValidListener()
     {
         return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-gateway';
+    }
+
+    /**
+     * Returns whther url has nonce.
+     *
+     * @unreleased
+     *
+     * @param GatewayRouteData $data
+     *
+     * @return bool
+     */
+    private function hasNonce(GatewayRouteData $data)
+    {
+        return ! empty($data->nonce);
+    }
+
+    /**
+     * Returns whether nonce is valid.
+     *
+     * @unreleased
+     *
+     * @since 2.18.0
+     *
+     * @return bool
+     */
+    private function hasValidNonce(GatewayRouteData $data)
+    {
+        return wp_verify_nonce($data->nonce, "$data->gatewayMethod-$data->donationId");
     }
 }
