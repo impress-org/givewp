@@ -38,6 +38,8 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
         /* @var OffsiteGatewayPaymentData $self */
         $self = parent::fromArray($array);
 
+        $nonceName = 'nonce';
+
         // Gateway route for successful payment.
         $self->redirectUrl = wp_nonce_url(
             Call::invoke(
@@ -46,7 +48,8 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
                 'returnSuccessFromOffsiteRedirect',
                 $self->donationId
             ),
-            "returnSuccessFromOffsiteRedirect-$self->donationId"
+            "returnSuccessFromOffsiteRedirect-$self->donationId",
+            $nonceName
         );
 
         // Gateway route for failed payment.
@@ -57,7 +60,8 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
                 'returnFailureFromOffsiteRedirect',
                 $self->donationId
             ),
-            "returnFailureFromOffsiteRedirect-$self->donationId"
+            "returnFailureFromOffsiteRedirect-$self->donationId",
+            $nonceName
         );
 
         // Gateway route for cancelled payment.
@@ -68,7 +72,8 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
                 'returnCancelFromOffsiteRedirect',
                 $self->donationId
             ),
-            "returnFailureFromOffsiteRedirect-$self->donationId"
+            "returnFailureFromOffsiteRedirect-$self->donationId",
+            $nonceName
         );
 
         return $self;
