@@ -2,7 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
-use Give\Framework\PaymentGateways\Actions\PaymentGatewayRoute;
+use Give\Framework\PaymentGateways\Actions\ProcessOffsitePaymentRedirectOnGatewayRoute;
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -65,7 +65,7 @@ class GatewayRoute
              * For this reason we need core to involve to handle redirect.
              */
             if( in_array( $data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods ) ) {
-                ( new PaymentGatewayRoute( $gateway ))
+                ( new ProcessOffsitePaymentRedirectOnGatewayRoute( $gateway ))
                     ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
             } else{
                 $gateway->handleGatewayRouteMethod( $data->donationId, $data->gatewayMethod );

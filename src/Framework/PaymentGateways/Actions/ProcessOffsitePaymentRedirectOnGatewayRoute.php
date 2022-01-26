@@ -27,7 +27,7 @@ use function Give\Framework\Http\Response\response;
  *
  * @unreleased
  */
-class PaymentGatewayRoute
+class ProcessOffsitePaymentRedirectOnGatewayRoute
 {
     /**
      * @var PaymentGateway
