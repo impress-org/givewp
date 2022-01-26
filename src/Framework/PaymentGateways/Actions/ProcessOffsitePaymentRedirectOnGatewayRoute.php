@@ -15,9 +15,9 @@ use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsiteFailedPayment;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsiteSuccessPayment;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\Helpers\Gateway;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Session\SessionDonation\DonationAccessor;
 
 use function Give\Framework\Http\Response\response;
@@ -40,18 +40,6 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
     public function __construct(PaymentGateway $paymentGateway)
     {
         $this->paymentGateway = $paymentGateway;
-    }
-
-    /**
-     * Return whether payment gateway is offsite type.
-     *
-     * @unreleased
-     *
-     * @return bool
-     */
-    private function isOffsitePaymentGateway()
-    {
-        return $this->paymentGateway instanceof OffSitePaymentGateway;
     }
 
     /**
@@ -116,7 +104,7 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
      */
     private function getSuccessPageUrl($donationId)
     {
-        return $this->isOffsitePaymentGateway() ?
+        return Gateway::isOffsitePaymentGateway( $this->paymentGateway ) ?
             (new RedirectOffsiteSuccessPayment($donationId))
                 ->getUrl((new DonationAccessor())->get()->currentUrl) :
             give_get_success_page_uri();
@@ -131,7 +119,7 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
      */
     private function getFailedPageUrl($donationId)
     {
-        return $this->isOffsitePaymentGateway() ?
+        return Gateway::isOffsitePaymentGateway( $this->paymentGateway ) ?
             (new RedirectOffsiteFailedPayment($donationId))
                 ->getUrl((new DonationAccessor())->get()->currentUrl) :
             give_get_failed_transaction_uri();

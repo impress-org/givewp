@@ -3,7 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\Framework\PaymentGateways\Helpers\Gateway;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
@@ -50,7 +50,7 @@ class LegacyPaymentGatewayAdapter
 
         $donationId = $this->createPayment($formData->toGiveInsertPaymentData());
 
-        $gatewayPaymentData = $registeredGateway instanceof OffSitePaymentGateway ?
+        $gatewayPaymentData = Gateway::isOffsitePaymentGateway( $registeredGateway ) ?
             $formData->toOffsiteGatewayPaymentData($donationId):
             $formData->toGatewayPaymentData($donationId);
 
