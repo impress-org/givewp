@@ -13,16 +13,38 @@ interface OffsiteGatewayInterface
      * @var string[]
      */
     const defaultRouteMethods = [
-        'returnFromOffsiteRedirect'
+        'returnSuccessFromOffsiteRedirect',
+        'returnFailureFromOffsiteRedirect',
+        'returnCancelFromOffsiteRedirect'
     ];
 
     /**
-     * Return from offsite redirect
+     * Return from offsite redirect when payment completed successfully
      *
-     * @since 2.18.0
+     * @unreleased
      *
      * @return RedirectResponse|JsonResponse
      * @throws PaymentGatewayException|Exception
      */
-    public function returnFromOffsiteRedirect($donationId);
+    public function returnSuccessFromOffsiteRedirect($donationId);
+
+    /**
+     * Return from offsite redirect when payment failed
+     *
+     * @unreleased
+     *
+     * @return RedirectResponse|JsonResponse
+     * @throws PaymentGatewayException|Exception
+     */
+    public function returnFailureFromOffsiteRedirect($donationId);
+
+    /**
+     * Return from offsite redirect when payment cancelled/denied by donor
+     *
+     * @unreleased
+     *
+     * @return RedirectResponse|JsonResponse
+     * @throws PaymentGatewayException|Exception
+     */
+    public function returnCancelFromOffsiteRedirect($donationId);
 }
