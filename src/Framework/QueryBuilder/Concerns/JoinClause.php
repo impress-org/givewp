@@ -107,7 +107,7 @@ trait JoinClause
     /**
      * Add JoinCondition using Query Builder
      *
-     * @note this is a special helper method for building complex JOIN queries. Check README.md for more info.
+     * @internal this is a special helper method for building complex JOIN queries. Check README.md for more info.
      *
      * @param  string  $column1
      * @param  string  $comparisonOperator
@@ -132,7 +132,7 @@ trait JoinClause
     /**
      * Add JoinCondition using Query Builder
      *
-     * @note this is a special helper method for building complex JOIN queries. Check README.md for more info.
+     * @internal this is a special helper method for building complex JOIN queries. Check README.md for more info.
      *
      * @param  string  $column1
      * @param  string  $comparisonOperator
@@ -157,7 +157,7 @@ trait JoinClause
     /**
      * Add JoinCondition using Query Builder
      *
-     * @note this is a special helper method for building complex JOIN queries. Check README.md for more info.
+     * @internal this is a special helper method for building complex JOIN queries. Check README.md for more info.
      *
      * @param  string  $column1
      * @param  string  $comparisonOperator
@@ -216,6 +216,8 @@ trait JoinClause
     }
 
     /**
+     * @internal This method is only used internally by the QueryBuilder, and it is not meant to be used when building queries
+     *
      * @return Join[]
      */
     public function getDefinedJoins()
