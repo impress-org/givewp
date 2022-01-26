@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\Http\Response\Types\JsonResponse;
@@ -98,15 +99,17 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     }
 
     /**
+     * Handle failed donation redirect.
+     *
      * @unreleased
      *
      * @param int $donationId
      *
-     * @return void
+     * @return PaymentCommand
      */
     public function returnFailureFromOffsiteRedirect($donationId)
     {
-        // TODO: return failed payment command
+        return new PaymentCancelled($donationId);
     }
 
     /**
@@ -124,7 +127,8 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     /**
      * An example gateway method for extending the Gateway API for a given gateway.
      *
-     * @param  int  $donationId
+     * @param int $donationId
+     *
      * @return JsonResponse
      */
     public function testGatewayMethod($donationId)
@@ -138,6 +142,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      * Helper for updating donation
      *
      * @param $donationId
+     *
      * @return void
      */
     private function updateDonation($donationId)
@@ -147,8 +152,15 @@ class TestGatewayOffsite extends OffSitePaymentGateway
         give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
     }
 
+    /**
+     * Handle cancelled donation redirect.
+     *
+     * @param int $donationId
+     *
+     * @return PaymentCancelled
+     */
     public function returnCancelFromOffsiteRedirect($donationId)
     {
-        // TODO: Implement returnCancelFromOffsiteRedirect() method.
+        return new PaymentCancelled($donationId);
     }
 }
