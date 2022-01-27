@@ -4,9 +4,11 @@ namespace Give\Framework\QueryBuilder\Concerns;
 
 use Closure;
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\Models\Where;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\Types\Operator;
-use Give\Framework\QueryBuilder\Models\Where;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
+
 
 /**
  * @unreleased
@@ -20,8 +22,8 @@ trait WhereClause
     protected $wheres = [];
 
     /**
-     * @param  string|Closure  $column
-     * @param  string|Closure|array|null  $value
+     * @param  string|Closure  $column  The Closure will receive a Give\Framework\QueryBuilder\WhereQueryBuilder instance
+     * @param  string|Closure|array|null  $value  The Closure will receive a Give\Framework\QueryBuilder\QueryBuilder instance
      * @param  string  $comparisonOperator
      * @param  string  $logicalOperator
      *
@@ -32,12 +34,12 @@ trait WhereClause
         // If the columns is a Closure instance, we will assume the developer
         // wants to begin a nested where statement which is wrapped in parentheses.
         if ($column instanceof Closure && is_null($value)) {
-            $builder = new QueryBuilder();
+            $builder = new WhereQueryBuilder();
             call_user_func($column, $builder);
 
             // Since this is a nested where statement, we have to remove the starting WHERE keyword
             // which is the first returned array element from the getWhereSQL method
-            $wheres = $builder->getWhereSQL();
+            $wheres = $builder->getSQL();
             array_shift($wheres);
 
             $this->wheres[] = sprintf(
@@ -71,8 +73,8 @@ trait WhereClause
     }
 
     /**
-     * @param  string|Closure  $column
-     * @param  string|Closure|array|null  $value
+     * @param  string|Closure  $column  The closure will receive a Give\Framework\QueryBuilder\WhereQueryBuilder instance
+     * @param  string|Closure|array|null  $value  The closure will receive a Give\Framework\QueryBuilder\QueryBuilder instance
      * @param  string  $comparisonOperator
      *
      * @return $this
