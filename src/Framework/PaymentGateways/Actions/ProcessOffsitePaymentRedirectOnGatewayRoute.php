@@ -56,7 +56,6 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
      * @unreleased
      *
      * @return void
-     * TODO: create and handle failed payment command handler
      */
     public function handleGatewayRouteMethod($donationId, $method)
     {
