@@ -11,7 +11,7 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator
 {
@@ -20,7 +20,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Gateways
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return array
      */
@@ -32,7 +32,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Offsite Gateways
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return array
      */
@@ -46,7 +46,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $id
      *
@@ -62,7 +62,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     }
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $id
      *
@@ -76,7 +76,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Register Gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayClass
      *
@@ -110,7 +110,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Unregister Gateway
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param $gatewayId
      */
@@ -126,7 +126,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      * Register Gateway with Service Container as Singleton
      * with option of adding Subscription Module through filter "give_gateway_{$gatewayId}_subscription_module"
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayClass
      * @param  string  $gatewayId

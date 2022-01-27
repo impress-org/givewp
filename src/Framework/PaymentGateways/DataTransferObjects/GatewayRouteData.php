@@ -4,7 +4,7 @@ namespace Give\Framework\PaymentGateways\DataTransferObjects;
 
 /**
  * Class GatewayRouteData
- * @unreleased
+ * @since 2.18.0
  */
 class GatewayRouteData
 {
@@ -20,11 +20,16 @@ class GatewayRouteData
      * @var int
      */
     public $donationId;
+    /**
+     * WordPress's nonce.
+     * @var int
+     */
+    public $nonce;
 
     /**
      * Convert data from request into DTO
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return self
      */
@@ -35,6 +40,7 @@ class GatewayRouteData
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
         $self->donationId = (int)$request['give-donation-id'];
+        $self->nonce = $request['_wpnonce'];
 
         return $self;
     }

@@ -1,0 +1,35 @@
+@use 'fn';
+
+$ffm-space-fix: calc(fn.scaleBetween(1.75rem, 3.375rem) - fn.scaleBetween(1.5rem, 2rem));
+
+.give-repeater-table {
+    inline-size: 100%;
+}
+
+.give-section-break {
+    padding-block-end: 0.75rem;
+    border-block-end: 0.0625rem solid #ddd;
+    font-size: fn.scaleBetween(1.25rem, 1.5rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: #333;
+}
+
+.ffm-field-container + :not(.ffm-field-container) {
+    margin-block-start: $ffm-space-fix;
+}
+
+#give_checkout_user_info ~ .ffm-field-container,
+.give-total-wrap ~ .ffm-field-container,
+#give-payment-mode-select ~ .ffm-field-container {
+    margin-block-start: $ffm-space-fix;
+    align-self: end;
+
+    & ~ .ffm-field-container {
+        margin-block-start: 0;
+    }
+}
+form[id*=give-form] .ffm-field-container {
+    width: 100%;
+    flex-basis: 100%;
+}

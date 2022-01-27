@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Commands;
 
 /***
- * @unreleased
+ * @since 2.18.0
  */
 class RespondToBrowser implements GatewayCommand {
     /**
@@ -13,7 +13,7 @@ class RespondToBrowser implements GatewayCommand {
     public $data;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  array  $data
      */

@@ -1,0 +1,14 @@
+[data-field-type='checkbox'],
+[data-field-type='radio'] {
+    fieldset {
+        display: grid;
+        row-gap: 0.75rem;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+        padding: 0;
+    }
+}

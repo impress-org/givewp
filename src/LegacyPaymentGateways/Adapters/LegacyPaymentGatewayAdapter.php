@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Helpers\Gateway;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
@@ -11,7 +12,7 @@ use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
  * Class LegacyPaymentGatewayAdapter
- * @unreleased
+ * @since 2.18.0
  */
 class LegacyPaymentGatewayAdapter
 {
@@ -19,7 +20,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Get legacy form field markup to display gateway specific payment fields
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $formId
      * @param  PaymentGatewayInterface  $registeredGateway
@@ -34,7 +35,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased
+     * @since 2.18.0
      * @unreleased Replace is_recurring with is_donation_recurring to detect recurring donations.
      *
      * @param  array  $legacyDonationData  Legacy Donation Data
@@ -50,7 +51,9 @@ class LegacyPaymentGatewayAdapter
 
         $donationId = $this->createPayment($formData->toGiveInsertPaymentData());
 
-        $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
+        $gatewayPaymentData = Gateway::isOffsitePaymentGateway( $registeredGateway ) ?
+            $formData->toOffsiteGatewayPaymentData($donationId):
+            $formData->toGatewayPaymentData($donationId);
 
         if (
             function_exists('Give_Recurring') &&
@@ -70,7 +73,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Create the payment
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  GiveInsertPaymentData  $giveInsertPaymentData
      *
@@ -87,7 +90,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Create the payment
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $donationId
      * @param  FormData  $formData
@@ -106,7 +109,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Validate Gateway Nonce
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string  $gatewayNonce
      */

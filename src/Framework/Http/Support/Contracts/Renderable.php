@@ -3,14 +3,14 @@
 namespace Give\Framework\Support\Contracts;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 interface Renderable
 {
     /**
      * Get the evaluated contents of the object.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return string
      */

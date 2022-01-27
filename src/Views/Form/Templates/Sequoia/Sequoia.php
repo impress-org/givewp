@@ -33,9 +33,9 @@ class Sequoia extends Template implements Hookable, Scriptable
         }
         $goalHeight = ! $form->has_goal() ? 0 : 123;
         $imageHeight = empty($templateOptions['introduction']['image']) && empty(
-        get_post_thumbnail_id(
-            $formId
-        )
+            get_post_thumbnail_id(
+                $formId
+            )
         ) ? 0 : 175;
 
         return 423 + $goalHeight + $imageHeight;
@@ -112,8 +112,8 @@ class Sequoia extends Template implements Hookable, Scriptable
         }
 
         // If default Give styles are disabled globally, enqueue Give default styles here
-        if ( ! give_is_setting_enabled(give_get_option('css'))) {
-            wp_enqueue_style('give-styles', (new Give_Scripts)->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all');
+        if (! give_is_setting_enabled(give_get_option('css'))) {
+            wp_enqueue_style('give-styles', (new Give_Scripts())->get_frontend_stylesheet_uri(), [], GIVE_VERSION, 'all');
         }
 
         // Enqueue Sequoia template styles
@@ -358,7 +358,7 @@ class Sequoia extends Template implements Hookable, Scriptable
      */
     public function getName()
     {
-        return __('Multi-Step Donation Form', 'give');
+        return __('Multi-Step Form', 'give');
     }
 
     /**
@@ -366,7 +366,7 @@ class Sequoia extends Template implements Hookable, Scriptable
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/SequoiaForm.jpg';
+        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-multi-step.png';
     }
 
     /**

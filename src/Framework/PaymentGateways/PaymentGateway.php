@@ -8,18 +8,12 @@ use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentAbandonedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
-use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
@@ -34,7 +28,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 use function Give\Framework\Http\Response\response;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
@@ -54,9 +48,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public $subscriptionModule;
 
     /**
-     * @unreleased
+     * @since 2.18.0
      *
-     * @param  SubscriptionModuleInterface|null  $subscriptionModule
+     * @param SubscriptionModuleInterface|null $subscriptionModule
      */
     public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
     {
@@ -134,10 +128,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway command
      *
-     * @unreleased
+     * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
@@ -175,11 +170,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway subscription command
      *
-     * @unreleased
+     * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
-     * @param  GatewaySubscriptionData  $gatewaySubscriptionData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     * @param GatewaySubscriptionData $gatewaySubscriptionData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewaySubscriptionCommand(
@@ -214,60 +210,32 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @param  int  $donationId
      * @param  string  $method
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @return void
      */
     public function handleGatewayRouteMethod($donationId, $method)
     {
         try {
-            $command = $this->$method();
-
-            if ($command instanceof PaymentComplete) {
-                PaymentCompleteHandler::make($command)->handle($donationId);
-                $this->handleResponse(
-                    response()->redirectTo(give_get_success_page_uri())
-                );
-            }
-
-            if ($command instanceof PaymentProcessing) {
-                PaymentProcessingHandler::make($command)->handle($donationId);
-                $this->handleResponse(
-                    response()->redirectTo(give_get_success_page_uri())
-                );
-            }
-
-            if ($command instanceof PaymentAbandoned) {
-                PaymentAbandonedHandler::make($command)->handle($donationId);
-            }
-
-            if ($command instanceof PaymentRefunded) {
-                PaymentRefundedHandler::make($command)->handle($donationId);
-            }
+            $this->handleResponse( $this->$method( $donationId ) );
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
             PaymentGatewayLog::error($exception->getMessage());
-
-            $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
-                'give'
-            );
-
-            $this->handleResponse(response()->json($message));
-            exit;
+            $this->handleResponse(response()->json(
+                __( 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.', 'give' )
+            ));
         }
     }
 
     /**
      * Generate gateway route url
      *
-     * @unreleased
+     * @since 2.18.0
      *
-     * @param  string  $gatewayMethod
-     * @param  int  $donationId
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param int $donationId
+     * @param array|null $args
      *
      * @return string
      */
@@ -280,9 +248,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle Response
      *
-     * @unreleased
+     * @since 2.18.0
      *
-     * @param  RedirectResponse|JsonResponse  $type
+     * @param RedirectResponse|JsonResponse $type
      */
     public function handleResponse($type)
     {

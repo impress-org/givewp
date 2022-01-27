@@ -35,10 +35,14 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
-        "bundle": "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded",
         "post-install-cmd": [
             "@php -r \"file_exists('tests/unit/wp-tests-config.php') || copy('tests/unit/wp-tests-config.dist.php', 'tests/unit/wp-tests-config.php');\""
-        ]
+        ],
+        "bundle": [
+            "@copy-fonts",
+            "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
+        ],
+        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/"
     },
     "autoload": {
         "psr-4": {
@@ -51,6 +55,10 @@
     "config": {
         "platform": {
             "php": "5.6.40"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/installers": true
         }
     },
     "repositories": [

@@ -24,7 +24,7 @@ class RegisterPaymentGateways
     /**
      * Registers all the payment gateways with GiveWP
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  array  $gateways
      *
@@ -51,7 +51,7 @@ class RegisterPaymentGateways
     /**
      * Register 3rd party payment gateways
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
@@ -63,7 +63,7 @@ class RegisterPaymentGateways
     /**
      * Unregister 3rd party payment gateways
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */

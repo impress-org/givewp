@@ -1,0 +1,60 @@
+@use 'fn';
+
+body {
+    display: flex;
+    justify-content: center;
+    font-family: var(--give-primary-font, inherit), sans-serif;
+    color: #444;
+}
+
+#give-receipt,
+.give-form-wrap {
+    inline-size: min(100%, $containerMaxWidth);
+}
+
+.give-container-boxed {
+    .give-form-wrap {
+        background-color: #fff;
+
+        @media screen and (min-width: $desktopMinWidth) {
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    @media screen and (min-width: $desktopMinWidth) {
+        padding: 1rem;
+    }
+}
+
+.give-form {
+    border-radius: inherit;
+}
+
+.give-form-closed {
+    margin: 1rem;
+    padding-block: fn.scaleBetween(4rem, 8rem);
+    padding-inline: fn.scaleBetween(2rem, 4rem);
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 0 0.5em rgb(0 0 0 / 0.1);
+    --tint-color: rgba(var(--give-header-background-color--for-rgb), 0.75);
+    --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
+    background-color: rgb(var(--give-header-background-color--for-rgb));
+    /* translucent tint gradient over image */
+    background-image: var(--tint, linear-gradient(transparent, transparent)), var(--give-header-background-image);
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.5rem;
+
+    font-size: fn.scaleBetween(1.125rem, 1.5rem);
+
+    & > p {
+        color: #fff;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+        line-height: 1.4;
+        font-weight: 500;
+        max-inline-size: 40ch;
+        text-align: center;
+    }
+}

@@ -236,13 +236,18 @@ class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterfac
         // TODO: Implement createPayment() method.
     }
 
-    public function handleReturnFromOffsiteRedirect($paymentId)
+    public function returnSuccessFromOffsiteRedirect($donationId)
     {
-        // TODO: Implement handleReturnFromOffsiteRedirect() method.
+        // TODO: Implement returnSuccessFromOffsiteRedirect() method.
     }
 
-    public function returnFromOffsiteRedirect()
+    public function returnFailureFromOffsiteRedirect($donationId)
     {
-        // TODO: Implement returnFromOffsiteRedirect() method.
+        // TODO: Implement returnFailureFromOffsiteRedirect() method.
+    }
+
+    public function returnCancelFromOffsiteRedirect($donationId)
+    {
+        // TODO: Implement returnCancelFromOffsiteRedirect() method.
     }
 }

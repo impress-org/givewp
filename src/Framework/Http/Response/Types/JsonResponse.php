@@ -10,7 +10,7 @@ use JsonSerializable;
 use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 class JsonResponse extends BaseJsonResponse
 {
@@ -19,7 +19,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Constructor.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  mixed  $data
      * @param  int  $status
@@ -37,7 +37,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Sets the JSONP callback.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  string|null  $callback
      * @return $this
@@ -50,7 +50,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Get the json_decoded data from the response.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  bool  $assoc
      * @param  int  $depth
@@ -64,7 +64,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Sets the data to be sent as JSON.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  mixed  $data
      *
@@ -96,7 +96,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Determine if an error occurred during JSON encoding.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $jsonError
      * @return bool
@@ -118,7 +118,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Sets options used while encoding data to JSON.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $encodingOptions
      *
@@ -134,7 +134,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Determine if a JSON encoding option is set.
      *
-     * @unreleased
+     * @since 2.18.0
      *
      * @param  int  $option
      * @return bool

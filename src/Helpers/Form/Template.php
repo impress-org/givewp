@@ -107,7 +107,9 @@ class Template
     public static function handleOptionsBackwardCompatibility($settings)
     {
         if (isset($settings['visual_appearance'])) {
-            $settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
+            if (isset($settings['visual_appearance']['decimals_enabled'])) {
+                $settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
+            }
             $settings['introduction']['primary_color'] = $settings['visual_appearance']['primary_color'];
         } elseif (isset($settings['payment_amount'], $settings['introduction'])) {
             $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
