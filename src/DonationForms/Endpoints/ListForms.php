@@ -127,7 +127,22 @@ class ListForms extends Endpoint
             }
             $results[$index]->donations = count( give_get_payments( ['give_forms' => $form->ID ] ) );
             $results[$index]->revenue = $this->formatAmount( give_get_form_earnings_stats( $form->ID ) );
-            $results[$index]->datetime = date_i18n('Y/m/d \a\t h:i a', date_create( $result->post_date ));
+            $date = date_create( $result->post_date );
+            $timestamp = $date->getTimestamp();
+            $date_string = '';
+            if($timestamp >= strtotime('today'))
+            {
+                $date_string .= __('Today', 'give');
+            }
+            elseif ($timestamp >= strtotime('yesterday'))
+            {
+                $date_string .= __('Yesterday', 'give');
+            }
+            else {
+                $date_string .= date_i18n('Y/m/d', $date );
+            }
+            $date_string .= date_i18n(' \a\t h:i a', $date);
+            $results[$index]->datetime = $date_string;
             $results[$index]->shortcode = "[give_form id=\"$form->ID\"]";
             $results[$index]->status = $form->post_status;
             $results[$index]->permalink = html_entity_decode(get_permalink($form->ID));
