@@ -1,8 +1,9 @@
 <?php
 
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\QueryBuilder\Types\JoinType;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class QueryBuilderTest extends TestCase
@@ -117,7 +118,11 @@ final class QueryBuilderTest extends TestCase
         $builder
             ->select('donationsTable.*', 'metaTable.*')
             ->from('posts', 'donationsTable')
-            ->join('give_donationmeta', JoinType::LEFT, ['donationsTable.ID', 'metaTable.donation_id'], 'metaTable');
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder
+                    ->leftJoin('give_donationmeta', 'metaTable')
+                    ->on('donationsTable.ID', 'metaTable.donation_id');
+            });
 
         $this->assertContains(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
@@ -133,16 +138,12 @@ final class QueryBuilderTest extends TestCase
         $builder
             ->select('donationsTable.*', 'metaTable.*')
             ->from('posts', 'donationsTable')
-            ->join(
-                'give_donationmeta',
-                JoinType::LEFT,
-                function (QueryBuilder $builder) {
-                    $builder
-                        ->joinOn('donationsTable.ID', '=', 'metaTable.donation_id')
-                        ->joinAnd('metaTable.meta_key', '=', '_give_donor_billing_first_name', true);
-                },
-                'metaTable'
-            );
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder
+                    ->leftJoin('give_donationmeta', 'metaTable')
+                    ->on('donationsTable.ID', 'metaTable.donation_id')
+                    ->and('metaTable.meta_key', '_give_donor_billing_first_name', true);
+            });
 
         $this->assertContains(
             "SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id AND metaTable.meta_key = '_give_donor_billing_first_name'",
@@ -203,7 +204,7 @@ final class QueryBuilderTest extends TestCase
             ->select('*')
             ->from('posts')
             ->where('post_status', 'subscription')
-            ->where(function (QueryBuilder $builder) {
+            ->where(function (WhereQueryBuilder $builder) {
                 $builder
                     ->where('post_status', 'give_subscription')
                     ->orWhere('post_status', 'give_donation');
