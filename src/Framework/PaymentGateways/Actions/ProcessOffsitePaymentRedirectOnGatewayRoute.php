@@ -65,22 +65,26 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
 
             if ($command instanceof PaymentComplete) {
                 PaymentCompleteHandler::make($command)->handle($donationId);
-                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentSuccessReturn())->handle($donationId);
+                ReturnOffsitePaymentReturnHandler::make(RedirectOffsitePaymentSuccessReturn::make($donationId))
+                                                 ->handle();
             }
 
             if ($command instanceof PaymentProcessing) {
                 PaymentProcessingHandler::make($command)->handle($donationId);
-                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentSuccessReturn())->handle($donationId);
+                ReturnOffsitePaymentReturnHandler::make(RedirectOffsitePaymentSuccessReturn::make($donationId))
+                                                 ->handle();
             }
 
             if ($command instanceof PaymentFailed) {
                 PaymentFailedHandler::make($command)->handle($donationId);
-                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentFailedReturn())->handle($donationId);
+                ReturnOffsitePaymentReturnHandler::make(RedirectOffsitePaymentFailedReturn::make($donationId))
+                                                 ->handle();
             }
 
             if ($command instanceof PaymentCancelled) {
                 PaymentCancelledHandler::make($command)->handle($donationId);
-                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentFailedReturn())->handle($donationId);
+                ReturnOffsitePaymentReturnHandler::make(RedirectOffsitePaymentFailedReturn::make($donationId))
+                                                 ->handle();
             }
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->paymentGateway->handleResponse(response()->json($paymentGatewayException->getMessage()));

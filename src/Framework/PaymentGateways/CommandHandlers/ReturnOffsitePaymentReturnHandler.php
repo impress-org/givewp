@@ -42,11 +42,9 @@ class ReturnOffsitePaymentReturnHandler
     /**
      * @unreleased
      *
-     * @param int $donationId
-     *
      * @return void
      */
-    public function handle($donationId)
+    public function handle()
     {
         $donationFormPageUrl = (new DonationAccessor())->get()->formEntry->currentUrl;
         $redirectURl = $this->redirectOffsitePaymentReturnCommand->getUrl($donationFormPageUrl);
