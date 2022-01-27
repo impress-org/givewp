@@ -2,9 +2,8 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\Models\MetaTable;
-use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\QueryBuilder\Types\JoinType;
 
 /**
  * @unreleased
@@ -83,7 +82,7 @@ trait MetaQuery
             if (is_array($entry)) {
                 list ($column, $columnAlias) = $entry;
             } else {
-                $column      = $entry;
+                $column = $entry;
                 $columnAlias = null;
             }
 
@@ -91,14 +90,12 @@ trait MetaQuery
             $tableAlias = sprintf('%s_%s_%d', $table, 'attach_meta', $i);
 
             $this->join(
-                $table,
-                JoinType::LEFT,
-                function (QueryBuilder $builder) use ($foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {
+                function (JoinQueryBuilder $builder) use ($table, $foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {
                     $builder
-                        ->joinOn($foreignKey, '=', "{$tableAlias}.{$primaryKey}")
-                        ->joinAnd("{$tableAlias}.{$metaTable->keyColumnName}", '=', $column, true);
-                },
-                $tableAlias
+                        ->leftJoin($table, $tableAlias)
+                        ->on($foreignKey, "{$tableAlias}.{$primaryKey}")
+                        ->and("{$tableAlias}.{$metaTable->keyColumnName}", $column, true);
+                }
             );
 
             $this->select(["{$tableAlias}.{$metaTable->valueColumnName}", $columnAlias ? : $column]);
