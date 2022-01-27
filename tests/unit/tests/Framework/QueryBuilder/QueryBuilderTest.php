@@ -525,7 +525,7 @@ final class QueryBuilderTest extends TestCase
         $builder
             ->select('*')
             ->from('posts')
-            ->whereExists( function (QueryBuilder $builder) {
+            ->whereExists(function (QueryBuilder $builder) {
                 $builder
                     ->select(['meta_value', 'donation_id'])
                     ->from('give_donationmeta')
@@ -546,7 +546,7 @@ final class QueryBuilderTest extends TestCase
         $builder
             ->select('*')
             ->from('posts')
-            ->whereNotExists( function (QueryBuilder $builder) {
+            ->whereNotExists(function (QueryBuilder $builder) {
                 $builder
                     ->select(['meta_value', 'donation_id'])
                     ->from('give_donationmeta')
@@ -859,4 +859,55 @@ final class QueryBuilderTest extends TestCase
             $builder->getSQL()
         );
     }
+
+
+    public function testUnion()
+    {
+        $builder1 = new QueryBuilder();
+        $builder2 = new QueryBuilder();
+
+        $builder1
+            ->select('ID')
+            ->from('give_donations');
+
+        $builder2
+            ->select('ID')
+            ->from('give_subscriptions')
+            ->where('ID', 100, '>')
+            ->union($builder1);
+
+        $this->assertContains(
+            "SELECT ID FROM give_subscriptions WHERE ID > '100' UNION SELECT ID FROM give_donations",
+            $builder2->getSQL()
+        );
+    }
+
+
+    public function testUnionAll()
+    {
+        $builder1 = new QueryBuilder();
+        $builder2 = new QueryBuilder();
+        $builder3 = new QueryBuilder();
+
+        $builder1
+            ->select('ID')
+            ->from('give_donations');
+
+        $builder2
+            ->select('ID')
+            ->from('give_subscriptions')
+            ->where('ID', 100, '>');
+
+        $builder3
+            ->select('*')
+            ->from('posts')
+            ->where('post_status', 'published')
+            ->unionAll($builder1, $builder2);
+
+        $this->assertContains(
+            "SELECT * FROM posts WHERE post_status = 'published' UNION ALL SELECT ID FROM give_donations UNION ALL SELECT ID FROM give_subscriptions WHERE ID > '100'",
+            $builder3->getSQL()
+        );
+    }
+
 }

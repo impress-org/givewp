@@ -12,6 +12,7 @@ use Give\Framework\QueryBuilder\Concerns\MetaQuery;
 use Give\Framework\QueryBuilder\Concerns\OffsetStatement;
 use Give\Framework\QueryBuilder\Concerns\OrderByStatement;
 use Give\Framework\QueryBuilder\Concerns\SelectStatement;
+use Give\Framework\QueryBuilder\Concerns\UnionOperator;
 use Give\Framework\QueryBuilder\Concerns\WhereClause;
 
 /**
@@ -28,6 +29,7 @@ class QueryBuilder
     use OffsetStatement;
     use OrderByStatement;
     use SelectStatement;
+    use UnionOperator;
     use WhereClause;
 
     /**
@@ -44,7 +46,8 @@ class QueryBuilder
             $this->getHavingSQL(),
             $this->getOrderBySQL(),
             $this->getLimitSQL(),
-            $this->getOffsetSQL()
+            $this->getOffsetSQL(),
+            $this->getUnionSQL()
         );
 
         // Trim triple doubles spaces added by DB::prepare
