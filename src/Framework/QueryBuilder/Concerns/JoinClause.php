@@ -6,6 +6,7 @@ use Closure;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\Models\Join;
+use Give\Framework\QueryBuilder\Models\RawSQL;
 
 /**
  * @unreleased
@@ -14,7 +15,7 @@ trait JoinClause
 {
 
     /**
-     * @var JoinQueryBuilder[]
+     * @var Closure[]|RawSQL[]
      */
     protected $joins = [];
 
@@ -34,7 +35,7 @@ trait JoinClause
     }
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string  $column1
      * @param  string  $column2
      * @param  string|null  $alias
@@ -55,7 +56,7 @@ trait JoinClause
     }
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string  $column1
      * @param  string  $column2
      * @param  string|null  $alias
@@ -76,7 +77,7 @@ trait JoinClause
     }
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string  $column1
      * @param  string  $column2
      * @param  string|null  $alias
@@ -98,16 +99,40 @@ trait JoinClause
 
 
     /**
+     * Add raw SQL JOIN clause
+     *
+     * @param  string  $sql
+     * @param ...$args
+     *
+     * @return $this;
+     */
+    public function joinRaw($sql, ...$args)
+    {
+        $this->joins[] = new RawSQL($sql, $args);
+
+        return $this;
+    }
+
+
+    /**
      * @return string[]
      */
     protected function getJoinSQL()
     {
-        return array_map(function (Closure $callback) {
+        return array_map(function ($callback) {
+            if ($callback instanceof RawSQL) {
+                return $callback->sql;
+            }
+
             $builder = new JoinQueryBuilder();
 
             call_user_func($callback, $builder);
 
             $joins = array_map(function ($join) {
+                if ($join instanceof RawSQL) {
+                    return $join->sql;
+                }
+
                 if ($join instanceof Join) {
                     if ($join->alias) {
                         return DB::prepare(

@@ -4,6 +4,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\Models\MetaTable;
+use Give\Framework\QueryBuilder\Models\RawSQL;
 
 /**
  * @unreleased
@@ -27,7 +28,7 @@ trait MetaQuery
     private $defaultMetaValueColumn = 'meta_value';
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string  $metaKeyColumn
      * @param  string  $metaValueColumn
      *
@@ -45,7 +46,7 @@ trait MetaQuery
     }
 
     /**
-     * @param $table
+     * @param  string|RawSQL  $table
      *
      * @return MetaTable
      */
@@ -67,7 +68,7 @@ trait MetaQuery
     /**
      * Select meta columns
      *
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string  $foreignKey
      * @param  string  $primaryKey
      * @param  array  $columns
@@ -87,7 +88,7 @@ trait MetaQuery
             }
 
             // Set dynamic alias
-            $tableAlias = sprintf('%s_%s_%d', $table, 'attach_meta', $i);
+            $tableAlias = sprintf('%s_%s_%d', ($table instanceof RawSQL) ? $table->sql : $table, 'attach_meta', $i);
 
             $this->join(
                 function (JoinQueryBuilder $builder) use ($table, $foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {

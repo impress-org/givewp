@@ -3,6 +3,7 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\Models\RawSQL;
 use Give\Framework\QueryBuilder\Models\Select;
 
 /**
@@ -11,9 +12,15 @@ use Give\Framework\QueryBuilder\Models\Select;
 trait SelectStatement
 {
     /**
-     * @var Select[]
+     * @var Select[]|RawSQL[]
      */
     protected $selects = [];
+
+
+    /**
+     * @var bool
+     */
+    private $selectUseRawSql = false;
 
     /**
      * @param  array  $columns
@@ -38,6 +45,20 @@ trait SelectStatement
     }
 
     /**
+     * Add raw SQL SELECT statement
+     *
+     * @param  string  $sql
+     * @param ...$args
+     */
+    public function selectRaw($sql, ...$args)
+    {
+        $this->selectUseRawSql = true;
+        $this->selects         = array_merge($this->selects, [new RawSQL($sql, $args)]);
+
+        return $this;
+    }
+
+    /**
      * @return string[]
      */
     protected function getSelectSQL()
@@ -47,21 +68,29 @@ trait SelectStatement
             $this->select('*');
         }
 
-        return [
-            'SELECT ' . implode(
-                ', ',
-                array_map(function (Select $select) {
-                    if ($select->alias) {
-                        return DB::prepare(
-                            '%1s AS %2s',
-                            $select->column,
-                            $select->alias
-                        );
-                    }
+        $selects = implode(
+            ', ',
+            array_map(function ($select) {
+                if ($select instanceof RawSQL) {
+                    return $select->sql;
+                }
 
-                    return DB::prepare('%1s', $select->column);
-                }, $this->selects)
-            )
-        ];
+                if ($select->alias) {
+                    return DB::prepare(
+                        '%1s AS %2s',
+                        $select->column,
+                        $select->alias
+                    );
+                }
+
+                return DB::prepare('%1s', $select->column);
+            }, $this->selects)
+        );
+
+        if ($this->selectUseRawSql) {
+            return [$selects];
+        }
+
+        return ['SELECT ' . $selects];
     }
 }

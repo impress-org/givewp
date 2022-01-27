@@ -2,6 +2,8 @@
 
 namespace Give\Framework\QueryBuilder\Models;
 
+use Give\Framework\QueryBuilder\Helpers\Table;
+
 /**
  * @unreleased
  */
@@ -18,12 +20,12 @@ class From
     public $alias;
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string|null  $alias
      */
     public function __construct($table, $alias = null)
     {
-        $this->table = trim($table);
+        $this->table = Table::prefix($table);
         $this->alias = trim($alias);
     }
 }

@@ -5,6 +5,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Models\Having;
 
+use Give\Framework\QueryBuilder\Models\RawSQL;
 use Give\Framework\QueryBuilder\Types\Math;
 use Give\Framework\QueryBuilder\Types\Operator;
 
@@ -14,9 +15,14 @@ use Give\Framework\QueryBuilder\Types\Operator;
 trait HavingClause
 {
     /**
-     * @var Having[]
+     * @var Having[]|RawSQL[]
      */
     protected $havings = [];
+
+    /**
+     * @var bool
+     */
+    private $havingUseRawSql = false;
 
     /**
      * @param  string  $column
@@ -232,6 +238,21 @@ trait HavingClause
     }
 
     /**
+     * Add raw SQL HAVING clause
+     *
+     * @param  string  $sql
+     * @param ...$args
+     * @return $this
+     */
+    public function havingRaw($sql, ...$args)
+    {
+        $this->havingUseRawSql = true;
+        $this->havings[]       = new RawSQL($sql, $args);
+
+        return $this;
+    }
+
+    /**
      * @return string[]
      */
     protected function getHavingSQL()
@@ -240,9 +261,17 @@ trait HavingClause
             return [];
         }
 
-        $havings = array_map(function (Having $having) {
+        $havings = array_map(function ($having) {
+            if ($having instanceof RawSQL) {
+                return $having->sql;
+            }
+
             return $this->buildHavingSQL($having);
         }, $this->havings);
+
+        if ($this->havingUseRawSql) {
+            return $havings;
+        }
 
         return array_merge(['HAVING'], $havings);
     }

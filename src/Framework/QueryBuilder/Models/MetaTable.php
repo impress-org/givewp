@@ -2,6 +2,8 @@
 
 namespace Give\Framework\QueryBuilder\Models;
 
+use Give\Framework\QueryBuilder\Helpers\Table;
+
 /**
  * @unreleased
  */
@@ -29,7 +31,7 @@ class MetaTable
      */
     public function __construct($table, $metaKeyColumnName, $metaValueColumnName)
     {
-        $this->tableName       = trim($table);
+        $this->tableName       = Table::prefix($table);
         $this->keyColumnName   = trim($metaKeyColumnName);
         $this->valueColumnName = trim($metaValueColumnName);
     }

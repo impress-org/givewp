@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Models;
 
+use Give\Framework\QueryBuilder\Helpers\Table;
 use Give\Framework\QueryBuilder\Types\JoinType;
 use InvalidArgumentException;
 
@@ -32,7 +33,7 @@ class Join
      */
     public function __construct($joinType, $table, $alias = null)
     {
-        $this->table    = trim($table);
+        $this->table    = Table::prefix($table);
         $this->joinType = $this->getJoinType($joinType);
         $this->alias    = trim($alias);
     }

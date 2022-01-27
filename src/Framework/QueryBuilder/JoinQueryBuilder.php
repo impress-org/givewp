@@ -4,6 +4,7 @@ namespace Give\Framework\QueryBuilder;
 
 use Give\Framework\QueryBuilder\Models\Join;
 use Give\Framework\QueryBuilder\Models\JoinCondition;
+use Give\Framework\QueryBuilder\Models\RawSQL;
 use Give\Framework\QueryBuilder\Types\JoinType;
 use Give\Framework\QueryBuilder\Types\Operator;
 
@@ -14,12 +15,12 @@ class JoinQueryBuilder
 {
 
     /**
-     * @var Join[]|JoinCondition[]
+     * @var Join[]|JoinCondition[]|RawSQL[]
      */
     private $joins = [];
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  null|string  $alias
      *
      * @return $this
@@ -34,7 +35,7 @@ class JoinQueryBuilder
     }
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  null|string  $alias
      *
      * @return $this
@@ -49,7 +50,7 @@ class JoinQueryBuilder
     }
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  null|string  $alias
      *
      * @return $this
@@ -115,10 +116,21 @@ class JoinQueryBuilder
     }
 
     /**
+     * Add raw SQL JOIN clause
+     *
+     * @param  string  $sql
+     * @param ...$args
+     */
+    public function joinRaw($sql, ...$args)
+    {
+        $this->joins[] = new RawSQL($sql, $args);
+    }
+
+    /**
      * Add Join
      *
      * @param  string  $joinType
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string  $alias
      *
      * @return $this

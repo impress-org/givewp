@@ -4,6 +4,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Models\From;
+use Give\Framework\QueryBuilder\Models\RawSQL;
 
 /**
  * @unreleased
@@ -16,7 +17,7 @@ trait FromClause
     protected $froms = [];
 
     /**
-     * @param  string  $table
+     * @param  string|RawSQL  $table
      * @param  string|null  $alias
      *
      * @return $this
