@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
+use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Actions\ProcessOffsitePaymentRedirectOnGatewayRoute;
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
@@ -18,64 +19,72 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 class GatewayRoute
 {
     /**
-     * @since 2.18.0
-     *
-     * @return void
      * @throws PaymentGatewayException
      */
     public function __invoke()
     {
         if ($this->isValidListener()) {
-            /** @var PaymentGatewayRegister $paymentGatewaysRegister */
-            $paymentGatewaysRegister = give(PaymentGatewayRegister::class);
-            $paymentGateways = $paymentGatewaysRegister->getPaymentGateways();
-            $gatewayIds = array_keys($paymentGateways);
-
-            if ( ! $this->isValidRequest($gatewayIds)) {
-                throw new PaymentGatewayException('This route is not valid.');
-            }
-
             $data = GatewayRouteData::fromRequest($_GET);
-            if ( ! $this->hasValidNonce($data)) {
-                throw new PaymentGatewayException('This route does not have valid nonce.');
-            }
+            $this->process($data);
+        }
+    }
 
-            /** @var PaymentGateway $gateway */
-            $gateway = give($paymentGateways[$data->gatewayId]);
+    /**
+     * @since 2.18.0
+     *
+     * @return void
+     * @throws PaymentGatewayException
+     */
+    public function process(GatewayRouteData $data)
+    {
+        /** @var PaymentGatewayRegister $paymentGatewaysRegister */
+        $paymentGatewaysRegister = give(PaymentGatewayRegister::class);
+        $paymentGateways = $paymentGatewaysRegister->getPaymentGateways();
+        $gatewayIds = array_keys($paymentGateways);
 
-            $allowedGatewayMethods = $gateway->routeMethods;
+        if ( ! $this->isValidRequest($gatewayIds, $data->gatewayId)) {
+            throw new PaymentGatewayException('This route is not valid.');
+        }
 
-            if (is_a($gateway, OffsiteGatewayInterface::class)) {
-                $allowedGatewayMethods = array_merge(
-                    $allowedGatewayMethods,
-                    OffsiteGatewayInterface::defaultRouteMethods
-                );
-            }
+        if ( ! $this->hasValidNonce($data)) {
+            throw new PaymentGatewayException('This route does not have valid nonce.');
+        }
 
-            if (
-                ! in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
-                ! method_exists($gateway, $data->gatewayMethod)
-            ) {
-                throw new PaymentGatewayException('The gateway method does not exist.');
-            }
+        /** @var PaymentGateway $gateway */
+        $gateway = give($paymentGateways[$data->gatewayId]);
 
-            /**
-             * Gateway route can be used for:
-             * 1. Webhooks
-             * 2. Offsite payment gateway redirect
-             *
-             * Webhooks controller mostly need to return http status 200 or other, so no need to involve core logic.
-             * Payment gateway can handle it.
-             *
-             * Offsite payment gateway redirect further need redirect to success or failed or cancelled donation page.
-             * For this reason we need core to involve to handle redirect.
-             */
-            if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods)) {
-                (new ProcessOffsitePaymentRedirectOnGatewayRoute($gateway))
-                    ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
-            } else {
-                $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
-            }
+        $allowedGatewayMethods = $gateway->routeMethods;
+
+        if (is_a($gateway, OffsiteGatewayInterface::class)) {
+            $allowedGatewayMethods = array_merge(
+                $allowedGatewayMethods,
+                OffsiteGatewayInterface::defaultRouteMethods
+            );
+        }
+
+        if (
+            ! in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
+            ! method_exists($gateway, $data->gatewayMethod)
+        ) {
+            throw new PaymentGatewayException('The gateway method does not exist.');
+        }
+
+        /**
+         * Gateway route can be used for:
+         * 1. Webhooks
+         * 2. Offsite payment gateway redirect
+         *
+         * Webhooks controller mostly need to return http status 200 or other, so no need to involve core logic.
+         * Payment gateway can handle it.
+         *
+         * Offsite payment gateway redirect further need redirect to success or failed or cancelled donation page.
+         * For this reason we need core to involve to handle redirect.
+         */
+        if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods)) {
+            (new ProcessOffsitePaymentRedirectOnGatewayRoute($gateway))
+                ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
+        } else {
+            $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
         }
     }
 
@@ -84,18 +93,15 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @param array $gatewayIds
+     * @param array $registeredGatewayIds
      *
      * @return bool
      * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
      *
      */
-    private function isValidRequest($gatewayIds)
+    private function isValidRequest($registeredGatewayIds, $gatewayId)
     {
-        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method'], $_GET['give-donation-id']);
-        $idValid = in_array($_GET['give-gateway-id'], $gatewayIds, true);
-
-        return $isset && $idValid;
+        return in_array($gatewayId, $registeredGatewayIds, true);
     }
 
     /**
@@ -121,6 +127,9 @@ class GatewayRoute
      */
     private function hasValidNonce(GatewayRouteData $data)
     {
-        return ! empty($data->nonce) && wp_verify_nonce($data->nonce, "$data->gatewayMethod-$data->donationId");
+        return wp_verify_nonce(
+            $data->nonce,
+            (new GenerateGatewayRouteUrl())->getNonceActionName($data)
+        );
     }
 }
