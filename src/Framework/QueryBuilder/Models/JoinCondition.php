@@ -21,11 +21,6 @@ class JoinCondition
     public $column1;
 
     /**
-     * @var string
-     */
-    public $comparisonOperator;
-
-    /**
      * @var mixed
      */
     public $column2;
@@ -39,17 +34,15 @@ class JoinCondition
     /**
      * @param  string  $logicalOperator
      * @param  string  $column1
-     * @param  string  $comparisonOperator
      * @param  string  $column2
      * @param  bool  $quote
      */
-    public function __construct($logicalOperator, $column1, $comparisonOperator, $column2, $quote = false)
+    public function __construct($logicalOperator, $column1, $column2, $quote = false)
     {
-        $this->logicalOperator    = $this->getLogicalOperator($logicalOperator);
-        $this->column1            = trim($column1);
-        $this->comparisonOperator = $this->getComparisonOperator($comparisonOperator);
-        $this->column2            = trim($column2);
-        $this->quote              = $quote;
+        $this->logicalOperator = $this->getLogicalOperator($logicalOperator);
+        $this->column1         = trim($column1);
+        $this->column2         = trim($column2);
+        $this->quote           = $quote;
     }
 
     /**
@@ -71,35 +64,6 @@ class JoinCondition
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported logical operator %s. Please provide one of the supported operators (%s)',
-                    $operator,
-                    implode(',', $supportedOperators)
-                )
-            );
-        }
-
-        return $operator;
-    }
-
-    /**
-     * @param  string  $operator
-     *
-     * @return string
-     */
-    private function getComparisonOperator($operator)
-    {
-        $supportedOperators = [
-            '<',
-            '<=',
-            '>',
-            '>=',
-            '<>',
-            '='
-        ];
-
-        if ( ! in_array($operator, $supportedOperators, true)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Unsupported comparison operator %s. Please provide one of the supported operators (%s)',
                     $operator,
                     implode(',', $supportedOperators)
                 )
