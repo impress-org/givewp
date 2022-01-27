@@ -4,7 +4,6 @@ use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
-use Give\PaymentGateways\Gateways\Stripe\LegacyStripePaymentIntent;
 
 /**
  * @unreleased
@@ -17,8 +16,8 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         $_POST['give_stripe_payment_method'] = 'pm_1234';
         $gateway = new CreditCardGateway();
 
-        $this->mock(LegacyStripePaymentIntent::class, function() {
-           return new MockLegacyStripePaymentIntent( 'succeeded' );
+        $this->mock(Give_Stripe_Payment_Intent::class, function() {
+           return new Give_Stripe_Payment_Intent( 'succeeded' );
         });
 
         $this->assertInstanceOf( PaymentProcessing::class, $gateway->createPayment( $this->getMockPaymentData() ) );
@@ -30,8 +29,8 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         $_POST['give_stripe_payment_method'] = 'pm_1234';
         $gateway = new CreditCardGateway();
 
-        $this->mock(LegacyStripePaymentIntent::class, function() {
-           return new MockLegacyStripePaymentIntent( 'requires_action' );
+        $this->mock(Give_Stripe_Payment_Intent::class, function() {
+           return new Give_Stripe_Payment_Intent( 'requires_action' );
         });
 
         $this->assertInstanceOf( RedirectOffsite::class, $gateway->createPayment( $this->getMockPaymentData() ) );
@@ -55,12 +54,21 @@ class Give_Stripe_Customer {
     }
 }
 
-class MockLegacyStripePaymentIntent {
-    public $id = 'pi_1234';
-    public $client_secret = 'pi_secret';
-    public function __construct( $status ) { $this->status = $status; }
-    public function create( $args ) { return $this; }
-    public function id() { return $this->id; }
-    public function status() { return $this->status; }
-    public function nextActionRedirectUrl() { return 'https://wordpress.test/next-action'; }
+class Give_Stripe_Payment_Intent {
+    protected $status;
+    public function __construct( $status ) {
+        $this->status = $status;
+    }
+    public function create() {
+        return json_decode(json_encode([
+            'id' => 'pi_1234',
+            'status' => $this->status,
+            'client_secret' => 'pi_secret',
+            'next_action' => [
+                'redirect_to_url' => [
+                    'url' => '',
+                ]
+            ]
+        ]));
+    }
 }

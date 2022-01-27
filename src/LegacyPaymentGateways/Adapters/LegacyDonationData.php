@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe;
+namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe;
+namespace Give\PaymentGateways\Gateways\Stripe\ValueObjects;
 
 use Give_Stripe_Payment_Intent;
 
 /**
  * @unreleased
  */
-class LegacyStripePaymentIntent
+class PaymentIntent
 {
     /** @var bool|\Stripe\PaymentIntent */
     protected $paymentIntentObject;
@@ -15,12 +15,12 @@ class LegacyStripePaymentIntent
     /**
      * @unreleased
      * @param $paymentIntentArgs
-     * @return LegacyStripePaymentIntent
+     * @return PaymentIntent
      */
     public function create( $paymentIntentArgs )
     {
-        $paymentIntent = new Give_Stripe_Payment_Intent;
-        $this->paymentIntentObject = $paymentIntent->create( $paymentIntentArgs );
+        $paymentIntentFactory = give( Give_Stripe_Payment_Intent::class );
+        $this->paymentIntentObject = $paymentIntentFactory->create( $paymentIntentArgs );
         return $this;
     }
 
@@ -40,6 +40,15 @@ class LegacyStripePaymentIntent
     public function status()
     {
         return $this->paymentIntentObject->status;
+    }
+
+    /**
+     * @unreleased
+     * @return string
+     */
+    public function clientSecret()
+    {
+        return $this->paymentIntentObject->client_secret;
     }
 
     /**
