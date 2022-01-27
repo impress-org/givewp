@@ -40,7 +40,7 @@ class GatewayRouteData
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
         $self->donationId = (int)$request['give-donation-id'];
-        $self->nonce = $request['nonce'];
+        $self->nonce = $request['_wpnonce'];
 
         return $self;
     }
