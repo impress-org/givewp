@@ -532,10 +532,29 @@ final class QueryBuilderTest extends TestCase
                     ->where('meta_key', 'donation_id');
             });
 
-        echo $builder->getSQL();
-
         $this->assertContains(
             "SELECT * FROM posts WHERE EXISTS (SELECT meta_value AS donation_id FROM give_donationmeta WHERE meta_key = 'donation_id')",
+            $builder->getSQL()
+        );
+    }
+
+
+    public function testWhereNotExists()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from('posts')
+            ->whereNotExists( function (QueryBuilder $builder) {
+                $builder
+                    ->select(['meta_value', 'donation_id'])
+                    ->from('give_donationmeta')
+                    ->where('meta_key', 'donation_id');
+            });
+
+        $this->assertContains(
+            "SELECT * FROM posts WHERE NOT EXISTS (SELECT meta_value AS donation_id FROM give_donationmeta WHERE meta_key = 'donation_id')",
             $builder->getSQL()
         );
     }

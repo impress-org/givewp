@@ -363,6 +363,20 @@ trait WhereClause
     }
 
     /**
+     * @param  Closure  $callback  The closure will receive a Give\Framework\QueryBuilder\QueryBuilder instance
+     *
+     * @return QueryBuilder|WhereQueryBuilder
+     */
+    public function whereNotExists($callback)
+    {
+        return $this->where(
+            null,
+            $callback,
+            Operator::NOTEXISTS
+        );
+    }
+
+    /**
      * @return string[]
      */
     protected function getWhereSQL()
