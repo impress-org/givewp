@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\PayPalStandard;
 
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
@@ -14,7 +14,7 @@ use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
  *
  * @unlreased
  */
-class PayPalStandardGateway extends PaymentGateway
+class PayPalStandardGateway extends OffSitePaymentGateway
 {
     /**
      * @inheritDoc
@@ -61,15 +61,6 @@ class PayPalStandardGateway extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        // Before registering PayPal Standard with new payment gateway API, We were using this url
-        // as offsite redirect url. Query param `payment-confirmation` is important because it triggers filter hook.
-        // We are using this url for backward compatibility.
-        // To review usage, search for `give_payment_confirm_paypal` filter hook.
-        $redirectUrl = add_query_arg(
-            ['payment-confirmation' => 'paypal', 'payment-id' => $paymentData->donationId,],
-            give_get_success_page_uri()
-        );
-
-        return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData, $redirectUrl));
+       return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData));
     }
 }
