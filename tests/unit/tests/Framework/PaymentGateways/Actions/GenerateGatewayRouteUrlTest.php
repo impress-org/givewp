@@ -19,6 +19,23 @@ class GenerateGatewayRouteUrlTest extends TestCase
         );
 
         $this->assertContains(
+            'example.org?give-listener=give-gateway&give-gateway-id=test-gateway&give-gateway-method=returnCancelFromOffsiteRedirect&give-donation-id=123',
+            $url
+        );
+    }
+
+    public function testGeneratedUrlWithNonce()
+    {
+        $url = Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            'test-gateway',
+            'returnCancelFromOffsiteRedirect',
+            '123',
+            null,
+            [ 'withNonce' => true ]
+        );
+
+        $this->assertContains(
             'example.org?give-listener=give-gateway&give-gateway-id=test-gateway&give-gateway-method=returnCancelFromOffsiteRedirect&give-donation-id=123&_wpnonce=',
             $url
         );

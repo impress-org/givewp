@@ -14,11 +14,12 @@ class GenerateGatewayRouteUrl
      * @param string $gatewayId
      * @param string $gatewayMethod
      * @param int $donationId
-     * @param array|null $args
+     * @param array|null $additionalQueryArgs
+     * @param array|null $optParams
      *
      * @return string Url.
      */
-    public function __invoke($gatewayId, $gatewayMethod, $donationId, $args = null)
+    public function __invoke($gatewayId, $gatewayMethod, $donationId, $additionalQueryArgs = null, $optParams = null)
     {
         $queryArgs = [
             'give-listener' => 'give-gateway',
@@ -27,13 +28,16 @@ class GenerateGatewayRouteUrl
             'give-donation-id' => $donationId,
         ];
 
-        if ($args) {
-            $queryArgs = array_merge($queryArgs, $args);
+        if ($additionalQueryArgs) {
+            $queryArgs = array_merge($queryArgs, $additionalQueryArgs);
         }
 
-        $queryArgs['_wpnonce'] = wp_create_nonce(
-            $this->getNonceActionName( $queryArgs )
-        );
+        // Add nonce to url on demand.
+        if ( $optParams && array_key_exists('withNonce', $optParams) && $optParams['withNonce']) {
+            $queryArgs['_wpnonce'] = wp_create_nonce(
+                $this->getNonceActionName($queryArgs)
+            );
+        }
 
         return add_query_arg(
             $queryArgs,

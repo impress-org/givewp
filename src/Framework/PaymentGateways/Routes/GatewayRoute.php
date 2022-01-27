@@ -127,9 +127,17 @@ class GatewayRoute
      */
     private function hasValidNonce(GatewayRouteData $data)
     {
-        return wp_verify_nonce(
-            $data->nonce,
-            (new GenerateGatewayRouteUrl())->getNonceActionName($data)
-        );
+        // Few gateway route like offsite payment gateway redirect url will contain nonce
+        // Which we need to verify for security purpose.
+        if ( null !== $data->nonce ) {
+            return wp_verify_nonce(
+                $data->nonce,
+                (new GenerateGatewayRouteUrl())->getNonceActionName($data)
+            );
+        }
+
+        // We can return true for other gateway route urls like webhook, paypal ipn
+        // Because these routes will not contain nonce.
+        return true;
     }
 }
