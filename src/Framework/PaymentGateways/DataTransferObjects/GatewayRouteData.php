@@ -40,7 +40,10 @@ class GatewayRouteData
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
         $self->donationId = (int)$request['give-donation-id'];
-        $self->nonce = $request['_wpnonce'];
+
+        // Nonce is options query param.
+        // Check GenerateGatewayRouteUrl class.
+        $self->nonce = isset( $request['_wpnonce'] ) ? $request['_wpnonce'] : null;
 
         return $self;
     }
