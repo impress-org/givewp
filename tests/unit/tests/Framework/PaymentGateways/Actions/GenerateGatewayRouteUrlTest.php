@@ -19,7 +19,7 @@ class GenerateGatewayRouteUrlTest extends TestCase
         );
 
         $this->assertContains(
-            'example.org?give-listener=give-gateway&amp;give-gateway-id=test-gateway&amp;give-gateway-method=returnCancelFromOffsiteRedirect&amp;give-donation-id=123&amp;_wpnonce=',
+            'example.org?give-listener=give-gateway&give-gateway-id=test-gateway&give-gateway-method=returnCancelFromOffsiteRedirect&give-donation-id=123&_wpnonce=',
             $url
         );
     }
@@ -38,7 +38,7 @@ class GenerateGatewayRouteUrlTest extends TestCase
         );
 
         $this->assertContains(
-            '&amp;paramOne=1&amp;paramTwo=2',
+            '&paramOne=1&paramTwo=2',
             $url
         );
     }
