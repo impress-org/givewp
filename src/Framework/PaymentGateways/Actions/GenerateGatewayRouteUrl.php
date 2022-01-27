@@ -9,14 +9,14 @@ class GenerateGatewayRouteUrl
 {
     /**
      * @since 2.18.0
-     * @unreleased Return escaped URL with nonce action added
+     * @unreleased Return URL with nonce action.
      *
      * @param string $gatewayId
      * @param string $gatewayMethod
      * @param int $donationId
      * @param array|null $args
      *
-     * @return string Escaped URL with nonce action added.
+     * @return string Url.
      */
     public function __invoke($gatewayId, $gatewayMethod, $donationId, $args = null)
     {
@@ -31,12 +31,13 @@ class GenerateGatewayRouteUrl
             $queryArgs = array_merge($queryArgs, $args);
         }
 
-        return wp_nonce_url(
-            add_query_arg(
-                $queryArgs,
-                home_url()
-            ),
-            $this->getNonceActionName($queryArgs)
+        $queryArgs['_wpnonce'] = wp_create_nonce(
+            $this->getNonceActionName( $queryArgs )
+        );
+
+        return add_query_arg(
+            $queryArgs,
+            home_url()
         );
     }
 
