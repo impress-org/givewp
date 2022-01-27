@@ -10,6 +10,7 @@ use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentFailedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\ReturnOffsitePaymentReturnHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
 use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
@@ -64,30 +65,22 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
 
             if ($command instanceof PaymentComplete) {
                 PaymentCompleteHandler::make($command)->handle($donationId);
-                $this->paymentGateway->handleResponse(
-                    response()->redirectTo($this->getSuccessPageUrl($donationId))
-                );
+                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentSuccessReturn())->handle($donationId);
             }
 
             if ($command instanceof PaymentProcessing) {
                 PaymentProcessingHandler::make($command)->handle($donationId);
-                $this->paymentGateway->handleResponse(
-                    response()->redirectTo($this->getSuccessPageUrl($donationId))
-                );
+                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentSuccessReturn())->handle($donationId);
             }
 
             if ($command instanceof PaymentFailed) {
                 PaymentFailedHandler::make($command)->handle($donationId);
-                $this->paymentGateway->handleResponse(
-                    response()->redirectTo($this->getFailedPageUrl($donationId))
-                );
+                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentFailedReturn())->handle($donationId);
             }
 
             if ($command instanceof PaymentCancelled) {
                 PaymentCancelledHandler::make($command)->handle($donationId);
-                $this->paymentGateway->handleResponse(
-                    response()->redirectTo($this->getFailedPageUrl($donationId))
-                );
+                ReturnOffsitePaymentReturnHandler::make(new RedirectOffsitePaymentFailedReturn())->handle($donationId);
             }
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->paymentGateway->handleResponse(response()->json($paymentGatewayException->getMessage()));
@@ -104,35 +97,4 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
             exit;
         }
     }
-
-    /**
-     * @unreleased
-     *
-     * @param int $donationId
-     *
-     * @return RedirectResponse|string
-     */
-    private function getSuccessPageUrl($donationId)
-    {
-        return Gateway::isOffsitePaymentGateway($this->paymentGateway) ?
-            (new RedirectOffsitePaymentSuccessReturn($donationId))
-                ->getUrl((new DonationAccessor())->get()->formEntry->currentUrl) :
-            give_get_success_page_uri();
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param int $donationId
-     *
-     * @return RedirectResponse|mixed
-     */
-    private function getFailedPageUrl($donationId)
-    {
-        return Gateway::isOffsitePaymentGateway($this->paymentGateway) ?
-            (new RedirectOffsitePaymentFailedReturn($donationId))
-                ->getUrl((new DonationAccessor())->get()->formEntry->currentUrl) :
-            give_get_failed_transaction_uri();
-    }
-
 }
