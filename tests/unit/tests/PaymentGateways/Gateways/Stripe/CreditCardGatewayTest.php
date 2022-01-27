@@ -56,9 +56,11 @@ class Give_Stripe_Customer {
 }
 
 class MockLegacyStripePaymentIntent {
+    public $id = 'pi_1234';
+    public $client_secret = 'pi_secret';
     public function __construct( $status ) { $this->status = $status; }
     public function create( $args ) { return $this; }
-    public function id() { return 'pi_1234'; }
+    public function id() { return $this->id; }
     public function status() { return $this->status; }
     public function nextActionRedirectUrl() { return 'https://wordpress.test/next-action'; }
 }
