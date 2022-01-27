@@ -9,13 +9,14 @@ class GenerateGatewayRouteUrl
 {
     /**
      * @since 2.18.0
+     * @unreleased Return escaped URL with nonce action added
      *
      * @param string $gatewayId
      * @param string $gatewayMethod
      * @param int $donationId
      * @param array|null $args
      *
-     * @return string
+     * @return string Escaped URL with nonce action added.
      */
     public function __invoke($gatewayId, $gatewayMethod, $donationId, $args = null)
     {
