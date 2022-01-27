@@ -13,6 +13,7 @@ class Operator extends Type
     const BETWEEN = 'BETWEEN';
     const NOTBETWEEN = 'NOT BETWEEN';
     const EXISTS = 'EXISTS';
+    const NOTEXISTS = 'NOT EXISTS';
     const IN = 'IN';
     const NOTIN = 'NOT IN';
     const LIKE = 'LIKE';
