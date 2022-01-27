@@ -43,7 +43,9 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
             GenerateGatewayRouteUrl::class,
             $self->gatewayId,
             'returnSuccessFromOffsiteRedirect',
-            $self->donationId
+            $self->donationId,
+            null,
+            [ 'withNonce' => true ]
         );
 
         // Gateway route for failed payment.
@@ -51,7 +53,9 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
             GenerateGatewayRouteUrl::class,
             $self->gatewayId,
             'returnFailureFromOffsiteRedirect',
-            $self->donationId
+            $self->donationId,
+            null,
+            [ 'withNonce' => true ]
         );
 
         // Gateway route for cancelled payment.
@@ -59,7 +63,9 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
             GenerateGatewayRouteUrl::class,
             $self->gatewayId,
             'returnCancelFromOffsiteRedirect',
-            $self->donationId
+            $self->donationId,
+            null,
+            [ 'withNonce' => true ]
         );
 
         return $self;
