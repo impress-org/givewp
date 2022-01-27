@@ -194,7 +194,7 @@ class FormData
     public function toGatewayPaymentData($donationId)
     {
         return GatewayPaymentData::fromArray([
-            'legacyPaymentData' => $this->legacyPaymentData,
+            'legacyPaymentData' => $this->legacyDonationData,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'date' => $this->date,
@@ -216,6 +216,7 @@ class FormData
     public function toOffsiteGatewayPaymentData($donationId)
     {
         return OffsiteGatewayPaymentData::fromArray([
+            'legacyPaymentData' => $this->legacyDonationData,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'date' => $this->date,
