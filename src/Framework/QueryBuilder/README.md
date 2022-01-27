@@ -4,6 +4,8 @@ Query Builder helper class is used to write SQL queries
 
 ### Nested WHERE statements
 
+If closure is passed as the first parameter to the ```where``` method, the Closure will receive a ```Give\Framework\QueryBuilder\WhereQueryBuilder``` instance
+
 ```php
 $builder = new \Give\Framework\QueryBuilder\QueryBuilder();
 
@@ -11,7 +13,7 @@ $builder
     ->select( '*' )
     ->from( $this->postsTable )
     ->where( 'post_status', 'subscription')
-    ->where( function(QueryBuilder $builder){
+    ->where( function(WhereQueryBuilder $builder){
         $builder
             ->where( 'post_status', 'give_subscription')
             ->orWhere( 'post_status', 'give_donation');
@@ -28,6 +30,8 @@ WHERE post_status = 'subscription'
 ```
 
 ### Sub-select within the query
+
+If closure is passed as the second parameter to the ```where```,  ```orWhere```, ```whereIn```, etc. methods, the Closure will receive a ```Give\Framework\QueryBuilder\QueryBuilder``` instance
 
 ```php
 $builder = new \Give\Framework\QueryBuilder\QueryBuilder();
@@ -84,31 +88,28 @@ WHERE posts.post_type = 'give_payment'
 ORDER BY posts.post_date DESC
 ```
 
-For complex JOIN clauses, you can use ```join``` method and pass a Closure for ```$condition``` parameter which will then pass back a new QueryBuilder instance to the Closure.
-Note: methods ```joinOn```, ```joinAnd```, and ```joinOr``` should be used only inside the Closure.
-
+For complex JOIN clauses, you can use ```join``` method and pass a Closure. The Closure will receive a ```Give\Framework\QueryBuilder\JoinQueryBuilder``` instance
 ```php
 $builder
     ->from('tableOne')
     ->join(
-        'tableTwo',
-        JoinType::LEFT,
-        function (QueryBuilder $builder) {
+        function (JoinQueryBuilder $builder) {
             $builder
-                ->joinOn('tableOne.foreignKey', '=', 'tableTwoAlias.primaryKey')
-                ->joinAnd('tableTwoAlias.meta_key', '=', 'subscription_id', $escape = true);
-        },
-        'tableTwoAlias'
+                ->leftJoin( 'table_two', 'tableTwoAlias')
+                ->joinOn('tableOne.foreignKey', 'tableTwoAlias.primaryKey')
+                ->joinAnd('tableTwoAlias.meta_key', 'subscription_id', $escape = true);
+        }
     );
 ```
 
 Generated SQL
 
 ```sql
-SELECT * FROM tableOne
-    LEFT JOIN tableTwo tableTwoAlias
-        ON tableOne.foreignKey = tableTwoAlias.primaryKey
-       AND tableTwoAlias.meta_key = 'subscription_id'
+SELECT *
+FROM tableOne
+         LEFT JOIN tableTwo tableTwoAlias
+                   ON tableOne.foreignKey = tableTwoAlias.primaryKey
+                       AND tableTwoAlias.meta_key = 'subscription_id'
 ```
 
 ### Special method for working with meta tables (attachMeta)
