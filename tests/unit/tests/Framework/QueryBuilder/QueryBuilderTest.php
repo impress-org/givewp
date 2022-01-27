@@ -771,6 +771,24 @@ final class QueryBuilderTest extends TestCase
     }
 
 
+    public function testOffset()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from('posts')
+            ->where('post_status', 'published')
+            ->limit(5)
+            ->offset(10);
+
+        $this->assertContains(
+            "SELECT * FROM posts WHERE post_status = 'published' LIMIT 5 OFFSET 10",
+            $builder->getSQL()
+        );
+    }
+
+
     public function testAttachMeta()
     {
         $builder = new QueryBuilder();

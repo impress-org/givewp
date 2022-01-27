@@ -9,6 +9,7 @@ use Give\Framework\QueryBuilder\Concerns\HavingClause;
 use Give\Framework\QueryBuilder\Concerns\JoinClause;
 use Give\Framework\QueryBuilder\Concerns\LimitStatement;
 use Give\Framework\QueryBuilder\Concerns\MetaQuery;
+use Give\Framework\QueryBuilder\Concerns\OffsetStatement;
 use Give\Framework\QueryBuilder\Concerns\OrderByStatement;
 use Give\Framework\QueryBuilder\Concerns\SelectStatement;
 use Give\Framework\QueryBuilder\Concerns\WhereClause;
@@ -24,6 +25,7 @@ class QueryBuilder
     use JoinClause;
     use LimitStatement;
     use MetaQuery;
+    use OffsetStatement;
     use OrderByStatement;
     use SelectStatement;
     use WhereClause;
@@ -41,7 +43,8 @@ class QueryBuilder
             $this->getGroupBySQL(),
             $this->getHavingSQL(),
             $this->getOrderBySQL(),
-            $this->getLimitSQL()
+            $this->getLimitSQL(),
+            $this->getOffsetSQL()
         );
 
         // Trim triple doubles spaces added by DB::prepare
