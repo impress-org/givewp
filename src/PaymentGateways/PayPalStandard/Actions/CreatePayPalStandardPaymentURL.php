@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalStandard\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 
 /**
  * This class create PayPal Standard payment gateway one time payment url on basis of donor donation query.
@@ -11,7 +12,8 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
  */
 class CreatePayPalStandardPaymentURL
 {
-    public function __invoke(GatewayPaymentData $paymentData, $redirectUrl)
+    // Todo update paypal ipn url.
+    public function __invoke(OffsiteGatewayPaymentData $paymentData)
     {
         // Only send to PayPal if the pending payment is created successfully.
         $payPalIpnListenerUrl = add_query_arg('give-listener', 'IPN', home_url('index.php'));
@@ -44,8 +46,8 @@ class CreatePayPalStandardPaymentURL
             'currency_code' => give_get_currency($paymentData->donationId),
 
             // Urls
-            'return' => $redirectUrl,
-            'cancel_return' => give_get_failed_transaction_uri(),
+            'return' => $paymentData->redirectUrl,
+            'cancel_return' => $paymentData->failedRedirectUrl,
             'notify_url' => $payPalIpnListenerUrl,
 
             'no_shipping' => '1',
