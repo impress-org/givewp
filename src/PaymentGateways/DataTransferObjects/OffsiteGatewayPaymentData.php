@@ -38,42 +38,28 @@ class OffsiteGatewayPaymentData extends GatewayPaymentData
         /* @var OffsiteGatewayPaymentData $self */
         $self = parent::fromArray($array);
 
-        $nonceName = 'nonce';
-
         // Gateway route for successful payment.
-        $self->redirectUrl = wp_nonce_url(
-            Call::invoke(
-                GenerateGatewayRouteUrl::class,
-                $self->gatewayId,
-                'returnSuccessFromOffsiteRedirect',
-                $self->donationId
-            ),
-            "returnSuccessFromOffsiteRedirect-$self->donationId",
-            $nonceName
+        $self->redirectUrl = Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $self->gatewayId,
+            'returnSuccessFromOffsiteRedirect',
+            $self->donationId
         );
 
         // Gateway route for failed payment.
-        $self->failedRedirectUrl = wp_nonce_url(
-            Call::invoke(
-                GenerateGatewayRouteUrl::class,
-                $self->gatewayId,
-                'returnFailureFromOffsiteRedirect',
-                $self->donationId
-            ),
-            "returnFailureFromOffsiteRedirect-$self->donationId",
-            $nonceName
+        $self->failedRedirectUrl = Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $self->gatewayId,
+            'returnFailureFromOffsiteRedirect',
+            $self->donationId
         );
 
         // Gateway route for cancelled payment.
-        $self->cancelledRedirectUrl = wp_nonce_url(
-            Call::invoke(
-                GenerateGatewayRouteUrl::class,
-                $self->gatewayId,
-                'returnCancelFromOffsiteRedirect',
-                $self->donationId
-            ),
-            "returnFailureFromOffsiteRedirect-$self->donationId",
-            $nonceName
+        $self->cancelledRedirectUrl = Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $self->gatewayId,
+            'returnCancelFromOffsiteRedirect',
+            $self->donationId
         );
 
         return $self;
