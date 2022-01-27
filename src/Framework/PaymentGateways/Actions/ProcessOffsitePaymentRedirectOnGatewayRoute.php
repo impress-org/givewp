@@ -89,14 +89,6 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
                     response()->redirectTo($this->getFailedPageUrl($donationId))
                 );
             }
-
-            if ($command instanceof PaymentAbandoned) {
-                PaymentAbandonedHandler::make($command)->handle($donationId);
-            }
-
-            if ($command instanceof PaymentRefunded) {
-                PaymentRefundedHandler::make($command)->handle($donationId);
-            }
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->paymentGateway->handleResponse(response()->json($paymentGatewayException->getMessage()));
             exit;
