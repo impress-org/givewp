@@ -2,17 +2,12 @@ import {StrictMode, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
+import { mutate } from 'swr'
 
 import styles from './admin-donation-forms.module.scss';
 import Pagination from './components/Pagination.js';
 import Shortcode from './components/Shortcode';
-import API, {useFetcher, getEndpoint} from './api';
-
-declare global {
-    interface Window {
-        GiveDonationForms: {apiNonce: string; apiRoot: string};
-    }
-}
+import {fetchWithArgs, keyFunction, useDonationForms} from './api';
 
 type DonationForm = {
     id: number;
@@ -28,53 +23,49 @@ type DonationForm = {
     edit: string;
 };
 
-let windowParams = new URLSearchParams(window.location.search);
+const windowParams = new URLSearchParams(window.location.search);
 const page = parseInt(windowParams.get('paged'));
 
 function AdminDonationForms() {
     const [state, setState] = useState({
-        donationForms: [],
-        count: 0,
-        page: page > 0 ? page : 1,
-        trash: true,
+        page: page ? page : 1,
         perPage: 10
     });
-
-    const parameters = {
+    const params = {
         page: state.page,
-        perPage: state.perPage,
+        perPage: state.perPage
     };
 
-    const {data, isLoading, isError} = useFetcher(getEndpoint('', parameters), {
-        onSuccess: ({response}) => {
-            setState((previousState) => {
-                return {
-                    ...previousState,
-                    page: response.page,
-                    count: response.total,
-                    trash: response.trash,
-                    donationForms: response.forms,
-                };
-            });
-        },
-    });
+    const {data, error, isValidating} = useDonationForms(params);
 
     function deleteForm(event) {
-        const endpoint = state.trash ? '/trash' : '/delete';
-        API.delete(endpoint, {params: {...parameters, ids: event.target.dataset.formid}})
-            .then((response) => {
-                setState((previousState) => {
-                    return {
-                        ...previousState,
-                        page: response.data.page,
-                        count: response.data.total,
-                        trash: response.data.trash,
-                        donationForms: response.data.forms,
-                    };
-                });
-            })
-            .catch((error) => {
-            });
+        const endpoint = data.trash ? '/trash' : '/delete';
+        mutateForm(event, endpoint, 'DELETE');
+    }
+
+    function duplicateForm(event) {
+        mutateForm(event, '/duplicate', 'POST');
+    }
+
+    async function mutateForm(event, endpoint, method) {
+        const response = await fetchWithArgs(endpoint, {...params, ids: event.target.dataset.formid}, method);
+        try {
+            //mutate the data without revalidating current page
+            const currentKey = keyFunction(params);
+            await mutate(currentKey, {...data, ...response}, false);
+            //revalidate all pages other than the one we're currently on and null their data
+            const mutations = [];
+            for(let i = 0; i <= Math.ceil(data.total / state.perPage); i++ ) {
+                const invalidKey = `${i},${state.perPage}`;
+                if(invalidKey != currentKey) {
+                    mutations.push(mutate(invalidKey, null));
+                }
+            }
+        }
+        catch(error)
+        {
+            console.error(error.message);
+        }
     }
 
     return (
@@ -86,22 +77,24 @@ function AdminDonationForms() {
                 </a>
             </div>
             <div className={styles.pageContent}>
-                <nav className={styles.paginationContainer}>
-                    <span className={styles.totalItems}>{state.count.toString() + __(' forms', 'give')}</span>
-                    <Pagination
-                        currentPage={state.page}
-                        totalPages={Math.ceil(state.count / state.perPage)}
-                        disabled={false}
-                        setPage={(page) => {
-                            setState((prevState) => {
-                                return {
-                                    ...prevState,
-                                    page: page,
-                                };
-                            });
-                        }}
-                    />
-                </nav>
+                {data &&
+                    <nav className={styles.paginationContainer}>
+                        <span className={styles.totalItems}>{data.total.toString() + " " + __('forms', 'give')}</span>
+                        <Pagination
+                            currentPage={data.page}
+                            totalPages={Math.ceil(data.total / state.perPage)}
+                            disabled={false}
+                            setPage={(page) => {
+                                setState((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        page: page,
+                                    };
+                                });
+                            }}
+                        />
+                    </nav>
+                }
                 <div role="group" aria-labelledby="giveDonationFormsTableCaption" className={styles.tableGroup}>
                     <table className={styles.table}>
                         <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
@@ -144,7 +137,7 @@ function AdminDonationForms() {
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            {state.donationForms.map((form) => (
+                            {data && data.forms.map((form) => (
                                 <tr key={form.id} className={styles.tableRow}>
                                     <td className={styles.tableCell}>
                                         <div className={styles.idBadge}>{form.id}</div>
@@ -160,7 +153,7 @@ function AdminDonationForms() {
                                                 Edit <span className="give-visually-hidden">{form.name}</span>
                                             </a>
                                             <button type="button" onClick={deleteForm} data-formid={form.id} className={styles.action}>
-                                                {state.trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
+                                                {data.trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
                                                 <span className="give-visually-hidden">{form.name}</span>
                                             </button>
                                             <a href={form.permalink}>{__('View', 'give')}</a>

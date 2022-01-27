@@ -1,47 +1,40 @@
-import axios from 'axios';
 import useSWR from 'swr';
 
-const API = axios.create({
-    baseURL: window.GiveDonationForms.apiRoot,
-    headers: {
+declare global {
+    interface Window {
+        GiveDonationForms: {apiNonce: string; apiRoot: string};
+    }
+}
+
+const headers = {
         'Content-Type': 'application/json',
         'X-WP-Nonce': window.GiveDonationForms.apiNonce,
-    },
-});
-
-export default API;
-
-export const CancelToken = axios.CancelToken.source();
-
-// SWR Fetcher
-export const Fetcher = (endpoint) =>
-    API.get(endpoint).then((res) => {
-        const {data, ...rest} = res.data;
-        return {
-            data,
-            response: rest,
-        };
-    });
-
-export const useFetcher = (endpoint, params = {}) => {
-    const {data, error} = useSWR(endpoint, Fetcher, params);
-    return {
-        data: data ? data.data : undefined,
-        isLoading: !error && !data,
-        isError: error,
-        response: data ? data.response : undefined,
-    };
 };
 
-// GET endpoint with additional parameters
-export const getEndpoint = (endpoint, data) => {
-    if (data) {
-        const queryString = new URLSearchParams(data);
-        // pretty url?
-        const separator = window.GiveDonationForms.apiRoot.indexOf('?') === -1 ? '?' : '&';
-
-        return endpoint + separator + queryString.toString();
+export const fetchWithArgs = (endpoint, args, method = 'GET') => {
+    console.log(endpoint);
+    const url = new URL(window.GiveDonationForms.apiRoot + endpoint);
+    for (const [param, value] of Object.entries(args)) {
+        url.searchParams.set(param, value as string);
     }
+    return fetch(url.href, {
+        method: method,
+        headers: headers,
+    }).then(res => res.json());
+}
 
-    return endpoint;
+
+const Fetcher = (params) => {
+    return fetchWithArgs('', {
+        page: params.split(',')[0],
+        perPage: params.split(',')[1]
+    });
+}
+// SWR Fetcher
+export const useDonationForms = ({page, perPage}, swrParams = {}) => {
+    return useSWR(keyFunction({page, perPage}), Fetcher, swrParams);
 };
+
+export const keyFunction = ({page, perPage}) => {
+    return `${page},${perPage}`
+}
