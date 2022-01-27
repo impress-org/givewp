@@ -14,7 +14,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select('local_posts.ID')
-            ->from('local_give_donations');
+            ->from(DB::raw('local_give_donations'));
 
         $this->assertContains(
             'SELECT local_posts.ID FROM local_give_donations',
@@ -27,7 +27,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select(['local_posts.ID', 'posts_id'])
-            ->from('local_give_donations');
+            ->from(DB::raw('local_give_donations'));
 
 
         $this->assertContains(
@@ -41,7 +41,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select('*')
-            ->from('local_give_donations');
+            ->from(DB::raw('local_give_donations'));
 
         $this->assertContains(
             'SELECT * FROM local_give_donations',
@@ -55,7 +55,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select('*')
-            ->from('local_give_donations', 'donations');
+            ->from(DB::raw('local_give_donations'), 'donations');
 
         $this->assertContains(
             'SELECT * FROM local_give_donations AS donations',
@@ -70,8 +70,8 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('donationsTable.*', 'metaTable.*')
-            ->from('posts', 'donationsTable')
-            ->leftJoin('give_donationmeta', 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
+            ->from(DB::raw('posts'), 'donationsTable')
+            ->leftJoin(DB::raw('give_donationmeta'), 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
 
         $this->assertContains(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
@@ -86,8 +86,8 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('donationsTable.*', 'metaTable.*')
-            ->from('posts', 'donationsTable')
-            ->rightJoin('give_donationmeta', 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
+            ->from(DB::raw('posts'), 'donationsTable')
+            ->rightJoin(DB::raw('give_donationmeta'), 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
 
         $this->assertContains(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable RIGHT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
@@ -101,8 +101,8 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('donationsTable.*', 'metaTable.*')
-            ->from('posts', 'donationsTable')
-            ->innerJoin('give_donationmeta', 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
+            ->from(DB::raw('posts'), 'donationsTable')
+            ->innerJoin(DB::raw('give_donationmeta'), 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
 
         $this->assertContains(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable INNER JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
@@ -117,10 +117,10 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('donationsTable.*', 'metaTable.*')
-            ->from('posts', 'donationsTable')
+            ->from(DB::raw('posts'), 'donationsTable')
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
-                    ->leftJoin('give_donationmeta', 'metaTable')
+                    ->leftJoin(DB::raw('give_donationmeta'), 'metaTable')
                     ->on('donationsTable.ID', 'metaTable.donation_id');
             });
 
@@ -137,10 +137,10 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('donationsTable.*', 'metaTable.*')
-            ->from('posts', 'donationsTable')
+            ->from(DB::raw('posts'), 'donationsTable')
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
-                    ->leftJoin('give_donationmeta', 'metaTable')
+                    ->leftJoin(DB::raw('give_donationmeta'), 'metaTable')
                     ->on('donationsTable.ID', 'metaTable.donation_id')
                     ->and('metaTable.meta_key', '_give_donor_billing_first_name', true);
             });
@@ -157,7 +157,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('ID', 5);
 
         $this->assertContains(
@@ -171,7 +171,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->where('post_title', 'Donation Form');
 
@@ -186,7 +186,7 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->orWhere('post_title', 'Donation Form');
 
@@ -202,7 +202,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'subscription')
             ->where(function (WhereQueryBuilder $builder) {
                 $builder
@@ -223,12 +223,12 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'subscription')
             ->whereIn('ID', function (QueryBuilder $builder) {
                 $builder
                     ->select(['meta_value', 'donation_id'])
-                    ->from('give_donationmeta')
+                    ->from(DB::raw('give_donationmeta'))
                     ->where('meta_key', 'donation_id');
             });
 
@@ -244,7 +244,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'subscription')
             ->whereIn('ID', [1, 2, 3]);
 
@@ -260,7 +260,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'subscription')
             ->whereNotIn('ID', [1, 2, 3]);
 
@@ -277,7 +277,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'subscription')
             ->orWhereIn('ID', [1, 2, 3]);
 
@@ -293,7 +293,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'subscription')
             ->orWhereNotIn('ID', [1, 2, 3]);
 
@@ -310,7 +310,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereBetween('ID', 0, 100);
 
         $this->assertContains(
@@ -326,7 +326,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereBetween('post_date', '2021-11-22', '2022-11-22');
 
         $this->assertContains(
@@ -342,7 +342,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereNotBetween('ID', 0, 100);
 
         $this->assertContains(
@@ -358,7 +358,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('ID', 222)
             ->orWhereBetween('ID', 0, 100);
 
@@ -375,7 +375,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('ID', 222)
             ->orWhereNotBetween('ID', 0, 100);
 
@@ -392,7 +392,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereLike('post_title', 'Donation');
 
         $this->assertContains(
@@ -408,7 +408,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereNotLike('post_title', 'Donation');
 
         $this->assertContains(
@@ -424,7 +424,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereLike('post_title', 'Form')
             ->orWhereLike('post_title', 'Donation');
 
@@ -441,7 +441,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereLike('post_title', 'Form')
             ->orWhereNotLike('post_title', 'Donation');
 
@@ -458,7 +458,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereIsNull('post_parent');
 
         $this->assertContains(
@@ -474,7 +474,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereIsNotNull('post_parent');
 
         $this->assertContains(
@@ -490,7 +490,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5, '>')
             ->orWhereIsNull('post_parent');
 
@@ -507,7 +507,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5, '>')
             ->orWhereIsNotNull('post_parent');
 
@@ -524,11 +524,11 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereExists(function (QueryBuilder $builder) {
                 $builder
                     ->select(['meta_value', 'donation_id'])
-                    ->from('give_donationmeta')
+                    ->from(DB::raw('give_donationmeta'))
                     ->where('meta_key', 'donation_id');
             });
 
@@ -545,11 +545,11 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->whereNotExists(function (QueryBuilder $builder) {
                 $builder
                     ->select(['meta_value', 'donation_id'])
-                    ->from('give_donationmeta')
+                    ->from(DB::raw('give_donationmeta'))
                     ->where('meta_key', 'donation_id');
             });
 
@@ -566,7 +566,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingCount('ID', '>', 10);
@@ -584,7 +584,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingSum('post_count', '>', 1000);
@@ -602,7 +602,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingSum('post_count', '>', 1000)
@@ -621,7 +621,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingSum('post_count', '>', 1000)
@@ -640,7 +640,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingMin('post_count', '>', 1000);
@@ -658,7 +658,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingMin('post_count', '>', 1000)
@@ -677,7 +677,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingMax('post_count', '>', 1000);
@@ -695,7 +695,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingMax('post_count', '>', 1000)
@@ -714,7 +714,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingAvg('post_count', '>', 1000);
@@ -732,7 +732,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_parent', 5)
             ->groupBy('ID')
             ->havingAvg('post_count', '<', 1000)
@@ -751,7 +751,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->orderBy('ID', 'DESC');
 
@@ -768,7 +768,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->orderBy('ID', 'ASC');
 
@@ -785,7 +785,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->groupBy('ID');
 
@@ -802,7 +802,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->limit(5);
 
@@ -819,7 +819,7 @@ final class QueryBuilderTest extends TestCase
 
         $builder
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->limit(5)
             ->offset(10);
@@ -836,18 +836,18 @@ final class QueryBuilderTest extends TestCase
         $builder = new QueryBuilder();
 
         $builder
-            ->from('wp_posts', 'posts')
+            ->from(DB::raw('wp_posts'), 'posts')
             ->select(
                 ['posts.ID', 'id'],
                 ['posts.post_date', 'createdAt']
             )
             ->attachMeta(
-                'wp_give_donationmeta',
+                DB::raw('wp_give_donationmeta'),
                 'posts.ID',
                 'donation_id',
                 ['_give_payment_total', 'amount']
             )
-            ->leftJoin('wp_give_donationmeta', 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
+            ->leftJoin(DB::raw('wp_give_donationmeta'), 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
             ->where('posts.post_type', 'give_payment')
             ->where('posts.post_status', 'give_subscription')
             ->where('donationMeta.meta_key', 'subscription_id')
@@ -868,11 +868,11 @@ final class QueryBuilderTest extends TestCase
 
         $builder1
             ->select('ID')
-            ->from('give_donations');
+            ->from(DB::raw('give_donations'));
 
         $builder2
             ->select('ID')
-            ->from('give_subscriptions')
+            ->from(DB::raw('give_subscriptions'))
             ->where('ID', 100, '>')
             ->union($builder1);
 
@@ -891,16 +891,16 @@ final class QueryBuilderTest extends TestCase
 
         $builder1
             ->select('ID')
-            ->from('give_donations');
+            ->from(DB::raw('give_donations'));
 
         $builder2
             ->select('ID')
-            ->from('give_subscriptions')
+            ->from(DB::raw('give_subscriptions'))
             ->where('ID', 100, '>');
 
         $builder3
             ->select('*')
-            ->from('posts')
+            ->from(DB::raw('posts'))
             ->where('post_status', 'published')
             ->unionAll($builder1, $builder2);
 
@@ -909,5 +909,68 @@ final class QueryBuilderTest extends TestCase
             $builder3->getSQL()
         );
     }
+
+    public function testWhereRaw()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('ID')
+            ->from(DB::raw('give_donations'))
+            ->whereRaw('WHERE post_id = %d AND post_title = %s', 5, 'Donation');
+
+        $this->assertContains(
+            "SELECT ID FROM give_donations WHERE post_id = 5 AND post_title = 'Donation'",
+            $builder->getSQL()
+        );
+    }
+
+
+    public function testJoinRaw()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('ID')
+            ->from(DB::raw('give_donations'))
+            ->joinRaw('LEFT JOIN posts ON post_id = give_donations.id');
+
+        $this->assertContains(
+            "SELECT ID FROM give_donations LEFT JOIN posts ON post_id = give_donations.id",
+            $builder->getSQL()
+        );
+    }
+
+
+    public function testHavingRaw()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('ID')
+            ->from(DB::raw('give_donations'))
+            ->groupBy('id')
+            ->havingRaw('HAVING COUNT(id) > %d', 1000);
+
+        $this->assertContains(
+            "SELECT ID FROM give_donations GROUP BY id HAVING COUNT(id) > 1000",
+            $builder->getSQL()
+        );
+    }
+
+    public function testSelectRaw()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->selectRaw('SELECT * FROM some_table WHERE something = %s', 'Something')
+            ->from(DB::raw('give_donations'));
+
+        $this->assertContains(
+            "SELECT * FROM some_table WHERE something = 'Something' FROM give_donations",
+            $builder->getSQL()
+        );
+    }
+
 
 }
