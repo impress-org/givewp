@@ -3,6 +3,7 @@
 namespace Give\Framework\Database;
 
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\QueryBuilder\Models\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 
@@ -130,6 +131,21 @@ class DB
         $builder->from($table, $alias);
 
         return $builder;
+    }
+
+
+    /**
+     * Used as a flag to tell QueryBuilder not to process the provided SQL
+     * If $args are provided, we will assume that dev wants to use DB::prepare method with raw SQL
+     *
+     * @param string $sql
+     * @param ...$args
+     *
+     * @return RawSQL
+     */
+    public static function raw($sql, ...$args)
+    {
+        return new RawSQL($sql, ...$args);
     }
 
     /**
