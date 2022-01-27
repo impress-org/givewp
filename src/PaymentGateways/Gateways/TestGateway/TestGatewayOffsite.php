@@ -112,32 +112,6 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     }
 
     /**
-     * Handle failed donation redirect.
-     *
-     * @unreleased
-     *
-     * @param int $donationId
-     *
-     * @return PaymentCommand
-     */
-    public function returnFailureFromOffsiteRedirect($donationId)
-    {
-        return new PaymentFailed($donationId);
-    }
-
-    /**
-     * Handle cancelled donation redirect.
-     *
-     * @param int $donationId
-     *
-     * @return PaymentCancelled
-     */
-    public function returnCancelFromOffsiteRedirect($donationId)
-    {
-        return new PaymentCancelled($donationId);
-    }
-
-    /**
      * An example gateway method for extending the Gateway API for a given gateway.
      *
      * @param int $donationId
