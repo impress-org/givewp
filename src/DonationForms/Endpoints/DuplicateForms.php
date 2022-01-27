@@ -4,6 +4,7 @@ namespace Give\DonationForms\Endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_Error;
 
 require_once( GIVE_PLUGIN_DIR . '/includes/admin/forms/class-give-form-duplicator.php');
 
@@ -46,23 +47,6 @@ class DuplicateForms extends MutateForms
                 ],
             ],
         );
-    }
-
-    /**
-     * Check user permissions
-     * @return bool|WP_Error
-     */
-    public function permissionsCheck()
-    {
-        if ( ! current_user_can('create_posts')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You dont have the right permissions to duplicate forms.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
     }
 
     protected function mutate($id)

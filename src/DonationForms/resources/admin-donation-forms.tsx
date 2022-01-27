@@ -157,7 +157,9 @@ function AdminDonationForms() {
                                                 <span className="give-visually-hidden">{form.name}</span>
                                             </button>
                                             <a href={form.permalink}>{__('View', 'give')}</a>
-                                            <a href="#todo-replace-with-duplicate-link">{__('Duplicate', 'give')}</a>
+                                            <button type="button" onClick={duplicateForm} data-formid={form.id} className={styles.action}>
+                                                {__('Duplicate', 'give')}
+                                            </button>
                                         </div>
                                     </th>
                                     <td className={styles.tableCell} style={{textAlign: 'end'}}>
