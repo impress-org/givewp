@@ -3,11 +3,9 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
-use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\Http\Response\Types\JsonResponse;
-use Give\Framework\PaymentGateways\Commands\PaymentFailed;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Call;

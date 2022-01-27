@@ -3,28 +3,20 @@
 namespace Give\Framework\PaymentGateways\Actions;
 
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Http\Response\Types\RedirectResponse;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentAbandonedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCancelledHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentFailedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\ReturnOffsitePaymentReturnHandler;
-use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
 use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentFailed;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
-use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsitePaymentFailedReturn;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsitePaymentSuccessReturn;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
-use Give\Framework\PaymentGateways\Helpers\Gateway;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Session\SessionDonation\DonationAccessor;
-
 use function Give\Framework\Http\Response\response;
 
 /**
