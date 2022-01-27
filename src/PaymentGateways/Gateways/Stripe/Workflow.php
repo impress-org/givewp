@@ -11,7 +11,7 @@ class Workflow
 {
     protected $container = [];
 
-    public function __construct( ...$args )
+    public function __construct()
     {
         $this->bind( $this );
     }
