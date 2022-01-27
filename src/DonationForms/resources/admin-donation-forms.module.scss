@@ -239,6 +239,30 @@
     padding-inline: 2rem;
     text-align: center;
     text-transform: uppercase;
+
+    &.pending {
+        background-color: rgba(8, 120, 176);
+    }
+
+    &.draft, &.auto-draft {
+        background-color: rgba(244, 148, 32);
+    }
+
+    &.future {
+        background-color: rgba(164, 99, 191);
+    }
+
+    &.trash, &.failed {
+        background-color: rgba(232, 75, 59);
+    }
+
+    &.private, &refunded {
+        background-color: rgba(51, 51, 51, 1);
+    }
+
+    &.abandoned {
+        background-color: rgba(244, 197, 32, 1)
+    }
 }
 
 .idBadge {

@@ -211,7 +211,7 @@ function AdminDonationForms() {
                                     </td>
                                     <td className={styles.tableCell}>{form.datetime}</td>
                                     <td className={styles.tableCell}>
-                                        <div className={styles.statusBadge}>{form.status}</div>
+                                        <div className={cx(styles.statusBadge, styles[form.status])}>{form.status}</div>
                                     </td>
                                 </tr>
                             ))}
