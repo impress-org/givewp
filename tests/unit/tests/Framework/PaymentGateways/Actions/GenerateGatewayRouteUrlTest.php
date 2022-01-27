@@ -24,7 +24,7 @@ class GenerateGatewayRouteUrlTest extends TestCase
         );
     }
 
-    public function testGeneratedUrlHasAdditionaQueryArgs()
+    public function testGeneratedUrlHasAdditionalQueryArgs()
     {
         $url = Call::invoke(
             GenerateGatewayRouteUrl::class,
