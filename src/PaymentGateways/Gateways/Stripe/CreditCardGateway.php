@@ -13,6 +13,7 @@ use Give\PaymentGateways\Gateways\Stripe\Actions\CreatePayment;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentIntentException;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentMethodException;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
 
@@ -33,20 +34,20 @@ class CreditCardGateway extends PaymentGateway
             throw new PaymentMethodException('Payment Method Not Found');
         }
 
-        $paymentMethodId = $_POST['give_stripe_payment_method'];
-        $donationData = new LegacyDonationData($paymentData, $paymentMethodId);
+        $paymentMethod = new PaymentMethod( give_clean( $_POST['give_stripe_payment_method'] ) );
+        $donationData = new LegacyDonationData($paymentData, $paymentMethod->id());
 
-        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $paymentMethodId);
+        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $paymentMethod->id());
         if ($giveStripeCustomer->get_id()) {
             Helpers::save_stripe_customer_id($giveStripeCustomer->get_id(), $paymentData->donationId);
         } else {
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
         }
 
-        give_insert_payment_note($paymentData->donationId, 'Stripe Source/Payment Method ID: ' . $paymentMethodId);
+        give_insert_payment_note($paymentData->donationId, 'Stripe Source/Payment Method ID: ' . $paymentMethod->id());
         give_insert_payment_note($paymentData->donationId, 'Stripe Customer ID: ' . $giveStripeCustomer->get_id());
 
-        give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethodId);
+        give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());
         give_update_meta($paymentData->donationId, '_give_stripe_customer_id', $giveStripeCustomer->get_id());
         give_update_meta(
             $paymentData->donationId,
@@ -69,7 +70,7 @@ class CreditCardGateway extends PaymentGateway
                 'description' => '', //give_payment_gateway_donation_summary( $donationData->toArray() ),
                 'metadata' => give_stripe_prepare_metadata($paymentData->donationId, $donationData->toArray()),
                 'customer' => $giveStripeCustomer->get_id(),
-                'payment_method' => $paymentMethodId,
+                'payment_method' => $paymentMethod->id(),
                 'confirm' => true,
                 'return_url' => $paymentData->redirectUrl,
             ]
