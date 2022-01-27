@@ -7,6 +7,7 @@ use Give\Framework\PaymentGateways\Commands\PaymentCancelled;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\Framework\PaymentGateways\Commands\PaymentFailed;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\Helpers\Call;
@@ -121,6 +122,18 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function returnFailureFromOffsiteRedirect($donationId)
     {
+        return new PaymentFailed($donationId);
+    }
+
+    /**
+     * Handle cancelled donation redirect.
+     *
+     * @param int $donationId
+     *
+     * @return PaymentCancelled
+     */
+    public function returnCancelFromOffsiteRedirect($donationId)
+    {
         return new PaymentCancelled($donationId);
     }
 
@@ -139,17 +152,5 @@ class TestGatewayOffsite extends OffSitePaymentGateway
         PaymentCompleteHandler::make($command)->handle($donationId);
 
         return response()->json();
-    }
-
-    /**
-     * Handle cancelled donation redirect.
-     *
-     * @param int $donationId
-     *
-     * @return PaymentCancelled
-     */
-    public function returnCancelFromOffsiteRedirect($donationId)
-    {
-        return new PaymentCancelled($donationId);
     }
 }
