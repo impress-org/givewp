@@ -24,6 +24,14 @@ use function Give\Framework\Http\Response\response;
 class TestGatewayOffsite extends OffSitePaymentGateway
 {
     /**
+     * @unreleased
+     * @var string[]
+     */
+    public $routeMethods = [
+        'testGatewayMethod'
+    ];
+
+    /**
      * @inheritDoc
      */
     public static function id()
