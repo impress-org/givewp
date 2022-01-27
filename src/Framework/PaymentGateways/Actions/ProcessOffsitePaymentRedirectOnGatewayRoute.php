@@ -124,7 +124,7 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
     {
         return Gateway::isOffsitePaymentGateway($this->paymentGateway) ?
             (new RedirectOffsiteSuccessPayment($donationId))
-                ->getUrl((new DonationAccessor())->get()->currentUrl) :
+                ->getUrl((new DonationAccessor())->get()->formEntry->currentUrl) :
             give_get_success_page_uri();
     }
 
@@ -139,7 +139,7 @@ class ProcessOffsitePaymentRedirectOnGatewayRoute
     {
         return Gateway::isOffsitePaymentGateway($this->paymentGateway) ?
             (new RedirectOffsiteFailedPayment($donationId))
-                ->getUrl((new DonationAccessor())->get()->currentUrl) :
+                ->getUrl((new DonationAccessor())->get()->formEntry->currentUrl) :
             give_get_failed_transaction_uri();
     }
 
