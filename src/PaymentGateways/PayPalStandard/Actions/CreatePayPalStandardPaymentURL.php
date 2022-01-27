@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalStandard\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
+use Give\ValueObjects\Address;
 
 /**
  * This class create PayPal Standard payment gateway one time payment url on basis of donor donation query.
@@ -31,14 +32,6 @@ class CreatePayPalStandardPaymentURL
             'last_name' => $paymentData->donorInfo->lastName,
             'email' => $paymentData->donorInfo->email,
 
-            // Donor address
-            'address1' => $paymentData->donorInfo->address->line1,
-            'address2' => $paymentData->donorInfo->address->line2,
-            'city' => $paymentData->donorInfo->address->city,
-            'state' => $paymentData->donorInfo->address->state,
-            'zip' => $paymentData->donorInfo->address->postalCode,
-            'country' => $paymentData->donorInfo->address->country,
-
             // Donation information.
             'invoice' => $paymentData->purchaseKey,
             'amount' => $paymentData->amount,
@@ -60,6 +53,16 @@ class CreatePayPalStandardPaymentURL
             'cbt' => get_bloginfo('name'),
             'bn' => $payPalPartnerCode,
         ];
+
+        if ($paymentData->donorInfo->address instanceof Address) {
+            // Donor address
+            $paypalPaymentArguments['address1'] = $paymentData->donorInfo->address->line1;
+            $paypalPaymentArguments['address2'] = $paymentData->donorInfo->address->line2;
+            $paypalPaymentArguments['city'] = $paymentData->donorInfo->address->city;
+            $paypalPaymentArguments['state'] = $paymentData->donorInfo->address->state;
+            $paypalPaymentArguments['zip'] = $paymentData->donorInfo->address->postalCode;
+            $paypalPaymentArguments['country'] = $paymentData->donorInfo->address->country;
+        }
 
 
         // Donations or regular transactions?
