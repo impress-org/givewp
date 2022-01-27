@@ -22,7 +22,7 @@ trait WhereClause
     protected $wheres = [];
 
     /**
-     * @param  string|Closure  $column  The Closure will receive a Give\Framework\QueryBuilder\WhereQueryBuilder instance
+     * @param  string|Closure|null  $column  The Closure will receive a Give\Framework\QueryBuilder\WhereQueryBuilder instance
      * @param  string|Closure|array|null  $value  The Closure will receive a Give\Framework\QueryBuilder\QueryBuilder instance
      * @param  string  $comparisonOperator
      * @param  string  $logicalOperator
@@ -344,6 +344,21 @@ trait WhereClause
             $column,
             null,
             Operator::NOTNULL
+        );
+    }
+
+
+    /**
+     * @param  Closure  $callback  The closure will receive a Give\Framework\QueryBuilder\QueryBuilder instance
+     *
+     * @return QueryBuilder|WhereQueryBuilder
+     */
+    public function whereExists($callback)
+    {
+        return $this->where(
+            null,
+            $callback,
+            Operator::EXISTS
         );
     }
 
