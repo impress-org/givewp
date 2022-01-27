@@ -36,7 +36,7 @@ class GatewayRoute
             }
 
             $data = GatewayRouteData::fromRequest($_GET);
-            if ($this->hasNonce($data) && ! $this->hasValidNonce($data)) {
+            if ( ! $this->hasValidNonce($data)) {
                 throw new PaymentGatewayException('This route does not have valid nonce.');
             }
 
@@ -111,20 +111,6 @@ class GatewayRoute
     }
 
     /**
-     * Returns whther url has nonce.
-     *
-     * @unreleased
-     *
-     * @param GatewayRouteData $data
-     *
-     * @return bool
-     */
-    private function hasNonce(GatewayRouteData $data)
-    {
-        return ! empty($data->nonce);
-    }
-
-    /**
      * Returns whether nonce is valid.
      *
      * @unreleased
@@ -135,6 +121,6 @@ class GatewayRoute
      */
     private function hasValidNonce(GatewayRouteData $data)
     {
-        return wp_verify_nonce($data->nonce, "$data->gatewayMethod-$data->donationId");
+        return ! empty($data->nonce) && wp_verify_nonce($data->nonce, "$data->gatewayMethod-$data->donationId");
     }
 }
