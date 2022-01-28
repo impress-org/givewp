@@ -2,9 +2,9 @@
 
 namespace Give\Framework\QueryBuilder;
 
-use Give\Framework\QueryBuilder\Models\Join;
-use Give\Framework\QueryBuilder\Models\JoinCondition;
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\Join;
+use Give\Framework\QueryBuilder\Clauses\JoinCondition;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\Types\JoinType;
 use Give\Framework\QueryBuilder\Types\Operator;
 

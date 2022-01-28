@@ -3,7 +3,7 @@
 namespace Give\Framework\Database;
 
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 

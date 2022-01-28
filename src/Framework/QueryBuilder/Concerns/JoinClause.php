@@ -5,8 +5,8 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Closure;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
-use Give\Framework\QueryBuilder\Models\Join;
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\Join;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
  * @unreleased

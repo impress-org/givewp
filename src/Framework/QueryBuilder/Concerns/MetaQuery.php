@@ -3,8 +3,8 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
-use Give\Framework\QueryBuilder\Models\MetaTable;
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\MetaTable;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
  * @unreleased

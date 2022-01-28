@@ -3,9 +3,9 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
-use Give\Framework\QueryBuilder\Models\Having;
+use Give\Framework\QueryBuilder\Clauses\Having;
 
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\Types\Math;
 use Give\Framework\QueryBuilder\Types\Operator;
 

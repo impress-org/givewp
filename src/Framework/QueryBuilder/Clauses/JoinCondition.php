@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Models;
+namespace Give\Framework\QueryBuilder\Clauses;
 
 use Give\Framework\QueryBuilder\Types\Operator;
 use InvalidArgumentException;

@@ -3,8 +3,8 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
-use Give\Framework\QueryBuilder\Models\From;
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\From;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
  * @unreleased

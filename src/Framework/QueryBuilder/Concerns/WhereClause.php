@@ -4,8 +4,8 @@ namespace Give\Framework\QueryBuilder\Concerns;
 
 use Closure;
 use Give\Framework\Database\DB;
-use Give\Framework\QueryBuilder\Models\RawSQL;
-use Give\Framework\QueryBuilder\Models\Where;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\Where;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\Types\Operator;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;

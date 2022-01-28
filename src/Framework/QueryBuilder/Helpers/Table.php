@@ -2,7 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Helpers;
 
-use Give\Framework\QueryBuilder\Models\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
  * @unreleased
