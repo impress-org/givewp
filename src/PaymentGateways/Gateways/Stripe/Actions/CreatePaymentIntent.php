@@ -47,12 +47,12 @@ class CreatePaymentIntent extends WorkflowAction
 
         $intent = give( PaymentIntent::class )->create( $intent_args );
 
-        give_insert_payment_note( $paymentData->donationId, 'Stripe Charge/Payment Intent ID: ' . $intent->id() );
-        give_insert_payment_note( $paymentData->donationId, 'Stripe Payment Intent Client Secret: ' . $intent->clientSecret() );
+        give_insert_payment_note( $paymentData->donationId, sprintf( __( 'Stripe Charge/Payment Intent ID: %s', 'give' ), $intent->id() ) );
+        give_insert_payment_note( $paymentData->donationId, sprintf( __( 'Stripe Payment Intent Client Secret: %s', 'give' ), $intent->clientSecret() ) );
         give_update_meta( $paymentData->donationId, '_give_stripe_payment_intent_client_secret', $intent->clientSecret() );
 
         if( 'requires_action' == $intent->status() ) {
-            give_insert_payment_note($paymentData->donationId, 'Stripe requires additional action to be fulfilled.');
+            give_insert_payment_note($paymentData->donationId, __( 'Stripe requires additional action to be fulfilled.', 'give' ));
             give_update_meta($paymentData->donationId, '_give_stripe_payment_intent_require_action_url', $intent->nextActionRedirectUrl());
         }
 
