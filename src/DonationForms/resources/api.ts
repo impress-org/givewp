@@ -12,7 +12,6 @@ const headers = {
 };
 
 export const fetchWithArgs = (endpoint, args, method = 'GET') => {
-    console.log(endpoint);
     const url = new URL(window.GiveDonationForms.apiRoot + endpoint);
     for (const [param, value] of Object.entries(args)) {
         url.searchParams.set(param, value as string);
@@ -20,7 +19,12 @@ export const fetchWithArgs = (endpoint, args, method = 'GET') => {
     return fetch(url.href, {
         method: method,
         headers: headers,
-    }).then(res => res.json());
+    }).then((res) => {
+        if(!res.ok){
+            throw new Error();
+        }
+        return res.json();
+    });
 }
 
 
