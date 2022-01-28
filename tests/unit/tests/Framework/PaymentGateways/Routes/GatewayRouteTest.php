@@ -4,56 +4,67 @@ use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Routes\GatewayRoute;
-use PHPUnit\Framework\TestCase;
+use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
 /**
  * @unreleased
  */
-class GatewayRouteTest extends TestCase
+class GatewayRouteTest extends Give_Unit_Test_Case
 {
     /**
      * @var GatewayRoute
      */
     private $gatewayRoute;
 
-    /**
-     * @var MockPaypalOffsite $mockPayPalOffsite
-     */
-    private $mockPayPalOffsite;
-
-    protected function setUp()
+    public function setUp()
     {
+        parent::setUp();
+
         $this->gatewayRoute = new GatewayRoute();
-        $this->mockPayPalOffsite = $this->getMockForAbstractClass(
-            MockPaypalOffsite::class,
-            [],
-            '',
-            true,
-            true,
-            true,
-            ['returnSuccessFromOffsiteRedirect', 'handleGatewayRouteMethod']
+
+        give(PaymentGatewayRegister::class)
+            ->registerGateway(MockPaypalOffsiteForGatewayRouteTest::class);
+
+        $this->mock(
+            MockPaypalOffsiteForGatewayRouteTest::class,
+            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+                $mock = $mockBuilder
+                    ->setMethods(['returnSuccessFromOffsiteRedirect', 'handleIpnNotification'])
+                    ->getMock();
+
+                $mock->method('returnSuccessFromOffsiteRedirect')
+                     ->willThrowException(
+                         new InvalidArgumentException('returnSuccessFromOffsiteRedirect function called.')
+                     );
+
+                $mock->method('handleIpnNotification')
+                     ->willThrowException(
+                         new InvalidArgumentException('handleIpnNotification function called.')
+                     );
+
+                return $mock;
+            }
         );
     }
 
     /**
      * @return void
      */
-    protected function tearDown()
+    public function tearDown()
     {
-        parent::tearDown();
-
         // De register gateway.
-        give(PaymentGatewayRegister::class)->unregisterGateway($this->mockPayPalOffsite->getId());
+        give(PaymentGatewayRegister::class)
+            ->unregisterGateway(MockPaypalOffsiteForGatewayRouteTest::id());
 
-        // Remove mock class from container.
-        give()->offsetUnset(get_class($this->mockPayPalOffsite));
+        parent::tearDown();
     }
 
     public function testThrowExceptionOnInvalidGatewayId()
     {
         $gatewayRouteData = GatewayRouteData::fromRequest(
             [
-                'give-gateway-id' => 'mock-payapl-offsite',
+                'give-gateway-id' => 'thisGatewayRouteISNotRegistered',
                 'give-gateway-method' => 'returnSuccessFromOffsiteRedirect',
                 'give-donation-id' => 123,
                 '_wpnonce' => ''
@@ -66,11 +77,9 @@ class GatewayRouteTest extends TestCase
 
     public function testThrowExceptionOnInvalidNonce()
     {
-        give(PaymentGatewayRegister::class)->registerGateway(get_class($this->mockPayPalOffsite));
-
         $gatewayRouteData = GatewayRouteData::fromRequest(
             [
-                'give-gateway-id' => $this->mockPayPalOffsite->getId(),
+                'give-gateway-id' => MockPaypalOffsiteForGatewayRouteTest::id(),
                 'give-gateway-method' => 'returnSuccessFromOffsiteRedirect',
                 'give-donation-id' => 123,
                 '_wpnonce' => 'demo'
@@ -83,10 +92,8 @@ class GatewayRouteTest extends TestCase
 
     public function testThrowExceptionOnInvalidGatewayCallback()
     {
-        give(PaymentGatewayRegister::class)->registerGateway(get_class($this->mockPayPalOffsite));
-
         $gatewayRouteData = [
-            'give-gateway-id' => $this->mockPayPalOffsite->getId(),
+            'give-gateway-id' => MockPaypalOffsiteForGatewayRouteTest::id(),
             'give-gateway-method' => 'thisCallbackDoesNotExistInMockClass',
             'give-donation-id' => 123,
         ];
@@ -104,18 +111,8 @@ class GatewayRouteTest extends TestCase
 
     public function testRedirectOffsiteReturnCallbackCalled()
     {
-        give(PaymentGatewayRegister::class)->registerGateway(get_class($this->mockPayPalOffsite));
-
-        $this->mockPayPalOffsite
-            ->method('returnSuccessFromOffsiteRedirect')
-            ->willThrowException(new InvalidArgumentException('returnSuccessFromOffsiteRedirect function called.'));
-
-        give()->bind(get_class($this->mockPayPalOffsite), function () {
-            return $this->mockPayPalOffsite;
-        });
-
         $gatewayRouteData = [
-            'give-gateway-id' => $this->mockPayPalOffsite->getId(),
+            'give-gateway-id' => MockPaypalOffsiteForGatewayRouteTest::id(),
             'give-gateway-method' => 'returnSuccessFromOffsiteRedirect',
             'give-donation-id' => 123,
         ];
@@ -133,19 +130,9 @@ class GatewayRouteTest extends TestCase
 
     public function testGatewayRouteCallbackCalled()
     {
-        give(PaymentGatewayRegister::class)->registerGateway(get_class($this->mockPayPalOffsite));
-
-        $this->mockPayPalOffsite
-            ->method('handleGatewayRouteMethod')
-            ->willThrowException(new InvalidArgumentException('handleGatewayRouteMethod function called.'));
-
-        give()->bind(get_class($this->mockPayPalOffsite), function () {
-            return $this->mockPayPalOffsite;
-        });
-
         $gatewayRouteData = [
-            'give-gateway-id' => $this->mockPayPalOffsite->getId(),
-            'give-gateway-method' => 'handleGatewayRouteMethod',
+            'give-gateway-id' => MockPaypalOffsiteForGatewayRouteTest::id(),
+            'give-gateway-method' => 'handleIpnNotification',
             'give-donation-id' => 123,
         ];
 
@@ -156,7 +143,46 @@ class GatewayRouteTest extends TestCase
 
         $gatewayRouteDTO = GatewayRouteData::fromRequest($gatewayRouteData);
 
-        $this->expectExceptionMessage('handleGatewayRouteMethod function called.');
+        $this->expectExceptionMessage('handleIpnNotification function called.');
         $this->gatewayRoute->process($gatewayRouteDTO);
+    }
+}
+
+class MockPaypalOffsiteForGatewayRouteTest extends OffSitePaymentGateway
+{
+    public $routeMethods = ['handleIpnNotification'];
+
+    public function handleIpnNotification()
+    {
+    }
+
+    public function getLegacyFormFieldMarkup($formId)
+    {
+        // TODO: Implement getLegacyFormFieldMarkup() method.
+    }
+
+    public static function id()
+    {
+        return 'mock-offsite-paypal';
+    }
+
+    public function getId()
+    {
+        return self::id();
+    }
+
+    public function getName()
+    {
+        // TODO: Implement getName() method.
+    }
+
+    public function getPaymentMethodLabel()
+    {
+        // TODO: Implement getPaymentMethodLabel() method.
+    }
+
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        // TODO: Implement createPayment() method.
     }
 }
