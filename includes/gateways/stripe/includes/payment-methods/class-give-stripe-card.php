@@ -147,12 +147,6 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		 */
 		public function process_payment( $donation_data ) {
 
-            /**
-             * Early return to prevent legacy processing of the Stripe Credit Card gateway.
-             * See src/PaymentGateways/Gateways/Stripe/CreditCardGateway.php
-             */
-            return;
-
 			// Bailout, if the current gateway and the posted gateway mismatched.
 			if ( 'stripe' !== $donation_data['post_data']['give-gateway'] ) {
 				return;
