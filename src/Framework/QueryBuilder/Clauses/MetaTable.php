@@ -2,7 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Clauses;
 
-use Give\Framework\QueryBuilder\Helpers\Table;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @unreleased
@@ -31,7 +31,7 @@ class MetaTable
      */
     public function __construct($table, $metaKeyColumnName, $metaValueColumnName)
     {
-        $this->tableName       = Table::prefix($table);
+        $this->tableName       = QueryBuilder::prefixTable($table);
         $this->keyColumnName   = trim($metaKeyColumnName);
         $this->valueColumnName = trim($metaValueColumnName);
     }

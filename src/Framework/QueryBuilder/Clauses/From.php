@@ -2,7 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Clauses;
 
-use Give\Framework\QueryBuilder\Helpers\Table;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @unreleased
@@ -25,7 +25,7 @@ class From
      */
     public function __construct($table, $alias = null)
     {
-        $this->table = Table::prefix($table);
+        $this->table = QueryBuilder::prefixTable($table);
         $this->alias = trim($alias);
     }
 }

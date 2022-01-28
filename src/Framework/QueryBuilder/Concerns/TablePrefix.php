@@ -1,20 +1,20 @@
 <?php
 
-namespace Give\Framework\QueryBuilder\Helpers;
+namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
  * @unreleased
  */
-class Table
+trait TablePrefix
 {
     /**
      * @param  string  $table
      *
      * @return string
      */
-    public static function prefix($table)
+    public static function prefixTable($table)
     {
         global $wpdb;
 
