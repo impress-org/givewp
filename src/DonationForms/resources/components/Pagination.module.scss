@@ -2,7 +2,10 @@
     .container {
         display: flex;
         justify-content: space-around;
-
+        align-items: center;
+        margin-block-start: 0.125rem;
+        margin-block-end: 0.125rem;
+        min-height: 1.875rem;
         & > * {
             margin-inline-start: 0.125rem;
             margin-inline-end: 0.125rem;

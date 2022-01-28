@@ -7,6 +7,7 @@ import { mutate } from 'swr'
 import styles from './admin-donation-forms.module.scss';
 import Pagination from './components/Pagination.js';
 import Shortcode from './components/Shortcode';
+import loadingForms from './loadingForms.json';
 import {fetchWithArgs, keyFunction, useDonationForms} from './api';
 
 type DonationForm = {
@@ -31,6 +32,7 @@ function AdminDonationForms() {
         page: page ? page : 1,
         perPage: 10
     });
+
     const params = {
         page: state.page,
         perPage: state.perPage
@@ -38,25 +40,16 @@ function AdminDonationForms() {
 
     const {data, error, isValidating} = useDonationForms(params);
 
-    function deleteForm(event) {
-        const endpoint = data.trash ? '/trash' : '/delete';
-        mutateForm(event, endpoint, 'DELETE');
-    }
-
-    function duplicateForm(event) {
-        mutateForm(event, '/duplicate', 'POST');
-    }
-
     async function mutateForm(event, endpoint, method) {
         const response = await fetchWithArgs(endpoint, {...params, ids: event.target.dataset.formid}, method);
         try {
             //mutate the data without revalidating current page
             const currentKey = keyFunction(params);
             await mutate(currentKey, {...data, ...response}, false);
-            //revalidate all pages other than the one we're currently on and null their data
+            //revalidate all pages after the one we're currently on and null their data
             const mutations = [];
-            for(let i = 0; i <= Math.ceil(data.total / state.perPage); i++ ) {
-                const invalidKey = `${i},${state.perPage}`;
+            for(let i = response.page + 1; i <= Math.ceil(data.total / state.perPage); i++ ) {
+                const invalidKey = keyFunction({page: i, perPage: state.perPage});
                 if(invalidKey != currentKey) {
                     mutations.push(mutate(invalidKey, null));
                 }
@@ -68,6 +61,97 @@ function AdminDonationForms() {
         }
     }
 
+    function deleteForm(event) {
+        const endpoint = data.trash ? '/trash' : '/delete';
+        mutateForm(event, endpoint, 'DELETE');
+    }
+
+    function duplicateForm(event) {
+        mutateForm(event, '/duplicate', 'POST');
+    }
+
+    function TableRows(data) {
+        const forms = data ? data.forms : loadingForms;
+        const trash = data ? data.trash : false;
+        return forms.map((form) => (
+            <tr key={form.id} className={cx(styles.tableRow, !data && styles.loading)}>
+                <td className={styles.tableCell}>
+                    <div className={styles.idBadge}>{form.id}</div>
+                </td>
+                <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
+                    <a href={form.edit}>{form.name}</a>
+                    <div
+                        role="group"
+                        aria-label={__('Actions', 'give')}
+                        className={styles.tableRowActions}
+                    >
+                        <a href={form.edit} className={styles.action}>
+                            Edit <span className="give-visually-hidden">{form.name}</span>
+                        </a>
+                        <button type="button" onClick={deleteForm} data-formid={form.id} className={styles.action}>
+                            {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
+                            <span className="give-visually-hidden">{form.name}</span>
+                        </button>
+                        <a href={form.permalink}>{__('View', 'give')}</a>
+                        <button type="button" onClick={duplicateForm} data-formid={form.id} className={styles.action}>
+                            {__('Duplicate', 'give')}
+                        </button>
+                    </div>
+                </th>
+                <td className={styles.tableCell} style={{textAlign: 'end'}}>
+                    {form.amount}
+                </td>
+                <td className={styles.tableCell}>
+                    {form.goal ? (
+                        <>
+                            <div className={styles.goalProgress}>
+                                                    <span
+                                                        style={{
+                                                            width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
+                                                        }}
+                                                    />
+                            </div>
+                            <a
+                                href={`${form.edit}&give_tab=donation_goal_options`}
+                            >
+                                {form.goal.actual}
+                            </a>
+                            {form.goal.goal ? (
+                                <span>
+                                    {' '}{__('of', 'give')} {form.goal.goal}{' '}
+                                    {form.goal.format != 'amount' ? form.goal.format : null}
+                                </span>
+                            ) : null}
+                        </>
+                    ) : (
+                        <span>{__('No Goal Set', 'give')}</span>
+                    )}
+                </td>
+                <td className={styles.tableCell}>
+                    <a
+                        href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}
+                    >
+                        {form.donations}
+                    </a>
+                </td>
+                <td className={styles.tableCell}>
+                    <a
+                        href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=${form.id}`}
+                    >
+                        {form.revenue}
+                    </a>
+                </td>
+                <td className={styles.tableCell}>
+                    <Shortcode code={form.shortcode} />
+                </td>
+                <td className={styles.tableCell}>{form.datetime}</td>
+                <td className={styles.tableCell}>
+                    <div className={cx(styles.statusBadge, styles[form.status])}>{form.status}</div>
+                </td>
+            </tr>
+        ));
+    }
+
     return (
         <article>
             <div className={styles.pageHeader}>
@@ -77,24 +161,22 @@ function AdminDonationForms() {
                 </a>
             </div>
             <div className={styles.pageContent}>
-                {data &&
-                    <nav className={styles.paginationContainer}>
-                        <span className={styles.totalItems}>{data.total.toString() + " " + __('forms', 'give')}</span>
-                        <Pagination
-                            currentPage={data.page}
-                            totalPages={Math.ceil(data.total / state.perPage)}
-                            disabled={false}
-                            setPage={(page) => {
-                                setState((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        page: page,
-                                    };
-                                });
-                            }}
-                        />
-                    </nav>
-                }
+                <div className={styles.pageActions}>
+                    <Pagination
+                        currentPage={data ? data.page : state.page}
+                        totalPages={data ? Math.ceil(data.total / state.perPage) : 1}
+                        disabled={false}
+                        totalItems={data ? data.total : -1}
+                        setPage={(page) => {
+                            setState((prevState) => {
+                                return {
+                                    ...prevState,
+                                    page: page
+                                };
+                            });
+                        }}
+                    />
+                </div>
                 <div role="group" aria-labelledby="giveDonationFormsTableCaption" className={styles.tableGroup}>
                     <table className={styles.table}>
                         <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
@@ -137,84 +219,7 @@ function AdminDonationForms() {
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            {data && data.forms.map((form) => (
-                                <tr key={form.id} className={styles.tableRow}>
-                                    <td className={styles.tableCell}>
-                                        <div className={styles.idBadge}>{form.id}</div>
-                                    </td>
-                                    <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
-                                        <a href={form.edit}>{form.name}</a>
-                                        <div
-                                            role="group"
-                                            aria-label={__('Actions', 'give')}
-                                            className={styles.tableRowActions}
-                                        >
-                                            <a href={form.edit} className={styles.action}>
-                                                Edit <span className="give-visually-hidden">{form.name}</span>
-                                            </a>
-                                            <button type="button" onClick={deleteForm} data-formid={form.id} className={styles.action}>
-                                                {data.trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
-                                                <span className="give-visually-hidden">{form.name}</span>
-                                            </button>
-                                            <a href={form.permalink}>{__('View', 'give')}</a>
-                                            <button type="button" onClick={duplicateForm} data-formid={form.id} className={styles.action}>
-                                                {__('Duplicate', 'give')}
-                                            </button>
-                                        </div>
-                                    </th>
-                                    <td className={styles.tableCell} style={{textAlign: 'end'}}>
-                                        {form.amount}
-                                    </td>
-                                    <td className={styles.tableCell}>
-                                        {form.goal ? (
-                                            <>
-                                                <div className={styles.goalProgress}>
-                                                    <span
-                                                        style={{
-                                                            width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
-                                                        }}
-                                                    />
-                                                </div>
-                                                <a
-                                                    href={`post.php?post=${form.id}&action=edit&give_tab=donation_goal_options`}
-                                                >
-                                                    {form.goal.actual}
-                                                </a>
-                                                {form.goal.goal ? (
-                                                    <span>
-                                                        {' '}
-                                                        {__('of', 'give')} {form.goal.goal}{' '}
-                                                        {form.goal.format != 'amount' ? form.goal.format : null}
-                                                    </span>
-                                                ) : null}
-                                            </>
-                                        ) : (
-                                            'No Goal Set'
-                                        )}
-                                    </td>
-                                    <td className={styles.tableCell}>
-                                        <a
-                                            href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}
-                                        >
-                                            {form.donations}
-                                        </a>
-                                    </td>
-                                    <td className={styles.tableCell}>
-                                        <a
-                                            href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=${form.id}`}
-                                        >
-                                            {form.revenue}
-                                        </a>
-                                    </td>
-                                    <td className={styles.tableCell}>
-                                        <Shortcode code={form.shortcode} />
-                                    </td>
-                                    <td className={styles.tableCell}>{form.datetime}</td>
-                                    <td className={styles.tableCell}>
-                                        <div className={cx(styles.statusBadge, styles[form.status])}>{form.status}</div>
-                                    </td>
-                                </tr>
-                            ))}
+                            <TableRows data={data}/>
                         </tbody>
                     </table>
                 </div>
