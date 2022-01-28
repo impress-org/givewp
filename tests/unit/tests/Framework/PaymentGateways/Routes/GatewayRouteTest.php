@@ -12,7 +12,8 @@ use PHPUnit\Framework\TestCase;
  */
 class GatewayRouteTest extends TestCase
 {
-    public function testThrowExceptionOnInvalidGatewayId(){
+    public function testThrowExceptionOnInvalidGatewayId()
+    {
         $gatewayRoute = new GatewayRoute();
 
         $gatewayRouteData = GatewayRouteData::fromRequest(
@@ -24,7 +25,7 @@ class GatewayRouteTest extends TestCase
             ]
         );
 
-        $this->expectException( PaymentGatewayException::class );
-        $gatewayRoute->process( $gatewayRouteData );
+        $this->expectExceptionMessage('This route is not valid.');
+        $gatewayRoute->process($gatewayRouteData);
     }
 }
