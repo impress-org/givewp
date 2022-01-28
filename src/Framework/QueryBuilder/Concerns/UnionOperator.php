@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Framework\QueryBuilder\Clauses\Union;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
@@ -22,7 +23,7 @@ trait UnionOperator
     public function union(...$union)
     {
         $this->unions = array_map(function (QueryBuilder $builder) {
-            return sprintf('UNION %s', $builder->getSQL());
+            return new Union($builder);
         }, $union);
 
         return $this;
@@ -36,16 +37,23 @@ trait UnionOperator
     public function unionAll(...$union)
     {
         $this->unions = array_map(function (QueryBuilder $builder) {
-            return sprintf('UNION ALL %s', $builder->getSQL());
+            return new Union($builder, true);
         }, $union);
 
         return $this;
     }
 
+    /**
+     * @return array|string[]
+     */
     protected function getUnionSQL()
     {
-        return ! empty($this->unions)
-            ? [implode(' ', $this->unions)]
-            : [];
+        if (empty($this->unions)) {
+            return [];
+        }
+
+        return array_map(function (Union $union) {
+            return ( $union->all ? 'UNION ALL ' : 'UNION ' ) . $union->builder->getSQL();
+        }, $this->unions);
     }
 }
