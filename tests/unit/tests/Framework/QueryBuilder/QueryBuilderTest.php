@@ -560,6 +560,23 @@ final class QueryBuilderTest extends TestCase
     }
 
 
+    public function testHaving()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->where('post_parent', 5)
+            ->groupBy('id')
+            ->having('id', '>', 10);
+
+        $this->assertContains(
+            "SELECT * FROM posts WHERE post_parent = '5' GROUP BY id HAVING 'id' > '10'",
+            $builder->getSQL()
+        );
+    }
+
     public function testHavingCount()
     {
         $builder = new QueryBuilder();
