@@ -29,8 +29,15 @@ trait FromClause
         return $this;
     }
 
+    /**
+     * @return array|string[]
+     */
     protected function getFromSQL()
     {
+        if (empty($this->froms)) {
+            return [];
+        }
+
         return [
             'FROM ' . implode(
                 ', ',
