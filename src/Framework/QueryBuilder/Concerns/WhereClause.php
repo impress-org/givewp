@@ -388,10 +388,14 @@ trait WhereClause
      *
      * @param $sql
      * @param ...$args
+     *
+     * @return $this
      */
     public function whereRaw($sql, ...$args)
     {
         $this->wheres[] = new RawSQL($sql, $args);
+
+        return $this;
     }
 
     /**
