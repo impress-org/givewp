@@ -5,6 +5,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\Clauses\MetaTable;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @unreleased
@@ -52,10 +53,10 @@ trait MetaQuery
      */
     protected function getMetaTable($table)
     {
-        $tableName = ($table instanceof RawSQL) ? $table->sql : $table;
+        $table = QueryBuilder::prefixTable($table);
 
         foreach ($this->metaTablesConfigs as $metaTable) {
-            if ($metaTable->tableName === $tableName) {
+            if ($metaTable->tableName === $table) {
                 return $metaTable;
             }
         }
