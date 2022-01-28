@@ -10,7 +10,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 class From
 {
     /**
-     * @var string
+     * @var string|RawSQL
      */
     public $table;
 
