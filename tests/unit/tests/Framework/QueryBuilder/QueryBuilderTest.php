@@ -1009,16 +1009,30 @@ final class QueryBuilderTest extends TestCase
         );
     }
 
+
     public function testSelectRaw()
     {
         $builder = new QueryBuilder();
 
-        $builder
-            ->selectRaw('SELECT * FROM some_table WHERE something = %s', 'Something')
-            ->from(DB::raw('give_donations'));
+        $builder->selectRaw('SELECT * FROM posts WHERE post_status = %s', 'give_subscription');
 
         $this->assertContains(
-            "SELECT * FROM some_table WHERE something = 'Something' FROM give_donations",
+            "SELECT * FROM posts WHERE post_status = 'give_subscription'",
+            $builder->getSQL()
+        );
+    }
+
+    public function testSelectRawChain()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('ID', 'post_title')
+            ->selectRaw('(SELECT COUNT(ID) FROM posts WHERE post_status = %s) as post_count', 'give_subscription')
+            ->from(DB::raw('posts'));
+
+        $this->assertContains(
+            "SELECT ID, post_title, (SELECT COUNT(ID) FROM posts WHERE post_status = 'give_subscription') as post_count FROM posts",
             $builder->getSQL()
         );
     }
