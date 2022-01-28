@@ -23,21 +23,26 @@ class CreditCardGateway extends PaymentGateway
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment( GatewayPaymentData $paymentData )
     {
         $workflow = new Workflow();
         $workflow->bind( $paymentData );
 
-        $workflow->action(new Actions\GetPaymentMethodFromRequest);
-        $workflow->action(new Actions\SaveDonationSummary);
-        $workflow->action(new Actions\GetOrCreateStripeCustomer);
-        $workflow->action(new Actions\CreatePaymentIntent);
+        $workflow->action( new Actions\GetPaymentMethodFromRequest );
+        $workflow->action( new Actions\SaveDonationSummary );
+        $workflow->action( new Actions\GetOrCreateStripeCustomer );
+        $workflow->action( new Actions\CreatePaymentIntent );
 
         return $this->handlePaymentIntentStatus(
             $workflow->resolve( PaymentIntent::class )
         );
     }
 
+    /**
+     * @param PaymentIntent $paymentIntent
+     * @return PaymentProcessing|RedirectOffsite
+     * @throws PaymentIntentException
+     */
     public function handlePaymentIntentStatus( PaymentIntent $paymentIntent )
     {
         switch( $paymentIntent->status() )  {
