@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe;
 
 use ReflectionMethod;
+use ReflectionParameter;
 
 /**
  * Encapsulate sequential processes with a shared context.
@@ -36,9 +37,20 @@ class Workflow
 
         $reflection = new ReflectionMethod($action, '__invoke');
         $action( ...array_map( function( $parameter ) {
-            return $this->resolve( $parameter->getType()->getName() );
+            return $this->resolve( $this->getReflectionParameterClassName( $parameter ) );
         }, $reflection->getParameters() ) );
 
         return $this;
+    }
+
+    /**
+     * @param ReflectionParameter $parameter
+     * @return string
+     */
+    protected function getReflectionParameterClassName( ReflectionParameter $parameter )
+    {
+        return method_exists( $parameter, 'getType' )
+            ? $parameter->getType()->getName()
+            : $parameter->getClass()->name;
     }
 }
