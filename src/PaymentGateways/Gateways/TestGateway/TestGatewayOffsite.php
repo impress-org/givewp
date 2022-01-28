@@ -59,7 +59,7 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         if (FormUtils::isLegacyForm($formId)) {
             return false;
