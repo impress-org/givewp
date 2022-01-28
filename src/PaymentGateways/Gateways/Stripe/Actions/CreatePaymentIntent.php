@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
-use Give\LegacyPaymentGateways\Adapters\LegacyDonationData;
+use Give\LegacyPaymentGateways\DataTransferObjects\LegacyDonationData;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;

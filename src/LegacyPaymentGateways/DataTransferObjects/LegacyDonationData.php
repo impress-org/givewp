@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\LegacyPaymentGateways\Adapters;
+namespace Give\LegacyPaymentGateways\DataTransferObjects;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
