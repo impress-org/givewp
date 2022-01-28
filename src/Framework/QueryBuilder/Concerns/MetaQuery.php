@@ -52,8 +52,10 @@ trait MetaQuery
      */
     protected function getMetaTable($table)
     {
+        $tableName = ($table instanceof RawSQL) ? $table->sql : $table;
+
         foreach ($this->metaTablesConfigs as $metaTable) {
-            if ($metaTable->tableName === $table) {
+            if ($metaTable->tableName === $tableName) {
                 return $metaTable;
             }
         }
