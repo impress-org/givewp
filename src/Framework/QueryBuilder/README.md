@@ -2,126 +2,499 @@
 
 Query Builder helper class is used to write SQL queries
 
-### Nested WHERE statements
+- [DB](#db)
 
-If closure is passed as the first parameter to the ```where``` method, the Closure will receive a ```Give\Framework\QueryBuilder\WhereQueryBuilder``` instance
+- [Select statements](#from-clause)
 
-```php
-$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
+- [From Clause](#select-statements)
 
-$builder
-    ->select( '*' )
-    ->from( $this->postsTable )
-    ->where( 'post_status', 'subscription')
-    ->where( function(WhereQueryBuilder $builder){
-        $builder
-            ->where( 'post_status', 'give_subscription')
-            ->orWhere( 'post_status', 'give_donation');
-    });
-```
+- [Joins](#joins)
+    - [LEFT Join](#left-join)
+    - [RIGHT Join](#right-join)
+    - [INNER Join](#inner-join)
+    - [Join Raw](#join-raw)
+    - [Advanced Join Clauses](#advanced-join-clauses)
 
-Generated SQL:
+- [Unions](#joins)
 
-```sql
-SELECT *
-FROM wp_posts
-WHERE post_status = 'subscription'
-  AND (post_status = 'give_subscription' OR post_status = 'give_donation')
-```
+- [Where Clauses](#where-clauses)
+    - [Where](#where-clauses)
+    - [Or Where](#or-where-clauses)
+    - [Where IN](#where-in-clauses)
+    - [Where BETWEEN](#where-between-clauses)
+    - [Where LIKE](#where-like-clauses)
+    - [Where IS NULL](#where-is-null-clauses)
+    - [Where EXISTS](#where-exists-clauses)
+    - [Subquery Where Clauses](#subquery-where-clauses)
+    - [Nested Where Clauses](#nested-where-clauses)
 
-### Sub-select within the query
+- [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit--offset)
+    - [Ordering](#ordering)
+    - [Grouping](#grouping)
+    - [Limit & Offset](#limit--offset)
 
-If closure is passed as the second parameter to the ```where```,  ```orWhere```, ```whereIn```, etc. methods, the Closure will receive a ```Give\Framework\QueryBuilder\QueryBuilder``` instance
+- [Special methods for working with metadata](#special-methods-for-working-with-metadata)
+  - [attachMeta](#attachmeta)
+  - [configureMetaTable](#configuremetatable)
 
-```php
-$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
 
-$builder
-    ->select('*')
-    ->from($this->postsTable)
-    ->where('post_status', 'subscription')
-    ->whereIn('ID', function (QueryBuilder $builder) {
-        $builder
-            ->select(['meta_value', 'donation_id'])
-            ->from($this->donationMetaTable)
-            ->where('meta_key', 'donation_id');
-    });
-```
+## DB
 
-Generated SQL:
+`DB` class is a static decorator for the `$wpdb` class, but it has a few methods that are exceptions to that.
+Methods `DB::table()` and `DB::raw()`.
 
-```sql
-SELECT *
-FROM wp_posts
-WHERE post_status = 'subscription'
-  AND ID IN (SELECT meta_value AS donation_id FROM wp_give_donationmeta WHERE meta_key = 'donation_id')
-```
+`DB::table()` is a static facade for the `QueryBuilder` class, and it accepts two string arguments, `$tableName`
+and `$tableAlias`.
 
-### Joins
+Under the hood, it will use the `QueryBuilder::from` method to set the table name, so calling `QueryBuilder::from` when using `DB::table` method will return an unexpected result. Basically, we are telling the `QueryBuilder` that we want to select data from two tables.
 
-For simple JOIN clauses, you can use ```leftJoin```, ```rightJoin```, and ```innerJoin``` methods.
+### Important
+
+When using `DB::table(tableName)` method, the `tableName` is prefixed with `$wpdb->prefix`. To bypass that, you can
+use `DB::raw` method which will tell `QueryBuilder` not to prefix the table name.
 
 ```php
-$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
-
-$builder
-    ->select('*')
-    ->from($this->postsTable, 'posts')
-    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
-    ->where('posts.post_type', 'give_payment')
-    ->where('posts.post_status', 'give_subscription')
-    ->where('donationMeta.meta_key', 'subscription_id')
-    ->where('donationMeta.meta_value', $subscriptionId)
-    ->orderBy('posts.post_date', 'DESC');
+DB::table(DB::raw('posts'));
 ```
 
-Generated SQL:
+## Select statements
 
-```sql
-SELECT *
-FROM wp_posts AS posts
-         LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id
-WHERE posts.post_type = 'give_payment'
-  AND posts.post_status = 'give_subscription'
-  AND donationMeta.meta_key = 'subscription_id'
-  AND donationMeta.meta_value = '1'
-ORDER BY posts.post_date DESC
-```
+By using the `QueryBuilder::select` method, you can specify a custom `SELECT` statement for the query.
 
-For complex JOIN clauses, you can use ```join``` method and pass a Closure. The Closure will receive a ```Give\Framework\QueryBuilder\JoinQueryBuilder``` instance
 ```php
-$builder
-    ->from('tableOne')
-    ->join(
-        function (JoinQueryBuilder $builder) {
-            $builder
-                ->leftJoin( 'table_two', 'tableTwoAlias')
-                ->joinOn('tableOne.foreignKey', 'tableTwoAlias.primaryKey')
-                ->joinAnd('tableTwoAlias.meta_key', 'subscription_id', $escape = true);
-        }
-    );
+DB::table('posts')->select('ID', 'post_title', 'post_date');
 ```
 
 Generated SQL
 
 ```sql
-SELECT *
-FROM tableOne
-         LEFT JOIN tableTwo tableTwoAlias
-                   ON tableOne.foreignKey = tableTwoAlias.primaryKey
-                       AND tableTwoAlias.meta_key = 'subscription_id'
+SELECT ID, post_title, post_date FROM wp_posts
 ```
 
-### Special method for working with meta tables (attachMeta)
-
-Under the hood ```attachMeta``` will add join clause for each defined ```meta_key``` column. And each column will be
-added in select statement as well, which means the meta columns will be returned in query result. Aliasing meta columns
-is recommended when using ```attachMeta``` method.
+You can also specify a custom `SELECT` statement with `QueryBuilder::selectRaw` method. This method accepts an optional array of
+bindings as its second argument.
 
 ```php
-$builder = new \Give\Framework\QueryBuilder\QueryBuilder();
+DB::table('posts')
+    ->select('ID')
+    ->selectRaw('(SELECT ID from wp_posts WHERE post_status = %s) AS subscriptionId', 'give_subscription');
+```
 
-$builder
+Generated SQL
+
+```sql
+SELECT ID, (SELECT ID from wp_posts WHERE post_status = 'give_subscription') AS subscriptionId FROM wp_posts
+```
+
+By default, all columns will be selected from a database table.
+
+```php
+DB::table('posts');
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts
+```
+
+## From clause
+
+By using the `QueryBuilder::from()` method, you can specify a custom `FROM` clause for the query.
+
+
+```php
+$builder = new QueryBuilder();
+$builder->from('posts');
+```
+
+Set multiple `FROM` clauses
+
+```php
+$builder = new QueryBuilder();
+$builder->from('posts');
+$builder->from('postmeta');
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts, wp_postmeta
+```
+
+### Important
+
+Table name is prefixed with `$wpdb->prefix`. To bypass that, you can
+use `DB::raw` method which will tell `QueryBuilder` not to prefix the table name.
+
+```php
+$builder = new QueryBuilder();
+$builder->from(DB::raw('posts'));
+```
+
+## Joins
+
+The Query Builder may also be used to add `JOIN` clauses to your queries.
+
+#### Available methods - leftJoin / rightJoin / innerJoin / joinRaw
+
+### LEFT Join
+
+Perform a `LEFT JOIN` clause.
+
+```php
+DB::table('posts', 'donationsTable')
+    ->select('donationsTable.*', 'metaTable.*')
+    ->leftJoin('give_donationmeta', 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
+```
+
+Generated SQL
+
+```sql
+SELECT donationsTable.*, metaTable.* FROM wp_posts AS donationsTable LEFT JOIN wp_give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id
+```
+
+### RIGHT Join
+
+Perform a `RIGHT JOIN` clause.
+
+```php
+DB::table('posts', 'donationsTable')
+    ->select('donationsTable.*', 'metaTable.*')
+    ->rightJoin('give_donationmeta', 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
+```
+
+Generated SQL
+
+```sql
+SELECT donationsTable.*, metaTable.* FROM wp_posts AS donationsTable RIGHT JOIN wp_give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id
+```
+
+### INNER Join
+
+Perform a `INNER JOIN` clause.
+
+```php
+DB::table('posts', 'donationsTable')
+    ->select('donationsTable.*', 'metaTable.*')
+    ->innerJoin('give_donationmeta', 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
+```
+
+Generated SQL
+
+```sql
+SELECT donationsTable.*, metaTable.* FROM wp_posts AS donationsTable INNER JOIN wp_give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id
+```
+
+### Join Raw
+
+Insert a raw expression into query.
+
+```php
+DB::table('posts', 'donationsTable')
+    ->select('donationsTable.*', 'metaTable.*')
+    ->joinRaw('LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id');
+```
+
+Generated SQL
+
+```sql
+SELECT donationsTable.*, metaTable.* FROM wp_posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id
+```
+
+### Advanced Join Clauses
+
+**The closure will receive a `Give\Framework\QueryBuilder\JoinQueryBuilder` instance**
+
+```php
+DB::table('posts')
+    ->select('donationsTable.*', 'metaTable.*')
+    ->join(function (JoinQueryBuilder $builder) {
+        $builder
+            ->leftJoin('give_donationmeta', 'metaTable')
+            ->on('donationsTable.ID', 'metaTable.donation_id')
+            ->and('metaTable.meta_key', 'some_key', $qoute = true);
+    });
+```
+
+Generated SQL
+
+```sql
+SELECT donationsTable.*, metaTable.* FROM wp_posts LEFT JOIN wp_give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id AND metaTable.meta_key = 'some_key'
+```
+
+## Where Clauses
+
+You may use the Query Builder's `where` method to add `WHERE` clauses to the query.
+
+### Where
+
+```php
+DB::table('posts')->where('ID', 5);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE ID = '5'
+```
+
+Using `where` multiple times.
+
+```php
+DB::table('posts')
+    ->where('ID', 5)
+    ->where('post_author', 10);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE ID = '5' AND post_author = '10'
+```
+
+### Or Where Clauses
+
+```php
+DB::table('posts')
+    ->where('ID', 5)
+    ->orWhere('post_author', 10);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE ID = '5' OR post_author = '10'
+```
+
+### Where IN Clauses
+
+#### Available methods - whereIn / orWhereIn / whereNotIn / orWhereNotIn
+
+The `QueryBuilder::whereIn` method verifies that a given column's value is contained within the given array:
+
+```php
+DB::table('posts')->whereIn('ID', [1, 2, 3]);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE ID IN ('1','2','3')
+```
+
+You can also pass a closure as the second argument which will generate a subquery.
+
+**The closure will receive a `Give\Framework\QueryBuilder\QueryBuilder` instance**
+
+```php
+DB::table('posts')
+    ->whereIn('ID', function (QueryBuilder $builder) {
+        $builder
+            ->select(['meta_value', 'donation_id'])
+            ->from('give_donationmeta')
+            ->where('meta_key', 'donation_id');
+    });
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE ID IN (SELECT meta_value AS donation_id FROM wp_give_donationmeta WHERE meta_key = 'donation_id')
+```
+
+### Where BETWEEN Clauses
+
+The `QueryBuilder::whereBetween` method verifies that a column's value is between two values:
+
+#### Available methods - whereBetween / orWhereBetween / whereNotBetween / orWhereNotBetween
+
+```php
+DB::table('posts')->whereBetween('ID', 0, 100);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE ID BETWEEN '0' AND '100'
+```
+
+### Where LIKE Clauses
+
+The `QueryBuilder::whereLike` method searches for a specified pattern in a column.
+
+#### Available methods - whereLike / orWhereLike / whereNotLike / orWhereNotLike
+
+```php
+DB::table('posts')->whereLike('post_title', 'Donation');
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE post_title LIKE '%Donation%'
+```
+
+### Where IS NULL Clauses
+
+The `QueryBuilder::whereIsNull` method verifies that a column's value is `NULL`
+
+#### Available methods - whereIsNull / orWhereIsNull / whereIsNotNull / orWhereIsNotNull
+
+```php
+DB::table('posts')->whereIsNull('post_author');
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE post_author IS NULL
+```
+
+### Where EXISTS Clauses
+
+The `QueryBuilder::whereExists` method allows you to write `WHERE EXISTS` SQL clauses. The `QueryBuilder::whereExists` method accepts a closure which will receive a `QueryBuilder` instance.
+
+#### Available methods - whereExists / whereNotExists
+
+```php
+DB::table('give_donationmeta')
+    ->whereExists(function (QueryBuilder $builder) {
+        $builder
+            ->select(['meta_value', 'donation_id'])
+            ->where('meta_key', 'donation_id');
+    });
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_give_donationmeta WHERE EXISTS (SELECT meta_value AS donation_id WHERE meta_key = 'donation_id')
+```
+
+### Subquery Where Clauses
+
+Sometimes you may need to construct a `WHERE` clause that compares the results of a subquery to a given value.
+
+```php
+DB::table('posts')
+    ->where('post_author', function (QueryBuilder $builder) {
+        $builder
+            ->select(['meta_value', 'author_id'])
+            ->from('postmeta')
+            ->where('meta_key', 'donation_id')
+            ->where('meta_value', 10);
+    });
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE post_author = (SELECT meta_value AS author_id FROM wp_postmeta WHERE meta_key = 'donation_id' AND meta_value = '10')
+```
+
+### Nested Where Clauses
+
+Sometimes you may need to construct a `WHERE` clause that has nested WHERE clauses.
+
+**The closure will receive a `Give\Framework\QueryBuilder\WhereQueryBuilder` instance**
+
+```php
+DB::table('posts')
+    ->where('post_author', 10)
+    ->where(function (WhereQueryBuilder $builder) {
+        $builder
+            ->where('post_status', 'published')
+            ->orWhere('post_status', 'donation')
+            ->whereIn('ID', [1, 2, 3]);
+    });
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE post_author = '10' AND ( post_status = 'published' OR post_status = 'donation' AND ID IN ('1','2','3'))
+```
+
+## Ordering, Grouping, Limit & Offset
+
+### Ordering
+
+The `QueryBuilder::orderBy` method allows you to sort the results of the query by a given column.
+
+```php
+DB::table('posts')->orderBy('ID');
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts ORDER BY ID ASC
+```
+
+Sorting result by multiple columns
+
+```php
+DB::table('posts')
+    ->orderBy('ID')
+    ->orderBy('post_date', 'DESC');
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts ORDER BY ID ASC, post_date DESC
+```
+
+### Grouping
+
+The `QueryBuilder::groupBy` and `QueryBuilder::having*` methods are used to group the query results.
+
+#### Available methods - groupBy / having / orHaving / havingCount / orHavingCount / havingMin / orHavingMin / havingMax / orHavingMax / havingAvg / orHavingAvg / havingSum / orHavingSum / havingRaw
+
+```php
+DB::table('posts')
+    ->groupBy('id')
+    ->having('id', '>', 10);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts WHERE GROUP BY id HAVING 'id' > '10'
+```
+
+### Limit & Offset
+
+Limit the number of results returned from the query.
+
+#### Available methods - limit / offset
+
+```php
+DB::table('posts')
+    ->limit(10)
+    ->offset(20);
+```
+
+Generated SQL
+
+```sql
+SELECT * FROM wp_posts LIMIT 10 OFFSET 20
+```
+
+## Special methods for working with metadata
+
+Query Builder has a few special methods for abstracting the work with meta tables.
+
+
+### attachMeta
+
+Under the hood `QueryBuilder::attachMeta` will add join clause for each defined `meta_key` column. And each column will be
+added in select statement as well, which means the meta columns will be returned in query result. Aliasing meta columns
+is recommended when using `QueryBuilder::attachMeta` method.
+
+```php
+DB::table('posts')
     ->select(
         ['posts.ID', 'id'],
         ['posts.post_date', 'createdAt'],
@@ -129,7 +502,7 @@ $builder
         ['posts.post_status', 'status'],
         ['posts.post_parent', 'parentId']
     )
-    ->attachMeta($this->donationMetaTable, 'posts.ID', 'donation_id',
+    ->attachMeta('give_donationmeta', 'posts.ID', 'donation_id',
         ['_give_payment_total', 'amount'],
         ['_give_payment_currency', 'paymentCurrency'],
         ['_give_payment_gateway', 'paymentGateway'],
@@ -139,8 +512,7 @@ $builder
         ['_give_payment_donor_email', 'donorEmail'],
         ['subscription_id', 'subscriptionId']
     )
-    ->from($this->postsTable, 'posts')
-    ->leftJoin($this->donationMetaTable, 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
+    ->leftJoin('give_donationmeta', 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
     ->where('posts.post_type', 'give_payment')
     ->where('posts.post_status', 'give_subscription')
     ->where('donationMeta.meta_key', 'subscription_id')
@@ -151,44 +523,44 @@ $builder
 Generated SQL:
 
 ```sql
-SELECT posts.ID                                      AS id,
-       posts.post_date                               AS createdAt,
-       posts.post_modified                           AS updatedAt,
-       posts.post_status                             AS status,
-       posts.post_parent                             AS parentId,
-       wp_give_donationmeta_attach_meta_0.meta_value AS amount,
-       wp_give_donationmeta_attach_meta_1.meta_value AS paymentCurrency,
-       wp_give_donationmeta_attach_meta_2.meta_value AS paymentGateway,
-       wp_give_donationmeta_attach_meta_3.meta_value AS donorId,
-       wp_give_donationmeta_attach_meta_4.meta_value AS firstName,
-       wp_give_donationmeta_attach_meta_5.meta_value AS lastName,
-       wp_give_donationmeta_attach_meta_6.meta_value AS donorEmail,
-       wp_give_donationmeta_attach_meta_7.meta_value AS subscriptionId
-FROM wp_posts AS posts
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_0
-                   ON posts.ID = wp_give_donationmeta_attach_meta_0.donation_id AND
-                      wp_give_donationmeta_attach_meta_0.meta_key = '_give_payment_total'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_1
-                   ON posts.ID = wp_give_donationmeta_attach_meta_1.donation_id AND
-                      wp_give_donationmeta_attach_meta_1.meta_key = '_give_payment_currency'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_2
-                   ON posts.ID = wp_give_donationmeta_attach_meta_2.donation_id AND
-                      wp_give_donationmeta_attach_meta_2.meta_key = '_give_payment_gateway'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_3
-                   ON posts.ID = wp_give_donationmeta_attach_meta_3.donation_id AND
-                      wp_give_donationmeta_attach_meta_3.meta_key = '_give_payment_donor_id'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_4
-                   ON posts.ID = wp_give_donationmeta_attach_meta_4.donation_id AND
-                      wp_give_donationmeta_attach_meta_4.meta_key = '_give_donor_billing_first_name'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_5
-                   ON posts.ID = wp_give_donationmeta_attach_meta_5.donation_id AND
-                      wp_give_donationmeta_attach_meta_5.meta_key = '_give_donor_billing_last_name'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_6
-                   ON posts.ID = wp_give_donationmeta_attach_meta_6.donation_id AND
-                      wp_give_donationmeta_attach_meta_6.meta_key = '_give_payment_donor_email'
-         LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_7
-                   ON posts.ID = wp_give_donationmeta_attach_meta_7.donation_id AND
-                      wp_give_donationmeta_attach_meta_7.meta_key = 'subscription_id'
+SELECT posts.ID                                   AS id,
+       posts.post_date                            AS createdAt,
+       posts.post_modified                        AS updatedAt,
+       posts.post_status                          AS status,
+       posts.post_parent                          AS parentId,
+       give_donationmeta_attach_meta_0.meta_value AS amount,
+       give_donationmeta_attach_meta_1.meta_value AS paymentCurrency,
+       give_donationmeta_attach_meta_2.meta_value AS paymentGateway,
+       give_donationmeta_attach_meta_3.meta_value AS donorId,
+       give_donationmeta_attach_meta_4.meta_value AS firstName,
+       give_donationmeta_attach_meta_5.meta_value AS lastName,
+       give_donationmeta_attach_meta_6.meta_value AS donorEmail,
+       give_donationmeta_attach_meta_7.meta_value AS subscriptionId
+FROM wp_posts
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_0
+                   ON posts.ID = give_donationmeta_attach_meta_0.donation_id AND
+                      give_donationmeta_attach_meta_0.meta_key = '_give_payment_total'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_1
+                   ON posts.ID = give_donationmeta_attach_meta_1.donation_id AND
+                      give_donationmeta_attach_meta_1.meta_key = '_give_payment_currency'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_2
+                   ON posts.ID = give_donationmeta_attach_meta_2.donation_id AND
+                      give_donationmeta_attach_meta_2.meta_key = '_give_payment_gateway'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_3
+                   ON posts.ID = give_donationmeta_attach_meta_3.donation_id AND
+                      give_donationmeta_attach_meta_3.meta_key = '_give_payment_donor_id'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_4
+                   ON posts.ID = give_donationmeta_attach_meta_4.donation_id AND
+                      give_donationmeta_attach_meta_4.meta_key = '_give_donor_billing_first_name'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_5
+                   ON posts.ID = give_donationmeta_attach_meta_5.donation_id AND
+                      give_donationmeta_attach_meta_5.meta_key = '_give_donor_billing_last_name'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_6
+                   ON posts.ID = give_donationmeta_attach_meta_6.donation_id AND
+                      give_donationmeta_attach_meta_6.meta_key = '_give_payment_donor_email'
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_7
+                   ON posts.ID = give_donationmeta_attach_meta_7.donation_id AND
+                      give_donationmeta_attach_meta_7.meta_key = 'subscription_id'
          LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id
 WHERE posts.post_type = 'give_payment'
   AND posts.post_status = 'give_subscription'
@@ -197,26 +569,48 @@ WHERE posts.post_type = 'give_payment'
 ORDER BY posts.post_date DESC
 ```
 
-Returned result when using
+### configureMetaTable
+
+By default, `QueryBuilder::attachMeta` will use `meta_key`, and `meta_value` as meta table column names, but that sometimes might not be the case.
+
+With `QueryBuilder::configureMetaTable` you can define a custom `meta_key` and `meta_value` column names.
 
 ```php
-DB::get_row($builder->getSQL());
+DB::table('posts')
+    ->select(
+        ['ID', 'id'],
+        ['post_date', 'createdAt']
+    )
+    ->configureMetaTable(
+        'give_donationmeta',
+        'custom_meta_key',
+        'custom_meta_value'
+    )
+    ->attachMeta(
+        'give_donationmeta',
+        'ID',
+        'donation_id',
+        ['_give_payment_total', 'amount']
+    )
+    ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
+    ->where('post_type', 'give_payment')
+    ->where('post_status', 'give_subscription')
+    ->where('donationMeta.custom_meta_key', 'subscription_id')
+    ->where('donationMeta.custom_meta_value', 1);
 ```
 
-```php
-stdClass Object
-(
-    [id] => 93
-    [createdAt] => 2022-02-21 00:00:00
-    [updatedAt] => 2022-01-21 11:08:09
-    [status] => give_subscription
-    [parentId] => 92
-    [amount] => 100.000000
-    [paymentCurrency] => USD
-    [paymentGateway] => manual
-    [donorId] => 1
-    [firstName] => Ante
-    [lastName] => Laca
-    [donorEmail] => dev-email@flywheel.local
-)
+Generated SQL
+
+```sql
+SELECT ID AS id, post_date AS createdAt, give_donationmeta_attach_meta_0.custom_meta_value AS amount
+FROM wp_posts
+         LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_0
+                   ON ID = give_donationmeta_attach_meta_0.donation_id AND
+                      give_donationmeta_attach_meta_0.custom_meta_key = '_give_payment_total'
+         LEFT JOIN wp_give_donationmeta donationMeta ON ID = donationMeta.donation_id
+WHERE post_type = 'give_payment'
+  AND post_status = 'give_subscription'
+  AND donationMeta.custom_meta_key = 'subscription_id'
+  AND donationMeta.custom_meta_value = '1'
 ```
+
