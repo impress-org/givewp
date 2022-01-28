@@ -304,6 +304,53 @@
     padding-inline-end: 0.25em;
 }
 
+.noForms {
+    font-weight: 600;
+    font-size: 1.2em;
+    padding-inline: 2.5em;
+    padding-block: 2em;
+}
+
+.updateError {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-inline: 2.5em;
+    padding-block: 1em;
+    height: 5em;
+    position: relative;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left-color: #d63638;
+    border-left-width: 0.25rem;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    margin: 0.3125em 0.9375em 0.125em;
+}
+
+.dismiss {
+    background: none;
+    color: #787c82;
+    display: block;
+    position: absolute;
+    margin: 0.5em;
+    right: 0;
+    top: 0;
+    font: normal 16px/20px dashicons;
+    speak: never;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+
+    &:hover {
+        color: #d63638;
+    }
+
+    &:active {
+        color: #787c82;
+    }
+}
+
 .goalProgress {
     width: 100%;
     height: 0.5rem;

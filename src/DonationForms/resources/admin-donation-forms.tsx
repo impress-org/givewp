@@ -1,6 +1,6 @@
 import {StrictMode, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
-import {__} from '@wordpress/i18n';
+import {__, _n} from '@wordpress/i18n';
 import cx from 'classnames';
 import { mutate } from 'swr'
 
@@ -30,7 +30,9 @@ const page = parseInt(windowParams.get('paged'));
 function AdminDonationForms() {
     const [state, setState] = useState({
         page: page ? page : 1,
-        perPage: 10
+        perPage: 10,
+        errors: 0,
+        successes: 0
     });
 
     const params = {
@@ -41,12 +43,12 @@ function AdminDonationForms() {
     const {data, error, isValidating} = useDonationForms(params);
 
     async function mutateForm(event, endpoint, method) {
-        const response = await fetchWithArgs(endpoint, {...params, ids: event.target.dataset.formid}, method);
         try {
+            const response = await fetchWithArgs(endpoint, {...params, ids: event.target.dataset.formid}, method);
             //mutate the data without revalidating current page
             const currentKey = keyFunction(params);
             await mutate(currentKey, {...data, ...response}, false);
-            //revalidate all pages after the one we're currently on and null their data
+            //revalidate all pages after the current page and null their data
             const mutations = [];
             for(let i = response.page + 1; i <= Math.ceil(data.total / state.perPage); i++ ) {
                 const invalidKey = keyFunction({page: i, perPage: state.perPage});
@@ -54,6 +56,9 @@ function AdminDonationForms() {
                     mutations.push(mutate(invalidKey, null));
                 }
             }
+            setState(( prevState ) => {
+                return { ...prevState, errors: response.errors, successes: response.successes };
+            })
         }
         catch(error)
         {
@@ -70,9 +75,16 @@ function AdminDonationForms() {
         mutateForm(event, '/duplicate', 'POST');
     }
 
-    function TableRows(data) {
-        const forms = data ? data.forms : loadingForms;
+    function TableRows({data}) {
+        let forms = data ? data.forms : loadingForms;
         const trash = data ? data.trash : false;
+
+        if(forms.length == 0){
+            return <tr className={styles.tableRow}>
+                <td colSpan={9} className={styles.noForms}>{__('No forms found.', 'give')}</td>
+            </tr>
+        }
+
         return forms.map((form) => (
             <tr key={form.id} className={cx(styles.tableRow, !data && styles.loading)}>
                 <td className={styles.tableCell}>
@@ -105,11 +117,11 @@ function AdminDonationForms() {
                     {form.goal ? (
                         <>
                             <div className={styles.goalProgress}>
-                                                    <span
-                                                        style={{
-                                                            width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
-                                                        }}
-                                                    />
+                                <span
+                                    style={{
+                                        width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
+                                    }}
+                                />
                             </div>
                             <a
                                 href={`${form.edit}&give_tab=donation_goal_options`}
@@ -160,6 +172,23 @@ function AdminDonationForms() {
                     Add Form
                 </a>
             </div>
+            {!!state.errors &&
+                <div className={styles.updateError}>
+                    {!!state.successes &&
+                        <span>
+                            {state.successes + ' ' + _n('form was updated successfully', 'forms were updated successfully.', state.successes, 'give')}
+                        </span>
+                    }
+                    <span>
+                        {state.errors + ' ' + _n("form couldn't be updated.", "forms couldn't be updated.", state.errors, 'give')}
+                    </span>
+                    <span className={cx("dashicons dashicons-dismiss", styles.dismiss)}
+                          onClick={() => setState((prevState) => {
+                              return {...prevState, errors: 0};
+                          })}
+                    />
+                </div>
+            }
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
                     <Pagination
