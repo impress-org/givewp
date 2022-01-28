@@ -31,7 +31,7 @@ class CreatePaymentIntent extends WorkflowAction
                 'currency' => $paymentData->currency,
                 'payment_method_types' => ['card'],
                 'statement_descriptor' => give_stripe_get_statement_descriptor(),
-                'description' => $donationSummary,
+                'description' => $donationSummary->getSummary(),
                 'metadata' => give_stripe_prepare_metadata($paymentData->donationId, new LegacyDonationData( $paymentData, $paymentMethod->id() ) ),
                 'customer' => $giveStripeCustomer->get_id(),
                 'payment_method' => $paymentMethod->id(),
