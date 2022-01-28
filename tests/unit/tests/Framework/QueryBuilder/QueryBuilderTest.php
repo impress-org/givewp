@@ -925,6 +925,22 @@ final class QueryBuilderTest extends TestCase
         );
     }
 
+    public function testWhereRawChain()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('ID')
+            ->from(DB::raw('give_donations'))
+            ->whereRaw('WHERE post_id = %d AND post_title = %s', 5, 'Donation')
+            ->orWhere( 'post_title', 'Form');
+
+        $this->assertContains(
+            "SELECT ID FROM give_donations WHERE post_id = 5 AND post_title = 'Donation' OR post_title = 'Form'",
+            $builder->getSQL()
+        );
+    }
+
 
     public function testJoinRaw()
     {
