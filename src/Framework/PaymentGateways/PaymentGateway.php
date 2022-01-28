@@ -7,7 +7,6 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
