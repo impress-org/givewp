@@ -17,6 +17,8 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
  */
 class CreditCardGateway extends PaymentGateway
 {
+    use CreditCardFormTrait;
+
     /**
      * @inheritDoc
      * @unreleased
@@ -90,12 +92,12 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         if (FormUtils::isLegacyForm($formId)) {
             return false;
         }
 
-        // @TODO Migrate field markup from legacy gateway implementation.
+        return $this->getCreditCardFormHTML( $formId, $args );
     }
 }
