@@ -950,7 +950,7 @@ final class QueryBuilderTest extends TestCase
             ->select('ID')
             ->from(DB::raw('give_donations'))
             ->whereRaw('WHERE post_id = %d AND post_title = %s', 5, 'Donation')
-            ->orWhere( 'post_title', 'Form');
+            ->orWhere('post_title', 'Form');
 
         $this->assertContains(
             "SELECT ID FROM give_donations WHERE post_id = 5 AND post_title = 'Donation' OR post_title = 'Form'",
@@ -987,6 +987,24 @@ final class QueryBuilderTest extends TestCase
 
         $this->assertContains(
             "SELECT ID FROM give_donations GROUP BY id HAVING COUNT(id) > 1000",
+            $builder->getSQL()
+        );
+    }
+
+
+    public function testHavingRawChain()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('ID')
+            ->from(DB::raw('give_donations'))
+            ->groupBy('id')
+            ->havingRaw('HAVING COUNT(id) > %d', 1000)
+            ->orHavingAvg('id', '<', 400);
+
+        $this->assertContains(
+            "SELECT ID FROM give_donations GROUP BY id HAVING COUNT(id) > 1000 OR AVG( id) < '400'",
             $builder->getSQL()
         );
     }
