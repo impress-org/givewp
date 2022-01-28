@@ -3,59 +3,48 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\Clauses\OrderBy;
 
 /**
  * @unreleased
  */
 trait OrderByStatement
 {
-
     /**
-     * @var string
+     * @var OrderBy[]
      */
-    protected $orderByColumn;
+    protected $orderBys = [];
 
     /**
-     * @var string
-     */
-    protected $orderByDirection;
-
-    /**
-     * @param  string  $tableColumn
-     * @param  string  $direction
+     * @param  string  $column
+     * @param  string  $direction  ASC|DESC
      *
      * @return $this
      */
-    public function orderBy($tableColumn, $direction)
+    public function orderBy($column, $direction = 'ASC')
     {
-        $this->orderByColumn    = $tableColumn;
-        $this->orderByDirection = $this->getSortDirection($direction);
+        $this->orderBys[] = new OrderBy($column, $direction);
 
         return $this;
     }
 
     /**
-     * @param  string  $direction
-     *
-     * @return string
+     * @return array|string[]
      */
-    protected function getSortDirection($direction)
-    {
-        $direction = strtoupper($direction);
-
-        if (in_array($direction, ['ASC', 'DESC'])) {
-            return $direction;
-        }
-
-        return 'ASC';
-    }
-
     protected function getOrderBySQL()
     {
-        return $this->orderByColumn && $this->orderByDirection
-            ? [
-                DB::prepare('ORDER BY %1s %2s', $this->orderByColumn, $this->orderByDirection)
-            ]
-            : [];
+        if (empty($this->orderBys)) {
+            return [];
+        }
+
+        $orderBys = implode(
+            ',',
+            array_map(function (OrderBy $order) {
+                return DB::prepare('%1s %2s', $order->column, $order->direction);
+            }, $this->orderBys)
+        );
+
+
+        return ['ORDER BY ' . $orderBys];
     }
 }
