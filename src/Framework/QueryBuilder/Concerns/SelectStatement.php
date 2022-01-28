@@ -20,7 +20,7 @@ trait SelectStatement
     /**
      * @var bool
      */
-    private $selectUseRawSql = false;
+    private $includeSelectKeyword = true;
 
     /**
      * @param  array  $columns
@@ -52,8 +52,7 @@ trait SelectStatement
      */
     public function selectRaw($sql, ...$args)
     {
-        $this->selectUseRawSql = true;
-        $this->selects         = array_merge($this->selects, [new RawSQL($sql, $args)]);
+        $this->selects = array_merge($this->selects, [new RawSQL($sql, $args)]);
 
         return $this;
     }
@@ -68,29 +67,38 @@ trait SelectStatement
             $this->select('*');
         }
 
-        $selects = implode(
-            ', ',
-            array_map(function ($select) {
-                if ($select instanceof RawSQL) {
-                    return $select->sql;
+        $selects = [];
+
+        foreach ($this->selects as $i => $select) {
+            if ($select instanceof RawSQL) {
+                if ($i === 0) {
+                    // If the first element is an instance of RawSQL
+                    // then we don't need the starting SELECT keyword because we assume that the dev will include that in RawSQL
+                    $this->includeSelectKeyword = false;
                 }
+                $selects[] = $select->sql;
+                continue;
+            }
 
-                if ($select->alias) {
-                    return DB::prepare(
-                        '%1s AS %2s',
-                        $select->column,
-                        $select->alias
-                    );
-                }
+            if ($select->alias) {
+                $selects[] = DB::prepare(
+                    '%1s AS %2s',
+                    $select->column,
+                    $select->alias
+                );
 
-                return DB::prepare('%1s', $select->column);
-            }, $this->selects)
-        );
+                continue;
+            }
 
-        if ($this->selectUseRawSql) {
-            return [$selects];
+            $selects[] = DB::prepare('%1s', $select->column);
         }
 
-        return ['SELECT ' . $selects];
+        $selectStatements = implode(', ', $selects);
+
+        if ($this->includeSelectKeyword) {
+            return ['SELECT ' . $selectStatements];
+        }
+
+        return [$selectStatements];
     }
 }
