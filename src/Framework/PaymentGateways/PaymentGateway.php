@@ -241,23 +241,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * Generate gateway route url
-     *
-     * @since 2.18.0
-     *
-     * @param string $gatewayMethod
-     * @param int $donationId
-     * @param array|null $args
-     *
-     * @return string
-     */
-    public function generateGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
-    {
-        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $donationId, $args);
-    }
-
-
-    /**
      * Handle Response
      *
      * @since 2.18.0
