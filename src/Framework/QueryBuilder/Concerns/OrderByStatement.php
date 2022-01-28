@@ -38,7 +38,7 @@ trait OrderByStatement
         }
 
         $orderBys = implode(
-            ',',
+            ', ',
             array_map(function (OrderBy $order) {
                 return DB::prepare('%1s %2s', $order->column, $order->direction);
             }, $this->orderBys)
