@@ -11,7 +11,6 @@
  */
 
 // Exit, if accessed directly.
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\ValueObjects\Money;
 
@@ -25,89 +24,79 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.5.0
  */
 if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
-    class Give_Stripe_Gateway
-    {
 
-        /**
-         * Default Gateway ID.
-         *
-         * @since  2.5.0
-         * @access public
-         *
-         * @var string
-         */
-        public $id;
+	class Give_Stripe_Gateway {
 
-        /**
-         * Set Latest Stripe Version.
-         *
-         * @since  2.5.0
-         * @access public
-         *
-         * @var string
-         */
-        public $api_version = '2019-05-16';
+		/**
+		 * Default Gateway ID.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var string
+		 */
+		public $id;
 
-        /**
-         * Payment Intent.
-         *
-         * @since  2.5.0
-         * @access public
-         *
-         * @var \Stripe\PaymentIntent
-         */
-        public $payment_intent;
+		/**
+		 * Set Latest Stripe Version.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var string
+		 */
+		public $api_version = '2019-05-16';
 
-        /**
-         * Stripe Payment Method Object.
-         *
-         * @since  2.5.0
-         * @access public
-         *
-         * @var Give_Stripe_Payment_Method
-         */
-        public $payment_method;
+		/**
+		 * Payment Intent.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var \Stripe\PaymentIntent
+		 */
+		public $payment_intent;
 
-        /**
-         * Error Messages.
-         *
-         * @since  2.7.0
-         * @access public
-         *
-         * @var array $errorMessages List of error messages.
-         */
-        public $errorMessages = [];
+		/**
+		 * Stripe Payment Method Object.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @var Give_Stripe_Payment_Method
+		 */
+		public $payment_method;
 
-        /**
-         * Give_Stripe_Gateway constructor.
-         *
-         * @return bool|void
-         * @since  2.5.0
-         * @access public
-         *
-         */
-        public function __construct()
-        {
-            // Set API Version.
-            $this->set_api_version();
+		/**
+		 * Error Messages.
+		 *
+		 * @since  2.7.0
+		 * @access public
+		 *
+		 * @var array $errorMessages List of error messages.
+		 */
+		public $errorMessages = [];
 
-            // Call Payment Intent Class to utilize.
-            $this->payment_intent = new Give_Stripe_Payment_Intent();
-            $this->payment_method = new Give_Stripe_Payment_Method();
+		/**
+		 * Give_Stripe_Gateway constructor.
+		 *
+		 * @since  2.5.0
+		 * @access public
+		 *
+		 * @return bool|void
+		 */
+		public function __construct() {
 
-            /** @var PaymentGatewayRegister $paymentGatewayRegister */
-            $paymentGatewayRegister = give(PaymentGatewayRegister::class);
+			// Set API Version.
+			$this->set_api_version();
 
-            /**
-             * @unreleased
-             *
-             * Once a gateway has been moved over to our Payment Gateway API
-             * we do not want the legacy processing to run.
-             */
-            if (!$paymentGatewayRegister->hasPaymentGateway($this->id)) {
-                add_action("give_gateway_{$this->id}", [$this, 'process_payment']);
-            }
-        }
+			// Call Payment Intent Class to utilize.
+			$this->payment_intent = new Give_Stripe_Payment_Intent();
+			$this->payment_method = new Give_Stripe_Payment_Method();
+
+			add_action( "give_gateway_{$this->id}", [ $this, 'process_payment' ] );
+
+		}
 
 		/**
 		 * This function is used to determine whether to show the payment fields or not.
