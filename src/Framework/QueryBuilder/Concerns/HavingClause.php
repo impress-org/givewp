@@ -295,7 +295,7 @@ trait HavingClause
         }
 
         return DB::prepare(
-            "%1s %2s %3s %s",
+            "%1s %s %3s %s",
             $having->logicalOperator,
             $having->column,
             $having->comparisonOperator,
