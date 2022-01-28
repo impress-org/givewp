@@ -81,7 +81,7 @@ class GatewayRoute
          * Offsite payment gateway redirect further need redirect to success or failed or cancelled donation page.
          * For this reason we need core to involve to handle redirect.
          */
-        if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods)) {
+        if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods, true)) {
             (new ProcessOffsitePaymentRedirectOnGatewayRoute($gateway))
                 ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
         } else {
