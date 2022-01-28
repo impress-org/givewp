@@ -22,7 +22,7 @@ trait HavingClause
     /**
      * @var bool
      */
-    private $havingUseRawSql = false;
+    private $includeHavingKeyword = true;
 
     /**
      * @param  string  $column
@@ -242,12 +242,12 @@ trait HavingClause
      *
      * @param  string  $sql
      * @param ...$args
+     *
      * @return $this
      */
     public function havingRaw($sql, ...$args)
     {
-        $this->havingUseRawSql = true;
-        $this->havings[]       = new RawSQL($sql, $args);
+        $this->havings[] = new RawSQL($sql, $args);
 
         return $this;
     }
@@ -261,19 +261,27 @@ trait HavingClause
             return [];
         }
 
-        $havings = array_map(function ($having) {
+        $havings = [];
+
+        foreach ($this->havings as $i => $having) {
             if ($having instanceof RawSQL) {
-                return $having->sql;
+                if ($i === 0) {
+                    // If the first element is an instance of RawSQL
+                    // then we don't need the starting HAVING keyword because we assume that the dev will include that in RawSQL
+                    $this->includeHavingKeyword = false;
+                }
+                $havings[] = $having->sql;
+                continue;
             }
 
-            return $this->buildHavingSQL($having);
-        }, $this->havings);
-
-        if ($this->havingUseRawSql) {
-            return $havings;
+            $havings[] = $this->buildHavingSQL($having);
         }
 
-        return array_merge(['HAVING'], $havings);
+        if ($this->includeHavingKeyword) {
+            return array_merge(['HAVING'], $havings);
+        }
+
+        return $havings;
     }
 
     /**
