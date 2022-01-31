@@ -2,6 +2,11 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
+/**
+ * Route signature for creating secure gateway route methods
+ *
+ * @unreleased
+ */
 class RouteSignature {
     /**
      * @var string
@@ -9,9 +14,11 @@ class RouteSignature {
     private $signature;
 
     /**
-     * @param int $gatewayId
-     * @param string $gatewayMethod
-     * @param array $args
+     * @unreleased
+     *
+     * @param  int  $gatewayId
+     * @param  string  $gatewayMethod
+     * @param  array  $args
      */
     public function __construct($gatewayId, $gatewayMethod, $args)
     {
@@ -21,9 +28,11 @@ class RouteSignature {
     }
 
     /**
-     * @param int $gatewayId
-     * @param string $gatewayMethod
-     * @param array $args
+     * @unreleased
+     *
+     * @param  int  $gatewayId
+     * @param  string  $gatewayMethod
+     * @param  array  $args
      *
      * @return static
      */
@@ -33,6 +42,8 @@ class RouteSignature {
     }
 
     /**
+     * @unreleased
+     *
      * @return string
      */
     public function toString()
@@ -41,6 +52,8 @@ class RouteSignature {
     }
 
     /**
+     * @unreleased
+     *
      * @return false|string
      */
     public function toNonce()

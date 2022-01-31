@@ -20,6 +20,7 @@ class GatewayRoute
      * @return void
      * @throws PaymentGatewayException
      * @since 2.18.0
+     * @unreleased - validate secureRouteMethods
      *
      */
     public function __invoke()
@@ -73,11 +74,12 @@ class GatewayRoute
     /**
      * Check if the request is valid
      *
-     * @since 2.18.0
-     *
      * @param  array  $gatewayIds
      *
      * @return bool
+     * @since 2.18.0
+     * @unreleased remove required check give-donation-id
+     *
      * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
      *
      */
@@ -102,6 +104,10 @@ class GatewayRoute
     }
 
     /**
+     * Validate signature using nonces
+     *
+     * @unreleased
+     *
      * @param  string  $routeSignature
      * @param  GatewayRouteData  $data
      * @return void

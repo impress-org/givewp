@@ -106,7 +106,7 @@ class TestGatewayOffsite extends PaymentGateway
 
 
     /**
-     * An example of using a routeMethod for extending the Gateway API to handle a redirect.
+     * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
      * @unreleased
      *
