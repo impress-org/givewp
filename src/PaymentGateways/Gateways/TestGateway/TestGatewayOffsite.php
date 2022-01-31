@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -15,13 +15,14 @@ use function Give\Framework\Http\Response\response;
  * Class TestGatewayOffsite
  * @since 2.18.0
  */
-class TestGatewayOffsite extends OffSitePaymentGateway
+class TestGatewayOffsite extends PaymentGateway
 {
     /**
      * @inheritDoc
      */
     public $routeMethods = [
-        'testGatewayMethod'
+        'testGatewayMethod',
+        'returnFromOffsiteRedirect'
     ];
 
     /**
@@ -76,16 +77,14 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        // This will allow you to overload returnFromOffsiteRedirect($donationId)
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
+        $redirectUrl = $this->generateGatewayRouteUrl('returnFromOffsiteRedirect', $paymentData->donationId);
 
         return new RedirectOffsite($redirectUrl);
     }
 
     /**
-     * An example of using the provided offsite method of returning from a redirect.
+     * An example of using a routeMethod to handing returning from a redirect.
      *
-     * @inheritDoc
      */
     public function returnFromOffsiteRedirect($donationId)
     {

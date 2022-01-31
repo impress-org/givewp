@@ -2,7 +2,6 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
-use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -37,13 +36,6 @@ class GatewayRoute
             $gateway = give($paymentGateways[$data->gatewayId]);
 
             $allowedGatewayMethods = $gateway->routeMethods;
-
-            if (is_a($gateway, OffsiteGatewayInterface::class)) {
-                $allowedGatewayMethods = array_merge(
-                    $allowedGatewayMethods,
-                    OffsiteGatewayInterface::defaultRouteMethods
-                );
-            }
 
             if (
                 !in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
