@@ -51,7 +51,6 @@ class PaymentGateways implements ServiceProvider
      */
     public $gateways = [
         PayPalStandard::class,
-        PayPalCommerce::class,
     ];
 
     /**
@@ -109,6 +108,9 @@ class PaymentGateways implements ServiceProvider
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
+
+        // Setup PayPal Commerce action/filter hooks.
+        (new PayPalCommerce())->boot();
     }
 
     /**
