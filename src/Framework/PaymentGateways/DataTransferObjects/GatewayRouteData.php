@@ -20,13 +20,17 @@ class GatewayRouteData
      * @var int
      */
     public $donationId;
+    /**
+     * @var array
+     */
+    public $queryParams;
 
     /**
      * Convert data from request into DTO
      *
+     * @return self
      * @since 2.18.0
      *
-     * @return self
      */
     public static function fromRequest(array $request)
     {
@@ -34,7 +38,9 @@ class GatewayRouteData
 
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
-        $self->donationId = (int)$request['give-donation-id'];
+        $self->queryParams = array_filter($request, static function ($param) {
+            return !in_array($param, ['give-gateway-id', 'give-gateway-method']);
+        });
 
         return $self;
     }

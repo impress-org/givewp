@@ -113,12 +113,14 @@ interface PaymentGatewayInterface
     /**
      * Handle gateway route method
      *
-     * @since 2.18.0
-     *
-     * @param  int  $donationId
      * @param  string  $method
+     * @param  array  $queryParams
      *
      * @return void
+     * @since 2.18.0
+     *
+     * @unreleased replace $donationId with $queryParams
+     *
      */
-    public function handleGatewayRouteMethod($donationId, $method);
+    public function handleGatewayRouteMethod($method, $queryParams);
 }

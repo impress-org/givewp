@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -21,7 +20,6 @@ class TestGatewayOffsite extends PaymentGateway
      * @inheritDoc
      */
     public $routeMethods = [
-        'testGatewayMethod',
         'returnFromOffsiteRedirect'
     ];
 
@@ -77,33 +75,26 @@ class TestGatewayOffsite extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $redirectUrl = $this->generateGatewayRouteUrl('returnFromOffsiteRedirect', $paymentData->donationId);
+        $redirectUrl = $this->generateGatewayRouteUrl(
+            'returnFromOffsiteRedirect',
+            ['give-donation-id' => $paymentData->donationId]
+        );
 
         return new RedirectOffsite($redirectUrl);
     }
 
     /**
-     * An example of using a routeMethod to handing returning from a redirect.
+     * An example of using a routeMethod for extending the Gateway API to handle a redirect.
      *
+     * @unreleased
+     *
+     * @param  array  $queryParams
      */
-    public function returnFromOffsiteRedirect($donationId)
+    public function returnFromOffsiteRedirect($queryParams)
     {
-        $this->updateDonation($donationId);
+        $this->updateDonation($queryParams['give-donation-id']);
 
         return response()->redirectTo(give_get_success_page_uri());
-    }
-
-    /**
-     * An example gateway method for extending the Gateway API for a given gateway.
-     *
-     * @param  int  $donationId
-     * @return JsonResponse
-     */
-    public function testGatewayMethod($donationId)
-    {
-        $this->updateDonation($donationId);
-
-        return response()->json();
     }
 
     /**

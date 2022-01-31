@@ -128,13 +128,43 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
 
     /**
-     * Handle gateway command
+     * Handle gateway route method
+     * @param  string  $method
+     * @param  array  $queryParams
      *
+     * @return void
      * @since 2.18.0
+     *
+     * @unreleased - replace $donationId with $queryParams array
+     *
+     */
+    public function handleGatewayRouteMethod($method, $queryParams)
+    {
+        try {
+            $this->handleResponse($this->$method($queryParams));
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error($exception->getMessage());
+            $this->handleResponse(
+                response()->json(
+                    __(
+                        'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                        'give'
+                    )
+                )
+            );
+        }
+    }
+
+    /**
+     * Handle gateway command
      *
      * @param  GatewayCommand  $command
      * @param  GatewayPaymentData  $gatewayPaymentData
      * @throws TypeNotSupported
+     * @since 2.18.0
+     *
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
@@ -215,43 +245,20 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * Handle gateway route method
-     *
-     * @param  int  $donationId
-     * @param  string  $method
-     *
-     * @since 2.18.0
-     *
-     * @return void
-     */
-    public function handleGatewayRouteMethod($donationId, $method)
-    {
-        try {
-            $this->handleResponse( $this->$method( $donationId ) );
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-        } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
-            $this->handleResponse(response()->json(
-                __( 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.', 'give' )
-            ));
-        }
-    }
-
-    /**
      * Generate gateway route url
      *
-     * @since 2.18.0
-     *
      * @param  string  $gatewayMethod
-     * @param  int  $donationId
      * @param  array|null  $args
      *
      * @return string
+     * @since 2.18.0
+     *
+     * @unreleased remove $donationId param in favor of args
+     *
      */
-    public function generateGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
+    public function generateGatewayRouteUrl($gatewayMethod, $args = null)
     {
-        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $donationId, $args);
+        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $args);
     }
 
 

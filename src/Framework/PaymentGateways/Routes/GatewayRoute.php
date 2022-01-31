@@ -13,38 +13,50 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 class GatewayRoute
 {
     /**
-     * @since 2.18.0
+     * This is our entry point into the Gateway Routing system.
      *
      * @return void
      * @throws PaymentGatewayException
+     * @since 2.18.0
+     *
      */
     public function __invoke()
     {
         if ($this->isValidListener()) {
             /** @var PaymentGatewayRegister $paymentGatewaysRegister */
             $paymentGatewaysRegister = give(PaymentGatewayRegister::class);
+
+            // get all registered gateways
             $paymentGateways = $paymentGatewaysRegister->getPaymentGateways();
+
+            // get all registered gateway ids
             $gatewayIds = array_keys($paymentGateways);
 
+            // make sure required params are valid
             if (!$this->isValidRequest($gatewayIds)) {
                 throw new PaymentGatewayException('This route is not valid.');
             }
 
+            // create DTO from GET request
             $data = GatewayRouteData::fromRequest($_GET);
 
-            /** @var PaymentGateway $gateway */
+            /**
+             * Get the PaymentGateway instance
+             *
+             * @var PaymentGateway $gateway
+             */
             $gateway = give($paymentGateways[$data->gatewayId]);
 
-            $allowedGatewayMethods = $gateway->routeMethods;
-
+            // Make sure the method being called is defined in the gateway.
             if (
-                !in_array($data->gatewayMethod, $allowedGatewayMethods, true) ||
+                !in_array($data->gatewayMethod, $gateway->routeMethods, true) ||
                 !method_exists($gateway, $data->gatewayMethod)
             ) {
                 throw new PaymentGatewayException('The gateway method does not exist.');
             }
 
-            $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
+            // Navigate to our payment gateway api to handle calling the gateway's method
+            $gateway->handleGatewayRouteMethod($data->gatewayMethod, $data->queryParams);
         }
     }
 
@@ -61,7 +73,7 @@ class GatewayRoute
      */
     private function isValidRequest($gatewayIds)
     {
-        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method'], $_GET['give-donation-id']);
+        $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method']);
         $idValid = in_array($_GET['give-gateway-id'], $gatewayIds, true);
 
         return $isset && $idValid;
