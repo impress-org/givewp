@@ -38,4 +38,17 @@ final class OrderByTest extends TestCase
             $builder->getSQL()
         );
     }
+
+
+    public function testReturnExceptionWhenBadOrderByDirectionArgumentIsUsed() {
+        $this->expectException( InvalidArgumentException::class );
+
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->where('post_status', 'published')
+            ->orderBy('ID', 'BANANAS');
+    }
 }

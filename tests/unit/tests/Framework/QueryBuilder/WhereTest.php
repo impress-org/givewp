@@ -447,4 +447,16 @@ final class WhereTest extends TestCase
         );
     }
 
+
+    public function testReturnExceptionWhenBadComparisonArgumentIsUsed() {
+        $this->expectException( InvalidArgumentException::class );
+
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->where('post_status', 'published', 'EQUALS TO');
+    }
+
 }

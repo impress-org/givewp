@@ -241,4 +241,17 @@ final class HavingTest extends TestCase
             $builder->getSQL()
         );
     }
+
+
+    public function testReturnExceptionWhenBadComparisonArgumentIsUsed() {
+        $this->expectException( InvalidArgumentException::class );
+
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->groupBy('ID')
+            ->having('id', 'EQUALS TO', 10);
+    }
 }
