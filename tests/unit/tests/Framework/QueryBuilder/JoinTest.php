@@ -86,11 +86,12 @@ final class JoinTest extends TestCase
                 $builder
                     ->leftJoin(DB::raw('give_donationmeta'), 'metaTable')
                     ->on('donationsTable.ID', 'metaTable.donation_id')
-                    ->and('metaTable.meta_key', '_give_donor_billing_first_name', true);
+                    ->andOn('metaTable.meta_key', '_give_donor_billing_first_name', true)
+                    ->orOn('metaTable.meta_key', '_give_donor_billing_last_name', true);
             });
 
         $this->assertContains(
-            "SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id AND metaTable.meta_key = '_give_donor_billing_first_name'",
+            "SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id AND metaTable.meta_key = '_give_donor_billing_first_name' OR metaTable.meta_key = '_give_donor_billing_last_name'",
             $builder->getSQL()
         );
     }
