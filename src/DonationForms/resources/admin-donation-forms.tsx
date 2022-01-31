@@ -76,13 +76,31 @@ function AdminDonationForms() {
     }
 
     function TableRows({data}) {
-        let forms = data ? data.forms : loadingForms;
+        const forms = data ? data.forms : loadingForms;
         const trash = data ? data.trash : false;
 
         if(forms.length == 0){
             return <tr className={styles.tableRow}>
-                <td colSpan={9} className={styles.noForms}>{__('No forms found.', 'give')}</td>
+                <td colSpan={9} className={styles.statusMessage}>{__('No donation forms found.', 'give')}</td>
             </tr>
+        }
+
+        //general error state
+        if(error){
+            return <>
+                <tr className={styles.tableRow}>
+                    <td colSpan={9} className={styles.statusMessage}>
+                        {__('There was a problem retrieving the donation forms.', 'give')}
+                    </td>
+                </tr>
+                <tr className={styles.tableRow}>
+                    <td colSpan={9} className={styles.statusMessage}>
+                        {__('Click', 'give') + ' '}
+                        <a href={'edit.php?post_type=give_forms&page=give-forms'}>{__('here', 'give')}</a>
+                        {' ' + __('to reload the page.')}
+                    </td>
+                </tr>
+            </>;
         }
 
         return forms.map((form) => (
@@ -184,7 +202,7 @@ function AdminDonationForms() {
                     </span>
                     <span className={cx("dashicons dashicons-dismiss", styles.dismiss)}
                           onClick={() => setState((prevState) => {
-                              return {...prevState, errors: 0};
+                              return {...prevState, errors: 0, successes: 0};
                           })}
                     />
                 </div>
@@ -219,10 +237,7 @@ function AdminDonationForms() {
                                 <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
                                     {__('Name', 'give')}
                                 </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}
                                     style={{textAlign: 'end'}}
                                 >
                                     {__('Amount', 'give')}
