@@ -60,8 +60,8 @@ class Having
     private function getLogicalOperator($logicalOperator)
     {
         $operators = [
-            Operator::AND,
-            Operator::OR
+            Operator::_AND,
+            Operator::_OR
         ];
 
         $logicalOperator = strtoupper($logicalOperator);

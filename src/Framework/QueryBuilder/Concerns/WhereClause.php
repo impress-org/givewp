@@ -92,7 +92,7 @@ trait WhereClause
             $column,
             $value,
             $comparisonOperator,
-            Operator::AND
+            Operator::_AND
         );
     }
 
@@ -109,7 +109,7 @@ trait WhereClause
             $column,
             $value,
             $comparisonOperator,
-            Operator::OR
+            Operator::_OR
         );
     }
 

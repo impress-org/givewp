@@ -56,8 +56,8 @@ class JoinCondition
 
         $supportedOperators = [
             Operator::ON,
-            Operator::AND,
-            Operator::OR
+            Operator::_AND,
+            Operator::_OR
         ];
 
         if ( ! in_array($operator, $supportedOperators, true)) {

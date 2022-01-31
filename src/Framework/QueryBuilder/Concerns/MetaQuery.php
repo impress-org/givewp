@@ -98,7 +98,7 @@ trait MetaQuery
                     $builder
                         ->leftJoin($table, $tableAlias)
                         ->on($foreignKey, "{$tableAlias}.{$primaryKey}")
-                        ->and("{$tableAlias}.{$metaTable->keyColumnName}", $column, true);
+                        ->andOn("{$tableAlias}.{$metaTable->keyColumnName}", $column, true);
                 }
             );
 

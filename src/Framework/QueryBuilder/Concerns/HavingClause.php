@@ -39,7 +39,7 @@ trait HavingClause
             $column,
             $comparisonOperator,
             $value,
-            empty($this->havings) ? null : Operator::AND,
+            empty($this->havings) ? null : Operator::_AND,
             $mathFunction
         );
 
@@ -60,7 +60,7 @@ trait HavingClause
             $column,
             $comparisonOperator,
             $value,
-            empty($this->havings) ? null : Operator::OR,
+            empty($this->havings) ? null : Operator::_OR,
             $mathFunction
         );
 
