@@ -549,11 +549,11 @@ DB::table('posts')
 Generated SQL:
 
 ```sql
-SELECT posts.ID                                   AS id,
-       posts.post_date                            AS createdAt,
-       posts.post_modified                        AS updatedAt,
-       posts.post_status                          AS status,
-       posts.post_parent                          AS parentId,
+SELECT ID                                         AS id,
+       post_date                                  AS createdAt,
+       post_modified                              AS updatedAt,
+       post_status                                AS status,
+       post_parent                                AS parentId,
        give_donationmeta_attach_meta_0.meta_value AS amount,
        give_donationmeta_attach_meta_1.meta_value AS paymentCurrency,
        give_donationmeta_attach_meta_2.meta_value AS paymentGateway,
@@ -564,35 +564,35 @@ SELECT posts.ID                                   AS id,
        give_donationmeta_attach_meta_7.meta_value AS subscriptionId
 FROM wp_posts
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_0
-                   ON posts.ID = give_donationmeta_attach_meta_0.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_0.donation_id AND
                       give_donationmeta_attach_meta_0.meta_key = '_give_payment_total'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_1
-                   ON posts.ID = give_donationmeta_attach_meta_1.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_1.donation_id AND
                       give_donationmeta_attach_meta_1.meta_key = '_give_payment_currency'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_2
-                   ON posts.ID = give_donationmeta_attach_meta_2.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_2.donation_id AND
                       give_donationmeta_attach_meta_2.meta_key = '_give_payment_gateway'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_3
-                   ON posts.ID = give_donationmeta_attach_meta_3.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_3.donation_id AND
                       give_donationmeta_attach_meta_3.meta_key = '_give_payment_donor_id'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_4
-                   ON posts.ID = give_donationmeta_attach_meta_4.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_4.donation_id AND
                       give_donationmeta_attach_meta_4.meta_key = '_give_donor_billing_first_name'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_5
-                   ON posts.ID = give_donationmeta_attach_meta_5.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_5.donation_id AND
                       give_donationmeta_attach_meta_5.meta_key = '_give_donor_billing_last_name'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_6
-                   ON posts.ID = give_donationmeta_attach_meta_6.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_6.donation_id AND
                       give_donationmeta_attach_meta_6.meta_key = '_give_payment_donor_email'
          LEFT JOIN wp_give_donationmeta give_donationmeta_attach_meta_7
-                   ON posts.ID = give_donationmeta_attach_meta_7.donation_id AND
+                   ON ID = give_donationmeta_attach_meta_7.donation_id AND
                       give_donationmeta_attach_meta_7.meta_key = 'subscription_id'
-         LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id
-WHERE posts.post_type = 'give_payment'
-  AND posts.post_status = 'give_subscription'
+         LEFT JOIN wp_give_donationmeta donationMeta ON ID = donationMeta.donation_id
+WHERE post_type = 'give_payment'
+  AND post_status = 'give_subscription'
   AND donationMeta.meta_key = 'subscription_id'
   AND donationMeta.meta_value = '1'
-ORDER BY posts.post_date DESC
+ORDER BY post_date DESC
 ```
 
 Returned result:
