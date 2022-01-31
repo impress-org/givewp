@@ -156,7 +156,7 @@ class MockPaypalOffsiteForGatewayRouteTest extends OffSitePaymentGateway
     {
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }

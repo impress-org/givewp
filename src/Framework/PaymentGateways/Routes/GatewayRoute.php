@@ -87,6 +87,8 @@ class GatewayRoute
         } else {
             $gateway->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
         }
+
+        exit();
     }
 
     /**
