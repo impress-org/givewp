@@ -16,6 +16,10 @@ use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
  */
 class PayPalStandardGateway extends OffSitePaymentGateway
 {
+    public $routeMethods = [
+        'handleIpnNotification'
+    ];
+
     /**
      * @inheritDoc
      */
