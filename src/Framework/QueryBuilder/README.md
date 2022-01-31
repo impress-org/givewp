@@ -15,7 +15,7 @@ Query Builder helper class is used to write SQL queries
     - [Join Raw](#join-raw)
     - [Advanced Join Clauses](#advanced-join-clauses)
 
-- [Unions](#joins)
+- [Unions](#unions)
 
 - [Where Clauses](#where-clauses)
     - [Where](#where-clauses)
@@ -245,6 +245,27 @@ Generated SQL
 
 ```sql
 SELECT donationsTable.*, metaTable.* FROM wp_posts LEFT JOIN wp_give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id AND metaTable.meta_key = 'some_key'
+```
+
+## Unions
+
+The Query Builder also provides a convenient method to "union" two or more queries together.
+
+#### Available methods - union / unionAll
+
+```php
+$donations = DB::table('give_donations')->where('author_id', 10);
+
+DB::table('give_subscriptions')
+    ->select('ID')
+    ->where('ID', 100, '>')
+    ->union($donations);
+```
+
+Generated SQL:
+
+```sql
+SELECT ID FROM wp_give_subscriptions WHERE ID > '100' UNION SELECT * FROM wp_give_donations WHERE author_id = '10'
 ```
 
 ## Where Clauses
