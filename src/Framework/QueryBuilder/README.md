@@ -59,6 +59,8 @@ DB::table(DB::raw('posts'));
 
 ## Select statements
 
+#### Available methods - select / selectRaw / distinct
+
 By using the `QueryBuilder::select` method, you can specify a custom `SELECT` statement for the query.
 
 ```php
@@ -69,6 +71,28 @@ Generated SQL
 
 ```sql
 SELECT ID, post_title, post_date FROM wp_posts
+```
+
+You can also specify the column alias by providing an array _[column, alias]_ to the `QueryBuilder::select` method.
+
+```php
+DB::table('posts')->select(
+    ['ID', 'post_id'],
+    ['post_status', 'status'],
+    ['post_date', 'createdAt']
+);
+```
+
+Generated SQL:
+
+```sql
+SELECT ID AS post_id, post_status AS status, post_date AS createdAt FROM wp_posts
+```
+
+The distinct method allows you to force the query to return distinct results:
+
+```php
+DB::table('posts')->select('post_status')->distinct();
 ```
 
 You can also specify a custom `SELECT` statement with `QueryBuilder::selectRaw` method. This method accepts an optional array of
