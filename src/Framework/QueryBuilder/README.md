@@ -33,7 +33,7 @@ Query Builder helper class is used to write SQL queries
     - [Grouping](#grouping)
     - [Limit & Offset](#limit--offset)
 
-- [Special methods for working with metadata](#special-methods-for-working-with-metadata)
+- [Special methods for working with meta tables](#special-methods-for-working-with-meta-tables)
   - [attachMeta](#attachmeta)
   - [configureMetaTable](#configuremetatable)
 
@@ -46,7 +46,7 @@ Methods `DB::table()` and `DB::raw()`.
 `DB::table()` is a static facade for the `QueryBuilder` class, and it accepts two string arguments, `$tableName`
 and `$tableAlias`.
 
-Under the hood, it will use the `QueryBuilder::from` method to set the table name, so calling `QueryBuilder::from` when using `DB::table` method will return an unexpected result. Basically, we are telling the `QueryBuilder` that we want to select data from two tables.
+Under the hood, `DB::table()` will create a new `QueryBuilder` instance, and it will use `QueryBuilder::from` method to set the table name. Calling `QueryBuilder::from` when using `DB::table` method will return an unexpected result. Basically, we are telling the `QueryBuilder` that we want to select data from two tables.
 
 ### Important
 
@@ -136,11 +136,11 @@ $builder->from(DB::raw('posts'));
 
 The Query Builder may also be used to add `JOIN` clauses to your queries.
 
-#### Available methods - leftJoin / rightJoin / innerJoin / joinRaw
+#### Available methods - leftJoin / rightJoin / innerJoin / joinRaw / join
 
 ### LEFT Join
 
-Perform a `LEFT JOIN` clause.
+`LEFT JOIN` clause.
 
 ```php
 DB::table('posts', 'donationsTable')
@@ -156,7 +156,7 @@ SELECT donationsTable.*, metaTable.* FROM wp_posts AS donationsTable LEFT JOIN w
 
 ### RIGHT Join
 
-Perform a `RIGHT JOIN` clause.
+`RIGHT JOIN` clause.
 
 ```php
 DB::table('posts', 'donationsTable')
@@ -172,7 +172,7 @@ SELECT donationsTable.*, metaTable.* FROM wp_posts AS donationsTable RIGHT JOIN 
 
 ### INNER Join
 
-Perform a `INNER JOIN` clause.
+`INNER JOIN` clause.
 
 ```php
 DB::table('posts', 'donationsTable')
@@ -482,12 +482,14 @@ Generated SQL
 SELECT * FROM wp_posts LIMIT 10 OFFSET 20
 ```
 
-## Special methods for working with metadata
+## Special methods for working with meta tables
 
 Query Builder has a few special methods for abstracting the work with meta tables.
 
 
 ### attachMeta
+
+`attachMeta` is used to include meta table _meta_key_ column values as columns in the `SELECT` statement.
 
 Under the hood `QueryBuilder::attachMeta` will add join clause for each defined `meta_key` column. And each column will be
 added in select statement as well, which means the meta columns will be returned in query result. Aliasing meta columns
@@ -496,13 +498,13 @@ is recommended when using `QueryBuilder::attachMeta` method.
 ```php
 DB::table('posts')
     ->select(
-        ['posts.ID', 'id'],
-        ['posts.post_date', 'createdAt'],
-        ['posts.post_modified', 'updatedAt'],
-        ['posts.post_status', 'status'],
-        ['posts.post_parent', 'parentId']
+        ['ID', 'id'],
+        ['post_date', 'createdAt'],
+        ['post_modified', 'updatedAt'],
+        ['post_status', 'status'],
+        ['post_parent', 'parentId']
     )
-    ->attachMeta('give_donationmeta', 'posts.ID', 'donation_id',
+    ->attachMeta('give_donationmeta', 'ID', 'donation_id',
         ['_give_payment_total', 'amount'],
         ['_give_payment_currency', 'paymentCurrency'],
         ['_give_payment_gateway', 'paymentGateway'],
@@ -512,12 +514,12 @@ DB::table('posts')
         ['_give_payment_donor_email', 'donorEmail'],
         ['subscription_id', 'subscriptionId']
     )
-    ->leftJoin('give_donationmeta', 'posts.ID', 'donationMeta.donation_id', 'donationMeta')
-    ->where('posts.post_type', 'give_payment')
-    ->where('posts.post_status', 'give_subscription')
+    ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
+    ->where('post_type', 'give_payment')
+    ->where('post_status', 'give_subscription')
     ->where('donationMeta.meta_key', 'subscription_id')
     ->where('donationMeta.meta_value', 1)
-    ->orderBy('posts.post_date', 'DESC');
+    ->orderBy('post_date', 'DESC');
 ```
 
 Generated SQL:
@@ -567,6 +569,27 @@ WHERE posts.post_type = 'give_payment'
   AND donationMeta.meta_key = 'subscription_id'
   AND donationMeta.meta_value = '1'
 ORDER BY posts.post_date DESC
+```
+
+Returned result:
+
+```
+stdClass Object
+(
+    [id] => 93
+    [createdAt] => 2022-02-21 00:00:00
+    [updatedAt] => 2022-01-21 11:08:09
+    [status] => give_subscription
+    [parentId] => 92
+    [amount] => 100.000000
+    [paymentCurrency] => USD
+    [paymentGateway] => manual
+    [donorId] => 1
+    [firstName] => Ante
+    [lastName] => Laca
+    [donorEmail] => dev-email@flywheel.local
+    [subscriptionId] => 1
+)
 ```
 
 ### configureMetaTable

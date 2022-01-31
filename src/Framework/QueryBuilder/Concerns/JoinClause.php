@@ -20,7 +20,7 @@ trait JoinClause
     protected $joins = [];
 
     /**
-     * Method used to build complex JOIN queries, Check README.md for more info.
+     * Method used to build advanced JOIN queries, Check README.md for more info.
      * If you need to perform only simple JOINs with only one JOIN condition, then you don't need this method.
      *
      * @param  Closure  $callback  The closure will receive a Give\Framework\QueryBuilder\JoinQueryBuilder instance
