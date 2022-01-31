@@ -53,10 +53,10 @@ trait MetaQuery
      */
     protected function getMetaTable($table)
     {
-        $table = QueryBuilder::prefixTable($table);
+        $tableName = QueryBuilder::prefixTable($table);
 
         foreach ($this->metaTablesConfigs as $metaTable) {
-            if ($metaTable->tableName === $table) {
+            if ($metaTable->tableName === $tableName) {
                 return $metaTable;
             }
         }
