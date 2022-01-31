@@ -88,10 +88,10 @@ class JoinQueryBuilder
      *
      * @return $this
      */
-    public function and($column1, $column2, $quote = null)
+    public function andOn($column1, $column2, $quote = null)
     {
         return $this->joinCondition(
-            Operator::AND,
+            Operator::_AND,
             $column1,
             $column2,
             $quote
@@ -105,10 +105,10 @@ class JoinQueryBuilder
      *
      * @return $this
      */
-    public function or($column1, $column2, $quote = null)
+    public function orOn($column1, $column2, $quote = null)
     {
         return $this->joinCondition(
-            Operator::AND,
+            Operator::_OR,
             $column1,
             $column2,
             $quote
