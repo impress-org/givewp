@@ -236,7 +236,7 @@ DB::table('posts')
         $builder
             ->leftJoin('give_donationmeta', 'metaTable')
             ->on('donationsTable.ID', 'metaTable.donation_id')
-            ->and('metaTable.meta_key', 'some_key', $qoute = true);
+            ->andOn('metaTable.meta_key', 'some_key', $qoute = true);
     });
 ```
 
