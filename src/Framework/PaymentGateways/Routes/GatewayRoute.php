@@ -7,6 +7,8 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
+use function Give\Framework\Http\Response\response;
+
 /**
  * @since 2.18.0
  */
@@ -47,12 +49,20 @@ class GatewayRoute
              */
             $gateway = give($paymentGateways[$data->gatewayId]);
 
+            // get all public and secure gateway methods
+            $allGatewayMethods = array_merge($gateway->routeMethods, $gateway->secureRouteMethods);
+
             // Make sure the method being called is defined in the gateway.
             if (
-                !in_array($data->gatewayMethod, $gateway->routeMethods, true) ||
-                !method_exists($gateway, $data->gatewayMethod)
+                !method_exists($gateway, $data->gatewayMethod) ||
+                !in_array($data->gatewayMethod, $allGatewayMethods, true)
             ) {
                 throw new PaymentGatewayException('The gateway method does not exist.');
+            }
+
+            // If method is in secureRouteMethods then, validate signature
+            if (in_array($data->gatewayMethod, $gateway->secureRouteMethods, true)) {
+                $this->validateSignature($data->routeSignature, $data);
             }
 
             // Navigate to our payment gateway api to handle calling the gateway's method
@@ -89,5 +99,19 @@ class GatewayRoute
     private function isValidListener()
     {
         return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-gateway';
+    }
+
+    /**
+     * @param  string  $routeSignature
+     * @param  GatewayRouteData  $data
+     * @return void
+     */
+    private function validateSignature($routeSignature, GatewayRouteData $data)
+    {
+        $action = RouteSignature::make($data->gatewayId, $data->gatewayMethod, $data->queryParams);
+
+        if (!wp_verify_nonce($routeSignature, $action->toString())) {
+            wp_redirect(response('Forbidden', 403));
+        }
     }
 }

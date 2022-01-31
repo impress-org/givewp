@@ -23,6 +23,7 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
@@ -36,13 +37,23 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 {
     /**
      * Route methods are used to extend the gateway api.
-     * By adding a custom route method, you are effectively
-     * registering a new route url that will resolve itself and
+     * By adding a custom routeMethod, you are effectively
+     * registering a new public route url that will resolve itself and
      * call your method.
      *
      * @var string[]
      */
     public $routeMethods = [];
+
+    /**
+     * Secure Route methods are used to extend the gateway api with an additional wp_nonce.
+     * By adding a custom secureRouteMethod, you are effectively
+     * registering a new route url that will resolve itself and
+     * call your method after validating the nonce.
+     *
+     * @var string[]
+     */
+    public $secureRouteMethods = [];
 
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
@@ -261,13 +272,37 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $args);
     }
 
+    /**
+     * Generate secure gateway route url
+     *
+     * @param  string  $gatewayMethod
+     * @param  array|null  $args
+     *
+     * @return string
+     * @unreleased remove $donationId param in favor of args
+     *
+     */
+    public function generateSecureGatewayRouteUrl($gatewayMethod, $args = null)
+    {
+        $nonce = RouteSignature::make($this->getId(), $gatewayMethod, $args);
+
+        return Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $this->getId(),
+            $gatewayMethod,
+            array_merge($args, [
+                'give-route-signature' => $nonce->toNonce()
+            ])
+        );
+    }
+
 
     /**
      * Handle Response
      *
+     * @param  RedirectResponse|JsonResponse  $type
      * @since 2.18.0
      *
-     * @param  RedirectResponse|JsonResponse  $type
      */
     public function handleResponse($type)
     {

@@ -26,6 +26,13 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
+    public $secureRouteMethods = [
+        'securelyReturnFromOffsiteRedirect'
+    ];
+
+    /**
+     * @inheritDoc
+     */
     public static function id()
     {
         return 'test-gateway-offsite';
@@ -75,8 +82,8 @@ class TestGatewayOffsite extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $redirectUrl = $this->generateGatewayRouteUrl(
-            'returnFromOffsiteRedirect',
+        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
             ['give-donation-id' => $paymentData->donationId]
         );
 
@@ -91,6 +98,21 @@ class TestGatewayOffsite extends PaymentGateway
      * @param  array  $queryParams
      */
     public function returnFromOffsiteRedirect($queryParams)
+    {
+        $this->updateDonation($queryParams['give-donation-id']);
+
+        return response()->redirectTo(give_get_success_page_uri());
+    }
+
+
+    /**
+     * An example of using a routeMethod for extending the Gateway API to handle a redirect.
+     *
+     * @unreleased
+     *
+     * @param  array  $queryParams
+     */
+    public function securelyReturnFromOffsiteRedirect($queryParams)
     {
         $this->updateDonation($queryParams['give-donation-id']);
 

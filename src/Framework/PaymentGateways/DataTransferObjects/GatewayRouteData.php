@@ -24,6 +24,10 @@ class GatewayRouteData
      * @var array
      */
     public $queryParams;
+    /**
+     * @var string|null
+     */
+    public $routeSignature;
 
     /**
      * Convert data from request into DTO
@@ -38,9 +42,12 @@ class GatewayRouteData
 
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
+        $self->routeSignature = isset($request['give-route-signature']) ? $request['give-route-signature'] : null;
+
         $self->queryParams = array_filter($request, static function ($param) {
-            return !in_array($param, ['give-gateway-id', 'give-gateway-method']);
-        });
+            return !in_array($param, ['give-listener', 'give-gateway-id', 'give-gateway-method', 'give-route-signature']
+            );
+        }, ARRAY_FILTER_USE_KEY);
 
         return $self;
     }
