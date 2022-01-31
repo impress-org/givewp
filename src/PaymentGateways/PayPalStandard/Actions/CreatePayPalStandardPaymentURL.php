@@ -15,7 +15,6 @@ use Give\ValueObjects\Address;
  */
 class CreatePayPalStandardPaymentURL
 {
-    // Todo update paypal ipn url.
     public function __invoke(OffsiteGatewayPaymentData $paymentData)
     {
         // PayPal will send ipn notification to this url.
