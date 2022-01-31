@@ -19,7 +19,6 @@ Query Builder helper class is used to write SQL queries
 
 - [Where Clauses](#where-clauses)
     - [Where](#where-clauses)
-    - [Or Where](#or-where-clauses)
     - [Where IN](#where-in-clauses)
     - [Where BETWEEN](#where-between-clauses)
     - [Where LIKE](#where-like-clauses)
@@ -276,6 +275,8 @@ You may use the Query Builder's `where` method to add `WHERE` clauses to the que
 
 ### Where
 
+#### Available methods - where / orWhere
+
 ```php
 DB::table('posts')->where('ID', 5);
 ```
@@ -298,20 +299,6 @@ Generated SQL
 
 ```sql
 SELECT * FROM wp_posts WHERE ID = '5' AND post_author = '10'
-```
-
-### Or Where Clauses
-
-```php
-DB::table('posts')
-    ->where('ID', 5)
-    ->orWhere('post_author', 10);
-```
-
-Generated SQL
-
-```sql
-SELECT * FROM wp_posts WHERE ID = '5' OR post_author = '10'
 ```
 
 ### Where IN Clauses
