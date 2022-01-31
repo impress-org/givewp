@@ -64,7 +64,7 @@ class GiveModal {
 				<div class="give-modal__controls">
 
 					${ ( 'form' === this.config.type ) ? '<div class="spinner"></div>' : '' }
-					${ ( 'form' === this.config.type && 'undefined' !== this.config.modalContent.link ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }" target="_blank">${ this.config.modalContent.link_text }</a>` : '' }
+					${ ( 'form' === this.config.type && 'undefined' !== this.config.modalContent.link ) ? `<a class="give-modal--additional-link" href="${ this.config.modalContent.link }" target="${ ( 'undefined' !== this.config.modalContent.link_self && this.config.modalContent.link_self ) ? '_self' : '_blank' }">${ this.config.modalContent.link_text }</a>` : '' }
 
 					<button class="give-button give-popup-close-button${ this.config.classes.cancelBtn ? ` ${ this.config.classes.cancelBtn }` : ' give-button--secondary' }">
 						${ this.config.modalContent.cancelBtnTitle ? this.config.modalContent.cancelBtnTitle : ( 'confirm' === this.config.type ? Give.fn.getGlobalVar( 'cancel' ) : Give.fn.getGlobalVar( 'close' ) ) }
