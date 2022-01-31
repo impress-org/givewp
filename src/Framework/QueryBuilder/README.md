@@ -253,6 +253,8 @@ The Query Builder also provides a convenient method to "union" two or more queri
 
 #### Available methods - union / unionAll
 
+### Union
+
 ```php
 $donations = DB::table('give_donations')->where('author_id', 10);
 
