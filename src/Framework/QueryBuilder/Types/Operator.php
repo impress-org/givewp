@@ -7,8 +7,9 @@ namespace Give\Framework\QueryBuilder\Types;
  */
 class Operator extends Type
 {
-    const AND = 'AND';
-    const OR = 'OR';
+    // _AND and _OR constants are prefixed with underscore to be compatible with PHP 5.6
+    const _AND = 'AND';
+    const _OR = 'OR';
     const ON = 'ON';
     const BETWEEN = 'BETWEEN';
     const NOTBETWEEN = 'NOT BETWEEN';
