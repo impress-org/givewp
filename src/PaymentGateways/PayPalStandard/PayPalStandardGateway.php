@@ -70,6 +70,6 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      * @unreleased
      */
     public function handleIpnNotification(){
-
+        give_process_paypal_ipn();
     }
 }
