@@ -63,4 +63,13 @@ class PayPalStandardGateway extends OffSitePaymentGateway
     {
         return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData));
     }
+
+    /**
+     * Handle PayPal IPN notification.
+     *
+     * @unreleased
+     */
+    public function handleIpnNotification(){
+
+    }
 }

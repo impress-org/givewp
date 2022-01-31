@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalStandard\Actions;
 
+use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
+use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 use Give\ValueObjects\Address;
@@ -16,8 +18,13 @@ class CreatePayPalStandardPaymentURL
     // Todo update paypal ipn url.
     public function __invoke(OffsiteGatewayPaymentData $paymentData)
     {
-        // Only send to PayPal if the pending payment is created successfully.
-        $payPalIpnListenerUrl = add_query_arg('give-listener', 'IPN', home_url('index.php'));
+        // PayPal will send ipn notification to this url.
+        $payPalIpnListenerUrl = Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $paymentData->gatewayId,
+            'handleIpnNotification',
+            $paymentData->donationId
+        );
         $paypalPaymentRedirectUrl = trailingslashit(give_get_paypal_redirect()) . '?';
         $itemName = $paymentData->getDonationTitle();
         $payPalPartnerCode = 'givewp_SP';
