@@ -21,15 +21,17 @@ class LegacyPaymentGatewayAdapter
      * Get legacy form field markup to display gateway specific payment fields
      *
      * @since 2.18.0
+     * @unreleased Added missing $args parameter for ID prefixing and general backwards compatibility.
      *
-     * @param  int  $formId
-     * @param  PaymentGatewayInterface  $registeredGateway
+     * @param int $formId
+     * @param array $args
+     * @param PaymentGatewayInterface  $registeredGateway
      *
      * @return string|bool
      */
-    public function getLegacyFormFieldMarkup($formId, $registeredGateway)
+    public function getLegacyFormFieldMarkup($formId, $args, $registeredGateway)
     {
-        return $registeredGateway->getLegacyFormFieldMarkup($formId);
+        return $registeredGateway->getLegacyFormFieldMarkup($formId, $args);
     }
 
     /**

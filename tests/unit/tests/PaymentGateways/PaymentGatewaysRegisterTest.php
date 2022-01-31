@@ -6,6 +6,7 @@ use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use PHPUnit\Framework\TestCase;
 
@@ -136,7 +137,7 @@ class MockStripe extends PaymentGateway
         return 'Credit Card';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -181,7 +182,7 @@ class MockPaypal extends PaymentGateway
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -192,7 +193,7 @@ class MockPaypal extends PaymentGateway
     }
 }
 
-class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterface
+class MockPaypalOffsite extends OffSitePaymentGateway
 {
     /**
      * @return string
@@ -226,7 +227,7 @@ class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterfac
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -234,20 +235,5 @@ class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterfac
     public function createPayment(GatewayPaymentData $paymentData)
     {
         // TODO: Implement createPayment() method.
-    }
-
-    public function returnSuccessFromOffsiteRedirect($donationId)
-    {
-        // TODO: Implement returnSuccessFromOffsiteRedirect() method.
-    }
-
-    public function returnFailureFromOffsiteRedirect($donationId)
-    {
-        // TODO: Implement returnFailureFromOffsiteRedirect() method.
-    }
-
-    public function returnCancelFromOffsiteRedirect($donationId)
-    {
-        // TODO: Implement returnCancelFromOffsiteRedirect() method.
     }
 }

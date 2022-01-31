@@ -7,7 +7,7 @@ namespace Give\Framework\PaymentGateways\Commands;
  *
  * @unreleased
  */
-abstract class RedirectPaymentCommand implements GatewayCommand
+abstract class RedirectOffsitePaymentReturnCommand implements GatewayCommand
 {
     protected $donationId;
 

@@ -7,6 +7,7 @@ use Give\Framework\PaymentGateways\Actions\ProcessOffsitePaymentRedirectOnGatewa
 use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\Helpers\Gateway;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
@@ -53,7 +54,7 @@ class GatewayRoute
         /** @var PaymentGateway $gateway */
         $gateway = give($paymentGateways[$data->gatewayId]);
 
-        $allowedGatewayMethods = $gateway->routeMethods;
+        $allowedGatewayMethods = Gateway::isOffsitePaymentGateway($gateway) ? $gateway->routeMethods : [];
 
         if (is_a($gateway, OffsiteGatewayInterface::class)) {
             $allowedGatewayMethods = array_merge(
@@ -80,7 +81,7 @@ class GatewayRoute
          * Offsite payment gateway redirect further need redirect to success or failed or cancelled donation page.
          * For this reason we need core to involve to handle redirect.
          */
-        if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods)) {
+        if (in_array($data->gatewayMethod, OffsiteGatewayInterface::defaultRouteMethods, true)) {
             (new ProcessOffsitePaymentRedirectOnGatewayRoute($gateway))
                 ->handleGatewayRouteMethod($data->donationId, $data->gatewayMethod);
         } else {
@@ -129,7 +130,7 @@ class GatewayRoute
     {
         // Few gateway route like offsite payment gateway redirect url will contain nonce
         // Which we need to verify for security purpose.
-        if ( null !== $data->nonce ) {
+        if (null !== $data->nonce) {
             return wp_verify_nonce(
                 $data->nonce,
                 (new GenerateGatewayRouteUrl())->getNonceActionName($data)

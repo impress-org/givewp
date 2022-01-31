@@ -13,5 +13,5 @@ interface LegacyPaymentGatewayInterface {
 	 *
 	 * @return string|bool
 	 */
-	public function getLegacyFormFieldMarkup( $formId );
+	public function getLegacyFormFieldMarkup( $formId, $args );
 }
