@@ -23,9 +23,9 @@ class LegacyPaymentGatewayRegisterAdapter {
 		$registeredGatewayId = $registeredGateway->getId();
 
 		add_action( "give_{$registeredGatewayId}_cc_form",
-			static function ( $formId ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
-				echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup( $formId, $registeredGateway );
-			} );
+			static function ( $formId, $args ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {
+				echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup( $formId, $args, $registeredGateway );
+			}, 10, 2 );
 
 		add_action( "give_gateway_{$registeredGatewayId}",
 			static function ( $legacyDonationData ) use ( $registeredGateway, $legacyPaymentGatewayAdapter ) {

@@ -41,6 +41,7 @@ class GiveDeactivationSurvey {
 					confirmBtnTitle: give_vars.submit_and_deactivate,
 					link: window.deactivationLink,
 					link_text: give_vars.skip_and_deactivate,
+					link_self: true,
 				},
 
 				successConfirm: function() {
@@ -65,7 +66,8 @@ class GiveDeactivationSurvey {
 						continueFlag = false;
 					}
 
-					/* If a radio button is assosciated with additional field
+					/**
+                     * If a radio button is associated with additional field
 					 * and if that field is empty, then throw error.
 					 */
 					let userReasonField = '';
