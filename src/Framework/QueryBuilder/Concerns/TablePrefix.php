@@ -18,7 +18,8 @@ trait TablePrefix
     {
         global $wpdb;
 
-        $knownTables = [
+        //  Shared tables in  multisite environment
+        $sharedTables = [
             'users'    => $wpdb->users,
             'usermeta' => $wpdb->usermeta,
         ];
@@ -33,8 +34,8 @@ trait TablePrefix
             $table
         );
 
-        if (array_key_exists($table, $knownTables)) {
-            return $knownTables[ $table ];
+        if (array_key_exists($table, $sharedTables)) {
+            return $sharedTables[ $table ];
         }
 
         return $wpdb->prefix . $table;
