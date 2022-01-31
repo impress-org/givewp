@@ -19,7 +19,7 @@ class PayPalStandardGateway extends OffSitePaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         Call::invoke(PayPalStandardBillingFields::class, $formId);
     }
@@ -61,6 +61,6 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-       return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData));
+        return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData));
     }
 }
