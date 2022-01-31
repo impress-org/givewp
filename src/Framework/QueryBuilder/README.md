@@ -4,9 +4,9 @@ Query Builder helper class is used to write SQL queries
 
 - [DB](#db)
 
-- [Select statements](#from-clause)
+- [Select statements](#select-statements)
 
-- [From Clause](#select-statements)
+- [From Clause](#from-clause)
 
 - [Joins](#joins)
     - [LEFT Join](#left-join)
