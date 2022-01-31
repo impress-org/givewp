@@ -16,6 +16,10 @@ trait SelectStatement
      */
     protected $selects = [];
 
+    /**
+     * @var bool
+     */
+    protected $distinct = false;
 
     /**
      * @var bool
@@ -53,6 +57,19 @@ trait SelectStatement
     public function selectRaw($sql, ...$args)
     {
         $this->selects = array_merge($this->selects, [new RawSQL($sql, $args)]);
+
+        return $this;
+    }
+
+
+    /**
+     * Select distinct
+     *
+     * @return $this
+     */
+    public function distinct()
+    {
+        $this->distinct = true;
 
         return $this;
     }
@@ -96,7 +113,13 @@ trait SelectStatement
         $selectStatements = implode(', ', $selects);
 
         if ($this->includeSelectKeyword) {
-            return ['SELECT ' . $selectStatements];
+            $keyword = 'SELECT ';
+
+            if ($this->distinct) {
+                $keyword .= 'DISTINCT ';
+            }
+
+            return [$keyword . $selectStatements];
         }
 
         return [$selectStatements];
