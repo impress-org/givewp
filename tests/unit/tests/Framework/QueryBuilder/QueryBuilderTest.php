@@ -36,6 +36,20 @@ final class QueryBuilderTest extends TestCase
         );
     }
 
+    public function testSelectDistinct()
+    {
+        $builder = new QueryBuilder();
+        $builder
+            ->select('ID', 'post_author')
+            ->from(DB::raw('posts'))
+            ->distinct();
+
+        $this->assertContains(
+            'SELECT DISTINCT ID, post_author FROM posts',
+            $builder->getSQL()
+        );
+    }
+
     public function testFrom()
     {
         $builder = new QueryBuilder();
