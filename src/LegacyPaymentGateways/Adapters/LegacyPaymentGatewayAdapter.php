@@ -3,7 +3,6 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Helpers\Gateway;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
