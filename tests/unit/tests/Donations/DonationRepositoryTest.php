@@ -4,9 +4,9 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use PHPUnit\Framework\TestCase;
 
-final class DonationTest extends TestCase
+final class DonationRepositoryTest extends TestCase
 {
-    public function testDonationInsert()
+    public function testDonationRepositoryInsert()
     {
         $donation   = new Donation();
         $repository = new DonationRepository();
