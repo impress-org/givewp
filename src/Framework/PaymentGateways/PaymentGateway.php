@@ -4,8 +4,6 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\Http\Response\Types\JsonResponse;
-use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
@@ -24,6 +22,7 @@ use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
+use Give\Framework\PaymentGateways\Traits\ResponseHelpers;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
@@ -35,6 +34,8 @@ use function Give\Framework\Http\Response\response;
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
+    use ResponseHelpers;
+
     /**
      * Route methods are used to extend the gateway api.
      * By adding a custom routeMethod, you are effectively
@@ -135,37 +136,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
         return $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
-    }
-
-
-    /**
-     * Handle gateway route method
-     * @param  string  $method
-     * @param  array  $queryParams
-     *
-     * @return void
-     * @since 2.18.0
-     *
-     * @unreleased - replace $donationId with $queryParams array
-     *
-     */
-    public function handleGatewayRouteMethod($method, $queryParams)
-    {
-        try {
-            $this->handleResponse($this->$method($queryParams));
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-        } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
-            $this->handleResponse(
-                response()->json(
-                    __(
-                        'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
-                        'give'
-                    )
-                )
-            );
-        }
     }
 
     /**
@@ -294,25 +264,5 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 'give-route-signature' => $nonce->toNonce()
             ])
         );
-    }
-
-
-    /**
-     * Handle Response
-     *
-     * @param  RedirectResponse|JsonResponse  $type
-     * @since 2.18.0
-     *
-     */
-    public function handleResponse($type)
-    {
-        if ($type instanceof RedirectResponse) {
-            wp_redirect($type->getTargetUrl());
-            exit;
-        }
-
-        if ($type instanceof JsonResponse) {
-            wp_send_json(['data' => $type->getData()]);
-        }
     }
 }

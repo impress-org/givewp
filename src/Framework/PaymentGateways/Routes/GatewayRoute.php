@@ -4,8 +4,10 @@ namespace Give\Framework\PaymentGateways\Routes;
 
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\PaymentGateways\Traits\ResponseHelpers;
 
 use function Give\Framework\Http\Response\response;
 
@@ -14,6 +16,8 @@ use function Give\Framework\Http\Response\response;
  */
 class GatewayRoute
 {
+    use ResponseHelpers;
+
     /**
      * This is our entry point into the Gateway Routing system.
      *
@@ -67,7 +71,7 @@ class GatewayRoute
             }
 
             // Navigate to our payment gateway api to handle calling the gateway's method
-            $gateway->handleGatewayRouteMethod($data->gatewayMethod, $data->queryParams);
+            $this->handleGatewayRouteMethod($gateway, $data->gatewayMethod, $data->queryParams);
         }
     }
 
@@ -117,7 +121,40 @@ class GatewayRoute
         $action = RouteSignature::make($data->gatewayId, $data->gatewayMethod, $data->queryParams);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
-            wp_redirect(response('Forbidden', 403));
+            wp_redirect(home_url(), 403);
+            exit();
+        }
+    }
+
+    /**
+     * Handle gateway route method
+     *
+     * @since 2.18.0
+     * @unreleased - replace $donationId with $queryParams array
+     *
+     * @param  PaymentGateway  $gateway
+     * @param  string  $method
+     * @param  array  $queryParams
+     *
+     * @return void
+     *
+     */
+    private function handleGatewayRouteMethod(PaymentGateway $gateway, $method, $queryParams)
+    {
+        try {
+            $this->handleResponse($gateway->$method($queryParams));
+        } catch (PaymentGatewayException $paymentGatewayException) {
+            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
+        } catch (\Exception $exception) {
+            PaymentGatewayLog::error($exception->getMessage());
+            $this->handleResponse(
+                response()->json(
+                    __(
+                        'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                        'give'
+                    )
+                )
+            );
         }
     }
 }

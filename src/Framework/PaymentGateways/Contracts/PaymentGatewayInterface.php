@@ -109,18 +109,4 @@ interface PaymentGatewayInterface
         GatewayPaymentData $paymentData,
         GatewaySubscriptionData $subscriptionData
     );
-
-    /**
-     * Handle gateway route method
-     *
-     * @param  string  $method
-     * @param  array  $queryParams
-     *
-     * @return void
-     * @since 2.18.0
-     *
-     * @unreleased replace $donationId with $queryParams
-     *
-     */
-    public function handleGatewayRouteMethod($method, $queryParams);
 }
