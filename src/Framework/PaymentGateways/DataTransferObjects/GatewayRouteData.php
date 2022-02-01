@@ -17,10 +17,6 @@ class GatewayRouteData
      */
     public $gatewayMethod;
     /**
-     * @var int
-     */
-    public $donationId;
-    /**
      * @var array
      */
     public $queryParams;
