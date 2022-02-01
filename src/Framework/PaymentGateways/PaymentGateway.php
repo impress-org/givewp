@@ -141,11 +141,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway command
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
-     * @throws TypeNotSupported
      * @since 2.18.0
      *
+     * @param  GatewayCommand  $command
+     * @param  GatewayPaymentData  $gatewayPaymentData
+     *
+     * @throws TypeNotSupported
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
@@ -228,13 +229,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate gateway route url
      *
+     * @since 2.18.0
+     * @unreleased remove $donationId param in favor of args
+     *
      * @param  string  $gatewayMethod
      * @param  array|null  $args
      *
      * @return string
-     * @since 2.18.0
-     *
-     * @unreleased remove $donationId param in favor of args
      *
      */
     public function generateGatewayRouteUrl($gatewayMethod, $args = null)
@@ -245,11 +246,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate secure gateway route url
      *
+     * @unreleased
+     *
      * @param  string  $gatewayMethod
      * @param  array|null  $args
      *
      * @return string
-     * @unreleased remove $donationId param in favor of args
      *
      */
     public function generateSecureGatewayRouteUrl($gatewayMethod, $args = null)
