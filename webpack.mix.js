@@ -44,6 +44,7 @@ mix.setPublicPath('assets/dist')
     )
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
+    .js('src/Promotions/FreeAddonModal/resources/App.js', 'js/admin-free-addon-modal.js')
     .react()
     .sourceMaps(false, 'source-map')
 
@@ -55,7 +56,10 @@ mix.webpackConfig({
         $: 'jQuery',
         jquery: 'jQuery',
         lodash: 'lodash',
+        react: 'wp.element',
+        'react-dom': 'wp.element',
         '@wordpress/i18n': 'wp.i18n',
+        '@wordpress/element': 'wp.element',
     },
     resolve: {
         alias: {

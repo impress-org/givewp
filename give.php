@@ -54,6 +54,7 @@ use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
+use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -167,6 +168,7 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        PromotionsServiceProvider::class
     ];
 
     /**

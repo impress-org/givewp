@@ -52,6 +52,8 @@ class AddonsAdminPage
                 [
                     'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/',
                     'containerId' => $this->containerId,
+                    'siteUrl' => site_url(),
+                    'siteName' => get_bloginfo('name'),
                 ]
             )
         );
