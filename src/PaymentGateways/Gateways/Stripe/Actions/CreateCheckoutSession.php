@@ -27,7 +27,7 @@ class CreateCheckoutSession extends WorkflowAction
             'mode'                       => 'payment',
             'line_items'                 => [
                 [
-                    'name'        => give_get_payment_meta( $paymentData->donationId, '_give_payment_form_title' ), // @TODO Probably a more preferred method than this...
+                    'name'        => give_get_donation_form_title( $paymentData->donationId ),
                     'description' => $donationSummary->getSummary(),
                     'amount'      => Money::of( $paymentData->price, $paymentData->currency )->getMinorAmount(),
                     'currency'    => $paymentData->currency,
