@@ -39,6 +39,11 @@ class DuplicateForms extends MutateForms
                         'required' => false,
                         'validate_callback' => [$this, 'validateInt'],
                     ],
+                    'status' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'validate_callback' => [$this, 'validateStatus']
+                    ],
                     'ids' => [
                         'type' => 'string',
                         'required' => true,

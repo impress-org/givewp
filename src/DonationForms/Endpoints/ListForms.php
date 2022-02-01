@@ -3,9 +3,9 @@
 namespace Give\DonationForms\Endpoints;
 
 use Give_Donate_Form;
-use Give_Forms_Query;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_Error;
 
 /**
  * @unreleased
@@ -37,6 +37,11 @@ class ListForms extends Endpoint
                        'type' => 'int',
                         'required' => false,
                        'validate_callback' => [$this, 'validateInt'],
+                    ],
+                    'status' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'validate_callback' => [$this, 'validateStatus']
                     ]
                 ],
             ]
@@ -46,6 +51,20 @@ class ListForms extends Endpoint
     public function validateInt($param, $request, $key)
     {
         return is_numeric($param) && $param > 0;
+    }
+
+    public function validateStatus($param, $request, $key)
+    {
+        return in_array($param, array(
+           'publish',
+           'future',
+           'draft',
+           'pending',
+           'trash',
+           'auto-draft',
+           'inherit',
+           'any'
+        ));
     }
 
     public function handleRequest( WP_REST_Request $request )
@@ -79,11 +98,12 @@ class ListForms extends Endpoint
     protected function constructFormList( $parameters ) {
         $per_page = $parameters['perPage'] ?: 30;
         $page = $parameters['page'] ?: 1;
+        $status = isset($parameters['status']) ? $parameters['status'] : 'any';
         $args = array(
                 'output'    => 'forms',
                 'post_type' => array( 'give_forms' ),
                 'update_post_meta_cache' => 'false',
-                'post_status' => 'any',
+                'post_status' => $status,
                 'posts_per_page' => $per_page,
         );
         $form_query = new \WP_Query( $args );
