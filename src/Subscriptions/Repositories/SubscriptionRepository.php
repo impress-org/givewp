@@ -15,13 +15,17 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $subscriptionId
-     * @return Subscription
+     * @return Subscription|null
      */
     public function getById($subscriptionId)
     {
         $subscription = DB::table('give_subscriptions')
             ->where('id', $subscriptionId)
             ->get();
+
+        if ( ! $subscription) {
+            return null;
+        }
 
         return SubscriptionQueryData::fromObject($subscription)->toSubscription();
     }
@@ -30,13 +34,17 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $donationId
-     * @return Subscription
+     * @return Subscription|null
      */
     public function getByDonationId($donationId)
     {
         $subscription = DB::table('give_subscriptions')
             ->where('parent_payment_id', $donationId)
             ->get();
+
+        if ( ! $subscription) {
+            return null;
+        }
 
         return SubscriptionQueryData::fromObject($subscription)->toSubscription();
     }
@@ -45,13 +53,17 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $donorId
-     * @return array|Subscription[]
+     * @return Subscription[]
      */
     public function getByDonorId($donorId)
     {
         $subscriptions = DB::table('give_subscriptions')
             ->where('customer_id', $donorId)
             ->getAll();
+
+        if ( ! $subscriptions) {
+            return [];
+        }
 
         return array_map(static function ($object) {
             return SubscriptionQueryData::fromObject($object)->toSubscription();
@@ -61,7 +73,7 @@ class SubscriptionRepository
     /**
      * @param int $id
      *
-     * @return object[]
+     * @return object[]|null
      */
     public function getNotesBySubscriptionId($id)
     {

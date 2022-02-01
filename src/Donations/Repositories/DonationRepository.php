@@ -19,7 +19,7 @@ class DonationRepository
      *
      * @param  int  $donationId
      *
-     * @return Donation
+     * @return Donation|null
      */
     public function getById($donationId)
     {
@@ -45,6 +45,10 @@ class DonationRepository
             )
             ->where('ID', $donationId)
             ->get();
+
+        if ( ! $donation) {
+            return null;
+        }
 
         return DonationQueryData::fromObject($donation)->toDonation();
     }
@@ -85,6 +89,9 @@ class DonationRepository
             ->orderBy('post_date', 'DESC')
             ->getAll();
 
+        if ( ! $donations) {
+            return [];
+        }
 
         return array_map(static function ($donation) {
             return DonationQueryData::fromObject($donation)->toDonation();
@@ -129,6 +136,10 @@ class DonationRepository
             })
             ->orderBy('post_date', 'DESC')
             ->getAll();
+
+        if ( ! $donations) {
+            return [];
+        }
 
         return array_map(static function ($donation) {
             return DonationQueryData::fromObject($donation)->toDonation();
