@@ -29,6 +29,7 @@ class CreditCardGateway extends PaymentGateway
         $workflow->bind( $paymentData );
 
         $workflow->action( new Actions\GetPaymentMethodFromRequest );
+        $workflow->action( new Actions\ValidatePaymentMethod );
         $workflow->action( new Actions\SaveDonationSummary );
         $workflow->action( new Actions\GetOrCreateStripeCustomer );
         $workflow->action( new Actions\CreatePaymentIntent );

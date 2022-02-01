@@ -13,6 +13,12 @@ use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
+include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-checkout-session.php';
+include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-customer.php';
+include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-gateway.php';
+include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-payment-intent.php';
+include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-payment-method.php';
+
 class CheckoutGateway extends PaymentGateway
 {
     use Traits\CheckoutInstructions;
@@ -42,7 +48,7 @@ class CheckoutGateway extends PaymentGateway
             case 'redirect':
                 $workflow->action( new Actions\CreateCheckoutSession() );
                 $session = $workflow->resolve( CheckoutSession::class );
-                return new RedirectOffsite( $session->url );
+                return new RedirectOffsite( $session->url() );
             default:
                 throw new CheckoutException( 'Invalid Checkout Error' );
         }
@@ -93,7 +99,7 @@ class CheckoutGateway extends PaymentGateway
 
         switch( give_stripe_get_checkout_type() ) {
             case 'modal':
-                return $this->getCheckoutModalHTML();
+                return $this->getCheckoutModalHTML( $formId, $args );
             case 'redirect':
                 return $this->getCheckoutInstructions();
         }
