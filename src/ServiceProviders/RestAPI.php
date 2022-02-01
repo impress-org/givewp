@@ -6,6 +6,7 @@ use Give\DonationForms\Endpoints\ListForms;
 use Give\DonationForms\Endpoints\TrashForms;
 use Give\DonationForms\Endpoints\DeleteForms;
 use Give\DonationForms\Endpoints\DuplicateForms;
+use Give\DonationForms\Endpoints\RestoreForms;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
 use Give\API\Endpoints\Migrations\GetMigrations;
@@ -46,6 +47,7 @@ class RestAPI implements ServiceProvider
         TrashForms::class,
         DeleteForms::class,
         DuplicateForms::class,
+        RestoreForms::class,
         GetMigrations::class,
         RunMigration::class,
     ];
