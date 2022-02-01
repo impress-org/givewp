@@ -142,7 +142,11 @@ class PayPalStandard extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * This function returns payment gateway settings.
+     *
+     * @unreleased
+     *
+     * @return array
      */
     public function getOptions()
     {
