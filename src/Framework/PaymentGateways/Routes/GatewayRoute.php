@@ -21,11 +21,12 @@ class GatewayRoute
     /**
      * This is our entry point into the Gateway Routing system.
      *
-     * @return void
-     * @throws PaymentGatewayException
-     * @since 2.18.0
      * @unreleased - validate secureRouteMethods
+     * @since 2.18.0
      *
+     * @return void
+     *
+     * @throws PaymentGatewayException
      */
     public function __invoke()
     {
@@ -78,11 +79,13 @@ class GatewayRoute
     /**
      * Check if the request is valid
      *
+     * @unreleased remove required check give-donation-id
+     *
+     * @since 2.18.0
+     *
      * @param  array  $gatewayIds
      *
      * @return bool
-     * @since 2.18.0
-     * @unreleased remove required check give-donation-id
      *
      * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
      *
@@ -134,6 +137,7 @@ class GatewayRoute
      * Handle gateway route method
      *
      * @since 2.18.0
+     *
      * @unreleased - replace $donationId with $queryParams array
      *
      * @param  PaymentGateway  $gateway
