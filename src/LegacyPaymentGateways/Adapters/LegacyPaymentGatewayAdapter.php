@@ -53,9 +53,7 @@ class LegacyPaymentGatewayAdapter
 
         $donationId = $this->createPayment($formData->toGiveInsertPaymentData());
 
-        $gatewayPaymentData = Gateway::isOffsitePaymentGateway( $registeredGateway ) ?
-            $formData->toOffsiteGatewayPaymentData($donationId):
-            $formData->toGatewayPaymentData($donationId);
+        $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
 
         if (
             function_exists('Give_Recurring') &&

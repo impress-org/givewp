@@ -3,21 +3,28 @@
 namespace Give\PaymentGateways\PayPalStandard;
 
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
+use Give\PaymentGateways\PayPalStandard\Actions\RedirectOffsitePayment;
 use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
+use Give_Payment;
 
 /**
  * This class handles one-time donation payment processing with PayPal Standard payment gateway
  *
  * @unlreased
  */
-class PayPalStandardGateway extends OffSitePaymentGateway
+class PayPalStandardGateway extends PaymentGateway
 {
     public $routeMethods = [
         'handleIpnNotification'
+    ];
+
+    public $secureRouteMethods = [
+        'handleSuccessPaymentReturn',
+        'handleFailedPaymentReturn'
     ];
 
     /**
@@ -65,7 +72,68 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        return new RedirectOffsite(Call::invoke(CreatePayPalStandardPaymentURL::class, $paymentData));
+        return new RedirectOffsite(
+            Call::invoke(
+                CreatePayPalStandardPaymentURL::class,
+                $paymentData,
+                $this->generateSecureGatewayRouteUrl(
+                    'handleSuccessPaymentReturn',
+                    ['donation-id' => $paymentData->donationId]
+                ),
+                $this->generateSecureGatewayRouteUrl(
+                    'handleFailedPaymentReturn',
+                    ['donation-id' => $paymentData->donationId]
+                ),
+                $this->generateGatewayRouteUrl(
+                    $paymentData->gatewayId,
+                    'handleIpnNotification'
+                )
+            )
+        );
+    }
+
+    /**
+     * Handle payment redirect after successful payment on PayPal standard.
+     *
+     * @unreleased
+     *
+     * @param array $queryParams Query params in gateway route. {
+     *
+     * @type string "donation-id" Donation id.
+     *
+     * }
+     *
+     * @return void
+     */
+    public function handleSuccessPaymentReturn($queryParams)
+    {
+        $donationId = (int)$queryParams['donation-id'];
+        $payment = new Give_Payment($donationId);
+        $payment->update_status('processing');
+
+        RedirectOffsitePayment::redirectToReceiptPage( $donationId );
+    }
+
+    /**
+     * Handle payment redirect after failed payment on PayPal standard.
+     *
+     * @unreleased
+     *
+     * @param array $queryParams Query params in gateway route. {
+     *
+     * @type string "donation-id" Donation id.
+     *
+     * }
+     *
+     * @return void
+     */
+    public function handleFailedPaymentReturn($queryParams)
+    {
+        $donationId = (int)$queryParams['donation-id'];
+        $payment = new Give_Payment($donationId);
+        $payment->update_status('failed');
+
+        RedirectOffsitePayment::redirectToFailedPage( $donationId );
     }
 
     /**
@@ -73,7 +141,8 @@ class PayPalStandardGateway extends OffSitePaymentGateway
      *
      * @unreleased
      */
-    public function handleIpnNotification(){
+    public function handleIpnNotification()
+    {
         give_process_paypal_ipn();
     }
 }

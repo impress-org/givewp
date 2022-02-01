@@ -2,10 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalStandard\Actions;
 
-use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
-use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\OffsiteGatewayPaymentData;
 use Give\ValueObjects\Address;
 
 /**
@@ -15,15 +12,13 @@ use Give\ValueObjects\Address;
  */
 class CreatePayPalStandardPaymentURL
 {
-    public function __invoke(OffsiteGatewayPaymentData $paymentData)
+    public function __invoke(
+        GatewayPaymentData $paymentData,
+        $successRedirectUrl, // PayPal Standard will redirect donor to this url after successful payment.
+        $failedRedirectUrl, // PayPal Standard will redirect donor to this url after failed payment.
+        $payPalIpnListenerUrl // PayPal Standard will send ipn notification to this url on payment update.
+    )
     {
-        // PayPal will send ipn notification to this url.
-        $payPalIpnListenerUrl = Call::invoke(
-            GenerateGatewayRouteUrl::class,
-            $paymentData->gatewayId,
-            'handleIpnNotification',
-            $paymentData->donationId
-        );
         $paypalPaymentRedirectUrl = trailingslashit(give_get_paypal_redirect()) . '?';
         $itemName = $paymentData->getDonationTitle();
         $payPalPartnerCode = 'givewp_SP';
@@ -45,8 +40,8 @@ class CreatePayPalStandardPaymentURL
             'currency_code' => give_get_currency($paymentData->donationId),
 
             // Urls
-            'return' => $paymentData->redirectUrl,
-            'cancel_return' => $paymentData->failedRedirectUrl,
+            'return' => $successRedirectUrl,
+            'cancel_return' => $failedRedirectUrl,
             'notify_url' => $payPalIpnListenerUrl,
 
             'no_shipping' => '1',
