@@ -22,7 +22,7 @@ class RouteSignature {
      */
     public function __construct($gatewayId, $gatewayMethod, $args)
     {
-        $secureArgs = md5(json_encode($args));
+        $secureArgs = md5(implode('|', $args));
 
         $this->signature = "$gatewayId@$gatewayMethod:$secureArgs";
     }

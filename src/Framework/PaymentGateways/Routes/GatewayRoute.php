@@ -125,6 +125,7 @@ class GatewayRoute
                 'Invalid Secure Route',
                 ['routeSignature' => $routeSignature, 'action' => $action->toString(), 'data' => $data]
             );
+            
             wp_die('Forbidden', 403);
         }
     }
