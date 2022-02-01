@@ -22,6 +22,10 @@ class GenerateGatewayRouteUrl
             'give-gateway-method' => $gatewayMethod,
         ];
 
+        if ($args) {
+            $queryArgs = array_merge($queryArgs, $args);
+        }
+
         return add_query_arg(
             $queryArgs,
             home_url()
