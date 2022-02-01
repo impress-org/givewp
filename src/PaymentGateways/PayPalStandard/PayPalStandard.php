@@ -80,7 +80,6 @@ class PayPalStandard extends PaymentGateway
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateGatewayRouteUrl(
-                    $paymentData->gatewayId,
                     'handleIpnNotification'
                 )
             )
