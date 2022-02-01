@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalStandard\Controllers;
 
 use Give\Helpers\Call;
 use Give\PaymentGateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookValidator;
 use Give_Payment;
 
@@ -179,6 +180,6 @@ class PayPalStandardWebhook
      */
     private function verifyDonationId($donationId)
     {
-        return $donationId && 'paypal' === give_get_payment_gateway($donationId);
+        return $donationId && PayPalStandard::id() === give_get_payment_gateway($donationId);
     }
 }
