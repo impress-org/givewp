@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Actions;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\PayPalStandard\PayPalStandardGateway;
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
 
 class RegisterPaymentGateways
 {
@@ -18,7 +18,7 @@ class RegisterPaymentGateways
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
         //TestGateway::class,
         //TestGatewayOffsite::class
-        PayPalStandardGateway::class
+        PayPalStandard::class
     ];
 
     /**

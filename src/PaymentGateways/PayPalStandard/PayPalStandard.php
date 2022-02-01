@@ -2,31 +2,48 @@
 
 namespace Give\PaymentGateways\PayPalStandard;
 
-use Give\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Helpers\Call;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
+use Give\PaymentGateways\PayPalStandard\Actions\RedirectOffsitePayment;
+use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
+use Give_Payment;
 
-class PayPalStandard implements PaymentGateway
+class PayPalStandard extends PaymentGateway
 {
-    /**
-     * @var PayPalStandardGateway
-     */
-    private $payPalStandardGateway;
+    public $routeMethods = [
+        'handleIpnNotification'
+    ];
+
+    public $secureRouteMethods = [
+        'handleSuccessPaymentReturn',
+        'handleFailedPaymentReturn'
+    ];
 
     /**
-     * @unlreased
-     *
-     * @param PayPalStandardGateway $payPalStandardGateway
+     * @inheritDoc
      */
-    public function __construct(PayPalStandardGateway $payPalStandardGateway)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
-        $this->payPalStandardGateway = $payPalStandardGateway;
+        Call::invoke(PayPalStandardBillingFields::class, $formId);
     }
 
     /**
      * @inheritDoc
      */
+    public static function id()
+    {
+        return 'paypal';
+    }
+
+    /**
+     * @inerhitDoc
+     */
     public function getId()
     {
-        return $this->payPalStandardGateway->getId();
+        return self::id();
     }
 
     /**
@@ -34,7 +51,7 @@ class PayPalStandard implements PaymentGateway
      */
     public function getName()
     {
-        return $this->payPalStandardGateway->getName();
+        return esc_html__('PayPal Standard', 'give');
     }
 
     /**
@@ -42,7 +59,86 @@ class PayPalStandard implements PaymentGateway
      */
     public function getPaymentMethodLabel()
     {
-        return $this->payPalStandardGateway->getPaymentMethodLabel();
+        return esc_html__('PayPal', 'give');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        return new RedirectOffsite(
+            Call::invoke(
+                CreatePayPalStandardPaymentURL::class,
+                $paymentData,
+                $this->generateSecureGatewayRouteUrl(
+                    'handleSuccessPaymentReturn',
+                    ['donation-id' => $paymentData->donationId]
+                ),
+                $this->generateSecureGatewayRouteUrl(
+                    'handleFailedPaymentReturn',
+                    ['donation-id' => $paymentData->donationId]
+                ),
+                $this->generateGatewayRouteUrl(
+                    $paymentData->gatewayId,
+                    'handleIpnNotification'
+                )
+            )
+        );
+    }
+
+    /**
+     * Handle payment redirect after successful payment on PayPal standard.
+     *
+     * @unreleased
+     *
+     * @param array $queryParams Query params in gateway route. {
+     *
+     * @type string "donation-id" Donation id.
+     *
+     * }
+     *
+     * @return void
+     */
+    public function handleSuccessPaymentReturn($queryParams)
+    {
+        $donationId = (int)$queryParams['donation-id'];
+        $payment = new Give_Payment($donationId);
+        $payment->update_status('processing');
+
+        RedirectOffsitePayment::redirectToReceiptPage( $donationId );
+    }
+
+    /**
+     * Handle payment redirect after failed payment on PayPal standard.
+     *
+     * @unreleased
+     *
+     * @param array $queryParams Query params in gateway route. {
+     *
+     * @type string "donation-id" Donation id.
+     *
+     * }
+     *
+     * @return void
+     */
+    public function handleFailedPaymentReturn($queryParams)
+    {
+        $donationId = (int)$queryParams['donation-id'];
+        $payment = new Give_Payment($donationId);
+        $payment->update_status('failed');
+
+        RedirectOffsitePayment::redirectToFailedPage( $donationId );
+    }
+
+    /**
+     * Handle PayPal IPN notification.
+     *
+     * @unreleased
+     */
+    public function handleIpnNotification()
+    {
+        give_process_paypal_ipn();
     }
 
     /**
@@ -131,12 +227,5 @@ class PayPalStandard implements PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function boot()
-    {
     }
 }
