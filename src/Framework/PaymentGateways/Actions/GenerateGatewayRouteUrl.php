@@ -2,9 +2,6 @@
 
 namespace Give\Framework\PaymentGateways\Actions;
 
-use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
-use InvalidArgumentException;
-
 class GenerateGatewayRouteUrl
 {
     /**
