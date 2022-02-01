@@ -1,8 +1,10 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe;
+namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
-trait CreditCardFormTrait
+use Give_Notices;
+
+trait CreditCardForm
 {
     /**
      * @note Stripe uses its own credit card form to tokenize card details.
