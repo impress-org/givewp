@@ -15,6 +15,7 @@ use WP_Error;
 
 class ListForms extends Endpoint
 {
+
     protected $endpoint = 'admin/forms';
 
     public function registerRoute()
@@ -43,6 +44,12 @@ class ListForms extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'validate_callback' => [$this, 'validateStatus']
+                    ],
+                    'search' => [
+                        'type' => 'string',
+                        'required' => 'false',
+                        'validate_callback' => [$this, 'validateSearch'],
+                        'sanitize_callback' => [$this, 'sanitizeSearch']
                     ]
                 ],
             ]
@@ -66,6 +73,22 @@ class ListForms extends Endpoint
            'inherit',
            'any'
         ));
+    }
+
+    public function validateSearch($param, $request, $key)
+    {
+        return is_int($param) || is_string($param);
+    }
+
+    public function sanitizeSearch($value, $request, $param)
+    {
+        if(is_int($param)){
+            return $param;
+        }
+        else
+        {
+            return sanitize_text_field($value);
+        }
     }
 
     public function handleRequest( WP_REST_Request $request )
@@ -101,6 +124,7 @@ class ListForms extends Endpoint
     protected function constructFormList( $parameters ) {
         $per_page = $parameters['perPage'] ?: 30;
         $page = $parameters['page'] ?: 1;
+        $search = $parameters['search'] ?: '';
         $status = isset($parameters['status']) ? $parameters['status'] : 'any';
         // basic query to get list of forms and form meta
         global $wpdb;
@@ -140,6 +164,14 @@ class ListForms extends Endpoint
                 'post_status' => $status,
                 'posts_per_page' => $per_page,
         );
+        if(is_numeric($search))
+        {
+            $args['p'] = $search;
+        }
+        else
+        {
+            $args['title'] = $search;
+        }
         $form_query = new \WP_Query( $args );
         //make sure we're not asking for a non-existent page
         if( $form_query->max_num_pages < $page )
