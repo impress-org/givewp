@@ -5,13 +5,14 @@ namespace Give\Framework\PaymentGateways\Traits;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 
-trait ResponseHelpers {
+trait HandleHttpResponses
+{
     /**
      * Handle Response
      *
-     * @param  RedirectResponse|JsonResponse  $type
      * @since 2.18.0
      *
+     * @param  RedirectResponse|JsonResponse  $type
      */
     public function handleResponse($type)
     {

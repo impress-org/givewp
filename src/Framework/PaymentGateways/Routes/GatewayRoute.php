@@ -7,7 +7,7 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\PaymentGateways\Traits\ResponseHelpers;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 use function Give\Framework\Http\Response\response;
 
@@ -16,7 +16,7 @@ use function Give\Framework\Http\Response\response;
  */
 class GatewayRoute
 {
-    use ResponseHelpers;
+    use HandleHttpResponses;
 
     /**
      * This is our entry point into the Gateway Routing system.
