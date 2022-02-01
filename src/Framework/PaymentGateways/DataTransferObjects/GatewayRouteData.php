@@ -17,21 +17,20 @@ class GatewayRouteData
      */
     public $gatewayMethod;
     /**
-     * @var int
+     * @var array
      */
-    public $donationId;
+    public $queryParams;
     /**
-     * WordPress's nonce.
-     * @var int
+     * @var string|null
      */
-    public $nonce;
+    public $routeSignature;
 
     /**
      * Convert data from request into DTO
      *
+     * @return self
      * @since 2.18.0
      *
-     * @return self
      */
     public static function fromRequest(array $request)
     {
@@ -39,11 +38,12 @@ class GatewayRouteData
 
         $self->gatewayId = $request['give-gateway-id'];
         $self->gatewayMethod = $request['give-gateway-method'];
-        $self->donationId = (int)$request['give-donation-id'];
+        $self->routeSignature = isset($request['give-route-signature']) ? $request['give-route-signature'] : null;
 
-        // Nonce is options query param.
-        // Check GenerateGatewayRouteUrl class.
-        $self->nonce = isset( $request['_wpnonce'] ) ? $request['_wpnonce'] : null;
+        $self->queryParams = array_filter($request, static function ($param) {
+            return !in_array($param, ['give-listener', 'give-gateway-id', 'give-gateway-method', 'give-route-signature']
+            );
+        }, ARRAY_FILTER_USE_KEY);
 
         return $self;
     }

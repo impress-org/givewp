@@ -2,16 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
-use Give\Framework\PaymentGateways\Commands\PaymentCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
-use Give\Helpers\Call;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\TestGateway\Commands\CreateTestGatewayOffsitePaymentUrlCommand;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 use function Give\Framework\Http\Response\response;
@@ -20,14 +14,20 @@ use function Give\Framework\Http\Response\response;
  * Class TestGatewayOffsite
  * @since 2.18.0
  */
-class TestGatewayOffsite extends OffSitePaymentGateway
+class TestGatewayOffsite extends PaymentGateway
 {
     /**
-     * @unreleased
-     * @var string[]
+     * @inheritDoc
      */
     public $routeMethods = [
-        'testGatewayMethod'
+        'returnFromOffsiteRedirect'
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    public $secureRouteMethods = [
+        'securelyReturnFromOffsiteRedirect'
     ];
 
     /**
@@ -78,51 +78,57 @@ class TestGatewayOffsite extends OffSitePaymentGateway
     }
 
     /**
-     * @unreleased
-     *
-     * @param GatewayPaymentData $paymentData
-     *
-     * @return RedirectOffsite
+     * @inheritDoc
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        return new RedirectOffsite(
-            Call::invoke(
-                CreateTestGatewayOffsitePaymentUrlCommand::class,
-                $paymentData
-            )
+        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
+            ['give-donation-id' => $paymentData->donationId]
         );
+
+        return new RedirectOffsite($redirectUrl);
     }
 
     /**
+     * An example of using a routeMethod for extending the Gateway API to handle a redirect.
+     *
      * @unreleased
      *
-     * @param int $donationId
-     *
-     * @return PaymentCommand
+     * @param  array  $queryParams
      */
-    public function returnSuccessFromOffsiteRedirect($donationId)
+    public function returnFromOffsiteRedirect($queryParams)
     {
-        $command = new PaymentComplete( 'test-gateway-transaction-id' );
-        $command->paymentNotes = ['NOTE GOES HERE'];
+        $this->updateDonation($queryParams['give-donation-id']);
 
-        return $command;
+        return response()->redirectTo(give_get_success_page_uri());
+    }
+
+
+    /**
+     * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
+     *
+     * @unreleased
+     *
+     * @param  array  $queryParams
+     */
+    public function securelyReturnFromOffsiteRedirect($queryParams)
+    {
+        $this->updateDonation($queryParams['give-donation-id']);
+
+        return response()->redirectTo(give_get_success_page_uri());
     }
 
     /**
-     * An example gateway method for extending the Gateway API for a given gateway.
+     * Helper for updating donation
      *
-     * @param int $donationId
-     *
-     * @return JsonResponse
+     * @param $donationId
+     * @return void
      */
-    public function testGatewayMethod($donationId)
+    private function updateDonation($donationId)
     {
-        $command = new PaymentComplete();
-        $command->gatewayTransactionId = 'test-gateway-transaction-id';
-        $command->paymentNotes = ['NOTE GOES HERE'];
-        PaymentCompleteHandler::make($command)->handle($donationId);
-
-        return response()->json();
+        give_insert_payment_note($donationId, 'NOTE GOES HERE');
+        give_update_payment_status($donationId);
+        give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
     }
 }
