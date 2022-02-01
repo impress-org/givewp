@@ -121,8 +121,7 @@ class GatewayRoute
         $action = RouteSignature::make($data->gatewayId, $data->gatewayMethod, $data->queryParams);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
-            wp_redirect(home_url(), 403);
-            exit();
+            wp_die('Forbidden', 403);
         }
     }
 
