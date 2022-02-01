@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Endpoints;
 
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give_Donate_Form;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -69,9 +70,11 @@ class ListForms extends Endpoint
 
     public function handleRequest( WP_REST_Request $request )
     {
+        $now = hrtime(true);
         $parameters = $request->get_params();
         $forms = $this->constructFormList( $parameters );
-
+        $then = hrtime(true);
+        error_log('took ' . ( ( $then - $now ) / 1000000) . 'ms');
         return new WP_REST_Response(
             $forms
         );
@@ -99,6 +102,37 @@ class ListForms extends Endpoint
         $per_page = $parameters['perPage'] ?: 30;
         $page = $parameters['page'] ?: 1;
         $status = isset($parameters['status']) ? $parameters['status'] : 'any';
+        // basic query to get list of forms and form meta
+        global $wpdb;
+        $builder = new QueryBuilder();
+        $builder->from('posts', 'posts')
+            ->select(
+                ['ID', 'id'],
+                ['post_date', 'createdAt'],
+                ['post_modified', 'updatedAt'],
+                ['post_status', 'status'],
+                ['post_title', 'title'],
+            )
+            ->where('post_type', 'give_forms')
+            ->whereIn('post_status', ['publish', 'draft', 'pending'])
+            ->attachMeta('give_formmeta', 'id', 'form_id',
+                ['_give_form_earnings', 'revenue'],
+                ['_give_goal_option', 'goal_enabled'],
+                ['_give_levels_minimum_amount', 'level_min'],
+                ['_give_levels_maximum_amount', 'level_max'],
+                ['_give_goal_format', 'goal_format'],
+                ['_give_form_goal_progress', 'goal_progress']
+            )
+            ->limit($per_page)
+            ->orderBy('ID', 'DESC')
+            ->offset(($page-1)*$per_page);
+        $builder_form_query = $builder->getAll();
+        $found_ids = array_map(function($e) {
+            return $e->id;
+        }, $builder_form_query);
+
+        // todo: add a query to get donation count from $found_ids (list of form IDs)
+
         $args = array(
                 'output'    => 'forms',
                 'post_type' => array( 'give_forms' ),
