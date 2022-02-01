@@ -9,8 +9,19 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 
+/**
+ * @unreleased
+ */
 class CreateCheckoutSession extends WorkflowAction
 {
+    /**
+     * @unreleased
+     * @param GatewayPaymentData $paymentData
+     * @param DonationSummary $donationSummary
+     * @param \Give_Stripe_Customer $giveStripeCustomer
+     * @param PaymentMethod $paymentMethod
+     * @return void
+     */
     public function __invoke(
         GatewayPaymentData $paymentData,
         DonationSummary $donationSummary,

@@ -5,6 +5,9 @@ namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Gateways\Stripe;
 
+/**
+ * @unreleased
+ */
 trait CheckoutModal
 {
     /**

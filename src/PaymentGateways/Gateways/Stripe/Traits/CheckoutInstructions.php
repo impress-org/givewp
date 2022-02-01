@@ -2,8 +2,14 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
+/**
+ * @unreleased
+ */
 trait CheckoutInstructions
 {
+    /**
+     * @unreleased Migrated from the legacy Give_Stripe_Checkout::output_redirect_notice implementation of the Stripe Checkout Gateway.
+     */
     public function getCheckoutInstructions()
     {
         // For Multi-step Sequoia Form Template.

@@ -14,6 +14,9 @@ use Give\PaymentGateways\Gateways\Stripe\Helpers\CheckoutHelper;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
+/**
+ * @unreleased
+ */
 class CheckoutGateway extends PaymentGateway
 {
     use Traits\CheckoutInstructions;
