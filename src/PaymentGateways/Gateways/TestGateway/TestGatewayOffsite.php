@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -96,10 +97,17 @@ class TestGatewayOffsite extends PaymentGateway
      * @unreleased
      *
      * @param  array  $queryParams
+     * @throws PaymentGatewayException
      */
     public function returnFromOffsiteRedirect($queryParams)
     {
-        $this->updateDonation($queryParams['give-donation-id']);
+        $donationId = $queryParams['give-donation-id'];
+
+        $this->updateDonation($donationId);
+
+        if (!get_post($donationId)) {
+            throw new PaymentGatewayException('Donation does not exist');
+        }
 
         return response()->redirectTo(give_get_success_page_uri());
     }
@@ -111,10 +119,17 @@ class TestGatewayOffsite extends PaymentGateway
      * @unreleased
      *
      * @param  array  $queryParams
+     * @throws PaymentGatewayException
      */
     public function securelyReturnFromOffsiteRedirect($queryParams)
     {
-        $this->updateDonation($queryParams['give-donation-id']);
+        $donationId = $queryParams['give-donation-id'];
+
+        $this->updateDonation($donationId);
+
+        if (!get_post($donationId)) {
+            throw new PaymentGatewayException('Donation does not exist');
+        }
 
         return response()->redirectTo(give_get_success_page_uri());
     }
