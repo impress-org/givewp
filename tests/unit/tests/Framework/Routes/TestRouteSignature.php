@@ -1,7 +1,11 @@
 <?php
 
+namespace unit\tests\Framework\Routes;
+
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use PHPUnit\Framework\TestCase;
+
+use function wp_verify_nonce;
 
 /**
  * @unreleased
