@@ -120,7 +120,7 @@ class DonationRepository
                 ['subscription_id', 'subscriptionId']
             )
             ->where('post_type', 'give_payment')
-            ->whereIn('ID', function (WhereQueryBuilder $builder) use ($donorId) {
+            ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder
                     ->select('donation_id')
                     ->from('give_donationmeta')
