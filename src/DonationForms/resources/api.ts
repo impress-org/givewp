@@ -31,14 +31,15 @@ export const fetchWithArgs = (endpoint, args, method = 'GET') => {
 const Fetcher = (params) => {
     return fetchWithArgs('', {
         page: params.split(',')[0],
-        perPage: params.split(',')[1]
+        perPage: params.split(',')[1],
+        status: params.split(',')[2]
     });
 }
 // SWR Fetcher
-export const useDonationForms = ({page, perPage}, swrParams = {}) => {
-    return useSWR(keyFunction({page, perPage}), Fetcher, swrParams);
+export const useDonationForms = ({page, perPage, status}, swrParams = {}) => {
+    return useSWR(keyFunction({page, perPage, status}), Fetcher, swrParams);
 };
 
-export const keyFunction = ({page, perPage}) => {
-    return `${page},${perPage}`
+export const keyFunction = ({page, perPage, status}) => {
+    return `${page},${perPage},${status}`
 }

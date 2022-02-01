@@ -29,18 +29,19 @@ function AdminDonationForms() {
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState(0);
     const [successes, setSuccesses] = useState(0);
-    const {data, error, isValidating} = useDonationForms({page, perPage});
+    const [status, setStatus] = useState('any');
+    const {data, error, isValidating} = useDonationForms({page, perPage, status});
 
     async function mutateForm(event, endpoint, method) {
         try {
             const response = await fetchWithArgs(endpoint, {page, perPage, ids: event.target.dataset.formid}, method);
             //mutate the data without revalidating current page
-            const currentKey = keyFunction({page, perPage});
+            const currentKey = keyFunction({page, perPage, status});
             await mutate(currentKey, {...data, ...response}, false);
             //revalidate all pages after the current page and null their data
             const mutations = [];
             for (let i = response.page + 1; i <= Math.ceil(data.total / perPage); i++) {
-                const invalidKey = keyFunction({page: i, perPage});
+                const invalidKey = keyFunction({page: i, perPage, status});
                 if (invalidKey != currentKey) {
                     mutations.push(mutate(invalidKey, null));
                 }
@@ -59,6 +60,10 @@ function AdminDonationForms() {
 
     function duplicateForm(event) {
         mutateForm(event, '/duplicate', 'POST');
+    }
+
+    function changeStatus(event) {
+        setStatus(event.target.value);
     }
 
     function TableRows({data}) {
@@ -170,6 +175,15 @@ function AdminDonationForms() {
                 <a href="post-new.php?post_type=give_forms" className={styles.button}>
                     {__('Add Form', 'give')}
                 </a>
+            </div>
+            <div className={styles.searchContainer}>
+                <select onChange={changeStatus}>
+                    <option value="any">{__('All','give')}</option>
+                    <option value="publish">{__('Published','give')}</option>
+                    <option value="pending">{__('Pending','give')}</option>
+                    <option value="draft">{__('Draft','give')}</option>
+                    <option value="trash">{__('Trash','give')}</option>
+                </select>
             </div>
             {!!errors && (
                 <div className={styles.updateError}>

@@ -249,6 +249,16 @@
     margin-block-start: 0.25rem;
 }
 
+.searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(248, 248, 248);
+    padding-inline: 1.5em;
+    padding-block: 1em;
+    border-bottom: 0.0625rem solid #dbdbdb;
+}
+
 .statusBadge {
     background-color: var(--give-primary-color);
     border-radius: 0.1875rem;
