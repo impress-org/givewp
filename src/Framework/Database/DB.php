@@ -3,6 +3,8 @@
 namespace Give\Framework\Database;
 
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\QueryBuilder\Clauses\RawSQL;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 
 /**
@@ -21,6 +23,8 @@ use WP_Error;
  * @method static array get_col(string $query = null, int $x = 0)
  * @method static array|object|null get_results(string $query = null, string $output = OBJECT)
  * @method static string get_charset_collate()
+ * @method static string esc_like(string $text)
+ * @method static string remove_placeholder_escape(string $text)
  */
 class DB
 {
@@ -97,6 +101,51 @@ class DB
         global $wpdb;
 
         return $wpdb->insert_id;
+    }
+
+    /**
+     * Prefix given table name with $wpdb->prefix
+     *
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public static function prefix($tableName)
+    {
+        global $wpdb;
+
+        return $wpdb->prefix . $tableName;
+    }
+
+    /**
+     * Create QueryBuilder instance
+     *
+     * @param string $table
+     * @param  null|string  $alias
+     *
+     * @return QueryBuilder
+     */
+    public static function table($table, $alias = null)
+    {
+        $builder = new QueryBuilder();
+        $builder->from($table, $alias);
+
+        return $builder;
+    }
+
+
+    /**
+     * Used as a flag to tell QueryBuilder not to process the provided SQL
+     * If $args are provided, we will assume that dev wants to use DB::prepare method with raw SQL
+     *
+     * @param string $sql
+     * @param ...$args
+     *
+     * @return RawSQL
+     */
+    public static function raw($sql, ...$args)
+    {
+        return new RawSQL($sql, ...$args);
     }
 
     /**
