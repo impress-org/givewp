@@ -2,9 +2,9 @@
 
 namespace Give\Subscriptions\Repositories;
 
-use Give\Subscriptions\DataTransferObjects\SubscriptionObjectData;
+use Give\Framework\Database\DB;
+use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Models\Subscription;
-use Give_Subscriptions_DB;
 
 class SubscriptionRepository
 {
@@ -16,12 +16,11 @@ class SubscriptionRepository
      */
     public function getById($subscriptionId)
     {
-        /** @var Give_Subscriptions_DB $db */
-        $db = give(Give_Subscriptions_DB::class);
+        $query = DB::table('give_subscriptions')
+            ->where('id', $subscriptionId)
+            ->get();
 
-        $subscriptionObject = $db->get($subscriptionId);
-
-        return SubscriptionObjectData::fromObject($subscriptionObject)->toSubscription();
+        return SubscriptionQueryData::fromObject($query)->toSubscription();
     }
 
     /**
@@ -32,12 +31,11 @@ class SubscriptionRepository
      */
     public function getByDonationId($donationId)
     {
-        /** @var Give_Subscriptions_DB $db */
-        $db = give(Give_Subscriptions_DB::class);
+        $query = DB::table('give_subscriptions')
+            ->where('parent_payment_id', $donationId)
+            ->get();
 
-        $subscriptionObject = $db->get_by('parent_payment_id', $donationId);
-
-        return SubscriptionObjectData::fromObject($subscriptionObject)->toSubscription();
+        return SubscriptionQueryData::fromObject($query)->toSubscription();
     }
 
     /**
@@ -48,16 +46,12 @@ class SubscriptionRepository
      */
     public function getByDonorId($donorId)
     {
-        global $wpdb;
-
-        $query = $wpdb->get_results(
-            "SELECT *
-                    FROM {$wpdb->prefix}give_subscriptions
-                    WHERE customer_id = $donorId"
-        );
+        $query = DB::table('give_subscriptions')
+            ->where('customer_id', $donorId)
+            ->getAll();
 
         return array_map(static function ($object) {
-            return SubscriptionObjectData::fromObject($object)->toSubscription();
+            return SubscriptionQueryData::fromObject($object)->toSubscription();
         }, $query);
     }
 
