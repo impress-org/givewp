@@ -45,7 +45,7 @@ class GatewayRoute
             }
 
             // create DTO from GET request
-            $data = GatewayRouteData::fromRequest($_GET);
+            $data = GatewayRouteData::fromRequest(give_clean($_GET));
 
             /**
              * Get the PaymentGateway instance
