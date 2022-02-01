@@ -42,7 +42,7 @@ class PayPalStandardWebhook
         $donationId = isset($eventData['custom']) ? absint($eventData['custom']) : 0;
         $txnType = $eventData['txn_type'];
 
-        $this->recordIpn($donationId);
+        $this->recordIpn($eventData, $donationId);
         $this->recordIpnInDonation($donationId);
 
         if (has_action('give_paypal_' . $txnType)) {
@@ -76,16 +76,17 @@ class PayPalStandardWebhook
     }
 
     /**
+     * @param array $eventData
      * @param int $donationId
      *
      * @unreleased
      */
-    private function recordIpn($donationId)
+    private function recordIpn(array $eventData, $donationId)
     {
         update_option(
             'give_last_paypal_ipn_received',
             [
-                'auth_status' => isset($api_response['body']) ? $api_response['body'] : 'N/A',
+                'auth_status' => 'VERIFIED',
                 'transaction_id' => isset($eventData['txn_id']) ? $eventData['txn_id'] : 'N/A',
                 'payment_id' => $donationId,
             ],
@@ -114,7 +115,8 @@ class PayPalStandardWebhook
 
         // Process refunds & reversed.
         if (in_array($donationStatus, ['refunded', 'reversed'])) {
-            Call::invoke( ProcessIpnDonationRefund::class, $eventData, $donationId );
+            Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donationId);
+
             return;
         }
 
