@@ -91,7 +91,12 @@
         border: none;
         padding: 0;
         font-weight: 400;
+        cursor: pointer;
     }
+}
+
+.action.delete {
+    color: rgba(232, 75, 59);
 }
 
 .tableGroup {

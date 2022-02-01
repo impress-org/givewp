@@ -32,9 +32,9 @@ function AdminDonationForms() {
     const [status, setStatus] = useState('any');
     const {data, error, isValidating} = useDonationForms({page, perPage, status});
 
-    async function mutateForm(event, endpoint, method) {
+    async function mutateForm(ids, endpoint, method) {
         try {
-            const response = await fetchWithArgs(endpoint, {page, perPage, ids: event.target.dataset.formid}, method);
+            const response = await fetchWithArgs(endpoint, {page, perPage, status, ids}, method);
             //mutate the data without revalidating current page
             const currentKey = keyFunction({page, perPage, status});
             await mutate(currentKey, {...data, ...response}, false);
@@ -55,11 +55,15 @@ function AdminDonationForms() {
 
     function deleteForm(event) {
         const endpoint = data.trash ? '/trash' : '/delete';
-        mutateForm(event, endpoint, 'DELETE');
+        mutateForm(event.target.dataset.formid, endpoint, 'DELETE');
     }
 
     function duplicateForm(event) {
-        mutateForm(event, '/duplicate', 'POST');
+        mutateForm(event.target.dataset.formid, '/duplicate', 'POST');
+    }
+
+    function restoreForm(event){
+        mutateForm(event.target.dataset.formid, '/restore', 'POST');
     }
 
     function changeStatus(event) {
@@ -108,17 +112,32 @@ function AdminDonationForms() {
                 <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                     <a href={form.edit}>{form.name}</a>
                     <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                        <a href={form.edit} className={styles.action}>
-                            Edit <span className="give-visually-hidden">{form.name}</span>
-                        </a>
-                        <button type="button" onClick={deleteForm} data-formid={form.id} className={styles.action}>
-                            {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
-                            <span className="give-visually-hidden">{form.name}</span>
-                        </button>
-                        <a href={form.permalink}>{__('View', 'give')}</a>
-                        <button type="button" onClick={duplicateForm} data-formid={form.id} className={styles.action}>
-                            {__('Duplicate', 'give')}
-                        </button>
+                        {status == 'trash' ? (
+                            <>
+                                <button type="button" onClick={restoreForm} data-formid={form.id} className={styles.action}>
+                                    {__('Restore', 'give')}{' '}
+                                    <span className="give-visually-hidden">{form.name}</span>
+                                </button>
+                                <button type="button" onClick={deleteForm} data-formid={form.id} className={cx(styles.action, styles.delete)}>
+                                    {__('Delete Permanently', 'give')}{' '}
+                                    <span className="give-visually-hidden">{form.name}</span>
+                                </button>                            </>
+                        ) : (
+                            <>
+                                <a href={form.edit} className={styles.action}>
+                                    {__('Edit', 'give')}{' '}
+                                    <span className="give-visually-hidden">{form.name}</span>
+                                </a>
+                                <button type="button" onClick={deleteForm} data-formid={form.id} className={cx(styles.action, {[styles.delete] : !trash})}>
+                                    {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
+                                    <span className="give-visually-hidden">{form.name}</span>
+                                </button>
+                                <a href={form.permalink}>{__('View', 'give')}</a>
+                                <button type="button" onClick={duplicateForm} data-formid={form.id} className={styles.action}>
+                                    {__('Duplicate', 'give')}
+                                </button>
+                            </>
+                            )}
                     </div>
                 </th>
                 <td className={styles.tableCell} style={{textAlign: 'end'}}>
