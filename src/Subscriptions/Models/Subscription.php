@@ -94,4 +94,14 @@ class Subscription
         return give()->donationRepository->getBySubscriptionId($this->id);
     }
 
+    /**
+     * Get Subscription notes
+     *
+     * @return object[]
+     */
+    public function getNotes()
+    {
+        return give()->subscriptionRepository->getNotesBySubscriptionId($this->id);
+    }
+
 }
