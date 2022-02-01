@@ -8,6 +8,7 @@ use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
 use Give\PaymentGateways\PayPalStandard\Actions\RedirectOffsitePayment;
+use Give\PaymentGateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
 use Give_Payment;
 
@@ -137,7 +138,7 @@ class PayPalStandard extends PaymentGateway
      */
     public function handleIpnNotification()
     {
-        give_process_paypal_ipn();
+        give(PayPalStandardWebhook::class)->handle();
     }
 
     /**

@@ -9,6 +9,8 @@
  * @subpackage  Gateways
  */
 
+use Give\PaymentGateways\PayPalStandard\PayPalStandard;
+
 if ( ! defined('ABSPATH')) {
     exit;
 }
@@ -26,265 +28,22 @@ function give_listen_for_paypal_ipn()
         /**
          * Fires while verifying PayPal IPN
          *
+         * @deprecated
          * @since 1.0
          */
         do_action('give_verify_paypal_ipn');
+
+        give(PayPalStandard::class)->handleIpnNotification();
     }
 }
 
 add_action('init', 'give_listen_for_paypal_ipn');
 
 /**
- * Process PayPal IPN
- *
- * @since 1.0
- * @unlreased Set correct PayPal host url in header information for ipn verification.
- * @return void
- */
-function give_process_paypal_ipn()
-{
-    // Check the request method is POST.
-    if (isset($_SERVER['REQUEST_METHOD']) && 'POST' !== $_SERVER['REQUEST_METHOD']) {
-        return;
-    }
-
-    // Set initial post data to empty string.
-    $post_data = '';
-
-    // Fallback just in case post_max_size is lower than needed.
-    if (ini_get('allow_url_fopen')) {
-        $post_data = file_get_contents('php://input');
-    } else {
-        // If allow_url_fopen is not enabled, then make sure that post_max_size is large enough.
-        ini_set('post_max_size', '12M');
-    }
-    // Start the encoded data collection with notification command.
-    $encoded_data = 'cmd=_notify-validate';
-
-    // Get current arg separator.
-    $arg_separator = give_get_php_arg_separator_output();
-
-    // Verify there is a post_data.
-    if ($post_data || strlen($post_data) > 0) {
-        // Append the data.
-        $encoded_data .= $arg_separator . $post_data;
-    } else {
-        // Check if POST is empty.
-        if (empty($_POST)) {
-            // Nothing to do.
-            return;
-        } else {
-            // Loop through each POST.
-            foreach ($_POST as $key => $value) {
-                // Encode the value and append the data.
-                $encoded_data .= $arg_separator . "$key=" . urlencode($value);
-            }
-        }
-    }
-
-    // Convert collected post data to an array.
-    parse_str($encoded_data, $encoded_data_array);
-
-    foreach ($encoded_data_array as $key => $value) {
-        if (false !== strpos($key, 'amp;')) {
-            $new_key = str_replace('&amp;', '&', $key);
-            $new_key = str_replace('amp;', '&', $new_key);
-
-            unset($encoded_data_array[$key]);
-            $encoded_data_array[$new_key] = $value;
-        }
-    }
-
-    $api_response = false;
-
-    // Validate IPN request w/ PayPal if user hasn't disabled this security measure.
-    if (give_is_setting_enabled(give_get_option('paypal_verification', 'enabled'))) {
-        $remote_post_vars = [
-            'method'      => 'POST',
-            'timeout'     => 45,
-            'redirection' => 5,
-            'httpversion' => '1.1',
-            'blocking'    => true,
-            'headers'     => [
-                'host'         => give_is_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com',
-                'connection'   => 'close',
-                'content-type' => 'application/x-www-form-urlencoded',
-                'post'         => '/cgi-bin/webscr HTTP/1.1',
-            ],
-            'sslverify'   => false,
-            'body'        => $encoded_data_array,
-        ];
-
-        // Validate the IPN.
-        // https://developer.paypal.com/docs/api-basics/notifications/ipn/IPNImplementation/
-        $api_response = wp_remote_post(give_get_paypal_redirect(), $remote_post_vars);
-        if (is_wp_error($api_response)) {
-            give_record_gateway_error(
-                __('IPN Error', 'give'),
-                sprintf( /* translators: %s: Paypal IPN response */
-                    __('Invalid IPN verification response. IPN data: %s', 'give'),
-                    json_encode($api_response)
-                )
-            );
-
-            return; // Something went wrong.
-        }
-
-        if ('VERIFIED' !== $api_response['body']) {
-            give_record_gateway_error(
-                __('IPN Error', 'give'),
-                sprintf( /* translators: %s: Paypal IPN response */
-                    __('Invalid IPN verification response. IPN data: %s', 'give'),
-                    json_encode($api_response)
-                )
-            );
-
-            return; // Response not okay.
-        }
-    }
-
-    // Check if $post_data_array has been populated.
-    if ( ! is_array($encoded_data_array) && ! empty($encoded_data_array)) {
-        return;
-    }
-
-    $defaults = [
-        'txn_type'       => '',
-        'payment_status' => '',
-    ];
-
-    $encoded_data_array = wp_parse_args($encoded_data_array, $defaults);
-
-    $payment_id = isset($encoded_data_array['custom']) ? absint($encoded_data_array['custom']) : 0;
-    $txn_type = $encoded_data_array['txn_type'];
-
-    // Check for PayPal IPN Notifications and update data based on it.
-    $current_timestamp = current_time('timestamp');
-    $paypal_ipn_vars = [
-        'auth_status'    => isset($api_response['body']) ? $api_response['body'] : 'N/A',
-        'transaction_id' => isset($encoded_data_array['txn_id']) ? $encoded_data_array['txn_id'] : 'N/A',
-        'payment_id'     => $payment_id,
-    ];
-    update_option('give_last_paypal_ipn_received', $paypal_ipn_vars, false);
-    give_insert_payment_note(
-        $payment_id,
-        sprintf(
-            __('IPN received on %1$s at %2$s', 'give'),
-            date_i18n('m/d/Y', $current_timestamp),
-            date_i18n('H:i', $current_timestamp)
-        )
-    );
-    give_update_meta($payment_id, 'give_last_paypal_ipn_received', $current_timestamp);
-
-    if (has_action('give_paypal_' . $txn_type)) {
-        /**
-         * Fires while processing PayPal IPN $txn_type.
-         *
-         * Allow PayPal IPN types to be processed separately.
-         *
-         * @since 1.0
-         *
-         * @param int $payment_id Payment id.
-         *
-         * @param array $encoded_data_array Encoded data.
-         */
-        do_action("give_paypal_{$txn_type}", $encoded_data_array, $payment_id);
-    } else {
-        /**
-         * Fires while process PayPal IPN.
-         *
-         * Fallback to web accept just in case the txn_type isn't present.
-         *
-         * @since 1.0
-         *
-         * @param int $payment_id Payment id.
-         *
-         * @param array $encoded_data_array Encoded data.
-         */
-        do_action('give_paypal_web_accept', $encoded_data_array, $payment_id);
-    }
-    exit;
-}
-
-add_action('give_verify_paypal_ipn', 'give_process_paypal_ipn');
-
-/**
- * Process web accept (one time) payment IPNs.
- *
- * @since 1.0
- * @since 2.15.0 Remove unnecessary payment validation to prevent frequent failure.
- *
- * @param int $payment_id The payment ID from Give.
- *
- * @param array $data The IPN Data.
- *
- * @return void
- */
-function give_process_paypal_web_accept($data, $payment_id)
-{
-    // Only allow through these transaction types.
-    if (
-        'web_accept' !== $data['txn_type'] &&
-        'cart' !== $data['txn_type']
-    ) {
-        return;
-    }
-
-    // Need $payment_id to continue.
-    if (empty($payment_id)) {
-        return;
-    }
-
-    // Collect donation payment details.
-    $donation = new Give_Payment($payment_id);
-    $payment_status = strtolower($data['payment_status']);
-
-    // Must be a PayPal standard IPN.
-    // Validate donation id.
-    if (
-        ! $donation->ID ||
-        'paypal' !== $donation->gateway) {
-        return;
-    }
-
-    // Process refunds & reversed.
-    if (in_array($payment_status, ['refunded', 'reversed'])) {
-        give_process_paypal_refund($data, $payment_id);
-
-        return;
-    }
-
-    // Only complete payments once.
-    if ('publish' === get_post_status($payment_id)) {
-        return;
-    }
-
-    // Process completed donations.
-    if ('completed' === $payment_status) {
-        give_insert_payment_note(
-            $donation->ID,
-            sprintf( /* translators: %s: Paypal transaction ID */
-                __('PayPal Transaction ID: %s', 'give'),
-                $data['txn_id']
-            )
-        );
-        give_set_payment_transaction_id($donation->ID, $data['txn_id']);
-        give_update_payment_status($donation->ID, 'publish');
-    } elseif ('pending' === $payment_status) {
-        // Look for possible pending reasons, such as an eCheck.
-        if (isset($data['pending_reason'])) {
-            $note = give_paypal_get_pending_donation_note($data['pending_reason']);
-            give_insert_payment_note($donation->ID, $note);
-        }
-    }
-}
-
-add_action('give_paypal_web_accept', 'give_process_paypal_web_accept', 10, 2);
-
-/**
  * Process PayPal IPN Refunds
  *
  * @since 1.0
+ * @deprecated
  *
  * @param int $payment_id The payment ID.
  *
