@@ -21,7 +21,7 @@ class Donation
     /**
      * @var int
      */
-    public $sequentialId;
+    public $sequentialId = null;
     /**
      * @var DateTime
      */
@@ -65,11 +65,11 @@ class Donation
     /**
      * @var int
      */
-    public $parentId;
+    public $parentId = 0;
     /**
      * @var int
      */
-    public $subscriptionId;
+    public $subscriptionId = null;
 
     /**
      * Find donation by ID

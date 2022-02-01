@@ -52,9 +52,9 @@ class DonationQueryData
         $donation->firstName = $this->donation->firstName;
         $donation->lastName = $this->donation->lastName;
         $donation->email = $this->donation->email;
-        $donation->sequentialId = (int)$this->donation->sequentialId;
-        $donation->parentId = (int)$this->donation->parentId;
-        $donation->subscriptionId = (int)$this->donation->subscriptionId;
+        $donation->sequentialId = isset($this->donation->sequentialId) ? (int)$this->donation->sequentialId : 0;
+        $donation->parentId = isset($this->donation->parentId) ? (int)$this->donation->parentId : 0;
+        $donation->subscriptionId = isset($this->donation->subscriptionId) ? (int)$this->donation->subscriptionId : null;
 
         return $donation;
     }
