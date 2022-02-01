@@ -23,12 +23,23 @@ type DonationForm = {
     edit: string;
 };
 
-export default function DonationFormsTable() {
+export enum DonationStatus {
+    Any = 'any',
+    Publish = 'publish',
+    Pending = 'pending',
+    Draft = 'draft',
+    Trash = 'trash',
+}
+
+interface DonationFormsTableProps {
+    statusFilter: DonationStatus;
+}
+
+export default function DonationFormsTable({statusFilter: status}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState(0);
     const [successes, setSuccesses] = useState(0);
-    const [status, setStatus] = useState('any');
     const {data, error, isValidating} = useDonationForms({page, perPage, status});
 
     async function mutateForm(ids, endpoint, method) {
@@ -63,10 +74,6 @@ export default function DonationFormsTable() {
 
     function restoreForm(event) {
         mutateForm(event.target.dataset.formid, '/restore', 'POST');
-    }
-
-    function changeStatus(event) {
-        setStatus(event.target.value);
     }
 
     function TableRows({data}) {
@@ -236,15 +243,6 @@ export default function DonationFormsTable() {
                     </button>
                 </div>
             )}
-            <div className={styles.searchContainer}>
-                <select onChange={changeStatus}>
-                    <option value="any">{__('All', 'give')}</option>
-                    <option value="publish">{__('Published', 'give')}</option>
-                    <option value="pending">{__('Pending', 'give')}</option>
-                    <option value="draft">{__('Draft', 'give')}</option>
-                    <option value="trash">{__('Trash', 'give')}</option>
-                </select>
-            </div>
             <div className={styles.pageActions}>
                 <Pagination
                     currentPage={data ? data.page : page}
