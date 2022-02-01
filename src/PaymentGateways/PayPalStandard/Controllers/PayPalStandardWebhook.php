@@ -42,6 +42,12 @@ class PayPalStandardWebhook
         $donationId = isset($eventData['custom']) ? absint($eventData['custom']) : 0;
         $txnType = $eventData['txn_type'];
 
+        // ipn verification can be disabled in GiveWP (<=2.15.0).
+        // This check will prevent anonymous requests to edit donation.
+        if( ! $this->verifyDonationId( $donationId ) ) {
+            wp_die('Forbidden', 404);
+        }
+
         $this->recordIpn($eventData, $donationId);
         $this->recordIpnInDonation($donationId);
 
@@ -164,5 +170,15 @@ class PayPalStandardWebhook
         );
 
         give_update_meta($donationId, 'give_last_paypal_ipn_received', $currentTimestamp);
+    }
+
+    /**
+     * @param $donationId
+     *
+     * @return bool
+     */
+    private function verifyDonationId($donationId)
+    {
+        return $donationId && 'paypal' === give_get_payment_gateway($donationId);
     }
 }
