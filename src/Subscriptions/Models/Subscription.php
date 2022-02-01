@@ -71,7 +71,7 @@ class Subscription
      * @unreleased
      *
      * @param  int  $id
-     * @return Subscription
+     * @return Subscription|null
      */
     public static function find($id)
     {
@@ -79,7 +79,7 @@ class Subscription
     }
 
     /**
-     * @return Donor
+     * @return Donor|null
      */
     public function donor()
     {

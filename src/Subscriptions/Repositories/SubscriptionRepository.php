@@ -73,11 +73,11 @@ class SubscriptionRepository
     /**
      * @param int $id
      *
-     * @return object[]|null
+     * @return object[]
      */
     public function getNotesBySubscriptionId($id)
     {
-       return DB::table('comments')
+       $notes = DB::table('comments')
                 ->select(
                     [ 'comment_content', 'note'],
                     ['comment_date', 'date' ]
@@ -86,6 +86,12 @@ class SubscriptionRepository
                 ->where('comment_type', 'give_sub_note')
                 ->orderBy('comment_date', 'DESC')
                 ->getAll();
+
+       if ( ! $notes) {
+           return [];
+       }
+
+       return $notes;
     }
 
 }
