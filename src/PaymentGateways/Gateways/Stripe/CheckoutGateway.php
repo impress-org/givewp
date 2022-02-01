@@ -13,12 +13,6 @@ use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
-include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-checkout-session.php';
-include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-customer.php';
-include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-gateway.php';
-include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-payment-intent.php';
-include GIVE_PLUGIN_DIR . 'includes/gateways/stripe/includes/class-give-stripe-payment-method.php';
-
 class CheckoutGateway extends PaymentGateway
 {
     use Traits\CheckoutInstructions;
@@ -59,7 +53,7 @@ class CheckoutGateway extends PaymentGateway
      */
     public static function id()
     {
-        return 'stripe-checkout';
+        return 'stripe_checkout';
     }
 
     /**
