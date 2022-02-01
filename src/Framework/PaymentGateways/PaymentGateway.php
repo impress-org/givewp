@@ -256,7 +256,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function generateSecureGatewayRouteUrl($gatewayMethod, $args = null)
     {
-        $nonce = RouteSignature::make($this->getId(), $gatewayMethod, $args);
+        $nonce = new RouteSignature($this->getId(), $gatewayMethod, $args);
 
         return Call::invoke(
             GenerateGatewayRouteUrl::class,
