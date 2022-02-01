@@ -121,6 +121,10 @@ class GatewayRoute
         $action = RouteSignature::make($data->gatewayId, $data->gatewayMethod, $data->queryParams);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
+            PaymentGatewayLog::error(
+                'Invalid Secure Route',
+                ['routeSignature' => $routeSignature, 'action' => $action->toString(), 'data' => $data]
+            );
             wp_die('Forbidden', 403);
         }
     }
