@@ -103,11 +103,11 @@ class TestGatewayOffsite extends PaymentGateway
     {
         $donationId = $queryParams['give-donation-id'];
 
-        $this->updateDonation($donationId);
-
         if (!get_post($donationId)) {
             throw new PaymentGatewayException('Donation does not exist');
         }
+
+        $this->updateDonation($donationId);
 
         return response()->redirectTo(give_get_success_page_uri());
     }
@@ -125,11 +125,11 @@ class TestGatewayOffsite extends PaymentGateway
     {
         $donationId = $queryParams['give-donation-id'];
 
-        $this->updateDonation($donationId);
-
         if (!get_post($donationId)) {
             throw new PaymentGatewayException('Donation does not exist');
         }
+
+        $this->updateDonation($donationId);
 
         return response()->redirectTo(give_get_success_page_uri());
     }
