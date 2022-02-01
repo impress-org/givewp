@@ -135,4 +135,12 @@ class Donation
         return give()->donationRepository->getMeta($this);
     }
 
+    /**
+     * @return int
+     */
+    public function getSequentialId()
+    {
+        return give()->donationRepository->getSequentialId($this->id);
+    }
+
 }

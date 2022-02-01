@@ -236,5 +236,15 @@ class DonationRepository
             'subscription_id' => $donation->subscriptionId
         ];
     }
+
+    /**
+     * @param int $id
+     *
+     * @return int
+     */
+    public function getSequentialId($id)
+    {
+        return (int)give()->seq_donation_number->get_serial_number($id);
+    }
 }
 

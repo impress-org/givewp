@@ -52,7 +52,7 @@ class DonationQueryData
         $donation->firstName = $this->donation->firstName;
         $donation->lastName = $this->donation->lastName;
         $donation->email = $this->donation->email;
-        $donation->sequentialId = (int)give()->seq_donation_number->get_serial_number($this->donation->id);
+        $donation->sequentialId = (int)$this->donation->sequentialId;
         $donation->parentId = (int)$this->donation->parentId;
         $donation->subscriptionId = (int)$this->donation->subscriptionId;
 
