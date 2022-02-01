@@ -33,25 +33,32 @@ export enum DonationStatus {
 
 interface DonationFormsTableProps {
     statusFilter: DonationStatus;
+    search: string;
 }
 
-export default function DonationFormsTable({statusFilter: status}: DonationFormsTableProps) {
+export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState(0);
     const [successes, setSuccesses] = useState(0);
-    const {data, error, isValidating} = useDonationForms({page, perPage, status});
+    const listParams = {
+        page,
+        perPage,
+        status,
+        search
+    }
+    const {data, error, isValidating} = useDonationForms(listParams);
 
     async function mutateForm(ids, endpoint, method) {
         try {
-            const response = await fetchWithArgs(endpoint, {page, perPage, status, ids}, method);
+            const response = await fetchWithArgs(endpoint, {...listParams, ids}, method);
             //mutate the data without revalidating current page
-            const currentKey = keyFunction({page, perPage, status});
+            const currentKey = keyFunction(listParams);
             await mutate(currentKey, {...data, ...response}, false);
             //revalidate all pages after the current page and null their data
             const mutations = [];
             for (let i = response.page + 1; i <= Math.ceil(data.total / perPage); i++) {
-                const invalidKey = keyFunction({page: i, perPage, status});
+                const invalidKey = keyFunction({...listParams, page: i});
                 if (invalidKey != currentKey) {
                     mutations.push(mutate(invalidKey, null));
                 }

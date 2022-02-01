@@ -262,8 +262,19 @@
     padding-inline: 1.5em;
     padding-block: 1em;
     border-bottom: 0.0625rem solid #dbdbdb;
+    & > * {
+      margin-inline-end: 1.5em;
+    }
 }
 
+input.textInput {
+    border: 1px solid rgba(221, 221, 221);
+    margin-inline-end: 0.5em;
+
+    &::placeholder {
+        color: rgba(157, 157, 157);
+    }
+}
 .statusBadge {
     background-color: var(--give-primary-color);
     border-radius: 0.1875rem;

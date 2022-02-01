@@ -32,14 +32,15 @@ const Fetcher = (params) => {
     return fetchWithArgs('', {
         page: params.split(',')[0],
         perPage: params.split(',')[1],
-        status: params.split(',')[2]
+        status: params.split(',')[2],
+        search: params.split(',')[3]
     });
 }
 // SWR Fetcher
-export const useDonationForms = ({page, perPage, status}, swrParams = {}) => {
-    return useSWR(keyFunction({page, perPage, status}), Fetcher, swrParams);
+export const useDonationForms = ({page, perPage, status, search}, swrParams = {}) => {
+    return useSWR(keyFunction({page, perPage, status, search}), Fetcher, swrParams);
 };
 
-export const keyFunction = ({page, perPage, status}) => {
-    return `${page},${perPage},${status}`
+export const keyFunction = ({page, perPage, status, search}) => {
+    return `${page},${perPage},${status},${search}`
 }

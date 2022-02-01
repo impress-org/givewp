@@ -22,8 +22,13 @@ function getDonationStatusText(donationStatus: DonationStatus): string {
 
 export default function AdminDonationFormsPage() {
     const [statusFilter, setStatusFilter] = useState<DonationStatus>(DonationStatus.Any);
+    const [search, setSearch] = useState<string>('');
     const handleStatusFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) =>
         setStatusFilter(event.target.value as DonationStatus);
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        setSearch(event.target.searchInput.value);
+    }
 
     return (
         <article>
@@ -34,6 +39,12 @@ export default function AdminDonationFormsPage() {
                 </a>
             </div>
             <div className={styles.searchContainer}>
+                <form onSubmit={handleSearchSubmit}>
+                    <input className={styles.textInput} name='searchInput' type='text' placeholder={__('Search by name or ID', 'give')}/>
+                    <button className={styles.button}>
+                        {__('Search', 'give')}
+                    </button>
+                </form>
                 <select onChange={handleStatusFilterChange}>
                     {Object.values(DonationStatus).map((donationStatus) => (
                         <option key={donationStatus} value={donationStatus}>
@@ -43,7 +54,7 @@ export default function AdminDonationFormsPage() {
                 </select>
             </div>
             <div className={styles.pageContent}>
-                <DonationFormsTable statusFilter={statusFilter} />
+                <DonationFormsTable statusFilter={statusFilter} search={search} />
             </div>
         </article>
     );
