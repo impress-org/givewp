@@ -45,9 +45,10 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         page,
         perPage,
         status,
-        search
-    }
+        search,
+    };
     const {data, error, isValidating} = useDonationForms(listParams);
+    const isEmpty = !error && data?.forms.length === 0;
 
     async function mutateForm(ids, endpoint, method) {
         try {
@@ -86,16 +87,6 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     function TableRows({data}) {
         const forms = data ? data.forms : loadingForms;
         const trash = data ? data.trash : false;
-
-        if (forms.length == 0) {
-            return (
-                <tr className={styles.tableRow}>
-                    <td colSpan={9} className={styles.statusMessage}>
-                        {__('No donation forms found.', 'give')}
-                    </td>
-                </tr>
-            );
-        }
 
         //general error state
         if (error) {
@@ -259,7 +250,12 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     setPage={setPage}
                 />
             </div>
-            <div role="group" aria-labelledby="giveDonationFormsTableCaption" className={styles.tableGroup}>
+            <div
+                role="group"
+                aria-labelledby="giveDonationFormsTableCaption"
+                aria-describedby="giveDonationFormsTableMessage"
+                className={styles.tableGroup}
+            >
                 <table className={styles.table}>
                     <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
                         {__('Donation Forms', 'give')}
@@ -304,6 +300,9 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         <TableRows data={data} />
                     </tbody>
                 </table>
+                <div id="giveDonationFormsTableMessage">
+                    {isEmpty && <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>}
+                </div>
             </div>
         </>
     );
