@@ -14,14 +14,12 @@ class ProcessIpnDonationRefund
      * @unreleased
      *
      * @param array $ipnEventData
-     * @param int $donationId
+     * @param Give_Payment $donation
      *
      * @return void
      */
-    public function __invoke(array $ipnEventData, $donationId)
+    public function __invoke(array $ipnEventData, Give_Payment $donation)
     {
-        $donation = new Give_Payment($donationId);
-
         if ($this->isPartialRefund($ipnEventData, $donation)) {
             $donation->add_note(
                 sprintf( /* translators: %s: Paypal parent transaction ID */
@@ -29,7 +27,6 @@ class ProcessIpnDonationRefund
                     $ipnEventData['parent_txn_id']
                 )
             );
-
         } else {
             $donation->add_note(
                 sprintf( /* translators: 1: Paypal parent transaction ID 2. Paypal reason code */

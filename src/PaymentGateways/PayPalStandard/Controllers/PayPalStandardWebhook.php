@@ -124,7 +124,7 @@ class PayPalStandardWebhook
             // Process refunds & reversed.
             case in_array($donationStatus, ['refunded', 'reversed']):
                 if ('refunded' !== $donation->status) {
-                    Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donationId);
+                    Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donation);
                 }
 
                 return;
