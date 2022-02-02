@@ -66,12 +66,48 @@ class ListForms extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request)
     {
+        $data    = [];
+        $forms   = $this->getFormsForRequest($request);
+        $total   = $this->getTotalFormsCountForRequest($request);
+        $perPage = $request->get_param('perPage');
+
+        foreach ($forms as $form) {
+            $data[] = [
+                'id'        => $form->id,
+                'name'      => $form->title,
+                'status'    => $form->status,
+                'goal'      => $form->goalEnabled === 'enabled' ? $this->getGoal($form->id) : false,
+                'donations' => $this->getFormDonationsCount($form->id),
+                'amount'    => $this->getFormAmount($form),
+                'revenue'   => $this->formatAmount($form->revenue),
+                'datetime'  => $this->getDateTime($form->createdAt),
+                'shortcode' => sprintf('[give_form id="%d"]', $form->id),
+                'permalink' => html_entity_decode(get_permalink($form->id)),
+                'edit'      => html_entity_decode(get_edit_post_link($form->id))
+            ];
+        }
+
+        return new WP_REST_Response(
+            [
+                'forms'      => $data,
+                'totalPages' => ceil($total / $perPage),
+            ]
+        );
+    }
+
+    /**
+     * @param  WP_REST_Request  $request
+     *
+     * @return array
+     */
+    private function getFormsForRequest(WP_REST_Request $request)
+    {
         $page    = $request->get_param('page');
         $perPage = $request->get_param('perPage');
         $search  = $request->get_param('search');
         $status  = $request->get_param('status');
 
-        $forms = DB::table('posts')
+        $query = DB::table('posts')
                    ->select(
                        ['ID', 'id'],
                        ['post_date', 'createdAt'],
@@ -92,60 +128,72 @@ class ListForms extends Endpoint
 
         // Status
         if ($status === 'any') {
-            $forms->whereIn('post_status', ['publish', 'draft', 'pending']);
+            $query->whereIn('post_status', ['publish', 'draft', 'pending']);
         } else {
-            $forms->where('post_status', $status);
+            $query->where('post_status', $status);
         }
 
         // Search
         if ($search) {
             if (ctype_digit($search)) {
-                $forms->where('ID', $search);
+                $query->where('ID', $search);
             } else {
-                $forms->whereLike('post_title', $search);
+                $query->whereLike('post_title', $search);
             }
         }
 
-        $forms = $forms->getAll();
+        return $query->getAll();
+    }
 
-        // Get total forms count
-        $total = DB::table('posts')
+    /**
+     * @param  WP_REST_Request  $request
+     *
+     * @return int
+     */
+    private function getTotalFormsCountForRequest(WP_REST_Request $request)
+    {
+        $search = $request->get_param('search');
+        $status = $request->get_param('status');
+
+        $query = DB::table('posts')
                    ->selectRaw('SELECT COUNT(ID) AS count')
-                   ->where('post_type', 'give_forms')
-                   ->get();
+                   ->where('post_type', 'give_forms');
 
-        $data = [];
-
-        foreach ($forms as $form) {
-            // Get donations count
-            $donations = DB::table('posts')
-                           ->selectRaw('SELECT COUNT(ID) as count')
-                           ->leftJoin('give_donationmeta', 'ID', 'donation_id')
-                           ->where('meta_key', '_give_payment_form_id')
-                           ->where('meta_value', $form->id)
-                           ->get();
-
-            $data[] = [
-                'id'        => $form->id,
-                'name'      => $form->title,
-                'donations' => $donations->count,
-                'status'    => $form->status,
-                'goal'      => $form->goalEnabled === 'enabled' ? $this->getGoal($form->id) : false,
-                'amount'    => $this->getFormAmount($form),
-                'revenue'   => $this->formatAmount($form->revenue),
-                'datetime'  => $this->getDateTime($form->createdAt),
-                'shortcode' => sprintf('[give_form id="%d"]', $form->id),
-                'permalink' => html_entity_decode(get_permalink($form->id)),
-                'edit'      => html_entity_decode(get_edit_post_link($form->id))
-            ];
+        if ($status === 'any') {
+            $query->whereIn('post_status', ['publish', 'draft', 'pending']);
+        } else {
+            $query->where('post_status', $status);
         }
 
-        return new WP_REST_Response(
-            [
-                'forms'      => $data,
-                'totalPages' => ceil($total->count / $perPage),
-            ]
-        );
+        if ($search) {
+            if (ctype_digit($search)) {
+                $query->where('ID', $search);
+            } else {
+                $query->whereLike('post_title', $search);
+            }
+        }
+
+        $total = $query->get();
+
+        return $total->count;
+    }
+
+    /**
+     * @param  int  $formId
+     *
+     * @return int mixed
+     */
+    private function getFormDonationsCount($formId)
+    {
+        $donations = DB::table('posts')
+                       ->selectRaw('SELECT COUNT(ID) as count')
+                       ->leftJoin('give_donationmeta', 'ID', 'donation_id')
+                       ->where('meta_key', '_give_payment_form_id')
+                       ->where('meta_value', $formId)
+                       ->get();
+
+
+        return $donations->count;
     }
 
     /**
