@@ -18,27 +18,13 @@ class RouteSignature {
      *
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
-     * @param  array  $args
+     * @param  string[]  $args
      */
     public function __construct($gatewayId, $gatewayMethod, $args)
     {
         $secureArgs = md5(implode('|', $args));
 
         $this->signature = "$gatewayId@$gatewayMethod:$secureArgs";
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param  int  $gatewayId
-     * @param  string  $gatewayMethod
-     * @param  array  $args
-     *
-     * @return static
-     */
-    public static function make($gatewayId, $gatewayMethod, $args)
-    {
-        return new static($gatewayId, $gatewayMethod, $args);
     }
 
     /**
