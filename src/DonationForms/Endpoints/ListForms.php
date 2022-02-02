@@ -51,7 +51,7 @@ class ListForms extends Endpoint
                     ],
                     'search'  => [
                         'type'              => 'string',
-                        'required'          => 'false',
+                        'required'          => false,
                         'sanitize_callback' => [$this, 'sanitizeString']
                     ]
                 ],
