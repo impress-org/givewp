@@ -2,6 +2,9 @@
 
 namespace Give\PaymentGateways\PayPalStandard\Actions;
 
+use Give\ValueObjects\Money;
+use Give_Payment;
+
 /**
  * @unreleased
  */
@@ -14,10 +17,11 @@ class ProcessIpnDonationRefund
             return;
         }
 
-        $payment_amount = give_donation_amount($donationId);
-        $refund_amount = $ipnEventData['payment_gross'] * -1;
+        $donation = new Give_Payment($donationId);
+        $donationAmount = Money::of($donation->total, $donation->currency);
+        $refundedAmountOnPayPal = Money::of($ipnEventData['payment_gross'], $donation->currency);
 
-        if (number_format((float)$refund_amount, 2) < number_format((float)$payment_amount, 2)) {
+        if ($refundedAmountOnPayPal->getMinorAmount() < $donationAmount->getMinorAmount()) {
             give_insert_payment_note(
                 $donationId,
                 sprintf( /* translators: %s: Paypal parent transaction ID */
@@ -27,7 +31,6 @@ class ProcessIpnDonationRefund
             );
 
             return; // This is a partial refund
-
         }
 
         give_insert_payment_note(
