@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalStandard;
 
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
@@ -98,7 +99,7 @@ class PayPalStandard extends PaymentGateway
      *
      * }
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function handleSuccessPaymentReturn($queryParams)
     {
@@ -106,7 +107,7 @@ class PayPalStandard extends PaymentGateway
         $payment = new Give_Payment($donationId);
         $payment->update_status('processing');
 
-        RedirectOffsitePayment::redirectToReceiptPage( $donationId );
+        return new RedirectResponse((new RedirectOffsitePayment($donationId))->getReceiptPageUrl());
     }
 
     /**
@@ -120,7 +121,7 @@ class PayPalStandard extends PaymentGateway
      *
      * }
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function handleFailedPaymentReturn($queryParams)
     {
@@ -128,7 +129,7 @@ class PayPalStandard extends PaymentGateway
         $payment = new Give_Payment($donationId);
         $payment->update_status('failed');
 
-        RedirectOffsitePayment::redirectToFailedPage( $donationId );
+        return new RedirectResponse((new RedirectOffsitePayment($donationId))->getFailedPageUrl());
     }
 
     /**

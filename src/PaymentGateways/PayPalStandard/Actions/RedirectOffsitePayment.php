@@ -26,73 +26,31 @@ class RedirectOffsitePayment
     /**
      * @unreleased
      *
-     * @param int $donationId
-     *
-     * @return void
-     */
-    public static function redirectToReceiptPage( $donationId ){
-        $self = new static( $donationId );
-
-        wp_safe_redirect( $self->getReceiptPageUrl( $self->getDonationFormPageUrl() ) );
-        exit();
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param int $donationId
-     *
-     * @return void
-     */
-    public static function redirectToFailedPage( $donationId ){
-        $self = new static( $donationId );
-
-        wp_safe_redirect( $self->getFailedPageUrl( $self->getDonationFormPageUrl() ) );
-        exit();
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param string $donationFormPageUrl
-     *
      * @return string
      */
-    protected function getReceiptPageUrl($donationFormPageUrl = null)
+    public function getReceiptPageUrl()
     {
         $formId = give_get_payment_form_id($this->donationId);
         $isEmbedDonationForm = ! Utils::isLegacyForm($formId);
 
         return $isEmbedDonationForm ?
-            Utils::createSuccessPageURL($donationFormPageUrl ?: get_permalink($formId)) :
+            Utils::createSuccessPageURL($this->getDonationFormPageUrl() ?: get_permalink($formId)) :
             give_get_success_page_url();
     }
 
     /**
      * @unreleased
      *
-     * @param string $donationFormPageUrl
-     *
-     * @return mixed|void
+     * @return string
      */
-    protected function getFailedPageUrl($donationFormPageUrl = null)
+    public function getFailedPageUrl()
     {
         $formId = give_get_payment_form_id($this->donationId);
         $isEmbedDonationForm = ! Utils::isLegacyForm($formId);
 
-        $url = $isEmbedDonationForm ?
-            Utils::createFailedPageURL($donationFormPageUrl ?: get_permalink($formId)) :
+        return $isEmbedDonationForm ?
+            Utils::createFailedPageURL($this->getDonationFormPageUrl() ?: get_permalink($formId)) :
             give_get_failed_transaction_uri();
-
-        /**
-         * Filter the failed payment redirect url.
-         *
-         * @unreleased
-         *
-         * @param string $url
-         * @param int $donationId
-         */
-        return apply_filters('give_gateway_payment_failed_redirect_url', $url, $this->donationId);
     }
 
     /**
