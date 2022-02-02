@@ -66,10 +66,9 @@ class ListForms extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        $data    = [];
-        $forms   = $this->getFormsForRequest($request);
-        $total   = $this->getTotalFormsCountForRequest($request);
-        $perPage = $request->get_param('perPage');
+        $data  = [];
+        $forms = $this->getFormsForRequest($request);
+        $total = $this->getTotalFormsCountForRequest($request);
 
         foreach ($forms as $form) {
             $data[] = [
@@ -90,7 +89,7 @@ class ListForms extends Endpoint
         return new WP_REST_Response(
             [
                 'forms'      => $data,
-                'totalPages' => ceil($total / $perPage),
+                'totalPages' => $total,
             ]
         );
     }
@@ -152,8 +151,9 @@ class ListForms extends Endpoint
      */
     private function getTotalFormsCountForRequest(WP_REST_Request $request)
     {
-        $search = $request->get_param('search');
-        $status = $request->get_param('status');
+        $search  = $request->get_param('search');
+        $status  = $request->get_param('status');
+        $perPage = $request->get_param('perPage');
 
         $query = DB::table('posts')
                    ->selectRaw('SELECT COUNT(ID) AS count')
@@ -175,7 +175,7 @@ class ListForms extends Endpoint
 
         $total = $query->get();
 
-        return $total->count;
+        return (int)ceil($total->count / $perPage);
     }
 
     /**
