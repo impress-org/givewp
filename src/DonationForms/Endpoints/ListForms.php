@@ -234,7 +234,7 @@ class ListForms extends Endpoint
     {
         $date      = date_create($date);
         $timestamp = $date->getTimestamp();
-        $time      = date_i18n(get_option('time_format'), $date);
+        $time      = date_i18n(get_option('time_format'), $timestamp);
 
         if ($timestamp >= strtotime('today')) {
             return __('Today', 'give') . ' ' . __('at', 'give') . ' ' . $time;
@@ -244,7 +244,7 @@ class ListForms extends Endpoint
             return __('Yesterday', 'give') . ' ' . __('at', 'give') . ' ' . $time;
         }
 
-        return date_i18n(get_option('date_format'), $date);
+        return date_i18n(get_option('date_format'), $timestamp);
     }
 
     /**
