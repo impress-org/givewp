@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms;
 
+use Give\DonationForms\Repositories\DonationFormsRepository;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -13,7 +14,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     public function register()
     {
-
+        give()->singleton('donationFormsRepository', DonationFormsRepository::class);
     }
 
     public function boot()

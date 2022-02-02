@@ -42,6 +42,7 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\Repositories\DonationFormsRepository;
 use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
@@ -100,6 +101,7 @@ if (!defined('ABSPATH')) {
  * @property-read Give_Session                    $session
  * @property-read Give_DB_Sessions                $session_db
  * @property-read Give_Tooltips                   $tooltips
+ * @property-read DonationFormsRepository         $donationFormsRepository
  *
  * @mixin Container
  */
