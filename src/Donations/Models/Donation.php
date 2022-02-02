@@ -20,10 +20,6 @@ class Donation
      */
     public $id;
     /**
-     * @var int
-     */
-    public $sequentialId = null;
-    /**
      * @var DateTime
      */
     public $createdAt;
@@ -70,7 +66,7 @@ class Donation
     /**
      * @var int
      */
-    public $subscriptionId = null;
+    public $subscriptionId;
 
     /**
      * @param  int  $amount
@@ -147,7 +143,7 @@ class Donation
         if (!$this->id) {
             return give()->donationRepository->insert($this);
         }
-        
+
         return give()->donationRepository->update($this);
     }
 
