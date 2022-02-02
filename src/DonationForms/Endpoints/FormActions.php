@@ -40,7 +40,15 @@ class FormActions extends Endpoint
                     'ids'    => [
                         'type'              => 'string',
                         'required'          => true,
-                        'validate_callback' => [$this, 'validateIds'],
+                        'validate_callback' => function ($ids) {
+                            foreach ($this->splitString($ids) as $id) {
+                                if ( ! $this->validateInt($id)) {
+                                    return false;
+                                }
+                            }
+
+                            return true;
+                        },
                     ]
                 ],
             ]
@@ -106,21 +114,5 @@ class FormActions extends Endpoint
         }
 
         return [trim($ids)];
-    }
-
-    /**
-     * @param  string  $ids  '1,2,3'
-     *
-     * @return bool
-     */
-    protected function validateIds($ids)
-    {
-        foreach ($this->splitString($ids) as $id) {
-            if ( ! $this->validateInt($id)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
