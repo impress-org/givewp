@@ -2,7 +2,6 @@
 
 namespace Give\DonationForms\Endpoints;
 
-use Give\Framework\Database\DB;
 use WP_REST_Request;
 use WP_REST_Response;
 
