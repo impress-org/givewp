@@ -10,7 +10,7 @@ class Controller
             return;
         }
 
-        wp_enqueue_script('give_free_addon_modal', GIVE_PLUGIN_URL . 'assets/dist/js/admin-free-addon-modal.js', ['wp'], GIVE_VERSION, true);
+        wp_enqueue_script('give_free_addon_modal', GIVE_PLUGIN_URL . 'assets/dist/js/admin-free-addon-modal.js', [], GIVE_VERSION, true);
     }
 
     /**
