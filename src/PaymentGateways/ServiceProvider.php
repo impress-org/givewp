@@ -35,6 +35,9 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
         Hooks::addAction('template_redirect', GatewayRoute::class);
+
+        // We are adding event listener to this action hook.
+        // This hook fires for PayPal Standard ipn for onetime donation.
         Hooks::addAction(
             'give_paypal_web_accept',
             PayPalStandardWebhook::class,
