@@ -6,18 +6,20 @@ declare global {
     }
 }
 
+let controller = null;
 const headers = {
         'Content-Type': 'application/json',
         'X-WP-Nonce': window.GiveDonationForms.apiNonce,
 };
 
-export const fetchWithArgs = (endpoint, args, method = 'GET') => {
+export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
     const url = new URL(window.GiveDonationForms.apiRoot + endpoint);
     for (const [param, value] of Object.entries(args)) {
         url.searchParams.set(param, value as string);
     }
     return fetch(url.href, {
         method: method,
+        signal: signal,
         headers: headers,
     }).then((res) => {
         if(!res.ok){
@@ -27,13 +29,22 @@ export const fetchWithArgs = (endpoint, args, method = 'GET') => {
     });
 }
 
-
 const Fetcher = (params) => {
-    return fetchWithArgs('', params);
+    if(controller instanceof AbortController) controller.abort();
+    controller = new AbortController();
+    return fetchWithArgs('', params, 'GET', controller.signal);
 }
+
 // SWR Fetcher
 export function useDonationForms({page, perPage, status, search}) {
-    const {data, error} = useSWR({page, perPage, status, search}, Fetcher);
+    const {data, error} = useSWR({page, perPage, status, search}, Fetcher, {
+        onErrorRetry: (error, key, config, revalidate) => {
+            //don't retry if we cancelled the initial request
+            if(error.name == 'AbortError') return;
+            revalidate();
+        }
+
+    });
 
     return {data, error};
 }
