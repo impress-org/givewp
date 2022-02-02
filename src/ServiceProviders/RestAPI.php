@@ -3,10 +3,7 @@
 namespace Give\ServiceProviders;
 
 use Give\DonationForms\Endpoints\ListForms;
-use Give\DonationForms\Endpoints\TrashForms;
-use Give\DonationForms\Endpoints\DeleteForms;
-use Give\DonationForms\Endpoints\DuplicateForms;
-use Give\DonationForms\Endpoints\RestoreForms;
+use Give\DonationForms\Endpoints\FormActions;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
 use Give\API\Endpoints\Migrations\GetMigrations;
@@ -44,10 +41,7 @@ class RestAPI implements ServiceProvider
         GetLogs::class,
         FlushLogs::class,
         ListForms::class,
-        TrashForms::class,
-        DeleteForms::class,
-        DuplicateForms::class,
-        RestoreForms::class,
+        FormActions::class,
         GetMigrations::class,
         RunMigration::class,
     ];
