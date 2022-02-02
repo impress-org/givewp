@@ -25,10 +25,7 @@ export default function AdminDonationFormsPage() {
     const [search, setSearch] = useState<string>('');
     const handleStatusFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) =>
         setStatusFilter(event.target.value as DonationStatus);
-    const handleSearchSubmit = (event) => {
-        event.preventDefault();
-        setSearch(event.target.searchInput.value);
-    }
+    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = event => setSearch(event.target.value);
 
     return (
         <article>
@@ -39,12 +36,9 @@ export default function AdminDonationFormsPage() {
                 </a>
             </div>
             <div className={styles.searchContainer}>
-                <form onSubmit={handleSearchSubmit}>
-                    <input className={styles.textInput} name='searchInput' type='text' placeholder={__('Search by name or ID', 'give')}/>
-                    <button className={styles.button}>
-                        {__('Search', 'give')}
-                    </button>
-                </form>
+                <input className={styles.textInput} name='searchInput' type='text' onChange={handleSearchChange}
+                       placeholder={__('Search by name or ID', 'give')}
+                />
                 <select onChange={handleStatusFilterChange}>
                     {Object.values(DonationStatus).map((donationStatus) => (
                         <option key={donationStatus} value={donationStatus}>
