@@ -52,10 +52,10 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
 
     async function mutateForm(ids, endpoint, method) {
         try {
-            const response = await fetchWithArgs(endpoint, {...listParams, ids}, method);
-            //mutate the data without revalidating current page
+            const response = await fetchWithArgs(endpoint, {ids}, method);
+            // revalidate current page
             const currentKey = keyFunction(listParams);
-            await mutate(currentKey, {...data, ...response}, false);
+            await mutate(currentKey, data);
             //revalidate all pages after the current page and null their data
             const mutations = [];
             for (let i = response.page + 1; i <= Math.ceil(data.total / perPage); i++) {
@@ -67,7 +67,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             setErrors(response.errors);
             setSuccesses(response.successes);
         } catch (error) {
-            console.error(error.message);
+            return error;
         }
     }
 
