@@ -47,7 +47,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         status,
         search,
     };
-    const {data, error, isValidating} = useDonationForms(listParams);
+    const {data, error} = useDonationForms(listParams);
     const isEmpty = !error && data?.forms.length === 0;
 
     async function mutateForm(ids, endpoint, method) {

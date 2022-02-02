@@ -37,9 +37,11 @@ const Fetcher = (params) => {
     });
 }
 // SWR Fetcher
-export const useDonationForms = ({page, perPage, status, search}, swrParams = {}) => {
-    return useSWR(keyFunction({page, perPage, status, search}), Fetcher, swrParams);
-};
+export function useDonationForms({page, perPage, status, search}) {
+    const {data, error} = useSWR(keyFunction({page, perPage, status, search}), Fetcher);
+
+    return {data, error};
+}
 
 export const keyFunction = ({page, perPage, status, search}) => {
     return `${page},${perPage},${status},${search}`
