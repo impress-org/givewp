@@ -3,6 +3,7 @@
 namespace Give\Donations\Models;
 
 use DateTime;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Subscriptions\Models\Subscription;
@@ -31,7 +32,7 @@ class Donation
      */
     public $updatedAt;
     /**
-     * @var string
+     * @var DonationStatus
      */
     public $status;
     /**
@@ -70,6 +71,25 @@ class Donation
      * @var int
      */
     public $subscriptionId = null;
+
+    /**
+     * @param  int  $amount
+     * @param  string  $currency
+     * @param  int  $donorId
+     * @param  string  $firstName
+     * @param  string  $lastName
+     * @param  string  $email
+     */
+    public function __construct($amount, $currency, $donorId, $firstName, $lastName, $email)
+    {
+        $this->amount = $amount;
+        $this->currency = $currency;
+        $this->donorId = $donorId;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->status = DonationStatus::PENDING();
+    }
 
     /**
      * Find donation by ID
@@ -124,6 +144,10 @@ class Donation
      */
     public function save()
     {
+        if (!$this->id) {
+            return give()->donationRepository->insert($this);
+        }
+        
         return give()->donationRepository->update($this);
     }
 
