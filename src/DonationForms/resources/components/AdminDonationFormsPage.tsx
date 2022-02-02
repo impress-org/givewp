@@ -2,6 +2,7 @@ import {useState} from 'react';
 import type {ChangeEventHandler} from 'react';
 import {__} from '@wordpress/i18n';
 
+import useDebounce from "./useDebounce";
 import styles from '../admin-donation-forms.module.scss';
 import DonationFormsTable, {DonationStatus} from './DonationFormsTable';
 
@@ -23,6 +24,7 @@ function getDonationStatusText(donationStatus: DonationStatus): string {
 export default function AdminDonationFormsPage() {
     const [statusFilter, setStatusFilter] = useState<DonationStatus>(DonationStatus.Any);
     const [search, setSearch] = useState<string>('');
+    const debouncedSearch = useDebounce(search, 400);
     const handleStatusFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) =>
         setStatusFilter(event.target.value as DonationStatus);
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = event => setSearch(event.target.value);
@@ -48,7 +50,7 @@ export default function AdminDonationFormsPage() {
                 </select>
             </div>
             <div className={styles.pageContent}>
-                <DonationFormsTable statusFilter={statusFilter} search={search} />
+                <DonationFormsTable statusFilter={statusFilter} search={debouncedSearch} />
             </div>
         </article>
     );
