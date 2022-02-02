@@ -162,7 +162,7 @@ class DonationRepository
             DB::insert(DB::prefix('posts'), [
                 'post_date' => $date,
                 'post_date_gmt' => get_gmt_from_date($date),
-                'post_status' => $donation->status,
+                'post_status' => $donation->status->getValue(),
                 'post_type' => 'give_payment'
             ], null);
 
@@ -204,8 +204,8 @@ class DonationRepository
             DB::update(DB::prefix('posts'), [
                 'post_modified' => $date,
                 'post_modified_gmt' => get_gmt_from_date($date),
-                'post_status' => $donation->status,
-                'post_type' => $donation->status
+                'post_status' => $donation->status->getValue(),
+                'post_type' => 'give_payment'
             ], ['id' => $donation->id]);
 
             foreach ($donation->getMeta() as $metaKey => $metaValue) {
