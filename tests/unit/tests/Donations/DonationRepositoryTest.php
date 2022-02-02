@@ -1,30 +1,28 @@
 <?php
 
+namespace unit\tests\Donations;
+
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use PHPUnit\Framework\TestCase;
 
 final class DonationRepositoryTest extends TestCase
 {
-    public function testDonationRepositoryInsert()
+    /**
+     * @throws DatabaseQueryException
+     */
+    public function testInsertShouldAddDonationToDatabase()
     {
-        $donation   = new Donation();
+        $donation = new Donation(50, 'USD', 1, 'Ante', 'Laća', 'ante@givewp.com');
         $repository = new DonationRepository();
-
-        $donation->status    = 'give_payment';
-        $donation->amount    = 1000000;
-        $donation->currency  = 'USD';
-        $donation->gateway   = 'manual';
-        $donation->donorId   = 1;
-        $donation->firstName = 'Ante';
-        $donation->lastName  = 'Laća';
-        $donation->email     = 'ante@givewp.com';
+        $donation->gateway = 'manual';
 
         $newDonation = $repository->insert($donation);
 
         $this->assertInstanceOf(Donation::class, $newDonation);
-        $this->assertEquals('give_payment', $newDonation->status);
-        $this->assertEquals(1000000, $newDonation->amount);
+        $this->assertEquals('pending', $newDonation->status->getValue());
+        $this->assertEquals(50, $newDonation->amount);
         $this->assertEquals('USD', $newDonation->currency);
         $this->assertEquals('manual', $newDonation->gateway);
         $this->assertEquals(1, $newDonation->donorId);
