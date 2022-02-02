@@ -67,7 +67,8 @@ class ListForms extends Endpoint
     {
         $data  = [];
         $forms = give()->donationFormsRepository->getFormsForRequest($request);
-        $total = give()->donationFormsRepository->getTotalFormsCountForRequest($request);
+        $totalForms = give()->donationFormsRepository->getTotalFormsCountForRequest($request);
+        $totalPages = (int)ceil($totalForms / $request->get_param('perPage'));
 
         foreach ($forms as $form) {
             $data[] = [
@@ -88,7 +89,8 @@ class ListForms extends Endpoint
         return new WP_REST_Response(
             [
                 'forms'      => $data,
-                'totalPages' => $total,
+                'totalForms' => $totalForms,
+                'totalPages' => $totalPages
             ]
         );
     }

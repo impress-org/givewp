@@ -90,7 +90,7 @@ class DonationFormsRepository
 
         $total = $query->get();
 
-        return (int)ceil($total->count / $perPage);
+        return $total->count;
     }
 
     /**
